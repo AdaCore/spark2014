@@ -138,7 +138,8 @@ def check_marks(strlist):
 
     RESULT is either
     - PASS/FAIL for checks, or
-    - ERROR/CHECK/WARN for flow messages.
+    - ERROR/CHECK/WARN for flow messages, or
+    - NONE for no such check/message.
 
     Case does not matter for the tag or result, although UPPERCASE is better in
     source code to easily locate the marks visually.
@@ -174,6 +175,8 @@ def check_marks(strlist):
             return 'INDEX_CHECK'
         elif 'overflow check' in text:
             return 'OVERFLOW_CHECK'
+        elif 'predicate check' in text:
+            return 'PREDICATE_CHECK'
         elif 'range check' in text:
             return 'RANGE_CHECK'
         elif 'length check' in text:
@@ -241,6 +244,7 @@ def check_marks(strlist):
         return tag in ("DIVISION_CHECK",
                        "INDEX_CHECK",
                        "OVERFLOW_CHECK",
+                       "PREDICATE_CHECK",
                        "RANGE_CHECK",
                        "LENGTH_CHECK",
                        "DISCRIMINANT_CHECK",
@@ -276,7 +280,8 @@ def check_marks(strlist):
                           "FAIL",
                           "CHECK",
                           "WARN",
-                          "ERROR")
+                          "ERROR",
+                          "NONE")
 
     def get_result(qualifier, text, is_flow_tag):
         """Returns the result for a given message qualifier and text.
@@ -316,6 +321,12 @@ def check_marks(strlist):
         print "at " + f + ":" + str(line) + \
             ": mark @" + tag + ":" + result + " not found"
 
+    def bad_found(f, line, tag, result):
+        """Print an error that the mark has been unexpectedly found"""
+        print "SPURIOUS MESSAGE",
+        print "at " + f + ":" + str(line) + \
+            ": message @" + tag + ":" + result + " found"
+
     # store actual results in a map from (file,line) to (TAG,RESULT)
     results = {}
 
@@ -338,18 +349,27 @@ def check_marks(strlist):
                 line = line + 1  # first line in file is 1, not 0
                 for mark in re.finditer(is_mark, linestr):
                     tag = mark.group(1).upper()
+
                     if not (is_flow_tag(tag) or is_proof_tag(tag)):
                         print "unrecognized tag", \
                             tag, "at", f + ":" + str(line)
                         sys.exit(1)
                     res = mark.group(2).upper()
+
                     if not is_valid_result(res):
                         print "unrecognized result", \
                             res, "at", f + ":" + str(line)
                         sys.exit(1)
-                    if (f, line) not in results or \
-                       (tag, res) not in results[f, line]:
-                        not_found(f, line, tag, res)
+
+                    if res == "NONE":
+                        if (f, line) in results:
+                            for tag2, res2 in results[f, line]:
+                                if tag == tag2:
+                                    bad_found(f, line, tag2, res2)
+                    else:
+                        if (f, line) not in results or \
+                           (tag, res) not in results[f, line]:
+                            not_found(f, line, tag, res)
 
 
 def gcc(src, opt=["-c"]):

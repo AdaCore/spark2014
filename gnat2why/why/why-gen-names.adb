@@ -735,6 +735,7 @@ package body Why.Gen.Names is
               WNE_Range_Check_Fun_BV_Int |
               WNE_Dynamic_Property |
               WNE_Dynamic_Property_BV_Int |
+              WNE_Dynamic_Predicate |
               WNE_To_Int |
               WNE_To_Int_2 |
               WNE_To_Int_3 |

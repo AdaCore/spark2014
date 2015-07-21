@@ -255,7 +255,7 @@ package body Why.Gen.Scalars is
       begin
          if Has_Static_Discrete_Predicate (E) then
             declare
-               Pred   : Node_Id := First (Static_Discrete_Predicate (E));
+               Pred : Node_Id := First (Static_Discrete_Predicate (E));
             begin
                Def := False_Pred;
 

@@ -127,9 +127,9 @@ package body Gnat2Why.Error_Messages is
       end if;
    end Add_Id_To_Entity;
 
-      -----------------------
-      -- Emit_Proof_Result --
-      -----------------------
+   -----------------------
+   -- Emit_Proof_Result --
+   -----------------------
 
    procedure Emit_Proof_Result
      (Node        : Node_Id;
@@ -237,6 +237,8 @@ package body Gnat2Why.Error_Messages is
             return "overflow check might fail";
          when VC_Range_Check               =>
             return "range check might fail";
+         when VC_Predicate_Check               =>
+            return "predicate check might fail";
          when VC_Length_Check              =>
             return "length check might fail";
          when VC_Discriminant_Check        =>
@@ -437,6 +439,7 @@ package body Gnat2Why.Error_Messages is
          when VC_Index_Check               => return "index check proved";
          when VC_Overflow_Check            => return "overflow check proved";
          when VC_Range_Check               => return "range check proved";
+         when VC_Predicate_Check           => return "predicate check proved";
          when VC_Length_Check              => return "length check proved";
          when VC_Discriminant_Check        =>
             return "discriminant check proved";

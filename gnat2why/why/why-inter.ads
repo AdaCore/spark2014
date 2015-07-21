@@ -72,10 +72,11 @@ package Why.Inter is
    procedure Discard_Theory (P : in out Why_Section);
    --  Remove the current theory from P
 
-   procedure Open_Theory (P       : in out Why_Section;
-                          Module  : W_Module_Id;
-                          Comment : String)
-     with Pre => (P.Cur_Theory = Why_Empty);
+   procedure Open_Theory
+     (P       : in out Why_Section;
+      Module  : W_Module_Id;
+      Comment : String)
+     with Pre => P.Cur_Theory = Why_Empty;
    --  Open a new theory in the file
 
    procedure Add_Use_For_Entity

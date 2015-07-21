@@ -56,7 +56,7 @@ package Why.Gen.Records is
    --  record field.
    --  @param Ada_Node  the Ada Node that corresponds to the record access
    --  @param Domain    the domain of the Why expression
-   --  @param Name      the prefix fo the record expression, as an Ada node
+   --  @param Name      the prefix for the record expression, as an Ada node
    --  @param Field     the field access, as an Ada entity
    --  @param Ty        the type of the record
    --  @return a Why expression which corresponds to the Ada record
@@ -91,7 +91,7 @@ package Why.Gen.Records is
       Name     : W_Expr_Id;
       Updates  : W_Field_Association_Array)
       return W_Expr_Id;
-   --  Generate an update to an array. The associations in Updates should only
+   --  Generate an update to a record. The associations in Updates should only
    --  modify normal fields (not discrimiants).
 
    function New_Ada_Record_Aggregate
@@ -99,8 +99,7 @@ package Why.Gen.Records is
       Domain       : EW_Domain;
       Discr_Assocs : W_Field_Association_Array;
       Field_Assocs : W_Field_Association_Array;
-      Ty           : Entity_Id)
-      return W_Expr_Id;
+      Ty           : Entity_Id) return W_Expr_Id;
    --  Generate a record aggregate of ada type Ty from the association in
    --  Discr_Assocs and Field_Assocs.
 

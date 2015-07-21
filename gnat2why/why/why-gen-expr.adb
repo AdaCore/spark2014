@@ -45,6 +45,7 @@ with GNATCOLL.Utils;          use GNATCOLL.Utils;
 with SPARK_Util;              use SPARK_Util;
 with String_Utils;            use String_Utils;
 
+with Gnat2Why_Args;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;           use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
@@ -419,10 +420,9 @@ package body Why.Gen.Expr is
       Arr_Expr    : W_Expr_Id;
       T           : W_Expr_Id;
 
-      --  Beginning of processing for Insert_Array_Conversion
+   --  Beginning of processing for Insert_Array_Conversion
 
    begin
-
       if To_Ent = From_Ent then
 
          --  In the case of unconstrained arrays, the Ada entity may be equal,
@@ -568,6 +568,15 @@ package body Why.Gen.Expr is
                  (Insert_Array_Range_Check (Arr_Expr, Check_Type),
                  +T);
             end if;
+
+            --  If the target type has a direct or inherited predicate,
+            --  generate a corresponding check.
+
+            if Has_Predicates (Check_Type) then
+               T := +Insert_Predicate_Check (Ada_Node,
+                                             Check_Type,
+                                             +T);
+            end if;
          end;
       end if;
 
@@ -605,7 +614,6 @@ package body Why.Gen.Expr is
       T : W_Expr_Id := Expr;
 
    begin
-
       if Is_Private_Conversion (From, To)
         or else Is_Record_Conversion (From, To)
       then
@@ -669,7 +677,8 @@ package body Why.Gen.Expr is
                   then
                      True
                   else Get_Type_Kind (To) in EW_Abstract | EW_Split
-                    and then Has_Predicates (Get_Ada_Node (+To)))
+                    and then
+                      Has_Static_Discrete_Predicate (Get_Ada_Node (+To)))
                else False);
 
             --  When converting to a floating-point, from either a discrete
@@ -721,6 +730,8 @@ package body Why.Gen.Expr is
         Need_Check and then Is_Constrained (R);
       Need_Tag_Check   : constant Boolean :=
         Need_Check and then Is_Tagged_Type (R) and then not Is_Ancestor (R, L);
+      Need_Pred_Check  : constant Boolean :=
+        Need_Check and then Has_Predicates (R);
 
    begin
       --  When From = To and no check needs to be inserted, do nothing
@@ -736,27 +747,35 @@ package body Why.Gen.Expr is
                                           To       => Base,
                                           Expr     => Result);
 
-      --  2.a Possibly perform the discriminant check
+      --  2. Possibly perform checks
 
-      if Domain = EW_Prog and Need_Discr_Check then
+      if Domain = EW_Prog then
          declare
             Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
          begin
-            Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
-                                                          Check_Entity,
-                                                          +Result);
-         end;
-      end if;
+            --  2.a Possibly perform a discriminant check
 
-      --  2.b Possibly perform the tag check
+            if Need_Discr_Check then
+               Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
+                                                             Check_Entity,
+                                                             +Result);
+            end if;
 
-      if Domain = EW_Prog and Need_Tag_Check then
-         declare
-            Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
-         begin
-            Result := +Insert_Tag_Check (Ada_Node,
-                                         Check_Entity,
-                                         +Result);
+            --  2.b Possibly perform the tag check
+
+            if Need_Tag_Check then
+               Result := +Insert_Tag_Check (Ada_Node,
+                                            Check_Entity,
+                                            +Result);
+            end if;
+
+            --  2.c Possibly perform a predicate check
+
+            if Need_Pred_Check then
+               Result := +Insert_Predicate_Check (Ada_Node,
+                                                  Check_Entity,
+                                                  +Result);
+            end if;
          end;
       end if;
 
@@ -1399,19 +1418,26 @@ package body Why.Gen.Expr is
       Range_Type : Entity_Id := Empty;
       Check_Kind : Range_Check_Kind := RCK_Range;
 
+      Do_Predicate_Check : constant Boolean :=
+        Has_Predicates (Get_Ada_Node (+To))
+          and then not Has_Static_Discrete_Predicate (Get_Ada_Node (+To))
+          and then Get_Ada_Node (+To) /= Get_Ada_Node (+From);
+
    --  Start of processing for Insert_Scalar_Conversion
 
    begin
       --  Do nothing when
       --  1. From = To, and
       --  2. no rounding needed, and
-      --  3. a) no check needed, _or_
+      --  3. no predicate check needed, and
+      --  4. a) no range check needed, _or_
       --     b) check is flagged but the base type is the one reserved for
       --        Standard.Boolean, so check does not need to be inserted.
       --        (Other boolean types in Ada have a base type of EW_Int.)
 
       if Eq_Base (To, From)
         and then No (Round_Func)
+        and then not Do_Predicate_Check
         and then (not Do_Check
                   or else To = EW_Bool_Type)
       then
@@ -1443,7 +1469,6 @@ package body Why.Gen.Expr is
       Range_Type    : Entity_Id;
       Check_Kind    : Range_Check_Kind) return W_Expr_Id
    is
-
       From : constant W_Type_Id := Get_Type (Expr);
 
       --  Current result expression
@@ -1458,7 +1483,6 @@ package body Why.Gen.Expr is
    --  Start of processing for Insert_Scalar_Conversion
 
    begin
-
       --  If the check is a range check on a floating-point type, and we can
       --  determine that the expression is always within bounds, then issue a
       --  check always true.
@@ -1605,7 +1629,7 @@ package body Why.Gen.Expr is
       --     case is that range checks on boolean variables are performed after
       --     their conversion to int. Another special case is that range checks
       --     on modular types are always performed at this point, as any
-      --     necessary to int has already occurred in 2.
+      --     necessary conversion to int has already occurred in 2.
 
       if Present (Range_Type)
         and then not Range_Check_Applied
@@ -1655,7 +1679,7 @@ package body Why.Gen.Expr is
                Cur := Base_Why_Type (To);
             end;
 
-         --  4.2. Otherwise simply convert from Cur to To
+         --  4.2. Otherwise simply convert from Cur to Base_Why_Type (To)
 
          else
             Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
@@ -1694,7 +1718,22 @@ package body Why.Gen.Expr is
                                     Check_Kind => Check_Kind);
       end if;
 
-      --  7. If To is an abstract type, convert from int, __fixed or real to it
+      --  7. Perform a predicate check if needed, before the final conversion
+      --  to the target abstract type if any, if the predicate function takes
+      --  a Why3 native type as input as detected by Use_Split_Form_For_Type.
+
+      if Domain = EW_Prog
+        and then Has_Predicates (Get_Ada_Node (+To))
+        and then not Has_Static_Discrete_Predicate (Get_Ada_Node (+To))
+        and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
+        and then Use_Split_Form_For_Type (Get_Ada_Node (+To))
+      then
+         Result := +Insert_Predicate_Check (Ada_Node => Ada_Node,
+                                            Check_Ty => Get_Ada_Node (+To),
+                                            W_Expr   => +Result);
+      end if;
+
+      --  8. If To is an abstract type, convert from int, __fixed or real to it
 
       if Get_Type_Kind (To) = EW_Abstract then
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
@@ -1702,6 +1741,21 @@ package body Why.Gen.Expr is
                                              From     => Cur,
                                              To       => To,
                                              Expr     => Result);
+      end if;
+
+      --  9. Perform a predicate check if needed, after the final conversion
+      --  to the target abstract type if any, if the predicate function takes
+      --  an abstract type as input as detected by Use_Split_Form_For_Type.
+
+      if Domain = EW_Prog
+        and then Has_Predicates (Get_Ada_Node (+To))
+        and then not Has_Static_Discrete_Predicate (Get_Ada_Node (+To))
+        and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
+        and then not Use_Split_Form_For_Type (Get_Ada_Node (+To))
+      then
+         Result := +Insert_Predicate_Check (Ada_Node => Ada_Node,
+                                            Check_Ty => Get_Ada_Node (+To),
+                                            W_Expr   => +Result);
       end if;
 
       return Result;
@@ -2166,7 +2220,6 @@ package body Why.Gen.Expr is
       Params : Transformation_Params := Body_Params) return W_Expr_Id
    is
    begin
-
       --  For now, only supports dynamic scalar types, unconstrained array
       --  types and record or private types with discriminants.
 
@@ -3119,7 +3172,13 @@ package body Why.Gen.Expr is
       Location_Lab := New_Located_Label
         (N, Left_Most => Locate_On_First_Token (Reason));
       Set.Include (Location_Lab);
-      Set.Include (New_Comment_Label (N, Location_Lab, Reason));
+
+      --  Do not generate comment labels in Why3 to facilitate debugging
+
+      if not Gnat2Why_Args.Debug_Mode then
+         Set.Include (New_Comment_Label (N, Location_Lab, Reason));
+      end if;
+
       Set.Include (New_Shape_Label (Node => N));
       Set.Include (NID (Keep_On_Simp));
       Set.Include (NID (Model_VC_Label));

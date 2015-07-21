@@ -217,12 +217,13 @@ package Gnat2Why.Util is
 
    Why_File_Suffix : constant String := ".mlw";
 
-   function Usual_Params (Phase : Transformation_Phase)
-                          return Transformation_Params
+   function Usual_Params
+     (Phase : Transformation_Phase;
+      Kind  : Why_Section_Enum := WF_Main) return Transformation_Params
    is
      (Transformation_Params'
-        (File        => Why_Sections (WF_Main).File,
-         Theory      => Why_Sections (WF_Main).Cur_Theory,
+        (File        => Why_Sections (Kind).File,
+         Theory      => Why_Sections (Kind).Cur_Theory,
          Phase       => Phase,
          Gen_Marker   => False,
          Ref_Allowed => (if Phase = Generate_Logic then False else True)));
@@ -238,8 +239,9 @@ package Gnat2Why.Util is
    function Assert_Params return Transformation_Params is
      (Usual_Params (Generate_VCs_For_Assert));
 
-   function Logic_Params return Transformation_Params is
-     (Usual_Params (Generate_Logic));
+   function Logic_Params
+     (Kind : Why_Section_Enum := WF_Main) return Transformation_Params
+   is (Usual_Params (Generate_Logic, Kind));
 
    --------------
    -- Builders --

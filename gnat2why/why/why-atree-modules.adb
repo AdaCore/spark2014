@@ -119,9 +119,8 @@ package body Why.Atree.Modules is
                     S : Why_Name_Enum) return W_Identifier_Id
    is
       use Why_Symb_Maps;
-      E2 : constant Entity_Id :=
-        (if Is_Type (E) then Retysp (E) else E);
-      Key : constant Why_Symb :=  Why_Symb'(Entity => E2, Symb => S);
+      E2 : constant Entity_Id := (if Is_Type (E) then Retysp (E) else E);
+      Key : constant Why_Symb := Why_Symb'(Entity => E2, Symb => S);
       C : constant Cursor := Why_Symb_Map.Find (Key);
    begin
       if Has_Element (C) then
@@ -156,7 +155,6 @@ package body Why.Atree.Modules is
       else
          return Why_Empty;
       end if;
-
    end E_Axiom_Module;
 
    ----------------
@@ -1407,9 +1405,10 @@ package body Why.Atree.Modules is
 
       procedure Insert_Type_Symbols (E : Entity_Id) is
          M  : constant W_Module_Id := E_Module (E);
-         Ty : constant W_Type_Id := EW_Abstract (E);
-      begin
+         AM : constant W_Module_Id := E_Axiom_Module (E);
+         Ty : constant W_Type_Id   := EW_Abstract (E);
 
+      begin
          Insert_Symbol
            (E, WNE_Bool_Eq,
             New_Identifier
@@ -1426,7 +1425,26 @@ package body Why.Atree.Modules is
                Domain => EW_Term,
                Typ    => Ty));
 
-      --  symbols for scalar types
+         --  Add symbol for the function checking that the predicate of a type
+         --  holds. This symbol is registered in the axiom module, so that
+         --  the function can be directly defined there instead of being first
+         --  declared in the entity module and then axiomatized in the axiom
+         --  module (to have visibility over constants/functions in the
+         --  definition).
+
+         if Has_Predicates (E)
+           and then not Has_Static_Discrete_Predicate (E)
+         then
+            Insert_Symbol
+              (E, WNE_Dynamic_Predicate,
+               New_Identifier
+                 (Symbol => NID ("dynamic_predicate"),
+                  Module => AM,
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
+         end if;
+
+         --  symbols for scalar types
 
          if Is_Scalar_Type (E) then
             declare
@@ -1711,7 +1729,7 @@ package body Why.Atree.Modules is
                end if;
             end;
 
-            --  symbols for record types
+         --  symbols for record types
 
          elsif Is_Record_Type (E)
            or else Full_View_Not_In_SPARK (E)
@@ -1849,7 +1867,7 @@ package body Why.Atree.Modules is
                end if;
             end;
 
-            --  symbols for array types
+         --  symbols for array types
 
          elsif Is_Array_Type (E) then
             declare
@@ -1974,10 +1992,9 @@ package body Why.Atree.Modules is
                end loop;
             end;
          end if;
-
       end Insert_Type_Symbols;
 
-      --  beginning of processing for Insert_Why_Symbols
+   --  Start of processing for Insert_Why_Symbols
 
    begin
       if Is_Type (E) then

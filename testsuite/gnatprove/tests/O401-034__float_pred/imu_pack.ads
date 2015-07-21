@@ -15,6 +15,7 @@ is
 
    subtype T_Acc_Lifted is T_Acc with
        Static_Predicate => T_Acc_Lifted = 0.0 or else
-       T_Acc_Lifted not in -MIN_NON_ZERO_ACC .. MIN_NON_ZERO_ACC;
+                           T_Acc_Lifted <= -MIN_NON_ZERO_ACC or else
+                           T_Acc_Lifted >= MIN_NON_ZERO_ACC;
 
 end IMU_Pack;

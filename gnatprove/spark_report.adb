@@ -702,6 +702,7 @@ procedure SPARK_Report is
             | VC_Index_Check
             | VC_Overflow_Check
             | VC_Range_Check
+            | VC_Predicate_Check
             | VC_Length_Check
             | VC_Discriminant_Check
             | VC_Tag_Check =>
@@ -728,7 +729,7 @@ procedure SPARK_Report is
 
             return Functional_Contracts;
 
-            when VC_Weaker_Pre
+         when VC_Weaker_Pre
             | VC_Trivial_Weaker_Pre
             | VC_Stronger_Post
             | VC_Weaker_Classwide_Pre

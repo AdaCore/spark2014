@@ -756,7 +756,6 @@ package body Gnat2Why.Driver is
             if Entity_In_SPARK (E)
               and then Retysp (E) = E
             then
-
                --  Partial views of private types should not be
                --  translated if the underlying type is not in SPARK,
                --  otherwise we end up with two definitions for the same

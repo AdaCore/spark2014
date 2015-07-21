@@ -1,0 +1,24 @@
+communications.adb:5:38: medium: predicate check might fail
+communications.adb:5:47: info: length check proved
+communications.adb:5:73: info: length check proved
+communications.adb:7:16: info: length check proved
+communications.adb:7:19: info: length check proved
+communications.adb:11:07: warning: type invariant ignored (not yet supported)
+communications.adb:13:17: info: length check proved
+communications.adb:13:20: info: length check proved
+communications.adb:14:14: info: initialization of "Coms.Msgs" proved
+communications.ads:12:31: warning: unused initial value of "Com"
+communications.ads:16:09: warning: type invariant ignored (not yet supported)
+days.adb:9:25: info: range check proved
+days.adb:16:13: info: initialization of "Tmp" proved
+days.adb:17:13: info: initialization of "Tmp" proved
+days.adb:18:16: info: initialization of "Tmp" proved
+days.adb:20:12: info: initialization of "Tmp" proved
+days.adb:20:12: info: range check proved
+main.adb:5:07: medium: predicate check might fail
+main.adb:5:16: info: length check proved
+main.adb:5:42: info: length check proved
+main.adb:6:07: medium: predicate check might fail
+main.adb:6:16: info: length check proved
+main.adb:6:42: info: length check proved
+messages.adb:6:12: medium: predicate check might fail

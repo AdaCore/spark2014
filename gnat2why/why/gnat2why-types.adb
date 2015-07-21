@@ -67,9 +67,45 @@ package body Gnat2Why.Types is
    ------------------------------
 
    procedure Generate_Type_Completion
-     (File       : in out Why_Section;
-      E          : Entity_Id)
+     (File : in out Why_Section;
+      E    : Entity_Id)
    is
+      procedure Create_Dynamic_Predicate_If_Needed
+        (Theory : W_Theory_Declaration_Id;
+         E      : Entity_Id);
+      --  Create a predicate to express the dynamic predicate associated with
+      --  entity E if needed.
+
+      ----------------------------------------
+      -- Create_Dynamic_Predicate_If_Needed --
+      ----------------------------------------
+
+      procedure Create_Dynamic_Predicate_If_Needed
+        (Theory : W_Theory_Declaration_Id;
+         E      : Entity_Id)
+      is
+         W_Param : constant W_Identifier_Id :=
+           New_Temp_Identifier (Typ => Type_Of_Node (E));
+         Binder : constant Binder_Type :=
+           Binder_Type'(B_Name => W_Param,
+                        others => <>);
+         W_Dyn_Pred_Expr : constant W_Pred_Id :=
+           Compute_Dynamic_Predicate
+             (Expr     => +W_Param,
+              Ty       => E,
+              Params   => Logic_Params (File.Kind),
+              Use_Pred => False);
+      begin
+         Emit
+           (Theory,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain      => EW_Pred,
+               Name        => To_Local (E_Symb (E, WNE_Dynamic_Predicate)),
+               Def         => +W_Dyn_Pred_Expr,
+               Labels  => Name_Id_Sets.To_Set (NID ("inline")),
+               Binders => (1 => Binder)));
+      end Create_Dynamic_Predicate_If_Needed;
+
       Ty        : constant W_Type_Id := EW_Abstract (E);
       Variables : Flow_Id_Sets.Set;
       Params    : Transformation_Params;
@@ -78,7 +114,7 @@ package body Gnat2Why.Types is
       Open_Theory
         (File, E_Axiom_Module (E),
          Comment =>
-           "Module giving axioms for the type entity "
+           "Module giving axioms for type "
          & """" & Get_Name_String (Chars (E)) & """"
          & (if Sloc (E) > 0 then
               " defined at " & Build_Location_String (Sloc (E))
@@ -285,6 +321,13 @@ package body Gnat2Why.Types is
             end;
          end if;
       end;
+
+      if Has_Predicates (E)
+        and then not Has_Static_Discrete_Predicate (E)
+      then
+         Create_Dynamic_Predicate_If_Needed (File.Cur_Theory, E);
+      end if;
+
       Close_Theory (File,
                     Kind => Axiom_Theory,
                     Defined_Entity => E);
@@ -294,8 +337,7 @@ package body Gnat2Why.Types is
    -- Ident_Of_Ada_Type --
    -----------------------
 
-   function Ident_Of_Ada_Type (E : Entity_Id) return W_Name_Id
-   is
+   function Ident_Of_Ada_Type (E : Entity_Id) return W_Name_Id is
    begin
       if Is_Standard_Boolean_Type (E) then
          return Get_Name (EW_Bool_Type);
@@ -362,7 +404,6 @@ package body Gnat2Why.Types is
          return;
 
       else
-
          if Is_Array_Type (E) then
             Create_Rep_Array_Theory_If_Needed (File, E);
          end if;

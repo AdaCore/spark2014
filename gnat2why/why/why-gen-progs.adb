@@ -202,8 +202,8 @@ package body Why.Gen.Progs is
    -- Sequence --
    --------------
 
-   function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id
-   is
+   function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id is
+
       function Is_Void (N : W_Prog_Id) return Boolean;
       --  Detect if the node represents the Void Literal
 
@@ -211,13 +211,13 @@ package body Why.Gen.Progs is
       -- Is_Void --
       --------------
 
-      function Is_Void (N : W_Prog_Id) return Boolean
-      is
+      function Is_Void (N : W_Prog_Id) return Boolean is
       begin
          return Get_Kind (+N) = W_Void;
       end Is_Void;
 
-      --  begin processing for Sequence
+   --  Start of processing for Sequence
+
    begin
       --  We only optimize the case where at least one of (Left, Right) is not
       --  a sequence; in this case we append the not-sequence statement to the

@@ -1153,9 +1153,10 @@ package body Why.Inter is
    -- Open_Theory --
    -----------------
 
-   procedure Open_Theory (P       : in out Why_Section;
-                          Module  : W_Module_Id;
-                          Comment : String)
+   procedure Open_Theory
+     (P       : in out Why_Section;
+      Module  : W_Module_Id;
+      Comment : String)
    is
       S : constant String :=
         Capitalize_First (Get_Name_String (Get_Name (Module)));

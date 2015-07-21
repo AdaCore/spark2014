@@ -197,6 +197,8 @@ package Why.Gen.Names is
       WNE_Dynamic_Property,
       WNE_Dynamic_Property_BV_Int, --  for bitvector when index of an array
 
+      WNE_Dynamic_Predicate,      --  toplevel predicate checking function
+
       --  Prefix for Why3 field names corresponding to record components
       WNE_Rec_Comp_Prefix,
 

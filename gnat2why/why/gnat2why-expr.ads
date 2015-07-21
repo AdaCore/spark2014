@@ -49,11 +49,20 @@ package Gnat2Why.Expr is
    function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id;
    --  Generate an assignment from an object declaration
 
+   function Assume_Dynamic_Property
+     (Expr        : W_Expr_Id;
+      Ty          : Entity_Id;
+      Only_Var    : Boolean;
+      Initialized : Boolean) return W_Prog_Id;
+   --  Generate an assumption that N is a value of its type.
+   --  If Only_Var is true, then don't assume properties of constant parts
+   --  of the object, such as the bounds of an array.
+
    function Check_Scalar_Range
-     (Params   : Transformation_Params;
-      N        : Entity_Id;
-      Base     : Entity_Id) return W_Prog_Id with
-   Pre => (if No (Base) then Is_OK_Static_Range (Get_Range (N)));
+     (Params : Transformation_Params;
+      N      : Entity_Id;
+      Base   : Entity_Id) return W_Prog_Id
+     with Pre => (if No (Base) then Is_OK_Static_Range (Get_Range (N)));
    --  Generate checks for the bounds of a range as well as a
    --  range check that the range_constraint is compatible with the subtype.
    --  Returns the empty program if both Base and N have a static
@@ -73,28 +82,6 @@ package Gnat2Why.Expr is
    --  the subtype. Returns the empty program if N is not a scalar subtype,
    --  or is a scalar subtype with a static range_constraint.
 
-   function Compute_Dynamic_Property
-     (Expr        : W_Expr_Id;
-      Ty          : Entity_Id;
-      Only_Var    : W_Term_Id;
-      Initialized : W_Term_Id;
-      Params      : Transformation_Params := Body_Params;
-      Use_Pred    : Boolean := True)
-      return W_Pred_Id;
-   --  @param Expr Expression for which we want the the dynamic property
-   --  @param Ty The type of the expression Expr
-   --  @param Only_Var Only assume property over variable parts of Expr
-   --  @param Initialized Assume that Expr is initialized
-   --  @param Params Transformation parameters
-   --  @param Use_Pred Use the precomputed predicate for Ty's dynamic property
-   --  @result The dynamic property of type Ty over Expr.
-
-   procedure Variables_In_Dynamic_Property
-     (Ty        : Entity_Id;
-      Variables : in out Flow_Id_Sets.Set);
-   --  @param Ty a type
-   --  @param Variables used in the expression for Ty's dynamic invariant
-
    function Compute_Default_Init
      (Expr           : W_Expr_Id;
       Ty             : Entity_Id;
@@ -109,20 +96,35 @@ package Gnat2Why.Expr is
    --  @param Use_Pred Use the precomputed predicate for Ty's dynamic property
    --  @result The dynamic property of type Ty over Expr
 
-   procedure Variables_In_Default_Init
-     (Ty        : Entity_Id;
-      Variables : in out Flow_Id_Sets.Set);
-   --  @param Ty a type
-   --  @param Variables used in the expression for Ty's default initialization
+   function Compute_Dynamic_Predicate
+     (Expr     : W_Expr_Id;
+      Ty       : Entity_Id;
+      Params   : Transformation_Params := Body_Params;
+      Use_Pred : Boolean := True) return W_Pred_Id;
+   --  @param Expr Why3 expression on which to express the dynamic predicate
+   --  @param Ty type with the dynamic property
+   --  @param Params transformation parameters
+   --  @param Use_Pred True iff the named predicate should be used
+   --  @result Why3 predicate expressing the dynamic predicate of type [Ty]
+   --     over [Expr].
 
-   function Assume_Dynamic_Property
+   function Compute_Dynamic_Property
      (Expr        : W_Expr_Id;
       Ty          : Entity_Id;
-      Only_Var    : Boolean;
-      Initialized : Boolean) return W_Prog_Id;
-   --  Generate an assumption that N is a value of its type.
-   --  If Only_Var is true, then don't assume properties of constant parts
-   --  of the object, such as the bounds of an array.
+      Only_Var    : W_Term_Id;
+      Initialized : W_Term_Id;
+      Params      : Transformation_Params := Body_Params;
+      Use_Pred    : Boolean := True) return W_Pred_Id;
+   --  @param Expr Expression for which we want the dynamic property
+   --  @param Ty The type of the expression Expr
+   --  @param Only_Var Only assume property over variable parts of Expr
+   --  @param Initialized Assume that Expr is initialized
+   --  @param Params Transformation parameters
+   --  @param Use_Pred Use the precomputed predicate for Ty's dynamic property
+   --  @result The dynamic property of type Ty over Expr.
+
+   function Get_Container_In_Iterator_Specification
+     (N : Node_Id) return Node_Id;
 
    function Get_Pure_Logic_Term_If_Possible
      (File          : Why_Section;
@@ -130,6 +132,27 @@ package Gnat2Why.Expr is
       Expected_Type : W_Type_Id) return W_Term_Id;
    --  If Expr can be translated into a pure logic term (without dereference),
    --  return this term. Otherwise, return Why_Empty.
+
+   function Insert_Predicate_Check
+     (Ada_Node : Node_Id;
+      Check_Ty : Entity_Id;
+      W_Expr   : W_Prog_Id) return W_Prog_Id;
+   --  @param Ada_Node node to which the check is attached
+   --  @param Check_Ty type whose predicate needs to be checked
+   --  @param W_Expr Why3 expression on which to check the predicate
+   --  @result Why3 program that performs the check and returns [W_Expr]
+
+   function New_Op_Expr
+     (Op          : N_Op;
+      Left        : W_Expr_Id := Why_Empty;
+      Right       : W_Expr_Id;
+      Left_Type   : Entity_Id := Empty;
+      Right_Type  : Entity_Id;
+      Return_Type : Entity_Id;
+      Domain      : EW_Domain;
+      Ada_Node    : Node_Id := Empty) return W_Expr_Id;
+   --  Generates Left Op Right depending on the value of Op and the Ada types
+   --  Return_Type, Left_Type, and Right_Type
 
    function Range_Expr
      (N           : Node_Id;
@@ -144,58 +167,26 @@ package Gnat2Why.Expr is
    --  place (e.g. int, real). If it is not set, it is deduced from
    --  the bounds' type.
 
-   function Get_Container_In_Iterator_Specification
-     (N : Node_Id) return Node_Id;
+   function Transform_Attribute_Old
+     (Expr   : Node_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Expr_Id;
+   --  Translate Expr'Old into Why
 
-   function Transform_Identifier
-     (Params   : Transformation_Params;
-      Expr     : Node_Id;
-      Ent      : Entity_Id;
-      Domain   : EW_Domain;
-      Selector : Selection_Kind := Why.Inter.Standard) return W_Expr_Id;
-   --  Transform an Ada identifier to a Why item (take care of enumeration
-   --  literals, boolean values etc)
-   --
-   --  This also deals with volatility, so that an object with a Async_Writers
-   --  is suitably havoc'd before being read.
+   function Transform_Declarations_Block (L : List_Id; Core : W_Prog_Id)
+      return W_Prog_Id;
+   --  Translate the Declarations block of Block statement or subprogram to a
+   --  sequence of Why expressions; dynamic type declarations are translated
+   --  to assert/assume statements, object declarations to assignment
+   --  statements
 
-   procedure Transform_Pragma_Check
-     (Stmt    :     Node_Id;
-      Force   :     Boolean;
-      Runtime : out W_Prog_Id;
-      Pred    : out W_Pred_Id);
-   --  Translates a pragma Check into Why3.
-   --  @param Stmt The pragma Check to translate.
-   --  @param Force True to force the translation of the pragma, even for those
-   --     pragmas normally translated elsewhere like preconditions and
-   --     postconditions.
-   --  @param Runtime On exit, Why3 program for checking absence of run-time
-   --     errors in the pragma.
-   --  @param Pred On exit, Why3 proposition corresponding to the pragma.
+   function Transform_Declarations_For_Body (L : List_Id) return W_Prog_Id;
+   --  Transform the declarations in the list, but excluding the leading
+   --  declarations with a Related_Expression wich is a parameter enity.
 
-   function Transform_Pragma_Check
-     (Prag  : Node_Id;
-      Force : Boolean) return W_Prog_Id;
-   --  Returns the Why program for pragma Check. As most assertion pragmas
-   --  (like Assert or Assume) are internally rewritten by semantic analysis
-   --  into pragma Check, this is where these are translated.
-   --  @param Prag The pragma Check to translate into Why3.
-   --  @param Force True to force the translation of the pragma, even for those
-   --     pragmas normally translated elsewhere like preconditions and
-   --     postconditions.
-   --  @return The translated pragma into Why3.
-
-   function Transform_Pragma
-     (Prag  : Node_Id;
-      Force : Boolean) return W_Prog_Id
-   with
-     Pre => Nkind (Prag) = N_Pragma;
-   --  Returns the Why program for pragma.
-   --  @param Prag The pragma to translate into Why3.
-   --  @param Force True to force the translation of the pragma, for those
-   --     pragmas normally translated elsewhere like preconditions and
-   --     postconditions.
-   --  @return The translated pragma into Why3.
+   function Transform_Declarations_For_Params (L : List_Id) return W_Prog_Id;
+   --  Transform the declarations in the list, only the first declarations
+   --  with a Related_Expression wich is a parameter enity.
 
    function Transform_Discrete_Choices
      (Choices      : List_Id;
@@ -205,12 +196,6 @@ package Gnat2Why.Expr is
       Params       : Transformation_Params) return W_Expr_Id;
       --  Return the guard that corresponds to a branch. In programs, also
       --  generate a check that dynamic choices are in the subtype Choice_Type.
-
-   function Transform_Attribute_Old
-     (Expr   : Node_Id;
-      Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id;
-   --  Translate Expr'Old into Why
 
    function Transform_Expr
      (Expr          : Node_Id;
@@ -248,6 +233,56 @@ package Gnat2Why.Expr is
       Params        : Transformation_Params) return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
+   function Transform_Identifier
+     (Params   : Transformation_Params;
+      Expr     : Node_Id;
+      Ent      : Entity_Id;
+      Domain   : EW_Domain;
+      Selector : Selection_Kind := Why.Inter.Standard) return W_Expr_Id;
+   --  Transform an Ada identifier to a Why item (take care of enumeration
+   --  literals, boolean values etc)
+   --
+   --  This also deals with volatility, so that an object with a Async_Writers
+   --  is suitably havoc'd before being read.
+
+   function Transform_Pragma
+     (Prag  : Node_Id;
+      Force : Boolean) return W_Prog_Id
+   with
+     Pre => Nkind (Prag) = N_Pragma;
+   --  Returns the Why program for pragma.
+   --  @param Prag The pragma to translate into Why3.
+   --  @param Force True to force the translation of the pragma, for those
+   --     pragmas normally translated elsewhere like preconditions and
+   --     postconditions.
+   --  @return The translated pragma into Why3.
+
+   procedure Transform_Pragma_Check
+     (Stmt    :     Node_Id;
+      Force   :     Boolean;
+      Runtime : out W_Prog_Id;
+      Pred    : out W_Pred_Id);
+   --  Translates a pragma Check into Why3.
+   --  @param Stmt The pragma Check to translate.
+   --  @param Force True to force the translation of the pragma, even for those
+   --     pragmas normally translated elsewhere like preconditions and
+   --     postconditions.
+   --  @param Runtime On exit, Why3 program for checking absence of run-time
+   --     errors in the pragma.
+   --  @param Pred On exit, Why3 proposition corresponding to the pragma.
+
+   function Transform_Pragma_Check
+     (Prag  : Node_Id;
+      Force : Boolean) return W_Prog_Id;
+   --  Returns the Why program for pragma Check. As most assertion pragmas
+   --  (like Assert or Assume) are internally rewritten by semantic analysis
+   --  into pragma Check, this is where these are translated.
+   --  @param Prag The pragma Check to translate into Why3.
+   --  @param Force True to force the translation of the pragma, even for those
+   --     pragmas normally translated elsewhere like preconditions and
+   --     postconditions.
+   --  @return The translated pragma into Why3.
+
    function Transform_Statements_And_Declarations
      (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id;
    function Transform_Statements_And_Declarations
@@ -263,32 +298,17 @@ package Gnat2Why.Expr is
    --  previous statements and declarations in the list. This allows treating
    --  the case where Cur is a pragma Assert_And_Cut.
 
-   function Transform_Declarations_Block (L : List_Id; Core : W_Prog_Id)
-      return W_Prog_Id;
-   --  Translate the Declarations block of Block statement or subprogram to a
-   --  sequence of Why expressions; dynamic type declarations are translated
-   --  to assert/assume statements, object declarations to assignment
-   --  statements
+   procedure Variables_In_Default_Init
+     (Ty        : Entity_Id;
+      Variables : in out Flow_Id_Sets.Set);
+   --  @param Ty a type
+   --  @param Variables used in the expression for Ty's default initialization
 
-   function Transform_Declarations_For_Body (L : List_Id) return W_Prog_Id;
-   --  Transform the declarations in the list, but excluding the leading
-   --  declarations with a Related_Expression wich is a parameter enity.
-
-   function Transform_Declarations_For_Params (L : List_Id) return W_Prog_Id;
-   --  Transform the declarations in the list, only the first declarations
-   --  with a Related_Expression wich is a parameter enity.
-
-   function New_Op_Expr
-     (Op          : N_Op;
-      Left        : W_Expr_Id := Why_Empty;
-      Right       : W_Expr_Id;
-      Left_Type   : Entity_Id := Empty;
-      Right_Type  : Entity_Id;
-      Return_Type : Entity_Id;
-      Domain      : EW_Domain;
-      Ada_Node    : Node_Id := Empty) return W_Expr_Id;
-   --  Generates Left Op Right depending on the value of Op and the Ada types
-   --  Return_Type, Left_Type, and Right_Type
+   procedure Variables_In_Dynamic_Property
+     (Ty        : Entity_Id;
+      Variables : in out Flow_Id_Sets.Set);
+   --  @param Ty a type
+   --  @param Variables used in the expression for Ty's dynamic invariant
 
    ----------------------------------------
    -- Attributes Old, Loop_Entry, Result --

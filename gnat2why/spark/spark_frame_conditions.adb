@@ -499,7 +499,6 @@ package body SPARK_Frame_Conditions is
    procedure For_All_External_Objects
      (Process : not null access procedure (E : Entity_Name))
    is
-
       procedure For_All_Define_Sets (Key : Entity_Name; S : Id_Set.Set);
       --  will be called for all "define sets" for all subprograms
 
@@ -507,8 +506,7 @@ package body SPARK_Frame_Conditions is
       -- For_All_Define_Sets --
       -------------------------
 
-      procedure For_All_Define_Sets (Key : Entity_Name; S : Id_Set.Set)
-      is
+      procedure For_All_Define_Sets (Key : Entity_Name; S : Id_Set.Set) is
          pragma Unreferenced (Key);
       begin
          --  External objects are those in the sets of defined objects Defines,
@@ -528,7 +526,8 @@ package body SPARK_Frame_Conditions is
          end loop;
       end For_All_Define_Sets;
 
-      --  beginning of processing for For_All_External_Objects
+   --  Start of processing for For_All_External_Objects
+
    begin
       for C in Defines.Iterate loop
          Id_Map.Query_Element (C, For_All_Define_Sets'Access);

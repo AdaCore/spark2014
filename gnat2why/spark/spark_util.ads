@@ -588,6 +588,15 @@ package SPARK_Util is
    --  this condition. This is used to extract the condition checked for aspect
    --  Default_Initialization.
 
+   function Get_Expr_From_Return_Only_Func (E : Entity_Id) return Node_Id
+     with Pre => Ekind (E) = E_Function;
+   --  @param E procedure
+   --  @return the expression in the first return statement found in the body
+   --     of E, if any, or Empty otherwise
+   --  Extract a condition being checked from a procedure intended to test
+   --  this condition. This is used to extract the condition checked for aspect
+   --  Dynamic_Predicate.
+
    function Has_Contracts
      (E         : Entity_Id;
       Name      : Name_Id;

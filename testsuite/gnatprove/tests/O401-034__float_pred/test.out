@@ -1,4 +1,3 @@
-imu_pack.ads:16:12: warning: type predicate on non-discrete type ignored (not yet supported)
 maths_pack.adb:9:32: info: overflow check proved
 maths_pack.adb:18:34: info: initialization of "Y" proved
 maths_pack.adb:19:12: info: initialization of "Magic_Num" proved
@@ -21,10 +20,11 @@ safety_pack.adb:43:21: info: overflow check proved
 safety_pack.adb:46:14: info: initialization of "Res" proved
 safety_pack.adb:57:26: info: range check proved
 safety_pack.adb:60:14: info: initialization of "Res" proved
-safety_pack.adb:67:17: info: range check proved
+safety_pack.adb:67:17: info: predicate check proved
+safety_pack.adb:69:17: info: predicate check proved
 safety_pack.adb:69:17: info: range check proved
-safety_pack.adb:71:17: info: range check proved
-safety_pack.adb:73:17: info: range check proved
+safety_pack.adb:71:17: info: predicate check proved
+safety_pack.adb:73:17: info: predicate check proved
 safety_pack.adb:76:14: info: initialization of "Res" proved
 safety_pack.ads:15:08: info: complete contract cases proved
 safety_pack.ads:15:08: info: disjoint contract cases proved

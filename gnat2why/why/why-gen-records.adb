@@ -2352,6 +2352,7 @@ package body Why.Gen.Records is
               Domain   => Domain,
               Reason   => VC_Discriminant_Check,
               Typ      => Ret_Ty);
+
       else
          return
            New_Call
@@ -2372,8 +2373,7 @@ package body Why.Gen.Records is
       Domain       : EW_Domain;
       Discr_Assocs : W_Field_Association_Array;
       Field_Assocs : W_Field_Association_Array;
-      Ty           : Entity_Id)
-      return W_Expr_Id
+      Ty           : Entity_Id) return W_Expr_Id
    is
       Num_All    : constant Natural := Count_Why_Top_Level_Fields (Ty);
       Num_Discr  : constant Natural :=
@@ -2384,6 +2384,7 @@ package body Why.Gen.Records is
       Assoc      : W_Field_Association_Id;
       Assocs     : W_Field_Association_Array (1 .. Num_All);
       Index      : Natural := 0;
+      Result     : W_Expr_Id;
 
    begin
       if Num_Discr > 0 then
@@ -2435,10 +2436,23 @@ package body Why.Gen.Records is
          Assocs (Index) := Assoc;
       end if;
 
-      return New_Record_Aggregate
+      Result := New_Record_Aggregate
         (Ada_Node     => Ada_Node,
          Associations => Assocs,
          Typ          => EW_Abstract (Ty));
+
+      --  If the target type has a direct or inherited predicate, generate a
+      --  corresponding check.
+
+      if Domain = EW_Prog
+        and then Has_Predicates (Ty)
+      then
+         Result := +Insert_Predicate_Check (Ada_Node => Ada_Node,
+                                            Check_Ty => Ty,
+                                            W_Expr   => +Result);
+      end if;
+
+      return Result;
    end New_Ada_Record_Aggregate;
 
    -----------------------------------------
