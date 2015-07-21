@@ -1089,14 +1089,14 @@ indefinite_unbounded_tagged.adb:59:27: info: precondition proved
 indefinite_unbounded_tagged.adb:59:29: info: precondition proved
 indefinite_unbounded_tagged.adb:62:07: info: precondition proved
 indefinite_unbounded_tagged.adb:62:24: info: initialization of private part of "V" proved
-indefinite_unbounded_tagged.adb:63:07: info: assertion proved
 indefinite_unbounded_tagged.adb:63:22: info: precondition proved
+indefinite_unbounded_tagged.adb:63:22: medium: assertion might fail, requires Element (V, 1) = F(1)
 indefinite_unbounded_tagged.adb:63:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:64:07: info: assertion proved
 indefinite_unbounded_tagged.adb:64:22: info: precondition proved
 indefinite_unbounded_tagged.adb:64:31: info: initialization of private part of "V" proved
-indefinite_unbounded_tagged.adb:65:07: info: assertion proved
 indefinite_unbounded_tagged.adb:65:22: info: precondition proved
+indefinite_unbounded_tagged.adb:65:22: medium: assertion might fail, requires Element (V, 3) = F(3)
 indefinite_unbounded_tagged.adb:65:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:67:07: info: precondition proved
 indefinite_unbounded_tagged.adb:67:13: info: initialization of private part of "V" proved
