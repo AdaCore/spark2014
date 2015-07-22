@@ -305,11 +305,14 @@ compiler. |GNATprove| also supports other compilers by providing special
 switches:
 
 * ``-gnateT`` for specifying the target configuration
-* ``--pedantic`` for warning about possible implementation-defined behavior
+* ``--pedantic`` for warnings about possible implementation-defined behavior
 
-Note that |GNATprove| will always choose the smallest multiple of 8
-bits for the base type, which is a safe and conservative choice for any Ada
-compiler.
+Note that, even with switch ``--pedantic``, |GNATprove| only detects some
+implementation-defined behaviors. For more details, see the dedicated section
+on how to :ref:`Ensure Portability of Programs`.
+
+Note that |GNATprove| will always choose the smallest multiple of 8 bits for
+the base type, which is a safe and conservative choice for any Ada compiler.
 
 .. _Target Parameterization:
 
