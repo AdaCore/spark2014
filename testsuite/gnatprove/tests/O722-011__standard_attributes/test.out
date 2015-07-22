@@ -1,4 +1,5 @@
 discr_rec.ads:3:40: attribute "Word_Size" is not permitted in SPARK
+discr_rec.ads:8:46: attribute "Word_Size" is not permitted in SPARK
 objects.ads:3:52: attribute "Address_Size" is not permitted in SPARK
 objects.ads:4:52: attribute "Maximum_Alignment" is not permitted in SPARK
 objects.ads:5:52: attribute "Storage_Unit" is not permitted in SPARK
