@@ -641,7 +641,7 @@ def check_all_spark(result_file, expected_len):
 
 def check_dot_files(opt=None):
     """Call do_flow"""
-    do_flow()
+    do_flow(opt)
 
     # Create a list that contains all dot files lying under directory
     # gnatprove.
