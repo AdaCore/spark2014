@@ -84,4 +84,15 @@ package P is
       entry Barrier_Entry;
       procedure Barrier_Proc;
    end;
+
+   protected PO_8 is
+      entry File_Entry;
+      procedure File_Proc;
+   end;
+
+   protected PO_9 is
+      entry Text_Entry;
+      procedure Text_Proc;
+   end;
+
 end P;

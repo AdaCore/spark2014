@@ -21,17 +21,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Handling;    use Ada.Characters.Handling;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Maps;           use Ada.Strings.Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
 with Ada.Text_IO;                use Ada.Text_IO;
+with GNAT.Regexp;                use GNAT.Regexp;
+with GNAT.Regpat;                use GNAT.Regpat;
 
 with AA_Util;                    use AA_Util;
 with ALI;                        use ALI;
-with Fname;                      use Fname;
 with Lib;                        use Lib;
 with Lib.Util;                   use Lib.Util;
 with Namet;                      use Namet;
@@ -40,8 +40,6 @@ with Osint;                      use Osint;
 with Output;                     use Output;
 with Sem_Util;                   use Sem_Util;
 with Sinfo;                      use Sinfo;
-with Snames;                     use Snames;
-with Stand;                      use Stand;
 
 with Gnat2Why_Args;
 with Hashing;                    use Hashing;
@@ -176,6 +174,44 @@ package body Flow_Generated_Globals is
    --  inputs, outputs and proof inputs.
 
    use Global_Graphs;
+
+   ----------------------------------------------------
+   -- Regular expressions for predefined subprograms --
+   ----------------------------------------------------
+
+   --  For entities called from other compilation units we have no Entity_Id
+   --  and can only recognize them by names. Regular expressions should be
+   --  faster than naive comparing of strings; regexps are global and thus
+   --  are compiled only once.
+
+   --  Regexp for predefined entities
+   Predefined : constant Regexp :=
+     Compile ("(ada|interfaces|system)__([a-z]|[0-9]|_)+");
+
+   --  Regexp for:
+   --  Ada.Task_Identification.Abort_Task
+   --  Ada.Dispatching.Yield
+   --  Ada.Synchronous_Task_Control.Suspend_Until_True
+   --  Ada.Synchronous_Task_Control.EDF.Suspend_Until_True_And_Set_Deadline
+   --  Ada.Synchronous_Barriers.Wait_For_Release
+   --  System.RPC.*
+   Predefined_Potentially_Blocking : constant Regexp :=
+     Compile ("ada__(" &
+              "task_identification__abort_task|" &
+              "dispatching__yield|" &
+              "synchronous_task_control__(" &
+              "suspend_until_true|" &
+              "edf__suspend_until_true_and_set_deadline)|" &
+              "synchronous_barriers__wait_for_release)|" &
+              "system__rpc__([a-z]|[0-9]|_)*" --  ??? needs testing
+             );
+
+   --  A pattern that matches any package name that ends with "_IO"; it matches
+   --  also some non-blocking subprograms (e.g. Ada.Text_IO.Is_Open), but this
+   --  is much safer than explicitly checking which subprograms may be
+   --  potentially blocking.
+   Predefined_Manipulate_Files : constant Pattern_Matcher :=
+     Compile ("_io__");
 
    -----------------------
    -- Local subprograms --
@@ -2105,13 +2141,13 @@ package body Flow_Generated_Globals is
          function Calls_Same_Target_Object (S : Global_Id) return Boolean;
          --  Check if subprogram S calls the enclosing protected object of EN
 
-         function Is_Predefined (E : Entity_Id) return Boolean;
-         --  Check if subprogram entity E is in a unit predefined by the Ada RM
+         function Is_Predefined (Name : String) return Boolean;
+         --  Check if subprogram name is in a unit predefined by the Ada RM
 
          function Is_Predefined_Potentially_Blocking
-           (E : Entity_Id) return Boolean;
-         --  Check if subprogram S is predefined by the Ada RM to be
-         --  potentially blocking.
+           (Name : String) return Boolean;
+         --  Check if Name is specified by the Ada RM to be potentially
+         --  blocking.
 
          ------------------------------
          -- Calls_Same_Target_Object --
@@ -2152,10 +2188,9 @@ package body Flow_Generated_Globals is
          -- Is_Predefined --
          -------------------
 
-         function Is_Predefined (E : Entity_Id) return Boolean is
+         function Is_Predefined (Name : String) return Boolean is
          begin
-            return Is_Predefined_File_Name
-              (Unit_File_Name (Get_Source_Unit (Sloc (E))));
+            return Match (Name, Predefined);
          end Is_Predefined;
 
          ----------------------------------------
@@ -2163,71 +2198,10 @@ package body Flow_Generated_Globals is
          ----------------------------------------
 
          function Is_Predefined_Potentially_Blocking
-           (E : Entity_Id) return Boolean is
-
-            function Chars_Eq (E : Entity_Id; Str : String) return Boolean;
-            --  Determine if chars of entity E are equal to Str
-
-            function Is_Root_Scope (E : Entity_Id; N : Name_Id) return Boolean;
-            --  Check if entity E denotes a root scope with name N
-
-            --------------
-            -- Chars_Eq --
-            --------------
-            function Chars_Eq (E : Entity_Id; Str : String) return Boolean is
-            begin
-               return Get_Name_String (Chars (E)) = To_Lower (Str);
-            end Chars_Eq;
-
-            -------------------
-            -- Is_Root_Scope --
-            -------------------
-
-            function Is_Root_Scope
-              (E : Entity_Id;
-               N : Name_Id) return Boolean is
-            begin
-               return Chars (E) = N and then Scope (E) = Standard_Standard;
-            end Is_Root_Scope;
-
-            --  Start of processing for Is_Predefined_Potentially_Blocking
-
+           (Name : String) return Boolean is
          begin
-            --  Check for:
-            --  Ada.Task_Identification.Abort_Task
-            --  Ada.Dispatching.Yield
-            --  Ada.Synchronous_Task_Control.Suspend_Until_True
-            --  Ada.Synchronous_Task_Control.EDF.
-            --      Suspend_Until_True_And_Set_Deadline
-            --  Ada.Synchronous_Barriers.Wait_For_Release
-            --  System.RPC.*
-            --  remote subprograms
-
-            return (Chars_Eq (E, "Abort_Task")
-                    and then Chars_Eq (Scope (E), "Task_Identification")
-                    and then Is_Root_Scope (Scope (Scope (E)), Name_Ada))
-              or else
-                (Chars_Eq (E, "Yield")
-                 and then Chars_Eq (Scope (E), "Dispatching")
-                 and then Is_Root_Scope (Scope (Scope (E)), Name_Ada))
-              or else
-                (Chars_Eq (E, "Suspend_Until_True")
-                 and then Chars_Eq (Scope (E), "Synchronous_Task_Control")
-                 and then Is_Root_Scope (Scope (Scope (E)), Name_Ada))
-              or else
-                (Chars_Eq (E, "Suspend_Until_True_And_Set_Deadline")
-                 and then Chars_Eq (Scope (E), "EDF")
-                 and then Chars_Eq (Scope (Scope (E)),
-                                    "Synchronous_Task_Control")
-                 and then Is_Root_Scope (Scope (Scope (Scope (E))), Name_Ada))
-              or else
-                (Chars_Eq (E, "Wait_For_Release")
-                 and then Chars_Eq (Scope (E), "Synchronous_Barriers")
-                 and then Is_Root_Scope (Scope (Scope (E)), Name_Ada))
-              or else
-                (Chars (Scope (E)) = Name_Rpc
-                 and then Is_Root_Scope (Scope (Scope (E)), Name_System));
-
+            return Match (Name, Predefined_Potentially_Blocking)
+              or else Match (Predefined_Manipulate_Files, Name);
          end Is_Predefined_Potentially_Blocking;
 
       --  Start of processing for Calls_Potentially_Blocking_Subprogram
@@ -2241,11 +2215,13 @@ package body Flow_Generated_Globals is
                --  Check for potentially blocking constructs
 
                declare
+                  Callee_Str : constant String := To_String (Callee.Name);
+
                   Callee_E : constant Entity_Id := Find_Entity (Callee.Name);
-                  --  Entities from other compilation units have empty id???
+                  --  Entities from other compilation units have empty id
                begin
-                  if Is_Predefined (Callee_E) then
-                     if Is_Predefined_Potentially_Blocking (Callee_E) then
+                  if Is_Predefined (Callee_Str) then
+                     if Is_Predefined_Potentially_Blocking (Callee_Str) then
                         return True;
                      end if;
                   else
@@ -2256,7 +2232,7 @@ package body Flow_Generated_Globals is
                   end if;
 
                   --  Check for external calls on a protected subprogram with
-                  --  the same target object as that of the protected action???
+                  --  the same target object as that of the protected action.
                   if Callee_E = Empty
                     or else not Scope_Within_Or_Same (Scope (Callee_E),
                                                       Protected_Object_E)
@@ -2265,6 +2241,8 @@ package body Flow_Generated_Globals is
                         return True;
                      end if;
                   end if;
+
+                  --  ??? remote subprograms
                end;
             end if;
 

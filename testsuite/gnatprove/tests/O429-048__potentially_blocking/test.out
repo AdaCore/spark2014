@@ -6,33 +6,44 @@ p-po_stub_1.adb:8:04: warning: analyzing unreferenced procedure "Nonblocking_Stu
 p-po_stub_2.adb:3:44: warning: statement has no effect
 p-po_stub_2.adb:5:07: warning: statement has no effect
 p-po_stub_3.adb:8:04: warning: analyzing unreferenced procedure "Indirectly_Blocking_Stub_Proc"
-p.adb:5:45: "Real_Time.Clock_Time" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(12))
-p.adb:30:07: warning: statement has no effect
-p.adb:31:10: warning: statement has no effect
-p.adb:38:07: warning: statement has no effect
-p.adb:50:41: warning: statement has no effect
-p.adb:55:07: warning: analyzing unreferenced procedure "Nonblocking_Type_Proc"
-p.adb:62:47: warning: statement has no effect
-p.adb:64:10: warning: statement has no effect
-p.adb:79:07: warning: analyzing unreferenced procedure "Indirectly_Blocking_Type_Proc"
-p.adb:92:43: warning: statement has no effect
-p.adb:97:07: warning: analyzing unreferenced procedure "Nonblocking_Object_Proc"
-p.adb:104:49: warning: statement has no effect
-p.adb:106:10: warning: statement has no effect
-p.adb:121:07: warning: analyzing unreferenced procedure "Indirectly_Blocking_Object_Proc"
-p.adb:137:07: warning: statement has no effect
-p.adb:149:33: warning: statement has no effect
-p.adb:151:10: warning: statement has no effect
-p.adb:151:10: warning: unused assignment to "Po_4t"
-p.adb:156:25: warning: assuming "Yield" has no effect on global items
-p.adb:156:25: warning: no Global contract available for "Yield"
-p.adb:161:29: warning: statement has no effect
-p.adb:163:10: warning: statement has no effect
-p.adb:163:10: warning: unused assignment to "Po_5t"
-p.adb:174:31: warning: statement has no effect
-p.adb:176:10: warning: statement has no effect
-p.adb:176:10: warning: unused assignment to "Po_6t"
-p.adb:188:10: warning: unused assignment to "Po_7t"
+p.adb:10:45: "Real_Time.Clock_Time" must be listed in the Initializes aspect of "P" (SPARK RM 7.1.5(12))
+p.adb:35:07: warning: statement has no effect
+p.adb:36:10: warning: statement has no effect
+p.adb:43:07: warning: statement has no effect
+p.adb:55:41: warning: statement has no effect
+p.adb:60:07: warning: analyzing unreferenced procedure "Nonblocking_Type_Proc"
+p.adb:67:47: warning: statement has no effect
+p.adb:69:10: warning: statement has no effect
+p.adb:84:07: warning: analyzing unreferenced procedure "Indirectly_Blocking_Type_Proc"
+p.adb:97:43: warning: statement has no effect
+p.adb:102:07: warning: analyzing unreferenced procedure "Nonblocking_Object_Proc"
+p.adb:109:49: warning: statement has no effect
+p.adb:111:10: warning: statement has no effect
+p.adb:126:07: warning: analyzing unreferenced procedure "Indirectly_Blocking_Object_Proc"
+p.adb:142:07: warning: statement has no effect
+p.adb:154:33: warning: statement has no effect
+p.adb:156:10: warning: statement has no effect
+p.adb:156:10: warning: unused assignment to "Po_4t"
+p.adb:161:25: warning: assuming "Yield" has no effect on global items
+p.adb:161:25: warning: no Global contract available for "Yield"
+p.adb:166:29: warning: statement has no effect
+p.adb:168:10: warning: statement has no effect
+p.adb:168:10: warning: unused assignment to "Po_5t"
+p.adb:179:31: warning: statement has no effect
+p.adb:181:10: warning: statement has no effect
+p.adb:181:10: warning: unused assignment to "Po_6t"
+p.adb:193:10: warning: unused assignment to "Po_7t"
+p.adb:203:29: warning: statement has no effect
+p.adb:205:10: warning: statement has no effect
+p.adb:205:10: warning: unused assignment to "Po_8t"
+p.adb:211:21: warning: assuming "Open" has no effect on global items
+p.adb:211:21: warning: no Global contract available for "Open"
+p.adb:211:28: info: initialization of "F" proved
+p.adb:216:29: warning: statement has no effect
+p.adb:218:10: warning: statement has no effect
+p.adb:218:10: warning: unused assignment to "Po_9t"
+p.adb:223:21: warning: assuming "Put_Line" has no effect on global items
+p.adb:223:21: warning: no Global contract available for "Put_Line"
 p.ads:5:14: warning: subprogram "Potentially_Blocking_Proc" has no effect
 p.ads:7:14: warning: subprogram "Blocking_Proc" has no effect
 p.ads:9:14: warning: subprogram "Nonblocking_Proc" has no effect
@@ -67,6 +78,12 @@ p.ads:75:17: warning: subprogram "Pure_Proc" has no effect
 p.ads:80:17: warning: subprogram "Remote_Proc" has no effect
 p.ads:84:13: potentially blocking operation in protected operation "Barrier_Entry"
 p.ads:85:17: potentially blocking operation in protected operation "Barrier_Proc"
+p.ads:89:13: potentially blocking operation in protected operation "File_Entry"
+p.ads:90:17: potentially blocking operation in protected operation "File_Proc"
+p.ads:90:17: warning: subprogram "File_Proc" has no effect
+p.ads:94:13: potentially blocking operation in protected operation "Text_Entry"
+p.ads:95:17: potentially blocking operation in protected operation "Text_Proc"
+p.ads:95:17: warning: subprogram "Text_Proc" has no effect
 pack.ads:5:13: potentially blocking operation in protected operation "E_Proc"
 pack.ads:10:13: potentially blocking operation in protected operation "E_Func"
 pack.ads:13:14: warning: subprogram "Unrelated_Proc" has no effect

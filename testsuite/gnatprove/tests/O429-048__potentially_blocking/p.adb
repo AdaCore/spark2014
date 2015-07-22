@@ -1,4 +1,9 @@
-with Ada.Real_Time; with Ada.Dispatching; with Ada.Numerics.Elementary_Functions; with Remote; with Barrier;
+with Ada.Real_Time;
+with Ada.Dispatching;
+with Ada.Numerics.Elementary_Functions;
+with Ada.Text_IO;
+with Remote;
+with Barrier;
 
 package body P is
 
@@ -192,6 +197,31 @@ package body P is
       begin
          Barrier.Wait;
       end Barrier_Proc;
+   end;
+
+   protected body PO_8 is
+      entry File_Entry when True is
+      begin
+         File_Proc;
+      end File_Entry;
+
+      procedure File_Proc is
+         F : Ada.Text_IO.File_Type;
+      begin
+         Ada.Text_IO.Open (F, Ada.Text_IO.In_File, "dummy.txt");
+      end File_Proc;
+   end;
+
+   protected body PO_9 is
+      entry Text_Entry when True is
+      begin
+         Text_Proc;
+      end Text_Entry;
+
+      procedure Text_Proc is
+      begin
+         Ada.Text_IO.Put_Line ("dummy");
+      end Text_Proc;
    end;
 
 end P;
