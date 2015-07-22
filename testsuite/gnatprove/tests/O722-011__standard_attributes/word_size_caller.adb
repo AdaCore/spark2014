@@ -1,6 +1,6 @@
 with params;
 
-procedure Caller is
+procedure word_size_caller is
 begin
    params.word_size;
 end;

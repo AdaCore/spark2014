@@ -7,4 +7,6 @@ package Params is
    procedure Wchar_T_Size (X : Natural := Standard'Wchar_T_Size);
    procedure Word_Size (X : Natural := Standard'Word_Size);
 
+   procedure Integer_Size (X : Natural := Integer'Size);
+
 end;
