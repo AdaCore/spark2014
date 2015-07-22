@@ -1590,9 +1590,9 @@ package body SPARK_Definition is
             --  If a literal is the result of the front-end
             --  rewriting a static attribute, then we mark
             --  the original node.
-            if not Comes_From_Source (N) and then
-              Is_Rewrite_Substitution (N) and then
-              Nkind (Original_Node (N)) = N_Attribute_Reference
+            if not Comes_From_Source (N)
+              and then Is_Rewrite_Substitution (N)
+              and then Nkind (Original_Node (N)) = N_Attribute_Reference
             then
                Mark_Attribute_Reference (Original_Node (N));
             end if;
@@ -1803,20 +1803,19 @@ package body SPARK_Definition is
       Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
 
    begin
-      --  This case statement must agree with the table specified
-      --  in SPARK RM 15.2 "Language Defined Attributes".
+      --  This case statement must agree with the table specified in SPARK RM
+      --  15.2 "Language Defined Attributes".
       --
-      --  See also the analysis in Gnat2Why.Expr.Transform_Attr
-      --  which defines which of these attributes are supported
-      --  in proof.
+      --  See also the analysis in Gnat2Why.Expr.Transform_Attr which defines
+      --  which of these attributes are supported in proof.
       case Attr_Id is
 
          --  Support special aspects defined in SPARK
          when Attribute_Loop_Entry =>
             null;
 
-         --  Support a subset of the attributes defined in Ada RM. These
-         --  are the attributes marked "Yes" in SPARK RM 15.2
+         --  Support a subset of the attributes defined in Ada RM. These are
+         --  the attributes marked "Yes" in SPARK RM 15.2.
          when Attribute_Adjacent       |
            Attribute_Aft               |
            Attribute_Body_Version      |
@@ -1888,10 +1887,9 @@ package body SPARK_Definition is
          =>
             null;
 
-         --  These attributes are supported, but generate a warning
-         --  in "pedantic" mode, owing to their implemention-
-         --  defined status. These are the attributes marked
-         --  "Warn" in SPARK RM 15.2
+         --  These attributes are supported, but generate a warning in
+         --  "pedantic" mode, owing to their implemention-defined status.
+         --  These are the attributes marked "Warn" in SPARK RM 15.2.
          when Attribute_Address     |
            Attribute_Alignment      |
            Attribute_Bit_Order      |
