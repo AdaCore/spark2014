@@ -122,6 +122,21 @@ package body Gnat2Why.Expr is
    --  Optimization: if E is a modular type, and Op is division, do not add the
    --  modulus operation.
 
+   function Boolean_Term_Of_Pred (W : W_Pred_Id) return W_Term_Id is
+     (New_Conditional (Condition => +W,
+                       Then_Part => +True_Term,
+                       Else_Part => +False_Term,
+                       Typ       => EW_Bool_Type));
+   --  @param W a Why3 pred expression
+   --  @return the equivalent Why3 term expression
+
+   function Pred_Of_Boolean_Term (W : W_Term_Id) return W_Pred_Id is
+     (New_Call (Name => Why_Eq,
+                Args => (1 => +W, 2 => +True_Term),
+                Typ  => EW_Bool_Type));
+   --  @param W a Why3 term expression
+   --  @return the equivalent Why3 pred expression
+
    function Case_Expr_Of_Ada_Node
      (N             : Node_Id;
       Expected_Type : W_Type_OId := Why_Empty;
@@ -2714,9 +2729,7 @@ package body Gnat2Why.Expr is
       Ty_Ext : constant Entity_Id := Retysp (Ty);
 
    begin
-      if not Has_Predicates (Ty_Ext)
-        and then not Has_Static_Discrete_Predicate (Ty_Ext)
-      then
+      if not Has_Predicates (Ty_Ext) then
          return True_Pred;
 
       --  If Use_Pred is true, then we already have generated a predicate for
@@ -4107,8 +4120,6 @@ package body Gnat2Why.Expr is
                 not Eq_Base (Type_Of_Node (Formal), Type_Of_Node (Actual));
          begin
             if Has_Predicates (Etype (Actual))
-              and then not
-                Has_Static_Discrete_Predicate (Etype (Actual))
               and then Need_Pred_Check_On_Store
             then
                declare
@@ -5832,7 +5843,6 @@ package body Gnat2Why.Expr is
 
          if Domain = EW_Prog
            and then Has_Predicates (Etype (Expr))
-           and then not Has_Static_Discrete_Predicate (Etype (Expr))
          then
             R := +Insert_Predicate_Check (Ada_Node => Expr,
                                           Check_Ty => Etype (Expr),
@@ -9047,16 +9057,9 @@ package body Gnat2Why.Expr is
               (Entity (Expr) = Standard_True or else
                Entity (Expr) = Standard_False))
       then
-         T :=
-           New_Call
-             (Ada_Node => Expr,
-              Domain   => EW_Pred,
-              Typ      => EW_Bool_Type,
-              Name     => Why_Eq,
-              Args     =>
-                (1 =>
-                   +Transform_Expr (Expr, EW_Bool_Type, EW_Term, Local_Params),
-                 2 => +True_Prog));
+         T := +Pred_Of_Boolean_Term
+                 (+Transform_Expr (Expr, EW_Bool_Type, EW_Term, Local_Params));
+
       elsif Domain /= EW_Pred and then
         Is_Discrete_Type (Expr_Type) and then
         Compile_Time_Known_Value (Expr)
@@ -10470,12 +10473,11 @@ package body Gnat2Why.Expr is
 
                --  Possibly include a predicate in the type membership test
 
-               if Has_Predicates (Ty)
-                 and then not Has_Static_Discrete_Predicate (Ty)
-               then
+               if Has_Predicates (Ty) then
                   Result := New_And_Expr
                     (Result,
-                     +Compute_Dynamic_Predicate (Var, Ty, Params),
+                     +Boolean_Term_Of_Pred
+                        (Compute_Dynamic_Predicate (Var, Ty, Params)),
                      Domain);
                end if;
             end;
@@ -11548,11 +11550,7 @@ package body Gnat2Why.Expr is
             Pred : constant W_Expr_Id :=
               Transform_Quantified_Expression (Expr, EW_Pred, Params);
          begin
-            return New_Conditional (Domain    => Domain,
-                                    Condition => Pred,
-                                    Then_Part => +True_Term,
-                                    Else_Part => +False_Term,
-                                    Typ       => EW_Bool_Type);
+            return +Boolean_Term_Of_Pred (+Pred);
          end;
       end if;
 

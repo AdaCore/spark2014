@@ -322,9 +322,7 @@ package body Gnat2Why.Types is
          end if;
       end;
 
-      if Has_Predicates (E)
-        and then not Has_Static_Discrete_Predicate (E)
-      then
+      if Has_Predicates (E) then
          Create_Dynamic_Predicate_If_Needed (File.Cur_Theory, E);
       end if;
 

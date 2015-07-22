@@ -1432,9 +1432,7 @@ package body Why.Atree.Modules is
          --  module (to have visibility over constants/functions in the
          --  definition).
 
-         if Has_Predicates (E)
-           and then not Has_Static_Discrete_Predicate (E)
-         then
+         if Has_Predicates (E) then
             Insert_Symbol
               (E, WNE_Dynamic_Predicate,
                New_Identifier

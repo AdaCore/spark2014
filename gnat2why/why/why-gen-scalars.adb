@@ -23,9 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;               use Atree;
 with Namet;               use Namet;
-with Nlists;              use Nlists;
 with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
@@ -252,81 +250,17 @@ package body Why.Gen.Scalars is
                Domain => EW_Term,
                Typ    => Ty)
             else To_Local (E_Symb (E, WNE_Attr_Last)));
+
       begin
-         if Has_Static_Discrete_Predicate (E) then
-            declare
-               Pred : Node_Id := First (Static_Discrete_Predicate (E));
-            begin
-               Def := False_Pred;
+         --  Express the range constraints
 
-               --  The compiler has already prepared the static predicate
-               --  in such a way that it is simply a list of ranges which
-               --  represent the type.
-               --  In case we're generating a range predicate for bitvectors
-               --  from integers we need to force First and Last to be
-               --  Integer constants, we detect this case by checking that
-               --  E has a modular type while Ty is ew_int_type.
-
-               while Present (Pred) loop
-                  declare
-                     Rng   : constant Node_Id := Get_Range (Pred);
-                     First : constant W_Term_Id :=
-                       (if Has_Modular_Integer_Type (E) and Ty = EW_Int_Type
-                        then
-                           New_Integer_Constant
-                          (Value => Expr_Value (Low_Bound (Rng)))
-                        elsif Why_Type_Is_BitVector (Ty) then
-                             +Insert_Simple_Conversion
-                          (Domain => EW_Term,
-                           Expr   => +Num_Constant (E, Low_Bound (Rng)),
-                           To     => Ty)
-                        else
-                           Num_Constant (E, Low_Bound (Rng)));
-                     Last  : constant W_Term_Id :=
-                       (if Has_Modular_Integer_Type (E) and Ty = EW_Int_Type
-                        then
-                           New_Integer_Constant
-                          (Value => Expr_Value (High_Bound (Rng)))
-                        elsif Why_Type_Is_BitVector (Ty) then
-                             +Insert_Simple_Conversion
-                          (Domain => EW_Term,
-                           Expr   => +Num_Constant (E, High_Bound (Rng)),
-                           To     => Ty)
-                        else
-                           Num_Constant (E, High_Bound (Rng)));
-                  begin
-                     Def :=
-                       +New_Or_Else_Expr
-                       (Domain => EW_Pred,
-                        Left   => +Def,
-                        Right  =>
-                          New_Range_Expr (Domain => EW_Pred,
-                                          Low    => +First,
-                                          High   => +Last,
-                                          Expr   => +Var));
-                     Next (Pred);
-                  end;
-               end loop;
-            end;
-         end if;
-
-         --  For a static type with static predicates, the range constraints
-         --  are already included in the predicate's constraints.
-         --  Otherwise, add the range constraints to the predicate.
-
-         if not Is_Static
-           or else not Has_Static_Discrete_Predicate (E)
-         then
-            Def :=
-              +New_And_Expr
-              (Domain => EW_Pred,
-               Left   => +Def,
-               Right  =>
-                 +New_Range_Expr (Domain => EW_Pred,
-                                  Low    => +Fst,
-                                  High   => +Lst,
-                                  Expr   => +Var));
-         end if;
+         Def := +New_And_Expr (Domain => EW_Pred,
+                               Left   => +Def,
+                               Right  =>
+                                 +New_Range_Expr (Domain => EW_Pred,
+                                                  Low    => +Fst,
+                                                  High   => +Lst,
+                                                  Expr   => +Var));
 
          --  Emit range predicate if the type is static, a dynamic_property
          --  otherwise.

@@ -41,10 +41,6 @@ package VC_Kinds is
    type VC_Kind is
       --  VC_RTE_Kind - run-time checks
 
-      --  ??? Currently, static predicates on discrete types are handled
-      --  through range checks. They should be dealt with through predicate
-      --  checks like other predicates.
-
      (VC_Division_Check,
       VC_Index_Check,
       VC_Overflow_Check,

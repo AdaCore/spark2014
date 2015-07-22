@@ -7,7 +7,7 @@ is
 
    procedure Decr (X : in out S) is
    begin
-      X := S'Pred (X); -- @RANGE_CHECK:FAIL
+      X := S'Pred (X); -- @PREDICATE_CHECK:FAIL
    end Decr;
 begin
    null;

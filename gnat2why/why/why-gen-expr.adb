@@ -658,9 +658,6 @@ package body Why.Gen.Expr is
             --  ??? It would be good if such special casing were closer to the
             --  code which handles the call
 
-            --  We can't rely on check flags for subtype predicates, so force
-            --  check_node in that case.
-
             Do_Check : constant Boolean :=
               (if Domain = EW_Prog and Check_Needed then
                  (if Do_Range_Check (Ada_Node) then
@@ -676,9 +673,7 @@ package body Why.Gen.Expr is
                     E_In_Out_Parameter | E_Out_Parameter
                   then
                      True
-                  else Get_Type_Kind (To) in EW_Abstract | EW_Split
-                    and then
-                      Has_Static_Discrete_Predicate (Get_Ada_Node (+To)))
+                  else False)
                else False);
 
             --  When converting to a floating-point, from either a discrete
@@ -1420,7 +1415,6 @@ package body Why.Gen.Expr is
 
       Do_Predicate_Check : constant Boolean :=
         Has_Predicates (Get_Ada_Node (+To))
-          and then not Has_Static_Discrete_Predicate (Get_Ada_Node (+To))
           and then Get_Ada_Node (+To) /= Get_Ada_Node (+From);
 
    --  Start of processing for Insert_Scalar_Conversion
@@ -1724,7 +1718,6 @@ package body Why.Gen.Expr is
 
       if Domain = EW_Prog
         and then Has_Predicates (Get_Ada_Node (+To))
-        and then not Has_Static_Discrete_Predicate (Get_Ada_Node (+To))
         and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
         and then Use_Split_Form_For_Type (Get_Ada_Node (+To))
       then
@@ -1749,7 +1742,6 @@ package body Why.Gen.Expr is
 
       if Domain = EW_Prog
         and then Has_Predicates (Get_Ada_Node (+To))
-        and then not Has_Static_Discrete_Predicate (Get_Ada_Node (+To))
         and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
         and then not Use_Split_Form_For_Type (Get_Ada_Node (+To))
       then

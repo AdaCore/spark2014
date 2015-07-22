@@ -3080,31 +3080,20 @@ package body SPARK_Definition is
             end if;
          end if;
 
+         --  If the type has a predicate, store the corresponding
+         --  frontend-generated checking function in the
+         --  Delayed_Type_Aspects map.
+
          if Has_Predicates (E) then
-
-            --  If the type has a non-static-discrete Predicate aspect, store
-            --  the corresponding procedure in the Delayed_Type_Aspects map.
-
-            if not Has_Static_Discrete_Predicate (E) then
-               declare
-                  Delayed_Mapping : constant Node_Id :=
-                    (if Present (Current_SPARK_Pragma) then
-                       Current_SPARK_Pragma
-                     else E);
-               begin
-                  Delayed_Type_Aspects.Include
-                    (Predicate_Function (E), Delayed_Mapping);
-               end;
-            else
-               declare
-                  Pred : Node_Id := First (Static_Discrete_Predicate (E));
-               begin
-                  while Present (Pred) loop
-                     Mark (Pred);
-                     Next (Pred);
-                  end loop;
-               end;
-            end if;
+            declare
+               Delayed_Mapping : constant Node_Id :=
+                 (if Present (Current_SPARK_Pragma) then
+                    Current_SPARK_Pragma
+                  else E);
+            begin
+               Delayed_Type_Aspects.Include
+                 (Predicate_Function (E), Delayed_Mapping);
+            end;
          end if;
 
          --  Detect if the type has partial default initialization
