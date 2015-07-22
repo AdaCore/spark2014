@@ -1,9 +1,11 @@
+discr_rec.ads:3:40: attribute "Word_Size" is not permitted in SPARK
 objects.ads:3:52: attribute "Address_Size" is not permitted in SPARK
 objects.ads:4:52: attribute "Maximum_Alignment" is not permitted in SPARK
 objects.ads:5:52: attribute "Storage_Unit" is not permitted in SPARK
 objects.ads:6:52: attribute "System_Allocator_Alignment" is not permitted in SPARK
 objects.ads:7:52: attribute "Wchar_T_Size" is not permitted in SPARK
 objects.ads:8:52: attribute "Word_Size" is not permitted in SPARK
+   compilation of discr_rec.ads failed
    compilation of objects.ads failed
 
 
