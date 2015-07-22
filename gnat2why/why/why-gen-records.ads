@@ -236,4 +236,9 @@ package Why.Gen.Records is
      Pre => Is_Type (E) and then Count_Why_Regular_Fields (E) > 0;
    --  Type of the top-level Why3 field for fields of E.
 
+   function Record_Type_Is_Clone (E : Entity_Id) return Boolean;
+   --  Return True if we do not produce a new type declaration for E but rather
+   --  clone an existing one.
+   --  This is used so that we can know if we need to create new references
+
 end Why.Gen.Records;

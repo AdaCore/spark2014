@@ -404,13 +404,13 @@ package body Gnat2Why.Types is
          --  We generate a record type containing only one mutable field of
          --  type t. This is used to store mutable variables of type t.
          --  We also generate a havoc function for this type.
-         --  We do not generate these declarations for classwide types and
+         --  We do not generate these declarations for record types which are
+         --  clones of existing types and
          --  statically constrained array type are no new type is declared for
          --  them.
 
          if (not Has_Record_Type (E)
-             or else Ekind (Retysp (E)) not in E_Class_Wide_Type
-               | E_Class_Wide_Subtype)
+               or else not Record_Type_Is_Clone (Retysp (E)))
            and then (not Has_Array_Type (E)
                      or else not Is_Static_Array_Type (Retysp (E)))
          then

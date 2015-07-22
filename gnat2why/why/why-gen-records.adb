@@ -2993,4 +2993,35 @@ package body Why.Gen.Records is
       return Record_From_Split_Form (E, Values, Ty);
    end Record_From_Split_Form;
 
+   --------------------------
+   -- Record_Type_Is_Clone --
+   --------------------------
+
+   function Record_Type_Is_Clone (E : Entity_Id) return Boolean is
+   begin
+
+      --  Classwide types are translated as clones of their specific types
+
+      if Ekind (E) in E_Class_Wide_Type | E_Class_Wide_Subtype then
+         return True;
+
+      --  Empty record types are not clones
+
+      elsif Count_Why_Top_Level_Fields (E) = 0 then
+         return False;
+
+      --  Subtypes with a cloned_subtype with the same name are clones
+
+      elsif Ekind (E) = E_Record_Subtype
+        and then Present (Cloned_Subtype (E))
+      then
+         return Short_Name (E) = Short_Name (Cloned_Subtype (E));
+      else
+         return False;
+      end if;
+
+      --  ??? We may be missing a case when a type is cloned twice and get the
+      --  name of the first type back.
+   end Record_Type_Is_Clone;
+
 end Why.Gen.Records;
