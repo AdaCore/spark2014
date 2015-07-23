@@ -1283,11 +1283,9 @@ package body SPARK_Util is
    function Get_Called_Entity (N : Node_Id) return Entity_Id is
       Nam : constant Node_Id := Name (N);
    begin
-      if Nkind (Nam) = N_Selected_Component then
-         return Entity (Selector_Name (Nam));
-      else
-         return Entity (Nam);
-      end if;
+      return Entity (if Nkind (Nam) = N_Selected_Component
+                     then Selector_Name (Nam)
+                     else Nam);
    end Get_Called_Entity;
 
    ------------------------
