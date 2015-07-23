@@ -617,18 +617,17 @@ The result file gnatprove.out
 
 This file consists of two parts. The first part is a summary table of the
 verification results of all checks in the project. The table may look like
-this:
+this::
 
-
-                            Total      Flow   Interval                          Provers   Justified   Unproved
-Data Dependencies               .         .          .                                .           .          .
-Flow Dependencies               .         .          .                                .           .          .
-Initialization               2100      2079          .                                .           .         21
-Non-Aliasing                    .         .          .                                .           .          .
-Run-time Checks               596         .          .    480 (altergo  31%, CVC4  69%)           .        116
-Assertions                      3         .          .      3 (altergo  33%, CVC4  67%)           .          .
-Functional Contracts          323         .          .    168 (altergo  24%, CVC4  76%)           .        155
-LSP Verification                .         .          .                                .           .          .
+      Check type                  Total      Flow   Interval                          Provers   Justified   Unproved
+      Data Dependencies               .         .          .                                .           .          .
+      Flow Dependencies               .         .          .                                .           .          .
+      Initialization               2100      2079          .                                .           .         21
+      Non-Aliasing                    .         .          .                                .           .          .
+      Run-time Checks               596         .          .    480 (altergo  31%, CVC4  69%)           .        116
+      Assertions                      3         .          .      3 (altergo  33%, CVC4  67%)           .          .
+      Functional Contracts          323         .          .    168 (altergo  24%, CVC4  76%)           .        155
+      LSP Verification                .         .          .                                .           .          .
 
 The following table explains the lines of the summary table:
 
