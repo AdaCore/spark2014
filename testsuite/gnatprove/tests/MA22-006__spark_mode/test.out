@@ -21,15 +21,15 @@ in unit p, 2 subprograms and packages out of 2 analyzed
 Summary of SPARK analysis
 =========================
 
-                            Total      Flow   Interval   Provers   Justified   Unproved
-Data Dependencies               .         .          .         .           .          .
-Flow Dependencies               .         .          .         .           .          .
-Initialization                  1         1          .         .           .          .
-Non-Aliasing                    .         .          .         .           .          .
-Run-time Checks                 2         .          .         2           .          .
-Assertions                      .         .          .         .           .          .
-Functional Contracts            .         .          .         .           .          .
-LSP Verification                .         .          .         .           .          .
+                            Total      Flow   Interval     Provers   Justified   Unproved
+Data Dependencies               .         .          .           .           .          .
+Flow Dependencies               .         .          .           .           .          .
+Initialization                  1         1          .           .           .          .
+Non-Aliasing                    .         .          .           .           .          .
+Run-time Checks                 2         .          .    2 (CVC4)           .          .
+Assertions                      .         .          .           .           .          .
+Functional Contracts            .         .          .           .           .          .
+LSP Verification                .         .          .           .           .          .
 
 
 Analyzed 1 unit
@@ -40,15 +40,15 @@ in unit p, 2 subprograms and packages out of 2 analyzed
 Summary of SPARK analysis
 =========================
 
-                            Total      Flow   Interval   Provers   Justified   Unproved
-Data Dependencies               .         .          .         .           .          .
-Flow Dependencies               .         .          .         .           .          .
-Initialization                  1         1          .         .           .          .
-Non-Aliasing                    .         .          .         .           .          .
-Run-time Checks                 2         .          .         2           .          .
-Assertions                      .         .          .         .           .          .
-Functional Contracts            .         .          .         .           .          .
-LSP Verification                .         .          .         .           .          .
+                            Total      Flow   Interval     Provers   Justified   Unproved
+Data Dependencies               .         .          .           .           .          .
+Flow Dependencies               .         .          .           .           .          .
+Initialization                  1         1          .           .           .          .
+Non-Aliasing                    .         .          .           .           .          .
+Run-time Checks                 2         .          .    2 (CVC4)           .          .
+Assertions                      .         .          .           .           .          .
+Functional Contracts            .         .          .           .           .          .
+LSP Verification                .         .          .           .           .          .
 
 
 Analyzed 1 unit
@@ -60,15 +60,15 @@ p.ads:4:37: info: initialization of "Z" proved
 Summary of SPARK analysis
 =========================
 
-                            Total      Flow   Interval   Provers   Justified   Unproved
-Data Dependencies               .         .          .         .           .          .
-Flow Dependencies               .         .          .         .           .          .
-Initialization                  1         1          .         .           .          .
-Non-Aliasing                    .         .          .         .           .          .
-Run-time Checks                 2         .          .         2           .          .
-Assertions                      .         .          .         .           .          .
-Functional Contracts            .         .          .         .           .          .
-LSP Verification                .         .          .         .           .          .
+                            Total      Flow   Interval     Provers   Justified   Unproved
+Data Dependencies               .         .          .           .           .          .
+Flow Dependencies               .         .          .           .           .          .
+Initialization                  1         1          .           .           .          .
+Non-Aliasing                    .         .          .           .           .          .
+Run-time Checks                 2         .          .    2 (CVC4)           .          .
+Assertions                      .         .          .           .           .          .
+Functional Contracts            .         .          .           .           .          .
+LSP Verification                .         .          .           .           .          .
 
 
 Analyzed 1 unit

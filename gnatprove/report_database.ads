@@ -27,6 +27,8 @@
 --  gnatprove.
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Assumptions;           use Assumptions;
 with Assumption_Types;      use Assumption_Types;
@@ -61,10 +63,22 @@ package Report_Database is
       Assumptions   : Rule_Lists.List;    --  final mapping claims->assumptions
    end record;
 
+   package String_Maps is new Ada.Containers.Indefinite_Hashed_Maps
+     (Key_Type        => String,
+      Element_Type    => Natural,
+      Hash            => Ada.Strings.Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   type Prover_Stat is record
+      Total : Natural;
+      Provers : String_Maps.Map;
+   end record;
+
    type Summary_Line is record
       Flow : Natural;
       Interval : Natural;
-      Provers : Natural;
+      Provers : Prover_Stat;
       Justified : Natural;
       Unproved : Natural;
    end record;
@@ -84,7 +98,10 @@ package Report_Database is
 
    type Summary_Type is array (Summary_Entries) of Summary_Line;
 
-   Null_Summary_Line : Summary_Line := (others => 0);
+   Empty_Prover_Stats : Prover_Stat :=
+     (Total => 0, Provers => String_Maps.Empty_Map);
+   Null_Summary_Line : Summary_Line :=
+     (Provers => Empty_Prover_Stats, others => 0);
    Summary : Summary_Type := (others => Null_Summary_Line);
 
    procedure Add_Flow_Result

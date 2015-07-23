@@ -11,7 +11,7 @@ my_pack.ads:14:22: info: postcondition proved
 
 
 
-                            Total      Flow   Interval   Provers   Justified   Unproved
+                            Total      Flow   Interval     Provers   Justified   Unproved
 
   Full at full.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
 
@@ -43,21 +43,21 @@ my_pack.ads:14:22: info: postcondition proved
 
 Analyzed 2 units
 
-Assertions                      .         .          .         .           .          .
+Assertions                      .         .          .           .           .          .
 
-Data Dependencies               .         .          .         .           .          .
+Data Dependencies               .         .          .           .           .          .
 
-Flow Dependencies               .         .          .         .           .          .
+Flow Dependencies               .         .          .           .           .          .
 
-Functional Contracts            5         .          .         5           .          .
+Functional Contracts            5         .          .    5 (CVC4)           .          .
 
-Initialization                  .         .          .         .           .          .
+Initialization                  .         .          .           .           .          .
 
-LSP Verification                .         .          .         .           .          .
+LSP Verification                .         .          .           .           .          .
 
-Non-Aliasing                    .         .          .         .           .          .
+Non-Aliasing                    .         .          .           .           .          .
 
-Run-time Checks                 2         .          .         2           .          .
+Run-time Checks                 2         .          .    2 (CVC4)           .          .
 
 Summary of SPARK analysis
 

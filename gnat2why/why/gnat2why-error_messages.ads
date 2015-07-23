@@ -25,6 +25,7 @@
 
 with VC_Kinds; use VC_Kinds;
 with Types;    use Types;
+with GNATCOLL.JSON;
 
 package Gnat2Why.Error_Messages is
 
@@ -48,6 +49,7 @@ package Gnat2Why.Error_Messages is
       Cntexmpfile : String := "";
       VC_File     : String := "";
       How_Proved  : String := "";
+      Stats       : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       Editor_Cmd  : String := "");
 
 end Gnat2Why.Error_Messages;

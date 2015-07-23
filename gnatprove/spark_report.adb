@@ -112,6 +112,7 @@
 --  possible values for "rule", which can only be tho ones for flow messages.
 --  Also "how_proved" field is never set.
 
+with Ada.Containers;
 with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Strings.Unbounded;
@@ -189,6 +190,11 @@ procedure SPARK_Report is
    --  @param S the table line
    --  @return a string to be presented to the user
 
+   procedure Process_Stats (C : Summary_Entries; Stats : JSON_Value);
+   --  process the stats record for the VC and update the proof information
+   --  @param C the category of the VC
+   --  @param Stats the stats record
+
    -------------------------
    -- Compute_Assumptions --
    -------------------------
@@ -222,6 +228,11 @@ procedure SPARK_Report is
       --  print a line of the table other than the header
       --  @param Line the entry of the summary to be printed
 
+      procedure Put_Provers_Cell (Stats : Prover_Stat);
+      --  print the "provers" cell of a category, with the total count of
+      --  checks and the percentage of each prover
+      --  @param Stats the stats for the prover
+
       ------------------------
       -- Print_Table_Header --
       ------------------------
@@ -249,18 +260,59 @@ procedure SPARK_Report is
       procedure Print_Table_Line (Line : Summary_Entries) is
          Elt : constant Summary_Line := Summary (Line);
          Total : constant Natural :=
-           Elt.Flow + Elt.Interval + Elt.Provers +
+           Elt.Flow + Elt.Interval + Elt.Provers.Total +
              Elt.Justified + Elt.Unproved;
       begin
          Put_Cell (T, To_String (Line), Align => Left_Align);
          Put_Cell (T, Total);
          Put_Cell (T, Elt.Flow);
          Put_Cell (T, Elt.Interval);
-         Put_Cell (T, Elt.Provers);
+         Put_Provers_Cell (Elt.Provers);
          Put_Cell (T, Elt.Justified);
          Put_Cell (T, Elt.Unproved);
          New_Line (T);
       end Print_Table_Line;
+
+      ----------------------
+      -- Put_Provers_Cell --
+      ----------------------
+
+      procedure Put_Provers_Cell (Stats : Prover_Stat) is
+         use Ada.Strings.Unbounded;
+         use String_Maps;
+         use Ada.Containers;
+         Check_Total : constant Natural := Stats.Total;
+         VC_Total    : Natural := 0;
+         Buf         : Unbounded_String;
+         First       : Boolean := True;
+      begin
+         if Check_Total = 0 or else Stats.Provers.Length = 0 then
+            Put_Cell (T, Check_Total);
+            return;
+         end if;
+         Append (Buf, Natural'Image (Check_Total));
+         for Elt of Stats.Provers loop
+            VC_Total := VC_Total + Elt;
+         end loop;
+         for Elt of Stats.Provers loop
+            Elt := Integer ((Float (100 * Elt)) / Float (VC_Total));
+         end loop;
+         Append (Buf, " (");
+         if Stats.Provers.Length = 1 then
+            Append (Buf, Key (Stats.Provers.First));
+         else
+            for C in Stats.Provers.Iterate loop
+               if not First then
+                  Append (Buf, ", ");
+               end if;
+               First := False;
+               Append (Buf, Key (C));
+               Append (Buf, " " & Natural'Image (Element (C)) & "%");
+            end loop;
+         end if;
+         Append (Buf, ')');
+         Put_Cell (T, To_String (Buf));
+      end Put_Provers_Cell;
 
    begin
       Ada.Text_IO.Put_Line (Handle, "Summary of SPARK analysis");
@@ -414,7 +466,10 @@ procedure SPARK_Report is
                   then
                      Increment (Summary (Category).Interval);
                   else
-                     Increment (Summary (Category).Provers);
+                     if Has_Field (Result, "stats") then
+                        Process_Stats (Category, Get (Result, "stats"));
+                     end if;
+                     Increment (Summary (Category).Provers.Total);
                   end if;
                else
                   Increment (Summary (Category).Unproved);
@@ -690,6 +745,35 @@ procedure SPARK_Report is
          Iter_Units (For_Each_Unit'Access, Ordered => True);
       end if;
    end Print_Analysis_Report;
+
+   -------------------
+   -- Process_Stats --
+   -------------------
+
+   procedure Process_Stats (C : Summary_Entries; Stats : JSON_Value) is
+
+      procedure Process_Prover_Stat (Name : UTF8_String; Value : JSON_Value);
+
+      procedure Process_Prover_Stat (Name : UTF8_String; Value : JSON_Value) is
+         use String_Maps;
+         Cur : constant Cursor := Summary (C).Provers.Provers.Find (Name);
+         Count : constant Natural := Get (Value, "count");
+      begin
+         if Has_Element (Cur) then
+            declare
+               Tmp : Natural := Element (Cur);
+            begin
+               Tmp := Tmp + Count;
+               Replace_Element (Summary (C).Provers.Provers, Cur, Tmp);
+            end;
+         else
+            Summary (C).Provers.Provers.Insert (Name, Count);
+         end if;
+      end Process_Prover_Stat;
+
+   begin
+      Map_JSON_Object (Stats, Process_Prover_Stat'Access);
+   end Process_Stats;
 
    -----------------------------
    -- String_To_Summary_Entry --

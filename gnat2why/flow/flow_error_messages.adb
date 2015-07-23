@@ -87,6 +87,7 @@ package body Flow_Error_Messages is
       Cntexmpfile : String := "";
       VC_File     : String := "";
       How_Proved  : String := "";
+      Stats       : JSON_Value := GNATCOLL.JSON.Create_Object;
       Editor_Cmd  : String := "");
 
    function Warning_Is_Suppressed
@@ -396,6 +397,7 @@ package body Flow_Error_Messages is
       Editor_Cmd  : String;
       E           : Entity_Id;
       How_Proved  : String;
+      Stats       : JSON_Value := Create_Object;
       Place_First : Boolean) is
       Kind     : constant Msg_Kind :=
         (if Is_Proved then Info_Kind else Medium_Check_Kind);
@@ -443,6 +445,7 @@ package body Flow_Error_Messages is
          Cntexmpfile => Cntexmpfile,
          VC_File     => VC_File,
          How_Proved  => How_Proved,
+         Stats       => Stats,
          Editor_Cmd  => Editor_Cmd);
 
    end Error_Msg_Proof;
@@ -531,6 +534,7 @@ package body Flow_Error_Messages is
       Cntexmpfile : String := "";
       VC_File     : String := "";
       How_Proved  : String := "";
+      Stats       : JSON_Value := GNATCOLL.JSON.Create_Object;
       Editor_Cmd  : String := "")
    is
       Value : constant JSON_Value := Create_Object;
@@ -581,6 +585,10 @@ package body Flow_Error_Messages is
 
       if How_Proved /= "" then
          Set_Field (Value, "how_proved", How_Proved);
+      end if;
+
+      if not Is_Empty (Stats) then
+         Set_Field (Value, "stats", Stats);
       end if;
 
       Append (Msg_List, Value);

@@ -129,6 +129,7 @@ package Flow_Error_Messages is
       Editor_Cmd  : String;
       E           : Entity_Id;
       How_Proved  : String;
+      Stats       : JSON_Value := Create_Object;
       Place_First : Boolean);
    --  register a message for proof (i.e. which corresponds to a check that is
    --  usually taken care of by proof)
@@ -141,6 +142,8 @@ package Flow_Error_Messages is
    --  @param Editor_Cmd the editor command to spawn manual prover
    --  @param E which subprogram this VC belongs to
    --  @param How_Proved which prover or analysis discharged this VC
+   --  @param Stats describes which provers and which timeout/steps where
+   --    necessary
    --  @param Place_First signal if placement on the beginning of the
    --         expression should be used (instead of the middle)
 

@@ -33,8 +33,6 @@ with Errout;               use Errout;
 with Osint;                use Osint;
 with Sinfo;                use Sinfo;
 
-with GNATCOLL.JSON;
-
 with Common_Containers;    use Common_Containers;
 with SPARK_Util;           use SPARK_Util;
 with Flow_Error_Messages;  use Flow_Error_Messages;
@@ -141,6 +139,7 @@ package body Gnat2Why.Error_Messages is
       Cntexmpfile : String := "";
       VC_File     : String := "";
       How_Proved  : String := "";
+      Stats       : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       Editor_Cmd  : String := "") is
       Msg : constant String :=
         (if Proved then Proved_Message (Node, Kind)
@@ -157,6 +156,7 @@ package body Gnat2Why.Error_Messages is
          Cntexmpfile => Cntexmpfile,
          VC_File     => VC_File,
          Editor_Cmd  => Editor_Cmd,
+         Stats       => Stats,
          How_Proved  => How_Proved,
          E           => E);
    end Emit_Proof_Result;
@@ -370,6 +370,9 @@ package body Gnat2Why.Error_Messages is
          Editor_Cmd : constant String :=
            (if Has_Field (V, "editor_cmd") then Get (Get (V, "editor_cmd"))
             else "");
+         Stats : constant JSON_Value :=
+           (if Has_Field (V, "stats") then Get (V, "stats")
+            else Create_Object);
       begin
          if Proved then
             Mark_VC_As_Proved_For_Entity (Id, Kind, VC.Entity);
@@ -385,6 +388,7 @@ package body Gnat2Why.Error_Messages is
             Cntexmpfile => Cntexmpfile,
             VC_File     => VC_File,
             Editor_Cmd  => Editor_Cmd,
+            Stats       => Stats,
             Extra_Msg   => Extra_Msg);
       end Handle_Result;
 

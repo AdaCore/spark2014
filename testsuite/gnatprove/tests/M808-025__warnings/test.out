@@ -212,15 +212,15 @@ p.adb:18:19: info: initialization of "X" proved
 Summary of SPARK analysis
 =========================
 
-                            Total      Flow   Interval   Provers   Justified   Unproved
-Data Dependencies               .         .          .         .           .          .
-Flow Dependencies               .         .          .         .           .          .
-Initialization                  5         5          .         .           .          .
-Non-Aliasing                    .         .          .         .           .          .
-Run-time Checks                 .         .          .         .           .          .
-Assertions                      1         .          .         1           .          .
-Functional Contracts            .         .          .         .           .          .
-LSP Verification                .         .          .         .           .          .
+                            Total      Flow   Interval     Provers   Justified   Unproved
+Data Dependencies               .         .          .           .           .          .
+Flow Dependencies               .         .          .           .           .          .
+Initialization                  5         5          .           .           .          .
+Non-Aliasing                    .         .          .           .           .          .
+Run-time Checks                 .         .          .           .           .          .
+Assertions                      1         .          .    1 (CVC4)           .          .
+Functional Contracts            .         .          .           .           .          .
+LSP Verification                .         .          .           .           .          .
 
 
 Analyzed 1 unit
