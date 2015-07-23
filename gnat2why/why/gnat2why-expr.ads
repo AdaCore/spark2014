@@ -52,13 +52,20 @@ package Gnat2Why.Expr is
    function Assume_Dynamic_Property
      (Expr          : W_Expr_Id;
       Ty            : Entity_Id;
-      Only_Var      : Boolean := True;
       Initialized   : Boolean := True;
+      Only_Var      : Boolean := True;
       Top_Predicate : Boolean := True;
       Use_Pred      : Boolean := True) return W_Prog_Id;
-   --  Generate an assumption that N is a value of its type.
-   --  If Only_Var is true, then don't assume properties of constant parts
-   --  of the object, such as the bounds of an array.
+   --  @param Expr Why3 expression on which to assume the dynamic property
+   --  @param Ty type of expression [Expr]
+   --  @param Initialized True iff Expr is known to be initialized
+   --  @param Only_Var True iff the dynamic property should only consider
+   --     the variable parts of [Expr].
+   --  @param Top_Predicate True iff the dynamic property should consider
+   --     the toplevel type predicate possibly associated with [Ty].
+   --  @param Use_Pred True iff the named predicate should be used
+   --  @result Why3 prog assuming the dynamic property of type [Ty]
+   --     over [Expr].
 
    function Check_Scalar_Range
      (Params : Transformation_Params;
@@ -118,14 +125,17 @@ package Gnat2Why.Expr is
       Top_Predicate : W_Term_Id := True_Term;
       Params        : Transformation_Params := Body_Params;
       Use_Pred      : Boolean := True) return W_Pred_Id;
-   --  @param Expr Expression for which we want the dynamic property
-   --  @param Ty The type of the expression Expr
-   --  @param Only_Var Only assume property over variable parts of Expr
-   --  @param Initialized Assume that Expr is initialized
-   --  @param Skip_Predicate whether the type predicate is considered
-   --  @param Params Transformation parameters
-   --  @param Use_Pred Use the precomputed predicate for Ty's dynamic property
-   --  @result The dynamic property of type Ty over Expr.
+   --  @param Expr Why3 expression on which to express the dynamic property
+   --  @param Ty type of expression [Expr]
+   --  @param Initialized true term iff Expr is known to be initialized
+   --  @param Only_Var true term iff the dynamic property should only consider
+   --     the variable parts of [Expr].
+   --  @param Top_Predicate true term iff the dynamic property should consider
+   --     the toplevel type predicate possibly associated with [Ty].
+   --  @param Params transformation parameters
+   --  @param Use_Pred True iff the named predicate should be used
+   --  @result Why3 predicate expressing the dynamic property of type [Ty]
+   --     over [Expr].
 
    function Get_Container_In_Iterator_Specification
      (N : Node_Id) return Node_Id;

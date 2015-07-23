@@ -922,8 +922,8 @@ package body Gnat2Why.Expr is
    function Assume_Dynamic_Property
      (Expr          : W_Expr_Id;
       Ty            : Entity_Id;
-      Only_Var      : Boolean := True;
       Initialized   : Boolean := True;
+      Only_Var      : Boolean := True;
       Top_Predicate : Boolean := True;
       Use_Pred      : Boolean := True) return W_Prog_Id
    is

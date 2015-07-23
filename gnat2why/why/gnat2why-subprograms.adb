@@ -139,10 +139,13 @@ package body Gnat2Why.Subprograms is
    --  @param W Why node from which we collect entities
    --  @param Params Transformation parameters used to transform the objects
    --  @param Scope Entity of the enclosing unit for the Why code. It is used
-   --  to determine if objects are local/initialized.
+   --     to determine if objects are local/initialized.
+   --  @param Pred_Fun_Param not Empty iff computing the dynamic property for
+   --     inputs of a predicate function, in which case [Pred_Fun_Param] is
+   --     the entity for the formal parameter of the predicate function.
    --  @param Initialized Assume global out to be initialized at this point.
    --  @result an assumption including the dynamic property of every external
-   --  dynamic objects that are referenced in W.
+   --     dynamic objects that are referenced in W.
 
    function Compute_Dynamic_Property_For_Effects
      (E      : Entity_Id;
