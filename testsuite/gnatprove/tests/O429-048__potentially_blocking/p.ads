@@ -95,4 +95,8 @@ package P is
       procedure Text_Proc;
    end;
 
+   protected PO_10 is
+      entry My_Text_Entry;
+   end;
+
 end P;
