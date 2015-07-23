@@ -632,11 +632,11 @@ this::
 
 The following table explains the lines of the summary table:
 
-.. tabularcolumns:: |l|p{3in}|
+.. tabularcolumns:: |l|p{5in}|
 
 .. csv-table::
    :header: "Line Description", "Explanation"
-   :widths: 1, 4
+   :widths: 1, 5
 
    "Data Dependencies", "Verification of :ref:`Data Dependencies` and parameter modes"
    "Flow Dependencies", "Verification of :ref:`Flow Dependencies`"
