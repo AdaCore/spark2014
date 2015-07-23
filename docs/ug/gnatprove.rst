@@ -608,6 +608,67 @@ offer to re-edit the file if the proof fails.
 How to View |GNATprove| Output
 ==============================
 
+|GNATprove| produces two kinds of outputs: The one which is echoed to standard
+output, and the one which is produced in a file ``gnatprove.out``, which lies
+in the ``gnatprove`` subdirectory of the object directory of your project.
+
+The result file gnatprove.out
+-----------------------------
+
+This file consists of two parts. The first part is a summary table of the
+verification results of all checks in the project. The table may look like
+this:
+
+
+                            Total      Flow   Interval                          Provers   Justified   Unproved
+Data Dependencies               .         .          .                                .           .          .
+Flow Dependencies               .         .          .                                .           .          .
+Initialization               2100      2079          .                                .           .         21
+Non-Aliasing                    .         .          .                                .           .          .
+Run-time Checks               596         .          .    480 (altergo  31%, CVC4  69%)           .        116
+Assertions                      3         .          .      3 (altergo  33%, CVC4  67%)           .          .
+Functional Contracts          323         .          .    168 (altergo  24%, CVC4  76%)           .        155
+LSP Verification                .         .          .                                .           .          .
+
+The following table explains the lines of the summary table:
+
+.. tabularcolumns:: |l|p{3in}|
+
+.. csv-table::
+   :header: "Message Kind", "Explanation"
+   :widths: 1, 4
+
+   **Check kinds in the summary table**
+   "Data Dependencies", "Global aspects and variable modes"
+   "Flow Dependencies", "Depends aspects"
+   "Initialization", "access to initialized dataa"
+   "Non-Aliasing", "verification of aliasing properties"
+   "Run-time Checks", "overflow checks, range checks, index checks etc"
+   "Assertions", "pragma Assert"
+   "Functional Contracts", "pre- and postconditions, contract cases, loop invariants"
+   "LSP Verification", "Checks related to the Liskov Substitution Principle"
+
+
+We now explain the columns of the table. The ``Total`` column describes the
+total number of checks in this category. The ``Flow`` column describes the
+number of checks discharged by Flow analysis, which is the first analysis done
+by |GNATprove|. The ``Interval`` column describes the number of checks
+discharged by the ``Interval`` analysis, which specifically tries to prove
+overflow and range checks for floating-point computations.
+
+The ``Provers`` column describes the number of checks proved by automatic or
+manua proof tools. The column also gives information on the used provers, and
+the percentage they proved. Note that sometimes a check corresponds to many
+prover runs, even of different provers, so only percentages and not absolute
+counts are given. Also note that generally the prover which is run first
+(determined by the ``--prover`` command line option) proves the most checks,
+because the other ones are only run if the first one fails. The prover
+percentages are provided in alphabetical order.
+
+The ``Justified`` column contains the number of checks for which the user has
+provided a ``pragma Annotate``. Finally, the column ``Unproved`` counts the
+checks which have not been proved nor justified.
+
 Categories of Messages
 ----------------------
 
