@@ -634,10 +634,9 @@ The following table explains the lines of the summary table:
 .. tabularcolumns:: |l|p{3in}|
 
 .. csv-table::
-   :header: "Message Kind", "Explanation"
+   :header: "Line Description", "Explanation"
    :widths: 1, 4
 
-   **Check kinds in the summary table**
    "Data Dependencies", "Global aspects and variable modes"
    "Flow Dependencies", "Depends aspects"
    "Initialization", "access to initialized dataa"
