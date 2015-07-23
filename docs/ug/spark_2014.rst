@@ -1358,16 +1358,16 @@ Type Contracts
 
 * A *scalar range* may be specified on a scalar type or subtype to bound its
   values.
-* A *static predicate* introduced by aspect ``Static_Predicate`` may be
-  specified on a scalar type or subtype to list values allowed or forbidden.
 * A *record discriminant* may be specified on a record type to distinguish
   between variants of the same record.
+* A *predicate* introduced by aspect ``Static_Predicate``,
+  ``Dynamic_Predicate`` or ``Predicate`` may be specified on a type or subtype
+  to express a property verified by objects of the type.
 * A *default initial condition* introduced by aspect
   ``Default_Initial_Condition`` on a private type specifies the initialization
   status and possibly properties of the default initialization for a type.
 
-Note that |SPARK| does not yet support aspects ``Dynamic_Predicate`` and
-``Type_Invariant`` from Ada 2012.
+Note that |SPARK| does not yet support aspect ``Type_Invariant`` from Ada 2012.
 
 .. _Scalar Ranges:
 
@@ -1419,46 +1419,6 @@ All the variants above result in the same range checks both at run-time and in
 |GNATprove|. |GNATprove| also uses the range information for proving properties
 about the program (for example, the absence of overflows in computations).
 
-Static Predicates
------------------
-
-[Ada 2012]
-
-A static predicate allows specifying which values are allowed or forbidden in a
-scalar type, when this specification cannot be expressed with :ref:`Scalar
-Ranges` (because it has *holes*). For example, we can express that the global
-counter ``Total`` cannot be equal to ``10`` or ``100`` with the following
-static predicate:
-
-.. code-block:: ada
-
-   subtype Count is Integer with
-     Static_Predicate => Count /= 10 and Count /= 100;
-   Total : Count;
-
-or equivalently:
-
-.. code-block:: ada
-
-   subtype Count is Integer with
-     Static_Predicate => Count in Integer'First .. 9 | 11 .. 99 | 101 .. Integer'Last;
-   Total : Count;
-
-Uses of the name of the subtype ``Count`` in the predicate refer to variables
-of this type. Scalar ranges and static predicates can also be combined, and
-static predicates can be specified on subtypes, derived types and new signed
-integer types. For example, we may define ``Count`` as follows:
-
-.. code-block:: ada
-
-   type Count is new Natural with
-     Static_Predicate => Count /= 10 and Count /= 100;
-
-Any attempt to assign a forbidden value to variable ``Total`` results in
-raising an exception at run time. During analysis, |GNATprove| checks that all
-values assigned to ``Total`` are allowed. |GNATprove| also uses the predicate
-information for proving properties about the program.
-
 Record Discriminants
 ---------------------
 
@@ -1495,6 +1455,186 @@ bounds:
 
 .. literalinclude:: gnatprove_by_example/results/logging_discr.prove
    :language: none
+
+Predicates
+----------
+
+[Ada 2012]
+
+Predicates can be used on any type to express a property verified by objects of
+the type at all times. Aspects ``Static_Predicate`` and ``Dynamic_Predicate``
+are defined in Ada 2012 to associate a predicate to a type. Aspect
+``Dynamic_Predicate`` allows to express more general predicates than aspect
+``Static_Predicate``, at the cost of restricting the use of variables of the
+type. The following table summarizes the main similarities and differences
+between both aspects:
+
+.. csv-table::
+   :header: "Feature", "``Static_Predicate``", "``Dynamic_Predicate``"
+   :widths: 3, 1, 1
+
+   "Applicable to scalar type", "Yes", "Yes"
+   "Applicable to array/record type", "No", "Yes"
+   "Allows simple comparisons with static values", "Yes", "Yes"
+   "Allows conjunctions/disjunctions", "Yes", "Yes"
+   "Allows function calls", "No", "Yes"
+   "Allows general Boolean properties", "No", "Yes"
+   "Can be used in membership test", "Yes", "Yes"
+   "Can be used as range in for-loop", "Yes", "No"
+   "Can be used as choice in case-statement", "Yes", "No"
+   "Can be used as prefix with attributes First, Last or Range", "No", "No"
+   "Can be used as index type in array", "No", "No"
+
+Aspect ``Predicate`` is specific to |GNAT Pro| and can be used instead of
+``Static_Predicate`` or ``Dynamic_Predicate``. |GNAT Pro| treats it as a
+``Static_Predicate`` whenever possible and as a ``Dynamic_Predicate`` in the
+remaining cases, thus not restricting uses of variables of the type more than
+necessary.
+
+Note that predicates are inherited by subtypes and derived types. If a subtype
+or a derived type inherits a predicate and defines its own predicate, both
+predicates are checked on values of the new type.
+
+|GNATprove| checks that all values assigned to a type with a predicate are
+allowed by its predicate. |GNATprove| generates a predicate check even in cases
+where there is no corresponding run-time check, for example when assigning to a
+component of a record with a predicate. |GNATprove| also uses the predicate
+information for proving properties about the program.
+
+Static Predicates
+^^^^^^^^^^^^^^^^^
+
+A static predicate allows specifying which values are allowed or forbidden in a
+scalar type, when this specification cannot be expressed with :ref:`Scalar
+Ranges` (because it has *holes*). For example, we can express that the global
+counter ``Total`` cannot be equal to ``10`` or ``100`` with the following
+static predicate:
+
+.. code-block:: ada
+
+   subtype Count is Integer with
+     Static_Predicate => Count /= 10 and Count /= 100;
+   Total : Count;
+
+or equivalently:
+
+.. code-block:: ada
+
+   subtype Count is Integer with
+     Static_Predicate => Count in Integer'First .. 9 | 11 .. 99 | 101 .. Integer'Last;
+   Total : Count;
+
+Uses of the name of the subtype ``Count`` in the predicate refer to variables
+of this type. Scalar ranges and static predicates can also be combined, and
+static predicates can be specified on subtypes, derived types and new signed
+integer types. For example, we may define ``Count`` as follows:
+
+.. code-block:: ada
+
+   type Count is new Natural with
+     Static_Predicate => Count /= 10 and Count /= 100;
+
+Any attempt to assign a forbidden value to variable ``Total`` results in
+raising an exception at run time. During analysis, |GNATprove| checks that all
+values assigned to ``Total`` are allowed.
+
+Similarly, we can express that values of type ``Normal_Float`` are the *normal*
+32-bits floating-point values (thus excluding *subnormal* values), assuming
+here that ``Float`` is the 32-bits floating-point type on the target:
+
+.. code-block:: ada
+
+   subtype Normal_Float is Float with
+     Static_Predicate => Normal_Float <= -2.0**(-126) or Normal_Float = 0.0 or Normal_Float >= 2.0**(-126);
+
+Any attempt to assign a subnormal value to a variable of type ``Normal_Value``
+results in raising an exception at run time. During analysis, |GNATprove|
+checks that only normal values are assigned to such variables.
+
+Dynamic Predicates
+^^^^^^^^^^^^^^^^^^
+
+A dynamic predicate allows specifying properties of scalar types that cannot be
+expressed as static predicates. For example, we can express that values of type
+``Odd`` and ``Even`` are distributed according to their name as follows:
+
+.. code-block:: ada
+
+   subtype Odd is Natural with
+     Dynamic_Predicate => Odd mod 2 = 1;
+
+   subtype Even is Natural with
+     Dynamic_Predicate => Even mod 2 = 0;
+
+or that values of type ``Prime`` are prime numbers as follows:
+
+.. code-block:: ada
+
+   type Prime is new Positive with
+     Dynamic_Predicate => (for all Divisor in 2 .. Prime / 2 => Prime mod Divisor /= 0);
+
+A dynamic predicate also allows specifying relations between components of a
+record. For example, we can express that the values paired together in a record
+are always distinct as follows:
+
+.. code-block:: ada
+
+   type Distinct_Pair is record
+     Val1, Val2 : Integer;
+   end record
+     with Dynamic_Predicate => Distinct_Pair.Val1 /= Distinct_Pair.Val2;
+
+or that a record stores pairs of values with their greatest common divisor as
+follows:
+
+.. code-block:: ada
+
+   type Bundle_Values is record
+     X, Y : Integer;
+     GCD  : Natural;
+   end record
+     with Dynamic_Predicate => Bundle_Values.GCD = Get_GCD (Bundle_Values.X, Bundle_Values.Y);
+
+or that the number of elements ``Count`` in a resizable table is always less
+than or equal to its maximal number of elements ``Max`` as follows:
+
+.. code-block:: ada
+
+   type Resizable_Table (Max : Natural) is record
+      Count : Natural;
+      Data  : Data_Array(1 .. Max);
+   end record
+     with Dynamic_Predicate => Resizable_Table.Count <= Resizable_Table.Max;
+
+A dynamic predicate also allows specifying global properties over the content
+of an array. For example, we can express that elements of an array are stored
+in increasing order as follows:
+
+.. code-block:: ada
+
+   type Ordered_Array is array (Index) of Integer
+     with Dynamic_Predicate =>
+       (for all I in Index => (if I < Index'Last then Ordered_Array(I) < Ordered_Array(I+1)));
+
+or that a special end marker is always present in the array as follows:
+
+.. code-block:: ada
+
+   type Ended_Array is array (Index) of Integer
+     with Dynamic_Predicate =>
+       (for some I in Index => Ended_Array(I) = End_Marker);
+
+Dynamic predicates are checked only at specific places at run time, as mandated
+by the Ada Reference Manual:
+
+* when converting a value to the type with the predicate
+* when returning from a call, for each in-out and out parameter passed by reference
+* when declaring an object, except when there is no initialization expression
+  and no subcomponent has a default expression
+
+Thus, not all violations of the dynamic predicate are caught at run time. On
+the contrary, during analysis, |GNATprove| checks that initialized variables
+whose type has a predicate always contain a value allowed by the predicate.
 
 Default Initial Condition
 -------------------------
@@ -1709,6 +1849,17 @@ evaluated* anymore, for example:
 
    procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
      Post => J not in A'Range or V = Get_If_In_Range(A,J)'Old;
+
+or to rewrite the postcondition using an intermediate expression function, so
+that the expression is not *potentially evaluated* anymore, for example:
+
+.. code-block:: ada
+
+   function Extract_Post (A : My_Array; J : Integer; V, Get_V : Value) return Boolean is
+     (if J in A'Range then V = Get_V);
+
+   procedure Extract (A : in out My_Array; J : Integer; V : out Value) with
+     Post => Extract_Post (A, J, V, Get_If_In_Range(A,J)'Old);
 
 or to use the |GNAT Pro| pragma ``Unevaluated_Use_Of_Old`` to allow such uses
 of attribute ``Old`` in potentially unevaluated expressions:
