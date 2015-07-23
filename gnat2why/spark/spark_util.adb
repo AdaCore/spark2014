@@ -1965,17 +1965,14 @@ package body SPARK_Util is
                end;
 
             when N_Object_Declaration =>
-               declare
-                  Id : constant Entity_Id := Defining_Identifier (N);
-               begin
-                  --  ??? what if a library-level declaration
-                  if Has_Task (Etype (Id)) then
-                     Potentially_Blocking_Statement_Found := True;
-                     return Abandon;
-                  else
-                     return OK;
-                  end if;
-               end;
+               --  ??? non-library-level task declarations should be already
+               --  rejected by the Ravenscar profile restrictions.
+               if Has_Task (Etype (Defining_Identifier (N))) then
+                  Potentially_Blocking_Statement_Found := True;
+                  return Abandon;
+               else
+                  return OK;
+               end if;
 
             when others =>
                return OK;
