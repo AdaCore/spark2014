@@ -1982,6 +1982,8 @@ package body SPARK_Util is
          end case;
       end Proc;
 
+   --  Start of processing for Has_Only_Nonblocking_Statements
+
    begin
       Traverse (N);
       return not Potentially_Blocking_Statement_Found;
