@@ -789,11 +789,17 @@ procedure SPARK_Report is
             | VC_Predicate_Check
             | VC_Length_Check
             | VC_Discriminant_Check
-            | VC_Tag_Check =>
-
+            | VC_Tag_Check
+            | VC_Raise
+         =>
             return Runtime_Checks;
 
-         when VC_Assert =>
+         when VC_Assert
+            | VC_Loop_Invariant
+            | VC_Loop_Invariant_Init
+            | VC_Loop_Invariant_Preserv
+            | VC_Loop_Variant
+         =>
             return Assertions;
 
          when VC_Initial_Condition
@@ -805,20 +811,15 @@ procedure SPARK_Report is
             | VC_Contract_Case
             | VC_Disjoint_Contract_Cases
             | VC_Complete_Contract_Cases
-            | VC_Loop_Invariant
-            | VC_Loop_Invariant_Init
-            | VC_Loop_Invariant_Preserv
-            | VC_Loop_Variant
-            | VC_Raise =>
-
+         =>
             return Functional_Contracts;
 
          when VC_Weaker_Pre
             | VC_Trivial_Weaker_Pre
             | VC_Stronger_Post
             | VC_Weaker_Classwide_Pre
-            | VC_Stronger_Classwide_Post =>
-
+            | VC_Stronger_Classwide_Post
+         =>
             return LSP;
       end case;
    end VC_Kind_To_Summary;
