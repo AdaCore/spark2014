@@ -908,6 +908,8 @@ postcondition of ``True`` is used implicitly on the subprogram declaration.
 precise refined contract (precondition and refined postcondition) of
 ``Add_To_Total`` when analyzing calls inside package ``Account``.
 
+.. _Package Contracts:
+
 Package Contracts
 =================
 
@@ -1346,6 +1348,8 @@ An external abstract state on which none of the four aspects ``Async_Writers``,
 assumed to have all four aspects set to ``True``. An external abstract state on
 which some of the four aspects are set to ``True`` is assumed to have the
 remaining ones set to ``False``. See SPARK RM 7.1.2 for details.
+
+.. _Type Contracts:
 
 Type Contracts
 ==============
