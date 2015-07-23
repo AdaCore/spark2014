@@ -21,12 +21,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package will produce PGFs from the CDG and DDG.
+--  This package will produce PDGs from the CDG, DDG and TDG.
 
 package Flow.Program_Dependence_Graph is
 
-   procedure Create
-     (FA : in out Flow_Analysis_Graphs);
-   --  Produce the program dependence graph.
+   procedure Create (FA : in out Flow_Analysis_Graphs);
+   --  Create the program dependence graph.
 
 end Flow.Program_Dependence_Graph;

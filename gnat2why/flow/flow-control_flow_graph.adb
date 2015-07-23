@@ -708,7 +708,7 @@ package body Flow.Control_Flow_Graph is
    --
    --  For entries (procedures, functions and entries in protected types)
    --  we also have the protected object as an implicit volatile input
-   --  and/or output).
+   --  and/or output.
    --
    --  Each of these vertices will also have call_vertex set in its
    --  attributes so that we can fiddle the CDG to look like this:
@@ -803,26 +803,25 @@ package body Flow.Control_Flow_Graph is
 
    procedure Process_Subprogram_Globals
      (Callsite : Node_Id;
-      In_List  : in out Vertex_Vectors.Vector;
-      Out_List : in out Vertex_Vectors.Vector;
+      Ins      : in out Vertex_Vectors.Vector;
+      Outs     : in out Vertex_Vectors.Vector;
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
       Ctx      : in out Context);
    --  This procedures creates the in and out vertices for a
    --  subprogram's globals. They are not connected to anything,
-   --  instead the vertices are added to the given in_list and
-   --  out_list.
+   --  instead the vertices are appended to Ins and Outs.
 
    procedure Process_Parameter_Associations
      (Callsite : Node_Id;
-      In_List  : in out Vertex_Vectors.Vector;
-      Out_List : in out Vertex_Vectors.Vector;
+      Ins      : in out Vertex_Vectors.Vector;
+      Outs     : in out Vertex_Vectors.Vector;
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
       Ctx      : in out Context);
    --  Similar to the above procedure, this deals with the actuals
    --  provided in a subprogram call. The vertices are created but not
-   --  linked up; as above they are added to in_list and out_list.
+   --  linked up; as above, they are appended to Ins and Outs.
 
    procedure Process_Statement_List
      (L   : List_Id;
@@ -3330,8 +3329,7 @@ package body Flow.Control_Flow_Graph is
       --  we return the node for => (N_Component_Association).
 
       function Get_Declarations return List_Id;
-      --  Returns the List_Id that corresponds to the body's
-      --  declarations.
+      --  Returns the List_Id that corresponds to the body's declarations.
 
       Package_Spec : constant Entity_Id :=
         (case Nkind (N) is
@@ -3524,7 +3522,7 @@ package body Flow.Control_Flow_Graph is
       --  A dummy procedure called when pragma Inspection_Point is
       --  processed. This is just to help debugging Why generation. If a
       --  pragma Inspection_Point is added to a source program, then
-      --  breaking on tip will get you to that point in the program.
+      --  breaking on fip will get you to that point in the program.
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  Adds N to the appropriate entry references of the current
@@ -3767,8 +3765,8 @@ package body Flow.Control_Flow_Graph is
       Called_Thing   : constant Entity_Id := Get_Called_Entity (N);
       Called_Thing_F : constant Flow_Id   := Direct_Mapping_Id (Called_Thing);
 
-      In_List  : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
-      Out_List : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
+      Ins  : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
+      Outs : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
 
       V : Flow_Graphs.Vertex_Id;
       C : Flow_Graphs.Cluster_Id;
@@ -3789,10 +3787,10 @@ package body Flow.Control_Flow_Graph is
          V);
       FA.CFG.Set_Cluster (V, C);
 
-      --  Deal with the procedures parameters.
+      --  Deal with the subprogram's parameters.
       Process_Parameter_Associations (N,
-                                      In_List,
-                                      Out_List,
+                                      Ins,
+                                      Outs,
                                       FA, CM, Ctx);
 
       --  We process globals when:
@@ -3805,7 +3803,7 @@ package body Flow.Control_Flow_Graph is
                                                           FA.B_Scope))
       then
          Process_Subprogram_Globals (N,
-                                     In_List, Out_List,
+                                     Ins, Outs,
                                      FA, CM, Ctx);
       end if;
 
@@ -3833,7 +3831,7 @@ package body Flow.Control_Flow_Graph is
                   Loops                        => Ctx.Current_Loops,
                   E_Loc                        => N),
                V);
-            In_List.Append (V);
+            Ins.Append (V);
 
             --  Writing
             Add_Vertex
@@ -3847,7 +3845,7 @@ package body Flow.Control_Flow_Graph is
                   Loops                        => Ctx.Current_Loops,
                   E_Loc                        => N),
                V);
-            Out_List.Append (V);
+            Outs.Append (V);
          end;
       end if;
 
@@ -3887,10 +3885,10 @@ package body Flow.Control_Flow_Graph is
                      Loops                        => Ctx.Current_Loops,
                      E_Loc                        => N),
                   V);
-               Out_List.Append (V);
+               Outs.Append (V);
             end if;
          end;
-      elsif Out_List.Is_Empty then
+      elsif Outs.Is_Empty then
          --  Check if there are no exports
          declare
             V : Flow_Graphs.Vertex_Id;
@@ -3906,7 +3904,7 @@ package body Flow.Control_Flow_Graph is
                   Loops                        => Ctx.Current_Loops,
                   E_Loc                        => N),
                V);
-            Out_List.Append (V);
+            Outs.Append (V);
          end;
       end if;
 
@@ -3914,7 +3912,7 @@ package body Flow.Control_Flow_Graph is
       declare
          use Vertex_Vectors;
          Combined_List : constant Vertex_Vectors.Vector :=
-           Vertex_Vectors.To_Vector (V, 1) & In_List & Out_List;
+           Vertex_Vectors.To_Vector (V, 1) & Ins & Outs;
          Prev          : Flow_Graphs.Vertex_Id;
       begin
          Prev := Flow_Graphs.Null_Vertex;
@@ -4261,8 +4259,8 @@ package body Flow.Control_Flow_Graph is
 
    procedure Process_Subprogram_Globals
      (Callsite : Node_Id;
-      In_List  : in out Vertex_Vectors.Vector;
-      Out_List : in out Vertex_Vectors.Vector;
+      Ins      : in out Vertex_Vectors.Vector;
+      Outs     : in out Vertex_Vectors.Vector;
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
       Ctx      : in out Context)
@@ -4295,7 +4293,7 @@ package body Flow.Control_Flow_Graph is
                         Loops                        => Ctx.Current_Loops,
                         E_Loc                        => Callsite),
                      V);
-         In_List.Append (V);
+         Ins.Append (V);
       end loop;
 
       for W of Writes loop
@@ -4310,7 +4308,7 @@ package body Flow.Control_Flow_Graph is
                   Loops                        => Ctx.Current_Loops,
                   E_Loc                        => Callsite),
                V);
-            In_List.Append (V);
+            Ins.Append (V);
          end if;
          Add_Vertex (FA,
                      Make_Global_Attributes
@@ -4321,7 +4319,7 @@ package body Flow.Control_Flow_Graph is
                         Loops                        => Ctx.Current_Loops,
                         E_Loc                        => Callsite),
                      V);
-         Out_List.Append (V);
+         Outs.Append (V);
       end loop;
 
    end Process_Subprogram_Globals;
@@ -4332,8 +4330,8 @@ package body Flow.Control_Flow_Graph is
 
    procedure Process_Parameter_Associations
      (Callsite : Node_Id;
-      In_List  : in out Vertex_Vectors.Vector;
-      Out_List : in out Vertex_Vectors.Vector;
+      Ins      : in out Vertex_Vectors.Vector;
+      Outs     : in out Vertex_Vectors.Vector;
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
       Ctx      : in out Context)
@@ -4383,7 +4381,7 @@ package body Flow.Control_Flow_Graph is
                E_Loc                        => P),
             V);
          Ctx.Folded_Function_Checks (Callsite).Insert (Actual);
-         In_List.Append (V);
+         Ins.Append (V);
 
          --  Build an out vertex.
          if Ekind (Formal) in  E_In_Out_Parameter | E_Out_Parameter then
@@ -4400,10 +4398,10 @@ package body Flow.Control_Flow_Graph is
                   Loops                        => Ctx.Current_Loops,
                   E_Loc                        => P),
                V);
-            Out_List.Append (V);
+            Outs.Append (V);
          end if;
          --  Go to the next statement
-         P    := Next (P);
+         P := Next (P);
       end loop;
    end Process_Parameter_Associations;
 
@@ -4777,6 +4775,8 @@ package body Flow.Control_Flow_Graph is
             TV := Flow_Graphs.Continue;
          end if;
       end Mark_Reachable;
+
+   --  Start of processing for Mark_Exceptional_Paths
 
    begin
       --  (1) Detect all non-dead-code vertices and place them in set

@@ -233,7 +233,7 @@ package body Flow.Interprocedural is
 
                   when E_Out_Parameter =>
                      if Contains_Discriminants (The_In, FA.B_Scope)
-                       or Has_Bounds (The_In, FA.B_Scope)
+                       or else Has_Bounds (The_In, FA.B_Scope)
                      then
                         --  Discriminated out parameters or out parameters
                         --  for which we need to keep track of the bounds

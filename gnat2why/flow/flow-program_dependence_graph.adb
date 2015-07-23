@@ -24,8 +24,7 @@
 package body Flow.Program_Dependence_Graph is
 
    procedure Create
-     (FA : in out Flow_Analysis_Graphs)
-   is
+     (FA : in out Flow_Analysis_Graphs) is
    begin
       --  Initialize the PDG with a copy of the vertices of the CFG,
       --  but not the edges
