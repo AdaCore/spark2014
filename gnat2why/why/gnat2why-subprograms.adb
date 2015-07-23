@@ -127,10 +127,11 @@ package body Gnat2Why.Subprograms is
    --  function.
 
    function Compute_Dynamic_Property_For_Inputs
-     (W           : Why_Node_Id;
-      Params      : Transformation_Params;
-      Scope       : Entity_Id;
-      Initialized : Boolean := False) return W_Prog_Id
+     (W              : Why_Node_Id;
+      Params         : Transformation_Params;
+      Scope          : Entity_Id;
+      Pred_Fun_Param : Entity_Id := Empty;
+      Initialized    : Boolean := False) return W_Prog_Id
    with
        Pre => Ekind (Scope) in E_Procedure | E_Function | E_Package;
    --  Given a Why node, collects the set of external dynamic objects
@@ -278,10 +279,11 @@ package body Gnat2Why.Subprograms is
    -----------------------------------------
 
    function Compute_Dynamic_Property_For_Inputs
-     (W           : Why_Node_Id;
-      Params      : Transformation_Params;
-      Scope       : Entity_Id;
-      Initialized : Boolean := False) return W_Prog_Id
+     (W              : Why_Node_Id;
+      Params         : Transformation_Params;
+      Scope          : Entity_Id;
+      Pred_Fun_Param : Entity_Id := Empty;
+      Initialized    : Boolean := False) return W_Prog_Id
    is
       Max_Assocs : constant Natural := 100;
       --  if the defining expression of a constant contains more than
@@ -318,6 +320,7 @@ package body Gnat2Why.Subprograms is
 
       Includes            : Node_Sets.Set := Compute_Ada_Node_Set (W);
       Dynamic_Prop_Inputs : W_Prog_Id := New_Void;
+
    begin
       --  Collect global variables read in scope if it is a subprogam
 
@@ -336,6 +339,8 @@ package body Gnat2Why.Subprograms is
          Already_Included : Node_Sets.Set := Node_Sets.Empty_Set;
          Prop_For_Include : W_Prog_Id;
          L_Id             : W_Expr_Id;
+         Top_Predicate    : Boolean;
+
       begin
          while not Node_Sets.Is_Empty (Includes) loop
             Prop_For_Include := New_Void;
@@ -351,8 +356,18 @@ package body Gnat2Why.Subprograms is
                then
                   null;
                else
+                  --  If Obj is the parameter of a predicate function, do not
+                  --  assume the toplevel predicate for checking absence of RTE
+                  --  in the predicate function itself.
 
-                  --  Assume dynamic property
+                  Top_Predicate := Obj /= Pred_Fun_Param;
+
+                  --  Assume the dynamic property of Obj. Inline the property
+                  --  instead of calling the corresponding predicate (so
+                  --  Use_Pred is False in the calls below), so that variables
+                  --  that appear in the property get picked later in the
+                  --  Includes set, and their dynamic property is included
+                  --  as well.
 
                   if Is_Object (Obj) and then Is_Mutable_In_Why (Obj) then
                      L_Id := Transform_Identifier (Params   => Params,
@@ -362,20 +377,24 @@ package body Gnat2Why.Subprograms is
                      Prop_For_Include := Sequence
                        (Prop_For_Include,
                         Assume_Dynamic_Property
-                          (Expr        => L_Id,
-                           Ty          => Etype (Obj),
-                           Only_Var    => False,
-                           Initialized => Is_Initialized (Obj)));
+                          (Expr          => L_Id,
+                           Ty            => Etype (Obj),
+                           Initialized   => Is_Initialized (Obj),
+                           Only_Var      => False,
+                           Top_Predicate => Top_Predicate,
+                           Use_Pred      => False));
                   else
                      L_Id := +To_Why_Id (E => Obj,
                                          Typ => Why_Type_Of_Entity (Obj));
                      Prop_For_Include := Sequence
                        (Prop_For_Include,
                         Assume_Dynamic_Property
-                          (Expr        => L_Id,
-                           Ty          => Etype (Obj),
-                           Only_Var    => False,
-                           Initialized => True));
+                          (Expr          => L_Id,
+                           Ty            => Etype (Obj),
+                           Initialized   => True,
+                           Only_Var      => False,
+                           Top_Predicate => Top_Predicate,
+                           Use_Pred      => False));
                   end if;
 
                   --  Assume value if constant
@@ -443,6 +462,7 @@ package body Gnat2Why.Subprograms is
                   end if;
                end if;
             end loop;
+
             Dynamic_Prop_Inputs := Sequence
               (Prop_For_Include, Dynamic_Prop_Inputs);
             Node_Sets.Union (Already_Included, Includes);
@@ -450,6 +470,7 @@ package body Gnat2Why.Subprograms is
             Node_Sets.Difference (Includes, Already_Included);
          end loop;
       end;
+
       return Dynamic_Prop_Inputs;
    end Compute_Dynamic_Property_For_Inputs;
 
@@ -470,14 +491,11 @@ package body Gnat2Why.Subprograms is
                Binder   : constant Binder_Type := Func_Why_Binders (I);
                Dyn_Prop : constant W_Pred_Id :=
                  Compute_Dynamic_Property
-                   (Expr        => Transform_Identifier
-                      (Params   => Params,
-                       Expr     => Binder.Ada_Node,
-                       Ent      => Binder.Ada_Node,
-                       Domain   => EW_Term),
-                    Ty          => Etype (Binder.Ada_Node),
-                    Only_Var    => True_Term,
-                    Initialized => True_Term);
+                   (Expr => Transform_Identifier (Params => Params,
+                                                  Expr   => Binder.Ada_Node,
+                                                  Ent    => Binder.Ada_Node,
+                                                  Domain => EW_Term),
+                    Ty   => Etype (Binder.Ada_Node));
             begin
                Dynamic_Prop_Effects := +New_And_Expr
                  (Left   => +Dynamic_Prop_Effects,
@@ -511,26 +529,22 @@ package body Gnat2Why.Subprograms is
                   declare
                      Dyn_Prop : constant W_Pred_Id :=
                        Compute_Dynamic_Property
-                         (Expr        => Transform_Identifier
-                            (Params   => Params,
-                             Expr     => Entity,
-                             Ent      => Entity,
-                             Domain   => EW_Term),
-                          Ty          => Etype (Entity),
-                          Only_Var    => True_Term,
-                          Initialized => True_Term);
+                         (Expr => Transform_Identifier (Params   => Params,
+                                                        Expr     => Entity,
+                                                        Ent      => Entity,
+                                                        Domain   => EW_Term),
+                          Ty   => Etype (Entity));
                   begin
                      Dynamic_Prop_Effects := +New_And_Expr
                        (Left   => +Dynamic_Prop_Effects,
                         Right  => +Dyn_Prop,
                         Domain => EW_Pred);
                   end;
-
                end if;
-
             end;
          end loop;
       end;
+
       return Dynamic_Prop_Effects;
    end Compute_Dynamic_Property_For_Effects;
 
@@ -722,12 +736,10 @@ package body Gnat2Why.Subprograms is
                  Reconstruct_Item (B, True);
                Dyn_Prop : constant W_Pred_Id :=
                  (if Present (Ada_Node) then
-                       Compute_Dynamic_Property
-                    (Expr        => Expr,
-                     Ty          => Etype (Ada_Node),
-                     Only_Var    => True_Term,
-                     Initialized => True_Term)
-                  else True_Pred);
+                    Compute_Dynamic_Property (Expr => Expr,
+                                              Ty   => Etype (Ada_Node))
+                  else
+                    True_Pred);
             begin
                if No (Ada_Node) then
                   declare
@@ -1564,8 +1576,8 @@ package body Gnat2Why.Subprograms is
       Call_Effects := Sequence
         (Call_Effects,
          New_Assume_Statement
-           (Ada_Node    => E,
-            Pred        => Compute_Dynamic_Property_For_Effects (E, Params)));
+           (Ada_Node => E,
+            Pred     => Compute_Dynamic_Property_For_Effects (E, Params)));
 
       --  If E has a class-wide precondition, check that it cannot raise a
       --  run-time error in an empty context.
@@ -2163,18 +2175,29 @@ package body Gnat2Why.Subprograms is
       --  for which we should not assume that the predicate holds for checking
       --  the absence of RTE in the predicate itself.
 
-      if not Is_Predicate_Function (E) then
+      declare
+         Pred_Fun_Param : constant Entity_Id :=
+           (if Is_Predicate_Function (E) then
+              Defining_Entity (First (Parameter_Specifications
+                (Subprogram_Specification (E))))
+            else
+              Empty);
+         Assume_For_Input : constant W_Prog_Id :=
+           Compute_Dynamic_Property_For_Inputs
+             (W      => +Prog,
+              Params => Params,
+              Scope  => E,
+              Pred_Fun_Param => Pred_Fun_Param);
+      begin
          Prog := Sequence
            ((1 => New_Comment
              (Comment => NID ("Assume dynamic property of params of the"
               & " subprogram"
               & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
                 else ""))),
-             2 => Compute_Dynamic_Property_For_Inputs (W      => +Prog,
-                                                       Params => Params,
-                                                       Scope  => E),
+             2 => Assume_For_Input,
              3 => Prog));
-      end if;
+      end;
 
       --  We always need to add the int theory as
       --  Compute_Contract_Cases_Entry_Checks may make use of the
@@ -2345,11 +2368,10 @@ package body Gnat2Why.Subprograms is
          Guard   : constant W_Pred_Id :=
            Compute_Guard_Formula (Logic_Func_Binders);
          --  Dynamic property of the result.
-         Dynamic_Prop_Result : constant W_Pred_Id := Compute_Dynamic_Property
-           (Expr        => +New_Result_Ident (Why_Type),
-            Ty          => Etype (E),
-            Only_Var    => False_Term,
-            Initialized => True_Term);
+         Dynamic_Prop_Result : constant W_Pred_Id :=
+           Compute_Dynamic_Property (Expr     => +New_Result_Ident (Why_Type),
+                                     Ty       => Etype (E),
+                                     Only_Var => False_Term);
 
          procedure Emit_Post_Axiom
            (Suffix : String;
@@ -2573,10 +2595,10 @@ package body Gnat2Why.Subprograms is
                 (E, Domain => EW_Term, Local => False, Selector => Refine);
             Dynamic_Prop_Result : constant W_Pred_Id :=
               +Compute_Dynamic_Property
-              (Expr        => +New_Result_Ident (Why_Type),
-               Ty          => Etype (E),
-               Only_Var    => False_Term,
-               Initialized => True_Term);
+                 (Expr     => +New_Result_Ident (Why_Type),
+                  Ty       => Etype (E),
+                  Only_Var => False_Term);
+
             Volatile_State  : constant W_Identifier_Id :=
               New_Identifier
                 (Domain => EW_Term,

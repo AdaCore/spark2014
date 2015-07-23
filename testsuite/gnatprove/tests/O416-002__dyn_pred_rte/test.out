@@ -1,0 +1,9 @@
+pred.adb:1:11: warning: subprogram "Pred" has no effect
+pred.adb:5:54: info: division check proved
+pred.adb:8:09: info: range check proved
+pred.adb:10:08: info: precondition proved
+pred.adb:14:33: info: precondition proved
+pred.adb:27:08: info: precondition proved
+pred.adb:29:22: info: discriminant check proved
+pred.adb:30:22: info: discriminant check proved
+pred.adb:31:27: info: discriminant check proved

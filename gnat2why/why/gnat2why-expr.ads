@@ -50,10 +50,12 @@ package Gnat2Why.Expr is
    --  Generate an assignment from an object declaration
 
    function Assume_Dynamic_Property
-     (Expr        : W_Expr_Id;
-      Ty          : Entity_Id;
-      Only_Var    : Boolean;
-      Initialized : Boolean) return W_Prog_Id;
+     (Expr          : W_Expr_Id;
+      Ty            : Entity_Id;
+      Only_Var      : Boolean := True;
+      Initialized   : Boolean := True;
+      Top_Predicate : Boolean := True;
+      Use_Pred      : Boolean := True) return W_Prog_Id;
    --  Generate an assumption that N is a value of its type.
    --  If Only_Var is true, then don't assume properties of constant parts
    --  of the object, such as the bounds of an array.
@@ -109,16 +111,18 @@ package Gnat2Why.Expr is
    --     over [Expr].
 
    function Compute_Dynamic_Property
-     (Expr        : W_Expr_Id;
-      Ty          : Entity_Id;
-      Only_Var    : W_Term_Id;
-      Initialized : W_Term_Id;
-      Params      : Transformation_Params := Body_Params;
-      Use_Pred    : Boolean := True) return W_Pred_Id;
+     (Expr          : W_Expr_Id;
+      Ty            : Entity_Id;
+      Initialized   : W_Term_Id := True_Term;
+      Only_Var      : W_Term_Id := True_Term;
+      Top_Predicate : W_Term_Id := True_Term;
+      Params        : Transformation_Params := Body_Params;
+      Use_Pred      : Boolean := True) return W_Pred_Id;
    --  @param Expr Expression for which we want the dynamic property
    --  @param Ty The type of the expression Expr
    --  @param Only_Var Only assume property over variable parts of Expr
    --  @param Initialized Assume that Expr is initialized
+   --  @param Skip_Predicate whether the type predicate is considered
    --  @param Params Transformation parameters
    --  @param Use_Pred Use the precomputed predicate for Ty's dynamic property
    --  @result The dynamic property of type Ty over Expr.
@@ -303,6 +307,12 @@ package Gnat2Why.Expr is
       Variables : in out Flow_Id_Sets.Set);
    --  @param Ty a type
    --  @param Variables used in the expression for Ty's default initialization
+
+   procedure Variables_In_Dynamic_Predicate
+     (Ty        : Entity_Id;
+      Variables : in out Flow_Id_Sets.Set);
+   --  @param Ty a type with a predicate
+   --  @param Variables used in the expression for Ty's predicate
 
    procedure Variables_In_Dynamic_Property
      (Ty        : Entity_Id;

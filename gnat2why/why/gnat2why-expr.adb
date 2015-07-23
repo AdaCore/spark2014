@@ -856,6 +856,7 @@ package body Gnat2Why.Expr is
                raise Program_Error;
             end case;
          end;
+
       elsif not Is_Partial_View (Defining_Identifier (N)) then
 
          --  Only assume default initialization if we are in a fullview.
@@ -919,17 +920,26 @@ package body Gnat2Why.Expr is
    -----------------------------
 
    function Assume_Dynamic_Property
-     (Expr        : W_Expr_Id;
-      Ty          : Entity_Id;
-      Only_Var    : Boolean;
-      Initialized : Boolean) return W_Prog_Id
+     (Expr          : W_Expr_Id;
+      Ty            : Entity_Id;
+      Only_Var      : Boolean := True;
+      Initialized   : Boolean := True;
+      Top_Predicate : Boolean := True;
+      Use_Pred      : Boolean := True) return W_Prog_Id
    is
-      Init  : constant W_Term_Id :=
+      Init     : constant W_Term_Id :=
         (if Initialized then True_Term else False_Term);
-      O_Var : constant W_Term_Id :=
+      O_Var    : constant W_Term_Id :=
         (if Only_Var then True_Term else False_Term);
-      T     : constant W_Pred_Id :=
-        Compute_Dynamic_Property (Expr, Ty, O_Var, Init);
+      Top_Pred : constant W_Term_Id :=
+        (if Top_Predicate then True_Term else False_Term);
+      T        : constant W_Pred_Id :=
+        Compute_Dynamic_Property (Expr          => Expr,
+                                  Ty            => Ty,
+                                  Initialized   => Init,
+                                  Only_Var      => O_Var,
+                                  Top_Predicate => Top_Pred,
+                                  Use_Pred      => Use_Pred);
    begin
       if T /= True_Pred then
          return New_Assume_Statement (Ada_Node => Ty,
@@ -1935,25 +1945,13 @@ package body Gnat2Why.Expr is
                      --  We need entities of discrimiants for bounds of
                      --  component types...
 
-                     Ada_Ent_To_Why.Insert
-                       (Symbol_Table, Field,
-                        (Regular, Main =>
-                             (Ada_Node => Field,
-                              B_Name   => Tmps (I),
-                              B_Ent    => Null_Entity_Name,
-                              Mutable  => False)));
+                     Insert_Entity (Field, Tmps (I));
 
                      --  and entities of discrimiants of the base type for
                      --  bounds of defaults...
 
                      if not Is_Base_Type (Ty_Ext) then
-                        Ada_Ent_To_Why.Insert
-                          (Symbol_Table, Base_Field,
-                           (Regular, Main =>
-                                (Ada_Node => Base_Field,
-                                 B_Name   => Tmps (I),
-                                 B_Ent    => Null_Entity_Name,
-                                 Mutable  => False)));
+                        Insert_Entity (Base_Field, Tmps (I));
                      end if;
                   end;
 
@@ -2486,25 +2484,13 @@ package body Gnat2Why.Expr is
                      --  We need entities of discrimiants for bounds of
                      --  component types...
 
-                     Ada_Ent_To_Why.Insert
-                       (Symbol_Table, Field,
-                        (Regular, Main =>
-                             (Ada_Node => Field,
-                              B_Name   => Tmps (I),
-                              B_Ent    => Null_Entity_Name,
-                              Mutable  => False)));
+                     Insert_Entity (Field, Tmps (I));
 
                      --  and entities of discrimiants of the base type for
                      --  bounds of defaults
 
                      if not Is_Base_Type (Ty_Ext) then
-                        Ada_Ent_To_Why.Insert
-                          (Symbol_Table, Base_Field,
-                           (Regular, Main =>
-                                (Ada_Node => Base_Field,
-                                 B_Name   => Tmps (I),
-                                 B_Ent    => Null_Entity_Name,
-                                 Mutable  => False)));
+                        Insert_Entity (Base_Field, Tmps (I));
                      end if;
                   end;
 
@@ -2639,64 +2625,54 @@ package body Gnat2Why.Expr is
         or else Has_Inherited_Default_Init_Cond (Ty)
       then
          declare
-            Default_Init_Subp : constant Entity_Id :=
+            Init_Subp : constant Entity_Id :=
               Default_Init_Cond_Procedure (Ty);
-            Default_Init_Expr : constant Node_Id :=
-              Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
-            Binders           : constant Item_Array :=
-              Compute_Subprogram_Parameters (Default_Init_Subp, EW_Prog);
-            --  Binder for the reference to the type in the default property.
+            Init_Expr : constant Node_Id :=
+              Get_Expr_From_Check_Only_Proc (Init_Subp);
+            Init_Param : constant Entity_Id :=
+              Defining_Entity (First (Parameter_Specifications
+                (Subprogram_Specification (Init_Subp))));
+            Init_Id    : constant W_Identifier_Id :=
+              New_Temp_Identifier (Init_Param, Get_Type (Tmp));
+            T          : W_Pred_Id;
+
          begin
-            pragma Assert (Binders'Length = 1);
-
-            if Present (Default_Init_Expr) then
-
-               --  Add the binder for the reference to the type to the
-               --  Symbol_Table.
-
+            if Present (Init_Expr) then
                Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-               declare
-                  Binder : constant Item_Type :=
-                    Binders (Binders'First);
-                  A      : constant Node_Id :=
-                    (case Binder.Kind is
-                        when Regular => Binder.Main.Ada_Node,
-                        when others  => raise Program_Error);
-               begin
-                  pragma Assert (Present (A));
+               --  Register the temporary identifier Init_Id for parameter
+               --  Init_Param in the symbol table. This ensures both that a
+               --  distinct name is used each time (preventing name capture),
+               --  and that the type of Tmp is used as the type used to
+               --  represent Init_Param (avoiding type conversion).
 
-                  if Present (A) then
-                     Ada_Ent_To_Why.Insert (Symbol_Table,
-                                            Unique_Entity (A),
-                                            Binder);
-                  end if;
+               Insert_Entity (Init_Param, Init_Id);
 
-                  declare
-                     W_Def_Init_Expr : constant W_Expr_Id :=
-                       Transform_Expr
-                         (Expr          => Default_Init_Expr,
-                          Domain        => EW_Pred,
-                          Params        => Params);
-                  begin
-                     Assumption := New_And_Then_Expr
-                       (Left   => Assumption,
-                        Right  => New_Conditional
-                          (Domain      => EW_Pred,
-                           Condition   => +Skip_Last_Cond,
-                           Then_Part   => +True_Pred,
-                           Else_Part   => New_Typed_Binding
-                             (Domain   => EW_Pred,
-                              Name     => Binder.Main.B_Name,
-                              Def      => Insert_Simple_Conversion
-                                (Domain   => EW_Term,
-                                 Expr     => Tmp,
-                                 To       => Get_Typ (Binder.Main.B_Name)),
-                              Context  => W_Def_Init_Expr),
-                           Typ         => EW_Bool_Type),
-                        Domain => EW_Pred);
-                  end;
-               end;
+               --  Transform the default init expression into Why3
+
+               T := +Transform_Expr (Expr   => Init_Expr,
+                                     Domain => EW_Pred,
+                                     Params => Params);
+
+               --  Relate the name Init_Id used in the default init expression
+               --  to the value Tmp for which the predicate is checked.
+
+               T := New_Binding (Name    => Init_Id,
+                                 Def     => Tmp,
+                                 Context => +T,
+                                 Typ     => Get_Type (+T));
+
+               --  Only take default init condition into account if
+               --  Skip_Last_Cond is False.
+
+               T := New_Conditional (Condition => +Skip_Last_Cond,
+                                     Then_Part => +True_Pred,
+                                     Else_Part => +T,
+                                     Typ       => EW_Bool_Type);
+
+               Assumption := New_And_Then_Expr (Left   => Assumption,
+                                                Right  => +T,
+                                                Domain => EW_Pred);
 
                Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
             end if;
@@ -2726,7 +2702,8 @@ package body Gnat2Why.Expr is
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
 
-      Ty_Ext : constant Entity_Id := Retysp (Ty);
+      Ty_Ext    : constant Entity_Id := Retysp (Ty);
+      Variables : Flow_Id_Sets.Set;
 
    begin
       if not Has_Predicates (Ty_Ext) then
@@ -2740,56 +2717,58 @@ package body Gnat2Why.Expr is
       elsif Use_Pred
         and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (Expr))
       then
-         return New_Call (Name => E_Symb (Ty, WNE_Dynamic_Predicate),
-                          Args => (1 => Expr),
-                          Typ  => EW_Bool_Type);
+         Variables_In_Dynamic_Property (Ty_Ext, Variables);
+
+         declare
+            Vars  : constant W_Expr_Array :=
+              Get_Args_From_Variables (To_Name_Set (Variables));
+            Num_B : constant Positive := 1 + Vars'Length;
+            Args  : W_Expr_Array (1 .. Num_B);
+
+         begin
+            Args (1)          := Expr;
+            Args (2 .. Num_B) := Vars;
+
+            return New_Call (Name => E_Symb (Ty, WNE_Dynamic_Predicate),
+                             Args => Args,
+                             Typ  => EW_Bool_Type);
+         end;
 
       else
          declare
-            Dynamic_Pred_Subp : constant Entity_Id := Predicate_Function (Ty);
-            Dynamic_Pred_Expr : constant Node_Id :=
-              Get_Expr_From_Return_Only_Func (Dynamic_Pred_Subp);
-            Binders           : constant Item_Array :=
-              Compute_Subprogram_Parameters (Dynamic_Pred_Subp, EW_Prog);
-            --  Binder for the reference to the type in the dynamic
-            --  predicate.
+            Pred_Subp  : constant Entity_Id := Predicate_Function (Ty);
+            Pred_Expr  : constant Node_Id :=
+              Get_Expr_From_Return_Only_Func (Pred_Subp);
+            Pred_Param : constant Entity_Id :=
+              Defining_Entity (First (Parameter_Specifications
+                (Subprogram_Specification (Pred_Subp))));
+            Pred_Id    : constant W_Identifier_Id :=
+              New_Temp_Identifier (Pred_Param, Get_Type (Expr));
+
          begin
-            pragma Assert (Binders'Length = 1);
-            pragma Assert (Present (Dynamic_Pred_Expr));
-
-            --  Add the binder for the reference to the type to the
-            --  Symbol_Table.
-
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-            declare
-               Binder : constant Item_Type := Binders (Binders'First);
-               A      : constant Node_Id :=
-                 (case Binder.Kind is
-                     when Regular => Binder.Main.Ada_Node,
-                     when others  => raise Program_Error);
-            begin
-               pragma Assert (Present (A));
+            --  Register the temporary identifier Pred_Id for parameter
+            --  Pred_Param in the symbol table. This ensures both that a
+            --  distinct name is used each time (preventing name capture), and
+            --  that the type of Expr is used as the type used to represent
+            --  Pred_Param (avoiding type conversion).
 
-               Ada_Ent_To_Why.Insert (Symbol_Table,
-                                      Unique_Entity (A),
-                                      Binder);
-               T :=
-                 +Transform_Expr
-                   (Expr   => Dynamic_Pred_Expr,
-                    Domain => EW_Pred,
-                    Params => Params);
+            Insert_Entity (Pred_Param, Pred_Id);
 
-               T :=
-                 New_Binding (Name     => Binder.Main.B_Name,
-                              Def      =>
-                                Insert_Simple_Conversion
-                                  (Domain => EW_Term,
-                                   Expr   => Expr,
-                                   To     => Get_Why_Type_From_Item (Binder)),
-                              Context  => +T,
-                              Typ      => Get_Type (+T));
-            end;
+            --  Transform the predicate expression into Why3
+
+            T := +Transform_Expr (Expr   => Pred_Expr,
+                                  Domain => EW_Pred,
+                                  Params => Params);
+
+            --  Relate the name Pred_Id used in the predicate expression to the
+            --  value Expr for which the predicate is checked.
+
+            T := New_Binding (Name    => Pred_Id,
+                              Def     => Expr,
+                              Context => +T,
+                              Typ     => Get_Type (+T));
 
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end;
@@ -2803,13 +2782,13 @@ package body Gnat2Why.Expr is
    ------------------------------
 
    function Compute_Dynamic_Property
-     (Expr        : W_Expr_Id;
-      Ty          : Entity_Id;
-      Only_Var    : W_Term_Id;
-      Initialized : W_Term_Id;
-      Params      : Transformation_Params := Body_Params;
-      Use_Pred    : Boolean := True)
-      return W_Pred_Id
+     (Expr          : W_Expr_Id;
+      Ty            : Entity_Id;
+      Initialized   : W_Term_Id := True_Term;
+      Only_Var      : W_Term_Id := True_Term;
+      Top_Predicate : W_Term_Id := True_Term;
+      Params        : Transformation_Params := Body_Params;
+      Use_Pred      : Boolean := True) return W_Pred_Id
    is
       T : W_Pred_Id;
 
@@ -2839,24 +2818,22 @@ package body Gnat2Why.Expr is
          declare
             Vars  : constant W_Expr_Array :=
               Get_Args_From_Variables (To_Name_Set (Variables));
-            Num_B : constant Positive := 3 + Vars'Length;
+            Num_B : constant Positive := 4 + Vars'Length;
             Args  : W_Expr_Array (1 .. Num_B);
-            Result : W_Pred_Id;
-         begin
 
+         begin
             Args (1) := Expr;
             Args (2) := +Initialized;
             Args (3) := +Only_Var;
-            Args (4 .. Num_B) := Vars;
+            Args (4) := +Top_Predicate;
+            Args (5 .. Num_B) := Vars;
 
-            Result := New_Call (Name => New_Identifier
-                                (Name   => "dynamic_invariant",
-                                 Module => E_Axiom_Module (Ty_Ext),
-                                 Typ    => EW_Bool_Type),
-                                Args => Args,
-                                Typ  => EW_Bool_Type);
-
-            return Result;
+            return New_Call (Name => New_Identifier
+                             (Name   => "dynamic_invariant",
+                              Module => E_Axiom_Module (Ty_Ext),
+                              Typ    => EW_Bool_Type),
+                             Args => Args,
+                             Typ  => EW_Bool_Type);
          end;
       end if;
 
@@ -3009,21 +2986,25 @@ package body Gnat2Why.Expr is
       end if;
 
       --  Add possible dynamic predicate. This is only valid for initialized
-      --  data.
+      --  data, when the top predicate should be included.
 
       declare
          Typ_Pred : constant W_Pred_Id :=
            Compute_Dynamic_Predicate
              (Expr, Ty_Ext, Params, Use_Pred => False);
+         Check_Pred : constant W_Pred_Id :=
+           New_Conditional
+             (Condition => +Top_Predicate,
+              Then_Part => New_Conditional (Domain    => EW_Pred,
+                                            Condition => +Initialized,
+                                            Then_Part => +Typ_Pred,
+                                            Typ       => EW_Bool_Type),
+              Typ       => EW_Bool_Type);
+
       begin
          if Typ_Pred /= True_Pred then
             T := +New_And_Then_Expr (Left   => +T,
-                                     Right  =>
-                                       New_Conditional
-                                         (Domain    => EW_Pred,
-                                          Condition => +Initialized,
-                                          Then_Part => +Typ_Pred,
-                                          Typ       => EW_Bool_Type),
+                                     Right  => +Check_Pred,
                                      Domain => EW_Pred);
          end if;
       end;
@@ -3083,11 +3064,23 @@ package body Gnat2Why.Expr is
 
             pragma Assert (I = Indices'Last + 1);
 
+            --  Recursively call Compute_Dynamic_Property on the array
+            --  components. Additional parameters are unchanged expect for
+            --  Only_Var set to false (as a constant subcomponent of a variable
+            --  toplevel object needs to be considered as variable too) and
+            --  Top_Predicate set to true (as the decision to include or not
+            --  the top predicate does not apply to subcomponents).
+
             T_Comp :=
               +Compute_Dynamic_Property
-                (New_Array_Access (Empty, Expr, Indices, EW_Term),
-                 Component_Type (Ty_Ext), False_Term, Initialized, Params,
-                 Use_Pred);
+                 (Expr          =>
+                    New_Array_Access (Empty, Expr, Indices, EW_Term),
+                  Ty            => Component_Type (Ty_Ext),
+                  Initialized   => Initialized,
+                  Only_Var      => False_Term,
+                  Top_Predicate => True_Term,
+                  Params        => Params,
+                  Use_Pred      => Use_Pred);
 
             --  If elements of an array have default discriminants and are not
             --  constrained then 'Constrained returns false on them.
@@ -3181,18 +3174,26 @@ package body Gnat2Why.Expr is
                      Tmps (I) := New_Temp_Identifier
                        (Field, EW_Abstract (Etype (Field)));
                      Binds (I) := R_Acc;
-                     Ada_Ent_To_Why.Insert (Symbol_Table, Field,
-                                            (Regular, Main =>
-                                               (Ada_Node => Field,
-                                                B_Name   => Tmps (I),
-                                                B_Ent    => Null_Entity_Name,
-                                                Mutable   => False)));
+                     Insert_Entity (Field, Tmps (I));
                   end if;
+
+                  --  Recursively call Compute_Dynamic_Property on the record
+                  --  components. Additional parameters are unchanged expect
+                  --  for Only_Var set to false (as a constant subcomponent
+                  --  of a variable toplevel object needs to be considered
+                  --  as variable too) and Top_Predicate set to true (as the
+                  --  decision to include or not the top predicate does not
+                  --  apply to subcomponents).
 
                   T_Comp :=
                     Compute_Dynamic_Property
-                      (R_Acc, Etype (Field), False_Term, Initialized, Params,
-                       Use_Pred);
+                      (Expr          => R_Acc,
+                       Ty            => Etype (Field),
+                       Initialized   => Initialized,
+                       Only_Var      => False_Term,
+                       Top_Predicate => True_Term,
+                       Params        => Params,
+                       Use_Pred      => Use_Pred);
 
                   --  If fields of a record have default discriminants and are
                   --  not constrained then 'Constrained returns false on them.
@@ -8672,14 +8673,14 @@ package body Gnat2Why.Expr is
                   R := Sequence
                     (R,
                      Assume_Dynamic_Property
-                       (Expr        => Transform_Identifier
-                            (Expr   => Lvalue,
-                             Ent    => Lvalue,
-                             Domain => EW_Term,
-                             Params => Body_Params),
+                       (Expr        =>
+                          Transform_Identifier (Expr   => Lvalue,
+                                                Ent    => Lvalue,
+                                                Domain => EW_Term,
+                                                Params => Body_Params),
                         Ty          => Etype (Lvalue),
-                        Only_Var    => False,
-                        Initialized => False));
+                        Initialized => Present (Expression (Decl)),
+                        Only_Var    => False));
                end;
             end if;
 
@@ -10148,12 +10149,9 @@ package body Gnat2Why.Expr is
 
                      declare
                         Dyn_Prop : constant W_Pred_Id :=
-                          Compute_Dynamic_Property
-                            (Expr        => T,
-                             Ty          => E.Typ,
-                             Only_Var    => True_Term,
-                             Initialized => True_Term,
-                             Params      => Params);
+                          Compute_Dynamic_Property (Expr   => T,
+                                                    Ty     => E.Typ,
+                                                    Params => Params);
                      begin
                         if Dyn_Prop /= True_Pred then
                            T := +Sequence
@@ -10236,12 +10234,9 @@ package body Gnat2Why.Expr is
                          Right    => +T,
                          Typ      => Get_Type (T));
             Dyn_Prop : constant W_Pred_Id :=
-              Compute_Dynamic_Property
-                (Expr        => +Deref,
-                 Ty          => Etype (Ent),
-                 Only_Var    => True_Term,
-                 Initialized => True_Term,
-                 Params      => Params);
+              Compute_Dynamic_Property (Expr   => +Deref,
+                                        Ty     => Etype (Ent),
+                                        Params => Params);
             Havoc    : W_Prog_Id := New_Havoc_Call (+T);
          begin
             if Dyn_Prop /= True_Pred then
@@ -12780,6 +12775,32 @@ package body Gnat2Why.Expr is
       end if;
    end Variables_In_Default_Init;
 
+   ------------------------------------
+   -- Variables_In_Dynamic_Predicate --
+   ------------------------------------
+
+   procedure Variables_In_Dynamic_Predicate
+     (Ty        : Entity_Id;
+      Variables : in out Flow_Id_Sets.Set)
+   is
+      Ty_Ext : constant Entity_Id := Retysp (Ty);
+      Scope  : constant Flow_Scope := Get_Flow_Scope (Ty_Ext);
+
+      Dynamic_Pred_Subp : constant Entity_Id := Predicate_Function (Ty_Ext);
+      Dynamic_Pred_Expr : constant Node_Id :=
+        Get_Expr_From_Return_Only_Func (Dynamic_Pred_Subp);
+
+   begin
+      Variables.Union
+        (Get_Variable_Set
+           (N                    => Dynamic_Pred_Expr,
+            Scope                => Scope,
+            Local_Constants      => Node_Sets.Empty_Set,
+            Fold_Functions       => False,
+            Use_Computed_Globals => True,
+            Reduced              => True));
+   end Variables_In_Dynamic_Predicate;
+
    -----------------------------------
    -- Variables_In_Dynamic_Property --
    -----------------------------------
@@ -12913,6 +12934,12 @@ package body Gnat2Why.Expr is
                Next_Discriminant (Discr);
             end loop;
          end;
+      end if;
+
+      --  Variables in the predicate of the type
+
+      if Has_Predicates (Ty_Ext) then
+         Variables_In_Dynamic_Predicate (Ty_Ext, Variables);
       end if;
 
       --  Dynamic property of Ty_Ext's components

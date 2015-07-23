@@ -219,6 +219,20 @@ package Why.Gen.Binders is
    function Unit_Param return Binder_Type;
    --  return a dummy binder for a single argument of type unit
 
+   function Mk_Tmp_Item_Of_Entity
+     (E       : Entity_Id;
+      Id      : W_Identifier_Id;
+      Mutable : Boolean) return Item_Type
+   is
+     (Regular, Main => (Ada_Node => E,
+                        B_Name   => Id,
+                        B_Ent    => Null_Entity_Name,
+                        Mutable  => Mutable));
+   --  @param E entity
+   --  @param Id identifier
+   --  @param Mutable True iff the item is mutable
+   --  @return a temporary item from entity E with identity Id
+
    function Mk_Item_Of_Entity
      (E           : Entity_Id;
       Local       : Boolean := False;

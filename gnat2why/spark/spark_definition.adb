@@ -3091,6 +3091,7 @@ package body SPARK_Definition is
                     Current_SPARK_Pragma
                   else E);
             begin
+               pragma Assert (Present (Predicate_Function (E)));
                Delayed_Type_Aspects.Include
                  (Predicate_Function (E), Delayed_Mapping);
             end;

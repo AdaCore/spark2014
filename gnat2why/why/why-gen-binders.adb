@@ -327,9 +327,9 @@ package body Why.Gen.Binders is
       end loop;
    end Localize_Variable_Parts;
 
-   -------------------------
-   -- Mk_Item_From_Entity --
-   -------------------------
+   -----------------------
+   -- Mk_Item_Of_Entity --
+   -----------------------
 
    function Mk_Item_Of_Entity
      (E           : Entity_Id;

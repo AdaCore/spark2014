@@ -597,14 +597,8 @@ package body Gnat2Why.Util is
                             Name    : W_Identifier_Id;
                             Mutable : Boolean := False) is
    begin
-      Ada_Ent_To_Why.Insert (Symbol_Table,
-                             E,
-                             Item_Type'(Regular,
-                               Binder_Type'(
-                                 B_Name   => Name,
-                                 B_Ent    => Null_Entity_Name,
-                                 Ada_Node => E,
-                                 Mutable  => Mutable)));
+      Ada_Ent_To_Why.Insert (Symbol_Table, E,
+                             Mk_Tmp_Item_Of_Entity (E, Name, Mutable));
    end Insert_Entity;
 
    -----------------

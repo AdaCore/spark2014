@@ -70,41 +70,65 @@ package body Gnat2Why.Types is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      procedure Create_Dynamic_Predicate_If_Needed
+      procedure Create_Dynamic_Predicate
         (Theory : W_Theory_Declaration_Id;
          E      : Entity_Id);
-      --  Create a predicate to express the dynamic predicate associated with
-      --  entity E if needed.
+      --  Create a function to express type E's predicate
 
-      ----------------------------------------
-      -- Create_Dynamic_Predicate_If_Needed --
-      ----------------------------------------
+      ------------------------------
+      -- Create_Dynamic_Predicate --
+      ------------------------------
 
-      procedure Create_Dynamic_Predicate_If_Needed
+      procedure Create_Dynamic_Predicate
         (Theory : W_Theory_Declaration_Id;
          E      : Entity_Id)
       is
-         W_Param : constant W_Identifier_Id :=
-           New_Temp_Identifier (Typ => Type_Of_Node (E));
-         Binder : constant Binder_Type :=
-           Binder_Type'(B_Name => W_Param,
-                        others => <>);
-         W_Dyn_Pred_Expr : constant W_Pred_Id :=
-           Compute_Dynamic_Predicate
-             (Expr     => +W_Param,
-              Ty       => E,
-              Params   => Logic_Params (File.Kind),
-              Use_Pred => False);
+         Variables : Flow_Id_Sets.Set;
+
       begin
-         Emit
-           (Theory,
-            Why.Gen.Binders.New_Function_Decl
-              (Domain      => EW_Pred,
-               Name        => To_Local (E_Symb (E, WNE_Dynamic_Predicate)),
-               Def         => +W_Dyn_Pred_Expr,
-               Labels  => Name_Id_Sets.To_Set (NID ("inline")),
-               Binders => (1 => Binder)));
-      end Create_Dynamic_Predicate_If_Needed;
+         --  Get the set of variables used in E's predicate
+
+         Variables_In_Dynamic_Predicate (E, Variables);
+
+         declare
+            Items    : Item_Array :=
+              Get_Binders_From_Variables (To_Name_Set (Variables));
+            Main_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => Type_Of_Node (E));
+            --  Expression on which we want to assume the property
+            Def : W_Pred_Id;
+
+         begin
+            --  Use local names for variables
+
+            Localize_Variable_Parts (Items);
+
+            --  Push the names to Symbol_Table
+
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+            Push_Binders_To_Symbol_Table (Items);
+
+            Def := Compute_Dynamic_Predicate
+                     (Expr     => +Main_Arg,
+                      Ty       => E,
+                      Params   => Logic_Params (File.Kind),
+                      Use_Pred => False);
+
+            Emit
+              (Theory,
+               Why.Gen.Binders.New_Function_Decl
+                 (Domain      => EW_Pred,
+                  Name        => To_Local (E_Symb (E, WNE_Dynamic_Predicate)),
+                  Def         => +Def,
+                  Labels  => Name_Id_Sets.To_Set (NID ("inline")),
+                  Binders =>
+                    Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
+                                                    others => <>))
+                    & Get_Parameters_From_Binders (Items)));
+
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+         end;
+      end Create_Dynamic_Predicate;
 
       Ty        : constant W_Type_Id := EW_Abstract (E);
       Variables : Flow_Id_Sets.Set;
@@ -150,11 +174,15 @@ package body Gnat2Why.Types is
               New_Temp_Identifier (Typ => EW_Bool_Type);
             --  Do we need to assume the properties on constant parts
 
+            Top_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => EW_Bool_Type);
+            --  Should we check the toplevel predicate
+
             Main_Arg : constant W_Identifier_Id :=
               New_Temp_Identifier (Typ => Type_Of_Node (E));
             --  Expression on which we want to assume the property
-         begin
 
+         begin
             --  Use local names for variables
 
             Localize_Variable_Parts (Items);
@@ -171,13 +199,14 @@ package body Gnat2Why.Types is
                        (Name   => "dynamic_invariant",
                         Module => Why.Types.Why_Empty,
                         Typ    => EW_Bool_Type),
-                     Def     => +Compute_Dynamic_Property
-                       (Expr        => +Main_Arg,
-                        Ty          => E,
-                        Only_Var    => +Ovar_Arg,
-                        Initialized => +Init_Arg,
-                        Params      => Params,
-                        Use_Pred    => False),
+                     Def     =>
+                       +Compute_Dynamic_Property (Expr          => +Main_Arg,
+                                                  Ty            => E,
+                                                  Initialized   => +Init_Arg,
+                                                  Only_Var      => +Ovar_Arg,
+                                                  Top_Predicate => +Top_Arg,
+                                                  Params        => Params,
+                                                  Use_Pred      => False),
                      Labels  => Name_Id_Sets.To_Set (NID ("inline")),
                      Binders =>
                        Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
@@ -185,6 +214,8 @@ package body Gnat2Why.Types is
                                      2 => Binder_Type'(B_Name => Init_Arg,
                                                        others => <>),
                                      3 => Binder_Type'(B_Name => Ovar_Arg,
+                                                       others => <>),
+                                     4 => Binder_Type'(B_Name => Top_Arg,
                                                        others => <>))
                      & Get_Parameters_From_Binders (Items)));
 
@@ -323,7 +354,7 @@ package body Gnat2Why.Types is
       end;
 
       if Has_Predicates (E) then
-         Create_Dynamic_Predicate_If_Needed (File.Cur_Theory, E);
+         Create_Dynamic_Predicate (File.Cur_Theory, E);
       end if;
 
       Close_Theory (File,
