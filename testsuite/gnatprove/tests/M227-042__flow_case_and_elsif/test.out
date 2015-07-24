@@ -612,7 +612,7 @@ digraph G {
     12 ->  7 [arrowType="normal",color="red",fontcolor="red"];
 }
 
-// test_Globals_Graph
+// test_globals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -640,7 +640,7 @@ digraph G {
 
 }
 
-// test_Locals_Graph
+// test_locals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];

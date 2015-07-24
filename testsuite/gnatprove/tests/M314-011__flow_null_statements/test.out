@@ -84,7 +84,7 @@ digraph G {
     1 ->  9 [arrowType="normal"];
 }
 
-// test_Globals_Graph
+// test_globals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -94,7 +94,7 @@ digraph G {
 
 }
 
-// test_Locals_Graph
+// test_locals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];

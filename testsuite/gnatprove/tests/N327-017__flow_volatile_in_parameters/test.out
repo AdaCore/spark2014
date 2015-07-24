@@ -130,7 +130,7 @@ digraph G {
     14 ->  9 [arrowType="normal",color="red",fontcolor="red"];
 }
 
-// types_Globals_Graph
+// types_globals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -142,7 +142,7 @@ digraph G {
 
 }
 
-// types_Locals_Graph
+// types_locals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];

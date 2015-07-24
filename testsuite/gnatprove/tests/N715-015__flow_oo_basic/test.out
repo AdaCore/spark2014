@@ -5254,7 +5254,7 @@ digraph G {
     23 ->  23 [arrowType="normal",color="red",fontcolor="red"];
 }
 
-// foo_Globals_Graph
+// foo_globals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -5285,7 +5285,7 @@ digraph G {
 
 }
 
-// foo_Locals_Graph
+// foo_locals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -5750,7 +5750,7 @@ digraph G {
     20 ->  22 [arrowType="normal",color="red",fontcolor="red"];
 }
 
-// misc_Globals_Graph
+// misc_globals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -5781,7 +5781,7 @@ digraph G {
 
 }
 
-// misc_Locals_Graph
+// misc_locals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -5796,7 +5796,7 @@ digraph G {
 
 }
 
-// other_Globals_Graph
+// other_globals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -5830,7 +5830,7 @@ digraph G {
 
 }
 
-// other_Locals_Graph
+// other_locals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -5846,7 +5846,7 @@ digraph G {
 
 }
 
-// tests_Globals_Graph
+// tests_globals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -5923,7 +5923,7 @@ digraph G {
     49 ->  43 [arrowType="normal"];
 }
 
-// tests_Locals_Graph
+// tests_locals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -5959,14 +5959,14 @@ digraph G {
     11 ->  13 [arrowType="normal"];
 }
 
-// untangle_Globals_Graph
+// untangle_globals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
 
 }
 
-// untangle_Locals_Graph
+// untangle_locals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];

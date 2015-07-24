@@ -878,7 +878,7 @@ digraph G {
     24 ->  9 [arrowType="normal",color="red",fontcolor="red"];
 }
 
-// foo_Globals_Graph
+// foo_globals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -958,7 +958,7 @@ digraph G {
     56 ->  13 [arrowType="normal"];
 }
 
-// foo_Locals_Graph
+// foo_locals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];

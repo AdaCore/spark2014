@@ -1714,10 +1714,10 @@ package body Flow_Generated_Globals is
                 (Enclosing_Comp_Unit_Node (GNAT_Root));
 
             LG_Filename   : constant String :=
-              Common_Prefix & "_Locals_Graph";
+              Common_Prefix & "_locals_graph";
 
             GG_Filename   : constant String :=
-              Common_Prefix & "_Globals_Graph";
+              Common_Prefix & "_globals_graph";
          begin
             Print_Global_Graph (Filename => LG_Filename,
                                 G        => Local_Graph);

@@ -728,21 +728,21 @@ digraph G {
     14 ->  15 [arrowType="normal",color="red",fontcolor="red"];
 }
 
-// uninitialized_Globals_Graph
+// uninitialized_globals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
 
 }
 
-// uninitialized_Locals_Graph
+// uninitialized_locals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
 
 }
 
-// vehicle_Globals_Graph
+// vehicle_globals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
@@ -765,7 +765,7 @@ digraph G {
     8 ->  5 [arrowType="normal"];
 }
 
-// vehicle_Locals_Graph
+// vehicle_locals_graph
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
