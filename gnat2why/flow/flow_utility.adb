@@ -2357,7 +2357,7 @@ package body Flow_Utility is
       Consider_Extensions          : Boolean := False)
       return Flow_Id_Sets.Set
    is
-      VS : Flow_Id_Sets.Set;
+      VS         : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
       function Recurse_On (N                   : Node_Id;
                            Consider_Extensions : Boolean := False)
@@ -2929,7 +2929,7 @@ package body Flow_Utility is
 
                   when others =>
                      null;
-               end case;
+               end case;  -- dealing with all the attributes
 
             when others =>
                null;
@@ -2941,7 +2941,44 @@ package body Flow_Utility is
 
    begin --  Get_Variable_Set
       Traverse (N);
-      return Filter_Out_Constants (VS, Local_Constants);
+
+      return S : Flow_Id_Sets.Set do
+         --  We need to do two kinds of post-processing on the result here.
+         --  First we check each variable to see if it is the result of an
+         --  action. For flow analysis its more helpful to talk about the
+         --  original variables, so we undo these actions whenever
+         --  possible.
+         for F of VS loop
+            case F.Kind is
+               when Direct_Mapping | Record_Field =>
+                  declare
+                     N : constant Node_Id := Parent (F.Node);
+                  begin
+                     if Nkind (N) = N_Object_Declaration
+                       and then Is_Action (N)
+                     then
+                        case Nkind (Expression (N)) is
+                           when N_Identifier =>
+                              S.Include
+                                (F'Update
+                                   (Node => Unique_Entity
+                                      (Entity (Expression (N)))));
+                           when others =>
+                              S.Union (Recurse_On (Expression (N)));
+                        end case;
+                     else
+                        S.Include (F);
+                     end if;
+                  end;
+
+               when others =>
+                  S.Include (F);
+            end case;
+         end loop;
+
+         --  And secondly, we remove any local constants.
+         S := Filter_Out_Constants (S, Local_Constants);
+      end return;
    end Get_Variable_Set;
 
    function Get_Variable_Set

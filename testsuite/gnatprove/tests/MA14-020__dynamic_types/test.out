@@ -13,6 +13,5 @@ dynamic_in_post.adb:22:22: medium: assertion might fail, requires A = B
 dynamic_in_post.adb:22:26: info: initialization of "B" proved
 dynamic_in_post.adb:29:13: info: range check proved, in call inlined at dynamic_in_post.adb:37
 dynamic_in_post.adb:29:26: info: initialization of "X" proved, in call inlined at dynamic_in_post.adb:37
-dynamic_in_post.adb:29:36: info: initialization of "X" proved, in call inlined at dynamic_in_post.adb:37
 dynamic_in_post.adb:30:10: info: assertion proved, in call inlined at dynamic_in_post.adb:37
 dynamic_in_post.adb:30:25: info: initialization of "X" proved, in call inlined at dynamic_in_post.adb:37

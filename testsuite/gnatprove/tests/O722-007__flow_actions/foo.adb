@@ -99,4 +99,21 @@ is
             then True else False));
    end Test_07;
 
+   --  This test makes sure we don't miss any initialization checks for the
+   --  action variables we substitute
+   procedure Test_08 (N : Natural;
+                      B : out Boolean)
+   is
+      X : Integer := N;
+      Y : Integer;
+   begin
+      while X <= New_Str'Last-New_Sub'Length + 1
+        and then New_Str (X .. Y+New_Sub'Length - 1) /= New_Sub
+      loop
+         X := X + 1;
+      end loop;
+      B := X > 3;
+   end Test_08;
+
+
 end Foo;

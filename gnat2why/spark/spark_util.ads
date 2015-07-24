@@ -891,6 +891,11 @@ package SPARK_Util is
    --     declaration or a subtype indication.
    --  @return the N_Range node of such a node
 
+   function Is_Action (N : Node_Id) return Boolean
+     with Pre => Nkind (N) = N_Object_Declaration;
+   --  @param N is an object declaration
+   --  @return if the given node N is an action
+
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
    --  @param N any node
    --  @return True iff N is a call to a frontend-generated predicate function

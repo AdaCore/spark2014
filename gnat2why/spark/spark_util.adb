@@ -2107,6 +2107,43 @@ package body SPARK_Util is
       return False;
    end In_Private_Declarations;
 
+   ---------------
+   -- Is_Action --
+   ---------------
+
+   function Is_Action (N : Node_Id) return Boolean
+   is
+      L : constant List_Id := List_Containing (N);
+      P : constant Node_Id := Parent (N);
+   begin
+      if No (L) or else No (P) then
+         return False;
+      end if;
+
+      case Nkind (P) is
+         when N_Component_Association =>
+            return L = Loop_Actions (P);
+         when N_And_Then | N_Or_Else =>
+            return L = Actions (P);
+         when N_If_Expression =>
+            return L = Then_Actions (P) or L = Else_Actions (P);
+         when N_Case_Expression_Alternative =>
+            return L = Actions (P);
+         when N_Elsif_Part =>
+            return L = Condition_Actions (P);
+         when N_Iteration_Scheme =>
+            return L = Condition_Actions (P);
+         when N_Block_Statement =>
+            return L = Cleanup_Actions (P);
+         when N_Expression_With_Actions =>
+            return L = Actions (P);
+         when N_Freeze_Entity =>
+            return L = Actions (P);
+         when others =>
+            return False;
+      end case;
+   end Is_Action;
+
    -------------------------
    -- Is_Declared_In_Unit --
    -------------------------
