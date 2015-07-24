@@ -9,11 +9,16 @@ const.adb:3:38: info: overflow check proved
 const.ads:10:33: info: precondition proved
 const.ads:12:33: info: precondition proved
 const.ads:15:33: info: precondition proved
-const2.adb:7:04: medium: constant with variable input "C" needs to be a constituent of some state abstraction
-const2.adb:7:28: info: initialization of "V" proved
-const2.adb:7:28: info: precondition proved
-const2.adb:13:14: medium: overflow check might fail
-const2.ads:2:26: warning: no procedure exists that can initialize abstract state "Const2.State"
+const2.adb:1:14: body of package "Const2" has unused hidden states
+const2.adb:1:14: variable "C" defined at line 7
+const2.adb:1:14: variable "V2" defined at line 9
+const2.adb:2:08: all constituents must be declared before body at line 5
+const2.adb:2:08: body "Get_V" declared at line 5 freezes the contract of "Const2"
+const2.adb:2:35: "V2" is undefined
+   compilation of const2.adb failed
+
+
+gnatprove: error during generation of Global contracts
 const3.adb:3:19: info: initialization of "F" proved
 const3.adb:4:19: info: initialization of "L" proved
 const3.adb:5:19: info: initialization of "R" proved
