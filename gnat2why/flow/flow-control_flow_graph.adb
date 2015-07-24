@@ -307,19 +307,19 @@ package body Flow.Control_Flow_Graph is
    procedure Add_Vertex (FA : in out Flow_Analysis_Graphs;
                          F  : Flow_Id;
                          A  : V_Attributes);
-   --  Helper function to add a vertex (with attributes) to the graph.
+   --  Helper procedure to add a vertex (with attributes) to the graph.
 
    procedure Add_Vertex (FA : in out Flow_Analysis_Graphs;
                          F  : Flow_Id;
                          A  : V_Attributes;
                          V  : out Flow_Graphs.Vertex_Id);
-   --  Helper function to add a vertex (with attributes) to the graph,
+   --  Helper procedure to add a vertex (with attributes) to the graph,
    --  returning the Id of the newly added vertex.
 
    procedure Add_Vertex (FA : in out Flow_Analysis_Graphs;
                          A  : V_Attributes;
                          V  : out Flow_Graphs.Vertex_Id);
-   --  Helper function to add an unkeyed vertex (with attributes) to the
+   --  Helper procedure to add an unkeyed vertex (with attributes) to the
    --  graph, returning its Id.
 
    procedure Linkup
@@ -851,7 +851,7 @@ package body Flow.Control_Flow_Graph is
                             N_Object_Declaration
                and then Present (Expression (N));
    --  Checks the right hand side of an assignment statement (or the
-   --  expression on an object declaration) and determines if we can to
+   --  expression on an object declaration) and determines if we can
    --  perform some meaningful record-field splitting.
 
    procedure Mark_Exceptional_Paths (FA : in out Flow_Analysis_Graphs);
@@ -1330,7 +1330,7 @@ package body Flow.Control_Flow_Graph is
 
    begin
       --  First we need to determine the root name where we assign to, and
-      --  if this is a partial or full assignment. This mirror the
+      --  whether this is a partial or full assignment. This mirror the
       --  beginning of Untangle_Assignment_Target.
 
       declare
@@ -1486,7 +1486,7 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  Finally, we join up all the vertices we have produced and record
-      --  update the connection map.
+      --  update the connection map. ??? record update
 
       if Verts.Is_Empty then
          pragma Assert (Is_Null_Record (Etype (Name (N))));
@@ -3807,9 +3807,9 @@ package body Flow.Control_Flow_Graph is
                                      FA, CM, Ctx);
       end if;
 
-      --  For procedure and entry calls that are declared directly inside a
+      --  For subprogram and entry calls that are declared directly inside a
       --  protected object we need an extra magic parameter that models the
-      --  protected object.
+      --  protected object itself.
       if Belongs_To_Protected_Object (Called_Thing_F) then
          declare
             The_PO : constant Flow_Id :=
@@ -4384,7 +4384,7 @@ package body Flow.Control_Flow_Graph is
          Ins.Append (V);
 
          --  Build an out vertex.
-         if Ekind (Formal) in  E_In_Out_Parameter | E_Out_Parameter then
+         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter then
             Add_Vertex
               (FA,
                Direct_Mapping_Id (P, Out_View),
@@ -5105,7 +5105,7 @@ package body Flow.Control_Flow_Graph is
             return False;
 
          --  Group 1d - pragma that are re-written and/or removed
-         --  by the front-end in GNATProve, so they should
+         --  by the front-end in GNATprove, so they should
          --  never be seen here.
          when Pragma_Assert                       |
               Pragma_Assert_And_Cut               |

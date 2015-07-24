@@ -453,11 +453,11 @@ package Flow_Types is
                                 Pretty_Print_Entry_Barrier);
 
    type V_Attributes is record
-      Is_Null_Node        : Boolean;
+      Is_Null_Node                 : Boolean;
       --  Set for auxiliary nodes which can be removed, such as early
       --  returns or null statements.
 
-      Is_Program_Node     : Boolean;
+      Is_Program_Node              : Boolean;
       --  Set for all vertices which both
       --     - trace directly to an element in the AST,
       --     - they are constructs which could be ineffective
@@ -469,136 +469,136 @@ package Flow_Types is
       --  It should be noted that most vertices we construct will have
       --  this set to true.
 
-      Is_Exceptional_Branch : Boolean;
+      Is_Exceptional_Branch        : Boolean;
       --  True for nodes which lead *into* an exceptional path, but are not
       --  part of the path itself.
 
-      Is_Exceptional_Path : Boolean;
+      Is_Exceptional_Path          : Boolean;
       --  True for all nodes on execptional execution paths. We tend to
       --  exclude these from analysis and sanity checking.
 
-      Is_Proof            : Boolean;
+      Is_Proof                     : Boolean;
       --  True if this vertex represents something in a proof context
       --  (ghost code, asserts, contracts, etc.)
 
-      Is_Precondition     : Boolean;
+      Is_Precondition              : Boolean;
       --  True if this vertex represents the precondition.
 
-      Is_Postcondition    : Boolean;
+      Is_Postcondition             : Boolean;
       --  True if this vertex represents the postcondition.
 
-      Is_Package_Initialization : Boolean;
+      Is_Package_Initialization    : Boolean;
       --  True if this vertex represents a package initialization.
 
-      Is_Default_Init     : Boolean;
+      Is_Default_Init              : Boolean;
       --  True if this vertex represents a default initialization.
 
-      Is_Loop_Entry       : Boolean;
+      Is_Loop_Entry                : Boolean;
       --  True if this vertex represents a loop entry assignment. For
       --  each variable where we use 'Loop_Entry we have one of these
       --  at the top of the actual loop.
 
-      Is_Initialized      : Boolean;
+      Is_Initialized               : Boolean;
       --  True if an initial value is either imported (in or in out)
       --  or otherwise initialized.
 
-      Is_Function_Return  : Boolean;
+      Is_Function_Return           : Boolean;
       --  True if this vertex models the returned value of a function.
 
-      Is_Global           : Boolean;
+      Is_Global                    : Boolean;
       --  True if the imported or exported variable is a global.
 
-      Is_Loop_Parameter   : Boolean;
+      Is_Loop_Parameter            : Boolean;
       --  True for loop parameters so they can be ignored in
       --  ineffective-import analysis.
 
-      Is_Import           : Boolean;
+      Is_Import                    : Boolean;
       --  True if the given initial value is a parameter or global of
       --  the analysed subprogram.
 
-      Is_Export           : Boolean;
+      Is_Export                    : Boolean;
       --  True if the given final-use variable is actually relevant to
       --  a subprogram's exports (out parameter or global out).
 
-      Mode                : Param_Mode;
+      Mode                         : Param_Mode;
       --  Set for initial and final use vertices which are parameters
       --  or globals.
 
-      Is_Package_State    : Boolean;
+      Is_Package_State             : Boolean;
       --  True if the given variable is part of a package' state.
 
-      Is_Constant         : Boolean;
+      Is_Constant                  : Boolean;
       --  True if this value may not be updated.
 
-      Is_Callsite         : Boolean;
+      Is_Callsite                  : Boolean;
       --  True if the vertex represents a subprogram call.
 
-      Is_Parameter        : Boolean;
+      Is_Parameter                 : Boolean;
       --  True if this vertex models an argument to a procedure call.
 
       Is_Discr_Or_Bounds_Parameter : Boolean;
       --  If true this only captures the discriminants or bounds of a
       --  parameter.
 
-      Is_Global_Parameter : Boolean;
+      Is_Global_Parameter          : Boolean;
       --  True if this vertex models a global for a procedure or
       --  function call.
 
-      Execution           : Execution_Kind_T;
+      Execution                    : Execution_Kind_T;
       --  Determines how we should treat edges from this vertex. Most nodes
       --  will have Normal_Execution set here.
 
-      Perform_IPFA        : Boolean;
+      Perform_IPFA                 : Boolean;
       --  True if the dependencies for this callsite should be filled
       --  in using interprocedural flow analysis.
 
-      Call_Vertex         : Flow_Id;
+      Call_Vertex                  : Flow_Id;
       --  Used to identify which vertex a parameter vertex belongs to.
 
-      Parameter_Actual    : Flow_Id;
-      Parameter_Formal    : Flow_Id;
+      Parameter_Actual             : Flow_Id;
+      Parameter_Formal             : Flow_Id;
       --  For nodes where Is_Parameter is true, this keeps track of which
       --  parameter this is. This is also quite useful for pretty-printing.
       --  For nodes with Is_Global_Parameter only Parameter_Formal is set.
 
-      Default_Init_Var    : Flow_Id;
-      Default_Init_Val    : Node_Id;
+      Default_Init_Var             : Flow_Id;
+      Default_Init_Val             : Node_Id;
       --  For default initializations (Is_Default_init) this pair
       --  records which variable has a default value (Var) and what it
       --  is (Val).
 
-      Variables_Defined   : Flow_Id_Sets.Set;
-      Variables_Used      : Flow_Id_Sets.Set;
+      Variables_Defined            : Flow_Id_Sets.Set;
+      Variables_Used               : Flow_Id_Sets.Set;
       --  For producing the DDG.
 
-      Variables_Explicitly_Used : Flow_Id_Sets.Set;
+      Variables_Explicitly_Used    : Flow_Id_Sets.Set;
       --  Similar to Variables_Used, but does not include the implicit
       --  self-dependency for partial record and array updates.
 
-      Volatiles_Read      : Flow_Id_Sets.Set;
-      Volatiles_Written   : Flow_Id_Sets.Set;
+      Volatiles_Read               : Flow_Id_Sets.Set;
+      Volatiles_Written            : Flow_Id_Sets.Set;
       --  Again, for producing the DDG. These are implied updates due
       --  to reads of volatiles where reads are effective.
 
-      Subprograms_Called  : Node_Sets.Set;
+      Subprograms_Called           : Node_Sets.Set;
       --  The set of all subprograms (functions and procedures) called;
       --  think of this as Variables_Used, but for subprogram calls.
 
-      Loops               : Node_Sets.Set;
+      Loops                        : Node_Sets.Set;
       --  Which loops are we a member of (identified by loop
       --  name/label). For loop stability analysis.
 
-      Error_Location      : Node_Or_Entity_Id;
+      Error_Location               : Node_Or_Entity_Id;
       --  If we have an error involving this vertex, raise it here.
 
-      Aux_Node            : Node_Or_Entity_Id;
+      Aux_Node                     : Node_Or_Entity_Id;
       --  The meaning of this depends on the kind of vertex these
       --  attributes are attached to.
       --
-      --     * E_Return_Statement: for the implicit extended return
+      --     * E_Return_Statement : for the implicit extended return
       --       returns this keeps track of the actual variable we return.
 
-      Pretty_Print_Kind   : Pretty_Print_Kind_T;
+      Pretty_Print_Kind            : Pretty_Print_Kind_T;
       --  Some extra information which we use when deciding how to pretty
       --  print the vertex in --flow-debug mode.
    end record;
