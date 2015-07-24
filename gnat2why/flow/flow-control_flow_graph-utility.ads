@@ -28,13 +28,6 @@ with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 
 package Flow.Control_Flow_Graph.Utility is
 
-   function Refers_To_Ghost
-     (FA  : Flow_Analysis_Graphs;
-      Atr : V_Attributes)
-      return Boolean;
-   --  Checks if Atr refers to a Ghost. This function is mainly used
-   --  to set the Is_Proof field of V_Attributes.
-
    function Make_Basic_Attributes
      (FA         : Flow_Analysis_Graphs;
       Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;

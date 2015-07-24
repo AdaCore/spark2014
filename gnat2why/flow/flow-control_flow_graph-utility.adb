@@ -45,6 +45,13 @@ package body Flow.Control_Flow_Graph.Utility is
    --  This procedure should not be blindly called in all cases; in
    --  particular for 'inital and 'final vertices it should not be used.
 
+   function Refers_To_Ghost
+     (FA  : Flow_Analysis_Graphs;
+      Atr : V_Attributes)
+      return Boolean;
+   --  Checks if Atr refers to a Ghost. This function is mainly used
+   --  to set the Is_Proof field of V_Attributes.
+
    --------------------------
    -- Add_Volatile_Effects --
    --------------------------
@@ -74,42 +81,6 @@ package body Flow.Control_Flow_Graph.Utility is
          end if;
       end loop;
    end Add_Volatile_Effects;
-
-   ---------------------
-   -- Refers_To_Ghost --
-   ---------------------
-
-   function Refers_To_Ghost
-     (FA  : Flow_Analysis_Graphs;
-      Atr : V_Attributes)
-      return Boolean
-   is
-      All_Vars : constant Flow_Id_Sets.Set :=
-        Atr.Variables_Used or Atr.Variables_Defined;
-   begin
-      --  Check if the analyzed entity is a ghost
-      if Is_Ghost_Entity (FA.Analyzed_Entity) then
-         return True;
-      end if;
-
-      --  Check if any of the variables used or defined is a ghost
-      for Var of All_Vars loop
-         if Var.Kind in Direct_Mapping | Record_Field
-           and then Is_Ghost_Entity (Get_Direct_Mapping_Id (Var))
-         then
-            return True;
-         end if;
-      end loop;
-
-      --  Check if any of the subprograms called is a ghost
-      for Sub of Atr.Subprograms_Called loop
-         if Is_Ghost_Entity (Sub) then
-            return True;
-         end if;
-      end loop;
-
-      return False;
-   end Refers_To_Ghost;
 
    ---------------------------
    -- Make_Basic_Attributes --
@@ -708,5 +679,41 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Proof := Refers_To_Ghost (FA, A);
       return A;
    end Make_Package_Initialization_Attributes;
+
+   ---------------------
+   -- Refers_To_Ghost --
+   ---------------------
+
+   function Refers_To_Ghost
+     (FA  : Flow_Analysis_Graphs;
+      Atr : V_Attributes)
+      return Boolean
+   is
+      All_Vars : constant Flow_Id_Sets.Set :=
+        Atr.Variables_Used or Atr.Variables_Defined;
+   begin
+      --  Check if the analyzed entity is a ghost
+      if Is_Ghost_Entity (FA.Analyzed_Entity) then
+         return True;
+      end if;
+
+      --  Check if any of the variables used or defined is a ghost
+      for Var of All_Vars loop
+         if Var.Kind in Direct_Mapping | Record_Field
+           and then Is_Ghost_Entity (Get_Direct_Mapping_Id (Var))
+         then
+            return True;
+         end if;
+      end loop;
+
+      --  Check if any of the subprograms called is a ghost
+      for Sub of Atr.Subprograms_Called loop
+         if Is_Ghost_Entity (Sub) then
+            return True;
+         end if;
+      end loop;
+
+      return False;
+   end Refers_To_Ghost;
 
 end Flow.Control_Flow_Graph.Utility;
