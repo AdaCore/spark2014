@@ -11292,7 +11292,6 @@ package body Gnat2Why.Expr is
         (Ada_Node    : Node_Id;
          Container   : Node_Id;
          W_Index_Var : W_Identifier_Id;
-         Index_Type  : Entity_Id;
          Domain      : EW_Domain;
          Element_T   : W_Type_Id;
          Params      : Transformation_Params) return W_Expr_Id;
@@ -11304,7 +11303,6 @@ package body Gnat2Why.Expr is
         (Ada_Node    : Node_Id;
          Container   : Node_Id;
          W_Index_Var : W_Expr_Id;
-         Index_Type  : Entity_Id;
          Domain      : EW_Domain;
          Params      : Transformation_Params) return W_Expr_Id;
       --  Constructs an expression for the constraint of a quantified
@@ -11375,27 +11373,32 @@ package body Gnat2Why.Expr is
         (Ada_Node    : Node_Id;
          Container   : Node_Id;
          W_Index_Var : W_Identifier_Id;
-         Index_Type  : Entity_Id;
          Domain      : EW_Domain;
          Element_T   : W_Type_Id;
          Params      : Transformation_Params) return W_Expr_Id
       is
          Element_E : constant Entity_Id :=
            Get_Iterable_Type_Primitive (Etype (Container), Name_Element);
-         Cont_Expr : constant W_Expr_Id :=
+         Cont_Type   : constant Entity_Id :=
+           Etype (First_Entity (Element_E));
+         Cont_Expr   : constant W_Expr_Id :=
            Insert_Simple_Conversion
              (Domain   => Domain,
               Expr     => Transform_Expr (Container, Domain, Params),
-              To       => Type_Of_Node (Etype (First_Entity (Element_E))));
+              To       => (if Use_Base_Type_For_Type (Cont_Type) then
+                              Base_Why_Type (Cont_Type)
+                           else Type_Of_Node (Cont_Type)));
+         Curs_Type   : constant Entity_Id :=
+           Etype (Next_Entity (First_Entity (Element_E)));
          Curs_Expr : constant W_Expr_Id :=
            Insert_Simple_Conversion
              (Ada_Node => Empty,
               Domain   => Domain,
               Expr     => +W_Index_Var,
               To       =>
-                (if Use_Base_Type_For_Type (Index_Type) then
-                      Base_Why_Type (Get_Type (+W_Index_Var))
-                 else Get_Type (+W_Index_Var)));
+                (if Use_Base_Type_For_Type (Curs_Type) then
+                      Base_Why_Type (Curs_Type)
+                 else Type_Of_Node (Curs_Type)));
       begin
          return New_VC_Call
            (Ada_Node => Ada_Node,
@@ -11420,7 +11423,6 @@ package body Gnat2Why.Expr is
         (Ada_Node    : Node_Id;
          Container   : Node_Id;
          W_Index_Var : W_Expr_Id;
-         Index_Type  : Entity_Id;
          Domain      : EW_Domain;
          Params      : Transformation_Params) return W_Expr_Id
        is
@@ -11429,20 +11431,26 @@ package body Gnat2Why.Expr is
          Has_Element : constant Entity_Id := Get_Iterable_Type_Primitive
            (Etype (Container), Name_Has_Element);
          T           : W_Expr_Id;
+         Cont_Type   : constant Entity_Id :=
+           Etype (First_Entity (Has_Element));
          Cont_Expr   : constant W_Expr_Id :=
            Insert_Simple_Conversion
              (Domain   => Subdomain,
               Expr     => Transform_Expr (Container, Subdomain, Params),
-              To       => Type_Of_Node (Etype (First_Entity (Has_Element))));
+              To       => (if Use_Base_Type_For_Type (Cont_Type) then
+                              Base_Why_Type (Cont_Type)
+                           else Type_Of_Node (Cont_Type)));
+         Curs_Type   : constant Entity_Id :=
+           Etype (Next_Entity (First_Entity (Has_Element)));
          Curs_Expr  : constant W_Expr_Id :=
            Insert_Simple_Conversion
              (Ada_Node => Empty,
               Domain   => Subdomain,
               Expr     => +W_Index_Var,
               To       =>
-                (if Use_Base_Type_For_Type (Index_Type) then
-                      Base_Why_Type (Get_Type (+W_Index_Var))
-                 else Get_Type (+W_Index_Var)));
+                (if Use_Base_Type_For_Type (Curs_Type) then
+                      Base_Why_Type (Curs_Type)
+                 else Type_Of_Node (Curs_Type)));
       begin
          T := New_VC_Call
            (Ada_Node => Ada_Node,
@@ -11573,8 +11581,12 @@ package body Gnat2Why.Expr is
 
       --  Step 2: create the base Why3 variables/expressions
 
-      W_Quant_Type := Base_Why_Type (Quant_Type);
-      W_Index_Type := Base_Why_Type (Index_Type);
+      W_Quant_Type := (if Use_Base_Type_For_Type (Quant_Type) then
+                          Base_Why_Type (Quant_Type)
+                       else Type_Of_Node (Quant_Type));
+      W_Index_Type := (if Use_Base_Type_For_Type (Index_Type) then
+                          Base_Why_Type (Index_Type)
+                       else Type_Of_Node (Index_Type));
 
       W_Quant_Var := New_Identifier (Name => Short_Name (Quant_Var),
                                      Typ  => W_Quant_Type);
@@ -11590,7 +11602,7 @@ package body Gnat2Why.Expr is
       else
          W_Bound_Expr :=
            +Make_Constraint_For_Iterable
-             (Expr, Bound_Expr, +W_Index_Var, Index_Type, Domain, Params);
+             (Expr, Bound_Expr, +W_Index_Var, Domain, Params);
       end if;
 
       --  Step 3: translate the expression over which the quantification is
@@ -11634,7 +11646,7 @@ package body Gnat2Why.Expr is
             else --  Over_Content
                W_Binding_Expr :=
                  Make_Binding_For_Iterable
-                   (Expr, Bound_Expr, +W_Index_Var, Index_Type,
+                   (Expr, Bound_Expr, +W_Index_Var,
                     Prog_Or_Term_Domain (Domain), W_Index_Type, Params);
             end if;
 
