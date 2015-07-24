@@ -198,7 +198,7 @@ is
    --  Generated Depends will be produced for E.
 
    function Get_Function_Set (N : Node_Id) return Node_Sets.Set;
-   --  Obtains all function calls used in an expression.
+   --  Obtains all functions called in an expression N
 
    function Get_Variable_Set
      (N                            : Node_Id;
