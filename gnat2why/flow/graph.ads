@@ -161,8 +161,7 @@ package Graph is
       V : Vertex_Key)
       return Vertex_Id;
    --  Search the vertex group for the given vertex and return its
-   --  Id. If not found, a value outside the range of Valid_Vertex_Id
-   --  is returned.
+   --  Id. If not found, Null_Vertex is returned.
    --
    --  Complexity is O(1) (in the general case).
 
