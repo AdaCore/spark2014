@@ -1,1 +1,1 @@
-XFAIL ALL missing scope for generic instance within an entry
+ALL XFAIL missing scope for generic instance within an entry
