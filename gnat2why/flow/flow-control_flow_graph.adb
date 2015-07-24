@@ -3813,9 +3813,9 @@ package body Flow.Control_Flow_Graph is
       if Belongs_To_Protected_Object (Called_Thing_F) then
          declare
             The_PO : constant Flow_Id :=
-               (if Nkind (Name (N)) = N_Selected_Component
-                then Direct_Mapping_Id (Entity (Prefix (Name (N))))
-                else Direct_Mapping_Id (Sinfo.Scope (Called_Thing)));
+               Direct_Mapping_Id (if Nkind (Name (N)) = N_Selected_Component
+                                  then Entity (Prefix (Name (N)))
+                                  else Sinfo.Scope (Called_Thing));
 
             V      : Flow_Graphs.Vertex_Id;
          begin
