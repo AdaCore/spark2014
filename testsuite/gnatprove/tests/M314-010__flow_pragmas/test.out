@@ -47,7 +47,7 @@ digraph G {
     7 [label="type state_type is (still, forward, backward);\n<VId: 7>"];
     8 [label="type input is (no_input, nothing, accelerate, brake);\n<VId: 8>"];
     9 [label="subtype valid_input is input range nothing .. brake;\n<VId: 9>"];
-    10 [label="type speed_type is range -100 .. 100;\n<VId: 10>"];
+    10 [label="type speed_type is range -max_speed .. max_speed;\n<VId: 10>"];
     11 [label="Speed'initial\nVD: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="red"];
     12 [label="Speed'final\nVU: {Speed}\n<VId: 12>",shape="plaintext"];
     14 [label="State'initial\nVD: {State}\n<VId: 14>",shape="plaintext",fontcolor="red"];
@@ -77,7 +77,7 @@ digraph G {
     7 [label="type state_type is (still, forward, backward);\n<VId: 7>"];
     8 [label="type input is (no_input, nothing, accelerate, brake);\n<VId: 8>"];
     9 [label="subtype valid_input is input range nothing .. brake;\n<VId: 9>"];
-    10 [label="type speed_type is range -100 .. 100;\n<VId: 10>"];
+    10 [label="type speed_type is range -max_speed .. max_speed;\n<VId: 10>"];
     11 [label="Speed'initial\nVD: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="red"];
     12 [label="Speed'final\nVU: {Speed}\n<VId: 12>",shape="plaintext"];
     14 [label="State'initial\nVD: {State}\n<VId: 14>",shape="plaintext",fontcolor="red"];
@@ -379,10 +379,10 @@ digraph G {
     12 [label="precondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 12>",shape="plaintext"];
     13 [label="postcondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 13>",shape="plaintext"];
     15 [label="if i = accelerate\nVU: {I}\n<VId: 15>",shape="diamond"];
-    16 [label="if speed < 100\nVU: {Speed}\n<VId: 16>",shape="diamond"];
+    16 [label="if speed < speed_type'last\nVU: {Speed}\n<VId: 16>",shape="diamond"];
     17 [label="speed := {speed + 1};\nVU: {Speed}\nVD: {Speed}\n<VId: 17>"];
     18 [label="elsif i = brake\nVU: {I}\n<VId: 18>",shape="diamond"];
-    19 [label="if speed > -100\nVU: {Speed}\n<VId: 19>",shape="diamond"];
+    19 [label="if speed > speed_type'first\nVU: {Speed}\n<VId: 19>",shape="diamond"];
     20 [label="speed := {speed - 1};\nVU: {Speed}\nVD: {Speed}\n<VId: 20>"];
     21 [label="if speed = 0\nVU: {Speed}\n<VId: 21>",shape="diamond"];
     22 [label="state := still;\nVD: {State}\n<VId: 22>"];
@@ -438,10 +438,10 @@ digraph G {
     12 [label="precondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 12>",shape="plaintext"];
     13 [label="postcondition speed_is_valid\nVU: {State, Speed}\nSC: {Speed_Is_Valid}\nPROOF\n<VId: 13>",shape="plaintext"];
     15 [label="if i = accelerate\nVU: {I}\n<VId: 15>",shape="diamond"];
-    16 [label="if speed < 100\nVU: {Speed}\n<VId: 16>",shape="diamond"];
+    16 [label="if speed < speed_type'last\nVU: {Speed}\n<VId: 16>",shape="diamond"];
     17 [label="speed := {speed + 1};\nVU: {Speed}\nVD: {Speed}\n<VId: 17>"];
     18 [label="elsif i = brake\nVU: {I}\n<VId: 18>",shape="diamond"];
-    19 [label="if speed > -100\nVU: {Speed}\n<VId: 19>",shape="diamond"];
+    19 [label="if speed > speed_type'first\nVU: {Speed}\n<VId: 19>",shape="diamond"];
     20 [label="speed := {speed - 1};\nVU: {Speed}\nVD: {Speed}\n<VId: 20>"];
     21 [label="if speed = 0\nVU: {Speed}\n<VId: 21>",shape="diamond"];
     22 [label="state := still;\nVD: {State}\n<VId: 22>"];

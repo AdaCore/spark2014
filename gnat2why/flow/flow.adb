@@ -353,7 +353,11 @@ package body Flow is
          procedure Print_Node (N : Node_Id)
          is
          begin
-            pg (Union_Id (N));
+            if Comes_From_Source (N) then
+               po (Union_Id (N));
+            else
+               pg (Union_Id (N));
+            end if;
          end Print_Node;
 
       begin

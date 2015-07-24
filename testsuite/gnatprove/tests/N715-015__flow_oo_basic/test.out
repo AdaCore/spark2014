@@ -190,9 +190,9 @@ digraph G {
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     3 [label="end\n<VId: 3>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    8 [label="type byte is mod 256;\n<VId: 8>"];
+    8 [label="type byte is mod 2 ** 8;\n<VId: 8>"];
     9 [label="type word_a is recordlo : byte;hi : byte;end record;\n<VId: 9>"];
-    10 [label="type word_b is mod 16#1000_0#;\n<VId: 10>"];
+    10 [label="type word_b is mod 2 ** 16;\n<VId: 10>"];
     11 [label="type word_array is array (1 .. 10) of word_a;\n<VId: 11>"];
     12 [label="type thing is recorda : boolean;b : word_array;c : boolean;end record;\n<VId: 12>"];
     13 [label="type optional_thing (exists : boolean := false) is recordcase exists iswhen true =>t : thing;when false =>null;end caseend record;\n<VId: 13>"];
@@ -222,9 +222,9 @@ digraph G {
     1 [label="start\n<VId: 1>",shape="plaintext"];
     2 [label="helper end\n<VId: 2>",shape="plaintext"];
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    8 [label="type byte is mod 256;\n<VId: 8>"];
+    8 [label="type byte is mod 2 ** 8;\n<VId: 8>"];
     9 [label="type word_a is recordlo : byte;hi : byte;end record;\n<VId: 9>"];
-    10 [label="type word_b is mod 16#1000_0#;\n<VId: 10>"];
+    10 [label="type word_b is mod 2 ** 16;\n<VId: 10>"];
     11 [label="type word_array is array (1 .. 10) of word_a;\n<VId: 11>"];
     12 [label="type thing is recorda : boolean;b : word_array;c : boolean;end record;\n<VId: 12>"];
     13 [label="type optional_thing (exists : boolean := false) is recordcase exists iswhen true =>t : thing;when false =>null;end caseend record;\n<VId: 13>"];
@@ -258,7 +258,7 @@ digraph G {
     9 [label="Misc_Const.Y'final\nVU: {Misc_Const.Y}\n<VId: 9>",shape="plaintext"];
     10 [label="Misc_Const.X'initial\nVD: {Misc_Const.X}\n<VId: 10>",shape="plaintext",fontcolor="red"];
     11 [label="Misc_Const.X'final\nVU: {Misc_Const.X}\n<VId: 11>",shape="plaintext"];
-    12 [label="misc_const : constant widget_t := (x => 1,y => 2);\nVD: {Misc_Const.X, Misc_Const.Y}\n<VId: 12>"];
+    12 [label="misc_const : constant widget_t := (1, 2);\nVD: {Misc_Const.X, Misc_Const.Y}\n<VId: 12>"];
 
     1 ->  12 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -283,7 +283,7 @@ digraph G {
     9 [label="Misc_Const.Y'final\nVU: {Misc_Const.Y}\n<VId: 9>",shape="plaintext"];
     10 [label="Misc_Const.X'initial\nVD: {Misc_Const.X}\n<VId: 10>",shape="plaintext",fontcolor="red"];
     11 [label="Misc_Const.X'final\nVU: {Misc_Const.X}\n<VId: 11>",shape="plaintext"];
-    12 [label="misc_const : constant widget_t := (x => 1,y => 2);\nVD: {Misc_Const.X, Misc_Const.Y}\n<VId: 12>"];
+    12 [label="misc_const : constant widget_t := (1, 2);\nVD: {Misc_Const.X, Misc_Const.Y}\n<VId: 12>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  12 [arrowType="normal"];
@@ -692,7 +692,7 @@ digraph G {
     12 [label="W.X'final\nVU: {W.X}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
     13 [label="N'initial\nVD: {N}\n<VId: 13>",shape="plaintext"];
     14 [label="N'final\nVU: {N}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    18 [label="w.x := hash__2 (w);\nVU: {W.X, W.Y, W'Extensions}\nSC: {Hash}\nVD: {W.X}\n<VId: 18>"];
+    18 [label="w.x := w.hash__2;\nVU: {W.X, W.Y, W'Extensions}\nSC: {Hash}\nVD: {W.X}\n<VId: 18>"];
     19 [label="w.y := n;\nVU: {N}\nVD: {W.Y}\n<VId: 19>"];
 
     1 ->  18 [arrowType="normal"];
@@ -728,7 +728,7 @@ digraph G {
     12 [label="W.X'final\nVU: {W.X}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
     13 [label="N'initial\nVD: {N}\n<VId: 13>",shape="plaintext"];
     14 [label="N'final\nVU: {N}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    18 [label="w.x := hash__2 (w);\nVU: {W.X, W.Y, W'Extensions}\nSC: {Hash}\nVD: {W.X}\n<VId: 18>"];
+    18 [label="w.x := w.hash__2;\nVU: {W.X, W.Y, W'Extensions}\nSC: {Hash}\nVD: {W.X}\n<VId: 18>"];
     19 [label="w.y := n;\nVU: {N}\nVD: {W.Y}\n<VId: 19>"];
 
     1 ->  2 [arrowType="normal"];
@@ -910,7 +910,7 @@ digraph G {
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
     6 [label="N'initial\nVD: {N}\n<VId: 6>",shape="plaintext",fontcolor="red"];
     7 [label="N'final\nVU: {N}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    12 [label="n := hash (obj);\nSC: {Hash}\nVD: {N}\n<VId: 12>"];
+    12 [label="n := obj.hash;\nSC: {Hash}\nVD: {N}\n<VId: 12>"];
 
     1 ->  12 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -932,7 +932,7 @@ digraph G {
     8 [label="Obj'Extensions'final\nVU: {Obj'Extensions}\n<VId: 8>",shape="plaintext",fontcolor="red"];
     9 [label="N'initial\nVD: {N}\n<VId: 9>",shape="plaintext",fontcolor="red"];
     10 [label="N'final\nVU: {N}\n<VId: 10>",shape="plaintext",fontcolor="blue"];
-    16 [label="n := hash (obj);\nSC: {Hash}\nVD: {N}\n<VId: 16>"];
+    16 [label="n := obj.hash;\nSC: {Hash}\nVD: {N}\n<VId: 16>"];
 
     1 ->  16 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -956,7 +956,7 @@ digraph G {
     8 [label="Obj'Extensions'final\nVU: {Obj'Extensions}\n<VId: 8>",shape="plaintext",fontcolor="red"];
     9 [label="N'initial\nVD: {N}\n<VId: 9>",shape="plaintext",fontcolor="red"];
     10 [label="N'final\nVU: {N}\n<VId: 10>",shape="plaintext",fontcolor="blue"];
-    16 [label="n := hash (obj);\nSC: {Hash}\nVD: {N}\n<VId: 16>"];
+    16 [label="n := obj.hash;\nSC: {Hash}\nVD: {N}\n<VId: 16>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  16 [arrowType="normal"];
@@ -973,7 +973,7 @@ digraph G {
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
     6 [label="N'initial\nVD: {N}\n<VId: 6>",shape="plaintext",fontcolor="red"];
     7 [label="N'final\nVU: {N}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    12 [label="n := hash (obj);\nSC: {Hash}\nVD: {N}\n<VId: 12>"];
+    12 [label="n := obj.hash;\nSC: {Hash}\nVD: {N}\n<VId: 12>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  12 [arrowType="normal"];
@@ -995,7 +995,7 @@ digraph G {
     10 [label="Obj.X'final\nVU: {Obj.X}\n<VId: 10>",shape="plaintext",fontcolor="red"];
     11 [label="N'initial\nVD: {N}\n<VId: 11>",shape="plaintext",fontcolor="red"];
     12 [label="N'final\nVU: {N}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
-    17 [label="n := hash__2 (obj);\nVU: {Obj.X, Obj.Y}\nSC: {Hash}\nVD: {N}\n<VId: 17>"];
+    17 [label="n := obj.hash__2;\nVU: {Obj.X, Obj.Y}\nSC: {Hash}\nVD: {N}\n<VId: 17>"];
 
     1 ->  17 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1024,7 +1024,7 @@ digraph G {
     10 [label="Obj.X'final\nVU: {Obj.X}\n<VId: 10>",shape="plaintext",fontcolor="red"];
     11 [label="N'initial\nVD: {N}\n<VId: 11>",shape="plaintext",fontcolor="red"];
     12 [label="N'final\nVU: {N}\n<VId: 12>",shape="plaintext",fontcolor="blue"];
-    17 [label="n := hash__2 (obj);\nVU: {Obj.X, Obj.Y}\nSC: {Hash}\nVD: {N}\n<VId: 17>"];
+    17 [label="n := obj.hash__2;\nVU: {Obj.X, Obj.Y}\nSC: {Hash}\nVD: {N}\n<VId: 17>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  17 [arrowType="normal"];
@@ -1050,7 +1050,7 @@ digraph G {
     8 [label="Obj'Extensions'final\nVU: {Obj'Extensions}\n<VId: 8>",shape="plaintext",fontcolor="red"];
     9 [label="N'initial\nVD: {N}\n<VId: 9>",shape="plaintext",fontcolor="red"];
     10 [label="N'final\nVU: {N}\n<VId: 10>",shape="plaintext",fontcolor="blue"];
-    15 [label="n := hash (obj);\nVU: {Obj'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 15>"];
+    15 [label="n := obj.hash;\nVU: {Obj'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 15>"];
 
     1 ->  15 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1074,7 +1074,7 @@ digraph G {
     8 [label="Obj'Extensions'final\nVU: {Obj'Extensions}\n<VId: 8>",shape="plaintext",fontcolor="red"];
     9 [label="N'initial\nVD: {N}\n<VId: 9>",shape="plaintext",fontcolor="red"];
     10 [label="N'final\nVU: {N}\n<VId: 10>",shape="plaintext",fontcolor="blue"];
-    15 [label="n := hash (obj);\nVU: {Obj'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 15>"];
+    15 [label="n := obj.hash;\nVU: {Obj'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 15>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -1100,7 +1100,7 @@ digraph G {
     12 [label="Obj.X'final\nVU: {Obj.X}\n<VId: 12>",shape="plaintext",fontcolor="red"];
     13 [label="N'initial\nVD: {N}\n<VId: 13>",shape="plaintext",fontcolor="red"];
     14 [label="N'final\nVU: {N}\n<VId: 14>",shape="plaintext",fontcolor="blue"];
-    19 [label="n := hash__2 (obj);\nVU: {Obj.X, Obj.Y, Obj'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 19>"];
+    19 [label="n := obj.hash__2;\nVU: {Obj.X, Obj.Y, Obj'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 19>"];
 
     1 ->  19 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1134,7 +1134,7 @@ digraph G {
     12 [label="Obj.X'final\nVU: {Obj.X}\n<VId: 12>",shape="plaintext",fontcolor="red"];
     13 [label="N'initial\nVD: {N}\n<VId: 13>",shape="plaintext",fontcolor="red"];
     14 [label="N'final\nVU: {N}\n<VId: 14>",shape="plaintext",fontcolor="blue"];
-    19 [label="n := hash__2 (obj);\nVU: {Obj.X, Obj.Y, Obj'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 19>"];
+    19 [label="n := obj.hash__2;\nVU: {Obj.X, Obj.Y, Obj'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 19>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  19 [arrowType="normal"];
@@ -1180,7 +1180,7 @@ digraph G {
     29 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 29>",shape="plaintext",fontcolor="red"];
     30 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 30>",shape="plaintext"];
     31 [label="tmp : widget_t := widget_t(obj);\nVU: {Obj.X, Obj.Y}\nVD: {Tmp.X, Tmp.Y}\n<VId: 31>"];
-    32 [label="n := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 32>"];
+    32 [label="n := tmp.hash__2;\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 32>"];
 
     1 ->  25 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1241,7 +1241,7 @@ digraph G {
     29 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 29>",shape="plaintext",fontcolor="red"];
     30 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 30>",shape="plaintext"];
     31 [label="tmp : widget_t := widget_t(obj);\nVU: {Obj.X, Obj.Y}\nVD: {Tmp.X, Tmp.Y}\n<VId: 31>"];
-    32 [label="n := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 32>"];
+    32 [label="n := tmp.hash__2;\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 32>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];
@@ -1292,7 +1292,7 @@ digraph G {
     23 [label="Obj.X'initial\nVD: {Obj.X}\n<VId: 23>",shape="plaintext",fontcolor="red"];
     24 [label="Obj.X'final\nVU: {Obj.X}\n<VId: 24>",shape="plaintext"];
     25 [label="obj : constant nice_widget_t := (x => a,y => b,round => c);\nVU: {B, C, A}\nVD: {Obj.X, Obj.Y, Obj.Round}\n<VId: 25>"];
-    26 [label="n := hash__2 (widget_t(obj));\nVU: {Obj.X, Obj.Y}\nSC: {Hash}\nVD: {N}\n<VId: 26>"];
+    26 [label="n := widget_t(obj).hash__2;\nVU: {Obj.X, Obj.Y}\nSC: {Hash}\nVD: {N}\n<VId: 26>"];
 
     1 ->  25 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1340,7 +1340,7 @@ digraph G {
     23 [label="Obj.X'initial\nVD: {Obj.X}\n<VId: 23>",shape="plaintext",fontcolor="red"];
     24 [label="Obj.X'final\nVU: {Obj.X}\n<VId: 24>",shape="plaintext"];
     25 [label="obj : constant nice_widget_t := (x => a,y => b,round => c);\nVU: {B, C, A}\nVD: {Obj.X, Obj.Y, Obj.Round}\n<VId: 25>"];
-    26 [label="n := hash__2 (widget_t(obj));\nVU: {Obj.X, Obj.Y}\nSC: {Hash}\nVD: {N}\n<VId: 26>"];
+    26 [label="n := widget_t(obj).hash__2;\nVU: {Obj.X, Obj.Y}\nSC: {Hash}\nVD: {N}\n<VId: 26>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];
@@ -1385,7 +1385,7 @@ digraph G {
     23 [label="Obj.X'initial\nVD: {Obj.X}\n<VId: 23>",shape="plaintext",fontcolor="red"];
     24 [label="Obj.X'final\nVU: {Obj.X}\n<VId: 24>",shape="plaintext"];
     25 [label="obj : nice_widget_t := (x => a,y => b,round => c);\nVU: {A, B, C}\nVD: {Obj.X, Obj.Y, Obj.Round}\n<VId: 25>"];
-    29 [label="n := hash__3 (obj);\nVU: {Obj.X, Obj.Y, Obj.Round}\nSC: {Hash}\nVD: {N}\n<VId: 29>"];
+    29 [label="n := obj.hash__3;\nVU: {Obj.X, Obj.Y, Obj.Round}\nSC: {Hash}\nVD: {N}\n<VId: 29>"];
 
 subgraph cluster1 {
   style=filled;
@@ -1448,7 +1448,7 @@ digraph G {
     26 [label="call zero_widget\nSC: {Zero_Widget}\n<VId: 26>",shape="box"];
     27 [label="obj'in&nbsp;:=&nbsp;widget_t(obj)'discr_or_bounds\n<VId: 27>",shape="plaintext"];
     28 [label="widget_t(obj)&nbsp;:=&nbsp;obj'out\nVD: {Obj.X, Obj.Y}\n<VId: 28>",shape="plaintext"];
-    29 [label="n := hash__3 (obj);\nVU: {Obj.X, Obj.Y, Obj.Round}\nSC: {Hash}\nVD: {N}\n<VId: 29>"];
+    29 [label="n := obj.hash__3;\nVU: {Obj.X, Obj.Y, Obj.Round}\nSC: {Hash}\nVD: {N}\n<VId: 29>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];
@@ -1497,7 +1497,7 @@ digraph G {
     24 [label="Obj.X'initial\nVD: {Obj.X}\n<VId: 24>",shape="plaintext",fontcolor="red"];
     25 [label="Obj.X'final\nVU: {Obj.X}\n<VId: 25>",shape="plaintext"];
     26 [label="obj : nice_widget_t := (x => a,y => b,round => c);\nVU: {A, B, C}\nVD: {Obj.X, Obj.Y, Obj.Round}\n<VId: 26>"];
-    31 [label="n := hash__3 (obj);\nVU: {Obj.X, Obj.Y, Obj.Round}\nSC: {Hash}\nVD: {N}\n<VId: 31>"];
+    31 [label="n := obj.hash__3;\nVU: {Obj.X, Obj.Y, Obj.Round}\nSC: {Hash}\nVD: {N}\n<VId: 31>"];
 
 subgraph cluster1 {
   style=filled;
@@ -1560,7 +1560,7 @@ digraph G {
     28 [label="call zero_widget__2\nSC: {Zero_Widget}\n<VId: 28>",shape="box"];
     29 [label="obj'in&nbsp;:=&nbsp;obj'discr_or_bounds\n<VId: 29>",shape="plaintext"];
     30 [label="obj&nbsp;:=&nbsp;obj'out\nVD: {Obj.Round, Obj.Y, Obj.X}\n<VId: 30>",shape="plaintext"];
-    31 [label="n := hash__3 (obj);\nVU: {Obj.X, Obj.Y, Obj.Round}\nSC: {Hash}\nVD: {N}\n<VId: 31>"];
+    31 [label="n := obj.hash__3;\nVU: {Obj.X, Obj.Y, Obj.Round}\nSC: {Hash}\nVD: {N}\n<VId: 31>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  26 [arrowType="normal"];
@@ -1627,7 +1627,7 @@ digraph G {
     47 [label="Tmp2.X'initial\nVD: {Tmp2.X}\n<VId: 47>",shape="plaintext",fontcolor="red"];
     48 [label="Tmp2.X'final\nVU: {Tmp2.X}\n<VId: 48>",shape="plaintext"];
     49 [label="tmp2 : widget_t := widget_t(tmp.b);\nVU: {Tmp.B.X, Tmp.B.Y}\nVD: {Tmp2.X, Tmp2.Y}\n<VId: 49>"];
-    50 [label="n := hash__2 (tmp2);\nVU: {Tmp2.X, Tmp2.Y}\nSC: {Hash}\nVD: {N}\n<VId: 50>"];
+    50 [label="n := tmp2.hash__2;\nVU: {Tmp2.X, Tmp2.Y}\nSC: {Hash}\nVD: {N}\n<VId: 50>"];
 
 subgraph cluster1 {
   style=filled;
@@ -1739,7 +1739,7 @@ digraph G {
     47 [label="Tmp2.X'initial\nVD: {Tmp2.X}\n<VId: 47>",shape="plaintext",fontcolor="red"];
     48 [label="Tmp2.X'final\nVU: {Tmp2.X}\n<VId: 48>",shape="plaintext"];
     49 [label="tmp2 : widget_t := widget_t(tmp.b);\nVU: {Tmp.B.X, Tmp.B.Y}\nVD: {Tmp2.X, Tmp2.Y}\n<VId: 49>"];
-    50 [label="n := hash__2 (tmp2);\nVU: {Tmp2.X, Tmp2.Y}\nSC: {Hash}\nVD: {N}\n<VId: 50>"];
+    50 [label="n := tmp2.hash__2;\nVU: {Tmp2.X, Tmp2.Y}\nSC: {Hash}\nVD: {N}\n<VId: 50>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];
@@ -1833,7 +1833,7 @@ digraph G {
     48 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 48>",shape="plaintext",fontcolor="red"];
     49 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 49>",shape="plaintext"];
     50 [label="tmp : widget_t := widget_t(obj.b);\nVU: {Obj.B.X, Obj.B.Y}\nVD: {Tmp.X, Tmp.Y}\n<VId: 50>"];
-    51 [label="n := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 51>"];
+    51 [label="n := tmp.hash__2;\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 51>"];
 
 subgraph cluster1 {
   style=filled;
@@ -1949,7 +1949,7 @@ digraph G {
     48 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 48>",shape="plaintext",fontcolor="red"];
     49 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 49>",shape="plaintext"];
     50 [label="tmp : widget_t := widget_t(obj.b);\nVU: {Obj.B.X, Obj.B.Y}\nVD: {Tmp.X, Tmp.Y}\n<VId: 50>"];
-    51 [label="n := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 51>"];
+    51 [label="n := tmp.hash__2;\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 51>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  40 [arrowType="normal"];
@@ -2015,7 +2015,7 @@ digraph G {
     15 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 15>",shape="plaintext",fontcolor="red"];
     16 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 16>",shape="plaintext"];
     17 [label="tmp : widget_t := null_widget;\nVD: {Tmp.X, Tmp.Y}\n<VId: 17>"];
-    18 [label="n := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 18>"];
+    18 [label="n := tmp.hash__2;\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 18>"];
 
     1 ->  17 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -2046,7 +2046,7 @@ digraph G {
     15 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 15>",shape="plaintext",fontcolor="red"];
     16 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 16>",shape="plaintext"];
     17 [label="tmp : widget_t := null_widget;\nVD: {Tmp.X, Tmp.Y}\n<VId: 17>"];
-    18 [label="n := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 18>"];
+    18 [label="n := tmp.hash__2;\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 18>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  17 [arrowType="normal"];
@@ -2202,7 +2202,7 @@ digraph G {
     52 [label="tmp.a := widget_t(obj);\nVU: {Obj.Y, Obj.X}\nVD: {Tmp.A.Y, Tmp.A.X}\n<VId: 52>"];
     53 [label="tmp.b := obj;\nVU: {Obj.Round, Obj.Y, Obj.X}\nVD: {Tmp.B.Round, Tmp.B.Y, Tmp.B.X}\n<VId: 53>"];
     54 [label="tmp2 := widget_t(tmp.b);\nVU: {Tmp.B.Y, Tmp.B.X}\nVD: {Tmp2.Y, Tmp2.X}\n<VId: 54>"];
-    55 [label="x := hash__2 (tmp2);\nVU: {Tmp2.X, Tmp2.Y}\nSC: {Hash}\nVD: {X}\n<VId: 55>"];
+    55 [label="x := tmp2.hash__2;\nVU: {Tmp2.X, Tmp2.Y}\nSC: {Hash}\nVD: {X}\n<VId: 55>"];
     56 [label="y := tmp.b.round;\nVU: {Tmp.B.Round}\nVD: {Y}\n<VId: 56>"];
     57 [label="z := tmp.a.y;\nVU: {Tmp.A.Y}\nVD: {Z}\n<VId: 57>"];
 
@@ -2311,7 +2311,7 @@ digraph G {
     52 [label="tmp.a := widget_t(obj);\nVU: {Obj.Y, Obj.X}\nVD: {Tmp.A.Y, Tmp.A.X}\n<VId: 52>"];
     53 [label="tmp.b := obj;\nVU: {Obj.Round, Obj.Y, Obj.X}\nVD: {Tmp.B.Round, Tmp.B.Y, Tmp.B.X}\n<VId: 53>"];
     54 [label="tmp2 := widget_t(tmp.b);\nVU: {Tmp.B.Y, Tmp.B.X}\nVD: {Tmp2.Y, Tmp2.X}\n<VId: 54>"];
-    55 [label="x := hash__2 (tmp2);\nVU: {Tmp2.X, Tmp2.Y}\nSC: {Hash}\nVD: {X}\n<VId: 55>"];
+    55 [label="x := tmp2.hash__2;\nVU: {Tmp2.X, Tmp2.Y}\nSC: {Hash}\nVD: {X}\n<VId: 55>"];
     56 [label="y := tmp.b.round;\nVU: {Tmp.B.Round}\nVD: {Y}\n<VId: 56>"];
     57 [label="z := tmp.a.y;\nVU: {Tmp.A.Y}\nVD: {Z}\n<VId: 57>"];
 
@@ -2550,7 +2550,7 @@ digraph G {
     30 [label="R19b.Present'final\nVU: {R19b.Present}\n<VId: 30>",shape="plaintext"];
     31 [label="R19b : constant holder := id (h1);\nVU: {H1.Content.Present, H1.Content.Field, H1.Present}\nSC: {Id}\nVD: {R19b.Present, R19b.Content.Field, R19b.Content.Present}\n<VId: 31>"];
     32 [label="subtype S20b is record_with_mutable_discrs (R19b.present);\n<VId: 32>"];
-    33 [label="x := R19b.content.present;\nVU: {R19b.Content.Present}\nVD: {X}\n<VId: 33>"];
+    33 [label="x := id (h1).content.present;\nVU: {R19b.Content.Present}\nVD: {X}\n<VId: 33>"];
 
     1 ->  11 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -2612,7 +2612,7 @@ digraph G {
     30 [label="R19b.Present'final\nVU: {R19b.Present}\n<VId: 30>",shape="plaintext"];
     31 [label="R19b : constant holder := id (h1);\nVU: {H1.Content.Present, H1.Content.Field, H1.Present}\nSC: {Id}\nVD: {R19b.Present, R19b.Content.Field, R19b.Content.Present}\n<VId: 31>"];
     32 [label="subtype S20b is record_with_mutable_discrs (R19b.present);\n<VId: 32>"];
-    33 [label="x := R19b.content.present;\nVU: {R19b.Content.Present}\nVD: {X}\n<VId: 33>"];
+    33 [label="x := id (h1).content.present;\nVU: {R19b.Content.Present}\nVD: {X}\n<VId: 33>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  11 [arrowType="normal"];
@@ -2822,8 +2822,8 @@ digraph G {
     30 [label="Tmp2.W'Private_Part'final\nVU: {Tmp2.W'Private_Part}\n<VId: 30>",shape="plaintext"];
     31 [label="Tmp2.Valid'initial\nVD: {Tmp2.Valid}\n<VId: 31>",shape="plaintext",fontcolor="red"];
     32 [label="Tmp2.Valid'final\nVU: {Tmp2.Valid}\n<VId: 32>",shape="plaintext"];
-    41 [label="n := hash__4 (tmp2.w);\nVU: {Tmp2.W.X, Tmp2.W.Y, Tmp2.W'Private_Part}\nSC: {Hash}\nVD: {N}\n<VId: 41>"];
-    42 [label="m := hash__2 (widget_t(tmp2.w));\nVU: {Tmp2.W.X, Tmp2.W.Y}\nSC: {Hash}\nVD: {M}\n<VId: 42>"];
+    41 [label="n := tmp2.w.hash__4;\nVU: {Tmp2.W.X, Tmp2.W.Y, Tmp2.W'Private_Part}\nSC: {Hash}\nVD: {N}\n<VId: 41>"];
+    42 [label="m := widget_t(tmp2.w).hash__2;\nVU: {Tmp2.W.X, Tmp2.W.Y}\nSC: {Hash}\nVD: {M}\n<VId: 42>"];
 
 subgraph cluster1 {
   style=filled;
@@ -2920,8 +2920,8 @@ digraph G {
     38 [label="Tmp2.W.Y => Tmp.Y\nVU: {Tmp.Y}\nVD: {Tmp2.W.Y}\n<VId: 38>"];
     39 [label="Tmp2.W.X => Tmp.X\nVU: {Tmp.X}\nVD: {Tmp2.W.X}\n<VId: 39>"];
     40 [label="Tmp2.Valid => null\nVD: {Tmp2.Valid}\n<VId: 40>"];
-    41 [label="n := hash__4 (tmp2.w);\nVU: {Tmp2.W.X, Tmp2.W.Y, Tmp2.W'Private_Part}\nSC: {Hash}\nVD: {N}\n<VId: 41>"];
-    42 [label="m := hash__2 (widget_t(tmp2.w));\nVU: {Tmp2.W.X, Tmp2.W.Y}\nSC: {Hash}\nVD: {M}\n<VId: 42>"];
+    41 [label="n := tmp2.w.hash__4;\nVU: {Tmp2.W.X, Tmp2.W.Y, Tmp2.W'Private_Part}\nSC: {Hash}\nVD: {N}\n<VId: 41>"];
+    42 [label="m := widget_t(tmp2.w).hash__2;\nVU: {Tmp2.W.X, Tmp2.W.Y}\nSC: {Hash}\nVD: {M}\n<VId: 42>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  14 [arrowType="normal"];
@@ -2977,7 +2977,7 @@ digraph G {
     13 [label="Tmp.Y'final\nVU: {Tmp.Y}\n<VId: 13>",shape="plaintext"];
     14 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 14>",shape="plaintext",fontcolor="red"];
     15 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 15>",shape="plaintext"];
-    20 [label="n := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
+    20 [label="n := tmp.hash__2;\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
 
 subgraph cluster1 {
   style=filled;
@@ -3023,7 +3023,7 @@ digraph G {
     17 [label="call other.new_widget\nSC: {New_Widget}\n<VId: 17>",shape="box"];
     18 [label="x'in&nbsp;:=&nbsp;tmp'discr_or_bounds\n<VId: 18>",shape="plaintext"];
     19 [label="tmp&nbsp;:=&nbsp;x'out\nVD: {Tmp.Y, Tmp.X}\n<VId: 19>",shape="plaintext"];
-    20 [label="n := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
+    20 [label="n := tmp.hash__2;\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  8 [arrowType="normal"];
@@ -3207,7 +3207,7 @@ digraph G {
     41 [label="Z.X'initial\nVD: {Z.X}\n<VId: 41>",shape="plaintext",fontcolor="red"];
     42 [label="Z.X'final\nVU: {Z.X}\n<VId: 42>",shape="plaintext"];
     43 [label="z : nice_widget_t := nice_widget_t(y);\nVU: {Y.X, Y.Y}\nVD: {Z.X, Z.Y, Z.Round}\n<VId: 43>"];
-    44 [label="n := hash__2 (y);\nVU: {Y.X, Y.Y, Y'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 44>"];
+    44 [label="n := y.hash__2;\nVU: {Y.X, Y.Y, Y'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 44>"];
     45 [label="m := {z.x};\nVU: {Z.X}\nVD: {M}\n<VId: 45>"];
     46 [label="o := z.round;\nVU: {Z.Round}\nVD: {O}\n<VId: 46>"];
 
@@ -3299,7 +3299,7 @@ digraph G {
     41 [label="Z.X'initial\nVD: {Z.X}\n<VId: 41>",shape="plaintext",fontcolor="red"];
     42 [label="Z.X'final\nVU: {Z.X}\n<VId: 42>",shape="plaintext"];
     43 [label="z : nice_widget_t := nice_widget_t(y);\nVU: {Y.X, Y.Y}\nVD: {Z.X, Z.Y, Z.Round}\n<VId: 43>"];
-    44 [label="n := hash__2 (y);\nVU: {Y.X, Y.Y, Y'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 44>"];
+    44 [label="n := y.hash__2;\nVU: {Y.X, Y.Y, Y'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 44>"];
     45 [label="m := {z.x};\nVU: {Z.X}\nVD: {M}\n<VId: 45>"];
     46 [label="o := z.round;\nVU: {Z.Round}\nVD: {O}\n<VId: 46>"];
 
@@ -3359,7 +3359,7 @@ digraph G {
     17 [label="Tmp'group'initial\n<VId: 17>",shape="plaintext"];
     18 [label="Tmp'Extensions'final\nVU: {Tmp'Extensions}\n<VId: 18>",shape="plaintext"];
     19 [label="tmp : constant root_t'class := obj;\nVU: {Obj'Extensions}\nVD: {Tmp'Extensions}\n<VId: 19>"];
-    20 [label="n := hash (tmp);\nVU: {Tmp'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
+    20 [label="n := tmp.hash;\nVU: {Tmp'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
 
     1 ->  19 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -3391,7 +3391,7 @@ digraph G {
     17 [label="Tmp'group'initial\n<VId: 17>",shape="plaintext"];
     18 [label="Tmp'Extensions'final\nVU: {Tmp'Extensions}\n<VId: 18>",shape="plaintext"];
     19 [label="tmp : constant root_t'class := obj;\nVU: {Obj'Extensions}\nVD: {Tmp'Extensions}\n<VId: 19>"];
-    20 [label="n := hash (tmp);\nVU: {Tmp'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
+    20 [label="n := tmp.hash;\nVU: {Tmp'Extensions}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  19 [arrowType="normal"];
@@ -3611,8 +3611,8 @@ digraph G {
     23 [label="X.X'initial\nVD: {X.X}\n<VId: 23>",shape="plaintext",fontcolor="red"];
     24 [label="X.X'final\nVU: {X.X}\n<VId: 24>",shape="plaintext"];
     25 [label="x : widget_t := (x => a,y => 0);\nVU: {A}\nVD: {X.X, X.Y}\n<VId: 25>"];
-    26 [label="m := hash__2 (w);\nVU: {W.X, W.Y}\nSC: {Hash}\nVD: {M}\n<VId: 26>"];
-    27 [label="n := hash__2 (x);\nVU: {X.X, X.Y}\nSC: {Hash}\nVD: {N}\n<VId: 27>"];
+    26 [label="m := w.hash__2;\nVU: {W.X, W.Y}\nSC: {Hash}\nVD: {M}\n<VId: 26>"];
+    27 [label="n := x.hash__2;\nVU: {X.X, X.Y}\nSC: {Hash}\nVD: {N}\n<VId: 27>"];
 
     1 ->  25 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -3663,8 +3663,8 @@ digraph G {
     23 [label="X.X'initial\nVD: {X.X}\n<VId: 23>",shape="plaintext",fontcolor="red"];
     24 [label="X.X'final\nVU: {X.X}\n<VId: 24>",shape="plaintext"];
     25 [label="x : widget_t := (x => a,y => 0);\nVU: {A}\nVD: {X.X, X.Y}\n<VId: 25>"];
-    26 [label="m := hash__2 (w);\nVU: {W.X, W.Y}\nSC: {Hash}\nVD: {M}\n<VId: 26>"];
-    27 [label="n := hash__2 (x);\nVU: {X.X, X.Y}\nSC: {Hash}\nVD: {N}\n<VId: 27>"];
+    26 [label="m := w.hash__2;\nVU: {W.X, W.Y}\nSC: {Hash}\nVD: {M}\n<VId: 26>"];
+    27 [label="n := x.hash__2;\nVU: {X.X, X.Y}\nSC: {Hash}\nVD: {N}\n<VId: 27>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];
@@ -3743,16 +3743,16 @@ digraph G {
     58 [label="ZZ.X'final\nVU: {ZZ.X}\n<VId: 58>",shape="plaintext"];
     59 [label="zz : widget_t'class := widget_t'class(w);\nVU: {W.X, W.Y, W'Extensions}\nVD: {ZZ.X, ZZ.Y, ZZ'Extensions}\n<VId: 59>"];
     60 [label="x.x := 0;\nVD: {X.X}\n<VId: 60>"];
-    61 [label="o1 := hash__2 (x);\nVU: {X.X, X.Y}\nSC: {Hash}\nVD: {O1}\n<VId: 61>"];
+    61 [label="o1 := x.hash__2;\nVU: {X.X, X.Y}\nSC: {Hash}\nVD: {O1}\n<VId: 61>"];
     62 [label="y.x := 0;\nVD: {Y.X}\n<VId: 62>"];
     63 [label="y.y := 0;\nVD: {Y.Y}\n<VId: 63>"];
-    64 [label="o2 := hash__2 (y);\nVU: {Y.X, Y.Y}\nSC: {Hash}\nVD: {O2}\n<VId: 64>"];
+    64 [label="o2 := y.hash__2;\nVU: {Y.X, Y.Y}\nSC: {Hash}\nVD: {O2}\n<VId: 64>"];
     65 [label="z.x := 0;\nVD: {Z.X}\n<VId: 65>"];
-    66 [label="o3 := hash__2 (z);\nVU: {Z.X, Z.Y, Z'Extensions}\nSC: {Hash}\nVD: {O3}\n<VId: 66>"];
+    66 [label="o3 := z.hash__2;\nVU: {Z.X, Z.Y, Z'Extensions}\nSC: {Hash}\nVD: {O3}\n<VId: 66>"];
     67 [label="zz.x := 0;\nVD: {ZZ.X}\n<VId: 67>"];
     68 [label="zz.y := 0;\nVD: {ZZ.Y}\n<VId: 68>"];
-    69 [label="o4 := hash__2 (zz);\nVU: {ZZ.X, ZZ.Y, ZZ'Extensions}\nSC: {Hash}\nVD: {O4}\n<VId: 69>"];
-    70 [label="o5 := hash__2 (widget_t'class(w'update((x => 0,y => {a}))));\nVU: {A, W'Extensions}\nSC: {Hash}\nVD: {O5}\n<VId: 70>"];
+    69 [label="o4 := zz.hash__2;\nVU: {ZZ.X, ZZ.Y, ZZ'Extensions}\nSC: {Hash}\nVD: {O4}\n<VId: 69>"];
+    70 [label="o5 := widget_t'class(w'update((x => 0,y => {a}))).hash__2;\nVU: {A, W'Extensions}\nSC: {Hash}\nVD: {O5}\n<VId: 70>"];
 
     1 ->  35 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -3879,16 +3879,16 @@ digraph G {
     58 [label="ZZ.X'final\nVU: {ZZ.X}\n<VId: 58>",shape="plaintext"];
     59 [label="zz : widget_t'class := widget_t'class(w);\nVU: {W.X, W.Y, W'Extensions}\nVD: {ZZ.X, ZZ.Y, ZZ'Extensions}\n<VId: 59>"];
     60 [label="x.x := 0;\nVD: {X.X}\n<VId: 60>"];
-    61 [label="o1 := hash__2 (x);\nVU: {X.X, X.Y}\nSC: {Hash}\nVD: {O1}\n<VId: 61>"];
+    61 [label="o1 := x.hash__2;\nVU: {X.X, X.Y}\nSC: {Hash}\nVD: {O1}\n<VId: 61>"];
     62 [label="y.x := 0;\nVD: {Y.X}\n<VId: 62>"];
     63 [label="y.y := 0;\nVD: {Y.Y}\n<VId: 63>"];
-    64 [label="o2 := hash__2 (y);\nVU: {Y.X, Y.Y}\nSC: {Hash}\nVD: {O2}\n<VId: 64>"];
+    64 [label="o2 := y.hash__2;\nVU: {Y.X, Y.Y}\nSC: {Hash}\nVD: {O2}\n<VId: 64>"];
     65 [label="z.x := 0;\nVD: {Z.X}\n<VId: 65>"];
-    66 [label="o3 := hash__2 (z);\nVU: {Z.X, Z.Y, Z'Extensions}\nSC: {Hash}\nVD: {O3}\n<VId: 66>"];
+    66 [label="o3 := z.hash__2;\nVU: {Z.X, Z.Y, Z'Extensions}\nSC: {Hash}\nVD: {O3}\n<VId: 66>"];
     67 [label="zz.x := 0;\nVD: {ZZ.X}\n<VId: 67>"];
     68 [label="zz.y := 0;\nVD: {ZZ.Y}\n<VId: 68>"];
-    69 [label="o4 := hash__2 (zz);\nVU: {ZZ.X, ZZ.Y, ZZ'Extensions}\nSC: {Hash}\nVD: {O4}\n<VId: 69>"];
-    70 [label="o5 := hash__2 (widget_t'class(w'update((x => 0,y => {a}))));\nVU: {A, W'Extensions}\nSC: {Hash}\nVD: {O5}\n<VId: 70>"];
+    69 [label="o4 := zz.hash__2;\nVU: {ZZ.X, ZZ.Y, ZZ'Extensions}\nSC: {Hash}\nVD: {O4}\n<VId: 69>"];
+    70 [label="o5 := widget_t'class(w'update((x => 0,y => {a}))).hash__2;\nVU: {A, W'Extensions}\nSC: {Hash}\nVD: {O5}\n<VId: 70>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  59 [arrowType="normal"];
@@ -4804,7 +4804,7 @@ digraph G {
     23 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 23>",shape="plaintext",fontcolor="red"];
     24 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 24>",shape="plaintext"];
     25 [label="tmp : widget_t'class := w1;\nVU: {W1'Extensions, W1.X, W1.Y}\nVD: {Tmp.X, Tmp.Y, Tmp'Extensions}\n<VId: 25>"];
-    26 [label="o1 := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y, Tmp'Extensions}\nSC: {Hash}\nVD: {O1}\n<VId: 26>"];
+    26 [label="o1 := tmp.hash__2;\nVU: {Tmp.X, Tmp.Y, Tmp'Extensions}\nSC: {Hash}\nVD: {O1}\n<VId: 26>"];
 
     1 ->  25 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -4856,7 +4856,7 @@ digraph G {
     23 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 23>",shape="plaintext",fontcolor="red"];
     24 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 24>",shape="plaintext"];
     25 [label="tmp : widget_t'class := w1;\nVU: {W1'Extensions, W1.X, W1.Y}\nVD: {Tmp.X, Tmp.Y, Tmp'Extensions}\n<VId: 25>"];
-    26 [label="o1 := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y, Tmp'Extensions}\nSC: {Hash}\nVD: {O1}\n<VId: 26>"];
+    26 [label="o1 := tmp.hash__2;\nVU: {Tmp.X, Tmp.Y, Tmp'Extensions}\nSC: {Hash}\nVD: {O1}\n<VId: 26>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  25 [arrowType="normal"];
@@ -5674,7 +5674,7 @@ digraph G {
     13 [label="Tmp.Y'final\nVU: {Tmp.Y}\n<VId: 13>",shape="plaintext"];
     14 [label="Tmp.X'initial\nVD: {Tmp.X}\n<VId: 14>",shape="plaintext",fontcolor="red"];
     15 [label="Tmp.X'final\nVU: {Tmp.X}\n<VId: 15>",shape="plaintext"];
-    20 [label="n := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
+    20 [label="n := tmp.hash__2;\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
     21 [label="Hash'initial\nVD: {Hash}\n<VId: 21>",shape="plaintext"];
     22 [label="Hash'final\nVU: {Hash}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
     23 [label="New_Widget'initial\nVD: {New_Widget}\n<VId: 23>",shape="plaintext"];
@@ -5728,7 +5728,7 @@ digraph G {
     17 [label="call other.new_widget\nSC: {New_Widget}\n<VId: 17>",shape="box"];
     18 [label="x'in&nbsp;:=&nbsp;tmp'discr_or_bounds\n<VId: 18>",shape="plaintext"];
     19 [label="tmp&nbsp;:=&nbsp;x'out\nVD: {Tmp.Y, Tmp.X}\n<VId: 19>",shape="plaintext"];
-    20 [label="n := hash__2 (tmp);\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
+    20 [label="n := tmp.hash__2;\nVU: {Tmp.X, Tmp.Y}\nSC: {Hash}\nVD: {N}\n<VId: 20>"];
     21 [label="Hash'initial\nVD: {Hash}\n<VId: 21>",shape="plaintext"];
     22 [label="Hash'final\nVU: {Hash}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
     23 [label="New_Widget'initial\nVD: {New_Widget}\n<VId: 23>",shape="plaintext"];
