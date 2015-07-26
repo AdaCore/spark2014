@@ -136,6 +136,7 @@ package body Gnat2Why.Error_Messages is
       E           : Entity_Id;
       Extra_Msg   : String := "";
       Tracefile   : String := "";
+      Cntexmp_Vc  : String := "";
       Cntexmpfile : String := "";
       VC_File     : String := "";
       How_Proved  : String := "";
@@ -153,6 +154,7 @@ package body Gnat2Why.Error_Messages is
          Kind,
          Place_First => Locate_On_First_Token (Kind),
          Tracefile   => Tracefile,
+         Cntexmp_Vc  => Cntexmp_Vc,
          Cntexmpfile => Cntexmpfile,
          VC_File     => VC_File,
          Editor_Cmd  => Editor_Cmd,
@@ -361,6 +363,9 @@ package body Gnat2Why.Error_Messages is
          Tracefile : constant String :=
            (if Has_Field (V, "tracefile") then Get (Get (V, "tracefile"))
             else "");
+         Cntexmp_Vc  : constant String :=
+           (if Has_Field (V, "cntexmp_vc") then Get (Get (V, "cntexmp_vc"))
+            else "");
          Cntexmpfile : constant String :=
            (if Has_Field (V, "cntexmpfile") then Get (Get (V, "cntexmpfile"))
             else "");
@@ -385,6 +390,7 @@ package body Gnat2Why.Error_Messages is
             Proved      => Proved,
             E           => VC.Entity,
             Tracefile   => Tracefile,
+            Cntexmp_Vc  => Cntexmp_Vc,
             Cntexmpfile => Cntexmpfile,
             VC_File     => VC_File,
             Editor_Cmd  => Editor_Cmd,

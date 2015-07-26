@@ -84,6 +84,7 @@ package body Flow_Error_Messages is
       E           : Entity_Id;
       Msg_Id      : Message_Id;
       Tracefile   : String := "";
+      Cntexmp_Vc  : String := "";
       Cntexmpfile : String := "";
       VC_File     : String := "";
       How_Proved  : String := "";
@@ -392,6 +393,7 @@ package body Flow_Error_Messages is
       Is_Proved   : Boolean;
       Tag         : VC_Kind;
       Tracefile   : String;
+      Cntexmp_Vc  : String;
       Cntexmpfile : String;
       VC_File     : String;
       Editor_Cmd  : String;
@@ -403,6 +405,9 @@ package body Flow_Error_Messages is
         (if Is_Proved then Info_Kind else Medium_Check_Kind);
       Msg2     : constant String :=
         Compute_Message (Msg, N);
+      Msg3     : constant String :=
+        (if Cntexmp_Vc /= "" then Msg2 & ", counter-example: " & Cntexmp_Vc
+         else Msg2);
       Suppr    : String_Id := No_String;
       Slc      : constant Source_Ptr := Compute_Sloc (N, Place_First);
       Msg_Id   : Message_Id := No_Message_Id;
@@ -422,11 +427,11 @@ package body Flow_Error_Messages is
             if Is_Annot then
                Suppr := Info.Reason;
             else
-               Msg_Id := Print_Regular_Msg (Msg2, Slc, Kind);
+               Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind);
             end if;
          when Info_Kind =>
             if Report_Mode /= GPR_Fail then
-               Msg_Id := Print_Regular_Msg (Msg2, Slc, Kind);
+               Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind);
             end if;
          when Error_Kind | Warning_Kind =>
             --  cannot happen
@@ -442,6 +447,7 @@ package body Flow_Error_Messages is
          Msg_Id      => Msg_Id,
          E           => E,
          Tracefile   => Tracefile,
+         Cntexmp_Vc  => Cntexmp_Vc,
          Cntexmpfile => Cntexmpfile,
          VC_File     => VC_File,
          How_Proved  => How_Proved,
@@ -531,6 +537,7 @@ package body Flow_Error_Messages is
       E           : Entity_Id;
       Msg_Id      : Message_Id;
       Tracefile   : String := "";
+      Cntexmp_Vc  : String := "";
       Cntexmpfile : String := "";
       VC_File     : String := "";
       How_Proved  : String := "";
@@ -565,6 +572,10 @@ package body Flow_Error_Messages is
 
       if Tracefile /= "" then
          Set_Field (Value, "tracefile", Tracefile);
+      end if;
+
+      if Cntexmp_Vc /= "" then
+         Set_Field (Value, "cntexmp_vc", Cntexmp_Vc);
       end if;
 
       if Cntexmpfile /= "" then
