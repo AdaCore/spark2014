@@ -1,8 +1,12 @@
 sorters.adb:15:16: medium: postcondition might fail, requires Values = Values'Old'update
+sorters.adb:15:45: info: range check proved
 sorters.adb:15:62: info: index check proved
+sorters.adb:16:45: info: range check proved
 sorters.adb:16:62: info: index check proved
 sorters.adb:19:15: medium: length check might fail
+sorters.adb:19:33: info: range check proved
 sorters.adb:19:46: info: index check proved
+sorters.adb:20:33: info: range check proved
 sorters.adb:20:46: info: index check proved
 sorters.adb:30:10: info: postcondition proved
 sorters.adb:32:39: info: index check proved

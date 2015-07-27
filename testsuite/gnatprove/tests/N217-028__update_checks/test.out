@@ -40,6 +40,7 @@ ar.adb:128:25: medium: range check might fail
 ar.adb:128:33: medium: range check might fail
 ar.adb:128:42: medium: range check might fail
 ar.adb:134:04: warning: analyzing unreferenced procedure "Test13"
+ar.adb:137:27: info: range check proved
 ar.adb:137:39: medium: range check might fail
 ar.ads:19:05: info: postcondition proved
 ar.ads:19:25: info: range check proved

@@ -92,6 +92,12 @@ package body Why.Gen.Expr is
    --  not allow retrieving the name of the appropriate conversion function,
    --  only the abstract fixed-point type allows it.
 
+   function Is_Choice_Of_Unconstrained_Array_Update
+     (Node : Node_Id) return Boolean;
+   --  Determines whether the node is some kind of a choice of a 'Update of
+   --  an unconstrained array. This is useful for producing the extra
+   --  checks required for updates of unconstrained arrays.
+
    Temp_Names_Map : Why_Node_Maps.Map := Why_Node_Maps.Empty_Map;
 
    --------------------------------------
@@ -586,6 +592,57 @@ package body Why.Gen.Expr is
       return T;
    end Insert_Array_Conversion;
 
+   ---------------------------------------------
+   -- Is_Choice_Of_Unconstrained_Array_Update --
+   ---------------------------------------------
+
+   function Is_Choice_Of_Unconstrained_Array_Update
+     (Node : Node_Id) return Boolean
+   is
+      Possibly_Choice_Node,
+      Attribute_Node :      Node_Id;
+   begin
+
+      if Nkind (Parent (Node)) = N_Component_Association
+      then
+         Possibly_Choice_Node := Node;
+      elsif Nkind (Parent (Node)) = N_Range
+        and then Nkind (Parent (Parent (Node))) = N_Component_Association
+      then
+         Possibly_Choice_Node := Parent (Node);
+      else
+         return False;
+      end if;
+
+      if Nkind (Parent (Parent (Possibly_Choice_Node))) = N_Aggregate
+      then
+         Attribute_Node := Parent (Parent (Parent (Possibly_Choice_Node)));
+      else
+         return False;
+      end if;
+
+      if Nkind (Attribute_Node) = N_Attribute_Reference
+        and then
+        Get_Attribute_Id (Attribute_Name (Attribute_Node)) = Attribute_Update
+        and then
+        Is_Array_Type (Etype (Prefix (Attribute_Node)))
+        and then
+        not (Is_Constrained (Etype (Prefix (Attribute_Node))))
+        and then
+        Is_List_Member (Possibly_Choice_Node)
+        and then
+        Present (Choices (Parent (Possibly_Choice_Node)))
+        and then
+        List_Containing (Possibly_Choice_Node) =
+        Choices (Parent (Possibly_Choice_Node))
+      then
+         return True;
+      else
+         return False;
+      end if;
+
+   end Is_Choice_Of_Unconstrained_Array_Update;
+
    -------------------------------
    -- Insert_Checked_Conversion --
    -------------------------------
@@ -608,6 +665,8 @@ package body Why.Gen.Expr is
          then
             Check_Needed_On_Conversion (From => Get_Ada_Node (+From),
                                         To   => Get_Ada_Node (+To))
+            or else
+            Is_Choice_Of_Unconstrained_Array_Update (Ada_Node)
          else
             True);
 
@@ -672,6 +731,9 @@ package body Why.Gen.Expr is
                   and then Ekind (Get_Formal_From_Actual (Ada_Node)) in
                     E_In_Out_Parameter | E_Out_Parameter
                   then
+                     True
+                  elsif Nkind (Parent (Ada_Node)) = N_Range
+                  and then Do_Range_Check (Parent (Ada_Node)) then
                      True
                   else False)
                else False);
@@ -1268,7 +1330,30 @@ package body Why.Gen.Expr is
 
          when N_Range =>
 
-            Check_Type := Etype (Par);
+            if Is_Choice_Of_Unconstrained_Array_Update (Par)
+            then
+               declare
+                  Pref        : Node_Id;
+                  Prefix_Type : Entity_Id;
+
+               begin
+                  pragma Assert (Nkind (Parent (Parent (Par))) = N_Aggregate);
+                  Pref := Prefix (Parent (Parent (Parent (Par))));
+
+                  if Is_Entity_Name (Pref)
+                    and then Present (Actual_Subtype (Entity (Pref)))
+                  then
+                     Prefix_Type := Actual_Subtype (Entity (Pref));
+                  else
+                     Prefix_Type := Etype (Pref);
+                  end if;
+
+                  Check_Type :=
+                    Etype (First_Index (Unique_Entity (Prefix_Type)));
+               end;
+            else
+               Check_Type := Etype (Par);
+            end if;
 
          when N_Aggregate =>
 

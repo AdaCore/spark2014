@@ -129,7 +129,7 @@ package body AR is
    end Test12;
 
    --  'Update, choice is type range
-   --  Falsifiable range check. No check generated for choice.
+   --  Falsifiable range check. Check (valid here) is generated for choice too.
 
    procedure Test13 (A: in out Arr1T; E: in ET1)
    is

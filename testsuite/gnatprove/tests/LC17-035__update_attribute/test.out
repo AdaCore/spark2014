@@ -46,6 +46,7 @@ arrays.ads:61:32: info: length check proved
 arrays.ads:65:19: info: postcondition proved
 arrays.ads:69:19: info: postcondition proved
 arrays.ads:75:19: medium: postcondition might fail, requires A = A'Old'update
+arrays.ads:75:37: info: range check proved
 records.adb:21:27: medium: range check might fail
 records.adb:33:20: medium: overflow check might fail
 records.adb:34:20: medium: range check might fail
