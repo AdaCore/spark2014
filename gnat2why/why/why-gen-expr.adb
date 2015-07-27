@@ -592,57 +592,6 @@ package body Why.Gen.Expr is
       return T;
    end Insert_Array_Conversion;
 
-   ---------------------------------------------
-   -- Is_Choice_Of_Unconstrained_Array_Update --
-   ---------------------------------------------
-
-   function Is_Choice_Of_Unconstrained_Array_Update
-     (Node : Node_Id) return Boolean
-   is
-      Possibly_Choice_Node,
-      Attribute_Node :      Node_Id;
-   begin
-
-      if Nkind (Parent (Node)) = N_Component_Association
-      then
-         Possibly_Choice_Node := Node;
-      elsif Nkind (Parent (Node)) = N_Range
-        and then Nkind (Parent (Parent (Node))) = N_Component_Association
-      then
-         Possibly_Choice_Node := Parent (Node);
-      else
-         return False;
-      end if;
-
-      if Nkind (Parent (Parent (Possibly_Choice_Node))) = N_Aggregate
-      then
-         Attribute_Node := Parent (Parent (Parent (Possibly_Choice_Node)));
-      else
-         return False;
-      end if;
-
-      if Nkind (Attribute_Node) = N_Attribute_Reference
-        and then
-        Get_Attribute_Id (Attribute_Name (Attribute_Node)) = Attribute_Update
-        and then
-        Is_Array_Type (Etype (Prefix (Attribute_Node)))
-        and then
-        not (Is_Constrained (Etype (Prefix (Attribute_Node))))
-        and then
-        Is_List_Member (Possibly_Choice_Node)
-        and then
-        Present (Choices (Parent (Possibly_Choice_Node)))
-        and then
-        List_Containing (Possibly_Choice_Node) =
-        Choices (Parent (Possibly_Choice_Node))
-      then
-         return True;
-      else
-         return False;
-      end if;
-
-   end Is_Choice_Of_Unconstrained_Array_Update;
-
    -------------------------------
    -- Insert_Checked_Conversion --
    -------------------------------
@@ -1329,9 +1278,7 @@ package body Why.Gen.Expr is
             end;
 
          when N_Range =>
-
-            if Is_Choice_Of_Unconstrained_Array_Update (Par)
-            then
+            if Is_Choice_Of_Unconstrained_Array_Update (Par) then
                declare
                   Pref        : Node_Id;
                   Prefix_Type : Entity_Id;
@@ -1928,6 +1875,54 @@ package body Why.Gen.Expr is
                   Args     => (1 => +Expr),
                   Typ      => To);
    end Insert_Single_Conversion;
+
+   ---------------------------------------------
+   -- Is_Choice_Of_Unconstrained_Array_Update --
+   ---------------------------------------------
+
+   function Is_Choice_Of_Unconstrained_Array_Update
+     (Node : Node_Id) return Boolean
+   is
+      Possibly_Choice_Node,
+      Attribute_Node :      Node_Id;
+
+   begin
+      if Nkind (Parent (Node)) = N_Component_Association then
+         Possibly_Choice_Node := Node;
+      elsif Nkind (Parent (Node)) = N_Range
+        and then Nkind (Parent (Parent (Node))) = N_Component_Association
+      then
+         Possibly_Choice_Node := Parent (Node);
+      else
+         return False;
+      end if;
+
+      if Nkind (Parent (Parent (Possibly_Choice_Node))) = N_Aggregate then
+         Attribute_Node := Parent (Parent (Parent (Possibly_Choice_Node)));
+      else
+         return False;
+      end if;
+
+      if Nkind (Attribute_Node) = N_Attribute_Reference
+        and then
+        Get_Attribute_Id (Attribute_Name (Attribute_Node)) = Attribute_Update
+        and then
+        Is_Array_Type (Etype (Prefix (Attribute_Node)))
+        and then
+        not (Is_Constrained (Etype (Prefix (Attribute_Node))))
+        and then
+        Is_List_Member (Possibly_Choice_Node)
+        and then
+        Present (Choices (Parent (Possibly_Choice_Node)))
+        and then
+        List_Containing (Possibly_Choice_Node) =
+        Choices (Parent (Possibly_Choice_Node))
+      then
+         return True;
+      else
+         return False;
+      end if;
+   end Is_Choice_Of_Unconstrained_Array_Update;
 
    ----------------------
    -- Is_False_Boolean --
