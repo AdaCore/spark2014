@@ -107,9 +107,10 @@ package body Flow.Control_Flow_Graph.Utility is
             Functions_Called.Include (Get_Called_Entity (N));
 
             if Convention (Get_Called_Entity (N)) = Convention_Protected then
-               pragma Assert (Nkind (Name (N)) = N_Selected_Component);
-               Tasking.PO_Read_Locks.Include
-                 (Direct_Mapping_Id (Entity (Prefix (Name (N)))));
+               if Nkind (Name (N)) = N_Selected_Component then
+                  Tasking.PO_Read_Locks.Include
+                    (Direct_Mapping_Id (Entity (Prefix (Name (N)))));
+               end if;
             end if;
          end if;
 
