@@ -11,8 +11,6 @@ my_pack.ads:14:22: info: postcondition proved
 
 
 
-                            Total      Flow   Interval     Provers   Justified   Unproved
-
   Full at full.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
 
   Full.Bump at full.ads:7 flow analyzed (0 errors and 0 warnings) and proved (3 checks)
@@ -39,35 +37,37 @@ my_pack.ads:14:22: info: postcondition proved
 
   the postcondition of My_Pack.Bump
 
------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
 
------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
 
------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------
 
 =========================
 
 Analyzed 2 units
 
-Assertions                      .         .          .           .           .          .
+Assertions                        .         .          .           .           .          .
 
-Data Dependencies               .         .          .           .           .          .
+Data Dependencies                 .         .          .           .           .          .
 
-Flow Dependencies               .         .          .           .           .          .
+Flow Dependencies                 .         .          .           .           .          .
 
-Functional Contracts            5         .          .    5 (CVC4)           .          .
+Functional Contracts              5         .          .    5 (CVC4)           .          .
 
-Initialization                  .         .          .           .           .          .
+Initialization                    .         .          .           .           .          .
 
-LSP Verification                .         .          .           .           .          .
+LSP Verification                  .         .          .           .           .          .
 
-Non-Aliasing                    .         .          .           .           .          .
+Non-Aliasing                      .         .          .           .           .          .
 
-Run-time Checks                 2         .          .    2 (CVC4)           .          .
+Run-time Checks                   2         .          .    2 (CVC4)           .          .
+
+SPARK Analysis results        Total      Flow   Interval     Provers   Justified   Unproved
 
 Summary of SPARK analysis
 
-Total                           7         .          .    7 (100%)           .          .
+Total                             7         .          .    7 (100%)           .          .
 
 absence of run-time errors of Full.Bump fully established
 

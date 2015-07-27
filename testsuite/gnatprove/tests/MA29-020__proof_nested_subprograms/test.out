@@ -72,19 +72,19 @@ skein.ads:269:52: info: length check proved
 Summary of SPARK analysis
 =========================
 
---------------------------------------------------------------------------------------------
-                            Total        Flow   Interval      Provers   Justified   Unproved
---------------------------------------------------------------------------------------------
-Data Dependencies               .           .          .            .           .          .
-Flow Dependencies               .           .          .            .           .          .
-Initialization                 27          27          .            .           .          .
-Non-Aliasing                    .           .          .            .           .          .
-Run-time Checks                28           .          .    23 (CVC4)           .          5
-Assertions                      .           .          .            .           .          .
-Functional Contracts            .           .          .            .           .          .
-LSP Verification                .           .          .            .           .          .
---------------------------------------------------------------------------------------------
-Total                          55    27 (49%)          .     23 (42%)           .     5 (9%)
+----------------------------------------------------------------------------------------------
+SPARK Analysis results        Total        Flow   Interval      Provers   Justified   Unproved
+----------------------------------------------------------------------------------------------
+Data Dependencies                 .           .          .            .           .          .
+Flow Dependencies                 .           .          .            .           .          .
+Initialization                   27          27          .            .           .          .
+Non-Aliasing                      .           .          .            .           .          .
+Run-time Checks                  28           .          .    23 (CVC4)           .          5
+Assertions                        .           .          .            .           .          .
+Functional Contracts              .           .          .            .           .          .
+LSP Verification                  .           .          .            .           .          .
+----------------------------------------------------------------------------------------------
+Total                            55    27 (49%)          .     23 (42%)           .     5 (9%)
 
 
 Analyzed 1 unit

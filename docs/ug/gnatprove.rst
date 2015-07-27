@@ -621,7 +621,7 @@ verification results of all checks in the project. The table may look like
 this::
 
       ----------------------------------------------------------------------------------------------------------------
-      Check type                  Total        Flow   Interval                          Provers   Justified   Unproved
+      SPARK Analysis Results      Total        Flow   Interval                          Provers   Justified   Unproved
       ----------------------------------------------------------------------------------------------------------------
       Data Dependencies               .           .          .                                .           .          .
       Flow Dependencies               .           .          .                                .           .          .
@@ -632,7 +632,7 @@ this::
       Functional Contracts          323           .          .    168 (altergo  24%, CVC4  76%)           .        155
       LSP Verification                .           .          .                                .           .          .
       ----------------------------------------------------------------------------------------------------------------
-      Total                        3022  2079 (69%)          .                        651 (22%)           .    292 (9%)
+      Total                        3022  2079 (69%)          .                        651 (22%)           .   292 (9%)
 
 The following table explains the lines of the summary table:
 

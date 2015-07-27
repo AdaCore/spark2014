@@ -289,7 +289,7 @@ procedure SPARK_Report is
          --  the very first cell is the upper left corner of the table, which
          --  is empty
 
-         Put_Cell (T, "");
+         Put_Cell (T, "SPARK Analysis results", Align => Left_Align);
          Put_Cell (T, "Total");
          Put_Cell (T, "Flow");
          Put_Cell (T, "Interval");
