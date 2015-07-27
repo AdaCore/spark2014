@@ -1883,9 +1883,7 @@ package body Why.Gen.Expr is
    function Is_Choice_Of_Unconstrained_Array_Update
      (Node : Node_Id) return Boolean
    is
-      Possibly_Choice_Node,
-      Attribute_Node :      Node_Id;
-
+      Possibly_Choice_Node, Attribute_Node : Node_Id;
    begin
       if Nkind (Parent (Node)) = N_Component_Association then
          Possibly_Choice_Node := Node;
@@ -1904,19 +1902,14 @@ package body Why.Gen.Expr is
       end if;
 
       if Nkind (Attribute_Node) = N_Attribute_Reference
-        and then
-        Get_Attribute_Id (Attribute_Name (Attribute_Node)) = Attribute_Update
-        and then
-        Is_Array_Type (Etype (Prefix (Attribute_Node)))
-        and then
-        not (Is_Constrained (Etype (Prefix (Attribute_Node))))
-        and then
-        Is_List_Member (Possibly_Choice_Node)
-        and then
-        Present (Choices (Parent (Possibly_Choice_Node)))
-        and then
-        List_Containing (Possibly_Choice_Node) =
-        Choices (Parent (Possibly_Choice_Node))
+        and then Get_Attribute_Id (Attribute_Name (Attribute_Node))
+                   = Attribute_Update
+        and then Is_Array_Type (Etype (Prefix (Attribute_Node)))
+        and then not (Is_Constrained (Etype (Prefix (Attribute_Node))))
+        and then Is_List_Member (Possibly_Choice_Node)
+        and then Present (Choices (Parent (Possibly_Choice_Node)))
+        and then List_Containing (Possibly_Choice_Node)
+                   = Choices (Parent (Possibly_Choice_Node))
       then
          return True;
       else
@@ -1928,8 +1921,7 @@ package body Why.Gen.Expr is
    -- Is_False_Boolean --
    ----------------------
 
-   function Is_False_Boolean (P : W_Expr_Id) return Boolean
-   is
+   function Is_False_Boolean (P : W_Expr_Id) return Boolean is
    begin
       return
          (Get_Kind (+P) = W_Literal and then
@@ -1940,8 +1932,7 @@ package body Why.Gen.Expr is
    -- Is_True_Boolean --
    ---------------------
 
-   function Is_True_Boolean (P : W_Expr_Id) return Boolean
-   is
+   function Is_True_Boolean (P : W_Expr_Id) return Boolean is
    begin
       return
          (Get_Kind (+P) = W_Literal and then
@@ -1956,8 +1947,8 @@ package body Why.Gen.Expr is
      (Typ              : Entity_Id;
       Domain           : EW_Domain;
       Left, Right      : W_Expr_Id;
-      Force_Predefined : Boolean := False)
-      return W_Expr_Id is
+      Force_Predefined : Boolean := False) return W_Expr_Id
+   is
       Why_Type : constant W_Type_Id := Type_Of_Node (Typ);
       Use_Predef : constant Boolean :=
         Force_Predefined or else not Present (Get_User_Defined_Eq (Typ));
@@ -1972,6 +1963,7 @@ package body Why.Gen.Expr is
                         Ada_Node => Typ);
       Is_Pred  : Boolean := False;
       T        : W_Expr_Id;
+
    begin
       if Is_Scalar_Type (Typ) then
          declare
@@ -1985,6 +1977,7 @@ package body Why.Gen.Expr is
                 (Domain => EW_Term,
                  Expr => Right,
                  To   => Base_Why_Type (Why_Type));
+
          begin
             if Use_Predef then
                T :=
@@ -1994,6 +1987,7 @@ package body Why.Gen.Expr is
                     Typ    => EW_Bool_Type,
                     Args   => (Left_Int, Right_Int));
                Is_Pred := True;
+
             else
                T :=
                  New_Call
@@ -2013,6 +2007,7 @@ package body Why.Gen.Expr is
                  2 => Right),
               Typ   => EW_Bool_Type);
       end if;
+
       if Is_Pred then
          return T;
       else
@@ -2035,10 +2030,8 @@ package body Why.Gen.Expr is
    begin
       if Is_True_Boolean (+Left) then
          return Right;
-
       elsif Is_True_Boolean (+Right) then
          return Left;
-
       elsif Domain = EW_Pred then
          return New_Connection (Domain => Domain,
                                 Op     => EW_And,
