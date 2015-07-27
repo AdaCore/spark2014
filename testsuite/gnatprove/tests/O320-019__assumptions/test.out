@@ -52,6 +52,12 @@ my_pack.ads:16:36: info: overflow check proved
 
   the postcondition of My_Pack.Bump
 
+-----------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------
+
 =========================
 
 Analyzed 2 units
@@ -73,6 +79,8 @@ Non-Aliasing                    .         .          .           .           .  
 Run-time Checks                 3         .          .    3 (CVC4)           .          .
 
 Summary of SPARK analysis
+
+Total                           8         .          .    8 (100%)           .          .
 
 absence of run-time errors of Full.Bump fully established
 

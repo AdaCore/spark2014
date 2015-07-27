@@ -79,7 +79,8 @@ package body Print_Table is
 
    procedure Dump_Table (H : Ada.Text_IO.File_Type; T : Table) is
       type Width_Array is array (T'Range (2)) of Natural;
-      Max_Width : Width_Array := (others => 10);
+      Max_Width   : Width_Array := (others => 10);
+      Total_Width : Natural := 0;
 
       procedure Compute_Max_Width;
       --  compute the maximum width for each column, minimum width is 10
@@ -89,6 +90,9 @@ package body Print_Table is
       --  @param Width the desired width
       --  @return a string of length Width, where the content of cell C has
       --     been fit according to the cell alignment
+
+      procedure Put_Dash_Line;
+      --  put a line of dashs of witdh Total_Width, plus a newline
 
       -----------------------
       -- Compute_Max_Width --
@@ -107,6 +111,9 @@ package body Print_Table is
                   end if;
                end;
             end loop;
+         end loop;
+         for Col in Max_Width'Range loop
+            Total_Width := Total_Width + Max_Width (Col);
          end loop;
       end Compute_Max_Width;
 
@@ -130,14 +137,30 @@ package body Print_Table is
          return S;
       end Fit_Cell;
 
+      -------------------
+      -- Put_Dash_Line --
+      -------------------
+
+      procedure Put_Dash_Line is
+      begin
+         for I in 1 .. Total_Width loop
+            Ada.Text_IO.Put (H, '-');
+         end loop;
+         Ada.Text_IO.New_Line (H);
+      end Put_Dash_Line;
+
    begin
       Compute_Max_Width;
+      Put_Dash_Line;
       for Line in T'Range (1) loop
          for Col in T'Range (2) loop
             Ada.Text_IO.Put (H,
                              Fit_Cell (T (Line, Col), Max_Width (Col)));
          end loop;
          Ada.Text_IO.New_Line (H);
+         if Line = T'First (1) or else Line = T'Last (1) - 1 then
+            Put_Dash_Line;
+         end if;
       end loop;
    end Dump_Table;
 

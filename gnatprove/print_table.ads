@@ -74,7 +74,9 @@ package Print_Table is
    --           has the expected number of columns.
 
    procedure Dump_Table (H : Ada.Text_IO.File_Type; T : Table);
-   --  print the table T, nicely aligned, to the file H.
+   --  print the table T, nicely aligned, to the file H. The first line is
+   --  considered a table header, so special markup is put there. Also, the
+   --  last line is considered a summary, so special markup can apply.
    --  @param H the file handle to print the table to
    --  @param T the table to be dumped
 

@@ -39,6 +39,12 @@ my_pack.ads:14:22: info: postcondition proved
 
   the postcondition of My_Pack.Bump
 
+-----------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------
+
 =========================
 
 Analyzed 2 units
@@ -60,6 +66,8 @@ Non-Aliasing                    .         .          .           .           .  
 Run-time Checks                 2         .          .    2 (CVC4)           .          .
 
 Summary of SPARK analysis
+
+Total                           7         .          .    7 (100%)           .          .
 
 absence of run-time errors of Full.Bump fully established
 

@@ -92,9 +92,10 @@ package Report_Database is
       Runtime_Checks,
       Assertions,
       Functional_Contracts,
-      LSP);
+      LSP,
+      Total);
 
-   subtype Summary_Entries is Possible_Entries range Data_Dep .. LSP;
+   subtype Summary_Entries is Possible_Entries range Data_Dep .. Total;
 
    type Summary_Type is array (Summary_Entries) of Summary_Line;
 

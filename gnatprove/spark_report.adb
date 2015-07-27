@@ -219,19 +219,65 @@ procedure SPARK_Report is
 
    procedure Dump_Summary_Table (Handle : Ada.Text_IO.File_Type) is
 
-      T : Table := Create_Table (Lines => 9, Cols => 7);
+      T               : Table := Create_Table (Lines => 10, Cols => 7);
 
       procedure Print_Table_Header;
       --  print the header of the table
 
       procedure Print_Table_Line (Line : Summary_Entries);
-      --  print a line of the table other than the header
+      --  print a line of the table other than the header and the total line
       --  @param Line the entry of the summary to be printed
+
+      procedure Print_Table_Total;
+      --  print the "Total" line of the table
 
       procedure Put_Provers_Cell (Stats : Prover_Stat);
       --  print the "provers" cell of a category, with the total count of
       --  checks and the percentage of each prover
       --  @param Stats the stats for the prover
+
+      procedure Put_Total_Cell (Part, Total : Natural);
+      --  print a number cell, and if not zero, print the percentage this
+      --  represents in some total, in the way "32 (14%)"
+      --  @param Part the number to be shown in this cell
+      --  @param Total the total (ie. 100%)
+
+      procedure Compute_Total_Summary_Line;
+      --  compute the numbers for the "Total" line of the summary table
+
+      function Integer_Percent (Part, Total : Integer) return Integer;
+      --  compute the percentage of Part in Total, using Integers
+      --  @param Part the part
+      --  @param Total the total count
+      --  @return an integer close to the percentage that Part represents of
+      --  Total
+
+      --------------------------------
+      -- Compute_Total_Summary_Line --
+      --------------------------------
+
+      procedure Compute_Total_Summary_Line is
+         Tot : Summary_Line renames Summary (Total);
+      begin
+         for Entr in Summary_Entries range Data_Dep .. LSP loop
+            Tot.Flow := Tot.Flow + Summary (Entr).Flow;
+            Tot.Interval :=
+              Tot.Interval + Summary (Entr).Interval;
+            Tot.Provers.Total :=
+              Tot.Provers.Total + Summary (Entr).Provers.Total;
+            Tot.Justified := Tot.Justified + Summary (Entr).Justified;
+            Tot.Unproved := Tot.Unproved + Summary (Entr).Unproved;
+         end loop;
+      end Compute_Total_Summary_Line;
+
+      ---------------------
+      -- Integer_Percent --
+      ---------------------
+
+      function Integer_Percent (Part, Total : Integer) return Integer is
+      begin
+         return Integer ((Float (100 * Part)) / Float (Total));
+      end Integer_Percent;
 
       ------------------------
       -- Print_Table_Header --
@@ -273,6 +319,27 @@ procedure SPARK_Report is
          New_Line (T);
       end Print_Table_Line;
 
+      -----------------------
+      -- Print_Table_Total --
+      -----------------------
+
+      procedure Print_Table_Total
+      is
+         Elt : constant Summary_Line := Summary (Total);
+         Tot : constant Natural :=
+           Elt.Flow + Elt.Interval + Elt.Provers.Total +
+             Elt.Justified + Elt.Unproved;
+      begin
+         Put_Cell (T, To_String (Total), Align => Left_Align);
+         Put_Cell (T, Tot);
+         Put_Total_Cell (Elt.Flow, Tot);
+         Put_Total_Cell (Elt.Interval, Tot);
+         Put_Total_Cell (Elt.Provers.Total, Tot);
+         Put_Total_Cell (Elt.Justified, Tot);
+         Put_Total_Cell (Elt.Unproved, Tot);
+         New_Line (T);
+      end Print_Table_Total;
+
       ----------------------
       -- Put_Provers_Cell --
       ----------------------
@@ -295,7 +362,7 @@ procedure SPARK_Report is
             VC_Total := VC_Total + Elt;
          end loop;
          for Elt of Stats.Provers loop
-            Elt := Integer ((Float (100 * Elt)) / Float (VC_Total));
+            Elt := Integer_Percent (Elt, VC_Total);
          end loop;
          Append (Buf, " (");
          if Stats.Provers.Length = 1 then
@@ -314,13 +381,38 @@ procedure SPARK_Report is
          Put_Cell (T, To_String (Buf));
       end Put_Provers_Cell;
 
+      --------------------
+      -- Put_Total_Cell --
+      --------------------
+
+      procedure Put_Total_Cell (Part, Total : Natural) is
+      begin
+         if Part = 0 then
+            Put_Cell (T, 0);
+         else
+            declare
+               Pcnt_Img : constant String :=
+                 Integer'Image (Integer_Percent (Part, Total));
+               No_Space : constant String :=
+                 Pcnt_Img (Pcnt_Img'First + 1 .. Pcnt_Img'Last);
+            begin
+               Put_Cell (T, Integer'Image (Part) & " (" & No_Space & "%)");
+            end;
+         end if;
+      end Put_Total_Cell;
+
    begin
+      Compute_Total_Summary_Line;
       Ada.Text_IO.Put_Line (Handle, "Summary of SPARK analysis");
       Ada.Text_IO.Put_Line (Handle, "=========================");
       Ada.Text_IO.New_Line (Handle);
       Print_Table_Header;
       for Line in Summary_Entries loop
-         Print_Table_Line (Line);
+         if Line = Total then
+            Print_Table_Total;
+         else
+            Print_Table_Line (Line);
+         end if;
       end loop;
       Dump_Table (Handle, T);
    end Dump_Summary_Table;
@@ -859,6 +951,7 @@ procedure SPARK_Report is
          when Assertions           => return "Assertions";
          when Functional_Contracts => return "Functional Contracts";
          when LSP                  => return "LSP Verification";
+         when Total                => return "Total";
       end case;
    end To_String;
 
