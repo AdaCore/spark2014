@@ -405,6 +405,54 @@ package body Flow.Control_Flow_Graph is
       with Pre => Nkind (N) = N_Assignment_Statement;
    --  Process assignment statements. Pretty obvious stuff.
 
+   procedure Do_Call_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   with Pre => Nkind (N) in N_Procedure_Call_Statement |
+                            N_Entry_Call_Statement;
+   --  Deal with procedure and entry calls. We follow the ideas of the SDG
+   --  paper by Horowitz, Reps and Binkley and have a separate vertex for
+   --  each parameter (if a paramater is an in out, we have two vertices
+   --  modelling it).
+   --
+   --  For a procedure P (A : in     Integer;
+   --                     B : in out Integer;
+   --                     C :    out Integer)
+   --  we produce the following CFG when called as P (X, Y, Z):
+   --
+   --     call P
+   --     |
+   --     a_in := x
+   --     |
+   --     b_in := y
+   --     |
+   --     y := b_out
+   --     |
+   --     z := c_out
+   --
+   --  Globals are treated like parameters.
+   --
+   --  For entries (procedures, functions and entries in protected types)
+   --  we also have the protected object as an implicit volatile input
+   --  and/or output.
+   --
+   --  Each of these vertices will also have call_vertex set in its
+   --  attributes so that we can fiddle the CDG to look like this:
+   --
+   --                     call P
+   --                    / |  | \
+   --           --------/  |  |  ---------
+   --          /           /  \           \
+   --  a_in := x  b_in := y    y := b_out  z := c_out
+   --
+   --  Note that dependencies between the parameters are NOT set up
+   --  here, this is done in Flow.Interprocedural. The vertex for call
+   --  P will have IPFA set or not set, which changes how we fill in
+   --  the dependencies. This decision is made in
+   --  Control_Flow_Graph.Utility.
+
    procedure Do_Case_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -563,43 +611,6 @@ package body Flow.Control_Flow_Graph is
    --  object's type has a Default_Initial_Condition aspect, we check
    --  for uninitialized variables in the default initial condition.
 
-   procedure Do_Package_Declaration
-     (N   : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context)
-      with Pre => Nkind (N) = N_Package_Declaration;
-   --  When we find a nested package, we add 'initial and 'final
-   --  vertices for all variables and state_abstractions it
-   --  introduces.
-   --
-   --  For example, analysis of the following nested package:
-   --
-   --    package Inner
-   --      with Abstract_State => (AS1, AS2),
-   --           Initializes    => (AS1,
-   --                              X => Foo,
-   --                              Y => (Foo, Bar),
-   --                              Z => Foo)
-   --    is
-   --       X : Integer := Foo;
-   --       Y : Integer := X;
-   --    end Inner;
-   --
-   --  would have the following effects:
-   --
-   --    1) Due to the Abstract_State aspect vertices AS1'Initial,
-   --       AS1'Final, AS2'Initial and AS2'Final are created.
-   --
-   --    2) The visible part of package inner is analyzed as if it were
-   --       part of the enclosing package. This means initial and final
-   --       vertices for x, y, and z are introduced and two vertices for
-   --       the two declarations.
-   --
-   --  Note that the initializes aspect is *not* considered yet, as it only
-   --  holds once the package body has been elaborated. See
-   --  Do_Package_Body_Or_Stub below for more information.
-
    procedure Do_Package_Body_Or_Stub
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -654,6 +665,43 @@ package body Flow.Control_Flow_Graph is
    --  for the package spec. Note that we only process the
    --  declarations of the package's body.
 
+   procedure Do_Package_Declaration
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+      with Pre => Nkind (N) = N_Package_Declaration;
+   --  When we find a nested package, we add 'initial and 'final
+   --  vertices for all variables and state_abstractions it
+   --  introduces.
+   --
+   --  For example, analysis of the following nested package:
+   --
+   --    package Inner
+   --      with Abstract_State => (AS1, AS2),
+   --           Initializes    => (AS1,
+   --                              X => Foo,
+   --                              Y => (Foo, Bar),
+   --                              Z => Foo)
+   --    is
+   --       X : Integer := Foo;
+   --       Y : Integer := X;
+   --    end Inner;
+   --
+   --  would have the following effects:
+   --
+   --    1) Due to the Abstract_State aspect vertices AS1'Initial,
+   --       AS1'Final, AS2'Initial and AS2'Final are created.
+   --
+   --    2) The visible part of package inner is analyzed as if it were
+   --       part of the enclosing package. This means initial and final
+   --       vertices for x, y, and z are introduced and two vertices for
+   --       the two declarations.
+   --
+   --  Note that the initializes aspect is *not* considered yet, as it only
+   --  holds once the package body has been elaborated. See
+   --  Do_Package_Body_Or_Stub below for more information.
+
    procedure Do_Pragma
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -670,62 +718,6 @@ package body Flow.Control_Flow_Graph is
    --  Please also see Pragma_Relevant_To_Flow which decides which
    --  pragmas are important.
 
-   procedure Do_Precondition
-     (Pre : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context);
-   --  Deals with the given precondition expression.
-   --  ??? can be merged with Do_Postcondition
-
-   procedure Do_Call_Statement
-     (N   : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context)
-   with Pre => Nkind (N) in N_Procedure_Call_Statement |
-                            N_Entry_Call_Statement;
-   --  Deal with procedure and entry calls. We follow the ideas of the SDG
-   --  paper by Horowitz, Reps and Binkley and have a separate vertex for
-   --  each parameter (if a paramater is an in out, we have two vertices
-   --  modelling it).
-   --
-   --  For a procedure P (A : in     Integer;
-   --                     B : in out Integer;
-   --                     C :    out Integer)
-   --  we produce the following CFG when called as P (X, Y, Z):
-   --
-   --     call P
-   --     |
-   --     a_in := x
-   --     |
-   --     b_in := y
-   --     |
-   --     y := b_out
-   --     |
-   --     z := c_out
-   --
-   --  Globals are treated like parameters.
-   --
-   --  For entries (procedures, functions and entries in protected types)
-   --  we also have the protected object as an implicit volatile input
-   --  and/or output.
-   --
-   --  Each of these vertices will also have call_vertex set in its
-   --  attributes so that we can fiddle the CDG to look like this:
-   --
-   --                     call P
-   --                    / |  | \
-   --           --------/  |  |  ---------
-   --          /           /  \           \
-   --  a_in := x  b_in := y    y := b_out  z := c_out
-   --
-   --  Note that dependencies between the parameters are NOT set up
-   --  here, this is done in Flow.Interprocedural. The vertex for call
-   --  P will have IPFA set or not set, which changes how we fill in
-   --  the dependencies. This decision is made in
-   --  Control_Flow_Graph.Utility.
-
    procedure Do_Postcondition
      (Post : Node_Id;
       FA   : in out Flow_Analysis_Graphs;
@@ -733,6 +725,14 @@ package body Flow.Control_Flow_Graph is
       Ctx  : in out Context);
    --  Deals with the given postcondition expression.
    --  ??? can be merged with Do_Precondition
+
+   procedure Do_Precondition
+     (Pre : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context);
+   --  Deals with the given precondition expression.
+   --  ??? can be merged with Do_Postcondition
 
    procedure Do_Simple_Return_Statement
      (N   : Node_Id;
@@ -803,17 +803,6 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context);
    --  As above but operates on a single node.
 
-   procedure Process_Subprogram_Globals
-     (Callsite : Node_Id;
-      Ins      : in out Vertex_Vectors.Vector;
-      Outs     : in out Vertex_Vectors.Vector;
-      FA       : in out Flow_Analysis_Graphs;
-      CM       : in out Connection_Maps.Map;
-      Ctx      : in out Context);
-   --  This procedures creates the in and out vertices for a
-   --  subprogram's globals. They are not connected to anything,
-   --  instead the vertices are appended to Ins and Outs.
-
    procedure Process_Parameter_Associations
      (Callsite : Node_Id;
       Ins      : in out Vertex_Vectors.Vector;
@@ -825,6 +814,16 @@ package body Flow.Control_Flow_Graph is
    --  provided in a subprogram call. The vertices are created but not
    --  linked up; as above, they are appended to Ins and Outs.
 
+   procedure Process_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   with Post => Ctx'Old.Folded_Function_Checks.Length =
+                Ctx.Folded_Function_Checks.Length;
+   --  Process an arbitrary statement (this is basically a big case
+   --  block which calls the various Do_XYZ procedures).
+
    procedure Process_Statement_List
      (L   : List_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -835,15 +834,16 @@ package body Flow.Control_Flow_Graph is
    --  to the standard entry of the first statement and the standard
    --  exits of the last statement.
 
-   procedure Process_Statement
-     (N   : Node_Id;
-      FA  : in out Flow_Analysis_Graphs;
-      CM  : in out Connection_Maps.Map;
-      Ctx : in out Context)
-   with Post => Ctx'Old.Folded_Function_Checks.Length =
-                Ctx.Folded_Function_Checks.Length;
-   --  Process an arbitrary statement (this is basically a big case
-   --  block which calls the various Do_XYZ procedures).
+   procedure Process_Subprogram_Globals
+     (Callsite : Node_Id;
+      Ins      : in out Vertex_Vectors.Vector;
+      Outs     : in out Vertex_Vectors.Vector;
+      FA       : in out Flow_Analysis_Graphs;
+      CM       : in out Connection_Maps.Map;
+      Ctx      : in out Context);
+   --  This procedures creates the in and out vertices for a
+   --  subprogram's globals. They are not connected to anything,
+   --  instead the vertices are appended to Ins and Outs.
 
    function RHS_Split_Useful (N     : Node_Id;
                               Scope : Flow_Scope)
