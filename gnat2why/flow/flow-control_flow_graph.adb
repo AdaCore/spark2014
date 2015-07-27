@@ -1314,8 +1314,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      Subprograms_Called : constant Node_Sets.Set :=
-        Get_Function_Set (Expression (N));
+      Funcs : Node_Sets.Set;
 
       V     : Flow_Graphs.Vertex_Id;
       Verts : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
@@ -1329,6 +1328,8 @@ package body Flow.Control_Flow_Graph is
           not Is_Class_Wide_Type (Get_Type (Expression (N), FA.B_Scope));
 
    begin
+      Collect_Functions_And_Read_Locked_POs (Expression (N),
+                                             Funcs, FA.Tasking);
       --  First we need to determine the root name where we assign to, and
       --  whether this is a partial or full assignment. This mirror the
       --  beginning of Untangle_Assignment_Target.
@@ -1388,7 +1389,7 @@ package body Flow.Control_Flow_Graph is
                     (FA         => FA,
                      Var_Def    => Flow_Id_Sets.To_Set (Output),
                      Var_Ex_Use => Inputs,
-                     Sub_Called => Subprograms_Called,
+                     Sub_Called => Funcs,
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => N,
                      Print_Hint => Pretty_Print_Record_Field),
@@ -1477,7 +1478,7 @@ package body Flow.Control_Flow_Graph is
                   Var_Im_Use => (if Partial
                                  then Vars_Defined
                                  else Flow_Id_Sets.Empty_Set),
-                  Sub_Called => Subprograms_Called,
+                  Sub_Called => Funcs,
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => N),
                V);
@@ -1525,7 +1526,11 @@ package body Flow.Control_Flow_Graph is
    is
       V, V_Alter  : Flow_Graphs.Vertex_Id;
       Alternative : Node_Id;
+      Funcs       : Node_Sets.Set;
    begin
+      Collect_Functions_And_Read_Locked_POs (Expression (N),
+                                             Funcs, FA.Tasking);
+
       --  We have a vertex V for the case statement itself
       Add_Vertex
         (FA,
@@ -1538,7 +1543,7 @@ package body Flow.Control_Flow_Graph is
                Local_Constants      => FA.Local_Constants,
                Fold_Functions       => True,
                Use_Computed_Globals => not Generating_Globals),
-            Sub_Called => Get_Function_Set (Expression (N)),
+            Sub_Called => Funcs,
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),
          V);
@@ -1582,6 +1587,7 @@ package body Flow.Control_Flow_Graph is
    is
       V         : Flow_Graphs.Vertex_Id;
       Vars_Used : Flow_Id_Sets.Set;
+      Funcs     : Node_Sets.Set;
    begin
       --  Gather variables used in the expression of the delay statement
       Vars_Used := Get_Variable_Set
@@ -1597,13 +1603,16 @@ package body Flow.Control_Flow_Graph is
                       Normal_Use,
                       FA.B_Scope));
 
+      Collect_Functions_And_Read_Locked_POs (Expression (N),
+                                             Funcs, FA.Tasking);
+
       Add_Vertex
         (FA,
          Direct_Mapping_Id (N),
          Make_Basic_Attributes
            (FA,
             Var_Ex_Use => Vars_Used,
-            Sub_Called => Get_Function_Set (Expression (N)),
+            Sub_Called => Funcs,
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),
          V);
@@ -1620,8 +1629,9 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V : Flow_Graphs.Vertex_Id;
-      L : Node_Id := N;
+      V     : Flow_Graphs.Vertex_Id;
+      L     : Node_Id := N;
+      Funcs : Node_Sets.Set;
    begin
       --  Go up the tree until we find the loop we are exiting from.
       if not Present (Name (N)) then
@@ -1654,6 +1664,9 @@ package body Flow.Control_Flow_Graph is
          CM (Union_Id (L)).Standard_Exits.Include (V);
 
       else
+         Collect_Functions_And_Read_Locked_POs (Condition (N),
+                                                Funcs, FA.Tasking);
+
          Add_Vertex
            (FA,
             Direct_Mapping_Id (N),
@@ -1665,7 +1678,7 @@ package body Flow.Control_Flow_Graph is
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
                   Use_Computed_Globals => not Generating_Globals),
-               Sub_Called => Get_Function_Set (Condition (N)),
+               Sub_Called => Funcs,
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
             V);
@@ -1691,6 +1704,7 @@ package body Flow.Control_Flow_Graph is
       Ret_Object_L : constant List_Id := Return_Object_Declarations (N);
       Ret_Entity   : constant Node_Id := Return_Statement_Entity (N);
       Ret_Object   : Node_Id;
+      Funcs        : Node_Sets.Set;
    begin
       --  We create a null vertex for the extended return statement
       Add_Vertex
@@ -1720,7 +1734,10 @@ package body Flow.Control_Flow_Graph is
       --  standard entry of its return_object_declarations.
       Linkup (FA, V, CM (Union_Id (Ret_Object_L)).Standard_Entry);
 
-      --  We create a vertex for the Return_Statement_Entity
+      --  Create a vertex for the Return_Statement_Entity
+      Collect_Functions_And_Read_Locked_POs (Ret_Object,
+                                             Funcs, FA.Tasking);
+
       Add_Vertex
         (FA,
          Direct_Mapping_Id (Ret_Entity),
@@ -1731,7 +1748,7 @@ package body Flow.Control_Flow_Graph is
             Var_Use         => Flatten_Variable (Ret_Object,
                                                  FA.B_Scope),
             Object_Returned => Ret_Object,
-            Sub_Called      => Get_Function_Set (Ret_Object),
+            Sub_Called      => Funcs,
             --  ??? really? I don't think we can call a function here...
             Loops           => Ctx.Current_Loops,
             E_Loc           => Ret_Entity),
@@ -1801,8 +1818,12 @@ package body Flow.Control_Flow_Graph is
       Else_Part       : constant List_Id := Else_Statements (N);
       Elsif_Part      : constant List_Id := Elsif_Parts (N);
       Elsif_Statement : Node_Id;
+      Funcs           : Node_Sets.Set;
    begin
       --  We have a vertex for the if statement itself.
+      Collect_Functions_And_Read_Locked_POs (Condition (N),
+                                             Funcs, FA.Tasking);
+
       Add_Vertex
         (FA,
          Direct_Mapping_Id (N),
@@ -1814,7 +1835,7 @@ package body Flow.Control_Flow_Graph is
                Local_Constants      => FA.Local_Constants,
                Fold_Functions       => True,
                Use_Computed_Globals => not Generating_Globals),
-            Sub_Called => Get_Function_Set (Condition (N)),
+            Sub_Called => Funcs,
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),
          V);
@@ -1860,8 +1881,13 @@ package body Flow.Control_Flow_Graph is
             declare
                Elsif_Body : constant List_Id :=
                  Then_Statements (Elsif_Statement);
+               Funcs      : Node_Sets.Set;
             begin
                --  We have a vertex V for each elsif statement
+               Collect_Functions_And_Read_Locked_POs
+                 (Condition (Elsif_Statement),
+                  Funcs, FA.Tasking);
+
                Add_Vertex
                  (FA,
                   Direct_Mapping_Id (Elsif_Statement),
@@ -1873,8 +1899,7 @@ package body Flow.Control_Flow_Graph is
                         Local_Constants      => FA.Local_Constants,
                         Fold_Functions       => True,
                         Use_Computed_Globals => not Generating_Globals),
-                     Sub_Called => Get_Function_Set (Condition
-                                                       (Elsif_Statement)),
+                     Sub_Called => Funcs,
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => Elsif_Statement),
                   V);
@@ -2188,8 +2213,13 @@ package body Flow.Control_Flow_Graph is
       -------------------
 
       procedure Do_While_Loop is
-         V : Flow_Graphs.Vertex_Id;
+         V     : Flow_Graphs.Vertex_Id;
+         Funcs : Node_Sets.Set;
       begin
+         Collect_Functions_And_Read_Locked_POs
+           (Condition (Iteration_Scheme (N)),
+            Funcs, FA.Tasking);
+
          Add_Vertex
            (FA,
             Direct_Mapping_Id (N),
@@ -2201,8 +2231,7 @@ package body Flow.Control_Flow_Graph is
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
                   Use_Computed_Globals => not Generating_Globals),
-               Sub_Called => Get_Function_Set (Condition
-                                                 (Iteration_Scheme (N))),
+               Sub_Called => Funcs,
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
             V);
@@ -2233,6 +2262,7 @@ package body Flow.Control_Flow_Graph is
 
          R : constant Node_Id := Get_Loop_Range (N);
          V : Flow_Graphs.Vertex_Id;
+         Funcs : Node_Sets.Set;
       begin
          --  We have a new variable here which we have not picked up
          --  in Create, so we should set it up.
@@ -2285,6 +2315,9 @@ package body Flow.Control_Flow_Graph is
 
          else
             --  We don't know if the loop will be executed or not.
+            Collect_Functions_And_Read_Locked_POs (DSD,
+                                                   Funcs, FA.Tasking);
+
             Add_Vertex
               (FA,
                Direct_Mapping_Id (N),
@@ -2297,7 +2330,7 @@ package body Flow.Control_Flow_Graph is
                      Local_Constants      => FA.Local_Constants,
                      Fold_Functions       => True,
                      Use_Computed_Globals => not Generating_Globals),
-                  Sub_Called => Get_Function_Set (DSD),
+                  Sub_Called => Funcs,
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => N),
                V);
@@ -2682,12 +2715,16 @@ package body Flow.Control_Flow_Graph is
          Cont  : constant Node_Id   := Name (I_Spec);
 
          V : Flow_Graphs.Vertex_Id;
+         Funcs : Node_Sets.Set;
       begin
          --  Set up parameter variable.
          Create_Initial_And_Final_Vertices (Param, Variable_Kind, FA);
 
          --  Create vertex for the container expression. We also define the
          --  loop parameter here.
+         Collect_Functions_And_Read_Locked_POs (Cont,
+                                                Funcs, FA.Tasking);
+
          Add_Vertex
            (FA,
             Direct_Mapping_Id (N),
@@ -2700,7 +2737,7 @@ package body Flow.Control_Flow_Graph is
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
                   Use_Computed_Globals => not Generating_Globals),
-               Sub_Called => Get_Function_Set (Cont),
+               Sub_Called => Funcs,
                Loops      => Ctx.Current_Loops,
                E_Loc      => Cont),
             V);
@@ -2958,6 +2995,7 @@ package body Flow.Control_Flow_Graph is
 
          declare
             Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+            Funcs   : Node_Sets.Set;
          begin
             FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
             for F of FS loop
@@ -2982,14 +3020,13 @@ package body Flow.Control_Flow_Graph is
                      Use_Computed_Globals         => not Generating_Globals,
                      Expand_Synthesized_Constants => False);
 
-                  Subprograms  : constant Node_Sets.Set :=
-                    Get_Function_Set (Expression (N));
-
                   Output       : Flow_Id;
                   Inputs       : Flow_Id_Sets.Set;
                   All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
                   Missing      : Flow_Id_Sets.Set := Var_Def;
                begin
+                  Collect_Functions_And_Read_Locked_POs (Expression (N),
+                                                         Funcs, FA.Tasking);
 
                   for C in M.Iterate loop
                      Output := Flow_Id_Maps.Key (C);
@@ -3004,7 +3041,7 @@ package body Flow.Control_Flow_Graph is
                           (FA         => FA,
                            Var_Def    => Flow_Id_Sets.To_Set (Output),
                            Var_Ex_Use => Inputs,
-                           Sub_Called => Subprograms,
+                           Sub_Called => Funcs,
                            Loops      => Ctx.Current_Loops,
                            E_Loc      => N,
                            Print_Hint => Pretty_Print_Record_Field),
@@ -3049,6 +3086,8 @@ package body Flow.Control_Flow_Graph is
                end;
 
             else
+               Collect_Functions_And_Read_Locked_POs (Expression (N),
+                                                      Funcs, FA.Tasking);
 
                Add_Vertex
                  (FA,
@@ -3063,7 +3102,7 @@ package body Flow.Control_Flow_Graph is
                         Fold_Functions       => True,
                         Use_Computed_Globals => not Generating_Globals,
                         Consider_Extensions  => To_Cw),
-                     Sub_Called => Get_Function_Set (Expression (N)),
+                     Sub_Called => Funcs,
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => N),
                   V);
@@ -3085,6 +3124,8 @@ package body Flow.Control_Flow_Graph is
          Variables_Used       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
          Components_Of_Type   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
          Components_Of_Object : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
+         Funcs : Node_Sets.Set;
       begin
          Typ := Etype (Defining_Identifier (N));
 
@@ -3132,6 +3173,9 @@ package body Flow.Control_Flow_Graph is
                   Variables_Used.Union (Components_Of_Object);
                end if;
 
+               Collect_Functions_And_Read_Locked_POs (Expr,
+                                                      Funcs, FA.Tasking);
+
                Add_Vertex
                  (FA,
                   Make_Sink_Vertex_Attributes
@@ -3141,7 +3185,7 @@ package body Flow.Control_Flow_Graph is
                                        (Default_Init_Cond_Procedure (Typ)),
                         With_This => Defining_Identifier (N),
                         The_Set   => Variables_Used),
-                     Sub_Called => Get_Function_Set (Expr),
+                     Sub_Called => Funcs,
                      Is_Proof   => True,
                      Is_DIC     => True,
                      E_Loc      => N),
@@ -3625,7 +3669,8 @@ package body Flow.Control_Flow_Graph is
 
       procedure Add_Loop_Entry_References is new Traverse_Proc (Proc);
 
-      V : Flow_Graphs.Vertex_Id;
+      V     : Flow_Graphs.Vertex_Id;
+      Funcs : Node_Sets.Set;
    begin
       if Pragma_Relevant_To_Flow (N) then
 
@@ -3673,6 +3718,9 @@ package body Flow.Control_Flow_Graph is
                --  pragma unmodified or pragma unreferenced then we
                --  create a sink vertex to check for uninitialized
                --  variables.
+               Collect_Functions_And_Read_Locked_POs (N,
+                                                      Funcs, FA.Tasking);
+
                Add_Vertex
                  (FA,
                   Direct_Mapping_Id (N),
@@ -3684,7 +3732,7 @@ package body Flow.Control_Flow_Graph is
                         Local_Constants      => FA.Local_Constants,
                         Fold_Functions       => False,
                         Use_Computed_Globals => not Generating_Globals),
-                     Sub_Called => Get_Function_Set (N),
+                     Sub_Called => Funcs,
                      Is_Proof   => True,
                      E_Loc      => N,
                      Execution  => Find_Execution_Kind),
@@ -3730,8 +3778,12 @@ package body Flow.Control_Flow_Graph is
    is
       pragma Unreferenced (Ctx);
       V : Flow_Graphs.Vertex_Id;
+      Funcs : Node_Sets.Set;
    begin
       --  We just need to check for uninitialized variables.
+      Collect_Functions_And_Read_Locked_POs (Pre,
+                                             Funcs, FA.Tasking);
+
       Add_Vertex
         (FA,
          Direct_Mapping_Id (Pre),
@@ -3743,7 +3795,7 @@ package body Flow.Control_Flow_Graph is
                Local_Constants      => FA.Local_Constants,
                Fold_Functions       => False,
                Use_Computed_Globals => not Generating_Globals),
-            Sub_Called      => Get_Function_Set (Pre),
+            Sub_Called      => Funcs,
             Is_Proof        => True,
             Is_Precondition => True,
             E_Loc           => Pre),
@@ -3770,6 +3822,59 @@ package body Flow.Control_Flow_Graph is
 
       V : Flow_Graphs.Vertex_Id;
       C : Flow_Graphs.Cluster_Id;
+
+      function Suspends_On_Suspension_Object return Boolean;
+      --  Check if Called_Thing suspends on a suspension object, i.e. it is
+      --  Ada.Synchronous_Task_Control.Suspend_Until_True or
+      --  Ada.Synchronous_Task_Control.EDF.Suspend_Until_True_And_Set_Deadline
+
+      function Suspends_On_Suspension_Object return Boolean is
+         Scop : Entity_Id := Called_Thing;
+
+         procedure Scope_Up;
+         --  Climb up the scope
+
+         procedure Scope_Up is
+         begin
+            Scop := Scope (Scop);
+         end Scope_Up;
+
+         Called_String : constant String := Get_Name_String (Chars (Scop));
+         --  Name of the called procedure
+
+      --  Start of processing for Suspends_On_Suspension_Object
+
+      begin
+         if Called_String = "suspend_until_true" then
+            Scope_Up;
+         elsif Called_String = "suspend_until_true_and_set_deadline" then
+            Scope_Up;
+            if Get_Name_String (Chars (Scop)) = "edf" then
+               Scope_Up;
+            else
+               return False;
+            end if;
+         else
+            return False;
+         end if;
+
+         if Chars (Scop) = Name_Synchronous_Task_Control then
+            Scope_Up;
+         else
+            return False;
+         end if;
+
+         if Chars (Scop) = Name_Ada then
+            Scope_Up;
+         else
+            return False;
+         end if;
+
+         return Scop = Standard_Standard;
+      end Suspends_On_Suspension_Object;
+
+   --  Start of processing for Do_Call_Statement
+
    begin
       --  Add a cluster to help pretty printing.
       FA.CFG.New_Cluster (C);
@@ -3846,7 +3951,26 @@ package body Flow.Control_Flow_Graph is
                   E_Loc                        => N),
                V);
             Outs.Append (V);
+
+            --  Collect tasking-related information
+            case Convention (Called_Thing) is
+               when Convention_Entry =>
+                  FA.Tasking.Entries_Called.Include (The_PO);
+                  FA.Tasking.PO_Write_Locks.Include (The_PO);
+
+               when Convention_Protected =>
+                  FA.Tasking.PO_Write_Locks.Include (The_PO);
+
+               when others =>
+                  null;
+            end case;
          end;
+      end if;
+
+      --  Check for suspending on a suspension object
+      if Suspends_On_Suspension_Object then
+         FA.Tasking.Suspends_On.Include
+           (Direct_Mapping_Id (First_Actual (Called_Thing)));
       end if;
 
       --  A magic null export is needed when:
@@ -3957,8 +4081,12 @@ package body Flow.Control_Flow_Graph is
    is
       pragma Unreferenced (Ctx);
       V : Flow_Graphs.Vertex_Id;
+      Funcs : Node_Sets.Set;
    begin
       --  We only need to check for uninitialized variables.
+      Collect_Functions_And_Read_Locked_POs (Post,
+                                             Funcs, FA.Tasking);
+
       Add_Vertex
         (FA,
          Direct_Mapping_Id (Post),
@@ -3970,7 +4098,7 @@ package body Flow.Control_Flow_Graph is
                Local_Constants      => FA.Local_Constants,
                Fold_Functions       => False,
                Use_Computed_Globals => not Generating_Globals),
-            Sub_Called       => Get_Function_Set (Post),
+            Sub_Called       => Funcs,
             Is_Proof         => True,
             Is_Postcondition => True,
             E_Loc            => Post),
@@ -3990,6 +4118,7 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
       V : Flow_Graphs.Vertex_Id;
+      Funcs : Node_Sets.Set;
    begin
       if not Present (Expression (N)) then
          --  We have a return for a procedure.
@@ -3999,6 +4128,9 @@ package body Flow.Control_Flow_Graph is
                      V);
       else
          --  We have a function return.
+         Collect_Functions_And_Read_Locked_POs (Expression (N),
+                                                Funcs, FA.Tasking);
+
          Add_Vertex
            (FA,
             Direct_Mapping_Id (N),
@@ -4012,7 +4144,7 @@ package body Flow.Control_Flow_Graph is
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
                   Use_Computed_Globals => not Generating_Globals),
-               Sub_Called => Get_Function_Set (Expression (N)),
+               Sub_Called => Funcs,
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
             V);
@@ -4058,7 +4190,11 @@ package body Flow.Control_Flow_Graph is
             Cond : constant Node_Id := Condition (Entry_Body_Formal_Part (N));
             V_C  : Flow_Graphs.Vertex_Id;
             V    : Flow_Graphs.Vertex_Id;
+            Funcs : Node_Sets.Set;
          begin
+            Collect_Functions_And_Read_Locked_POs (Cond,
+                                                   Funcs, FA.Tasking);
+
             Add_Vertex
               (FA,
                Direct_Mapping_Id (Cond),
@@ -4070,7 +4206,7 @@ package body Flow.Control_Flow_Graph is
                      Local_Constants      => FA.Local_Constants,
                      Fold_Functions       => False,
                      Use_Computed_Globals => not Generating_Globals),
-                  Sub_Called => Get_Function_Set (Cond),
+                  Sub_Called => Funcs,
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => Cond,
                   Print_Hint => Pretty_Print_Entry_Barrier),
@@ -4347,6 +4483,7 @@ package body Flow.Control_Flow_Graph is
       Actual            : Node_Id;
       Formal            : Node_Id;
       Call              : Node_Id;
+      Funcs             : Node_Sets.Set;
    begin
       --  Create initial nodes for the statements.
       P := First (Parameter_Associations (Callsite));
@@ -4365,6 +4502,9 @@ package body Flow.Control_Flow_Graph is
          pragma Assert (Is_Formal (Formal));
 
          --  Build an in vertex.
+         Collect_Functions_And_Read_Locked_POs (Actual,
+                                                Funcs, FA.Tasking);
+
          Add_Vertex
            (FA,
             Direct_Mapping_Id (P, In_View),
@@ -4376,7 +4516,7 @@ package body Flow.Control_Flow_Graph is
                In_Vertex                    => True,
                Discriminants_Or_Bounds_Only =>
                  Ekind (Formal) = E_Out_Parameter,
-               Sub_Called                   => Get_Function_Set (Actual),
+               Sub_Called                   => Funcs,
                Loops                        => Ctx.Current_Loops,
                E_Loc                        => P),
             V);

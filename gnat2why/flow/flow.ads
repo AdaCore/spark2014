@@ -156,6 +156,17 @@ package Flow is
       --  not subprogram parameters of the analyzed entity).
    end record;
 
+   type Tasking_Info is
+      record
+         Suspends_On          : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         Entries_Called       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         PO_Read_Locks        : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         PO_Write_Locks       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         Unsynch_Obj_Accessed : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      end record;
+   --  Tasking-related information that needs to be collected for each analyzed
+   --  entity.
+
    type Flow_Analysis_Graphs_Root
      (Kind : Valid_Analyzed_Entity := E_Subprogram_Body)
    is record
@@ -233,6 +244,9 @@ package Flow is
 
       GG                    : Flow_Global_Generation_Info;
       --  Information for globals computation
+
+      Tasking               : Tasking_Info;
+      --  Tasking-related information
 
       case Kind is
          when E_Subprogram_Body | E_Task_Body | E_Entry =>

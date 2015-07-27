@@ -28,6 +28,15 @@ with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 
 package Flow.Control_Flow_Graph.Utility is
 
+   procedure Collect_Functions_And_Read_Locked_POs
+     (N : Node_Id;
+      Functions_Called : out Node_Sets.Set;
+      Tasking          : in out Tasking_Info) with
+     Pre => Present (N);
+   --  For an expression N collect its called functions and update the set
+   --  of protected objects that are read-locked when evaluating these
+   --  functions.
+
    function Make_Basic_Attributes
      (FA         : Flow_Analysis_Graphs;
       Var_Def    : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;

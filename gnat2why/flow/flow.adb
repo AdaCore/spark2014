@@ -1409,6 +1409,30 @@ package body Flow is
                           Character'Val (8#33#) & "[1m" &
                           Get_Name_String (Chars (FA.Analyzed_Entity)) &
                           Character'Val (8#33#) & "[0m");
+
+            Indent;
+
+            if not FA.Tasking.Suspends_On.Is_Empty then
+               Write_Str ("Suspends on:");
+               Print_Node_Set (FA.Tasking.Suspends_On);
+            end if;
+
+            if not FA.Tasking.PO_Read_Locks.Is_Empty then
+               Write_Str ("PO read-locks:");
+               Print_Node_Set (FA.Tasking.PO_Read_Locks);
+            end if;
+
+            if not FA.Tasking.PO_Write_Locks.Is_Empty then
+               Write_Str ("PO write-locks:");
+               Print_Node_Set (FA.Tasking.PO_Write_Locks);
+            end if;
+
+            if not FA.Tasking.Entries_Called.Is_Empty then
+               Write_Str ("Entry calls:");
+               Print_Node_Set (FA.Tasking.Entries_Called);
+            end if;
+
+            Outdent;
          end if;
 
          Analysis.Sanity_Check (FA, Success);
