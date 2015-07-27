@@ -176,7 +176,7 @@ package Flow is
       --  The entity and scope (of the body and spec) of the analysed
       --  entity. The two scopes might be the same in some cases.
 
-      Spec_Node             : Entity_Id;
+      Spec_Entity           : Entity_Id;
       --  Useful shorthand to the node where the N_Contract node is attached
 
       Start_Vertex          : Flow_Graphs.Vertex_Id;

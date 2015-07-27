@@ -643,13 +643,13 @@ package body Flow.Analysis is
                         E                   : Entity_Id;
                         Tmp_A, Tmp_B, Tmp_C : Flow_Id_Sets.Set;
                      begin
-                        E := First_Formal (FA.Spec_Node);
+                        E := First_Formal (FA.Spec_Entity);
                         while Present (E) loop
                            Vars_Known.Include (Direct_Mapping_Id (E));
                            E := Next_Formal (E);
                         end loop;
 
-                        Get_Globals (Subprogram => FA.Spec_Node,
+                        Get_Globals (Subprogram => FA.Spec_Entity,
                                      Scope      => FA.S_Scope,
                                      Classwide  => False,
                                      Proof_Ins  => Tmp_A,
@@ -674,7 +674,7 @@ package body Flow.Analysis is
                end case;
             end if;
 
-            for Expr of Get_Postcondition_Expressions (FA.Spec_Node,
+            for Expr of Get_Postcondition_Expressions (FA.Spec_Entity,
                                                        Refined)
             loop
                case FA.Kind is
@@ -1191,12 +1191,12 @@ package body Flow.Analysis is
            and then V_Use /= Flow_Graphs.Null_Vertex
            and then Is_Compilation_Unit (Scope (N))
            and then (Scope (N) /= FA.Analyzed_Entity
-                       and then Scope (N) /= FA.Spec_Node)
+                       and then Scope (N) /= FA.Spec_Entity)
          then
             declare
                Clause       : Node_Id;
                Current_Unit : constant Node_Id :=
-                 Get_Enclosing_Comp_Unit (FA.Spec_Node);
+                 Get_Enclosing_Comp_Unit (FA.Spec_Entity);
                Other_Unit   : constant Node_Id :=
                  Get_Enclosing_Comp_Unit (Scope (N));
             begin
@@ -1214,7 +1214,7 @@ package body Flow.Analysis is
                            SRM_Ref => "7.7.1(4)",
                            N       => V_Atr.Error_Location,
                            F1      => F,
-                           F2      => Direct_Mapping_Id (FA.Spec_Node),
+                           F2      => Direct_Mapping_Id (FA.Spec_Entity),
                            F3      => Direct_Mapping_Id (Scope (N)),
                            Kind    => Error_Kind,
                            Tag     => Pragma_Elaborate_All_Needed);
@@ -2823,23 +2823,23 @@ package body Flow.Analysis is
 
    begin  --  Find_Hidden_Unexposed_State
 
-      if not Present (Abstract_States (FA.Spec_Node))
-        and then Enclosing_Package_Has_State (FA.Spec_Node)
+      if not Present (Abstract_States (FA.Spec_Entity))
+        and then Enclosing_Package_Has_State (FA.Spec_Entity)
       then
          --  If the package does not have an abstract state aspect and
          --  an enclosing package does introduces a state abstraction
          --  then issue a medium check per hidden state.
-         Warn_About_Hidden_States (FA.Spec_Node);
+         Warn_About_Hidden_States (FA.Spec_Entity);
       end if;
 
-      if Present (Abstract_States (FA.Spec_Node))
-        and then Present (Body_Entity (FA.Spec_Node))
+      if Present (Abstract_States (FA.Spec_Entity))
+        and then Present (Body_Entity (FA.Spec_Entity))
       then
          --  If the package has an abstract state aspect then issue
          --  high checks for every constant with variable input that
          --  is part of the package's hidden state and is not exposed
          --  through a state abstraction.
-         Warn_About_Unreferenced_Constants (FA.Spec_Node);
+         Warn_About_Unreferenced_Constants (FA.Spec_Entity);
       end if;
 
    end Find_Hidden_Unexposed_State;
@@ -2867,7 +2867,7 @@ package body Flow.Analysis is
          FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
          DM : constant Dependency_Maps.Map :=
-           Parse_Initializes (FA.Initializes_N, FA.Spec_Node);
+           Parse_Initializes (FA.Initializes_N, FA.Spec_Entity);
       begin
 
          for C in DM.Iterate loop
@@ -2890,7 +2890,7 @@ package body Flow.Analysis is
          Scop : constant Flow_Scope := FA.S_Scope;
          FS   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
       begin
-         E := First_Entity (FA.Spec_Node);
+         E := First_Entity (FA.Spec_Entity);
          while Present (E) loop
             if Ekind (E) = E_Procedure then
                declare
@@ -2929,9 +2929,9 @@ package body Flow.Analysis is
       --  If the package either has no state abstractions, or has
       --  "Abstract_State => null" then there is nothing to do here.
 
-      if not Present (Abstract_States (FA.Spec_Node))
+      if not Present (Abstract_States (FA.Spec_Entity))
         or else Is_Null_State
-                  (Node (First_Elmt (Abstract_States (FA.Spec_Node))))
+                  (Node (First_Elmt (Abstract_States (FA.Spec_Entity))))
       then
          return;
       end if;
@@ -2945,7 +2945,7 @@ package body Flow.Analysis is
          Initializable : constant Flow_Id_Sets.Set :=
            Initialized_By_Initializes_Aspect or Outputs_Of_Procedures;
       begin
-         State_Elmt := First_Elmt (Abstract_States (FA.Spec_Node));
+         State_Elmt := First_Elmt (Abstract_States (FA.Spec_Entity));
          State := Node (State_Elmt);
 
          while Present (State) loop
@@ -3514,7 +3514,7 @@ package body Flow.Analysis is
       end Write_Tracefile;
 
       DM : constant Dependency_Maps.Map :=
-        Parse_Initializes (FA.Initializes_N, FA.Spec_Node);
+        Parse_Initializes (FA.Initializes_N, FA.Spec_Entity);
 
    begin  --  Check_Initializes_Contract
       if DM.Is_Empty then
@@ -3545,7 +3545,7 @@ package body Flow.Analysis is
                        (FA   => FA,
                         Msg  => "% must be initialized at elaboration",
                         N    => Search_Contract
-                                  (FA.Spec_Node,
+                                  (FA.Spec_Entity,
                                    Pragma_Initializes,
                                    Get_Direct_Mapping_Id (The_Out),
                                    Get_Direct_Mapping_Id (G)),
@@ -3621,7 +3621,7 @@ package body Flow.Analysis is
                           "initialization of % must not depend on %",
                         SRM_Ref   => "7.1.5(11)",
                         N         => Search_Contract
-                                       (FA.Spec_Node,
+                                       (FA.Spec_Entity,
                                         Pragma_Initializes,
                                         Get_Direct_Mapping_Id (The_Out)),
                         F1        => The_Out,
@@ -3649,7 +3649,7 @@ package body Flow.Analysis is
                         Msg     => "initialization of & does not depend on &",
                         SRM_Ref => "7.1.5(11)",
                         N       => Search_Contract
-                                       (FA.Spec_Node,
+                                       (FA.Spec_Entity,
                                         Pragma_Initializes,
                                         Get_Direct_Mapping_Id (The_Out)),
                         F1      => The_Out,
@@ -3663,7 +3663,7 @@ package body Flow.Analysis is
                       (FA   => FA,
                        Msg  => "& cannot appear in Initializes",
                        N    => Search_Contract
-                                 (FA.Spec_Node,
+                                 (FA.Spec_Entity,
                                   Pragma_Initializes,
                                   Get_Direct_Mapping_Id (The_Out),
                                   Get_Direct_Mapping_Id (Contract_In)),
@@ -3684,7 +3684,7 @@ package body Flow.Analysis is
                     (FA   => FA,
                      Msg  => "& cannot appear in Initializes",
                      N    => Search_Contract
-                               (FA.Spec_Node,
+                               (FA.Spec_Entity,
                                 Pragma_Initializes,
                                 Get_Direct_Mapping_Id (Contract_Out)),
                      F1   => Contract_Out,
@@ -3996,7 +3996,7 @@ package body Flow.Analysis is
                       Writes     => Writes);
 
          --  Populate formal parameters set
-         E := First_Formal (FA.Spec_Node);
+         E := First_Formal (FA.Spec_Entity);
          while Present (E) loop
             Formal_Parameters.Include (Direct_Mapping_Id (E));
             E := Next_Formal (E);

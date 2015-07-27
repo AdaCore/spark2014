@@ -354,7 +354,7 @@ package body Flow.Analysis.Sanity is
             Check_Expressions (Entry_Node);
 
          when E_Package_Body =>
-            Entry_Node := Package_Specification (FA.Spec_Node);
+            Entry_Node := Package_Specification (FA.Spec_Entity);
             Check_Expressions (Entry_Node);
 
             Entry_Node := Package_Body (FA.Analyzed_Entity);

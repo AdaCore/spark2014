@@ -93,7 +93,7 @@ package body Flow is
    --  Temp_String. We use this to pretty print nodes via Sprint_Node.
 
    function Flow_Analyse_Entity (E : Entity_Id;
-                                 S : Node_Id)
+                                 S : Entity_Id)
                                  return Flow_Analysis_Graphs
      with Pre  => Ekind (E) in Subprogram_Kind  |
                                E_Task_Type      |
@@ -101,9 +101,9 @@ package body Flow is
                                E_Package        |
                                E_Package_Body,
           Post => Is_Valid (Flow_Analyse_Entity'Result);
-   --  Flow analyse the given entity E with a specification node S (i.e. where
-   --  the N_Contract node is attached). Do nothing for entities with no body
-   --  or not in SPARK 2014.
+   --  Flow analyse the given entity E with a specification entity S (i.e.
+   --  where the N_Contract node is attached). Do nothing for entities with
+   --  no body or not in SPARK 2014.
 
    use type Analysis_Maps.Map;
 
@@ -851,7 +851,7 @@ package body Flow is
    -------------------------
 
    function Flow_Analyse_Entity (E : Entity_Id;
-                                 S : Node_Id)
+                                 S : Entity_Id)
                                  return Flow_Analysis_Graphs
    is
       Tmp : Flow_Analysis_Graphs_Root
@@ -866,7 +866,7 @@ package body Flow is
          else "Flow analysis");
    begin
       Tmp.Analyzed_Entity       := E;
-      Tmp.Spec_Node             := S;
+      Tmp.Spec_Entity           := S;
       Tmp.Start_Vertex          := Null_Vertex;
       Tmp.Helper_End_Vertex     := Null_Vertex;
       Tmp.End_Vertex            := Null_Vertex;

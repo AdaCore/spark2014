@@ -5546,7 +5546,7 @@ package body Flow.Control_Flow_Graph is
             if Is_Generic_Instance (FA.Analyzed_Entity) then
                declare
                   Instance    : constant Node_Id :=
-                   Get_Package_Instantiation_Node (FA.Spec_Node);
+                   Get_Package_Instantiation_Node (FA.Spec_Entity);
                   Association : Node_Id;
                   Parameter   : Node_Id;
                begin
@@ -5699,7 +5699,7 @@ package body Flow.Control_Flow_Graph is
                The_Out : Flow_Id;
                The_In  : Flow_Id_Sets.Set;
                DM      : constant Dependency_Maps.Map :=
-                 Parse_Initializes (FA.Initializes_N, FA.Spec_Node);
+                 Parse_Initializes (FA.Initializes_N, FA.Spec_Entity);
             begin
                for C in DM.Iterate loop
                   The_Out := Dependency_Maps.Key (C);
