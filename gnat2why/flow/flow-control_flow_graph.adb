@@ -676,6 +676,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context);
    --  Deals with the given precondition expression.
+   --  ??? can be merged with Do_Postcondition
 
    procedure Do_Call_Statement
      (N   : Node_Id;
@@ -731,6 +732,7 @@ package body Flow.Control_Flow_Graph is
       CM   : in out Connection_Maps.Map;
       Ctx  : in out Context);
    --  Deals with the given postcondition expression.
+   --  ??? can be merged with Do_Precondition
 
    procedure Do_Simple_Return_Statement
      (N   : Node_Id;
