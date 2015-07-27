@@ -1,1 +1,1 @@
-XFAIL ALL missing scope for generic instance within an entry (O723-005)
+ALL XFAIL missing scope for generic instance within an entry (O723-005)
