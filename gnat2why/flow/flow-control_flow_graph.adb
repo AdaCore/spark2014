@@ -5447,11 +5447,10 @@ package body Flow.Control_Flow_Graph is
             Preconditions   :=
               Get_Precondition_Expressions (FA.Analyzed_Entity);
 
-            if Acts_As_Spec (Body_N) then
-               Subprogram_Spec := Defining_Unit_Name (Specification (Body_N));
-            else
-               Subprogram_Spec := Corresponding_Spec (Body_N);
-            end if;
+            Subprogram_Spec :=
+              (if Acts_As_Spec (Body_N)
+               then Defining_Unit_Name (Specification (Body_N))
+               else Corresponding_Spec (Body_N));
 
          when E_Entry =>
             Body_N          := Entry_Body (FA.Analyzed_Entity);
