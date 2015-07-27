@@ -393,7 +393,7 @@ package body Flow_Error_Messages is
       Is_Proved   : Boolean;
       Tag         : VC_Kind;
       Tracefile   : String;
-      Cntexmp_Vc  : String;
+      Cntexmp_VC  : String;
       Cntexmpfile : String;
       VC_File     : String;
       Editor_Cmd  : String;
@@ -406,7 +406,7 @@ package body Flow_Error_Messages is
       Msg2     : constant String :=
         Compute_Message (Msg, N);
       Msg3     : constant String :=
-        (if Cntexmp_Vc /= "" then Msg2 & ", counter-example: " & Cntexmp_Vc
+        (if Cntexmp_VC /= "" then Msg2 & ", counter-example: " & Cntexmp_VC
          else Msg2);
       Suppr    : String_Id := No_String;
       Slc      : constant Source_Ptr := Compute_Sloc (N, Place_First);
@@ -447,7 +447,7 @@ package body Flow_Error_Messages is
          Msg_Id      => Msg_Id,
          E           => E,
          Tracefile   => Tracefile,
-         Cntexmp_Vc  => Cntexmp_Vc,
+         Cntexmp_Vc  => Cntexmp_VC,
          Cntexmpfile => Cntexmpfile,
          VC_File     => VC_File,
          How_Proved  => How_Proved,

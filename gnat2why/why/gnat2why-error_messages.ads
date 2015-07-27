@@ -46,7 +46,7 @@ package Gnat2Why.Error_Messages is
       E           : Entity_Id;
       Extra_Msg   : String := "";
       Tracefile   : String := "";
-      Cntexmp_Vc  : String := "";
+      Cntexmp_VC  : String := "";
       Cntexmpfile : String := "";
       VC_File     : String := "";
       How_Proved  : String := "";

@@ -124,7 +124,7 @@ package Flow_Error_Messages is
       Is_Proved   : Boolean;
       Tag         : VC_Kind;
       Tracefile   : String;
-      Cntexmp_Vc  : String;
+      Cntexmp_VC  : String;
       Cntexmpfile : String;
       VC_File     : String;
       Editor_Cmd  : String;
