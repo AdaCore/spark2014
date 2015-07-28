@@ -50,7 +50,7 @@ package Gnat2Why.Expr is
    --  Generate an assignment from an object declaration
 
    function Assume_Dynamic_Property
-     (Expr          : W_Expr_Id;
+     (Expr          : W_Term_Id;
       Ty            : Entity_Id;
       Initialized   : Boolean := True;
       Only_Var      : Boolean := True;
@@ -106,11 +106,12 @@ package Gnat2Why.Expr is
    --  @result The dynamic property of type Ty over Expr
 
    function Compute_Dynamic_Predicate
-     (Expr     : W_Expr_Id;
+     (Expr     : W_Term_Id;
       Ty       : Entity_Id;
       Params   : Transformation_Params := Body_Params;
       Use_Pred : Boolean := True) return W_Pred_Id;
-   --  @param Expr Why3 expression on which to express the dynamic predicate
+   --  @param Expr Why3 term expression on which to express the dynamic
+   --     predicate.
    --  @param Ty type with the dynamic property
    --  @param Params transformation parameters
    --  @param Use_Pred True iff the named predicate should be used
@@ -118,7 +119,7 @@ package Gnat2Why.Expr is
    --     over [Expr].
 
    function Compute_Dynamic_Property
-     (Expr          : W_Expr_Id;
+     (Expr          : W_Term_Id;
       Ty            : Entity_Id;
       Initialized   : W_Term_Id := True_Term;
       Only_Var      : W_Term_Id := True_Term;

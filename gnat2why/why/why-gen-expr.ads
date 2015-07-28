@@ -377,8 +377,8 @@ package Why.Gen.Expr is
      (E         : W_Expr_Id;
       Need_Temp : Boolean := True) return W_Expr_Id;
    --  Return a temp variable for the given expression, and store the provided
-   --  expression for later use. If Need_Temp is set, do not actually introduce
-   --  a temp variable.
+   --  expression for later use. If Need_Temp is False, do not actually
+   --  introduce a temp variable.
 
    function Binding_For_Temp
      (Ada_Node : Node_Id := Empty;

@@ -122,6 +122,23 @@ package body Gnat2Why.Expr is
    --  Optimization: if E is a modular type, and Op is division, do not add the
    --  modulus operation.
 
+   function Boolean_Prog_Of_Pred (W : W_Pred_Id) return W_Prog_Id is
+     (New_Any_Expr (Post        =>
+                      New_Connection
+                        (Left     =>
+                            New_Call (Domain => EW_Pred,
+                                      Name   => Why_Eq,
+                                      Typ    => EW_Bool_Type,
+                                      Args   =>
+                                        (+New_Result_Ident (EW_Bool_Type),
+                                         +True_Term)),
+                         Op       => EW_Equivalent,
+                         Right    => +W),
+                    Return_Type => EW_Bool_Type));
+
+   --  @param W a Why3 pred expression
+   --  @return the equivalent Why3 prog expression
+
    function Boolean_Term_Of_Pred (W : W_Pred_Id) return W_Term_Id is
      (New_Conditional (Condition => +W,
                        Then_Part => +True_Term,
@@ -129,6 +146,18 @@ package body Gnat2Why.Expr is
                        Typ       => EW_Bool_Type));
    --  @param W a Why3 pred expression
    --  @return the equivalent Why3 term expression
+
+   function Boolean_Expr_Of_Pred
+     (W      : W_Pred_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   is
+     (case Domain is
+        when EW_Prog | EW_Pterm => +Boolean_Prog_Of_Pred (W),
+        when EW_Term => +Boolean_Term_Of_Pred (W),
+        when EW_Pred => +W);
+   --  @param W a Why3 pred expression
+   --  @param Domain translation domain
+   --  @return the equivalent Why3 expression, depending on the [Domain]
 
    function Pred_Of_Boolean_Term (W : W_Term_Id) return W_Pred_Id is
      (New_Call (Name => Why_Eq,
@@ -920,7 +949,7 @@ package body Gnat2Why.Expr is
    -----------------------------
 
    function Assume_Dynamic_Property
-     (Expr          : W_Expr_Id;
+     (Expr          : W_Term_Id;
       Ty            : Entity_Id;
       Initialized   : Boolean := True;
       Only_Var      : Boolean := True;
@@ -2692,7 +2721,7 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Compute_Dynamic_Predicate
-     (Expr     : W_Expr_Id;
+     (Expr     : W_Term_Id;
       Ty       : Entity_Id;
       Params   : Transformation_Params := Body_Params;
       Use_Pred : Boolean := True) return W_Pred_Id
@@ -2715,7 +2744,7 @@ package body Gnat2Why.Expr is
       --  unnecessary conversion harmful to provers.
 
       elsif Use_Pred
-        and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (Expr))
+        and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Expr))
       then
          Variables_In_Dynamic_Property (Ty_Ext, Variables);
 
@@ -2726,7 +2755,7 @@ package body Gnat2Why.Expr is
             Args  : W_Expr_Array (1 .. Num_B);
 
          begin
-            Args (1)          := Expr;
+            Args (1)          := +Expr;
             Args (2 .. Num_B) := Vars;
 
             return New_Call (Name => E_Symb (Ty, WNE_Dynamic_Predicate),
@@ -2743,7 +2772,7 @@ package body Gnat2Why.Expr is
               Defining_Entity (First (Parameter_Specifications
                 (Subprogram_Specification (Pred_Subp))));
             Pred_Id    : constant W_Identifier_Id :=
-              New_Temp_Identifier (Pred_Param, Get_Type (Expr));
+              New_Temp_Identifier (Pred_Param, Get_Type (+Expr));
 
          begin
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
@@ -2766,7 +2795,7 @@ package body Gnat2Why.Expr is
             --  value Expr for which the predicate is checked.
 
             T := New_Binding (Name    => Pred_Id,
-                              Def     => Expr,
+                              Def     => +Expr,
                               Context => +T,
                               Typ     => Get_Type (+T));
 
@@ -2782,7 +2811,7 @@ package body Gnat2Why.Expr is
    ------------------------------
 
    function Compute_Dynamic_Property
-     (Expr          : W_Expr_Id;
+     (Expr          : W_Term_Id;
       Ty            : Entity_Id;
       Initialized   : W_Term_Id := True_Term;
       Only_Var      : W_Term_Id := True_Term;
@@ -2811,7 +2840,7 @@ package body Gnat2Why.Expr is
       if Use_Pred
         and then not Is_Itype (Ty_Ext)
         and then not Is_Standard_Boolean_Type (Ty_Ext)
-        and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (Expr))
+        and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Expr))
       then
          Variables_In_Dynamic_Property (Ty_Ext, Variables);
 
@@ -2822,7 +2851,7 @@ package body Gnat2Why.Expr is
             Args  : W_Expr_Array (1 .. Num_B);
 
          begin
-            Args (1) := Expr;
+            Args (1) := +Expr;
             Args (2) := +Initialized;
             Args (3) := +Only_Var;
             Args (4) := +Top_Predicate;
@@ -2841,11 +2870,11 @@ package body Gnat2Why.Expr is
 
       if Type_Is_Modeled_As_Base (Ty_Ext)
         or else (Is_Scalar_Type (Ty_Ext)
-                 and then Get_Type_Kind (Get_Type (Expr)) = EW_Split)
+                 and then Get_Type_Kind (Get_Type (+Expr)) = EW_Split)
       then
          T := +New_Dynamic_Property (Domain => EW_Pred,
                                      Ty     => Ty_Ext,
-                                     Expr   => Expr,
+                                     Expr   => +Expr,
                                      Params => Params);
 
          --  If a scalar variable is not initialized, then its dynamic property
@@ -2898,7 +2927,7 @@ package body Gnat2Why.Expr is
       then
          T := +New_Dynamic_Property (Domain => EW_Pred,
                                      Ty     => Ty_Ext,
-                                     Expr   => Expr,
+                                     Expr   => +Expr,
                                      Params => Params);
 
          --  For arrays, also assume the value of its bounds
@@ -2925,7 +2954,7 @@ package body Gnat2Why.Expr is
                                (EW_Term,
                                 +Get_Array_Attr
                                   (Domain => EW_Term,
-                                   Expr   => Expr,
+                                   Expr   => +Expr,
                                    Attr   => Attribute_First,
                                    Dim    => I)),
                              2 => Low_Expr));
@@ -2941,7 +2970,7 @@ package body Gnat2Why.Expr is
                                (EW_Term,
                                 +Get_Array_Attr
                                   (Domain => EW_Term,
-                                   Expr   => Expr,
+                                   Expr   => +Expr,
                                    Attr   => Attribute_Last,
                                    Dim    => I)),
                              2 => High_Expr));
@@ -2978,7 +3007,7 @@ package body Gnat2Why.Expr is
             Then_Part   => +True_Pred,
             Else_Part   => +New_Dynamic_Property (Domain => EW_Pred,
                                                   Ty     => Ty_Ext,
-                                                  Expr   => Expr,
+                                                  Expr   => +Expr,
                                                   Params => Params),
             Typ         => EW_Bool_Type);
       else
@@ -3047,13 +3076,13 @@ package body Gnat2Why.Expr is
                        Low    => Insert_Conversion_To_Rep_No_Bool
                          (EW_Term,
                           Get_Array_Attr (Domain => EW_Term,
-                                          Expr   => Expr,
+                                          Expr   => +Expr,
                                           Attr   => Attribute_First,
                                           Dim    => I)),
                        High   => Insert_Conversion_To_Rep_No_Bool
                          (EW_Term,
                           Get_Array_Attr (Domain => EW_Term,
-                                          Expr   => Expr,
+                                          Expr   => +Expr,
                                           Attr   => Attribute_Last,
                                           Dim    => I)),
                        Expr   => +Tmp),
@@ -3074,7 +3103,7 @@ package body Gnat2Why.Expr is
             T_Comp :=
               +Compute_Dynamic_Property
                  (Expr          =>
-                    New_Array_Access (Empty, Expr, Indices, EW_Term),
+                    +New_Array_Access (Empty, +Expr, Indices, EW_Term),
                   Ty            => Component_Type (Ty_Ext),
                   Initialized   => Initialized,
                   Only_Var      => False_Term,
@@ -3102,7 +3131,7 @@ package body Gnat2Why.Expr is
                              Domain   => EW_Term,
                              Name     =>
                                New_Array_Access
-                                 (Empty, Expr, Indices, EW_Term),
+                                 (Empty, +Expr, Indices, EW_Term),
                              Ty       => Component_Type (Ty_Ext)),
                           2 => +False_Term)),
                   Domain => EW_Pred);
@@ -3145,7 +3174,7 @@ package body Gnat2Why.Expr is
             R_Expr  : constant W_Expr_Id :=
               Insert_Simple_Conversion (Ada_Node => Ty,
                                         Domain   => EW_Term,
-                                        Expr     => Expr,
+                                        Expr     => +Expr,
                                         To       => EW_Abstract (Ty_Ext));
             Discrs  : constant Natural :=
               (if Has_Discriminants (Ty_Ext) then
@@ -3187,7 +3216,7 @@ package body Gnat2Why.Expr is
 
                   T_Comp :=
                     Compute_Dynamic_Property
-                      (Expr          => R_Acc,
+                      (Expr          => +R_Acc,
                        Ty            => Etype (Field),
                        Initialized   => Initialized,
                        Only_Var      => False_Term,
@@ -8674,10 +8703,10 @@ package body Gnat2Why.Expr is
                     (R,
                      Assume_Dynamic_Property
                        (Expr        =>
-                          Transform_Identifier (Expr   => Lvalue,
-                                                Ent    => Lvalue,
-                                                Domain => EW_Term,
-                                                Params => Body_Params),
+                          +Transform_Identifier (Expr   => Lvalue,
+                                                 Ent    => Lvalue,
+                                                 Domain => EW_Term,
+                                                 Params => Body_Params),
                         Ty          => Etype (Lvalue),
                         Initialized => Present (Expression (Decl)),
                         Only_Var    => False));
@@ -10149,7 +10178,7 @@ package body Gnat2Why.Expr is
 
                      declare
                         Dyn_Prop : constant W_Pred_Id :=
-                          Compute_Dynamic_Property (Expr   => T,
+                          Compute_Dynamic_Property (Expr   => +T,
                                                     Ty     => E.Typ,
                                                     Params => Params);
                      begin
@@ -10466,14 +10495,29 @@ package body Gnat2Why.Expr is
                   end if;
                end if;
 
-               --  Possibly include a predicate in the type membership test
+               --  Possibly include a predicate in the type membership
+               --  test. A temporary needs to be introduced if Var is not
+               --  a simple variable, so that we can always pass a term to
+               --  Compute_Dynamic_Predicate, even when Domain = EW_Prog.
+               --  This is needed because the pred expression returned by
+               --  Compute_Dynamic_Predicate may then be converted back to a
+               --  Why3 prog expression by Boolean_Expr_Of_Pred, which requires
+               --  its argument to be a pred expression.
 
                if Has_Predicates (Ty) then
-                  Result := New_And_Expr
-                    (Result,
-                     +Boolean_Term_Of_Pred
-                        (Compute_Dynamic_Predicate (Var, Ty, Params)),
-                     Domain);
+                  declare
+                     Tmp : constant W_Expr_Id := New_Temp_For_Expr (Var);
+                  begin
+                     Result := New_And_Expr
+                       (Result,
+                        Boolean_Expr_Of_Pred
+                          (Compute_Dynamic_Predicate (+Tmp, Ty, Params),
+                           Domain),
+                        Domain);
+                     Result := Binding_For_Temp (Domain  => Domain,
+                                                 Tmp     => Tmp,
+                                                 Context => Result);
+                  end;
                end if;
             end;
          else
@@ -10495,10 +10539,9 @@ package body Gnat2Why.Expr is
         (if Domain = EW_Pred then EW_Term else Domain);
       Var_Expr  : W_Expr_Id;
 
-      --  Start of processing for Transform_Membership_Expression
+   --  Start of processing for Transform_Membership_Expression
 
    begin
-
       --  For ranges and membership, "bool" should be mapped to "int".
 
       if Base_Type = EW_Bool_Type then
@@ -11553,7 +11596,7 @@ package body Gnat2Why.Expr is
             Pred : constant W_Expr_Id :=
               Transform_Quantified_Expression (Expr, EW_Pred, Params);
          begin
-            return +Boolean_Term_Of_Pred (+Pred);
+            return Boolean_Expr_Of_Pred (+Pred, Domain);
          end;
       end if;
 

@@ -14,7 +14,7 @@ days.adb:16:13: info: initialization of "Tmp" proved
 days.adb:17:13: info: initialization of "Tmp" proved
 days.adb:18:16: info: initialization of "Tmp" proved
 days.adb:20:12: info: initialization of "Tmp" proved
-days.adb:20:12: info: range check proved
+days.adb:20:12: info: predicate check proved
 main.adb:5:07: medium: predicate check might fail
 main.adb:5:16: info: length check proved
 main.adb:5:42: info: length check proved

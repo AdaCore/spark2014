@@ -466,7 +466,7 @@ package body Gnat2Why.Expr.Loops is
                           (Symbol_Table, N);
                         Expr := Reconstruct_Item (Binder, Ref_Allowed => True);
                         Dyn_Prop :=
-                          Compute_Dynamic_Property (Expr        => Expr,
+                          Compute_Dynamic_Property (Expr        => +Expr,
                                                     Ty          => Etype (N),
                                                     Initialized => False_Term);
 
