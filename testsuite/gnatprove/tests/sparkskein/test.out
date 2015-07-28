@@ -1,5 +1,5 @@
 skein.adb:223:14: info: range check proved, in call inlined at skein.adb:874
-skein.adb:224:29: info: index check proved, in call inlined at skein.adb:874
+skein.adb:224:29: medium: array index check might fail, in call inlined at skein.adb:874
 skein.adb:224:34: info: initialization of "Hash" proved, in call inlined at skein.adb:874
 skein.adb:226:44: info: division check proved, in call inlined at skein.adb:874
 skein.adb:226:44: info: index check proved, in call inlined at skein.adb:874
@@ -7,13 +7,13 @@ skein.adb:227:35: info: range check proved, in call inlined at skein.adb:874
 skein.adb:227:49: info: range check proved, in call inlined at skein.adb:874
 skein.adb:253:52: info: range check proved, in call inlined at skein.adb:582
 skein.adb:258:29: info: initialization of "W" proved, in call inlined at skein.adb:582
-skein.adb:259:25: info: index check proved, in call inlined at skein.adb:582
-skein.adb:260:47: info: index check proved, in call inlined at skein.adb:582
-skein.adb:261:47: info: index check proved, in call inlined at skein.adb:582
-skein.adb:262:47: info: index check proved, in call inlined at skein.adb:582
-skein.adb:263:47: info: index check proved, in call inlined at skein.adb:582
-skein.adb:264:47: info: index check proved, in call inlined at skein.adb:582
-skein.adb:265:47: info: index check proved, in call inlined at skein.adb:582
+skein.adb:259:25: medium: array index check might fail, in call inlined at skein.adb:582
+skein.adb:260:47: medium: array index check might fail, in call inlined at skein.adb:582
+skein.adb:261:47: medium: array index check might fail, in call inlined at skein.adb:582
+skein.adb:262:47: medium: array index check might fail, in call inlined at skein.adb:582
+skein.adb:263:47: medium: array index check might fail, in call inlined at skein.adb:582
+skein.adb:264:47: medium: array index check might fail, in call inlined at skein.adb:582
+skein.adb:265:47: medium: array index check might fail, in call inlined at skein.adb:582
 skein.adb:266:47: medium: array index check might fail, in call inlined at skein.adb:582
 skein.adb:304:19: info: postcondition proved
 skein.adb:326:23: info: initialization of "KS" proved, in call inlined at skein.adb:578
@@ -64,19 +64,19 @@ skein.adb:651:61: info: length check proved
 skein.adb:693:20: info: initialization of "Current_Msg_Offset" proved, in call inlined at skein.adb:728
 skein.adb:693:20: info: initialization of "Current_Msg_Offset" proved, in call inlined at skein.adb:768
 skein.adb:695:25: info: range check proved, in call inlined at skein.adb:728
-skein.adb:695:25: info: range check proved, in call inlined at skein.adb:768
+skein.adb:695:25: medium: range check might fail, in call inlined at skein.adb:768
 skein.adb:697:26: info: initialization of "Dst" proved, in call inlined at skein.adb:728
 skein.adb:697:26: info: initialization of "Dst" proved, in call inlined at skein.adb:768
 skein.adb:697:30: info: range check proved, in call inlined at skein.adb:728
-skein.adb:697:30: info: range check proved, in call inlined at skein.adb:768
+skein.adb:697:30: medium: range check might fail, in call inlined at skein.adb:768
 skein.adb:699:26: info: initialization of "Src" proved, in call inlined at skein.adb:728
 skein.adb:699:26: info: initialization of "Src" proved, in call inlined at skein.adb:768
 skein.adb:702:28: info: initialization of "Dst" proved, in call inlined at skein.adb:728
 skein.adb:702:28: info: initialization of "Dst" proved, in call inlined at skein.adb:768
 skein.adb:702:36: info: index check proved, in call inlined at skein.adb:728
-skein.adb:702:36: info: index check proved, in call inlined at skein.adb:768
 skein.adb:702:36: info: initialization of "Src" proved, in call inlined at skein.adb:728
 skein.adb:702:36: info: initialization of "Src" proved, in call inlined at skein.adb:768
+skein.adb:702:36: medium: array index check might fail, in call inlined at skein.adb:768
 skein.adb:704:16: info: loop invariant initialization proved, in call inlined at skein.adb:728
 skein.adb:704:16: info: loop invariant initialization proved, in call inlined at skein.adb:768
 skein.adb:704:16: info: loop invariant preservation proved, in call inlined at skein.adb:728
@@ -108,7 +108,7 @@ skein.adb:744:13: info: initialization of "Msg_Byte_Count" proved
 skein.adb:747:29: info: initialization of "Msg_Byte_Count" proved
 skein.adb:747:49: info: division check proved
 skein.adb:747:49: info: range check proved
-skein.adb:749:13: info: precondition proved
+skein.adb:749:13: medium: precondition might fail
 skein.adb:752:35: info: initialization of "Current_Msg_Offset" proved
 skein.adb:753:35: info: initialization of "Block_Count" proved
 skein.adb:756:29: info: initialization of "Block_Count" proved
@@ -142,7 +142,7 @@ skein.adb:813:26: info: initialization of "Local_Ctx.B" proved, in call inlined 
 skein.adb:813:61: info: range check proved, in call inlined at skein.adb:851
 skein.adb:814:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:851
 skein.adb:814:61: info: range check proved, in call inlined at skein.adb:851
-skein.adb:819:12: info: length check proved
+skein.adb:819:12: medium: length check might fail
 skein.adb:822:11: info: initialization of "Local_Ctx.H.Byte_Count" proved
 skein.adb:826:16: info: initialization of "Local_Ctx.B" proved
 skein.adb:827:29: info: initialization of "Local_Ctx.H.Byte_Count" proved
@@ -250,10 +250,23 @@ skein.ads:176:36: info: initialization of "Ctx.H.Tweak_Words.First_Block" proved
 skein.ads:176:36: info: initialization of "Ctx.H.Tweak_Words.Reserved" proved
 skein.ads:176:36: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
 skein.ads:176:36: info: initialization of "Ctx.X" proved
-skein.ads:190:19: info: postcondition proved
+skein.ads:190:19: medium: postcondition might fail
 skein.ads:195:31: info: initialization of "Hash" proved
 skein.ads:200:46: info: division check proved
 skein.ads:369:52: info: length check proved
 skein.ads:370:52: info: length check proved
-warning: prover z3 does not support step limit
-warning: running z3 without step limit
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
