@@ -1352,7 +1352,7 @@ package body Flow is
                         Needs_Body := True;
                      end if;
 
-                     if Needs_Body and Entity_Body_In_SPARK (E) then
+                     if Needs_Body and then Entity_Body_In_SPARK (E) then
                         FA_Graphs.Include
                           (Pkg_Body,
                            Flow_Analyse_Entity (Pkg_Body, E));
