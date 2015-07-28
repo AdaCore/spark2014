@@ -621,19 +621,28 @@ package body Why.Gen.Arrays is
    is
      (Prepare_Standard_Array_Logical_Substitutions (Theory, Und_Ent)
       & (1 =>
-            New_Clone_Substitution
-         (Kind      => EW_Type_Subst,
-          Orig_Name => To_Name (WNE_Array_Component_Type),
-          Image     => To_Name (WNE_Array_Component_Type)),
+              New_Clone_Substitution
+           (Kind      => EW_Type_Subst,
+            Orig_Name => To_Name (WNE_Array_Component_Type),
+            Image     => To_Name (WNE_Array_Component_Type)),
          2 =>
             New_Clone_Substitution
-         (Kind      => EW_Function,
-          Orig_Name => New_Name (Symbol => NID ("to_int")),
-          Image     =>
-             Get_Name (Conversion_Name
-                      (From =>
-                          +EW_Abstract (Component_Type (Und_Ent)),
-                       To   => +EW_Int_Type)))));
+           (Kind      => EW_Function,
+            Orig_Name => New_Name (Symbol => NID ("to_int")),
+            Image     =>
+               Get_Name (Conversion_Name
+                         (From =>
+                             +EW_Abstract (Component_Type (Und_Ent)),
+                          To   => +EW_Int_Type))),
+         3 =>
+            New_Clone_Substitution
+           (Kind      => EW_Function,
+            Orig_Name => New_Name (Symbol => NID ("of_int")),
+            Image     =>
+               Get_Name (Conversion_Name
+                         (From => +EW_Int_Type,
+                          To   =>
+                             +EW_Abstract (Component_Type (Und_Ent)))))));
 
    ----------------
    -- Append_Num --

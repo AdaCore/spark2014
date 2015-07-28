@@ -913,6 +913,7 @@ module Array_Generic_Op_Axiom
   function get map Index.t : component_type
 
   function to_bool component_type : bool
+  function of_bool bool : component_type
   function base_op bool bool : bool
 
   function array_op map Index.t Index.t map Index.t Index.t : map
@@ -922,8 +923,8 @@ module Array_Generic_Op_Axiom
    forall a_first a_last b_first b_last : Index.t.
    forall i : Index.t [get (array_op a a_first a_last b b_first b_last) i].
      (Index.le a_first i /\ Index.le i a_last) ->
-     to_bool (get (array_op a a_first a_last b b_first b_last) i) =
-            base_op (to_bool (get a i)) (to_bool (get b (Index.add (Index.sub i a_first) b_first)))
+     get (array_op a a_first a_last b b_first b_last) i =
+            of_bool (base_op (to_bool (get a i)) (to_bool (get b (Index.add (Index.sub i a_first) b_first))))
 end
 
 module Array_Logical_Op_Generic_Axioms
@@ -933,6 +934,7 @@ module Array_Logical_Op_Generic_Axioms
        boolean 1 dimension array type *)
    type component_type
    function to_bool component_type : bool
+   function of_bool bool : component_type
 
    type map
 
@@ -961,6 +963,7 @@ module Array_Logical_Op_Generic_Axioms
      function Index.one = Index.one,
      function get = get,
      function to_bool = to_bool,
+     function of_bool = of_bool,
      function array_op = orb,
      function base_op = Bool.orb
 
@@ -976,6 +979,7 @@ module Array_Logical_Op_Generic_Axioms
      function Index.one = Index.one,
      function get = get,
      function to_bool = to_bool,
+     function of_bool = of_bool,
      function array_op = andb,
      function base_op = Bool.andb
 
@@ -991,6 +995,7 @@ module Array_Logical_Op_Generic_Axioms
      function Index.one = Index.one,
      function get = get,
      function to_bool = to_bool,
+     function of_bool = of_bool,
      function array_op = xorb,
      function base_op = Bool.xorb
 
@@ -999,8 +1004,8 @@ module Array_Logical_Op_Generic_Axioms
     forall a_first a_last : Index.t.
     forall i : Index.t [get (notb a a_first a_last) i].
       (Index.le a_first i /\ Index.le i a_last) ->
-      to_bool (get (notb a a_first a_last) i) =
-             Bool.notb (to_bool (get a i))
+      get (notb a a_first a_last) i =
+             of_bool (Bool.notb (to_bool (get a i)))
 end
 
 module Standard_Array_Logical_Op_Axioms
@@ -1010,7 +1015,8 @@ module Standard_Array_Logical_Op_Axioms
 
   clone export Array_Logical_Op_Generic_Axioms with
      type component_type = bool,
-     function to_bool = bool_id
+     function to_bool = bool_id,
+     function of_bool = bool_id
 end
 
 module Subtype_Array_Logical_Op_Axioms
@@ -1019,12 +1025,15 @@ module Subtype_Array_Logical_Op_Axioms
 
    type component_type
    function to_int component_type : int
+   function of_int int : component_type
 
   function to_bool "inline" (x : component_type) : bool = Boolean.of_int (to_int (x))
+  function of_bool "inline" (x : bool) : component_type = of_int (Boolean.to_int (x))
 
   clone export Array_Logical_Op_Generic_Axioms with
      type component_type = component_type,
-     function to_bool = to_bool
+     function to_bool = to_bool,
+     function of_bool = of_bool
 end
 
 module Unconstr_Array
