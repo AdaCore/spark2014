@@ -335,6 +335,50 @@ package body Flow_Utility is
       Init_Done := True;
    end Initialize;
 
+   -------------------------------------------
+   -- Collect_Functions_And_Read_Locked_POs --
+   -------------------------------------------
+
+   procedure Collect_Functions_And_Read_Locked_POs
+     (N : Node_Id;
+      Functions_Called : out Node_Sets.Set;
+      Tasking          : in out Tasking_Info) is
+
+      function Proc (N : Node_Id) return Traverse_Result;
+      --  If the node being processed is an N_Function_Call, store a
+      --  corresponding Flow_Id; for protected functions store the read-locked
+      --  protected object.
+
+      ----------
+      -- Proc --
+      ----------
+
+      function Proc (N : Node_Id) return Traverse_Result is
+      begin
+         if Nkind (N) = N_Function_Call then
+            Functions_Called.Include (Get_Called_Entity (N));
+
+            if Convention (Get_Called_Entity (N)) = Convention_Protected then
+               if Nkind (Name (N)) = N_Selected_Component then
+                  Tasking.PO_Read_Locks.Include
+                    (Direct_Mapping_Id (Entity (Prefix (Name (N)))));
+               end if;
+            end if;
+         end if;
+
+         return OK;
+      end Proc;
+
+      procedure Traverse is new Traverse_Proc (Process => Proc);
+      --  AST traversal procedure
+
+   --  Start of processing for Collect_Functions_And_Read_Locked_POs
+
+   begin
+      Functions_Called := Node_Sets.Empty_Set;
+      Traverse (N);
+   end Collect_Functions_And_Read_Locked_POs;
+
    --------------------
    -- Component_Hash --
    --------------------
@@ -2315,30 +2359,13 @@ package body Flow_Utility is
    ----------------------
 
    function Get_Function_Set (N : Node_Id) return Node_Sets.Set is
-      NS : Node_Sets.Set := Node_Sets.Empty_Set;
 
-      function Proc (N : Node_Id) return Traverse_Result;
-      --  If the node being processed is an N_Function call, it adds
-      --  the corresponding Flow_Id to FS.
-
-      ----------
-      -- Proc --
-      ----------
-
-      function Proc (N : Node_Id) return Traverse_Result is
-      begin
-         if Nkind (N) = N_Function_Call then
-            NS.Include (Get_Called_Entity (N));
-         end if;
-
-         return OK;
-      end Proc;
-
-      procedure Traverse is new Traverse_Proc (Process => Proc);
+      Funcs  : Node_Sets.Set := Node_Sets.Empty_Set;
+      Unused : Tasking_Info;
 
    begin
-      Traverse (N);
-      return NS;
+      Collect_Functions_And_Read_Locked_POs (N, Funcs, Unused);
+      return Funcs;
    end Get_Function_Set;
 
    ----------------------

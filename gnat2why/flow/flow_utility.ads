@@ -28,6 +28,7 @@ with Ada.Containers;
 with Atree;                use Atree;
 with Common_Containers;    use Common_Containers;
 with Einfo;                use Einfo;
+with Flow;                 use Flow;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 with Flow_Refinement;      use Flow_Refinement;
 with Flow_Types;           use Flow_Types;
@@ -47,6 +48,15 @@ is
 
    function Is_Initialized return Boolean;
    --  Tests if we're initialized.
+
+   procedure Collect_Functions_And_Read_Locked_POs
+     (N : Node_Id;
+      Functions_Called : out Node_Sets.Set;
+      Tasking          : in out Tasking_Info) with
+     Pre => Present (N);
+   --  For an expression N collect its called functions and update the set
+   --  of protected objects that are read-locked when evaluating these
+   --  functions.
 
    function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type
    with Pre => Is_Initialized and then
