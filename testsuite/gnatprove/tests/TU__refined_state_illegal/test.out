@@ -1,5 +1,11 @@
 refined_state_illegal.adb:5:43: cannot mix null and non-null constituents
 refined_state_illegal.adb:24:12: useless refinement, package "Pac4" does not define abstract states
+refined_state_illegal.adb:24:30: "S" is not visible
+refined_state_illegal.adb:24:30: non-visible declaration at refined_state_illegal.ads:111
+refined_state_illegal.adb:24:30: non-visible declaration at refined_state_illegal.ads:13
+refined_state_illegal.adb:24:30: non-visible declaration at refined_state_illegal.ads:33
+refined_state_illegal.adb:24:30: non-visible declaration at refined_state_illegal.ads:50
+refined_state_illegal.adb:24:30: non-visible declaration at refined_state_illegal.ads:58
 refined_state_illegal.adb:31:35: constituent "F1" must denote object or state
 refined_state_illegal.adb:40:44: malformed constituent
 refined_state_illegal.adb:58:36: cannot use "Pr_Var1" in refinement, constituent is not a hidden state of package "Pac8"
