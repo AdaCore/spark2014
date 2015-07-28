@@ -738,6 +738,7 @@ package body Why.Gen.Expr is
         Need_Check and then Is_Tagged_Type (R) and then not Is_Ancestor (R, L);
       Need_Pred_Check  : constant Boolean :=
         Need_Check and then Has_Predicates (R);
+      Check_Entity     : constant Entity_Id := Get_Ada_Node (+To);
 
    begin
       --  When From = To and no check needs to be inserted, do nothing
@@ -753,36 +754,25 @@ package body Why.Gen.Expr is
                                           To       => Base,
                                           Expr     => Result);
 
-      --  2. Possibly perform checks
+      --  2. Possibly perform checks on root type
 
       if Domain = EW_Prog then
-         declare
-            Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
-         begin
-            --  2.a Possibly perform a discriminant check
 
-            if Need_Discr_Check then
-               Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
-                                                             Check_Entity,
-                                                             +Result);
-            end if;
+         --  2.a Possibly perform a discriminant check
 
-            --  2.b Possibly perform the tag check
+         if Need_Discr_Check then
+            Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
+                                                          Check_Entity,
+                                                          +Result);
+         end if;
 
-            if Need_Tag_Check then
-               Result := +Insert_Tag_Check (Ada_Node,
-                                            Check_Entity,
-                                            +Result);
-            end if;
+         --  2.b Possibly perform a tag check
 
-            --  2.c Possibly perform a predicate check
-
-            if Need_Pred_Check then
-               Result := +Insert_Predicate_Check (Ada_Node,
-                                                  Check_Entity,
-                                                  +Result);
-            end if;
-         end;
+         if Need_Tag_Check then
+            Result := +Insert_Tag_Check (Ada_Node,
+                                         Check_Entity,
+                                         +Result);
+         end if;
       end if;
 
       --  3. Convert Base -> To
@@ -791,6 +781,16 @@ package body Why.Gen.Expr is
                                           Ada_Node => Ada_Node,
                                           To       => To,
                                           Expr     => Result);
+
+      --  4. Possibly perform a predicate check on target type To
+
+      if Domain = EW_Prog
+        and then Need_Pred_Check
+      then
+         Result := +Insert_Predicate_Check (Ada_Node,
+                                            Check_Entity,
+                                            +Result);
+      end if;
 
       return Result;
    end Insert_Record_Conversion;

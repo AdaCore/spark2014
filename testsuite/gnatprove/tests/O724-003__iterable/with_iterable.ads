@@ -9,8 +9,8 @@ package With_Iterable with SPARK_Mode is
                   Next        => Next);
    type Cursor (C : Natural) is record
       I : Natural;
-   end record;
---       with Dynamic_Predicate => Cursor.I in 1 .. Cursor.C;
+   end record
+     with Dynamic_Predicate => Cursor.I in 1 .. Cursor.C;
    subtype Cursor_2 is Cursor (Max + 1);
 
    function Get (A : Container; I : Natural) return Natural is
