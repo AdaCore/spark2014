@@ -1348,7 +1348,7 @@ package body Flow is
                      if Present (Pkg_Body) then
                         pragma Assert
                           (Nkind (Pkg_Body) = N_Defining_Identifier and then
-                             Ekind (Pkg_Body) = E_Package_Body);
+                           Ekind (Pkg_Body) = E_Package_Body);
                         Needs_Body := True;
                      end if;
 
