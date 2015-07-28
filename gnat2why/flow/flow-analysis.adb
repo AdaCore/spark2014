@@ -3851,9 +3851,8 @@ package body Flow.Analysis is
                   then Expression (First (Pragma_Argument_Associations (N)))
                   else Empty);
 
-         --  The pragma has an optional Boolean expression, the
-         --  related property is enabled only when the expression
-         --  evaluates to True.
+         --  The pragma has an optional Boolean expression, the related
+         --  property is enabled only when the expression evaluates to True.
 
          if Present (Expr) then
             return Is_True (Expr_Value (Get_Pragma_Arg (Expr)));
@@ -3863,6 +3862,8 @@ package body Flow.Analysis is
             return True;
          end if;
       end Is_Constant_After_Elaboration;
+
+   --  Start of processing for Check_Constant_After_Elaboration
 
    begin
       if Ekind (FA.Analyzed_Entity) = E_Function
