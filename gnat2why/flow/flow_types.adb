@@ -32,6 +32,7 @@ with Snames;                 use Snames;
 
 with Hashing;                use Hashing;
 with Why;
+with Gnat2Why_Args;
 
 with Flow_Generated_Globals; use Flow_Generated_Globals;
 with Flow_Utility;           use Flow_Utility;
@@ -638,6 +639,20 @@ package body Flow_Types is
          when Magic_String =>
             Output.Write_Str (" (magic)");
       end case;
+      if Gnat2Why_Args.Flow_Advanced_Debug then
+         case F.Kind is
+            when Direct_Mapping =>
+               Output.Write_Str (" <" & F.Node'Img & ">");
+            when Record_Field =>
+               Output.Write_Str (" <" & F.Node'Img);
+               for C of F.Component loop
+                  Output.Write_Str ("|" & C'Img);
+               end loop;
+               Output.Write_Str (">");
+            when others =>
+               null;
+         end case;
+      end if;
       Output.Write_Eol;
    end Print_Flow_Id;
 

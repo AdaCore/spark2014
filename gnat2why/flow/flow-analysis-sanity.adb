@@ -24,6 +24,8 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
+with Ada.Containers;      use Ada.Containers;
+
 with Elists;              use Elists;
 with Sem_Aux;             use Sem_Aux;
 with Sinfo;               use Sinfo;
@@ -124,15 +126,9 @@ package body Flow.Analysis.Sanity is
       function Check_Expressions_Variable_Free
         (N : Node_Id) return Traverse_Result
       is
-         ES1 : constant String := "default initialization ";
-         ES2 : constant String := "subtype constraint ";
-         ES3 : constant String := "cannot depend on &";
-         ES4 : constant String := "renamed index ";
-         ES5 : constant String := "renamed slice ";
-
          procedure Check_Flow_Id_Set
            (Flow_Ids : Ordered_Flow_Id_Sets.Set;
-            Err_Msg  : String;
+            Err_Desc : String;
             Err_Node : Node_Id);
          --  Iterates over Flow_Ids. An error is issued for any member of that
          --  set which does NOT denote a constant, a bound or a discriminant.
@@ -147,7 +143,7 @@ package body Flow.Analysis.Sanity is
 
          procedure Check_Flow_Id_Set
            (Flow_Ids : Ordered_Flow_Id_Sets.Set;
-            Err_Msg  : String;
+            Err_Desc : String;
             Err_Node : Node_Id)
          is
          begin
@@ -161,7 +157,7 @@ package body Flow.Analysis.Sanity is
                then
                   Error_Msg_Flow
                     (FA      => FA,
-                     Msg     => Err_Msg,
+                     Msg     => Err_Desc & " cannot depend on &",
                      SRM_Ref => "4.4(2)",
                      N       => Err_Node,
                      Kind    => Error_Kind,
@@ -186,7 +182,7 @@ package body Flow.Analysis.Sanity is
                        Simple_Variable_Set (Renamed_Indexes);
                   begin
                      Check_Flow_Id_Set (Flow_Ids => Deps,
-                                        Err_Msg  => ES4 & ES3,
+                                        Err_Desc  => "renamed index",
                                         Err_Node => N);
                   end;
 
@@ -198,7 +194,7 @@ package body Flow.Analysis.Sanity is
                        Simple_Variable_Set (Renamed_Slice);
                   begin
                      Check_Flow_Id_Set (Flow_Ids => Deps,
-                                        Err_Msg  => ES5 & ES3,
+                                        Err_Desc => "renamed slice",
                                         Err_Node => Renamed_Slice);
                   end;
 
@@ -229,6 +225,37 @@ package body Flow.Analysis.Sanity is
                else
                   return Skip;
                end if;
+
+            when N_Full_Type_Declaration |
+                 N_Subtype_Declaration   |
+                 N_Private_Extension_Declaration =>
+               declare
+                  E          : constant Entity_Id := Defining_Identifier (N);
+                  P          : constant Node_Id := Predicate_Function (E);
+                  GP, GI, GO : Flow_Id_Sets.Set;
+                  Deps       : Ordered_Flow_Id_Sets.Set;
+               begin
+                  if Present (P) then
+                     Get_Globals (Subprogram => P,
+                                  Scope      => FA.B_Scope,
+                                  Classwide  => False,
+                                  Proof_Ins  => GP,
+                                  Reads      => GI,
+                                  Writes     => GO);
+                     pragma Assert (GO.Length = 0);
+                     Deps := Ordered_Flow_Id_Sets.Empty_Set;
+                     for F of GP loop
+                        Deps.Insert (Change_Variant (F, Normal_Use));
+                     end loop;
+                     for F of GI loop
+                        Deps.Insert (Change_Variant (F, Normal_Use));
+                     end loop;
+                     Check_Flow_Id_Set (Flow_Ids => Deps,
+                                        Err_Desc => "predicate",
+                                        Err_Node => E);
+                  end if;
+               end;
+               return OK;
 
             when N_Loop_Parameter_Specification =>
 
@@ -270,7 +297,7 @@ package body Flow.Analysis.Sanity is
                              Simple_Variable_Set (C);
                         begin
                            Check_Flow_Id_Set (Flow_Ids => Deps,
-                                              Err_Msg  => ES2 & ES3,
+                                              Err_Desc => "subtype constraint",
                                               Err_Node => C);
                         end;
 
@@ -282,7 +309,7 @@ package body Flow.Analysis.Sanity is
                              Simple_Variable_Set (Constraints (C));
                         begin
                            Check_Flow_Id_Set (Flow_Ids => Deps,
-                                              Err_Msg  => ES2 & ES3,
+                                              Err_Desc => "subtype constraint",
                                               Err_Node => C);
                         end;
 
@@ -310,7 +337,7 @@ package body Flow.Analysis.Sanity is
                        Simple_Variable_Set (Expression (N));
                   begin
                      Check_Flow_Id_Set (Flow_Ids => Deps,
-                                        Err_Msg  => ES1 & ES3,
+                                        Err_Desc => "default initialization",
                                         Err_Node => Expression (N));
                   end;
                end if;

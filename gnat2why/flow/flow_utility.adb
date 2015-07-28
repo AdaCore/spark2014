@@ -340,40 +340,95 @@ package body Flow_Utility is
    -------------------------------------------
 
    procedure Collect_Functions_And_Read_Locked_POs
-     (N : Node_Id;
-      Functions_Called : out Node_Sets.Set;
-      Tasking          : in out Tasking_Info) is
+     (N                  : Node_Id;
+      Functions_Called   : out Node_Sets.Set;
+      Tasking            : in out Tasking_Info;
+      Include_Predicates : Boolean)
+   is
+      Scope : constant Flow_Scope := Get_Flow_Scope (N);
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  If the node being processed is an N_Function_Call, store a
-      --  corresponding Flow_Id; for protected functions store the read-locked
-      --  protected object.
+      --  corresponding Flow_Id; for protected functions store the
+      --  read-locked protected object.
+
+      procedure Process_Type (E : Entity_Id);
+      --  Merge predicate function for the given type.
+
+      ------------------
+      -- Process_Type --
+      ------------------
+
+      procedure Process_Type (E : Entity_Id)
+      is
+         P : Node_Id;
+      begin
+         if Include_Predicates and then Present (E) then
+            P := Predicate_Function (E);
+         else
+            return;
+         end if;
+
+         if Present (P) then
+            Functions_Called.Include (P);
+         end if;
+      end Process_Type;
 
       ----------
       -- Proc --
       ----------
 
-      function Proc (N : Node_Id) return Traverse_Result is
+      function Proc (N : Node_Id) return Traverse_Result
+      is
+         P : Node_Id;
       begin
-         if Nkind (N) = N_Function_Call then
-            Functions_Called.Include (Get_Called_Entity (N));
+         case Nkind (N) is
+            when N_Function_Call =>
+               Functions_Called.Include (Get_Called_Entity (N));
 
-            if Convention (Get_Called_Entity (N)) = Convention_Protected then
-               if Nkind (Name (N)) = N_Selected_Component then
-                  Tasking.PO_Read_Locks.Include
-                    (Direct_Mapping_Id (Entity (Prefix (Name (N)))));
+               if Convention (Get_Called_Entity (N)) = Convention_Protected
+               then
+                  if Nkind (Name (N)) = N_Selected_Component then
+                     Tasking.PO_Read_Locks.Include
+                       (Direct_Mapping_Id (Entity (Prefix (Name (N)))));
+                  end if;
                end if;
-            end if;
-         end if;
+
+            when N_In | N_Not_In =>
+               --  Membership tests involving type with predicates have the
+               --  predicate function appear during GG, but not in phase 2.
+               --  See mirroring code in Get_Variable_Set that deals with
+               --  this as well.
+               if Present (Right_Opnd (N)) then
+                  --  x in t
+                  P := Right_Opnd (N);
+                  if Nkind (P) = N_Identifier
+                    and then Ekind (Entity (P)) in Type_Kind
+                  then
+                     Process_Type (Get_Type (P, Scope));
+                  end if;
+               else
+                  --  x in t | 1 .. y | u
+                  P := First (Alternatives (N));
+                  while Present (P) loop
+                     if Nkind (P) = N_Identifier
+                       and then Ekind (Entity (P)) in Type_Kind
+                     then
+                        Process_Type (Get_Type (P, Scope));
+                     end if;
+                     Next (P);
+                  end loop;
+               end if;
+
+            when others =>
+               null;
+         end case;
 
          return OK;
       end Proc;
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
       --  AST traversal procedure
-
-   --  Start of processing for Collect_Functions_And_Read_Locked_POs
-
    begin
       Functions_Called := Node_Sets.Empty_Set;
       Traverse (N);
@@ -413,36 +468,36 @@ package body Flow_Utility is
       C : Node_Sets.Set)
       return Flow_Id_Sets.Set
    is
-      R : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
-      for F of S loop
-         case F.Kind is
-            when Direct_Mapping | Record_Field =>
-               declare
-                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-                  pragma Assert (Nkind (E) in N_Entity);
-               begin
-                  if Ekind (E) /= E_Constant
-                    or else C.Contains (E)
-                    or else Has_Variable_Input (F)
-                  then
+      return R : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set do
+         for F of S loop
+            case F.Kind is
+               when Direct_Mapping | Record_Field =>
+                  declare
+                     E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+                     pragma Assert (Nkind (E) in N_Entity);
+                  begin
+                     if Ekind (E) /= E_Constant
+                       or else C.Contains (E)
+                       or else Has_Variable_Input (F)
+                     then
+                        R.Include (F);
+                     end if;
+                  end;
+
+               when Magic_String =>
+                  if not Is_Constant (F.Name) then
                      R.Include (F);
                   end if;
-               end;
 
-            when Magic_String =>
-               if not Is_Constant (F.Name) then
+               when Synthetic_Null_Export =>
                   R.Include (F);
-               end if;
 
-            when Synthetic_Null_Export =>
-               R.Include (F);
-
-            when Null_Value =>
-               raise Program_Error;
-         end case;
-      end loop;
-      return R;
+               when Null_Value =>
+                  raise Program_Error;
+            end case;
+         end loop;
+      end return;
    end Filter_Out_Constants;
 
    --------------
@@ -2358,13 +2413,18 @@ package body Flow_Utility is
    -- Get_Function_Set --
    ----------------------
 
-   function Get_Function_Set (N : Node_Id) return Node_Sets.Set is
-
+   function Get_Function_Set (N                  : Node_Id;
+                              Include_Predicates : Boolean)
+                              return Node_Sets.Set
+   is
       Funcs  : Node_Sets.Set := Node_Sets.Empty_Set;
       Unused : Tasking_Info;
-
    begin
-      Collect_Functions_And_Read_Locked_POs (N, Funcs, Unused);
+      Collect_Functions_And_Read_Locked_POs
+        (N,
+         Functions_Called   => Funcs,
+         Tasking            => Unused,
+         Include_Predicates => Include_Predicates);
       return Funcs;
    end Get_Function_Set;
 
@@ -2958,6 +3018,81 @@ package body Flow_Utility is
                      null;
                end case;  -- dealing with all the attributes
 
+            when N_In | N_Not_In =>
+               --  Membership tests involving type with predicates have the
+               --  predicate flow into the variable set returned.
+
+               declare
+                  procedure Process_Type (E : Entity_Id);
+                  --  Merge variables used in predicate functions for the
+                  --  given type.
+
+                  procedure Process_Type (E : Entity_Id)
+                  is
+                     P          : Node_Id;
+                     GP, GI, GO : Flow_Id_Sets.Set;
+                  begin
+                     if Present (E) then
+                        P := Predicate_Function (E);
+                     else
+                        P := Empty;
+                     end if;
+                     if No (P) then
+                        return;
+                     end if;
+
+                     --  Something to note here: we include the predicate
+                     --  function in the set of called subprograms during
+                     --  GG, but not in phase 2. The idea is that 'calling'
+                     --  the subprogram will introduce the dependencies on
+                     --  its global, wheras in phase 2 we directly include
+                     --  its globals.
+
+                     Get_Globals
+                       (Subprogram           => P,
+                        Scope                => Scope,
+                        Classwide            => False,
+                        Proof_Ins            => GP,
+                        Reads                => GI,
+                        Writes               => GO,
+                        Use_Computed_Globals => Use_Computed_Globals);
+                     pragma Assert (GO.Length = 0);
+
+                     declare
+                        Effects : constant Flow_Id_Sets.Set := GP or GI or GO;
+                     begin
+                        for F of Effects loop
+                           VS.Include (Change_Variant (F, Normal_Use));
+                        end loop;
+                     end;
+
+                  end Process_Type;
+
+                  P : Node_Id;
+               begin
+                  if Present (Right_Opnd (N)) then
+                     --  x in t
+                     P := Right_Opnd (N);
+                     if Nkind (P) = N_Identifier
+                        and then Ekind (Entity (P)) in Type_Kind
+                     then
+                        Process_Type (Get_Type (P, Scope));
+                     end if;
+                  else
+                     --  x in t | 1 .. y | u
+                     P := First (Alternatives (N));
+                     while Present (P) loop
+                        if Nkind (P) = N_Identifier
+                          and then Ekind (Entity (P)) in Type_Kind
+                        then
+                           Process_Type (Get_Type (P, Scope));
+                        end if;
+                        Next (P);
+                     end loop;
+                  end if;
+               end;
+               return OK;
+
             when others =>
                null;
          end case;
@@ -2970,8 +3105,8 @@ package body Flow_Utility is
       Traverse (N);
 
       return S : Flow_Id_Sets.Set do
-         --  We need to do two kinds of post-processing on the result here.
-         --  First we check each variable to see if it is the result of an
+         --  We need to do some post-processing on the result here. First
+         --  we check each variable to see if it is the result of an
          --  action. For flow analysis its more helpful to talk about the
          --  original variables, so we undo these actions whenever
          --  possible.
@@ -3003,7 +3138,7 @@ package body Flow_Utility is
             end case;
          end loop;
 
-         --  And secondly, we remove any local constants.
+         --  And finally, we remove any local constants.
          S := Filter_Out_Constants (S, Local_Constants);
       end return;
    end Get_Variable_Set;
@@ -4150,11 +4285,8 @@ package body Flow_Utility is
    -- Has_Variable_Input --
    ------------------------
 
-   function Has_Variable_Input (F : Flow_Id) return Boolean is
-      E    : Entity_Id;
-      Decl : Node_Id;
-      FS   : Flow_Id_Sets.Set;
-
+   function Has_Variable_Input (F : Flow_Id) return Boolean
+   is
       function Get_Declaration (E : Entity_Id) return Node_Id
         with Post => Nkind (Get_Declaration'Result) = N_Object_Declaration;
       --  Returns the N_Object_Declaration corresponding to entity E
@@ -4178,6 +4310,9 @@ package body Flow_Utility is
          return D;
       end Get_Declaration;
 
+      E    : Entity_Id;
+      Decl : Node_Id;
+      FS   : Flow_Id_Sets.Set;
    begin
       E := Get_Direct_Mapping_Id (F);
 
@@ -4224,11 +4359,13 @@ package body Flow_Utility is
       end if;
 
       if not GG_Has_Been_Generated
-        and then Get_Function_Set (Expression (Decl)) /= Node_Sets.Empty_Set
+        and then Get_Function_Set (Expression (Decl),
+                                   Include_Predicates => False)
+          /= Node_Sets.Empty_Set
       then
-         --  Globals have not yet been computed. If we find any
-         --  function calls we consider the constant to have variable
-         --  inputs (this is the safe thing to do).
+         --  Globals have not yet been computed. If we find any function
+         --  calls we consider the constant to have variable inputs (this
+         --  is the safe thing to do).
          return True;
       end if;
 

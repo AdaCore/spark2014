@@ -943,7 +943,6 @@ package body Flow is
 
          when E_Task_Type =>
             --  ??? O429-046 Set contract nodes
-
             Tmp.B_Scope := Get_Flow_Scope (Task_Body (E));
             Tmp.S_Scope := Get_Flow_Scope (E);
 
@@ -1201,9 +1200,9 @@ package body Flow is
                --  Check for potentially blocking statements
 
                if Generating_Globals
-                  and then Ekind (E) in Subprogram_Kind | E_Entry
-                  and then Entity_Body_In_SPARK (E)
-                  and then Entity_Body_Valid_SPARK (E)
+                 and then Ekind (E) in Subprogram_Kind | E_Entry
+                 and then Entity_Body_In_SPARK (E)
+                 and then Entity_Body_Valid_SPARK (E)
                then
                   declare
                      Body_N : constant Node_Id := Get_Body (E);

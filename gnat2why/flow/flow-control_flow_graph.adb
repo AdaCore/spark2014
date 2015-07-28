@@ -50,6 +50,28 @@ with Flow_Utility;                       use Flow_Utility;
 
 pragma Unreferenced (Flow_Debug);
 
+--  Documentation on how we deal with some non-obvious constructs.
+--
+--  Note: This is a new section and thus somewhat incomplete, but the idea
+--  is to document any new, non-obvious decisions here.
+--
+--  Dynamic_Predicate
+--  =================
+--  The front-end translates this into a special function which is then
+--  implicitly called. We need to check two things: we do not use variables
+--  in the predicate, and explicit membership should have the constants
+--  with variable inputs used in the predicate appear.
+--
+--  We currently ignore any proof-flow for the dynamic predicate; and the
+--  member ship effects are introduces as follows:
+--  * only in phase 1, get_function_set will add calls to the predicates for
+--    membership tests
+--  * in phase 1, we generate normal globals for the predicate functions
+--  * in phase 2, we add the global effects of predicates in get_variable_set
+--    for membership tests
+--  * in phase 2 sanity checking, we examine the global variables of the
+--    predicate functions
+
 package body Flow.Control_Flow_Graph is
 
    use type Ada.Containers.Count_Type;
@@ -1330,8 +1352,12 @@ package body Flow.Control_Flow_Graph is
           not Is_Class_Wide_Type (Get_Type (Expression (N), FA.B_Scope));
 
    begin
-      Collect_Functions_And_Read_Locked_POs (Expression (N),
-                                             Funcs, FA.Tasking);
+      Collect_Functions_And_Read_Locked_POs
+        (Expression (N),
+         Functions_Called   => Funcs,
+         Tasking            => FA.Tasking,
+         Include_Predicates => Generating_Globals);
+
       --  First we need to determine the root name where we assign to, and
       --  whether this is a partial or full assignment. This mirror the
       --  beginning of Untangle_Assignment_Target.
@@ -1530,8 +1556,11 @@ package body Flow.Control_Flow_Graph is
       Alternative : Node_Id;
       Funcs       : Node_Sets.Set;
    begin
-      Collect_Functions_And_Read_Locked_POs (Expression (N),
-                                             Funcs, FA.Tasking);
+      Collect_Functions_And_Read_Locked_POs
+        (Expression (N),
+         Functions_Called   => Funcs,
+         Tasking            => FA.Tasking,
+         Include_Predicates => Generating_Globals);
 
       --  We have a vertex V for the case statement itself
       Add_Vertex
@@ -1605,8 +1634,11 @@ package body Flow.Control_Flow_Graph is
                       Normal_Use,
                       FA.B_Scope));
 
-      Collect_Functions_And_Read_Locked_POs (Expression (N),
-                                             Funcs, FA.Tasking);
+      Collect_Functions_And_Read_Locked_POs
+        (Expression (N),
+         Functions_Called   => Funcs,
+         Tasking            => FA.Tasking,
+         Include_Predicates => Generating_Globals);
 
       Add_Vertex
         (FA,
@@ -1666,8 +1698,12 @@ package body Flow.Control_Flow_Graph is
          CM (Union_Id (L)).Standard_Exits.Include (V);
 
       else
-         Collect_Functions_And_Read_Locked_POs (Condition (N),
-                                                Funcs, FA.Tasking);
+
+         Collect_Functions_And_Read_Locked_POs
+           (Condition (N),
+            Functions_Called   => Funcs,
+            Tasking            => FA.Tasking,
+            Include_Predicates => Generating_Globals);
 
          Add_Vertex
            (FA,
@@ -1737,8 +1773,11 @@ package body Flow.Control_Flow_Graph is
       Linkup (FA, V, CM (Union_Id (Ret_Object_L)).Standard_Entry);
 
       --  Create a vertex for the Return_Statement_Entity
-      Collect_Functions_And_Read_Locked_POs (Ret_Object,
-                                             Funcs, FA.Tasking);
+      Collect_Functions_And_Read_Locked_POs
+        (Ret_Object,
+         Functions_Called   => Funcs,
+         Tasking            => FA.Tasking,
+         Include_Predicates => Generating_Globals);
 
       Add_Vertex
         (FA,
@@ -1823,8 +1862,11 @@ package body Flow.Control_Flow_Graph is
       Funcs           : Node_Sets.Set;
    begin
       --  We have a vertex for the if statement itself.
-      Collect_Functions_And_Read_Locked_POs (Condition (N),
-                                             Funcs, FA.Tasking);
+      Collect_Functions_And_Read_Locked_POs
+        (Condition (N),
+         Functions_Called   => Funcs,
+         Tasking            => FA.Tasking,
+         Include_Predicates => Generating_Globals);
 
       Add_Vertex
         (FA,
@@ -1888,7 +1930,9 @@ package body Flow.Control_Flow_Graph is
                --  We have a vertex V for each elsif statement
                Collect_Functions_And_Read_Locked_POs
                  (Condition (Elsif_Statement),
-                  Funcs, FA.Tasking);
+                  Functions_Called   => Funcs,
+                  Tasking            => FA.Tasking,
+                  Include_Predicates => Generating_Globals);
 
                Add_Vertex
                  (FA,
@@ -2220,7 +2264,9 @@ package body Flow.Control_Flow_Graph is
       begin
          Collect_Functions_And_Read_Locked_POs
            (Condition (Iteration_Scheme (N)),
-            Funcs, FA.Tasking);
+            Functions_Called   => Funcs,
+            Tasking            => FA.Tasking,
+            Include_Predicates => Generating_Globals);
 
          Add_Vertex
            (FA,
@@ -2317,8 +2363,11 @@ package body Flow.Control_Flow_Graph is
 
          else
             --  We don't know if the loop will be executed or not.
-            Collect_Functions_And_Read_Locked_POs (DSD,
-                                                   Funcs, FA.Tasking);
+            Collect_Functions_And_Read_Locked_POs
+              (DSD,
+               Functions_Called   => Funcs,
+               Tasking            => FA.Tasking,
+               Include_Predicates => Generating_Globals);
 
             Add_Vertex
               (FA,
@@ -2724,8 +2773,11 @@ package body Flow.Control_Flow_Graph is
 
          --  Create vertex for the container expression. We also define the
          --  loop parameter here.
-         Collect_Functions_And_Read_Locked_POs (Cont,
-                                                Funcs, FA.Tasking);
+         Collect_Functions_And_Read_Locked_POs
+           (Cont,
+            Functions_Called   => Funcs,
+            Tasking            => FA.Tasking,
+            Include_Predicates => Generating_Globals);
 
          Add_Vertex
            (FA,
@@ -3027,8 +3079,11 @@ package body Flow.Control_Flow_Graph is
                   All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
                   Missing      : Flow_Id_Sets.Set := Var_Def;
                begin
-                  Collect_Functions_And_Read_Locked_POs (Expression (N),
-                                                         Funcs, FA.Tasking);
+                  Collect_Functions_And_Read_Locked_POs
+                    (Expression (N),
+                     Functions_Called   => Funcs,
+                     Tasking            => FA.Tasking,
+                     Include_Predicates => Generating_Globals);
 
                   for C in M.Iterate loop
                      Output := Flow_Id_Maps.Key (C);
@@ -3088,8 +3143,11 @@ package body Flow.Control_Flow_Graph is
                end;
 
             else
-               Collect_Functions_And_Read_Locked_POs (Expression (N),
-                                                      Funcs, FA.Tasking);
+               Collect_Functions_And_Read_Locked_POs
+                 (Expression (N),
+                  Functions_Called   => Funcs,
+                  Tasking            => FA.Tasking,
+                  Include_Predicates => Generating_Globals);
 
                Add_Vertex
                  (FA,
@@ -3175,8 +3233,11 @@ package body Flow.Control_Flow_Graph is
                   Variables_Used.Union (Components_Of_Object);
                end if;
 
-               Collect_Functions_And_Read_Locked_POs (Expr,
-                                                      Funcs, FA.Tasking);
+               Collect_Functions_And_Read_Locked_POs
+                 (Expr,
+                  Functions_Called   => Funcs,
+                  Tasking            => FA.Tasking,
+                  Include_Predicates => Generating_Globals);
 
                Add_Vertex
                  (FA,
@@ -3720,8 +3781,11 @@ package body Flow.Control_Flow_Graph is
                --  pragma unmodified or pragma unreferenced then we
                --  create a sink vertex to check for uninitialized
                --  variables.
-               Collect_Functions_And_Read_Locked_POs (N,
-                                                      Funcs, FA.Tasking);
+               Collect_Functions_And_Read_Locked_POs
+                 (N,
+                  Functions_Called   => Funcs,
+                  Tasking            => FA.Tasking,
+                  Include_Predicates => Generating_Globals);
 
                Add_Vertex
                  (FA,
@@ -3783,8 +3847,11 @@ package body Flow.Control_Flow_Graph is
       Funcs : Node_Sets.Set;
    begin
       --  We just need to check for uninitialized variables.
-      Collect_Functions_And_Read_Locked_POs (Pre,
-                                             Funcs, FA.Tasking);
+      Collect_Functions_And_Read_Locked_POs
+        (Pre,
+         Functions_Called   => Funcs,
+         Tasking            => FA.Tasking,
+         Include_Predicates => Generating_Globals);
 
       Add_Vertex
         (FA,
@@ -4086,8 +4153,11 @@ package body Flow.Control_Flow_Graph is
       Funcs : Node_Sets.Set;
    begin
       --  We only need to check for uninitialized variables.
-      Collect_Functions_And_Read_Locked_POs (Post,
-                                             Funcs, FA.Tasking);
+      Collect_Functions_And_Read_Locked_POs
+        (Post,
+         Functions_Called   => Funcs,
+         Tasking            => FA.Tasking,
+         Include_Predicates => Generating_Globals);
 
       Add_Vertex
         (FA,
@@ -4130,8 +4200,11 @@ package body Flow.Control_Flow_Graph is
                      V);
       else
          --  We have a function return.
-         Collect_Functions_And_Read_Locked_POs (Expression (N),
-                                                Funcs, FA.Tasking);
+         Collect_Functions_And_Read_Locked_POs
+           (Expression (N),
+            Functions_Called   => Funcs,
+            Tasking            => FA.Tasking,
+            Include_Predicates => Generating_Globals);
 
          Add_Vertex
            (FA,
@@ -4194,8 +4267,11 @@ package body Flow.Control_Flow_Graph is
             V    : Flow_Graphs.Vertex_Id;
             Funcs : Node_Sets.Set;
          begin
-            Collect_Functions_And_Read_Locked_POs (Cond,
-                                                   Funcs, FA.Tasking);
+            Collect_Functions_And_Read_Locked_POs
+              (Cond,
+               Functions_Called   => Funcs,
+               Tasking            => FA.Tasking,
+               Include_Predicates => Generating_Globals);
 
             Add_Vertex
               (FA,
@@ -4504,8 +4580,11 @@ package body Flow.Control_Flow_Graph is
          pragma Assert (Is_Formal (Formal));
 
          --  Build an in vertex.
-         Collect_Functions_And_Read_Locked_POs (Actual,
-                                                Funcs, FA.Tasking);
+         Collect_Functions_And_Read_Locked_POs
+           (Actual,
+            Functions_Called   => Funcs,
+            Tasking            => FA.Tasking,
+            Include_Predicates => Generating_Globals);
 
          Add_Vertex
            (FA,

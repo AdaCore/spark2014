@@ -50,13 +50,19 @@ is
    --  Tests if we're initialized.
 
    procedure Collect_Functions_And_Read_Locked_POs
-     (N : Node_Id;
-      Functions_Called : out Node_Sets.Set;
-      Tasking          : in out Tasking_Info) with
-     Pre => Present (N);
+     (N                  : Node_Id;
+      Functions_Called   : out Node_Sets.Set;
+      Tasking            : in out Tasking_Info;
+      Include_Predicates : Boolean)
+   with Pre => Present (N);
    --  For an expression N collect its called functions and update the set
    --  of protected objects that are read-locked when evaluating these
    --  functions.
+   --
+   --  When Include_Predicates is set, then the implicit calls to predicate
+   --  functions appear in the set of subprograms called. This is what we
+   --  use in phase 1; in phase 2 this should not be set as we add the
+   --  global effects directly.
 
    function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type
    with Pre => Is_Initialized and then
@@ -207,8 +213,12 @@ is
    --  Returns True if Scope has visibility of E's body and a
    --  Generated Depends will be produced for E.
 
-   function Get_Function_Set (N : Node_Id) return Node_Sets.Set;
-   --  Collect all functions called in an expression N
+   function Get_Function_Set (N                  : Node_Id;
+                              Include_Predicates : Boolean)
+                              return Node_Sets.Set;
+   --  Collect all functions called in an expression N. If
+   --  Include_Predicates is set, then we also mention implicit calls to
+   --  predicate functions.
 
    function Get_Variable_Set
      (N                            : Node_Id;
