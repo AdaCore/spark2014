@@ -635,24 +635,6 @@ package body Flow_Generated_Globals is
       procedure Load_GG_Info_From_ALI (ALI_File_Name : File_Name_Type);
       --  Loads the GG info from an ALI file and stores them in the
       --  Subprogram_Info_List, State_Comp_Map and volatile info sets.
-      --
-      --  The info that we read look as follows:
-      --
-      --  GG AS test__state test__g
-      --  GG S FA test__proc
-      --  GG VP test__proof_var
-      --  GG VI test__g test__g2
-      --  GG VO test__g
-      --  GG CP test__ghost_func_a test__ghost_func_b
-      --  GG CD test__proc_2 test__proc__nested_proc
-      --  GG CC test__proc_3
-      --  GG LV test__proc__nested_proc__v
-      --  GG LS test__proc__nested_proc
-      --  GG AW test__fully_vol test__vol_er2 test__ext_state
-      --  GG AR test__fully_vol test__vol_ew3
-      --  GG ER test__fully_vol test__vol_er2
-      --  GG EW test__fully_vol test__vol_ew3
-      --  GG NB test__proc
 
       procedure Remove_Constants_Without_Variable_Input;
       --  Removes edges leading to constants without variable input
