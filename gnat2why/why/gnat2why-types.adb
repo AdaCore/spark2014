@@ -162,7 +162,7 @@ package body Gnat2Why.Types is
 
          --  Get the set of variables used in E's dynamic property
 
-         Variables_In_Dynamic_Property (E, Variables);
+         Variables_In_Dynamic_Invariant (E, Variables);
 
          declare
             Items    : Item_Array :=
@@ -195,7 +195,7 @@ package body Gnat2Why.Types is
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
             Push_Binders_To_Symbol_Table (Items);
 
-            Def := Compute_Dynamic_Property
+            Def := Compute_Dynamic_Invariant
               (Expr          => +Main_Arg,
                Ty            => E,
                Initialized   => +Init_Arg,

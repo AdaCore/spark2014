@@ -49,22 +49,22 @@ package Gnat2Why.Expr is
    function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id;
    --  Generate an assignment from an object declaration
 
-   function Assume_Dynamic_Property
+   function Assume_Dynamic_Invariant
      (Expr          : W_Term_Id;
       Ty            : Entity_Id;
       Initialized   : Boolean := True;
       Only_Var      : Boolean := True;
       Top_Predicate : Boolean := True;
       Use_Pred      : Boolean := True) return W_Prog_Id;
-   --  @param Expr Why3 expression on which to assume the dynamic property
+   --  @param Expr Why3 expression on which to assume the dynamic invariant
    --  @param Ty type of expression [Expr]
    --  @param Initialized True iff Expr is known to be initialized
-   --  @param Only_Var True iff the dynamic property should only consider
+   --  @param Only_Var True iff the dynamic invariant should only consider
    --     the variable parts of [Expr].
-   --  @param Top_Predicate True iff the dynamic property should consider
+   --  @param Top_Predicate True iff the dynamic invariant should consider
    --     the toplevel type predicate possibly associated with [Ty].
    --  @param Use_Pred True iff the named predicate should be used
-   --  @result Why3 prog assuming the dynamic property of type [Ty]
+   --  @result Why3 prog assuming the dynamic invariant of type [Ty]
    --     over [Expr].
 
    function Check_Scalar_Range
@@ -102,8 +102,9 @@ package Gnat2Why.Expr is
    --  @param Params Transformation parameters
    --  @param Skip_Last_Cond Do not assume the top-level
    --         Default_Initial_Condition of Ty if any.
-   --  @param Use_Pred Use the precomputed predicate for Ty's dynamic property
-   --  @result The dynamic property of type Ty over Expr
+   --  @param Use_Pred Use the precomputed predicate for Ty's default initial
+   --         assumption
+   --  @result The default initial assumption of type Ty over Expr
 
    function Compute_Dynamic_Predicate
      (Expr     : W_Term_Id;
@@ -112,13 +113,13 @@ package Gnat2Why.Expr is
       Use_Pred : Boolean := True) return W_Pred_Id;
    --  @param Expr Why3 term expression on which to express the dynamic
    --     predicate.
-   --  @param Ty type with the dynamic property
+   --  @param Ty type with the dynamic invariant
    --  @param Params transformation parameters
    --  @param Use_Pred True iff the named predicate should be used
    --  @result Why3 predicate expressing the dynamic predicate of type [Ty]
    --     over [Expr].
 
-   function Compute_Dynamic_Property
+   function Compute_Dynamic_Invariant
      (Expr          : W_Term_Id;
       Ty            : Entity_Id;
       Initialized   : W_Term_Id := True_Term;
@@ -126,16 +127,16 @@ package Gnat2Why.Expr is
       Top_Predicate : W_Term_Id := True_Term;
       Params        : Transformation_Params := Body_Params;
       Use_Pred      : Boolean := True) return W_Pred_Id;
-   --  @param Expr Why3 expression on which to express the dynamic property
+   --  @param Expr Why3 expression on which to express the dynamic invariant
    --  @param Ty type of expression [Expr]
    --  @param Initialized true term iff Expr is known to be initialized
-   --  @param Only_Var true term iff the dynamic property should only consider
+   --  @param Only_Var true term iff the dynamic invariant should only consider
    --     the variable parts of [Expr].
-   --  @param Top_Predicate true term iff the dynamic property should consider
+   --  @param Top_Predicate true term iff the dynamic invariant should consider
    --     the toplevel type predicate possibly associated with [Ty].
    --  @param Params transformation parameters
    --  @param Use_Pred True iff the named predicate should be used
-   --  @result Why3 predicate expressing the dynamic property of type [Ty]
+   --  @result Why3 predicate expressing the dynamic invariant of type [Ty]
    --     over [Expr].
 
    function Get_Container_In_Iterator_Specification
@@ -325,7 +326,7 @@ package Gnat2Why.Expr is
    --  @param Ty a type with a predicate
    --  @param Variables used in the expression for Ty's predicate
 
-   procedure Variables_In_Dynamic_Property
+   procedure Variables_In_Dynamic_Invariant
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set);
    --  @param Ty a type

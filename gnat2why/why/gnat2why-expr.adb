@@ -944,11 +944,11 @@ package body Gnat2Why.Expr is
       end if;
    end Assignment_Of_Obj_Decl;
 
-   -----------------------------
-   -- Assume_Dynamic_Property --
-   -----------------------------
+   ------------------------------
+   -- Assume_Dynamic_Invariant --
+   ------------------------------
 
-   function Assume_Dynamic_Property
+   function Assume_Dynamic_Invariant
      (Expr          : W_Term_Id;
       Ty            : Entity_Id;
       Initialized   : Boolean := True;
@@ -963,7 +963,7 @@ package body Gnat2Why.Expr is
       Top_Pred : constant W_Term_Id :=
         (if Top_Predicate then True_Term else False_Term);
       T        : constant W_Pred_Id :=
-        Compute_Dynamic_Property (Expr          => Expr,
+        Compute_Dynamic_Invariant (Expr          => Expr,
                                   Ty            => Ty,
                                   Initialized   => Init,
                                   Only_Var      => O_Var,
@@ -976,7 +976,7 @@ package body Gnat2Why.Expr is
       else
          return New_Void;
       end if;
-   end Assume_Dynamic_Property;
+   end Assume_Dynamic_Invariant;
 
    -------------------------------
    -- Bind_From_Mapping_In_Expr --
@@ -2714,100 +2714,10 @@ package body Gnat2Why.Expr is
    end Compute_Default_Init;
 
    -------------------------------
-   -- Compute_Dynamic_Predicate --
+   -- Compute_Dynamic_Invariant --
    -------------------------------
 
-   function Compute_Dynamic_Predicate
-     (Expr     : W_Term_Id;
-      Ty       : Entity_Id;
-      Params   : Transformation_Params := Body_Params;
-      Use_Pred : Boolean := True) return W_Pred_Id
-   is
-      T : W_Pred_Id := True_Pred;
-
-      --  If Ty's fullview is in SPARK, go to its underlying type to check its
-      --  kind.
-
-      Ty_Ext    : constant Entity_Id := Retysp (Ty);
-      Variables : Flow_Id_Sets.Set;
-
-   begin
-      if not Has_Predicates (Ty_Ext) then
-         return True_Pred;
-
-      --  If Use_Pred is true, then we already have generated a predicate for
-      --  the dynamic predicate of elements of type Ty_Ext. We also avoid using
-      --  the predicate for objects in split form as it would introduce an
-      --  unnecessary conversion harmful to provers.
-
-      elsif Use_Pred
-        and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Expr))
-      then
-         Variables_In_Dynamic_Property (Ty_Ext, Variables);
-
-         declare
-            Vars  : constant W_Expr_Array :=
-              Get_Args_From_Variables (To_Name_Set (Variables));
-            Num_B : constant Positive := 1 + Vars'Length;
-            Args  : W_Expr_Array (1 .. Num_B);
-
-         begin
-            Args (1)          := +Expr;
-            Args (2 .. Num_B) := Vars;
-
-            return New_Call (Name => E_Symb (Ty, WNE_Dynamic_Predicate),
-                             Args => Args,
-                             Typ  => EW_Bool_Type);
-         end;
-
-      else
-         declare
-            Pred_Subp  : constant Entity_Id := Predicate_Function (Ty);
-            Pred_Expr  : constant Node_Id :=
-              Get_Expr_From_Return_Only_Func (Pred_Subp);
-            Pred_Param : constant Entity_Id :=
-              Defining_Entity (First (Parameter_Specifications
-                (Subprogram_Specification (Pred_Subp))));
-            Pred_Id    : constant W_Identifier_Id :=
-              New_Temp_Identifier (Pred_Param, Get_Type (+Expr));
-
-         begin
-            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-            --  Register the temporary identifier Pred_Id for parameter
-            --  Pred_Param in the symbol table. This ensures both that a
-            --  distinct name is used each time (preventing name capture), and
-            --  that the type of Expr is used as the type used to represent
-            --  Pred_Param (avoiding type conversion).
-
-            Insert_Entity (Pred_Param, Pred_Id);
-
-            --  Transform the predicate expression into Why3
-
-            T := +Transform_Expr (Expr   => Pred_Expr,
-                                  Domain => EW_Pred,
-                                  Params => Params);
-
-            --  Relate the name Pred_Id used in the predicate expression to the
-            --  value Expr for which the predicate is checked.
-
-            T := New_Binding (Name    => Pred_Id,
-                              Def     => +Expr,
-                              Context => +T,
-                              Typ     => Get_Type (+T));
-
-            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-         end;
-      end if;
-
-      return T;
-   end Compute_Dynamic_Predicate;
-
-   ------------------------------
-   -- Compute_Dynamic_Property --
-   ------------------------------
-
-   function Compute_Dynamic_Property
+   function Compute_Dynamic_Invariant
      (Expr          : W_Term_Id;
       Ty            : Entity_Id;
       Initialized   : W_Term_Id := True_Term;
@@ -2829,7 +2739,7 @@ package body Gnat2Why.Expr is
 
    begin
       --  If Use_Pred is true, then we already have generated a predicate
-      --  for the dynamic property of elements of type Ty_Ext, except if the
+      --  for the dynamic invariant of elements of type Ty_Ext, except if the
       --  type is an itype or if it is standard boolean. We also avoid using
       --  the predicate for objects in split form as it would introduce an
       --  unnecessary conversion harmful to provers.
@@ -2839,7 +2749,7 @@ package body Gnat2Why.Expr is
         and then not Is_Standard_Boolean_Type (Ty_Ext)
         and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Expr))
       then
-         Variables_In_Dynamic_Property (Ty_Ext, Variables);
+         Variables_In_Dynamic_Invariant (Ty_Ext, Variables);
 
          declare
             Vars  : constant W_Expr_Array :=
@@ -3033,7 +2943,7 @@ package body Gnat2Why.Expr is
          end if;
       end;
 
-      --  Compute dynamic property for its components
+      --  Compute dynamic invariant for its components
 
       if Is_Array_Type (Ty_Ext)
         and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
@@ -3041,7 +2951,7 @@ package body Gnat2Why.Expr is
 
          --  Generates:
          --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
-         --    dynamic_property (get <Expr> i1 .. in)
+         --    Dynamic_Invariant (get <Expr> i1 .. in)
 
          declare
             Dim        : constant Positive :=
@@ -3088,7 +2998,7 @@ package body Gnat2Why.Expr is
 
             pragma Assert (I = Indices'Last + 1);
 
-            --  Recursively call Compute_Dynamic_Property on the array
+            --  Recursively call Compute_Dynamic_Invariant on the array
             --  components. Additional parameters are unchanged expect for
             --  Only_Var set to false (as a constant subcomponent of a variable
             --  toplevel object needs to be considered as variable too) and
@@ -3096,7 +3006,7 @@ package body Gnat2Why.Expr is
             --  the top predicate does not apply to subcomponents).
 
             T_Comp :=
-              +Compute_Dynamic_Property
+              +Compute_Dynamic_Invariant
                  (Expr          =>
                     +New_Array_Access (Empty, +Expr, Indices, EW_Term),
                   Ty            => Component_Type (Ty_Ext),
@@ -3158,8 +3068,8 @@ package body Gnat2Why.Expr is
       then
 
          --  Generates:
-         --  (check_for_f1 <Expr> -> dynamic_property <Expr>.rec__f1)
-         --  /\ .. /\ (check_for_fn <Expr> -> dynamic_property <Expr>.rec__fn)
+         --  (check_for_f1 <Expr> -> Dynamic_Invariant <Expr>.rec__f1)
+         --  /\ .. /\ (check_for_fn <Expr> -> Dynamic_Invariant <Expr>.rec__fn)
          --  As discriminants may occur in bounds of types of other fields,
          --  store them in the Symbol_Table.
 
@@ -3201,7 +3111,7 @@ package body Gnat2Why.Expr is
                      Insert_Entity (Field, Tmps (I));
                   end if;
 
-                  --  Recursively call Compute_Dynamic_Property on the record
+                  --  Recursively call Compute_Dynamic_Invariant on the record
                   --  components. Additional parameters are unchanged expect
                   --  for Only_Var set to false (as a constant subcomponent
                   --  of a variable toplevel object needs to be considered
@@ -3210,7 +3120,7 @@ package body Gnat2Why.Expr is
                   --  apply to subcomponents).
 
                   T_Comp :=
-                    Compute_Dynamic_Property
+                    Compute_Dynamic_Invariant
                       (Expr          => +R_Acc,
                        Ty            => Etype (Field),
                        Initialized   => Initialized,
@@ -3281,7 +3191,97 @@ package body Gnat2Why.Expr is
       end if;
 
       return T;
-   end Compute_Dynamic_Property;
+   end Compute_Dynamic_Invariant;
+
+   -------------------------------
+   -- Compute_Dynamic_Predicate --
+   -------------------------------
+
+   function Compute_Dynamic_Predicate
+     (Expr     : W_Term_Id;
+      Ty       : Entity_Id;
+      Params   : Transformation_Params := Body_Params;
+      Use_Pred : Boolean := True) return W_Pred_Id
+   is
+      T : W_Pred_Id := True_Pred;
+
+      --  If Ty's fullview is in SPARK, go to its underlying type to check its
+      --  kind.
+
+      Ty_Ext    : constant Entity_Id := Retysp (Ty);
+      Variables : Flow_Id_Sets.Set;
+
+   begin
+      if not Has_Predicates (Ty_Ext) then
+         return True_Pred;
+
+      --  If Use_Pred is true, then we already have generated a predicate for
+      --  the dynamic predicate of elements of type Ty_Ext. We also avoid using
+      --  the predicate for objects in split form as it would introduce an
+      --  unnecessary conversion harmful to provers.
+
+      elsif Use_Pred
+        and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Expr))
+      then
+         Variables_In_Dynamic_Invariant (Ty_Ext, Variables);
+
+         declare
+            Vars  : constant W_Expr_Array :=
+              Get_Args_From_Variables (To_Name_Set (Variables));
+            Num_B : constant Positive := 1 + Vars'Length;
+            Args  : W_Expr_Array (1 .. Num_B);
+
+         begin
+            Args (1)          := +Expr;
+            Args (2 .. Num_B) := Vars;
+
+            return New_Call (Name => E_Symb (Ty, WNE_Dynamic_Predicate),
+                             Args => Args,
+                             Typ  => EW_Bool_Type);
+         end;
+
+      else
+         declare
+            Pred_Subp  : constant Entity_Id := Predicate_Function (Ty);
+            Pred_Expr  : constant Node_Id :=
+              Get_Expr_From_Return_Only_Func (Pred_Subp);
+            Pred_Param : constant Entity_Id :=
+              Defining_Entity (First (Parameter_Specifications
+                (Subprogram_Specification (Pred_Subp))));
+            Pred_Id    : constant W_Identifier_Id :=
+              New_Temp_Identifier (Pred_Param, Get_Type (+Expr));
+
+         begin
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+            --  Register the temporary identifier Pred_Id for parameter
+            --  Pred_Param in the symbol table. This ensures both that a
+            --  distinct name is used each time (preventing name capture), and
+            --  that the type of Expr is used as the type used to represent
+            --  Pred_Param (avoiding type conversion).
+
+            Insert_Entity (Pred_Param, Pred_Id);
+
+            --  Transform the predicate expression into Why3
+
+            T := +Transform_Expr (Expr   => Pred_Expr,
+                                  Domain => EW_Pred,
+                                  Params => Params);
+
+            --  Relate the name Pred_Id used in the predicate expression to the
+            --  value Expr for which the predicate is checked.
+
+            T := New_Binding (Name    => Pred_Id,
+                              Def     => +Expr,
+                              Context => +T,
+                              Typ     => Get_Type (+T));
+
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+         end;
+      end if;
+
+      return T;
+   end Compute_Dynamic_Predicate;
 
    -----------------------
    -- Compute_Tag_Check --
@@ -8697,7 +8697,7 @@ package body Gnat2Why.Expr is
 
                   R := Sequence
                     (R,
-                     Assume_Dynamic_Property
+                     Assume_Dynamic_Invariant
                        (Expr        =>
                           +Transform_Identifier (Expr   => Lvalue,
                                                  Ent    => Lvalue,
@@ -10170,13 +10170,13 @@ package body Gnat2Why.Expr is
                      pragma Assert (Is_Mutable_In_Why (Ent));
                      pragma Assert (Params.Ref_Allowed);
 
-                     --  Assume dynamic property of the object after the havoc.
+                     --  Assume dynamic invariant of the object after havoc.
 
                      declare
                         Dyn_Prop : constant W_Pred_Id :=
-                          Compute_Dynamic_Property (Expr   => +T,
-                                                    Ty     => E.Typ,
-                                                    Params => Params);
+                          Compute_Dynamic_Invariant (Expr   => +T,
+                                                     Ty     => E.Typ,
+                                                     Params => Params);
                      begin
                         if Dyn_Prop /= True_Pred then
                            T := +Sequence
@@ -10259,14 +10259,14 @@ package body Gnat2Why.Expr is
                          Right    => +T,
                          Typ      => Get_Type (T));
             Dyn_Prop : constant W_Pred_Id :=
-              Compute_Dynamic_Property (Expr   => +Deref,
+              Compute_Dynamic_Invariant (Expr   => +Deref,
                                         Ty     => Etype (Ent),
                                         Params => Params);
             Havoc    : W_Prog_Id := New_Havoc_Call (+T);
          begin
             if Dyn_Prop /= True_Pred then
 
-               --  Assume dynamic property of the object after the havoc.
+               --  Assume dynamic invariant of the object after the havoc.
 
                Havoc := +Sequence
                  (Havoc, New_Assume_Statement (Pred => Dyn_Prop));
@@ -12852,11 +12852,11 @@ package body Gnat2Why.Expr is
             Reduced              => True));
    end Variables_In_Dynamic_Predicate;
 
-   -----------------------------------
-   -- Variables_In_Dynamic_Property --
-   -----------------------------------
+   ------------------------------------
+   -- Variables_In_Dynamic_Invariant --
+   ------------------------------------
 
-   procedure Variables_In_Dynamic_Property
+   procedure Variables_In_Dynamic_Invariant
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
    is
@@ -12993,7 +12993,7 @@ package body Gnat2Why.Expr is
          Variables_In_Dynamic_Predicate (Ty_Ext, Variables);
       end if;
 
-      --  Dynamic property of Ty_Ext's components
+      --  Dynamic Invariant of Ty_Ext's components
 
       if Is_Array_Type (Ty_Ext)
         and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
@@ -13001,15 +13001,15 @@ package body Gnat2Why.Expr is
 
          --  Generates:
          --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
-         --    dynamic_property (get <Expr> i1 .. in)
+         --    Dynamic_Invariant (get <Expr> i1 .. in)
 
-         Variables_In_Dynamic_Property (Component_Type (Ty_Ext), Variables);
+         Variables_In_Dynamic_Invariant (Component_Type (Ty_Ext), Variables);
 
       elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
 
          --  Generates:
-         --  (check_for_f1 <Expr> -> dynamic_property <Expr>.rec__f1)
-         --  /\ .. /\ (check_for_fn <Expr> -> dynamic_property <Expr>.rec__fn)
+         --  (check_for_f1 <Expr> -> Dynamic_Invariant <Expr>.rec__f1)
+         --  /\ .. /\ (check_for_fn <Expr> -> Dynamic_Invariant <Expr>.rec__fn)
          --  As discriminants may occur in bounds of types of other fields,
          --  store them in the Symbol_Table.
 
@@ -13022,14 +13022,14 @@ package body Gnat2Why.Expr is
                    or else (Ekind (Field) = E_Discriminant
                             and then Is_Not_Hidden_Discriminant (Field))
                then
-                  Variables_In_Dynamic_Property (Etype (Field), Variables);
+                  Variables_In_Dynamic_Invariant (Etype (Field), Variables);
                end if;
 
                Next_Component_Or_Discriminant (Field);
             end loop;
          end;
       end if;
-   end Variables_In_Dynamic_Property;
+   end Variables_In_Dynamic_Invariant;
 
    -------------------------------
    -- Why_Subp_Has_Precondition --
