@@ -22,31 +22,30 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
-
 with Errout;
-with Namet;                              use Namet;
-with Nlists;                             use Nlists;
-with Sem_Aux;                            use Sem_Aux;
-with Sem_Ch12;                           use Sem_Ch12;
-with Sem_Eval;                           use Sem_Eval;
-with Sem_Util;                           use Sem_Util;
-with Sinfo;                              use Sinfo;
-with Snames;                             use Snames;
-with Stand;                              use Stand;
-with Treepr;                             use Treepr;
-
-with Hashing;                            use Hashing;
-with SPARK_Definition;                   use SPARK_Definition;
-with SPARK_Util;                         use SPARK_Util;
-with VC_Kinds;                           use VC_Kinds;
-with Why;
-
-with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
 with Flow_Classwide;                     use Flow_Classwide;
+with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
 with Flow_Debug;                         use Flow_Debug;
 with Flow_Error_Messages;                use Flow_Error_Messages;
 with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
 with Flow_Utility;                       use Flow_Utility;
+with Hashing;                            use Hashing;
+with Namet;                              use Namet;
+with Nlists;                             use Nlists;
+with Opt;                                use Opt;
+with Sem_Aux;                            use Sem_Aux;
+with Sem_Ch12;                           use Sem_Ch12;
+with Sem_Eval;                           use Sem_Eval;
+with Sem_Prag;                           use Sem_Prag;
+with Sem_Util;                           use Sem_Util;
+with Sinfo;                              use Sinfo;
+with Snames;                             use Snames;
+with SPARK_Definition;                   use SPARK_Definition;
+with SPARK_Util;                         use SPARK_Util;
+with Stand;                              use Stand;
+with Treepr;                             use Treepr;
+with VC_Kinds;                           use VC_Kinds;
+with Why;
 
 pragma Unreferenced (Flow_Debug);
 
@@ -642,7 +641,7 @@ package body Flow.Control_Flow_Graph is
    --  When we find a nested package body, we bring its initializes clause
    --  to bear.
    --
-   --  Lets remind ourselves of the example from Do_Package_Body:
+   --  Lets remind ourselves of the example from Do_Package_Declaration:
    --
    --    package Inner
    --      with Abstract_State => (AS1, AS2),
@@ -682,10 +681,10 @@ package body Flow.Control_Flow_Graph is
    --  Note we do not have this self-dependency here, because Z is *not*
    --  initialized at specification.
    --
-   --  Finally, we look into the nested package body when the package
-   --  declares no state abstractions. This is similar to what we do
-   --  for the package spec. Note that we only process the
-   --  declarations of the package's body.
+   --  Finally, we look into the nested package body when the package declares
+   --  no state abstractions. This is similar to what we do for the package
+   --  spec. Note that we only process the declarations of the package's body
+   --  and we only do so if the package's body is actually in SPARK.
 
    procedure Do_Package_Declaration
      (N   : Node_Id;
@@ -719,6 +718,10 @@ package body Flow.Control_Flow_Graph is
    --       part of the enclosing package. This means initial and final
    --       vertices for x, y, and z are introduced and two vertices for
    --       the two declarations.
+   --
+   --    3) If the nested package has an initializes aspect then the private
+   --       part is ignored. However, if there is no initializes aspect and
+   --       if the private part is in SPARK then it is processed.
    --
    --  Note that the initializes aspect is *not* considered yet, as it only
    --  holds once the package body has been elaborated. See
@@ -3326,9 +3329,13 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      AS_Pragma : constant Node_Id :=
+      AS_Pragma   : constant Node_Id :=
         Get_Pragma (Defining_Unit_Name (Specification (N)),
                     Pragma_Abstract_State);
+
+      Init_Pragma : constant Node_Id :=
+        Get_Pragma (Defining_Unit_Name (Specification (N)),
+                    Pragma_Initializes);
    begin
 
       --  Introduce variables from the abstract state of the nested
@@ -3393,18 +3400,53 @@ package body Flow.Control_Flow_Graph is
          end;
       end if;
 
-      --  Traverse visible part of the specs.
+      --  Traverse visible and private part of the specs and link them up.
 
       declare
-         Visible_Part : constant List_Id :=
+         Visible_Decls : constant List_Id :=
            Visible_Declarations (Specification (N));
-      begin
-         Process_Statement_List (Visible_Part, FA, CM, Ctx);
 
-         Copy_Connections (CM,
-                           Dst => Union_Id (N),
-                           Src => Union_Id (Visible_Part));
+         Private_Decls : constant List_Id :=
+           Private_Declarations (Specification (N));
+      begin
+         Process_Statement_List (Visible_Decls, FA, CM, Ctx);
+
+         if No (Init_Pragma)
+           and then Present (Private_Decls)
+           and then (No (SPARK_Aux_Pragma (Defining_Entity (N)))
+                       or else Get_SPARK_Mode_From_Pragma
+                               (SPARK_Aux_Pragma (Defining_Entity (N))) /= Off)
+         then
+            --  We only process the private declarations if there is no
+            --  initializes pragma and if the private declarations are
+            --  actually in SPARK.
+            Process_Statement_List (Private_Decls, FA, CM, Ctx);
+
+            --  Link the visible declarations to the private declarations
+            Linkup
+              (FA,
+               CM (Union_Id (Visible_Decls)).Standard_Exits,
+               CM (Union_Id (Private_Decls)).Standard_Entry);
+
+            --  The standard entry of N is the entry to the visible
+            --  declarations and the standard exits are the exits of the
+            --  private declarations.
+            CM.Include
+              (Union_Id (N),
+               Graph_Connections'
+                 (Standard_Entry => CM.Element
+                    (Union_Id (Visible_Decls)).Standard_Entry,
+                  Standard_Exits => CM.Element
+                    (Union_Id (Private_Decls)).Standard_Exits));
+         else
+            --  We have only processed the visible declarations so we just copy
+            --  the connections of N from Visible_Decls.
+            Copy_Connections (CM,
+                              Dst => Union_Id (N),
+                              Src => Union_Id (Visible_Decls));
+         end if;
       end;
+
    end Do_Package_Declaration;
 
    -----------------------------
@@ -3440,12 +3482,9 @@ package body Flow.Control_Flow_Graph is
 
       Package_Spec : constant Entity_Id :=
         (case Nkind (N) is
-            when N_Package_Body =>
-               Corresponding_Spec (N),
-            when N_Package_Body_Stub =>
-               Corresponding_Spec_Of_Stub (N),
-            when others =>
-               raise Program_Error);
+         when N_Package_Body      => Corresponding_Spec (N),
+         when N_Package_Body_Stub => Corresponding_Spec_Of_Stub (N),
+         when others              => raise Program_Error);
 
       Abstract_State_Aspect : constant Node_Id :=
         Get_Pragma (Package_Spec,
@@ -3454,8 +3493,26 @@ package body Flow.Control_Flow_Graph is
       Initializes_Aspect : constant Node_Id := Get_Pragma (Package_Spec,
                                                            Pragma_Initializes);
 
+      Pkg_Body : constant Node_Id :=
+        (case Nkind (N) is
+         when N_Package_Body      => N,
+         when N_Package_Body_Stub => Parent (Corresponding_Body (N)),
+         when others              => raise Program_Error);
+
+      Initializes_Scope : constant Flow_Scope :=
+        (case Nkind (N) is
+         when N_Package_Body      => Get_Enclosing_Body_Flow_Scope
+                                       (Get_Flow_Scope (Pkg_Body)),
+         when N_Package_Body_Stub => Get_Flow_Scope
+                                       (Get_Body_Or_Stub (Pkg_Body)),
+         when others              => raise Program_Error);
+      --  The above holds the scope of the nested package. In the case of a
+      --  stub we look at where the stub is placed instead.
+
       DM : constant Dependency_Maps.Map :=
-        Parse_Initializes (Initializes_Aspect, Package_Spec);
+        Parse_Initializes (Initializes_Aspect,
+                           Package_Spec,
+                           Initializes_Scope);
 
       ---------------
       -- Find_Node --
@@ -3484,14 +3541,7 @@ package body Flow.Control_Flow_Graph is
       -- Get_Declarations --
       ----------------------
 
-      function Get_Declarations return List_Id is
-        (case Nkind (N) is
-            when N_Package_Body =>
-               Declarations (N),
-            when N_Package_Body_Stub =>
-               Declarations (Parent (Corresponding_Body (N))),
-            when others =>
-               raise Program_Error);
+      function Get_Declarations return List_Id is (Declarations (Pkg_Body));
 
       V : Flow_Graphs.Vertex_Id;
 
@@ -3504,23 +3554,30 @@ package body Flow.Control_Flow_Graph is
          --  instantiations.
          Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
          CM.Include (Union_Id (N), Trivial_Connection (V));
-
          return;
       end if;
 
-      if Present (Abstract_State_Aspect)
-        and then DM.Is_Empty
+      if (Present (Abstract_State_Aspect) and then DM.Is_Empty)
+        or else (DM.Is_Empty
+                   and then not Entity_Body_In_SPARK (Package_Spec))
       then
-         --  If we have an Abstract_State aspect and no Initializes
-         --  aspect, then the package elaboration will have no
-         --  observable effect on the enclosing package.
+         --  We create a null vertex when:
+         --
+         --    1) we have an Abstract_State aspect and no state is
+         --       initialized (then the package elaboration will have no
+         --       observable effect on the enclosing package)
+         --
+         --    2) no state is initialized and the body of the package is not
+         --       in SPARK.
 
          Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
          CM.Include (Union_Id (N), Trivial_Connection (V));
          return;
       end if;
 
-      if not Present (Abstract_State_Aspect) then
+      if No (Abstract_State_Aspect)
+        and then Entity_Body_In_SPARK (Package_Spec)
+      then
          --  Traverse package body declarations.
          declare
             Body_Declarations : constant List_Id := Get_Declarations;
@@ -3576,7 +3633,9 @@ package body Flow.Control_Flow_Graph is
                   Nodes => Verts,
                   Block => Initializes_CM);
 
-            if not Present (Abstract_State_Aspect) then
+            if No (Abstract_State_Aspect)
+              and then Entity_Body_In_SPARK (Package_Spec)
+            then
                declare
                   Body_Declarations : constant List_Id := Get_Declarations;
                begin
@@ -4404,16 +4463,16 @@ package body Flow.Control_Flow_Graph is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
-            when N_Package_Body                |
-                 N_Package_Declaration         |
-                 N_Subprogram_Body             |
-                 N_Subprogram_Declaration      |
-                 N_Protected_Body              |
-                 N_Protected_Type_Declaration  |
-                 N_Entry_Body                  |
-                 N_Entry_Declaration           |
-                 N_Task_Body                   |
-                 N_Task_Definition             =>
+            when N_Package_Body               |
+                 N_Package_Declaration        |
+                 N_Subprogram_Body            |
+                 N_Subprogram_Declaration     |
+                 N_Protected_Body             |
+                 N_Protected_Type_Declaration |
+                 N_Entry_Body                 |
+                 N_Entry_Declaration          |
+                 N_Task_Body                  |
+                 N_Task_Definition            =>
                --  If we ever get one of these we skip the rest of the
                --  nodes that hang under them.
                return Skip;
@@ -5623,6 +5682,36 @@ package body Flow.Control_Flow_Graph is
             end;
 
          when E_Package | E_Package_Body =>
+            --  We create initial and final vertices for the package's state
+            --  abstractions.
+            declare
+               AS_Pragma : constant Node_Id :=
+                 Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State);
+
+               PAA       : Node_Id;
+               AS_N      : Node_Id;
+               AS_E      : Entity_Id;
+            begin
+               if Present (AS_Pragma) then
+                  PAA  := First (Pragma_Argument_Associations (AS_Pragma));
+                  AS_N := First (Expressions (Expression (PAA)));
+
+                  while Present (AS_N) loop
+                     AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
+                              then Entity (Ancestor_Part (AS_N))
+                              else Entity (AS_N));
+
+                     --  ??? Are those arguments correct ???
+                     Create_Initial_And_Final_Vertices
+                       (AS_E,
+                        Variable_Kind,
+                        FA);
+
+                     Next (AS_N);
+                  end loop;
+               end if;
+            end;
+
             if Is_Generic_Instance (FA.Analyzed_Entity) then
                declare
                   Instance    : constant Node_Id :=
@@ -5779,7 +5868,9 @@ package body Flow.Control_Flow_Graph is
                The_Out : Flow_Id;
                The_In  : Flow_Id_Sets.Set;
                DM      : constant Dependency_Maps.Map :=
-                 Parse_Initializes (FA.Initializes_N, FA.Spec_Entity);
+                 Parse_Initializes (FA.Initializes_N,
+                                    FA.Spec_Entity,
+                                    FA.S_Scope);
             begin
                for C in DM.Iterate loop
                   The_Out := Dependency_Maps.Key (C);

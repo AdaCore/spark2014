@@ -100,9 +100,6 @@ package body Flow_Refinement is
    --  Returns the node representing E (or its immediately encapsulating
    --  state) in an initializes aspect or Empty.
 
-   function Get_Body_Or_Stub (N : Node_Id) return Node_Id;
-   --  If a corresponding stub exists, then we return that instead of N.
-
    -------------------
    -- Tree_Contains --
    -------------------
@@ -276,17 +273,17 @@ package body Flow_Refinement is
    begin
       P := S.Ent;
       while Present (P)
-        and then not (Nkind (P) in N_Package_Declaration        |
+        and then not (Nkind (P) in N_Generic_Package_Declaration |
+                                   N_Package_Declaration         |
                                    N_Protected_Type_Declaration)
       loop
          P := Parent (P);
       end loop;
 
       case Nkind (P) is
-         when N_Package_Declaration =>
-            P := Corresponding_Body (P);
-
-         when N_Protected_Type_Declaration =>
+         when N_Generic_Package_Declaration |
+              N_Package_Declaration         |
+              N_Protected_Type_Declaration  =>
             P := Corresponding_Body (P);
 
          when others =>
@@ -563,15 +560,15 @@ package body Flow_Refinement is
    ------------------------------
 
    function Find_Node_In_Initializes (E : Entity_Id) return Node_Id is
-      P          : Entity_Id          := E;
+      P          : Entity_Id := E;
       Init       : Node_Id;
       M          : Dependency_Maps.Map;
       F          : Flow_Id;
       N          : Node_Id;
 
       Target_Ent : constant Entity_Id :=
-        (if Present (Encapsulating_State (E)) and then
-            Scope (E) = Scope (Encapsulating_State (E))
+        (if Present (Encapsulating_State (E))
+           and then Scope (E) = Scope (Encapsulating_State (E))
          then Encapsulating_State (E)
          else Unique_Entity (E));
       --  What we are searching for. Either the entity itself, or, if this
@@ -579,7 +576,7 @@ package body Flow_Refinement is
       --  package, that abstract state.
 
    begin
-      while Ekind (P) /= E_Package loop
+      while not (Ekind (P) in E_Package | E_Generic_Package) loop
          case Ekind (P) is
             when E_Package_Body =>
                raise Why.Not_Implemented;
@@ -589,7 +586,8 @@ package body Flow_Refinement is
       end loop;
       Init := Get_Pragma (P, Pragma_Initializes);
 
-      M := Parse_Initializes (Init, P);
+      M := Parse_Initializes (Init, P, Get_Flow_Scope (P));
+
       for Initialized_Var in M.Iterate loop
          F := Dependency_Maps.Key (Initialized_Var);
          N := (if F.Kind in Direct_Mapping | Record_Field

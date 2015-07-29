@@ -1,6 +1,5 @@
 nested_pkg.adb:19:07: info: initialization of "Foo" constituent of "State" proved
 nested_pkg.adb:20:07: info: initialization of "Bar" constituent of "State" proved
-nested_pkg.ads:2:26: warning: no procedure exists that can initialize abstract state "Nested_Pkg.Foobar"
 stack_asm.adb:38:40: high: "The_Stack" constituent of "State" is not initialized
 stack_asm.adb:38:40: low: unused global "The_Stack" constituent of "State"
 stack_asm.adb:38:51: info: initialization of "The_Ptr" constituent of "State" proved

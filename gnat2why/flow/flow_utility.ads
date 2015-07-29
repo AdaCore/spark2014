@@ -84,8 +84,8 @@ is
 
    function Get_Flow_Id
      (Name  : Entity_Name;
-      View  : Flow_Id_Variant;
-      Scope : Flow_Scope)
+      View  : Flow_Id_Variant := Normal_Use;
+      Scope : Flow_Scope      := Null_Flow_Scope)
       return Flow_Id;
    --  Return a suitable Flow_Id for the unique_name of an entity. We
    --  try our best to get a direct mapping, resorting to the magic
@@ -97,6 +97,18 @@ is
    --  @param Scope is the scope from which Get_Flow_Id is called
    --  @return a Flow_Id with either an entity or a magic_string if
    --    an entity cannot be found.
+
+   function To_Flow_Id_Set
+     (NS    : Name_Sets.Set;
+      View  : Flow_Id_Variant := Normal_Use;
+      Scope : Flow_Scope      := Null_Flow_Scope)
+      return Flow_Id_Sets.Set;
+   --  Converts a name set into a flow id set. The flow ids have their views
+   --  set to View.
+   --  @param NS is the name set that will be converted
+   --  @param View is the view that flow ids will be given
+   --  @param Scope is used to return full views if they are visible
+   --  @return the equivalent set of flow ids
 
    function Has_Depends (Subprogram : Entity_Id) return Boolean
    with Pre => Ekind (Subprogram) in E_Entry | E_Task_Type | Subprogram_Kind;

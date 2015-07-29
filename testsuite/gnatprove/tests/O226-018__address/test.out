@@ -21,6 +21,7 @@ worker_pack.adb:89:07: warning: assuming "Worker_Function" has no effect on glob
 worker_pack.adb:89:07: warning: no Global contract available for "Worker_Function"
 worker_pack.adb:96:07: warning: assuming "Worker_Function" has no effect on global items
 worker_pack.adb:96:07: warning: no Global contract available for "Worker_Function"
+worker_pack.ads:20:04: info: initialization of "Worker_Queue" proved
 worker_pack.ads:29:14: warning: subprogram "Worker_Loop" has no effect
 worker_pack.ads:35:14: warning: subprogram "Log_Run_Worker" has no effect
 worker_pack.ads:37:14: warning: subprogram "Neo_Pixel_Ring_Worker" has no effect

@@ -99,13 +99,19 @@ x86.adb:162:24: info: initialization of "val1" proved
 x86.adb:162:31: info: initialization of "val2" proved
 x86.adb:163:36: info: initialization of "val1" proved
 x86.adb:163:56: info: initialization of "val2" proved
+x86.ads:16:04: info: initialization of "ZeroFlag" proved
+x86.ads:17:04: info: initialization of "CarryFlag" proved
+x86.ads:18:04: info: initialization of "Memory" proved
 x86.ads:18:48: info: length check proved
+x86.ads:20:04: info: initialization of "XCX" proved
 x86.ads:20:31: info: length check proved
 x86.ads:24:16: info: postcondition proved
 x86.ads:31:16: info: postcondition proved
+x86.ads:38:04: info: initialization of "XSI" proved
 x86.ads:38:31: info: length check proved
 x86.ads:42:16: info: postcondition proved
 x86.ads:49:16: info: postcondition proved
+x86.ads:56:04: info: initialization of "XDI" proved
 x86.ads:56:31: info: length check proved
 x86.ads:60:16: info: postcondition proved
 x86.ads:67:16: info: postcondition proved

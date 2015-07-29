@@ -21,6 +21,7 @@ mda.ads:75:19: info: postcondition proved
 mda.ads:90:19: medium: postcondition might fail, requires A = A'Old'update
 mda.ads:103:19: info: postcondition proved
 mda.ads:122:19: medium: postcondition might fail, requires A = A'Old'update
+update.ads:8:04: info: initialization of "An_Arr" proved
 update.ads:8:34: info: length check proved
 update.ads:18:19: medium: postcondition might fail
 update.ads:31:19: info: postcondition proved

@@ -764,13 +764,12 @@ package body Flow_Types is
    -- Is_Easily_Printable --
    -------------------------
 
-   function Is_Easily_Printable (F : Flow_Id) return Boolean
-   is
+   function Is_Easily_Printable (F : Flow_Id) return Boolean is
    begin
       case F.Kind is
-         when Null_Value |
-              Record_Field |
-              Magic_String |
+         when Null_Value            |
+              Record_Field          |
+              Magic_String          |
               Synthetic_Null_Export =>
             return True;
 
@@ -778,10 +777,10 @@ package body Flow_Types is
             case Nkind (F.Node) is
                when N_Has_Chars =>
                   return True;
+
                when others =>
                   return False;
             end case;
-
       end case;
    end Is_Easily_Printable;
 

@@ -24,6 +24,7 @@ arrays.adb:83:14: info: initialization of "Arr" proved
 arrays.adb:84:14: info: initialization of "Arr" proved
 arrays.adb:85:14: info: initialization of "Arr" proved
 arrays.adb:90:10: info: index check proved
+arrays.ads:5:04: info: initialization of "An_Arr" proved
 arrays.ads:5:34: info: length check proved
 arrays.ads:14:19: info: postcondition proved
 arrays.ads:15:31: info: length check proved

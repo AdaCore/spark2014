@@ -21,15 +21,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Flow_Utility;     use Flow_Utility;
+with Nlists;           use Nlists;
+with Opt;              use Opt;
+with Sem_Aux;          use Sem_Aux;
+with Snames;           use Snames;
+with Sem_Prag;         use Sem_Prag;
+with Sem_Util;         use Sem_Util;
+with Sinfo;            use Sinfo;
+with SPARK_Definition; use SPARK_Definition;
+with SPARK_Util;       use SPARK_Util;
 with Why;
-
-with Sem_Aux;      use Sem_Aux;
-with Sem_Util;     use Sem_Util;
-with Sinfo;        use Sinfo;
-
-with SPARK_Util;   use SPARK_Util;
-
-with Flow_Utility; use Flow_Utility;
 
 package body Flow.Slice is
 
@@ -269,15 +271,16 @@ package body Flow.Slice is
    ---------------------
 
    procedure Compute_Globals
-     (FA                : Flow_Analysis_Graphs;
-      Inputs_Proof      : out Node_Sets.Set;
-      Inputs            : out Node_Sets.Set;
-      Outputs           : out Node_Sets.Set;
-      Proof_Calls       : out Node_Sets.Set;
-      Definite_Calls    : out Node_Sets.Set;
-      Conditional_Calls : out Node_Sets.Set;
-      Local_Variables   : out Node_Sets.Set;
-      Local_Subprograms : out Node_Sets.Set)
+     (FA                    : Flow_Analysis_Graphs;
+      Inputs_Proof          : out Node_Sets.Set;
+      Inputs                : out Node_Sets.Set;
+      Outputs               : out Node_Sets.Set;
+      Proof_Calls           : out Node_Sets.Set;
+      Definite_Calls        : out Node_Sets.Set;
+      Conditional_Calls     : out Node_Sets.Set;
+      Local_Variables       : out Node_Sets.Set;
+      Local_Subprograms     : out Node_Sets.Set;
+      Local_Definite_Writes : out Node_Sets.Set)
    is
       --  The "Get" functions that follow return sets of nodes that
       --  are purely of the mode described in their names. This is
@@ -315,6 +318,10 @@ package body Flow.Slice is
       --  respectivelly under Local_Vars and Local_Subs.
       --  @param Local_Vars is populated with all local variables
       --  @param Local_Subs is populated with all local subprograms
+
+      function Get_Local_Definite_Writes return Node_Sets.Set;
+      --  Returns all local variables of the package that are definitely
+      --  initialized once the package has been elaborated.
 
       function Subprograms_Without_Contracts
         (NS : Node_Sets.Set)
@@ -510,9 +517,6 @@ package body Flow.Slice is
          --  declarations and adds them respectivelly to Local_Vars
          --  and Local_Subs.
 
-         procedure Gather_Local_Variables_And_Subprograms is
-            new Traverse_Proc (Get_Object_Or_Subprogram_Declaration);
-
          ------------------------------------------
          -- Get_Object_Or_Subprogram_Declaration --
          ------------------------------------------
@@ -521,35 +525,205 @@ package body Flow.Slice is
            (N : Node_Id)
             return Traverse_Result
          is
+            function Hidden_In_Package_With_State
+              (E : Entity_Id)
+               return Boolean;
+            --  Returns True iff E is declared in either the private part or
+            --  body of a package that either has abstract state or is not in
+            --  SPARK.
+
+            function Hidden_In_Package_With_State
+              (E : Entity_Id)
+               return Boolean
+            is
+            begin
+               if not In_Private_Part (E) then
+                  --  Not in the hidden part
+                  return False;
+               end if;
+
+               if (FA.Kind = E_Package
+                     and then Unique_Entity (Scope (E)) =
+                                Unique_Entity (FA.Analyzed_Entity))
+                 or else (FA.Kind = E_Package_Body
+                            and then Unique_Entity (Scope (E)) =
+                                       Unique_Entity (FA.Spec_Entity))
+               then
+                  --  We always consider the private and body part of the
+                  --  Analyzed_Entity itself.
+                  return False;
+               end if;
+
+               --  Check if the enclosing scope has an abstract state aspect
+               --  or has SPARK_Mode set to Off.
+               declare
+                  Scp : constant Entity_Id := Scope (E);
+               begin
+                  case Ekind (Scp) is
+                     when E_Package =>
+                        if Present (Get_Pragma (Scp, Pragma_Abstract_State))
+                        then
+                           return True;
+                        end if;
+
+                        if Present (SPARK_Aux_Pragma (Scp))
+                          and then Get_SPARK_Mode_From_Pragma
+                                     (SPARK_Aux_Pragma (Scp)) = Off
+                        then
+                           return True;
+                        end if;
+
+                        return False;
+
+                     when others =>
+                        return False;
+                  end case;
+               end;
+
+            end Hidden_In_Package_With_State;
+
          begin
             case Nkind (N) is
                when N_Object_Declaration =>
                   declare
                      E : constant Entity_Id := Defining_Entity (N);
                   begin
-                     if Ekind (E) = E_Constant
-                       and then Present (Full_View (E))
-                     then
-                        --  If the Full_View is present then add that
-                        Local_Vars.Include (Full_View (E));
+                     if Hidden_In_Package_With_State (E) then
+                        --  We don't want to process object declarations that
+                        --  occur in the private or body part of nested
+                        --  packages with state. Ideally, we should have
+                        --  terminated the traversal when we processed the
+                        --  N_Package_Declaration. However, the private
+                        --  declarations of a package hang under a list and we
+                        --  cannot skip them easily since they are directly
+                        --  under the package specification, along with the
+                        --  visible declarations that we do want to process (we
+                        --  cannot skip one without also skipping the other).
+                        return Skip;
                      else
-                        Local_Vars.Include (E);
+                        if Ekind (E) /= E_Constant then
+                           Local_Vars.Include (E);
+                        elsif Has_Variable_Input (Direct_Mapping_Id (E)) then
+                           --  If the Full_View is present then add that
+                           if Present (Full_View (E)) then
+                              Local_Vars.Include (Full_View (E));
+                           else
+                              Local_Vars.Include (E);
+                           end if;
+                        end if;
                      end if;
                   end;
 
-               when N_Entry_Declaration | N_Subprogram_Declaration =>
-                  if Defining_Entity (N) /= FA.Analyzed_Entity then
-                     Local_Subs.Include (Defining_Entity (N));
+               when N_Single_Task_Declaration |
+                    N_Task_Type_Declaration   =>
+                  if Unique_Entity (Defining_Identifier (N)) /=
+                    Unique_Entity (FA.Analyzed_Entity)
+                  then
+                     Local_Subs.Include (Unique_Defining_Entity (N));
+                     return Skip;
+                  end if;
+
+               when N_Entry_Declaration      |
+                    N_Subprogram_Declaration =>
+                  if Unique_Defining_Entity (N) /=
+                    Unique_Entity (FA.Analyzed_Entity)
+                  then
+                     Local_Subs.Include (Unique_Defining_Entity (N));
+                     return Skip;
+                  end if;
+
+               when N_Package_Declaration =>
+                  --  State abstractions of nested packages appear as local
+                  --  variables
+                  declare
+                     AS_Pragma : constant Node_Id :=
+                       Get_Pragma (Defining_Unit_Name (Specification (N)),
+                                   Pragma_Abstract_State);
+
+                     PAA       : Node_Id;
+                     AS_N      : Node_Id;
+                     AS_E      : Entity_Id;
+                  begin
+                     if Present (AS_Pragma) then
+                        PAA  :=
+                          First (Pragma_Argument_Associations (AS_Pragma));
+
+                        AS_N := First (Expressions (Expression (PAA)));
+
+                        while Present (AS_N) loop
+                           AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
+                                    then Entity (Ancestor_Part (AS_N))
+                                    else Entity (AS_N));
+
+                           Local_Vars.Include (AS_E);
+
+                           Next (AS_N);
+                        end loop;
+                     end if;
+                  end;
+
+               when N_Package_Body      |
+                    N_Package_Body_Stub =>
+                  declare
+                     Package_Spec : constant Entity_Id :=
+                       (case Nkind (N) is
+                        when N_Package_Body      => Corresponding_Spec (N),
+                        when N_Package_Body_Stub =>
+                          Corresponding_Spec_Of_Stub (N),
+                        when others              => raise Program_Error);
+
+                     AS_Pragma : constant Node_Id :=
+                       Get_Pragma (Package_Spec,
+                                   Pragma_Abstract_State);
+                  begin
+                     --  Skip bodies of generic packages
+                     if Ekind (Package_Spec) = E_Generic_Package then
+                        return Skip;
+                     end if;
+
+                     --  Skip bodies of packages that are not in SPARK
+                     if not Entity_Body_In_SPARK (Package_Spec) then
+                        return Skip;
+                     end if;
+
+                     --  Skip bodies of nested packages that have an abstract
+                     --  state contract
+                     if Present (AS_Pragma)
+                       and then Unique_Entity (Defining_Unit_Name (N)) /=
+                                  Unique_Entity (FA.Analyzed_Entity)
+                     then
+                        return Skip;
+                     end if;
+                  end;
+
+               when N_Entry_Body |
+                    N_Task_Body  =>
+                  if Unique_Entity (Defining_Identifier (N)) /=
+                    Unique_Entity (FA.Analyzed_Entity)
+                  then
+                     Local_Subs.Include
+                       (Unique_Entity (Defining_Identifier (N)));
                      return Skip;
                   end if;
 
                when N_Subprogram_Body =>
-                  if Acts_As_Spec (N)
-                    and then Defining_Entity (N) /= FA.Analyzed_Entity
+                  if Unique_Defining_Entity (N) /=
+                    Unique_Entity (FA.Analyzed_Entity)
                   then
-                     Local_Subs.Include (Defining_Entity (N));
+                     Local_Subs.Include (Unique_Defining_Entity (N));
                      return Skip;
                   end if;
+
+               when N_Handled_Sequence_Of_Statements =>
+                  --  Skip statements of a nested package's body
+                  if Nkind (Parent (N)) = N_Package_Body then
+                     return Skip;
+                  end if;
+
+               when N_Generic_Package_Declaration    |
+                    N_Generic_Subprogram_Declaration =>
+                  --  Skip generic declarations
+                  return Skip;
 
                when others =>
                   null;
@@ -558,6 +732,9 @@ package body Flow.Slice is
             return OK;
          end Get_Object_Or_Subprogram_Declaration;
 
+         procedure Gather_Local_Variables_And_Subprograms is
+            new Traverse_Proc (Get_Object_Or_Subprogram_Declaration);
+
       --  Start of processing for Get_Local_Variables_And_Subprograms
 
       begin
@@ -565,7 +742,8 @@ package body Flow.Slice is
          Local_Vars := Node_Sets.Empty_Set;
          Local_Subs := Node_Sets.Empty_Set;
 
-         --  Gather formal parameters of the entry/subprogram/task.
+         --  Gather formal parameters of the entry/subprogram/task or state
+         --  abstractions of the package.
          declare
             E : Entity_Id;
          begin
@@ -587,7 +765,7 @@ package body Flow.Slice is
 
                   --  If the analyzed entity belongs to a protected object then
                   --  we add the protected type to the local variables. The
-                  --  protected object is tread as a formal parameter.
+                  --  protected object is treated as a formal parameter.
                   declare
                      F : constant Flow_Id :=
                        Direct_Mapping_Id (FA.Analyzed_Entity);
@@ -608,13 +786,42 @@ package body Flow.Slice is
                           and then Present (Full_View (E))
                         then
                            --  If the Full_View is present then add that
-                           Local_Vars.Include (Full_View (E));
+                           Local_Vars.Insert (Full_View (E));
                         else
-                           Local_Vars.Include (E);
+                           Local_Vars.Insert (E);
                         end if;
                         Next_Discriminant (E);
                      end loop;
                   end if;
+
+               when E_Package | E_Package_Body =>
+                  --  State abstractions of a package effectively act as
+                  --  local variables.
+                  declare
+                     AS_Pragma : constant Node_Id :=
+                       Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State);
+
+                     PAA       : Node_Id;
+                     AS_N      : Node_Id;
+                     AS_E      : Entity_Id;
+                  begin
+                     if Present (AS_Pragma) then
+                        PAA  :=
+                          First (Pragma_Argument_Associations (AS_Pragma));
+
+                        AS_N := First (Expressions (Expression (PAA)));
+
+                        while Present (AS_N) loop
+                           AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
+                                   then Entity (Ancestor_Part (AS_N))
+                                   else Entity (AS_N));
+
+                           Local_Vars.Insert (AS_E);
+
+                           Next (AS_N);
+                        end loop;
+                     end if;
+                  end;
 
                when others =>
                   raise Why.Unexpected_Node;
@@ -627,10 +834,71 @@ package body Flow.Slice is
                Gather_Local_Variables_And_Subprograms
                  (Get_Body (FA.Analyzed_Entity));
 
+            when E_Package | E_Package_Body =>
+               declare
+                  Decl : Entity_Id := FA.Spec_Entity;
+               begin
+                  while not (Nkind (Decl) in N_Package_Declaration         |
+                                             N_Generic_Package_Declaration)
+                    and then Present (Parent (Decl))
+                  loop
+                     Decl := Parent (Decl);
+                  end loop;
+
+                  pragma Assert (Nkind (Decl) in
+                                   N_Package_Declaration         |
+                                   N_Generic_Package_Declaration);
+
+                  Gather_Local_Variables_And_Subprograms (Decl);
+
+                  if FA.Kind = E_Package_Body then
+                     Gather_Local_Variables_And_Subprograms
+                       (Package_Body (FA.Analyzed_Entity));
+                  end if;
+               end;
+
             when others =>
                raise Why.Unexpected_Node;
          end case;
       end Get_Local_Variables_And_Subprograms;
+
+      -------------------------------
+      -- Get_Local_Definite_Writes --
+      -------------------------------
+
+      function Get_Local_Definite_Writes return Node_Sets.Set is
+         Definite_Local_Writes : Node_Sets.Set := Node_Sets.Empty_Set;
+         FS                    : Flow_Id_Sets.Set;
+         V_Initial             : Flow_Graphs.Vertex_Id;
+         Guilty                : Boolean;
+      begin
+         for LV of Local_Variables loop
+            --  We go through all local variables and check if their
+            --  corresponding 'Initial vertex has no Out_Neighbours.
+
+            Guilty := False;  --  Innocent till found guilty
+
+            FS := Flatten_Variable (Direct_Mapping_Id (LV), FA.B_Scope);
+
+            for Comp of FS loop
+               V_Initial := FA.PDG.Get_Vertex
+                 (Change_Variant (Comp, Initial_Value));
+
+               pragma Assert (V_Initial /= Flow_Graphs.Null_Vertex);
+
+               if FA.PDG.Out_Neighbour_Count (V_Initial) /= 0 then
+                  Guilty := True;
+                  exit;
+               end if;
+            end loop;
+
+            if not Guilty then
+               Definite_Local_Writes.Insert (LV);
+            end if;
+         end loop;
+
+         return Definite_Local_Writes;
+      end Get_Local_Definite_Writes;
 
       -----------------------------------
       -- Subprograms_Without_Contracts --
@@ -656,16 +924,18 @@ package body Flow.Slice is
    --  Beginning of Compute_Globals
 
    begin
-      Inputs_Proof      := Get_Proof_Ins;
-      Inputs            := Get_In_Outs or (Get_Inputs_Or_Proof_Ins -
-                                             Get_Proof_Ins);
-      Outputs           := Get_In_Outs or Get_Outputs;
-      Proof_Calls       := Get_Proof_Subprograms;
-      Definite_Calls    := Get_Definite_Subprograms - Proof_Calls;
-      Conditional_Calls := Subprograms_Without_Contracts
+      Inputs_Proof          := Get_Proof_Ins;
+      Inputs                := Get_In_Outs or (Get_Inputs_Or_Proof_Ins -
+                                                 Get_Proof_Ins);
+      Outputs               := Get_In_Outs or Get_Outputs;
+      Proof_Calls           := Get_Proof_Subprograms;
+      Definite_Calls        := Get_Definite_Subprograms - Proof_Calls;
+      Conditional_Calls     := Subprograms_Without_Contracts
         (FA.Direct_Calls - Definite_Calls - Proof_Calls);
 
       Get_Local_Variables_And_Subprograms (Local_Variables, Local_Subprograms);
+
+      Local_Definite_Writes := Get_Local_Definite_Writes;
    end Compute_Globals;
 
 end Flow.Slice;

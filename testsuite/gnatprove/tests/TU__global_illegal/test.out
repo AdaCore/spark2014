@@ -33,6 +33,10 @@ global_illegal_3.adb:115:34: info: initialization of "Y" proved
 global_illegal_3.adb:116:34: export "Y" must not depend on Proof_In "X" (SPARK RM 6.1.4(18))
 global_illegal_3.adb:133:32: info: initialization of "Arr2" proved
 global_illegal_3.adb:136:15: medium: "Arr2" might not be initialized
+global_illegal_3.ads:6:04: info: initialization of "X" proved
+global_illegal_3.ads:6:07: info: initialization of "Y" proved
+global_illegal_3.ads:6:10: info: initialization of "Z" proved
+global_illegal_3.ads:10:04: info: initialization of "Arr" proved
    compilation of global_illegal_3.adb failed
 
 

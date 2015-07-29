@@ -613,21 +613,21 @@ package body Flow.Analysis is
          declare
             Aspect_To_Fix : constant String :=
               (case FA.Kind is
-                 when E_Entry           |
-                      E_Subprogram_Body |
-                      E_Task_Body       => (if Refined
-                                            then "Refined_Global"
-                                            else "Global"),
-                  when others => "Initializes");
+               when E_Entry           |
+                    E_Subprogram_Body |
+                    E_Task_Body       => (if Refined
+                                          then "Refined_Global"
+                                          else "Global"),
+               when others => "Initializes");
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-                  when E_Entry           |
-                       E_Subprogram_Body |
-                       E_Task_Body       => "6.1.4(13)",
-                  when E_Package         |
-                       E_Package_Body    => "7.1.5(12)",
-                  when others            => raise Program_Error);
+               when E_Entry           |
+                    E_Subprogram_Body |
+                    E_Task_Body       => "6.1.4(13)",
+               when E_Package         |
+                    E_Package_Body    => "7.1.5(12)",
+               when others            => raise Program_Error);
 
          begin
             if Refined then
@@ -664,10 +664,20 @@ package body Flow.Analysis is
                      end;
 
                   when E_Package | E_Package_Body =>
-                     Vars_Known := To_Flow_Id_Set
-                       (Down_Project (To_Node_Set (To_Entire_Variables
-                                                     (FA.Visible_Vars)),
-                                      FA.S_Scope));
+                     Vars_Known := Flow_Id_Sets.Empty_Set;
+
+                     for F of To_Entire_Variables (FA.Visible_Vars) loop
+                        if F.Kind in Direct_Mapping | Record_Field then
+                           Vars_Known.Union
+                             (To_Flow_Id_Set
+                                (Down_Project
+                                   (Node_Sets.To_Set
+                                      (Get_Direct_Mapping_Id (F)),
+                                    FA.S_Scope)));
+                        else
+                           Vars_Known.Include (F);
+                        end if;
+                     end loop;
 
                   when E_Task_Body =>
                      raise Program_Error;
@@ -2284,6 +2294,7 @@ package body Flow.Analysis is
          if Is_Constituent (Var)
            and then Kind in Unknown | Err
            and then FA.Kind in E_Package | E_Package_Body
+           and then Present (FA.Initializes_N)
          then
             Msg := To_Unbounded_String
               ("initialization of & is specified @");
@@ -2297,9 +2308,9 @@ package body Flow.Analysis is
                F2           => Direct_Mapping_Id (FA.Initializes_N),
                Tag          => Uninitialized,
                Kind         => (case Kind is
-                                   when Init    => Info_Kind,
-                                   when Unknown => Medium_Check_Kind,
-                                   when Err     => High_Check_Kind),
+                                when Init    => Info_Kind,
+                                when Unknown => Medium_Check_Kind,
+                                when Err     => High_Check_Kind),
                Vertex       => Vertex,
                Continuation => True);
          end if;
@@ -2867,7 +2878,7 @@ package body Flow.Analysis is
          FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
          DM : constant Dependency_Maps.Map :=
-           Parse_Initializes (FA.Initializes_N, FA.Spec_Entity);
+           Parse_Initializes (FA.Initializes_N, FA.Spec_Entity, FA.S_Scope);
       begin
 
          for C in DM.Iterate loop
@@ -3514,12 +3525,13 @@ package body Flow.Analysis is
       end Write_Tracefile;
 
       DM : constant Dependency_Maps.Map :=
-        Parse_Initializes (FA.Initializes_N, FA.Spec_Entity);
+        Parse_Initializes (FA.Initializes_N,
+                           FA.Spec_Entity,
+                           Null_Flow_Scope);
 
    begin  --  Check_Initializes_Contract
       if DM.Is_Empty then
-         --  If there is no Initializes contract then we have nothing
-         --  to do.
+         --  We have nothing to do if DM is empty
          return;
       end if;
 
@@ -3544,11 +3556,13 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA   => FA,
                         Msg  => "% must be initialized at elaboration",
-                        N    => Search_Contract
-                                  (FA.Spec_Entity,
-                                   Pragma_Initializes,
-                                   Get_Direct_Mapping_Id (The_Out),
-                                   Get_Direct_Mapping_Id (G)),
+                        N    => (if Present (FA.Initializes_N)
+                                 then Search_Contract
+                                        (FA.Spec_Entity,
+                                         Pragma_Initializes,
+                                         Get_Direct_Mapping_Id (The_Out),
+                                         Get_Direct_Mapping_Id (G))
+                                 else FA.Spec_Entity),
                         F1   => G,
                         Kind => High_Check_Kind,
                         Tag  => Uninitialized);
@@ -3563,6 +3577,12 @@ package body Flow.Analysis is
             --  mentioned in an Initializes aspect was found in the
             --  RHS of an initialization_item then we don't do any
             --  further analysis.
+            return;
+         end if;
+
+         if No (FA.Initializes_N) then
+            --  If we are dealing with a generated initializes aspect then we
+            --  have no further checks to do.
             return;
          end if;
 
@@ -3585,8 +3605,7 @@ package body Flow.Analysis is
                All_Contract_Ins.Union
                  (Node_Id_Set_To_Flow_Id_Set
                     (Down_Project
-                       (Vars => Node_Sets.To_Set
-                          (Get_Direct_Mapping_Id (G)),
+                       (Vars => Node_Sets.To_Set (Get_Direct_Mapping_Id (G)),
                         S    => FA.B_Scope)));
             end loop;
 

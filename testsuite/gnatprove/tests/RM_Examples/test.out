@@ -129,6 +129,8 @@ hal.ads:35:44: info: initialization of "Found" proved
 hal.ads:44:31: info: initialization of "A_Byte" proved
 hal.ads:69:30: info: initialization of "Result" proved
 inter_unit_elaboration_examples.adb:8:14: medium: overflow check might fail
+inter_unit_elaboration_examples.ads:6:04: info: initialization of "X" proved
+inter_unit_elaboration_examples.ads:8:04: info: initialization of "Y" proved
 intra_unit_elaboration_order_examples.adb:3:50: medium: overflow check might fail
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved
 intra_unit_elaboration_order_examples.adb:35:14: medium: overflow check might fail

@@ -1,5 +1,5 @@
 initial_condition_illegal.adb:6:11: aspect "Initial_Condition" must apply to a package declaration
-initial_condition_illegal_2.ads:10:32: "Initial_Condition_Illegal_2.State" must be listed in the Initializes aspect of "Initial_Condition_Illegal_2" (SPARK RM 7.1.5(12))
+initial_condition_illegal_2.ads:10:32: "Initial_Condition_Illegal_2.State" must be initialized at elaboration
    compilation of initial_condition_illegal_2.adb failed
 
 
@@ -9,9 +9,7 @@ initial_condition_illegal_3.ads:13:29: info: initialization of "Var" proved
 initial_condition_illegal_3.ads:15:04: info: initialization of "Var" proved
 initial_condition_illegal_3.ads:15:04: warning: initialization of Var is not mentioned in contract "Initializes" at line 12
 initial_condition_illegal_3.ads:18:32: info: initialization of "Var" proved
-initial_condition_illegal_4.ads:8:29: "Var" must be initialized at elaboration
+initial_condition_illegal_4.ads:8:08: info: initial condition proved
+initial_condition_illegal_4.ads:8:29: info: initialization of "Var" proved
+initial_condition_illegal_4.ads:10:04: info: initialization of "Var" proved
 initial_condition_illegal_4.ads:11:14: warning: subprogram "P1" has no effect
-   compilation of initial_condition_illegal_4.adb failed
-
-
-gnatprove: error during flow analysis and proof

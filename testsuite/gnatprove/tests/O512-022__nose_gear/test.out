@@ -33,6 +33,9 @@ ng.adb:78:07: medium: precondition might fail
 ng.adb:78:26: info: initialization of "CurrTime" proved
 ng.adb:78:36: info: initialization of "ThisTime" proved
 ng.adb:78:46: info: initialization of "ThisCount" proved
+ng.ads:13:04: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
+ng.ads:23:04: info: initialization of "PrevTime" proved
+ng.ads:24:04: info: initialization of "PrevCount" proved
 ng.ads:26:14: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v1.adb:30:14: info: initialization of "D1" proved
 ng_v1.adb:30:19: info: initialization of "T2" proved
@@ -43,11 +46,30 @@ ng_v1.adb:33:41: info: initialization of "D2" proved
 ng_v1.adb:33:53: medium: divide by zero might fail
 ng_v1.adb:33:56: info: initialization of "T1" proved
 ng_v1.adb:33:61: info: initialization of "T2" proved
+ng_v1.ads:5:04: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
+ng_v1.ads:13:04: info: initialization of "PrevTime" proved
+ng_v1.ads:14:04: info: initialization of "PrevCount" proved
+ng_v1.ads:15:04: info: initialization of "PrevCurr" proved
+ng_v1.ads:16:04: info: initialization of "FirstTime" proved
+ng_v1.ads:17:04: info: initialization of "NumFailedUpdates" proved
+ng_v1.ads:18:04: info: initialization of "UpdatedWithoutNewClicks" proved
+ng_v1.ads:20:04: info: initialization of "CurrTime" proved
+ng_v1.ads:21:04: info: initialization of "ThisTime" proved
+ng_v1.ads:22:04: info: initialization of "ThisCount" proved
 ng_v1.ads:26:14: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v1.ads:27:18: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v1.ads:28:17: medium: postcondition might fail, requires EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime
 ng_v1.ads:31:23: info: division check proved
 ng_v1.ads:32:28: medium: divide by zero might fail
+ng_v2.adb:19:04: info: initialization of "PrevTime" proved
+ng_v2.adb:20:04: info: initialization of "PrevCount" proved
+ng_v2.adb:21:04: info: initialization of "PrevCurr" proved
+ng_v2.adb:22:04: info: initialization of "FirstTime" proved
+ng_v2.adb:23:04: info: initialization of "NumFailedUpdates" proved
+ng_v2.adb:24:04: info: initialization of "UpdatedWithoutNewClicks" proved
+ng_v2.adb:26:04: info: initialization of "CurrTime" proved
+ng_v2.adb:27:04: info: initialization of "ThisTime" proved
+ng_v2.adb:28:04: info: initialization of "ThisCount" proved
 ng_v2.adb:49:09: info: division check proved
 ng_v2.adb:52:44: medium: precondition might fail
 ng_v2.adb:65:13: info: precondition proved
@@ -56,6 +78,7 @@ ng_v2.adb:68:41: info: initialization of "D2" proved
 ng_v2.adb:68:53: medium: divide by zero might fail
 ng_v2.adb:68:56: info: initialization of "T1" proved
 ng_v2.adb:68:61: info: initialization of "T2" proved
+ng_v2.ads:5:04: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v2.ads:11:14: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v2.ads:12:18: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v2.ads:13:17: medium: postcondition might fail, requires EstimatedGroundVelocity = (DistanceSinceLastClickBeforeLastUpdate * 3600) / (TimeSinceLastClickBeforeLastUpdate)

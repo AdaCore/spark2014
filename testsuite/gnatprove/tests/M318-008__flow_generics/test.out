@@ -2,4 +2,9 @@ test.adb:12:15: info: initialization of "Temp" proved, in instantiation at test.
 test.adb:12:15: info: initialization of "Temp" proved, in instantiation at test.adb:16
 test.adb:18:04: warning: analyzing unreferenced procedure "Call_Both"
 test.adb:61:41: info: initialization of "Temp" proved
+test.adb:98:04: info: initialization of "Apple_Basket.Arr" proved
+test.adb:104:04: info: initialization of "Mixed_Basket.A" proved
+test.adb:104:04: info: initialization of "Mixed_Basket.Arr" proved
+test.adb:104:04: info: initialization of "Mixed_Basket.B" proved
+test.adb:104:04: info: initialization of "Mixed_Basket.Single_Item" proved
 test.adb:111:44: info: initialization of "Has_Apple" proved

@@ -1,3 +1,5 @@
+foo.adb:8:04: info: initialization of "New_Str" proved
+foo.adb:9:04: info: initialization of "New_Sub" proved
 foo.adb:9:33: info: initialization of "New_Str" proved
 foo.adb:11:23: info: initialization of "B" proved
 foo.adb:16:22: info: initialization of "Pos" proved
@@ -43,11 +45,11 @@ digraph G {
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
     9 [label="subtype Tnew_strS is string (1 .. 5);\n<VId: 9>"];
     10 [label="New_Str'initial\nVD: {New_Str}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="New_Str'final\nVU: {New_Str}\n<VId: 11>",shape="plaintext"];
+    11 [label="New_Str'final\nVU: {New_Str}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     12 [label="new_str : string (1 .. 5) := \"12345\";\nVD: {New_Str}\n<VId: 12>"];
     13 [label="subtype Tnew_subS is string (1 .. 5);\n<VId: 13>"];
     14 [label="New_Sub'initial\nVD: {New_Sub}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="New_Sub'final\nVU: {New_Sub}\n<VId: 15>",shape="plaintext"];
+    15 [label="New_Sub'final\nVU: {New_Sub}\n<VId: 15>",shape="plaintext",fontcolor="blue"];
     16 [label="new_sub : string (1 .. 5) := new_str;\nVU: {New_Str}\nVD: {New_Sub}\n<VId: 16>"];
     17 [label="null;\n<VId: 17>"];
 
@@ -73,11 +75,11 @@ digraph G {
     5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
     9 [label="subtype Tnew_strS is string (1 .. 5);\n<VId: 9>"];
     10 [label="New_Str'initial\nVD: {New_Str}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="New_Str'final\nVU: {New_Str}\n<VId: 11>",shape="plaintext"];
+    11 [label="New_Str'final\nVU: {New_Str}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
     12 [label="new_str : string (1 .. 5) := \"12345\";\nVD: {New_Str}\n<VId: 12>"];
     13 [label="subtype Tnew_subS is string (1 .. 5);\n<VId: 13>"];
     14 [label="New_Sub'initial\nVD: {New_Sub}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="New_Sub'final\nVU: {New_Sub}\n<VId: 15>",shape="plaintext"];
+    15 [label="New_Sub'final\nVU: {New_Sub}\n<VId: 15>",shape="plaintext",fontcolor="blue"];
     16 [label="new_sub : string (1 .. 5) := new_str;\nVU: {New_Str}\nVD: {New_Sub}\n<VId: 16>"];
     17 [label="null;\n<VId: 17>"];
 
@@ -882,37 +884,37 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="foo__test_06__b"];
-    2 [label="foo__test_06__x"];
-    3 [label="foo__test_06__y"];
-    4 [label="foo__test_07__R58b"];
-    5 [label="foo__test_07__pos"];
-    6 [label="foo__test_07__n"];
-    7 [label="foo__test_07__b"];
-    8 [label="foo__test_08__x"];
-    9 [label="foo__test_08__b"];
-    10 [label="foo__test_08__n"];
-    11 [label="foo__test_08__y"];
-    12 [label="foo__new_str"];
-    13 [label="foo__new_sub"];
-    14 [label="foo__test_01__pos"];
-    15 [label="foo__test_01__b"];
-    16 [label="foo__test_02__R10b"];
-    17 [label="foo__test_02__pos"];
-    18 [label="foo__test_02__b"];
-    19 [label="foo__test_03__L_2__R14b"];
-    20 [label="foo__test_03__pos"];
-    21 [label="foo__test_03__b"];
-    22 [label="foo__test_04__b"];
-    23 [label="foo__test_04__pos"];
-    24 [label="foo__test_05__R34b"];
-    25 [label="foo__test_05__x"];
-    26 [label="foo__test_05__b"];
-    27 [label="foo__test_05__y"];
-    28 [label="foo__test_05__z"];
-    29 [label="foo__test_06__R49b"];
-    30 [label="foo__test_06__pos"];
-    31 [label="foo__test_06__n"];
+    1 [label="foo__test_06__R49b"];
+    2 [label="foo__test_06__pos"];
+    3 [label="foo__test_06__n"];
+    4 [label="foo__test_06__b"];
+    5 [label="foo__test_06__x"];
+    6 [label="foo__test_06__y"];
+    7 [label="foo__test_07__R58b"];
+    8 [label="foo__test_07__pos"];
+    9 [label="foo__test_07__n"];
+    10 [label="foo__test_07__b"];
+    11 [label="foo__test_08__x"];
+    12 [label="foo__test_08__b"];
+    13 [label="foo__test_08__n"];
+    14 [label="foo__test_08__y"];
+    15 [label="foo__new_str"];
+    16 [label="foo__new_sub"];
+    17 [label="foo__test_01__pos"];
+    18 [label="foo__test_01__b"];
+    19 [label="foo__test_02__R10b"];
+    20 [label="foo__test_02__pos"];
+    21 [label="foo__test_02__b"];
+    22 [label="foo__test_03__L_2__R14b"];
+    23 [label="foo__test_03__pos"];
+    24 [label="foo__test_03__b"];
+    25 [label="foo__test_04__b"];
+    26 [label="foo__test_04__pos"];
+    27 [label="foo__test_05__R34b"];
+    28 [label="foo__test_05__x"];
+    29 [label="foo__test_05__b"];
+    30 [label="foo__test_05__y"];
+    31 [label="foo__test_05__z"];
     32 [label="foo__test_07__set'Ins",shape="box"];
     33 [label="foo__test_07__set'Outs",shape="box"];
     34 [label="foo__test_07__set'Proof_Ins",shape="box"];
@@ -941,21 +943,21 @@ digraph G {
     57 [label="foo__test_08'Outs",shape="box"];
     58 [label="foo__test_08'Proof_Ins",shape="box"];
 
-    33 ->  7 [arrowType="normal"];
-    35 ->  12 [arrowType="normal"];
-    35 ->  13 [arrowType="normal"];
-    38 ->  12 [arrowType="normal"];
-    38 ->  13 [arrowType="normal"];
-    44 ->  12 [arrowType="normal"];
-    44 ->  13 [arrowType="normal"];
-    47 ->  12 [arrowType="normal"];
-    47 ->  13 [arrowType="normal"];
-    50 ->  12 [arrowType="normal"];
-    50 ->  13 [arrowType="normal"];
-    53 ->  12 [arrowType="normal"];
-    53 ->  13 [arrowType="normal"];
-    56 ->  12 [arrowType="normal"];
-    56 ->  13 [arrowType="normal"];
+    33 ->  10 [arrowType="normal"];
+    35 ->  15 [arrowType="normal"];
+    35 ->  16 [arrowType="normal"];
+    38 ->  15 [arrowType="normal"];
+    38 ->  16 [arrowType="normal"];
+    44 ->  15 [arrowType="normal"];
+    44 ->  16 [arrowType="normal"];
+    47 ->  15 [arrowType="normal"];
+    47 ->  16 [arrowType="normal"];
+    50 ->  15 [arrowType="normal"];
+    50 ->  16 [arrowType="normal"];
+    53 ->  15 [arrowType="normal"];
+    53 ->  16 [arrowType="normal"];
+    56 ->  15 [arrowType="normal"];
+    56 ->  16 [arrowType="normal"];
 }
 
 // foo_locals_graph
@@ -994,12 +996,12 @@ digraph G {
     30 [label="foo__test_02__pos"];
     31 [label="foo__test_02__b"];
     32 [label="Subprogram foo__test_06",shape="box"];
-    33 [label="foo__test_06__b"];
-    34 [label="foo__test_06__x"];
-    35 [label="foo__test_06__y"];
-    36 [label="foo__test_06__R49b"];
-    37 [label="foo__test_06__pos"];
-    38 [label="foo__test_06__n"];
+    33 [label="foo__test_06__R49b"];
+    34 [label="foo__test_06__pos"];
+    35 [label="foo__test_06__n"];
+    36 [label="foo__test_06__b"];
+    37 [label="foo__test_06__x"];
+    38 [label="foo__test_06__y"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  3 [arrowType="normal"];
@@ -1035,6 +1037,65 @@ digraph G {
     32 ->  36 [arrowType="normal"];
     32 ->  37 [arrowType="normal"];
     32 ->  38 [arrowType="normal"];
+}
+
+// gg_pkg_body_standard__foo_cfg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="subtype Tnew_strS is string (1 .. 5);\n<VId: 9>"];
+    10 [label="New_Str'initial\nVD: {New_Str}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="New_Str'final\nVU: {New_Str}\n<VId: 11>",shape="plaintext"];
+    12 [label="new_str : string (1 .. 5) := \"12345\";\nVD: {New_Str}\n<VId: 12>"];
+    13 [label="subtype Tnew_subS is string (1 .. 5);\n<VId: 13>"];
+    14 [label="New_Sub'initial\nVD: {New_Sub}\n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="New_Sub'final\nVU: {New_Sub}\n<VId: 15>",shape="plaintext"];
+    16 [label="new_sub : string (1 .. 5) := new_str;\nVU: {New_Str}\nVD: {New_Sub}\n<VId: 16>"];
+    17 [label="null;\n<VId: 17>"];
+
+    1 ->  9 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  11 [arrowType="normal"];
+    3 ->  15 [arrowType="normal"];
+    9 ->  12 [arrowType="normal"];
+    10 ->  1 [arrowType="normal"];
+    12 ->  13 [arrowType="normal"];
+    13 ->  16 [arrowType="normal"];
+    14 ->  1 [arrowType="normal"];
+    16 ->  17 [arrowType="normal"];
+    17 ->  2 [arrowType="normal"];
+}
+
+// gg_pkg_body_standard__foo_pdg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="subtype Tnew_strS is string (1 .. 5);\n<VId: 9>"];
+    10 [label="New_Str'initial\nVD: {New_Str}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="New_Str'final\nVU: {New_Str}\n<VId: 11>",shape="plaintext"];
+    12 [label="new_str : string (1 .. 5) := \"12345\";\nVD: {New_Str}\n<VId: 12>"];
+    13 [label="subtype Tnew_subS is string (1 .. 5);\n<VId: 13>"];
+    14 [label="New_Sub'initial\nVD: {New_Sub}\n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="New_Sub'final\nVU: {New_Sub}\n<VId: 15>",shape="plaintext"];
+    16 [label="new_sub : string (1 .. 5) := new_str;\nVU: {New_Str}\nVD: {New_Sub}\n<VId: 16>"];
+    17 [label="null;\n<VId: 17>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
+    1 ->  12 [arrowType="normal"];
+    1 ->  13 [arrowType="normal"];
+    1 ->  16 [arrowType="normal"];
+    1 ->  17 [arrowType="normal"];
+    12 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    12 ->  16 [arrowType="normal",color="red",fontcolor="red"];
+    16 ->  15 [arrowType="normal",color="red",fontcolor="red"];
 }
 
 // gg_subprogram_foo__test_01_cfg

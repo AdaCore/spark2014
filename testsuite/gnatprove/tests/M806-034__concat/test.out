@@ -24,7 +24,9 @@ concat.adb:27:07: info: assertion proved
 concat.adb:27:38: info: overflow check proved
 concat.adb:27:42: info: overflow check proved
 concat.adb:27:52: medium: overflow check might fail
+concat.adb:30:04: info: initialization of "X" proved
 concat.adb:30:13: info: length check proved
+concat.adb:31:04: info: initialization of "Y" proved
 concat.adb:31:14: info: length check proved
 concat.adb:36:07: info: precondition proved
 concat.ads:10:14: warning: subprogram "P" has no effect
@@ -49,7 +51,9 @@ concat_left.adb:26:07: info: assertion proved, in call inlined at concat_left.ad
 concat_left.adb:26:22: info: initialization of "Z" proved, in call inlined at concat_left.adb:37
 concat_left.adb:27:07: info: assertion proved, in call inlined at concat_left.adb:37
 concat_left.adb:27:22: info: initialization of "Z" proved, in call inlined at concat_left.adb:37
+concat_left.adb:30:04: info: initialization of "X" proved
 concat_left.adb:30:13: info: length check proved
+concat_left.adb:31:04: info: initialization of "Y" proved
 concat_left.adb:31:14: info: length check proved
 concat_left.adb:35:07: info: precondition proved
 concat_left.ads:2:14: warning: subprogram "P" has no effect
@@ -78,7 +82,9 @@ concat_right.adb:26:07: info: assertion proved, in call inlined at concat_right.
 concat_right.adb:26:22: info: initialization of "Z" proved, in call inlined at concat_right.adb:37
 concat_right.adb:27:07: info: assertion proved, in call inlined at concat_right.adb:37
 concat_right.adb:27:22: info: initialization of "Z" proved, in call inlined at concat_right.adb:37
+concat_right.adb:30:04: info: initialization of "X" proved
 concat_right.adb:30:13: info: length check proved
+concat_right.adb:31:04: info: initialization of "Y" proved
 concat_right.adb:31:14: info: length check proved
 concat_right.adb:35:07: info: precondition proved
 concat_right.ads:2:14: warning: subprogram "P" has no effect

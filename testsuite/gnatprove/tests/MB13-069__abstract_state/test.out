@@ -1,3 +1,2 @@
-client.adb:5:11: medium: "Pack.Content" might not be initialized after elaboration of main program "Client"
+pack.adb:6:04: info: initialization of "A" constituent of "Content" proved
 pack.adb:11:14: medium: overflow check might fail
-pack.ads:4:21: warning: no procedure exists that can initialize abstract state "Pack.Content"

@@ -32,6 +32,7 @@ test.adb:135:07: warning: unused assignment to "Temp"
 test.adb:137:17: info: initialization of "Temp" proved
 test.adb:144:14: warning: subprogram "Ineffective_Statements_4" has no effect
 test.adb:163:14: warning: subprogram "Unused_Variables_1" has no effect
+test.adb:167:10: info: initialization of "Unused" proved, in instantiation at test.adb:176
 test.adb:173:25: info: initialization of "Unused" proved, in instantiation at test.adb:176
 test.adb:185:39: warning: unused variable "Par2"
 test.adb:187:13: warning: unused variable "Z"

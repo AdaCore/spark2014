@@ -2,6 +2,7 @@ p.adb:8:17: info: overflow check proved
 p.adb:15:17: info: overflow check proved
 p.adb:22:17: info: overflow check proved
 p.adb:29:17: info: overflow check proved
+p.ads:5:04: info: initialization of "Threshold" proved
 p.ads:12:14: medium: postcondition might fail, requires X = Integer'min
 p.ads:12:37: medium: overflow check might fail
 p.ads:15:06: info: complete contract cases proved

@@ -117,7 +117,7 @@ package body Flow_Utility is
       C : Node_Sets.Set)
       return Flow_Id_Sets.Set;
    --  Remove from set S all Flow_Ids that do not correspond to
-   --  constants that Might_Have_Variable_Input and are not
+   --  constants that have Has_Variable_Input and are not
    --  contained in C.
    --  @param S is the initial set of Flow_Ids
    --  @param C is the set of Node base on which filtering will occur
@@ -146,8 +146,8 @@ package body Flow_Utility is
 
    function Get_Flow_Id
      (Name  : Entity_Name;
-      View  : Flow_Id_Variant;
-      Scope : Flow_Scope)
+      View  : Flow_Id_Variant := Normal_Use;
+      Scope : Flow_Scope      := Null_Flow_Scope)
       return Flow_Id
    is
       E : constant Entity_Id := Find_Entity (Name);
@@ -155,7 +155,8 @@ package body Flow_Utility is
       if Present (E) then
          if Ekind (E) in Type_Kind | E_Constant
            and then Present (Full_View (E))
-           and then Is_Visible (Full_View (E), Scope)
+           and then (Scope = Null_Flow_Scope
+                       or else Is_Visible (Full_View (E), Scope))
          then
             return Direct_Mapping_Id (Full_View (E), View);
          else
@@ -167,6 +168,25 @@ package body Flow_Utility is
       --  string.
       return Magic_String_Id (Name, View);
    end Get_Flow_Id;
+
+   --------------------
+   -- To_Flow_Id_Set --
+   --------------------
+
+   function To_Flow_Id_Set
+     (NS    : Name_Sets.Set;
+      View  : Flow_Id_Variant := Normal_Use;
+      Scope : Flow_Scope        := Null_Flow_Scope)
+      return Flow_Id_Sets.Set
+   is
+      FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+   begin
+      for N of NS loop
+         FS.Include (Get_Flow_Id (N, View, Scope));
+      end loop;
+
+      return FS;
+   end To_Flow_Id_Set;
 
    ----------------
    -- Initialize --

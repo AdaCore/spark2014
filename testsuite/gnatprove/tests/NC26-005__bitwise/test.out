@@ -2,6 +2,7 @@ x86.adb:29:37: info: range check proved
 x86.adb:30:53: info: range check proved
 x86.adb:36:37: info: range check proved
 x86.adb:37:53: info: range check proved
+x86.ads:16:04: info: initialization of "Memory" proved
 x86.ads:16:48: info: length check proved
 x86.ads:21:14: info: postcondition proved
 x86.ads:25:24: info: postcondition proved

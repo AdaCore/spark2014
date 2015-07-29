@@ -32,5 +32,6 @@ const.ads:28:30: info: overflow check proved
 const.ads:28:35: info: overflow check proved
 const.ads:32:30: info: overflow check proved
 const.ads:32:39: info: overflow check proved
+const.ads:36:04: info: initialization of "O" proved
 const.ads:37:32: info: initialization of "O" proved
 const.ads:39:14: warning: subprogram "Test" has no effect

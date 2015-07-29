@@ -21,13 +21,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Einfo;    use Einfo;
-with Elists;   use Elists;
-with Nlists;   use Nlists;
-with Sem_Util; use Sem_Util;
-
-with Treepr;   use Treepr;
-
+with Common_Containers;      use Common_Containers;
+with Einfo;                  use Einfo;
+with Elists;                 use Elists;
+with Flow_Generated_Globals; use Flow_Generated_Globals;
+with Nlists;                 use Nlists;
+with Sem_Util;               use Sem_Util;
+with Treepr;                 use Treepr;
 with Why;
 
 package body Flow_Dependency_Maps is
@@ -36,12 +36,12 @@ package body Flow_Dependency_Maps is
 
    function Parse_Raw_Dependency_Map (N : Node_Id)
                                       return Dependency_Maps.Map
-     with Pre => Nkind (N) = N_Pragma and then
-                 Get_Pragma_Id (Chars (Pragma_Identifier (N))) in
-                   Pragma_Depends         |
-                   Pragma_Refined_Depends |
-                   Pragma_Refined_State   |
-                   Pragma_Initializes;
+   with Pre => Nkind (N) = N_Pragma and then
+               Get_Pragma_Id (Chars (Pragma_Identifier (N))) in
+                 Pragma_Depends         |
+                 Pragma_Refined_Depends |
+                 Pragma_Refined_State   |
+                 Pragma_Initializes;
    --  Helper function to parse something that looks like a dependency
    --  map; in particular we can parse either a depends or an
    --  initializes aspect.
@@ -251,13 +251,28 @@ package body Flow_Dependency_Maps is
 
    function Parse_Initializes
      (N : Node_Id;
-      P : Entity_Id := Empty)
+      P : Entity_Id;
+      S : Flow_Scope)
       return Dependency_Maps.Map
    is
-      M : Dependency_Maps.Map :=
-        (if Present (N) then Parse_Raw_Dependency_Map (N)
-         else Dependency_Maps.Empty_Map);
+      M : Dependency_Maps.Map;
    begin
+      if Present (N) then
+         --  If an initializes aspect exists then we use it
+         M := Parse_Raw_Dependency_Map (N);
+      elsif GG_Has_Been_Generated
+        and then Present (P)
+      then
+         --  If an initializes aspect does not exist but the global generation
+         --  phase has been completed then we look for the generate
+         --  initializes.
+         M := GG_Get_Initializes (To_Entity_Name (Unique_Entity (P)), S);
+      else
+         --  We have neither a user-provided nor a generated initializes aspect
+         --  so we just have an empty dependency map.
+         M := Dependency_Maps.Empty_Map;
+      end if;
+
       --  When we parse the Initializes aspect we add any external
       --  state abstractions with the property Async_Writers set to
       --  the dependency map (even if the user did not manually write

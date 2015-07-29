@@ -1,0 +1,2 @@
+tab.ads:5:04: info: initialization of "Table" proved, in instantiation at count.adb:4
+tab.ads:5:04: info: initialization of "Table" proved, in instantiation at other.ads:2

@@ -2,6 +2,7 @@ nr.adb:16:10: info: call to nonreturning procedure never executed
 nr.adb:18:14: medium: overflow check might fail
 nr.adb:25:10: medium: call to nonreturning subprogram might be executed
 nr.adb:27:14: medium: overflow check might fail
+nr.ads:3:04: info: initialization of "X" proved
 nr.ads:10:19: info: postcondition proved
 nr.ads:10:29: info: overflow check proved
 nr.ads:15:19: info: postcondition proved

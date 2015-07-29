@@ -503,6 +503,99 @@ digraph G {
     26 ->  13 [arrowType="normal",color="red",fontcolor="red"];
 }
 
+// gg_pkg_body_standard__uninitialized_cfg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="A'initial\nVD: {A}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="A'final\nVU: {A}\n<VId: 8>",shape="plaintext"];
+    12 [label="null;\n<VId: 12>"];
+
+    1 ->  12 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  8 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    12 ->  2 [arrowType="normal"];
+}
+
+// gg_pkg_body_standard__uninitialized_pdg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="A'initial\nVD: {A}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="A'final\nVU: {A}\n<VId: 8>",shape="plaintext"];
+    12 [label="null;\n<VId: 12>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  12 [arrowType="normal"];
+    7 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+}
+
+// gg_pkg_body_standard__vehicle_cfg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="type state_type is (still, forward, backward);\n<VId: 7>"];
+    8 [label="type input is (no_input, nothing, accelerate, brake);\n<VId: 8>"];
+    9 [label="subtype valid_input is input range nothing .. brake;\n<VId: 9>"];
+    10 [label="type speed_type is range -max_speed .. max_speed;\n<VId: 10>"];
+    11 [label="Speed'initial\nVD: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="Speed'final\nVU: {Speed}\n<VId: 12>",shape="plaintext"];
+    14 [label="State'initial\nVD: {State}\n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="State'final\nVU: {State}\n<VId: 15>",shape="plaintext"];
+    22 [label="null;\n<VId: 22>"];
+
+    1 ->  7 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  12 [arrowType="normal"];
+    3 ->  15 [arrowType="normal"];
+    7 ->  8 [arrowType="normal"];
+    8 ->  9 [arrowType="normal"];
+    9 ->  10 [arrowType="normal"];
+    10 ->  22 [arrowType="normal"];
+    11 ->  1 [arrowType="normal"];
+    14 ->  1 [arrowType="normal"];
+    22 ->  2 [arrowType="normal"];
+}
+
+// gg_pkg_body_standard__vehicle_pdg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="type state_type is (still, forward, backward);\n<VId: 7>"];
+    8 [label="type input is (no_input, nothing, accelerate, brake);\n<VId: 8>"];
+    9 [label="subtype valid_input is input range nothing .. brake;\n<VId: 9>"];
+    10 [label="type speed_type is range -max_speed .. max_speed;\n<VId: 10>"];
+    11 [label="Speed'initial\nVD: {Speed}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="Speed'final\nVU: {Speed}\n<VId: 12>",shape="plaintext"];
+    14 [label="State'initial\nVD: {State}\n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="State'final\nVU: {State}\n<VId: 15>",shape="plaintext"];
+    22 [label="null;\n<VId: 22>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  7 [arrowType="normal"];
+    1 ->  8 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
+    1 ->  10 [arrowType="normal"];
+    1 ->  22 [arrowType="normal"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    14 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+}
+
 // gg_subprogram_vehicle__halt_cfg
 digraph G {
    graph [splines=True];
@@ -732,6 +825,10 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
+    1 [label="uninitialized__a"];
+    2 [label="uninitialized__compare'Ins",shape="box"];
+    3 [label="uninitialized__compare'Outs",shape="box"];
+    4 [label="uninitialized__compare'Proof_Ins",shape="box"];
 
 }
 
@@ -751,9 +848,12 @@ digraph G {
     3 [label="vehicle__speed_is_valid'Ins",shape="box"];
     4 [label="vehicle__speed_is_valid'Outs",shape="box"];
     5 [label="vehicle__speed_is_valid'Proof_Ins",shape="box"];
-    6 [label="vehicle__halt'Ins",shape="box"];
-    7 [label="vehicle__halt'Outs",shape="box"];
-    8 [label="vehicle__halt'Proof_Ins",shape="box"];
+    6 [label="vehicle__state_update'Ins",shape="box"];
+    7 [label="vehicle__state_update'Outs",shape="box"];
+    8 [label="vehicle__state_update'Proof_Ins",shape="box"];
+    9 [label="vehicle__halt'Ins",shape="box"];
+    10 [label="vehicle__halt'Outs",shape="box"];
+    11 [label="vehicle__halt'Proof_Ins",shape="box"];
 
     3 ->  1 [arrowType="normal"];
     3 ->  2 [arrowType="normal"];
@@ -761,8 +861,12 @@ digraph G {
     6 ->  2 [arrowType="normal"];
     7 ->  1 [arrowType="normal"];
     7 ->  2 [arrowType="normal"];
-    8 ->  3 [arrowType="normal"];
-    8 ->  5 [arrowType="normal"];
+    9 ->  1 [arrowType="normal"];
+    9 ->  2 [arrowType="normal"];
+    10 ->  1 [arrowType="normal"];
+    10 ->  2 [arrowType="normal"];
+    11 ->  3 [arrowType="normal"];
+    11 ->  5 [arrowType="normal"];
 }
 
 // vehicle_locals_graph

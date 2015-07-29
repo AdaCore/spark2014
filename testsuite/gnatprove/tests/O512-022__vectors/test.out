@@ -1,3 +1,4 @@
+counter.adb:3:04: info: initialization of "Count" proved
 vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:108
 vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:120
 vectors.adb:22:49: info: length check proved

@@ -94,9 +94,20 @@ x86.adb:567:24: info: initialization of "Val1" proved
 x86.adb:567:31: info: initialization of "Val2" proved
 x86.adb:568:35: info: initialization of "Val1" proved
 x86.adb:568:54: info: initialization of "Val2" proved
+x86.ads:22:04: info: initialization of "DS" proved
+x86.ads:23:04: info: initialization of "ES" proved
+x86.ads:24:04: info: initialization of "FS" proved
+x86.ads:25:04: info: initialization of "GS" proved
+x86.ads:26:04: info: initialization of "StackAddressSize" proved
+x86.ads:28:04: info: initialization of "Exit_Called" proved
+x86.ads:30:04: info: initialization of "ZeroFlag" proved
+x86.ads:31:04: info: initialization of "CarryFlag" proved
+x86.ads:32:04: info: initialization of "SignFlag" proved
+x86.ads:33:04: info: initialization of "OverflowFlag" proved
 x86.ads:36:27: info: initialization of "Exit_Called" proved
 x86.ads:37:14: info: postcondition proved
 x86.ads:37:15: info: initialization of "Exit_Called" proved
+x86.ads:43:04: info: initialization of "RAX" proved
 x86.ads:47:14: info: postcondition proved
 x86.ads:47:41: info: range check proved
 x86.ads:51:14: info: postcondition proved
@@ -109,6 +120,7 @@ x86.ads:68:14: info: postcondition proved
 x86.ads:72:16: info: postcondition proved
 x86.ads:72:45: info: range check proved
 x86.ads:76:14: info: postcondition proved
+x86.ads:82:04: info: initialization of "RCX" proved
 x86.ads:86:14: info: postcondition proved
 x86.ads:86:41: info: range check proved
 x86.ads:90:14: info: postcondition proved
@@ -121,6 +133,7 @@ x86.ads:107:14: info: postcondition proved
 x86.ads:111:16: info: postcondition proved
 x86.ads:111:45: info: range check proved
 x86.ads:115:16: info: postcondition proved
+x86.ads:121:04: info: initialization of "RDX" proved
 x86.ads:125:14: info: postcondition proved
 x86.ads:125:41: info: range check proved
 x86.ads:129:14: info: postcondition proved
@@ -133,6 +146,7 @@ x86.ads:146:14: info: postcondition proved
 x86.ads:150:16: info: postcondition proved
 x86.ads:150:45: info: range check proved
 x86.ads:154:16: info: postcondition proved
+x86.ads:160:04: info: initialization of "RBX" proved
 x86.ads:164:14: info: postcondition proved
 x86.ads:164:41: info: range check proved
 x86.ads:168:14: info: postcondition proved
@@ -145,54 +159,67 @@ x86.ads:185:14: info: postcondition proved
 x86.ads:189:16: info: postcondition proved
 x86.ads:189:45: info: range check proved
 x86.ads:193:16: info: postcondition proved
+x86.ads:199:04: info: initialization of "RSP" proved
 x86.ads:204:14: info: postcondition proved
 x86.ads:204:42: info: range check proved
 x86.ads:208:14: info: postcondition proved
 x86.ads:212:16: info: postcondition proved
 x86.ads:212:45: info: range check proved
 x86.ads:216:16: info: postcondition proved
+x86.ads:222:04: info: initialization of "RBP" proved
 x86.ads:227:14: info: postcondition proved
 x86.ads:227:42: info: range check proved
 x86.ads:231:14: info: postcondition proved
 x86.ads:235:16: info: postcondition proved
 x86.ads:235:45: info: range check proved
 x86.ads:239:16: info: postcondition proved
+x86.ads:245:04: info: initialization of "RSI" proved
 x86.ads:250:14: info: postcondition proved
 x86.ads:250:42: info: range check proved
 x86.ads:254:14: info: postcondition proved
 x86.ads:258:16: info: postcondition proved
 x86.ads:258:45: info: range check proved
 x86.ads:262:16: info: postcondition proved
+x86.ads:268:04: info: initialization of "RDI" proved
 x86.ads:273:14: info: postcondition proved
 x86.ads:273:42: info: range check proved
 x86.ads:277:14: info: postcondition proved
 x86.ads:281:16: info: postcondition proved
 x86.ads:281:45: info: range check proved
 x86.ads:285:16: info: postcondition proved
+x86.ads:291:04: info: initialization of "R8" proved
 x86.ads:296:14: info: postcondition proved
 x86.ads:296:41: info: range check proved
 x86.ads:300:14: info: postcondition proved
+x86.ads:306:04: info: initialization of "R9" proved
 x86.ads:311:14: info: postcondition proved
 x86.ads:311:41: info: range check proved
 x86.ads:315:14: info: postcondition proved
+x86.ads:321:04: info: initialization of "R10" proved
 x86.ads:326:14: info: postcondition proved
 x86.ads:326:43: info: range check proved
 x86.ads:330:14: info: postcondition proved
+x86.ads:336:04: info: initialization of "R11" proved
 x86.ads:341:14: info: postcondition proved
 x86.ads:341:43: info: range check proved
 x86.ads:345:14: info: postcondition proved
+x86.ads:351:04: info: initialization of "R12" proved
 x86.ads:356:14: info: postcondition proved
 x86.ads:356:43: info: range check proved
 x86.ads:360:14: info: postcondition proved
+x86.ads:366:04: info: initialization of "R13" proved
 x86.ads:371:14: info: postcondition proved
 x86.ads:371:43: info: range check proved
 x86.ads:375:14: info: postcondition proved
+x86.ads:381:04: info: initialization of "R14" proved
 x86.ads:386:14: info: postcondition proved
 x86.ads:386:43: info: range check proved
 x86.ads:390:14: info: postcondition proved
+x86.ads:396:04: info: initialization of "R15" proved
 x86.ads:401:14: info: postcondition proved
 x86.ads:401:43: info: range check proved
 x86.ads:405:14: info: postcondition proved
+x86.ads:410:04: info: initialization of "Memory" proved
 x86.ads:410:48: info: length check proved
 x86.ads:414:14: info: postcondition proved
 x86.ads:418:14: info: postcondition proved

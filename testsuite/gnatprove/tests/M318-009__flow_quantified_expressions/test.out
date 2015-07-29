@@ -168,6 +168,38 @@ digraph G {
     32 ->  28 [arrowType="normal",color="red",fontcolor="red"];
 }
 
+// gg_pkg_body_standard__test_cfg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    8 [label="type table_t is array (positive range 1 .. 9) of integer;\n<VId: 8>"];
+    9 [label="null;\n<VId: 9>"];
+
+    1 ->  8 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    8 ->  9 [arrowType="normal"];
+    9 ->  2 [arrowType="normal"];
+}
+
+// gg_pkg_body_standard__test_pdg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    8 [label="type table_t is array (positive range 1 .. 9) of integer;\n<VId: 8>"];
+    9 [label="null;\n<VId: 9>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  8 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
+}
+
 // gg_subprogram_test__qe_2_cfg
 digraph G {
    graph [splines=True];
@@ -307,9 +339,12 @@ digraph G {
    edge [labelfloat=True];
     1 [label="test__qe_2__table"];
     2 [label="test__qe_2__B_2__temp_table"];
-    3 [label="test__qe_2'Ins",shape="box"];
-    4 [label="test__qe_2'Outs",shape="box"];
-    5 [label="test__qe_2'Proof_Ins",shape="box"];
+    3 [label="test__qe_1'Ins",shape="box"];
+    4 [label="test__qe_1'Outs",shape="box"];
+    5 [label="test__qe_1'Proof_Ins",shape="box"];
+    6 [label="test__qe_2'Ins",shape="box"];
+    7 [label="test__qe_2'Outs",shape="box"];
+    8 [label="test__qe_2'Proof_Ins",shape="box"];
 
 }
 

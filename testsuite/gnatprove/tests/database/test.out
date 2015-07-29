@@ -1,11 +1,15 @@
+database.adb:39:07: info: initialization of "Links" proved
 database.adb:39:07: warning: initialization of Links is not mentioned in contract
 database.adb:40:35: info: length check proved
+database.adb:42:07: info: initialization of "First_Available" proved
 database.adb:50:42: info: initialization of "Account" proved
 database.adb:53:17: info: postcondition proved
 database.adb:53:35: info: initialization of "Account" proved
 database.adb:55:31: info: initialization of "Account" proved
 database.adb:61:17: info: postcondition proved
+database.adb:106:04: info: initialization of "Accounts" proved
 database.adb:106:52: info: length check proved
+database.adb:109:04: info: initialization of "Accounts_Balance" proved
 database.adb:110:46: info: length check proved
 database.adb:123:21: info: range check proved
 database.adb:124:17: info: index check proved

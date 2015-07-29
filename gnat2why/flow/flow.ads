@@ -247,15 +247,15 @@ package Flow is
       Tasking               : Tasking_Info;
       --  Tasking-related information
 
+      Is_Generative         : Boolean;
+      --  True if we do not have a global contract
+
       case Kind is
          when E_Subprogram_Body | E_Task_Body | E_Entry =>
             Is_Main : Boolean;
             --  True if this is the main program. In order to be the
             --  main it has to be a library level subprogram without
             --  formal parameters (global parameters are allowed).
-
-            Is_Generative : Boolean;
-            --  True if we do not have a global contract
 
             Last_Statement_Is_Raise : Boolean;
             --  True if the last statement of the subprogram is an

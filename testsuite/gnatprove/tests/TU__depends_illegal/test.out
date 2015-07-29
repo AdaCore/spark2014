@@ -70,10 +70,15 @@ depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => P1"
 depends_illegal_3.adb:78:23: medium: missing dependency "G_Var3 => P3"
 depends_illegal_3.adb:98:11: medium: incorrect dependency "null => Par1"
 depends_illegal_3.adb:98:25: medium: missing dependency "F1'Result => Par1"
+depends_illegal_3.ads:6:04: info: initialization of "X" proved
+depends_illegal_3.ads:6:07: info: initialization of "Y" proved
+depends_illegal_3.ads:6:10: info: initialization of "Z" proved
    compilation of depends_illegal_3.adb failed
 
 
 gnatprove: error during flow analysis and proof
+depends_illegal_4.adb:4:04: info: initialization of "X" proved
+depends_illegal_4.adb:4:07: info: initialization of "Y" proved
 depends_illegal_4.adb:7:14: warning: "Y" is not modified, could be INPUT
 depends_illegal_4.adb:8:18: info: initialization of "Par2" proved
 depends_illegal_4.adb:15:23: medium: missing dependency "Par2 => Y"

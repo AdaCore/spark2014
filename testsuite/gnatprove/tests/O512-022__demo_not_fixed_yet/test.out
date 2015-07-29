@@ -19,6 +19,8 @@ adt_stack.adb:48:45: info: range check proved
 adt_stack.ads:13:20: info: initialization of "S.STack_Top" proved
 adt_stack.ads:13:20: info: initialization of "S.STack_Vector" proved
 adt_stack.ads:20:36: info: initialization of "X" proved
+asm_stack.adb:11:04: info: initialization of "Stack_Vector" proved
+asm_stack.adb:12:04: info: initialization of "Stack_Top" proved
 asm_stack.adb:30:23: info: length check proved
 asm_stack.adb:37:10: medium: exception might be raised
 asm_stack.adb:39:29: medium: range check might fail
@@ -26,6 +28,7 @@ asm_stack.adb:40:20: info: index check proved
 asm_stack.adb:58:20: info: length check proved
 asm_stack.ads:9:14: info: initialization of "Stack_Top" proved
 asm_stack.ads:9:14: info: initialization of "Stack_Vector" proved
+generic_stack.adb:11:04: info: initialization of "Index" proved, in instantiation at use_stacks.adb:47
 generic_stack.adb:16:10: medium: exception might be raised, in instantiation at use_stacks.adb:47
 generic_stack.adb:18:22: info: overflow check proved, in instantiation at use_stacks.adb:47
 generic_stack.adb:19:20: info: index check proved, in instantiation at use_stacks.adb:47

@@ -272,10 +272,10 @@ package body SPARK_Rewrite is
             end;
          end if;
 
-         --  Register protected types, which act as implicit parameters of
-         --  protected actions.
+         --  Register packages and protected types
          if Nkind (N) in N_Entity
-           and then Ekind (N) in E_Protected_Type
+           and then Ekind (N) in E_Package        |
+                                 E_Protected_Type
          then
             Register_Entity (N);
          end if;

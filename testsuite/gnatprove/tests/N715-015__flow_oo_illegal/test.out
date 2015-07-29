@@ -13,6 +13,7 @@ illegal_1.adb:51:14: info: initialization of private part of "E" proved
 illegal_1.adb:63:14: info: initialization of "E.Object_Y.X" proved
 illegal_1.adb:63:14: info: initialization of "E.Object_Y.Y" proved
 illegal_1.adb:63:14: info: initialization of private part of "E" proved
+illegal_1.ads:4:04: info: initialization of "G" proved
 illegal_1.ads:13:13: class-wide proof_in "G" must also be a class-wide (proof) input of overridden subprogram "New_Object" at root.ads:14 (SPARK RM 6.1.6)
 illegal_1.ads:19:13: class-wide input "G" must also be a class-wide input of overridden subprogram "New_Object_From_State" at root.ads:18 (SPARK RM 6.1.6)
 illegal_1.ads:28:13: class-wide input "G" must also be a class-wide input of overridden subprogram "New_P_Object_From_State" at root.ads:25 (SPARK RM 6.1.6)
@@ -31,6 +32,10 @@ root.adb:11:29: info: overflow check proved
 root.adb:43:40: info: initialization of "Counter" constituent of "State" proved
 root.ads:28:52: info: initialization of "O.X" proved
 simple_illegal_with_contracts.adb:50:13: info: initialization of "IO" proved
+simple_illegal_with_contracts.ads:13:04: info: initialization of "PI" proved
+simple_illegal_with_contracts.ads:13:08: info: initialization of "I" proved
+simple_illegal_with_contracts.ads:13:12: info: initialization of "IO" proved
+simple_illegal_with_contracts.ads:13:16: info: initialization of "O" proved
 simple_illegal_with_contracts.ads:19:34: info: initialization of "O" proved
 simple_illegal_with_contracts.ads:25:14: class-wide input "PI" must also be a class-wide input of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
 simple_illegal_with_contracts.ads:28:32: info: initialization of "O" proved
@@ -48,6 +53,10 @@ simple_illegal_with_contracts.ads:62:34: info: initialization of "O" proved
 
 gnatprove: error during flow analysis and proof
 simple_illegal_without_contracts.adb:50:13: info: initialization of "IO" proved
+simple_illegal_without_contracts.ads:13:04: info: initialization of "PI" proved
+simple_illegal_without_contracts.ads:13:08: info: initialization of "I" proved
+simple_illegal_without_contracts.ads:13:12: info: initialization of "IO" proved
+simple_illegal_without_contracts.ads:13:16: info: initialization of "O" proved
 simple_illegal_without_contracts.ads:15:14: info: initialization of "O" proved
 simple_illegal_without_contracts.ads:21:14: class-wide input "PI" must also be a class-wide input of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
 simple_illegal_without_contracts.ads:21:14: info: initialization of "O" proved

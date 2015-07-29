@@ -51,18 +51,19 @@ package Flow.Slice is
    --  Complexity is O(N^2)
 
    procedure Compute_Globals
-     (FA                : Flow_Analysis_Graphs;
-      Inputs_Proof      : out Node_Sets.Set;
-      Inputs            : out Node_Sets.Set;
-      Outputs           : out Node_Sets.Set;
-      Proof_Calls       : out Node_Sets.Set;
-      Definite_Calls    : out Node_Sets.Set;
-      Conditional_Calls : out Node_Sets.Set;
-      Local_Variables   : out Node_Sets.Set;
-      Local_Subprograms : out Node_Sets.Set)
-   with Pre => (Generating_Globals and then
-                  FA.Is_Generative and then
-                  not FA.GG.Aborted),
+     (FA                    : Flow_Analysis_Graphs;
+      Inputs_Proof          : out Node_Sets.Set;
+      Inputs                : out Node_Sets.Set;
+      Outputs               : out Node_Sets.Set;
+      Proof_Calls           : out Node_Sets.Set;
+      Definite_Calls        : out Node_Sets.Set;
+      Conditional_Calls     : out Node_Sets.Set;
+      Local_Variables       : out Node_Sets.Set;
+      Local_Subprograms     : out Node_Sets.Set;
+      Local_Definite_Writes : out Node_Sets.Set)
+   with Pre  => (Generating_Globals and then
+                   FA.Is_Generative and then
+                   not FA.GG.Aborted),
         Post => (for all E of Definite_Calls =>
                    not Conditional_Calls.Contains (E)) and then
                 (for all E of Proof_Calls =>
@@ -89,5 +90,7 @@ package Flow.Slice is
    --  @param Local_Variables is the set of local variables (this set
    --    also contains formal paramaters)
    --  @param Local_Subprograms is the set of all nested subprograms
+   --  @param Local_Definite_Writes is the set of all local variables that
+   --     are definitely initialized once the package has been elaborated.
 
 end Flow.Slice;

@@ -79,7 +79,7 @@ package body Flow is
    ------------------------------------------------------------
 
    use Flow_Graphs;
-   use Subprogram_Info_Lists;
+   use Global_Info_Lists;
    use Name_Sets;
 
    Temp_String : Unbounded_String := Null_Unbounded_String;
@@ -95,12 +95,13 @@ package body Flow is
    function Flow_Analyse_Entity (E : Entity_Id;
                                  S : Entity_Id)
                                  return Flow_Analysis_Graphs
-     with Pre  => Ekind (E) in Subprogram_Kind  |
-                               E_Task_Type      |
-                               E_Entry          |
-                               E_Package        |
-                               E_Package_Body,
-          Post => Is_Valid (Flow_Analyse_Entity'Result);
+   with Pre  => Ekind (E) in Subprogram_Kind  |
+                             E_Task_Type      |
+                             E_Protected_Type |
+                             E_Entry          |
+                             E_Package        |
+                             E_Package_Body,
+        Post => Is_Valid (Flow_Analyse_Entity'Result);
    --  Flow analyse the given entity E with a specification entity S (i.e.
    --  where the N_Contract node is attached). Do nothing for entities with
    --  no body or not in SPARK 2014.
@@ -108,16 +109,16 @@ package body Flow is
    use type Analysis_Maps.Map;
 
    procedure Build_Graphs_For_Compilation_Unit
-     (FA_Graphs            : out Analysis_Maps.Map;
-      Subprogram_Info_List : out Subprogram_Info_Lists.List)
-     with Pre => FA_Graphs = Analysis_Maps.Empty_Map and then
-                 Subprogram_Info_List = Subprogram_Info_Lists.Empty_List,
-          Post => (if not Generating_Globals then
-                     Subprogram_Info_List = Subprogram_Info_Lists.Empty_List);
+     (FA_Graphs        : out Analysis_Maps.Map;
+      Global_Info_List : out Global_Info_Lists.List)
+   with Pre  => FA_Graphs = Analysis_Maps.Empty_Map and then
+                Global_Info_List = Global_Info_Lists.Empty_List,
+        Post => (if not Generating_Globals then
+                   Global_Info_List = Global_Info_Lists.Empty_List);
    --  Build all flow graphs for the current compilation unit
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry;
+   with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry;
    --  Returns True if the last statement in the
    --  Handled_Sequence_Of_Statements of E is an N_Raise_Statement.
 
@@ -972,6 +973,8 @@ package body Flow is
 
             Tmp.Visible_Vars  := Flow_Id_Sets.Empty_Set;
 
+            Tmp.Is_Generative := not Present (Tmp.Initializes_N);
+
          when E_Package_Body =>
             Tmp.B_Scope       := Flow_Scope'(Spec_Entity (E), Body_Part);
             Tmp.S_Scope       := Flow_Scope'(Spec_Entity (E), Private_Part);
@@ -982,6 +985,8 @@ package body Flow is
                                              Pragma_Initializes);
 
             Tmp.Visible_Vars  := Flow_Id_Sets.Empty_Set;
+
+            Tmp.Is_Generative := not Present (Tmp.Initializes_N);
 
          when others =>
             raise Why.Not_SPARK;
@@ -1066,16 +1071,60 @@ package body Flow is
                   end if;
 
                when E_Package =>
-                  if Gnat2Why_Args.Flow_Advanced_Debug then
-                     Write_Line ("skipped (package spec)");
+                  if Present (FA.Initializes_N) then
+                     --  There is no need to create a GG graph if the package
+                     --  has an Initializes aspect.
+                     if Gnat2Why_Args.Flow_Advanced_Debug then
+                        Write_Line ("skipped (package spec)");
+                     end if;
+                     FA.GG.Aborted := True;
+                  else
+                     if Entity_In_SPARK (E) then
+                        if Gnat2Why_Args.Flow_Advanced_Debug then
+                           Write_Line ("Spec in SPARK: yes");
+                        end if;
+                     else
+                        --  We cannot create a GG graph if the spec is not in
+                        --  SPARK.
+
+                        if Gnat2Why_Args.Flow_Advanced_Debug then
+                           Write_Line ("Spec in SPARK: no");
+                        end if;
+                        FA.GG.Aborted := True;
+                     end if;
                   end if;
-                  FA.GG.Aborted := True;
 
                when E_Package_Body =>
+                  if Present (FA.Initializes_N) then
+                     --  There is no need to create a GG graph if the package
+                     --  has an Initializes aspect.
+
+                     if Gnat2Why_Args.Flow_Advanced_Debug then
+                        Write_Line ("skipped (package spec)");
+                        Write_Line ("skipped (package body)");
+                     end if;
+                     FA.GG.Aborted := True;
+                  else
+                     if Entity_Body_In_SPARK (FA.Spec_Entity) then
+                        if Gnat2Why_Args.Flow_Advanced_Debug then
+                           Write_Line ("Spec in SPARK: yes");
+                           Write_Line ("Body in SPARK: yes");
+                        end if;
+                     else
+                        if Gnat2Why_Args.Flow_Advanced_Debug then
+                           Write_Line ("Spec in SPARK: " &
+                                         (if Entity_In_SPARK (FA.Spec_Entity)
+                                          then "yes"
+                                          else "no"));
+                           Write_Line ("Body in SPARK: no");
+                        end if;
+                        FA.GG.Aborted := True;
+                     end if;
+                  end if;
+
                   declare
                      Refined_State_N : constant Node_Id :=
-                       Get_Pragma (E,
-                                   Pragma_Refined_State);
+                       Get_Pragma (E, Pragma_Refined_State);
 
                      DM              : Dependency_Maps.Map;
                      Constituents    : Flow_Id_Sets.Set;
@@ -1105,7 +1154,6 @@ package body Flow is
                         if Gnat2Why_Args.Flow_Advanced_Debug then
                            Write_Line ("Refinement found: no");
                         end if;
-                        FA.GG.Aborted := True;
                      end if;
                   end;
             end case;
@@ -1180,13 +1228,13 @@ package body Flow is
    ---------------------------------------
 
    procedure Build_Graphs_For_Compilation_Unit
-     (FA_Graphs            : out Analysis_Maps.Map;
-      Subprogram_Info_List : out Subprogram_Info_Lists.List)
+     (FA_Graphs        : out Analysis_Maps.Map;
+      Global_Info_List : out Global_Info_Lists.List)
    is
       Body_E : Entity_Id;
    begin
-      --  Initialize the Subprogram_Info_List to the empty set
-      Subprogram_Info_List := Subprogram_Info_Lists.Empty_List;
+      --  Initialize the Global_Info_List to the empty set
+      Global_Info_List := Global_Info_Lists.Empty_List;
 
       for E of Entity_Set loop
          case Ekind (E) is
@@ -1237,15 +1285,14 @@ package body Flow is
                         if Present (Global_Node)
                           or else Present (Depends_Node)
                         then
-                           --  If we have a user-provided Global or
-                           --  Depends contract then we use Get_Globals
-                           --  to get that.
+                           --  If we have a user-provided Global or Depends
+                           --  contract then we use Get_Globals to get that.
 
                            declare
-                              Proof_Ins       : Flow_Id_Sets.Set;
-                              Reads           : Flow_Id_Sets.Set;
-                              Writes          : Flow_Id_Sets.Set;
-                              Subprogram_Info : Subprogram_Phase_1_Info;
+                              Proof_Ins   : Flow_Id_Sets.Set;
+                              Reads       : Flow_Id_Sets.Set;
+                              Writes      : Flow_Id_Sets.Set;
+                              Global_Info : Global_Phase_1_Info;
                            begin
                               Get_Globals (Subprogram           => E,
                                            Scope                => Scope,
@@ -1255,65 +1302,67 @@ package body Flow is
                                            Writes               => Writes,
                                            Use_Computed_Globals => False);
 
-                              Subprogram_Info := Subprogram_Phase_1_Info'
-                                (Name              => To_Entity_Name (E),
-                                 Kind              =>
+                              Global_Info := Global_Phase_1_Info'
+                                (Name                  => To_Entity_Name (E),
+                                 Kind                  =>
                                    (case Ekind (E) is
                                     when E_Entry         => E_Kind,
                                     when E_Task_Type     => T_Kind,
                                     when Subprogram_Kind => S_Kind,
                                     when others          =>
                                       raise Program_Error),
-                                 Globals_Origin    => UG,
-                                 Inputs_Proof      => To_Name_Set (Proof_Ins),
-                                 Inputs            => To_Name_Set (Reads),
-                                 Outputs           => To_Name_Set (Writes),
-                                 Proof_Calls       => Name_Sets.Empty_Set,
-                                 Definite_Calls    => Name_Sets.Empty_Set,
-                                 Conditional_Calls => Name_Sets.Empty_Set,
-                                 Local_Variables   => Name_Sets.Empty_Set,
-                                 Local_Subprograms => Name_Sets.Empty_Set);
+                                 Globals_Origin        => UG,
+                                 Inputs_Proof          =>
+                                   To_Name_Set (Proof_Ins),
+                                 Inputs                => To_Name_Set (Reads),
+                                 Outputs               => To_Name_Set (Writes),
+                                 Proof_Calls           => Name_Sets.Empty_Set,
+                                 Definite_Calls        => Name_Sets.Empty_Set,
+                                 Conditional_Calls     => Name_Sets.Empty_Set,
+                                 Local_Variables       => Name_Sets.Empty_Set,
+                                 Local_Subprograms     => Name_Sets.Empty_Set,
+                                 Local_Definite_Writes => Name_Sets.Empty_Set);
 
-                              Subprogram_Info_List.Append (Subprogram_Info);
+                              Global_Info_List.Append (Global_Info);
                            end;
 
                         else
                            --  Use (Yannick's) Computed Globals info
                            --  to add a GG entry to the ALI file.
                            declare
-                              Reads           : Name_Sets.Set;
-                              Writes          : Name_Sets.Set;
-                              Calls           : Name_Sets.Set;
-                              Subprogram_Info : Subprogram_Phase_1_Info;
+                              Reads       : Name_Sets.Set;
+                              Writes      : Name_Sets.Set;
+                              Calls       : Name_Sets.Set;
+                              Global_Info : Global_Phase_1_Info;
                            begin
-                              --  Collect the computed globals using
-                              --  only info from the current
-                              --  compilation unit.
+                              --  Collect the computed globals using only info
+                              --  from the current compilation unit.
                               Collect_Current_Computed_Globals (E,
                                                                 Reads,
                                                                 Writes,
                                                                 Calls);
 
-                              Subprogram_Info := Subprogram_Phase_1_Info'
-                                (Name              => To_Entity_Name (E),
-                                 Kind              =>
+                              Global_Info := Global_Phase_1_Info'
+                                (Name                  => To_Entity_Name (E),
+                                 Kind                  =>
                                    (case Ekind (E) is
                                     when E_Entry         => E_Kind,
                                     when E_Task_Type     => T_Kind,
                                     when Subprogram_Kind => S_Kind,
                                     when others          =>
                                       raise Why.Unexpected_Node),
-                                 Globals_Origin    => XR,
-                                 Inputs_Proof      => Name_Sets.Empty_Set,
-                                 Inputs            => Reads,
-                                 Outputs           => Writes,
-                                 Proof_Calls       => Name_Sets.Empty_Set,
-                                 Definite_Calls    => Name_Sets.Empty_Set,
-                                 Conditional_Calls => Calls,
-                                 Local_Variables   => Name_Sets.Empty_Set,
-                                 Local_Subprograms => Name_Sets.Empty_Set);
+                                 Globals_Origin        => XR,
+                                 Inputs_Proof          => Name_Sets.Empty_Set,
+                                 Inputs                => Reads,
+                                 Outputs               => Writes,
+                                 Proof_Calls           => Name_Sets.Empty_Set,
+                                 Definite_Calls        => Name_Sets.Empty_Set,
+                                 Conditional_Calls     => Calls,
+                                 Local_Variables       => Name_Sets.Empty_Set,
+                                 Local_Subprograms     => Name_Sets.Empty_Set,
+                                 Local_Definite_Writes => Name_Sets.Empty_Set);
 
-                              Subprogram_Info_List.Append (Subprogram_Info);
+                              Global_Info_List.Append (Global_Info);
                            end;
                         end if;
                      end;
@@ -1327,12 +1376,12 @@ package body Flow is
                   Needs_Body : Boolean := Unit_Requires_Body (E);
                begin
                   if SPARK_Util.Analysis_Requested (E)
-                    and Entity_Spec_In_SPARK (E)
-                    and not In_Predefined_Unit (E)
-                    and not Is_Wrapper_Package (E)
-                    --  We do not generate graphs for wrapper packages
-                    --  of subprogram instantiations since messages
-                    --  emitted on them would be confusing.
+                    and then Entity_Spec_In_SPARK (E)
+                    and then not In_Predefined_Unit (E)
+                    and then not Is_Wrapper_Package (E)
+                    --  We do not generate graphs for wrapper packages of
+                    --  subprogram instantiations since messages emitted on
+                    --  them would be confusing.
                   then
                      Pkg_Body := Pkg_Spec;
                      while Present (Pkg_Body) and then
@@ -1377,7 +1426,7 @@ package body Flow is
 
    procedure Flow_Analyse_CUnit is
       Success : Boolean;
-      Unused  : Subprogram_Info_Lists.List;
+      Unused  : Global_Info_Lists.List;
    begin
 
       --  Check that classwide contracts conform to the legality rules laid
@@ -1393,8 +1442,8 @@ package body Flow is
       end loop;
 
       --  Process entities and construct graphs if necessary
-      Build_Graphs_For_Compilation_Unit (FA_Graphs            => FA_Graphs,
-                                         Subprogram_Info_List => Unused);
+      Build_Graphs_For_Compilation_Unit (FA_Graphs        => FA_Graphs,
+                                         Global_Info_List => Unused);
 
       --  ??? Perform interprocedural analysis
 
@@ -1571,18 +1620,19 @@ package body Flow is
 
    procedure Generate_Flow_Globals (GNAT_Root : Node_Id) is
       pragma Unreferenced (GNAT_Root);
-      Subprogram_Info_List : Subprogram_Info_Lists.List;
+      Global_Info_List : Global_Info_Lists.List;
    begin
       GG_Write_Initialize;
 
       --  Process entities and construct graphs if necessary
       Build_Graphs_For_Compilation_Unit
-        (FA_Graphs            => FA_Graphs,
-         Subprogram_Info_List => Subprogram_Info_List);
+        (FA_Graphs        => FA_Graphs,
+         Global_Info_List => Global_Info_List);
 
-      --  Consider the subprogram info in case a graph was not created
-      for S of Subprogram_Info_List loop
-         GG_Write_Subprogram_Info (SI => S);
+      --  Consider the subprogram and package info in case a graph was not
+      --  created.
+      for S of Global_Info_List loop
+         GG_Write_Global_Info (GI => S);
       end loop;
 
       --  Write Generated Globals to the ALI file
@@ -1598,95 +1648,111 @@ package body Flow is
             Indent;
          end if;
 
+         if FA.Kind = E_Package_Body then
+            --  Here we utilize the package's Refined_State aspect (if it
+            --  exists). Notice that we process this aspect regardless of
+            --  whether we generate a gg graph or not.
+            declare
+               Refined_State_N : constant Node_Id :=
+                 Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_State);
+
+               DM              : Dependency_Maps.Map;
+            begin
+               if Present (Refined_State_N) then
+                  DM := Parse_Refined_State (Refined_State_N);
+                  GG_Write_State_Info (DM);
+               end if;
+            end;
+         end if;
+
          if FA.GG.Aborted then
             if Gnat2Why_Args.Flow_Advanced_Debug then
                Write_Line ("aborted earlier");
             end if;
-         elsif FA.Kind in E_Subprogram_Body | E_Task_Body | E_Entry then
+         else
             declare
-               Inputs_Proof      : Node_Sets.Set;
-               Inputs            : Node_Sets.Set;
-               Outputs           : Node_Sets.Set;
-               Proof_Calls       : Node_Sets.Set;
-               Definite_Calls    : Node_Sets.Set;
-               Conditional_Calls : Node_Sets.Set;
-               Local_Variables   : Node_Sets.Set;
-               Local_Subprograms : Node_Sets.Set;
-               Subprogram_Info   : Subprogram_Phase_1_Info;
+               Inputs_Proof          : Node_Sets.Set;
+               Inputs                : Node_Sets.Set;
+               Outputs               : Node_Sets.Set;
+               Proof_Calls           : Node_Sets.Set;
+               Definite_Calls        : Node_Sets.Set;
+               Conditional_Calls     : Node_Sets.Set;
+               Local_Variables       : Node_Sets.Set;
+               Local_Subprograms     : Node_Sets.Set;
+               Local_Definite_Writes : Node_Sets.Set;
+               Global_Info           : Global_Phase_1_Info;
             begin
                Compute_Globals (FA,
-                                Inputs_Proof      => Inputs_Proof,
-                                Inputs            => Inputs,
-                                Outputs           => Outputs,
-                                Proof_Calls       => Proof_Calls,
-                                Definite_Calls    => Definite_Calls,
-                                Conditional_Calls => Conditional_Calls,
-                                Local_Variables   => Local_Variables,
-                                Local_Subprograms => Local_Subprograms);
+                                Inputs_Proof          => Inputs_Proof,
+                                Inputs                => Inputs,
+                                Outputs               => Outputs,
+                                Proof_Calls           => Proof_Calls,
+                                Definite_Calls        => Definite_Calls,
+                                Conditional_Calls     => Conditional_Calls,
+                                Local_Variables       => Local_Variables,
+                                Local_Subprograms     => Local_Subprograms,
+                                Local_Definite_Writes =>
+                                  Local_Definite_Writes);
 
                if Gnat2Why_Args.Flow_Advanced_Debug then
-                  Write_Str ("Proof inputs     : ");
+                  Write_Str ("Proof inputs         : ");
                   Print_Node_Set (Inputs_Proof);
 
-                  Write_Str ("Inputs           : ");
+                  Write_Str ("Inputs               : ");
                   Print_Node_Set (Inputs);
 
-                  Write_Str ("Outputs          : ");
+                  Write_Str ("Outputs              : ");
                   Print_Node_Set (Outputs);
 
-                  Write_Str ("Proof calls      : ");
+                  Write_Str ("Proof calls          : ");
                   Print_Node_Set (Proof_Calls);
 
-                  Write_Str ("Definite calls   : ");
+                  Write_Str ("Definite calls       : ");
                   Print_Node_Set (Definite_Calls);
 
-                  Write_Str ("Conditional calls: ");
+                  Write_Str ("Conditional calls    : ");
                   Print_Node_Set (Conditional_Calls);
 
-                  Write_Str ("Local variables  : ");
+                  Write_Str ("Local variables      : ");
                   Print_Node_Set (Local_Variables);
 
-                  Write_Str ("Local subprograms: ");
+                  Write_Str ("Local subprograms    : ");
                   Print_Node_Set (Local_Subprograms);
+
+                  if FA.Kind in E_Package | E_Package_Body then
+                     Write_Str ("Local definite writes: ");
+                     Print_Node_Set (Local_Definite_Writes);
+                  end if;
                end if;
 
-               Subprogram_Info := Subprogram_Phase_1_Info'
-                 (Name              => To_Entity_Name (FA.Analyzed_Entity),
-                  Kind              =>
+               Global_Info := Global_Phase_1_Info'
+                 (Name                  =>
+                    (if FA.Kind = E_Package_Body
+                     then To_Entity_Name (Spec_Entity (FA.Analyzed_Entity))
+                     else To_Entity_Name (FA.Analyzed_Entity)),
+                  Kind                  =>
                     (case FA.Kind is
                      when E_Subprogram_Body => S_Kind,
                      when E_Task_Body       => T_Kind,
                      when E_Entry           => E_Kind,
+                     when E_Package         |
+                          E_Package_Body    => P_Kind,
                      when others            => raise Why.Unexpected_Node),
-                  Globals_Origin    => Flow_Generated_Globals.FA,
-                  Inputs_Proof      => To_Name_Set (Inputs_Proof),
-                  Inputs            => To_Name_Set (Inputs),
-                  Outputs           => To_Name_Set (Outputs),
-                  Proof_Calls       => To_Name_Set (Proof_Calls),
-                  Definite_Calls    => To_Name_Set (Definite_Calls),
-                  Conditional_Calls => To_Name_Set (Conditional_Calls),
-                  Local_Variables   => To_Name_Set (Local_Variables),
-                  Local_Subprograms => To_Name_Set (Local_Subprograms));
+                  Globals_Origin        => Flow_Generated_Globals.FA,
+                  Inputs_Proof          => To_Name_Set (Inputs_Proof),
+                  Inputs                => To_Name_Set (Inputs),
+                  Outputs               => To_Name_Set (Outputs),
+                  Proof_Calls           => To_Name_Set (Proof_Calls),
+                  Definite_Calls        => To_Name_Set (Definite_Calls),
+                  Conditional_Calls     => To_Name_Set (Conditional_Calls),
+                  Local_Variables       => To_Name_Set (Local_Variables),
+                  Local_Subprograms     => To_Name_Set (Local_Subprograms),
+                  Local_Definite_Writes =>
+                    To_Name_Set (Local_Definite_Writes));
 
-               GG_Write_Subprogram_Info (SI => Subprogram_Info);
+               GG_Write_Global_Info (GI => Global_Info);
             end;
-         elsif FA.Kind = E_Package_Body then
-            --  Here we utilize the package's Refined_State aspect
-            declare
-               Refined_State_N : constant Node_Id :=
-                 Get_Pragma (FA.Analyzed_Entity,
-                             Pragma_Refined_State);
 
-               DM              : Dependency_Maps.Map;
-            begin
-               --  Sanity check that there is indeed a Refined_State
-               --  aspect. Note that if there wasn't one, then GG
-               --  would have been aborted earlier for this entity.
-               pragma Assert (Present (Refined_State_N));
-
-               DM := Parse_Refined_State (Refined_State_N);
-               GG_Write_Package_Info (DM);
-            end;
          end if;
 
          if Gnat2Why_Args.Flow_Advanced_Debug then

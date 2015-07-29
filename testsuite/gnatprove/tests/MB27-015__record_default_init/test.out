@@ -4,6 +4,7 @@ fsb.adb:17:20: medium: overflow check might fail
 fsb.adb:24:16: medium: overflow check might fail
 fsb.adb:31:16: medium: overflow check might fail
 fsb.adb:31:20: medium: overflow check might fail
+fsb.ads:4:04: info: initialization of "S" proved
 p.adb:15:26: default initialization cannot depend on "S" (SPARK RM 4.4(2))
 p.adb:20:26: default initialization cannot depend on "S" (SPARK RM 4.4(2))
 p.adb:21:26: default initialization cannot depend on "S" (SPARK RM 4.4(2))

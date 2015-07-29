@@ -14,41 +14,50 @@ single_compilation_unit.adb:54:18: info: initialization of "Fact" proved
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="across_compilation_units__child__x"];
-    2 [label="across_compilation_units__child__y"];
-    3 [label="across_compilation_units__child__z"];
-    4 [label="across_compilation_units__prime__x"];
-    5 [label="across_compilation_units__swap__x"];
-    6 [label="across_compilation_units__swap__y"];
-    7 [label="across_compilation_units__swap__temp"];
+    1 [label="across_compilation_units__swap__temp"];
+    2 [label="across_compilation_units__child__x"];
+    3 [label="across_compilation_units__child__y"];
+    4 [label="across_compilation_units__child__z"];
+    5 [label="across_compilation_units__prime__x"];
+    6 [label="across_compilation_units__swap__x"];
+    7 [label="across_compilation_units__swap__y"];
     8 [label="across_compilation_units__swap'Ins",shape="box"];
     9 [label="across_compilation_units__swap'Outs",shape="box"];
     10 [label="across_compilation_units__swap'Proof_Ins",shape="box"];
-    11 [label="across_compilation_units__prime'Ins",shape="box"];
-    12 [label="across_compilation_units__prime'Outs",shape="box"];
-    13 [label="across_compilation_units__prime'Proof_Ins",shape="box"];
-    14 [label="across_compilation_units__child__round_swap_1'Ins",shape="box"];
-    15 [label="across_compilation_units__child__round_swap_1'Outs",shape="box"];
-    16 [label="across_compilation_units__child__round_swap_1'Proof_Ins",shape="box"];
-    17 [label="across_compilation_units__child__round_swap_2'Ins",shape="box"];
-    18 [label="across_compilation_units__child__round_swap_2'Outs",shape="box"];
-    19 [label="across_compilation_units__child__round_swap_2'Proof_Ins",shape="box"];
+    11 [label="across_compilation_units__swap_with_depends'Ins",shape="box"];
+    12 [label="across_compilation_units__swap_with_depends'Outs",shape="box"];
+    13 [label="across_compilation_units__swap_with_depends'Proof_Ins",shape="box"];
+    14 [label="across_compilation_units__prime'Ins",shape="box"];
+    15 [label="across_compilation_units__prime'Outs",shape="box"];
+    16 [label="across_compilation_units__prime'Proof_Ins",shape="box"];
+    17 [label="across_compilation_units__child__round_swap_1'Ins",shape="box"];
+    18 [label="across_compilation_units__child__round_swap_1'Outs",shape="box"];
+    19 [label="across_compilation_units__child__round_swap_1'Proof_Ins",shape="box"];
+    20 [label="across_compilation_units__child__round_swap_2'Ins",shape="box"];
+    21 [label="across_compilation_units__child__round_swap_2'Outs",shape="box"];
+    22 [label="across_compilation_units__child__round_swap_2'Proof_Ins",shape="box"];
+    23 [label="across_compilation_units__child__round_swap_with_depends_1'Ins",shape="box"];
+    24 [label="across_compilation_units__child__round_swap_with_depends_1'Outs",shape="box"];
+    25 [label="across_compilation_units__child__round_swap_with_depends_1'Proof_Ins",shape="box"];
+    26 [label="across_compilation_units__child__round_swap_with_depends_2'Ins",shape="box"];
+    27 [label="across_compilation_units__child__round_swap_with_depends_2'Outs",shape="box"];
+    28 [label="across_compilation_units__child__round_swap_with_depends_2'Proof_Ins",shape="box"];
 
-    14 ->  1 [arrowType="normal"];
-    14 ->  2 [arrowType="normal"];
-    14 ->  3 [arrowType="normal"];
-    14 ->  8 [arrowType="normal"];
-    15 ->  1 [arrowType="normal"];
-    15 ->  2 [arrowType="normal"];
-    15 ->  3 [arrowType="normal"];
-    15 ->  9 [arrowType="normal"];
-    16 ->  10 [arrowType="normal"];
-    17 ->  1 [arrowType="normal"];
     17 ->  2 [arrowType="normal"];
     17 ->  3 [arrowType="normal"];
-    18 ->  1 [arrowType="normal"];
+    17 ->  4 [arrowType="normal"];
+    17 ->  8 [arrowType="normal"];
     18 ->  2 [arrowType="normal"];
     18 ->  3 [arrowType="normal"];
+    18 ->  4 [arrowType="normal"];
+    18 ->  9 [arrowType="normal"];
+    19 ->  10 [arrowType="normal"];
+    20 ->  2 [arrowType="normal"];
+    20 ->  3 [arrowType="normal"];
+    20 ->  4 [arrowType="normal"];
+    21 ->  2 [arrowType="normal"];
+    21 ->  3 [arrowType="normal"];
+    21 ->  4 [arrowType="normal"];
 }
 
 // across_compilation_units-child_locals_graph
@@ -60,9 +69,9 @@ digraph G {
     3 [label="Subprogram across_compilation_units__prime",shape="box"];
     4 [label="across_compilation_units__prime__x"];
     5 [label="Subprogram across_compilation_units__swap",shape="box"];
-    6 [label="across_compilation_units__swap__x"];
-    7 [label="across_compilation_units__swap__y"];
-    8 [label="across_compilation_units__swap__temp"];
+    6 [label="across_compilation_units__swap__temp"];
+    7 [label="across_compilation_units__swap__x"];
+    8 [label="across_compilation_units__swap__y"];
 
     3 ->  4 [arrowType="normal"];
     5 ->  6 [arrowType="normal"];
@@ -84,6 +93,9 @@ digraph G {
     8 [label="across_compilation_units__swap'Ins",shape="box"];
     9 [label="across_compilation_units__swap'Outs",shape="box"];
     10 [label="across_compilation_units__swap'Proof_Ins",shape="box"];
+    11 [label="across_compilation_units__swap_with_depends'Ins",shape="box"];
+    12 [label="across_compilation_units__swap_with_depends'Outs",shape="box"];
+    13 [label="across_compilation_units__swap_with_depends'Proof_Ins",shape="box"];
 
 }
 
@@ -108,15 +120,15 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="across_compilation_units__swap__temp"];
-    2 [label="caller_of_across_compilation_units__min__y"];
-    3 [label="caller_of_across_compilation_units__min__x"];
-    4 [label="caller_of_across_compilation_units__coprime__y"];
-    5 [label="caller_of_across_compilation_units__coprime__x"];
-    6 [label="caller_of_across_compilation_units__coprime__L_1__R4b"];
-    7 [label="across_compilation_units__prime__x"];
-    8 [label="across_compilation_units__swap__x"];
-    9 [label="across_compilation_units__swap__y"];
+    1 [label="across_compilation_units__swap__y"];
+    2 [label="across_compilation_units__swap__temp"];
+    3 [label="caller_of_across_compilation_units__min__y"];
+    4 [label="caller_of_across_compilation_units__min__x"];
+    5 [label="caller_of_across_compilation_units__coprime__y"];
+    6 [label="caller_of_across_compilation_units__coprime__x"];
+    7 [label="caller_of_across_compilation_units__coprime__L_1__R4b"];
+    8 [label="across_compilation_units__prime__x"];
+    9 [label="across_compilation_units__swap__x"];
     10 [label="across_compilation_units__prime'Ins",shape="box"];
     11 [label="across_compilation_units__prime'Outs",shape="box"];
     12 [label="across_compilation_units__prime'Proof_Ins",shape="box"];
@@ -126,17 +138,20 @@ digraph G {
     16 [label="across_compilation_units__swap'Ins",shape="box"];
     17 [label="across_compilation_units__swap'Outs",shape="box"];
     18 [label="across_compilation_units__swap'Proof_Ins",shape="box"];
-    19 [label="caller_of_across_compilation_units__coprime'Ins",shape="box"];
-    20 [label="caller_of_across_compilation_units__coprime'Outs",shape="box"];
-    21 [label="caller_of_across_compilation_units__coprime'Proof_Ins",shape="box"];
+    19 [label="across_compilation_units__swap_with_depends'Ins",shape="box"];
+    20 [label="across_compilation_units__swap_with_depends'Outs",shape="box"];
+    21 [label="across_compilation_units__swap_with_depends'Proof_Ins",shape="box"];
+    22 [label="caller_of_across_compilation_units__coprime'Ins",shape="box"];
+    23 [label="caller_of_across_compilation_units__coprime'Outs",shape="box"];
+    24 [label="caller_of_across_compilation_units__coprime'Proof_Ins",shape="box"];
 
-    19 ->  10 [arrowType="normal"];
-    19 ->  13 [arrowType="normal"];
-    19 ->  14 [arrowType="normal"];
-    20 ->  11 [arrowType="normal"];
-    20 ->  14 [arrowType="normal"];
-    21 ->  12 [arrowType="normal"];
-    21 ->  15 [arrowType="normal"];
+    22 ->  10 [arrowType="normal"];
+    22 ->  13 [arrowType="normal"];
+    22 ->  14 [arrowType="normal"];
+    23 ->  11 [arrowType="normal"];
+    23 ->  14 [arrowType="normal"];
+    24 ->  12 [arrowType="normal"];
+    24 ->  15 [arrowType="normal"];
 }
 
 // caller_of_across_compilation_units_locals_graph
@@ -153,9 +168,9 @@ digraph G {
     8 [label="Subprogram across_compilation_units__prime",shape="box"];
     9 [label="across_compilation_units__prime__x"];
     10 [label="Subprogram across_compilation_units__swap",shape="box"];
-    11 [label="across_compilation_units__swap__temp"];
-    12 [label="across_compilation_units__swap__x"];
-    13 [label="across_compilation_units__swap__y"];
+    11 [label="across_compilation_units__swap__y"];
+    12 [label="across_compilation_units__swap__temp"];
+    13 [label="across_compilation_units__swap__x"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  3 [arrowType="normal"];
@@ -1602,6 +1617,160 @@ digraph G {
     24 ->  11 [arrowType="normal",color="red",fontcolor="red"];
 }
 
+// gg_pkg_body_across_compilation_units__child_cfg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="X'initial\nVD: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="X'final\nVU: {X}\n<VId: 8>",shape="plaintext"];
+    10 [label="Y'initial\nVD: {Y}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Y'final\nVU: {Y}\n<VId: 11>",shape="plaintext"];
+    13 [label="Z'initial\nVD: {Z}\n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="Z'final\nVU: {Z}\n<VId: 14>",shape="plaintext"];
+    21 [label="null;\n<VId: 21>"];
+
+    1 ->  21 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  8 [arrowType="normal"];
+    3 ->  11 [arrowType="normal"];
+    3 ->  14 [arrowType="normal"];
+    7 ->  1 [arrowType="normal"];
+    10 ->  1 [arrowType="normal"];
+    13 ->  1 [arrowType="normal"];
+    21 ->  2 [arrowType="normal"];
+}
+
+// gg_pkg_body_across_compilation_units__child_pdg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="X'initial\nVD: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="X'final\nVU: {X}\n<VId: 8>",shape="plaintext"];
+    10 [label="Y'initial\nVD: {Y}\n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Y'final\nVU: {Y}\n<VId: 11>",shape="plaintext"];
+    13 [label="Z'initial\nVD: {Z}\n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="Z'final\nVU: {Z}\n<VId: 14>",shape="plaintext"];
+    21 [label="null;\n<VId: 21>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  21 [arrowType="normal"];
+    7 ->  8 [arrowType="normal",color="red",fontcolor="red"];
+    10 ->  11 [arrowType="normal",color="red",fontcolor="red"];
+    13 ->  14 [arrowType="normal",color="red",fontcolor="red"];
+}
+
+// gg_pkg_body_standard__across_compilation_units_cfg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;\n<VId: 9>"];
+
+    1 ->  9 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    9 ->  2 [arrowType="normal"];
+}
+
+// gg_pkg_body_standard__across_compilation_units_pdg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;\n<VId: 9>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
+}
+
+// gg_pkg_body_standard__caller_of_across_compilation_units_cfg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;\n<VId: 9>"];
+
+    1 ->  9 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    9 ->  2 [arrowType="normal"];
+}
+
+// gg_pkg_body_standard__caller_of_across_compilation_units_pdg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;\n<VId: 9>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  9 [arrowType="normal"];
+}
+
+// gg_pkg_body_standard__single_compilation_unit_cfg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    8 [label="Condition'initial\nVD: {Condition}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Condition'final\nVU: {Condition}\n<VId: 9>",shape="plaintext"];
+    11 [label="X'initial\nVD: {X}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="X'final\nVU: {X}\n<VId: 12>",shape="plaintext"];
+    14 [label="Y'initial\nVD: {Y}\n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="Y'final\nVU: {Y}\n<VId: 15>",shape="plaintext"];
+    23 [label="null;\n<VId: 23>"];
+
+    1 ->  23 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    3 ->  9 [arrowType="normal"];
+    3 ->  12 [arrowType="normal"];
+    3 ->  15 [arrowType="normal"];
+    8 ->  1 [arrowType="normal"];
+    11 ->  1 [arrowType="normal"];
+    14 ->  1 [arrowType="normal"];
+    23 ->  2 [arrowType="normal"];
+}
+
+// gg_pkg_body_standard__single_compilation_unit_pdg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    8 [label="Condition'initial\nVD: {Condition}\n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Condition'final\nVU: {Condition}\n<VId: 9>",shape="plaintext"];
+    11 [label="X'initial\nVD: {X}\n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="X'final\nVU: {X}\n<VId: 12>",shape="plaintext"];
+    14 [label="Y'initial\nVD: {Y}\n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="Y'final\nVU: {Y}\n<VId: 15>",shape="plaintext"];
+    23 [label="null;\n<VId: 23>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  23 [arrowType="normal"];
+    8 ->  9 [arrowType="normal",color="red",fontcolor="red"];
+    11 ->  12 [arrowType="normal",color="red",fontcolor="red"];
+    14 ->  15 [arrowType="normal",color="red",fontcolor="red"];
+}
+
 // gg_subprogram_across_compilation_units__child__round_swap_1_cfg
 digraph G {
    graph [splines=True];
@@ -2377,31 +2546,55 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="single_compilation_unit__x"];
-    2 [label="single_compilation_unit__y"];
-    3 [label="single_compilation_unit__double_max__temp"];
-    4 [label="single_compilation_unit__factorial__var"];
-    5 [label="single_compilation_unit__factorial__fact"];
-    6 [label="single_compilation_unit__fibonacci__n"];
-    7 [label="single_compilation_unit__factorial'Ins",shape="box"];
-    8 [label="single_compilation_unit__factorial'Outs",shape="box"];
-    9 [label="single_compilation_unit__factorial'Proof_Ins",shape="box"];
-    10 [label="single_compilation_unit__fibonacci'Ins",shape="box"];
-    11 [label="single_compilation_unit__fibonacci'Outs",shape="box"];
-    12 [label="single_compilation_unit__fibonacci'Proof_Ins",shape="box"];
-    13 [label="single_compilation_unit__double_max'Ins",shape="box"];
-    14 [label="single_compilation_unit__double_max'Outs",shape="box"];
-    15 [label="single_compilation_unit__double_max'Proof_Ins",shape="box"];
+    1 [label="single_compilation_unit__condition"];
+    2 [label="single_compilation_unit__x"];
+    3 [label="single_compilation_unit__y"];
+    4 [label="single_compilation_unit__double_max__temp"];
+    5 [label="single_compilation_unit__factorial__var"];
+    6 [label="single_compilation_unit__factorial__fact"];
+    7 [label="single_compilation_unit__fibonacci__n"];
+    8 [label="single_compilation_unit__max'Ins",shape="box"];
+    9 [label="single_compilation_unit__max'Outs",shape="box"];
+    10 [label="single_compilation_unit__max'Proof_Ins",shape="box"];
+    11 [label="single_compilation_unit__factorial'Ins",shape="box"];
+    12 [label="single_compilation_unit__factorial'Outs",shape="box"];
+    13 [label="single_compilation_unit__factorial'Proof_Ins",shape="box"];
+    14 [label="single_compilation_unit__fibonacci'Ins",shape="box"];
+    15 [label="single_compilation_unit__fibonacci'Outs",shape="box"];
+    16 [label="single_compilation_unit__fibonacci'Proof_Ins",shape="box"];
+    17 [label="single_compilation_unit__mutual_recursion_b'Ins",shape="box"];
+    18 [label="single_compilation_unit__mutual_recursion_b'Outs",shape="box"];
+    19 [label="single_compilation_unit__mutual_recursion_b'Proof_Ins",shape="box"];
+    20 [label="single_compilation_unit__mutual_recursion_a'Ins",shape="box"];
+    21 [label="single_compilation_unit__mutual_recursion_a'Outs",shape="box"];
+    22 [label="single_compilation_unit__mutual_recursion_a'Proof_Ins",shape="box"];
+    23 [label="single_compilation_unit__double_max'Ins",shape="box"];
+    24 [label="single_compilation_unit__double_max'Outs",shape="box"];
+    25 [label="single_compilation_unit__double_max'Proof_Ins",shape="box"];
 
-    7 ->  7 [arrowType="normal"];
-    7 ->  8 [arrowType="normal"];
-    8 ->  8 [arrowType="normal"];
-    9 ->  9 [arrowType="normal"];
-    10 ->  10 [arrowType="normal"];
+    8 ->  2 [arrowType="normal"];
+    8 ->  3 [arrowType="normal"];
     11 ->  11 [arrowType="normal"];
+    11 ->  12 [arrowType="normal"];
     12 ->  12 [arrowType="normal"];
-    13 ->  1 [arrowType="normal"];
-    13 ->  2 [arrowType="normal"];
+    13 ->  13 [arrowType="normal"];
+    14 ->  14 [arrowType="normal"];
+    15 ->  15 [arrowType="normal"];
+    16 ->  16 [arrowType="normal"];
+    17 ->  1 [arrowType="normal"];
+    17 ->  2 [arrowType="normal"];
+    17 ->  3 [arrowType="normal"];
+    18 ->  1 [arrowType="normal"];
+    18 ->  2 [arrowType="normal"];
+    18 ->  3 [arrowType="normal"];
+    20 ->  1 [arrowType="normal"];
+    20 ->  2 [arrowType="normal"];
+    20 ->  3 [arrowType="normal"];
+    21 ->  1 [arrowType="normal"];
+    21 ->  2 [arrowType="normal"];
+    21 ->  3 [arrowType="normal"];
+    23 ->  2 [arrowType="normal"];
+    23 ->  3 [arrowType="normal"];
 }
 
 // single_compilation_unit_locals_graph

@@ -1,3 +1,7 @@
+foo.adb:3:04: info: initialization of "X" proved
+foo.adb:4:04: info: initialization of "Y" proved
+foo.adb:5:04: info: initialization of "Z" proved
+foo.adb:6:04: info: initialization of "W" proved
 foo.adb:6:04: warning: initialization of W is not mentioned in contract
 foo.adb:9:06: warning: unused assignment
 foo.adb:10:04: warning: statement has no effect

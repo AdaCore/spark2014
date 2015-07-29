@@ -81,6 +81,38 @@ digraph G {
     14 ->  9 [arrowType="normal",color="red",fontcolor="red"];
 }
 
+// gg_pkg_body_standard__types_cfg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    3 [label="end\n<VId: 3>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    8 [label="type volatile_integer is new integerwith volatile;\n<VId: 8>"];
+    10 [label="null;\n<VId: 10>"];
+
+    1 ->  8 [arrowType="normal"];
+    2 ->  3 [arrowType="normal"];
+    8 ->  10 [arrowType="normal"];
+    10 ->  2 [arrowType="normal"];
+}
+
+// gg_pkg_body_standard__types_pdg
+digraph G {
+   graph [splines=True];
+   edge [labelfloat=True];
+    1 [label="start\n<VId: 1>",shape="plaintext"];
+    2 [label="helper end\n<VId: 2>",shape="plaintext"];
+    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    8 [label="type volatile_integer is new integerwith volatile;\n<VId: 8>"];
+    10 [label="null;\n<VId: 10>"];
+
+    1 ->  2 [arrowType="normal"];
+    1 ->  8 [arrowType="normal"];
+    1 ->  10 [arrowType="normal"];
+}
+
 // gg_subprogram_types__test_01_cfg
 digraph G {
    graph [splines=True];

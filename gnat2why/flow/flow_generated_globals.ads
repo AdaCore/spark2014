@@ -25,13 +25,13 @@
 --  contracts.
 
 with Ada.Containers.Doubly_Linked_Lists;
-with Atree;                       use Atree;
-with Common_Containers;           use Common_Containers;
-with Einfo;                       use Einfo;
-with Flow_Types;                  use Flow_Types;
-with Flow_Refinement;             use Flow_Refinement;
-with Flow_Dependency_Maps;        use Flow_Dependency_Maps;
-with Types;                       use Types;
+with Atree;                              use Atree;
+with Common_Containers;                  use Common_Containers;
+with Einfo;                              use Einfo;
+with Flow_Types;                         use Flow_Types;
+with Flow_Refinement;                    use Flow_Refinement;
+with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
+with Types;                              use Types;
 
 package Flow_Generated_Globals is
 
@@ -102,19 +102,20 @@ package Flow_Generated_Globals is
    --       GG AS test__state2
    --       GG AS test__state3 test_state2
    --
-   --  2) The second kind is related to subprograms, tasks and entries. For
-   --     these we store the names of:
+   --  2) The second kind is related to subprograms, tasks, entries and
+   --     package. For these we store the names of:
    --
-   --       * subprogram/task/entry together with the origin of the entry
-   --         (see Globals_Origin_T)                             (S/T/E)
+   --       * subprogram/task/entry/package name together with the origin
+   --         of the entry [see Globals_Origin_T]                (S/T/E/P)
    --       * global variables read in proof contexts only       (VP)
-   --       * global variables read    (input)                   (VI)
-   --       * global variables written (output)                  (VO)
+   --       * global variables read    [input]                   (VI)
+   --       * global variables written [output]                  (VO)
    --       * subprograms that are called only in proof contexts (CP)
    --       * subprograms that are called definitely             (CD)
    --       * subprograms that are called conditionally          (CC)
    --       * local variables of the subprogram                  (LV)
    --       * local subprograms of the subprogram                (LS)
+   --       * local variables definitely written [packages only] (LD)
 
    --     For an entry of the second kind to be complete/correct all of the
    --     afformentioned lines must be present (order does not matter).
@@ -166,27 +167,29 @@ package Flow_Generated_Globals is
    --  FA = Flow Analysis
    --  XR = xref
 
-   type Subprogram_Info_Kind is (S_Kind, T_Kind, E_Kind);
+   type Analyzed_Entity_Kind is (S_Kind, T_Kind, E_Kind, P_Kind);
    --  S_Kind = Subprogram
    --  T_Kind = Task
    --  E_Kind = Entry
+   --  P_Kind = Package
 
-   type Subprogram_Phase_1_Info is record
-      Name              : Entity_Name;
-      Kind              : Subprogram_Info_Kind;
-      Globals_Origin    : Globals_Origin_T;
-      Inputs_Proof      : Name_Sets.Set;
-      Inputs            : Name_Sets.Set;
-      Outputs           : Name_Sets.Set;
-      Proof_Calls       : Name_Sets.Set;
-      Definite_Calls    : Name_Sets.Set;
-      Conditional_Calls : Name_Sets.Set;
-      Local_Variables   : Name_Sets.Set;
-      Local_Subprograms : Name_Sets.Set;
+   type Global_Phase_1_Info is record
+      Name                  : Entity_Name;
+      Kind                  : Analyzed_Entity_Kind;
+      Globals_Origin        : Globals_Origin_T;
+      Inputs_Proof          : Name_Sets.Set;
+      Inputs                : Name_Sets.Set;
+      Outputs               : Name_Sets.Set;
+      Proof_Calls           : Name_Sets.Set;
+      Definite_Calls        : Name_Sets.Set;
+      Conditional_Calls     : Name_Sets.Set;
+      Local_Variables       : Name_Sets.Set;
+      Local_Subprograms     : Name_Sets.Set;
+      Local_Definite_Writes : Name_Sets.Set;
    end record;
 
-   package Subprogram_Info_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Subprogram_Phase_1_Info);
+   package Global_Info_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Global_Phase_1_Info);
 
    ----------------------------------------------------------------------
 
@@ -204,18 +207,17 @@ package Flow_Generated_Globals is
    with Pre  => GG_Mode = GG_No_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Must be called before the first call to
-   --  GG_Write_Subprogram_Info and GG_Write_Package_Info.
+   --  GG_Write_Global_Info and GG_Write_Package_Info.
 
-   procedure GG_Write_Package_Info (DM : Dependency_Maps.Map)
+   procedure GG_Write_State_Info (DM : Dependency_Maps.Map)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
-   --  Records information related to state abstractions and the
-   --  refinements thereof. This will later be used to return the
-   --  appropriate view depending on the caller (as opposed to always
-   --  returning the most refined view). It also stores information
-   --  related to external states.
+   --  Records information related to state abstractions and the refinements
+   --  thereof. This will later be used to return the appropriate view
+   --  depending on the caller (as opposed to always returning the most refined
+   --  view). It also stores information related to external states.
 
-   procedure GG_Write_Subprogram_Info (SI : Subprogram_Phase_1_Info)
+   procedure GG_Write_Global_Info (GI : Global_Phase_1_Info)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Records the information we need to later compute globals.
@@ -293,6 +295,16 @@ package Flow_Generated_Globals is
    with Pre => GG_Mode = GG_Read_Mode;
    --  @return a set of Entity_Names with all the state abstractions
    --    that the Generated Globals know of.
+
+   function GG_Get_Initializes
+     (EN : Entity_Name;
+      S  : Flow_Scope)
+      return Dependency_Maps.Map
+   with Pre => GG_Has_Been_Generated;
+   --  @param EN is the entity name whose generated initialize aspect we want
+   --  @param S is the Flow_Scope at which we need to up project the results
+   --  @return the generated initializes if it exists or an empty dependency
+   --    map otherwise.
 
    function GG_Is_Volatile (EN : Entity_Name) return Boolean
    with Pre => GG_Has_Been_Generated;
