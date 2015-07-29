@@ -1448,6 +1448,7 @@ package body SPARK_Definition is
               N_Protected_Type_Declaration    |
               N_Subtype_Declaration           |
               N_Task_Type_Declaration         =>
+
             declare
                E  : constant Entity_Id := Defining_Entity (N);
                BT : constant Entity_Id := Base_Type (E);
@@ -1478,7 +1479,16 @@ package body SPARK_Definition is
                  and then (if Ekind (E) = E_Record_Subtype then
                                not (Present (Cloned_Subtype (E))))
                then
-                  Mark_Entity (Class_Wide_Type (E));
+
+                  --  Only mark the classwide type associated to a record type
+                  --  if the record type isn't constrained. Otherwise, the
+                  --  classwide type is not in SPARK and should not be used.
+
+                  if not Has_Discriminants (E)
+                    or else not Is_Constrained (E)
+                  then
+                     Mark_Entity (Class_Wide_Type (E));
+                  end if;
                   Set_Specific_Tagged (Class_Wide_Type (E), E);
                end if;
 
@@ -2876,7 +2886,7 @@ package body SPARK_Definition is
                declare
                   Subty : constant Node_Id :=
                     Subtype_Indication (Parent (E));
-                  Ty : Node_Id;
+                  Ty : Node_Id := Empty;
                begin
                   case Nkind (Subty) is
                      when N_Attribute_Reference =>
@@ -2884,11 +2894,24 @@ package body SPARK_Definition is
                         Ty := Entity (Prefix (Subty));
                      when N_Identifier | N_Expanded_Name =>
                         Ty := Entity (Subty);
+                     when N_Subtype_Indication =>
+
+                        --  Constrained class-wide types are not supported yet
+                        --  as it is unclear wether we should do discriminant
+                        --  checks for them or not.
+
+                        Violation_Detected := True;
+                        if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                           Error_Msg_N ("constrained class-wide subtypes "
+                                        & "are not yet supported", E);
+                        end if;
                      when others =>
                         raise Program_Error;
                   end case;
 
-                  Set_Specific_Tagged (E, Unique_Entity (Ty));
+                  if Present (Ty) then
+                     Set_Specific_Tagged (E, Unique_Entity (Ty));
+                  end if;
                end;
             end if;
 
@@ -3229,6 +3252,19 @@ package body SPARK_Definition is
             begin
                if not In_SPARK (Specific_Type) then
                   Mark_Violation (E, From => Specific_Type);
+
+               --  Constrained class-wide types are not supported yet as it is
+               --  unclear wether we should do discriminant checks for them
+               --  or not.
+
+               elsif Has_Discriminants (Retysp (Specific_Type))
+                 and then Is_Constrained (Retysp (Specific_Type))
+               then
+                  Violation_Detected := True;
+                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                     Error_Msg_N ("Class attribute of a constrained type "
+                                  & "is not yet supported", E);
+                  end if;
                end if;
             end;
 

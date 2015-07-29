@@ -22,14 +22,7 @@ membership_discr.adb:21:22: medium: assertion might fail, requires Root'Class (R
 membership_discr.adb:24:14: warning: subprogram "Bad_3" has no effect
 membership_discr.adb:27:22: medium: assertion might fail, requires R02 in Root
 membership_discr.adb:28:22: medium: assertion might fail, requires Root'Class (R02) in Root_01
-membership_discr.adb:31:14: warning: subprogram "Bad_4" has no effect
-membership_discr.adb:34:22: medium: assertion might fail, requires Root'Class (C1) in Root_02'class
-membership_discr.adb:43:19: medium: assertion might fail, requires R00 in Root
-membership_discr.adb:44:19: medium: assertion might fail, requires Root'Class (R00) in Root_02
-membership_discr.adb:45:19: medium: assertion might fail, requires C00 in Child
-membership_discr.adb:46:19: medium: assertion might fail, requires Root'Class (C01) in Root_01'class
-membership_discr.adb:47:04: info: assertion proved
-membership_discr.adb:48:04: info: assertion proved
-membership_discr.adb:49:04: info: assertion proved
-membership_discr.adb:50:04: info: assertion proved
-membership_discr.adb:51:19: medium: assertion might fail, requires Child'Class (C00) in Child_04
+membership_discr.adb:37:19: medium: assertion might fail, requires R00 in Root
+membership_discr.adb:38:19: medium: assertion might fail, requires Root'Class (R00) in Root_02
+membership_discr.adb:39:19: medium: assertion might fail, requires C00 in Child
+membership_discr.adb:40:19: medium: assertion might fail, requires Child'Class (C00) in Child_04

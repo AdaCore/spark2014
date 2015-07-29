@@ -28,12 +28,6 @@ procedure Membership_Discr with SPARK_Mode is
       pragma Assert (Root'Class (R02) in Root_01); --@ASSERT:FAIL
    end Bad_3;
 
-   procedure Bad_4 with Pre => True is
-      C1 : Child (1);
-   begin
-      pragma Assert (Root'Class (C1) in Root_02'Class); --@ASSERT:FAIL
-   end Bad_4;
-
    R00 : Root (0);
    C00 : Child (0);
    C01 : Child_01;
@@ -43,10 +37,5 @@ begin
    pragma Assert (R00 in Root); -- OK
    pragma Assert (Root'Class (R00) in Root_02); -- OK
    pragma Assert (C00 in Child); -- OK
-   pragma Assert (Root'Class (C01) in Root_01'Class); -- OK
-   pragma Assert (C00 in Root_02'Class); -- OK
-   pragma Assert (C01 in Root_02'Class); -- OK
-   pragma Assert (C02 in Root_02'Class); -- OK
-   pragma Assert (C03 in Root_02'Class); -- OK
    pragma Assert (Child'Class (C00) in Child_04); -- OK
 end Membership_Discr;
