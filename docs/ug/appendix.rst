@@ -1006,6 +1006,9 @@ Tool Limitations
    example ``for all Elem of Arr`` where ``Arr`` is a multi dimensional array)
    are not supported.
 
+#. Constrained subtypes of class-wide types and 'Class attributes of
+   constrained record types are not supported.
+
 Legality Rules
 --------------
 
