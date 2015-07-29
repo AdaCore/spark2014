@@ -192,12 +192,15 @@ package Why.Gen.Names is
       WNE_Bool_Eq,
       WNE_Check_Not_First,
       WNE_Check_Not_Last,
+      WNE_Default_Init,            --  assumption for default initialization
       WNE_Dispatch_Eq,
       WNE_Dummy,
       WNE_Dynamic_Property,
       WNE_Dynamic_Property_BV_Int, --  for bitvector when index of an array
 
-      WNE_Dynamic_Predicate,      --  toplevel predicate checking function
+      WNE_Dynamic_Predicate,       --  toplevel predicate checking function
+
+      WNE_Dynamic_Invariant,       --  dynamic invariant of a type
 
       --  Prefix for Why3 field names corresponding to record components
       WNE_Rec_Comp_Prefix,

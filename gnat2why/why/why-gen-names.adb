@@ -733,6 +733,8 @@ package body Why.Gen.Names is
               WNE_Range_Pred |
               WNE_Range_Pred_BV_Int |
               WNE_Range_Check_Fun_BV_Int |
+              WNE_Default_Init |
+              WNE_Dynamic_Invariant |
               WNE_Dynamic_Property |
               WNE_Dynamic_Property_BV_Int |
               WNE_Dynamic_Predicate |

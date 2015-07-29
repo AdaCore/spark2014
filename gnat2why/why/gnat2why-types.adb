@@ -70,10 +70,160 @@ package body Gnat2Why.Types is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
+      procedure Create_Default_Init_Assumption
+        (Theory : W_Theory_Declaration_Id;
+         E      : Entity_Id);
+      --  Create a function to express type E's default initial assumption
+
+      procedure Create_Dynamic_Invariant
+        (Theory : W_Theory_Declaration_Id;
+         E      : Entity_Id);
+      --  Create a function to express type E's dynamic invariant
+
       procedure Create_Dynamic_Predicate
         (Theory : W_Theory_Declaration_Id;
          E      : Entity_Id);
       --  Create a function to express type E's predicate
+
+      ------------------------------------
+      -- Create_Default_Init_Assumption --
+      ------------------------------------
+
+      procedure Create_Default_Init_Assumption
+        (Theory : W_Theory_Declaration_Id;
+         E      : Entity_Id)
+      is
+         Variables : Flow_Id_Sets.Set;
+
+      begin
+
+         --  Get the set of variables used in E's default initialization
+
+         Variables_In_Default_Init (E, Variables);
+
+         declare
+            Items    : Item_Array :=
+              Get_Binders_From_Variables (To_Name_Set (Variables));
+            Main_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => Type_Of_Node (E));
+            --  Expression on which we want to assume the property
+
+            Slst_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => EW_Bool_Type);
+            --  Only assume initial condition for the components
+
+            Def : W_Pred_Id;
+
+         begin
+            --  Use local names for variables
+
+            Localize_Variable_Parts (Items);
+
+            --  Push the names to Symbol_Table
+
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+            Push_Binders_To_Symbol_Table (Items);
+
+            Def := Compute_Default_Init
+              (Expr           => +Main_Arg,
+               Ty             => E,
+               Skip_Last_Cond => +Slst_Arg,
+               Params         => Logic_Params (File.Kind),
+               Use_Pred       => False);
+
+            Emit (Theory,
+                  New_Function_Decl
+                    (Domain  => EW_Pred,
+                     Name    => To_Local (E_Symb (E, WNE_Default_Init)),
+                     Def     => +Def,
+                     Labels  => Name_Id_Sets.To_Set (NID ("inline")),
+                     Binders =>
+                       Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
+                                                       others => <>),
+                                     2 => Binder_Type'(B_Name => Slst_Arg,
+                                                       others => <>))
+                     & Get_Parameters_From_Binders (Items)));
+
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+         end;
+      end Create_Default_Init_Assumption;
+
+      ------------------------------
+      -- Create_Dynamic_Invariant --
+      ------------------------------
+
+      procedure Create_Dynamic_Invariant
+        (Theory : W_Theory_Declaration_Id;
+         E      : Entity_Id)
+      is
+         Variables : Flow_Id_Sets.Set;
+
+      begin
+
+         --  Get the set of variables used in E's dynamic property
+
+         Variables_In_Dynamic_Property (E, Variables);
+
+         declare
+            Items    : Item_Array :=
+              Get_Binders_From_Variables (To_Name_Set (Variables));
+            Init_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => EW_Bool_Type);
+            --  Is the object known to be initialized
+
+            Ovar_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => EW_Bool_Type);
+            --  Do we need to assume the properties on constant parts
+
+            Top_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => EW_Bool_Type);
+            --  Should we check the toplevel predicate
+
+            Main_Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => Type_Of_Node (E));
+            --  Expression on which we want to assume the property
+
+            Def : W_Pred_Id;
+
+         begin
+            --  Use local names for variables
+
+            Localize_Variable_Parts (Items);
+
+            --  Push the names to Symbol_Table
+
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+            Push_Binders_To_Symbol_Table (Items);
+
+            Def := Compute_Dynamic_Property
+              (Expr          => +Main_Arg,
+               Ty            => E,
+               Initialized   => +Init_Arg,
+               Only_Var      => +Ovar_Arg,
+               Top_Predicate => +Top_Arg,
+               Params        => Logic_Params (File.Kind),
+               Use_Pred      => False);
+
+            Emit (Theory,
+                  New_Function_Decl
+                    (Domain  => EW_Pred,
+                     Name    => To_Local (E_Symb (E, WNE_Dynamic_Invariant)),
+                     Def     => +Def,
+                     Labels  => Name_Id_Sets.To_Set (NID ("inline")),
+                     Binders =>
+                       Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
+                                                       others => <>),
+                                     2 => Binder_Type'(B_Name => Init_Arg,
+                                                       others => <>),
+                                     3 => Binder_Type'(B_Name => Ovar_Arg,
+                                                       others => <>),
+                                     4 => Binder_Type'(B_Name => Top_Arg,
+                                                       others => <>))
+                     & Get_Parameters_From_Binders (Items)));
+
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+         end;
+      end Create_Dynamic_Invariant;
 
       ------------------------------
       -- Create_Dynamic_Predicate --
@@ -131,8 +281,6 @@ package body Gnat2Why.Types is
       end Create_Dynamic_Predicate;
 
       Ty        : constant W_Type_Id := EW_Abstract (E);
-      Variables : Flow_Id_Sets.Set;
-      Params    : Transformation_Params;
    begin
 
       Open_Theory
@@ -144,146 +292,6 @@ package body Gnat2Why.Types is
               " defined at " & Build_Location_String (Sloc (E))
            else "")
          & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Params :=
-        (File        => File.File,
-         Theory      => File.Cur_Theory,
-         Phase       => Generate_Logic,
-         Gen_Marker  => False,
-         Ref_Allowed => False);
-
-      --  Generate a predicate for E's dynamic property. For provability, it is
-      --  inlined by Why3.
-      --  We do not generate the dynamic property for Itypes as they may
-      --  depend on locally defined constants such as 'Old.
-
-      if not Is_Itype (E) then
-
-         --  Get the set of variables used in E's dynamic property
-
-         Variables_In_Dynamic_Property (E, Variables);
-
-         declare
-            Items    : Item_Array :=
-              Get_Binders_From_Variables (To_Name_Set (Variables));
-            Init_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => EW_Bool_Type);
-            --  Is the object known to be initialized
-
-            Ovar_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => EW_Bool_Type);
-            --  Do we need to assume the properties on constant parts
-
-            Top_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => EW_Bool_Type);
-            --  Should we check the toplevel predicate
-
-            Main_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => Type_Of_Node (E));
-            --  Expression on which we want to assume the property
-
-         begin
-            --  Use local names for variables
-
-            Localize_Variable_Parts (Items);
-
-            --  Push the names to Symbol_Table
-
-            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-            Push_Binders_To_Symbol_Table (Items);
-
-            Emit (File.Cur_Theory,
-                  New_Function_Decl
-                    (Domain  => EW_Pred,
-                     Name    => New_Identifier
-                       (Name   => "dynamic_invariant",
-                        Module => Why.Types.Why_Empty,
-                        Typ    => EW_Bool_Type),
-                     Def     =>
-                       +Compute_Dynamic_Property (Expr          => +Main_Arg,
-                                                  Ty            => E,
-                                                  Initialized   => +Init_Arg,
-                                                  Only_Var      => +Ovar_Arg,
-                                                  Top_Predicate => +Top_Arg,
-                                                  Params        => Params,
-                                                  Use_Pred      => False),
-                     Labels  => Name_Id_Sets.To_Set (NID ("inline")),
-                     Binders =>
-                       Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
-                                                       others => <>),
-                                     2 => Binder_Type'(B_Name => Init_Arg,
-                                                       others => <>),
-                                     3 => Binder_Type'(B_Name => Ovar_Arg,
-                                                       others => <>),
-                                     4 => Binder_Type'(B_Name => Top_Arg,
-                                                       others => <>))
-                     & Get_Parameters_From_Binders (Items)));
-
-            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-         end;
-
-         --  Generate a predicate for E's default initialization.
-         --  We do not generate default initialization for unconstrained types.
-
-         if (not Has_Array_Type (E) or else Is_Constrained (E))
-           and then (not Has_Record_Type (E)
-                     or else not Has_Discriminants (E)
-                     or else Is_Constrained (E)
-                     or else Has_Defaulted_Discriminants (E))
-           and then not Is_Class_Wide_Type (E)
-         then
-
-            --  Get the set of variables used in E's default initialization
-
-            Variables.Clear;
-            Variables_In_Default_Init (E, Variables);
-
-            declare
-               Items    : Item_Array :=
-                 Get_Binders_From_Variables (To_Name_Set (Variables));
-               Main_Arg : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ => Type_Of_Node (E));
-               --  Expression on which we want to assume the property
-
-               Slst_Arg : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ => EW_Bool_Type);
-               --  Only assume initial condition for the components
-            begin
-
-               --  Use local names for variables
-
-               Localize_Variable_Parts (Items);
-
-               --  Push the names to Symbol_Table
-
-               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-               Push_Binders_To_Symbol_Table (Items);
-
-               Emit (File.Cur_Theory,
-                     New_Function_Decl
-                       (Domain  => EW_Pred,
-                        Name    => New_Identifier
-                          (Name   => "default_init_assumption",
-                           Module => Why.Types.Why_Empty,
-                           Typ    => EW_Bool_Type),
-                        Def     => +Compute_Default_Init
-                          (Expr           => +Main_Arg,
-                           Ty             => E,
-                           Skip_Last_Cond => +Slst_Arg,
-                           Params         => Params,
-                           Use_Pred       => False),
-                        Labels  => Name_Id_Sets.To_Set (NID ("inline")),
-                        Binders =>
-                          Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
-                                                          others => <>),
-                                        2 => Binder_Type'(B_Name => Slst_Arg,
-                                                          others => <>))
-                        & Get_Parameters_From_Binders (Items)));
-
-               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-            end;
-         end if;
-      end if;
 
       declare
          Eq  : Entity_Id := Get_User_Defined_Eq (E);
@@ -352,6 +360,22 @@ package body Gnat2Why.Types is
             end;
          end if;
       end;
+
+      --  Generate a predicate for E's dynamic property. For provability, it is
+      --  inlined by Why3.
+      --  We do not generate the dynamic property for Itypes as they may
+      --  depend on locally defined constants such as 'Old.
+
+      if not Is_Itype (E) then
+         Create_Dynamic_Invariant (File.Cur_Theory, E);
+
+         --  Generate a predicate for E's default initialization.
+         --  We do not generate default initialization for unconstrained types.
+
+         if Can_Be_Default_Initialized (E) then
+            Create_Default_Init_Assumption (File.Cur_Theory, E);
+         end if;
+      end if;
 
       if Has_Predicates (E) then
          Create_Dynamic_Predicate (File.Cur_Theory, E);

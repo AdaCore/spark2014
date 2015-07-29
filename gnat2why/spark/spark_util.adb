@@ -40,7 +40,6 @@ with Pprint;                    use Pprint;
 with Sem_Aux;                   use Sem_Aux;
 with Sem_Disp;                  use Sem_Disp;
 with Sem_Eval;                  use Sem_Eval;
-with Sem_Util;                  use Sem_Util;
 with SPARK_Definition;          use SPARK_Definition;
 with Stringt;                   use Stringt;
 with Treepr;                    use Treepr;

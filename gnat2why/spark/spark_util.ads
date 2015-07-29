@@ -30,6 +30,7 @@ with Impunit;               use Impunit;
 with Lib;                   use Lib;
 with Namet;                 use Namet;
 with Sem_Type;
+with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
 with Snames;                use Snames;
@@ -408,6 +409,17 @@ package SPARK_Util is
    --       (use Count_Why_Regular_Fields)
    --     - A field attr__constrained if E's discriminants have default values
    --     - A field __tag if E is tagged
+
+   function Can_Be_Default_Initialized (Typ : Entity_Id) return Boolean is
+     ((not Has_Array_Type (Typ) or else Is_Constrained (Typ))
+      and then (not Has_Record_Type (Typ)
+                or else not Has_Discriminants (Typ)
+                or else Is_Constrained (Typ)
+                or else Has_Defaulted_Discriminants (Typ))
+      and then not Is_Class_Wide_Type (Typ));
+   --  Determine wether there can be default initialized variables of a type.
+   --  @param Typ any type
+   --  @return False if Typ is unconstrained.
 
    function Default_Initialization
      (Typ           : Entity_Id;

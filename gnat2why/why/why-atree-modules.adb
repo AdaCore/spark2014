@@ -1442,6 +1442,40 @@ package body Why.Atree.Modules is
                   Typ    => EW_Bool_Type));
          end if;
 
+         --  Add symbol for the predicate used to assume the dynamic invariant
+         --  of a type. This symbol is registered in the axiom module, so that
+         --  the function can be directly defined there instead of being first
+         --  declared in the entity module and then axiomatized in the axiom
+         --  module (to have visibility over constants/functions in the
+         --  definition).
+
+         if not Is_Itype (E) then
+            Insert_Symbol
+              (E, WNE_Dynamic_Invariant,
+               New_Identifier
+                 (Symbol => NID ("dynamic_invariant"),
+                  Module => AM,
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
+         end if;
+
+         --  Add symbol for the predicate used to assume the initial value of
+         --  default initialized variables of a type. This symbol is registered
+         --  in the axiom module, so that the function can be directly defined
+         --  there instead of being first declared in the entity module and
+         --  then axiomatized in the axiom module (to have visibility over
+         --  constants/functions in the definition).
+
+         if not Is_Itype (E) and then Can_Be_Default_Initialized (E) then
+            Insert_Symbol
+              (E, WNE_Default_Init,
+               New_Identifier
+                 (Symbol => NID ("default_initial_assumption"),
+                  Module => AM,
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
+         end if;
+
          --  symbols for scalar types
 
          if Is_Scalar_Type (E) then

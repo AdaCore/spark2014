@@ -2264,10 +2264,7 @@ package body Gnat2Why.Expr is
             Args (2) := +Skip_Last_Cond;
             Args (3 .. Num_B) := Vars;
 
-            return New_Call (Name => New_Identifier
-                             (Name   => "default_init_assumption",
-                              Module => E_Axiom_Module (Ty_Ext),
-                              Typ    => EW_Bool_Type),
+            return New_Call (Name => E_Symb (Ty_Ext, WNE_Default_Init),
                              Args => Args,
                              Typ  => EW_Bool_Type);
          end;
@@ -2857,10 +2854,8 @@ package body Gnat2Why.Expr is
             Args (4) := +Top_Predicate;
             Args (5 .. Num_B) := Vars;
 
-            return New_Call (Name => New_Identifier
-                             (Name   => "dynamic_invariant",
-                              Module => E_Axiom_Module (Ty_Ext),
-                              Typ    => EW_Bool_Type),
+            return New_Call (Name => E_Symb (E => Ty_Ext,
+                                             S => WNE_Dynamic_Invariant),
                              Args => Args,
                              Typ  => EW_Bool_Type);
          end;
