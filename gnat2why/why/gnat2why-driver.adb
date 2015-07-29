@@ -152,7 +152,7 @@ package body Gnat2Why.Driver is
                   or else not Entity_Body_In_SPARK (E))
       then
          declare
-            Compl_File : Why_Section :=
+            Compl_File : Why_Section renames
               Why_Sections (Dispatch_Entity_Completion (E));
          begin
             Generate_Subprogram_Completion (Compl_File, E);
@@ -165,7 +165,7 @@ package body Gnat2Why.Driver is
       elsif Ekind (E) = E_Subprogram_Body then
          declare
             Decl_E : constant Entity_Id := Unique_Entity (E);
-            File   : Why_Section :=
+            File   : Why_Section renames
               Why_Sections (Dispatch_Entity (E));
          begin
             pragma Assert (Present (Get_Expression_Function (Decl_E)));
@@ -181,7 +181,7 @@ package body Gnat2Why.Driver is
            and then E /= Universal_Fixed
          then
             declare
-               Compl_File : Why_Section :=
+               Compl_File : Why_Section renames
                  Why_Sections (Dispatch_Entity_Completion (E));
             begin
                Generate_Type_Completion (Compl_File, E);
@@ -738,8 +738,8 @@ package body Gnat2Why.Driver is
                        Kind => Standalone_Theory);
       end Generate_Empty_Axiom_Theory;
 
-      File       : Why_Section := Why_Sections (Dispatch_Entity (E));
-      Compl_File : Why_Section :=
+      File       : Why_Section renames Why_Sections (Dispatch_Entity (E));
+      Compl_File : Why_Section renames
         Why_Sections (Dispatch_Entity_Completion (E));
       New_Theory : Boolean;
 

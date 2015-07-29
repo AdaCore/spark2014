@@ -190,20 +190,19 @@ package Gnat2Why.Util is
       WF_Context,
       WF_Main);
 
-   type Why_Section is tagged
+   type Why_Section is limited
       record
          File        : W_File_Id;
          Kind        : Why_Section_Enum;
          Cur_Theory  : W_Theory_Declaration_Id;
       end record;
-   --  Making this type tagged is a way to force by-reference passing of
-   --  objects of this type. This is needed because we have aliasing between
+   --  Making this type limited is a way to force by-reference passing
+   --  of objects of this type. This is needed because we have aliasing between
    --  parameters of many functions and the global variable Why_Sections below.
 
-   function Make_Empty_Why_Section
-     (Kind : Why_Section_Enum) return Why_Section
-     with Post =>
-       (Make_Empty_Why_Section'Result.Cur_Theory = Why.Types.Why_Empty);
+   procedure Make_Empty_Why_Section
+     (Kind : Why_Section_Enum; Section : out Why_Section)
+     with Post => (Section.Cur_Theory = Why.Types.Why_Empty);
    --  Return an empty Why_Section with the given kind
 
    Why_File_Name : String_Access;

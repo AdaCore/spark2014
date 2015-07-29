@@ -245,7 +245,7 @@ package body Gnat2Why.Decls is
    -------------------------------
 
    procedure Translate_External_Object (E : Entity_Name) is
-      File : Why_Section := Why_Sections (WF_Variables);
+      File : Why_Section renames Why_Sections (WF_Variables);
    begin
       Open_Theory
         (File,

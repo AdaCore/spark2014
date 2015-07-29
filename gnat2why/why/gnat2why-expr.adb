@@ -5942,7 +5942,8 @@ package body Gnat2Why.Expr is
 
          --  Select file for the declarations
 
-         Decl_File     : Why_Section := Why_Sections (Dispatch_Entity (Expr));
+         Decl_File     : Why_Section renames
+           Why_Sections (Dispatch_Entity (Expr));
 
       --  Start of processing for Generate_Logic_Function
 
@@ -12614,7 +12615,7 @@ package body Gnat2Why.Expr is
         New_Identifier (Ada_Node => N,
                         Name     => Name,
                         Typ      => Why_Type);
-      Decl_File : Why_Section := Why_Sections (Dispatch_Entity (N));
+      Decl_File : Why_Section renames Why_Sections (Dispatch_Entity (N));
    begin
       if Params.File = Decl_File.File then
          Decl_File.Cur_Theory := Why_Empty;

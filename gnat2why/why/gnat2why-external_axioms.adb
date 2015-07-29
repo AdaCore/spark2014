@@ -281,7 +281,7 @@ package body Gnat2Why.External_Axioms is
                     and then E /= Universal_Fixed
                   then
                      declare
-                        Compl_File : Why_Section :=
+                        Compl_File : Why_Section renames
                           Why_Sections (Dispatch_Entity_Completion (E));
                      begin
                         Generate_Type_Completion (Compl_File, E);
@@ -339,39 +339,42 @@ package body Gnat2Why.External_Axioms is
                         else Entity (Par))
                      else Empty);
                   Formal : constant Entity_Id := Defining_Entity (CurLabs);
-                  Compl_File : Why_Section;
                begin
                   if Is_Type (Formal)
                     and then not Is_Boolean_Type (Retysp (Actual))
                     and then not Is_Itype (Retysp (Actual))
                   then
-                     Compl_File :=
-                       Why_Sections (Dispatch_Entity_Completion
-                                     (Retysp (Actual)));
+                     declare
+                        Compl_File : Why_Section renames
+                          Why_Sections (Dispatch_Entity_Completion
+                                        (Retysp (Actual)));
+                     begin
 
-                     Open_Theory
-                       (Compl_File,
-                        Module =>
-                          New_Module
-                            (Name =>
-                                 NID (Capitalize_First (Instance_Name) & "__"
-                               & Short_Name (Formal) & "__axiom"),
-                             File => No_Name),
-                        Comment =>
-                          "Module giving axioms for the type entity "
-                        & """" & Get_Name_String (Chars (E)) & """"
-                        & (if Sloc (E) > 0 then
-                             " defined at " & Build_Location_String (Sloc (E))
-                          else "")
-                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                        Open_Theory
+                          (Compl_File,
+                           Module =>
+                             New_Module
+                               (Name =>
+                                    NID (Capitalize_First (Instance_Name)
+                                  & "__" & Short_Name (Formal) & "__axiom"),
+                                File => No_Name),
+                           Comment =>
+                             "Module giving axioms for the type entity "
+                           & """" & Get_Name_String (Chars (E)) & """"
+                           & (if Sloc (E) > 0 then
+                                " defined at "
+                             & Build_Location_String (Sloc (E)) else "")
+                           & ", created in "
+                           & GNAT.Source_Info.Enclosing_Entity);
 
-                     Add_With_Clause
-                       (Compl_File, E_Axiom_Module (Retysp (Actual)),
-                        EW_Export);
+                        Add_With_Clause
+                          (Compl_File, E_Axiom_Module (Retysp (Actual)),
+                           EW_Export);
 
-                     Close_Theory (Compl_File,
-                                   Defined_Entity => Formal,
-                                   Kind => Axiom_Theory);
+                        Close_Theory (Compl_File,
+                                      Defined_Entity => Formal,
+                                      Kind => Axiom_Theory);
+                     end;
                   end if;
                end;
                Next (CurAssoc);
@@ -1013,7 +1016,7 @@ package body Gnat2Why.External_Axioms is
          end if;
       end Get_Logic_Type_Of_Ada_Type;
 
-      TFile     : Why_Section :=
+      TFile     : Why_Section renames
         Why_Sections (Dispatch_Entity (Package_Entity));
       CurAssoc  : Node_Id := First (Assoc);
       CurLabs   : Node_Id := First (Labs);
@@ -1609,7 +1612,7 @@ package body Gnat2Why.External_Axioms is
               and then Is_Array_Type (Defining_Identifier (N))
             then
                declare
-                  File : Why_Section :=
+                  File : Why_Section renames
                     Why_Sections (Dispatch_Entity (Defining_Identifier (N)));
                   Element_Is_Local : constant Boolean :=
                     Containing_Package_With_Ext_Axioms
@@ -1659,7 +1662,7 @@ package body Gnat2Why.External_Axioms is
      (Package_Entity : Entity_Id)
    is
 
-      TFile : constant Why_Section :=
+      TFile : Why_Section renames
         Why_Sections (Dispatch_Entity (Package_Entity));
       G_Parents : constant List_Of_Entity.List :=
         Get_Generic_Parents (Package_Entity);

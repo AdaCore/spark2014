@@ -583,10 +583,10 @@ package body Gnat2Why.Util is
       for Kind in Why_Section_Enum'First ..
                   Why_Section_Enum'Pred (Why_Section_Enum'Last)
       loop
-         Why_Sections (Kind) :=
-           Make_Empty_Why_Section (Kind => Kind);
+         Make_Empty_Why_Section (Kind => Kind, Section => Why_Sections (Kind));
       end loop;
-      Why_Sections (WF_Main) := Make_Empty_Why_Section (Kind => WF_Main);
+      Make_Empty_Why_Section
+        (Kind => WF_Main, Section => Why_Sections (WF_Main));
    end Init_Why_Sections;
 
    -------------------
@@ -695,12 +695,12 @@ package body Gnat2Why.Util is
    -- Make_Empty_Why_File --
    -------------------------
 
-   function Make_Empty_Why_Section (Kind : Why_Section_Enum)
-                                    return Why_Section is
+   procedure Make_Empty_Why_Section
+     (Kind : Why_Section_Enum; Section : out Why_Section) is
    begin
-      return Why_Section'(File       => New_File,
-                          Kind       => Kind,
-                          Cur_Theory => Why.Types.Why_Empty);
+      Section.File := New_File;
+      Section.Kind := Kind;
+      Section.Cur_Theory := Why.Types.Why_Empty;
    end Make_Empty_Why_Section;
 
    ----------------
