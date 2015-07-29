@@ -1,0 +1,2 @@
+generate_initializes.ads:5:04: info: initialization of "A" proved
+main.adb:3:17: info: initialization of "X" proved
