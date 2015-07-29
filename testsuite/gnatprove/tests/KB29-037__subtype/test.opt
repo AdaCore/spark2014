@@ -1,0 +1,1 @@
+ALL XFAIL flow analysis must reject Dynamic_Predicate with var input (O722-010)

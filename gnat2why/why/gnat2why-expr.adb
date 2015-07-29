@@ -257,6 +257,13 @@ package body Gnat2Why.Expr is
    --  Translate an assignment of the form "Lvalue := Expr",
    --  using Ada_Node for its source location.
 
+   function New_Predicate_Call
+     (Ty     : Entity_Id;
+      W_Expr : W_Term_Id) return W_Pred_Id;
+   --  @param Ty type whose predicate needs to be checked
+   --  @param W_Expr Why3 expression on which to check the predicate
+   --  @result Why3 pred that expressed the check
+
    function New_Predicate_Check
      (Ada_Node : Node_Id;
       Ty       : Entity_Id;
@@ -3203,17 +3210,16 @@ package body Gnat2Why.Expr is
       Params   : Transformation_Params := Body_Params;
       Use_Pred : Boolean := True) return W_Pred_Id
    is
-      T : W_Pred_Id := True_Pred;
+      Result : W_Pred_Id;
 
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
 
-      Ty_Ext    : constant Entity_Id := Retysp (Ty);
-      Variables : Flow_Id_Sets.Set;
+      Ty_Ext : constant Entity_Id := Retysp (Ty);
 
    begin
       if not Has_Predicates (Ty_Ext) then
-         return True_Pred;
+         Result := True_Pred;
 
       --  If Use_Pred is true, then we already have generated a predicate for
       --  the dynamic predicate of elements of type Ty_Ext. We also avoid using
@@ -3223,22 +3229,7 @@ package body Gnat2Why.Expr is
       elsif Use_Pred
         and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Expr))
       then
-         Variables_In_Dynamic_Invariant (Ty_Ext, Variables);
-
-         declare
-            Vars  : constant W_Expr_Array :=
-              Get_Args_From_Variables (To_Name_Set (Variables));
-            Num_B : constant Positive := 1 + Vars'Length;
-            Args  : W_Expr_Array (1 .. Num_B);
-
-         begin
-            Args (1)          := +Expr;
-            Args (2 .. Num_B) := Vars;
-
-            return New_Call (Name => E_Symb (Ty, WNE_Dynamic_Predicate),
-                             Args => Args,
-                             Typ  => EW_Bool_Type);
-         end;
+         Result := New_Predicate_Call (Ty_Ext, Expr);
 
       else
          declare
@@ -3264,23 +3255,23 @@ package body Gnat2Why.Expr is
 
             --  Transform the predicate expression into Why3
 
-            T := +Transform_Expr (Expr   => Pred_Expr,
-                                  Domain => EW_Pred,
-                                  Params => Params);
+            Result := +Transform_Expr (Expr   => Pred_Expr,
+                                       Domain => EW_Pred,
+                                       Params => Params);
 
             --  Relate the name Pred_Id used in the predicate expression to the
             --  value Expr for which the predicate is checked.
 
-            T := New_Binding (Name    => Pred_Id,
-                              Def     => +Expr,
-                              Context => +T,
-                              Typ     => Get_Type (+T));
+            Result := New_Binding (Name    => Pred_Id,
+                                   Def     => +Expr,
+                                   Context => +Result,
+                                   Typ     => Get_Type (+Result));
 
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end;
       end if;
 
-      return T;
+      return Result;
    end Compute_Dynamic_Predicate;
 
    -----------------------
@@ -5180,6 +5171,35 @@ package body Gnat2Why.Expr is
       return T;
    end New_Op_Expr;
 
+   ------------------------
+   -- New_Predicate_Call --
+   ------------------------
+
+   function New_Predicate_Call
+     (Ty     : Entity_Id;
+      W_Expr : W_Term_Id) return W_Pred_Id
+   is
+      Variables : Flow_Id_Sets.Set;
+
+   begin
+      Variables_In_Dynamic_Invariant (Ty, Variables);
+
+      declare
+         Vars  : constant W_Expr_Array :=
+           Get_Args_From_Variables (To_Name_Set (Variables));
+         Num_B : constant Positive := 1 + Vars'Length;
+         Args  : W_Expr_Array (1 .. Num_B);
+
+      begin
+         Args (1)          := +W_Expr;
+         Args (2 .. Num_B) := Vars;
+
+         return +New_Call (Name => E_Symb (Ty, WNE_Dynamic_Predicate),
+                           Args => Args,
+                           Typ  => EW_Bool_Type);
+      end;
+   end New_Predicate_Call;
+
    -------------------------
    -- New_Predicate_Check --
    -------------------------
@@ -5189,10 +5209,7 @@ package body Gnat2Why.Expr is
       Ty       : Entity_Id;
       W_Expr   : W_Expr_Id) return W_Prog_Id
    is
-      Check : constant W_Pred_Id :=
-        New_Call (Name => E_Symb (Ty, WNE_Dynamic_Predicate),
-                  Args => (1 => W_Expr),
-                  Typ  => EW_Bool_Type);
+      Check : constant W_Pred_Id := New_Predicate_Call (Ty, +W_Expr);
    begin
       return New_Assert
         (Pred =>
