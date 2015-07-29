@@ -132,8 +132,8 @@ package Graph is
    ----------------------------------------------------------------------
 
    function Is_Frozen (G : T'Class) return Boolean;
-   --  Returns true if the graph is frozen, i.e. no more new vertices may
-   --  be added. Edges may still be added or removed however.
+   --  Returns true if the graph is frozen, i.e. vertices may not be added.
+   --  Edges may still be added or removed however.
 
    function Create (Colour : Edge_Colours := Edge_Colours'First) return T;
    --  Creates a new, empty graph.
@@ -539,7 +539,7 @@ package Graph is
      (G             : in out T'Class;
       Edge_Selector : access function (A, B : Vertex_Id) return Boolean);
    --  Transitively close the graph using SIMPLE_TC from Nuutila's thesis.
-   --  A new edge is only added if the edge selector function returns true
+   --  A new edge is only added if the Edge_Selector function returns True
    --  for the given vertices.
    --
    --  Complexity is O(N^2) and space more or less doubled.

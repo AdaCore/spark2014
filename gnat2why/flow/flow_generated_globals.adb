@@ -696,6 +696,8 @@ package body Flow_Generated_Globals is
             return Local_Graph.Edge_Exists (Key_B, Key_A);
          end Edge_Selector;
 
+      --  Start of processing for Add_All_Edges
+
       begin
 
          --  Go through the Subprogram_Info_List and add edges
@@ -709,7 +711,7 @@ package body Flow_Generated_Globals is
             G_Proof_Ins := Global_Id'(Kind => Proof_Ins_Kind,
                                       Name => Info.Name);
 
-            --  Connecting the subprogram's Proof_In variables to the
+            --  Connect the subprogram's Proof_In variables to the
             --  subprogram's Proof_Ins vertex.
             for Input_Proof of Info.Inputs_Proof loop
                Add_Edge (G_Proof_Ins,
@@ -717,7 +719,7 @@ package body Flow_Generated_Globals is
                                     Name => Input_Proof));
             end loop;
 
-            --  Connecting the subprogram's Input variables to the
+            --  Connect the subprogram's Input variables to the
             --  subprogram's Ins vertex.
             for Input of Info.Inputs loop
                Add_Edge (G_Ins,
@@ -725,7 +727,7 @@ package body Flow_Generated_Globals is
                                     Name => Input));
             end loop;
 
-            --  Connecting the subprogram's Output variables to the
+            --  Connect the subprogram's Output variables to the
             --  subprogram's Outputs vertex.
             for Output of Info.Outputs loop
                Add_Edge (G_Outs,
@@ -733,7 +735,7 @@ package body Flow_Generated_Globals is
                                     Name => Output));
             end loop;
 
-            --  Connecting the subprogram's Proof_Ins vertex to the
+            --  Connect the subprogram's Proof_Ins vertex to the
             --  callee's Ins and Proof_Ins vertices.
             for Proof_Call of Info.Proof_Calls loop
                Add_Edge (G_Proof_Ins,
@@ -745,7 +747,7 @@ package body Flow_Generated_Globals is
                                     Name => Proof_Call));
             end loop;
 
-            --  Connecting the subprogram's Proof_Ins, Ins and Outs
+            --  Connect the subprogram's Proof_Ins, Ins and Outs
             --  vertices respectively to the callee's Proof_Ins, Ins
             --  and Outs vertices.
             for Definite_Call of Info.Definite_Calls loop
@@ -762,7 +764,7 @@ package body Flow_Generated_Globals is
                                     Name => Definite_Call));
             end loop;
 
-            --  As above but we also add an edge from the subprogram's
+            --  As above but also add an edge from the subprogram's
             --  Ins vertex to the callee's Outs vertex.
             for Conditional_Call of Info.Conditional_Calls loop
                Add_Edge (G_Proof_Ins,
