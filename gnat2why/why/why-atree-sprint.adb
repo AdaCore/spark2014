@@ -64,11 +64,13 @@ package body Why.Atree.Sprint is
    Curr_Sloc : Source_Ptr := -1;
    --  The source code location of currently printed node
 
-   procedure Print_Sloc_Tag;
+   procedure Print_Sloc_Tag (Force : Boolean := False);
    --  Print the location tag for currently printed node.
-   --  The tag is printed only if the location of the ada node corresponing
-   --  to the currently printed node is different from the location of the
-   --  ada node corresponding to the previously printed node.
+   --  The tag is printed only if Force is set to true, the location of the ada
+   --  node corresponing to the currently printed node is different from the
+   --  location of the ada node corresponding to the previously printed node.
+   --  @param Force if set to true, the location tag is prined even if the
+   --  location is the same as the previously printed location.
 
    -----------------------
    -- Local Subprograms --
@@ -1136,7 +1138,7 @@ package body Why.Atree.Sprint is
          P (O, "( ");
       end if;
       if Labels.Contains (NID (Model_VC_Label)) then
-         Print_Sloc_Tag;
+         Print_Sloc_Tag (Force => True);
       end if;
       P (O, Labels, As_String => True);
       Print_Node (+Get_Def (Node));
@@ -1618,7 +1620,7 @@ package body Why.Atree.Sprint is
    -- Print_Sloc_Tag --
    --------------------
 
-   procedure Print_Sloc_Tag is
+   procedure Print_Sloc_Tag (Force : Boolean := False) is
       File : constant String := File_Name (Curr_Sloc);
       Line : constant Physical_Line_Number :=
         Get_Physical_Line_Number (Curr_Sloc);
@@ -1629,7 +1631,8 @@ package body Why.Atree.Sprint is
         "0" & " " &  --  dummy line 0
         "0" & "#";   --  dummy column 0
    begin
-      if Line /= Get_Physical_Line_Number (Prev_Sloc)
+      if Force
+        or else Line /= Get_Physical_Line_Number (Prev_Sloc)
         or else File /= File_Name (Prev_Sloc)
       then
          P (O, Sloc_Tag);
