@@ -8634,7 +8634,7 @@ package body Gnat2Why.Expr is
       --  Return Empty otherwise.
 
       -------------------
-      -- Get_Type_Kind --
+      -- Get_Base_Type --
       -------------------
 
       function Get_Base_Type (N : Node_Id) return Entity_Id is
