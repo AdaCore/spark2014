@@ -23,27 +23,28 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;               use Atree;
-with Einfo;               use Einfo;
+with Atree;                  use Atree;
+with Einfo;                  use Einfo;
 with GNAT.Source_Info;
-with Gnat2Why.Expr;       use Gnat2Why.Expr;
-with Namet;               use Namet;
-with Sinfo;               use Sinfo;
-with Sinput;              use Sinput;
-with SPARK_Definition;    use SPARK_Definition;
-with SPARK_Util;          use SPARK_Util;
-with String_Utils;        use String_Utils;
-with Why.Ids;             use Why.Ids;
-with Why.Sinfo;           use Why.Sinfo;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Gen.Decl;        use Why.Gen.Decl;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Binders;     use Why.Gen.Binders;
-with Why.Gen.Expr;        use Why.Gen.Expr;
-with Why.Inter;           use Why.Inter;
-with Why.Types;           use Why.Types;
+with Gnat2Why.Expr;          use Gnat2Why.Expr;
+with Namet;                  use Namet;
+with Sinfo;                  use Sinfo;
+with Sinput;                 use Sinput;
+with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Frame_Conditions;
+with SPARK_Util;             use SPARK_Util;
+with String_Utils;           use String_Utils;
+with Why.Ids;                use Why.Ids;
+with Why.Sinfo;              use Why.Sinfo;
+with Why.Atree.Accessors;    use Why.Atree.Accessors;
+with Why.Atree.Builders;     use Why.Atree.Builders;
+with Why.Atree.Modules;      use Why.Atree.Modules;
+with Why.Gen.Decl;           use Why.Gen.Decl;
+with Why.Gen.Names;          use Why.Gen.Names;
+with Why.Gen.Binders;        use Why.Gen.Binders;
+with Why.Gen.Expr;           use Why.Gen.Expr;
+with Why.Inter;              use Why.Inter;
+with Why.Types;              use Why.Types;
 
 package body Gnat2Why.Decls is
 
@@ -246,7 +247,24 @@ package body Gnat2Why.Decls is
 
    procedure Translate_External_Object (E : Entity_Name) is
       File : Why_Section renames Why_Sections (WF_Variables);
+
    begin
+      --  Objects in axiomatized units should not be treated as external
+      --  objects, since the axiomatization should define them. In particular,
+      --  constants in axiomatized units should be treated as constants without
+      --  variable input, which do not matter for effects, and as such do not
+      --  need to be translated as external objects.
+
+      declare
+         Ent : constant Entity_Id := SPARK_Frame_Conditions.Find_Entity (E);
+      begin
+         if Present (Ent)
+           and then Entity_In_Ext_Axioms (Ent)
+         then
+            return;
+         end if;
+      end;
+
       Open_Theory
         (File,
          Module =>
