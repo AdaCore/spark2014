@@ -670,7 +670,7 @@ private
      (Index_Type   => Valid_Vertex_Id,
       Element_Type => Vertex);
    use VL;
-   subtype Vertex_List is VL.Vector;
+   subtype Vertex_List is VL.Vector; --  Vertex_Vector???
 
    package Key_To_Id_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Vertex_Key,

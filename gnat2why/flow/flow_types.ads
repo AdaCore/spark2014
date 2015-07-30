@@ -96,6 +96,7 @@ package Flow_Types is
                          EC_TDG
                          --  Transitive call dependencies
                         );
+   --  ??? by convention type name are in singular (e.g. Kind not Kinds)
 
    type Flow_Id_Kind is (Null_Value,
                          --  No reference or any entity or node

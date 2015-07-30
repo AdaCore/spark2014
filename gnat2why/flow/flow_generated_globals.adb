@@ -296,6 +296,7 @@ package body Flow_Generated_Globals is
       Write_Line (Header);
       for Name of Set loop
          Write_Line ("   " & To_String (Name));
+         --  ??? use Indent/Outdent instead of fixed amount of spaces
       end loop;
    end Write_Name_Set;
 
@@ -429,12 +430,12 @@ package body Flow_Generated_Globals is
 
          Label : constant String :=
            (case G_Id.Kind is
-            when Subprogram_Kind => "Subprogram " & To_String (G_Id.Name),
-            when Proof_Ins_Kind  => To_String (G_Id.Name) & "'Proof_Ins",
-            when Ins_Kind        => To_String (G_Id.Name) & "'Ins",
-            when Outs_Kind       => To_String (G_Id.Name) & "'Outs",
-            when Variable_Kind   => To_String (G_Id.Name),
-            when Null_Kind       => "");
+              when Subprogram_Kind => "Subprogram " & To_String (G_Id.Name),
+              when Proof_Ins_Kind  => To_String (G_Id.Name) & "'Proof_Ins",
+              when Ins_Kind        => To_String (G_Id.Name) & "'Ins",
+              when Outs_Kind       => To_String (G_Id.Name) & "'Outs",
+              when Variable_Kind   => To_String (G_Id.Name),
+              when Null_Kind       => raise Program_Error);
 
          Rv : constant Node_Display_Info := Node_Display_Info'
            (Show        => True,
