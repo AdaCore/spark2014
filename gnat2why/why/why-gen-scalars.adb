@@ -53,12 +53,7 @@ package body Why.Gen.Scalars is
    procedure Define_Scalar_Attributes
      (Theory     : W_Theory_Declaration_Id;
       E          : Entity_Id;
-      Base_Type  : W_Type_Id;
-      First      : W_Term_Id;
-      Last       : W_Term_Id;
-      Modulus    : W_Term_OId;
-      Small      : W_Term_OId;
-      Is_Static  : Boolean);
+      Base_Type  : W_Type_Id);
    --  Define the attributes first, last, modulus, small for the given type.
 
    function Num_Constant (Ty : Entity_Id; N : Node_Id) return W_Term_Id;
@@ -355,7 +350,6 @@ package body Why.Gen.Scalars is
 
       --  Local variables
 
-      First, Last, Modul, Small : W_Term_OId := Why_Empty;
       Rng                       : constant Node_Id := Get_Range (E);
 
    --  Start of processing for Declare_Scalar_Type
@@ -377,70 +371,12 @@ package body Why.Gen.Scalars is
                   Labels => Name_Id_Sets.Empty_Set));
       end if;
 
-      --  retrieve and declare the attributes first, last and modulus
-
-      if Has_Modular_Integer_Type (E) then
-         declare
-            Modulus_Val : constant Uint := Modulus (E);
-            Typ : constant W_Type_Id := Base_Why_Type (E);
-         begin
-            Modul := (if Typ = EW_BitVector_8_Type then
-                        (if UI_Lt (Modulus_Val, UI_Expon (2, 8)) then
-                              New_Modular_Constant (Value => Modulus_Val,
-                                                    Typ => EW_BitVector_8_Type)
-                         else
-                                Why_Empty)
-                      elsif Typ = EW_BitVector_16_Type then
-                        (if UI_Lt (Modulus_Val, UI_Expon (2, 16)) then
-                              New_Modular_Constant
-                           (Value => Modulus_Val,
-                            Typ => EW_BitVector_16_Type)
-                         else
-                                Why_Empty)
-                      elsif Typ = EW_BitVector_32_Type then
-                        (if UI_Lt (Modulus_Val, UI_Expon (2, 32)) then
-                              New_Modular_Constant
-                           (Value => Modulus_Val,
-                            Typ => EW_BitVector_32_Type)
-                         else
-                                Why_Empty)
-                      elsif Typ = EW_BitVector_64_Type then
-                        (if UI_Lt (Modulus_Val, UI_Expon (2, 64)) then
-                              New_Modular_Constant
-                           (Value => Modulus_Val,
-                            Typ => EW_BitVector_64_Type)
-                         else
-                            Why_Empty)
-                      else
-                            raise Program_Error);
-         end;
-      end if;
-
-      if Has_Fixed_Point_Type (E) then
-         declare
-            Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (E));
-         begin
-            pragma Assert (Norm_Den (Inv_Small) = Uint_1);
-            Small := New_Integer_Constant (Value => Norm_Num (Inv_Small));
-         end;
-      end if;
-
-      if Is_Static_Expression (Low_Bound (Rng)) then
-         First := +Num_Constant (E, Low_Bound (Rng));
-      end if;
-      if Is_Static_Expression (High_Bound (Rng)) then
-         Last := +Num_Constant (E, High_Bound (Rng));
-      end if;
+      --  retrieve and declare the attributes first, last, small, and modulus
 
       Define_Scalar_Attributes
         (Theory    => Theory,
          E         => E,
-         Base_Type => Base_Why_Type (E),
-         First     => First,
-         Last      => Last,
-         Modulus   => Modul,
-         Small     => Small,
-         Is_Static => Is_Static);
+         Base_Type => Base_Why_Type (E));
 
       --  define first_int and last_int for static modular types
 
@@ -490,55 +426,118 @@ package body Why.Gen.Scalars is
    procedure Define_Scalar_Attributes
      (Theory     : W_Theory_Declaration_Id;
       E          : Entity_Id;
-      Base_Type  : W_Type_Id;
-      First      : W_Term_Id;
-      Last       : W_Term_Id;
-      Modulus    : W_Term_OId;
-      Small      : W_Term_OId;
-      Is_Static  : Boolean) is
+      Base_Type  : W_Type_Id) is
+
+      Rng : constant Node_Id := Get_Range (E);
+      First, Last : W_Term_OId := Why_Empty;
    begin
-      if Is_Static then
-         Emit (Theory,
-               Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        =>
-                    To_Local (E_Symb (E, WNE_Attr_First)),
-                  Binders     => (1 .. 0 => <>),
-                  Return_Type => Base_Type,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Def         => +First));
-         Emit (Theory,
-               Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        =>
-                    To_Local (E_Symb (E, WNE_Attr_Last)),
-                  Binders     => (1 .. 0 => <>),
-                  Return_Type => Base_Type,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Def         => +Last));
+
+      --  Compute and declare the modulus attribute of modular integer types
+
+      if Has_Modular_Integer_Type (E) then
+         declare
+            Modulus_Val : constant Uint := Modulus (E);
+            Typ         : constant W_Type_Id := Base_Why_Type (E);
+            Modul       : W_Term_OId;
+         begin
+            Modul := (if Typ = EW_BitVector_8_Type then
+                        (if UI_Lt (Modulus_Val, UI_Expon (2, 8)) then
+                              New_Modular_Constant (Value => Modulus_Val,
+                                                    Typ => EW_BitVector_8_Type)
+                         else
+                                Why_Empty)
+                      elsif Typ = EW_BitVector_16_Type then
+                        (if UI_Lt (Modulus_Val, UI_Expon (2, 16)) then
+                              New_Modular_Constant
+                           (Value => Modulus_Val,
+                            Typ => EW_BitVector_16_Type)
+                         else
+                                Why_Empty)
+                      elsif Typ = EW_BitVector_32_Type then
+                        (if UI_Lt (Modulus_Val, UI_Expon (2, 32)) then
+                              New_Modular_Constant
+                           (Value => Modulus_Val,
+                            Typ => EW_BitVector_32_Type)
+                         else
+                                Why_Empty)
+                      elsif Typ = EW_BitVector_64_Type then
+                        (if UI_Lt (Modulus_Val, UI_Expon (2, 64)) then
+                              New_Modular_Constant
+                           (Value => Modulus_Val,
+                            Typ => EW_BitVector_64_Type)
+                         else
+                            Why_Empty)
+                      else
+                         raise Program_Error);
+
+            Emit (Theory,
+                  Why.Atree.Builders.New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        =>
+                       To_Local (E_Symb (E, WNE_Attr_Modulus)),
+                     Binders     => (1 .. 0 => <>),
+                     Return_Type => Base_Type,
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Def         => +Modul));
+         end;
       end if;
-      if Modulus /= Why_Empty then
-         Emit (Theory,
-               Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        =>
-                    To_Local (E_Symb (E, WNE_Attr_Modulus)),
-                  Binders     => (1 .. 0 => <>),
-                  Return_Type => Base_Type,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Def         => +Modulus));
+
+      --  Compute and declare the small attribute of fixed point types
+
+      if Has_Fixed_Point_Type (E) then
+         declare
+            Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (E));
+            Small     : W_Term_OId;
+         begin
+            pragma Assert (Norm_Den (Inv_Small) = Uint_1);
+            Small := New_Integer_Constant (Value => Norm_Num (Inv_Small));
+
+            Emit (Theory,
+                  Why.Atree.Builders.New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        =>
+                       To_Local (E_Symb (E, WNE_Attr_Small)),
+                     Binders     => (1 .. 0 => <>),
+                     Return_Type => Base_Type,
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Def         => +Small));
+         end;
       end if;
-      if Small /= Why_Empty then
-         Emit (Theory,
-               Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        =>
-                    To_Local (E_Symb (E, WNE_Attr_Small)),
-                  Binders     => (1 .. 0 => <>),
-                  Return_Type => Base_Type,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Def         => +Small));
+
+      --  Compute and declare the first and last attributes of E
+      --  If they are static, those are constants.
+      --  Otherwise, we declare logic functions for them, with arguments for
+      --  the variables they may read. These functions will be defined later
+      --  in the axiom module of E.
+      --  Compute the binders as the objects are not declared at that point.
+
+      if Is_Static_Expression (Low_Bound (Rng)) then
+         First := +Num_Constant (E, Low_Bound (Rng));
       end if;
+      if Is_Static_Expression (High_Bound (Rng)) then
+         Last := +Num_Constant (E, High_Bound (Rng));
+      end if;
+
+      Emit (Theory,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        =>
+                 To_Local (E_Symb (E, WNE_Attr_First)),
+               Items       => Get_Binders_From_Expression
+                 (Low_Bound (Rng), Compute => True),
+               Return_Type => Base_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Def         => +First));
+      Emit (Theory,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        =>
+                 To_Local (E_Symb (E, WNE_Attr_Last)),
+               Items       => Get_Binders_From_Expression
+                 (High_Bound (Rng), Compute => True),
+               Return_Type => Base_Type,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Def         => +Last));
    end Define_Scalar_Attributes;
 
    ------------------

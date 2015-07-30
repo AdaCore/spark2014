@@ -70,6 +70,11 @@ package body Gnat2Why.Types is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
+      procedure Create_Axioms_For_Scalar_Bounds
+        (Theory : W_Theory_Declaration_Id;
+         E      : Entity_Id);
+      --  Create axioms defining the values of non-static scalar bounds
+
       procedure Create_Default_Init_Assumption
         (Theory : W_Theory_Declaration_Id;
          E      : Entity_Id);
@@ -84,6 +89,76 @@ package body Gnat2Why.Types is
         (Theory : W_Theory_Declaration_Id;
          E      : Entity_Id);
       --  Create a function to express type E's predicate
+
+      -------------------------------------
+      -- Create_Axioms_For_Scalar_Bounds --
+      -------------------------------------
+
+      procedure Create_Axioms_For_Scalar_Bounds
+        (Theory : W_Theory_Declaration_Id;
+         E      : Entity_Id)
+      is
+         procedure Create_Axiom_For_Expr
+           (Name : W_Identifier_Id;
+            Bnd  : Node_Id;
+            Typ  : W_Type_Id);
+         --  Create a defining axiom for a logic function which can be used
+         --  instead of E.
+
+         ---------------------------
+         -- Create_Axiom_For_Expr --
+         ---------------------------
+
+         procedure Create_Axiom_For_Expr
+           (Name : W_Identifier_Id;
+            Bnd  : Node_Id;
+            Typ  : W_Type_Id)
+         is
+            Items : Item_Array :=
+              Get_Binders_From_Expression (Bnd);
+            Def   : W_Term_Id;
+
+         begin
+            --  Use local names for variables
+
+            Localize_Variable_Parts (Items);
+
+            --  Push the names to Symbol_Table
+
+            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+            Push_Binders_To_Symbol_Table (Items);
+
+            Def := +Transform_Expr
+              (Expr          => Bnd,
+               Expected_Type => Typ,
+               Domain        => EW_Term,
+               Params        => Logic_Params (File.Kind));
+
+            Emit (Theory,
+                  New_Defining_Axiom
+                    (Name    => Name,
+                     Def     => +Def,
+                     Binders => Get_Parameters_From_Binders (Items)));
+
+            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+         end Create_Axiom_For_Expr;
+
+         Rng       : constant Node_Id := Get_Range (E);
+
+      begin
+         if not Is_Static_Expression (Low_Bound (Rng)) then
+            Create_Axiom_For_Expr
+              (Name => E_Symb (E, WNE_Attr_First),
+               Bnd  => Low_Bound (Rng),
+               Typ  => Base_Why_Type (E));
+         end if;
+         if not Is_Static_Expression (High_Bound (Rng)) then
+            Create_Axiom_For_Expr
+              (Name => E_Symb (E, WNE_Attr_Last),
+               Bnd  => High_Bound (Rng),
+               Typ  => Base_Why_Type (E));
+         end if;
+      end Create_Axioms_For_Scalar_Bounds;
 
       ------------------------------------
       -- Create_Default_Init_Assumption --
@@ -379,6 +454,13 @@ package body Gnat2Why.Types is
 
       if Has_Predicates (E) then
          Create_Dynamic_Predicate (File.Cur_Theory, E);
+      end if;
+
+      --  If E is a scalar type with dynamic bounds, we give axioms for the
+      --  values of its bounds.
+
+      if not Is_Itype (E) and then Is_Scalar_Type (E) then
+         Create_Axioms_For_Scalar_Bounds (File.Cur_Theory, E);
       end if;
 
       Close_Theory (File,

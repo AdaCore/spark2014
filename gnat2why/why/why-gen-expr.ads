@@ -339,16 +339,18 @@ package Why.Gen.Expr is
                                                  | Attribute_Tag;
 
    function New_Attribute_Expr
-     (Ty     : Entity_Id;
-      Domain : EW_Domain;
-      Attr   : Supported_Attribute_Id;
-      Params : Transformation_Params := Body_Params) return W_Expr_Id;
+     (Ty        : Entity_Id;
+      Domain    : EW_Domain;
+      Attr      : Supported_Attribute_Id;
+      Params    : Transformation_Params := Body_Params;
+      Use_Pred  : Boolean := True) return W_Expr_Id;
    --  Compute an expression for a type attribute Ty'Attr.
    --  @param Ty The entity for the Ada type.
    --  @param Domain The domain of the returned expression.
    --  @param Attr The querried type attribute.
    --  @param Params The parameters used for the transformation of bound
    --  expressions.
+   --  @param Use_Pred False if we want to inline values of scalar bounds
    --  @return The translated type attribute into Why3.
 
    function Get_Type (E : W_Expr_Id) return W_Type_Id;

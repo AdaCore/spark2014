@@ -3072,15 +3072,6 @@ package body Gnat2Why.Subprograms is
    is
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
       Why_Type     : W_Type_Id := Why_Empty;
-
-      function Get_Subp_Symbol (Domain   : EW_Domain) return Binder_Type
-      is
-        (Binder_Type'(B_Name   =>
-                        To_Why_Id (E, Typ => Why_Type, Domain => Domain),
-                      B_Ent    => Null_Entity_Name,
-                      Ada_Node => E,
-                      Mutable  => False));
-
    begin
       Open_Theory (File, E_Module (E),
                    Comment =>
@@ -3142,11 +3133,7 @@ package body Gnat2Why.Subprograms is
             end if;
          end;
 
-         Ada_Ent_To_Why.Insert
-           (Symbol_Table, E,
-            Item_Type'(Func,
-              For_Logic => Get_Subp_Symbol (EW_Term),
-              For_Prog  => Get_Subp_Symbol (EW_Prog)));
+         Ada_Ent_To_Why.Insert (Symbol_Table, E, Mk_Item_Of_Entity (E));
       else
          Insert_Entity (E, To_Why_Id (E, Typ => Why_Type));
       end if;

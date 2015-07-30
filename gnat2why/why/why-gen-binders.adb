@@ -32,6 +32,10 @@ with Snames;                 use Snames;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 
+with Flow_Refinement;        use Flow_Refinement;
+with Flow_Types;             use Flow_Types;
+with Flow_Utility;           use Flow_Utility;
+
 with Gnat2Why.Util;          use Gnat2Why.Util;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
@@ -80,11 +84,33 @@ package body Why.Gen.Binders is
       end case;
    end Get_Ada_Node_From_Item;
 
+   ------------------------------
+   -- Get_Args_From_Expression --
+   ------------------------------
+
+   function Get_Args_From_Expression (E           : Node_Id;
+                                      Ref_Allowed : Boolean)
+                                      return W_Expr_Array is
+      Scope     : constant Flow_Scope := Get_Flow_Scope (E);
+      Variables : constant Flow_Id_Sets.Set :=
+        Get_Variable_Set
+          (N                    => E,
+           Scope                => Scope,
+           Local_Constants      => Node_Sets.Empty_Set,
+           Fold_Functions       => False,
+           Use_Computed_Globals => True,
+           Reduced              => True);
+   begin
+      pragma Assert (if Is_Static_Expression (E) then Variables.Is_Empty);
+      return Get_Args_From_Variables (To_Name_Set (Variables), Ref_Allowed);
+   end Get_Args_From_Expression;
+
    -----------------------------
    -- Get_Args_From_Variables --
    -----------------------------
 
-   function Get_Args_From_Variables (Variables : Name_Sets.Set)
+   function Get_Args_From_Variables (Variables : Name_Sets.Set;
+                                     Ref_Allowed : Boolean)
                                    return W_Expr_Array is
       Items   : constant Item_Array := Get_Binders_From_Variables (Variables);
       Binders : constant Binder_Array := Get_Parameters_From_Binders (Items);
@@ -92,25 +118,53 @@ package body Why.Gen.Binders is
       I       : Positive := 1;
    begin
       for B of Binders loop
-         Args (I) := New_Deref (Right => B.B_Name,
-                                Typ   => Get_Typ (B.B_Name));
+         if Ref_Allowed then
+            Args (I) := New_Deref (Right => B.B_Name,
+                                   Typ   => Get_Typ (B.B_Name));
+         else
+            Args (I) := +B.B_Name;
+         end if;
          I := I + 1;
       end loop;
       return Args;
    end Get_Args_From_Variables;
 
+   ---------------------------------
+   -- Get_Binders_From_Expression --
+   ---------------------------------
+
+   function Get_Binders_From_Expression (E       : Node_Id;
+                                         Compute : Boolean := False)
+                                         return Item_Array
+   is
+      Scope     : constant Flow_Scope := Get_Flow_Scope (E);
+      Variables : constant Flow_Id_Sets.Set :=
+        Get_Variable_Set
+          (N                    => E,
+           Scope                => Scope,
+           Local_Constants      => Node_Sets.Empty_Set,
+           Fold_Functions       => False,
+           Use_Computed_Globals => True,
+           Reduced              => True);
+   begin
+      pragma Assert (if Is_Static_Expression (E) then Variables.Is_Empty);
+      return Get_Binders_From_Variables (To_Name_Set (Variables), Compute);
+   end Get_Binders_From_Expression;
+
    --------------------------------
    -- Get_Binders_From_Variables --
    --------------------------------
 
-   function Get_Binders_From_Variables (Variables : Name_Sets.Set)
-                                        return Item_Array is
+   function Get_Binders_From_Variables (Variables : Name_Sets.Set;
+                                        Compute   : Boolean := False)
+                                        return Item_Array
+   is
       Binders : Item_Array (1 .. Natural (Variables.Length));
       I       : Positive := 1;
    begin
       for V of Variables loop
          declare
-            Entity : constant Entity_Id := Find_Entity (V);
+            Entity  : constant Entity_Id := Find_Entity (V);
             Use_Ent : constant Boolean := Present (Entity)
               and then not (Ekind (Entity) = E_Abstract_State)
               and then Entity_In_SPARK (Entity);
@@ -120,14 +174,29 @@ package body Why.Gen.Binders is
               (if Use_Ent then
                     Ada_Ent_To_Why.Find (Symbol_Table, Entity)
                else Ada_Ent_To_Why.Find (Symbol_Table, V));
+
          begin
+            --  Do nothing if the entity is not mutable
+
             if Present (Entity) and then not Is_Mutable_In_Why (Entity) then
-
-               --  Do nothing if the entity is not mutable
-
                null;
+
+            --  If there is an existing binder for this entity use it
+
             elsif Ada_Ent_To_Why.Has_Element (C) then
                Binders (I) := Ada_Ent_To_Why.Element (C);
+               I := I + 1;
+
+            --  Otherwise, construct the binder
+
+            elsif Present (Entity) and then Use_Ent then
+
+               --  If we are not allowed to construct binders, all the entities
+               --  should be in the Symbol_Table.
+
+               pragma Assert (Compute);
+
+               Binders (I) := Mk_Item_Of_Entity (Entity);
                I := I + 1;
             else
                Binders (I) :=
@@ -358,12 +427,45 @@ package body Why.Gen.Binders is
 
       Ty     : constant Entity_Id :=
         (if Is_Type (Spec_Ty) then Retysp (Spec_Ty) else Spec_Ty);
-
    begin
+
+      --  For procedures, use a regular binder
+
+      if Ekind (E) = E_Procedure then
+         return (Regular,
+                 Binder_Type'
+                   (B_Name   =>
+                      To_Why_Id (E, Typ => Why_Empty),
+                    B_Ent    => Null_Entity_Name,
+                    Ada_Node => E,
+                    Mutable  => False));
+
+      --  For functions, store both the name to be used in logic and the name
+      --  to be used in programs
+
+      elsif Ekind (E) = E_Function then
+         declare
+            Typ    : constant W_Type_Id := Type_Of_Node (Ty);
+         begin
+            return (Func,
+                    For_Logic => Binder_Type'
+                      (B_Name   =>
+                         To_Why_Id (E, Typ => Typ, Domain => EW_Term),
+                       B_Ent    => Null_Entity_Name,
+                       Ada_Node => E,
+                       Mutable  => False),
+                    For_Prog => Binder_Type'
+                      (B_Name   =>
+                         To_Why_Id (E, Typ => Typ, Domain => EW_Prog),
+                       B_Ent    => Null_Entity_Name,
+                       Ada_Node => E,
+                       Mutable  => False));
+         end;
+
       --  If E is not in SPARK, only declare an object of type __private for
       --  use in effects of program functions in Why3.
 
-      if not Entity_In_SPARK (E) then
+      elsif not Entity_In_SPARK (E) then
          declare
             Typ    : constant W_Type_Id := EW_Private_Type;
             Name   : constant W_Identifier_Id :=
@@ -610,13 +712,12 @@ package body Why.Gen.Binders is
       Def         : W_Term_Id)
      return W_Declaration_Id
    is
-      Left : constant W_Term_Id := +New_Call (Domain  => EW_Term,
-                                              Name    => Name,
-                                              Binders => Binders);
-      Equality : W_Pred_Id;
-      Node_Name : constant String := (if Ada_Node /= Empty then
-                                         Short_Name (Ada_Node)
-                                      else "");
+      Left       : constant W_Term_Id := +New_Call (Domain  => EW_Term,
+                                                    Name    => Name,
+                                                    Binders => Binders);
+      Equality   : W_Pred_Id;
+      Node_Name  : constant String :=
+        (Get_Name_String (Get_Symbol (Get_Name (Name))));
       Axiom_Name : constant String := (if Node_Name /= "" then
                                           Node_Name & "__"
                                        else "") & Def_Axiom;
@@ -806,6 +907,35 @@ package body Why.Gen.Binders is
          Name        => Name,
          Labels      => Labels,
          Binders     => New_Binders (Domain, Binders),
+         Return_Type => +Return_Type,
+         Def         => Def,
+         Effects     => Effects,
+         Pre         => Pre,
+         Post        => Post);
+   end New_Function_Decl;
+
+   function New_Function_Decl
+     (Ada_Node    : Node_Id := Empty;
+      Domain      : EW_Domain;
+      Name        : W_Identifier_Id;
+      Items       : Item_Array;
+      Return_Type : W_Type_Id := Why_Empty;
+      Labels      : Name_Id_Set;
+      Effects     : W_Effects_Id := New_Effects;
+      Def         : W_Expr_Id := Why_Empty;
+      Pre         : W_Pred_Id := True_Pred;
+      Post        : W_Pred_Id := True_Pred)
+     return W_Declaration_Id is
+      Loc_Items : Item_Array := Items;
+   begin
+      Localize_Variable_Parts (Loc_Items);
+
+      return New_Function_Decl
+        (Ada_Node    => Ada_Node,
+         Domain      => Domain,
+         Name        => Name,
+         Labels      => Labels,
+         Binders     => Get_Parameters_From_Binders (Loc_Items),
          Return_Type => +Return_Type,
          Def         => Def,
          Effects     => Effects,

@@ -56,7 +56,7 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Var      : constant Item_Type := Mk_Item_Of_Entity (E);
+      Var : constant Item_Type := Mk_Item_Of_Entity (E);
    begin
       Open_Theory (File, E_Module (E),
                    Comment =>

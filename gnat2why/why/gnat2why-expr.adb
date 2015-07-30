@@ -259,9 +259,11 @@ package body Gnat2Why.Expr is
 
    function New_Predicate_Call
      (Ty     : Entity_Id;
-      W_Expr : W_Term_Id) return W_Pred_Id;
+      W_Expr : W_Term_Id;
+      Params : Transformation_Params) return W_Pred_Id;
    --  @param Ty type whose predicate needs to be checked
    --  @param W_Expr Why3 expression on which to check the predicate
+   --  @param Params transformation parameters
    --  @result Why3 pred that expressed the check
 
    function New_Predicate_Check
@@ -2258,7 +2260,8 @@ package body Gnat2Why.Expr is
 
          declare
             Vars  : constant W_Expr_Array :=
-              Get_Args_From_Variables (To_Name_Set (Variables));
+              Get_Args_From_Variables
+                (To_Name_Set (Variables), Params.Ref_Allowed);
             Num_B : constant Positive := 2 + Vars'Length;
             Args  : W_Expr_Array (1 .. Num_B);
          begin
@@ -2760,7 +2763,8 @@ package body Gnat2Why.Expr is
 
          declare
             Vars  : constant W_Expr_Array :=
-              Get_Args_From_Variables (To_Name_Set (Variables));
+              Get_Args_From_Variables
+                (To_Name_Set (Variables), Params.Ref_Allowed);
             Num_B : constant Positive := 4 + Vars'Length;
             Args  : W_Expr_Array (1 .. Num_B);
 
@@ -2806,10 +2810,11 @@ package body Gnat2Why.Expr is
                  Insert_Simple_Conversion
                    (Domain   => EW_Term,
                     Expr     => New_Attribute_Expr
-                      (Ty     => Ty_Ext,
-                       Domain => EW_Term,
-                       Attr   => Attribute_First,
-                       Params => Params),
+                      (Ty       => Ty_Ext,
+                       Domain   => EW_Term,
+                       Attr     => Attribute_First,
+                       Params   => Params,
+                       Use_Pred => Use_Pred),
                     To       => Why_Rep_Type);
                Last        : constant W_Expr_Id :=
                  Insert_Simple_Conversion
@@ -2818,7 +2823,8 @@ package body Gnat2Why.Expr is
                       (Ty     => Ty_Ext,
                        Domain => EW_Term,
                        Attr   => Attribute_Last,
-                       Params => Params),
+                       Params => Params,
+                       Use_Pred => Use_Pred),
                     To       => Why_Rep_Type);
                Fst_Le_Last : constant W_Pred_Id :=
                  New_Call (Name     => Le_Op,
@@ -3229,7 +3235,7 @@ package body Gnat2Why.Expr is
       elsif Use_Pred
         and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Expr))
       then
-         Result := New_Predicate_Call (Ty_Ext, Expr);
+         Result := New_Predicate_Call (Ty_Ext, Expr, Params);
 
       else
          declare
@@ -5177,7 +5183,8 @@ package body Gnat2Why.Expr is
 
    function New_Predicate_Call
      (Ty     : Entity_Id;
-      W_Expr : W_Term_Id) return W_Pred_Id
+      W_Expr : W_Term_Id;
+      Params : Transformation_Params) return W_Pred_Id
    is
       Variables : Flow_Id_Sets.Set;
 
@@ -5186,7 +5193,8 @@ package body Gnat2Why.Expr is
 
       declare
          Vars  : constant W_Expr_Array :=
-           Get_Args_From_Variables (To_Name_Set (Variables));
+           Get_Args_From_Variables
+             (To_Name_Set (Variables), Params.Ref_Allowed);
          Num_B : constant Positive := 1 + Vars'Length;
          Args  : W_Expr_Array (1 .. Num_B);
 
@@ -5209,7 +5217,8 @@ package body Gnat2Why.Expr is
       Ty       : Entity_Id;
       W_Expr   : W_Expr_Id) return W_Prog_Id
    is
-      Check : constant W_Pred_Id := New_Predicate_Call (Ty, +W_Expr);
+      Check : constant W_Pred_Id :=
+        New_Predicate_Call (Ty, +W_Expr, Body_Params);
    begin
       return New_Assert
         (Pred =>

@@ -1591,12 +1591,8 @@ package body Gnat2Why.External_Axioms is
                         To_Why_Id (E, Domain => EW_Term),
                         Mutable => False);
                   else
-                     Insert_Entity
-                       (E,
-                        To_Why_Id (E, Typ => Type_Of_Node (Etype (E)),
-                                   Domain => EW_Term),
-                        Mutable => Is_Object (E) and then
-                                   Is_Mutable_In_Why (E));
+                     Ada_Ent_To_Why.Insert
+                       (Symbol_Table, E, Mk_Item_Of_Entity (E));
                   end if;
                end;
             end if;

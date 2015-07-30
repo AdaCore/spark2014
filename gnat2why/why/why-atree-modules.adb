@@ -1539,24 +1539,24 @@ package body Why.Atree.Modules is
                      Domain => EW_Term,
                      Symbol => NID ("of_rep"),
                      Typ    => Ty));
+               Insert_Symbol
+                 (E, WNE_Attr_First,
+                  New_Identifier
+                    (Symbol => NID ("first"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Base));
+               Insert_Symbol
+                 (E, WNE_Attr_Last,
+                  New_Identifier
+                    (Symbol => NID ("last"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Base));
 
                --  symbols for static scalar types
 
                if not Type_Is_Modeled_As_Base (E) then
-                  Insert_Symbol
-                    (E, WNE_Attr_First,
-                     New_Identifier
-                       (Symbol => NID ("first"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => Base));
-                  Insert_Symbol
-                    (E, WNE_Attr_Last,
-                     New_Identifier
-                       (Symbol => NID ("last"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => Base));
                   Insert_Symbol
                     (E, WNE_Range_Pred,
                      New_Identifier

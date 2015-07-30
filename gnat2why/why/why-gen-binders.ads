@@ -174,6 +174,21 @@ package Why.Gen.Binders is
       Post        : W_Pred_Id := True_Pred)
      return W_Declaration_Id;
 
+   function New_Function_Decl
+     (Ada_Node    : Node_Id := Empty;
+      Domain      : EW_Domain;
+      Name        : W_Identifier_Id;
+      Items       : Item_Array;
+      Return_Type : W_Type_Id := Why_Empty;
+      Labels      : Name_Id_Set;
+      Effects     : W_Effects_Id := New_Effects;
+      Def         : W_Expr_Id := Why_Empty;
+      Pre         : W_Pred_Id := True_Pred;
+      Post        : W_Pred_Id := True_Pred)
+      return W_Declaration_Id;
+   --  Localizes Binders before transforming their variable parts into
+   --  function parameters.
+
    function New_Record_Definition
       (Ada_Node : Node_Id := Empty;
        Name     : W_Name_Id;
@@ -266,11 +281,24 @@ package Why.Gen.Binders is
    --  @param Ref_Allowed use dereference for variables.
    --  @return an Item representing the Entity E.
 
-   function Get_Binders_From_Variables (Variables : Name_Sets.Set)
+   function Get_Binders_From_Variables (Variables : Name_Sets.Set;
+                                        Compute   : Boolean := False)
                                         return Item_Array;
    --  From a set of names returned by flow analysis, compute an array of
    --  items representing the variables in Why.
    --  @param Variables a set of names returned by flow analysis
+   --  @param Compute Should be True if we want to compute binders missing from
+   --  the Symbol_Table.
+   --  Should only be put to True if only localized versions of names are used.
+   --  @result An array of items used to represent these variables in Why
+
+   function Get_Binders_From_Expression (E       : Node_Id;
+                                         Compute : Boolean := False)
+                                         return Item_Array;
+   --  Compute an array of items representing the variables of E in Why.
+   --  @param E Ada node for an expression
+   --  @param Compute Should be True if we want to compute binders missing from
+   --  the Symbol_Table. Only put it to True when the names are localized.
    --  @result An array of items used to represent these variables in Why
 
    procedure Localize_Variable_Parts (Binders : in out Item_Array);
@@ -288,11 +316,23 @@ package Why.Gen.Binders is
    --  @result An array of items used to represent these variables in Why
    --  @result An array of binders containing their variable parts
 
-   function Get_Args_From_Variables (Variables : Name_Sets.Set)
+   function Get_Args_From_Variables (Variables : Name_Sets.Set;
+                                     Ref_Allowed : Boolean)
                                      return W_Expr_Array;
    --  From a set of names returned by flow analysis, compute an array of
    --  expressions for the values of their variable parts.
    --  @param Variables a set of names returned by flow analysis
+   --  @param Ref_Allowed whether variables should be dereferenced
+   --  @result An array of W_Expr_Ids used to represent the variable parts
+   --  of these variables in Why.
+
+   function Get_Args_From_Expression (E           : Node_Id;
+                                      Ref_Allowed : Boolean)
+                                      return W_Expr_Array;
+   --  Compute an array of expressions representing the value of variable
+   --  parts of variables of E.
+   --  @param E Ada node for an expression
+   --  @param Ref_Allowed whether variables should be dereferenced
    --  @result An array of W_Expr_Ids used to represent the variable parts
    --  of these variables in Why.
 

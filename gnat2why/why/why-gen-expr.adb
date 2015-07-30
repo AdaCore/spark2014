@@ -54,6 +54,7 @@ with Common_Containers;       use Common_Containers;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Modules;       use Why.Atree.Modules;
 with Why.Atree.Tables;        use Why.Atree.Tables;
+with Why.Gen.Binders;         use Why.Gen.Binders;
 with Why.Conversions;         use Why.Conversions;
 with Why.Gen.Arrays;          use Why.Gen.Arrays;
 with Why.Gen.Names;           use Why.Gen.Names;
@@ -2153,21 +2154,28 @@ package body Why.Gen.Expr is
    ------------------------
 
    function New_Attribute_Expr
-     (Ty     : Entity_Id;
-      Domain : EW_Domain;
-      Attr   : Supported_Attribute_Id;
-      Params : Transformation_Params := Body_Params) return W_Expr_Id is
+     (Ty        : Entity_Id;
+      Domain    : EW_Domain;
+      Attr      : Supported_Attribute_Id;
+      Params    : Transformation_Params := Body_Params;
+      Use_Pred  : Boolean := True) return W_Expr_Id is
       Subdomain : constant EW_Domain :=
         (if Domain in EW_Prog | EW_Pterm then EW_Pterm else EW_Term);
+
    begin
+      --  We do not generate axioms giving values to bounds of Itypes as they
+      --  may contain locally defined entities that are not detected by
+      --  Get_Variables_Set ('Old, 'Loop_Entry, 'Return).
+
       if Attr in Attribute_First | Attribute_Last
         and then Type_Is_Modeled_As_Base (Ty)
+        and then (Is_Itype (Ty) or else not Use_Pred)
       then
          --  Use expression for dynamic bounds
 
          declare
-            Rng       : constant Node_Id := Get_Range (Ty);
-            BT        : constant W_Type_Id :=
+            Rng : constant Node_Id := Get_Range (Ty);
+            BT  : constant W_Type_Id :=
               (if Is_Standard_Boolean_Type (Ty) then EW_Int_Type
                else Base_Why_Type (Ty));
          begin
@@ -2176,6 +2184,30 @@ package body Why.Gen.Expr is
             else
                return Transform_Expr (High_Bound (Rng), BT, Subdomain, Params);
             end if;
+         end;
+
+      elsif Attr in Attribute_First | Attribute_Last
+        and then Type_Is_Modeled_As_Base (Ty)
+      then
+         --  Call predefind functions
+
+         declare
+            Rng : constant Node_Id := Get_Range (Ty);
+            BT  : constant W_Type_Id :=
+              (if Is_Standard_Boolean_Type (Ty) then EW_Int_Type
+               else Base_Why_Type (Ty));
+            Bnd : constant Node_Id :=
+              (if Attr = Attribute_First then Low_Bound (Rng)
+               else High_Bound (Rng));
+            Id  : constant W_Identifier_Id :=
+              (if Attr = Attribute_First then E_Symb (Ty, WNE_Attr_First)
+               else E_Symb (Ty, WNE_Attr_Last));
+         begin
+            return New_Call (Domain   => Subdomain,
+                             Name     => Id,
+                             Args     => Get_Args_From_Expression
+                               (Bnd, Params.Ref_Allowed),
+                             Typ      => BT);
          end;
 
       elsif Attr in Attribute_First | Attribute_Last | Attribute_Length
