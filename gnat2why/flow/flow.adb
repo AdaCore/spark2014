@@ -887,6 +887,7 @@ package body Flow is
       Tmp.No_Effects            := False;
       Tmp.No_Errors_Or_Warnings := True;
       Tmp.Direct_Calls          := Node_Sets.Empty_Set;
+      Tmp.Tasking               := (others => Node_Sets.Empty_Set);
 
       --  Generate Globals (gg) or Flow Analysis (fa)
       Tmp.Base_Filename := To_Unbounded_String (if Generating_Globals
@@ -1168,6 +1169,12 @@ package body Flow is
 
          Control_Flow_Graph.Create (FA);
 
+         --  Register tasking-related information
+         if Generating_Globals then
+            GG_Register_Tasking_Info (To_Entity_Name (FA.Analyzed_Entity),
+                                      FA.Tasking);
+         end if;
+
          --  We print this graph first in case the other algorithms barf
          if Debug_Print_CFG then
             Print_Graph (Filename          =>
@@ -1418,6 +1425,21 @@ package body Flow is
                null;
          end case;
       end loop;
+
+      for FA of FA_Graphs loop
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            Indent;
+
+            for Kind in Tasking_Info_Kind'Range loop
+               if not FA.Tasking (Kind).Is_Empty then
+                  Write_Str (Kind'Img & " :");
+                  Print_Node_Set (FA.Tasking (Kind));
+               end if;
+            end loop;
+
+            Outdent;
+         end if;
+      end loop;
    end Build_Graphs_For_Compilation_Unit;
 
    ------------------------
@@ -1457,30 +1479,6 @@ package body Flow is
                           Character'Val (8#33#) & "[1m" &
                           Get_Name_String (Chars (FA.Analyzed_Entity)) &
                           Character'Val (8#33#) & "[0m");
-
-            Indent;
-
-            if not FA.Tasking.Suspends_On.Is_Empty then
-               Write_Str ("Suspends on:");
-               Print_Node_Set (FA.Tasking.Suspends_On);
-            end if;
-
-            if not FA.Tasking.PO_Read_Locks.Is_Empty then
-               Write_Str ("PO read-locks:");
-               Print_Node_Set (FA.Tasking.PO_Read_Locks);
-            end if;
-
-            if not FA.Tasking.PO_Write_Locks.Is_Empty then
-               Write_Str ("PO write-locks:");
-               Print_Node_Set (FA.Tasking.PO_Write_Locks);
-            end if;
-
-            if not FA.Tasking.Entries_Called.Is_Empty then
-               Write_Str ("Entry calls:");
-               Print_Node_Set (FA.Tasking.Entries_Called);
-            end if;
-
-            Outdent;
          end if;
 
          Analysis.Sanity_Check (FA, Success);

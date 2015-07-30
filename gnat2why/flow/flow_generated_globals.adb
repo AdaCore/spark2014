@@ -68,6 +68,9 @@ package body Flow_Generated_Globals is
    Debug_Print_Generated_Initializes : constant Boolean := False;
    --  Enables printing of the generated initializes aspects
 
+   Debug_Print_Tasking_Info          : constant Boolean := False;
+   --  Enables printing of tasking-related information
+
    ----------------------------------------------------------------------
    --  Local state
    ----------------------------------------------------------------------
@@ -100,6 +103,7 @@ package body Flow_Generated_Globals is
       Equivalent_Keys => "=",
       "="             => Name_Sets."=");
    use State_Info_Maps;
+   --  ??? rename since also used for tasking-related info
 
    State_Comp_Map : State_Info_Maps.Map := State_Info_Maps.Empty_Map;
    --  state -> {components}
@@ -113,13 +117,6 @@ package body Flow_Generated_Globals is
    ----------------------------------------------------------------------
    --  Initializes information
    ----------------------------------------------------------------------
-
-   package Name_Dependency_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Name,
-      Element_Type    => Name_Sets.Set,
-      Hash            => Name_Hash,
-      Equivalent_Keys => "=",
-      "="             => Name_Sets."=");
 
    type Initializes_Info is record
       LHS       : Name_Sets.Set := Name_Sets.Empty_Set;
@@ -160,6 +157,22 @@ package body Flow_Generated_Globals is
    Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
    --  Volatile information
 
+   Tasking_Info_Bag : array (Tasking_Info_Kind) of State_Info_Maps.Map :=
+     (others => State_Info_Maps.Empty_Map);
+   --  Tasking-related information read from ALI file and then processed
+
+   package Entity_Tasking_Info_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Name,
+      Element_Type    => Tasking_Info,
+      Hash            => Name_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+   --  Container for tasking-related information collected in phase 1
+
+   Entity_Tasking_Info_Map : Entity_Tasking_Info_Maps.Map :=
+     Entity_Tasking_Info_Maps.Empty_Map;
+   --  Tasking-related information to be stored in ALI file
+
    ----------------------------------------------------------------------
    --  Global_Id
    ----------------------------------------------------------------------
@@ -199,6 +212,23 @@ package body Flow_Generated_Globals is
    is (if X.Kind = Null_Kind
        then Generic_Integer_Hash (-1)
        else Name_Hash (X.Name));
+
+   --------------------
+   -- Tasking graphs --
+   --------------------
+
+   subtype Single_Edge_Colour is Edge_Colours range EC_Default .. EC_Default;
+   --  For tasking graph we need a single colour
+
+   package Tasking_Graphs is new Graph (Vertex_Key   => Entity_Name,
+                                        Edge_Colours => Single_Edge_Colour,
+                                        Null_Key     => Null_Entity_Name,
+                                        Key_Hash     => Name_Hash,
+                                        Test_Key     => "=");
+
+   Tasking_Graph : array (Tasking_Info_Kind) of Tasking_Graphs.T :=
+     (others => Tasking_Graphs.Create);
+   --  Graphs with tasking-related information
 
    -------------------
    -- Global_Graphs --
@@ -284,21 +314,21 @@ package body Flow_Generated_Globals is
    procedure Print_Generated_Initializes_Aspects;
    --  Prints all the generated initializes aspects
 
-   procedure Write_Name_Set (Header : String; Set : Name_Sets.Set);
-   --  Write Header followed by elements of Set
+   procedure Print_Name_Set (Header : String; Set : Name_Sets.Set);
+   --  Print Header followed by elements of Set
 
    --------------------
-   -- Write_Name_Set --
+   -- Print_Name_Set --
    --------------------
 
-   procedure Write_Name_Set (Header : String; Set : Name_Sets.Set) is
+   procedure Print_Name_Set (Header : String; Set : Name_Sets.Set) is
    begin
       Write_Line (Header);
       for Name of Set loop
          Write_Line ("   " & To_String (Name));
          --  ??? use Indent/Outdent instead of fixed amount of spaces
       end loop;
-   end Write_Name_Set;
+   end Print_Name_Set;
 
    procedure GG_Get_MR_Globals (EN          : Entity_Name;
                                 Proof_Reads : out Name_Sets.Set;
@@ -381,16 +411,16 @@ package body Flow_Generated_Globals is
                    when E_Kind => "Entry ",
                    when P_Kind => "Package ") & To_String (Info.Name));
 
-      Write_Name_Set ("Proof_Ins            :", Info.Inputs_Proof);
-      Write_Name_Set ("Inputs               :", Info.Inputs);
-      Write_Name_Set ("Outputs              :", Info.Outputs);
-      Write_Name_Set ("Proof calls          :", Info.Proof_Calls);
-      Write_Name_Set ("Definite calls       :", Info.Definite_Calls);
-      Write_Name_Set ("Conditional calls    :", Info.Conditional_Calls);
-      Write_Name_Set ("Local variables      :", Info.Local_Variables);
+      Print_Name_Set ("Proof_Ins            :", Info.Inputs_Proof);
+      Print_Name_Set ("Inputs               :", Info.Inputs);
+      Print_Name_Set ("Outputs              :", Info.Outputs);
+      Print_Name_Set ("Proof calls          :", Info.Proof_Calls);
+      Print_Name_Set ("Definite calls       :", Info.Definite_Calls);
+      Print_Name_Set ("Conditional calls    :", Info.Conditional_Calls);
+      Print_Name_Set ("Local variables      :", Info.Local_Variables);
 
       if Info.Kind = P_Kind then
-         Write_Name_Set ("Local definite writes:", Info.Local_Definite_Writes);
+         Print_Name_Set ("Local definite writes:", Info.Local_Definite_Writes);
       end if;
    end Print_Global_Phase_1_Info;
 
@@ -503,10 +533,10 @@ package body Flow_Generated_Globals is
             Indent;
             Write_Line ("Package " & To_String (Pkg)  & ":");
             Indent;
-            Write_Name_Set ("LHS      : ", II.LHS);
-            Write_Name_Set ("LHS_Proof: ", II.LHS_Proof);
-            Write_Name_Set ("RHS      : ", II.RHS);
-            Write_Name_Set ("RHS_Proof: ", II.RHS_Proof);
+            Print_Name_Set ("LHS      : ", II.LHS);
+            Print_Name_Set ("LHS_Proof: ", II.LHS_Proof);
+            Print_Name_Set ("RHS      : ", II.RHS);
+            Print_Name_Set ("RHS_Proof: ", II.RHS_Proof);
             Outdent;
             Outdent;
          end;
@@ -687,6 +717,16 @@ package body Flow_Generated_Globals is
       Nonblocking_Subprograms_Set.Insert (EN);
    end GG_Register_Nonblocking;
 
+   ------------------------------
+   -- GG_Register_Tasking_Info --
+   ------------------------------
+
+   procedure GG_Register_Tasking_Info (EN : Entity_Name;
+                                       TI : Tasking_Info) is
+   begin
+      Entity_Tasking_Info_Map.Insert (EN, TI);
+   end GG_Register_Tasking_Info;
+
    -----------------------
    -- GG_Write_Finalize --
    -----------------------
@@ -695,8 +735,11 @@ package body Flow_Generated_Globals is
       procedure Write_Global_Info_List (L : Global_Info_Lists.List);
       --  Writes all global info of the global info set on the file
 
-      procedure Write_Name_Set (Tag : String; S : Name_Sets.Set);
-      --  Writes all names of the name set on the file
+      procedure Write_Info_Tag_Names (Tag : String; S : Name_Sets.Set);
+      --  Write tag followed by a set of names
+
+      procedure Write_Info_Tag_Nodes (Tag : String; S : Node_Sets.Set);
+      --  Write tag followed by a set of nodes
 
       ---------------------------
       -- Write_Global_Info_Set --
@@ -705,39 +748,39 @@ package body Flow_Generated_Globals is
       procedure Write_Global_Info_List (L : Global_Info_Lists.List) is
       begin
          for Info of L loop
-            Write_Name_Set ((case Info.Kind is
-                             when S_Kind => "GG S ",
-                             when T_Kind => "GG T ",
-                             when E_Kind => "GG E ",
-                             when P_Kind => "GG P ") &
-                            (case Info.Globals_Origin is
-                             when UG => "UG ",
-                             when FA => "FA ",
-                             when XR => "XR ") &
-                            To_String (Info.Name),
-                            Name_Sets.Empty_Set);
+            Write_Info_Tag_Names ((case Info.Kind is
+                                     when S_Kind => "GG S ",
+                                     when T_Kind => "GG T ",
+                                     when E_Kind => "GG E ",
+                                     when P_Kind => "GG P ") &
+                                  (case Info.Globals_Origin is
+                                     when UG => "UG ",
+                                     when FA => "FA ",
+                                     when XR => "XR ") &
+                                     To_String (Info.Name),
+                                  Name_Sets.Empty_Set);
 
-            Write_Name_Set ("GG VP", Info.Inputs_Proof);
-            Write_Name_Set ("GG VI", Info.Inputs);
-            Write_Name_Set ("GG VO", Info.Outputs);
-            Write_Name_Set ("GG CP", Info.Proof_Calls);
-            Write_Name_Set ("GG CD", Info.Definite_Calls);
-            Write_Name_Set ("GG CC", Info.Conditional_Calls);
-            Write_Name_Set ("GG LV", Info.Local_Variables);
-            Write_Name_Set ("GG LS", Info.Local_Subprograms);
+            Write_Info_Tag_Names ("GG VP", Info.Inputs_Proof);
+            Write_Info_Tag_Names ("GG VI", Info.Inputs);
+            Write_Info_Tag_Names ("GG VO", Info.Outputs);
+            Write_Info_Tag_Names ("GG CP", Info.Proof_Calls);
+            Write_Info_Tag_Names ("GG CD", Info.Definite_Calls);
+            Write_Info_Tag_Names ("GG CC", Info.Conditional_Calls);
+            Write_Info_Tag_Names ("GG LV", Info.Local_Variables);
+            Write_Info_Tag_Names ("GG LS", Info.Local_Subprograms);
 
             --  For packages we have an additional line
             if Info.Kind = P_Kind then
-               Write_Name_Set ("GG LD", Info.Local_Definite_Writes);
+               Write_Info_Tag_Names ("GG LD", Info.Local_Definite_Writes);
             end if;
          end loop;
       end Write_Global_Info_List;
 
-      --------------------
-      -- Write_Name_Set --
-      --------------------
+      --------------------------
+      -- Write_Info_Tag_Names --
+      --------------------------
 
-      procedure Write_Name_Set (Tag : String; S : Name_Sets.Set) is
+      procedure Write_Info_Tag_Names (Tag : String; S : Name_Sets.Set) is
       begin
          Write_Info_Str (Tag);
          for N of S loop
@@ -745,7 +788,21 @@ package body Flow_Generated_Globals is
             Write_Info_Str (To_String (N));
          end loop;
          Write_Info_Terminate;
-      end Write_Name_Set;
+      end Write_Info_Tag_Names;
+
+      --------------------------
+      -- Write_Info_Tag_Nodes --
+      --------------------------
+
+      procedure Write_Info_Tag_Nodes (Tag : String; S : Node_Sets.Set) is
+      begin
+         Write_Info_Str (Tag);
+         for N of S loop
+            Write_Info_Char (' ');
+            Write_Info_Str (To_String (To_Entity_Name (N)));
+         end loop;
+         Write_Info_Terminate;
+      end Write_Info_Tag_Nodes;
 
    --  Start of processing for GG_Write_Finalize
 
@@ -756,8 +813,8 @@ package body Flow_Generated_Globals is
             State        : constant Entity_Name   := Key (C);
             Constituents : constant Name_Sets.Set := Element (C);
          begin
-            Write_Name_Set ("GG AS " & To_String (State),
-                            Constituents);
+            Write_Info_Tag_Names ("GG AS " & To_String (State),
+                                  Constituents);
          end;
       end loop;
 
@@ -771,31 +828,65 @@ package body Flow_Generated_Globals is
 
       --  Write Async_Writers
       if not Async_Writers_Vars.Is_Empty then
-         Write_Name_Set ("GG AW", Async_Writers_Vars);
+         Write_Info_Tag_Names ("GG AW", Async_Writers_Vars);
       end if;
 
       --  Write Async_Readers
       if not Async_Readers_Vars.Is_Empty then
-         Write_Name_Set ("GG AR", Async_Readers_Vars);
+         Write_Info_Tag_Names ("GG AR", Async_Readers_Vars);
       end if;
 
       --  Write Effective_Reads
       if not Effective_Reads_Vars.Is_Empty then
-         Write_Name_Set ("GG ER", Effective_Reads_Vars);
+         Write_Info_Tag_Names ("GG ER", Effective_Reads_Vars);
       end if;
 
       --  Write Effective_Writes
       if not Effective_Writes_Vars.Is_Empty then
-         Write_Name_Set ("GG EW", Effective_Writes_Vars);
+         Write_Info_Tag_Names ("GG EW", Effective_Writes_Vars);
       end if;
 
       --  Write nonblocking subprograms
       if not Nonblocking_Subprograms_Set.Is_Empty then
-         Write_Name_Set ("GG NB", Nonblocking_Subprograms_Set);
+         Write_Info_Tag_Names ("GG NB", Nonblocking_Subprograms_Set);
       end if;
+
+      --  Write tasking-related information
+      for C in Entity_Tasking_Info_Map.Iterate loop
+         declare
+            Name : constant String :=
+              To_String (Entity_Tasking_Info_Maps.Key (C));
+            Info : constant Tasking_Info :=
+              Entity_Tasking_Info_Maps.Element (C);
+
+            procedure Write_Tasking_Info (Tag  : String;
+                                          Kind : Tasking_Info_Kind);
+            --  Write tasking-related info if S is not empty
+
+            ------------------------
+            -- Write_Tasking_Info --
+            ------------------------
+
+            procedure Write_Tasking_Info (Tag  : String;
+                                          Kind : Tasking_Info_Kind) is
+            begin
+               if not Info (Kind).Is_Empty then
+                  Write_Info_Tag_Nodes ("GG " & Tag & " " & Name, Info (Kind));
+               end if;
+            end Write_Tasking_Info;
+
+         begin
+            Write_Tasking_Info ("TS", Suspends_On);
+            Write_Tasking_Info ("TE", Entry_Calls);
+            Write_Tasking_Info ("TR", Read_Locks);
+            Write_Tasking_Info ("TW", Write_Locks);
+            Write_Tasking_Info ("TU", Unsynch_Accesses);
+         end;
+      end loop;
 
       Close_Output_Library_Info;
       Current_Mode := GG_No_Mode;
+
    end GG_Write_Finalize;
 
    -------------
@@ -815,6 +906,7 @@ package body Flow_Generated_Globals is
 
       All_Other_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
       --  Contains all subprograms for which a GG entry does not exist
+      --  ??? rename to No_GG_Subprograms?
 
       procedure Add_All_Edges;
       --  Reads the populated Subprogram_Info_List and generates all the edges
@@ -827,6 +919,9 @@ package body Flow_Generated_Globals is
       procedure Create_Local_Graph;
       --  Creates the Local_Graph. This graph will be used to prevent adding
       --  edges to local variables on the Global_Graph.
+
+      procedure Create_Tasking_Graph;
+      --  Creates graph with tasking-related information
 
       procedure Edit_Proof_Ins;
       --  A variable cannot be simultaneously a Proof_In and an Input
@@ -845,6 +940,13 @@ package body Flow_Generated_Globals is
 
       procedure Remove_Constants_Without_Variable_Input;
       --  Removes edges leading to constants without variable input
+
+      procedure Print_Tasking_Info_Bag;
+      --  Display the tasking-related information
+
+      procedure Process_Tasking_Graph;
+      --  Do transitive closure of the tasking graph and put the resulting
+      --  information back to bag with tasking-related information.
 
       -------------------
       -- Add_All_Edges --
@@ -969,6 +1071,13 @@ package body Flow_Generated_Globals is
                Add_Edge (G_Outs,
                          Global_Id'(Kind => Outs_Kind,
                                     Name => Definite_Call));
+
+               --  Also record the call in the tasking-info graphs
+               for Kind in Tasking_Info_Kind loop
+                  Tasking_Graph (Kind).Add_Edge (Info.Name,
+                                                 Definite_Call,
+                                                 EC_Default);
+               end loop;
             end loop;
 
             --  As above but also add an edge from the subprogram's
@@ -989,6 +1098,13 @@ package body Flow_Generated_Globals is
                Add_Edge (G_Outs,
                          Global_Id'(Kind => Outs_Kind,
                                     Name => Conditional_Call));
+
+               --  Also record the call in the tasking-info graphs
+               for Kind in Tasking_Info_Kind loop
+                  Tasking_Graph (Kind).Add_Edge (Info.Name,
+                                                 Conditional_Call,
+                                                 EC_Default);
+               end loop;
             end loop;
          end loop;
 
@@ -1098,6 +1214,12 @@ package body Flow_Generated_Globals is
                Global_Graph.Add_Vertex (G_Ins);
                Global_Graph.Add_Vertex (G_Outs);
                Global_Graph.Add_Vertex (G_Proof_Ins);
+
+               --  Also add vertex to the tasking-info graphs
+               for Kind in Tasking_Info_Kind loop
+                  Tasking_Graph (Kind).Add_Vertex (N);
+                  --  ??? vertices could be created just before adding edges
+               end loop;
             end;
          end loop;
 
@@ -1242,6 +1364,44 @@ package body Flow_Generated_Globals is
          --  Close graph
          Local_Graph.Close;
       end Create_Local_Graph;
+
+      --------------------------
+      -- Create_Tasking_Graph --
+      --------------------------
+
+      procedure Create_Tasking_Graph is
+      begin
+         for Kind in Tasking_Info_Kind loop
+            for C in Tasking_Info_Bag (Kind).Iterate loop
+               declare
+                  Subp : constant Entity_Name   := State_Info_Maps.Key (C);
+                  Objs : constant Name_Sets.Set := State_Info_Maps.Element (C);
+                  use type Tasking_Graphs.Vertex_Id;
+               begin
+                  --  Add vertices for objects
+                  for Obj of Objs loop
+                     --  Create subprogram vertex if not already exists, which
+                     --  happens for package elaboration code
+                     if Tasking_Graph (Kind).Get_Vertex (Subp) =
+                       Tasking_Graphs.Null_Vertex
+                     then
+                        Tasking_Graph (Kind).Add_Vertex (Subp);
+                     end if;
+
+                     --  Create object vertex if it not already created
+                     if Tasking_Graph (Kind).Get_Vertex (Obj) =
+                       Tasking_Graphs.Null_Vertex
+                     then
+                        Tasking_Graph (Kind).Add_Vertex (Obj);
+                     end if;
+
+                     --  Create edge
+                     Tasking_Graph (Kind).Add_Edge (Subp, Obj, EC_Default);
+                  end loop;
+               end;
+            end loop;
+         end loop;
+      end Create_Tasking_Graph;
 
       --------------------
       -- Edit_Proof_Ins --
@@ -1636,6 +1796,66 @@ package body Flow_Generated_Globals is
                --  State line parsed. We will now return.
                return;
 
+            --  And to the same trick for tasking-related information
+
+            elsif Length (Line) > 6
+              and then Slice (Line, 1, 4) = "GG T"
+              and then Element (Line, 6) = ' '
+            then
+               declare
+                  Tasking_Key   : constant Character := Element (Line, 5);
+                  First         : Entity_Name;
+                  Names         : Name_Sets.Set;
+                  Start_Of_Word : constant Natural := 7;
+                  End_Of_Word   : Natural := 7;
+               begin
+                  --  Check line format
+                  if not (Tasking_Key in 'S' | 'E' | 'R' | 'W' | 'U') then
+                     raise Program_Error;
+                  end if;
+
+                  --  Get all names
+                  Names := Get_Names_From_Line;
+
+                  --  And now the first one
+                  while End_Of_Word < Length (Line)
+                    and then Element (Line, End_Of_Word) > ' '
+                  loop
+                     End_Of_Word := End_Of_Word + 1;
+                  end loop;
+
+                  --  If we have not reached the end of the line then
+                  --  we have read one character too many.
+                  if End_Of_Word < Length (Line) then
+                     End_Of_Word := End_Of_Word - 1;
+                  end if;
+
+                  First := To_Entity_Name (Slice (Line,
+                                           Start_Of_Word,
+                                           End_Of_Word));
+
+                  Names.Exclude (First);
+
+                  case Tasking_Key is
+                     when 'S' =>
+                        Tasking_Info_Bag (Suspends_On).Insert (First, Names);
+                     when 'E' =>
+                        Tasking_Info_Bag (Entry_Calls).Insert (First, Names);
+                     when 'R' =>
+                        Tasking_Info_Bag (Read_Locks).Insert (First, Names);
+                     when 'W' =>
+                        Tasking_Info_Bag (Write_Locks).Insert (First, Names);
+                     when 'U' =>
+                        Tasking_Info_Bag
+                          (Unsynch_Accesses).Insert (First, Names);
+                     when others =>
+                        raise Program_Error;
+                  end case;
+
+                  --  State line parsed. We will now return.
+                  return;
+               end;
+
             --  We special case lines that contain info about volatile
             --  variables and external state abstractions.
 
@@ -1914,6 +2134,77 @@ package body Flow_Generated_Globals is
          Close (ALI_File);
       end Load_GG_Info_From_ALI;
 
+      ----------------------------
+      -- Print_Tasking_Info_Bag --
+      ----------------------------
+
+      procedure Print_Tasking_Info_Bag is
+      begin
+         if not Debug_Print_Tasking_Info then
+            return;
+         end if;
+
+         for Kind in Tasking_Info_Kind loop
+            Write_Line ("Tasking: " & Kind'Img);
+            Indent;
+            if not Tasking_Info_Bag (Kind).Is_Empty then
+               for C in Tasking_Info_Bag (Kind).Iterate loop
+                  declare
+                     Subp : constant Entity_Name   := Key (C);
+                     Objs : constant Name_Sets.Set := Element (C);
+                  begin
+                     if not Objs.Is_Empty then
+                        Write_Line (To_String (Subp) & ":");
+                        Indent;
+                        for Obj of Objs loop
+                           Write_Line (To_String (Obj));
+                        end loop;
+                        Outdent;
+                     end if;
+                  end;
+               end loop;
+            end if;
+            Outdent;
+         end loop;
+      end Print_Tasking_Info_Bag;
+
+      ---------------------------
+      -- Process_Tasking_Graph --
+      ---------------------------
+
+      procedure Process_Tasking_Graph is
+      begin
+         for Kind in Tasking_Info_Kind loop
+            --  Do the transitive closure
+            Tasking_Graph (Kind).Close;
+
+            --  Clear the bag
+            Tasking_Info_Bag (Kind).Clear;
+
+            for S of All_Subprograms loop
+               declare
+                  S_Vertex : constant Tasking_Graphs.Vertex_Id :=
+                    Tasking_Graph (Kind).Get_Vertex (S);
+                  Objs : Name_Sets.Set := Name_Sets.Empty_Set;
+                  use Tasking_Graphs;
+               begin
+                  --  Collect out-neighbours of the subprogram vertex
+                  for Obj_Key of Tasking_Graph (Kind).Get_Collection
+                      (S_Vertex, Tasking_Graphs.Out_Neighbours)
+                  loop
+                     Objs.Insert (Tasking_Graph (Kind).Get_Key (Obj_Key));
+                  end loop;
+
+                  --  Remove called subprograms
+                  Objs := Objs - All_Subprograms;
+
+                  --  Store the result
+                  Tasking_Info_Bag (Kind).Insert (S, Objs);
+               end;
+            end loop;
+         end loop;
+      end Process_Tasking_Graph;
+
       ---------------------------------------------
       -- Remove_Constants_Without_Variable_Input --
       ---------------------------------------------
@@ -2059,7 +2350,10 @@ package body Flow_Generated_Globals is
          Note_Time ("gg_read - vertices added");
       end if;
 
-      --  Add all edges in the Global_Graph
+      --  Create graph with tasking-related information
+      Create_Tasking_Graph;
+
+      --  Add all edges in the Global_Graph and Tasking_Graph
       Add_All_Edges;
       if Debug_GG_Read_Timing then
          Note_Time ("gg_read - edges added");
@@ -2070,6 +2364,10 @@ package body Flow_Generated_Globals is
       if Debug_GG_Read_Timing then
          Note_Time ("gg_read - proof ins");
       end if;
+
+      --  Put tasking-related information back to the bag
+      Process_Tasking_Graph;
+      Print_Tasking_Info_Bag;
 
       --  Now that the Globals Graph has been generated we set
       --  GG_Generated to True. Notice that we set GG_Generated to

@@ -4045,10 +4045,12 @@ package body Flow.Control_Flow_Graph is
       --  protected object itself.
       if Belongs_To_Protected_Object (Called_Thing_F) then
          declare
-            The_PO : constant Flow_Id :=
-               Direct_Mapping_Id (if Nkind (Name (N)) = N_Selected_Component
-                                  then Entity (Prefix (Name (N)))
-                                  else Sinfo.Scope (Called_Thing));
+            The_PO_Ent : constant Entity_Id :=
+              (if Nkind (Name (N)) = N_Selected_Component
+               then Entity (Prefix (Name (N)))
+               else Sinfo.Scope (Called_Thing));
+
+            The_PO : constant Flow_Id := Direct_Mapping_Id (The_PO_Ent);
 
             V      : Flow_Graphs.Vertex_Id;
          begin
@@ -4083,11 +4085,11 @@ package body Flow.Control_Flow_Graph is
             --  Collect tasking-related information
             case Convention (Called_Thing) is
                when Convention_Entry =>
-                  FA.Tasking.Entries_Called.Include (The_PO);
-                  FA.Tasking.PO_Write_Locks.Include (The_PO);
+                  FA.Tasking (Entry_Calls).Include (The_PO_Ent);
+                  FA.Tasking (Write_Locks).Include (The_PO_Ent);
 
                when Convention_Protected =>
-                  FA.Tasking.PO_Write_Locks.Include (The_PO);
+                  FA.Tasking (Write_Locks).Include (The_PO_Ent);
 
                when others =>
                   null;
@@ -4097,8 +4099,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Check for suspending on a suspension object
       if Suspends_On_Suspension_Object then
-         FA.Tasking.Suspends_On.Include
-           (Direct_Mapping_Id (First_Actual (Called_Thing)));
+         FA.Tasking (Suspends_On).Include (First_Actual (Called_Thing));
       end if;
 
       --  A magic null export is needed when:
@@ -6259,6 +6260,16 @@ package body Flow.Control_Flow_Graph is
                   Create_Initial_And_Final_Vertices (Direct_Mapping_Id (E),
                                                      Mode_In_Out, False, FA);
             end case;
+
+            --  Collect unsynchronized objects by excluding constant,
+            --  protected, suspension and atomic ones.
+            --  ??? Constant_After_Elaboration
+            if not (Ekind (Etype (E)) in E_Constant | Protected_Kind
+                    or else Is_Suspension_Object (E)
+                    or else Is_Atomic (E))
+            then
+               FA.Tasking (Unsynch_Accesses).Include (E);
+            end if;
          end loop;
 
          for E of FA.Direct_Calls loop

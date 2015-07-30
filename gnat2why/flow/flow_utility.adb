@@ -406,12 +406,12 @@ package body Flow_Utility is
             when N_Function_Call =>
                Functions_Called.Include (Get_Called_Entity (N));
 
+               --  Collect only external calls to protected functions; internal
+               --  calls must be called from the outside anyway.
                if Convention (Get_Called_Entity (N)) = Convention_Protected
+                 and then Nkind (Name (N)) = N_Selected_Component
                then
-                  if Nkind (Name (N)) = N_Selected_Component then
-                     Tasking.PO_Read_Locks.Include
-                       (Direct_Mapping_Id (Entity (Prefix (Name (N)))));
-                  end if;
+                  Tasking (Read_Locks).Include (Entity (Prefix (Name (N))));
                end if;
 
             when N_In | N_Not_In =>

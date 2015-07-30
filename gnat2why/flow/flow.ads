@@ -156,15 +156,16 @@ package Flow is
       --  not subprogram parameters of the analyzed entity).
    end record;
 
-   type Tasking_Info is record
-      Suspends_On          : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      Entries_Called       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      PO_Read_Locks        : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      PO_Write_Locks       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      Unsynch_Obj_Accessed : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-   end record;
+   type Tasking_Info_Kind is (Suspends_On,
+                              Entry_Calls,
+                              Read_Locks,
+                              Write_Locks,
+                              Unsynch_Accesses);
    --  Tasking-related information that needs to be collected for each analyzed
    --  entity.
+
+   type Tasking_Info is array (Tasking_Info_Kind) of Node_Sets.Set;
+   --  Named array type for sets of nodes realted to tasking
 
    type Flow_Analysis_Graphs_Root
      (Kind : Valid_Analyzed_Entity := E_Subprogram_Body)

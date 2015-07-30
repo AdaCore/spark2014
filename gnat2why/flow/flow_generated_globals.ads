@@ -28,6 +28,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Atree;                              use Atree;
 with Common_Containers;                  use Common_Containers;
 with Einfo;                              use Einfo;
+with Flow;                               use Flow;
 with Flow_Types;                         use Flow_Types;
 with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
@@ -155,6 +156,18 @@ package Flow_Generated_Globals is
    --
    --     Examples:
    --     GG NB my_nonblocking_subprogram_a my_other_nonblocking_subprogram
+   --
+   --  5) Tasking-related information.
+   --
+   --       * suspension objects that call suspends on          (TS)
+   --       * protected objects whose entries are called        (TE)
+   --       * protected objects read-locked by function calls   (TR)
+   --       * protected objects write-locked by procedure calls (TW)
+   --       * accessed unsynchronized objects                   (TU)
+   --
+   --     Examples:
+   --     GG TS foo_proc my_susp_obj
+   --     GG TE bar_proc my_prot_obj
 
    ----------------------------------------------------------------------
 
@@ -199,6 +212,17 @@ package Flow_Generated_Globals is
    function GG_Mode return GG_Mode_T;
    --  Returns the current mode.
 
+   procedure GG_Register_Nonblocking (EN : Entity_Name)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Record entity with no potentially blocking statements
+
+   procedure GG_Register_Tasking_Info (EN : Entity_Name;
+                                       TI : Tasking_Info)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Record tasking-related information for entity
+
    -------------
    -- Writing --
    -------------
@@ -224,11 +248,6 @@ package Flow_Generated_Globals is
    --  Compute_Globals in Flow.Slice is used to produce the inputs.
    --  It also stores information related to volatiles and possibly blocking
    --  property.
-
-   procedure GG_Register_Nonblocking (EN : Entity_Name)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Notes that an entity is definitely not blocking.
 
    procedure GG_Write_Finalize
    with Pre => GG_Mode = GG_Write_Mode;
