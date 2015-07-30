@@ -144,6 +144,14 @@ package Flow_Refinement is
    --  Given a set of variables and a scope, recursively expand all
    --  abstract state where its refinement is visible in S.
 
+   function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
+   with Post => not Present (Find_Node_In_Initializes'Result)
+                  or else Find_Node_In_Initializes'Result = E
+                  or else Find_Node_In_Initializes'Result =
+                            Encapsulating_State (E);
+   --  Returns the node representing E (or its immediately encapsulating
+   --  state) in an initializes aspect or Empty.
+
    function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope
    with Pre => S.Section in Spec_Part | Private_Part;
    --  Returns the most nested scope of the parent of S.Ent that is visible

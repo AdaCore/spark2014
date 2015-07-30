@@ -16,7 +16,6 @@ initializes_illegal_3.ads:49:04: "PrivVar" is declared in the private part of pa
 initializes_illegal_3.ads:49:04: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
 initializes_illegal_3_helper.ads:5:35: "SH" is declared in the visible part of package "Initializes_Illegal_3_Helper"
 initializes_illegal_3_helper.ads:5:35: indicator Part_Of cannot appear in this context (SPARK RM 7.2.6(5))
-initializes_illegal_4.adb:9:07: warning: initialization of Z is not mentioned in contract "Initializes" at initializes_illegal_4.ads:17
 initializes_illegal_4.adb:11:09: warning: unused assignment
 initializes_illegal_4.adb:19:07: info: initialization of "Body_Var" constituent of "State" proved
 initializes_illegal_4.adb:22:17: warning: unused assignment
@@ -24,9 +23,10 @@ initializes_illegal_4.adb:22:20: info: initialization of "Body_Var" constituent 
 initializes_illegal_4.ads:4:04: info: initialization of "G_Var" proved
 initializes_illegal_4.ads:4:11: info: initialization of "G_Var2" proved
 initializes_illegal_4.ads:16:29: warning: no procedure exists that can initialize abstract state "Pac1.State"
+initializes_illegal_4.ads:17:11: warning: initialization of Z is not mentioned in Initializes contract
 initializes_illegal_4.ads:32:37: warning: no procedure exists that can initialize abstract state "Pac2.State2"
+initializes_illegal_4.ads:33:11: warning: initialization of Var2 is not mentioned in Initializes contract
 initializes_illegal_4.ads:35:07: info: initialization of "Var" proved
-initializes_illegal_4.ads:35:07: warning: initialization of Var2 is not mentioned in contract "Initializes" at line 33
 initializes_illegal_4.ads:48:29: info: initialization of "G_Var" proved
 initializes_illegal_4.ads:52:07: info: initialization of "G_Var" proved
 initializes_illegal_4.ads:52:07: info: initialization of "Var" proved

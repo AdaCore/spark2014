@@ -92,14 +92,6 @@ package body Flow_Refinement is
    --     s.section = enclosing_scope(s).section
    --  Unless S is a private descendant, in which case it is always "priv".
 
-   function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
-   with Post => not Present (Find_Node_In_Initializes'Result)
-                  or else Find_Node_In_Initializes'Result = E
-                  or else Find_Node_In_Initializes'Result =
-                            Encapsulating_State (E);
-   --  Returns the node representing E (or its immediately encapsulating
-   --  state) in an initializes aspect or Empty.
-
    -------------------
    -- Tree_Contains --
    -------------------

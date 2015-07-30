@@ -36,8 +36,7 @@ is
 
       type Account_Link_Data is array (Database.Account_Num) of Account_Link;
 
-      Links : Account_Link_Data :=
-                Account_Link_Data'(others => No_Account_Link);
+      Links : Account_Link_Data;
 
       First_Available : Ext_Account_Num := Account_Num'First;
 

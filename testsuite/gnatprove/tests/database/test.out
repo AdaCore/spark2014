@@ -1,41 +1,39 @@
 database.adb:39:07: info: initialization of "Links" proved
-database.adb:39:07: warning: initialization of Links is not mentioned in contract
-database.adb:40:35: info: length check proved
-database.adb:42:07: info: initialization of "First_Available" proved
-database.adb:50:42: info: initialization of "Account" proved
-database.adb:53:17: info: postcondition proved
-database.adb:53:35: info: initialization of "Account" proved
-database.adb:55:31: info: initialization of "Account" proved
-database.adb:61:17: info: postcondition proved
-database.adb:106:04: info: initialization of "Accounts" proved
-database.adb:106:52: info: length check proved
-database.adb:109:04: info: initialization of "Accounts_Balance" proved
-database.adb:110:46: info: length check proved
-database.adb:123:21: info: range check proved
-database.adb:124:17: info: index check proved
-database.adb:125:36: info: index check proved
-database.adb:133:35: info: index check proved
-database.adb:136:35: info: index check proved
-database.adb:142:44: info: index check proved
-database.adb:153:13: info: loop invariant initialization proved
-database.adb:153:13: info: loop invariant preservation proved
-database.adb:153:36: info: initialization of "Count" proved
-database.adb:155:25: info: initialization of "Count" proved
-database.adb:155:31: info: overflow check proved
-database.adb:158:17: info: initialization of "Count" proved
-database.adb:174:30: info: range check proved, in call inlined at database.adb:183
-database.adb:176:23: info: initialization of "Links" proved, in call inlined at database.adb:183
-database.adb:177:53: info: initialization of "Tmp_Prev" proved, in call inlined at database.adb:183
-database.adb:178:53: info: initialization of "Tmp_Next" proved, in call inlined at database.adb:183
-database.adb:252:19: info: precondition proved
-database.adb:255:56: info: initialization of "Account" proved
-database.adb:259:37: info: initialization of "Account" proved
-database.adb:273:10: info: precondition proved
-database.adb:284:22: info: precondition proved
-database.adb:297:17: info: precondition proved
-database.adb:303:42: info: precondition proved
-database.adb:315:27: info: precondition proved
-database.adb:321:42: info: precondition proved
+database.adb:41:07: info: initialization of "First_Available" proved
+database.adb:49:42: info: initialization of "Account" proved
+database.adb:52:17: info: postcondition proved
+database.adb:52:35: info: initialization of "Account" proved
+database.adb:54:31: info: initialization of "Account" proved
+database.adb:60:17: info: postcondition proved
+database.adb:105:04: info: initialization of "Accounts" proved
+database.adb:105:52: info: length check proved
+database.adb:108:04: info: initialization of "Accounts_Balance" proved
+database.adb:109:46: info: length check proved
+database.adb:122:21: info: range check proved
+database.adb:123:17: info: index check proved
+database.adb:124:36: info: index check proved
+database.adb:132:35: info: index check proved
+database.adb:135:35: info: index check proved
+database.adb:141:44: info: index check proved
+database.adb:152:13: info: loop invariant initialization proved
+database.adb:152:13: info: loop invariant preservation proved
+database.adb:152:36: info: initialization of "Count" proved
+database.adb:154:25: info: initialization of "Count" proved
+database.adb:154:31: info: overflow check proved
+database.adb:157:17: info: initialization of "Count" proved
+database.adb:173:30: info: range check proved, in call inlined at database.adb:182
+database.adb:175:23: info: initialization of "Links" proved, in call inlined at database.adb:182
+database.adb:176:53: info: initialization of "Tmp_Prev" proved, in call inlined at database.adb:182
+database.adb:177:53: info: initialization of "Tmp_Next" proved, in call inlined at database.adb:182
+database.adb:251:19: info: precondition proved
+database.adb:254:56: info: initialization of "Account" proved
+database.adb:258:37: info: initialization of "Account" proved
+database.adb:272:10: info: precondition proved
+database.adb:283:22: info: precondition proved
+database.adb:296:17: info: precondition proved
+database.adb:302:42: info: precondition proved
+database.adb:314:27: info: precondition proved
+database.adb:320:42: info: precondition proved
 database.ads:62:07: info: initialization of "Account" proved
 database.ads:65:14: info: postcondition proved
 database.ads:65:24: info: initialization of "Account" proved

@@ -1093,18 +1093,17 @@ package body Flow.Analysis is
                then
                   Error_Msg_Flow
                     (FA   => FA,
-                     Msg  =>
-                       (if FA.B_Scope.Section /= Body_Part
-                          and then Is_Abstract_State (F)
-                          and then Present (FA.B_Scope)
-                          and then State_Refinement_Is_Visible
-                          (Get_Direct_Mapping_Id (F),
-                           Body_Scope (FA.B_Scope))
-                        then "non-visible constituents " &
-                          "of & are not used " &
-                          "- consider moving the subprogram to the " &
-                          "package body and adding a Refined_Global"
-                        else "unused initial value of &"),
+                     Msg  => (if FA.B_Scope.Section /= Body_Part
+                                and then Is_Abstract_State (F)
+                                and then Present (FA.B_Scope)
+                                and then State_Refinement_Is_Visible
+                                           (Get_Direct_Mapping_Id (F),
+                                            Body_Scope (FA.B_Scope))
+                              then "non-visible constituents " &
+                                   "of & are not used " &
+                                   "- consider moving the subprogram to the " &
+                                   "package body and adding a Refined_Global"
+                              else "unused initial value of &"),
                      N    => Find_Global (FA.Analyzed_Entity, F),
                      F1   => F,
                      F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
@@ -1218,9 +1217,9 @@ package body Flow.Analysis is
                      if not Elaborate_All_Present (Clause) then
                         Error_Msg_Flow
                           (FA      => FA,
-                           Msg     => "use of remote abstract state &"
-                             & " during elaboration of &" &
-                             " - Elaborate_All pragma required for &",
+                           Msg     => "use of remote abstract state &" &
+                                      " during elaboration of &" &
+                                      " - Elaborate_All pragma required for &",
                            SRM_Ref => "7.7.1(4)",
                            N       => V_Atr.Error_Location,
                            F1      => F,
@@ -1534,8 +1533,8 @@ package body Flow.Analysis is
                  not Atr.Is_Package_Initialization and then
 
                  --  Suppression for packages without initializes
-                 (if FA.Kind in E_Package | E_Package_Body and then
-                    not Present (FA.Initializes_N)
+                 (if FA.Kind in E_Package | E_Package_Body
+                    and then No (FA.Initializes_N)
                   then
                      not FA.PDG.Non_Trivial_Path_Exists
                        (V, Is_Any_Final_Use'Access)) and then
@@ -1630,53 +1629,39 @@ package body Flow.Analysis is
 
                   elsif Nkind (N) = N_Object_Declaration then
                      if not Constant_Present (N) then
-
+                        --  This warning is ignored for local constants.
                         Get_Name_String (Chars (Defining_Identifier (N)));
                         Adjust_Name_Case (Sloc (N));
 
-                        case FA.Kind is
-                        when E_Package_Body =>
-                           declare
-                              Initializes : constant Flow_Id :=
-                                (if FA.Initializes_N /= Empty
-                                 then Direct_Mapping_Id (
-                                   Pragma_Identifier (FA.Initializes_N))
-                                 else Null_Flow_Id);
-                           begin
-
-                              Error_Msg_Flow
-                                (FA        => FA,
-                                 Tracefile => Tracefile,
-                                 Msg       => "initialization of " &
-                                   Name_Buffer (1 .. Name_Len) &
-                                   " is not mentioned in contract" &
-                                 (if Initializes = Null_Flow_Id
-                                    then "" else " #"),
-                                 N         =>
-                                   Error_Location (FA.PDG, FA.Atr, V),
-                                 F1        => Initializes,
-                                 Tag       => Tag,
-                                 Kind      => Warning_Kind,
-                                 Vertex    => V);
-                           end;
-
-                           when others =>
-
-                              Error_Msg_Flow
-                                (FA        => FA,
-                                 Tracefile => Tracefile,
-                                 Msg       => "initialization of " &
-                                   Name_Buffer (1 .. Name_Len) &
-                                   " has no effect",
-                                 N         =>
-                                    Error_Location (FA.PDG, FA.Atr, V),
-                                 Tag       => Tag,
-                                 Kind      => Warning_Kind,
-                                 Vertex    => V);
-                        end case;
+                        if FA.Kind in E_Package | E_Package_Body
+                          and then No (Find_Node_In_Initializes
+                                         (Defining_Identifier (N)))
+                        then
+                           Error_Msg_Flow
+                             (FA        => FA,
+                              Tracefile => Tracefile,
+                              Msg       => "initialization of " &
+                                           Name_Buffer (1 .. Name_Len) &
+                                           " is not mentioned in " &
+                                           "Initializes contract",
+                              N         => FA.Initializes_N,
+                              Tag       => Tag,
+                              Kind      => Warning_Kind,
+                              Vertex    => V);
+                        else
+                           Error_Msg_Flow
+                             (FA        => FA,
+                              Tracefile => Tracefile,
+                              Msg       => "initialization of " &
+                                           Name_Buffer (1 .. Name_Len) &
+                                           " has no effect",
+                              N         => Error_Location (FA.PDG, FA.Atr, V),
+                              Tag       => Tag,
+                              Kind      => Warning_Kind,
+                              Vertex    => V);
+                        end if;
 
                      end if;
-                     --  This warning is ignored for local constants.
 
                   else
                      Error_Msg_Flow
