@@ -614,6 +614,18 @@ package body Flow.Slice is
                      end if;
                   end;
 
+               when N_Loop_Parameter_Specification =>
+                  --  Add variable introduced by for loop (but do not add
+                  --  variables introduced by quantified expressions)
+                  if Nkind (Parent (N)) /= N_Iteration_Scheme
+                    or else Hidden_In_Package_With_State
+                              (Defining_Identifier (N))
+                  then
+                     return Skip;
+                  else
+                     Local_Vars.Include (Defining_Identifier (N));
+                  end if;
+
                when N_Single_Task_Declaration |
                     N_Task_Type_Declaration   =>
                   if Unique_Entity (Defining_Identifier (N)) /=
