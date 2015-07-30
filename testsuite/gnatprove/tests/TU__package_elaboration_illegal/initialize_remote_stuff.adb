@@ -15,7 +15,7 @@ is
    end Initialize_Remote_State;
 
 begin
-   Var := 0;                --  Cannot initialize remote variabler.
+   Var := 0;                --  Cannot initialize remote variable.
    Init_State;              --  Cannot initialize remote state.
    Initialize_Remote_Var;   --  Cannot initialize remote variable.
    Initialize_Remote_State; --  Cannot initialize remote state.
