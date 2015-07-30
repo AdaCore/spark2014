@@ -3400,8 +3400,7 @@ package body SPARK_Definition is
                            then Protected_Definition (Type_Decl)
                            else Task_Definition (Type_Decl));
                      begin
-                        --  ??? Interface_List
-                        pragma Assert (Interface_List (Type_Decl) = No_List);
+                        Mark_List (Interface_List (Type_Decl));
 
                         if Present (Type_Def) then
                            Mark_Stmt_Or_Decl_List
