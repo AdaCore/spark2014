@@ -84,7 +84,7 @@ package body Graph is
       end loop;
       R.Key_To_Id := G.Key_To_Id;
 
-      R.Frozen   := True;
+      R.Frozen := True;
       if Copy_Clusters then
          R.Clusters := G.Clusters;
       end if;
@@ -1284,12 +1284,12 @@ package body Graph is
       type V_To_Comp is array
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Component;
 
-      Visited   : Bit_Field         := Bit_Field'(others => False);
-      Stack     : Vertex_Index_List := VIL.Empty_Vector;
-      Root      : V_To_V            := V_To_V'(others => 0);
-      Comp      : V_To_Comp         := V_To_Comp'(others => 0);
-      Succ      : V_To_V            := V_To_V'(others => 0);
-      Sets      : V_To_VIS          := V_To_VIS'(others => VIS.Empty_Set);
+      Visited : Bit_Field         := Bit_Field'(others => False);
+      Stack   : Vertex_Index_List := VIL.Empty_Vector;
+      Root    : V_To_V            := V_To_V'(others => 0);
+      Comp    : V_To_Comp         := V_To_Comp'(others => 0);
+      Succ    : V_To_V            := V_To_V'(others => 0);
+      Sets    : V_To_VIS          := V_To_VIS'(others => VIS.Empty_Set);
 
       Current_Component : Component := 0;
 
