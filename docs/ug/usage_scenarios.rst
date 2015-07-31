@@ -593,3 +593,75 @@ the same result when taking the same values in arguments. GNAT compiler was
 modified to ensure this property (see
 http://www.spark-2014.org/entries/detail/how-our-compiler-learnt-from-our-analyzers),
 which may not hold for other Ada compilers.
+
+.. _safe coding standard for critical software:
+
+Safe coding standard for critical software
+==========================================
+
+|GNATprove| is designed to apply formal verification to Ada programs, allowing
+powerful analysis of a program's behavior. But he who can do more can do less.
+It can also be used as a coding standard checker for critical software, and so,
+without the need for annotating the program.
+
+Exclude features that make a program difficult to understand (and to verify)
+----------------------------------------------------------------------------
+
+|SPARK| is a subset of Ada targeted at formal verification. As such, it excludes
+features introducing complex behaviors which are both difficult to reason
+about and to annotate. |GNATprove| can be used to check conformance of Ada programs
+to this subset, therefore working as a coding standard checker. Here we list some
+of the most error-prone Ada features that are excluded from |SPARK|
+(see :ref:`Excluded Ada Features` for the complete list).
+
+* All expressions, including function calls, are free from side-effects. Expressions
+  with side-effects often obfuscate the code, in the sense that a computation will
+  not only produce a value but also modify some hidden state in the program. What is
+  more, they may introduce a dependency on the order of computations of sub-expressions
+  of an enclosing expression, which is not fixed by the Ada language.
+
+* Handling of exceptions is not permitted. Exception handling can create complex and
+  obfuscated control flow in a program, making it difficult to read the program. What
+  is more, when an exception is raised, the subprogram is not terminated, leaving the
+  program in an 'unfinished' state, where data invariants may be broken. Finally, if the
+  program is not terminated normally, values of out parameters passed by copy are not
+  copied back into their variable. This may introduce dependencies on parameter passing
+  modes of out parameters, which, once again, are not specified by the Ada language.
+
+* The use of access types and allocators is not permitted. Pointers can introduce
+  aliasing, that is, they can allow the same object to be visible through different
+  names at the same program point. This makes it difficult to reason about a program
+  as modifying the object under one of the names will also modify the other names.
+  What is more, access types come with their on load of common mistakes, like double
+  frees and dangling pointers.
+
+* SPARK also prevents dependencies on the elaboration order by ensuring that no package
+  can write into variables declared in other packages during its elaboration. The use
+  of controlled types is also forbidden as they lead to insertions of implicit calls by
+  the compiler. Finally, goto statements are not permitted as they obfuscate the control
+  flow.
+
+Detect errors and suspect behaviors
+-----------------------------------
+
+Coding standard checkers are not only concerned with preventing usages of dangerous
+or error-prone features. They often also enforce good practices aiming at reducing
+the amount of coding errors. Among them, we can find enforcement of initialization
+of variables at declaration, or obligation to use the initial values of all subprograms
+inputs. Even without any additional annotations, |GNATprove| can do more than just check
+conformance to the SPARK subset. It can also detect errors and suspect behaviors
+which at best obfuscate the code and at worst are the sign of bugs. In particular,
+|GNATprove| will find all the occurrences of the following errors:
+
+* uses of uninitialized variables (a bounded error, variable may be out of bound),
+
+* aliasing of parameters (often not accounted for by programmers).
+
+It will also warn systematically about the following suspect behaviors:
+
+* wrong parameter modes (can hurt readability, be the sign of a bug (if we forgot to
+  update a parameter, read the value of an out parameter, do not use the initial value
+  of something)),
+
+* unused variables and ineffective statements (again, can hurt readability, be the
+  sign of a bug).
