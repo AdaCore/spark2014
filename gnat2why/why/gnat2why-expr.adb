@@ -2804,8 +2804,7 @@ package body Gnat2Why.Expr is
                       (Ty       => Ty_Ext,
                        Domain   => EW_Term,
                        Attr     => Attribute_First,
-                       Params   => Params,
-                       Use_Pred => Use_Pred),
+                       Params   => Params),
                     To       => Why_Rep_Type);
                Last        : constant W_Expr_Id :=
                  Insert_Simple_Conversion
@@ -2814,8 +2813,7 @@ package body Gnat2Why.Expr is
                       (Ty     => Ty_Ext,
                        Domain => EW_Term,
                        Attr   => Attribute_Last,
-                       Params => Params,
-                       Use_Pred => Use_Pred),
+                       Params => Params),
                     To       => Why_Rep_Type);
                Fst_Le_Last : constant W_Pred_Id :=
                  New_Call (Name     => Le_Op,

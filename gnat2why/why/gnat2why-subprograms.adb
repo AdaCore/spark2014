@@ -337,10 +337,14 @@ package body Gnat2Why.Subprograms is
          Prop_For_Include : W_Prog_Id;
          L_Id             : W_Expr_Id;
          Top_Predicate    : Boolean;
+         Variables        : Flow_Id_Sets.Set;
+         --  Set of variable inputs used in the assumed dynamic invariants.
+         --  We will also need to assume their dynamic invariant.
 
       begin
          while not Node_Sets.Is_Empty (Includes) loop
             Prop_For_Include := New_Void;
+            Flow_Id_Sets.Clear (Variables);
             for Obj of Includes loop
 
                --  No need to assume anything if Obj is a local object of the
@@ -359,12 +363,7 @@ package body Gnat2Why.Subprograms is
 
                   Top_Predicate := Obj /= Pred_Fun_Param;
 
-                  --  Assume the dynamic property of Obj. Inline the property
-                  --  instead of calling the corresponding predicate (so
-                  --  Use_Pred is False in the calls below), so that variables
-                  --  that appear in the property get picked later in the
-                  --  Includes set, and their dynamic property is included
-                  --  as well.
+                  --  Assume the dynamic invariant of Obj.
 
                   if Is_Object (Obj) and then Is_Mutable_In_Why (Obj) then
                      L_Id := Transform_Identifier (Params   => Params,
@@ -378,8 +377,7 @@ package body Gnat2Why.Subprograms is
                            Ty            => Etype (Obj),
                            Initialized   => Is_Initialized (Obj),
                            Only_Var      => False,
-                           Top_Predicate => Top_Predicate,
-                           Use_Pred      => False));
+                           Top_Predicate => Top_Predicate));
                   else
                      L_Id := +To_Why_Id (E => Obj,
                                          Typ => Why_Type_Of_Entity (Obj));
@@ -390,9 +388,13 @@ package body Gnat2Why.Subprograms is
                            Ty            => Etype (Obj),
                            Initialized   => True,
                            Only_Var      => False,
-                           Top_Predicate => Top_Predicate,
-                           Use_Pred      => False));
+                           Top_Predicate => Top_Predicate));
                   end if;
+
+                  --  Add all the variable inputs of the dynamic invariant
+                  --  to the set of variables to consider.
+
+                  Variables_In_Dynamic_Invariant (Etype (Obj), Variables);
 
                   --  Assume value if constant
 
@@ -464,6 +466,14 @@ package body Gnat2Why.Subprograms is
               (Prop_For_Include, Dynamic_Prop_Inputs);
             Node_Sets.Union (Already_Included, Includes);
             Includes := Compute_Ada_Node_Set (+Prop_For_Include);
+
+            --  Add the variable inputs of dynamic predicates to Includes so
+            --  that their dynamic invariant can be assumed.
+
+            for Name of To_Name_Set (Variables) loop
+               Node_Sets.Include (Includes, Find_Entity (Name));
+            end loop;
+
             Node_Sets.Difference (Includes, Already_Included);
          end loop;
       end;
@@ -2188,8 +2198,8 @@ package body Gnat2Why.Subprograms is
       begin
          Prog := Sequence
            ((1 => New_Comment
-             (Comment => NID ("Assume dynamic property of params of the"
-              & " subprogram"
+             (Comment => NID ("Assume dynamic invariants of inputs of the"
+              & " subprogram "
               & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
                 else ""))),
              2 => Assume_For_Input,

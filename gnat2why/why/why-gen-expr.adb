@@ -2153,8 +2153,7 @@ package body Why.Gen.Expr is
      (Ty        : Entity_Id;
       Domain    : EW_Domain;
       Attr      : Supported_Attribute_Id;
-      Params    : Transformation_Params := Body_Params;
-      Use_Pred  : Boolean := True) return W_Expr_Id is
+      Params    : Transformation_Params := Body_Params) return W_Expr_Id is
       Subdomain : constant EW_Domain :=
         (if Domain in EW_Prog | EW_Pterm then EW_Pterm else EW_Term);
 
@@ -2165,7 +2164,7 @@ package body Why.Gen.Expr is
 
       if Attr in Attribute_First | Attribute_Last
         and then Type_Is_Modeled_As_Base (Ty)
-        and then (Is_Itype (Ty) or else not Use_Pred)
+        and then Is_Itype (Ty)
       then
          --  Use expression for dynamic bounds
 
