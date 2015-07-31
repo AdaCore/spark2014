@@ -23,13 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;     use Types;
 with Namet;     use Namet;
+with Outputs;   use Outputs;
+with Types;     use Types;
 with Uintp;     use Uintp;
 with Urealp;    use Urealp;
-with Why.Types; use Why.Types;
 with Why.Sinfo; use Why.Sinfo;
-with Outputs;   use Outputs;
+with Why.Types; use Why.Types;
 
 package Why.Images is
    --  Image functions for the basic entities used in Why's AST.

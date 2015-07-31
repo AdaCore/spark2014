@@ -23,14 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Common_Containers;   use Common_Containers;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
-
-with Common_Containers;   use Common_Containers;
 
 package body Why.Gen.Decl is
 

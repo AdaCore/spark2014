@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Ids;            use Why.Ids;
 with Why.Sinfo;          use Why.Sinfo;
-with Why.Atree.Builders; use Why.Atree.Builders;
 
 package Why.Gen.Preds is
 

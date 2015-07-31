@@ -23,27 +23,27 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;      use Ada.Containers;
-with Ada.Directories;
+with Ada.Containers;        use Ada.Containers;
 with Ada.Direct_IO;
+with Ada.Directories;
 with Ada.Strings.Unbounded;
-with Errout;              use Errout;
+with Errout;                use Errout;
 with GNAT.Regpat;
-with GNAT.OS_Lib;         use GNAT.OS_Lib;
+with GNAT.OS_Lib;           use GNAT.OS_Lib;
+with Gnat2Why.Util;         use Gnat2Why.Util;
 with Gnat2Why_Args;
-with Gnat2Why.Util;       use Gnat2Why.Util;
-with Namet;               use Namet;
-with Sinput;              use Sinput;
-with SPARK_Util;          use SPARK_Util;
-with String_Utils;        use String_Utils;
-with Uintp;               use Uintp;
-with VC_Kinds;            use VC_Kinds;
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Ids;             use Why.Ids;
-with Why.Images;          use Why.Images;
-with Why.Conversions;     use Why.Conversions;
+with Namet;                 use Namet;
+with Sinput;                use Sinput;
+with SPARK_Util;            use SPARK_Util;
+with String_Utils;          use String_Utils;
+with Uintp;                 use Uintp;
+with VC_Kinds;              use VC_Kinds;
+with Why.Atree.Accessors;   use Why.Atree.Accessors;
+with Why.Atree.Modules;     use Why.Atree.Modules;
+with Why.Conversions;       use Why.Conversions;
+with Why.Gen.Names;         use Why.Gen.Names;
+with Why.Ids;               use Why.Ids;
+with Why.Images;            use Why.Images;
 
 package body Why.Atree.Sprint is
 

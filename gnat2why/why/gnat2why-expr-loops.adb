@@ -23,23 +23,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  For debugging, to print info on the output before raising an exception
-with Ada.Text_IO;
-
+with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Atree;              use Atree;
 with Einfo;              use Einfo;
+with Flow_Utility;       use Flow_Utility;
+with Gnat2Why.Util;      use Gnat2Why.Util;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
 with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with Sinput;             use Sinput;
 with Snames;             use Snames;
+with SPARK_Util;         use SPARK_Util;
 with Uintp;              use Uintp;
 with VC_Kinds;           use VC_Kinds;
-
-with SPARK_Util;         use SPARK_Util;
-with Flow_Utility;       use Flow_Utility;
-
 with Why;                use Why;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Atree.Modules;  use Why.Atree.Modules;
@@ -48,12 +45,10 @@ with Why.Conversions;    use Why.Conversions;
 with Why.Gen.Binders;    use Why.Gen.Binders;
 with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Gen.Progs;      use Why.Gen.Progs;
 with Why.Gen.Terms;      use Why.Gen.Terms;
 with Why.Inter;          use Why.Inter;
-
-with Gnat2Why.Util;      use Gnat2Why.Util;
 
 package body Gnat2Why.Expr.Loops is
 

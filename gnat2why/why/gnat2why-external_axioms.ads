@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;                  use Types;
+with Types; use Types;
 
 package Gnat2Why.External_Axioms is
 

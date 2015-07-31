@@ -68,24 +68,20 @@
 with Ada.Directories;            use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
-with Ada.Strings.Maps.Constants; use Ada.Strings.Maps.Constants;
 with Ada.Strings.Maps;           use Ada.Strings.Maps;
+with Ada.Strings.Maps.Constants; use Ada.Strings.Maps.Constants;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;                use Ada.Text_IO;
 with Call;                       use Call;
 with Configuration;              use Configuration;
-
 with GNAT.Expect;                use GNAT.Expect;
 with GNAT.OS_Lib;
-
+with GNAT.Strings;               use GNAT.Strings;
+with Gnat2Why_Args;
 with GNATCOLL.Projects;          use GNATCOLL.Projects;
 with GNATCOLL.VFS;               use GNATCOLL.VFS;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
-
-with GNAT.Strings;               use GNAT.Strings;
 with String_Utils;               use String_Utils;
-
-with Gnat2Why_Args;
 
 procedure Gnatprove is
 

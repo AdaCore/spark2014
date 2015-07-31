@@ -25,10 +25,10 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Atree;                 use Atree;
-with Sinput;                use Sinput;
-with Snames;                use Snames;
-with SPARK_Util;            use SPARK_Util;
+with Atree;                      use Atree;
+with Sinput;                     use Sinput;
+with Snames;                     use Snames;
+with SPARK_Util;                 use SPARK_Util;
 
 package body Gnat2Why.Assumptions is
 

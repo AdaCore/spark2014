@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with VC_Kinds; use VC_Kinds;
-with Types;    use Types;
 with GNATCOLL.JSON;
+with Types;         use Types;
+with VC_Kinds;      use VC_Kinds;
 
 package Gnat2Why.Error_Messages is
 

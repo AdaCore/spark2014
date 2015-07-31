@@ -22,19 +22,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
-with Ada.Containers;
-with Ada.Strings.Unbounded.Hash;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
-
+with Ada.Strings.Unbounded.Hash;
+with Hashing;                            use Hashing;
 with Namet;                              use Namet;
 with Types;                              use Types;
-
-with Hashing;                            use Hashing;
 
 --  This package contains a few common types (and expression functions)
 --  which are used throughout gnat2why (frame conditions, flow and why

@@ -27,17 +27,14 @@ with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Text_IO;
-
-with Atree;                use Atree;
-with Errout;               use Errout;
-with Osint;                use Osint;
-with Sinfo;                use Sinfo;
-
-with Common_Containers;    use Common_Containers;
-with SPARK_Util;           use SPARK_Util;
-with Flow_Error_Messages;  use Flow_Error_Messages;
-
-with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
+with Atree;                      use Atree;
+with Common_Containers;          use Common_Containers;
+with Errout;                     use Errout;
+with Flow_Error_Messages;        use Flow_Error_Messages;
+with Gnat2Why.Assumptions;       use Gnat2Why.Assumptions;
+with Osint;                      use Osint;
+with Sinfo;                      use Sinfo;
+with SPARK_Util;                 use SPARK_Util;
 
 package body Gnat2Why.Error_Messages is
 

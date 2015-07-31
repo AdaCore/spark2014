@@ -26,11 +26,10 @@
 --  and if the latter which of the possible refined views.
 
 with Atree;             use Atree;
+with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
 with Sinfo;             use Sinfo;
 with Types;             use Types;
-
-with Common_Containers; use Common_Containers;
 
 package Flow_Refinement is
 

@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
 with Opt;
 with String_Utils;          use String_Utils;
 

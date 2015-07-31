@@ -28,17 +28,13 @@ with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
-
-with Atree;                              use Atree;
-with Einfo;                              use Einfo;
-with Sinfo;                              use Sinfo;
-with Types;                              use Types;
-
-with Common_Containers;                  use Common_Containers;
-
-with SPARK_Util;                         use SPARK_Util;
-
-with Flow_Refinement;                    use Flow_Refinement;
+with Atree;                       use Atree;
+with Common_Containers;           use Common_Containers;
+with Einfo;                       use Einfo;
+with Flow_Refinement;             use Flow_Refinement;
+with Sinfo;                       use Sinfo;
+with SPARK_Util;                  use SPARK_Util;
+with Types;                       use Types;
 
 package Flow_Types is
 

@@ -23,15 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Conversions;         use Why.Conversions;
+with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
+with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Why.Atree.Modules;       use Why.Atree.Modules;
 with Why.Atree.Mutators;      use Why.Atree.Mutators;
 with Why.Atree.Properties;    use Why.Atree.Properties;
 with Why.Atree.Tables;        use Why.Atree.Tables;
-with Why.Gen.Names;           use Why.Gen.Names;
+with Why.Conversions;         use Why.Conversions;
 with Why.Gen.Expr;            use Why.Gen.Expr;
-with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
-with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
+with Why.Gen.Names;           use Why.Gen.Names;
 
 package body Why.Gen.Progs is
 

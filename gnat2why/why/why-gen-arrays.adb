@@ -24,25 +24,22 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
 with Atree;                 use Atree;
 with Common_Containers;     use Common_Containers;
 with GNAT.Source_Info;
+with Gnat2Why.Types;        use Gnat2Why.Types;
+with GNATCOLL.Utils;        use GNATCOLL.Utils;
 with Sem_Eval;              use Sem_Eval;
 with Sem_Util;              use Sem_Util;
 with Sinfo;                 use Sinfo;
 with Sinput;                use Sinput;
+with SPARK_Util;            use SPARK_Util;
 with Stand;                 use Stand;
 with String_Utils;          use String_Utils;
 with Uintp;                 use Uintp;
-
-with GNATCOLL.Utils;        use GNATCOLL.Utils;
-with Gnat2Why.Types;        use Gnat2Why.Types;
-with SPARK_Util;            use SPARK_Util;
-
-with Why.Conversions;       use Why.Conversions;
 with Why.Atree.Builders;    use Why.Atree.Builders;
 with Why.Atree.Tables;      use Why.Atree.Tables;
+with Why.Conversions;       use Why.Conversions;
 with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;

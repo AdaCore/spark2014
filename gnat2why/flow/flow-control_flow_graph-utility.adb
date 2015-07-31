@@ -21,9 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Sinfo;        use Sinfo;
-
 with Flow_Utility; use Flow_Utility;
+with Sinfo;        use Sinfo;
 with Why;
 
 package body Flow.Control_Flow_Graph.Utility is

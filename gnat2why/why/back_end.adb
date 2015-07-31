@@ -27,14 +27,13 @@
 
 with Adabkend;
 with Elists;
-with Namet;
-with Opt;
-with Stringt;
-with System;
-
 with Gnat2Why.Driver;
 with Gnat2Why_Args;
+with Namet;
+with Opt;
 with SPARK_Definition;
+with Stringt;
+with System;
 
 package body Back_End is
 

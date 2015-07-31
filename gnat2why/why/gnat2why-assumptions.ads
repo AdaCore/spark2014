@@ -23,12 +23,12 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
-with Ada.Containers;   use Ada.Containers;
+with Ada.Containers;             use Ada.Containers;
 with Ada.Containers.Hashed_Sets;
-with Assumption_Types; use Assumption_Types;
-with Assumptions;      use Assumptions;
+with Assumption_Types;           use Assumption_Types;
+with Assumptions;                use Assumptions;
 with GNATCOLL.JSON;
-with Types;            use Types;
+with Types;                      use Types;
 
 package Gnat2Why.Assumptions is
 

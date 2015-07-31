@@ -23,10 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Ids;            use Why.Ids;
-with Why.Types;          use Why.Types;
-with Why.Sinfo;          use Why.Sinfo;
 with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Ids;            use Why.Ids;
+with Why.Sinfo;          use Why.Sinfo;
+with Why.Types;          use Why.Types;
 
 package Why.Gen.Terms is
    --  Functions that deal with generation of terms

@@ -23,24 +23,22 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;               use AA_Util;
-with Atree;                 use Atree;
-with Einfo;                 use Einfo;
-with Impunit;               use Impunit;
-with Lib;                   use Lib;
-with Namet;                 use Namet;
+with AA_Util;           use AA_Util;
+with Atree;             use Atree;
+with Common_Containers; use Common_Containers;
+with Einfo;             use Einfo;
+with Impunit;           use Impunit;
+with Lib;               use Lib;
+with Namet;             use Namet;
 with Sem_Type;
-with Sem_Util;              use Sem_Util;
-with Sinfo;                 use Sinfo;
-with Sinput;                use Sinput;
-with Snames;                use Snames;
-with Stand;                 use Stand;
-with Types;                 use Types;
-with Uintp;                 use Uintp;
-
-with Common_Containers;     use Common_Containers;
-
-with Why.Atree.Tables;      use Why.Atree.Tables;
+with Sem_Util;          use Sem_Util;
+with Sinfo;             use Sinfo;
+with Sinput;            use Sinput;
+with Snames;            use Snames;
+with Stand;             use Stand;
+with Types;             use Types;
+with Uintp;             use Uintp;
+with Why.Atree.Tables;  use Why.Atree.Tables;
 
 package SPARK_Util is
 

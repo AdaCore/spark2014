@@ -22,14 +22,11 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
-
+with Ada.Integer_Text_IO;                use Ada.Integer_Text_IO;
+with Ada.Text_IO;                        use Ada.Text_IO;
+with GNAT.OS_Lib;                        use GNAT.OS_Lib;
+with Hashing;                            use Hashing;
 with System.Strings;
-with Ada.Text_IO;         use Ada.Text_IO;
-with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
-
-with GNAT.OS_Lib;         use GNAT.OS_Lib;
-
-with Hashing;             use Hashing;
 
 use type Ada.Containers.Count_Type;
 

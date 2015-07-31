@@ -25,7 +25,6 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Containers;
 with Ada.Real_Time;          use Ada.Real_Time;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
-
 with Atree;                  use Atree;
 with Output;                 use Output;
 with Sprint;                 use Sprint;

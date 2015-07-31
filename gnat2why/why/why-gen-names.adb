@@ -31,8 +31,8 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Conversions;     use Why.Conversions;
-with Why.Types;           use Why.Types;
 with Why.Inter;           use Why.Inter;
+with Why.Types;           use Why.Types;
 
 package body Why.Gen.Names is
 

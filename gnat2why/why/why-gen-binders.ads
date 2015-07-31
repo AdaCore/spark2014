@@ -23,12 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;                  use Namet;
-with Types;                  use Types;
-
 with Common_Containers;      use Common_Containers;
-
+with Namet;                  use Namet;
 with SPARK_Definition;       use SPARK_Definition;
+with Types;                  use Types;
+with Why.Atree.Builders;     use Why.Atree.Builders;
+with Why.Gen.Preds;          use Why.Gen.Preds;
+with Why.Ids;                use Why.Ids;
+with Why.Sinfo;              use Why.Sinfo;
 
 pragma Warnings (Off);
 --  ??? Why.Types" is directly visible as "Types", as it has "Why" as a
@@ -37,10 +39,6 @@ pragma Warnings (Off);
 --  "Why.W_Types".
 with Why.Types;              use Why.Types;
 pragma Warnings (On);
-with Why.Sinfo;              use Why.Sinfo;
-with Why.Ids;                use Why.Ids;
-with Why.Atree.Builders;     use Why.Atree.Builders;
-with Why.Gen.Preds;          use Why.Gen.Preds;
 
 package Why.Gen.Binders is
    --  This package provides operations to build binders in program space

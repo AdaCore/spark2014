@@ -26,37 +26,33 @@
 with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
-
 with Aspects;                 use Aspects;
 with Atree;                   use Atree;
 with Checks;                  use Checks;
+with Common_Containers;       use Common_Containers;
 with Einfo;                   use Einfo;
 with Errout;                  use Errout;
+with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;           use Gnat2Why.Expr;
+with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
+with Gnat2Why_Args;
+with GNATCOLL.Utils;          use GNATCOLL.Utils;
 with Nlists;                  use Nlists;
 with Sem_Aux;                 use Sem_Aux;
 with Sem_Eval;                use Sem_Eval;
 with Sem_Util;                use Sem_Util;
 with Sinfo;                   use Sinfo;
 with Sinput;                  use Sinput;
-with Stand;                   use Stand;
-with Urealp;                  use Urealp;
-
-with GNATCOLL.Utils;          use GNATCOLL.Utils;
 with SPARK_Util;              use SPARK_Util;
+with Stand;                   use Stand;
 with String_Utils;            use String_Utils;
-
-with Gnat2Why_Args;
-with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
-with Gnat2Why.Expr;           use Gnat2Why.Expr;
-with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
-
-with Common_Containers;       use Common_Containers;
+with Urealp;                  use Urealp;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Modules;       use Why.Atree.Modules;
 with Why.Atree.Tables;        use Why.Atree.Tables;
-with Why.Gen.Binders;         use Why.Gen.Binders;
 with Why.Conversions;         use Why.Conversions;
 with Why.Gen.Arrays;          use Why.Gen.Arrays;
+with Why.Gen.Binders;         use Why.Gen.Binders;
 with Why.Gen.Names;           use Why.Gen.Names;
 with Why.Gen.Preds;           use Why.Gen.Preds;
 with Why.Gen.Progs;           use Why.Gen.Progs;

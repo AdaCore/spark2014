@@ -26,7 +26,6 @@ with Ada.Containers.Vectors;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Iterator_Interfaces;
-
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 
 --  A graph library. Although reasonably generic, it was implemented

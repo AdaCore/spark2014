@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.OS_Lib;       use GNAT.OS_Lib;
-with String_Utils;      use String_Utils;
+with GNAT.OS_Lib;  use GNAT.OS_Lib;
+with String_Utils; use String_Utils;
 
 package Call is
 

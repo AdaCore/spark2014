@@ -24,8 +24,8 @@
 
 with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
-with GNATCOLL.JSON;         use GNATCOLL.JSON;
-with GNATCOLL.Symbols;      use GNATCOLL.Symbols;
+with GNATCOLL.JSON;                      use GNATCOLL.JSON;
+with GNATCOLL.Symbols;                   use GNATCOLL.Symbols;
 
 package Assumption_Types is
 

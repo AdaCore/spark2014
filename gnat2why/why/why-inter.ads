@@ -23,21 +23,22 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Einfo;                              use Einfo;
-with Types;                              use Types;
-with Why.Atree.Tables;                   use Why.Atree.Tables;
+with Common_Containers; use Common_Containers;
+with Einfo;             use Einfo;
+with Gnat2Why.Util;     use Gnat2Why.Util;
+with Stand;             use Stand;
+with Types;             use Types;
+with Why.Atree.Tables;  use Why.Atree.Tables;
+with Why.Ids;           use Why.Ids;
+with Why.Types;         use Why.Types;
+
 pragma Warnings (Off);
 --  ??? Why.Sinfo" is directly visible as "Sinfo", as it has "Why" as a
 --  common ancestor with the current package. So it hides compilation unit
 --  with the same name ("Sinfo"). Maybe we should think of renaming it to
 --  "Why.W_Sinfo".
-with Why.Sinfo;                          use Why.Sinfo;
+with Why.Sinfo;         use Why.Sinfo;
 pragma Warnings (On);
-with Why.Ids;                            use Why.Ids;
-with Why.Types;                          use Why.Types;
-with Common_Containers;                  use Common_Containers;
-with Gnat2Why.Util;                      use Gnat2Why.Util;
-with Stand;                              use Stand;
 
 package Why.Inter is
    --  This package contains types that are used to represent intermediate

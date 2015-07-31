@@ -23,11 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Source_Info;
-
 with Atree;                  use Atree;
+with Common_Containers;      use Common_Containers;
 with Einfo;                  use Einfo;
 with Errout;                 use Errout;
+with Flow_Types;             use Flow_Types;
+with Flow_Utility;           use Flow_Utility;
+with GNAT.Source_Info;
+with Gnat2Why.Expr;          use Gnat2Why.Expr;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Sem_Aux;                use Sem_Aux;
@@ -36,19 +39,12 @@ with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with Sinput;                 use Sinput;
 with Snames;                 use Snames;
-with Stand;                  use Stand;
-with Uintp;                  use Uintp;
-with VC_Kinds;               use VC_Kinds;
-
-with Common_Containers;      use Common_Containers;
-
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
-
-with Flow_Types;             use Flow_Types;
-with Flow_Utility;           use Flow_Utility;
-
+with Stand;                  use Stand;
+with Uintp;                  use Uintp;
+with VC_Kinds;               use VC_Kinds;
 with Why;                    use Why;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
@@ -64,8 +60,6 @@ with Why.Gen.Records;        use Why.Gen.Records;
 with Why.Gen.Terms;          use Why.Gen.Terms;
 with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
-
-with Gnat2Why.Expr;          use Gnat2Why.Expr;
 
 package body Gnat2Why.Subprograms is
 

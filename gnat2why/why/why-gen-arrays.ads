@@ -28,12 +28,11 @@ with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
 with Snames;              use Snames;
 with Types;               use Types;
-with Why.Ids;             use Why.Ids;
-with Why.Sinfo;           use Why.Sinfo;
-
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Ids;             use Why.Ids;
+with Why.Sinfo;           use Why.Sinfo;
 
 package Why.Gen.Arrays is
    --  This package encapsulates the encoding of Ada arrays into Why.

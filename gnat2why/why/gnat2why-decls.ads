@@ -23,11 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;                  use Types;
-
-with Common_Containers;      use Common_Containers;
-
-with Gnat2Why.Util;          use Gnat2Why.Util;
+with Common_Containers; use Common_Containers;
+with Gnat2Why.Util;     use Gnat2Why.Util;
+with Types;             use Types;
 
 package Gnat2Why.Decls is
 

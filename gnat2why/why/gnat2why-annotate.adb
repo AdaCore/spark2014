@@ -24,19 +24,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;               use AA_Util;
+with AA_Util;                use AA_Util;
 with Ada.Containers.Vectors;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Common_Containers;
-with Einfo;                 use Einfo;
-with Errout;                use Errout;
+with Einfo;                  use Einfo;
+with Errout;                 use Errout;
 with Gnat2Why_Args;
-with GNAT.Regpat;           use GNAT.Regpat;
-with Namet;                 use Namet;
-with Nlists;                use Nlists;
-with Sem_Util;              use Sem_Util;
-with Sinfo;                 use Sinfo;
-with Sinput;                use Sinput;
+with GNAT.Regpat;            use GNAT.Regpat;
+with Namet;                  use Namet;
+with Nlists;                 use Nlists;
+with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
+with Sinput;                 use Sinput;
 
 package body Gnat2Why.Annotate is
 

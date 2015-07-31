@@ -25,8 +25,8 @@
 
 --  This package allows printing a text table which is nicely aligned.
 
-with Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO;
 
 package Print_Table is
 

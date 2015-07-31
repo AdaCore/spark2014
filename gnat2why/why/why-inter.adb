@@ -23,29 +23,27 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;         use Atree;
-with Namet;         use Namet;
-with SPARK_Xrefs;   use SPARK_Xrefs;
-with Sem_Util;      use Sem_Util;
-with Sinfo;         use Sinfo;
-with Snames;        use Snames;
-with String_Utils;  use String_Utils;
-
+with Atree;                  use Atree;
+with Flow_Utility;
+with Namet;                  use Namet;
+with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
+with Snames;                 use Snames;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
-
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Atree.Mutators;  use Why.Atree.Mutators;
-with Why.Atree.Traversal; use Why.Atree.Traversal;
-with Why.Conversions;     use Why.Conversions;
-with Why.Gen.Arrays;      use Why.Gen.Arrays;
-with Why.Gen.Expr;        use Why.Gen.Expr;
-with Why.Gen.Names;       use Why.Gen.Names;
+with SPARK_Xrefs;            use SPARK_Xrefs;
+with String_Utils;           use String_Utils;
 with Uintp;
-with Flow_Utility;
+with Why.Atree.Accessors;    use Why.Atree.Accessors;
+with Why.Atree.Builders;     use Why.Atree.Builders;
+with Why.Atree.Modules;      use Why.Atree.Modules;
+with Why.Atree.Mutators;     use Why.Atree.Mutators;
+with Why.Atree.Traversal;    use Why.Atree.Traversal;
+with Why.Conversions;        use Why.Conversions;
+with Why.Gen.Arrays;         use Why.Gen.Arrays;
+with Why.Gen.Expr;           use Why.Gen.Expr;
+with Why.Gen.Names;          use Why.Gen.Names;
 
 ---------------
 -- Why.Inter --

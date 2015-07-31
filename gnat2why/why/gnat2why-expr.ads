@@ -24,25 +24,19 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-
-with Atree;             use Atree;
-with Flow_Types;        use Flow_Types;
-with Sem_Eval;          use Sem_Eval;
-with Sinfo;             use Sinfo;
-with Types;             use Types;
-
-with SPARK_Util;        use SPARK_Util;
-
-with Why.Gen.Terms;     use Why.Gen.Terms;
-
-with Why.Types;         use Why.Types;
-with Why.Ids;           use Why.Ids;
-with Why.Inter;         use Why.Inter;
-with Why.Sinfo;         use Why.Sinfo;
-
-with Common_Containers; use Common_Containers;
-
-with Gnat2Why.Util;     use Gnat2Why.Util;
+with Atree;                      use Atree;
+with Common_Containers;          use Common_Containers;
+with Flow_Types;                 use Flow_Types;
+with Gnat2Why.Util;              use Gnat2Why.Util;
+with Sem_Eval;                   use Sem_Eval;
+with Sinfo;                      use Sinfo;
+with SPARK_Util;                 use SPARK_Util;
+with Types;                      use Types;
+with Why.Gen.Terms;              use Why.Gen.Terms;
+with Why.Ids;                    use Why.Ids;
+with Why.Inter;                  use Why.Inter;
+with Why.Sinfo;                  use Why.Sinfo;
+with Why.Types;                  use Why.Types;
 
 package Gnat2Why.Expr is
 

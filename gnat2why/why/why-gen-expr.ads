@@ -23,10 +23,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
 with Snames;              use Snames;
 with Types;               use Types;
+with Uintp;               use Uintp;
+with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Ids;             use Why.Ids;
+with Why.Sinfo;           use Why.Sinfo;
+
 pragma Warnings (Off);
 --  ??? "Why.Types" is directly visible as "Types", as it has "Why" as a
 --  common ancestor with the current package. So it hides compilation unit
@@ -34,14 +40,6 @@ pragma Warnings (Off);
 --  "Why.W_Types".
 with Why.Types;           use Why.Types;
 pragma Warnings (On);
-with VC_Kinds;            use VC_Kinds;
-
-with Why.Ids;             use Why.Ids;
-with Why.Sinfo;           use Why.Sinfo;
-
-with Gnat2Why.Util;       use Gnat2Why.Util;
-
-with Uintp;               use Uintp;
 
 package Why.Gen.Expr is
 

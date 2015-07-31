@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Outputs;             use Outputs;
-with Why.Atree.Tables;    use Why.Atree.Tables;
+with Outputs;          use Outputs;
+with Why.Atree.Tables; use Why.Atree.Tables;
 
 package Why.Atree.Sprint is
 

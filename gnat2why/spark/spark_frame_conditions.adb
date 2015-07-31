@@ -24,10 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Unchecked_Deallocation;
-
 with Ada.Text_IO;                use Ada.Text_IO;
-
+with Flow_Generated_Globals;     use Flow_Generated_Globals;
+with Flow_Types;                 use Flow_Types;
+with Flow_Utility;               use Flow_Utility;
 with Fname.UF;
 with Get_SPARK_Xrefs;
 with Lib;
@@ -35,11 +35,8 @@ with Osint;
 with Sem_Aux;                    use Sem_Aux;
 with Snames;                     use Snames;
 with SPARK_Xrefs;                use SPARK_Xrefs;
+with Unchecked_Deallocation;
 with Uname;
-
-with Flow_Types;                 use Flow_Types;
-with Flow_Utility;               use Flow_Utility;
-with Flow_Generated_Globals;     use Flow_Generated_Globals;
 
 package body SPARK_Frame_Conditions is
 

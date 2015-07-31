@@ -27,7 +27,7 @@ with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
 with Why.Conversions;     use Why.Conversions;
-with Why.Gen.Expr;       use Why.Gen.Expr;
+with Why.Gen.Expr;        use Why.Gen.Expr;
 
 package body Why.Gen.Terms is
 

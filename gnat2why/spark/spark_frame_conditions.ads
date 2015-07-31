@@ -33,7 +33,6 @@
 
 with Ada.Containers;             use Ada.Containers;
 with Ada.Containers.Hashed_Sets;
-
 with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
 with Einfo;                      use Einfo;

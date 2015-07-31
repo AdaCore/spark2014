@@ -23,12 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada;              use Ada;
-with SPARK_Definition; use SPARK_Definition;
-with Why.Ids;          use Why.Ids;
-with Why.Gen.Names;    use Why.Gen.Names;
+with Ada;                        use Ada;
 with Ada.Containers.Hashed_Maps;
 with Common_Containers;
+with SPARK_Definition;           use SPARK_Definition;
+with Why.Ids;                    use Why.Ids;
+with Why.Gen.Names;              use Why.Gen.Names;
 
 package Why.Atree.Modules is
    --  This package helps with Why modules. Today, it is only a list of

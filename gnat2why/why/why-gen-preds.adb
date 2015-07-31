@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Conversions;   use Why.Conversions;
 with Why.Atree.Modules; use Why.Atree.Modules;
+with Why.Conversions;   use Why.Conversions;
 
 package body Why.Gen.Preds is
 

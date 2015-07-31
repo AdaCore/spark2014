@@ -21,14 +21,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Flow_Classwide; use Flow_Classwide;
+with Flow_Utility;   use Flow_Utility;
 with Sem_Util;       use Sem_Util;
 with Sinfo;          use Sinfo;
-
-with Why;
 with SPARK_Util;     use SPARK_Util;
-
-with Flow_Utility;   use Flow_Utility;
-with Flow_Classwide; use Flow_Classwide;
+with Why;
 
 package body Flow.Interprocedural is
 

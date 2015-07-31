@@ -23,17 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Directories; use Ada.Directories;
-
+with Ada.Directories;   use Ada.Directories;
 with GNAT.Strings;
-
+with Gnat2Why_Args;     use  Gnat2Why_Args;
 with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
-with String_Utils;      use String_Utils;
 with Opt;
-
-with Gnat2Why_Args;     use  Gnat2Why_Args;
+with String_Utils;      use String_Utils;
 
 package Configuration is
 

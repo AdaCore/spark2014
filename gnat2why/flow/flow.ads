@@ -26,17 +26,14 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
-
 with Atree;                      use Atree;
-with Einfo;                      use Einfo;
-with Types;                      use Types;
-
 with Common_Containers;          use Common_Containers;
-
-with Graph;
-with Flow_Types;                 use Flow_Types;
+with Einfo;                      use Einfo;
 with Flow_Dependency_Maps;       use Flow_Dependency_Maps;
 with Flow_Refinement;            use Flow_Refinement;
+with Flow_Types;                 use Flow_Types;
+with Graph;
+with Types;                      use Types;
 
 package Flow is
 

@@ -24,11 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;               use Ada.Text_IO;
+with Call;                      use Call;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.SHA1;
 with GNATCOLL.Utils;
-
-with Call;                      use Call;
 with Output;                    use Output;
 with Types;                     use Types;
 

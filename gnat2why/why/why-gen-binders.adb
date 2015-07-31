@@ -25,20 +25,17 @@
 
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
-with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
-with Snames;                 use Snames;
-
-with SPARK_Util;             use SPARK_Util;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
-
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Types;             use Flow_Types;
 with Flow_Utility;           use Flow_Utility;
-
 with Gnat2Why.Util;          use Gnat2Why.Util;
-with Why.Atree.Modules;      use Why.Atree.Modules;
+with Sem_Util;               use Sem_Util;
+with Sinfo;                  use Sinfo;
+with Snames;                 use Snames;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util;             use SPARK_Util;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
+with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;

@@ -21,27 +21,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Vectors;
 with Ada.Containers;         use Ada.Containers;
-
+with Ada.Containers.Vectors;
 with Elists;                 use Elists;
+with Flow_Debug;             use Flow_Debug;
+with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
+with Flow_Types;             use Flow_Types;
 with Nlists;                 use Nlists;
-
+with Output;                 use Output;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;
-with Stand;                  use Stand;
-
-with Output;                 use Output;
-with Sprint;                 use Sprint;
-with Treepr;                 use Treepr;
-
 with SPARK_Util;             use SPARK_Util;
-
-with Flow_Types;             use Flow_Types;
-with Flow_Debug;             use Flow_Debug;
-with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
-
+with Sprint;                 use Sprint;
+with Stand;                  use Stand;
+with Treepr;                 use Treepr;
 with Why;
 
 package body Flow_Refinement is

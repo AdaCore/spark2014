@@ -25,7 +25,6 @@
 
 with Einfo;   use Einfo;
 with Types;   use Types;
-
 with Why.Ids; use Why.Ids;
 
 package Why.Gen.Scalars is

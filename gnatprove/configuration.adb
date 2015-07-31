@@ -23,19 +23,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;
 with Ada.Command_Line;
 with Ada.Containers;            use Ada.Containers;
 with Ada.Text_IO;               use Ada.Text_IO;
-with System.Multiprocessors;
-
-with SPARK2014VSN;              use SPARK2014VSN;
-
 with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.Strings;              use GNAT.Strings;
 with GNAT.OS_Lib;
-
-with Ada.Characters.Handling;
+with SPARK2014VSN;              use SPARK2014VSN;
+with System.Multiprocessors;
 
 package body Configuration is
 

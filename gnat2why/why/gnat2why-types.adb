@@ -23,27 +23,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  For debugging, to print info on the output before raising an exception
-with Ada.Text_IO;
-use Ada.Text_IO;
-
-with GNAT.Source_Info;
-
+with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Atree;               use Atree;
+with Common_Containers;   use Common_Containers;
 with Einfo;               use Einfo;
+with Flow_Types;          use Flow_Types;
+with GNAT.Source_Info;
 with Gnat2Why.Expr;       use Gnat2Why.Expr;
 with Namet;               use Namet;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with Sinput;              use Sinput;
-with Stand;               use Stand;
-
-with Flow_Types;          use Flow_Types;
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
-
-with Common_Containers;   use Common_Containers;
-
+with Stand;               use Stand;
 with Why;                 use Why;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;

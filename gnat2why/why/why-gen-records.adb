@@ -24,35 +24,30 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-
-with Atree;               use Atree;
-with Elists;              use Elists;
-with Namet;               use Namet;
-with Nlists;              use Nlists;
-with Sem_Aux;             use Sem_Aux;
-with Sem_Util;            use Sem_Util;
-with Sinfo;               use Sinfo;
-with Snames;              use Snames;
-with Uintp;               use Uintp;
-
-with SPARK_Definition;    use SPARK_Definition;
-with VC_Kinds;            use VC_Kinds;
-
-with Common_Containers;   use Common_Containers;
-
-with Gnat2Why.Expr;       use Gnat2Why.Expr;
-
-with Why.Atree.Accessors; use Why.Atree.Accessors;
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Atree.Modules;   use Why.Atree.Modules;
-with Why.Conversions;     use Why.Conversions;
-with Why.Gen.Decl;        use Why.Gen.Decl;
-with Why.Gen.Expr;        use Why.Gen.Expr;
-with Why.Gen.Names;       use Why.Gen.Names;
-with Why.Gen.Preds;       use Why.Gen.Preds;
-with Why.Gen.Progs;       use Why.Gen.Progs;
-with Why.Gen.Terms;       use Why.Gen.Terms;
-with Why.Inter;           use Why.Inter;
+with Atree;                      use Atree;
+with Common_Containers;          use Common_Containers;
+with Elists;                     use Elists;
+with Gnat2Why.Expr;              use Gnat2Why.Expr;
+with Namet;                      use Namet;
+with Nlists;                     use Nlists;
+with Sem_Aux;                    use Sem_Aux;
+with Sem_Util;                   use Sem_Util;
+with Sinfo;                      use Sinfo;
+with Snames;                     use Snames;
+with SPARK_Definition;           use SPARK_Definition;
+with Uintp;                      use Uintp;
+with VC_Kinds;                   use VC_Kinds;
+with Why.Atree.Accessors;        use Why.Atree.Accessors;
+with Why.Atree.Builders;         use Why.Atree.Builders;
+with Why.Atree.Modules;          use Why.Atree.Modules;
+with Why.Conversions;            use Why.Conversions;
+with Why.Gen.Decl;               use Why.Gen.Decl;
+with Why.Gen.Expr;               use Why.Gen.Expr;
+with Why.Gen.Names;              use Why.Gen.Names;
+with Why.Gen.Preds;              use Why.Gen.Preds;
+with Why.Gen.Progs;              use Why.Gen.Progs;
+with Why.Gen.Terms;              use Why.Gen.Terms;
+with Why.Inter;                  use Why.Inter;
 
 package body Why.Gen.Records is
 

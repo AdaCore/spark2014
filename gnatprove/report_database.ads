@@ -29,9 +29,9 @@
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Strings.Hash;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Assumptions;           use Assumptions;
-with Assumption_Types;      use Assumption_Types;
+with Ada.Strings.Unbounded;                 use Ada.Strings.Unbounded;
+with Assumptions;                           use Assumptions;
+with Assumption_Types;                      use Assumption_Types;
 
 package Report_Database is
 

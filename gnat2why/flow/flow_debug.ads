@@ -25,13 +25,11 @@
 --  datastructures used by flow analysis in a vaguely human-readable
 --  form.
 
-with Types;                use Types;
-
 with Common_Containers;    use Common_Containers;
-
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 with Flow_Refinement;      use Flow_Refinement;
 with Flow_Types;           use Flow_Types;
+with Types;                use Types;
 
 package Flow_Debug is
 

@@ -32,9 +32,8 @@ with Sem_Eval;               use Sem_Eval;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with Snames;                 use Snames;
-with Tbuild;                 use Tbuild;
-
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with Tbuild;                 use Tbuild;
 
 package body SPARK_Rewrite is
 

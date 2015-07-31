@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
 with Gnat2Why.Util;         use Gnat2Why.Util;
 with Namet;                 use Namet;
 with Snames;                use Snames;

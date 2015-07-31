@@ -23,12 +23,11 @@
 
 --  This package provides mechanisms for emitting errors and warnings.
 
-with Flow;                  use Flow;
-with Flow_Types;            use Flow_Types;
-with GNATCOLL.JSON;         use GNATCOLL.JSON;
-with Types;                 use Types;
-
-with VC_Kinds;              use VC_Kinds;
+with Flow;          use Flow;
+with Flow_Types;    use Flow_Types;
+with GNATCOLL.JSON; use GNATCOLL.JSON;
+with Types;         use Types;
+with VC_Kinds;      use VC_Kinds;
 
 package Flow_Error_Messages is
 

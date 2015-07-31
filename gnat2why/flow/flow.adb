@@ -24,15 +24,8 @@
 with Ada.Characters.Latin_1;
 with Ada.Strings.Maps;
 with Ada.Strings;                   use Ada.Strings;
-
 with Assumptions;                   use Assumptions;
-with Gnat2Why.Assumptions;          use Gnat2Why.Assumptions;
-with Gnat2Why_Args;
-with Why;
-
-with SPARK_Definition;              use SPARK_Definition;
-with SPARK_Util;                    use SPARK_Util;
-
+with Errout;                        use Errout;
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
 with Flow.Control_Flow_Graph;
@@ -41,12 +34,12 @@ with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
 with Flow.Slice;                    use Flow.Slice;
 with Flow_Classwide;                use Flow_Classwide;
-with Flow_Generated_Globals;        use Flow_Generated_Globals;
 with Flow_Debug;                    use Flow_Debug;
+with Flow_Generated_Globals;        use Flow_Generated_Globals;
 with Flow_Error_Messages;           use Flow_Error_Messages;
 with Flow_Utility;                  use Flow_Utility;
-
-with Errout;                        use Errout;
+with Gnat2Why.Assumptions;          use Gnat2Why.Assumptions;
+with Gnat2Why_Args;
 with Lib;                           use Lib;
 with Namet;                         use Namet;
 with Nlists;                        use Nlists;
@@ -57,10 +50,12 @@ with Sem_Util;                      use Sem_Util;
 with Sem_Ch7;                       use Sem_Ch7;
 with Sinfo;                         use Sinfo;
 with Snames;                        use Snames;
-with Sprint;                        use Sprint;
-
+with SPARK_Definition;              use SPARK_Definition;
 with SPARK_Frame_Conditions;        use SPARK_Frame_Conditions;
+with SPARK_Util;                    use SPARK_Util;
+with Sprint;                        use Sprint;
 with VC_Kinds;                      use VC_Kinds;
+with Why;
 
 use type Ada.Containers.Count_Type;
 

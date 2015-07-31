@@ -23,47 +23,42 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Source_Info;
-
-with Atree;                use Atree;
-with Einfo;                use Einfo;
-with Errout;               use Errout;
-with Exp_Util;             use Exp_Util;
-with Namet;                use Namet;
-with Nlists;               use Nlists;
-with Sem_Aux;              use Sem_Aux;
-with Sem_Ch12;             use Sem_Ch12;
-with Sem_Util;             use Sem_Util;
-with Sinfo;                use Sinfo;
-with Sinput;               use Sinput;
-with Stand;                use Stand;
-with String_Utils;         use String_Utils;
-
-with SPARK_Util;           use SPARK_Util;
-with Flow_Utility;         use Flow_Utility;
-with Common_Containers;    use Common_Containers;
-
-with Why.Ids;              use Why.Ids;
-with Why.Sinfo;            use Why.Sinfo;
-with Why.Atree.Accessors;  use Why.Atree.Accessors;
-with Why.Atree.Builders;   use Why.Atree.Builders;
-with Why.Atree.Mutators;   use Why.Atree.Mutators;
-with Why.Atree.Modules;    use Why.Atree.Modules;
-with Why.Gen.Arrays;       use Why.Gen.Arrays;
-with Why.Gen.Decl;         use Why.Gen.Decl;
-with Why.Gen.Names;        use Why.Gen.Names;
-with Why.Gen.Binders;      use Why.Gen.Binders;
-with Why.Gen.Expr;         use Why.Gen.Expr;
-with Why.Inter;            use Why.Inter;
-with Why.Types;            use Why.Types;
-with Why.Conversions;      use Why.Conversions;
-
-with Gnat2Why.Expr;        use Gnat2Why.Expr;
-with Gnat2Why.Util;        use Gnat2Why.Util;
-with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
-with Gnat2Why.Types;       use Gnat2Why.Types;
-
 with Ada.Containers.Doubly_Linked_Lists;
+with Atree;                              use Atree;
+with Common_Containers;                  use Common_Containers;
+with Einfo;                              use Einfo;
+with Errout;                             use Errout;
+with Exp_Util;                           use Exp_Util;
+with Flow_Utility;                       use Flow_Utility;
+with GNAT.Source_Info;
+with Gnat2Why.Expr;                      use Gnat2Why.Expr;
+with Gnat2Why.Subprograms;               use Gnat2Why.Subprograms;
+with Gnat2Why.Types;                     use Gnat2Why.Types;
+with Gnat2Why.Util;                      use Gnat2Why.Util;
+with Namet;                              use Namet;
+with Nlists;                             use Nlists;
+with Sem_Aux;                            use Sem_Aux;
+with Sem_Ch12;                           use Sem_Ch12;
+with Sem_Util;                           use Sem_Util;
+with Sinfo;                              use Sinfo;
+with Sinput;                             use Sinput;
+with SPARK_Util;                         use SPARK_Util;
+with Stand;                              use Stand;
+with String_Utils;                       use String_Utils;
+with Why.Atree.Accessors;                use Why.Atree.Accessors;
+with Why.Atree.Builders;                 use Why.Atree.Builders;
+with Why.Atree.Mutators;                 use Why.Atree.Mutators;
+with Why.Atree.Modules;                  use Why.Atree.Modules;
+with Why.Conversions;                    use Why.Conversions;
+with Why.Gen.Arrays;                     use Why.Gen.Arrays;
+with Why.Gen.Binders;                    use Why.Gen.Binders;
+with Why.Gen.Decl;                       use Why.Gen.Decl;
+with Why.Gen.Expr;                       use Why.Gen.Expr;
+with Why.Gen.Names;                      use Why.Gen.Names;
+with Why.Ids;                            use Why.Ids;
+with Why.Inter;                          use Why.Inter;
+with Why.Sinfo;                          use Why.Sinfo;
+with Why.Types;                          use Why.Types;
 
 package body Gnat2Why.External_Axioms is
 

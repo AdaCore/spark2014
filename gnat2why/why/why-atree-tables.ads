@@ -23,13 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers; use Ada.Containers;
-with Ada.Containers.Vectors;
+with Ada.Containers;                     use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Hashed_Maps;
-
-with Why.Classes; use Why.Classes;
+with Ada.Containers.Ordered_Sets;
+with Ada.Containers.Vectors;
+with Why.Classes;                        use Why.Classes;
 
 package Why.Atree.Tables is
    --  This package allows to allocate new Why nodes and to associate

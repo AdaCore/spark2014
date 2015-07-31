@@ -117,19 +117,19 @@ with Ada.Command_Line;
 with Ada.Directories;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with Assumptions;             use Assumptions;
-with Assumptions.Search;      use Assumptions.Search;
-with Assumption_Types;        use Assumption_Types;
-with Call;                    use Call;
-with Configuration;           use Configuration;
+with Assumptions;                         use Assumptions;
+with Assumptions.Search;                  use Assumptions.Search;
+with Assumption_Types;                    use Assumption_Types;
+with Call;                                use Call;
+with Configuration;                       use Configuration;
 with GNAT.Directory_Operations.Iteration;
-with GNAT.OS_Lib;             use GNAT.OS_Lib;
-with GNATCOLL.JSON;           use GNATCOLL.JSON;
-with GNATCOLL.Utils;          use GNATCOLL.Utils;
-with Print_Table;             use Print_Table;
-with Report_Database;         use Report_Database;
-with String_Utils;            use String_Utils;
-with VC_Kinds;                use VC_Kinds;
+with GNAT.OS_Lib;                         use GNAT.OS_Lib;
+with GNATCOLL.JSON;                       use GNATCOLL.JSON;
+with GNATCOLL.Utils;                      use GNATCOLL.Utils;
+with Print_Table;                         use Print_Table;
+with Report_Database;                     use Report_Database;
+with String_Utils;                        use String_Utils;
+with VC_Kinds;                            use VC_Kinds;
 
 procedure SPARK_Report is
 

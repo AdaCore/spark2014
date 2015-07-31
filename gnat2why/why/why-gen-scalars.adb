@@ -23,16 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Common_Containers;   use Common_Containers;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
 with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
+with SPARK_Util;          use SPARK_Util;
 with Uintp;               use Uintp;
 with Urealp;              use Urealp;
-
-with SPARK_Util;          use SPARK_Util;
-
-with Common_Containers;   use Common_Containers;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
@@ -45,8 +44,6 @@ with Why.Gen.Binders;     use Why.Gen.Binders;
 with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
-
-with Gnat2Why.Util;       use Gnat2Why.Util;
 
 package body Why.Gen.Scalars is
 

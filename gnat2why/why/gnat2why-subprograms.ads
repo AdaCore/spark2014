@@ -23,11 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;           use Types;
 with Gnat2Why.Util;   use Gnat2Why.Util;
-with Why.Sinfo;       use Why.Sinfo;
+with Types;           use Types;
 with Why.Gen.Binders; use Why.Gen.Binders;
-with Why.Ids; use Why.Ids;
+with Why.Ids;         use Why.Ids;
+with Why.Sinfo;       use Why.Sinfo;
 
 package Gnat2Why.Subprograms is
 

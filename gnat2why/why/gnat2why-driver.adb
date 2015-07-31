@@ -24,23 +24,36 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Source_Info;
-with GNAT.Expect;
-
 with Ada.Directories;
 with Ada.Strings.Unbounded;    use Ada.Strings.Unbounded;
+with Ada.Text_IO;
 with AA_Util;                  use AA_Util;
 with ALI.Util;                 use ALI.Util;
 with ALI;                      use ALI;
 with Atree;                    use Atree;
 with Binderr;
 with Call;
+with Common_Containers;        use Common_Containers;
 with Debug;                    use Debug;
 with Einfo;                    use Einfo;
 with Errout;                   use Errout;
 with Flow;                     use Flow;
 with Flow.Trivia;              use Flow.Trivia;
 with Flow_Error_Messages;      use Flow_Error_Messages;
+with Flow_Generated_Globals;   use Flow_Generated_Globals;
+with Flow_Utility;             use Flow_Utility;
+with GNAT.Expect;
+with GNAT.Source_Info;
+with GNATCOLL.JSON;            use GNATCOLL.JSON;
+with Gnat2Why.Annotate;        use Gnat2Why.Annotate;
+with Gnat2Why.Assumptions;     use Gnat2Why.Assumptions;
+with Gnat2Why.Decls;           use Gnat2Why.Decls;
+with Gnat2Why.Error_Messages;  use Gnat2Why.Error_Messages;
+with Gnat2Why.External_Axioms; use Gnat2Why.External_Axioms;
+with Gnat2Why.Subprograms;     use Gnat2Why.Subprograms;
+with Gnat2Why.Types;           use Gnat2Why.Types;
+with Gnat2Why.Util;            use Gnat2Why.Util;
+with Gnat2Why_Args;
 with Lib;                      use Lib;
 with Namet;                    use Namet;
 with Nlists;                   use Nlists;
@@ -53,14 +66,12 @@ with Sem_Aux;                  use Sem_Aux;
 with Sem_Util;                 use Sem_Util;
 with Sinfo;                    use Sinfo;
 with Sinput;                   use Sinput;
+with SPARK_Definition;         use SPARK_Definition;
+with SPARK_Frame_Conditions;   use SPARK_Frame_Conditions;
+with SPARK_Rewrite;            use SPARK_Rewrite;
+with SPARK_Util;               use SPARK_Util;
 with Stand;                    use Stand;
 with Switch;                   use Switch;
-
-with SPARK_Definition;         use SPARK_Definition;
-with SPARK_Rewrite;            use SPARK_Rewrite;
-with SPARK_Frame_Conditions;   use SPARK_Frame_Conditions;
-with SPARK_Util;               use SPARK_Util;
-
 with Why;                      use Why;
 with Why.Atree.Modules;        use Why.Atree.Modules;
 with Why.Atree.Sprint;         use Why.Atree.Sprint;
@@ -68,25 +79,9 @@ with Why.Gen.Names;            use Why.Gen.Names;
 with Why.Inter;                use Why.Inter;
 with Why.Types;                use Why.Types;
 
-with Common_Containers;        use Common_Containers;
-with GNATCOLL.JSON;            use GNATCOLL.JSON;
-with Gnat2Why.Annotate;        use Gnat2Why.Annotate;
-with Gnat2Why.Decls;           use Gnat2Why.Decls;
-with Gnat2Why.Error_Messages;  use Gnat2Why.Error_Messages;
-with Gnat2Why.External_Axioms; use Gnat2Why.External_Axioms;
-with Gnat2Why_Args;
-with Gnat2Why.Assumptions;     use Gnat2Why.Assumptions;
-with Gnat2Why.Subprograms;     use Gnat2Why.Subprograms;
-with Gnat2Why.Types;           use Gnat2Why.Types;
-with Gnat2Why.Util;            use Gnat2Why.Util;
-
-with Flow_Generated_Globals;   use Flow_Generated_Globals;
-with Flow_Utility;             use Flow_Utility;
-
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
 pragma Warnings (On,  "unit ""Why.Atree.Treepr"" is not referenced");
-with Ada.Text_IO;
 
 package body Gnat2Why.Driver is
 

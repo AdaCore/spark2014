@@ -23,19 +23,16 @@
 
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Ada.Strings;
-
 with Errout;                 use Errout;
+with Flow_Generated_Globals; use Flow_Generated_Globals;
+with Flow_Utility;           use Flow_Utility;
+with Gnat2Why_Args;
+with Hashing;                use Hashing;
 with Namet;                  use Namet;
 with Output;                 use Output;
 with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;
-
-with Hashing;                use Hashing;
 with Why;
-with Gnat2Why_Args;
-
-with Flow_Generated_Globals; use Flow_Generated_Globals;
-with Flow_Utility;           use Flow_Utility;
 
 package body Flow_Types is
 
