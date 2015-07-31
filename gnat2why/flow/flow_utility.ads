@@ -508,12 +508,12 @@ is
    function Is_Initialized_At_Elaboration (F : Flow_Id;
                                            S : Flow_Scope)
                                            return Boolean;
-   --  Returns true if F is covered by an initializes aspect. If F is not a
-   --  record or direct mapping, we return false. (A magic string by
-   --  definition cannot be mentioned in an initializes aspect.)
+   --  Returns True iff F is covered by either a user-provided or a generated
+   --  initializes aspect.
    --
-   --  This mirrors Is_Initialized_At_Elaboration from Flow_Refinement,
-   --  but works for a Flow_Id instead of an Entity_Id.
+   --  This function is a wrapper around Is_Initialized_At_Elaboration from
+   --  Flow_Refinement and GG_Is_Initialized_At_Elaboration fromm
+   --  Flow_Generated_Globals.
 
    function Is_Initialized_In_Specification (F : Flow_Id;
                                              S : Flow_Scope)

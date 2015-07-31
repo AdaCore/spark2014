@@ -23,9 +23,6 @@ clock.ads:6:19: info: initialization of "Time" proved
 display.ads:8:14: info: initialization of "Output_Ext" proved
 heatingsystem_dfa.adb:11:11: info: initialization of "display.output_ext" proved
 heatingsystem_dfa.adb:11:11: medium: "actuator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
-heatingsystem_dfa.adb:11:11: medium: "advancebutton.advancemode" might not be initialized after elaboration of main program "HeatingSystem_DFA"
-heatingsystem_dfa.adb:11:11: medium: "advancebutton.advpressed" might not be initialized after elaboration of main program "HeatingSystem_DFA"
-heatingsystem_dfa.adb:11:11: medium: "advancebutton.advtimer" might not be initialized after elaboration of main program "HeatingSystem_DFA"
 heatingsystem_dfa.adb:11:11: medium: "advancebutton.raw.input_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
 heatingsystem_dfa.adb:11:11: medium: "clock.tick_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
 heatingsystem_dfa.adb:11:11: medium: "indicator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"

@@ -3834,8 +3834,7 @@ package body Flow_Utility is
    -- Is_Precondition_Check --
    ---------------------------
 
-   function Is_Precondition_Check (N : Node_Id) return Boolean
-   is
+   function Is_Precondition_Check (N : Node_Id) return Boolean is
       A : constant Node_Id := First (Pragma_Argument_Associations (N));
    begin
       pragma Assert (Nkind (Expression (A)) = N_Identifier);
@@ -3898,7 +3897,11 @@ package body Flow_Utility is
             return Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (F),
                                                   S);
 
-         when Magic_String | Synthetic_Null_Export =>
+         when Magic_String =>
+            return GG_Has_Been_Generated
+              and then GG_Is_Initialized_At_Elaboration (F.Name);
+
+         when Synthetic_Null_Export =>
             return False;
 
          when Null_Value =>
@@ -3914,17 +3917,32 @@ package body Flow_Utility is
                                              S : Flow_Scope)
                                              return Boolean
    is
-      pragma Assert (F.Kind in Direct_Mapping | Record_Field);
-      E : constant Entity_Id := Get_Direct_Mapping_Id (F);
    begin
-      case Ekind (E) is
-         when E_Abstract_State =>
-            return False;
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               case Ekind (E) is
+                  when E_Abstract_State =>
+                     return False;
+
+                  when others =>
+                     pragma Assert (Nkind (Parent (E)) = N_Object_Declaration);
+                     return Present (Expression (Parent (E)));
+
+               end case;
+            end;
+
+         when Magic_String =>
+            --  The fact that we have a Magic_String instead of an entity means
+            --  that we this comes from another compilation unit (via an
+            --  indirect call) and therefore has to have already been
+            --  elaborated.
+            return True;
 
          when others =>
-            pragma Assert (Nkind (Parent (E)) = N_Object_Declaration);
-            return Present (Expression (Parent (E)));
-
+            raise Program_Error;
       end case;
    end Is_Initialized_In_Specification;
 

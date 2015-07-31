@@ -146,6 +146,10 @@ package body Flow_Generated_Globals is
    Initializes_Aspects_Map : Initializes_Aspects_Maps.Map :=
      Initializes_Aspects_Maps.Empty_Map;
 
+   All_Initialized_Names   : Name_Sets.Set := Name_Sets.Empty_Set;
+   --  This set of names will hold all variables and state abstractions that we
+   --  know are initialized.
+
    ----------------------------------------------------------------------
    --  Volatile information
    ----------------------------------------------------------------------
@@ -1606,6 +1610,27 @@ package body Flow_Generated_Globals is
 
                --  Insert II into Initializes_Aspects_Map
                Initializes_Aspects_Map.Insert (P.Name, II);
+
+               --  Add LHS and LHS_Proof to the All_Initialized_Names set
+               All_Initialized_Names.Union (II.LHS);
+               All_Initialized_Names.Union (II.LHS_Proof);
+
+               --  Add state abstractions to the All_Initialized_Names set
+               declare
+                  All_LHS : constant Name_Sets.Set := LHS or LHS_Proof;
+                  State   : Entity_Name;
+               begin
+                  for Var of All_LHS loop
+                     State := GG_Enclosing_State (Var);
+
+                     if State /= Null_Entity_Name
+                       and then (for all Const of GG_Get_Constituents (State)
+                                   => All_LHS.Contains (Const))
+                     then
+                        All_Initialized_Names.Include (State);
+                     end if;
+                  end loop;
+               end;
             end;
          end loop;
 
@@ -2734,6 +2759,18 @@ package body Flow_Generated_Globals is
          return DM;
       end;
    end GG_Get_Initializes;
+
+   --------------------------------------
+   -- GG_Is_Initialized_At_Elaboration --
+   --------------------------------------
+
+   function GG_Is_Initialized_At_Elaboration
+     (EN : Entity_Name)
+      return Boolean
+   is
+   begin
+      return All_Initialized_Names.Contains (EN);
+   end GG_Is_Initialized_At_Elaboration;
 
    --------------------
    -- GG_Is_Volatile --

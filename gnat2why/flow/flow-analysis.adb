@@ -551,11 +551,7 @@ package body Flow.Analysis is
       --  Note we never actually need writes in this analysis.
 
       for R of Reads loop
-         --  ??? Fix this for magic strings once M711-031 is implemented
-         if not (R.Kind in Direct_Mapping | Record_Field and then
-                   Is_Initialized_At_Elaboration (Get_Direct_Mapping_Id (R),
-                                                  FA.B_Scope))
-         then
+         if not Is_Initialized_At_Elaboration (R, FA.B_Scope) then
             Error_Msg_Flow
               (FA   => FA,
                Msg  => "& might not be initialized after elaboration " &

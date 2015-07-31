@@ -325,6 +325,11 @@ package Flow_Generated_Globals is
    --  @return the generated initializes if it exists or an empty dependency
    --    map otherwise.
 
+   function GG_Is_Initialized_At_Elaboration (EN : Entity_Name) return Boolean
+   with Pre => GG_Has_Been_Generated;
+   --  @param EN is the entity name we want to check
+   --  @return True iff EN is initialized at elaboration
+
    function GG_Is_Volatile (EN : Entity_Name) return Boolean
    with Pre => GG_Has_Been_Generated;
    --  @param EN is the entity name that we check for being volatile

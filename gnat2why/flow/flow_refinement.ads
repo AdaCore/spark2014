@@ -144,7 +144,7 @@ package Flow_Refinement is
    --  abstract state where its refinement is visible in S.
 
    function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
-   with Post => not Present (Find_Node_In_Initializes'Result)
+   with Post => No (Find_Node_In_Initializes'Result)
                   or else Find_Node_In_Initializes'Result = E
                   or else Find_Node_In_Initializes'Result =
                             Encapsulating_State (E);

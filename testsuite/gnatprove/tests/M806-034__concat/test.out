@@ -88,9 +88,3 @@ concat_right.adb:31:04: info: initialization of "Y" proved
 concat_right.adb:31:14: info: length check proved
 concat_right.adb:35:07: info: precondition proved
 concat_right.ads:2:14: warning: subprogram "P" has no effect
-main.adb:5:11: medium: "concat.x" might not be initialized after elaboration of main program "Main"
-main.adb:5:11: medium: "concat.y" might not be initialized after elaboration of main program "Main"
-main.adb:5:11: medium: "concat_left.x" might not be initialized after elaboration of main program "Main"
-main.adb:5:11: medium: "concat_left.y" might not be initialized after elaboration of main program "Main"
-main.adb:5:11: medium: "concat_right.x" might not be initialized after elaboration of main program "Main"
-main.adb:5:11: medium: "concat_right.y" might not be initialized after elaboration of main program "Main"

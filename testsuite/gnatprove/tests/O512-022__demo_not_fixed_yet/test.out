@@ -37,8 +37,6 @@ generic_stack.adb:27:25: medium: array index check might fail, in instantiation 
 generic_stack.adb:28:22: info: range check proved, in instantiation at use_stacks.adb:47
 generic_stack.ads:8:19: info: initialization of "E" proved, in instantiation at use_stacks.adb:47
 main.adb:5:11: info: initialization of "random_numbers.state" proved
-main.adb:5:11: medium: "asm_stack.stack_top" might not be initialized after elaboration of main program "Main"
-main.adb:5:11: medium: "asm_stack.stack_vector" might not be initialized after elaboration of main program "Main"
 main.adb:11:14: warning: unused assignment to "random_numbers.state"
 main.adb:14:12: info: initialization of "X" proved
 main.adb:14:14: medium: overflow check might fail
