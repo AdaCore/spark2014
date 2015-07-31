@@ -407,8 +407,8 @@ def altergo(src, timeout=10, opt=None):
 
 
 def cntexample_error(line):
-    """ Return true if the line is error or warning related to querying a solver
-    for a counter-example"""
+    """Return true if the line is error or warning related to querying a solver
+    for a counterexample."""
     if line == "\")":
         return True
     if line.startswith("(error \""):
@@ -420,7 +420,7 @@ def cntexample_error(line):
 
 
 def filter_cntexample_errors(strlist):
-    """ Filter errors related to querying a solver for a counter-example. """
+    """Filter errors related to querying a solver for a counterexample."""
     newlist = []
     for line in strlist:
         if not cntexample_error(line):
