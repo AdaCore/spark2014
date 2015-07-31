@@ -1222,7 +1222,7 @@ package body Flow_Generated_Globals is
                --  Also add vertex to the tasking-info graphs
                for Kind in Tasking_Info_Kind loop
                   Tasking_Graph (Kind).Add_Vertex (N);
-                  --  ??? vertices could be created just before adding edges
+                  --  ??? subprogram vertices can be created when adding edges
                end loop;
             end;
          end loop;
@@ -1384,15 +1384,7 @@ package body Flow_Generated_Globals is
                begin
                   --  Add vertices for objects
                   for Obj of Objs loop
-                     --  Create subprogram vertex if not already exists, which
-                     --  happens for package elaboration code
-                     if Tasking_Graph (Kind).Get_Vertex (Subp) =
-                       Tasking_Graphs.Null_Vertex
-                     then
-                        Tasking_Graph (Kind).Add_Vertex (Subp);
-                     end if;
-
-                     --  Create object vertex if it not already created
+                     --  Create object vertex if it does not already exist
                      if Tasking_Graph (Kind).Get_Vertex (Obj) =
                        Tasking_Graphs.Null_Vertex
                      then
@@ -2206,6 +2198,7 @@ package body Flow_Generated_Globals is
             --  Clear the bag
             Tasking_Info_Bag (Kind).Clear;
 
+            --  Collect information for each subprogram
             for S of All_Subprograms loop
                declare
                   S_Vertex : constant Tasking_Graphs.Vertex_Id :=
