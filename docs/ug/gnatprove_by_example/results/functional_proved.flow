@@ -1,1 +1,2 @@
-no output
+functional_proved.adb:4:04: info: initialization of "Max" proved
+functional_proved.adb:5:04: info: initialization of "Snd" proved

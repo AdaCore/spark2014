@@ -1,1 +1,2 @@
+assumptions.adb:4:04: info: initialization of "Clock_Ticks" proved
 assumptions.adb:12:34: info: overflow check proved
