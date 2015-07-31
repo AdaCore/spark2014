@@ -14,6 +14,8 @@ $(error Please define TARGET)
 endif
 endif
 
+export GPR_PROJECT_PATH=../projects:../projects.$(TARGET)
+
 # Settings for native target
 
 # Common settings
@@ -89,7 +91,6 @@ run: $(APP_IMAGE).bin
 spark: force
 	mkdir -p spark && \
 	cd spark && \
-	GPR_PROJECT_PATH=../projects:../projects.$(TARGET) \
 	gnatprove -P../projects.native/ipstack_dev.gpr --mode=flow --warnings=continue --quiet | sort
 
 codepeer: force
