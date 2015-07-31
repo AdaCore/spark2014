@@ -406,7 +406,7 @@ package body Flow_Error_Messages is
       Msg2     : constant String :=
         Compute_Message (Msg, N);
       Msg3     : constant String :=
-        (if Cntexmp_VC /= "" then Msg2 & ", counter-example: " & Cntexmp_VC
+        (if Cntexmp_VC /= "" then Msg2 & ", counterexample: " & Cntexmp_VC
          else Msg2);
       Suppr    : String_Id := No_String;
       Slc      : constant Source_Ptr := Compute_Sloc (N, Place_First);

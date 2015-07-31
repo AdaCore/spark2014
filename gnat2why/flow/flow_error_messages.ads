@@ -137,7 +137,7 @@ package Flow_Error_Messages is
    --  @param Msg the message string
    --  @param Tag the kind of VC
    --  @param Tracefile the tracefile of the VC which describes context
-   --  @param Cntexmp_Vc the string with counter-example model elements related
+   --  @param Cntexmp_Vc the string with counterexample model elements related
    --    to the construct that triggers VC.
    --  @param Cntexmpfile the file which contains the counterexample
    --  @param VC_File if the VC is a manual proof, the VC file for manual proof

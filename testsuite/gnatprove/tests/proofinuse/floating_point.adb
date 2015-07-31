@@ -30,7 +30,7 @@ is
       pragma Assert (Res >= 0.0 and then Res <= 360.0);
    end Range_Add_Mult;
 
-   --  NOT TRUE. Counter-example posted to N131-061.
+   --  NOT TRUE. Counterexample posted to N131-061.
    procedure Guarded_Div (X, Y : Float_32; Res : out Float_32) is
       Threshold : constant Float_32 := 1000.0;
    begin
@@ -42,7 +42,7 @@ is
       pragma Assert (Res < Threshold);  --@ASSERT:FAIL
    end Guarded_Div;
 
-   --  NOT TRUE. Counter-example posted to N131-061.
+   --  NOT TRUE. Counterexample posted to N131-061.
    procedure Fibonacci (N : Positive; X, Y : Float_32; Res : out Float_32) is
    begin
       pragma Assume (N in 2 .. 46);
@@ -249,7 +249,7 @@ is
       pragma Assert (Res);     -- valid
    end User_Rule_10;
 
-   --  The counter-example to 11 involves infinity.
+   --  The counterexample to 11 involves infinity.
 
    procedure User_Rule_11 (A, B, C, D : Float;
                            Res        : out Boolean)
