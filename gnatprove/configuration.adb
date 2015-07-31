@@ -248,7 +248,7 @@ ASCII.LF &
 ASCII.LF &
 " --prover=s[,s]*     Use given provers (s=cvc4, altergo, ...)" &
 ASCII.LF &
-" --counter-example=c Generate a counter-example for unproved formulas" &
+" --counterexample=c  Generate a counterexample for unproved formulas" &
 ASCII.LF &
 "                     (c=on, off*)" &
 ASCII.LF &
@@ -924,8 +924,8 @@ ASCII.LF;
 
       Define_Switch
         (Config,
-         Counter_Example'Access,
-         Long_Switch => "--counter-example=");
+         Counterexample'Access,
+         Long_Switch => "--counterexample=");
 
       Define_Switch
         (Config, Why3_Config_File'Access,

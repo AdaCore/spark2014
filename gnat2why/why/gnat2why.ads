@@ -291,17 +291,17 @@
 --
 --  "model"
 --     This label identifies elements that should be included in the
---     counter-example model.
+--     counterexample model.
 --
 --  "model_projected"
 --     This label identifies elements that should be included in the
---     counter-example model.
+--     counterexample model.
 --     Unlike the label "model", the value of the element will be projected
 --     using a projection function (specified using the meta model_projection)
 --
 --  "model_trace:name"
 --      This label specifies the name that will be reported in a
---      counter-example for this element.
+--      counterexample for this element.
 --      Should be always used together with label "model" or "model_projected"
 --
 --  "model_vc"

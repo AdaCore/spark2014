@@ -49,11 +49,11 @@ package body Why.Atree.Sprint is
 
    O : Output_Id := Stdout;
 
-   ------------------------------------
-   -- Locations for counter-examples --
-   ------------------------------------
+   -----------------------------------
+   -- Locations for counterexamples --
+   -----------------------------------
 
-   --  Counter-examples use Why3 locations, contrary to VCs which are based
+   --  Counterexamples use Why3 locations, contrary to VCs which are based
    --  on special GP_Sloc labels. Location information is printed in the Why3
    --  output file for every change of file or line.
 
@@ -1308,7 +1308,7 @@ package body Why.Atree.Sprint is
             --  W_Global_Ref_Declaration. See their printing functions.
 
             --  Location tags are printed in order to display correct locations
-            --  in counter-examples.
+            --  in counterexamples.
             Print_Sloc_Tag;
          when others => null;
       end case;

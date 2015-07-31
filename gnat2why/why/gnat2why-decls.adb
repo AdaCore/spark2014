@@ -111,7 +111,7 @@ package body Gnat2Why.Decls is
 
       Insert_Entity (E, To_Why_Id (E, Typ => Typ));
 
-      Add_Counter_Example_Labels (E, Labels);
+      Add_Counterexample_Labels (E, Labels);
 
       Emit (File.Cur_Theory,
             Why.Atree.Builders.New_Function_Decl
@@ -474,9 +474,9 @@ package body Gnat2Why.Decls is
          when Regular =>
             begin
                --  Currently only generate values for scalar variables in
-               --  counter-examples, which are always of the Regular kind.
+               --  counterexamples, which are always of the Regular kind.
 
-               Add_Counter_Example_Labels (E, Labels);
+               Add_Counterexample_Labels (E, Labels);
 
                --  generate a global ref
 

@@ -3252,7 +3252,7 @@ package body Why.Gen.Expr is
       --  VC
       --  "keep_on_simp"          - tag that disallows simplifying this VC away
       --  "model_vc"              - identifies the construct that triggers the
-      --   VC (for generating counter-examples)
+      --   VC (for generating counterexamples)
       --  "model_func:name"       - present if VC is postcondition or
       --  precondition, name is the name of the function
       --

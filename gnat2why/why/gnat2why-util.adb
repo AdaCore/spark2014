@@ -255,36 +255,36 @@ package body Gnat2Why.Util is
 
    end Ada_Ent_To_Why;
 
-   --------------------------------
-   -- Add_Counter_Example_Labels --
-   --------------------------------
+   -------------------------------
+   -- Add_Counterexample_Labels --
+   -------------------------------
 
-   procedure Add_Counter_Example_Labels
+   procedure Add_Counterexample_Labels
      (E      : Entity_Id;
       Labels : in out Name_Id_Sets.Set)
    is
    begin
       --  Currently only generate values for scalar variables in
-      --  counter-examples.
+      --  counterexamples.
 
       if Is_Scalar_Type (Etype (E)) then
          Labels.Include (NID (Model_Trace_Label &
                            Source_Name (E)));
 
          --  If E's type is directly a native prover type, simply request the
-         --  value of E in the counter-example.
+         --  value of E in the counterexample.
 
          if Has_Builtin_Why_Type (E) then
             Labels.Include (NID (Model_Label));
 
          --  If E's type needs a projection to a native prover type, request
-         --  the value of the projection of E in the counter-example.
+         --  the value of the projection of E in the counterexample.
 
          else
             Labels.Include (NID (Model_Proj_Label));
          end if;
       end if;
-   end Add_Counter_Example_Labels;
+   end Add_Counterexample_Labels;
 
    ------------------
    -- Add_To_Graph --

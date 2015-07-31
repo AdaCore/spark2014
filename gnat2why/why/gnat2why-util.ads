@@ -246,10 +246,10 @@ package Gnat2Why.Util is
    -- Builders --
    --------------
 
-   procedure Add_Counter_Example_Labels
+   procedure Add_Counterexample_Labels
      (E      : Entity_Id;
       Labels : in out Name_Id_Sets.Set);
-   --  Add labels relevant for generating counter-example model
+   --  Add labels relevant for generating counterexample model
 
    function Compute_Spec
      (Params : Transformation_Params;

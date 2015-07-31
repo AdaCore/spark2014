@@ -341,16 +341,16 @@ procedure Gnatprove is
                5 => new String'(Proof_Dir.all),
                6 => new String'("--why3-conf"),
                7 => new String'(Gnatwhy3_Conf),
-               8 => new String'("--counter-example"),
-               9 => new String'(Counter_Example.all))
+               8 => new String'("--counterexample"),
+               9 => new String'(Counterexample.all))
             else
               (1 => new String'("--prepare-shared"),
                2 => new String'("--prover"),
                3 => new String'(Alter_Prover.all),
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all),
-               6 => new String'("--counter-example"),
-               7 => new String'(Counter_Example.all)));
+               6 => new String'("--counterexample"),
+               7 => new String'(Counterexample.all)));
          Res : Boolean;
          Old_Dir  : constant String := Current_Directory;
          Gnatwhy3 : constant String := Compose (Libexec_Bin_Dir, "gnatwhy3");
@@ -431,8 +431,8 @@ procedure Gnatprove is
          Args.Append (Gnatwhy3_Conf);
       end if;
 
-      Args.Append ("--counter-example");
-      Args.Append (Counter_Example.all);
+      Args.Append ("--counterexample");
+      Args.Append (Counterexample.all);
 
       return Args;
    end Compute_Why3_Args;
