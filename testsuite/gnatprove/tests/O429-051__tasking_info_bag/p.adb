@@ -1,5 +1,3 @@
-with Ada.Synchronous_Task_Control;
-
 package body P is
 
    --  protected type
@@ -28,18 +26,19 @@ package body P is
 
    end;
 
-   --  protected object
-   PO : PT;
-
-   --  suspension object
-   SO : Ada.Synchronous_Task_Control.Suspension_Object;
-
    procedure Call is
       X : Boolean := PO.Func;
    begin
       PO.Dummy;
       PO.Proc;
+      R.X := 1;
+
+      Nonatomic_Int := Atomic_Int;
+      Atomic_Int := Nonatomic_Int;
+      --  Call to suspension object is now not allowed
       --  Ada.Synchronous_Task_Control.Suspend_Until_True (SO);
+
+      CAE_Not := CAE;
    end;
 
 end;

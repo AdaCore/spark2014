@@ -33,7 +33,6 @@ with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Output;                      use Output;
-with Sem_Eval;                    use Sem_Eval;
 with Sem_Util;                    use Sem_Util;
 with Sinfo;                       use Sinfo;
 with Sinput;                      use Sinput;
@@ -3812,11 +3811,6 @@ package body Flow.Analysis is
       --  @return True iff the Analyzed_Entity is defined in a
       --     package's body.
 
-      function Is_Constant_After_Elaboration (N : Node_Id) return Boolean;
-      --  @param N is the node corresponding to the
-      --     Pragma_Constant_After_Elaboration. N might be Empty.
-      --  @return True iff Constant_After_Elaboration is True
-
       ---------------------------------
       -- In_Body_Part return Boolean --
       ---------------------------------
@@ -3838,34 +3832,6 @@ package body Flow.Analysis is
 
          return False;
       end In_Body_Part;
-
-      -----------------------------------
-      -- Is_Constant_After_Elaboration --
-      -----------------------------------
-
-      function Is_Constant_After_Elaboration (N : Node_Id) return Boolean is
-         Expr : Node_Id;
-      begin
-         if No (N) then
-            --  Trivially false
-            return False;
-         end if;
-
-         Expr := (if Present (Pragma_Argument_Associations (N))
-                  then Expression (First (Pragma_Argument_Associations (N)))
-                  else Empty);
-
-         --  The pragma has an optional Boolean expression, the related
-         --  property is enabled only when the expression evaluates to True.
-
-         if Present (Expr) then
-            return Is_True (Expr_Value (Get_Pragma_Arg (Expr)));
-         else
-            --  Otherwise the lack of expression enables the property
-            --  by default.
-            return True;
-         end if;
-      end Is_Constant_After_Elaboration;
 
    --  Start of processing for Check_Constant_After_Elaboration
 

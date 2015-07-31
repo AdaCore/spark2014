@@ -656,6 +656,12 @@ is
    --  @param F is the Flow_Id that we check
    --  @return True if F is either not a constant or if it is a constant
    --     which Has_Variable_Input
+
+   function Is_Constant_After_Elaboration (N : Node_Id) return Boolean
+   with Pre => N = Empty or else Nkind (N) = N_Pragma;
+   --  @param N is the node corresponding to the
+   --     Pragma_Constant_After_Elaboration. N might be Empty.
+   --  @return True iff Constant_After_Elaboration is True
 private
    Init_Done : Boolean := False;
 
