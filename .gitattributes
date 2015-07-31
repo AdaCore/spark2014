@@ -16,6 +16,7 @@ libs/containers/ada/*/* no-precommit-check
 libs/containers/ada/* no-precommit-check
 testsuite/gnatprove/tests/*/* no-precommit-check
 testsuite/gnatprove/tests/*/*/* no-precommit-check
+testsuite/gnatprove/tests/*/*/*/* no-precommit-check
 testsuite/alt-ergo/tests/*/* no-precommit-check
 testsuite/gnatmerge/tests/*/* no-precommit-check
 testsuite/gnatmerge/tests/*/*/* no-precommit-check
