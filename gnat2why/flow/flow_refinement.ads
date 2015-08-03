@@ -107,8 +107,8 @@ package Flow_Refinement is
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
    with Pre => Present (N);
-   --  Given (almost) any node in the AST, work out which flow scope we are
-   --  in. If the scope is Standard, we return Null_Flow_Scope instead.
+   --  Given (almost) any node in the AST, work out which flow scope we are in.
+   --  If the scope is Standard, return Null_Flow_Scope instead.
 
    function Subprogram_Refinement_Is_Visible (E : Entity_Id;
                                               S : Flow_Scope)

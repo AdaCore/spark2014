@@ -68,7 +68,7 @@ package Flow.Analysis is
    procedure Find_Non_Elaborated_State_Abstractions
      (FA : in out Flow_Analysis_Graphs)
      with Pre => FA.Kind in E_Package | E_Package_Body;
-   --  Finds usages of state abstractions that belong to other
+   --  Find uses of state abstractions that belong to other
    --  non-elaborated packages.
    --
    --  Complexity is O(N)
@@ -98,7 +98,7 @@ package Flow.Analysis is
 
    procedure Find_Exports_Derived_From_Proof_Ins
      (FA : in out Flow_Analysis_Graphs);
-   --  Finds exports derived from global variables with mode Proof_In.
+   --  Find exports derived from global variables with mode Proof_In.
    --
    --  Complexity is O(N^2) - (due to path search on each element of the
    --  precomputed dependency map)
@@ -129,15 +129,14 @@ package Flow.Analysis is
    --  Complexity is O(N)
 
    procedure Check_Depends_Contract (FA : in out Flow_Analysis_Graphs);
-   --  Check the given depends against the reality. If there is no
-   --  depends aspect this procedure does nothing.
+   --  Check the given Depends contract against the reality; do nothing if
+   --  there is no such contract.
    --
    --  Complexity is O(N^2)
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs)
      with Pre => FA.Kind in E_Package | E_Package_Body;
-   --  Checks if the Initializes contract has extra dependencies or missing
-   --  dependencies.
+   --  Check if the Initializes contract has extra or missing dependencies.
    --
    --  Complexity is O(N^2)
 
@@ -185,7 +184,7 @@ private
      (FA  : in out Flow_Analysis_Graphs;
       Var : Flow_Id)
      with Pre  => Var.Kind = Magic_String;
-   --  Emit an error message that (the first call) introducing the
+   --  Emit error message that (the first call) introducing the
    --  global Var requires a global annotation.
 
    function First_Variable_Use (N        : Node_Id;
@@ -195,14 +194,13 @@ private
                                 Precise  : Boolean;
                                 Targeted : Boolean := False)
                                 return Node_Id;
-   --  Given a node N, we traverse the tree to find the most deeply
+   --  Given a node N, traverse the tree to find the most deeply
    --  nested node which still uses Var. If Precise is True look only
-   --  for Var (for example R.Y), otherwise we also look for the
+   --  for Var (for example R.Y), otherwise also look for the
    --  entire variable represented by Var (in our example we'd also
    --  look for R).
    --
-   --  When Targeted is set, we only search under specific nodes of
-   --  the AST:
+   --  When Targeted is set, we only search under specific nodes of the AST:
    --
    --    * For assignment statement, we only look at the right
    --      hand side of the assignment.
