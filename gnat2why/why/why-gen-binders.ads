@@ -237,10 +237,10 @@ package Why.Gen.Binders is
       Id      : W_Identifier_Id;
       Mutable : Boolean) return Item_Type
    is
-     (Regular, Main => (Ada_Node => E,
-                        B_Name   => Id,
-                        B_Ent    => Null_Entity_Name,
-                        Mutable  => Mutable));
+     ((Regular, Main => (Ada_Node => E,
+                         B_Name   => Id,
+                         B_Ent    => Null_Entity_Name,
+                         Mutable  => Mutable)));
    --  @param E entity
    --  @param Id identifier
    --  @param Mutable True iff the item is mutable

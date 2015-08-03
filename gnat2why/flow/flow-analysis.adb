@@ -846,11 +846,11 @@ package body Flow.Analysis is
      (FA : in out Flow_Analysis_Graphs)
    is
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean
-      is (FA.PDG.Get_Key (V).Variant = Final_Value and then
+      is ((FA.PDG.Get_Key (V).Variant = Final_Value and then
             FA.Atr.Element (V).Is_Export)
-        or else FA.Atr.Element (V).Is_Precondition
-        or else FA.Atr.Element (V).Is_Postcondition
-        or else FA.Atr.Element (V).Is_Proof;
+         or else FA.Atr.Element (V).Is_Precondition
+         or else FA.Atr.Element (V).Is_Postcondition
+         or else FA.Atr.Element (V).Is_Proof);
       --  Checks if the given vertex V is a final-use vertex or is useful for
       --  proof.
 
