@@ -124,6 +124,7 @@ package body Why.Atree.Sprint is
    procedure Print_Identifier (Node : W_Identifier_Id);
    procedure Print_Include_Declaration (Node : W_Include_Declaration_Id);
    procedure Print_Integer_Constant (Node : W_Integer_Constant_Id);
+   procedure Print_Meta_Declaration (Node : W_Meta_Declaration_Id);
    procedure Print_Modular_Constant (Node : W_Modular_Constant_Id);
    procedure Print_Label (Node : W_Label_Id);
    procedure Print_Literal (Node : W_Literal_Id);
@@ -1100,6 +1101,21 @@ package body Why.Atree.Sprint is
       end if;
    end Print_Integer_Constant;
 
+   ----------------------------
+   -- Print_Meta_Declaration --
+   ----------------------------
+
+   procedure Print_Meta_Declaration (Node : W_Meta_Declaration_Id) is
+      Name      : constant Name_Id := Get_Name (Node);
+      Parameter : constant Name_Id := Get_Parameter (Node);
+   begin
+      P (O, "meta """);
+      P (O, Name);
+      P (O, """ ");
+      P (O, Parameter);
+
+   end Print_Meta_Declaration;
+
    -----------------------------
    -- Print_Modular_Constant --
    -----------------------------
@@ -1478,6 +1494,9 @@ package body Why.Atree.Sprint is
 
          when W_Clone_Substitution =>
             Print_Clone_Substitution (+N);
+
+         when W_Meta_Declaration =>
+            Print_Meta_Declaration (+N);
 
          when W_Theory_Declaration =>
             Print_Theory_Declaration (+N);

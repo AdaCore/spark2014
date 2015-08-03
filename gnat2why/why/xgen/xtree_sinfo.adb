@@ -610,6 +610,16 @@ package body Xtree_Sinfo is
                  "Use_Kind", "EW_Clone_Type");
       Set_Domain (W_Include_Declaration, EW_Term);
 
+      ------------------------
+      -- W_Meta_Declaration --
+      ------------------------
+
+      New_Field (W_Meta_Declaration,
+                 "Name", "Name_Id");
+      New_Field (W_Meta_Declaration,
+                 "Parameter", "Name_Id");
+      Set_Domain (W_Meta_Declaration, EW_Term);
+
       -------------------------
       -- W_Clone_Declaration --
       -------------------------

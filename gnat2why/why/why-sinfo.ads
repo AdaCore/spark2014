@@ -554,6 +554,14 @@ package Why.Sinfo is
    --
    --  An include directive. It is of the form "use [import] file.Module".
    --
+   --  ------------------------
+   --  -- W_Meta_Declaration --
+   --  ------------------------
+   --  Name      Name_Id
+   --  Parameter Name_Id
+   --
+   --  A meta directive. It is of the form "meta "name" parameter".
+   --
    --  -------------------------
    --  -- W_Clone_Declaration --
    --  -------------------------
@@ -724,6 +732,7 @@ package Why.Sinfo is
       W_Namespace_Declaration,
       W_Exception_Declaration,
       W_Include_Declaration,
+      W_Meta_Declaration,
       W_Clone_Declaration,
       W_Clone_Substitution,
       W_Theory_Declaration,
