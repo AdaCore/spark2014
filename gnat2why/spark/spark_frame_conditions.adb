@@ -577,6 +577,14 @@ package body SPARK_Frame_Conditions is
       Read_Ids : Id_Set.Set := Id_Set.Empty_Set;
 
    begin
+      --  ??? O429-046, O603-033 Task types, entries and Abstract subprograms
+      --  not yet supported. Avoid issuing an error on those, instead return
+      --  empty sets.
+
+      if Ekind (E) in Task_Kind | Entry_Kind then
+         return Name_Sets.Empty_Set;
+      end if;
+
       --  Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, which do not have effects, instead return the empty set.
 
@@ -612,6 +620,14 @@ package body SPARK_Frame_Conditions is
       Write_Ids : Id_Set.Set := Id_Set.Empty_Set;
 
    begin
+      --  ??? O429-046, O603-033 Task types, entries and Abstract subprograms
+      --  not yet supported. Avoid issuing an error on those, instead return
+      --  empty sets.
+
+      if Ekind (E) in Task_Kind | Entry_Kind then
+         return Name_Sets.Empty_Set;
+      end if;
+
       --  Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, which do not have effects, instead return the empty set.
 

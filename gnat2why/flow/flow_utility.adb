@@ -1653,8 +1653,7 @@ package body Flow_Utility is
          Sprint_Node (Subprogram);
          Write_Str (", ");
          Print_Flow_Scope (Scope);
-         Write_Str (")");
-         Write_Eol;
+         Write_Line (")");
       end if;
 
       if Present (Global_Node)
@@ -1662,8 +1661,7 @@ package body Flow_Utility is
       then
          if Debug_Trace_Get_Global then
             Indent;
-            Write_Str ("using user annotation");
-            Write_Eol;
+            Write_Line ("using user annotation");
             Outdent;
          end if;
 
@@ -2867,13 +2865,24 @@ package body Flow_Utility is
                VS.Union (Recurse_On (Aggregate_Bounds (N)));
 
             when N_Selected_Component =>
+               if Ekind (Entity (Selector_Name (N))) = E_Function then
+                  --  Here we are dealing with a call of a protected
+                  --  function. This appears on the tree as a selected
+                  --  component of the protected object.
+
+                  --  Sanity check that parent is a subprogram call
+                  pragma Assert (Nkind (Parent (N)) in N_Subprogram_Call);
+
+                  VS.Union (Process_Subprogram_Call (Parent (N)));
+                  return Skip;
+               end if;
+
                if Reduced then
                   --  In reduced mode we just keep traversing the tree, but
                   --  we need to turn off consider_extensions.
 
                   VS.Union (Recurse_On (Prefix (N)));
                   return Skip;
-
                else
                   VS.Union
                     (Untangle_Record_Fields

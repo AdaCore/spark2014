@@ -890,13 +890,20 @@ package body Flow is
                                                 else "fa_");
 
       case Ekind (E) is
-         when Subprogram_Kind =>
-            Tmp.B_Scope := Get_Flow_Scope (Subprogram_Body (E));
+         when E_Entry         |
+              E_Task_Type     |
+              Subprogram_Kind =>
+            Tmp.B_Scope := Get_Flow_Scope (Get_Body (E));
             Tmp.S_Scope := Get_Flow_Scope (E);
 
             Append (Tmp.Base_Filename, "subprogram_");
 
-            Tmp.Is_Main := Might_Be_Main (E);
+            Tmp.Is_Main :=
+              (case Ekind (E) is
+               when Subprogram_Kind => Might_Be_Main (E),
+               when E_Entry         => False,
+               when E_Task_Type     => True,
+               when others          => raise Program_Error);
 
             Tmp.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
 
@@ -904,56 +911,13 @@ package body Flow is
             Tmp.Global_N  := Get_Pragma (E, Pragma_Global);
 
             declare
-               Body_E : constant Entity_Id := Subprogram_Body_Entity (E);
+               Body_E : constant Entity_Id := Get_Body_Entity (E);
             begin
                Tmp.Refined_Depends_N := Get_Pragma (Body_E,
                                                     Pragma_Refined_Depends);
                Tmp.Refined_Global_N  := Get_Pragma (Body_E,
                                                     Pragma_Refined_Global);
             end;
-
-            Tmp.Is_Generative := Refinement_Needed (E);
-
-            Tmp.Function_Side_Effects_Present := False;
-
-         when E_Entry =>
-            Tmp.B_Scope := Get_Flow_Scope (Entry_Body (E));
-            Tmp.S_Scope := Get_Flow_Scope (E);
-
-            --  This is intentional, no clash here with functions and
-            --  procedures.
-            Append (Tmp.Base_Filename, "subprogram_");
-
-            Tmp.Is_Main := False;
-
-            Tmp.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
-
-            --  ??? O429-046 requires FE work for contracts on entries
-            Tmp.Depends_N         := Empty;
-            Tmp.Global_N          := Empty;
-            Tmp.Refined_Depends_N := Empty;
-            Tmp.Refined_Global_N  := Empty;
-
-            Tmp.Is_Generative := Refinement_Needed (E);
-
-            Tmp.Function_Side_Effects_Present := False;
-
-         when E_Task_Type =>
-            --  ??? O429-046 Set contract nodes
-            Tmp.B_Scope := Get_Flow_Scope (Task_Body (E));
-            Tmp.S_Scope := Get_Flow_Scope (E);
-
-            Append (Tmp.Base_Filename, "task_");
-
-            Tmp.Is_Main := True;
-
-            Tmp.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
-
-            --  ??? O429-046 requires FE work for contracts on tasks
-            Tmp.Depends_N         := Empty;
-            Tmp.Global_N          := Empty;
-            Tmp.Refined_Depends_N := Empty;
-            Tmp.Refined_Global_N  := Empty;
 
             Tmp.Is_Generative := Refinement_Needed (E);
 
@@ -1490,7 +1454,7 @@ package body Flow is
                     E_Subprogram_Body =>
                   Analysis.Sanity_Check_Postcondition (FA, Success);
 
-               when E_Task_Body      =>
+               when E_Task_Body       =>
                   --  No postconditions for tasks
                   null;
             end case;
@@ -1515,7 +1479,7 @@ package body Flow is
                         then
                            Error_Msg_Flow
                              (FA   => FA,
-                              --  ??? another message lfor entries and tasks
+                              --  ??? another message for entries and tasks
                               Msg  => "subprogram & has no effect",
                               N    => FA.Analyzed_Entity,
                               F1   => Direct_Mapping_Id (FA.Analyzed_Entity),

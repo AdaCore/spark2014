@@ -113,7 +113,7 @@ package Flow_Refinement is
    function Subprogram_Refinement_Is_Visible (E : Entity_Id;
                                               S : Flow_Scope)
                                               return Boolean
-   with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type;
+   with Pre => Ekind (E) in Subprogram_Kind | E_Entry | E_Task_Type;
    --  Return True iff the implementation (and thus refined global or depends)
    --  of subprogram E is visible from S.
 
@@ -184,9 +184,9 @@ package Flow_Refinement is
    --  abstraction whose refinement is visible from Scope.
 
    function Refinement_Needed (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry;
-   --  Returns True if a refinement is needed for the given subprogram or
-   --  task E.
+   with Pre => Ekind (E) in E_Entry | E_Task_Type | Subprogram_Kind;
+   --  Returns True if a refinement is needed for the given subprogram, entry
+   --  or task E.
    --
    --  If no body is present then we return false since we can't decide
    --  (nor need an answer, since we won't analyze the body).
@@ -195,6 +195,6 @@ package Flow_Refinement is
    --     * no global or depends present
    --     * no refined global, but global mentions state with visible
    --       refinement
-   --     * ditto for depends and refined repends
+   --     * ditto for depends and refined depends
 
 end Flow_Refinement;
