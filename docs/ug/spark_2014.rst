@@ -88,8 +88,8 @@ The features listed above are excluded from |SPARK| because, currently, they
 defy formal verification. As formal verification technology advances the list
 will be revisited and it may be possible to relax some of these
 restrictions. There are other features which are technically feasible to
-formally verify but which are currently not supported in |SPARK|, most notably
-concurrency features (tasks, protected objects, etc.).
+formally verify but which are currently not supported in |SPARK|, such as
+access-to-subprogram types.
 
 Uses of these features in |SPARK| code are detected by |GNATprove| and reported
 as errors. Formal verification is not possible on subprograms using these
