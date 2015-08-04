@@ -1313,11 +1313,11 @@ package body SPARK_Frame_Conditions is
       end;
    end Set_Default_To_Empty;
 
-   --------------------------------------
-   -- Collect_Current_Computed_Globals --
-   --------------------------------------
+   -------------------------------------
+   -- Collect_Direct_Computed_Globals --
+   -------------------------------------
 
-   procedure Collect_Current_Computed_Globals
+   procedure Collect_Direct_Computed_Globals
      (E                  : Entity_Id;
       Inputs             : out Name_Sets.Set;
       Outputs            : out Name_Sets.Set;
@@ -1355,7 +1355,7 @@ package body SPARK_Frame_Conditions is
 
       --  Add variables written to variables read
       Inputs.Union (Outputs);
-   end Collect_Current_Computed_Globals;
+   end Collect_Direct_Computed_Globals;
 
    -----------------------
    -- Set_Ignore_Errors --

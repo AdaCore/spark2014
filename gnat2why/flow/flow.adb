@@ -1304,10 +1304,10 @@ package body Flow is
                            begin
                               --  Collect the computed globals using only info
                               --  from the current compilation unit.
-                              Collect_Current_Computed_Globals (E,
-                                                                Reads,
-                                                                Writes,
-                                                                Calls);
+                              Collect_Direct_Computed_Globals (E,
+                                                               Reads,
+                                                               Writes,
+                                                               Calls);
 
                               Global_Info := Global_Phase_1_Info'
                                 (Name                  => To_Entity_Name (E),

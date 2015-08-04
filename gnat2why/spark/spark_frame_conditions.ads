@@ -94,7 +94,7 @@ package SPARK_Frame_Conditions is
    --  If Already_Loaded is set then the information is already present
    --  and we do NOT need to read the ALI file.
 
-   procedure Collect_Current_Computed_Globals
+   procedure Collect_Direct_Computed_Globals
      (E                  : Entity_Id;
       Inputs             : out Name_Sets.Set;
       Outputs            : out Name_Sets.Set;
