@@ -123,4 +123,4 @@ they have dynamic semantics given.
 Elaboration Control
 ~~~~~~~~~~~~~~~~~~~
 
-No extenstions or restrictions.
+No extensions or restrictions.

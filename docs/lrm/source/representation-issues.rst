@@ -28,7 +28,7 @@ otherwise for a particular aspect:
    to specifying a value of True as described in Ada RM 13.1.1(15).]
 
 3. The usage names in an aspect_definition for the given aspect are
-   resolved at the point of the associated declaration. [This supercedes
+   resolved at the point of the associated declaration. [This supersedes
    the name resolution rule given in Ada RM 13.1.1 that states that such names
    are resolved at the end of the enclosing declaration list.]
 
