@@ -158,8 +158,11 @@ package body Flow is
 
       function Flow_Id_Image (F : Flow_Id) return String;
 
-      procedure Format_Item (K, V : String)
-      is
+      -----------------
+      -- Format_Item --
+      -----------------
+
+      procedure Format_Item (K, V : String) is
       begin
          Write_Str (K);
          Write_Str (": ");
@@ -167,27 +170,20 @@ package body Flow is
          Write_Eol;
       end Format_Item;
 
-      function Flow_Id_Image (F : Flow_Id) return String
-      is
-         R : Unbounded_String;
-      begin
-         case F.Kind is
-            when Direct_Mapping =>
-               if Nkind (F.Node) in N_Entity then
-                  Append (R, Flow_Id_To_String (F));
-               else
-                  Append (R, Node_Or_Entity_Id'Image (F.Node));
-               end if;
-            when others =>
-               Append (R, Flow_Id_To_String (F));
-         end case;
+      -------------------
+      -- Flow_Id_Image --
+      -------------------
 
-         Append (R, "|");
+      function Flow_Id_Image (F : Flow_Id) return String is
+        ((case F.Kind is
+             when Direct_Mapping =>
+                (if Nkind (F.Node) in N_Entity
+                 then Flow_Id_To_String (F)
+                 else Node_Or_Entity_Id'Image (F.Node)),
+             when others =>
+                Flow_Id_To_String (F)) & "|" & F.Variant'Img);
 
-         Append (R, Flow_Id_Variant'Image (F.Variant));
-
-         return To_String (R);
-      end Flow_Id_Image;
+   --  Start of processing for Print_Graph_Vertex
 
    begin
       Write_Line ("Graph vertex [" &
