@@ -2492,24 +2492,6 @@ package body SPARK_Util is
       return Unit_In_Standard_Library (Unit (Get_Source_File_Index (Loc)));
    end Location_In_Standard_Library;
 
-   -----------------------------
-   -- Lowercase_Capacity_Name --
-   -----------------------------
-
-   function Lowercase_Capacity_Name return String is ("capacity");
-
-   --------------------------------
-   -- Lowercase_Has_Element_Name --
-   --------------------------------
-
-   function Lowercase_Has_Element_Name return String is ("has_element");
-
-   ----------------------------
-   -- Lowercase_Iterate_Name --
-   ----------------------------
-
-   function Lowercase_Iterate_Name return String is ("iterate");
-
    -------------------
    -- Might_Be_Main --
    -------------------

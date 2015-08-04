@@ -935,15 +935,6 @@ package SPARK_Util is
       Elmts : Why_Node_Lists.List);
    --  Append all elements from list Elmts to the list To
 
-   function Lowercase_Has_Element_Name return String;
-   --  Return the name of the function Has_Element in formal containers
-
-   function Lowercase_Iterate_Name return String;
-   --  Return the name of the function Iterate in formal containers
-
-   function Lowercase_Capacity_Name return String;
-   --  Return the name of the discriminant Capacity in formal containers
-
    function Unit_In_Standard_Library (U : Unit_Number_Type) return Boolean is
       (Get_Kind_Of_Unit (U) /= Not_Predefined_Unit);
    --  Returns True is unit U is in the standard library, which includes all
