@@ -2517,6 +2517,10 @@ package body SPARK_Util is
       function Find_Assoc (N : Node_Id) return Traverse_Result;
       --  Increments Count if N is a N_Component_Association
 
+      ----------------
+      -- Find_Assoc --
+      ----------------
+
       function Find_Assoc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
@@ -2528,6 +2532,9 @@ package body SPARK_Util is
       end Find_Assoc;
 
       procedure Count_Assoc is new Traverse_Proc (Find_Assoc);
+
+   --  Start of processing for Number_Of_Assocs_In_Expression
+
    begin
       Count_Assoc (N);
       return Count;
