@@ -2674,8 +2674,8 @@ package body SPARK_Util is
       Comp : Entity_Id) return Entity_Id
    is
       Specific_Rec : constant Entity_Id :=
-        (if Is_Class_Wide_Type (Rec) then
-           Retysp (Get_Specific_Type_From_Classwide (Rec))
+        (if Is_Class_Wide_Type (Rec)
+         then Retysp (Get_Specific_Type_From_Classwide (Rec))
          else Rec);
       Cur_Comp     : Entity_Id :=
         First_Component_Or_Discriminant (Specific_Rec);
@@ -2757,7 +2757,7 @@ package body SPARK_Util is
    -----------------------------------
 
    function Spec_File_Name_Without_Suffix (N : Node_Id) return String is
-      (File_Name_Without_Suffix (Spec_File_Name (N)));
+     (File_Name_Without_Suffix (Spec_File_Name (N)));
 
    -------------------------
    -- Static_Array_Length --
@@ -2844,6 +2844,8 @@ package body SPARK_Util is
          Add_Char_To_Name_Buffer ('"');
          return Name_Buffer (1 .. Name_Len);
       end String_Image;
+
+   --  Start of processing for String_Of_Node
 
    begin
       return Node_To_String (N, "");
