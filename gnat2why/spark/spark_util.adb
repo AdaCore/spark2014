@@ -2469,14 +2469,9 @@ package body SPARK_Util is
          return False;
       end if;
 
-      if Loc = Standard_Location
-        or else Loc = Standard_ASCII_Location
-        or else Loc = System_Location
-      then
-         return True;
-      end if;
-
-      return Unit_In_Standard_Library (Unit (Get_Source_File_Index (Loc)));
+      return
+        Loc in Standard_Location | Standard_ASCII_Location | System_Location
+        or else Unit_In_Standard_Library (Unit (Get_Source_File_Index (Loc)));
    end Location_In_Standard_Library;
 
    -------------------
