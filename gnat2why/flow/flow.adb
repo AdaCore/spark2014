@@ -1532,7 +1532,7 @@ package body Flow is
                     and then Convention (FA.Analyzed_Entity) =
                       Convention_Protected)
          then
-            --  ??? issue different a warning if the blocking status is unknown
+            --  ??? issue different warning if the blocking status is unknown
             if Is_Potentially_Blocking (FA.Analyzed_Entity)
             then
                Error_Msg_Flow (FA   => FA,
