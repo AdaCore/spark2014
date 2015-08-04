@@ -492,10 +492,6 @@ package SPARK_Util is
    --    subtype; otherwise the index type entity which corresponds to the
    --    selected dimension
 
-   function Nth_Index_Type (E : Entity_Id; Dim : Uint) return Node_Id
-   with Pre => Is_Array_Type (E);
-   --  same as above, but with Uint instead of positive
-
    function Root_Record_Type (E : Entity_Id) return Entity_Id;
    --  Given a record type (or private type whose implementation is a record
    --  type, etc.), return the root type, including traversing private types.

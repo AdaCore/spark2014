@@ -2504,10 +2504,7 @@ package body SPARK_Util is
    --------------------
 
    function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id is
-      (Nth_Index_Type (E, UI_From_Int (Int (Dim))));
-
-   function Nth_Index_Type (E : Entity_Id; Dim : Uint) return Node_Id is
-      Cur   : Int := 1;
+      Cur   : Positive := 1;
       Index : Node_Id := First_Index (E);
 
    begin
