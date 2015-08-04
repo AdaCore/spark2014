@@ -1143,9 +1143,8 @@ package body SPARK_Util is
 
    function Entry_Body_Entity (E : Entity_Id) return Entity_Id
    is
-      Ptr : Node_Id;
+      Ptr : constant Node_Id := Parent (E);
    begin
-      Ptr := Parent (E);
       pragma Assert (Nkind (Ptr) = N_Entry_Declaration);
       return Corresponding_Body (Ptr);
    end Entry_Body_Entity;
@@ -2551,9 +2550,9 @@ package body SPARK_Util is
    -------------
 
    function PO_Body (E : Entity_Id) return Node_Id is
-      Ptr : Node_Id;
+      Ptr : constant Node_Id := Parent (E);
+
    begin
-      Ptr := Parent (E);
       pragma Assert (Nkind (Ptr) = N_Protected_Type_Declaration);
       return Parent (Corresponding_Body (Ptr));
    end PO_Body;
@@ -2563,9 +2562,9 @@ package body SPARK_Util is
    -------------------
 
    function PO_Definition (E : Entity_Id) return Node_Id is
-      Ptr : Node_Id;
+      Ptr : constant Node_Id := Parent (E);
+
    begin
-      Ptr := Parent (E);
       pragma Assert (Nkind (Ptr) = N_Protected_Type_Declaration);
       return Protected_Definition (Ptr);
    end PO_Definition;
@@ -2903,9 +2902,8 @@ package body SPARK_Util is
    ---------------
 
    function Task_Body (E : Entity_Id) return Node_Id is
-      Ptr : Node_Id;
+      Ptr : constant Node_Id := Parent (E);
    begin
-      Ptr := Parent (E);
       pragma Assert (Nkind (Ptr) = N_Task_Type_Declaration);
       return Parent (Corresponding_Body (Ptr));
    end Task_Body;
