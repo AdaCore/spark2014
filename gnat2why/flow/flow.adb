@@ -81,7 +81,9 @@ package body Flow is
 
    Whitespace : constant Ada.Strings.Maps.Character_Set :=
      Ada.Strings.Maps.To_Set
-       (" " & Ada.Characters.Latin_1.CR & Ada.Characters.Latin_1.LF);
+       (Ada.Characters.Latin_1.Space &
+        Ada.Characters.Latin_1.CR &
+        Ada.Characters.Latin_1.LF);
 
    procedure Add_To_Temp_String (S : String);
    --  Nasty nasty hack to add the given string to a global variable,
