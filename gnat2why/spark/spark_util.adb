@@ -1210,16 +1210,13 @@ package body SPARK_Util is
 
             if No (C) then
                P := Empty;
-            elsif Name = Name_Precondition then
-               P := Pre_Post_Conditions (C);
-            elsif Name = Name_Postcondition then
-               P := Pre_Post_Conditions (C);
-            elsif Name = Name_Refined_Post then
-               P := Pre_Post_Conditions (C);
-            elsif Name = Name_Initial_Condition then
-               P := Classifications (C);
             else
-               P := Contract_Test_Cases (C);
+               P := (case Name is
+                        when Name_Precondition  |
+                             Name_Postcondition |
+                             Name_Refined_Post  => Pre_Post_Conditions (C),
+                        when Name_Initial_Condition => Classifications (C),
+                        when others => Contract_Test_Cases (C));
             end if;
 
             while Present (P) loop
