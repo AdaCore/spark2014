@@ -502,17 +502,10 @@ package body SPARK_Util is
 
    function Body_File_Name (N : Node_Id) return String is
       CU     : Node_Id := Enclosing_Lib_Unit_Node (N);
-      Switch : Boolean := False;
+      Switch : constant Boolean :=
+        not (Nkind (Unit (CU)) in N_Package_Body | N_Subprogram_Body);
 
    begin
-      case Nkind (Unit (CU)) is
-         when N_Package_Body    |
-              N_Subprogram_Body =>
-            null;
-         when others =>
-            Switch := True;
-      end case;
-
       if Switch and then Present (Library_Unit (CU)) then
          CU := Library_Unit (CU);
       end if;
