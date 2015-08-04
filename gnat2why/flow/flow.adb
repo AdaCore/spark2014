@@ -1245,13 +1245,9 @@ package body Flow is
                         Scope        : constant Flow_Scope :=
                           Get_Flow_Scope (Body_E);
                         Global_Node  : constant Node_Id :=
-                          Get_Contract_Node (E,
-                                             Scope,
-                                             Global_Contract);
+                          Get_Contract_Node (E, Scope, Global_Contract);
                         Depends_Node : constant Node_Id :=
-                          Get_Contract_Node (E,
-                                             Scope,
-                                             Depends_Contract);
+                          Get_Contract_Node (E, Scope, Depends_Contract);
                      begin
                         if Present (Global_Node)
                           or else Present (Depends_Node)
