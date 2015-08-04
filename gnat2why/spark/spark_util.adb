@@ -2515,11 +2515,7 @@ package body SPARK_Util is
    -------------------
 
    function Might_Be_Main (E : Entity_Id) return Boolean is
-     ((Scope_Depth_Value (E) = Uint_1
-         or else
-      (Is_Generic_Instance (E) and then Scope_Depth_Value (E) = Uint_2))
-        and then
-      No (First_Formal (E)));
+     (Scope (E) = Standard_Standard and then No (First_Formal (E)));
 
    --------------------
    -- Nth_Index_Type --
