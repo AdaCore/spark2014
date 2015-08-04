@@ -2285,9 +2285,7 @@ package body SPARK_Util is
    begin
       return
         (Present (Orig) and then
-         Nkind (Orig) = N_Pragma and then
-         Get_Name_String (Chars (Pragma_Identifier (Orig))) =
-           "assert_and_cut");
+         Is_Pragma (Orig, Pragma_Assert_And_Cut));
    end Is_Pragma_Assert_And_Cut;
 
    ---------------------
