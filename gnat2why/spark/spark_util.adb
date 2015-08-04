@@ -575,7 +575,8 @@ package body SPARK_Util is
             Orig_Comp : constant Entity_Id := Original_Record_Component (E);
             Orig_Rec  : constant Entity_Id := Scope (Orig_Comp);
             Pview_Rec : constant Entity_Id :=
-              (if Present (Full_View (Orig_Rec)) then Full_View (Orig_Rec)
+              (if Present (Full_View (Orig_Rec))
+               then Full_View (Orig_Rec)
                else Orig_Rec);
          begin
             return Entity_In_SPARK (Pview_Rec);
@@ -1581,8 +1582,7 @@ package body SPARK_Util is
       --  depending on the mode.
 
       procedure Process (The_Mode   : Name_Id;
-                         The_Global : Entity_Id)
-      is
+                         The_Global : Entity_Id) is
       begin
          case The_Mode is
             when Name_Input =>
