@@ -354,6 +354,8 @@ package body Flow is
             end if;
          end Print_Node;
 
+      --  Start of processing for Print_Graph
+
       begin
          Temp_String := Null_Unbounded_String;
          Set_Special_Output (Add_To_Temp_String'Access);
