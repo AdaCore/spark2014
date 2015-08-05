@@ -1669,7 +1669,8 @@ package body Flow_Generated_Globals is
          procedure Issue_Corrupted_File_Error is
          begin
             Abort_With_Message
-              ("Corrupted ali file detected. Do ""gnatprove --clean""");
+              ("Corrupted ali file detected. " &
+               "Call gnatprove with ""--clean"".");
          end Issue_Corrupted_File_Error;
 
          ------------------
