@@ -1,0 +1,144 @@
+V "GNAT Lib v7.4"
+A -gnatdk
+A -gnato13
+A -gnatws
+A -gnatc
+P DB GP ES ZX
+
+RN
+RR SIMPLE_BARRIERS
+RR NO_ABORT_STATEMENTS
+RR NO_ASYNCHRONOUS_CONTROL
+RR NO_CALENDAR
+RR NO_DYNAMIC_ATTACHMENT
+RR NO_DYNAMIC_PRIORITIES
+RR NO_ENTRY_QUEUE
+RV NO_EXCEPTIONS
+RR NO_IMPLICIT_HEAP_ALLOCATIONS
+RR NO_LOCAL_TIMING_EVENTS
+RR NO_LOCAL_PROTECTED_OBJECTS
+RR NO_PROTECTED_TYPE_ALLOCATORS
+RR NO_RELATIVE_DELAY
+RR NO_REQUEUE_STATEMENTS
+RR NO_SELECT_STATEMENTS
+RR NO_SPECIFIC_TERMINATION_HANDLERS
+RR NO_TASK_ALLOCATORS
+RR NO_TASK_ATTRIBUTES_PACKAGE
+RR NO_TASK_HIERARCHY
+RR NO_TASK_TERMINATION
+RR NO_TERMINATE_ALTERNATIVES
+RV NO_IMPLEMENTATION_PRAGMAS
+RV NO_ELABORATION_CODE
+RV SPARK_05
+RR MAX_PROTECTED_ENTRIES=1
+RR MAX_SELECT_ALTERNATIVES=0
+RR MAX_TASK_ENTRIES=0
+RR MAX_ASYNCHRONOUS_SELECT_NESTING=0
+
+U test%b		test.adb		ed802faf OO PK
+
+U test%s		test.ads		3fdd5534 EB EE OO PK
+
+D system.ads		20150728102812 1d274481 system%s
+D test.ads		20130919081125 3fdd5534 test%s
+D test.adb		20130919081125 d25d7a9b test%b
+D /home/pavlos/Documents/Versioning_systems/Git/spark2014/testsuite/gnatprove/tests/O720-004__corrupted_ali_file/test.adc  20150805134839 00000000
+X 2 test.ads
+2K9*Test 4l5 4e9 3|1b14 47l5 47t9
+X 3 test.adb
+3V13 Random_Number{integer} 7l8 7t21
+4i7 N{integer} 6r14
+9V13 Multiple_Returns{integer} 16l8 16t24
+9b31 A{boolean} 11r10
+18V13 Is_Prime{boolean} 26l8 26t16
+18i23 N{positive} 20r36 21r13
+20i11 I{integer} 21r19
+28V13 Ext_Return_01{integer} 33l8 33t21
+28i28 N{positive} 31r15
+30i14 R{integer} 31m10
+35V13 No_Return{boolean} 45l8 45t17
+35i24 N{integer} 37r10 40r10
+FD 1 system.ads
+FD 2 test.ads
+FS .1 2K9 test
+FD 3 test.adb
+FS .1 1K14 standard__test -> 2.1
+FS .2 3V13 test__random_number
+FS .3 3V13 test__random_number -> 3.2
+FS .4 9V13 test__multiple_returns
+FS .5 9V13 test__multiple_returns -> 3.4
+FS .6 18V13 test__is_prime
+FS .7 18V13 test__is_prime -> 3.6
+FS .8 28V13 test__ext_return_01
+FS .9 28V13 test__ext_return_01 -> 3.8
+FS .10 35V13 test__no_return
+FS .11 35V13 test__no_return -> 3.10
+FX 3 test.adb .3 test__random_number
+F 4*7 test__random_number__n 6r14
+FX 3 test.adb .4 test__multiple_returns
+F 9>31 test__multiple_returns__a .5:11c10
+FX 3 test.adb .6 test__is_prime
+F 18>23 test__is_prime__n .7:20c36 21c13
+FX 3 test.adb .7 test__is_prime
+F 20*11 test__is_prime__L_1__i 21c19
+FX 3 test.adb .8 test__ext_return_01
+F 28>28 test__ext_return_01__n .9:31c15
+FX 3 test.adb .9 test__ext_return_01
+F 30*14 test__ext_return_01__R9b__r 31m10
+FX 3 test.adb .10 test__no_return
+F 35>24 test__no_return__n .11:37c10 40c10
+
+GG P FA test
+GG VP
+GG VI
+GG VO
+GG CP
+GG CD
+GG CC
+GG LV
+GG LS test__random_number test__multiple_returns test__is_prime test__ext_return_01 test__no_return
+GG LD
+GG S FA test__random_number
+GG VP
+GG VI
+GG VO
+GG CP
+GG CD
+GG CC
+GG LV test__random_number__n
+GG LS
+GG S FA test__is_prime
+GG VP
+GG VI
+GG VO
+GG CP
+GG CD
+GG CC
+GG LV test__is_prime__L_1__i test__is_prime__n
+GG LS
+GG S FA test__multiple_returns
+GG VP
+GG VI
+GG VO
+GG CP
+GG CD
+GG CC
+GG LV test__multiple_returns__a
+GG LS
+GG S FA test__ext_return_01
+GG VP
+GG VI
+GG VO
+GG CP
+GG CD
+GG CC
+GG LV test__ext_return_01__R9b__r test__ext_return_01__n
+GG LS
+GG S FA test__no_return
+GG VP
+GG VI
+GG VO
+GG CP
+GG CD
+GG CC
+GG LV test__no_return__n

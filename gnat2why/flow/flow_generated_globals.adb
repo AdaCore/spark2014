@@ -29,6 +29,7 @@ with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;                use Ada.Text_IO;
 with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
 with ALI;                        use ALI;
+with Call;                       use Call;
 with Flow_Debug;                 use Flow_Debug;
 with Flow_Utility;               use Flow_Utility;
 with GNAT.Regexp;                use GNAT.Regexp;
@@ -875,6 +876,10 @@ package body Flow_Generated_Globals is
          end;
       end loop;
 
+      --  Write the finalization string "GG END"
+      Write_Info_Str ("GG END");
+      Write_Info_Terminate;
+
       Close_Output_Library_Info;
       Current_Mode := GG_No_Mode;
 
@@ -1626,8 +1631,11 @@ package body Flow_Generated_Globals is
          ALI_File_Name_Str : constant String :=
            Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
 
-         ALI_File : Ada.Text_IO.File_Type;
-         Line     : Unbounded_String;
+         ALI_File  : Ada.Text_IO.File_Type;
+         Line      : Unbounded_String;
+
+         Found_End : Boolean := False;
+         --  This will be set to True iff a "GG END" line is found
 
          type External_State is
            (Async_Readers,
@@ -1646,9 +1654,23 @@ package body Flow_Generated_Globals is
             Effective_Reads  => "ER",
             Effective_Writes => "EW");
 
+         procedure Issue_Corrupted_File_Error;
+         --  Issues an error about the ALI file being corrupted and suggests
+         --  the usage of "gnatprove --clean".
+
          procedure Parse_Record;
          --  Parses a GG record from the ALI file and if no problems
          --  occurred adds it to the relevant set.
+
+         --------------------------------
+         -- Issue_Corrupted_File_Error --
+         --------------------------------
+
+         procedure Issue_Corrupted_File_Error is
+         begin
+            Abort_With_Message
+              ("Corrupted ali file detected. Do ""gnatprove --clean""");
+         end Issue_Corrupted_File_Error;
 
          ------------------
          -- Parse_Record --
@@ -1701,7 +1723,7 @@ package body Flow_Generated_Globals is
                   --  Either the ALI file has been tampered with
                   --  or we are dealing with a new kind of line
                   --  that we are not aware of.
-                  raise Program_Error;
+                  Issue_Corrupted_File_Error;
                end if;
             end Check_GG_Format;
 
@@ -1756,7 +1778,7 @@ package body Flow_Generated_Globals is
             procedure Set_Line_Found (L : Line_Index) is
             begin
                if Line_Found (L) then
-                  raise Program_Error;
+                  Issue_Corrupted_File_Error;
                else
                   Line_Found (L) := True;
                end if;
@@ -1800,7 +1822,7 @@ package body Flow_Generated_Globals is
                --  State line parsed. We will now return.
                return;
 
-            --  And to the same trick for tasking-related information
+            --  We special case tasking-related information
 
             elsif Length (Line) > 6
               and then Slice (Line, 1, 4) = "GG T"
@@ -1815,7 +1837,7 @@ package body Flow_Generated_Globals is
                begin
                   --  Check line format
                   if not (Tasking_Key in 'S' | 'E' | 'R' | 'W' | 'U') then
-                     raise Program_Error;
+                     Issue_Corrupted_File_Error;
                   end if;
 
                   --  Get all names
@@ -1853,12 +1875,20 @@ package body Flow_Generated_Globals is
                         Tasking_Info_Bag
                           (Unsynch_Accesses).Insert (First, Names);
                      when others =>
-                        raise Program_Error;
+                        Issue_Corrupted_File_Error;
                   end case;
 
                   --  State line parsed. We will now return.
                   return;
                end;
+
+            --  We special case the "GG END" line
+
+            elsif Length (Line) = 6
+              and then  Slice (Line, 1, 6) = "GG END"
+            then
+               Found_End := True;
+               return;
 
             --  We special case lines that contain info about volatile
             --  variables and external state abstractions.
@@ -1884,7 +1914,7 @@ package body Flow_Generated_Globals is
 
                   --  Check if this tag was not already seen
                   if External_State_Found (ES) then
-                     raise Program_Error;
+                     Issue_Corrupted_File_Error;
                   else
                      External_State_Found (ES) := True;
                   end if;
@@ -1964,7 +1994,7 @@ package body Flow_Generated_Globals is
                         New_Info.Kind := P_Kind;
 
                      when others =>
-                        raise Program_Error;
+                        Issue_Corrupted_File_Error;
                   end case;
 
                   declare
@@ -2059,14 +2089,14 @@ package body Flow_Generated_Globals is
                      else
                         --  Unexpected type of line. Something is wrong
                         --  with the ALI file.
-                        raise Program_Error;
+                        Issue_Corrupted_File_Error;
                      end if;
 
                   end;
 
                else
                   --  Something is wrong with the ALI file
-                  raise Program_Error;
+                  Issue_Corrupted_File_Error;
                end if;
 
                if not End_Of_File (ALI_File)
@@ -2080,7 +2110,7 @@ package body Flow_Generated_Globals is
                   --  We reached the end of the file and our New_Info
                   --  is not yet complete. Something is missing from
                   --  the ALI file.
-                  raise Program_Error;
+                  Issue_Corrupted_File_Error;
                end if;
 
                if (for all I in Line_Index => Line_Found (I)) then
@@ -2122,18 +2152,28 @@ package body Flow_Generated_Globals is
 
             Get_Line (ALI_File, Line);
 
-            --  Check if now reached the "GG" section
+            --  Check if Line starts with "GG "
             if Length (Line) >= 3 and then Slice (Line, 1, 3) = "GG " then
                exit;
             end if;
          end loop;
 
-         --  We have now reached the "GG" section of the ALI file
+         --  We have reached the "GG" section of the ALI file
          Parse_Record;
-         while not End_Of_File (ALI_File) loop
+         while not End_Of_File (ALI_File)
+           and then not Found_End
+         loop
             Get_Line (ALI_File, Line);
             Parse_Record;
          end loop;
+
+         if not Found_End
+           or else not End_Of_File (ALI_File)
+         then
+            --  If "GG END" was not the last line of the ALI file then the file
+            --  has been corrupted.
+            Issue_Corrupted_File_Error;
+         end if;
 
          Close (ALI_File);
       end Load_GG_Info_From_ALI;
