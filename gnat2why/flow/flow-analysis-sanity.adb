@@ -179,7 +179,7 @@ package body Flow.Analysis.Sanity is
                        Simple_Variable_Set (Renamed_Indexes);
                   begin
                      Check_Flow_Id_Set (Flow_Ids => Deps,
-                                        Err_Desc  => "renamed index",
+                                        Err_Desc => "renamed index",
                                         Err_Node => N);
                   end;
 
