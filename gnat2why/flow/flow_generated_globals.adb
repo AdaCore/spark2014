@@ -125,23 +125,11 @@ package body Flow_Generated_Globals is
       RHS_Proof : Name_Sets.Set := Name_Sets.Empty_Set;
    end record;
 
-   function "=" (Left, Right : Initializes_Info) return Boolean;
-   --  Equality function for two name dependency maps
-
-   function "=" (Left, Right : Initializes_Info) return Boolean is
-   begin
-      return Name_Sets."=" (Left.LHS, Right.LHS)
-        and then Name_Sets."=" (Left.LHS_Proof, Right.LHS_Proof)
-        and then Name_Sets."=" (Left.RHS, Right.RHS)
-        and then Name_Sets."=" (Left.RHS_Proof, Right.RHS_Proof);
-   end "=";
-
    package Initializes_Aspects_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Name,
       Element_Type    => Initializes_Info,
       Hash            => Name_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+      Equivalent_Keys => "=");
 
    Initializes_Aspects_Map : Initializes_Aspects_Maps.Map :=
      Initializes_Aspects_Maps.Empty_Map;
@@ -169,8 +157,7 @@ package body Flow_Generated_Globals is
      (Key_Type        => Entity_Name,
       Element_Type    => Tasking_Info,
       Hash            => Name_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+      Equivalent_Keys => "=");
    --  Container for tasking-related information collected in phase 1
 
    Entity_Tasking_Info_Map : Entity_Tasking_Info_Maps.Map :=
