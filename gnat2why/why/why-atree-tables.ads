@@ -42,7 +42,7 @@ package Why.Atree.Tables is
 
    function New_Why_Node_Id
      (Kind : W_Any_Node)
-     return Why_Node_Id with
+      return Why_Node_Id with
      Post => (Get_Kind (New_Why_Node_Id'Result) = Kind);
    pragma Inline (New_Why_Node_Id);
    --  Allocate a new (uninitialized) Why node in table of the given kind
@@ -88,7 +88,7 @@ package Why.Atree.Tables is
    function Option
      (Node  : Why_Node_Id;
       Value : Why_Node_Kind)
-     return Boolean;
+      return Boolean;
    --  Return True if Node is Empty or has kind Value
 
    package Why_Node_Lists is
