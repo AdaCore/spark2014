@@ -9,10 +9,6 @@ package body Inl is
    type Record_Table_T is array (Range_T) of Record_T;
    RT : Record_Table_T;
 
-   procedure Clear_X (R : in out Record_T);
-
-   procedure Call_Clear (I : Range_T);
-
    procedure Clear_X (R : in out Record_T) is
    begin
       R.X := 0;
