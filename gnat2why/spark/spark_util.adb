@@ -2480,6 +2480,8 @@ package body SPARK_Util is
 
    function Might_Be_Main (E : Entity_Id) return Boolean is
      (Scope (E) = Standard_Standard and then No (First_Formal (E)));
+     --  ??? Is this expression equivalent to test in
+     --  Sem_Ch13.Analyze_Pragma.Check_In_Main_Program ?
 
    --------------------
    -- Nth_Index_Type --

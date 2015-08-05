@@ -243,7 +243,7 @@ package Flow is
       --  Information for globals computation
 
       Tasking               : Tasking_Info;
-      --  Tasking-related information
+      --  Tasking-related information collected in phase 1
 
       Is_Generative         : Boolean;
       --  True if we do not have a global contract
