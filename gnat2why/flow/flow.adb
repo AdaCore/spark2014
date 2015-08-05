@@ -1735,16 +1735,7 @@ package body Flow is
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean is
       Ptr : Node_Id;
    begin
-      case Ekind (E) is
-         when Subprogram_Kind =>
-            Ptr := Subprogram_Body (E);
-         when E_Task_Type =>
-            Ptr := Task_Body (E);
-         when E_Entry =>
-            Ptr := Entry_Body (E);
-         when others =>
-            raise Why.Unexpected_Node;
-      end case;
+      Ptr := Get_Body (E);
       Ptr := Last (Statements (Handled_Statement_Sequence (Ptr)));
       return Nkind (Ptr) in N_Raise_xxx_Error | N_Raise_Statement;
    end Last_Statement_Is_Raise;
