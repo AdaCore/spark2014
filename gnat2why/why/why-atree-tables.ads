@@ -92,24 +92,18 @@ package Why.Atree.Tables is
    --  Return True if Node is Empty or has kind Value
 
    package Why_Node_Lists is
-     new Ada.Containers.Doubly_Linked_Lists (Element_Type => Why_Node_Id,
-                                             "=" => "=");
+     new Ada.Containers.Doubly_Linked_Lists (Element_Type => Why_Node_Id);
 
    function Why_Node_Hash (X : Why_Node_Id) return Hash_Type is
      (Hash_Type (X));
 
-   package Why_Node_Sets is new
-     Ordered_Sets
-       (Element_Type        => Why_Node_Id,
-        "<"                 => "<",
-        "="                 => "=");
+   package Why_Node_Sets is new Ordered_Sets (Element_Type => Why_Node_Id);
 
    package Why_Node_Maps is new
      Hashed_Maps (Key_Type        => Why_Node_Id,
                   Element_Type    => Why_Node_Id,
                   Hash            => Why_Node_Hash,
-                  Equivalent_Keys => "=",
-                  "="             => "=");
+                  Equivalent_Keys => "=");
 
    function Get_List (List_Id : Why_Node_List) return Why_Node_Lists.List;
 
@@ -134,13 +128,9 @@ private
 
    package Node_Tables is
      new Ada.Containers.Vectors (Index_Type   => Why_Node_Id,
-                                 Element_Type => Why_Node,
-                                 "=" => "=");
+                                 Element_Type => Why_Node);
 
    Node_Table : Node_Tables.Vector;
-
-   function "=" (Left, Right : Why_Node_Lists.List) return Boolean;
-   --  Return True if Left and Right have the same extension
 
    type List_Info is record
       Checked : Boolean;
@@ -150,8 +140,8 @@ private
 
    package Node_List_Tables is
      new Ada.Containers.Vectors (Index_Type => Why_Node_List,
-                                 Element_Type => List_Info,
-                                 "=" => "=");
+                                 Element_Type => List_Info);
+
    List_Table : Node_List_Tables.Vector;
 
    function Get_Node (Node_Id : Why_Node_Id) return Why_Node is
