@@ -1685,9 +1685,9 @@ package body Flow is
 
                Global_Info := Global_Phase_1_Info'
                  (Name                  =>
-                    (if FA.Kind = E_Package_Body
-                     then To_Entity_Name (Spec_Entity (FA.Analyzed_Entity))
-                     else To_Entity_Name (FA.Analyzed_Entity)),
+                    To_Entity_Name (if FA.Kind = E_Package_Body
+                                    then Spec_Entity (FA.Analyzed_Entity)
+                                    else FA.Analyzed_Entity),
                   Kind                  =>
                     (case FA.Kind is
                      when E_Subprogram_Body => S_Kind,
