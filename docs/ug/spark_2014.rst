@@ -1955,6 +1955,7 @@ already seen is equal to its value at loop entry plus one, using
       for J in X'Range loop
          X(J) := X(J) + 1;
          pragma Loop_Invariant (for all K in X'First .. J => X(J) = X'Loop_Entry(J) + 1);
+         pragma Loop_Invariant (for all K in J + 1 .. X'Last => X(J) = X'Loop_Entry(J) + 1);
       end loop
    end Increment_Array;
 
