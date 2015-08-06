@@ -949,7 +949,7 @@ package body Flow is
             Tmp.Is_Generative := not Present (Tmp.Initializes_N);
 
          when others =>
-            raise Why.Not_SPARK;
+            raise Program_Error;
       end case;
 
       Tmp.GG.Aborted := False;

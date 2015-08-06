@@ -36,6 +36,7 @@ package Why is
    Not_SPARK       : exception;
    --  Use this exception for cases that are outside the subset defined by
    --  SPARK.
+   --  ??? this exception currently not used
 
    Unexpected_Node : exception;
    --  Use this exception for cases that are not expected at this place in the
