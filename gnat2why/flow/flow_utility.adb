@@ -2124,12 +2124,9 @@ package body Flow_Utility is
          end if;
 
          declare
-            --  We exclude constants here, since any *analyzed* spark
-            --  program (as opposed to called programs) will have the new
-            --  generated globals. To be revisited in M314-013.
             ALI_Reads  : constant Name_Sets.Set :=
               Get_Generated_Reads (Subprogram,
-                                   Include_Constants => False);
+                                   Include_Constants => True);
             ALI_Writes : constant Name_Sets.Set :=
               Get_Generated_Writes (Subprogram);
 
@@ -2152,20 +2149,9 @@ package body Flow_Utility is
                   Write_Eol;
                end if;
 
-               case F.Kind is
-                  when Direct_Mapping =>
-                     if Ekind (Get_Direct_Mapping_Id (F)) /= E_Constant then
-                        --  We completely ignore all non-local constants
-                        --  for now.
-                        Reads.Include (F);
-                     end if;
-
-                  when Magic_String =>
-                     Reads.Include (F);
-
-                  when Null_Value | Record_Field | Synthetic_Null_Export  =>
-                     raise Program_Error;
-               end case;
+               if Is_Variable (F) then
+                  Reads.Include (F);
+               end if;
             end loop;
 
             if Debug_Trace_Get_Global then
