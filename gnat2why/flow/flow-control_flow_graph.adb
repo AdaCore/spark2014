@@ -5670,15 +5670,13 @@ package body Flow.Control_Flow_Graph is
          when E_Task_Body =>
             --  Tasks see their discriminants as parameters
             declare
-               E : Entity_Id := First_Entity (FA.Analyzed_Entity);
+               Discr : Entity_Id := First_Discriminant (FA.Analyzed_Entity);
             begin
-               while Present (E) loop
-                  if Ekind (E) = E_Discriminant then
-                     Create_Initial_And_Final_Vertices (E,
-                                                        Discriminant_Kind,
-                                                        FA);
-                  end if;
-                  Next_Entity (E);
+               while Present (Discr) loop
+                  Create_Initial_And_Final_Vertices (Discr,
+                                                     Discriminant_Kind,
+                                                     FA);
+                  Next_Discriminant (Discr);
                end loop;
             end;
 
