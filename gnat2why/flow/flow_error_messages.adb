@@ -136,7 +136,7 @@ package body Flow_Error_Messages is
    --  works like '&', but is followed by a line reference. Use '@' to
    --  substitute only with sloc of F.
 
-   File_Counter : Integer := 0;
+   File_Counter : Natural := 0;
    Message_Id_Counter : Message_Id := 0;
    No_Message_Id : constant Message_Id := -1;
 
