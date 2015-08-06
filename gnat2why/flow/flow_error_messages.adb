@@ -59,7 +59,9 @@ package body Flow_Error_Messages is
       F1   : Flow_Id := Null_Flow_Id;
       F2   : Flow_Id := Null_Flow_Id;
       F3   : Flow_Id := Null_Flow_Id)
-      return String;
+      return String with
+      Pre => (if Present (F2) then Present (F1)) and then
+             (if Present (F3) then Present (F2));
    --  This function:
    --    * adds more precise location for generics and inlining
    --    * substitutes flow nodes
@@ -156,12 +158,12 @@ package body Flow_Error_Messages is
       Append (M, Msg);
       if Present (F1) then
          M := Substitute (M, F1, Sloc (N));
-      end if;
-      if Present (F2) then
-         M := Substitute (M, F2, Sloc (N));
-      end if;
-      if Present (F3) then
-         M := Substitute (M, F3, Sloc (N));
+         if Present (F2) then
+            M := Substitute (M, F2, Sloc (N));
+            if Present (F3) then
+               M := Substitute (M, F3, Sloc (N));
+            end if;
+         end if;
       end if;
 
       if Instantiation_Location (Sloc (N)) /= No_Location then

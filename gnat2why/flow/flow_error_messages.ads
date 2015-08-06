@@ -77,7 +77,7 @@ package Flow_Error_Messages is
       SRM_Ref      : String        := "";
       Tracefile    : String        := "";
       Continuation : Boolean       := False)
-   with Pre => (if Present (F2) then Present (F1)) and
+   with Pre => (if Present (F2) then Present (F1)) and then
                (if Present (F3) then Present (F2));
    --  Output a message attached to the given node with a substitution
    --  using F1, F2 and F3. It also adds a JSON entry in the "unit.flow" file
