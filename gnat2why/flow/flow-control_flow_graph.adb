@@ -5698,9 +5698,9 @@ package body Flow.Control_Flow_Graph is
                   AS_N := First (Expressions (Expression (PAA)));
 
                   while Present (AS_N) loop
-                     AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
-                              then Entity (Ancestor_Part (AS_N))
-                              else Entity (AS_N));
+                     AS_E := Entity (if Nkind (AS_N) = N_Extension_Aggregate
+                                     then Ancestor_Part (AS_N)
+                                     else AS_N);
 
                      --  ??? Are those arguments correct ???
                      Create_Initial_And_Final_Vertices
