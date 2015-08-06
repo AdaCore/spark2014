@@ -43,22 +43,19 @@ package body Common_Containers is
      (Key_Type        => Ada.Strings.Unbounded.String_Access,
       Element_Type    => Entity_Name,
       Hash            => Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+      Equivalent_Keys => "=");
 
    package Entity_Name_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
       Element_Type    => Entity_Name,
       Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+      Equivalent_Keys => "=");
 
    package Entity_Name_To_String_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Name,
       Element_Type    => Ada.Strings.Unbounded.String_Access,
       Hash            => Name_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+      Equivalent_Keys => "=");
 
    Intern_Strings : Intern_Strings_Maps.Map := Intern_Strings_Maps.Empty_Map;
    Num            : Entity_Name := 1;

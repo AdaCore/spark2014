@@ -54,9 +54,7 @@ package Common_Containers is
    --  Compute a hash of a node
 
    package Node_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type => Node_Id,
-      "<"          => "<",
-      "="          => "=");
+     (Element_Type => Node_Id);
    --  Sets of ordered nodes. We prefer ordered rather than hashed sets, as the
    --  order of iterating over them influence the generation of Why code, which
    --  we intend to be as predictable as possible on all machines, to get the
@@ -66,8 +64,7 @@ package Common_Containers is
      (Key_Type        => Node_Id,
       Element_Type    => Node_Id,
       Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+      Equivalent_Keys => "=");
    --  Maps of nodes
 
    package Node_Graphs is new Ada.Containers.Hashed_Maps
@@ -94,23 +91,19 @@ package Common_Containers is
    package Name_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Entity_Name,
       Hash                => Name_Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
+      Equivalent_Elements => "=");
 
    package Name_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Name,
       Element_Type    => Entity_Name,
       Hash            => Name_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+      Equivalent_Keys => "=");
 
    function Name_Id_Hash (N : Name_Id) return Ada.Containers.Hash_Type
    is (Generic_Integer_Hash (Integer (N)));
 
    package Name_Id_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type        => Name_Id,
-      "<"                 => "<",
-      "="                 => "=");
+     (Element_Type => Name_Id);
 
    package Unbounded_String_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Unbounded_String,
