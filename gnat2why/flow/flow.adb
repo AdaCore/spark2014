@@ -1131,9 +1131,9 @@ package body Flow is
          --  Register tasking-related information; ignore packages because
          --  they are elaborated sequentially anyway.
          if Generating_Globals
-           and then Ekind (FA.Analyzed_Entity) in E_Subprogram_Body |
-                                                  E_Entry           |
-                                                  E_Task_Body
+           and then FA.Kind in E_Subprogram_Body |
+                               E_Entry           |
+                               E_Task_Body
          then
             GG_Register_Tasking_Info (To_Entity_Name (FA.Analyzed_Entity),
                                       FA.Tasking);

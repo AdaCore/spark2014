@@ -4103,7 +4103,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Check for suspending on a suspension object
       if Suspends_On_Suspension_Object then
-         FA.Tasking (Suspends_On).Include (First_Actual (Called_Thing));
+         FA.Tasking (Suspends_On).Include (Entity (First_Actual (N)));
       end if;
 
       --  A magic null export is needed when:
@@ -6267,7 +6267,7 @@ package body Flow.Control_Flow_Graph is
             --  protected, suspension and atomic ones.
             --  ??? Constant_After_Elaboration
             if not (Ekind (Etype (E)) in E_Constant | Protected_Kind
-                    or else Is_Suspension_Object (E)
+                    or else Is_Suspension_Object (Etype (E))
                     or else Is_Atomic (E)
                     or else
                     Is_Constant_After_Elaboration
