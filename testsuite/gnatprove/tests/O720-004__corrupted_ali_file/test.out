@@ -1,4 +1,6 @@
-Phase 1 of 2: generation of Global contracts ...
-Phase 2 of 2: flow analysis and proof ...
+test.adb:3:04: warning: analyzing unreferenced function "Random_Number"
+test.adb:28:04: warning: analyzing unreferenced function "Ext_Return_01"
+test.adb:31:17: medium: overflow check might fail
+test.adb:44:07: medium: exception might be raised
 Corrupted ali file detected. Call gnatprove with "--clean".
 gnatprove: error during flow analysis and proof
