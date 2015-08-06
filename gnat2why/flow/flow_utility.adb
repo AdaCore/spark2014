@@ -2136,8 +2136,7 @@ package body Flow_Utility is
             --  We process the reads
             if Debug_Trace_Get_Global then
                Indent;
-               Write_Str ("reads");
-               Write_Eol;
+               Write_Line ("reads");
                Indent;
             end if;
 
@@ -2156,8 +2155,7 @@ package body Flow_Utility is
 
             if Debug_Trace_Get_Global then
                Outdent;
-               Write_Str ("writes");
-               Write_Eol;
+               Write_Line ("writes");
                Indent;
             end if;
 
@@ -2191,8 +2189,7 @@ package body Flow_Utility is
 
          if Debug_Trace_Get_Global then
             Indent;
-            Write_Str ("defaulting to null globals");
-            Write_Eol;
+            Write_Line ("defaulting to null globals");
             Outdent;
          end if;
 

@@ -646,7 +646,7 @@ is
    --  input. If this function is called before the globals graph has
    --  been generated then the results might not be perfectly accurate
    --  (this means that some constant that might not actually have
-   --  variable will be reported as having variable input).
+   --  variable input will be reported as having variable input).
    --  @param F is the Flow_Id which we check for variable input
    --  @return True iff F is a constant with variable input
 
