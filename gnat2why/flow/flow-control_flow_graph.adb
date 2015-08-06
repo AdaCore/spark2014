@@ -5940,8 +5940,8 @@ package body Flow.Control_Flow_Graph is
 
       end case;
 
-      --  Collect variables introduced by quantified expressions. We
-      --  need to look at the following parts:
+      --  Collect variables introduced by quantified expressions.
+      --  We need to look at the following parts:
       --     - precondition
       --     - postcondition
       --     - initial_condition
