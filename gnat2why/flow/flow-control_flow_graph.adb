@@ -3962,6 +3962,10 @@ package body Flow.Control_Flow_Graph is
          procedure Scope_Up;
          --  Climb up the scope
 
+         --------------
+         -- Scope_Up --
+         --------------
+
          procedure Scope_Up is
          begin
             Scop := Scope (Scop);
