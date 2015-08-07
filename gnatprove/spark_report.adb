@@ -231,7 +231,7 @@ procedure SPARK_Report is
       procedure Print_Table_Total;
       --  print the "Total" line of the table
 
-      procedure Put_Provers_Cell (Stats : Prover_Stat);
+      procedure Put_Provers_Cell (Stats : in out Prover_Stat);
       --  print the "provers" cell of a category, with the total count of
       --  checks and the percentage of each prover
       --  @param Stats the stats for the prover
@@ -304,7 +304,7 @@ procedure SPARK_Report is
       ----------------------
 
       procedure Print_Table_Line (Line : Summary_Entries) is
-         Elt : constant Summary_Line := Summary (Line);
+         Elt : Summary_Line := Summary (Line);
          Total : constant Natural :=
            Elt.Flow + Elt.Interval + Elt.Provers.Total +
              Elt.Justified + Elt.Unproved;
@@ -344,7 +344,7 @@ procedure SPARK_Report is
       -- Put_Provers_Cell --
       ----------------------
 
-      procedure Put_Provers_Cell (Stats : Prover_Stat) is
+      procedure Put_Provers_Cell (Stats : in out Prover_Stat) is
          use Ada.Strings.Unbounded;
          use String_Maps;
          use Ada.Containers;
