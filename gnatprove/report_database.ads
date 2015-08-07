@@ -71,16 +71,16 @@ package Report_Database is
       "="             => "=");
 
    type Prover_Stat is record
-      Total : Natural;
+      Total   : Natural;
       Provers : String_Maps.Map;
    end record;
 
    type Summary_Line is record
-      Flow : Natural;
-      Interval : Natural;
-      Provers : Prover_Stat;
+      Flow      : Natural;
+      Interval  : Natural;
+      Provers   : Prover_Stat;
       Justified : Natural;
-      Unproved : Natural;
+      Unproved  : Natural;
    end record;
 
    type Possible_Entries is
