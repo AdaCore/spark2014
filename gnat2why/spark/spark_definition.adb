@@ -662,7 +662,7 @@ package body SPARK_Definition is
       --  statements. Also stores scalar objects declared before the last
       --  loop-invariant in Loop_Entity_Set.
       --  Nested should be true when checking statements coming from a nested
-      --  construct of the loop (if, case, and extended return statements.
+      --  construct of the loop (if, case, and extended return statements).
 
       ------------------------------------
       -- Check_Loop_Invariant_Placement --
@@ -697,7 +697,7 @@ package body SPARK_Definition is
                end if;
             else
 
-               --  Check that there are no nested loops and non-scalar object
+               --  Check that there are no nested loops and non-scalar objects
                --  declarations before the last invariant/variant.
 
                case Nkind (N) is
