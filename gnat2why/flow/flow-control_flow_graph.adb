@@ -413,7 +413,7 @@ package body Flow.Control_Flow_Graph is
      (Of_This   : Entity_Id;
       With_This : Entity_Id;
       The_Set   : Flow_Id_Sets.Set)
-     return Flow_Id_Sets.Set;
+      return Flow_Id_Sets.Set;
    --  Returns a flow set that replaces all Flow_Ids of The_Set that
    --  correspond to Of_This with equivalent Flow_Ids that correspond to
    --  With_This.
@@ -4867,7 +4867,7 @@ package body Flow.Control_Flow_Graph is
 
    function RHS_Split_Useful (N     : Node_Id;
                               Scope : Flow_Scope)
-                             return Boolean is
+                              return Boolean is
 
       function Rec (N : Node_Id) return Boolean;
       --  Recursive helper function.
