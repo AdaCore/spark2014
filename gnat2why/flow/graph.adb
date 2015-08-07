@@ -50,7 +50,7 @@ package body Graph is
    -- Is_Frozen --
    ---------------
 
-   function Is_Frozen (G : T'Class) return Boolean is (G.Frozen);
+   function Is_Frozen (G : T) return Boolean is (G.Frozen);
 
    ------------
    -- Create --
@@ -65,7 +65,7 @@ package body Graph is
               Key_To_Id      => Key_To_Id_Maps.Empty_Map);
    end Create;
 
-   function Create (G             : T'Class;
+   function Create (G             : T;
                     Copy_Clusters : Boolean := False)
                     return T
    is
@@ -97,7 +97,7 @@ package body Graph is
    -- Get_Vertex --
    ----------------
 
-   function Get_Vertex (G : T'Class; V : Vertex_Key) return Vertex_Id is
+   function Get_Vertex (G : T; V : Vertex_Key) return Vertex_Id is
       C : constant Key_To_Id_Maps.Cursor := G.Key_To_Id.Find (V);
    begin
       if Key_To_Id_Maps.Has_Element (C) then
@@ -111,7 +111,7 @@ package body Graph is
    -- Get_Key --
    -------------
 
-   function Get_Key (G : T'Class; V : Vertex_Id) return Vertex_Key is
+   function Get_Key (G : T; V : Vertex_Id) return Vertex_Key is
    begin
       return G.Vertices (V).Key;
    end Get_Key;
@@ -121,7 +121,7 @@ package body Graph is
    ----------------
 
    procedure Add_Vertex
-     (G  : in out T'Class;
+     (G  : in out T;
       V  : Vertex_Key;
       Id : out Vertex_Id) is
    begin
@@ -134,7 +134,7 @@ package body Graph is
    end Add_Vertex;
 
    procedure Add_Vertex
-     (G  : in out T'Class;
+     (G  : in out T;
       Id : out Vertex_Id) is
    begin
       G.Vertices.Append ((Key            => Null_Key,
@@ -145,7 +145,7 @@ package body Graph is
    end Add_Vertex;
 
    procedure Add_Vertex
-     (G  : in out T'Class;
+     (G  : in out T;
       V  : Vertex_Key) is
    begin
       G.Vertices.Append ((Key            => V,
@@ -171,7 +171,7 @@ package body Graph is
    --------------------------
 
    function In_Neighbour_Count
-     (G : T'Class;
+     (G : T;
       V : Vertex_Id) return Natural is
    begin
       return Natural (G.Vertices (V).In_Neighbours.Length);
@@ -182,7 +182,7 @@ package body Graph is
    ---------------------------
 
    function Out_Neighbour_Count
-     (G : T'Class;
+     (G : T;
       V : Vertex_Id) return Natural is
    begin
       return Natural (G.Vertices (V).Out_Neighbours.Length);
@@ -193,7 +193,7 @@ package body Graph is
    -----------------
 
    function Edge_Exists
-     (G        : T'Class;
+     (G        : T;
       V_1, V_2 : Vertex_Id) return Boolean is
    begin
       --  Sanity check the indices.
@@ -205,7 +205,7 @@ package body Graph is
    end Edge_Exists;
 
    function Edge_Exists
-     (G        : T'Class;
+     (G        : T;
       V_1, V_2 : Vertex_Key) return Boolean is
    begin
       return Edge_Exists (G,
@@ -218,7 +218,7 @@ package body Graph is
    -----------------
 
    function Edge_Colour
-     (G        : T'Class;
+     (G        : T;
       V_1, V_2 : Vertex_Id) return Edge_Colours
    is
    begin
@@ -230,7 +230,7 @@ package body Graph is
    --------------
 
    procedure Add_Edge
-     (G        : in out T'Class;
+     (G        : in out T;
       V_1, V_2 : Vertex_Id;
       Colour   : Edge_Colours) is
    begin
@@ -254,7 +254,7 @@ package body Graph is
    end Add_Edge;
 
    procedure Add_Edge
-     (G        : in out T'Class;
+     (G        : in out T;
       V_1, V_2 : Vertex_Key;
       Colour   : Edge_Colours) is
    begin
@@ -266,7 +266,7 @@ package body Graph is
    -----------------
 
    procedure Remove_Edge
-     (G        : in out T'Class;
+     (G        : in out T;
       V_1, V_2 : Vertex_Id) is
    begin
       --  Sanity check the indices.
@@ -287,7 +287,7 @@ package body Graph is
    ---------------
 
    procedure Mark_Edge
-     (G        : in out T'Class;
+     (G        : in out T;
       V_1, V_2 : Vertex_Id) is
    begin
       --  Sanity check the indices.
@@ -304,7 +304,7 @@ package body Graph is
    ------------------
 
    procedure Clear_Vertex
-     (G : in out T'Class;
+     (G : in out T;
       V : Vertex_Id) is
    begin
       --  Sanity check the index.
@@ -330,8 +330,8 @@ package body Graph is
    ------------------
 
    procedure Copy_Edges
-     (G             : in out T'Class;
-      O             : T'Class;
+     (G             : in out T;
+      O             : T;
       Edge_Selector : access function (A, B : Vertex_Id)
                                        return Boolean := null)
    is
@@ -361,7 +361,7 @@ package body Graph is
    ------------
 
    function Parent
-     (G : T'Class;
+     (G : T;
       V : Vertex_Id)
       return Vertex_Id
    is
@@ -377,7 +377,7 @@ package body Graph is
    -----------
 
    function Child
-     (G : T'Class;
+     (G : T;
       V : Vertex_Id)
       return Vertex_Id
    is
@@ -396,7 +396,7 @@ package body Graph is
    -- New_Cluster --
    -----------------
 
-   procedure New_Cluster (G : in out T'Class;
+   procedure New_Cluster (G : in out T;
                           C :    out Cluster_Id)
    is
    begin
@@ -408,7 +408,7 @@ package body Graph is
    -- Set_Cluster --
    -----------------
 
-   procedure Set_Cluster (G : in out T'Class;
+   procedure Set_Cluster (G : in out T;
                           V : Vertex_Id;
                           C : Cluster_Id)
    is
@@ -421,7 +421,7 @@ package body Graph is
    -- Get_Cluster --
    -----------------
 
-   function Get_Cluster (G : T'Class;
+   function Get_Cluster (G : T;
                          V : Vertex_Id)
                          return Cluster_Id
    is
@@ -444,7 +444,7 @@ package body Graph is
    -- Get_Collection --
    --------------------
 
-   function Get_Collection (G        : T'Class;
+   function Get_Collection (G        : T;
                             V        : Vertex_Id;
                             The_Type : Vertex_Based_Collection)
                             return Vertex_Collection_T
@@ -462,7 +462,7 @@ package body Graph is
       end case;
    end Get_Collection;
 
-   function Get_Collection (G        : T'Class;
+   function Get_Collection (G        : T;
                             The_Type : Graph_Based_Collection)
                             return Vertex_Collection_T
    is
@@ -561,7 +561,7 @@ package body Graph is
    -------------------------------
 
    function Non_Trivial_Path_Exists
-     (G        : T'Class;
+     (G        : T;
       A        : Vertex_Id;
       B        : Vertex_Id;
       Reversed : Boolean := False)
@@ -596,7 +596,7 @@ package body Graph is
    end Non_Trivial_Path_Exists;
 
    function Non_Trivial_Path_Exists
-     (G        : T'Class;
+     (G        : T;
       A        : Vertex_Id;
       F        : access function (V : Vertex_Id) return Boolean;
       Reversed : Boolean := False)
@@ -638,7 +638,7 @@ package body Graph is
    ---------
 
    procedure DFS
-     (G             : T'Class;
+     (G             : T;
       Start         : Vertex_Id;
       Include_Start : Boolean;
       Visitor       : access procedure
@@ -767,7 +767,7 @@ package body Graph is
    ---------
 
    procedure BFS
-     (G             : T'Class;
+     (G             : T;
       Start         : Vertex_Id;
       Include_Start : Boolean;
       Visitor       : access procedure
@@ -876,7 +876,7 @@ package body Graph is
    -------------------
 
    procedure Shortest_Path
-     (G             : T'Class;
+     (G             : T;
       Start         : Vertex_Id;
       Allow_Trivial : Boolean;
       Search        : access procedure
@@ -956,7 +956,7 @@ package body Graph is
    -- Invert --
    ------------
 
-   function Invert (G : T'Class) return T is
+   function Invert (G : T) return T is
       R : T;
    begin
       --  Start with an empty graph, with the same vertices.
@@ -983,7 +983,7 @@ package body Graph is
    -----------------------------
 
    function Dominator_Tree_Internal
-     (G : T'Class;
+     (G : T;
       R : Vertex_Id) return Vertex_To_Vertex_T;
    --  Compute the dominator tree, but return a vertex-to-vertex map,
    --  instead of a graph representing a tree. The Dominator_Tree
@@ -991,7 +991,7 @@ package body Graph is
    --  easier to work with the array representation.
 
    function Dominator_Tree_Internal
-     (G : T'Class;
+     (G : T;
       R : Vertex_Id) return Vertex_To_Vertex_T
    is
       subtype V_To_V is Vertex_To_Vertex_T (0 .. G.Vertices.Last_Index);
@@ -1193,7 +1193,7 @@ package body Graph is
    --------------------
 
    function Dominator_Tree
-     (G : T'Class;
+     (G : T;
       R : Vertex_Id) return T
    is
       Dom : constant Vertex_To_Vertex_T := Dominator_Tree_Internal (G, R);
@@ -1215,7 +1215,7 @@ package body Graph is
    ------------------------
 
    function Dominance_Frontier
-     (G : T'Class;
+     (G : T;
       R : Vertex_Id) return T
    is
       Dom : constant Vertex_To_Vertex_T := Dominator_Tree_Internal (G, R);
@@ -1246,7 +1246,7 @@ package body Graph is
    -----------
 
    procedure Close
-     (G       : in out T'Class;
+     (G       : in out T;
       Visitor : access procedure (A, B : Vertex_Id) := null)
    is
       type Component is new Natural;
@@ -1353,7 +1353,7 @@ package body Graph is
    -----------------------
 
    procedure Conditional_Close
-     (G             : in out T'Class;
+     (G             : in out T;
       Edge_Selector : access function (A, B : Vertex_Id) return Boolean)
    is
       procedure Visitor (A, B : Vertex_Id);
@@ -1390,12 +1390,12 @@ package body Graph is
    --------------------
 
    procedure Write_Dot_File
-     (G         : T'Class;
+     (G         : T;
       Filename  : String;
-      Node_Info : access function (G : T'Class;
+      Node_Info : access function (G : T;
                                    V : Vertex_Id)
                                    return Node_Display_Info;
-      Edge_Info : access function (G      : T'Class;
+      Edge_Info : access function (G      : T;
                                    A      : Vertex_Id;
                                    B      : Vertex_Id;
                                    Marked : Boolean;
@@ -1533,12 +1533,12 @@ package body Graph is
    --------------------
 
    procedure Write_Pdf_File
-     (G         : T'Class;
+     (G         : T;
       Filename  : String;
-      Node_Info : access function (G : T'Class;
+      Node_Info : access function (G : T;
                                    V : Vertex_Id)
                                    return Node_Display_Info;
-      Edge_Info : access function (G      : T'Class;
+      Edge_Info : access function (G      : T;
                                    A      : Vertex_Id;
                                    B      : Vertex_Id;
                                    Marked : Boolean;
@@ -1588,7 +1588,7 @@ package body Graph is
    -- Vertex_To_Natural --
    -----------------------
 
-   function Vertex_To_Natural (G : T'Class; V : Vertex_Id) return Natural is
+   function Vertex_To_Natural (G : T; V : Vertex_Id) return Natural is
       pragma Unreferenced (G);
    begin
       return Natural (V);
@@ -1598,7 +1598,7 @@ package body Graph is
    -- Cluster_To_Natural --
    ------------------------
 
-   function Cluster_To_Natural (G : T'Class; C : Cluster_Id) return Natural is
+   function Cluster_To_Natural (G : T; C : Cluster_Id) return Natural is
       pragma Unreferenced (G);
    begin
       return Natural (C);

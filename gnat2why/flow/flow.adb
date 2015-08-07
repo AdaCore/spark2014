@@ -308,12 +308,12 @@ package body Flow is
       End_Vertex        : Vertex_Id := Null_Vertex) is
 
       function NDI
-        (G : T'Class;
+        (G : T;
          V : Vertex_Id) return Node_Display_Info;
       --  Pretty-printing for each vertex in the dot output.
 
       function EDI
-        (G      : T'Class;
+        (G      : T;
          A      : Vertex_Id;
          B      : Vertex_Id;
          Marked : Boolean;
@@ -325,7 +325,7 @@ package body Flow is
       ---------
 
       function NDI
-        (G : T'Class;
+        (G : T;
          V : Vertex_Id) return Node_Display_Info
       is
          Rv : Node_Display_Info := Node_Display_Info'
@@ -784,7 +784,7 @@ package body Flow is
       ---------
 
       function EDI
-        (G      : T'Class;
+        (G      : T;
          A      : Vertex_Id;
          B      : Vertex_Id;
          Marked : Boolean;

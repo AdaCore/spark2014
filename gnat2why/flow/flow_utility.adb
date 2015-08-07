@@ -196,18 +196,18 @@ package body Flow_Utility is
    procedure Initialize is
       use Component_Graphs;
 
-      function Node_Info (G : T'Class;
+      function Node_Info (G : T;
                           V : Vertex_Id)
                           return Node_Display_Info;
 
-      function Edge_Info (G      : T'Class;
+      function Edge_Info (G      : T;
                           A      : Vertex_Id;
                           B      : Vertex_Id;
                           Marked : Boolean;
                           Colour : Natural)
                           return Edge_Display_Info;
 
-      function Node_Info (G : T'Class;
+      function Node_Info (G : T;
                           V : Vertex_Id)
                           return Node_Display_Info
       is
@@ -224,7 +224,7 @@ package body Flow_Utility is
                  Label       => Temp_String);
       end Node_Info;
 
-      function Edge_Info (G      : T'Class;
+      function Edge_Info (G      : T;
                           A      : Vertex_Id;
                           B      : Vertex_Id;
                           Marked : Boolean;

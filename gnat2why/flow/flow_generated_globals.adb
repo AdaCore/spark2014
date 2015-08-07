@@ -427,12 +427,12 @@ package body Flow_Generated_Globals is
                                  G        : T)
    is
       function NDI
-        (G : T'Class;
+        (G : T;
          V : Vertex_Id) return Node_Display_Info;
       --  Pretty-printing for each vertex in the dot output
 
       function EDI
-        (G      : T'Class;
+        (G      : T;
          A      : Vertex_Id;
          B      : Vertex_Id;
          Marked : Boolean;
@@ -444,7 +444,7 @@ package body Flow_Generated_Globals is
       ---------
 
       function NDI
-        (G : T'Class;
+        (G : T;
          V : Vertex_Id) return Node_Display_Info
       is
          G_Id  : constant Global_Id := G.Get_Key (V);
@@ -477,7 +477,7 @@ package body Flow_Generated_Globals is
       ---------
 
       function EDI
-        (G      : T'Class;
+        (G      : T;
          A      : Vertex_Id;
          B      : Vertex_Id;
          Marked : Boolean;
