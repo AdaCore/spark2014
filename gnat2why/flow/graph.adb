@@ -440,135 +440,117 @@ package body Graph is
    --  Iterators
    ----------------------------------------------------------------------
 
-   type Iterator is new List_Iterators.Forward_Iterator with record
-      The_Collection : Vertex_Collection_T;
-   end record;
-
-   overriding function First
-     (Object : Iterator) return Cursor;
-   overriding function Next
-     (Object   : Iterator;
-      Position : Cursor) return Cursor;
-
-   -----------
-   -- First --
-   -----------
-
-   function First (Object : Iterator) return Cursor is
-      G : access constant T renames Object.The_Collection.The_Graph;
-   begin
-      case Object.The_Collection.The_Type is
-         when In_Neighbours =>
-            return Cursor'(Collection_Type   => In_Neighbours,
-                           The_Collection    => Object.The_Collection,
-                           VIS_Native_Cursor => G.Vertices
-                             (Object.The_Collection.Id).In_Neighbours.First);
-         when Out_Neighbours =>
-            return Cursor'(Collection_Type   => Out_Neighbours,
-                           The_Collection    => Object.The_Collection,
-                           EAM_Native_Cursor => G.Vertices
-                             (Object.The_Collection.Id).Out_Neighbours.First);
-         when All_Vertices =>
-            return Cursor'(Collection_Type   => All_Vertices,
-                           The_Collection    => Object.The_Collection,
-                           VL_Native_Cursor  => G.Vertices.First);
-      end case;
-   end First;
-
-   ----------
-   -- Next --
-   ----------
-
-   function Next (Object : Iterator; Position : Cursor) return Cursor is
-   begin
-      case Object.The_Collection.The_Type is
-         when In_Neighbours =>
-            return Cursor'(Collection_Type   => In_Neighbours,
-                           The_Collection    => Object.The_Collection,
-                           VIS_Native_Cursor => Next
-                             (Position.VIS_Native_Cursor));
-         when Out_Neighbours =>
-            return Cursor'(Collection_Type   => Out_Neighbours,
-                           The_Collection    => Object.The_Collection,
-                           EAM_Native_Cursor => Next
-                             (Position.EAM_Native_Cursor));
-         when All_Vertices =>
-            return Cursor'(Collection_Type   => All_Vertices,
-                           The_Collection    => Object.The_Collection,
-                           VL_Native_Cursor  => Next
-                             (Position.VL_Native_Cursor));
-      end case;
-   end Next;
-
    --------------------
    -- Get_Collection --
    --------------------
 
-   function Get_Collection
-     (G        : T'Class;
-      V        : Vertex_Id;
-      The_Type : Vertex_Based_Collection) return Vertex_Collection_T'Class is
+   function Get_Collection (G        : T'Class;
+                            V        : Vertex_Id;
+                            The_Type : Vertex_Based_Collection)
+                            return Vertex_Collection_T
+   is
    begin
-      return Vertex_Collection_T'(The_Type  => The_Type,
-                                  The_Graph => G'Unrestricted_Access,
-                                  Id        => V);
+      case The_Type is
+         when In_Neighbours =>
+            return Vertex_Collection_T'(The_Type  => In_Neighbours,
+                                        The_Graph => G'Unrestricted_Access,
+                                        Id        => V);
+         when Out_Neighbours =>
+            return Vertex_Collection_T'(The_Type  => Out_Neighbours,
+                                        The_Graph => G'Unrestricted_Access,
+                                        Id        => V);
+      end case;
    end Get_Collection;
 
-   function Get_Collection
-     (G        : T'Class;
-      The_Type : Graph_Based_Collection) return Vertex_Collection_T'Class is
+   function Get_Collection (G        : T'Class;
+                            The_Type : Graph_Based_Collection)
+                            return Vertex_Collection_T
+   is
    begin
-      return Vertex_Collection_T'(The_Type  => The_Type,
-                                  The_Graph => G'Unrestricted_Access,
-                                  Id        => Null_Vertex);
+      case The_Type is
+         when All_Vertices =>
+            return Vertex_Collection_T'(The_Type  => All_Vertices,
+                                        The_Graph => G'Unrestricted_Access);
+      end case;
    end Get_Collection;
+
+   ------------------
+   -- First_Cursor --
+   ------------------
+
+   function First_Cursor (Coll : Vertex_Collection_T)
+                          return Cursor
+   is
+      G : access constant T renames Coll.The_Graph;
+   begin
+      case Coll.The_Type is
+         when In_Neighbours =>
+            return Cursor'(Collection_Type   => In_Neighbours,
+                           VIS_Native_Cursor => G.Vertices
+                             (Coll.Id).In_Neighbours.First);
+         when Out_Neighbours =>
+            return Cursor'(Collection_Type   => Out_Neighbours,
+                           EAM_Native_Cursor => G.Vertices
+                             (Coll.Id).Out_Neighbours.First);
+         when All_Vertices =>
+            return Cursor'(Collection_Type   => All_Vertices,
+                           VL_Native_Cursor  => G.Vertices.First);
+      end case;
+   end First_Cursor;
+
+   -----------------
+   -- Next_Cursor --
+   -----------------
+
+   function Next_Cursor (Coll : Vertex_Collection_T;
+                         C    : Cursor)
+                         return Cursor
+   is
+   begin
+      case Coll.The_Type is
+         when In_Neighbours =>
+            return Cursor'(Collection_Type   => In_Neighbours,
+                           VIS_Native_Cursor => Next (C.VIS_Native_Cursor));
+         when Out_Neighbours =>
+            return Cursor'(Collection_Type   => Out_Neighbours,
+                           EAM_Native_Cursor => Next (C.EAM_Native_Cursor));
+         when All_Vertices =>
+            return Cursor'(Collection_Type   => All_Vertices,
+                           VL_Native_Cursor  => Next (C.VL_Native_Cursor));
+      end case;
+   end Next_Cursor;
 
    -----------------
    -- Has_Element --
    -----------------
 
-   function Has_Element (Pos : Cursor) return Boolean is
+   function Has_Element (Coll : Vertex_Collection_T;
+                         C    : Cursor)
+                         return Boolean
+   is
    begin
-      case Pos.Collection_Type is
-         when In_Neighbours =>
-            return Has_Element (Pos.VIS_Native_Cursor);
-         when Out_Neighbours =>
-            return Has_Element (Pos.EAM_Native_Cursor);
-         when All_Vertices =>
-            return Has_Element (Pos.VL_Native_Cursor);
+      case Coll.The_Type is
+         when In_Neighbours  => return Has_Element (C.VIS_Native_Cursor);
+         when Out_Neighbours => return Has_Element (C.EAM_Native_Cursor);
+         when All_Vertices   => return Has_Element (C.VL_Native_Cursor);
       end case;
    end Has_Element;
 
-   -------------
-   -- Iterate --
-   -------------
+   -----------------
+   -- Get_Element --
+   -----------------
 
-   function Iterate
-     (Container : Vertex_Collection_T)
-      return List_Iterators.Forward_Iterator'Class is
-   begin
-      return Iterator'(The_Collection => Container);
-   end Iterate;
-
-   ---------------------------
-   -- Get_Current_Vertex_Id --
-   ---------------------------
-
-   function Get_Current_Vertex_Id
-     (Container : Vertex_Collection_T;
-      Pos       : Cursor) return Vertex_Id
+   function Get_Element (Coll : Vertex_Collection_T;
+                         C    : Cursor)
+                         return Vertex_Id
    is
-      pragma Unreferenced (Container);
    begin
-      case Pos.Collection_Type is
-         when In_Neighbours =>
-            return Element (Pos.VIS_Native_Cursor);
-         when Out_Neighbours =>
-            return Key (Pos.EAM_Native_Cursor);
-         when All_Vertices =>
-            return To_Index (Pos.VL_Native_Cursor);
+      case Coll.The_Type is
+         when In_Neighbours  => return Element  (C.VIS_Native_Cursor);
+         when Out_Neighbours => return Key      (C.EAM_Native_Cursor);
+         when All_Vertices   => return To_Index (C.VL_Native_Cursor);
       end case;
-   end Get_Current_Vertex_Id;
+   end Get_Element;
 
    ----------------------------------------------------------------------
    --  Complex queries

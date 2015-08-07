@@ -25,7 +25,6 @@ with Ada.Containers;
 with Ada.Containers.Vectors;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
-with Ada.Iterator_Interfaces;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 
 --  A graph library. Although reasonably generic, it was implemented
@@ -59,11 +58,10 @@ with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 --       can expect runtime to be nearer to linear time instead of
 --       quadratic.
 --
---     * Transitive closure could improved by implementing the
---       STACK_TC algorithm, but as it requires a topological sort it
---       is significantly more difficult to implement. We only rarely
---       require transitive closure in release 1, in self-recursive
---       programs, hence there is no urgency.
+--     * Transitive closure could improved by implementing the STACK_TC
+--       algorithm, but as it requires a topological sort it is significantly
+--       more difficult to implement. Deferred until we actully feel like this
+--       is a performance problem.
 --
 --  A few other implementation notes:
 --
@@ -111,10 +109,11 @@ package Graph is
    subtype Graph_Based_Collection is Collection_Type_T
      range All_Vertices .. All_Vertices;
 
-   type Vertex_Collection_T is tagged private
-     with Default_Iterator  => Iterate,
-          Iterator_Element  => Vertex_Id,
-          Constant_Indexing => Get_Current_Vertex_Id;
+   type Vertex_Collection_T (The_Type : Collection_Type_T) is private with
+     Iterable => (First       => First_Cursor,
+                  Next        => Next_Cursor,
+                  Has_Element => Has_Element,
+                  Element     => Get_Element);
 
    type Cursor (Collection_Type : Collection_Type_T) is private;
 
@@ -124,7 +123,7 @@ package Graph is
                                   Found_Destination);
 
    subtype Simple_Traversal_Instruction is Traversal_Instruction
-     range Traversal_Instruction'First .. Abort_Traversal;
+     range Continue .. Abort_Traversal;
 
    ----------------------------------------------------------------------
    --  Basic operations
@@ -355,26 +354,30 @@ package Graph is
    --  Iterators
    ----------------------------------------------------------------------
 
-   function Get_Collection
-     (G        : T'Class;
-      V        : Vertex_Id;
-      The_Type : Vertex_Based_Collection) return Vertex_Collection_T'Class;
+   function Get_Collection (G        : T'Class;
+                            V        : Vertex_Id;
+                            The_Type : Vertex_Based_Collection)
+                            return Vertex_Collection_T
+   with Pre => V /= Null_Vertex;
 
-   function Get_Collection
-     (G        : T'Class;
-      The_Type : Graph_Based_Collection) return Vertex_Collection_T'Class;
+   function Get_Collection (G        : T'Class;
+                            The_Type : Graph_Based_Collection)
+                            return Vertex_Collection_T;
 
-   function Has_Element (Pos : Cursor) return Boolean;
+   function First_Cursor (Coll : Vertex_Collection_T)
+                          return Cursor;
 
-   package List_Iterators is new Ada.Iterator_Interfaces (Cursor, Has_Element);
+   function Next_Cursor (Coll : Vertex_Collection_T;
+                         C    : Cursor)
+                         return Cursor;
 
-   function Iterate
-     (Container : Vertex_Collection_T)
-      return List_Iterators.Forward_Iterator'Class;
+   function Has_Element (Coll : Vertex_Collection_T;
+                         C    : Cursor)
+                         return Boolean;
 
-   function Get_Current_Vertex_Id
-     (Container : Vertex_Collection_T;
-      Pos       : Cursor) return Vertex_Id;
+   function Get_Element (Coll : Vertex_Collection_T;
+                         C    : Cursor)
+                         return Vertex_Id;
 
    ----------------------------------------------------------------------
    --  Complex queries
@@ -689,14 +692,17 @@ private
    ----------------------------------------------------------------------
    --  Collections
 
-   type Vertex_Collection_T is tagged record
-      The_Type  : Collection_Type_T;
+   type Vertex_Collection_T (The_Type : Collection_Type_T) is record
       The_Graph : access constant T;
-      Id        : Vertex_Id;
+      case The_Type is
+         when Vertex_Based_Collection =>
+            Id : Vertex_Id;
+         when Graph_Based_Collection =>
+            null;
+      end case;
    end record;
 
    type Cursor (Collection_Type : Collection_Type_T) is record
-      The_Collection : Vertex_Collection_T;
       case Collection_Type is
          when In_Neighbours =>
             VIS_Native_Cursor : VIS.Cursor;
