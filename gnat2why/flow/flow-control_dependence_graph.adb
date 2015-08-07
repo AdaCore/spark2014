@@ -27,7 +27,7 @@ package body Flow.Control_Dependence_Graph is
 
    procedure Create (FA : in out Flow_Analysis_Graphs)
    is
-      Reversed_CFG : Flow_Graphs.T;
+      Reversed_CFG : Flow_Graphs.Graph;
    begin
       --  Reverse CFG and add an edge from end -> start.
       Reversed_CFG := FA.CFG.Invert;

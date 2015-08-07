@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                                G R A P H                                 --
+--                               G R A P H S                                --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -65,9 +65,8 @@ with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 --
 --  A few other implementation notes:
 --
---     * The iterator scheme is fairly complex and could be
---       improved. In particular it would be nice if we didn't have to
---       pass around a pointer.
+--     * The iterator scheme is fairly complex and we use the GNAT iterable
+--       extension.
 --
 --     * For each concept in graph theory there seem to be at least
 --       two words commonly used in the literature. I have used the
@@ -85,8 +84,8 @@ generic
    with function Key_Hash (Element : Vertex_Key)
                            return Ada.Containers.Hash_Type;
    with function Test_Key (A, B : Vertex_Key) return Boolean;
-package Graph is
-   type T is tagged private;
+package Graphs is
+   type Graph is tagged private;
 
    type Vertex_Id is private;
    Null_Vertex : constant Vertex_Id;
@@ -129,16 +128,16 @@ package Graph is
    --  Basic operations
    ----------------------------------------------------------------------
 
-   function Is_Frozen (G : T) return Boolean;
+   function Is_Frozen (G : Graph) return Boolean;
    --  Returns true if the graph is frozen, i.e. vertices may not be added.
    --  Edges may still be added or removed however.
 
-   function Create (Colour : Edge_Colours := Edge_Colours'First) return T;
+   function Create (Colour : Edge_Colours := Edge_Colours'First) return Graph;
    --  Creates a new, empty graph.
 
-   function Create (G             : T;
+   function Create (G             : Graph;
                     Copy_Clusters : Boolean := False)
-                    return T
+                    return Graph
    with Post => Create'Result.Is_Frozen;
    --  Creates a new graph with all the vertices from G, but no edges. Both
    --  graphs are frozen by this operation.
@@ -155,7 +154,7 @@ package Graph is
    --  the graph object.
 
    function Get_Vertex
-     (G : T;
+     (G : Graph;
       V : Vertex_Key)
       return Vertex_Id;
    --  Search the vertex group for the given vertex and return its
@@ -164,7 +163,7 @@ package Graph is
    --  Complexity is O(1) (in the general case).
 
    function Get_Key
-     (G : T;
+     (G : Graph;
       V : Vertex_Id)
       return Vertex_Key
    with Pre => V /= Null_Vertex;
@@ -173,7 +172,7 @@ package Graph is
    --  Complexity is O(1).
 
    procedure Add_Vertex
-     (G  : in out T;
+     (G  : in out Graph;
       V  : Vertex_Key;
       Id : out Vertex_Id)
    with Pre  => not G.Is_Frozen and
@@ -185,7 +184,7 @@ package Graph is
    --  O(N) if the internal vector is resized.
 
    procedure Add_Vertex
-     (G  : in out T;
+     (G  : in out Graph;
       Id : out Vertex_Id)
    with Pre  => not G.Is_Frozen,
         Post => Id /= Null_Vertex;
@@ -193,7 +192,7 @@ package Graph is
    --  otherwise you lose the vertex!
 
    procedure Add_Vertex
-     (G  : in out T;
+     (G  : in out Graph;
       V  : Vertex_Key)
    with Pre  => not G.Is_Frozen and
                 G.Get_Vertex (V) = Null_Vertex;
@@ -208,41 +207,41 @@ package Graph is
    ----------------------------------------------------------------------
 
    function In_Neighbour_Count
-     (G : T;
+     (G : Graph;
       V : Vertex_Id) return Natural;
    --  Returns the number of in neighbours for the given vertex.
    --
    --  Complexity is O(1).
 
    function Out_Neighbour_Count
-     (G : T;
+     (G : Graph;
       V : Vertex_Id) return Natural;
    --  Returns the number of out neighbours for the given vertex.
    --
    --  Complexity is O(1).
 
    function Edge_Exists
-     (G        : T;
+     (G        : Graph;
       V_1, V_2 : Vertex_Id) return Boolean;
    --  Tests if the given edge from V_1 to V_2 is in the graph.
    --
    --  Complexity is O(1).
 
    function Edge_Exists
-     (G        : T;
+     (G        : Graph;
       V_1, V_2 : Vertex_Key) return Boolean
    with Pre => G.Get_Vertex (V_1) /= Null_Vertex and
                G.Get_Vertex (V_2) /= Null_Vertex;
    --  Same as above but takes Vertex_Keys as parameters.
 
    function Edge_Colour
-     (G        : T;
+     (G        : Graph;
       V_1, V_2 : Vertex_Id) return Edge_Colours
    with Pre => G.Edge_Exists (V_1, V_2);
    --  Returns the edge colour of the given edge.
 
    procedure Add_Edge
-     (G        : in out T;
+     (G        : in out Graph;
       V_1, V_2 : Vertex_Id;
       Colour   : Edge_Colours)
    with Pre  => V_1 /= Null_Vertex and
@@ -255,7 +254,7 @@ package Graph is
    --  Complexity is O(1).
 
    procedure Add_Edge
-     (G        : in out T;
+     (G        : in out Graph;
       V_1, V_2 : Vertex_Key;
       Colour   : Edge_Colours)
    with Pre => G.Get_Vertex (V_1) /= Null_Vertex and
@@ -266,7 +265,7 @@ package Graph is
    --  Complexity is O(1) (in general due to use of Get_Vertex).
 
    procedure Remove_Edge
-     (G        : in out T;
+     (G        : in out Graph;
       V_1, V_2 : Vertex_Id)
    with Pre  => V_1 /= Null_Vertex and
                 V_2 /= Null_Vertex,
@@ -276,7 +275,7 @@ package Graph is
    --  Complexity is O(1).
 
    procedure Mark_Edge
-     (G        : in out T;
+     (G        : in out Graph;
       V_1, V_2 : Vertex_Id)
    with Pre  => G.Edge_Exists (V_1, V_2),
         Post => G.Edge_Exists (V_1, V_2);
@@ -285,7 +284,7 @@ package Graph is
    --  Complexity is O(1).
 
    procedure Clear_Vertex
-     (G : in out T;
+     (G : in out Graph;
       V : Vertex_Id)
    with Pre => V /= Null_Vertex;
    --  Remove all in and out edges from the given vertex.
@@ -293,8 +292,8 @@ package Graph is
    --  Complexity is O(N).
 
    procedure Copy_Edges
-     (G             : in out T;
-      O             : T;
+     (G             : in out Graph;
+      O             : Graph;
       Edge_Selector : access function (A, B : Vertex_Id)
                                        return Boolean := null);
    --  Copy all edges from graph O to graph G.
@@ -302,7 +301,7 @@ package Graph is
    --  Complexity is O(N).
 
    function Parent
-     (G : T;
+     (G : Graph;
       V : Vertex_Id)
       return Vertex_Id
    with Pre => G.In_Neighbour_Count (V) <= 1;
@@ -312,7 +311,7 @@ package Graph is
    --  Complexity is O(1).
 
    function Child
-     (G : T;
+     (G : Graph;
       V : Vertex_Id)
       return Vertex_Id
    with Pre => G.Out_Neighbour_Count (V) <= 1;
@@ -325,13 +324,13 @@ package Graph is
    --  Clusters
    ----------------------------------------------------------------------
 
-   procedure New_Cluster (G : in out T;
+   procedure New_Cluster (G : in out Graph;
                           C :    out Cluster_Id);
    --  Create a new cluster that vertices can be a member of.
    --
    --  Complexity is O(1).
 
-   procedure Set_Cluster (G : in out T;
+   procedure Set_Cluster (G : in out Graph;
                           V : Vertex_Id;
                           C : Cluster_Id);
    --  Assigns the given cluster to the given vertex. Note a vertex can
@@ -340,7 +339,7 @@ package Graph is
    --
    --  Complexity is O(1).
 
-   function Get_Cluster (G : T;
+   function Get_Cluster (G : Graph;
                          V : Vertex_Id)
                          return Cluster_Id;
    --  Returns the vertex' cluster.
@@ -354,13 +353,13 @@ package Graph is
    --  Iterators
    ----------------------------------------------------------------------
 
-   function Get_Collection (G        : T;
+   function Get_Collection (G        : Graph;
                             V        : Vertex_Id;
                             The_Type : Vertex_Based_Collection)
                             return Vertex_Collection_T
    with Pre => V /= Null_Vertex;
 
-   function Get_Collection (G        : T;
+   function Get_Collection (G        : Graph;
                             The_Type : Graph_Based_Collection)
                             return Vertex_Collection_T;
 
@@ -384,7 +383,7 @@ package Graph is
    ----------------------------------------------------------------------
 
    function Non_Trivial_Path_Exists
-     (G        : T;
+     (G        : Graph;
       A        : Vertex_Id;
       B        : Vertex_Id;
       Reversed : Boolean := False)
@@ -401,7 +400,7 @@ package Graph is
    --  Complexity is O(N).
 
    function Non_Trivial_Path_Exists
-     (G        : T;
+     (G        : Graph;
       A        : Vertex_Id;
       F        : access function (V : Vertex_Id) return Boolean;
       Reversed : Boolean := False)
@@ -421,7 +420,7 @@ package Graph is
    ----------------------------------------------------------------------
 
    procedure DFS
-     (G             : T;
+     (G             : Graph;
       Start         : Vertex_Id;
       Include_Start : Boolean;
       Visitor       : access procedure
@@ -448,7 +447,7 @@ package Graph is
    --  Complexity is obviously O(N).
 
    procedure BFS
-     (G             : T;
+     (G             : Graph;
       Start         : Vertex_Id;
       Include_Start : Boolean;
       Visitor       : access procedure
@@ -462,7 +461,7 @@ package Graph is
    --  Complexity is also O(N).
 
    procedure Shortest_Path
-     (G             : T;
+     (G             : Graph;
       Start         : Vertex_Id;
       Allow_Trivial : Boolean;
       Search        : access procedure
@@ -495,15 +494,15 @@ package Graph is
    --  Graph-wide operations
    ----------------------------------------------------------------------
 
-   function Invert (G : T) return T;
+   function Invert (G : Graph) return Graph;
    --  Creates a new graph with all edge directions reversed.
    --
    --  Complexity is, in theory, O(N^2). This worse-case requires
    --  every node to be connected to every other node.
 
    function Dominator_Tree
-     (G : T;
-      R : Vertex_Id) return T
+     (G : Graph;
+      R : Vertex_Id) return Graph
    with Pre => R /= Null_Vertex;
    --  Computes the dominator tree of graph G rooted in R using the
    --  Lengauer-Tarjan dominator algorithm. This is the
@@ -518,8 +517,8 @@ package Graph is
    --  than O(M log N), but worse than linear.
 
    function Dominance_Frontier
-     (G : T;
-      R : Vertex_Id) return T;
+     (G : Graph;
+      R : Vertex_Id) return Graph;
    --  Computes the dominance frontier of graph G rooted in R using
    --  the `runner' algorithm by Ferrante, Harvey.
    --
@@ -529,7 +528,7 @@ package Graph is
    --  this in cfganal.c.
 
    procedure Close
-     (G       : in out T;
+     (G       : in out Graph;
       Visitor : access procedure (A, B : Vertex_Id) := null);
    --  Transitively close the graph using SIMPLE_TC from Nuutila's
    --  thesis. The visitor procedure, if not null, is called for each new edge
@@ -538,7 +537,7 @@ package Graph is
    --  Complexity is O(N^2).
 
    procedure Conditional_Close
-     (G             : in out T;
+     (G             : in out Graph;
       Edge_Selector : access function (A, B : Vertex_Id) return Boolean);
    --  Transitively close the graph using SIMPLE_TC from Nuutila's thesis.
    --  A new edge is only added if the Edge_Selector function returns True
@@ -574,12 +573,12 @@ package Graph is
    end record;
 
    procedure Write_Dot_File
-     (G         : T;
+     (G         : Graph;
       Filename  : String;
-      Node_Info : access function (G : T;
+      Node_Info : access function (G : Graph;
                                    V : Vertex_Id)
                                    return Node_Display_Info;
-      Edge_Info : access function (G      : T;
+      Edge_Info : access function (G      : Graph;
                                    A      : Vertex_Id;
                                    B      : Vertex_Id;
                                    Marked : Boolean;
@@ -589,12 +588,12 @@ package Graph is
    --  functions Node_Info and Edge_Info to pretty-print each vertex.
 
    procedure Write_Pdf_File
-     (G         : T;
+     (G         : Graph;
       Filename  : String;
-      Node_Info : access function (G : T;
+      Node_Info : access function (G : Graph;
                                    V : Vertex_Id)
                                    return Node_Display_Info;
-      Edge_Info : access function (G      : T;
+      Edge_Info : access function (G      : Graph;
                                    A      : Vertex_Id;
                                    B      : Vertex_Id;
                                    Marked : Boolean;
@@ -606,10 +605,10 @@ package Graph is
    --  Debug
    ----------------------------------------------------------------------
 
-   function Vertex_To_Natural (G : T; V : Vertex_Id) return Natural;
+   function Vertex_To_Natural (G : Graph; V : Vertex_Id) return Natural;
    --  Debug function to get the internal index of the given vertex.
 
-   function Cluster_To_Natural (G : T; C : Cluster_Id) return Natural;
+   function Cluster_To_Natural (G : Graph; C : Cluster_Id) return Natural;
    --  Debug function to get the internal index of the given cluster.
 
 private
@@ -681,7 +680,7 @@ private
       Equivalent_Keys => Test_Key,
       "="             => "=");
 
-   type T is tagged record
+   type Graph is tagged record
       Vertices       : Vertex_List;
       Default_Colour : Edge_Colours;
       Frozen         : Boolean;
@@ -693,7 +692,7 @@ private
    --  Collections
 
    type Vertex_Collection_T (The_Type : Collection_Type_T) is record
-      The_Graph : access constant T;
+      The_Graph : access constant Graph;
       case The_Type is
          when Vertex_Based_Collection =>
             Id : Vertex_Id;
@@ -713,4 +712,4 @@ private
       end case;
    end record;
 
-end Graph;
+end Graphs;

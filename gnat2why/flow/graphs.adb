@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                                G R A P H                                 --
+--                               G R A P H S                                --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -25,12 +25,13 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Integer_Text_IO;                use Ada.Integer_Text_IO;
 with Ada.Text_IO;                        use Ada.Text_IO;
 with GNAT.OS_Lib;                        use GNAT.OS_Lib;
-with Hashing;                            use Hashing;
 with System.Strings;
+
+with Hashing;                            use Hashing;
 
 use type Ada.Containers.Count_Type;
 
-package body Graph is
+package body Graphs is
 
    ----------------------------------------------------------------------
    --  Local types
@@ -50,13 +51,14 @@ package body Graph is
    -- Is_Frozen --
    ---------------
 
-   function Is_Frozen (G : T) return Boolean is (G.Frozen);
+   function Is_Frozen (G : Graph) return Boolean is (G.Frozen);
 
    ------------
    -- Create --
    ------------
 
-   function Create (Colour : Edge_Colours := Edge_Colours'First) return T is
+   function Create (Colour : Edge_Colours := Edge_Colours'First) return Graph
+   is
    begin
       return (Vertices       => VL.Empty_Vector,
               Default_Colour => Colour,
@@ -65,11 +67,11 @@ package body Graph is
               Key_To_Id      => Key_To_Id_Maps.Empty_Map);
    end Create;
 
-   function Create (G             : T;
+   function Create (G             : Graph;
                     Copy_Clusters : Boolean := False)
-                    return T
+                    return Graph
    is
-      R : T := Create (G.Default_Colour);
+      R : Graph := Create (G.Default_Colour);
    begin
       for V of G.Vertices loop
          R.Vertices.Append ((Key            => V.Key,
@@ -97,7 +99,7 @@ package body Graph is
    -- Get_Vertex --
    ----------------
 
-   function Get_Vertex (G : T; V : Vertex_Key) return Vertex_Id is
+   function Get_Vertex (G : Graph; V : Vertex_Key) return Vertex_Id is
       C : constant Key_To_Id_Maps.Cursor := G.Key_To_Id.Find (V);
    begin
       if Key_To_Id_Maps.Has_Element (C) then
@@ -111,7 +113,7 @@ package body Graph is
    -- Get_Key --
    -------------
 
-   function Get_Key (G : T; V : Vertex_Id) return Vertex_Key is
+   function Get_Key (G : Graph; V : Vertex_Id) return Vertex_Key is
    begin
       return G.Vertices (V).Key;
    end Get_Key;
@@ -121,7 +123,7 @@ package body Graph is
    ----------------
 
    procedure Add_Vertex
-     (G  : in out T;
+     (G  : in out Graph;
       V  : Vertex_Key;
       Id : out Vertex_Id) is
    begin
@@ -134,7 +136,7 @@ package body Graph is
    end Add_Vertex;
 
    procedure Add_Vertex
-     (G  : in out T;
+     (G  : in out Graph;
       Id : out Vertex_Id) is
    begin
       G.Vertices.Append ((Key            => Null_Key,
@@ -145,7 +147,7 @@ package body Graph is
    end Add_Vertex;
 
    procedure Add_Vertex
-     (G  : in out T;
+     (G  : in out Graph;
       V  : Vertex_Key) is
    begin
       G.Vertices.Append ((Key            => V,
@@ -171,7 +173,7 @@ package body Graph is
    --------------------------
 
    function In_Neighbour_Count
-     (G : T;
+     (G : Graph;
       V : Vertex_Id) return Natural is
    begin
       return Natural (G.Vertices (V).In_Neighbours.Length);
@@ -182,7 +184,7 @@ package body Graph is
    ---------------------------
 
    function Out_Neighbour_Count
-     (G : T;
+     (G : Graph;
       V : Vertex_Id) return Natural is
    begin
       return Natural (G.Vertices (V).Out_Neighbours.Length);
@@ -193,7 +195,7 @@ package body Graph is
    -----------------
 
    function Edge_Exists
-     (G        : T;
+     (G        : Graph;
       V_1, V_2 : Vertex_Id) return Boolean is
    begin
       --  Sanity check the indices.
@@ -205,7 +207,7 @@ package body Graph is
    end Edge_Exists;
 
    function Edge_Exists
-     (G        : T;
+     (G        : Graph;
       V_1, V_2 : Vertex_Key) return Boolean is
    begin
       return Edge_Exists (G,
@@ -218,7 +220,7 @@ package body Graph is
    -----------------
 
    function Edge_Colour
-     (G        : T;
+     (G        : Graph;
       V_1, V_2 : Vertex_Id) return Edge_Colours
    is
    begin
@@ -230,7 +232,7 @@ package body Graph is
    --------------
 
    procedure Add_Edge
-     (G        : in out T;
+     (G        : in out Graph;
       V_1, V_2 : Vertex_Id;
       Colour   : Edge_Colours) is
    begin
@@ -254,7 +256,7 @@ package body Graph is
    end Add_Edge;
 
    procedure Add_Edge
-     (G        : in out T;
+     (G        : in out Graph;
       V_1, V_2 : Vertex_Key;
       Colour   : Edge_Colours) is
    begin
@@ -266,7 +268,7 @@ package body Graph is
    -----------------
 
    procedure Remove_Edge
-     (G        : in out T;
+     (G        : in out Graph;
       V_1, V_2 : Vertex_Id) is
    begin
       --  Sanity check the indices.
@@ -287,7 +289,7 @@ package body Graph is
    ---------------
 
    procedure Mark_Edge
-     (G        : in out T;
+     (G        : in out Graph;
       V_1, V_2 : Vertex_Id) is
    begin
       --  Sanity check the indices.
@@ -304,7 +306,7 @@ package body Graph is
    ------------------
 
    procedure Clear_Vertex
-     (G : in out T;
+     (G : in out Graph;
       V : Vertex_Id) is
    begin
       --  Sanity check the index.
@@ -330,8 +332,8 @@ package body Graph is
    ------------------
 
    procedure Copy_Edges
-     (G             : in out T;
-      O             : T;
+     (G             : in out Graph;
+      O             : Graph;
       Edge_Selector : access function (A, B : Vertex_Id)
                                        return Boolean := null)
    is
@@ -361,7 +363,7 @@ package body Graph is
    ------------
 
    function Parent
-     (G : T;
+     (G : Graph;
       V : Vertex_Id)
       return Vertex_Id
    is
@@ -377,7 +379,7 @@ package body Graph is
    -----------
 
    function Child
-     (G : T;
+     (G : Graph;
       V : Vertex_Id)
       return Vertex_Id
    is
@@ -396,7 +398,7 @@ package body Graph is
    -- New_Cluster --
    -----------------
 
-   procedure New_Cluster (G : in out T;
+   procedure New_Cluster (G : in out Graph;
                           C :    out Cluster_Id)
    is
    begin
@@ -408,7 +410,7 @@ package body Graph is
    -- Set_Cluster --
    -----------------
 
-   procedure Set_Cluster (G : in out T;
+   procedure Set_Cluster (G : in out Graph;
                           V : Vertex_Id;
                           C : Cluster_Id)
    is
@@ -421,7 +423,7 @@ package body Graph is
    -- Get_Cluster --
    -----------------
 
-   function Get_Cluster (G : T;
+   function Get_Cluster (G : Graph;
                          V : Vertex_Id)
                          return Cluster_Id
    is
@@ -444,7 +446,7 @@ package body Graph is
    -- Get_Collection --
    --------------------
 
-   function Get_Collection (G        : T;
+   function Get_Collection (G        : Graph;
                             V        : Vertex_Id;
                             The_Type : Vertex_Based_Collection)
                             return Vertex_Collection_T
@@ -462,7 +464,7 @@ package body Graph is
       end case;
    end Get_Collection;
 
-   function Get_Collection (G        : T;
+   function Get_Collection (G        : Graph;
                             The_Type : Graph_Based_Collection)
                             return Vertex_Collection_T
    is
@@ -481,7 +483,7 @@ package body Graph is
    function First_Cursor (Coll : Vertex_Collection_T)
                           return Cursor
    is
-      G : access constant T renames Coll.The_Graph;
+      G : access constant Graph renames Coll.The_Graph;
    begin
       case Coll.The_Type is
          when In_Neighbours =>
@@ -561,7 +563,7 @@ package body Graph is
    -------------------------------
 
    function Non_Trivial_Path_Exists
-     (G        : T;
+     (G        : Graph;
       A        : Vertex_Id;
       B        : Vertex_Id;
       Reversed : Boolean := False)
@@ -596,7 +598,7 @@ package body Graph is
    end Non_Trivial_Path_Exists;
 
    function Non_Trivial_Path_Exists
-     (G        : T;
+     (G        : Graph;
       A        : Vertex_Id;
       F        : access function (V : Vertex_Id) return Boolean;
       Reversed : Boolean := False)
@@ -638,7 +640,7 @@ package body Graph is
    ---------
 
    procedure DFS
-     (G             : T;
+     (G             : Graph;
       Start         : Vertex_Id;
       Include_Start : Boolean;
       Visitor       : access procedure
@@ -767,7 +769,7 @@ package body Graph is
    ---------
 
    procedure BFS
-     (G             : T;
+     (G             : Graph;
       Start         : Vertex_Id;
       Include_Start : Boolean;
       Visitor       : access procedure
@@ -876,7 +878,7 @@ package body Graph is
    -------------------
 
    procedure Shortest_Path
-     (G             : T;
+     (G             : Graph;
       Start         : Vertex_Id;
       Allow_Trivial : Boolean;
       Search        : access procedure
@@ -956,8 +958,8 @@ package body Graph is
    -- Invert --
    ------------
 
-   function Invert (G : T) return T is
-      R : T;
+   function Invert (G : Graph) return Graph is
+      R : Graph;
    begin
       --  Start with an empty graph, with the same vertices.
       R := Create (G);
@@ -983,7 +985,7 @@ package body Graph is
    -----------------------------
 
    function Dominator_Tree_Internal
-     (G : T;
+     (G : Graph;
       R : Vertex_Id) return Vertex_To_Vertex_T;
    --  Compute the dominator tree, but return a vertex-to-vertex map,
    --  instead of a graph representing a tree. The Dominator_Tree
@@ -991,7 +993,7 @@ package body Graph is
    --  easier to work with the array representation.
 
    function Dominator_Tree_Internal
-     (G : T;
+     (G : Graph;
       R : Vertex_Id) return Vertex_To_Vertex_T
    is
       subtype V_To_V is Vertex_To_Vertex_T (0 .. G.Vertices.Last_Index);
@@ -1193,11 +1195,11 @@ package body Graph is
    --------------------
 
    function Dominator_Tree
-     (G : T;
-      R : Vertex_Id) return T
+     (G : Graph;
+      R : Vertex_Id) return Graph
    is
       Dom : constant Vertex_To_Vertex_T := Dominator_Tree_Internal (G, R);
-      DT  : T;
+      DT  : Graph;
    begin
       DT := Create (G);
 
@@ -1215,11 +1217,11 @@ package body Graph is
    ------------------------
 
    function Dominance_Frontier
-     (G : T;
-      R : Vertex_Id) return T
+     (G : Graph;
+      R : Vertex_Id) return Graph
    is
       Dom : constant Vertex_To_Vertex_T := Dominator_Tree_Internal (G, R);
-      DF  : T := Create (G);
+      DF  : Graph := Create (G);
    begin
       for B in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          if G.Vertices (B).In_Neighbours.Length >= 2 then
@@ -1246,7 +1248,7 @@ package body Graph is
    -----------
 
    procedure Close
-     (G       : in out T;
+     (G       : in out Graph;
       Visitor : access procedure (A, B : Vertex_Id) := null)
    is
       type Component is new Natural;
@@ -1353,7 +1355,7 @@ package body Graph is
    -----------------------
 
    procedure Conditional_Close
-     (G             : in out T;
+     (G             : in out Graph;
       Edge_Selector : access function (A, B : Vertex_Id) return Boolean)
    is
       procedure Visitor (A, B : Vertex_Id);
@@ -1371,7 +1373,7 @@ package body Graph is
          end if;
       end Visitor;
    begin
-      --  IMPORTANT NOTE: This current implementation takes advantage of
+      --  IMPORTANT NOTE: Graphhis current implementation takes advantage of
       --  the inefficient (in terms of space) implementation of Close - we
       --  effectively cache the entire graph hence we can actually get away
       --  with modifying it in the visitor procedure. If we get around to
@@ -1390,12 +1392,12 @@ package body Graph is
    --------------------
 
    procedure Write_Dot_File
-     (G         : T;
+     (G         : Graph;
       Filename  : String;
-      Node_Info : access function (G : T;
+      Node_Info : access function (G : Graph;
                                    V : Vertex_Id)
                                    return Node_Display_Info;
-      Edge_Info : access function (G      : T;
+      Edge_Info : access function (G      : Graph;
                                    A      : Vertex_Id;
                                    B      : Vertex_Id;
                                    Marked : Boolean;
@@ -1533,12 +1535,12 @@ package body Graph is
    --------------------
 
    procedure Write_Pdf_File
-     (G         : T;
+     (G         : Graph;
       Filename  : String;
-      Node_Info : access function (G : T;
+      Node_Info : access function (G : Graph;
                                    V : Vertex_Id)
                                    return Node_Display_Info;
-      Edge_Info : access function (G      : T;
+      Edge_Info : access function (G      : Graph;
                                    A      : Vertex_Id;
                                    B      : Vertex_Id;
                                    Marked : Boolean;
@@ -1588,7 +1590,7 @@ package body Graph is
    -- Vertex_To_Natural --
    -----------------------
 
-   function Vertex_To_Natural (G : T; V : Vertex_Id) return Natural is
+   function Vertex_To_Natural (G : Graph; V : Vertex_Id) return Natural is
       pragma Unreferenced (G);
    begin
       return Natural (V);
@@ -1598,10 +1600,10 @@ package body Graph is
    -- Cluster_To_Natural --
    ------------------------
 
-   function Cluster_To_Natural (G : T; C : Cluster_Id) return Natural is
+   function Cluster_To_Natural (G : Graph; C : Cluster_Id) return Natural is
       pragma Unreferenced (G);
    begin
       return Natural (C);
    end Cluster_To_Natural;
 
-end Graph;
+end Graphs;

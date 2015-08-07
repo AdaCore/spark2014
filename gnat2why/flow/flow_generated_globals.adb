@@ -49,7 +49,7 @@ with SPARK_Util;                 use SPARK_Util;
 
 with Flow_Debug;                 use Flow_Debug;
 with Flow_Utility;               use Flow_Utility;
-with Graph;
+with Graphs;
 
 package body Flow_Generated_Globals is
 
@@ -215,13 +215,14 @@ package body Flow_Generated_Globals is
    subtype Single_Edge_Colour is Edge_Colours range EC_Default .. EC_Default;
    --  For tasking graph we need a single colour
 
-   package Tasking_Graphs is new Graph (Vertex_Key   => Entity_Name,
-                                        Edge_Colours => Single_Edge_Colour,
-                                        Null_Key     => Null_Entity_Name,
-                                        Key_Hash     => Name_Hash,
-                                        Test_Key     => "=");
+   package Tasking_Graphs is new Graphs
+     (Vertex_Key   => Entity_Name,
+      Edge_Colours => Single_Edge_Colour,
+      Null_Key     => Null_Entity_Name,
+      Key_Hash     => Name_Hash,
+      Test_Key     => "=");
 
-   Tasking_Graph : array (Tasking_Info_Kind) of Tasking_Graphs.T :=
+   Tasking_Graph : array (Tasking_Info_Kind) of Tasking_Graphs.Graph :=
      (others => Tasking_Graphs.Create);
    --  Graphs with tasking-related information
 
@@ -229,11 +230,12 @@ package body Flow_Generated_Globals is
    -- Global_Graphs --
    -------------------
 
-   package Global_Graphs is new Graph (Vertex_Key   => Global_Id,
-                                       Key_Hash     => Global_Hash,
-                                       Edge_Colours => Edge_Colours,
-                                       Null_Key     => Null_Global_Id,
-                                       Test_Key     => "=");
+   package Global_Graphs is new Graphs
+     (Vertex_Key   => Global_Id,
+      Key_Hash     => Global_Hash,
+      Edge_Colours => Edge_Colours,
+      Null_Key     => Null_Global_Id,
+      Test_Key     => "=");
 
    package Vertex_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Global_Graphs.Vertex_Id,
@@ -241,12 +243,12 @@ package body Flow_Generated_Globals is
       Equivalent_Elements => Global_Graphs."=",
       "="                 => Global_Graphs."=");
 
-   Local_Graph  : Global_Graphs.T;
+   Local_Graph  : Global_Graphs.Graph;
    --  This graph will represent the hierarchy of subprograms (which subprogram
    --  is nested in which one) and will be used to determine which local
    --  variables can act as globals to which subprograms.
 
-   Global_Graph : Global_Graphs.T;
+   Global_Graph : Global_Graphs.Graph;
    --  This graph will represent the globals that each subprogram has as
    --  inputs, outputs and proof inputs.
 
@@ -303,7 +305,7 @@ package body Flow_Generated_Globals is
    --  Prints all global related info of an entity
 
    procedure Print_Global_Graph (Filename : String;
-                                 G        : T);
+                                 G        : Graph);
    --  Writes dot and pdf files for the Global_Graph
 
    procedure Print_Generated_Initializes_Aspects;
@@ -424,15 +426,15 @@ package body Flow_Generated_Globals is
    ------------------------
 
    procedure Print_Global_Graph (Filename : String;
-                                 G        : T)
+                                 G        : Graph)
    is
       function NDI
-        (G : T;
+        (G : Graph;
          V : Vertex_Id) return Node_Display_Info;
       --  Pretty-printing for each vertex in the dot output
 
       function EDI
-        (G      : T;
+        (G      : Graph;
          A      : Vertex_Id;
          B      : Vertex_Id;
          Marked : Boolean;
@@ -444,7 +446,7 @@ package body Flow_Generated_Globals is
       ---------
 
       function NDI
-        (G : T;
+        (G : Graph;
          V : Vertex_Id) return Node_Display_Info
       is
          G_Id  : constant Global_Id := G.Get_Key (V);
@@ -477,7 +479,7 @@ package body Flow_Generated_Globals is
       ---------
 
       function EDI
-        (G      : T;
+        (G      : Graph;
          A      : Vertex_Id;
          B      : Vertex_Id;
          Marked : Boolean;

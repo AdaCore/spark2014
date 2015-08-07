@@ -56,7 +56,7 @@ package body Flow.Analysis is
    use type Flow_Id_Sets.Set;
 
    function Get_Line
-     (G   : Flow_Graphs.T'Class;
+     (G   : Flow_Graphs.Graph;
       M   : Attribute_Maps.Map;
       V   : Flow_Graphs.Vertex_Id;
       Sep : Character := ':') return String;
@@ -77,7 +77,7 @@ package body Flow.Analysis is
    --  because of computed globals) we just return S which is a useful
    --  fallback place to raise an error.
 
-   function Get_Initial_Vertex (G : Flow_Graphs.T;
+   function Get_Initial_Vertex (G : Flow_Graphs.Graph;
                                 F : Flow_Id)
                                 return Flow_Graphs.Vertex_Id
      with Pre  => F.Variant = Normal_Use,
@@ -86,7 +86,7 @@ package body Flow.Analysis is
                               Initial_Value | Initial_Grouping;
    --  Returns the vertex id which represents the initial value for F
 
-   function Get_Final_Vertex (G : Flow_Graphs.T;
+   function Get_Final_Vertex (G : Flow_Graphs.Graph;
                               F : Flow_Id)
                               return Flow_Graphs.Vertex_Id
      with Pre  => F.Variant = Normal_Use,
@@ -99,7 +99,7 @@ package body Flow.Analysis is
    --------------------
 
    function Error_Location
-     (G : Flow_Graphs.T'Class;
+     (G : Flow_Graphs.Graph;
       M : Attribute_Maps.Map;
       V : Flow_Graphs.Vertex_Id) return Node_Or_Entity_Id
    is
@@ -123,7 +123,7 @@ package body Flow.Analysis is
    --------------
 
    function Get_Line
-     (G   : Flow_Graphs.T'Class;
+     (G   : Flow_Graphs.Graph;
       M   : Attribute_Maps.Map;
       V   : Flow_Graphs.Vertex_Id;
       Sep : Character := ':') return String
@@ -301,7 +301,7 @@ package body Flow.Analysis is
    -- Get_Initial_Vertex --
    ------------------------
 
-   function Get_Initial_Vertex (G : Flow_Graphs.T;
+   function Get_Initial_Vertex (G : Flow_Graphs.Graph;
                                 F : Flow_Id)
                                 return Flow_Graphs.Vertex_Id
    is
@@ -320,7 +320,7 @@ package body Flow.Analysis is
    -- Get_Final_Vertex --
    ----------------------
 
-   function Get_Final_Vertex (G : Flow_Graphs.T;
+   function Get_Final_Vertex (G : Flow_Graphs.Graph;
                               F : Flow_Id)
                               return Flow_Graphs.Vertex_Id
    is

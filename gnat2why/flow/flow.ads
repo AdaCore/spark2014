@@ -32,7 +32,7 @@ with Einfo;                      use Einfo;
 with Flow_Dependency_Maps;       use Flow_Dependency_Maps;
 with Flow_Refinement;            use Flow_Refinement;
 with Flow_Types;                 use Flow_Types;
-with Graph;
+with Graphs;
 with Types;                      use Types;
 
 package Flow is
@@ -55,7 +55,7 @@ package Flow is
    --  Flow_Graphs
    ----------------------------------------------------------------------
 
-   package Flow_Graphs is new Graph
+   package Flow_Graphs is new Graphs
      (Vertex_Key   => Flow_Id,
       Key_Hash     => Hash,
       Edge_Colours => Edge_Colours,
@@ -68,7 +68,7 @@ package Flow is
       Hash            => Flow_Graphs.Vertex_Hash,
       Equivalent_Keys => Flow_Graphs."=");
 
-   procedure Print_Graph_Vertex (G : Flow_Graphs.T;
+   procedure Print_Graph_Vertex (G : Flow_Graphs.Graph;
                                  M : Attribute_Maps.Map;
                                  V : Flow_Graphs.Vertex_Id);
    --  Print a human-readable representation for the given vertex.
@@ -184,11 +184,11 @@ package Flow is
       --  end of the procedure (i.e. returns jump here), but before
       --  postconditions are checked.
 
-      CFG                   : Flow_Graphs.T;
-      DDG                   : Flow_Graphs.T;
-      CDG                   : Flow_Graphs.T;
-      TDG                   : Flow_Graphs.T;
-      PDG                   : Flow_Graphs.T;
+      CFG                   : Flow_Graphs.Graph;
+      DDG                   : Flow_Graphs.Graph;
+      CDG                   : Flow_Graphs.Graph;
+      TDG                   : Flow_Graphs.Graph;
+      PDG                   : Flow_Graphs.Graph;
       --  The graphs.
 
       Atr                   : Attribute_Maps.Map;
@@ -309,7 +309,7 @@ package Flow is
 
    procedure Print_Graph
      (Filename          : String;
-      G                 : Flow_Graphs.T;
+      G                 : Flow_Graphs.Graph;
       M                 : Attribute_Maps.Map;
       Start_Vertex      : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
       Helper_End_Vertex : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;

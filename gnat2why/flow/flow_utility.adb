@@ -32,7 +32,7 @@ with Flow_Classwide;             use Flow_Classwide;
 with Flow_Debug;                 use Flow_Debug;
 with Flow_Generated_Globals;     use Flow_Generated_Globals;
 with Gnat2Why.Util;
-with Graph;
+with Graphs;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
 with Output;                     use Output;
@@ -77,13 +77,14 @@ package body Flow_Utility is
    --  Component_Graphs
    ----------------------------------------------------------------------
 
-   package Component_Graphs is new Graph (Vertex_Key   => Entity_Id,
-                                          Key_Hash     => Node_Hash,
-                                          Edge_Colours => Natural,
-                                          Null_Key     => Empty,
-                                          Test_Key     => "=");
+   package Component_Graphs is new Graphs
+     (Vertex_Key   => Entity_Id,
+      Key_Hash     => Node_Hash,
+      Edge_Colours => Natural,
+      Null_Key     => Empty,
+      Test_Key     => "=");
 
-   Comp_Graph  : Component_Graphs.T;
+   Comp_Graph  : Component_Graphs.Graph;
 
    Temp_String : Unbounded_String := Null_Unbounded_String;
 
@@ -196,18 +197,18 @@ package body Flow_Utility is
    procedure Initialize is
       use Component_Graphs;
 
-      function Node_Info (G : T;
+      function Node_Info (G : Graph;
                           V : Vertex_Id)
                           return Node_Display_Info;
 
-      function Edge_Info (G      : T;
+      function Edge_Info (G      : Graph;
                           A      : Vertex_Id;
                           B      : Vertex_Id;
                           Marked : Boolean;
                           Colour : Natural)
                           return Edge_Display_Info;
 
-      function Node_Info (G : T;
+      function Node_Info (G : Graph;
                           V : Vertex_Id)
                           return Node_Display_Info
       is
@@ -224,7 +225,7 @@ package body Flow_Utility is
                  Label       => Temp_String);
       end Node_Info;
 
-      function Edge_Info (G      : T;
+      function Edge_Info (G      : Graph;
                           A      : Vertex_Id;
                           B      : Vertex_Id;
                           Marked : Boolean;

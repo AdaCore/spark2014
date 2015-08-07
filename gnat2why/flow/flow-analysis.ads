@@ -174,7 +174,7 @@ private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);
 
-   function Error_Location (G : Flow_Graphs.T'Class;
+   function Error_Location (G : Flow_Graphs.Graph;
                             M : Attribute_Maps.Map;
                             V : Flow_Graphs.Vertex_Id)
                             return Node_Or_Entity_Id;
