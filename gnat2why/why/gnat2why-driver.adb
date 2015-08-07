@@ -677,9 +677,8 @@ package body Gnat2Why.Driver is
 
       For_All_External_Objects (Translate_External_Object'Access);
 
-      --  For all state abstractions whose declaration is not visible
-      --  (has not been translated to Why), we generate a dummy
-      --  declaration.
+      --  For all state abstractions whose declaration is not visible (has not
+      --  been translated to Why), we generate a dummy declaration.
 
       For_All_External_States (Translate_External_Object'Access);
 
