@@ -140,8 +140,8 @@ package body Back_End is
 
          SPARK_Definition.Emit_Messages := False;
 
-         --  In this mode, we should run the frontend with no warnings, they
-         --  will be issued in the second run
+         --  In this mode, we should run the frontend with no warnings. They
+         --  will be issued in the second run.
 
          Opt.Warning_Mode := Opt.Suppress;
 
