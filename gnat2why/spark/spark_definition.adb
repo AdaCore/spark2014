@@ -2372,7 +2372,7 @@ package body SPARK_Definition is
          --  axioms.
 
          procedure Mark_Generic_Parameters_External_Axioms (Assoc : List_Id);
-         --  Mark actual parameters of a package with external axioms.
+         --  Mark actual parameters of a package with external axioms
 
          ---------------------------------------------
          -- Declare_In_Package_With_External_Axioms --
