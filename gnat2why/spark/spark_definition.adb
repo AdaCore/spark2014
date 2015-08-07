@@ -704,9 +704,7 @@ package body SPARK_Definition is
                   when N_Full_Type_Declaration         |
                        N_Private_Extension_Declaration |
                        N_Private_Type_Declaration      |
-                       N_Protected_Type_Declaration    |
-                       N_Subtype_Declaration           |
-                       N_Task_Type_Declaration         =>
+                       N_Subtype_Declaration           =>
                      declare
                         E : constant Entity_Id := Defining_Entity (N);
                      begin
