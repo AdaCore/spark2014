@@ -199,6 +199,8 @@ package body Gnat2Why.Expr.Loops is
 
       use Node_Lists;
 
+   --  Start of processing for Get_Loop_Variant
+
    begin
       for Cur in Loop_Stmts.Iterate loop
          N := Element (Cur);
