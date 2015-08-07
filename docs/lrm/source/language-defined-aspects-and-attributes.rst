@@ -54,7 +54,7 @@ Pre'Class		      Yes
 Post			      Yes
 Post'Class		      Yes
 Preelaborate       	      Yes
-Priority  	  	      True
+Priority  	  	      Yes
 Pure               	      Yes
 Relative_Deadline	      Yes
 Remote_Call_Interface	      No
