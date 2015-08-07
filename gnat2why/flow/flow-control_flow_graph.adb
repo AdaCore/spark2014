@@ -2985,10 +2985,8 @@ package body Flow.Control_Flow_Graph is
       FS    : Flow_Id_Sets.Set;
       To_Cw : Boolean;
 
-      Is_Constant : constant Boolean :=
-        (if Nkind (N) = N_Object_Declaration
-         then Constant_Present (N)
-         else False);
+      Is_Constant : constant Boolean := Nkind (N) = N_Object_Declaration
+                                        and then Constant_Present (N);
    begin
       --  We are dealing with a local constant. These constants are *not*
       --  ignored.
