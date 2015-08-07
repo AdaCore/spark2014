@@ -10,6 +10,9 @@ is
    --  component's type has at least one elementary nondiscriminant
    --  part, then the record type or type extension shall define full
    --  default initialization.
+   --  [The enforcement of this rule may require looking at the
+   --  ``full_type_declaration`` of a ``private_type`` declaration if the
+   --  private type's Default_Initial_Condition aspect is not specified.]
    --  [In the unusual case of a nondiscriminant component which has no
    --  nondiscriminant scalar parts (e.g., an array of null records),
    --  the preceding "at least one elementary" wording means that the component

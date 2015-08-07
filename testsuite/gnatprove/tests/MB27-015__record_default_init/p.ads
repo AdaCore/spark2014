@@ -12,10 +12,6 @@ is
    --  TU: 2. The ``default_expression`` of a ``component_declaration`` shall
    --  not have any variable inputs, nor shall it contain a name denoting the
    --  current instance of the enclosing type.
-   --  [The enforcement of this rule may require looking at the
-   --  ``full_type_declaration`` of a ``private_type`` declaration if the
-   --  private type's Default_Initial_Condition aspect is not specified.]
-
 
    -- Case 1 - all literal default expressions. OK
    type R1 is record

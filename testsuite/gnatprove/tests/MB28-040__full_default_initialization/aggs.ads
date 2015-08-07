@@ -2,8 +2,9 @@ package Aggs
   with SPARK_Mode => On
 is
 
-   -- TU: 1. The box symbol, <>, may only be used in an aggregate if the type(s)
-   --     of the corresponding component(s) define full default initialization.
+   -- TU: 1. The box symbol, <>, shall not be used in an aggregate unless the
+   --     type(s) of the corresponding component(s) define full default
+   --     initialization.
 
    type I is range 1 .. 5;
 

@@ -19,9 +19,10 @@ is
    --  * the [right-hand side] expression of an assignment statement; or
    --  * the expression of an initialization expression of an object
    --    declaration; or
+   --  * the ``object_name`` of an ``object_renaming_declaration``; or
    --  * the actual parameter in a call to an instance of Unchecked_Conversion
    --    whose result is renamed [in an object renaming declaration]; or
-   --  * the actual parameter in a procedure call of which the corresponding
+   --  * an actual parameter in a call for which the corresponding
    --    formal parameter is of a non-scalar effectively volatile type; or
    --  * the (protected) prefix of a name denoting a protected operation; or
    --  * the return expression of a ``simple_return_statement`` which applies
