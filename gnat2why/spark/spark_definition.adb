@@ -708,7 +708,7 @@ package body SPARK_Definition is
                        N_Subtype_Declaration           |
                        N_Task_Type_Declaration         =>
                      declare
-                        E  : constant Entity_Id := Defining_Entity (N);
+                        E : constant Entity_Id := Defining_Entity (N);
                      begin
                         if Is_Scalar_Type (E) then
                            Loop_Entity_Set.Insert (E);
