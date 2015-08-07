@@ -668,8 +668,8 @@ package body Gnat2Why.Util is
       --  which case they are defined as local "let" bound variables in Why).
 
       elsif Ekind (N) = E_Constant
-        and then SPARK_Definition.Loop_Entity_Set.Contains (N)
-        and then not SPARK_Definition.Actions_Entity_Set.Contains (N)
+        and then SPARK_Definition.Is_Loop_Entity (N)
+        and then not SPARK_Definition.Is_Actions_Entity (N)
       then
          return True;
 

@@ -8697,8 +8697,8 @@ package body Gnat2Why.Expr is
             pragma Assert
               (not Is_In_Loop_Initial_Statements
                or else (Is_Scalar_Type (Etype (Defining_Entity (Decl)))
-                 and then Loop_Entity_Set.Contains (Defining_Entity (Decl)))
-               or else Actions_Entity_Set.Contains (Defining_Entity (Decl)));
+                 and then Is_Loop_Entity (Defining_Entity (Decl)))
+               or else Is_Actions_Entity (Defining_Entity (Decl)));
 
             R := Assignment_Of_Obj_Decl (Decl);
 

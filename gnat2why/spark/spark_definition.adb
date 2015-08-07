@@ -174,6 +174,14 @@ package body SPARK_Definition is
    --  SPARK_Mode entity if there is one or to their type entity in discovery
    --  mode.
 
+   Loop_Entity_Set : Node_Sets.Set;
+   --  Set of entities defined in loops before the invariant, which may require
+   --  a special translation. See gnat2why.ads for details.
+
+   Actions_Entity_Set : Node_Sets.Set;
+   --  Set of entities defined in actions which require a special translation.
+   --  See gnat2why.ads for details.
+
    function Entity_In_SPARK (E : Entity_Id) return Boolean is
      (Entities_In_SPARK.Contains (E));
 
@@ -191,6 +199,12 @@ package body SPARK_Definition is
 
    function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean is
      (Full_Views_Not_In_SPARK.Contains (E));
+
+   function Is_Loop_Entity (E : Entity_Id) return Boolean is
+     (Loop_Entity_Set.Contains (E));
+
+   function Is_Actions_Entity (E : Entity_Id) return Boolean is
+     (Actions_Entity_Set.Contains (E));
 
    procedure Discard_Underlying_Type (T : Entity_Id);
    --  Mark T's underlying type as seen and store T as its partial view.

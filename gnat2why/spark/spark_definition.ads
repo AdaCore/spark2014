@@ -58,14 +58,6 @@ package SPARK_Definition is
    --  Set of all entities marked so far. It contains entities from both the
    --  current compilation unit and other units.
 
-   Loop_Entity_Set : Node_Sets.Set;
-   --  Set of entities defined in loops before the invariant, which may require
-   --  a special translation. See gnat2why.ads for details.
-
-   Actions_Entity_Set : Node_Sets.Set;
-   --  Set of entities defined in actions which require a special translation.
-   --  See gnat2why.ads for details.
-
    Max_Array_Dimensions : constant Positive := 4;
    --  Maximal number of array dimensions that are currently supported
 
@@ -122,5 +114,13 @@ package SPARK_Definition is
    function Get_SPARK_JSON return JSON_Array;
    --  Should be called after marking is finished. Returns the result of
    --  marking as a JSON record.
+
+   function Is_Actions_Entity (E : Entity_Id) return Boolean;
+   --  Returns True iff entity E is defined in actions and thus requires a
+   --  special translation. See gnat2why.ads for details.
+
+   function Is_Loop_Entity (E : Entity_Id) return Boolean;
+   --  Returns True iff entity E is defined in loop before the invariants and
+   --  thus may require a special translation. See gnat2why.ads for details.
 
 end SPARK_Definition;
