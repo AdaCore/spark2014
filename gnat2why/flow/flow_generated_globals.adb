@@ -21,22 +21,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;                    use AA_Util;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Maps;           use Ada.Strings.Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;                use Ada.Text_IO;
 with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
-with ALI;                        use ALI;
-with Call;                       use Call;
-with Flow_Debug;                 use Flow_Debug;
-with Flow_Utility;               use Flow_Utility;
 with GNAT.Regexp;                use GNAT.Regexp;
 with GNAT.Regpat;                use GNAT.Regpat;
-with Gnat2Why_Args;
-with Graph;
-with Hashing;                    use Hashing;
+
+with AA_Util;                    use AA_Util;
+with ALI;                        use ALI;
 with Lib;                        use Lib;
 with Lib.Util;                   use Lib.Util;
 with Namet;                      use Namet;
@@ -45,8 +40,16 @@ with Osint.C;                    use Osint.C;
 with Output;                     use Output;
 with Sem_Util;                   use Sem_Util;
 with Sinfo;                      use Sinfo;
+
+with Call;                       use Call;
+with Gnat2Why_Args;
+with Hashing;                    use Hashing;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
+
+with Flow_Debug;                 use Flow_Debug;
+with Flow_Utility;               use Flow_Utility;
+with Graph;
 
 package body Flow_Generated_Globals is
 
