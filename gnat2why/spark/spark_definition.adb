@@ -3488,7 +3488,7 @@ package body SPARK_Definition is
          return;
       end if;
 
-      --  Store entities defines in actions in Actions_Entity_Set
+      --  Store entities defined in actions in Actions_Entity_Set
 
       if Inside_Actions then
          Actions_Entity_Set.Insert (E);

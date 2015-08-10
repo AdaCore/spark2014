@@ -289,7 +289,7 @@ package SPARK_Util is
 
    function Analysis_Requested (E : Entity_Id) return Boolean;
    --  @param E subprogram, task or package
-   --  @return True iff subprogramm, task or package E must be analyzed,
+   --  @return True iff subprogram, task or package E must be analyzed,
    --     because it belongs to one of the analyzed units, and either the
    --     complete unit is analyzed, or E is the specific entity whose analysis
    --     was requested.
