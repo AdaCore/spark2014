@@ -1200,9 +1200,7 @@ package body Flow is
 
    procedure Build_Graphs_For_Compilation_Unit
      (FA_Graphs        : out Analysis_Maps.Map;
-      Global_Info_List : out Global_Info_Lists.List)
-   is
-      Body_E : Entity_Id;
+      Global_Info_List : out Global_Info_Lists.List) is
    begin
       --  Initialize the Global_Info_List to the empty set
       Global_Info_List := Global_Info_Lists.Empty_List;
@@ -1210,11 +1208,6 @@ package body Flow is
       for E of Entity_Set loop
          case Ekind (E) is
             when E_Entry | E_Task_Type | Subprogram_Kind =>
-               Body_E := (case Ekind (E) is
-                          when E_Entry         => Entry_Body_Entity (E),
-                          when E_Task_Type     => Task_Body_Entity (E),
-                          when Subprogram_Kind => E,
-                          when others          => raise Why.Unexpected_Node);
 
                --  Check for potentially blocking statements
 
@@ -1234,7 +1227,7 @@ package body Flow is
                   end;
                end if;
 
-               if SPARK_Util.Analysis_Requested (Body_E) then
+               if SPARK_Util.Analysis_Requested (E) then
                   if Entity_Body_In_SPARK (E)
                     and then Entity_Body_Valid_SPARK (E)
                   then
@@ -1243,7 +1236,7 @@ package body Flow is
                   elsif Generating_Globals then
                      declare
                         Scope        : constant Flow_Scope :=
-                          Get_Flow_Scope (Body_E);
+                          Get_Flow_Scope (E);
                         Global_Node  : constant Node_Id :=
                           Get_Contract_Node (E, Scope, Global_Contract);
                         Depends_Node : constant Node_Id :=
