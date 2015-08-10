@@ -1,0 +1,71 @@
+library project Test is
+
+   type Modes is
+     ("Compile", "Analyze");
+   Mode : Modes := external ("MODE", "Compile");
+
+   for Object_Dir use "obj";
+   for Languages use ("Ada");
+   for Source_Dirs use ("config/spec",
+                        "modules/spec",
+                        "modules/body",
+                        "utils/spec",
+                        "utils/body",
+                        "drivers/spec",
+                        "drivers/body",
+                        "lib/spec",
+                        "hal/spec",
+                        "hal/body",
+                        "types/spec");
+   for Library_Name use "spark";
+   for Library_Dir use "bin";
+   for Library_Kind use "static";
+   for Library_Interface use ("config",
+                              "maths_pack",
+                              "debug_pack",
+                              "safety_pack",
+                              "worker_pack",
+                              "sensfusion6_pack",
+                              "pid_pack",
+                              "controller_pack",
+                              "commander_pack",
+                              "stabilizer_pack",
+                              "types",
+                              "pid_parameters",
+                              "freertos_pack",
+                              "imu_pack",
+                              "lps25h_pack",
+                              "pm_pack",
+                              "motors_pack",
+                              "free_fall_pack");
+
+   case Mode is
+
+      when "Compile" =>
+         for Target use "arm-eabi";
+         for Runtime ("ada") use "ravenscar-sfp-stm32f4";
+
+      when "Analyze" =>
+
+   end case;
+
+   package Compiler is
+
+      case Mode is
+         when "Compile" =>
+            for Default_Switches ("ada") use ("-gnatp", "-gnaty", "-ffast-math");
+
+         when "Analyze" =>
+            for Default_Switches ("ada") use ("-gnato13", "-gnateF");
+      end case;
+   end Compiler;
+
+   package Naming is
+      for Casing use "mixedcase";
+   end Naming;
+
+   package CodePeer is
+      for Switches use ("-no-preconditions");
+   end CodePeer;
+
+end Test;
