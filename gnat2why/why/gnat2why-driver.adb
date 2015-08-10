@@ -420,10 +420,7 @@ package body Gnat2Why.Driver is
 
       Flow_Utility.Initialize;
 
-      --  Set mode of generating globals from the command line argument
-      Generating_Globals := Gnat2Why_Args.Global_Gen_Mode;
-
-      if Generating_Globals then
+      if Gnat2Why_Args.Global_Gen_Mode then
 
          --  Compute basic globals. These will be used for subprograms
          --  that are NOT in SPARK.

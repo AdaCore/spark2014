@@ -165,7 +165,8 @@ package Flow is
    --  Named array type for sets of nodes realted to tasking
 
    type Flow_Analysis_Graphs_Root
-     (Kind : Valid_Analyzed_Entity := E_Subprogram_Body)
+     (Kind            : Valid_Analyzed_Entity := E_Subprogram_Body;
+      Compute_Globals : Boolean               := False)
    is record
       Analyzed_Entity       : Entity_Id;
       B_Scope               : Flow_Scope;
@@ -325,17 +326,6 @@ package Flow is
 
    procedure Generate_Flow_Globals (GNAT_Root : Node_Id);
    --  Generate flow globals for the current compilation unit
-
-   Generating_Globals : Boolean;
-   --  If true we are trying to generate globals and will construct the graphs
-   --  slightly differently. In particular we will deal with subprogram calls
-   --  differently and we don't try to create initial and final vertices for
-   --  globals.
-   --
-   --  After we have constructed the graph, we can create a list of
-   --  global variables (kinda what the analysis sanity check would do).
-   --
-   --  This flag is set once and never modifed.
 
 private
 

@@ -1359,7 +1359,7 @@ package body Flow.Control_Flow_Graph is
         (Expression (N),
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => Generating_Globals);
+         Include_Predicates => FA.Compute_Globals);
 
       --  First we need to determine the root name where we assign to, and
       --  whether this is a partial or full assignment. This mirror the
@@ -1397,7 +1397,7 @@ package body Flow.Control_Flow_Graph is
                Scope                        => FA.B_Scope,
                Local_Constants              => FA.Local_Constants,
                Fold_Functions               => True,
-               Use_Computed_Globals         => not Generating_Globals,
+               Use_Computed_Globals         => not FA.Compute_Globals,
                Expand_Synthesized_Constants => False);
 
             Missing := Flatten_Variable (Map_Root, FA.B_Scope);
@@ -1474,7 +1474,7 @@ package body Flow.Control_Flow_Graph is
               (N                    => Name (N),
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
-               Use_Computed_Globals => not Generating_Globals,
+               Use_Computed_Globals => not FA.Compute_Globals,
                Vars_Defined         => Vars_Defined,
                Vars_Used            => Vars_Used,
                Vars_Proof           => Vars_Proof,
@@ -1488,7 +1488,7 @@ package body Flow.Control_Flow_Graph is
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
-                  Use_Computed_Globals => not Generating_Globals,
+                  Use_Computed_Globals => not FA.Compute_Globals,
                   Consider_Extensions  => To_Cw));
 
             --  Any proof variables we need to check separately. We also
@@ -1563,7 +1563,7 @@ package body Flow.Control_Flow_Graph is
         (Expression (N),
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => Generating_Globals);
+         Include_Predicates => FA.Compute_Globals);
 
       --  We have a vertex V for the case statement itself
       Add_Vertex
@@ -1576,7 +1576,7 @@ package body Flow.Control_Flow_Graph is
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
                Fold_Functions       => True,
-               Use_Computed_Globals => not Generating_Globals),
+               Use_Computed_Globals => not FA.Compute_Globals),
             Sub_Called => Funcs,
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),
@@ -1629,7 +1629,7 @@ package body Flow.Control_Flow_Graph is
                       Scope                => FA.B_Scope,
                       Local_Constants      => FA.Local_Constants,
                       Fold_Functions       => True,
-                      Use_Computed_Globals => not Generating_Globals);
+                      Use_Computed_Globals => not FA.Compute_Globals);
 
       --  Add the implicit use of Ada.Real_Time.Clock_Time
       Vars_Used.Include
@@ -1641,7 +1641,7 @@ package body Flow.Control_Flow_Graph is
         (Expression (N),
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => Generating_Globals);
+         Include_Predicates => FA.Compute_Globals);
 
       Add_Vertex
         (FA,
@@ -1706,7 +1706,7 @@ package body Flow.Control_Flow_Graph is
            (Condition (N),
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
-            Include_Predicates => Generating_Globals);
+            Include_Predicates => FA.Compute_Globals);
 
          Add_Vertex
            (FA,
@@ -1718,7 +1718,7 @@ package body Flow.Control_Flow_Graph is
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
-                  Use_Computed_Globals => not Generating_Globals),
+                  Use_Computed_Globals => not FA.Compute_Globals),
                Sub_Called => Funcs,
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
@@ -1780,7 +1780,7 @@ package body Flow.Control_Flow_Graph is
         (Ret_Object,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => Generating_Globals);
+         Include_Predicates => FA.Compute_Globals);
 
       Add_Vertex
         (FA,
@@ -1869,7 +1869,7 @@ package body Flow.Control_Flow_Graph is
         (Condition (N),
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => Generating_Globals);
+         Include_Predicates => FA.Compute_Globals);
 
       Add_Vertex
         (FA,
@@ -1881,7 +1881,7 @@ package body Flow.Control_Flow_Graph is
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
                Fold_Functions       => True,
-               Use_Computed_Globals => not Generating_Globals),
+               Use_Computed_Globals => not FA.Compute_Globals),
             Sub_Called => Funcs,
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),
@@ -1935,7 +1935,7 @@ package body Flow.Control_Flow_Graph is
                  (Condition (Elsif_Statement),
                   Functions_Called   => Funcs,
                   Tasking            => FA.Tasking,
-                  Include_Predicates => Generating_Globals);
+                  Include_Predicates => FA.Compute_Globals);
 
                Add_Vertex
                  (FA,
@@ -1947,7 +1947,7 @@ package body Flow.Control_Flow_Graph is
                         Scope                => FA.B_Scope,
                         Local_Constants      => FA.Local_Constants,
                         Fold_Functions       => True,
-                        Use_Computed_Globals => not Generating_Globals),
+                        Use_Computed_Globals => not FA.Compute_Globals),
                      Sub_Called => Funcs,
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => Elsif_Statement),
@@ -2269,7 +2269,7 @@ package body Flow.Control_Flow_Graph is
            (Condition (Iteration_Scheme (N)),
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
-            Include_Predicates => Generating_Globals);
+            Include_Predicates => FA.Compute_Globals);
 
          Add_Vertex
            (FA,
@@ -2281,7 +2281,7 @@ package body Flow.Control_Flow_Graph is
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
-                  Use_Computed_Globals => not Generating_Globals),
+                  Use_Computed_Globals => not FA.Compute_Globals),
                Sub_Called => Funcs,
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
@@ -2370,7 +2370,7 @@ package body Flow.Control_Flow_Graph is
               (DSD,
                Functions_Called   => Funcs,
                Tasking            => FA.Tasking,
-               Include_Predicates => Generating_Globals);
+               Include_Predicates => FA.Compute_Globals);
 
             Add_Vertex
               (FA,
@@ -2383,7 +2383,7 @@ package body Flow.Control_Flow_Graph is
                      Scope                => FA.B_Scope,
                      Local_Constants      => FA.Local_Constants,
                      Fold_Functions       => True,
-                     Use_Computed_Globals => not Generating_Globals),
+                     Use_Computed_Globals => not FA.Compute_Globals),
                   Sub_Called => Funcs,
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => N),
@@ -2780,7 +2780,7 @@ package body Flow.Control_Flow_Graph is
            (Cont,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
-            Include_Predicates => Generating_Globals);
+            Include_Predicates => FA.Compute_Globals);
 
          Add_Vertex
            (FA,
@@ -2793,7 +2793,7 @@ package body Flow.Control_Flow_Graph is
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
-                  Use_Computed_Globals => not Generating_Globals),
+                  Use_Computed_Globals => not FA.Compute_Globals),
                Sub_Called => Funcs,
                Loops      => Ctx.Current_Loops,
                E_Loc      => Cont),
@@ -2899,7 +2899,7 @@ package body Flow.Control_Flow_Graph is
                      Scope                => FA.B_Scope,
                      Local_Constants      => FA.Local_Constants,
                      Fold_Functions       => False,
-                     Use_Computed_Globals => not Generating_Globals),
+                     Use_Computed_Globals => not FA.Compute_Globals),
                   Is_Loop_Entry => True),
                V);
             Ctx.Folded_Function_Checks (N).Insert (Prefix (Reference));
@@ -3072,7 +3072,7 @@ package body Flow.Control_Flow_Graph is
                      Scope                        => FA.B_Scope,
                      Local_Constants              => FA.Local_Constants,
                      Fold_Functions               => True,
-                     Use_Computed_Globals         => not Generating_Globals,
+                     Use_Computed_Globals         => not FA.Compute_Globals,
                      Expand_Synthesized_Constants => False);
 
                   Output       : Flow_Id;
@@ -3084,7 +3084,7 @@ package body Flow.Control_Flow_Graph is
                     (Expression (N),
                      Functions_Called   => Funcs,
                      Tasking            => FA.Tasking,
-                     Include_Predicates => Generating_Globals);
+                     Include_Predicates => FA.Compute_Globals);
 
                   for C in M.Iterate loop
                      Output := Flow_Id_Maps.Key (C);
@@ -3148,7 +3148,7 @@ package body Flow.Control_Flow_Graph is
                  (Expression (N),
                   Functions_Called   => Funcs,
                   Tasking            => FA.Tasking,
-                  Include_Predicates => Generating_Globals);
+                  Include_Predicates => FA.Compute_Globals);
 
                Add_Vertex
                  (FA,
@@ -3161,7 +3161,7 @@ package body Flow.Control_Flow_Graph is
                         Scope                => FA.B_Scope,
                         Local_Constants      => FA.Local_Constants,
                         Fold_Functions       => True,
-                        Use_Computed_Globals => not Generating_Globals,
+                        Use_Computed_Globals => not FA.Compute_Globals,
                         Consider_Extensions  => To_Cw),
                      Sub_Called => Funcs,
                      Loops      => Ctx.Current_Loops,
@@ -3216,7 +3216,7 @@ package body Flow.Control_Flow_Graph is
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
-                  Use_Computed_Globals => not Generating_Globals);
+                  Use_Computed_Globals => not FA.Compute_Globals);
 
                --  Calculate components of Type and Object
                Components_Of_Type   :=
@@ -3238,7 +3238,7 @@ package body Flow.Control_Flow_Graph is
                  (Expr,
                   Functions_Called   => Funcs,
                   Tasking            => FA.Tasking,
-                  Include_Predicates => Generating_Globals);
+                  Include_Predicates => FA.Compute_Globals);
 
                Add_Vertex
                  (FA,
@@ -3842,7 +3842,7 @@ package body Flow.Control_Flow_Graph is
                  (N,
                   Functions_Called   => Funcs,
                   Tasking            => FA.Tasking,
-                  Include_Predicates => Generating_Globals);
+                  Include_Predicates => FA.Compute_Globals);
 
                Add_Vertex
                  (FA,
@@ -3854,7 +3854,7 @@ package body Flow.Control_Flow_Graph is
                         Scope                => FA.B_Scope,
                         Local_Constants      => FA.Local_Constants,
                         Fold_Functions       => False,
-                        Use_Computed_Globals => not Generating_Globals),
+                        Use_Computed_Globals => not FA.Compute_Globals),
                      Sub_Called => Funcs,
                      Is_Proof   => True,
                      E_Loc      => N,
@@ -3908,7 +3908,7 @@ package body Flow.Control_Flow_Graph is
         (Pre,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => Generating_Globals);
+         Include_Predicates => FA.Compute_Globals);
 
       Add_Vertex
         (FA,
@@ -3920,7 +3920,7 @@ package body Flow.Control_Flow_Graph is
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
                Fold_Functions       => False,
-               Use_Computed_Globals => not Generating_Globals),
+               Use_Computed_Globals => not FA.Compute_Globals),
             Sub_Called      => Funcs,
             Is_Proof        => True,
             Is_Precondition => True,
@@ -4032,7 +4032,7 @@ package body Flow.Control_Flow_Graph is
       --     * the globals have already been generated or
       --     * when the user has supplied them and we don't have to rely
       --       on the generated ones
-      if not Generating_Globals
+      if not FA.Compute_Globals
         or else (Has_User_Supplied_Globals (Called_Thing)
                    and then not Rely_On_Generated_Global (Called_Thing,
                                                           FA.B_Scope))
@@ -4112,7 +4112,7 @@ package body Flow.Control_Flow_Graph is
       --    * does not need to be refined or
       --    * it has already been refined
       if Has_Depends (Called_Thing)
-        and then (not Generating_Globals
+        and then (not FA.Compute_Globals
                     or else not Rely_On_Generated_Global (Called_Thing,
                                                           FA.B_Scope))
       then
@@ -4125,7 +4125,7 @@ package body Flow.Control_Flow_Graph is
                          Scope                => FA.B_Scope,
                          Classwide            => Is_Dispatching_Call (N),
                          Depends              => D_Map,
-                         Use_Computed_Globals => not Generating_Globals);
+                         Use_Computed_Globals => not FA.Compute_Globals);
             if D_Map.Contains (Null_Flow_Id)
               and then D_Map (Null_Flow_Id).Length >= 1
             then
@@ -4188,7 +4188,7 @@ package body Flow.Control_Flow_Graph is
                   Standard_Exits => Vertex_Sets.Empty_Set));
             FA.Atr (V).Execution :=
               Get_Execution_Kind (Called_Thing,
-                                  After_GG => not Generating_Globals);
+                                  After_GG => not FA.Compute_Globals);
             Linkup (FA, Prev, FA.Helper_End_Vertex);
          else
             CM.Include
@@ -4219,7 +4219,7 @@ package body Flow.Control_Flow_Graph is
         (Post,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
-         Include_Predicates => Generating_Globals);
+         Include_Predicates => FA.Compute_Globals);
 
       Add_Vertex
         (FA,
@@ -4231,7 +4231,7 @@ package body Flow.Control_Flow_Graph is
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
                Fold_Functions       => False,
-               Use_Computed_Globals => not Generating_Globals),
+               Use_Computed_Globals => not FA.Compute_Globals),
             Sub_Called       => Funcs,
             Is_Proof         => True,
             Is_Postcondition => True,
@@ -4266,7 +4266,7 @@ package body Flow.Control_Flow_Graph is
            (Expression (N),
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
-            Include_Predicates => Generating_Globals);
+            Include_Predicates => FA.Compute_Globals);
 
          Add_Vertex
            (FA,
@@ -4280,7 +4280,7 @@ package body Flow.Control_Flow_Graph is
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
-                  Use_Computed_Globals => not Generating_Globals),
+                  Use_Computed_Globals => not FA.Compute_Globals),
                Sub_Called => Funcs,
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
@@ -4333,7 +4333,7 @@ package body Flow.Control_Flow_Graph is
               (Cond,
                Functions_Called   => Funcs,
                Tasking            => FA.Tasking,
-               Include_Predicates => Generating_Globals);
+               Include_Predicates => FA.Compute_Globals);
 
             Add_Vertex
               (FA,
@@ -4345,7 +4345,7 @@ package body Flow.Control_Flow_Graph is
                      Scope                => FA.B_Scope,
                      Local_Constants      => FA.Local_Constants,
                      Fold_Functions       => False,
-                     Use_Computed_Globals => not Generating_Globals),
+                     Use_Computed_Globals => not FA.Compute_Globals),
                   Sub_Called => Funcs,
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => Cond,
@@ -4422,7 +4422,7 @@ package body Flow.Control_Flow_Graph is
          --      since we will get a warning on the type that comes from
          --      source anyway).
 
-         if not Generating_Globals
+         if not FA.Compute_Globals
            and then Comes_From_Source (Typ)
            and then (not Is_Private_Type (Typ)
                        or else No (Full_View (Typ)))
@@ -4556,7 +4556,7 @@ package body Flow.Control_Flow_Graph is
                    Proof_Ins            => Proof_Reads,
                    Reads                => Reads,
                    Writes               => Writes,
-                   Use_Computed_Globals => not Generating_Globals);
+                   Use_Computed_Globals => not FA.Compute_Globals);
       Reads.Union (Proof_Reads);
 
       for R of Reads loop
@@ -4646,7 +4646,7 @@ package body Flow.Control_Flow_Graph is
            (Actual,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
-            Include_Predicates => Generating_Globals);
+            Include_Predicates => FA.Compute_Globals);
 
          Add_Vertex
            (FA,
@@ -4809,14 +4809,14 @@ package body Flow.Control_Flow_Graph is
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
                Fold_Functions       => False,
-               Use_Computed_Globals => not Generating_Globals) -
+               Use_Computed_Globals => not FA.Compute_Globals) -
 
               Get_Variable_Set
               (Expr,
                Scope                => FA.B_Scope,
                Local_Constants      => FA.Local_Constants,
                Fold_Functions       => True,
-               Use_Computed_Globals => not Generating_Globals);
+               Use_Computed_Globals => not FA.Compute_Globals);
             V : Flow_Graphs.Vertex_Id;
          begin
             if Unchecked.Length > 0 then
@@ -5131,7 +5131,7 @@ package body Flow.Control_Flow_Graph is
       --  need to make sure we can still reach the final vertex.
       if not FA.CFG.Non_Trivial_Path_Exists (FA.Start_Vertex, FA.End_Vertex)
       then
-         if not Generating_Globals
+         if not FA.Compute_Globals
            and then FA.Kind = E_Subprogram_Body
            and then not No_Return (FA.Analyzed_Entity)
          then
@@ -5753,7 +5753,7 @@ package body Flow.Control_Flow_Graph is
       --  and final vertices.
       case FA.Kind is
          when E_Subprogram_Body | E_Task_Body | E_Entry =>
-            if not Generating_Globals then
+            if not FA.Compute_Globals then
                declare
                   type G_Prop is record
                      Is_Read     : Boolean;
@@ -6228,7 +6228,7 @@ package body Flow.Control_Flow_Graph is
 
       --  In GG mode, we assemble a list of globals and subprograms now (and
       --  retroactively make some initial and final vertices).
-      if Generating_Globals then
+      if FA.Compute_Globals then
          declare
             Known_Vars : constant Flow_Id_Sets.Set :=
               To_Entire_Variables (FA.All_Vars);

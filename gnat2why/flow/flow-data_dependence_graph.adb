@@ -36,7 +36,7 @@ package body Flow.Data_Dependence_Graph is
          if not FA.Atr.Element (V_D).Is_Exceptional_Path then
             Atr_Def          := FA.Atr.Element (V_D);
             Combined_Defined :=
-              (if not Generating_Globals
+              (if not FA.Compute_Globals
                then Atr_Def.Variables_Defined or
                     Atr_Def.Volatiles_Read
                else Atr_Def.Variables_Defined or
@@ -94,7 +94,7 @@ package body Flow.Data_Dependence_Graph is
                            TV := Flow_Graphs.Skip_Children;
                         end if;
 
-                     elsif Generating_Globals
+                     elsif FA.Compute_Globals
                        and then Var.Kind = Direct_Mapping
                        and then Atr.Subprograms_Called.Contains
                        (Get_Direct_Mapping_Id (Var))

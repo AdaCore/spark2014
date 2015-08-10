@@ -89,8 +89,9 @@ package body Flow is
    --  Nasty nasty hack to add the given string to a global variable,
    --  Temp_String. We use this to pretty print nodes via Sprint_Node.
 
-   function Flow_Analyse_Entity (E : Entity_Id;
-                                 S : Entity_Id)
+   function Flow_Analyse_Entity (E               : Entity_Id;
+                                 S               : Entity_Id;
+                                 Compute_Globals : Boolean)
                                  return Flow_Analysis_Graphs
    with Pre  => Ekind (E) in Subprogram_Kind  |
                              E_Task_Type      |
@@ -106,11 +107,12 @@ package body Flow is
    use type Analysis_Maps.Map;
 
    procedure Build_Graphs_For_Compilation_Unit
-     (FA_Graphs        : out Analysis_Maps.Map;
+     (Compute_Globals  : Boolean;
+      FA_Graphs        : out Analysis_Maps.Map;
       Global_Info_List : out Global_Info_Lists.List)
    with Pre  => FA_Graphs = Analysis_Maps.Empty_Map and then
                 Global_Info_List = Global_Info_Lists.Empty_List,
-        Post => (if not Generating_Globals then
+        Post => (if not Compute_Globals then
                    Global_Info_List = Global_Info_Lists.Empty_List);
    --  Build all flow graphs for the current compilation unit
 
@@ -263,7 +265,7 @@ package body Flow is
            Ekind (X.Analyzed_Entity) = E_Package,
         when E_Package_Body =>
            Ekind (X.Analyzed_Entity) = E_Package_Body)
-           and then (if not Generating_Globals
+           and then (if not X.Compute_Globals
                      then not X.GG.Aborted and X.GG.Globals.Is_Empty)
       );
 
@@ -846,18 +848,20 @@ package body Flow is
    -- Flow_Analyse_Entity --
    -------------------------
 
-   function Flow_Analyse_Entity (E : Entity_Id;
-                                 S : Entity_Id)
+   function Flow_Analyse_Entity (E               : Entity_Id;
+                                 S               : Entity_Id;
+                                 Compute_Globals : Boolean)
                                  return Flow_Analysis_Graphs
    is
       Tmp : Flow_Analysis_Graphs_Root
-         (Kind => (case Ekind (E) is
-                   when Subprogram_Kind => E_Subprogram_Body,
-                   when E_Task_Type     => E_Task_Body,
-                   when others          => Ekind (E)));
+         (Kind            => (case Ekind (E) is
+                              when Subprogram_Kind  => E_Subprogram_Body,
+                              when E_Task_Type      => E_Task_Body,
+                              when others           => Ekind (E)),
+          Compute_Globals => Compute_Globals);
 
       Phase : constant String :=
-        (if Generating_Globals
+        (if Compute_Globals
          then "Global generation"
          else "Flow analysis");
    begin
@@ -885,7 +889,7 @@ package body Flow is
       Tmp.Tasking               := (others => Node_Sets.Empty_Set);
 
       --  Generate Globals (gg) or Flow Analysis (fa)
-      Tmp.Base_Filename := To_Unbounded_String (if Generating_Globals
+      Tmp.Base_Filename := To_Unbounded_String (if Compute_Globals
                                                 then "gg_"
                                                 else "fa_");
 
@@ -971,7 +975,7 @@ package body Flow is
 
             Indent;
 
-            if Debug_Trace_Scoping and not Generating_Globals then
+            if Debug_Trace_Scoping and not FA.Compute_Globals then
                Write_Str ("Spec_Scope: ");
                Print_Flow_Scope (FA.S_Scope);
                Write_Eol;
@@ -1001,7 +1005,7 @@ package body Flow is
             end if;
          end if;
 
-         if Generating_Globals then
+         if FA.Compute_Globals then
             --  There are a number of cases where we don't want to produce
             --  graphs as we already have all the contracts we need.
             case FA.Kind is
@@ -1130,7 +1134,7 @@ package body Flow is
 
          --  Register tasking-related information; ignore packages because
          --  they are elaborated sequentially anyway.
-         if Generating_Globals
+         if FA.Compute_Globals
            and then FA.Kind in E_Subprogram_Body |
                                E_Entry           |
                                E_Task_Body
@@ -1199,8 +1203,10 @@ package body Flow is
    ---------------------------------------
 
    procedure Build_Graphs_For_Compilation_Unit
-     (FA_Graphs        : out Analysis_Maps.Map;
-      Global_Info_List : out Global_Info_Lists.List) is
+     (Compute_Globals  : Boolean;
+      FA_Graphs        : out Analysis_Maps.Map;
+      Global_Info_List : out Global_Info_Lists.List)
+   is
    begin
       --  Initialize the Global_Info_List to the empty set
       Global_Info_List := Global_Info_Lists.Empty_List;
@@ -1211,7 +1217,7 @@ package body Flow is
 
                --  Check for potentially blocking statements
 
-               if Generating_Globals
+               if Compute_Globals
                  and then Ekind (E) in Subprogram_Kind | E_Entry
                  and then Entity_Body_In_SPARK (E)
                  and then Entity_Body_Valid_SPARK (E)
@@ -1232,8 +1238,11 @@ package body Flow is
                     and then Entity_Body_Valid_SPARK (E)
                   then
                      --  Produce a GG graph
-                     FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
-                  elsif Generating_Globals then
+                     FA_Graphs.Include (E, Flow_Analyse_Entity
+                                          (E,
+                                           E,
+                                           Compute_Globals));
+                  elsif Compute_Globals then
                      declare
                         Scope        : constant Flow_Scope :=
                           Get_Flow_Scope (E);
@@ -1363,9 +1372,11 @@ package body Flow is
                      if Needs_Body and then Entity_Body_In_SPARK (E) then
                         FA_Graphs.Include
                           (Pkg_Body,
-                           Flow_Analyse_Entity (Pkg_Body, E));
+                           Flow_Analyse_Entity (Pkg_Body, E, Compute_Globals));
                      elsif not Needs_Body then
-                        FA_Graphs.Include (E, Flow_Analyse_Entity (E, E));
+                        FA_Graphs.Include
+                          (E,
+                           Flow_Analyse_Entity (E, E, Compute_Globals));
                      else
                         null;
                         --  ??? warn that we can't flow analyze elaboration?
@@ -1417,7 +1428,8 @@ package body Flow is
       end loop;
 
       --  Process entities and construct graphs if necessary
-      Build_Graphs_For_Compilation_Unit (FA_Graphs        => FA_Graphs,
+      Build_Graphs_For_Compilation_Unit (Compute_Globals  => False,
+                                         FA_Graphs        => FA_Graphs,
                                          Global_Info_List => Unused);
 
       --  ??? Perform interprocedural analysis
@@ -1577,7 +1589,8 @@ package body Flow is
 
       --  Process entities and construct graphs if necessary
       Build_Graphs_For_Compilation_Unit
-        (FA_Graphs        => FA_Graphs,
+        (Compute_Globals  => True,
+         FA_Graphs        => FA_Graphs,
          Global_Info_List => Global_Info_List);
 
       --  Consider the subprogram and package info in case a graph was not
