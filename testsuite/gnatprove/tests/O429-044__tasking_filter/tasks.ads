@@ -48,4 +48,14 @@ package Tasks is
       The_Stored_Data : Integer := 0;
    end Store_Stub;
 
+   protected type Store_With_No_Initialization
+   is
+      entry Wait (Dummy : Integer);
+   private
+      No_Default_Value : Integer;
+   end;
+
+   protected type Null_Protected_Type is
+   end;
+
 end Tasks;

@@ -93,4 +93,14 @@ package body Tasks is
 
    --  type Serial_Device is task interface;
 
+   protected body Store_With_No_Initialization is
+      entry Wait (Dummy : Integer) when True is
+      begin
+         null;
+      end Wait;
+   end;
+
+   protected body Null_Protected_Type is
+   end;
+
 end Tasks;
