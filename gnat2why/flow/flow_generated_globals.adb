@@ -1827,7 +1827,7 @@ package body Flow_Generated_Globals is
                   End_Of_Word   : Natural := 7;
                begin
                   --  Check line format
-                  if not (Tasking_Key in 'S' | 'E' | 'R' | 'W' | 'U') then
+                  if Tasking_Key not in 'S' | 'E' | 'R' | 'W' | 'U' then
                      Issue_Corrupted_File_Error;
                   end if;
 
