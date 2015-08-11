@@ -29,6 +29,7 @@ with Ada.Text_IO;                use Ada.Text_IO;
 with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
 with GNAT.Regexp;                use GNAT.Regexp;
 with GNAT.Regpat;                use GNAT.Regpat;
+with GNAT.String_Split;          use GNAT.String_Split;
 
 with AA_Util;                    use AA_Util;
 with ALI;                        use ALI;
@@ -1743,39 +1744,19 @@ package body Flow_Generated_Globals is
 
             function Get_Names_From_Line return Name_Sets.Set is
                Names_In_Line : Name_Sets.Set := Name_Sets.Empty_Set;
-               Start_Of_Word : Natural       := 7;
-               End_Of_Word   : Natural;
+               Words         : GNAT.String_Split.Slice_Set;
             begin
                if Length (Line) = 5 then
                   --  There are no names here. Return the empty set.
                   return Names_In_Line;
                end if;
 
-               while Start_Of_Word < Length (Line) loop
-                  End_Of_Word := Start_Of_Word;
+               GNAT.String_Split.Create (Words,
+                                         Slice (Line, 7, Length (Line)),
+                                         " ");
 
-                  while End_Of_Word < Length (Line)
-                    and then Element (Line, End_Of_Word) > ' '
-                  loop
-                     End_Of_Word := End_Of_Word + 1;
-                  end loop;
-
-                  --  If we have not reached the end of the line then
-                  --  we have read one character too many.
-                  if End_Of_Word < Length (Line) then
-                     End_Of_Word := End_Of_Word - 1;
-                  end if;
-
-                  declare
-                     EN : constant Entity_Name :=
-                       To_Entity_Name (Slice (Line,
-                                              Start_Of_Word,
-                                              End_Of_Word));
-                  begin
-                     Names_In_Line.Insert (EN);
-                  end;
-
-                  Start_Of_Word := End_Of_Word + 2;
+               for J in 1 .. Slice_Count (Words) loop
+                  Names_In_Line.Insert (To_Entity_Name (Slice (Words, J)));
                end loop;
 
                return Names_In_Line;
