@@ -45,10 +45,10 @@ package Flow.Analysis is
    procedure Sanity_Check_Postcondition (FA   : in out Flow_Analysis_Graphs;
                                          Sane : in out Boolean)
    with Pre => Sane and then
-               FA.Kind in E_Subprogram_Body |
-                          E_Entry           |
-                          E_Package_Body    |
-                          E_Package;
+               FA.Kind in Kind_Subprogram   |
+                          Kind_Entry        |
+                          Kind_Package_Body |
+                          Kind_Package;
    --  Check post, refined_post and initializes for use of variables
    --  we have not introduced through a global or parameter.
    --
@@ -67,7 +67,7 @@ package Flow.Analysis is
 
    procedure Find_Non_Elaborated_State_Abstractions
      (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in E_Package | E_Package_Body;
+     with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
    --  Find uses of state abstractions that belong to other
    --  non-elaborated packages.
    --
@@ -120,7 +120,7 @@ package Flow.Analysis is
 
    procedure Find_Impossible_To_Initialize_State
      (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in E_Package | E_Package_Body;
+     with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
    --  Finds state abstractions that are not mentioned in an
    --  initializes aspect and are not pure global outputs of any of
    --  the package's subprograms. This makes it impossible for users
@@ -135,13 +135,13 @@ package Flow.Analysis is
    --  Complexity is O(N^2)
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in E_Package | E_Package_Body;
+     with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
    --  Check if the Initializes contract has extra or missing dependencies.
    --
    --  Complexity is O(N^2)
 
    procedure Check_Prefixes_Of_Attribute_Old (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in E_Subprogram_Body | E_Task_Body | E_Entry;
+     with Pre => FA.Kind in Kind_Subprogram | Kind_Task | Kind_Entry;
    --  We issue a high check whenever a variable that serves as a
    --  prefix of a 'Old attribute is NOT an import.
    --
@@ -154,7 +154,7 @@ package Flow.Analysis is
 
    procedure Check_Constant_After_Elaboration
      (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in E_Subprogram_Body | E_Task_Body | E_Entry;
+     with Pre => FA.Kind in Kind_Subprogram | Kind_Task | Kind_Entry;
    --  Checks that the subprogram does not modify variables that have
    --  Constant_After_Elaboration set.
    --
@@ -162,7 +162,7 @@ package Flow.Analysis is
 
    procedure Check_Function_For_Volatile_Effects
      (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in E_Subprogram_Body | E_Task_Body | E_Entry;
+     with Pre => FA.Kind in Kind_Subprogram | Kind_Task | Kind_Entry;
    --  Checks that the subprogram does not have any volatile effects except if
    --  so specified. This check is only doing something when called on
    --  functions. We also issue a warning if we are dealing with a volatile

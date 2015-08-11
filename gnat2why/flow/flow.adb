@@ -255,15 +255,15 @@ package body Flow is
    function Is_Valid (X : Flow_Analysis_Graphs_Root)
                       return Boolean
    is ((case X.Kind is
-        when E_Subprogram_Body =>
+        when Kind_Subprogram =>
            Is_Subprogram (X.Analyzed_Entity),
-        when E_Task_Body =>
+        when Kind_Task =>
            Ekind (X.Analyzed_Entity) = E_Task_Type,
-        when E_Entry =>
+        when Kind_Entry =>
            Ekind (X.Analyzed_Entity) = E_Entry,
-        when E_Package =>
+        when Kind_Package =>
            Ekind (X.Analyzed_Entity) = E_Package,
-        when E_Package_Body =>
+        when Kind_Package_Body =>
            Ekind (X.Analyzed_Entity) = E_Package_Body)
            and then (if not X.Compute_Globals
                      then not X.GG.Aborted and X.GG.Globals.Is_Empty)
@@ -854,16 +854,19 @@ package body Flow is
                                  return Flow_Analysis_Graphs
    is
       Tmp : Flow_Analysis_Graphs_Root
-         (Kind            => (case Ekind (E) is
-                              when Subprogram_Kind  => E_Subprogram_Body,
-                              when E_Task_Type      => E_Task_Body,
-                              when others           => Ekind (E)),
+        (Kind            =>
+           (case Ekind (E) is
+            when Subprogram_Kind => Kind_Subprogram,
+            when E_Task_Type     => Kind_Task,
+            when E_Entry         => Kind_Entry,
+            when E_Package       => Kind_Package,
+            when E_Package_Body  => Kind_Package_Body,
+            when others          => raise Program_Error),
           Compute_Globals => Compute_Globals);
 
-      Phase : constant String :=
-        (if Compute_Globals
-         then "Global generation"
-         else "Flow analysis");
+      Phase : constant String := (if Compute_Globals
+                                  then "Global generation"
+                                  else "Flow analysis");
    begin
       Tmp.Analyzed_Entity       := E;
       Tmp.Spec_Entity           := S;
@@ -967,7 +970,7 @@ package body Flow is
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Write_Line (Character'Val (8#33#) & "[32m" &
                           Phase & " (cons) of " &
-                          Entity_Kind'Image (FA.Kind) &
+                          FA.Kind'Img &
                           " " &
                           Character'Val (8#33#) & "[1m" &
                           Get_Name_String (Chars (E)) &
@@ -1009,7 +1012,7 @@ package body Flow is
             --  There are a number of cases where we don't want to produce
             --  graphs as we already have all the contracts we need.
             case FA.Kind is
-               when E_Subprogram_Body | E_Task_Body | E_Entry =>
+               when Kind_Subprogram | Kind_Task | Kind_Entry =>
                   if not FA.Is_Generative then
                      if Gnat2Why_Args.Flow_Advanced_Debug then
                         if Present (FA.Global_N) then
@@ -1034,7 +1037,7 @@ package body Flow is
                                     else "no"));
                   end if;
 
-               when E_Package =>
+               when Kind_Package =>
                   if Present (FA.Initializes_N) then
                      --  There is no need to create a GG graph if the package
                      --  has an Initializes aspect.
@@ -1058,7 +1061,7 @@ package body Flow is
                      end if;
                   end if;
 
-               when E_Package_Body =>
+               when Kind_Package_Body =>
                   if Present (FA.Initializes_N) then
                      --  There is no need to create a GG graph if the package
                      --  has an Initializes aspect.
@@ -1135,9 +1138,9 @@ package body Flow is
          --  Register tasking-related information; ignore packages because
          --  they are elaborated sequentially anyway.
          if FA.Compute_Globals
-           and then FA.Kind in E_Subprogram_Body |
-                               E_Entry           |
-                               E_Task_Body
+           and then FA.Kind in Kind_Subprogram |
+                               Kind_Entry      |
+                               Kind_Task
          then
             GG_Register_Tasking_Info (To_Entity_Name (FA.Analyzed_Entity),
                                       FA.Tasking);
@@ -1275,12 +1278,12 @@ package body Flow is
                                 (Name                  => To_Entity_Name (E),
                                  Kind                  =>
                                    (case Ekind (E) is
-                                    when E_Entry         => E_Kind,
-                                    when E_Task_Type     => T_Kind,
-                                    when Subprogram_Kind => S_Kind,
+                                    when E_Entry         => Kind_Entry,
+                                    when E_Task_Type     => Kind_Task,
+                                    when Subprogram_Kind => Kind_Subprogram,
                                     when others          =>
                                       raise Program_Error),
-                                 Globals_Origin        => UG,
+                                 Globals_Origin        => Origin_User,
                                  Inputs_Proof          =>
                                    To_Name_Set (Proof_Ins),
                                  Inputs                => To_Name_Set (Reads),
@@ -1315,12 +1318,12 @@ package body Flow is
                                 (Name                  => To_Entity_Name (E),
                                  Kind                  =>
                                    (case Ekind (E) is
-                                    when E_Entry         => E_Kind,
-                                    when E_Task_Type     => T_Kind,
-                                    when Subprogram_Kind => S_Kind,
+                                    when E_Entry         => Kind_Entry,
+                                    when E_Task_Type     => Kind_Task,
+                                    when Subprogram_Kind => Kind_Subprogram,
                                     when others          =>
                                       raise Why.Unexpected_Node),
-                                 Globals_Origin        => XR,
+                                 Globals_Origin        => Origin_Frontend,
                                  Inputs_Proof          => Name_Sets.Empty_Set,
                                  Inputs                => Reads,
                                  Outputs               => Writes,
@@ -1439,7 +1442,7 @@ package body Flow is
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Write_Line (Character'Val (8#33#) & "[32m" &
                           "Flow analysis (errors) for " &
-                          Entity_Kind'Image (FA.Kind) &
+                          FA.Kind'Img &
                           " " &
                           Character'Val (8#33#) & "[1m" &
                           Get_Name_String (Chars (FA.Analyzed_Entity)) &
@@ -1449,13 +1452,13 @@ package body Flow is
          Analysis.Sanity_Check (FA, Success);
          if Success then
             case FA.Kind is
-               when E_Entry           |
-                    E_Package         |
-                    E_Package_Body    |
-                    E_Subprogram_Body =>
+               when Kind_Entry         |
+                    Kind_Package       |
+                    Kind_Package_Body  |
+                    Kind_Subprogram    =>
                   Analysis.Sanity_Check_Postcondition (FA, Success);
 
-               when E_Task_Body       =>
+               when Kind_Task =>
                   --  No postconditions for tasks
                   null;
             end case;
@@ -1465,7 +1468,7 @@ package body Flow is
             FA.Dependency_Map := Compute_Dependency_Relation (FA);
 
             case FA.Kind is
-               when E_Entry | E_Task_Body | E_Subprogram_Body =>
+               when Kind_Entry | Kind_Task | Kind_Subprogram =>
                   --  In "Prove" mode we do not care about unwritten
                   --  exports, ineffective statements, dead code and
                   --  incorrect Depends aspects.
@@ -1497,7 +1500,7 @@ package body Flow is
                   end if;
                   Analysis.Check_Aliasing (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
-                  if FA.Kind /= E_Task_Body then
+                  if FA.Kind /= Kind_Task then
                      --  We exclude Tasks from this check since they do not
                      --  have pre- and postconditions.
                      Analysis.Check_Prefixes_Of_Attribute_Old (FA);
@@ -1515,7 +1518,7 @@ package body Flow is
                                             Kind => Claim_Effects));
                   end if;
 
-               when E_Package | E_Package_Body =>
+               when Kind_Package | Kind_Package_Body =>
                   --  In "Prove" mode we do not care about hidden
                   --  unexposed state, ineffective statements, dead
                   --  code and impossible to initialize state
@@ -1534,14 +1537,13 @@ package body Flow is
          end if;
 
          --  Check for potentially blocking operations in protected actions
-         if FA.Kind = E_Entry
-           or else (FA.Kind = E_Subprogram_Body
+         if FA.Kind = Kind_Entry
+           or else (FA.Kind = Kind_Subprogram
                     and then Convention (FA.Analyzed_Entity) =
                       Convention_Protected)
          then
             --  ??? issue different warning if the blocking status is unknown
-            if Is_Potentially_Blocking (FA.Analyzed_Entity)
-            then
+            if Is_Potentially_Blocking (FA.Analyzed_Entity) then
                Error_Msg_Flow (FA   => FA,
                                Msg  => "potentially blocking operation " &
                                  "in protected operation &",
@@ -1604,7 +1606,7 @@ package body Flow is
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Write_Line (Character'Val (8#33#) & "[32m" &
                           "Global generation (slice) for " &
-                          Entity_Kind'Image (FA.Kind) &
+                          FA.Kind'Img &
                           " " &
                           Character'Val (8#33#) & "[1m" &
                           Get_Name_String (Chars (FA.Analyzed_Entity)) &
@@ -1612,7 +1614,7 @@ package body Flow is
             Indent;
          end if;
 
-         if FA.Kind = E_Package_Body then
+         if FA.Kind = Kind_Package_Body then
             --  Here we utilize the package's Refined_State aspect (if it
             --  exists). Notice that we process this aspect regardless of
             --  whether we generate a gg graph or not.
@@ -1683,7 +1685,7 @@ package body Flow is
                   Write_Str ("Local subprograms    : ");
                   Print_Node_Set (Local_Subprograms);
 
-                  if FA.Kind in E_Package | E_Package_Body then
+                  if FA.Kind in Kind_Package | Kind_Package_Body then
                      Write_Str ("Local definite writes: ");
                      Print_Node_Set (Local_Definite_Writes);
                   end if;
@@ -1691,18 +1693,11 @@ package body Flow is
 
                Global_Info := Global_Phase_1_Info'
                  (Name                  =>
-                    To_Entity_Name (if FA.Kind = E_Package_Body
+                    To_Entity_Name (if FA.Kind = Kind_Package_Body
                                     then Spec_Entity (FA.Analyzed_Entity)
                                     else FA.Analyzed_Entity),
-                  Kind                  =>
-                    (case FA.Kind is
-                     when E_Subprogram_Body => S_Kind,
-                     when E_Task_Body       => T_Kind,
-                     when E_Entry           => E_Kind,
-                     when E_Package         |
-                          E_Package_Body    => P_Kind,
-                     when others            => raise Why.Unexpected_Node),
-                  Globals_Origin        => Flow_Generated_Globals.FA,
+                  Kind                  => FA.Kind,
+                  Globals_Origin        => Origin_Flow,
                   Inputs_Proof          => To_Name_Set (Inputs_Proof),
                   Inputs                => To_Name_Set (Inputs),
                   Outputs               => To_Name_Set (Outputs),

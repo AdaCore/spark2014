@@ -360,24 +360,24 @@ package body Flow.Analysis.Sanity is
       --  global in Check_Expressions.
 
       case FA.Kind is
-         when E_Subprogram_Body =>
+         when Kind_Subprogram =>
             Entry_Node := Subprogram_Body (FA.Analyzed_Entity);
             pragma Assert (Nkind (Entry_Node) = N_Subprogram_Body);
             Check_Expressions (Entry_Node);
 
-         when E_Entry =>
+         when Kind_Entry =>
             Entry_Node := Entry_Body (FA.Analyzed_Entity);
             Check_Expressions (Entry_Node);
 
-         when E_Task_Body =>
+         when Kind_Task =>
             Entry_Node := Task_Body (FA.Analyzed_Entity);
             Check_Expressions (Entry_Node);
 
-         when E_Package =>
+         when Kind_Package =>
             Entry_Node := Package_Specification (FA.Analyzed_Entity);
             Check_Expressions (Entry_Node);
 
-         when E_Package_Body =>
+         when Kind_Package_Body =>
             Entry_Node := Package_Specification (FA.Spec_Entity);
             Check_Expressions (Entry_Node);
 
@@ -425,7 +425,7 @@ package body Flow.Analysis.Sanity is
                F := Change_Variant (Var, Normal_Use);
 
                if not (FA.All_Vars.Contains (F) or else Synthetic (F)) and then
-                 FA.Kind in E_Package | E_Package_Body
+                 FA.Kind in Kind_Package | Kind_Package_Body
                then
 
                   --  We have a write to a variable a package knows
@@ -476,7 +476,7 @@ package body Flow.Analysis.Sanity is
                     and not Final_Atr.Is_Loop_Parameter
                     and not Is_Abstract_State (Var)
                   then
-                     if FA.Kind in E_Package | E_Package_Body then
+                     if FA.Kind in Kind_Package | Kind_Package_Body then
                         Error_Msg_Flow
                           (FA      => FA,
                            Msg     => "cannot write & during " &
@@ -530,7 +530,7 @@ package body Flow.Analysis.Sanity is
       function Find_Aspect_To_Fix return String is
       begin
          case FA.Kind is
-            when E_Subprogram_Body | E_Task_Body | E_Entry =>
+            when Kind_Subprogram | Kind_Entry | Kind_Task =>
                if Present (FA.Refined_Global_N) then
                   return "Refined_Global";
                elsif Present (FA.Global_N) then
@@ -548,7 +548,7 @@ package body Flow.Analysis.Sanity is
                else
                   return "Global";
                end if;
-            when E_Package | E_Package_Body  =>
+            when Kind_Package | Kind_Package_Body  =>
                return "Initializes";
          end case;
       end Find_Aspect_To_Fix;
@@ -569,12 +569,8 @@ package body Flow.Analysis.Sanity is
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-                  when E_Subprogram_Body |
-                       E_Entry           |
-                       E_Task_Body       => "6.1.4(13)",
-                  when E_Package         |
-                       E_Package_Body    => "7.1.5(12)"
-              );
+               when Kind_Subprogram | Kind_Entry | Kind_Task => "6.1.4(13)",
+               when Kind_Package | Kind_Package_Body         => "7.1.5(12)");
 
             F : Flow_Id;
          begin
@@ -802,7 +798,7 @@ package body Flow.Analysis.Sanity is
 
       Sane := True;
 
-      if FA.Kind /= E_Subprogram_Body
+      if FA.Kind /= Kind_Subprogram
         or else No (FA.Global_N)
         or else not FA.Is_Generative
         or else Present (FA.Refined_Global_N)

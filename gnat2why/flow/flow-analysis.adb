@@ -608,28 +608,27 @@ package body Flow.Analysis is
          declare
             Aspect_To_Fix : constant String :=
               (case FA.Kind is
-               when E_Entry           |
-                    E_Subprogram_Body |
-                    E_Task_Body       => (if Refined
-                                          then "Refined_Global"
-                                          else "Global"),
+               when Kind_Subprogram |
+                    Kind_Entry      |
+                    Kind_Task       => (if Refined
+                                        then "Refined_Global"
+                                        else "Global"),
                when others => "Initializes");
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-               when E_Entry           |
-                    E_Subprogram_Body |
-                    E_Task_Body       => "6.1.4(13)",
-               when E_Package         |
-                    E_Package_Body    => "7.1.5(12)",
-               when others            => raise Program_Error);
+               when Kind_Entry      |
+                    Kind_Subprogram |
+                    Kind_Task       => "6.1.4(13)",
+               when Kind_Package      |
+                    Kind_Package_Body => "7.1.5(12)");
 
          begin
             if Refined then
                Vars_Known := To_Entire_Variables (FA.All_Vars);
             else
                case FA.Kind is
-                  when E_Subprogram_Body | E_Entry =>
+                  when Kind_Subprogram | Kind_Entry =>
                      Vars_Known := Flow_Id_Sets.Empty_Set;
 
                      --  We need to assemble the variables known from
@@ -658,7 +657,7 @@ package body Flow.Analysis is
                         end loop;
                      end;
 
-                  when E_Package | E_Package_Body =>
+                  when Kind_Package | Kind_Package_Body =>
                      Vars_Known := Flow_Id_Sets.Empty_Set;
 
                      for F of To_Entire_Variables (FA.Visible_Vars) loop
@@ -674,7 +673,7 @@ package body Flow.Analysis is
                         end if;
                      end loop;
 
-                  when E_Task_Body =>
+                  when Kind_Task =>
                      raise Program_Error;
                end case;
             end if;
@@ -683,7 +682,7 @@ package body Flow.Analysis is
                                                        Refined)
             loop
                case FA.Kind is
-                  when E_Subprogram_Body =>
+                  when Kind_Subprogram =>
                      Vars_Used := To_Entire_Variables
                        (Get_Variable_Set
                           (Expr,
@@ -693,7 +692,7 @@ package body Flow.Analysis is
                            Reduced              => True,
                            Use_Computed_Globals => True));
 
-                  when E_Task_Body =>
+                  when Kind_Task =>
                      --  Nothing to do - no pre or postconditions.
                      null;
 
@@ -727,7 +726,7 @@ package body Flow.Analysis is
                         Kind    => Error_Kind);
                      Sane := False;
 
-                  elsif FA.Kind in E_Package | E_Package_Body
+                  elsif FA.Kind in Kind_Package | Kind_Package_Body
                     and then Is_Library_Level_Entity (FA.Analyzed_Entity)
                     and then not Is_Initialized_At_Elaboration (Var,
                                                                 FA.B_Scope)
@@ -882,7 +881,7 @@ package body Flow.Analysis is
       --  mentioned there, we suppress the ineffective import warning.
 
       Suppressed_Entire_Ids := Flow_Id_Sets.Empty_Set;
-      if FA.Kind = E_Subprogram_Body and then Present (FA.Depends_N) then
+      if FA.Kind = Kind_Subprogram and then Present (FA.Depends_N) then
          declare
             D : Dependency_Maps.Map;
          begin
@@ -1083,7 +1082,7 @@ package body Flow.Analysis is
                --  Proof_Ins are never ineffective imports, for now.
                null;
             elsif Atr.Is_Global then
-               if FA.Kind = E_Subprogram_Body
+               if FA.Kind = Kind_Subprogram
                  and then not FA.Is_Generative
                then
                   Error_Msg_Flow
@@ -1528,7 +1527,7 @@ package body Flow.Analysis is
                  not Atr.Is_Package_Initialization and then
 
                  --  Suppression for packages without initializes
-                 (if FA.Kind in E_Package | E_Package_Body
+                 (if FA.Kind in Kind_Package | Kind_Package_Body
                     and then No (FA.Initializes_N)
                   then
                      not FA.PDG.Non_Trivial_Path_Exists
@@ -1628,7 +1627,7 @@ package body Flow.Analysis is
                         Get_Name_String (Chars (Defining_Identifier (N)));
                         Adjust_Name_Case (Sloc (N));
 
-                        if FA.Kind in E_Package | E_Package_Body
+                        if FA.Kind in Kind_Package | Kind_Package_Body
                           and then No (Find_Node_In_Initializes
                                          (Defining_Identifier (N)))
                         then
@@ -2273,7 +2272,7 @@ package body Flow.Analysis is
 
          if Is_Constituent (Var)
            and then Kind in Unknown | Err
-           and then FA.Kind in E_Package | E_Package_Body
+           and then FA.Kind in Kind_Package | Kind_Package_Body
            and then Present (FA.Initializes_N)
          then
             Msg := To_Unbounded_String

@@ -542,10 +542,10 @@ package body Flow.Slice is
                   return False;
                end if;
 
-               if (FA.Kind = E_Package
+               if (FA.Kind = Kind_Package
                      and then Unique_Entity (Scope (E)) =
                                 Unique_Entity (FA.Analyzed_Entity))
-                 or else (FA.Kind = E_Package_Body
+                 or else (FA.Kind = Kind_Package_Body
                             and then Unique_Entity (Scope (E)) =
                                        Unique_Entity (FA.Spec_Entity))
                then
@@ -760,7 +760,7 @@ package body Flow.Slice is
             E : Entity_Id;
          begin
             case FA.Kind is
-               when E_Entry | E_Subprogram_Body =>
+               when Kind_Subprogram | Kind_Entry  =>
                   E := First_Formal (FA.Analyzed_Entity);
 
                   while Present (E) loop
@@ -787,7 +787,7 @@ package body Flow.Slice is
                      end if;
                   end;
 
-               when E_Task_Body =>
+               when Kind_Task =>
                   --  The discriminants of a task effectively act as its formal
                   --  parameters.
                   if Has_Discriminants (FA.Analyzed_Entity) then
@@ -806,7 +806,7 @@ package body Flow.Slice is
                      end loop;
                   end if;
 
-               when E_Package | E_Package_Body =>
+               when Kind_Package | Kind_Package_Body =>
                   --  State abstractions of a package effectively act as
                   --  local variables.
                   declare
@@ -834,19 +834,16 @@ package body Flow.Slice is
                         end loop;
                      end if;
                   end;
-
-               when others =>
-                  raise Why.Unexpected_Node;
             end case;
          end;
 
          --  Gather local parameters and subprograms
          case FA.Kind is
-            when E_Entry | E_Subprogram_Body | E_Task_Body =>
+            when Kind_Subprogram | Kind_Entry | Kind_Task =>
                Gather_Local_Variables_And_Subprograms
                  (Get_Body (FA.Analyzed_Entity));
 
-            when E_Package | E_Package_Body =>
+            when Kind_Package | Kind_Package_Body =>
                declare
                   Decl : Entity_Id := FA.Spec_Entity;
                begin
@@ -863,14 +860,11 @@ package body Flow.Slice is
 
                   Gather_Local_Variables_And_Subprograms (Decl);
 
-                  if FA.Kind = E_Package_Body then
+                  if FA.Kind = Kind_Package_Body then
                      Gather_Local_Variables_And_Subprograms
                        (Package_Body (FA.Analyzed_Entity));
                   end if;
                end;
-
-            when others =>
-               raise Why.Unexpected_Node;
          end case;
       end Get_Local_Variables_And_Subprograms;
 

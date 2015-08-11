@@ -38,6 +38,13 @@ with Types;                       use Types;
 
 package Flow_Types is
 
+   type Analyzed_Subject_Kind is (Kind_Subprogram,
+                                  Kind_Entry,
+                                  Kind_Task,
+                                  Kind_Package,
+                                  Kind_Package_Body);
+   --  The different kinds of things we will analyze.
+
    ----------------------------------------------------------------------
    --  Flow_Id
    --

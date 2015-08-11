@@ -133,14 +133,6 @@ package Flow is
    --  Flow_Analysis_Graphs
    ----------------------------------------------------------------------
 
-   subtype Valid_Analyzed_Entity is Entity_Kind
-     with Static_Predicate =>
-       Valid_Analyzed_Entity in E_Subprogram_Body |
-                                E_Entry           |
-                                E_Task_Body       |
-                                E_Package         |
-                                E_Package_Body;
-
    --  ??? This should be a variant record, but O325-005 and AI12-0047 make
    --      this difficult.
    type Flow_Global_Generation_Info is record
@@ -165,7 +157,7 @@ package Flow is
    --  Named array type for sets of nodes realted to tasking
 
    type Flow_Analysis_Graphs_Root
-     (Kind            : Valid_Analyzed_Entity := E_Subprogram_Body;
+     (Kind            : Analyzed_Subject_Kind := Kind_Subprogram;
       Compute_Globals : Boolean               := False)
    is record
       Analyzed_Entity       : Entity_Id;
@@ -250,7 +242,7 @@ package Flow is
       --  True if we do not have a global contract
 
       case Kind is
-         when E_Subprogram_Body | E_Task_Body | E_Entry =>
+         when Kind_Subprogram | Kind_Task | Kind_Entry =>
             Is_Main : Boolean;
             --  True if this is the main program. In order to be the
             --  main it has to be a library level subprogram without
@@ -271,7 +263,7 @@ package Flow is
             --  Set to True if we are dealing with a function that has side
             --  effects.
 
-         when E_Package | E_Package_Body =>
+         when Kind_Package | Kind_Package_Body =>
             Initializes_N : Node_Id;
             --  A few contract nodes cached as they can be a bit
             --  tedious to find.

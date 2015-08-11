@@ -5132,7 +5132,7 @@ package body Flow.Control_Flow_Graph is
       if not FA.CFG.Non_Trivial_Path_Exists (FA.Start_Vertex, FA.End_Vertex)
       then
          if not FA.Compute_Globals
-           and then FA.Kind = E_Subprogram_Body
+           and then FA.Kind = Kind_Subprogram
            and then not No_Return (FA.Analyzed_Entity)
          then
             --  We warn about this, but only for subprograms not
@@ -5585,7 +5585,7 @@ package body Flow.Control_Flow_Graph is
       pragma Assert (Is_Valid (FA));
 
       case FA.Kind is
-         when E_Subprogram_Body =>
+         when Kind_Subprogram =>
             Body_N          := Subprogram_Body (FA.Analyzed_Entity);
             Preconditions   :=
               Get_Precondition_Expressions (FA.Analyzed_Entity);
@@ -5595,24 +5595,24 @@ package body Flow.Control_Flow_Graph is
                then Defining_Unit_Name (Specification (Body_N))
                else Corresponding_Spec (Body_N));
 
-         when E_Entry =>
+         when Kind_Entry =>
             Body_N          := Entry_Body (FA.Analyzed_Entity);
             Preconditions   :=
               Get_Precondition_Expressions (FA.Analyzed_Entity);
 
             Subprogram_Spec := FA.Analyzed_Entity;
 
-         when E_Task_Body =>
+         when Kind_Task =>
             --  Tasks cannot have pre- or postconditions right now. This is
             --  a matter for the ARG perhaps.
             Body_N          := Task_Body (FA.Analyzed_Entity);
             Subprogram_Spec := Corresponding_Spec (Body_N);
 
-         when E_Package =>
+         when Kind_Package =>
             Spec_N := Package_Specification (FA.Analyzed_Entity);
             Body_N := Spec_N;
 
-         when E_Package_Body =>
+         when Kind_Package_Body =>
             Body_N := Package_Body (FA.Analyzed_Entity);
             Spec_N := Package_Specification (Corresponding_Spec (Body_N));
 
@@ -5648,7 +5648,7 @@ package body Flow.Control_Flow_Graph is
       --  Collect parameters of the analyzed entity and produce
       --  initial and final vertices.
       case FA.Kind is
-         when E_Subprogram_Body | E_Entry =>
+         when Kind_Subprogram | Kind_Entry =>
             declare
                E : Entity_Id;
                F : constant Flow_Id := Direct_Mapping_Id (FA.Analyzed_Entity);
@@ -5669,7 +5669,7 @@ package body Flow.Control_Flow_Graph is
                end if;
             end;
 
-         when E_Task_Body =>
+         when Kind_Task =>
             --  Tasks see their discriminants as parameters
             declare
                Discr : Entity_Id := First_Discriminant (FA.Analyzed_Entity);
@@ -5682,7 +5682,7 @@ package body Flow.Control_Flow_Graph is
                end loop;
             end;
 
-         when E_Package | E_Package_Body =>
+         when Kind_Package | Kind_Package_Body =>
             --  We create initial and final vertices for the package's state
             --  abstractions.
             declare
@@ -5752,7 +5752,7 @@ package body Flow.Control_Flow_Graph is
       --  Collect globals for the analyzed entity and create initial
       --  and final vertices.
       case FA.Kind is
-         when E_Subprogram_Body | E_Task_Body | E_Entry =>
+         when Kind_Subprogram | Kind_Entry | Kind_Task =>
             if not FA.Compute_Globals then
                declare
                   type G_Prop is record
@@ -5848,7 +5848,7 @@ package body Flow.Control_Flow_Graph is
                end;
             end if;
 
-         when E_Package | E_Package_Body =>
+         when Kind_Package | Kind_Package_Body =>
             --  Packages have no obvious globals, but we can extract a
             --  list of global variables used from the optional rhs of
             --  the initializes clause:
@@ -5898,7 +5898,7 @@ package body Flow.Control_Flow_Graph is
             --  constituents that are abstract states and create
             --  Initial and Final vertices for them.
 
-            if FA.Kind = E_Package_Body then
+            if FA.Kind = Kind_Package_Body then
                declare
                   Refined_State_N : constant Node_Id :=
                     Get_Pragma (FA.Analyzed_Entity,
@@ -5948,7 +5948,7 @@ package body Flow.Control_Flow_Graph is
       --     - declarative part
       --     - body
       case FA.Kind is
-         when E_Subprogram_Body | E_Entry =>
+         when Kind_Subprogram | Kind_Entry =>
             for Precondition of Preconditions loop
                Process_Quantified_Expressions
                  (Precondition, FA, Connection_Map, The_Context);
@@ -5972,14 +5972,14 @@ package body Flow.Control_Flow_Graph is
                FA, Connection_Map, The_Context);
             --  ?? O429-046 look into entry barriers
 
-         when E_Task_Body =>
+         when Kind_Task =>
             Process_Quantified_Expressions
               (Declarations (Body_N), FA, Connection_Map, The_Context);
             Process_Quantified_Expressions
               (Statements (Handled_Statement_Sequence (Body_N)),
                FA, Connection_Map, The_Context);
 
-         when E_Package =>
+         when Kind_Package =>
             Process_Quantified_Expressions
               (Visible_Declarations (Spec_N), FA, Connection_Map, The_Context);
             Process_Quantified_Expressions
@@ -5996,7 +5996,7 @@ package body Flow.Control_Flow_Graph is
                end loop;
             end;
 
-         when E_Package_Body =>
+         when Kind_Package_Body =>
             --  Look into the spec
             Process_Quantified_Expressions
               (Visible_Declarations (Spec_N), FA, Connection_Map, The_Context);
@@ -6042,7 +6042,7 @@ package body Flow.Control_Flow_Graph is
       --  Produce flowgraph for the precondition and postcondition if
       --  any.
       case FA.Kind is
-         when E_Subprogram_Body | E_Entry  =>
+         when Kind_Subprogram | Kind_Entry  =>
             --  Flowgraph for preconditions and left hand sides of
             --  contract cases.
             declare
@@ -6086,11 +6086,11 @@ package body Flow.Control_Flow_Graph is
                      Block => Postcon_Block);
             end;
 
-         when E_Task_Body =>
+         when Kind_Task =>
             --  No pre or post here.
             null;
 
-         when E_Package | E_Package_Body =>
+         when Kind_Package | Kind_Package_Body =>
             --  Flowgraph for initial_condition aspect
             declare
                Spec_E         : constant Entity_Id :=
@@ -6120,7 +6120,7 @@ package body Flow.Control_Flow_Graph is
       --  Produce flowgraphs for the body and link to start, helper
       --  end and end vertex.
       case FA.Kind is
-         when E_Subprogram_Body | E_Entry =>
+         when Kind_Subprogram | Kind_Entry =>
             Do_Subprogram_Or_Block (Body_N, FA, Connection_Map, The_Context);
 
             --  Connect up all the dots...
@@ -6140,7 +6140,7 @@ package body Flow.Control_Flow_Graph is
                     Postcon_Block.Standard_Exits,
                     FA.End_Vertex);
 
-         when E_Task_Body =>
+         when Kind_Task =>
             Do_Subprogram_Or_Block (Body_N, FA, Connection_Map, The_Context);
 
             Linkup (FA,
@@ -6153,7 +6153,7 @@ package body Flow.Control_Flow_Graph is
                     FA.Helper_End_Vertex,
                     FA.End_Vertex);
 
-         when E_Package | E_Package_Body =>
+         when Kind_Package | Kind_Package_Body =>
             declare
                UL   : Union_Lists.List := Union_Lists.Empty_List;
                Prev : Union_Id;
@@ -6178,7 +6178,7 @@ package body Flow.Control_Flow_Graph is
                   UL.Append (Union_Id (Private_Declarations (Spec_N)));
                end if;
 
-               if FA.Kind = E_Package_Body then
+               if FA.Kind = Kind_Package_Body then
                   Do_Subprogram_Or_Block (Body_N,
                                           FA, Connection_Map, The_Context);
                   UL.Append (Union_Id (Body_N));
@@ -6323,7 +6323,7 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  Note if this is a subprogram with no effects.
-      if FA.Kind = E_Subprogram_Body then
+      if FA.Kind = Kind_Subprogram then
          FA.No_Effects := True;
          for F of FA.All_Vars loop
             declare

@@ -175,20 +175,14 @@ package Flow_Generated_Globals is
                       GG_Read_Mode,
                       GG_Write_Mode);
 
-   type Globals_Origin_T is (UG, FA, XR);
-   --  UG = User Globals
-   --  FA = Flow Analysis
-   --  XR = xref
-
-   type Analyzed_Entity_Kind is (S_Kind, T_Kind, E_Kind, P_Kind);
-   --  S_Kind = Subprogram
-   --  T_Kind = Task
-   --  E_Kind = Entry
-   --  P_Kind = Package
+   type Globals_Origin_T is (Origin_User, Origin_Flow, Origin_Frontend);
+   --  User     : Hand-written annotations
+   --  Flow     : Produced using flow analysis
+   --  Frontend : Produced from the XREF sections of the ALI files
 
    type Global_Phase_1_Info is record
       Name                  : Entity_Name;
-      Kind                  : Analyzed_Entity_Kind;
+      Kind                  : Analyzed_Subject_Kind;
       Globals_Origin        : Globals_Origin_T;
       Inputs_Proof          : Name_Sets.Set;
       Inputs                : Name_Sets.Set;

@@ -398,10 +398,11 @@ package body Flow_Generated_Globals is
    procedure Print_Global_Phase_1_Info (Info : Global_Phase_1_Info) is
    begin
       Write_Line ((case Info.Kind is
-                   when S_Kind => "Subprogram ",
-                   when T_Kind => "Task ",
-                   when E_Kind => "Entry ",
-                   when P_Kind => "Package ") & To_String (Info.Name));
+                   when Kind_Subprogram                  => "Subprogram ",
+                   when Kind_Entry                       => "Entry ",
+                   when Kind_Task                        => "Task ",
+                   when Kind_Package | Kind_Package_Body => "Package ")
+        & To_String (Info.Name));
 
       Print_Name_Set ("Proof_Ins            :", Info.Inputs_Proof);
       Print_Name_Set ("Inputs               :", Info.Inputs);
@@ -411,7 +412,7 @@ package body Flow_Generated_Globals is
       Print_Name_Set ("Conditional calls    :", Info.Conditional_Calls);
       Print_Name_Set ("Local variables      :", Info.Local_Variables);
 
-      if Info.Kind = P_Kind then
+      if Info.Kind in Kind_Package | Kind_Package_Body then
          Print_Name_Set ("Local definite writes:", Info.Local_Definite_Writes);
       end if;
    end Print_Global_Phase_1_Info;
@@ -685,12 +686,10 @@ package body Flow_Generated_Globals is
 
    begin
       case GI.Kind is
-         when S_Kind |
-              T_Kind |
-              E_Kind =>
+         when Kind_Subprogram | Kind_Task | Kind_Entry =>
             Subprogram_Info_List.Append (GI);
 
-         when P_Kind =>
+         when Kind_Package | Kind_Package_Body =>
             Package_Info_List.Append (GI);
       end case;
       GG_Exists_Cache.Insert (GI.Name);
@@ -740,18 +739,20 @@ package body Flow_Generated_Globals is
       ---------------------------
 
       procedure Write_Global_Info_List (L : Global_Info_Lists.List) is
+         Origin_Str : constant array (Globals_Origin_T) of String (1 .. 3)
+           := (Origin_User     => "UG ",
+               Origin_Flow     => "FA ",
+               Origin_Frontend => "XR ");
+         Kind_Str : constant array (Analyzed_Subject_Kind) of String (1 .. 5)
+           := (Kind_Subprogram                  => "GG S ",
+               Kind_Entry                       => "GG E ",
+               Kind_Task                        => "GG T ",
+               Kind_Package | Kind_Package_Body => "GG P ");
       begin
          for Info of L loop
-            Write_Info_Tag_Names ((case Info.Kind is
-                                     when S_Kind => "GG S ",
-                                     when T_Kind => "GG T ",
-                                     when E_Kind => "GG E ",
-                                     when P_Kind => "GG P ") &
-                                  (case Info.Globals_Origin is
-                                     when UG => "UG ",
-                                     when FA => "FA ",
-                                     when XR => "XR ") &
-                                     To_String (Info.Name),
+            Write_Info_Tag_Names (Kind_Str (Info.Kind) &
+                                    Origin_Str (Info.Globals_Origin) &
+                                    To_String (Info.Name),
                                   Name_Sets.Empty_Set);
 
             Write_Info_Tag_Names ("GG VP", Info.Inputs_Proof);
@@ -764,7 +765,7 @@ package body Flow_Generated_Globals is
             Write_Info_Tag_Names ("GG LS", Info.Local_Subprograms);
 
             --  For packages we have an additional line
-            if Info.Kind = P_Kind then
+            if Info.Kind in Kind_Package | Kind_Package_Body then
                Write_Info_Tag_Names ("GG LD", Info.Local_Definite_Writes);
             end if;
          end loop;
@@ -1907,11 +1908,9 @@ package body Flow_Generated_Globals is
               and then Element (Line, 6) = ' '
             then
                declare
-                  Names : constant Name_Sets.Set := Get_Names_From_Line;
-
+                  Names  : constant Name_Sets.Set := Get_Names_From_Line;
                   ES_Tag : constant GG_Tag := GG_Tag (Slice (Line, 4, 5));
-                  ES : External_State;
-
+                  ES     : External_State;
                begin
                   for I in External_State'Range loop
                      if ES_Tag = External_State_Tags (I) then
@@ -1973,7 +1972,7 @@ package body Flow_Generated_Globals is
                   case Element (Line, 4) is
                      when 'S' =>
                         --  subprogram
-                        New_Info.Kind := S_Kind;
+                        New_Info.Kind := Kind_Subprogram;
 
                         --  No LD line is expected for subprograms so set it to
                         --  True.
@@ -1982,7 +1981,7 @@ package body Flow_Generated_Globals is
 
                      when 'T' =>
                         --  task
-                        New_Info.Kind := T_Kind;
+                        New_Info.Kind := Kind_Task;
 
                         --  No LD line is expected for tasks so set it to True
                         Set_Line_Found (10);
@@ -1990,7 +1989,7 @@ package body Flow_Generated_Globals is
 
                      when 'E' =>
                         --  entry
-                        New_Info.Kind := E_Kind;
+                        New_Info.Kind := Kind_Entry;
 
                         --  No LD line is expected for entries so set it to
                         --  True.
@@ -1999,7 +1998,7 @@ package body Flow_Generated_Globals is
 
                      when 'P' =>
                         --  package
-                        New_Info.Kind := P_Kind;
+                        New_Info.Kind := Kind_Package;
 
                      when others =>
                         Issue_Corrupted_File_Error;
@@ -2014,19 +2013,17 @@ package body Flow_Generated_Globals is
                   begin
                      New_Info.Name := EN;
                      New_Info.Globals_Origin :=
-                       (if GO = "UG" then UG
-                        elsif GO = "FA" then FA
-                        elsif GO = "XR" then XR
+                       (if    GO = "UG" then Origin_User
+                        elsif GO = "FA" then Origin_Flow
+                        elsif GO = "XR" then Origin_Frontend
                         else raise Program_Error);
 
                      case New_Info.Kind is
-                        when S_Kind |
-                             T_Kind |
-                             E_Kind =>
+                        when Kind_Subprogram | Kind_Entry | Kind_Task =>
                            GG_Subprograms.Include (EN);
                            All_Subprograms.Include (EN);
 
-                        when P_Kind =>
+                        when Kind_Package | Kind_Package_Body =>
                            null;
                      end case;
                   end;
@@ -2126,12 +2123,10 @@ package body Flow_Generated_Globals is
                   --  either Subprogram_Info_List or Package_Info_List and
                   --  return.
                   case New_Info.Kind is
-                     when S_Kind |
-                          T_Kind |
-                          E_Kind =>
+                     when Kind_Subprogram | Kind_Entry | Kind_Task =>
                         Subprogram_Info_List.Append (New_Info);
 
-                     when P_Kind =>
+                     when Kind_Package | Kind_Package_Body  =>
                         Package_Info_List.Append (New_Info);
                   end case;
 
