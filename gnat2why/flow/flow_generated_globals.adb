@@ -1662,7 +1662,8 @@ package body Flow_Generated_Globals is
             Effective_Reads  => "ER",
             Effective_Writes => "EW");
 
-         procedure Issue_Corrupted_File_Error;
+         procedure Issue_Corrupted_File_Error with
+           No_Return;
          --  Issues an error about the ALI file being corrupted and suggests
          --  the usage of "gnatprove --clean".
 
