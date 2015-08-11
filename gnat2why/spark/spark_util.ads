@@ -334,7 +334,8 @@ package SPARK_Util is
    --  @param Scope scope
    --  @return True iff E is declared directly in Scope
 
-   function Is_In_Analyzed_Files (E : Entity_Id) return Boolean;
+   function Is_In_Analyzed_Files (E : Entity_Id) return Boolean
+   with Pre => Present (E);
    --  @param E any entity
    --  @return True iff E is contained in a file that should be analyzed
 
