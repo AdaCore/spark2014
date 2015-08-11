@@ -1866,7 +1866,7 @@ package body Flow_Generated_Globals is
                         Tasking_Info_Bag
                           (Unsynch_Accesses).Insert (First, Names);
                      when others =>
-                        Issue_Corrupted_File_Error;
+                        raise Program_Error;
                   end case;
 
                   --  State line parsed. We will now return.
@@ -1983,7 +1983,7 @@ package body Flow_Generated_Globals is
                         New_Info.Kind := Kind_Package;
 
                      when others =>
-                        Issue_Corrupted_File_Error;
+                        raise Program_Error;
                   end case;
 
                   declare
