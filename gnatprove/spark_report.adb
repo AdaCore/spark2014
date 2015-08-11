@@ -882,6 +882,7 @@ procedure SPARK_Report is
             | VC_Length_Check
             | VC_Discriminant_Check
             | VC_Tag_Check
+            | VC_Task_Termination
             | VC_Raise
          =>
             return Runtime_Checks;

@@ -86,9 +86,9 @@ package SPARK_Definition is
    --  violations use Entity_Body_Valid_SPARK.
 
    function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean;
-   --  Returns True if the spec of subprogram or package E was marked in
-   --  SPARK. Note this does not mean that the subprogram is valid SPARK,
-   --  only that SPARK_Mode is On.
+   --  @param E a subprogram, package or task entity
+   --  @return True if the spec of E was marked in SPARK. Note this does not
+   --    mean that the subprogram is valid SPARK, only that SPARK_Mode is On.
 
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean;
    --  Returns True if the body of subprogram or package E was marked in

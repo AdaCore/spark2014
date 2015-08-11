@@ -558,6 +558,7 @@ failing condition reported by |GNATprove|:
    "length check might fail",                           "VC_LENGTH_CHECK"
    "discriminant check might fail",                     "VC_DISCRIMINANT_CHECK"
    "tag check might fail",                              "VC_TAG_CHECK"
+   "task might terminate",                              "VC_TASK_TERMINATION"
 
    **assertions**
    "initial condition might fail",                      "VC_INITIAL_CONDITION"
@@ -784,6 +785,7 @@ The following table shows the kinds of check messages issued by proof.
    "length check", "Check that the given array is of the length of the expected array subtype."
    "discriminant check", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
    "tag check",          "Check that the tag of the given tagged object has the expected value."
+   "task termination",   "Check that the task does not terminate, as required by Ravenscar"
 
    **assertions**
    "initial condition", "Check that the initial condition of a package is true after elaboration."

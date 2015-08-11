@@ -525,8 +525,15 @@ package body Gnat2Why.Types is
    --  Start of processing for Translate_Type
 
    begin
+
+      --  Tasks are like subprograms without side effects and pre-condition
+      --  "True", so even if a task object can be seen like a call to the
+      --  task body, we never need to care about such calls and don't need
+      --  to generate any why declarations for tasks
+
       if Is_Standard_Boolean_Type (E)
-        or else E = Universal_Fixed
+        or else E = Universal_Fixed or else
+        Ekind (E) in Task_Kind
       then
          New_Theory := False;
          return;

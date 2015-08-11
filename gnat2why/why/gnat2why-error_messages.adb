@@ -244,6 +244,8 @@ package body Gnat2Why.Error_Messages is
             return "discriminant check might fail";
          when VC_Tag_Check                 =>
             return "tag check might fail";
+         when VC_Task_Termination =>
+            return "the task might terminate, which is not allowed in SPARK";
 
          --  VC_Assert_Kind - assertions
 
@@ -452,6 +454,8 @@ package body Gnat2Why.Error_Messages is
             return "discriminant check proved";
          when VC_Tag_Check                 =>
             return "tag check proved";
+         when VC_Task_Termination          =>
+            return "nontermination of task proved";
 
          when VC_Initial_Condition         =>
             return "initial condition proved";

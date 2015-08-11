@@ -184,11 +184,14 @@ package Gnat2Why.Expr is
    --  Translate Expr'Old into Why
 
    function Transform_Declarations_Block (L : List_Id; Core : W_Prog_Id)
-      return W_Prog_Id;
+                                          return W_Prog_Id;
    --  Translate the Declarations block of Block statement or subprogram to a
    --  sequence of Why expressions; dynamic type declarations are translated
    --  to assert/assume statements, object declarations to assignment
    --  statements
+   --  @param L a list of declarations
+   --  param Core an expression to which the statements resulting from L are
+   --    prepended
 
    function Transform_Declarations_For_Body (L : List_Id) return W_Prog_Id;
    --  Transform the declarations in the list, but excluding the leading

@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;           use Atree;
+with Einfo;           use Einfo;
 with Gnat2Why.Util;   use Gnat2Why.Util;
 with Types;           use Types;
 with Why.Gen.Binders; use Why.Gen.Binders;
@@ -80,6 +82,13 @@ package Gnat2Why.Subprograms is
       E    : Entity_Id);
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the verification of LSP for dispatching subprogram E.
+
+   procedure Generate_VCs_For_Task
+     (File : in out Why_Section;
+      E    : Entity_Id)
+   with Pre => Ekind (E) in Task_Kind;
+   --  @param File the file and section in which the VCs should be generated
+   --  @param E the task entity to be translated
 
    procedure Translate_Subprogram_Spec
      (File : in out Why_Section;

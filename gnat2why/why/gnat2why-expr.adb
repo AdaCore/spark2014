@@ -8691,6 +8691,12 @@ package body Gnat2Why.Expr is
       case Nkind (Decl) is
          when N_Object_Declaration =>
 
+            --  we can ignore task declarations
+
+            if Is_Task_Type (Etype (Defining_Entity (Decl))) then
+               return R;
+            end if;
+
             --  non scalar object declaration should not appear before the
             --  loop invariant in a loop.
 

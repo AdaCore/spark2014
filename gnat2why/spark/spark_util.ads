@@ -683,7 +683,10 @@ package SPARK_Util is
    --  @return True iff E should not be translated into Why3
 
    function Subp_Location (E : Entity_Id) return String
-   with Pre => Is_Subprogram (E) or else Ekind (E) = E_Package;
+     with Pre =>
+       Is_Subprogram (E)
+     or else Ekind (E) = E_Package
+     or else Is_Task_Type (E);
    --  @param E subprogram or package
    --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file
    --    and line where this subprogram or package is declared. This allows to

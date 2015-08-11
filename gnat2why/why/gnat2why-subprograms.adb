@@ -23,9 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                  use Atree;
 with Common_Containers;      use Common_Containers;
-with Einfo;                  use Einfo;
 with Errout;                 use Errout;
 with Flow_Types;             use Flow_Types;
 with Flow_Utility;           use Flow_Utility;
@@ -127,7 +125,8 @@ package body Gnat2Why.Subprograms is
       Pred_Fun_Param : Entity_Id := Empty;
       Initialized    : Boolean := False) return W_Prog_Id
    with
-       Pre => Ekind (Scope) in E_Procedure | E_Function | E_Package;
+       Pre => Ekind (Scope) in
+     E_Procedure | E_Function | E_Package | E_Task_Type;
    --  Given a Why node, collects the set of external dynamic objects
    --  that are referenced in this node.
    --  @param W Why node from which we collect entities
@@ -2233,6 +2232,94 @@ package body Gnat2Why.Subprograms is
                     Kind => VC_Generation_Theory,
                     Defined_Entity => E);
    end Generate_VCs_For_Subprogram;
+
+   ---------------------------
+   -- Generate_VCs_For_Task --
+   ---------------------------
+
+   procedure Generate_VCs_For_Task
+     (File : in out Why_Section;
+      E    : Entity_Id)
+   is
+      Name       : constant String  := Full_Name (E);
+      Body_N     : constant Node_Id := Task_Body (E);
+      Params     : Transformation_Params;
+
+      Why_Body   : W_Prog_Id := New_Void;
+      Post       : constant W_Pred_Id :=
+        +New_VC_Expr (Ada_Node   => E,
+                      Expr       => +False_Pred,
+                      Reason     => VC_Task_Termination,
+                      Domain     => EW_Pred,
+                      Subprogram => Source_Name (E));
+
+   begin
+      --  We open a new theory, so that the context is fresh for this task
+
+      Open_Theory (File,
+                   New_Module
+                     (Name => NID (Name & "__task_body"),
+                      File => No_Name),
+                   Comment =>
+                     "Module for checking absence of run-time errors and "
+                       & "non-termination of task body of the task "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Current_Subp := E;
+
+      Params := (File        => File.File,
+                 Theory      => File.Cur_Theory,
+                 Phase       => Generate_VCs_For_Body,
+                 Gen_Marker  => False,
+                 Ref_Allowed => True);
+
+      --  Translate declarations and statements in the task body, if there
+      --  is one.
+
+      if Present (Body_N) then
+         if Present (Handled_Statement_Sequence (Body_N)) then
+            Why_Body :=
+              Sequence
+                (Transform_Statements_And_Declarations
+                   (Statements (Handled_Statement_Sequence (Body_N))),
+                 Why_Body);
+         end if;
+
+         Why_Body :=
+           Transform_Declarations_Block (Declarations (Body_N), Why_Body);
+      end if;
+
+      --  We assume that objects used in the program are in range, if
+      --  they are of a dynamic type
+
+      Why_Body :=
+        Sequence
+          (Compute_Dynamic_Property_For_Inputs (W      => +Why_Body,
+                                                Params => Params,
+                                                Scope  => E),
+           Why_Body);
+
+      declare
+         Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
+      begin
+         Label_Set.Include (NID ("W:diverges:N"));
+         Emit (File.Cur_Theory,
+                Why.Gen.Binders.New_Function_Decl
+                 (Domain  => EW_Prog,
+                  Name    => Def_Name,
+                  Binders => (1 => Unit_Param),
+                  Labels  => Label_Set,
+                  Post    => Post,
+                  Def     => +Why_Body));
+      end;
+
+      Close_Theory (File,
+                    Kind => VC_Generation_Theory);
+
+   end Generate_VCs_For_Task;
 
    -----------------------------
    -- Get_Location_For_Aspect --

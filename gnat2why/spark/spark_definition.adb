@@ -3415,6 +3415,11 @@ package body SPARK_Definition is
                      then
                         Mark_Violation (E, From => Base_Type (E));
                      end if;
+                     if Ekind (E) = E_Task_Subtype
+                       and then SPARK_Pragma_Is (Opt.On)
+                     then
+                        Specs_In_SPARK.Include (E);
+                     end if;
 
                   when E_Protected_Type | E_Task_Type =>
                      declare
@@ -3434,6 +3439,12 @@ package body SPARK_Definition is
                            Mark_Stmt_Or_Decl_List
                              (Private_Declarations (Type_Def));
                         end if;
+                        if Ekind (E) = E_Task_Type
+                          and then SPARK_Pragma_Is (Opt.On)
+                        then
+                           Specs_In_SPARK.Include (E);
+                        end if;
+
                      end;
 
                   when others =>
