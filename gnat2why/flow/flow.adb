@@ -1394,7 +1394,7 @@ package body Flow is
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Indent;
 
-            for Kind in Tasking_Info_Kind'Range loop
+            for Kind in Tasking_Info_Kind loop
                if not FA.Tasking (Kind).Is_Empty then
                   Write_Str (Kind'Img & " :");
                   Print_Node_Set (FA.Tasking (Kind));

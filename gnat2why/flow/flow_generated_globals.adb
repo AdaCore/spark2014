@@ -56,6 +56,8 @@ package body Flow_Generated_Globals is
    use type Flow_Id_Sets.Set;
    use type Name_Sets.Set;
 
+   use Name_Graphs;
+
    ----------------------------------------------------------------------
    --  Debug flags
    ----------------------------------------------------------------------
@@ -100,23 +102,16 @@ package body Flow_Generated_Globals is
    --  State information
    ----------------------------------------------------------------------
 
-   package State_Info_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Name,
-      Element_Type    => Name_Sets.Set,
-      Hash            => Name_Hash,
-      Equivalent_Keys => "=",
-      "="             => Name_Sets."=");
-   use State_Info_Maps;
-   --  ??? rename since also used for tasking-related info
-
-   State_Comp_Map : State_Info_Maps.Map := State_Info_Maps.Empty_Map;
+   State_Comp_Map : Name_Graphs.Map := Name_Graphs.Empty_Map;
    --  state -> {components}
+   --
+   --  This maps abstract state to its constituents.
 
-   Comp_State_Map : Name_Maps.Map       := Name_Maps.Empty_Map;
+   Comp_State_Map : Name_Maps.Map   := Name_Maps.Empty_Map;
    --  component -> state
    --
-   --  this is filled in at the end of GG_Read from state_comp_map, in order
-   --  to speed up some queries
+   --  This is the reverse of the above, and is filled in at the end of
+   --  GG_Read from state_comp_map, in order to speed up some queries.
 
    ----------------------------------------------------------------------
    --  Initializes information
@@ -153,8 +148,8 @@ package body Flow_Generated_Globals is
    Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
    --  Volatile information
 
-   Tasking_Info_Bag : array (Tasking_Info_Kind) of State_Info_Maps.Map :=
-     (others => State_Info_Maps.Empty_Map);
+   Tasking_Info_Bag : array (Tasking_Info_Kind) of Name_Graphs.Map :=
+     (others => Name_Graphs.Empty_Map);
    --  Tasking-related information read from ALI file and then processed
 
    package Entity_Tasking_Info_Maps is new Ada.Containers.Hashed_Maps
@@ -226,6 +221,8 @@ package body Flow_Generated_Globals is
      (others => Tasking_Graphs.Create);
    --  Graphs with tasking-related information
 
+   use type Tasking_Graphs.Vertex_Id;
+
    -------------------
    -- Global_Graphs --
    -------------------
@@ -251,8 +248,6 @@ package body Flow_Generated_Globals is
    Global_Graph : Global_Graphs.Graph;
    --  This graph will represent the globals that each subprogram has as
    --  inputs, outputs and proof inputs.
-
-   use Global_Graphs;
 
    ----------------------------------------------------
    -- Regular expressions for predefined subprograms --
@@ -305,7 +300,7 @@ package body Flow_Generated_Globals is
    --  Prints all global related info of an entity
 
    procedure Print_Global_Graph (Filename : String;
-                                 G        : Graph);
+                                 G        : Global_Graphs.Graph);
    --  Writes dot and pdf files for the Global_Graph
 
    procedure Print_Generated_Initializes_Aspects;
@@ -426,8 +421,10 @@ package body Flow_Generated_Globals is
    ------------------------
 
    procedure Print_Global_Graph (Filename : String;
-                                 G        : Graph)
+                                 G        : Global_Graphs.Graph)
    is
+      use Global_Graphs;
+
       function NDI
         (G : Graph;
          V : Vertex_Id) return Node_Display_Info;
@@ -954,6 +951,8 @@ package body Flow_Generated_Globals is
       -------------------
 
       procedure Add_All_Edges is
+         use Global_Graphs;
+
          G_Ins, G_Outs, G_Proof_Ins : Global_Id;
 
          procedure Add_Edge (G1, G2 : Global_Id);
@@ -1190,6 +1189,7 @@ package body Flow_Generated_Globals is
       -------------------------
 
       procedure Create_All_Vertices is
+         use Global_Graphs;
       begin
          --  Create vertices for all global variables
          for N of All_Globals loop
@@ -1283,6 +1283,7 @@ package body Flow_Generated_Globals is
       ------------------------
 
       procedure Create_Local_Graph is
+         use Global_Graphs;
 
          procedure Add_Edge (G1, G2 : Global_Id);
          --  Adds an edge between the vertices V1 and V2 that correspond to G1
@@ -1371,19 +1372,18 @@ package body Flow_Generated_Globals is
       --------------------------
 
       procedure Create_Tasking_Graph is
+         use Tasking_Graphs;
       begin
          for Kind in Tasking_Info_Kind loop
             for C in Tasking_Info_Bag (Kind).Iterate loop
                declare
-                  Subp : constant Entity_Name   := State_Info_Maps.Key (C);
-                  Objs : constant Name_Sets.Set := State_Info_Maps.Element (C);
-                  use type Tasking_Graphs.Vertex_Id;
+                  Subp : constant Entity_Name   := Key (C);
+                  Objs : constant Name_Sets.Set := Element (C);
                begin
                   --  Add vertices for objects
                   for Obj of Objs loop
                      --  Create object vertex if it does not already exist
-                     if Tasking_Graph (Kind).Get_Vertex (Obj) =
-                       Tasking_Graphs.Null_Vertex
+                     if Tasking_Graph (Kind).Get_Vertex (Obj) = Null_Vertex
                      then
                         Tasking_Graph (Kind).Add_Vertex (Obj);
                      end if;
@@ -1401,6 +1401,8 @@ package body Flow_Generated_Globals is
       --------------------
 
       procedure Edit_Proof_Ins is
+         use Global_Graphs;
+
          function Get_Variable_Neighbours
            (Start : Vertex_Id)
             return Vertex_Sets.Set;
@@ -2223,6 +2225,7 @@ package body Flow_Generated_Globals is
       ---------------------------
 
       procedure Process_Tasking_Graph is
+         use Tasking_Graphs;
       begin
          for Kind in Tasking_Info_Kind loop
             --  Do the transitive closure
@@ -2234,14 +2237,13 @@ package body Flow_Generated_Globals is
             --  Collect information for each subprogram
             for S of All_Subprograms loop
                declare
-                  S_Vertex : constant Tasking_Graphs.Vertex_Id :=
+                  S_Vertex : constant Vertex_Id :=
                     Tasking_Graph (Kind).Get_Vertex (S);
                   Objs : Name_Sets.Set := Name_Sets.Empty_Set;
-                  use Tasking_Graphs;
                begin
                   --  Collect out-neighbours of the subprogram vertex
                   for Obj_Key of Tasking_Graph (Kind).Get_Collection
-                      (S_Vertex, Tasking_Graphs.Out_Neighbours)
+                    (S_Vertex, Out_Neighbours)
                   loop
                      Objs.Insert (Tasking_Graph (Kind).Get_Key (Obj_Key));
                   end loop;
@@ -2260,8 +2262,11 @@ package body Flow_Generated_Globals is
       -- Remove_Constants_Without_Variable_Input --
       ---------------------------------------------
 
-      procedure Remove_Constants_Without_Variable_Input is
-         All_Constants : Name_Sets.Set  := Name_Sets.Empty_Set;
+      procedure Remove_Constants_Without_Variable_Input
+      is
+         use Global_Graphs;
+
+         All_Constants : Name_Sets.Set := Name_Sets.Empty_Set;
       begin
          --  Gather up all constants without variable input
          for Glob of All_Globals loop
@@ -2561,6 +2566,8 @@ package body Flow_Generated_Globals is
                                 Reads       : out Name_Sets.Set;
                                 Writes      : out Name_Sets.Set)
    is
+      use Global_Graphs;
+
       G_Proof_Ins     : constant Global_Id :=
         Global_Id'(Kind => Proof_Ins_Kind,
                    Name => EN);
@@ -2876,6 +2883,8 @@ package body Flow_Generated_Globals is
       function Calls_Potentially_Blocking_Subprogram
         (GID : Global_Id) return Boolean
       is
+         use Global_Graphs;
+
          Subp_V : constant Vertex_Id := Global_Graph.Get_Vertex (GID);
          --  Vertex that represents called subprogram
 

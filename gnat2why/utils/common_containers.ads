@@ -99,6 +99,13 @@ package Common_Containers is
       Hash            => Name_Hash,
       Equivalent_Keys => "=");
 
+   package Name_Graphs is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Name,
+      Element_Type    => Name_Sets.Set,
+      Hash            => Name_Hash,
+      Equivalent_Keys => "=",
+      "="             => Name_Sets."=");
+
    function Name_Id_Hash (N : Name_Id) return Ada.Containers.Hash_Type
    is (Generic_Integer_Hash (Integer (N)));
 
