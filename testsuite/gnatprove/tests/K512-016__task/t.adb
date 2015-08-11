@@ -1,7 +1,4 @@
-procedure T is
-   pragma SPARK_Mode (Off);
-
-   task T1;
+package body T is
 
    task body T1 is
    begin
