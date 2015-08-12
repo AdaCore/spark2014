@@ -4683,14 +4683,6 @@ package body SPARK_Definition is
 
             Bodies_In_SPARK.Include (E);
 
-            --  Mark entry barrier
-
-            if Nkind (E) = N_Entry_Body then
-               --  Entry barriers in Ravenscar are always of N_Identifier kind
-               Mark_Identifier_Or_Expanded_Name
-                (Condition (Entry_Body_Formal_Part (N)));
-            end if;
-
             --  Mark Actual_Subtypes of parameters if any
 
             declare
@@ -4719,6 +4711,14 @@ package body SPARK_Definition is
                   end loop;
                end if;
             end;
+
+            --  Mark entry barrier
+
+            if Nkind (E) = N_Entry_Body then
+               --  Entry barriers in Ravenscar are always of N_Identifier kind
+               Mark_Identifier_Or_Expanded_Name
+                (Condition (Entry_Body_Formal_Part (N)));
+            end if;
 
             --  Detect violations in the body itself
 
