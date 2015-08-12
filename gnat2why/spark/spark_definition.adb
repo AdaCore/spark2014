@@ -1513,16 +1513,32 @@ package body SPARK_Definition is
 
          --  Supported tasking constructs
 
-         when N_Protected_Body =>
+         when N_Protected_Body |
+              N_Task_Body      =>
             if Is_SPARK_Tasking_Configuration then
-               Mark_Stmt_Or_Decl_List (Declarations (N));
-            else
-               Mark_Violation_In_Tasking (N);
-            end if;
+               declare
+                  Spec : constant Entity_Id := Corresponding_Spec (N);
+               begin
+                  --  For entries, functions and procedures of protected types
+                  --  detect also violations in the enclosing type, which acts
+                  --  as an implicit argument to these subprograms.
 
-         when N_Task_Body =>
-            if Is_SPARK_Tasking_Configuration then
-               Mark_Subprogram_Body (N);
+                  if Entity_In_SPARK (Spec) then
+                     case Nkind (N) is
+                        when N_Protected_Body =>
+                           Mark_Stmt_Or_Decl_List (Declarations (N));
+
+                        when N_Task_Body =>
+                           Mark_Subprogram_Body (N);
+
+                        when others =>
+                           raise Program_Error;
+
+                     end case;
+                  else
+                     Mark_Violation (N, From => Spec);
+                  end if;
+               end;
             else
                Mark_Violation_In_Tasking (N);
             end if;
@@ -4710,28 +4726,6 @@ package body SPARK_Definition is
 
             Mark_Stmt_Or_Decl_List (Declarations (N));
             Mark (HSS);
-
-            --  For entries, functions and procedures of concurrent types
-            --  detect also violations in the enclosing type, which acts as an
-            --  implicit argument to these subprograms.
-
-            declare
-               Enclosing_Concurrent_Type : constant Entity_Id :=
-                 (if Nkind (N) in N_Task_Body then
-                     Corresponding_Spec (N)
-                  elsif Nkind (N) in N_Entry_Body then
-                     Scope (Defining_Identifier (N))
-                  elsif Convention (E) = Convention_Protected then
-                     Scope (E)
-                  else
-                     Empty);
-            begin
-               if Present (Enclosing_Concurrent_Type)
-                 and then not Entity_In_SPARK (Enclosing_Concurrent_Type)
-               then
-                  Mark_Violation (N, From => Enclosing_Concurrent_Type);
-               end if;
-            end;
 
             --  For the special case of an expression function, the frontend
             --  generates a distinct body if not already in source code. Use as

@@ -3,12 +3,10 @@ with Ada.Task_Identification;
 
 package body Tasks is
 
-   --  Bad_Guard : Boolean;
-
-   task body Bad_Timer is
+   task body Task_With_Invalid_Discriminant is
    begin
       null;
-   end Bad_Timer;
+   end;
 
    task body Timer
    is
@@ -18,64 +16,65 @@ package body Tasks is
          delay until NextPeriod;
          NextPeriod := NextPeriod + Ada.Real_Time.Seconds (1);
       end loop;
-   end Timer;
+   end;
 
    task body Timer_Stub is separate;
 
    Last_Caller : Ada.Task_Identification.Task_Id;
 
-   protected body Store is
+   protected body Bad_Store is
       function Get return Integer is
       begin
          return The_Stored_Data;
-      end Get;
+      end;
 
       procedure Put (X : Integer) is
       begin
          The_Stored_Data := X;
          The_Guard := X > 0;
-      end Put;
+      end;
 
       entry Wait (Dummy : Integer) when The_Guard is
       begin
          null;
          Last_Caller := Wait'Caller;
          --  delay 1.0;
-      end Wait;
-   end Store;
+      end;
+   end;
 
-   protected body Unreferenced_PO is
+   protected body Simple is
       entry Dummy when True is
       begin
          null;
-      end Dummy;
-   end Unreferenced_PO;
+      end;
+   end;
 
    protected body Store_Stub is separate;
+   protected body Invalid_Protected_Stub is separate;
 
-   The_Store : Store;
+   The_Store : Bad_Store;
    The_Timer : Timer (10);
 
-   The_Sub_Store : Sub_Store;
+   The_Sub_Store : Bad_Store;
    The_Sub_Timer : Sub_Timer;
 
    -- single protected object
 
    protected Single_PO is
-   end Single_PO;
+   end;
 
    protected body Single_PO is
-   end Single_PO;
+   end;
 
    -- single task object
 
    task Single_Task is
-   end Single_Task;
+   end;
 
    task body Single_Task is
    begin
       null;
-   end Single_Task;
+   end;
 
    procedure Entry_Call
      with Global => null
@@ -89,7 +88,7 @@ package body Tasks is
       else
          Last_Caller := The_Timer'Identity;
       end if;
-   end Entry_Call;
+   end;
 
    --  type Serial_Device is task interface;
 
@@ -97,7 +96,7 @@ package body Tasks is
       entry Wait (Dummy : Integer) when True is
       begin
          null;
-      end Wait;
+      end;
    end;
 
    protected body Null_Protected_Type is
@@ -107,7 +106,7 @@ package body Tasks is
       entry Wait (Dummy : Integer) when True is
       begin
          null;
-      end Wait;
+      end;
    end;
 
-end Tasks;
+end;

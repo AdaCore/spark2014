@@ -1,25 +1,20 @@
 package Tasks is
 
-   type Empty_Record is
-      record
-         null;
-      end record;
-
-   task type Bad_Timer (Countdown : access Natural)
+   task type Task_With_Invalid_Discriminant (Countdown : access Natural)
    is
       pragma Priority (10);
-   end Bad_Timer;
+   end;
 
    task type Timer (Countdown : Natural)
    is
       pragma Priority (10);
-   end Timer;
+   end;
 
    task type Timer_Stub;
 
    X : aliased Integer;
 
-   protected type Store
+   protected type Bad_Store
    is
       pragma Priority (10);
       function Get return Integer;
@@ -30,14 +25,14 @@ package Tasks is
       Forbidden_Integer : access Integer := X'Access;
       The_Stored_Data : Integer := 0;
       The_Guard : Boolean := False;
-   end Store;
+   end;
 
-   protected type Unreferenced_PO
+   protected type Simple
    is
      entry Dummy;
-   end Unreferenced_PO;
+   end;
 
-   subtype Sub_Store is Store;
+   subtype Sub_Simple is Simple;
    subtype Sub_Timer is Timer (5);
 
    protected type Store_Stub
@@ -46,7 +41,15 @@ package Tasks is
       entry Wait;
    private
       The_Stored_Data : Integer := 0;
-   end Store_Stub;
+   end;
+
+   protected type Invalid_Protected_Stub
+   is
+      entry Wait;
+      procedure Proc;
+   private
+      No_Default_Value : Integer;
+   end;
 
    protected type Store_With_No_Initialization
    is
@@ -66,4 +69,4 @@ package Tasks is
       No_Default_Value : Integer;
    end;
 
-end Tasks;
+end;
