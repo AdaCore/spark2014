@@ -534,7 +534,7 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
-   with Pre => (Ekind (E) in Subprogram_Kind | E_Package | E_Entry) and then
+   with Pre => Ekind (E) in Subprogram_Kind | E_Package | E_Entry and then
                not (Classwide and Inherited);
    --  @param E subprogram or package
    --  @param Name contract name
