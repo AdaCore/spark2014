@@ -704,7 +704,8 @@ package body Flow_Generated_Globals is
    ------------------------------
 
    procedure GG_Register_Tasking_Info (EN : Entity_Name;
-                                       TI : Tasking_Info) is
+                                       TI : Tasking_Info)
+   is
    begin
       Entity_Tasking_Info_Map.Insert (EN, TI);
    end GG_Register_Tasking_Info;

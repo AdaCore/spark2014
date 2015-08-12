@@ -206,17 +206,6 @@ package Flow_Generated_Globals is
    function GG_Mode return GG_Mode_T;
    --  Returns the current mode.
 
-   procedure GG_Register_Nonblocking (EN : Entity_Name)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Record entity with no potentially blocking statements
-
-   procedure GG_Register_Tasking_Info (EN : Entity_Name;
-                                       TI : Tasking_Info)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Record tasking-related information for entity
-
    -------------
    -- Writing --
    -------------
@@ -242,6 +231,17 @@ package Flow_Generated_Globals is
    --  Compute_Globals in Flow.Slice is used to produce the inputs.
    --  It also stores information related to volatiles and possibly blocking
    --  property.
+
+   procedure GG_Register_Nonblocking (EN : Entity_Name)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Record entity with no potentially blocking statements.
+
+   procedure GG_Register_Tasking_Info (EN : Entity_Name;
+                                       TI : Tasking_Info)
+   with Pre  => GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Record tasking-related information for entity.
 
    procedure GG_Write_Finalize
    with Pre => GG_Mode = GG_Write_Mode;
