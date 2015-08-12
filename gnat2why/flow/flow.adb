@@ -1553,6 +1553,12 @@ package body Flow is
             end if;
          end if;
 
+         if FA.Kind in Kind_Subprogram | Kind_Entry | Kind_Task
+           and then FA.Is_Main
+         then
+            Analysis.Check_Concurrent_Accesses (FA);
+         end if;
+
          --  Not really necessary, but it forces N131-017 to occur
          --  immediately, instead of when this procedure ends.
          FA.Atr.Clear;

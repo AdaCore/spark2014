@@ -45,6 +45,7 @@ with Sinfo;                      use Sinfo;
 with Call;                       use Call;
 with Gnat2Why_Args;
 with Hashing;                    use Hashing;
+with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
 
@@ -878,6 +879,14 @@ package body Flow_Generated_Globals is
             Write_Tasking_Info ("TW", Write_Locks);
             Write_Tasking_Info ("TU", Unsynch_Accesses);
          end;
+      end loop;
+
+      for C in Task_Instances.Iterate loop
+         Write_Info_Str ("GG TI "
+                         & To_String (Task_Instances_Maps.Key (C))
+                         & " "
+                         & Task_Instances_Maps.Element (C)'Img);
+         Write_Info_Terminate;
       end loop;
 
       --  Write the finalization string "GG END"
@@ -1820,57 +1829,90 @@ package body Flow_Generated_Globals is
               and then Element (Line, 6) = ' '
             then
                declare
-                  Tasking_Key   : constant Character := Element (Line, 5);
-                  First         : Entity_Name;
-                  Names         : Name_Sets.Set;
-                  Start_Of_Word : constant Natural := 7;
-                  End_Of_Word   : Natural := 7;
+                  Tasking_Key : constant Character := Element (Line, 5);
                begin
                   --  Check line format
-                  if Tasking_Key not in 'S' | 'E' | 'R' | 'W' | 'U' then
-                     Issue_Corrupted_File_Error;
-                  end if;
-
-                  --  Get all names
-                  Names := Get_Names_From_Line;
-
-                  --  And now the first one
-                  while End_Of_Word < Length (Line)
-                    and then Element (Line, End_Of_Word) > ' '
-                  loop
-                     End_Of_Word := End_Of_Word + 1;
-                  end loop;
-
-                  --  If we have not reached the end of the line then
-                  --  we have read one character too many.
-                  if End_Of_Word < Length (Line) then
-                     End_Of_Word := End_Of_Word - 1;
-                  end if;
-
-                  First := To_Entity_Name (Slice (Line,
-                                           Start_Of_Word,
-                                           End_Of_Word));
-
-                  Names.Exclude (First);
-
                   case Tasking_Key is
-                     when 'S' =>
-                        Tasking_Info_Bag (Suspends_On).Insert (First, Names);
-                     when 'E' =>
-                        Tasking_Info_Bag (Entry_Calls).Insert (First, Names);
-                     when 'R' =>
-                        Tasking_Info_Bag (Read_Locks).Insert (First, Names);
-                     when 'W' =>
-                        Tasking_Info_Bag (Write_Locks).Insert (First, Names);
-                     when 'U' =>
-                        Tasking_Info_Bag
-                          (Unsynch_Accesses).Insert (First, Names);
-                     when others =>
-                        raise Program_Error;
-                  end case;
+                  when 'I' =>
+                     declare
+                        Tokens : GNAT.String_Split.Slice_Set;
+                     begin
+                        GNAT.String_Split.Create
+                          (Tokens,
+                           Slice (Line, 7, Length (Line)),
+                           " ");
 
-                  --  State line parsed. We will now return.
-                  return;
+                        if GNAT.String_Split.Slice_Count (Tokens) /= 2 then
+                           Issue_Corrupted_File_Error;
+                        end if;
+
+                        declare
+                           Task_Type : constant Entity_Name :=
+                             To_Entity_Name
+                               (GNAT.String_Split.Slice (Tokens, 1));
+                           Task_Inst : constant Instance_Number :=
+                             Instance_Number'Value
+                               (GNAT.String_Split.Slice (Tokens, 2));
+                           --  ??? check for Constraint error and call
+                           --      Issue_Corrupted_File_Error.
+                        begin
+                           case Task_Inst is
+                           when One =>
+                              --  Check if this is the first instance
+                              if Task_Instances.Contains (Task_Type) then
+                                 Task_Instances.Include (Task_Type, Many);
+                              else
+                                 Task_Instances.Include (Task_Type, One);
+                              end if;
+
+                           when Many =>
+                              Task_Instances.Include (Task_Type, Many);
+                           end case;
+                        end;
+                     end;
+
+                     return;
+                  when 'S' | 'E' | 'R' | 'W' | 'U' =>
+                     declare
+                        First  : Entity_Name;
+                        Other  : Name_Sets.Set;
+                        Tokens : GNAT.String_Split.Slice_Set;
+                     begin
+                        GNAT.String_Split.Create
+                          (Tokens,
+                           Slice (Line, 7, Length (Line)),
+                           " ");
+
+                        if GNAT.String_Split.Slice_Count (Tokens) <= 1 then
+                           Issue_Corrupted_File_Error;
+                        end if;
+
+                        First :=
+                          To_Entity_Name (GNAT.String_Split.Slice (Tokens, 1));
+
+                        for J in 2 .. GNAT.String_Split.Slice_Count (Tokens)
+                        loop
+                           Other.Insert
+                             (To_Entity_Name
+                                (GNAT.String_Split.Slice (Tokens, J)));
+                        end loop;
+
+                        Insert (Tasking_Info_Bag
+                                (case Tasking_Key is
+                                    when 'S' => Suspends_On,
+                                    when 'E' => Entry_Calls,
+                                    when 'R' => Read_Locks,
+                                    when 'W' => Write_Locks,
+                                    when 'U' => Unsynch_Accesses,
+                                    when others => raise Program_Error),
+                                First, Other);
+                     end;
+
+                     --  State line parsed. We will now return.
+                     return;
+                  when others =>
+                     Issue_Corrupted_File_Error;
+                  end case;
                end;
 
             --  We special case the "GG END" line
@@ -2228,8 +2270,10 @@ package body Flow_Generated_Globals is
                   --  Remove called subprograms
                   Objs := Objs - All_Subprograms;
 
-                  --  Store the result
-                  Tasking_Info_Bag (Kind).Insert (S, Objs);
+                  --  Store the non-empty results
+                  if not Objs.Is_Empty then
+                     Tasking_Info_Bag (Kind).Insert (S, Objs);
+                  end if;
                end;
             end loop;
          end loop;
@@ -2989,5 +3033,24 @@ package body Flow_Generated_Globals is
         or else Calls_Potentially_Blocking_Subprogram (Outs_GID)
         or else Calls_Potentially_Blocking_Subprogram (Proof_Ins_GID);
    end Is_Potentially_Blocking;
+
+   ---------------------
+   -- Tasking_Objects --
+   ---------------------
+
+   function Tasking_Objects
+     (Kind : Tasking_Info_Kind;
+      Subp : Entity_Name)
+      return Name_Sets.Set is
+      C : constant Cursor :=
+        Tasking_Info_Bag (Kind).Find (Subp);
+   begin
+      pragma Assert (if Has_Element (C)
+                     then
+                       not Name_Sets.Is_Empty (Element (C)));
+      return (if Has_Element (C)
+              then Element (C)
+              else Name_Sets.Empty_Set);
+   end Tasking_Objects;
 
 end Flow_Generated_Globals;

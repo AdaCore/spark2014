@@ -164,10 +164,13 @@ package Flow_Generated_Globals is
    --       * protected objects read-locked by function calls   (TR)
    --       * protected objects write-locked by procedure calls (TW)
    --       * accessed unsynchronized objects                   (TU)
+   --       * task instances and their number (one or more)     (TI)
    --
    --     Examples:
    --     GG TS foo_proc my_susp_obj
    --     GG TE bar_proc my_prot_obj
+   --     GG TI task_type_A ONE
+   --     GG TI task_type_B MANY
 
    ----------------------------------------------------------------------
 
@@ -362,6 +365,13 @@ package Flow_Generated_Globals is
                Ekind (E) in E_Entry | E_Procedure | E_Function;
    --  Returns True if subprogram E is potentially blocking or its blocking
    --  status is unknown; returns False it if is known to be nonblocking.
+
+   function Tasking_Objects
+     (Kind : Tasking_Info_Kind;
+      Subp : Entity_Name)
+      return Name_Sets.Set;
+   --  Returns the set of objects (e.g. suspension objects or entries,
+   --  depending on the Kind) accessed by subprogram Subp.
 
 private
 

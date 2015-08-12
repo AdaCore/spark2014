@@ -27,6 +27,7 @@ with Errout;                      use Errout;
 with Flow.Analysis.Antialiasing;
 with Flow.Analysis.Sanity;
 with Flow_Debug;                  use Flow_Debug;
+with Flow_Generated_Globals;
 with Flow_Error_Messages;         use Flow_Error_Messages;
 with Flow_Utility;                use Flow_Utility;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
@@ -37,6 +38,7 @@ with Sem_Util;                    use Sem_Util;
 with Sinfo;                       use Sinfo;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
+with SPARK_Definition;
 with SPARK_Util;                  use SPARK_Util;
 with Stand;                       use Stand;
 with VC_Kinds;                    use VC_Kinds;
@@ -3990,5 +3992,102 @@ package body Flow.Analysis is
             Tag  => Volatile_Function_Without_Volatile_Effects);
       end if;
    end Check_Function_For_Volatile_Effects;
+
+   package Entity_Name_to_Nodes_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Entity_Name,
+      Element_Type    => Node_Id,
+      Hash            => Name_Hash,
+      Equivalent_Keys => "=");
+   --  Containers for mapping (possibly concurrent) objects to tasks that
+   --  access them.
+
+   Suspenders : Entity_Name_to_Nodes_Maps.Map :=
+     Entity_Name_to_Nodes_Maps.Empty_Map;
+   --  Mapping from suspension objects to tasks that suspends on them;
+   --  we store only the first suspending task, any another indicates an error.
+
+   -------------------------------
+   -- Check_Concurrent_Accesses --
+   -------------------------------
+
+   procedure Check_Concurrent_Accesses (FA : in out Flow_Analysis_Graphs) is
+      This_Task_Type : constant Entity_Name :=
+        To_Entity_Name (FA.Analyzed_Entity);
+      --  Entity name of the task type that we analyse
+
+      use Flow_Generated_Globals, SPARK_Definition;
+
+      C : constant Task_Instances_Maps.Cursor :=
+        Task_Instances.Find (This_Task_Type);
+
+      subtype Instance_Count is Natural range 0 .. 2;
+      --  Number of task type instances; if there is more than one we do not
+      --  care about the exact number and represent it by 2.
+      --  ??? This type should be enum (Zero, One, Many) and Instance_Number
+      --      should be rather its subtype, say Non_Zero_Istance_Number with
+      --      range One .. Many.
+
+      Instances : constant Instance_Count :=
+        (if Task_Instances_Maps.Has_Element (C)
+         then (case Task_Instances_Maps.Element (C) is
+              when One  => 1,
+              when Many => 2)
+         else 0);
+
+   begin
+      --  If there are no instances of the this task there are no exclusivity
+      --  conflicts.
+      if Instances = 0 then
+         return;
+
+      --  If this task has many instances that suspend on some suspension
+      --  object then there is a conflict.
+      elsif Instances > 1
+        and then not Flow_Generated_Globals.
+          Tasking_Objects (Suspends_On, This_Task_Type).Is_Empty
+      then
+         Error_Msg_Flow (FA      => FA,
+                         Msg     => "more than one task " &
+                                    "suspend on suspension object &",
+                         Kind    => Error_Kind,
+                         N       => FA.Analyzed_Entity,
+                         F1      => Magic_String_Id
+                           (Name_Sets.Element (
+                            Tasking_Objects (Suspends_On, This_Task_Type).
+                              First)),
+                         SRM_Ref => "9.11");
+
+      --  Otherwise there is one instance of this task type and it must be the
+      --  only task type that suspend on its suspension variables.
+      else
+         for SO of Tasking_Objects (Suspends_On, This_Task_Type) loop
+            declare
+               use Entity_Name_to_Nodes_Maps;
+               Other_Task : constant Cursor := Suspenders.Find (SO);
+            begin
+               --  If there is an instance of another task type that suspends
+               --  on this suspension object then there is a conflict.
+               if Has_Element (Other_Task) then
+                  Error_Msg_Flow (FA      => FA,
+                                  Msg     => "task & already suspends " &
+                                    "on suspension object &",
+                                  Kind    => Error_Kind,
+                                  N       => FA.Analyzed_Entity,
+                                  F1      => Direct_Mapping_Id
+                                    (Entity_Name_to_Nodes_Maps.Element
+                                       (Other_Task)),
+                                  F2      => Magic_String_Id (SO),
+                                  SRM_Ref => "9.11");
+
+               --  Otherwise record this task (type???)
+               else
+                  Suspenders.Insert (SO, FA.Analyzed_Entity);
+               end if;
+            end;
+         end loop;
+
+      end if;
+
+   end Check_Concurrent_Accesses;
 
 end Flow.Analysis;

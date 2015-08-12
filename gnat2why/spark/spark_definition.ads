@@ -40,6 +40,7 @@
 --  in SPARK, and listed for translation, or not listed for translation if a
 --  violation was detected in the body.
 
+with Ada.Containers.Hashed_Maps;
 with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
@@ -57,6 +58,18 @@ package SPARK_Definition is
    Entity_Set : Node_Sets.Set;
    --  Set of all entities marked so far. It contains entities from both the
    --  current compilation unit and other units.
+
+   type Instance_Number is (One, Many);
+
+   package Task_Instances_Maps is
+     new Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
+                                     Element_Type    => Instance_Number,
+                                     Hash            => Name_Hash,
+                                     Equivalent_Keys => "=");
+   --  Containers that map tasks to number of their instances
+
+   Task_Instances : Task_Instances_Maps.Map;
+   --  Task instances
 
    Max_Array_Dimensions : constant Positive := 4;
    --  Maximal number of array dimensions that are currently supported

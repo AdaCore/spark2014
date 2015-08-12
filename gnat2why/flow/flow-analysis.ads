@@ -170,6 +170,10 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
+   procedure Check_Concurrent_Accesses
+     (FA : in out Flow_Analysis_Graphs)
+     with Pre => FA.Kind in Kind_Subprogram | Kind_Entry | Kind_Task;
+
 private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);

@@ -4101,7 +4101,8 @@ package body Flow.Control_Flow_Graph is
 
       --  Check for suspending on a suspension object
       if Suspends_On_Suspension_Object then
-         FA.Tasking (Suspends_On).Include (Entity (First_Actual (N)));
+         FA.Tasking (Suspends_On).Include
+           (Get_Enclosing_Object (First_Actual (N)));
       end if;
 
       --  A magic null export is needed when:
