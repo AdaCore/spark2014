@@ -159,6 +159,7 @@ package body Flow_Generated_Globals is
       Element_Type    => Tasking_Info,
       Hash            => Name_Hash,
       Equivalent_Keys => "=");
+   use Entity_Tasking_Info_Maps;
    --  Container for tasking-related information collected in phase 1
 
    Entity_Tasking_Info_Map : Entity_Tasking_Info_Maps.Map :=
@@ -718,75 +719,95 @@ package body Flow_Generated_Globals is
       procedure Write_Global_Info_List (L : Global_Info_Lists.List);
       --  Writes all global info of the global info set on the file
 
-      procedure Write_Info_Tag_Names (Tag : String; S : Name_Sets.Set);
-      --  Write tag followed by a set of names
+      procedure Write_Heading (Tag : String);
+      --  Write 'GG Tag' to the ALI file.
 
-      procedure Write_Info_Tag_Nodes (Tag : String; S : Node_Sets.Set);
-      --  Write tag followed by a set of nodes
+      procedure Write_Info_Tag_Names (Tag      : String;
+                                      S        : Name_Sets.Set;
+                                      Optional : Boolean := False);
+      --  Write 'GG Tag' to the ALI file followed by the names in S.
+
+      procedure Write_Info_Tag_Nodes (Tag      : String;
+                                      S        : Node_Sets.Set;
+                                      Optional : Boolean := False);
+      --  Write 'GG Tag' to the ALI file followed by the names in S.
 
       ---------------------------
       -- Write_Global_Info_Set --
       ---------------------------
 
       procedure Write_Global_Info_List (L : Global_Info_Lists.List) is
-         Origin_Str : constant array (Globals_Origin_T) of String (1 .. 3)
-           := (Origin_User     => "UG ",
-               Origin_Flow     => "FA ",
-               Origin_Frontend => "XR ");
-         Kind_Str : constant array (Analyzed_Subject_Kind) of String (1 .. 5)
-           := (Kind_Subprogram                  => "GG S ",
-               Kind_Entry                       => "GG E ",
-               Kind_Task                        => "GG T ",
-               Kind_Package | Kind_Package_Body => "GG P ");
+         Kind_Str : constant array (Analyzed_Subject_Kind) of Character :=
+           (Kind_Subprogram                  => 'S',
+            Kind_Entry                       => 'E',
+            Kind_Task                        => 'T',
+            Kind_Package | Kind_Package_Body => 'P');
+         Origin_Str : constant array (Globals_Origin_T) of String (1 .. 2) :=
+           (Origin_User     => "UG",
+            Origin_Flow     => "FA",
+            Origin_Frontend => "XR");
       begin
          for Info of L loop
-            Write_Info_Tag_Names (Kind_Str (Info.Kind) &
-                                    Origin_Str (Info.Globals_Origin) &
-                                    To_String (Info.Name),
-                                  Name_Sets.Empty_Set);
+            Write_Heading (Kind_Str (Info.Kind) & " " &
+                             Origin_Str (Info.Globals_Origin) & " " &
+                             To_String (Info.Name));
 
-            Write_Info_Tag_Names ("GG VP", Info.Inputs_Proof);
-            Write_Info_Tag_Names ("GG VI", Info.Inputs);
-            Write_Info_Tag_Names ("GG VO", Info.Outputs);
-            Write_Info_Tag_Names ("GG CP", Info.Proof_Calls);
-            Write_Info_Tag_Names ("GG CD", Info.Definite_Calls);
-            Write_Info_Tag_Names ("GG CC", Info.Conditional_Calls);
-            Write_Info_Tag_Names ("GG LV", Info.Local_Variables);
-            Write_Info_Tag_Names ("GG LS", Info.Local_Subprograms);
+            Write_Info_Tag_Names ("VP", Info.Inputs_Proof);
+            Write_Info_Tag_Names ("VI", Info.Inputs);
+            Write_Info_Tag_Names ("VO", Info.Outputs);
+            Write_Info_Tag_Names ("CP", Info.Proof_Calls);
+            Write_Info_Tag_Names ("CD", Info.Definite_Calls);
+            Write_Info_Tag_Names ("CC", Info.Conditional_Calls);
+            Write_Info_Tag_Names ("LV", Info.Local_Variables);
+            Write_Info_Tag_Names ("LS", Info.Local_Subprograms);
 
             --  For packages we have an additional line
             if Info.Kind in Kind_Package | Kind_Package_Body then
-               Write_Info_Tag_Names ("GG LD", Info.Local_Definite_Writes);
+               Write_Info_Tag_Names ("LD", Info.Local_Definite_Writes);
             end if;
          end loop;
       end Write_Global_Info_List;
+
+      -------------------
+      -- Write_Heading --
+      -------------------
+
+      procedure Write_Heading (Tag : String)
+      is
+      begin
+         Write_Info_Str ("GG " & Tag);
+         Write_Info_Terminate;
+      end Write_Heading;
 
       --------------------------
       -- Write_Info_Tag_Names --
       --------------------------
 
-      procedure Write_Info_Tag_Names (Tag : String; S : Name_Sets.Set) is
+      procedure Write_Info_Tag_Names (Tag      : String;
+                                      S        : Name_Sets.Set;
+                                      Optional : Boolean := False)
+      is
       begin
-         Write_Info_Str (Tag);
-         for N of S loop
-            Write_Info_Char (' ');
-            Write_Info_Str (To_String (N));
-         end loop;
-         Write_Info_Terminate;
+         if not Optional or else not S.Is_Empty then
+            Write_Info_Str ("GG " & Tag);
+            for N of S loop
+               Write_Info_Char (' ');
+               Write_Info_Str (To_String (N));
+            end loop;
+            Write_Info_Terminate;
+         end if;
       end Write_Info_Tag_Names;
 
       --------------------------
       -- Write_Info_Tag_Nodes --
       --------------------------
 
-      procedure Write_Info_Tag_Nodes (Tag : String; S : Node_Sets.Set) is
+      procedure Write_Info_Tag_Nodes (Tag      : String;
+                                      S        : Node_Sets.Set;
+                                      Optional : Boolean := False)
+      is
       begin
-         Write_Info_Str (Tag);
-         for N of S loop
-            Write_Info_Char (' ');
-            Write_Info_Str (To_String (To_Entity_Name (N)));
-         end loop;
-         Write_Info_Terminate;
+         Write_Info_Tag_Names (Tag, To_Name_Set (S), Optional);
       end Write_Info_Tag_Nodes;
 
    --  Start of processing for GG_Write_Finalize
@@ -798,8 +819,7 @@ package body Flow_Generated_Globals is
             State        : constant Entity_Name   := Key (C);
             Constituents : constant Name_Sets.Set := Element (C);
          begin
-            Write_Info_Tag_Names ("GG AS " & To_String (State),
-                                  Constituents);
+            Write_Info_Tag_Names ("AS " & To_String (State), Constituents);
          end;
       end loop;
 
@@ -810,62 +830,34 @@ package body Flow_Generated_Globals is
       Write_Global_Info_List (Subprogram_Info_List);
 
       --  Write Volatile info
-
-      --  Write Async_Writers
-      if not Async_Writers_Vars.Is_Empty then
-         Write_Info_Tag_Names ("GG AW", Async_Writers_Vars);
-      end if;
-
-      --  Write Async_Readers
-      if not Async_Readers_Vars.Is_Empty then
-         Write_Info_Tag_Names ("GG AR", Async_Readers_Vars);
-      end if;
-
-      --  Write Effective_Reads
-      if not Effective_Reads_Vars.Is_Empty then
-         Write_Info_Tag_Names ("GG ER", Effective_Reads_Vars);
-      end if;
-
-      --  Write Effective_Writes
-      if not Effective_Writes_Vars.Is_Empty then
-         Write_Info_Tag_Names ("GG EW", Effective_Writes_Vars);
-      end if;
+      Write_Info_Tag_Names ("AW", Async_Writers_Vars,    Optional => True);
+      Write_Info_Tag_Names ("AR", Async_Readers_Vars,    Optional => True);
+      Write_Info_Tag_Names ("ER", Effective_Reads_Vars,  Optional => True);
+      Write_Info_Tag_Names ("EW", Effective_Writes_Vars, Optional => True);
 
       --  Write nonblocking subprograms
-      if not Nonblocking_Subprograms_Set.Is_Empty then
-         Write_Info_Tag_Names ("GG NB", Nonblocking_Subprograms_Set);
-      end if;
+      Write_Info_Tag_Names ("NB", Nonblocking_Subprograms_Set,
+                            Optional => True);
 
       --  Write tasking-related information
       for C in Entity_Tasking_Info_Map.Iterate loop
          declare
-            Name : constant String :=
-              To_String (Entity_Tasking_Info_Maps.Key (C));
-            Info : constant Tasking_Info :=
-              Entity_Tasking_Info_Maps.Element (C);
+            Name : constant String       := To_String (Key (C));
+            Info : constant Tasking_Info := Element (C);
 
-            procedure Write_Tasking_Info (Tag  : String;
-                                          Kind : Tasking_Info_Kind);
-            --  Write tasking-related info if S is not empty
-
-            ------------------------
-            -- Write_Tasking_Info --
-            ------------------------
-
-            procedure Write_Tasking_Info (Tag  : String;
-                                          Kind : Tasking_Info_Kind) is
-            begin
-               if not Info (Kind).Is_Empty then
-                  Write_Info_Tag_Nodes ("GG " & Tag & " " & Name, Info (Kind));
-               end if;
-            end Write_Tasking_Info;
-
+            Kind_To_Str : constant array (Tasking_Info_Kind) of String (1 .. 2)
+              := (Suspends_On      => "TS",
+                  Entry_Calls      => "TE",
+                  Read_Locks       => "TR",
+                  Write_Locks      => "TW",
+                  Unsynch_Accesses => "TU");
          begin
-            Write_Tasking_Info ("TS", Suspends_On);
-            Write_Tasking_Info ("TE", Entry_Calls);
-            Write_Tasking_Info ("TR", Read_Locks);
-            Write_Tasking_Info ("TW", Write_Locks);
-            Write_Tasking_Info ("TU", Unsynch_Accesses);
+            for Kind in Tasking_Info_Kind loop
+               Write_Info_Tag_Nodes
+                 (Tag      => Kind_To_Str (Kind) & " " & Name,
+                  S        => Info (Kind),
+                  Optional => True);
+            end loop;
          end;
       end loop;
 
@@ -880,10 +872,9 @@ package body Flow_Generated_Globals is
       --  Write the finalization string "GG END"
       Write_Info_Str ("GG END");
       Write_Info_Terminate;
-
       Close_Output_Library_Info;
-      Current_Mode := GG_No_Mode;
 
+      Current_Mode := GG_No_Mode;
    end GG_Write_Finalize;
 
    -------------
