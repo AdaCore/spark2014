@@ -60,6 +60,8 @@ package body Flow_Generated_Globals is
 
    use Name_Graphs;
 
+   subtype GG_Edge_Colours is Edge_Colours range EC_Default .. EC_Default;
+
    ----------------------------------------------------------------------
    --  Debug flags
    ----------------------------------------------------------------------
@@ -210,12 +212,9 @@ package body Flow_Generated_Globals is
    -- Tasking graphs --
    --------------------
 
-   subtype Single_Edge_Colour is Edge_Colours range EC_Default .. EC_Default;
-   --  For tasking graph we need a single colour
-
    package Tasking_Graphs is new Graphs
      (Vertex_Key   => Entity_Name,
-      Edge_Colours => Single_Edge_Colour,
+      Edge_Colours => GG_Edge_Colours,
       Null_Key     => Null_Entity_Name,
       Key_Hash     => Name_Hash,
       Test_Key     => "=");
@@ -233,7 +232,7 @@ package body Flow_Generated_Globals is
    package Global_Graphs is new Graphs
      (Vertex_Key   => Global_Id,
       Key_Hash     => Global_Hash,
-      Edge_Colours => Edge_Colours,
+      Edge_Colours => GG_Edge_Colours,
       Null_Key     => Null_Global_Id,
       Test_Key     => "=");
 
@@ -418,7 +417,8 @@ package body Flow_Generated_Globals is
 
       function NDI
         (G : Graph;
-         V : Vertex_Id) return Node_Display_Info;
+         V : Vertex_Id)
+         return Node_Display_Info;
       --  Pretty-printing for each vertex in the dot output
 
       function EDI
@@ -426,7 +426,8 @@ package body Flow_Generated_Globals is
          A      : Vertex_Id;
          B      : Vertex_Id;
          Marked : Boolean;
-         Colour : Edge_Colours) return Edge_Display_Info;
+         Colour : GG_Edge_Colours)
+         return Edge_Display_Info;
       --  Pretty-printing for each edge in the dot output
 
       ---------
@@ -471,7 +472,8 @@ package body Flow_Generated_Globals is
          A      : Vertex_Id;
          B      : Vertex_Id;
          Marked : Boolean;
-         Colour : Edge_Colours) return Edge_Display_Info
+         Colour : GG_Edge_Colours)
+         return Edge_Display_Info
       is
          pragma Unreferenced (G, A, B, Marked, Colour);
 
@@ -945,23 +947,9 @@ package body Flow_Generated_Globals is
 
          G_Ins, G_Outs, G_Proof_Ins : Global_Id;
 
-         procedure Add_Edge (G1, G2 : Global_Id);
-         --  Adds an edge between the vertices V1 and V2 that
-         --  correspond to G1 and G2 (V1 --> V2). The edge has the
-         --  default colour.
-
          function Edge_Selector (A, B : Vertex_Id) return Boolean;
          --  Check if we should add the given edge to the graph based
          --  wheather it is in the local graph or not.
-
-         --------------
-         -- Add_Edge --
-         --------------
-
-         procedure Add_Edge (G1, G2 : Global_Id) is
-         begin
-            Global_Graph.Add_Edge (G1, G2, EC_Default);
-         end Add_Edge;
 
          -------------------
          -- Edge_Selector --
@@ -1013,87 +1001,85 @@ package body Flow_Generated_Globals is
             --  Connect the subprogram's Proof_In variables to the
             --  subprogram's Proof_Ins vertex.
             for Input_Proof of Info.Inputs_Proof loop
-               Add_Edge (G_Proof_Ins,
-                         Global_Id'(Kind => Variable_Kind,
-                                    Name => Input_Proof));
+               Global_Graph.Add_Edge (G_Proof_Ins,
+                                      Global_Id'(Kind => Variable_Kind,
+                                                 Name => Input_Proof));
             end loop;
 
             --  Connect the subprogram's Input variables to the
             --  subprogram's Ins vertex.
             for Input of Info.Inputs loop
-               Add_Edge (G_Ins,
-                         Global_Id'(Kind => Variable_Kind,
-                                    Name => Input));
+               Global_Graph.Add_Edge (G_Ins,
+                                      Global_Id'(Kind => Variable_Kind,
+                                                 Name => Input));
             end loop;
 
             --  Connect the subprogram's Output variables to the
             --  subprogram's Outputs vertex.
             for Output of Info.Outputs loop
-               Add_Edge (G_Outs,
-                         Global_Id'(Kind => Variable_Kind,
-                                    Name => Output));
+               Global_Graph.Add_Edge (G_Outs,
+                                      Global_Id'(Kind => Variable_Kind,
+                                                 Name => Output));
             end loop;
 
             --  Connect the subprogram's Proof_Ins vertex to the
             --  callee's Ins and Proof_Ins vertices.
             for Proof_Call of Info.Proof_Calls loop
-               Add_Edge (G_Proof_Ins,
-                         Global_Id'(Kind => Proof_Ins_Kind,
-                                    Name => Proof_Call));
+               Global_Graph.Add_Edge (G_Proof_Ins,
+                                      Global_Id'(Kind => Proof_Ins_Kind,
+                                                 Name => Proof_Call));
 
-               Add_Edge (G_Proof_Ins,
-                         Global_Id'(Kind => Ins_Kind,
-                                    Name => Proof_Call));
+               Global_Graph.Add_Edge (G_Proof_Ins,
+                                      Global_Id'(Kind => Ins_Kind,
+                                                 Name => Proof_Call));
             end loop;
 
             --  Connect the subprogram's Proof_Ins, Ins and Outs
             --  vertices respectively to the callee's Proof_Ins, Ins
             --  and Outs vertices.
             for Definite_Call of Info.Definite_Calls loop
-               Add_Edge (G_Proof_Ins,
-                         Global_Id'(Kind => Proof_Ins_Kind,
-                                    Name => Definite_Call));
+               Global_Graph.Add_Edge (G_Proof_Ins,
+                                      Global_Id'(Kind => Proof_Ins_Kind,
+                                                 Name => Definite_Call));
 
-               Add_Edge (G_Ins,
-                         Global_Id'(Kind => Ins_Kind,
-                                    Name => Definite_Call));
+               Global_Graph.Add_Edge (G_Ins,
+                                      Global_Id'(Kind => Ins_Kind,
+                                                 Name => Definite_Call));
 
-               Add_Edge (G_Outs,
-                         Global_Id'(Kind => Outs_Kind,
-                                    Name => Definite_Call));
+               Global_Graph.Add_Edge (G_Outs,
+                                      Global_Id'(Kind => Outs_Kind,
+                                                 Name => Definite_Call));
 
                --  Also record the call in the tasking-info graphs
                for Kind in Tasking_Info_Kind loop
                   Tasking_Graph (Kind).Add_Edge (Info.Name,
-                                                 Definite_Call,
-                                                 EC_Default);
+                                                 Definite_Call);
                end loop;
             end loop;
 
             --  As above but also add an edge from the subprogram's
             --  Ins vertex to the callee's Outs vertex.
             for Conditional_Call of Info.Conditional_Calls loop
-               Add_Edge (G_Proof_Ins,
-                         Global_Id'(Kind => Proof_Ins_Kind,
-                                    Name => Conditional_Call));
+               Global_Graph.Add_Edge (G_Proof_Ins,
+                                      Global_Id'(Kind => Proof_Ins_Kind,
+                                                 Name => Conditional_Call));
 
-               Add_Edge (G_Ins,
-                         Global_Id'(Kind => Ins_Kind,
-                                    Name => Conditional_Call));
+               Global_Graph.Add_Edge (G_Ins,
+                                      Global_Id'(Kind => Ins_Kind,
+                                                 Name => Conditional_Call));
 
-               Add_Edge (G_Ins,
-                         Global_Id'(Kind => Outs_Kind,
-                                    Name => Conditional_Call));
+               Global_Graph.Add_Edge (G_Ins,
+                                      Global_Id'(Kind => Outs_Kind,
+                                                 Name => Conditional_Call));
 
-               Add_Edge (G_Outs,
-                         Global_Id'(Kind => Outs_Kind,
-                                    Name => Conditional_Call));
+               Global_Graph.Add_Edge (G_Outs,
+                                      Global_Id'(Kind => Outs_Kind,
+                                                 Name => Conditional_Call));
 
                --  Also record the call in the tasking-info graphs
                for Kind in Tasking_Info_Kind loop
                   Tasking_Graph (Kind).Add_Edge (Info.Name,
-                                                 Conditional_Call,
-                                                 EC_Default);
+                                                 Conditional_Call);
                end loop;
             end loop;
          end loop;
@@ -1139,7 +1125,7 @@ package body Flow_Generated_Globals is
                                        Name => Nam);
 
                      if not Global_Graph.Edge_Exists (From, G) then
-                        Add_Edge (From, G);
+                        Global_Graph.Add_Edge (From, G);
                      end if;
                   end loop;
                end Add_Edges_For_FS;
@@ -1275,20 +1261,6 @@ package body Flow_Generated_Globals is
       procedure Create_Local_Graph is
          use Global_Graphs;
 
-         procedure Add_Edge (G1, G2 : Global_Id);
-         --  Adds an edge between the vertices V1 and V2 that correspond to G1
-         --  and G2 (V1 --> V2). The edge has the default colour. This
-         --  procedure operates on the Local_Graph.
-
-         --------------
-         -- Add_Edge --
-         --------------
-
-         procedure Add_Edge (G1, G2 : Global_Id) is
-         begin
-            Local_Graph.Add_Edge (G1, G2, EC_Default);
-         end Add_Edge;
-
          G_Subp       : Global_Id;
          G_Local_Subp : Global_Id;
          G_Local_Var  : Global_Id;
@@ -1319,7 +1291,7 @@ package body Flow_Generated_Globals is
                end if;
 
                --  Link enclosing subprogram to local variable
-               Add_Edge (G_Subp, G_Local_Var);
+               Local_Graph.Add_Edge (G_Subp, G_Local_Var);
             end loop;
 
             --  Create a vertex for every local subprogram and link it to the
@@ -1335,7 +1307,7 @@ package body Flow_Generated_Globals is
                end if;
 
                --  Link enclosing subprogram to local subprogram
-               Add_Edge (G_Subp, G_Local_Subp);
+               Local_Graph.Add_Edge (G_Subp, G_Local_Subp);
             end loop;
 
             --  Link all local variables to all local subprograms (this
@@ -1348,7 +1320,7 @@ package body Flow_Generated_Globals is
                   G_Local_Subp := Global_Id'(Kind => Subprogram_Kind,
                                              Name => Local_Subprogram);
 
-                  Add_Edge (G_Local_Var, G_Local_Subp);
+                  Local_Graph.Add_Edge (G_Local_Var, G_Local_Subp);
                end loop;
             end loop;
          end loop;
@@ -1379,7 +1351,7 @@ package body Flow_Generated_Globals is
                      end if;
 
                      --  Create edge
-                     Tasking_Graph (Kind).Add_Edge (Subp, Obj, EC_Default);
+                     Tasking_Graph (Kind).Add_Edge (Subp, Obj);
                   end loop;
                end;
             end loop;
@@ -1460,7 +1432,7 @@ package body Flow_Generated_Globals is
                     or else Outputs.Contains (V)
                   then
                      if not Global_Graph.Edge_Exists (V_Ins, V) then
-                        Global_Graph.Add_Edge (V_Ins, V, EC_Default);
+                        Global_Graph.Add_Edge (V_Ins, V);
                      end if;
 
                      Global_Graph.Remove_Edge (V_Proof_Ins, V);

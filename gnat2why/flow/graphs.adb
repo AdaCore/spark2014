@@ -234,7 +234,8 @@ package body Graphs is
    procedure Add_Edge
      (G        : in out Graph;
       V_1, V_2 : Vertex_Id;
-      Colour   : Edge_Colours) is
+      Colour   : Edge_Colours := Edge_Colours'First)
+   is
    begin
       --  Sanity check the indices.
       pragma Assert
@@ -258,7 +259,8 @@ package body Graphs is
    procedure Add_Edge
      (G        : in out Graph;
       V_1, V_2 : Vertex_Key;
-      Colour   : Edge_Colours) is
+      Colour   : Edge_Colours := Edge_Colours'First)
+   is
    begin
       G.Add_Edge (G.Get_Vertex (V_1), G.Get_Vertex (V_2), Colour);
    end Add_Edge;

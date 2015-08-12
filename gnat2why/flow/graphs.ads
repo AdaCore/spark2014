@@ -243,7 +243,7 @@ package Graphs is
    procedure Add_Edge
      (G        : in out Graph;
       V_1, V_2 : Vertex_Id;
-      Colour   : Edge_Colours)
+      Colour   : Edge_Colours := Edge_Colours'First)
    with Pre  => V_1 /= Null_Vertex and
                 V_2 /= Null_Vertex,
         Post => G.Edge_Exists (V_1, V_2);
@@ -256,7 +256,7 @@ package Graphs is
    procedure Add_Edge
      (G        : in out Graph;
       V_1, V_2 : Vertex_Key;
-      Colour   : Edge_Colours)
+      Colour   : Edge_Colours := Edge_Colours'First)
    with Pre => G.Get_Vertex (V_1) /= Null_Vertex and
                G.Get_Vertex (V_2) /= Null_Vertex;
    --  Convenience function to add an edge between two vertices given
