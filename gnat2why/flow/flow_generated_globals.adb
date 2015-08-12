@@ -380,19 +380,6 @@ package body Flow_Generated_Globals is
       end if;
    end Add_To_Volatile_Sets_If_Volatile;
 
-   -----------------
-   -- To_Name_Set --
-   -----------------
-
-   function To_Name_Set (S : Node_Sets.Set) return Name_Sets.Set is
-   begin
-      return X : Name_Sets.Set := Name_Sets.Empty_Set do
-         for E of S loop
-            X.Insert (To_Entity_Name (E));
-         end loop;
-      end return;
-   end To_Name_Set;
-
    -------------------------------
    -- Print_Global_Phase_1_Info --
    -------------------------------

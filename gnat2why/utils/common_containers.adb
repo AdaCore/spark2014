@@ -64,6 +64,10 @@ package body Common_Containers is
    String_Cache   : Entity_Name_To_String_Maps.Map :=
      Entity_Name_To_String_Maps.Empty_Map;
 
+   --------------------
+   -- To_Entity_Name --
+   --------------------
+
    function To_Entity_Name (S : String) return Entity_Name is
       Tmp : Ada.Strings.Unbounded.String_Access := new String'(S);
       use Intern_Strings_Maps;
@@ -101,10 +105,26 @@ package body Common_Containers is
       end if;
    end To_Entity_Name;
 
+   ---------------
+   -- To_String --
+   ---------------
+
    function To_String (E : Entity_Name) return String is
-      use Entity_Name_To_String_Maps;
    begin
-      return Element (String_Cache, E).all;
+      return Entity_Name_To_String_Maps.Element (String_Cache, E).all;
    end To_String;
+
+   -----------------
+   -- To_Name_Set --
+   -----------------
+
+   function To_Name_Set (S : Node_Sets.Set) return Name_Sets.Set is
+   begin
+      return X : Name_Sets.Set := Name_Sets.Empty_Set do
+         for E of S loop
+            X.Insert (To_Entity_Name (E));
+         end loop;
+      end return;
+   end To_Name_Set;
 
 end Common_Containers;

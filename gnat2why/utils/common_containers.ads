@@ -118,6 +118,9 @@ package Common_Containers is
       Equivalent_Elements => Ada.Strings.Unbounded."=",
       "="                 => Ada.Strings.Unbounded."=");
 
+   function To_Name_Set (S : Node_Sets.Set) return Name_Sets.Set;
+   --  Takes a set of Node_Ids and returns a set of Entity_Names.
+
 private
 
    Null_Entity_Name : constant Entity_Name := 0;
