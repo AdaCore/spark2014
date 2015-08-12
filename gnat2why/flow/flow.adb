@@ -963,7 +963,7 @@ package body Flow is
       Tmp.GG.Globals := Node_Sets.Empty_Set;
 
       declare
-         FA : Flow_Analysis_Graphs := Tmp;
+         FA : Flow_Analysis_Graphs := Tmp; -- ??? why not simply use Tmp?
       begin
          Append (FA.Base_Filename, Unique_Name (E));
 
