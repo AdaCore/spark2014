@@ -4720,6 +4720,31 @@ package body SPARK_Definition is
                 (Condition (Entry_Body_Formal_Part (N)));
             end if;
 
+            --  For subprogram bodies (but not other subprogram-like nodes
+            --  which are also processed by this procedure) mark Refined_Post
+            --  aspect if present.
+            if Nkind (N) = N_Subprogram_Body then
+               declare
+                  C : constant Entity_Id :=
+                    Contract (Defining_Entity (Specification (N)));
+               begin
+                  if Present (C) then
+                     declare
+                        Prag : Node_Id := Pre_Post_Conditions (C);
+                     begin
+                        while Present (Prag) loop
+                           if Get_Pragma_Id (Prag) = Pragma_Refined_Post
+                           then
+                              Mark (Expression (First (
+                                    Pragma_Argument_Associations (Prag))));
+                           end if;
+                           Prag := Next_Pragma (Prag);
+                        end loop;
+                     end;
+                  end if;
+               end;
+            end if;
+
             --  Detect violations in the body itself
 
             Mark_Stmt_Or_Decl_List (Declarations (N));

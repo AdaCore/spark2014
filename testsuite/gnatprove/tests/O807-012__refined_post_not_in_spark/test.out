@@ -1,0 +1,6 @@
+refined_post_not_in_spark.adb:17:29: "Not_In_SPARK" is not allowed in SPARK
+refined_post_not_in_spark.adb:17:29: violation of pragma SPARK_Mode at /tmp/tmp-test-O807-012__refined_post_not_in_spark-15718/src/test.adc:1
+   compilation of refined_post_not_in_spark.adb failed
+
+
+gnatprove: error during flow analysis and proof
