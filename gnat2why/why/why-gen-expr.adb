@@ -3240,7 +3240,7 @@ package body Why.Gen.Expr is
       Reason : VC_Kind;
       Subprogram : String := "") return Name_Id_Set
    is
-      --  A gnatprove label in Why3 has the following form
+      --  A GNATprove label in Why3 has the following form
       --
       --  "GP_Reason:VC_Kind"     - the kind of the VC
       --  "GP_Sloc:file:line:col" - the sloc of the construct that triggers the

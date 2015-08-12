@@ -1163,7 +1163,7 @@ package body SPARK_Definition is
 
          when N_Raise_xxx_Error =>
             --  The frontend inserts explicit checks during semantic
-            --  analysis in some cases, for which gnatprove issues a
+            --  analysis in some cases, for which GNATprove issues a
             --  corresponding check. Currently, this is only used for
             --  discriminant checks introduced when converting a
             --  discriminant type into another discriminant type, in
@@ -4112,10 +4112,10 @@ package body SPARK_Definition is
    -- Mark_Pragma --
    -----------------
 
-   --  gnatprove currently deals with a subset of the Ada and GNAT pragmas.
+   --  GNATprove currently deals with a subset of the Ada and GNAT pragmas.
    --  Other recognized pragmas are ignored, and a warning is issued here (and
    --  in flow analysis, and in proof) that the pragma is ignored. Any change
-   --  in the set of pragmas that gnatprove supports should be reflected:
+   --  in the set of pragmas that GNATprove supports should be reflected:
    --    . in Mark_Pragma below
    --    . for flow analysis, in Pragma_Relevant_To_Flow in
    --      flow-control_flow_graph.adb
@@ -4301,7 +4301,7 @@ package body SPARK_Definition is
             null;
 
          --  Group 1d - pragma that are re-written and/or removed
-         --  by the front-end in GNATProve, so they should
+         --  by the front-end in GNATprove, so they should
          --  never be seen here.
          when Pragma_Assert                       |
               Pragma_Assert_And_Cut               |

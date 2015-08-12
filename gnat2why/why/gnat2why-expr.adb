@@ -11025,7 +11025,7 @@ package body Gnat2Why.Expr is
             return New_Void (Prag);
 
          --  Group 1d - pragma that are re-written and/or removed
-         --  by the front-end in GNATProve, so they should
+         --  by the front-end in GNATprove, so they should
          --  never be seen here.
          when Pragma_Assert                       |
               Pragma_Assert_And_Cut               |
