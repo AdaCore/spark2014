@@ -2845,11 +2845,9 @@ package body SPARK_Definition is
                                         then Parent (E)
                                         else Subprogram_Specification (E));
 
-         if Present (Contract (E)) then
-            Prag := Pre_Post_Conditions (Contract (E));
-         else
-            Prag := Empty;
-         end if;
+         Prag := (if Present (Contract (E))
+                  then Pre_Post_Conditions (Contract (E))
+                  else Empty);
 
          while Present (Prag) loop
             Expr :=
