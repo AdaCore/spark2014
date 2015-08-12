@@ -2521,6 +2521,28 @@ Data and flow dependency contracts are given for all subprograms. |GNATprove|
 proves all checks on this program, except for 4 runtime checks related to
 scaling quantities using a division (a known limitation of automatic provers).
 
+.. rubric:: ``crazyflie``
+
+This program is a translation of the stabilization system of the Crazyflie 2.0,
+a tiny drone released by Bitcraze AB in 2013 and originally based on an
+open-source firmware written in C.
+
+This SPARK code interfaces with the other parts of the firmware (ST peripheral
+libraries, FreeRTOS libraries, Crazyflie sensors and actuators), which
+remained in C, by using Ada capabilities for multi-language programs.
+
+The goal was to prove absence of runtime errors on the most critical code parts
+of the drone's firmware. The techniques used to achieve this aim were presented
+in a post on the AdaCore Blog :
+http://blog.adacore.com/how-to-prevent-drone-crashes-using-spark
+
+Data dependency contracts are given for most subprograms, specially in the
+``Stabilizer_Pack`` package which uses :ref:`State Abstraction` to specify
+this type of contracts.
+
+|GNATprove| proves all the checks of the program using the default timeout
+of one second.
+
 .. rubric:: ``heatingsystem``
 
 This program is a standard example of controller, turning on and off the
