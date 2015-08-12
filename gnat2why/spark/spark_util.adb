@@ -1755,8 +1755,7 @@ package body SPARK_Util is
          end if;
 
          if Contracts.Is_Empty and Inherited then
-            Contracts :=
-              Find_Contracts (E, Name, Inherited => True);
+            Contracts := Find_Contracts (E, Name, Inherited => True);
          end if;
 
       else
