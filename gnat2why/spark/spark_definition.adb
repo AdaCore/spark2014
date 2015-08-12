@@ -3229,25 +3229,31 @@ package body SPARK_Definition is
             end;
          end if;
 
-         --  Detect if the type has partial default initialization
-         case SPARK_Util.Default_Initialization (E) is
-            when Mixed_Initialization =>
-               Mark_Violation ("type with partial default initialization",
-                               E,
-                               SRM_Reference => "SPARK RM 3.8(1)");
-
-            when No_Default_Initialization =>
-               if Ekind (E) in Protected_Kind then
+         --  Check default initialization
+         declare
+            DI : constant Default_Initialization_Kind :=
+              SPARK_Util.Default_Initialization (E);
+         begin
+            --  Protected types need full default initialization
+            if Ekind (E) in Protected_Kind then
+               if DI not in
+                 Full_Default_Initialization | No_Possible_Initialization
+               then
                   Mark_Violation ("protected type "
                                   & "with no default initialization",
                                   E,
+                                  SRM_Reference => "SPARK RM 9.4");
+               end if;
+            else
+               --  Other types are not allowed to have partial default
+               --  initialization.
+               if DI = Mixed_Initialization then
+                  Mark_Violation ("type with partial default initialization",
+                                  E,
                                   SRM_Reference => "SPARK RM 3.8(1)");
                end if;
-
-            when Full_Default_Initialization |
-               No_Possible_Initialization  =>
-               null;
-         end case;
+            end if;
+         end;
 
          if Is_Array_Type (E) then
             declare

@@ -9,19 +9,23 @@ tasks.adb:39:07: "Store" is not allowed in SPARK
 tasks.adb:39:07: violation of pragma SPARK_Mode at test.adc:1
 tasks.adb:97:07: "Store_With_No_Initialization" is not allowed in SPARK
 tasks.adb:97:07: violation of pragma SPARK_Mode at test.adc:1
+tasks.adb:107:07: "Store_With_Mixed_Initialization" is not allowed in SPARK
+tasks.adb:107:07: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:8:25: access type is not allowed in SPARK
 tasks.ads:8:25: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:10:07: warning: pragma "Priority" ignored (not yet supported)
 tasks.ads:15:07: warning: pragma "Priority" ignored (not yet supported)
-tasks.ads:22:19: type with partial default initialization is not allowed in SPARK (SPARK RM 3.8(1))
+tasks.ads:22:19: protected type with no default initialization is not allowed in SPARK (SPARK RM 9.4)
 tasks.ads:22:19: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:24:07: warning: pragma "Priority" ignored (not yet supported)
 tasks.ads:30:07: access type is not allowed in SPARK
 tasks.ads:30:07: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:30:27: access type is not allowed in SPARK
 tasks.ads:30:27: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:51:19: protected type with no default initialization is not allowed in SPARK (SPARK RM 3.8(1))
+tasks.ads:51:19: protected type with no default initialization is not allowed in SPARK (SPARK RM 9.4)
 tasks.ads:51:19: violation of pragma SPARK_Mode at test.adc:1
+tasks.ads:61:19: protected type with no default initialization is not allowed in SPARK (SPARK RM 9.4)
+tasks.ads:61:19: violation of pragma SPARK_Mode at test.adc:1
    compilation of tasks.adb failed
 
 

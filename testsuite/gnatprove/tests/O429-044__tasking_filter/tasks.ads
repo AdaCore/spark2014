@@ -58,4 +58,12 @@ package Tasks is
    protected type Null_Protected_Type is
    end;
 
+   protected type Store_With_Mixed_Initialization
+   is
+      entry Wait (Dummy : Integer);
+   private
+      Default_Value : Integer := 0;
+      No_Default_Value : Integer;
+   end;
+
 end Tasks;

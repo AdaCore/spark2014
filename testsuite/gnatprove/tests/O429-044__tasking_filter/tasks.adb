@@ -103,4 +103,11 @@ package body Tasks is
    protected body Null_Protected_Type is
    end;
 
+   protected body Store_With_Mixed_Initialization is
+      entry Wait (Dummy : Integer) when True is
+      begin
+         null;
+      end Wait;
+   end;
+
 end Tasks;
