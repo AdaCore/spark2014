@@ -5490,6 +5490,7 @@ package body Flow.Control_Flow_Graph is
            Pragma_Post_Class                     |
            Pragma_Pre                            |
            Pragma_Predicate                      |
+           Pragma_Predicate_Failure              |
            Pragma_Prefix_Exception_Messages      |
            Pragma_Pre_Class                      |
            Pragma_Priority_Specific_Dispatching  |
