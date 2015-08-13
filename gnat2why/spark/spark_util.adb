@@ -628,7 +628,7 @@ package body SPARK_Util is
       Count : Natural := 0;
 
    begin
-      if Is_Record_Type (E) then
+      if Is_Record_Type (E) or else Is_Protected_Type (E) then
          Field := First_Component (E);
          while Present (Field) loop
             if not Is_Tag (Field)
@@ -2443,10 +2443,13 @@ package body SPARK_Util is
       --  A subprogram always inlined should have Body_To_Inline set and flag
       --  Is_Inlined_Always set to True.
 
+      --  subprograms of protected objects are never inlined.
+
       return Is_Subprogram (E)
         and then Present (Subprogram_Spec (E))
         and then Present (Body_To_Inline (Subprogram_Spec (E)))
-        and then Is_Inlined_Always (E);
+        and then Is_Inlined_Always (E)
+        and then Convention (E) /= Convention_Protected;
    end Is_Local_Subprogram_Always_Inlined;
 
    -------------------
@@ -2655,7 +2658,7 @@ package body SPARK_Util is
    procedure Iterate_Call_Arguments (Call : Node_Id)
    is
       Params     : constant List_Id := Parameter_Associations (Call);
-      Cur_Formal : Node_Id := First_Entity (Entity (Name (Call)));
+      Cur_Formal : Node_Id := First_Entity (Get_Called_Entity (Call));
       Cur_Actual : Node_Id := First (Params);
       In_Named   : Boolean := False;
    begin

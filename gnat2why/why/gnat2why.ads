@@ -230,6 +230,27 @@
 --         as parameters all the values of components of the (possibly
 --         multidimensional) aggregate.
 
+--  -------------------------------------------------
+--  -- Translation of specific language constructs --
+--  -------------------------------------------------
+
+--  Protected types
+--  ---------------
+--
+--  The frontend generated protected types even for proctected objects without
+--  explicit type declaration. Protected types are handled just as records with
+--  discriminants. The complex part are calls to subprograms of the protected
+--  object.
+--  * When translating the subprogram declaration: The protected subprogram's
+--    first formal is an implicit "self" objects whose type is the protected
+--    type.
+--  * When translating the subprogram body: an extra "self" object is
+--    introduced for internal calls and direct manipulation of fields.
+--  * When translating calls: the self object (internal calls) or the prefix
+--    (external calls) needs to be passed as first argument
+--  * When translating references to fields: The self object needs to be
+--    prepended
+
 ------------------------------------
 -- Labels Interpreted by gnatwhy3 --
 ------------------------------------

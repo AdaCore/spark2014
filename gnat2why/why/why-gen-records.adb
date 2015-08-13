@@ -229,6 +229,12 @@ package body Why.Gen.Records is
       --  @param E record type
       --  For each subcomponent of E, create an entry in map Comp_Info
 
+      procedure Init_Component_Info_For_Protected_Types (E : Entity_Id)
+        with Pre => Is_Protected_Type (E);
+      --  @param E the entity of the protected type
+      --  For each component and discriminant of E, create an entry in map
+      --  Comp_Info
+
       function Transform_Discrete_Choices
         (Case_N : Node_Id;
          Expr   : W_Term_Id) return W_Pred_Id;
@@ -770,7 +776,8 @@ package body Why.Gen.Records is
                      Index  : Natural := 0;
                      Field  : Node_Id := First_Component_Or_Discriminant (E);
                   begin
-                     while Present (Field) loop
+                     while Present (Field)
+                     loop
                         if Is_Not_Hidden_Discriminant (Field)
                           and then not Is_Tag (Field)
                           and then No (Root_Record_Component (Field))
@@ -1604,7 +1611,7 @@ package body Why.Gen.Records is
            or else Is_Tagged_Type (E)
          then
             Index := 1;
-            if Is_Record_Type (E) then
+            if Is_Record_Type (E) or else Is_Protected_Type (E) then
                Field := First_Component (E);
                while Present (Field) loop
                   if not Is_Tag (Field)
@@ -1911,6 +1918,26 @@ package body Why.Gen.Records is
          end if;
       end Init_Component_Info;
 
+      ---------------------------------------------
+      -- Init_Component_Info_For_Protected_Types --
+      ---------------------------------------------
+
+      procedure Init_Component_Info_For_Protected_Types (E : Entity_Id) is
+         Field : Entity_Id := First_Entity (E);
+      begin
+         while Present (Field) loop
+            if Ekind (Field) in E_Discriminant | E_Component then
+               Comp_Info.Insert
+                 (Field,
+                  Component_Info'(
+                    Ident  =>
+                      To_Why_Id (Field, Local => True),
+                    others => Empty));
+            end if;
+            Next_Entity (Field);
+         end loop;
+      end Init_Component_Info_For_Protected_Types;
+
       --------------------------------
       -- Transform_Discrete_Choices --
       --------------------------------
@@ -2066,6 +2093,8 @@ package body Why.Gen.Records is
          Init_Component_Info (Retysp (Etype (E)));
       elsif Ekind (E) in E_Record_Type | E_Record_Type_With_Private then
          Init_Component_Info (E);
+      elsif Ekind (E) in E_Protected_Type | E_Protected_Subtype then
+         Init_Component_Info_For_Protected_Types (E);
       end if;
 
       Declare_Record_Type;

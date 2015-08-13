@@ -281,7 +281,15 @@ package body Gnat2Why.Expr is
       Value       : W_Expr_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params) return W_Expr_Id;
-   --  same as One_Level_Access, but for updates
+   --  @param N      the Ada node which defines the component to be updated
+   --                  (e.g. a record access)
+   --  @param Pref   the currently computed prefix, (e.g. the record value
+   --                  before the update)
+   --  @param Value  the new value of the updated component
+   --  @param Domain the domain
+   --  @param Params the translation params
+   --  @return the Why expression which corresponds to the Pref object, but
+   --            updated at the point specified by N, with value Value
 
    function Transform_Aggregate
      (Params              : Transformation_Params;
@@ -819,7 +827,7 @@ package body Gnat2Why.Expr is
                      Def      => +Why_Expr,
                      Context  => +Res);
                end;
-            when Regular =>
+            when Regular | Prot_Self =>
                declare
                   L_Id     : constant W_Identifier_Id :=
                     To_Why_Id (Lvalue, Typ => Why_Ty);
@@ -1392,7 +1400,7 @@ package body Gnat2Why.Expr is
       Nb_Of_Lets  : out Natural;
       Params      :     Transformation_Params) return W_Expr_Array
    is
-      Subp    : constant Entity_Id := Entity (Name (Call));
+      Subp    : constant Entity_Id := Get_Called_Entity (Call);
       Binders : constant Item_Array :=
         Compute_Subprogram_Parameters (Subp, Domain);
 
@@ -1476,6 +1484,23 @@ package body Gnat2Why.Expr is
                              Params);
                      end case;
                   end if;
+                  Arg_Cnt := Arg_Cnt + 1;
+
+               when Prot_Self =>
+
+                  --  external call, pass the object itself
+
+                  if Nkind (Name (Call)) = N_Selected_Component then
+                     Why_Args (Arg_Cnt) :=
+                       Transform_Expr
+                         (Prefix (Name (Call)),
+                          Get_Typ (Binders (Bind_Cnt).Main.B_Name),
+                          Domain,
+                          Params);
+                  else
+                     Why_Args (Arg_Cnt) := +Binders (Bind_Cnt).Main.B_Name;
+                  end if;
+
                   Arg_Cnt := Arg_Cnt + 1;
 
                when DRecord =>
@@ -1782,12 +1807,21 @@ package body Gnat2Why.Expr is
          procedure Iterate_Call is new
            Iterate_Call_Arguments (Compute_Arg);
       begin
+
+         --  In the case of protected subprograms, there is an invisible first
+         --  parameter, the protected object itself. We call "Compute_Arg" with
+         --  empty arguments to process this case.
+
+         if Is_Protected_Subprogram (Subp) then
+            Compute_Arg (Empty, Empty);
+         end if;
+
          Iterate_Call (Call);
 
          --  Loop over remaining logical binders
 
          for B in Bind_Cnt .. Binders'Last loop
-            pragma Assert (Binders (B).Kind = Regular);
+            pragma Assert (Binders (B).Kind in Regular);
             Why_Args (Arg_Cnt) :=
               Get_Logic_Arg (Binders (B).Main, Params.Ref_Allowed);
             Arg_Cnt := Arg_Cnt + 1;
@@ -3418,10 +3452,14 @@ package body Gnat2Why.Expr is
 
          when N_Identifier | N_Expanded_Name =>
             declare
-               Binder : constant Item_Type :=
-                 Ada_Ent_To_Why.Element (Symbol_Table, Entity (N));
+               Ent : constant Entity_Id := Entity (N);
             begin
-               return Get_Why_Type_From_Item (Binder);
+               if Is_Protected_Component_Or_Discr (Ent) then
+                  return Type_Of_Node (Etype (Ent));
+               else
+                  return Get_Why_Type_From_Item
+                    (Ada_Ent_To_Why.Element (Symbol_Table, Ent));
+               end if;
             end;
          when N_Slice =>
             return EW_Abstract (Unique_Entity (Etype (N)));
@@ -3579,6 +3617,8 @@ package body Gnat2Why.Expr is
       procedure Process_Arg (Formal, Actual : Node_Id) is
       begin
          case Binders (Bind_Cnt).Kind is
+            when Prot_Self =>
+               null;
             when Regular =>
                if Needs_Temporary_Ref
                  (Actual, Formal, Get_Typ (Binders (Bind_Cnt).Main.B_Name))
@@ -4438,11 +4478,22 @@ package body Gnat2Why.Expr is
          Shift_Rvalue (Left_Side, Right_Side);
       end loop;
 
-      declare
-         Binder : constant Item_Type :=
-           Ada_Ent_To_Why.Element (Symbol_Table, Entity (Left_Side));
-      begin
-         case Binder.Kind is
+      --  in the case of protected components, we have to generate the record
+      --  code ourselves on top
+
+      if Is_Protected_Component_Or_Discr (Entity (Left_Side)) then
+         Result :=
+           +One_Level_Update (Left_Side,
+                              +Self_Name,
+                              +Right_Side,
+                              EW_Prog,
+                              Body_Params);
+      else
+         declare
+            Binder : constant Item_Type :=
+              Ada_Ent_To_Why.Element (Symbol_Table, Entity (Left_Side));
+         begin
+            case Binder.Kind is
             when Regular =>
                Result :=
                  New_Assignment
@@ -4504,15 +4555,16 @@ package body Gnat2Why.Expr is
                   end if;
 
                   Result := +Binding_For_Temp (Ada_Node => Ada_Node,
-                                            Domain   => EW_Prog,
-                                            Tmp      => Tmp,
-                                            Context  => +Result);
+                                               Domain   => EW_Prog,
+                                               Tmp      => Tmp,
+                                               Context  => +Result);
                end;
 
-            when Func    =>
+            when Func | Prot_Self =>
                raise Program_Error;
-         end case;
-      end;
+            end case;
+         end;
+      end if;
 
       return Result;
    end New_Assignment;
@@ -5316,25 +5368,37 @@ package body Gnat2Why.Expr is
       Result : W_Expr_Id;
    begin
       case Nkind (N) is
-         when N_Selected_Component =>
+         when N_Selected_Component | N_Identifier =>
+
+            --  In fact identifiers can refer to components in the case of
+            --  protected objects. But this is the only case, and we assert
+            --  this here.
+
+            pragma Assert (if Nkind (N) = N_Identifier
+                           then Is_Protected_Component (Entity (N)));
 
             --  The code should never update a discrimiant by assigning to it.
 
-            pragma Assert
-              (Ekind (Entity (Selector_Name (N))) /= E_Discriminant);
+            declare
+               Selector : constant Entity_Id :=
+                 (if Nkind (N) = N_Identifier then Entity (N)
+                  else Entity (Selector_Name (N)));
+            begin
+               pragma Assert (Ekind (Selector) /= E_Discriminant);
 
-            Result := New_Ada_Record_Update
-              (Ada_Node => N,
-               Domain   => Domain,
-               Name     => Pref,
-               Field    => Entity (Selector_Name (N)),
-               Value    =>
-                  Insert_Simple_Conversion
+               Result := New_Ada_Record_Update
                  (Ada_Node => N,
                   Domain   => Domain,
-                  Expr     => Value,
-                  To       =>
-                     EW_Abstract (Etype (Entity (Selector_Name (N))))));
+                  Name     => Pref,
+                  Field    => Selector,
+                  Value    =>
+                    Insert_Simple_Conversion
+                      (Ada_Node => N,
+                       Domain   => Domain,
+                       Expr     => Value,
+                       To       =>
+                         EW_Abstract (Etype (Selector))));
+            end;
 
          when N_Indexed_Component =>
             declare
@@ -8842,7 +8906,10 @@ package body Gnat2Why.Expr is
 
                   when Private_Kind
                      | E_Class_Wide_Type
-                     | E_Class_Wide_Subtype =>
+                     | E_Class_Wide_Subtype
+                     | E_Protected_Type
+                     | E_Protected_Subtype
+                     =>
                      null;
 
                   when others =>
@@ -9817,7 +9884,7 @@ package body Gnat2Why.Expr is
             end if;
 
          when N_Function_Call =>
-            if Is_Simple_Shift_Or_Rotate (Entity (Name (Expr))) then
+            if Is_Simple_Shift_Or_Rotate (Get_Called_Entity (Expr)) then
                T := Transform_Shift_Or_Rotate_Call
                       (Expr, Domain, Local_Params);
             else
@@ -10085,7 +10152,7 @@ package body Gnat2Why.Expr is
       Nb_Of_Refs : Natural;
       Nb_Of_Lets : Natural;
       T          : W_Expr_Id;
-      Subp       : constant Entity_Id := Entity (Name (Expr));
+      Subp       : constant Entity_Id := Get_Called_Entity (Expr);
 
       Args       : constant W_Expr_Array :=
         Compute_Call_Args (Expr, Domain, Nb_Of_Refs, Nb_Of_Lets, Params);
@@ -10172,6 +10239,7 @@ package body Gnat2Why.Expr is
       --  * enumeration literals (we have a separate function)
       --  * ids of Standard.ASCII (transform to integer)
       --  * quantified variables (use local name instead of global name)
+      --  * fields of protected objects
 
       if Ada_Ent_To_Why.Has_Element (C) then
          declare
@@ -10187,7 +10255,7 @@ package body Gnat2Why.Expr is
                   else
                      T := +E.For_Logic.B_Name;
                   end if;
-               when Regular =>
+               when Regular | Prot_Self =>
                   T := +E.Main.B_Name;
                when UCArray =>
                   T := +E.Content.B_Name;
@@ -10268,6 +10336,20 @@ package body Gnat2Why.Expr is
          T :=
            New_Integer_Constant
              (Value => Char_Literal_Value (Constant_Value (Ent)));
+      elsif Is_Protected_Component_Or_Discr (Ent) then
+         declare
+            Prot : constant Entity_Id := Containing_Protected_Type (Ent);
+         begin
+            T := New_Ada_Record_Access
+              (Ada_Node => Expr,
+               Domain   => Domain,
+               Name     =>
+                 +New_Identifier
+                 (Name => "self__",
+                  Typ  => Type_Of_Node (Prot)),
+               Field    => Ent,
+               Ty       => Prot);
+         end;
       else
          Ada.Text_IO.Put_Line ("[Transform_Identifier] unregistered entity "
                                & Full_Name (Ent));
@@ -12350,12 +12432,13 @@ package body Gnat2Why.Expr is
                return Sequence (Expr, Raise_Stmt);
             end;
 
-         when N_Procedure_Call_Statement =>
+         when N_Procedure_Call_Statement | N_Entry_Call_Statement =>
             declare
                Nb_Of_Refs : Natural;
                Nb_Of_Lets : Natural;
                Call       : W_Expr_Id;
-               Subp       : constant Entity_Id := Entity (Name (Stmt_Or_Decl));
+               Subp       : constant Entity_Id :=
+                 Get_Called_Entity (Stmt_Or_Decl);
 
                Args       : constant W_Expr_Array :=
                  Compute_Call_Args
@@ -12566,6 +12649,11 @@ package body Gnat2Why.Expr is
             | N_Use_Package_Clause
             | N_Use_Type_Clause
             | N_Validate_Unchecked_Conversion =>
+            return New_Void;
+
+         --  delay statements can be ignored for proof
+
+         when N_Delay_Until_Statement =>
             return New_Void;
 
          when others =>

@@ -3719,6 +3719,12 @@ package body SPARK_Definition is
             end;
          when E_Loop_Parameter |
               Formal_Kind      => Mark_Parameter_Entity (E);
+
+         --  discriminants of task types are marked, but those of records and
+         --  protected objects are not
+
+         when E_Discriminant   => Mark_Object_Entity (E);
+
          when Named_Kind       => Mark_Number_Entity (E);
          when E_Package        => Mark_Package_Entity (E);
 
@@ -4737,6 +4743,21 @@ package body SPARK_Definition is
                   end loop;
                end if;
             end;
+
+            --  Mark Task discriminants
+
+            if Nkind (N) = N_Task_Body
+              and then Has_Discriminants (E)
+            then
+               declare
+                  Disc : Entity_Id := First_Discriminant (E);
+               begin
+                  while Present (Disc) loop
+                     Mark_Entity (Disc);
+                     Next_Discriminant (Disc);
+                  end loop;
+               end;
+            end if;
 
             --  Mark entry barrier
 

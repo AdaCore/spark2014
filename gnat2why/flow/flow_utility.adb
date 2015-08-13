@@ -2213,7 +2213,10 @@ package body Flow_Utility is
       Proof_Ins : Flow_Id_Sets.Set;
       Tmp_In    : Flow_Id_Sets.Set;
       Tmp_Out   : Flow_Id_Sets.Set;
-      Body_E    : constant Entity_Id := Subprogram_Body_Entity (Subprogram);
+      Body_E    : constant Entity_Id :=
+        (if Is_Entry (Subprogram) then
+              Entry_Body_Entity (Subprogram)
+         else Subprogram_Body_Entity (Subprogram));
 
       function Expand (F : Flow_Id) return Flow_Id_Sets.Set;
       --  If F represents abstract state, return the set of all its

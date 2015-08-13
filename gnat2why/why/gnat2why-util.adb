@@ -670,7 +670,8 @@ package body Gnat2Why.Util is
                          E_Component           |
                          E_Discriminant        |
                          Named_Kind            |
-                         Subprogram_Kind
+                         Subprogram_Kind       |
+                         Entry_Kind
       then
          return False;
 

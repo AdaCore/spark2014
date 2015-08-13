@@ -59,7 +59,10 @@ package Why.Gen.Binders is
 
    type Binder_Array is array (Positive range <>) of Binder_Type;
 
-   type Item_Enum is (Regular, UCArray, DRecord, Func);
+   --  see the comment of the Item_Type type below to see the meaning of this
+   --  enum
+
+   type Item_Enum is (Regular, UCArray, DRecord, Func, Prot_Self);
 
    type Item_Bounds is record
       First : W_Identifier_Id;
@@ -86,7 +89,7 @@ package Why.Gen.Binders is
 
    type Item_Type (Kind : Item_Enum := Regular) is record
       case Kind is
-         when Regular =>
+         when Regular | Prot_Self =>
             Main      : Binder_Type;
          when UCArray =>
             Content   : Binder_Type;
@@ -109,10 +112,13 @@ package Why.Gen.Binders is
    --  which is not always 1 to 1. In the common case where it is 1 to 1, the
    --  Kind "Regular" is used. We have three other cases for now: unconstrained
    --  arrays, where extra objects are created to represent the bounds,
-   --  functions where we need different translations when used in programs
-   --  or in assertions, and records where we can have up to four objects, a
-   --  set of fields, a set of discriminant, a 'Constrained attribute, and a
-   --  'Tag attribute.
+   --  functions where we need different translations when used in programs or
+   --  in assertions, and records where we can have up to four objects, a set
+   --  of fields, a set of discriminant, a 'Constrained attribute, and a 'Tag
+   --  attribute. The 'Prot_Self' case corresponds to the "self" object used in
+   --  protected subprograms and entries, and can be seen as as "0 to 1"
+   --  mapping. See also the general description of protected types in
+   --  gnat2why.
 
    type Item_Array is array (Positive range <>) of Item_Type;
 

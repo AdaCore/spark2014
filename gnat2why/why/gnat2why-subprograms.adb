@@ -229,9 +229,14 @@ package body Gnat2Why.Subprograms is
       Result : W_Expr_Array (1 .. Binders'Last);
       Ada_Binders : constant List_Id :=
         Parameter_Specifications (Subprogram_Specification (E));
-      Arg_Length  : constant Nat := List_Length (Ada_Binders);
+      Arg_Length  : Nat := List_Length (Ada_Binders);
 
    begin
+
+      if Is_Protected_Subprogram (E) then
+         Arg_Length := Arg_Length + 1;
+      end if;
+
       if Arg_Length = 0
         and then not Flow_Utility.Has_Proof_Global_Reads (E, Classwide => True)
       then
@@ -582,7 +587,7 @@ package body Gnat2Why.Subprograms is
       procedure Effects_Append_Binder (Binder : Item_Type)  is
       begin
          case Binder.Kind is
-            when Regular =>
+            when Regular | Prot_Self =>
                if Binder.Main.Mutable then
                   Effects_Append (Eff, Binder.Main.B_Name);
                end if;
@@ -740,10 +745,15 @@ package body Gnat2Why.Subprograms is
                  Get_Ada_Node_From_Item (B);
                Expr     : constant W_Expr_Id :=
                  Reconstruct_Item (B, True);
-               Dyn_Prop : constant W_Pred_Id :=
+               Ty_Node  : constant Entity_Id :=
                  (if Present (Ada_Node) then
+                      (if Is_Type (Ada_Node) then Ada_Node
+                       else Etype (Ada_Node))
+                  else Empty);
+               Dyn_Prop : constant W_Pred_Id :=
+                 (if Present (Ty_Node) then
                     Compute_Dynamic_Invariant (Expr => +Expr,
-                                              Ty   => Etype (Ada_Node))
+                                               Ty   => Ty_Node)
                   else
                     True_Pred);
             begin
@@ -873,15 +883,36 @@ package body Gnat2Why.Subprograms is
    -------------------------
 
    function Compute_Raw_Binders (E : Entity_Id) return Item_Array is
-      Params : constant List_Id :=
-                 Parameter_Specifications (Subprogram_Specification (E));
-      Result : Item_Array (1 .. Integer (List_Length (Params)));
-      Param  : Node_Id;
-      Count  : Integer;
-
+      Params        : constant List_Id :=
+        (if Is_Entry (E) then Parameter_Specifications (Parent (E))
+         else Parameter_Specifications (Subprogram_Specification (E)));
+      Ada_Param_Len : constant Integer := Integer (List_Length (Params));
+      Binder_Len    : constant Integer :=
+        (if Is_Protected_Subprogram (E) then Ada_Param_Len + 1
+         else Ada_Param_Len);
+      Result        : Item_Array (1 .. Binder_Len);
+      Param         : Node_Id;
+      Count         : Integer;
    begin
       Param := First (Params);
       Count := 1;
+      if Is_Protected_Subprogram (E) then
+         declare
+            Prot : constant Entity_Id := Containing_Protected_Type (E);
+         begin
+            Result (1) :=
+              (Prot_Self,
+               Binder_Type'
+                 (B_Name   =>
+                      New_Identifier
+                    (Name => "self__",
+                     Typ  => Type_Of_Node (Prot)),
+                  B_Ent    => Null_Entity_Name,
+                  Ada_Node => Prot,
+                  Mutable  => False));
+            Count := 2;
+         end;
+      end if;
       while Present (Param) loop
          Result (Count) := Mk_Item_Of_Entity
            (E           => Defining_Identifier (Param),
@@ -1869,6 +1900,13 @@ package body Gnat2Why.Subprograms is
             Typ      => Type_Of_Node (Etype (E)))
          else New_Void);
 
+      if Is_Protected_Subprogram (E) then
+            Self_Name :=
+              New_Identifier
+                (Name => "self__",
+                 Typ  => Type_Of_Node (Containing_Protected_Type (E)));
+      end if;
+
       Params :=
         (File        => File.File,
          Theory      => File.Cur_Theory,
@@ -1948,6 +1986,10 @@ package body Gnat2Why.Subprograms is
            & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
              else ""))),
           6 => Precondition));
+
+      --  ??? if this is a protected entry, we need to havoc the protected
+      --  object after the assumption of the precondition
+
       Prog := Compute_Contract_Cases_Entry_Checks (E, Guard_Map);
 
       if Present (Body_N) and then Entity_Body_In_SPARK (E) then
@@ -1999,6 +2041,20 @@ package body Gnat2Why.Subprograms is
                  (Name     => Result_Name,
                   Labels   => Name_Id_Sets.Empty_Set,
                   Ref_Type => Type_Of_Node (Etype (E))));
+         end if;
+
+         --  Declare global variable to hold the state of a protected object
+
+         if Is_Protected_Subprogram (E) then
+            Emit
+              (File.Cur_Theory,
+               New_Function_Decl
+                 (Ada_Node    => Containing_Protected_Type (E),
+                  Domain      => EW_Term,
+                  Name        => Self_Name,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type =>
+                    Type_Of_Node (Containing_Protected_Type (E))));
          end if;
 
          --  Translate statements in the body of the subp
@@ -2276,6 +2332,28 @@ package body Gnat2Why.Subprograms is
                  Gen_Marker  => False,
                  Ref_Allowed => True);
 
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+      --  discriminants can be used in the task body; we insert them into the
+      --  symbol table
+
+      if Has_Discriminants (E) then
+         declare
+            Discr : Entity_Id := First_Discriminant (E);
+         begin
+            while Present (Discr) loop
+               Ada_Ent_To_Why.Insert
+                 (Symbol_Table,
+                  Discr,
+                  Mk_Item_Of_Entity
+                    (Discr,
+                     Local => False,
+                     In_Fun_Decl => False));
+               Next_Discriminant (Discr);
+            end loop;
+         end;
+      end if;
+
       --  Translate declarations and statements in the task body, if there
       --  is one.
 
@@ -2316,6 +2394,7 @@ package body Gnat2Why.Subprograms is
                   Def     => +Why_Body));
       end;
 
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       Close_Theory (File,
                     Kind => VC_Generation_Theory);
 
@@ -2374,7 +2453,7 @@ package body Gnat2Why.Subprograms is
       Why_Type           : W_Type_Id := Why_Empty;
    begin
 
-      if Ekind (E) = E_Procedure
+      if Ekind (E) in E_Procedure | Entry_Kind
         or else No_Return (E)
         or else not Is_Non_Recursive_Subprogram (E)
       then
@@ -2405,7 +2484,7 @@ package body Gnat2Why.Subprograms is
          declare
             A : constant Node_Id :=
               (case Binder.Kind is
-                  when Regular => Binder.Main.Ada_Node,
+                  when Regular | Prot_Self => Binder.Main.Ada_Node,
                   when others  => raise Program_Error);
             --  in parameters should not be split
          begin
@@ -2618,7 +2697,7 @@ package body Gnat2Why.Subprograms is
             --  If the Ada_Node is empty, it's not an interesting binder
             --  (e.g. void_param)
 
-            if Present (A) then
+            if Present (A) and then not Is_Type (E) then
                Ada_Ent_To_Why.Insert (Symbol_Table, A, Binder);
             end if;
          end;
@@ -2809,7 +2888,7 @@ package body Gnat2Why.Subprograms is
             end if;
          end;
 
-      --  Ekind (E) = E_Procedure
+      --  Ekind (E) in E_Procedure | E_Entry
 
       else
          declare
@@ -3004,8 +3083,8 @@ package body Gnat2Why.Subprograms is
          declare
             A : constant Node_Id :=
               (case Binder.Kind is
-                  when Regular => Binder.Main.Ada_Node,
-                  when others  => raise Program_Error);
+                  when Regular | Prot_Self => Binder.Main.Ada_Node,
+                  when others              => raise Program_Error);
          begin
             pragma Assert (Present (A) or else Binder.Kind = Regular);
 

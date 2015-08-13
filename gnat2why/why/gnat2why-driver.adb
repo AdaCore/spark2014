@@ -138,12 +138,13 @@ package body Gnat2Why.Driver is
 
    procedure Complete_Declaration (E : Entity_Id) is
    begin
-      if Ekind (E) in Subprogram_Kind
+      if Ekind (E) in Subprogram_Kind | Entry_Kind
         and then Is_Translated_Subprogram (E)
 
         --  Axioms for a SPARK expression function are issued in the same
         --  module as the function declaration.
-        and then (not (Present (Get_Expression_Function (E)))
+        and then (Ekind (E) in Entry_Kind
+                  or else not (Present (Get_Expression_Function (E)))
                   or else not Entity_Body_In_SPARK (E))
       then
          declare
@@ -769,6 +770,16 @@ package body Gnat2Why.Driver is
 
          when Object_Kind =>
 
+            --  we can ignore discriminals, these are objects used for
+            --  analysis, that can occur for discriminants of protected
+            --  types and task types
+
+            if Ekind (E) in Formal_Kind
+              and then Present (Discriminal_Link (E))
+            then
+               return;
+            end if;
+
             --  We need to fill the set of translated object entities, so that
             --  we do not generate a dummy declaration for those
 
@@ -810,7 +821,7 @@ package body Gnat2Why.Driver is
 
          --  Generate a logic function for Ada functions
 
-         when Subprogram_Kind =>
+         when Subprogram_Kind | Entry_Kind =>
             if Is_Translated_Subprogram (E) then
                Translate_Subprogram_Spec (File, E);
             end if;

@@ -67,7 +67,7 @@ package body Why.Gen.Binders is
    function Get_Ada_Node_From_Item (B : Item_Type) return Node_Id is
    begin
       case B.Kind is
-         when Regular =>
+         when Regular | Prot_Self =>
             return B.Main.Ada_Node;
          when DRecord =>
             if B.Fields.Present then
@@ -231,7 +231,7 @@ package body Why.Gen.Binders is
       begin
          for B of Binders loop
             case B.Kind is
-            when Regular =>
+            when Regular | Prot_Self =>
                pragma Assert (B.Main.Mutable);
                Length := Length + 1;
             when UCArray =>
@@ -259,7 +259,7 @@ package body Why.Gen.Binders is
    begin
       for B of Binders loop
          case B.Kind is
-            when Regular =>
+            when Regular | Prot_Self =>
                Params (I) := B.Main;
                I := I + 1;
             when UCArray =>
@@ -288,7 +288,7 @@ package body Why.Gen.Binders is
    function Get_Why_Type_From_Item (B : Item_Type) return W_Type_Id is
    begin
       case B.Kind is
-         when Regular =>
+         when Regular | Prot_Self =>
             return Get_Typ (B.Main.B_Name);
          when DRecord =>
             return EW_Abstract (B.Typ);
@@ -308,7 +308,7 @@ package body Why.Gen.Binders is
    begin
       for Index in Arr'Range loop
          case Arr (Index).Kind is
-            when Regular => Count := Count + 1;
+            when Regular | Prot_Self => Count := Count + 1;
             when UCArray => Count := Count + 1 + 2 * Arr (Index).Dim;
             when DRecord =>
                if Arr (Index).Fields.Present then
@@ -337,7 +337,7 @@ package body Why.Gen.Binders is
    begin
       for B of Binders loop
          case B.Kind is
-            when Regular =>
+            when Regular | Prot_Self =>
                declare
                   Local_Name : constant String :=
                     (if Present (B.Main.Ada_Node)
@@ -1108,7 +1108,7 @@ package body Why.Gen.Binders is
    begin
       case E.Kind is
          when Func => raise Program_Error;
-         when Regular =>
+         when Regular | Prot_Self =>
             T := +E.Main.B_Name;
             Needs_Deref := E.Main.Mutable;
          when UCArray =>
@@ -1134,23 +1134,27 @@ package body Why.Gen.Binders is
    procedure Push_Binders_To_Symbol_Table (Binders : Item_Array) is
    begin
       for B of Binders loop
-         if Present (Get_Ada_Node_From_Item (B)) then
-            Ada_Ent_To_Why.Insert (Symbol_Table,
-                                   Get_Ada_Node_From_Item (B),
-                                   B);
-         else
-            pragma Assert (B.Kind = Regular
-                           and then B.Main.B_Ent /= Null_Entity_Name);
+         declare
+            Node : constant Node_Id := Get_Ada_Node_From_Item (B);
+         begin
+            if Present (Node) and then not Is_Type (Node) then
+               Ada_Ent_To_Why.Insert (Symbol_Table,
+                                      Get_Ada_Node_From_Item (B),
+                                      B);
+            else
+               pragma Assert (B.Kind = Regular
+                              and then B.Main.B_Ent /= Null_Entity_Name);
 
-            --  If there is no Ada_Node, this is a binder generated
-            --  from an effect; we add the parameter in the name
-            --  map using its unique name.
+               --  If there is no Ada_Node, this is a binder generated
+               --  from an effect; we add the parameter in the name
+               --  map using its unique name.
 
-            Ada_Ent_To_Why.Insert
-              (Symbol_Table,
-               B.Main.B_Ent,
-               B);
-         end if;
+               Ada_Ent_To_Why.Insert
+                 (Symbol_Table,
+                  B.Main.B_Ent,
+                  B);
+            end if;
+         end;
       end loop;
    end Push_Binders_To_Symbol_Table;
 
@@ -1167,7 +1171,7 @@ package body Why.Gen.Binders is
             Cur : Item_Type renames A (Index);
          begin
             case Cur.Kind is
-               when Regular =>
+               when Regular | Prot_Self =>
                   Result (Count) := Cur.Main;
                   Count := Count + 1;
                when UCArray =>

@@ -644,6 +644,9 @@ package body Why.Inter is
          when Named_Kind  =>
             return WF_Context;
 
+         when Entry_Kind =>
+            return WF_Context;
+
          when Subprogram_Kind | E_Subprogram_Body =>
             declare
                Decl_E : constant Entity_Id := Unique_Entity (E);
@@ -1180,6 +1183,7 @@ package body Why.Inter is
       Suffix : constant String :=
         (if Ekind (E) in Subprogram_Kind
                        | E_Subprogram_Body
+                       | Entry_Kind
                        | Named_Kind
                        | Type_Kind
                        | Object_Kind
@@ -1188,10 +1192,15 @@ package body Why.Inter is
             Short_Name (E)
          else "");
    begin
-      --  The component case is sufficiently different to treat it
-      --  independently
+      --  Components names are prefixed by a constant string, and are always
+      --  expressed wrt to their record.
 
-      if Ekind (E) in E_Component | E_Discriminant then
+      --  Discriminants of task types are treated pretty much as regular
+      --  objects.
+
+      if Ekind (E) in E_Component | E_Discriminant
+        and then Ekind (Scope (E)) not in Task_Kind
+      then
          declare
             Field : constant String :=
               To_String (WNE_Rec_Comp_Prefix) & Get_Name_String (Chars (E));
@@ -1227,7 +1236,8 @@ package body Why.Inter is
       else
          declare
             Module : constant W_Module_Id :=
-              (if Is_Subprogram (E) and then Domain = EW_Prog then
+              (if (Is_Subprogram (E) or else Is_Protected_Subprogram (E))
+                 and then Domain = EW_Prog then
                  E_Axiom_Module (E)
                else
                  E_Module (E));

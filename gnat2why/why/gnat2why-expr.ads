@@ -345,6 +345,11 @@ package Gnat2Why.Expr is
    --  be equal to Why_Empty when we are not generating code for detecting
    --  run-time errors in the postcondition.
 
+   Self_Name   : W_Identifier_Id := Why_Empty;
+   --  Name to use to refer to the state (i.e. fields) of a protected object.
+   --  It should be equal to empty when we are not generating code for a
+   --  protected subprogram.
+
    package Ada_To_Why_Ident is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
       Element_Type    => W_Identifier_Id,

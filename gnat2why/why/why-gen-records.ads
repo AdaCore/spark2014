@@ -41,7 +41,10 @@ package Why.Gen.Records is
       Theory  : W_Theory_Declaration_Id;
       E       : Entity_Id);
    --  Emit all necessary Why3 declarations to support Ada records. This also
-   --  supports variant records and private types.
+   --  supports variant records, private types and protected types.
+   --  @param P the Why section to insert the declaration
+   --  @param Theory the theory in which to insert the type declaration
+   --  @param E the type entity to translate
 
    function New_Ada_Record_Access
      (Ada_Node : Node_Id;
@@ -54,7 +57,8 @@ package Why.Gen.Records is
    --  record field.
    --  @param Ada_Node  the Ada Node that corresponds to the record access
    --  @param Domain    the domain of the Why expression
-   --  @param Name      the prefix for the record expression, as an Ada node
+   --  @param Name      the prefix for the record expression, as a Why
+   --                     expression
    --  @param Field     the field access, as an Ada entity
    --  @param Ty        the type of the record
    --  @return a Why expression which corresponds to the Ada record

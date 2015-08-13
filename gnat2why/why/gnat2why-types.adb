@@ -503,7 +503,10 @@ package body Gnat2Why.Types is
             when Array_Kind =>
                Declare_Ada_Array (Theory, E);
 
-            when E_Record_Type | E_Record_Subtype =>
+            when E_Record_Type
+               | E_Record_Subtype
+               | E_Protected_Type
+               | E_Protected_Subtype =>
                Declare_Ada_Record (File, Theory, E);
 
             when E_Class_Wide_Type | E_Class_Wide_Subtype =>

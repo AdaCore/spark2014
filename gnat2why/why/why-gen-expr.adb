@@ -2707,7 +2707,8 @@ package body Why.Gen.Expr is
             Buf := "orelse" & Label_Append (Buf);
 
          when N_Subprogram_Call =>
-            Buf := "call_" & Get_Name_String (Chars (Name (Node_It)))
+            Buf := "call_" &
+              Get_Name_String (Chars (Get_Called_Entity (Node_It)))
               & Label_Append (Buf);
 
          when N_Indexed_Component =>
