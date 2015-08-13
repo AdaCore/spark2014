@@ -2992,13 +2992,12 @@ package body Flow_Generated_Globals is
    function Tasking_Objects
      (Kind : Tasking_Info_Kind;
       Subp : Entity_Name)
-      return Name_Sets.Set is
-      C : constant Cursor :=
-        Tasking_Info_Bag (Kind).Find (Subp);
+      return Name_Sets.Set
+   is
+      C : constant Name_Graphs.Cursor := Tasking_Info_Bag (Kind).Find (Subp);
    begin
       pragma Assert (if Has_Element (C)
-                     then
-                       not Name_Sets.Is_Empty (Element (C)));
+                     then not Name_Sets.Is_Empty (Element (C)));
       return (if Has_Element (C)
               then Element (C)
               else Name_Sets.Empty_Set);
