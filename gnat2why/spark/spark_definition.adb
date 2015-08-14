@@ -3149,6 +3149,10 @@ package body SPARK_Definition is
                   function Find_Type (N : Node_Id) return Traverse_Result;
                   --  Sets [Found] to True if type name for [E] is found
 
+                  ---------------
+                  -- Find_Type --
+                  ---------------
+
                   function Find_Type (N : Node_Id) return Traverse_Result is
                   begin
                      case Nkind (N) is
