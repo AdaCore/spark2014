@@ -4047,10 +4047,12 @@ package body Flow.Control_Flow_Graph is
       --  protected object itself.
       if Belongs_To_Protected_Object (Called_Thing_F) then
          declare
+            --  For external calls we get the protected *object*;
+            --  for internal calls we get the protected *type.
             The_PO_Ent : constant Entity_Id :=
               (if Nkind (Name (N)) = N_Selected_Component
-               then Entity (Prefix (Name (N)))
-               else Sinfo.Scope (Called_Thing));
+               then Get_Enclosing_Object (Name (N))
+               else Scope (Called_Thing));
 
             The_PO : constant Flow_Id := Direct_Mapping_Id (The_PO_Ent);
 

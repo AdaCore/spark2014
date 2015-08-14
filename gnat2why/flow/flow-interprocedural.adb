@@ -250,7 +250,7 @@ package body Flow.Interprocedural is
             if Nkind (N) = N_Entry_Call_Statement then
                declare
                   The_PO : constant Flow_Id :=
-                    Direct_Mapping_Id (Entity (Prefix (Name (N))));
+                    Direct_Mapping_Id (Get_Enclosing_Object (Name (N)));
                begin
                   Inputs.Insert (Change_Variant (The_PO, In_View));
                   if Ekind (Called_Procedure) /= E_Function then
