@@ -4001,10 +4001,14 @@ package body Flow.Analysis is
    --  Containers for mapping (possibly concurrent) objects to tasks that
    --  access them.
 
-   Suspenders : Entity_Name_to_Nodes_Maps.Map :=
-     Entity_Name_to_Nodes_Maps.Empty_Map;
-   --  Mapping from suspension objects to tasks that suspends on them;
-   --  we store only the first suspending task, any another indicates an error.
+   subtype Tasking_Owners_Kind is Tasking_Info_Kind
+   range Suspends_On .. Entry_Calls;
+
+   Concurrent_Object_Owner : array (Tasking_Owners_Kind) of
+     Entity_Name_to_Nodes_Maps.Map;
+   --  Mapping from concurrent objects to task that owns them, i.e. suspends on
+   --  a suspension object or calls an entry. It stores only the first owning
+   --  task, if there are more then it is SPARK violation.
 
    -------------------------------
    -- Check_Concurrent_Accesses --
@@ -4033,60 +4037,81 @@ package body Flow.Analysis is
               when One  => 1,
               when Many => 2)
          else 0);
+      --  Number of task instances
+
+      function Conflict_Msg (Kind : Tasking_Owners_Kind) return String is
+         (case Kind is
+          when Suspends_On => "suspends on suspension object",
+          when Entry_Calls => "calls entry of the protected object");
+      --  Messages for a exclusivity conflicts; conceptually it is a constant
+      --  array of strings, but because these strings are of different length
+      --  it is implemented as a function.
+      --
+      --  ??? For conflicting entry calls the message should contain the name
+      --  of the entry, not just the name of the enclosing protected object.
+      --  For this we first need to clean-up the code for loading GG entries
+      --  and make it easier to check the convention of a subprogram call.
 
    begin
-      --  If there are no instances of the this task there are no exclusivity
-      --  conflicts.
-      if Instances = 0 then
-         return;
+      for Owning_Kind in Tasking_Owners_Kind loop
+         --  If there are no instances of the this task there are no
+         --  exclusivity conflicts.
+         if Instances = 0 then
+            return;
 
-      --  If this task has many instances that suspend on some suspension
-      --  object then there is a conflict.
-      elsif Instances > 1
-        and then not Flow_Generated_Globals.
-          Tasking_Objects (Suspends_On, This_Task_Type).Is_Empty
-      then
-         Error_Msg_Flow (FA      => FA,
-                         Msg     => "more than one task " &
-                                    "suspend on suspension object &",
-                         Kind    => Error_Kind,
-                         N       => FA.Analyzed_Entity,
-                         F1      => Magic_String_Id
-                           (Name_Sets.Element (
-                            Tasking_Objects (Suspends_On, This_Task_Type).
-                              First)),
-                         SRM_Ref => "9.11");
+            --  If this task has many instances that access a concurrent object
+            --  then there is a conflict.
+         elsif Instances > 1
+           and then not Flow_Generated_Globals.
+             Tasking_Objects (Owning_Kind, This_Task_Type).Is_Empty
+         then
+            Error_Msg_Flow (FA      => FA,
+                            Msg     => "more than one task " &
+                              Conflict_Msg (Owning_Kind) &
+                              " &",
+                            Kind    => Error_Kind,
+                            N       => FA.Analyzed_Entity,
+                            F1      => Magic_String_Id
+                              (Name_Sets.Element (
+                               Tasking_Objects (Owning_Kind, This_Task_Type).
+                                 First)),
+                            SRM_Ref => "9.11");
 
-      --  Otherwise there is one instance of this task type and it must be the
-      --  only task type that suspend on its suspension variables.
-      else
-         for SO of Tasking_Objects (Suspends_On, This_Task_Type) loop
-            declare
-               use Entity_Name_to_Nodes_Maps;
-               Other_Task : constant Cursor := Suspenders.Find (SO);
-            begin
-               --  If there is an instance of another task type that suspends
-               --  on this suspension object then there is a conflict.
-               if Has_Element (Other_Task) then
-                  Error_Msg_Flow (FA      => FA,
-                                  Msg     => "task & already suspends " &
-                                    "on suspension object &",
-                                  Kind    => Error_Kind,
-                                  N       => FA.Analyzed_Entity,
-                                  F1      => Direct_Mapping_Id
-                                    (Entity_Name_to_Nodes_Maps.Element
-                                       (Other_Task)),
-                                  F2      => Magic_String_Id (SO),
-                                  SRM_Ref => "9.11");
+            --  Otherwise there is one instance of this task type and it must
+            --  be the only task type that accesses the concurrent object.
+         else
+            for SO of Tasking_Objects (Owning_Kind, This_Task_Type) loop
+               declare
+                  use Entity_Name_to_Nodes_Maps;
+                  Other_Task : constant Cursor :=
+                    Concurrent_Object_Owner (Owning_Kind).Find (SO);
+               begin
+                  --  If there is an instance of another task type that
+                  --  suspends on this suspension object then there is a
+                  --  conflict.
+                  if Has_Element (Other_Task) then
+                     Error_Msg_Flow (FA      => FA,
+                                     Msg     => "task & already " &
+                                       Conflict_Msg (Owning_Kind) &
+                                       " &",
+                                     Kind    => Error_Kind,
+                                     N       => FA.Analyzed_Entity,
+                                     F1      => Direct_Mapping_Id
+                                       (Entity_Name_to_Nodes_Maps.Element
+                                          (Other_Task)),
+                                     F2      => Magic_String_Id (SO),
+                                     SRM_Ref => "9.11");
 
-               --  Otherwise record this task (type???)
-               else
-                  Suspenders.Insert (SO, FA.Analyzed_Entity);
-               end if;
-            end;
-         end loop;
+                     --  Otherwise record this task (type???)
+                  else
+                     Concurrent_Object_Owner
+                       (Owning_Kind).Insert (SO, FA.Analyzed_Entity);
+                  end if;
+               end;
+            end loop;
 
-      end if;
+         end if;
+      end loop;
 
    end Check_Concurrent_Accesses;
 
