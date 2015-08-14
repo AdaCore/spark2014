@@ -259,7 +259,7 @@ package body Flow.Interprocedural is
                end;
             end if;
 
-            if Flow_Id_Sets."/=" (Outputs, Flow_Id_Sets.Empty_Set) then
+            if not Outputs.Is_Empty then
                --  Each output depends on all inputs.
                for Input of Inputs loop
                   for Output of Outputs loop
