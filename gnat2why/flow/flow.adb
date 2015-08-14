@@ -853,7 +853,7 @@ package body Flow is
                                  Compute_Globals : Boolean)
                                  return Flow_Analysis_Graphs
    is
-      Tmp : Flow_Analysis_Graphs_Root
+      FA : Flow_Analysis_Graphs_Root
         (Kind            =>
            (case Ekind (E) is
             when Subprogram_Kind => Kind_Subprogram,
@@ -868,337 +868,332 @@ package body Flow is
                                   then "Global generation"
                                   else "Flow analysis");
    begin
-      Tmp.Analyzed_Entity       := E;
-      Tmp.Spec_Entity           := S;
-      Tmp.Start_Vertex          := Null_Vertex;
-      Tmp.Helper_End_Vertex     := Null_Vertex;
-      Tmp.End_Vertex            := Null_Vertex;
-      Tmp.CFG                   := Create;
-      Tmp.DDG                   := Create;
-      Tmp.CDG                   := Create;
-      Tmp.TDG                   := Create;
-      Tmp.PDG                   := Create;
-      Tmp.Atr                   := Attribute_Maps.Empty_Map;
-      Tmp.Other_Fields          := Vertex_To_Vertex_Set_Maps.Empty_Map;
-      Tmp.Local_Constants       := Node_Sets.Empty_Set;
-      Tmp.All_Vars              := Flow_Id_Sets.Empty_Set;
-      Tmp.Unmodified_Vars       := Node_Sets.Empty_Set;
-      Tmp.Unreferenced_Vars     := Node_Sets.Empty_Set;
-      Tmp.Loops                 := Node_Sets.Empty_Set;
-      Tmp.Dependency_Map        := Dependency_Maps.Empty_Map;
-      Tmp.No_Effects            := False;
-      Tmp.No_Errors_Or_Warnings := True;
-      Tmp.Direct_Calls          := Node_Sets.Empty_Set;
-      Tmp.Tasking               := (others => Node_Sets.Empty_Set);
+      FA.Analyzed_Entity       := E;
+      FA.Spec_Entity           := S;
+      FA.Start_Vertex          := Null_Vertex;
+      FA.Helper_End_Vertex     := Null_Vertex;
+      FA.End_Vertex            := Null_Vertex;
+      FA.CFG                   := Create;
+      FA.DDG                   := Create;
+      FA.CDG                   := Create;
+      FA.TDG                   := Create;
+      FA.PDG                   := Create;
+      FA.Atr                   := Attribute_Maps.Empty_Map;
+      FA.Other_Fields          := Vertex_To_Vertex_Set_Maps.Empty_Map;
+      FA.Local_Constants       := Node_Sets.Empty_Set;
+      FA.All_Vars              := Flow_Id_Sets.Empty_Set;
+      FA.Unmodified_Vars       := Node_Sets.Empty_Set;
+      FA.Unreferenced_Vars     := Node_Sets.Empty_Set;
+      FA.Loops                 := Node_Sets.Empty_Set;
+      FA.Dependency_Map        := Dependency_Maps.Empty_Map;
+      FA.No_Effects            := False;
+      FA.No_Errors_Or_Warnings := True;
+      FA.Direct_Calls          := Node_Sets.Empty_Set;
+      FA.Tasking               := (others => Node_Sets.Empty_Set);
 
       --  Generate Globals (gg) or Flow Analysis (fa)
-      Tmp.Base_Filename := To_Unbounded_String (if Compute_Globals
-                                                then "gg_"
-                                                else "fa_");
+      FA.Base_Filename := To_Unbounded_String (if Compute_Globals
+                                               then "gg_"
+                                               else "fa_");
 
       case Ekind (E) is
          when E_Entry         |
               E_Task_Type     |
               Subprogram_Kind =>
-            Tmp.B_Scope := Get_Flow_Scope (Get_Body (E));
-            Tmp.S_Scope := Get_Flow_Scope (E);
+            FA.B_Scope := Get_Flow_Scope (Get_Body (E));
+            FA.S_Scope := Get_Flow_Scope (E);
 
-            Append (Tmp.Base_Filename, "subprogram_");
+            Append (FA.Base_Filename, "subprogram_");
 
-            Tmp.Is_Main :=
+            FA.Is_Main :=
               (case Ekind (E) is
                when Subprogram_Kind => Might_Be_Main (E),
                when E_Entry         => False,
                when E_Task_Type     => True,
                when others          => raise Program_Error);
 
-            Tmp.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
+            FA.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
 
-            Tmp.Depends_N := Get_Pragma (E, Pragma_Depends);
-            Tmp.Global_N  := Get_Pragma (E, Pragma_Global);
+            FA.Depends_N := Get_Pragma (E, Pragma_Depends);
+            FA.Global_N  := Get_Pragma (E, Pragma_Global);
 
             declare
                Body_E : constant Entity_Id := Get_Body_Entity (E);
             begin
-               Tmp.Refined_Depends_N := Get_Pragma (Body_E,
-                                                    Pragma_Refined_Depends);
-               Tmp.Refined_Global_N  := Get_Pragma (Body_E,
-                                                    Pragma_Refined_Global);
+               FA.Refined_Depends_N := Get_Pragma (Body_E,
+                                                   Pragma_Refined_Depends);
+               FA.Refined_Global_N  := Get_Pragma (Body_E,
+                                                   Pragma_Refined_Global);
             end;
 
-            Tmp.Is_Generative := Refinement_Needed (E);
+            FA.Is_Generative := Refinement_Needed (E);
 
-            Tmp.Function_Side_Effects_Present := False;
+            FA.Function_Side_Effects_Present := False;
 
          when E_Package =>
-            Tmp.B_Scope       := Flow_Scope'(E, Private_Part);
-            Tmp.S_Scope       := Flow_Scope'(E, Private_Part);
+            FA.B_Scope       := Flow_Scope'(E, Private_Part);
+            FA.S_Scope       := Flow_Scope'(E, Private_Part);
 
-            Append (Tmp.Base_Filename, "pkg_spec_");
+            Append (FA.Base_Filename, "pkg_spec_");
 
-            Tmp.Initializes_N := Get_Pragma (E, Pragma_Initializes);
+            FA.Initializes_N := Get_Pragma (E, Pragma_Initializes);
 
-            Tmp.Visible_Vars  := Flow_Id_Sets.Empty_Set;
+            FA.Visible_Vars  := Flow_Id_Sets.Empty_Set;
 
-            Tmp.Is_Generative := not Present (Tmp.Initializes_N);
+            FA.Is_Generative := No (FA.Initializes_N);
 
          when E_Package_Body =>
-            Tmp.B_Scope       := Flow_Scope'(Spec_Entity (E), Body_Part);
-            Tmp.S_Scope       := Flow_Scope'(Spec_Entity (E), Private_Part);
+            FA.B_Scope       := Flow_Scope'(Spec_Entity (E), Body_Part);
+            FA.S_Scope       := Flow_Scope'(Spec_Entity (E), Private_Part);
 
-            Append (Tmp.Base_Filename, "pkg_body_");
+            Append (FA.Base_Filename, "pkg_body_");
 
-            Tmp.Initializes_N := Get_Pragma (Spec_Entity (E),
-                                             Pragma_Initializes);
+            FA.Initializes_N := Get_Pragma (Spec_Entity (E),
+                                            Pragma_Initializes);
 
-            Tmp.Visible_Vars  := Flow_Id_Sets.Empty_Set;
+            FA.Visible_Vars  := Flow_Id_Sets.Empty_Set;
 
-            Tmp.Is_Generative := not Present (Tmp.Initializes_N);
+            FA.Is_Generative := No (FA.Initializes_N);
 
          when others =>
             raise Program_Error;
       end case;
 
-      Tmp.GG.Aborted := False;
-      Tmp.GG.Globals := Node_Sets.Empty_Set;
+      FA.GG.Aborted := False;
+      FA.GG.Globals := Node_Sets.Empty_Set;
 
-      declare
-         FA : Flow_Analysis_Graphs := Tmp; -- ??? why not simply use Tmp?
-      begin
-         Append (FA.Base_Filename, Unique_Name (E));
+      Append (FA.Base_Filename, Unique_Name (E));
 
-         if Gnat2Why_Args.Flow_Advanced_Debug then
-            Write_Line (Character'Val (8#33#) & "[32m" &
-                          Phase & " (cons) of " &
-                          FA.Kind'Img &
-                          " " &
-                          Character'Val (8#33#) & "[1m" &
-                          Get_Name_String (Chars (E)) &
-                          Character'Val (8#33#) & "[0m");
+      if Gnat2Why_Args.Flow_Advanced_Debug then
+         Write_Line (Character'Val (8#33#) & "[32m" &
+                     Phase & " (cons) of " &
+                     FA.Kind'Img &
+                     " " &
+                     Character'Val (8#33#) & "[1m" &
+                     Get_Name_String (Chars (E)) &
+                     Character'Val (8#33#) & "[0m");
 
-            Indent;
+         Indent;
 
-            if Debug_Trace_Scoping and not FA.Compute_Globals then
-               Write_Str ("Spec_Scope: ");
-               Print_Flow_Scope (FA.S_Scope);
-               Write_Eol;
-               declare
-                  Ptr : Flow_Scope := FA.S_Scope;
-               begin
-                  Indent;
-                  while Ptr /= Null_Flow_Scope loop
-                     case Valid_Section_T'(Ptr.Section) is
-                        when Body_Part =>
-                           Ptr.Section := Private_Part;
+         if Debug_Trace_Scoping and not FA.Compute_Globals then
+            Write_Str ("Spec_Scope: ");
+            Print_Flow_Scope (FA.S_Scope);
+            Write_Eol;
+            declare
+               Ptr : Flow_Scope := FA.S_Scope;
+            begin
+               Indent;
+               while Ptr /= Null_Flow_Scope loop
+                  case Valid_Section_T'(Ptr.Section) is
+                     when Body_Part =>
+                        Ptr.Section := Private_Part;
 
-                        when Private_Part | Spec_Part =>
-                           Ptr := Get_Enclosing_Flow_Scope (Ptr);
-                     end case;
-                     if Ptr /= Null_Flow_Scope then
-                        Print_Flow_Scope (Ptr);
-                        Write_Eol;
-                     end if;
-                  end loop;
-                  Outdent;
-               end;
+                     when Private_Part | Spec_Part =>
+                        Ptr := Get_Enclosing_Flow_Scope (Ptr);
+                  end case;
+                  if Ptr /= Null_Flow_Scope then
+                     Print_Flow_Scope (Ptr);
+                     Write_Eol;
+                  end if;
+               end loop;
+               Outdent;
+            end;
 
-               Write_Str ("Body_Scope: ");
-               Print_Flow_Scope (FA.B_Scope);
-               Write_Eol;
-            end if;
+            Write_Str ("Body_Scope: ");
+            Print_Flow_Scope (FA.B_Scope);
+            Write_Eol;
          end if;
+      end if;
 
-         if FA.Compute_Globals then
-            --  There are a number of cases where we don't want to produce
-            --  graphs as we already have all the contracts we need.
-            case FA.Kind is
-               when Kind_Subprogram | Kind_Task | Kind_Entry =>
-                  if not FA.Is_Generative then
+      if FA.Compute_Globals then
+         --  There are a number of cases where we don't want to produce graphs
+         --  as we already have all the contracts we need.
+         case FA.Kind is
+            when Kind_Subprogram | Kind_Task | Kind_Entry =>
+               if not FA.Is_Generative then
+                  if Gnat2Why_Args.Flow_Advanced_Debug then
+                     if Present (FA.Global_N) then
+                        Write_Line ("skipped (global found)");
+                     elsif Present (FA.Depends_N) then
+                        Write_Line ("skipped (depends found)");
+                     else
+                        raise Program_Error;
+                     end if;
+                  end if;
+                  FA.GG.Aborted := True;
+               end if;
+
+               if Gnat2Why_Args.Flow_Advanced_Debug then
+                  Write_Line ("Spec in SPARK: " & (if Entity_In_SPARK (E)
+                                                   then "yes"
+                                                   else "no"));
+
+                  Write_Line ("Body in SPARK: " &
+                                (if Entity_Body_Valid_SPARK (E)
+                                 then "yes"
+                                 else "no"));
+               end if;
+
+            when Kind_Package =>
+               if Present (FA.Initializes_N) then
+                  --  There is no need to create a GG graph if the package has
+                  --  an Initializes aspect.
+                  if Gnat2Why_Args.Flow_Advanced_Debug then
+                     Write_Line ("skipped (package spec)");
+                  end if;
+                  FA.GG.Aborted := True;
+               else
+                  if Entity_In_SPARK (E) then
                      if Gnat2Why_Args.Flow_Advanced_Debug then
-                        if Present (FA.Global_N) then
-                           Write_Line ("skipped (global found)");
-                        elsif Present (FA.Depends_N) then
-                           Write_Line ("skipped (depends found)");
-                        else
-                           raise Program_Error;
-                        end if;
+                        Write_Line ("Spec in SPARK: yes");
+                     end if;
+                  else
+                     --  We cannot create a GG graph if the spec is not in
+                     --  SPARK.
+
+                     if Gnat2Why_Args.Flow_Advanced_Debug then
+                        Write_Line ("Spec in SPARK: no");
                      end if;
                      FA.GG.Aborted := True;
                   end if;
+               end if;
+
+            when Kind_Package_Body =>
+               if Present (FA.Initializes_N) then
+                  --  There is no need to create a GG graph if the package has
+                  --  an Initializes aspect.
 
                   if Gnat2Why_Args.Flow_Advanced_Debug then
-                     Write_Line ("Spec in SPARK: " & (if Entity_In_SPARK (E)
-                                                      then "yes"
-                                                      else "no"));
-
-                     Write_Line ("Body in SPARK: " &
-                                   (if Entity_Body_Valid_SPARK (E)
-                                    then "yes"
-                                    else "no"));
+                     Write_Line ("skipped (package spec)");
+                     Write_Line ("skipped (package body)");
                   end if;
-
-               when Kind_Package =>
-                  if Present (FA.Initializes_N) then
-                     --  There is no need to create a GG graph if the package
-                     --  has an Initializes aspect.
+                  FA.GG.Aborted := True;
+               else
+                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
                      if Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("skipped (package spec)");
+                        Write_Line ("Spec in SPARK: yes");
+                        Write_Line ("Body in SPARK: yes");
+                     end if;
+                  else
+                     if Gnat2Why_Args.Flow_Advanced_Debug then
+                        Write_Line ("Spec in SPARK: " &
+                                      (if Entity_In_SPARK (FA.Spec_Entity)
+                                       then "yes"
+                                       else "no"));
+                        Write_Line ("Body in SPARK: no");
                      end if;
                      FA.GG.Aborted := True;
-                  else
-                     if Entity_In_SPARK (E) then
-                        if Gnat2Why_Args.Flow_Advanced_Debug then
-                           Write_Line ("Spec in SPARK: yes");
-                        end if;
-                     else
-                        --  We cannot create a GG graph if the spec is not in
-                        --  SPARK.
-
-                        if Gnat2Why_Args.Flow_Advanced_Debug then
-                           Write_Line ("Spec in SPARK: no");
-                        end if;
-                        FA.GG.Aborted := True;
-                     end if;
                   end if;
-
-               when Kind_Package_Body =>
-                  if Present (FA.Initializes_N) then
-                     --  There is no need to create a GG graph if the package
-                     --  has an Initializes aspect.
-
-                     if Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("skipped (package spec)");
-                        Write_Line ("skipped (package body)");
-                     end if;
-                     FA.GG.Aborted := True;
-                  else
-                     if Entity_Body_In_SPARK (FA.Spec_Entity) then
-                        if Gnat2Why_Args.Flow_Advanced_Debug then
-                           Write_Line ("Spec in SPARK: yes");
-                           Write_Line ("Body in SPARK: yes");
-                        end if;
-                     else
-                        if Gnat2Why_Args.Flow_Advanced_Debug then
-                           Write_Line ("Spec in SPARK: " &
-                                         (if Entity_In_SPARK (FA.Spec_Entity)
-                                          then "yes"
-                                          else "no"));
-                           Write_Line ("Body in SPARK: no");
-                        end if;
-                        FA.GG.Aborted := True;
-                     end if;
-                  end if;
-
-                  declare
-                     Refined_State_N : constant Node_Id :=
-                       Get_Pragma (E, Pragma_Refined_State);
-
-                     DM              : Dependency_Maps.Map;
-                     Constituents    : Flow_Id_Sets.Set;
-                  begin
-                     if Present (Refined_State_N) then
-                        if Gnat2Why_Args.Flow_Advanced_Debug then
-                           Write_Line ("Refinement found: yes");
-                        end if;
-
-                        DM := Parse_Refined_State (Refined_State_N);
-                        if Gnat2Why_Args.Flow_Advanced_Debug then
-                           for State in DM.Iterate loop
-                              Write_Line ("State       :");
-                              Indent;
-                              Print_Flow_Id (Dependency_Maps.Key (State));
-                              Outdent;
-                              Write_Line ("Constituents:");
-                              Constituents := Dependency_Maps.Element (State);
-                              Indent;
-                              for Constituent of Constituents loop
-                                 Print_Flow_Id (Constituent);
-                              end loop;
-                              Outdent;
-                           end loop;
-                        end if;
-                     else
-                        if Gnat2Why_Args.Flow_Advanced_Debug then
-                           Write_Line ("Refinement found: no");
-                        end if;
-                     end if;
-                  end;
-            end case;
-
-            if FA.GG.Aborted then
-               if Gnat2Why_Args.Flow_Advanced_Debug then
-                  Outdent;
                end if;
-               return FA;
+
+               declare
+                  Refined_State_N : constant Node_Id :=
+                    Get_Pragma (E, Pragma_Refined_State);
+
+                  DM              : Dependency_Maps.Map;
+                  Constituents    : Flow_Id_Sets.Set;
+               begin
+                  if Present (Refined_State_N) then
+                     if Gnat2Why_Args.Flow_Advanced_Debug then
+                        Write_Line ("Refinement found: yes");
+                     end if;
+
+                     DM := Parse_Refined_State (Refined_State_N);
+                     if Gnat2Why_Args.Flow_Advanced_Debug then
+                        for State in DM.Iterate loop
+                           Write_Line ("State       :");
+                           Indent;
+                           Print_Flow_Id (Dependency_Maps.Key (State));
+                           Outdent;
+                           Write_Line ("Constituents:");
+                           Constituents := Dependency_Maps.Element (State);
+                           Indent;
+                           for Constituent of Constituents loop
+                              Print_Flow_Id (Constituent);
+                           end loop;
+                           Outdent;
+                        end loop;
+                     end if;
+                  elsif Gnat2Why_Args.Flow_Advanced_Debug then
+                        Write_Line ("Refinement found: no");
+                  end if;
+               end;
+         end case;
+
+         if FA.GG.Aborted then
+            if Gnat2Why_Args.Flow_Advanced_Debug then
+               Outdent;
             end if;
+            return FA;
          end if;
+      end if;
 
-         Control_Flow_Graph.Create (FA);
+      Control_Flow_Graph.Create (FA);
 
-         --  Register tasking-related information; ignore packages because
-         --  they are elaborated sequentially anyway.
-         if FA.Compute_Globals
-           and then FA.Kind in Kind_Subprogram |
-                               Kind_Entry      |
-                               Kind_Task
-         then
-            GG_Register_Tasking_Info (To_Entity_Name (FA.Analyzed_Entity),
-                                      FA.Tasking);
-         end if;
+      --  Register tasking-related information; ignore packages because they
+      --  are elaborated sequentially anyway.
+      if FA.Compute_Globals
+        and then FA.Kind in Kind_Subprogram |
+                            Kind_Entry      |
+                            Kind_Task
+      then
+         GG_Register_Tasking_Info (To_Entity_Name (FA.Analyzed_Entity),
+                                   FA.Tasking);
+      end if;
 
-         --  We print this graph first in case the other algorithms barf
-         if Debug_Print_CFG then
-            Print_Graph (Filename          =>
-                           To_String (FA.Base_Filename) & "_cfg",
-                         G                 => FA.CFG,
-                         M                 => FA.Atr,
-                         Start_Vertex      => FA.Start_Vertex,
-                         Helper_End_Vertex => FA.Helper_End_Vertex,
-                         End_Vertex        => FA.End_Vertex);
-         end if;
+      --  We print this graph first in case the other algorithms barf
+      if Debug_Print_CFG then
+         Print_Graph (Filename          =>
+                        To_String (FA.Base_Filename) & "_cfg",
+                      G                 => FA.CFG,
+                      M                 => FA.Atr,
+                      Start_Vertex      => FA.Start_Vertex,
+                      Helper_End_Vertex => FA.Helper_End_Vertex,
+                      End_Vertex        => FA.End_Vertex);
+      end if;
 
-         Control_Dependence_Graph.Create (FA);
+      Control_Dependence_Graph.Create (FA);
 
-         if Debug_Print_Intermediates then
-            Print_Graph (Filename          =>
-                           To_String (FA.Base_Filename) & "_cdg",
-                         G                 => FA.CDG,
-                         M                 => FA.Atr,
-                         Start_Vertex      => FA.Start_Vertex,
-                         Helper_End_Vertex => FA.Helper_End_Vertex,
-                         End_Vertex        => FA.End_Vertex);
-         end if;
+      if Debug_Print_Intermediates then
+         Print_Graph (Filename          =>
+                        To_String (FA.Base_Filename) & "_cdg",
+                      G                 => FA.CDG,
+                      M                 => FA.Atr,
+                      Start_Vertex      => FA.Start_Vertex,
+                      Helper_End_Vertex => FA.Helper_End_Vertex,
+                      End_Vertex        => FA.End_Vertex);
+      end if;
 
-         Data_Dependence_Graph.Create (FA);
-         Interprocedural.Create (FA);
-         Program_Dependence_Graph.Create (FA);
+      Data_Dependence_Graph.Create (FA);
+      Interprocedural.Create (FA);
+      Program_Dependence_Graph.Create (FA);
 
-         if Debug_Print_Intermediates then
-            Print_Graph (Filename          =>
-                           To_String (FA.Base_Filename) & "_ddg",
-                         G                 => FA.DDG,
-                         M                 => FA.Atr,
-                         Start_Vertex      => FA.Start_Vertex,
-                         Helper_End_Vertex => FA.Helper_End_Vertex,
-                         End_Vertex        => FA.End_Vertex);
-         end if;
+      if Debug_Print_Intermediates then
+         Print_Graph (Filename          =>
+                        To_String (FA.Base_Filename) & "_ddg",
+                      G                 => FA.DDG,
+                      M                 => FA.Atr,
+                      Start_Vertex      => FA.Start_Vertex,
+                      Helper_End_Vertex => FA.Helper_End_Vertex,
+                      End_Vertex        => FA.End_Vertex);
+      end if;
 
-         if Debug_Print_PDG then
-            Print_Graph (Filename          =>
-                           To_String (FA.Base_Filename) & "_pdg",
-                         G                 => FA.PDG,
-                         M                 => FA.Atr,
-                         Start_Vertex      => FA.Start_Vertex,
-                         Helper_End_Vertex => FA.Helper_End_Vertex,
-                         End_Vertex        => FA.End_Vertex);
-         end if;
+      if Debug_Print_PDG then
+         Print_Graph (Filename          =>
+                        To_String (FA.Base_Filename) & "_pdg",
+                      G                 => FA.PDG,
+                      M                 => FA.Atr,
+                      Start_Vertex      => FA.Start_Vertex,
+                      Helper_End_Vertex => FA.Helper_End_Vertex,
+                      End_Vertex        => FA.End_Vertex);
+      end if;
 
-         if Gnat2Why_Args.Flow_Advanced_Debug then
-            Outdent;
-         end if;
+      if Gnat2Why_Args.Flow_Advanced_Debug then
+         Outdent;
+      end if;
 
-         return FA;
-      end;
+      return FA;
+
    end Flow_Analyse_Entity;
 
    ---------------------------------------
