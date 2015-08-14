@@ -1,34 +1,48 @@
+nested_po.adb:4:24: warning: statement has no effect
+nested_po.adb:12:29: warning: statement has no effect
+nested_po.adb:12:29: warning: unused assignment to "Outer_Rec"
+nested_po.ads:21:14: more than one task calls entry of the protected object "nested_po.outer_rec" (SPARK RM 9.11)
+nested_po.ads:23:04: info: initialization of "T" proved
 pack.adb:7:18: warning: assuming "Put_Line" has no effect on global items
 pack.adb:7:18: warning: no Global contract available for "Put_Line"
 pack.adb:12:18: warning: assuming "Put_Line" has no effect on global items
 pack.adb:12:18: warning: no Global contract available for "Put_Line"
 pack.ads:14:04: info: initialization of "TA" proved
+task_and_po_arrays.adb:9:24: warning: statement has no effect
+task_and_po_arrays.ads:5:14: medium: "POs" might not be initialized after elaboration of main program "T"
+task_and_po_arrays.ads:5:14: more than one task calls entry of the protected object "task_and_po_arrays.pos" (SPARK RM 9.11)
+task_and_po_arrays.ads:12:04: info: initialization of "Ts" proved
 task_and_so_arrays.ads:7:14: medium: "SOs" might not be initialized after elaboration of main program "T"
-task_and_so_arrays.ads:7:14: more than one task suspend on suspension object "task_and_so_arrays.sos" (SPARK RM 9.11)
+task_and_so_arrays.ads:7:14: more than one task suspends on suspension object "task_and_so_arrays.sos" (SPARK RM 9.11)
 task_and_so_arrays.ads:10:04: info: initialization of "Ts" proved
 task_type_array_single_so.adb:11:04: info: initialization of "Task_Array" proved
 task_type_array_single_so.ads:7:14: medium: "SO" might not be initialized after elaboration of main program "TT"
-task_type_array_single_so.ads:7:14: more than one task suspend on suspension object "task_type_array_single_so.so" (SPARK RM 9.11)
+task_type_array_single_so.ads:7:14: more than one task suspends on suspension object "task_type_array_single_so.so" (SPARK RM 9.11)
 two_task_type_objects_single_so.adb:10:04: info: initialization of "T1" proved
 two_task_type_objects_single_so.adb:10:08: info: initialization of "T2" proved
 two_task_type_objects_single_so.ads:7:14: medium: "SO" might not be initialized after elaboration of main program "TT"
-two_task_type_objects_single_so.ads:7:14: more than one task suspend on suspension object "two_task_type_objects_single_so.so" (SPARK RM 9.11)
+two_task_type_objects_single_so.ads:7:14: more than one task suspends on suspension object "two_task_type_objects_single_so.so" (SPARK RM 9.11)
 two_tasks_single_po.adb:4:20: warning: statement has no effect
 two_tasks_single_po.adb:10:09: info: initialization of "T1" proved
+two_tasks_single_po.adb:10:09: more than one task calls entry of the protected object "two_tasks_single_po.po" (SPARK RM 9.11)
 two_tasks_single_po.adb:11:09: info: initialization of "T2" proved
+two_tasks_single_po.adb:11:09: more than one task calls entry of the protected object "two_tasks_single_po.po" (SPARK RM 9.11)
 two_tasks_single_po.adb:15:09: warning: statement has no effect
 two_tasks_single_po.adb:15:09: warning: unused assignment to "PO"
 two_tasks_single_po.adb:20:09: warning: statement has no effect
 two_tasks_single_po.adb:20:09: warning: unused assignment to "PO"
 two_tasks_single_so.ads:7:09: info: initialization of "T1" proved
 two_tasks_single_so.ads:7:09: medium: "SO" might not be initialized after elaboration of main program "T1tk"
-two_tasks_single_so.ads:7:09: more than one task suspend on suspension object "two_tasks_single_so.so" (SPARK RM 9.11)
+two_tasks_single_so.ads:7:09: more than one task suspends on suspension object "two_tasks_single_so.so" (SPARK RM 9.11)
 two_tasks_single_so.ads:9:09: info: initialization of "T2" proved
 two_tasks_single_so.ads:9:09: medium: "SO" might not be initialized after elaboration of main program "T2tk"
-two_tasks_single_so.ads:9:09: more than one task suspend on suspension object "two_tasks_single_so.so" (SPARK RM 9.11)
+two_tasks_single_so.ads:9:09: more than one task suspends on suspension object "two_tasks_single_so.so" (SPARK RM 9.11)
+   compilation of nested_po.adb failed
+   compilation of task_and_po_arrays.adb failed
    compilation of task_and_so_arrays.adb failed
    compilation of task_type_array_single_so.adb failed
    compilation of two_task_type_objects_single_so.adb failed
+   compilation of two_tasks_single_po.adb failed
    compilation of two_tasks_single_so.adb failed
 
 

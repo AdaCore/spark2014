@@ -4,6 +4,8 @@ a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiati
 barrier.adb:10:31: warning: assuming "Wait_For_Release" has no effect on global items
 barrier.adb:10:31: warning: no Global contract available for "Wait_For_Release"
 barrier.adb:10:54: warning: unused assignment to "Notified"
+internal_protected_call.adb:6:12: warning: statement has no effect
+internal_protected_call.adb:6:12: warning: unused assignment to "PT"
 p-po_stub_1.adb:3:38: warning: statement has no effect
 p-po_stub_1.adb:8:04: warning: analyzing unreferenced procedure "Nonblocking_Stub_Proc"
 p-po_stub_2.adb:3:44: warning: statement has no effect

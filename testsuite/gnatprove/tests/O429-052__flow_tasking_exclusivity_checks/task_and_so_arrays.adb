@@ -11,4 +11,4 @@ package body Task_And_SO_Arrays is
       Ada.Synchronous_Task_Control.Suspend_Until_True (SOs (Id));
    end T;
 
-end Task_And_SO_Arrays;
+end;
