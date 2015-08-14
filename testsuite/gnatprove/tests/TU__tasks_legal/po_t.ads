@@ -1,5 +1,5 @@
 package PO_T
-  with Abstract_State => State
+  with Abstract_State => (State with External)
 is
 
    --  TU: 3. If a variable or a package which declares a state abstraction is
@@ -20,10 +20,10 @@ is
 
       entry Set (X : Integer);
    private
-      The_Protected_Int : Integer := 0;
+      Condition : Boolean := True;
    end P_Int;
 
-   Condition : Boolean := True
+   The_Protected_Int : Integer := 0
      with Part_Of => P_Int;
 
 private

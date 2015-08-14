@@ -10,10 +10,11 @@ package PO_T is
 
       entry Set (X : Integer);
    private
-      The_Protected_Int : Integer;  --  This should be initialized.
+      Condition : Boolean := True
+        with Part_Of => P_Int;
    end P_Int;
 
-   Condition : Boolean := True
-     with Part_Of => P_Int;
+   The_Protected_Int : Integer;  --  This should be initialized.
+
 
 end PO_T;

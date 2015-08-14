@@ -28,6 +28,6 @@ is
 
 begin
    P_Int.Set (-10);
-   Hidden_Po.Set (-10)
+   Hidden_Po.Set (-10);
    pragma Assert (P_Int.Get = Hidden_PO.Get);
 end PO_T;
