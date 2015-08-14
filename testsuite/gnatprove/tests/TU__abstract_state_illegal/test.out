@@ -13,7 +13,7 @@ abstract_state_illegal.ads:66:07: package "Null_Abstract_State_With_Hidden_State
 abstract_state_illegal.ads:77:07: "S1" conflicts with declaration at line 75
 abstract_state_illegal_2.ads:14:48: "=>" expected (positional association cannot follow named association)
 abstract_state_illegal_4-pub_child.adb:5:57: "Pr_State" cannot act as constituent of state "Pub_State"
-abstract_state_illegal_4-pub_child.adb:5:57: Part_Of indicator specifies "State" as encapsulating state
+abstract_state_illegal_4-pub_child.adb:5:57: Part_Of indicator specifies encapsulator "State"
    compilation of abstract_state_illegal.ads failed
    compilation of abstract_state_illegal_2.ads failed
    compilation of abstract_state_illegal_4-pub_child.adb failed
