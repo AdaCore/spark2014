@@ -902,16 +902,22 @@ package body Flow_Generated_Globals is
       --  Reads the populated Subprogram_Info_List and generates all the edges
       --  of the Global_Graph. While adding edges we consult the Local_Graph so
       --  as not to add edges to local variables.
+      --  It also created edges for (conditional and unconditional) subprogram
+      --  calls in the Tasking_Graph.
 
       procedure Create_All_Vertices;
-      --  Creates all the vertices of the Global_Graph
+      --  Creates all the vertices of the Global_Graph and subprogram vertices
+      --  in the Tasking_Graph.
 
       procedure Create_Local_Graph;
       --  Creates the Local_Graph. This graph will be used to prevent adding
       --  edges to local variables on the Global_Graph.
 
       procedure Create_Tasking_Graph;
-      --  Creates graph with tasking-related information
+      --  Creates graph with tasking-related information; it will contain:
+      --  * a vertex for each subprogram that accesses a tasking object,
+      --  * a vertex for each tasking object,
+      --  * an edge from such subprogram to such vertex.
 
       procedure Edit_Proof_Ins;
       --  A variable cannot be simultaneously a Proof_In and an Input
