@@ -249,6 +249,12 @@ package body Flow.Interprocedural is
             --  Add something for the PO in an entry call
             if Nkind (N) = N_Entry_Call_Statement then
                declare
+                  --  Make sure that it is an external call for which we can
+                  --  indeed get the enclosing object; for internal calls we
+                  --  can only get the protected type itself, but apparently
+                  --  we are not hitting this code???
+                  pragma Assert (Nkind (Name (N)) = N_Selected_Component);
+
                   The_PO : constant Flow_Id :=
                     Direct_Mapping_Id (Get_Enclosing_Object (Name (N)));
                begin
