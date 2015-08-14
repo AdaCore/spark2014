@@ -234,6 +234,86 @@ package body Why.Gen.Records is
          Expr   : W_Term_Id) return W_Pred_Id;
       --  Wrapper for the function in Gnat2Why.Expr;
 
+      function Extract_Fun
+        (Field       : Entity_Id;
+         Is_Ancestor : Boolean) return W_Identifier_Id;
+      --  Returns the name of the extract function for an extension or an
+      --  ancestor component.
+
+      function Extract_Extension_Fun return W_Identifier_Id;
+      --  Returns the name of the extract function for an extension component
+
+      function Extract_Ancestor_Fun return W_Identifier_Id;
+      --  Returns the name of the extract function for an ancestor component
+
+      function Extract_Main_Fun (Is_Ancestor : Boolean) return W_Identifier_Id;
+      --  Returns the name of the extract function for an ancestor component
+
+      function New_Extension_Component_Expr (Ty : Entity_Id) return W_Expr_Id;
+      --  Returns the name of the special field representing extension
+      --  components.
+
+      function New_Main_Component_Expr (Ty : Entity_Id) return W_Expr_Id;
+      --  Returns the name of the special field representing invisible
+      --  fields of a private type.
+
+      ----------------------------------
+      -- Declare_Extraction_Functions --
+      ----------------------------------
+
+      procedure Declare_Extraction_Functions_For_Ancestor;
+      --  This is only called when the current tagged type has a private
+      --  ancestor, so that the components of the root type are invisible
+      --  in the current type.
+      --
+      --  For each component <comp> of the root type, declare a function
+      --  extract__anc__<comp> to extract the value of the component from the
+      --  ancestor field of a value of current type. Also declare a function
+      --  hide_ext__ to generate the ancestor field of the current type based
+      --  on the root components including its special extension field.
+      --
+      --  Note that we currently do not generate the axioms stating that
+      --  extraction and hiding are inverse functions.
+
+      procedure Declare_Extraction_Functions_For_Extension;
+      --  For each extension component <comp> of the current type (i.e.
+      --  a component that is not in the root type), declare a function
+      --  extract__<comp> to extract the value of the component from the
+      --  extension field of a value of root type. Also declare a function
+      --  extract__ext__ to extract the value of the extension part for the
+      --  current type, and a function hide_ext__ to generate the extension
+      --  field of the root type based on the extension components and special
+      --  extension field rec__ext__ of the current type.
+      --
+      --  Note that we currently do not generate the axioms stating that
+      --  extraction and hiding are inverse functions, in the sense that:
+      --
+      --    root.rec_ext__ = hide_ext__ (extract__comp1 root.rec_ext__,
+      --                                 extract__comp2 root.rec_ext__,
+      --                                 ...
+      --                                 extract__ext__ root.rec_ext__)
+      --
+      --  and for every extension component <comp> or the special extension
+      --  component rec_ext__:
+      --
+      --    cur.comp = extract__comp (hide_ext__ (..., cur.comp, ...))
+      --
+      --  Previously, we generated axioms in Declare_Conversion_Functions that
+      --  stated that converting back and forth between the current type and
+      --  its root type is the identity in both directions. The axiom going
+      --  from root to derived to root was incorrect in the case that the
+      --  derived type had a constrained discriminant. These axioms are no
+      --  longer generated.
+
+      procedure Declare_Extraction_Functions
+        (Components  : Node_Lists.List;
+         Is_Ancestor : Boolean);
+      --  Shared implementation for the two kinds of extraction functions, for
+      --  ancestor components and extension components.
+      --  @param Components The list of components to hide
+      --  @param Is_Ancestor True if generating extraction functions for the
+      --     ancestor component, False for the extension component
+
       Root      : constant Entity_Id := Root_Record_Type (E);
       Is_Root   : constant Boolean   := Root = E;
       Ty_Name   : constant W_Name_Id := To_Why_Type (E, Local => True);
@@ -322,81 +402,6 @@ package body Why.Gen.Records is
          end loop;
          return Cond;
       end Compute_Others_Choice;
-
-      ----------------------------------
-      -- New_Extension_Component_Expr --
-      ----------------------------------
-
-      function New_Extension_Component_Expr (Ty : Entity_Id) return W_Expr_Id;
-      --  Returns the name of the special field representing extension
-      --  components.
-
-      function New_Extension_Component_Expr (Ty : Entity_Id) return W_Expr_Id
-      is
-      begin
-         return +E_Symb (Ty, WNE_Rec_Extension);
-      end New_Extension_Component_Expr;
-
-      function New_Main_Component_Expr (Ty : Entity_Id) return W_Expr_Id;
-      --  Returns the name of the special field representing invisible
-      --  fields of a private type.
-
-      function New_Main_Component_Expr (Ty : Entity_Id) return W_Expr_Id
-      is
-      begin
-         return +E_Symb (Ty, WNE_Rec_Main);
-      end New_Main_Component_Expr;
-
-      -----------------
-      -- Extract_Fun --
-      -----------------
-
-      function Extract_Fun
-        (Field       : Entity_Id;
-         Is_Ancestor : Boolean) return W_Identifier_Id;
-      --  Returns the name of the extract function for an extension or an
-      --  ancestor component.
-
-      function Extract_Fun
-        (Field       : Entity_Id;
-         Is_Ancestor : Boolean) return W_Identifier_Id
-      is
-         Prefix : constant Why_Name_Enum :=
-           (if Is_Ancestor then WNE_Ancestor_Prefix else WNE_Extract_Prefix);
-      begin
-         return New_Identifier (Name => To_String (Prefix) &
-                                        Get_Name_String (Chars (Field)));
-      end Extract_Fun;
-
-      function Extract_Extension_Fun return W_Identifier_Id;
-      --  Returns the name of the extract function for an extension component
-
-      function Extract_Extension_Fun return W_Identifier_Id is
-      begin
-         return New_Identifier (Name => To_String (WNE_Extract_Prefix) &
-                                        To_String (WNE_Rec_Extension_Suffix));
-      end Extract_Extension_Fun;
-
-      function Extract_Ancestor_Fun return W_Identifier_Id;
-      --  Returns the name of the extract function for an ancestor component
-
-      function Extract_Ancestor_Fun return W_Identifier_Id is
-      begin
-         return New_Identifier (Name => To_String (WNE_Extract_Prefix) &
-                                        To_String (WNE_Rec_Ancestor_Suffix));
-      end Extract_Ancestor_Fun;
-
-      function Extract_Main_Fun (Is_Ancestor : Boolean) return W_Identifier_Id;
-      --  Returns the name of the extract function for an ancestor component
-
-      function Extract_Main_Fun (Is_Ancestor : Boolean) return W_Identifier_Id
-      is
-         Prefix : constant Why_Name_Enum :=
-           (if Is_Ancestor then WNE_Ancestor_Prefix else WNE_Extract_Prefix);
-      begin
-         return New_Identifier (Name => To_String (Prefix) &
-                                        To_String (WNE_Rec_Main_Suffix));
-      end Extract_Main_Fun;
 
       ------------------------
       -- Declare_Attributes --
@@ -1039,59 +1044,6 @@ package body Why.Gen.Records is
       ----------------------------------
       -- Declare_Extraction_Functions --
       ----------------------------------
-
-      procedure Declare_Extraction_Functions_For_Ancestor;
-      --  This is only called when the current tagged type has a private
-      --  ancestor, so that the components of the root type are invisible
-      --  in the current type.
-      --
-      --  For each component <comp> of the root type, declare a function
-      --  extract__anc__<comp> to extract the value of the component from the
-      --  ancestor field of a value of current type. Also declare a function
-      --  hide_ext__ to generate the ancestor field of the current type based
-      --  on the root components including its special extension field.
-      --
-      --  Note that we currently do not generate the axioms stating that
-      --  extraction and hiding are inverse functions.
-
-      procedure Declare_Extraction_Functions_For_Extension;
-      --  For each extension component <comp> of the current type (i.e.
-      --  a component that is not in the root type), declare a function
-      --  extract__<comp> to extract the value of the component from the
-      --  extension field of a value of root type. Also declare a function
-      --  extract__ext__ to extract the value of the extension part for the
-      --  current type, and a function hide_ext__ to generate the extension
-      --  field of the root type based on the extension components and special
-      --  extension field rec__ext__ of the current type.
-      --
-      --  Note that we currently do not generate the axioms stating that
-      --  extraction and hiding are inverse functions, in the sense that:
-      --
-      --    root.rec_ext__ = hide_ext__ (extract__comp1 root.rec_ext__,
-      --                                 extract__comp2 root.rec_ext__,
-      --                                 ...
-      --                                 extract__ext__ root.rec_ext__)
-      --
-      --  and for every extension component <comp> or the special extension
-      --  component rec_ext__:
-      --
-      --    cur.comp = extract__comp (hide_ext__ (..., cur.comp, ...))
-      --
-      --  Previously, we generated axioms in Declare_Conversion_Functions that
-      --  stated that converting back and forth between the current type and
-      --  its root type is the identity in both directions. The axiom going
-      --  from root to derived to root was incorrect in the case that the
-      --  derived type had a constrained discriminant. These axioms are no
-      --  longer generated.
-
-      procedure Declare_Extraction_Functions
-        (Components  : Node_Lists.List;
-         Is_Ancestor : Boolean);
-      --  Shared implementation for the two kinds of extraction functions, for
-      --  ancestor components and extension components.
-      --  @param Components The list of components to hide
-      --  @param Is_Ancestor True if generating extraction functions for the
-      --     ancestor component, False for the extension component
 
       procedure Declare_Extraction_Functions
         (Components  : Node_Lists.List;
@@ -1774,6 +1726,74 @@ package body Why.Gen.Records is
               Args => (1 => +Arg));
       end Discriminant_Check_Pred_Call;
 
+      -----------------
+      -- Extract_Fun --
+      -----------------
+
+      function Extract_Fun
+        (Field       : Entity_Id;
+         Is_Ancestor : Boolean) return W_Identifier_Id
+      is
+         Prefix : constant Why_Name_Enum :=
+           (if Is_Ancestor then WNE_Ancestor_Prefix else WNE_Extract_Prefix);
+      begin
+         return New_Identifier (Name => To_String (Prefix) &
+                                        Get_Name_String (Chars (Field)));
+      end Extract_Fun;
+
+      ---------------------------
+      -- Extract_Extension_Fun --
+      ---------------------------
+
+      function Extract_Extension_Fun return W_Identifier_Id is
+      begin
+         return New_Identifier (Name => To_String (WNE_Extract_Prefix) &
+                                        To_String (WNE_Rec_Extension_Suffix));
+      end Extract_Extension_Fun;
+
+      --------------------------
+      -- Extract_Ancestor_Fun --
+      --------------------------
+
+      function Extract_Ancestor_Fun return W_Identifier_Id is
+      begin
+         return New_Identifier (Name => To_String (WNE_Extract_Prefix) &
+                                        To_String (WNE_Rec_Ancestor_Suffix));
+      end Extract_Ancestor_Fun;
+
+      ----------------------
+      -- Extract_Main_Fun --
+      ----------------------
+
+      function Extract_Main_Fun (Is_Ancestor : Boolean) return W_Identifier_Id
+      is
+         Prefix : constant Why_Name_Enum :=
+           (if Is_Ancestor then WNE_Ancestor_Prefix else WNE_Extract_Prefix);
+      begin
+         return New_Identifier (Name => To_String (Prefix) &
+                                        To_String (WNE_Rec_Main_Suffix));
+      end Extract_Main_Fun;
+
+      ----------------------------------
+      -- New_Extension_Component_Expr --
+      ----------------------------------
+
+      function New_Extension_Component_Expr (Ty : Entity_Id) return W_Expr_Id
+      is
+      begin
+         return +E_Symb (Ty, WNE_Rec_Extension);
+      end New_Extension_Component_Expr;
+
+      -----------------------------
+      -- New_Main_Component_Expr --
+      -----------------------------
+
+      function New_Main_Component_Expr (Ty : Entity_Id) return W_Expr_Id
+      is
+      begin
+         return +E_Symb (Ty, WNE_Rec_Main);
+      end New_Main_Component_Expr;
+
       -------------------------
       -- Init_Component_Info --
       -------------------------
@@ -2229,6 +2249,94 @@ package body Why.Gen.Records is
                 Name       =>
                    Get_Name (E_Symb (E, WNE_Rec_Split_Fields))));
 
+   -----------------------------------------
+   -- Generate_Associations_From_Ancestor --
+   -----------------------------------------
+
+   procedure Generate_Associations_From_Ancestor
+     (Ada_Node     : Node_Id := Empty;
+      Domain       : EW_Domain;
+      Expr         : W_Expr_Id;
+      Anc_Ty       : Entity_Id;
+      Ty           : Entity_Id;
+      Discr_Assocs : out W_Field_Association_Array;
+      Field_Assocs : out W_Field_Association_Array)
+   is
+      Anc_Comp    : Entity_Id := First_Component_Or_Discriminant (Anc_Ty);
+      Component   : Entity_Id;
+      Discr_Index : Natural := 0;
+      Field_Index : Natural := 0;
+      Assoc       : W_Field_Association_Id;
+
+   begin
+      while Present (Anc_Comp) loop
+         pragma Assert (Is_Not_Hidden_Discriminant (Anc_Comp));
+
+         Component := Search_Component_By_Name (Ty, Anc_Comp);
+
+         if Present (Component)
+           and then Component_Is_Visible_In_SPARK (Component)
+         then
+            Assoc := New_Field_Association
+              (Domain   => Domain,
+               Field    => To_Why_Id (Component),
+               Value    => New_Ada_Record_Access
+                 (Ada_Node => Ada_Node,
+                  Domain   => (if Domain in EW_Prog | EW_Pterm then EW_Pterm
+                               else EW_Term),
+                  Name     => Expr,
+                  Field    => Anc_Comp,
+                  Ty       => Anc_Ty));
+
+            if Ekind (Component) = E_Discriminant then
+               Discr_Index := Discr_Index + 1;
+               Discr_Assocs (Discr_Index) := Assoc;
+            else
+               Field_Index := Field_Index + 1;
+               Field_Assocs (Field_Index) := Assoc;
+            end if;
+
+         else
+            pragma Assert (Has_Private_Ancestor_Or_Root (Ty));
+         end if;
+
+         Next_Component_Or_Discriminant (Anc_Comp);
+      end loop;
+
+      if Has_Private_Ancestor_Or_Root (Ty) then
+         declare
+            Root        : constant Entity_Id :=
+              Root_Record_Type (Ty);
+            Anc_Is_Root : constant Boolean :=
+              Unique_Entity (Root) = Unique_Entity (Anc_Ty);
+            Root_Expr : constant W_Expr_Id :=
+              (if Anc_Is_Root then
+                 Expr
+               else
+                 New_Call (Domain => EW_Term,
+                           Name => E_Symb (Anc_Ty, WNE_To_Base),
+                           Args => (1 => Expr)));
+         begin
+            Assoc := New_Field_Association
+              (Domain   => Domain,
+               Field    => E_Symb (Ty, WNE_Rec_Ancestor),
+               Value    =>
+                 New_Call (Domain => EW_Term,
+                           Name => E_Symb (Ty, WNE_Hide_Ancestor),
+                           Args => (1 => Root_Expr)));
+
+            Field_Index := Field_Index + 1;
+            Field_Assocs (Field_Index) := Assoc;
+         end;
+      end if;
+
+      --  All discriminants of the ancestor part should have been set, but
+      --  possibly not all components in case of a discriminant record.
+
+      pragma Assert (Discr_Index = Discr_Assocs'Last);
+      pragma Assert (Field_Index = Field_Assocs'Last);
+   end Generate_Associations_From_Ancestor;
+
    ---------------------------------------
    -- Insert_Subtype_Discriminant_Check --
    ---------------------------------------
@@ -2450,94 +2558,6 @@ package body Why.Gen.Records is
       return Result;
    end New_Ada_Record_Aggregate;
 
-   -----------------------------------------
-   -- Generate_Associations_From_Ancestor --
-   -----------------------------------------
-
-   procedure Generate_Associations_From_Ancestor
-     (Ada_Node     : Node_Id := Empty;
-      Domain       : EW_Domain;
-      Expr         : W_Expr_Id;
-      Anc_Ty       : Entity_Id;
-      Ty           : Entity_Id;
-      Discr_Assocs : out W_Field_Association_Array;
-      Field_Assocs : out W_Field_Association_Array)
-   is
-      Anc_Comp    : Entity_Id := First_Component_Or_Discriminant (Anc_Ty);
-      Component   : Entity_Id;
-      Discr_Index : Natural := 0;
-      Field_Index : Natural := 0;
-      Assoc       : W_Field_Association_Id;
-
-   begin
-      while Present (Anc_Comp) loop
-         pragma Assert (Is_Not_Hidden_Discriminant (Anc_Comp));
-
-         Component := Search_Component_By_Name (Ty, Anc_Comp);
-
-         if Present (Component)
-           and then Component_Is_Visible_In_SPARK (Component)
-         then
-            Assoc := New_Field_Association
-              (Domain   => Domain,
-               Field    => To_Why_Id (Component),
-               Value    => New_Ada_Record_Access
-                 (Ada_Node => Ada_Node,
-                  Domain   => (if Domain in EW_Prog | EW_Pterm then EW_Pterm
-                               else EW_Term),
-                  Name     => Expr,
-                  Field    => Anc_Comp,
-                  Ty       => Anc_Ty));
-
-            if Ekind (Component) = E_Discriminant then
-               Discr_Index := Discr_Index + 1;
-               Discr_Assocs (Discr_Index) := Assoc;
-            else
-               Field_Index := Field_Index + 1;
-               Field_Assocs (Field_Index) := Assoc;
-            end if;
-
-         else
-            pragma Assert (Has_Private_Ancestor_Or_Root (Ty));
-         end if;
-
-         Next_Component_Or_Discriminant (Anc_Comp);
-      end loop;
-
-      if Has_Private_Ancestor_Or_Root (Ty) then
-         declare
-            Root        : constant Entity_Id :=
-              Root_Record_Type (Ty);
-            Anc_Is_Root : constant Boolean :=
-              Unique_Entity (Root) = Unique_Entity (Anc_Ty);
-            Root_Expr : constant W_Expr_Id :=
-              (if Anc_Is_Root then
-                 Expr
-               else
-                 New_Call (Domain => EW_Term,
-                           Name => E_Symb (Anc_Ty, WNE_To_Base),
-                           Args => (1 => Expr)));
-         begin
-            Assoc := New_Field_Association
-              (Domain   => Domain,
-               Field    => E_Symb (Ty, WNE_Rec_Ancestor),
-               Value    =>
-                 New_Call (Domain => EW_Term,
-                           Name => E_Symb (Ty, WNE_Hide_Ancestor),
-                           Args => (1 => Root_Expr)));
-
-            Field_Index := Field_Index + 1;
-            Field_Assocs (Field_Index) := Assoc;
-         end;
-      end if;
-
-      --  All discriminants of the ancestor part should have been set, but
-      --  possibly not all components in case of a discriminant record.
-
-      pragma Assert (Discr_Index = Discr_Assocs'Last);
-      pragma Assert (Field_Index = Field_Assocs'Last);
-   end Generate_Associations_From_Ancestor;
-
    ------------------------------------
    -- New_Ada_Record_Check_For_Field --
    ------------------------------------
@@ -2606,6 +2626,10 @@ package body Why.Gen.Records is
       end if;
       return Binding_For_Temp (Ada_Node, Domain, Tmp, T);
    end New_Ada_Record_Update;
+
+   ---------------------------
+   -- New_Ada_Record_Update --
+   ---------------------------
 
    function New_Ada_Record_Update
      (Ada_Node : Node_Id := Empty;
@@ -2947,6 +2971,10 @@ package body Why.Gen.Records is
          Associations => Associations,
          Typ          => EW_Abstract (Ty));
    end Record_From_Split_Form;
+
+   ----------------------------
+   -- Record_From_Split_Form --
+   ----------------------------
 
    function Record_From_Split_Form (I : Item_Type; Ref_Allowed : Boolean)
                                     return W_Expr_Id
