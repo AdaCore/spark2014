@@ -172,7 +172,9 @@ package Flow.Analysis is
 
    procedure Check_Concurrent_Accesses
      (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in Kind_Subprogram | Kind_Entry | Kind_Task;
+     with Pre => (FA.Kind = Kind_Subprogram and then FA.Is_Main) or else
+                 FA.Kind = Kind_Task;
+   --  Check exclusivity rules for concurrent accesses to library-level objects
 
 private
 

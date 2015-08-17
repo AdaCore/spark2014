@@ -244,9 +244,9 @@ package Flow is
       case Kind is
          when Kind_Subprogram | Kind_Task | Kind_Entry =>
             Is_Main : Boolean;
-            --  True if this is the main program. In order to be the
-            --  main it has to be a library level subprogram without
-            --  formal parameters (global parameters are allowed).
+            --  True if this is a task or a main program, i.e. a library level
+            --  subprogram without formal parameters (global parameters are
+            --  allowed).
 
             Last_Statement_Is_Raise : Boolean;
             --  True if the last statement of the subprogram is an

@@ -1548,8 +1548,8 @@ package body Flow is
             end if;
          end if;
 
-         if FA.Kind in Kind_Subprogram | Kind_Entry | Kind_Task
-           and then FA.Is_Main
+         if (FA.Kind = Kind_Subprogram and then FA.Is_Main) or else
+            FA.Kind = Kind_Task
          then
             Analysis.Check_Concurrent_Accesses (FA);
          end if;
