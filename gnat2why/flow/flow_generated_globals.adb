@@ -29,7 +29,6 @@ with Ada.Text_IO;                use Ada.Text_IO;
 with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
 with GNAT.Regexp;                use GNAT.Regexp;
 with GNAT.Regpat;                use GNAT.Regpat;
-with GNAT.String_Split;          use GNAT.String_Split;
 
 with AA_Util;                    use AA_Util;
 with ALI;                        use ALI;
@@ -52,6 +51,7 @@ with SPARK_Util;                 use SPARK_Util;
 with Flow_Debug;                 use Flow_Debug;
 with Flow_Utility;               use Flow_Utility;
 with Graphs;
+with Serialisation;              use Serialisation;
 
 package body Flow_Generated_Globals is
 
@@ -156,18 +156,6 @@ package body Flow_Generated_Globals is
      (others => Name_Graphs.Empty_Map);
    --  Tasking-related information read from ALI file and then processed
 
-   package Entity_Tasking_Info_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Entity_Name,
-      Element_Type    => Tasking_Info,
-      Hash            => Name_Hash,
-      Equivalent_Keys => "=");
-   use Entity_Tasking_Info_Maps;
-   --  Container for tasking-related information collected in phase 1
-
-   Entity_Tasking_Info_Map : Entity_Tasking_Info_Maps.Map :=
-     Entity_Tasking_Info_Maps.Empty_Map;
-   --  Tasking-related information to be stored in ALI file
-
    ----------------------------------------------------------------------
    --  Global_Id
    ----------------------------------------------------------------------
@@ -222,6 +210,9 @@ package body Flow_Generated_Globals is
    Tasking_Graph : array (Tasking_Info_Kind) of Tasking_Graphs.Graph :=
      (others => Tasking_Graphs.Create);
    --  Graphs with tasking-related information
+
+   type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
+   --  Similar to Tasking_Info, but with name sets.
 
    use type Tasking_Graphs.Vertex_Id;
 
@@ -288,6 +279,178 @@ package body Flow_Generated_Globals is
    --  potentially blocking.
    Predefined_Manipulate_Files : constant Pattern_Matcher :=
      Compile ("_io__");
+
+   ----------------------------------------------------------------------
+   --  Serialisation
+   ----------------------------------------------------------------------
+
+   type ALI_Entry_Kind is (EK_Error,
+                           EK_End_Marker,
+                           EK_State_Map,
+                           EK_Volatiles,
+                           EK_Globals,
+                           EK_Tasking_Instance_Count,
+                           EK_Tasking_Info,
+                           EK_Tasking_Nonblocking);
+
+   type ALI_Entry (Kind : ALI_Entry_Kind := EK_Error) is record
+      case Kind is
+         when EK_Error | EK_End_Marker =>
+            null;
+         when EK_State_Map =>
+            The_State                   : Entity_Name := Null_Entity_Name;
+            The_Constituents            : Name_Sets.Set;
+         when EK_Volatiles =>
+            All_Async_Readers           : Name_Sets.Set;
+            All_Async_Writers           : Name_Sets.Set;
+            All_Effective_Reads         : Name_Sets.Set;
+            All_Effective_Writes        : Name_Sets.Set;
+         when EK_Globals =>
+            The_Global_Info             : Global_Phase_1_Info;
+         when EK_Tasking_Instance_Count =>
+            The_Type                    : Entity_Name := Null_Entity_Name;
+            The_Count                   : Instance_Number;
+         when EK_Tasking_Info =>
+            The_Entity                  : Entity_Name := Null_Entity_Name;
+            The_Tasking_Info            : Name_Tasking_Info;
+         when EK_Tasking_Nonblocking =>
+            The_Nonblocking_Subprograms : Name_Sets.Set;
+      end case;
+   end record;
+
+   procedure Serialize (A : in out Archive; V : in out Entity_Name);
+
+   procedure Serialize is new Serialize_Set
+     (T              => Name_Sets.Set,
+      E              => Entity_Name,
+      Cursor         => Name_Sets.Cursor,
+      Null_Container => Name_Sets.Empty_Set,
+      Null_Element   => Null_Entity_Name,
+      First          => Name_Sets.First,
+      Next           => Name_Sets.Next,
+      Has_Element    => Name_Sets.Has_Element,
+      Element        => Name_Sets.Element,
+      Insert         => Name_Sets.Insert);
+
+   procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info);
+
+   procedure Serialize (A : in out Archive; V : in out Global_Phase_1_Info);
+
+   procedure Serialize (A : in out Archive; V : in out ALI_Entry);
+
+   ---------------
+   -- Serialize --
+   ---------------
+
+   procedure Serialize (A : in out Archive; V : in out Entity_Name) is
+      S : Unbounded_String;
+   begin
+      if A.Kind = Serialisation.Output then
+         S := To_Unbounded_String (To_String (V));
+      end if;
+      Serialize (A, S);
+      if A.Kind = Serialisation.Input then
+         V := To_Entity_Name (To_String (S));
+      end if;
+   end Serialize;
+
+   procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info) is
+   begin
+      for Kind in Tasking_Info_Kind loop
+         Serialize (A, V (Kind), Kind'Img);
+      end loop;
+   end Serialize;
+
+   procedure Serialize (A : in out Archive; V : in out Global_Phase_1_Info) is
+      procedure Serialize is new Serialisation.Serialize_Discreete
+        (T => Analyzed_Subject_Kind);
+      procedure Serialize is new Serialisation.Serialize_Discreete
+        (T => Globals_Origin_T);
+   begin
+      Serialize (A, V.Name);
+      Serialize (A, V.Kind);
+      Serialize (A, V.Globals_Origin);
+      Serialize (A, V.Inputs_Proof,          "var_proof");
+      Serialize (A, V.Inputs,                "var_in");
+      Serialize (A, V.Outputs,               "var_out");
+      Serialize (A, V.Proof_Calls,           "calls_proof");
+      Serialize (A, V.Definite_Calls,        "calls");
+      Serialize (A, V.Conditional_Calls,     "calls_conditional");
+      Serialize (A, V.Local_Variables,       "local_var");
+      Serialize (A, V.Local_Subprograms,     "local_sub");
+      Serialize (A, V.Local_Definite_Writes, "local_init");
+   end Serialize;
+
+   procedure Serialize (A : in out Archive; V : in out ALI_Entry) is
+      procedure Serialize is new Serialisation.Serialize_Discreete
+        (T => ALI_Entry_Kind);
+      procedure Serialize is new Serialisation.Serialize_Discreete
+        (T => Instance_Number);
+
+      Kind : ALI_Entry_Kind := ALI_Entry_Kind'First;
+   begin
+      if A.Kind = Serialisation.Output then
+         Kind := V.Kind;
+      end if;
+      Serialize (A, Kind);
+      if A.Kind = Serialisation.Input then
+         case Kind is
+            when EK_Error =>
+               raise Program_Error;
+            when EK_End_Marker =>
+               V := (Kind => EK_End_Marker);
+            when EK_State_Map =>
+               V := (Kind => EK_State_Map, others => <>);
+            when EK_Volatiles =>
+               V := (Kind => EK_Volatiles, others => <>);
+            when EK_Globals =>
+               V := (Kind => EK_Globals, others => <>);
+            when EK_Tasking_Instance_Count =>
+               V := (Kind => EK_Tasking_Instance_Count, others => <>);
+            when EK_Tasking_Info =>
+               V := (Kind => EK_Tasking_Info, others => <>);
+            when EK_Tasking_Nonblocking =>
+               V := (Kind => EK_Tasking_Nonblocking, others => <>);
+         end case;
+      end if;
+
+      case V.Kind is
+         when EK_Error =>
+            raise Program_Error;
+
+         when EK_End_Marker =>
+            null;
+
+         when EK_State_Map =>
+            Serialize (A, V.The_State);
+            Serialize (A, V.The_Constituents);
+
+         when EK_Volatiles =>
+            Serialize (A, V.All_Async_Readers,    "AR");
+            Serialize (A, V.All_Async_Writers,    "AW");
+            Serialize (A, V.All_Effective_Reads,  "ER");
+            Serialize (A, V.All_Effective_Writes, "EW");
+
+         when EK_Globals =>
+            Serialize (A, V.The_Global_Info);
+
+         when EK_Tasking_Instance_Count =>
+            Serialize (A, V.The_Type);
+            Serialize (A, V.The_Count);
+
+         when EK_Tasking_Info =>
+            Serialize (A, V.The_Entity);
+            Serialize (A, V.The_Tasking_Info);
+
+         when EK_Tasking_Nonblocking =>
+            Serialize (A, V.The_Nonblocking_Subprograms);
+      end case;
+
+   exception
+      when Serialisation.Parse_Error =>
+         pragma Assert (A.Kind = Serialisation.Input);
+         V := (Kind => EK_Error);
+   end Serialize;
 
    ----------------------------------------------------------------------
    --  Local subprograms
@@ -710,172 +873,104 @@ package body Flow_Generated_Globals is
                                        TI : Tasking_Info)
    is
    begin
-      Entity_Tasking_Info_Map.Insert (EN, TI);
+      for Kind in Tasking_Info_Kind loop
+         Tasking_Info_Bag (Kind).Insert (EN, To_Name_Set (TI (Kind)));
+      end loop;
    end GG_Register_Tasking_Info;
 
    -----------------------
    -- GG_Write_Finalize --
    -----------------------
 
-   procedure GG_Write_Finalize is
-      procedure Write_Global_Info_List (L : Global_Info_Lists.List);
-      --  Writes all global info of the global info set on the file
+   procedure GG_Write_Finalize
+   is
+      procedure Write_To_ALI (V : in out ALI_Entry);
+      --  Helper subprogram to write the given entry to the ALI file.
+      --  Second parameter has to be in out because of the way serialize
+      --  works.
 
-      procedure Write_Heading (Tag : String);
-      --  Write 'GG Tag' to the ALI file.
+      ------------------
+      -- Write_To_ALI --
+      ------------------
 
-      procedure Write_Info_Tag_Names (Tag      : String;
-                                      S        : Name_Sets.Set;
-                                      Optional : Boolean := False);
-      --  Write 'GG Tag' to the ALI file followed by the names in S.
-
-      procedure Write_Info_Tag_Nodes (Tag      : String;
-                                      S        : Node_Sets.Set;
-                                      Optional : Boolean := False);
-      --  Write 'GG Tag' to the ALI file followed by the names in S.
-
-      ---------------------------
-      -- Write_Global_Info_Set --
-      ---------------------------
-
-      procedure Write_Global_Info_List (L : Global_Info_Lists.List) is
-         Kind_Str : constant array (Analyzed_Subject_Kind) of Character :=
-           (Kind_Subprogram                  => 'S',
-            Kind_Entry                       => 'E',
-            Kind_Task                        => 'T',
-            Kind_Package | Kind_Package_Body => 'P');
-         Origin_Str : constant array (Globals_Origin_T) of String (1 .. 2) :=
-           (Origin_User     => "UG",
-            Origin_Flow     => "FA",
-            Origin_Frontend => "XR");
+      procedure Write_To_ALI (V : in out ALI_Entry) is
+         A : Archive (Serialisation.Output);
       begin
-         for Info of L loop
-            Write_Heading (Kind_Str (Info.Kind) & " " &
-                             Origin_Str (Info.Globals_Origin) & " " &
-                             To_String (Info.Name));
-
-            Write_Info_Tag_Names ("VP", Info.Inputs_Proof);
-            Write_Info_Tag_Names ("VI", Info.Inputs);
-            Write_Info_Tag_Names ("VO", Info.Outputs);
-            Write_Info_Tag_Names ("CP", Info.Proof_Calls);
-            Write_Info_Tag_Names ("CD", Info.Definite_Calls);
-            Write_Info_Tag_Names ("CC", Info.Conditional_Calls);
-            Write_Info_Tag_Names ("LV", Info.Local_Variables);
-            Write_Info_Tag_Names ("LS", Info.Local_Subprograms);
-
-            --  For packages we have an additional line
-            if Info.Kind in Kind_Package | Kind_Package_Body then
-               Write_Info_Tag_Names ("LD", Info.Local_Definite_Writes);
-            end if;
-         end loop;
-      end Write_Global_Info_List;
-
-      -------------------
-      -- Write_Heading --
-      -------------------
-
-      procedure Write_Heading (Tag : String)
-      is
-      begin
-         Write_Info_Str ("GG " & Tag);
+         Serialize (A, V);
+         Write_Info_Str ("GG " & To_String (To_String (A)));
          Write_Info_Terminate;
-      end Write_Heading;
+      end Write_To_ALI;
 
-      --------------------------
-      -- Write_Info_Tag_Names --
-      --------------------------
-
-      procedure Write_Info_Tag_Names (Tag      : String;
-                                      S        : Name_Sets.Set;
-                                      Optional : Boolean := False)
-      is
-      begin
-         if not Optional or else not S.Is_Empty then
-            Write_Info_Str ("GG " & Tag);
-            for N of S loop
-               Write_Info_Char (' ');
-               Write_Info_Str (To_String (N));
-            end loop;
-            Write_Info_Terminate;
-         end if;
-      end Write_Info_Tag_Names;
-
-      --------------------------
-      -- Write_Info_Tag_Nodes --
-      --------------------------
-
-      procedure Write_Info_Tag_Nodes (Tag      : String;
-                                      S        : Node_Sets.Set;
-                                      Optional : Boolean := False)
-      is
-      begin
-         Write_Info_Tag_Names (Tag, To_Name_Set (S), Optional);
-      end Write_Info_Tag_Nodes;
-
-   --  Start of processing for GG_Write_Finalize
-
+      V : ALI_Entry;
    begin
       --  Write State info
       for C in State_Comp_Map.Iterate loop
-         declare
-            State        : constant Entity_Name   := Key (C);
-            Constituents : constant Name_Sets.Set := Element (C);
-         begin
-            Write_Info_Tag_Names ("AS " & To_String (State), Constituents);
-         end;
+         V := (Kind             => EK_State_Map,
+               The_State        => Key (C),
+               The_Constituents => Element (C));
+         Write_To_ALI (V);
       end loop;
 
-      --  Write Package info
-      Write_Global_Info_List (Package_Info_List);
+      --  Write globals for package and subprograms/tasks
+      for Info of Package_Info_List loop
+         V := (Kind            => EK_Globals,
+               The_Global_Info => Info);
+         Write_To_ALI (V);
+      end loop;
 
-      --  Write Entry/Subprogram/Task info
-      Write_Global_Info_List (Subprogram_Info_List);
+      for Info of Subprogram_Info_List loop
+         V := (Kind            => EK_Globals,
+               The_Global_Info => Info);
+         Write_To_ALI (V);
+      end loop;
 
       --  Write Volatile info
-      Write_Info_Tag_Names ("AW", Async_Writers_Vars,    Optional => True);
-      Write_Info_Tag_Names ("AR", Async_Readers_Vars,    Optional => True);
-      Write_Info_Tag_Names ("ER", Effective_Reads_Vars,  Optional => True);
-      Write_Info_Tag_Names ("EW", Effective_Writes_Vars, Optional => True);
+      V := (Kind                 => EK_Volatiles,
+            All_Async_Readers    => Async_Readers_Vars,
+            All_Async_Writers    => Async_Writers_Vars,
+            All_Effective_Reads  => Effective_Reads_Vars,
+            All_Effective_Writes => Effective_Writes_Vars);
+      Write_To_ALI (V);
 
       --  Write nonblocking subprograms
-      Write_Info_Tag_Names ("NB", Nonblocking_Subprograms_Set,
-                            Optional => True);
+      V := (Kind                        => EK_Tasking_Nonblocking,
+            The_Nonblocking_Subprograms => Nonblocking_Subprograms_Set);
+      Write_To_ALI (V);
 
-      --  Write tasking-related information
-      for C in Entity_Tasking_Info_Map.Iterate loop
-         declare
-            Name : constant String       := To_String (Key (C));
-            Info : constant Tasking_Info := Element (C);
-
-            Kind_To_Str : constant array (Tasking_Info_Kind) of String (1 .. 2)
-              := (Suspends_On      => "TS",
-                  Entry_Calls      => "TE",
-                  Read_Locks       => "TR",
-                  Write_Locks      => "TW",
-                  Unsynch_Accesses => "TU");
-         begin
-            for Kind in Tasking_Info_Kind loop
-               Write_Info_Tag_Nodes
-                 (Tag      => Kind_To_Str (Kind) & " " & Name,
-                  S        => Info (Kind),
-                  Optional => True);
+      --  Write tasking-related information. This is a bit awkward since we
+      --  need to rotate the information in tasking_info_bag.
+      declare
+         All_Names : Name_Sets.Set := Name_Sets.Empty_Set;
+      begin
+         for Kind in Tasking_Info_Kind loop
+            for C in Tasking_Info_Bag (Kind).Iterate loop
+               All_Names.Include (Key (C));
             end loop;
-         end;
-      end loop;
+         end loop;
+         for Name of All_Names loop
+            V := (Kind             => EK_Tasking_Info,
+                  The_Entity       => Name,
+                  The_Tasking_Info => <>);
+            for Kind in Tasking_Info_Kind loop
+               V.The_Tasking_Info (Kind) := Tasking_Objects (Kind, Name);
+            end loop;
+            Write_To_ALI (V);
+         end loop;
+      end;
 
       for C in Task_Instances.Iterate loop
-         Write_Info_Str ("GG TI "
-                         & To_String (Task_Instances_Maps.Key (C))
-                         & " "
-                         & Task_Instances_Maps.Element (C)'Img);
-         Write_Info_Terminate;
+         V := (Kind      => EK_Tasking_Instance_Count,
+               The_Type  => Task_Instances_Maps.Key (C),
+               The_Count => Task_Instances_Maps.Element (C));
+         Write_To_ALI (V);
       end loop;
 
-      --  Write the finalization string "GG END"
-      Write_Info_Str ("GG END");
-      Write_Info_Terminate;
-      Close_Output_Library_Info;
+      --  Write the finalization string.
+      V := (Kind => EK_End_Marker);
+      Write_To_ALI (V);
 
+      --  Close file and put the package out of writing mode.
+      Close_Output_Library_Info;
       Current_Mode := GG_No_Mode;
    end GG_Write_Finalize;
 
@@ -1606,528 +1701,38 @@ package body Flow_Generated_Globals is
          ALI_File_Name_Str : constant String :=
            Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
 
-         ALI_File  : Ada.Text_IO.File_Type;
-         Line      : Unbounded_String;
+         Sanitized_Name : constant Unbounded_String :=
+           Trim (Source => To_Unbounded_String (ALI_File_Name_Str),
+                 Left   => Null_Set,
+                 Right  => To_Set (Character'Val (0)));
 
-         Found_End : Boolean := False;
-         --  This will be set to True iff a "GG END" line is found
-
-         type External_State is
-           (Async_Readers,
-            Async_Writers,
-            Effective_Reads,
-            Effective_Writes);
-
-         External_State_Found : array (External_State) of Boolean :=
-           (others => False);
-
-         type GG_Tag is array (Positive range 1 .. 2) of Character;
-
-         External_State_Tags : constant array (External_State) of GG_Tag :=
-           (Async_Readers    => "AR",
-            Async_Writers    => "AW",
-            Effective_Reads  => "ER",
-            Effective_Writes => "EW");
-
-         procedure Issue_Corrupted_File_Error with
-           No_Return;
-         --  Issues an error about the ALI file being corrupted and suggests
-         --  the usage of "gnatprove --clean".
-
-         procedure Parse_Record;
-         --  Parses a GG record from the ALI file and if no problems
-         --  occurred adds it to the relevant set.
+         procedure Issue_Corrupted_File_Error (Msg : String)
+         with No_Return;
+         --  Issues an error about the ALI file being corrupted and
+         --  suggests the usage of "gnatprove --clean".
 
          --------------------------------
          -- Issue_Corrupted_File_Error --
          --------------------------------
 
-         procedure Issue_Corrupted_File_Error is
+         procedure Issue_Corrupted_File_Error (Msg : String) is
          begin
             Abort_With_Message
-              ("Corrupted ali file detected. " &
-               "Call gnatprove with ""--clean"".");
+              ("Corrupted ali file detected (" &
+                 To_String (Sanitized_Name) & "): " &
+                 Msg &
+                 ". Call gnatprove with ""--clean"".");
          end Issue_Corrupted_File_Error;
 
-         ------------------
-         -- Parse_Record --
-         ------------------
-
-         procedure Parse_Record is
-
-            type Line_Index is range 1 .. 10;
-
-            type Line_Found_T is array (Line_Index) of Boolean;
-            --  This array represents whether we have found a line
-            --  of the following format while populating the record.
-            --  The order is as follow:
-            --
-            --  array slot 1  is True if we have found "GG S/T/E/P *"
-            --  array slot 2  is True if we have found "GG VP *"
-            --  array slot 3  is True if we have found "GG VI *"
-            --  array slot 4  is True if we have found "GG VO *"
-            --  array slot 5  is True if we have found "GG CP *"
-            --  array slot 6  is True if we have found "GG CD *"
-            --  array slot 7  is True if we have found "GG CC *"
-            --  array slot 8  is True if we have found "GG LV *"
-            --  array slot 9  is True if we have found "GG LS *"
-            --  array slot 10 is True if we have found "GG LD *"
-
-            Line_Found : Line_Found_T := Line_Found_T'(others => False);
-            --  Initially we haven't found anything
-
-            New_Info   : Global_Phase_1_Info;
-
-            procedure Check_GG_Format;
-            --  Checks if the line start with "GG "
-
-            function Get_Names_From_Line return Name_Sets.Set;
-            --  Returns a set of all names appearing in a line
-
-            procedure Set_Line_Found (L : Line_Index);
-            --  Set Line_Found (L) to True or raise an exception if it is
-            --  already set.
-
-            ---------------------
-            -- Check_GG_Format --
-            ---------------------
-
-            procedure Check_GG_Format is
-            begin
-               if Length (Line) <= 3
-                 or else Slice (Line, 1, 3) /= "GG "
-               then
-                  --  Either the ALI file has been tampered with
-                  --  or we are dealing with a new kind of line
-                  --  that we are not aware of.
-                  Issue_Corrupted_File_Error;
-               end if;
-            end Check_GG_Format;
-
-            -------------------------
-            -- Get_Names_From_Line --
-            -------------------------
-
-            function Get_Names_From_Line return Name_Sets.Set is
-               Names_In_Line : Name_Sets.Set := Name_Sets.Empty_Set;
-               Words         : GNAT.String_Split.Slice_Set;
-            begin
-               if Length (Line) = 5 then
-                  --  There are no names here. Return the empty set.
-                  return Names_In_Line;
-               end if;
-
-               GNAT.String_Split.Create (Words,
-                                         Slice (Line, 7, Length (Line)),
-                                         " ");
-
-               for J in 1 .. Slice_Count (Words) loop
-                  Names_In_Line.Insert (To_Entity_Name (Slice (Words, J)));
-               end loop;
-
-               return Names_In_Line;
-            end Get_Names_From_Line;
-
-            --------------------
-            -- Set_Line_Found --
-            --------------------
-
-            procedure Set_Line_Found (L : Line_Index) is
-            begin
-               if Line_Found (L) then
-                  Issue_Corrupted_File_Error;
-               else
-                  Line_Found (L) := True;
-               end if;
-            end Set_Line_Found;
-
-         --  Start of processing for Parse_Record
-
-         begin
-            --  We special case lines that contain info about state
-            --  abstractions.
-            if Length (Line) > 6
-              and then Slice (Line, 1, 6) = "GG AS "
-            then
-               declare
-                  State         : Entity_Name;
-                  Constituents  : Name_Sets.Set := Get_Names_From_Line;
-                  Start_Of_Word : constant Natural := 7;
-                  End_Of_Word   : Natural := 7;
-               begin
-                  while End_Of_Word < Length (Line)
-                    and then Element (Line, End_Of_Word) > ' '
-                  loop
-                     End_Of_Word := End_Of_Word + 1;
-                  end loop;
-
-                  --  If we have not reached the end of the line then
-                  --  we have read one character too many.
-                  if End_Of_Word < Length (Line) then
-                     End_Of_Word := End_Of_Word - 1;
-                  end if;
-
-                  State := To_Entity_Name (Slice (Line,
-                                                  Start_Of_Word,
-                                                  End_Of_Word));
-
-                  Constituents.Exclude (State);
-
-                  State_Comp_Map.Include (State, Constituents);
-               end;
-
-               --  State line parsed. We will now return.
-               return;
-
-            --  We special case tasking-related information
-
-            elsif Length (Line) > 6
-              and then Slice (Line, 1, 4) = "GG T"
-              and then Element (Line, 6) = ' '
-            then
-               declare
-                  Tasking_Key : constant Character := Element (Line, 5);
-               begin
-                  --  Check line format
-                  case Tasking_Key is
-                  when 'I' =>
-                     declare
-                        Tokens : GNAT.String_Split.Slice_Set;
-                     begin
-                        GNAT.String_Split.Create
-                          (Tokens,
-                           Slice (Line, 7, Length (Line)),
-                           " ");
-
-                        if GNAT.String_Split.Slice_Count (Tokens) /= 2 then
-                           Issue_Corrupted_File_Error;
-                        end if;
-
-                        declare
-                           Task_Type : constant Entity_Name :=
-                             To_Entity_Name
-                               (GNAT.String_Split.Slice (Tokens, 1));
-                           Task_Inst : constant Instance_Number :=
-                             Instance_Number'Value
-                               (GNAT.String_Split.Slice (Tokens, 2));
-                           --  ??? check for Constraint error and call
-                           --      Issue_Corrupted_File_Error.
-                        begin
-                           case Task_Inst is
-                           when One =>
-                              --  Check if this is the first instance
-                              if Task_Instances.Contains (Task_Type) then
-                                 Task_Instances.Include (Task_Type, Many);
-                              else
-                                 Task_Instances.Include (Task_Type, One);
-                              end if;
-
-                           when Many =>
-                              Task_Instances.Include (Task_Type, Many);
-                           end case;
-                        end;
-                     end;
-
-                     return;
-                  when 'S' | 'E' | 'R' | 'W' | 'U' =>
-                     declare
-                        First  : Entity_Name;
-                        Other  : Name_Sets.Set;
-                        Tokens : GNAT.String_Split.Slice_Set;
-                     begin
-                        GNAT.String_Split.Create
-                          (Tokens,
-                           Slice (Line, 7, Length (Line)),
-                           " ");
-
-                        if GNAT.String_Split.Slice_Count (Tokens) <= 1 then
-                           Issue_Corrupted_File_Error;
-                        end if;
-
-                        First :=
-                          To_Entity_Name (GNAT.String_Split.Slice (Tokens, 1));
-
-                        for J in 2 .. GNAT.String_Split.Slice_Count (Tokens)
-                        loop
-                           Other.Insert
-                             (To_Entity_Name
-                                (GNAT.String_Split.Slice (Tokens, J)));
-                        end loop;
-
-                        Insert (Tasking_Info_Bag
-                                (case Tasking_Key is
-                                    when 'S' => Suspends_On,
-                                    when 'E' => Entry_Calls,
-                                    when 'R' => Read_Locks,
-                                    when 'W' => Write_Locks,
-                                    when 'U' => Unsynch_Accesses,
-                                    when others => raise Program_Error),
-                                First, Other);
-                     end;
-
-                     --  State line parsed. We will now return.
-                     return;
-                  when others =>
-                     Issue_Corrupted_File_Error;
-                  end case;
-               end;
-
-            --  We special case the "GG END" line
-
-            elsif Length (Line) = 6
-              and then  Slice (Line, 1, 6) = "GG END"
-            then
-               Found_End := True;
-               return;
-
-            --  We special case lines that contain info about volatile
-            --  variables and external state abstractions.
-
-            elsif Length (Line) > 6
-              and then Element (Line, 4) in 'A' | 'E'
-              and then Element (Line, 5) in 'R' | 'W'
-              and then Element (Line, 6) = ' '
-            then
-               declare
-                  Names  : constant Name_Sets.Set := Get_Names_From_Line;
-                  ES_Tag : constant GG_Tag := GG_Tag (Slice (Line, 4, 5));
-                  ES     : External_State;
-               begin
-                  for I in External_State'Range loop
-                     if ES_Tag = External_State_Tags (I) then
-                        ES := I;
-                        exit;
-                     end if;
-                  end loop;
-
-                  --  Check if this tag was not already seen
-                  if External_State_Found (ES) then
-                     Issue_Corrupted_File_Error;
-                  else
-                     External_State_Found (ES) := True;
-                  end if;
-
-                  --  Update the correponding set
-                  case ES is
-                     when Async_Writers =>
-                        Async_Writers_Vars.Union (Names);
-
-                     when Async_Readers =>
-                        Async_Readers_Vars.Union (Names);
-
-                     when Effective_Reads =>
-                        Effective_Reads_Vars.Union (Names);
-
-                     when Effective_Writes =>
-                        Effective_Writes_Vars.Union (Names);
-                  end case;
-
-                  --  Store all names from the line in the All_Volatile_Vars
-                  --  set and return.
-                  All_Volatile_Vars.Union (Get_Names_From_Line);
-                  return;
-               end;
-
-            elsif Length (Line) > 6
-              and then Slice (Line, 1, 6) = "GG NB "
-            then
-
-               Nonblocking_Subprograms_Set.Union (Get_Names_From_Line);
-               return;
-
-            end if;
-
-            while (for some I in Line_Index => not Line_Found (I)) loop
-               Check_GG_Format;
-
-               if Length (Line) >= 6
-                 and then Element (Line, 4) in 'S' | 'T' | 'E' | 'P'
-                 and then Element (Line, 5) = ' '
-               then
-                  --  Line format: GG S *
-                  --      or       GG T *
-                  --      or       GG E *
-                  --      or       GG P *
-                  Set_Line_Found (1);
-
-                  case Element (Line, 4) is
-                     when 'S' =>
-                        --  subprogram
-                        New_Info.Kind := Kind_Subprogram;
-
-                        --  No LD line is expected for subprograms so set it to
-                        --  True.
-                        Set_Line_Found (10);
-                        New_Info.Local_Definite_Writes := Name_Sets.Empty_Set;
-
-                     when 'T' =>
-                        --  task
-                        New_Info.Kind := Kind_Task;
-
-                        --  No LD line is expected for tasks so set it to True
-                        Set_Line_Found (10);
-                        New_Info.Local_Definite_Writes := Name_Sets.Empty_Set;
-
-                     when 'E' =>
-                        --  entry
-                        New_Info.Kind := Kind_Entry;
-
-                        --  No LD line is expected for entries so set it to
-                        --  True.
-                        Set_Line_Found (10);
-                        New_Info.Local_Definite_Writes := Name_Sets.Empty_Set;
-
-                     when 'P' =>
-                        --  package
-                        New_Info.Kind := Kind_Package;
-
-                     when others =>
-                        raise Program_Error;
-                  end case;
-
-                  declare
-                     GO : constant String := Slice (Line, 6, 7);
-
-                     EN : constant Entity_Name :=
-                       To_Entity_Name (Slice (Line, 9, Length (Line)));
-
-                  begin
-                     New_Info.Name := EN;
-                     New_Info.Globals_Origin :=
-                       (if    GO = "UG" then Origin_User
-                        elsif GO = "FA" then Origin_Flow
-                        elsif GO = "XR" then Origin_Frontend
-                        else raise Program_Error);
-
-                     case New_Info.Kind is
-                        when Kind_Subprogram | Kind_Entry | Kind_Task =>
-                           GG_Subprograms.Include (EN);
-                           All_Subprograms.Include (EN);
-
-                        when Kind_Package | Kind_Package_Body =>
-                           null;
-                     end case;
-                  end;
-
-               elsif Length (Line) >= 5 then
-                  declare
-                     Tag : constant String := Slice (Line, 4, 5);
-                  begin
-                     if Tag = "VP" then
-                        Set_Line_Found (2);
-
-                        New_Info.Inputs_Proof := Get_Names_From_Line;
-                        All_Globals.Union (New_Info.Inputs_Proof);
-
-                     elsif Tag = "VI" then
-                        Set_Line_Found (3);
-
-                        New_Info.Inputs := Get_Names_From_Line;
-                        All_Globals.Union (New_Info.Inputs);
-
-                     elsif Tag = "VO" then
-                        Set_Line_Found (4);
-
-                        New_Info.Outputs := Get_Names_From_Line;
-                        All_Globals.Union (New_Info.Outputs);
-
-                     elsif Tag = "CP" then
-                        Set_Line_Found (5);
-
-                        New_Info.Proof_Calls := Get_Names_From_Line;
-                        All_Subprograms.Union (New_Info.Proof_Calls);
-
-                     elsif Tag = "CD" then
-                        Set_Line_Found (6);
-
-                        New_Info.Definite_Calls := Get_Names_From_Line;
-                        All_Subprograms.Union (New_Info.Definite_Calls);
-
-                     elsif Tag = "CC" then
-                        Set_Line_Found (7);
-
-                        New_Info.Conditional_Calls := Get_Names_From_Line;
-                        All_Subprograms.Union (New_Info.Conditional_Calls);
-
-                     elsif Tag = "LV" then
-                        Set_Line_Found (8);
-
-                        New_Info.Local_Variables := Get_Names_From_Line;
-                        All_Globals.Union (New_Info.Local_Variables);
-
-                     elsif Tag = "LS" then
-                        Set_Line_Found (9);
-
-                        New_Info.Local_Subprograms := Get_Names_From_Line;
-                        All_Subprograms.Union (New_Info.Local_Subprograms);
-
-                     elsif Tag = "LD" then
-                        Set_Line_Found (10);
-
-                        New_Info.Local_Definite_Writes := Get_Names_From_Line;
-                        All_Globals.Union (New_Info.Local_Definite_Writes);
-
-                     elsif Tag = "NB" then
-                        Nonblocking_Subprograms_Set.Union
-                          (Get_Names_From_Line);
-                        return;
-
-                     else
-                        --  Unexpected type of line. Something is wrong
-                        --  with the ALI file.
-                        Issue_Corrupted_File_Error;
-                     end if;
-
-                  end;
-
-               else
-                  --  Something is wrong with the ALI file
-                  Issue_Corrupted_File_Error;
-               end if;
-
-               if not End_Of_File (ALI_File)
-                 and then (for some I in Line_Index => not Line_Found (I))
-               then
-                  --  Go to the next line
-                  Get_Line (ALI_File, Line);
-               elsif End_Of_File (ALI_File)
-                 and then (for some I in Line_Index => not Line_Found (I))
-               then
-                  --  We reached the end of the file and our New_Info
-                  --  is not yet complete. Something is missing from
-                  --  the ALI file.
-                  Issue_Corrupted_File_Error;
-               end if;
-
-               if (for all I in Line_Index => Line_Found (I)) then
-                  --  If all lines have been found then we add New_Info to
-                  --  either Subprogram_Info_List or Package_Info_List and
-                  --  return.
-                  case New_Info.Kind is
-                     when Kind_Subprogram | Kind_Entry | Kind_Task =>
-                        Subprogram_Info_List.Append (New_Info);
-
-                     when Kind_Package | Kind_Package_Body  =>
-                        Package_Info_List.Append (New_Info);
-                  end case;
-
-                  GG_Exists_Cache.Insert (New_Info.Name);
-
-                  return;
-               end if;
-
-            end loop;
-
-            --  We should never reach here
-            raise Program_Error;
-
-         end Parse_Record;
-
-      --  Start of processing for Load_GG_Info_From_ALI
-
+         ALI_File  : Ada.Text_IO.File_Type;
+         Line      : Unbounded_String;
+
+         Found_End : Boolean := False;
+         --  This will be set to True once we find the end marker.
       begin
          Open (ALI_File, In_File, ALI_File_Name_Str);
 
+         --  Skip to the GG section (this should be the very last section).
          loop
             if End_Of_File (ALI_File) then
                Close (ALI_File);
@@ -2135,28 +1740,104 @@ package body Flow_Generated_Globals is
             end if;
 
             Get_Line (ALI_File, Line);
-
-            --  Check if Line starts with "GG "
-            if Length (Line) >= 3 and then Slice (Line, 1, 3) = "GG " then
-               exit;
-            end if;
+            exit when Length (Line) >= 3 and then Slice (Line, 1, 3) = "GG ";
          end loop;
 
          --  We have reached the "GG" section of the ALI file
-         Parse_Record;
-         while not End_Of_File (ALI_File)
-           and then not Found_End
-         loop
+         while Length (Line) >= 5 and then Slice (Line, 1, 3) = "GG " loop
+            --  Parse the given record.
+            declare
+               A : Archive (Serialisation.Input) :=
+                 From_String (Unbounded_Slice (Line, 4, Length (Line)));
+               V : ALI_Entry := (Kind => EK_Error);
+            begin
+               Serialize (A, V);
+               case V.Kind is
+                  when EK_Error =>
+                     Issue_Corrupted_File_Error ("parse error");
+
+                  when EK_End_Marker =>
+                     Found_End := True;
+                     exit;
+
+                  when EK_State_Map =>
+                     State_Comp_Map.Include (V.The_State,
+                                             V.The_Constituents);
+
+                  when EK_Volatiles =>
+                     Async_Writers_Vars.Union (V.All_Async_Writers);
+                     All_Volatile_Vars.Union (V.All_Async_Writers);
+
+                     Async_Readers_Vars.Union (V.All_Async_Readers);
+                     All_Volatile_Vars.Union (V.All_Async_Readers);
+
+                     Effective_Reads_Vars.Union (V.All_Effective_Reads);
+                     All_Volatile_Vars.Union (V.All_Effective_Reads);
+
+                     Effective_Writes_Vars.Union (V.All_Effective_Writes);
+                     All_Volatile_Vars.Union (V.All_Effective_Writes);
+
+                  when EK_Globals =>
+                     All_Globals.Union (V.The_Global_Info.Inputs_Proof);
+                     All_Globals.Union (V.The_Global_Info.Inputs);
+                     All_Globals.Union (V.The_Global_Info.Outputs);
+
+                     All_Subprograms.Union (V.The_Global_Info.Proof_Calls);
+                     All_Subprograms.Union (V.The_Global_Info.Definite_Calls);
+                     All_Subprograms.Union
+                       (V.The_Global_Info.Conditional_Calls);
+
+                     All_Globals.Union (V.The_Global_Info.Local_Variables);
+                     All_Subprograms.Union
+                       (V.The_Global_Info.Local_Subprograms);
+                     All_Globals.Union
+                       (V.The_Global_Info.Local_Definite_Writes);
+
+                     case V.The_Global_Info.Kind is
+                        when Kind_Subprogram | Kind_Entry | Kind_Task =>
+                           GG_Subprograms.Include (V.The_Global_Info.Name);
+                           All_Subprograms.Include (V.The_Global_Info.Name);
+
+                           Subprogram_Info_List.Append (V.The_Global_Info);
+
+                        when Kind_Package | Kind_Package_Body =>
+                           Package_Info_List.Append (V.The_Global_Info);
+                     end case;
+
+                     GG_Exists_Cache.Insert (V.The_Global_Info.Name);
+
+                  when EK_Tasking_Instance_Count =>
+                     if Task_Instances.Contains (V.The_Type) then
+                        Task_Instances.Include (V.The_Type, Many);
+                     else
+                        Task_Instances.Include (V.The_Type, V.The_Count);
+                     end if;
+
+                  when EK_Tasking_Info =>
+                     for Kind in Tasking_Info_Kind loop
+                        if not V.The_Tasking_Info (Kind).Is_Empty then
+                           Tasking_Info_Bag (Kind).Insert
+                             (V.The_Entity,
+                              V.The_Tasking_Info (Kind));
+                        end if;
+                     end loop;
+
+                  when EK_Tasking_Nonblocking =>
+                     Nonblocking_Subprograms_Set.Union
+                       (V.The_Nonblocking_Subprograms);
+               end case;
+            end;
+
+            exit when End_Of_File (ALI_File);
+
+            --  Proceed to the next ile.
             Get_Line (ALI_File, Line);
-            Parse_Record;
          end loop;
 
-         if not Found_End
-           or else not End_Of_File (ALI_File)
-         then
-            --  If "GG END" was not the last line of the ALI file then the file
-            --  has been corrupted.
-            Issue_Corrupted_File_Error;
+         if not Found_End then
+            --  If we have not found the end marker by now, the file is
+            --  broken...
+            Issue_Corrupted_File_Error ("missing end marker");
          end if;
 
          Close (ALI_File);
@@ -3001,8 +2682,6 @@ package body Flow_Generated_Globals is
    is
       C : constant Name_Graphs.Cursor := Tasking_Info_Bag (Kind).Find (Subp);
    begin
-      pragma Assert (if Has_Element (C)
-                     then not Name_Sets.Is_Empty (Element (C)));
       return (if Has_Element (C)
               then Element (C)
               else Name_Sets.Empty_Set);

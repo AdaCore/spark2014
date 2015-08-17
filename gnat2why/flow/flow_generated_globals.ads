@@ -184,9 +184,11 @@ package Flow_Generated_Globals is
    --  Frontend : Produced from the XREF sections of the ALI files
 
    type Global_Phase_1_Info is record
-      Name                  : Entity_Name;
-      Kind                  : Analyzed_Subject_Kind;
-      Globals_Origin        : Globals_Origin_T;
+      Name                  : Entity_Name           := Null_Entity_Name;
+      Kind                  : Analyzed_Subject_Kind :=
+        Analyzed_Subject_Kind'First;
+      Globals_Origin        : Globals_Origin_T      :=
+        Globals_Origin_T'First;
       Inputs_Proof          : Name_Sets.Set;
       Inputs                : Name_Sets.Set;
       Outputs               : Name_Sets.Set;
