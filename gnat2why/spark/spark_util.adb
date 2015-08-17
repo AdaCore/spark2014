@@ -1902,6 +1902,7 @@ package body SPARK_Util is
    function Has_Only_Nonblocking_Statements (N : Node_Id) return Boolean is
 
       Potentially_Blocking_Statement_Found : Boolean := False;
+      --  Flag used as an output for the AST traversal procedure
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  Process a node to check if it is a potentially blocking statement
@@ -1917,8 +1918,8 @@ package body SPARK_Util is
       begin
          --  Detect a potentially blocking statement; RM 9.5.1 (8-16).
          --  The following check mirrors the callers of
-         --  Check_Potentially_Blocking_Operation but directly rejects
-         --  all forms of the select statement.
+         --  Check_Potentially_Blocking_Operation but immediately rejects
+         --  all kinds of the select statement.
          case Nkind (N) is
             when N_Abort_Statement        |
                  N_Accept_Statement       |
@@ -1931,23 +1932,18 @@ package body SPARK_Util is
                Potentially_Blocking_Statement_Found := True;
                return Abandon;
 
-            --  Front end rewrites calls to protected procedures as entry
-            --  calls; however, they are not potentially blocking (unless
-            --  called with the same target object as the entry's object,
-            --  RM 9.5.1(15)).
+            --  Front end rewrites external calls to protected procedures as
+            --  entry calls. It is best to check the call convention.
+
             when N_Entry_Call_Statement =>
-               declare
-                  Orig_N : constant Node_Id := Original_Node (N);
-               begin
-                  if Orig_N = N then
-                     Potentially_Blocking_Statement_Found := True;
-                     return Abandon;
-                  end if;
-
-                  pragma Assert (Nkind (Orig_N) = N_Procedure_Call_Statement);
-
+               if Convention (Entity (Selector_Name (Name (N)))) =
+                 Convention_Entry
+               then
+                  Potentially_Blocking_Statement_Found := True;
+                  return Abandon;
+               else
                   return OK;
-               end;
+               end if;
 
             when N_Object_Declaration =>
                --  ??? non-library-level task declarations should be already

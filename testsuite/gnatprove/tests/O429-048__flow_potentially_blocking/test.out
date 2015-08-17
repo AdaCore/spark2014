@@ -4,8 +4,27 @@ a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiati
 barrier.adb:10:31: warning: assuming "Wait_For_Release" has no effect on global items
 barrier.adb:10:31: warning: no Global contract available for "Wait_For_Release"
 barrier.adb:10:54: warning: unused assignment to "Notified"
-internal_protected_call.adb:6:12: warning: statement has no effect
-internal_protected_call.adb:6:12: warning: unused assignment to "PT"
+internal_protected_call.adb:5:20: warning: statement has no effect
+internal_protected_call.adb:7:33: warning: statement has no effect
+internal_protected_call.adb:7:33: warning: unused assignment to "Mutual_Entry_Proc_Calls"
+internal_protected_call.adb:8:10: warning: statement has no effect
+internal_protected_call.adb:8:10: warning: unused assignment to "Mutual_Entry_Proc_Calls"
+internal_protected_call.adb:20:20: warning: statement has no effect
+internal_protected_call.adb:22:26: warning: statement has no effect
+internal_protected_call.adb:22:26: warning: unused assignment to "Entry_Calls_Proc"
+internal_protected_call.adb:23:10: warning: statement has no effect
+internal_protected_call.adb:23:10: warning: unused assignment to "Entry_Calls_Proc"
+internal_protected_call.adb:34:07: warning: analyzing unreferenced procedure "P1"
+internal_protected_call.adb:39:07: warning: analyzing unreferenced procedure "P2"
+internal_protected_call.adb:44:20: warning: statement has no effect
+internal_protected_call.ads:3:13: potentially blocking operation in protected operation "E"
+internal_protected_call.ads:4:17: potentially blocking operation in protected operation "P"
+internal_protected_call.ads:4:17: warning: subprogram "P" has no effect
+internal_protected_call.ads:9:17: warning: subprogram "P" has no effect
+internal_protected_call.ads:13:17: potentially blocking operation in protected operation "P1"
+internal_protected_call.ads:13:17: warning: subprogram "P1" has no effect
+internal_protected_call.ads:14:17: potentially blocking operation in protected operation "P2"
+internal_protected_call.ads:14:17: warning: subprogram "P2" has no effect
 p-po_stub_1.adb:3:38: warning: statement has no effect
 p-po_stub_1.adb:8:04: warning: analyzing unreferenced procedure "Nonblocking_Stub_Proc"
 p-po_stub_2.adb:3:44: warning: statement has no effect
@@ -96,15 +115,18 @@ p.ads:94:13: potentially blocking operation in protected operation "Text_Entry"
 p.ads:95:17: potentially blocking operation in protected operation "Text_Proc"
 p.ads:95:17: warning: subprogram "Text_Proc" has no effect
 p.ads:99:13: potentially blocking operation in protected operation "My_Text_Entry"
+pack.adb:78:17: warning: statement has no effect
+pack.adb:78:17: warning: unused assignment to "PO_Proc"
 pack.ads:5:13: potentially blocking operation in protected operation "E_Proc"
 pack.ads:10:13: potentially blocking operation in protected operation "E_Func"
-pack.ads:13:14: warning: subprogram "Unrelated_Proc" has no effect
-pack.ads:14:14: warning: subprogram "Unrelated_Func" has no effect
+pack.ads:13:14: warning: subprogram "External_Call_To_Protected_Proc" has no effect
+pack.ads:14:14: warning: subprogram "External_Call_To_Protected_Func" has no effect
 remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored (not yet supported)
 remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored in flow analysis (not yet supported)
 remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored (not yet supported)
 remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored in flow analysis (not yet supported)
 remote.ads:7:14: warning: subprogram "Remote_Call" has no effect
+   compilation of internal_protected_call.adb failed
    compilation of p.adb failed
    compilation of pack.adb failed
 

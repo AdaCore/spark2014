@@ -10,8 +10,8 @@ package Pack is
       entry E_Func;
    end;
 
-   procedure Unrelated_Proc;
-   procedure Unrelated_Func;
+   procedure External_Call_To_Protected_Proc;
+   procedure External_Call_To_Protected_Func;
 
    protected PO_Safe is
       function Func return Boolean;
