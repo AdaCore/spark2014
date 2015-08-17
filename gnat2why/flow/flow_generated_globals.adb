@@ -2836,8 +2836,8 @@ package body Flow_Generated_Globals is
       EN : constant Entity_Name := To_Entity_Name (E);
       --  Entity name
 
-      Protected_Object_E : constant Entity_Id := Scope (E);
-      --  Entity of the enclosing protected object
+      Protected_Type_E : constant Entity_Id := Scope (E);
+      --  Entity of the enclosing protected type
 
       Ins_GID       : constant Global_Id := (Kind => Ins_Kind,
                                              Name => EN);
@@ -2868,29 +2868,28 @@ package body Flow_Generated_Globals is
 
          Callee : Global_Id;
 
-         function Calls_Same_Target_Object (S : Global_Id) return Boolean;
-         --  Check if subprogram S calls the enclosing protected object of EN
+         function Calls_Same_Target_Type (S : Global_Id) return Boolean;
+         --  Check if subprogram S calls the enclosing protected type of E
 
          function Is_Predefined (Name : String) return Boolean;
          --  Check if subprogram name is in a unit predefined by the Ada RM
 
          function Is_Predefined_Potentially_Blocking
            (Name : String) return Boolean;
-         --  Check if Name is specified by the Ada RM to be potentially
-         --  blocking.
+         --  Check if Ada RM specifies subprogram Name as potentially blocking
 
-         ------------------------------
-         -- Calls_Same_Target_Object --
-         ------------------------------
+         ----------------------------
+         -- Calls_Same_Target_Type --
+         ----------------------------
 
-         function Calls_Same_Target_Object (S : Global_Id) return Boolean is
+         function Calls_Same_Target_Type (S : Global_Id) return Boolean is
             Subp_V : constant Vertex_Id := Global_Graph.Get_Vertex (S);
             --  Vertex that represents subprogram S
 
             Callee : Global_Id;
             --  Vertex that represent subprogram called by S
          begin
-            --  Iterate over variables accessed by subprogram S
+            --  Iterate over objects accessed by subprogram S
             for V of Global_Graph.Get_Collection (Subp_V, Out_Neighbours) loop
 
                Callee := Global_Graph.Get_Key (V);
@@ -2901,7 +2900,7 @@ package body Flow_Generated_Globals is
                        Find_Entity (Callee.Name);
                   begin
                      if Callee_E /= Empty and then
-                       Scope (Callee_E) = Protected_Object_E
+                       Scope (Callee_E) = Protected_Type_E
                      then
                         return True;
                      end if;
@@ -2912,7 +2911,7 @@ package body Flow_Generated_Globals is
             end loop;
 
             return False;
-         end Calls_Same_Target_Object;
+         end Calls_Same_Target_Type;
 
          -------------------
          -- Is_Predefined --
@@ -2961,13 +2960,13 @@ package body Flow_Generated_Globals is
                      end if;
                   end if;
 
-                  --  Check for external calls on a protected subprogram with
-                  --  the same target object as that of the protected action.
+                  --  Check for external calls to a protected subprogram with
+                  --  the same target type as that of the protected action.
                   if Callee_E = Empty
                     or else not Scope_Within_Or_Same (Scope (Callee_E),
-                                                      Protected_Object_E)
+                                                      Protected_Type_E)
                   then
-                     if Calls_Same_Target_Object (Callee) then
+                     if Calls_Same_Target_Type (Callee) then
                         return True;
                      end if;
                   end if;
