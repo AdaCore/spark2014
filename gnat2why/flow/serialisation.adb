@@ -21,7 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Strings;            use Ada.Strings;
 with Ada.Text_IO;            use Ada.Text_IO;
 
@@ -141,8 +140,57 @@ package body Serialisation is
 
    procedure Serialize (A : in out Archive; V : in out Unbounded_String)
    is
+      subtype Hex_String is String (1 .. 2);
+
+      function To_Hex (C : Character) return Hex_String;
+      --  Convert a character (such as ' ') to a two-digit hex
+      --  representation ("A0" in this example).
+
+      function From_Hex (S : Hex_String) return Character;
+      --  The inverse of the above. Raises Parse_Error if we get something
+      --  that is not a hex string.
+
+      ------------
+      -- To_Hex --
+      ------------
+
+      function To_Hex (C : Character) return Hex_String is
+         Upper : constant Natural := Character'Pos (C)   / 16;
+         Lower : constant Natural := Character'Pos (C) mod 16;
+         Conv  : constant array (0 .. 15) of Character :=
+           ('0', '1', '2', '3', '4', '5', '6', '7',
+            '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
+      begin
+         return S : Hex_String do
+            S (1) := Conv (Upper);
+            S (2) := Conv (Lower);
+         end return;
+      end To_Hex;
+
+      --------------
+      -- From_Hex --
+      --------------
+
+      function From_Hex (S : Hex_String) return Character is
+         R : Natural := 0;
+      begin
+         for C of S loop
+            R := R * 16;
+            case C is
+               when '0' .. '9' =>
+                  R := R + (Character'Pos (C) - Character'Pos ('0'));
+               when 'A' .. 'F' =>
+                  R := R + (Character'Pos (C) - Character'Pos ('A')) + 10;
+               when others =>
+                  raise Parse_Error with "malformed string data";
+            end case;
+         end loop;
+         return Character'Val (R);
+      end From_Hex;
+
       S      : Unbounded_String;
       Escape : Boolean := False;
+      Resume : Natural := 0;
    begin
       case A.Kind is
          when Input =>
@@ -152,29 +200,31 @@ package body Serialisation is
             S := A.Content.First_Element;
             A.Content.Delete_First;
 
-            if Length (S) < 2
-              or else (Element (S, 1) /= 's' and Element (S, 2) /= ':')
-            then
-               raise Parse_Error with "malformed data";
-            end if;
-
             V := Null_Unbounded_String;
-            for I in Natural range 3 .. Length (S) loop
-               if Escape then
+            for I in Natural range 1 .. Length (S) loop
+               if Resume > I then
+                  null;
+               elsif Escape then
                   case Element (S, I) is
-                     when '\' | '[' | ']' | '.' =>
+                     when '0' =>
+                        null;
+                     when ':' | '\' =>
                         Append (V, Element (S, I));
-                     when 'n' =>
-                        Append (V, LF);
+                     when 'x' =>
+                        if Length (S) < I + 2 then
+                           raise Parse_Error with "malformed string data";
+                        end if;
+                        Resume := I + 3;
+                        Append (V, From_Hex (Slice (S, I + 1, I + 2)));
                      when others =>
-                        raise Parse_Error with "malformed data";
+                        raise Parse_Error with "malformed string data";
                   end case;
                   Escape := False;
                else
                   case Element (S, I) is
                      when '\' =>
                         Escape := True;
-                     when '.' =>
+                     when ':' =>
                         Append (V, ' ');
                      when others =>
                         Append (V, Element (S, I));
@@ -183,20 +233,29 @@ package body Serialisation is
             end loop;
 
          when Output =>
-            S := To_Unbounded_String ("s:");
+            --  Null strings are encoded as ':'
+            if Length (V) = 0 then
+               S := To_Unbounded_String ("\0");
+            end if;
+
             for I in Natural range 1 .. Length (V) loop
                case Element (V, I) is
-                  when '\' | '[' | ']' | '.' =>
+                  when ' ' =>
+                     Append (S, ':');
+                  when ':' | '\' =>
                      Append (S, '\');
                      Append (S, Element (V, I));
-                  when LF =>
-                     Append (S, "\n");
-                  when ' ' =>
-                     Append (S, ".");
-                  when others =>
+                  when Character'Val (33) .. Character'Val (57)  |
+                       Character'Val (59) .. Character'Val (91) |
+                       Character'Val (93) .. Character'Val (126) =>
+                     --  Printable characters excluding ':', '\', and SPACE
                      Append (S, Element (V, I));
+                  when others =>
+                     Append (S, "\x");
+                     Append (S, To_Hex (Element (V, I)));
                end case;
             end loop;
+
             A.Content.Append (S);
       end case;
    end Serialize;
