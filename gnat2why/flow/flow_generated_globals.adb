@@ -28,7 +28,6 @@ with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;                use Ada.Text_IO;
 with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
 with GNAT.Regexp;                use GNAT.Regexp;
-with GNAT.Regpat;                use GNAT.Regpat;
 
 with AA_Util;                    use AA_Util;
 with ALI;                        use ALI;
@@ -254,31 +253,6 @@ package body Flow_Generated_Globals is
    --  Regexp for predefined entities
    Predefined : constant Regexp :=
      Compile ("(ada|interfaces|system)__([a-z]|[0-9]|_)+");
-
-   --  Regexp for:
-   --  Ada.Task_Identification.Abort_Task
-   --  Ada.Dispatching.Yield
-   --  Ada.Synchronous_Task_Control.Suspend_Until_True
-   --  Ada.Synchronous_Task_Control.EDF.Suspend_Until_True_And_Set_Deadline
-   --  Ada.Synchronous_Barriers.Wait_For_Release
-   --  System.RPC.*
-   Predefined_Potentially_Blocking : constant Regexp :=
-     Compile ("ada__(" &
-              "task_identification__abort_task|" &
-              "dispatching__yield|" &
-              "synchronous_task_control__(" &
-              "suspend_until_true|" &
-              "edf__suspend_until_true_and_set_deadline)|" &
-              "synchronous_barriers__wait_for_release)|" &
-              "system__rpc__([a-z]|[0-9]|_)*" --  ??? needs testing
-             );
-
-   --  A pattern that matches any package name that ends with "_IO"; it matches
-   --  also some non-blocking subprograms (e.g. Ada.Text_IO.Is_Open), but this
-   --  is much safer than explicitly checking which subprograms may be
-   --  potentially blocking.
-   Predefined_Manipulate_Files : constant Pattern_Matcher :=
-     Compile ("_io__");
 
    ----------------------------------------------------------------------
    --  Serialisation
@@ -2557,10 +2531,6 @@ package body Flow_Generated_Globals is
          function Is_Predefined (Name : String) return Boolean;
          --  Check if subprogram name is in a unit predefined by the Ada RM
 
-         function Is_Predefined_Potentially_Blocking
-           (Name : String) return Boolean;
-         --  Check if Ada RM specifies subprogram Name as potentially blocking
-
          ----------------------------
          -- Calls_Same_Target_Type --
          ----------------------------
@@ -2605,17 +2575,6 @@ package body Flow_Generated_Globals is
             return Match (Name, Predefined);
          end Is_Predefined;
 
-         ----------------------------------------
-         -- Is_Predefined_Potentially_Blocking --
-         ----------------------------------------
-
-         function Is_Predefined_Potentially_Blocking
-           (Name : String) return Boolean is
-         begin
-            return Match (Name, Predefined_Potentially_Blocking)
-              or else Match (Predefined_Manipulate_Files, Name);
-         end Is_Predefined_Potentially_Blocking;
-
       --  Start of processing for Calls_Potentially_Blocking_Subprogram
 
       begin
@@ -2633,9 +2592,11 @@ package body Flow_Generated_Globals is
                   --  Entities from other compilation units have empty id
                begin
                   if Is_Predefined (Callee_Str) then
-                     if Is_Predefined_Potentially_Blocking (Callee_Str) then
-                        return True;
-                     end if;
+                     --  All user-defined callers of predefined potentially
+                     --  blocking subprograms have been already marked as
+                     --  potentially blocking, so here we can safely assume
+                     --  that any call to predefined subprogram is nonblocking.
+                     return False;
                   else
                      if not Nonblocking_Subprograms_Set.Contains (Callee.Name)
                      then

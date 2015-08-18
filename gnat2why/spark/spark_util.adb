@@ -1899,6 +1899,49 @@ package body SPARK_Util is
    -- Has_Only_Nonblocking_Statements --
    -------------------------------------
 
+   Name_Abort_Task                          : Name_Id := No_Name;
+   Name_Directories                         : Name_Id := No_Name;
+   Name_Dispatching                         : Name_Id := No_Name;
+   Name_EDF                                 : Name_Id := No_Name;
+   Name_Suspend_Until_True                  : Name_Id := No_Name;
+   Name_Suspend_Until_True_And_Set_Deadline : Name_Id := No_Name;
+   Name_Synchronous_Barriers                : Name_Id := No_Name;
+   Name_Task_Identification                 : Name_Id := No_Name;
+   Name_Wait_For_Release                    : Name_Id := No_Name;
+   Name_Yield                               : Name_Id := No_Name;
+   --  ??? should we move these to Snames package?
+   --  The above Name_Ids shall be constants, exectly like those in Snames, but
+   --  when the package body is elaborated the name tables are locked so we can
+   --  not call Name_Find_Str then. They are global variables, so they are
+   --  initialized only once.
+
+   Potentially_Blocking_Name_Ids_Initialized : Boolean := False;
+   --  If True then Name_* variables have been initialized
+
+   procedure Initialize_Potentially_Blocking_Name_Ids;
+   --  Initialize
+
+   ----------------------------------------------
+   -- Initialize_Potentially_Blocking_Name_Ids --
+   ----------------------------------------------
+
+   procedure Initialize_Potentially_Blocking_Name_Ids is
+   begin
+      Name_Abort_Task := Name_Find_Str ("abort_task");
+      Name_Directories := Name_Find_Str ("directories");
+      Name_Dispatching := Name_Find_Str ("dispatching");
+      Name_EDF := Name_Find_Str ("edf");
+      Name_Suspend_Until_True := Name_Find_Str ("suspend_until_true");
+      Name_Suspend_Until_True_And_Set_Deadline :=
+        Name_Find_Str ("suspend_until_true_and_set_deadline");
+      Name_Synchronous_Barriers := Name_Find_Str ("synchronous_barriers");
+      Name_Task_Identification := Name_Find_Str ("task_identification");
+      Name_Wait_For_Release := Name_Find_Str ("wait_for_release");
+      Name_Yield := Name_Find_Str ("yield");
+
+      Potentially_Blocking_Name_Ids_Initialized := True;
+   end Initialize_Potentially_Blocking_Name_Ids;
+
    function Has_Only_Nonblocking_Statements (N : Node_Id) return Boolean is
 
       Potentially_Blocking_Statement_Found : Boolean := False;
@@ -1909,6 +1952,146 @@ package body SPARK_Util is
 
       procedure Traverse is new Traverse_Proc (Proc);
       --  Traverse a tree to check if it includes blocking statements
+
+      function Is_Predefined_Potentially_Blocking
+        (E : Entity_Id)
+         return Boolean;
+      --  Check if entity E is a predefined potentially blocking subprogram
+
+      ----------------------------------------
+      -- Is_Predefined_Potentially_Blocking --
+      ----------------------------------------
+      function Is_Predefined_Potentially_Blocking
+        (E : Entity_Id)
+         return Boolean
+      is
+         --  Detect calls to:
+         --    Ada.Task_Identification.Abort_Task
+         --    Ada.Dispatching.Yield
+         --    Ada.Synchronous_Task_Control.Suspend_Until_True
+         --    Ada.Synchronous_Task_Control.EDF.
+         --        Suspend_Until_True_And_Set_Deadline
+         --    Ada.Synchronous_Barriers.Wait_For_Release
+         --    System.RPC.*
+         --
+         --  and file-manipulating subprograms:
+         --    Ada.Directories.*
+         --    Ada.Text_IO.*
+         --    Ada.Wide_Text_IO.*
+         --    Ada.Wide_Wide_Text_IO.*
+
+         --  It is more natural to first collect the scope sequence and then
+         --  analyse it starting from the outermost scope.
+         --
+         --  We can avoid the use of much heavier Ada.Container.Vector/List,
+         --  becase we only need 5 outermost scopes, i.e.
+         --    (0) Standard.
+         --    (1)  Ada.
+         --    (2)   Synchronous_Task_Control.
+         --    (3)    EDF.
+         --    (4)     Suspend_Until_True_And_Set_Deadline
+         --  and for System.RPC.* we need only the 3 outermost scopes, i.e.
+         --    (0) Standard.
+         --    (1)  System.
+         --    (2)   RPC.
+
+         type Scope_Index is mod 5;
+         --  Modular type with scope number
+
+         Scopes : array (Scope_Index) of Entity_Id;
+
+         Scope_Id : Scope_Index := Scope_Index'Last;
+         --  Indexing variable for the Scopes array
+
+         function Scope_Name (Index : Scope_Index) return Name_Id;
+         --  Returns the string representation of the entity in Scopes (Index)
+         --  ??? we should compare Name_Ids and not strings, but for this
+         --      we need to extend the Snames package.
+
+         ----------------
+         -- Scope_Name --
+         ----------------
+
+         function Scope_Name (Index : Scope_Index) return Name_Id is
+            (Chars (Scopes (Scope_Id + Index)));
+
+      begin
+         --  Start from the called subprogram
+         Scopes (Scope_Id) := E;
+
+         --  Collect scopes until we reach the outermost one, i.e. Standard
+         while Scopes (Scope_Id) /= Standard_Standard loop
+            Scopes (Scope_Id - 1) := Scope (Scopes (Scope_Id));
+            Scope_Id := Scope_Id - 1;
+         end loop;
+
+         --  Now we have something like:
+         --  Scopes (Scope_Id)     -> Standard
+         --  Scopes (Scope_Id + 1) -> Ada/Interfaces/System/...
+         --  Scopes (Scope_Id + 2) -> Synchronous_Task_Control/...
+         --  Scopes (Scope_Id + 3) -> EDF/Suspend_Until_True/...
+         --  Scopes (Scope_Id + 4) -> Suspend_Until_True_And_Set_Deadline/...
+
+         --  Dive into the scope hierarchy and look for predefined blocking
+         --  subprograms.
+         case Chars (Scopes (Scope_Id + 1)) is
+            when Name_Ada =>
+               --  Further checks needed
+               null;
+
+            when Name_Interfaces =>
+               --  All subprograms in package Interfaces are nonblocking
+               return False;
+
+            when Name_System =>
+               --  Check for System.RPC
+               return Chars (Scopes (Scope_Id + 2)) = Name_Rpc;
+
+            when others =>
+               --  It must be a user-defined subprogram
+               return False;
+         end case;
+
+         --  Initialize Name_Ids, they now they will be needed
+         if not Potentially_Blocking_Name_Ids_Initialized then
+            Initialize_Potentially_Blocking_Name_Ids;
+         end if;
+
+         declare
+            Scope_Nam : constant Name_Id := Scope_Name (2);
+         begin
+            if Scope_Nam = Name_Directories then
+               return True;
+
+            elsif Scope_Nam = Name_Dispatching then
+               return Scope_Name (3) = Name_Yield;
+
+            elsif Scope_Nam = Name_Task_Identification then
+               return Scope_Name (3) = Name_Abort_Task;
+
+            elsif Scope_Nam = Name_Synchronous_Task_Control then
+               declare
+                  Scope_Nam : constant Name_Id := Scope_Name (3);
+               begin
+                  if Scope_Nam = Name_Suspend_Until_True then
+                     return True;
+                  elsif Scope_Nam = Name_EDF then
+                     return Scope_Name (4) =
+                       Name_Suspend_Until_True_And_Set_Deadline;
+                  else
+                     return False;
+                  end if;
+               end;
+
+            elsif Scope_Nam = Name_Synchronous_Barriers then
+               return Scope_Name (3) = Name_Wait_For_Release;
+
+            else
+               return False;
+            end if;
+         end;
+
+      end Is_Predefined_Potentially_Blocking;
 
       ----------
       -- Proc --
@@ -1936,8 +2119,20 @@ package body SPARK_Util is
             --  entry calls. It is best to check the call convention.
 
             when N_Entry_Call_Statement =>
+
                if Convention (Entity (Selector_Name (Name (N)))) =
                  Convention_Entry
+               then
+                  Potentially_Blocking_Statement_Found := True;
+                  return Abandon;
+               else
+                  return OK;
+               end if;
+
+            when N_Procedure_Call_Statement |
+                 N_Function_Call =>
+
+               if Is_Predefined_Potentially_Blocking (Get_Called_Entity (N))
                then
                   Potentially_Blocking_Statement_Found := True;
                   return Abandon;
