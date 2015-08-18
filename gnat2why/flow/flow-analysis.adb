@@ -4002,7 +4002,10 @@ package body Flow.Analysis is
    --  access them.
 
    subtype Tasking_Owners_Kind is Tasking_Info_Kind
-   range Suspends_On .. Entry_Calls;
+   range
+     Suspends_On ..
+     --  Entry_Calls
+     Unsynch_Accesses;
 
    Concurrent_Object_Owner : array (Tasking_Owners_Kind) of
      Entity_Name_to_Nodes_Maps.Map;
@@ -4042,7 +4045,9 @@ package body Flow.Analysis is
       function Conflict_Msg (Kind : Tasking_Owners_Kind) return String is
          (case Kind is
           when Suspends_On => "suspends on suspension object",
-          when Entry_Calls => "calls entry of the protected object");
+          when Entry_Calls => "calls entry of the protected object",
+          when Unsynch_Accesses => "accesses an unsynchronized global variable"
+         );
       --  Messages for a exclusivity conflicts; conceptually it is a constant
       --  array of strings, but because these strings are of different length
       --  it is implemented as a function.

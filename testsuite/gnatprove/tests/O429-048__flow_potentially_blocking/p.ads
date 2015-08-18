@@ -8,9 +8,11 @@ package P is
 
    procedure Nonblocking_Proc;
 
-   function Potentially_Blocking_Func return Boolean;
+   function Potentially_Blocking_Func return Boolean
+   with Volatile_Function;
 
-   function Blocking_Func return Boolean;
+   function Blocking_Func return Boolean
+   with Volatile_Function;
 
    function Nonblocking_Func return Boolean;
 

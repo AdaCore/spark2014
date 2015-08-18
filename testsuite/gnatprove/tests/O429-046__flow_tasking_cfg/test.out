@@ -22,6 +22,7 @@ support.ads:14:04: info: initialization of "Task_Array" proved
 tasks.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 tasks.ads:5:04: info: initialization of "Visible" proved
+tasks.ads:7:09: more than one task accesses an unsynchronized global variable "tasks.visible" (SPARK RM 9.11)
 tasks.ads:11:14: info: initialization of "Visible" proved
 test.adb:6:11: medium: "Default_Aft" might not be initialized after elaboration of main program "Test"
 test.adb:6:11: medium: "Default_Exp" might not be initialized after elaboration of main program "Test"
@@ -30,3 +31,7 @@ test.adb:10:15: warning: assuming "Put" has no effect on global items
 test.adb:10:15: warning: no Global contract available for "Put"
 test.adb:11:21: warning: assuming "Put" has no effect on global items
 test.adb:11:21: warning: no Global contract available for "Put"
+   compilation of tasks.adb failed
+
+
+gnatprove: error during analysis of data and information flow

@@ -147,9 +147,9 @@ package Flow is
 
    type Tasking_Info_Kind is (Suspends_On,
                               Entry_Calls,
+                              Unsynch_Accesses,
                               Read_Locks,
-                              Write_Locks,
-                              Unsynch_Accesses);
+                              Write_Locks);
    --  Tasking-related information that needs to be collected for each analyzed
    --  entity.
 
