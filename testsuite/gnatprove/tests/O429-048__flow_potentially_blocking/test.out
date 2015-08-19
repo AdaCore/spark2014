@@ -101,7 +101,7 @@ p.ads:56:17: warning: subprogram "Directly_Blocking_Stub_Proc" has no effect
 p.ads:60:13: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Entry"
 p.ads:61:17: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Proc"
 p.ads:61:17: warning: subprogram "Indirectly_Blocking_Stub_Proc" has no effect
-p.ads:64:14: more than one task accesses an unsynchronized global variable "p.now" (SPARK RM 9.11)
+p.ads:64:14: more than one task accesses an unsynchronized global variable "ada.real_time.clock_time" (SPARK RM 9.11)
 p.ads:71:13: potentially blocking operation in protected operation "Yielding_Entry"
 p.ads:72:17: potentially blocking operation in protected operation "Yielding_Proc"
 p.ads:72:17: warning: subprogram "Yielding_Proc" has no effect

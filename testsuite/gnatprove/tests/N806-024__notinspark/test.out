@@ -1,4 +1,4 @@
-notinspark.ads:6:27: global item must denote object or state
+notinspark.ads:6:27: global item must denote object, state or current instance of concurrent type
    compilation of notinspark.ads failed
 
 

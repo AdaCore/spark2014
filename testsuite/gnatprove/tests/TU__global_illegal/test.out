@@ -1,5 +1,5 @@
 global_illegal.ads:29:11: incorrect placement of aspect "Global"
-global_illegal.ads:40:26: global item must denote object or state
+global_illegal.ads:40:26: global item must denote object, state or current instance of concurrent type
 global_illegal.ads:43:22: "Non_Existant" is undefined
 global_illegal.ads:57:22: duplicate global mode
 global_illegal.ads:58:22: duplicate global mode
@@ -10,7 +10,7 @@ global_illegal.ads:61:34: global item cannot reference parameter of subprogram "
 global_illegal.ads:69:32: duplicate global item
 global_illegal.ads:71:32: duplicate global item
 global_illegal.ads:86:26: cannot mix null and non-null global items
-global_illegal.ads:91:21: global item must denote object or state
+global_illegal.ads:91:21: global item must denote object, state or current instance of concurrent type
 global_illegal.ads:97:22: global mode "Output" is not applicable to functions
 global_illegal.ads:98:22: global mode "In_Out" is not applicable to functions
 global_illegal_2.adb:13:11: aspect specification must appear on initial declaration
