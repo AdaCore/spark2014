@@ -76,11 +76,6 @@ package body Why.Gen.Scalars is
       function Compute_Clone_Subst return W_Clone_Substitution_Array;
       --  generate the substitutions to be passed to the clone
 
-      procedure Emit_Projection_Meta
-        (Theory : W_Theory_Declaration_Id;
-         Projection_Fun : String);
-      --  emit meta for projecting values using function Projection_Fun
-
       procedure Generate_Range_Predicate
         (Ty : W_Type_Id := Base_Why_Type (E);
          Name : Why_Name_Enum);
@@ -210,25 +205,6 @@ package body Why.Gen.Scalars is
            Range_Int_Clone_Subst &
            Fixed_Clone_Subst;
       end Compute_Clone_Subst;
-
-      --------------------------
-      -- Emit_Projection_Meta --
-      --------------------------
-
-      procedure Emit_Projection_Meta
-        (Theory : W_Theory_Declaration_Id; Projection_Fun : String) is
-      begin
-         Emit (Theory,
-               New_Meta_Declaration (Name      => NID ("model_projection"),
-                                     Parameter => NID ("function " &
-                                         Projection_Fun)));
-
-         --  disable inlining of projection functions
-         Emit (Theory,
-               New_Meta_Declaration (Name      => NID ("inline : no"),
-                                     Parameter => NID ("function " &
-                                         Projection_Fun)));
-      end Emit_Projection_Meta;
 
       ------------------------------
       -- Generate_Range_Predicate --
@@ -454,9 +430,9 @@ package body Why.Gen.Scalars is
       --      for cloned projection functions.
 
       if Is_Discrete_Type (E) then
-         Emit_Projection_Meta (Theory => Theory, Projection_Fun => "to_rep");
+         Emit_Projection_Metas (Theory => Theory, Projection_Fun => "to_rep");
       elsif Is_Floating_Point_Type (E) then
-         Emit_Projection_Meta (Theory => Theory, Projection_Fun => "to_real");
+         Emit_Projection_Metas (Theory => Theory, Projection_Fun => "to_real");
       end if;
 
    end Declare_Scalar_Type;

@@ -1113,6 +1113,7 @@ package body Why.Atree.Sprint is
       P (O, Name);
       P (O, """ ");
       P (O, Parameter);
+      NL (O);
 
    end Print_Meta_Declaration;
 

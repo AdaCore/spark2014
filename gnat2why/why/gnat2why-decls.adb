@@ -367,6 +367,8 @@ package body Gnat2Why.Decls is
       else
          case Var.Kind is
          when DRecord =>
+            Add_Counterexample_Labels (E, Labels);
+
             if Var.Fields.Present then
 
                --  generate a global ref for the fields

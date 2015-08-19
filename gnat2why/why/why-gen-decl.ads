@@ -47,4 +47,37 @@ package Why.Gen.Decl is
      (Theory : W_Theory_Declaration_Id;
       Decl : W_Declaration_Id);
 
+   procedure Emit_Projection_Metas
+     (Theory : W_Theory_Declaration_Id;
+      Projection_Fun : String);
+   --  Emit meta that marks a function as a projection function and disables
+   --  inlining of this function in Why3.
+   --  @param Theory the theory where the projection meta will be emitted.
+   --  @param Projection_Fun the name of the function that will be marked as
+   --      projection.
+
+   procedure Emit_Record_Projection_Declaration
+     (Theory           : W_Theory_Declaration_Id;
+      Param_Ty_Name    : W_Name_Id;
+      Return_Ty        : W_Type_Id;
+      Field_Id         : W_Identifier_Id;
+      SPARK_Field_Name : String := "");
+   --  Emit declaration of a projection for a Why3 record type. The projection
+   --  projects values of the record type to given field of this type.
+   --  The declaration consists of a declaration  of a function that returns a
+   --  value of a field Field_Id of a value of the type Param_Ty_Name and
+   --  declaration projection metas (see Emit_Projection_Metas).
+   --  @param Theory the theory where the projection declaration will be
+   --      emitted.
+   --  @param Param_Ty_Name the name of the record type being projected.
+   --  @param Return_Ty the type to that the record is projected (the type of
+   --      the field to that the record is projected).
+   --  @param Field_Id the identifier of the field to that the record is
+   --      projected.
+   --  @param SPARK_Field_Name if the projection projects SPARK record to the
+   --      SPARK field, the SPARK name of the field, "" otherwise.
+   --      The string "." & SPARK_Field_Name will be appended to the name of
+   --      the variable that is being projected. If SPARK_Field_Name equals to
+   --      "", nothing will be appended to the name of the variable.
+
 end Why.Gen.Decl;

@@ -296,13 +296,16 @@
 --  "model_projected"
 --     This label identifies elements that should be included in the
 --     counterexample model.
---     Unlike the label "model", the value of the element will be projected
+--     Unlike the label "model", the value of the element can be projected
 --     using a projection function (specified using the meta model_projection)
 --
 --  "model_trace:name"
 --      This label specifies the name that will be reported in a
---      counterexample for this element.
---      Should be always used together with label "model" or "model_projected"
+--      counterexample for this element. If it labels projection function, it
+--      specifies the name that should be added to the element name when the
+--      element is projected.
+--      Should be used either to for projection functions or together with
+--      label "model" or "model_projected".
 --
 --  "model_vc"
 --      This label identifies the construct that triggers the VC.
@@ -310,6 +313,19 @@
 --  "model_func:name"
 --      This label is present if VC is postcondition or precondition of the
 --      function with name "name".
+
+-----------------------------------
+-- Metas Interpreted by gnatwhy3 --
+-----------------------------------
+
+--  "model_projection"
+--      This meta marks a function as projection. Projections functions project
+--      values of why abstract types to concrete values.
+--      The function F is projection function for abstract type T if it is
+--      marked with the meta "model_projection" and has a single argument of
+--      type T.
+--      Note that there can be more projection functions for a single type T.
+--      This is used when T is record type.
 
 package Gnat2Why is
 

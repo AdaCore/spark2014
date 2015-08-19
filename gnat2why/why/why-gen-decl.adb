@@ -24,12 +24,19 @@
 ------------------------------------------------------------------------------
 
 with Common_Containers;   use Common_Containers;
+with Namet;               use Namet;
+with VC_Kinds;            use VC_Kinds;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
+with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
+with Ada.Strings.Fixed;
+with Ada.Containers.Indefinite_Ordered_Maps;
 
 package body Why.Gen.Decl is
 
@@ -45,6 +52,113 @@ package body Why.Gen.Decl is
         (Id => Theory,
          New_Item => +Decl);
    end Emit;
+
+   ---------------------------
+   -- Emit_Projection_Metas --
+   ---------------------------
+
+   procedure Emit_Projection_Metas
+     (Theory : W_Theory_Declaration_Id; Projection_Fun : String) is
+   begin
+      --  mark function as projection function
+      Emit (Theory,
+            New_Meta_Declaration (Name      => NID (Model_Proj_Meta),
+                                  Parameter => NID ("function " &
+                                      Projection_Fun)));
+
+      --  disable inlining of projection functions
+      Emit (Theory,
+            New_Meta_Declaration (Name      => NID ("inline : no"),
+                                  Parameter => NID ("function " &
+                                      Projection_Fun)));
+   end Emit_Projection_Metas;
+
+   package Projection_Names is new Ada.Containers.Indefinite_Ordered_Maps
+     (Key_Type     => String,
+      Element_Type => Positive,
+      "<"          => Standard."<",
+      "="          => Standard."=");
+
+   use Projection_Names;
+
+   Projection_Names_Decls : Map;
+   --  Map from the name of projection to the number of declarations of
+   --  projections with this name.
+   --  The name of the projection is composed from the name of the type that
+   --  is projected and if the projection projects SPARK record type to a field
+   --  of the record also from the spark field name. That is, the name of the
+   --  projection is not unique.
+   --  The name of the projection function must be unique and it is composed
+   --  of the name of the projection and if there are more declarations
+   --  of projections with the same name, the name of projection function is
+   --  also composed of the number of declarations of  projections with this
+   --  name.
+
+   ----------------------------------------
+   -- Emit_Record_Projection_Declaration --
+   ----------------------------------------
+
+   procedure Emit_Record_Projection_Declaration
+     (Theory           : W_Theory_Declaration_Id;
+      Param_Ty_Name    : W_Name_Id;
+      Return_Ty        : W_Type_Id;
+      Field_Id         : W_Identifier_Id;
+      SPARK_Field_Name : String := "")
+   is
+      --  Projection function name
+      Param_Ty_Name_Str : constant String :=
+        Get_Name_String (Get_Symbol (Param_Ty_Name));
+      Proj_Name : constant String :=
+        Param_Ty_Name_Str & "_" & SPARK_Field_Name;
+      Proj_Name_Cursor : constant Cursor :=
+        Projection_Names_Decls.Find (Proj_Name);
+      Proj_Name_Decls_Num : constant Natural :=
+        (if Proj_Name_Cursor = No_Element then 1
+         else Element (Proj_Name_Cursor));
+      Proj_Fun_Name : constant String :=
+        (if Proj_Name_Decls_Num = 1 then Proj_Name & "__projection"
+         else Proj_Name & Ada.Strings.Fixed.Trim
+           (Natural'Image (Proj_Name_Decls_Num), Ada.Strings.Left) &
+           "__projection");
+      --  Parameter type and identifier
+      Param_Ty : constant W_Type_Id := New_Named_Type (Name => Param_Ty_Name);
+      Param_Ident   : constant W_Identifier_Id :=
+        Why.Gen.Names.New_Identifier (Name => "a", Typ => Param_Ty);
+      --  The access to the field to that the record is projected
+      Field_Access    : constant W_Expr_Id :=
+        Why.Atree.Builders.New_Record_Access
+          (Name  => +Param_Ident,
+           Field => Field_Id);
+
+      Labels : Name_Id_Set := Name_Id_Sets.Empty_Set;
+
+   begin
+      --  Update number of declarations of projection with name Proj_Name
+      if Proj_Name_Cursor = No_Element then
+         Projection_Names_Decls.Insert (Proj_Name, 2);
+      else
+         Projection_Names_Decls (Proj_Name) := Proj_Name_Decls_Num + 1;
+      end if;
+
+      if SPARK_Field_Name /= "" then
+         Labels.Include (NID (Model_Trace_Label & "." & SPARK_Field_Name));
+      end if;
+
+      Emit
+        (Theory,
+         New_Function_Decl
+           (Domain      => EW_Term,
+            Name        => Why.Gen.Names.New_Identifier (
+              Name => Proj_Fun_Name),
+            Binders     => (1 => New_Binder (Domain => EW_Prog,
+                                             Name => Param_Ident,
+                                             Arg_Type => Param_Ty)),
+            Return_Type => Return_Ty,
+            Labels      => Labels,
+            Def         => Field_Access));
+
+      Emit_Projection_Metas (Theory, Proj_Fun_Name);
+   end Emit_Record_Projection_Declaration;
 
    ---------------------------
    -- New_Havoc_Declaration --
