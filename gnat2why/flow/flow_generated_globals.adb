@@ -1832,7 +1832,7 @@ package body Flow_Generated_Globals is
 
             exit when End_Of_File (ALI_File);
 
-            --  Proceed to the next ile.
+            --  Proceed to the next line.
             Get_Line (ALI_File, Line);
          end loop;
 
