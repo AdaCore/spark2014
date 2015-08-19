@@ -26,6 +26,31 @@ module Main
   type real__ref = { mutable real__content : real }
   type __private__ref = { mutable __private__content : __private }
 
+  (* Projections from records holding references over builtin types to builtin types *)
+  function int__ref___projection
+    (a : int__ref)  : int =
+    a.int__content
+  meta "model_projection" function int__ref___projection
+  meta "inline : no" function int__ref___projection
+
+  function bool__ref___projection
+    (a : bool__ref)  : bool =
+    a.bool__content
+  meta "model_projection" function bool__ref___projection
+  meta "inline : no" function bool__ref___projection
+
+  function real__ref___projection
+    (a : real__ref)  : real =
+    a.real__content
+  meta "model_projection" function real__ref___projection
+  meta "inline : no" function real__ref___projection
+
+  function __private__ref___projection
+    (a : __private__ref)  : __private =
+    a.__private__content
+  meta "model_projection" function __private__ref___projection
+  meta "inline : no" function __private__ref___projection
+
   (* Program function that sets the value of its parameter to any possible
      value allowed by its type. *)
   val int__havoc (x : int__ref) : unit
