@@ -121,22 +121,9 @@ package Serialisation is
 
    procedure Serialize (A : in out Archive; V : in out Unbounded_String);
    --  Serialisation for an unbounded String. If you want to serialize a
-   --  String, convert to/from an unbounded string.
-   --
-   --  This is not as easy as one might expect, since we need to do some
-   --  escaping so that any string does not interfere with the (very simple
-   --  space separated) format we expect an archive to have in to_string
-   --  and from_string. The escaping is done as follows:
-   --
-   --     * the empty string is encoded as "\0"
-   --     * ' ' is translated to ':'
-   --     * ':' and '\' are escaped with '\'
-   --     * non-printable characters are encoded as '\xHH' where H is
-   --       an upper-case hex digit.
-   --
-   --  This minimal translation ensures most strings are as long as they
-   --  were before, and are reasonably readable. In particular most magic
-   --  strings produced by SPARK 2014 should be untouched.
+   --  String, convert to/from an unbounded string and use this procedure;
+   --  it produces a much more compact output than looping over each
+   --  element of the string/array.
 
    generic
       type T is (<>);

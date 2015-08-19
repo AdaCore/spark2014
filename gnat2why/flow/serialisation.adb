@@ -28,8 +28,10 @@ package body Serialisation is
 
    Coll_Begin : constant Unbounded_String := To_Unbounded_String ("[");
    Coll_End   : constant Unbounded_String := To_Unbounded_String ("]");
-
    --  Begin/end markers for collections (lists, sets).
+
+   subtype Hex_String is String (1 .. 2);
+   --  String of length 2 for text-representation of 8 bits in hex.
 
    procedure Match (A : in out Archive; S : Unbounded_String)
    with Pre => A.Kind = Input;
@@ -40,6 +42,31 @@ package body Serialisation is
    function Test (A : Archive; S : Unbounded_String) return Boolean
    with Pre => A.Kind = Input;
    --  Returns true iff the next element of A is equal to S.
+
+   function To_Hex (C : Character) return Hex_String;
+   --  Convert a character (such as ' ') to a two-digit hex
+   --  representation ("A0" in this example).
+
+   function From_Hex (S : Hex_String) return Character;
+   --  The inverse of the above. Raises Parse_Error if we get something
+   --  that is not a hex string.
+
+   function Escape (S : Unbounded_String) return Unbounded_String;
+   --  Escape a string so that it contains no spaces or unprintable
+   --  characters.
+   --
+   --     * the empty string is encoded as "\0"
+   --     * ' ' is translated to ':'
+   --     * ':' and '\' are escaped with '\'
+   --     * non-printable characters are encoded as '\xHH' where H is
+   --       an upper-case hex digit.
+   --
+   --  This minimal translation ensures most strings are as long as they
+   --  were before, and are reasonably readable. In particular most magic
+   --  strings produced by SPARK 2014 should be untouched.
+
+   function Interpret (S : Unbounded_String) return Unbounded_String;
+   --  The inverse of Escape.
 
    generic
       type T is private;
@@ -95,7 +122,7 @@ package body Serialisation is
             if Length (S) > 0 then
                Append (S, " ");
             end if;
-            Append (S, Trim (E, Both));
+            Append (S, Escape (E));
          end loop;
       end return;
    end To_String;
@@ -114,13 +141,124 @@ package body Serialisation is
             end if;
             if Element (S, I) = ' ' or I = Length (S) then
                if Length (Tmp) > 0 then
-                  A.Content.Append (Tmp);
+                  A.Content.Append (Interpret (Tmp));
                   Tmp := Null_Unbounded_String;
                end if;
             end if;
          end loop;
       end return;
    end From_String;
+
+   ------------
+   -- To_Hex --
+   ------------
+
+   function To_Hex (C : Character) return Hex_String is
+      Upper : constant Natural := Character'Pos (C)   / 16;
+      Lower : constant Natural := Character'Pos (C) mod 16;
+      Conv  : constant array (0 .. 15) of Character :=
+        ('0', '1', '2', '3', '4', '5', '6', '7',
+         '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
+   begin
+      return S : Hex_String do
+         S (1) := Conv (Upper);
+         S (2) := Conv (Lower);
+      end return;
+   end To_Hex;
+
+   --------------
+   -- From_Hex --
+   --------------
+
+   function From_Hex (S : Hex_String) return Character is
+      R : Natural := 0;
+   begin
+      for C of S loop
+         R := R * 16;
+         case C is
+            when '0' .. '9' =>
+               R := R + (Character'Pos (C) - Character'Pos ('0'));
+            when 'A' .. 'F' =>
+               R := R + (Character'Pos (C) - Character'Pos ('A')) + 10;
+            when others =>
+               raise Parse_Error with "malformed string data";
+         end case;
+      end loop;
+      return Character'Val (R);
+   end From_Hex;
+
+   ------------
+   -- Escape --
+   ------------
+
+   function Escape (S : Unbounded_String) return Unbounded_String is
+   begin
+      if Length (S) = 0 then
+         return To_Unbounded_String ("\0");
+      end if;
+
+      return V : Unbounded_String := Null_Unbounded_String do
+         for I in Natural range 1 .. Length (S) loop
+            case Element (S, I) is
+               when ' ' =>
+                  Append (V, ':');
+               when ':' | '\' =>
+                  Append (V, '\');
+                  Append (V, Element (S, I));
+               when Character'Val (33) .. Character'Val (57)  |
+                    Character'Val (59) .. Character'Val (91) |
+                    Character'Val (93) .. Character'Val (126) =>
+                  --  Printable characters excluding ':', '\', and SPACE
+                  Append (V, Element (S, I));
+               when others =>
+                  Append (V, "\x");
+                  Append (V, To_Hex (Element (S, I)));
+            end case;
+         end loop;
+      end return;
+   end Escape;
+
+   ---------------
+   -- Interpret --
+   ---------------
+
+   function Interpret (S : Unbounded_String) return Unbounded_String is
+      Resume    : Natural := 0;
+      In_Escape : Boolean := False;
+   begin
+      return V : Unbounded_String do
+         for I in Natural range 1 .. Length (S) loop
+            if Resume > I then
+               null;
+            elsif In_Escape then
+               case Element (S, I) is
+                  when '0' =>
+                     null;
+                  when ':' | '\' =>
+                     Append (V, Element (S, I));
+                  when 'x' =>
+                     if Length (S) < I + 2 then
+                        raise Parse_Error with "malformed string data";
+                     end if;
+                     Resume := I + 3;
+                     Append (V, From_Hex (Slice (S, I + 1, I + 2)));
+                  when others =>
+                     raise Parse_Error with "malformed string data";
+               end case;
+               In_Escape := False;
+            else
+               case Element (S, I) is
+                  when '\' =>
+                     In_Escape := True;
+                  when ':' =>
+                     Append (V, ' ');
+                  when others =>
+                     Append (V, Element (S, I));
+               end case;
+            end if;
+         end loop;
+      end return;
+   end Interpret;
 
    ------------------------
    -- Debug_Dump_Archive --
@@ -138,125 +276,17 @@ package body Serialisation is
    -- Serialize --
    ---------------
 
-   procedure Serialize (A : in out Archive; V : in out Unbounded_String)
-   is
-      subtype Hex_String is String (1 .. 2);
-
-      function To_Hex (C : Character) return Hex_String;
-      --  Convert a character (such as ' ') to a two-digit hex
-      --  representation ("A0" in this example).
-
-      function From_Hex (S : Hex_String) return Character;
-      --  The inverse of the above. Raises Parse_Error if we get something
-      --  that is not a hex string.
-
-      ------------
-      -- To_Hex --
-      ------------
-
-      function To_Hex (C : Character) return Hex_String is
-         Upper : constant Natural := Character'Pos (C)   / 16;
-         Lower : constant Natural := Character'Pos (C) mod 16;
-         Conv  : constant array (0 .. 15) of Character :=
-           ('0', '1', '2', '3', '4', '5', '6', '7',
-            '8', '9', 'A', 'B', 'C', 'D', 'E', 'F');
-      begin
-         return S : Hex_String do
-            S (1) := Conv (Upper);
-            S (2) := Conv (Lower);
-         end return;
-      end To_Hex;
-
-      --------------
-      -- From_Hex --
-      --------------
-
-      function From_Hex (S : Hex_String) return Character is
-         R : Natural := 0;
-      begin
-         for C of S loop
-            R := R * 16;
-            case C is
-               when '0' .. '9' =>
-                  R := R + (Character'Pos (C) - Character'Pos ('0'));
-               when 'A' .. 'F' =>
-                  R := R + (Character'Pos (C) - Character'Pos ('A')) + 10;
-               when others =>
-                  raise Parse_Error with "malformed string data";
-            end case;
-         end loop;
-         return Character'Val (R);
-      end From_Hex;
-
-      S      : Unbounded_String;
-      Escape : Boolean := False;
-      Resume : Natural := 0;
+   procedure Serialize (A : in out Archive; V : in out Unbounded_String) is
    begin
       case A.Kind is
          when Input =>
             if A.Content.Is_Empty then
                raise Parse_Error with "insufficient data";
             end if;
-            S := A.Content.First_Element;
+            V := A.Content.First_Element;
             A.Content.Delete_First;
-
-            V := Null_Unbounded_String;
-            for I in Natural range 1 .. Length (S) loop
-               if Resume > I then
-                  null;
-               elsif Escape then
-                  case Element (S, I) is
-                     when '0' =>
-                        null;
-                     when ':' | '\' =>
-                        Append (V, Element (S, I));
-                     when 'x' =>
-                        if Length (S) < I + 2 then
-                           raise Parse_Error with "malformed string data";
-                        end if;
-                        Resume := I + 3;
-                        Append (V, From_Hex (Slice (S, I + 1, I + 2)));
-                     when others =>
-                        raise Parse_Error with "malformed string data";
-                  end case;
-                  Escape := False;
-               else
-                  case Element (S, I) is
-                     when '\' =>
-                        Escape := True;
-                     when ':' =>
-                        Append (V, ' ');
-                     when others =>
-                        Append (V, Element (S, I));
-                  end case;
-               end if;
-            end loop;
-
          when Output =>
-            --  Null strings are encoded as ':'
-            if Length (V) = 0 then
-               S := To_Unbounded_String ("\0");
-            end if;
-
-            for I in Natural range 1 .. Length (V) loop
-               case Element (V, I) is
-                  when ' ' =>
-                     Append (S, ':');
-                  when ':' | '\' =>
-                     Append (S, '\');
-                     Append (S, Element (V, I));
-                  when Character'Val (33) .. Character'Val (57)  |
-                       Character'Val (59) .. Character'Val (91) |
-                       Character'Val (93) .. Character'Val (126) =>
-                     --  Printable characters excluding ':', '\', and SPACE
-                     Append (S, Element (V, I));
-                  when others =>
-                     Append (S, "\x");
-                     Append (S, To_Hex (Element (V, I)));
-               end case;
-            end loop;
-
-            A.Content.Append (S);
+            A.Content.Append (V);
       end case;
    end Serialize;
 
@@ -274,7 +304,7 @@ package body Serialisation is
             V := T'Value (To_String (A.Content.First_Element));
             A.Content.Delete_First;
          when Output =>
-            A.Content.Append (To_Unbounded_String (T'Image (V)));
+            A.Content.Append (Trim (To_Unbounded_String (T'Image (V)), Both));
       end case;
    end Serialize_Discreete;
 
