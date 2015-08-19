@@ -69,12 +69,19 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --        Write_To_File (To_String (A));
 --     end;
 --
---  And for reading:
+--  Note that in the case of reading, the object passed to the
+--  serialisation procedure must be fully initialized if it is a scalar, or
+--  if it is a composite type any components containing scalars must be
+--  fully initialized since the second argument is an "in out". The easiest
+--  way to achieve this is to have a "null" constant for the type you
+--  ultimately want to serialize. Thus to safely read:
 --
 --     declare
---        A : Archive (Input) := From_String (Read_Line_From_File);
+--        A          : Archive (Input) := From_String (Read_Line_From_File);
+--        The_Record : Record_T        := Null_Record;
 --     begin
 --        Serialize (A, The_Record);
+--        --  do stuff with the_record here...
 --     end;
 
 package Serialisation is
