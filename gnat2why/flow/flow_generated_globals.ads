@@ -184,11 +184,9 @@ package Flow_Generated_Globals is
    --  Frontend : Produced from the XREF sections of the ALI files
 
    type Global_Phase_1_Info is record
-      Name                  : Entity_Name           := Null_Entity_Name;
-      Kind                  : Analyzed_Subject_Kind :=
-        Analyzed_Subject_Kind'First;
-      Globals_Origin        : Globals_Origin_T      :=
-        Globals_Origin_T'First;
+      Name                  : Entity_Name;
+      Kind                  : Analyzed_Subject_Kind;
+      Globals_Origin        : Globals_Origin_T;
       Inputs_Proof          : Name_Sets.Set;
       Inputs                : Name_Sets.Set;
       Outputs               : Name_Sets.Set;
@@ -199,6 +197,12 @@ package Flow_Generated_Globals is
       Local_Subprograms     : Name_Sets.Set;
       Local_Definite_Writes : Name_Sets.Set;
    end record;
+
+   Null_Global_Info : constant Global_Phase_1_Info :=
+     (Name           => Null_Entity_Name,
+      Kind           => Analyzed_Subject_Kind'First,
+      Globals_Origin => Globals_Origin_T'First,
+      others         => <>);
 
    package Global_Info_Lists is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Global_Phase_1_Info);

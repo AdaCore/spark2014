@@ -298,7 +298,7 @@ package body Flow_Generated_Globals is
          when EK_Error | EK_End_Marker =>
             null;
          when EK_State_Map =>
-            The_State                   : Entity_Name := Null_Entity_Name;
+            The_State                   : Entity_Name;
             The_Constituents            : Name_Sets.Set;
          when EK_Volatiles =>
             All_Async_Readers           : Name_Sets.Set;
@@ -308,15 +308,34 @@ package body Flow_Generated_Globals is
          when EK_Globals =>
             The_Global_Info             : Global_Phase_1_Info;
          when EK_Tasking_Instance_Count =>
-            The_Type                    : Entity_Name := Null_Entity_Name;
+            The_Type                    : Entity_Name;
             The_Count                   : Instance_Number;
          when EK_Tasking_Info =>
-            The_Entity                  : Entity_Name := Null_Entity_Name;
+            The_Entity                  : Entity_Name;
             The_Tasking_Info            : Name_Tasking_Info;
          when EK_Tasking_Nonblocking =>
             The_Nonblocking_Subprograms : Name_Sets.Set;
       end case;
    end record;
+
+   Null_ALI_Entry : constant array (ALI_Entry_Kind) of ALI_Entry :=
+       (EK_Error => (Kind => EK_Error),
+        EK_End_Marker => (Kind => EK_End_Marker),
+        EK_State_Map => (Kind      => EK_State_Map,
+                         The_State => Null_Entity_Name,
+                         others    => <>),
+        EK_Volatiles => (Kind   => EK_Volatiles,
+                         others => <>),
+        EK_Globals => (Kind            => EK_Globals,
+                       The_Global_Info => Null_Global_Info),
+        EK_Tasking_Instance_Count => (Kind      => EK_Tasking_Instance_Count,
+                                      The_Type  => Null_Entity_Name,
+                                      The_Count => Instance_Number'First),
+        EK_Tasking_Info => (Kind       => EK_Tasking_Info,
+                            The_Entity => Null_Entity_Name,
+                            others     => <>),
+        EK_Tasking_Nonblocking => (Kind   => EK_Tasking_Nonblocking,
+                                   others => <>));
 
    procedure Serialize (A : in out Archive; V : in out Entity_Name);
 
@@ -394,24 +413,7 @@ package body Flow_Generated_Globals is
       end if;
       Serialize (A, Kind);
       if A.Kind = Serialisation.Input then
-         case Kind is
-            when EK_Error =>
-               raise Program_Error;
-            when EK_End_Marker =>
-               V := (Kind => EK_End_Marker);
-            when EK_State_Map =>
-               V := (Kind => EK_State_Map, others => <>);
-            when EK_Volatiles =>
-               V := (Kind => EK_Volatiles, others => <>);
-            when EK_Globals =>
-               V := (Kind => EK_Globals, others => <>);
-            when EK_Tasking_Instance_Count =>
-               V := (Kind => EK_Tasking_Instance_Count, others => <>);
-            when EK_Tasking_Info =>
-               V := (Kind => EK_Tasking_Info, others => <>);
-            when EK_Tasking_Nonblocking =>
-               V := (Kind => EK_Tasking_Nonblocking, others => <>);
-         end case;
+         V := Null_ALI_Entry (Kind);
       end if;
 
       case V.Kind is
