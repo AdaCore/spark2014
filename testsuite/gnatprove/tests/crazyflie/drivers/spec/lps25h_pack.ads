@@ -1,6 +1,3 @@
-with Interfaces.C; use Interfaces.C;
-with Interfaces.C.Extensions; use Interfaces.C.Extensions;
-
 --  Package wrapping functions from the lps25h pressure sensor driver
 
 package LPS25h_pack

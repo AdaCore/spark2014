@@ -86,11 +86,13 @@ is
      (Thrust : T_Uint16;
       Roll   : T_Int16;
       Pitch  : T_Int16;
-      Yaw    : T_Int16) is
-      T : T_Int32 := T_Int32 (Thrust);
+      Yaw    : T_Int16)
+   is
+      T : constant T_Int32 := T_Int32 (Thrust);
       R : T_Int32 := T_Int32 (Roll);
       P : T_Int32 := T_Int32 (Pitch);
-      Y : T_Int32 := T_Int32 (Yaw);
+      Y : constant T_Int32 := T_Int32 (Yaw);
+
    begin
       if QUAD_FORMATION_X then
          R := R / 2;

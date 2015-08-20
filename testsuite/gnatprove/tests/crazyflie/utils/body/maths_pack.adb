@@ -10,7 +10,7 @@ is
         Global => null,
         Pre    => X >= Float'Succ (0.0),
         Post   => Sqrtf'Result in 3.745E-23 .. 1.85E+19,
-        Import, Convention => Intrinsic, External_Name => "__builtin_sqrtf";
+        Import, Convention => C, External_Name => "sqrtf";
    begin
       return 1.0 / Sqrtf (X);
    end Inv_Sqrt;

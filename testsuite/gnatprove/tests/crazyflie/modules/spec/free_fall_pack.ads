@@ -42,8 +42,8 @@ private
    --  Type used to collect measurement samples and easily calculate
    --  their variance and mean.
    type FF_Acc_Data_Collector (Number_Of_Samples : Natural) is record
-      Samples : T_Acc_Array (1 .. Number_Of_Samples) := (others => 0.0);
       Index   : Integer := 1;
+      Samples : T_Acc_Array (1 .. Number_Of_Samples) := (others => 0.0);
    end record;
 
    --  Global variables and constants

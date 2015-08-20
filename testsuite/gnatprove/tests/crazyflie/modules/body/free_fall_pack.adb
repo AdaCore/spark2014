@@ -143,9 +143,13 @@ is
       Sum        : Float := 0.0;
       Sum_Square : Float := 0.0;
    begin
-      for Acc_Z_Sample of Data_Collector.Samples loop
-         Sum := Sum + Acc_Z_Sample;
-         Sum_Square := Sum_Square + (Acc_Z_Sample * Acc_Z_Sample);
+      for J in Data_Collector.Samples'Range loop
+         declare
+            Acc_Z_Sample : Float renames Data_Collector.Samples (J);
+         begin
+            Sum := Sum + Acc_Z_Sample;
+            Sum_Square := Sum_Square + (Acc_Z_Sample * Acc_Z_Sample);
+         end;
       end loop;
 
       Mean := Sum / Float (Data_Collector.Number_Of_Samples);

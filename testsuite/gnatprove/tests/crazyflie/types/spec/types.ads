@@ -1,6 +1,5 @@
 with IMU_Pack; use IMU_Pack;
 with Interfaces;
-with Interfaces.C.Extensions;
 
 package Types is
 
