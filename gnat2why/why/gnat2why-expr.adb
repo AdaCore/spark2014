@@ -5605,6 +5605,13 @@ package body Gnat2Why.Expr is
                | N_Freeze_Entity =>
                null;
 
+            when N_Pragma =>
+               if Is_Ignored_Pragma_Check (N) then
+                  null;
+               else
+                  raise Program_Error;
+               end if;
+
             when others =>
                raise Program_Error;
          end case;
@@ -5653,6 +5660,13 @@ package body Gnat2Why.Expr is
             when N_Null_Statement
                | N_Freeze_Entity =>
                null;
+
+            when N_Pragma =>
+               if Is_Ignored_Pragma_Check (N) then
+                  null;
+               else
+                  raise Program_Error;
+               end if;
 
             when others =>
                raise Program_Error;

@@ -1796,6 +1796,13 @@ package body SPARK_Definition is
                   | N_Freeze_Entity =>
                   null;
 
+               when N_Pragma =>
+                  if Is_Ignored_Pragma_Check (N) then
+                     null;
+                  else
+                     return False;
+                  end if;
+
                when others =>
                   return False;
             end case;
