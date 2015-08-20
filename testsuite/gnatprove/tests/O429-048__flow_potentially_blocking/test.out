@@ -109,7 +109,11 @@ p.ads:77:17: warning: subprogram "Pure_Proc" has no effect
 p.ads:82:17: warning: subprogram "Remote_Proc" has no effect
 p.ads:86:13: potentially blocking operation in protected operation "Barrier_Entry"
 p.ads:87:17: potentially blocking operation in protected operation "Barrier_Proc"
+p.ads:91:13: potentially blocking operation in protected operation "File_Entry"
+p.ads:92:17: potentially blocking operation in protected operation "File_Proc"
 p.ads:92:17: warning: subprogram "File_Proc" has no effect
+p.ads:96:13: potentially blocking operation in protected operation "Text_Entry"
+p.ads:97:17: potentially blocking operation in protected operation "Text_Proc"
 p.ads:97:17: warning: subprogram "Text_Proc" has no effect
 p.ads:101:13: potentially blocking operation in protected operation "My_Text_Entry"
 pack.adb:78:17: warning: statement has no effect
