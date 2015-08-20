@@ -138,8 +138,8 @@ package body Flow_Generated_Globals is
      Initializes_Aspects_Maps.Empty_Map;
 
    All_Initialized_Names   : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  This set of names will hold all variables and state abstractions that we
-   --  know are initialized.
+   --  This set of names will hold all variables and state abstractions
+   --  that we know are initialized.
 
    ----------------------------------------------------------------------
    --  Volatile information
@@ -240,9 +240,9 @@ package body Flow_Generated_Globals is
       "="                 => Global_Graphs."=");
 
    Local_Graph  : Global_Graphs.Graph;
-   --  This graph will represent the hierarchy of subprograms (which subprogram
-   --  is nested in which one) and will be used to determine which local
-   --  variables can act as globals to which subprograms.
+   --  This graph will represent the hierarchy of subprograms (which
+   --  subprogram is nested in which one) and will be used to determine
+   --  which local variables can act as globals to which subprograms.
 
    Global_Graph : Global_Graphs.Graph;
    --  This graph will represent the globals that each subprogram has as
@@ -307,6 +307,9 @@ package body Flow_Generated_Globals is
             The_Nonblocking_Subprograms : Name_Sets.Set;
       end case;
    end record;
+   --  IMPORTANT: If you change this, please also remember to update the
+   --  serialisation procedure, and Null_ALI_Entry to initialize any
+   --  scalars.
 
    Null_ALI_Entry : constant array (ALI_Entry_Kind) of ALI_Entry := (
       EK_Error                  => (Kind => EK_Error),

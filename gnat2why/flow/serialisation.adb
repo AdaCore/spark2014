@@ -192,6 +192,15 @@ package body Serialisation is
    ------------
 
    function Escape (S : Unbounded_String) return Unbounded_String is
+      subtype Printable_Character is Character
+        range Character'Val (32) .. Character'Val (126);
+
+      subtype Escaped_Character is Character
+        with Static_Predicate => Escaped_Character in ':' | '\' | ' ';
+
+      subtype Unescaped_Printable_Character is Printable_Character
+        with Static_Predicate =>
+           Unescaped_Printable_Character not in Escaped_Character;
    begin
       if Length (S) = 0 then
          return To_Unbounded_String ("\0");
@@ -205,10 +214,7 @@ package body Serialisation is
                when ':' | '\' =>
                   Append (V, '\');
                   Append (V, Element (S, I));
-               when Character'Val (33) .. Character'Val (57)  |
-                    Character'Val (59) .. Character'Val (91)  |
-                    Character'Val (93) .. Character'Val (126) =>
-                  --  Printable characters excluding ':', '\', and SPACE
+               when Unescaped_Printable_Character =>
                   Append (V, Element (S, I));
                when others =>
                   Append (V, "\x");

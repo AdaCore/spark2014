@@ -39,7 +39,7 @@ package Flow_Generated_Globals is
    --  -------------------------------------
    --  -- Flow_Generated_Globals Algorithm --
    --  -------------------------------------
-
+   --
    --  This algorithm is applied to individual compilation units.
    --
    --  During the first pass:
@@ -50,16 +50,21 @@ package Flow_Generated_Globals is
    --      calls and conditional calls. Also we take note of all local
    --      variables. This info is then stored in the ALI file.
    --
-   --    * For every subprogram and task that is NOT in SPARK and does NOT have
-   --      a user-provided contract only GG entries and not a GG graph is
-   --      created and stored in the ALI file. Those GG entries mirror the
-   --      information that (Yannick's) computed globals store in the ALI file.
-   --      As a result, all subprogram calls are considered to be conditional
-   --      calls and all writes to variables are considered to be read-writes
-   --      (pure reads are also included in the reads of course).
+   --    * For every subprogram and task that is NOT in SPARK and does NOT
+   --      have a user-provided contract only GG entries and not a GG graph is
+   --      created and stored in the ALI file. Those GG entries mirror the xref
+   --      information that the frontend stores in the ALI file (see also
+   --      Spark_Frame_Condition). For these, all subprogram calls are
+   --      considered to be conditional calls and all writes to variables are
+   --      considered to be read-writes (pure reads are also included in the
+   --      reads of course), since the xref information only records 'reads'
+   --      and 'writes'.
    --
    --    * For every package all known state abstractions and all their
    --      constituents are collected and this info is stored in the ALI file.
+   --
+   --    * We also collect some data relevant to tasking: a set of
+   --      nonblocking subprograms, instance counts, etc.
    --
    --  During the second pass:
    --
@@ -79,99 +84,33 @@ package Flow_Generated_Globals is
    --
    --    * Lastly we use the compilation unit's Global Graph and information
    --      that we have about state abstractions and their constituents to
-   --      return globals relatively to the caller's scope.
+   --      return globals appropriate to the caller's scope.
 
    --  -------------------------------
    --  -- Generated Globals Section --
    --  -------------------------------
-
+   --
    --  The Generated Globals section is located at the end of the ALI file.
    --
    --  All lines with information related to the Generated Globals start
-   --  with a "GG" string.
+   --  with a "GG" string, and the rest of the line is a string produced by
+   --  the Serialize package.
    --
-   --  The Generated Globals section stores a collection of information:
+   --  See type ALI_Entry in the body of this package for details. In
+   --  summary we record the following information:
    --
-   --  1) Abstract States and their constituents.
+   --  * Abstract States and their constituents
+   --  * Variables and subprograms used by subprograms
+   --  * Volatile variables and external state abstractions
+   --  * Nonblocking subprograms
+   --  * Tasking-related information.
+   --    - suspension objects that call suspends on
+   --    - protected objects whose entries are called
+   --    - protected objects read-locked by function calls
+   --    - protected objects write-locked by procedure calls
+   --    - accessed unsynchronized objects
+   --    - task instances and their number (one or more)
    --
-   --     This information is stored in single lines that start with "GG"
-   --     followed by "AS"; then comes the name of the Abstract State and then
-   --     the names of its constituents.
-   --
-   --     Examples:
-   --       GG AS test__state test__constit_1 test__constit_2
-   --       GG AS test__state2
-   --       GG AS test__state3 test_state2
-   --
-   --  2) The second kind is related to subprograms, tasks, entries and
-   --     package. For these we store the names of:
-   --
-   --       * subprogram/task/entry/package name together with the origin
-   --         of the entry [see Globals_Origin_T]                (S/T/E/P)
-   --       * global variables read in proof contexts only       (VP)
-   --       * global variables read    [input]                   (VI)
-   --       * global variables written [output]                  (VO)
-   --       * subprograms that are called only in proof contexts (CP)
-   --       * subprograms that are called definitely             (CD)
-   --       * subprograms that are called conditionally          (CC)
-   --       * local variables of the subprogram                  (LV)
-   --       * local subprograms of the subprogram                (LS)
-   --       * local variables definitely written [packages only] (LD)
-
-   --     For an entry of the second kind to be complete/correct all of the
-   --     afformentioned lines must be present (order does not matter).
-
-   --     Examples:
-   --       GG S FA test__proc
-   --       GG VP test__proof_var
-   --       GG VI test__g test__g2
-   --       GG VO test__g
-   --       GG CP test__ghost_func_a test__ghost_func_b
-   --       GG CD test__proc_2 test__proc__nested_proc
-   --       GG CC test__proc_3
-   --       GG LV test__proc__nested_proc__v
-   --       GG LS test__proc__nested_proc__nested_proc
-   --
-   --  3) Volatile variables and external state abstractions.
-   --
-   --     There are at most 4 lines in the ALI file; one line for each of the
-   --     property, with names of the variables and external state
-   --     abstractions:
-   --
-   --       * Async_Writers    (AW)
-   --       * Async_Readers    (AR)
-   --       * Effective_Reads  (ER)
-   --       * Effective_Writes (EW)
-   --
-   --     Note here that names appearing on ER line have to also appear on the
-   --     AW line; the same holds for EW and AR.
-   --
-   --     Examples:
-   --     GG AW test__fully_vol test__vol_er2 test__ext_state
-   --     GG AR test__fully_vol test__vol_ew3
-   --     GG ER test__fully_vol test__vol_er2
-   --     GG EW test__fully_vol test__vol_ew3
-   --
-   --  4) Nonblocking subprograms.
-   --
-   --     Examples:
-   --     GG NB my_nonblocking_subprogram_a my_other_nonblocking_subprogram
-   --
-   --  5) Tasking-related information.
-   --
-   --       * suspension objects that call suspends on          (TS)
-   --       * protected objects whose entries are called        (TE)
-   --       * protected objects read-locked by function calls   (TR)
-   --       * protected objects write-locked by procedure calls (TW)
-   --       * accessed unsynchronized objects                   (TU)
-   --       * task instances and their number (one or more)     (TI)
-   --
-   --     Examples:
-   --     GG TS foo_proc my_susp_obj
-   --     GG TE bar_proc my_prot_obj
-   --     GG TI task_type_A ONE
-   --     GG TI task_type_B MANY
-
    ----------------------------------------------------------------------
 
    type GG_Mode_T is (GG_No_Mode,
@@ -197,6 +136,9 @@ package Flow_Generated_Globals is
       Local_Subprograms     : Name_Sets.Set;
       Local_Definite_Writes : Name_Sets.Set;
    end record;
+   --  IMPORTANT: If you add fields to this, make sure to also update the
+   --  serialisation procedure (in the body of flow_generated_globals), and
+   --  update Null_Global_Info below.
 
    Null_Global_Info : constant Global_Phase_1_Info :=
      (Name           => Null_Entity_Name,
