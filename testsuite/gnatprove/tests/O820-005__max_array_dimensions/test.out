@@ -1,0 +1,5 @@
+max_array_dimensions.ads:9:04: type "D5" defined at line 9 of dimension greater than 4 is not yet supported
+   compilation of max_array_dimensions.ads failed
+
+
+gnatprove: error during flow analysis and proof

@@ -3290,7 +3290,8 @@ package body SPARK_Definition is
                   Violation_Detected := True;
                   if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                      Error_Msg_Node_1 := E;
-                     Error_Msg_N ("} of dimension greater than 4" &
+                     Error_Msg_N ("} of dimension greater than" &
+                                    Max_Array_Dimensions'Img &
                                     " is not yet supported", E);
                   end if;
                end if;
