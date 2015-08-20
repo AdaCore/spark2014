@@ -290,11 +290,11 @@ package body Serialisation is
       end case;
    end Serialize;
 
-   -------------------------
-   -- Serialize_Discreete --
-   -------------------------
+   ------------------------
+   -- Serialize_Discrete --
+   ------------------------
 
-   procedure Serialize_Discreete (A : in out Archive; V : in out T) is
+   procedure Serialize_Discrete (A : in out Archive; V : in out T) is
    begin
       case A.Kind is
          when Input =>
@@ -306,7 +306,7 @@ package body Serialisation is
          when Output =>
             A.Content.Append (Trim (To_Unbounded_String (T'Image (V)), Both));
       end case;
-   end Serialize_Discreete;
+   end Serialize_Discrete;
 
    --------------------------
    -- Serialize_Collection --

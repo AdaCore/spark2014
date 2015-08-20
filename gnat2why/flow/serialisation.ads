@@ -33,7 +33,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --
 --  The idea is taken from the Boost serialisation library, in that we have
 --  a *single* procedure for reading and writing, which keeps code size
---  small and maintainence obvious should datastructures be extended or
+--  small and maintainance obvious should datastructures be extended or
 --  modified.
 --
 --  To use it you first need write a simple Serialize procedure, for
@@ -52,7 +52,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --  type Small_Range_T which we might have used in the above record we
 --  simply do:
 --
---     procedure Serialize is new Serialize_Discreete (T => Small_Range_T);
+--     procedure Serialize is new Serialize_Discrete (T => Small_Range_T);
 --
 --  Similar pre-made procedures are available for the ada containers as
 --  well (or really anything that exports the required functions related to
@@ -127,8 +127,8 @@ package Serialisation is
 
    generic
       type T is (<>);
-   procedure Serialize_Discreete (A : in out Archive; V : in out T);
-   --  Serialisation for any discreete type (ultimately using 'image and
+   procedure Serialize_Discrete (A : in out Archive; V : in out T);
+   --  Serialisation for any discrete type (ultimately using 'image and
    --  'value) of the given type T.
 
    generic
