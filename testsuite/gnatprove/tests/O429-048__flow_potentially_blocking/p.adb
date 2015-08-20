@@ -3,7 +3,7 @@ with Ada.Text_IO;
 with Ada.Real_Time;
 with Ada.Numerics.Elementary_Functions;
 
-with Remote, Barrier, Complex;
+with Remote, Barrier, Complex, Floatio;
 
 package body P is
 
@@ -239,6 +239,14 @@ package body P is
       entry Complex_Print_Entry when True is
       begin
          Complex;
+      end;
+
+   end;
+
+   protected body PO_12 is
+      entry Floatio_Print_Entry when True is
+      begin
+         Floatio;
       end;
 
    end;

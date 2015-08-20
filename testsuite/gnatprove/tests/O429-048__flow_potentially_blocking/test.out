@@ -17,6 +17,12 @@ complex.adb:12:13: info: initialization of "X.Im" proved
 complex.adb:12:13: info: initialization of "X.Re" proved
 external_separate_calls.ads:4:13: potentially blocking operation in protected operation "Enter"
 external_separate_calls.ads:12:14: warning: subprogram "Divert_Control_From_PO1_To_PO2" has no effect
+floatio.adb:3:11: medium: "Default_Aft" might not be initialized after elaboration of main program "Floatio"
+floatio.adb:3:11: medium: "Default_Exp" might not be initialized after elaboration of main program "Floatio"
+floatio.adb:3:11: medium: "Default_Fore" might not be initialized after elaboration of main program "Floatio"
+floatio.adb:7:21: warning: assuming "Put" has no effect on global items
+floatio.adb:7:21: warning: no Global contract available for "Put"
+floatio.adb:7:27: info: initialization of "X" proved
 internal_protected_call.adb:5:20: warning: statement has no effect
 internal_protected_call.adb:7:33: warning: statement has no effect
 internal_protected_call.adb:7:33: warning: unused assignment to "Mutual_Entry_Proc_Calls"
@@ -128,6 +134,7 @@ p.ads:97:17: potentially blocking operation in protected operation "Text_Proc"
 p.ads:97:17: warning: subprogram "Text_Proc" has no effect
 p.ads:101:13: potentially blocking operation in protected operation "My_Text_Entry"
 p.ads:105:13: potentially blocking operation in protected operation "Complex_Print_Entry"
+p.ads:109:13: potentially blocking operation in protected operation "Floatio_Print_Entry"
 pack.adb:78:17: warning: statement has no effect
 pack.adb:78:17: warning: unused assignment to "PO_Proc"
 pack.ads:5:13: potentially blocking operation in protected operation "E_Proc"

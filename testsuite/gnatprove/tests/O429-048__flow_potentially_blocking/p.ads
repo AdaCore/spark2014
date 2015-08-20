@@ -105,4 +105,8 @@ package P is
       entry Complex_Print_Entry;
    end;
 
+   protected PO_12 is
+      entry Floatio_Print_Entry;
+   end;
+
 end P;
