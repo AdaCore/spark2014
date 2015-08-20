@@ -44,8 +44,8 @@ package body Serialisation is
    --  Returns true iff the next element of A is equal to S.
 
    function To_Hex (C : Character) return Hex_String;
-   --  Convert a character (such as ' ') to a two-digit hex
-   --  representation ("A0" in this example).
+   --  Convert a character (such as ' ') to a two-digit hex representation
+   --  ("20" in this example).
 
    function From_Hex (S : Hex_String) return Character;
    --  The inverse of the above. Raises Parse_Error if we get something

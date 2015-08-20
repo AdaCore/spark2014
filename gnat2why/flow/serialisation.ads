@@ -147,8 +147,7 @@ package Serialisation is
       with procedure Serialize (A : in out Archive; V : in out E) is <>;
    procedure Serialize_List (A   : in out Archive;
                              V   : in out T;
-                             Tag : String := "")
-   with Pre => " " not in Tag;
+                             Tag : String := "");
    --  Serialisation for a container that behaves like a list.
    --
    --  If tag is specified the format will be "c:tag [ element ... ]". If
@@ -173,8 +172,7 @@ package Serialisation is
       with procedure Serialize (A : in out Archive; V : in out E) is <>;
    procedure Serialize_Set (A   : in out Archive;
                             V   : in out T;
-                            Tag : String := "")
-   with Pre => " " not in Tag;
+                            Tag : String := "");
    --  Serialisation for a container that behaves like a set (the main
    --  difference to the above is that the add-to-container procedure).
    --
