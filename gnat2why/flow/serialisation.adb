@@ -139,7 +139,7 @@ package body Serialisation is
             if Element (S, I) /= ' ' then
                Append (Tmp, Element (S, I));
             end if;
-            if Element (S, I) = ' ' or I = Length (S) then
+            if Element (S, I) = ' ' or else I = Length (S) then
                if Length (Tmp) > 0 then
                   A.Content.Append (Interpret (Tmp));
                   Tmp := Null_Unbounded_String;
@@ -206,7 +206,7 @@ package body Serialisation is
                   Append (V, '\');
                   Append (V, Element (S, I));
                when Character'Val (33) .. Character'Val (57)  |
-                    Character'Val (59) .. Character'Val (91) |
+                    Character'Val (59) .. Character'Val (91)  |
                     Character'Val (93) .. Character'Val (126) =>
                   --  Printable characters excluding ':', '\', and SPACE
                   Append (V, Element (S, I));
@@ -323,11 +323,12 @@ package body Serialisation is
       case A.Kind is
          when Input =>
             V := Null_Container;
-            if Has_Tag and then not Test (A, The_Tag) then
-               return;
-            end if;
             if Has_Tag then
-               Match (A, The_Tag);
+               if Test (A, The_Tag) then
+                  Match (A, The_Tag);
+               else
+                  return;
+               end if;
             end if;
             Match (A, Coll_Begin);
             while not Test (A, Coll_End) loop

@@ -188,7 +188,7 @@ private
    type Archive (Kind : Direction) is record
       Content : String_Lists.List;
    end record;
-   --  An archive is just a bunch of string, and our file format is a
+   --  An archive is just a bunch of strings, and our file format is a
    --  space-separated collection of strings. So the above record with
    --  three integer fields might produce a serialisation similar to this:
    --
