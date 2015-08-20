@@ -85,8 +85,10 @@ package VC_Kinds is
 
    subtype VC_RTE_Kind is VC_Kind range
      VC_Division_Check .. VC_Task_Termination;
+
    subtype VC_Assert_Kind is  VC_Kind range
      VC_Initial_Condition .. VC_Raise;
+
    subtype VC_LSP_Kind is  VC_Kind range
      VC_Weaker_Pre .. VC_Stronger_Classwide_Post;
 
@@ -181,7 +183,7 @@ package VC_Kinds is
    --  checked expression. For example, this is not true for VC_Precondition,
    --  which should be positioned on the location of the call.
    function Locate_On_First_Token (V : VC_Kind) return Boolean is
-     (case V is when VC_RTE_Kind  => False,
+     (case V is when VC_RTE_Kind    => False,
                 when VC_Assert_Kind => V /= VC_Precondition,
                 when VC_LSP_Kind    => True);
 

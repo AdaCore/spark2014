@@ -30,7 +30,7 @@ package Call is
 
    procedure Abort_With_Message (Msg : String) with
      No_Return;
-   --  Print the Msg to Standard Error and Exit with Error code 1.
+   --  Print the Msg to Standard Error and Exit with Error code 1
 
    function Argument_List_Of_String_List (S : String_Lists.List)
       return Argument_List;
@@ -44,7 +44,7 @@ package Call is
       Arguments : String_Lists.List;
       Verbose   : Boolean := False);
    --  Call the given command using the given argument list.
-   --  Free all argument access values
+   --  Free all argument access values.
    --  If the command exit status is not 0, print its output and exit.
 
    procedure Call_Exit_On_Failure
@@ -73,7 +73,7 @@ package Call is
       with procedure Handle_Line (Line : String);
    procedure For_Line_In_File
       (File : String);
-   --  Do something for each line of a file.
+   --  Do something for each line of a file
 
    function Read_File_Into_String (Fn : String) return String;
    --  Return a string with the contents of the file in argument
