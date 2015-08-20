@@ -355,9 +355,9 @@ package body Flow_Generated_Globals is
    end Serialize;
 
    procedure Serialize (A : in out Archive; V : in out Global_Phase_1_Info) is
-      procedure Serialize is new Serialisation.Serialize_Discreete
+      procedure Serialize is new Serialisation.Serialize_Discrete
         (T => Analyzed_Subject_Kind);
-      procedure Serialize is new Serialisation.Serialize_Discreete
+      procedure Serialize is new Serialisation.Serialize_Discrete
         (T => Globals_Origin_T);
    begin
       Serialize (A, V.Name);
@@ -375,9 +375,9 @@ package body Flow_Generated_Globals is
    end Serialize;
 
    procedure Serialize (A : in out Archive; V : in out ALI_Entry) is
-      procedure Serialize is new Serialisation.Serialize_Discreete
+      procedure Serialize is new Serialisation.Serialize_Discrete
         (T => ALI_Entry_Kind);
-      procedure Serialize is new Serialisation.Serialize_Discreete
+      procedure Serialize is new Serialisation.Serialize_Discrete
         (T => Instance_Number);
 
       Kind : ALI_Entry_Kind := ALI_Entry_Kind'First;
