@@ -3290,8 +3290,8 @@ package body SPARK_Definition is
                   Violation_Detected := True;
                   if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
                      Error_Msg_Node_1 := E;
-                     Error_Msg_Uint_1 := UI_From_Int (Number_Dimensions (E));
-                     Error_Msg_N ("} of dimension ^ is not yet supported", E);
+                     Error_Msg_N ("} of dimension greater than 4" &
+                                    " is not yet supported", E);
                   end if;
                end if;
 
