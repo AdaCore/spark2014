@@ -1,9 +1,20 @@
+a-ticoio.ads:43:04: info: initialization of "Default_Fore" proved, in instantiation at complex.adb:7
+a-ticoio.ads:44:04: info: initialization of "Default_Aft" proved, in instantiation at complex.adb:7
+a-ticoio.ads:45:04: info: initialization of "Default_Exp" proved, in instantiation at complex.adb:7
 a-tiflio.ads:48:04: info: initialization of "Default_Fore" proved, in instantiation at p.adb:231
 a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiation at p.adb:231
 a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at p.adb:231
 barrier.adb:10:31: warning: assuming "Wait_For_Release" has no effect on global items
 barrier.adb:10:31: warning: no Global contract available for "Wait_For_Release"
 barrier.adb:10:54: warning: unused assignment to "Notified"
+complex.adb:4:11: medium: "Current_Out" might not be initialized after elaboration of main program "Complex"
+complex.adb:12:07: info: initialization of "Default_Aft" proved
+complex.adb:12:07: info: initialization of "Default_Exp" proved
+complex.adb:12:07: info: initialization of "Default_Fore" proved
+complex.adb:12:07: warning: assuming "Put" has no effect on global items
+complex.adb:12:07: warning: no Global contract available for "Put"
+complex.adb:12:13: info: initialization of "X.Im" proved
+complex.adb:12:13: info: initialization of "X.Re" proved
 external_separate_calls.ads:4:13: potentially blocking operation in protected operation "Enter"
 external_separate_calls.ads:12:14: warning: subprogram "Divert_Control_From_PO1_To_PO2" has no effect
 internal_protected_call.adb:5:20: warning: statement has no effect
@@ -101,7 +112,7 @@ p.ads:56:17: warning: subprogram "Directly_Blocking_Stub_Proc" has no effect
 p.ads:60:13: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Entry"
 p.ads:61:17: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Proc"
 p.ads:61:17: warning: subprogram "Indirectly_Blocking_Stub_Proc" has no effect
-p.ads:64:14: more than one task accesses an unsynchronized global variable "ada.real_time.clock_time" (SPARK RM 9.11)
+p.ads:64:14: more than one task accesses an unsynchronized global variable "p.now" (SPARK RM 9.11)
 p.ads:71:13: potentially blocking operation in protected operation "Yielding_Entry"
 p.ads:72:17: potentially blocking operation in protected operation "Yielding_Proc"
 p.ads:72:17: warning: subprogram "Yielding_Proc" has no effect
@@ -116,6 +127,7 @@ p.ads:96:13: potentially blocking operation in protected operation "Text_Entry"
 p.ads:97:17: potentially blocking operation in protected operation "Text_Proc"
 p.ads:97:17: warning: subprogram "Text_Proc" has no effect
 p.ads:101:13: potentially blocking operation in protected operation "My_Text_Entry"
+p.ads:105:13: potentially blocking operation in protected operation "Complex_Print_Entry"
 pack.adb:78:17: warning: statement has no effect
 pack.adb:78:17: warning: unused assignment to "PO_Proc"
 pack.ads:5:13: potentially blocking operation in protected operation "E_Proc"

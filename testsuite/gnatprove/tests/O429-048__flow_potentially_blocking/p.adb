@@ -1,9 +1,9 @@
-with Ada.Real_Time;
 with Ada.Dispatching;
-with Ada.Numerics.Elementary_Functions;
 with Ada.Text_IO;
-with Remote;
-with Barrier;
+with Ada.Real_Time;
+with Ada.Numerics.Elementary_Functions;
+
+with Remote, Barrier, Complex;
 
 package body P is
 
@@ -231,6 +231,14 @@ package body P is
          package My_Float_Text_IO is new Ada.Text_IO.Float_IO (My_Float);
       begin
          My_Float_Text_IO.Put (My_Float'First);
+      end;
+
+   end;
+
+   protected body PO_11 is
+      entry Complex_Print_Entry when True is
+      begin
+         Complex;
       end;
 
    end;

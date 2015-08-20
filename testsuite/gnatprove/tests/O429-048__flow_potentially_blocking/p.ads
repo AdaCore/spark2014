@@ -101,4 +101,8 @@ package P is
       entry My_Text_Entry;
    end;
 
+   protected PO_11 is
+      entry Complex_Print_Entry;
+   end;
+
 end P;

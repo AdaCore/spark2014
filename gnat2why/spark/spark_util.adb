@@ -45,6 +45,7 @@ with Stringt;                            use Stringt;
 with Treepr;                             use Treepr;
 with Urealp;                             use Urealp;
 with VC_Kinds;                           use VC_Kinds;
+with Sem_Ch12;                           use Sem_Ch12;
 
 package body SPARK_Util is
 
@@ -1899,6 +1900,71 @@ package body SPARK_Util is
    -- Has_Only_Nonblocking_Statements --
    -------------------------------------
 
+   Name_Abort_Task                          : Name_Id := No_Name;
+   Name_Bounded_IO                          : Name_Id := No_Name;
+   Name_C_Streams                           : Name_Id := No_Name;
+   Name_Complex_IO                          : Name_Id := No_Name;
+   Name_Directories                         : Name_Id := No_Name;
+   Name_Direct_IO                           : Name_Id := No_Name;
+   Name_Dispatching                         : Name_Id := No_Name;
+   Name_Editing                             : Name_Id := No_Name;
+   Name_EDF                                 : Name_Id := No_Name;
+   Name_Reset_Standard_Files                : Name_Id := No_Name;
+   Name_Sequential_IO                       : Name_Id := No_Name;
+   Name_Streams                             : Name_Id := No_Name;
+   Name_Suspend_Until_True                  : Name_Id := No_Name;
+   Name_Suspend_Until_True_And_Set_Deadline : Name_Id := No_Name;
+   Name_Synchronous_Barriers                : Name_Id := No_Name;
+   Name_Task_Identification                 : Name_Id := No_Name;
+   Name_Text_Streams                        : Name_Id := No_Name;
+   Name_Unbounded_IO                        : Name_Id := No_Name;
+   Name_Wait_For_Release                    : Name_Id := No_Name;
+   Name_Yield                               : Name_Id := No_Name;
+   --  The above Name_Ids shall be constants, exectly like those in Snames, but
+   --  when the package body is elaborated the name tables are locked so it is
+   --  not possble to call Name_Find_Str then. Still, they are global variables
+   --  and as such are initialized only once.
+   --  ??? should we move these to Snames package?
+
+   Potentially_Blocking_Name_Ids_Initialized : Boolean := False;
+   --  If True then Name_* variables have been initialized. Once set to True
+   --  it is never set to False.
+
+   procedure Initialize_Potentially_Blocking_Name_Ids;
+   --  Initialize Name_* variables for detecting predefined potentially
+   --  blocking subprograms.
+
+   ----------------------------------------------
+   -- Initialize_Potentially_Blocking_Name_Ids --
+   ----------------------------------------------
+
+   procedure Initialize_Potentially_Blocking_Name_Ids is
+   begin
+      Name_Abort_Task := Name_Find_Str ("abort_task");
+      Name_Bounded_IO := Name_Find_Str ("bounded_io");
+      Name_C_Streams := Name_Find_Str ("c_streams");
+      Name_Complex_IO := Name_Find_Str ("complex_io");
+      Name_Directories := Name_Find_Str ("directories");
+      Name_Direct_IO := Name_Find_Str ("direct_io");
+      Name_Dispatching := Name_Find_Str ("dispatching");
+      Name_Editing := Name_Find_Str ("editing");
+      Name_EDF := Name_Find_Str ("edf");
+      Name_Reset_Standard_Files := Name_Find_Str ("reset_standard_files");
+      Name_Sequential_IO := Name_Find_Str ("sequential_io");
+      Name_Streams := Name_Find_Str ("streams");
+      Name_Suspend_Until_True := Name_Find_Str ("suspend_until_true");
+      Name_Suspend_Until_True_And_Set_Deadline :=
+        Name_Find_Str ("suspend_until_true_and_set_deadline");
+      Name_Synchronous_Barriers := Name_Find_Str ("synchronous_barriers");
+      Name_Task_Identification := Name_Find_Str ("task_identification");
+      Name_Text_Streams := Name_Find_Str ("text_streams");
+      Name_Unbounded_IO := Name_Find_Str ("unbounded_io");
+      Name_Wait_For_Release := Name_Find_Str ("wait_for_release");
+      Name_Yield := Name_Find_Str ("yield");
+
+      Potentially_Blocking_Name_Ids_Initialized := True;
+   end Initialize_Potentially_Blocking_Name_Ids;
+
    function Has_Only_Nonblocking_Statements (N : Node_Id) return Boolean is
 
       Potentially_Blocking_Statement_Found : Boolean := False;
@@ -1909,6 +1975,236 @@ package body SPARK_Util is
 
       procedure Traverse is new Traverse_Proc (Proc);
       --  Traverse a tree to check if it includes blocking statements
+
+      function Is_Predefined_Potentially_Blocking
+        (E : Entity_Id)
+         return Boolean;
+      --  Check if entity E is a predefined potentially blocking subprogram
+
+      ----------------------------------------
+      -- Is_Predefined_Potentially_Blocking --
+      ----------------------------------------
+      function Is_Predefined_Potentially_Blocking
+        (E : Entity_Id)
+         return Boolean
+      is
+         --  Detect:
+         --    Ada.Task_Identification.Abort_Task
+         --    Ada.Dispatching.Yield
+         --    Ada.Synchronous_Task_Control.Suspend_Until_True
+         --    Ada.Synchronous_Task_Control.EDF.
+         --        Suspend_Until_True_And_Set_Deadline
+         --    Ada.Synchronous_Barriers.Wait_For_Release
+         --    System.RPC.*
+         --
+         --  and file-manipulating subprograms:
+         --    Ada.Directories.*
+         --    Ada.Text_IO.*
+         --    Ada.Wide_Text_IO.*
+         --    Ada.Wide_Wide_Text_IO.*
+         --    Ada.Direct_IO.*
+         --    Ada.Sequential_IO.*
+         --    Ada.Streams.*
+         --
+         --  with notable exception of
+         --    Ada.Storage_IO (input-output to memory buffer).
+
+         --  It is more natural to detect these subprograms by first collecting
+         --  the scope hierarchy and then analysing it starting from the
+         --  outermost scope.
+         --
+         --  Note: to detect any of the predefined potentially blocking
+         --  subprograms we only need up to 5 outermost scopes, like:
+         --    (0) Standard.
+         --    (1)  Ada.
+         --    (2)   Text_IO.
+         --    (3)    Editing.
+         --    (4)     Decimal_Output
+         --  and for System.RPC.* we need only the 3 outermost scopes, i.e.
+         --    (0) Standard.
+         --    (1)  System.
+         --    (2)   RPC.
+         --  Thus we avoid the use of much heavier Ada.Container.Vector/List,
+         --  and use a circullar buffer instead.
+
+         Max_Predefined_Potentially_Blocking_Nesting : constant := 5;
+         --  Maximal nesting of predefined potentially blocking subprograms
+
+         type Scope_Index is mod Max_Predefined_Potentially_Blocking_Nesting;
+         --  Modular type for indexing the circullar buffer
+
+         Scopes : array (Scope_Index) of Entity_Id;
+         --  Circullar buffer with scopes of a call
+
+         Scope_Id : Scope_Index := Scope_Index'Last;
+         --  Indexing variable
+
+         function Scope_Name (Nth : Scope_Index) return Name_Id with
+         Pure_Function;
+         --  Return name of the Nth scope for the analyzed entity.
+         --  For 0 the result is always Standard,
+         --  For 1 the result is Ada/Interfaces/System or user-defined,
+         --  Etc.
+         --
+         --  Aspect Pure_Function is ment to improve performance when using
+         --  this function as an array.
+
+         ----------------
+         -- Scope_Name --
+         ----------------
+
+         function Scope_Name (Nth : Scope_Index) return Name_Id is
+            (Chars (Scopes (Scope_Id + Nth)));
+
+      begin
+         --  Start from the called subprogram
+         Scopes (Scope_Id) := E;
+
+         --  Collect scopes up to the outermost one, i.e. Standard
+         while Scopes (Scope_Id) /= Standard_Standard loop
+            declare
+               Parent_Scope : Entity_Id := Scope (Scopes (Scope_Id));
+            begin
+               --  If the parent scope is an instance of a generic package
+               --  then analyze the generic and not its instance.
+               if Ekind (Parent_Scope) = E_Package
+                 and then Is_Generic_Instance (Parent_Scope)
+               then
+                  Parent_Scope :=
+                    Entity (Name (
+                            Get_Package_Instantiation_Node (Parent_Scope)));
+               end if;
+
+               Scope_Id := Scope_Id - 1;
+               Scopes (Scope_Id) := Parent_Scope;
+            end;
+         end loop;
+         --  Now we have something like:
+         --  Scopes (Scope_Id)     -> Standard
+         --  Scopes (Scope_Id + 1) -> Ada/Interfaces/System/...
+         --  Scopes (Scope_Id + 2) -> Synchronous_Task_Control/...
+         --  Scopes (Scope_Id + 3) -> EDF/Suspend_Until_True/...
+         --  Scopes (Scope_Id + 4) -> Suspend_Until_True_And_Set_Deadline/...
+
+         --  Dive into the scope hierarchy and look for names of predefined
+         --  blocking subprograms.
+         case Scope_Name (1) is
+            when Name_Ada =>
+               --  Further checks needed
+               null;
+
+            when Name_Interfaces =>
+               --  All subprograms in package Interfaces are nonblocking
+               return False;
+
+            when Name_System =>
+               --  Only subprograms in System.RPC are blocking
+               return Scope_Name (2) = Name_Rpc;
+
+            when others =>
+               --  It is a user-defined subprogram and the call itself is
+               --  nonblocking. If the target subprogram is potentially
+               --  blocking, then it will be detected by call graph traversal.
+               return False;
+         end case;
+
+         --  Now we need Name_Ids of potentially blocking packages/subprogram;
+         --  if they are not already initialized, do it now.
+         if not Potentially_Blocking_Name_Ids_Initialized then
+            Initialize_Potentially_Blocking_Name_Ids;
+         end if;
+
+         --  All subprograms in the child packages of Ada are blocking
+         if Scope_Name (2) in Name_Directories   |
+                              Name_Direct_IO     |
+                              Name_Sequential_IO |
+                              Name_Streams
+         then
+            --  Ada.Directories.Hierarchical_File_Names seems nonblocking. We
+            --  conciously ignore it, since it is not yet implemented in GNAT
+            --  and extremely unlikely to be needed in nonblocking contexts.
+            return True;
+
+         --  Child packages of Ada.[Wide_[Wide_]]Text_IO are identical
+         elsif Scope_Name (2) in Name_Text_IO         |
+                                 Name_Wide_Text_IO    |
+                                 Name_Wide_Wide_Text_IO
+         then
+            --  Operations on bounded/unbounded strings either print or read
+            --  them and thus are potentially blocking.
+            if Scope_Name (3) in Name_Bounded_IO | Name_Unbounded_IO
+            then
+               return True;
+
+            --  These generics have both blocking and nonblocking Put/Get
+            elsif Scope_Name (3) in Name_Complex_IO | Text_IO_Package_Name
+            then
+               --  The name of the subproram (i.e. Put or Get) makes
+               --  no difference (and it troublesome to know because of
+               --  overriding). Blocking/Nonblocking status is determined
+               --  by the name of the first formal parameter.
+               --  * "File" means input/output to a specific file
+               --  * "Item" means input/output to a default file
+               --  * anything else means input/output to a string buffer
+               return Chars (First_Formal (E)) in Name_File | Name_Item;
+
+            --  These packages operate only on internal data structers and thus
+            --  are nonblocking.
+            elsif Scope_Name (3) in Name_C_Streams          |
+                                    Name_Text_Streams       |
+                                    Name_Reset_Standard_Files
+            then
+               return False;
+
+            --  Ada.Text_IO.Editing is nonblocking, except for Decimal_IO
+            elsif Scope_Name (3) = Name_Editing
+            then
+               if Scope_Name (4) = Name_Decimal_IO then
+                  --  The only blocking subprograms are:
+                  --    procedure Put (File : Ada.Text_IO.File_Type; ...)
+                  --    procedure Put (Item : Num; ...)
+                  --  and they are also detected by the name of the first
+                  --  formal parameter.
+                  return Ekind (E) = E_Procedure and then
+                    Chars (First_Formal (E)) in Name_File | Name_Item;
+               else
+                  return False;
+               end if;
+            else
+               --  Assume that all subprograms directly within Ada.Text_IO
+               --  are potentially blocking. This is true for most of them,
+               --  e.g. for Create/Open/Close/Delete, but in GNAT there few
+               --  exceptions, e.g. Mode/Name/Form/Is_Open. However, they can
+               --  be blocking in other compilers, so assume the worst case.
+               return True;
+            end if;
+
+         elsif Scope_Name (2) = Name_Dispatching then
+            return Scope_Name (3) = Name_Yield;
+
+         elsif Scope_Name (2) = Name_Task_Identification then
+            return Scope_Name (3) = Name_Abort_Task;
+
+         elsif Scope_Name (2) = Name_Synchronous_Task_Control then
+
+            if Scope_Name (3) = Name_Suspend_Until_True then
+               return True;
+            elsif Scope_Name (3) = Name_EDF then
+               return Scope_Name (4) =
+                 Name_Suspend_Until_True_And_Set_Deadline;
+            else
+               return False;
+            end if;
+
+         elsif Scope_Name (2) = Name_Synchronous_Barriers then
+            return Scope_Name (3) = Name_Wait_For_Release;
+
+         else
+            --  All other predefined subprograms are nonblocking.
+            return False;
+         end if;
+
+      end Is_Predefined_Potentially_Blocking;
 
       ----------
       -- Proc --
@@ -1936,8 +2232,27 @@ package body SPARK_Util is
             --  entry calls. It is best to check the call convention.
 
             when N_Entry_Call_Statement =>
+
                if Convention (Entity (Selector_Name (Name (N)))) =
                  Convention_Entry
+               then
+                  Potentially_Blocking_Statement_Found := True;
+                  return Abandon;
+               else
+                  return OK;
+               end if;
+
+            --  Predefined potentially blocking subprograms cannot be reliably
+            --  detected in phase 2, where we only have entity names. Here
+            --  we have full AST of their specifications and can precisely
+            --  distinguish between blocking/nonblocking homonyms, e.g.
+            --  Put/Get, by looking at the name of their first formal
+            --  parameter. In phase 2 we only have names like "put__2"
+            --  and "put__3".
+            when N_Procedure_Call_Statement |
+                 N_Function_Call =>
+
+               if Is_Predefined_Potentially_Blocking (Get_Called_Entity (N))
                then
                   Potentially_Blocking_Statement_Found := True;
                   return Abandon;
