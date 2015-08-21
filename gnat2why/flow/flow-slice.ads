@@ -61,7 +61,7 @@ package Flow.Slice is
       Local_Variables       : out Node_Sets.Set;
       Local_Subprograms     : out Node_Sets.Set;
       Local_Definite_Writes : out Node_Sets.Set)
-   with Pre  => (FA.Compute_Globals and then
+   with Pre  => (FA.Generating_Globals and then
                    FA.Is_Generative and then
                    not FA.GG.Aborted),
         Post => (for all E of Definite_Calls =>

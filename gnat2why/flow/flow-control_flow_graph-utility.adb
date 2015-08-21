@@ -303,7 +303,7 @@ package body Flow.Control_Flow_Graph.Utility is
             Scope                => Scope,
             Local_Constants      => FA.Local_Constants,
             Fold_Functions       => True,
-            Use_Computed_Globals => not FA.Compute_Globals,
+            Use_Computed_Globals => not FA.Generating_Globals,
             Consider_Extensions  => Ext_Relevant_To_Formal);
 
          for F of Tmp_Used loop
@@ -347,7 +347,7 @@ package body Flow.Control_Flow_Graph.Utility is
               (N                    => Actual,
                Scope                => Scope,
                Local_Constants      => FA.Local_Constants,
-               Use_Computed_Globals => not FA.Compute_Globals,
+               Use_Computed_Globals => not FA.Generating_Globals,
                Vars_Defined         => A.Variables_Defined,
                Vars_Used            => A.Variables_Explicitly_Used,
                Vars_Proof           => Unused,
@@ -639,7 +639,7 @@ package body Flow.Control_Flow_Graph.Utility is
             Scope                => Scope,
             Local_Constants      => FA.Local_Constants,
             Fold_Functions       => False,
-            Use_Computed_Globals => not FA.Compute_Globals);
+            Use_Computed_Globals => not FA.Generating_Globals);
          A.Variables_Explicitly_Used := A.Variables_Used;
       end if;
       A.Is_Proof          := Refers_To_Ghost (FA, A);

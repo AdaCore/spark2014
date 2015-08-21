@@ -157,8 +157,8 @@ package Flow is
    --  Named array type for sets of nodes realted to tasking
 
    type Flow_Analysis_Graphs_Root
-     (Kind            : Analyzed_Subject_Kind := Kind_Subprogram;
-      Compute_Globals : Boolean               := False)
+     (Kind               : Analyzed_Subject_Kind := Kind_Subprogram;
+      Generating_Globals : Boolean               := False)
    is record
       Analyzed_Entity       : Entity_Id;
       B_Scope               : Flow_Scope;
