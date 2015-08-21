@@ -552,20 +552,20 @@ and provide a file `spark.adc` which contains::
 External Axiomatizations
 ========================
 
-What is it ?
+What is it?
 ----------------
 It is a feature of the |SPARK| toolset that allows to manually supply a WhyMl
 translation for the public specification of a library level package that is in
 |SPARK|. This feature is still experimental.
 
-Why is it useful ?
+Why is it useful?
 -------------------------
 - For features that cannot easily be described using contracts, like
   transitivity, counting, or summation
 - To link functions to the logic world, like trigonometry functions
 - To improve provability of client code, like for containers
 
-How does it work ?
+How does it work?
 ----------------------------------
 - To say that a library package has an external axiomatization, we annotate it
   using::
@@ -577,7 +577,7 @@ How does it work ?
 - The WhyMl translation for the package should be stored in a subdirectory
   named _theories of the proof directory specified for the project.
 
-What should the translation look like ?
+What should the translation look like?
 -------------------------------------------------------------
 - For each publicly visible entity E in the package P, it should provide the
   same elements (types as well as logic and program functions) as the automatic
@@ -822,7 +822,7 @@ file named sum.mlw::
 
   end
 
-And for generic packages ?
+And for generic packages?
 -------------------------------------------
 - External axiomatizations can also be used for a generic package P, with the
   restriction that P will then have to be instantiated at library level only.
