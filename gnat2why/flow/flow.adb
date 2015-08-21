@@ -1213,7 +1213,8 @@ package body Flow is
          case Ekind (E) is
             when E_Entry | E_Task_Type | Subprogram_Kind =>
 
-               --  Check for potentially blocking statements
+               --  Check for potentially blocking statements in callable
+               --  entities, i.e. entries and subprograms.
 
                if Compute_Globals
                  and then Ekind (E) in Subprogram_Kind | E_Entry
@@ -1235,7 +1236,7 @@ package body Flow is
                   if Entity_Body_In_SPARK (E)
                     and then Entity_Body_Valid_SPARK (E)
                   then
-                     --  Produce a GG graph
+                     --  Body is in SPARK, so we just analyze it
                      FA_Graphs.Include (E, Flow_Analyse_Entity
                                           (E,
                                            E,
