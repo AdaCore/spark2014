@@ -2942,28 +2942,34 @@ package body SPARK_Util is
          return Name_Buffer (1 .. Name_Len);
       end Short_Name;
 
-      Name : String := Short_Name (E);
-      Loc  : Source_Ptr := Sloc (E);
-      Buf  : Source_Buffer_Ptr;
-
    --  Start of processing for Source_Name
 
    begin
-      if Name /= "" and then Loc >= First_Source_Ptr then
-         Buf := Source_Text (Get_Source_File_Index (Loc));
-
-         --  Copy characters from source while they match (modulo
-         --  capitalization) the name of the entity.
-
-         for Idx in Name'Range loop
-            exit when not Identifier_Char (Buf (Loc))
-              or else Fold_Lower (Buf (Loc)) /= Name (Idx);
-            Name (Idx) := Buf (Loc);
-            Loc := Loc + 1;
-         end loop;
+      if E = Empty then
+         return "";
       end if;
 
-      return Name;
+      declare
+         Name : String := Short_Name (E);
+         Loc  : Source_Ptr := Sloc (E);
+         Buf  : Source_Buffer_Ptr;
+      begin
+         if Name /= "" and then Loc >= First_Source_Ptr then
+            Buf := Source_Text (Get_Source_File_Index (Loc));
+
+            --  Copy characters from source while they match (modulo
+            --  capitalization) the name of the entity.
+
+            for Idx in Name'Range loop
+               exit when not Identifier_Char (Buf (Loc))
+                 or else Fold_Lower (Buf (Loc)) /= Name (Idx);
+               Name (Idx) := Buf (Loc);
+               Loc := Loc + 1;
+            end loop;
+         end if;
+
+         return Name;
+      end;
    end Source_Name;
 
    --------------------

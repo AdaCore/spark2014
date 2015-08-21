@@ -357,7 +357,8 @@ package SPARK_Util is
 
    function Source_Name (E : Entity_Id) return String;
    --  @param E any entity
-   --  @return The unscoped name of E as it appears in the source code
+   --  @return The unscoped name of E as it appears in the source code;
+   --          "" if E is equal to Empty.
 
    ------------------------------
    -- Queries related to types --

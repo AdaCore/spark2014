@@ -216,11 +216,6 @@ package body Why.Gen.Records is
       procedure Declare_Equality_Function;
       --  Generate the boolean equality function for the record type
 
-      procedure Declare_Projection_Functions;
-      --  Generate projection functions for a SPARK record type.
-      --  Note that the projection for the type storing mutable references of
-      --  the record type is generated in Gnat2why-types.Translate_Type.
-
       function Discriminant_Check_Pred_Call
         (Field : Entity_Id;
          Arg   : W_Identifier_Id) return W_Pred_Id;
@@ -1422,93 +1417,6 @@ package body Why.Gen.Records is
          end if;
       end Declare_Equality_Function;
 
-      ----------------------------------
-      -- Declare_Projection_Functions --
-      ----------------------------------
-
-      procedure Declare_Projection_Functions is
-         Comp               : Entity_Id := First_Component_Or_Discriminant (E);
-         Split_Discr_Name : constant W_Name_Id :=
-           (if not Is_Root then Get_Name
-              (E_Symb (Root, WNE_Rec_Split_Discrs))
-            else To_Name (WNE_Rec_Split_Discrs));
-         Split_Fields_Name : constant W_Name_Id :=
-           To_Name (WNE_Rec_Split_Fields);
-      begin
-         if Count_Why_Regular_Fields (E) > 0
-           or else Has_Private_Ancestor_Or_Root (E)
-           or else Is_Tagged_Type (E)
-         then
-            --  1. Projection function from Ty_Name (SPARK record type) to
-            --  Split_Fields_Name
-            Emit_Record_Projection_Declaration
-              (Theory        => Theory,
-               Param_Ty_Name => Ty_Name,
-               Return_Ty     => New_Named_Type
-                 (Name => To_Name (WNE_Rec_Split_Fields)),
-               Field_Id      => To_Ident (WNE_Rec_Split_Fields));
-
-            --  2. Projection function from Ty_Name to Split_Discr_Name
-            if Has_Discriminants (E) then
-               Emit_Record_Projection_Declaration
-                 (Theory        => Theory,
-                  Param_Ty_Name => Ty_Name,
-                  Return_Ty     => New_Type (Type_Kind => EW_Abstract,
-                                             Name      => Split_Discr_Name),
-                  Field_Id      => To_Ident (WNE_Rec_Split_Discrs));
-            end if;
-
-            --  3. Projection function from split_fields__ref to
-            --  Split_Fields_Name
-            declare
-               Content_Ty_Name   : constant W_Name_Id :=
-                 To_Name (WNE_Rec_Split_Fields);
-               Param_Ty_Name : constant W_Name_Id :=
-                 Ref_Append (Content_Ty_Name);
-               Field_Typ : constant W_Type_Id := New_Type
-                 (Type_Kind  => EW_Abstract,
-                  Name       => Content_Ty_Name);
-            begin
-               Emit_Record_Projection_Declaration
-                 (Theory        => Theory,
-                  Param_Ty_Name => Param_Ty_Name,
-                  Return_Ty     => New_Named_Type (Name => Split_Fields_Name),
-                  Field_Id      => Content_Append
-                    (Content_Ty_Name, Field_Typ));
-            end;
-
-            --  4. Projection function from the record type (Split_Fields_Name)
-            --  to every field and from the discriminant type
-            --  (Split_Discr_Name) to every discriminant
-            while Present (Comp) loop
-               if Is_Not_Hidden_Discriminant (Comp)
-                 and then Component_Is_Visible_In_SPARK (Comp)
-               then
-                  declare
-                     Param_Ty_Name : constant W_Name_Id :=
-                       (if Ekind (Comp) = E_Discriminant
-                        then Split_Discr_Name
-                        else Split_Fields_Name);
-
-                     Field_Id         : constant W_Identifier_Id :=
-                       (if Is_Root or else Ekind (Comp) /= E_Discriminant
-                        then To_Why_Id (Comp, Local => True)
-                        else To_Why_Id (Comp, Rec => Root));
-                  begin
-                     Emit_Record_Projection_Declaration
-                       (Theory           => Theory,
-                        Param_Ty_Name    => Param_Ty_Name,
-                        Return_Ty        => EW_Abstract (Etype (Comp)),
-                        Field_Id         => Field_Id,
-                        SPARK_Field_Name => Source_Name (Comp));
-                  end;
-               end if;
-               Next_Component_Or_Discriminant (Comp);
-            end loop;
-         end if;
-
-      end Declare_Projection_Functions;
-
       ----------------------------------------
       -- Declare_Protected_Access_Functions --
       ----------------------------------------
@@ -1642,28 +1550,27 @@ package body Why.Gen.Records is
                   while Present (Field) loop
                      if Is_Not_Hidden_Discriminant (Field) then
                         Binders_D (Index) :=
-                          (B_Name =>
+                          (B_Name   =>
                              To_Why_Id
                                (Field,
                                 Local => True,
                                 Typ => EW_Abstract (Etype (Field))),
-                           others => <>);
+                           Ada_Node => Field,
+                           others   => <>);
                         Index := Index + 1;
                      end if;
                      Next_Discriminant (Field);
                   end loop;
 
-                  Emit (Theory,
-                        New_Record_Definition
-                          (Name    => Discr_Name,
-                           Binders => Binders_D));
+                  Emit_Record_Declaration (Theory  => Theory,
+                                           Name    => Discr_Name,
+                                           Binders => Binders_D);
 
                   --  Generate a mutable record to hold elements of type
                   --  __split_discrs, as well as an havoc function for it.
 
-                  Emit
-                    (Theory,
-                     New_Ref_Type_Definition (Name => Discr_Name));
+                  Emit_Ref_Type_Definition (Theory =>  Theory,
+                                            Name => Discr_Name);
                   Emit
                     (Theory,
                      New_Havoc_Declaration (Name => Discr_Name));
@@ -1704,12 +1611,13 @@ package body Why.Gen.Records is
                     and then Component_Is_Visible_In_SPARK (Field)
                   then
                      Binders_F (Index) :=
-                       (B_Name =>
+                       (B_Name   =>
                           To_Why_Id
                             (Field,
                              Local => True,
                              Typ => EW_Abstract (Etype (Field))),
-                        others => <>);
+                        Ada_Node => Field,
+                        others   => <>);
                      Index := Index + 1;
                   end if;
                   Next_Component (Field);
@@ -1748,17 +1656,17 @@ package body Why.Gen.Records is
 
             pragma Assert (Index = Binders_F'Last + 1);
 
-            Emit (Theory,
-                  New_Record_Definition
-                    (Name    => To_Name (WNE_Rec_Split_Fields),
-                     Binders => Binders_F));
+            Emit_Record_Declaration (Theory  => Theory,
+                                     Name    => To_Name (WNE_Rec_Split_Fields),
+                                     Binders => Binders_F,
+                                     SPARK_Record => True);
 
             --  Generate a mutable record to hold elements of type
             --  __split_fields, as well as an havoc function for it.
 
-            Emit
-              (Theory,
-               New_Ref_Type_Definition (To_Name (WNE_Rec_Split_Fields)));
+            Emit_Ref_Type_Definition
+              (Theory => Theory,
+               Name   => To_Name (WNE_Rec_Split_Fields));
             Emit
               (Theory,
                New_Havoc_Declaration (To_Name (WNE_Rec_Split_Fields)));
@@ -1799,9 +1707,9 @@ package body Why.Gen.Records is
 
          pragma Assert (Index_All = Num_All + 1);
 
-         Emit (Theory,
-           New_Record_Definition (Name    => Ty_Name,
-                                  Binders => Binders_A));
+         Emit_Record_Declaration (Theory  => Theory,
+                                  Name    => Ty_Name,
+                                  Binders => Binders_A);
       end Declare_Record_Type;
 
       ----------------------------------
@@ -2191,8 +2099,6 @@ package body Why.Gen.Records is
       then
          Declare_Conversion_Check_Function (Theory, E, Root);
       end if;
-
-      Declare_Projection_Functions;
    end Declare_Ada_Record;
 
    ---------------------------------------

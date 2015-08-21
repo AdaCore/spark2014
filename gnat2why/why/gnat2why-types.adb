@@ -590,29 +590,13 @@ package body Gnat2Why.Types is
            and then (not Has_Array_Type (E)
                      or else not Is_Static_Array_Type (Retysp (E)))
          then
-            Emit
-              (File.Cur_Theory,
-               New_Ref_Type_Definition
-                 (Name => To_Why_Type (Retysp (E), Local => True)));
+            Emit_Ref_Type_Definition
+              (Theory => File.Cur_Theory,
+               Name   => To_Why_Type (Retysp (E), Local => True));
             Emit
               (File.Cur_Theory,
                New_Havoc_Declaration
                  (Name => To_Why_Type (Retysp (E), Local => True)));
-
-            --  projection function from record_name__ref to record_name
-            declare
-               Return_Ty_Name   : constant W_Name_Id :=
-                 To_Why_Type (Retysp (E), Local => True);
-               Field_Typ : constant W_Type_Id := New_Type
-                 (Type_Kind  => EW_Abstract,
-                  Name       => Return_Ty_Name);
-            begin
-               Emit_Record_Projection_Declaration
-                 (Theory        => File.Cur_Theory,
-                  Param_Ty_Name => Ref_Append (Return_Ty_Name),
-                  Return_Ty     => New_Named_Type (Name => Return_Ty_Name),
-                  Field_Id      => Content_Append (Return_Ty_Name, Field_Typ));
-            end;
          end if;
 
          --  If E is the full view of a private type, use its partial view as

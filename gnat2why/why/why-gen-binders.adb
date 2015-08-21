@@ -665,10 +665,11 @@ package body Why.Gen.Binders is
    begin
       for B in Binders'Range loop
          Result (B) := New_Record_Binder
-           (Ada_Node => Binders (B).Ada_Node,
-            Domain   => Domain,
-            Name     => Binders (B).B_Name,
-            Arg_Type => New_Arg_Type (Binders (B)));
+           (Ada_Node   => Binders (B).Ada_Node,
+            Domain     => Domain,
+            Name       => Binders (B).B_Name,
+            Arg_Type   => New_Arg_Type (Binders (B)),
+            Is_Mutable => Binders (B).Mutable);
       end loop;
 
       return Result;

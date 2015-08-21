@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Indefinite_Ordered_Maps;
+with Ada.Strings.Fixed;
 with Common_Containers;   use Common_Containers;
 with Namet;               use Namet;
 with VC_Kinds;            use VC_Kinds;
@@ -31,14 +33,36 @@ with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
-with Ada.Strings.Fixed;
-with Ada.Containers.Indefinite_Ordered_Maps;
+with SPARK_Util;          use SPARK_Util;
 
 package body Why.Gen.Decl is
+
+   procedure Emit_Record_Projection_Declaration
+     (Theory           : W_Theory_Declaration_Id;
+      Param_Ty_Name    : W_Name_Id;
+      Field_Id         : W_Identifier_Id;
+      SPARK_Field_Name : String := "");
+   --  Emit declaration of a projection for a Why3 record type. The projection
+   --  projects values of the record type to given field of this type.
+   --  The declaration consists of a declaration  of a function that returns a
+   --  value of a field Field_Id of a value of the type Param_Ty_Name and
+   --  declaration projection metas (see Emit_Projection_Metas).
+   --  @param Theory the theory where the projection declaration will be
+   --      emitted.
+   --  @param Param_Ty_Name the name of the record type being projected.
+   --  @param Field_Id the identifier of the field to that the record is
+   --      projected. Its type is the type to that the record type is projected
+   --      and must be different from Why_Empty.
+   --  @param SPARK_Field_Name if the projection projects SPARK record to the
+   --      SPARK field, the SPARK name of the field, "" otherwise.
+   --      The string "." & SPARK_Field_Name will be appended to the name of
+   --      the variable that is being projected. If SPARK_Field_Name equals to
+   --      "", nothing will be appended to the name of the variable.
 
    ----------
    -- Emit --
@@ -73,6 +97,33 @@ package body Why.Gen.Decl is
                                       Projection_Fun)));
    end Emit_Projection_Metas;
 
+   -----------------------------
+   -- Emit_Record_Declaration --
+   -----------------------------
+   procedure Emit_Record_Declaration
+     (Theory : W_Theory_Declaration_Id;
+      Name     : W_Name_Id;
+      Binders  : Why.Gen.Binders.Binder_Array;
+      SPARK_Record : Boolean := False)
+   is
+   begin
+      --  Emit declaration of the record
+      Emit (Theory => Theory,
+            Decl   => New_Record_Definition (Name     => Name,
+                                             Binders  => Binders));
+
+      --  For each record field, emit projection from the record to the field
+      for Binder in Binders'Range loop
+         Emit_Record_Projection_Declaration
+           (Theory => Theory,
+            Param_Ty_Name => Name,
+            Field_Id => Binders (Binder).B_Name,
+            SPARK_Field_Name => (if SPARK_Record then
+                                      Source_Name (Binders (Binder).Ada_Node)
+                                 else ""));
+      end loop;
+   end Emit_Record_Declaration;
+
    package Projection_Names is new Ada.Containers.Indefinite_Ordered_Maps
      (Key_Type     => String,
       Element_Type => Positive,
@@ -101,7 +152,6 @@ package body Why.Gen.Decl is
    procedure Emit_Record_Projection_Declaration
      (Theory           : W_Theory_Declaration_Id;
       Param_Ty_Name    : W_Name_Id;
-      Return_Ty        : W_Type_Id;
       Field_Id         : W_Identifier_Id;
       SPARK_Field_Name : String := "")
    is
@@ -146,19 +196,38 @@ package body Why.Gen.Decl is
 
       Emit
         (Theory,
-         New_Function_Decl
+         Why.Atree.Builders.New_Function_Decl
            (Domain      => EW_Term,
             Name        => Why.Gen.Names.New_Identifier (
               Name => Proj_Fun_Name),
             Binders     => (1 => New_Binder (Domain => EW_Prog,
                                              Name => Param_Ident,
                                              Arg_Type => Param_Ty)),
-            Return_Type => Return_Ty,
+            Return_Type => Get_Type (+Field_Id),
             Labels      => Labels,
             Def         => Field_Access));
 
       Emit_Projection_Metas (Theory, Proj_Fun_Name);
    end Emit_Record_Projection_Declaration;
+
+   ------------------------------
+   -- Emit_Ref_Type_Definition --
+   ------------------------------
+   procedure Emit_Ref_Type_Definition
+     (Theory : W_Theory_Declaration_Id;
+      Name : W_Name_Id)
+   is
+      Field_Typ : constant W_Type_Id := New_Type
+        (Type_Kind  => EW_Abstract,
+         Name       => Name);
+   begin
+      Emit_Record_Declaration
+        (Theory  => Theory,
+         Name    => Ref_Append (Name),
+         Binders => (1 => (B_Name  => Content_Append (Name, Field_Typ),
+                           Mutable => True,
+                           others  => <>)));
+   end Emit_Ref_Type_Definition;
 
    ---------------------------
    -- New_Havoc_Declaration --
@@ -176,7 +245,7 @@ package body Why.Gen.Decl is
                         Name   => "x",
                         Typ    => Typ);
    begin
-      return New_Function_Decl
+      return Why.Atree.Builders.New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => Havoc_Fun,
                   Binders     => (1 => New_Binder (Domain   => EW_Prog,
@@ -186,29 +255,6 @@ package body Why.Gen.Decl is
                   Return_Type => EW_Unit_Type,
                   Labels      => Name_Id_Sets.Empty_Set);
    end New_Havoc_Declaration;
-
-   -----------------------------
-   -- New_Ref_Type_Definition --
-   -----------------------------
-
-   function New_Ref_Type_Definition (Name : W_Name_Id) return W_Declaration_Id
-   is
-      Typ : constant W_Type_Id := New_Type
-        (Type_Kind  => EW_Abstract,
-         Name       => Name);
-   begin
-      return Why.Atree.Builders.New_Type_Decl
-        (Name       => Ref_Append (Name),
-         Labels     => Name_Id_Sets.Empty_Set,
-         Definition => New_Record_Definition
-           (Fields   =>
-              (1 => New_Record_Binder
-                   (Domain     => EW_Term,
-                    Name       =>
-                      Content_Append (Name, Typ),
-                    Arg_Type   => Typ,
-                    Is_Mutable => True))));
-   end New_Ref_Type_Definition;
 
    -------------------
    -- New_Type_Decl --
