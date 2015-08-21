@@ -1900,71 +1900,6 @@ package body SPARK_Util is
    -- Has_Only_Nonblocking_Statements --
    -------------------------------------
 
-   Name_Abort_Task                          : Name_Id := No_Name;
-   Name_Bounded_IO                          : Name_Id := No_Name;
-   Name_C_Streams                           : Name_Id := No_Name;
-   Name_Complex_IO                          : Name_Id := No_Name;
-   Name_Directories                         : Name_Id := No_Name;
-   Name_Direct_IO                           : Name_Id := No_Name;
-   Name_Dispatching                         : Name_Id := No_Name;
-   Name_Editing                             : Name_Id := No_Name;
-   Name_EDF                                 : Name_Id := No_Name;
-   Name_Reset_Standard_Files                : Name_Id := No_Name;
-   Name_Sequential_IO                       : Name_Id := No_Name;
-   Name_Streams                             : Name_Id := No_Name;
-   Name_Suspend_Until_True                  : Name_Id := No_Name;
-   Name_Suspend_Until_True_And_Set_Deadline : Name_Id := No_Name;
-   Name_Synchronous_Barriers                : Name_Id := No_Name;
-   Name_Task_Identification                 : Name_Id := No_Name;
-   Name_Text_Streams                        : Name_Id := No_Name;
-   Name_Unbounded_IO                        : Name_Id := No_Name;
-   Name_Wait_For_Release                    : Name_Id := No_Name;
-   Name_Yield                               : Name_Id := No_Name;
-   --  The above Name_Ids shall be constants, exectly like those in Snames, but
-   --  when the package body is elaborated the name tables are locked so it is
-   --  not possble to call Name_Find_Str then. Still, they are global variables
-   --  and as such are initialized only once.
-   --  ??? should we move these to Snames package?
-
-   Potentially_Blocking_Name_Ids_Initialized : Boolean := False;
-   --  If True then Name_* variables have been initialized. Once set to True
-   --  it is never set to False.
-
-   procedure Initialize_Potentially_Blocking_Name_Ids;
-   --  Initialize Name_* variables for detecting predefined potentially
-   --  blocking subprograms.
-
-   ----------------------------------------------
-   -- Initialize_Potentially_Blocking_Name_Ids --
-   ----------------------------------------------
-
-   procedure Initialize_Potentially_Blocking_Name_Ids is
-   begin
-      Name_Abort_Task := Name_Find_Str ("abort_task");
-      Name_Bounded_IO := Name_Find_Str ("bounded_io");
-      Name_C_Streams := Name_Find_Str ("c_streams");
-      Name_Complex_IO := Name_Find_Str ("complex_io");
-      Name_Directories := Name_Find_Str ("directories");
-      Name_Direct_IO := Name_Find_Str ("direct_io");
-      Name_Dispatching := Name_Find_Str ("dispatching");
-      Name_Editing := Name_Find_Str ("editing");
-      Name_EDF := Name_Find_Str ("edf");
-      Name_Reset_Standard_Files := Name_Find_Str ("reset_standard_files");
-      Name_Sequential_IO := Name_Find_Str ("sequential_io");
-      Name_Streams := Name_Find_Str ("streams");
-      Name_Suspend_Until_True := Name_Find_Str ("suspend_until_true");
-      Name_Suspend_Until_True_And_Set_Deadline :=
-        Name_Find_Str ("suspend_until_true_and_set_deadline");
-      Name_Synchronous_Barriers := Name_Find_Str ("synchronous_barriers");
-      Name_Task_Identification := Name_Find_Str ("task_identification");
-      Name_Text_Streams := Name_Find_Str ("text_streams");
-      Name_Unbounded_IO := Name_Find_Str ("unbounded_io");
-      Name_Wait_For_Release := Name_Find_Str ("wait_for_release");
-      Name_Yield := Name_Find_Str ("yield");
-
-      Potentially_Blocking_Name_Ids_Initialized := True;
-   end Initialize_Potentially_Blocking_Name_Ids;
-
    function Has_Only_Nonblocking_Statements (N : Node_Id) return Boolean is
 
       Potentially_Blocking_Statement_Found : Boolean := False;
@@ -1984,6 +1919,7 @@ package body SPARK_Util is
       ----------------------------------------
       -- Is_Predefined_Potentially_Blocking --
       ----------------------------------------
+
       function Is_Predefined_Potentially_Blocking
         (E : Entity_Id)
          return Boolean
@@ -2107,12 +2043,6 @@ package body SPARK_Util is
                --  blocking, then it will be detected by call graph traversal.
                return False;
          end case;
-
-         --  Now we need Name_Ids of potentially blocking packages/subprogram;
-         --  if they are not already initialized, do it now.
-         if not Potentially_Blocking_Name_Ids_Initialized then
-            Initialize_Potentially_Blocking_Name_Ids;
-         end if;
 
          --  All subprograms in the child packages of Ada are blocking
          if Scope_Name (2) in Name_Directories   |
