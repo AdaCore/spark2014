@@ -8,157 +8,319 @@ This section discusses some of the common usage scenarios (or use cases) in
 which |SPARK| may be used. It is illustrative, and is certainly not intended
 to be an exhaustive list.
 
-.. _develop new code from scratch:
+.. _Safe Coding Standard for Critical Software:
 
-Develop New Code from Scratch
-=============================
+Safe Coding Standard for Critical Software
+==========================================
 
-This is the 'green field' development scenario where new software is
-being written and there are no constraints imposed in terms of having
-to base the development on pre-existing code. |SPARK| may be used for
-all software components or (more likely) the software may be developed
-in a mixture of |SPARK|, full Ada and other languages. For example, Ada
-may be employed in modules where it is deemed essential to make use of
-language features that are not currently in the |SPARK| subset, or in
-a safety-related project |SPARK| might be used for all of the
-safety-related software components.
+|SPARK| is a subset of Ada meant for formal verification, by excluding features
+that are difficult or impossible to analyze automatically. This means that
+|SPARK| can also be used as a coding standard to restrict the set of features
+used in critical software. As a safe coding standard checker, |SPARK| allows
+both to prevent the introduction of errors by excluding unsafe Ada features,
+and it facilitates their early detection with |GNATprove|'s flow analysis.
 
-A typical development process for this scenario might be:
+Exclusion of Unsafe Ada Features
+--------------------------------
 
-#. Produce the high level (architectural) design in terms of package
-   specifications. Determine which packages will be in |SPARK| and add
-   contracts to those packages. The package contracts identify the
-   key elements of abstract state, and the subprogram global contracts
-   show which subprograms read and write that state. Optionally, dependency
-   contracts can be added to specify information flow relations, and
-   postconditions can be added to specify high-level properties such
-   as safety requirements that must be satisfied.
+Once the simple task of :ref:`Identifying SPARK Code` has been completed, one
+can use |GNATprove| in ``check`` mode to verify that |SPARK| restrictions are
+respected in |SPARK| code. Here we list some of the most error-prone Ada
+features that are excluded from |SPARK| (see :ref:`Excluded Ada Features` for
+the complete list).
 
-#. Identify the |SPARK| packages with the ``SPARK_Mode`` aspect. At this
-   stage the high-level package structure can be analyzed with the tools (using
-   the 'Examine' command in GPS/GNATbench) before any executable code is
-   implemented.
+* All expressions, including function calls, are free of
+  side-effects. Expressions with side-effects are problematic because they hide
+  interactions that occur in the code, in the sense that a computation will not
+  only produce a value but also modify some hidden state in the program. In the
+  worst case, they may even introduce interferences between subexpressions of a
+  common expression, which results in different executions depending on the
+  order of evaluation of subexpressions chosen by the compiler.
 
-#. Alternatively, if the majority of packages are to be |SPARK|, then a
-   project should use ``SPARK_Mode`` as a configuration pragma, and only
-   apply ``SPARK_Mode => Off`` selectively for those few units that are
-   not |SPARK|.
+* Handling of exceptions is not permitted. Exception handling can create
+  complex and invisible control flows in a program, which increase the
+  likelihood of introducing errors during maintenance. What is more, when an
+  exception is raised, subprograms that are terminated abnormally leave their
+  variables in a possibly uninitialized or inconsistent state, in which data
+  invariants may be broken. This includes values of out parameters, which
+  additionnally are not copied back when passed by copy, thus introducing a
+  dependency on the parameter mode chosen by the compiler.
 
-#. Begin implementing the package bodies. One typical method of doing this
-   is to use a process of top-down decomposition, starting with a top-level
-   subprogram specification and implementing the body by breaking it down
-   into further (nested) subprograms which are themselves specified but not
-   yet implemented, and to iterate until a level is reached where it is
-   appropriate to start writing executable code. However the exact process
-   is not mandated and will depend on other factors such as the design
-   methodology being employed.
+* The use of access types and allocators is not permitted. Pointers can
+  introduce aliasing, that is, they can allow the same object to be visible
+  through different names at the same program point. This makes it difficult to
+  reason about a program as modifying the object under one of the names will
+  also modify the other names.  What is more, access types come with their on
+  load of common mistakes, like double frees and dangling pointers.
 
-#. As each subprogram is implemented it can be verified (against its contract,
-   and to show absence of run-time errors) by proof, testing (with assertion
-   checking enabled) or both.
+* |SPARK| also prevents dependencies on the elaboration order by ensuring that
+  no package can write into variables declared in other packages during its
+  elaboration. The use of controlled types is also forbidden as they lead to
+  insertions of implicit calls by the compiler. Finally, goto statements are
+  not permitted as they obfuscate the control flow.
 
-   - Users may opt to try proving first then, if a particular proof is
-     tricky to discharge, execute test cases to either give confidence that
-     the code and contract is correct or to help diagnose why it is failing.
+Early Detection of Errors
+-------------------------
 
-   - Alternatively, users may prefer to execute the code with suitable
-     test cases during development, then use proof to verify it once they
-     believe it to be correct.
+|GNATprove|'s flow analysis will find all the occurrences of the following
+errors:
 
-#. Once verification is complete the executable can be compiled with
-   assertion checks either enabled or disabled depending on the policy chosen
-   by the project.
+* uses of uninitialized variables (see :ref:`Data Initialization Policy`)
 
-.. _convert SPARK 2005 to SPARK 2014:
+* aliasing of parameters that can cause interferences, which are often not
+  accounted for by programmers (see :ref:`Absence of Interference`)
 
-Convert existing SPARK 2005 software to SPARK 2014
-==================================================
+It will also warn systematically about the following suspicious behaviors:
 
-If an existing piece of software has been developed in SPARK 2005 and is
-still undergoing active development/maintenance then it may be advantageous
-to upgrade to using SPARK 2014 in order to make use of the larger language
-subset and the new tools and environment. The |SPARK| Language Reference Manual
-has an appendix containing a SPARK 2005 to |SPARK| Mapping Specification which
-can be used to guide the conversion process. As the |SPARK| subset is larger
-than the SPARK 2005 subset, and the mapping of features between the two languages
-is defined, the translation should be relatively straightforward. There are two
-main options for the conversion process:
+* wrong parameter modes (can hurt readability and maintainability or even be
+  the sign of a bug, for example if the programmer forgot to update a
+  parameter, to read the value of an out parameter, or to use the initial value
+  of a parameter)
 
-#. All of the software is converted from SPARK 2005 to |SPARK| at the same time.
-   The |SPARK| tools should be used to analyze the work in progress throughout
-   the conversion process (which implies that a bottom-up approach may work best)
-   and any errors corrected as they are found. Once the conversion is complete,
-   development and maintenance can continue in |SPARK|.
+* unused variables or statements (again, can hurt readability and
+  maintainability or even be the sign of a bug)
 
-#. A more gradual approach could be employed, where code is only converted to
-   |SPARK| when it needs to be changed. (The granularity of how much code needs
-   to be converted when a module is touched should be considered, and is likely to
-   be at the level of the whole package.) The |SPARK| tools can then be used to
-   analyze the new/changed code, and will attempt to analyze any dependent units,
-   which may or may not be in |SPARK|. It is not necessary for dependent units to
-   be fully in |SPARK| but any declarations from them that are used in |SPARK|
-   packages must be in |SPARK|. Note that the latest version of the SPARK 2005
-   toolset facilitates this migration by ignoring |SPARK| pragmas.
+.. _Address Data and Control Coupling:
 
-Note that some users may wish to take advantage of the new |SPARK| contracts
-and tools whilst retaining the more restrictive nature of SPARK 2005. (Many
-of the restrictions from SPARK 2005 have been lifted in |SPARK| because
-improvements in the tools mean that sound analysis can be performed without
-them, but some projects may need to operate in a more constrained environment.)
-This can be achieved using ``pragma Restrictions (SPARK_05)``. For further details
-of this restriction please see the GNAT Reference Manual.
+Address Data and Control Coupling
+=================================
 
-.. _analyze legacy Ada software:
+As defined in the avionics standard DO-178, data coupling is `"The dependence
+of a software component on data not exclusively under the control of that
+software component"` and control coupling is `"The manner or degree by which
+one software component influences the execution of another software
+component"`, where a software component could be a subprogram, a unit or a set
+of units.
 
-Analyze Legacy Ada Software
-===========================
+Although analysis of data and control coupling are not performed at the same
+level of details in non-critical domains, knowledge of data and control
+coupling is important to assess impact of code changes. |SPARK| is ideally
+equiped to support such analysis, with its detailed :ref:`Subprogram
+Contracts`:
 
-If a legacy system has been developed in Ada then analyzing it with the |SPARK|
-tools may be a good first step in order to assess the quality of the code prior
-to performing a full or partial conversion to |SPARK|. The suggested workflow is:
+* With :ref:`Data Dependencies`, a user can specify exactly the input and
+  output data of a subprogram, which identifies the `"data not exclusively
+  under the control of that software component"`:
 
-#. Identify units which are highest priority for conversion to |SPARK|. These may
-   already be known, or potential candidates could be identified by:
+  * When taking the subprogram as component, any variable in the data
+    dependencies is in general not exclusively under the control of that
+    software component.
 
-   - putting pragma SPARK_Mode in a global configuration file so that all code is
-     analyzed as if it were intended to be |SPARK|;
+  * When taking the unit (or sets of units) as component, any variable in the
+    data dependencies that is not defined in the unit itself (or the set of
+    units) is in general not exclusively under the control of that software
+    component.
 
-   - running the 'Examine' command on all code;
+* With :ref:`Flow Dependencies`, a user can specify the nature of the
+  `"dependence of a software component on data not exclusively under the
+  control of that software component"`, by identifying how that data may
+  influence specific outputs of a subprogram.
 
-   - use the errors in the summary report to guide the selection process - files
-     with fewer errors are likely to be easier to convert and would be a good
-     starting point;
+* With :ref:`Flow Dependencies`, a user can also specify how `"one software
+  component influences the execution of another software component"`, by
+  identifying the shared data potentially written by the subprogram.
 
-   - remove the global configuration pragma SPARK_Mode before proceeding.
+* With functional contracts (:ref:`Preconditions` and :ref:`Postconditions`), a
+  user can specify very precisely the behavior of the subprogram, which defines
+  how it `"influences the execution of another software component"`. These
+  contracts need not be complete, for example they could describe the
+  precedence order rules for calling various subprograms.
 
-#. For each unit to be converted to |SPARK|:
+When using data and flow dependencies, |GNATprove|'s flow analysis is
+sufficient to check that the program implements its specifications. When using
+functional contracts, |GNATprove|'s proof should also be applied.
 
-   - Identify the specification as |SPARK| (SPARK_Mode => On) but identify the body
-     as not in |SPARK| (SPARK_Mode => Off).
+.. _Prove Absence of Run-Time Errors (AoRTE):
 
-   - Analyze (Examine) the specification and correct any errors that are reported
-     by the tools, iterating until no errors remain.
+Prove Absence of Run-Time Errors (AoRTE)
+========================================
 
-   - Mark the body as |SPARK| (change SPARK_Mode from Off to On).
+With Proof Only
+---------------
 
-   - Analyze (Examine) the body and correct any errors that are reported
-     by the tools, iterating until no errors remain.
+|GNATprove| can be used to prove the complete absence of possible run-time
+errors corresponding to:
 
-   - Each subprogram can then be verified to show absence of run-time errors by proof,
-     testing (with assertion checking enabled) or both.
+* raising exception ``Constraint_Error`` at run time,
 
-     - Users may opt to try proving first then, if a particular proof is
-       tricky to discharge, execute test cases to either give confidence that
-       the code is correct or to help diagnose why it is failing.
+* all possible failures of assertions corresponding to raising exception
+  ``Assert_Error`` at run time, and
 
-     - Alternatively, users may prefer to execute the code with suitable
-       test cases first, then use proof to verify it once they believe it
-       to be correct.
+* all possible explicit raising of exceptions in the program.
 
-#. Once conversion and verification is complete, the executable can be compiled with
-   assertion checks either enabled or disabled depending on the policy chosen
-   by the project. At this point users might begin adding contracts to the code in
-   order to perform verification of functional properties.
+AoRTE is important for ensuring safety in all possible operational conditions
+for safety-critical software (including boundary conditions, or abnormal
+conditions) or for ensuring availability of a service (absence of DOS attack
+that can crash the software).
+
+When run-time checks are enabled during execution, Ada programs are not
+vulnerable to the kind of attacks like buffer overflows that plague programs in
+C and C++, which allow attackers to gain control over the system. But in the
+case where run-time checks are disabled (in general for efficiency, but it
+could be for other reasons), proving their absence with |GNATprove| also
+prevents such attacks. This is specially important for ensuring security when
+some inputs may have been crafted by an attacker.
+
+Few subprogram contracts (:ref:`Preconditions` and :ref:`Postconditions`) are
+needed in general to prove AoRTE, far fewer than for proving functional
+properties. Even fewer subprogram contracts are needed if types are suitably
+constrained with :ref:`Type Contracts`. Typically, 95% to 98% of run-time
+checks can be proved automatically, and the remaining checks can be either
+verified with manual provers or justified by manual analysis.
+
+|GNATprove| supports this type of combination of results in :ref:`The Analysis
+Results Summary Table`. Multiple columns display the number of checks
+automatically verified, while the column `Justified` displays the number of
+checks manually justified. The column `Unproved` should be empty for all checks
+to be verified.
+
+With a Combination of Proof and Test
+------------------------------------
+
+It is not always possible to achieve 100% proof of AoRTE, for multiple reasons:
+
+#. Formal verification is only applicable to the part of the program that is in
+   |SPARK|. If the program includes parts in Ada that are not in |SPARK|, for
+   example, then it is not possible to prove AoRTE on those parts.
+
+#. Some run-time checks may not be proved automatically due to prover
+   shortcomings (see :ref:`Investigating Prover Shortcomings` for details).
+
+#. It may not be cost-effective to add the required contracts for proving AoRTE
+   in a less critical part of the code, compared to using testing as a means of
+   verification.
+
+For all these reasons, it is important to be able to combine the results of
+formal verification and testing on different parts of a codebase. Formal
+verification works by making some assumptions, and these assumptions should be
+shown to hold even when formal verification and testing are
+combined. Certainly, formal verification cannot guarantee the same properties
+when part of a program is only tested, as when all of a program is proved. The
+goal then, when combining formal verification and testing, is to reach a level
+of confidence as good as the level reached by testing alone.
+
+At the Level of Individual Run-Time Checks
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+One way to get confidence that unproved run-time checks cannot fail during
+execution is to exercize them during testing. Test coverage information allows
+to guarantee a set of run-time checks have been executed successfully during a
+test run. This coverage information may be gathered from the execution of a
+unit testing campaign, an integration testing campaign, or the execution of a
+dedicated testsuite focussing on exercizing the run-time checks (for example on
+boundary values or random ones).
+
+This strategy is already applied in other static analysis tools, for example in
+the integration between the CodePeer static analyzer and the VectorCAST testing
+tool for Ada programs.
+
+Between Proof and Unit Testing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Contracts on subprograms provide a natural boundary for combining proof and
+test:
+
+* If proof is used to demonstrate that a subprogram is free of run-time errors
+  and respects its contract, this proof depends on the precondition of the
+  subprogram being respected at the call site. This verification can be
+  achieved by proving the caller too, or by checking dynamically the
+  precondition of the called subprogram during unit testing for the caller.
+
+* If proof is used to demonstrate that a subprogram is free of run-time errors
+  and respects its contract, and this subprogram calls other subprograms, this
+  proof depends on the postconditions of the called subprogram being respected
+  at call sites. This verification can be achieved by proving the callees too,
+  or by checking dynamically the postcondition of the called subprograms during
+  their unit testing.
+
+Thus, it is possible to combine freely subprograms that are proved and
+subprograms that are unit tested, provided subprogram contracts
+(:ref:`Preconditions` and :ref:`Postconditions`) are exercized during unit
+testing. This can be achieved by compiling the program with assertions for
+testing (for example with switch ``-gnata`` in |GNAT Pro|), or by using
+GNATtest to create the test harness (see section 7.10.12 of |GNAT Pro| User's
+Guide on `Testing with Contracts`).
+
+This strategy is particularly well suited in the context of the DO-178C
+certification standard in avionics, which explicitly allows proof or test to be
+used as verification means on each module.
+
+Between Proof and Integration Testing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Contracts can also be exercized dynamically during integration testing. In
+cases where unit testing is not required (either because proof has been applied
+to all subprograms, or because the verification context allows it), exercizing
+contracts during integration testing can complement proof results, by giving
+the assurance that the actual compiled program behaves as expected.
+
+This strategy has been applied at Altran on UK military projects submitted to
+Def Stan 00-56 certification: AoRTE was proved on all the code, and contracts
+were exercized during integration testing, which allowed to scrap unit testing.
+
+.. _Prove Correct Integration Between Components:
+
+Prove Correct Integration Between Components
+============================================
+
+|GNATprove| can be used to prove correct integration between components, where
+a component could be a subprogram, a unit or a set of units. Indeed, even if
+components are verified individually (for example by proof or test or a
+combination thereof), their combination may still fail because of unforeseen
+interactions or design problems.
+
+|SPARK| is ideally is ideally equiped to support such analysis, with its
+detailed :ref:`Subprogram Contracts`:
+
+* With :ref:`Data Dependencies`, a user can specify exactly the input and
+  output data of a subprogram, which goes a long way towards uncovering
+  unforeseen interactions.
+
+* With functional contracts (:ref:`Preconditions` and :ref:`Postconditions`), a
+  user can specify precisely properties about the behavior of the subprogram
+  that are relevant for component integration. In general, simple contracts are
+  needed for component integration, which means that they are easy to write and
+  to verify automatically. See section on :ref:`Writing Contracts for Program
+  Integrity` for examples of such contracts.
+
+When using data dependencies, |GNATprove|'s flow analysis is sufficient to
+check correct integration between components. When using functional contracts,
+|GNATprove|'s proof should also be applied.
+
+.. _Prove Functional Correctness:
+
+Prove Functional Correctness
+============================
+
+|GNATprove| can be used to prove functional correctness of an implementation
+against its specification. This strongest level of verification can be applied
+either to specific subprograms, or specific units, or the complete program. For
+those subprograms whose functional correctness is to be checked, the user
+should:
+
+#. express the specification of the subprogram as a subprogram contract
+   (see :ref:`Preconditions` and :ref:`Postconditions`);
+
+#. use |GNATprove| to prove automatically that most checks (including
+   contracts) always hold; and
+
+#. address the remaining unproved checks with manual justifications or testing,
+   as already discussed in the section on how to :ref:`Prove Absence of
+   Run-Time Errors (AoRTE)`.
+
+As more complex contracts are required in general, it is expected that
+achieving that strongest level of verification is also more costly than proving
+absence of run-time errors. Typically, |SPARK| features like :ref:`Quantified
+Expressions` and :ref:`Expression Functions` are needed to express the
+specification, and features like :ref:`Loop Invariants` are needed to achieve
+automatic proof. See section on :ref:`Writing Contracts for Functional
+Correctness` for examples of such contracts, and section on :ref:`How to Write
+Loop Invariants` for examples of the required loop invariants.
+
+When the functional specification is expressed as a set of disjoint cases, the
+|SPARK| feature of :ref:`Contract Cases` can be used to increase readability
+and to provide an automatic means to verify that cases indeed define a
+partitioning of the possible operational contexts.
 
 .. _Ensure Portability of Programs:
 
@@ -594,310 +756,154 @@ modified to ensure this property (see
 http://www.spark-2014.org/entries/detail/how-our-compiler-learnt-from-our-analyzers),
 which may not hold for other Ada compilers.
 
-.. _Safe Coding Standard for Critical Software:
-
-Safe Coding Standard for Critical Software
-==========================================
-
-|SPARK| is a subset of Ada meant for formal verification, by excluding features
-that are difficult or impossible to analyze automatically. This means that
-|SPARK| can also be used as a coding standard to restrict the set of features
-used in critical software. As a safe coding standard checker, |SPARK| allows
-both to prevent the introduction of errors by excluding unsafe Ada features,
-and it facilitates their early detection with |GNATprove|'s flow analysis.
-
-Exclusion of Unsafe Ada Features
---------------------------------
-
-Once the simple task of :ref:`Identifying SPARK Code` has been completed, one
-can use |GNATprove| in ``check`` mode to verify that |SPARK| restrictions are
-respected in |SPARK| code. Here we list some of the most error-prone Ada
-features that are excluded from |SPARK| (see :ref:`Excluded Ada Features` for
-the complete list).
-
-* All expressions, including function calls, are free of
-  side-effects. Expressions with side-effects are problematic because they hide
-  interactions that occur in the code, in the sense that a computation will not
-  only produce a value but also modify some hidden state in the program. In the
-  worst case, they may even introduce interferences between subexpressions of a
-  common expression, which results in different executions depending on the
-  order of evaluation of subexpressions chosen by the compiler.
-
-* Handling of exceptions is not permitted. Exception handling can create
-  complex and invisible control flows in a program, which increase the
-  likelihood of introducing errors during maintenance. What is more, when an
-  exception is raised, subprograms that are terminated abnormally leave their
-  variables in a possibly uninitialized or inconsistent state, in which data
-  invariants may be broken. This includes values of out parameters, which
-  additionnally are not copied back when passed by copy, thus introducing a
-  dependency on the parameter mode chosen by the compiler.
-
-* The use of access types and allocators is not permitted. Pointers can
-  introduce aliasing, that is, they can allow the same object to be visible
-  through different names at the same program point. This makes it difficult to
-  reason about a program as modifying the object under one of the names will
-  also modify the other names.  What is more, access types come with their on
-  load of common mistakes, like double frees and dangling pointers.
-
-* |SPARK| also prevents dependencies on the elaboration order by ensuring that
-  no package can write into variables declared in other packages during its
-  elaboration. The use of controlled types is also forbidden as they lead to
-  insertions of implicit calls by the compiler. Finally, goto statements are
-  not permitted as they obfuscate the control flow.
-
-Early Detection of Errors
--------------------------
-
-|GNATprove|'s flow analysis will find all the occurrences of the following
-errors:
-
-* uses of uninitialized variables (see :ref:`Data Initialization Policy`)
-
-* aliasing of parameters that can cause interferences, which are often not
-  accounted for by programmers (see :ref:`Absence of Interference`)
-
-It will also warn systematically about the following suspicious behaviors:
-
-* wrong parameter modes (can hurt readability and maintainability or even be
-  the sign of a bug, for example if the programmer forgot to update a
-  parameter, to read the value of an out parameter, or to use the initial value
-  of a parameter)
-
-* unused variables or statements (again, can hurt readability and
-  maintainability or even be the sign of a bug)
-
-Address Data and Control Coupling
-=================================
-
-As defined in the avionics standard DO-178, data coupling is `"The dependence
-of a software component on data not exclusively under the control of that
-software component"` and control coupling is `"The manner or degree by which
-one software component influences the execution of another software
-component"`, where a software component could be a subprogram, a unit or a set
-of units.
-
-Although analysis of data and control coupling are not performed at the same
-level of details in non-critical domains, knowledge of data and control
-coupling is important to assess impact of code changes. |SPARK| is ideally
-equiped to support such analysis, with its detailed :ref:`Subprogram
-Contracts`:
-
-* With :ref:`Data Dependencies`, a user can specify exactly the input and
-  output data of a subprogram, which identifies the `"data not exclusively
-  under the control of that software component"`:
-
-  * When taking the subprogram as component, any variable in the data
-    dependencies is in general not exclusively under the control of that
-    software component.
-
-  * When taking the unit (or sets of units) as component, any variable in the
-    data dependencies that is not defined in the unit itself (or the set of
-    units) is in general not exclusively under the control of that software
-    component.
-
-* With :ref:`Flow Dependencies`, a user can specify the nature of the
-  `"dependence of a software component on data not exclusively under the
-  control of that software component"`, by identifying how that data may
-  influence specific outputs of a subprogram.
-
-* With :ref:`Flow Dependencies`, a user can also specify how `"one software
-  component influences the execution of another software component"`, by
-  identifying the shared data potentially written by the subprogram.
-
-* With functional contracts (:ref:`Preconditions` and :ref:`Postconditions`), a
-  user can specify very precisely the behavior of the subprogram, which defines
-  how it `"influences the execution of another software component"`. These
-  contracts need not be complete, for example they could describe the
-  precedence order rules for calling various subprograms.
-
-When using data and flow dependencies, |GNATprove|'s flow analysis is
-sufficient to check that the program implements its specifications. When using
-functional contracts, |GNATprove|'s proof should also be applied.
-
-.. _Prove Absence of Run-Time Errors (AoRTE):
-
-Prove Absence of Run-Time Errors (AoRTE)
-========================================
-
-With Proof Only
----------------
-
-|GNATprove| can be used to prove the complete absence of possible run-time
-errors corresponding to:
-
-* raising exception ``Constraint_Error`` at run time,
-
-* all possible failures of assertions corresponding to raising exception
-  ``Assert_Error`` at run time, and
-
-* all possible explicit raising of exceptions in the program.
-
-AoRTE is important for ensuring safety in all possible operational conditions
-for safety-critical software (including boundary conditions, or abnormal
-conditions) or for ensuring availability of a service (absence of DOS attack
-that can crash the software).
-
-When run-time checks are enabled during execution, Ada programs are not
-vulnerable to the kind of attacks like buffer overflows that plague programs in
-C and C++, which allow attackers to gain control over the system. But in the
-case where run-time checks are disabled (in general for efficiency, but it
-could be for other reasons), proving their absence with |GNATprove| also
-prevents such attacks. This is specially important for ensuring security when
-some inputs may have been crafted by an attacker.
-
-Few subprogram contracts (:ref:`Preconditions` and :ref:`Postconditions`) are
-needed in general to prove AoRTE, far fewer than for proving functional
-properties. Even fewer subprogram contracts are needed if types are suitably
-constrained with :ref:`Type Contracts`. Typically, 95% to 98% of run-time
-checks can be proved automatically, and the remaining checks can be either
-verified with manual provers or justified by manual analysis.
-
-|GNATprove| supports this type of combination of results in :ref:`The Analysis
-Results Summary Table`. Multiple columns display the number of checks
-automatically verified, while the column `Justified` displays the number of
-checks manually justified. The column `Unproved` should be empty for all checks
-to be verified.
-
-With a Combination of Proof and Test
-------------------------------------
-
-It is not always possible to achieve 100% proof of AoRTE, for multiple reasons:
-
-#. Formal verification is only applicable to the part of the program that is in
-   |SPARK|. If the program includes parts in Ada that are not in |SPARK|, for
-   example, then it is not possible to prove AoRTE on those parts.
-
-#. Some run-time checks may not be proved automatically due to prover
-   shortcomings (see :ref:`Investigating Prover Shortcomings` for details).
-
-#. It may not be cost-effective to add the required contracts for proving AoRTE
-   in a less critical part of the code, compared to using testing as a means of
-   verification.
-
-For all these reasons, it is important to be able to combine the results of
-formal verification and testing on different parts of a codebase. Formal
-verification works by making some assumptions, and these assumptions should be
-shown to hold even when formal verification and testing are
-combined. Certainly, formal verification cannot guarantee the same properties
-when part of a program is only tested, as when all of a program is proved. The
-goal then, when combining formal verification and testing, is to reach a level
-of confidence as good as the level reached by testing alone.
-
-At the Level of Individual Run-Time Checks
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-One way to get confidence that unproved run-time checks cannot fail during
-execution is to exercize them during testing. Test coverage information allows
-to guarantee a set of run-time checks have been executed successfully during a
-test run. This coverage information may be gathered from the execution of a
-unit testing campaign, an integration testing campaign, or the execution of a
-dedicated testsuite focussing on exercizing the run-time checks (for example on
-boundary values or random ones).
-
-This strategy is already applied in other static analysis tools, for example in
-the integration between the CodePeer static analyzer and the VectorCAST testing
-tool for Ada programs.
-
-Between Proof and Unit Testing
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Contracts on subprograms provide a natural boundary for combining proof and
-test:
-
-* If proof is used to demonstrate that a subprogram is free of run-time errors
-  and respects its contract, this proof depends on the precondition of the
-  subprogram being respected at the call site. This verification can be
-  achieved by proving the caller too, or by checking dynamically the
-  precondition of the called subprogram during unit testing for the caller.
-
-* If proof is used to demonstrate that a subprogram is free of run-time errors
-  and respects its contract, and this subprogram calls other subprograms, this
-  proof depends on the postconditions of the called subprogram being respected
-  at call sites. This verification can be achieved by proving the callees too,
-  or by checking dynamically the postcondition of the called subprograms during
-  their unit testing.
-
-Thus, it is possible to combine freely subprograms that are proved and
-subprograms that are unit tested, provided subprogram contracts
-(:ref:`Preconditions` and :ref:`Postconditions`) are exercized during unit
-testing. This can be achieved by compiling the program with assertions for
-testing (for example with switch ``-gnata`` in |GNAT Pro|), or by using
-GNATtest to create the test harness (see section 7.10.12 of |GNAT Pro| User's
-Guide on `Testing with Contracts`).
-
-This strategy is particularly well suited in the context of the DO-178C
-certification standard in avionics, which explicitly allows proof or test to be
-used as verification means on each module.
-
-Between Proof and Integration Testing
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Contracts can also be exercized dynamically during integration testing. In
-cases where unit testing is not required (either because proof has been applied
-to all subprograms, or because the verification context allows it), exercizing
-contracts during integration testing can complement proof results, by giving
-the assurance that the actual compiled program behaves as expected.
-
-This strategy has been applied at Altran on UK military projects submitted to
-Def Stan 00-56 certification: AoRTE was proved on all the code, and contracts
-were exercized during integration testing, which allowed to scrap unit testing.
-
-Prove Correct Integration Between Components
-============================================
-
-|GNATprove| can be used to prove correct integration between components, where
-a component could be a subprogram, a unit or a set of units. Indeed, even if
-components are verified individually (for example by proof or test or a
-combination thereof), their combination may still fail because of unforeseen
-interactions or design problems.
-
-|SPARK| is ideally is ideally equiped to support such analysis, with its
-detailed :ref:`Subprogram Contracts`:
-
-* With :ref:`Data Dependencies`, a user can specify exactly the input and
-  output data of a subprogram, which goes a long way towards uncovering
-  unforeseen interactions.
-
-* With functional contracts (:ref:`Preconditions` and :ref:`Postconditions`), a
-  user can specify precisely properties about the behavior of the subprogram
-  that are relevant for component integration. In general, simple contracts are
-  needed for component integration, which means that they are easy to write and
-  to verify automatically. See section on :ref:`Writing Contracts for Program
-  Integrity` for examples of such contracts.
-
-When using data dependencies, |GNATprove|'s flow analysis is sufficient to
-check correct integration between components. When using functional contracts,
-|GNATprove|'s proof should also be applied.
-
-Prove Functional Correctness
-============================
-
-|GNATprove| can be used to prove functional correctness of an implementation
-against its specification. This strongest level of verification can be applied
-either to specific subprograms, or specific units, or the complete program. For
-those subprograms whose functional correctness is to be checked, the user
-should:
-
-#. express the specification of the subprogram as a subprogram contract
-   (see :ref:`Preconditions` and :ref:`Postconditions`);
-
-#. use |GNATprove| to prove automatically that most checks (including
-   contracts) always hold; and
-
-#. address the remaining unproved checks with manual justifications or testing,
-   as already discussed in the section on how to :ref:`Prove Absence of
-   Run-Time Errors (AoRTE)`.
-
-As more complex contracts are required in general, it is expected that
-achieving that strongest level of verification is also more costly than proving
-absence of run-time errors. Typically, |SPARK| features like :ref:`Quantified
-Expressions` and :ref:`Expression Functions` are needed to express the
-specification, and features like :ref:`Loop Invariants` are needed to achieve
-automatic proof. See section on :ref:`Writing Contracts for Functional
-Correctness` for examples of such contracts, and section on :ref:`How to Write
-Loop Invariants` for examples of the required loop invariants.
-
-When the functional specification is expressed as a set of disjoint cases, the
-|SPARK| feature of :ref:`Contract Cases` can be used to increase readability
-and to provide an automatic means to verify that cases indeed define a
-partitioning of the possible operational contexts.
+.. _develop new code from scratch:
+
+Develop New Code from Scratch
+=============================
+
+This is the 'green field' development scenario where new software is
+being written and there are no constraints imposed in terms of having
+to base the development on pre-existing code. |SPARK| may be used for
+all software components or (more likely) the software may be developed
+in a mixture of |SPARK|, full Ada and other languages. For example, Ada
+may be employed in modules where it is deemed essential to make use of
+language features that are not currently in the |SPARK| subset, or in
+a safety-related project |SPARK| might be used for all of the
+safety-related software components.
+
+A typical development process for this scenario might be:
+
+#. Produce the high level (architectural) design in terms of package
+   specifications. Determine which packages will be in |SPARK| and add
+   contracts to those packages. The package contracts identify the
+   key elements of abstract state, and the subprogram global contracts
+   show which subprograms read and write that state. Optionally, dependency
+   contracts can be added to specify information flow relations, and
+   postconditions can be added to specify high-level properties such
+   as safety requirements that must be satisfied.
+
+#. Identify the |SPARK| packages with the ``SPARK_Mode`` aspect. At this
+   stage the high-level package structure can be analyzed with the tools (using
+   the 'Examine' command in GPS/GNATbench) before any executable code is
+   implemented.
+
+#. Alternatively, if the majority of packages are to be |SPARK|, then a
+   project should use ``SPARK_Mode`` as a configuration pragma, and only
+   apply ``SPARK_Mode => Off`` selectively for those few units that are
+   not |SPARK|.
+
+#. Begin implementing the package bodies. One typical method of doing this
+   is to use a process of top-down decomposition, starting with a top-level
+   subprogram specification and implementing the body by breaking it down
+   into further (nested) subprograms which are themselves specified but not
+   yet implemented, and to iterate until a level is reached where it is
+   appropriate to start writing executable code. However the exact process
+   is not mandated and will depend on other factors such as the design
+   methodology being employed.
+
+#. As each subprogram is implemented it can be verified (against its contract,
+   and to show absence of run-time errors) by proof, testing (with assertion
+   checking enabled) or both.
+
+   - Users may opt to try proving first then, if a particular proof is
+     tricky to discharge, execute test cases to either give confidence that
+     the code and contract is correct or to help diagnose why it is failing.
+
+   - Alternatively, users may prefer to execute the code with suitable
+     test cases during development, then use proof to verify it once they
+     believe it to be correct.
+
+#. Once verification is complete the executable can be compiled with
+   assertion checks either enabled or disabled depending on the policy chosen
+   by the project.
+
+.. _convert SPARK 2005 to SPARK 2014:
+
+Convert existing SPARK 2005 software to SPARK 2014
+==================================================
+
+If an existing piece of software has been developed in SPARK 2005 and is
+still undergoing active development/maintenance then it may be advantageous
+to upgrade to using SPARK 2014 in order to make use of the larger language
+subset and the new tools and environment. The |SPARK| Language Reference Manual
+has an appendix containing a SPARK 2005 to |SPARK| Mapping Specification which
+can be used to guide the conversion process. As the |SPARK| subset is larger
+than the SPARK 2005 subset, and the mapping of features between the two languages
+is defined, the translation should be relatively straightforward. There are two
+main options for the conversion process:
+
+#. All of the software is converted from SPARK 2005 to |SPARK| at the same time.
+   The |SPARK| tools should be used to analyze the work in progress throughout
+   the conversion process (which implies that a bottom-up approach may work best)
+   and any errors corrected as they are found. Once the conversion is complete,
+   development and maintenance can continue in |SPARK|.
+
+#. A more gradual approach could be employed, where code is only converted to
+   |SPARK| when it needs to be changed. (The granularity of how much code needs
+   to be converted when a module is touched should be considered, and is likely to
+   be at the level of the whole package.) The |SPARK| tools can then be used to
+   analyze the new/changed code, and will attempt to analyze any dependent units,
+   which may or may not be in |SPARK|. It is not necessary for dependent units to
+   be fully in |SPARK| but any declarations from them that are used in |SPARK|
+   packages must be in |SPARK|. Note that the latest version of the SPARK 2005
+   toolset facilitates this migration by ignoring |SPARK| pragmas.
+
+Note that some users may wish to take advantage of the new |SPARK| contracts
+and tools whilst retaining the more restrictive nature of SPARK 2005. (Many
+of the restrictions from SPARK 2005 have been lifted in |SPARK| because
+improvements in the tools mean that sound analysis can be performed without
+them, but some projects may need to operate in a more constrained environment.)
+This can be achieved using ``pragma Restrictions (SPARK_05)``. For further details
+of this restriction please see the GNAT Reference Manual.
+
+.. _analyze legacy Ada software:
+
+Analyze Legacy Ada Software
+===========================
+
+If a legacy system has been developed in Ada then analyzing it with the |SPARK|
+tools may be a good first step in order to assess the quality of the code prior
+to performing a full or partial conversion to |SPARK|. The suggested workflow is:
+
+#. Identify units which are highest priority for conversion to |SPARK|. These may
+   already be known, or potential candidates could be identified by:
+
+   - putting pragma SPARK_Mode in a global configuration file so that all code is
+     analyzed as if it were intended to be |SPARK|;
+
+   - running the 'Examine' command on all code;
+
+   - use the errors in the summary report to guide the selection process - files
+     with fewer errors are likely to be easier to convert and would be a good
+     starting point;
+
+   - remove the global configuration pragma SPARK_Mode before proceeding.
+
+#. For each unit to be converted to |SPARK|:
+
+   - Identify the specification as |SPARK| (SPARK_Mode => On) but identify the body
+     as not in |SPARK| (SPARK_Mode => Off).
+
+   - Analyze (Examine) the specification and correct any errors that are reported
+     by the tools, iterating until no errors remain.
+
+   - Mark the body as |SPARK| (change SPARK_Mode from Off to On).
+
+   - Analyze (Examine) the body and correct any errors that are reported
+     by the tools, iterating until no errors remain.
+
+   - Each subprogram can then be verified to show absence of run-time errors by proof,
+     testing (with assertion checking enabled) or both.
+
+     - Users may opt to try proving first then, if a particular proof is
+       tricky to discharge, execute test cases to either give confidence that
+       the code is correct or to help diagnose why it is failing.
+
+     - Alternatively, users may prefer to execute the code with suitable
+       test cases first, then use proof to verify it once they believe it
+       to be correct.
+
+#. Once conversion and verification is complete, the executable can be compiled with
+   assertion checks either enabled or disabled depending on the policy chosen
+   by the project. At this point users might begin adding contracts to the code in
+   order to perform verification of functional properties.
