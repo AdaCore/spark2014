@@ -97,7 +97,7 @@ Basic Project Set Up
 ^^^^^^^^^^^^^^^^^^^^
 
 If not already done, create a GNAT project file (`.gpr`), as documented in the
-GNAT User's Guide, section `GNAT Project Manager`. See also :ref:`Project
+|GNAT Pro| User's Guide, section `GNAT Project Manager`. See also :ref:`Project
 Attributes` for optional project attributes to specify the proof directory and
 other |GNATprove| switches in the project file directly.
 
@@ -614,11 +614,13 @@ output or displayed in your IDE (GPS or GNATbench), and the one which is
 produced in a file ``gnatprove.out``, which lies in the ``gnatprove``
 subdirectory of the object directory of your project.
 
-The Result File ``gnatprove.out``
----------------------------------
+.. _The Analysis Results Summary Table:
 
-This file consists of two parts. The first part is a summary table of the
-verification results of all checks in the project. The table may look like
+The Analysis Results Summary Table
+----------------------------------
+
+A summary table at the start of file ``gnatprove.out`` provides an overview of
+the verification results for all checks in the project. The table may look like
 this::
 
       ----------------------------------------------------------------------------------------------------------------
@@ -2161,6 +2163,8 @@ may yield VCs that should be true, but cannot be proved:
 
 In these cases the missing information can usually be added using ``pragma
 Assume``.
+
+.. _Investigating Prover Shortcomings:
 
 Investigating Prover Shortcomings
 ---------------------------------

@@ -246,7 +246,7 @@ Section 18.1 "Writing Portable Fixed-Point Declarations" of the GNAT Reference
 Manual gives some advice on how to reduce implementation defined behavior for
 fixed-point types. Use of IEEE 754 floating-point arithmetic can be enforced in
 GNAT by using the compilation switches "-msse2 -mfpmath=sse", as documented in
-section 8.3.1.6 "Floating Point Operations" of the GNAT User's Guide.
+section 8.3.1.6 "Floating Point Operations" of the |GNAT Pro| User's Guide.
 
 Note that a number of restrictions can be used to prevent some features leading
 to implementation defined or unspecified behavior:
@@ -665,3 +665,239 @@ It will also warn systematically about the following suspect behaviors:
 
 * unused variables and ineffective statements (again, can hurt readability, be the
   sign of a bug).
+
+Address Data and Control Coupling
+=================================
+
+As defined in the avionics standard DO-178, data coupling is `"The dependence
+of a software component on data not exclusively under the control of that
+software component"` and control coupling is `"The manner or degree by which
+one software component influences the execution of another software
+component"`, where a software component could be a subprogram, a unit or a set
+of units.
+
+Although analysis of data and control coupling are not performed at the same
+level of details in non-critical domains, knowledge of data and control
+coupling is important to assess impact of code changes. |SPARK| is ideally
+equiped to support such analysis, with its detailed :ref:`Subprogram
+Contracts`:
+
+* With :ref:`Data Dependencies`, a user can specify exactly the input and
+  output data of a subprogram, which identifies the `"data not exclusively
+  under the control of that software component"`:
+
+  * When taking the subprogram as component, any variable in the data
+    dependencies is in general not exclusively under the control of that
+    software component.
+
+  * When taking the unit (or sets of units) as component, any variable in the
+    data dependencies that is not defined in the unit itself (or the set of
+    units) is in general not exclusively under the control of that software
+    component.
+
+* With :ref:`Flow Dependencies`, a user can specify the nature of the
+  `"dependence of a software component on data not exclusively under the
+  control of that software component"`, by identifying how that data may
+  influence specific outputs of a subprogram.
+
+* With :ref:`Flow Dependencies`, a user can also specify how `"one software
+  component influences the execution of another software component"`, by
+  identifying the shared data potentially written by the subprogram.
+
+* With functional contracts (:ref:`Preconditions` and :ref:`Postconditions`), a
+  user can specify very precisely the behavior of the subprogram, which defines
+  how it `"influences the execution of another software component"`. These
+  contracts need not be complete, for example they could describe the
+  precedence order rules for calling various subprograms.
+
+When using data and flow dependencies, |GNATprove|'s flow analysis is
+sufficient to check that the program implements its specifications. When using
+functional contracts, |GNATprove|'s proof should also be applied.
+
+.. _Prove Absence of Run-Time Errors (AoRTE):
+
+Prove Absence of Run-Time Errors (AoRTE)
+========================================
+
+With Proof Only
+---------------
+
+|GNATprove| can be used to prove the complete absence of possible run-time
+errors corresponding to:
+
+* raising exception ``Constraint_Error`` at run time,
+
+* all possible failures of assertions corresponding to raising exception
+  ``Assert_Error`` at run time, and
+
+* all possible explicit raising of exceptions in the program.
+
+AoRTE is important for ensuring safety in all possible operational conditions
+for safety-critical software (including boundary conditions, or abnormal
+conditions) or for ensuring availability of a service (absence of DOS attack
+that can crash the software).
+
+When run-time checks are enabled during execution, Ada programs are not
+vulnerable to the kind of attacks like buffer overflows that plague programs in
+C and C++, which allow attackers to gain control over the system. But in the
+case where run-time checks are disabled (in general for efficiency, but it
+could be for other reasons), proving their absence with |GNATprove| also
+prevents such attacks. This is specially important for ensuring security when
+some inputs may have been crafted by an attacker.
+
+Few subprogram contracts (:ref:`Preconditions` and :ref:`Postconditions`) are
+needed in general to prove AoRTE, far fewer than for proving functional
+properties. Even fewer subprogram contracts are needed if types are suitably
+constrained with :ref:`Type Contracts`. Typically, 95% to 98% of run-time
+checks can be proved automatically, and the remaining checks can be either
+verified with manual provers or justified by manual analysis.
+
+|GNATprove| supports this type of combination of results in :ref:`The Analysis
+Results Summary Table`. Multiple columns display the number of checks
+automatically verified, while the column `Justified` displays the number of
+checks manually justified. The column `Unproved` should be empty for all checks
+to be verified.
+
+With a Combination of Proof and Test
+------------------------------------
+
+It is not always possible to achieve 100% proof of AoRTE, for multiple reasons:
+
+#. Formal verification is only applicable to the part of the program that is in
+   |SPARK|. If the program includes parts in Ada that are not in |SPARK|, for
+   example, then it is not possible to prove AoRTE on those parts.
+
+#. Some run-time checks may not be proved automatically due to prover
+   shortcomings (see :ref:`Investigating Prover Shortcomings` for details).
+
+#. It may not be cost-effective to add the required contracts for proving AoRTE
+   in a less critical part of the code, compared to using testing as a means of
+   verification.
+
+For all these reasons, it is important to be able to combine the results of
+formal verification and testing on different parts of a codebase. Formal
+verification works by making some assumptions, and these assumptions should be
+shown to hold even when formal verification and testing are
+combined. Certainly, formal verification cannot guarantee the same properties
+when part of a program is only tested, as when all of a program is proved. The
+goal then, when combining formal verification and testing, is to reach a level
+of confidence as good as the level reached by testing alone.
+
+At the Level of Individual Run-Time Checks
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+One way to get confidence that unproved run-time checks cannot fail during
+execution is to exercize them during testing. Test coverage information allows
+to guarantee a set of run-time checks have been executed successfully during a
+test run. This coverage information may be gathered from the execution of a
+unit testing campaign, an integration testing campaign, or the execution of a
+dedicated testsuite focussing on exercizing the run-time checks (for example on
+boundary values or random ones).
+
+This strategy is already applied in other static analysis tools, for example in
+the integration between the CodePeer static analyzer and the VectorCAST testing
+tool for Ada programs.
+
+Between Proof and Unit Testing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Contracts on subprograms provide a natural boundary for combining proof and
+test:
+
+* If proof is used to demonstrate that a subprogram is free of run-time errors
+  and respects its contract, this proof depends on the precondition of the
+  subprogram being respected at the call site. This verification can be
+  achieved by proving the caller too, or by checking dynamically the
+  precondition of the called subprogram during unit testing for the caller.
+
+* If proof is used to demonstrate that a subprogram is free of run-time errors
+  and respects its contract, and this subprogram calls other subprograms, this
+  proof depends on the postconditions of the called subprogram being respected
+  at call sites. This verification can be achieved by proving the callees too,
+  or by checking dynamically the postcondition of the called subprograms during
+  their unit testing.
+
+Thus, it is possible to combine freely subprograms that are proved and
+subprograms that are unit tested, provided subprogram contracts
+(:ref:`Preconditions` and :ref:`Postconditions`) are exercized during unit
+testing. This can be achieved by compiling the program with assertions for
+testing (for example with switch ``-gnata`` in |GNAT Pro|), or by using
+GNATtest to create the test harness (see section 7.10.12 of |GNAT Pro| User's
+Guide on `Testing with Contracts`).
+
+This strategy is particularly well suited in the context of the DO-178C
+certification standard in avionics, which explicitly allows proof or test to be
+used as verification means on each module.
+
+Between Proof and Integration Testing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Contracts can also be exercized dynamically during integration testing. In
+cases where unit testing is not required (either because proof has been applied
+to all subprograms, or because the verification context allows it), exercizing
+contracts during integration testing can complement proof results, by giving
+the assurance that the actual compiled program behaves as expected.
+
+This strategy has been applied at Altran on UK military projects submitted to
+Def Stan 00-56 certification: AoRTE was proved on all the code, and contracts
+were exercized during integration testing, which allowed to scrap unit testing.
+
+Prove Correct Integration Between Components
+============================================
+
+|GNATprove| can be used to prove correct integration between components, where
+a component could be a subprogram, a unit or a set of units. Indeed, even if
+components are verified individually (for example by proof or test or a
+combination thereof), their combination may still fail because of unforeseen
+interactions or design problems.
+
+|SPARK| is ideally is ideally equiped to support such analysis, with its
+detailed :ref:`Subprogram Contracts`:
+
+* With :ref:`Data Dependencies`, a user can specify exactly the input and
+  output data of a subprogram, which goes a long way towards uncovering
+  unforeseen interactions.
+
+* With functional contracts (:ref:`Preconditions` and :ref:`Postconditions`), a
+  user can specify precisely properties about the behavior of the subprogram
+  that are relevant for component integration. In general, simple contracts are
+  needed for component integration, which means that they are easy to write and
+  to verify automatically. See section on :ref:`Writing Contracts for Program
+  Integrity` for examples of such contracts.
+
+When using data dependencies, |GNATprove|'s flow analysis is sufficient to
+check correct integration between components. When using functional contracts,
+|GNATprove|'s proof should also be applied.
+
+Prove Functional Correctness
+============================
+
+|GNATprove| can be used to prove functional correctness of an implementation
+against its specification. This strongest level of verification can be applied
+either to specific subprograms, or specific units, or the complete program. For
+those subprograms whose functional correctness is to be checked, the user
+should:
+
+#. express the specification of the subprogram as a subprogram contract
+   (see :ref:`Preconditions` and :ref:`Postconditions`);
+
+#. use |GNATprove| to prove automatically that most checks (including
+   contracts) always hold; and
+
+#. address the remaining unproved checks with manual justifications or testing,
+   as already discussed in the section on how to :ref:`Prove Absence of
+   Run-Time Errors (AoRTE)`.
+
+As more complex contracts are required in general, it is expected that
+achieving that strongest level of verification is also more costly than proving
+absence of run-time errors. Typically, |SPARK| features like :ref:`Quantified
+Expressions` and :ref:`Expression Functions` are needed to express the
+specification, and features like :ref:`Loop Invariants` are needed to achieve
+automatic proof. See section on :ref:`Writing Contracts for Functional
+Correctness` for examples of such contracts, and section on :ref:`How to Write
+Loop Invariants` for examples of the required loop invariants.
+
+When the functional specification is expressed as a set of disjoint cases, the
+|SPARK| feature of :ref:`Contract Cases` can be used to increase readability
+and to provide an automatic means to verify that cases indeed define a
+partitioning of the possible operational contexts.
