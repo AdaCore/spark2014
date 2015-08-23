@@ -594,77 +594,77 @@ modified to ensure this property (see
 http://www.spark-2014.org/entries/detail/how-our-compiler-learnt-from-our-analyzers),
 which may not hold for other Ada compilers.
 
-.. _safe coding standard for critical software:
+.. _Safe Coding Standard for Critical Software:
 
-Safe coding standard for critical software
+Safe Coding Standard for Critical Software
 ==========================================
 
-|GNATprove| is designed to apply formal verification to Ada programs, allowing
-powerful analysis of a program's behavior. But he who can do more can do less.
-It can also be used as a coding standard checker for critical software, and so,
-without the need for annotating the program.
+|SPARK| is a subset of Ada meant for formal verification, by excluding features
+that are difficult or impossible to analyze automatically. This means that
+|SPARK| can also be used as a coding standard to restrict the set of features
+used in critical software. As a safe coding standard checker, |SPARK| allows
+both to prevent the introduction of errors by excluding unsafe Ada features,
+and it facilitates their early detection with |GNATprove|'s flow analysis.
 
-Exclude features that make a program difficult to understand (and to verify)
-----------------------------------------------------------------------------
+Exclusion of Unsafe Ada Features
+--------------------------------
 
-|SPARK| is a subset of Ada targeted at formal verification. As such, it excludes
-features introducing complex behaviors which are both difficult to reason
-about and to annotate. |GNATprove| can be used to check conformance of Ada programs
-to this subset, therefore working as a coding standard checker. Here we list some
-of the most error-prone Ada features that are excluded from |SPARK|
-(see :ref:`Excluded Ada Features` for the complete list).
+Once the simple task of :ref:`Identifying SPARK Code` has been completed, one
+can use |GNATprove| in ``check`` mode to verify that |SPARK| restrictions are
+respected in |SPARK| code. Here we list some of the most error-prone Ada
+features that are excluded from |SPARK| (see :ref:`Excluded Ada Features` for
+the complete list).
 
-* All expressions, including function calls, are free from side-effects. Expressions
-  with side-effects often obfuscate the code, in the sense that a computation will
-  not only produce a value but also modify some hidden state in the program. What is
-  more, they may introduce a dependency on the order of computations of sub-expressions
-  of an enclosing expression, which is not fixed by the Ada language.
+* All expressions, including function calls, are free of
+  side-effects. Expressions with side-effects are problematic because they hide
+  interactions that occur in the code, in the sense that a computation will not
+  only produce a value but also modify some hidden state in the program. In the
+  worst case, they may even introduce interferences between subexpressions of a
+  common expression, which results in different executions depending on the
+  order of evaluation of subexpressions chosen by the compiler.
 
-* Handling of exceptions is not permitted. Exception handling can create complex and
-  obfuscated control flow in a program, making it difficult to read the program. What
-  is more, when an exception is raised, the subprogram is not terminated, leaving the
-  program in an 'unfinished' state, where data invariants may be broken. Finally, if the
-  program is not terminated normally, values of out parameters passed by copy are not
-  copied back into their variable. This may introduce dependencies on parameter passing
-  modes of out parameters, which, once again, are not specified by the Ada language.
+* Handling of exceptions is not permitted. Exception handling can create
+  complex and invisible control flows in a program, which increase the
+  likelihood of introducing errors during maintenance. What is more, when an
+  exception is raised, subprograms that are terminated abnormally leave their
+  variables in a possibly uninitialized or inconsistent state, in which data
+  invariants may be broken. This includes values of out parameters, which
+  additionnally are not copied back when passed by copy, thus introducing a
+  dependency on the parameter mode chosen by the compiler.
 
-* The use of access types and allocators is not permitted. Pointers can introduce
-  aliasing, that is, they can allow the same object to be visible through different
-  names at the same program point. This makes it difficult to reason about a program
-  as modifying the object under one of the names will also modify the other names.
-  What is more, access types come with their on load of common mistakes, like double
-  frees and dangling pointers.
+* The use of access types and allocators is not permitted. Pointers can
+  introduce aliasing, that is, they can allow the same object to be visible
+  through different names at the same program point. This makes it difficult to
+  reason about a program as modifying the object under one of the names will
+  also modify the other names.  What is more, access types come with their on
+  load of common mistakes, like double frees and dangling pointers.
 
-* SPARK also prevents dependencies on the elaboration order by ensuring that no package
-  can write into variables declared in other packages during its elaboration. The use
-  of controlled types is also forbidden as they lead to insertions of implicit calls by
-  the compiler. Finally, goto statements are not permitted as they obfuscate the control
-  flow.
+* |SPARK| also prevents dependencies on the elaboration order by ensuring that
+  no package can write into variables declared in other packages during its
+  elaboration. The use of controlled types is also forbidden as they lead to
+  insertions of implicit calls by the compiler. Finally, goto statements are
+  not permitted as they obfuscate the control flow.
 
-Detect errors and suspect behaviors
------------------------------------
+Early Detection of Errors
+-------------------------
 
-Coding standard checkers are not only concerned with preventing usages of dangerous
-or error-prone features. They often also enforce good practices aiming at reducing
-the amount of coding errors. Among them, we can find enforcement of initialization
-of variables at declaration, or obligation to use the initial values of all subprograms
-inputs. Even without any additional annotations, |GNATprove| can do more than just check
-conformance to the SPARK subset. It can also detect errors and suspect behaviors
-which at best obfuscate the code and at worst are the sign of bugs. In particular,
-|GNATprove| will find all the occurrences of the following errors:
+|GNATprove|'s flow analysis will find all the occurrences of the following
+errors:
 
-* uses of uninitialized variables (a bounded error, variable may be out of bound),
+* uses of uninitialized variables (see :ref:`Data Initialization Policy`)
 
-* aliasing of parameters (often not accounted for by programmers).
+* aliasing of parameters that can cause interferences, which are often not
+  accounted for by programmers (see :ref:`Absence of Interference`)
 
-It will also warn systematically about the following suspect behaviors:
+It will also warn systematically about the following suspicious behaviors:
 
-* wrong parameter modes (can hurt readability, be the sign of a bug (if we forgot to
-  update a parameter, read the value of an out parameter, do not use the initial value
-  of something)),
+* wrong parameter modes (can hurt readability and maintainability or even be
+  the sign of a bug, for example if the programmer forgot to update a
+  parameter, to read the value of an out parameter, or to use the initial value
+  of a parameter)
 
-* unused variables and ineffective statements (again, can hurt readability, be the
-  sign of a bug).
+* unused variables or statements (again, can hurt readability and
+  maintainability or even be the sign of a bug)
 
 Address Data and Control Coupling
 =================================
