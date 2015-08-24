@@ -662,6 +662,7 @@ is
    --  @param N is the node corresponding to the
    --     Pragma_Constant_After_Elaboration. N might be Empty.
    --  @return True iff Constant_After_Elaboration is True
+
 private
    Init_Done : Boolean := False;
 
