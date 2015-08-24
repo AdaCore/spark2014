@@ -322,6 +322,33 @@ When the functional specification is expressed as a set of disjoint cases, the
 and to provide an automatic means to verify that cases indeed define a
 partitioning of the possible operational contexts.
 
+.. _Safe Optimization of Run-Time Checks:
+
+Safe Optimization of Run-Time Checks
+====================================
+
+Enabling run-time checks in a program usually increase the running time by
+around 10%. This may not fit the timing schedule in some highly constrained
+applications. In some cases where a piece of code is called a large number of
+times (for example in a loop), enabling run-time checks on that piece of code
+may increase the running time by far more than 10%. Thus, it may be tempting to
+remove run-time checking in the complete program (with compilation switch
+``-gnatp``) or a selected piece of code (with pragma ``Suppress``), for the
+purpose of decreasing running time. The poblem with that approach is that the
+program is not protected anymore against programming mistakes (for safety) or
+attackers (for security).
+
+|GNATprove| provides a better solution, by allowing users to prove the absence
+of all run-time errors (or run-time errors of a specific kind, for example
+overflow checks) in a piece of code, provided the precondition of the enclosing
+subprogram is respected. Then, all run-time checks (or run-time errors of a
+specific kind) can be suppressed in that piece of code using pragma
+``Suppress``, knowing that they will never fail at run time, provided the
+precondition of the enclosing subprogram is checked (for example by using
+:ref:`Pragma Assertion_Policy`). By replacing many checks with one check, we
+can decrease the running time of the application by doing safe and controlled
+optimization of run-time checks.
+
 .. _Ensure Portability of Programs:
 
 Ensure Portability of Programs
