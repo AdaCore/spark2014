@@ -225,7 +225,7 @@ package Flow_Generated_Globals is
    procedure GG_Write_State_Info (DM : Dependency_Maps.Map)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
-   --  Records information related to state abstractions and the refinements
+   --  Record information related to state abstractions and the refinements
    --  thereof. This will later be used to return the appropriate view
    --  depending on the caller (as opposed to always returning the most refined
    --  view). It also stores information related to external states.
@@ -233,7 +233,7 @@ package Flow_Generated_Globals is
    procedure GG_Write_Global_Info (GI : Global_Phase_1_Info)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
-   --  Records the information we need to later compute globals.
+   --  Record the information we need to later compute globals.
    --  Compute_Globals in Flow.Slice is used to produce the inputs.
    --  It also stores information related to volatiles and possibly blocking
    --  property.

@@ -259,7 +259,6 @@ package body Flow_Generated_Globals is
    --  string). Regular expression should be faster than naive string matching.
    --  It is a global constant and so it is compiler only once.
 
-   --  Regexp for predefined entities
    Predefined : constant Pattern_Matcher :=
      Compile ("^(ada|interfaces|system)__");
 
@@ -267,6 +266,7 @@ package body Flow_Generated_Globals is
    --  Serialisation
    ----------------------------------------------------------------------
 
+   --  Regexp for predefined entities
    type ALI_Entry_Kind is (EK_Error,
                            EK_End_Marker,
                            EK_State_Map,
@@ -931,7 +931,7 @@ package body Flow_Generated_Globals is
       Write_To_ALI (V);
 
       --  Write tasking-related information. This is a bit awkward since we
-      --  need to rotate the information in tasking_info_bag.
+      --  need to rotate the information in Tasking_Info_Bag.
       declare
          All_Names : Name_Sets.Set := Name_Sets.Empty_Set;
       begin
