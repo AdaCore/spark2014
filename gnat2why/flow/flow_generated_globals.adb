@@ -301,24 +301,32 @@ package body Flow_Generated_Globals is
       end case;
    end record;
 
-   Null_ALI_Entry : constant array (ALI_Entry_Kind) of ALI_Entry :=
-       (EK_Error => (Kind => EK_Error),
-        EK_End_Marker => (Kind => EK_End_Marker),
-        EK_State_Map => (Kind      => EK_State_Map,
-                         The_State => Null_Entity_Name,
-                         others    => <>),
-        EK_Volatiles => (Kind   => EK_Volatiles,
-                         others => <>),
-        EK_Globals => (Kind            => EK_Globals,
-                       The_Global_Info => Null_Global_Info),
-        EK_Tasking_Instance_Count => (Kind      => EK_Tasking_Instance_Count,
-                                      The_Type  => Null_Entity_Name,
-                                      The_Count => Instance_Number'First),
-        EK_Tasking_Info => (Kind       => EK_Tasking_Info,
-                            The_Entity => Null_Entity_Name,
-                            others     => <>),
-        EK_Tasking_Nonblocking => (Kind   => EK_Tasking_Nonblocking,
-                                   others => <>));
+   Null_ALI_Entry : constant array (ALI_Entry_Kind) of ALI_Entry := (
+      EK_Error                  => (Kind => EK_Error),
+
+      EK_End_Marker             => (Kind => EK_End_Marker),
+
+      EK_State_Map              => (Kind      => EK_State_Map,
+                                    The_State => Null_Entity_Name,
+                                    others    => <>),
+
+      EK_Volatiles              => (Kind   => EK_Volatiles,
+                                    others => <>),
+
+      EK_Globals                => (Kind            => EK_Globals,
+                                    The_Global_Info => Null_Global_Info),
+
+      EK_Tasking_Instance_Count => (Kind       => EK_Tasking_Instance_Count,
+                                    The_Type   => Null_Entity_Name,
+                                    The_Count  => Instance_Number'First),
+
+      EK_Tasking_Info           => (Kind       => EK_Tasking_Info,
+                                    The_Entity => Null_Entity_Name,
+                                    others     => <>),
+
+      EK_Tasking_Nonblocking    => (Kind   => EK_Tasking_Nonblocking,
+                                    others => <>)
+   );
 
    procedure Serialize (A : in out Archive; V : in out Entity_Name);
 
