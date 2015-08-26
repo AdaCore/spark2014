@@ -2093,7 +2093,7 @@ package body Flow_Generated_Globals is
       end;
 
       if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - ali files read");
+         Note_Time ("gg_read - ALI files read");
       end if;
 
       if Debug_Print_Info_Sets_Read then
