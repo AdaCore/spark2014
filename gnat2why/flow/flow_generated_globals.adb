@@ -2728,7 +2728,19 @@ package body Flow_Generated_Globals is
 
    begin
       return (not Nonblocking_Subprograms_Set.Contains (EN));
---          or else Calls_Potentially_Blocking_Subprogram;
+      --  Analysis of the call graph for potentially blocking calls is
+      --  temprorarily disabled, since the created call graph is not yet
+      --  complete.
+      --
+      --  The call graph needs to be created for all callable entities
+      --  (i.e. procedures, functions and entries) of the current compilation
+      --  unit; currently it is only created for those callable entities that
+      --  have a GG (generated globals) entry in the ALI file created in phase
+      --  1.
+      --
+      --  Once the call graph is fixed, the return statement needs to be
+      --  extended with
+      --    or else Calls_Potentially_Blocking_Subprogram;
    end Is_Potentially_Blocking;
 
    ---------------------
