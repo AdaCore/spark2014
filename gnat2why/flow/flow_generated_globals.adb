@@ -839,6 +839,8 @@ package body Flow_Generated_Globals is
          end loop;
       end Process_Volatiles;
 
+   --  Start of processing for GG_Write_Global_Info
+
    begin
       case GI.Kind is
          when Kind_Subprogram | Kind_Task | Kind_Entry =>
