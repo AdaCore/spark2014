@@ -563,6 +563,13 @@ package body SPARK_Frame_Conditions is
       end loop;
    end Free_SCCs;
 
+   --------------------
+   -- Computed_Calls --
+   --------------------
+
+   function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
+   is (To_Names (Calls.Element (E_Name)));
+
    -------------------------
    -- Get_Generated_Reads --
    -------------------------

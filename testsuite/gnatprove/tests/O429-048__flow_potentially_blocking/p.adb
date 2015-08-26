@@ -3,7 +3,7 @@ with Ada.Text_IO;
 with Ada.Real_Time;
 with Ada.Numerics.Elementary_Functions;
 
-with Remote, Barrier, Complex, Floatio;
+with Library_Level_Function, Library_Level_Procedure, Simple_Package, Remote, Barrier, Complex, Floatio;
 
 package body P is
 
@@ -247,6 +247,31 @@ package body P is
       entry Floatio_Print_Entry when True is
       begin
          Floatio;
+      end;
+
+   end;
+
+   protected body PO_13 is
+      procedure Dummy_Proc is
+      begin
+         null;
+      end;
+
+      entry Entry_Call_To_Library_Level_Procedure when True is
+      begin
+         Library_Level_Procedure;
+         Simple_Package.Dummy;
+      end;
+
+      procedure Proc_Call_To_Library_Level_Procedure is
+      begin
+         Library_Level_Procedure;
+         Simple_Package.Dummy;
+      end;
+
+      function Func_Call_To_Library_Level_Function return Boolean is
+      begin
+         return Library_Level_Function;
       end;
 
    end;

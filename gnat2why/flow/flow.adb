@@ -1255,7 +1255,8 @@ package body Flow is
                         then
                            --  If we have a user-provided Global or Depends
                            --  contract then we use Get_Globals to get that.
-
+                           --  Note that in such a case components *_Calls
+                           --  and Local_* will be left as empty sets.
                            declare
                               Proof_Ins   : Flow_Id_Sets.Set;
                               Reads       : Flow_Id_Sets.Set;
@@ -1284,6 +1285,7 @@ package body Flow is
                                    To_Name_Set (Proof_Ins),
                                  Inputs                => To_Name_Set (Reads),
                                  Outputs               => To_Name_Set (Writes),
+                                 --  These are left as empty sets
                                  Proof_Calls           => Name_Sets.Empty_Set,
                                  Definite_Calls        => Name_Sets.Empty_Set,
                                  Conditional_Calls     => Name_Sets.Empty_Set,

@@ -39,6 +39,7 @@ with Osint.C;                    use Osint.C;
 with Output;                     use Output;
 with Sem_Util;                   use Sem_Util;
 with Sinfo;                      use Sinfo;
+with Snames;                     use Snames;
 
 with Call;                       use Call;
 with Gnat2Why_Args;
@@ -199,21 +200,27 @@ package body Flow_Generated_Globals is
    -- Tasking graphs --
    --------------------
 
-   package Tasking_Graphs is new Graphs
+   package Entity_Name_Graphs is new Graphs
      (Vertex_Key   => Entity_Name,
       Edge_Colours => GG_Edge_Colours,
       Null_Key     => Null_Entity_Name,
       Key_Hash     => Name_Hash,
       Test_Key     => "=");
 
-   Tasking_Graph : array (Tasking_Info_Kind) of Tasking_Graphs.Graph :=
-     (others => Tasking_Graphs.Create);
-   --  Graphs with tasking-related information
+   Tasking_Graph : array (Tasking_Info_Kind) of Entity_Name_Graphs.Graph :=
+     (others => Entity_Name_Graphs.Create);
+   --  Graphs with information about objects accessed by subprograms
+
+   Call_Graph : Entity_Name_Graphs.Graph := Entity_Name_Graphs.Create;
+   --  Call graph where vertices correspond to subprograms and edges correspond
+   --  to subprogram calls. Subprogram calls are provided by the front end,
+   --  i.e. they are not affected by user's annotations. Unlike Global_Graph,
+   --  it contains no objects.
 
    type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
    --  Similar to Tasking_Info, but with name sets.
 
-   use type Tasking_Graphs.Vertex_Id;
+   use type Entity_Name_Graphs.Vertex_Id;
 
    -------------------
    -- Global_Graphs --
@@ -247,26 +254,26 @@ package body Flow_Generated_Globals is
 
    --  Any user-defined subprogram for which we do not know its blocking status
    --  (e.g. when its body is missing or is not in SPARK) is assumed to be
-   --  potentially blocking. For predefined subprograms we never have their
-   --  blocking status read from ALI file, but assume that they are nonblocing.
-   --
+   --  potentially blocking. For predefined subprograms we never read their
+   --  blocking status from ALI file, but assume that they are nonblocking.
    --  This assumption is valid, because user-defined subprograms that call a
-   --  potentially blocking predefined subprogram have been already marked as
+   --  predefined potentially blocking subprogram have been already marked as
    --  potentially blocking.
    --
    --  However, here we still need to distinguish between user-defined and
    --  predefined subprograms and can only do this by their Entity_Name (i.e.
-   --  string). Regular expression should be faster than naive string matching.
-   --  It is a global constant and so it is compiler only once.
+   --  string). This is done with regular expressions, which more efficient
+   --  than naive string matching. The regexp is a global constant and so it
+   --  is compiled only once.
 
    Predefined : constant Pattern_Matcher :=
      Compile ("^(ada|interfaces|system)__");
+   --  Regexp for predefined entities
 
    ----------------------------------------------------------------------
    --  Serialisation
    ----------------------------------------------------------------------
 
-   --  Regexp for predefined entities
    type ALI_Entry_Kind is (EK_Error,
                            EK_End_Marker,
                            EK_State_Map,
@@ -1252,6 +1259,100 @@ package body Flow_Generated_Globals is
          --  Close graph, but only add edges that are not in the local
          --  graph.
          Global_Graph.Conditional_Close (Edge_Selector'Access);
+
+         -----------------------
+         -- Create call graph --
+         -----------------------
+
+         --  To detect potentially blocking operations in protected actions
+         --  we create a call graph with vertices corresponding to callable
+         --  subprograms (i.e. entries, functions and procedures).
+         --
+         --  All edges originate from subprograms in SPARK, since subprograms
+         --  not in SPARK are considered to be potentially blocking anyway
+         --  (they are "leaves" of the call graph).
+         --
+         declare
+            Protected_Actions_In_Current_Compilation_Unit : Boolean := False;
+            --  Call graphs are needed only if there are protected actions in
+            --  the current compilation unit.
+
+            V_Caller, V_Callee : Entity_Name_Graphs.Vertex_Id;
+
+            procedure Find_Vertex
+              (E_Name : Entity_Name;
+               V      : out Entity_Name_Graphs.Vertex_Id)
+              with Post => V /= Entity_Name_Graphs.Null_Vertex;
+            --  Find Vertex_Id of subprogram represented by entity
+            --  name E_Name in Call_Graph; create such vertex if it
+            --  does not already exists.
+
+            -----------------
+            -- Find_Vertex --
+            -----------------
+
+            procedure Find_Vertex
+              (E_Name : Entity_Name;
+               V      : out Entity_Name_Graphs.Vertex_Id)
+            is
+            begin
+               V := Call_Graph.Get_Vertex (E_Name);
+               if V = Entity_Name_Graphs.Null_Vertex then
+                  Call_Graph.Add_Vertex (E_Name, V);
+               end if;
+            end Find_Vertex;
+
+         begin
+            --  Check if there are any entries in the current compilation unit;
+            --  if not then we do not need to create a call graph.
+            for Subprogram_Info of Subprogram_Info_List loop
+               case Subprogram_Info.Kind is
+                  when Kind_Entry =>
+                     Protected_Actions_In_Current_Compilation_Unit := True;
+                     exit;
+
+                  when Kind_Subprogram =>
+                     declare
+                        E : constant Entity_Id :=
+                          Find_Entity (Subprogram_Info.Name);
+                     begin
+                        if Present (E)
+                          and then Convention (E) = Convention_Protected
+                        then
+                           Protected_Actions_In_Current_Compilation_Unit :=
+                             True;
+                           exit;
+                        end if;
+                     end;
+
+                  when others =>
+                     null;
+
+               end case;
+            end loop;
+
+            if Protected_Actions_In_Current_Compilation_Unit then
+               for Subprogram_Info of Subprogram_Info_List loop
+
+                  if Subprogram_Info.Kind in Kind_Subprogram | Kind_Entry
+                  then
+                     Find_Vertex (Subprogram_Info.Name, V_Caller);
+                     declare
+                        Calls : constant Name_Sets.Set :=
+                          Computed_Calls (Subprogram_Info.Name);
+                     begin
+                        for Callee of Calls loop
+                           Find_Vertex (Callee, V_Callee);
+                           Call_Graph.Add_Edge (V_Caller, V_Callee);
+                        end loop;
+                     end;
+                  end if;
+               end loop;
+
+               --  Close the call graph
+               Call_Graph.Close;
+            end if;
+         end;
       end Add_All_Edges;
 
       -------------------------
@@ -1428,7 +1529,7 @@ package body Flow_Generated_Globals is
       --------------------------
 
       procedure Create_Tasking_Graph is
-         use Tasking_Graphs;
+         use Entity_Name_Graphs;
       begin
          for Kind in Tasking_Info_Kind loop
             for C in Tasking_Info_Bag (Kind).Iterate loop
@@ -1875,7 +1976,7 @@ package body Flow_Generated_Globals is
       ---------------------------
 
       procedure Process_Tasking_Graph is
-         use Tasking_Graphs;
+         use Entity_Name_Graphs;
       begin
          for Kind in Tasking_Info_Kind loop
             --  Do the transitive closure
@@ -2513,70 +2614,53 @@ package body Flow_Generated_Globals is
       Protected_Type_E : constant Entity_Id := Scope (E);
       --  Entity of the enclosing protected type
 
-      Ins_GID       : constant Global_Id := (Kind => Ins_Kind,
-                                             Name => EN);
-
-      Outs_GID      : constant Global_Id := (Kind => Outs_Kind,
-                                             Name => EN);
-
-      Proof_Ins_GID : constant Global_Id := (Kind => Proof_Ins_Kind,
-                                             Name => EN);
-      --  Global_Ids that collectively represent subprogram EN
-
-      function Calls_Potentially_Blocking_Subprogram
-        (GID : Global_Id) return Boolean with
-        Pre => GID.Kind in Ins_Kind | Proof_Ins_Kind | Outs_Kind;
+      function Calls_Potentially_Blocking_Subprogram return Boolean;
       --  Check for calls to potentially blocking subprograms of a given Kind
 
       -------------------------------------------
       -- Calls_Potentially_Blocking_Subprogram --
       -------------------------------------------
 
-      function Calls_Potentially_Blocking_Subprogram
-        (GID : Global_Id) return Boolean
+      function Calls_Potentially_Blocking_Subprogram return Boolean
       is
-         use Global_Graphs;
+         use Entity_Name_Graphs;
 
-         Subp_V : constant Vertex_Id := Global_Graph.Get_Vertex (GID);
-         --  Vertex that represents called subprogram
+         Caller : constant Vertex_Id := Call_Graph.Get_Vertex (EN);
+         --  Vertex that represents the analysed subprogram
 
-         Callee : Global_Id;
+         Callee : Entity_Name;
 
-         function Calls_Same_Target_Type (S : Global_Id) return Boolean;
+         function Calls_Same_Target_Type (S : Entity_Name) return Boolean;
          --  Check if subprogram S calls the enclosing protected type of E
 
-         function Is_Predefined (Name : String) return Boolean;
-         --  Check if subprogram name is in a unit predefined by the Ada RM
+         function Is_Predefined (Subprogram : String) return Boolean;
+         --  Check if Subprogram is in a unit predefined by the Ada RM
 
          ----------------------------
          -- Calls_Same_Target_Type --
          ----------------------------
 
-         function Calls_Same_Target_Type (S : Global_Id) return Boolean is
-            Subp_V : constant Vertex_Id := Global_Graph.Get_Vertex (S);
+         function Calls_Same_Target_Type (S : Entity_Name) return Boolean is
+            Subp_V : constant Vertex_Id := Call_Graph.Get_Vertex (S);
             --  Vertex that represents subprogram S
 
-            Callee : Global_Id;
+            Callee : Entity_Name;
             --  Vertex that represent subprogram called by S
          begin
-            --  Iterate over objects accessed by subprogram S
-            for V of Global_Graph.Get_Collection (Subp_V, Out_Neighbours) loop
+            --  Iterate over subprograms called by subprogram S
+            for V of Call_Graph.Get_Collection (Subp_V, Out_Neighbours) loop
 
-               Callee := Global_Graph.Get_Key (V);
+               Callee := Call_Graph.Get_Key (V);
 
-               if Callee.Kind in Ins_Kind | Outs_Kind | Proof_Ins_Kind then
-                  declare
-                     Callee_E : constant Entity_Id :=
-                       Find_Entity (Callee.Name);
-                  begin
-                     if Callee_E /= Empty and then
-                       Scope (Callee_E) = Protected_Type_E
-                     then
-                        return True;
-                     end if;
-                  end;
-
-               end if;
+               declare
+                  Callee_E : constant Entity_Id := Find_Entity (Callee);
+               begin
+                  if Present (Callee_E)
+                    and then Scope (Callee_E) = Protected_Type_E
+                  then
+                     return True;
+                  end if;
+               end;
 
             end loop;
 
@@ -2587,54 +2671,49 @@ package body Flow_Generated_Globals is
          -- Is_Predefined --
          -------------------
 
-         function Is_Predefined (Name : String) return Boolean is
+         function Is_Predefined (Subprogram : String) return Boolean is
          begin
-            return Match (Predefined, Name);
+            return Match (Predefined, Subprogram);
          end Is_Predefined;
 
       --  Start of processing for Calls_Potentially_Blocking_Subprogram
 
       begin
-         for V of Global_Graph.Get_Collection (Subp_V, Out_Neighbours) loop
 
-            Callee := Global_Graph.Get_Key (V);
+         for V of Call_Graph.Get_Collection (Caller, Out_Neighbours) loop
 
-            if Callee.Kind in Proof_Ins_Kind | Ins_Kind | Outs_Kind then
-               --  Check for potentially blocking constructs
+            Callee := Call_Graph.Get_Key (V);
 
-               declare
-                  Callee_Str : constant String := To_String (Callee.Name);
-
-                  Callee_E : constant Entity_Id := Find_Entity (Callee.Name);
-                  --  Entities from other compilation units have empty id
-               begin
-                  if Is_Predefined (Callee_Str) then
-                     --  All user-defined callers of predefined potentially
-                     --  blocking subprograms have been already marked as
-                     --  potentially blocking, so here we can safely assume
-                     --  that any call to predefined subprogram is nonblocking.
-                     null;
-                  else
-                     if not Nonblocking_Subprograms_Set.Contains (Callee.Name)
-                     then
-                        return True;
-                     end if;
-                  end if;
-
-                  --  Check for external calls to a protected subprogram with
-                  --  the same target type as that of the protected action.
-                  if Callee_E = Empty
-                    or else not Scope_Within_Or_Same (Scope (Callee_E),
-                                                      Protected_Type_E)
+            declare
+               Callee_E : constant Entity_Id := Find_Entity (Callee);
+               --  Entities from other compilation units have empty id
+            begin
+               if Is_Predefined (To_String (Callee)) then
+                  --  All user-defined callers of predefined potentially
+                  --  blocking subprograms have been already marked as
+                  --  potentially blocking, so here we can safely assume
+                  --  that any call to predefined subprogram is nonblocking.
+                  null;
+               else
+                  if not Nonblocking_Subprograms_Set.Contains (Callee)
                   then
-                     if Calls_Same_Target_Type (Callee) then
-                        return True;
-                     end if;
+                     return True;
                   end if;
+               end if;
 
-                  --  ??? remote subprograms
-               end;
-            end if;
+               --  Check for external calls to a protected subprogram with
+               --  the same target type as that of the protected action.
+               if Callee_E = Empty
+                 or else not Scope_Within_Or_Same (Scope (Callee_E),
+                                                   Protected_Type_E)
+               then
+                  if Calls_Same_Target_Type (Callee) then
+                     return True;
+                  end if;
+               end if;
+
+               --  ??? remote subprograms
+            end;
 
          end loop;
 
@@ -2646,9 +2725,7 @@ package body Flow_Generated_Globals is
 
    begin
       return (not Nonblocking_Subprograms_Set.Contains (EN))
-        or else Calls_Potentially_Blocking_Subprogram (Ins_GID)
-        or else Calls_Potentially_Blocking_Subprogram (Outs_GID)
-        or else Calls_Potentially_Blocking_Subprogram (Proof_Ins_GID);
+        or else Calls_Potentially_Blocking_Subprogram;
    end Is_Potentially_Blocking;
 
    ---------------------

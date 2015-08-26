@@ -109,4 +109,11 @@ package P is
       entry Floatio_Print_Entry;
    end;
 
+   protected PO_13 is
+      entry Entry_Call_To_Library_Level_Procedure;
+      procedure Proc_Call_To_Library_Level_Procedure;
+      function Func_Call_To_Library_Level_Function return Boolean with Volatile_Function;
+      procedure Dummy_Proc;
+   end;
+
 end P;
