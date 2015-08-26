@@ -2617,6 +2617,7 @@ package body Flow_Generated_Globals is
       --  Entity of the enclosing protected type
 
       function Calls_Potentially_Blocking_Subprogram return Boolean;
+      pragma Unreferenced (Calls_Potentially_Blocking_Subprogram);
       --  Check for calls to potentially blocking subprograms of a given Kind
 
       -------------------------------------------
@@ -2726,8 +2727,8 @@ package body Flow_Generated_Globals is
    --  Start of processing for Is_Potentially_Blocking
 
    begin
-      return (not Nonblocking_Subprograms_Set.Contains (EN))
-        or else Calls_Potentially_Blocking_Subprogram;
+      return (not Nonblocking_Subprograms_Set.Contains (EN));
+--          or else Calls_Potentially_Blocking_Subprogram;
    end Is_Potentially_Blocking;
 
    ---------------------

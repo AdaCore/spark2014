@@ -15,7 +15,6 @@ complex.adb:12:07: warning: assuming "Put" has no effect on global items
 complex.adb:12:07: warning: no Global contract available for "Put"
 complex.adb:12:13: info: initialization of "X.Im" proved
 complex.adb:12:13: info: initialization of "X.Re" proved
-external_separate_calls.ads:4:13: potentially blocking operation in protected operation "Enter"
 external_separate_calls.ads:12:14: warning: subprogram "Divert_Control_From_PO1_To_PO2" has no effect
 floatio.adb:3:11: medium: "Default_Aft" might not be initialized after elaboration of main program "Floatio"
 floatio.adb:3:11: medium: "Default_Exp" might not be initialized after elaboration of main program "Floatio"
@@ -36,7 +35,6 @@ internal_protected_call.adb:23:10: warning: unused assignment to "Entry_Calls_Pr
 internal_protected_call.adb:34:07: warning: analyzing unreferenced procedure "P1"
 internal_protected_call.adb:39:07: warning: analyzing unreferenced procedure "P2"
 internal_protected_call.adb:44:20: warning: statement has no effect
-internal_protected_call.ads:3:13: potentially blocking operation in protected operation "E"
 internal_protected_call.ads:4:17: potentially blocking operation in protected operation "P"
 internal_protected_call.ads:4:17: warning: subprogram "P" has no effect
 internal_protected_call.ads:9:17: warning: subprogram "P" has no effect
@@ -44,6 +42,8 @@ internal_protected_call.ads:13:17: potentially blocking operation in protected o
 internal_protected_call.ads:13:17: warning: subprogram "P1" has no effect
 internal_protected_call.ads:14:17: potentially blocking operation in protected operation "P2"
 internal_protected_call.ads:14:17: warning: subprogram "P2" has no effect
+library_level_function.adb:5:32: warning: unused initial value of "Real_Time.Clock_Time"
+library_level_function.adb:8:04: warning: statement has no effect
 p-po_stub_1.adb:3:38: warning: statement has no effect
 p-po_stub_1.adb:8:04: warning: analyzing unreferenced procedure "Nonblocking_Stub_Proc"
 p-po_stub_2.adb:3:44: warning: statement has no effect
@@ -94,6 +94,8 @@ p.adb:233:26: info: initialization of "Default_Exp" proved
 p.adb:233:26: info: initialization of "Default_Fore" proved
 p.adb:233:26: warning: assuming "Put" has no effect on global items
 p.adb:233:26: warning: no Global contract available for "Put"
+p.adb:255:07: warning: analyzing unreferenced procedure "Dummy_Proc"
+p.adb:266:07: warning: analyzing unreferenced procedure "Proc_Call_To_Library_Level_Procedure"
 p.ads:5:14: warning: subprogram "Potentially_Blocking_Proc" has no effect
 p.ads:7:14: warning: subprogram "Blocking_Proc" has no effect
 p.ads:9:14: warning: subprogram "Nonblocking_Proc" has no effect
@@ -101,44 +103,31 @@ p.ads:21:17: warning: subprogram "Nonblocking_Type_Proc" has no effect
 p.ads:25:13: potentially blocking operation in protected operation "Directly_Blocking_Type_Entry"
 p.ads:26:17: potentially blocking operation in protected operation "Directly_Blocking_Type_Proc"
 p.ads:26:17: warning: subprogram "Directly_Blocking_Type_Proc" has no effect
-p.ads:30:13: potentially blocking operation in protected operation "Indirectly_Blocking_Type_Entry"
-p.ads:31:17: potentially blocking operation in protected operation "Indirectly_Blocking_Type_Proc"
 p.ads:31:17: warning: subprogram "Indirectly_Blocking_Type_Proc" has no effect
 p.ads:36:17: warning: subprogram "Nonblocking_Object_Proc" has no effect
 p.ads:40:13: potentially blocking operation in protected operation "Directly_Blocking_Object_Entry"
 p.ads:41:17: potentially blocking operation in protected operation "Directly_Blocking_Object_Proc"
 p.ads:41:17: warning: subprogram "Directly_Blocking_Object_Proc" has no effect
-p.ads:45:13: potentially blocking operation in protected operation "Indirectly_Blocking_Object_Entry"
-p.ads:46:17: potentially blocking operation in protected operation "Indirectly_Blocking_Object_Proc"
 p.ads:46:17: warning: subprogram "Indirectly_Blocking_Object_Proc" has no effect
 p.ads:51:17: warning: subprogram "Nonblocking_Stub_Proc" has no effect
 p.ads:55:13: potentially blocking operation in protected operation "Directly_Blocking_Stub_Entry"
 p.ads:56:17: potentially blocking operation in protected operation "Directly_Blocking_Stub_Proc"
 p.ads:56:17: warning: subprogram "Directly_Blocking_Stub_Proc" has no effect
-p.ads:60:13: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Entry"
-p.ads:61:17: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Proc"
 p.ads:61:17: warning: subprogram "Indirectly_Blocking_Stub_Proc" has no effect
 p.ads:64:14: more than one task accesses an unsynchronized global variable "p.now" (SPARK RM 9.11)
-p.ads:71:13: potentially blocking operation in protected operation "Yielding_Entry"
 p.ads:72:17: potentially blocking operation in protected operation "Yielding_Proc"
 p.ads:72:17: warning: subprogram "Yielding_Proc" has no effect
 p.ads:77:17: warning: subprogram "Pure_Proc" has no effect
 p.ads:82:17: warning: subprogram "Remote_Proc" has no effect
-p.ads:86:13: potentially blocking operation in protected operation "Barrier_Entry"
-p.ads:87:17: potentially blocking operation in protected operation "Barrier_Proc"
-p.ads:91:13: potentially blocking operation in protected operation "File_Entry"
 p.ads:92:17: potentially blocking operation in protected operation "File_Proc"
 p.ads:92:17: warning: subprogram "File_Proc" has no effect
-p.ads:96:13: potentially blocking operation in protected operation "Text_Entry"
 p.ads:97:17: potentially blocking operation in protected operation "Text_Proc"
 p.ads:97:17: warning: subprogram "Text_Proc" has no effect
 p.ads:101:13: potentially blocking operation in protected operation "My_Text_Entry"
-p.ads:105:13: potentially blocking operation in protected operation "Complex_Print_Entry"
-p.ads:109:13: potentially blocking operation in protected operation "Floatio_Print_Entry"
+p.ads:114:17: warning: subprogram "Proc_Call_To_Library_Level_Procedure" has no effect
+p.ads:116:17: warning: subprogram "Dummy_Proc" has no effect
 pack.adb:78:17: warning: statement has no effect
 pack.adb:78:17: warning: unused assignment to "PO_Proc"
-pack.ads:5:13: potentially blocking operation in protected operation "E_Proc"
-pack.ads:10:13: potentially blocking operation in protected operation "E_Func"
 pack.ads:13:14: warning: subprogram "External_Call_To_Protected_Proc" has no effect
 pack.ads:14:14: warning: subprogram "External_Call_To_Protected_Func" has no effect
 remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored (not yet supported)
@@ -146,10 +135,9 @@ remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored in flow analysi
 remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored (not yet supported)
 remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored in flow analysis (not yet supported)
 remote.ads:7:14: warning: subprogram "Remote_Call" has no effect
-   compilation of external_separate_calls.adb failed
+simple_package.ads:3:14: warning: subprogram "Dummy" has no effect
    compilation of internal_protected_call.adb failed
    compilation of p.adb failed
-   compilation of pack.adb failed
 
 
 gnatprove: error during analysis of data and information flow
