@@ -13,4 +13,11 @@ is
       return Gun_Bullet'(others => <>);
    end Select_Bullet;
 
+   function Select_Bullet2 return Bullet'Class is
+      E : Gun_Bullet'Class := Gun_Bullet'(others => <>);
+   begin
+      pragma Assert (Hit (E) in 0 .. 10);
+      return E;
+   end Select_Bullet2;
+
 end Weapon_Class;

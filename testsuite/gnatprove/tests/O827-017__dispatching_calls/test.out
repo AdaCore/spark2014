@@ -1,3 +1,7 @@
+weapon_class.adb:19:07: info: assertion proved
+weapon_class.adb:19:27: info: initialization of extension of "E" proved
+weapon_class.adb:20:14: info: initialization of extension of "E" proved
 weapon_class.ads:23:25: info: class-wide postcondition is stronger than overridden one
 weapon_class.ads:23:25: info: postcondition proved
 weapon_class.ads:30:14: medium: postcondition might fail, requires Hit (Select_Bullet'Result) in 0 .. 10
+weapon_class.ads:33:14: medium: postcondition might fail, requires Hit (Select_Bullet2'Result) in 0 .. 10

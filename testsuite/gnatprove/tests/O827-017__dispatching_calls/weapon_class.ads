@@ -28,4 +28,7 @@ is
 
    function Select_Bullet return Bullet'Class with
      Post => Hit (Select_Bullet'Result) in 0 .. 10;
+
+   function Select_Bullet2 return Bullet'Class with
+     Post => Hit (Select_Bullet2'Result) in 0 .. 10;
 end Weapon_Class;
