@@ -406,29 +406,6 @@ def altergo(src, timeout=10, opt=None):
     print process.out
 
 
-def cntexample_error(line):
-    """Return true if the line is error or warning related to querying a solver
-    for a counterexample."""
-    if line == "\")":
-        return True
-    if line.startswith("(error \""):
-        return True
-    if line.startswith("The fact in question: "):
-        return True
-
-    return False
-
-
-def filter_cntexample_errors(strlist):
-    """Filter errors related to querying a solver for a counterexample."""
-    newlist = []
-    for line in strlist:
-        if not cntexample_error(line):
-            newlist.append(line)
-
-    return newlist
-
-
 def gnatprove_(opt=["-P", "test.gpr"]):
     """Invoke gnatprove, and in case of success return list of output lines
 
@@ -491,9 +468,6 @@ def gnatprove_(opt=["-P", "test.gpr"]):
         # running the tool
         # strlist = str.splitlines(process)
         check_marks(strlist)
-
-        strlist = filter_cntexample_errors(strlist)
-
         print_sorted(strlist)
 
 
