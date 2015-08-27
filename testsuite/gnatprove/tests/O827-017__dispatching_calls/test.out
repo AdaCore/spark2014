@@ -1,0 +1,3 @@
+weapon_class.ads:23:25: info: class-wide postcondition is stronger than overridden one
+weapon_class.ads:23:25: info: postcondition proved
+weapon_class.ads:30:14: medium: postcondition might fail, requires Hit (Select_Bullet'Result) in 0 .. 10
