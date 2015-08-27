@@ -66,7 +66,7 @@ Command Line Invocation
   --why3-conf=f       Specify a configuration file for why3
   --limit-line=s      Limit analysis to given file and line
   --limit-subp=s      Limit analysis to subprogram defined by file and line
-  --prover=s[,s]*     Use given provers (s=cvc4, altergo, ...)
+  --prover=s[,s]*     Use given provers (s=cvc4, altergo, z3, ...)
   --counterexample=c  Generate a counterexample for unproved formulas
                       (c=on, off*)
 
@@ -88,6 +88,7 @@ Command Line Invocation
     (Provers marked with [steps] support the --steps switch.)
     . cvc4          - [steps] Use CVC4
     . altergo       - [steps] Use Alt-Ergo
+    . z3            - [steps] Use Z3
     . ...           - Any other prover configured in your .why3.conf file
 
 .. _Alternative_Provers:
@@ -98,16 +99,17 @@ Alternative Provers
 Installed with |SPARK|
 ----------------------
 
-By default, |GNATprove| uses a combination of its own version of the
-provers CVC4 and Alt-Ergo (in that order). Switch ``--prover`` allows to
-use another prover, or a list of provers. Prover names ``altergo`` and
-``cvc4`` are used to refer to the versions of provers CVC4 and Alt-Ergo
-that are installed with the |SPARK| toolset. The string ``alt-ergo`` can
-also be used to refer to Alt-Ergo. More information on Alt-Ergo and CVC4
-can be found on their respective websites:
+The provers Alt-Ergo, CVC4 and Z3 are installed with the |SPARK| tool. By
+default, |GNATprove| uses a combination of the provers CVC4 and Alt-Ergo (in
+that order). Switch ``--prover`` allows to use another prover, or a list of
+provers. Prover names ``altergo``, ``cvc4`` and z3 are used to refer to the
+versions of provers CVC4 and Alt-Ergo that are installed with the |SPARK|
+toolset. The string ``alt-ergo`` can also be used to refer to Alt-Ergo. More
+information on Alt-Ergo and CVC4 can be found on their respective websites:
 
  * Alt-Ergo: http://alt-ergo.ocamlpro.com
  * CVC4: http://cvc4.cs.nyu.edu
+ * Z3: https://z3.codeplex.com/
 
 Other Automatic or Manual Provers
 ---------------------------------
@@ -133,7 +135,7 @@ general settings and a section for each prover which is supported.
 can be used as an argument to switch ``--prover``.
 
 Note that using this mechanism, you cannot replace the definitions provided
-with the SPARK tools for the provers ``altergo`` and ``cvc4``.
+with the SPARK tools for the provers ``altergo``, ``cvc4`` and ``z3``.
 
 If more than one prover is specified, the provers are tried in order on each
 VC, until one of them succeeds or all fail. Interactive provers cannot be
