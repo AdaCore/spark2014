@@ -775,6 +775,8 @@ procedure Gnatprove is
          --
          --  * finite-model-find
          --    resturn SAT on some quantified formulae
+         --    not used now - it caused non termination of the prover (for
+         --    VCs with bitvector or arrays)
          --
          --  * macros-quant
          --    expand function definitions, and eliminate quantifiers, making
@@ -786,7 +788,6 @@ procedure Gnatprove is
          Command : constant String := CVC4_Binary & " " &
            Common_CVC4_Options &
            " --macros-quant " &
-           " --finite-model-find " &
            " --quiet ";
       begin
          Start_Section ("prover");
