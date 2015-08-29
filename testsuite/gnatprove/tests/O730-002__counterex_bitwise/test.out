@@ -1,1 +1,1 @@
-saturate.adb:4:16: medium: postcondition might fail, requires Saturate'Result < 256
+saturate.adb:4:16: medium: postcondition might fail, requires Saturate'Result < 256, counterexample: Saturate'Result = 2048
