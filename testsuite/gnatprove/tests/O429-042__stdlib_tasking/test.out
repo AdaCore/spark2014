@@ -79,6 +79,10 @@ ada_real_time.ads:188:25: medium: precondition might fail
 ada_real_time.ads:192:50: info: range check proved
 ada_real_time.ads:192:50: medium: divide by zero might fail
 ada_real_time.ads:192:50: medium: overflow check might fail
+ada_real_time.ads:253:23: info: range check proved
+ada_real_time.ads:256:25: info: overflow check proved
+ada_real_time.ads:256:37: medium: range check might fail
+ada_real_time.ads:259:35: medium: overflow check might fail
 ada_real_time.ads:268:21: info: overflow check proved
 ada_real_time.ads:268:34: info: overflow check proved
 ada_real_time.ads:269:41: info: overflow check proved

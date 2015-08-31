@@ -1,19 +1,19 @@
-controller_pack.adb:21:26: info: range check proved
-controller_pack.adb:26:26: info: range check proved
-controller_pack.adb:31:26: info: range check proved
-controller_pack.adb:37:30: info: range check proved
-controller_pack.adb:42:30: info: range check proved
-controller_pack.adb:47:30: info: range check proved
-controller_pack.adb:64:14: info: initialization of "Res" proved
-controller_pack.adb:90:46: info: overflow check proved
-controller_pack.adb:99:10: info: initialization of "Yaw_Error" proved
+controller_pack.adb:19:26: info: range check proved
+controller_pack.adb:24:26: info: range check proved
+controller_pack.adb:29:26: info: range check proved
+controller_pack.adb:35:30: info: range check proved
+controller_pack.adb:40:30: info: range check proved
+controller_pack.adb:45:30: info: range check proved
+controller_pack.adb:62:14: info: initialization of "Res" proved
+controller_pack.adb:88:46: info: overflow check proved
+controller_pack.adb:97:10: info: initialization of "Yaw_Error" proved
+controller_pack.adb:98:23: info: initialization of "Yaw_Error" proved
+controller_pack.adb:98:33: info: overflow check proved
+controller_pack.adb:100:10: info: initialization of "Yaw_Error" proved
 controller_pack.adb:100:23: info: initialization of "Yaw_Error" proved
 controller_pack.adb:100:33: info: overflow check proved
-controller_pack.adb:102:10: info: initialization of "Yaw_Error" proved
-controller_pack.adb:102:23: info: initialization of "Yaw_Error" proved
-controller_pack.adb:102:33: info: overflow check proved
-controller_pack.adb:105:44: info: initialization of "Yaw_Error" proved
-controller_pack.adb:105:44: info: range check proved
+controller_pack.adb:103:44: info: initialization of "Yaw_Error" proved
+controller_pack.adb:103:44: info: range check proved
 controller_pack.ads:35:14: info: initialization of "Is_Init" constituent of "Controller_State" proved
 controller_pack.ads:35:14: info: initialization of "Pitch_Pid.Deriv" constituent of "Attitude_PIDs" proved
 controller_pack.ads:35:14: info: initialization of "Pitch_Pid.Desired" constituent of "Attitude_PIDs" proved
@@ -113,23 +113,23 @@ free_fall_pack.adb:83:30: info: initialization of "Has_Detected_FF" proved
 free_fall_pack.adb:133:45: medium: array index check might fail
 free_fall_pack.adb:136:31: info: division check proved
 free_fall_pack.adb:136:69: info: overflow check proved
-free_fall_pack.adb:146:50: info: index check proved
-free_fall_pack.adb:147:17: info: initialization of "Sum" proved
-free_fall_pack.adb:147:21: medium: overflow check might fail
-free_fall_pack.adb:148:24: info: initialization of "Sum_Square" proved
-free_fall_pack.adb:148:35: medium: overflow check might fail
-free_fall_pack.adb:148:51: info: overflow check proved
-free_fall_pack.adb:151:15: info: initialization of "Sum" proved
-free_fall_pack.adb:151:19: medium: divide by zero might fail
-free_fall_pack.adb:151:19: medium: overflow check might fail
-free_fall_pack.adb:151:42: info: range check proved
-free_fall_pack.adb:153:10: info: initialization of "Sum_Square" proved
-free_fall_pack.adb:153:21: medium: overflow check might fail
-free_fall_pack.adb:153:23: info: initialization of "Sum" proved
-free_fall_pack.adb:153:28: medium: divide by zero might fail
-free_fall_pack.adb:153:28: medium: overflow check might fail
-free_fall_pack.adb:153:51: info: range check proved
-free_fall_pack.ads:45:57: info: length check proved
+free_fall_pack.adb:148:66: info: index check proved
+free_fall_pack.adb:150:20: info: initialization of "Sum" proved
+free_fall_pack.adb:150:24: medium: overflow check might fail
+free_fall_pack.adb:151:27: info: initialization of "Sum_Square" proved
+free_fall_pack.adb:151:38: medium: overflow check might fail
+free_fall_pack.adb:151:54: info: overflow check proved
+free_fall_pack.adb:155:15: info: initialization of "Sum" proved
+free_fall_pack.adb:155:19: medium: divide by zero might fail
+free_fall_pack.adb:155:19: medium: overflow check might fail
+free_fall_pack.adb:155:42: info: range check proved
+free_fall_pack.adb:157:10: info: initialization of "Sum_Square" proved
+free_fall_pack.adb:157:21: medium: overflow check might fail
+free_fall_pack.adb:157:23: info: initialization of "Sum" proved
+free_fall_pack.adb:157:28: medium: divide by zero might fail
+free_fall_pack.adb:157:28: medium: overflow check might fail
+free_fall_pack.adb:157:51: info: range check proved
+free_fall_pack.ads:46:57: info: length check proved
 free_fall_pack.ads:62:04: info: initialization of "FF_DURATION" constituent of "FF_Parameters" proved
 free_fall_pack.ads:68:04: info: initialization of "LANDING_VARIANCE_THRESHOLD" constituent of "FF_Parameters" proved
 free_fall_pack.ads:74:04: info: initialization of "FF_Mode" constituent of "FF_Parameters" proved
@@ -656,48 +656,32 @@ sensfusion6_pack.ads:82:04: info: initialization of "Integral_FBx" constituent o
 sensfusion6_pack.ads:84:04: info: initialization of "Integral_FBy" constituent of "SensFusion6_State" proved
 sensfusion6_pack.ads:86:04: info: initialization of "Integral_FBz" constituent of "SensFusion6_State" proved
 sensfusion6_pack.ads:92:04: info: initialization of "Beta" constituent of "SensFusion6_State" proved
-stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:100
 stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:101
 stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:102
+stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:103
 stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:104
-stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:105
 stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:106
 stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:107
-stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:99
-stabilizer_pack.adb:96:15: info: initialization of "R" proved
-stabilizer_pack.adb:97:15: info: initialization of "P" proved
-stabilizer_pack.adb:99:42: info: initialization of "T" proved
-stabilizer_pack.adb:99:46: info: initialization of "R" proved
-stabilizer_pack.adb:99:50: info: initialization of "P" proved
-stabilizer_pack.adb:99:54: info: initialization of "Y" proved
-stabilizer_pack.adb:100:42: info: initialization of "T" proved
-stabilizer_pack.adb:100:46: info: initialization of "R" proved
-stabilizer_pack.adb:100:50: info: initialization of "P" proved
-stabilizer_pack.adb:100:54: info: initialization of "Y" proved
-stabilizer_pack.adb:101:42: info: initialization of "T" proved
+stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:108
+stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:109
+stabilizer_pack.adb:98:15: info: initialization of "R" proved
+stabilizer_pack.adb:99:15: info: initialization of "P" proved
 stabilizer_pack.adb:101:46: info: initialization of "R" proved
 stabilizer_pack.adb:101:50: info: initialization of "P" proved
-stabilizer_pack.adb:101:54: info: initialization of "Y" proved
-stabilizer_pack.adb:102:42: info: initialization of "T" proved
 stabilizer_pack.adb:102:46: info: initialization of "R" proved
 stabilizer_pack.adb:102:50: info: initialization of "P" proved
-stabilizer_pack.adb:102:54: info: initialization of "Y" proved
-stabilizer_pack.adb:104:42: info: initialization of "T" proved
-stabilizer_pack.adb:104:46: info: initialization of "P" proved
-stabilizer_pack.adb:104:50: info: initialization of "Y" proved
-stabilizer_pack.adb:105:42: info: initialization of "T" proved
-stabilizer_pack.adb:105:46: info: initialization of "R" proved
-stabilizer_pack.adb:105:50: info: initialization of "Y" proved
-stabilizer_pack.adb:106:42: info: initialization of "T" proved
+stabilizer_pack.adb:103:46: info: initialization of "R" proved
+stabilizer_pack.adb:103:50: info: initialization of "P" proved
+stabilizer_pack.adb:104:46: info: initialization of "R" proved
+stabilizer_pack.adb:104:50: info: initialization of "P" proved
 stabilizer_pack.adb:106:46: info: initialization of "P" proved
-stabilizer_pack.adb:106:50: info: initialization of "Y" proved
-stabilizer_pack.adb:107:42: info: initialization of "T" proved
 stabilizer_pack.adb:107:46: info: initialization of "R" proved
-stabilizer_pack.adb:107:50: info: initialization of "Y" proved
-stabilizer_pack.adb:110:34: info: initialization of "Motor_Power_M1" constituent of "Motor_Powers" proved
-stabilizer_pack.adb:111:34: info: initialization of "Motor_Power_M2" constituent of "Motor_Powers" proved
-stabilizer_pack.adb:112:34: info: initialization of "Motor_Power_M3" constituent of "Motor_Powers" proved
-stabilizer_pack.adb:113:34: info: initialization of "Motor_Power_M4" constituent of "Motor_Powers" proved
+stabilizer_pack.adb:108:46: info: initialization of "P" proved
+stabilizer_pack.adb:109:46: info: initialization of "R" proved
+stabilizer_pack.adb:112:34: info: initialization of "Motor_Power_M1" constituent of "Motor_Powers" proved
+stabilizer_pack.adb:113:34: info: initialization of "Motor_Power_M2" constituent of "Motor_Powers" proved
+stabilizer_pack.adb:114:34: info: initialization of "Motor_Power_M3" constituent of "Motor_Powers" proved
+stabilizer_pack.adb:115:34: info: initialization of "Motor_Power_M4" constituent of "Motor_Powers" proved
 stabilizer_pack.ads:88:08: global output "Stabilizer_Pack.Actuator_Commands" of "Stabilizer_Alt_Hold_Update" not fully written
 stabilizer_pack.ads:88:08: global output "Stabilizer_Pack.V_Speed_Variables" of "Stabilizer_Alt_Hold_Update" not fully written
 stabilizer_pack.ads:99:08: global output "Stabilizer_Pack.V_Speed_Variables" of "Stabilizer_Update_Attitude" not fully written
