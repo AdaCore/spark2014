@@ -1945,8 +1945,8 @@ inside a loop. It is mostly useful for expressing complex :ref:`Loop
 Invariants` which relate the value of a variable at a given iteration of the
 loop and its value at loop entry. For example, we can express that after ``J``
 iterations of the loop, the value of parameter array ``X`` at all indexes
-already seen is equal to its value at loop entry plus one, using
-:ref:`Quantified Expressions`:
+already seen is equal to its value at loop entry plus one, and that its value
+at all indexes not yet seen is unchanged, using :ref:`Quantified Expressions`:
 
 .. code-block:: ada
 
