@@ -682,10 +682,6 @@ stabilizer_pack.adb:112:34: info: initialization of "Motor_Power_M1" constituent
 stabilizer_pack.adb:113:34: info: initialization of "Motor_Power_M2" constituent of "Motor_Powers" proved
 stabilizer_pack.adb:114:34: info: initialization of "Motor_Power_M3" constituent of "Motor_Powers" proved
 stabilizer_pack.adb:115:34: info: initialization of "Motor_Power_M4" constituent of "Motor_Powers" proved
-stabilizer_pack.ads:88:08: global output "Stabilizer_Pack.Actuator_Commands" of "Stabilizer_Alt_Hold_Update" not fully written
-stabilizer_pack.ads:88:08: global output "Stabilizer_Pack.V_Speed_Variables" of "Stabilizer_Alt_Hold_Update" not fully written
-stabilizer_pack.ads:99:08: global output "Stabilizer_Pack.V_Speed_Variables" of "Stabilizer_Update_Attitude" not fully written
-stabilizer_pack.ads:111:08: global output "Stabilizer_Pack.Actuator_Commands" of "Stabilizer_Update_Rate" not fully written
 stabilizer_pack.ads:142:04: info: initialization of "Gyro.X" constituent of "IMU_Outputs" proved
 stabilizer_pack.ads:142:04: info: initialization of "Gyro.Y" constituent of "IMU_Outputs" proved
 stabilizer_pack.ads:142:04: info: initialization of "Gyro.Z" constituent of "IMU_Outputs" proved
