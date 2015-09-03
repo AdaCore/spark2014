@@ -13,9 +13,9 @@ be an exhaustive list.
 Whatever the objective(s) of using |SPARK|, any project fits in one of three
 possible :ref:`Project Scenarios`:
 
- * :ref:`Maintenance and Evolution of Existing Ada Software`
- * :ref:`New Developments in SPARK`
- * :ref:`Convertion of Existing SPARK Software to SPARK 2014`
+* :ref:`Maintenance and Evolution of Existing Ada Software`
+* :ref:`New Developments in SPARK`
+* :ref:`Convertion of Existing SPARK Software to SPARK 2014`
 
 The end of this section examines each of these scenarios in turn and describes
 how |SPARK| can be applied in each case.
@@ -111,9 +111,11 @@ of units.
 
 Although analysis of data and control coupling are not performed at the same
 level of details in non-critical domains, knowledge of data and control
-coupling is important to assess impact of code changes. |SPARK| is ideally
-equiped to support such analysis, with its detailed :ref:`Subprogram
-Contracts`:
+coupling is important to assess impact of code changes. In particular, it may
+important for security that some secret data does not leak publicly, which can
+be rephrased as saying that only the specified data dependencies are
+allowed. |SPARK| is ideally equiped to support such analysis, with its detailed
+:ref:`Subprogram Contracts`:
 
 * With :ref:`Data Dependencies`, a user can specify exactly the input and
   output data of a subprogram, which identifies the `"data not exclusively
@@ -280,14 +282,17 @@ were exercized during integration testing, which allowed to scrap unit testing.
 Prove Correct Integration Between Components
 --------------------------------------------
 
+In New Developments
+^^^^^^^^^^^^^^^^^^^
+
 |GNATprove| can be used to prove correct integration between components, where
 a component could be a subprogram, a unit or a set of units. Indeed, even if
 components are verified individually (for example by proof or test or a
 combination thereof), their combination may still fail because of unforeseen
 interactions or design problems.
 
-|SPARK| is ideally is ideally equiped to support such analysis, with its
-detailed :ref:`Subprogram Contracts`:
+|SPARK| is ideally equiped to support such analysis, with its detailed
+:ref:`Subprogram Contracts`:
 
 * With :ref:`Data Dependencies`, a user can specify exactly the input and
   output data of a subprogram, which goes a long way towards uncovering
@@ -304,10 +309,57 @@ When using data dependencies, |GNATprove|'s flow analysis is sufficient to
 check correct integration between components. When using functional contracts,
 |GNATprove|'s proof should also be applied.
 
+In Replacement of Comments
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is good practice to specify properties of a subprogram that are important
+for integration in the comments that are attached to the subprogram
+declaration.
+
+Comments can be advantageously replaced by contracts:
+
+* Comments about the domain of the subprogram can be replaced by
+  :ref:`Preconditions`.
+
+* Comments about the effects of the subprogram can be replaced by
+  :ref:`Postconditions` and :ref:`Data Dependencies`.
+
+* Comments about the result of functions can be replaced by
+  :ref:`Postconditions`.
+
+* |GNATprove| can use the contracts to prove correct integration between
+  components, as in new developments.
+
+Contracts are less ambiguous than comments, and can be accompanied by (or
+interspersed with) higher level comments than need not be focused on the finer
+grain details of which variables must have which values, as these are already
+specified concisely and precisely in the contracts.
+
+In Replacement of Defensive Coding
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In existing Ada code that is migrated to |SPARK|, defensive coding is typically
+used to verify the correct integration between components: checks are made at
+the start of a subprogram that inputs (parameters and global variables) satisfy
+expected properties, and an exception is raised or the program halted if an
+unexpected situation is found.
+
+Defensive code can be advantageously replaced by preconditions:
+
+* The dynamic checks performed by defensive code at run time can be performed
+  equally by preconditions, and they can be enabled at a much finer grain
+  thanks to :ref:`Pragma Assertion_Policy`.
+
+* |GNATprove| can use the preconditions to prove correct integration between
+  components, as in new developments.
+
 .. _Prove Functional Correctness:
 
 Prove Functional Correctness
 ----------------------------
+
+In New Developments
+^^^^^^^^^^^^^^^^^^^
 
 |GNATprove| can be used to prove functional correctness of an implementation
 against its specification. This strongest level of verification can be applied
@@ -338,6 +390,27 @@ When the functional specification is expressed as a set of disjoint cases, the
 |SPARK| feature of :ref:`Contract Cases` can be used to increase readability
 and to provide an automatic means to verify that cases indeed define a
 partitioning of the possible operational contexts.
+
+In Replacement of Unit Testing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+In existing Ada code that is migrated to |SPARK|, unit testing is typically
+used to verify functional correctness: actual outputs obtained when calling the
+subprogram are compared to expected outputs for given inputs. A `test case`
+defines an expected behavior to verify; a `test procedure` implements a `test
+case` with specific given inputs and expected outputs.
+
+Test cases can be used as a basis for functional contracts, as they define in
+general a behavior for a set of similar inputs. Thus, a set of test cases can
+be transformed into :ref:`Contract Cases`, where each case corresponds to a
+test case: the test input constraint becomes the guard of the corresponding
+case, while the test output constraint becomes the consequence of the
+corresponding case.
+
+|GNATprove| can be used to prove this initial functional contract, as in new
+developments. Then, cases can be progressively generalized (by relaxing the
+conditions in the guards), or new cases added to the contract, until the full
+functional behavior of the subprogram is specified and proved.
 
 .. _Safe Optimization of Run-Time Checks:
 
