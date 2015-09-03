@@ -112,8 +112,8 @@ of units.
 Although analysis of data and control coupling are not performed at the same
 level of details in non-critical domains, knowledge of data and control
 coupling is important to assess impact of code changes. In particular, it may
-important for security that some secret data does not leak publicly, which can
-be rephrased as saying that only the specified data dependencies are
+be critical for security that some secret data does not leak publicly, which
+can be rephrased as saying that only the specified data dependencies are
 allowed. |SPARK| is ideally equiped to support such analysis, with its detailed
 :ref:`Subprogram Contracts`:
 
