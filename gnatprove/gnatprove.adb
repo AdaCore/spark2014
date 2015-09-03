@@ -871,10 +871,10 @@ procedure Gnatprove is
                        " %f");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
-                       (Why3_Drivers_Dir, "z3_432.drv"));
+                       (Why3_Drivers_Dir, "z3_gnatprove.drv"));
          Put_Keyval ("name", "Z3");
          Put_Keyval ("shortcut", "z3");
-         Put_Keyval ("version", "4.3.2");
+         Put_Keyval ("version", "4.4.1");
       end Generate_Z3_Section;
 
       --  begin processing for Generate_Why3_Conf_File
