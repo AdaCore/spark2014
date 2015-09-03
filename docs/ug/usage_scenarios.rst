@@ -1,17 +1,34 @@
 .. _Usage Scenarios for SPARK:
 
-***************************
-Usage Scenarios for |SPARK|
-***************************
+****************************
+Applying |SPARK| in Practice
+****************************
 
-This section discusses some of the common usage scenarios (or use cases) in
-which |SPARK| may be used. It is illustrative, and is certainly not intended
-to be an exhaustive list.
+|SPARK| tools offer different levels of analysis, which are relevant in
+different contexts. This section starts with a description of the main
+:ref:`Objectives of Using SPARK`. This list gathers the most commonly found
+reasons for adopting |SPARK| in industrial projects, but it is not intended to
+be an exhaustive list.
+
+Whatever the objective(s) of using |SPARK|, any project fits in one of three
+possible :ref:`Project Scenarios`:
+
+ * :ref:`Maintenance and Evolution of Existing Ada Software`
+ * :ref:`New Developments in SPARK`
+ * :ref:`Convertion of Existing SPARK Software to SPARK 2014`
+
+The end of this section examines each of these scenarios in turn and describes
+how |SPARK| can be applied in each case.
+
+.. _Objectives of Using SPARK:
+
+Objectives of Using SPARK
+=========================
 
 .. _Safe Coding Standard for Critical Software:
 
 Safe Coding Standard for Critical Software
-==========================================
+------------------------------------------
 
 |SPARK| is a subset of Ada meant for formal verification, by excluding features
 that are difficult or impossible to analyze automatically. This means that
@@ -21,7 +38,7 @@ both to prevent the introduction of errors by excluding unsafe Ada features,
 and it facilitates their early detection with |GNATprove|'s flow analysis.
 
 Exclusion of Unsafe Ada Features
---------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Once the simple task of :ref:`Identifying SPARK Code` has been completed, one
 can use |GNATprove| in ``check`` mode to verify that |SPARK| restrictions are
@@ -60,7 +77,7 @@ the complete list).
   not permitted as they obfuscate the control flow.
 
 Early Detection of Errors
--------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 |GNATprove|'s flow analysis will find all the occurrences of the following
 errors:
@@ -83,7 +100,7 @@ It will also warn systematically about the following suspicious behaviors:
 .. _Address Data and Control Coupling:
 
 Address Data and Control Coupling
-=================================
+---------------------------------
 
 As defined in the avionics standard DO-178, data coupling is `"The dependence
 of a software component on data not exclusively under the control of that
@@ -133,10 +150,10 @@ functional contracts, |GNATprove|'s proof should also be applied.
 .. _Prove Absence of Run-Time Errors (AoRTE):
 
 Prove Absence of Run-Time Errors (AoRTE)
-========================================
+----------------------------------------
 
 With Proof Only
----------------
+^^^^^^^^^^^^^^^
 
 |GNATprove| can be used to prove the complete absence of possible run-time
 errors corresponding to:
@@ -175,7 +192,7 @@ checks manually justified. The column `Unproved` should be empty for all checks
 to be verified.
 
 With a Combination of Proof and Test
-------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 It is not always possible to achieve 100% proof of AoRTE, for multiple reasons:
 
@@ -200,7 +217,7 @@ goal then, when combining formal verification and testing, is to reach a level
 of confidence as good as the level reached by testing alone.
 
 At the Level of Individual Run-Time Checks
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 One way to get confidence that unproved run-time checks cannot fail during
 execution is to exercize them during testing. Test coverage information allows
@@ -215,7 +232,7 @@ the integration between the CodePeer static analyzer and the VectorCAST testing
 tool for Ada programs.
 
 Between Proof and Unit Testing
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Contracts on subprograms provide a natural boundary for combining proof and
 test:
@@ -246,7 +263,7 @@ certification standard in avionics, which explicitly allows proof or test to be
 used as verification means on each module.
 
 Between Proof and Integration Testing
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Contracts can also be exercized dynamically during integration testing. In
 cases where unit testing is not required (either because proof has been applied
@@ -261,7 +278,7 @@ were exercized during integration testing, which allowed to scrap unit testing.
 .. _Prove Correct Integration Between Components:
 
 Prove Correct Integration Between Components
-============================================
+--------------------------------------------
 
 |GNATprove| can be used to prove correct integration between components, where
 a component could be a subprogram, a unit or a set of units. Indeed, even if
@@ -290,7 +307,7 @@ check correct integration between components. When using functional contracts,
 .. _Prove Functional Correctness:
 
 Prove Functional Correctness
-============================
+----------------------------
 
 |GNATprove| can be used to prove functional correctness of an implementation
 against its specification. This strongest level of verification can be applied
@@ -325,7 +342,7 @@ partitioning of the possible operational contexts.
 .. _Safe Optimization of Run-Time Checks:
 
 Safe Optimization of Run-Time Checks
-====================================
+------------------------------------
 
 Enabling run-time checks in a program usually increase the running time by
 around 10%. This may not fit the timing schedule in some highly constrained
@@ -352,7 +369,7 @@ optimization of run-time checks.
 .. _Ensure Portability of Programs:
 
 Ensure Portability of Programs
-==============================
+------------------------------
 
 Using |SPARK| enhances portability of programs by excluding language features
 that are known to cause portability problems, and by making it possible to
@@ -377,13 +394,13 @@ a difference between both interpretations, many algorithms which use
 trigonometry are portable in the more common sense, not in the strictest sense.
 
 Portability of Ada Programs
----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Programs with errors cause additional portability issues than programs without
 errors, which is why we consider them separately.
 
 Portability of Programs Without Errors
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Ada Reference Manual defines precisely which features of the language
 depend on choices by the compiler (see Ada RM 1.1.3 "Conformity of an
@@ -463,7 +480,7 @@ to implementation defined or unspecified behavior:
 .. _Portability of Programs With Errors:
 
 Portability of Programs With Errors
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In addition to the portability issues discussed so far, programs with errors
 cause specific portability issues related to whether errors are detected and
@@ -518,7 +535,7 @@ tools to guarantee that all possible errors of a given kind have been reported.
 .. _Benefits of Using SPARK for Portability:
 
 Benefits of Using |SPARK| for Portability
------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The :ref:`Language Restrictions` in |SPARK| favor portability by excluding
 problematic language features (see :ref:`Excluded Ada Features`):
@@ -602,7 +619,7 @@ The analysis of |GNATprove| can take into account characteristics of the target
 :ref:`Target Parameterization`.
 
 How to Use |SPARK| for Portability
-----------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 |GNATprove|'s analysis may be used to enhance the portability of programs. Note
 that the guarantees provided by this analysis only hold for the source
@@ -611,7 +628,7 @@ one should independently provide assurance that the object code correctly
 implements the semantics of the source code.
 
 Avoiding Non-Portable Features
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As much as possible, uses of non-portable language features should be avoided,
 or at least isolated in specific parts of the program to facilitate analyses
@@ -696,7 +713,7 @@ non-portability in |SPARK| may come from a small list of causes:
 .. _Avoiding Errors to Enhance Portability:
 
 Avoiding Errors to Enhance Portability
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Because errors in a program make portability particularly challenging (see
 :ref:`Portability of Programs With Errors`), it is important to ensure that a
@@ -735,7 +752,7 @@ forbidden in |SPARK|, the only possible cause for raising exception
 .. _Portability of Fixed-Point and Floating-Point Computations:
 
 Portability of Fixed-Point and Floating-Point Computations
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Portability issues related to the use of fixed-point or floating-point
 operations can be avoided altogether by ensuring that the program does not use
@@ -783,10 +800,15 @@ modified to ensure this property (see
 http://www.spark-2014.org/entries/detail/how-our-compiler-learnt-from-our-analyzers),
 which may not hold for other Ada compilers.
 
-.. _develop new code from scratch:
+.. _Project Scenarios:
 
-Develop New Code from Scratch
-=============================
+Project Scenarios
+=================
+
+.. _New Developments in SPARK:
+
+New Developments in |SPARK|
+---------------------------
 
 This is the 'green field' development scenario where new software is
 being written and there are no constraints imposed in terms of having
@@ -844,10 +866,10 @@ A typical development process for this scenario might be:
    assertion checks either enabled or disabled depending on the policy chosen
    by the project.
 
-.. _convert SPARK 2005 to SPARK 2014:
+.. _Convertion of Existing SPARK Software to SPARK 2014:
 
-Convert existing SPARK 2005 software to SPARK 2014
-==================================================
+Convertion of Existing SPARK Software to SPARK 2014
+---------------------------------------------------
 
 If an existing piece of software has been developed in SPARK 2005 and is
 still undergoing active development/maintenance then it may be advantageous
@@ -883,10 +905,10 @@ them, but some projects may need to operate in a more constrained environment.)
 This can be achieved using ``pragma Restrictions (SPARK_05)``. For further details
 of this restriction please see the GNAT Reference Manual.
 
-.. _analyze legacy Ada software:
+.. _Maintenance and Evolution of Existing Ada Software:
 
-Analyze Legacy Ada Software
-===========================
+Maintenance and Evolution of Existing Ada Software
+--------------------------------------------------
 
 If a legacy system has been developed in Ada then analyzing it with the |SPARK|
 tools may be a good first step in order to assess the quality of the code prior
