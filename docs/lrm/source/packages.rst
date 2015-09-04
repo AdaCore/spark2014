@@ -710,6 +710,8 @@ grammar of ``initialization_spec`` given below.
    definition for a package shall denote a state abstraction of the package
    or an entire object declared immediately within the visible part of the
    package.
+   [For purposes of this rule, formal parameters of a generic package
+   are not considered to be "declared in the package".]
 
 .. _tu-fe-initializes_aspects-04:
 
