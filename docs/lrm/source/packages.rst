@@ -1102,6 +1102,11 @@ where
 13. A ``constituent`` of a synchronized state abstraction shall be
     either a synchronized object or another synchronized state abstraction.
 
+.. _tu-fe-refined_state_aspects-14:
+
+14. A ``constituent`` of a non-external state abstraction shall be neither
+    an effectively volatile object nor an external state abstraction.
+
 .. _etu-refined_state_aspects-lr:
 
 .. centered:: **Static Semantics**
