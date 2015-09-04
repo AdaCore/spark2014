@@ -1033,6 +1033,9 @@ Legality Rules
    This limitation is corrected in versions of the toolset based
    on GNAT Pro 7.2.2, GPL 2014, or later.
 
+#. The case of a state abstraction whose Part_Of aspect denotes a
+   task or protected unit is not currently supported.
+
 Flow Analysis Limitations
 -------------------------
 
