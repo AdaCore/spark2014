@@ -1036,6 +1036,9 @@ Legality Rules
 #. The case of a state abstraction whose Part_Of aspect denotes a
    task or protected unit is not currently supported.
 
+#. The case of a Refined_Post specification for a (protected) entry
+   is not currently supported.
+
 Flow Analysis Limitations
 -------------------------
 
