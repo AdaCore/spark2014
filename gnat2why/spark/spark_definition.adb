@@ -1509,6 +1509,17 @@ package body SPARK_Definition is
                if Is_Itype (BT) then
                   Mark_Entity (BT);
                end if;
+
+               --  We avoid marking the subprograms of a protected type when
+               --  marked the type entity. Instead, we do it here directly on
+               --  the type declaration. This is needed to avoid that certain
+               --  pure functions are declared before the type in Why.
+
+               if Ekind (E) in Protected_Kind then
+                  Mark_Stmt_Or_Decl_List
+                    (Visible_Declarations (Protected_Definition (N)));
+               end if;
+
             end;
 
          --  Supported tasking constructs
@@ -3561,8 +3572,10 @@ package body SPARK_Definition is
                         Mark_List (Interface_List (Type_Decl));
 
                         if Present (Type_Def) then
-                           Mark_Stmt_Or_Decl_List
-                             (Visible_Declarations (Type_Def));
+                           --  We do not mark the visible declarations here, we
+                           --  mark them independently of the type entity when
+                           --  processing the type declaration
+
                            --  ??? components of protected types were already
                            --  marked when dealing with discriminants
                            Mark_Stmt_Or_Decl_List
