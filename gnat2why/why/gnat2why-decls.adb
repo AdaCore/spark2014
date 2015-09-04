@@ -434,6 +434,7 @@ package body Gnat2Why.Decls is
             end if;
 
          when UCArray =>
+            Add_Counterexample_Labels (E, Labels);
 
             --  generate a global ref for the content
 

@@ -210,7 +210,7 @@ package VC_Kinds is
    Model_VC_Label    : constant String := "model_vc";
    Model_Func_Label  : constant String := "model_func:";
 
-   --  A meta that is used in Why3 to marka function as projection.
+   --  A meta that is used in Why3 to mark a function as projection.
    Model_Proj_Meta : constant String := "model_projection";
 
 end VC_Kinds;

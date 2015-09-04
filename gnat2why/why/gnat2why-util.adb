@@ -264,8 +264,8 @@ package body Gnat2Why.Util is
       Labels : in out Name_Id_Sets.Set)
    is
    begin
-      --  Currently only generate values for scalar and record variables in
-      --  counterexamples.
+      --  Currently only generate values for scalar, record, and array
+      --  variables in counterexamples.
 
       if Is_Scalar_Type (Etype (E)) then
          Labels.Include (NID (Model_Trace_Label &
@@ -286,6 +286,12 @@ package body Gnat2Why.Util is
       end if;
 
       if Is_Record_Type (Etype (E)) then
+         Labels.Include (NID (Model_Trace_Label &
+                           Source_Name (E)));
+         Labels.Include (NID (Model_Proj_Label));
+      end if;
+
+      if Is_Array_Type (Etype (E)) then
          Labels.Include (NID (Model_Trace_Label &
                            Source_Name (E)));
          Labels.Include (NID (Model_Proj_Label));
