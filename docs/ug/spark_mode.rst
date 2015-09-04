@@ -103,6 +103,8 @@ The project file is used to identify coarsely which parts of a program are in
 |SPARK|. To get more details on project file setup, see section :ref:`Setting
 Up a Project File`.
 
+.. _Setting the Default SPARK_Mode:
+
 Setting the Default SPARK_Mode
 ------------------------------
 
@@ -246,6 +248,8 @@ line:
 
   pragma SPARK_Mode (On);
 
+.. _Using SPARK_Mode in Code:
+
 Using ``SPARK_Mode`` in Code
 ============================
 
@@ -383,6 +387,8 @@ occurrences of ``SPARK_Mode`` in the generic are ignored for this instance.
 Examples of Use
 ---------------
 
+.. _Verifying Selected Subprograms:
+
 Verifying Selected Subprograms
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -404,6 +410,8 @@ that the spec of ``Sub_Action`` is in |SPARK|.
    :language: ada
    :linenos:
 
+.. _Verifying Selected Units:
+
 Verifying Selected Units
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -423,6 +431,8 @@ Off``. On the contrary, procedure ``Non_Critical_Action`` whose spec is marked
 .. literalinclude:: gnatprove_by_example/examples/selected_units.adb
    :language: ada
    :linenos:
+
+.. _Excluding Selected Unit Bodies:
 
 Excluding Selected Unit Bodies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -464,6 +474,8 @@ which case both the spec and the body of the instantiated generic are excluded.
 .. literalinclude:: gnatprove_by_example/examples/use_generic.adb
    :language: ada
    :linenos:
+
+.. _Excluding Selected Parts of a Unit:
 
 Excluding Selected Parts of a Unit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

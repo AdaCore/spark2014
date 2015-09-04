@@ -10,12 +10,13 @@ different contexts. This section starts with a description of the main
 reasons for adopting |SPARK| in industrial projects, but it is not intended to
 be an exhaustive list.
 
-Whatever the objective(s) of using |SPARK|, any project fits in one of three
+Whatever the objective(s) of using |SPARK|, any project fits in one of four
 possible :ref:`Project Scenarios`:
 
-* :ref:`Maintenance and Evolution of Existing Ada Software`
-* :ref:`New Developments in SPARK`
-* :ref:`Convertion of Existing SPARK Software to SPARK 2014`
+* the `brown field` scenario: :ref:`Maintenance and Evolution of Existing Ada Software`
+* the `green field` scenario: :ref:`New Developments in SPARK`
+* the `migration` scenario: :ref:`Convertion of Existing SPARK Software to SPARK 2014`
+* the `frozen` scenario: :ref:`Analysis of Frozen Ada Software`
 
 The end of this section examines each of these scenarios in turn and describes
 how |SPARK| can be applied in each case.
@@ -878,154 +879,275 @@ which may not hold for other Ada compilers.
 Project Scenarios
 =================
 
-.. _New Developments in SPARK:
-
-New Developments in |SPARK|
----------------------------
-
-This is the 'green field' development scenario where new software is
-being written and there are no constraints imposed in terms of having
-to base the development on pre-existing code. |SPARK| may be used for
-all software components or (more likely) the software may be developed
-in a mixture of |SPARK|, full Ada and other languages. For example, Ada
-may be employed in modules where it is deemed essential to make use of
-language features that are not currently in the |SPARK| subset, or in
-a safety-related project |SPARK| might be used for all of the
-safety-related software components.
-
-A typical development process for this scenario might be:
-
-#. Produce the high level (architectural) design in terms of package
-   specifications. Determine which packages will be in |SPARK| and add
-   contracts to those packages. The package contracts identify the
-   key elements of abstract state, and the subprogram global contracts
-   show which subprograms read and write that state. Optionally, dependency
-   contracts can be added to specify information flow relations, and
-   postconditions can be added to specify high-level properties such
-   as safety requirements that must be satisfied.
-
-#. Identify the |SPARK| packages with the ``SPARK_Mode`` aspect. At this
-   stage the high-level package structure can be analyzed with the tools (using
-   the 'Examine' command in GPS/GNATbench) before any executable code is
-   implemented.
-
-#. Alternatively, if the majority of packages are to be |SPARK|, then a
-   project should use ``SPARK_Mode`` as a configuration pragma, and only
-   apply ``SPARK_Mode => Off`` selectively for those few units that are
-   not |SPARK|.
-
-#. Begin implementing the package bodies. One typical method of doing this
-   is to use a process of top-down decomposition, starting with a top-level
-   subprogram specification and implementing the body by breaking it down
-   into further (nested) subprograms which are themselves specified but not
-   yet implemented, and to iterate until a level is reached where it is
-   appropriate to start writing executable code. However the exact process
-   is not mandated and will depend on other factors such as the design
-   methodology being employed.
-
-#. As each subprogram is implemented it can be verified (against its contract,
-   and to show absence of run-time errors) by proof, testing (with assertion
-   checking enabled) or both.
-
-   - Users may opt to try proving first then, if a particular proof is
-     tricky to discharge, execute test cases to either give confidence that
-     the code and contract is correct or to help diagnose why it is failing.
-
-   - Alternatively, users may prefer to execute the code with suitable
-     test cases during development, then use proof to verify it once they
-     believe it to be correct.
-
-#. Once verification is complete the executable can be compiled with
-   assertion checks either enabled or disabled depending on the policy chosen
-   by the project.
-
-.. _Convertion of Existing SPARK Software to SPARK 2014:
-
-Convertion of Existing SPARK Software to SPARK 2014
----------------------------------------------------
-
-If an existing piece of software has been developed in SPARK 2005 and is
-still undergoing active development/maintenance then it may be advantageous
-to upgrade to using SPARK 2014 in order to make use of the larger language
-subset and the new tools and environment. The |SPARK| Language Reference Manual
-has an appendix containing a SPARK 2005 to |SPARK| Mapping Specification which
-can be used to guide the conversion process. As the |SPARK| subset is larger
-than the SPARK 2005 subset, and the mapping of features between the two languages
-is defined, the translation should be relatively straightforward. There are two
-main options for the conversion process:
-
-#. All of the software is converted from SPARK 2005 to |SPARK| at the same time.
-   The |SPARK| tools should be used to analyze the work in progress throughout
-   the conversion process (which implies that a bottom-up approach may work best)
-   and any errors corrected as they are found. Once the conversion is complete,
-   development and maintenance can continue in |SPARK|.
-
-#. A more gradual approach could be employed, where code is only converted to
-   |SPARK| when it needs to be changed. (The granularity of how much code needs
-   to be converted when a module is touched should be considered, and is likely to
-   be at the level of the whole package.) The |SPARK| tools can then be used to
-   analyze the new/changed code, and will attempt to analyze any dependent units,
-   which may or may not be in |SPARK|. It is not necessary for dependent units to
-   be fully in |SPARK| but any declarations from them that are used in |SPARK|
-   packages must be in |SPARK|. Note that the latest version of the SPARK 2005
-   toolset facilitates this migration by ignoring |SPARK| pragmas.
-
-Note that some users may wish to take advantage of the new |SPARK| contracts
-and tools whilst retaining the more restrictive nature of SPARK 2005. (Many
-of the restrictions from SPARK 2005 have been lifted in |SPARK| because
-improvements in the tools mean that sound analysis can be performed without
-them, but some projects may need to operate in a more constrained environment.)
-This can be achieved using ``pragma Restrictions (SPARK_05)``. For further details
-of this restriction please see the GNAT Reference Manual.
+The workflow for using |SPARK| depends not only on the chosen :ref:`Objectives
+of Using SPARK`, but also on the context in which |SPARK| is used: Is it for a
+new development? Or an evolution of an existing codebase? Is the existing
+codebase in Ada or in a version of SPARK prior to SPARK 2014? We examine all
+these project scenarios in this section.
 
 .. _Maintenance and Evolution of Existing Ada Software:
 
 Maintenance and Evolution of Existing Ada Software
 --------------------------------------------------
 
-If a legacy system has been developed in Ada then analyzing it with the |SPARK|
-tools may be a good first step in order to assess the quality of the code prior
-to performing a full or partial conversion to |SPARK|. The suggested workflow is:
+Although |SPARK| is a large subset of Ada, it contains a number of
+:ref:`Language Restrictions` which prevent in general direct application of
+|GNATprove| to an existing Ada codebase without any modifications. The
+suggested workflow is to:
 
-#. Identify units which are highest priority for conversion to |SPARK|. These may
-   already be known, or potential candidates could be identified by:
+#. Identify violations of |SPARK| restrictions.
+#. For each violation, either rewrite the code in |SPARK| or mark it
+   ``SPARK_Mode => Off`` (see section on :ref:`Identifying SPARK Code`).
+#. Perform the required analyses to achieve the desired objectives (see section
+   on :ref:`Formal Verification with GNATprove`), a process which likely
+   involved writing contracts (see in particular section on :ref:`How to Write
+   Subprogram Contracts`).
+#. Make sure that the assumptions made for formal verification are justified at
+   the boundary between |SPARK| and full Ada code (see section on
+   :ref:`Managing Assumptions`).
 
-   - putting pragma SPARK_Mode in a global configuration file so that all code is
-     analyzed as if it were intended to be |SPARK|;
+Identifying Violations of |SPARK| Restrictions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-   - running the 'Examine' command on all code;
+A simple way to identify violations of |SPARK| restrictions is by :ref:`Setting
+the Default SPARK_Mode` to ``SPARK_Mode => On``, and then running |GNATprove|
+either in ``check`` mode (to report basic violations) or in ``flow`` mode (to
+report violations whose detection requires flow analysis).
 
-   - use the errors in the summary report to guide the selection process - files
-     with fewer errors are likely to be easier to convert and would be a good
-     starting point;
+If only a subset of the project files should be analyzed, one should create a
+project file for :ref:`Specifying Files To Analyze` or :ref:`Excluding Files
+From Analysis`.
 
-   - remove the global configuration pragma SPARK_Mode before proceeding.
+Finally, one may prefer to work her way through the project one unit at a time
+by :ref:`Using SPARK_Mode in Code`, and running |GNATprove| on the current unit
+only.
 
-#. For each unit to be converted to |SPARK|:
+Rewriting the Code in |SPARK|
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-   - Identify the specification as |SPARK| (SPARK_Mode => On) but identify the body
-     as not in |SPARK| (SPARK_Mode => Off).
+Depending on the violation, it may be more or less easy to rewrite the code in
+|SPARK|:
 
-   - Analyze (Examine) the specification and correct any errors that are reported
-     by the tools, iterating until no errors remain.
+* Access types should in general be rewritten as private types of a package
+  whose public part is marked ``SPARK_Mode => On`` and whose private part is
+  marked ``SPARK_Mode => Off``. Thus, the body of that package cannot be
+  analyzed by |GNATprove|, but clients of the package can be analyzed.
 
-   - Mark the body as |SPARK| (change SPARK_Mode from Off to On).
+* Functions with side-effects should be rewritten as procedures, by adding an
+  additional out parameter for the result of the function.
 
-   - Analyze (Examine) the body and correct any errors that are reported
-     by the tools, iterating until no errors remain.
+* Aliasing should be either explicitly signed off by :ref:`Justifying Check
+  Messages` or removed by introducing a copy of the object to pass as argument
+  to the call.
 
-   - Each subprogram can then be verified to show absence of run-time errors by proof,
-     testing (with assertion checking enabled) or both.
+* Goto statements should be rewritten into regular control and looping
+  structures when possible.
 
-     - Users may opt to try proving first then, if a particular proof is
-       tricky to discharge, execute test cases to either give confidence that
-       the code is correct or to help diagnose why it is failing.
+* Controlled types cannot be rewritten easily.
 
-     - Alternatively, users may prefer to execute the code with suitable
-       test cases first, then use proof to verify it once they believe it
-       to be correct.
+* Top-level exception handlers can be moved to a wrapper subprogram, which
+  calls the subprogram without handlers and handles the exceptions which may be
+  raised. The callee subprogram (and any callers) can thus be analyzed by
+  |GNATprove|, while the body of the wrapper subprogram is marked ``SPARK_Mode
+  => Off``. The same result can be obtained for exception handlers not at
+  top-level by first refactoring the corresponding block into a subprogram.
 
-#. Once conversion and verification is complete, the executable can be compiled with
-   assertion checks either enabled or disabled depending on the policy chosen
-   by the project. At this point users might begin adding contracts to the code in
-   order to perform verification of functional properties.
+Using ``SPARK_Mode`` to Select or Exclude Code
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Depending on the number and location of remaining violations, ``SPARK_Mode``
+can be used in different ways:
+
+* If most of the codebase is in |SPARK|, :ref:`Setting the Default SPARK_Mode`
+  to ``SPARK_Mode => On`` is best. Violations should be isolated in parts of
+  the code marked ``SPARK_Mode => Off`` by either :ref:`Excluding Selected Unit
+  Bodies` or :ref:`Excluding Selected Parts of a Unit`.
+
+* Otherwise, ``SPARK_Mode => On`` should be applied selectively for
+  :ref:`Verifying Selected Subprograms` or :ref:`Verifying Selected
+  Units`. Violations are allowed outside the parts of the code marked
+  ``SPARK_Mode => On``.
+
+* Even when most of the code is in |SPARK|, it may be more cost effective to
+  apply ``SPARK_Mode => On`` selectively rather than by default. This is the
+  case in particular when some units have non-|SPARK| declarations in the
+  public part of their package spec (for example access type
+  definitions). Rewriting the code of these units to isolate the non-|SPARK|
+  declarations in a part that can be marked ``SPARK_Mode => Off`` may be more
+  costly than specifying no ``SPARK_Mode`` for these units, which allows
+  |SPARK| code elsewhere in the program to refer to the |SPARK| entities in
+  these units.
+
+When analyzing a unit for the first time, it may help to gradually mark the
+code ``SPARK_Mode => On``:
+
+#. Start with the unit spec marked ``SPARK_Mode => On`` and the unit body
+   marked ``SPARK_Mode => Off``. First run |GNATprove| in ``flow`` mode, then
+   in ``proof`` mode, until all errors are resolved (some unproved checks may
+   remain, as errors and checks are different :ref:`Categories of Messages`).
+
+#. Continue with the both the unit spec and body marked ``SPARK_Mode =>
+   On``. First run |GNATprove| in ``flow`` mode, then in ``proof`` mode, until
+   all errors are resolved.
+
+#. Now that |GNATprove| can analyze the unit without any errors, continue with
+   whatever analysis is required to achieve the desired objectives.
+
+.. _New Developments in SPARK:
+
+New Developments in |SPARK|
+---------------------------
+
+In this scenario, a significant part of a software (possibly a module, possibly
+the whole software) is developed in |SPARK|. Typically, |SPARK| is used for the
+most critical parts of the software, with less critical parts programmed in
+Ada, C or Java (for example the graphical interface). A typical development
+process for this scenario might be:
+
+#. Produce the high level (architectural) design in terms of package
+   specifications. Determine which packages will be in |SPARK|, to be marked
+   ``SPARK_Mode => On``.
+
+#. Alternatively, if the majority of packages are to be |SPARK|, :ref:`Setting
+   the Default SPARK_Mode` to ``SPARK_Mode => On`` is best. Those few units
+   that are not |SPARK| should be marked ``SPARK_Mode => Off``.
+
+#. Add :ref:`Package Contracts` to |SPARK| packages and, depending on the
+   desired objectives, add relevant :ref:`Subprogram Contracts` to the
+   subprograms declared in these packages. The package contracts should
+   identify the key elements of :ref:`State Abstraction` which might also be
+   referred to in :ref:`Data Dependencies` and :ref:`Flow Dependencies`.
+
+#. Begin implementing the package bodies. One typical method of doing this is
+   to use a process of top-down decomposition, starting with a top-level
+   subprogram specification and implementing the body by breaking it down into
+   further (nested) subprograms which are themselves specified but not yet
+   implemented, and to iterate until a level is reached where it is appropriate
+   to start writing executable code. However the exact process is not mandated
+   and will depend on other factors such as the design methodology being
+   employed. Provided unimplemented subprograms are stubbed (that is, they are
+   given dummy bodies), |GNATprove| can be used at any point to analyze the
+   program.
+
+#. As each subprogram is implemented, |GNATprove| can be used (in mode ``flow``
+   or ``proof`` depending on the objectives) to verify it (against its
+   contract, and/or to show absence of run-time errors).
+
+.. _Convertion of Existing SPARK Software to SPARK 2014:
+
+Convertion of Existing SPARK Software to SPARK 2014
+---------------------------------------------------
+
+If an existing piece of software has been developed in a previous version of
+|SPARK| and is still undergoing active development/maintenance then it may be
+advantageous to upgrade to using SPARK 2014 in order to make use of the larger
+language subset and the new tools and environment. This requires more efforts
+than previous upgrades between versions of |SPARK| (SPARK 83, SPARK 95 and
+SPARK 2005) because the new version SPARK 2014 of |SPARK| is incompatible with
+those previous versions of the language. While the programming language itself
+in those previous versions of SPARK is a strict subset of SPARK 2014, the
+contracts and assertions in previous versions of SPARK are expressed as
+stylized comments that are ignored by |GNATprove|. Instead, those contracts and
+assertions should be expressed as executable Ada constructs, as presented in
+the :ref:`Overview of SPARK Language`.
+
+The |SPARK| Language Reference Manual has an appendix containing a `SPARK 2005
+to SPARK 2014 Mapping Specification` which can be used to guide the conversion
+process. Various options can be considered for the conversion process:
+
+#. `Only convert annotations into contracts and assertions, with minimal
+   changes to the executable code` - Note that some changes to the code may be
+   required when converting annotations, for example adding with-clauses in a
+   unit to give visibility over entities used in contracts in this unit but
+   defined in another units (which was performed in previous versions of
+   |SPARK| with ``inherit`` annotations). This conversion should be relatively
+   straightforward by following the mapping of features between the two
+   languages.
+
+   The |SPARK| tools should be used to analyze the work in progress throughout
+   the conversion process (which implies that a bottom-up approach may work
+   best) and any errors corrected as they are found. This may also be an
+   occasion to dramatically simplify annotations, as |GNATprove| requires far
+   fewer of them. See the description of the conversion of SPARKSkein program
+   in the section about :ref:`Examples in the Toolset Distribution`, for which
+   a majority of the annotations are not needed anymore.
+
+   Once the conversion is complete, development and maintenance can continue in
+   |SPARK|.
+
+#. `In addition to converting annotations, benefit from the larger language and
+   more powerful tools to simplify code and contracts` - SPARK 2014 is far less
+   constraining than previous versions of |SPARK| in terms of dependencies
+   between units (which can form a graph instead of a tree), control structures
+   (for example arbitrary return statements and exit statements are allowed),
+   data structures (for example scalar types with dynamic bounds are allowed),
+   expressions (for example local variables can be initialized with non-static
+   expressions at declaration). In addition, useful new language constructs are
+   available:
+
+   * :ref:`Contract Cases` can be used to replace complex postconditions with
+     implications.
+
+   * :ref:`Predicates` can be used to state invariant properties of types, so
+     that they need not be repeated in preconditions, postconditions, loop
+     invariants, etc.
+
+   * :ref:`Expression Functions` can be used to replace simple query functions
+     and their postcondition.
+
+   * :ref:`Ghost Code` can be used to mark code only used for verification.
+
+   * :ref:`Loop Variants` can be used to prove the termination of loops.
+
+   Changing the code to use these new features may favor readability and
+   maintenance. These changes can be performed either while converting
+   annotations, or as a second stage after all annotations have been converted
+   (the case discussed above). Like in the previous case, the |SPARK| tools
+   should be used to analyze the work in progress throughout the conversion
+   process (which implies that a bottom-up approach may work best) and any
+   errors corrected as they are found. Once the conversion is complete,
+   development and maintenance can continue in |SPARK|.
+
+#. `Gradually convert annotations and code` - It is possible to keep
+   annotations in comments for the previous versions of |SPARK| while gradually
+   adding contracts and assertions in SPARK 2014. The latest version of the
+   SPARK 2005 toolset facilitates this gradual migration by ignoring |SPARK|
+   pragmas. Thus, new contracts (for example :ref:`Preconditions` and
+   :ref:`Postconditions`) should be expressed as pragmas rather than aspects in
+   that case.
+
+   Typically, annotations and code would be converted when it needs to be
+   changed. The granularity of how much code needs to be converted when a
+   module is touched should be considered, and is likely to be at the level of
+   the whole package.
+
+   The latest version of the SPARK 2005 toolset can be used to continue
+   analyzing the parts of the program that do not use the new features of SPARK
+   2014, including units which have the two versions of contracts in
+   parallel. |GNATprove| can be used to analyze parts of the program that have
+   contracts in SPARK 2014 syntax, including units which have the two versions
+   of contracts in parallel.
+
+Note that some users may wish to take advantage of the new |SPARK| contracts
+and tools whilst retaining the more restrictive nature of SPARK 2005. (Many of
+the restrictions from SPARK 2005 have been lifted in |SPARK| because
+improvements in the tools mean that sound analysis can be performed without
+them, but some projects may need to operate in a more constrained environment.)
+This can be achieved using ``pragma Restrictions (SPARK_05)``. For further
+details of this restriction please see the GNAT Reference Manual.
+
+.. _Analysis of Frozen Ada Software:
+
+Analysis of Frozen Ada Software
+-------------------------------
+
+In some very specific cases, users may be interested in the results of
+|GNATprove|'s analysis on an unmodified code. This may be the case for example
+if the only objective is to :ref:`Ensure Portability of Programs` for existing
+Ada programs that cannot be modified (due to some certification or legal
+contraints).
+
+In such a case, the suggested worflow is very similar to the one described for
+:ref:`Maintenance and Evolution of Existing Ada Software`, except the code
+cannot be rewritten when a violation of |SPARK| restrictions is encountered,
+and instead that part of the code should be marked ``SPARK_Mode => Off``.

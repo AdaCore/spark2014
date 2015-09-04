@@ -1456,6 +1456,8 @@ bounds:
 .. literalinclude:: gnatprove_by_example/results/logging_discr.prove
    :language: none
 
+.. _Predicates:
+
 Predicates
 ----------
 

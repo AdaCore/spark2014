@@ -679,6 +679,8 @@ We now explain the columns of the table.
 * Finally, the column ``Unproved`` counts the checks which have neither been
   proved nor justified.
 
+.. _Categories of Messages:
+
 Categories of Messages
 ----------------------
 
@@ -2300,6 +2302,8 @@ menu item.
 .. _manual_proof:
 
 .. include:: gnatprove_by_example/manual_proof.rst
+
+.. _Examples in the Toolset Distribution:
 
 Examples in the Toolset Distribution
 ====================================
