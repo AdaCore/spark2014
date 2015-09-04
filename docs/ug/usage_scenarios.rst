@@ -1,4 +1,4 @@
-.. _Usage Scenarios for SPARK:
+.. _Applying SPARK in Practice:
 
 ****************************
 Applying |SPARK| in Practice
@@ -234,6 +234,19 @@ This strategy is already applied in other static analysis tools, for example in
 the integration between the CodePeer static analyzer and the VectorCAST testing
 tool for Ada programs.
 
+Between Proof and Integration Testing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Contracts can also be exercized dynamically during integration testing. In
+cases where unit testing is not required (either because proof has been applied
+to all subprograms, or because the verification context allows it), exercizing
+contracts during integration testing can complement proof results, by giving
+the assurance that the actual compiled program behaves as expected.
+
+This strategy has been applied at Altran on UK military projects submitted to
+Def Stan 00-56 certification: AoRTE was proved on all the code, and contracts
+were exercized during integration testing, which allowed to scrap unit testing.
+
 Between Proof and Unit Testing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -261,22 +274,22 @@ testing (for example with switch ``-gnata`` in |GNAT Pro|), or by using
 GNATtest to create the test harness (see section 7.10.12 of |GNAT Pro| User's
 Guide on `Testing with Contracts`).
 
+When combining proof and test on individual subprograms, one should make sure
+that the assumptions made for proof are justified at the boundary between
+proved subprograms and tested subprograms (see section on :ref:`Managing
+Assumptions`). To help with this verification, special switches are defined in
+|GNAT Pro| to add run-time checks that verify dynamically the assumptions made
+during proof:
+
+* ``-gnateA`` adds checks that parameters are not aliased
+* ``-gnateV`` adds checks that parameters are valid, including parameters of
+  composite types (arrays, records)
+* ``-gnatVa`` adds checks that objects are valid at more places than -gnateV,
+  but only for scalar objects
+
 This strategy is particularly well suited in the context of the DO-178C
 certification standard in avionics, which explicitly allows proof or test to be
 used as verification means on each module.
-
-Between Proof and Integration Testing
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Contracts can also be exercized dynamically during integration testing. In
-cases where unit testing is not required (either because proof has been applied
-to all subprograms, or because the verification context allows it), exercizing
-contracts during integration testing can complement proof results, by giving
-the assurance that the actual compiled program behaves as expected.
-
-This strategy has been applied at Altran on UK military projects submitted to
-Def Stan 00-56 certification: AoRTE was proved on all the code, and contracts
-were exercized during integration testing, which allowed to scrap unit testing.
 
 .. _Prove Correct Integration Between Components:
 
@@ -952,6 +965,8 @@ Depending on the violation, it may be more or less easy to rewrite the code in
   => Off``. The same result can be obtained for exception handlers not at
   top-level by first refactoring the corresponding block into a subprogram.
 
+.. _Using SPARK_Mode to Select or Exclude Code:
+
 Using ``SPARK_Mode`` to Select or Exclude Code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1150,4 +1165,10 @@ contraints).
 In such a case, the suggested worflow is very similar to the one described for
 :ref:`Maintenance and Evolution of Existing Ada Software`, except the code
 cannot be rewritten when a violation of |SPARK| restrictions is encountered,
-and instead that part of the code should be marked ``SPARK_Mode => Off``.
+and instead that part of the code should be marked ``SPARK_Mode => Off``. To
+minimize the parts of the code that need to be marked ``SPARK_Mode => Off``, it
+is in general preferable to apply ``SPARK_Mode => On`` selectively rather than
+by default, so that units that have non-|SPARK| declarations in the public part
+of their package spec (for example access type definitions) need not be marked
+``SPARK_Mode => Off``. See :ref:`Using SPARK_Mode to Select or Exclude Code`
+for details.

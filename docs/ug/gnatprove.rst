@@ -1111,20 +1111,35 @@ checking absence of infinite call chains). But in general, a program is partly
 in |SPARK| and partly in other languages, mostly Ada, C and assembly
 languages. Thus, assumptions on parts of the program that cannot be analyzed
 with |GNATprove| need to be recorded for verification by other means, like
-testing, manual analysis or reviews. When switch ``--assumptions`` is used,
-|GNATprove| generates additional information about assumptions in its result
-file ``gnatprove.out``:
+testing, manual analysis or reviews.
 
-.. tabularcolumns:: |l|p{4in}|
+When switch ``--assumptions`` is used, |GNATprove| generates information about
+remaining assumptions in its result file ``gnatprove.out``. These remaining
+assumptions need to be justified to ensure that the desired verification
+objectives are met. An assumption on a subprogram may be generated in various
+cases:
+
+* the subprogram was not analyzed (for example because it is marked
+  ``SPARK_Mode => Off``)
+
+* the subprogram was not completely verified by |GNATprove| (that is, some
+  unproved checks remain)
+
+Note that currently, only assumptions on called subprograms are output, and not
+assumptions on calling subprograms.
+
+The following table explains the meaning of assumptions and claims which
+gnatprove may output:
+
+.. tabularcolumns:: |l|p{4.5in}|
 
 .. csv-table::
-   :header: "Assumption Kind", "Explanation"
-   :widths: 1, 3
+   :header: "Assumption", "Explanation"
+   :widths: 2, 4
 
-   "post", "The subprogram guarantees that its postcondition holds."
-   "aorte", "The subprogram is free from run-time errors."
-   "effects", "The subprogram interacts with parameters and global variables
-   as described in its spec (signature + data dependencies)."
+    "effects on parameters and global variables", "The subprogram does not read or write any other parameters or global variables than what is described in its spec (signature + data dependencies)."
+    "absence of run-time errors", "The subprogram is free from run-time errors."
+    "the postcondition", "The postconditon of the subprogram holds after each call of the subprogram."
 
 .. _How to Write Subprogram Contracts:
 

@@ -94,7 +94,7 @@ missing.
 
 Such patterns are intended to allow for application of formal verification to a
 subset of a program, and the combination of formal verification with more
-traditional testing (see :ref:`Combining Formal Verification and Testing`).
+traditional testing (see :ref:`Applying SPARK in Practice`).
 
 Project File Setup
 ==================

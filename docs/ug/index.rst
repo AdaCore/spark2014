@@ -33,7 +33,6 @@ SPARK 2014 Toolset User's Guide
    tutorial
    gnatprove
    usage_scenarios
-   test_and_proof
    appendix
    gfdl
 

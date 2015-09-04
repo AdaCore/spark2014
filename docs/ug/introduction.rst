@@ -46,7 +46,5 @@ The remainder of this document is structured as follows:
   to writing, testing and proving |SPARK| programs.
 * :ref:`Formal Verification with GNATprove` describes the use of the
   |GNATprove| formal verification tool.
-* :ref:`Usage Scenarios for SPARK` lists the main usage
-  scenarios for |SPARK|.
-* :ref:`Combining Formal Verification and Testing` explains how to combine the
-  results of formal verification and classical verification by testing.
+* :ref:`Applying SPARK in Practice` lists the main objectives and project
+  scenarios for using |SPARK|.
