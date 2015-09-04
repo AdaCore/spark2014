@@ -1160,7 +1160,7 @@ In some very specific cases, users may be interested in the results of
 |GNATprove|'s analysis on an unmodified code. This may be the case for example
 if the only objective is to :ref:`Ensure Portability of Programs` for existing
 Ada programs that cannot be modified (due to some certification or legal
-contraints).
+constraints).
 
 In such a case, the suggested worflow is very similar to the one described for
 :ref:`Maintenance and Evolution of Existing Ada Software`, except the code
