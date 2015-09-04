@@ -9,7 +9,7 @@ module Main
      interfere with other variables, i.e., writes through pointers, aliased
      variables etc. *)
   type __type_of_heap
-  type __type_of_heap__ref = { mutable __type_of_heap__content : __type_of_heap }
+  type __type_of_heap__ref = { mutable __type_of_heap__content "model_trace:" : __type_of_heap }
   val __HEAP : __type_of_heap__ref
 
   (* the return type for the functions that correspond to 'Image *)
@@ -21,10 +21,10 @@ module Main
   predicate __ignore "inline" (x : 'a) = true
 
   (* Mutable records holding references over builtin types *)
-  type int__ref  = { mutable int__content : int  }
-  type bool__ref = { mutable bool__content : bool }
-  type real__ref = { mutable real__content : real }
-  type __private__ref = { mutable __private__content : __private }
+  type int__ref  = { mutable int__content "model_trace:"  : int  }
+  type bool__ref = { mutable bool__content "model_trace:" : bool }
+  type real__ref = { mutable real__content "model_trace:" : real }
+  type __private__ref = { mutable __private__content "model_trace:" : __private }
 
   (* Projections from records holding references over builtin types to builtin types *)
   function int__ref___projection
@@ -330,7 +330,7 @@ module Array__1
   type component_type
 
   type map = Map.map I1.t component_type
-  type map__ref = { mutable map__content : map }
+  type map__ref = { mutable map__content "model_trace:" : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
 
@@ -409,7 +409,7 @@ module Array__2
   type component_type
 
   type map
-  type map__ref = { mutable map__content : map }
+  type map__ref = { mutable map__content "model_trace:" : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
 
@@ -473,7 +473,7 @@ module Array__3
   type component_type
 
   type map
-  type map__ref = { mutable map__content : map }
+  type map__ref = { mutable map__content "model_trace:" : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
 
@@ -553,7 +553,7 @@ module Array__4
   type component_type
 
   type map
-  type map__ref = { mutable map__content : map }
+  type map__ref = { mutable map__content "model_trace:" : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
 
@@ -693,7 +693,7 @@ end
 module BV8
   use export bv.BV8
 
-  type t__ref = { mutable t__content : t }
+  type t__ref = { mutable t__content "model_trace:" : t }
   val t__havoc (x : t__ref) : unit
      writes { x }
 
@@ -725,7 +725,7 @@ end
 module BV16
   use export bv.BV16
 
-  type t__ref = { mutable t__content : t }
+  type t__ref = { mutable t__content "model_trace:" : t }
   val t__havoc (x : t__ref) : unit
      writes { x }
 
@@ -757,7 +757,7 @@ end
 module BV32
   use export bv.BV32
 
-  type t__ref = { mutable t__content : t }
+  type t__ref = { mutable t__content "model_trace:" : t }
   val t__havoc (x : t__ref) : unit
      writes { x }
 
@@ -789,7 +789,7 @@ end
 module BV64
   use export bv.BV64
 
-  type t__ref = { mutable t__content : t }
+  type t__ref = { mutable t__content "model_trace:" : t }
   val t__havoc (x : t__ref) : unit
      writes { x }
 

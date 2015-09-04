@@ -137,6 +137,8 @@ package body Xtree_Sinfo is
       New_Field (W_Record_Binder,
                  "Arg_Type", "W_Type", Id_One);
       New_Field (W_Record_Binder,
+                 "Labels", "Name_Id_Set");
+      New_Field (W_Record_Binder,
                  "Is_Mutable", "Boolean", "False");
 
       -------------------------

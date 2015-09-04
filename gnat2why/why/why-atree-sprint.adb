@@ -1607,6 +1607,8 @@ package body Why.Atree.Sprint is
          P (O, "mutable ");
       end if;
       Print_Node (+Get_Name (Node));
+      P (O, " ");
+      P (O, Get_Labels (Node), As_String => True);
       P (O, " : ");
       Print_Node (+Get_Arg_Type (Node));
    end Print_Record_Binder;

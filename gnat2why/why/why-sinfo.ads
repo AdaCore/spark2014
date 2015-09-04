@@ -145,6 +145,7 @@ package Why.Sinfo is
    --  ----------------------
    --  Name       W_Identifier_Id
    --  Arg_Type   W_Type_Id
+   --  Labels     Name_Id_Set
    --  Is_Mutable Boolean
    --
    --  Used to declare fields of record types
