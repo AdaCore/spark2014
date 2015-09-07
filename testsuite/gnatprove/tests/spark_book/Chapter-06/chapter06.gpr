@@ -1,0 +1,18 @@
+with "../library/library.gpr";
+
+project Chapter06 is
+
+   for Object_Dir use "build";
+   for Main use ("main.adb", "tests.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata");
+   end Compiler;
+
+   package Prove is
+      for Switches use ("-j4");
+   end Prove;
+
+   for Source_Dirs use (".", "tests");
+
+end Chapter06;

@@ -1,0 +1,13 @@
+project Library is
+
+   for Object_Dir use "build";
+   for Library_Name use "library";
+   for Library_Dir use "lib";
+   for Library_Ali_Dir use "lib";
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-gnata", "-fstack-check");
+   end Compiler;
+
+end Library;
+

@@ -1,0 +1,16 @@
+project Chapter05 is
+
+   for Object_Dir use "build";
+   for Source_Dirs use (".");
+   for Main use ("exercise.adb", "logical_syntax.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-O2", "-gnatyabfkrt", "-gnat12", "-gnata", "-gnato");
+   end Compiler;
+
+   package Prove is
+      for Switches use ("-j8");
+   end Prove;
+
+end Chapter05;
+

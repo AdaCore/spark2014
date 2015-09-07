@@ -1,0 +1,13 @@
+with "../library/library.gpr";
+
+project Chapter02 is
+
+   for Object_Dir use "build";
+   for Source_Dirs use (".");
+   for Main use ("average.adb", "average_with_use.adb", "bad_types.adb", "enum_example.adb", "example.adb", "generic_examples.adb", "good_types.adb", "palindrome.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-O2", "-gnatyabfkrt", "-gnat12", "-gnata");
+   end Compiler;
+
+end Chapter02;

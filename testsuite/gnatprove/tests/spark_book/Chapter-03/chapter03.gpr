@@ -1,0 +1,12 @@
+project Chapter03 is
+
+   for Object_Dir use "build";
+   for Source_Dirs use (".", "Visibility");
+   for Main use ("bingo_basket_test.adb", "bounded_queue_example.adb", "bounded_queue_example_v1.adb", "bounded_queue_example_v2.adb", "ohms_law.adb", "pack_test.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-O2", "-gnatyabfkrt", "-gnat12", "-gnata");
+   end Compiler;
+
+end Chapter03;
+

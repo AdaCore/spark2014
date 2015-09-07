@@ -1,0 +1,14 @@
+
+project Chapter07 is
+
+   for Object_Dir use "build";
+   for Main use ("main.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata");
+   end Compiler;
+
+   for Languages use ("Ada", "C");
+
+end Chapter07;
+

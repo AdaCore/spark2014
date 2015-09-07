@@ -1,0 +1,17 @@
+with "../library/library.gpr";
+
+project Chapter04 is
+
+   for Object_Dir use "build";
+   for Source_Dirs use (".");
+   for Main use ("sample.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-O2", "-gnatyabfkhrxen");
+   end Compiler;
+
+   package Pretty_Printer is
+      for Default_Switches ("ada") use ("-c0");
+   end Pretty_Printer;
+
+end Chapter04;

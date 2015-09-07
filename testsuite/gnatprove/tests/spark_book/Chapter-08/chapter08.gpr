@@ -1,0 +1,12 @@
+project Chapter08 is
+
+   for Object_Dir use "build";
+   for Source_Dirs use (".");
+   for Main use ("bingo_basket_test.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-O2", "-gnatyabfkr", "-gnat12", "-gnata");
+   end Compiler;
+
+end Chapter08;
+
