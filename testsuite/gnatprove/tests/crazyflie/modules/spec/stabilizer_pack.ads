@@ -111,8 +111,8 @@ is
        Global => (Input  => (Command_Types,
                              Desired_Angles,
                              IMU_Outputs),
-                  Output => (Actuator_Commands),
-                  In_Out => (Desired_Rates,
+                  In_Out => (Actuator_Commands,
+                             Desired_Rates,
                              Rate_PIDs));
 
 private

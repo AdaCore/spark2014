@@ -148,44 +148,64 @@ maths_pack.adb:31:14: info: range check proved
 maths_pack.ads:18:16: medium: postcondition might fail
 pid_pack.adb:47:35: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:47:35: info: overflow check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:47:35: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:47:35: info: range check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:47:35: info: range check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:47:35: info: range check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:50:32: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:50:32: info: overflow check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:50:32: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:50:41: medium: assertion might fail, requires Pid.Error * Pid.Dt in T_Error'First * 2.0 * T_Delta_Time'Last .. T_Error'Last * 2.0 * T_Delta_Time'last, in instantiation at controller_pack.ads:16
 pid_pack.adb:50:41: medium: assertion might fail, requires Pid.Error * Pid.Dt in T_Error'First * 2.0 * T_Delta_Time'Last .. T_Error'Last * 2.0 * T_Delta_Time'last, in instantiation at controller_pack.ads:24
+pid_pack.adb:50:41: medium: assertion might fail, requires Pid.Error * Pid.Dt in T_Error'First * 2.0 * T_Delta_Time'Last .. T_Error'Last * 2.0 * T_Delta_Time'last, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:54:20: info: range check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:54:20: info: range check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:54:20: info: range check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:54:40: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:54:40: info: overflow check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:54:40: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:54:52: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:54:52: info: overflow check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:54:52: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:58:31: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:58:31: info: overflow check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:58:31: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:58:49: info: division check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:58:49: info: division check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:58:49: info: division check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:58:49: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:58:49: info: overflow check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:58:49: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:58:49: info: range check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:58:49: info: range check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:58:49: info: range check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:60:27: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:60:27: info: overflow check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:60:27: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:60:27: info: range check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:60:27: info: range check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:60:27: info: range check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:62:07: info: assertion proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:62:07: info: assertion proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:62:07: info: assertion proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:64:27: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:64:27: info: overflow check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:64:27: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:64:27: info: range check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:64:27: info: range check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:64:27: info: range check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:66:27: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:66:27: info: overflow check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:66:27: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:66:27: info: range check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:66:27: info: range check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:66:27: info: range check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:72:17: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:72:17: info: overflow check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:72:17: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:72:29: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:72:29: info: overflow check proved, in instantiation at controller_pack.ads:24
+pid_pack.adb:72:29: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.adb:81:14: info: initialization of "Is_Active" proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:81:14: info: initialization of "Is_Active" proved, in instantiation at controller_pack.ads:24
 pid_pack.adb:81:14: info: initialization of "Is_Active" proved, in instantiation at stabilizer_pack.ads:44
@@ -233,20 +253,28 @@ pid_pack.ads:50:07: info: initialization of "Pid.Prev_Error" proved, in instanti
 pid_pack.ads:50:07: info: initialization of "Pid.Prev_Error" proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.ads:82:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:82:20: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:82:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.ads:92:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:92:20: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:92:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.ads:99:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:99:20: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:99:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.ads:106:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:106:20: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:106:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.ads:113:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:113:20: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:113:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.ads:120:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:120:20: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:120:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.ads:127:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:127:20: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:127:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
 pid_pack.ads:135:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:135:20: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:135:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
 safety_pack.ads:16:16: info: overflow check proved
 safety_pack.ads:18:16: info: overflow check proved
 safety_pack.ads:56:21: info: range check proved
@@ -419,9 +447,9 @@ sensfusion6_pack.adb:224:24: medium: precondition might fail, in call inlined at
 sensfusion6_pack.adb:224:34: info: initialization of "Square_Sum" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:226:10: info: assertion proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:226:25: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:227:10: info: assertion proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:228:10: info: assertion proved, in call inlined at sensfusion6_pack.adb:320
-sensfusion6_pack.adb:229:10: info: assertion proved, in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:227:28: medium: assertion might fail, requires Ax in -16.0 .. , in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:228:28: medium: assertion might fail, requires Ay in -16.0 .. , in call inlined at sensfusion6_pack.adb:320
+sensfusion6_pack.adb:229:28: medium: assertion might fail, requires Az in -16.0 .. , in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:230:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:230:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:230:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:320
@@ -656,6 +684,24 @@ sensfusion6_pack.ads:82:04: info: initialization of "Integral_FBx" constituent o
 sensfusion6_pack.ads:84:04: info: initialization of "Integral_FBy" constituent of "SensFusion6_State" proved
 sensfusion6_pack.ads:86:04: info: initialization of "Integral_FBz" constituent of "SensFusion6_State" proved
 sensfusion6_pack.ads:92:04: info: initialization of "Beta" constituent of "SensFusion6_State" proved
+stabilizer_pack.adb:78:10: info: assertion proved, in call inlined at stabilizer_pack.adb:101
+stabilizer_pack.adb:78:10: info: assertion proved, in call inlined at stabilizer_pack.adb:102
+stabilizer_pack.adb:78:10: info: assertion proved, in call inlined at stabilizer_pack.adb:103
+stabilizer_pack.adb:78:10: info: assertion proved, in call inlined at stabilizer_pack.adb:104
+stabilizer_pack.adb:78:10: info: assertion proved, in call inlined at stabilizer_pack.adb:106
+stabilizer_pack.adb:78:10: info: assertion proved, in call inlined at stabilizer_pack.adb:107
+stabilizer_pack.adb:78:10: info: assertion proved, in call inlined at stabilizer_pack.adb:108
+stabilizer_pack.adb:78:10: info: assertion proved, in call inlined at stabilizer_pack.adb:109
+stabilizer_pack.adb:78:10: info: assertion proved, in call inlined at stabilizer_pack.adb:277
+stabilizer_pack.adb:79:27: info: range check proved, in call inlined at stabilizer_pack.adb:101
+stabilizer_pack.adb:79:27: info: range check proved, in call inlined at stabilizer_pack.adb:102
+stabilizer_pack.adb:79:27: info: range check proved, in call inlined at stabilizer_pack.adb:103
+stabilizer_pack.adb:79:27: info: range check proved, in call inlined at stabilizer_pack.adb:104
+stabilizer_pack.adb:79:27: info: range check proved, in call inlined at stabilizer_pack.adb:106
+stabilizer_pack.adb:79:27: info: range check proved, in call inlined at stabilizer_pack.adb:107
+stabilizer_pack.adb:79:27: info: range check proved, in call inlined at stabilizer_pack.adb:108
+stabilizer_pack.adb:79:27: info: range check proved, in call inlined at stabilizer_pack.adb:109
+stabilizer_pack.adb:79:27: info: range check proved, in call inlined at stabilizer_pack.adb:277
 stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:101
 stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:102
 stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:103
@@ -666,41 +712,119 @@ stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined
 stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:109
 stabilizer_pack.adb:82:14: info: initialization of "Res" proved, in call inlined at stabilizer_pack.adb:277
 stabilizer_pack.adb:98:15: info: initialization of "R" proved
+stabilizer_pack.adb:98:17: info: division check proved
 stabilizer_pack.adb:99:15: info: initialization of "P" proved
+stabilizer_pack.adb:99:17: info: division check proved
+stabilizer_pack.adb:101:44: info: overflow check proved
 stabilizer_pack.adb:101:46: info: initialization of "R" proved
+stabilizer_pack.adb:101:48: info: overflow check proved
 stabilizer_pack.adb:101:50: info: initialization of "P" proved
+stabilizer_pack.adb:101:52: info: overflow check proved
+stabilizer_pack.adb:102:44: info: overflow check proved
 stabilizer_pack.adb:102:46: info: initialization of "R" proved
+stabilizer_pack.adb:102:48: info: overflow check proved
 stabilizer_pack.adb:102:50: info: initialization of "P" proved
+stabilizer_pack.adb:102:52: info: overflow check proved
+stabilizer_pack.adb:103:44: info: overflow check proved
 stabilizer_pack.adb:103:46: info: initialization of "R" proved
+stabilizer_pack.adb:103:48: info: overflow check proved
 stabilizer_pack.adb:103:50: info: initialization of "P" proved
+stabilizer_pack.adb:103:52: info: overflow check proved
+stabilizer_pack.adb:104:44: info: overflow check proved
 stabilizer_pack.adb:104:46: info: initialization of "R" proved
+stabilizer_pack.adb:104:48: info: overflow check proved
 stabilizer_pack.adb:104:50: info: initialization of "P" proved
+stabilizer_pack.adb:104:52: medium: overflow check might fail
+stabilizer_pack.adb:106:44: info: overflow check proved
 stabilizer_pack.adb:106:46: info: initialization of "P" proved
+stabilizer_pack.adb:106:48: info: overflow check proved
+stabilizer_pack.adb:107:44: info: overflow check proved
 stabilizer_pack.adb:107:46: info: initialization of "R" proved
+stabilizer_pack.adb:107:48: info: overflow check proved
+stabilizer_pack.adb:108:44: info: overflow check proved
 stabilizer_pack.adb:108:46: info: initialization of "P" proved
+stabilizer_pack.adb:108:48: info: overflow check proved
+stabilizer_pack.adb:109:44: info: overflow check proved
 stabilizer_pack.adb:109:46: info: initialization of "R" proved
+stabilizer_pack.adb:109:48: info: overflow check proved
 stabilizer_pack.adb:112:34: info: initialization of "Motor_Power_M1" constituent of "Motor_Powers" proved
 stabilizer_pack.adb:113:34: info: initialization of "Motor_Power_M2" constituent of "Motor_Powers" proved
 stabilizer_pack.adb:114:34: info: initialization of "Motor_Power_M3" constituent of "Motor_Powers" proved
 stabilizer_pack.adb:115:34: info: initialization of "Motor_Power_M4" constituent of "Motor_Powers" proved
+stabilizer_pack.adb:131:25: info: overflow check proved
+stabilizer_pack.adb:131:34: info: overflow check proved
+stabilizer_pack.adb:131:43: info: overflow check proved
+stabilizer_pack.adb:131:52: info: overflow check proved
+stabilizer_pack.adb:131:61: info: overflow check proved
+stabilizer_pack.adb:135:18: medium: range check might fail
+stabilizer_pack.adb:135:36: info: overflow check proved
 stabilizer_pack.adb:136:42: info: initialization of "Acc_WZ" constituent of "V_Speed_Variables" proved
+stabilizer_pack.adb:136:66: info: overflow check proved
 stabilizer_pack.adb:142:40: info: initialization of "Euler_Roll_Actual" constituent of "Actual_Angles" proved
 stabilizer_pack.adb:143:40: info: initialization of "Euler_Pitch_Actual" constituent of "Actual_Angles" proved
 stabilizer_pack.adb:144:40: info: initialization of "Euler_Yaw_Actual" constituent of "Actual_Angles" proved
+stabilizer_pack.adb:147:40: info: range check proved
+stabilizer_pack.adb:148:36: info: range check proved
+stabilizer_pack.adb:148:55: info: range check proved
+stabilizer_pack.adb:149:36: info: range check proved
+stabilizer_pack.adb:165:30: info: range check proved
+stabilizer_pack.adb:168:44: info: range check proved
+stabilizer_pack.adb:185:55: info: range check proved
 stabilizer_pack.adb:189:10: info: initialization of "LPS25H_Data_Valid" proved
+stabilizer_pack.adb:190:17: medium: range check might fail
+stabilizer_pack.adb:190:31: info: overflow check proved
+stabilizer_pack.adb:190:43: info: overflow check proved
 stabilizer_pack.adb:190:45: info: initialization of "Asl_Raw" constituent of "Asl_Variables" proved
+stabilizer_pack.adb:190:53: info: overflow check proved
+stabilizer_pack.adb:190:60: info: overflow check proved
+stabilizer_pack.adb:193:22: medium: range check might fail
+stabilizer_pack.adb:193:41: info: overflow check proved
+stabilizer_pack.adb:194:33: info: overflow check proved
 stabilizer_pack.adb:194:35: info: initialization of "Asl_Raw" constituent of "Asl_Variables" proved
+stabilizer_pack.adb:194:43: info: overflow check proved
+stabilizer_pack.adb:194:50: info: overflow check proved
+stabilizer_pack.adb:200:22: info: range check proved
+stabilizer_pack.adb:200:47: info: overflow check proved
+stabilizer_pack.adb:205:18: medium: range check might fail
+stabilizer_pack.adb:205:36: info: overflow check proved
+stabilizer_pack.adb:205:51: info: overflow check proved
 stabilizer_pack.adb:206:31: info: initialization of "V_Speed_ASL" constituent of "V_Speed_Variables" proved
+stabilizer_pack.adb:206:43: info: overflow check proved
+stabilizer_pack.adb:206:50: info: overflow check proved
 stabilizer_pack.adb:217:10: info: initialization of "Set_Alt_Hold" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.adb:229:33: info: range check proved
 stabilizer_pack.adb:233:32: info: initialization of "Prev_Integ" proved
+stabilizer_pack.adb:233:32: info: range check proved
+stabilizer_pack.adb:236:30: info: range check proved
 stabilizer_pack.adb:242:10: info: initialization of "Alt_Hold" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.adb:244:29: medium: range check might fail
+stabilizer_pack.adb:244:55: info: overflow check proved
 stabilizer_pack.adb:245:40: info: initialization of "Alt_Hold_Change" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.adb:245:56: info: division check proved
+stabilizer_pack.adb:245:56: info: overflow check proved
+stabilizer_pack.adb:251:51: info: overflow check proved
+stabilizer_pack.adb:257:52: medium: range check might fail
+stabilizer_pack.adb:260:26: medium: range check might fail
+stabilizer_pack.adb:260:41: info: overflow check proved
+stabilizer_pack.adb:261:36: info: overflow check proved
 stabilizer_pack.adb:261:40: info: initialization of "V_Speed_Acc" constituent of "V_Speed_Variables" proved
+stabilizer_pack.adb:261:52: info: overflow check proved
+stabilizer_pack.adb:262:36: info: overflow check proved
 stabilizer_pack.adb:262:39: info: initialization of "V_Speed_ASL" constituent of "V_Speed_Variables" proved
+stabilizer_pack.adb:262:51: info: overflow check proved
+stabilizer_pack.adb:265:30: info: range check proved
+stabilizer_pack.adb:270:30: medium: range check might fail
+stabilizer_pack.adb:270:54: info: overflow check proved
+stabilizer_pack.adb:270:73: info: overflow check proved
 stabilizer_pack.adb:271:42: info: initialization of "Baro_V_Speed" proved
+stabilizer_pack.adb:271:55: info: overflow check proved
 stabilizer_pack.adb:271:57: info: initialization of "Alt_Hold_PID_Out" proved
+stabilizer_pack.adb:276:30: info: overflow check proved
 stabilizer_pack.adb:277:39: info: initialization of "C28b" proved
 stabilizer_pack.adb:277:62: info: initialization of "Raw_Thrust" proved
+stabilizer_pack.adb:317:33: info: range check proved
+stabilizer_pack.adb:318:33: info: range check proved
+stabilizer_pack.adb:362:55: info: overflow check proved
 stabilizer_pack.ads:86:14: info: initialization of "Alt_Hold" constituent of "Alt_Hold_Variables" proved
 stabilizer_pack.ads:86:14: info: initialization of "Alt_Hold_Change" constituent of "Alt_Hold_Variables" proved
 stabilizer_pack.ads:86:14: info: initialization of "Asl_Raw" constituent of "Asl_Variables" proved
@@ -717,7 +841,9 @@ stabilizer_pack.ads:97:14: info: initialization of "Euler_Yaw_Actual" constituen
 stabilizer_pack.ads:97:14: info: initialization of "Pitch_Rate_Desired" constituent of "Desired_Rates" proved
 stabilizer_pack.ads:97:14: info: initialization of "Roll_Rate_Desired" constituent of "Desired_Rates" proved
 stabilizer_pack.ads:97:14: info: initialization of "Yaw_Rate_Desired" constituent of "Desired_Rates" proved
-stabilizer_pack.ads:111:08: global output "Stabilizer_Pack.Actuator_Commands" of "Stabilizer_Update_Rate" not fully written
+stabilizer_pack.ads:109:14: info: initialization of "Actuator_Pitch" constituent of "Actuator_Commands" proved
+stabilizer_pack.ads:109:14: info: initialization of "Actuator_Roll" constituent of "Actuator_Commands" proved
+stabilizer_pack.ads:109:14: info: initialization of "Actuator_Yaw" constituent of "Actuator_Commands" proved
 stabilizer_pack.ads:142:04: info: initialization of "Gyro.X" constituent of "IMU_Outputs" proved
 stabilizer_pack.ads:142:04: info: initialization of "Gyro.Y" constituent of "IMU_Outputs" proved
 stabilizer_pack.ads:142:04: info: initialization of "Gyro.Z" constituent of "IMU_Outputs" proved
@@ -766,8 +892,10 @@ stabilizer_pack.ads:213:04: info: initialization of "Alt_Hold_PID_Val" constitue
 stabilizer_pack.ads:215:04: info: initialization of "Alt_Hold_Err" constituent of "Alt_Hold_Variables" proved
 stabilizer_pack.ads:217:04: info: initialization of "Alt_Hold_Change" constituent of "Alt_Hold_Variables" proved
 stabilizer_pack.ads:219:04: info: initialization of "Alt_Hold_Target" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:219:41: info: range check proved
 stabilizer_pack.ads:230:04: info: initialization of "V_Speed_ASL_Fac" constituent of "V_Speed_Parameters" proved
 stabilizer_pack.ads:232:04: info: initialization of "V_Speed_Acc_Fac" constituent of "V_Speed_Parameters" proved
+stabilizer_pack.ads:232:38: info: range check proved
 stabilizer_pack.ads:234:04: info: initialization of "V_Acc_Deadband" constituent of "V_Speed_Parameters" proved
 stabilizer_pack.ads:236:04: info: initialization of "V_Speed_ASL_Deadband" constituent of "V_Speed_Parameters" proved
 stabilizer_pack.ads:239:04: info: initialization of "V_Speed_Limit" constituent of "V_Speed_Parameters" proved
@@ -809,7 +937,3 @@ worker_pack.adb:57:41: info: initialization of "Work.Arg" proved
 worker_pack.adb:57:41: info: initialization of "Work.Func" proved
 worker_pack.adb:59:10: info: initialization of "Res" proved
 worker_pack.ads:26:04: info: initialization of "Worker_Queue" proved
-   compilation of stabilizer_pack.adb failed
-
-
-gnatprove: error during flow analysis and proof
