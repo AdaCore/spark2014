@@ -760,8 +760,7 @@ package body SPARK_Frame_Conditions is
 
    procedure Load_SPARK_Xrefs
      (ALI_Filename    : String;
-      Has_SPARK_Xrefs : out Boolean;
-      Already_Loaded  : Boolean := False)
+      Has_SPARK_Xrefs : out Boolean)
    is
       ALI_File : Ada.Text_IO.File_Type;
       Line     : String (1 .. 1024);
@@ -826,37 +825,32 @@ package body SPARK_Frame_Conditions is
    --  Start of processing for Load_SPARK_Xrefs
 
    begin
-      if not Already_Loaded then
-         Open (ALI_File, In_File, ALI_Filename);
+      Open (ALI_File, In_File, ALI_Filename);
 
-         Scan_ALI : loop
-            if End_Of_File (ALI_File) then
-               --  No SPARK cross-reference information in this ALI
+      Scan_ALI : loop
+         if End_Of_File (ALI_File) then
+            --  No SPARK cross-reference information in this ALI
 
-               Close (ALI_File);
-               Has_SPARK_Xrefs := False;
-               return;
-            end if;
+            Close (ALI_File);
+            Has_SPARK_Xrefs := False;
+            return;
+         end if;
 
-            Get_Line (ALI_File, Line, Last);
-            case Line (1) is
-               when 'F' =>
-                  exit Scan_ALI;
+         Get_Line (ALI_File, Line, Last);
+         case Line (1) is
+            when 'F' =>
+               exit Scan_ALI;
 
-               when others =>
-                  null;
-            end case;
-         end loop Scan_ALI;
+            when others =>
+               null;
+         end case;
+      end loop Scan_ALI;
 
-         Has_SPARK_Xrefs := True;
-         Index := 1;
+      Has_SPARK_Xrefs := True;
+      Index := 1;
 
-         Get_SPARK_From_ALI;
-         Close (ALI_File);
-      else
-         Has_SPARK_Xrefs := True;
-         Index := 1;
-      end if;
+      Get_SPARK_From_ALI;
+      Close (ALI_File);
 
       --  Walk low-level SPARK tables for this unit and populate high-level
       --  maps.

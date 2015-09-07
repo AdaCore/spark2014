@@ -91,12 +91,8 @@ package SPARK_Frame_Conditions is
    --  Return the name of the file defining the entity E
 
    procedure Load_SPARK_Xrefs (ALI_Filename    : String;
-                               Has_SPARK_Xrefs : out Boolean;
-                               Already_Loaded  : Boolean := False);
+                               Has_SPARK_Xrefs : out Boolean);
    --  Extract xref information from an ALI file.
-   --
-   --  If Already_Loaded is set then the information is already present
-   --  and we do NOT need to read the ALI file.
 
    procedure Collect_Direct_Computed_Globals
      (E                  : Entity_Id;

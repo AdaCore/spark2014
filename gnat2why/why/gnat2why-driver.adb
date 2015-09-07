@@ -268,7 +268,7 @@ package body Gnat2Why.Driver is
               Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
             Has_SPARK_Xrefs : Boolean;
          begin
-            Load_SPARK_Xrefs (ALI_File_Name_Str, Has_SPARK_Xrefs, False);
+            Load_SPARK_Xrefs (ALI_File_Name_Str, Has_SPARK_Xrefs);
 
             if Has_SPARK_Xrefs then
                Loaded_ALI_Files.Include (ALI_File_Name);
