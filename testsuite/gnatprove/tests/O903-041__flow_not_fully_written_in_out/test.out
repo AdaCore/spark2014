@@ -1,0 +1,7 @@
+stack.adb:7:05: info: initialization of "Top" constituent of "The_Stack" proved
+stack.adb:8:05: high: "Content" constituent of "The_Stack" is not initialized in "Stack"
+stack.adb:12:22: medium: array index check might fail
+stack.adb:13:19: info: range check proved
+stack.adb:18:19: medium: overflow check might fail
+stack.adb:19:17: medium: array index check might fail
+stack.ads:7:21: info: initialization of "E" proved

@@ -868,7 +868,7 @@ package body Flow.Analysis.Sanity is
          begin
             if not Extended_Set_Contains (W, Projected_Actual_Writes) then
                --  Don't issue this error for state abstractions that
-               --  have a null refinement
+               --  have a null refinement.
 
                if Ekind (E) /= E_Abstract_State
                  or else Has_Non_Null_Refinement (E)
@@ -886,7 +886,7 @@ package body Flow.Analysis.Sanity is
                end if;
 
             elsif Ekind (E) = E_Abstract_State
-              and then not User_Reads.Contains (W)
+              and then not User_Reads.Contains (Change_Variant (W, In_View))
               and then State_Partially_Written (W)
             then
                --  The synthesized Refined_Global is not fully written
