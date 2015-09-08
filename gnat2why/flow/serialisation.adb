@@ -36,12 +36,21 @@ package body Serialisation is
    procedure Match (A : in out Archive; S : Unbounded_String)
    with Pre => A.Kind = Input;
    --  A classic match-token-or-die helper subprogram. Returns if the next
-   --  element of A is equal to S, otherwise raises a Parse_Error
+   --  element of A is a tag equal to S, otherwise raises a Parse_Error
    --  exception.
 
    function Test (A : Archive; S : Unbounded_String) return Boolean
    with Pre => A.Kind = Input;
-   --  Returns true iff the next element of A is equal to S.
+   --  Returns true iff the next element of A is a tag and equal to S.
+
+   procedure Append_Tag (A : in out Archive; The_Tag : Unbounded_String)
+   with Pre => The_Tag = Coll_Begin or
+               The_Tag = Coll_End or
+               (Length (The_Tag) > 2 and then Element (The_Tag, 2) = ':');
+   --  Append a given tag to the archive.
+
+   procedure Append_Data (A : in out Archive; The_Data : Unbounded_String);
+   --  Append a given bit of data to the archive.
 
    function To_Hex (C : Character) return Hex_String;
    --  Convert a character (such as ' ') to a two-digit hex representation
@@ -97,7 +106,9 @@ package body Serialisation is
    begin
       if A.Content.Is_Empty then
          raise Parse_Error with "insufficient data";
-      elsif A.Content.First_Element = S then
+      elsif A.Content.First_Element.Kind = Tag and then
+        A.Content.First_Element.Value = S
+      then
          A.Content.Delete_First;
       else
          raise Parse_Error with "unexpected data";
@@ -109,7 +120,29 @@ package body Serialisation is
    ----------
 
    function Test (A : Archive; S : Unbounded_String) return Boolean
-   is (not A.Content.Is_Empty and then A.Content.First_Element = S);
+   is (not A.Content.Is_Empty
+       and then A.Content.First_Element.Kind = Tag
+       and then A.Content.First_Element.Value = S);
+
+   ----------------
+   -- Append_Tag --
+   ----------------
+
+   procedure Append_Tag (A : in out Archive; The_Tag : Unbounded_String) is
+   begin
+      A.Content.Append ((Kind  => Tag,
+                         Value => The_Tag));
+   end Append_Tag;
+
+   -----------------
+   -- Append_Data --
+   -----------------
+
+   procedure Append_Data (A : in out Archive; The_Data : Unbounded_String) is
+   begin
+      A.Content.Append ((Kind  => Data,
+                         Value => The_Data));
+   end Append_Data;
 
    ---------------
    -- To_String --
@@ -122,7 +155,12 @@ package body Serialisation is
             if Length (S) > 0 then
                Append (S, " ");
             end if;
-            Append (S, Escape (E));
+            case E.Kind is
+               when Tag =>
+                  Append (S, E.Value);
+               when Data =>
+                  Append (S, Escape (E.Value));
+            end case;
          end loop;
       end return;
    end To_String;
@@ -141,7 +179,14 @@ package body Serialisation is
             end if;
             if Element (S, I) = ' ' or else I = Length (S) then
                if Length (Tmp) > 0 then
-                  A.Content.Append (Interpret (Tmp));
+                  if Tmp = Coll_Begin
+                    or Tmp = Coll_End
+                    or (Length (Tmp) >= 2 and then Element (Tmp, 2) = ':')
+                  then
+                     Append_Tag (A, Tmp);
+                  else
+                     Append_Data (A, Interpret (Tmp));
+                  end if;
                   Tmp := Null_Unbounded_String;
                end if;
             end if;
@@ -274,7 +319,12 @@ package body Serialisation is
    begin
       Put_Line ("Archive (" & A.Kind'Img & ")");
       for C of A.Content loop
-         Put_Line ("   <" & To_String (C) & ">");
+         case C.Kind is
+            when Tag =>
+               Put_Line ("   Tag: " & To_String (C.Value));
+            when Data =>
+               Put_Line ("   <" & To_String (C.Value) & ">");
+         end case;
       end loop;
    end Debug_Dump_Archive;
 
@@ -288,11 +338,13 @@ package body Serialisation is
          when Input =>
             if A.Content.Is_Empty then
                raise Parse_Error with "insufficient data";
+            elsif A.Content.First_Element.Kind /= Data then
+               raise Parse_Error with "expected data, not tag";
             end if;
-            V := A.Content.First_Element;
+            V := A.Content.First_Element.Value;
             A.Content.Delete_First;
          when Output =>
-            A.Content.Append (V);
+            Append_Data (A, V);
       end case;
    end Serialize;
 
@@ -306,11 +358,13 @@ package body Serialisation is
          when Input =>
             if A.Content.Is_Empty then
                raise Parse_Error with "insufficient data";
+            elsif A.Content.First_Element.Kind /= Data then
+               raise Parse_Error with "expected data, not tag";
             end if;
-            V := T'Value (To_String (A.Content.First_Element));
+            V := T'Value (To_String (A.Content.First_Element.Value));
             A.Content.Delete_First;
          when Output =>
-            A.Content.Append (Trim (To_Unbounded_String (T'Image (V)), Both));
+            Append_Data (A, (Trim (To_Unbounded_String (T'Image (V)), Both)));
       end case;
    end Serialize_Discrete;
 
@@ -348,18 +402,18 @@ package body Serialisation is
             begin
                if Has_Tag then
                   if Has_Element (C) then
-                     A.Content.Append (The_Tag);
+                     Append_Tag (A, The_Tag);
                   else
                      return;
                   end if;
                end if;
-               A.Content.Append (Coll_Begin);
+               Append_Tag (A, Coll_Begin);
                while Has_Element (C) loop
                   Tmp := Element (C);
                   Serialize (A, Tmp);
                   C := Next (C);
                end loop;
-               A.Content.Append (Coll_End);
+               Append_Tag (A, Coll_End);
             end;
       end case;
    end Serialize_Collection;

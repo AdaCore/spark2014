@@ -180,11 +180,18 @@ package Serialisation is
 
 private
 
-   package String_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Unbounded_String);
+   type Token_Kind is (Tag, Data);
+
+   type Token is record
+      Kind  : Token_Kind;
+      Value : Unbounded_String;
+   end record;
+
+   package Token_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Token);
 
    type Archive (Kind : Direction) is record
-      Content : String_Lists.List;
+      Content : Token_Lists.List;
    end record;
    --  An archive is just a bunch of strings, and our file format is a
    --  space-separated collection of strings. So the above record with
