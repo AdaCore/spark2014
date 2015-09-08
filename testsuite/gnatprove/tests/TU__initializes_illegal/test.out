@@ -2,18 +2,18 @@ initializes_illegal.adb:5:11: aspect "Initializes" must apply to a package decla
 initializes_illegal.ads:11:36: cannot mix null and non-null initialization items
 initializes_illegal.ads:17:12: package "Incorrect_Placement" requires state refinement
 cannot generate code for file initializes_illegal_2.ads (package spec)
-initializes_illegal_3.ads:22:30: initialization item must denote object or state
-initializes_illegal_3.ads:24:27: initialization item "PrivVar" must appear in the visible declarations of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:26:30: initialization item "SS" must appear in the visible declarations of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:28:30: initialization item "XX" must appear in the visible declarations of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:30:34: input item "Rec" cannot denote a visible object or state of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:30:39: input item "S2" cannot denote a visible object or state of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:30:46: input item "SS" cannot denote a visible object or state of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:30:54: input item "XX" cannot denote a visible object or state of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:34:45: duplicate input item
-initializes_illegal_3.ads:34:49: duplicate input item
-initializes_illegal_3.ads:49:04: "PrivVar" is declared in the private part of package "Initializes_Illegal_3"
-initializes_illegal_3.ads:49:04: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
+initializes_illegal_3.ads:24:30: initialization item must denote object or state
+initializes_illegal_3.ads:26:27: initialization item "PrivVar" must appear in the visible declarations of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:28:30: initialization item "SS" must appear in the visible declarations of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:30:30: initialization item "XX" must appear in the visible declarations of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:32:34: input item "Rec" cannot denote a visible object or state of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:32:39: input item "S2" cannot denote a visible object or state of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:32:46: input item "SS" cannot denote a visible object or state of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:32:54: input item "XX" cannot denote a visible object or state of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:36:45: duplicate input item
+initializes_illegal_3.ads:36:49: duplicate input item
+initializes_illegal_3.ads:51:04: "PrivVar" is declared in the private part of package "Initializes_Illegal_3"
+initializes_illegal_3.ads:51:04: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
 initializes_illegal_3_helper.ads:5:35: "SH" is declared in the visible part of package "Initializes_Illegal_3_Helper"
 initializes_illegal_3_helper.ads:5:35: indicator Part_Of cannot appear in this context (SPARK RM 7.2.6(5))
 initializes_illegal_4.adb:11:09: warning: unused assignment

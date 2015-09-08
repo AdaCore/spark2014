@@ -6,6 +6,8 @@ package Initializes_Illegal_3
   --  aspect definition for a package shall denote a state abstraction of the
   --  package or an entire object declared immediately within the visible
   --  part of the package.
+  --  [For purposes of this rule, formal parameters of a generic package
+  --  are not considered to be "declared in the package".]
 
   --  TU: 4. Each ``name`` in the ``input_list`` shall denote an
   --  object, or a state abstraction but shall not denote an entity
