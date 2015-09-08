@@ -1,6 +1,7 @@
 package Stacks is
 -- Implements a simple stack of integers (with no safety features)
-   type Stack_Type (Max_Size : Positive) is private;
+   type Stack_Type (Max_Size : Positive) is private
+      with Default_Initial_Condition;
 
    procedure Clear (Stack : out Stack_Type);
    function Empty (Stack : in Stack_Type) return Boolean;

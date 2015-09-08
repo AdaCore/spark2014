@@ -2,6 +2,8 @@ package body Hierarchical_State_Demo_Nested
    with SPARK_Mode    => On,
         Refined_State => (Top_State => (Count, A_Pack.State))
 is
+   Count : Natural := 0;
+
    package A_Pack
       with Abstract_State => State,
            Initializes    => State
@@ -31,7 +33,6 @@ is
       end A_Proc;
    end A_Pack;
    -------------------------------------------
-   Count : Natural := 0;
 
    procedure Do_Something (Value   : in out Natural;
                            Success :    out Boolean)

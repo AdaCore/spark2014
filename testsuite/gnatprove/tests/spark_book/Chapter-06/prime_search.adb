@@ -1,4 +1,4 @@
-with Searchers;
+with Generic_Searchers;
 
 procedure Prime_Search(Search_Item : in Natural; Prime_Index : out Natural)
   with SPARK_Mode => On
@@ -12,7 +12,7 @@ is
    Found    : Boolean;
    Position : Positive;
 
-   procedure Natural_Search is new Searchers.Binary_Search
+   procedure Natural_Search is new Generic_Searchers.Binary_Search
      (Element_Type => Natural,
       Index_Type   => Index_Type,
       Array_Type   => Natural_Array_Type);

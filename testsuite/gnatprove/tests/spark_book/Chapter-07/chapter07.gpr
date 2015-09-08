@@ -4,6 +4,10 @@ project Chapter07 is
    for Object_Dir use "build";
    for Main use ("main.adb");
 
+   --  Exclude serial_port.adb from analysis, as it depends on Windows
+   --  specific files.
+   for Excluded_Source_Files use ("serial_port.adb");
+
    package Compiler is
       for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata");
    end Compiler;
@@ -11,4 +15,3 @@ project Chapter07 is
    for Languages use ("Ada", "C");
 
 end Chapter07;
-

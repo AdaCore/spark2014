@@ -1,0 +1,1920 @@
+sorters.adb:21:19: info: postcondition proved
+sorters.adb:22:28: info: index check proved
+sorters.adb:22:45: info: index check proved
+sorters.adb:23:28: info: index check proved
+sorters.adb:23:45: info: index check proved
+sorters.adb:25:58: info: index check proved
+sorters.adb:25:75: info: index check proved
+sorters.adb:31:29: info: index check proved
+sorters.adb:32:15: info: index check proved
+sorters.adb:32:29: info: index check proved
+sorters.adb:33:15: info: index check proved
+sorters.adb:33:21: info: initialization of "Temp" proved
+sorters.adb:41:19: info: postcondition proved
+sorters.adb:43:45: info: index check proved
+sorters.adb:43:67: info: index check proved
+sorters.adb:47:22: info: range check proved
+sorters.adb:49:10: info: loop invariant initialization proved
+sorters.adb:49:10: info: loop invariant preservation proved
+sorters.adb:50:13: info: initialization of "Min" proved
+sorters.adb:51:50: info: overflow check proved
+sorters.adb:52:25: info: index check proved
+sorters.adb:52:43: info: index check proved
+sorters.adb:54:42: info: index check proved
+sorters.adb:54:42: info: initialization of "Min" proved
+sorters.adb:55:20: info: range check proved
+sorters.adb:58:14: info: initialization of "Min" proved
+sorters.adb:68:50: info: overflow check proved
+sorters.adb:69:22: info: length check proved
+sorters.adb:69:25: info: length check proved
+sorters.adb:70:22: info: precondition proved
+sorters.adb:70:40: info: range check proved
+sorters.adb:72:13: info: initialization of "Smallest" proved
+sorters.adb:73:13: info: precondition proved
+sorters.adb:74:29: info: range check proved
+sorters.adb:75:29: info: initialization of "Smallest" proved
+sorters.adb:78:61: info: initialization of "Values_Last" proved
+sorters.adb:80:10: info: loop invariant initialization proved
+sorters.adb:80:10: info: loop invariant preservation proved
+sorters.adb:81:10: info: loop invariant initialization proved
+sorters.adb:81:10: info: loop invariant preservation proved
+sorters.adb:83:26: info: index check proved
+sorters.adb:83:46: info: index check proved
+sorters.adb:84:10: info: loop invariant initialization proved
+sorters.adb:86:16: medium: loop invariant might fail after first iteration, requires Values (J) <= Values (J + 1)
+sorters.adb:86:24: info: index check proved
+sorters.adb:86:40: info: index check proved
+sorters.adb:86:40: info: overflow check proved
+sorters.ads:18:22: info: postcondition proved
+sorters.ads:18:64: info: overflow check proved
+sorters.ads:19:33: info: index check proved
+sorters.ads:19:49: info: index check proved
+sorters.ads:19:49: info: overflow check proved
+a-tienio.ads:28:04: info: initialization of "Default_Width" proved, in instantiation at enum_example.adb:11
+a-tienio.ads:29:04: info: initialization of "Default_Setting" proved, in instantiation at enum_example.adb:11
+a-tiflio.ads:48:04: info: initialization of "Default_Fore" proved, in instantiation at good_types.adb:8
+a-tiflio.ads:48:04: info: initialization of "Default_Fore" proved, in instantiation at good_types.adb:9
+a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiation at good_types.adb:8
+a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiation at good_types.adb:9
+a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at good_types.adb:8
+a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at good_types.adb:9
+aggregates.adb:11:46: info: overflow check proved, in call inlined at aggregates.adb:29
+aggregates.adb:13:19: info: division check proved, in call inlined at aggregates.adb:29
+aggregates.adb:13:19: info: overflow check proved, in call inlined at aggregates.adb:29
+aggregates.adb:14:20: medium: overflow check might fail, in call inlined at aggregates.adb:29
+aggregates.adb:14:22: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
+aggregates.adb:14:29: medium: overflow check might fail, in call inlined at aggregates.adb:29
+aggregates.adb:15:24: info: overflow check proved, in call inlined at aggregates.adb:29
+aggregates.adb:15:27: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
+aggregates.adb:15:34: medium: overflow check might fail, in call inlined at aggregates.adb:29
+aggregates.adb:15:38: medium: divide by zero might fail, in call inlined at aggregates.adb:29
+aggregates.adb:15:38: medium: overflow check might fail, in call inlined at aggregates.adb:29
+aggregates.adb:17:14: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
+aggregates.adb:25:13: info: length check proved
+aggregates.adb:26:13: info: length check proved
+aggregates.adb:27:13: info: length check proved
+aggregates.adb:28:13: info: length check proved
+aggregates.adb:29:13: info: length check proved
+aggregates.adb:29:24: info: initialization of "A" proved
+aggregates.adb:29:26: medium: overflow check might fail
+aggregates.adb:29:28: info: initialization of "B" proved
+aggregates.adb:29:28: info: initialization of "C14b" proved
+aggregates.adb:32:13: info: length check proved
+aggregates.adb:36:13: info: length check proved
+aggregates.adb:40:13: info: length check proved
+aggregates.adb:43:13: info: length check proved
+aggregates.adb:44:13: info: length check proved
+average.adb:10:15: warning: assuming "Put_Line" has no effect on global items
+average.adb:10:15: warning: no Global contract available for "Put_Line"
+average.adb:11:23: warning: assuming "Get" has no effect on global items
+average.adb:11:23: warning: no Global contract available for "Get"
+average.adb:12:23: warning: assuming "Get" has no effect on global items
+average.adb:12:23: warning: no Global contract available for "Get"
+average.adb:13:15: warning: assuming "New_Line" has no effect on global items
+average.adb:13:15: warning: no Global contract available for "New_Line"
+average.adb:15:16: info: initialization of "A" proved
+average.adb:15:18: info: range check proved
+average.adb:15:18: medium: overflow check might fail
+average.adb:15:20: info: initialization of "B" proved
+average.adb:15:23: info: division check proved
+average.adb:15:23: info: overflow check proved
+average.adb:17:15: warning: assuming "Put" has no effect on global items
+average.adb:17:15: warning: no Global contract available for "Put"
+average.adb:18:21: warning: assuming "Put" has no effect on global items
+average.adb:18:21: warning: no Global contract available for "Put"
+average.adb:18:35: info: initialization of "M" proved
+average.adb:22:15: warning: assuming "New_Line" has no effect on global items
+average.adb:22:15: warning: no Global contract available for "New_Line"
+average_with_use.adb:4:11: warning: file name does not match unit name, should be "average.adb"
+average_with_use.adb:10:04: warning: assuming "Put_Line" has no effect on global items
+average_with_use.adb:10:04: warning: no Global contract available for "Put_Line"
+average_with_use.adb:11:04: warning: assuming "Get" has no effect on global items
+average_with_use.adb:11:04: warning: no Global contract available for "Get"
+average_with_use.adb:12:04: warning: assuming "Get" has no effect on global items
+average_with_use.adb:12:04: warning: no Global contract available for "Get"
+average_with_use.adb:13:04: warning: assuming "New_Line" has no effect on global items
+average_with_use.adb:13:04: warning: no Global contract available for "New_Line"
+average_with_use.adb:15:16: info: initialization of "A" proved
+average_with_use.adb:15:18: info: range check proved
+average_with_use.adb:15:18: medium: overflow check might fail
+average_with_use.adb:15:20: info: initialization of "B" proved
+average_with_use.adb:15:23: info: division check proved
+average_with_use.adb:15:23: info: overflow check proved
+average_with_use.adb:17:04: warning: assuming "Put" has no effect on global items
+average_with_use.adb:17:04: warning: no Global contract available for "Put"
+average_with_use.adb:18:04: warning: assuming "Put" has no effect on global items
+average_with_use.adb:18:04: warning: no Global contract available for "Put"
+average_with_use.adb:18:09: info: initialization of "M" proved
+average_with_use.adb:19:04: warning: assuming "New_Line" has no effect on global items
+average_with_use.adb:19:04: warning: no Global contract available for "New_Line"
+bad_types.adb:7:21: warning: assuming "Get" has no effect on global items
+bad_types.adb:7:21: warning: no Global contract available for "Get"
+bad_types.adb:8:21: warning: assuming "Get" has no effect on global items
+bad_types.adb:8:21: warning: no Global contract available for "Get"
+bad_types.adb:9:13: info: initialization of "Room_Length" proved
+bad_types.adb:9:25: medium: overflow check might fail
+bad_types.adb:9:31: medium: overflow check might fail
+bad_types.adb:9:33: info: initialization of "Wall_Thickness" proved
+bad_types.adb:10:21: warning: assuming "Put" has no effect on global items
+bad_types.adb:10:21: warning: no Global contract available for "Put"
+bad_types.adb:10:35: info: initialization of "Total" proved
+control_structures.adb:7:11: medium: "Default_Base" might not be initialized after elaboration of main program "Control_Structures"
+control_structures.adb:7:11: medium: "Default_Width" might not be initialized after elaboration of main program "Control_Structures"
+control_structures.adb:26:24: medium: overflow check might fail, in call inlined at control_structures.adb:184
+control_structures.adb:26:26: info: initialization of "Temperature" proved, in call inlined at control_structures.adb:184
+control_structures.adb:31:08: medium: overflow check might fail
+control_structures.adb:31:23: medium: overflow check might fail
+control_structures.adb:31:25: medium: overflow check might fail
+control_structures.adb:44:07: info: initialization of "A" proved
+control_structures.adb:45:12: info: overflow check proved
+control_structures.adb:45:13: info: initialization of "A" proved
+control_structures.adb:49:07: info: initialization of "A" proved
+control_structures.adb:53:07: info: initialization of "A" proved
+control_structures.adb:53:11: info: initialization of "B" proved
+control_structures.adb:55:12: info: initialization of "A" proved
+control_structures.adb:58:12: info: initialization of "B" proved
+control_structures.adb:62:07: info: initialization of "A" proved
+control_structures.adb:62:11: info: initialization of "B" proved
+control_structures.adb:64:10: info: initialization of "A" proved
+control_structures.adb:64:14: info: initialization of "B" proved
+control_structures.adb:71:07: info: initialization of "A" proved
+control_structures.adb:71:11: info: initialization of "B" proved
+control_structures.adb:71:21: info: initialization of "C" proved
+control_structures.adb:73:10: info: initialization of "B" proved
+control_structures.adb:73:14: info: initialization of "A" proved
+control_structures.adb:73:24: info: initialization of "C" proved
+control_structures.adb:75:10: info: initialization of "C" proved
+control_structures.adb:75:14: info: initialization of "A" proved
+control_structures.adb:75:24: info: initialization of "B" proved
+control_structures.adb:80:09: info: initialization of "Ch" proved
+control_structures.adb:95:07: info: initialization of "A" proved
+control_structures.adb:95:11: info: initialization of "B" proved
+control_structures.adb:96:12: info: initialization of "D" proved
+control_structures.adb:96:14: info: overflow check proved
+control_structures.adb:98:12: info: initialization of "F" proved
+control_structures.adb:98:14: info: division check proved
+control_structures.adb:101:13: info: initialization of "A" proved
+control_structures.adb:101:17: info: initialization of "B" proved
+control_structures.adb:101:24: info: initialization of "D" proved
+control_structures.adb:101:26: info: overflow check proved
+control_structures.adb:101:35: info: initialization of "F" proved
+control_structures.adb:101:37: info: division check proved
+control_structures.adb:103:07: info: initialization of "A" proved
+control_structures.adb:103:11: info: initialization of "B" proved
+control_structures.adb:104:12: info: initialization of "D" proved
+control_structures.adb:104:14: info: overflow check proved
+control_structures.adb:105:14: info: initialization of "B" proved
+control_structures.adb:106:14: info: overflow check proved
+control_structures.adb:106:16: info: initialization of "A" proved
+control_structures.adb:108:12: info: initialization of "F" proved
+control_structures.adb:108:14: info: division check proved
+control_structures.adb:111:24: info: initialization of "D" proved
+control_structures.adb:111:26: info: overflow check proved
+control_structures.adb:111:40: info: initialization of "B" proved
+control_structures.adb:111:49: info: overflow check proved
+control_structures.adb:111:51: info: initialization of "A" proved
+control_structures.adb:111:58: info: initialization of "F" proved
+control_structures.adb:111:60: info: division check proved
+control_structures.adb:113:07: info: initialization of "X" proved
+control_structures.adb:114:18: info: initialization of "X" proved
+control_structures.adb:116:23: info: overflow check proved
+control_structures.adb:116:25: info: initialization of "X" proved
+control_structures.adb:119:44: info: overflow check proved
+control_structures.adb:119:46: info: initialization of "X" proved
+control_structures.adb:123:11: info: initialization of "C" proved
+control_structures.adb:123:13: info: overflow check proved
+control_structures.adb:123:15: info: initialization of "D" proved
+control_structures.adb:123:26: info: initialization of "E" proved
+control_structures.adb:127:11: info: initialization of "C" proved
+control_structures.adb:127:13: info: overflow check proved
+control_structures.adb:127:15: info: initialization of "D" proved
+control_structures.adb:127:26: info: initialization of "E" proved
+control_structures.adb:131:11: info: initialization of "A" proved
+control_structures.adb:131:22: info: initialization of "B" proved
+control_structures.adb:137:19: info: initialization of "Letter" proved
+control_structures.adb:152:26: warning: assuming "Get" has no effect on global items
+control_structures.adb:152:26: warning: no Global contract available for "Get"
+control_structures.adb:153:17: info: initialization of "Value" proved
+control_structures.adb:154:14: info: initialization of "Sum" proved
+control_structures.adb:154:18: medium: overflow check might fail
+control_structures.adb:154:20: info: initialization of "Value" proved
+control_structures.adb:158:14: info: initialization of "X" proved
+control_structures.adb:158:16: info: division check proved
+control_structures.adb:158:16: info: overflow check proved
+control_structures.adb:159:15: info: initialization of "X" proved
+control_structures.adb:159:17: medium: overflow check might fail
+control_structures.adb:159:19: info: initialization of "Approx" proved
+control_structures.adb:159:26: medium: overflow check might fail
+control_structures.adb:160:21: info: overflow check proved
+control_structures.adb:160:24: info: initialization of "Approx" proved
+control_structures.adb:160:31: medium: overflow check might fail
+control_structures.adb:160:33: info: initialization of "X" proved
+control_structures.adb:160:35: medium: divide by zero might fail
+control_structures.adb:160:35: medium: overflow check might fail
+control_structures.adb:164:26: warning: assuming "Put" has no effect on global items
+control_structures.adb:164:26: warning: no Global contract available for "Put"
+control_structures.adb:168:26: warning: assuming "Put" has no effect on global items
+control_structures.adb:168:26: warning: no Global contract available for "Put"
+control_structures.adb:174:08: info: range check proved
+control_structures.adb:174:31: info: initialization of "A" proved
+control_structures.adb:174:36: info: initialization of "B" proved
+control_structures.adb:175:26: warning: assuming "Put" has no effect on global items
+control_structures.adb:175:26: warning: no Global contract available for "Put"
+control_structures.adb:178:08: info: range check proved
+control_structures.adb:178:39: info: initialization of "A" proved
+control_structures.adb:178:44: info: initialization of "B" proved
+control_structures.adb:179:26: warning: assuming "Put" has no effect on global items
+control_structures.adb:179:26: warning: no Global contract available for "Put"
+control_structures.adb:186:18: info: initialization of "Valve_Setting" proved
+dates.adb:17:15: info: division check proved, in call inlined at dates.adb:49
+dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
+dates.adb:28:08: info: postcondition proved
+dates.adb:45:09: info: length check proved
+dates.adb:49:10: info: initialization of "C8b" proved
+dates.adb:54:14: info: initialization of "Length" proved
+dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
+dates.adb:77:47: info: range check proved
+dates.adb:81:54: info: range check proved
+dates.adb:85:53: info: range check proved
+dates.adb:99:47: info: range check proved
+dates.adb:102:54: info: range check proved
+dates.adb:105:53: info: range check proved
+dates.adb:142:10: info: initialization of "C19b" proved
+dates.adb:224:14: info: range check proved
+dates.adb:224:47: info: initialization of "Steps" proved
+dates.adb:230:13: info: loop invariant initialization proved
+dates.adb:230:13: info: loop invariant preservation proved
+dates.adb:232:13: info: precondition proved
+dates.adb:236:14: info: range check proved
+dates.adb:236:47: info: initialization of "Steps" proved
+dates.adb:242:13: info: loop invariant initialization proved
+dates.adb:242:13: info: loop invariant preservation proved
+dates.adb:244:13: info: precondition proved
+dates.adb:276:14: info: initialization of "Result" proved
+dates.ads:32:07: info: initialization of "New_Date.Day" proved
+dates.ads:32:07: info: initialization of "New_Date.Month" proved
+dates.ads:32:07: info: initialization of "New_Date.Year" proved
+dates.ads:33:07: info: initialization of "Valid" proved
+dates.ads:62:76: info: initialization of "Valid" proved
+dates.ads:78:14: info: postcondition proved
+enum_example.adb:3:11: medium: "Current_In" might not be initialized after elaboration of main program "Enum_Example"
+enum_example.adb:3:11: medium: "Current_Out" might not be initialized after elaboration of main program "Enum_Example"
+enum_example.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Enum_Example"
+enum_example.adb:13:04: info: no contextual analysis of "Next_Day" (multiple returns)
+enum_example.adb:18:32: info: range check proved
+enum_example.adb:26:04: warning: assuming "Put_Line" has no effect on global items
+enum_example.adb:26:04: warning: no Global contract available for "Put_Line"
+enum_example.adb:27:10: warning: assuming "Get" has no effect on global items
+enum_example.adb:27:10: warning: no Global contract available for "Get"
+enum_example.adb:28:26: info: initialization of "Today" proved
+enum_example.adb:29:04: warning: assuming "Put" has no effect on global items
+enum_example.adb:29:04: warning: no Global contract available for "Put"
+enum_example.adb:30:10: info: initialization of "Default_Setting" proved
+enum_example.adb:30:10: info: initialization of "Default_Width" proved
+enum_example.adb:30:10: warning: assuming "Put" has no effect on global items
+enum_example.adb:30:10: warning: no Global contract available for "Put"
+enum_example.adb:30:25: info: initialization of "Tomorrow" proved
+enum_example.adb:33:04: warning: assuming "New_Line" has no effect on global items
+enum_example.adb:33:04: warning: no Global contract available for "New_Line"
+enum_example.adb:35:07: info: initialization of "Today" proved
+enum_example.adb:35:15: info: initialization of "Tomorrow" proved
+enum_example.adb:36:07: warning: assuming "Put_Line" has no effect on global items
+enum_example.adb:36:07: warning: no Global contract available for "Put_Line"
+enum_example.adb:38:04: warning: assuming "New_Line" has no effect on global items
+enum_example.adb:38:04: warning: no Global contract available for "New_Line"
+enum_example.adb:40:04: warning: assuming "Put_Line" has no effect on global items
+enum_example.adb:40:04: warning: no Global contract available for "Put_Line"
+enum_example.adb:42:13: info: initialization of "Default_Setting" proved
+enum_example.adb:42:13: info: initialization of "Default_Width" proved
+enum_example.adb:42:13: warning: assuming "Put" has no effect on global items
+enum_example.adb:42:13: warning: no Global contract available for "Put"
+enum_example.adb:43:07: warning: assuming "New_Line" has no effect on global items
+enum_example.adb:43:07: warning: no Global contract available for "New_Line"
+enum_example.adb:45:04: warning: assuming "New_Line" has no effect on global items
+enum_example.adb:45:04: warning: no Global contract available for "New_Line"
+enum_example.adb:48:07: warning: assuming "Put_Line" has no effect on global items
+enum_example.adb:48:07: warning: no Global contract available for "Put_Line"
+enum_example.adb:50:04: warning: assuming "New_Line" has no effect on global items
+enum_example.adb:50:04: warning: no Global contract available for "New_Line"
+enum_example.adb:54:16: info: initialization of "Count" proved
+enum_example.adb:54:22: medium: overflow check might fail
+enum_example.adb:56:04: warning: assuming "Put" has no effect on global items
+enum_example.adb:56:04: warning: no Global contract available for "Put"
+enum_example.adb:56:17: info: initialization of "Count" proved
+example.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Example"
+example.adb:14:27: info: overflow check proved, in call inlined at example.adb:27
+example.adb:25:15: warning: assuming "Put_Line" has no effect on global items
+example.adb:25:15: warning: no Global contract available for "Put_Line"
+example.adb:26:23: warning: assuming "Get" has no effect on global items
+example.adb:26:23: warning: no Global contract available for "Get"
+example.adb:27:04: info: initialization of "Value" proved
+example.adb:30:07: info: initialization of "Modified" proved
+example.adb:31:18: warning: assuming "Put_Line" has no effect on global items
+example.adb:31:18: warning: no Global contract available for "Put_Line"
+example.adb:32:26: warning: assuming "Put" has no effect on global items
+example.adb:32:26: warning: no Global contract available for "Put"
+example.adb:32:41: info: initialization of "Value" proved
+generic_examples.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Generic_Examples"
+generic_examples.adb:3:11: medium: "Default_Width" might not be initialized after elaboration of main program "Generic_Examples"
+generic_examples.adb:11:21: info: index check proved, in call inlined at generic_examples.adb:89
+generic_examples.adb:12:23: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
+generic_examples.adb:12:30: medium: overflow check might fail, in call inlined at generic_examples.adb:89
+generic_examples.adb:15:14: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
+generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
+generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
+generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:39
+generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:46
+generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
+generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
+generic_examples.adb:59:21: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
+generic_examples.adb:70:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
+generic_examples.adb:70:30: medium: overflow check might fail, in instantiation at generic_examples.adb:77
+generic_examples.adb:91:23: warning: assuming "Put" has no effect on global items
+generic_examples.adb:91:23: warning: no Global contract available for "Put"
+generic_examples.adb:91:29: info: initialization of "The_Count" proved
+generic_examples.adb:92:15: warning: assuming "New_Line" has no effect on global items
+generic_examples.adb:92:15: warning: no Global contract available for "New_Line"
+generic_examples.adb:95:40: info: range check proved
+generic_examples.adb:97:23: warning: assuming "Put" has no effect on global items
+generic_examples.adb:97:23: warning: no Global contract available for "Put"
+generic_examples.adb:97:29: info: initialization of "The_Count" proved
+generic_examples.adb:98:15: warning: assuming "New_Line" has no effect on global items
+generic_examples.adb:98:15: warning: no Global contract available for "New_Line"
+generic_examples.adb:100:43: info: initialization of "My_Percents" proved
+generic_examples.adb:100:43: info: range check proved
+generic_examples.adb:102:23: warning: assuming "Put" has no effect on global items
+generic_examples.adb:102:23: warning: no Global contract available for "Put"
+generic_examples.adb:102:29: info: initialization of "The_Count" proved
+generic_examples.adb:103:15: warning: assuming "New_Line" has no effect on global items
+generic_examples.adb:103:15: warning: no Global contract available for "New_Line"
+generic_examples.adb:106:31: info: initialization of "My_Percents" proved
+generic_examples.adb:106:31: info: range check proved
+generic_examples.adb:109:23: warning: assuming "Put" has no effect on global items
+generic_examples.adb:109:23: warning: no Global contract available for "Put"
+generic_examples.adb:109:29: info: initialization of "The_Count" proved
+generic_examples.adb:110:15: warning: assuming "New_Line" has no effect on global items
+generic_examples.adb:110:15: warning: no Global contract available for "New_Line"
+good_types.adb:2:11: medium: "Current_In" might not be initialized after elaboration of main program "Good_Types"
+good_types.adb:2:11: medium: "Current_Out" might not be initialized after elaboration of main program "Good_Types"
+good_types.adb:13:20: info: initialization of "Wall_Thickness" proved, in call inlined at good_types.adb:22
+good_types.adb:13:26: info: division check proved, in call inlined at good_types.adb:22
+good_types.adb:13:26: info: overflow check proved, in call inlined at good_types.adb:22
+good_types.adb:20:11: warning: assuming "Get" has no effect on global items
+good_types.adb:20:11: warning: no Global contract available for "Get"
+good_types.adb:21:11: warning: assuming "Get" has no effect on global items
+good_types.adb:21:11: warning: no Global contract available for "Get"
+good_types.adb:22:13: info: initialization of "Room_Length" proved
+good_types.adb:22:25: info: overflow check proved
+good_types.adb:22:25: medium: range check might fail
+good_types.adb:22:31: info: overflow check proved
+good_types.adb:23:11: info: initialization of "Default_Aft" proved
+good_types.adb:23:11: info: initialization of "Default_Exp" proved
+good_types.adb:23:11: info: initialization of "Default_Fore" proved
+good_types.adb:23:11: warning: assuming "Put" has no effect on global items
+good_types.adb:23:11: warning: no Global contract available for "Put"
+good_types.adb:23:25: info: initialization of "Total" proved
+operator_overload.adb:16:24: info: initialization of "P1.X_Coord" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:24: info: initialization of "P1.X_Coord" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:16:38: info: overflow check proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:38: medium: overflow check might fail, in call inlined at operator_overload.adb:37
+operator_overload.adb:16:43: info: overflow check proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:43: info: overflow check proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:16:45: info: initialization of "P1.Y_Coord" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:45: info: initialization of "P1.Y_Coord" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:16:59: info: overflow check proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:59: medium: overflow check might fail, in call inlined at operator_overload.adb:37
+operator_overload.adb:17:24: info: initialization of "P2.X_Coord" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:24: info: initialization of "P2.X_Coord" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:17:38: info: overflow check proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:38: medium: overflow check might fail, in call inlined at operator_overload.adb:37
+operator_overload.adb:17:43: info: overflow check proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:43: info: overflow check proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:17:45: info: initialization of "P2.Y_Coord" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:45: info: initialization of "P2.Y_Coord" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:17:59: info: overflow check proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:59: medium: overflow check might fail, in call inlined at operator_overload.adb:37
+operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:30:10: info: initialization of "C3b" proved
+operator_overload.adb:31:07: warning: assuming "Put_Line" has no effect on global items
+operator_overload.adb:31:07: warning: no Global contract available for "Put_Line"
+operator_overload.adb:33:07: warning: assuming "Put_Line" has no effect on global items
+operator_overload.adb:33:07: warning: no Global contract available for "Put_Line"
+operator_overload.adb:37:07: info: initialization of "C8b" proved
+operator_overload.adb:38:07: warning: assuming "Put_Line" has no effect on global items
+operator_overload.adb:38:07: warning: no Global contract available for "Put_Line"
+operator_overload.adb:40:07: warning: assuming "Put_Line" has no effect on global items
+operator_overload.adb:40:07: warning: no Global contract available for "Put_Line"
+sqrt.adb:4:16: info: division check proved
+sqrt.adb:4:16: info: overflow check proved
+sqrt.adb:5:17: medium: overflow check might fail
+sqrt.adb:5:19: info: initialization of "Approx" proved
+sqrt.adb:5:26: medium: overflow check might fail
+sqrt.adb:6:21: info: overflow check proved
+sqrt.adb:6:24: info: initialization of "Approx" proved
+sqrt.adb:6:31: medium: overflow check might fail
+sqrt.adb:6:35: medium: divide by zero might fail
+sqrt.adb:6:35: medium: overflow check might fail
+sqrt.adb:8:11: info: initialization of "Approx" proved
+string_examples.adb:13:12: info: length check proved
+string_examples.adb:15:09: info: initialization of "Address" proved
+string_examples.adb:15:09: medium: length check might fail
+string_examples.adb:16:09: info: length check proved
+string_examples.adb:17:12: info: initialization of "Name" proved
+string_examples.adb:17:12: info: length check proved
+string_examples.adb:19:09: info: initialization of "Name" proved
+string_examples.adb:19:09: info: length check proved
+string_examples.adb:20:09: info: initialization of "Address" proved
+string_examples.adb:20:09: info: length check proved
+string_examples.adb:20:09: info: range check proved
+string_examples.adb:21:12: info: initialization of "Name" proved
+string_examples.adb:21:17: info: length check proved
+string_examples.adb:21:17: info: range check proved
+string_examples.adb:22:19: info: initialization of "Address" proved
+string_examples.adb:22:22: info: initialization of "Name" proved
+string_examples.adb:22:22: info: length check proved
+string_examples.adb:25:12: info: initialization of "Count" proved
+string_examples.adb:25:19: info: initialization of "Name" proved
+string_examples.adb:25:19: info: length check proved
+string_examples.adb:25:22: info: length check proved
+string_examples.adb:26:01: warning: assuming "Put" has no effect on global items
+string_examples.adb:26:01: warning: no Global contract available for "Put"
+string_examples.adb:26:06: info: initialization of "Name" proved
+string_examples.adb:26:06: info: range check proved
+string_examples.adb:26:17: info: initialization of "Count" proved
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a-tienio.ads:28:04: info: initialization of "Default_Width" proved, in instantiation at bingo_basket_test.adb:9
+a-tienio.ads:29:04: info: initialization of "Default_Setting" proved, in instantiation at bingo_basket_test.adb:9
+a-tiinio.ads:48:04: info: initialization of "Default_Width" proved, in instantiation at bingo_basket_test.adb:6
+a-tiinio.ads:49:04: info: initialization of "Default_Base" proved, in instantiation at bingo_basket_test.adb:6
+bingo_basket_test.adb:4:11: medium: "Current_Out" might not be initialized after elaboration of main program "Bingo_Basket_Test"
+bingo_basket_test.adb:17:19: info: precondition proved
+bingo_basket_test.adb:19:07: info: initialization of "Default_Setting" proved
+bingo_basket_test.adb:19:07: info: initialization of "Default_Width" proved
+bingo_basket_test.adb:19:07: warning: assuming "Put" has no effect on global items
+bingo_basket_test.adb:19:07: warning: no Global contract available for "Put"
+bingo_basket_test.adb:19:12: info: initialization of "Letter" proved
+bingo_basket_test.adb:20:07: info: initialization of "Default_Base" proved
+bingo_basket_test.adb:20:07: info: initialization of "Default_Width" proved
+bingo_basket_test.adb:20:07: warning: assuming "Put" has no effect on global items
+bingo_basket_test.adb:20:07: warning: no Global contract available for "Put"
+bingo_basket_test.adb:20:20: info: initialization of "Number" proved
+bingo_basket_test.adb:22:07: warning: assuming "New_Line" has no effect on global items
+bingo_basket_test.adb:22:07: warning: no Global contract available for "New_Line"
+bounded_queue.adb:20:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:25:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:38:32: info: division check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:38:51: info: overflow check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:38:51: info: range check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:39:25: info: index check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:40:34: medium: overflow check might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:47:33: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:48:34: info: division check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:48:53: info: overflow check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:48:53: info: range check proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.adb:49:34: medium: range check might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:25:18: medium: postcondition might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:31:18: medium: postcondition might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:32:50: medium: overflow check might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:33:18: info: precondition proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:36:23: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:39:17: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:39:22: medium: postcondition might fail, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:39:24: info: precondition proved, in instantiation at bounded_queue_example.adb:7
+bounded_queue.ads:45:04: medium: type "Queue_Type" is not fully initialized, in instantiation at bounded_queue_example.adb:7
+bounded_queue_example.adb:14:11: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:16:07: medium: precondition might fail
+bounded_queue_example.adb:16:25: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:19:07: medium: precondition might fail
+bounded_queue_example.adb:19:25: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:20:07: warning: assuming "Put" has no effect on global items
+bounded_queue_example.adb:20:07: warning: no Global contract available for "Put"
+bounded_queue_example.adb:20:12: info: initialization of "Value" proved
+bounded_queue_example.adb:21:07: warning: assuming "New_Line" has no effect on global items
+bounded_queue_example.adb:21:07: warning: no Global contract available for "New_Line"
+bounded_queue_example.adb:23:11: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:24:04: warning: assuming "Put_Line" has no effect on global items
+bounded_queue_example.adb:24:04: warning: no Global contract available for "Put_Line"
+bounded_queue_example.adb:24:42: medium: range check might fail
+bounded_queue_example.adb:24:65: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized
+bounded_queue_example_v1.adb:10:11: high: "My_Queue.Front" is not initialized
+bounded_queue_example_v1.adb:10:11: high: "My_Queue.Items" is not initialized
+bounded_queue_example_v1.adb:10:11: high: "My_Queue.Rear" is not initialized
+bounded_queue_example_v1.adb:12:07: medium: precondition might fail
+bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Count" proved
+bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Front" proved
+bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Items" proved
+bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Rear" proved
+bounded_queue_example_v1.adb:15:07: medium: precondition might fail
+bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Count" proved
+bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Front" proved
+bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Items" proved
+bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Rear" proved
+bounded_queue_example_v1.adb:16:07: warning: assuming "Put_Line" has no effect on global items
+bounded_queue_example_v1.adb:16:07: warning: no Global contract available for "Put_Line"
+bounded_queue_example_v1.adb:16:32: info: initialization of "Value" proved
+bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Count" proved
+bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Front" proved
+bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Items" proved
+bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Rear" proved
+bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Count" proved
+bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Front" proved
+bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Items" proved
+bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Rear" proved
+bounded_queue_example_v1.adb:20:04: warning: assuming "Put_Line" has no effect on global items
+bounded_queue_example_v1.adb:20:04: warning: no Global contract available for "Put_Line"
+bounded_queue_example_v1.adb:20:42: medium: range check might fail
+bounded_queue_example_v1.adb:20:59: info: initialization of "Value" proved
+bounded_queue_example_v2.adb:10:11: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:12:07: medium: precondition might fail
+bounded_queue_example_v2.adb:12:25: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:15:07: medium: precondition might fail
+bounded_queue_example_v2.adb:15:25: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:16:07: warning: assuming "Put_Line" has no effect on global items
+bounded_queue_example_v2.adb:16:07: warning: no Global contract available for "Put_Line"
+bounded_queue_example_v2.adb:16:32: info: initialization of "Value" proved
+bounded_queue_example_v2.adb:18:11: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:19:19: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:20:04: warning: assuming "Put_Line" has no effect on global items
+bounded_queue_example_v2.adb:20:04: warning: no Global contract available for "Put_Line"
+bounded_queue_example_v2.adb:20:42: medium: range check might fail
+bounded_queue_example_v2.adb:20:59: info: initialization of "Value" proved
+bounded_queue_v1.adb:20:32: medium: array index check might fail
+bounded_queue_v1.adb:25:32: medium: array index check might fail
+bounded_queue_v1.adb:38:32: info: division check proved
+bounded_queue_v1.adb:38:51: info: overflow check proved
+bounded_queue_v1.adb:38:51: info: range check proved
+bounded_queue_v1.adb:39:25: info: index check proved
+bounded_queue_v1.adb:40:34: medium: overflow check might fail
+bounded_queue_v1.adb:47:33: medium: array index check might fail
+bounded_queue_v1.adb:48:34: info: division check proved
+bounded_queue_v1.adb:48:53: info: overflow check proved
+bounded_queue_v1.adb:48:53: info: range check proved
+bounded_queue_v1.adb:49:34: medium: range check might fail
+bounded_queue_v1.ads:31:18: medium: postcondition might fail
+bounded_queue_v1.ads:37:18: medium: postcondition might fail
+bounded_queue_v1.ads:38:50: medium: overflow check might fail
+bounded_queue_v1.ads:39:18: info: precondition proved
+bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
+bounded_queue_v1.ads:45:18: info: initialization of "Item" proved
+bounded_queue_v1.ads:45:18: medium: postcondition might fail
+bounded_queue_v1.ads:45:25: info: precondition proved
+bounded_queue_v2.adb:20:32: medium: array index check might fail
+bounded_queue_v2.adb:25:32: medium: array index check might fail
+bounded_queue_v2.adb:38:32: info: division check proved
+bounded_queue_v2.adb:38:51: info: overflow check proved
+bounded_queue_v2.adb:38:51: info: range check proved
+bounded_queue_v2.adb:39:25: info: index check proved
+bounded_queue_v2.adb:40:34: medium: overflow check might fail
+bounded_queue_v2.adb:47:33: medium: array index check might fail
+bounded_queue_v2.adb:48:34: info: division check proved
+bounded_queue_v2.adb:48:53: info: overflow check proved
+bounded_queue_v2.adb:48:53: info: range check proved
+bounded_queue_v2.adb:49:34: medium: range check might fail
+bounded_queue_v2.ads:25:18: medium: postcondition might fail
+bounded_queue_v2.ads:31:18: medium: postcondition might fail
+bounded_queue_v2.ads:32:50: medium: overflow check might fail
+bounded_queue_v2.ads:33:18: info: precondition proved
+bounded_queue_v2.ads:36:23: info: initialization of "Item" proved
+bounded_queue_v2.ads:39:17: info: initialization of "Item" proved
+bounded_queue_v2.ads:39:17: medium: postcondition might fail
+bounded_queue_v2.ads:39:24: info: precondition proved
+bounded_queue_v2.ads:45:04: medium: type "Queue_Type" is not fully initialized
+display_control.adb:16:18: warning: assuming "Put" has no effect on global items
+display_control.adb:16:18: warning: no Global contract available for "Put"
+display_control.adb:18:18: warning: assuming "Flush" has no effect on global items
+display_control.adb:18:18: warning: no Global contract available for "Flush"
+display_control.adb:23:18: warning: assuming "Put" has no effect on global items
+display_control.adb:23:18: warning: no Global contract available for "Put"
+display_control.adb:24:18: warning: assuming "Flush" has no effect on global items
+display_control.adb:24:18: warning: no Global contract available for "Flush"
+display_control.adb:29:18: warning: assuming "Put" has no effect on global items
+display_control.adb:29:18: warning: no Global contract available for "Put"
+display_control.adb:30:18: warning: assuming "Flush" has no effect on global items
+display_control.adb:30:18: warning: no Global contract available for "Flush"
+display_control.ads:3:14: warning: subprogram "Bold_On" has no effect
+display_control.ads:7:14: warning: subprogram "Blink_On" has no effect
+display_control.ads:11:14: warning: subprogram "Normal" has no effect
+elaboration_demo.adb:2:29: warning: unused initial value of "Size"
+elaboration_demo.adb:3:29: high: "Count" is not initialized in "Elaboration_Demo"
+elaboration_demo.adb:3:29: warning: unused variable "Count"
+elaboration_demo.adb:4:04: info: range check proved
+elaboration_demo.adb:4:04: warning: initialization of Line has no effect
+elaboration_demo.adb:4:34: info: length check proved
+elaboration_demo.adb:5:04: warning: initialization of Guess has no effect
+elaboration_demo.adb:5:26: medium: overflow check might fail
+elaboration_demo.adb:5:74: info: division check proved
+elaboration_demo.adb:5:74: info: overflow check proved
+parent-public1.adb:11:20: info: initialization of "Temp" proved
+parent.adb:6:22: medium: overflow check might fail
+serial_numbers.adb:3:04: info: initialization of "Next_Number" proved
+serial_numbers.adb:8:34: medium: overflow check might fail
+serial_numbers.ads:3:24: info: initialization of "Number" proved
+serial_numbers2.adb:3:04: info: initialization of "Next_Number" proved
+serial_numbers2.adb:8:34: medium: overflow check might fail
+serial_numbers2.ads:3:24: info: initialization of "Number" proved
+stacks-more.adb:4:32: medium: array index check might fail
+stacks.adb:14:30: medium: overflow check might fail
+stacks.adb:15:25: medium: array index check might fail
+stacks.adb:21:33: medium: array index check might fail
+stacks.adb:22:30: info: range check proved
+stacks.ads:6:21: info: initialization of "Stack.Top" proved
+stacks.ads:6:21: medium: input value of "Stack.Items" will be used in "Clear"
+stacks.ads:10:19: info: initialization of "Item" proved
+stacks.ads:14:04: medium: type "Stack_Type" is not fully initialized
+calculate.adb:3:21: info: initialization of "A" proved
+calculate.adb:12:11: medium: overflow check might fail
+datebook.adb:40:40: info: initialization of "Event_Array" constituent of "State" proved
+datebook.adb:45:09: info: length check proved
+datebook.adb:45:71: info: length check proved
+datebook.adb:80:17: info: initialization of "Found" proved
+datebook.adb:86:54: info: initialization of "Available" proved
+datebook.adb:86:69: info: length check proved
+datebook.adb:86:69: medium: range check might fail
+datebook.adb:87:21: info: range check proved
+datebook.adb:88:54: info: initialization of "Available" proved
+datebook.adb:89:45: info: initialization of "Available" proved
+datebook.adb:90:45: info: initialization of "Available" proved
+datebook.adb:128:16: info: initialization of "Status" proved
+datebook.adb:133:62: info: initialization of "Date" proved
+datebook.adb:156:19: info: length check proved
+datebook.adb:161:26: info: initialization of "Index" proved
+datebook.adb:162:50: info: initialization of "Index" proved
+datebook.adb:165:20: info: range check proved
+datebook.adb:166:35: info: initialization of "Index" proved
+datebook.adb:168:19: info: loop invariant initialization proved
+datebook.adb:168:19: info: loop invariant preservation proved
+datebook.adb:169:35: info: initialization of "Index" proved
+datebook.adb:170:35: info: initialization of "Index" proved
+datebook.adb:173:49: info: index check proved
+datebook.adb:173:49: info: overflow check proved
+datebook.adb:173:60: info: initialization of "Description" proved
+datebook.adb:174:33: info: initialization of "Index" proved
+datebook.adb:182:20: info: initialization of "Index" proved
+datebook.adb:183:19: info: initialization of "Index" proved
+datebook.adb:183:25: info: range check proved
+datebook.adb:210:12: info: call appears in potentially unevaluated context
+datebook.adb:210:12: info: no contextual analysis of "Is_After"
+datebook.adb:228:10: info: loop invariant initialization proved
+datebook.adb:228:10: info: loop invariant preservation proved
+datebook.adb:228:32: info: initialization of "Count" proved
+datebook.adb:231:22: info: initialization of "Count" proved
+datebook.adb:231:28: info: range check proved
+datebook.adb:234:14: info: initialization of "Count" proved
+datebook.ads:36:07: info: initialization of "Status" proved
+datebook.ads:49:38: info: initialization of "Date" proved
+datebook.ads:49:65: info: initialization of "Status" proved
+datebook.ads:60:07: info: initialization of "Description" proved
+datebook.ads:61:07: info: initialization of "Status" proved
+datebook.ads:70:07: info: initialization of "Next_Date" proved
+datebook.ads:71:07: info: initialization of "Status" proved
+datebooks.adb:17:09: info: length check proved
+datebooks.adb:17:71: info: length check proved
+datebooks.adb:41:13: info: loop invariant initialization proved
+datebooks.adb:41:13: info: loop invariant preservation proved
+datebooks.adb:50:17: info: initialization of "Find_Result.Found_Slot" proved
+datebooks.adb:54:60: info: initialization of "Find_Result.Fresh_Index" proved
+datebooks.adb:54:80: info: length check proved
+datebooks.adb:55:17: info: range check proved
+datebooks.adb:56:16: info: loop invariant initialization proved
+datebooks.adb:56:16: info: loop invariant preservation proved
+datebooks.adb:56:38: info: initialization of "Find_Result.Fresh_Index" proved
+datebooks.adb:58:40: info: overflow check proved
+datebooks.adb:60:65: info: index check proved
+datebooks.adb:60:65: info: overflow check proved
+datebooks.adb:60:70: info: overflow check proved
+datebooks.adb:60:92: info: initialization of "Find_Result.Fresh_Index" proved
+datebooks.adb:62:60: info: initialization of "Find_Result.Fresh_Index" proved
+datebooks.adb:63:60: info: initialization of "Find_Result.Fresh_Index" proved
+datebooks.adb:64:60: info: initialization of "Find_Result.Fresh_Index" proved
+datebooks.adb:91:16: info: initialization of "Status" proved
+datebooks.adb:96:49: info: initialization of "Date" proved
+datebooks.adb:109:19: info: length check proved
+datebooks.adb:114:18: info: initialization of "I" proved
+datebooks.adb:115:42: info: initialization of "I" proved
+datebooks.adb:118:20: info: range check proved
+datebooks.adb:118:64: info: initialization of "I" proved
+datebooks.adb:119:19: info: loop invariant initialization proved
+datebooks.adb:119:19: info: loop invariant preservation proved
+datebooks.adb:120:27: info: initialization of "I" proved
+datebooks.adb:121:27: info: initialization of "I" proved
+datebooks.adb:124:49: info: index check proved
+datebooks.adb:124:49: info: overflow check proved
+datebooks.adb:124:60: info: initialization of "Description" proved
+datebooks.adb:124:68: info: initialization of "I" proved
+datebooks.adb:132:20: info: initialization of "I" proved
+datebooks.adb:133:15: info: initialization of "I" proved
+datebooks.adb:133:17: info: range check proved
+datebooks.adb:152:38: info: call appears in potentially unevaluated context
+datebooks.adb:152:38: info: no contextual analysis of "Is_After"
+datebooks.adb:165:10: info: loop invariant initialization proved
+datebooks.adb:165:10: info: loop invariant preservation proved
+datebooks.adb:165:32: info: initialization of "Count" proved
+datebooks.adb:168:22: info: initialization of "Count" proved
+datebooks.adb:168:28: info: range check proved
+datebooks.adb:171:14: info: initialization of "Count" proved
+datebooks.ads:25:25: info: initialization of "Book" proved
+datebooks.ads:32:99: info: initialization of "Status" proved
+datebooks.ads:43:58: info: initialization of "Date" proved
+datebooks.ads:43:85: info: initialization of "Status" proved
+datebooks.ads:50:70: info: initialization of "Description" proved
+datebooks.ads:50:96: info: initialization of "Status" proved
+datebooks.ads:57:61: info: initialization of "Next_Date" proved
+datebooks.ads:57:93: info: initialization of "Status" proved
+dates.adb:17:15: info: division check proved, in call inlined at dates.adb:49
+dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
+dates.adb:28:08: info: postcondition proved
+dates.adb:45:09: info: length check proved
+dates.adb:49:10: info: initialization of "C8b" proved
+dates.adb:54:14: info: initialization of "Length" proved
+dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
+dates.adb:77:47: info: range check proved
+dates.adb:81:54: info: range check proved
+dates.adb:85:53: info: range check proved
+dates.adb:99:47: info: range check proved
+dates.adb:102:54: info: range check proved
+dates.adb:105:53: info: range check proved
+dates.adb:142:10: info: initialization of "C19b" proved
+dates.adb:224:14: info: range check proved
+dates.adb:224:47: info: initialization of "Steps" proved
+dates.adb:230:13: info: loop invariant initialization proved
+dates.adb:230:13: info: loop invariant preservation proved
+dates.adb:232:13: info: precondition proved
+dates.adb:236:14: info: range check proved
+dates.adb:236:47: info: initialization of "Steps" proved
+dates.adb:242:13: info: loop invariant initialization proved
+dates.adb:242:13: info: loop invariant preservation proved
+dates.adb:244:13: info: precondition proved
+dates.adb:276:14: info: initialization of "Result" proved
+dates.ads:32:07: info: initialization of "New_Date.Day" proved
+dates.ads:32:07: info: initialization of "New_Date.Month" proved
+dates.ads:32:07: info: initialization of "New_Date.Year" proved
+dates.ads:33:07: info: initialization of "Valid" proved
+dates.ads:62:76: info: initialization of "Valid" proved
+dates.ads:78:14: info: postcondition proved
+hierarchical_state_demo-a_pack.adb:5:04: info: initialization of "Total" constituent of "State" proved
+hierarchical_state_demo-a_pack.adb:12:31: info: overflow check proved
+hierarchical_state_demo-a_pack.adb:13:19: info: overflow check proved
+hierarchical_state_demo-a_pack.adb:13:19: info: range check proved
+hierarchical_state_demo-a_pack.adb:13:30: info: overflow check proved
+hierarchical_state_demo-a_pack.adb:15:25: info: overflow check proved
+hierarchical_state_demo.adb:6:04: info: initialization of "Count" constituent of "Top_State" proved
+hierarchical_state_demo.adb:16:22: info: division check proved
+hierarchical_state_demo.adb:18:25: info: overflow check proved
+hierarchical_state_demo.adb:18:25: info: range check proved
+hierarchical_state_demo.adb:18:34: info: overflow check proved
+hierarchical_state_demo.adb:18:43: info: division check proved
+hierarchical_state_demo.adb:20:25: info: overflow check proved
+hierarchical_state_demo.adb:20:25: info: range check proved
+hierarchical_state_demo.adb:20:34: info: overflow check proved
+hierarchical_state_demo.adb:20:43: info: division check proved
+hierarchical_state_demo.ads:7:28: info: initialization of "Success" proved
+hierarchical_state_demo_nested.adb:5:04: info: initialization of "Count" constituent of "Top_State" proved
+hierarchical_state_demo_nested.adb:20:07: info: initialization of "Total" constituent of "State" proved
+hierarchical_state_demo_nested.adb:27:34: info: overflow check proved
+hierarchical_state_demo_nested.adb:28:22: info: overflow check proved
+hierarchical_state_demo_nested.adb:28:22: info: range check proved
+hierarchical_state_demo_nested.adb:28:33: info: overflow check proved
+hierarchical_state_demo_nested.adb:30:28: info: overflow check proved
+hierarchical_state_demo_nested.adb:45:22: info: division check proved
+hierarchical_state_demo_nested.adb:47:25: info: overflow check proved
+hierarchical_state_demo_nested.adb:47:25: info: range check proved
+hierarchical_state_demo_nested.adb:47:34: info: overflow check proved
+hierarchical_state_demo_nested.adb:47:43: info: division check proved
+hierarchical_state_demo_nested.adb:49:25: info: overflow check proved
+hierarchical_state_demo_nested.adb:49:25: info: range check proved
+hierarchical_state_demo_nested.adb:49:34: info: overflow check proved
+hierarchical_state_demo_nested.adb:49:43: info: division check proved
+hierarchical_state_demo_nested.ads:7:28: info: initialization of "Success" proved
+initializer_demo.adb:6:07: warning: initialization of Sum has no effect
+initializer_demo.adb:10:17: info: initialization of "Sum" proved
+initializer_demo.adb:10:21: medium: overflow check might fail
+initializer_demo.adb:12:14: info: initialization of "Sum" proved
+initializer_demo.adb:23:17: info: initialization of "Sum" proved
+initializer_demo.adb:23:21: medium: overflow check might fail
+initializer_demo.adb:25:23: info: initialization of "Sum" proved
+initializer_demo.adb:35:19: info: overflow check proved
+initializer_demo.adb:35:21: info: initialization of "Offset.X" proved
+initializer_demo.adb:35:35: medium: overflow check might fail
+initializer_demo.adb:35:37: info: initialization of "Offset.Y" proved
+initializer_demo.ads:12:28: info: range check proved
+raster_graphics.adb:13:32: info: initialization of "Status" proved
+raster_graphics.adb:15:39: info: overflow check proved
+raster_graphics.adb:15:39: medium: range check might fail
+raster_graphics.adb:16:39: info: overflow check proved
+raster_graphics.adb:16:39: medium: range check might fail
+raster_graphics.adb:18:13: info: initialization of "Delta_X" proved
+raster_graphics.adb:18:20: info: overflow check proved
+raster_graphics.adb:18:24: medium: overflow check might fail
+raster_graphics.adb:18:26: info: initialization of "Delta_Y" proved
+raster_graphics.adb:18:33: info: overflow check proved
+raster_graphics.adb:27:10: info: initialization of "Status" proved
+raster_graphics.adb:31:41: medium: overflow check might fail
+raster_graphics.ads:21:29: info: initialization of "Status" proved
+strings.adb:19:16: info: initialization of "Current" proved
+strings.adb:20:21: info: index check proved
+strings.adb:20:21: info: initialization of "Current" proved
+strings.adb:22:28: info: initialization of "Current" proved
+strings.adb:39:34: info: range check proved
+strings.adb:43:13: info: initialization of "Equals_Found" proved
+strings.adb:44:23: medium: range check might fail
+strings.adb:44:43: info: initialization of "Equals_Position" proved
+strings.adb:45:32: medium: precondition might fail
+strings.adb:45:40: medium: range check might fail
+strings.adb:45:46: info: initialization of "Equals_Position" proved
+strings.adb:45:62: medium: overflow check might fail
+strings.ads:8:22: info: initialization of "Found" proved
+strings.ads:9:22: info: initialization of "Position" proved
+searches.adb:9:23: info: range check proved
+searches.adb:11:26: info: index check proved
+searches.adb:11:26: info: initialization of "Position" proved
+searches.adb:12:22: info: initialization of "Position" proved
+searches.adb:12:31: info: overflow check proved
+searches.adb:13:10: info: loop invariant initialization proved
+searches.adb:13:10: info: loop invariant preservation proved
+searches.adb:14:13: info: initialization of "Position" proved
+searches.adb:15:63: info: index check proved
+searches.adb:24:23: info: range check proved
+searches.adb:26:20: info: initialization of "Position" proved
+searches.adb:26:55: info: index check proved
+searches.adb:27:22: info: initialization of "Position" proved
+searches.adb:27:31: info: overflow check proved
+searches.adb:28:10: info: loop invariant initialization proved
+searches.adb:28:10: info: loop invariant preservation proved
+searches.adb:29:13: info: initialization of "Position" proved
+searches.adb:29:49: info: overflow check proved
+searches.adb:30:63: info: index check proved
+searches.adb:32:16: info: initialization of "Position" proved
+searches.adb:33:14: info: initialization of "Found" proved
+searches.adb:34:26: info: range check proved
+searches.ads:9:26: info: initialization of "Position" proved
+searches.ads:12:60: info: index check proved
+searches.ads:13:22: info: initialization of "Position" proved
+searches.ads:13:22: info: postcondition proved
+searches.ads:14:28: info: index check proved
+searches.ads:14:28: info: initialization of "Position" proved
+searches.ads:15:54: info: initialization of "Position" proved
+searches.ads:16:32: info: index check proved
+searches.ads:20:26: info: initialization of "Found" proved
+searches.ads:21:26: info: initialization of "Position" proved
+searches.ads:28:38: info: index check proved
+searches.ads:28:49: info: index check proved
+searches.ads:29:22: info: initialization of "Position" proved
+searches.ads:29:22: info: postcondition proved
+searches.ads:30:24: info: initialization of "Found" proved
+searches.ads:30:45: info: index check proved
+searches.ads:30:45: info: initialization of "Position" proved
+searches.ads:33:57: info: index check proved
+buffers.adb:8:29: info: length check proved
+buffers.adb:17:32: info: length check proved
+buffers.adb:19:56: info: division check proved
+buffers.adb:20:31: info: initialization of "New_Index" proved
+buffers.adb:20:31: info: initialization of "Workspace" proved
+buffers.adb:22:17: info: initialization of "Workspace" proved
+buffers.adb:32:43: info: initialization of "Temp" proved
+buffers.adb:42:10: info: loop invariant initialization proved
+buffers.adb:42:10: info: loop invariant preservation proved
+buffers.adb:42:33: info: initialization of "Count" proved
+buffers.adb:45:22: info: initialization of "Count" proved
+buffers.adb:45:28: info: range check proved
+buffers.adb:48:14: info: initialization of "Count" proved
+buffers.adb:59:10: info: loop invariant initialization proved
+buffers.adb:59:10: info: loop invariant preservation proved
+buffers.adb:59:33: info: initialization of "Count" proved
+buffers.adb:62:22: info: initialization of "Count" proved
+buffers.adb:62:28: info: range check proved
+buffers.adb:77:32: info: length check proved
+buffers.adb:82:10: info: loop invariant initialization proved
+buffers.adb:82:10: info: loop invariant preservation proved
+buffers.adb:82:32: info: initialization of "Offset" proved
+buffers.adb:85:39: info: index check proved
+buffers.adb:85:49: info: initialization of "Offset" proved
+buffers.adb:85:49: info: initialization of "Workspace" proved
+buffers.adb:86:23: info: initialization of "Offset" proved
+buffers.adb:86:30: info: range check proved
+buffers.adb:90:16: info: initialization of "Offset" proved
+buffers.adb:93:11: info: range check proved
+buffers.adb:93:40: info: initialization of "Offset" proved
+buffers.adb:94:36: info: index check proved
+buffers.adb:94:41: info: initialization of "Workspace" proved
+buffers.adb:96:17: info: initialization of "Workspace" proved
+buffers.adb:104:17: info: length check proved
+buffers.adb:105:26: info: initialization of "Characters_To_Copy" proved
+buffers.adb:108:11: info: range check proved
+buffers.adb:108:49: info: initialization of "Characters_To_Copy" proved
+buffers.adb:109:10: info: loop invariant initialization proved
+buffers.adb:109:10: info: loop invariant preservation proved
+buffers.adb:110:13: info: initialization of "Characters_To_Copy" proved
+buffers.adb:111:53: info: initialization of "Characters_To_Copy" proved
+buffers.adb:113:25: info: initialization of "Buffer" proved
+buffers.adb:113:49: info: index check proved
+buffers.adb:113:49: info: overflow check proved
+buffers.adb:126:26: info: initialization of "Characters_To_Copy" proved
+buffers.adb:129:19: info: initialization of "Characters_To_Copy" proved
+buffers.adb:132:11: info: range check proved
+buffers.adb:132:45: info: initialization of "Characters_To_Copy" proved
+buffers.adb:133:23: info: index check proved
+buffers.adb:133:23: info: overflow check proved
+buffers.adb:133:57: info: index check proved
+buffers.adb:133:57: info: overflow check proved
+buffers.adb:146:19: info: length check proved
+buffers.adb:147:34: info: initialization of "Characters_To_Copy" proved
+buffers.adb:150:10: info: initialization of "Characters_To_Copy" proved
+buffers.adb:153:11: info: range check proved
+buffers.adb:153:45: info: initialization of "Characters_To_Copy" proved
+buffers.adb:154:40: info: index check proved
+buffers.adb:154:40: info: overflow check proved
+buffers.adb:154:51: info: initialization of "Destination" proved
+buffers.adb:154:67: info: index check proved
+buffers.adb:154:67: info: overflow check proved
+buffers.ads:11:20: info: initialization of "Buffer" proved
+buffers.ads:35:07: info: initialization of "Count" proved
+buffers.ads:45:23: info: initialization of "Valid" proved
+buffers.ads:53:24: info: initialization of "Buffer" proved
+buffers.ads:75:25: info: initialization of "Destination" proved
+circle_demo.adb:14:14: info: precondition proved
+circle_demo.adb:14:50: info: initialization of "My_Circle" proved
+circle_demo.adb:15:18: warning: assuming "Put_Line" has no effect on global items
+circle_demo.adb:15:18: warning: no Global contract available for "Put_Line"
+circle_demo.adb:17:18: warning: assuming "Put_Line" has no effect on global items
+circle_demo.adb:17:18: warning: no Global contract available for "Put_Line"
+dates.adb:17:15: info: division check proved, in call inlined at dates.adb:49
+dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
+dates.adb:28:08: info: postcondition proved
+dates.adb:45:09: info: length check proved
+dates.adb:49:10: info: initialization of "C8b" proved
+dates.adb:54:14: info: initialization of "Length" proved
+dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
+dates.adb:77:47: info: range check proved
+dates.adb:81:54: info: range check proved
+dates.adb:85:53: info: range check proved
+dates.adb:99:47: info: range check proved
+dates.adb:102:54: info: range check proved
+dates.adb:105:53: info: range check proved
+dates.adb:142:10: info: initialization of "C19b" proved
+dates.adb:224:14: info: range check proved
+dates.adb:224:47: info: initialization of "Steps" proved
+dates.adb:230:13: info: loop invariant initialization proved
+dates.adb:230:13: info: loop invariant preservation proved
+dates.adb:232:13: info: precondition proved
+dates.adb:236:14: info: range check proved
+dates.adb:236:47: info: initialization of "Steps" proved
+dates.adb:242:13: info: loop invariant initialization proved
+dates.adb:242:13: info: loop invariant preservation proved
+dates.adb:244:13: info: precondition proved
+dates.adb:276:14: info: initialization of "Result" proved
+dates.ads:32:07: info: initialization of "New_Date.Day" proved
+dates.ads:32:07: info: initialization of "New_Date.Month" proved
+dates.ads:32:07: info: initialization of "New_Date.Year" proved
+dates.ads:33:07: info: initialization of "Valid" proved
+dates.ads:62:76: info: initialization of "Valid" proved
+dates.ads:78:14: info: postcondition proved
+double_list.adb:17:04: info: initialization of "Memory" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.adb:18:04: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.adb:19:04: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.adb:20:04: info: initialization of "Free" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.adb:24:41: info: initialization of "Memory" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.adb:24:49: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.adb:24:56: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.adb:24:67: info: initialization of "Free" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.adb:29:17: info: length check proved, in instantiation at list_handler.adb:8
+double_list.adb:33:20: info: length check proved, in instantiation at list_handler.adb:8
+double_list.adb:36:28: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.adb:62:30: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:8
+double_list.adb:63:46: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:8
+double_list.adb:64:33: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:8
+double_list.adb:67:25: info: range check proved, in instantiation at list_handler.adb:8
+double_list.ads:9:05: info: initial condition proved, in instantiation at list_handler.adb:8
+double_list.ads:9:26: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.ads:19:19: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.ads:19:24: info: postcondition proved, in instantiation at list_handler.adb:8
+double_list.ads:23:29: info: initialization of "Status" proved, in instantiation at list_handler.adb:8
+generic_searchers.adb:16:31: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:16:31: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:16:52: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:16:52: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:21:24: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:21:24: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:21:36: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:21:36: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:21:48: info: division check proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:21:48: info: division check proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:22:34: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:22:34: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:24:23: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:24:23: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:28:20: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:28:20: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:28:32: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:28:32: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:30:10: info: loop invariant initialization proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:30:10: info: loop invariant initialization proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:30:10: info: loop invariant preservation proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:30:10: info: loop invariant preservation proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:30:37: info: initialization of "Found" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:30:37: info: initialization of "Found" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:31:10: info: loop invariant initialization proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:31:10: info: loop invariant initialization proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:31:10: info: loop invariant preservation proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:31:10: info: loop invariant preservation proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:31:33: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:31:33: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:31:46: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:31:46: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:31:72: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:31:72: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:32:10: info: loop invariant initialization proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:32:10: info: loop invariant initialization proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:32:10: info: loop invariant preservation proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:32:10: info: loop invariant preservation proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:32:40: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:32:40: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:33:10: info: loop invariant initialization proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:33:10: info: loop invariant initialization proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:33:10: info: loop invariant preservation proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:33:10: info: loop invariant preservation proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:33:54: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:33:54: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:34:10: info: loop variant proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:34:10: info: loop variant proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:34:44: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:34:44: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:34:68: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:34:68: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:36:20: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:36:20: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:37:37: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:37:37: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:37:47: info: index check proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:37:47: info: index check proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:40:26: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:40:26: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:40:36: info: range check proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:40:36: info: range check proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:42:27: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:42:27: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.ads:11:29: info: initialization of "Found" proved, in instantiation at prime_search.adb:15
+generic_searchers.ads:11:29: info: initialization of "Found" proved, in instantiation at search_demo.adb:12
+generic_searchers.ads:12:29: info: initialization of "Result" proved, in instantiation at prime_search.adb:15
+generic_searchers.ads:12:29: info: initialization of "Result" proved, in instantiation at search_demo.adb:12
+generic_searchers.ads:15:74: info: index check proved, in instantiation at prime_search.adb:15
+generic_searchers.ads:15:74: info: index check proved, in instantiation at search_demo.adb:12
+generic_searchers.ads:16:17: info: postcondition proved, in instantiation at prime_search.adb:15
+generic_searchers.ads:16:17: info: postcondition proved, in instantiation at search_demo.adb:12
+generic_searchers.ads:16:20: info: initialization of "Found" proved, in instantiation at prime_search.adb:15
+generic_searchers.ads:16:20: info: initialization of "Found" proved, in instantiation at search_demo.adb:12
+generic_searchers.ads:17:41: info: initialization of "Result" proved, in instantiation at prime_search.adb:15
+generic_searchers.ads:17:41: info: initialization of "Result" proved, in instantiation at search_demo.adb:12
+interval.ads:13:09: warning: type invariant ignored (not yet supported)
+lights.adb:15:14: info: initialization of "Result" proved
+list_handler.adb:21:13: info: initialization of "Current" proved
+list_handler.adb:23:48: info: initialization of "Current" proved
+list_handler.adb:25:20: info: initialization of "Status" proved
+list_handler.adb:25:54: info: initialization of "Current" proved
+list_handler.adb:26:21: info: initialization of "Current" proved
+list_handler.adb:26:29: info: overflow check proved
+prime_search.adb:3:50: info: initialization of "Prime_Index" proved
+prime_search.adb:10:06: info: length check proved
+prime_search.adb:20:04: info: assertion proved
+prime_search.adb:21:77: info: index check proved
+prime_search.adb:22:04: info: precondition proved
+prime_search.adb:22:32: info: length check proved
+prime_search.adb:23:07: info: initialization of "Found" proved
+prime_search.adb:24:22: info: initialization of "Position" proved
+region_checks.ads:8:08: info: complete contract cases proved
+region_checks.ads:8:08: info: disjoint contract cases proved
+region_checks.ads:9:17: info: contract case proved
+region_checks.ads:10:17: info: contract case proved
+region_checks.ads:11:17: info: contract case proved
+region_checks.ads:15:08: info: disjoint contract cases proved
+region_checks.ads:16:58: info: contract case proved
+region_checks.ads:18:58: info: contract case proved
+region_checks.ads:20:58: info: contract case proved
+region_checks.ads:22:58: info: contract case proved
+region_checks.ads:24:18: info: contract case proved
+scrabble.adb:7:06: info: length check proved
+scrabble.adb:7:15: info: predicate check proved
+scrabble.adb:7:26: info: predicate check proved
+scrabble.adb:7:37: info: predicate check proved
+scrabble.adb:7:48: info: predicate check proved
+scrabble.adb:8:15: info: predicate check proved
+scrabble.adb:8:26: info: predicate check proved
+scrabble.adb:8:37: info: predicate check proved
+scrabble.adb:8:48: info: predicate check proved
+scrabble.adb:9:15: info: predicate check proved
+scrabble.adb:9:26: info: predicate check proved
+scrabble.adb:9:37: info: predicate check proved
+scrabble.adb:9:48: info: predicate check proved
+scrabble.adb:10:15: info: predicate check proved
+scrabble.adb:10:26: info: predicate check proved
+scrabble.adb:10:37: info: predicate check proved
+scrabble.adb:10:48: info: predicate check proved
+scrabble.adb:11:14: info: predicate check proved
+scrabble.adb:11:26: info: predicate check proved
+scrabble.adb:11:37: info: predicate check proved
+scrabble.adb:11:48: info: predicate check proved
+scrabble.adb:12:15: info: predicate check proved
+scrabble.adb:12:26: info: predicate check proved
+scrabble.adb:12:37: info: predicate check proved
+scrabble.adb:12:48: info: predicate check proved
+scrabble.adb:13:15: info: predicate check proved
+scrabble.adb:13:25: info: predicate check proved
+scrabble.adb:19:10: info: loop invariant initialization proved
+scrabble.adb:19:10: info: loop invariant preservation proved
+scrabble.adb:19:33: info: initialization of "Total_Score" proved
+scrabble.adb:19:50: info: overflow check proved
+scrabble.adb:19:65: info: overflow check proved
+scrabble.adb:20:25: info: initialization of "Total_Score" proved
+scrabble.adb:20:37: info: overflow check proved
+scrabble.adb:20:37: info: range check proved
+scrabble.adb:22:14: info: initialization of "Total_Score" proved
+search_demo.adb:10:40: info: length check proved
+search_demo.adb:21:04: info: precondition proved
+search_demo.adb:21:17: info: initialization of "Search_Array" proved
+search_demo.adb:21:17: info: length check proved
+search_demo.adb:22:11: info: initialization of "Found" proved
+search_demo.adb:23:18: warning: assuming "Put_Line" has no effect on global items
+search_demo.adb:23:18: warning: no Global contract available for "Put_Line"
+search_demo.adb:25:18: warning: assuming "Put_Line" has no effect on global items
+search_demo.adb:25:18: warning: no Global contract available for "Put_Line"
+search_demo.adb:25:63: medium: range check might fail
+search_demo.adb:25:79: info: initialization of "Result_Index" proved
+searchers.adb:18:30: info: initialization of "Low_Index" proved
+searchers.adb:18:50: info: initialization of "High_Index" proved
+searchers.adb:23:24: info: initialization of "Low_Index" proved
+searchers.adb:23:36: info: initialization of "High_Index" proved
+searchers.adb:23:48: info: division check proved
+searchers.adb:24:33: info: initialization of "Mid_Index" proved
+searchers.adb:26:23: info: initialization of "Mid_Index" proved
+searchers.adb:30:20: info: initialization of "Low_Index" proved
+searchers.adb:30:32: info: initialization of "High_Index" proved
+searchers.adb:32:10: info: loop invariant initialization proved
+searchers.adb:32:10: info: loop invariant preservation proved
+searchers.adb:32:38: info: initialization of "Low_Index" proved
+searchers.adb:33:10: info: loop invariant initialization proved
+searchers.adb:33:10: info: loop invariant preservation proved
+searchers.adb:33:53: info: initialization of "High_Index" proved
+searchers.adb:35:19: info: initialization of "Mid_Index" proved
+searchers.adb:36:26: info: initialization of "Mid_Index" proved
+searchers.adb:38:27: info: initialization of "Mid_Index" proved
+searchers.ads:9:29: info: initialization of "Found" proved
+searchers.ads:10:29: info: initialization of "Result" proved
+searchers.ads:14:71: info: index check proved
+searchers2.adb:18:30: info: initialization of "Low_Index" proved
+searchers2.adb:18:50: info: initialization of "High_Index" proved
+searchers2.adb:23:24: info: initialization of "Low_Index" proved
+searchers2.adb:23:36: info: initialization of "High_Index" proved
+searchers2.adb:23:48: info: division check proved
+searchers2.adb:24:33: info: initialization of "Mid_Index" proved
+searchers2.adb:26:23: info: initialization of "Mid_Index" proved
+searchers2.adb:30:20: info: initialization of "Low_Index" proved
+searchers2.adb:30:32: info: initialization of "High_Index" proved
+searchers2.adb:32:10: info: loop invariant initialization proved
+searchers2.adb:32:10: info: loop invariant preservation proved
+searchers2.adb:33:34: info: initialization of "Low_Index" proved
+searchers2.adb:33:54: info: initialization of "High_Index" proved
+searchers2.adb:35:19: info: initialization of "Mid_Index" proved
+searchers2.adb:36:26: info: initialization of "Mid_Index" proved
+searchers2.adb:38:27: info: initialization of "Mid_Index" proved
+searchers2.ads:9:29: info: initialization of "Found" proved
+searchers2.ads:10:29: info: initialization of "Result" proved
+searchers2.ads:14:68: info: index check proved
+searchers2.ads:16:10: info: postcondition proved
+searchers2.ads:16:14: info: initialization of "Found" proved
+searchers2.ads:16:46: info: initialization of "Result" proved
+searchers3.adb:16:30: info: initialization of "Low_Index" proved
+searchers3.adb:16:50: info: initialization of "High_Index" proved
+searchers3.adb:21:24: info: initialization of "Low_Index" proved
+searchers3.adb:21:36: info: initialization of "High_Index" proved
+searchers3.adb:21:48: info: division check proved
+searchers3.adb:22:33: info: initialization of "Mid_Index" proved
+searchers3.adb:24:23: info: initialization of "Mid_Index" proved
+searchers3.adb:28:20: info: initialization of "Low_Index" proved
+searchers3.adb:28:32: info: initialization of "High_Index" proved
+searchers3.adb:30:10: info: loop invariant initialization proved
+searchers3.adb:30:10: info: loop invariant preservation proved
+searchers3.adb:30:37: info: initialization of "Found" proved
+searchers3.adb:31:10: info: loop invariant initialization proved
+searchers3.adb:31:10: info: loop invariant preservation proved
+searchers3.adb:31:33: info: initialization of "Mid_Index" proved
+searchers3.adb:31:46: info: initialization of "Low_Index" proved
+searchers3.adb:31:59: info: initialization of "High_Index" proved
+searchers3.adb:32:10: info: loop invariant initialization proved
+searchers3.adb:32:10: info: loop invariant preservation proved
+searchers3.adb:32:39: info: initialization of "Low_Index" proved
+searchers3.adb:33:10: info: loop invariant initialization proved
+searchers3.adb:33:10: info: loop invariant preservation proved
+searchers3.adb:33:54: info: initialization of "High_Index" proved
+searchers3.adb:34:10: info: loop variant proved
+searchers3.adb:34:44: info: initialization of "High_Index" proved
+searchers3.adb:34:57: info: initialization of "Low_Index" proved
+searchers3.adb:36:19: info: initialization of "Mid_Index" proved
+searchers3.adb:37:36: info: initialization of "Mid_Index" proved
+searchers3.adb:37:46: info: index check proved
+searchers3.adb:40:26: info: initialization of "Mid_Index" proved
+searchers3.adb:40:36: info: range check proved
+searchers3.adb:42:27: info: initialization of "Mid_Index" proved
+searchers3.ads:9:29: info: initialization of "Found" proved
+searchers3.ads:10:29: info: initialization of "Result" proved
+searchers3.ads:14:71: info: index check proved
+searchers3.ads:16:12: info: postcondition proved
+searchers3.ads:16:16: info: initialization of "Found" proved
+searchers3.ads:16:47: info: initialization of "Result" proved
+shapes.adb:12:34: info: overflow check proved
+shapes.adb:12:34: info: range check proved
+shapes.adb:13:34: info: overflow check proved
+shapes.adb:13:34: info: range check proved
+shapes.adb:14:14: info: initialization of "Delta_X" proved
+shapes.adb:14:21: info: overflow check proved
+shapes.adb:14:30: medium: overflow check might fail
+shapes.adb:14:32: info: initialization of "Delta_Y" proved
+shapes.adb:14:39: info: overflow check proved
+shapes.adb:14:75: info: overflow check proved
+shapes.adb:14:75: medium: range check might fail
+shapes2.adb:12:34: info: overflow check proved
+shapes2.adb:12:34: info: range check proved
+shapes2.adb:13:34: info: overflow check proved
+shapes2.adb:13:34: info: range check proved
+shapes2.adb:14:14: info: initialization of "Delta_X" proved
+shapes2.adb:14:21: info: overflow check proved
+shapes2.adb:14:30: medium: overflow check might fail
+shapes2.adb:14:32: info: initialization of "Delta_Y" proved
+shapes2.adb:14:39: info: overflow check proved
+shapes2.adb:14:75: info: overflow check proved
+shapes2.adb:14:75: info: range check proved
+shapes3.adb:7:08: info: refined post proved
+shapes3.adb:18:10: info: initialization of "R" proved
+shapes3.adb:19:36: info: range check proved
+shapes3.adb:21:10: info: initialization of "R" proved
+shapes3.adb:22:17: info: range check proved
+shapes3.adb:24:10: info: initialization of "R" proved
+shapes3.adb:25:36: info: range check proved
+shapes3.adb:27:10: info: initialization of "R" proved
+shapes3.adb:28:17: info: range check proved
+shapes3.adb:30:21: info: initialization of "R" proved
+shapes3.adb:41:34: info: overflow check proved
+shapes3.adb:41:34: info: range check proved
+shapes3.adb:42:34: info: overflow check proved
+shapes3.adb:42:34: info: range check proved
+shapes3.adb:43:14: info: initialization of "Delta_X" proved
+shapes3.adb:43:21: info: overflow check proved
+shapes3.adb:43:30: medium: overflow check might fail
+shapes3.adb:43:32: info: initialization of "Delta_Y" proved
+shapes3.adb:43:39: info: overflow check proved
+shapes3.adb:43:75: info: overflow check proved
+shapes3.adb:43:75: info: range check proved
+shapes3.ads:11:18: info: postcondition proved
+shapes4.adb:10:10: info: initialization of "R" proved
+shapes4.adb:10:72: info: range check proved
+shapes4.adb:11:10: info: initialization of "R" proved
+shapes4.adb:11:53: info: range check proved
+shapes4.adb:12:10: info: initialization of "R" proved
+shapes4.adb:12:72: info: range check proved
+shapes4.adb:13:10: info: initialization of "R" proved
+shapes4.adb:13:53: info: range check proved
+shapes4.adb:14:21: info: initialization of "R" proved
+shapes4.adb:25:34: info: overflow check proved
+shapes4.adb:25:34: info: range check proved
+shapes4.adb:26:34: info: overflow check proved
+shapes4.adb:26:34: info: range check proved
+shapes4.adb:27:14: info: initialization of "Delta_X" proved
+shapes4.adb:27:21: info: overflow check proved
+shapes4.adb:27:30: medium: overflow check might fail
+shapes4.adb:27:32: info: initialization of "Delta_Y" proved
+shapes4.adb:27:39: info: overflow check proved
+shapes4.adb:27:75: info: overflow check proved
+shapes4.adb:27:75: info: range check proved
+shapes4.ads:22:09: warning: type invariant ignored (not yet supported)
+shapes5.adb:8:08: info: refined post proved
+shapes5.adb:19:10: info: initialization of "R" proved
+shapes5.adb:20:36: info: range check proved
+shapes5.adb:22:10: info: initialization of "R" proved
+shapes5.adb:23:17: info: range check proved
+shapes5.adb:25:10: info: initialization of "R" proved
+shapes5.adb:26:36: info: range check proved
+shapes5.adb:28:10: info: initialization of "R" proved
+shapes5.adb:29:17: info: range check proved
+shapes5.adb:31:21: info: initialization of "R" proved
+shapes5.adb:42:34: info: overflow check proved
+shapes5.adb:42:34: info: range check proved
+shapes5.adb:43:34: info: overflow check proved
+shapes5.adb:43:34: info: range check proved
+shapes5.adb:44:14: info: initialization of "Delta_X" proved
+shapes5.adb:44:21: info: overflow check proved
+shapes5.adb:44:30: medium: overflow check might fail
+shapes5.adb:44:32: info: initialization of "Delta_Y" proved
+shapes5.adb:44:39: info: overflow check proved
+shapes5.adb:44:75: info: overflow check proved
+shapes5.adb:44:75: info: range check proved
+shapes5.ads:14:18: medium: postcondition might fail, requires In_Bounds (Make_Circle'result)
+shapes5.ads:21:04: info: initialization of "Wild_Man" proved
+students.adb:15:21: info: initialization of "Tuition" proved
+students.adb:15:29: info: overflow check proved
+students.adb:15:29: info: range check proved
+students.adb:15:38: info: division check proved
+students.adb:15:38: info: overflow check proved
+students.adb:32:18: info: initialization of "Fees" proved
+students.adb:32:23: info: overflow check proved
+students.adb:32:23: info: range check proved
+students.adb:35:40: info: initialization of "Fees" proved
+students.adb:35:45: info: overflow check proved
+students.adb:35:45: info: range check proved
+students.adb:36:40: info: initialization of "Fees" proved
+students.adb:36:45: info: overflow check proved
+students.adb:36:45: info: range check proved
+students.adb:37:40: info: initialization of "Fees" proved
+students.adb:37:45: info: overflow check proved
+students.adb:37:45: info: range check proved
+students.adb:43:40: info: initialization of "Fees" proved
+students.adb:43:45: info: overflow check proved
+students.adb:43:45: info: range check proved
+students.adb:44:40: info: initialization of "Fees" proved
+students.adb:44:45: info: overflow check proved
+students.adb:44:45: info: range check proved
+students.adb:45:40: info: initialization of "Fees" proved
+students.adb:45:45: info: overflow check proved
+students.adb:45:45: info: range check proved
+students.adb:51:20: info: initialization of "Grants" proved
+students.adb:51:27: info: overflow check proved
+students.adb:51:27: info: range check proved
+students.adb:55:23: info: initialization of "Grants" proved
+students.adb:55:30: info: overflow check proved
+students.adb:55:30: info: range check proved
+students.adb:59:16: info: initialization of "Tuition" proved
+students.adb:59:24: info: overflow check proved
+students.adb:59:26: info: initialization of "Fees" proved
+students.adb:59:32: info: overflow check proved
+students.adb:59:34: info: initialization of "Grants" proved
+students.adb:59:42: info: overflow check proved
+students.adb:59:42: info: range check proved
+students.adb:59:44: info: initialization of "Insurance" proved
+students2.adb:32:21: info: initialization of "Tuition" proved
+students2.adb:32:29: info: overflow check proved
+students2.adb:32:29: info: range check proved
+students2.adb:32:38: info: division check proved
+students2.adb:32:38: info: overflow check proved
+students2.adb:49:18: info: initialization of "Fees" proved
+students2.adb:49:23: info: overflow check proved
+students2.adb:49:23: info: range check proved
+students2.adb:52:39: info: initialization of "Fees" proved
+students2.adb:52:44: info: overflow check proved
+students2.adb:52:44: info: range check proved
+students2.adb:53:39: info: initialization of "Fees" proved
+students2.adb:53:44: info: overflow check proved
+students2.adb:53:44: info: range check proved
+students2.adb:54:39: info: initialization of "Fees" proved
+students2.adb:54:44: info: overflow check proved
+students2.adb:54:44: info: range check proved
+students2.adb:60:39: info: initialization of "Fees" proved
+students2.adb:60:44: info: overflow check proved
+students2.adb:60:44: info: range check proved
+students2.adb:61:39: info: initialization of "Fees" proved
+students2.adb:61:44: info: overflow check proved
+students2.adb:61:44: info: range check proved
+students2.adb:62:39: info: initialization of "Fees" proved
+students2.adb:62:44: info: overflow check proved
+students2.adb:62:44: info: range check proved
+students2.adb:68:20: info: initialization of "Grants" proved
+students2.adb:68:27: info: overflow check proved
+students2.adb:68:27: info: range check proved
+students2.adb:72:23: info: initialization of "Grants" proved
+students2.adb:72:30: info: overflow check proved
+students2.adb:72:30: info: range check proved
+students2.adb:76:07: info: assertion proved
+students2.adb:76:21: info: initialization of "Tuition" proved
+students2.adb:77:07: info: assertion proved
+students2.adb:77:21: info: initialization of "Insurance" proved
+students2.adb:78:07: info: assertion proved
+students2.adb:78:21: info: initialization of "Fees" proved
+students2.adb:79:07: info: assertion proved
+students2.adb:79:21: info: initialization of "Grants" proved
+students2.adb:81:16: info: initialization of "Tuition" proved
+students2.adb:81:24: info: overflow check proved
+students2.adb:81:26: info: initialization of "Fees" proved
+students2.adb:81:32: info: overflow check proved
+students2.adb:81:34: info: initialization of "Grants" proved
+students2.adb:81:42: info: overflow check proved
+students2.adb:81:42: info: range check proved
+students2.adb:81:44: info: initialization of "Insurance" proved
+students3.adb:15:21: info: initialization of "Tuition" proved
+students3.adb:15:29: info: overflow check proved
+students3.adb:15:29: info: range check proved
+students3.adb:15:39: info: division check proved
+students3.adb:15:39: info: overflow check proved
+students3.adb:18:07: info: assertion proved
+students3.adb:18:30: info: initialization of "Tuition" proved
+students3.adb:25:07: info: assertion proved
+students3.adb:25:31: info: initialization of "Tuition" proved
+students3.adb:26:31: info: initialization of "Insurance" proved
+students3.adb:37:18: info: initialization of "Fees" proved
+students3.adb:37:23: info: overflow check proved
+students3.adb:37:23: info: range check proved
+students3.adb:40:39: info: initialization of "Fees" proved
+students3.adb:40:44: info: overflow check proved
+students3.adb:40:44: info: range check proved
+students3.adb:41:39: info: initialization of "Fees" proved
+students3.adb:41:44: info: overflow check proved
+students3.adb:41:44: info: range check proved
+students3.adb:42:39: info: initialization of "Fees" proved
+students3.adb:42:44: info: overflow check proved
+students3.adb:42:44: info: range check proved
+students3.adb:48:39: info: initialization of "Fees" proved
+students3.adb:48:44: info: overflow check proved
+students3.adb:48:44: info: range check proved
+students3.adb:49:39: info: initialization of "Fees" proved
+students3.adb:49:44: info: overflow check proved
+students3.adb:49:44: info: range check proved
+students3.adb:50:39: info: initialization of "Fees" proved
+students3.adb:50:44: info: overflow check proved
+students3.adb:50:44: info: range check proved
+students3.adb:54:07: info: assertion proved
+students3.adb:54:31: info: initialization of "Tuition" proved
+students3.adb:55:31: info: initialization of "Insurance" proved
+students3.adb:56:31: info: initialization of "Fees" proved
+students3.adb:60:20: info: initialization of "Grants" proved
+students3.adb:60:27: info: overflow check proved
+students3.adb:60:27: info: range check proved
+students3.adb:64:23: info: initialization of "Grants" proved
+students3.adb:64:30: info: overflow check proved
+students3.adb:64:30: info: range check proved
+students3.adb:68:07: info: assertion proved
+students3.adb:68:31: info: initialization of "Tuition" proved
+students3.adb:69:31: info: initialization of "Insurance" proved
+students3.adb:70:31: info: initialization of "Fees" proved
+students3.adb:71:31: info: initialization of "Grants" proved
+students3.adb:73:16: info: initialization of "Tuition" proved
+students3.adb:73:24: info: overflow check proved
+students3.adb:73:26: info: initialization of "Fees" proved
+students3.adb:73:32: info: overflow check proved
+students3.adb:73:34: info: initialization of "Grants" proved
+students3.adb:73:42: info: overflow check proved
+students3.adb:73:42: info: range check proved
+students3.adb:73:44: info: initialization of "Insurance" proved
+ticktock.adb:6:04: info: initialization of "Clock_Value" constituent of "TickTock_State" proved
+ticktock.adb:14:34: medium: overflow check might fail
+utility.adb:13:07: medium: exception might be raised
+utility.ads:12:16: info: postcondition proved
+various.adb:12:07: medium: exception might be raised
+various.adb:15:04: info: initialization of "X" proved
+various.adb:16:04: info: initialization of "Y" proved
+various.adb:20:07: info: assertion proved
+various.adb:20:23: medium: overflow check might fail
+various.adb:20:26: info: division check proved
+various.adb:21:13: info: division check proved
+very_longs-divide.adb:15:12: info: range check proved
+very_longs-divide.adb:19:12: info: range check proved
+very_longs-divide.adb:20:48: info: overflow check proved
+very_longs-divide.adb:20:64: info: overflow check proved
+very_longs-divide.adb:47:14: info: initialization of "Distance" proved
+very_longs-divide.adb:52:30: info: initialization of "Result.Long_Digits" proved
+very_longs-divide.adb:61:26: info: length check proved
+very_longs-divide.adb:61:29: info: length check proved
+very_longs-divide.adb:64:57: info: index check proved
+very_longs-divide.adb:64:64: info: initialization of "Overflow_Mask" proved
+very_longs-divide.adb:65:29: info: index check proved
+very_longs-divide.adb:65:32: info: initialization of "Result.Long_Digits" proved
+very_longs-divide.adb:65:65: info: index check proved
+very_longs-divide.adb:66:29: info: index check proved
+very_longs-divide.adb:66:35: info: initialization of "Result.Long_Digits" proved
+very_longs-divide.adb:66:54: info: index check proved
+very_longs-divide.adb:66:60: info: initialization of "Old_Overflow" proved
+very_longs-divide.adb:67:26: info: initialization of "New_Overflow" proved
+very_longs-divide.adb:69:44: info: index check proved
+very_longs-divide.adb:69:51: info: initialization of "Result.Long_Digits" proved
+very_longs-divide.adb:69:54: info: initialization of "Old_Overflow" proved
+very_longs-divide.adb:83:57: info: index check proved
+very_longs-divide.adb:83:64: info: initialization of "Overflow_Mask" proved
+very_longs-divide.adb:84:29: info: index check proved
+very_longs-divide.adb:84:65: info: index check proved
+very_longs-divide.adb:85:29: info: index check proved
+very_longs-divide.adb:85:54: info: index check proved
+very_longs-divide.adb:85:60: info: initialization of "Old_Overflow" proved
+very_longs-divide.adb:86:26: info: initialization of "New_Overflow" proved
+very_longs-divide.adb:101:45: info: index check proved
+very_longs-divide.adb:101:52: info: initialization of "Overflow_Mask" proved
+very_longs-divide.adb:102:29: info: index check proved
+very_longs-divide.adb:102:66: info: index check proved
+very_longs-divide.adb:103:29: info: index check proved
+very_longs-divide.adb:104:31: info: index check proved
+very_longs-divide.adb:104:48: info: initialization of "Old_Overflow" proved
+very_longs-divide.adb:105:26: info: initialization of "New_Overflow" proved
+very_longs-divide.adb:111:49: info: initialization of "Q_Hat" proved
+very_longs-divide.adb:113:28: info: overflow check proved
+very_longs-divide.adb:119:44: info: index check proved
+very_longs-divide.adb:119:44: info: overflow check proved
+very_longs-divide.adb:119:81: info: overflow check proved
+very_longs-divide.adb:119:85: info: index check proved
+very_longs-divide.adb:120:16: info: initialization of "Temporary_Digit" proved
+very_longs-divide.adb:120:32: medium: divide by zero might fail
+very_longs-divide.adb:120:61: info: index check proved
+very_longs-divide.adb:123:16: info: initialization of "Temporary_Digit" proved
+very_longs-divide.adb:123:32: medium: divide by zero might fail
+very_longs-divide.adb:123:63: info: index check proved
+very_longs-divide.adb:126:10: info: initialization of "Q_Hat" proved
+very_longs-divide.adb:127:47: info: index check proved
+very_longs-divide.adb:128:18: info: initialization of "R_Hat" proved
+very_longs-divide.adb:128:56: info: overflow check proved
+very_longs-divide.adb:128:61: info: index check proved
+very_longs-divide.adb:130:19: info: initialization of "Q_Hat" proved
+very_longs-divide.adb:131:19: info: initialization of "R_Hat" proved
+very_longs-divide.adb:131:54: info: index check proved
+very_longs-divide.adb:133:10: info: initialization of "R_Hat" proved
+very_longs-divide.adb:135:13: info: initialization of "Q_Hat" proved
+very_longs-divide.adb:136:50: info: index check proved
+very_longs-divide.adb:137:21: info: initialization of "R_Hat" proved
+very_longs-divide.adb:137:59: info: overflow check proved
+very_longs-divide.adb:137:64: info: index check proved
+very_longs-divide.adb:139:22: info: initialization of "Q_Hat" proved
+very_longs-divide.adb:147:53: info: initialization of "Current_Borrow" proved
+very_longs-divide.adb:157:11: info: range check proved
+very_longs-divide.adb:158:56: info: index check proved
+very_longs-divide.adb:158:74: info: initialization of "Carry" proved
+very_longs-divide.adb:159:31: info: initialization of "Product" proved
+very_longs-divide.adb:161:29: info: initialization of "Product" proved
+very_longs-divide.adb:162:43: info: overflow check proved
+very_longs-divide.adb:162:59: medium: array index check might fail
+very_longs-divide.adb:163:16: info: initialization of "Temporary_Digit" proved
+very_longs-divide.adb:163:34: info: initialization of "Current_Borrow" proved
+very_longs-divide.adb:169:26: info: overflow check proved
+very_longs-divide.adb:169:42: info: index check proved
+very_longs-divide.adb:170:49: info: overflow check proved
+very_longs-divide.adb:170:65: info: index check proved
+very_longs-divide.adb:170:73: info: initialization of "Temporary_Digit" proved
+very_longs-divide.adb:170:92: info: initialization of "Current_Borrow" proved
+very_longs-divide.adb:170:108: info: range check proved
+very_longs-divide.adb:171:28: info: initialization of "Future_Borrow" proved
+very_longs-divide.adb:175:39: info: overflow check proved
+very_longs-divide.adb:175:39: medium: array index check might fail
+very_longs-divide.adb:175:48: info: initialization of "Carry" proved
+very_longs-divide.adb:175:56: info: initialization of "Current_Borrow" proved
+very_longs-divide.adb:180:23: info: index check proved
+very_longs-divide.adb:180:23: info: overflow check proved
+very_longs-divide.adb:181:46: info: index check proved
+very_longs-divide.adb:181:46: info: overflow check proved
+very_longs-divide.adb:181:54: info: initialization of "Carry" proved
+very_longs-divide.adb:181:63: info: initialization of "Current_Borrow" proved
+very_longs-divide.adb:181:79: info: range check proved
+very_longs-divide.adb:182:25: info: initialization of "Future_Borrow" proved
+very_longs-divide.adb:194:28: medium: array index check might fail
+very_longs-divide.adb:194:40: medium: range check might fail
+very_longs-divide.adb:198:31: info: index check proved
+very_longs-divide.adb:198:58: info: index check proved
+very_longs-divide.adb:200:14: info: range check proved
+very_longs-divide.adb:201:49: info: overflow check proved
+very_longs-divide.adb:201:65: medium: array index check might fail
+very_longs-divide.adb:202:47: info: index check proved
+very_longs-divide.adb:202:65: info: initialization of "Carry" proved
+very_longs-divide.adb:203:29: info: overflow check proved
+very_longs-divide.adb:203:45: info: index check proved
+very_longs-divide.adb:203:68: info: initialization of "Sum" proved
+very_longs-divide.adb:204:34: info: initialization of "Sum" proved
+very_longs-divide.adb:206:26: info: index check proved
+very_longs-divide.adb:206:26: info: overflow check proved
+very_longs-divide.adb:206:50: info: overflow check proved
+very_longs-divide.adb:206:50: medium: array index check might fail
+very_longs-divide.adb:206:72: info: initialization of "Carry" proved
+very_longs-divide.adb:211:26: info: length check proved
+very_longs-divide.adb:211:29: info: length check proved
+very_longs-divide.adb:212:26: info: length check proved
+very_longs-divide.adb:212:29: info: length check proved
+very_longs-divide.adb:215:09: info: range check proved
+very_longs-divide.adb:216:25: info: range check proved
+very_longs-divide.adb:216:27: info: initialization of "N" proved
+very_longs-divide.adb:219:22: info: precondition proved
+very_longs-divide.adb:219:61: info: index check proved
+very_longs-divide.adb:219:61: info: initialization of "N" proved
+very_longs-divide.adb:220:04: info: precondition proved
+very_longs-divide.adb:220:33: info: initialization of "Shift_Distance" proved
+very_longs-divide.adb:221:09: info: discriminant check proved
+very_longs-divide.adb:222:15: info: initialization of "V.Long_Digits" proved
+very_longs-divide.adb:222:18: info: initialization of "Shift_Distance" proved
+very_longs-divide.adb:225:08: info: range check proved
+very_longs-divide.adb:225:49: info: initialization of "M" proved
+very_longs-divide.adb:225:51: info: overflow check proved
+very_longs-divide.adb:227:07: info: initialization of "N" proved
+very_longs-divide.adb:227:07: info: initialization of "U.Long_Digits" proved
+very_longs-divide.adb:227:07: info: initialization of "V.Long_Digits" proved
+very_longs-divide.adb:227:07: info: precondition proved
+very_longs-divide.adb:227:10: info: range check proved
+very_longs-divide.adb:230:07: info: initialization of "N" proved
+very_longs-divide.adb:230:07: info: initialization of "Q_Hat" proved
+very_longs-divide.adb:230:07: info: initialization of "U.Long_Digits" proved
+very_longs-divide.adb:230:07: info: initialization of "V.Long_Digits" proved
+very_longs-divide.adb:230:10: info: range check proved
+very_longs-divide.adb:233:07: info: initialization of "Current_Borrow" proved
+very_longs-divide.adb:233:07: info: initialization of "N" proved
+very_longs-divide.adb:233:07: info: initialization of "Q_Hat" proved
+very_longs-divide.adb:233:07: info: initialization of "Quotient.Long_Digits" proved
+very_longs-divide.adb:233:07: info: initialization of "U.Long_Digits" proved
+very_longs-divide.adb:233:07: info: initialization of "V.Long_Digits" proved
+very_longs-divide.adb:233:10: info: range check proved
+very_longs-divide.adb:239:08: info: range check proved
+very_longs-divide.adb:239:53: info: initialization of "N" proved
+very_longs-divide.adb:240:29: info: index check proved
+very_longs-divide.adb:240:44: info: initialization of "Remainder.Long_Digits" proved
+very_longs-divide.adb:240:47: info: initialization of "U.Long_Digits" proved
+very_longs-divide.adb:240:61: info: index check proved
+very_longs-divide.adb:242:16: info: initialization of "Remainder.Long_Digits" proved
+very_longs-divide.adb:242:27: info: initialization of "Shift_Distance" proved
+very_longs.adb:33:54: info: initialization of "Digit" proved
+very_longs.adb:33:73: info: initialization of "Valid" proved
+very_longs.adb:50:28: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:50:52: info: initialization of "Carry" proved
+very_longs.adb:59:26: info: length check proved
+very_longs.adb:59:29: info: length check proved
+very_longs.adb:62:48: info: index check proved
+very_longs.adb:63:48: info: index check proved
+very_longs.adb:64:21: info: initialization of "L_Digit" proved
+very_longs.adb:64:31: info: initialization of "R_Digit" proved
+very_longs.adb:64:41: info: initialization of "Carry" proved
+very_longs.adb:65:33: info: initialization of "Sum" proved
+very_longs.adb:66:29: info: index check proved
+very_longs.adb:66:32: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:66:50: info: initialization of "Sum" proved
+very_longs.adb:73:28: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:73:52: info: initialization of "Borrow" proved
+very_longs.adb:82:26: info: length check proved
+very_longs.adb:82:29: info: length check proved
+very_longs.adb:85:51: info: index check proved
+very_longs.adb:86:51: info: index check proved
+very_longs.adb:87:25: info: initialization of "L_Digit" proved
+very_longs.adb:87:35: info: initialization of "R_Digit" proved
+very_longs.adb:87:46: info: initialization of "Borrow" proved
+very_longs.adb:88:14: info: initialization of "Difference" proved
+very_longs.adb:93:29: info: index check proved
+very_longs.adb:93:32: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:93:50: info: initialization of "Difference" proved
+very_longs.adb:112:07: info: assertion proved
+very_longs.adb:113:26: info: length check proved
+very_longs.adb:113:29: info: length check proved
+very_longs.adb:116:29: info: index check proved
+very_longs.adb:116:36: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:116:45: info: initialization of "Temp" proved
+very_longs.adb:116:50: info: division check proved
+very_longs.adb:116:50: info: range check proved
+very_longs.adb:117:18: info: initialization of "Temp" proved
+very_longs.adb:117:23: info: division check proved
+very_longs.adb:119:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:133:26: info: length check proved
+very_longs.adb:133:29: info: length check proved
+very_longs.adb:136:34: info: range check proved
+very_longs.adb:137:29: info: range check proved
+very_longs.adb:140:10: info: loop invariant initialization proved
+very_longs.adb:140:10: info: loop invariant preservation proved
+very_longs.adb:141:26: info: overflow check proved
+very_longs.adb:141:28: info: initialization of "String_Index" proved
+very_longs.adb:141:41: info: overflow check proved
+very_longs.adb:141:45: info: division check proved
+very_longs.adb:141:59: info: initialization of "Index" proved
+very_longs.adb:142:10: info: loop invariant initialization proved
+very_longs.adb:142:10: info: loop invariant preservation proved
+very_longs.adb:142:32: info: initialization of "String_Index" proved
+very_longs.adb:143:10: info: loop invariant initialization proved
+very_longs.adb:143:10: info: loop invariant preservation proved
+very_longs.adb:143:32: info: initialization of "Index" proved
+very_longs.adb:145:31: info: index check proved
+very_longs.adb:145:31: info: initialization of "String_Index" proved
+very_longs.adb:146:31: info: initialization of "String_Index" proved
+very_longs.adb:146:44: info: index check proved
+very_longs.adb:146:44: info: overflow check proved
+very_longs.adb:147:18: info: initialization of "H_Okay" proved
+very_longs.adb:147:29: info: initialization of "L_Okay" proved
+very_longs.adb:151:10: info: assertion proved
+very_longs.adb:151:24: info: initialization of "Index" proved
+very_longs.adb:152:29: info: index check proved
+very_longs.adb:152:36: info: initialization of "Index" proved
+very_longs.adb:152:36: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:152:44: info: initialization of "H_Digit" proved
+very_longs.adb:152:54: info: initialization of "L_Digit" proved
+very_longs.adb:153:20: info: initialization of "Index" proved
+very_longs.adb:154:19: info: initialization of "Index" proved
+very_longs.adb:154:25: info: range check proved
+very_longs.adb:155:26: info: initialization of "String_Index" proved
+very_longs.adb:155:39: info: overflow check proved
+very_longs.adb:168:27: info: index check proved
+very_longs.adb:168:46: info: index check proved
+very_longs.adb:172:27: info: index check proved
+very_longs.adb:172:46: info: index check proved
+very_longs.adb:178:14: info: initialization of "Result" proved
+very_longs.adb:184:17: info: precondition proved
+very_longs.adb:190:21: info: precondition proved
+very_longs.adb:196:21: info: precondition proved
+very_longs.adb:203:07: info: refined post proved
+very_longs.adb:205:46: info: index check proved
+very_longs.adb:207:33: info: index check proved
+very_longs.adb:213:33: info: index check proved
+very_longs.adb:214:28: info: range check proved
+very_longs.adb:217:10: info: loop invariant initialization proved
+very_longs.adb:217:10: info: loop invariant preservation proved
+very_longs.adb:219:37: info: index check proved
+very_longs.adb:219:37: info: initialization of "Digit_Count" proved
+very_longs.adb:223:39: info: index check proved
+very_longs.adb:226:11: info: initialization of "Digit_Count" proved
+very_longs.adb:241:26: info: length check proved
+very_longs.adb:241:29: info: length check proved
+very_longs.adb:244:48: info: index check proved
+very_longs.adb:245:48: info: index check proved
+very_longs.adb:246:21: info: initialization of "L_Digit" proved
+very_longs.adb:246:31: info: initialization of "R_Digit" proved
+very_longs.adb:246:41: info: initialization of "Carry" proved
+very_longs.adb:247:33: info: initialization of "Sum" proved
+very_longs.adb:248:29: info: index check proved
+very_longs.adb:248:32: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:248:50: info: initialization of "Sum" proved
+very_longs.adb:250:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:261:26: info: length check proved
+very_longs.adb:261:29: info: length check proved
+very_longs.adb:264:51: info: index check proved
+very_longs.adb:265:51: info: index check proved
+very_longs.adb:266:25: info: initialization of "L_Digit" proved
+very_longs.adb:266:35: info: initialization of "R_Digit" proved
+very_longs.adb:266:46: info: initialization of "Borrow" proved
+very_longs.adb:267:14: info: initialization of "Difference" proved
+very_longs.adb:272:29: info: index check proved
+very_longs.adb:272:32: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:272:50: info: initialization of "Difference" proved
+very_longs.adb:274:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:291:26: info: length check proved
+very_longs.adb:291:29: info: length check proved
+very_longs.adb:297:51: info: index check proved
+very_longs.adb:298:51: info: index check proved
+very_longs.adb:299:18: info: overflow check proved
+very_longs.adb:300:40: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:300:61: info: overflow check proved
+very_longs.adb:300:65: info: index check proved
+very_longs.adb:301:28: info: initialization of "L_Digit" proved
+very_longs.adb:301:38: info: initialization of "R_Digit" proved
+very_longs.adb:301:49: info: initialization of "T_Digit" proved
+very_longs.adb:301:59: info: initialization of "Carry" proved
+very_longs.adb:302:37: info: overflow check proved
+very_longs.adb:302:41: info: index check proved
+very_longs.adb:302:46: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:302:64: info: initialization of "Temp" proved
+very_longs.adb:303:39: info: initialization of "Temp" proved
+very_longs.adb:307:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:320:26: info: length check proved
+very_longs.adb:320:29: info: length check proved
+very_longs.adb:326:52: info: index check proved
+very_longs.adb:327:52: info: index check proved
+very_longs.adb:328:38: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:328:59: info: overflow check proved
+very_longs.adb:328:63: info: index check proved
+very_longs.adb:329:26: info: initialization of "L_Digit" proved
+very_longs.adb:329:36: info: initialization of "R_Digit" proved
+very_longs.adb:329:47: info: initialization of "T_Digit" proved
+very_longs.adb:329:57: info: initialization of "Carry" proved
+very_longs.adb:330:34: info: overflow check proved
+very_longs.adb:330:38: info: index check proved
+very_longs.adb:330:43: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:330:61: info: initialization of "Temp" proved
+very_longs.adb:331:37: info: initialization of "Temp" proved
+very_longs.adb:333:38: info: index check proved
+very_longs.adb:333:38: info: overflow check proved
+very_longs.adb:333:43: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:333:61: info: initialization of "Carry" proved
+very_longs.adb:335:14: info: initialization of "Result.Long_Digits" proved
+very_longs.ads:14:20: info: postcondition proved
+very_longs.ads:17:36: info: initialization of "Result.Long_Digits" proved
+very_longs.ads:18:36: info: initialization of "Valid" proved
+very_longs.ads:21:34: info: overflow check proved
+very_longs.ads:46:18: info: postcondition proved
+very_longs.ads:52:18: info: postcondition proved
+very_longs.ads:58:18: info: postcondition proved
+very_longs.ads:62:19: info: postcondition proved
+very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
+very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
+very_longs.ads:75:37: info: overflow check proved
+very_longs.ads:90:68: info: index check proved
+no_overflow.adb:7:14: info: overflow check proved
+no_overflow.adb:7:14: info: range check proved
+no_overflow.adb:7:19: info: overflow check proved
+no_overflow.adb:7:24: info: division check proved
+no_overflow.ads:5:19: info: initialization of "C" proved
+overflow.adb:7:15: medium: overflow check might fail
+overflow.adb:7:20: info: division check proved
+overflow.ads:5:19: info: initialization of "C" proved
+temperature_buffer14.adb:34:25: info: range check proved
+temperature_buffer14.adb:53:22: info: range check proved
+temperature_buffer14.adb:59:38: info: initialization of "Buffer" constituent of "Contents" proved
+temperature_buffer14.adb:59:46: info: initialization of "Count" constituent of "Contents" proved
+temperature_buffer14.adb:59:53: info: initialization of "Next_In" constituent of "Contents" proved
+temperature_buffer14.adb:59:62: info: initialization of "Next_Out" constituent of "Contents" proved
+temperature_buffer14.adb:64:31: info: length check proved
+temperature_buffer14.ads:30:19: info: initialization of "Item.Time_Stamp" proved
+temperature_buffer14.ads:30:19: info: initialization of "Item.Value" proved
+unused_parameter.adb:7:15: medium: overflow check might fail
+unused_parameter.adb:7:20: info: division check proved
+unused_parameter.ads:4:19: warning: unused variable "B"
+unused_parameter.ads:5:19: info: initialization of "C" proved
+dates.adb:17:15: info: division check proved, in call inlined at dates.adb:49
+dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
+dates.adb:28:08: info: postcondition proved
+dates.adb:45:09: info: length check proved
+dates.adb:49:10: info: initialization of "C8b" proved
+dates.adb:54:14: info: initialization of "Length" proved
+dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
+dates.adb:77:47: info: range check proved
+dates.adb:81:54: info: range check proved
+dates.adb:85:53: info: range check proved
+dates.adb:99:47: info: range check proved
+dates.adb:102:54: info: range check proved
+dates.adb:105:53: info: range check proved
+dates.adb:142:10: info: initialization of "C19b" proved
+dates.adb:224:14: info: range check proved
+dates.adb:224:47: info: initialization of "Steps" proved
+dates.adb:230:13: info: loop invariant initialization proved
+dates.adb:230:13: info: loop invariant preservation proved
+dates.adb:232:13: info: precondition proved
+dates.adb:236:14: info: range check proved
+dates.adb:236:47: info: initialization of "Steps" proved
+dates.adb:242:13: info: loop invariant initialization proved
+dates.adb:242:13: info: loop invariant preservation proved
+dates.adb:244:13: info: precondition proved
+dates.adb:276:14: info: initialization of "Result" proved
+dates.ads:32:07: info: initialization of "New_Date.Day" proved
+dates.ads:32:07: info: initialization of "New_Date.Month" proved
+dates.ads:32:07: info: initialization of "New_Date.Year" proved
+dates.ads:33:07: info: initialization of "Valid" proved
+dates.ads:62:76: info: initialization of "Valid" proved
+dates.ads:78:14: info: postcondition proved
+network-helpers.ads:5:23: info: initialization of "MSB" proved
+network-helpers.ads:6:23: info: initialization of "LSB" proved
+network-helpers0.adb:14:27: info: range check proved
+network-helpers0.adb:15:21: info: no contextual analysis of "Shift_Right" (body not seen yet)
+network-helpers0.adb:15:21: info: range check proved
+network-helpers0.adb:15:21: warning: assuming "Shift_Right" has no effect on global items
+network-helpers0.adb:15:21: warning: no Global contract available for "Shift_Right"
+network-helpers0.ads:5:23: info: initialization of "MSB" proved
+network-helpers0.ads:6:23: info: initialization of "LSB" proved
+simple_math.adb:10:10: info: initialization of "Q" proved
+simple_math.adb:12:19: medium: divide by zero might fail
+simple_math.adb:12:19: medium: range check might fail
+simple_math.adb:12:20: info: initialization of "Q" proved
+simple_math.adb:13:23: info: initialization of "Q" proved
+simple_math.adb:13:28: info: initialization of "R" proved
+simple_math.adb:14:19: info: initialization of "Q" proved
+simple_math.adb:14:23: info: initialization of "R" proved
+simple_math.adb:14:25: info: division check proved
+simple_math.adb:17:14: info: initialization of "Q" proved
+simple_math.adb:17:14: info: range check proved
+transitive.adb:16:19: info: postcondition proved
+transitive.adb:20:37: info: division check proved
+transitive.adb:21:14: info: division check proved
+transitive.adb:31:10: info: loop invariant initialization proved
+transitive.adb:31:10: info: loop invariant preservation proved
+transitive.adb:38:56: info: initialization of "X_Last" proved
+transitive.ads:10:19: info: postcondition proved
+workspaces.adb:5:07: info: range check proved
+workspaces.adb:5:48: info: length check proved
+workspaces.adb:7:26: info: division check proved
+workspaces.adb:8:21: info: index check proved
+workspaces.adb:8:24: info: initialization of "Workspace" proved
+workspaces.adb:9:27: medium: overflow check might fail
+workspaces.adb:9:32: info: index check proved
+workspaces.adb:9:37: info: initialization of "Workspace" proved
+workspaces.adb:11:14: info: initialization of "Workspace" proved

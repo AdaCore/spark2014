@@ -4,9 +4,24 @@ project Chapter03 is
    for Source_Dirs use (".", "Visibility");
    for Main use ("bingo_basket_test.adb", "bounded_queue_example.adb", "bounded_queue_example_v1.adb", "bounded_queue_example_v2.adb", "ohms_law.adb", "pack_test.adb");
 
+   --  Exclude "pack" files from analysis, as this code is meant to show how
+   --  elaboration problems are detected by GNAT compiler (here the binder). As
+   --  a result, this is not valid SPARK code, and GNATprove requires
+   --  Elaboration_All to be applied, which results in circular elaboration
+   --  that is detected by both GNAT and GNATprove.
+   --
+   --  Also exclude "ohms_law.adb" which uses multiplication between two
+   --  different fixed-point types, which is not currently supported in
+   --  GNATprove.
+   --
+   --  Also exclude bingo_basket.adb from analysis, as it instantiates
+   --  non-SPARK generic Ada.Numerics.Discrete_Random in SPARK code.
+
+   for Excluded_Source_Files use ("pack_a.ads", "pack_a.adb", "pack_b.ads", "pack_b.adb", "pack_test.adb", "ohms_law.adb", "bingo_basket.adb");
+
    package Compiler is
       for Default_Switches ("ada") use ("-g", "-O2", "-gnatyabfkrt", "-gnat12", "-gnata");
+      for Local_Configuration_Pragmas use "../spark_mode.adc";
    end Compiler;
 
 end Chapter03;
-

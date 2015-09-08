@@ -3,7 +3,8 @@ package Bounded_Queue_V2 is
 
    subtype Element_Type is Integer;
 
-   type Queue_Type (Max_Size : Positive) is private;
+   type Queue_Type (Max_Size : Positive) is private
+     with Default_Initial_Condition;
 
    function Full (Queue : in Queue_Type) return Boolean;
 

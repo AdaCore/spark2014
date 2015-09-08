@@ -9,6 +9,7 @@ package body Various is
             return J;
          end if;
       end loop;
+      raise Program_Error;
    end Search_For_Zero;
 
    X : Positive := 1;

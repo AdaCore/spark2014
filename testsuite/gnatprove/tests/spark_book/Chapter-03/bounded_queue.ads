@@ -3,7 +3,8 @@ generic
 package Bounded_Queue is
 -- Final version, generic with hidden details
 
-   type Queue_Type (Max_Size : Positive) is private;
+   type Queue_Type (Max_Size : Positive) is private
+     with Default_Initial_Condition;
 
    function Full (Queue : in Queue_Type) return Boolean;
 
