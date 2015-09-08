@@ -494,7 +494,7 @@ package body Flow_Generated_Globals is
                                 Proof_Reads : out Name_Sets.Set;
                                 Reads       : out Name_Sets.Set;
                                 Writes      : out Name_Sets.Set);
-   --  Gets the most refined proof reads, reads and writes globas of EN
+   --  Gets the most refined proof reads, reads and writes globals of EN
 
    procedure Up_Project
      (Most_Refined      : Name_Sets.Set;
@@ -1761,29 +1761,47 @@ package body Flow_Generated_Globals is
                II.RHS       := RHS;
                II.RHS_Proof := RHS_Proof;
 
-               --  Insert II into Initializes_Aspects_Map
-               Initializes_Aspects_Map.Insert (P.Name, II);
-
                --  Add LHS and LHS_Proof to the All_Initialized_Names set
                All_Initialized_Names.Union (II.LHS);
                All_Initialized_Names.Union (II.LHS_Proof);
 
-               --  Add state abstractions to the All_Initialized_Names set
+               --  Add state abstractions to the All_Initialized_Names set when
+               --  all constituents are initialized and remove constituents of
+               --  state abstractions that are not fully initialized.
                declare
-                  All_LHS : constant Name_Sets.Set := LHS or LHS_Proof;
-                  State   : Entity_Name;
+                  All_LHS   : constant Name_Sets.Set := LHS or LHS_Proof;
+                  State     : Entity_Name;
+                  To_Remove : Name_Sets.Set := Name_Sets.Empty_Set;
                begin
                   for Var of All_LHS loop
                      State := GG_Enclosing_State (Var);
 
-                     if State /= Null_Entity_Name
-                       and then (for all Const of GG_Get_Constituents (State)
-                                   => All_LHS.Contains (Const))
-                     then
-                        All_Initialized_Names.Include (State);
+                     if State /= Null_Entity_Name then
+                        if (for all Const of GG_Get_Constituents (State)
+                              => All_LHS.Contains (Const))
+                        then
+                           --  All constituents are initialized so we add the
+                           --  entire abstract state.
+                           All_Initialized_Names.Include (State);
+                        else
+                           --  At least one constituent is not initialized so
+                           --  there is no point in considering the current
+                           --  constituent alone as being initialized.
+                           To_Remove.Insert (Var);
+                        end if;
                      end if;
                   end loop;
+
+                  --  Remove constituents whose eclosing state abstraction is
+                  --  not fully initialized.
+                  All_Initialized_Names := All_Initialized_Names - To_Remove;
+                  II.LHS                := II.LHS - To_Remove;
+                  II.LHS_Proof          := II.LHS_Proof - To_Remove;
                end;
+
+               --  Insert II into Initializes_Aspects_Map
+               Initializes_Aspects_Map.Insert (P.Name, II);
+
             end;
          end loop;
 
