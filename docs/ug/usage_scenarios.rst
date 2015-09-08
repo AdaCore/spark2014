@@ -68,7 +68,7 @@ the complete list).
   introduce aliasing, that is, they can allow the same object to be visible
   through different names at the same program point. This makes it difficult to
   reason about a program as modifying the object under one of the names will
-  also modify the other names.  What is more, access types come with their on
+  also modify the other names.  What is more, access types come with their own
   load of common mistakes, like double frees and dangling pointers.
 
 * |SPARK| also prevents dependencies on the elaboration order by ensuring that
@@ -431,14 +431,14 @@ functional behavior of the subprogram is specified and proved.
 Safe Optimization of Run-Time Checks
 ------------------------------------
 
-Enabling run-time checks in a program usually increase the running time by
+Enabling run-time checks in a program usually increases the running time by
 around 10%. This may not fit the timing schedule in some highly constrained
 applications. In some cases where a piece of code is called a large number of
 times (for example in a loop), enabling run-time checks on that piece of code
 may increase the running time by far more than 10%. Thus, it may be tempting to
 remove run-time checking in the complete program (with compilation switch
 ``-gnatp``) or a selected piece of code (with pragma ``Suppress``), for the
-purpose of decreasing running time. The poblem with that approach is that the
+purpose of decreasing running time. The problem with that approach is that the
 program is not protected anymore against programming mistakes (for safety) or
 attackers (for security).
 
@@ -483,14 +483,14 @@ trigonometry are portable in the more common sense, not in the strictest sense.
 Portability of Ada Programs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Programs with errors cause additional portability issues than programs without
-errors, which is why we consider them separately.
+Programs with errors cause additional portability issues not seen in programs
+without errors, which is why we consider them separately.
 
 Portability of Programs Without Errors
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Ada Reference Manual defines precisely which features of the language
-depend on choices by the compiler (see Ada RM 1.1.3 "Conformity of an
+depend on choices made by the compiler (see Ada RM 1.1.3 "Conformity of an
 Implementation with the Standard"):
 
 * *Implementation defined behavior* - The set of possible behaviors is
@@ -691,8 +691,8 @@ description of the different modes):
 * In modes ``flow``, ``prove`` and ``all``, |GNATprove| issues check messages
   on possible reads of uninitialized data. These messages should be reviewed
   with respect to the stricter :ref:`Data Initialization Policy` in |SPARK|
-  than in Ada. Hence, it is possible when the program does not conform to the
-  stricter |SPARK| rules to manually validate them, see section
+  rather than in Ada. Hence, it is possible when the program does not conform
+  to the stricter |SPARK| rules to manually validate them, see section
   :ref:`Justifying Check Messages`.
 
 * In modes ``prove`` and ``all``, |GNATprove| issues check messages on all
@@ -1162,7 +1162,7 @@ if the only objective is to :ref:`Ensure Portability of Programs` for existing
 Ada programs that cannot be modified (due to some certification or legal
 constraints).
 
-In such a case, the suggested worflow is very similar to the one described for
+In such a case, the suggested workflow is very similar to the one described for
 :ref:`Maintenance and Evolution of Existing Ada Software`, except the code
 cannot be rewritten when a violation of |SPARK| restrictions is encountered,
 and instead that part of the code should be marked ``SPARK_Mode => Off``. To
