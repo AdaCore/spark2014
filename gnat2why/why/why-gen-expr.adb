@@ -3215,15 +3215,14 @@ package body Why.Gen.Expr is
       (Ada_Node   : Node_Id;
        Expr       : W_Expr_Id;
        Reason     : VC_Kind;
-       Domain     : EW_Domain;
-       Subprogram : String := "") return W_Expr_Id
+       Domain     : EW_Domain) return W_Expr_Id
    is
    begin
       if Domain /= EW_Term and then Present (Ada_Node) then
          return
             New_Label
               (Ada_Node => Ada_Node,
-               Labels   => New_VC_Labels (Ada_Node, Reason, Subprogram),
+               Labels   => New_VC_Labels (Ada_Node, Reason),
                Def      => Expr,
                Domain   => Domain,
                Typ      => Get_Type (Expr));
@@ -3238,8 +3237,7 @@ package body Why.Gen.Expr is
 
    function New_VC_Labels
      (N      : Node_Id;
-      Reason : VC_Kind;
-      Subprogram : String := "") return Name_Id_Set
+      Reason : VC_Kind) return Name_Id_Set
    is
       --  A GNATprove label in Why3 has the following form
       --
@@ -3248,9 +3246,9 @@ package body Why.Gen.Expr is
       --  VC
       --  "keep_on_simp"          - tag that disallows simplifying this VC away
       --  "model_vc"              - identifies the construct that triggers the
-      --   VC (for generating counterexamples)
-      --  "model_func:name"       - present if VC is postcondition or
-      --  precondition, name is the name of the function
+      --   VC and it is not postcondition (for generating counterexamples)
+      --  "model_vc_post"         - identifies the construct that triggers the
+      --   VC and is postcondition (for generating counterexamples)
       --
       --  For a node inside an instantiation, we use the location of the
       --  top-level instantiation. This could be refined in the future.
@@ -3274,9 +3272,10 @@ package body Why.Gen.Expr is
 
       Set.Include (New_Shape_Label (Node => N));
       Set.Include (NID (Keep_On_Simp));
-      Set.Include (NID (Model_VC_Label));
-      if Subprogram /= "" then
-         Set.Include (NID (Model_Func_Label & Subprogram));
+      if Reason = VC_Postcondition then
+         Set.Include (NID (Model_VC_Post_Label));
+      else
+         Set.Include (NID (Model_VC_Label));
       end if;
       return Set;
    end New_VC_Labels;

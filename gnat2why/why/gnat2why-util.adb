@@ -263,13 +263,20 @@ package body Gnat2Why.Util is
      (E      : Entity_Id;
       Labels : in out Name_Id_Sets.Set)
    is
+      Model_Trace : constant Name_Id := NID
+        (Model_Trace_Label &
+           Source_Name (E) &
+           --  Add information whether labels are generated for a variable
+           --  holding result of a function.
+         (if Ekind (E) = E_Function
+            then "@result"
+            else ""));
    begin
       --  Currently only generate values for scalar, record, and array
       --  variables in counterexamples.
 
       if Is_Scalar_Type (Etype (E)) then
-         Labels.Include (NID (Model_Trace_Label &
-                           Source_Name (E)));
+         Labels.Include (Model_Trace);
 
          --  If E's type is directly a native prover type, simply request the
          --  value of E in the counterexample.
@@ -286,14 +293,12 @@ package body Gnat2Why.Util is
       end if;
 
       if Is_Record_Type (Etype (E)) then
-         Labels.Include (NID (Model_Trace_Label &
-                           Source_Name (E)));
+         Labels.Include (Model_Trace);
          Labels.Include (NID (Model_Proj_Label));
       end if;
 
       if Is_Array_Type (Etype (E)) then
-         Labels.Include (NID (Model_Trace_Label &
-                           Source_Name (E)));
+         Labels.Include (Model_Trace);
          Labels.Include (NID (Model_Proj_Label));
       end if;
    end Add_Counterexample_Labels;

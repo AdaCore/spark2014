@@ -1154,7 +1154,11 @@ package body Why.Atree.Sprint is
       if not Labels.Is_Empty then
          P (O, "( ");
       end if;
-      if Labels.Contains (NID (Model_VC_Label)) then
+      --  Emit location for constructs that trigger VC (these constructs have
+      --  either Model_VC_Label or Model_VC_Post_Label)
+      if Labels.Contains (NID (Model_VC_Label)) or else
+        Labels.Contains (NID (Model_VC_Post_Label))
+      then
          Print_Sloc_Tag (Force => True);
       end if;
       P (O, Labels, As_String => True);

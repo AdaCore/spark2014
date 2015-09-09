@@ -329,11 +329,12 @@
 --      label "model" or "model_projected".
 --
 --  "model_vc"
---      This label identifies the construct that triggers the VC.
+--      This label identifies the construct that triggers the VC and it is not
+--      postcondition.
 --
---  "model_func:name"
---      This label is present if VC is postcondition or precondition of the
---      function with name "name".
+--  "model_vc_post"
+--      This label identifies the construct that triggers the VC and it is
+--      postcondition.
 
 -----------------------------------
 -- Metas Interpreted by gnatwhy3 --

@@ -1137,8 +1137,7 @@ package body Gnat2Why.Subprograms is
                      Args =>
                        (+Count, New_Integer_Constant (Value => Uint_1))),
                   VC_Disjoint_Contract_Cases,
-                  EW_Pred,
-                  Source_Name (E)),
+                  EW_Pred),
             Assert_Kind => EW_Check));
       end if;
 
@@ -1159,8 +1158,7 @@ package body Gnat2Why.Subprograms is
                      Args => (+Count,
                               New_Integer_Constant (Value => Uint_1))),
                   VC_Complete_Contract_Cases,
-                  EW_Pred,
-                  Source_Name (E)),
+                  EW_Pred),
                Assert_Kind => EW_Check));
       end if;
 
@@ -1245,9 +1243,7 @@ package body Gnat2Why.Subprograms is
                      Then_Part   =>
                        +Transform_Expr (Consequence, EW_Pred, Params)),
                     VC_Contract_Case,
-                    EW_Pred,
-                    Source_Name (E)
-                   ),
+                    EW_Pred),
                Assert_Kind => EW_Assert));
       end Do_One_Contract_Case;
 
@@ -1425,8 +1421,7 @@ package body Gnat2Why.Subprograms is
             Params.Phase := Generate_Contract_For_Body;
             Post := +Transform_Expr (Expr, EW_Bool_Type, EW_Pred, Params);
             Post :=
-              +New_VC_Expr (Init_Cond, +Post, VC_Initial_Condition, EW_Pred,
-                           Source_Name (E));
+              +New_VC_Expr (Init_Cond, +Post, VC_Initial_Condition, EW_Pred);
 
             --  Generate program to check the absence of run-time errors in the
             --  initial condition.
@@ -1783,12 +1778,17 @@ package body Gnat2Why.Subprograms is
       --  Declare a global variable to hold the result of a function
 
       if Ekind (E) = E_Function then
-         Emit
-           (File.Cur_Theory,
-            New_Global_Ref_Declaration
-              (Name     => Result_Name,
-               Labels   => Name_Id_Sets.Empty_Set,
-               Ref_Type => Type_Of_Node (Etype (E))));
+         declare
+            Labels : Name_Id_Sets.Set   := Name_Id_Sets.Empty_Set;
+         begin
+            Add_Counterexample_Labels (E, Labels);
+            Emit
+              (File.Cur_Theory,
+               New_Global_Ref_Declaration
+                 (Name     => Result_Name,
+                  Labels   => Labels,
+                  Ref_Type => Type_Of_Node (Etype (E))));
+         end;
       end if;
 
       --  add declarations for 'Old variables
@@ -2022,8 +2022,7 @@ package body Gnat2Why.Subprograms is
             Post := Get_Static_Call_Contract (Params, E, Name_Postcondition);
             Params.Gen_Marker := False;
 
-            Post := +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred,
-                                 Source_Name (E));
+            Post := +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred);
          end if;
 
          --  Set the phase to Generate_VCs_For_Body from now on, so that
@@ -2035,12 +2034,17 @@ package body Gnat2Why.Subprograms is
          --  Declare a global variable to hold the result of a function
 
          if Ekind (E) = E_Function then
-            Emit
-              (File.Cur_Theory,
-               New_Global_Ref_Declaration
-                 (Name     => Result_Name,
-                  Labels   => Name_Id_Sets.Empty_Set,
-                  Ref_Type => Type_Of_Node (Etype (E))));
+            declare
+               Labels : Name_Id_Sets.Set   := Name_Id_Sets.Empty_Set;
+            begin
+               Add_Counterexample_Labels (E, Labels);
+               Emit
+                 (File.Cur_Theory,
+                  New_Global_Ref_Declaration
+                    (Name     => Result_Name,
+                     Labels   => Labels,
+                     Ref_Type => Type_Of_Node (Etype (E))));
+            end;
          end if;
 
          --  Declare global variable to hold the state of a protected object
@@ -2306,8 +2310,7 @@ package body Gnat2Why.Subprograms is
         +New_VC_Expr (Ada_Node   => E,
                       Expr       => +False_Pred,
                       Reason     => VC_Task_Termination,
-                      Domain     => EW_Pred,
-                      Subprogram => Source_Name (E));
+                      Domain     => EW_Pred);
 
    begin
       --  We open a new theory, so that the context is fresh for this task
