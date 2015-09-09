@@ -180,7 +180,8 @@ are in |SPARK|.
 .. _tu-tasks_and_synchronization-11:
 
 12. The verification condition associated with the Ada rule that it is a bounded
-    error to invoke an operation that is potentially blocking during a
+    error to invoke an operation that is potentially blocking 
+    (including due to cyclic locking) during a
     protected action (see Ada RM 9.5.1(8)) is discharged via (potentially
     conservative) flow analysis, as opposed to by introducing verification
     conditions. [Support for the "Potentially_Blocking" aspect discussed in
@@ -188,7 +189,23 @@ are in |SPARK|.
 
     The verification condition associated with the Ada rule that
     it is a bounded error to call the Current_Task function from an
-    entry_body, or an interrupt handler is discharged similarly.
+    entry_body, or an interrupt handler (see Ada RM C.7.1(17/3))
+    is discharged similarly.
+
+    The verification condition associated with the Ada rule that
+    the active priority of a caller of a protected operation is not higher
+    than the ceiling of the corresponding protected object (see Ada RM
+    D.3(13)) is dependent on (potentially conservative) flow analysis.
+    This flow analysis is used to determine which tasks potentially call
+    (directly or indirectly)
+    a protected operation of which protected objects, and similarly
+    which protected objects have protected operations that potentially
+    perform calls (directly or indirectly) on the operations of other
+    protected objects.  A verification condition is created for each
+    combination of potential (task or protected object) caller and called
+    protected object to ensure that the (task or ceiling) priority of the
+    potential caller is no greater than the ceiling priority of the called
+    protected object.
 
 .. _tu-tasks_and_synchronization-12:
 
