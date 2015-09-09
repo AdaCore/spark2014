@@ -279,9 +279,12 @@ package body Gnat2Why.Util is
          Labels.Include (Model_Trace);
 
          --  If E's type is directly a native prover type, simply request the
-         --  value of E in the counterexample.
+         --  value of E in the counterexample. This is known by querying the
+         --  kind of type used in Why3 for the entity. If it's not abstract,
+         --  then a builtin Why3 type is used.
 
-         if Has_Builtin_Why_Type (E) then
+         if Get_Type_Kind (Type_Of_Node (Etype (E))) in EW_Builtin | EW_Split
+         then
             Labels.Include (NID (Model_Label));
 
          --  If E's type needs a projection to a native prover type, request
