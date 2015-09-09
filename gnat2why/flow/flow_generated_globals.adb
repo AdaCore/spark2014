@@ -714,19 +714,21 @@ package body Flow_Generated_Globals is
 
       for N of Most_Refined loop
          if GG_Enclosing_State (N) /= Null_Entity_Name
-           and then (Find_Entity (N) = Empty
+           and then (No (Find_Entity (N))
                        or else not Is_Visible (Find_Entity (N), Scope))
          then
             declare
                Var               : Entity_Name :=
-                 (if Find_Entity (N) /= Empty
+                 (if Present (Find_Entity (N))
                     and then Is_Visible (Find_Entity (N), Scope)
                   then N
                   else GG_Enclosing_State (N));
                ES                : Entity_Name := GG_Enclosing_State (N);
-               Is_Abstract_State : Boolean     := False;
+               Is_Abstract_State : Boolean     :=
+                 No (Find_Entity (N))
+                   or else not Is_Visible (Find_Entity (N), Scope);
             begin
-               while Find_Entity (ES) = Empty
+               while No (Find_Entity (ES))
                  or else not Is_Visible (Find_Entity (ES), Scope)
                loop
                   Is_Abstract_State := True;
