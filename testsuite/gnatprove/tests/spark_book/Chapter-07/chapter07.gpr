@@ -6,7 +6,9 @@ project Chapter07 is
 
    --  Exclude serial_port.adb from analysis, as it depends on Windows
    --  specific files.
-   for Excluded_Source_Files use ("serial_port.adb");
+   --  Also exclude files messages_wrapper.adb and main.adb as they lead to
+   --  segfaults on Mac due to excessive stack usage (O908-026).
+   for Excluded_Source_Files use ("serial_port.adb", "messages_wrapper.adb", "main.adb");
 
    package Compiler is
       for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata");
