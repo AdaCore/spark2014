@@ -1672,6 +1672,34 @@ package body Flow_Generated_Globals is
 
                ODC       : Name_Sets.Set    := Name_Sets.Empty_Set;
                --  Outputs of Definite Calls
+
+               procedure Add_To_Proof_Or_Normal_Set
+                 (EN         : Entity_Name;
+                  Proof_Set  : in out Name_Sets.Set;
+                  Normal_Set : in out Name_Sets.Set);
+               --  Adds EN to either Proof_Set or Normal_Set depending on
+               --  whether it is a ghost entity or not.
+
+               --------------------------------
+               -- Add_To_Proof_Or_Normal_Set --
+               --------------------------------
+
+               procedure Add_To_Proof_Or_Normal_Set
+                 (EN         : Entity_Name;
+                  Proof_Set  : in out Name_Sets.Set;
+                  Normal_Set : in out Name_Sets.Set)
+               is
+                  E : constant Entity_Id := Find_Entity (EN);
+               begin
+                  if Present (E)
+                    and then Is_Ghost_Entity (E)
+                  then
+                     Proof_Set.Insert (EN);
+                  else
+                     Normal_Set.Insert (EN);
+                  end if;
+               end Add_To_Proof_Or_Normal_Set;
+
             begin
                --  Add inputs to the RHS set
                RHS.Union (P.Inputs);
@@ -1682,34 +1710,29 @@ package body Flow_Generated_Globals is
                --  Add local variables to either LV_Proof or LV depending on
                --  whether they are ghosts or not.
                for Local_Variable of P.Local_Variables loop
-                  declare
-                     E : constant Entity_Id := Find_Entity (Local_Variable);
-                  begin
-                     if Present (E)
-                       and then Is_Ghost_Entity (E)
-                     then
-                        LV_Proof.Insert (Local_Variable);
-                     else
-                        LV.Insert (Local_Variable);
-                     end if;
-                  end;
+                  Add_To_Proof_Or_Normal_Set (Local_Variable,
+                                              LV_Proof,
+                                              LV);
+
+                  --  Add local state abstractions with null refinements to the
+                  --  list of local definite writes since they are trivially
+                  --  initialized.
+                  if State_Comp_Map.Contains (Local_Variable)
+                    and then State_Comp_Map.Element (Local_Variable) =
+                               Name_Sets.Empty_Set
+                  then
+                     Add_To_Proof_Or_Normal_Set (Local_Variable,
+                                                 LHS_Proof,
+                                                 LHS);
+                  end if;
                end loop;
 
                --  Add definite local writes to either LHS_Proof or LHS
                --  depending on whether they are ghosts or not.
                for Local_Definite_Write of P.Local_Definite_Writes loop
-                  declare
-                     E : constant Entity_Id :=
-                       Find_Entity (Local_Definite_Write);
-                  begin
-                     if Present (E)
-                       and then Is_Ghost_Entity (E)
-                     then
-                        LHS_Proof.Insert (Local_Definite_Write);
-                     else
-                        LHS.Insert (Local_Definite_Write);
-                     end if;
-                  end;
+                  Add_To_Proof_Or_Normal_Set (Local_Definite_Write,
+                                              LHS_Proof,
+                                              LHS);
                end loop;
 
                --  Add the intersection of pure outputs (outputs that are not
