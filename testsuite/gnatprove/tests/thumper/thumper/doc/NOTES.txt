@@ -1,0 +1,101 @@
+
+Things to work out:
+
++ Network programming.
++ Cryptographic software.
++ XML handling software.
++ XML signature standard.
++ XML Schema for timestamp messages.
+
+Time Stamping Service
+=====================
+
+(Message to the VTC Computer Club: 2006-05-15)
+
+In my Computer Security class I like to talk about a cryptographic time stamping protocol as an
+example of a security protocol. The idea is for a user, say Alice, to obtain a digitally signed
+time stamp of one of her documents such that she can convince another user, say Bob, that she
+created the document on or before the time in the time stamp. The example I use in class is that
+of a student submitting homework electronically. Alice is the student and Bob is the instructor.
+Alice wants to prove to Bob that she completed her homework on time even though it arrived in
+Bob's mailbox late due to network problems.
+
+The protocol I present in class is fairly simple and easy to understand and it works reasonably
+well. I won't repeat it here. However, now I'm wondering: Is there any value in providing this
+service to the general Internet public? I think there is.
+
+Consider the following example: A system administrator keeps (manually) written logs about
+his/her system to help document problems and their corresponding resolutions. Suppose the
+administrator's system is hacked and information in these written logs ends up being used as
+evidence in a court case. The defendant will argue that electronic files are so easily modified
+that they can't be admissible; who's to say that the incriminating evidence wasn't added long
+after the fact?
+
+This is where the public time stamping service comes in. Suppose the administrator kept periodic
+snapshots of the written log, together with a cryptographic time stamp of each snapshot. Then
+when the case goes to court he/she can show that the evidence in the log existed on or before
+the time in the time stamp. Of course the jury will have to believe that the time stamp service
+is an impartial third party and run in a secure way. How acceptable such evidence will be will
+depend on the importance of the evidence. In any case a "real" time stamp will certainly enhance
+the value of such evidence.
+
+There are other situations were this comes up. People working on potentially patentable ideas
+need to document, with time stamps, when they come up with their ideas and when they work on
+them. Traditionally such "inventors notebooks" are kept on paper precisely because the paper
+trail carries more legal weight. In today's world paper is an annoyance. The goal of a public
+time stamp service would be to give people a feasible way of using electronic files for such
+information without sacrificing the ability to prove a time line.
+
+Note that the time stamp service *must* be public. If Alice is inventing a new encryption
+algorithm and uses her own time stamp service, that obviously proves nothing. She must use a
+time stamp service that is clearly not in collaboration with Alice before the time line it
+generates can be believed by others.
+
+I propose this as an interesting VTC3 project.
+
+To implement this idea the following would have to happen:
+
+1. We'd need to set up a machine (solstice?) to use as the time stamp server. It would need to
+   be synchronized with several atomic clocks (say using NTP) and it would need to be well
+   secured.
+
+2. We'd need to write the server software to implement the time stamp protocol.
+
+3. We'd need to get an X509 certificate from a real certificate authority.
+
+4. We'd need to implement one or more client programs as well. As far as I know there is no
+   standard protocol for this application; we'd have to make one up. Hence the need for custom
+   clients.
+
+5. We'd have to post our programs openly (source code too) for download and inspection.
+
+6. We'd have to let the world know that the service exists.
+
+7. We'd have to keep the service alive for a while. Nobody will use it unless they believe that
+   it is stable and secure. The only way to prove that is to have it running solidly for a nice
+   long time. However, we could use the service locally, for example by VTC students to time
+   stamp homework assignments, pretty much right away.
+
+Note that in my two earlier example applications for this technology there is a need for
+maintaining timestamps for multiple old versions of a file or set of files. This leads me to
+wonder if cryptographic time stamps can be combined with revision control technology in some
+useful way. I don't see how that would work right now, though.
+
+(2006-05-22)
+
+In response to the above message Ernie Blake suggested a "time capsule" protocol: a way for
+Alice to encrypt a message so that it could only be decrypted after a particular time, and then
+only by someone who also knows the right key. The idea would be to blend a time value and the
+public key from one or more time authorities into the encryption process in some way. Then a
+time stamp signed by that TA, and with an appropriate time, would be necessary to do the
+decryption. Ernie did not have a specific suggestion about how this might be done, but it seems
+intriguing.
+
+John Campbell suggested a different approach to making a time capsule protocol. His idea is for
+Alice to generate a public/private key pair and submit the private key to the TA. The TA would
+hold on to this key until the appropriate time and then distribute it freely. Note that if Alice
+double encrypts her message, knowledge of just the key held in escrow by the TA would be
+insufficient to decrypt the message. Only authorized individuals with the second key could open
+the time capsule when the appropriate time arrived. Of course this method requires the TA to
+securely hold private keys for all time capsules created on his authority. That is a distinct
+disadvantage.

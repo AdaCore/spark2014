@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+   "http://www.docbook.org/xml/4.5/docbookx.dtd" [
+
+<!ELEMENT xi:include (xi:fallback?) >
+<!ATTLIST xi:include
+    xmlns:xi   CDATA      #FIXED     "http://www.w3.org/2001/XInclude"
+    href       CDATA      #REQUIRED
+    parse      (xml|text) "xml"
+    encoding   CDATA      #IMPLIED >
+<!ELEMENT xi:fallback ANY>
+<!ATTLIST xi:fallback
+    xmlsn:xi   CDATA      #FIXED     "http://www.w3.org/2001/XInclude" >
+<!ENTITY % local.chapter.class "| xi:include">
+<!ENTITY % local.section.class "| xi:include">
+]>
+
+<!-- FILE        : Hermes.xml
+     SUBJECT     : Master document for the Hermes documentation set.
+     AUTHOR      : (C) Copyright 2015 by Peter C. Chapin <PChapin@vtc.vsc.edu>
+
+This is the documentation for the Hermes ASN.1 library. -->
+
+<book status="draft">
+  <bookinfo>
+    <title>Hermes</title>
+    <author>
+      <firstname>Peter</firstname>
+      <surname>Chapin</surname>
+      <othername role="mi">C.</othername>
+      <affiliation>
+        <orgname>Vermont Technical College</orgname>
+        <orgdiv>Computer Information Systems Department</orgdiv>
+      </affiliation>
+    </author>
+    <authorinitials>pcc</authorinitials>
+    <copyright>
+      <year>2015</year>
+      <holder>Peter C. Chapin</holder>
+    </copyright>
+    <legalnotice>
+      <para> Permission is granted to copy, distribute and/or modify this document under the
+        terms of the GNU Free Documentation License, Version 1.1 or any later version published
+        by the Free Software Foundation; with the Invariant Sections being LIST THEIR TITLES,
+        with the Front-Cover Texts being LIST, and with the Back-Cover Texts being LIST. A copy
+        of the license is included in the section entitled "GNU Free Documentation License".
+      </para>
+    </legalnotice>
+    <!-- Do we really want to include this revision history now? -->
+    <revhistory>
+      <revision>
+        <revnumber>1.0</revnumber>
+        <date>2015-08-01</date>
+        <authorinitials>pcc</authorinitials>
+        <revremark>This is a work in progress. Release 1.0 is scheduled for the end of the
+          summer of 2015.</revremark>
+      </revision>
+    </revhistory>
+  </bookinfo>
+  <preface id="Introduction">
+    <title>Introduction</title>
+
+    <para>Hermes is an ASN.1 library written in SPARK 2014. It is intended to support other
+      projects that have a need for a robust and highly reliable ASN.1 layer. It is also
+      intended to showcase SPARK.</para>
+
+    <para>In theory one might prefer a compiler that takes the high level ASN.1 notation and
+      compiles it into efficient low level code. In the spirit of Hermes, however, such a
+      compiler would have to generate provable SPARK. To my knowledge no such ASN.1 compiler
+      exists or is planned. It might be a valuable long term goal for Hermes to one day provide
+      such a compiler.</para>
+
+    <para>Hermes is the name of the Greek god of "transitions and boundaries." He was a
+      messenger of the gods, playing a role in the communication between the mortal world and
+      the divine world. This library is named in his honor.</para>
+
+    <!-- Include disclaimer. -->
+  </preface>
+
+  <xi:include href="Build.xml"/>
+  <xi:include href="User.xml"/>
+  <xi:include href="Requirements.xml"/>
+  <xi:include href="Design.xml"/>
+
+  <!-- <bibliography> ... </bibliography> -->
+
+</book>

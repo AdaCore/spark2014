@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="16.1">
+    <meta>
+        <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="false"/>
+        <options>
+            <serialized version="16.1" xml:space="preserve">
+                <serializableOrderedMap>
+                    <entry>
+                        <String>ant.file.patterns</String>
+                        <String>disable.xml</String>
+                    </entry>
+                    <entry>
+                        <String>editor.line.width</String>
+                        <Integer>96</Integer>
+                    </entry>
+                    <entry>
+                        <String>editor.print.margin.columns</String>
+                        <Integer>96</Integer>
+                    </entry>
+                    <entry>
+                        <String>editor.show.print.margin</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                    <entry>
+                        <String>key.editor.format.option.pane.group</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                    <entry>
+                        <String>key.file.types.option.pane</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                    <entry>
+                        <String>key.text.editor.option.pane</String>
+                        <Boolean>true</Boolean>
+                    </entry>
+                </serializableOrderedMap>
+            </serialized>
+        </options>
+    </meta>
+    <projectTree name="Thumper.xpr">
+        <file name="Theory.xml"/>
+        <file name="Thumper.xml"/>
+        <file name="Build.xml"/>
+        <file name="Design.xml"/>
+        <file name="Requirements.xml"/>
+        <file name="Thumper.xsd"/>
+        <file name="User.xml"/>
+    </projectTree>
+</project>

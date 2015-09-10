@@ -1,0 +1,4 @@
+--  Dummy project GTKAda for standalone analysis of Thumper code
+project GTKAda is
+   for Source_Dirs use ();
+end GTKAda;

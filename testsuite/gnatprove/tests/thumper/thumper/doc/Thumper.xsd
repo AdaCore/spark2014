@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- FILE    : Thumper.xsd
+     AUTHOR  : (C) Copyright 2012 by Peter C. Chapin <PChapin@vtc.vsc.edu>
+     SUBJECT : XML schema for time stamps.
+-->
+
+<xs:schema targetNamespace="http://www.vtc.edu/XML/Thumper"
+  xmlns="http://www.vtc.edu/XML/Thumper" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified" xml:lang="en-US">
+
+  <xs:annotation>
+    <xs:documentation> This is the XML Schema that defines the XML format used for time
+      stamps.</xs:documentation>
+  </xs:annotation>
+
+  <!-- ROOT ELEMENTS -->
+
+  <xs:element name="timeStamp" type="timeStampType">
+    <xs:annotation>
+      <xs:documentation>The timeStamp element is a wrapper around the entire time
+        stamp.</xs:documentation>
+    </xs:annotation>
+    <!-- etc -->
+  </xs:element>
+
+  <!-- COMPLEX TYPES FOR THE ROOT ELEMENTS -->
+
+  <xs:complexType name="timeStampType">
+    <xs:annotation>
+      <xs:documentation>Documentation for this type.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="hash" type="xs:string"/>
+      <xs:element name="time" type="xs:dateTime"/>
+      <xs:element name="signature" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

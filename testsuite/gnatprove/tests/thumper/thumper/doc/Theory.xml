@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.docbook.org/xml/4.5/docbookx.dtd">
+  
+<chapter id="Theory">
+  <title>Thumper Theoretical Background</title>
+
+  <section>
+    <title>Protocol</title>
+
+    <para>The time stamp protocol begins when Alice wants to be able to prove later that one of
+      her documents existed at (or before) the current time. She first computes a cryptographic
+      hash of the document using a suitable secure hash algorithm. She then presents this hash
+      to a trusted third party time stamping server. The server appends the current time to the
+      end of the hash, signs the resulting data to make the official time stamp, and returns the
+      time stamp to Alice. Alice keeps the time stamp with the document.</para>
+
+    <para>To verify the time stamp a person need only verify the signature of the time stamp
+      server and then verify that the document has the same hash as that stored in the time
+      stamp. Alice can't modify the time stamp after she receives it since that would invalidate
+      the signature of the time stamp server. Furthermore Alice can't modify the document
+      without changing its hash. Alice would need to get a new time stamp for the modified
+      document. Note that Alice should verify the time stamp immediately upon receiving it from
+      the server to be sure that the time stamp has been properly signed and that the hash
+      contained inside of it has not been modified during the time stamping process. This also
+      protects (or at least detects) various kinds of tampering that might occur on the
+      network.</para>
+
+    <!-- TODO: Draw some kind of protocol diagram. -->
+
+    <para>With this protocol, it is not necessary for Alice to send her document to the time
+      stamp server. Only the hash needs to be time stamped. If we use a suitable hash algorithm
+      then we can assume that no two documents will ever have the same hash so time stamping the
+      hash is as good as time stamping the document itself. The trusted third party also does
+      not need to verify Alice's authenticity. The time stamp is only intended to prove that the
+      document with the specified hash existed at or before the time in the time stamp. The time
+      stamp is not intended to prove the authenticity of the document's author (although the
+      protocol could be extended to do so and that might be useful). As a result, it is not
+      necessary for Alice to sign the hash. In addition, since the time stamp is intended to be
+      public information, it need not be encrypted on the network.</para>
+  </section>
+
+  <section>
+    <title>Vulnerabilities</title>
+
+    <para>A major source of vulnerabilities with this system is the server. If an attacker is
+      able to change the time on the server, the system can be compromised. Thus the server
+      needs to be highly secure. It is tempting to configure the server to use a network time
+      protocol such as NTP to set its clock. While that would normally provide for very accurate
+      timestamps, it does introduce the possibility that an attacker could trick the server by
+      attacking the NTP software. It might actually be more secure to set the time on the server
+      manually and not have it depend on an external source.</para>
+
+    <para>The protocol is also vulnerable to compromise of the time stamp server's
+      public/private key. If an attacker can get the private key used by the server, the
+      attacker could forge the server's signature on bogus timestamps. This vulnerability is
+      probably of secondary importance compared to the first. To get the server's private key
+      the attacker would most likely need to compromise the server system. If the attacker can
+      do that he/she can simple change the time on the server instead.</para>
+  </section>
+
+</chapter>

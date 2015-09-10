@@ -1,0 +1,17 @@
+with "aunit.gpr";
+with "src/hermes.gpr";
+
+project Master is
+
+   type Os_Type is ("Unix", "Windows_NT");
+   Os : Os_Type := external ("OS", "Unix");
+   for Source_Dirs use ("tests");
+   for Object_Dir use "build";
+   for Main use ("tests.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-gnatwa", "-gnata");
+   end Compiler;
+
+end Master;
+

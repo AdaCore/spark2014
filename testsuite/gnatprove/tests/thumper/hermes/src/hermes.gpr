@@ -1,0 +1,20 @@
+project Hermes is
+
+   for Source_Dirs use (".");
+   for Library_Ali_Dir use "lib";
+   for Library_Dir use "lib";
+   for Object_Dir use "obj";
+   type Runtime_Type is ("full");
+   Runtime : Runtime_Type := external ("RUNTIME", "full");
+   for Library_Name use "hermes";
+   for Languages use ("Ada");
+
+   package Builder is
+      for Default_Switches ("ada") use ("-g", "-gnatwa", "-gnata");
+   end Builder;
+
+   package Prove is
+      for Switches use ("-j4", "--timeout=10");
+   end Prove;
+
+end Hermes;

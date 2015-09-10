@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.docbook.org/xml/4.5/docbookx.dtd">
+  
+<chapter id="Build">
+  <title>Building Hermes</title>
+
+  <para>This chapter describes how to build Hermes and its associated documentation and how to
+    run the tests. We also describe various issues related to the tool chain in general, such as
+    setting up a continuous integration server and the use of style tools and advanced static
+    analysis tools. This chapter is intended for Hermes contributors or power users who wish to
+    build the system from the source code repository. If you are using a binary distribution you
+    can skip this section entirely.</para>
+
+  <para>The README at the top level of the Hermes source tree gives a summary of the steps
+    included here. The README is intended as a kind of "quick start" document. The information
+    here is a more detailed version of the information in the top level README.</para>
+
+  <para>The tools with specific version numbers shown below are the official tools used by the
+    Hermes contributors. Other tools (or other versions of the same tools) may also work.
+    Obviously the greater the differences between the tools you attempt to use and those listed
+    below the more problems you are likely to encounter.</para>
+
+  <variablelist>
+    <title>Build Tools</title>
+
+    <varlistentry>
+      <term><ulink url="http://www.docbook.org/">DocBook</ulink></term>
+      <listitem>
+        <para>The Hermes documentation is written primarily in DocBook. This is an XML format
+          and so is readable (and writable) in an ordinary text editor. However, if you want to
+          build nicely formatted documentation or benefit from a more advanced editing features,
+          you will need a tool chain for processing DocBook. We currently use <ulink
+            url="http://oxygenxml.com/">&lt;oXygen/&gt;</ulink> as our primary DocBook editing
+          tool.</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><ulink url="http://libre.adacore.com/">GNAT</ulink></term>
+      <listitem>
+        <para>Hermes is built with GNAT GPL 2015 and SPARK GPL 2015.</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><ulink url="http://jenkins-ci.org/">Jenkins</ulink></term>
+      <listitem>
+        <para>We use Jenkins as our continuous integration system. Our practice is to run
+          Jenkins from the <ulink url="http://glassfish.java.net/">Glassfish</ulink> application
+          server. You do not need to set up Jenkins if you are a single developer.
+            <emphasis>TODO: Give more details about setting up Glassfish and
+          Jenkins.</emphasis></para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+
+  <para><emphasis>TODO: Say something about testing!</emphasis></para>
+
+</chapter>

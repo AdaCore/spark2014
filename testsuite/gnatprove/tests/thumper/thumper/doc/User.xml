@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+  "http://www.docbook.org/xml/4.5/docbookx.dtd">
+  
+<chapter id="User">
+  <title>Thumper User Documentation</title>
+
+  <para><emphasis>This chapter contains the user documentation for Thumper.</emphasis></para>
+</chapter>

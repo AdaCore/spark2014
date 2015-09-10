@@ -1,0 +1,54 @@
+with "aunit.gpr";
+with "gtkada.gpr";
+with "../../Hermes/src/hermes.gpr";
+
+project Thumper is
+
+   for Languages use ("Ada");
+   for Object_Dir use "build";
+
+   type Modes is ("Compile", "Analyze");
+   Mode : Modes := External ("MODE", "Compile");
+
+   case Mode is
+      when "Compile" =>
+         for Source_Dirs use (".", "client", "server", "tests");
+         for Main use ("thumper_client.adb", "thumper_server.adb", "thumper_test.adb");
+      when "Analyze" =>
+         --  For analysis of Thumper code, ignore test files
+         for Source_Dirs use (".", "client", "server");
+         --  For a standalone analysis of Thumper code, exclude files that
+         --  require GTKAda or AWS.
+         --  Also exclude "timestamp_messages-server.adb" which causes
+         --  gnatwhy3 to loop.
+         --  Also exclude "network-addresses.adb" which causes wrong generation
+         --  of Why3 code.
+         for Excluded_Source_Files use ("thumper_client.adb", "remote_access.adb", "client_gui.adb", "client_gui.ads", "timestamp_messages-server.adb", "network-addresses.adb");
+   end case;
+
+   for Library_Options use ("-LC:/lib/OpenSSL-Win32/lib/VC", "-llibeay32MD", "-LC:/Program Files (x86)/PostgreSQL/9.4/lib", "-llibpq");
+   type Runtime_Type is ("full");
+   Runtime : Runtime_Type := external ("RUNTIME", "full");
+
+   package Builder is
+      for Default_Switches ("Ada") use ("-g", "-gnata", "-gnatwa");
+   end Builder;
+
+   package Compiler is
+      for Default_Switches ("C") use ("");
+      for Default_Switches ("Ada") use ("-g", "-gnata", "-gnatwa");
+   end Compiler;
+
+   package Binder is
+      for Default_Switches ("Ada") use ("-static");
+   end Binder;
+
+   package Linker is
+      for Default_Switches ("Ada") use ("-g") & Project'Library_Options;
+   end Linker;
+
+   package Prove is
+      for Switches use ("-j2", "--timeout=10");
+   end Prove;
+
+end Thumper;
