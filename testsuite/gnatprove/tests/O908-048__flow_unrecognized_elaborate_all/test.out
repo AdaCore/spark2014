@@ -1,11 +1,6 @@
-data_package.adb:8:07: use of remote abstract state "External_Interface.File_System" during elaboration of "Data_Package" - Elaborate_All pragma required for "External_Interface" (SPARK RM 7.7.1(4))
 data_package.adb:9:17: info: initialization of "Data.Field_1" proved
 data_package.adb:10:17: info: initialization of "Data.Field_2" proved
 data_package.adb:11:17: info: initialization of "Data.Field_3" proved
 data_package.ads:5:04: info: initialization of "Data_1" proved
 data_package.ads:6:04: info: initialization of "Data_2" proved
 data_package.ads:7:04: info: initialization of "Data_3" proved
-   compilation of data_package.adb failed
-
-
-gnatprove: error during analysis of data and information flow

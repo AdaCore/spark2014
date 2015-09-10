@@ -1131,10 +1131,9 @@ package body Flow.Analysis is
       procedure Check_If_From_Another_Non_Elaborated_CU
         (F : Flow_Id;
          V : Flow_Graphs.Vertex_Id);
-      --  If F is used but is not declared in the compilation unit
-      --  enclosing the currently analyzed entity AND the other
-      --  compilation unit does not have an Elaborate_All then emit an
-      --  error.
+      --  If F is used but is not declared in the compilation unit enclosing
+      --  the currently analyzed entity AND the other compilation unit does not
+      --  have an Elaborate[_All] then emit an error.
 
       ---------------------------------------------
       -- Check_If_From_Another_Non_Elaborated_CU --
@@ -1195,41 +1194,65 @@ package body Flow.Analysis is
          if Present (N)
            and then V_Use /= Flow_Graphs.Null_Vertex
            and then Is_Compilation_Unit (Scope (N))
-           and then (Scope (N) /= FA.Analyzed_Entity
-                       and then Scope (N) /= FA.Spec_Entity)
+           and then Scope (N) not in FA.Analyzed_Entity | FA.Spec_Entity
          then
             declare
-               Clause       : Node_Id;
                Current_Unit : constant Node_Id :=
                  Get_Enclosing_Comp_Unit (FA.Spec_Entity);
                Other_Unit   : constant Node_Id :=
                  Get_Enclosing_Comp_Unit (Scope (N));
-            begin
-               Clause := First (Context_Items (Current_Unit));
-               while Present (Clause) loop
-                  if Nkind (Clause) = N_With_Clause
-                    and then Library_Unit (Clause) = Other_Unit
-                  then
-                     if not Elaborate_All_Present (Clause) then
-                        Error_Msg_Flow
-                          (FA      => FA,
-                           Msg     => "use of remote abstract state &" &
-                                      " during elaboration of &" &
-                                      " - Elaborate_All pragma required for &",
-                           SRM_Ref => "7.7.1(4)",
-                           N       => V_Atr.Error_Location,
-                           F1      => F,
-                           F2      => Direct_Mapping_Id (FA.Spec_Entity),
-                           F3      => Direct_Mapping_Id (Scope (N)),
-                           Kind    => Error_Kind,
-                           Tag     => Pragma_Elaborate_All_Needed);
+
+               Found        : Boolean := False;
+               --  Found will become True if we find a pragma Elaborate[_All]
+               --  for Other_Unit. We initialy set it to False.
+
+               procedure Check_Clauses (CUnit : Node_Id);
+               --  Checks the clauses of CUnit for a pragma Elaborate[_All] of
+               --  Other_Unit and sets Found to True if it finds it.
+
+               procedure Check_Clauses (CUnit : Node_Id) is
+                  Clause : Node_Id;
+               begin
+                  Clause := First (Context_Items (CUnit));
+                  while Present (Clause) loop
+                     if Nkind (Clause) = N_With_Clause
+                       and then Library_Unit (Clause) = Other_Unit
+                       and then (Elaborate_All_Present (Clause)
+                                   or else Elaborate_Present (Clause))
+                     then
+                        Found := True;
+                        return;
                      end if;
 
-                     return;
-                  end if;
+                     Next (Clause);
+                  end loop;
+               end Check_Clauses;
 
-                  Next (Clause);
-               end loop;
+            begin
+               --  Check clauses of the spec
+               Check_Clauses (Current_Unit);
+
+               --  Check also clauses of the body
+               if not Found
+                 and then FA.Analyzed_Entity /= FA.Spec_Entity
+               then
+                  Check_Clauses (Get_Enclosing_Comp_Unit (FA.Analyzed_Entity));
+               end if;
+
+               if not Found then
+                  Error_Msg_Flow
+                    (FA      => FA,
+                     Msg     => "use of remote abstract state &" &
+                                " during elaboration of &" &
+                                " - Elaborate_All pragma required for &",
+                     SRM_Ref => "7.7.1(4)",
+                     N       => V_Atr.Error_Location,
+                     F1      => F,
+                     F2      => Direct_Mapping_Id (FA.Spec_Entity),
+                     F3      => Direct_Mapping_Id (Scope (N)),
+                     Kind    => Error_Kind,
+                     Tag     => Pragma_Elaborate_All_Needed);
+               end if;
             end;
          end if;
       end Check_If_From_Another_Non_Elaborated_CU;
