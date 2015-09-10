@@ -1273,92 +1273,73 @@ package body Flow_Generated_Globals is
 
          --  To detect potentially blocking operations in protected actions
          --  we create a call graph with vertices corresponding to callable
-         --  subprograms (i.e. entries, functions and procedures).
+         --  entities (i.e. entries, functions and procedures).
          --
-         --  All edges originate from subprograms in SPARK, since subprograms
-         --  not in SPARK are considered to be potentially blocking anyway
-         --  (they are "leaves" of the call graph).
-         --
+         --  All edges originate from vertices corresponding to subprograms
+         --  in SPARK, since subprograms not in SPARK are considered to be
+         --  potentially blocking anyway (they are "leaves" of the call graph).
+
          declare
-            Protected_Actions_In_Current_Compilation_Unit : Boolean := False;
-            --  Call graphs are needed only if there are protected actions in
-            --  the current compilation unit.
-
-            V_Caller, V_Callee : Entity_Name_Graphs.Vertex_Id;
-
-            procedure Find_Vertex
-              (E_Name : Entity_Name;
-               V      : out Entity_Name_Graphs.Vertex_Id)
-              with Post => V /= Entity_Name_Graphs.Null_Vertex;
-            --  Find Vertex_Id of subprogram represented by entity
-            --  name E_Name in Call_Graph; create such vertex if it
-            --  does not already exists.
-
-            -----------------
-            -- Find_Vertex --
-            -----------------
-
-            procedure Find_Vertex
-              (E_Name : Entity_Name;
-               V      : out Entity_Name_Graphs.Vertex_Id)
-            is
-            begin
-               V := Call_Graph.Get_Vertex (E_Name);
-               if V = Entity_Name_Graphs.Null_Vertex then
-                  Call_Graph.Add_Vertex (E_Name, V);
-               end if;
-            end Find_Vertex;
-
+            Protected_Operations_Stack : Name_Sets.Set;
+            --  We collect protected operations in SPARK and use them as seeds
+            --  to grow the call graph.
          begin
-            --  Check if there are any entries in the current compilation unit;
-            --  if not then we do not need to create a call graph.
-            for Subprogram_Info of Subprogram_Info_List loop
-               case Subprogram_Info.Kind is
-                  when Kind_Entry =>
-                     Protected_Actions_In_Current_Compilation_Unit := True;
-                     exit;
-
-                  when Kind_Subprogram =>
-                     declare
-                        E : constant Entity_Id :=
-                          Find_Entity (Subprogram_Info.Name);
-                     begin
-                        if Present (E)
-                          and then Convention (E) = Convention_Protected
-                        then
-                           Protected_Actions_In_Current_Compilation_Unit :=
-                             True;
-                           exit;
-                        end if;
-                     end;
-
-                  when others =>
-                     null;
-
-               end case;
+            --  First collect SPARK-compliant protected operations in the
+            --  current compilation unit.
+            for E of Entity_Set loop
+               if (Ekind (E) = E_Entry
+                   or else (Ekind (E) in Einfo.Subprogram_Kind
+                            and then Convention (E) = Convention_Protected))
+                 and then Entity_Body_In_SPARK (E)
+                 and then Entity_Body_Valid_SPARK (E)
+               then
+                  Protected_Operations_Stack.Insert (To_Entity_Name (E));
+               end if;
             end loop;
 
-            if Protected_Actions_In_Current_Compilation_Unit then
-               for Subprogram_Info of Subprogram_Info_List loop
+            --  Then create a call graph for them
+            while not Protected_Operations_Stack.Is_Empty loop
 
-                  if Subprogram_Info.Kind in Kind_Subprogram | Kind_Entry
-                  then
-                     Find_Vertex (Subprogram_Info.Name, V_Caller);
-                     declare
-                        Calls : constant Name_Sets.Set :=
-                          Computed_Calls (Subprogram_Info.Name);
-                     begin
-                        for Callee of Calls loop
-                           Find_Vertex (Callee, V_Callee);
-                           Call_Graph.Add_Edge (V_Caller, V_Callee);
-                        end loop;
-                     end;
+               declare
+                  V_Caller, V_Callee : Entity_Name_Graphs.Vertex_Id;
+                  --  Call graph vertices for the caller and the callee
+
+                  Caller : constant Entity_Name :=
+                    Name_Sets.Element (Protected_Operations_Stack.First);
+                  --  Name of the caller
+
+               begin
+                  --  Create vertex for a caller if it does not already exist
+                  V_Caller := Call_Graph.Get_Vertex (Caller);
+                  if V_Caller = Entity_Name_Graphs.Null_Vertex then
+                     Call_Graph.Add_Vertex (Caller, V_Caller);
                   end if;
-               end loop;
 
-               --  Close the call graph
-               Call_Graph.Close;
-            end if;
+                  --  If the caller is nonblocking then check its callees;
+                  --  otherwise leave it as a leaf of the call graph.
+                  if Nonblocking_Subprograms_Set.Contains (Caller) then
+                     for Callee of Computed_Calls (Caller) loop
+                        --  Get vertex for the callee
+                        V_Callee := Call_Graph.Get_Vertex (Callee);
+
+                        --  If there is no vertex for the callee then create
+                        --  one and put the callee on the stack.
+                        if V_Callee = Entity_Name_Graphs.Null_Vertex then
+                           Call_Graph.Add_Vertex (Callee, V_Callee);
+                           Protected_Operations_Stack.Include (Callee);
+                        end if;
+
+                        Call_Graph.Add_Edge (V_Caller, V_Callee);
+                     end loop;
+                  end if;
+
+                  --  Pop the caller from the stack
+                  Protected_Operations_Stack.Delete (Caller);
+               end;
+            end loop;
+
+            --  Close the call graph; for an empty graph it will be a no-op
+            Call_Graph.Close;
          end;
       end Add_All_Edges;
 
@@ -2663,7 +2644,6 @@ package body Flow_Generated_Globals is
       --  Entity of the enclosing protected type
 
       function Calls_Potentially_Blocking_Subprogram return Boolean;
-      pragma Unreferenced (Calls_Potentially_Blocking_Subprogram);
       --  Check for calls to potentially blocking subprograms of a given Kind
 
       -------------------------------------------
@@ -2728,7 +2708,6 @@ package body Flow_Generated_Globals is
       --  Start of processing for Calls_Potentially_Blocking_Subprogram
 
       begin
-
          for V of Call_Graph.Get_Collection (Caller, Out_Neighbours) loop
 
             Callee := Call_Graph.Get_Key (V);
@@ -2772,20 +2751,8 @@ package body Flow_Generated_Globals is
    --  Start of processing for Is_Potentially_Blocking
 
    begin
-      return (not Nonblocking_Subprograms_Set.Contains (EN));
-      --  Analysis of the call graph for potentially blocking calls is
-      --  temprorarily disabled, since the created call graph is not yet
-      --  complete.
-      --
-      --  The call graph needs to be created for all callable entities
-      --  (i.e. procedures, functions and entries) of the current compilation
-      --  unit; currently it is only created for those callable entities that
-      --  have a GG (generated globals) entry in the ALI file created in phase
-      --  1.
-      --
-      --  Once the call graph is fixed, the return statement needs to be
-      --  extended with
-      --    or else Calls_Potentially_Blocking_Subprogram;
+      return (not Nonblocking_Subprograms_Set.Contains (EN))
+        or else Calls_Potentially_Blocking_Subprogram;
    end Is_Potentially_Blocking;
 
    ---------------------

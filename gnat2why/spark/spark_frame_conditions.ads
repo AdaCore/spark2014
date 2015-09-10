@@ -75,7 +75,7 @@ package SPARK_Frame_Conditions is
 
    function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
    with Pre => E_Name /= Null_Entity_Name;
-   --  Get subprograms directly called subprogram EN
+   --  Get subprograms directly called by subprogram EN
 
    function Get_Generated_Reads
      (E                 : Entity_Id;
