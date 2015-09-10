@@ -2160,6 +2160,9 @@ package body Gnat2Why.Subprograms is
          end;
 
          --  Refined_Post
+         --  Encapsulate the translated body inside an abstract program with
+         --  the Refined_Post as a postcondition.
+         --  Assume the dynamic property of modified variables after the call.
 
          if Has_Contracts (E, Name_Refined_Post) then
             Why_Body :=
@@ -2173,12 +2176,12 @@ package body Gnat2Why.Subprograms is
                 (Ada_Node => Get_Location_For_Aspect (E, Name_Refined_Post),
                  Expr => Why_Body,
                  Reason => VC_Refined_Post,
-                 Post => +New_And_Expr
-                   (Left   => +Compute_Spec
-                      (Params, E, Name_Refined_Post, EW_Pred),
-                    Right  => +Compute_Dynamic_Property_For_Effects
-                    (E, Params),
-                    Domain => EW_Pred));
+                 Post => +Compute_Spec
+                   (Params, E, Name_Refined_Post, EW_Pred));
+            Why_Body := Sequence
+              (Why_Body,
+               New_Assume_Statement
+                 (Pred => Compute_Dynamic_Property_For_Effects (E, Params)));
          end if;
 
          --  check absence of runtime errors in Post and RTE + validity of
