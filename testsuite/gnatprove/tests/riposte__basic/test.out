@@ -1,8 +1,8 @@
 basic.adb:6:19: info: postcondition proved
-basic.adb:9:16: medium: range check might fail, counterexample: A = 255 and B = 1
+basic.adb:9:16: medium: range check might fail, counterexample: A = -1 and B = -1
 basic.adb:13:19: info: postcondition proved
 basic.adb:13:36: info: overflow check proved
-basic.adb:16:16: medium: overflow check might fail, counterexample: A = -2147483648 and B = -1
+basic.adb:16:16: medium: overflow check might fail, counterexample: A = -1 and B = -1
 basic.adb:20:19: info: postcondition proved
 basic.adb:31:07: info: assertion proved
 basic.adb:31:46: info: initialization of "R" proved

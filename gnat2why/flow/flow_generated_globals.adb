@@ -2744,8 +2744,7 @@ package body Flow_Generated_Globals is
                   --  that any call to predefined subprogram is nonblocking.
                   null;
                else
-                  if not Nonblocking_Subprograms_Set.Contains (Callee)
-                  then
+                  if not Nonblocking_Subprograms_Set.Contains (Callee) then
                      return True;
                   end if;
                end if;

@@ -207,6 +207,9 @@ package body Flow_Utility is
                           Marked : Boolean;
                           Colour : Natural)
                           return Edge_Display_Info;
+      ---------------
+      -- Node_Info --
+      ---------------
 
       function Node_Info (G : Graph;
                           V : Vertex_Id)
@@ -224,6 +227,10 @@ package body Flow_Utility is
                  Fill_Colour => Null_Unbounded_String,
                  Label       => Temp_String);
       end Node_Info;
+
+      ---------------
+      -- Edge_Info --
+      ---------------
 
       function Edge_Info (G      : Graph;
                           A      : Vertex_Id;
