@@ -1,9 +1,3 @@
 warning: cannot read config file toto.conf:
   toto.conf: No such file or directory
-Found prover CVC4 version 1.5-prerelease, Ok.
-Found prover PVS version 6.0, Ok.
-Found prover Isabelle version 2015, Ok.
-warning: Warning: prover Z3 version 4.4.1 is not known to be supported.
-
-3 provers detected and 1 provers detected with unsupported version
-Save config to toto.conf
+0 provers detected and 0 provers detected with unsupported version
