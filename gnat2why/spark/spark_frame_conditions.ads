@@ -42,7 +42,6 @@ with Types;                      use Types;
 package SPARK_Frame_Conditions is
 
    use Name_Sets;
-   use Name_Maps;
 
    Translated_Object_Entities : Name_Sets.Set := Name_Sets.Empty_Set;
    --  Is filled by gnat2why-driver.adb, and represents all object entities
