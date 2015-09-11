@@ -11,5 +11,4 @@ initial_condition_illegal_3.ads:15:04: warning: initialization of Var has no eff
 initial_condition_illegal_3.ads:18:32: info: initialization of "Var" proved
 initial_condition_illegal_4.ads:8:08: info: initial condition proved
 initial_condition_illegal_4.ads:8:29: info: initialization of "Var" proved
-initial_condition_illegal_4.ads:10:04: info: initialization of "Var" proved
 initial_condition_illegal_4.ads:11:14: warning: subprogram "P1" has no effect

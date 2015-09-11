@@ -14,7 +14,6 @@ window.adb:19:07: info: initialization of "Rec" proved
 window.adb:20:24: info: initialization of "Rec" proved
 window.adb:21:07: medium: precondition might fail
 window.adb:21:13: info: initialization of "Rec" proved
-window.ads:6:04: info: initialization of "Total_Area" proved
 window.ads:11:16: info: postcondition proved
 window.ads:11:44: info: overflow check proved
 window.ads:15:16: medium: postcondition might fail, requires Obj.Has_Stored_Area

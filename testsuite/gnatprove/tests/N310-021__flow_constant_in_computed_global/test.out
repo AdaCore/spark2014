@@ -1,9 +1,6 @@
 actuator.ads:4:14: info: initialization of "Output_Ext" proved
 actuator.ads:7:14: info: initialization of "Output_Ext" proved
 advancebutton-raw.ads:5:20: info: initialization of "Pressed" proved
-advancebutton.adb:6:04: info: initialization of "AdvanceMode" proved
-advancebutton.adb:7:04: info: initialization of "AdvPressed" proved
-advancebutton.adb:8:04: info: initialization of "AdvTimer" proved
 advancebutton.adb:35:10: info: initialization of "PressedNow" proved
 advancebutton.adb:35:29: info: initialization of "PressedBefore" proved
 advancebutton.adb:37:24: info: initialization of "TimePressed" proved

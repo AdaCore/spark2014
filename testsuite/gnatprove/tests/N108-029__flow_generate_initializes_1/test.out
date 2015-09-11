@@ -1,15 +1,8 @@
-g.adb:9:07: info: initialization of "Tmp" proved, in instantiation at g.adb:18
 g.adb:21:23: info: initialization of "Tmp" proved
 generate_initializes.adb:7:04: info: initialization of "X" constituent of "State" proved
 generate_initializes.adb:7:07: info: initialization of "Y" constituent of "State" proved
-generate_initializes.ads:4:04: info: initialization of "A" proved
-generate_initializes.ads:5:04: info: initialization of "B" proved
-generate_initializes.ads:6:04: info: initialization of "C" proved
 generate_initializes.ads:8:14: info: initialization of "X" constituent of "State" proved
 generate_initializes.ads:8:14: info: initialization of "Y" constituent of "State" proved
-other.adb:2:04: info: initialization of "Hidden" proved
-other.ads:2:04: info: initialization of "G" proved
-other.ads:3:04: info: initialization of "G2" proved
 other.ads:5:14: info: initialization of "G2" proved
 other.ads:8:07: info: initialization of "Nested_Visible_Var" proved
 outer.adb:8:07: info: initialization of "Visible" proved

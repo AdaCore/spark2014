@@ -48,7 +48,6 @@ library_level_function.adb:8:04: warning: statement has no effect
 p-po_stub_1.adb:3:38: warning: statement has no effect
 p-po_stub_2.adb:3:44: warning: statement has no effect
 p-po_stub_2.adb:5:07: warning: statement has no effect
-p.adb:10:04: info: initialization of "Now" proved
 p.adb:10:04: use of remote abstract state "Real_Time.Clock_Time" during elaboration of "P" - Elaborate_All pragma required for "Real_Time" (SPARK RM 7.7.1(4))
 p.adb:35:07: warning: statement has no effect
 p.adb:36:10: warning: statement has no effect
@@ -60,8 +59,6 @@ p.adb:97:43: warning: statement has no effect
 p.adb:109:49: warning: statement has no effect
 p.adb:111:10: warning: statement has no effect
 p.adb:142:07: warning: statement has no effect
-p.adb:150:04: info: initialization of "Blocking_Task" proved
-p.adb:151:04: info: initialization of "Nonblocking_Task" proved
 p.adb:154:33: warning: statement has no effect
 p.adb:156:10: warning: statement has no effect
 p.adb:156:10: warning: unused assignment to "Po_4t"

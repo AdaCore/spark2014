@@ -30,7 +30,6 @@ port.adb:160:27: info: initialization of "T2" proved
 port.adb:162:13: info: initialization of "T1" proved
 port.adb:162:18: info: initialization of "T2" proved
 port.ads:16:04: info: assertion proved
-port.ads:33:04: info: initialization of "V2" proved
 port.ads:65:28: info: initialization of "X" proved
 port.ads:68:22: info: initialization of "X" proved
 port.ads:68:22: info: postcondition proved

@@ -1800,6 +1800,11 @@ package body Flow.Analysis is
       --  define Var. If V_Allowed is set, then the path that we return is
       --  allowed to contain V_Allowed even if V_Allowed does set Var.
 
+      function Mentioned_On_Gen_Init (Var  : Flow_Id) return Boolean
+      with Pre => Ekind (FA.Analyzed_Entity) in E_Package | E_Package_Body;
+      --  Returns True if Var is mentioned on the LHS of a generated
+      --  Initializes aspect.
+
       procedure Might_Be_Defined_In_Other_Path
         (V_Initial : Flow_Graphs.Vertex_Id;
          V_Use     : Flow_Graphs.Vertex_Id;
@@ -1825,6 +1830,10 @@ package body Flow.Analysis is
       --
       --  They can be both set, in which case we're most likely going to
       --  produce a medium check, but this is not always the case in loops.
+
+      ---------------------
+      -- Consider_Vertex --
+      ---------------------
 
       function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean is
          V_Key : constant Flow_Id      := FA.PDG.Get_Key (V);
@@ -1916,6 +1925,31 @@ package body Flow.Analysis is
                               Filename => Tracefile);
          end if;
       end Mark_Definition_Free_Path;
+
+      ---------------------------
+      -- Mentioned_On_Gen_Init --
+      ---------------------------
+
+      function Mentioned_On_Gen_Init (Var  : Flow_Id) return Boolean is
+         DM : constant Dependency_Maps.Map :=
+           Flow_Generated_Globals.GG_Get_Initializes
+             (To_Entity_Name (Unique_Entity (FA.Spec_Entity)),
+              FA.S_Scope);
+      begin
+         if DM.Is_Empty then
+            --  If there is no generated initializes aspect then Var cannot
+            --  possibly be mentioned on it.
+            return False;
+         end if;
+
+         for Init_Var in DM.Iterate loop
+            if Dependency_Maps.Key (Init_Var) = Var then
+               return True;
+            end if;
+         end loop;
+
+         return False;
+      end Mentioned_On_Gen_Init;
 
       ------------------------------------
       -- Might_Be_Defined_In_Other_Path --
@@ -2354,7 +2388,10 @@ package body Flow.Analysis is
                if not Var_Atr.Is_Initialized
                  and then (if Ekind (FA.Analyzed_Entity) in
                              E_Package | E_Package_Body
-                           then not Is_Abstract_State (Var_Read))
+                           then not Is_Abstract_State (Var_Read) and then
+                             (FA.PDG.Get_Vertex
+                                (Change_Variant (Var_Read, Final_Value)) /= V
+                                 or else not Mentioned_On_Gen_Init (Var_Read)))
                  and then (if Var_Read.Kind in Direct_Mapping | Record_Field
                            then not Is_Constant_Object
                                       (Get_Direct_Mapping_Id (Var_Read)))
@@ -2363,10 +2400,12 @@ package body Flow.Analysis is
                   --  they define it. We record initialized / uninitialized
                   --  reads accordingly.
                   --
-                  --  Note we skip this check for abstract state iff we
-                  --  analyze a package, since it is OK to leave some state
-                  --  uninitialized (Check_Initializes_Contract will pick
-                  --  this up).
+                  --  Note we skip this check for abstract state iff we analyze
+                  --  a package, since it is OK to leave some state
+                  --  uninitialized (Check_Initializes_Contract will pick this
+                  --  up). We also skip this check when checking final vertices
+                  --  of variables that are mentioned on a generated
+                  --  Initializes aspect.
                   for V_Def of FA.DDG.Get_Collection
                     (V, Flow_Graphs.In_Neighbours)
                   loop

@@ -1,9 +1,6 @@
-pack.adb:3:04: info: initialization of "Glob" proved
-pack.adb:4:04: info: initialization of "G" proved
 pack.adb:4:32: info: initialization of "Glob" proved
 pack.adb:4:32: info: length check proved
 pack.adb:4:32: info: range check proved
-pack.adb:9:04: info: initialization of "Matrix" proved
 pack.adb:12:34: info: length check proved
 pack.adb:12:51: medium: array index check might fail
 pack.adb:13:41: info: length check proved

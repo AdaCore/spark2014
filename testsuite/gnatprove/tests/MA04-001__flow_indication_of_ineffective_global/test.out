@@ -3,8 +3,6 @@ foo.adb:13:19: medium: "My_A" might not be initialized, in call inlined at foo.a
 foo.adb:19:25: info: initialization of "R" proved
 foo.adb:27:12: info: initialization of "My_A" proved
 foo.adb:27:12: medium: "My_A" might not be initialized
-foo.adb:30:04: info: initialization of "G1" proved
-foo.adb:30:08: info: initialization of "G2" proved
 foo.adb:32:26: info: initialization of "X" proved
 foo.adb:32:29: info: initialization of "Y" proved
 foo.adb:42:04: warning: analyzing unreferenced procedure "Test_03_E"

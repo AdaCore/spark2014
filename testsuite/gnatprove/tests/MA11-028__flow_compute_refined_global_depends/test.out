@@ -67,9 +67,6 @@ lots_of_tests.ads:105:14: info: initialization of "A" constituent of "State" pro
 lots_of_tests.ads:105:14: info: initialization of "B" constituent of "State" proved
 refinement_needed.adb:5:04: info: initialization of "A" constituent of "State" proved
 refinement_needed.adb:14:17: medium: overflow check might fail
-refinement_needed.ads:5:34: warning: no procedure exists that can initialize abstract state "Refinement_Needed.State2"
-refinement_needed.ads:7:04: info: initialization of "V1" proved
-refinement_needed.ads:7:08: info: initialization of "V2" proved
 user.ads:4:36: info: initialization of "X" proved
 user.ads:7:14: info: initialization of "Lots_Of_Tests.State3" proved
 user.ads:10:40: info: initialization of "Y" proved

@@ -1,6 +1,4 @@
 p.adb:7:24: warning: statement has no effect
 p.adb:37:21: info: initialization of "Nonatomic_Int" proved
-p.ads:34:04: info: initialization of "CAE" proved
-p.ads:37:04: info: initialization of "CAE_Not" proved
 p.ads:40:14: info: initialization of "CAE_Not" proved
 p.ads:40:14: info: initialization of "Nonatomic_Int" proved

@@ -1,6 +1,5 @@
 error.ads:7:14: info: initialization of "MyState" proved
 error.ads:9:14: info: initialization of "MyState" proved
-error.ads:13:04: info: initialization of "MyState" proved
 stacks.adb:10:22: medium: overflow check might fail
 stacks.adb:11:16: medium: array index check might fail
 stacks.adb:21:22: info: range check proved

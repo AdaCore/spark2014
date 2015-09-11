@@ -1,10 +1,6 @@
-generate_initializes.ads:5:04: info: initialization of "A" proved
 generate_initializes2.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 generate_initializes2.ads:4:09: high: other2.hidden_var must be initialized at elaboration
-generate_initializes2.ads:7:04: info: initialization of "Visible" proved
 generate_initializes2.ads:9:14: info: initialization of "Hidden" constituent of "State" proved
 generate_initializes2.ads:9:14: info: initialization of "Priv" constituent of "State" proved
 generate_initializes2.ads:12:04: info: initialization of "Priv" constituent of "State" proved
 main.adb:3:17: info: initialization of "X" proved
-other2.ads:2:04: info: initialization of "Visible_Var" proved
-other2.ads:9:04: info: initialization of "Priv_Var" proved

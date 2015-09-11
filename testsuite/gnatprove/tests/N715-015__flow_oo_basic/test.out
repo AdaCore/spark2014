@@ -150,7 +150,6 @@ tests.adb:624:16: info: initialization of extension of "Tmp" proved
 tests.adb:629:33: info: initialization of "W2.X" proved
 tests.adb:629:33: info: initialization of "W2.Y" proved
 tests.adb:629:33: info: initialization of extension of "W2" proved
-untangle.adb:31:04: info: initialization of "G" proved
 // fa_pkg_body_standard__tests_cfg
 digraph G {
    graph [splines=True];

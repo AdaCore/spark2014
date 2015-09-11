@@ -1,2 +1,1 @@
-t.ads:3:09: info: initialization of "T1" proved
 t.ads:3:09: medium: the task might terminate, which is not allowed in SPARK

@@ -20,8 +20,6 @@ initializes_illegal_4.adb:11:09: warning: unused assignment
 initializes_illegal_4.adb:19:07: info: initialization of "Body_Var" constituent of "State" proved
 initializes_illegal_4.adb:22:17: warning: unused assignment
 initializes_illegal_4.adb:22:20: info: initialization of "Body_Var" constituent of "State" proved
-initializes_illegal_4.ads:4:04: info: initialization of "G_Var" proved
-initializes_illegal_4.ads:4:11: info: initialization of "G_Var2" proved
 initializes_illegal_4.ads:16:29: warning: no procedure exists that can initialize abstract state "Pac1.State"
 initializes_illegal_4.ads:17:11: warning: initialization of Z is not mentioned in Initializes contract
 initializes_illegal_4.ads:32:37: warning: no procedure exists that can initialize abstract state "Pac2.State2"
@@ -33,7 +31,6 @@ initializes_illegal_4.ads:52:07: info: initialization of "Var" proved
 initializes_illegal_4.ads:52:24: info: initialization of "G_Var" proved
 initializes_illegal_4.ads:52:32: "G_Var2" must be listed in the Initializes aspect of "Pac3" (SPARK RM 7.1.5(12))
 initializes_illegal_4.ads:52:32: info: initialization of "G_Var2" proved
-initializes_illegal_4.ads:64:07: info: initialization of "A" proved
 initializes_illegal_4.ads:64:22: "G_Var" must be listed in the Initializes aspect of "Pac4" (SPARK RM 7.1.5(12))
 initializes_illegal_4.ads:64:22: info: initialization of "G_Var" proved
    compilation of initializes_illegal_4.adb failed

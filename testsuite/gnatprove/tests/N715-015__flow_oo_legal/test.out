@@ -1,16 +1,8 @@
 people.adb:4:04: info: initialization of "Today" constituent of "Date" proved
 people.adb:7:40: info: initialization of "Today" constituent of "Date" proved
-simple_oo_with_contracts.ads:2:04: info: initialization of "G1" proved
-simple_oo_with_contracts.ads:2:08: info: initialization of "G2" proved
-simple_oo_with_contracts.ads:2:12: info: initialization of "G3" proved
-simple_oo_with_contracts.ads:2:16: info: initialization of "G4" proved
 simple_oo_with_contracts.ads:12:34: info: initialization of "G4" proved
 simple_oo_with_contracts.ads:22:34: info: initialization of "G4" proved
 simple_oo_with_contracts.ads:31:34: info: initialization of "G4" proved
-simple_oo_without_contracts.ads:2:04: info: initialization of "G1" proved
-simple_oo_without_contracts.ads:2:08: info: initialization of "G2" proved
-simple_oo_without_contracts.ads:2:12: info: initialization of "G3" proved
-simple_oo_without_contracts.ads:2:16: info: initialization of "G4" proved
 simple_oo_without_contracts.ads:8:14: info: initialization of "G4" proved
 simple_oo_without_contracts.ads:15:14: info: initialization of "G4" proved
 simple_oo_without_contracts.ads:22:14: info: initialization of "G4" proved

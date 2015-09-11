@@ -1,8 +1,6 @@
 prot.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 prot.adb:41:17: info: initialization of "Visible" proved
-prot.ads:4:04: info: initialization of "Visible" proved
-prot.ads:17:09: info: initialization of "Singleton_Task" proved
 prot.ads:17:09: more than one task accesses an unsynchronized global variable "prot.visible" (SPARK RM 9.11)
    compilation of prot.adb failed
 

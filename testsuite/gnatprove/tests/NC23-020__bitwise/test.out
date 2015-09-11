@@ -2,7 +2,6 @@ x86.adb:7:28: info: range check proved
 x86.adb:17:59: info: division check proved
 x86.adb:27:29: info: range check proved
 x86.adb:37:29: info: range check proved
-x86.ads:16:04: info: initialization of "RAX" proved
 x86.ads:20:14: info: postcondition proved
 x86.ads:20:41: info: range check proved
 x86.ads:24:14: info: postcondition proved
@@ -16,6 +15,5 @@ x86.ads:45:16: info: postcondition proved
 x86.ads:45:45: info: range check proved
 x86.ads:49:16: info: postcondition proved
 x86.ads:57:16: info: postcondition proved
-x86.ads:65:04: info: initialization of "Memory" proved
 x86.ads:65:48: info: length check proved
 x86.ads:71:14: info: postcondition proved

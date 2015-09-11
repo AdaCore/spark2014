@@ -1,6 +1,4 @@
-cst.ads:5:04: info: initialization of "X" proved
 cst.ads:5:13: info: length check proved
-cst.ads:6:04: info: initialization of "J" proved
 cst.ads:7:28: info: initialization of "X" proved
 use_cst.adb:13:12: info: precondition proved
 use_cst.ads:4:14: warning: subprogram "P" has no effect

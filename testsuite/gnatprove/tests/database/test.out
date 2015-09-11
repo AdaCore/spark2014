@@ -5,9 +5,7 @@ database.adb:52:17: info: postcondition proved
 database.adb:52:35: info: initialization of "Account" proved
 database.adb:54:31: info: initialization of "Account" proved
 database.adb:60:17: info: postcondition proved
-database.adb:105:04: info: initialization of "Accounts" proved
 database.adb:105:52: info: length check proved
-database.adb:108:04: info: initialization of "Accounts_Balance" proved
 database.adb:109:46: info: length check proved
 database.adb:122:21: info: range check proved
 database.adb:123:17: info: index check proved

@@ -1,5 +1,3 @@
-foo.adb:4:04: info: initialization of "G1" proved
-foo.adb:5:04: info: initialization of "G2" proved
 foo.adb:22:24: warning: unused variable "Y"
 foo.adb:29:26: info: initialization of "R" proved
 foo.adb:43:25: info: initialization of "B" proved
