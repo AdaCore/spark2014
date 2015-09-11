@@ -1,5 +1,3 @@
 package Integrity_Proved is
-
-   function Invariant return Boolean;
-
+   Max : Natural := 0;
 end Integrity_Proved;
