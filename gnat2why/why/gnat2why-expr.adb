@@ -7721,29 +7721,30 @@ package body Gnat2Why.Expr is
             elsif Is_Modular_Integer_Type (Etype (Var)) then
                declare
                   W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
-                  Op     : constant W_Identifier_Id :=
+                  Op     : constant N_Op :=
                     (if Attr_Id = Attribute_Succ then
-                         MF_BVs (W_Type).Add
+                        N_Op_Add
                      else
-                         MF_BVs (W_Type).Sub);
+                        N_Op_Subtract);
                   Old    : W_Expr_Id;
                   Offset : constant W_Expr_Id :=
                     New_Modular_Constant (Typ => W_Type,
                                           Value => Uint_1);
+                  NType : constant Node_Id := Etype (Expr);
                begin
-
                   Old := Transform_Expr (First (Expressions (Expr)),
                                          W_Type,
                                          Domain,
                                          Params);
 
-                  T :=
-                    New_Call
-                      (Ada_Node => Expr,
-                       Domain   => Domain,
-                       Name     => Op,
-                       Args     => (1 => Old, 2 => Offset),
-                       Typ      => W_Type);
+                  T := New_Op_Expr (Op          => Op,
+                                    Left        => Old,
+                                    Right       => Offset,
+                                    Left_Type   => NType,
+                                    Right_Type  => NType,
+                                    Return_Type => NType,
+                                    Domain      => Domain,
+                                    Ada_Node    => Expr);
                end;
             else
                declare
