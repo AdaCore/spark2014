@@ -4681,9 +4681,7 @@ package body SPARK_Definition is
       else
          --  For entries and task bodies reuse the value of SPARK_Pragma from
          --  the context; workaround for O506-007.
-         Current_SPARK_Pragma := (if Ekind (E) in E_Entry | E_Task_Type
-                                  then Current_SPARK_Pragma
-                                  else SPARK_Pragma (Defining_Entity (N)));
+         Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
 
          --  Only analyze subprogram body declarations in SPARK_Mode => On
 
@@ -4853,9 +4851,7 @@ package body SPARK_Definition is
       else
          --  For entries and task bodies reuse the value of SPARK_Pragma from
          --  the context; workaround for O506-007.
-         Current_SPARK_Pragma := (if Ekind (E) in E_Entry | E_Task_Body
-                                  then Current_SPARK_Pragma
-                                  else SPARK_Pragma (E));
+         Current_SPARK_Pragma := SPARK_Pragma (E);
 
          if SPARK_Pragma_Is (Opt.On) then
             Specs_In_SPARK.Include (E);
