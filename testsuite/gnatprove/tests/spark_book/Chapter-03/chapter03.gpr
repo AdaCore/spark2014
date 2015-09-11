@@ -16,8 +16,12 @@ project Chapter03 is
    --
    --  Also exclude bingo_basket.adb from analysis, as it instantiates
    --  non-SPARK generic Ada.Numerics.Discrete_Random in SPARK code.
+   --
+   --  Also exclude bounded_queue_v2.adb, bounded_queue_example.adb and
+   --  bounded_queue_example_v2.adb from analysis, as they cause proof to
+   --  crash (O911-022).
 
-   for Excluded_Source_Files use ("pack_a.ads", "pack_a.adb", "pack_b.ads", "pack_b.adb", "pack_test.adb", "ohms_law.adb", "bingo_basket.adb");
+   for Excluded_Source_Files use ("pack_a.ads", "pack_a.adb", "pack_b.ads", "pack_b.adb", "pack_test.adb", "ohms_law.adb", "bingo_basket.adb", "bounded_queue_v2.adb", "bounded_queue_example.adb", "bounded_queue_example_v2.adb");
 
    package Compiler is
       for Default_Switches ("ada") use ("-g", "-O2", "-gnatyabfkrt", "-gnat12", "-gnata");

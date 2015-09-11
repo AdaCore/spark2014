@@ -505,42 +505,6 @@ bingo_basket_test.adb:20:07: warning: no Global contract available for "Put"
 bingo_basket_test.adb:20:20: info: initialization of "Number" proved
 bingo_basket_test.adb:22:07: warning: assuming "New_Line" has no effect on global items
 bingo_basket_test.adb:22:07: warning: no Global contract available for "New_Line"
-bounded_queue.adb:20:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:25:32: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:38:32: info: division check proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:38:51: info: overflow check proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:38:51: info: range check proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:39:25: info: index check proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:40:34: medium: overflow check might fail, in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:47:33: medium: array index check might fail, in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:48:34: info: division check proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:48:53: info: overflow check proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:48:53: info: range check proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.adb:49:34: medium: range check might fail, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:25:18: medium: postcondition might fail, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:31:18: medium: postcondition might fail, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:32:50: medium: overflow check might fail, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:33:18: info: precondition proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:36:23: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:39:17: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:39:22: medium: postcondition might fail, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:39:24: info: precondition proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:45:04: medium: type "Queue_Type" is not fully initialized, in instantiation at bounded_queue_example.adb:7
-bounded_queue_example.adb:14:11: info: initialization of private part of "My_Queue" proved
-bounded_queue_example.adb:16:07: medium: precondition might fail
-bounded_queue_example.adb:16:25: info: initialization of private part of "My_Queue" proved
-bounded_queue_example.adb:19:07: medium: precondition might fail
-bounded_queue_example.adb:19:25: info: initialization of private part of "My_Queue" proved
-bounded_queue_example.adb:20:07: warning: assuming "Put" has no effect on global items
-bounded_queue_example.adb:20:07: warning: no Global contract available for "Put"
-bounded_queue_example.adb:20:12: info: initialization of "Value" proved
-bounded_queue_example.adb:21:07: warning: assuming "New_Line" has no effect on global items
-bounded_queue_example.adb:21:07: warning: no Global contract available for "New_Line"
-bounded_queue_example.adb:23:11: info: initialization of private part of "My_Queue" proved
-bounded_queue_example.adb:24:04: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example.adb:24:04: warning: no Global contract available for "Put_Line"
-bounded_queue_example.adb:24:42: medium: range check might fail
-bounded_queue_example.adb:24:65: info: initialization of private part of "My_Queue" proved
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Front" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Items" is not initialized
@@ -570,20 +534,6 @@ bounded_queue_example_v1.adb:20:04: warning: assuming "Put_Line" has no effect o
 bounded_queue_example_v1.adb:20:04: warning: no Global contract available for "Put_Line"
 bounded_queue_example_v1.adb:20:42: medium: range check might fail
 bounded_queue_example_v1.adb:20:59: info: initialization of "Value" proved
-bounded_queue_example_v2.adb:10:11: info: initialization of private part of "My_Queue" proved
-bounded_queue_example_v2.adb:12:07: medium: precondition might fail
-bounded_queue_example_v2.adb:12:25: info: initialization of private part of "My_Queue" proved
-bounded_queue_example_v2.adb:15:07: medium: precondition might fail
-bounded_queue_example_v2.adb:15:25: info: initialization of private part of "My_Queue" proved
-bounded_queue_example_v2.adb:16:07: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example_v2.adb:16:07: warning: no Global contract available for "Put_Line"
-bounded_queue_example_v2.adb:16:32: info: initialization of "Value" proved
-bounded_queue_example_v2.adb:18:11: info: initialization of private part of "My_Queue" proved
-bounded_queue_example_v2.adb:19:19: info: initialization of private part of "My_Queue" proved
-bounded_queue_example_v2.adb:20:04: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example_v2.adb:20:04: warning: no Global contract available for "Put_Line"
-bounded_queue_example_v2.adb:20:42: medium: range check might fail
-bounded_queue_example_v2.adb:20:59: info: initialization of "Value" proved
 bounded_queue_v1.adb:20:32: medium: array index check might fail
 bounded_queue_v1.adb:25:32: medium: array index check might fail
 bounded_queue_v1.adb:38:32: info: division check proved
@@ -604,27 +554,6 @@ bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
 bounded_queue_v1.ads:45:18: info: initialization of "Item" proved
 bounded_queue_v1.ads:45:18: medium: postcondition might fail
 bounded_queue_v1.ads:45:25: info: precondition proved
-bounded_queue_v2.adb:20:32: medium: array index check might fail
-bounded_queue_v2.adb:25:32: medium: array index check might fail
-bounded_queue_v2.adb:38:32: info: division check proved
-bounded_queue_v2.adb:38:51: info: overflow check proved
-bounded_queue_v2.adb:38:51: info: range check proved
-bounded_queue_v2.adb:39:25: info: index check proved
-bounded_queue_v2.adb:40:34: medium: overflow check might fail
-bounded_queue_v2.adb:47:33: medium: array index check might fail
-bounded_queue_v2.adb:48:34: info: division check proved
-bounded_queue_v2.adb:48:53: info: overflow check proved
-bounded_queue_v2.adb:48:53: info: range check proved
-bounded_queue_v2.adb:49:34: medium: range check might fail
-bounded_queue_v2.ads:25:18: medium: postcondition might fail
-bounded_queue_v2.ads:31:18: medium: postcondition might fail
-bounded_queue_v2.ads:32:50: medium: overflow check might fail
-bounded_queue_v2.ads:33:18: info: precondition proved
-bounded_queue_v2.ads:36:23: info: initialization of "Item" proved
-bounded_queue_v2.ads:39:17: info: initialization of "Item" proved
-bounded_queue_v2.ads:39:17: medium: postcondition might fail
-bounded_queue_v2.ads:39:24: info: precondition proved
-bounded_queue_v2.ads:45:04: medium: type "Queue_Type" is not fully initialized
 display_control.adb:16:18: warning: assuming "Put" has no effect on global items
 display_control.adb:16:18: warning: no Global contract available for "Put"
 display_control.adb:18:18: warning: assuming "Flush" has no effect on global items
@@ -1830,6 +1759,65 @@ very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
 very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
 very_longs.ads:75:37: info: overflow check proved
 very_longs.ads:90:68: info: index check proved
+contains.adb:6:39: info: length check proved
+contains.adb:9:37: warning: assuming "Index" has no effect on global items
+contains.adb:9:37: warning: no Global contract available for "Index"
+contains.adb:10:56: info: initialization of "Search_String" proved
+contains.adb:11:57: medium: range check might fail
+contains.adb:12:11: info: initialization of "Result_Index" proved
+contains2.adb:8:39: info: length check proved
+contains2.adb:11:37: warning: assuming "Index" has no effect on global items
+contains2.adb:11:37: warning: no Global contract available for "Index"
+contains2.adb:12:56: info: initialization of "Search_String" proved
+contains2.adb:13:57: info: range check proved
+contains2.adb:14:11: info: initialization of "Result_Index" proved
+contains3.adb:7:21: info: postcondition proved
+contains3.adb:7:69: info: index check proved
+contains3.adb:9:39: info: length check proved
+contains3.adb:14:04: info: assertion proved
+contains3.adb:15:37: warning: assuming "Index" has no effect on global items
+contains3.adb:15:37: warning: no Global contract available for "Index"
+contains3.adb:16:56: info: initialization of "Search_String" proved
+contains3.adb:17:57: info: range check proved
+contains3.adb:22:37: info: index check proved
+contains3.adb:24:10: info: initialization of "Result_Index" proved
+contains3.adb:24:46: info: index check proved
+contains3.adb:25:11: info: initialization of "Result_Index" proved
+density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
+density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
+density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
+density_altitude.adb:24:29: info: initialization of "Temperature" proved
+density_altitude.adb:24:29: info: range check proved
+density_altitude.adb:24:42: medium: overflow check might fail
+density_altitude.adb:25:29: info: initialization of "Pressure" proved
+density_altitude.adb:25:39: medium: overflow check might fail
+density_altitude.adb:25:39: medium: range check might fail
+density_altitude.adb:26:29: info: initialization of "Humidity" proved
+density_altitude.adb:26:29: info: range check proved
+density_altitude.ads:7:20: info: initialization of "Value" proved
+display_manager.adb:8:09: info: length check proved
+display_manager.ads:10:44: info: initialization of "Value" proved
+external_test.adb:16:12: warning: unused assignment
+external_test.ads:6:20: info: initialization of "Item" proved
+led_display.adb:19:15: info: length check proved
+led_display.adb:24:41: info: initialization of "Value" constituent of "LED_State" proved
+terminal.adb:13:14: info: length check proved
+terminal.adb:17:10: info: loop invariant initialization proved
+terminal.adb:17:10: info: loop invariant preservation proved
+terminal.adb:17:33: info: initialization of "Count" proved
+terminal.adb:20:13: info: initialization of "Count" proved
+terminal.adb:28:13: info: initialization of "Port_Status" proved
+terminal.adb:34:35: info: initialization of "Value" proved
+terminal.adb:37:31: info: index check proved
+terminal.adb:37:31: info: overflow check proved
+terminal.adb:37:40: info: initialization of "Buffer" proved
+terminal.adb:37:40: info: initialization of "Count" proved
+terminal.adb:37:58: info: initialization of "Value" proved
+terminal.adb:38:19: info: initialization of "Count" proved
+terminal.adb:38:25: info: overflow check proved
+terminal.ads:7:24: info: initialization of "Buffer" proved
+terminal.ads:8:24: info: initialization of "Count" proved
+terminal.ads:9:24: info: initialization of "Status" proved
 no_overflow.adb:7:14: info: overflow check proved
 no_overflow.adb:7:14: info: range check proved
 no_overflow.adb:7:19: info: overflow check proved
