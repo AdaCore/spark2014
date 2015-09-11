@@ -21,8 +21,6 @@ project Thumper is
          --  require GTKAda or AWS.
          --  Also exclude "timestamp_messages-server.adb" which causes
          --  gnatwhy3 to loop.
-         --  Also exclude "network-addresses.adb" which causes wrong generation
-         --  of Why3 code.
          for Excluded_Source_Files use ("thumper_client.adb", "remote_access.adb", "client_gui.adb", "client_gui.ads", "timestamp_messages-server.adb");
    end case;
 
