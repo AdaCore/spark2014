@@ -397,8 +397,7 @@ package Gnat2Why.Util is
                                         return W_Type_Id;
    --  @param E an array type entity
    --  @param Dim specifies a dimension
-   --  @return the argument E in the special case where E is a string literal
-   --    subtype; otherwise the rep type of the index entity which corresponds
+   --  @return The rep type of the index entity which corresponds
    --    to the selected dimension or ew_int_id if it is bool
 
    function Type_Of_Node (N : Node_Id) return Entity_Id;

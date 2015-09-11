@@ -3008,8 +3008,8 @@ package body SPARK_Util is
       F_Index : constant Entity_Id := Nth_Index_Type (E, Dim);
 
    begin
-      if Ekind (F_Index) = E_String_Literal_Subtype then
-         return String_Literal_Length (F_Index);
+      if Ekind (E) = E_String_Literal_Subtype then
+         return String_Literal_Length (E);
       else
          declare
             Rng   : constant Node_Id := Get_Range (F_Index);

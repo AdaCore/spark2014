@@ -1,6 +1,6 @@
 with "aunit.gpr";
 with "gtkada.gpr";
-with "../../Hermes/src/hermes.gpr";
+with "../../hermes/src/hermes.gpr";
 
 project Thumper is
 
@@ -23,7 +23,7 @@ project Thumper is
          --  gnatwhy3 to loop.
          --  Also exclude "network-addresses.adb" which causes wrong generation
          --  of Why3 code.
-         for Excluded_Source_Files use ("thumper_client.adb", "remote_access.adb", "client_gui.adb", "client_gui.ads", "timestamp_messages-server.adb", "network-addresses.adb");
+         for Excluded_Source_Files use ("thumper_client.adb", "remote_access.adb", "client_gui.adb", "client_gui.ads", "timestamp_messages-server.adb");
    end case;
 
    for Library_Options use ("-LC:/lib/OpenSSL-Win32/lib/VC", "-llibeay32MD", "-LC:/Program Files (x86)/PostgreSQL/9.4/lib", "-llibpq");

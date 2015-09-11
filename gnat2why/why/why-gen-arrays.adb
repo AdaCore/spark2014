@@ -393,7 +393,8 @@ package body Why.Gen.Arrays is
               Base_Why_Type_No_Bool (Component_Type (E));
 
             Fst_Idx : constant Node_Id :=
-              (if Ekind (E) = E_String_Literal_Subtype then Standard_Integer
+              (if Ekind (E) = E_String_Literal_Subtype then
+                    First_Index (Retysp (Etype (E)))
                else First_Index (E));
 
             Sbst : constant W_Clone_Substitution_Array :=
@@ -724,14 +725,19 @@ package body Why.Gen.Arrays is
       Cursor := Cursor + 1;
 
       if Ekind (Und_Ent) = E_String_Literal_Subtype then
+         pragma Assert (Has_Array_Type (Etype (Und_Ent)) and then
+                        Ekind (Etype (Und_Ent)) /= E_String_Literal_Subtype);
          declare
             Low : constant Uint :=
               Expr_Value (String_Literal_Low_Bound (Und_Ent));
+            R_Ty : constant W_Type_Id := Base_Why_Type_No_Bool
+              (Base_Type (Retysp (Etype (
+               First_Index (Retysp (Etype (Und_Ent)))))));
          begin
-            Declare_Attribute (WNE_Attr_First (1), Low, EW_Int_Type);
+            Declare_Attribute (WNE_Attr_First (1), Low, R_Ty);
             Declare_Attribute (WNE_Attr_Last (1),
                                String_Literal_Length (Und_Ent) - Low + 1,
-                               EW_Int_Type);
+                               R_Ty);
 
             Subst (Cursor) :=
               New_Clone_Substitution
@@ -739,7 +745,7 @@ package body Why.Gen.Arrays is
                  Orig_Name => New_Name
                    (Symbol => NID
                       (Append_Num ("index_rep_type", 1))),
-                 Image     => Get_Name (EW_Int_Type));
+                 Image     => Get_Name (R_Ty));
             Cursor := Cursor + 1;
          end;
       else
@@ -1007,12 +1013,7 @@ package body Why.Gen.Arrays is
                                                Domain => Domain,
                                                Attr   => Attr,
                                                Params => Params),
-               To       =>
-                 (if Index_Type = Ty then
-                  --  in the case of strings, force the type to int
-                        EW_Int_Type
-                   else
-                      Base_Why_Type_No_Bool (Index_Type)));
+               To       => Nth_Index_Rep_Type_No_Bool (Ty, Dim));
          end;
       else
          pragma Assert (Is_Constrained (Ty));
@@ -1051,7 +1052,6 @@ package body Why.Gen.Arrays is
 
          if Attr in Attribute_First | Attribute_Last then
             declare
-               Index_Type : constant Node_Id := Nth_Index_Type (Ty, Dim);
                Enum : constant Why_Name_Enum :=
                  (case Attr is
                      when Attribute_First => WNE_Attr_First (Dim),
@@ -1063,11 +1063,7 @@ package body Why.Gen.Arrays is
                    (Domain => Domain,
                     Name   => E_Symb (Ty, Enum),
                     Args   => (1 => Expr),
-                    Typ    => (if Index_Type = Ty then
-                              --  for strings, force the index type
-                                  EW_Int_Type
-                               else
-                                  Base_Why_Type_No_Bool (Index_Type)));
+                    Typ    => Nth_Index_Rep_Type_No_Bool (Ty, Dim));
             end;
          else
             return
