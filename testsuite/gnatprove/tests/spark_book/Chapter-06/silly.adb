@@ -2,6 +2,7 @@
                     Y      : in  Positive;
                     Result : out Positive)
       with
+         SPARK_Mode,
          Pre => ((X + Y) / 2 in Positive)
    is
    begin

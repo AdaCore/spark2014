@@ -581,10 +581,8 @@ elaboration_demo.adb:5:74: info: division check proved
 elaboration_demo.adb:5:74: info: overflow check proved
 parent-public1.adb:11:20: info: initialization of "Temp" proved
 parent.adb:6:22: medium: overflow check might fail
-serial_numbers.adb:3:04: info: initialization of "Next_Number" proved
 serial_numbers.adb:8:34: medium: overflow check might fail
 serial_numbers.ads:3:24: info: initialization of "Number" proved
-serial_numbers2.adb:3:04: info: initialization of "Next_Number" proved
 serial_numbers2.adb:8:34: medium: overflow check might fail
 serial_numbers2.ads:3:24: info: initialization of "Number" proved
 stacks-more.adb:4:32: medium: array index check might fail
@@ -1204,7 +1202,7 @@ shapes.adb:14:30: medium: overflow check might fail
 shapes.adb:14:32: info: initialization of "Delta_Y" proved
 shapes.adb:14:39: info: overflow check proved
 shapes.adb:14:75: info: overflow check proved
-shapes.adb:14:75: medium: range check might fail
+shapes.adb:14:75: info: range check proved
 shapes2.adb:12:34: info: overflow check proved
 shapes2.adb:12:34: info: range check proved
 shapes2.adb:13:34: info: overflow check proved
@@ -1282,6 +1280,10 @@ shapes5.adb:44:75: info: overflow check proved
 shapes5.adb:44:75: info: range check proved
 shapes5.ads:14:18: medium: postcondition might fail, requires In_Bounds (Make_Circle'result)
 shapes5.ads:21:04: info: initialization of "Wild_Man" proved
+silly.adb:3:21: info: initialization of "Result" proved
+silly.adb:6:21: medium: overflow check might fail
+silly.adb:6:26: info: division check proved
+silly.adb:12:22: info: division check proved
 students.adb:15:21: info: initialization of "Tuition" proved
 students.adb:15:29: info: overflow check proved
 students.adb:15:29: info: range check proved
@@ -1426,11 +1428,12 @@ students3.adb:73:42: info: range check proved
 students3.adb:73:44: info: initialization of "Insurance" proved
 ticktock.adb:6:04: info: initialization of "Clock_Value" constituent of "TickTock_State" proved
 ticktock.adb:14:34: medium: overflow check might fail
-utility.adb:13:07: medium: exception might be raised
+utility.adb:12:10: info: loop invariant initialization proved
+utility.adb:12:10: info: loop invariant preservation proved
+utility.adb:13:67: info: index check proved
+utility.adb:15:07: info: raise statement proved unreachable
 utility.ads:12:16: info: postcondition proved
 various.adb:12:07: medium: exception might be raised
-various.adb:15:04: info: initialization of "X" proved
-various.adb:16:04: info: initialization of "Y" proved
 various.adb:20:07: info: assertion proved
 various.adb:20:23: medium: overflow check might fail
 various.adb:20:26: info: division check proved

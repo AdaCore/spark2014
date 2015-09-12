@@ -1,4 +1,4 @@
-with "../library/library.gpr";
+with "../Library/library.gpr";
 
 project Chapter04 is
 

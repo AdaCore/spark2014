@@ -9,6 +9,8 @@ package body Utility is
          if Values (Index) = 0 then
             return Index;
          end if;
+         pragma Loop_Invariant
+           (for some J in Index + 1 .. Index_Type'Last => Values (J) = 0);
       end loop;
       raise Program_Error;
    end Search_For_Zero;
