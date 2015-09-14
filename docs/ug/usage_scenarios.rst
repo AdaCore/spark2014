@@ -98,58 +98,6 @@ It will also warn systematically about the following suspicious behaviors:
 * unused variables or statements (again, can hurt readability and
   maintainability or even be the sign of a bug)
 
-.. _Address Data and Control Coupling:
-
-Address Data and Control Coupling
----------------------------------
-
-As defined in the avionics standard DO-178, data coupling is `"The dependence
-of a software component on data not exclusively under the control of that
-software component"` and control coupling is `"The manner or degree by which
-one software component influences the execution of another software
-component"`, where a software component could be a subprogram, a unit or a set
-of units.
-
-Although analysis of data and control coupling are not performed at the same
-level of details in non-critical domains, knowledge of data and control
-coupling is important to assess impact of code changes. In particular, it may
-be critical for security that some secret data does not leak publicly, which
-can be rephrased as saying that only the specified data dependencies are
-allowed. |SPARK| is ideally equiped to support such analysis, with its detailed
-:ref:`Subprogram Contracts`:
-
-* With :ref:`Data Dependencies`, a user can specify exactly the input and
-  output data of a subprogram, which identifies the `"data not exclusively
-  under the control of that software component"`:
-
-  * When taking the subprogram as component, any variable in the data
-    dependencies is in general not exclusively under the control of that
-    software component.
-
-  * When taking the unit (or sets of units) as component, any variable in the
-    data dependencies that is not defined in the unit itself (or the set of
-    units) is in general not exclusively under the control of that software
-    component.
-
-* With :ref:`Flow Dependencies`, a user can specify the nature of the
-  `"dependence of a software component on data not exclusively under the
-  control of that software component"`, by identifying how that data may
-  influence specific outputs of a subprogram.
-
-* With :ref:`Flow Dependencies`, a user can also specify how `"one software
-  component influences the execution of another software component"`, by
-  identifying the shared data potentially written by the subprogram.
-
-* With functional contracts (:ref:`Preconditions` and :ref:`Postconditions`), a
-  user can specify very precisely the behavior of the subprogram, which defines
-  how it `"influences the execution of another software component"`. These
-  contracts need not be complete, for example they could describe the
-  precedence order rules for calling various subprograms.
-
-When using data and flow dependencies, |GNATprove|'s flow analysis is
-sufficient to check that the program implements its specifications. When using
-functional contracts, |GNATprove|'s proof should also be applied.
-
 .. _Prove Absence of Run-Time Errors (AoRTE):
 
 Prove Absence of Run-Time Errors (AoRTE)
@@ -426,6 +374,42 @@ developments. Then, cases can be progressively generalized (by relaxing the
 conditions in the guards), or new cases added to the contract, until the full
 functional behavior of the subprogram is specified and proved.
 
+.. _Ensure Correct Behavior of Parameterized Software:
+
+Ensure Correct Behavior of Parameterized Software
+-------------------------------------------------
+
+In some domains (railway, space), it is common to develop software which
+depends on parameterization data, which changes from mission to mission. For
+example, the layout of railroads or the characteristics of the payload for a
+spacecraft are mission specific, but in general do not require developing a
+completely new software for the mission. Instead, the software may either
+depend on data definition units which are subject to changes between missions,
+or the software may load at starting time (possibly during `elaboration` in
+Ada) the data which defines the characteristics of the mission. Then, the issue
+is that a verification performed on a specific version of the software (for a
+given parameterization) is not necessarily valid for all versions of the
+software. In general, this means that verification has to be performed again
+for each new version of the software, which can be costly.
+
+|SPARK| provides a better solution to ensure correct behavior of the software
+for all possible parameterizations. It requires to define a getter function for
+every variable or constant in the program that represents an element of
+parameterization, and calling this getter function instead of reading the
+variable or constant directly. Because |GNATprove| performs an analysis based
+on contracts, all that is known at analysis time about the value returned by a
+getter function is what is available from its signature and
+contract. Typically, one may want to use :ref:`Scalar Ranges` or
+:ref:`Predicates` to constrain the return type of such getter functions, to
+reflect the operational constraints respected by all parameterizations.
+
+This technique ensures that the results of applying |GNATprove| are valid not
+only for the version of the software analyzed, but for any other version that
+satisfies the same operational constraints. This is valid whatever the
+objective(s) pursued with the use of |SPARK|: :ref:`Prove Absence of Run-Time
+Errors (AoRTE)`, :ref:`Prove Correct Integration Between Components`,
+:ref:`Prove Functional Correctness`, etc.
+
 .. _Safe Optimization of Run-Time Checks:
 
 Safe Optimization of Run-Time Checks
@@ -452,6 +436,58 @@ precondition of the enclosing subprogram is checked (for example by using
 :ref:`Pragma Assertion_Policy`). By replacing many checks with one check, we
 can decrease the running time of the application by doing safe and controlled
 optimization of run-time checks.
+
+.. _Address Data and Control Coupling:
+
+Address Data and Control Coupling
+---------------------------------
+
+As defined in the avionics standard DO-178, data coupling is `"The dependence
+of a software component on data not exclusively under the control of that
+software component"` and control coupling is `"The manner or degree by which
+one software component influences the execution of another software
+component"`, where a software component could be a subprogram, a unit or a set
+of units.
+
+Although analysis of data and control coupling are not performed at the same
+level of details in non-critical domains, knowledge of data and control
+coupling is important to assess impact of code changes. In particular, it may
+be critical for security that some secret data does not leak publicly, which
+can be rephrased as saying that only the specified data dependencies are
+allowed. |SPARK| is ideally equiped to support such analysis, with its detailed
+:ref:`Subprogram Contracts`:
+
+* With :ref:`Data Dependencies`, a user can specify exactly the input and
+  output data of a subprogram, which identifies the `"data not exclusively
+  under the control of that software component"`:
+
+  * When taking the subprogram as component, any variable in the data
+    dependencies is in general not exclusively under the control of that
+    software component.
+
+  * When taking the unit (or sets of units) as component, any variable in the
+    data dependencies that is not defined in the unit itself (or the set of
+    units) is in general not exclusively under the control of that software
+    component.
+
+* With :ref:`Flow Dependencies`, a user can specify the nature of the
+  `"dependence of a software component on data not exclusively under the
+  control of that software component"`, by identifying how that data may
+  influence specific outputs of a subprogram.
+
+* With :ref:`Flow Dependencies`, a user can also specify how `"one software
+  component influences the execution of another software component"`, by
+  identifying the shared data potentially written by the subprogram.
+
+* With functional contracts (:ref:`Preconditions` and :ref:`Postconditions`), a
+  user can specify very precisely the behavior of the subprogram, which defines
+  how it `"influences the execution of another software component"`. These
+  contracts need not be complete, for example they could describe the
+  precedence order rules for calling various subprograms.
+
+When using data and flow dependencies, |GNATprove|'s flow analysis is
+sufficient to check that the program implements its specifications. When using
+functional contracts, |GNATprove|'s proof should also be applied.
 
 .. _Ensure Portability of Programs:
 
