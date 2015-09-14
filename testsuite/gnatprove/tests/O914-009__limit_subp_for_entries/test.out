@@ -1,0 +1,7 @@
+p.adb:8:25: warning: assuming "Yield" has no effect on global items
+p.adb:8:25: warning: no Global contract available for "Yield"
+p.ads:4:13: potentially blocking operation in protected operation "Yielding_Entry"
+   compilation of p.adb failed
+
+
+gnatprove: error during flow analysis and proof

@@ -692,15 +692,15 @@ package SPARK_Util is
    --  @return True iff E should not be translated into Why3
 
    function Subp_Location (E : Entity_Id) return String
-     with Pre =>
-       Is_Subprogram (E)
-     or else Ekind (E) = E_Package
-     or else Is_Task_Type (E);
-   --  @param E subprogram or package
-   --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file
-   --    and line where this subprogram or package is declared. This allows to
-   --    identify the subprogram or package by its source position and is
-   --    used e.g. for the --limit-subp switch of GNATprove.
+     with Pre => Ekind (E) in Subprogram_Kind |
+                              E_Package       |
+                              Task_Kind       |
+                              Entry_Kind;
+   --  @param E subprogram, package, task or entry
+   --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file and
+   --    line where this entity is declared. This allows to identify the entity
+   --    by its source position and is used e.g. for the --limit-subp switch of
+   --    GNATprove.
 
    function Is_Protected_Subprogram (E : Entity_Id) return Boolean
    is (Ekind (E) = E_Entry or else

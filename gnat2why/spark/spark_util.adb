@@ -2553,7 +2553,7 @@ package body SPARK_Util is
    -------------------------------------
 
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean is
-     (Ekind (E) in Subprogram_Kind | Task_Kind | E_Task_Body
+     (Ekind (E) in Subprogram_Kind | Task_Kind | E_Task_Body | Entry_Kind
         and then
       GP_Subp_Marker & To_String (Gnat2Why_Args.Limit_Subp) =
         SPARK_Util.Subp_Location (E));
