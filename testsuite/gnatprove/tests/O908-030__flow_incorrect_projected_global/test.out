@@ -1,3 +1,4 @@
+counting.ads:1:41: warning: no procedure exists that can initialize abstract state "Counting.State"
 counting.ads:3:14: info: initialization of "Black_Counter" constituent of "State" proved
 counting.ads:4:14: info: initialization of "Red_Counter" constituent of "State" proved
 pkg_a.adb:12:38: info: initialization of "G1" constituent of "State" proved
@@ -10,9 +11,8 @@ pkg_a.adb:54:07: warning: unused assignment to "G1" constituent of "State"
 pkg_a.adb:79:14: info: initialization of "G1" constituent of "State" proved
 pkg_a.adb:82:07: warning: statement has no effect
 pkg_a.adb:82:07: warning: unused assignment to "G1" constituent of "State"
+pkg_a.ads:1:38: warning: no procedure exists that can initialize abstract state "Pkg_A.State"
 pkg_a.ads:7:14: info: initialization of "G1" constituent of "State" proved
-pkg_b.ads:8:50: warning: unused initial value of "Pkg_A.State"
-pkg_b.ads:12:14: info: initialization of "Pkg_A.State" proved
 pkg_c.adb:10:38: info: initialization of "G1" constituent of "State" proved
 pkg_c.adb:45:30: info: initialization of "G1" constituent of "State" proved
 pkg_c.adb:52:30: info: initialization of "G1" constituent of "State" proved
@@ -22,14 +22,15 @@ pkg_c.adb:72:14: info: initialization of "G1" constituent of "State" proved
 pkg_c.adb:78:14: info: initialization of "G1" constituent of "State" proved
 pkg_c.adb:84:14: info: initialization of "G1" constituent of "State" proved
 pkg_c.adb:90:14: info: initialization of "G1" constituent of "State" proved
+pkg_c.ads:1:38: warning: no procedure exists that can initialize abstract state "Pkg_C.State"
 pkg_c.ads:7:14: info: initialization of "G1" constituent of "State" proved
 pkg_c.ads:9:14: info: initialization of "G1" constituent of "State" proved
 pkg_c.ads:11:14: info: initialization of "G1" constituent of "State" proved
 pkg_c.ads:13:14: info: initialization of "G1" constituent of "State" proved
 pkg_c.ads:15:14: info: initialization of "G1" constituent of "State" proved
 use_counting.adb:3:11: info: initialization of "Counting.State" proved
-use_counting.adb:5:05: warning: statement has no effect
-use_counting.adb:5:05: warning: unused assignment to "Counting.State"
+use_counting.adb:5:05: high: "Counting.State" is not initialized
+use_counting.adb:6:05: info: initialization of "Counting.State" proved
    compilation of pkg_a.adb failed
 
 
