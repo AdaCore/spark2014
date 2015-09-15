@@ -2399,6 +2399,8 @@ package body SPARK_Util is
                or else
              Is_Pragma_Check (N, Name_Post)
                or else
+             Is_Pragma_Check (N, Name_Refined_Post)
+               or else
              Is_Pragma_Check (N, Name_Static_Predicate)
                or else
              Is_Pragma_Check (N, Name_Predicate)

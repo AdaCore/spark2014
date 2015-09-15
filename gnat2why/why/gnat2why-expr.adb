@@ -1027,6 +1027,8 @@ package body Gnat2Why.Expr is
               or else
             Is_Pragma_Check (P, Name_Postcondition)
               or else
+            Is_Pragma_Check (P, Name_Refined_Post)
+              or else
             Is_Pragma (P, Pragma_Post)
               or else
             Is_Pragma (P, Pragma_Postcondition)
@@ -11357,6 +11359,8 @@ package body Gnat2Why.Expr is
           Is_Pragma_Check (Prag, Name_Postcondition)
         or else
           Is_Pragma_Check (Prag, Name_Post)
+        or else
+          Is_Pragma_Check (Prag, Name_Refined_Post)
         or else
           Is_Pragma_Check (Prag, Name_Static_Predicate)
         or else
