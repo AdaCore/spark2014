@@ -79,6 +79,18 @@ package Gnat2Why.Util is
 
    private
 
+      --  The implementation is a simple map from Ada entities to Items. In
+      --  fact we need two maps, because some of the keys are not entities,
+      --  but entity_names.
+
+      --  To implement scopes, for all modifications to the maps, we register
+      --  the inverse action into a stack, which is replayed in reverse order
+      --  on "pop". This is called the undo stack.
+
+      --  To support several nested scopes, instead of having a nested data
+      --  structure, we insert "boundary" actions in the undo stack, which
+      --  stop the undoing at that point.
+
       package Name_To_Why_Map is new Ada.Containers.Hashed_Maps
         (Key_Type => Entity_Name,
          Element_Type    => Item_Type,
