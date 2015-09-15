@@ -1043,16 +1043,37 @@ We can also imagine defining different abstract names for the total and the log:
       ...
    end Account;
 
+Global constants with a statically known value are not part of a package's
+state. On the contrary, `constant with variable inputs` are constants whose
+value depends on the value of either a variable or a subprogram
+parameter. Since they participate in the flow of information between variables,
+constants with variable inputs are treated like variables: they are part of a
+package's state, and they must be listed in its state refinement whenever they
+are not visible. For example, constant ``Total_Min`` is not part of the state
+refinement of package ``Account`` below, while constant with variable inputs
+``Total_Max`` is part of it:
+
+.. code-block:: ada
+
+   package body Account with
+     Refined_State => (State => (Total, Total_Max))
+   is
+      Total     : Integer;
+      Total_Min : constant Integer := 0;
+      Total_Max : constant Integer := Compute_Total_Max(...);
+      ...
+   end Account;
+
 Global variables are not always the only constituents of a package's state. For
 example, if a package P contains a nested package N, then N's state is part of
 P's state. As a consequence, if N is hidden, then its state must be listed in
 P's refinement. For example, we can nest ``Account`` in the body of the
-``Account_Manager`` package:
+``Account_Manager`` package as follows:
 
 .. code-block:: ada
 
    package Account_Manager with
-     Abstract_State => (State)
+     Abstract_State => State
    is
       ...
    end Account_Manager;
@@ -1061,18 +1082,12 @@ P's refinement. For example, we can nest ``Account`` in the body of the
      Refined_State => (State => Account.State)
    is
       package Account with
-        Abstract_State => (State)
+        Abstract_State => State
       is
          ...
       end Account;
       ...
    end Account_Manager;
-
-We call `constant with variable inputs` a constant whose value depends on
-the value of either variable or a subprogram parameter. Since they participate
-to the flow of information between variables, constants with variable inputs are
-part of a package's state, and must be listed in its state refinement whenever
-they are not visible.
 
 The abstract names defined in a package are visible everywhere the package name
 itself is visible:
