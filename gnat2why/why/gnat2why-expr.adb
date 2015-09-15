@@ -1001,8 +1001,8 @@ package body Gnat2Why.Expr is
       Bind_Value_Of_Old      : Boolean := False) return W_Prog_Id
    is
       function Get_Corresponding_Guard (N : Node_Id) return Node_Id;
-      --  If N is inside the consequence expression of a contract case, returns
-      --  the corresponding guard expression. Otherwise, returns Empty;
+      --  If N is inside the consequence expression of a contract case, return
+      --  the corresponding guard expression. Otherwise, return Empty.
 
       -----------------------------
       -- Get_Corresponding_Guard --

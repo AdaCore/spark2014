@@ -178,7 +178,7 @@ package body Gnat2Why.Subprograms is
       Kind      : Name_Id;
       Classwide : Boolean := False) return Node_Id;
    --  Return a node with a proper location for the pre- or postcondition of E,
-   --  if any
+   --  if any.
 
    procedure Generate_Subprogram_Program_Fun
      (File : Why_Section;
@@ -2399,7 +2399,7 @@ package body Gnat2Why.Subprograms is
    begin
 
       --  In the case of a No_Return Subprogram, there is no real location for
-      --  the postcondition; simply return the subp entity node.
+      --  the postcondition; simply return the subprogram entity node.
 
       if Kind = Name_Postcondition
         and then No_Return (E)
