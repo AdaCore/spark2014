@@ -776,6 +776,7 @@ package body Gnat2Why.Driver is
 
             if Ekind (E) in Formal_Kind
               and then Present (Discriminal_Link (E))
+                and then Ekind (Scope (E)) in Protected_Kind | Task_Kind
             then
                return;
             end if;
