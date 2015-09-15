@@ -1608,7 +1608,7 @@ package body Gnat2Why.Expr is
                                         Actual_Binder.Discrs.Binder.B_Name,
                                     Typ   => Get_Typ
                                       (Actual_Binder.Discrs.Binder.B_Name))
-                                 else Actual_Binder.Discrs.Binder.B_Name);
+                                 else +Actual_Binder.Discrs.Binder.B_Name);
 
                               Arg_Cnt := Arg_Cnt + 1;
                            end if;
