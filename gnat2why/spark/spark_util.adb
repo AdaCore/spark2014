@@ -2592,7 +2592,7 @@ package body SPARK_Util is
            and then
              (ECI (Name, Get_Name_String (Name_Shift_Right))
                 or else
-              ECI (Name,  Get_Name_String (Name_Shift_Right_Arithmetic))
+              ECI (Name, Get_Name_String (Name_Shift_Right_Arithmetic))
                 or else
               ECI (Name, Get_Name_String (Name_Shift_Left))
                 or else
