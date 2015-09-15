@@ -382,7 +382,7 @@ Ensure Correct Behavior of Parameterized Software
 In some domains (railway, space), it is common to develop software which
 depends on parameterization data, which changes from mission to mission. For
 example, the layout of railroads or the characteristics of the payload for a
-spacecraft are mission specific, but in general do not require developing a
+spacecraft are mission specific, but in general do not require developing
 completely new software for the mission. Instead, the software may either
 depend on data definition units which are subject to changes between missions,
 or the software may load at starting time (possibly during `elaboration` in
@@ -393,7 +393,7 @@ software. In general, this means that verification has to be performed again
 for each new version of the software, which can be costly.
 
 |SPARK| provides a better solution to ensure correct behavior of the software
-for all possible parameterizations. It requires to define a getter function for
+for all possible parameterizations. It requires defining a getter function for
 every variable or constant in the program that represents an element of
 parameterization, and calling this getter function instead of reading the
 variable or constant directly. Because |GNATprove| performs an analysis based
@@ -409,6 +409,14 @@ satisfies the same operational constraints. This is valid whatever the
 objective(s) pursued with the use of |SPARK|: :ref:`Prove Absence of Run-Time
 Errors (AoRTE)`, :ref:`Prove Correct Integration Between Components`,
 :ref:`Prove Functional Correctness`, etc.
+
+It may be the case that changing constants into functions makes the code
+illegal because the constants were used in representation clauses that require
+static values. In that case, compilation switch ``-gnatI`` should be specified
+when analyzing the modified code with |GNATprove|, so that representation
+clauses are ignored. As representation clauses have no effect on |GNATprove|'s
+analysis, and their validity is checked by |GNAT Pro| when compiling the
+original code, the formal verification results are valid for the original code.
 
 .. _Safe Optimization of Run-Time Checks:
 
