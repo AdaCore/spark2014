@@ -3036,8 +3036,8 @@ package body Flow.Analysis is
 
    procedure Check_Depends_Contract (FA : in out Flow_Analysis_Graphs) is
 
-      User_Deps   : Dependency_Maps.Map;
-      Actual_Deps : Dependency_Maps.Map;
+      User_Deps        : Dependency_Maps.Map;
+      Actual_Deps      : Dependency_Maps.Map;
 
       Depends_Location : constant Node_Id :=
         (if Has_Depends (FA.Analyzed_Entity) then
@@ -3045,10 +3045,18 @@ package body Flow.Analysis is
          else
             FA.Analyzed_Entity);
 
-      Params      : Node_Sets.Set;
+      Params           : Node_Sets.Set;
       --  This set will hold all local parameters of the subprogram
 
-      function Message_Kind  (F : Flow_Id) return Msg_Kind;
+      Depends_Scope    : constant Flow_Scope :=
+        (if Present (FA.Refined_Depends_N) then
+            FA.B_Scope
+         else
+            FA.S_Scope);
+      --  This will be FA.B_Scope if we are checking a Refined_Depends contract
+      --  or FA.S_Scope if we are checking a Depends contract.
+
+      function Message_Kind (F : Flow_Id) return Msg_Kind;
       --  Returns the severity of the message that we have to emit.
       --
       --  In the absence of a user-provided Global contract the
@@ -3066,7 +3074,7 @@ package body Flow.Analysis is
          return Dependency_Maps.Map;
       --  Up projects the constituents that are mentioned in DM until
       --  we have visibility of the enclosing state abstractions from
-      --  FA.S_Scope.
+      --  Depends_Scope.
       --
       --  Example:
       --     State1 => (Con1, Con2)
@@ -3127,8 +3135,8 @@ package body Flow.Analysis is
                AS     : Flow_Id;
             begin
                --  Add output
-               if Is_Non_Visible_Constituent (F_Out, FA.S_Scope) then
-                  AS := Up_Project_Constituent (F_Out, FA.S_Scope);
+               if Is_Non_Visible_Constituent (F_Out, Depends_Scope) then
+                  AS := Up_Project_Constituent (F_Out, Depends_Scope);
 
                   --  Add closest enclosing abstract state to the map
                   --  (if it is not already in it).
@@ -3148,8 +3156,8 @@ package body Flow.Analysis is
 
                --  Add output's dependencies
                for Dep of F_Deps loop
-                  if Is_Non_Visible_Constituent (Dep, FA.S_Scope) then
-                     AS := Up_Project_Constituent (Dep, FA.S_Scope);
+                  if Is_Non_Visible_Constituent (Dep, Depends_Scope) then
+                     AS := Up_Project_Constituent (Dep, Depends_Scope);
 
                      --  Add closest enclosing abstract state
                      Up_Projected_Map (F_Out).Include (AS);
@@ -3203,7 +3211,7 @@ package body Flow.Analysis is
       end if;
 
       Get_Depends (Subprogram => FA.Analyzed_Entity,
-                   Scope      => FA.B_Scope,
+                   Scope      => Depends_Scope,
                    Classwide  => False,
                    Depends    => User_Deps);
 
@@ -3218,18 +3226,9 @@ package body Flow.Analysis is
          end loop;
       end;
 
-      if FA.Is_Generative
-        and then No (FA.Refined_Depends_N)
-        and then Mentions_State_With_Visible_Refinement (FA.Depends_N,
-                                                         FA.B_Scope)
-      then
-         --  Use the abstract states versions of the dependencies
-         User_Deps   := Up_Project_Map (User_Deps);
-         Actual_Deps := Up_Project_Map (FA.Dependency_Map);
-      else
-         --  Use the down projected version of the dependencies
-         Actual_Deps := FA.Dependency_Map;
-      end if;
+      --  Up project the dependencies
+      User_Deps   := Up_Project_Map (User_Deps);
+      Actual_Deps := Up_Project_Map (FA.Dependency_Map);
 
       if Debug_Trace_Depends then
          Print_Dependency_Map (User_Deps);
@@ -3297,7 +3296,7 @@ package body Flow.Analysis is
                Error_Msg_Flow
                  (FA   => FA,
                   Msg  => "expected to see & on the left-hand-side of" &
-                    " a dependency relation",
+                          " a dependency relation",
                   N    => Depends_Location,
                   F1   => F_Out,
                   Tag  => Depends_Missing_Clause,
@@ -3388,7 +3387,23 @@ package body Flow.Analysis is
                for Wrong_Var of Wrong_Deps loop
                   --  Something the user dependency claims, but does
                   --  not happen in reality.
-                  if not Is_Variable (Wrong_Var) then
+                  if Is_Abstract_State (Wrong_Var)
+                    and then Wrong_Var.Kind in Direct_Mapping | Record_Field
+                    and then State_Refinement_Is_Visible
+                               (Get_Direct_Mapping_Id (Wrong_Var),
+                                FA.B_Scope)
+                    --  ??? Change the following into
+                    --  Has_Null_Refinement (Get_Direct_Mapping_Id (Wrong_Var))
+                    --  once O914-008 is fixed.
+                    and then Flow_Generated_Globals.GG_Get_Constituents
+                               (To_Entity_Name
+                                  (Get_Direct_Mapping_Id (Wrong_Var))).Is_Empty
+                  then
+                     --  If the depends contract mentions a state with visible
+                     --  null refinement then we do not need to emit a message
+                     --  since this is trivially True.
+                     null;
+                  elsif not Is_Variable (Wrong_Var) then
                      Error_Msg_Flow
                        (FA   => FA,
                         Msg  => "& cannot appear in Depends",
@@ -3711,9 +3726,9 @@ package body Flow.Analysis is
                         Msg     => "initialization of & does not depend on &",
                         SRM_Ref => "7.1.5(11)",
                         N       => Search_Contract
-                                       (FA.Spec_Entity,
-                                        Pragma_Initializes,
-                                        Get_Direct_Mapping_Id (The_Out)),
+                                     (FA.Spec_Entity,
+                                      Pragma_Initializes,
+                                      Get_Direct_Mapping_Id (The_Out)),
                         F1      => The_Out,
                         F2      => Contract_In,
                         Tag     => Initializes_Wrong,
@@ -3800,15 +3815,15 @@ package body Flow.Analysis is
                      Error_Msg_Flow
                        (FA         => FA,
                         Msg        => "& is not initialized at " &
-                          "subprogram entry",
+                                      "subprogram entry",
                         Kind       => High_Check_Kind,
                         N          => First_Variable_Use
-                          (N        => N,
-                           FA       => FA,
-                           Scope    => FA.B_Scope,
-                           Var      => Var,
-                           Precise  => False,
-                           Targeted => False),
+                                        (N        => N,
+                                         FA       => FA,
+                                         Scope    => FA.B_Scope,
+                                         Var      => Var,
+                                         Precise  => False,
+                                         Targeted => False),
                         F1         => Var,
                         Tag        => Uninitialized);
                   end if;
@@ -3937,8 +3952,8 @@ package body Flow.Analysis is
                   if Present (FA.S_Scope) then
                      Error_Msg_Flow
                       (FA   => FA,
-                       Msg  => "& must not be an output of publicly"
-                                  & " visible procedure &",
+                       Msg  => "& must not be an output of publicly" &
+                               " visible procedure &",
                        Kind => High_Check_Kind,
                        N    => FA.Analyzed_Entity,
                        F1   => W,
@@ -3947,8 +3962,8 @@ package body Flow.Analysis is
                   else
                      Error_Msg_Flow
                        (FA   => FA,
-                        Msg  => "constant after elaboration & must not be an "
-                                   & "output of procedure &",
+                        Msg  => "constant after elaboration & must not be " &
+                                "an output of procedure &",
                         Kind => High_Check_Kind,
                         N    => FA.Analyzed_Entity,
                         F1   => W,
@@ -3989,8 +4004,8 @@ package body Flow.Analysis is
                if not Is_Volatile_Function (FA.Analyzed_Entity) then
                   Error_Msg_Flow
                     (FA   => FA,
-                     Msg  => "& cannot act as global item of nonvolatile "
-                                & "function &",
+                     Msg  => "& cannot act as global item of nonvolatile " &
+                             "function &",
                      Kind => Error_Kind,
                      N    => FA.Analyzed_Entity,
                      F1   => F,
@@ -4099,8 +4114,8 @@ package body Flow.Analysis is
       Instances : constant Instance_Count :=
         (if Task_Instances_Maps.Has_Element (C)
          then (case Task_Instances_Maps.Element (C) is
-              when One  => 1,
-              when Many => 2)
+               when One  => 1,
+               when Many => 2)
          else 0);
       --  Number of task instances
 
@@ -4134,8 +4149,8 @@ package body Flow.Analysis is
          then
             Error_Msg_Flow (FA      => FA,
                             Msg     => "more than one task " &
-                              Conflict_Msg (Owning_Kind) &
-                              " &",
+                                       Conflict_Msg (Owning_Kind) &
+                                       " &",
                             Kind    => Error_Kind,
                             N       => FA.Analyzed_Entity,
                             F1      => Magic_String_Id
@@ -4159,8 +4174,8 @@ package body Flow.Analysis is
                   if Has_Element (Other_Task) then
                      Error_Msg_Flow (FA      => FA,
                                      Msg     => "task & already " &
-                                       Conflict_Msg (Owning_Kind) &
-                                       " &",
+                                                Conflict_Msg (Owning_Kind) &
+                                                " &",
                                      Kind    => Error_Kind,
                                      N       => FA.Analyzed_Entity,
                                      F1      => Direct_Mapping_Id

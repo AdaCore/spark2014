@@ -1,7 +1,6 @@
 with C.B;
 
-package body C
-with
+package body C with
    SPARK_Mode,
    Refined_State => (State =>  (C.B.X, C.B.Y))
 is
@@ -15,12 +14,10 @@ is
       Value := B.X;
    end Read;
 
-   procedure Is_Positive (Result :    out Boolean)
-   is
+   procedure Is_Positive (Result :    out Boolean) is
       Value : Integer;
    begin
       Read (Value);
       Result := Value > 0;
    end Is_Positive;
-
 end C;

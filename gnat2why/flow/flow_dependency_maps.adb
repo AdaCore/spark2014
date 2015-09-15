@@ -50,8 +50,7 @@ package body Flow_Dependency_Maps is
    -- Parse_Raw_Dependency_Map --
    ------------------------------
 
-   function Parse_Raw_Dependency_Map (N : Node_Id)
-                                      return Dependency_Maps.Map
+   function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
    is
       use type Ada.Containers.Count_Type;
 

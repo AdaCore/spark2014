@@ -8,6 +8,7 @@ bad_refinement.ads:9:11: "Bad_Refinement.State" must be a global input of "Liar2
 bad_refinement.ads:12:11: "Bad_Refinement.State" must be a global output of "Liar3" (SPARK RM 6.1.4)
 bad_refinement.ads:12:11: low: global input "Bad_Refinement.State" of "Liar3" not read
 bad_refinement.ads:15:28: medium: missing dependency "Liar4'Result => Bad_Refinement.State2"
+bad_refinement.ads:15:39: medium: incorrect dependency "Liar4'Result => Bad_Refinement.State"
 bad_refinement.ads:17:21: info: initialization of "I" proved
 bad_refinement.ads:19:23: medium: missing dependency "Bad_Refinement.State2 => Bad_Refinement.State2"
 bad_refinement.ads:21:21: info: initialization of "I" proved
@@ -49,6 +50,7 @@ lots_of_tests.ads:12:49: info: initialization of "X" proved
 lots_of_tests.ads:13:23: medium: missing dependency "X => G1"
 lots_of_tests.ads:13:23: medium: missing dependency "X => Lots_Of_Tests.State"
 lots_of_tests.ads:13:23: medium: missing dependency "X => Lots_Of_Tests.State2"
+lots_of_tests.ads:13:37: medium: incorrect dependency "X => G2"
 lots_of_tests.ads:25:14: info: initialization of "G2" proved
 lots_of_tests.ads:25:32: info: initialization of "Y" proved
 lots_of_tests.ads:29:52: info: initialization of "Y" proved

@@ -1,5 +1,4 @@
-package C
-with
+package C with
    SPARK_Mode,
    Abstract_State => (State with External)
 is
@@ -9,7 +8,5 @@ is
       Global  => (In_Out => State),
       Depends => ((Value, State) => State);
 
-   procedure Is_Positive
-       (Result   :    out Boolean);
-
+   procedure Is_Positive (Result   :    out Boolean);
 end C;

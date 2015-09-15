@@ -35,7 +35,6 @@ const4.ads:15:14: medium: constant without variable input "C" cannot appear in G
 const4.ads:15:17: info: initialization of "X" proved
 const4.ads:16:11: medium: constant without variable input "C" cannot appear in Depends
 const4.ads:18:14: info: initialization of "H" constituent of "State" proved
-const4.ads:19:23: medium: missing dependency "Const4.State => Const4.State"
 other.adb:4:49: medium: overflow check might fail
 other.ads:4:04: info: initialization of "V" proved
 other.ads:6:28: info: initialization of "V" proved

@@ -49,8 +49,7 @@ package Flow_Dependency_Maps is
    --  Functions
    ----------------------------------------------------------------------
 
-   function Parse_Depends (N : Node_Id)
-                           return Dependency_Maps.Map
+   function Parse_Depends (N : Node_Id) return Dependency_Maps.Map
    with Pre => Nkind (N) = N_Pragma and then
                Get_Pragma_Id (Chars (Pragma_Identifier (N))) in
                  Pragma_Depends         |

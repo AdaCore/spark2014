@@ -147,7 +147,7 @@ is
    --
    --  The Use_Computed_Globals flag is set to False during the
    --  generation of globals phase. It prevents us from attempting to
-   --  use generated glboals before they have actually been produced.
+   --  use generated globals before they have actually been produced.
 
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Scope                  : Flow_Scope;
@@ -157,7 +157,8 @@ is
                           Writes                 : out Flow_Id_Sets.Set;
                           Consider_Discriminants : Boolean := False;
                           Globals_For_Proof      : Boolean := False;
-                          Use_Computed_Globals   : Boolean := True)
+                          Use_Computed_Globals   : Boolean := True;
+                          Ignore_Depends         : Boolean := False)
    with Pre  => Ekind (Subprogram) in E_Entry         |
                                       E_Task_Type     |
                                       Subprogram_Kind,
@@ -178,6 +179,9 @@ is
    --
    --  If Globals_For_Proof is True then the calls to
    --  Get_Generated_Reads will not specify Include_Constants.
+   --
+   --  If Ignore_Depends is True then we do not use the Refined_Depends
+   --  contract to trim the Globals.
 
    procedure Get_Proof_Globals (Subprogram           : Entity_Id;
                                 Classwide            : Boolean;

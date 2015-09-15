@@ -1480,11 +1480,18 @@ package body Flow_Utility is
       --  For now we assume classwide globals are the same as the actual
       --  globals.
 
-      Tmp       : Dependency_Maps.Map;
+      Tmp           : Dependency_Maps.Map;
 
-      Depends_N : constant Node_Id := Get_Contract_Node (Subprogram,
-                                                         Scope,
-                                                         Depends_Contract);
+      Depends_N     : constant Node_Id := Get_Contract_Node (Subprogram,
+                                                             Scope,
+                                                             Depends_Contract);
+
+      All_Proof_Ins : Flow_Id_Sets.Set;
+      All_Reads     : Flow_Id_Sets.Set;
+      All_Writes    : Flow_Id_Sets.Set;
+
+      Param         : Entity_Id;
+      F             : Flow_Id;
 
       function Trimming_Required return Boolean;
       --  Checks if the projected Depends constituents need to be
@@ -1515,99 +1522,75 @@ package body Flow_Utility is
    begin
 
       ----------------------------------------------------------------------
-      --  Step 1: parse the appropriate dependency relation.
+      --  Step 1: Parse the appropriate dependency relation.
       ----------------------------------------------------------------------
 
       Tmp := Parse_Depends (Depends_N);
 
       ----------------------------------------------------------------------
-      --  Step 2: expand out any abstract state for which the refinement is
+      --  Step 2: Expand out any abstract state for which the refinement is
       --  visible, similar to what we do for globals. During this step we
       --  also trim the generated refined depends according to the
-      --  user-provided refined_global contact.
+      --  user-provided Refined_Global contract.
       ----------------------------------------------------------------------
 
+      --  Initializing Depends map
       Depends := Dependency_Maps.Empty_Map;
+
       if Trimming_Required then
-         --  Use the Refined_Global to trim the down projected
-         --  Depends.
-         declare
-            All_Proof_Ins : Flow_Id_Sets.Set;
-            All_Reads     : Flow_Id_Sets.Set;
-            Unused        : Flow_Id_Sets.Set;
+         --  Use the Refined_Global to trim the down projected Depends
 
-            Params        : Node_Sets.Set;
-            E             : Entity_Id;
-         begin
-            --  Start with collecting all global outputs and
-            --  inputs
-            Get_Globals (Subprogram           => Subprogram,
-                         Scope                => Scope,
-                         Classwide            => False,
-                         Proof_Ins            => All_Proof_Ins,
-                         Reads                => All_Reads,
-                         Writes               => Unused,
-                         Use_Computed_Globals => Use_Computed_Globals);
+         --  Collecting all global Proof_Ins, Outputs and Inputs
+         Get_Globals (Subprogram           => Subprogram,
+                      Scope                => Scope,
+                      Classwide            => False,
+                      Proof_Ins            => All_Proof_Ins,
+                      Reads                => All_Reads,
+                      Writes               => All_Writes,
+                      Use_Computed_Globals => Use_Computed_Globals);
 
-            --  Pupulate params (with the subprogram's formal
-            --  parameters)
-            E := First_Formal (Subprogram);
-            while Present (E) loop
-               Params.Include (E);
-               E := Next_Formal (E);
-            end loop;
+         --  Add formal parameters so that we have the complete set of
+         --  Proof_Ins, Reads and Writes.
+         Param := First_Formal (Subprogram);
+         while Present (Param) loop
+            case Ekind (Param) is
+               when E_In_Parameter     =>
+                  F := Direct_Mapping_Id (Param);
+                  All_Reads.Insert (F);
+                  All_Proof_Ins.Insert (F);
 
-            --  Add the formal parameters of mode "in [out]" so
-            --  that we have the complete set of Proof_Ins and
-            --  Reads.
-            for Par of Params loop
-               if Ekind (Par) in E_In_Parameter | E_In_Out_Parameter then
-                  declare
-                     F : constant Flow_Id := Direct_Mapping_Id (Par);
-                  begin
-                     All_Reads.Include (F);
-                     All_Proof_Ins.Include (F);
-                  end;
-               end if;
-            end loop;
+               when E_In_Out_Parameter =>
+                  F := Direct_Mapping_Id (Param);
+                  All_Proof_Ins.Insert (F);
+                  All_Reads.Insert (F);
+                  All_Writes.Insert (F);
 
-            for C in Tmp.Iterate loop
-               declare
-                  D_In  : constant Flow_Id_Sets.Set :=
-                    (if Present (Dependency_Maps.Key (C)) then
-                        To_Flow_Id_Set (Down_Project
-                                          (Node_Sets.To_Set
-                                             (Get_Direct_Mapping_Id
-                                                (Dependency_Maps.Key (C))),
-                                           Scope))
-                     else
-                        Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
+               when E_Out_Parameter    =>
+                  F := Direct_Mapping_Id (Param);
+                  All_Writes.Insert (F);
 
-                  D_Out : Flow_Id_Sets.Set :=
-                    To_Flow_Id_Set (Down_Project
-                                      (To_Node_Set
-                                         (Dependency_Maps.Element (C)),
-                                       Scope));
-               begin
-                  for I of D_In loop
-                     if I = Null_Flow_Id then
-                        D_Out := D_Out and Change_Variant (All_Proof_Ins,
-                                                           Normal_Use);
-                     else
-                        D_Out := D_Out and Change_Variant (All_Reads,
-                                                           Normal_Use);
-                     end if;
-                     Depends.Include (I, D_Out);
-                  end loop;
-               end;
-            end loop;
-         end;
+               when others             =>
+                  null;
+            end case;
 
-      else
-         --  Simply add the dependencies as they are
+            Param := Next_Formal (Param);
+         end loop;
+
+         --  If Subprogram is a function then we need to add it to the
+         --  All_Writes set so that Subprogram'Result can appear on the LHS of
+         --  the Refined_Depends.
+         if Ekind (Subprogram) in E_Function | E_Generic_Function then
+            All_Writes.Insert (Direct_Mapping_Id (Subprogram));
+         end if;
+
+         --  Change all variants to Normal_Use
+         All_Proof_Ins := Change_Variant (All_Proof_Ins, Normal_Use);
+         All_Reads     := Change_Variant (All_Reads, Normal_Use);
+         All_Writes    := Change_Variant (All_Writes, Normal_Use);
+
          for C in Tmp.Iterate loop
             declare
-               D_In  : constant Flow_Id_Sets.Set :=
+               D_Out : constant Flow_Id_Sets.Set :=
                  (if Present (Dependency_Maps.Key (C)) then
                      To_Flow_Id_Set (Down_Project
                                        (Node_Sets.To_Set
@@ -1617,18 +1600,81 @@ package body Flow_Utility is
                   else
                      Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
 
-               D_Out : constant Flow_Id_Sets.Set :=
+               D_In  : Flow_Id_Sets.Set :=
                  To_Flow_Id_Set (Down_Project
                                    (To_Node_Set
                                       (Dependency_Maps.Element (C)),
                                     Scope));
             begin
-               for I of D_In loop
-                  Depends.Include (I, D_Out);
+               for O of D_Out loop
+                  if All_Writes.Contains (O) then
+                     if O = Null_Flow_Id then
+                        D_In := D_In and All_Proof_Ins;
+                     else
+                        D_In := D_In and All_Reads;
+                     end if;
+                     Depends.Include (O, D_In);
+                  end if;
+               end loop;
+            end;
+         end loop;
+
+      else
+         --  Simply add the dependencies as they are
+         for C in Tmp.Iterate loop
+            declare
+               D_Out : constant Flow_Id_Sets.Set :=
+                 (if Present (Dependency_Maps.Key (C)) then
+                     To_Flow_Id_Set (Down_Project
+                                       (Node_Sets.To_Set
+                                          (Get_Direct_Mapping_Id
+                                             (Dependency_Maps.Key (C))),
+                                        Scope))
+                  else
+                     Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
+
+               D_In  : constant Flow_Id_Sets.Set :=
+                 To_Flow_Id_Set (Down_Project
+                                   (To_Node_Set
+                                      (Dependency_Maps.Element (C)),
+                                    Scope));
+            begin
+               for O of D_Out loop
+                  Depends.Include (O, D_In);
                end loop;
             end;
          end loop;
       end if;
+
+      ----------------------------------------------------------------------
+      --  Step 3: We add all Proof_Ins of the [Refined_]Global contract to
+      --  the RHS of the "null => RHS" dependence. This is an implicit
+      --  dependency.
+      ----------------------------------------------------------------------
+
+      Get_Globals (Subprogram           => Subprogram,
+                   Scope                => Scope,
+                   Classwide            => False,
+                   Proof_Ins            => All_Proof_Ins,
+                   Reads                => All_Reads,
+                   Writes               => All_Writes,
+                   Use_Computed_Globals => Use_Computed_Globals,
+                   Ignore_Depends       => True);
+
+      --  Change variant of All_Proof_Ins to Normal_Use
+      All_Proof_Ins := Change_Variant (All_Proof_Ins, Normal_Use);
+
+      if Depends.Contains (Null_Flow_Id) then
+         --  Add All_Proof_Ins to the existing RHS of the "null => RHS"
+         --  dependency.
+         for P_In of All_Proof_Ins loop
+            Depends (Null_Flow_Id).Include (P_In);
+         end loop;
+      else
+         --  Create new dependency where "null => All_Proof_Ins"
+         Depends.Insert (Null_Flow_Id, All_Proof_Ins);
+      end if;
+
    end Get_Depends;
 
    -----------------
@@ -1643,7 +1689,8 @@ package body Flow_Utility is
                           Writes                 : out Flow_Id_Sets.Set;
                           Consider_Discriminants : Boolean := False;
                           Globals_For_Proof      : Boolean := False;
-                          Use_Computed_Globals   : Boolean := True)
+                          Use_Computed_Globals   : Boolean := True;
+                          Ignore_Depends         : Boolean := False)
    is
       Global_Node  : constant Node_Id := Get_Contract_Node (Subprogram,
                                                             Scope,
@@ -1878,7 +1925,8 @@ package body Flow_Utility is
 
                function Trimming_Required return Boolean is
                begin
-                  if No (Depends_Node)
+                  if Ignore_Depends
+                    or else No (Depends_Node)
                     or else Pragma_Name (Global_Node) = Name_Refined_Global
                     or else Pragma_Name (Depends_Node) /= Name_Refined_Depends
                     or else not Mentions_State_With_Visible_Refinement
@@ -1978,6 +2026,7 @@ package body Flow_Utility is
 
       elsif Present (Depends_Node)
         and then not Use_Generated_Globals
+        and then not Ignore_Depends
       then
 
          --  If we have no global, but we do have a depends, we can
