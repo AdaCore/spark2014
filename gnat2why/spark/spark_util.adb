@@ -1190,12 +1190,14 @@ package body SPARK_Util is
               Name_Initial_Condition =>
 
             if Name = Name_Refined_Post then
-               if Ekind (E) in Subprogram_Kind and then
-                 Present (Subprogram_Body (E))
+               if Ekind (E) in Subprogram_Kind
+                 and then Present (Subprogram_Body (E))
                then
                   C := Contract (Defining_Entity (Specification
                                                     (Subprogram_Body (E))));
-               elsif Ekind (E) = E_Entry and then Present (Entry_Body (E)) then
+               elsif Ekind (E) = E_Entry
+                 and then Present (Entry_Body (E))
+               then
                   C := Contract (Entry_Body_Entity (E));
                else
                   C := Empty;
