@@ -1065,8 +1065,8 @@ package body Gnat2Why.Expr is
             N     : constant Node_Id := Ada_To_Why_Ident.Key (C);
             Name  : constant W_Identifier_Id := Ada_To_Why_Ident.Element (C);
             Guard : constant Node_Id :=
-              (if Bind_Value_Of_Old then
-                  Get_Corresponding_Guard (N)
+              (if Bind_Value_Of_Old
+               then Get_Corresponding_Guard (N)
                else Empty);
 
             --  Generate a program expression to check absence of run-time
