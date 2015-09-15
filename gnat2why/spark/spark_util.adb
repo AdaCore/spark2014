@@ -2388,8 +2388,6 @@ package body SPARK_Util is
    -----------------------------
 
    function Is_Ignored_Pragma_Check (N : Node_Id) return Boolean is
-      Arg1 : constant Node_Id := First (Pragma_Argument_Associations (N));
-      Arg2 : constant Node_Id := Next (Arg1);
    begin
       return Is_Pragma_Check (N, Name_Precondition)
                or else
@@ -2405,7 +2403,7 @@ package body SPARK_Util is
                or else
              Is_Pragma_Check (N, Name_Predicate)
                or else
-             Is_Predicate_Function_Call (Get_Pragma_Arg (Arg2));
+             Is_Pragma_Check (N, Name_Dynamic_Predicate);
    end Is_Ignored_Pragma_Check;
 
    --------------------------
