@@ -383,8 +383,10 @@ package body Gnat2Why.Subprograms is
                            Only_Var      => False,
                            Top_Predicate => Top_Predicate));
                   else
-                     L_Id := +To_Why_Id (E => Obj,
-                                         Typ => Why_Type_Of_Entity (Obj));
+                     L_Id := Transform_Identifier (Params   => Params,
+                                                   Expr     => Obj,
+                                                   Ent      => Obj,
+                                                   Domain   => EW_Term);
                      Prop_For_Include := Sequence
                        (Prop_For_Include,
                         Assume_Dynamic_Invariant
@@ -2339,26 +2341,6 @@ package body Gnat2Why.Subprograms is
                  Ref_Allowed => True);
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-      --  discriminants can be used in the task body; we insert them into the
-      --  symbol table
-
-      if Has_Discriminants (E) then
-         declare
-            Discr : Entity_Id := First_Discriminant (E);
-         begin
-            while Present (Discr) loop
-               Ada_Ent_To_Why.Insert
-                 (Symbol_Table,
-                  Discr,
-                  Mk_Item_Of_Entity
-                    (Discr,
-                     Local => False,
-                     In_Fun_Decl => False));
-               Next_Discriminant (Discr);
-            end loop;
-         end;
-      end if;
 
       --  Translate declarations and statements in the task body, if there
       --  is one.

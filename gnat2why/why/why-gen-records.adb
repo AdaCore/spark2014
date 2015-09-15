@@ -168,7 +168,7 @@ package body Why.Gen.Records is
          end loop;
       end if;
 
-      if Is_Private_Type (E) then
+      if Is_Private_Type (E) or else Is_Task_Type (E) then
 
          --  Field for the private main record component
 
@@ -230,8 +230,8 @@ package body Why.Gen.Records is
       --  For each subcomponent of E, create an entry in map Comp_Info
 
       procedure Init_Component_Info_For_Protected_Types (E : Entity_Id)
-        with Pre => Is_Protected_Type (E);
-      --  @param E the entity of the protected type
+        with Pre => Is_Concurrent_Type (E);
+      --  @param E the entity of the concurrent type
       --  For each component and discriminant of E, create an entry in map
       --  Comp_Info
 
@@ -802,7 +802,7 @@ package body Why.Gen.Records is
 
                      pragma Assert (Num_Args - Index in 0 .. 2);
 
-                     if Is_Private_Type (E) then
+                     if Is_Private_Type (E) or else Is_Task_Type (E) then
                         Index := Index + 1;
                         Args (Index) :=
                           New_Record_Access
@@ -853,7 +853,7 @@ package body Why.Gen.Records is
 
                --  Step 2.5. Deal with Rec__Main__ component for private types
 
-               if Is_Private_Type (E) then
+               if Is_Private_Type (E) or else Is_Task_Type (E) then
                   Field_From_Index := Field_From_Index + 1;
                   if Is_Tagged_Type (E) then
                      From_Root_Field (Field_From_Index) :=
@@ -882,7 +882,7 @@ package body Why.Gen.Records is
                   end if;
                end if;
 
-               if Is_Private_Type (Root) then
+               if Is_Private_Type (Root) or else Is_Task_Type (Root) then
                   Field_To_Index := Field_To_Index + 1;
                   if Has_Private_Ancestor_Or_Root (E) then
                      To_Root_Field (Field_To_Index) :=
@@ -1070,8 +1070,9 @@ package body Why.Gen.Records is
             else
                Extract_Extension_Fun);
          Needs_Main   : constant Boolean :=
-           (if Is_Ancestor then Is_Private_Type (Root)
-            else Is_Private_Type (E));
+           (if Is_Ancestor then
+               Is_Private_Type (Root) or else Is_Task_Type (Root)
+            else Is_Private_Type (E) or else Is_Task_Type (E));
 
       begin
          for Field of Components loop
@@ -1346,7 +1347,7 @@ package body Why.Gen.Records is
 
          --  Equality of the invisible private part
 
-         if Is_Private_Type (E) then
+         if Is_Private_Type (E) or else Is_Task_Type (E) then
             declare
                Field_Ident : constant W_Identifier_Id :=
                  To_Ident (WNE_Rec_Split_Fields);
@@ -1634,7 +1635,7 @@ package body Why.Gen.Records is
             --  For private types, add a field of type __private representing
             --  the invisible components.
 
-            if Is_Private_Type (E) then
+            if Is_Private_Type (E) or else Is_Task_Type (E) then
                Binders_F (Index) :=
                  (B_Name => To_Local (E_Symb (E, WNE_Rec_Main)),
                   others => <>);
@@ -2093,7 +2094,7 @@ package body Why.Gen.Records is
          Init_Component_Info (Retysp (Etype (E)));
       elsif Ekind (E) in E_Record_Type | E_Record_Type_With_Private then
          Init_Component_Info (E);
-      elsif Ekind (E) in E_Protected_Type | E_Protected_Subtype then
+      elsif Ekind (E) in Concurrent_Kind then
          Init_Component_Info_For_Protected_Types (E);
       end if;
 

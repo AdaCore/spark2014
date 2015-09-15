@@ -175,7 +175,6 @@ package body Gnat2Why.Driver is
       then
          if not Is_Standard_Boolean_Type (E)
            and then E /= Universal_Fixed
-           and then not Is_Task_Type (E)
          then
             declare
                Compl_File : Why_Section renames
@@ -344,7 +343,7 @@ package body Gnat2Why.Driver is
                Entity_Spec_In_SPARK (E))
       then
          Generate_VCs_For_Package_Elaboration (Why_Sections (WF_Main), E);
-      elsif Ekind (E) in Task_Kind
+      elsif Ekind (E) = E_Task_Type
         and then Entity_Spec_In_SPARK (E)
       then
          Generate_VCs_For_Task (Why_Sections (WF_Main), E);
@@ -786,34 +785,31 @@ package body Gnat2Why.Driver is
 
             Translated_Object_Entities.Include (To_Entity_Name (E));
 
-            if Ekind (Etype (E)) not in Task_Kind then
+            --  Constants and variables are translated differently
 
-               --  Constants and variables are translated differently
-
-               if not Is_Mutable_In_Why (E) then
-                  if Entity_In_SPARK (E) then
-                     if Ekind (E) = E_Constant then
-                        if Is_Partial_View (E) then
-                           Translate_Constant (File, E);
-                           if not Entity_In_SPARK (Full_View (E)) then
-                              Generate_Empty_Axiom_Theory (File, E);
-                           end if;
-                        elsif Is_Full_View (E) then
-                           Translate_Constant_Value (Compl_File, E);
-                        else
-                           Translate_Constant (File, E);
-                           Translate_Constant_Value (Compl_File, E);
+            if not Is_Mutable_In_Why (E) then
+               if Entity_In_SPARK (E) then
+                  if Ekind (E) = E_Constant then
+                     if Is_Partial_View (E) then
+                        Translate_Constant (File, E);
+                        if not Entity_In_SPARK (Full_View (E)) then
+                           Generate_Empty_Axiom_Theory (File, E);
                         end if;
+                     elsif Is_Full_View (E) then
+                        Translate_Constant_Value (Compl_File, E);
                      else
                         Translate_Constant (File, E);
-                        Generate_Empty_Axiom_Theory (File, E);
+                        Translate_Constant_Value (Compl_File, E);
                      end if;
+                  else
+                     Translate_Constant (File, E);
+                     Generate_Empty_Axiom_Theory (File, E);
                   end if;
-
-               else
-                  Translate_Variable (File, E);
-                  Generate_Empty_Axiom_Theory (File, E);
                end if;
+
+            else
+               Translate_Variable (File, E);
+               Generate_Empty_Axiom_Theory (File, E);
             end if;
 
          when E_Abstract_State =>

@@ -1765,7 +1765,7 @@ package body Why.Atree.Modules is
 
          elsif Is_Record_Type (E)
            or else Full_View_Not_In_SPARK (E)
-           or else Is_Protected_Type (E)
+           or else Is_Concurrent_Type (E)
          then
             declare
                Root    : constant Entity_Id :=

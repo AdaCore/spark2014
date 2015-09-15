@@ -505,8 +505,7 @@ package body Gnat2Why.Types is
 
             when E_Record_Type
                | E_Record_Subtype
-               | E_Protected_Type
-               | E_Protected_Subtype =>
+               | Concurrent_Kind =>
                Declare_Ada_Record (File, Theory, E);
 
             when E_Class_Wide_Type | E_Class_Wide_Subtype =>
@@ -528,16 +527,7 @@ package body Gnat2Why.Types is
    --  Start of processing for Translate_Type
 
    begin
-
-      --  Tasks are like subprograms without side effects and pre-condition
-      --  "True", so even if a task object can be seen like a call to the
-      --  task body, we never need to care about such calls and don't need
-      --  to generate any why declarations for tasks
-
-      if Is_Standard_Boolean_Type (E)
-        or else E = Universal_Fixed or else
-        Ekind (E) in Task_Kind
-      then
+      if Is_Standard_Boolean_Type (E) or else E = Universal_Fixed then
          New_Theory := False;
          return;
 

@@ -1177,6 +1177,7 @@ package body Why.Inter is
       Domain   : EW_Domain := EW_Prog;
       Local    : Boolean := False;
       Selector : Selection_Kind := Standard;
+      No_Comp  : Boolean := False;
       Rec      : Entity_Id := Empty;
       Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id
    is
@@ -1195,12 +1196,7 @@ package body Why.Inter is
       --  Components names are prefixed by a constant string, and are always
       --  expressed wrt to their record.
 
-      --  Discriminants of task types are treated pretty much as regular
-      --  objects.
-
-      if Ekind (E) in E_Component | E_Discriminant
-        and then Ekind (Scope (E)) not in Task_Kind
-      then
+      if Ekind (E) in E_Component | E_Discriminant and then not No_Comp then
          declare
             Field : constant String :=
               To_String (WNE_Rec_Comp_Prefix) & Get_Name_String (Chars (E));

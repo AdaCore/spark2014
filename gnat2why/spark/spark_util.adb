@@ -642,7 +642,7 @@ package body SPARK_Util is
 
       --  Add one field for private types whose components are not visible.
 
-      if Is_Private_Type (E) then
+      if Is_Private_Type (E) or else Is_Task_Type (E) then
          Count := Count + 1;
       end if;
 

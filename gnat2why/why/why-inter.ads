@@ -149,6 +149,7 @@ package Why.Inter is
       Domain   : EW_Domain := EW_Prog;
       Local    : Boolean := False;
       Selector : Selection_Kind := Standard;
+      No_Comp  : Boolean := False;
       Rec      : Entity_Id := Empty;
       Typ      : W_Type_Id := Why_Empty) return W_Identifier_Id;
    --  The one and only way to transform an Ada Entity to a Why identifier.
@@ -157,11 +158,19 @@ package Why.Inter is
    --  local name is to be used when referring to the entity in the Why3 module
    --  in which it is being defined. The global name is to be used everywhere
    --  else.
-   --  The Rec entity is used only for record components and specifies the
-   --  (sub-)type which contains the component.
    --  There may be several ways to refer to an Ada Name, especially for
    --  subprograms. A call may use the refined contracts, or the dispatching
    --  contracts.
+   --  @param E Entity to be translated
+   --  @param Domain Domain of the id
+   --  @param Local Wether we want the local or the global name
+   --  @param Selector Selects the proper version of a subprogram
+   --  @param No_Comp Translates record fields and discriminants as normal
+   --         names.
+   --  @param Rec Record entity that is used only for record components and
+   --         specifies the (sub-)type which contains the component.
+   --  @param Typ Expected type of the id.
+   --  @result The Why identifier to be used for E.
 
    function To_Why_Id (Obj : String; Local : Boolean) return W_Identifier_Id;
    --  This function should only be called for object references for effects

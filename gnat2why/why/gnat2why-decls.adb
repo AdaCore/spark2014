@@ -109,14 +109,20 @@ package body Gnat2Why.Decls is
 
       --  We generate a "logic", whose axiom will be given in a completion
 
-      Insert_Entity (E, To_Why_Id (E, Typ => Typ));
+      --  It can happen that components need to be translated, for example, for
+      --  discriminants of task types.
+      --  In this case, the variable should have its own name and not a Why3
+      --  record component name.
+
+      Insert_Entity (E, To_Why_Id (E, No_Comp => True, Typ => Typ));
 
       Add_Counterexample_Labels (E, Labels);
 
       Emit (File.Cur_Theory,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
-               Name        => To_Why_Id (E, Domain => EW_Term, Local => True),
+               Name        => To_Why_Id
+                 (E, No_Comp => True, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
                Labels      => Labels,
                Return_Type => Typ));
