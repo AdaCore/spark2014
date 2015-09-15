@@ -1043,6 +1043,37 @@ We can also imagine defining different abstract names for the total and the log:
       ...
    end Account;
 
+Global variables are not always the only constituents of a package's state. For
+example, if a package P contains a nested package N, then N's state is part of
+P's state. As a consequence, if N is hidden, then its state must be listed in
+P's refinement. For example, we can nest ``Account`` in the body of the
+``Account_Manager`` package:
+
+.. code-block:: ada
+
+   package Account_Manager with
+     Abstract_State => (State)
+   is
+      ...
+   end Account_Manager;
+
+   package body Account_Manager with
+     Refined_State => (State => Account.State)
+   is
+      package Account with
+        Abstract_State => (State)
+      is
+         ...
+      end Account;
+      ...
+   end Account_Manager;
+
+We call `constant with variable inputs` a constant whose value depends on
+the value of either variable or a subprogram parameter. Since they participate
+to the flow of information between variables, constants with variable inputs are
+part of a package's state, and must be listed in its state refinement whenever
+they are not visible.
+
 The abstract names defined in a package are visible everywhere the package name
 itself is visible:
 
@@ -1060,7 +1091,8 @@ Package Initialization
 
 [|SPARK|]
 
-The package initialization specifies which global data (global variables and
+The package initialization specifies which global data (global variables,
+constant with variable inputs, and
 abstract state) defined in the package is initialized at package startup. The
 corresponding global variables may either be initialized at declaration, or by
 the package body statements. Thus, package initialization can be seen as the
@@ -1108,6 +1140,30 @@ These initializations need not correspond to direct assignments, but may be
 performed in a call, for example here to procedure ``Init_Total`` as seen in
 :ref:`State Abstraction and Dependencies`. A mix of initializations at
 declaration and in package body statements is also possible.
+
+Package initializations also serve as dependency contracts for global
+variables' initial values. That is, if the initial value of a global variable,
+state abstraction, or constant with variable inputs listed in a package
+initialization depends on the value of a variable defined outside the
+package, then this dependency must be listed in the package's initialization.
+For example, we can initialize ``Total`` by reading the value of an external
+variable:
+
+.. code-block:: ada
+
+   package Account with
+     Abstract_State => State,
+     Initializes    => (State => External_Variable)
+   is
+      ...
+   end Account;
+
+   package body Account with
+     Refined_State => (State => Total)
+   is
+      Total : Integer := External_Variable;
+      ...
+   end Account;
 
 .. _Package Initial Condition:
 
