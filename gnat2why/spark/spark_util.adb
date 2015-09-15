@@ -1204,27 +1204,26 @@ package body SPARK_Util is
                end if;
             end if;
 
-            if No (C) then
-               P := Empty;
-            else
+            if Present (C) then
                P := (case Name is
                         when Name_Precondition  |
                              Name_Postcondition |
                              Name_Refined_Post  => Pre_Post_Conditions (C),
                         when Name_Initial_Condition => Classifications (C),
                         when others => Contract_Test_Cases (C));
+
+               while Present (P) loop
+                  if Chars (Pragma_Identifier (P)) = Name
+                    and then Classwide = Class_Present (P)
+                  then
+                     Contracts.Append
+                       (Expression (First (Pragma_Argument_Associations (P))));
+                  end if;
+
+                  P := Next_Pragma (P);
+               end loop;
+
             end if;
-
-            while Present (P) loop
-               if Chars (Pragma_Identifier (P)) = Name
-                 and then Classwide = Class_Present (P)
-               then
-                  Contracts.Append
-                    (Expression (First (Pragma_Argument_Associations (P))));
-               end if;
-
-               P := Next_Pragma (P);
-            end loop;
 
             return Contracts;
 
