@@ -1443,7 +1443,8 @@ package body Why.Gen.Expr is
       Check_Kind : Range_Check_Kind := RCK_Range;
 
       Do_Predicate_Check : constant Boolean :=
-        Has_Predicates (Get_Ada_Node (+To))
+        Present (Get_Ada_Node (+To))
+          and then Has_Predicates (Get_Ada_Node (+To))
           and then Get_Ada_Node (+To) /= Get_Ada_Node (+From);
 
    --  Start of processing for Insert_Scalar_Conversion
