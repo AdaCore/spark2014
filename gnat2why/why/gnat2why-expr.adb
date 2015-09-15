@@ -11350,21 +11350,7 @@ package body Gnat2Why.Expr is
    begin
       --  pre / post / predicate are not handled here, unless Force is True
 
-      if not Force
-        and then
-         (Is_Pragma_Check (Prag, Name_Precondition)
-        or else
-          Is_Pragma_Check (Prag, Name_Pre)
-        or else
-          Is_Pragma_Check (Prag, Name_Postcondition)
-        or else
-          Is_Pragma_Check (Prag, Name_Post)
-        or else
-          Is_Pragma_Check (Prag, Name_Refined_Post)
-        or else
-          Is_Pragma_Check (Prag, Name_Static_Predicate)
-        or else
-          Is_Pragma_Check (Prag, Name_Predicate))
+      if not Force and then Is_Ignored_Pragma_Check (Prag)
       then
          return New_Void (Prag);
       end if;
