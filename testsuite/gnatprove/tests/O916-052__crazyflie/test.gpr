@@ -1,0 +1,8 @@
+project Test is
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatI");
+      for Local_Configuration_Pragmas use "gnat.adc";
+   end Compiler;
+
+end Test;
