@@ -2725,38 +2725,37 @@ package body SPARK_Definition is
                  ("nonvolatile function with effectively volatile result", Id);
             end if;
 
-            if Is_Non_Empty_List (Params) then
-               Param := First (Params);
-               while Present (Param) loop
-                  Param_Id := Defining_Identifier (Param);
+            Param := First (Params);
+            while Present (Param) loop
+               Param_Id := Defining_Identifier (Param);
 
-                  --  A nonvolatile function shall not have a formal parameter
-                  --  of an effectively volatile type (SPARK RM 7.1.3(9)).
+               --  A nonvolatile function shall not have a formal parameter
+               --  of an effectively volatile type (SPARK RM 7.1.3(9)).
 
-                  if not Is_Volatile_Function (Id)
-                    and then Is_Effectively_Volatile (Etype (Param_Id))
-                  then
-                     Mark_Violation
-                       ("nonvolatile function with effectively volatile " &
-                          "parameter", Id);
-                  end if;
+               if not Is_Volatile_Function (Id)
+                 and then Is_Effectively_Volatile (Etype (Param_Id))
+               then
+                  Mark_Violation
+                    ("nonvolatile function with effectively volatile " &
+                       "parameter", Id);
+               end if;
 
-                  case Ekind (Param_Id) is
-                     when E_Out_Parameter =>
-                        Mark_Violation ("function with OUT parameter", Id);
-                        return;
+               case Ekind (Param_Id) is
+                  when E_Out_Parameter =>
+                     Mark_Violation ("function with OUT parameter", Id);
+                     return;
 
-                     when E_In_Out_Parameter =>
-                        Mark_Violation ("function with IN OUT parameter", Id);
-                        return;
+                  when E_In_Out_Parameter =>
+                     Mark_Violation ("function with IN OUT parameter", Id);
+                     return;
 
-                     when others =>
-                        null;
-                  end case;
+                  when others =>
+                     null;
+               end case;
 
-                  Next (Param);
-               end loop;
-            end if;
+               Next (Param);
+            end loop;
+
          end Mark_Function_Specification;
 
          -----------------------------------
