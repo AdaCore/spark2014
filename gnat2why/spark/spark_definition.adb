@@ -2372,7 +2372,7 @@ package body SPARK_Definition is
          with Pre => Is_Type (T);
          --  Update the map with number of task instances.
          --
-         --  It check which and how many tasks are instiated when an object
+         --  It checks which and how many tasks are instiated when an object
          --  of type T is declared. Flag Array_Component should be True if the
          --  parent type is an array with possibly more than one element.
          --
@@ -2391,6 +2391,7 @@ package body SPARK_Definition is
             --  Type for checking the number of elements in an array
 
             S : Array_Elements;
+            --  Number of elements in the array
 
          begin
             if not Has_Task (T) then
@@ -2398,7 +2399,9 @@ package body SPARK_Definition is
 
             elsif Is_Task_Type (T) then
                declare
-                  TN : constant Entity_Name := To_Entity_Name (T);
+                  --  For discriminated tasks record the number of instances of
+                  --  the base type.
+                  TN : constant Entity_Name := To_Entity_Name (Etype (T));
                begin
                   Task_Instances.Include
                     (Key => TN,
