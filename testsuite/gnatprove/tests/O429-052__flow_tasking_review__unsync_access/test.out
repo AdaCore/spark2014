@@ -1,0 +1,6 @@
+foo.adb:7:09: more than one task accesses an unsynchronized global variable "foo.g" (SPARK RM 9.11)
+foo.adb:9:09: more than one task accesses an unsynchronized global variable "foo.g" (SPARK RM 9.11)
+   compilation of foo.adb failed
+
+
+gnatprove: error during analysis of data and information flow
