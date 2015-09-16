@@ -1643,8 +1643,8 @@ package body Flow_Generated_Globals is
 
                RHS       : Name_Sets.Set    := Name_Sets.Empty_Set;
                RHS_Proof : Name_Sets.Set    := Name_Sets.Empty_Set;
-               --  RHS and RHS_Proof combined will represent the left hand side
-               --  of the generated initializes aspect.
+               --  RHS and RHS_Proof combined will represent the right hand
+               --  side of the generated initializes aspect.
 
                LV        : Name_Sets.Set    := Name_Sets.Empty_Set;
                LV_Proof  : Name_Sets.Set    := Name_Sets.Empty_Set;

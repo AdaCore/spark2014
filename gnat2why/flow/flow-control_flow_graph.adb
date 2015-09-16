@@ -3791,6 +3791,9 @@ package body Flow.Control_Flow_Graph is
 
       V     : Flow_Graphs.Vertex_Id;
       Funcs : Node_Sets.Set;
+
+   --  Start of processing for Do_Pragma
+
    begin
       if Pragma_Relevant_To_Flow (N) then
 
@@ -4924,8 +4927,7 @@ package body Flow.Control_Flow_Graph is
    -- Mark_Exceptional_Paths --
    ----------------------------
 
-   procedure Mark_Exceptional_Paths (FA : in out Flow_Analysis_Graphs)
-   is
+   procedure Mark_Exceptional_Paths (FA : in out Flow_Analysis_Graphs) is
       --  Identification of exceptional paths is a bit tedious. We use a
       --  number of simple DFS passes over the graph which will eventually
       --  flag all vertices belonging to exceptional paths.
@@ -5116,8 +5118,7 @@ package body Flow.Control_Flow_Graph is
    -- Prune_Exceptional_Paths --
    -----------------------------
 
-   procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs)
-   is
+   procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs) is
       Dead : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
@@ -5155,8 +5156,7 @@ package body Flow.Control_Flow_Graph is
    -- Separate_Dead_Paths --
    -------------------------
 
-   procedure Separate_Dead_Paths (FA : in out Flow_Analysis_Graphs)
-   is
+   procedure Separate_Dead_Paths (FA : in out Flow_Analysis_Graphs) is
       Live : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
       Dead : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 

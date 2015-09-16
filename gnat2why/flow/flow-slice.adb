@@ -525,44 +525,41 @@ package body Flow.Slice is
            (N : Node_Id)
             return Traverse_Result
          is
-            function Hidden_In_Package_With_State
-              (E : Entity_Id)
-               return Boolean;
-            --  Returns True iff E is declared in either the private part or
-            --  body of a package that either has abstract state or is not in
-            --  SPARK.
+            function Hidden_In_Package (E : Entity_Id) return Boolean;
+            --  Returns True if E is either declared in the private part of a
+            --  package that has an Initializes aspect or in the private part
+            --  of a package that has SPARK_Mode => Off.
 
-            function Hidden_In_Package_With_State
-              (E : Entity_Id)
-               return Boolean
-            is
+            -----------------------
+            -- Hidden_In_Package --
+            -----------------------
+
+            function Hidden_In_Package (E : Entity_Id) return Boolean is
             begin
-               if not In_Private_Part (E) then
-                  --  Not in the hidden part
+               if Get_Flow_Scope (E).Section /= Private_Part then
+                  --  Not in the private part
                   return False;
                end if;
 
-               if (FA.Kind = Kind_Package
-                     and then Unique_Entity (Scope (E)) =
-                                Unique_Entity (FA.Analyzed_Entity))
-                 or else (FA.Kind = Kind_Package_Body
-                            and then Unique_Entity (Scope (E)) =
-                                       Unique_Entity (FA.Spec_Entity))
+               if FA.Kind in Kind_Package | Kind_Package_Body
+                 and then Unique_Entity (Scope (E)) in
+                            Unique_Entity (FA.Analyzed_Entity) |
+                            Unique_Entity (FA.Spec_Entity)
                then
                   --  We always consider the private and body part of the
                   --  Analyzed_Entity itself.
                   return False;
                end if;
 
-               --  Check if the enclosing scope has an abstract state aspect
-               --  or has SPARK_Mode set to Off.
+               --  Check if the enclosing scope has an Initializes aspect or
+               --  has SPARK_Mode set to Off.
                declare
                   Scp : constant Entity_Id := Scope (E);
                begin
                   case Ekind (Scp) is
-                     when E_Package =>
-                        if Present (Get_Pragma (Scp, Pragma_Abstract_State))
-                        then
+                     when E_Package      =>
+                        if Present (Get_Pragma (Scp, Pragma_Initializes)) then
+                           --  Eclosing scope has Initializes
                            return True;
                         end if;
 
@@ -570,17 +567,18 @@ package body Flow.Slice is
                           and then Get_SPARK_Mode_From_Pragma
                                      (SPARK_Aux_Pragma (Scp)) = Off
                         then
+                           --  Eclosing scope has SPARK_Mode => Off
                            return True;
                         end if;
 
                         return False;
 
-                     when others =>
+                     when others         =>
                         return False;
                   end case;
                end;
 
-            end Hidden_In_Package_With_State;
+            end Hidden_In_Package;
 
          begin
             case Nkind (N) is
@@ -588,17 +586,10 @@ package body Flow.Slice is
                   declare
                      E : constant Entity_Id := Defining_Entity (N);
                   begin
-                     if Hidden_In_Package_With_State (E) then
-                        --  We don't want to process object declarations that
-                        --  occur in the private or body part of nested
-                        --  packages with state. Ideally, we should have
-                        --  terminated the traversal when we processed the
-                        --  N_Package_Declaration. However, the private
-                        --  declarations of a package hang under a list and we
-                        --  cannot skip them easily since they are directly
-                        --  under the package specification, along with the
-                        --  visible declarations that we do want to process (we
-                        --  cannot skip one without also skipping the other).
+                     if Hidden_In_Package (E) then
+                        --  We do not want to process object declarations that
+                        --  occur in the private part of nested packages that
+                        --  have an Initializes aspect.
                         return Skip;
                      else
                         if Ekind (E) /= E_Constant then
@@ -618,8 +609,7 @@ package body Flow.Slice is
                   --  Add variable introduced by for loop (but do not add
                   --  variables introduced by quantified expressions)
                   if Nkind (Parent (N)) /= N_Iteration_Scheme
-                    or else Hidden_In_Package_With_State
-                              (Defining_Identifier (N))
+                    or else Hidden_In_Package (Defining_Identifier (N))
                   then
                      return Skip;
                   else
@@ -685,8 +675,7 @@ package body Flow.Slice is
                         when others              => raise Program_Error);
 
                      AS_Pragma : constant Node_Id :=
-                       Get_Pragma (Package_Spec,
-                                   Pragma_Abstract_State);
+                       Get_Pragma (Package_Spec, Pragma_Abstract_State);
                   begin
                      --  Skip bodies of generic packages
                      if Ekind (Package_Spec) = E_Generic_Package then
@@ -825,8 +814,8 @@ package body Flow.Slice is
 
                         while Present (AS_N) loop
                            AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
-                                   then Entity (Ancestor_Part (AS_N))
-                                   else Entity (AS_N));
+                                    then Entity (Ancestor_Part (AS_N))
+                                    else Entity (AS_N));
 
                            Local_Vars.Insert (AS_E);
 
@@ -847,8 +836,8 @@ package body Flow.Slice is
                declare
                   Decl : Entity_Id := FA.Spec_Entity;
                begin
-                  while not (Nkind (Decl) in N_Package_Declaration         |
-                                             N_Generic_Package_Declaration)
+                  while Nkind (Decl) not in N_Package_Declaration         |
+                                            N_Generic_Package_Declaration
                     and then Present (Parent (Decl))
                   loop
                      Decl := Parent (Decl);
