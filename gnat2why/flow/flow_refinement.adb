@@ -685,6 +685,8 @@ package body Flow_Refinement is
 
       Common_Scope : constant Flow_Scope := Common_Ancestor (Ptr, S);
 
+   --  Start of processing for Is_Initialized_At_Elaboration
+
    begin
 
       if Trace then
@@ -798,6 +800,8 @@ package body Flow_Refinement is
       end Proc;
 
       procedure Look_For_Abstract_State is new Traverse_Proc (Process => Proc);
+
+   --  Start of processing for Mentions_State_With_Visible_Refinement
 
    begin
       Look_For_Abstract_State (N);
