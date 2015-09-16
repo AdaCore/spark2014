@@ -551,6 +551,12 @@ package body Flow.Analysis.Antialiasing is
    begin
       case Ekind (F) is
          when E_In_Parameter =>
+            --  According to SPARK and Ada RMs here we should test for by-copy
+            --  type (e.g. using Is_By_Copy_Type). However, it seems better
+            --  to treat private types as really private and check if by-copy
+            --  property can be deduced from the public declaration only. If
+            --  not then we are conservative and assume the worst case, i.e.
+            --  that the type is by-reference. See O916-007.
             return Is_Elementary_Type (Etype (F));
 
          when E_In_Out_Parameter | E_Out_Parameter =>
