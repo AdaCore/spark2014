@@ -318,8 +318,7 @@ package body Flow.Analysis.Antialiasing is
 
       if not Is_Interesting (Nkind (A)) then
          if Trace_Antialiasing then
-            Write_Str ("   -> A is not interesting");
-            Write_Eol;
+            Write_Line ("   -> A is not interesting");
          end if;
          return Impossible;
       elsif not Is_Interesting (Nkind (B)) then
@@ -523,8 +522,8 @@ package body Flow.Analysis.Antialiasing is
             --  Consider this: A (4 .. 10) (5 .. 8) (3)
 
             if Trace_Antialiasing then
-               Write_Str ("   -> slice v.s. index is difficult - bailing out");
-               Write_Eol;
+               Write_Line
+                 ("   -> slice v.s. index is difficult - bailing out");
             end if;
 
             return Possible_Aliasing;
