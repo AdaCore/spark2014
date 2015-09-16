@@ -132,7 +132,8 @@ package body Flow.Analysis.Antialiasing is
 
       elsif Full (AL, AH) and then Full (BL, BH) and then
         ((GE (AH, BL) and then GE (BH, AL))
-           or else (GE (BH, AL) and then GE (AH, BL)))
+           or else
+         (GE (BH, AL) and then GE (AH, BL)))
       then
          --  We definitely have overlapping, non-empty ranges.
          return Definite_Aliasing;
