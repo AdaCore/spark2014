@@ -591,7 +591,7 @@ package body SPARK_Definition is
       --  in proof for that subprogram/package can be interpreted as correct
       --  flow analysis or proof of that entity.
 
-      if Analysis_Requested (Id) then
+      if Analysis_Requested (Id, With_Inlined => True) then
          declare
             V : constant JSON_Value := To_JSON (Entity_To_Subp (Id));
             SPARK_Status : constant String :=

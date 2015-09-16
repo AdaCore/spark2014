@@ -452,7 +452,9 @@ package body SPARK_Util is
    -- Analysis_Requested --
    ------------------------
 
-   function Analysis_Requested (E : Entity_Id) return Boolean is
+   function Analysis_Requested
+     (E            : Entity_Id;
+      With_Inlined : Boolean) return Boolean is
    begin
       return Is_In_Analyzed_Files (E)
 
@@ -466,9 +468,12 @@ package body SPARK_Util is
         --  Ignore inlined subprograms that are referenced. Unreferenced
         --  subprograms are analyzed anyway, as they are likely to correspond
         --  to an intermediate stage of development. Also always analyze the
-        --  subprogram if analysis was specifically requested for it.
+        --  subprogram if analysis was specifically requested for it, or if
+        --  With_Inlined is set to True.
 
-        and then (not Is_Local_Subprogram_Always_Inlined (E)
+        and then (With_Inlined
+                    or else
+                  not Is_Local_Subprogram_Always_Inlined (E)
                     or else
                   not Referenced (E)
                     or else

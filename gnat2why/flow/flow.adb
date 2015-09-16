@@ -1241,7 +1241,7 @@ package body Flow is
                   end;
                end if;
 
-               if SPARK_Util.Analysis_Requested (E) then
+               if SPARK_Util.Analysis_Requested (E, With_Inlined => True) then
                   if Entity_Body_In_SPARK (E)
                     and then Entity_Body_Valid_SPARK (E)
                   then
@@ -1354,7 +1354,7 @@ package body Flow is
                   Pkg_Body   : Node_Id;
                   Needs_Body : Boolean := Unit_Requires_Body (E);
                begin
-                  if SPARK_Util.Analysis_Requested (E)
+                  if SPARK_Util.Analysis_Requested (E, With_Inlined => True)
                     and then Entity_Spec_In_SPARK (E)
                     and then not In_Predefined_Unit (E)
                     and then not Is_Wrapper_Package (E)
@@ -1416,7 +1416,7 @@ package body Flow is
       Success := True;
       for E of Entity_Set loop
          if Is_Subprogram (E)
-           and then SPARK_Util.Analysis_Requested (E)
+           and then SPARK_Util.Analysis_Requested (E, With_Inlined => True)
            and then Entity_In_SPARK (E)
          then
             Check_Classwide_Contracts (E, Success);

@@ -311,7 +311,7 @@ package body Gnat2Why.Driver is
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
       if Ekind (E) in Subprogram_Kind
-        and then Analysis_Requested (E)
+        and then Analysis_Requested (E, With_Inlined => False)
         and then Entity_Spec_In_SPARK (E)
 
         --  Ignore predicate functions and invariant procedures
@@ -377,7 +377,8 @@ package body Gnat2Why.Driver is
 
    begin
       if Is_Generic_Unit (Unique_Defining_Entity (N))
-        and then Analysis_Requested (Unique_Defining_Entity (N))
+        and then Analysis_Requested (Unique_Defining_Entity (N),
+                                     With_Inlined => False)
       then
 
          --  We do nothing for generic units currently. If this get revised
@@ -485,7 +486,7 @@ package body Gnat2Why.Driver is
       for E of Entity_Set loop
          case Ekind (E) is
             when Subprogram_Kind =>
-               if SPARK_Util.Analysis_Requested (E)
+               if SPARK_Util.Analysis_Requested (E, With_Inlined => True)
                  and then Entity_Body_In_SPARK (E)
                  and then Entity_Body_Valid_SPARK (E)
                then

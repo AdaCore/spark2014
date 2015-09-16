@@ -287,12 +287,53 @@ package SPARK_Util is
    -- Queries related to entities --
    ---------------------------------
 
-   function Analysis_Requested (E : Entity_Id) return Boolean;
+   function Analysis_Requested
+     (E            : Entity_Id;
+      With_Inlined : Boolean) return Boolean;
    --  @param E subprogram, task or package
+   --  @param With_Inlined True if inlined subprograms should be analyzed
    --  @return True iff subprogram, task or package E must be analyzed,
    --     because it belongs to one of the analyzed units, and either the
    --     complete unit is analyzed, or E is the specific entity whose analysis
    --     was requested.
+   --
+   --  With_Inlined is set to False in proof to avoid analyzing when possible
+   --  subprograms that are inlined, and to True in flow analysis to always
+   --  analyze both the inlined code and the original subprogram, otherwise
+   --  analysis may miss reads of uninitialized data due to the way inlining
+   --  mechanism works.
+   --
+   --  Here is a case where a read of uninitialized data is missed when
+   --  analyzing only the inlined code:
+   --
+   --     procedure Test2 (Done : out Boolean) is
+   --     begin
+   --        if Success then
+   --           Done := ...;
+   --        end if;
+   --     end Test2;
+   --
+   --     procedure Test1 (I : Integer; Success : out Boolean) is
+   --        Done : Boolean := False;
+   --     begin
+   --        Test2 (Done);
+   --        Success := Success and Done;
+   --     end Test1;
+   --
+   --  Here is a case where a read of uninitialized data is missed when
+   --  analyzing only the original subprogram (and silencing flow analysis
+   --  messages on the inlined code):
+   --
+   --     type R is record
+   --        C : Integer;
+   --     end record;
+   --     X : R;
+   --     procedure Local (Param : R) is
+   --     begin
+   --        Y := Param.C;
+   --     end Local;
+   --
+   --     Local (X);
 
    function Full_Name (E : Entity_Id) return String
    with Pre => Nkind (E) in N_Entity;
