@@ -666,13 +666,11 @@ package body Flow.Analysis.Antialiasing is
       --     Y v.s. (   Z, A, B)
       --     Z v.s. (      A, B)
       --
-      --  In particular we do not check the globals against each other
-      --  and we do not check combinations of parameters which we have
-      --  already seen. This is implemented by this procedure having
-      --  the same loop as
-      --  Check_Parameter_Against_Parameters_And_Globals and by only
-      --  checking parameters once we have seen our parameter we
-      --  compare against.
+      --  In particular we do not check the globals against each other and
+      --  we do not check combinations of parameters which we have already
+      --  seen. This is implemented by this procedure having the same loop as
+      --  Check_Parameter_Against_Parameters_And_Globals and by only checking
+      --  parameters once we have seen our parameter we compare against.
 
       --  Check against parameters.
 
