@@ -1,1 +1,1 @@
-XFAIL not implemented yet
+XFAIL wrong test for volatile functions (O916-031)
