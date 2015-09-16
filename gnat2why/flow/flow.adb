@@ -1141,6 +1141,15 @@ package body Flow is
                                    FA.Tasking);
       end if;
 
+      if Gnat2Why_Args.Flow_Advanced_Debug then
+         for Kind in Tasking_Info_Kind loop
+            if not FA.Tasking (Kind).Is_Empty then
+               Write_Str (Kind'Img & ": ");
+               Print_Node_Set (FA.Tasking (Kind));
+            end if;
+         end loop;
+      end if;
+
       --  We print this graph first in case the other algorithms barf
       if Debug_Print_CFG then
          Print_Graph (Filename          =>
@@ -1390,21 +1399,6 @@ package body Flow is
             when others =>
                null;
          end case;
-      end loop;
-
-      for FA of FA_Graphs loop
-         if Gnat2Why_Args.Flow_Advanced_Debug then
-            Indent;
-
-            for Kind in Tasking_Info_Kind loop
-               if not FA.Tasking (Kind).Is_Empty then
-                  Write_Str (Kind'Img & " :");
-                  Print_Node_Set (FA.Tasking (Kind));
-               end if;
-            end loop;
-
-            Outdent;
-         end if;
       end loop;
    end Build_Graphs_For_Compilation_Unit;
 
