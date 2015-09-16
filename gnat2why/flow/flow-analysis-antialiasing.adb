@@ -672,11 +672,9 @@ package body Flow.Analysis.Antialiasing is
       begin
          P := First (Parameter_Associations (Call));
          while Present (P) loop
-            if Nkind (P) = N_Parameter_Association then
-               Other := Explicit_Actual_Parameter (P);
-            else
-               Other := P;
-            end if;
+            Other := (if Nkind (P) = N_Parameter_Association
+                      then Explicit_Actual_Parameter (P)
+                      else P);
             Find_Actual (Other, Other_Formal, Other_Call);
             Other_Is_Out := Ekind (Other_Formal) in
               E_Out_Parameter | E_In_Out_Parameter;
@@ -789,11 +787,9 @@ package body Flow.Analysis.Antialiasing is
       begin
          P := First (Parameter_Associations (N));
          while Present (P) loop
-            if Nkind (P) = N_Parameter_Association then
-               Actual := Explicit_Actual_Parameter (P);
-            else
-               Actual := P;
-            end if;
+            Actual := (if Nkind (P) = N_Parameter_Association
+                       then Explicit_Actual_Parameter (P)
+                       else P);
             Find_Actual (Actual, Formal, Call);
             pragma Assert (Call = N);
 
