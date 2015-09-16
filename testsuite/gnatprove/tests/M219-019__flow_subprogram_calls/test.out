@@ -2,7 +2,10 @@ test.adb:8:04: info: initialization of "Global_A" constituent of "State" proved
 test.adb:9:04: info: initialization of "Global_B" constituent of "State" proved
 test.adb:10:04: info: initialization of "Global_C" constituent of "State" proved
 test.adb:16:24: info: initialization of "Sum" proved
+test.adb:19:26: warning: "B" is not modified, could be IN
 test.adb:22:19: info: initialization of "I" proved, in call inlined at test.adb:36, in call inlined at test.adb:45
+test.adb:22:19: info: initialization of "Tmp" proved, in call inlined at test.adb:29
+test.adb:22:19: info: initialization of "Tmp" proved, in call inlined at test.adb:29, in call inlined at test.adb:37
 test.adb:22:19: info: initialization of "Tmp" proved, in call inlined at test.adb:29, in call inlined at test.adb:37, in call inlined at test.adb:45
 test.adb:29:10: info: initialization of "I" proved, in call inlined at test.adb:29, in call inlined at test.adb:37, in call inlined at test.adb:45
 test.adb:36:10: info: initialization of "Sum" proved, in call inlined at test.adb:36, in call inlined at test.adb:45
@@ -22,6 +25,7 @@ test.adb:168:19: info: initialization of "N" proved
 test.adb:171:30: info: initialization of "N" proved
 test.adb:179:18: warning: unused assignment, in call inlined at test.adb:190
 test.adb:179:21: high: "Counter" is not initialized, in call inlined at test.adb:190
+test.adb:182:17: info: initialization of "Counter" proved
 test.adb:185:18: warning: unused assignment, in call inlined at test.adb:191
 test.adb:185:21: info: initialization of "N" proved, in call inlined at test.adb:191
 test.adb:190:07: info: initialization of "N" proved

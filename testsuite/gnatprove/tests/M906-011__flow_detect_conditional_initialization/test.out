@@ -1,3 +1,4 @@
+uninitialized.adb:18:19: info: initialization of "Y" proved
 uninitialized.adb:20:09: info: initialization of "An_Arr" proved, in call inlined at uninitialized.adb:110
 uninitialized.adb:24:04: warning: analyzing unreferenced procedure "Init_Var_Warn"
 uninitialized.adb:24:29: info: initialization of "X" proved

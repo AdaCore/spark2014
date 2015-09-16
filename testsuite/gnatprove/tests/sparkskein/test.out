@@ -5,8 +5,10 @@ skein.adb:226:44: info: division check proved, in call inlined at skein.adb:874
 skein.adb:226:44: info: index check proved, in call inlined at skein.adb:874
 skein.adb:227:35: info: range check proved, in call inlined at skein.adb:874
 skein.adb:227:49: info: range check proved, in call inlined at skein.adb:874
+skein.adb:233:32: medium: "Dst" might not be initialized in "Get_64_LSB_First"
 skein.adb:253:52: info: range check proved, in call inlined at skein.adb:582
 skein.adb:258:29: info: initialization of "W" proved, in call inlined at skein.adb:582
+skein.adb:258:29: medium: "Dst" might not be initialized
 skein.adb:259:25: medium: array index check might fail, in call inlined at skein.adb:582
 skein.adb:260:47: medium: array index check might fail, in call inlined at skein.adb:582
 skein.adb:261:47: medium: array index check might fail, in call inlined at skein.adb:582
@@ -18,14 +20,20 @@ skein.adb:266:47: medium: array index check might fail, in call inlined at skein
 skein.adb:304:19: info: postcondition proved
 skein.adb:326:23: info: initialization of "KS" proved, in call inlined at skein.adb:578
 skein.adb:328:30: info: initialization of "KS" proved, in call inlined at skein.adb:578
+skein.adb:332:17: info: initialization of "TS" proved
 skein.adb:338:26: info: length check proved, in call inlined at skein.adb:580
+skein.adb:340:32: info: initialization of "W0" proved
 skein.adb:340:32: info: initialization of "W0" proved, in call inlined at skein.adb:580
+skein.adb:340:39: info: initialization of "W1" proved
 skein.adb:340:39: info: initialization of "W1" proved, in call inlined at skein.adb:580
+skein.adb:343:17: info: initialization of "X" proved
 skein.adb:345:25: info: length check proved, in call inlined at skein.adb:596
 skein.adb:352:31: info: initialization of "W" proved, in call inlined at skein.adb:596
 skein.adb:352:39: info: initialization of "KS" proved, in call inlined at skein.adb:596
+skein.adb:353:30: info: initialization of "X" proved
 skein.adb:353:30: info: initialization of "X" proved, in call inlined at skein.adb:596
 skein.adb:353:49: info: initialization of "TS" proved, in call inlined at skein.adb:596
+skein.adb:354:30: info: initialization of "X" proved
 skein.adb:354:30: info: initialization of "X" proved, in call inlined at skein.adb:596
 skein.adb:354:49: info: initialization of "TS" proved, in call inlined at skein.adb:596
 skein.adb:365:45: info: division check proved, in call inlined at skein.adb:538
@@ -65,15 +73,19 @@ skein.adb:693:20: info: initialization of "Current_Msg_Offset" proved, in call i
 skein.adb:693:20: info: initialization of "Current_Msg_Offset" proved, in call inlined at skein.adb:768
 skein.adb:695:25: info: range check proved, in call inlined at skein.adb:728
 skein.adb:695:25: medium: range check might fail, in call inlined at skein.adb:768
+skein.adb:697:26: info: initialization of "Dst" proved
 skein.adb:697:26: info: initialization of "Dst" proved, in call inlined at skein.adb:728
 skein.adb:697:26: info: initialization of "Dst" proved, in call inlined at skein.adb:768
 skein.adb:697:30: info: range check proved, in call inlined at skein.adb:728
 skein.adb:697:30: medium: range check might fail, in call inlined at skein.adb:768
+skein.adb:699:26: info: initialization of "Src" proved
 skein.adb:699:26: info: initialization of "Src" proved, in call inlined at skein.adb:728
 skein.adb:699:26: info: initialization of "Src" proved, in call inlined at skein.adb:768
+skein.adb:702:28: info: initialization of "Dst" proved
 skein.adb:702:28: info: initialization of "Dst" proved, in call inlined at skein.adb:728
 skein.adb:702:28: info: initialization of "Dst" proved, in call inlined at skein.adb:768
 skein.adb:702:36: info: index check proved, in call inlined at skein.adb:728
+skein.adb:702:36: info: initialization of "Src" proved
 skein.adb:702:36: info: initialization of "Src" proved, in call inlined at skein.adb:728
 skein.adb:702:36: info: initialization of "Src" proved, in call inlined at skein.adb:768
 skein.adb:702:36: medium: array index check might fail, in call inlined at skein.adb:768
@@ -81,18 +93,24 @@ skein.adb:704:16: info: loop invariant initialization proved, in call inlined at
 skein.adb:704:16: info: loop invariant initialization proved, in call inlined at skein.adb:768
 skein.adb:704:16: info: loop invariant preservation proved, in call inlined at skein.adb:728
 skein.adb:704:16: info: loop invariant preservation proved, in call inlined at skein.adb:768
+skein.adb:708:26: info: initialization of "Dst" proved
 skein.adb:708:26: info: initialization of "Dst" proved, in call inlined at skein.adb:728
 skein.adb:708:26: info: initialization of "Dst" proved, in call inlined at skein.adb:768
+skein.adb:708:33: info: initialization of "Final_Dst" proved
 skein.adb:708:33: info: initialization of "Final_Dst" proved, in call inlined at skein.adb:728
 skein.adb:708:33: info: initialization of "Final_Dst" proved, in call inlined at skein.adb:768
+skein.adb:708:46: info: initialization of "Src" proved
 skein.adb:708:46: info: initialization of "Src" proved, in call inlined at skein.adb:728
 skein.adb:708:46: info: initialization of "Src" proved, in call inlined at skein.adb:768
+skein.adb:708:53: info: initialization of "Final_Src" proved
 skein.adb:708:53: info: initialization of "Final_Src" proved, in call inlined at skein.adb:728
 skein.adb:708:53: info: initialization of "Final_Src" proved, in call inlined at skein.adb:768
+skein.adb:710:23: info: initialization of "Dst" proved
 skein.adb:710:23: info: initialization of "Dst" proved, in call inlined at skein.adb:728
 skein.adb:710:23: info: initialization of "Dst" proved, in call inlined at skein.adb:768
 skein.adb:710:27: info: range check proved, in call inlined at skein.adb:728
 skein.adb:710:27: info: range check proved, in call inlined at skein.adb:768
+skein.adb:711:23: info: initialization of "Src" proved
 skein.adb:711:23: info: initialization of "Src" proved, in call inlined at skein.adb:728
 skein.adb:711:23: info: initialization of "Src" proved, in call inlined at skein.adb:768
 skein.adb:722:11: info: initialization of "Msg_Byte_Count" proved
@@ -255,18 +273,3 @@ skein.ads:195:31: info: initialization of "Hash" proved
 skein.ads:200:46: info: division check proved
 skein.ads:369:52: info: length check proved
 skein.ads:370:52: info: length check proved
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

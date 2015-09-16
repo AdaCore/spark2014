@@ -103,6 +103,7 @@ stable_marriage.adb:241:53: info: index check proved
 stable_marriage.adb:249:30: info: range check proved
 stable_marriage.adb:251:52: info: index check proved
 stable_marriage.adb:254:39: info: range check proved
+stable_marriage.adb:256:52: info: initialization of "Selected" proved
 stable_marriage.adb:264:55: info: index check proved, in call inlined at stable_marriage.adb:299
 stable_marriage.adb:265:71: info: range check proved, in call inlined at stable_marriage.adb:299
 stable_marriage.adb:270:42: info: initialization of "Unmatched_G1_Set.Cardinality" proved, in call inlined at stable_marriage.adb:385

@@ -2,16 +2,21 @@ ap-altitude-pitch-rate.adb:13:04: info: initialization of "Pitch_History_C" cons
 ap-altitude-pitch-rate.adb:13:51: info: length check proved
 ap-altitude-pitch-rate.adb:22:10: info: loop invariant initialization proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:22:10: info: loop invariant preservation proved, in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:23:13: info: initialization of "Sum" proved
 ap-altitude-pitch-rate.adb:23:13: info: initialization of "Sum" proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:23:23: info: overflow check proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:24:29: info: overflow check proved, in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:25:17: info: initialization of "Sum" proved
 ap-altitude-pitch-rate.adb:25:17: info: initialization of "Sum" proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:25:21: info: overflow check proved, in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:29:41: info: initialization of "Sum" proved
 ap-altitude-pitch-rate.adb:29:41: info: initialization of "Sum" proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:29:45: info: division check proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:29:45: info: overflow check proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:29:45: medium: range check might fail, in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:29:47: info: initialization of "Gap" proved
 ap-altitude-pitch-rate.adb:29:47: info: initialization of "Gap" proved, in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:30:14: info: initialization of "Average" proved
 ap-altitude-pitch-rate.adb:30:14: info: initialization of "Average" proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:40:24: info: index check proved
 ap-altitude-pitch-rate.adb:60:11: info: initialization of "Early_Pitch" proved
@@ -30,52 +35,82 @@ ap-altitude-pitch-rate.adb:75:55: info: division check proved
 ap-altitude-pitch-rate.ads:9:29: info: initialization of "Present_Pitchrate" proved
 ap-altitude-pitch.adb:28:69: info: division check proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:28:69: info: range check proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:29:10: info: initialization of "Result" proved
+ap-altitude-pitch.adb:29:10: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45
 ap-altitude-pitch.adb:29:10: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:32:10: info: initialization of "Result" proved
+ap-altitude-pitch.adb:32:10: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45
 ap-altitude-pitch.adb:32:10: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:34:14: info: initialization of "Result" proved
+ap-altitude-pitch.adb:34:14: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45
 ap-altitude-pitch.adb:34:14: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:51:30: info: range check proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:53:07: info: assertion proved, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:53:30: info: initialization of "Floor_Climb_Rate" proved
 ap-altitude-pitch.adb:53:30: info: initialization of "Floor_Climb_Rate" proved, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:54:36: info: initialization of "Target_Climb_Rate" proved
 ap-altitude-pitch.adb:54:36: info: initialization of "Target_Climb_Rate" proved, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:55:33: info: initialization of "Target_Climb_Rate" proved
 ap-altitude-pitch.adb:55:33: info: initialization of "Target_Climb_Rate" proved, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:55:53: info: initialization of "Floor_Climb_Rate" proved
 ap-altitude-pitch.adb:55:53: info: initialization of "Floor_Climb_Rate" proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:55:71: info: division check proved, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:56:11: info: initialization of "Result" proved
 ap-altitude-pitch.adb:56:11: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:59:10: info: initialization of "Result" proved
 ap-altitude-pitch.adb:59:10: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:61:14: info: initialization of "Result" proved
 ap-altitude-pitch.adb:61:14: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:71:28: info: precondition proved, in call inlined at ap-altitude-pitch.adb:104
 ap-altitude-pitch.adb:73:36: info: initialization of "Present_Pitchrate" proved, in call inlined at ap-altitude-pitch.adb:104
 ap-altitude-pitch.adb:73:54: info: division check proved, in call inlined at ap-altitude-pitch.adb:104
 ap-altitude-pitch.adb:74:36: info: initialization of "Target_Pitchrate" proved, in call inlined at ap-altitude-pitch.adb:104
 ap-altitude-pitch.adb:74:53: info: division check proved, in call inlined at ap-altitude-pitch.adb:104
+ap-altitude-pitch.adb:77:14: info: initialization of "Target_Angle" proved
 ap-altitude-pitch.adb:77:14: info: initialization of "Target_Angle" proved, in call inlined at ap-altitude-pitch.adb:104
 ap-altitude-pitch.adb:86:49: info: initialization of "Surfaces.Elevators" proved
 ap-altitude-pitch.adb:106:31: info: initialization of "Elevator_Movement" proved
 ap-altitude.adb:7:04: info: initialization of "Target_Altitude" constituent of "State" proved
 ap-altitude.adb:8:04: info: initialization of "Switch_Pressed_Before" constituent of "State" proved
+ap-heading-roll.adb:28:10: info: initialization of "Offset" proved
+ap-heading-roll.adb:28:10: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48
 ap-heading-roll.adb:28:10: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:30:13: info: initialization of "Offset" proved
+ap-heading-roll.adb:30:13: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48
 ap-heading-roll.adb:30:13: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:33:42: info: initialization of "Offset" proved
+ap-heading-roll.adb:33:42: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48
 ap-heading-roll.adb:33:42: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:33:42: info: range check proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:35:46: info: range check proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:35:56: info: initialization of "Offset" proved
+ap-heading-roll.adb:35:56: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48
 ap-heading-roll.adb:35:56: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:37:14: info: initialization of "Result" proved
+ap-heading-roll.adb:37:14: info: initialization of "Result" proved, in call inlined at ap-heading-roll.adb:48
 ap-heading-roll.adb:37:14: info: initialization of "Result" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:49:33: info: initialization of "Target_Bank" proved
 ap-heading-roll.adb:49:33: info: initialization of "Target_Bank" proved, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:49:53: info: division check proved, in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:50:10: info: initialization of "Result" proved
 ap-heading-roll.adb:50:10: info: initialization of "Result" proved, in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:53:10: info: initialization of "Result" proved
 ap-heading-roll.adb:53:10: info: initialization of "Result" proved, in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:55:14: info: initialization of "Result" proved
 ap-heading-roll.adb:55:14: info: initialization of "Result" proved, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:66:28: info: precondition proved, in call inlined at ap-heading-roll.adb:97
 ap-heading-roll.adb:68:36: info: initialization of "Present_Rollrate" proved, in call inlined at ap-heading-roll.adb:97
 ap-heading-roll.adb:68:49: info: division check proved, in call inlined at ap-heading-roll.adb:97
 ap-heading-roll.adb:69:36: info: initialization of "Target_Rollrate" proved, in call inlined at ap-heading-roll.adb:97
 ap-heading-roll.adb:69:48: info: division check proved, in call inlined at ap-heading-roll.adb:97
+ap-heading-roll.adb:72:14: info: initialization of "Target_Angle" proved
 ap-heading-roll.adb:72:14: info: initialization of "Target_Angle" proved, in call inlined at ap-heading-roll.adb:97
 ap-heading-roll.adb:80:49: info: initialization of "Surfaces.Ailerons" proved
 ap-heading-roll.adb:100:30: info: initialization of "Aileron_Movement" proved
 ap-heading-yaw.adb:25:28: info: precondition proved, in call inlined at ap-heading-yaw.adb:47
 ap-heading-yaw.adb:27:36: info: initialization of "Present_Sliprate" proved, in call inlined at ap-heading-yaw.adb:47
 ap-heading-yaw.adb:27:53: info: division check proved, in call inlined at ap-heading-yaw.adb:47
+ap-heading-yaw.adb:31:14: info: initialization of "Target_Angle" proved
 ap-heading-yaw.adb:31:14: info: initialization of "Target_Angle" proved, in call inlined at ap-heading-yaw.adb:47
 ap-heading-yaw.adb:36:49: info: initialization of "Surfaces.Rudder" proved
 ap-heading-yaw.adb:48:28: info: initialization of "Rudder_Movement" proved

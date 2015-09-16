@@ -1,8 +1,10 @@
+conv.adb:7:37: info: initialization of "Y" proved
 conv.adb:11:14: info: overflow check proved, in call inlined at conv.adb:15
 conv.adb:15:10: info: initialization of "X" proved
 conv.adb:15:10: info: range check proved
 conv.adb:16:04: info: assertion proved
 conv.adb:16:19: info: initialization of "Y" proved
+ident.adb:6:42: info: initialization of "Y" proved
 ident.adb:10:14: info: initialization of "X" proved
 ident.adb:30:14: info: initialization of "X" proved
 ident.adb:43:25: info: initialization of "X" proved
@@ -29,3 +31,4 @@ ident.adb:55:07: info: assertion proved
 ident.adb:55:22: info: initialization of "Y" proved
 ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
+ident.ads:9:45: info: initialization of "Y" proved

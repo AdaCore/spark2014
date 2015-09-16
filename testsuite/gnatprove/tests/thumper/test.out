@@ -531,23 +531,44 @@ server_spark_boundary.adb:43:36: info: initialization of "Network_Response.Size"
 server_spark_boundary.adb:43:60: info: initialization of "Client_Address" proved
 server_spark_boundary.adb:44:16: info: initialization of "Write_Status" proved
 server_timestamp_maker.adb:20:34: warning: literal "Failure" is not referenced
+server_timestamp_maker.adb:35:07: warning: unused variable "Request_Message"
+server_timestamp_maker.adb:36:07: warning: unused variable "Index"
+server_timestamp_maker.adb:37:07: high: "Stop" is not initialized in "Get_Message_Imprint"
+server_timestamp_maker.adb:37:07: warning: unused variable "Stop"
+server_timestamp_maker.adb:38:07: high: "Message_Imprint.X" is not initialized in "Get_Message_Imprint"
+server_timestamp_maker.adb:38:07: warning: unused variable "Message_Imprint"
+server_timestamp_maker.adb:39:07: high: "Imprint_Status" is not initialized in "Get_Message_Imprint"
+server_timestamp_maker.adb:39:07: warning: unused variable "Imprint_Status"
+server_timestamp_maker.adb:47:07: warning: initialization of Result has no effect
 server_timestamp_maker.adb:47:07: warning: unused variable "Result", in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:48:07: warning: unused variable "Length_Stop", in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:49:07: warning: unused variable "Length", in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:50:07: warning: unused variable "Version_Stop", in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:51:07: warning: unused variable "Version", in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:52:07: warning: unused variable "Imprint_Stop"
 server_timestamp_maker.adb:52:07: warning: unused variable "Imprint_Stop", in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:53:07: warning: unused variable "Message_Imprint"
 server_timestamp_maker.adb:53:07: warning: unused variable "Message_Imprint", in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:54:07: warning: unused variable "Decode_Status", in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:55:07: warning: unused variable "Imprint_Status", in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:69:27: info: precondition proved, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:70:67: info: range check proved, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:71:13: info: initialization of "Decode_Status" proved
+server_timestamp_maker.adb:74:16: info: initialization of "Length_Stop" proved
 server_timestamp_maker.adb:74:28: medium: overflow check might fail, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:74:30: info: initialization of "Length" proved
 server_timestamp_maker.adb:79:30: medium: precondition might fail, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:80:38: info: initialization of "Length_Stop" proved
 server_timestamp_maker.adb:80:55: info: range check proved, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:80:55: warning: unused assignment to "Version_Stop"
+server_timestamp_maker.adb:81:16: info: initialization of "Decode_Status" proved
+server_timestamp_maker.adb:84:19: info: initialization of "Version" proved
 server_timestamp_maker.adb:89:16: warning: unused variable constant with variable input "C14b", in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:91:38: info: initialization of "Version_Stop" proved
 server_timestamp_maker.adb:91:51: medium: range check might fail, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:96:19: high: "Imprint_Status" is not initialized
 server_timestamp_maker.adb:100:19: medium: exception might be raised, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:106:14: info: initialization of "Result" proved
 server_timestamp_maker.adb:113:53: info: length check proved
 server_timestamp_maker.adb:115:14: warning: unused variable "C11b"
 server_timestamp_maker.adb:116:10: medium: exception might be raised
@@ -612,5 +633,3 @@ timestamp_messages-client.ads:46:08: medium: incorrect dependency "Stop => Messa
 timestamp_messages-client.ads:46:08: medium: incorrect dependency "Stop => Start"
 timestamp_messages-client.ads:46:08: medium: missing dependency "null => Message"
 timestamp_messages-client.ads:46:08: medium: missing dependency "null => Start"
-
-

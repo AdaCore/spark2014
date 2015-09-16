@@ -21,6 +21,9 @@ message_tests.adb:56:32: info: initialization of "C.X" proved
 message_tests.adb:56:32: info: initialization of "C.Y" proved
 message_tests.adb:66:18: high: "F.B" is not initialized
 message_tests.adb:66:18: info: initialization of "F.A" proved
+parameter_tests.adb:15:27: info: initialization of "F" proved
+parameter_tests.adb:21:32: info: initialization of "C.X" proved
+parameter_tests.adb:21:32: info: initialization of "C.Y" proved
 parameter_tests.adb:28:04: warning: analyzing unreferenced procedure "Clear_Position"
 parameter_tests.adb:36:32: high: "G.Y" is not initialized
 parameter_tests.adb:36:32: info: initialization of "G.X" proved

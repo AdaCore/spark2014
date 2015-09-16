@@ -60,6 +60,7 @@ array_arith.adb:59:16: info: initialization of "X" proved, in call inlined at ar
 array_arith.adb:59:19: info: initialization of "One" proved, in call inlined at array_arith.adb:66
 array_arith.adb:63:19: medium: overflow check might fail
 array_arith.adb:63:19: medium: range check might fail
+array_arith.adb:70:29: info: initialization of "Y" proved
 array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:77
 array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:78
 array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:79
@@ -82,6 +83,7 @@ array_arith.ads:15:35: medium: postcondition might fail, requires X(J) = Natural
 array_arith.ads:17:20: info: initialization of "X" proved
 array_arith.ads:18:14: info: postcondition proved
 array_arith.ads:18:35: info: initialization of "X" proved
+ident.adb:6:42: info: initialization of "Y" proved
 ident.adb:15:12: info: initialization of "X" proved, in call inlined at ident.adb:54
 ident.adb:35:12: info: initialization of "X" proved, in call inlined at ident.adb:52
 ident.adb:43:25: info: initialization of "X" proved
@@ -105,6 +107,7 @@ ident.adb:55:07: info: assertion proved
 ident.adb:55:22: info: initialization of "Y" proved
 ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
+ident.ads:9:45: info: initialization of "Y" proved
 incr_expr_fun.adb:4:62: medium: overflow check might fail
 incr_expr_fun.adb:6:63: medium: overflow check might fail
 incr_expr_fun.adb:8:58: medium: overflow check might fail

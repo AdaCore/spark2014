@@ -7,7 +7,11 @@ other.ads:5:14: info: initialization of "G2" proved
 other.ads:8:07: info: initialization of "Nested_Visible_Var" proved
 outer.adb:8:07: info: initialization of "Visible" proved
 outer.adb:14:07: info: initialization of "Hidden" proved
+outer.adb:18:17: info: initialization of "Hidden" proved
+outer.adb:18:17: info: initialization of "Visible" proved
+outer.adb:24:21: info: initialization of "Tmp" proved
 outer.adb:24:21: info: initialization of "Tmp" proved, in call inlined at outer.adb:29
+outer.adb:25:21: info: initialization of "Tmp" proved
 outer.adb:25:21: info: initialization of "Tmp" proved, in call inlined at outer.adb:29
 outer.ads:2:14: warning: subprogram "P" has no effect
 p.adb:1:14: info: initialization of "X" proved

@@ -20,6 +20,16 @@ part.adb:24:10: info: index check proved
 part.adb:24:19: info: index check proved
 part.adb:25:10: info: index check proved
 part.adb:25:16: info: initialization of "Tmp" proved
+part.adb:36:13: info: initialization of "First" proved
+part.adb:36:22: info: initialization of "Last" proved
+part.adb:37:24: info: initialization of "First" proved
+part.adb:38:22: info: initialization of "First" proved
+part.adb:40:22: info: initialization of "First" proved
+part.adb:40:29: info: initialization of "Last" proved
+part.adb:41:21: info: initialization of "Last" proved
+part.adb:47:10: info: initialization of "First" proved
+part.adb:47:34: info: initialization of "Last" proved
+part.adb:51:33: info: initialization of "First" proved
 part.ads:6:41: info: index check proved
 part.ads:9:42: info: index check proved
 part.ads:15:47: info: index check proved

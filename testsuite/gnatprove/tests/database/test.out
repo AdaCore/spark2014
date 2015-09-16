@@ -7,6 +7,7 @@ database.adb:54:31: info: initialization of "Account" proved
 database.adb:60:17: info: postcondition proved
 database.adb:105:52: info: length check proved
 database.adb:109:46: info: length check proved
+database.adb:118:17: info: initialization of "Links" proved
 database.adb:122:21: info: range check proved
 database.adb:123:17: info: index check proved
 database.adb:124:36: info: index check proved
@@ -20,8 +21,11 @@ database.adb:154:25: info: initialization of "Count" proved
 database.adb:154:31: info: overflow check proved
 database.adb:157:17: info: initialization of "Count" proved
 database.adb:173:30: info: range check proved, in call inlined at database.adb:182
+database.adb:175:23: info: initialization of "Links" proved
 database.adb:175:23: info: initialization of "Links" proved, in call inlined at database.adb:182
+database.adb:176:53: info: initialization of "Tmp_Prev" proved
 database.adb:176:53: info: initialization of "Tmp_Prev" proved, in call inlined at database.adb:182
+database.adb:177:53: info: initialization of "Tmp_Next" proved
 database.adb:177:53: info: initialization of "Tmp_Next" proved, in call inlined at database.adb:182
 database.adb:251:19: info: precondition proved
 database.adb:254:56: info: initialization of "Account" proved

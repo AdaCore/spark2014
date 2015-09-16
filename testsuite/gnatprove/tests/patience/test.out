@@ -228,6 +228,7 @@ patience.ads:115:56: info: index check proved
 patience.ads:125:14: medium: postcondition might fail
 patience.ads:125:43: info: index check proved
 patience.ads:130:14: info: postcondition proved
+test_patience.adb:7:14: warning: subprogram "PrintCardStack" has no effect
 test_patience.adb:9:07: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:9:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:10:07: warning: assuming "Put" has no effect on global items
@@ -243,6 +244,7 @@ test_patience.adb:14:07: warning: assuming "Put_Line" has no effect on global it
 test_patience.adb:14:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:15:07: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:15:07: warning: no Global contract available for "Put_Line"
+test_patience.adb:18:14: warning: subprogram "PrintState" has no effect
 test_patience.adb:20:07: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:20:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:21:07: warning: assuming "Put_Line" has no effect on global items
@@ -276,6 +278,7 @@ test_patience.adb:35:23: info: initialization of "S.Stacks" proved, in call inli
 test_patience.adb:36:16: warning: assuming "Put" has no effect on global items
 test_patience.adb:36:16: warning: no Global contract available for "Put"
 test_patience.adb:36:24: medium: range check might fail, in call inlined at test_patience.adb:53
+test_patience.adb:36:42: info: initialization of "Idx" proved
 test_patience.adb:36:42: info: initialization of "Idx" proved, in call inlined at test_patience.adb:53
 test_patience.adb:36:47: medium: range check might fail, in call inlined at test_patience.adb:53
 test_patience.adb:36:55: medium: range check might fail, in call inlined at test_patience.adb:53

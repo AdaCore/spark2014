@@ -62,13 +62,16 @@ aggregates.adb:11:46: info: overflow check proved, in call inlined at aggregates
 aggregates.adb:13:19: info: division check proved, in call inlined at aggregates.adb:29
 aggregates.adb:13:19: info: overflow check proved, in call inlined at aggregates.adb:29
 aggregates.adb:14:20: medium: overflow check might fail, in call inlined at aggregates.adb:29
+aggregates.adb:14:22: info: initialization of "Approx" proved
 aggregates.adb:14:22: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
 aggregates.adb:14:29: medium: overflow check might fail, in call inlined at aggregates.adb:29
 aggregates.adb:15:24: info: overflow check proved, in call inlined at aggregates.adb:29
+aggregates.adb:15:27: info: initialization of "Approx" proved
 aggregates.adb:15:27: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
 aggregates.adb:15:34: medium: overflow check might fail, in call inlined at aggregates.adb:29
 aggregates.adb:15:38: medium: divide by zero might fail, in call inlined at aggregates.adb:29
 aggregates.adb:15:38: medium: overflow check might fail, in call inlined at aggregates.adb:29
+aggregates.adb:17:14: info: initialization of "Approx" proved
 aggregates.adb:17:14: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
 aggregates.adb:25:13: info: length check proved
 aggregates.adb:26:13: info: length check proved
@@ -140,6 +143,7 @@ bad_types.adb:10:21: warning: no Global contract available for "Put"
 bad_types.adb:10:35: info: initialization of "Total" proved
 control_structures.adb:7:11: medium: "Default_Base" might not be initialized after elaboration of main program "Control_Structures"
 control_structures.adb:7:11: medium: "Default_Width" might not be initialized after elaboration of main program "Control_Structures"
+control_structures.adb:24:31: info: initialization of "New_Setting" proved
 control_structures.adb:26:24: medium: overflow check might fail, in call inlined at control_structures.adb:184
 control_structures.adb:26:26: info: initialization of "Temperature" proved, in call inlined at control_structures.adb:184
 control_structures.adb:31:08: medium: overflow check might fail
@@ -247,11 +251,13 @@ control_structures.adb:179:26: warning: assuming "Put" has no effect on global i
 control_structures.adb:179:26: warning: no Global contract available for "Put"
 control_structures.adb:186:18: info: initialization of "Valve_Setting" proved
 dates.adb:17:15: info: division check proved, in call inlined at dates.adb:49
+dates.adb:20:14: info: initialization of "Result" proved
 dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
 dates.adb:28:08: info: postcondition proved
 dates.adb:45:09: info: length check proved
 dates.adb:49:10: info: initialization of "C8b" proved
 dates.adb:54:14: info: initialization of "Length" proved
+dates.adb:65:14: info: initialization of "Result" proved
 dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
 dates.adb:77:47: info: range check proved
 dates.adb:81:54: info: range check proved
@@ -322,6 +328,7 @@ enum_example.adb:56:04: warning: assuming "Put" has no effect on global items
 enum_example.adb:56:04: warning: no Global contract available for "Put"
 enum_example.adb:56:17: info: initialization of "Count" proved
 example.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Example"
+example.adb:10:07: info: initialization of "Changed" proved
 example.adb:14:27: info: overflow check proved, in call inlined at example.adb:27
 example.adb:25:15: warning: assuming "Put_Line" has no effect on global items
 example.adb:25:15: warning: no Global contract available for "Put_Line"
@@ -337,8 +344,10 @@ example.adb:32:41: info: initialization of "Value" proved
 generic_examples.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Generic_Examples"
 generic_examples.adb:3:11: medium: "Default_Width" might not be initialized after elaboration of main program "Generic_Examples"
 generic_examples.adb:11:21: info: index check proved, in call inlined at generic_examples.adb:89
+generic_examples.adb:12:23: info: initialization of "Result" proved
 generic_examples.adb:12:23: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
 generic_examples.adb:12:30: medium: overflow check might fail, in call inlined at generic_examples.adb:89
+generic_examples.adb:15:14: info: initialization of "Result" proved
 generic_examples.adb:15:14: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
 generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
 generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
@@ -413,8 +422,10 @@ operator_overload.adb:17:45: info: initialization of "P2.Y_Coord" proved, in cal
 operator_overload.adb:17:45: info: initialization of "P2.Y_Coord" proved, in call inlined at operator_overload.adb:37
 operator_overload.adb:17:59: info: overflow check proved, in call inlined at operator_overload.adb:30
 operator_overload.adb:17:59: medium: overflow check might fail, in call inlined at operator_overload.adb:37
+operator_overload.adb:18:14: info: initialization of "Left_Squared" proved
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:18:30: info: initialization of "Right_Squared" proved
 operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:30
 operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:37
 operator_overload.adb:30:10: info: initialization of "C3b" proved
@@ -694,11 +705,13 @@ datebooks.ads:50:96: info: initialization of "Status" proved
 datebooks.ads:57:61: info: initialization of "Next_Date" proved
 datebooks.ads:57:93: info: initialization of "Status" proved
 dates.adb:17:15: info: division check proved, in call inlined at dates.adb:49
+dates.adb:20:14: info: initialization of "Result" proved
 dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
 dates.adb:28:08: info: postcondition proved
 dates.adb:45:09: info: length check proved
 dates.adb:49:10: info: initialization of "C8b" proved
 dates.adb:54:14: info: initialization of "Length" proved
+dates.adb:65:14: info: initialization of "Result" proved
 dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
 dates.adb:77:47: info: range check proved
 dates.adb:81:54: info: range check proved
@@ -911,11 +924,13 @@ circle_demo.adb:15:18: warning: no Global contract available for "Put_Line"
 circle_demo.adb:17:18: warning: assuming "Put_Line" has no effect on global items
 circle_demo.adb:17:18: warning: no Global contract available for "Put_Line"
 dates.adb:17:15: info: division check proved, in call inlined at dates.adb:49
+dates.adb:20:14: info: initialization of "Result" proved
 dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
 dates.adb:28:08: info: postcondition proved
 dates.adb:45:09: info: length check proved
 dates.adb:49:10: info: initialization of "C8b" proved
 dates.adb:54:14: info: initialization of "Length" proved
+dates.adb:65:14: info: initialization of "Result" proved
 dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
 dates.adb:77:47: info: range check proved
 dates.adb:81:54: info: range check proved
@@ -1202,7 +1217,7 @@ shapes.adb:14:30: medium: overflow check might fail
 shapes.adb:14:32: info: initialization of "Delta_Y" proved
 shapes.adb:14:39: info: overflow check proved
 shapes.adb:14:75: info: overflow check proved
-shapes.adb:14:75: medium: range check might fail
+shapes.adb:14:75: info: range check proved
 shapes2.adb:12:34: info: overflow check proved
 shapes2.adb:12:34: info: range check proved
 shapes2.adb:13:34: info: overflow check proved
@@ -1843,11 +1858,13 @@ unused_parameter.adb:7:20: info: division check proved
 unused_parameter.ads:4:19: warning: unused variable "B"
 unused_parameter.ads:5:19: info: initialization of "C" proved
 dates.adb:17:15: info: division check proved, in call inlined at dates.adb:49
+dates.adb:20:14: info: initialization of "Result" proved
 dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
 dates.adb:28:08: info: postcondition proved
 dates.adb:45:09: info: length check proved
 dates.adb:49:10: info: initialization of "C8b" proved
 dates.adb:54:14: info: initialization of "Length" proved
+dates.adb:65:14: info: initialization of "Result" proved
 dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
 dates.adb:77:47: info: range check proved
 dates.adb:81:54: info: range check proved

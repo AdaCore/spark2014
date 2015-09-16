@@ -10,8 +10,11 @@ foo.adb:63:19: info: initialization of "A" proved
 foo.adb:66:26: info: initialization of "A" proved
 foo.adb:73:26: info: initialization of "A.Index" proved
 foo.adb:84:26: info: initialization of "A.Index" proved
+foo.adb:91:26: info: initialization of "A" proved
+foo.adb:95:19: info: initialization of "A" proved
 foo.adb:95:19: info: initialization of "A" proved, in call inlined at foo.adb:102
 foo.adb:98:26: info: initialization of "A" proved
+foo.adb:105:26: info: initialization of "A.Index" proved
 foo.adb:115:26: info: initialization of "A.Index" proved
 foo.adb:128:30: info: initialization of "Data" proved
 foo.adb:129:30: info: initialization of "Octet_Count" proved
