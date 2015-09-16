@@ -103,34 +103,22 @@ package body Flow.Analysis.Antialiasing is
 
       function LT (A, B : Node_Id) return Boolean is
       begin
-         case Compile_Time_Compare (A, B, True) is
-            when LT     => return True;
-            when others => return False;
-         end case;
+         return Compile_Time_Compare (A, B, True) = LT;
       end LT;
 
       function GE (A, B : Node_Id) return Boolean is
       begin
-         case Compile_Time_Compare (A, B, True) is
-            when GE | GT | EQ => return True;
-            when others       => return False;
-         end case;
+         return Compile_Time_Compare (A, B, True) in GE | GT | EQ;
       end GE;
 
       function Empty (A, B : Node_Id) return Boolean is
       begin
-         case Compile_Time_Compare (A, B, True) is
-            when GT     => return True;
-            when others => return False;
-         end case;
+         return Compile_Time_Compare (A, B, True) = GT;
       end Empty;
 
       function Full (A, B : Node_Id) return Boolean is
       begin
-         case Compile_Time_Compare (A, B, True) is
-            when LT | LE | EQ => return True;
-            when others       => return False;
-         end case;
+         return Compile_Time_Compare (A, B, True) in LT | LE | EQ;
       end Full;
    begin
       if Empty (AL, AH)
