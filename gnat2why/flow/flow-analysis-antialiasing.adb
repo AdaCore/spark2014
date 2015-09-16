@@ -305,7 +305,7 @@ package body Flow.Analysis.Antialiasing is
 
    begin
 
-      --  First we check if either of the nodes are interesting as
+      --  First we check if either of the nodes is interesting as
       --  non-interesting nodes cannot introduce aliasing.
 
       if Trace_Antialiasing then
@@ -697,7 +697,7 @@ package body Flow.Analysis.Antialiasing is
             pragma Assert (Call = Other_Call);
 
             if Actual = Other then
-               --  We don't check against ourselves, but we do not
+               --  We don't check against ourselves, but we do not ???
                --  when we have found ourselves, see below...
                Found_Myself := True;
 

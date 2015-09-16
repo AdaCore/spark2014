@@ -38,10 +38,9 @@ package Flow.Analysis.Antialiasing is
    --  out parameters is not.
    --
    --  This procedure is aware of globals, both computed by gnat2why
-   --  and specified. The following checks are performed:
-   --     * Is there aliasing between any two parameters
-   --     * Is there aliasing between a parameter and a global
-   --     * Is there potential aliasing between a computed global and
-   --       abstract state
+   --  and specified by the user. It checks if there is:
+   --     * aliasing between any two parameters
+   --     * aliasing between a parameter and a global
+   --     * potential aliasing between a computed global and abstract state
 
 end Flow.Analysis.Antialiasing;
