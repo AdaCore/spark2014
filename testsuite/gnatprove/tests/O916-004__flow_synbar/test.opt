@@ -1,0 +1,1 @@
+ALL XFAIL fail on non-linux synchronous barrier package
