@@ -1,1 +1,1 @@
-XFAIL wrong test for volatile functions (O916-031)
+ALL XFAIL wrong test for volatile functions (O916-031)
