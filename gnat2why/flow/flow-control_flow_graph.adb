@@ -6361,14 +6361,12 @@ package body Flow.Control_Flow_Graph is
          end;
 
          for E of FA.GG.Globals loop
-            case Ekind (E) is
-               when E_In_Parameter | E_Constant =>
-                  Create_Initial_And_Final_Vertices (Direct_Mapping_Id (E),
-                                                     Mode_In, False, FA);
-               when others =>
-                  Create_Initial_And_Final_Vertices (Direct_Mapping_Id (E),
-                                                     Mode_In_Out, False, FA);
-            end case;
+            Create_Initial_And_Final_Vertices
+              (Direct_Mapping_Id (E),
+               (if Ekind (E) in E_In_Parameter | E_Constant
+                then Mode_In
+                else Mode_In_Out),
+               False, FA);
 
             --  Collect unsynchronized objects by excluding constant,
             --  protected, suspension and atomic ones.
