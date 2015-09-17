@@ -3276,7 +3276,7 @@ package body Flow.Control_Flow_Graph is
       --  create a vertex to check for uninitialized variables within the
       --  Default_Initial_Condition's expression.
       declare
-         Typ  : Node_Id;
+         Typ  : constant Node_Id := Etype (Defining_Identifier (N));
          Expr : Node_Id;
 
          Variables_Used       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -3285,8 +3285,6 @@ package body Flow.Control_Flow_Graph is
 
          Funcs : Node_Sets.Set;
       begin
-         Typ := Etype (Defining_Identifier (N));
-
          if (Has_Default_Init_Cond (Typ)
                or else Has_Inherited_Default_Init_Cond (Typ))
            and then Present (Default_Init_Cond_Procedure (Typ))
