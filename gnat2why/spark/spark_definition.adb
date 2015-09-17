@@ -4894,7 +4894,7 @@ package body SPARK_Definition is
    procedure Mark_Violation_In_Tasking (N : Node_Id)
    is
       Msg_Prefix : constant String := "tasking in SPARK requires ";
-      Msg_Suffix : constant String := " (SPARK RM 9.1(2))";
+      Msg_Suffix : constant String := " (SPARK RM 9(2))";
    begin
       --  Flag the violation, so that the current entity is marked accordingly
 

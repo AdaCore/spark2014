@@ -4157,7 +4157,7 @@ package body Flow.Analysis is
                               (Name_Sets.Element (
                                Tasking_Objects (Owning_Kind, This_Task_Type).
                                  First)),
-                            SRM_Ref => "9.11");
+                            SRM_Ref => "9(11)");
 
             --  Otherwise there is one instance of this task type and it must
             --  be the only task type that accesses the concurrent object.
@@ -4182,7 +4182,7 @@ package body Flow.Analysis is
                                        (Entity_Name_to_Nodes_Maps.Element
                                           (Other_Task)),
                                      F2      => Magic_String_Id (SO),
-                                     SRM_Ref => "9.11");
+                                     SRM_Ref => "9(11)");
 
                      --  Otherwise record this task (type???)
                   else
