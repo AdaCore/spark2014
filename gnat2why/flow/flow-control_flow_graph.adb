@@ -1294,6 +1294,8 @@ package body Flow.Control_Flow_Graph is
 
       FS : Flow_Id_Sets.Set;
 
+   --  Start of processing for Create_Initial_And_Final_Vertices
+
    begin
       FS := Flatten_Variable (F, FA.B_Scope);
       for Tmp of FS loop
