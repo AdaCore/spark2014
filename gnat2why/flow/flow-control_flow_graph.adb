@@ -6370,7 +6370,6 @@ package body Flow.Control_Flow_Graph is
 
             --  Collect unsynchronized objects by excluding constant,
             --  protected, suspension and atomic ones.
-            --  ??? Constant_After_Elaboration
             if not (Is_Synchronized_Object (E)
                     or else Is_Synchronized_State (E))
             then
