@@ -2497,6 +2497,31 @@ invariant maintained across states is expressed in an expression function
 called from preconditions and postconditions. |GNATprove| proves all checks
 on this program.
 
+.. rubric:: ``spark_book``
+
+This collection of examples comes from the book `Building High Integrity
+Applications with SPARK` written by Prof. John McCormick from University of
+Northern Iowa and Prof. Peter Chapin from Vermont Technical College, published
+by Cambridge University Press:
+
+.. image:: static/spark_book.jpg
+   :align: center
+   :alt: Cover of SPARK Book
+
+The examples follow the chapters of the book:
+
+1. Introduction and overview
+2. The basic SPARK language
+3. Programming in the large
+4. Dependency contracts
+5. Mathematical background
+6. Proof
+7. Interfacing with SPARK
+8. Software engineering with SPARK
+9. Advanced techniques
+
+The original source code is available from the publisher's website at http://www.cambridge.org/us/academic/subjects/computer-science/programming-languages-and-applied-logic/building-high-integrity-applications-spark
+
 .. rubric:: ``tetris``
 
 This program implements a simple version of the game of Tetris. An invariant of
@@ -2716,6 +2741,31 @@ library ``Ada.Text_IO``, for example the generic unit
 ``Ada.Text_IO.Integer_IO``. Partial function contracts are expressed on all
 subprograms. |GNATprove| proves all checks on the implementation of these
 wrapper units.
+
+.. rubric:: ``thumper``
+
+This program is a secure time stamp client/server system that implements
+RFC-3161 (see https://www.ietf.org/rfc/rfc3161.txt). It allows clients to
+obtain cryptographic time stamps that can be used to later verify that certain
+documents existed on or before the time mentioned in the time stamp. Thumper is
+written in a combination of Ada 2012 and SPARK 2014 and makes use of an
+external C library. Thumper was developed as a SPARK technology demonstration
+by Prof. Peter Chapin from Vermont Technical College and his students. It is
+used as a case study in the book `Building High Integrity Applications with
+SPARK` written by Prof. John McCormick from University of Northern Iowa and
+Prof. Peter Chapin, published by Cambridge University Press (see section 8.5).
+
+The program in the toolset distribution is a snapshot of the Thumper project
+and a supporting project providing ASN.1 support named Hermes, whose up-to-date
+sources can be obtained separately from GitHub:
+
+* Thumper at https://github.com/pchapin/thumper
+* Hermer at https://github.com/pchapin/hermes
+
+The verification objectives pursued in both projects are currently to
+:ref:`Address Data and Control Coupling` with a focus on ensuring secure
+information flows (especially important for a cryptographic application) and to
+:ref:`Prove Absence of Run-Time Errors (AoRTE)`.
 
 .. rubric:: ``tokeneer``
 

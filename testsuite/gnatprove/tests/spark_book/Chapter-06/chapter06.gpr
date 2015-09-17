@@ -5,6 +5,10 @@ project Chapter06 is
    for Object_Dir use "build";
    for Main use ("main.adb", "tests.adb");
 
+   --  Exclude main.adb as it is also in Chapter-09, so that
+   --  we can build a project that includes all chapter projects.
+   for Excluded_Source_Files use ("main.adb");
+
    package Compiler is
       for Default_Switches ("ada") use ("-gnato", "-fstack-check", "-gnata");
    end Compiler;

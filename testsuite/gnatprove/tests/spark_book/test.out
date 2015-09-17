@@ -1,55 +1,3 @@
-sorters.adb:21:19: info: postcondition proved
-sorters.adb:22:28: info: index check proved
-sorters.adb:22:45: info: index check proved
-sorters.adb:23:28: info: index check proved
-sorters.adb:23:45: info: index check proved
-sorters.adb:25:58: info: index check proved
-sorters.adb:25:75: info: index check proved
-sorters.adb:31:29: info: index check proved
-sorters.adb:32:15: info: index check proved
-sorters.adb:32:29: info: index check proved
-sorters.adb:33:15: info: index check proved
-sorters.adb:33:21: info: initialization of "Temp" proved
-sorters.adb:41:19: info: postcondition proved
-sorters.adb:43:45: info: index check proved
-sorters.adb:43:67: info: index check proved
-sorters.adb:47:22: info: range check proved
-sorters.adb:49:10: info: loop invariant initialization proved
-sorters.adb:49:10: info: loop invariant preservation proved
-sorters.adb:50:13: info: initialization of "Min" proved
-sorters.adb:51:50: info: overflow check proved
-sorters.adb:52:25: info: index check proved
-sorters.adb:52:43: info: index check proved
-sorters.adb:54:42: info: index check proved
-sorters.adb:54:42: info: initialization of "Min" proved
-sorters.adb:55:20: info: range check proved
-sorters.adb:58:14: info: initialization of "Min" proved
-sorters.adb:68:50: info: overflow check proved
-sorters.adb:69:22: info: length check proved
-sorters.adb:69:25: info: length check proved
-sorters.adb:70:22: info: precondition proved
-sorters.adb:70:40: info: range check proved
-sorters.adb:72:13: info: initialization of "Smallest" proved
-sorters.adb:73:13: info: precondition proved
-sorters.adb:74:29: info: range check proved
-sorters.adb:75:29: info: initialization of "Smallest" proved
-sorters.adb:78:61: info: initialization of "Values_Last" proved
-sorters.adb:80:10: info: loop invariant initialization proved
-sorters.adb:80:10: info: loop invariant preservation proved
-sorters.adb:81:10: info: loop invariant initialization proved
-sorters.adb:81:10: info: loop invariant preservation proved
-sorters.adb:83:26: info: index check proved
-sorters.adb:83:46: info: index check proved
-sorters.adb:84:10: info: loop invariant initialization proved
-sorters.adb:86:16: medium: loop invariant might fail after first iteration, requires Values (J) <= Values (J + 1)
-sorters.adb:86:24: info: index check proved
-sorters.adb:86:40: info: index check proved
-sorters.adb:86:40: info: overflow check proved
-sorters.ads:18:22: info: postcondition proved
-sorters.ads:18:64: info: overflow check proved
-sorters.ads:19:33: info: index check proved
-sorters.ads:19:49: info: index check proved
-sorters.ads:19:49: info: overflow check proved
 a-tienio.ads:28:04: info: initialization of "Default_Width" proved, in instantiation at enum_example.adb:11
 a-tienio.ads:29:04: info: initialization of "Default_Setting" proved, in instantiation at enum_example.adb:11
 a-tiflio.ads:48:04: info: initialization of "Default_Fore" proved, in instantiation at good_types.adb:8
@@ -141,6 +89,154 @@ bad_types.adb:9:33: info: initialization of "Wall_Thickness" proved
 bad_types.adb:10:21: warning: assuming "Put" has no effect on global items
 bad_types.adb:10:21: warning: no Global contract available for "Put"
 bad_types.adb:10:35: info: initialization of "Total" proved
+bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized
+bounded_queue_example_v1.adb:10:11: high: "My_Queue.Front" is not initialized
+bounded_queue_example_v1.adb:10:11: high: "My_Queue.Items" is not initialized
+bounded_queue_example_v1.adb:10:11: high: "My_Queue.Rear" is not initialized
+bounded_queue_example_v1.adb:12:07: medium: precondition might fail
+bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Count" proved
+bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Front" proved
+bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Items" proved
+bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Rear" proved
+bounded_queue_example_v1.adb:15:07: medium: precondition might fail
+bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Count" proved
+bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Front" proved
+bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Items" proved
+bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Rear" proved
+bounded_queue_example_v1.adb:16:07: warning: assuming "Put_Line" has no effect on global items
+bounded_queue_example_v1.adb:16:07: warning: no Global contract available for "Put_Line"
+bounded_queue_example_v1.adb:16:32: info: initialization of "Value" proved
+bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Count" proved
+bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Front" proved
+bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Items" proved
+bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Rear" proved
+bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Count" proved
+bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Front" proved
+bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Items" proved
+bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Rear" proved
+bounded_queue_example_v1.adb:20:04: warning: assuming "Put_Line" has no effect on global items
+bounded_queue_example_v1.adb:20:04: warning: no Global contract available for "Put_Line"
+bounded_queue_example_v1.adb:20:42: medium: range check might fail
+bounded_queue_example_v1.adb:20:59: info: initialization of "Value" proved
+bounded_queue_v1.adb:20:32: medium: array index check might fail
+bounded_queue_v1.adb:25:32: medium: array index check might fail
+bounded_queue_v1.adb:38:32: info: division check proved
+bounded_queue_v1.adb:38:51: info: overflow check proved
+bounded_queue_v1.adb:38:51: info: range check proved
+bounded_queue_v1.adb:39:25: info: index check proved
+bounded_queue_v1.adb:40:34: medium: overflow check might fail
+bounded_queue_v1.adb:47:33: medium: array index check might fail
+bounded_queue_v1.adb:48:34: info: division check proved
+bounded_queue_v1.adb:48:53: info: overflow check proved
+bounded_queue_v1.adb:48:53: info: range check proved
+bounded_queue_v1.adb:49:34: medium: range check might fail
+bounded_queue_v1.ads:31:18: medium: postcondition might fail
+bounded_queue_v1.ads:37:18: medium: postcondition might fail
+bounded_queue_v1.ads:38:50: medium: overflow check might fail
+bounded_queue_v1.ads:39:18: info: precondition proved
+bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
+bounded_queue_v1.ads:45:18: info: initialization of "Item" proved
+bounded_queue_v1.ads:45:18: medium: postcondition might fail
+bounded_queue_v1.ads:45:25: info: precondition proved
+buffers.adb:8:29: info: length check proved
+buffers.adb:17:32: info: length check proved
+buffers.adb:19:56: info: division check proved
+buffers.adb:20:31: info: initialization of "New_Index" proved
+buffers.adb:20:31: info: initialization of "Workspace" proved
+buffers.adb:22:17: info: initialization of "Workspace" proved
+buffers.adb:32:43: info: initialization of "Temp" proved
+buffers.adb:42:10: info: loop invariant initialization proved
+buffers.adb:42:10: info: loop invariant preservation proved
+buffers.adb:42:33: info: initialization of "Count" proved
+buffers.adb:45:22: info: initialization of "Count" proved
+buffers.adb:45:28: info: range check proved
+buffers.adb:48:14: info: initialization of "Count" proved
+buffers.adb:59:10: info: loop invariant initialization proved
+buffers.adb:59:10: info: loop invariant preservation proved
+buffers.adb:59:33: info: initialization of "Count" proved
+buffers.adb:62:22: info: initialization of "Count" proved
+buffers.adb:62:28: info: range check proved
+buffers.adb:77:32: info: length check proved
+buffers.adb:82:10: info: loop invariant initialization proved
+buffers.adb:82:10: info: loop invariant preservation proved
+buffers.adb:82:32: info: initialization of "Offset" proved
+buffers.adb:85:39: info: index check proved
+buffers.adb:85:49: info: initialization of "Offset" proved
+buffers.adb:85:49: info: initialization of "Workspace" proved
+buffers.adb:86:23: info: initialization of "Offset" proved
+buffers.adb:86:30: info: range check proved
+buffers.adb:90:16: info: initialization of "Offset" proved
+buffers.adb:93:11: info: range check proved
+buffers.adb:93:40: info: initialization of "Offset" proved
+buffers.adb:94:36: info: index check proved
+buffers.adb:94:41: info: initialization of "Workspace" proved
+buffers.adb:96:17: info: initialization of "Workspace" proved
+buffers.adb:104:17: info: length check proved
+buffers.adb:105:26: info: initialization of "Characters_To_Copy" proved
+buffers.adb:108:11: info: range check proved
+buffers.adb:108:49: info: initialization of "Characters_To_Copy" proved
+buffers.adb:109:10: info: loop invariant initialization proved
+buffers.adb:109:10: info: loop invariant preservation proved
+buffers.adb:110:13: info: initialization of "Characters_To_Copy" proved
+buffers.adb:111:53: info: initialization of "Characters_To_Copy" proved
+buffers.adb:113:25: info: initialization of "Buffer" proved
+buffers.adb:113:49: info: index check proved
+buffers.adb:113:49: info: overflow check proved
+buffers.adb:126:26: info: initialization of "Characters_To_Copy" proved
+buffers.adb:129:19: info: initialization of "Characters_To_Copy" proved
+buffers.adb:132:11: info: range check proved
+buffers.adb:132:45: info: initialization of "Characters_To_Copy" proved
+buffers.adb:133:23: info: index check proved
+buffers.adb:133:23: info: overflow check proved
+buffers.adb:133:57: info: index check proved
+buffers.adb:133:57: info: overflow check proved
+buffers.adb:146:19: info: length check proved
+buffers.adb:147:34: info: initialization of "Characters_To_Copy" proved
+buffers.adb:150:10: info: initialization of "Characters_To_Copy" proved
+buffers.adb:153:11: info: range check proved
+buffers.adb:153:45: info: initialization of "Characters_To_Copy" proved
+buffers.adb:154:40: info: index check proved
+buffers.adb:154:40: info: overflow check proved
+buffers.adb:154:51: info: initialization of "Destination" proved
+buffers.adb:154:67: info: index check proved
+buffers.adb:154:67: info: overflow check proved
+buffers.ads:11:20: info: initialization of "Buffer" proved
+buffers.ads:35:07: info: initialization of "Count" proved
+buffers.ads:45:23: info: initialization of "Valid" proved
+buffers.ads:53:24: info: initialization of "Buffer" proved
+buffers.ads:75:25: info: initialization of "Destination" proved
+calculate.adb:3:21: info: initialization of "A" proved
+calculate.adb:12:11: medium: overflow check might fail
+circle_demo.adb:14:14: info: precondition proved
+circle_demo.adb:14:50: info: initialization of "My_Circle" proved
+circle_demo.adb:15:18: warning: assuming "Put_Line" has no effect on global items
+circle_demo.adb:15:18: warning: no Global contract available for "Put_Line"
+circle_demo.adb:17:18: warning: assuming "Put_Line" has no effect on global items
+circle_demo.adb:17:18: warning: no Global contract available for "Put_Line"
+contains.adb:6:39: info: length check proved
+contains.adb:9:37: warning: assuming "Index" has no effect on global items
+contains.adb:9:37: warning: no Global contract available for "Index"
+contains.adb:10:56: info: initialization of "Search_String" proved
+contains.adb:11:57: medium: range check might fail
+contains.adb:12:11: info: initialization of "Result_Index" proved
+contains2.adb:8:39: info: length check proved
+contains2.adb:11:37: warning: assuming "Index" has no effect on global items
+contains2.adb:11:37: warning: no Global contract available for "Index"
+contains2.adb:12:56: info: initialization of "Search_String" proved
+contains2.adb:13:57: info: range check proved
+contains2.adb:14:11: info: initialization of "Result_Index" proved
+contains3.adb:7:21: info: postcondition proved
+contains3.adb:7:69: info: index check proved
+contains3.adb:9:39: info: length check proved
+contains3.adb:14:04: info: assertion proved
+contains3.adb:15:37: warning: assuming "Index" has no effect on global items
+contains3.adb:15:37: warning: no Global contract available for "Index"
+contains3.adb:16:56: info: initialization of "Search_String" proved
+contains3.adb:17:57: info: range check proved
+contains3.adb:22:37: info: index check proved
+contains3.adb:24:10: info: initialization of "Result_Index" proved
+contains3.adb:24:46: info: index check proved
+contains3.adb:25:11: info: initialization of "Result_Index" proved
 control_structures.adb:7:11: medium: "Default_Base" might not be initialized after elaboration of main program "Control_Structures"
 control_structures.adb:7:11: medium: "Default_Width" might not be initialized after elaboration of main program "Control_Structures"
 control_structures.adb:24:31: info: initialization of "New_Setting" proved
@@ -250,363 +346,6 @@ control_structures.adb:178:44: info: initialization of "B" proved
 control_structures.adb:179:26: warning: assuming "Put" has no effect on global items
 control_structures.adb:179:26: warning: no Global contract available for "Put"
 control_structures.adb:186:18: info: initialization of "Valve_Setting" proved
-dates.adb:17:15: info: division check proved, in call inlined at dates.adb:49
-dates.adb:20:14: info: initialization of "Result" proved
-dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
-dates.adb:28:08: info: postcondition proved
-dates.adb:45:09: info: length check proved
-dates.adb:49:10: info: initialization of "C8b" proved
-dates.adb:54:14: info: initialization of "Length" proved
-dates.adb:65:14: info: initialization of "Result" proved
-dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
-dates.adb:77:47: info: range check proved
-dates.adb:81:54: info: range check proved
-dates.adb:85:53: info: range check proved
-dates.adb:99:47: info: range check proved
-dates.adb:102:54: info: range check proved
-dates.adb:105:53: info: range check proved
-dates.adb:142:10: info: initialization of "C19b" proved
-dates.adb:224:14: info: range check proved
-dates.adb:224:47: info: initialization of "Steps" proved
-dates.adb:230:13: info: loop invariant initialization proved
-dates.adb:230:13: info: loop invariant preservation proved
-dates.adb:232:13: info: precondition proved
-dates.adb:236:14: info: range check proved
-dates.adb:236:47: info: initialization of "Steps" proved
-dates.adb:242:13: info: loop invariant initialization proved
-dates.adb:242:13: info: loop invariant preservation proved
-dates.adb:244:13: info: precondition proved
-dates.adb:276:14: info: initialization of "Result" proved
-dates.ads:32:07: info: initialization of "New_Date.Day" proved
-dates.ads:32:07: info: initialization of "New_Date.Month" proved
-dates.ads:32:07: info: initialization of "New_Date.Year" proved
-dates.ads:33:07: info: initialization of "Valid" proved
-dates.ads:62:76: info: initialization of "Valid" proved
-dates.ads:78:14: info: postcondition proved
-enum_example.adb:3:11: medium: "Current_In" might not be initialized after elaboration of main program "Enum_Example"
-enum_example.adb:3:11: medium: "Current_Out" might not be initialized after elaboration of main program "Enum_Example"
-enum_example.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Enum_Example"
-enum_example.adb:13:04: info: no contextual analysis of "Next_Day" (multiple returns)
-enum_example.adb:18:32: info: range check proved
-enum_example.adb:26:04: warning: assuming "Put_Line" has no effect on global items
-enum_example.adb:26:04: warning: no Global contract available for "Put_Line"
-enum_example.adb:27:10: warning: assuming "Get" has no effect on global items
-enum_example.adb:27:10: warning: no Global contract available for "Get"
-enum_example.adb:28:26: info: initialization of "Today" proved
-enum_example.adb:29:04: warning: assuming "Put" has no effect on global items
-enum_example.adb:29:04: warning: no Global contract available for "Put"
-enum_example.adb:30:10: info: initialization of "Default_Setting" proved
-enum_example.adb:30:10: info: initialization of "Default_Width" proved
-enum_example.adb:30:10: warning: assuming "Put" has no effect on global items
-enum_example.adb:30:10: warning: no Global contract available for "Put"
-enum_example.adb:30:25: info: initialization of "Tomorrow" proved
-enum_example.adb:33:04: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:33:04: warning: no Global contract available for "New_Line"
-enum_example.adb:35:07: info: initialization of "Today" proved
-enum_example.adb:35:15: info: initialization of "Tomorrow" proved
-enum_example.adb:36:07: warning: assuming "Put_Line" has no effect on global items
-enum_example.adb:36:07: warning: no Global contract available for "Put_Line"
-enum_example.adb:38:04: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:38:04: warning: no Global contract available for "New_Line"
-enum_example.adb:40:04: warning: assuming "Put_Line" has no effect on global items
-enum_example.adb:40:04: warning: no Global contract available for "Put_Line"
-enum_example.adb:42:13: info: initialization of "Default_Setting" proved
-enum_example.adb:42:13: info: initialization of "Default_Width" proved
-enum_example.adb:42:13: warning: assuming "Put" has no effect on global items
-enum_example.adb:42:13: warning: no Global contract available for "Put"
-enum_example.adb:43:07: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:43:07: warning: no Global contract available for "New_Line"
-enum_example.adb:45:04: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:45:04: warning: no Global contract available for "New_Line"
-enum_example.adb:48:07: warning: assuming "Put_Line" has no effect on global items
-enum_example.adb:48:07: warning: no Global contract available for "Put_Line"
-enum_example.adb:50:04: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:50:04: warning: no Global contract available for "New_Line"
-enum_example.adb:54:16: info: initialization of "Count" proved
-enum_example.adb:54:22: medium: overflow check might fail
-enum_example.adb:56:04: warning: assuming "Put" has no effect on global items
-enum_example.adb:56:04: warning: no Global contract available for "Put"
-enum_example.adb:56:17: info: initialization of "Count" proved
-example.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Example"
-example.adb:10:07: info: initialization of "Changed" proved
-example.adb:14:27: info: overflow check proved, in call inlined at example.adb:27
-example.adb:25:15: warning: assuming "Put_Line" has no effect on global items
-example.adb:25:15: warning: no Global contract available for "Put_Line"
-example.adb:26:23: warning: assuming "Get" has no effect on global items
-example.adb:26:23: warning: no Global contract available for "Get"
-example.adb:27:04: info: initialization of "Value" proved
-example.adb:30:07: info: initialization of "Modified" proved
-example.adb:31:18: warning: assuming "Put_Line" has no effect on global items
-example.adb:31:18: warning: no Global contract available for "Put_Line"
-example.adb:32:26: warning: assuming "Put" has no effect on global items
-example.adb:32:26: warning: no Global contract available for "Put"
-example.adb:32:41: info: initialization of "Value" proved
-generic_examples.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Generic_Examples"
-generic_examples.adb:3:11: medium: "Default_Width" might not be initialized after elaboration of main program "Generic_Examples"
-generic_examples.adb:11:21: info: index check proved, in call inlined at generic_examples.adb:89
-generic_examples.adb:12:23: info: initialization of "Result" proved
-generic_examples.adb:12:23: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
-generic_examples.adb:12:30: medium: overflow check might fail, in call inlined at generic_examples.adb:89
-generic_examples.adb:15:14: info: initialization of "Result" proved
-generic_examples.adb:15:14: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
-generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
-generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
-generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:39
-generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:46
-generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
-generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
-generic_examples.adb:59:21: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
-generic_examples.adb:70:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
-generic_examples.adb:70:30: medium: overflow check might fail, in instantiation at generic_examples.adb:77
-generic_examples.adb:91:23: warning: assuming "Put" has no effect on global items
-generic_examples.adb:91:23: warning: no Global contract available for "Put"
-generic_examples.adb:91:29: info: initialization of "The_Count" proved
-generic_examples.adb:92:15: warning: assuming "New_Line" has no effect on global items
-generic_examples.adb:92:15: warning: no Global contract available for "New_Line"
-generic_examples.adb:95:40: info: range check proved
-generic_examples.adb:97:23: warning: assuming "Put" has no effect on global items
-generic_examples.adb:97:23: warning: no Global contract available for "Put"
-generic_examples.adb:97:29: info: initialization of "The_Count" proved
-generic_examples.adb:98:15: warning: assuming "New_Line" has no effect on global items
-generic_examples.adb:98:15: warning: no Global contract available for "New_Line"
-generic_examples.adb:100:43: info: initialization of "My_Percents" proved
-generic_examples.adb:100:43: info: range check proved
-generic_examples.adb:102:23: warning: assuming "Put" has no effect on global items
-generic_examples.adb:102:23: warning: no Global contract available for "Put"
-generic_examples.adb:102:29: info: initialization of "The_Count" proved
-generic_examples.adb:103:15: warning: assuming "New_Line" has no effect on global items
-generic_examples.adb:103:15: warning: no Global contract available for "New_Line"
-generic_examples.adb:106:31: info: initialization of "My_Percents" proved
-generic_examples.adb:106:31: info: range check proved
-generic_examples.adb:109:23: warning: assuming "Put" has no effect on global items
-generic_examples.adb:109:23: warning: no Global contract available for "Put"
-generic_examples.adb:109:29: info: initialization of "The_Count" proved
-generic_examples.adb:110:15: warning: assuming "New_Line" has no effect on global items
-generic_examples.adb:110:15: warning: no Global contract available for "New_Line"
-good_types.adb:2:11: medium: "Current_In" might not be initialized after elaboration of main program "Good_Types"
-good_types.adb:2:11: medium: "Current_Out" might not be initialized after elaboration of main program "Good_Types"
-good_types.adb:13:20: info: initialization of "Wall_Thickness" proved, in call inlined at good_types.adb:22
-good_types.adb:13:26: info: division check proved, in call inlined at good_types.adb:22
-good_types.adb:13:26: info: overflow check proved, in call inlined at good_types.adb:22
-good_types.adb:20:11: warning: assuming "Get" has no effect on global items
-good_types.adb:20:11: warning: no Global contract available for "Get"
-good_types.adb:21:11: warning: assuming "Get" has no effect on global items
-good_types.adb:21:11: warning: no Global contract available for "Get"
-good_types.adb:22:13: info: initialization of "Room_Length" proved
-good_types.adb:22:25: info: overflow check proved
-good_types.adb:22:25: medium: range check might fail
-good_types.adb:22:31: info: overflow check proved
-good_types.adb:23:11: info: initialization of "Default_Aft" proved
-good_types.adb:23:11: info: initialization of "Default_Exp" proved
-good_types.adb:23:11: info: initialization of "Default_Fore" proved
-good_types.adb:23:11: warning: assuming "Put" has no effect on global items
-good_types.adb:23:11: warning: no Global contract available for "Put"
-good_types.adb:23:25: info: initialization of "Total" proved
-operator_overload.adb:16:24: info: initialization of "P1.X_Coord" proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:16:24: info: initialization of "P1.X_Coord" proved, in call inlined at operator_overload.adb:37
-operator_overload.adb:16:38: info: overflow check proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:16:38: medium: overflow check might fail, in call inlined at operator_overload.adb:37
-operator_overload.adb:16:43: info: overflow check proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:16:43: info: overflow check proved, in call inlined at operator_overload.adb:37
-operator_overload.adb:16:45: info: initialization of "P1.Y_Coord" proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:16:45: info: initialization of "P1.Y_Coord" proved, in call inlined at operator_overload.adb:37
-operator_overload.adb:16:59: info: overflow check proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:16:59: medium: overflow check might fail, in call inlined at operator_overload.adb:37
-operator_overload.adb:17:24: info: initialization of "P2.X_Coord" proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:17:24: info: initialization of "P2.X_Coord" proved, in call inlined at operator_overload.adb:37
-operator_overload.adb:17:38: info: overflow check proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:17:38: medium: overflow check might fail, in call inlined at operator_overload.adb:37
-operator_overload.adb:17:43: info: overflow check proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:17:43: info: overflow check proved, in call inlined at operator_overload.adb:37
-operator_overload.adb:17:45: info: initialization of "P2.Y_Coord" proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:17:45: info: initialization of "P2.Y_Coord" proved, in call inlined at operator_overload.adb:37
-operator_overload.adb:17:59: info: overflow check proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:17:59: medium: overflow check might fail, in call inlined at operator_overload.adb:37
-operator_overload.adb:18:14: info: initialization of "Left_Squared" proved
-operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:37
-operator_overload.adb:18:30: info: initialization of "Right_Squared" proved
-operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:37
-operator_overload.adb:30:10: info: initialization of "C3b" proved
-operator_overload.adb:31:07: warning: assuming "Put_Line" has no effect on global items
-operator_overload.adb:31:07: warning: no Global contract available for "Put_Line"
-operator_overload.adb:33:07: warning: assuming "Put_Line" has no effect on global items
-operator_overload.adb:33:07: warning: no Global contract available for "Put_Line"
-operator_overload.adb:37:07: info: initialization of "C8b" proved
-operator_overload.adb:38:07: warning: assuming "Put_Line" has no effect on global items
-operator_overload.adb:38:07: warning: no Global contract available for "Put_Line"
-operator_overload.adb:40:07: warning: assuming "Put_Line" has no effect on global items
-operator_overload.adb:40:07: warning: no Global contract available for "Put_Line"
-sqrt.adb:4:16: info: division check proved
-sqrt.adb:4:16: info: overflow check proved
-sqrt.adb:5:17: medium: overflow check might fail
-sqrt.adb:5:19: info: initialization of "Approx" proved
-sqrt.adb:5:26: medium: overflow check might fail
-sqrt.adb:6:21: info: overflow check proved
-sqrt.adb:6:24: info: initialization of "Approx" proved
-sqrt.adb:6:31: medium: overflow check might fail
-sqrt.adb:6:35: medium: divide by zero might fail
-sqrt.adb:6:35: medium: overflow check might fail
-sqrt.adb:8:11: info: initialization of "Approx" proved
-string_examples.adb:13:12: info: length check proved
-string_examples.adb:15:09: info: initialization of "Address" proved
-string_examples.adb:15:09: medium: length check might fail
-string_examples.adb:16:09: info: length check proved
-string_examples.adb:17:12: info: initialization of "Name" proved
-string_examples.adb:17:12: info: length check proved
-string_examples.adb:19:09: info: initialization of "Name" proved
-string_examples.adb:19:09: info: length check proved
-string_examples.adb:20:09: info: initialization of "Address" proved
-string_examples.adb:20:09: info: length check proved
-string_examples.adb:20:09: info: range check proved
-string_examples.adb:21:12: info: initialization of "Name" proved
-string_examples.adb:21:17: info: length check proved
-string_examples.adb:21:17: info: range check proved
-string_examples.adb:22:19: info: initialization of "Address" proved
-string_examples.adb:22:22: info: initialization of "Name" proved
-string_examples.adb:22:22: info: length check proved
-string_examples.adb:25:12: info: initialization of "Count" proved
-string_examples.adb:25:19: info: initialization of "Name" proved
-string_examples.adb:25:19: info: length check proved
-string_examples.adb:25:22: info: length check proved
-string_examples.adb:26:01: warning: assuming "Put" has no effect on global items
-string_examples.adb:26:01: warning: no Global contract available for "Put"
-string_examples.adb:26:06: info: initialization of "Name" proved
-string_examples.adb:26:06: info: range check proved
-string_examples.adb:26:17: info: initialization of "Count" proved
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-a-tienio.ads:28:04: info: initialization of "Default_Width" proved, in instantiation at bingo_basket_test.adb:9
-a-tienio.ads:29:04: info: initialization of "Default_Setting" proved, in instantiation at bingo_basket_test.adb:9
-a-tiinio.ads:48:04: info: initialization of "Default_Width" proved, in instantiation at bingo_basket_test.adb:6
-a-tiinio.ads:49:04: info: initialization of "Default_Base" proved, in instantiation at bingo_basket_test.adb:6
-bingo_basket_test.adb:4:11: medium: "Current_Out" might not be initialized after elaboration of main program "Bingo_Basket_Test"
-bingo_basket_test.adb:17:19: info: precondition proved
-bingo_basket_test.adb:19:07: info: initialization of "Default_Setting" proved
-bingo_basket_test.adb:19:07: info: initialization of "Default_Width" proved
-bingo_basket_test.adb:19:07: warning: assuming "Put" has no effect on global items
-bingo_basket_test.adb:19:07: warning: no Global contract available for "Put"
-bingo_basket_test.adb:19:12: info: initialization of "Letter" proved
-bingo_basket_test.adb:20:07: info: initialization of "Default_Base" proved
-bingo_basket_test.adb:20:07: info: initialization of "Default_Width" proved
-bingo_basket_test.adb:20:07: warning: assuming "Put" has no effect on global items
-bingo_basket_test.adb:20:07: warning: no Global contract available for "Put"
-bingo_basket_test.adb:20:20: info: initialization of "Number" proved
-bingo_basket_test.adb:22:07: warning: assuming "New_Line" has no effect on global items
-bingo_basket_test.adb:22:07: warning: no Global contract available for "New_Line"
-bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized
-bounded_queue_example_v1.adb:10:11: high: "My_Queue.Front" is not initialized
-bounded_queue_example_v1.adb:10:11: high: "My_Queue.Items" is not initialized
-bounded_queue_example_v1.adb:10:11: high: "My_Queue.Rear" is not initialized
-bounded_queue_example_v1.adb:12:07: medium: precondition might fail
-bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Count" proved
-bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Front" proved
-bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Items" proved
-bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Rear" proved
-bounded_queue_example_v1.adb:15:07: medium: precondition might fail
-bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Count" proved
-bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Front" proved
-bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Items" proved
-bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Rear" proved
-bounded_queue_example_v1.adb:16:07: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example_v1.adb:16:07: warning: no Global contract available for "Put_Line"
-bounded_queue_example_v1.adb:16:32: info: initialization of "Value" proved
-bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Count" proved
-bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Front" proved
-bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Items" proved
-bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Rear" proved
-bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Count" proved
-bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Front" proved
-bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Items" proved
-bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Rear" proved
-bounded_queue_example_v1.adb:20:04: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example_v1.adb:20:04: warning: no Global contract available for "Put_Line"
-bounded_queue_example_v1.adb:20:42: medium: range check might fail
-bounded_queue_example_v1.adb:20:59: info: initialization of "Value" proved
-bounded_queue_v1.adb:20:32: medium: array index check might fail
-bounded_queue_v1.adb:25:32: medium: array index check might fail
-bounded_queue_v1.adb:38:32: info: division check proved
-bounded_queue_v1.adb:38:51: info: overflow check proved
-bounded_queue_v1.adb:38:51: info: range check proved
-bounded_queue_v1.adb:39:25: info: index check proved
-bounded_queue_v1.adb:40:34: medium: overflow check might fail
-bounded_queue_v1.adb:47:33: medium: array index check might fail
-bounded_queue_v1.adb:48:34: info: division check proved
-bounded_queue_v1.adb:48:53: info: overflow check proved
-bounded_queue_v1.adb:48:53: info: range check proved
-bounded_queue_v1.adb:49:34: medium: range check might fail
-bounded_queue_v1.ads:31:18: medium: postcondition might fail
-bounded_queue_v1.ads:37:18: medium: postcondition might fail
-bounded_queue_v1.ads:38:50: medium: overflow check might fail
-bounded_queue_v1.ads:39:18: info: precondition proved
-bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
-bounded_queue_v1.ads:45:18: info: initialization of "Item" proved
-bounded_queue_v1.ads:45:18: medium: postcondition might fail
-bounded_queue_v1.ads:45:25: info: precondition proved
-display_control.adb:16:18: warning: assuming "Put" has no effect on global items
-display_control.adb:16:18: warning: no Global contract available for "Put"
-display_control.adb:18:18: warning: assuming "Flush" has no effect on global items
-display_control.adb:18:18: warning: no Global contract available for "Flush"
-display_control.adb:23:18: warning: assuming "Put" has no effect on global items
-display_control.adb:23:18: warning: no Global contract available for "Put"
-display_control.adb:24:18: warning: assuming "Flush" has no effect on global items
-display_control.adb:24:18: warning: no Global contract available for "Flush"
-display_control.adb:29:18: warning: assuming "Put" has no effect on global items
-display_control.adb:29:18: warning: no Global contract available for "Put"
-display_control.adb:30:18: warning: assuming "Flush" has no effect on global items
-display_control.adb:30:18: warning: no Global contract available for "Flush"
-display_control.ads:3:14: warning: subprogram "Bold_On" has no effect
-display_control.ads:7:14: warning: subprogram "Blink_On" has no effect
-display_control.ads:11:14: warning: subprogram "Normal" has no effect
-elaboration_demo.adb:2:29: warning: unused initial value of "Size"
-elaboration_demo.adb:3:29: high: "Count" is not initialized in "Elaboration_Demo"
-elaboration_demo.adb:3:29: warning: unused variable "Count"
-elaboration_demo.adb:4:04: info: range check proved
-elaboration_demo.adb:4:04: warning: initialization of Line has no effect
-elaboration_demo.adb:4:34: info: length check proved
-elaboration_demo.adb:5:04: warning: initialization of Guess has no effect
-elaboration_demo.adb:5:26: medium: overflow check might fail
-elaboration_demo.adb:5:74: info: division check proved
-elaboration_demo.adb:5:74: info: overflow check proved
-parent-public1.adb:11:20: info: initialization of "Temp" proved
-parent.adb:6:22: medium: overflow check might fail
-serial_numbers.adb:8:34: medium: overflow check might fail
-serial_numbers.ads:3:24: info: initialization of "Number" proved
-serial_numbers2.adb:8:34: medium: overflow check might fail
-serial_numbers2.ads:3:24: info: initialization of "Number" proved
-stacks-more.adb:4:32: medium: array index check might fail
-stacks.adb:14:30: medium: overflow check might fail
-stacks.adb:15:25: medium: array index check might fail
-stacks.adb:21:33: medium: array index check might fail
-stacks.adb:22:30: info: range check proved
-stacks.ads:6:21: info: initialization of "Stack.Top" proved
-stacks.ads:6:21: medium: input value of "Stack.Items" will be used in "Clear"
-stacks.ads:10:19: info: initialization of "Item" proved
-stacks.ads:14:04: medium: type "Stack_Type" is not fully initialized
-calculate.adb:3:21: info: initialization of "A" proved
-calculate.adb:12:11: medium: overflow check might fail
 datebook.adb:40:40: info: initialization of "Event_Array" constituent of "State" proved
 datebook.adb:45:09: info: length check proved
 datebook.adb:45:71: info: length check proved
@@ -737,225 +476,35 @@ dates.ads:32:07: info: initialization of "New_Date.Year" proved
 dates.ads:33:07: info: initialization of "Valid" proved
 dates.ads:62:76: info: initialization of "Valid" proved
 dates.ads:78:14: info: postcondition proved
-hierarchical_state_demo-a_pack.adb:5:04: info: initialization of "Total" constituent of "State" proved
-hierarchical_state_demo-a_pack.adb:12:31: info: overflow check proved
-hierarchical_state_demo-a_pack.adb:13:19: info: overflow check proved
-hierarchical_state_demo-a_pack.adb:13:19: info: range check proved
-hierarchical_state_demo-a_pack.adb:13:30: info: overflow check proved
-hierarchical_state_demo-a_pack.adb:15:25: info: overflow check proved
-hierarchical_state_demo.adb:6:04: info: initialization of "Count" constituent of "Top_State" proved
-hierarchical_state_demo.adb:16:22: info: division check proved
-hierarchical_state_demo.adb:18:25: info: overflow check proved
-hierarchical_state_demo.adb:18:25: info: range check proved
-hierarchical_state_demo.adb:18:34: info: overflow check proved
-hierarchical_state_demo.adb:18:43: info: division check proved
-hierarchical_state_demo.adb:20:25: info: overflow check proved
-hierarchical_state_demo.adb:20:25: info: range check proved
-hierarchical_state_demo.adb:20:34: info: overflow check proved
-hierarchical_state_demo.adb:20:43: info: division check proved
-hierarchical_state_demo.ads:7:28: info: initialization of "Success" proved
-hierarchical_state_demo_nested.adb:5:04: info: initialization of "Count" constituent of "Top_State" proved
-hierarchical_state_demo_nested.adb:20:07: info: initialization of "Total" constituent of "State" proved
-hierarchical_state_demo_nested.adb:27:34: info: overflow check proved
-hierarchical_state_demo_nested.adb:28:22: info: overflow check proved
-hierarchical_state_demo_nested.adb:28:22: info: range check proved
-hierarchical_state_demo_nested.adb:28:33: info: overflow check proved
-hierarchical_state_demo_nested.adb:30:28: info: overflow check proved
-hierarchical_state_demo_nested.adb:45:22: info: division check proved
-hierarchical_state_demo_nested.adb:47:25: info: overflow check proved
-hierarchical_state_demo_nested.adb:47:25: info: range check proved
-hierarchical_state_demo_nested.adb:47:34: info: overflow check proved
-hierarchical_state_demo_nested.adb:47:43: info: division check proved
-hierarchical_state_demo_nested.adb:49:25: info: overflow check proved
-hierarchical_state_demo_nested.adb:49:25: info: range check proved
-hierarchical_state_demo_nested.adb:49:34: info: overflow check proved
-hierarchical_state_demo_nested.adb:49:43: info: division check proved
-hierarchical_state_demo_nested.ads:7:28: info: initialization of "Success" proved
-initializer_demo.adb:6:07: warning: initialization of Sum has no effect
-initializer_demo.adb:10:17: info: initialization of "Sum" proved
-initializer_demo.adb:10:21: medium: overflow check might fail
-initializer_demo.adb:12:14: info: initialization of "Sum" proved
-initializer_demo.adb:23:17: info: initialization of "Sum" proved
-initializer_demo.adb:23:21: medium: overflow check might fail
-initializer_demo.adb:25:23: info: initialization of "Sum" proved
-initializer_demo.adb:35:19: info: overflow check proved
-initializer_demo.adb:35:21: info: initialization of "Offset.X" proved
-initializer_demo.adb:35:35: medium: overflow check might fail
-initializer_demo.adb:35:37: info: initialization of "Offset.Y" proved
-initializer_demo.ads:12:28: info: range check proved
-raster_graphics.adb:13:32: info: initialization of "Status" proved
-raster_graphics.adb:15:39: info: overflow check proved
-raster_graphics.adb:15:39: medium: range check might fail
-raster_graphics.adb:16:39: info: overflow check proved
-raster_graphics.adb:16:39: medium: range check might fail
-raster_graphics.adb:18:13: info: initialization of "Delta_X" proved
-raster_graphics.adb:18:20: info: overflow check proved
-raster_graphics.adb:18:24: medium: overflow check might fail
-raster_graphics.adb:18:26: info: initialization of "Delta_Y" proved
-raster_graphics.adb:18:33: info: overflow check proved
-raster_graphics.adb:27:10: info: initialization of "Status" proved
-raster_graphics.adb:31:41: medium: overflow check might fail
-raster_graphics.ads:21:29: info: initialization of "Status" proved
-strings.adb:19:16: info: initialization of "Current" proved
-strings.adb:20:21: info: index check proved
-strings.adb:20:21: info: initialization of "Current" proved
-strings.adb:22:28: info: initialization of "Current" proved
-strings.adb:39:34: info: range check proved
-strings.adb:43:13: info: initialization of "Equals_Found" proved
-strings.adb:44:23: medium: range check might fail
-strings.adb:44:43: info: initialization of "Equals_Position" proved
-strings.adb:45:32: medium: precondition might fail
-strings.adb:45:40: medium: range check might fail
-strings.adb:45:46: info: initialization of "Equals_Position" proved
-strings.adb:45:62: medium: overflow check might fail
-strings.ads:8:22: info: initialization of "Found" proved
-strings.ads:9:22: info: initialization of "Position" proved
-searches.adb:9:23: info: range check proved
-searches.adb:11:26: info: index check proved
-searches.adb:11:26: info: initialization of "Position" proved
-searches.adb:12:22: info: initialization of "Position" proved
-searches.adb:12:31: info: overflow check proved
-searches.adb:13:10: info: loop invariant initialization proved
-searches.adb:13:10: info: loop invariant preservation proved
-searches.adb:14:13: info: initialization of "Position" proved
-searches.adb:15:63: info: index check proved
-searches.adb:24:23: info: range check proved
-searches.adb:26:20: info: initialization of "Position" proved
-searches.adb:26:55: info: index check proved
-searches.adb:27:22: info: initialization of "Position" proved
-searches.adb:27:31: info: overflow check proved
-searches.adb:28:10: info: loop invariant initialization proved
-searches.adb:28:10: info: loop invariant preservation proved
-searches.adb:29:13: info: initialization of "Position" proved
-searches.adb:29:49: info: overflow check proved
-searches.adb:30:63: info: index check proved
-searches.adb:32:16: info: initialization of "Position" proved
-searches.adb:33:14: info: initialization of "Found" proved
-searches.adb:34:26: info: range check proved
-searches.ads:9:26: info: initialization of "Position" proved
-searches.ads:12:60: info: index check proved
-searches.ads:13:22: info: initialization of "Position" proved
-searches.ads:13:22: info: postcondition proved
-searches.ads:14:28: info: index check proved
-searches.ads:14:28: info: initialization of "Position" proved
-searches.ads:15:54: info: initialization of "Position" proved
-searches.ads:16:32: info: index check proved
-searches.ads:20:26: info: initialization of "Found" proved
-searches.ads:21:26: info: initialization of "Position" proved
-searches.ads:28:38: info: index check proved
-searches.ads:28:49: info: index check proved
-searches.ads:29:22: info: initialization of "Position" proved
-searches.ads:29:22: info: postcondition proved
-searches.ads:30:24: info: initialization of "Found" proved
-searches.ads:30:45: info: index check proved
-searches.ads:30:45: info: initialization of "Position" proved
-searches.ads:33:57: info: index check proved
-buffers.adb:8:29: info: length check proved
-buffers.adb:17:32: info: length check proved
-buffers.adb:19:56: info: division check proved
-buffers.adb:20:31: info: initialization of "New_Index" proved
-buffers.adb:20:31: info: initialization of "Workspace" proved
-buffers.adb:22:17: info: initialization of "Workspace" proved
-buffers.adb:32:43: info: initialization of "Temp" proved
-buffers.adb:42:10: info: loop invariant initialization proved
-buffers.adb:42:10: info: loop invariant preservation proved
-buffers.adb:42:33: info: initialization of "Count" proved
-buffers.adb:45:22: info: initialization of "Count" proved
-buffers.adb:45:28: info: range check proved
-buffers.adb:48:14: info: initialization of "Count" proved
-buffers.adb:59:10: info: loop invariant initialization proved
-buffers.adb:59:10: info: loop invariant preservation proved
-buffers.adb:59:33: info: initialization of "Count" proved
-buffers.adb:62:22: info: initialization of "Count" proved
-buffers.adb:62:28: info: range check proved
-buffers.adb:77:32: info: length check proved
-buffers.adb:82:10: info: loop invariant initialization proved
-buffers.adb:82:10: info: loop invariant preservation proved
-buffers.adb:82:32: info: initialization of "Offset" proved
-buffers.adb:85:39: info: index check proved
-buffers.adb:85:49: info: initialization of "Offset" proved
-buffers.adb:85:49: info: initialization of "Workspace" proved
-buffers.adb:86:23: info: initialization of "Offset" proved
-buffers.adb:86:30: info: range check proved
-buffers.adb:90:16: info: initialization of "Offset" proved
-buffers.adb:93:11: info: range check proved
-buffers.adb:93:40: info: initialization of "Offset" proved
-buffers.adb:94:36: info: index check proved
-buffers.adb:94:41: info: initialization of "Workspace" proved
-buffers.adb:96:17: info: initialization of "Workspace" proved
-buffers.adb:104:17: info: length check proved
-buffers.adb:105:26: info: initialization of "Characters_To_Copy" proved
-buffers.adb:108:11: info: range check proved
-buffers.adb:108:49: info: initialization of "Characters_To_Copy" proved
-buffers.adb:109:10: info: loop invariant initialization proved
-buffers.adb:109:10: info: loop invariant preservation proved
-buffers.adb:110:13: info: initialization of "Characters_To_Copy" proved
-buffers.adb:111:53: info: initialization of "Characters_To_Copy" proved
-buffers.adb:113:25: info: initialization of "Buffer" proved
-buffers.adb:113:49: info: index check proved
-buffers.adb:113:49: info: overflow check proved
-buffers.adb:126:26: info: initialization of "Characters_To_Copy" proved
-buffers.adb:129:19: info: initialization of "Characters_To_Copy" proved
-buffers.adb:132:11: info: range check proved
-buffers.adb:132:45: info: initialization of "Characters_To_Copy" proved
-buffers.adb:133:23: info: index check proved
-buffers.adb:133:23: info: overflow check proved
-buffers.adb:133:57: info: index check proved
-buffers.adb:133:57: info: overflow check proved
-buffers.adb:146:19: info: length check proved
-buffers.adb:147:34: info: initialization of "Characters_To_Copy" proved
-buffers.adb:150:10: info: initialization of "Characters_To_Copy" proved
-buffers.adb:153:11: info: range check proved
-buffers.adb:153:45: info: initialization of "Characters_To_Copy" proved
-buffers.adb:154:40: info: index check proved
-buffers.adb:154:40: info: overflow check proved
-buffers.adb:154:51: info: initialization of "Destination" proved
-buffers.adb:154:67: info: index check proved
-buffers.adb:154:67: info: overflow check proved
-buffers.ads:11:20: info: initialization of "Buffer" proved
-buffers.ads:35:07: info: initialization of "Count" proved
-buffers.ads:45:23: info: initialization of "Valid" proved
-buffers.ads:53:24: info: initialization of "Buffer" proved
-buffers.ads:75:25: info: initialization of "Destination" proved
-circle_demo.adb:14:14: info: precondition proved
-circle_demo.adb:14:50: info: initialization of "My_Circle" proved
-circle_demo.adb:15:18: warning: assuming "Put_Line" has no effect on global items
-circle_demo.adb:15:18: warning: no Global contract available for "Put_Line"
-circle_demo.adb:17:18: warning: assuming "Put_Line" has no effect on global items
-circle_demo.adb:17:18: warning: no Global contract available for "Put_Line"
-dates.adb:17:15: info: division check proved, in call inlined at dates.adb:49
-dates.adb:20:14: info: initialization of "Result" proved
-dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
-dates.adb:28:08: info: postcondition proved
-dates.adb:45:09: info: length check proved
-dates.adb:49:10: info: initialization of "C8b" proved
-dates.adb:54:14: info: initialization of "Length" proved
-dates.adb:65:14: info: initialization of "Result" proved
-dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
-dates.adb:77:47: info: range check proved
-dates.adb:81:54: info: range check proved
-dates.adb:85:53: info: range check proved
-dates.adb:99:47: info: range check proved
-dates.adb:102:54: info: range check proved
-dates.adb:105:53: info: range check proved
-dates.adb:142:10: info: initialization of "C19b" proved
-dates.adb:224:14: info: range check proved
-dates.adb:224:47: info: initialization of "Steps" proved
-dates.adb:230:13: info: loop invariant initialization proved
-dates.adb:230:13: info: loop invariant preservation proved
-dates.adb:232:13: info: precondition proved
-dates.adb:236:14: info: range check proved
-dates.adb:236:47: info: initialization of "Steps" proved
-dates.adb:242:13: info: loop invariant initialization proved
-dates.adb:242:13: info: loop invariant preservation proved
-dates.adb:244:13: info: precondition proved
-dates.adb:276:14: info: initialization of "Result" proved
-dates.ads:32:07: info: initialization of "New_Date.Day" proved
-dates.ads:32:07: info: initialization of "New_Date.Month" proved
-dates.ads:32:07: info: initialization of "New_Date.Year" proved
-dates.ads:33:07: info: initialization of "Valid" proved
-dates.ads:62:76: info: initialization of "Valid" proved
-dates.ads:78:14: info: postcondition proved
+density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
+density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
+density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
+density_altitude.adb:24:29: info: initialization of "Temperature" proved
+density_altitude.adb:24:29: info: range check proved
+density_altitude.adb:24:42: medium: overflow check might fail
+density_altitude.adb:25:29: info: initialization of "Pressure" proved
+density_altitude.adb:25:39: medium: overflow check might fail
+density_altitude.adb:25:39: medium: range check might fail
+density_altitude.adb:26:29: info: initialization of "Humidity" proved
+density_altitude.adb:26:29: info: range check proved
+density_altitude.ads:7:20: info: initialization of "Value" proved
+display_control.adb:16:18: warning: assuming "Put" has no effect on global items
+display_control.adb:16:18: warning: no Global contract available for "Put"
+display_control.adb:18:18: warning: assuming "Flush" has no effect on global items
+display_control.adb:18:18: warning: no Global contract available for "Flush"
+display_control.adb:23:18: warning: assuming "Put" has no effect on global items
+display_control.adb:23:18: warning: no Global contract available for "Put"
+display_control.adb:24:18: warning: assuming "Flush" has no effect on global items
+display_control.adb:24:18: warning: no Global contract available for "Flush"
+display_control.adb:29:18: warning: assuming "Put" has no effect on global items
+display_control.adb:29:18: warning: no Global contract available for "Put"
+display_control.adb:30:18: warning: assuming "Flush" has no effect on global items
+display_control.adb:30:18: warning: no Global contract available for "Flush"
+display_control.ads:3:14: warning: subprogram "Bold_On" has no effect
+display_control.ads:7:14: warning: subprogram "Blink_On" has no effect
+display_control.ads:11:14: warning: subprogram "Normal" has no effect
+display_manager.adb:8:09: info: length check proved
+display_manager.ads:10:44: info: initialization of "Value" proved
 double_list.adb:17:04: info: initialization of "Memory" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
 double_list.adb:18:04: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
 double_list.adb:19:04: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
@@ -976,6 +525,118 @@ double_list.ads:9:26: info: initialization of "Count" constituent of "Internal_L
 double_list.ads:19:19: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
 double_list.ads:19:24: info: postcondition proved, in instantiation at list_handler.adb:8
 double_list.ads:23:29: info: initialization of "Status" proved, in instantiation at list_handler.adb:8
+elaboration_demo.adb:2:29: warning: unused initial value of "Size"
+elaboration_demo.adb:3:29: high: "Count" is not initialized in "Elaboration_Demo"
+elaboration_demo.adb:3:29: warning: unused variable "Count"
+elaboration_demo.adb:4:04: info: range check proved
+elaboration_demo.adb:4:04: warning: initialization of Line has no effect
+elaboration_demo.adb:4:34: info: length check proved
+elaboration_demo.adb:5:04: warning: initialization of Guess has no effect
+elaboration_demo.adb:5:26: medium: overflow check might fail
+elaboration_demo.adb:5:74: info: division check proved
+elaboration_demo.adb:5:74: info: overflow check proved
+enum_example.adb:3:11: medium: "Current_In" might not be initialized after elaboration of main program "Enum_Example"
+enum_example.adb:3:11: medium: "Current_Out" might not be initialized after elaboration of main program "Enum_Example"
+enum_example.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Enum_Example"
+enum_example.adb:13:04: info: no contextual analysis of "Next_Day" (multiple returns)
+enum_example.adb:18:32: info: range check proved
+enum_example.adb:26:04: warning: assuming "Put_Line" has no effect on global items
+enum_example.adb:26:04: warning: no Global contract available for "Put_Line"
+enum_example.adb:27:10: warning: assuming "Get" has no effect on global items
+enum_example.adb:27:10: warning: no Global contract available for "Get"
+enum_example.adb:28:26: info: initialization of "Today" proved
+enum_example.adb:29:04: warning: assuming "Put" has no effect on global items
+enum_example.adb:29:04: warning: no Global contract available for "Put"
+enum_example.adb:30:10: info: initialization of "Default_Setting" proved
+enum_example.adb:30:10: info: initialization of "Default_Width" proved
+enum_example.adb:30:10: warning: assuming "Put" has no effect on global items
+enum_example.adb:30:10: warning: no Global contract available for "Put"
+enum_example.adb:30:25: info: initialization of "Tomorrow" proved
+enum_example.adb:33:04: warning: assuming "New_Line" has no effect on global items
+enum_example.adb:33:04: warning: no Global contract available for "New_Line"
+enum_example.adb:35:07: info: initialization of "Today" proved
+enum_example.adb:35:15: info: initialization of "Tomorrow" proved
+enum_example.adb:36:07: warning: assuming "Put_Line" has no effect on global items
+enum_example.adb:36:07: warning: no Global contract available for "Put_Line"
+enum_example.adb:38:04: warning: assuming "New_Line" has no effect on global items
+enum_example.adb:38:04: warning: no Global contract available for "New_Line"
+enum_example.adb:40:04: warning: assuming "Put_Line" has no effect on global items
+enum_example.adb:40:04: warning: no Global contract available for "Put_Line"
+enum_example.adb:42:13: info: initialization of "Default_Setting" proved
+enum_example.adb:42:13: info: initialization of "Default_Width" proved
+enum_example.adb:42:13: warning: assuming "Put" has no effect on global items
+enum_example.adb:42:13: warning: no Global contract available for "Put"
+enum_example.adb:43:07: warning: assuming "New_Line" has no effect on global items
+enum_example.adb:43:07: warning: no Global contract available for "New_Line"
+enum_example.adb:45:04: warning: assuming "New_Line" has no effect on global items
+enum_example.adb:45:04: warning: no Global contract available for "New_Line"
+enum_example.adb:48:07: warning: assuming "Put_Line" has no effect on global items
+enum_example.adb:48:07: warning: no Global contract available for "Put_Line"
+enum_example.adb:50:04: warning: assuming "New_Line" has no effect on global items
+enum_example.adb:50:04: warning: no Global contract available for "New_Line"
+enum_example.adb:54:16: info: initialization of "Count" proved
+enum_example.adb:54:22: medium: overflow check might fail
+enum_example.adb:56:04: warning: assuming "Put" has no effect on global items
+enum_example.adb:56:04: warning: no Global contract available for "Put"
+enum_example.adb:56:17: info: initialization of "Count" proved
+example.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Example"
+example.adb:10:07: info: initialization of "Changed" proved
+example.adb:14:27: info: overflow check proved, in call inlined at example.adb:27
+example.adb:25:15: warning: assuming "Put_Line" has no effect on global items
+example.adb:25:15: warning: no Global contract available for "Put_Line"
+example.adb:26:23: warning: assuming "Get" has no effect on global items
+example.adb:26:23: warning: no Global contract available for "Get"
+example.adb:27:04: info: initialization of "Value" proved
+example.adb:30:07: info: initialization of "Modified" proved
+example.adb:31:18: warning: assuming "Put_Line" has no effect on global items
+example.adb:31:18: warning: no Global contract available for "Put_Line"
+example.adb:32:26: warning: assuming "Put" has no effect on global items
+example.adb:32:26: warning: no Global contract available for "Put"
+example.adb:32:41: info: initialization of "Value" proved
+external_test.adb:16:12: warning: unused assignment
+external_test.ads:6:20: info: initialization of "Item" proved
+generic_examples.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Generic_Examples"
+generic_examples.adb:3:11: medium: "Default_Width" might not be initialized after elaboration of main program "Generic_Examples"
+generic_examples.adb:11:21: info: index check proved, in call inlined at generic_examples.adb:89
+generic_examples.adb:12:23: info: initialization of "Result" proved
+generic_examples.adb:12:23: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
+generic_examples.adb:12:30: medium: overflow check might fail, in call inlined at generic_examples.adb:89
+generic_examples.adb:15:14: info: initialization of "Result" proved
+generic_examples.adb:15:14: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
+generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
+generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
+generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:39
+generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:46
+generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
+generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
+generic_examples.adb:59:21: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
+generic_examples.adb:70:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
+generic_examples.adb:70:30: medium: overflow check might fail, in instantiation at generic_examples.adb:77
+generic_examples.adb:91:23: warning: assuming "Put" has no effect on global items
+generic_examples.adb:91:23: warning: no Global contract available for "Put"
+generic_examples.adb:91:29: info: initialization of "The_Count" proved
+generic_examples.adb:92:15: warning: assuming "New_Line" has no effect on global items
+generic_examples.adb:92:15: warning: no Global contract available for "New_Line"
+generic_examples.adb:95:40: info: range check proved
+generic_examples.adb:97:23: warning: assuming "Put" has no effect on global items
+generic_examples.adb:97:23: warning: no Global contract available for "Put"
+generic_examples.adb:97:29: info: initialization of "The_Count" proved
+generic_examples.adb:98:15: warning: assuming "New_Line" has no effect on global items
+generic_examples.adb:98:15: warning: no Global contract available for "New_Line"
+generic_examples.adb:100:43: info: initialization of "My_Percents" proved
+generic_examples.adb:100:43: info: range check proved
+generic_examples.adb:102:23: warning: assuming "Put" has no effect on global items
+generic_examples.adb:102:23: warning: no Global contract available for "Put"
+generic_examples.adb:102:29: info: initialization of "The_Count" proved
+generic_examples.adb:103:15: warning: assuming "New_Line" has no effect on global items
+generic_examples.adb:103:15: warning: no Global contract available for "New_Line"
+generic_examples.adb:106:31: info: initialization of "My_Percents" proved
+generic_examples.adb:106:31: info: range check proved
+generic_examples.adb:109:23: warning: assuming "Put" has no effect on global items
+generic_examples.adb:109:23: warning: no Global contract available for "Put"
+generic_examples.adb:109:29: info: initialization of "The_Count" proved
+generic_examples.adb:110:15: warning: assuming "New_Line" has no effect on global items
+generic_examples.adb:110:15: warning: no Global contract available for "New_Line"
 generic_searchers.adb:16:31: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
 generic_searchers.adb:16:31: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:16:52: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
@@ -1052,7 +713,74 @@ generic_searchers.ads:16:20: info: initialization of "Found" proved, in instanti
 generic_searchers.ads:16:20: info: initialization of "Found" proved, in instantiation at search_demo.adb:12
 generic_searchers.ads:17:41: info: initialization of "Result" proved, in instantiation at prime_search.adb:15
 generic_searchers.ads:17:41: info: initialization of "Result" proved, in instantiation at search_demo.adb:12
+good_types.adb:2:11: medium: "Current_In" might not be initialized after elaboration of main program "Good_Types"
+good_types.adb:2:11: medium: "Current_Out" might not be initialized after elaboration of main program "Good_Types"
+good_types.adb:13:20: info: initialization of "Wall_Thickness" proved, in call inlined at good_types.adb:22
+good_types.adb:13:26: info: division check proved, in call inlined at good_types.adb:22
+good_types.adb:13:26: info: overflow check proved, in call inlined at good_types.adb:22
+good_types.adb:20:11: warning: assuming "Get" has no effect on global items
+good_types.adb:20:11: warning: no Global contract available for "Get"
+good_types.adb:21:11: warning: assuming "Get" has no effect on global items
+good_types.adb:21:11: warning: no Global contract available for "Get"
+good_types.adb:22:13: info: initialization of "Room_Length" proved
+good_types.adb:22:25: info: overflow check proved
+good_types.adb:22:25: medium: range check might fail
+good_types.adb:22:31: info: overflow check proved
+good_types.adb:23:11: info: initialization of "Default_Aft" proved
+good_types.adb:23:11: info: initialization of "Default_Exp" proved
+good_types.adb:23:11: info: initialization of "Default_Fore" proved
+good_types.adb:23:11: warning: assuming "Put" has no effect on global items
+good_types.adb:23:11: warning: no Global contract available for "Put"
+good_types.adb:23:25: info: initialization of "Total" proved
+hierarchical_state_demo-a_pack.adb:5:04: info: initialization of "Total" constituent of "State" proved
+hierarchical_state_demo-a_pack.adb:12:31: info: overflow check proved
+hierarchical_state_demo-a_pack.adb:13:19: info: overflow check proved
+hierarchical_state_demo-a_pack.adb:13:19: info: range check proved
+hierarchical_state_demo-a_pack.adb:13:30: info: overflow check proved
+hierarchical_state_demo-a_pack.adb:15:25: info: overflow check proved
+hierarchical_state_demo.adb:6:04: info: initialization of "Count" constituent of "Top_State" proved
+hierarchical_state_demo.adb:16:22: info: division check proved
+hierarchical_state_demo.adb:18:25: info: overflow check proved
+hierarchical_state_demo.adb:18:25: info: range check proved
+hierarchical_state_demo.adb:18:34: info: overflow check proved
+hierarchical_state_demo.adb:18:43: info: division check proved
+hierarchical_state_demo.adb:20:25: info: overflow check proved
+hierarchical_state_demo.adb:20:25: info: range check proved
+hierarchical_state_demo.adb:20:34: info: overflow check proved
+hierarchical_state_demo.adb:20:43: info: division check proved
+hierarchical_state_demo.ads:7:28: info: initialization of "Success" proved
+hierarchical_state_demo_nested.adb:5:04: info: initialization of "Count" constituent of "Top_State" proved
+hierarchical_state_demo_nested.adb:20:07: info: initialization of "Total" constituent of "State" proved
+hierarchical_state_demo_nested.adb:27:34: info: overflow check proved
+hierarchical_state_demo_nested.adb:28:22: info: overflow check proved
+hierarchical_state_demo_nested.adb:28:22: info: range check proved
+hierarchical_state_demo_nested.adb:28:33: info: overflow check proved
+hierarchical_state_demo_nested.adb:30:28: info: overflow check proved
+hierarchical_state_demo_nested.adb:45:22: info: division check proved
+hierarchical_state_demo_nested.adb:47:25: info: overflow check proved
+hierarchical_state_demo_nested.adb:47:25: info: range check proved
+hierarchical_state_demo_nested.adb:47:34: info: overflow check proved
+hierarchical_state_demo_nested.adb:47:43: info: division check proved
+hierarchical_state_demo_nested.adb:49:25: info: overflow check proved
+hierarchical_state_demo_nested.adb:49:25: info: range check proved
+hierarchical_state_demo_nested.adb:49:34: info: overflow check proved
+hierarchical_state_demo_nested.adb:49:43: info: division check proved
+hierarchical_state_demo_nested.ads:7:28: info: initialization of "Success" proved
+initializer_demo.adb:6:07: warning: initialization of Sum has no effect
+initializer_demo.adb:10:17: info: initialization of "Sum" proved
+initializer_demo.adb:10:21: medium: overflow check might fail
+initializer_demo.adb:12:14: info: initialization of "Sum" proved
+initializer_demo.adb:23:17: info: initialization of "Sum" proved
+initializer_demo.adb:23:21: medium: overflow check might fail
+initializer_demo.adb:25:23: info: initialization of "Sum" proved
+initializer_demo.adb:35:19: info: overflow check proved
+initializer_demo.adb:35:21: info: initialization of "Offset.X" proved
+initializer_demo.adb:35:35: medium: overflow check might fail
+initializer_demo.adb:35:37: info: initialization of "Offset.Y" proved
+initializer_demo.ads:12:28: info: range check proved
 interval.ads:13:09: warning: type invariant ignored (not yet supported)
+led_display.adb:19:15: info: length check proved
+led_display.adb:24:41: info: initialization of "Value" constituent of "LED_State" proved
 lights.adb:15:14: info: initialization of "Result" proved
 list_handler.adb:21:13: info: initialization of "Current" proved
 list_handler.adb:23:48: info: initialization of "Current" proved
@@ -1060,6 +788,61 @@ list_handler.adb:25:20: info: initialization of "Status" proved
 list_handler.adb:25:54: info: initialization of "Current" proved
 list_handler.adb:26:21: info: initialization of "Current" proved
 list_handler.adb:26:29: info: overflow check proved
+network-helpers.ads:5:23: info: initialization of "MSB" proved
+network-helpers.ads:6:23: info: initialization of "LSB" proved
+network-helpers0.adb:14:27: info: range check proved
+network-helpers0.adb:15:21: info: no contextual analysis of "Shift_Right" (body not seen yet)
+network-helpers0.adb:15:21: info: range check proved
+network-helpers0.adb:15:21: warning: assuming "Shift_Right" has no effect on global items
+network-helpers0.adb:15:21: warning: no Global contract available for "Shift_Right"
+network-helpers0.ads:5:23: info: initialization of "MSB" proved
+network-helpers0.ads:6:23: info: initialization of "LSB" proved
+no_overflow.adb:7:14: info: overflow check proved
+no_overflow.adb:7:14: info: range check proved
+no_overflow.adb:7:19: info: overflow check proved
+no_overflow.adb:7:24: info: division check proved
+no_overflow.ads:5:19: info: initialization of "C" proved
+operator_overload.adb:16:24: info: initialization of "P1.X_Coord" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:24: info: initialization of "P1.X_Coord" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:16:38: info: overflow check proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:38: medium: overflow check might fail, in call inlined at operator_overload.adb:37
+operator_overload.adb:16:43: info: overflow check proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:43: info: overflow check proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:16:45: info: initialization of "P1.Y_Coord" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:45: info: initialization of "P1.Y_Coord" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:16:59: info: overflow check proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:16:59: medium: overflow check might fail, in call inlined at operator_overload.adb:37
+operator_overload.adb:17:24: info: initialization of "P2.X_Coord" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:24: info: initialization of "P2.X_Coord" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:17:38: info: overflow check proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:38: medium: overflow check might fail, in call inlined at operator_overload.adb:37
+operator_overload.adb:17:43: info: overflow check proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:43: info: overflow check proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:17:45: info: initialization of "P2.Y_Coord" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:45: info: initialization of "P2.Y_Coord" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:17:59: info: overflow check proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:17:59: medium: overflow check might fail, in call inlined at operator_overload.adb:37
+operator_overload.adb:18:14: info: initialization of "Left_Squared" proved
+operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:18:30: info: initialization of "Right_Squared" proved
+operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:30:10: info: initialization of "C3b" proved
+operator_overload.adb:31:07: warning: assuming "Put_Line" has no effect on global items
+operator_overload.adb:31:07: warning: no Global contract available for "Put_Line"
+operator_overload.adb:33:07: warning: assuming "Put_Line" has no effect on global items
+operator_overload.adb:33:07: warning: no Global contract available for "Put_Line"
+operator_overload.adb:37:07: info: initialization of "C8b" proved
+operator_overload.adb:38:07: warning: assuming "Put_Line" has no effect on global items
+operator_overload.adb:38:07: warning: no Global contract available for "Put_Line"
+operator_overload.adb:40:07: warning: assuming "Put_Line" has no effect on global items
+operator_overload.adb:40:07: warning: no Global contract available for "Put_Line"
+overflow.adb:7:15: medium: overflow check might fail
+overflow.adb:7:20: info: division check proved
+overflow.ads:5:19: info: initialization of "C" proved
+parent-public1.adb:11:20: info: initialization of "Temp" proved
+parent.adb:6:22: medium: overflow check might fail
 prime_search.adb:3:50: info: initialization of "Prime_Index" proved
 prime_search.adb:10:06: info: length check proved
 prime_search.adb:20:04: info: assertion proved
@@ -1068,6 +851,19 @@ prime_search.adb:22:04: info: precondition proved
 prime_search.adb:22:32: info: length check proved
 prime_search.adb:23:07: info: initialization of "Found" proved
 prime_search.adb:24:22: info: initialization of "Position" proved
+raster_graphics.adb:13:32: info: initialization of "Status" proved
+raster_graphics.adb:15:39: info: overflow check proved
+raster_graphics.adb:15:39: medium: range check might fail
+raster_graphics.adb:16:39: info: overflow check proved
+raster_graphics.adb:16:39: medium: range check might fail
+raster_graphics.adb:18:13: info: initialization of "Delta_X" proved
+raster_graphics.adb:18:20: info: overflow check proved
+raster_graphics.adb:18:24: medium: overflow check might fail
+raster_graphics.adb:18:26: info: initialization of "Delta_Y" proved
+raster_graphics.adb:18:33: info: overflow check proved
+raster_graphics.adb:27:10: info: initialization of "Status" proved
+raster_graphics.adb:31:41: medium: overflow check might fail
+raster_graphics.ads:21:29: info: initialization of "Status" proved
 region_checks.ads:8:08: info: complete contract cases proved
 region_checks.ads:8:08: info: disjoint contract cases proved
 region_checks.ads:9:17: info: contract case proved
@@ -1207,6 +1003,50 @@ searchers3.ads:14:71: info: index check proved
 searchers3.ads:16:12: info: postcondition proved
 searchers3.ads:16:16: info: initialization of "Found" proved
 searchers3.ads:16:47: info: initialization of "Result" proved
+searches.adb:9:23: info: range check proved
+searches.adb:11:26: info: index check proved
+searches.adb:11:26: info: initialization of "Position" proved
+searches.adb:12:22: info: initialization of "Position" proved
+searches.adb:12:31: info: overflow check proved
+searches.adb:13:10: info: loop invariant initialization proved
+searches.adb:13:10: info: loop invariant preservation proved
+searches.adb:14:13: info: initialization of "Position" proved
+searches.adb:15:63: info: index check proved
+searches.adb:24:23: info: range check proved
+searches.adb:26:20: info: initialization of "Position" proved
+searches.adb:26:55: info: index check proved
+searches.adb:27:22: info: initialization of "Position" proved
+searches.adb:27:31: info: overflow check proved
+searches.adb:28:10: info: loop invariant initialization proved
+searches.adb:28:10: info: loop invariant preservation proved
+searches.adb:29:13: info: initialization of "Position" proved
+searches.adb:29:49: info: overflow check proved
+searches.adb:30:63: info: index check proved
+searches.adb:32:16: info: initialization of "Position" proved
+searches.adb:33:14: info: initialization of "Found" proved
+searches.adb:34:26: info: range check proved
+searches.ads:9:26: info: initialization of "Position" proved
+searches.ads:12:60: info: index check proved
+searches.ads:13:22: info: initialization of "Position" proved
+searches.ads:13:22: info: postcondition proved
+searches.ads:14:28: info: index check proved
+searches.ads:14:28: info: initialization of "Position" proved
+searches.ads:15:54: info: initialization of "Position" proved
+searches.ads:16:32: info: index check proved
+searches.ads:20:26: info: initialization of "Found" proved
+searches.ads:21:26: info: initialization of "Position" proved
+searches.ads:28:38: info: index check proved
+searches.ads:28:49: info: index check proved
+searches.ads:29:22: info: initialization of "Position" proved
+searches.ads:29:22: info: postcondition proved
+searches.ads:30:24: info: initialization of "Found" proved
+searches.ads:30:45: info: index check proved
+searches.ads:30:45: info: initialization of "Position" proved
+searches.ads:33:57: info: index check proved
+serial_numbers.adb:8:34: medium: overflow check might fail
+serial_numbers.ads:3:24: info: initialization of "Number" proved
+serial_numbers2.adb:8:34: medium: overflow check might fail
+serial_numbers2.ads:3:24: info: initialization of "Number" proved
 shapes.adb:12:34: info: overflow check proved
 shapes.adb:12:34: info: range check proved
 shapes.adb:13:34: info: overflow check proved
@@ -1299,6 +1139,129 @@ silly.adb:3:21: info: initialization of "Result" proved
 silly.adb:6:21: medium: overflow check might fail
 silly.adb:6:26: info: division check proved
 silly.adb:12:22: info: division check proved
+simple_math.adb:10:10: info: initialization of "Q" proved
+simple_math.adb:12:19: medium: divide by zero might fail
+simple_math.adb:12:19: medium: range check might fail
+simple_math.adb:12:20: info: initialization of "Q" proved
+simple_math.adb:13:23: info: initialization of "Q" proved
+simple_math.adb:13:28: info: initialization of "R" proved
+simple_math.adb:14:19: info: initialization of "Q" proved
+simple_math.adb:14:23: info: initialization of "R" proved
+simple_math.adb:14:25: info: division check proved
+simple_math.adb:17:14: info: initialization of "Q" proved
+simple_math.adb:17:14: info: range check proved
+sorters.adb:21:19: info: postcondition proved
+sorters.adb:22:28: info: index check proved
+sorters.adb:22:45: info: index check proved
+sorters.adb:23:28: info: index check proved
+sorters.adb:23:45: info: index check proved
+sorters.adb:25:58: info: index check proved
+sorters.adb:25:75: info: index check proved
+sorters.adb:31:29: info: index check proved
+sorters.adb:32:15: info: index check proved
+sorters.adb:32:29: info: index check proved
+sorters.adb:33:15: info: index check proved
+sorters.adb:33:21: info: initialization of "Temp" proved
+sorters.adb:41:19: info: postcondition proved
+sorters.adb:43:45: info: index check proved
+sorters.adb:43:67: info: index check proved
+sorters.adb:47:22: info: range check proved
+sorters.adb:49:10: info: loop invariant initialization proved
+sorters.adb:49:10: info: loop invariant preservation proved
+sorters.adb:50:13: info: initialization of "Min" proved
+sorters.adb:51:50: info: overflow check proved
+sorters.adb:52:25: info: index check proved
+sorters.adb:52:43: info: index check proved
+sorters.adb:54:42: info: index check proved
+sorters.adb:54:42: info: initialization of "Min" proved
+sorters.adb:55:20: info: range check proved
+sorters.adb:58:14: info: initialization of "Min" proved
+sorters.adb:68:50: info: overflow check proved
+sorters.adb:69:22: info: length check proved
+sorters.adb:69:25: info: length check proved
+sorters.adb:70:22: info: precondition proved
+sorters.adb:70:40: info: range check proved
+sorters.adb:72:13: info: initialization of "Smallest" proved
+sorters.adb:73:13: info: precondition proved
+sorters.adb:74:29: info: range check proved
+sorters.adb:75:29: info: initialization of "Smallest" proved
+sorters.adb:78:61: info: initialization of "Values_Last" proved
+sorters.adb:80:10: info: loop invariant initialization proved
+sorters.adb:80:10: info: loop invariant preservation proved
+sorters.adb:81:10: info: loop invariant initialization proved
+sorters.adb:81:10: info: loop invariant preservation proved
+sorters.adb:83:26: info: index check proved
+sorters.adb:83:46: info: index check proved
+sorters.adb:84:10: info: loop invariant initialization proved
+sorters.adb:86:16: medium: loop invariant might fail after first iteration, requires Values (J) <= Values (J + 1)
+sorters.adb:86:24: info: index check proved
+sorters.adb:86:40: info: index check proved
+sorters.adb:86:40: info: overflow check proved
+sorters.ads:18:22: info: postcondition proved
+sorters.ads:18:64: info: overflow check proved
+sorters.ads:19:33: info: index check proved
+sorters.ads:19:49: info: index check proved
+sorters.ads:19:49: info: overflow check proved
+sqrt.adb:4:16: info: division check proved
+sqrt.adb:4:16: info: overflow check proved
+sqrt.adb:5:17: medium: overflow check might fail
+sqrt.adb:5:19: info: initialization of "Approx" proved
+sqrt.adb:5:26: medium: overflow check might fail
+sqrt.adb:6:21: info: overflow check proved
+sqrt.adb:6:24: info: initialization of "Approx" proved
+sqrt.adb:6:31: medium: overflow check might fail
+sqrt.adb:6:35: medium: divide by zero might fail
+sqrt.adb:6:35: medium: overflow check might fail
+sqrt.adb:8:11: info: initialization of "Approx" proved
+stacks-more.adb:4:32: medium: array index check might fail
+stacks.adb:14:30: medium: overflow check might fail
+stacks.adb:15:25: medium: array index check might fail
+stacks.adb:21:33: medium: array index check might fail
+stacks.adb:22:30: info: range check proved
+stacks.ads:6:21: info: initialization of "Stack.Top" proved
+stacks.ads:6:21: medium: input value of "Stack.Items" will be used in "Clear"
+stacks.ads:10:19: info: initialization of "Item" proved
+stacks.ads:14:04: medium: type "Stack_Type" is not fully initialized
+string_examples.adb:13:12: info: length check proved
+string_examples.adb:15:09: info: initialization of "Address" proved
+string_examples.adb:15:09: medium: length check might fail
+string_examples.adb:16:09: info: length check proved
+string_examples.adb:17:12: info: initialization of "Name" proved
+string_examples.adb:17:12: info: length check proved
+string_examples.adb:19:09: info: initialization of "Name" proved
+string_examples.adb:19:09: info: length check proved
+string_examples.adb:20:09: info: initialization of "Address" proved
+string_examples.adb:20:09: info: length check proved
+string_examples.adb:20:09: info: range check proved
+string_examples.adb:21:12: info: initialization of "Name" proved
+string_examples.adb:21:17: info: length check proved
+string_examples.adb:21:17: info: range check proved
+string_examples.adb:22:19: info: initialization of "Address" proved
+string_examples.adb:22:22: info: initialization of "Name" proved
+string_examples.adb:22:22: info: length check proved
+string_examples.adb:25:12: info: initialization of "Count" proved
+string_examples.adb:25:19: info: initialization of "Name" proved
+string_examples.adb:25:19: info: length check proved
+string_examples.adb:25:22: info: length check proved
+string_examples.adb:26:01: warning: assuming "Put" has no effect on global items
+string_examples.adb:26:01: warning: no Global contract available for "Put"
+string_examples.adb:26:06: info: initialization of "Name" proved
+string_examples.adb:26:06: info: range check proved
+string_examples.adb:26:17: info: initialization of "Count" proved
+strings.adb:19:16: info: initialization of "Current" proved
+strings.adb:20:21: info: index check proved
+strings.adb:20:21: info: initialization of "Current" proved
+strings.adb:22:28: info: initialization of "Current" proved
+strings.adb:39:34: info: range check proved
+strings.adb:43:13: info: initialization of "Equals_Found" proved
+strings.adb:44:23: medium: range check might fail
+strings.adb:44:43: info: initialization of "Equals_Position" proved
+strings.adb:45:32: medium: precondition might fail
+strings.adb:45:40: medium: range check might fail
+strings.adb:45:46: info: initialization of "Equals_Position" proved
+strings.adb:45:62: medium: overflow check might fail
+strings.ads:8:22: info: initialization of "Found" proved
+strings.ads:9:22: info: initialization of "Position" proved
 students.adb:15:21: info: initialization of "Tuition" proved
 students.adb:15:29: info: overflow check proved
 students.adb:15:29: info: range check proved
@@ -1441,8 +1404,45 @@ students3.adb:73:34: info: initialization of "Grants" proved
 students3.adb:73:42: info: overflow check proved
 students3.adb:73:42: info: range check proved
 students3.adb:73:44: info: initialization of "Insurance" proved
+temperature_buffer14.adb:34:25: info: range check proved
+temperature_buffer14.adb:53:22: info: range check proved
+temperature_buffer14.adb:59:38: info: initialization of "Buffer" constituent of "Contents" proved
+temperature_buffer14.adb:59:46: info: initialization of "Count" constituent of "Contents" proved
+temperature_buffer14.adb:59:53: info: initialization of "Next_In" constituent of "Contents" proved
+temperature_buffer14.adb:59:62: info: initialization of "Next_Out" constituent of "Contents" proved
+temperature_buffer14.adb:64:31: info: length check proved
+temperature_buffer14.ads:30:19: info: initialization of "Item.Time_Stamp" proved
+temperature_buffer14.ads:30:19: info: initialization of "Item.Value" proved
+terminal.adb:13:14: info: length check proved
+terminal.adb:17:10: info: loop invariant initialization proved
+terminal.adb:17:10: info: loop invariant preservation proved
+terminal.adb:17:33: info: initialization of "Count" proved
+terminal.adb:20:13: info: initialization of "Count" proved
+terminal.adb:28:13: info: initialization of "Port_Status" proved
+terminal.adb:34:35: info: initialization of "Value" proved
+terminal.adb:37:31: info: index check proved
+terminal.adb:37:31: info: overflow check proved
+terminal.adb:37:40: info: initialization of "Buffer" proved
+terminal.adb:37:40: info: initialization of "Count" proved
+terminal.adb:37:58: info: initialization of "Value" proved
+terminal.adb:38:19: info: initialization of "Count" proved
+terminal.adb:38:25: info: overflow check proved
+terminal.ads:7:24: info: initialization of "Buffer" proved
+terminal.ads:8:24: info: initialization of "Count" proved
+terminal.ads:9:24: info: initialization of "Status" proved
 ticktock.adb:6:04: info: initialization of "Clock_Value" constituent of "TickTock_State" proved
 ticktock.adb:14:34: medium: overflow check might fail
+transitive.adb:16:19: info: postcondition proved
+transitive.adb:20:37: info: division check proved
+transitive.adb:21:14: info: division check proved
+transitive.adb:31:10: info: loop invariant initialization proved
+transitive.adb:31:10: info: loop invariant preservation proved
+transitive.adb:38:56: info: initialization of "X_Last" proved
+transitive.ads:10:19: info: postcondition proved
+unused_parameter.adb:7:15: medium: overflow check might fail
+unused_parameter.adb:7:20: info: division check proved
+unused_parameter.ads:4:19: warning: unused variable "B"
+unused_parameter.ads:5:19: info: initialization of "C" proved
 utility.adb:12:10: info: loop invariant initialization proved
 utility.adb:12:10: info: loop invariant preservation proved
 utility.adb:13:67: info: index check proved
@@ -1777,146 +1777,6 @@ very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
 very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
 very_longs.ads:75:37: info: overflow check proved
 very_longs.ads:90:68: info: index check proved
-contains.adb:6:39: info: length check proved
-contains.adb:9:37: warning: assuming "Index" has no effect on global items
-contains.adb:9:37: warning: no Global contract available for "Index"
-contains.adb:10:56: info: initialization of "Search_String" proved
-contains.adb:11:57: medium: range check might fail
-contains.adb:12:11: info: initialization of "Result_Index" proved
-contains2.adb:8:39: info: length check proved
-contains2.adb:11:37: warning: assuming "Index" has no effect on global items
-contains2.adb:11:37: warning: no Global contract available for "Index"
-contains2.adb:12:56: info: initialization of "Search_String" proved
-contains2.adb:13:57: info: range check proved
-contains2.adb:14:11: info: initialization of "Result_Index" proved
-contains3.adb:7:21: info: postcondition proved
-contains3.adb:7:69: info: index check proved
-contains3.adb:9:39: info: length check proved
-contains3.adb:14:04: info: assertion proved
-contains3.adb:15:37: warning: assuming "Index" has no effect on global items
-contains3.adb:15:37: warning: no Global contract available for "Index"
-contains3.adb:16:56: info: initialization of "Search_String" proved
-contains3.adb:17:57: info: range check proved
-contains3.adb:22:37: info: index check proved
-contains3.adb:24:10: info: initialization of "Result_Index" proved
-contains3.adb:24:46: info: index check proved
-contains3.adb:25:11: info: initialization of "Result_Index" proved
-density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
-density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
-density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
-density_altitude.adb:24:29: info: initialization of "Temperature" proved
-density_altitude.adb:24:29: info: range check proved
-density_altitude.adb:24:42: medium: overflow check might fail
-density_altitude.adb:25:29: info: initialization of "Pressure" proved
-density_altitude.adb:25:39: medium: overflow check might fail
-density_altitude.adb:25:39: medium: range check might fail
-density_altitude.adb:26:29: info: initialization of "Humidity" proved
-density_altitude.adb:26:29: info: range check proved
-density_altitude.ads:7:20: info: initialization of "Value" proved
-display_manager.adb:8:09: info: length check proved
-display_manager.ads:10:44: info: initialization of "Value" proved
-external_test.adb:16:12: warning: unused assignment
-external_test.ads:6:20: info: initialization of "Item" proved
-led_display.adb:19:15: info: length check proved
-led_display.adb:24:41: info: initialization of "Value" constituent of "LED_State" proved
-terminal.adb:13:14: info: length check proved
-terminal.adb:17:10: info: loop invariant initialization proved
-terminal.adb:17:10: info: loop invariant preservation proved
-terminal.adb:17:33: info: initialization of "Count" proved
-terminal.adb:20:13: info: initialization of "Count" proved
-terminal.adb:28:13: info: initialization of "Port_Status" proved
-terminal.adb:34:35: info: initialization of "Value" proved
-terminal.adb:37:31: info: index check proved
-terminal.adb:37:31: info: overflow check proved
-terminal.adb:37:40: info: initialization of "Buffer" proved
-terminal.adb:37:40: info: initialization of "Count" proved
-terminal.adb:37:58: info: initialization of "Value" proved
-terminal.adb:38:19: info: initialization of "Count" proved
-terminal.adb:38:25: info: overflow check proved
-terminal.ads:7:24: info: initialization of "Buffer" proved
-terminal.ads:8:24: info: initialization of "Count" proved
-terminal.ads:9:24: info: initialization of "Status" proved
-no_overflow.adb:7:14: info: overflow check proved
-no_overflow.adb:7:14: info: range check proved
-no_overflow.adb:7:19: info: overflow check proved
-no_overflow.adb:7:24: info: division check proved
-no_overflow.ads:5:19: info: initialization of "C" proved
-overflow.adb:7:15: medium: overflow check might fail
-overflow.adb:7:20: info: division check proved
-overflow.ads:5:19: info: initialization of "C" proved
-temperature_buffer14.adb:34:25: info: range check proved
-temperature_buffer14.adb:53:22: info: range check proved
-temperature_buffer14.adb:59:38: info: initialization of "Buffer" constituent of "Contents" proved
-temperature_buffer14.adb:59:46: info: initialization of "Count" constituent of "Contents" proved
-temperature_buffer14.adb:59:53: info: initialization of "Next_In" constituent of "Contents" proved
-temperature_buffer14.adb:59:62: info: initialization of "Next_Out" constituent of "Contents" proved
-temperature_buffer14.adb:64:31: info: length check proved
-temperature_buffer14.ads:30:19: info: initialization of "Item.Time_Stamp" proved
-temperature_buffer14.ads:30:19: info: initialization of "Item.Value" proved
-unused_parameter.adb:7:15: medium: overflow check might fail
-unused_parameter.adb:7:20: info: division check proved
-unused_parameter.ads:4:19: warning: unused variable "B"
-unused_parameter.ads:5:19: info: initialization of "C" proved
-dates.adb:17:15: info: division check proved, in call inlined at dates.adb:49
-dates.adb:20:14: info: initialization of "Result" proved
-dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
-dates.adb:28:08: info: postcondition proved
-dates.adb:45:09: info: length check proved
-dates.adb:49:10: info: initialization of "C8b" proved
-dates.adb:54:14: info: initialization of "Length" proved
-dates.adb:65:14: info: initialization of "Result" proved
-dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
-dates.adb:77:47: info: range check proved
-dates.adb:81:54: info: range check proved
-dates.adb:85:53: info: range check proved
-dates.adb:99:47: info: range check proved
-dates.adb:102:54: info: range check proved
-dates.adb:105:53: info: range check proved
-dates.adb:142:10: info: initialization of "C19b" proved
-dates.adb:224:14: info: range check proved
-dates.adb:224:47: info: initialization of "Steps" proved
-dates.adb:230:13: info: loop invariant initialization proved
-dates.adb:230:13: info: loop invariant preservation proved
-dates.adb:232:13: info: precondition proved
-dates.adb:236:14: info: range check proved
-dates.adb:236:47: info: initialization of "Steps" proved
-dates.adb:242:13: info: loop invariant initialization proved
-dates.adb:242:13: info: loop invariant preservation proved
-dates.adb:244:13: info: precondition proved
-dates.adb:276:14: info: initialization of "Result" proved
-dates.ads:32:07: info: initialization of "New_Date.Day" proved
-dates.ads:32:07: info: initialization of "New_Date.Month" proved
-dates.ads:32:07: info: initialization of "New_Date.Year" proved
-dates.ads:33:07: info: initialization of "Valid" proved
-dates.ads:62:76: info: initialization of "Valid" proved
-dates.ads:78:14: info: postcondition proved
-network-helpers.ads:5:23: info: initialization of "MSB" proved
-network-helpers.ads:6:23: info: initialization of "LSB" proved
-network-helpers0.adb:14:27: info: range check proved
-network-helpers0.adb:15:21: info: no contextual analysis of "Shift_Right" (body not seen yet)
-network-helpers0.adb:15:21: info: range check proved
-network-helpers0.adb:15:21: warning: assuming "Shift_Right" has no effect on global items
-network-helpers0.adb:15:21: warning: no Global contract available for "Shift_Right"
-network-helpers0.ads:5:23: info: initialization of "MSB" proved
-network-helpers0.ads:6:23: info: initialization of "LSB" proved
-simple_math.adb:10:10: info: initialization of "Q" proved
-simple_math.adb:12:19: medium: divide by zero might fail
-simple_math.adb:12:19: medium: range check might fail
-simple_math.adb:12:20: info: initialization of "Q" proved
-simple_math.adb:13:23: info: initialization of "Q" proved
-simple_math.adb:13:28: info: initialization of "R" proved
-simple_math.adb:14:19: info: initialization of "Q" proved
-simple_math.adb:14:23: info: initialization of "R" proved
-simple_math.adb:14:25: info: division check proved
-simple_math.adb:17:14: info: initialization of "Q" proved
-simple_math.adb:17:14: info: range check proved
-transitive.adb:16:19: info: postcondition proved
-transitive.adb:20:37: info: division check proved
-transitive.adb:21:14: info: division check proved
-transitive.adb:31:10: info: loop invariant initialization proved
-transitive.adb:31:10: info: loop invariant preservation proved
-transitive.adb:38:56: info: initialization of "X_Last" proved
-transitive.ads:10:19: info: postcondition proved
 workspaces.adb:5:07: info: range check proved
 workspaces.adb:5:48: info: length check proved
 workspaces.adb:7:26: info: division check proved
@@ -1926,3 +1786,26 @@ workspaces.adb:9:27: medium: overflow check might fail
 workspaces.adb:9:32: info: index check proved
 workspaces.adb:9:37: info: initialization of "Workspace" proved
 workspaces.adb:11:14: info: initialization of "Workspace" proved
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
