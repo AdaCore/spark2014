@@ -2403,6 +2403,15 @@ Single Units
 These examples contain a single unit, and are usually small (a few hundreds
 slocs at most).
 
+.. rubric:: ``adacore_u``
+
+This folder contains the complete source code of the small examples used in
+the quiz of the SPARK 2014 lesson on the AdaCore University website (at
+http://university.adacore.com/courses/spark-2014/). They include
+unannotated units, examples with formally verified data flow, functional,
+or abstraction contracts, as well as erroneous programs, on which |GNATprove|
+detects failing checks.
+
 .. rubric:: ``database``
 
 This program implements a toy interface to a bank account database, with
