@@ -22,14 +22,8 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
+
 with Errout;
-with Flow_Classwide;                     use Flow_Classwide;
-with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
-with Flow_Debug;                         use Flow_Debug;
-with Flow_Error_Messages;                use Flow_Error_Messages;
-with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
-with Flow_Utility;                       use Flow_Utility;
-with Hashing;                            use Hashing;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
 with Opt;                                use Opt;
@@ -40,11 +34,21 @@ with Sem_Prag;                           use Sem_Prag;
 with Sem_Util;                           use Sem_Util;
 with Sinfo;                              use Sinfo;
 with Snames;                             use Snames;
-with SPARK_Definition;                   use SPARK_Definition;
-with SPARK_Util;                         use SPARK_Util;
 with Stand;                              use Stand;
 with Treepr;                             use Treepr;
 with Uintp;                              use Uintp;
+
+with Hashing;                            use Hashing;
+with SPARK_Definition;                   use SPARK_Definition;
+with SPARK_Util;                         use SPARK_Util;
+
+with Flow_Classwide;                     use Flow_Classwide;
+with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
+with Flow_Debug;                         use Flow_Debug;
+with Flow_Error_Messages;                use Flow_Error_Messages;
+with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
+with Flow_Utility;                       use Flow_Utility;
+
 with VC_Kinds;                           use VC_Kinds;
 with Why;
 
@@ -2443,8 +2447,7 @@ package body Flow.Control_Flow_Graph is
       function Variables_Initialized_By_Loop (N : Node_Id)
                                               return Flow_Id_Sets.Set
       is
-         Fully_Initialized : Flow_Id_Sets.Set :=
-           Flow_Id_Sets.Empty_Set;
+         Fully_Initialized : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
          type Target (Valid : Boolean := False)
             is record
