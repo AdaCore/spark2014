@@ -1,0 +1,95 @@
+crtp_pack.adb:23:43: info: initialization of "Packet.Channel" proved
+crtp_pack.adb:23:43: info: initialization of "Packet.Data_1" proved
+crtp_pack.adb:23:43: info: initialization of "Packet.Data_2" proved
+crtp_pack.adb:23:43: info: initialization of "Packet.Header" proved
+crtp_pack.adb:23:43: info: initialization of "Packet.Port" proved
+crtp_pack.adb:23:43: info: initialization of "Packet.Raw" proved
+crtp_pack.adb:23:43: info: initialization of "Packet.Reserved" proved
+crtp_pack.adb:23:43: info: initialization of "Packet.Size" proved
+crtp_pack.adb:34:24: info: initialization of "Packet.Port" proved
+crtp_pack.adb:35:30: info: initialization of "Packet.Port" proved
+crtp_pack.adb:35:44: info: initialization of "Packet.Channel" proved
+crtp_pack.adb:35:44: info: initialization of "Packet.Data_1" proved
+crtp_pack.adb:35:44: info: initialization of "Packet.Data_2" proved
+crtp_pack.adb:35:44: info: initialization of "Packet.Header" proved
+crtp_pack.adb:35:44: info: initialization of "Packet.Port" proved
+crtp_pack.adb:35:44: info: initialization of "Packet.Raw" proved
+crtp_pack.adb:35:44: info: initialization of "Packet.Reserved" proved
+crtp_pack.adb:35:44: info: initialization of "Packet.Size" proved
+crtp_pack.adb:37:26: info: initialization of "Packet.Port" proved
+crtp_pack.adb:37:53: info: initialization of "Packet.Channel" proved
+crtp_pack.adb:37:53: info: initialization of "Packet.Data_1" proved
+crtp_pack.adb:37:53: info: initialization of "Packet.Data_2" proved
+crtp_pack.adb:37:53: info: initialization of "Packet.Header" proved
+crtp_pack.adb:37:53: info: initialization of "Packet.Port" proved
+crtp_pack.adb:37:53: info: initialization of "Packet.Raw" proved
+crtp_pack.adb:37:53: info: initialization of "Packet.Reserved" proved
+crtp_pack.adb:37:53: info: initialization of "Packet.Size" proved
+crtp_pack.adb:53:25: high: "Packet.Data_1" is not initialized
+crtp_pack.adb:53:25: high: "Packet.Data_2" is not initialized
+crtp_pack.adb:53:25: high: "Packet.Header" is not initialized
+crtp_pack.adb:53:25: high: "Packet.Raw" is not initialized
+crtp_pack.adb:53:25: high: "Packet.Reserved" is not initialized
+crtp_pack.adb:53:25: info: initialization of "Packet.Channel" proved
+crtp_pack.adb:53:25: info: initialization of "Packet.Port" proved
+crtp_pack.adb:53:25: info: initialization of "Packet.Size" proved
+crtp_pack.adb:55:14: info: initialization of "Handler.Index" proved
+crtp_pack.adb:55:14: info: initialization of "Handler.Packet.Channel" proved
+crtp_pack.adb:55:14: info: initialization of "Handler.Packet.Data_1" proved
+crtp_pack.adb:55:14: info: initialization of "Handler.Packet.Data_2" proved
+crtp_pack.adb:55:14: info: initialization of "Handler.Packet.Header" proved
+crtp_pack.adb:55:14: info: initialization of "Handler.Packet.Port" proved
+crtp_pack.adb:55:14: info: initialization of "Handler.Packet.Raw" proved
+crtp_pack.adb:55:14: info: initialization of "Handler.Packet.Reserved" proved
+crtp_pack.adb:55:14: info: initialization of "Handler.Packet.Size" proved
+crtp_pack.adb:66:14: info: initialization of "Handler.Index" proved
+crtp_pack.adb:66:14: info: initialization of "Handler.Packet.Channel" proved
+crtp_pack.adb:66:14: info: initialization of "Handler.Packet.Data_1" proved
+crtp_pack.adb:66:14: info: initialization of "Handler.Packet.Data_2" proved
+crtp_pack.adb:66:14: info: initialization of "Handler.Packet.Header" proved
+crtp_pack.adb:66:14: info: initialization of "Handler.Packet.Port" proved
+crtp_pack.adb:66:14: info: initialization of "Handler.Packet.Raw" proved
+crtp_pack.adb:66:14: info: initialization of "Handler.Packet.Reserved" proved
+crtp_pack.adb:66:14: info: initialization of "Handler.Packet.Size" proved
+crtp_pack.ads:77:04: warning: pragma "Unchecked_Union" ignored (not yet supported)
+crtp_pack.ads:77:04: warning: pragma "Unchecked_Union" ignored in flow analysis (not yet supported)
+crtp_pack.ads:138:07: info: initialization of "Packet.Channel" proved
+crtp_pack.ads:138:07: info: initialization of "Packet.Data_1" proved
+crtp_pack.ads:138:07: info: initialization of "Packet.Data_2" proved
+crtp_pack.ads:138:07: info: initialization of "Packet.Header" proved
+crtp_pack.ads:138:07: info: initialization of "Packet.Port" proved
+crtp_pack.ads:138:07: info: initialization of "Packet.Raw" proved
+crtp_pack.ads:138:07: info: initialization of "Packet.Reserved" proved
+crtp_pack.ads:138:07: info: initialization of "Packet.Size" proved
+crtp_pack.ads:142:14: warning: subprogram "D27s" has no effect
+crtp_pack.ads:144:07: info: initialization of "Has_Succeed" proved
+crtp_pack.ads:145:07: warning: unused variable "Time_To_Wait"
+crtp_pack.ads:160:14: info: initialization of "Is_Connected" proved
+crtp_pack.ads:167:12: high: Bla must be initialized at elaboration
+crtp_pack.ads:194:14: medium: "Tx_Queue" might not be initialized after elaboration of main program "CRTP_Tx_Task"
+generic_queue_pack.ads:23:07: medium: "Item.Channel" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:23:07: medium: "Item.Data_1" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:23:07: medium: "Item.Data_2" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:23:07: medium: "Item.Header" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:23:07: medium: "Item.Port" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:23:07: medium: "Item.Raw" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:23:07: medium: "Item.Reserved" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:23:07: medium: "Item.Size" might not be initialized in "Dequeue", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:49:10: info: initialization of "Has_Succeed" proved, in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:53:10: medium: "Item.Channel" might not be initialized in "Dequeue_Item", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:53:10: medium: "Item.Data_1" might not be initialized in "Dequeue_Item", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:53:10: medium: "Item.Data_2" might not be initialized in "Dequeue_Item", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:53:10: medium: "Item.Header" might not be initialized in "Dequeue_Item", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:53:10: medium: "Item.Port" might not be initialized in "Dequeue_Item", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:53:10: medium: "Item.Raw" might not be initialized in "Dequeue_Item", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:53:10: medium: "Item.Reserved" might not be initialized in "Dequeue_Item", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:53:10: medium: "Item.Size" might not be initialized in "Dequeue_Item", in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:54:10: info: initialization of "Has_Succeed" proved, in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:58:68: info: initialization of "Item.Channel" proved, in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:58:68: info: initialization of "Item.Data_1" proved, in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:58:68: info: initialization of "Item.Data_2" proved, in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:58:68: info: initialization of "Item.Header" proved, in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:58:68: info: initialization of "Item.Port" proved, in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:58:68: info: initialization of "Item.Raw" proved, in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:58:68: info: initialization of "Item.Reserved" proved, in instantiation at crtp_pack.ads:167
+generic_queue_pack.ads:58:68: info: initialization of "Item.Size" proved, in instantiation at crtp_pack.ads:167
