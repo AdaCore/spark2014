@@ -310,7 +310,7 @@ package body Gnat2Why.Driver is
 
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
-      if Ekind (E) in Subprogram_Kind
+      if Ekind (E) in Subprogram_Kind | Entry_Kind
         and then Analysis_Requested (E, With_Inlined => False)
         and then Entity_Spec_In_SPARK (E)
 

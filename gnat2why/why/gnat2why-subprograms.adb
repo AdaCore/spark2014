@@ -126,13 +126,10 @@ package body Gnat2Why.Subprograms is
       Initialized    : Boolean := False) return W_Prog_Id
    with
        Pre => Ekind (E) in
-         E_Procedure | E_Function | E_Package | E_Task_Type;
+         E_Procedure | E_Function | E_Package | E_Task_Type | E_Entry;
    --  Given a Why node, collects the set of external dynamic objects
    --  that are referenced in this node.
-   --  @param W Why node from which we collect entities
-   --  @param Params Transformation parameters used to transform the objects
-   --  @param Scope Entity of the enclosing unit for the Why code. It is used
-   --     to determine if objects are local/initialized.
+   --  @param E Entity of subprogram or task or entry or package.
    --  @param Pred_Fun_Param not Empty iff computing the dynamic property for
    --     inputs of a predicate function, in which case [Pred_Fun_Param] is
    --     the entity for the formal parameter of the predicate function.
@@ -1873,7 +1870,8 @@ package body Gnat2Why.Subprograms is
       Name      : constant String := Full_Name (E);
       Params    : Transformation_Params;
 
-      Body_N    : constant Node_Id := Subprogram_Body (E);
+      Body_N    : constant Node_Id :=
+        (if Is_Entry (E) then Entry_Body (E) else Subprogram_Body (E));
       Post_N    : Node_Id;
       Assume    : W_Prog_Id;
       Init_Prog : W_Prog_Id;
@@ -1890,6 +1888,7 @@ package body Gnat2Why.Subprograms is
       Contract_Check : W_Prog_Id;
       Post_Check     : W_Prog_Id;
       Precondition   : W_Prog_Id;
+      Entry_Havoc    : W_Prog_Id;
 
       Result_Var : W_Prog_Id;
 
@@ -1985,7 +1984,7 @@ package body Gnat2Why.Subprograms is
          Pre : constant W_Pred_Id :=
            Get_Static_Call_Contract (Params, E, Name_Precondition);
       begin
-         if Might_Be_Main (E) then
+         if not Is_Entry (E) and then Might_Be_Main (E) then
             Precondition :=
               New_Located_Assert
                 (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition),
@@ -2010,6 +2009,13 @@ package body Gnat2Why.Subprograms is
          Others_Guard_Ident => Others_Guard_Ident,
          Others_Guard_Expr  => Others_Guard_Expr);
 
+      if Is_Entry (E) then
+         Entry_Havoc :=
+           New_Havoc_Call (Self_Name);
+      else
+         Entry_Havoc := New_Void;
+      end if;
+
       Init_Prog := Sequence
         ((1 => New_Comment
           (Comment => NID ("Declarations introduced by the compiler at the"
@@ -2027,10 +2033,8 @@ package body Gnat2Why.Subprograms is
           (Comment => NID ("Assume Pre of the subprogram"
            & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
              else ""))),
-          6 => Precondition));
-
-      --  ??? if this is a protected entry, we need to havoc the protected
-      --  object after the assumption of the precondition
+          6 => Precondition,
+          7 => Entry_Havoc));
 
       Prog := Compute_Contract_Cases_Entry_Checks (E, Guard_Map);
 

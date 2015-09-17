@@ -1591,18 +1591,27 @@ package body Gnat2Why.Expr is
 
                when Prot_Self =>
 
-                  --  external call, pass the object itself
+                  declare
+                     Prot : constant W_Identifier_Id :=
+                       Binders (Bind_Cnt).Main.B_Name;
+                  begin
+                     --  external call, pass the object itself
 
-                  if Nkind (Name (Call)) = N_Selected_Component then
-                     Why_Args (Arg_Cnt) :=
-                       Transform_Expr
-                         (Prefix (Name (Call)),
-                          Get_Typ (Binders (Bind_Cnt).Main.B_Name),
-                          Domain,
-                          Params);
-                  else
-                     Why_Args (Arg_Cnt) := +Binders (Bind_Cnt).Main.B_Name;
-                  end if;
+                     if Nkind (Name (Call)) = N_Selected_Component then
+                        Why_Args (Arg_Cnt) :=
+                          Transform_Expr
+                            (Prefix (Name (Call)),
+                             Get_Typ (Prot),
+                             Domain,
+                             Params);
+                     elsif Self_Is_Mutable then
+                        Why_Args (Arg_Cnt) :=
+                          New_Deref (Right => Prot,
+                                     Typ   => Get_Typ (Prot));
+                     else
+                        Why_Args (Arg_Cnt) := +Prot;
+                     end if;
+                  end;
 
                   Arg_Cnt := Arg_Cnt + 1;
 
