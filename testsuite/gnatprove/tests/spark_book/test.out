@@ -1057,7 +1057,7 @@ shapes.adb:14:30: medium: overflow check might fail
 shapes.adb:14:32: info: initialization of "Delta_Y" proved
 shapes.adb:14:39: info: overflow check proved
 shapes.adb:14:75: info: overflow check proved
-shapes.adb:14:75: info: range check proved
+shapes.adb:14:75: medium: range check might fail
 shapes2.adb:12:34: info: overflow check proved
 shapes2.adb:12:34: info: range check proved
 shapes2.adb:13:34: info: overflow check proved
@@ -1786,26 +1786,3 @@ workspaces.adb:9:27: medium: overflow check might fail
 workspaces.adb:9:32: info: index check proved
 workspaces.adb:9:37: info: initialization of "Workspace" proved
 workspaces.adb:11:14: info: initialization of "Workspace" proved
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
