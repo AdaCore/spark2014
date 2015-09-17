@@ -40,6 +40,7 @@ with Pprint;                             use Pprint;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Disp;                           use Sem_Disp;
 with Sem_Eval;                           use Sem_Eval;
+with Sem_Prag;                           use Sem_Prag;
 with SPARK_Definition;                   use SPARK_Definition;
 with Stringt;                            use Stringt;
 with Treepr;                             use Treepr;
@@ -3197,5 +3198,18 @@ package body SPARK_Util is
               when Subprogram_Kind => Subprogram_Body_Entity (E),
               when others => raise Program_Error);
    end Get_Body_Entity;
+
+   ----------------------------------
+   -- Is_Part_Of_Concurrent_Object --
+   ----------------------------------
+
+   function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean is
+      Part_Of_Pragma : constant Node_Id := Get_Pragma (E, Pragma_Part_Of);
+   begin
+      return Present (Part_Of_Pragma)
+        and then
+          Ekind (Etype (Expression (Get_Argument (Part_Of_Pragma))))
+             in Concurrent_Kind;
+   end Is_Part_Of_Concurrent_Object;
 
 end SPARK_Util;

@@ -6368,10 +6368,11 @@ package body Flow.Control_Flow_Graph is
                 else Mode_In_Out),
                False, FA);
 
-            --  Collect unsynchronized objects by excluding constant,
-            --  protected, suspension and atomic ones.
+            --  Collect unsynchronized objects by excluding states and objects
+            --  that are synchronized or are part of concurrent object.
             if not (Is_Synchronized_Object (E)
-                    or else Is_Synchronized_State (E))
+                    or else Is_Synchronized_State (E)
+                    or else Is_Part_Of_Concurrent_Object (E))
             then
                FA.Tasking (Unsynch_Accesses).Include (E);
             end if;
