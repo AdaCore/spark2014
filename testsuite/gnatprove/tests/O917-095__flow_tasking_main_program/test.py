@@ -1,2 +1,2 @@
 from test_support import *
-prove_all()
+do_flow()

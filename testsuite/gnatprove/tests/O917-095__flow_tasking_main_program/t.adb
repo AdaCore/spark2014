@@ -1,7 +1,6 @@
-package body T
-  with SPARK_Mode
-is
+package body T is
    X : Integer;
+
    task body TT is
    begin
       loop

@@ -1,6 +1,4 @@
 with T; use T;
-package Client2
-  with SPARK_Mode
-is
+package Client2 is
    T2 : TT;
 end Client2;
