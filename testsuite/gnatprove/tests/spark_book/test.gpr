@@ -1,0 +1,12 @@
+with "Chapter-01/chapter01";
+with "Chapter-02/chapter02";
+with "Chapter-03/chapter03";
+with "Chapter-04/chapter04";
+with "Chapter-05/chapter05";
+with "Chapter-06/chapter06";
+with "Chapter-07/chapter07";
+with "Chapter-08/chapter08";
+with "Chapter-09/chapter09";
+
+project Test is
+end Test;

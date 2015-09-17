@@ -2405,12 +2405,16 @@ slocs at most).
 
 .. rubric:: ``adacore_u``
 
-This folder contains the complete source code of the small examples used in
-the quiz of the SPARK 2014 lesson on the AdaCore University website (at
-http://university.adacore.com/courses/spark-2014/). They include
-unannotated units, examples with formally verified data flow, functional,
-or abstraction contracts, as well as erroneous programs, on which |GNATprove|
-detects failing checks.
+This folder contains the complete source code of the small examples used in the
+quiz of the SPARK 2014 course available from the AdaCore University website (at
+http://university.adacore.com/courses/spark-2014/). They include unannotated
+units, examples with formally verified data flow, functional, or abstraction
+contracts, as well as erroneous programs, on which |GNATprove| detects failing
+checks.
+
+Opening the example in GPS or GNATbench opens the project corresponding to the
+first lecture. Projects corresponding to the following lectures are available
+in sibling subdirectories and can be opened manually.
 
 .. rubric:: ``database``
 
@@ -2519,6 +2523,10 @@ The examples follow the chapters of the book:
 7. Interfacing with SPARK
 8. Software engineering with SPARK
 9. Advanced techniques
+
+Opening the example in GPS or GNATbench opens a project with all
+sources. Projects corresponding to individual chapters are available in
+subdirectories and can be opened manually.
 
 The original source code is available from the publisher's website at http://www.cambridge.org/us/academic/subjects/computer-science/programming-languages-and-applied-logic/building-high-integrity-applications-spark
 
@@ -2630,13 +2638,6 @@ corresponding README file.
 Data dependency contracts are given for most subprograms. These contracts are
 proved by |GNATprove| flow analysis, which also proves the absence of reads of
 uninitialized data.
-
-.. note::
-
-   IPstack is not directly available under GPS and GNATbench as an example via
-   the :menuselection:`Help --> SPARK --> Examples` menu item, as some files
-   need to be generated (through command ``make ipstack``) and the environment
-   properly set for analysis (see script ``test.cmd``).
 
 .. rubric:: ``openETCS``
 
