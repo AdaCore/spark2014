@@ -1942,10 +1942,11 @@ package body Gnat2Why.Subprograms is
          else New_Void);
 
       if Is_Protected_Subprogram (E) then
-            Self_Name :=
-              New_Identifier
-                (Name => "self__",
-                 Typ  => Type_Of_Node (Containing_Protected_Type (E)));
+         Self_Name :=
+           New_Identifier
+             (Name => "self__",
+              Typ  => Type_Of_Node (Containing_Protected_Type (E)));
+         Self_Is_Mutable := True;
       end if;
 
       Params :=
@@ -2093,12 +2094,11 @@ package body Gnat2Why.Subprograms is
          if Is_Protected_Subprogram (E) then
             Emit
               (File.Cur_Theory,
-               New_Function_Decl
+               New_Global_Ref_Declaration
                  (Ada_Node    => Containing_Protected_Type (E),
-                  Domain      => EW_Term,
                   Name        => Self_Name,
                   Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type =>
+                  Ref_Type =>
                     Type_Of_Node (Containing_Protected_Type (E))));
          end if;
 
@@ -2331,6 +2331,11 @@ package body Gnat2Why.Subprograms is
                   Post    => Post,
                   Def     => +Prog));
       end;
+
+      --  cleanup
+
+      Self_Name := Why_Empty;
+      Self_Is_Mutable := False;
 
       --  We should *not* filter our own entity, it is needed for recursive
       --  calls

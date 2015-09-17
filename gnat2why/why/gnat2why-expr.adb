@@ -4587,7 +4587,8 @@ package body Gnat2Why.Expr is
       if Is_Protected_Component_Or_Discr (Entity (Left_Side)) then
          Result :=
            +One_Level_Update (Left_Side,
-                              +Self_Name,
+                              New_Deref (Right => +Self_Name,
+                                         Typ   => Get_Typ (Self_Name)),
                               +Right_Side,
                               EW_Prog,
                               Body_Params);
@@ -10512,14 +10513,18 @@ package body Gnat2Why.Expr is
       elsif Is_Protected_Component_Or_Discr (Ent) then
          declare
             Prot : constant Entity_Id := Containing_Protected_Type (Ent);
+            Id   : constant W_Identifier_Id :=
+              New_Identifier
+                (Name => "self__",
+                 Typ  => Type_Of_Node (Prot));
          begin
             T := New_Ada_Record_Access
               (Ada_Node => Expr,
                Domain   => Domain,
                Name     =>
-                 +New_Identifier
-                 (Name => "self__",
-                  Typ  => Type_Of_Node (Prot)),
+                 (if Self_Is_Mutable
+                  then New_Deref (Right => Id, Typ => Type_Of_Node (Prot))
+                    else +Id),
                Field    => Ent,
                Ty       => Prot);
          end;

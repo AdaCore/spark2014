@@ -363,6 +363,7 @@ package Gnat2Why.Expr is
    --  run-time errors in the postcondition.
 
    Self_Name   : W_Identifier_Id := Why_Empty;
+   Self_Is_Mutable : Boolean := False;
    --  Name to use to refer to the state (i.e. fields) of a protected object.
    --  It should be equal to empty when we are not generating code for a
    --  protected subprogram.
