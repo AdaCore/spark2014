@@ -269,7 +269,8 @@ package Flow_Generated_Globals is
 
    function GG_Get_Local_Variables
      (EN : Entity_Name)
-      return Name_Sets.Set;
+      return Name_Sets.Set
+   with Pre => GG_Has_Been_Generated;
    --  This function takes as a parameter the name of a package and returns a
    --  set of names comprising:
    --    * all variables declared directly inside the package,
