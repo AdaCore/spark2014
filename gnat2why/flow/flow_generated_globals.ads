@@ -267,6 +267,23 @@ package Flow_Generated_Globals is
    --  @return the generated initializes if it exists or an empty dependency
    --    map otherwise.
 
+   function GG_Get_Local_Variables
+     (EN : Entity_Name)
+      return Name_Sets.Set;
+   --  This function takes as a parameter the name of a package and returns a
+   --  set of names comprising:
+   --    * all variables declared directly inside the package,
+   --    * variables declared in the private part of nested packages that are
+   --      in SPARK and do NOT have a user-provided Initializes aspect and
+   --    * variables introduced in the declarations of the body part of nested
+   --      packages that are in SPARK and do NOT have a user-provided
+   --      Abstract_State aspect.
+   --  Constants with variable inputs are also included in the above.
+   --
+   --  @param EN is the entity name whose local variables we are asking for
+   --  @return the set of Entity_Names of the local variables as recorded
+   --    by the generated globals
+
    function GG_Is_Initialized_At_Elaboration (EN : Entity_Name) return Boolean
    with Pre => GG_Has_Been_Generated;
    --  @param EN is the entity name we want to check

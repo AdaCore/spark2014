@@ -141,6 +141,11 @@ package body Flow_Generated_Globals is
    --  This set of names will hold all variables and state abstractions
    --  that we know are initialized.
 
+   Package_To_Locals_Map   : Name_Graphs.Map := Name_Graphs.Empty_Map;
+   --  package -> {local variables}
+   --
+   --  This maps packages to their local variables
+
    ----------------------------------------------------------------------
    --  Volatile information
    ----------------------------------------------------------------------
@@ -1030,7 +1035,8 @@ package body Flow_Generated_Globals is
 
       procedure Generate_Initializes_Aspects;
       --  Once the global graph has been generated, we use it to generate
-      --  the initializes aspects.
+      --  the initializes aspects. We also take this opportunity to populate
+      --  the Package_To_Locals_Map.
 
       procedure Load_GG_Info_From_ALI (ALI_File_Name : File_Name_Type);
       --  Loads the GG info from an ALI file and stores them in the
@@ -1809,6 +1815,10 @@ package body Flow_Generated_Globals is
                Initializes_Aspects_Map.Insert (P.Name, II);
 
             end;
+
+            --  This is a convenient place to populate the
+            --  Package_To_Locals_Map.
+            Package_To_Locals_Map.Insert (P.Name, P.Local_Variables);
          end loop;
 
          if Debug_Print_Generated_Initializes then
@@ -2574,6 +2584,19 @@ package body Flow_Generated_Globals is
          return DM;
       end;
    end GG_Get_Initializes;
+
+   ----------------------------
+   -- GG_Get_Local_Variables --
+   ----------------------------
+
+   function GG_Get_Local_Variables (EN : Entity_Name) return Name_Sets.Set is
+   begin
+      if not GG_Exists_Cache.Contains (EN) then
+         return Name_Sets.Empty_Set;
+      end if;
+
+      return Package_To_Locals_Map.Element (EN);
+   end GG_Get_Local_Variables;
 
    --------------------------------------
    -- GG_Is_Initialized_At_Elaboration --
