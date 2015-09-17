@@ -728,7 +728,11 @@ package body Flow_Refinement is
                --  SPARK.
                return True;
 
-            when others =>
+            when E_Discriminant   =>
+               --  Discriminants are always initialized
+               return True;
+
+            when others           =>
                Print_Tree_Node (Ent);
                raise Program_Error;
          end case;
