@@ -44,6 +44,7 @@ with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util;                         use SPARK_Util;
 with Stand;                              use Stand;
 with Treepr;                             use Treepr;
+with Uintp;                              use Uintp;
 with VC_Kinds;                           use VC_Kinds;
 with Why;
 
@@ -2987,6 +2988,102 @@ package body Flow.Control_Flow_Graph is
 
       Is_Constant : constant Boolean := Nkind (N) = N_Object_Declaration
                                         and then Constant_Present (N);
+
+      procedure Find_Tasks (T : Entity_Id; Array_Component : Boolean)
+        with Pre => Is_Type (T);
+      --  Update the map with number of task instances.
+      --
+      --  It checks which and how many tasks are instantiated when an object of
+      --  type T is declared. Flag Array_Component should be True if the parent
+      --  type is an array with possibly more than one element.
+      --
+      --  This procedure mirrors Count_Tasks from
+      --  Sem_Ch3.Analyze_Object_Declaration.
+
+      ----------------
+      -- Find_Tasks --
+      ----------------
+
+      procedure Find_Tasks (T : Entity_Id; Array_Component : Boolean) is
+         C : Entity_Id;
+         X : Node_Id;
+
+         type Array_Elements is (Zero, One, Many);
+         --  Type for checking the number of elements in an array
+
+         S : Array_Elements;
+         --  Number of elements in the array
+
+      begin
+         if not Has_Task (T) then
+            return;
+
+         elsif Is_Task_Type (T) then
+            declare
+               --  For discriminated tasks record the number of instances of
+               --  the base type.
+               TN : constant Entity_Name := To_Entity_Name (Etype (T));
+            begin
+               Task_Instances.Include
+                 (Key => TN,
+                  New_Item => (if Array_Component
+                               or else Task_Instances.Contains (TN)
+                               then Many
+                               else One));
+            end;
+
+         elsif Is_Record_Type (T) then
+            --  Ignore record variants and simply find any task components
+            C := First_Component (T);
+            while Present (C) loop
+               Find_Tasks (Etype (C), Array_Component);
+               Next_Component (C);
+            end loop;
+
+         elsif Is_Array_Type (T) then
+            --  Check whether the array is empty (at least one index range
+            --  statically equal zero) or has exectly one component (all ranges
+            --  statically equal one); otherwise assume it has many components.
+            S := One;
+            X := First_Index (T);
+
+            while Present (X) loop
+               C := Etype (X);
+
+               if not Is_OK_Static_Subtype (C) then
+                  S := Many;
+               else
+                  declare
+                     Length : constant Uint :=
+                       (UI_Max (Uint_0,
+                        Expr_Value (Type_High_Bound (C)) -
+                          Expr_Value (Type_Low_Bound (C)) + Uint_1));
+                  begin
+                     if Length = Uint_0 then
+                        S := Zero;
+                        exit;
+                     elsif Length = Uint_1 then
+                        null;
+                     else
+                        S := Many;
+                     end if;
+                  end;
+               end if;
+
+               Next_Index (X);
+            end loop;
+
+            if S = Zero then
+               null;
+            else
+               Find_Tasks (Component_Type (T),
+                           Array_Component => S = Many);
+            end if;
+         end if;
+      end Find_Tasks;
+
+   --  Start of processing for Do_Object_Declaration
+
    begin
       --  We are dealing with a local constant. These constants are *not*
       --  ignored.
@@ -3314,6 +3411,14 @@ package body Flow.Control_Flow_Graph is
                end if;
             end;
          end loop;
+
+         --  In phase 1 we count task instances (which can be only declared at
+         --  library level because of the Ravenscar profile restrictions).
+         if FA.Generating_Globals then
+            --  Register task objects
+            Find_Tasks (Etype (Defining_Identifier (N)),
+                        Array_Component => False);
+         end if;
       end if;
    end Do_Object_Declaration;
 

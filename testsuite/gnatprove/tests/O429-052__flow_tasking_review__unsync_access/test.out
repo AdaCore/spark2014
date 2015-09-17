@@ -1,6 +1,5 @@
 bar.adb:6:14: more than one task accesses an unsynchronized global variable "bar.g" (SPARK RM 9.11)
-foo.adb:7:09: more than one task accesses an unsynchronized global variable "foo.g" (SPARK RM 9.11)
-foo.adb:9:09: more than one task accesses an unsynchronized global variable "foo.g" (SPARK RM 9.11)
+foo.adb:9:09: task "T1tk" already accesses an unsynchronized global variable "foo.g" (SPARK RM 9.11)
    compilation of bar.adb failed
    compilation of foo.adb failed
 
