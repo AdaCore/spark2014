@@ -25,6 +25,8 @@
 
 with Common_Containers;      use Common_Containers;
 with Errout;                 use Errout;
+with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
+with Flow_Refinement;        use Flow_Refinement;
 with Flow_Types;             use Flow_Types;
 with Flow_Utility;           use Flow_Utility;
 with GNAT.Source_Info;
@@ -54,7 +56,6 @@ with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Gen.Preds;          use Why.Gen.Preds;
 with Why.Gen.Progs;          use Why.Gen.Progs;
-with Why.Gen.Records;        use Why.Gen.Records;
 with Why.Gen.Terms;          use Why.Gen.Terms;
 with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
@@ -119,14 +120,13 @@ package body Gnat2Why.Subprograms is
    --  function.
 
    function Compute_Dynamic_Property_For_Inputs
-     (W              : Why_Node_Id;
+     (E              : Entity_Id;
       Params         : Transformation_Params;
-      Scope          : Entity_Id;
       Pred_Fun_Param : Entity_Id := Empty;
       Initialized    : Boolean := False) return W_Prog_Id
    with
-       Pre => Ekind (Scope) in
-     E_Procedure | E_Function | E_Package | E_Task_Type;
+       Pre => Ekind (E) in
+         E_Procedure | E_Function | E_Package | E_Task_Type;
    --  Given a Why node, collects the set of external dynamic objects
    --  that are referenced in this node.
    --  @param W Why node from which we collect entities
@@ -163,6 +163,16 @@ package body Gnat2Why.Subprograms is
    --  Return Why binders for the parameters and read effects of function E.
    --  The array is a singleton of unit type if E has no parameters and no
    --  effects.
+
+   procedure Assume_Value_Of_Constants
+     (Why_Expr : in out W_Prog_Id;
+      Scope    : Entity_Id;
+      Params   : Transformation_Params);
+   --  Go through Why_Expr to find all the Ada node referencing constants with
+   --  no variable input to assume their definition.
+   --  ??? This is especially needed for record aggregates containing floating
+   --      point numbers and should not be needed anymore once floating point
+   --      numbers are properly handled by solvers.
 
    function Compute_Raw_Binders (E : Entity_Id) return Item_Array;
    --  Return Why binders for the parameters of subprogram E. The array is
@@ -216,6 +226,36 @@ package body Gnat2Why.Subprograms is
       Add_Effect_Imports (T, Write_Names);
 
    end Add_Dependencies_For_Effects;
+
+   -------------------------------
+   -- Assume_Value_Of_Constants --
+   -------------------------------
+
+   procedure Assume_Value_Of_Constants
+     (Why_Expr : in out W_Prog_Id;
+      Scope    : Entity_Id;
+      Params   : Transformation_Params)
+   is
+      Include : constant Node_Sets.Set := Compute_Ada_Node_Set (+Why_Expr);
+      Assumes : W_Prog_Id := New_Void;
+   begin
+      for N of Include loop
+         if Present (N)
+           and then Nkind (N) in N_Entity
+           and then Ekind (N) = E_Constant
+           and then not Has_Variable_Input (Direct_Mapping_Id (N))
+           and then not Is_Declared_In_Unit (N, Scope)
+         then
+            Assume_Declaration_Of_Entity
+              (E             => N,
+               Params        => Params,
+               Initialized   => True,
+               Top_Predicate => True,
+               Context       => Assumes);
+         end if;
+      end loop;
+      Why_Expr := Sequence (Assumes, Why_Expr);
+   end Assume_Value_Of_Constants;
 
    ------------------
    -- Compute_Args --
@@ -280,34 +320,28 @@ package body Gnat2Why.Subprograms is
    -----------------------------------------
 
    function Compute_Dynamic_Property_For_Inputs
-     (W              : Why_Node_Id;
+     (E              : Entity_Id;
       Params         : Transformation_Params;
-      Scope          : Entity_Id;
       Pred_Fun_Param : Entity_Id := Empty;
       Initialized    : Boolean := False) return W_Prog_Id
    is
-      Max_Assocs : constant Natural := 100;
-      --  if the defining expression of a constant contains more than
-      --  Max_Assocs N_Component_Association nodes, its definition will not be
-      --  inlined.
-
       Read_Ids   : Flow_Types.Flow_Id_Sets.Set;
 
       function Is_Initialized (Obj : Entity_Id) return Boolean with
-        Pre => not Is_Declared_In_Unit (Obj, Scope)
+        Pre => not Is_Declared_In_Unit (Obj, E)
         and then Is_Mutable_In_Why (Obj);
-      --  Returns True if Obj is always initialized in the scope of Scope.
+      --  Returns True if Obj is always initialized in the scope of E.
 
       function Is_Initialized (Obj : Entity_Id) return Boolean is
       begin
          if not Initialized
-           and then Ekind (Scope) in E_Function | E_Procedure
+           and then Ekind (E) in E_Function | E_Procedure
          then
 
             --  Inside a subprogram, global variables may be uninitialized if
             --  they do not occur as reads of the subprogram.
 
-            return (Enclosing_Package_Or_Subprogram (Obj) = Scope
+            return (Enclosing_Package_Or_Subprogram (Obj) = E
                     and then Ekind (Obj) /= E_Out_Parameter)
               or else Read_Ids.Contains (Direct_Mapping_Id (Obj));
          else
@@ -319,27 +353,109 @@ package body Gnat2Why.Subprograms is
          end if;
       end Is_Initialized;
 
-      Includes            : Node_Sets.Set := Compute_Ada_Node_Set (W);
+      Includes            : Node_Sets.Set;
       Dynamic_Prop_Inputs : W_Prog_Id := New_Void;
 
    begin
-      --  Collect global variables read in scope if it is a subprogam
+      --  Collect global variables read or written in E
 
-      if Ekind (Scope) in E_Function | E_Procedure then
+      if Ekind (E) in E_Function | E_Procedure | E_Task_Type then
          declare
-            Write_Ids  : Flow_Types.Flow_Id_Sets.Set;
+            Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+            Read_Names  : Name_Sets.Set;
+            Write_Names : Name_Sets.Set;
          begin
-            Flow_Utility.Get_Proof_Globals (Subprogram => Scope,
-                                            Classwide  => True,
-                                            Reads      => Read_Ids,
-                                            Writes     => Write_Ids);
+
+            --  Also get references to global constants with variable inputs
+            --  even if they are constants in Why.
+
+            Flow_Utility.Get_Proof_Globals (Subprogram     => E,
+                                            Classwide      => True,
+                                            Reads          => Read_Ids,
+                                            Writes         => Write_Ids,
+                                            Keep_Constants => True);
+
+            Read_Names  := Flow_Types.To_Name_Set (Read_Ids);
+            Write_Names := Flow_Types.To_Name_Set (Write_Ids);
+
+            for R of Read_Names loop
+               declare
+                  Entity : constant Entity_Id := Find_Entity (R);
+               begin
+                  if Present (Entity) then
+                     Includes.Insert (Entity);
+                  end if;
+               end;
+            end loop;
+
+            for R of Write_Names loop
+               declare
+                  Entity : constant Entity_Id := Find_Entity (R);
+               begin
+                  if Present (Entity) then
+                     Includes.Include (Entity);
+                  end if;
+               end;
+            end loop;
+         end;
+      elsif Ekind (E) = E_Package and then not Is_Wrapper_Package (E) then
+
+         --  For packages, we use the Initializes aspect to get the variables
+         --  referenced during elaboration.
+         --  We don't do it for wrapper packages as Initializes are not
+         --  generated for them.
+
+         declare
+            Init_Map : constant Dependency_Maps.Map :=
+              Parse_Initializes (Get_Pragma (E, Pragma_Initializes),
+                                 E,
+                                 Get_Flow_Scope (E));
+         begin
+            for S of Init_Map loop
+               for X of S loop
+                  declare
+                     Entity : Entity_Id;
+                  begin
+                     case X.Kind is
+                     when Direct_Mapping | Record_Field =>
+                        Entity := Find_Entity (To_Entity_Name (X.Node));
+                     when Magic_String =>
+                        Entity := Find_Entity (X.Name);
+                     when Null_Value | Synthetic_Null_Export =>
+                        raise Program_Error;
+                     end case;
+
+                     if Present (Entity) then
+                        Includes.Include (Entity);
+                     end if;
+                  end;
+               end loop;
+            end loop;
+         end;
+      end if;
+
+      --  Collect parameters of E if any
+      --  ??? We may want to account for discriminants of task types and self
+      --  reference of protected subprograms.
+
+      if Ekind (E) in E_Function | E_Procedure then
+         declare
+            Params : constant List_Id :=
+              (if Is_Entry (E) then Parameter_Specifications (Parent (E))
+               else Parameter_Specifications (Subprogram_Specification (E)));
+            Param  : Node_Id;
+         begin
+            Param := First (Params);
+            while Present (Param) loop
+               Includes.Include (Defining_Identifier (Param));
+               Next (Param);
+            end loop;
          end;
       end if;
 
       declare
          Already_Included : Node_Sets.Set := Node_Sets.Empty_Set;
          Prop_For_Include : W_Prog_Id;
-         L_Id             : W_Expr_Id;
          Top_Predicate    : Boolean;
          Variables        : Flow_Id_Sets.Set;
          --  Set of variable inputs used in the assumed dynamic invariants.
@@ -351,13 +467,14 @@ package body Gnat2Why.Subprograms is
             Flow_Id_Sets.Clear (Variables);
             for Obj of Includes loop
 
-               --  No need to assume anything if Obj is a local object of the
-               --  unit.
+               --  No need to assume anything if Obj is not an object, if it is
+               --  not in SPARK or if it is a local object of the unit.
 
                if not (Nkind (Obj) in N_Entity)
                  or else not (Is_Object (Obj) or else Is_Named_Number (Obj))
+                 or else not Entity_In_SPARK (Obj)
                  or else not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
-                 or else Is_Declared_In_Unit (Obj, Scope)
+                 or else Is_Declared_In_Unit (Obj, E)
                then
                   null;
                else
@@ -367,104 +484,20 @@ package body Gnat2Why.Subprograms is
 
                   Top_Predicate := Obj /= Pred_Fun_Param;
 
-                  --  Assume the dynamic invariant of Obj.
-
-                  if Is_Object (Obj) and then Is_Mutable_In_Why (Obj) then
-                     L_Id := Transform_Identifier (Params   => Params,
-                                                   Expr     => Obj,
-                                                   Ent      => Obj,
-                                                   Domain   => EW_Term);
-                     Prop_For_Include := Sequence
-                       (Prop_For_Include,
-                        Assume_Dynamic_Invariant
-                          (Expr          => +L_Id,
-                           Ty            => Etype (Obj),
-                           Initialized   => Is_Initialized (Obj),
-                           Only_Var      => False,
-                           Top_Predicate => Top_Predicate));
-                  else
-                     L_Id := Transform_Identifier (Params   => Params,
-                                                   Expr     => Obj,
-                                                   Ent      => Obj,
-                                                   Domain   => EW_Term);
-                     Prop_For_Include := Sequence
-                       (Prop_For_Include,
-                        Assume_Dynamic_Invariant
-                          (Expr          => +L_Id,
-                           Ty            => Etype (Obj),
-                           Initialized   => True,
-                           Only_Var      => False,
-                           Top_Predicate => Top_Predicate));
-                  end if;
+                  Assume_Declaration_Of_Entity
+                    (E             => Obj,
+                     Params        => Params,
+                     Initialized   =>
+                       (if Is_Object (Obj) and then Is_Mutable_In_Why (Obj)
+                        then Is_Initialized (Obj)
+                        else True),
+                     Top_Predicate => Top_Predicate,
+                     Context       => Prop_For_Include);
 
                   --  Add all the variable inputs of the dynamic invariant
                   --  to the set of variables to consider.
 
                   Variables_In_Dynamic_Invariant (Etype (Obj), Variables);
-
-                  --  Assume value if constant
-
-                  if (Is_Object (Obj) and then Ekind (Obj) = E_Constant)
-                    or else Is_Named_Number (Obj)
-                  then
-                     declare
-                        Typ  : constant W_Type_Id := Why_Type_Of_Entity (Obj);
-                        FV   : constant Entity_Id :=
-                          (if Is_Object (Obj) and then Is_Partial_View (Obj)
-                           and then Entity_In_SPARK (Full_View (Obj))
-                           then Full_View (Obj) else Obj);
-                        Decl : constant Node_Id := Parent (FV);
-                        Expr : W_Expr_Id;
-                     begin
-                        if Ekind (FV) /= E_In_Parameter
-                          and then Present (Expression (Decl))
-                          and then Comes_From_Source (FV)
-                          and then Number_Of_Assocs_In_Expression
-                            (Expression (Decl)) <= Max_Assocs
-                        then
-
-                           --  We do not issue checks here. Checks for this
-                           --  declaration will be issued when verifying its
-                           --  enclosing unit.
-
-                           Expr :=
-                             +Transform_Expr (Expression (Decl),
-                                              Typ,
-                                              EW_Pterm,
-                                              Params => Body_Params);
-                           declare
-                              Tmp_Var : constant W_Identifier_Id :=
-                                New_Temp_Identifier (Typ => Typ);
-                              Eq      : constant W_Pred_Id :=
-                                New_Call
-                                  (Name => Why_Eq,
-                                   Typ  => EW_Bool_Type,
-                                   Args =>
-                                     ((if Has_Record_Type (Etype (Obj))
-                                      or else Full_View_Not_In_SPARK
-                                        (Etype (Obj))
-                                      then
-                                         New_Record_Attributes_Update
-                                        (Domain   => EW_Prog,
-                                         Name     => +Tmp_Var,
-                                         Ty       => Etype (Obj))
-                                      else +Tmp_Var),
-                                      +L_Id));
-                           begin
-                              if not Has_Dereference (+Expr) then
-                                 Prop_For_Include := Sequence
-                                   (Prop_For_Include,
-                                    +New_Typed_Binding
-                                      (Domain   => EW_Prog,
-                                       Name     => Tmp_Var,
-                                       Def      => +Expr,
-                                       Context  =>
-                                         +New_Assume_Statement (Pred => Eq)));
-                              end if;
-                           end;
-                        end if;
-                     end;
-                  end if;
                end if;
             end loop;
 
@@ -1471,10 +1504,13 @@ package body Gnat2Why.Subprograms is
 
       Why_Body :=
         Sequence
-          (Compute_Dynamic_Property_For_Inputs (W      => +Why_Body,
-                                                Params => Params,
-                                                Scope  => E),
+          (Compute_Dynamic_Property_For_Inputs (Params => Params,
+                                                E      => E),
            Why_Body);
+
+      --  Assume values of constants
+
+      Assume_Value_Of_Constants (Why_Body, E, Params);
 
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
@@ -1772,10 +1808,13 @@ package body Gnat2Why.Subprograms is
       --  Assume dynamic property of inputs before the checks
 
       Why_Body := Sequence
-        (Compute_Dynamic_Property_For_Inputs (W      => +Why_Body,
-                                              Params => Params,
-                                              Scope  => E),
+        (Compute_Dynamic_Property_For_Inputs (Params => Params,
+                                              E      => E),
          Why_Body);
+
+      --  Assume values of constants
+
+      Assume_Value_Of_Constants (Why_Body, E, Params);
 
       --  Declare a global variable to hold the result of a function
 
@@ -2255,9 +2294,8 @@ package body Gnat2Why.Subprograms is
               Empty);
          Assume_For_Input : constant W_Prog_Id :=
            Compute_Dynamic_Property_For_Inputs
-             (W      => +Prog,
-              Params => Params,
-              Scope  => E,
+             (Params         => Params,
+              E              => E,
               Pred_Fun_Param => Pred_Fun_Param);
       begin
          Prog := Sequence
@@ -2269,6 +2307,10 @@ package body Gnat2Why.Subprograms is
              2 => Assume_For_Input,
              3 => Prog));
       end;
+
+      --  Assume values of constants
+
+      Assume_Value_Of_Constants (Prog, E, Params);
 
       --  We always need to add the int theory as
       --  Compute_Contract_Cases_Entry_Checks may make use of the
@@ -2363,10 +2405,13 @@ package body Gnat2Why.Subprograms is
 
       Why_Body :=
         Sequence
-          (Compute_Dynamic_Property_For_Inputs (W      => +Why_Body,
-                                                Params => Params,
-                                                Scope  => E),
+          (Compute_Dynamic_Property_For_Inputs (Params => Params,
+                                                E      => E),
            Why_Body);
+
+      --  Assume values of constants
+
+      Assume_Value_Of_Constants (Why_Body, E, Params);
 
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);

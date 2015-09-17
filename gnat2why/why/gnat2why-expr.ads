@@ -43,6 +43,23 @@ package Gnat2Why.Expr is
    function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id;
    --  Generate an assignment from an object declaration
 
+   procedure Assume_Declaration_Of_Entity
+     (E             : Entity_Id;
+      Params        : Transformation_Params;
+      Initialized   : Boolean;
+      Top_Predicate : Boolean;
+      Context       : in out W_Prog_Id);
+   --  Add to Context assumption for a declared entity. They include both its
+   --  dynamic invariant and its value if it is a constant whose value contains
+   --  no dereference.
+   --  @param E Entity of the object that we want to declare
+   --  @param Params Transformation parameters to be used
+   --  @param Initialized True iff E is known to be initialized
+   --  @param Top_Predicate True iff the dynamic invariant should consider
+   --     the toplevel type predicate possibly associated with [Ty].
+   --  @param Context The Why program to which we want to append the
+   --     assumptions.
+
    function Assume_Dynamic_Invariant
      (Expr          : W_Term_Id;
       Ty            : Entity_Id;

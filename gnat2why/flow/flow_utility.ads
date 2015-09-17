@@ -156,7 +156,6 @@ is
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
                           Consider_Discriminants : Boolean := False;
-                          Globals_For_Proof      : Boolean := False;
                           Use_Computed_Globals   : Boolean := True;
                           Ignore_Depends         : Boolean := False)
    with Pre  => Ekind (Subprogram) in E_Entry         |
@@ -177,9 +176,6 @@ is
    --  include a corresponding read if the global includes at least
    --  one discriminant.
    --
-   --  If Globals_For_Proof is True then the calls to
-   --  Get_Generated_Reads will not specify Include_Constants.
-   --
    --  If Ignore_Depends is True then we do not use the Refined_Depends
    --  contract to trim the Globals.
 
@@ -187,7 +183,8 @@ is
                                 Classwide            : Boolean;
                                 Reads                : out Flow_Id_Sets.Set;
                                 Writes               : out Flow_Id_Sets.Set;
-                                Use_Computed_Globals : Boolean := True)
+                                Use_Computed_Globals : Boolean := True;
+                                Keep_Constants       : Boolean := False)
    with Pre  => Ekind (Subprogram) in E_Entry         |
                                       E_Task_Type     |
                                       Subprogram_Kind,
@@ -196,6 +193,8 @@ is
    --  Same as above but Reads consists of both the Reads and Proof_Ins,
    --  discriminants receive no special handling and globals are proof
    --  globals, and we always return the most refined view possible.
+   --  If Keep_Constants is true then constants with variable inputs are
+   --  not suppressed form the Globals even if they are constants in Why.
 
    function Has_Proof_Global_Reads (Subprogram : Entity_Id;
                                     Classwide  : Boolean)

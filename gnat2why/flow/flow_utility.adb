@@ -1688,7 +1688,6 @@ package body Flow_Utility is
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
                           Consider_Discriminants : Boolean := False;
-                          Globals_For_Proof      : Boolean := False;
                           Use_Computed_Globals   : Boolean := True;
                           Ignore_Depends         : Boolean := False)
    is
@@ -1762,14 +1761,7 @@ package body Flow_Utility is
             begin
                case The_Mode is
                   when Name_Input =>
-                     if not Globals_For_Proof or else
-                       Ekind (Non_Limited_Global) /= E_In_Parameter
-                     then
-                        --  Proof does not count in parameters as
-                        --  globals (as they are constants).
-                        G_In.Insert (Non_Limited_Global);
-                     end if;
-
+                     G_In.Insert (Non_Limited_Global);
                   when Name_In_Out =>
                      G_In.Insert (Non_Limited_Global);
                      G_Out.Insert (Non_Limited_Global);
@@ -1785,13 +1777,7 @@ package body Flow_Utility is
                      G_Out.Insert (Non_Limited_Global);
 
                   when Name_Proof_In =>
-                     if not Globals_For_Proof or else
-                       Ekind (Non_Limited_Global) /= E_In_Parameter
-                     then
-                        --  See above.
-                        G_Proof.Insert (Non_Limited_Global);
-                     end if;
-
+                     G_Proof.Insert (Non_Limited_Global);
                   when others =>
                      raise Program_Error;
                end case;
@@ -2264,7 +2250,8 @@ package body Flow_Utility is
                                 Classwide            : Boolean;
                                 Reads                : out Flow_Id_Sets.Set;
                                 Writes               : out Flow_Id_Sets.Set;
-                                Use_Computed_Globals : Boolean := True)
+                                Use_Computed_Globals : Boolean := True;
+                                Keep_Constants       : Boolean := False)
    is
       Proof_Ins : Flow_Id_Sets.Set;
       Tmp_In    : Flow_Id_Sets.Set;
@@ -2321,7 +2308,8 @@ package body Flow_Utility is
                --  considered as effects for proof. This includes in particular
                --  formal parameters of mode IN.
 
-               elsif not
+               elsif not Keep_Constants
+                 and then not
                  Gnat2Why.Util.Is_Mutable_In_Why (Get_Direct_Mapping_Id (F))
                then
                   null;
@@ -2353,7 +2341,6 @@ package body Flow_Utility is
          Reads                  => Tmp_In,
          Writes                 => Tmp_Out,
          Consider_Discriminants => False,
-         Globals_For_Proof      => True,
          Use_Computed_Globals   => Use_Computed_Globals);
 
       --  Merge the proof ins with the reads.

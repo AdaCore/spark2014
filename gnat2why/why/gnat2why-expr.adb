@@ -30,6 +30,7 @@ with Checks;                 use Checks;
 with Einfo;                  use Einfo;
 with Elists;                 use Elists;
 with Errout;                 use Errout;
+with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Utility;           use Flow_Utility;
 with GNAT.Source_Info;
@@ -45,6 +46,7 @@ with Sem_Type;               use Sem_Type;
 with Sinput;                 use Sinput;
 with Snames;                 use Snames;
 with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with Stand;                  use Stand;
 with Uintp;                  use Uintp;
 with Urealp;                 use Urealp;
@@ -951,6 +953,105 @@ package body Gnat2Why.Expr is
          return New_Void;
       end if;
    end Assignment_Of_Obj_Decl;
+
+   ----------------------------------
+   -- Assume_Declaration_Of_Entity --
+   ----------------------------------
+
+   procedure Assume_Declaration_Of_Entity
+     (E             : Entity_Id;
+      Params        : Transformation_Params;
+      Initialized   : Boolean;
+      Top_Predicate : Boolean;
+      Context       : in out W_Prog_Id)
+   is
+      Max_Assocs : constant Natural := 100;
+      --  if the defining expression of a constant contains more than
+      --  Max_Assocs N_Component_Association nodes, its definition will not be
+      --  inlined.
+
+      L_Id : constant W_Expr_Id :=
+        Transform_Identifier (Params   => Params,
+                              Expr     => E,
+                              Ent      => E,
+                              Domain   => EW_Term);
+
+   begin
+      --  Assume dynamic property of E
+
+         Context := Sequence
+           (Context,
+            Assume_Dynamic_Invariant
+              (Expr          => +L_Id,
+               Ty            => Etype (E),
+               Initialized   => Initialized,
+               Only_Var      => False,
+               Top_Predicate => Top_Predicate));
+
+      --  Assume value if constant
+
+      if (Is_Object (E) and then Ekind (E) = E_Constant)
+        or else Is_Named_Number (E)
+      then
+         declare
+            Typ  : constant W_Type_Id := Why_Type_Of_Entity (E);
+            FV   : constant Entity_Id :=
+              (if Is_Object (E) and then Is_Partial_View (E)
+               and then Entity_In_SPARK (Full_View (E))
+               then Full_View (E) else E);
+            Decl : constant Node_Id := Parent (FV);
+            Expr : W_Expr_Id;
+         begin
+            if Ekind (FV) /= E_In_Parameter
+              and then Present (Expression (Decl))
+              and then Comes_From_Source (FV)
+              and then Number_Of_Assocs_In_Expression
+                (Expression (Decl)) <= Max_Assocs
+            then
+
+               --  We do not issue checks here. Checks for this
+               --  declaration will be issued when verifying its
+               --  enclosing unit.
+
+               Expr :=
+                 +Transform_Expr (Expression (Decl),
+                                  Typ,
+                                  EW_Pterm,
+                                  Params => Body_Params);
+               declare
+                  Tmp_Var : constant W_Identifier_Id :=
+                    New_Temp_Identifier (Typ => Typ);
+                  Eq      : constant W_Pred_Id :=
+                    New_Call
+                      (Name => Why_Eq,
+                       Typ  => EW_Bool_Type,
+                       Args =>
+                         ((if Has_Record_Type (Etype (E))
+                          or else Full_View_Not_In_SPARK
+                            (Etype (E))
+                          then
+                             New_Record_Attributes_Update
+                            (Domain   => EW_Prog,
+                             Name     => +Tmp_Var,
+                             Ty       => Etype (E))
+                          else +Tmp_Var),
+                          +L_Id));
+               begin
+                  if not Has_Dereference (+Expr) then
+                     Context := Sequence
+                       (Context,
+                        +New_Typed_Binding
+                          (Domain   => EW_Prog,
+                           Name     => Tmp_Var,
+                           Def      => +Expr,
+                           Context  =>
+                             +New_Assume_Statement (Pred => Eq)));
+                  end if;
+               end;
+            end if;
+         end;
+      end if;
+   end Assume_Declaration_Of_Entity;
 
    ------------------------------
    -- Assume_Dynamic_Invariant --
@@ -8931,6 +9032,73 @@ package body Gnat2Why.Expr is
 
          when N_Raise_xxx_Error | N_Raise_Statement =>
             R := Transform_Raise (Decl);
+
+         when N_Package_Declaration =>
+
+            --  Assume dynamic property of initialized local variables.
+            --  ??? What about non-initialized local variables?
+
+            declare
+               E        : constant Entity_Id := Unique_Defining_Entity (Decl);
+               Init_Map : constant Dependency_Maps.Map :=
+                 Parse_Initializes (Get_Pragma (E, Pragma_Initializes),
+                                    E,
+                                    Get_Flow_Scope (E));
+            begin
+               for Cu in Init_Map.Iterate loop
+                  declare
+                     X      : constant Flow_Id := Dependency_Maps.Key (Cu);
+                     Entity : Entity_Id;
+                  begin
+                     case X.Kind is
+                        when Direct_Mapping | Record_Field =>
+                           Entity := Find_Entity (To_Entity_Name (X.Node));
+                        when Magic_String =>
+                           Entity := Find_Entity (X.Name);
+                        when Null_Value | Synthetic_Null_Export =>
+                           raise Program_Error;
+                     end case;
+
+                     if Present (Entity)
+                       and then Nkind (Entity) in N_Entity
+                       and then (Is_Object (Entity)
+                                 or else Is_Named_Number (Entity))
+                       and then Entity_In_SPARK (Entity)
+                       and then Ada_Ent_To_Why.Has_Element
+                         (Symbol_Table, Entity)
+                     then
+                        Assume_Declaration_Of_Entity
+                          (E             => Entity,
+                           Params        => Body_Params,
+                           Initialized   => True,
+                           Top_Predicate => True,
+                           Context       => R);
+                     end if;
+                  end;
+               end loop;
+            end;
+
+            --  Assume initial condition
+
+            declare
+               Init_Cond  : constant Node_Id :=
+                 Get_Pragma (Unique_Defining_Entity (Decl),
+                             Pragma_Initial_Condition);
+            begin
+               if Present (Init_Cond) then
+                  declare
+                     Expr : constant Node_Id :=
+                       Expression (First (Pragma_Argument_Associations
+                                   (Init_Cond)));
+                  begin
+                     R := Sequence
+                       (R,
+                        New_Assume_Statement
+                          (Pred => +Transform_Expr
+                               (Expr, EW_Bool_Type, EW_Pred, Body_Params)));
+                  end;
+               end if;
+            end;
 
          when others =>
             null;
