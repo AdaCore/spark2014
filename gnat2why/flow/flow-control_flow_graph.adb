@@ -5832,26 +5832,23 @@ package body Flow.Control_Flow_Graph is
                   --  Sanity check that Instance is indeed an
                   --  N_Package_Instantiation.
                   pragma Assert (Nkind (Instance) = N_Package_Instantiation);
+
                   Association := First (Generic_Associations (Instance));
                   while Present (Association) loop
                      Parameter := Explicit_Generic_Actual_Parameter
                                     (Association);
 
-                     case Nkind (Parameter) is
-                        when N_Identifier =>
-                           if Ekind (Entity (Parameter)) in
+                     if Nkind (Parameter) = N_Identifier
+                       and then Ekind (Entity (Parameter)) in
                              E_Constant | E_Variable
-                           then
-                              Create_Initial_And_Final_Vertices
-                                (Direct_Mapping_Id (Entity (Parameter)),
-                                 Mode_In,
-                                 False,
-                                 FA);
-                           end if;
+                     then
+                        Create_Initial_And_Final_Vertices
+                          (Direct_Mapping_Id (Entity (Parameter)),
+                           Mode_In,
+                           False,
+                           FA);
+                     end if;
 
-                        when others =>
-                           null;
-                     end case;
                      Next (Association);
                   end loop;
                end;
