@@ -207,7 +207,7 @@ package body SPARK_Definition is
      (Actions_Entity_Set.Contains (E));
 
    procedure Discard_Underlying_Type (T : Entity_Id);
-   --  Mark T's underlying type as seen and store T as its partial view.
+   --  Mark T's underlying type as seen and store T as its partial view
 
    ----------------------
    -- SPARK Violations --
@@ -254,7 +254,7 @@ package body SPARK_Definition is
    --  if all the required settings are set.
 
    function Sequential_Elaboration return Boolean;
-   --  Check if Partition_Elaboration_Policy is set to Sequential.
+   --  Check if Partition_Elaboration_Policy is set to Sequential
 
    function Is_SPARK_Tasking_Configuration return Boolean;
    --  Check tasking configuration required by SPARK and possibly
