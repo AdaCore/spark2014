@@ -1,21 +1,14 @@
 --  An example from "Concurrent and Real-Time Programming in Ada", Alan Burns
---  and Andy Wellings, CUP, 2007; section 10.3.
+--  and Andy Wellings, CUP, 2007; section 10.3 (adapted to SPARK).
 
 package Signals is
 
-   type Sender is protected interface;
+   type Signal_Sender is protected interface;
+   procedure Send(S : in out Signal_Sender) is abstract;
+   --type Any_Signal_Sender is access all Signal_Sender'Class;
 
-   procedure Send (S : in out Sender) is abstract;
-
-   type Waiter is protected interface;
-
-   procedure Wait (R : in out Waiter) is abstract;
-
-   protected type Transient_Signal is new Sender and Waiter with
-      overriding procedure Send;
-      overriding entry Wait;
-   private
-      Arrived : Boolean := False;
-   end Transient_Signal;
+   type Signal_Waiter is protected interface;
+   procedure Wait(S : in out Signal_Waiter) is abstract;
+   --type Any_Signal_Waiter is access all Signal_Waiter'Class;
 
 end Signals;
