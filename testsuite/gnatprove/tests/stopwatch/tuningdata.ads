@@ -4,9 +4,9 @@ package TuningData with
   SPARK_Mode
 is
    -- priorities
-   UserPriority    : constant System.Interrupt_Priority := 31;
+   UserPriority    : constant System.Interrupt_Priority := System.Interrupt_Priority'Last;
    TimerPriority   : constant System.Priority := 15;
-   DisplayPriority : constant System.Interrupt_Priority := 31;
+   DisplayPriority : constant System.Interrupt_Priority := System.Interrupt_Priority'Last;
 
    -- task periodicities
    TimerPeriod       : constant Ada.Real_Time.Time_Span :=

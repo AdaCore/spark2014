@@ -9,10 +9,10 @@ is
    Operate    : Ada.Synchronous_Task_Control.Suspension_Object;
 
    task TimingLoop with
-     Global  => (Output => Oper_State,
+     Global  => (Output => Operate,
                  In_Out => Display.State,
                  Input  => Ada.Real_Time.Clock_Time),
-     Depends => (Oper_State    => null,
+     Depends => (Operate       => null,
                  Display.State =>+ null,
                  null          => Ada.Real_Time.Clock_Time),
      Priority => TuningData.TimerPriority;
