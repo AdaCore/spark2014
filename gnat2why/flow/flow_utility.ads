@@ -337,6 +337,14 @@ is
    with Pre  => Nkind (E) in N_Entity;
    --  As above, but conveniently taking an Entity_Id instead of a Flow_Id
 
+   function Expand_Abstract_State
+     (F               : Flow_Id;
+      Erase_Constants : Boolean)
+      return Flow_Id_Sets.Set;
+   --  If F represents abstract state, return the set of all its
+   --  components. Otherwise return F. Additionally, remove formal
+   --  in parameters from the set if Erase_Constants is true.
+
    subtype Valid_Assignment_Kinds is Node_Kind with Static_Predicate =>
      Valid_Assignment_Kinds in N_Identifier                |
                                N_Expanded_Name             |

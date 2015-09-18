@@ -409,22 +409,32 @@ package body Gnat2Why.Subprograms is
                                  Get_Flow_Scope (E));
          begin
             for S of Init_Map loop
-               for X of S loop
+               for Y of S loop
+
+                  --  Expand Abstract_State if any.
+
                   declare
+                     Reads  : constant Flow_Id_Sets.Set :=
+                       Expand_Abstract_State (Y, Erase_Constants => False);
                      Entity : Entity_Id;
                   begin
-                     case X.Kind is
-                     when Direct_Mapping | Record_Field =>
-                        Entity := Find_Entity (To_Entity_Name (X.Node));
-                     when Magic_String =>
-                        Entity := Find_Entity (X.Name);
-                     when Null_Value | Synthetic_Null_Export =>
-                        raise Program_Error;
-                     end case;
 
-                     if Present (Entity) then
-                        Includes.Include (Entity);
-                     end if;
+                     --  Get the entity associated with the Flow_Ids.
+
+                     for X of Reads loop
+                        case X.Kind is
+                        when Direct_Mapping | Record_Field =>
+                           Entity := Find_Entity (To_Entity_Name (X.Node));
+                        when Magic_String =>
+                           Entity := Find_Entity (X.Name);
+                        when Null_Value | Synthetic_Null_Export =>
+                           raise Program_Error;
+                        end case;
+
+                        if Present (Entity) then
+                           Includes.Include (Entity);
+                        end if;
+                     end loop;
                   end;
                end loop;
             end loop;

@@ -31,6 +31,7 @@ with Einfo;                  use Einfo;
 with Elists;                 use Elists;
 with Errout;                 use Errout;
 with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
+with Flow_Generated_Globals; use Flow_Generated_Globals;
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Utility;           use Flow_Utility;
 with GNAT.Source_Info;
@@ -9045,46 +9046,101 @@ package body Gnat2Why.Expr is
 
          when N_Package_Declaration =>
 
-            --  Assume dynamic property of initialized local variables.
-            --  ??? What about non-initialized local variables?
+            --  Assume dynamic property of local variables.
+            --  ??? What about local variables of nested packages?
 
             declare
                E        : constant Entity_Id := Unique_Defining_Entity (Decl);
+               Var_Set  : constant Name_Sets.Set :=
+                 GG_Get_Local_Variables (To_Entity_Name (E));
+               --  Local variables declared in E.
+
                Init_Map : constant Dependency_Maps.Map :=
                  Parse_Initializes (Get_Pragma (E, Pragma_Initializes),
                                     E,
                                     Get_Flow_Scope (E));
+               Init_Set : Name_Sets.Set;
+               --  Local Variables initialized by E.
             begin
+
+               --  First, get initialized variables for Initializes aspect.
+
                for Cu in Init_Map.Iterate loop
                   declare
-                     X      : constant Flow_Id := Dependency_Maps.Key (Cu);
+                     S      : constant Flow_Id_Sets.Set :=
+                       Expand_Abstract_State (Dependency_Maps.Key (Cu),
+                                              Erase_Constants => False);
+                     E_Name : Entity_Name;
                      Entity : Entity_Id;
                   begin
-                     case X.Kind is
+                     for X of S loop
+                        case X.Kind is
                         when Direct_Mapping | Record_Field =>
-                           Entity := Find_Entity (To_Entity_Name (X.Node));
+                           E_Name := To_Entity_Name (X.Node);
                         when Magic_String =>
-                           Entity := Find_Entity (X.Name);
+                           E_Name := X.Name;
                         when Null_Value | Synthetic_Null_Export =>
                            raise Program_Error;
-                     end case;
+                        end case;
 
-                     if Present (Entity)
-                       and then Nkind (Entity) in N_Entity
-                       and then (Is_Object (Entity)
-                                 or else Is_Named_Number (Entity))
-                       and then Entity_In_SPARK (Entity)
-                       and then Ada_Ent_To_Why.Has_Element
-                         (Symbol_Table, Entity)
-                     then
-                        Assume_Declaration_Of_Entity
-                          (E             => Entity,
-                           Params        => Body_Params,
-                           Initialized   => True,
-                           Top_Predicate => True,
-                           Context       => R);
-                     end if;
+                        Entity := Find_Entity (E_Name);
+
+                        --  Assume declaration of X
+
+                        if Present (Entity)
+                          and then Nkind (Entity) in N_Entity
+                          and then (Is_Object (Entity)
+                                    or else Is_Named_Number (Entity))
+                          and then Entity_In_SPARK (Entity)
+                          and then Ada_Ent_To_Why.Has_Element
+                            (Symbol_Table, Entity)
+                        then
+                           Assume_Declaration_Of_Entity
+                             (E             => Entity,
+                              Params        => Body_Params,
+                              Initialized   => True,
+                              Top_Predicate => True,
+                              Context       => R);
+                        end if;
+
+                        --  Store it in Init_Set so that we do not declare it
+                        --  again.
+
+                        Init_Set.Include (E_Name);
+                     end loop;
                   end;
+               end loop;
+
+               --  Then also assume dynamic property of unitialized variables.
+
+               for X of Var_Set loop
+
+                  --  Do nothing if the variable has already been declared.
+
+                  if not Init_Set.Contains (X) then
+                     declare
+                        Entity : constant Entity_Id := Find_Entity (X);
+                     begin
+
+                        --  Assume declaration of X
+
+                        if Present (Entity)
+                          and then Nkind (Entity) in N_Entity
+                          and then (Is_Object (Entity)
+                                    or else Is_Named_Number (Entity))
+                          and then Entity_In_SPARK (Entity)
+                          and then Ada_Ent_To_Why.Has_Element
+                            (Symbol_Table, Entity)
+                        then
+                           Assume_Declaration_Of_Entity
+                             (E             => Entity,
+                              Params        => Body_Params,
+                              Initialized   => False,
+                              Top_Predicate => True,
+                              Context       => R);
+                        end if;
+                     end;
+                  end if;
                end loop;
             end;
 

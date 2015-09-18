@@ -28,5 +28,5 @@ use_stack.adb:59:10: info: initialization of "E" proved
 use_stack.adb:60:04: info: initialization of "Content" proved
 use_stack.adb:60:04: info: initialization of "Top" proved
 use_stack.adb:60:04: info: precondition proved
+use_stack.adb:61:04: info: assertion proved
 use_stack.adb:61:19: info: initialization of "E" proved
-use_stack.adb:61:19: medium: assertion might fail, requires E = 1

@@ -2257,78 +2257,6 @@ package body Flow_Utility is
       Tmp_In    : Flow_Id_Sets.Set;
       Tmp_Out   : Flow_Id_Sets.Set;
       Body_E    : constant Entity_Id := Get_Body_Entity (Subprogram);
-
-      function Expand (F : Flow_Id) return Flow_Id_Sets.Set;
-      --  If F represents abstract state, return the set of all its
-      --  components. Otherwise return F. Additionally, remove formal
-      --  in parameters from the set since proof is not interested in
-      --  them.
-
-      ------------
-      -- Expand --
-      ------------
-
-      function Expand (F : Flow_Id) return Flow_Id_Sets.Set is
-         Tmp : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-         Ptr : Elmt_Id;
-      begin
-         case F.Kind is
-            when Direct_Mapping =>
-               if Ekind (Get_Direct_Mapping_Id (F)) = E_Abstract_State then
-                  Ptr := First_Elmt (Refinement_Constituents
-                                       (Get_Direct_Mapping_Id (F)));
-                  while Present (Ptr) loop
-                     --  We simply ignore the null refinement, it is
-                     --  treated as if it was not present.
-                     if Nkind (Node (Ptr)) /= N_Null then
-                        Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
-                                                              F.Variant)));
-                     end if;
-                     Ptr := Next_Elmt (Ptr);
-                  end loop;
-
-                  Ptr := First_Elmt (Part_Of_Constituents
-                                       (Get_Direct_Mapping_Id (F)));
-                  while Present (Ptr) loop
-                     --  Part_of cannot include a null refinement.
-                     Tmp.Union (Expand (Direct_Mapping_Id (Node (Ptr),
-                                                           F.Variant)));
-                     Ptr := Next_Elmt (Ptr);
-                  end loop;
-
-                  if Tmp.Is_Empty then
-                     --  If we can't refine this state (maybe the body
-                     --  is not in SPARK, or simply not implemented or
-                     --  there is a null refinement) then we use the
-                     --  abstract state itself.
-                     Tmp.Insert (F);
-                  end if;
-
-               --  Entities translated as constants in Why3 should not be
-               --  considered as effects for proof. This includes in particular
-               --  formal parameters of mode IN.
-
-               elsif not Keep_Constants
-                 and then not
-                 Gnat2Why.Util.Is_Mutable_In_Why (Get_Direct_Mapping_Id (F))
-               then
-                  null;
-
-               --  Otherwise the effect is significant for proof, keep it
-
-               else
-                  Tmp.Insert (F);
-               end if;
-
-            when Magic_String =>
-               Tmp.Insert (F);
-
-            when Record_Field | Null_Value | Synthetic_Null_Export =>
-               raise Program_Error;
-         end case;
-         return Tmp;
-      end Expand;
-
    begin
       Get_Globals
         (Subprogram             => Subprogram,
@@ -2349,12 +2277,12 @@ package body Flow_Utility is
       --  Expand all variables.
       Reads := Flow_Id_Sets.Empty_Set;
       for F of Tmp_In loop
-         Reads.Union (Expand (F));
+         Reads.Union (Expand_Abstract_State (F, not Keep_Constants));
       end loop;
 
       Writes := Flow_Id_Sets.Empty_Set;
       for F of Tmp_Out loop
-         Writes.Union (Expand (F));
+         Writes.Union (Expand_Abstract_State (F, not Keep_Constants));
       end loop;
    end Get_Proof_Globals;
 
@@ -4036,6 +3964,83 @@ package body Flow_Utility is
    begin
       return Loop_Info (E);
    end Get_Loop_Writes;
+
+   ---------------------------
+   -- Expand_Abstract_State --
+   ---------------------------
+
+   function Expand_Abstract_State
+     (F               : Flow_Id;
+      Erase_Constants : Boolean)
+      return Flow_Id_Sets.Set
+   is
+      Tmp : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      Ptr : Elmt_Id;
+   begin
+      case F.Kind is
+         when Direct_Mapping =>
+            if Ekind (Get_Direct_Mapping_Id (F)) = E_Abstract_State then
+               Ptr := First_Elmt (Refinement_Constituents
+                                  (Get_Direct_Mapping_Id (F)));
+               while Present (Ptr) loop
+
+                  --  We simply ignore the null refinement, it is
+                  --  treated as if it was not present.
+
+                  if Nkind (Node (Ptr)) /= N_Null then
+                     Tmp.Union
+                       (Expand_Abstract_State (Direct_Mapping_Id (Node (Ptr),
+                        F.Variant), Erase_Constants));
+                  end if;
+                  Ptr := Next_Elmt (Ptr);
+               end loop;
+
+               Ptr := First_Elmt (Part_Of_Constituents
+                                  (Get_Direct_Mapping_Id (F)));
+               while Present (Ptr) loop
+
+                  --  Part_of cannot include a null refinement.
+
+                  Tmp.Union
+                    (Expand_Abstract_State (Direct_Mapping_Id (Node (Ptr),
+                     F.Variant), Erase_Constants));
+                  Ptr := Next_Elmt (Ptr);
+               end loop;
+
+               if Tmp.Is_Empty then
+
+                  --  If we can't refine this state (maybe the body
+                  --  is not in SPARK, or simply not implemented or
+                  --  there is a null refinement) then we use the
+                  --  abstract state itself.
+
+                  Tmp.Insert (F);
+               end if;
+
+               --  Entities translated as constants in Why3 should not be
+               --  considered as effects for proof. This includes in particular
+               --  formal parameters of mode IN.
+
+            elsif Erase_Constants
+              and then not
+                Gnat2Why.Util.Is_Mutable_In_Why (Get_Direct_Mapping_Id (F))
+            then
+               null;
+
+               --  Otherwise the effect is significant for proof, keep it
+
+            else
+               Tmp.Insert (F);
+            end if;
+
+         when Magic_String =>
+            Tmp.Insert (F);
+
+         when Record_Field | Null_Value | Synthetic_Null_Export =>
+            raise Program_Error;
+      end case;
+      return Tmp;
+   end Expand_Abstract_State;
 
    ------------------------
    -- Extensions_Visible --
