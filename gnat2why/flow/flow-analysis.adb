@@ -552,20 +552,28 @@ package body Flow.Analysis is
       Reads := To_Entire_Variables (Reads or Proof_Reads);
       --  Note we never actually need writes in this analysis.
 
-      for R of Reads loop
-         if not Is_Initialized_At_Elaboration (R, FA.B_Scope) then
-            Error_Msg_Flow
-              (FA   => FA,
-               Msg  => "& might not be initialized after elaboration " &
-                 "of main program &",
-               N    => Find_Global (FA.Analyzed_Entity, R),
-               F1   => R,
-               F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag  => Uninitialized,
-               Kind => Medium_Check_Kind);
-         end if;
-
-      end loop;
+      declare
+         Init_Msg : constant String :=
+           (case FA.Kind is
+            when Kind_Subprogram =>
+              "& might not be initialized after elaboration of main program &",
+            when Kind_Task =>
+              "& might not be initialized before start of tasks of type &",
+            when others => raise Program_Error);
+      begin
+         for R of Reads loop
+            if not Is_Initialized_At_Elaboration (R, FA.B_Scope) then
+               Error_Msg_Flow
+                 (FA   => FA,
+                  Msg  => Init_Msg,
+                  N    => Find_Global (FA.Analyzed_Entity, R),
+                  F1   => R,
+                  F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag  => Uninitialized,
+                  Kind => Medium_Check_Kind);
+            end if;
+         end loop;
+      end;
    end Analyse_Main;
 
    ------------------
