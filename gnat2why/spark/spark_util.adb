@@ -3206,7 +3206,8 @@ package body SPARK_Util is
    function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean is
       Part_Of_Pragma : constant Node_Id := Get_Pragma (E, Pragma_Part_Of);
    begin
-      return Present (Part_Of_Pragma)
+      return Ekind (E) in E_Abstract_State | Object_Kind
+        and then Present (Part_Of_Pragma)
         and then
           Ekind (Etype (Expression (Get_Argument (Part_Of_Pragma))))
              in Concurrent_Kind;
