@@ -1048,7 +1048,7 @@ package SPARK_Util is
    --  Check if subprogram body N contains no potentially blocking statements
 
    function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean
-     with Pre => Is_Object (E);
+     with Pre => Ekind (E) in Object_Kind | E_Abstract_State;
    --  Check if object E has Part_Of aspect that points to a concurrent object
 
 end SPARK_Util;
