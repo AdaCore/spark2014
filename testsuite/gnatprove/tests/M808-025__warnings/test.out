@@ -213,25 +213,25 @@ Summary of SPARK analysis
 =========================
 
 --------------------------------------------------------------------------------------------
-SPARK Analysis results        Total       Flow   Interval     Provers   Justified   Unproved
+SPARK Analysis results Total Flow Interval Provers Justified Unproved
 --------------------------------------------------------------------------------------------
-Data Dependencies                 .          .          .           .           .          .
-Flow Dependencies                 .          .          .           .           .          .
-Initialization                    5          5          .           .           .          .
-Non-Aliasing                      .          .          .           .           .          .
-Run-time Checks                   .          .          .           .           .          .
-Assertions                        1          .          .    1 (CVC4)           .          .
-Functional Contracts              .          .          .           .           .          .
-LSP Verification                  .          .          .           .           .          .
+Data Dependencies . . . . . .
+Flow Dependencies . . . . . .
+Initialization 5 5 . . . .
+Non-Aliasing . . . . . .
+Run-time Checks . . . . . .
+Assertions 1 . . 1 . .
+Functional Contracts . . . . . .
+LSP Verification . . . . . .
 --------------------------------------------------------------------------------------------
-Total                             6    5 (83%)          .     1 (17%)           .          .
+Total 6 5 (83%) . 1 (17%) . .
 
 
 Analyzed 1 unit
 in unit p, 1 subprograms and packages out of 1 analyzed
-  P at p.adb:1 flow analyzed (0 errors and 2 warnings) and proved (1 checks)
-   suppressed messages:
-    p.adb:4:4:
-    p.adb:7:4: unused Z2, but that's OK
-    p.adb:10:4: unused Z3, but that's also OK
+ P at p.adb:1 flow analyzed (0 errors and 2 warnings) and proved (1 checks)
+ suppressed messages:
+ p.adb:4:4: 
+ p.adb:7:4: unused Z2, but that's OK
+ p.adb:10:4: unused Z3, but that's also OK
 

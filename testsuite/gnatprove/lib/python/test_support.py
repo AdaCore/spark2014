@@ -639,3 +639,37 @@ def check_trace_files(opt=None):
     # Dump the contents of all trace files on stdout
     for trace_file in sorted(trace_files):
         cat(trace_file)
+
+
+def check_output_file(sort=False):
+    """ Print content of output file gnatprove.out.
+
+    The goal is to make this output independent from the order of provers
+    used. In particular, the summary table may contain different percentages
+    for the provers used to prove the VCs, and the columns of the table may
+    be aligned differently due to that.
+
+    To avoid such differences:
+    - replace all sequences of spaces by a single space
+    - filter out substrings starting with '(CVC4', '(altergo' or '(Z3', up
+      to the following closing parenthesis.
+
+    This ensures a common output whatever the order of provers used.
+    """
+
+    filename = os.path.join('gnatprove', 'gnatprove.out')
+    prover_tag = re.compile(r"(^.*)(\((CVC4|altergo)[^\)]*\))(.*$\n)")
+    output = ""
+
+    with open(filename, 'r') as f:
+        for line in f:
+            m = re.match(prover_tag, line)
+            if m:
+                newline = m.group(1) + ' ' + m.group(4)
+            else:
+                newline = line
+            output += re.sub(' +', ' ', newline)
+    if sort:
+        print_sorted(str.splitlines(output))
+    else:
+        print output

@@ -64,4 +64,4 @@ def cmd_line_or_ide_mode(opt=[]):
 cmd_line_or_ide_mode()
 cmd_line_or_ide_mode(opt=["--ide-progress-bar"])
 prove_all()
-cat(os.path.join("gnatprove","gnatprove.out"))
+check_output_file()

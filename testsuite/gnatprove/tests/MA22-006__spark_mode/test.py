@@ -2,18 +2,18 @@ from test_support import *
 from os.path import join
 
 do_flow()
-cat (os.path.join("gnatprove", "gnatprove.out"))
+check_output_file()
 clean()
 
 prove(opt=["--report=fail"])
-cat (os.path.join("gnatprove", "gnatprove.out"))
+check_output_file()
 clean()
 
 prove_all(opt=["--report=fail"])
-cat (os.path.join("gnatprove", "gnatprove.out"))
+check_output_file()
 clean()
 
 do_flow()
 prove_all(opt=["--report=fail"])
-cat (os.path.join("gnatprove", "gnatprove.out"))
+check_output_file()
 clean()
