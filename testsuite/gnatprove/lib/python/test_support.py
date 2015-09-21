@@ -651,6 +651,7 @@ def check_output_file(sort=False):
 
     To avoid such differences:
     - replace all sequences of spaces by a single space
+    - replace all sequences of '-' characters by a single one
     - filter out substrings starting with '(CVC4', '(altergo' or '(Z3', up
       to the following closing parenthesis.
 
@@ -668,7 +669,10 @@ def check_output_file(sort=False):
                 newline = m.group(1) + ' ' + m.group(4)
             else:
                 newline = line
-            output += re.sub(' +', ' ', newline)
+            # Replace multiple white spaces by a single one, and multiple
+            # '-' characters (used for the frame of the summary tablen, whose
+            # size varies depending on prover order) by a single one.
+            output += re.sub(' +', ' ', re.sub('-+', '-', newline))
     if sort:
         print_sorted(str.splitlines(output))
     else:

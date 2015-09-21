@@ -21,9 +21,9 @@ my_pack.ads:14:22: info: postcondition proved
  effects on parameters and Global variables of My_Pack.Bump
  the postcondition of My_Pack.Bump
  the postcondition of My_Pack.Bump
--------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------
--------------------------------------------------------------------------------------------
+-
+-
+-
 =========================
 Analyzed 2 units
 Assertions . . . . . .

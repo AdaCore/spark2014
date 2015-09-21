@@ -212,9 +212,9 @@ p.adb:18:19: info: initialization of "X" proved
 Summary of SPARK analysis
 =========================
 
---------------------------------------------------------------------------------------------
+-
 SPARK Analysis results Total Flow Interval Provers Justified Unproved
---------------------------------------------------------------------------------------------
+-
 Data Dependencies . . . . . .
 Flow Dependencies . . . . . .
 Initialization 5 5 . . . .
@@ -223,7 +223,7 @@ Run-time Checks . . . . . .
 Assertions 1 . . 1 . .
 Functional Contracts . . . . . .
 LSP Verification . . . . . .
---------------------------------------------------------------------------------------------
+-
 Total 6 5 (83%) . 1 (17%) . .
 
 
