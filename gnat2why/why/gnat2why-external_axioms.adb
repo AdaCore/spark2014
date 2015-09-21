@@ -1571,9 +1571,17 @@ package body Gnat2Why.External_Axioms is
          N : Node_Id := First (Decls);
       begin
          while Present (N) loop
-            if Comes_From_Source (N) and then
-              Nkind (N) in
-              N_Subprogram_Declaration | N_Object_Declaration
+
+            --  A subprogram may have been rewritten by the frontend, in
+            --  particular, it happens for expression functions. In this case,
+            --  the declaration won't come from source but its original node
+            --  will.
+
+            if (Comes_From_Source (N)
+                or else (Present (Original_Node (N))
+                         and then Comes_From_Source (Original_Node (N))))
+              and then Nkind (N) in N_Subprogram_Declaration
+              | N_Object_Declaration
             then
                declare
                   E : constant Entity_Id := Defining_Entity (N);
