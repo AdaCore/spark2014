@@ -1,0 +1,4 @@
+use_ext_ax.adb:4:04: info: assertion proved
+use_ext_ax.adb:4:19: info: precondition proved
+use_ext_ax.adb:5:04: info: assertion proved
+use_ext_ax.adb:5:23: info: precondition proved

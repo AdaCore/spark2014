@@ -1,0 +1,17 @@
+module Ext_ax__my_eq
+ use import "_gnatprove_standard".Main
+
+ function my_eq__logic #"ext_ax.ads"  3 0 0# 
+   (x1 : int) (x2 : int)  :bool
+
+ val my_eq #"ext_ax.ads"  3 0 0# 
+   (x1 : int) (x2 : int)  :bool
+  requires { true }
+  ensures { (result = (my_eq__logic x1 x2)) }
+
+ 
+ axiom my_eq__def_axiom :
+  (forall x1 x2  : int [(my_eq__logic x1 x2)].
+   ( ((my_eq__logic x1 x2) = True) <-> (x1 = x2) ))
+
+end
