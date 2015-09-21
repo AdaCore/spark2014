@@ -309,10 +309,10 @@ procedure Gnatprove is
    -----------------------
 
    function Compute_Why3_Args return String_Lists.List is
+
       Args    : String_Lists.List := String_Lists.Empty_List;
       Why3_VF : constant Virtual_File :=
-        (if Why3_Config_File /= null and then
-            Why3_Config_File.all /= ""
+        (if Why3_Config_File.all /= ""
          then Create (Filesystem_String (Why3_Config_File.all))
          else No_File);
       Gnatwhy3_Conf : constant String :=
@@ -321,11 +321,33 @@ procedure Gnatprove is
             then Why3_Config_File.all
             else Compose (+Get_Current_Dir.Full_Name, Why3_Config_File.all))
          else "");
+
+      -------------------------
+      --  Local subprograms  --
+      -------------------------
+
+      procedure Prepare_Why3_Manual;
+      --  Build user libraries (if any) for manual provers
+
+      procedure Set_Alter_Prover (Val : String);
+      --  Set alternative prover according to value of --level, if not already
+      --  set explicitly.
+
+      procedure Set_Proof_Mode (Val : Proof_Mode);
+      --  Set proof mode according to value of --level, if not already set
+      --  explicitly.
+
+      procedure Set_Steps (Val : Positive);
+      --  Set step limit according to value of --level, if not already set
+      --  explicitly.
+
+      procedure Set_Timeout (Val : Positive);
+      --  Set timeout according to value of --level, if not already set
+      --  explicitly.
+
       ---------------------------
       --  Prepare_Why3_Manual  --
       ---------------------------
-
-      procedure Prepare_Why3_Manual;
 
       procedure Prepare_Why3_Manual is
          Args : GNAT.OS_Lib.Argument_List :=
@@ -366,7 +388,106 @@ procedure Gnatprove is
          end if;
       end Prepare_Why3_Manual;
 
+      ----------------------
+      -- Set_Alter_Prover --
+      ----------------------
+
+      procedure Set_Alter_Prover (Val : String) is
+      begin
+         if Alter_Prover.all /= "" then
+            Alter_Prover := new String'(Val);
+         end if;
+      end Set_Alter_Prover;
+
+      --------------------
+      -- Set_Proof_Mode --
+      --------------------
+
+      procedure Set_Proof_Mode (Val : Proof_Mode) is
+      begin
+         if Proof_Input.all /= "" then
+            Proof := Val;
+         end if;
+      end Set_Proof_Mode;
+
+      ---------------
+      -- Set_Steps --
+      ---------------
+
+      procedure Set_Steps (Val : Positive) is
+      begin
+         if Steps /= Invalid_Step then
+            Steps := Val;
+         end if;
+      end Set_Steps;
+
+      -----------------
+      -- Set_Timeout --
+      -----------------
+
+      procedure Set_Timeout (Val : Positive) is
+      begin
+         if Timeout /= Invalid_Timeout then
+            Timeout := Val;
+         end if;
+      end Set_Timeout;
+
+   --  Start of processing for Compute_Why3_Args
+
    begin
+      --  Start by taking into account the --level switch if used. If a switch
+      --  that is impacted by --level is also set independently, the latter
+      --  setting takes precedence.
+
+      case Level is
+         when Invalid_Level =>  --  default invalid value
+            null;
+
+         when 0 =>   --  --prover=cvc4 --steps=100 --timeout=1
+            Set_Alter_Prover ("cvc4");
+            Set_Steps (100);
+            Set_Timeout (1);
+
+         when 1 =>   --  --prover=cvc4,z3,altergo --steps=100 --timeout=1
+            Set_Alter_Prover ("cvc4,z3,altergo");
+            Set_Steps (100);
+            Set_Timeout (1);
+
+         when 2 =>   --  --prover=cvc4,z3,altergo --steps=1000 --timeout=10
+            Set_Alter_Prover ("cvc4,z3,altergo");
+            Set_Steps (1000);
+            Set_Timeout (10);
+
+         when 3 =>   --  --prover=cvc4,z3,altergo --steps=1000 --timeout=10
+                     --  --proof=progressive
+            Set_Alter_Prover ("cvc4,z3,altergo");
+            Set_Steps (1000);
+            Set_Timeout (10);
+            Set_Proof_Mode (Then_Split);
+
+         when 4 =>   --  --prover=cvc4,z3,altergo --steps=10000 --timeout=60
+                     --  --proof=progressive
+            Set_Alter_Prover ("cvc4,z3,altergo");
+            Set_Steps (10_000);
+            Set_Timeout (60);
+            Set_Proof_Mode (Then_Split);
+
+         when others =>
+            raise Program_Error;
+      end case;
+
+      --  Then take into account all other settings, in particular for switches
+      --  impacted by --level, which ensures that the independent setting of
+      --  such switches takes precedence.
+
+      --  Set default timeout of 1s when not set explicitly on the command-line
+      --  (including when forced to 0 to avoid timeout) or implicitly set
+      --  through use of --level.
+
+      if Timeout = Invalid_Timeout then
+         Timeout := 1;
+      end if;
+
       if Timeout /= 0 then
          Args.Append ("--timeout");
          Args.Append (Image (Timeout, 1));
@@ -396,15 +517,15 @@ procedure Gnatprove is
       Args.Append ("-j");
       Args.Append (Image (Parallel, 1));
 
-      if Limit_Line /= null and then Limit_Line.all /= "" then
+      if Limit_Line.all /= "" then
          Args.Append ("--limit-line");
          Args.Append (Limit_Line.all);
       end if;
-      if Limit_Subp /= null and then Limit_Subp.all /= "" then
+      if Limit_Subp.all /= "" then
          Args.Append ("--limit-subp");
          Args.Append (Limit_Subp.all);
       end if;
-      if Alter_Prover /= null and then Alter_Prover.all /= "" then
+      if Alter_Prover.all /= "" then
          Args.Append ("--prover");
          Args.Append (Alter_Prover.all);
       end if;
@@ -417,7 +538,7 @@ procedure Gnatprove is
          --  the project directory so we give it an absolute path to the
          --  proof_dir
          Args.Append (Proof_Dir.all);
-         if Alter_Prover /= null and then Alter_Prover.all /= "" then
+         if Alter_Prover.all /= "" then
             Prepare_Why3_Manual;
          end if;
       end if;
@@ -581,12 +702,12 @@ procedure Gnatprove is
       --  beginning of processing for Replace_Config_File_If_Needed);
 
    begin
-      if (RTS_Dir = null or else RTS_Dir.all = "") and then
+      if RTS_Dir.all = "" and then
         (Target_Dir = null or else Target_Dir.all = "")
       then
          return Config_File;
       end if;
-      if RTS_Dir /= null and then RTS_Dir.all /= "" then
+      if RTS_Dir.all /= "" then
          RTS_Set := True;
       end if;
       if Target_Dir /= null and then Target_Dir.all /= "" then
@@ -641,7 +762,7 @@ procedure Gnatprove is
       Args.Append (Obj_Dir_Fn);
       if Assumptions then
          Args.Append ("--assumptions");
-         if Limit_Subp /= null and then Limit_Subp.all /= "" then
+         if Limit_Subp.all /= "" then
             Args.Append ("--limit-subp=" & Limit_Subp.all);
          end if;
       end if;

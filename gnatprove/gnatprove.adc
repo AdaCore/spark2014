@@ -1,0 +1,1 @@
+pragma Initialize_Scalars;

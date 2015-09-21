@@ -239,6 +239,26 @@ automatic proof, it is the default value, and can be explicitly selected with
 ``lazy``. The latter is most suited for combination of automatic and manual
 proof and can be selected with ``all``.
 
+Instead of setting individually switches that influence the speed and power of
+proof, one may use the switch ``--level``, which corresponds to predefined
+levels of proof, from the faster level 0 to the more powerful level 4. More
+precisely, each value of ``--level`` is equivalent to directly setting a
+collection of other switches discussed above:
+
+* ``--level=0`` is equivalent to ``--prover=cvc4 --steps=100 --timeout=1``
+* ``--level=1`` is equivalent to
+  ``--prover=cvc4,z3,altergo --steps=100 --timeout=1``
+* ``--level=2`` is equivalent to
+  ``--prover=cvc4,z3,altergo --steps=1000 --timeout=10``
+* ``--level=3`` is equivalent to
+  ``--prover=cvc4,z3,altergo --steps=1000 --timeout=10 --proof=progressive``
+* ``--level=4`` is equivalent to
+  ``--prover=cvc4,z3,altergo --steps=10000 --timeout=60 --proof=progressive``
+
+If both ``--level`` is set and a matching switch is set (``--prover``,
+``--steps``, ``--timeout`` or ``--proof``), the value of the latter takes
+precedence over the value set through ``--level``.
+
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
 

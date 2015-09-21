@@ -47,9 +47,6 @@ package body Configuration is
    Report_Input : aliased GNAT.Strings.String_Access;
    --  The input variable for command line parsing set by option --report=
 
-   Proof_Input  : aliased GNAT.Strings.String_Access;
-   --  The input variable for command line parsing set by option --proof
-
    Clean        : aliased Boolean;
    --  Set to True when --clean was given. Triggers cleanup of GNATprove
    --  intermediate files.
@@ -148,21 +145,28 @@ ASCII.LF &
 ASCII.LF &
 ASCII.LF &
 "gnatprove basic switches:" & ASCII.LF &
+" -aP=p               Add path p to project path" &
+ASCII.LF &
+"     --assumptions   Output assumptions information" &
+ASCII.LF &
+"     --clean         Remove GNATprove intermediate files, and exit" &
+ASCII.LF &
 " -f                  Force recompilation/analysis of all units" &
+ASCII.LF &
+" -h, --help          Display this usage information" &
 ASCII.LF &
 " -jnnn               Use nnn parallel processes (default: 1)" &
 ASCII.LF &
 " -k                  Do not stop analysis at the first error" &
 ASCII.LF &
-"     -m              Minimal reanalysis" &
+"     --level=n       Set the level of proof " &
+"(0 = faster to 4 = more powerful)" &
 ASCII.LF &
-" -aP=p               Add path p to project path" &
+" -m                  Minimal reanalysis" &
 ASCII.LF &
 "     --mode=m        Set the mode of GNATprove (m=check, flow, prove, all*)"
 & ASCII.LF &
 " -q, --quiet         Be quiet/terse" &
-ASCII.LF &
-"     --clean         Remove GNATprove intermediate files, and exit" &
 ASCII.LF &
 "     --report=r      Set the report mode of GNATprove " &
 "(r=fail*, all, statistics)"
@@ -175,79 +179,73 @@ ASCII.LF &
 ASCII.LF &
 " -v, --verbose       Output extra verbose information" &
 ASCII.LF &
-"     --assumptions   Output assumptions information" &
-ASCII.LF &
 "     --version       Output version of the tool and exit" &
 ASCII.LF &
 "     --warnings=w    Set the warning mode of GNATprove " &
-"(w=off, continue*, error)"
-&
-ASCII.LF &
-" -h, --help          Display this usage information" &
+"(w=off, continue*, error)" &
 ASCII.LF &
 ASCII.LF &
 " * Main mode values" &
+ASCII.LF &
+"   . all           - Activates all modes (default)" &
 ASCII.LF &
 "   . check         - Check SPARK restrictions for code where SPARK_Mode=On" &
 ASCII.LF &
 "   . flow          - Prove object initialization and flow contracts" &
 ASCII.LF &
-"   . prove         - Prove subprogram contracts and absence of run-time" &
-ASCII.LF &
-"                     errors" &
-ASCII.LF &
-"   . all           - Activates all modes (default)" &
+"   . prove         - Prove subprogram contracts and absence of run-time " &
+"errors" &
 ASCII.LF &
 ASCII.LF &
 " * Report mode values" &
 ASCII.LF &
-"   . fail          - Report failures to prove checks (default)" &
-ASCII.LF &
 "   . all           - Report all results of proving checks" &
+ASCII.LF &
+"   . fail          - Report failures to prove checks (default)" &
 ASCII.LF &
 "   . statistics    - Same as all, plus timing and steps information" &
 ASCII.LF &
 ASCII.LF &
 " * Warning mode values" &
 ASCII.LF &
-"   . off           - Do not issue warnings" &
-ASCII.LF &
 "   . continue      - Issue warnings and continue (default)" &
 ASCII.LF &
 "   . error         - Treat warnings as errors" &
 ASCII.LF &
+"   . off           - Do not issue warnings" &
+ASCII.LF &
 ASCII.LF &
 "gnatprove advanced switches:" &
 ASCII.LF &
+" --counterexample=c  Generate a counterexample for unproved formulas" &
+ASCII.LF &
+"                     (c=on, off*)" &
+ASCII.LF &
 " -d, --debug         Debug mode" &
 ASCII.LF &
-" --flow-debug        Extra debugging for flow analysis (requires graphviz)" &
-     ASCII.LF &
 " --dbg-proof-only    Disable flow analysis (possibly unsound results)" &
+ASCII.LF &
+" --flow-debug        Extra debugging for flow analysis (requires graphviz)" &
+ASCII.LF &
+" --limit-line=s      Limit analysis to given file and line" &
+ASCII.LF &
+" --limit-subp=s      Limit analysis to subprogram defined by file and line" &
+ASCII.LF &
+" --pedantic          Use a strict interpretation of the Ada standard" &
 ASCII.LF &
 " --proof=g[:l]       Set the proof modes for generation of formulas" &
 ASCII.LF &
-"                     (g=per_check*, per_path, progressive) (l=lazy*, all)"
-& ASCII.LF &
-" --RTS=dir           Specify the Ada runtime name/location" &
+"                     (g=per_check*, per_path, progressive) (l=lazy*, all)" &
 ASCII.LF &
-" --pedantic          Use a strict interpretation of the Ada standard" &
+" --prover=s[,s]*     Use given provers (s=cvc4, altergo, ...)" &
+ASCII.LF &
+" --RTS=dir           Specify the Ada runtime name/location" &
 ASCII.LF &
 " --steps=nnn         Set the maximum number of proof steps (prover-specific)"
 & ASCII.LF &
 " --timeout=s         Set the prover timeout in seconds (default: 1)" &
 ASCII.LF &
 " --why3-conf=f       Specify a configuration file for why3" &
-ASCII.LF &
-" --limit-line=s      Limit analysis to given file and line" &
-ASCII.LF &
-" --limit-subp=s      Limit analysis to subprogram defined by file and line" &
-ASCII.LF &
-" --prover=s[,s]*     Use given provers (s=cvc4, altergo, ...)" &
-ASCII.LF &
-" --counterexample=c  Generate a counterexample for unproved formulas" &
-ASCII.LF &
-"                     (c=on, off*)" &
 ASCII.LF &
 ASCII.LF &
 " * Proof mode values for generation" &
@@ -263,14 +261,14 @@ ASCII.LF &
 ASCII.LF &
 " * Proof mode values for laziness" &
 ASCII.LF &
-"   . lazy          - Stop at first unproved formula for each check" &
-ASCII.LF &
-"                     (most suited for fully automatic proof) (default)" &
- ASCII.LF &
 "   . all           - Attempt to prove all formulas" &
 ASCII.LF &
 "                     (most suited for combination of automatic and " &
 "manual proof)" &
+ASCII.LF &
+"   . lazy          - Stop at first unproved formula for each check" &
+ASCII.LF &
+"                     (most suited for fully automatic proof) (default)" &
 ASCII.LF &
 ASCII.LF &
 " * Prover name values" &
@@ -279,9 +277,11 @@ ASCII.LF &
 ASCII.LF &
 "   (Provers marked with [steps] support the --steps switch.)" &
 ASCII.LF &
+"   . altergo       - [steps] Use Alt-Ergo" &
+ASCII.LF &
 "   . cvc4          - [steps] Use CVC4" &
 ASCII.LF &
-"   . altergo       - [steps] Use Alt-Ergo" &
+"   . z3            - [steps] Use Z3" &
 ASCII.LF &
 "   . ...           - Any other prover configured in your .why3.conf file" &
 ASCII.LF;
@@ -506,7 +506,7 @@ ASCII.LF;
 
    function Is_Manual_Prover return Boolean is
    begin
-      if Alter_Prover = null or else Alter_Prover.all = "" then
+      if Alter_Prover.all = "" then
          return False;
       elsif
         Alter_Prover.all = "coq" or else
@@ -872,15 +872,23 @@ ASCII.LF;
          Report_Input'Access,
          Long_Switch => "--report=");
 
+      --  If not specified on the command-line, value of steps is invalid
       Define_Switch
          (Config, Steps'Access,
-          Long_Switch => "--steps=");
+          Long_Switch => "--steps=",
+          Initial => Invalid_Step);
 
-      --  If not specified on the command-line, value of timeout is 1s.
+      --  If not specified on the command-line, value of level is invalid
+      Define_Switch
+         (Config, Level'Access,
+          Long_Switch => "--level=",
+          Initial => Invalid_Level);
+
+      --  If not specified on the command-line, value of timeout is invalid
       Define_Switch
          (Config, Timeout'Access,
           Long_Switch => "--timeout=",
-          Initial => 1);
+          Initial => Invalid_Timeout);
 
       Define_Switch
          (Config,
@@ -923,6 +931,11 @@ ASCII.LF;
         (Config,
          Counterexample'Access,
          Long_Switch => "--counterexample=");
+
+      Define_Switch
+        (Config,
+         Report_Input'Access,
+         Long_Switch => "--report=");
 
       Define_Switch
         (Config, Why3_Config_File'Access,
@@ -1181,14 +1194,14 @@ ASCII.LF;
          elsif Proof_Input = "per_check" then
             Proof := No_Split;
 
-            --  Hidden debugging values
+         --  Hidden debugging values
 
          elsif Proof_Input = "no_wp" then
             Proof := No_WP;
          elsif Proof_Input = "all_split" then
             Proof := All_Split;
 
-            --  The default proof mode is per_check
+         --  The default proof mode is per_check
 
          elsif Proof_Input = "" then
             Proof := No_Split;
