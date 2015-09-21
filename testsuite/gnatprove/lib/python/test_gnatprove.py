@@ -85,7 +85,7 @@ def filter_list(pattern, run_test=""):
 
 def __parse_options():
     """Parse command lines options"""
-    m = Main(add_targets_options=False)
+    m = Main(add_targets_options=True)
     add_mainloop_options(m, extended_options=True)
     add_run_test_options(m)
     m.add_option("--benchmarks", dest="benchmarks", action="store_true",
