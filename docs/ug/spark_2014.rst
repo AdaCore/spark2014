@@ -1791,6 +1791,53 @@ programs. Some of these features come from Ada 2012 (:ref:`Attribute Old` and
 this section, we describe these features and their impact on execution and
 formal verification.
 
+.. _Aspect Constant_After_Elaboration:
+
+Aspect ``Constant_After_Elaboration``
+-------------------------------------
+
+Aspect ``Constant_After_Elaboration`` can be specified on a library level
+variable that has an initialization expression. When specified, the
+corresponding variable can only be changed during the elaboration of its
+enclosing package. |SPARK| ensures that users of the package do not change the
+variable. This feature can be particularly useful in tasking code since
+variables that are Constant_After_Elaboration are guaranteed to prevent
+unsynchronized modifications.
+
+.. code-block:: ada
+
+   package CAE is
+      Var : Integer := 0 with
+        Constant_After_Elaboration;
+
+      --  The following is illegal because users of CAE could call Illegal
+      --  and that would cause an update of Var after CAE has been
+      --  elaborated.
+      procedure Illegal with
+         Global => (Output => Var);
+   end CAE;
+
+   package body CAE is
+      procedure Illegal is
+      begin
+         Var := 10;
+      end Illegal;
+
+      --  The following subprogram is legal because it is declared inside
+      --  the body of CAE and therefore it cannot be directly called
+      --  from a user of CAE.
+      procedure Legal is
+      begin
+         Var := Var + 2;
+      end Legal;
+
+   begin
+      --  The following statements are legal since they take place during
+      --  the elaboration of CAE.
+      Var := Var + 1;
+      Legal;
+   end CAE;
+
 .. _Attribute Old:
 
 Attribute ``Old``
