@@ -658,7 +658,7 @@ def check_output_file(sort=False):
     """
 
     filename = os.path.join('gnatprove', 'gnatprove.out')
-    prover_tag = re.compile(r"(^.*)(\((CVC4|altergo)[^\)]*\))(.*$\n)")
+    prover_tag = re.compile(r"(^.*)(\((CVC4|altergo|Z3)[^\)]*\))(.*$\n)")
     output = ""
 
     with open(filename, 'r') as f:
