@@ -11,14 +11,14 @@ precise.adb:9:19: info: initialization of "Z" proved
 precise.adb:10:09: info: initialization of "X" proved
 precise.adb:10:11: info: overflow check proved
 precise.adb:10:13: info: initialization of "Y" proved
+precise.adb:11:04: info: assertion proved
 precise.adb:11:19: info: initialization of "Z" proved
-precise.adb:11:19: medium: assertion might fail, requires Z in 3.39999 ..
 precise.adb:12:09: info: initialization of "X" proved
 precise.adb:12:11: info: division check proved
 precise.adb:12:11: info: overflow check proved
 precise.adb:12:13: info: initialization of "Y" proved
+precise.adb:13:04: info: assertion proved
 precise.adb:13:19: info: initialization of "Z" proved
-precise.adb:13:19: medium: assertion might fail, requires Z in 24.99999 ..
 test_18.adb:2:20: info: initialization of "Z" proved
 test_18.adb:4:16: info: initialization of "Z" proved
 test_18.adb:4:16: medium: postcondition might fail, requires Z >= X

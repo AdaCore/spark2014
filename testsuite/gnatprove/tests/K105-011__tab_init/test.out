@@ -1,6 +1,6 @@
 tab_init.adb:5:19: medium: overflow check might fail
 tab_init.adb:6:10: info: loop invariant initialization proved
-tab_init.adb:7:38: medium: loop invariant might fail after first iteration, requires T(J) = A*J
+tab_init.adb:6:10: info: loop invariant preservation proved
 tab_init.adb:7:39: info: initialization of "T" proved
 tab_init.adb:7:39: medium: "T" might not be initialized
 tab_init.adb:7:41: info: index check proved

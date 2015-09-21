@@ -6,8 +6,8 @@ pck.adb:31:15: info: initialization of "V_Hi" proved
 pck.adb:31:20: info: overflow check proved
 pck.adb:31:20: info: range check proved
 pck.adb:32:15: info: initialization of "V_Lo" proved
+pck.adb:32:20: info: overflow check proved
 pck.adb:32:20: info: range check proved
-pck.adb:32:20: medium: overflow check might fail
 pck.adb:33:15: info: initialization of "V_Hi" proved
 pck.adb:33:20: medium: overflow check might fail
 pck.adb:33:22: info: initialization of "V_Lo" proved
@@ -20,8 +20,8 @@ pck.adb:38:25: medium: range check might fail
 pck.adb:40:22: info: initialization of "Result_Hi" proved
 pck.adb:40:22: medium: assertion might fail, requires Result_Hi < 16#7FFF_FFFF#
 pck.adb:49:20: info: initialization of "V_Hi" proved
-pck.adb:49:25: medium: overflow check might fail
-pck.adb:49:25: medium: range check might fail
+pck.adb:49:25: info: overflow check proved
+pck.adb:49:25: info: range check proved
 pck.adb:49:27: info: initialization of "Result_Hi" proved
 pck.adb:49:37: info: overflow check proved
 pck.adb:51:20: info: initialization of "Result_Hi" proved

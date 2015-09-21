@@ -19,7 +19,7 @@ patience.adb:29:39: info: initialization of "I" proved
 patience.adb:30:34: info: index check proved
 patience.adb:30:34: info: initialization of "I" proved
 patience.adb:30:37: info: initialization of "StackISize" proved
-patience.adb:30:48: medium: array index check might fail
+patience.adb:30:48: info: index check proved
 patience.adb:31:36: info: index check proved
 patience.adb:31:36: info: initialization of "TopStackI" proved
 patience.adb:32:12: info: assertion proved

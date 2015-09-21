@@ -1,6 +1,6 @@
 pi_euler.adb:9:15: info: initialization of "Erreur" proved
 pi_euler.adb:11:19: info: initialization of "Index" proved
-pi_euler.adb:11:24: medium: overflow check might fail
+pi_euler.adb:11:24: info: overflow check proved
 pi_euler.adb:12:10: info: loop invariant initialization proved
 pi_euler.adb:12:10: info: loop invariant preservation proved
 pi_euler.adb:12:33: info: initialization of "Index" proved

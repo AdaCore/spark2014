@@ -1,5 +1,5 @@
-after_tax.adb:7:22: medium: overflow check might fail
-after_tax.adb:7:22: medium: range check might fail
+after_tax.adb:7:22: info: overflow check proved
+after_tax.adb:7:22: info: range check proved
 after_tax.adb:7:36: medium: overflow check might fail
 after_tax.adb:7:44: info: division check proved
-after_tax.ads:8:11: medium: postcondition might fail, requires After_Tax'Result <= Before_Tax
+after_tax.ads:8:11: info: postcondition proved

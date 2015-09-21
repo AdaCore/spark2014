@@ -26,8 +26,8 @@ dynamic_array.adb:40:48: info: index check proved
 dynamic_array.adb:41:21: info: index check proved
 dynamic_array.adb:41:23: info: discriminant check proved
 dynamic_array.adb:41:64: info: index check proved
+dynamic_array.adb:42:07: info: loop invariant initialization proved
 dynamic_array.adb:42:07: info: loop invariant preservation proved
-dynamic_array.adb:43:33: medium: loop invariant might fail in first iteration, requires not H.Content (J).B
 dynamic_array.adb:43:37: info: initialization of "H.Content" proved
 dynamic_array.adb:43:48: info: index check proved
 dynamic_array.adb:46:43: info: index check proved

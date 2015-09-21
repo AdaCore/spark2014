@@ -7,6 +7,7 @@ partition_refinement.adb:26:38: info: precondition proved
 partition_refinement.adb:27:16: info: precondition proved
 partition_refinement.adb:27:37: info: precondition proved
 partition_refinement.adb:27:55: info: precondition proved
+partition_refinement.adb:28:15: info: postcondition proved
 partition_refinement.adb:29:26: info: precondition proved
 partition_refinement.adb:30:27: info: precondition proved
 partition_refinement.adb:30:41: info: precondition proved
@@ -30,7 +31,6 @@ partition_refinement.adb:42:57: info: precondition proved
 partition_refinement.adb:43:18: info: precondition proved
 partition_refinement.adb:43:40: info: precondition proved
 partition_refinement.adb:43:68: info: precondition proved
-partition_refinement.adb:43:68: medium: postcondition might fail, requires Key (D'Old, C) = Key (D, C)
 partition_refinement.adb:43:85: info: precondition proved
 partition_refinement.adb:49:17: info: overflow check proved
 partition_refinement.adb:49:19: info: precondition proved
@@ -54,10 +54,10 @@ partition_refinement.adb:96:07: info: assertion proved
 partition_refinement.adb:96:44: info: precondition proved
 partition_refinement.adb:97:07: info: precondition proved
 partition_refinement.adb:98:07: info: assertion proved
+partition_refinement.adb:100:07: info: assertion proved
 partition_refinement.adb:100:22: info: precondition proved
 partition_refinement.adb:100:44: info: precondition proved
 partition_refinement.adb:100:67: info: precondition proved
-partition_refinement.adb:100:91: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:100:94: info: precondition proved
 partition_refinement.adb:100:112: info: precondition proved
 partition_refinement.adb:101:07: info: assertion proved
@@ -67,15 +67,15 @@ partition_refinement.adb:101:70: info: precondition proved
 partition_refinement.adb:101:88: info: precondition proved
 partition_refinement.adb:102:07: info: precondition proved
 partition_refinement.adb:103:07: info: assertion proved
+partition_refinement.adb:105:07: info: assertion proved
 partition_refinement.adb:105:22: info: precondition proved
 partition_refinement.adb:105:44: info: precondition proved
 partition_refinement.adb:105:67: info: precondition proved
-partition_refinement.adb:105:91: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:105:94: info: precondition proved
 partition_refinement.adb:105:112: info: precondition proved
+partition_refinement.adb:106:07: info: assertion proved
 partition_refinement.adb:106:22: info: precondition proved
 partition_refinement.adb:106:44: info: precondition proved
-partition_refinement.adb:106:67: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 partition_refinement.adb:106:70: info: precondition proved
 partition_refinement.adb:106:88: info: precondition proved
 partition_refinement.adb:107:07: info: assertion proved

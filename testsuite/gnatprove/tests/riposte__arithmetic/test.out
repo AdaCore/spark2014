@@ -110,7 +110,7 @@ arithmetic.adb:257:17: info: overflow check proved
 arithmetic.adb:257:22: medium: divide by zero might fail
 arithmetic.adb:257:30: info: division check proved
 arithmetic.adb:257:37: medium: overflow check might fail
-arithmetic.adb:266:22: medium: assertion might fail, requires 101 rem A /= 0
+arithmetic.adb:266:07: info: assertion proved
 arithmetic.adb:266:26: info: division check proved
 arithmetic.adb:277:22: medium: assertion might fail, requires 100 rem A /= 0
 arithmetic.adb:277:26: info: division check proved

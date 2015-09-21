@@ -494,10 +494,11 @@ def prove(opt=None, steps=max_steps, procs=parallel_procs,
         fullopt += ["--steps=%d" % (steps)]
     fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]
+    fullopt += ["--prover=cvc4,altergo,z3"]
     if benchmark_mode():
         fullopt += ["--benchmark"]
     if inverse_prover():
-        fullopt += ["--prover=altergo,cvc4"]
+        fullopt += ["--prover=z3,altergo,cvc4"]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt

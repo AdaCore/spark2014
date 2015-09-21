@@ -6,9 +6,9 @@ replacement.adb:7:68: medium: array index check might fail
 replacement.adb:7:86: info: precondition proved
 replacement.adb:8:07: info: precondition proved
 replacement.adb:8:27: info: precondition proved
+replacement.adb:10:07: info: assertion proved
 replacement.adb:10:22: info: precondition proved
 replacement.adb:10:44: info: precondition proved
-replacement.adb:10:65: medium: assertion might fail, requires A (Element (D, C)) = Key (D, C)
 replacement.adb:10:68: info: precondition proved
 replacement.adb:10:68: medium: array index check might fail
 replacement.adb:10:86: info: precondition proved
