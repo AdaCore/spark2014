@@ -86,7 +86,7 @@ patience.adb:66:25: info: index check proved
 patience.adb:66:30: info: initialization of "Idx" proved
 patience.adb:66:33: info: initialization of "StackISize" proved
 patience.adb:70:07: info: assertion proved
-patience.adb:79:07: info: assertion proved
+patience.adb:80:13: medium: assertion might fail, requires S.StackSizes(I) >= 1
 patience.adb:80:26: info: index check proved
 patience.adb:82:07: info: assertion proved
 patience.adb:83:26: info: index check proved
@@ -95,7 +95,7 @@ patience.adb:87:30: info: index check proved
 patience.adb:87:33: info: index check proved
 patience.adb:87:49: info: index check proved
 patience.adb:87:52: info: index check proved
-patience.adb:90:07: info: assertion proved
+patience.adb:90:07: medium: assertion might fail
 patience.adb:92:24: info: index check proved
 patience.adb:94:25: info: index check proved
 patience.adb:94:50: info: index check proved
@@ -292,3 +292,4 @@ test_patience.adb:50:04: warning: assuming "Put_Line" has no effect on global it
 test_patience.adb:50:04: warning: no Global contract available for "Put_Line"
 test_patience.adb:52:09: info: precondition proved
 test_patience.adb:52:18: info: initialization of "Input" proved
+

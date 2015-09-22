@@ -14,8 +14,8 @@ prefixsum.adb:33:10: info: loop variant proved
 prefixsum.adb:33:44: info: initialization of "Space" proved
 prefixsum.adb:35:18: info: initialization of "Space" proved
 prefixsum.adb:37:16: info: initialization of "Left" proved
-prefixsum.adb:38:13: info: loop invariant initialization proved
 prefixsum.adb:38:13: medium: loop invariant might fail after first iteration
+prefixsum.adb:38:13: medium: loop invariant might fail in first iteration
 prefixsum.adb:39:16: info: initialization of "Left" proved
 prefixsum.adb:39:26: info: division check proved
 prefixsum.adb:39:30: info: initialization of "Space" proved
@@ -23,7 +23,7 @@ prefixsum.adb:41:56: info: range check proved
 prefixsum.adb:43:57: info: range check proved
 prefixsum.adb:45:26: info: division check proved
 prefixsum.adb:51:37: info: division check proved
-prefixsum.adb:53:64: info: index check proved
+prefixsum.adb:53:64: medium: array index check might fail
 prefixsum.adb:56:13: info: loop variant proved
 prefixsum.adb:56:47: info: initialization of "Left" proved
 prefixsum.adb:58:26: info: initialization of "Left" proved
@@ -33,8 +33,8 @@ prefixsum.adb:59:16: info: index check proved
 prefixsum.adb:59:29: info: index check proved
 prefixsum.adb:59:29: info: initialization of "Left" proved
 prefixsum.adb:59:35: info: overflow check proved
-prefixsum.adb:59:40: info: index check proved
 prefixsum.adb:59:40: info: initialization of "Right" proved
+prefixsum.adb:59:40: medium: array index check might fail
 prefixsum.adb:60:26: info: initialization of "Left" proved
 prefixsum.adb:60:31: info: overflow check proved
 prefixsum.adb:60:31: info: range check proved
@@ -52,7 +52,7 @@ prefixsum.adb:79:10: medium: loop invariant might fail after first iteration
 prefixsum.adb:79:10: medium: loop invariant might fail in first iteration
 prefixsum.adb:80:14: info: initialization of "Space" proved
 prefixsum.adb:82:36: info: division check proved
-prefixsum.adb:82:49: info: range check proved
+prefixsum.adb:82:49: medium: range check might fail
 prefixsum.adb:87:49: info: division check proved
 prefixsum.adb:88:64: info: index check proved
 prefixsum.adb:89:49: info: division check proved
@@ -131,8 +131,8 @@ prefixsum_expanded.adb:52:10: info: loop variant proved
 prefixsum_expanded.adb:52:44: info: initialization of "Space" proved
 prefixsum_expanded.adb:54:18: info: initialization of "Space" proved
 prefixsum_expanded.adb:56:16: info: initialization of "Left" proved
-prefixsum_expanded.adb:57:13: info: loop invariant initialization proved
 prefixsum_expanded.adb:57:13: medium: loop invariant might fail after first iteration
+prefixsum_expanded.adb:57:13: medium: loop invariant might fail in first iteration
 prefixsum_expanded.adb:58:16: info: initialization of "Left" proved
 prefixsum_expanded.adb:58:26: info: division check proved
 prefixsum_expanded.adb:58:30: info: initialization of "Space" proved
@@ -169,11 +169,11 @@ prefixsum_expanded.adb:117:15: warning: unused assignment
 prefixsum_expanded.adb:118:07: info: assertion proved
 prefixsum_expanded.adb:119:11: info: initialization of "Saved_A" proved
 prefixsum_expanded.adb:135:13: info: initialization of "Space" proved
-prefixsum_expanded.adb:136:10: info: loop invariant initialization proved
 prefixsum_expanded.adb:136:10: medium: loop invariant might fail after first iteration
+prefixsum_expanded.adb:136:10: medium: loop invariant might fail in first iteration
 prefixsum_expanded.adb:137:14: info: initialization of "Space" proved
 prefixsum_expanded.adb:139:36: info: division check proved
-prefixsum_expanded.adb:139:49: info: range check proved
+prefixsum_expanded.adb:139:49: medium: range check might fail
 prefixsum_expanded.adb:161:10: info: loop variant proved
 prefixsum_expanded.adb:161:44: info: initialization of "Space" proved
 prefixsum_expanded.adb:163:19: info: initialization of "Space" proved
@@ -244,27 +244,27 @@ prefixsum_general.adb:17:26: info: initialization of "Left" proved
 prefixsum_general.adb:21:24: info: division check proved
 prefixsum_general.adb:30:27: info: division check proved
 prefixsum_general.adb:31:25: info: precondition proved
-prefixsum_general.adb:31:56: info: range check proved
+prefixsum_general.adb:31:56: medium: range check might fail
 prefixsum_general.adb:32:10: info: loop variant proved
 prefixsum_general.adb:32:44: info: initialization of "Space" proved
 prefixsum_general.adb:34:16: info: initialization of "Left" proved
 prefixsum_general.adb:34:21: info: overflow check proved
 prefixsum_general.adb:34:23: info: initialization of "Space" proved
-prefixsum_general.adb:35:13: info: loop invariant initialization proved
 prefixsum_general.adb:35:13: medium: loop invariant might fail after first iteration
+prefixsum_general.adb:35:13: medium: loop invariant might fail in first iteration
 prefixsum_general.adb:36:16: info: initialization of "Left" proved
 prefixsum_general.adb:36:23: info: initialization of "Space" proved
 prefixsum_general.adb:38:25: info: division check proved
 prefixsum_general.adb:44:27: info: division check proved
 prefixsum_general.adb:56:43: info: division check proved
 prefixsum_general.adb:57:28: info: precondition proved
-prefixsum_general.adb:57:52: info: range check proved
+prefixsum_general.adb:57:52: medium: range check might fail
 prefixsum_general.adb:58:46: info: division check proved
 prefixsum_general.adb:59:28: info: precondition proved
-prefixsum_general.adb:59:52: info: range check proved
+prefixsum_general.adb:59:52: medium: range check might fail
 prefixsum_general.adb:61:19: info: index check proved
 prefixsum_general.adb:61:27: info: precondition proved
-prefixsum_general.adb:61:54: info: range check proved
+prefixsum_general.adb:61:54: medium: range check might fail
 prefixsum_general.adb:61:63: info: range check proved
 prefixsum_general.adb:63:24: info: index check proved
 prefixsum_general.adb:63:35: info: precondition proved
@@ -336,3 +336,17 @@ prefixsum_general.ads:15:41: info: initialization of "Output_Space" proved
 prefixsum_general.ads:17:14: medium: postcondition might fail
 prefixsum_general.ads:18:30: info: precondition proved
 prefixsum_general.ads:21:07: warning: unused variable "Ghost"
+
+
+
+
+
+
+
+
+
+
+
+
+
+

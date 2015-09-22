@@ -13,17 +13,17 @@ deceleration_curve.adb:41:48: info: division check proved
 deceleration_curve.adb:41:48: info: overflow check proved
 deceleration_curve.adb:43:14: medium: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:44:38: info: division check proved
-deceleration_curve.adb:44:38: info: overflow check proved
+deceleration_curve.adb:44:38: medium: overflow check might fail
 deceleration_curve.adb:44:40: info: initialization of "speed" proved
 deceleration_curve.adb:46:14: medium: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:48:39: info: division check proved
-deceleration_curve.adb:48:39: info: overflow check proved
+deceleration_curve.adb:48:39: medium: overflow check might fail
 deceleration_curve.adb:48:41: info: initialization of "speed" proved
-deceleration_curve.adb:48:48: info: overflow check proved
+deceleration_curve.adb:48:48: medium: overflow check might fail
 deceleration_curve.adb:50:48: info: division check proved
-deceleration_curve.adb:50:48: info: overflow check proved
+deceleration_curve.adb:50:48: medium: overflow check might fail
 deceleration_curve.adb:50:50: info: initialization of "speed" proved
-deceleration_curve.adb:51:12: info: overflow check proved
+deceleration_curve.adb:51:12: medium: overflow check might fail
 deceleration_curve.adb:53:10: medium: assertion might fail
 deceleration_curve.adb:55:47: info: initialization of "delta_speed" proved
 deceleration_curve.adb:59:19: info: initialization of "speed" proved
@@ -197,28 +197,28 @@ step_function.adb:103:18: info: initialization of "im" proved
 step_function.adb:103:24: info: initialization of "i1" proved
 step_function.adb:103:29: info: initialization of "i2" proved
 step_function.adb:106:10: info: loop invariant initialization proved
-step_function.adb:106:10: info: loop invariant preservation proved
 step_function.adb:107:16: info: initialization of "im" proved
 step_function.adb:107:28: info: initialization of "Merge.Step" proved
 step_function.adb:107:28: medium: "Merge.Step" might not be initialized
+step_function.adb:107:28: medium: loop invariant might fail after first iteration, requires Merge.Step(0).Delimiter = Function_Range'first
 step_function.adb:108:10: info: loop invariant initialization proved
-step_function.adb:108:10: info: loop invariant preservation proved
 step_function.adb:109:32: info: initialization of "scan_sfun1" proved
 step_function.adb:110:16: info: initialization of "Merge.Step" proved
+step_function.adb:110:16: medium: loop invariant might fail after first iteration, requires Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
 step_function.adb:110:27: info: initialization of "im" proved
 step_function.adb:110:29: info: index check proved
 step_function.adb:110:56: info: initialization of "i1" proved
 step_function.adb:111:10: info: loop invariant initialization proved
-step_function.adb:111:10: info: loop invariant preservation proved
 step_function.adb:112:32: info: initialization of "scan_sfun2" proved
 step_function.adb:113:16: info: initialization of "Merge.Step" proved
+step_function.adb:113:16: medium: loop invariant might fail after first iteration, requires Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter
 step_function.adb:113:27: info: initialization of "im" proved
 step_function.adb:113:29: info: index check proved
 step_function.adb:113:56: info: initialization of "i2" proved
 step_function.adb:114:10: info: loop invariant initialization proved
-step_function.adb:114:10: info: loop invariant preservation proved
 step_function.adb:115:29: info: initialization of "im" proved
 step_function.adb:116:15: info: initialization of "Merge.Step" proved
+step_function.adb:116:15: medium: loop invariant might fail after first iteration, requires Merge.Step(i-1).Delimiter < Merge.Step(i).Delimiter
 step_function.adb:116:27: info: index check proved
 step_function.adb:116:54: info: index check proved
 step_function.adb:119:10: info: loop invariant initialization proved
@@ -409,8 +409,8 @@ step_function_test.adb:65:04: info: assertion proved
 step_function_test.adb:65:19: info: precondition proved
 step_function_test.adb:65:39: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:65:39: info: initialization of "sfun4.Step" proved
-step_function_test.adb:66:04: info: assertion proved
 step_function_test.adb:66:19: info: precondition proved
+step_function_test.adb:66:19: medium: assertion might fail, requires Minimum_Until_Point(sfun4, 5) =
 step_function_test.adb:66:39: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:66:39: info: initialization of "sfun4.Step" proved
 step_function_test.adb:67:19: info: precondition proved
@@ -424,3 +424,19 @@ units.ads:37:22: info: overflow check proved
 units.ads:37:32: info: division check proved
 units.ads:37:32: info: overflow check proved
 units.ads:43:20: info: precondition proved
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
