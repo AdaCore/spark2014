@@ -15,7 +15,7 @@ perm-lemma_subprograms.adb:33:35: info: precondition proved
 perm-lemma_subprograms.adb:33:48: info: precondition proved
 perm-lemma_subprograms.adb:35:10: info: precondition proved
 perm-lemma_subprograms.adb:35:19: info: precondition proved
-perm-lemma_subprograms.adb:36:10: info: precondition proved
+perm-lemma_subprograms.adb:36:10: medium: precondition might fail
 perm-lemma_subprograms.adb:36:18: info: precondition proved
 perm-lemma_subprograms.adb:36:31: info: precondition proved
 perm-lemma_subprograms.adb:37:18: info: precondition proved
