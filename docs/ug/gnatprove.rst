@@ -211,12 +211,13 @@ A number of options exist to influence the behavior for proof. Internally, the
 prover(s) specified with option ``--prover`` is/are called repeatedly for each
 check or assertion. Using the option ``--timeout``, one can change the maximal
 time that is allocated to each prover to prove each check or assertion
-(default: 1s). Using the option ``--steps`` (default: not used), one can set
-the maximum number of reasoning steps that the prover is allowed to perform
-before giving up. The ``steps`` option should be used when predictable results
-are required, because the results with a timeout may differ depending on the
-computing power or current load of the machine. The option ``-j`` activates
-parallel compilation and parallel proofs.
+(default: 1s). Using the option ``--steps`` (default: not used explicitly but
+set by default level, see switch ``--level`` below), one can set the maximum
+number of reasoning steps that the prover is allowed to perform before giving
+up. The ``steps`` option should be used when predictable results are required,
+because the results with a timeout may differ depending on the computing power
+or current load of the machine. The option ``-j`` activates parallel
+compilation and parallel proofs.
 
 The way checks are passed to the prover can also be influenced using the option
 ``--proof``. By default, the prover is invoked a single time for each check or
@@ -241,9 +242,9 @@ proof and can be selected with ``all``.
 
 Instead of setting individually switches that influence the speed and power of
 proof, one may use the switch ``--level``, which corresponds to predefined
-levels of proof, from the faster level 0 to the more powerful level 4. More
-precisely, each value of ``--level`` is equivalent to directly setting a
-collection of other switches discussed above:
+levels of proof, from the faster level 0 (the default value) to the more
+powerful level 4. More precisely, each value of ``--level`` is equivalent to
+directly setting a collection of other switches discussed above:
 
 * ``--level=0`` is equivalent to ``--prover=cvc4 --steps=100 --timeout=1``
 * ``--level=1`` is equivalent to

@@ -160,7 +160,7 @@ ASCII.LF &
 " -k                  Do not stop analysis at the first error" &
 ASCII.LF &
 "     --level=n       Set the level of proof " &
-"(0 = faster to 4 = more powerful)" &
+"(0 = faster* to 4 = more powerful)" &
 ASCII.LF &
 " -m                  Minimal reanalysis" &
 ASCII.LF &
@@ -273,7 +273,7 @@ ASCII.LF &
 ASCII.LF &
 " * Prover name values" &
 ASCII.LF &
-"   (Default prover combination is cvc4,altergo.)" &
+"   (Default prover used at level 0 is cvc4.)" &
 ASCII.LF &
 "   (Provers marked with [steps] support the --steps switch.)" &
 ASCII.LF &

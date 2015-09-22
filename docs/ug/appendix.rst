@@ -24,7 +24,7 @@ Command Line Invocation
   -h, --help          Display this usage information
   -jnnn               Use nnn parallel processes (default: 1)
   -k                  Do not stop analysis at the first error
-      --level=n       Set the level of proof (0 = faster to 4 = more powerful)
+      --level=n       Set the level of proof (0 = faster* to 4 = more powerful)
   -m                  Minimal reanalysis
       --mode=m        Set the mode of GNATprove (m=check, flow, prove, all*)
   -q, --quiet         Be quiet/terse
@@ -81,7 +81,7 @@ Command Line Invocation
                       (most suited for fully automatic proof) (default)
 
   * Prover name values
-    (Default prover combination is cvc4,altergo.)
+    (Default prover used at level 0 is cvc4.)
     (Provers marked with [steps] support the --steps switch.)
     . altergo       - [steps] Use Alt-Ergo
     . cvc4          - [steps] Use CVC4

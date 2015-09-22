@@ -394,7 +394,7 @@ procedure Gnatprove is
 
       procedure Set_Alter_Prover (Val : String) is
       begin
-         if Alter_Prover.all /= "" then
+         if Alter_Prover.all = "" then
             Alter_Prover := new String'(Val);
          end if;
       end Set_Alter_Prover;
@@ -405,7 +405,7 @@ procedure Gnatprove is
 
       procedure Set_Proof_Mode (Val : Proof_Mode) is
       begin
-         if Proof_Input.all /= "" then
+         if Proof_Input.all = "" then
             Proof := Val;
          end if;
       end Set_Proof_Mode;
@@ -416,7 +416,7 @@ procedure Gnatprove is
 
       procedure Set_Steps (Val : Positive) is
       begin
-         if Steps /= Invalid_Step then
+         if Steps = Invalid_Step then
             Steps := Val;
          end if;
       end Set_Steps;
@@ -427,7 +427,7 @@ procedure Gnatprove is
 
       procedure Set_Timeout (Val : Positive) is
       begin
-         if Timeout /= Invalid_Timeout then
+         if Timeout = Invalid_Timeout then
             Timeout := Val;
          end if;
       end Set_Timeout;
@@ -440,10 +440,9 @@ procedure Gnatprove is
       --  setting takes precedence.
 
       case Level is
-         when Invalid_Level =>  --  default invalid value
-            null;
-
-         when 0 =>   --  --prover=cvc4 --steps=100 --timeout=1
+         when Invalid_Level  --  no explicit value set, defaults to 0
+            | 0              --  --prover=cvc4 --steps=100 --timeout=1
+         =>
             Set_Alter_Prover ("cvc4");
             Set_Steps (100);
             Set_Timeout (1);
