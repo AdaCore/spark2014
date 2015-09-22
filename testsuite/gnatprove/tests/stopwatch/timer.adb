@@ -6,7 +6,7 @@ package body Timer with
   Refined_State => (Oper_State => Operate, Timing_State => TimingLoop)
 is
 
-   Operate    : Ada.Synchronous_Task_Control.Suspension_Object;
+   Operate : Ada.Synchronous_Task_Control.Suspension_Object;
 
    task TimingLoop with
      Global  => (Output => Operate,
