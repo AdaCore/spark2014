@@ -49,42 +49,6 @@ package body Flow_Refinement is
                            return Boolean;
    --  Returns True iff the list L contains node N.
 
-   function Is_Visible (Target_Scope : Flow_Scope;
-                        S            : Flow_Scope)
-                        return Boolean;
-   --  Returns True iff the target scope is visible from S. We do this by
-   --  moving up the scope DAG from S and testing if we have reached the
-   --  target scope. If we hit the top (the null scope) without finding it,
-   --  we return False.
-   --
-   --  The scope DAG may look like a twisty maze, but it is actually
-   --  reasonably easy to traverse upwards. The only complication is when
-   --  we deal with a private part, in which case we need to quickly check
-   --  one extra scope (the visible part), but then we continue on as
-   --  normal.
-   --
-   --     S is...     Next node is...
-   --     =======     ===============
-   --     X|body      X|priv
-   --     X|priv      X|spec                (check this first)
-   --                 enclosing_scope (S)   (then continue here)
-   --     X|spec      enclosing_scope (S)
-   --
-   --  The enclosing scope of S is computed by Get_Enclosing_Flow_Scope and
-   --  may be one of:
-   --
-   --     1. The first parent (just going up the AST) of S which is a
-   --        package/PO declaration (this deals with nested packages)
-   --
-   --     2. The first Scope (see einfo.ads) which is a package/PO (this deals
-   --        with public and private children)
-   --
-   --     3. null (if we have hit Standard)
-   --
-   --  The visibility is the same as before, i.e.
-   --     s.section = enclosing_scope(s).section
-   --  Unless S is a private descendant, in which case it is always "priv".
-
    -------------------
    -- Tree_Contains --
    -------------------
@@ -137,6 +101,38 @@ package body Flow_Refinement is
                         S            : Flow_Scope)
                         return Boolean
    is
+      --  Returns True iff the target scope is visible from S. We do this by
+      --  moving up the scope DAG from S and testing if we have reached the
+      --  target scope. If we hit the top (the null scope) without finding it,
+      --  we return False.
+      --
+      --  The scope DAG may look like a twisty maze, but it is actually
+      --  reasonably easy to traverse upwards. The only complication is when we
+      --  deal with a private part, in which case we need to quickly check one
+      --  extra scope (the visible part), but then we continue on as normal.
+      --
+      --     S is...     Next node is...
+      --     =======     ===============
+      --     X|body      X|priv
+      --     X|priv      X|spec                (check this first)
+      --                 enclosing_scope (S)   (then continue here)
+      --     X|spec      enclosing_scope (S)
+      --
+      --  The enclosing scope of S is computed by Get_Enclosing_Flow_Scope and
+      --  may be one of:
+      --
+      --     1. The first parent (just going up the AST) of S which is a
+      --        package/PO declaration (this deals with nested packages)
+      --
+      --     2. The first Scope (see einfo.ads) which is a package/PO (this
+      --        deals with public and private children)
+      --
+      --     3. null (if we have hit Standard)
+      --
+      --  The visibility is the same as before, i.e.
+      --     s.section = enclosing_scope(s).section
+      --  Unless S is a private descendant, in which case it is always "priv".
+
       Ptr : Flow_Scope;
    begin
       --  Go upwards from S (the scope we are in) and see if we end up in

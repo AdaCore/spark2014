@@ -3889,43 +3889,28 @@ package body Flow.Analysis is
      (FA : in out Flow_Analysis_Graphs)
    is
 
-      function In_Body_Part return Boolean;
-      --  @return True iff the Analyzed_Entity is defined in a
-      --     package's body.
+      function In_Body_Part (S : Flow_Scope) return Boolean
+      with Pre => S /= Null_Flow_Scope;
+      --  @param S is the Flow_Scope of the Constant_After_Elaboration variable
+      --  @return True iff the Analyzed_Entity is defined in the body of the
+      --     package that introduces the Constant_After_Elaboration variable.
 
-      ---------------------------------
-      -- In_Body_Part return Boolean --
-      ---------------------------------
+      ------------------
+      -- In_Body_Part --
+      ------------------
 
-      function In_Body_Part return Boolean is
-         Scope : Flow_Scope;
+      function In_Body_Part (S : Flow_Scope) return Boolean is
+         Body_S : constant Flow_Scope := Body_Scope (S);
       begin
-         --  We start from the spec scope of the analyzed entity and
-         --  work our way up until we find either the null flow scope
-         --  or a body scope.
-         Scope := FA.S_Scope;
-         while Present (Scope) loop
-            if Scope.Section = Body_Part then
-               return True;
-            else
-               Scope := Get_Enclosing_Flow_Scope (Scope);
-            end if;
-         end loop;
-
-         return False;
+         --  We check if Body_S is visible from FA.S_Scope
+         return Is_Visible (Body_S, FA.S_Scope);
       end In_Body_Part;
 
    --  Start of processing for Check_Constant_After_Elaboration
 
    begin
-      if Ekind (FA.Analyzed_Entity) = E_Function
-        or else In_Body_Part
-      then
-         --  If we are:
-         --     * either dealing with a function
-         --     * or the Analyzed_Entity is declared in the body part
-         --       of a package
-         --  then we do not need to perform this check.
+      if Ekind (FA.Analyzed_Entity) = E_Function then
+         --  Skip this check when dealing with a function.
          return;
       end if;
 
@@ -3938,6 +3923,7 @@ package body Flow.Analysis is
 
          G_Out     : Entity_Id;
          CAE       : Node_Id;
+         CAE_Scope : Flow_Scope;
       begin
          Get_Globals (Subprogram => FA.Analyzed_Entity,
                       Scope      => FA.B_Scope,
@@ -3948,26 +3934,20 @@ package body Flow.Analysis is
 
          for W of Writes loop
             if W.Kind in Direct_Mapping | Record_Field then
-               G_Out := Get_Direct_Mapping_Id (W);
-               CAE   := Empty;
+               G_Out     := Get_Direct_Mapping_Id (W);
+               CAE_Scope := Get_Flow_Scope (G_Out);
 
-               if Ekind (G_Out) in E_Variable then
-                  CAE := Get_Pragma (G_Out,
-                                     Pragma_Constant_After_Elaboration);
-               end if;
+               if CAE_Scope /= Null_Flow_Scope then
+                  CAE := Empty;
 
-               if Is_Constant_After_Elaboration (CAE) then
-                  if Present (FA.S_Scope) then
-                     Error_Msg_Flow
-                      (FA   => FA,
-                       Msg  => "& must not be an output of publicly" &
-                               " visible procedure &",
-                       Kind => High_Check_Kind,
-                       N    => FA.Analyzed_Entity,
-                       F1   => W,
-                       F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
-                       Tag  => Not_Constant_After_Elaboration);
-                  else
+                  if Ekind (G_Out) = E_Variable then
+                     CAE := Get_Pragma (G_Out,
+                                        Pragma_Constant_After_Elaboration);
+                  end if;
+
+                  if Is_Constant_After_Elaboration (CAE)
+                    and then not In_Body_Part (CAE_Scope)
+                  then
                      Error_Msg_Flow
                        (FA   => FA,
                         Msg  => "constant after elaboration & must not be " &
