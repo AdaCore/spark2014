@@ -46,8 +46,8 @@ package Assumption_Types is
       "="          => "=");
 
    subtype My_Sloc is Sloc_Lists.List;
-   --  the type of slocs used in assumptions and more generally in the report
-   --  file
+   --  The type of slocs used in assumptions and more generally in the report
+   --  file.
 
    function Subp_Name (Subp : Subp_Type) return String;
    function Subp_Sloc (Subp : Subp_Type) return My_Sloc;

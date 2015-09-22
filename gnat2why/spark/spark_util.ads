@@ -721,7 +721,7 @@ package SPARK_Util is
    --    package body P is
    --       procedure Lib_Level is
    --          procedure Nested is
-   --     ....
+   --          ...
    --  return P.Lib_Level.Nested. Casing of names is taken as it appears in the
    --  source.
    --  @param E subprogram

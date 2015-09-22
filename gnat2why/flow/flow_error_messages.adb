@@ -270,6 +270,8 @@ package body Flow_Error_Messages is
                      To_String (Gnat2Why_Args.Limit_Line);
       end Is_Specified_Line;
 
+   --  Start of processing for Error_Msg_Flow
+
    begin
       --  If the message we are about to emit has already been emitted
       --  in the past then do nothing.
