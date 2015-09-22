@@ -482,11 +482,9 @@ package body SPARK_Frame_Conditions is
       use Name_To_Entity_Map;
       C : constant Name_To_Entity_Map.Cursor := Name_To_Entity.Find (E);
    begin
-      if Has_Element (C) then
-         return Element (C);
-      else
-         return Empty;
-      end if;
+      return (if Has_Element (C)
+              then Element (C)
+              else Empty);
    end Find_Entity;
 
    ------------------------------
