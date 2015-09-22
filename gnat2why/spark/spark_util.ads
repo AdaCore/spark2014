@@ -396,7 +396,8 @@ package SPARK_Util is
    --  @param E loop parameter
    --  @return True iff E has been introduced by a quantified expression
 
-   function Source_Name (E : Entity_Id) return String;
+   function Source_Name (E : Entity_Id) return String
+   with Pre => Nkind (E) in N_Has_Chars;
    --  @param E any entity
    --  @return The unscoped name of E as it appears in the source code;
    --          "" if E is equal to Empty.
