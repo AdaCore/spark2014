@@ -14,6 +14,16 @@ package body Tagged_Conv with SPARK_Mode is
          null;
       end Conv_Child_To_Root_Ok;
 
+      procedure Conv_Child_To_Root_Ok2 with Pre => True is
+         C : Child := (others => <>);
+         CC : Root'Class := C;
+         R2 : Root := Root (C);
+         RC2 : Root'Class := Root'Class (R2);
+         CC2 : Child := Child (CC);  --@TAG_CHECK:PASS
+      begin
+         null;
+      end Conv_Child_To_Root_Ok2;
+
       procedure Conv_Root_To_Child_Ok with Pre => True is
          RC2 : Root := Root (RC);
          CC2 : Root := Root (CC);
@@ -27,6 +37,14 @@ package body Tagged_Conv with SPARK_Mode is
       begin
          null;
       end Bad1;
+
+      procedure Bad12 with Pre => True is
+         R : Root := (others => <>);
+         RC : Root'Class := R;
+         RC2 : Child'Class := Child'Class (RC);  --@TAG_CHECK:FAIL
+      begin
+         null;
+      end Bad12;
 
       procedure Bad2 with Pre => True is
          RC3 : Child := Child (RC);  --@TAG_CHECK:FAIL
@@ -59,8 +77,10 @@ package body Tagged_Conv with SPARK_Mode is
       end Bad5;
    begin
       Conv_Child_To_Root_Ok;
+      Conv_Child_To_Root_Ok2;
       Conv_Root_To_Child_Ok ;
       Bad1;
+      Bad12;
       Bad2;
       Bad3;
       Bad4;

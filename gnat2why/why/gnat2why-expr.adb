@@ -751,7 +751,7 @@ package body Gnat2Why.Expr is
                                 Args =>
                                   (1 => +Binder.Tag.Id,
                                    2 =>
-                                     (if Is_Class_Wide_Type (Binder.Typ)
+                                     (if Is_Class_Wide_Type (Etype (Lvalue))
                                       then New_Tag_Access
                                         (Domain => EW_Prog,
                                          Name   => +Tmp_Var,

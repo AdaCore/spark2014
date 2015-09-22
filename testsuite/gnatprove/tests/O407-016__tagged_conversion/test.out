@@ -1,21 +1,28 @@
 tagged_conv.adb:9:17: warning: subprogram "Conv_Child_To_Root_Ok" has no effect
 tagged_conv.adb:12:32: info: tag check proved
-tagged_conv.adb:17:17: warning: subprogram "Conv_Root_To_Child_Ok" has no effect
-tagged_conv.adb:25:17: warning: subprogram "Bad1" has no effect
-tagged_conv.adb:26:44: medium: tag check might fail
-tagged_conv.adb:31:17: warning: subprogram "Bad2" has no effect
-tagged_conv.adb:32:32: medium: tag check might fail
-tagged_conv.adb:37:17: warning: subprogram "Bad3" has no effect
-tagged_conv.adb:40:32: medium: tag check might fail
-tagged_conv.adb:45:17: warning: subprogram "Bad4" has no effect
-tagged_conv.adb:48:31: medium: tag check might fail
-tagged_conv.adb:53:17: warning: subprogram "Bad5" has no effect
-tagged_conv.adb:56:32: medium: tag check might fail
-tagged_conv.adb:61:07: info: precondition proved
-tagged_conv.adb:62:07: info: precondition proved
-tagged_conv.adb:63:07: info: precondition proved
-tagged_conv.adb:64:07: info: precondition proved
-tagged_conv.adb:65:07: info: precondition proved
-tagged_conv.adb:66:07: info: precondition proved
-tagged_conv.adb:67:07: info: precondition proved
+tagged_conv.adb:17:17: warning: subprogram "Conv_Child_To_Root_Ok2" has no effect
+tagged_conv.adb:22:32: info: tag check proved
+tagged_conv.adb:27:17: warning: subprogram "Conv_Root_To_Child_Ok" has no effect
+tagged_conv.adb:35:17: warning: subprogram "Bad1" has no effect
+tagged_conv.adb:36:44: medium: tag check might fail
+tagged_conv.adb:41:17: warning: subprogram "Bad12" has no effect
+tagged_conv.adb:44:44: info: initialization of extension of "RC" proved
+tagged_conv.adb:44:44: medium: tag check might fail
+tagged_conv.adb:49:17: warning: subprogram "Bad2" has no effect
+tagged_conv.adb:50:32: medium: tag check might fail
+tagged_conv.adb:55:17: warning: subprogram "Bad3" has no effect
+tagged_conv.adb:58:32: medium: tag check might fail
+tagged_conv.adb:63:17: warning: subprogram "Bad4" has no effect
+tagged_conv.adb:66:31: medium: tag check might fail
+tagged_conv.adb:71:17: warning: subprogram "Bad5" has no effect
+tagged_conv.adb:74:32: medium: tag check might fail
+tagged_conv.adb:79:07: info: precondition proved
+tagged_conv.adb:80:07: info: precondition proved
+tagged_conv.adb:81:07: info: precondition proved
+tagged_conv.adb:82:07: info: precondition proved
+tagged_conv.adb:83:07: info: precondition proved
+tagged_conv.adb:84:07: info: precondition proved
+tagged_conv.adb:85:07: info: precondition proved
+tagged_conv.adb:86:07: info: precondition proved
+tagged_conv.adb:87:07: info: precondition proved
 tagged_conv.ads:5:14: warning: subprogram "P" has no effect
