@@ -714,7 +714,8 @@ package SPARK_Util is
    --  @return True iff E is a library level subprogram without formal
    --     parameters (E is allowed to have global parameters)
 
-   function Subprogram_Full_Source_Name (E : Entity_Id) return String;
+   function Subprogram_Full_Source_Name (E : Entity_Id) return String
+     with Pre => Present (E) and then Sloc (E) /= No_Location;
    --  For a subprogram entity, return its scoped name, e.g. for subprogram
    --  Nested in
    --
