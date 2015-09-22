@@ -7792,7 +7792,7 @@ package body Gnat2Why.Expr is
                     Right    => Name_For_Result,
                     Typ      => Get_Type (+Name_For_Result));
             else
-               T := +New_Result_Ident (Type_Of_Node (Etype (Var)));
+               T := +Name_For_Result;
             end if;
 
          when Attribute_Old =>

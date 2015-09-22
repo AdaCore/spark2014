@@ -359,8 +359,7 @@ package Gnat2Why.Expr is
 
    Result_Name : W_Identifier_Id := Why_Empty;
    --  Name to use for occurrences of F'Result in the postcondition. It should
-   --  be equal to Why_Empty when we are not generating code for detecting
-   --  run-time errors in the postcondition.
+   --  be equal to Why_Empty when we are not translating a postcondition.
 
    Self_Name   : W_Identifier_Id := Why_Empty;
    Self_Is_Mutable : Boolean := False;

@@ -2696,6 +2696,12 @@ package body Gnat2Why.Subprograms is
 
       Add_Dependencies_For_Effects (File.Cur_Theory, E);
 
+      --  Store an appropriate value for the result identifier in Result_Name.
+
+      if Ekind (E) = E_Function then
+         Result_Name := New_Result_Ident (Type_Of_Node (Etype (E)));
+      end if;
+
       Generate_Subprogram_Program_Fun (File, E);
 
       Generate_Axiom_For_Post (File, E);
@@ -3108,6 +3114,10 @@ package body Gnat2Why.Subprograms is
                    & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Add_Dependencies_For_Effects (File.Cur_Theory, E);
+
+      --  Store an appropriate value for the result identifier in Result_Name.
+
+      Result_Name := New_Result_Ident (Type_Of_Node (Etype (E)));
 
       Generate_Subprogram_Program_Fun (File, E);
 
