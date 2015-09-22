@@ -24,10 +24,10 @@ list.adb:22:73: info: precondition proved
 list.adb:22:85: info: precondition proved
 list.adb:22:104: info: range check proved
 list.ads:8:12: medium: range check might fail
+list.ads:12:14: info: postcondition proved
 list.ads:12:28: info: precondition proved
 list.ads:12:47: info: precondition proved
 list.ads:13:17: info: precondition proved
-list.ads:13:17: medium: postcondition might fail, requires Element (L, I) = Element (Reverse_List'Result, Last_Index (L) - I + 1)
 list.ads:13:29: info: range check proved
 list.ads:13:34: medium: precondition might fail
 list.ads:13:64: info: precondition proved

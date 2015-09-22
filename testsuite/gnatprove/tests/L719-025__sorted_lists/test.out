@@ -14,8 +14,8 @@ sorted_lists.adb:17:07: info: precondition proved
 sorted_lists.adb:17:26: info: initialization of "Current" proved
 sorted_lists.ads:22:25: info: initialization of "Position" proved
 sorted_lists.ads:23:14: info: precondition proved
+sorted_lists.ads:25:08: info: postcondition proved
 sorted_lists.ads:25:08: info: precondition proved
-sorted_lists.ads:25:08: medium: postcondition might fail
 sorted_lists.ads:25:32: info: initialization of "Position" proved
 sorted_lists.ads:26:06: info: precondition proved
 sorted_lists.ads:26:26: info: initialization of "Position" proved

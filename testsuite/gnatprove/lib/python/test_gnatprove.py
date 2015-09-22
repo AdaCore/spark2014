@@ -39,7 +39,13 @@ def run_testsuite(test_driver):
     if options.benchmarks:
         os.environ["benchmarks"] = "true"
 
-    if options.exact_name:
+    if options.test_list:
+        with open(options.test_list, 'r') as f:
+            test_list = f.readlines()
+            test_list =\
+                map(lambda s: os.path.join("tests", s.strip()), test_list)
+            test_list = [t for t in test_list if os.path.isdir(t)]
+    elif options.exact_name:
         test_name = os.path.join('tests/', options.run_test)
         if os.path.isdir(test_name):
             test_list = [test_name]
@@ -96,6 +102,9 @@ def __parse_options():
                  default=False, help="show diffs on stdout")
     m.add_option("--exact", dest="exact_name", action="store_true",
                  default=False, help="provide exact name of test (not regexp)")
+    m.add_option("--testlist", dest="test_list", action="store",
+                 type="string",
+                 help="provide text file with one test per line to be run")
     m.add_option("--inverse-prover", dest="inverse_prover",
                  action="store_true",
                  default=False, help="inverse order of default provers")

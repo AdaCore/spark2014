@@ -29,8 +29,8 @@ hello.adb:64:10: info: assertion proved
 hello.adb:65:10: info: assertion proved
 hello.adb:66:10: info: assertion proved
 hello.adb:67:10: info: loop invariant initialization proved
+hello.adb:67:10: info: loop invariant preservation proved
 hello.adb:67:33: info: precondition proved
-hello.adb:67:33: medium: loop invariant might fail after first iteration, requires To_Caml_Char2 (Str, Ret, Idx)
 hello.adb:67:53: info: initialization of "Ret" proved
 hello.adb:68:10: info: loop invariant initialization proved
 hello.adb:68:10: info: loop invariant preservation proved

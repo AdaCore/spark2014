@@ -8,7 +8,7 @@ q.adb:20:07: info: assertion proved
 q.adb:20:22: info: initialization of "X" proved
 q.adb:21:12: info: initialization of "X" proved
 q.adb:21:14: info: division check proved
-q.adb:21:14: medium: overflow check might fail
+q.adb:21:14: info: overflow check proved
 q.adb:23:10: info: initialization of "X" proved
 q.adb:24:29: info: range check proved
 q.adb:25:13: info: initialization of "X" proved

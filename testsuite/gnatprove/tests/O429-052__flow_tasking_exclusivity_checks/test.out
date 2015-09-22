@@ -21,8 +21,8 @@ two_tasks_single_po.adb:15:09: warning: unused assignment to "PO"
 two_tasks_single_po.adb:20:09: warning: statement has no effect
 two_tasks_single_po.adb:20:09: warning: unused assignment to "PO"
 two_tasks_single_so.ads:7:09: medium: "SO" might not be initialized before start of tasks of type "T1tk"
-two_tasks_single_so.ads:7:09: task "T2tk" already suspends on suspension object "two_tasks_single_so.so" (SPARK RM 9(11))
 two_tasks_single_so.ads:9:09: medium: "SO" might not be initialized before start of tasks of type "T2tk"
+two_tasks_single_so.ads:9:09: task "T1tk" already suspends on suspension object "two_tasks_single_so.so" (SPARK RM 9(11))
    compilation of task_and_po_arrays.adb failed
    compilation of task_and_so_arrays.adb failed
    compilation of task_type_array_single_so.adb failed

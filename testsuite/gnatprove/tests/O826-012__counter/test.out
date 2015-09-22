@@ -2,5 +2,5 @@ test.adb:11:08: info: overflow check proved
 test.adb:11:10: info: overflow check proved
 test.adb:11:12: info: overflow check proved
 test.adb:11:14: info: overflow check proved
-test.adb:11:17: medium: overflow check might fail
+test.adb:11:17: info: overflow check proved
 test.ads:5:05: info: initialization of "Y" proved
