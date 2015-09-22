@@ -1715,6 +1715,8 @@ package body Flow_Generated_Globals is
                   end if;
                end Add_To_Proof_Or_Normal_Set;
 
+            --  Start of processing for Generate_Initializes_Aspects
+
             begin
                --  Add inputs to the RHS set
                RHS.Union (P.Inputs);
@@ -1890,6 +1892,9 @@ package body Flow_Generated_Globals is
 
          Found_End : Boolean := False;
          --  This will be set to True once we find the end marker.
+
+      --  Start of processing for Load_GG_Info_From_ALI
+
       begin
          Open (ALI_File, In_File, ALI_File_Name_Str);
 
