@@ -807,7 +807,8 @@ package body Flow_Error_Messages is
             when Error_Kind        => "");
       Actual_Msg : constant String :=
         Prefix & Escape (Msg) & "!!" &
-        (if Ide_Mode then "'['#" & Image (Integer (Id), 1) & "']"
+        (if Ide_Mode
+         then "'['#" & Image (Integer (Id), 1) & "']"
          else "");
    begin
       Message_Id_Counter := Message_Id_Counter + 1;
