@@ -1,13 +1,9 @@
 from subprocess import call
 from test_support import *
 
-# Remove analysis on selected files only after NC02-004 has been fixed
-# AND REPLACE
-#   @ ASSERT:FAIL
-# BY
-#   @ASSERT:FAIL
-# IN THOSE TESTS AT THIS POINT
-prove_all()
+# Do not use Z3, as the step limit fluctuates too much between platforms, thus
+# making it impossible to share a common expected output when Z3 is used.
+prove_all(opt=["--prover=cvc4,altergo"])
 
 call(["gnatmake", "-gnata", "-q", "test_vectors.adb"])
 call(["./test_vectors"])
