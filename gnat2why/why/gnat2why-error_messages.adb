@@ -133,8 +133,7 @@ package body Gnat2Why.Error_Messages is
       E           : Entity_Id;
       Extra_Msg   : String := "";
       Tracefile   : String := "";
-      Cntexmp_VC  : String := "";
-      Cntexmpfile : String := "";
+      Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File     : String := "";
       How_Proved  : String := "";
       Stats       : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
@@ -151,8 +150,7 @@ package body Gnat2Why.Error_Messages is
          Kind,
          Place_First => Locate_On_First_Token (Kind),
          Tracefile   => Tracefile,
-         Cntexmp_VC  => Cntexmp_VC,
-         Cntexmpfile => Cntexmpfile,
+         Cntexmp     => Cntexmp,
          VC_File     => VC_File,
          Editor_Cmd  => Editor_Cmd,
          Stats       => Stats,
@@ -362,12 +360,6 @@ package body Gnat2Why.Error_Messages is
          Tracefile : constant String :=
            (if Has_Field (V, "tracefile") then Get (Get (V, "tracefile"))
             else "");
-         Cntexmp_VC  : constant String :=
-           (if Has_Field (V, "cntexmp_vc") then Get (Get (V, "cntexmp_vc"))
-            else "");
-         Cntexmpfile : constant String :=
-           (if Has_Field (V, "cntexmpfile") then Get (Get (V, "cntexmpfile"))
-            else "");
          VC_File : constant String :=
            (if Has_Field (V, "vc_file") then Get (Get (V, "vc_file"))
             else "");
@@ -376,6 +368,9 @@ package body Gnat2Why.Error_Messages is
             else "");
          Stats : constant JSON_Value :=
            (if Has_Field (V, "stats") then Get (V, "stats")
+            else Create_Object);
+         Cntexmp : constant JSON_Value :=
+           (if Has_Field (V, "cntexmp") then Get (V, "cntexmp")
             else Create_Object);
       begin
          if Proved then
@@ -389,8 +384,7 @@ package body Gnat2Why.Error_Messages is
             Proved      => Proved,
             E           => VC.Entity,
             Tracefile   => Tracefile,
-            Cntexmp_VC  => Cntexmp_VC,
-            Cntexmpfile => Cntexmpfile,
+            Cntexmp     => Cntexmp,
             VC_File     => VC_File,
             Editor_Cmd  => Editor_Cmd,
             Stats       => Stats,

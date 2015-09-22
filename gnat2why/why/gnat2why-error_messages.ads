@@ -46,8 +46,7 @@ package Gnat2Why.Error_Messages is
       E           : Entity_Id;
       Extra_Msg   : String := "";
       Tracefile   : String := "";
-      Cntexmp_VC  : String := "";
-      Cntexmpfile : String := "";
+      Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File     : String := "";
       How_Proved  : String := "";
       Stats       : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;

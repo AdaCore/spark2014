@@ -123,8 +123,7 @@ package Flow_Error_Messages is
       Is_Proved   : Boolean;
       Tag         : VC_Kind;
       Tracefile   : String;
-      Cntexmp_VC  : String;
-      Cntexmpfile : String;
+      Cntexmp     : JSON_Value := Create_Object;
       VC_File     : String;
       Editor_Cmd  : String;
       E           : Entity_Id;
@@ -140,6 +139,20 @@ package Flow_Error_Messages is
    --  @param Cntexmp_Vc the string with counterexample model elements related
    --    to the construct that triggers VC.
    --  @param Cntexmpfile the file which contains the counterexample
+   --  @param Cntexmp counterexample model; JSON object describing values of
+   --    counterexample elements:
+   --      - fields of this object correspond to file names
+   --      - values of the fields correspond to line numbers
+   --      - line number is JSON array (list) of counterexample elements
+   --      - counterexample element is JSON object with fields "name",
+   --        "value", and "kind"
+   --      - field "kind" can have one of the following values:
+   --        - "result": Result of a function call
+   --        - "old": Old value of function argument
+   --        - "error_message": The model element represents error message, not
+   --          source-code element. The error message is saved in the name of
+   --          the model element.
+   --        - "other"
    --  @param VC_File if the VC is a manual proof, the VC file for manual proof
    --  @param Editor_Cmd the editor command to spawn manual prover
    --  @param E which subprogram this VC belongs to

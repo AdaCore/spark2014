@@ -22,7 +22,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
+with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
 with Assumption_Types;           use Assumption_Types;
 with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
@@ -86,8 +88,7 @@ package body Flow_Error_Messages is
       E           : Entity_Id;
       Msg_Id      : Message_Id;
       Tracefile   : String := "";
-      Cntexmp_Vc  : String := "";
-      Cntexmpfile : String := "";
+      Cntexmp     : JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File     : String := "";
       How_Proved  : String := "";
       Stats       : JSON_Value := GNATCOLL.JSON.Create_Object;
@@ -395,26 +396,206 @@ package body Flow_Error_Messages is
       Is_Proved   : Boolean;
       Tag         : VC_Kind;
       Tracefile   : String;
-      Cntexmp_VC  : String;
-      Cntexmpfile : String;
+      Cntexmp     : JSON_Value := Create_Object;
       VC_File     : String;
       Editor_Cmd  : String;
       E           : Entity_Id;
       How_Proved  : String;
       Stats       : JSON_Value := Create_Object;
-      Place_First : Boolean) is
-      Kind     : constant Msg_Kind :=
-        (if Is_Proved then Info_Kind else Medium_Check_Kind);
+      Place_First : Boolean)
+   is
+      function Do_Pretty_Cntexmp (Cntexmp : JSON_Value) return JSON_Value;
+      --  Pretty print model element names in Cntexmp.
+      --  Note that no deep copy of Cntexmp is made and thus both input
+      --  counterexample (Cntexmp) and returned counterexample will contain
+      --  pretty printed model element names.
+
+      -----------------------
+      -- Do_Pretty_Cntexmp --
+      -----------------------
+
+      function Do_Pretty_Cntexmp (Cntexmp : JSON_Value) return JSON_Value
+      is
+         procedure Do_Pretty_File (File : String; File_Cntexmp : JSON_Value);
+         --  Pretty prints model element names in counterexample file.
+         procedure Do_Pretty_Line (Line : String; Line_Cntexmp : JSON_Value);
+         --  Pretty prints model element names in counterexample line.
+
+         --------------------
+         -- Do_Pretty_File --
+         --------------------
+
+         procedure Do_Pretty_File (File : String; File_Cntexmp : JSON_Value)
+         is
+            pragma Unreferenced (File);
+         begin
+            Map_JSON_Object (File_Cntexmp, Do_Pretty_Line'Access);
+         end Do_Pretty_File;
+
+         --------------------
+         -- Do_Pretty_Line --
+         --------------------
+
+         procedure Do_Pretty_Line (Line : String; Line_Cntexmp : JSON_Value)
+         is
+            function Get_Pretty_Name
+              (Name : String; Kind : String) return String;
+            --  Get pretty printed model element name.
+
+            ---------------------
+            -- Get_Pretty_Name --
+            ---------------------
+
+            function Get_Pretty_Name
+              (Name : String; Kind : String) return String
+            is
+               function Append_After_Var_Name
+                 (Access_Expr : String; To_Append : String) return String;
+               --  Append To_Append after the name of variable in Access_Expr.
+
+               ---------------------------
+               -- Append_After_Var_Name --
+               ---------------------------
+
+               function Append_After_Var_Name
+                 (Access_Expr : String; To_Append : String) return String
+               is
+                  Index_Of_Dot : constant Natural := Index (Access_Expr, ".");
+               begin
+                  --  Access_Expr can be either var_name or var_name.rec_fields
+                  if Index_Of_Dot = 0 then
+                     return Access_Expr & To_Append;
+                  else
+                     return
+                       Access_Expr (Access_Expr'First .. (Index_Of_Dot - 1)) &
+                       To_Append &
+                       Access_Expr (Index_Of_Dot .. Access_Expr'Last);
+                  end if;
+               end Append_After_Var_Name;
+
+            begin
+               if Kind = "old" then
+                  return Append_After_Var_Name (Name, "'Old");
+               elsif Kind = "result" then
+                  return Append_After_Var_Name (Name, "'Result");
+               else
+                  return Name;
+               end if;
+            end Get_Pretty_Name;
+
+            pragma Unreferenced (Line);
+            Line_Cntexmp_Arr : constant JSON_Array := Get (Line_Cntexmp);
+         begin
+            --  Change model element names to pretty printed names in all model
+            --  elements in counterexample line.
+            for I in Integer range 1 .. Length (Line_Cntexmp_Arr) loop
+               declare
+                  Cntexmp_Element : constant JSON_Value :=
+                    Get (Line_Cntexmp_Arr, I);
+                  Name  : constant String := Get (Cntexmp_Element, "name");
+                  Kind  : constant String := Get (Cntexmp_Element, "kind");
+               begin
+                  Set_Field (Cntexmp_Element,
+                             "name",
+                             Create (Get_Pretty_Name (Name, Kind)));
+               end;
+            end loop;
+         end Do_Pretty_Line;
+      begin
+         Map_JSON_Object (Cntexmp, Do_Pretty_File'Access);
+
+         return Cntexmp;
+      end Do_Pretty_Cntexmp;
+
+      function Get_Cntexmp_One_Liner
+        (Cntexmp : JSON_Value; VC_Loc : Source_Ptr) return String;
+      --  Get the part of the counterexample corresponding to the location of
+      --  the construct that triggers VC.
+
+      ---------------------------
+      -- Get_Cntexmp_One_Liner --
+      ---------------------------
+      function Get_Cntexmp_One_Liner
+        (Cntexmp : JSON_Value; VC_Loc : Source_Ptr) return String
+      is
+         function Get_Cntexmp_Line_Str
+           (Cntexmp_Line : JSON_Array) return String;
+
+         --------------------------
+         -- Get_Cntexmp_Line_Str --
+         --------------------------
+
+         function Get_Cntexmp_Line_Str
+           (Cntexmp_Line : JSON_Array) return String
+         is
+            Cntexmp_Line_Str : Unbounded_String := To_Unbounded_String ("");
+            procedure Add_Cntexmp_Element
+              (Add_Cntexmp_Element : JSON_Value);
+
+            -------------------------
+            -- Add_Cntexmp_Element --
+            -------------------------
+
+            procedure Add_Cntexmp_Element
+              (Add_Cntexmp_Element : JSON_Value)
+            is
+               Name  : constant String := Get (Add_Cntexmp_Element, "name");
+               Value : constant JSON_Value :=
+                 Get (Add_Cntexmp_Element, "value");
+               Kind  : constant String := Get (Add_Cntexmp_Element, "kind");
+               Element : constant String := Name &
+               (if Kind = "error_message" then "" else " = " & Get (Value));
+            begin
+               Cntexmp_Line_Str :=
+                 (if Cntexmp_Line_Str = "" then To_Unbounded_String (Element)
+                  else Cntexmp_Line_Str & " and " &
+                    To_Unbounded_String (Element));
+            end Add_Cntexmp_Element;
+
+         begin
+            for I in Integer range 1 .. Length (Cntexmp_Line) loop
+               Add_Cntexmp_Element (Get (Cntexmp_Line, I));
+            end loop;
+
+            return To_String (Cntexmp_Line_Str);
+         end Get_Cntexmp_Line_Str;
+
+         File  : constant String :=
+              File_Name (VC_Loc);
+         Line  : constant Integer :=
+           Integer (Get_Logical_Line_Number (VC_Loc));
+         Line_Str : constant String :=
+           To_String (Trim (To_Unbounded_String (Integer'Image (Line)), Both));
+         Cntexmp_File : constant JSON_Value :=
+           (if Has_Field (Cntexmp, File) then Get (Cntexmp, File)
+            else Create_Object);
+         Cntexmp_Line : constant JSON_Array :=
+           (if Has_Field (Cntexmp_File, Line_Str) then
+                 Get (Get (Cntexmp_File, Line_Str))
+            else Empty_Array);
+         Cntexmp_Line_Str : constant String :=
+           Get_Cntexmp_Line_Str (Cntexmp_Line);
+      begin
+            return (if Cntexmp_Line_Str = "" then
+                       "error: cannot get location of the check"
+                    else Cntexmp_Line_Str);
+      end Get_Cntexmp_One_Liner;
+
       Msg2     : constant String :=
         Compute_Message (Msg, N);
-      Msg3     : constant String :=
-        (if Cntexmp_VC /= "" then Msg2 & ", counterexample: " & Cntexmp_VC
-         else Msg2);
-      Suppr    : String_Id := No_String;
+      Pretty_Cntexmp  : constant JSON_Value := Do_Pretty_Cntexmp (Cntexmp);
       Slc      : constant Source_Ptr := Compute_Sloc (N, Place_First);
+      Msg3     : constant String :=
+        (if Is_Empty (Cntexmp) then Msg2
+         else Msg2 &
+         ", counterexample: " & Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
+      Kind     : constant Msg_Kind :=
+        (if Is_Proved then Info_Kind else Medium_Check_Kind);
+      Suppr    : String_Id := No_String;
       Msg_Id   : Message_Id := No_Message_Id;
       Is_Annot : Boolean;
       Info     : Annotated_Range;
+
    begin
 
       --  The call to Check_Is_Annotated needs to happen on all paths, even
@@ -449,8 +630,7 @@ package body Flow_Error_Messages is
          Msg_Id      => Msg_Id,
          E           => E,
          Tracefile   => Tracefile,
-         Cntexmp_Vc  => Cntexmp_VC,
-         Cntexmpfile => Cntexmpfile,
+         Cntexmp     => Pretty_Cntexmp,
          VC_File     => VC_File,
          How_Proved  => How_Proved,
          Stats       => Stats,
@@ -539,8 +719,7 @@ package body Flow_Error_Messages is
       E           : Entity_Id;
       Msg_Id      : Message_Id;
       Tracefile   : String := "";
-      Cntexmp_Vc  : String := "";
-      Cntexmpfile : String := "";
+      Cntexmp     : JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File     : String := "";
       How_Proved  : String := "";
       Stats       : JSON_Value := GNATCOLL.JSON.Create_Object;
@@ -576,12 +755,8 @@ package body Flow_Error_Messages is
          Set_Field (Value, "tracefile", Tracefile);
       end if;
 
-      if Cntexmp_Vc /= "" then
-         Set_Field (Value, "cntexmp_vc", Cntexmp_Vc);
-      end if;
-
-      if Cntexmpfile /= "" then
-         Set_Field (Value, "cntexmpfile", Cntexmpfile);
+      if not Is_Empty (Cntexmp) then
+         Set_Field (Value, "cntexmp", Cntexmp);
       end if;
 
       if VC_File /= "" then
