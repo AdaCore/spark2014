@@ -1406,7 +1406,7 @@ package body Flow is
    -- Flow_Analyse_CUnit --
    ------------------------
 
-   procedure Flow_Analyse_CUnit is
+   procedure Flow_Analyse_CUnit (GNAT_Root : Node_Id) is
       Success : Boolean;
       Unused  : Global_Info_Lists.List;
    begin
@@ -1546,16 +1546,14 @@ package body Flow is
             end if;
          end if;
 
-         if (FA.Kind = Kind_Subprogram and then FA.Is_Main) or else
-            FA.Kind = Kind_Task
-         then
-            Analysis.Check_Concurrent_Accesses (FA);
-         end if;
-
          --  Not really necessary, but it forces N131-017 to occur
          --  immediately, instead of when this procedure ends.
          FA.Atr.Clear;
       end loop;
+
+      --  Finally check concurrent accesses. This check is done for the whole
+      --  compilation unit.
+      Analysis.Check_Concurrent_Accesses (GNAT_Root);
 
       if Gnat2Why_Args.Flow_Advanced_Debug then
          Write_Line (Character'Val (8#33#) & "[33m" &

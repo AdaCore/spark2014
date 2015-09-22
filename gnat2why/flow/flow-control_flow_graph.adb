@@ -2994,6 +2994,9 @@ package body Flow.Control_Flow_Graph is
       Is_Constant : constant Boolean := Nkind (N) = N_Object_Declaration
                                         and then Constant_Present (N);
 
+      Object_Name : constant Entity_Name :=
+        To_Entity_Name (Defining_Identifier (N));
+
       procedure Find_Tasks (T : Entity_Id; Array_Component : Boolean)
         with Pre => Is_Type (T);
       --  Update the map with number of task instances.
@@ -3029,12 +3032,14 @@ package body Flow.Control_Flow_Graph is
                --  the base type.
                TN : constant Entity_Name := To_Entity_Name (Etype (T));
             begin
-               Task_Instances.Include
-                 (Key => TN,
-                  New_Item => (if Array_Component
-                               or else Task_Instances.Contains (TN)
-                               then Many
-                               else One));
+               Register_Task_Object
+                 (Type_Name => TN,
+                  Object => (Name => Object_Name,
+                             Instances =>
+                               (if Array_Component
+                                then Many
+                                else One),
+                             Node => N));
             end;
 
          elsif Is_Record_Type (T) then

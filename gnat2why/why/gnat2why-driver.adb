@@ -453,7 +453,7 @@ package body Gnat2Why.Driver is
          --  Do some flow analysis
 
          if not Gnat2Why_Args.Debug_Proof_Only then
-            Flow_Analyse_CUnit;
+            Flow_Analyse_CUnit (GNAT_Root);
             Generate_Assumptions;
          end if;
 

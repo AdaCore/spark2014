@@ -23,8 +23,6 @@
 
 --  This package deals with the detection of aliasing.
 
-with Sinfo; use Sinfo;
-
 package Flow.Analysis.Antialiasing is
 
    procedure Check_Procedure_Call

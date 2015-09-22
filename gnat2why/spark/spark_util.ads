@@ -709,7 +709,7 @@ package SPARK_Util is
    --  @return True iff E is an instance of Ada.Unchecked_Conversion
 
    function Might_Be_Main (E : Entity_Id) return Boolean
-   with Pre => Is_Subprogram (E);
+   with Pre => Ekind (E) in Subprogram_Kind | E_Subprogram_Body;
    --  @param E subprogram
    --  @return True iff E is a library level subprogram without formal
    --     parameters (E is allowed to have global parameters)

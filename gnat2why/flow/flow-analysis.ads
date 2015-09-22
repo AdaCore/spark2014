@@ -24,6 +24,8 @@
 --  This package looks at the produced graphs and emits error
 --  messages.
 
+with Sinfo; use Sinfo;
+
 package Flow.Analysis is
 
    procedure Analyse_Main (FA : in out Flow_Analysis_Graphs);
@@ -170,10 +172,8 @@ package Flow.Analysis is
    --
    --  Complexity is O(N)
 
-   procedure Check_Concurrent_Accesses
-     (FA : in out Flow_Analysis_Graphs)
-     with Pre => (FA.Kind = Kind_Subprogram and then FA.Is_Main) or else
-                 FA.Kind = Kind_Task;
+   procedure Check_Concurrent_Accesses (GNAT_Root : Node_Id)
+     with Pre => Nkind (GNAT_Root) = N_Compilation_Unit;
    --  Check exclusivity rules for concurrent accesses to library-level objects
 
 private

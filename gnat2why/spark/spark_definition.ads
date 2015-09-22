@@ -41,10 +41,12 @@
 --  violation was detected in the body.
 
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Doubly_Linked_Lists;
 with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
 with GNATCOLL.JSON;     use GNATCOLL.JSON;
+--  with Sinfo;             use Sinfo;
 with Types;             use Types;
 
 package SPARK_Definition is
@@ -60,13 +62,32 @@ package SPARK_Definition is
    --  current compilation unit and other units.
 
    type Instance_Number is (One, Many);
+   --  Number of task type instances in an object declaration
+
+   type Task_Object is
+      record
+         Name      : Entity_Name;
+         Instances : Instance_Number;
+         Node      : Node_Id;
+      end record;
+   --  Task object with the name of the library-level object and task type
+   --  instances (which can be many, e.g. for task arrays or records with
+   --  two components of a given task type).
+   --
+   --  Error messages related to a task object will be attached to Node.
+
+   package Task_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Task_Object);
+   --  Container with task instances
 
    package Task_Instances_Maps is
      new Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
-                                     Element_Type    => Instance_Number,
+                                     Element_Type    => Task_Lists.List,
                                      Hash            => Name_Hash,
-                                     Equivalent_Keys => "=");
-   --  Containers that map tasks to number of their instances
+                                     Equivalent_Keys => "=",
+                                     "="             => Task_Lists."=");
+   --  Containers that map task types to task objects with task instances
+   --  (e.g. task arrays may contain several instances of a task type).
 
    Task_Instances : Task_Instances_Maps.Map;
    --  Task instances
@@ -135,5 +156,9 @@ package SPARK_Definition is
    function Is_Loop_Entity (E : Entity_Id) return Boolean;
    --  Returns True iff entity E is defined in loop before the invariants and
    --  thus may require a special translation. See gnat2why.ads for details.
+
+   procedure Register_Task_Object (Type_Name : Entity_Name;
+                                   Object    : Task_Object);
+   --  Register object that instantiates tasks of a given type
 
 end SPARK_Definition;

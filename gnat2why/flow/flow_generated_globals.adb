@@ -38,7 +38,6 @@ with Osint;                      use Osint;
 with Osint.C;                    use Osint.C;
 with Output;                     use Output;
 with Sem_Util;                   use Sem_Util;
-with Sinfo;                      use Sinfo;
 with Snames;                     use Snames;
 
 with Call;                       use Call;
@@ -304,7 +303,7 @@ package body Flow_Generated_Globals is
             The_Global_Info             : Global_Phase_1_Info;
          when EK_Tasking_Instance_Count =>
             The_Type                    : Entity_Name;
-            The_Count                   : Instance_Number;
+            The_Objects                 : Task_Lists.List;
          when EK_Tasking_Info =>
             The_Entity                  : Entity_Name;
             The_Tasking_Info            : Name_Tasking_Info;
@@ -331,9 +330,9 @@ package body Flow_Generated_Globals is
       EK_Globals                => (Kind            => EK_Globals,
                                     The_Global_Info => Null_Global_Info),
 
-      EK_Tasking_Instance_Count => (Kind       => EK_Tasking_Instance_Count,
-                                    The_Type   => Null_Entity_Name,
-                                    The_Count  => Instance_Number'First),
+      EK_Tasking_Instance_Count => (Kind     => EK_Tasking_Instance_Count,
+                                    The_Type => Null_Entity_Name,
+                                    others   => <>),
 
       EK_Tasking_Info           => (Kind       => EK_Tasking_Info,
                                     The_Entity => Null_Entity_Name,
@@ -357,6 +356,25 @@ package body Flow_Generated_Globals is
       Element        => Name_Sets.Element,
       Insert         => Name_Sets.Insert);
 
+   procedure Serialize (A : in out Archive; V : in out Task_Object);
+
+   Null_Task_Object : constant Task_Object := (Null_Entity_Name,
+                                               Instance_Number'First,
+                                               Empty);
+   --  Null task object required for serialization
+
+   procedure Serialize is new Serialize_List
+     (T              => Task_Lists.List,
+      E              => Task_Object,
+      Cursor         => Task_Lists.Cursor,
+      Null_Container => Task_Lists.Empty_List,
+      Null_Element   => Null_Task_Object,
+      First          => Task_Lists.First,
+      Next           => Task_Lists.Next,
+      Has_Element    => Task_Lists.Has_Element,
+      Element        => Task_Lists.Element,
+      Append         => Task_Lists.Append);
+
    procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info);
 
    procedure Serialize (A : in out Archive; V : in out Global_Phase_1_Info);
@@ -376,6 +394,18 @@ package body Flow_Generated_Globals is
       Serialize (A, S);
       if A.Kind = Serialisation.Input then
          V := To_Entity_Name (To_String (S));
+      end if;
+   end Serialize;
+
+   procedure Serialize (A : in out Archive; V : in out Task_Object) is
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Instance_Number);
+   begin
+      Serialize (A, V.Name);
+      Serialize (A, V.Instances);
+      --  ??? Serialize (A, V.Node);
+      if A.Kind = Serialisation.Input then
+         V.Node := Find_Entity (V.Name);
       end if;
    end Serialize;
 
@@ -409,8 +439,6 @@ package body Flow_Generated_Globals is
    procedure Serialize (A : in out Archive; V : in out ALI_Entry) is
       procedure Serialize is new Serialisation.Serialize_Discrete
         (T => ALI_Entry_Kind);
-      procedure Serialize is new Serialisation.Serialize_Discrete
-        (T => Instance_Number);
 
       Kind : ALI_Entry_Kind := ALI_Entry_Kind'First;
    begin
@@ -444,7 +472,7 @@ package body Flow_Generated_Globals is
 
          when EK_Tasking_Instance_Count =>
             Serialize (A, V.The_Type);
-            Serialize (A, V.The_Count);
+            Serialize (A, V.The_Objects);
 
          when EK_Tasking_Info =>
             Serialize (A, V.The_Entity);
@@ -971,9 +999,9 @@ package body Flow_Generated_Globals is
       end;
 
       for C in Task_Instances.Iterate loop
-         V := (Kind      => EK_Tasking_Instance_Count,
-               The_Type  => Task_Instances_Maps.Key (C),
-               The_Count => Task_Instances_Maps.Element (C));
+         V := (Kind        => EK_Tasking_Instance_Count,
+               The_Type    => Task_Instances_Maps.Key (C),
+               The_Objects => Task_Instances_Maps.Element (C));
          Write_To_ALI (V);
       end loop;
 
@@ -1940,11 +1968,17 @@ package body Flow_Generated_Globals is
                      GG_Exists_Cache.Insert (V.The_Global_Info.Name);
 
                   when EK_Tasking_Instance_Count =>
-                     if Task_Instances.Contains (V.The_Type) then
-                        Task_Instances.Include (V.The_Type, Many);
-                     else
-                        Task_Instances.Include (V.The_Type, V.The_Count);
-                     end if;
+                     declare
+                        use type Task_Lists.Cursor;
+                        C : Task_Lists.Cursor := V.The_Objects.First;
+                     begin
+                        while C /= Task_Lists.No_Element loop
+                           Register_Task_Object
+                             (V.The_Type,
+                              Task_Lists.Element (C));
+                           Task_Lists.Next (C);
+                        end loop;
+                     end;
 
                   when EK_Tasking_Info =>
                      for Kind in Tasking_Info_Kind loop
@@ -2196,6 +2230,33 @@ package body Flow_Generated_Globals is
       Create_All_Vertices;
       if Debug_GG_Read_Timing then
          Note_Time ("gg_read - vertices added");
+      end if;
+
+      --  If it is a library-level procedure with no parameters then it may
+      --  be the main subprogram of a partition and thus be executed by the
+      --  environment task.
+      if Nkind (Unit (GNAT_Root)) in N_Subprogram_Body |
+                                     N_Subprogram_Declaration
+      then
+         declare
+            Def_Entity : constant Entity_Id :=
+              Defining_Entity (Unit (GNAT_Root));
+         begin
+            if Might_Be_Main (Def_Entity) then
+               declare
+                  Main_Entity_Name : constant Entity_Name :=
+                    To_Entity_Name (Def_Entity);
+               begin
+                  Register_Task_Object (Type_Name => Main_Entity_Name,
+                                        Object =>
+                                          (Name      => Main_Entity_Name,
+                                           Instances => One,
+                                           Node      => Def_Entity));
+                  --  Register the main-like subprogram just like a task using
+                  --  the same entity name for type and object name.
+               end;
+            end if;
+         end;
       end if;
 
       --  Create graph with tasking-related information

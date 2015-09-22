@@ -1,4 +1,6 @@
-bar.adb:6:14: more than one task accesses an unsynchronized global variable "bar.g" (SPARK RM 9(11))
+bar.adb:17:04: possible data race when accessing variable "bar.g"
+bar.adb:17:04: with task "bar.task_1"
+bar.adb:17:04: with task "bar.task_2"
    compilation of bar.adb failed
 
 

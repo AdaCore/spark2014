@@ -32,6 +32,7 @@ with Flow;                               use Flow;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
 with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Types;                         use Flow_Types;
+with Sinfo;                              use Sinfo;
 with Types;                              use Types;
 
 package Flow_Generated_Globals is
@@ -200,7 +201,8 @@ package Flow_Generated_Globals is
    -------------------------
 
    procedure GG_Read (GNAT_Root : Node_Id)
-   with Pre  => GG_Mode = GG_No_Mode,
+   with Pre  => Nkind (GNAT_Root) = N_Compilation_Unit
+                and then GG_Mode = GG_No_Mode,
         Post => GG_Mode = GG_Read_Mode;
    --  Reads all ALI files and produce the transitive closure.
 

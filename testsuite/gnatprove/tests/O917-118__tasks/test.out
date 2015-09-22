@@ -1,6 +1,8 @@
 t.ads:4:22: warning: unused initial value of "X"
 t.ads:5:14: medium: "X" might not be initialized before start of tasks of type "TT"
-t.ads:5:14: more than one task accesses an unsynchronized global variable "t.x" (SPARK RM 9(11))
+t.ads:9:04: possible data race when accessing variable "t.x"
+t.ads:9:04: with task "t.t1"
+t.ads:9:04: with task "t.t2"
    compilation of t.adb failed
 
 

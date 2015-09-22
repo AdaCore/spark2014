@@ -1,7 +1,7 @@
 --  Not OK, we have two instances of T.
 with Client1;
-with Client2;
-procedure Main is
+with Client3;
+procedure Main3 is
 begin
    null;
-end Main;
+end Main3;
