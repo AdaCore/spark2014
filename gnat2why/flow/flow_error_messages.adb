@@ -244,9 +244,9 @@ package body Flow_Error_Messages is
       Slc     : constant Source_Ptr := Compute_Sloc (N);
       Msg_Id  : Message_Id := No_Message_Id;
       Unb_Msg : constant Unbounded_String :=
-        To_Unbounded_String (Msg3) &
-        To_Unbounded_String (Source_Ptr'Image (Slc)) &
-        To_Unbounded_String (Msg_Kind_To_String (Kind));
+        To_Unbounded_String (Msg3 &
+                             Source_Ptr'Image (Slc) &
+                             Msg_Kind_To_String (Kind));
 
       function Is_Specified_Line return Boolean;
       --  Returns True if command line argument "--limit-line" was not
