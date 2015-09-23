@@ -273,7 +273,8 @@ package body Why.Gen.Records is
 
       function Extract_Fun
         (Field       : Entity_Id;
-         Is_Ancestor : Boolean) return W_Identifier_Id;
+         Is_Ancestor : Boolean;
+         Local       : Boolean := True) return W_Identifier_Id;
       --  Returns the name of the extract function for an extension or an
       --  ancestor component.
 
@@ -1111,16 +1112,38 @@ package body Why.Gen.Records is
 
       begin
          for Field of Components loop
+
             --  function extract__<comp> (x : __private) : <typ>
             --    or
             --  function extract_anc__<comp> (x : __private) : <typ>
-            Emit (Theory,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => Extract_Fun (Field, Is_Ancestor),
-                     Binders     => Binder,
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Return_Type => EW_Abstract (Etype (Field))));
+
+            --  If an extraction function is already present in the base type
+            --  or parent type of E, then the extraction function is a renaming
+            --  of the base type's extraction function.
+
+            declare
+               Has_Definition : constant Boolean := not Is_Ancestor
+                 and then Original_Record_Component (Field) /= Field;
+               Definition     : constant W_Expr_Id :=
+                 (if Has_Definition then
+                     New_Call
+                    (Domain   => EW_Term,
+                     Name     =>
+                       Extract_Fun (Original_Record_Component (Field),
+                         Is_Ancestor, Local => False),
+                     Binders  => Binder,
+                     Typ      => EW_Abstract (Etype (Field)))
+                  else Why_Empty);
+            begin
+               Emit (Theory,
+                     New_Function_Decl
+                       (Domain      => EW_Term,
+                        Name        => Extract_Fun (Field, Is_Ancestor),
+                        Binders     => Binder,
+                        Labels      => Name_Id_Sets.Empty_Set,
+                        Return_Type => EW_Abstract (Etype (Field)),
+                        Def         => Definition));
+            end;
          end loop;
 
          if not Is_Ancestor then
@@ -1798,13 +1821,18 @@ package body Why.Gen.Records is
 
       function Extract_Fun
         (Field       : Entity_Id;
-         Is_Ancestor : Boolean) return W_Identifier_Id
+         Is_Ancestor : Boolean;
+         Local       : Boolean := True) return W_Identifier_Id
       is
          Prefix : constant Why_Name_Enum :=
            (if Is_Ancestor then WNE_Ancestor_Prefix else WNE_Extract_Prefix);
       begin
-         return New_Identifier (Name => To_String (Prefix) &
-                                        Get_Name_String (Chars (Field)));
+         return New_Identifier
+           (Name   => To_String (Prefix) &
+              Get_Name_String (Chars (Field)),
+            Domain => EW_Term,
+            Module =>
+              (if Local then Why_Empty else E_Module (Scope (Field))));
       end Extract_Fun;
 
       ---------------------------
