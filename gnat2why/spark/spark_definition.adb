@@ -3936,7 +3936,7 @@ package body SPARK_Definition is
       end if;
 
       --  Postprocessing: indicate in output file if package is in
-      --  SPARK or not, for reporting, debug and verifications.
+      --  SPARK or not, for reporting, debug and verification.
 
       Generate_Output_In_Out_SPARK (Id);
 
@@ -4024,7 +4024,7 @@ package body SPARK_Definition is
       Current_SPARK_Pragma := Save_SPARK_Pragma;
 
       --  Postprocessing: indicate in output file if package is in SPARK or
-      --  not, for reporting, debug and verifications. Only do so if there
+      --  not, for reporting, debug and verification. Only do so if there
       --  is no corresponding package body, otherwise it is reported when
       --  marking the package body.
 
@@ -4711,7 +4711,7 @@ package body SPARK_Definition is
          end if;
 
          --  Postprocessing: indicate in output file if subprogram is in
-         --  SPARK or not, for reporting, debug and verifications.
+         --  SPARK or not, for reporting, debug and verification.
 
          Generate_Output_In_Out_SPARK (E);
 
