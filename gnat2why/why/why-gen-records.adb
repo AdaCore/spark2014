@@ -131,6 +131,10 @@ package body Why.Gen.Records is
    --  Counts the number of fields for the Why3 record representing type E that
    --  are not present in the representation of the root type for E.
 
+   function Count_Root_Fields_Not_In_E (E, Root : Entity_Id) return Natural;
+   --  Counts the number of fields for the Why3 record representing type Root
+   --  that are not present in the representation of E.
+
    procedure Declare_Conversion_Check_Function
      (Theory : W_Theory_Declaration_Id;
       E      : Entity_Id;
@@ -146,6 +150,16 @@ package body Why.Gen.Records is
    --  predicate. If Local is true, do not prefix the identifier.
    --  If the current record type is not a root type, return the name of the
    --  corresponding predicate in the root type module.
+
+   function Get_Ancestor_Part_From_Root (R     : W_Expr_Id;
+                                         Ty    : Entity_Id;
+                                         Local : Boolean := False)
+                                         return W_Expr_Id with
+     Pre => Has_Private_Ancestor_Or_Root (Ty);
+   --  @param R expression for a record
+   --  @param Ty type for which we want to create an ancestor part
+   --  @return The expression to be used for the ancestor part of a record of
+   --  type Ty initialized from R.
 
    ------------------------------
    -- Count_Fields_Not_In_Root --
@@ -168,15 +182,32 @@ package body Why.Gen.Records is
          end loop;
       end if;
 
-      if Is_Private_Type (E) or else Is_Task_Type (E) then
+      return Count;
+   end Count_Fields_Not_In_Root;
 
-         --  Field for the private main record component
+   --------------------------------
+   -- Count_Root_Fields_Not_In_E --
+   --------------------------------
 
-         Count := Count + 1;
+   function Count_Root_Fields_Not_In_E (E, Root : Entity_Id) return Natural is
+      Field : Node_Id;
+      Count : Natural := 0;
+   begin
+      if Is_Record_Type (Root) then
+         Field := First_Component (Root);
+         while Present (Field) loop
+            if not Is_Tag (Field)
+              and then Component_Is_Visible_In_SPARK (Field)
+              and then No (Search_Component_By_Name (E, Field))
+            then
+               Count := Count + 1;
+            end if;
+            Next_Component (Field);
+         end loop;
       end if;
 
       return Count;
-   end Count_Fields_Not_In_Root;
+   end Count_Root_Fields_Not_In_E;
 
    -----------------------
    -- Declare_Ada_Record --
@@ -689,6 +720,11 @@ package body Why.Gen.Records is
                                          Typ   => EW_Private_Type)))));
                         end if;
                      end;
+                  else
+                     pragma Assert
+                       (if not Component_Is_Visible_In_SPARK (Field)
+                        then Has_Private_Ancestor_Or_Root (E)
+                       or else Is_Private_Type (E) or else Is_Task_Type (E));
                   end if;
 
                   Next_Component (Field);
@@ -771,7 +807,9 @@ package body Why.Gen.Records is
                      Num_Args : constant Natural :=
                        Count_Fields_Not_In_Root (E)
                        + 1  --  for the extension field of the current type
-                       + (if Has_Private_Ancestor_Or_Root (E) then 1 else 0);
+                       + (if Has_Private_Ancestor_Or_Root (E) then 1 else 0)
+                       + (if Is_Private_Type (E) or else Is_Task_Type (E)
+                          then 1 else 0);
                      Args   : W_Expr_Array (1 .. Num_Args);
                      Index  : Natural := 0;
                      Field  : Node_Id := First_Component_Or_Discriminant (E);
@@ -839,16 +877,13 @@ package body Why.Gen.Records is
                --  private ancestor
 
                if Has_Private_Ancestor_Or_Root (E) then
-                  Field_From_Index := Field_From_Index + 1;
-                  From_Root_Field (Field_From_Index) :=
-                    New_Field_Association
-                      (Domain => EW_Term,
-                       Field  => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
-                       Value  => New_Call (Domain => EW_Term,
-                                           Name =>
-                                             To_Local
-                                               (E_Symb (E, WNE_Hide_Ancestor)),
-                                           Args => (1 => +R_Ident)));
+                     Field_From_Index := Field_From_Index + 1;
+                     From_Root_Field (Field_From_Index) :=
+                       New_Field_Association
+                         (Domain => EW_Term,
+                          Field  => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
+                          Value  =>
+                            Get_Ancestor_Part_From_Root (+R_Ident, E, True));
                end if;
 
                --  Step 2.5. Deal with Rec__Main__ component for private types
@@ -1114,32 +1149,53 @@ package body Why.Gen.Records is
 
          declare
             Num_Hide_Params : constant Natural :=
-              (if Is_Ancestor then
-                  1
-               else
-                  Natural (Components.Length)
-                  + 1  --  for the extension field of the current type
-                  + (if Has_Private_Ancestor_Or_Root (E) then 1 else 0)
-                  + (if Needs_Main then 1 else 0));
-
+              Natural (Components.Length)
+              + 1  --  for the extension field of the current type
+              + (if Needs_Main then 1 else 0)
+              + (if not Is_Ancestor and then Has_Private_Ancestor_Or_Root (E)
+                 then 1 else 0);
             Binder : Binder_Array (1 .. Num_Hide_Params);
             Index  : Natural := 0;
 
          begin
-            --  the complete root object is argument to the hide function to
-            --  generate the ancestor field in the current type
+            --  the hide function to generate an ancestor field in E
+            --  takes as arguments all components of the root type not
+            --  present in E, plus the special extension, main, and
+            --  ancestor components, if present in root.
 
             if Is_Ancestor then
-               Binder (1) :=
-                 (B_Name =>
-                    New_Identifier (Name => Short_Name (Root),
-                                    Typ => EW_Abstract (Root)),
+               for Field of Components loop
+                  Index := Index + 1;
+                  Binder (Index) :=
+                    (B_Name =>
+                       New_Identifier (Name => Short_Name (Field),
+                                       Typ => EW_Abstract (Etype (Field))),
+                     others => <>);
+               end loop;
+
+               --  the extension field in the root type is also part of the
+               --  ancestor field in E as it may contain some fields hidden in
+               --  E.
+
+               Index := Index + 1;
+               Binder (Index) :=
+                 (B_Name => To_Local (E_Symb (Root, WNE_Rec_Extension)),
                   others => <>);
 
+               --  the main field of the root type is also part of the ancestor
+               --  field of E
+
+               if Needs_Main then
+                  Index := Index + 1;
+                  Binder (Index) :=
+                    (B_Name => To_Local (E_Symb (Root, WNE_Rec_Main)),
+                     others => <>);
+               end if;
+
             --  the hide function to generate an extension field in the root
-            --  type takes as arguments all components of the root type not
-            --  present in the root type, plus the special extension and
-            --  ancestor components, if present.
+            --  type takes as arguments all components of E not present in the
+            --  root type, plus the special extension, main, and
+            --  ancestor components, if present in e.
 
             else
                for Field of Components loop
@@ -1185,7 +1241,8 @@ package body Why.Gen.Records is
             --  function hide__ext__ (comp1 : typ1; .. ; x : __private)
             --                       : __private
             --    or
-            --  function hide__anc__ (root : __private) : __private
+            --  function hide__anc__ (comp1 : typ1; .. ; x : __private)
+            --                       : __private
             Emit (Theory,
                   New_Function_Decl
                     (Domain      => EW_Term,
@@ -1208,6 +1265,7 @@ package body Why.Gen.Records is
 
          while Present (Field) loop
             if not Is_Tag (Field)
+              and then No (Search_Component_By_Name (E, Field))
               and then Component_Is_Visible_In_SPARK (Field)
             then
                Comps.Append (Field);
@@ -2334,30 +2392,13 @@ package body Why.Gen.Records is
       end loop;
 
       if Has_Private_Ancestor_Or_Root (Ty) then
-         declare
-            Root        : constant Entity_Id :=
-              Root_Record_Type (Ty);
-            Anc_Is_Root : constant Boolean :=
-              Unique_Entity (Root) = Unique_Entity (Anc_Ty);
-            Root_Expr : constant W_Expr_Id :=
-              (if Anc_Is_Root then
-                 Expr
-               else
-                 New_Call (Domain => EW_Term,
-                           Name => E_Symb (Anc_Ty, WNE_To_Base),
-                           Args => (1 => Expr)));
-         begin
-            Assoc := New_Field_Association
-              (Domain   => Domain,
-               Field    => E_Symb (Ty, WNE_Rec_Ancestor),
-               Value    =>
-                 New_Call (Domain => EW_Term,
-                           Name => E_Symb (Ty, WNE_Hide_Ancestor),
-                           Args => (1 => Root_Expr)));
+         Assoc := New_Field_Association
+           (Domain   => Domain,
+            Field    => E_Symb (Ty, WNE_Rec_Ancestor),
+            Value    => Get_Ancestor_Part_From_Root (Expr, Ty));
 
-            Field_Index := Field_Index + 1;
-            Field_Assocs (Field_Index) := Assoc;
-         end;
+         Field_Index := Field_Index + 1;
+         Field_Assocs (Field_Index) := Assoc;
       end if;
 
       --  All discriminants of the ancestor part should have been set, but
@@ -2366,6 +2407,74 @@ package body Why.Gen.Records is
       pragma Assert (Discr_Index = Discr_Assocs'Last);
       pragma Assert (Field_Index = Field_Assocs'Last);
    end Generate_Associations_From_Ancestor;
+
+   function Get_Ancestor_Part_From_Root (R     : W_Expr_Id;
+                                         Ty    : Entity_Id;
+                                         Local : Boolean := False)
+                                         return W_Expr_Id
+   is
+      Root     : constant Entity_Id := Root_Record_Type (Ty);
+      R_Fields : constant W_Expr_Id :=
+        New_Fields_Access (Domain => EW_Term,
+                           Name   =>
+                             Insert_Simple_Conversion
+                               (Domain => EW_Term,
+                                Expr   => R,
+                                To     => Type_Of_Node (Root)),
+                           Ty     => Root);
+      Num_Args : constant Natural :=
+        Count_Root_Fields_Not_In_E (Ty, Root)
+        + 1  --  for the extension field of the current type
+        + (if Is_Private_Type (Root) or else Is_Task_Type (Root)
+           then 1 else 0);
+      Args     : W_Expr_Array (1 .. Num_Args);
+      Index    : Natural := 0;
+      Field    : Node_Id :=  First_Component_Or_Discriminant (Root);
+   begin
+      while Present (Field)
+      loop
+         if Is_Not_Hidden_Discriminant (Field)
+           and then not Is_Tag (Field)
+           and then No (Search_Component_By_Name (Ty, Field))
+           and then Component_Is_Visible_In_SPARK (Field)
+         then
+            Index := Index + 1;
+            Args (Index) :=
+              New_Record_Access
+                (Name  => R_Fields,
+                 Field => To_Why_Id (Field),
+                 Typ   => EW_Abstract (Etype (Field)));
+         end if;
+         Next_Component_Or_Discriminant (Field);
+      end loop;
+
+      Index := Index + 1;
+      Args (Index) :=
+        New_Record_Access
+          (Name  => R_Fields,
+           Field => E_Symb (Root, WNE_Rec_Extension),
+           Typ   => EW_Private_Type);
+
+      pragma Assert (Num_Args - Index in 0 .. 1);
+
+      if Is_Private_Type (Root) or else Is_Task_Type (Root) then
+         Index := Index + 1;
+         Args (Index) :=
+           New_Record_Access
+             (Name  => R_Fields,
+              Field => E_Symb (Root, WNE_Rec_Main),
+              Typ   => EW_Private_Type);
+      end if;
+
+      pragma Assert (Index = Num_Args);
+
+      return New_Call (Domain => EW_Term,
+                       Name =>
+                         (if Local
+                          then To_Local (E_Symb (Ty, WNE_Hide_Ancestor))
+                          else E_Symb (Ty, WNE_Hide_Ancestor)),
+                       Args => Args);
+   end Get_Ancestor_Part_From_Root;
 
    ---------------------------------------
    -- Insert_Subtype_Discriminant_Check --
