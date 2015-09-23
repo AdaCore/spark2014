@@ -23,6 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings;            use Ada.Strings;
+with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
 with Flow_Types;
@@ -263,14 +265,7 @@ package body Gnat2Why.Util is
      (E      : Entity_Id;
       Labels : in out Name_Id_Sets.Set)
    is
-      Model_Trace : constant Name_Id := NID
-        (Model_Trace_Label &
-           Source_Name (E) &
-           --  Add information whether labels are generated for a variable
-           --  holding result of a function.
-         (if Ekind (E) = E_Function
-            then "@result"
-            else ""));
+      Model_Trace : constant Name_Id := Get_Model_Trace_Label (E);
    begin
       --  Currently only generate values for scalar, record, and array
       --  variables in counterexamples.
@@ -564,6 +559,26 @@ package body Gnat2Why.Util is
 
       return Result;
    end Get_Graph_Closure;
+
+   ---------------------------
+   -- Get_Model_Trace_Label --
+   ---------------------------
+
+   function Get_Model_Trace_Label
+     (E   : Entity_Id) return Name_Id
+   is
+   begin
+      return NID
+        (Model_Trace_Label &
+         (if E = Empty
+            then ""
+            else Trim (Entity_Id'Image (E), Both)) &
+         --  Add information whether labels are generated for a variable
+         --  holding result of a function.
+         (if Ekind (E) = E_Function
+            then "@result"
+            else ""));
+   end Get_Model_Trace_Label;
 
    ------------------------------
    -- Get_Static_Call_Contract --

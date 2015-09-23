@@ -24,7 +24,6 @@
 
 with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
-with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
 with Assumption_Types;           use Assumption_Types;
 with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
@@ -37,6 +36,8 @@ with Gnat2Why.Annotate;          use Gnat2Why.Annotate;
 with Gnat2Why.Assumptions;       use Gnat2Why.Assumptions;
 with Gnat2Why_Args;              use Gnat2Why_Args;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
+with GNAT;                       use GNAT;
+with GNAT.String_Split;
 with Namet;                      use Namet;
 with Sinfo;                      use Sinfo;
 with Sinput;                     use Sinput;
@@ -451,38 +452,59 @@ package body Flow_Error_Messages is
             function Get_Pretty_Name
               (Name : String; Kind : String) return String
             is
-               function Append_After_Var_Name
-                 (Access_Expr : String; To_Append : String) return String;
-               --  Append To_Append after the name of variable in Access_Expr.
-
-               ---------------------------
-               -- Append_After_Var_Name --
-               ---------------------------
-
-               function Append_After_Var_Name
-                 (Access_Expr : String; To_Append : String) return String
-               is
-                  Index_Of_Dot : constant Natural := Index (Access_Expr, ".");
-               begin
-                  --  Access_Expr can be either var_name or var_name.rec_fields
-                  if Index_Of_Dot = 0 then
-                     return Access_Expr & To_Append;
-                  else
-                     return
-                       Access_Expr (Access_Expr'First .. (Index_Of_Dot - 1)) &
-                       To_Append &
-                       Access_Expr (Index_Of_Dot .. Access_Expr'Last);
-                  end if;
-               end Append_After_Var_Name;
-
+               Name_Parts : String_Split.Slice_Set;
             begin
-               if Kind = "old" then
-                  return Append_After_Var_Name (Name, "'Old");
-               elsif Kind = "result" then
-                  return Append_After_Var_Name (Name, "'Result");
-               else
+
+               --  Name either error message or of the form
+               --  "Entity_Id"{".Entity_Id"}*
+
+               if Kind = "error_message" then
                   return Name;
                end if;
+
+               --  Split Name into sequence of Entity_Id and build the pretty
+               --  model element name using these
+
+               String_Split.Create (S => Name_Parts,
+                       From => Name,
+                       Separators => ".",
+                       Mode => String_Split.Single);
+
+               declare
+                  First_Entity : constant Entity_Id :=
+                    Entity_Id'Value (String_Split.Slice (Name_Parts, 1));
+                  Name_Pretty : Unbounded_String :=
+                    To_Unbounded_String (Source_Name (First_Entity));
+               begin
+
+                  --  Process the first Entity_Id, which corresponds to a
+                  --  variable. Possibly append attributes 'Old or 'Result
+                  --  after its name
+
+                  if Kind = "old" and then
+                    Out_Present (Parent (First_Entity))
+                  then
+                     Name_Pretty := Name_Pretty & "'Old";
+                  elsif Kind = "result" then
+                     Name_Pretty := Name_Pretty & "'Result";
+                  end if;
+
+                  --  Process other Entity_Ids, which correspond to record
+                  --  fields
+
+                  for I in 2 .. String_Split.Slice_Count (Name_Parts) loop
+                     declare
+                        Entity : constant Entity_Id :=
+                          Entity_Id'Value (String_Split.Slice (Name_Parts, I));
+                     begin
+                        Name_Pretty :=
+                          Name_Pretty & "." & Source_Name (Entity);
+                     end;
+                  end loop;
+
+                  return To_String (Name_Pretty);
+
+               end;
             end Get_Pretty_Name;
 
             pragma Unreferenced (Line);

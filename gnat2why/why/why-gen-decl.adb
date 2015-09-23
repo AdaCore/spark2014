@@ -24,9 +24,13 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Ordered_Maps;
-with Ada.Strings.Fixed;
+with Ada.Strings;         use Ada.Strings;
+with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
 with Common_Containers;   use Common_Containers;
+with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
+with SPARK_Util;          use SPARK_Util;
+with Types;               use Types;
 with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
@@ -38,7 +42,6 @@ with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
-with SPARK_Util;          use SPARK_Util;
 
 package body Why.Gen.Decl is
 
@@ -46,7 +49,7 @@ package body Why.Gen.Decl is
      (Theory           : W_Theory_Declaration_Id;
       Param_Ty_Name    : W_Name_Id;
       Field_Id         : W_Identifier_Id;
-      SPARK_Field_Name : String := "");
+      SPARK_Node       : Node_Or_Entity_Id := Empty);
    --  Emit declaration of a projection for a Why3 record type. The projection
    --  projects values of the record type to given field of this type.
    --  The declaration consists of a declaration  of a function that returns a
@@ -58,11 +61,12 @@ package body Why.Gen.Decl is
    --  @param Field_Id the identifier of the field to that the record is
    --      projected. Its type is the type to that the record type is projected
    --      and must be different from Why_Empty.
-   --  @param SPARK_Field_Name if the projection projects SPARK record to the
-   --      SPARK field, the SPARK name of the field, "" otherwise.
-   --      The string "." & SPARK_Field_Name will be appended to the name of
-   --      the variable that is being projected. If SPARK_Field_Name equals to
-   --      "", nothing will be appended to the name of the variable.
+   --  @param SPARK_Node if the projection projects SPARK record to the SPARK
+   --      field, the AST node corresponding to the field, Empty otherwise.
+   --      The string "." & Node_Or_Entity_Id'Image (SPARK_Node) will be
+   --      appended to the name of the variable that is being projected. If
+   --      SPARK_Field_Name equals to Empty, nothing will be appended to the
+   --      name of the variable.
 
    ----------
    -- Emit --
@@ -118,9 +122,8 @@ package body Why.Gen.Decl is
            (Theory => Theory,
             Param_Ty_Name => Name,
             Field_Id => Binders (Binder).B_Name,
-            SPARK_Field_Name => (if SPARK_Record then
-                                      Source_Name (Binders (Binder).Ada_Node)
-                                 else ""));
+            SPARK_Node => (if SPARK_Record then Binders (Binder).Ada_Node
+                           else Empty));
       end loop;
    end Emit_Record_Declaration;
 
@@ -153,13 +156,14 @@ package body Why.Gen.Decl is
      (Theory           : W_Theory_Declaration_Id;
       Param_Ty_Name    : W_Name_Id;
       Field_Id         : W_Identifier_Id;
-      SPARK_Field_Name : String := "")
+      SPARK_Node       : Node_Or_Entity_Id := Empty)
    is
       --  Projection function name
       Param_Ty_Name_Str : constant String :=
         Get_Name_String (Get_Symbol (Param_Ty_Name));
       Proj_Name : constant String :=
-        Param_Ty_Name_Str & "_" & SPARK_Field_Name;
+        Param_Ty_Name_Str & "_" &
+        Source_Name (SPARK_Node);
       Proj_Name_Cursor : constant Cursor :=
         Projection_Names_Decls.Find (Proj_Name);
       Proj_Name_Decls_Num : constant Natural :=
@@ -190,8 +194,8 @@ package body Why.Gen.Decl is
          Projection_Names_Decls (Proj_Name) := Proj_Name_Decls_Num + 1;
       end if;
 
-      if SPARK_Field_Name /= "" then
-         Labels.Include (NID (Model_Trace_Label & "." & SPARK_Field_Name));
+      if SPARK_Node /= Empty then
+         Labels.Include (Get_Model_Trace_Label (SPARK_Node));
       end if;
 
       Emit

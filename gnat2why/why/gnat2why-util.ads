@@ -263,6 +263,10 @@ package Gnat2Why.Util is
       Labels : in out Name_Id_Sets.Set);
    --  Add labels relevant for generating counterexample model
 
+   function Get_Model_Trace_Label
+     (E   : Entity_Id) return Name_Id;
+   --  Gets model trace label for given entity.
+
    function Compute_Spec
      (Params : Transformation_Params;
       Nodes  : Node_Lists.List;

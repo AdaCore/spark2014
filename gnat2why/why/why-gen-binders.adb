@@ -32,7 +32,6 @@ with Sinfo;                  use Sinfo;
 with Snames;                 use Snames;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
-with VC_Kinds;               use VC_Kinds;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
@@ -666,8 +665,7 @@ package body Why.Gen.Binders is
          declare
             Labels : Name_Id_Set;
          begin
-            Labels.Include (NID (Model_Trace_Label &
-                              Source_Name (Binders (B).Ada_Node)));
+            Labels.Include (Get_Model_Trace_Label (Binders (B).Ada_Node));
             Result (B) := New_Record_Binder
               (Ada_Node   => Binders (B).Ada_Node,
                Domain     => Domain,
