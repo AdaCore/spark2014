@@ -3948,12 +3948,11 @@ package body SPARK_Definition is
    ------------------------------
 
    procedure Mark_Package_Declaration (N : Node_Id) is
+      Id                : constant Entity_Id := Defining_Entity (N);
+      Spec              : constant Node_Id := Specification (N);
+      Vis_Decls         : constant List_Id := Visible_Declarations (Spec);
+      Priv_Decls        : constant List_Id := Private_Declarations (Spec);
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
-      Id         : constant Entity_Id := Defining_Entity (N);
-      Vis_Decls  : constant List_Id :=
-                     Visible_Declarations (Specification (N));
-      Priv_Decls : constant List_Id :=
-                     Private_Declarations (Specification (N));
 
    begin
       --  Mark package in SPARK if fully in SPARK_Mode => On (including the
