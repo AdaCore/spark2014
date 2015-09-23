@@ -584,8 +584,8 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
-   with Pre => Ekind (E) in Subprogram_Kind | E_Package | E_Entry and then
-               not (Classwide and Inherited);
+     with Pre => Ekind (E) in Subprogram_Kind | E_Package | E_Entry | Task_Kind
+               and then not (Classwide and Inherited);
    --  @param E subprogram or package
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract
@@ -659,7 +659,7 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Boolean
-   with Pre => Ekind (E) in Subprogram_Kind | E_Entry | E_Package;
+   with Pre => Ekind (E) in Subprogram_Kind | E_Entry | E_Package | Task_Kind;
    --  @param E subprogram or package
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract

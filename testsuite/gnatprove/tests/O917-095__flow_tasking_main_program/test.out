@@ -5,8 +5,9 @@ main3.adb:4:11: possible data race when accessing variable "t.x"
 main3.adb:4:11: with task "client1.t1"
 main3.adb:4:11: with task "client3.t3"
 t.ads:2:14: info: initialization of "X" proved
+t.ads:2:14: info: nontermination of task proved
    compilation of main2.adb failed
    compilation of main3.adb failed
 
 
-gnatprove: error during analysis of data and information flow
+gnatprove: error during flow analysis and proof

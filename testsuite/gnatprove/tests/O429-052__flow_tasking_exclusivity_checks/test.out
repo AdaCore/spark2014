@@ -1,10 +1,13 @@
 nested_po.adb:4:24: warning: statement has no effect
 nested_po.adb:12:29: warning: statement has no effect
 nested_po.adb:12:29: warning: unused assignment to "Outer_Rec"
+nested_po.ads:21:14: medium: the task might terminate, which is not allowed in SPARK
 pack.adb:7:18: warning: assuming "Put_Line" has no effect on global items
 pack.adb:7:18: warning: no Global contract available for "Put_Line"
 pack.adb:12:18: warning: assuming "Put_Line" has no effect on global items
 pack.adb:12:18: warning: no Global contract available for "Put_Line"
+pack.ads:5:14: medium: the task might terminate, which is not allowed in SPARK
+pack.ads:6:14: medium: the task might terminate, which is not allowed in SPARK
 task_and_po_arrays.adb:9:24: warning: statement has no effect
 task_and_po_arrays.ads:5:14: medium: "POs" might not be initialized before start of tasks of type "T"
 task_and_po_arrays.ads:12:04: possibly multiple task suspend on protected object "task_and_po_arrays.pos" (SPARK RM 9(11))
@@ -12,6 +15,8 @@ task_and_po_arrays.ads:12:04: with task "task_and_po_arrays.ts"
 task_and_so_arrays.ads:7:14: medium: "SOs" might not be initialized before start of tasks of type "T"
 task_and_so_arrays.ads:10:04: possibly multiple task suspend on suspension object "task_and_so_arrays.sos" (SPARK RM 9(11))
 task_and_so_arrays.ads:10:04: with task "task_and_so_arrays.ts"
+task_in_empty_arrays.ads:4:14: medium: the task might terminate, which is not allowed in SPARK
+task_in_empty_arrays.ads:6:14: medium: the task might terminate, which is not allowed in SPARK
 task_type_array_single_so.adb:11:04: possibly multiple task suspend on suspension object "task_type_array_single_so.so" (SPARK RM 9(11))
 task_type_array_single_so.adb:11:04: with task "task_type_array_single_so.task_array"
 task_type_array_single_so.ads:7:14: medium: "SO" might not be initialized before start of tasks of type "TT"
@@ -40,4 +45,4 @@ two_tasks_single_so.ads:9:09: with task "two_tasks_single_so.t2"
    compilation of two_tasks_single_so.adb failed
 
 
-gnatprove: error during analysis of data and information flow
+gnatprove: error during flow analysis and proof

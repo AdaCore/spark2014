@@ -1,7 +1,9 @@
 bar.adb:17:04: possible data race when accessing variable "bar.g"
 bar.adb:17:04: with task "bar.task_1"
 bar.adb:17:04: with task "bar.task_2"
+foo.adb:7:09: info: nontermination of task proved
+foo.adb:9:09: info: nontermination of task proved
    compilation of bar.adb failed
 
 
-gnatprove: error during analysis of data and information flow
+gnatprove: error during flow analysis and proof
