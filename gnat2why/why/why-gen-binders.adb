@@ -1095,6 +1095,37 @@ package body Why.Gen.Binders is
       end if;
    end New_Universal_Quantif;
 
+   ----------------------------------
+   -- Push_Binders_To_Symbol_Table --
+   ----------------------------------
+
+   procedure Push_Binders_To_Symbol_Table (Binders : Item_Array) is
+   begin
+      for B of Binders loop
+         declare
+            Node : constant Node_Id := Get_Ada_Node_From_Item (B);
+         begin
+            if Present (Node) and then not Is_Type (Node) then
+               Ada_Ent_To_Why.Insert (Symbol_Table,
+                                      Get_Ada_Node_From_Item (B),
+                                      B);
+            else
+               pragma Assert (B.Kind = Regular
+                              and then B.Main.B_Ent /= Null_Entity_Name);
+
+               --  If there is no Ada_Node, this is a binder generated
+               --  from an effect; we add the parameter in the name
+               --  map using its unique name.
+
+               Ada_Ent_To_Why.Insert
+                 (Symbol_Table,
+                  B.Main.B_Ent,
+                  B);
+            end if;
+         end;
+      end loop;
+   end Push_Binders_To_Symbol_Table;
+
    ----------------------
    -- Reconstruct_Item --
    ----------------------
@@ -1126,37 +1157,6 @@ package body Why.Gen.Binders is
 
       return T;
    end Reconstruct_Item;
-
-   ----------------------------------
-   -- Push_Binders_To_Symbol_Table --
-   ----------------------------------
-
-   procedure Push_Binders_To_Symbol_Table (Binders : Item_Array) is
-   begin
-      for B of Binders loop
-         declare
-            Node : constant Node_Id := Get_Ada_Node_From_Item (B);
-         begin
-            if Present (Node) and then not Is_Type (Node) then
-               Ada_Ent_To_Why.Insert (Symbol_Table,
-                                      Get_Ada_Node_From_Item (B),
-                                      B);
-            else
-               pragma Assert (B.Kind = Regular
-                              and then B.Main.B_Ent /= Null_Entity_Name);
-
-               --  If there is no Ada_Node, this is a binder generated
-               --  from an effect; we add the parameter in the name
-               --  map using its unique name.
-
-               Ada_Ent_To_Why.Insert
-                 (Symbol_Table,
-                  B.Main.B_Ent,
-                  B);
-            end if;
-         end;
-      end loop;
-   end Push_Binders_To_Symbol_Table;
 
    ---------------------
    -- To_Binder_Array --
