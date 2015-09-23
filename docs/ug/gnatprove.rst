@@ -246,19 +246,22 @@ levels of proof, from the faster level 0 (the default value) to the more
 powerful level 4. More precisely, each value of ``--level`` is equivalent to
 directly setting a collection of other switches discussed above:
 
-* ``--level=0`` is equivalent to ``--prover=cvc4 --steps=100 --timeout=1``
+* ``--level=0`` is equivalent to
+  ``--prover=cvc4 --proof=per_check --steps=100 --timeout=1``
 * ``--level=1`` is equivalent to
-  ``--prover=cvc4,z3,altergo --steps=100 --timeout=1``
+  ``--prover=cvc4,z3,altergo --proof=per_check --steps=100 --timeout=1``
 * ``--level=2`` is equivalent to
-  ``--prover=cvc4,z3,altergo --steps=1000 --timeout=10``
+  ``--prover=cvc4,z3,altergo --proof=per_check --steps=1000 --timeout=10``
 * ``--level=3`` is equivalent to
-  ``--prover=cvc4,z3,altergo --steps=1000 --timeout=10 --proof=progressive``
+  ``--prover=cvc4,z3,altergo --proof=progressive --steps=1000 --timeout=10``
 * ``--level=4`` is equivalent to
-  ``--prover=cvc4,z3,altergo --steps=10000 --timeout=60 --proof=progressive``
+  ``--prover=cvc4,z3,altergo --proof=progressive --steps=10000 --timeout=60``
 
-If both ``--level`` is set and a matching switch is set (``--prover``,
+If both ``--level`` is set and an underlying switch is set (``--prover``,
 ``--steps``, ``--timeout`` or ``--proof``), the value of the latter takes
-precedence over the value set through ``--level``.
+precedence over the value set through ``--level``. The default value of
+``--level=0`` is only set if no underlying switch is set explicitly, either on
+the command line or in the project file.
 
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.

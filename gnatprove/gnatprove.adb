@@ -440,36 +440,85 @@ procedure Gnatprove is
       --  setting takes precedence.
 
       case Level is
-         when Invalid_Level  --  no explicit value set, defaults to 0
-            | 0              --  --prover=cvc4 --steps=100 --timeout=1
-         =>
+         when Invalid_Level =>
+
+            --  When no explicit value of level is set, it defaults to 0 if
+            --  no switch impacted is independently set, either on the command
+            --  line or in the project file, which is equivalen to
+            --  --prover=cvc4 --proof=per_check --steps=100 --timeout=1
+
+            if Alter_Prover.all = ""
+              and then Proof_Input.all = ""
+              and then Steps = Invalid_Step
+              and then Timeout = Invalid_Timeout
+            then
+               Set_Alter_Prover ("cvc4");
+               Set_Proof_Mode (No_Split);
+               Set_Steps (100);
+               Set_Timeout (1);
+
+            --  Otherwise, no value of level is set. Directly set the default
+            --  value for --timeout, --prover and --proof if needed. There is
+            --  no default value for --steps.
+
+            else
+               if Alter_Prover.all = "" then
+                  Set_Alter_Prover ("cvc4");  --  --prover=cvc4
+               end if;
+
+               if Proof_Input.all = "" then
+                  Set_Proof_Mode (No_Split);  --  --proof=per_check
+               end if;
+
+               if Timeout = Invalid_Timeout then
+                  Set_Timeout (1);  --  --timeout=1
+               end if;
+            end if;
+
+         --  Level 0 is equivalent to
+         --  --prover=cvc4 --proof=per_check --steps=100 --timeout=1
+
+         when 0 =>
             Set_Alter_Prover ("cvc4");
+            Set_Proof_Mode (No_Split);
             Set_Steps (100);
             Set_Timeout (1);
 
-         when 1 =>   --  --prover=cvc4,z3,altergo --steps=100 --timeout=1
+         --  Level 1 is equivalent to
+         --  --prover=cvc4,z3,altergo --proof=per_check --steps=100 --timeout=1
+
+         when 1 =>
             Set_Alter_Prover ("cvc4,z3,altergo");
+            Set_Proof_Mode (No_Split);
             Set_Steps (100);
             Set_Timeout (1);
 
-         when 2 =>   --  --prover=cvc4,z3,altergo --steps=1000 --timeout=10
+         --  Level 2 is equivalent to --prover=cvc4,z3,altergo
+         --  --proof=per_check --steps=1000 --timeout=10
+
+         when 2 =>
             Set_Alter_Prover ("cvc4,z3,altergo");
+            Set_Proof_Mode (No_Split);
             Set_Steps (1000);
             Set_Timeout (10);
 
-         when 3 =>   --  --prover=cvc4,z3,altergo --steps=1000 --timeout=10
-                     --  --proof=progressive
+         --  Level 3 is equivalent to --prover=cvc4,z3,altergo
+         --  --proof=progressive --steps=1000 --timeout=10
+
+         when 3 =>
             Set_Alter_Prover ("cvc4,z3,altergo");
-            Set_Steps (1000);
-            Set_Timeout (10);
             Set_Proof_Mode (Then_Split);
+            Set_Steps (1000);
+            Set_Timeout (10);
 
-         when 4 =>   --  --prover=cvc4,z3,altergo --steps=10000 --timeout=60
-                     --  --proof=progressive
+         --  Level 4 is equivalent to --prover=cvc4,z3,altergo
+         --  --proof=progressive --steps=10000 --timeout=60
+
+         when 4 =>
             Set_Alter_Prover ("cvc4,z3,altergo");
+            Set_Proof_Mode (Then_Split);
             Set_Steps (10_000);
             Set_Timeout (60);
-            Set_Proof_Mode (Then_Split);
 
          when others =>
             raise Program_Error;
@@ -479,34 +528,34 @@ procedure Gnatprove is
       --  impacted by --level, which ensures that the independent setting of
       --  such switches takes precedence.
 
-      --  Set default timeout of 1s when not set explicitly on the command-line
-      --  (including when forced to 0 to avoid timeout) or implicitly set
-      --  through use of --level.
-
-      if Timeout = Invalid_Timeout then
-         Timeout := 1;
-      end if;
-
       if Timeout /= 0 then
          Args.Append ("--timeout");
          Args.Append (Image (Timeout, 1));
       end if;
 
-      if Steps /= 0 then
+      if Steps /= Invalid_Step then
          Args.Append ("--steps");
          Args.Append (Image (Steps, 1));
       end if;
+
+      --  If not set explicitly, the code above always sets a suitable value
+      --  for the prover list and the proof strategy.
+
+      pragma Assert (Alter_Prover.all /= "");
+      Args.Append ("--prover");
+      Args.Append (Alter_Prover.all);
+
+      Args.Append ("--proof");
+      Args.Append (To_String (Proof));
+
       Args.Append ("--socket");
       Args.Append (Socket_Name.all);
+
       if Debug then
          Args.Append ("--debug");
       end if;
       if Force then
          Args.Append ("--force");
-      end if;
-      if Proof /= Then_Split then
-         Args.Append ("--proof");
-         Args.Append (To_String (Proof));
       end if;
 
       if not Lazy then
@@ -523,10 +572,6 @@ procedure Gnatprove is
       if Limit_Subp.all /= "" then
          Args.Append ("--limit-subp");
          Args.Append (Limit_Subp.all);
-      end if;
-      if Alter_Prover.all /= "" then
-         Args.Append ("--prover");
-         Args.Append (Alter_Prover.all);
       end if;
 
       if Proof_Dir /= null then

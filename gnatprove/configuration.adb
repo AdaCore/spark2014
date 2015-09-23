@@ -237,7 +237,7 @@ ASCII.LF &
 ASCII.LF &
 "                     (g=per_check*, per_path, progressive) (l=lazy*, all)" &
 ASCII.LF &
-" --prover=s[,s]*     Use given provers (s=cvc4, altergo, ...)" &
+" --prover=s[,s]*     Use given provers (s=altergo, cvc4*, z3, ...)" &
 ASCII.LF &
 " --RTS=dir           Specify the Ada runtime name/location" &
 ASCII.LF &
@@ -273,7 +273,7 @@ ASCII.LF &
 ASCII.LF &
 " * Prover name values" &
 ASCII.LF &
-"   (Default prover used at level 0 is cvc4.)" &
+"   (Default prover is cvc4.)" &
 ASCII.LF &
 "   (Provers marked with [steps] support the --steps switch.)" &
 ASCII.LF &

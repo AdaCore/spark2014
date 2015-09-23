@@ -62,7 +62,7 @@ Command Line Invocation
   --pedantic          Use a strict interpretation of the Ada standard
   --proof=g[:l]       Set the proof modes for generation of formulas
                       (g=per_check*, per_path, progressive) (l=lazy*, all)
-  --prover=s[,s]*     Use given provers (s=cvc4, altergo, ...)
+  --prover=s[,s]*     Use given provers (s=altergo, cvc4*, z3, ...)
   --RTS=dir           Specify the Ada runtime name/location
   --steps=nnn         Set the maximum number of proof steps (prover-specific)
   --timeout=s         Set the prover timeout in seconds (default: 1)
@@ -81,7 +81,7 @@ Command Line Invocation
                       (most suited for fully automatic proof) (default)
 
   * Prover name values
-    (Default prover used at level 0 is cvc4.)
+    (Default prover is cvc4.)
     (Provers marked with [steps] support the --steps switch.)
     . altergo       - [steps] Use Alt-Ergo
     . cvc4          - [steps] Use CVC4
