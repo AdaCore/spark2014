@@ -745,10 +745,10 @@ package SPARK_Util is
    --    by its source position and is used e.g. for the --limit-subp switch of
    --    GNATprove.
 
-   function Is_Protected_Subprogram (E : Entity_Id) return Boolean
-   is (Ekind (E) = E_Entry or else
-         (Ekind (E) in Subprogram_Kind and then
-          Convention (E) = Convention_Protected));
+   function Is_Protected_Subprogram (E : Entity_Id) return Boolean;
+   --  @param any entity
+   --  @return True iff the entity is an entry or a subprogram that is part of
+   --    (directly or in a nested way) a protected type.
 
    ------------------------------
    -- Queries related to tasks --
@@ -790,11 +790,11 @@ package SPARK_Util is
    --  @return the protected definition for the given type
 
    function Containing_Protected_Type (E : Entity_Id) return Entity_Id
-     is (Scope (E))
      with Pre =>
              Ekind (E) in E_Function | E_Procedure | E_Entry
               | E_Component | E_Discriminant
-             and (Is_Protected_Subprogram (E) or else
+             and
+              (Is_Protected_Subprogram (E) or else
                   Ekind (Scope (E)) in Protected_Kind),
           Post => Ekind (Containing_Protected_Type'Result) in Protected_Kind;
    --  @param E a subprogram or entry or field which is part of a protected

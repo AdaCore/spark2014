@@ -195,6 +195,9 @@ is
    --  globals, and we always return the most refined view possible.
    --  If Keep_Constants is true then constants with variable inputs are
    --  not suppressed form the Globals even if they are constants in Why.
+   --  In the case of nested subprograms of protected types which may have
+   --  an effect on the components of the protected type, the protected type
+   --  itself is returned as an effect.
 
    function Has_Proof_Global_Reads (Subprogram : Entity_Id;
                                     Classwide  : Boolean)

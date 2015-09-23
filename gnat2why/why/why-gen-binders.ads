@@ -23,7 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;                  use Atree;
 with Common_Containers;      use Common_Containers;
+with Einfo;                  use Einfo;
 with Namet;                  use Namet;
 with SPARK_Definition;       use SPARK_Definition;
 with Types;                  use Types;
@@ -237,6 +239,12 @@ package Why.Gen.Binders is
 
    function Unit_Param return Binder_Type;
    --  return a dummy binder for a single argument of type unit
+
+   function Protected_Self_Binder (Prot_Ty : Entity_Id) return Binder_Type
+     with Pre => Ekind (Prot_Ty) in Protected_Kind;
+   --  @param Prot_Ty a protected type entity
+   --  @return a binder type which corresponds to the "self" object of that
+   --    protected type
 
    function Mk_Tmp_Item_Of_Entity
      (E       : Entity_Id;

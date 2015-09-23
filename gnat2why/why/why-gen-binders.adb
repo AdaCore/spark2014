@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                  use Atree;
-with Einfo;                  use Einfo;
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Types;             use Flow_Types;
 with Flow_Utility;           use Flow_Utility;
@@ -1125,6 +1123,23 @@ package body Why.Gen.Binders is
          end;
       end loop;
    end Push_Binders_To_Symbol_Table;
+
+   ---------------------------
+   -- Protected_Self_Binder --
+   ---------------------------
+
+   function Protected_Self_Binder (Prot_Ty : Entity_Id) return Binder_Type is
+   begin
+      return
+        Binder_Type'
+          (B_Name   =>
+             New_Identifier
+               (Name => "self__",
+                Typ  => Type_Of_Node (Prot_Ty)),
+           B_Ent    => Null_Entity_Name,
+           Ada_Node => Prot_Ty,
+           Mutable  => False);
+   end Protected_Self_Binder;
 
    ----------------------
    -- Reconstruct_Item --

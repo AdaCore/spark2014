@@ -584,6 +584,26 @@ package body SPARK_Util is
       end if;
    end Component_Is_Visible_In_SPARK;
 
+   -------------------------------
+   -- Containing_Protected_Type --
+   -------------------------------
+
+   function Containing_Protected_Type (E : Entity_Id) return Entity_Id is
+      Scop : Node_Id := Scope (E);
+   begin
+      while Present (Scop) loop
+         if Ekind (Scop) in Protected_Kind then
+            return Scop;
+         end if;
+         Scop := Scope (Scop);
+      end loop;
+
+      --  should not reach this - we should be in the scope of a protected type
+
+      pragma Assert (False);
+
+   end Containing_Protected_Type;
+
    ---------------------------------------
    -- Count_Non_Inherited_Discriminants --
    ---------------------------------------
@@ -2545,6 +2565,38 @@ package body SPARK_Util is
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean is
      (Nkind (N) = N_Function_Call
       and then Is_Predicate_Function (Entity (Name (N))));
+
+   -----------------------------
+   -- Is_Protected_Subprogram --
+   -----------------------------
+
+   function Is_Protected_Subprogram (E : Entity_Id) return Boolean is
+      Scop : Node_Id;
+   begin
+
+      --  entries are always protected subprograms
+
+      if Ekind (E) = E_Entry then
+         return True;
+      end if;
+
+      --  make sure that only subprograms pass this test
+
+      if Ekind (E) not in Subprogram_Kind then
+         return False;
+      end if;
+
+      --  now check that we are in the scope of a protected type
+
+      Scop := Scope (E);
+      while Present (Scop) loop
+         if Ekind (Scop) in Protected_Kind then
+            return True;
+         end if;
+         Scop := Scope (Scop);
+      end loop;
+      return False;
+   end Is_Protected_Subprogram;
 
    ------------------------------
    -- Is_Quantified_Loop_Param --

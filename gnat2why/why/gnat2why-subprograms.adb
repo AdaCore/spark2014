@@ -579,20 +579,29 @@ package body Gnat2Why.Subprograms is
                  and then not (Ekind (Entity) = E_Abstract_State)
                  and then Entity_In_SPARK (Entity)
                then
-                  declare
-                     Dyn_Prop : constant W_Pred_Id :=
-                       Compute_Dynamic_Invariant
-                         (Expr => +Transform_Identifier (Params   => Params,
-                                                         Expr     => Entity,
-                                                         Ent      => Entity,
-                                                         Domain   => EW_Term),
-                          Ty   => Etype (Entity));
-                  begin
-                     Dynamic_Prop_Effects := +New_And_Expr
-                       (Left   => +Dynamic_Prop_Effects,
-                        Right  => +Dyn_Prop,
-                        Domain => EW_Pred);
-                  end;
+
+                  --  ??? skip dynamic invariant for protected type
+
+                  if Ekind (Entity) in Type_Kind then
+                     pragma Assert (Ekind (Entity) in Protected_Kind);
+                     null;
+                  else
+                     declare
+                        Dyn_Prop : constant W_Pred_Id :=
+                          Compute_Dynamic_Invariant
+                            (Expr =>
+                               +Transform_Identifier (Params   => Params,
+                                                      Expr     => Entity,
+                                                      Ent      => Entity,
+                                                      Domain   => EW_Term),
+                             Ty   => Etype (Entity));
+                     begin
+                        Dynamic_Prop_Effects := +New_And_Expr
+                          (Left   => +Dynamic_Prop_Effects,
+                           Right  => +Dyn_Prop,
+                           Domain => EW_Pred);
+                     end;
+                  end if;
                end if;
             end;
          end loop;
@@ -673,12 +682,27 @@ package body Gnat2Why.Subprograms is
               and then not (Ekind (Entity) = E_Abstract_State)
               and then Entity_In_SPARK (Entity)
             then
-               declare
-                  Binder : constant Item_Type :=
-                    Ada_Ent_To_Why.Element (Symbol_Table, Entity);
-               begin
-                  Effects_Append_Binder_To_Writes (Binder);
-               end;
+
+               --  Take into account special case of effect on protected
+               --  components
+
+               if Ekind (Entity) in Type_Kind then
+                  pragma Assert (Ekind (Entity) in Protected_Kind);
+                  declare
+                     Binder : constant Item_Type :=
+                       Item_Type'(Kind => Prot_Self,
+                                  Main => Protected_Self_Binder (Entity));
+                  begin
+                     Effects_Append_Binder_To_Writes (Binder);
+                  end;
+               else
+                  declare
+                     Binder : constant Item_Type :=
+                       Ada_Ent_To_Why.Element (Symbol_Table, Entity);
+                  begin
+                     Effects_Append_Binder_To_Writes (Binder);
+                  end;
+               end if;
             else
                Effects_Append_To_Writes
                  (Eff,
@@ -728,12 +752,27 @@ package body Gnat2Why.Subprograms is
               and then not (Ekind (Entity) = E_Abstract_State)
               and then Entity_In_SPARK (Entity)
             then
-               declare
-                  Binder : constant Item_Type :=
-                    Ada_Ent_To_Why.Element (Symbol_Table, Entity);
-               begin
-                  Effects_Append_Binder_To_Reads (Binder);
-               end;
+
+               --  Take into account special case of effect on protected
+               --  components
+
+               if Ekind (Entity) in Type_Kind then
+                  pragma Assert (Ekind (Entity) in Protected_Kind);
+                  declare
+                     Binder : constant Item_Type :=
+                       Item_Type'(Kind => Prot_Self,
+                                  Main => Protected_Self_Binder (Entity));
+                  begin
+                     Effects_Append_Binder_To_Reads (Binder);
+                  end;
+               else
+                  declare
+                     Binder : constant Item_Type :=
+                       Ada_Ent_To_Why.Element (Symbol_Table, Entity);
+                  begin
+                     Effects_Append_Binder_To_Reads (Binder);
+                  end;
+               end if;
             else
                Effects_Append_To_Reads
                  (Eff,
@@ -942,16 +981,7 @@ package body Gnat2Why.Subprograms is
          declare
             Prot : constant Entity_Id := Containing_Protected_Type (E);
          begin
-            Result (1) :=
-              (Prot_Self,
-               Binder_Type'
-                 (B_Name   =>
-                      New_Identifier
-                    (Name => "self__",
-                     Typ  => Type_Of_Node (Prot)),
-                  B_Ent    => Null_Entity_Name,
-                  Ada_Node => Prot,
-                  Mutable  => False));
+            Result (1) := (Prot_Self, Protected_Self_Binder (Prot));
             Count := 2;
          end;
       end if;
