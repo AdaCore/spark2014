@@ -4015,15 +4015,11 @@ package body SPARK_Definition is
          Specs_In_SPARK.Include (Id);
       end if;
 
-      if Present (Vis_Decls) then
-         Mark_Stmt_Or_Decl_List (Vis_Decls);
-      end if;
+      Mark_Stmt_Or_Decl_List (Vis_Decls);
 
       Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
 
-      if Present (Priv_Decls) then
-         Mark_Stmt_Or_Decl_List (Priv_Decls);
-      end if;
+      Mark_Stmt_Or_Decl_List (Priv_Decls);
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;
 
