@@ -3978,9 +3978,8 @@ package body SPARK_Definition is
 
       if Entity_In_Ext_Axioms (Id) then
          if Present (Priv_Decls)
-           and then Present (SPARK_Aux_Pragma (Defining_Entity (N)))
-           and then Get_SPARK_Mode_From_Pragma
-           (SPARK_Aux_Pragma (Defining_Entity (N))) /= Off
+           and then Present (SPARK_Aux_Pragma (Id))
+           and then Get_SPARK_Mode_From_Pragma (SPARK_Aux_Pragma (Id)) /= Off
          then
             Mark_Violation
               ("Private part of package with External_Axiomatization", N);
