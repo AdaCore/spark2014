@@ -5,6 +5,26 @@ is
    X0 : Integer;
    Y0 : Integer;
 
+   package Nested_1
+   with Abstract_State => Abs_1
+   is
+
+      function Read_Partial_1 return Integer
+      with Global => Abs_1;
+
+      function Read_Partial_1_Inner return Integer
+      with Global => Abs_1;
+
+      procedure Test_11 (A : out Integer)
+      with Global => (X0, Abs_1),
+           Post => A = Read_Partial_0 + Read_Partial_1 + Read_Partial_1_Inner;
+
+      procedure D_Test_02 (X : out Integer)
+      with Global => (X0, Abs_1),
+           Depends => (X => (X0, Abs_1));
+
+   end Nested_1;
+
    function Read_Partial_0 return Integer
    with Refined_Global => X0
    is
@@ -45,26 +65,6 @@ is
    begin
       A := Read_Partial_0;
    end Test_01;
-
-   package Nested_1
-   with Abstract_State => Abs_1
-   is
-
-      function Read_Partial_1 return Integer
-      with Global => Abs_1;
-
-      function Read_Partial_1_Inner return Integer
-      with Global => Abs_1;
-
-      procedure Test_11 (A : out Integer)
-      with Global => (X0, Abs_1),
-           Post => A = Read_Partial_0 + Read_Partial_1 + Read_Partial_1_Inner;
-
-      procedure D_Test_02 (X : out Integer)
-      with Global => (X0, Abs_1),
-           Depends => (X => (X0, Abs_1));
-
-   end Nested_1;
 
    procedure D_Test_01 (X : out Integer;
                         Y : in out Integer)

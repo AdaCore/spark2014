@@ -17,11 +17,11 @@ fruit.ads:37:04: info: initialization of "Apples" constituent of "Fruits" proved
 fruit.ads:40:04: info: initialization of "Oranges" constituent of "Fruits" proved
 fruit.ads:43:04: info: initialization of "Price_Of_Apple" constituent of "Fruits" proved
 fruit.ads:46:04: info: initialization of "Price_Of_Orange" constituent of "Fruits" proved
-levels.adb:42:23: info: initialization of "A" proved
-levels.adb:50:27: warning: no procedure exists that can initialize abstract state "Nested_1.Abs_1" constituent of "Levels.Abs_0"
-levels.adb:59:26: info: initialization of "A" proved
-levels.adb:61:20: info: initialization of "A" proved
-levels.adb:63:28: info: initialization of "X" proved
+levels.adb:9:27: warning: no procedure exists that can initialize abstract state "Nested_1.Abs_1" constituent of "Levels.Abs_0"
+levels.adb:18:26: info: initialization of "A" proved
+levels.adb:20:20: info: initialization of "A" proved
+levels.adb:22:28: info: initialization of "X" proved
+levels.adb:62:23: info: initialization of "A" proved
 levels.adb:80:23: info: initialization of "A" proved
 levels.adb:98:30: info: initialization of "X2" constituent of "Abs_2" proved
 levels.adb:109:10: info: initialization of "X2" constituent of "Abs_2" proved
@@ -48,4 +48,5 @@ par.adb:29:04: warning: analyzing unreferenced procedure "Test_1"
 par.adb:29:14: info: initialization of "Z" constituent of "State" proved
 par.adb:37:04: warning: analyzing unreferenced procedure "Test_2"
 par.adb:37:14: info: initialization of "Z" constituent of "State" proved
+par.ads:2:27: warning: no procedure exists that can initialize abstract state "Par.State"
 par.ads:7:14: info: initialization of "Z" constituent of "State" proved
