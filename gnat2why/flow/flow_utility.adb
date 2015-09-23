@@ -4441,6 +4441,13 @@ package body Flow_Utility is
          return True;
       end if;
 
+      --  If we are dealing with an imported constant, we consider this to have
+      --  potentially variable input.
+
+      if Is_Imported (E) then
+         return True;
+      end if;
+
       Decl := Get_Declaration (E);
       if not Present (Expression (Decl)) then
          --  We are dealing with a deferred constant so we need to get
