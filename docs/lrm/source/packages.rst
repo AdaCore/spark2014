@@ -580,7 +580,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
    abstraction, this indicates that it is a constituent (see
    :ref:`state_refinement`) of the denoted state abstraction.
    [Alternatively, the name may denote a task or protected unit (see section
-   ref:`tasks-and-synchronization`).]
+   :ref:`tasks-and-synchronization`).]
 
 .. _tu-fe-abstract_state_aspects-10:
 
