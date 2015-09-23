@@ -3511,7 +3511,7 @@ package body SPARK_Definition is
    --  Start of processing for Mark_Entity
 
    begin
-      --  For entities in external axioms, mark the package entity.
+      --  For entities in external axioms, mark the package entity
 
       if Entity_In_Ext_Axioms (E) then
          declare
@@ -3974,7 +3974,7 @@ package body SPARK_Definition is
       end if;
 
       --  For packages with external axiomatization, check that the private
-      --  part (if any) has SPARK_Mode Off.
+      --  part (if any) has SPARK_Mode => Off.
 
       if Entity_In_Ext_Axioms (Id) then
          if Present (Priv_Decls)
