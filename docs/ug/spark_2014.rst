@@ -1109,9 +1109,9 @@ State In The Private Part
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Global variables and nested packages which themselves contain state may be
-declared in the private part of a package. For each global variable and nested
-package state, it is mandatory to identify, using aspect ``Part_Of``, the
-abstract state of the enclosing package of which it is a constituent:
+declared in the private part of a package. For each such global variable and
+nested package state, it is mandatory to identify, using aspect ``Part_Of``,
+the abstract state of the enclosing package of which it is a constituent:
 
 .. code-block:: ada
 
