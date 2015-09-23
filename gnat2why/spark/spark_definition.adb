@@ -3983,8 +3983,7 @@ package body SPARK_Definition is
            (SPARK_Aux_Pragma (Defining_Entity (N))) /= Off
          then
             Mark_Violation
-                 ("Private part of package with External_Axiomatization",
-                  N);
+              ("Private part of package with External_Axiomatization", N);
          end if;
 
          Current_SPARK_Pragma := Save_SPARK_Pragma;
