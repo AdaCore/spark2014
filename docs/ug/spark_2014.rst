@@ -947,6 +947,9 @@ on a particular choice of implementation (see :ref:`State Abstraction and
 Contracts`), which is better both for maintenance (no need to change contracts)
 and scalability of analysis (contracts can be much smaller).
 
+Basic State Abstraction
+^^^^^^^^^^^^^^^^^^^^^^^
+
 One abstract name may be mapped to more than one concrete variable, but no two
 abstract names can be mapped to the same concrete variable. When state
 abstraction is specified on a package, all non-visible global variables defined
@@ -1043,6 +1046,19 @@ We can also imagine defining different abstract names for the total and the log:
       ...
    end Account;
 
+The abstract names defined in a package are visible everywhere the package name
+itself is visible:
+
+* in the scope where the package is declared, for a locally defined package
+* in units that have a clause ``with <package>;``
+* in units that have a clause ``limited with <package>;``
+
+The last case allows subprograms in two packages to mutually reference the
+abstract state of the other package in their data and flow dependencies.
+
+Special Cases of State Abstraction
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Global constants with a statically known value are not part of a package's
 state. On the contrary, `constant with variable inputs` are constants whose
 value depends on the value of either a variable or a subprogram
@@ -1089,15 +1105,64 @@ P's refinement. For example, we can nest ``Account`` in the body of the
       ...
    end Account_Manager;
 
-The abstract names defined in a package are visible everywhere the package name
-itself is visible:
+State In The Private Part
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* in the scope where the package is declared, for a locally defined package
-* in units that have a clause ``with <package>;``
-* in units that have a clause ``limited with <package>;``
+Global variables and nested packages which contain themselves state may be
+declared in the private part of a package. In that case, it is mandatory to
+declare for each global variable and nested package state the abstract state of
+the enclosing package that it is a constituent of, using aspect ``Part_Of``:
 
-The last case allows subprograms in two packages to mutually reference the
-abstract state of the other package in their data and flow dependencies.
+.. code-block:: ada
+
+   package Account_Manager with
+     Abstract_State => (Totals, Details)
+   is
+      ...
+   private
+      Total_Accounts : Integer with Part_Of => Totals;
+
+      package Account with
+        Abstract_State => (State with Part_Of => Details)
+      is
+         Total : Integer with Part_Of => Totals;
+         ...
+      end Account;
+      ...
+   end Account_Manager;
+
+The purpose of using ``Part_Of`` is to enforce that each constituent of an
+abstract state is known at the declaration of the constituent (not having to
+look at the package body), which is useful for both code understanding and tool
+analysis (including compilation).
+
+As the state of a private child package is logically part of its parent
+package, aspect ``Part_Of`` must also be specified in that case:
+
+.. code-block:: ada
+
+   private package Account_Manager.Account with
+     Abstract_State => (State with Part_Of => Details)
+   is
+      Total : Integer with Part_Of => Totals;
+      ...
+   end Account_Manager.Account;
+
+Aspect ``Part_Of`` can also be specified on a generic package instantiation
+inside a private part, to specify that all the state (visible global variables
+and abstract states) of the package instantiation is a constituent of an
+abstract state of the enclosing package:
+
+.. code-block:: ada
+
+   package Account_Manager with
+     Abstract_State => (Totals, Details)
+   is
+      ...
+   private
+      package Account is new Generic_Account (Max_Total) with Part_Of => Details;
+      ...
+   end Account_Manager;
 
 .. _Package Initialization:
 
