@@ -1108,10 +1108,10 @@ P's refinement. For example, we can nest ``Account`` in the body of the
 State In The Private Part
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Global variables and nested packages which contain themselves state may be
-declared in the private part of a package. In that case, it is mandatory to
-declare for each global variable and nested package state the abstract state of
-the enclosing package that it is a constituent of, using aspect ``Part_Of``:
+Global variables and nested packages which themselves contain state may be
+declared in the private part of a package. For each global variable and nested
+package state, it is mandatory to identify, using aspect ``Part_Of``, the
+abstract state of the enclosing package of which it is a constituent:
 
 .. code-block:: ada
 
