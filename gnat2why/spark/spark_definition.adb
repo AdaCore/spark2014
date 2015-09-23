@@ -46,7 +46,6 @@ with Sem_Ch12;             use Sem_Ch12;
 with Sem_Disp;             use Sem_Disp;
 with Sem_Prag;             use Sem_Prag;
 with Sem_Util;             use Sem_Util;
-with Sinfo;                use Sinfo;
 with Snames;               use Snames;
 with SPARK_Util;           use SPARK_Util;
 with Stand;                use Stand;

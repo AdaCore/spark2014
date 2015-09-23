@@ -46,7 +46,7 @@ with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
 with GNATCOLL.JSON;     use GNATCOLL.JSON;
---  with Sinfo;             use Sinfo;
+with Sinfo;             use Sinfo;
 with Types;             use Types;
 
 package SPARK_Definition is
@@ -100,7 +100,16 @@ package SPARK_Definition is
    --  error messages during marking when we generate globals (only the
    --  marking itself is important).
 
-   procedure Mark_Compilation_Unit (N : Node_Id);
+   procedure Mark_Compilation_Unit (N : Node_Id)
+     with Pre => Nkind (N) in N_Compilation_Unit               |
+                              N_Generic_Package_Declaration    |
+                              N_Generic_Subprogram_Declaration |
+                              N_Package_Body                   |
+                              N_Package_Declaration            |
+                              N_Package_Renaming_Declaration   |
+                              N_Subprogram_Body                |
+                              N_Subprogram_Declaration         |
+                              N_Subprogram_Renaming_Declaration;
    --  Put marks on a compilation unit. This should be called after all
    --  compilation units on which it depends have been marked.
 
