@@ -1,7 +1,0 @@
-project Test is
-
-   package Compiler is
-      for Local_Configuration_Pragmas use "spark.adc";
-   end Compiler;
-
-end Test;
