@@ -26,8 +26,6 @@ def run_testsuite(test_driver):
     options = __parse_options()
     env = Env()
 
-    if options.quick_run:
-        os.environ["quick"] = "true"
     if options.vc_timeout:
         os.environ["vc_timeout"] = str(options.vc_timeout)
     if options.debug:
@@ -108,8 +106,6 @@ def __parse_options():
     m.add_option("--inverse-prover", dest="inverse_prover",
                  action="store_true",
                  default=False, help="inverse order of default provers")
-    m.add_option("--quick", dest="quick_run", action="store_true",
-                 default=False, help="perform a quick run (no proofs)")
     m.add_option("--vc-timeout", dest="vc_timeout", action="store",
                  type="int", help="set timeout for prover")
     m.parse_args()

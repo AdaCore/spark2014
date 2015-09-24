@@ -17,20 +17,12 @@ default_vc_timeout = 120
 parallel_procs = 1
 #  Change directory
 
-# global flag for quick mode, so that the fake output is generated only once,
-# even if original test calls gnatprove more than once
-fake_output_generated = False
-
 TEST = sys.modules['__main__']
 TESTDIR = os.path.dirname(TEST.__file__)
 TEST_NAME = os.path.basename(TESTDIR)
 os.chdir(TESTDIR)
 
 from gnatpython.ex import Run
-
-
-def quick_mode():
-    return "quick" in os.environ and os.environ["quick"] == "true"
 
 
 def debug_mode():
@@ -74,20 +66,18 @@ def print_sorted(strlist):
         print line
 
 
-def cat(filename, force_in_quick_mode=False, sort=False):
+def cat(filename, sort=False):
     """Dump the content of a file on stdout
 
     PARAMETERS
       filename: name of the file to print on stdout
     """
-    # do nothing in quick mode, as output is faked
-    if not quick_mode() or force_in_quick_mode:
-        if os.path.exists(filename):
-            with open(filename, 'r') as f:
-                if sort:
-                    print_sorted(f.readlines())
-                else:
-                    print f.read()
+    if os.path.exists(filename):
+        with open(filename, 'r') as f:
+            if sort:
+                print_sorted(f.readlines())
+            else:
+                print f.read()
 
 
 def ls(directory=None):
@@ -412,8 +402,6 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     PARAMETERS
     opt: options to give to gnatprove
     """
-    global fake_output_generated
-
     # generate an empty project file if not present already
     if not os.path.isfile("test.gpr"):
         with open("test.gpr", 'w') as f_prj:
@@ -434,8 +422,6 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     cmd += ["-k"]
     if benchmark_mode():
         cmd += ["--benchmark"]
-    if quick_mode():
-        cmd += ["--proof=no_wp"]
     if debug_mode():
         cmd += ["--debug"]
     if verbose_mode():
@@ -448,27 +434,14 @@ def gnatprove_(opt=["-P", "test.gpr"]):
     # running the tool:
     # process = open("test.out", 'r').read()
 
-    # In quick mode, ignore xfail tests by simply generating a dummy output
-    if quick_mode() and xfail_test():
-        if not fake_output_generated:
-            fake_output_generated = True
-            print "dummy output for XFAIL test"
+    # Check marks in source code and print the command output sorted
+    strlist = str.splitlines(process.out)
+    # Replace line above by the one below for testing the scripts without
+    # running the tool
+    # strlist = str.splitlines(process)
 
-    # Otherwise, in quick mode, ignore test output and copy instead the
-    # expected output.
-    elif quick_mode():
-        if os.path.exists("test.out") and not fake_output_generated:
-            fake_output_generated = True
-            cat("test.out", True)
-
-    # Otherwise, check marks in source code and print the command output sorted
-    else:
-        strlist = str.splitlines(process.out)
-        # Replace line above by the one below for testing the scripts without
-        # running the tool
-        # strlist = str.splitlines(process)
-        check_marks(strlist)
-        print_sorted(strlist)
+    check_marks(strlist)
+    print_sorted(strlist)
 
 
 def gnatprove(opt=["-P", "test.gpr"]):
