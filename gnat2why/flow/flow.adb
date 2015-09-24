@@ -1379,18 +1379,20 @@ package body Flow is
                         Needs_Body := True;
                      end if;
 
-                     if Needs_Body and then Entity_Body_In_SPARK (E) then
-                        FA_Graphs.Include
-                          (Pkg_Body,
-                           Flow_Analyse_Entity
-                             (Pkg_Body, E, Generating_Globals));
-                     elsif not Needs_Body then
+                     if Needs_Body then
+                        if Entity_Body_In_SPARK (E) then
+                           FA_Graphs.Include
+                             (Pkg_Body,
+                              Flow_Analyse_Entity
+                                (Pkg_Body, E, Generating_Globals));
+                        else
+                           null;
+                           --  ??? warn that we can't flow analyze elaboration?
+                        end if;
+                     else
                         FA_Graphs.Include
                           (E,
                            Flow_Analyse_Entity (E, E, Generating_Globals));
-                     else
-                        null;
-                        --  ??? warn that we can't flow analyze elaboration?
                      end if;
 
                   end if;
