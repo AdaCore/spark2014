@@ -2,9 +2,9 @@ perm-lemma_subprograms.adb:9:07: info: precondition proved
 perm-lemma_subprograms.adb:9:15: info: precondition proved
 perm-lemma_subprograms.adb:9:32: info: precondition proved
 perm-lemma_subprograms.adb:11:14: info: index check proved
-perm-lemma_subprograms.adb:12:25: medium: assertion might fail, requires B (B'Last) = E
+perm-lemma_subprograms.adb:12:10: info: assertion proved
 perm-lemma_subprograms.adb:12:29: info: index check proved
-perm-lemma_subprograms.adb:14:25: medium: assertion might fail, requires B (B'Last) /= E
+perm-lemma_subprograms.adb:14:10: info: assertion proved
 perm-lemma_subprograms.adb:14:29: info: index check proved
 perm-lemma_subprograms.adb:21:15: info: index check proved
 perm-lemma_subprograms.adb:21:18: info: initialization of "Result" proved
@@ -15,7 +15,7 @@ perm-lemma_subprograms.adb:33:35: info: precondition proved
 perm-lemma_subprograms.adb:33:48: info: precondition proved
 perm-lemma_subprograms.adb:35:10: info: precondition proved
 perm-lemma_subprograms.adb:35:19: info: precondition proved
-perm-lemma_subprograms.adb:36:10: medium: precondition might fail
+perm-lemma_subprograms.adb:36:10: info: precondition proved
 perm-lemma_subprograms.adb:36:18: info: precondition proved
 perm-lemma_subprograms.adb:36:31: info: precondition proved
 perm-lemma_subprograms.adb:37:18: info: precondition proved
