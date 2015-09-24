@@ -2423,7 +2423,7 @@ package body SPARK_Definition is
          begin
             Decl := First (Decls);
 
-            --  Declare entities for type and subprogram formal parameters.
+            --  Declare entities for type and subprogram formal parameters
 
             while Present (Decl) and then not Comes_From_Source (Decl) loop
                if Nkind (Decl) in
