@@ -20,7 +20,6 @@ safety_pack.adb:43:21: info: overflow check proved
 safety_pack.adb:46:14: info: initialization of "Res" proved
 safety_pack.adb:57:26: info: range check proved
 safety_pack.adb:60:14: info: initialization of "Res" proved
-safety_pack.adb:69:17: info: range check proved
 safety_pack.adb:76:14: info: initialization of "Res" proved
 safety_pack.ads:15:08: info: complete contract cases proved
 safety_pack.ads:15:08: info: disjoint contract cases proved

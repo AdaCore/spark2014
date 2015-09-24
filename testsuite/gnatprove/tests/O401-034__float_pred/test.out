@@ -22,7 +22,6 @@ safety_pack.adb:57:26: info: range check proved
 safety_pack.adb:60:14: info: initialization of "Res" proved
 safety_pack.adb:67:17: info: predicate check proved
 safety_pack.adb:69:17: info: predicate check proved
-safety_pack.adb:69:17: info: range check proved
 safety_pack.adb:71:17: info: predicate check proved
 safety_pack.adb:73:17: info: predicate check proved
 safety_pack.adb:76:14: info: initialization of "Res" proved

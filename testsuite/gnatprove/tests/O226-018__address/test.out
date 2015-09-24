@@ -1,4 +1,3 @@
-utils.ads:10:53: info: range check proved
 worker_pack.adb:13:26: warning: assuming "XQueue_Create" has no effect on global items
 worker_pack.adb:13:26: warning: no Global contract available for "XQueue_Create"
 worker_pack.adb:13:91: info: division check proved

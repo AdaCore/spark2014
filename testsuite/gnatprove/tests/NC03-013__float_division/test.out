@@ -4,7 +4,6 @@ a.adb:22:17: info: division check proved
 a.adb:22:17: info: overflow check proved
 a.adb:22:26: info: range check proved
 a.adb:24:13: info: initialization of "H" proved
-a.adb:25:28: info: range check proved
 a.adb:27:13: info: assertion proved
 a.adb:27:28: info: initialization of "H" proved
 a.adb:28:30: info: initialization of "H" proved
