@@ -3,6 +3,7 @@ bar.adb:17:04: with task "bar.task_1"
 bar.adb:17:04: with task "bar.task_2"
 foo.adb:7:09: info: nontermination of task proved
 foo.adb:9:09: info: nontermination of task proved
+foo.adb:11:14: info: initialization of "G" constituent of "P1" proved
    compilation of bar.adb failed
 
 

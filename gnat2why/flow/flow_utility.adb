@@ -257,7 +257,7 @@ package body Flow_Utility is
       S := Node_Sets.Empty_Set;
       for E of Entity_Set loop
          if Is_Record_Type (E)
-           or else Ekind (E) = E_Protected_Type
+           or else Ekind (E) in E_Protected_Type | E_Task_Type
          then
             Ptr := First_Component_Or_Discriminant (E);
             while Present (Ptr) loop
@@ -2443,9 +2443,10 @@ package body Flow_Utility is
       function Process_Subprogram_Call
         (Callsite : Node_Id)
          return Flow_Id_Sets.Set
-      with Pre => Nkind (Callsite) in N_Subprogram_Call;
+      with Pre => Nkind (Callsite) in N_Entry_Call_Statement |
+                                      N_Subprogram_Call;
       --  Work out which variables (including globals) are used in the
-      --  function call and add them to the given set.
+      --  entry/function call and add them to the given set.
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  Adds each identifier or defining_identifier found to VS, as
@@ -2823,13 +2824,16 @@ package body Flow_Utility is
                VS.Union (Recurse_On (Aggregate_Bounds (N)));
 
             when N_Selected_Component =>
-               if Ekind (Entity (Selector_Name (N))) = E_Function then
+               if Ekind (Entity (Selector_Name (N))) in E_Entry    |
+                                                        E_Function
+               then
                   --  Here we are dealing with a call of a protected
-                  --  function. This appears on the tree as a selected
+                  --  entry/function. This appears on the tree as a selected
                   --  component of the protected object.
 
-                  --  Sanity check that parent is a subprogram call
-                  pragma Assert (Nkind (Parent (N)) in N_Subprogram_Call);
+                  --  Sanity check that parent is an entry/subprogram call
+                  pragma Assert (Nkind (Parent (N)) in N_Entry_Call_Statement |
+                                                       N_Subprogram_Call);
 
                   VS.Union (Process_Subprogram_Call (Parent (N)));
                   return Skip;
@@ -3352,19 +3356,42 @@ package body Flow_Utility is
                Ids := Flow_Id_Sets.To_Set (F);
             end if;
 
-         when Record_Kind | E_Protected_Type =>
+         when Record_Kind | E_Protected_Type | E_Task_Type =>
             if Debug_Trace_Flatten then
-               if Ekind (T) in Record_Kind then
-                  Write_Line ("processing record type");
-               elsif Ekind (T) = E_Protected_Type then
-                  Write_Line ("processing protected object type");
+               case Ekind (T) is
+                  when Record_Kind      =>
+                     Write_Line ("processing record type");
+                  when E_Protected_Type =>
+                     Write_Line ("processing protected type");
+                  when E_Task_Type      =>
+                     Write_Line ("processing task type");
+                  when others           =>
+                     raise Why.Unexpected_Node;
+               end case;
+            end if;
+
+            --  Include constituents that belong to the protected object/task
+            --  due to a Part_Of.
+
+            Ids := Flow_Id_Sets.Empty_Set;
+
+            if Ekind (T) in E_Protected_Type | E_Task_Type then
+               if Present (Anonymous_Object (T)) then
+                  declare
+                     AO  : constant Node_Id := Anonymous_Object (T);
+                     Ptr : Elmt_Id := First_Elmt (Part_Of_Constituents (AO));
+                  begin
+                     while Present (Ptr) loop
+                        Ids.Union
+                          (Flatten_Variable (Direct_Mapping_Id (Node (Ptr)),
+                                             Scope));
+                        Ptr := Next_Elmt (Ptr);
+                     end loop;
+                  end;
                end if;
             end if;
 
-            --  this includes classwide types and privates with
-            --  discriminants
-
-            Ids := Flow_Id_Sets.Empty_Set;
+            --  Include classwide types and privates with discriminants
 
             for Ptr of All_Components (T) loop
                if Is_Visible (Get_Root_Component (Ptr), Scope) then

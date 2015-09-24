@@ -486,7 +486,7 @@ is
    --  if necessary.
    --
    --  Get_Variable_Set will be called with Reduced set to False (as this
-   --  function should never be called when its true...)
+   --  function should never be called when it's true...)
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
    with Pre => Ekind (E) in Subprogram_Kind |

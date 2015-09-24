@@ -464,12 +464,14 @@ package body Flow_Types is
    begin
       case F.Kind is
          when Direct_Mapping | Record_Field =>
-            return
-              Nkind (F.Node) in N_Entity
+            return Nkind (F.Node) in N_Entity
               and then Ekind (F.Node) in E_Abstract_State |
                                          E_Constant       |
                                          E_Variable
               and then Present (Encapsulating_State (F.Node));
+         when Magic_String =>
+            return GG_Has_Been_Generated
+              and then GG_Is_Constituent (F.Name);
          when others =>
             return False;
       end case;
@@ -479,8 +481,7 @@ package body Flow_Types is
    -- Is_Function_Entity --
    ------------------------
 
-   function Is_Function_Entity (F : Flow_Id) return Boolean
-   is
+   function Is_Function_Entity (F : Flow_Id) return Boolean is
    begin
       case F.Kind is
          when Direct_Mapping | Record_Field =>

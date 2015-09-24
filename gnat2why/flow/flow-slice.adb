@@ -514,8 +514,12 @@ package body Flow.Slice is
            (N : Node_Id)
             return Traverse_Result;
          --  Picks up entities coming from object and subprogram
-         --  declarations and adds them respectivelly to Local_Vars
+         --  declarations and adds them respectively to Local_Vars
          --  and Local_Subs.
+
+         procedure Remove_PO_And_Task_Parts;
+         --  Removes from Local_Vars these variables which are parts of a
+         --  singleton protected object or a singleton task.
 
          ------------------------------------------
          -- Get_Object_Or_Subprogram_Declaration --
@@ -579,6 +583,8 @@ package body Flow.Slice is
                end;
 
             end Hidden_In_Package;
+
+         --  Start of processing for Get_Object_Or_Subprogram_Declaration
 
          begin
             case Nkind (N) is
@@ -733,6 +739,25 @@ package body Flow.Slice is
             return OK;
          end Get_Object_Or_Subprogram_Declaration;
 
+         ------------------------------
+         -- Remove_PO_And_Task_Parts --
+         ------------------------------
+
+         procedure Remove_PO_And_Task_Parts is
+            Part_Of_Vars : Node_Sets.Set := Node_Sets.Empty_Set;
+         begin
+            for Var of Local_Vars loop
+               if Present (Encapsulating_State (Var))
+                 and then Is_Concurrent_Type
+                            (Etype (Encapsulating_State (Var)))
+               then
+                  Part_Of_Vars.Insert (Var);
+               end if;
+            end loop;
+
+            Local_Vars := Local_Vars - Part_Of_Vars;
+         end Remove_PO_And_Task_Parts;
+
          procedure Gather_Local_Variables_And_Subprograms is
             new Traverse_Proc (Get_Object_Or_Subprogram_Declaration);
 
@@ -855,6 +880,10 @@ package body Flow.Slice is
                   end if;
                end;
          end case;
+
+         --  Remove from Local_Vars the variables which are parts of singelton
+         --  protected objects and singleton tasks.
+         Remove_PO_And_Task_Parts;
       end Get_Local_Variables_And_Subprograms;
 
       -------------------------------

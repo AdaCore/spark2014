@@ -636,6 +636,8 @@ package body Flow.Control_Flow_Graph is
    --  graph or a simple defining vertex. Additionally, if the
    --  object's type has a Default_Initial_Condition aspect, we check
    --  for uninitialized variables in the default initial condition.
+   --  This procedure ignores objects that are part of single
+   --  concurrent types.
 
    procedure Do_Package_Body_Or_Stub
      (N   : Node_Id;
@@ -1678,7 +1680,7 @@ package body Flow.Control_Flow_Graph is
       Funcs : Node_Sets.Set;
    begin
       --  Go up the tree until we find the loop we are exiting from.
-      if not Present (Name (N)) then
+      if No (Name (N)) then
          --  We just need to find the enclosing loop.
          loop
             L := Parent (L);
@@ -1695,7 +1697,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Conditional and unconditional exits are different. One
       --  requires an extra vertex, the other does not.
-      if not Present (Condition (N)) then
+      if No (Condition (N)) then
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
                      Null_Node_Attributes,
@@ -3114,12 +3116,19 @@ package body Flow.Control_Flow_Graph is
          end if;
       end if;
 
-      --  First, we need a 'initial and 'final vertex for this object.
-      Create_Initial_And_Final_Vertices (Defining_Identifier (N),
-                                         Variable_Kind,
-                                         FA);
+      --  First, we need a 'initial and 'final vertex for this object. We only
+      --  create these if we are not dealing with a Part_Of a single concurrent
+      --  type.
+      if No (Encapsulating_State (Defining_Identifier (N)))
+        or else not Is_Concurrent_Type
+                      (Etype (Encapsulating_State (Defining_Identifier (N))))
+      then
+         Create_Initial_And_Final_Vertices (Defining_Identifier (N),
+                                            Variable_Kind,
+                                            FA);
+      end if;
 
-      if not Present (Expression (N)) then
+      if No (Expression (N)) then
          --  No initializing expression, so we fall back to the
          --  default initialization (if any).
          FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
@@ -4373,7 +4382,7 @@ package body Flow.Control_Flow_Graph is
       V : Flow_Graphs.Vertex_Id;
       Funcs : Node_Sets.Set;
    begin
-      if not Present (Expression (N)) then
+      if No (Expression (N)) then
          --  We have a return for a procedure.
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
@@ -6375,7 +6384,7 @@ package body Flow.Control_Flow_Graph is
                False, FA);
 
             --  Collect unsynchronized objects by excluding states and objects
-            --  that are synchronized or are part of concurrent object.
+            --  that are synchronized or are Part_Of single concurrent types.
             if not (Is_Synchronized_Object (E)
                     or else Is_Synchronized_State (E)
                     or else Is_Part_Of_Concurrent_Object (E))
