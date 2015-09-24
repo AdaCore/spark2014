@@ -1,2 +1,3 @@
-# Z3 does not prove a VC at level 1 on Linux 64bits
+# Z3 does not prove a VC at level 1 on Linux 64bits and Windows
 Linux,64bits OUT test.lessproved.out
+NT           OUT test.lessproved.out
