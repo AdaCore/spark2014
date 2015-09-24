@@ -30,6 +30,8 @@ with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Hash;
+with Atree;                              use Atree;
+with Einfo;                              use Einfo;
 with Hashing;                            use Hashing;
 with Namet;                              use Namet;
 with Types;                              use Types;
@@ -79,7 +81,8 @@ package Common_Containers is
 
    function To_Entity_Name (S : String) return Entity_Name;
 
-   function To_Entity_Name (E : Entity_Id) return Entity_Name;
+   function To_Entity_Name (E : Entity_Id) return Entity_Name
+     with Pre => Ekind (E) not in E_Package_Body | E_Subprogram_Body;
 
    function To_String (E : Entity_Name) return String;
 

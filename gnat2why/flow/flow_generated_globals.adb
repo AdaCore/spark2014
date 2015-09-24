@@ -2240,23 +2240,34 @@ package body Flow_Generated_Globals is
       --  If it is a library-level procedure with no parameters then it may
       --  be the main subprogram of a partition and thus be executed by the
       --  environment task.
-      if Nkind (Unit (GNAT_Root)) in N_Subprogram_Body |
-                                     N_Subprogram_Declaration
+      --
+      --  Such a procedure might be given either as a spec, body, renaming or
+      --  instance of a generic procedure, in which case front end wraps it
+      --  inside a package body.
+      if Nkind (Unit (GNAT_Root)) in N_Subprogram_Body                 |
+                                     N_Subprogram_Declaration          |
+                                     N_Subprogram_Renaming_Declaration
       then
          declare
-            Def_Entity : constant Entity_Id :=
+            Def_Entity  : constant Entity_Id :=
               Defining_Entity (Unit (GNAT_Root));
+
+            Spec_Entity : constant Entity_Id :=
+              (if Ekind (Def_Entity) = E_Subprogram_Body
+               then Corresponding_Spec (Parent (Parent (Def_Entity)))
+               else Def_Entity);
+
          begin
-            if Might_Be_Main (Def_Entity) then
+            if Might_Be_Main (Spec_Entity) then
                declare
                   Main_Entity_Name : constant Entity_Name :=
-                    To_Entity_Name (Def_Entity);
+                    To_Entity_Name (Spec_Entity);
                begin
                   Register_Task_Object (Type_Name => Main_Entity_Name,
                                         Object =>
                                           (Name      => Main_Entity_Name,
                                            Instances => One,
-                                           Node      => Def_Entity));
+                                           Node      => Spec_Entity));
                   --  Register the main-like subprogram just like a task using
                   --  the same entity name for type and object name.
                end;
