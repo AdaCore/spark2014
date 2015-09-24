@@ -3100,7 +3100,9 @@ package body Flow.Control_Flow_Graph is
       --  We are dealing with a local constant. These constants are *not*
       --  ignored.
       if Is_Constant then
-         if Present (Expression (N)) then
+         if Present (Expression (N))
+           or else Is_Imported (Defining_Identifier (N))
+         then
             FA.Local_Constants.Include (Defining_Identifier (N));
          else
             --  This is a deferred constant. We ignore it - we will deal

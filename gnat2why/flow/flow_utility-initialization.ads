@@ -30,7 +30,7 @@ package Flow_Utility.Initialization is
    --  Get the default initialization expression for the given Flow_Id
    --  (this only really works for record fields and direct mappings;
    --  magic strings are assumed to not be default initialized)
-   --  @param F is the Flow_Id who's initialization we look for
+   --  @param F is the Flow_Id whose initialization we look for
    --  @return the default initialization expression of F
 
    function Is_Default_Initialized
@@ -39,10 +39,10 @@ package Flow_Utility.Initialization is
       return Boolean;
    --  As above, but can also return True if we can't actually get a node
    --  which is the default-initialized expression.
-   --  @param F is the Flow_Id who's initialization we look for
-   --  @param Explicit_Only If True then do not consider attributes
+   --  @param F is the Flow_Id whose initialization we look for
+   --  @param Explicit_Only If True then ignore attributes
    --    Has_Default_Init_Cond and Has_Inherited_Default_Init_Cond for this
    --    type.
-   --  @return True if F is fully default initialized and False otherwise
+   --  @return True iff F is fully default initialized
 
 end Flow_Utility.Initialization;

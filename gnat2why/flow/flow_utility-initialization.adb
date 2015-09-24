@@ -180,14 +180,17 @@ package body Flow_Utility.Initialization is
    begin
       case F.Kind is
          when Direct_Mapping =>
-            return Call_Default_Initialization;
+            return Is_Imported (Get_Direct_Mapping_Id (F))
+              or else Call_Default_Initialization;
 
          when Record_Field =>
             if Is_Discriminant (F) then
                return Present (Discriminant_Default_Value
                                  (F.Component.Last_Element));
 
-            elsif Is_Record_Tag (F) then
+            elsif Is_Record_Tag (F)
+              or else Is_Imported (Get_Direct_Mapping_Id (F))
+            then
                return True;
 
             else
