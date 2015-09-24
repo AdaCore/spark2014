@@ -2184,6 +2184,12 @@ package body SPARK_Definition is
       elsif not In_SPARK (E) then
          Mark_Violation (N, From => E);
 
+      elsif Present (Controlling_Argument (N))
+        and then Is_Invisible_Dispatching_Operation (E)
+      then
+         Mark_Violation
+           ("dispatching call on primitive of untagged private", N);
+
       --  There should not be calls to predicate functions and invariant
       --  procedures.
 
@@ -2795,7 +2801,6 @@ package body SPARK_Definition is
       --  Start of processing for Mark_Subprogram_Entity
 
       begin
-
          Mark_Subprogram_Specification (if Ekind (E) = E_Entry
                                         then Parent (E)
                                         else Subprogram_Specification (E));

@@ -2360,6 +2360,29 @@ package body SPARK_Util is
       return False;
    end In_Private_Declarations;
 
+   -----------------------------
+   -- In_Visible_Declarations --
+   -----------------------------
+
+   function In_Visible_Declarations (Decl : Node_Id) return Boolean is
+      N : Node_Id;
+
+   begin
+      if Present (Parent (Decl))
+        and then Nkind (Parent (Decl)) = N_Package_Specification
+      then
+         N := First (Visible_Declarations (Parent (Decl)));
+         while Present (N) loop
+            if Decl = N then
+               return True;
+            end if;
+            Next (N);
+         end loop;
+      end if;
+
+      return False;
+   end In_Visible_Declarations;
+
    ---------------
    -- Is_Action --
    ---------------
@@ -2459,6 +2482,38 @@ package body SPARK_Util is
          return True;
       end if;
    end Is_In_Analyzed_Files;
+
+   ----------------------------------------
+   -- Is_Invisible_Dispatching_Operation --
+   ----------------------------------------
+
+   function Is_Invisible_Dispatching_Operation
+     (E : Entity_Id) return Boolean
+   is
+      Param : Entity_Id;
+      Etyp  : Entity_Id;
+
+   begin
+      if Has_Controlling_Result (E) then
+         Etyp := Etype (E);
+
+      else
+         Param := First_Entity (E);
+         while Present (Param)
+           and then Is_Formal (Param)
+           and then not Is_Controlling_Formal (Param)
+         loop
+            Next_Entity (Param);
+         end loop;
+
+         Etyp := Etype (Param);
+      end if;
+
+      return Is_Private_Type (Etyp)
+        and then not Is_Tagged_Type (Etyp)
+        and then Present (Subprogram_Spec (E))
+        and then In_Visible_Declarations (Subprogram_Spec (E));
+   end Is_Invisible_Dispatching_Operation;
 
    ----------------------------------------
    -- Is_Local_Subprogram_Always_Inlined --

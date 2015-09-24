@@ -330,7 +330,9 @@ package body Gnat2Why.Driver is
 
          --  Generate Why3 code to check LSP for primitive of tagged types
 
-         if Is_Dispatching_Operation (E) then
+         if Is_Dispatching_Operation (E)
+           and then not Is_Invisible_Dispatching_Operation (E)
+         then
             Generate_VCs_For_LSP (Why_Sections (WF_Main), E);
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end if;

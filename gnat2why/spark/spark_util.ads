@@ -667,12 +667,12 @@ package SPARK_Util is
    --  @return True iff there is at least one contract Name for E
 
    function Has_Extensions_Visible (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in Subprogram_Kind | E_Entry;
+     with Pre => Ekind (E) in Subprogram_Kind | E_Entry;
    --  @param E subprogram
    --  @return True iff Extensions_Visible is specified for E
 
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in Subprogram_Kind | E_Entry;
+     with Pre => Ekind (E) in Subprogram_Kind | E_Entry;
    --  @param E subprogram
    --  @return True iff E has a data dependencies (Global) or flow
    --     dependencies (Depends) contract
@@ -688,6 +688,14 @@ package SPARK_Util is
    --  @param After_GG is True when we can use the generated globals
    --  @return True iff E is marked No_Return and is considered to always
    --     terminate abnormally.
+
+   function Is_Invisible_Dispatching_Operation
+     (E : Entity_Id) return Boolean
+     with Pre => Is_Dispatching_Operation (E);
+   --  @param E subprogram
+   --  @return True iff E has is a public operation on a private type whose
+   --     public view is not tagged. Hence, Pre'Class and Post'Class cannot be
+   --     declared on such a subprogram.
 
    function Is_Local_Subprogram_Always_Inlined (E : Entity_Id) return Boolean;
    --  @param E subprogram
@@ -834,7 +842,12 @@ package SPARK_Util is
    function In_Private_Declarations (Decl : Node_Id) return Boolean;
    --  @param Decl declaration node
    --  @return True iff Decl belongs to the list of private declarations of a
-   --     package
+   --     package.
+
+   function In_Visible_Declarations (Decl : Node_Id) return Boolean;
+   --  @param Decl declaration node
+   --  @return True iff Decl belongs to the list of visible declarations of a
+   --     package.
 
    --------------------------------
    -- Queries related to pragmas --
