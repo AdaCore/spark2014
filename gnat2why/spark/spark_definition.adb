@@ -2557,28 +2557,64 @@ package body SPARK_Definition is
 
          if Entity_In_Ext_Axioms (E) then
 
-            --  If Id is a package instance, mark its actual parameters
+            --  Packages with external axioms should have SPARK_Mode On.
+
+            if No (SPARK_Pragma (E))
+              or else Get_SPARK_Mode_From_Pragma (SPARK_Pragma (E)) /= On
+            then
+               Mark_Violation
+                 ("package with External_Axiomatization with no SPARK_Mode",
+                  E);
+            end if;
+
+            --  For other verifications, use the SPARK pragma of the package
 
             declare
-               G_Parent : constant Node_Id :=
-                 Generic_Parent (Package_Specification (E));
+               Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
             begin
-               if Present (G_Parent) then
-                  Mark_Generic_Parameters_External_Axioms
-                    (Generic_Associations
-                       (Get_Package_Instantiation_Node (E)));
+               Current_SPARK_Pragma := SPARK_Pragma (E);
+
+               --  For packages with external axiomatization, check that the
+               --  private part (if any) has SPARK_Mode => Off.
+
+               if Present (Private_Declarations (Package_Specification (E)))
+                 and then Present (SPARK_Aux_Pragma (E))
+                 and then
+                   Get_SPARK_Mode_From_Pragma (SPARK_Aux_Pragma (E)) /= Off
+               then
+                  Mark_Violation
+                    ("private part of package with External_Axiomatization",
+                     E);
                end if;
+
+               --  If E is a package instance, mark its actual parameters
+
+               declare
+                  G_Parent : constant Node_Id :=
+                    Generic_Parent (Package_Specification (E));
+               begin
+                  if Present (G_Parent) then
+                     Mark_Generic_Parameters_External_Axioms
+                       (Generic_Associations
+                          (Get_Package_Instantiation_Node (E)));
+                  end if;
+               end;
+
+               --  Mark types and subprograms from packages with external
+               --  axioms as in SPARK or not.
+
+               Declare_In_Package_With_External_Axioms (Vis_Decls);
+
+               if not Violation_Detected then
+
+                  --  Explicitly add the package declaration to the entities to
+                  --  translate into Why3.
+
+                  Entity_List.Append (E);
+               end if;
+
+               Current_SPARK_Pragma := Save_SPARK_Pragma;
             end;
-
-            --  Explicitly add the package declaration to the entities to
-            --  translate into Why3.
-
-            Entity_List.Append (E);
-
-            --  Mark types and subprograms from packages with external axioms
-            --  as in SPARK or not.
-
-            Declare_In_Package_With_External_Axioms (Vis_Decls);
          end if;
       end Mark_Package_Entity;
 
@@ -3955,39 +3991,24 @@ package body SPARK_Definition is
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
 
    begin
+
+      if Entity_In_Ext_Axioms (Id) then
+
+         --  Mark the package entity.
+
+         Mark_Entity (Id);
+         Specs_In_SPARK.Include (Id);
+
+         return;
+      end if;
+
       --  Mark package in SPARK if fully in SPARK_Mode => On (including the
-      --  private part), or if the visible part is in SPARK_Mode => On and
-      --  it has external axiomatization.
+      --  private part).
 
       Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
 
       if SPARK_Pragma_Is (Opt.On) then
          Mark_Entity (Id);
-
-      else
-         Current_SPARK_Pragma := SPARK_Pragma (Id);
-
-         if Entity_In_Ext_Axioms (Id) then
-            Mark_Entity (Id);
-            Specs_In_SPARK.Include (Id);
-         end if;
-      end if;
-
-      --  For packages with external axiomatization, check that the private
-      --  part (if any) has SPARK_Mode => Off.
-
-      if Entity_In_Ext_Axioms (Id) then
-         if Present (Priv_Decls)
-           and then Present (SPARK_Aux_Pragma (Id))
-           and then Get_SPARK_Mode_From_Pragma (SPARK_Aux_Pragma (Id)) /= Off
-         then
-            Mark_Violation
-              ("Private part of package with External_Axiomatization", N);
-         end if;
-
-         Current_SPARK_Pragma := Save_SPARK_Pragma;
-
-         return;
       end if;
 
       Current_SPARK_Pragma := SPARK_Pragma (Id);
