@@ -2237,43 +2237,64 @@ package body Flow_Generated_Globals is
          Note_Time ("gg_read - vertices added");
       end if;
 
-      --  If it is a library-level procedure with no parameters then it may
+      --  If it is a library-level subprogram with no parameters then it may
       --  be the main subprogram of a partition and thus be executed by the
       --  environment task.
       --
-      --  Such a procedure might be given either as a spec, body, renaming or
-      --  instance of a generic procedure, in which case front end wraps it
-      --  inside a package body.
-      if Nkind (Unit (GNAT_Root)) in N_Subprogram_Body                 |
-                                     N_Subprogram_Declaration          |
-                                     N_Subprogram_Renaming_Declaration
-      then
-         declare
-            Def_Entity  : constant Entity_Id :=
-              Defining_Entity (Unit (GNAT_Root));
+      --  Such a subprogram might be given either as a spec, body or instance
+      --  of a generic procedure, in which case front end wraps it inside
+      --  a package body. Currently GNAT does not allow subprogram renaming
+      --  to be main, but this choice is implementation-specific (see AA RM
+      --  10.2(29.b)).
+      --
+      --  The following code mirrors front end tests in
+      --  Lib.Writ.Write_ALI.Output_Main_Program_Line, but also detects
+      --  main-like subprogram declaration, which we want to analyze even if
+      --  there is yet no a subprogram body or it is not in SPARK.
 
-            Spec_Entity : constant Entity_Id :=
-              (if Ekind (Def_Entity) = E_Subprogram_Body
-               then Corresponding_Spec (Parent (Parent (Def_Entity)))
-               else Def_Entity);
+      Detect_Main_Subprogram : declare
+         U : constant Node_Id := Unit (GNAT_Root);
+         S : Node_Id;
 
-         begin
-            if Might_Be_Main (Spec_Entity) then
-               declare
-                  Main_Entity_Name : constant Entity_Name :=
-                    To_Entity_Name (Spec_Entity);
-               begin
-                  Register_Task_Object (Type_Name => Main_Entity_Name,
-                                        Object =>
-                                          (Name      => Main_Entity_Name,
-                                           Instances => One,
-                                           Node      => Spec_Entity));
-                  --  Register the main-like subprogram just like a task using
-                  --  the same entity name for type and object name.
-               end;
-            end if;
-         end;
-      end if;
+      begin
+         case Nkind (U) is
+            when N_Subprogram_Body        |
+                 N_Subprogram_Declaration =>
+               S := Corresponding_Spec (U);
+
+            when N_Package_Body =>
+               if Nkind (Original_Node (U)) in N_Subprogram_Instantiation then
+
+                  S := Alias (Related_Instance
+                            (Defining_Unit_Name (Specification
+                               (Unit (Library_Unit (GNAT_Root))))));
+
+                  --  ??? A generic subprogram is never a main program
+                  --  ??? If it is a child unit, get its simple name
+               else
+                  S := Empty;
+               end if;
+
+            when others =>
+               S := Empty;
+
+         end case;
+
+         if Present (S) and then Might_Be_Main (S) then
+            declare
+               Main_Entity_Name : constant Entity_Name := To_Entity_Name (S);
+            begin
+               Register_Task_Object (Type_Name => Main_Entity_Name,
+                                     Object =>
+                                       (Name      => Main_Entity_Name,
+                                        Instances => One,
+                                        Node      => S));
+               --  Register the main-like subprogram as a task, but use the
+               --  same entity name for type and object name.
+            end;
+         end if;
+
+      end Detect_Main_Subprogram;
 
       --  Create graph with tasking-related information
       Create_Tasking_Graph;

@@ -7,7 +7,10 @@ mains = [
 	"original_fake_main_func.ads",
 	"renamed_fake_main_func.ads",
 	"original_main_func.ads",
-	"renamed_main_func.ads"
+	"renamed_main_func.ads",
+	"gen_inst.ads",
+	"original_main_spec.ads",
+	"original_main_body.adb"
 	]
 
 for m in mains:
