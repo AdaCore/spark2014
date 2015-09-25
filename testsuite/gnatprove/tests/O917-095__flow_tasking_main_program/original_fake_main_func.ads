@@ -1,0 +1,1 @@
+function Original_Fake_Main_Func return Boolean;

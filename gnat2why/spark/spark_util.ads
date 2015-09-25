@@ -720,8 +720,13 @@ package SPARK_Util is
    function Might_Be_Main (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in Subprogram_Kind;
    --  @param E subprogram
-   --  @return True iff E is a library level subprogram without formal
-   --     parameters (E is allowed to have global parameters)
+   --  @return True iff E is a library level subprogram, has no formal
+   --     parameters (E is allowed to have global parameters), and is either
+   --     a procedure or a function that return integer type
+   --
+   --  Note: this check is equivalent to rules enforced by GNAT and is more
+   --  restrictive than Ada RM (which allows pretty much every subprogram to
+   --  be main). See Ada 95 Quality and Style Guide, 7.1.4 for details.
 
    function Subprogram_Full_Source_Name (E : Entity_Id) return String
      with Pre => Present (E) and then Sloc (E) /= No_Location;

@@ -2836,9 +2836,40 @@ package body SPARK_Util is
    -------------------
 
    function Might_Be_Main (E : Entity_Id) return Boolean is
-     (Scope (E) = Standard_Standard and then No (First_Formal (E)));
-     --  ??? Is this expression equivalent to test in
-     --  Sem_Ch13.Analyze_Pragma.Check_In_Main_Program ?
+      Spec : Node_Id;
+   begin
+      --  This function mirrors tests in
+      --    Lib.Write.Write_ALI.Output_Main_Program_Line
+      --  which are more restrictive than those in
+      --    Sem_Ch13.Analyze_Pragma.Check_In_Main_Program.
+
+      --  Check if it is a library-level subprogram
+      if Scope (E) /= Standard_Standard then
+         return False;
+      end if;
+
+      Spec := Parent (E);
+
+      pragma Assert (Nkind (Spec) in N_Function_Specification |
+                                     N_Procedure_Specification);
+
+      --  Check if it has no parameters
+      if Parameter_Associations (Spec) /= No_List then
+         return False;
+      end if;
+
+      --  Check if it is a procedure or a function that returns an integer
+      return (case Nkind (Spec) is
+                 when N_Procedure_Specification =>
+                    True,
+
+                 when N_Function_Specification =>
+                    Is_Integer_Type (Etype (E)),
+
+                 when others =>
+                    raise Program_Error
+             );
+   end Might_Be_Main;
 
    --------------------
    -- Nth_Index_Type --
