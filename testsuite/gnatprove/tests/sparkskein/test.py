@@ -7,7 +7,7 @@ from test_support import *
 # O612-012.
 
 # All other checks are proved:
-# . CVC4 proves all other checks expect 2
+# . CVC4 proves all other checks except 2
 # . Alt-Ergo and Z3 each prove one remaining check
 
-prove_all(opt=["--prover=cvc4,altergo,z3"],procs=4)
+prove_all(opt=["--prover=cvc4,altergo,z3"],procs=4,steps=1000)
