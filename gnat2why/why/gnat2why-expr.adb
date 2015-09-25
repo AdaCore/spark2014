@@ -897,7 +897,9 @@ package body Gnat2Why.Expr is
             end case;
          end;
 
-      elsif not Is_Partial_View (Defining_Identifier (N)) then
+      elsif not Is_Partial_View (Defining_Identifier (N))
+        and then not Is_Imported (Lvalue)
+      then
 
          --  Only assume default initialization if we are in a fullview.
 
