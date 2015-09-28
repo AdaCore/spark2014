@@ -4063,17 +4063,18 @@ package body Flow.Analysis is
      --  Entry_Calls
      Unsynch_Accesses;
 
-   Concurrent_Object_Owner : array (Tasking_Owners_Kind) of Name_Maps.Map;
-   --  Mapping from concurrent objects to a task instance that owns them,
-   --  i.e. suspends on a suspension object or calls an entry. It stores only
-   --  the first owning task instance, if there are more then it is SPARK
-   --  violation.
-
    -------------------------------
    -- Check_Concurrent_Accesses --
    -------------------------------
 
    procedure Check_Concurrent_Accesses (GNAT_Root : Node_Id) is
+
+      Concurrent_Object_Owner : array (Tasking_Owners_Kind) of Name_Maps.Map;
+      --  Mapping from concurrent objects to a task instance that owns them,
+      --  i.e. suspends on a suspension object or calls an entry. It stores
+      --  only the first owning task instance, if there are more then it is
+      --  SPARK violation.
+
       use Flow_Generated_Globals, SPARK_Definition;
 
       procedure Check_Ownership (Task_Instance : Task_Object;
