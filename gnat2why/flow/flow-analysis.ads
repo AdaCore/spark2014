@@ -69,7 +69,7 @@ package Flow.Analysis is
 
    procedure Find_Non_Elaborated_State_Abstractions
      (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+   with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
    --  Find uses of state abstractions that belong to other
    --  non-elaborated packages.
    --
@@ -122,7 +122,7 @@ package Flow.Analysis is
 
    procedure Find_Impossible_To_Initialize_State
      (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+   with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
    --  Finds state abstractions that are not mentioned in an
    --  initializes aspect and are not pure global outputs of any of
    --  the package's subprograms. This makes it impossible for users
@@ -137,13 +137,13 @@ package Flow.Analysis is
    --  Complexity is O(N^2)
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+   with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
    --  Check if the Initializes contract has extra or missing dependencies.
    --
    --  Complexity is O(N^2)
 
    procedure Check_Prefixes_Of_Attribute_Old (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in Kind_Subprogram | Kind_Task | Kind_Entry;
+   with Pre => FA.Kind in Kind_Subprogram | Kind_Task | Kind_Entry;
    --  We issue a high check whenever a variable that serves as a
    --  prefix of a 'Old attribute is NOT an import.
    --
@@ -164,7 +164,7 @@ package Flow.Analysis is
 
    procedure Check_Function_For_Volatile_Effects
      (FA : in out Flow_Analysis_Graphs)
-     with Pre => FA.Kind in Kind_Subprogram | Kind_Task | Kind_Entry;
+   with Pre => FA.Kind in Kind_Subprogram | Kind_Task | Kind_Entry;
    --  Checks that the subprogram does not have any volatile effects except if
    --  so specified. This check is only doing something when called on
    --  functions. We also issue a warning if we are dealing with a volatile
@@ -173,7 +173,7 @@ package Flow.Analysis is
    --  Complexity is O(N)
 
    procedure Check_Concurrent_Accesses (GNAT_Root : Node_Id)
-     with Pre => Nkind (GNAT_Root) = N_Compilation_Unit;
+   with Pre => Nkind (GNAT_Root) = N_Compilation_Unit;
    --  Check exclusivity rules for concurrent accesses to library-level objects
 
 private
@@ -189,7 +189,7 @@ private
    procedure Global_Required
      (FA  : in out Flow_Analysis_Graphs;
       Var : Flow_Id)
-     with Pre  => Var.Kind = Magic_String;
+   with Pre  => Var.Kind = Magic_String;
    --  Emit error message that (the first call) introducing the
    --  global Var requires a global annotation.
 
