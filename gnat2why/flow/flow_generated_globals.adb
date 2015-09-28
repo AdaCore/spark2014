@@ -881,7 +881,7 @@ package body Flow_Generated_Globals is
 
    begin
       case GI.Kind is
-         when Kind_Subprogram | Kind_Task | Kind_Entry =>
+         when Kind_Entry | Kind_Subprogram | Kind_Task =>
             Subprogram_Info_List.Append (GI);
 
          when Kind_Package | Kind_Package_Body =>
