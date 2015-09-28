@@ -45,6 +45,9 @@ internal_protected_call.ads:14:17: potentially blocking operation in protected o
 internal_protected_call.ads:14:17: warning: subprogram "P2" has no effect
 library_level_function.adb:5:32: warning: unused initial value of "Real_Time.Clock_Time"
 library_level_function.adb:8:04: warning: statement has no effect
+nested_pb_call.adb:6:13: potentially blocking operation in protected operation "Dummy"
+nested_pb_call.adb:11:24: warning: statement has no effect
+nested_pb_call.adb:19:13: warning: statement has no effect
 p-po_stub_1.adb:3:38: warning: statement has no effect
 p-po_stub_2.adb:3:44: warning: statement has no effect
 p-po_stub_2.adb:5:07: warning: statement has no effect
@@ -148,6 +151,7 @@ remote.ads:7:14: warning: subprogram "Remote_Call" has no effect
 simple_package.ads:3:14: warning: subprogram "Dummy" has no effect
    compilation of external_separate_calls.adb failed
    compilation of internal_protected_call.adb failed
+   compilation of nested_pb_call.adb failed
    compilation of p.adb failed
    compilation of pack.adb failed
 
