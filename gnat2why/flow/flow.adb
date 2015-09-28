@@ -1594,13 +1594,12 @@ package body Flow is
          Global_Info_List   => Global_Info_List,
          Generating_Globals => True);
 
-      --  Consider the subprogram and package info in case a graph was not
-      --  created.
+      --  Write GG info for entities without graphs
       for S of Global_Info_List loop
          GG_Write_Global_Info (GI => S);
       end loop;
 
-      --  Write Generated Globals to the ALI file
+      --  Write GG info for entities with graphs
       for FA of FA_Graphs loop
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Write_Line (Character'Val (8#33#) & "[32m" &
