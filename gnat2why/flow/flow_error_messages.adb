@@ -22,6 +22,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Assumption_Types;           use Assumption_Types;
@@ -408,10 +409,10 @@ package body Flow_Error_Messages is
       Place_First : Boolean)
    is
       function Do_Pretty_Cntexmp (Cntexmp : JSON_Value) return JSON_Value;
-      --  Pretty print model element names in Cntexmp.
+      --  Pretty print counterexample Cntexmp.
       --  Note that no deep copy of Cntexmp is made and thus both input
       --  counterexample (Cntexmp) and returned counterexample will contain
-      --  pretty printed model element names.
+      --  pretty printed counterexample.
 
       -----------------------
       -- Do_Pretty_Cntexmp --
@@ -421,8 +422,6 @@ package body Flow_Error_Messages is
       is
          procedure Do_Pretty_File (File : String; File_Cntexmp : JSON_Value);
          --  Pretty prints model element names in counterexample file.
-         procedure Do_Pretty_Line (Line : String; Line_Cntexmp : JSON_Value);
-         --  Pretty prints model element names in counterexample line.
 
          --------------------
          -- Do_Pretty_File --
@@ -431,100 +430,325 @@ package body Flow_Error_Messages is
          procedure Do_Pretty_File (File : String; File_Cntexmp : JSON_Value)
          is
             pragma Unreferenced (File);
+            procedure Do_Pretty_Line
+              (Line : String; Line_Cntexmp : JSON_Value);
+            --  Pretty prints counterexample model elements at a single source
+            --  code location (line).
+
+            --------------------
+            -- Do_Pretty_Line --
+            --------------------
+
+            procedure Do_Pretty_Line (Line : String; Line_Cntexmp : JSON_Value)
+            is
+               type Var_Or_Field (<>);
+               type Var_Or_Field_Ptr is access all Var_Or_Field;
+
+               package Record_Fields is
+                 new Ada.Containers.Indefinite_Ordered_Maps
+                   (Key_Type => String,
+                    Element_Type => Var_Or_Field_Ptr
+                   );
+
+               type Record_Fields_Map_Ptr is access all
+                 Record_Fields.Map;
+
+               use Record_Fields;
+
+               type Var_Or_Field_Kind is (Record_Type, Non_Record_Type);
+
+               --  Represents information about variable or record field
+               type Var_Or_Field (Kind : Var_Or_Field_Kind;
+                                  Value_Length : Natural)
+               is record
+                  Entity : Entity_Id;
+                  --  The element of SPARK AST corresponding to the variable
+                  --  or field
+                  case Kind is
+                     when Record_Type =>
+                        Fields : Record_Fields_Map_Ptr;
+                        --  Subfields of the variable or the field
+                     when Non_Record_Type =>
+                        Value  : String (1 .. Value_Length);
+                        --  Value of the variable or the field
+                  end case;
+               end record;
+
+               procedure Build_Variable_Map
+                 (Line_Cntexmp_Arr : JSON_Array;
+                  Variable_Map : in out Record_Fields.Map);
+               --  Build a map grouping information about fields of variables
+               --  (and their subfields, ...) at a single source code location.
+               --  @param Line_Cntexmp_Arr counterexample model elements at a
+               --    single source code location (line)
+               --  @param Variable_Map stores information about values and
+               --    fields of variables at a single source code location.
+               --    Map from variable names to information about these
+               --    variables. This includes values of variables and
+               --    information about record fields of variables. Information
+               --    about record fields is map from field names to information
+               --    about record subfields of these fields, ...
+
+               procedure Build_Variable_Map
+                 (Line_Cntexmp_Arr : JSON_Array;
+                  Variable_Map : in out Record_Fields.Map)
+               is
+                  function Insert_Var_Or_Field
+                    (Name : String;
+                     Value : String;
+                     Kind : Var_Or_Field_Kind;
+                     Entity : Entity_Id;
+                     Map : Record_Fields_Map_Ptr)
+                     return Var_Or_Field_Ptr;
+                  --  Insert variable or field with given name, value, kind,
+                  --  and entity to given map.
+                  --  If the variable or the field already has been inserted to
+                  --  the map, return existing entry corresponding to it,
+                  --  create new entry, store it in the map, and return it.
+
+                  ---------------------------------------------------
+                  -- Insert_Var_Or_Field --
+                  ---------------------------------------------------
+                  function Insert_Var_Or_Field
+                    (Name : String;
+                     Value : String;
+                     Kind : Var_Or_Field_Kind;
+                     Entity : Entity_Id;
+                     Map : Record_Fields_Map_Ptr)
+                     return Var_Or_Field_Ptr
+                  is
+                  begin
+                     if Contains (Map.all, Name) then
+                        return Element (Map.all, Name);
+                     end if;
+
+                     declare
+                        Fields : constant Record_Fields_Map_Ptr :=
+                          new Record_Fields.Map;
+                        Var : constant Var_Or_Field_Ptr :=
+                          (case Kind is
+                              when Record_Type =>
+                                 new Var_Or_Field'(Kind         => Record_Type,
+                                                   Value_Length => 0,
+                                                   Entity       => Entity,
+                                                   Fields       => Fields),
+
+                              when Non_Record_Type =>
+                                 new Var_Or_Field'(Kind         =>
+                                                        Non_Record_Type,
+                                                   Value_Length =>
+                                                      Value'Length,
+                                                   Value        => Value,
+                                                   Entity       => Entity));
+                     begin
+                        Include (Container => Map.all,
+                                 Key       => Name,
+                                 New_Item  => Var);
+                        return Var;
+                     end;
+                  end Insert_Var_Or_Field;
+               begin
+                  for I in Integer range 1 .. Length (Line_Cntexmp_Arr) loop
+                     declare
+                        Cntexmp_Element : constant JSON_Value :=
+                          Get (Line_Cntexmp_Arr, I);
+                        Name  : constant String :=
+                          Get (Cntexmp_Element, "name");
+                        Kind  : constant String :=
+                          Get (Cntexmp_Element, "kind");
+                        Value : constant String :=
+                          Get (Cntexmp_Element, "value");
+                        Name_Parts : String_Split.Slice_Set;
+                        Current_Subfields_Map : Record_Fields_Map_Ptr :=
+                          Variable_Map'Unchecked_Access;
+                     begin
+
+                        --  There is either one model element with its name
+                        --  corresponding to an error message. No variable map
+                        --  is built in this case.
+
+                        if Kind = "error_message" then
+                           return;
+                        end if;
+
+                        --  Or model elements are of the form:
+                        --    "Entity_Id"{".Entity_Id"}*
+                        --    The first Entity_Id corresponds to a variable,
+                        --    other to record fields.
+                        --  Split Name into sequence of Entity_Id
+
+                        String_Split.Create (S => Name_Parts,
+                                             From => Name,
+                                             Separators => ".",
+                                             Mode => String_Split.Single);
+
+                        --  For every Entity_Id, get information about it and
+                        --  insert it to the variable map being built
+
+                        for I in 1 .. String_Split.Slice_Count (Name_Parts)
+                        loop
+                           declare
+                              use GNAT.String_Split;
+
+                              Field_Entity : constant Entity_Id :=
+                                Entity_Id'Value (Slice (Name_Parts, I));
+                              Field_Name : Unbounded_String :=
+                                To_Unbounded_String
+                                  (Source_Name (Field_Entity));
+                              Current_Var_Or_Field : Var_Or_Field_Ptr;
+
+                           begin
+                              if I = 1 then
+
+                                 --  Process the first Entity_Id, which
+                                 --  corresponds to a variable. Possibly append
+                                 --  attributes 'Old or 'Result after its name
+
+                                 if Kind = "old" and then
+                                   Out_Present (Parent (Field_Entity))
+                                 then
+                                    Field_Name := Field_Name & "'Old";
+                                 elsif Kind = "result" then
+                                    Field_Name := Field_Name & "'Result";
+                                 end if;
+                              end if;
+
+                              Current_Var_Or_Field := Insert_Var_Or_Field
+                                (Name   => To_String (Field_Name),
+                                 Kind   =>
+                                   (if I = Slice_Count (Name_Parts) then
+                                         Non_Record_Type
+                                    else Record_Type),
+                                 Value  => Value,
+                                 Entity => Field_Entity,
+                                 Map    => Current_Subfields_Map);
+
+                              if Current_Var_Or_Field.Kind = Record_Type then
+                                 Current_Subfields_Map :=
+                                   Current_Var_Or_Field.Fields;
+                              end if;
+                           end;
+                        end loop;
+                     end;
+                  end loop;
+               end Build_Variable_Map;
+
+               procedure Create_Pretty_Line
+                 (Variable_Map : Record_Fields.Map;
+                  Pretty_Line_Cntexmp_Arr : out JSON_Array);
+               --  Create pretty printed JSON array of counterexample elements.
+               --  @Variable_Map stores information about values and fields of
+               --    variables at a single source code location (line).
+               --    Map from variable names to information about these
+               --    variables. This includes values of variables and
+               --    information about record fields of variables. Information
+               --    about record fields is map from field names to information
+               --    about record subfields of these fields, ...
+
+               procedure Create_Pretty_Line
+                 (Variable_Map : Record_Fields.Map;
+                  Pretty_Line_Cntexmp_Arr : out JSON_Array)
+               is
+                  function Get_Var_Or_Field_Value
+                    (Var_Or_Field : Var_Or_Field_Ptr) return String;
+                  --  Gets the string value of given variable or record field.
+                  --  If the variable or record field is of record type, the
+                  --  returned value is record aggregate.
+
+                  function Get_Var_Or_Field_Value
+                    (Var_Or_Field : Var_Or_Field_Ptr) return String
+                  is
+                     Var_Or_Field_Type : constant Entity_Id :=
+                       Etype (Var_Or_Field.Entity);
+                  begin
+                     case Var_Or_Field.Kind is
+                        when Non_Record_Type =>
+                           return Var_Or_Field.Value;
+                        when Record_Type =>
+
+                           --  Create aggregate representing the value of
+                           --  Var_Or_Field
+                           --  Go through all fields of Var_Or_Field.
+                           --  To give the fields in the order of their
+                           --  declaration in the type of the Var_Or_Field
+                           --  (Var_Or_Field_Type), iterate through components
+                           --  of Var_Or_Field_Type
+
+                           declare
+                              Decl_Field : Entity_Id :=
+                                First_Component (Var_Or_Field_Type);
+                              First_Decl_Field : constant Entity_Id :=
+                                Decl_Field;
+                              Value : Unbounded_String :=
+                                To_Unbounded_String ("(");
+                           begin
+                              while Present (Decl_Field) loop
+                                 declare
+                                    Field_Name : constant String :=
+                                      Source_Name (Decl_Field);
+                                    Field : constant Cursor := Find
+                                      (Var_Or_Field.Fields.all, Field_Name);
+                                 begin
+                                    if Has_Element (Field) then
+                                       Value := Value &
+                                       (if Decl_Field /= First_Decl_Field then
+                                           ", "
+                                        else
+                                           "") &
+                                         Key (Field) &
+                                         " => " &
+                                         Get_Var_Or_Field_Value (Element (
+                                                                 Field));
+                                    end if;
+                                    Next_Component (Decl_Field);
+                                 end;
+                              end loop;
+                              Value := Value & ")";
+
+                              return To_String (Value);
+                           end;
+                     end case;
+                  end Get_Var_Or_Field_Value;
+
+                  Variable : Cursor := First (Variable_Map);
+               begin
+                  Pretty_Line_Cntexmp_Arr := Empty_Array;
+                  while Has_Element (Variable) loop
+                     declare
+                        Var_Name : constant String := Key (Variable);
+                        Var_Value : constant String :=
+                          Get_Var_Or_Field_Value (Element (Variable));
+                        Pretty_Var : constant JSON_Value := Create_Object;
+                     begin
+                        Set_Field (Pretty_Var, "name", Create (Var_Name));
+                        Set_Field (Pretty_Var, "value", Create (Var_Value));
+                        Set_Field (Pretty_Var, "kind", Create ("variable"));
+
+                        Append (Pretty_Line_Cntexmp_Arr, Pretty_Var);
+
+                        Next (Variable);
+                     end;
+                  end loop;
+               end Create_Pretty_Line;
+
+               Variable_Map : Record_Fields.Map;
+            begin
+               Build_Variable_Map (Get (Line_Cntexmp), Variable_Map);
+
+               if not Is_Empty (Variable_Map) then
+                  declare
+                     Pretty_Line_Cntexmp_Arr : JSON_Array;
+                  begin
+                     Create_Pretty_Line
+                       (Variable_Map, Pretty_Line_Cntexmp_Arr);
+                     Set_Field
+                       (File_Cntexmp, Line, Create (Pretty_Line_Cntexmp_Arr));
+                  end;
+               end if;
+            end Do_Pretty_Line;
          begin
             Map_JSON_Object (File_Cntexmp, Do_Pretty_Line'Access);
          end Do_Pretty_File;
-
-         --------------------
-         -- Do_Pretty_Line --
-         --------------------
-
-         procedure Do_Pretty_Line (Line : String; Line_Cntexmp : JSON_Value)
-         is
-            function Get_Pretty_Name
-              (Name : String; Kind : String) return String;
-            --  Get pretty printed model element name.
-
-            ---------------------
-            -- Get_Pretty_Name --
-            ---------------------
-
-            function Get_Pretty_Name
-              (Name : String; Kind : String) return String
-            is
-               Name_Parts : String_Split.Slice_Set;
-            begin
-
-               --  Name either error message or of the form
-               --  "Entity_Id"{".Entity_Id"}*
-
-               if Kind = "error_message" then
-                  return Name;
-               end if;
-
-               --  Split Name into sequence of Entity_Id and build the pretty
-               --  model element name using these
-
-               String_Split.Create (S => Name_Parts,
-                       From => Name,
-                       Separators => ".",
-                       Mode => String_Split.Single);
-
-               declare
-                  First_Entity : constant Entity_Id :=
-                    Entity_Id'Value (String_Split.Slice (Name_Parts, 1));
-                  Name_Pretty : Unbounded_String :=
-                    To_Unbounded_String (Source_Name (First_Entity));
-               begin
-
-                  --  Process the first Entity_Id, which corresponds to a
-                  --  variable. Possibly append attributes 'Old or 'Result
-                  --  after its name
-
-                  if Kind = "old" and then
-                    Out_Present (Parent (First_Entity))
-                  then
-                     Name_Pretty := Name_Pretty & "'Old";
-                  elsif Kind = "result" then
-                     Name_Pretty := Name_Pretty & "'Result";
-                  end if;
-
-                  --  Process other Entity_Ids, which correspond to record
-                  --  fields
-
-                  for I in 2 .. String_Split.Slice_Count (Name_Parts) loop
-                     declare
-                        Entity : constant Entity_Id :=
-                          Entity_Id'Value (String_Split.Slice (Name_Parts, I));
-                     begin
-                        Name_Pretty :=
-                          Name_Pretty & "." & Source_Name (Entity);
-                     end;
-                  end loop;
-
-                  return To_String (Name_Pretty);
-
-               end;
-            end Get_Pretty_Name;
-
-            pragma Unreferenced (Line);
-            Line_Cntexmp_Arr : constant JSON_Array := Get (Line_Cntexmp);
-         begin
-            --  Change model element names to pretty printed names in all model
-            --  elements in counterexample line.
-            for I in Integer range 1 .. Length (Line_Cntexmp_Arr) loop
-               declare
-                  Cntexmp_Element : constant JSON_Value :=
-                    Get (Line_Cntexmp_Arr, I);
-                  Name  : constant String := Get (Cntexmp_Element, "name");
-                  Kind  : constant String := Get (Cntexmp_Element, "kind");
-               begin
-                  Set_Field (Cntexmp_Element,
-                             "name",
-                             Create (Get_Pretty_Name (Name, Kind)));
-               end;
-            end loop;
-         end Do_Pretty_Line;
       begin
          Map_JSON_Object (Cntexmp, Do_Pretty_File'Access);
 
