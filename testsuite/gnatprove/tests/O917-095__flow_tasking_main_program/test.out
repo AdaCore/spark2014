@@ -59,3 +59,10 @@ pt.ads:2:09: with task "pt.t"
 
 
 gnatprove: error during flow analysis and proof
+pt.ads:2:09: possible data race when accessing variable "p.x"
+pt.ads:2:09: with task "main_spec_only"
+pt.ads:2:09: with task "pt.t"
+   compilation of main_spec_only.ads failed
+
+
+gnatprove: error during flow analysis and proof

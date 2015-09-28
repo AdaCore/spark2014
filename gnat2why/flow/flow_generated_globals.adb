@@ -2264,7 +2264,7 @@ package body Flow_Generated_Globals is
                      else Corresponding_Spec (U));
 
             when N_Subprogram_Declaration =>
-               S := Corresponding_Spec (U);
+               S := Defining_Unit_Name (Specification (U));
 
             when N_Package_Body =>
                if Nkind (Original_Node (U)) in N_Subprogram_Instantiation then

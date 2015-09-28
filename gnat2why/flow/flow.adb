@@ -1595,8 +1595,46 @@ package body Flow is
          Generating_Globals => True);
 
       --  Write GG info for entities without graphs
+      --
+      --  Entities without graphs are those with a contract but no body
+      --  in SPARK. For them we need to explicitly register accesses to
+      --  unsynchronized states and variables which occur in contract.
       for S of Global_Info_List loop
          GG_Write_Global_Info (GI => S);
+
+         Register_Unsynch_Accesses : declare
+            Tasking : Tasking_Info;
+
+            procedure Collect_Unsynchronized_Globals (From : Name_Sets.Set);
+            --  Collect unsynchronized globals accesses by S
+
+            procedure Collect_Unsynchronized_Globals (From : Name_Sets.Set) is
+               E : Entity_Id;
+            begin
+               for N of From loop
+                  --  Exclude states and objects that are synchronized or are
+                  --  Part_Of single concurrent types.
+                  E := Find_Entity (N);
+
+                  if not (Is_Synchronized_Object (E)
+                          or else Is_Synchronized_State (E)
+                          or else Is_Part_Of_Concurrent_Object (E))
+                  then
+                     Tasking (Unsynch_Accesses).Include (E);
+                  end if;
+
+               end loop;
+
+            end Collect_Unsynchronized_Globals;
+         begin
+            if S.Globals_Origin = Origin_User then
+               Collect_Unsynchronized_Globals (S.Inputs_Proof);
+               Collect_Unsynchronized_Globals (S.Inputs);
+               Collect_Unsynchronized_Globals (S.Outputs);
+
+               GG_Register_Tasking_Info (S.Name, Tasking);
+            end if;
+         end Register_Unsynch_Accesses;
       end loop;
 
       --  Write GG info for entities with graphs

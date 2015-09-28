@@ -11,7 +11,8 @@ mains = [
 	"gen_inst.ads",
 	"original_main_spec.ads",
 	"original_main_body.adb",
-	"main_with_no_spec.adb"
+	"main_with_no_spec.adb",
+	"main_spec_only.ads",
 	]
 
 for m in mains:
