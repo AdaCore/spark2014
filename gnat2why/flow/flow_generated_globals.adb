@@ -222,7 +222,7 @@ package body Flow_Generated_Globals is
    --  it contains no objects.
 
    type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
-   --  Similar to Tasking_Info, but with name sets.
+   --  Similar to Tasking_Info_Bag, but with name sets.
 
    use type Entity_Name_Graphs.Vertex_Id;
 
