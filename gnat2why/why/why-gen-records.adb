@@ -1092,25 +1092,128 @@ package body Why.Gen.Records is
         (Components  : Node_Lists.List;
          Is_Ancestor : Boolean)
       is
-         X_Ident      : constant W_Identifier_Id :=
+         X_Ident         : constant W_Identifier_Id :=
            New_Identifier (Name => "x", Typ => EW_Private_Type);
-         Binder       : constant Binder_Array :=
+         Binder          : constant Binder_Array :=
            (1 => (B_Name => X_Ident,
                   others => <>));
-         Hide_Name    : constant W_Identifier_Id :=
+         Hide_Name       : constant W_Identifier_Id :=
            (if Is_Ancestor then To_Local (E_Symb (E, WNE_Hide_Ancestor)) else
                To_Ident (WNE_Hide_Extension));
-         Extract_Func : constant W_Identifier_Id :=
+         Extract_Func    : constant W_Identifier_Id :=
            (if Is_Ancestor then
                Extract_Ancestor_Fun
             else
                Extract_Extension_Fun);
-         Needs_Main   : constant Boolean :=
+         Needs_Main      : constant Boolean :=
            (if Is_Ancestor then
                Is_Private_Type (Root) or else Is_Task_Type (Root)
             else Is_Private_Type (E) or else Is_Task_Type (E));
+         Num_Hide_Params : constant Natural :=
+           Natural (Components.Length)
+           + 1  --  for the extension field of the current type
+           + (if Needs_Main then 1 else 0)
+           + (if not Is_Ancestor and then Has_Private_Ancestor_Or_Root (E)
+              then 1 else 0);
+         Hide_Binders    : Binder_Array (1 .. Num_Hide_Params);
+         Index           : Natural := 0;
 
       begin
+         --  the hide function to generate an ancestor field in E
+         --  takes as arguments all components of the root type not
+         --  present in E, plus the special extension, main, and
+         --  ancestor components, if present in root.
+
+         if Is_Ancestor then
+            for Field of Components loop
+               Index := Index + 1;
+               Hide_Binders (Index) :=
+                 (B_Name =>
+                    New_Identifier (Name => Short_Name (Field),
+                                    Typ => EW_Abstract (Etype (Field))),
+                  others => <>);
+            end loop;
+
+            --  the extension field in the root type is also part of the
+            --  ancestor field in E as it may contain some fields hidden in
+            --  E.
+
+            Index := Index + 1;
+            Hide_Binders (Index) :=
+              (B_Name => To_Local (E_Symb (Root, WNE_Rec_Extension)),
+               others => <>);
+
+            --  the main field of the root type is also part of the ancestor
+            --  field of E
+
+            if Needs_Main then
+               Index := Index + 1;
+               Hide_Binders (Index) :=
+                 (B_Name => To_Local (E_Symb (Root, WNE_Rec_Main)),
+                  others => <>);
+            end if;
+
+            --  the hide function to generate an extension field in the root
+            --  type takes as arguments all components of E not present in the
+            --  root type, plus the special extension, main, and
+            --  ancestor components, if present in e.
+
+         else
+            for Field of Components loop
+               Index := Index + 1;
+               Hide_Binders (Index) :=
+                 (B_Name =>
+                    New_Identifier (Name => Short_Name (Field),
+                                    Typ => EW_Abstract (Etype (Field))),
+                  others => <>);
+            end loop;
+
+            --  the extension field in the current type is also part of the
+            --  extension field in the root type
+
+            Index := Index + 1;
+            Hide_Binders (Index) :=
+              (B_Name => To_Local (E_Symb (E, WNE_Rec_Extension)),
+               others => <>);
+
+            --  the ancestor field in the current type is also part of
+            --  the extension field in the root type, as some components
+            --  of intermediate derived types may be represented in the
+            --  ancestor field
+
+            if Has_Private_Ancestor_Or_Root (E) then
+               Index := Index + 1;
+               Hide_Binders (Index) :=
+                 (B_Name => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
+                  others => <>);
+            end if;
+
+            --  the main field of a private type is also part of the
+            --  extension field in the root type
+
+            if Needs_Main then
+               Index := Index + 1;
+               Hide_Binders (Index) :=
+                 (B_Name => To_Local (E_Symb (E, WNE_Rec_Main)),
+                  others => <>);
+            end if;
+
+            pragma Assert (Index = Num_Hide_Params);
+         end if;
+
+         --  function hide__ext__ (comp1 : typ1; .. ; x : __private)
+         --                       : __private
+         --    or
+         --  function hide__anc__ (comp1 : typ1; .. ; x : __private)
+         --                       : __private
+         Emit (Theory,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => Hide_Name,
+                  Binders     => Hide_Binders,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Private_Type));
+
          for Field of Components loop
 
             --  function extract__<comp> (x : __private) : <typ>
@@ -1144,6 +1247,34 @@ package body Why.Gen.Records is
                         Return_Type => EW_Abstract (Etype (Field)),
                         Def         => Definition));
             end;
+
+            --  Declare an axiom for the extraction function stating:
+            --  forall .... extract__<comp> (hide__ext (...)) = comp
+
+            Emit (Theory,
+                  New_Guarded_Axiom
+                    (Name     =>
+                       NID (Get_Name_String (Get_Symbol
+                         (Get_Name (Extract_Fun (Field, Is_Ancestor))))
+                         & "__conv"),
+                     Binders  => Hide_Binders,
+                     Def      => +New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => New_Call
+                          (Domain  => EW_Term,
+                           Name    => Extract_Fun (Field, Is_Ancestor),
+                           Args    =>
+                             (1 => New_Call
+                                  (Domain   => EW_Term,
+                                   Name     => Hide_Name,
+                                   Binders  => Hide_Binders,
+                                   Typ      => EW_Private_Type)),
+                           Typ     => EW_Abstract (Etype (Field))),
+                        Right  => +New_Identifier
+                          (Name => Short_Name (Field),
+                           Typ => EW_Abstract (Etype (Field))),
+                        Domain => EW_Term)));
+
          end loop;
 
          if not Is_Ancestor then
@@ -1169,111 +1300,6 @@ package body Why.Gen.Records is
                      Labels      => Name_Id_Sets.Empty_Set,
                      Return_Type => EW_Private_Type));
          end if;
-
-         declare
-            Num_Hide_Params : constant Natural :=
-              Natural (Components.Length)
-              + 1  --  for the extension field of the current type
-              + (if Needs_Main then 1 else 0)
-              + (if not Is_Ancestor and then Has_Private_Ancestor_Or_Root (E)
-                 then 1 else 0);
-            Binder : Binder_Array (1 .. Num_Hide_Params);
-            Index  : Natural := 0;
-
-         begin
-            --  the hide function to generate an ancestor field in E
-            --  takes as arguments all components of the root type not
-            --  present in E, plus the special extension, main, and
-            --  ancestor components, if present in root.
-
-            if Is_Ancestor then
-               for Field of Components loop
-                  Index := Index + 1;
-                  Binder (Index) :=
-                    (B_Name =>
-                       New_Identifier (Name => Short_Name (Field),
-                                       Typ => EW_Abstract (Etype (Field))),
-                     others => <>);
-               end loop;
-
-               --  the extension field in the root type is also part of the
-               --  ancestor field in E as it may contain some fields hidden in
-               --  E.
-
-               Index := Index + 1;
-               Binder (Index) :=
-                 (B_Name => To_Local (E_Symb (Root, WNE_Rec_Extension)),
-                  others => <>);
-
-               --  the main field of the root type is also part of the ancestor
-               --  field of E
-
-               if Needs_Main then
-                  Index := Index + 1;
-                  Binder (Index) :=
-                    (B_Name => To_Local (E_Symb (Root, WNE_Rec_Main)),
-                     others => <>);
-               end if;
-
-            --  the hide function to generate an extension field in the root
-            --  type takes as arguments all components of E not present in the
-            --  root type, plus the special extension, main, and
-            --  ancestor components, if present in e.
-
-            else
-               for Field of Components loop
-                  Index := Index + 1;
-                  Binder (Index) :=
-                    (B_Name =>
-                       New_Identifier (Name => Short_Name (Field),
-                                       Typ => EW_Abstract (Etype (Field))),
-                     others => <>);
-               end loop;
-
-               --  the extension field in the current type is also part of the
-               --  extension field in the root type
-
-               Index := Index + 1;
-               Binder (Index) :=
-                 (B_Name => To_Local (E_Symb (E, WNE_Rec_Extension)),
-                  others => <>);
-
-               --  the ancestor field in the current type is also part of
-               --  the extension field in the root type, as some components
-               --  of intermediate derived types may be represented in the
-               --  ancestor field
-
-               if Has_Private_Ancestor_Or_Root (E) then
-                  Index := Index + 1;
-                  Binder (Index) :=
-                    (B_Name => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
-                     others => <>);
-               end if;
-
-               --  the main field of a private type is also part of the
-               --  extension field in the root type
-
-               if Needs_Main then
-                  Index := Index + 1;
-                  Binder (Index) :=
-                    (B_Name => To_Local (E_Symb (E, WNE_Rec_Main)),
-                     others => <>);
-               end if;
-            end if;
-
-            --  function hide__ext__ (comp1 : typ1; .. ; x : __private)
-            --                       : __private
-            --    or
-            --  function hide__anc__ (comp1 : typ1; .. ; x : __private)
-            --                       : __private
-            Emit (Theory,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => Hide_Name,
-                     Binders     => Binder,
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Return_Type => EW_Private_Type));
-         end;
       end Declare_Extraction_Functions;
 
       -----------------------------------------------

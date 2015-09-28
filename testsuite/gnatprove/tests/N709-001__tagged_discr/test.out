@@ -46,7 +46,7 @@ tagged_discr.ads:40:20: info: initialization of "V.W" proved
 tagged_discr.ads:40:20: info: initialization of "V.X" proved
 tagged_discr.ads:40:20: info: initialization of "V.Y" proved
 tagged_discr.ads:40:20: info: initialization of "V.Z" proved
-tagged_discr.ads:41:14: medium: postcondition might fail, requires Is_Zero (V)
+tagged_discr.ads:41:14: info: postcondition proved
 tagged_discr.ads:41:23: info: initialization of "V.W" proved
 tagged_discr.ads:41:23: info: initialization of "V.X" proved
 tagged_discr.ads:41:23: info: initialization of "V.Y" proved
@@ -58,7 +58,7 @@ tagged_discr.ads:58:20: info: initialization of "V.XX" proved
 tagged_discr.ads:58:20: info: initialization of "V.Y" proved
 tagged_discr.ads:58:20: info: initialization of "V.YY" proved
 tagged_discr.ads:58:20: info: initialization of "V.Z" proved
-tagged_discr.ads:59:14: medium: postcondition might fail, requires Is_Zero (V)
+tagged_discr.ads:59:14: info: postcondition proved
 tagged_discr.ads:59:23: info: initialization of "V.W" proved
 tagged_discr.ads:59:23: info: initialization of "V.X" proved
 tagged_discr.ads:59:23: info: initialization of "V.XX" proved
