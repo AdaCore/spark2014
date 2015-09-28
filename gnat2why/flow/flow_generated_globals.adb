@@ -93,7 +93,7 @@ package body Flow_Generated_Globals is
    --  Information about packages from the "generated globals" algorithm
 
    GG_Exists_Cache             : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  This should be the equivalent of:
+   --  This should be equivalent to:
    --     {x.name for all x of Subprogram_Info_List}
 
    Nonblocking_Subprograms_Set : Name_Sets.Set := Name_Sets.Empty_Set;
