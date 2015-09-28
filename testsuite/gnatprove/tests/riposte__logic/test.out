@@ -4,9 +4,9 @@ logic.adb:19:07: info: assertion proved
 logic.adb:20:07: info: assertion proved
 logic.adb:24:22: medium: assertion might fail, requires not (if F then F else true, counterexample: the check fails with all inputs
 logic.adb:26:07: info: assertion proved
-logic.adb:27:22: medium: assertion might fail, requires not (if F then T else true, counterexample: F = false and T = true
+logic.adb:27:22: medium: assertion might fail, requires not (if F then T else true, counterexample: F = False and T = True
 logic.adb:29:07: info: assertion proved
-logic.adb:30:33: medium: assertion might fail, requires F, counterexample: F = false
+logic.adb:30:33: medium: assertion might fail, requires F, counterexample: F = False
 logic.adb:32:07: info: assertion proved
 logic.adb:33:22: medium: assertion might fail, requires not (if T then T else true, counterexample: the check fails with all inputs
 logic.adb:43:07: info: assertion proved
@@ -14,22 +14,22 @@ logic.adb:44:07: info: assertion proved
 logic.adb:45:07: info: assertion proved
 logic.adb:46:07: info: assertion proved
 logic.adb:50:07: info: assertion proved
-logic.adb:51:22: medium: assertion might fail, requires F = T, counterexample: F = false and T = true
+logic.adb:51:22: medium: assertion might fail, requires F = T, counterexample: F = False and T = True
 logic.adb:53:07: info: assertion proved
-logic.adb:54:22: medium: assertion might fail, requires T = F, counterexample: T = true and F = false
+logic.adb:54:22: medium: assertion might fail, requires T = F, counterexample: T = True and F = False
 logic.adb:59:04: warning: analyzing unreferenced procedure "De_Morgan"
 logic.adb:62:07: info: assertion proved
 logic.adb:63:07: info: assertion proved
 logic.adb:65:07: info: assertion proved
 logic.adb:66:07: info: assertion proved
 logic.adb:70:07: info: assertion proved
-logic.adb:71:22: medium: assertion might fail, requires not (A and B)) = (not A and not B, counterexample: A = false and B = true
+logic.adb:71:22: medium: assertion might fail, requires not (A and B)) = (not A and not B, counterexample: A = False and B = True
 logic.adb:73:07: info: assertion proved
-logic.adb:74:22: medium: assertion might fail, requires A or B) = (not A and not B, counterexample: A = false and B = false
+logic.adb:74:22: medium: assertion might fail, requires A or B) = (not A and not B, counterexample: A = False and B = False
 logic.adb:76:07: info: assertion proved
-logic.adb:77:22: medium: assertion might fail, requires not (A or B) = (A and not B, counterexample: A = false and B = false
+logic.adb:77:22: medium: assertion might fail, requires not (A or B) = (A and not B, counterexample: A = False and B = False
 logic.adb:79:07: info: assertion proved
-logic.adb:80:22: medium: assertion might fail, requires not (A or B) = (not A and B, counterexample: A = false and B = false
+logic.adb:80:22: medium: assertion might fail, requires not (A or B) = (not A and B, counterexample: A = False and B = False
 logic.adb:83:04: warning: analyzing unreferenced procedure "Contraposition"
 logic.adb:86:07: info: assertion proved
 logic.adb:87:07: info: assertion proved
@@ -43,4 +43,4 @@ logic.adb:115:07: info: assertion proved
 logic.adb:121:22: info: postcondition proved
 logic.adb:128:19: info: postcondition proved
 logic.adb:135:04: warning: analyzing unreferenced procedure "Implies_Test_1"
-logic.adb:138:22: medium: assertion might fail, requires if (if A then B) then C) =  (if A then if B then C else true else true, counterexample: A = false and B = false and C = false
+logic.adb:138:22: medium: assertion might fail, requires if (if A then B) then C) =  (if A then if B then C else true else true, counterexample: A = False and B = False and C = False

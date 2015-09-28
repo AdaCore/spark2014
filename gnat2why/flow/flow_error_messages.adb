@@ -676,11 +676,11 @@ package body Flow_Error_Messages is
                   begin
                      case Var_Or_Field.Kind is
                         when Non_Record_Type =>
---                             if Var_Or_Field.Value = "true" then
---                                return "True";
---                             elsif Var_Or_Field.Value = "false" then
---                                return "False";
---                             end if;
+                           if Var_Or_Field.Value = "true" then
+                              return "True";
+                           elsif Var_Or_Field.Value = "false" then
+                              return "False";
+                           end if;
 
                            return Var_Or_Field.Value;
                         when Record_Type =>
