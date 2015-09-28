@@ -2258,8 +2258,12 @@ package body Flow_Generated_Globals is
 
       begin
          case Nkind (U) is
-            when N_Subprogram_Body        |
-                 N_Subprogram_Declaration =>
+            when N_Subprogram_Body =>
+               S := (if Acts_As_Spec (U)
+                     then Defining_Unit_Name (Specification (U))
+                     else Corresponding_Spec (U));
+
+            when N_Subprogram_Declaration =>
                S := Corresponding_Spec (U);
 
             when N_Package_Body =>

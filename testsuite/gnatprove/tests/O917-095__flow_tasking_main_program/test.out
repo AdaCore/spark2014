@@ -52,3 +52,10 @@ pt2.ads:2:09: with task "pt2.t"
 
 
 gnatprove: error during flow analysis and proof
+pt.ads:2:09: possible data race when accessing variable "p.x"
+pt.ads:2:09: with task "main_with_no_spec"
+pt.ads:2:09: with task "pt.t"
+   compilation of main_with_no_spec.adb failed
+
+
+gnatprove: error during flow analysis and proof

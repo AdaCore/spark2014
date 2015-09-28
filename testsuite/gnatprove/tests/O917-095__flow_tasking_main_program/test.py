@@ -10,7 +10,8 @@ mains = [
 	"renamed_main_func.ads",
 	"gen_inst.ads",
 	"original_main_spec.ads",
-	"original_main_body.adb"
+	"original_main_body.adb",
+	"main_with_no_spec.adb"
 	]
 
 for m in mains:
