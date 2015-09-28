@@ -453,6 +453,21 @@ package body Flow_Error_Messages is
                type Record_Fields_Map_Ptr is access all
                  Record_Fields.Map;
 
+               --  Represents variables at given source code location.
+               type Variables_Info (Variables_Number : Natural) is record
+                  Variables_Order : Unbounded_String_Array
+                    (1 .. Variables_Number);
+                  --  Array of variable names in the order in that variables
+                  --  should be displayed
+
+                  Variables_Map : aliased Record_Fields.Map;
+                  --  Map from variable names to information about these
+                  --  variables. This includes values of variables and
+                  --  information about record fields of variables. Information
+                  --  about record fields is a map from field names to
+                  --  information about record subfields of these fields, ...
+               end record;
+
                use Record_Fields;
 
                type Var_Or_Field_Kind is (Record_Type, Non_Record_Type);
@@ -474,24 +489,20 @@ package body Flow_Error_Messages is
                   end case;
                end record;
 
-               procedure Build_Variable_Map
+               procedure Build_Variables_Info
                  (Line_Cntexmp_Arr : JSON_Array;
-                  Variable_Map : in out Record_Fields.Map);
-               --  Build a map grouping information about fields of variables
-               --  (and their subfields, ...) at a single source code location.
+                  Variables : in out Variables_Info);
+               --  Build a structure holding information about variables, their
+               --  fields (and subfields of these fields, ...) at a single
+               --  source code location.
                --  @param Line_Cntexmp_Arr counterexample model elements at a
                --    single source code location (line)
-               --  @param Variable_Map stores information about values and
+               --  @param Variables stores information about values and
                --    fields of variables at a single source code location.
-               --    Map from variable names to information about these
-               --    variables. This includes values of variables and
-               --    information about record fields of variables. Information
-               --    about record fields is map from field names to information
-               --    about record subfields of these fields, ...
 
-               procedure Build_Variable_Map
+               procedure Build_Variables_Info
                  (Line_Cntexmp_Arr : JSON_Array;
-                  Variable_Map : in out Record_Fields.Map)
+                  Variables : in out Variables_Info)
                is
                   function Insert_Var_Or_Field
                     (Name : String;
@@ -548,10 +559,11 @@ package body Flow_Error_Messages is
                      end;
                   end Insert_Var_Or_Field;
                begin
-                  for I in Integer range 1 .. Length (Line_Cntexmp_Arr) loop
+                  for Var_Index in Integer range 1 .. Length (Line_Cntexmp_Arr)
+                  loop
                      declare
                         Cntexmp_Element : constant JSON_Value :=
-                          Get (Line_Cntexmp_Arr, I);
+                          Get (Line_Cntexmp_Arr, Var_Index);
                         Name  : constant String :=
                           Get (Cntexmp_Element, "name");
                         Kind  : constant String :=
@@ -560,7 +572,7 @@ package body Flow_Error_Messages is
                           Get (Cntexmp_Element, "value");
                         Name_Parts : String_Split.Slice_Set;
                         Current_Subfields_Map : Record_Fields_Map_Ptr :=
-                          Variable_Map'Unchecked_Access;
+                          Variables.Variables_Map'Unchecked_Access;
                      begin
 
                         --  There is either one model element with its name
@@ -585,20 +597,21 @@ package body Flow_Error_Messages is
                         --  For every Entity_Id, get information about it and
                         --  insert it to the variable map being built
 
-                        for I in 1 .. String_Split.Slice_Count (Name_Parts)
-                        loop
+                        for Var_Slice_Num in 1 .. String_Split.Slice_Count
+                          (Name_Parts) loop
                            declare
                               use GNAT.String_Split;
 
                               Field_Entity : constant Entity_Id :=
-                                Entity_Id'Value (Slice (Name_Parts, I));
+                                Entity_Id'Value (Slice (Name_Parts,
+                                                 Var_Slice_Num));
                               Field_Name : Unbounded_String :=
                                 To_Unbounded_String
                                   (Source_Name (Field_Entity));
                               Current_Var_Or_Field : Var_Or_Field_Ptr;
 
                            begin
-                              if I = 1 then
+                              if Var_Slice_Num = 1 then
 
                                  --  Process the first Entity_Id, which
                                  --  corresponds to a variable. Possibly append
@@ -611,12 +624,17 @@ package body Flow_Error_Messages is
                                  elsif Kind = "result" then
                                     Field_Name := Field_Name & "'Result";
                                  end if;
+
+                                 --  Store variable name to Variable_List
+                                 Variables.Variables_Order (Var_Index) :=
+                                   Field_Name;
                               end if;
 
                               Current_Var_Or_Field := Insert_Var_Or_Field
                                 (Name   => To_String (Field_Name),
                                  Kind   =>
-                                   (if I = Slice_Count (Name_Parts) then
+                                   (if Var_Slice_Num = Slice_Count
+                                        (Name_Parts) then
                                          Non_Record_Type
                                     else Record_Type),
                                  Value  => Value,
@@ -631,22 +649,17 @@ package body Flow_Error_Messages is
                         end loop;
                      end;
                   end loop;
-               end Build_Variable_Map;
+               end Build_Variables_Info;
 
                procedure Create_Pretty_Line
-                 (Variable_Map : Record_Fields.Map;
+                 (Variables : Variables_Info;
                   Pretty_Line_Cntexmp_Arr : out JSON_Array);
                --  Create pretty printed JSON array of counterexample elements.
-               --  @Variable_Map stores information about values and fields of
+               --  @Variables stores information about values and fields of
                --    variables at a single source code location (line).
-               --    Map from variable names to information about these
-               --    variables. This includes values of variables and
-               --    information about record fields of variables. Information
-               --    about record fields is map from field names to information
-               --    about record subfields of these fields, ...
 
                procedure Create_Pretty_Line
-                 (Variable_Map : Record_Fields.Map;
+                 (Variables : Variables_Info;
                   Pretty_Line_Cntexmp_Arr : out JSON_Array)
                is
                   function Get_Var_Or_Field_Value
@@ -663,6 +676,12 @@ package body Flow_Error_Messages is
                   begin
                      case Var_Or_Field.Kind is
                         when Non_Record_Type =>
+--                             if Var_Or_Field.Value = "true" then
+--                                return "True";
+--                             elsif Var_Or_Field.Value = "false" then
+--                                return "False";
+--                             end if;
+
                            return Var_Or_Field.Value;
                         when Record_Type =>
 
@@ -710,11 +729,13 @@ package body Flow_Error_Messages is
                      end case;
                   end Get_Var_Or_Field_Value;
 
-                  Variable : Cursor := First (Variable_Map);
                begin
                   Pretty_Line_Cntexmp_Arr := Empty_Array;
-                  while Has_Element (Variable) loop
+                  for Var_Index in Variables.Variables_Order'Range loop
                      declare
+                        Variable : Cursor := Find
+                          (Variables.Variables_Map,
+                           To_String (Variables.Variables_Order (Var_Index)));
                         Var_Name : constant String := Key (Variable);
                         Var_Value : constant String :=
                           Get_Var_Or_Field_Value (Element (Variable));
@@ -731,16 +752,17 @@ package body Flow_Error_Messages is
                   end loop;
                end Create_Pretty_Line;
 
-               Variable_Map : Record_Fields.Map;
+               Variables : Variables_Info
+                 (GNATCOLL.JSON.Length (Get (Line_Cntexmp)));
             begin
-               Build_Variable_Map (Get (Line_Cntexmp), Variable_Map);
+               Build_Variables_Info (Get (Line_Cntexmp), Variables);
 
-               if not Is_Empty (Variable_Map) then
+               if not Is_Empty (Variables.Variables_Map) then
                   declare
                      Pretty_Line_Cntexmp_Arr : JSON_Array;
                   begin
                      Create_Pretty_Line
-                       (Variable_Map, Pretty_Line_Cntexmp_Arr);
+                       (Variables, Pretty_Line_Cntexmp_Arr);
                      Set_Field
                        (File_Cntexmp, Line, Create (Pretty_Line_Cntexmp_Arr));
                   end;
