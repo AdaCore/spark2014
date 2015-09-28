@@ -30,7 +30,7 @@ is
    is
       R : T;
    begin
-      P (A, B, R, R);
+      P (A, B, R, R);  --  @ALIASING:CHECK
       C := R.F;
    end Test_01;
 
@@ -39,7 +39,7 @@ is
    is
       R : T;
    begin
-      P (A, B, R, R);
+      P (A, B, R, R);  --  @ALIASING:CHECK
       C := R.F;
    end Test_02;
 
@@ -48,7 +48,7 @@ is
    is
       R : T;
    begin
-      P (A, B, R, R);
+      P (A, B, R, R);  --  @ALIASING:CHECK
       C := R.F;
    end Test_03;
 

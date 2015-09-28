@@ -154,6 +154,8 @@ def check_marks(strlist):
             return 'GLOBAL'
         elif 'initialized' in text:
             return 'INITIALIZED'
+        elif 'aliased' in text:
+            return 'ALIASING'
 
         # proof tags
 
@@ -227,7 +229,8 @@ def check_marks(strlist):
         """Returns True if the given tag corresponds to a flow message"""
         return tag in ("DEPENDS",
                        "GLOBAL",
-                       "INITIALIZED")
+                       "INITIALIZED",
+                       "ALIASING")
 
     def is_proof_tag(tag):
         """Returns True if the given tag corresponds to a proof message"""
