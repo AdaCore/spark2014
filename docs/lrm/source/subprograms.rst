@@ -26,7 +26,8 @@ An *entire object* is an object which is not a subcomponent of a larger
 containing object.  More specifically, an *entire object* is
 an object declared by an ``object_declaration`` (as opposed to, for example,
 a slice or the result object of a function call) or a formal parameter of
-a subprogram.
+a subprogram. In particular, a component of a protected unit is not
+an *entire object*.
 
 .. centered:: **Static Semantics**
 
@@ -374,7 +375,10 @@ a formal parameter (of mode **in** for a protected function, of mode
 **in out** otherwise) and a protected entry is considered to be
 a protected procedure. [For example, rules which refer to the
 "subprogram body" refer, in the case of a protected entry, to the
-entry body.]
+entry body. As another example, the Global aspect of a subprogram nested
+within a protected operation might name the current instance of the
+protected unit as a global in the same way that it might name any
+other parameter of the protected operation.]
 
 [Note that AI12-0169 modifies the Ada RM syntax for an ``entry_body``
 to allow an optional ``aspect_specification`` immediately before the
