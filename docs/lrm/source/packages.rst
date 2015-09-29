@@ -712,31 +712,26 @@ grammar of ``initialization_spec`` given below.
 
 .. _tu-fe-initializes_aspects-02:
 
-2. The Initializes aspect shall follow the Abstract_State aspect if one is
-   present.
-
-.. _tu-fe-initializes_aspects-03:
-
-3. The ``name`` of each ``initialization_item`` in the Initializes aspect
+2. The ``name`` of each ``initialization_item`` in the Initializes aspect
    definition for a package shall denote a state abstraction of the package
    or an entire object declared immediately within the visible part of the
    package.
    [For purposes of this rule, formal parameters of a generic package
    are not considered to be "declared in the package".]
 
-.. _tu-fe-initializes_aspects-04:
+.. _tu-fe-initializes_aspects-03:
 
-4. Each ``name`` in the ``input_list`` shall denote an object, or a state
+3. Each ``name`` in the ``input_list`` shall denote an object, or a state
    abstraction but shall not denote an entity declared in the package with
    the ``aspect_specification`` containing the Initializes aspect.
 
+.. _tu-fe-initializes_aspects-04:
+
+4. Each entity in a single ``input_list`` shall be distinct.
+
 .. _tu-fe-initializes_aspects-05:
 
-5. Each entity in a single ``input_list`` shall be distinct.
-
-.. _tu-fe-initializes_aspects-06:
-
-6. An ``initialization_item`` with a **null** ``input_list`` is
+5. An ``initialization_item`` with a **null** ``input_list`` is
    equivalent to the same ``initialization_item`` without an ``input_list``.
    [That is Initializes => (A => **null**) is equivalent to Initializes => A.]
 
@@ -744,14 +739,14 @@ grammar of ``initialization_spec`` given below.
 
 .. centered:: **Static Semantics**
 
-.. _tu-fe-initializes_aspects-07:
+.. _tu-fe-initializes_aspects-06:
 
-7. The Initializes aspect of a package has visibility of the declarations
+6. The Initializes aspect of a package has visibility of the declarations
    occurring immediately within the visible part of the package.
 
-.. _tu-fa-initializes_aspects-08:
+.. _tu-fa-initializes_aspects-07:
 
-8. The Initializes aspect of a package specification asserts which
+7. The Initializes aspect of a package specification asserts which
    state abstractions and visible variables of the package are initialized
    by the elaboration of the package, both its specification and body, and
    any units which have state abstractions or variable declarations that are
@@ -759,9 +754,9 @@ grammar of ``initialization_spec`` given below.
    [A package with a **null** ``initialization_list``, or no Initializes aspect
    does not initialize any of its state abstractions or variables.]
 
-.. _tu-fe-initializes_aspects-09:
+.. _tu-fe-initializes_aspects-08:
 
-9. An ``initialization_item`` shall have an ``input_list`` if and
+8. An ``initialization_item`` shall have an ``input_list`` if and
    only if its initialization is dependent on visible variables and
    state anbstractions not declared within the package containing the
    Initializes aspect.  Then the ``names`` in the ``input_list`` shall
@@ -778,35 +773,35 @@ There are no dynamic semantics associated with the Initializes aspect.
 
 .. centered:: **Verification Rules**
 
+.. _tu-fa-initializes_aspects-9:
+
+9. If the Initializes aspect is specified for a package, then after
+   the body (which may be implicit if the package has no explicit
+   body) has completed its elaboration, every (entire) variable and
+   state abstraction denoted by a ``name`` in the Initializes aspect
+   shall be initialized. A state abstraction is said to be
+   initialized if all of its constituents are initialized. An entire
+   variable is initialized if all of its components are initialized.
+   Other parts of the visible state of the package shall not be
+   initialized.
+
 .. _tu-fa-initializes_aspects-10:
 
-10. If the Initializes aspect is specified for a package, then after
-    the body (which may be implicit if the package has no explicit
-    body) has completed its elaboration, every (entire) variable and
-    state abstraction denoted by a ``name`` in the Initializes aspect
-    shall be initialized. A state abstraction is said to be
-    initialized if all of its constituents are initialized. An entire
-    variable is initialized if all of its components are initialized.
-    Other parts of the visible state of the package shall not be
-    initialized.
-
-.. _tu-fa-initializes_aspects-11:
-
-11. If an ``initialization_item`` has an ``input_list`` then the
+10. If an ``initialization_item`` has an ``input_list`` then the
     variables and state abstractions denoted in the input list shall
     be used in determining the initialized value of the entity denoted
     by the ``name`` of the ``initialization_item``.
 
-.. _tu-fa-initializes_aspects-12:
+.. _tu-fa-initializes_aspects-11:
 
-12. All variables and state abstractions which are not declared within
+11. All variables and state abstractions which are not declared within
     the package but are used in the initialization of an
     ``initialization_item`` shall appear in an ``input_list`` of the
     ``initialization_item``.
 
-.. _tu-fa-initializes_aspects-13:
+.. _tu-fa-initializes_aspects-12:
 
-13. Any ``initialization_item`` that is a constant shall be a *constant
+12. Any ``initialization_item`` that is a constant shall be a *constant
     with variable input*. Any entity in an ``input_list`` that is a
     constant shall be a parameter or constant *with variable input*.
 
@@ -885,18 +880,13 @@ be a *Boolean_*\ ``expression``.
 1. An Initial_Condition aspect shall only be placed in an ``aspect_specification``
    of a ``package_specification``.
 
-.. _tu-fe-initial_condition_aspects-02:
-
-2. The Initial_Condition aspect shall follow the Abstract_State aspect and
-   Initializes aspect if they are present.
-
 .. _etu-initial_condition_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-fe-pf-initial_condition_aspects-03:
+.. _tu-fe-pf-initial_condition_aspects-02:
 
-3. An Initial_Condition aspect is an assertion and behaves as a
+2. An Initial_Condition aspect is an assertion and behaves as a
    postcondition for the elaboration of both the specification and
    body of a package. If present on a package, then its assertion
    expression defines properties (a predicate) of the state of the
@@ -911,9 +901,9 @@ be a *Boolean_*\ ``expression``.
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-pr-fa-initial_condition_aspects-04:
+.. _tu-pr-fa-initial_condition_aspects-03:
 
-4. With respect to dynamic semantics, specifying a given expression as
+3. With respect to dynamic semantics, specifying a given expression as
    the Initial_Condition aspect of a package is equivalent to
    specifying that expression as the argument of an Assert pragma
    occurring at the end of the (possibly implicit) statement list of
@@ -928,15 +918,15 @@ be a *Boolean_*\ ``expression``.
 
 .. centered:: **Verification Rules**
 
-.. _tu-pr-initial_condition_aspects-05:
+.. _tu-pr-initial_condition_aspects-04:
 
-5. [The Initial_Condition aspect gives a verification condition to show that the
+4. [The Initial_Condition aspect gives a verification condition to show that the
    implementation of the ``package_specification`` and its body satisfy the
    predicate given in the Initial_Condition aspect.]
 
-.. _tu-fe-initial_condition_aspects-06:
+.. _tu-fe-initial_condition_aspects-05:
 
-6. Each variable or indirectly referenced state abstraction in an
+5. Each variable or indirectly referenced state abstraction in an
    Initial_Condition aspect of a package Q which is declared
    immediately within the visible part of Q shall be initialized
    during the elaboration of Q and be denoted by a ``name`` of an
