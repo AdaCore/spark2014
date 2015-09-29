@@ -37,20 +37,20 @@ Renaming Declarations
 ---------------------
 
 
+.. _object_renaming_declarations:
+
 Object Renaming Declarations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. centered:: **Static Semantics**
+.. centered:: **Legality Rules**
 
 .. _tu-object_renaming_declarations-01:
 
-1. An expression or range occurring as part of an
-   ``object_renaming_declaration`` shall not have a variable input.
+1. [An expression or range occurring as part of an
+   ``object_renaming_declaration`` shall not have a variable input;
+   see :ref:`expressions` for the statement of this rule.]
    [This rule can apply to an index of an indexed_component and the range
-   of a slice.] [This rule avoids the possible dependence of a subprogram
-   on an unnamed constant that cannot be mentioned in dependency contracts,
-   and it ensures that the renamed object can be mentally replaced for the
-   renaming variable in code reviews.]
+   of a slice.]
 
 .. _etu-object_renaming_declarations:
 

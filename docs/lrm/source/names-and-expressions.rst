@@ -122,6 +122,8 @@ Aggregates
 scalar value or a composite value having an uninitialized scalar value as a
 subcomponent. Similarly for an ancestor subtype in an extension aggregate.]
 
+.. _expressions:
+
 Expressions
 -----------
 
@@ -155,14 +157,15 @@ free from side-effects only retrieves or computes a value.
     * the default_expression of a discriminant_specification
       (see :ref:`discriminants`);
 
-    * a Dynamic_Predicate or Type_Invariant aspect specification;
+    * a Dynamic_Predicate or Type_Invariant aspect specification
+      (see :ref:`subtype_predicates`);
 
     * an indexing expresssion of an indexed_component or the discrete_range
       of a slice in an object renaming declaration which renames
-      part of that index or slice;
+      part of that index or slice (see :ref:`object_renaming_declarations`);
 
     * a generic actual parameter corresponding to a generic formal object
-      having mode **in**.
+      having mode **in** (see :ref:`generic_instantiation`).
 
 .. _etu-expressions:
 
@@ -179,6 +182,11 @@ have a variable input will always yield the same result if it is
 (conceptually, for purposes of static analysis) reevaluated later.
 This is not true of an expression that has a variable input because the
 value of the variable might have changed.]
+
+[For purposes of these rules, the current instance of a type or subtype is
+not considered to be a variable input in the case of a Dynamic_Predicate
+or Type_Invariant condition, but is considered to be a variable
+input in the case of the default_expression of a component declaration.]
 
 .. _update-expressions:
 

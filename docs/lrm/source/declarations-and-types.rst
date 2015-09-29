@@ -82,9 +82,10 @@ function which (directly or indirectly) reads a variable.
 
 .. _tu-subtype_declarations-01:
 
-1. A ``constraint``, excluding the ``range`` of a
+1. [A ``constraint``, excluding the ``range`` of a
    ``loop_parameter_specification``, shall not be defined using an
-   expression with a variable input.
+   expression with a variable input;
+   see :ref:`expressions` for the statement of this rule.]
 
 .. _etu-subtype_declarations-lr:
 
@@ -94,17 +95,20 @@ Classification of Operations
 
 No restrictions or extensions.
 
+.. _subtype_predicates:
+
 Subtype Predicates
 ~~~~~~~~~~~~~~~~~~
 
 Static predicates are in |SPARK|. Dynamic predicates are also in
 |SPARK|, but are subject to some restrictions.
 
-.. centered:: **Verification Rules**
+.. centered:: **Legality Rules**
 
 .. _tu-sf-subtype_predicates-01:
 
-1. A Dynamic_Predicate expression shall not have a variable input.
+1. [A Dynamic_Predicate expression shall not have a variable input;
+   see :ref:`expressions` for the statement of this rule.]
 
 .. _etu-subtype_predicates-01:
 
@@ -232,9 +236,10 @@ The following rules apply to discriminants in |SPARK|.
 
 .. _tu-discriminants-03:
 
-3. The ``default_expression`` of a ``discriminant_specification``
-   shall not have a variable input.
-
+3. [The ``default_expression`` of a ``discriminant_specification``
+   shall not have a variable input;
+   see :ref:`expressions` for the statement of this rule.]
+   
 .. _etu-discriminants:
 
 .. _record_types:
@@ -268,9 +273,10 @@ and the default initialization expressions must not have variable inputs.
 
 .. _tu-record_types-02:
 
-2. The ``default_expression`` of a ``component_declaration`` shall not
+2. [The ``default_expression`` of a ``component_declaration`` shall not
    have any variable inputs, nor shall it contain a name denoting
-   the current instance of the enclosing type.
+   the current instance of the enclosing type;
+   see :ref:`expressions` for the statement of this rule.]
 
 .. _etu-record_types:
 

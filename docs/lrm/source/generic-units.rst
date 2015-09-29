@@ -7,6 +7,8 @@ instance of the generic unit is analyzed.
 If an instance of a generic unit occurs within another generic unit,
 this principle is applied recursively.
 
+.. _generic_instantiation:
+
 Generic Instantiation
 ---------------------
 
@@ -19,6 +21,10 @@ Generic Instantiation
    in section 12.3 of the Ada reference manual) are in |SPARK| [(i.e.,
    when considered as a package (or, in the case of an instance of a
    generic subprogram, as a subprogram)].
+
+2. [A generic actual parameter corresponding to a generic formal
+   object having mode **in** shall not have a variable input;
+   see :ref:`expressions` for the statement of this rule.]
 
 .. _etu-generic_instantiation:
 
