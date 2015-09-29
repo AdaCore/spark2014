@@ -135,6 +135,9 @@ Source and Target types are effectively volatile types.
 [Unlike nonvolatile functions, two calls to a volatile function with all
 inputs equal need not return the same result.]
 
+A protected function whose Volatile_Function aspect is False is said
+to be "nonvolatile for internal calls".
+
 .. centered:: **Legality Rules**
 
 .. _tu-fe-external_state-01:
@@ -342,13 +345,17 @@ Async_Writers aspect specification.
 
 .. _tu-fe-external_state_variables-08:
 
-8. A ``global_item`` of a nonvolatile function shall not denote either
+8. A ``global_item`` of a nonvolatile function, or of a function which
+   is nonvolatile for internal calls, shall not denote either
    an effectively volatile object or an external state abstraction.
 
 .. _tu-fe-nt-external_state_variables-09:
 
-9. A nonvolatile function shall not have a formal parameter (or result)
-   of an effectively volatile type.
+9. A formal parameter (or result) of a nonvolatile function, or of a
+   function which is nonvolatile for internal calls, shall not be of
+   an effectively volatile type. [For a protected function, this rule
+   does not apply to the notional parameter denoting the current instance of
+   the associated protected unit described in section :ref:`global-aspects` .]
 
 .. _tu-fe-external_state_variables-10:
 
@@ -407,10 +414,14 @@ Async_Writers aspect specification.
    * the expression of a type conversion occurring in a non-interfering context.
 
    The same restrictions also apply to a call to a volatile function
+   (except not in the case of an internal call to a protected function
+   which is nonvolatile for internal calls)
    and to the evaluation of any attribute which is defined to introduce
    an implicit dependency on a volatile state abstraction [(these are
    the Callable, Caller, Count, and Terminated attributes; see section
-   :ref:`tasks-and-synchronization`)].
+   :ref:`tasks-and-synchronization`)]. [An internal call to a protected
+   function is treated like a call to nonvolatile function if the
+   function's Volatile_Function aspect is False.]
 
 .. _etu-external_state_variables-lr:
 
