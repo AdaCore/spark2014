@@ -369,7 +369,24 @@ package body Gnat2Why.Annotate is
       Reason   : out String_Id) is
       Arg1, Arg2, Arg3, Arg4 : Node_Id;
       Arg2_Exp, Arg3_Exp, Arg4_Exp : Node_Id;
+
    begin
+      --  We silently ignore this case
+
+      if List_Length (Pragma_Argument_Associations (Node)) = 2  then
+         declare
+            Arg1 : constant Node_Id :=
+              First (Pragma_Argument_Associations (Node));
+            Arg2 : constant Node_Id := Next (Arg1);
+         begin
+            if Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) =
+              "external_axiomatization"
+            then
+               Ok := False;
+               return;
+            end if;
+         end;
+      end if;
 
       --  We set Ok to false so that whenever we detect a problem we can simply
       --  return. Only when all checks passed, we set Ok to True.
@@ -397,11 +414,6 @@ package body Gnat2Why.Annotate is
                Kind := False_Positive;
             elsif Args_Str = "intentional" then
                Kind := Intentional;
-
-            --  we can silently ignore this case
-
-            elsif Args_Str = "external_axiomatization" then
-               return;
             else
                Error_Msg_N
                  ("the second argument of a Gnatprove Annotate pragma must " &

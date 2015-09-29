@@ -2565,13 +2565,9 @@ package body SPARK_Definition is
 
             --  Packages with external axioms should have SPARK_Mode On.
 
-            if No (SPARK_Pragma (E))
-              or else Get_SPARK_Mode_From_Pragma (SPARK_Pragma (E)) /= On
-            then
-               Mark_Violation
-                 ("package with External_Axiomatization with no SPARK_Mode",
-                  E);
-            end if;
+            pragma Assert
+              (Present (SPARK_Pragma (E))
+               and then Get_SPARK_Mode_From_Pragma (SPARK_Pragma (E)) = On);
 
             --  For other verifications, use the SPARK pragma of the package
 
@@ -3559,8 +3555,8 @@ package body SPARK_Definition is
             Pack : constant Entity_Id :=
               Containing_Package_With_Ext_Axioms (E);
          begin
-            if Pack /= E then
-               Mark_Entity (Pack);
+            if Pack /= E  and then not In_SPARK (Pack) then
+               Mark_Violation (E, From => Pack);
             end if;
          end;
       end if;

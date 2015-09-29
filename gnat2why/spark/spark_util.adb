@@ -36,6 +36,7 @@ with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
 with Fname;                              use Fname;
 with Nlists;                             use Nlists;
+with Opt;                                use Opt;
 with Pprint;                             use Pprint;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Disp;                           use Sem_Disp;
@@ -100,7 +101,10 @@ package body SPARK_Util is
    ------------------------------------------------
 
    function Entity_In_Ext_Axioms (E : Entity_Id) return Boolean is
-     (Present (Containing_Package_With_Ext_Axioms (E)));
+     (Present (Containing_Package_With_Ext_Axioms (E))
+      and then Present (SPARK_Pragma (Containing_Package_With_Ext_Axioms (E)))
+      and then Get_SPARK_Mode_From_Pragma
+        (SPARK_Pragma (Containing_Package_With_Ext_Axioms (E))) = On);
 
    function Is_Access_To_Ext_Axioms_Discriminant
      (N : Node_Id) return Boolean
