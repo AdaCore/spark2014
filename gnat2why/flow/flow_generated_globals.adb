@@ -156,8 +156,10 @@ package body Flow_Generated_Globals is
    Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
    --  Volatile information
 
-   Tasking_Info_Bag : array (Tasking_Info_Kind) of Name_Graphs.Map :=
-     (others => Name_Graphs.Empty_Map);
+   type Phase is (Phase_1, Phase_2);
+
+   Tasking_Info_Bag : array (Phase, Tasking_Info_Kind) of Name_Graphs.Map :=
+     (others => (others => Name_Graphs.Empty_Map));
    --  Maps from subprogram names to accessed objects
    --
    --  In phase 1 it is populated with objects directly accessed by each
@@ -215,19 +217,24 @@ package body Flow_Generated_Globals is
       Key_Hash     => Name_Hash,
       Test_Key     => "=");
 
-   Tasking_Graph : array (Tasking_Info_Kind) of Entity_Name_Graphs.Graph :=
-     (others => Entity_Name_Graphs.Create);
-   --  Graphs with information about objects accessed by subprograms
-
    Call_Graph : Entity_Name_Graphs.Graph := Entity_Name_Graphs.Create;
-   --  Call graph where vertices correspond to subprograms and edges correspond
-   --  to subprogram calls. Subprogram calls are provided by the front end,
-   --  i.e. they are not affected by user's annotations. Unlike Global_Graph,
-   --  it contains no objects.
+   --  Call graph rooted at protected operations for detecting potentially
+   --  blocking statements.
 
-   Tasking_Subprograms : Name_Sets.Set;
-   --  Subprograms, entries and tasks with specification in SPARK and a flow
-   --  contract, either provided by the user or inferred from the body.
+   --  Vertices correspond to subprograms and edges correspond to subprogram
+   --  calls.
+   --
+   --  Subprogram calls are provided by the front end, i.e. they are not
+   --  affected by user's annotations. Unlike Global_Graph, it contains
+   --  no objects.
+
+   Tasking_Call_Graph : Entity_Name_Graphs.Graph := Entity_Name_Graphs.Create;
+   --  Call graph for detecting ownership conflicts between tasks
+   --
+   --  Vertices correspond to subprograms, entries and tasks with specification
+   --  in SPARK and a flow contract, either provided by the user or inferred
+   --  from the body (otherwise they have no body or the body is not in SPARK).
+   --  Edges correspond to subprogram calls.
 
    type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
    --  Similar to Tasking_Info_Bag, but with sets of object names.
@@ -922,7 +929,7 @@ package body Flow_Generated_Globals is
    is
    begin
       for Kind in Tasking_Info_Kind loop
-         Tasking_Info_Bag (Kind).Insert (EN, To_Name_Set (TI (Kind)));
+         Tasking_Info_Bag (Phase_1, Kind).Insert (EN, To_Name_Set (TI (Kind)));
       end loop;
    end GG_Register_Tasking_Info;
 
@@ -991,7 +998,7 @@ package body Flow_Generated_Globals is
          All_Names : Name_Sets.Set := Name_Sets.Empty_Set;
       begin
          for Kind in Tasking_Info_Kind loop
-            for C in Tasking_Info_Bag (Kind).Iterate loop
+            for C in Tasking_Info_Bag (Phase_1, Kind).Iterate loop
                All_Names.Include (Key (C));
             end loop;
          end loop;
@@ -1000,7 +1007,14 @@ package body Flow_Generated_Globals is
                   The_Entity       => Name,
                   The_Tasking_Info => <>);
             for Kind in Tasking_Info_Kind loop
-               V.The_Tasking_Info (Kind) := Tasking_Objects (Kind, Name);
+               declare
+                  C : constant Name_Graphs.Cursor :=
+                    Tasking_Info_Bag (Phase_1, Kind).Find (Name);
+               begin
+                  V.The_Tasking_Info (Kind) := (if Has_Element (C)
+                                                then Element (C)
+                                                else Name_Sets.Empty_Set);
+               end;
             end loop;
             Write_To_ALI (V);
          end loop;
@@ -1046,7 +1060,7 @@ package body Flow_Generated_Globals is
       --  of the Global_Graph. While adding edges we consult the Local_Graph so
       --  as not to add edges to local variables.
       --  It also created edges for (conditional and unconditional) subprogram
-      --  calls in the Tasking_Graph.
+      --  calls in the Tasking_Call_Graph.
 
       procedure Create_All_Vertices;
       --  Creates all the vertices of the Global_Graph and subprogram vertices
@@ -1055,12 +1069,6 @@ package body Flow_Generated_Globals is
       procedure Create_Local_Graph;
       --  Creates the Local_Graph. This graph will be used to prevent adding
       --  edges to local variables on the Global_Graph.
-
-      procedure Create_Tasking_Graph;
-      --  Creates graph with tasking-related information; it will contain:
-      --  * a vertex for each subprogram that accesses a tasking object,
-      --  * a vertex for each tasking object,
-      --  * an edge from such subprogram to such vertex.
 
       procedure Edit_Proof_Ins;
       --  A variable cannot be simultaneously a Proof_In and an Input
@@ -1081,7 +1089,7 @@ package body Flow_Generated_Globals is
       procedure Remove_Constants_Without_Variable_Input;
       --  Removes edges leading to constants without variable input
 
-      procedure Print_Tasking_Info_Bag;
+      procedure Print_Tasking_Info_Bag (P : Phase);
       --  Display the tasking-related information
 
       procedure Process_Tasking_Graph;
@@ -1139,13 +1147,13 @@ package body Flow_Generated_Globals is
          procedure Add_Tasking_Edge (From, To : Entity_Name) is
          begin
             --  Record the call in the tasking-info graphs, but only for calls
-            --  that originate from subprograms in SPARK.
-            if Tasking_Subprograms.Contains (From)
-              and then Tasking_Subprograms.Contains (To)
+            --  between subprograms in SPARK.
+            if Tasking_Call_Graph.Get_Vertex (From) /=
+                Entity_Name_Graphs.Null_Vertex
+              and then Tasking_Call_Graph.Get_Vertex (To) /=
+                Entity_Name_Graphs.Null_Vertex
             then
-               for Kind in Tasking_Info_Kind loop
-                  Tasking_Graph (Kind).Add_Edge (From, To);
-               end loop;
+               Tasking_Call_Graph.Add_Edge (From, To);
             end if;
          end Add_Tasking_Edge;
 
@@ -1557,35 +1565,6 @@ package body Flow_Generated_Globals is
          --  Close graph
          Local_Graph.Close;
       end Create_Local_Graph;
-
-      --------------------------
-      -- Create_Tasking_Graph --
-      --------------------------
-
-      procedure Create_Tasking_Graph is
-         use Entity_Name_Graphs;
-      begin
-         for Kind in Tasking_Info_Kind loop
-            for C in Tasking_Info_Bag (Kind).Iterate loop
-               declare
-                  Subp : constant Entity_Name   := Key (C);
-                  Objs : constant Name_Sets.Set := Element (C);
-               begin
-                  --  Add vertices for objects
-                  for Obj of Objs loop
-                     --  Create object vertex if it does not already exist
-                     if Tasking_Graph (Kind).Get_Vertex (Obj) = Null_Vertex
-                     then
-                        Tasking_Graph (Kind).Add_Vertex (Obj);
-                     end if;
-
-                     --  Create edge
-                     Tasking_Graph (Kind).Add_Edge (Subp, Obj);
-                  end loop;
-               end;
-            end loop;
-         end loop;
-      end Create_Tasking_Graph;
 
       --------------------
       -- Edit_Proof_Ins --
@@ -1999,16 +1978,11 @@ package body Flow_Generated_Globals is
 
                   when EK_Tasking_Info =>
                      --  Register subprogram with tasking-related info
-                     Tasking_Subprograms.Include (V.The_Entity);
-
-                     --  Add subprogram vertices to the tasking-info graphs
-                     for Kind in Tasking_Info_Kind loop
-                        Tasking_Graph (Kind).Add_Vertex (V.The_Entity);
-                     end loop;
+                     Tasking_Call_Graph.Add_Vertex (V.The_Entity);
 
                      for Kind in Tasking_Info_Kind loop
                         if not V.The_Tasking_Info (Kind).Is_Empty then
-                           Tasking_Info_Bag (Kind).Insert
+                           Tasking_Info_Bag (Phase_1, Kind).Insert
                              (V.The_Entity,
                               V.The_Tasking_Info (Kind));
                         end if;
@@ -2039,7 +2013,7 @@ package body Flow_Generated_Globals is
       -- Print_Tasking_Info_Bag --
       ----------------------------
 
-      procedure Print_Tasking_Info_Bag is
+      procedure Print_Tasking_Info_Bag (P : Phase) is
       begin
          if not Debug_Print_Tasking_Info then
             return;
@@ -2048,8 +2022,8 @@ package body Flow_Generated_Globals is
          for Kind in Tasking_Info_Kind loop
             Write_Line ("Tasking: " & Kind'Img);
             Indent;
-            if not Tasking_Info_Bag (Kind).Is_Empty then
-               for C in Tasking_Info_Bag (Kind).Iterate loop
+            if not Tasking_Info_Bag (P, Kind).Is_Empty then
+               for C in Tasking_Info_Bag (P, Kind).Iterate loop
                   declare
                      Subp : constant Entity_Name   := Key (C);
                      Objs : constant Name_Sets.Set := Element (C);
@@ -2076,36 +2050,42 @@ package body Flow_Generated_Globals is
       procedure Process_Tasking_Graph is
          use Entity_Name_Graphs;
       begin
-         for Kind in Tasking_Info_Kind loop
-            --  Do the transitive closure
-            Tasking_Graph (Kind).Close;
+         --  Do the transitive closure
+         Tasking_Call_Graph.Close;
 
-            --  Clear the bag
-            Tasking_Info_Bag (Kind).Clear;
+         --  Collect information for each subprogram
+         --  ??? we should only care about main-like subprograms
+         for S_Vertex of Tasking_Call_Graph.Get_Collection (All_Vertices) loop
+            declare
+               S : constant Entity_Name :=
+                 Tasking_Call_Graph.Get_Key (S_Vertex);
 
-            --  Collect information for each subprogram
-            for S of Tasking_Subprograms loop
-               declare
-                  S_Vertex : constant Vertex_Id :=
-                    Tasking_Graph (Kind).Get_Vertex (S);
-                  Objs : Name_Sets.Set := Name_Sets.Empty_Set;
-               begin
-                  --  Collect out-neighbours of the subprogram vertex
-                  for Obj_Key of Tasking_Graph (Kind).Get_Collection
-                    (S_Vertex, Out_Neighbours)
-                  loop
-                     Objs.Insert (Tasking_Graph (Kind).Get_Key (Obj_Key));
-                  end loop;
+            begin
 
-                  --  Remove called subprograms
-                  Objs := Objs - Tasking_Subprograms;
+               for Kind in Tasking_Info_Kind loop
+                  declare
+                     C : constant Name_Graphs.Cursor :=
+                       Tasking_Info_Bag (Phase_1, Kind).Find (S);
 
-                  --  Store the non-empty results
-                  if not Objs.Is_Empty then
-                     Tasking_Info_Bag (Kind).Insert (S, Objs);
-                  end if;
-               end;
-            end loop;
+                     Objs_1 : constant Name_Sets.Set :=
+                       (if Name_Graphs.Has_Element (C)
+                        then Tasking_Info_Bag (Phase_1, Kind).Element (S)
+                        else Name_Sets.Empty_Set);
+
+                     Objs_2 : Name_Sets.Set;
+                  begin
+                     --  Collect objects directly accesses by the subprogram
+                     for Obj of Objs_1 loop
+                        Objs_2.Insert (Obj);
+                     end loop;
+
+                     --  Store the non-empty results
+                     if not Objs_2.Is_Empty then
+                        Tasking_Info_Bag (Phase_2, Kind).Insert (S, Objs_2);
+                     end if;
+                  end;
+               end loop;
+            end;
          end loop;
       end Process_Tasking_Graph;
 
@@ -2320,10 +2300,7 @@ package body Flow_Generated_Globals is
 
       end Detect_Main_Subprogram;
 
-      --  Create graph with tasking-related information
-      Create_Tasking_Graph;
-
-      --  Add all edges in the Global_Graph and Tasking_Graph
+      --  Add all edges in the Global_Graph and Tasking_Call_Graph
       Add_All_Edges;
       if Debug_GG_Read_Timing then
          Note_Time ("gg_read - edges added");
@@ -2337,7 +2314,7 @@ package body Flow_Generated_Globals is
 
       --  Put tasking-related information back to the bag
       Process_Tasking_Graph;
-      Print_Tasking_Info_Bag;
+      Print_Tasking_Info_Bag (Phase_2);
 
       --  Now that the Globals Graph has been generated we set
       --  GG_Generated to True. Notice that we set GG_Generated to
@@ -2909,7 +2886,8 @@ package body Flow_Generated_Globals is
       Subp : Entity_Name)
       return Name_Sets.Set
    is
-      C : constant Name_Graphs.Cursor := Tasking_Info_Bag (Kind).Find (Subp);
+      C : constant Name_Graphs.Cursor :=
+        Tasking_Info_Bag (Phase_2, Kind).Find (Subp);
    begin
       return (if Has_Element (C)
               then Element (C)

@@ -127,15 +127,15 @@ package Flow_Generated_Globals is
       Name                  : Entity_Name;
       Kind                  : Analyzed_Subject_Kind;
       Globals_Origin        : Globals_Origin_T;
-      Inputs_Proof          : Name_Sets.Set;
-      Inputs                : Name_Sets.Set;
-      Outputs               : Name_Sets.Set;
-      Proof_Calls           : Name_Sets.Set;
-      Definite_Calls        : Name_Sets.Set;
-      Conditional_Calls     : Name_Sets.Set;
-      Local_Variables       : Name_Sets.Set;
-      Local_Subprograms     : Name_Sets.Set;
-      Local_Definite_Writes : Name_Sets.Set;
+      Inputs_Proof          : Name_Sets.Set; --  Flow/User
+      Inputs                : Name_Sets.Set; --  Flow/Frontend/User
+      Outputs               : Name_Sets.Set; --  Flow/Frontend/User
+      Proof_Calls           : Name_Sets.Set; --  Flow
+      Definite_Calls        : Name_Sets.Set; --  Flow
+      Conditional_Calls     : Name_Sets.Set; --  Flow/Frontend
+      Local_Variables       : Name_Sets.Set; --  Flow
+      Local_Subprograms     : Name_Sets.Set; --  Flow
+      Local_Definite_Writes : Name_Sets.Set; --  Flow
    end record;
    --  IMPORTANT: If you add fields to this, make sure to also update the
    --  serialisation procedure (in the body of flow_generated_globals), and
@@ -334,7 +334,8 @@ package Flow_Generated_Globals is
    function Tasking_Objects
      (Kind : Tasking_Info_Kind;
       Subp : Entity_Name)
-      return Name_Sets.Set;
+      return Name_Sets.Set
+     with Pre => GG_Has_Been_Generated;
    --  Returns the set of objects (e.g. suspension objects or entries,
    --  depending on the Kind) accessed by subprogram Subp.
 
