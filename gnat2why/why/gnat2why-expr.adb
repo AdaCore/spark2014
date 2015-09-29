@@ -3382,7 +3382,7 @@ package body Gnat2Why.Expr is
               Get_Expr_From_Return_Only_Func (Pred_Subp);
             Pred_Param : constant Entity_Id :=
               Defining_Entity (First (Parameter_Specifications
-                (Subprogram_Specification (Pred_Subp))));
+                               (Subprogram_Specification (Pred_Subp))));
             Pred_Id    : constant W_Identifier_Id :=
               New_Temp_Identifier (Pred_Param, Get_Type (+Expr));
 
@@ -3395,7 +3395,26 @@ package body Gnat2Why.Expr is
             --  that the type of Expr is used as the type used to represent
             --  Pred_Param (avoiding type conversion).
 
-            Insert_Entity (Pred_Param, Pred_Id);
+            if Get_Type_Kind (Get_Type (+Expr)) = EW_Split
+              and then Has_Array_Type (Ty_Ext)
+            then
+               declare
+                  E : constant Item_Type :=
+                    Ada_Ent_To_Why.Element
+                      (Symbol_Table, Get_Entity_Of_Variable (+Expr));
+               begin
+                  Insert_Item
+                    (I => Item_Type'(Kind     => UCArray,
+                                     Content  =>
+                                       Binder_Type'(B_Name => Pred_Id,
+                                                    others => <>),
+                                     Dim      => E.Dim,
+                                     Bounds   => E.Bounds),
+                     E => Pred_Param);
+               end;
+            else
+               Insert_Entity (Pred_Param, Pred_Id);
+            end if;
 
             --  Transform the predicate expression into Why3
 
@@ -3671,10 +3690,15 @@ package body Gnat2Why.Expr is
    function Insert_Predicate_Check
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;
-      W_Expr   : W_Prog_Id) return W_Prog_Id
+      W_Expr   : W_Prog_Id;
+      Var_Ent  : Entity_Id := Empty) return W_Prog_Id
    is
       W_Tmp : constant W_Identifier_Id :=
-        New_Temp_Identifier (Typ => Get_Type (+W_Expr));
+        New_Temp_Identifier (Typ      => Get_Type (+W_Expr),
+                             Ada_Node => Var_Ent);
+      --  If W_Expr is an array in split form, we need to link W_Tmp to Var_Ent
+      --  so that the proper bounds can be retrieved.
+
       W_Seq : constant W_Prog_Id :=
         Sequence (New_Predicate_Check (Ada_Node, Check_Ty, +W_Tmp), +W_Tmp);
    begin
@@ -5375,7 +5399,9 @@ package body Gnat2Why.Expr is
       W_Expr   : W_Expr_Id) return W_Prog_Id
    is
       Check : constant W_Pred_Id :=
-        New_Predicate_Call (Ty, +W_Expr, Body_Params);
+        Compute_Dynamic_Predicate (Expr    => +W_Expr,
+                                   Ty      => Ty,
+                                   Params  => Body_Params);
    begin
       return New_Assert
         (Pred =>
@@ -5656,9 +5682,11 @@ package body Gnat2Why.Expr is
            and then Present (Ty)
            and then Has_Predicates (Ty)
          then
-            Result := +Insert_Predicate_Check (Ada_Node => N,
-                                               Check_Ty => Ty,
-                                               W_Expr   => +Result);
+            Result := +Insert_Predicate_Check
+              (Ada_Node => N,
+               Check_Ty => Ty,
+               W_Expr   => +Result,
+               Var_Ent  => Get_Ada_Node (+Pref));
          end if;
       end;
 

@@ -269,6 +269,13 @@ package Why.Gen.Arrays is
    --  The final value of Arg_Ind corresponds to the array index that follows
    --  the last argument filled in by this procedure.
 
+   function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id
+     with Pre => Get_Type_Kind (Get_Type (E)) = EW_Split;
+   --  Return the ada entity associated to an array expression in split form.
+   --  There is always one or we cannot reach to the object's bounds.
+   --  @param E Why expression for which we want an ada entity
+   --  @result Ada entity associated to E that can be used to find its bounds.
+
    function Get_Array_Attr
      (Domain : EW_Domain;
       Expr   : W_Expr_Id;
