@@ -337,6 +337,6 @@ are in |SPARK|.
 
 20. All procedures declared in the visible part of Ada.Synchronous_Task_Control
     have a dependency "(S => null)" despite the fact that S has mode **in
-    out**. Procedure Suspend_Until_True is defined to be potentially blocking.
+    out**.
 
 .. _etu-tasks_and_synchronization-vr:
