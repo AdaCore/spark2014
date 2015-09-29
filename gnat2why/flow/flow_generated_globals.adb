@@ -158,7 +158,11 @@ package body Flow_Generated_Globals is
 
    Tasking_Info_Bag : array (Tasking_Info_Kind) of Name_Graphs.Map :=
      (others => Name_Graphs.Empty_Map);
-   --  Tasking-related information read from ALI file and then processed
+   --  Maps from subprogram names to accessed objects
+   --
+   --  In phase 1 it is populated with objects directly accessed by each
+   --  subprogram and stored in the ALI file. In phase 2 it is populated
+   --  with objects directly and indirectly accessed by each subprogram.
 
    ----------------------------------------------------------------------
    --  Global_Id
@@ -221,8 +225,12 @@ package body Flow_Generated_Globals is
    --  i.e. they are not affected by user's annotations. Unlike Global_Graph,
    --  it contains no objects.
 
+   Tasking_Subprograms : Name_Sets.Set;
+   --  Subprograms, entries and tasks with specification in SPARK and a flow
+   --  contract, either provided by the user or inferred from the body.
+
    type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
-   --  Similar to Tasking_Info_Bag, but with name sets.
+   --  Similar to Tasking_Info_Bag, but with sets of object names.
 
    use type Entity_Name_Graphs.Vertex_Id;
 
@@ -1093,6 +1101,9 @@ package body Flow_Generated_Globals is
          --  Check if we should add the given edge to the graph based
          --  wheather it is in the local graph or not.
 
+         procedure Add_Tasking_Edge (From, To : Entity_Name);
+         --  Add edge to tasking call graphs
+
          -------------------
          -- Edge_Selector --
          -------------------
@@ -1124,6 +1135,19 @@ package body Flow_Generated_Globals is
             --  Check if local variable B can act as global of subprogram A
             return Local_Graph.Edge_Exists (Key_B, Key_A);
          end Edge_Selector;
+
+         procedure Add_Tasking_Edge (From, To : Entity_Name) is
+         begin
+            --  Record the call in the tasking-info graphs, but only for calls
+            --  that originate from subprograms in SPARK.
+            if Tasking_Subprograms.Contains (From)
+              and then Tasking_Subprograms.Contains (To)
+            then
+               for Kind in Tasking_Info_Kind loop
+                  Tasking_Graph (Kind).Add_Edge (From, To);
+               end loop;
+            end if;
+         end Add_Tasking_Edge;
 
       --  Start of processing for Add_All_Edges
 
@@ -1193,10 +1217,7 @@ package body Flow_Generated_Globals is
                                                  Name => Definite_Call));
 
                --  Also record the call in the tasking-info graphs
-               for Kind in Tasking_Info_Kind loop
-                  Tasking_Graph (Kind).Add_Edge (Info.Name,
-                                                 Definite_Call);
-               end loop;
+               Add_Tasking_Edge (Info.Name, Definite_Call);
             end loop;
 
             --  As above but also add an edge from the subprogram's
@@ -1218,11 +1239,8 @@ package body Flow_Generated_Globals is
                                       Global_Id'(Kind => Outs_Kind,
                                                  Name => Conditional_Call));
 
-               --  Also record the call in the tasking-info graphs
-               for Kind in Tasking_Info_Kind loop
-                  Tasking_Graph (Kind).Add_Edge (Info.Name,
-                                                 Conditional_Call);
-               end loop;
+               --  Also record the call in the tasking-info graph
+               Add_Tasking_Edge (Info.Name, Conditional_Call);
             end loop;
          end loop;
 
@@ -1408,12 +1426,6 @@ package body Flow_Generated_Globals is
                Global_Graph.Add_Vertex (G_Ins);
                Global_Graph.Add_Vertex (G_Outs);
                Global_Graph.Add_Vertex (G_Proof_Ins);
-
-               --  Also add vertex to the tasking-info graphs
-               for Kind in Tasking_Info_Kind loop
-                  Tasking_Graph (Kind).Add_Vertex (N);
-                  --  ??? subprogram vertices can be created when adding edges
-               end loop;
             end;
          end loop;
 
@@ -1986,6 +1998,14 @@ package body Flow_Generated_Globals is
                      end;
 
                   when EK_Tasking_Info =>
+                     --  Register subprogram with tasking-related info
+                     Tasking_Subprograms.Include (V.The_Entity);
+
+                     --  Add subprogram vertices to the tasking-info graphs
+                     for Kind in Tasking_Info_Kind loop
+                        Tasking_Graph (Kind).Add_Vertex (V.The_Entity);
+                     end loop;
+
                      for Kind in Tasking_Info_Kind loop
                         if not V.The_Tasking_Info (Kind).Is_Empty then
                            Tasking_Info_Bag (Kind).Insert
@@ -2064,7 +2084,7 @@ package body Flow_Generated_Globals is
             Tasking_Info_Bag (Kind).Clear;
 
             --  Collect information for each subprogram
-            for S of All_Subprograms loop
+            for S of Tasking_Subprograms loop
                declare
                   S_Vertex : constant Vertex_Id :=
                     Tasking_Graph (Kind).Get_Vertex (S);
@@ -2078,7 +2098,7 @@ package body Flow_Generated_Globals is
                   end loop;
 
                   --  Remove called subprograms
-                  Objs := Objs - All_Subprograms;
+                  Objs := Objs - Tasking_Subprograms;
 
                   --  Store the non-empty results
                   if not Objs.Is_Empty then

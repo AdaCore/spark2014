@@ -1,3 +1,6 @@
+entry_call_from_elaboration.adb:23:08: possible data race when accessing variable "entry_call_from_elaboration.x"
+entry_call_from_elaboration.adb:23:08: with task "entry_call_from_elaboration.t1"
+entry_call_from_elaboration.adb:23:08: with task "entry_call_from_elaboration.t2"
 nested_po.adb:4:24: warning: statement has no effect
 nested_po.adb:12:29: warning: statement has no effect
 nested_po.adb:12:29: warning: unused assignment to "Outer_Rec"
@@ -37,6 +40,7 @@ two_tasks_single_so.ads:9:09: medium: "SO" might not be initialized before start
 two_tasks_single_so.ads:9:09: possibly multiple task suspend on suspension object "two_tasks_single_so.so" (SPARK RM 9(11))
 two_tasks_single_so.ads:9:09: with task "two_tasks_single_so.t1"
 two_tasks_single_so.ads:9:09: with task "two_tasks_single_so.t2"
+   compilation of entry_call_from_elaboration.adb failed
    compilation of task_and_po_arrays.adb failed
    compilation of task_and_so_arrays.adb failed
    compilation of task_type_array_single_so.adb failed

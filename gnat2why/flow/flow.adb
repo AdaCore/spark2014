@@ -1006,8 +1006,8 @@ package body Flow is
       end if;
 
       if FA.Generating_Globals then
-         --  There are a number of cases where we don't want to produce graphs
-         --  as we already have all the contracts we need.
+         --  If we already have all the needed contracts then we set Aborted
+         --  flag and do not produce graphs.
          case FA.Kind is
             when Kind_Subprogram | Kind_Task | Kind_Entry =>
                if not FA.Is_Generative then
@@ -1020,6 +1020,15 @@ package body Flow is
                         raise Program_Error;
                      end if;
                   end if;
+
+                  --  Even if aborting we still collect tasking-related info
+                  --  using control flow traversal and register the results.
+                  Control_Flow_Graph.Create (FA);
+
+                  GG_Register_Tasking_Info
+                     (To_Entity_Name (FA.Analyzed_Entity),
+                      FA.Tasking);
+
                   FA.GG.Aborted := True;
                end if;
 
@@ -1598,7 +1607,7 @@ package body Flow is
       --
       --  Entities without graphs are those with a contract but no body
       --  in SPARK. For them we need to explicitly register accesses to
-      --  unsynchronized states and variables which occur in contract.
+      --  unsynchronized states and variables that occur in contract.
       for S of Global_Info_List loop
          GG_Write_Global_Info (GI => S);
 
