@@ -3555,7 +3555,7 @@ package body SPARK_Definition is
             Pack : constant Entity_Id :=
               Containing_Package_With_Ext_Axioms (E);
          begin
-            if Pack /= E  and then not In_SPARK (Pack) then
+            if Pack /= E and then not In_SPARK (Pack) then
                Mark_Violation (E, From => Pack);
             end if;
          end;

@@ -74,7 +74,7 @@ is
    with Pre => Is_Initialized and then
                Nkind (C1) in N_Entity and then
                Nkind (C2) in N_Entity and then
-               Ekind (C1) in E_Component | E_Discriminant  and then
+               Ekind (C1) in E_Component | E_Discriminant and then
                Ekind (C2) in E_Component | E_Discriminant;
    --  Given two record components, checks if one can be considered to be
    --  the `same' component (for purposes of flow analysis). For example a
