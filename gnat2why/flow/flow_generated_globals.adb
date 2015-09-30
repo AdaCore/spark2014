@@ -217,7 +217,8 @@ package body Flow_Generated_Globals is
       Key_Hash     => Name_Hash,
       Test_Key     => "=");
 
-   Call_Graph : Entity_Name_Graphs.Graph := Entity_Name_Graphs.Create;
+   Protected_Operation_Call_Graph : Entity_Name_Graphs.Graph :=
+     Entity_Name_Graphs.Create;
    --  Call graph rooted at protected operations for detecting potentially
    --  blocking statements.
 
@@ -1370,9 +1371,11 @@ package body Flow_Generated_Globals is
 
                begin
                   --  Create vertex for a caller if it does not already exist
-                  V_Caller := Call_Graph.Get_Vertex (Caller);
+                  V_Caller :=
+                    Protected_Operation_Call_Graph.Get_Vertex (Caller);
                   if V_Caller = Entity_Name_Graphs.Null_Vertex then
-                     Call_Graph.Add_Vertex (Caller, V_Caller);
+                     Protected_Operation_Call_Graph.
+                       Add_Vertex (Caller, V_Caller);
                   end if;
 
                   --  If the caller is nonblocking then check its callees;
@@ -1380,16 +1383,19 @@ package body Flow_Generated_Globals is
                   if Nonblocking_Subprograms_Set.Contains (Caller) then
                      for Callee of Computed_Calls (Caller) loop
                         --  Get vertex for the callee
-                        V_Callee := Call_Graph.Get_Vertex (Callee);
+                        V_Callee := Protected_Operation_Call_Graph.
+                          Get_Vertex (Callee);
 
                         --  If there is no vertex for the callee then create
                         --  one and put the callee on the stack.
                         if V_Callee = Entity_Name_Graphs.Null_Vertex then
-                           Call_Graph.Add_Vertex (Callee, V_Callee);
+                           Protected_Operation_Call_Graph.
+                             Add_Vertex (Callee, V_Callee);
                            Protected_Operations_Stack.Include (Callee);
                         end if;
 
-                        Call_Graph.Add_Edge (V_Caller, V_Callee);
+                        Protected_Operation_Call_Graph.
+                          Add_Edge (V_Caller, V_Callee);
                      end loop;
                   end if;
 
@@ -1399,7 +1405,7 @@ package body Flow_Generated_Globals is
             end loop;
 
             --  Close the call graph; for an empty graph it will be a no-op
-            Call_Graph.Close;
+            Protected_Operation_Call_Graph.Close;
          end;
       end Add_All_Edges;
 
@@ -2776,7 +2782,8 @@ package body Flow_Generated_Globals is
       is
          use Entity_Name_Graphs;
 
-         Caller : constant Vertex_Id := Call_Graph.Get_Vertex (EN);
+         Caller : constant Vertex_Id :=
+           Protected_Operation_Call_Graph.Get_Vertex (EN);
          --  Vertex that represents the analysed subprogram
 
          Callee : Entity_Name;
@@ -2792,16 +2799,19 @@ package body Flow_Generated_Globals is
          ----------------------------
 
          function Calls_Same_Target_Type (S : Entity_Name) return Boolean is
-            Subp_V : constant Vertex_Id := Call_Graph.Get_Vertex (S);
+            Subp_V : constant Vertex_Id :=
+              Protected_Operation_Call_Graph.Get_Vertex (S);
             --  Vertex that represents subprogram S
 
             Callee : Entity_Name;
             --  Vertex that represent subprogram called by S
          begin
             --  Iterate over subprograms called by subprogram S
-            for V of Call_Graph.Get_Collection (Subp_V, Out_Neighbours) loop
+            for V of Protected_Operation_Call_Graph.
+              Get_Collection (Subp_V, Out_Neighbours)
+            loop
 
-               Callee := Call_Graph.Get_Key (V);
+               Callee := Protected_Operation_Call_Graph.Get_Key (V);
 
                declare
                   Callee_E : constant Entity_Id := Find_Entity (Callee);
@@ -2830,9 +2840,11 @@ package body Flow_Generated_Globals is
       --  Start of processing for Calls_Potentially_Blocking_Subprogram
 
       begin
-         for V of Call_Graph.Get_Collection (Caller, Out_Neighbours) loop
+         for V of Protected_Operation_Call_Graph.
+           Get_Collection (Caller, Out_Neighbours)
+         loop
 
-            Callee := Call_Graph.Get_Key (V);
+            Callee := Protected_Operation_Call_Graph.Get_Key (V);
 
             declare
                Callee_E : constant Entity_Id := Find_Entity (Callee);
