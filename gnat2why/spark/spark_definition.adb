@@ -4765,8 +4765,6 @@ package body SPARK_Definition is
       --  Mark entity
 
       else
-         --  For entries and task bodies reuse the value of SPARK_Pragma from
-         --  the context; workaround for O506-007.
          Current_SPARK_Pragma := SPARK_Pragma (E);
 
          if SPARK_Pragma_Is (Opt.On) then
