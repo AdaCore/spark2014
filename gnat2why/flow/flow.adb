@@ -1359,8 +1359,9 @@ package body Flow is
 
             when E_Package =>
                declare
-                  Pkg_Spec   : constant Node_Id := Package_Specification (E);
-                  Pkg_Body   : Node_Id;
+                  Pkg_Body   : constant Entity_Id :=
+                             Defining_Entity (Package_Body (E),
+                                              Empty_On_Errors => True);
                   Needs_Body : Boolean := Unit_Requires_Body (E);
                begin
                   if SPARK_Util.Analysis_Requested (E, With_Inlined => True)
@@ -1371,16 +1372,6 @@ package body Flow is
                     --  subprogram instantiations since messages emitted on
                     --  them would be confusing.
                   then
-                     Pkg_Body := Pkg_Spec;
-                     while Present (Pkg_Body) and then
-                       Nkind (Pkg_Body) /= N_Package_Declaration
-                     loop
-                        Pkg_Body := Parent (Pkg_Body);
-                     end loop;
-                     if Present (Pkg_Body) then
-                        Pkg_Body := Corresponding_Body (Pkg_Body);
-                     end if;
-
                      if Present (Pkg_Body) then
                         pragma Assert
                           (Nkind (Pkg_Body) = N_Defining_Identifier and then
