@@ -3608,13 +3608,10 @@ package body SPARK_Definition is
 
                   pragma Assert (Nkind (Pack_Decl) = N_Package_Declaration);
 
-                  if In_Private_Declarations (Decl) then
-                     Current_SPARK_Pragma :=
-                       SPARK_Aux_Pragma (Defining_Entity (Pack_Decl));
-                  else
-                     Current_SPARK_Pragma :=
-                       SPARK_Pragma (Defining_Entity (Pack_Decl));
-                  end if;
+                  Current_SPARK_Pragma :=
+                    (if In_Private_Declarations (Decl)
+                     then SPARK_Aux_Pragma (Defining_Entity (Pack_Decl))
+                     else SPARK_Pragma (Defining_Entity (Pack_Decl)));
                end;
             end if;
          end;
