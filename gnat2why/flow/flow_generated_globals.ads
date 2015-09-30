@@ -337,7 +337,7 @@ package Flow_Generated_Globals is
       return Name_Sets.Set
      with Pre => GG_Has_Been_Generated;
    --  Returns the set of objects (e.g. suspension objects or entries,
-   --  depending on the Kind) accessed by subprogram Subp.
+   --  depending on the Kind) accessed by a main-like subprogram Subp.
 
 private
 

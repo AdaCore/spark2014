@@ -2059,12 +2059,11 @@ package body Flow_Generated_Globals is
          --  Do the transitive closure
          Tasking_Call_Graph.Close;
 
-         --  Collect information for each subprogram
+         --  Collect information for each main-like subprogram
          --  ??? we should only care about main-like subprograms
-         for S_Vertex of Tasking_Call_Graph.Get_Collection (All_Vertices) loop
+         for TC in Task_Instances.Iterate loop
             declare
-               S : constant Entity_Name :=
-                 Tasking_Call_Graph.Get_Key (S_Vertex);
+               S : constant Entity_Name := Task_Instances_Maps.Key (TC);
 
             begin
 
