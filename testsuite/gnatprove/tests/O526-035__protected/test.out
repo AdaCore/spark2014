@@ -1,4 +1,7 @@
 prot.adb:9:21: medium: overflow check might fail
 prot.adb:14:50: medium: overflow check might fail
+prot.adb:18:58: medium: overflow check might fail
+prot.ads:9:16: warning: volatile function "Get_Vol" has no volatile effects
+prot.ads:11:16: warning: volatile function "Get_Vol_Double" has no volatile effects
 user.adb:8:18: medium: overflow check might fail
 user.ads:10:14: info: initialization of "Y" proved
