@@ -3596,8 +3596,10 @@ package body SPARK_Definition is
          declare
             Decl : constant Node_Id :=
               (if No (Parent (Parent (E)))
-               and then Is_Itype (E) then
-                    Associated_Node_For_Itype (E) else Parent (E));
+                 and then Is_Itype (E)
+               then Associated_Node_For_Itype (E)
+               else Parent (E));
+
          begin
             if Present (Parent (Decl))
               and then Nkind (Parent (Decl)) = N_Package_Specification
