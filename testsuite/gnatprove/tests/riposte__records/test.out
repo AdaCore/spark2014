@@ -18,7 +18,7 @@ records.adb:66:19: info: postcondition proved
 records.adb:76:15: info: precondition proved
 records.adb:81:14: info: initialization of "R.A" proved
 records.adb:81:14: info: initialization of "R.B" proved
-records.adb:87:25: medium: postcondition might fail, requires Safe_Add_Pair_B'Result = PairPair'(A => A.A + B.A), (B => A.B + B.B), counterexample: error: cannot get location of the check
+records.adb:87:25: medium: postcondition might fail, requires Safe_Add_Pair_B'Result = PairPair'(A => A.A + B.A), (B => A.B + B.B), counterexample: Safe_Add_Pair_B'Result = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0) and A = (A => 255, B => 0) and A = (A => 255, B => 0) and B = (A => 0, B => 0) and B = (A => 0, B => 0)
 records.adb:95:15: info: precondition proved
 records.adb:100:14: info: initialization of "R.A" proved
 records.adb:100:14: info: initialization of "R.B" proved
