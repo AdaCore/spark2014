@@ -1,0 +1,4 @@
+prot.adb:9:21: medium: overflow check might fail
+prot.adb:14:50: medium: overflow check might fail
+user.adb:8:18: medium: overflow check might fail
+user.ads:10:14: info: initialization of "Y" proved
