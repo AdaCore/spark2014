@@ -2484,7 +2484,9 @@ package body SPARK_Definition is
                then
                   Id := Defining_Entity (Decl);
 
-                  if (Is_Type (Id) or Is_Object (Id) or Is_Subprogram (Id))
+                  if (Is_Type (Id)
+                      or else Is_Object (Id)
+                      or else Is_Subprogram (Id))
                     and then not Is_Hidden (Id)
                   then
 
