@@ -4007,9 +4007,7 @@ package body SPARK_Definition is
 
       Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
 
-      if SPARK_Pragma_Is (Opt.On) then
-         Mark_Entity (Id);
-      end if;
+      Mark_Entity (Id);
 
       Current_SPARK_Pragma := SPARK_Pragma (Id);
 
