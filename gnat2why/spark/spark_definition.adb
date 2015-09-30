@@ -3657,8 +3657,8 @@ package body SPARK_Definition is
          when E_Loop_Parameter |
               Formal_Kind      => Mark_Parameter_Entity (E);
 
-         --  discriminants of task types are marked, but those of records and
-         --  protected objects are not
+         --  Discriminants of task types are marked, but those of records and
+         --  protected objects are not.
 
          when E_Discriminant   => Mark_Object_Entity (E);
 
