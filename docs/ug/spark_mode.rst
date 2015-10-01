@@ -110,9 +110,15 @@ Setting the Default SPARK_Mode
 
 There are two possible defaults:
 
-#. No value of ``SPARK_Mode`` is specified as a configuration pragma. In that case, only the parts of the program explicitly marked with ``SPARK_Mode => On`` are in |SPARK|. This default is recommended if only a small number of units or subprograms are in |SPARK|.
+#. No value of ``SPARK_Mode`` is specified as a configuration pragma. In that
+   case, only the parts of the program explicitly marked with ``SPARK_Mode =>
+   On`` are in |SPARK|. This default is recommended if only a small number of
+   units or subprograms are in |SPARK|.
 
-#. A value of ``SPARK_Mode => On`` is specified as a configuration pragma. In that case, all the program should be in |SPARK|, except for those parts explicitly marked with ``SPARK_Mode => Off``. This mode is recommended if most of the program is in |SPARK|.
+#. A value of ``SPARK_Mode => On`` is specified as a configuration pragma. In
+   that case, all the program should be in |SPARK|, except for those parts
+   explicitly marked with ``SPARK_Mode => Off``. This mode is recommended if
+   most of the program is in |SPARK|.
 
 Here is how to specify a value of ``SPARK_Mode => On`` as a configuration
 pragma:
