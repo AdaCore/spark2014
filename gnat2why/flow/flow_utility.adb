@@ -2497,20 +2497,20 @@ package body Flow_Utility is
             end if;
          end;
 
-         --  If we are dealing with a subprogram that is declared inside a PO
-         --  then we also need to add the PO.
+         --  If we are dealing with a subprogram that is declared inside a
+         --  concurrent object then we also need to add the concurrent object.
          declare
             Subprogram_F : constant Flow_Id := Direct_Mapping_Id (Subprogram);
-            The_PO       : Entity_Id;
+            The_CO       : Entity_Id;
          begin
-            if Belongs_To_Protected_Object (Subprogram_F) then
+            if Belongs_To_Concurrent_Object (Subprogram_F) then
                if Nkind (Name (Callsite)) = N_Selected_Component then
-                  The_PO := Entity (Prefix (Name (Callsite)));
+                  The_CO := Entity (Prefix (Name (Callsite)));
                else
-                  The_PO := Sinfo.Scope (Subprogram);
+                  The_CO := Sinfo.Scope (Subprogram);
                end if;
 
-               V.Union (Flatten_Variable (The_PO, Scope));
+               V.Union (Flatten_Variable (The_CO, Scope));
             end if;
          end;
 
@@ -3375,7 +3375,7 @@ package body Flow_Utility is
 
             Ids := Flow_Id_Sets.Empty_Set;
 
-            if Ekind (T) in E_Protected_Type | E_Task_Type then
+            if Ekind (T) in Concurrent_Kind then
                if Present (Anonymous_Object (T)) then
                   declare
                      AO  : constant Node_Id := Anonymous_Object (T);

@@ -711,9 +711,13 @@ package body Flow_Refinement is
                null;
 
             when E_Variable =>
-               if Ekind (Etype (Ent)) = E_Protected_Type then
+               if Ekind (Etype (Ent)) in Concurrent_Kind then
                   --  Instances of a protected type are always fully default
                   --  initialized.
+                  return True;
+               elsif Is_Part_Of_Concurrent_Object (Ent) then
+                  --  Variables that are Part_Of a concurrent type are always
+                  --  fully default initialized.
                   return True;
                elsif not Is_Package_State (Ent) then
                   return False;

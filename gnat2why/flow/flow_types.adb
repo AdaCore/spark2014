@@ -225,25 +225,81 @@ package body Flow_Types is
       return Tmp;
    end Add_Component;
 
+   ----------------------------------
+   -- Belongs_To_Concurrent_Object --
+   ----------------------------------
+
+   function Belongs_To_Concurrent_Object (F : Flow_Id) return Boolean is
+   begin
+      if F.Kind not in Direct_Mapping | Record_Field then
+         return False;
+      end if;
+
+      declare
+         E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+      begin
+         return Is_Part_Of_Concurrent_Object (E)
+           or else Ekind (Scope (E)) in Concurrent_Kind;
+      end;
+   end Belongs_To_Concurrent_Object;
+
    ---------------------------------
    -- Belongs_To_Protected_Object --
    ---------------------------------
 
    function Belongs_To_Protected_Object (F : Flow_Id) return Boolean is
+      CO : Entity_Id;
    begin
-      return F.Kind in Direct_Mapping | Record_Field
-        and then Ekind (Scope (Get_Direct_Mapping_Id (F))) = E_Protected_Type;
+      if not Belongs_To_Concurrent_Object (F) then
+         return False;
+      end if;
+
+      CO := Get_Enclosing_Concurrent_Object (F);
+      return Ekind (CO) in Protected_Kind
+        or else (Ekind (CO) = E_Variable
+                   and then Ekind (Etype (CO)) in Protected_Kind);
    end Belongs_To_Protected_Object;
 
-   -------------------------------
-   -- Is_Protected_Comp_Or_Disc --
-   -------------------------------
+   -------------------------------------
+   -- Get_Enclosing_Concurrent_Object --
+   -------------------------------------
 
-   function Is_Protected_Comp_Or_Disc (F : Flow_Id) return Boolean is
+   function Get_Enclosing_Concurrent_Object (F : Flow_Id) return Entity_Id is
+      E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
+      function Get_Anonymous_Object (PT : Entity_Id) return Entity_Id
+      with Pre => Ekind (PT) in Concurrent_Kind;
+      --  Returns the Anonymous_Object if it exists
+
+      --------------------------
+      -- Get_Anonymous_Object --
+      --------------------------
+
+      function Get_Anonymous_Object (PT : Entity_Id) return Entity_Id is
+        (if Present (Anonymous_Object (PT))
+         then Anonymous_Object (PT)
+         else PT);
+
    begin
-      return Belongs_To_Protected_Object (F)
-        and then not (Ekind (Get_Direct_Mapping_Id (F)) in Subprogram_Kind);
-   end Is_Protected_Comp_Or_Disc;
+      if Is_Part_Of_Concurrent_Object (E) then
+         return Get_Anonymous_Object (Etype (Encapsulating_State (E)));
+      elsif Ekind (Scope (E)) in Concurrent_Kind then
+         return Get_Anonymous_Object (Scope (E));
+      else
+         raise Why.Unexpected_Node;
+      end if;
+   end Get_Enclosing_Concurrent_Object;
+
+   --------------------------------
+   -- Is_Concurrent_Comp_Or_Disc --
+   --------------------------------
+
+   function Is_Concurrent_Comp_Or_Disc (F : Flow_Id) return Boolean is
+   begin
+      return Belongs_To_Concurrent_Object (F)
+        and then Ekind (Get_Direct_Mapping_Id (F)) not in Subprogram_Kind |
+                                                          E_Entry;
+   end Is_Concurrent_Comp_Or_Disc;
 
    ---------------------
    -- Is_Discriminant --
@@ -287,15 +343,15 @@ package body Flow_Types is
       end case;
    end Is_Record_Discriminant;
 
-   -------------------------------
-   -- Is_Protected_Discriminant --
-   -------------------------------
+   --------------------------------
+   -- Is_Concurrent_Discriminant --
+   --------------------------------
 
-   function Is_Protected_Discriminant (F : Flow_Id) return Boolean is
+   function Is_Concurrent_Discriminant (F : Flow_Id) return Boolean is
    begin
       return Is_Discriminant (F)
-        and then Is_Protected_Comp_Or_Disc (F);
-   end Is_Protected_Discriminant;
+        and then Is_Concurrent_Comp_Or_Disc (F);
+   end Is_Concurrent_Discriminant;
 
    ----------------
    -- Has_Bounds --
@@ -334,31 +390,43 @@ package body Flow_Types is
    -- Is_Volatile --
    -----------------
 
-   function Is_Volatile (F : Flow_Id) return Boolean is
+   function Is_Volatile
+     (F     : Flow_Id;
+      Scope : Flow_Scope := Null_Flow_Scope)
+      return Boolean
+   is
    begin
       case F.Kind is
          when Null_Value =>
             return False;
+
          when Magic_String =>
             return GG_Has_Been_Generated
               and then GG_Is_Volatile (F.Name);
+
          when Direct_Mapping | Record_Field =>
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
                pragma Assert (Nkind (E) in N_Entity);
+
+               Is_Vol : constant Boolean :=
+                 (case Ekind (E) is
+                  when E_Abstract_State => Is_External_State (E),
+                  when Object_Kind      => Is_Effectively_Volatile (E),
+                  when others           => False);
             begin
-               case Ekind (E) is
-                  when E_Abstract_State =>
-                     return Is_External_State (E);
-                  when Object_Kind =>
-                     return Is_Effectively_Volatile (E);
-                  --  ??? Do we need this???
-                  --  when E_Protected_Type =>
-                  --     return True;
-                  when others =>
-                     return False;
-               end case;
+               if Scope = Null_Flow_Scope or else not Is_Vol then
+                  return Is_Vol;
+               end if;
+
+               --  When we are dealing with a protected type and we are given a
+               --  Scope, we only consider the protected type to be volatile
+               --  when we are outside it.
+               return not Is_Protected_Type (Etype (E))
+                 or else not Is_Visible (Body_Scope (Get_Flow_Scope (E)),
+                                         Scope);
             end;
+
          when Synthetic_Null_Export =>
             --  The special null export is a volatile (AR, EW).
             return True;
@@ -542,12 +610,12 @@ package body Flow_Types is
 
    function Parent_Record (F : Flow_Id) return Flow_Id is
    begin
-      --  When we are dealing with the constituent of a protected object then
-      --  we consider the protected object to be the parent record.
-      if Is_Protected_Comp_Or_Disc (F) then
+      --  When we are dealing with the constituent of a concurrent object then
+      --  we consider the concurrent object to be the parent record.
+      if Is_Concurrent_Comp_Or_Disc (F) then
          return Flow_Id'(Kind    => Direct_Mapping,
                          Variant => F.Variant,
-                         Node    => Scope (F.Node),
+                         Node    => Get_Enclosing_Concurrent_Object (F),
                          Facet   => F.Facet);
       end if;
 
@@ -579,10 +647,10 @@ package body Flow_Types is
             return F;
 
          when Direct_Mapping | Record_Field =>
-            if Is_Protected_Comp_Or_Disc (F) then
+            if Belongs_To_Protected_Object (F) then
                return Flow_Id'(Kind    => Direct_Mapping,
                                Variant => F.Variant,
-                               Node    => Scope (F.Node),
+                               Node    => Get_Enclosing_Concurrent_Object (F),
                                Facet   => Normal_Part);
             else
                return Flow_Id'(Kind    => Direct_Mapping,

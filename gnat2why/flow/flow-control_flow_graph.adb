@@ -23,6 +23,7 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
+with Elists;                             use Elists;
 with Errout;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
@@ -393,7 +394,6 @@ package body Flow.Control_Flow_Graph is
    --      R.A.X       R.A.Y*
 
    type Var_Kind is (Variable_Kind,
-                     Protected_Component_Kind,
                      Parameter_Kind,
                      Discriminant_Kind,
                      Quantified_Variable_Kind);
@@ -1056,7 +1056,7 @@ package body Flow.Control_Flow_Graph is
    is
    begin
       if Is_Record_Discriminant (F)
-        or else Is_Protected_Discriminant (F)
+        or else Belongs_To_Protected_Object (F)
       then
          --  The discriminants (for example r.x.d) do not live in the tree,
          --  but we should make the parent tree anyway, so that we get the
@@ -1064,8 +1064,8 @@ package body Flow.Control_Flow_Graph is
          --  discriminated null records which have no other way of
          --  producing this otherwise.
          --
-         --  Notice that discriminants of tasks are excluded from the tree
-         --  creation.
+         --  Notice that discriminants of tasks are excluded from the creation
+         --  of the corresponding group vertex.
          declare
             P : constant Flow_Id :=
               Change_Variant (Entire_Variable (F),
@@ -1089,7 +1089,7 @@ package body Flow.Control_Flow_Graph is
                when Direct_Mapping | Record_Field =>
                   if F.Kind = Record_Field
                     or else F.Facet in Private_Part | Extension_Part
-                    or else Is_Protected_Comp_Or_Disc (F)
+                    or else Belongs_To_Protected_Object (F)
                   then
                      declare
                         P : constant Flow_Id :=
@@ -1147,8 +1147,7 @@ package body Flow.Control_Flow_Graph is
       -- Process --
       -------------
 
-      procedure Process (F : Flow_Id)
-      is
+      procedure Process (F : Flow_Id) is
          V : Flow_Graphs.Vertex_Id;
          A : V_Attributes;
       begin
@@ -1209,7 +1208,7 @@ package body Flow.Control_Flow_Graph is
             pragma Assert (Kind = Discriminant_Kind);
             M := Mode_In;
 
-         when E_Protected_Type   =>
+         when Concurrent_Kind    =>
             pragma Assert (Kind = Parameter_Kind);
             if Ekind (FA.Analyzed_Entity) = E_Function then
                M := Mode_In;
@@ -1218,16 +1217,9 @@ package body Flow.Control_Flow_Graph is
             end if;
 
          when others =>
-            pragma Assert (Kind in Variable_Kind            |
-                                   Quantified_Variable_Kind |
-                                   Protected_Component_Kind);
-            if Kind = Protected_Component_Kind then
-               if Ekind (FA.Analyzed_Entity) = E_Function then
-                  M := Mode_In;
-               else
-                  M := Mode_In_Out;
-               end if;
-            elsif Kind = Quantified_Variable_Kind then
+            pragma Assert (Kind in Quantified_Variable_Kind |
+                                   Variable_Kind);
+            if Kind = Quantified_Variable_Kind then
                M := Mode_In;
             else
                M := Mode_Invalid;
@@ -2608,8 +2600,7 @@ package body Flow.Control_Flow_Graph is
          -- Fully_Defined_In_Original_Loop --
          ------------------------------------
 
-         function Fully_Defined_In_Original_Loop (T : Target) return Boolean
-         is
+         function Fully_Defined_In_Original_Loop (T : Target) return Boolean is
             Fully_Defined : Boolean         := True;
             Touched       : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
@@ -2735,14 +2726,14 @@ package body Flow.Control_Flow_Graph is
             end case;
             return OK;
          end Proc_Search;
+
          procedure Rec_Inner is new Traverse_Proc (Proc_Search);
 
          ---------
          -- Rec --
          ---------
 
-         procedure Rec (N : Node_Id)
-         is
+         procedure Rec (N : Node_Id) is
          begin
             Rec_Inner (N);
          end Rec;
@@ -2768,8 +2759,7 @@ package body Flow.Control_Flow_Graph is
       -- Do_Iterator_Loop --
       ----------------------
 
-      procedure Do_Iterator_Loop
-      is
+      procedure Do_Iterator_Loop is
          I_Spec : constant Node_Id :=
            Iterator_Specification (Iteration_Scheme (N));
 
@@ -3121,10 +3111,7 @@ package body Flow.Control_Flow_Graph is
       --  First, we need a 'initial and 'final vertex for this object. We only
       --  create these if we are not dealing with a Part_Of a single concurrent
       --  type.
-      if No (Encapsulating_State (Defining_Identifier (N)))
-        or else not Is_Concurrent_Type
-                      (Etype (Encapsulating_State (Defining_Identifier (N))))
-      then
+      if not Is_Part_Of_Concurrent_Object (Defining_Identifier (N)) then
          Create_Initial_And_Final_Vertices (Defining_Identifier (N),
                                             Variable_Kind,
                                             FA);
@@ -5787,27 +5774,55 @@ package body Flow.Control_Flow_Graph is
                   E := Next_Formal (E);
                end loop;
 
-               --  Add the protected type as a formal parameter to the
+               --  If the subprogram is directly enclosed in a protected object
+               --  then add the protected object as a formal parameter to the
                --  subprogram.
                if Belongs_To_Protected_Object (F) then
                   Create_Initial_And_Final_Vertices
-                    (Sinfo.Scope (FA.Analyzed_Entity),
-                     Parameter_Kind,
+                    (Direct_Mapping_Id (Get_Enclosing_Concurrent_Object (F)),
+                     (if Ekind (FA.Analyzed_Entity) = E_Function
+                      then Mode_In
+                      else Mode_In_Out),
+                     False,
                      FA);
                end if;
             end;
 
          when Kind_Task =>
-            --  Tasks see their discriminants as parameters
+            --  Tasks see their discriminants as formal in parameters
             declare
                Discr : Entity_Id := First_Discriminant (FA.Analyzed_Entity);
             begin
                while Present (Discr) loop
-                  Create_Initial_And_Final_Vertices (Discr,
-                                                     Discriminant_Kind,
+                  Create_Initial_And_Final_Vertices (Direct_Mapping_Id (Discr),
+                                                     Mode_In,
+                                                     False,
                                                      FA);
                   Next_Discriminant (Discr);
                end loop;
+            end;
+
+            --  Add variables that are Part_Of the task as formal in out
+            --  parameters to the task.
+            declare
+               T   : constant Entity_Id := Get_Type (FA.Analyzed_Entity,
+                                                     FA.B_Scope);
+
+               AO  : Node_Id;
+               Ptr : Elmt_Id;
+            begin
+               if Present (Anonymous_Object (T)) then
+                  AO  := Anonymous_Object (T);
+                  Ptr := First_Elmt (Part_Of_Constituents (AO));
+                  while Present (Ptr) loop
+                     Create_Initial_And_Final_Vertices
+                       (Direct_Mapping_Id (Node (Ptr)),
+                        Mode_In_Out,
+                        False,
+                        FA);
+                     Ptr := Next_Elmt (Ptr);
+                  end loop;
+               end if;
             end;
 
          when Kind_Package | Kind_Package_Body =>

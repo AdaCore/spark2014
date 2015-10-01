@@ -589,10 +589,10 @@ is
    function Extensions_Visible (E     : Entity_Id;
                                 Scope : Flow_Scope)
                                 return Boolean
-   with Pre => Ekind (E) in Object_Kind      |
+   with Pre => Ekind (E) in Concurrent_Kind  |
+                            Object_Kind      |
                             E_Function       |
-                            E_Abstract_State |
-                            E_Protected_Type;
+                            E_Abstract_State;
    --  Checks if extensions are visible for this particular entity. Note
    --  that if we give it a function, then we always return false, since
    --  this refers to the return of the function, not if the subprogram's
@@ -607,7 +607,7 @@ is
    with Pre => (if F.Kind in Direct_Mapping | Record_Field
                 then Ekind (Get_Direct_Mapping_Id (F))
                   in Object_Kind | E_Function | E_Abstract_State |
-                     E_Protected_Type);
+                     Concurrent_Kind);
    --  As above, but using a flow_id.
 
    function Search_Contract (Unit     : Node_Id;

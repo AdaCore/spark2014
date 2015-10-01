@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Elists;           use Elists;
 with Flow_Utility;     use Flow_Utility;
 with Nlists;           use Nlists;
 with Opt;              use Opt;
@@ -519,7 +520,8 @@ package body Flow.Slice is
 
          procedure Remove_PO_And_Task_Parts;
          --  Removes from Local_Vars these variables which are parts of a
-         --  singleton protected object or a singleton task.
+         --  singleton protected object or a singleton task. We don't do this
+         --  when we process tasks.
 
          ------------------------------------------
          -- Get_Object_Or_Subprogram_Declaration --
@@ -746,11 +748,12 @@ package body Flow.Slice is
          procedure Remove_PO_And_Task_Parts is
             Part_Of_Vars : Node_Sets.Set := Node_Sets.Empty_Set;
          begin
+            if FA.Kind = Kind_Task then
+               return;
+            end if;
+
             for Var of Local_Vars loop
-               if Present (Encapsulating_State (Var))
-                 and then Is_Concurrent_Type
-                            (Etype (Encapsulating_State (Var)))
-               then
+               if Is_Part_Of_Concurrent_Object (Var) then
                   Part_Of_Vars.Insert (Var);
                end if;
             end loop;
@@ -797,7 +800,8 @@ package body Flow.Slice is
                        Direct_Mapping_Id (FA.Analyzed_Entity);
                   begin
                      if Belongs_To_Protected_Object (F) then
-                        Local_Vars.Include (Scope (FA.Analyzed_Entity));
+                        Local_Vars.Include
+                          (Get_Enclosing_Concurrent_Object (F));
                      end if;
                   end;
 
@@ -819,6 +823,25 @@ package body Flow.Slice is
                         Next_Discriminant (E);
                      end loop;
                   end if;
+
+                  --  Variables that are Part_Of the task act as formal
+                  --  parameters to the task.
+                  declare
+                     T   : constant Entity_Id := Get_Type (FA.Analyzed_Entity,
+                                                           FA.B_Scope);
+
+                     AO  : Node_Id;
+                     Ptr : Elmt_Id;
+                  begin
+                     if Present (Anonymous_Object (T)) then
+                        AO  := Anonymous_Object (T);
+                        Ptr := First_Elmt (Part_Of_Constituents (AO));
+                        while Present (Ptr) loop
+                           Local_Vars.Insert (Node (Ptr));
+                           Ptr := Next_Elmt (Ptr);
+                        end loop;
+                     end if;
+                  end;
 
                when Kind_Package | Kind_Package_Body =>
                   --  State abstractions of a package effectively act as

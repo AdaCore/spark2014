@@ -81,18 +81,17 @@ package body Flow.Analysis is
    function Get_Initial_Vertex (G : Flow_Graphs.Graph;
                                 F : Flow_Id)
                                 return Flow_Graphs.Vertex_Id
-     with Pre  => F.Variant = Normal_Use,
-          Post => Get_Initial_Vertex'Result = Flow_Graphs.Null_Vertex
-                    or else G.Get_Key (Get_Initial_Vertex'Result).Variant in
-                              Initial_Value | Initial_Grouping;
+   with Pre  => F.Variant = Normal_Use,
+        Post => Get_Initial_Vertex'Result = Flow_Graphs.Null_Vertex
+                  or else G.Get_Key (Get_Initial_Vertex'Result).Variant in
+                            Initial_Value | Initial_Grouping;
    --  Returns the vertex id which represents the initial value for F
 
    function Get_Final_Vertex (G : Flow_Graphs.Graph;
                               F : Flow_Id)
                               return Flow_Graphs.Vertex_Id
-     with Pre  => F.Variant = Normal_Use,
-          Post => G.Get_Key
-            (Get_Final_Vertex'Result).Variant = Final_Value;
+   with Pre  => F.Variant = Normal_Use,
+        Post => G.Get_Key (Get_Final_Vertex'Result).Variant = Final_Value;
    --  Returns the vertex id which represents the final value for F
 
    --------------------
@@ -779,12 +778,33 @@ package body Flow.Analysis is
 
       Written_Entire_Vars : Flow_Id_Sets.Set;
       Unwritten_Vars      : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+
+      function Is_Or_Belongs_To_Concurrent_Object
+        (F : Flow_Id)
+         return Boolean
+      with Pre => F.Kind in Direct_Mapping | Record_Field;
+      --  @param F is the Flow_Id that we want to check
+      --  @return True iff F is or belongs to a concurrent object
+
+      ----------------------------------------
+      -- Is_Or_Belongs_To_Concurrent_Object --
+      ----------------------------------------
+
+      function Is_Or_Belongs_To_Concurrent_Object
+        (F : Flow_Id)
+         return Boolean
+      is
+         EV : constant Flow_Id := Entire_Variable (F);
+      begin
+         return Ekind (Get_Direct_Mapping_Id (EV)) in Concurrent_Kind;
+      end Is_Or_Belongs_To_Concurrent_Object;
+
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          F_Final := FA.PDG.Get_Key (V);
          A_Final := FA.Atr.Element (V);
-         if F_Final.Variant = Final_Value and then
-           A_Final.Is_Export
+         if F_Final.Variant = Final_Value
+           and then A_Final.Is_Export
          then
 
             --  We have a final use vertex which is an export that has
@@ -795,9 +815,9 @@ package body Flow.Analysis is
             if FA.PDG.In_Neighbour_Count (V) = 1 then
                F_Initial := FA.PDG.Get_Key (FA.PDG.Parent (V));
                A_Initial := FA.Atr.Element (FA.PDG.Parent (V));
-               if F_Initial.Variant = Initial_Value and then
-                 A_Initial.Is_Import and then
-                 Change_Variant (F_Initial, Final_Value) = F_Final
+               if F_Initial.Variant = Initial_Value
+                 and then A_Initial.Is_Import
+                 and then Change_Variant (F_Initial, Final_Value) = F_Final
                then
                   Unwritten := True;
                end if;
@@ -816,12 +836,15 @@ package body Flow.Analysis is
          A_Final := FA.Atr.Element (V);
 
          if not Written_Entire_Vars.Contains (Entire_Variable (F_Final)) then
-
-            if not (F_Final.Kind in Direct_Mapping | Record_Field)
-              or else not FA.Unmodified_Vars.Contains
-                            (Get_Direct_Mapping_Id (F_Final))
+            --  We do not issue messages:
+            --    * for variables that have been marked as unmodified or
+            --    * for variables that are/belong to a concurrent object.
+            if F_Final.Kind not in Direct_Mapping | Record_Field
+              or else (not FA.Unmodified_Vars.Contains
+                             (Get_Direct_Mapping_Id (F_Final))
+                         and then not Is_Or_Belongs_To_Concurrent_Object
+                                        (F_Final))
             then
-
                if A_Final.Is_Global then
                   Error_Msg_Flow
                     (FA     => FA,
@@ -2884,7 +2907,7 @@ package body Flow.Analysis is
 
    begin  --  Find_Hidden_Unexposed_State
 
-      if not Present (Abstract_States (FA.Spec_Entity))
+      if No (Abstract_States (FA.Spec_Entity))
         and then Enclosing_Package_Has_State (FA.Spec_Entity)
       then
          --  If the package does not have an abstract state aspect and
@@ -2990,7 +3013,7 @@ package body Flow.Analysis is
       --  If the package either has no state abstractions, or has
       --  "Abstract_State => null" then there is nothing to do here.
 
-      if not Present (Abstract_States (FA.Spec_Entity))
+      if No (Abstract_States (FA.Spec_Entity))
         or else Is_Null_State
                   (Node (First_Elmt (Abstract_States (FA.Spec_Entity))))
       then
@@ -3983,7 +4006,7 @@ package body Flow.Analysis is
       procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set) is
       begin
          for F of FS loop
-            if Is_Volatile (Change_Variant (F, Normal_Use)) then
+            if Is_Volatile (Change_Variant (F, Normal_Use), FA.B_Scope) then
                --  We just found a volatile effect
                Found_Volatile_Effect := True;
 

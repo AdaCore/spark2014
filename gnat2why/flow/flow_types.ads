@@ -257,15 +257,25 @@ package Flow_Types is
       return Flow_Id;
    --  Create a Flow_Id for the given magic string.
 
+   function Belongs_To_Concurrent_Object (F : Flow_Id) return Boolean;
+   --  @param F is the Flow_Id which will be checked
+   --  @return True iff F belongs to a concurrent object
+
    function Belongs_To_Protected_Object (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
    --  @return True iff F belongs to a protected object
 
-   function Is_Protected_Comp_Or_Disc (F : Flow_Id) return Boolean;
+   function Get_Enclosing_Concurrent_Object (F : Flow_Id) return Entity_Id
+   with Pre  => Belongs_To_Concurrent_Object (F),
+        Post => Present (Get_Enclosing_Concurrent_Object'Result);
+   --  @param F is the Flow_Id of a constituent of a concurrent object
+   --  @return the entity of the enclosing concurrent object
+
+   function Is_Concurrent_Comp_Or_Disc (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
-   --  @return True iff F is a component or discriminant of a protected
+   --  @return True iff F is a component or discriminant of a concurrent
    --    object. It will return False for subprograms that belong to
-   --    protected objects.
+   --    concurrent objects.
 
    function Is_Discriminant (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
@@ -277,10 +287,10 @@ package Flow_Types is
    --  @return True iff the given Flow_Id is a record field
    --    representing a discriminant.
 
-   function Is_Protected_Discriminant (F : Flow_Id) return Boolean;
+   function Is_Concurrent_Discriminant (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
    --  @return True iff the given Flow_Id is a discriminant belonging
-   --    to a PO.
+   --    to a concurrent type.
 
    function Has_Bounds
      (F     : Flow_Id;
@@ -316,8 +326,15 @@ package Flow_Types is
          and then F.Facet = The_Bounds);
    --  Returns True if the given Flow_Id represents a bound.
 
-   function Is_Volatile (F : Flow_Id) return Boolean;
-   --  Returns True if the given Flow_Id is volatile in any way.
+   function Is_Volatile
+     (F     : Flow_Id;
+      Scope : Flow_Scope := Null_Flow_Scope)
+      return Boolean;
+   --  Returns True if the given Flow_Id is volatile in any way. When Scope is
+   --  provided we check if F is volatile from Scope. This is only ever used
+   --  when dealing with protected objects. The protected objects are volatile
+   --  when seen from the outside but are not volatile for their nested
+   --  subprograms/entries.
 
    function Has_Async_Readers (F : Flow_Id) return Boolean
    with Post => (if Has_Async_Readers'Result then Is_Volatile (F));
@@ -355,7 +372,7 @@ package Flow_Types is
    with Pre  => F.Kind in Direct_Mapping | Record_Field
                   and then (F.Kind = Record_Field
                               or else F.Facet /= Normal_Part
-                              or else Belongs_To_Protected_Object (F)),
+                              or else Belongs_To_Concurrent_Object (F)),
         Post => Parent_Record'Result.Kind in Direct_Mapping | Record_Field;
    --  Return the parent record for the given record field. If given the
    --  hidden fields of a record, returns the visible part (i.e. clears the
