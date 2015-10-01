@@ -368,7 +368,7 @@ For a package, the rule is that if you explicitly turn ``SPARK_Mode`` Off for
 any part, then all the following parts cannot have ``SPARK_Mode`` On. Note that
 this may require repeating a pragma ``SPARK_Mode (Off)`` in the body. For
 example, if we have a configuration pragma ``SPARK_Mode (On)`` that turns the
-mode on by default everywhere, and one particular package spec has pragma
+mode On by default everywhere, and one particular package spec has pragma
 ``SPARK_Mode (Off)``, then that pragma will need to be repeated in the package
 body.
 
