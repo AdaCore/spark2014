@@ -326,11 +326,11 @@ is
    --  that there is no overflow. But current SMT solvers with our encoding
    --  can't solve this.
 
-   procedure Polynomial (X : Float; Res : out Float)
+   procedure Polynomial (X : Float)
    is
    begin
       pragma Assume (X in 0.0 .. 60.0);
-      Res := (((X + 2.0) * X + 3.0) + 4.0) * X + 5.0;
+      pragma Assert ((((X + 2.0) * X + 3.0) + 4.0) * X + 5.0 in Float'Range);
    end Polynomial;
 
 end Floating_Point;
