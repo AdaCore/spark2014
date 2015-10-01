@@ -2402,12 +2402,7 @@ package body Gnat2Why.Subprograms is
       Params     : Transformation_Params;
 
       Why_Body   : W_Prog_Id := New_Void;
-      Post       : constant W_Pred_Id :=
-        +New_VC_Expr (Ada_Node   => E,
-                      Expr       => +False_Pred,
-                      Reason     => VC_Task_Termination,
-                      Domain     => EW_Pred);
-
+      Post       : W_Pred_Id;
    begin
       --  We open a new theory, so that the context is fresh for this task
 
@@ -2430,6 +2425,12 @@ package body Gnat2Why.Subprograms is
                  Phase       => Generate_VCs_For_Body,
                  Gen_Marker  => False,
                  Ref_Allowed => True);
+
+      Post :=
+              +New_VC_Expr (Ada_Node   => E,
+                      Expr       => +False_Pred,
+                      Reason     => VC_Task_Termination,
+                      Domain     => EW_Pred);
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
