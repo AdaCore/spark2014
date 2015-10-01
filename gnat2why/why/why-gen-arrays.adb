@@ -45,7 +45,6 @@ with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Inter;             use Why.Inter;
-with Why.Types;             use Why.Types;
 
 package body Why.Gen.Arrays is
 
