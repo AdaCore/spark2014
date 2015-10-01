@@ -322,5 +322,15 @@ is
    --  user_rule_17 omitted until I have worked out how to deal with
    --  subnormals in ada
 
+   --  In this simple calculation, it can be easily seen by interval reasoning
+   --  that there is no overflow. But current SMT solvers with our encoding
+   --  can't solve this.
+
+   procedure Polynomial (X : Float; Res : out Float)
+   is
+   begin
+      pragma Assume (X in 0.0 .. 60.0);
+      Res := (((X + 2.0) * X + 3.0) + 4.0) * X + 5.0;
+   end Polynomial;
 
 end Floating_Point;
