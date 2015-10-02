@@ -1205,7 +1205,7 @@ package body Flow.Control_Flow_Graph is
             M := Mode_In;
 
          when E_Discriminant     =>
-            pragma Assert (Kind = Discriminant_Kind);
+            pragma Assert (Kind in Discriminant_Kind | Parameter_Kind);
             M := Mode_In;
 
          when Concurrent_Kind    =>
@@ -1217,9 +1217,16 @@ package body Flow.Control_Flow_Graph is
             end if;
 
          when others =>
-            pragma Assert (Kind in Quantified_Variable_Kind |
+            pragma Assert (Kind in Parameter_Kind           |
+                                   Quantified_Variable_Kind |
                                    Variable_Kind);
-            if Kind = Quantified_Variable_Kind then
+            if Kind = Parameter_Kind then
+               if Ekind (FA.Analyzed_Entity) = E_Function then
+                  M := Mode_In;
+               else
+                  M := Mode_In_Out;
+               end if;
+            elsif Kind = Quantified_Variable_Kind then
                M := Mode_In;
             else
                M := Mode_Invalid;
@@ -5779,11 +5786,8 @@ package body Flow.Control_Flow_Graph is
                --  subprogram.
                if Belongs_To_Protected_Object (F) then
                   Create_Initial_And_Final_Vertices
-                    (Direct_Mapping_Id (Get_Enclosing_Concurrent_Object (F)),
-                     (if Ekind (FA.Analyzed_Entity) = E_Function
-                      then Mode_In
-                      else Mode_In_Out),
-                     False,
+                    (Get_Enclosing_Concurrent_Object (F),
+                     Parameter_Kind,
                      FA);
                end if;
             end;
@@ -5794,9 +5798,8 @@ package body Flow.Control_Flow_Graph is
                Discr : Entity_Id := First_Discriminant (FA.Analyzed_Entity);
             begin
                while Present (Discr) loop
-                  Create_Initial_And_Final_Vertices (Direct_Mapping_Id (Discr),
-                                                     Mode_In,
-                                                     False,
+                  Create_Initial_And_Final_Vertices (Discr,
+                                                     Parameter_Kind,
                                                      FA);
                   Next_Discriminant (Discr);
                end loop;
@@ -5816,9 +5819,8 @@ package body Flow.Control_Flow_Graph is
                   Ptr := First_Elmt (Part_Of_Constituents (AO));
                   while Present (Ptr) loop
                      Create_Initial_And_Final_Vertices
-                       (Direct_Mapping_Id (Node (Ptr)),
-                        Mode_In_Out,
-                        False,
+                       (Node (Ptr),
+                        Parameter_Kind,
                         FA);
                      Ptr := Next_Elmt (Ptr);
                   end loop;
