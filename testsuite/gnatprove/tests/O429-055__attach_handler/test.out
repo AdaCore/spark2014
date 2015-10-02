@@ -1,0 +1,2 @@
+attach_test.ads:5:33: medium: this interrupt might be reserved
+attach_test.ads:7:33: medium: this interrupt might be reserved
