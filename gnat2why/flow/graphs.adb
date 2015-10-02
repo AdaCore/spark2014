@@ -1218,6 +1218,28 @@ package body Graphs is
       return Path_Exists;
    end Non_Trivial_Path_Exists;
 
+   ---------------
+   -- Num_Edges --
+   ---------------
+
+   function Num_Edges (G : Graph) return Natural is
+      Count : Natural := 0;
+   begin
+      for E of G.Vertices loop
+         Count := Count + Natural (E.In_Neighbours.Length);
+      end loop;
+      return Count;
+   end Num_Edges;
+
+   ------------------
+   -- Num_Vertices --
+   ------------------
+
+   function Num_Vertices (G : Graph) return Natural is
+   begin
+      return Natural (G.Vertices.Length);
+   end Num_Vertices;
+
    ---------------------------
    --  Out_Neighbour_Count  --
    ---------------------------

@@ -202,6 +202,10 @@ package Graphs is
      (Element : Vertex_Id) return Ada.Containers.Hash_Type;
    --  Hash a vertex_id (useful for building sets of vertices).
 
+   function Num_Vertices (G : Graph) return Natural;
+   --  @param G a graph
+   --  @return the number of vertices of G
+
    ----------------------------------------------------------------------
    --  Edge operations
    ----------------------------------------------------------------------
@@ -319,6 +323,10 @@ package Graphs is
    --  Null_Vertex otherwise.
    --
    --  Complexity is O(1).
+
+   function Num_Edges (G : Graph) return Natural;
+   --  @param G a graph
+   --  @return the number of edges in G
 
    ----------------------------------------------------------------------
    --  Clusters
