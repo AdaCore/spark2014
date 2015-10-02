@@ -4135,6 +4135,11 @@ package body SPARK_Definition is
                Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);
             end if;
 
+         --  Need to mark the expression of a pragma Attach_Handler
+
+         when Pragma_Attach_Handler =>
+            Mark (Expression (Arg1));
+
          when Unknown_Pragma =>
             Error_Msg_Name_1 := Pname;
             Mark_Violation ("unknown pragma %", N);
@@ -4401,7 +4406,6 @@ package body SPARK_Definition is
            Pragma_Task_Dispatching_Policy        |
            Pragma_All_Calls_Remote               |
            Pragma_Asynchronous                   |
-           Pragma_Attach_Handler                 |
            Pragma_Remote_Call_Interface          |
            Pragma_Remote_Types                   |
            Pragma_Shared_Passive                 |

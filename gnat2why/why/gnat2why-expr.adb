@@ -40,6 +40,7 @@ with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Opt;
+with Rtsfind;                use Rtsfind;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Disp;               use Sem_Disp;
 with Sem_Util;               use Sem_Util;
@@ -190,6 +191,15 @@ package body Gnat2Why.Expr is
    function Compute_Tag_Check
      (Call   : Node_Id;
       Params : Transformation_Params) return W_Prog_Id;
+
+   function Compute_Attach_Handler_Check
+     (Ty     : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+     with Pre => Is_Protected_Type (Ty);
+   --  @param Ty a protected type
+   --  @return an assertion (if necessary) that checks if any of the
+   --    Attach_Handler pragmas of the procedures of the type is reserved
+   --    see also Ada RM C.3.1(10/3)
 
    function Declaration_Is_Associated_To_Parameter
      (N : Node_Id) return Boolean
@@ -1496,6 +1506,93 @@ package body Gnat2Why.Expr is
          return New_Void;
       end if;
    end Check_Subtype_Indication;
+
+   ----------------------------------
+   -- Compute_Attach_Handler_Check --
+   ----------------------------------
+
+   function Compute_Attach_Handler_Check
+     (Ty     : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   is
+      function Single_Attach_Handler_Check (Proc : Entity_Id) return W_Prog_Id;
+      --  @param Proc a procedure with an attach_handler pragma
+      --  @return an assertion statement that expresses the attach handler
+      --    check for this pragma
+
+      ---------------------------------
+      -- Single_Attach_Handler_Check --
+      ---------------------------------
+
+      function Single_Attach_Handler_Check (Proc : Entity_Id) return W_Prog_Id
+      is
+
+         --  the interrupt is given as the second argument of the pragma
+         --  Attach_Handler
+         Att_Val : constant Node_Id :=
+           Expression (Next (First (Pragma_Argument_Associations
+                       (Get_Pragma (Proc, Pragma_Attach_Handler)))));
+
+         --  to check whether the attach handler is reserved, we call the
+         --  Ada.Interrupts.Is_Reserved. However, this function reads a global
+         --  state, which makes it a bit difficult to generate a call in
+         --  the logic (we would have to come up with the state object - not
+         --  impossible but not currently proposed by frontend). Instead,
+         --  we call the program function, which has only the interrupt as
+         --  argument, store the result in a temp and assert that the result
+         --  is false. So we are essentially asserting "not is_reserved(int)".
+
+         Res     : constant W_Expr_Id :=
+           New_Temp_For_Expr
+             (New_Call
+                (Name   => To_Why_Id (RTE (RE_Is_Reserved), Domain => EW_Prog),
+                 Domain => EW_Prog,
+                 Args   =>
+                   (1 =>
+                       Transform_Expr (Att_Val, EW_Int_Type, EW_Term, Params)),
+                 Typ    => EW_Bool_Type));
+         Pred    : constant W_Pred_Id :=
+           New_Call
+             (Name => Why_Eq,
+              Args => (1 => +Res,
+                       2 => Bool_False (EW_Term)));
+      begin
+         return
+           +Binding_For_Temp
+             (Domain  => EW_Prog,
+              Tmp     => Res,
+              Context =>
+                +New_Located_Assert
+                  (Ada_Node => Att_Val,
+                   Reason   => VC_Interrupt_Reserved,
+                   Kind     => EW_Check,
+                   Pred     => Pred));
+      end Single_Attach_Handler_Check;
+
+      Proc : Node_Id :=
+        First (Visible_Declarations (Protected_Definition (Parent (Ty))));
+      Stat : W_Prog_Id := New_Void;
+
+      --  Start of processing for Compute_Attach_Handler_Check
+
+   begin
+      while Present (Proc) loop
+         if Nkind (Proc) = N_Subprogram_Declaration then
+            declare
+               Ent : constant Entity_Id := Defining_Entity (Proc);
+            begin
+               if Ekind (Ent) = E_Procedure
+                 and Get_Pragma (Ent, Pragma_Attach_Handler) /= Empty
+               then
+                  Stat := Sequence (Stat,
+                                    Single_Attach_Handler_Check (Ent));
+               end if;
+            end;
+         end if;
+         Next (Proc);
+      end loop;
+      return Stat;
+   end Compute_Attach_Handler_Check;
 
    -----------------------
    -- Compute_Call_Args --
@@ -9053,6 +9150,16 @@ package body Gnat2Why.Expr is
                      end;
                   end if;
                end;
+            end if;
+
+            --  check that no attach_handler expression of the protected
+            --  object corresponds to a reserved signal
+
+            if Is_Protected_Type (Etype (Defining_Entity (Decl))) then
+               R := Sequence
+                 (R,
+                  Compute_Attach_Handler_Check
+                    (Etype (Defining_Entity (Decl)), Body_Params));
             end if;
 
          when N_Subtype_Declaration | N_Full_Type_Declaration =>
