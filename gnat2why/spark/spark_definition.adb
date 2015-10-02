@@ -3051,9 +3051,9 @@ package body SPARK_Definition is
               and then Present (Default_Init_Cond_Procedure (E))
             then
                declare
-                  Delayed_Mapping   : constant Node_Id :=
-                    (if Present (Current_SPARK_Pragma) then
-                          Current_SPARK_Pragma
+                  Delayed_Mapping : constant Node_Id :=
+                    (if Present (Current_SPARK_Pragma)
+                     then Current_SPARK_Pragma
                      else E);
                begin
                   Delayed_Type_Aspects.Include
@@ -3195,8 +3195,8 @@ package body SPARK_Definition is
          if Has_Predicates (E) then
             declare
                Delayed_Mapping : constant Node_Id :=
-                 (if Present (Current_SPARK_Pragma) then
-                    Current_SPARK_Pragma
+                 (if Present (Current_SPARK_Pragma)
+                  then Current_SPARK_Pragma
                   else E);
             begin
                pragma Assert (Present (Predicate_Function (E)));
