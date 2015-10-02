@@ -43,9 +43,13 @@ package body Graphs is
    --  Local operations for local callers
    ----------------------------------------------------------------------
 
-   ----------------------------------------------------------------------
-   --  Basic operations
-   ----------------------------------------------------------------------
+   function Dominator_Tree_Internal
+     (G : Graph;
+      R : Vertex_Id) return Vertex_To_Vertex_T;
+   --  Compute the dominator tree, but return a vertex-to-vertex map,
+   --  instead of a graph representing a tree. The Dominator_Tree
+   --  function calls this, and so does Dominance_Frontier as its
+   --  easier to work with the array representation.
 
    ---------------
    -- Is_Frozen --
@@ -53,70 +57,43 @@ package body Graphs is
 
    function Is_Frozen (G : Graph) return Boolean is (G.Frozen);
 
-   ------------
-   -- Create --
-   ------------
+   --------------
+   -- Add_Edge --
+   --------------
 
-   function Create (Colour : Edge_Colours := Edge_Colours'First) return Graph
+   procedure Add_Edge
+     (G        : in out Graph;
+      V_1, V_2 : Vertex_Id;
+      Colour   : Edge_Colours := Edge_Colours'First)
    is
    begin
-      return (Vertices       => VL.Empty_Vector,
-              Default_Colour => Colour,
-              Frozen         => False,
-              Clusters       => 0,
-              Key_To_Id      => Key_To_Id_Maps.Empty_Map);
-   end Create;
+      --  Sanity check the indices.
+      pragma Assert
+        (V_1 <= G.Vertices.Last_Index
+         and V_2 <= G.Vertices.Last_Index);
 
-   function Create (G             : Graph;
-                    Copy_Clusters : Boolean := False)
-                    return Graph
+      --  Do no work if we already have this edge.
+      if G.Edge_Exists (V_1, V_2) then
+         return;
+      end if;
+
+      --  Add to V_1's out neighbours and edge attribute list.
+      G.Vertices (V_1).Out_Neighbours.Include
+        (V_2, Edge_Attributes'(Marked => False,
+                               Colour => Colour));
+
+      --  Add to V_2's in neighbours.
+      G.Vertices (V_2).In_Neighbours.Include (V_1);
+   end Add_Edge;
+
+   procedure Add_Edge
+     (G        : in out Graph;
+      V_1, V_2 : Vertex_Key;
+      Colour   : Edge_Colours := Edge_Colours'First)
    is
-      R : Graph := Create (G.Default_Colour);
    begin
-      for V of G.Vertices loop
-         R.Vertices.Append ((Key            => V.Key,
-                             In_Neighbours  => VIS.Empty_Set,
-                             Out_Neighbours => EAM.Empty_Map,
-                             Cluster        => (if Copy_Clusters
-                                                then V.Cluster
-                                                else Null_Cluster)));
-      end loop;
-      R.Key_To_Id := G.Key_To_Id;
-
-      R.Frozen := True;
-      if Copy_Clusters then
-         R.Clusters := G.Clusters;
-      end if;
-
-      return R;
-   end Create;
-
-   ----------------------------------------------------------------------
-   --  Vertex operations
-   ----------------------------------------------------------------------
-
-   ----------------
-   -- Get_Vertex --
-   ----------------
-
-   function Get_Vertex (G : Graph; V : Vertex_Key) return Vertex_Id is
-      C : constant Key_To_Id_Maps.Cursor := G.Key_To_Id.Find (V);
-   begin
-      if Key_To_Id_Maps.Has_Element (C) then
-         return Key_To_Id_Maps.Element (C);
-      else
-         return Null_Vertex;
-      end if;
-   end Get_Vertex;
-
-   -------------
-   -- Get_Key --
-   -------------
-
-   function Get_Key (G : Graph; V : Vertex_Id) return Vertex_Key is
-   begin
-      return G.Vertices (V).Key;
-   end Get_Key;
+      G.Add_Edge (G.Get_Vertex (V_1), G.Get_Vertex (V_2), Colour);
+   end Add_Edge;
 
    ----------------
    -- Add_Vertex --
@@ -157,151 +134,130 @@ package body Graphs is
       G.Key_To_Id.Insert (V, G.Vertices.Last_Index);
    end Add_Vertex;
 
-   -----------------
-   -- Vertex_Hash --
-   -----------------
+   ---------
+   -- BFS --
+   ---------
 
-   function Vertex_Hash (Element : Vertex_Id) return Ada.Containers.Hash_Type
-   is (Generic_Integer_Hash (Integer (Element)));
-
-   ----------------------------------------------------------------------
-   --  Edge operations
-   ----------------------------------------------------------------------
-
-   --------------------------
-   --  In_Neighbour_Count  --
-   --------------------------
-
-   function In_Neighbour_Count
-     (G : Graph;
-      V : Vertex_Id) return Natural is
-   begin
-      return Natural (G.Vertices (V).In_Neighbours.Length);
-   end In_Neighbour_Count;
-
-   ---------------------------
-   --  Out_Neighbour_Count  --
-   ---------------------------
-
-   function Out_Neighbour_Count
-     (G : Graph;
-      V : Vertex_Id) return Natural is
-   begin
-      return Natural (G.Vertices (V).Out_Neighbours.Length);
-   end Out_Neighbour_Count;
-
-   -----------------
-   -- Edge_Exists --
-   -----------------
-
-   function Edge_Exists
-     (G        : Graph;
-      V_1, V_2 : Vertex_Id) return Boolean is
-   begin
-      --  Sanity check the indices.
-      pragma Assert
-        (V_1 <= G.Vertices.Last_Index
-         and V_2 <= G.Vertices.Last_Index);
-
-      return G.Vertices (V_1).Out_Neighbours.Contains (V_2);
-   end Edge_Exists;
-
-   function Edge_Exists
-     (G        : Graph;
-      V_1, V_2 : Vertex_Key) return Boolean is
-   begin
-      return Edge_Exists (G,
-                          Get_Vertex (G, V_1),
-                          Get_Vertex (G, V_2));
-   end Edge_Exists;
-
-   -----------------
-   -- Edge_Colour --
-   -----------------
-
-   function Edge_Colour
-     (G        : Graph;
-      V_1, V_2 : Vertex_Id) return Edge_Colours
+   procedure BFS
+     (G             : Graph;
+      Start         : Vertex_Id;
+      Include_Start : Boolean;
+      Visitor       : access procedure
+        (V      : Vertex_Id;
+         Origin : Vertex_Id;
+         Depth  : Natural;
+         T_Ins  : out Simple_Traversal_Instruction);
+      Reversed      : Boolean := False)
    is
+      type Index_And_Depth is record
+         Origin : Valid_Vertex_Id;
+         Index  : Valid_Vertex_Id;
+         Depth  : Natural;
+      end record;
+
+      package Queues is new Ada.Containers.Doubly_Linked_Lists
+        (Element_Type => Index_And_Depth);
+
+      type Bit_Field is array
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
+
+      Q      : Queues.List;
+      Marked : Bit_Field := Bit_Field'(others => False);
+
+      procedure Enqueue (A : Valid_Vertex_Id;
+                         B : Valid_Vertex_Id;
+                         D : Natural);
+      --  Add a single A -> B link to the queue.
+
+      procedure Enqueue_Children (V : Valid_Vertex_Id;
+                                  D : Natural);
+      --  Add all children of V to the queue.
+
+      procedure Enqueue (A : Valid_Vertex_Id;
+                         B : Valid_Vertex_Id;
+                         D : Natural) is
+      begin
+         Q.Append (Index_And_Depth'(Origin => A,
+                                    Index  => B,
+                                    Depth  => D));
+         Marked (B) := True;
+      end Enqueue;
+
+      procedure Enqueue_Children (V : Valid_Vertex_Id;
+                                  D : Natural) is
+      begin
+         if Reversed then
+            for W of G.Vertices (V).In_Neighbours loop
+               if not Marked (W) then
+                  Enqueue (A => V,
+                           B => W,
+                           D => D + 1);
+               end if;
+            end loop;
+         else
+            for C in G.Vertices (V).Out_Neighbours.Iterate loop
+               declare
+                  W : constant Valid_Vertex_Id := Key (C);
+               begin
+                  if not Marked (W) then
+                     Enqueue (A => V,
+                              B => W,
+                              D => D + 1);
+                  end if;
+               end;
+            end loop;
+         end if;
+      end Enqueue_Children;
+
    begin
-      return G.Vertices (V_1).Out_Neighbours (V_2).Colour;
-   end Edge_Colour;
 
-   --------------
-   -- Add_Edge --
-   --------------
-
-   procedure Add_Edge
-     (G        : in out Graph;
-      V_1, V_2 : Vertex_Id;
-      Colour   : Edge_Colours := Edge_Colours'First)
-   is
-   begin
-      --  Sanity check the indices.
-      pragma Assert
-        (V_1 <= G.Vertices.Last_Index
-         and V_2 <= G.Vertices.Last_Index);
-
-      --  Do no work if we already have this edge.
-      if G.Edge_Exists (V_1, V_2) then
-         return;
+      if Include_Start then
+         Enqueue (A => Start,
+                  B => Start,
+                  D => 0);
+      else
+         Enqueue_Children (Start, 0);
       end if;
 
-      --  Add to V_1's out neighbours and edge attribute list.
-      G.Vertices (V_1).Out_Neighbours.Include
-        (V_2, Edge_Attributes'(Marked => False,
-                               Colour => Colour));
+      while not Q.Is_Empty loop
+         declare
+            Origin : constant Valid_Vertex_Id := Q.First_Element.Origin;
+            V      : constant Valid_Vertex_Id := Q.First_Element.Index;
+            D      : constant Natural         := Q.First_Element.Depth;
+            T_Ins  : Simple_Traversal_Instruction;
+         begin
+            Q.Delete_First;
 
-      --  Add to V_2's in neighbours.
-      G.Vertices (V_2).In_Neighbours.Include (V_1);
-   end Add_Edge;
+            Visitor (V, Origin, D, T_Ins);
 
-   procedure Add_Edge
-     (G        : in out Graph;
-      V_1, V_2 : Vertex_Key;
-      Colour   : Edge_Colours := Edge_Colours'First)
+            case T_Ins is
+               when Continue =>
+                  Enqueue_Children (V, D);
+               when Skip_Children =>
+                  null;
+               when Abort_Traversal =>
+                  exit;
+            end case;
+         end;
+      end loop;
+
+   end BFS;
+
+   -----------
+   -- Child --
+   -----------
+
+   function Child
+     (G : Graph;
+      V : Vertex_Id)
+      return Vertex_Id
    is
    begin
-      G.Add_Edge (G.Get_Vertex (V_1), G.Get_Vertex (V_2), Colour);
-   end Add_Edge;
-
-   -----------------
-   -- Remove_Edge --
-   -----------------
-
-   procedure Remove_Edge
-     (G        : in out Graph;
-      V_1, V_2 : Vertex_Id) is
-   begin
-      --  Sanity check the indices.
-      pragma Assert
-        (V_1 <= G.Vertices.Last_Index
-         and V_2 <= G.Vertices.Last_Index);
-
-      if G.Edge_Exists (V_1, V_2) then
-         --  Note the use of delete, so we better check if there is an
-         --  edge we can delete first.
-         G.Vertices (V_1).Out_Neighbours.Delete (V_2);
-         G.Vertices (V_2).In_Neighbours.Delete (V_1);
-      end if;
-   end Remove_Edge;
-
-   ---------------
-   -- Mark_Edge --
-   ---------------
-
-   procedure Mark_Edge
-     (G        : in out Graph;
-      V_1, V_2 : Vertex_Id) is
-   begin
-      --  Sanity check the indices.
-      pragma Assert
-        (V_1 <= G.Vertices.Last_Index
-         and V_2 <= G.Vertices.Last_Index);
-
-      --  Mark the edge
-      G.Vertices (V_1).Out_Neighbours (V_2).Marked := True;
-   end Mark_Edge;
+      for C in G.Vertices (V).Out_Neighbours.Iterate loop
+         return Key (C);
+      end loop;
+      return Null_Vertex;
+   end Child;
 
    ------------------
    -- Clear_Vertex --
@@ -328,6 +284,163 @@ package body Graphs is
       end loop;
       G.Vertices (V).Out_Neighbours := Empty_Map;
    end Clear_Vertex;
+
+   -----------
+   -- Close --
+   -----------
+
+   procedure Close
+     (G       : in out Graph;
+      Visitor : access procedure (A, B : Vertex_Id) := null)
+   is
+      type Component is new Natural;
+
+      type Bit_Field is array
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
+
+      type V_To_V is array
+        (Vertex_Id range 0 .. G.Vertices.Last_Index) of Vertex_Id;
+
+      type V_To_VIS is array
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Vertex_Index_Set;
+
+      type V_To_Comp is array
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Component;
+
+      Visited : Bit_Field         := Bit_Field'(others => False);
+      Stack   : Vertex_Index_List := VIL.Empty_Vector;
+      Root    : V_To_V            := V_To_V'(others => 0);
+      Comp    : V_To_Comp         := V_To_Comp'(others => 0);
+      Succ    : V_To_V            := V_To_V'(others => 0);
+      Sets    : V_To_VIS          := V_To_VIS'(others => VIS.Empty_Set);
+
+      Current_Component : Component := 0;
+
+      procedure SIMPLE_TC (V : Valid_Vertex_Id);
+      --  See Nuutila's PhD thesis.
+
+      ---------------
+      -- SIMPLE_TC --
+      ---------------
+
+      procedure SIMPLE_TC (V : Valid_Vertex_Id) is
+      begin
+         Visited (V) := True;
+
+         Root (V) := V;
+
+         Stack.Append (V);
+
+         Succ (V) := V;
+         for C in G.Vertices (V).Out_Neighbours.Iterate loop
+            declare
+               W : Valid_Vertex_Id renames Key (C);
+            begin
+               Sets (Succ (V)).Include (W);
+            end;
+         end loop;
+
+         for C in G.Vertices (V).Out_Neighbours.Iterate loop
+            declare
+               W : Valid_Vertex_Id renames Key (C);
+            begin
+               if not Visited (W) then
+                  SIMPLE_TC (W);
+               end if;
+               if Comp (W) = 0 then
+                  Root (V) := Vertex_Id'Min (Root (V), Root (W));
+               end if;
+               Sets (Succ (V)).Union (Sets (Succ (W)));
+            end;
+         end loop;
+
+         if Root (V) = V then
+            Current_Component := Current_Component + 1;
+            loop
+               declare
+                  W : constant Valid_Vertex_Id := Stack.Last_Element;
+               begin
+                  Stack.Delete_Last;
+
+                  Comp (W) := Current_Component;
+                  Succ (W) := Succ (V); --  Pointer copy
+
+                  exit when W = V;
+               end;
+            end loop;
+         end if;
+      end SIMPLE_TC;
+
+   begin
+      for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
+         if not Visited (V) then
+            SIMPLE_TC (V);
+         end if;
+      end loop;
+
+      --  IMPORTANT NOTE: See Conditional_Close below which relies on this
+      --  post-processing.
+      for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
+         for W of Sets (Succ (V)) loop
+            if not G.Edge_Exists (V, W) then
+               G.Add_Edge (V, W, G.Default_Colour);
+               if Visitor /= null then
+                  Visitor (V, W);
+               end if;
+            end if;
+         end loop;
+      end loop;
+   end Close;
+
+   ------------------
+   -- Cluster_Hash --
+   ------------------
+
+   function Cluster_Hash (C : Cluster_Id) return Ada.Containers.Hash_Type
+   is (Generic_Integer_Hash (Integer (C)));
+
+   ------------------------
+   -- Cluster_To_Natural --
+   ------------------------
+
+   function Cluster_To_Natural (G : Graph; C : Cluster_Id) return Natural is
+      pragma Unreferenced (G);
+   begin
+      return Natural (C);
+   end Cluster_To_Natural;
+
+   -----------------------
+   -- Conditional_Close --
+   -----------------------
+
+   procedure Conditional_Close
+     (G             : in out Graph;
+      Edge_Selector : access function (A, B : Vertex_Id) return Boolean)
+   is
+      procedure Visitor (A, B : Vertex_Id);
+      --  Obvious visitor procedure.
+
+      -------------
+      -- Visitor --
+      -------------
+
+      procedure Visitor (A, B : Vertex_Id)
+      is
+      begin
+         if not Edge_Selector (A, B) then
+            G.Remove_Edge (A, B);
+         end if;
+      end Visitor;
+   begin
+      --  IMPORTANT NOTE: Graphhis current implementation takes advantage of
+      --  the inefficient (in terms of space) implementation of Close - we
+      --  effectively cache the entire graph hence we can actually get away
+      --  with modifying it in the visitor procedure. If we get around to
+      --  improving Close to not be so wasteful we need a re-think of
+      --  Conditional_Close.
+
+      G.Close (Visitor'Access);
+   end Conditional_Close;
 
    ------------------
    --  Copy_Edges  --
@@ -361,281 +474,42 @@ package body Graphs is
    end Copy_Edges;
 
    ------------
-   -- Parent --
+   -- Create --
    ------------
 
-   function Parent
-     (G : Graph;
-      V : Vertex_Id)
-      return Vertex_Id
+   function Create (Colour : Edge_Colours := Edge_Colours'First) return Graph
    is
    begin
-      for P of G.Vertices (V).In_Neighbours loop
-         return P;
+      return (Vertices       => VL.Empty_Vector,
+              Default_Colour => Colour,
+              Frozen         => False,
+              Clusters       => 0,
+              Key_To_Id      => Key_To_Id_Maps.Empty_Map);
+   end Create;
+
+   function Create (G             : Graph;
+                    Copy_Clusters : Boolean := False)
+                    return Graph
+   is
+      R : Graph := Create (G.Default_Colour);
+   begin
+      for V of G.Vertices loop
+         R.Vertices.Append ((Key            => V.Key,
+                             In_Neighbours  => VIS.Empty_Set,
+                             Out_Neighbours => EAM.Empty_Map,
+                             Cluster        => (if Copy_Clusters
+                                                then V.Cluster
+                                                else Null_Cluster)));
       end loop;
-      return Null_Vertex;
-   end Parent;
+      R.Key_To_Id := G.Key_To_Id;
 
-   -----------
-   -- Child --
-   -----------
+      R.Frozen := True;
+      if Copy_Clusters then
+         R.Clusters := G.Clusters;
+      end if;
 
-   function Child
-     (G : Graph;
-      V : Vertex_Id)
-      return Vertex_Id
-   is
-   begin
-      for C in G.Vertices (V).Out_Neighbours.Iterate loop
-         return Key (C);
-      end loop;
-      return Null_Vertex;
-   end Child;
-
-   ----------------------------------------------------------------------
-   --  Clusters
-   ----------------------------------------------------------------------
-
-   -----------------
-   -- New_Cluster --
-   -----------------
-
-   procedure New_Cluster (G : in out Graph;
-                          C :    out Cluster_Id)
-   is
-   begin
-      G.Clusters := G.Clusters + 1;
-      C          := G.Clusters;
-   end New_Cluster;
-
-   -----------------
-   -- Set_Cluster --
-   -----------------
-
-   procedure Set_Cluster (G : in out Graph;
-                          V : Vertex_Id;
-                          C : Cluster_Id)
-   is
-   begin
-      pragma Assert (C <= G.Clusters);
-      G.Vertices (V).Cluster := C;
-   end Set_Cluster;
-
-   -----------------
-   -- Get_Cluster --
-   -----------------
-
-   function Get_Cluster (G : Graph;
-                         V : Vertex_Id)
-                         return Cluster_Id
-   is
-   begin
-      return G.Vertices (V).Cluster;
-   end Get_Cluster;
-
-   ------------------
-   -- Cluster_Hash --
-   ------------------
-
-   function Cluster_Hash (C : Cluster_Id) return Ada.Containers.Hash_Type
-   is (Generic_Integer_Hash (Integer (C)));
-
-   ----------------------------------------------------------------------
-   --  Iterators
-   ----------------------------------------------------------------------
-
-   --------------------
-   -- Get_Collection --
-   --------------------
-
-   function Get_Collection (G        : Graph;
-                            V        : Vertex_Id;
-                            The_Type : Vertex_Based_Collection)
-                            return Vertex_Collection_T
-   is
-   begin
-      case The_Type is
-         when In_Neighbours =>
-            return Vertex_Collection_T'(The_Type  => In_Neighbours,
-                                        The_Graph => G'Unrestricted_Access,
-                                        Id        => V);
-         when Out_Neighbours =>
-            return Vertex_Collection_T'(The_Type  => Out_Neighbours,
-                                        The_Graph => G'Unrestricted_Access,
-                                        Id        => V);
-      end case;
-   end Get_Collection;
-
-   function Get_Collection (G        : Graph;
-                            The_Type : Graph_Based_Collection)
-                            return Vertex_Collection_T
-   is
-   begin
-      case The_Type is
-         when All_Vertices =>
-            return Vertex_Collection_T'(The_Type  => All_Vertices,
-                                        The_Graph => G'Unrestricted_Access);
-      end case;
-   end Get_Collection;
-
-   ------------------
-   -- First_Cursor --
-   ------------------
-
-   function First_Cursor (Coll : Vertex_Collection_T)
-                          return Cursor
-   is
-      G : access constant Graph renames Coll.The_Graph;
-   begin
-      case Coll.The_Type is
-         when In_Neighbours =>
-            return Cursor'(Collection_Type   => In_Neighbours,
-                           VIS_Native_Cursor => G.Vertices
-                             (Coll.Id).In_Neighbours.First);
-         when Out_Neighbours =>
-            return Cursor'(Collection_Type   => Out_Neighbours,
-                           EAM_Native_Cursor => G.Vertices
-                             (Coll.Id).Out_Neighbours.First);
-         when All_Vertices =>
-            return Cursor'(Collection_Type   => All_Vertices,
-                           VL_Native_Cursor  => G.Vertices.First);
-      end case;
-   end First_Cursor;
-
-   -----------------
-   -- Next_Cursor --
-   -----------------
-
-   function Next_Cursor (Coll : Vertex_Collection_T;
-                         C    : Cursor)
-                         return Cursor
-   is
-   begin
-      case Coll.The_Type is
-         when In_Neighbours =>
-            return Cursor'(Collection_Type   => In_Neighbours,
-                           VIS_Native_Cursor => Next (C.VIS_Native_Cursor));
-         when Out_Neighbours =>
-            return Cursor'(Collection_Type   => Out_Neighbours,
-                           EAM_Native_Cursor => Next (C.EAM_Native_Cursor));
-         when All_Vertices =>
-            return Cursor'(Collection_Type   => All_Vertices,
-                           VL_Native_Cursor  => Next (C.VL_Native_Cursor));
-      end case;
-   end Next_Cursor;
-
-   -----------------
-   -- Has_Element --
-   -----------------
-
-   function Has_Element (Coll : Vertex_Collection_T;
-                         C    : Cursor)
-                         return Boolean
-   is
-   begin
-      case Coll.The_Type is
-         when In_Neighbours  => return Has_Element (C.VIS_Native_Cursor);
-         when Out_Neighbours => return Has_Element (C.EAM_Native_Cursor);
-         when All_Vertices   => return Has_Element (C.VL_Native_Cursor);
-      end case;
-   end Has_Element;
-
-   -----------------
-   -- Get_Element --
-   -----------------
-
-   function Get_Element (Coll : Vertex_Collection_T;
-                         C    : Cursor)
-                         return Vertex_Id
-   is
-   begin
-      case Coll.The_Type is
-         when In_Neighbours  => return Element  (C.VIS_Native_Cursor);
-         when Out_Neighbours => return Key      (C.EAM_Native_Cursor);
-         when All_Vertices   => return To_Index (C.VL_Native_Cursor);
-      end case;
-   end Get_Element;
-
-   ----------------------------------------------------------------------
-   --  Complex queries
-   ----------------------------------------------------------------------
-
-   -------------------------------
-   --  Non_Trivial_Path_Exists  --
-   -------------------------------
-
-   function Non_Trivial_Path_Exists
-     (G        : Graph;
-      A        : Vertex_Id;
-      B        : Vertex_Id;
-      Reversed : Boolean := False)
-      return Boolean
-   is
-      Path_Exists : Boolean := False;
-
-      procedure Are_We_There_Yet
-         (V  : Vertex_Id;
-          TV : out Simple_Traversal_Instruction);
-      --  Repeatedly checks if we've arrived at out destination.
-
-      procedure Are_We_There_Yet
-         (V  : Vertex_Id;
-          TV : out Simple_Traversal_Instruction) is
-      begin
-         if V = B then
-            Path_Exists := True;
-
-            TV := Abort_Traversal;
-         else
-            TV := Continue;
-         end if;
-      end Are_We_There_Yet;
-
-   begin
-      G.DFS (Start         => A,
-             Include_Start => False,
-             Visitor       => Are_We_There_Yet'Access,
-             Reversed      => Reversed);
-      return Path_Exists;
-   end Non_Trivial_Path_Exists;
-
-   function Non_Trivial_Path_Exists
-     (G        : Graph;
-      A        : Vertex_Id;
-      F        : access function (V : Vertex_Id) return Boolean;
-      Reversed : Boolean := False)
-      return Boolean
-   is
-      Path_Exists : Boolean := False;
-
-      procedure Are_We_There_Yet
-         (V  : Vertex_Id;
-          TV : out Simple_Traversal_Instruction);
-      --  Repeatedly checks if we've arrived at out destination.
-
-      procedure Are_We_There_Yet
-        (V  : Vertex_Id;
-         TV : out Simple_Traversal_Instruction) is
-      begin
-         if F (V) then
-            Path_Exists := True;
-
-            TV := Abort_Traversal;
-         else
-            TV := Continue;
-         end if;
-      end Are_We_There_Yet;
-   begin
-      G.DFS (Start         => A,
-             Include_Start => False,
-             Visitor       => Are_We_There_Yet'Access,
-             Reversed      => Reversed);
-      return Path_Exists;
-   end Non_Trivial_Path_Exists;
-
-   ----------------------------------------------------------------------
-   --  Visitors
-   ----------------------------------------------------------------------
+      return R;
+   end Create;
 
    ---------
    -- DFS --
@@ -766,233 +640,40 @@ package body Graphs is
       end loop;
    end DFS;
 
-   ---------
-   -- BFS --
-   ---------
+   ------------------------
+   -- Dominance_Frontier --
+   ------------------------
 
-   procedure BFS
-     (G             : Graph;
-      Start         : Vertex_Id;
-      Include_Start : Boolean;
-      Visitor       : access procedure
-        (V      : Vertex_Id;
-         Origin : Vertex_Id;
-         Depth  : Natural;
-         T_Ins  : out Simple_Traversal_Instruction);
-      Reversed      : Boolean := False)
+   function Dominance_Frontier
+     (G : Graph;
+      R : Vertex_Id) return Graph
    is
-      type Index_And_Depth is record
-         Origin : Valid_Vertex_Id;
-         Index  : Valid_Vertex_Id;
-         Depth  : Natural;
-      end record;
-
-      package Queues is new Ada.Containers.Doubly_Linked_Lists
-        (Element_Type => Index_And_Depth);
-
-      type Bit_Field is array
-        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
-
-      Q      : Queues.List;
-      Marked : Bit_Field := Bit_Field'(others => False);
-
-      procedure Enqueue (A : Valid_Vertex_Id;
-                         B : Valid_Vertex_Id;
-                         D : Natural);
-      --  Add a single A -> B link to the queue.
-
-      procedure Enqueue_Children (V : Valid_Vertex_Id;
-                                  D : Natural);
-      --  Add all children of V to the queue.
-
-      procedure Enqueue (A : Valid_Vertex_Id;
-                         B : Valid_Vertex_Id;
-                         D : Natural) is
-      begin
-         Q.Append (Index_And_Depth'(Origin => A,
-                                    Index  => B,
-                                    Depth  => D));
-         Marked (B) := True;
-      end Enqueue;
-
-      procedure Enqueue_Children (V : Valid_Vertex_Id;
-                                  D : Natural) is
-      begin
-         if Reversed then
-            for W of G.Vertices (V).In_Neighbours loop
-               if not Marked (W) then
-                  Enqueue (A => V,
-                           B => W,
-                           D => D + 1);
+      Dom : constant Vertex_To_Vertex_T := Dominator_Tree_Internal (G, R);
+      DF  : Graph := Create (G);
+   begin
+      for B in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
+         if G.Vertices (B).In_Neighbours.Length >= 2 then
+            for P of G.Vertices (B).In_Neighbours loop
+               if Dom (P) in Valid_Vertex_Id then
+                  declare
+                     Runner : Valid_Vertex_Id := P;
+                  begin
+                     while Runner /= Dom (B) loop
+                        DF.Add_Edge (B, Runner, DF.Default_Colour);
+                        Runner := Dom (Runner);
+                     end loop;
+                  end;
                end if;
             end loop;
-         else
-            for C in G.Vertices (V).Out_Neighbours.Iterate loop
-               declare
-                  W : constant Valid_Vertex_Id := Key (C);
-               begin
-                  if not Marked (W) then
-                     Enqueue (A => V,
-                              B => W,
-                              D => D + 1);
-                  end if;
-               end;
-            end loop;
          end if;
-      end Enqueue_Children;
-
-   begin
-
-      if Include_Start then
-         Enqueue (A => Start,
-                  B => Start,
-                  D => 0);
-      else
-         Enqueue_Children (Start, 0);
-      end if;
-
-      while not Q.Is_Empty loop
-         declare
-            Origin : constant Valid_Vertex_Id := Q.First_Element.Origin;
-            V      : constant Valid_Vertex_Id := Q.First_Element.Index;
-            D      : constant Natural         := Q.First_Element.Depth;
-            T_Ins  : Simple_Traversal_Instruction;
-         begin
-            Q.Delete_First;
-
-            Visitor (V, Origin, D, T_Ins);
-
-            case T_Ins is
-               when Continue =>
-                  Enqueue_Children (V, D);
-               when Skip_Children =>
-                  null;
-               when Abort_Traversal =>
-                  exit;
-            end case;
-         end;
       end loop;
 
-   end BFS;
-
-   -------------------
-   -- Shortest_Path --
-   -------------------
-
-   procedure Shortest_Path
-     (G             : Graph;
-      Start         : Vertex_Id;
-      Allow_Trivial : Boolean;
-      Search        : access procedure
-        (V           : Vertex_Id;
-         Instruction : out Traversal_Instruction);
-      Step          : access procedure (V : Vertex_Id);
-      Reversed      : Boolean := False)
-   is
-      package Vertex_Maps is new Ada.Containers.Hashed_Maps
-        (Key_Type        => Valid_Vertex_Id,
-         Element_Type    => Valid_Vertex_Id,
-         Hash            => Vertex_Hash,
-         Equivalent_Keys => "=",
-         "="             => "=");
-
-      Tree  : Vertex_Maps.Map   := Vertex_Maps.Empty_Map;
-      Dest  : Vertex_Id         := Null_Vertex;
-      Route : Vertex_Index_List := VIL.Empty_Vector;
-
-      procedure Make_Tree (V      : Vertex_Id;
-                           Origin : Vertex_Id;
-                           Depth  : Natural;
-                           T_Ins  : out Simple_Traversal_Instruction);
-      --  Internal visitor for the BFS. This will construct a tree
-      --  which we can use to find our way home.
-
-      procedure Make_Tree (V      : Vertex_Id;
-                           Origin : Vertex_Id;
-                           Depth  : Natural;
-                           T_Ins  : out Simple_Traversal_Instruction)
-      is
-         pragma Unreferenced (Depth);
-         Tmp : Traversal_Instruction;
-      begin
-         Search (V, Tmp);
-         if Tmp = Found_Destination then
-            T_Ins := Abort_Traversal;
-            Dest  := V;
-         else
-            T_Ins := Tmp;
-         end if;
-
-         Tree.Include (V, Origin);
-      end Make_Tree;
-
-   begin
-
-      BFS (G             => G,
-           Start         => Start,
-           Include_Start => Allow_Trivial,
-           Visitor       => Make_Tree'Access,
-           Reversed      => Reversed);
-
-      if Dest /= Null_Vertex then
-         declare
-            P : Valid_Vertex_Id := Dest;
-         begin
-            while P /= Start loop
-               Route.Append (P);
-               P := Tree (P);
-            end loop;
-            Route.Append (P);
-         end;
-
-         for V of reverse Route loop
-            Step (V);
-         end loop;
-      end if;
-
-   end Shortest_Path;
-
-   ----------------------------------------------------------------------
-   --  Graph-wide operations
-   ----------------------------------------------------------------------
-
-   ------------
-   -- Invert --
-   ------------
-
-   function Invert (G : Graph) return Graph is
-      R : Graph;
-   begin
-      --  Start with an empty graph, with the same vertices.
-      R := Create (G);
-
-      --  Add reversed edges.
-      for V_1 in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
-         for C in G.Vertices (V_1).Out_Neighbours.Iterate loop
-            declare
-               V_2 : Valid_Vertex_Id renames Key (C);
-               Atr : Edge_Attributes renames Element (C);
-            begin
-               R.Vertices (V_2).Out_Neighbours.Include (V_1, Atr);
-               R.Vertices (V_1).In_Neighbours.Include (V_2);
-            end;
-         end loop;
-      end loop;
-
-      return R;
-   end Invert;
+      return DF;
+   end Dominance_Frontier;
 
    -----------------------------
    -- Dominator_Tree_Internal --
    -----------------------------
-
-   function Dominator_Tree_Internal
-     (G : Graph;
-      R : Vertex_Id) return Vertex_To_Vertex_T;
-   --  Compute the dominator tree, but return a vertex-to-vertex map,
-   --  instead of a graph representing a tree. The Dominator_Tree
-   --  function calls this, and so does Dominance_Frontier as its
-   --  easier to work with the array representation.
 
    function Dominator_Tree_Internal
      (G : Graph;
@@ -1214,180 +895,483 @@ package body Graphs is
       return DT;
    end Dominator_Tree;
 
-   ------------------------
-   -- Dominance_Frontier --
-   ------------------------
+   -----------------
+   -- Edge_Colour --
+   -----------------
 
-   function Dominance_Frontier
+   function Edge_Colour
+     (G        : Graph;
+      V_1, V_2 : Vertex_Id) return Edge_Colours
+   is
+   begin
+      return G.Vertices (V_1).Out_Neighbours (V_2).Colour;
+   end Edge_Colour;
+
+   -----------------
+   -- Edge_Exists --
+   -----------------
+
+   function Edge_Exists
+     (G        : Graph;
+      V_1, V_2 : Vertex_Id) return Boolean is
+   begin
+      --  Sanity check the indices.
+      pragma Assert
+        (V_1 <= G.Vertices.Last_Index
+         and V_2 <= G.Vertices.Last_Index);
+
+      return G.Vertices (V_1).Out_Neighbours.Contains (V_2);
+   end Edge_Exists;
+
+   function Edge_Exists
+     (G        : Graph;
+      V_1, V_2 : Vertex_Key) return Boolean is
+   begin
+      return Edge_Exists (G,
+                          Get_Vertex (G, V_1),
+                          Get_Vertex (G, V_2));
+   end Edge_Exists;
+
+   ------------------
+   -- First_Cursor --
+   ------------------
+
+   function First_Cursor (Coll : Vertex_Collection_T)
+                          return Cursor
+   is
+      G : access constant Graph renames Coll.The_Graph;
+   begin
+      case Coll.The_Type is
+         when In_Neighbours =>
+            return Cursor'(Collection_Type   => In_Neighbours,
+                           VIS_Native_Cursor => G.Vertices
+                             (Coll.Id).In_Neighbours.First);
+         when Out_Neighbours =>
+            return Cursor'(Collection_Type   => Out_Neighbours,
+                           EAM_Native_Cursor => G.Vertices
+                             (Coll.Id).Out_Neighbours.First);
+         when All_Vertices =>
+            return Cursor'(Collection_Type   => All_Vertices,
+                           VL_Native_Cursor  => G.Vertices.First);
+      end case;
+   end First_Cursor;
+
+   -----------------
+   -- Get_Cluster --
+   -----------------
+
+   function Get_Cluster (G : Graph;
+                         V : Vertex_Id)
+                         return Cluster_Id
+   is
+   begin
+      return G.Vertices (V).Cluster;
+   end Get_Cluster;
+
+   --------------------
+   -- Get_Collection --
+   --------------------
+
+   function Get_Collection (G        : Graph;
+                            V        : Vertex_Id;
+                            The_Type : Vertex_Based_Collection)
+                            return Vertex_Collection_T
+   is
+   begin
+      case The_Type is
+         when In_Neighbours =>
+            return Vertex_Collection_T'(The_Type  => In_Neighbours,
+                                        The_Graph => G'Unrestricted_Access,
+                                        Id        => V);
+         when Out_Neighbours =>
+            return Vertex_Collection_T'(The_Type  => Out_Neighbours,
+                                        The_Graph => G'Unrestricted_Access,
+                                        Id        => V);
+      end case;
+   end Get_Collection;
+
+   function Get_Collection (G        : Graph;
+                            The_Type : Graph_Based_Collection)
+                            return Vertex_Collection_T
+   is
+   begin
+      case The_Type is
+         when All_Vertices =>
+            return Vertex_Collection_T'(The_Type  => All_Vertices,
+                                        The_Graph => G'Unrestricted_Access);
+      end case;
+   end Get_Collection;
+
+   -----------------
+   -- Get_Element --
+   -----------------
+
+   function Get_Element (Coll : Vertex_Collection_T;
+                         C    : Cursor)
+                         return Vertex_Id
+   is
+   begin
+      case Coll.The_Type is
+         when In_Neighbours  => return Element  (C.VIS_Native_Cursor);
+         when Out_Neighbours => return Key      (C.EAM_Native_Cursor);
+         when All_Vertices   => return To_Index (C.VL_Native_Cursor);
+      end case;
+   end Get_Element;
+
+   -------------
+   -- Get_Key --
+   -------------
+
+   function Get_Key (G : Graph; V : Vertex_Id) return Vertex_Key is
+   begin
+      return G.Vertices (V).Key;
+   end Get_Key;
+
+   ----------------
+   -- Get_Vertex --
+   ----------------
+
+   function Get_Vertex (G : Graph; V : Vertex_Key) return Vertex_Id is
+      C : constant Key_To_Id_Maps.Cursor := G.Key_To_Id.Find (V);
+   begin
+      if Key_To_Id_Maps.Has_Element (C) then
+         return Key_To_Id_Maps.Element (C);
+      else
+         return Null_Vertex;
+      end if;
+   end Get_Vertex;
+
+   -----------------
+   -- Has_Element --
+   -----------------
+
+   function Has_Element (Coll : Vertex_Collection_T;
+                         C    : Cursor)
+                         return Boolean
+   is
+   begin
+      case Coll.The_Type is
+         when In_Neighbours  => return Has_Element (C.VIS_Native_Cursor);
+         when Out_Neighbours => return Has_Element (C.EAM_Native_Cursor);
+         when All_Vertices   => return Has_Element (C.VL_Native_Cursor);
+      end case;
+   end Has_Element;
+
+   ------------
+   -- Invert --
+   ------------
+
+   function Invert (G : Graph) return Graph is
+      R : Graph;
+   begin
+      --  Start with an empty graph, with the same vertices.
+      R := Create (G);
+
+      --  Add reversed edges.
+      for V_1 in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
+         for C in G.Vertices (V_1).Out_Neighbours.Iterate loop
+            declare
+               V_2 : Valid_Vertex_Id renames Key (C);
+               Atr : Edge_Attributes renames Element (C);
+            begin
+               R.Vertices (V_2).Out_Neighbours.Include (V_1, Atr);
+               R.Vertices (V_1).In_Neighbours.Include (V_2);
+            end;
+         end loop;
+      end loop;
+
+      return R;
+   end Invert;
+
+   --------------------------
+   --  In_Neighbour_Count  --
+   --------------------------
+
+   function In_Neighbour_Count
      (G : Graph;
-      R : Vertex_Id) return Graph
-   is
-      Dom : constant Vertex_To_Vertex_T := Dominator_Tree_Internal (G, R);
-      DF  : Graph := Create (G);
+      V : Vertex_Id) return Natural is
    begin
-      for B in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
-         if G.Vertices (B).In_Neighbours.Length >= 2 then
-            for P of G.Vertices (B).In_Neighbours loop
-               if Dom (P) in Valid_Vertex_Id then
-                  declare
-                     Runner : Valid_Vertex_Id := P;
-                  begin
-                     while Runner /= Dom (B) loop
-                        DF.Add_Edge (B, Runner, DF.Default_Colour);
-                        Runner := Dom (Runner);
-                     end loop;
-                  end;
-               end if;
-            end loop;
-         end if;
-      end loop;
+      return Natural (G.Vertices (V).In_Neighbours.Length);
+   end In_Neighbour_Count;
 
-      return DF;
-   end Dominance_Frontier;
+   ---------------
+   -- Mark_Edge --
+   ---------------
 
-   -----------
-   -- Close --
-   -----------
+   procedure Mark_Edge
+     (G        : in out Graph;
+      V_1, V_2 : Vertex_Id) is
+   begin
+      --  Sanity check the indices.
+      pragma Assert
+        (V_1 <= G.Vertices.Last_Index
+         and V_2 <= G.Vertices.Last_Index);
 
-   procedure Close
-     (G       : in out Graph;
-      Visitor : access procedure (A, B : Vertex_Id) := null)
+      --  Mark the edge
+      G.Vertices (V_1).Out_Neighbours (V_2).Marked := True;
+   end Mark_Edge;
+
+   -----------------
+   -- New_Cluster --
+   -----------------
+
+   procedure New_Cluster (G : in out Graph;
+                          C :    out Cluster_Id)
    is
-      type Component is new Natural;
+   begin
+      G.Clusters := G.Clusters + 1;
+      C          := G.Clusters;
+   end New_Cluster;
 
-      type Bit_Field is array
-        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Boolean;
+   -----------------
+   -- Next_Cursor --
+   -----------------
 
-      type V_To_V is array
-        (Vertex_Id range 0 .. G.Vertices.Last_Index) of Vertex_Id;
+   function Next_Cursor (Coll : Vertex_Collection_T;
+                         C    : Cursor)
+                         return Cursor
+   is
+   begin
+      case Coll.The_Type is
+         when In_Neighbours =>
+            return Cursor'(Collection_Type   => In_Neighbours,
+                           VIS_Native_Cursor => Next (C.VIS_Native_Cursor));
+         when Out_Neighbours =>
+            return Cursor'(Collection_Type   => Out_Neighbours,
+                           EAM_Native_Cursor => Next (C.EAM_Native_Cursor));
+         when All_Vertices =>
+            return Cursor'(Collection_Type   => All_Vertices,
+                           VL_Native_Cursor  => Next (C.VL_Native_Cursor));
+      end case;
+   end Next_Cursor;
 
-      type V_To_VIS is array
-        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Vertex_Index_Set;
+   -------------------------------
+   --  Non_Trivial_Path_Exists  --
+   -------------------------------
 
-      type V_To_Comp is array
-        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Component;
+   function Non_Trivial_Path_Exists
+     (G        : Graph;
+      A        : Vertex_Id;
+      B        : Vertex_Id;
+      Reversed : Boolean := False)
+      return Boolean
+   is
+      Path_Exists : Boolean := False;
 
-      Visited : Bit_Field         := Bit_Field'(others => False);
-      Stack   : Vertex_Index_List := VIL.Empty_Vector;
-      Root    : V_To_V            := V_To_V'(others => 0);
-      Comp    : V_To_Comp         := V_To_Comp'(others => 0);
-      Succ    : V_To_V            := V_To_V'(others => 0);
-      Sets    : V_To_VIS          := V_To_VIS'(others => VIS.Empty_Set);
+      procedure Are_We_There_Yet
+         (V  : Vertex_Id;
+          TV : out Simple_Traversal_Instruction);
+      --  Repeatedly checks if we've arrived at out destination.
 
-      Current_Component : Component := 0;
-
-      procedure SIMPLE_TC (V : Valid_Vertex_Id);
-      --  See Nuutila's PhD thesis.
-
-      ---------------
-      -- SIMPLE_TC --
-      ---------------
-
-      procedure SIMPLE_TC (V : Valid_Vertex_Id) is
+      procedure Are_We_There_Yet
+         (V  : Vertex_Id;
+          TV : out Simple_Traversal_Instruction) is
       begin
-         Visited (V) := True;
+         if V = B then
+            Path_Exists := True;
 
-         Root (V) := V;
-
-         Stack.Append (V);
-
-         Succ (V) := V;
-         for C in G.Vertices (V).Out_Neighbours.Iterate loop
-            declare
-               W : Valid_Vertex_Id renames Key (C);
-            begin
-               Sets (Succ (V)).Include (W);
-            end;
-         end loop;
-
-         for C in G.Vertices (V).Out_Neighbours.Iterate loop
-            declare
-               W : Valid_Vertex_Id renames Key (C);
-            begin
-               if not Visited (W) then
-                  SIMPLE_TC (W);
-               end if;
-               if Comp (W) = 0 then
-                  Root (V) := Vertex_Id'Min (Root (V), Root (W));
-               end if;
-               Sets (Succ (V)).Union (Sets (Succ (W)));
-            end;
-         end loop;
-
-         if Root (V) = V then
-            Current_Component := Current_Component + 1;
-            loop
-               declare
-                  W : constant Valid_Vertex_Id := Stack.Last_Element;
-               begin
-                  Stack.Delete_Last;
-
-                  Comp (W) := Current_Component;
-                  Succ (W) := Succ (V); --  Pointer copy
-
-                  exit when W = V;
-               end;
-            end loop;
+            TV := Abort_Traversal;
+         else
+            TV := Continue;
          end if;
-      end SIMPLE_TC;
+      end Are_We_There_Yet;
 
    begin
-      for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
-         if not Visited (V) then
-            SIMPLE_TC (V);
-         end if;
-      end loop;
+      G.DFS (Start         => A,
+             Include_Start => False,
+             Visitor       => Are_We_There_Yet'Access,
+             Reversed      => Reversed);
+      return Path_Exists;
+   end Non_Trivial_Path_Exists;
 
-      --  IMPORTANT NOTE: See Conditional_Close below which relies on this
-      --  post-processing.
-      for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
-         for W of Sets (Succ (V)) loop
-            if not G.Edge_Exists (V, W) then
-               G.Add_Edge (V, W, G.Default_Colour);
-               if Visitor /= null then
-                  Visitor (V, W);
-               end if;
-            end if;
-         end loop;
-      end loop;
-   end Close;
-
-   -----------------------
-   -- Conditional_Close --
-   -----------------------
-
-   procedure Conditional_Close
-     (G             : in out Graph;
-      Edge_Selector : access function (A, B : Vertex_Id) return Boolean)
+   function Non_Trivial_Path_Exists
+     (G        : Graph;
+      A        : Vertex_Id;
+      F        : access function (V : Vertex_Id) return Boolean;
+      Reversed : Boolean := False)
+      return Boolean
    is
-      procedure Visitor (A, B : Vertex_Id);
-      --  Obvious visitor procedure.
+      Path_Exists : Boolean := False;
 
-      -------------
-      -- Visitor --
-      -------------
+      procedure Are_We_There_Yet
+         (V  : Vertex_Id;
+          TV : out Simple_Traversal_Instruction);
+      --  Repeatedly checks if we've arrived at out destination.
 
-      procedure Visitor (A, B : Vertex_Id)
+      procedure Are_We_There_Yet
+        (V  : Vertex_Id;
+         TV : out Simple_Traversal_Instruction) is
+      begin
+         if F (V) then
+            Path_Exists := True;
+
+            TV := Abort_Traversal;
+         else
+            TV := Continue;
+         end if;
+      end Are_We_There_Yet;
+   begin
+      G.DFS (Start         => A,
+             Include_Start => False,
+             Visitor       => Are_We_There_Yet'Access,
+             Reversed      => Reversed);
+      return Path_Exists;
+   end Non_Trivial_Path_Exists;
+
+   ---------------------------
+   --  Out_Neighbour_Count  --
+   ---------------------------
+
+   function Out_Neighbour_Count
+     (G : Graph;
+      V : Vertex_Id) return Natural is
+   begin
+      return Natural (G.Vertices (V).Out_Neighbours.Length);
+   end Out_Neighbour_Count;
+
+   ------------
+   -- Parent --
+   ------------
+
+   function Parent
+     (G : Graph;
+      V : Vertex_Id)
+      return Vertex_Id
+   is
+   begin
+      for P of G.Vertices (V).In_Neighbours loop
+         return P;
+      end loop;
+      return Null_Vertex;
+   end Parent;
+
+   -----------------
+   -- Remove_Edge --
+   -----------------
+
+   procedure Remove_Edge
+     (G        : in out Graph;
+      V_1, V_2 : Vertex_Id) is
+   begin
+      --  Sanity check the indices.
+      pragma Assert
+        (V_1 <= G.Vertices.Last_Index
+         and V_2 <= G.Vertices.Last_Index);
+
+      if G.Edge_Exists (V_1, V_2) then
+         --  Note the use of delete, so we better check if there is an
+         --  edge we can delete first.
+         G.Vertices (V_1).Out_Neighbours.Delete (V_2);
+         G.Vertices (V_2).In_Neighbours.Delete (V_1);
+      end if;
+   end Remove_Edge;
+
+   -----------------
+   -- Set_Cluster --
+   -----------------
+
+   procedure Set_Cluster (G : in out Graph;
+                          V : Vertex_Id;
+                          C : Cluster_Id)
+   is
+   begin
+      pragma Assert (C <= G.Clusters);
+      G.Vertices (V).Cluster := C;
+   end Set_Cluster;
+
+   -------------------
+   -- Shortest_Path --
+   -------------------
+
+   procedure Shortest_Path
+     (G             : Graph;
+      Start         : Vertex_Id;
+      Allow_Trivial : Boolean;
+      Search        : access procedure
+        (V           : Vertex_Id;
+         Instruction : out Traversal_Instruction);
+      Step          : access procedure (V : Vertex_Id);
+      Reversed      : Boolean := False)
+   is
+      package Vertex_Maps is new Ada.Containers.Hashed_Maps
+        (Key_Type        => Valid_Vertex_Id,
+         Element_Type    => Valid_Vertex_Id,
+         Hash            => Vertex_Hash,
+         Equivalent_Keys => "=",
+         "="             => "=");
+
+      Tree  : Vertex_Maps.Map   := Vertex_Maps.Empty_Map;
+      Dest  : Vertex_Id         := Null_Vertex;
+      Route : Vertex_Index_List := VIL.Empty_Vector;
+
+      procedure Make_Tree (V      : Vertex_Id;
+                           Origin : Vertex_Id;
+                           Depth  : Natural;
+                           T_Ins  : out Simple_Traversal_Instruction);
+      --  Internal visitor for the BFS. This will construct a tree
+      --  which we can use to find our way home.
+
+      procedure Make_Tree (V      : Vertex_Id;
+                           Origin : Vertex_Id;
+                           Depth  : Natural;
+                           T_Ins  : out Simple_Traversal_Instruction)
       is
+         pragma Unreferenced (Depth);
+         Tmp : Traversal_Instruction;
       begin
-         if not Edge_Selector (A, B) then
-            G.Remove_Edge (A, B);
+         Search (V, Tmp);
+         if Tmp = Found_Destination then
+            T_Ins := Abort_Traversal;
+            Dest  := V;
+         else
+            T_Ins := Tmp;
          end if;
-      end Visitor;
+
+         Tree.Include (V, Origin);
+      end Make_Tree;
+
    begin
-      --  IMPORTANT NOTE: Graphhis current implementation takes advantage of
-      --  the inefficient (in terms of space) implementation of Close - we
-      --  effectively cache the entire graph hence we can actually get away
-      --  with modifying it in the visitor procedure. If we get around to
-      --  improving Close to not be so wasteful we need a re-think of
-      --  Conditional_Close.
 
-      G.Close (Visitor'Access);
-   end Conditional_Close;
+      BFS (G             => G,
+           Start         => Start,
+           Include_Start => Allow_Trivial,
+           Visitor       => Make_Tree'Access,
+           Reversed      => Reversed);
 
-   ----------------------------------------------------------------------
-   --  IO
-   ----------------------------------------------------------------------
+      if Dest /= Null_Vertex then
+         declare
+            P : Valid_Vertex_Id := Dest;
+         begin
+            while P /= Start loop
+               Route.Append (P);
+               P := Tree (P);
+            end loop;
+            Route.Append (P);
+         end;
+
+         for V of reverse Route loop
+            Step (V);
+         end loop;
+      end if;
+
+   end Shortest_Path;
+
+   -----------------
+   -- Vertex_Hash --
+   -----------------
+
+   function Vertex_Hash (Element : Vertex_Id) return Ada.Containers.Hash_Type
+   is (Generic_Integer_Hash (Integer (Element)));
+
+   -----------------------
+   -- Vertex_To_Natural --
+   -----------------------
+
+   function Vertex_To_Natural (G : Graph; V : Vertex_Id) return Natural is
+      pragma Unreferenced (G);
+   begin
+      return Natural (V);
+   end Vertex_To_Natural;
 
    --------------------
    -- Write_Dot_File --
@@ -1583,29 +1567,5 @@ package body Graphs is
          System.Strings.Free (Args);
       end;
    end Write_Pdf_File;
-
-   ----------------------------------------------------------------------
-   --  Debug
-   ----------------------------------------------------------------------
-
-   -----------------------
-   -- Vertex_To_Natural --
-   -----------------------
-
-   function Vertex_To_Natural (G : Graph; V : Vertex_Id) return Natural is
-      pragma Unreferenced (G);
-   begin
-      return Natural (V);
-   end Vertex_To_Natural;
-
-   ------------------------
-   -- Cluster_To_Natural --
-   ------------------------
-
-   function Cluster_To_Natural (G : Graph; C : Cluster_Id) return Natural is
-      pragma Unreferenced (G);
-   begin
-      return Natural (C);
-   end Cluster_To_Natural;
 
 end Graphs;
