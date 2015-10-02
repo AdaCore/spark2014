@@ -1,6 +1,11 @@
-from subprocess import call
-from test_support import spark_install_path
+import subprocess
+from test_support import *
 import os.path
 
 why3config = os.path.join(spark_install_path(), "libexec", "spark", "bin", "why3config")
-call([why3config, "-C", "toto.conf", "--detect-provers"])
+output = subprocess.check_output([why3config, "-C", "toto.conf", "--detect-provers"],
+                                 stderr=subprocess.STDOUT)
+output = output.splitlines()
+output = grep("Save config", output)
+for l in output:
+    print l
