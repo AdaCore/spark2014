@@ -578,7 +578,7 @@ package body SPARK_Frame_Conditions is
    is
       E_Alias  : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
-      E_Name   : constant Entity_Name    := To_Entity_Name (E_Alias);
+      E_Name   : constant Entity_Name := To_Entity_Name (E_Alias);
       Read_Ids : Id_Set.Set := Id_Set.Empty_Set;
 
    begin
@@ -621,7 +621,7 @@ package body SPARK_Frame_Conditions is
    function Get_Generated_Writes (E : Entity_Id) return Name_Sets.Set is
       E_Alias   : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
-      E_Name    : constant Entity_Name    := To_Entity_Name (E_Alias);
+      E_Name    : constant Entity_Name := To_Entity_Name (E_Alias);
       Write_Ids : Id_Set.Set := Id_Set.Empty_Set;
 
    begin
@@ -736,7 +736,7 @@ package body SPARK_Frame_Conditions is
    function Is_Non_Recursive_Subprogram (E : Entity_Id) return Boolean is
       E_Alias  : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
-      E_Name   : constant Entity_Name    := To_Entity_Name (E);
+      E_Name   : constant Entity_Name := To_Entity_Name (E);
    begin
       --  Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, instead return false.
