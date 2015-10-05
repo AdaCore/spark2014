@@ -347,6 +347,8 @@ package body SPARK_Frame_Conditions is
          end if;
       end Strong_Connect;
 
+   --  Start of processing for Compute_Strongly_Connected_Components
+
    begin
 --  Workaround for K526-008
 
