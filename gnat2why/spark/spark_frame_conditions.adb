@@ -379,17 +379,13 @@ package body SPARK_Frame_Conditions is
 
    function Count_In_Map
      (Map : Id_Map.Map;
-      Ent : Entity_Name) return Count_Type is
+      Ent : Entity_Name) return Count_Type
+   is
+      C : constant Id_Map.Cursor := Map.Find (Ent);
    begin
-      if Map.Contains (Ent) then
-         declare
-            Set : constant Id_Set.Set := Map.Element (Ent);
-         begin
-            return Set.Length;
-         end;
-      else
-         return 0;
-      end if;
+      return (if Id_Map.Has_Element (C)
+              then Id_Map.Element (C).Length
+              else 0);
    end Count_In_Map;
 
    ------------------
