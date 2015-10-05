@@ -1146,17 +1146,12 @@ package body SPARK_Frame_Conditions is
 
       procedure Update_Subprogram (Subp : Entity_Name; Updated : out Boolean)
       is
-         Num_Reads   : Nat;
-         Num_Writes  : Nat;
-         Called_Subp : Id_Set.Set;
+         Num_Reads   : constant Nat := Count_In_Map (Reads, Subp);
+         Num_Writes  : constant Nat := Count_In_Map (Writes, Subp);
+         Called_Subp : constant Id_Set.Set := Calls.Element (Subp);
 
       begin
-         Num_Reads  := Count_In_Map (Reads, Subp);
-         Num_Writes := Count_In_Map (Writes, Subp);
-
          Updated := False;
-
-         Called_Subp := Calls.Element (Subp);
 
          --  If Current_Unit_Only is set then we only want the direct
          --  calls and globals.
