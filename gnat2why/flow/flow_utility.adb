@@ -1980,8 +1980,7 @@ package body Flow_Utility is
 
             if Debug_Trace_Get_Global then
                Indent;
-               Write_Str ("proof ins");
-               Write_Eol;
+               Write_Line ("proof ins");
                Indent;
                for F of Proof_Ins loop
                   Sprint_Flow_Id (F);
@@ -1989,8 +1988,7 @@ package body Flow_Utility is
                end loop;
                Outdent;
 
-               Write_Str ("reads");
-               Write_Eol;
+               Write_Line ("reads");
                Indent;
                for F of Reads loop
                   Sprint_Flow_Id (F);
@@ -1998,8 +1996,7 @@ package body Flow_Utility is
                end loop;
                Outdent;
 
-               Write_Str ("writes");
-               Write_Eol;
+               Write_Line ("writes");
                Indent;
                for F of Writes loop
                   Sprint_Flow_Id (F);
@@ -2022,8 +2019,7 @@ package body Flow_Utility is
 
          if Debug_Trace_Get_Global then
             Indent;
-            Write_Str ("reversing depends annotation");
-            Write_Eol;
+            Write_Line ("reversing depends annotation");
             Outdent;
          end if;
 
@@ -2088,8 +2084,7 @@ package body Flow_Utility is
 
             if Debug_Trace_Get_Global then
                Indent;
-               Write_Str ("reads");
-               Write_Eol;
+               Write_Line ("reads");
                Indent;
                for F of Reads loop
                   Sprint_Flow_Id (F);
@@ -2097,8 +2092,7 @@ package body Flow_Utility is
                end loop;
                Outdent;
 
-               Write_Str ("writes");
-               Write_Eol;
+               Write_Line ("writes");
                Indent;
                for F of Writes loop
                   Sprint_Flow_Id (F);
@@ -2115,8 +2109,7 @@ package body Flow_Utility is
 
          if Debug_Trace_Get_Global then
             Indent;
-            Write_Str ("using pavlos globals");
-            Write_Eol;
+            Write_Line ("using pavlos globals");
             Outdent;
          end if;
 
@@ -2128,8 +2121,7 @@ package body Flow_Utility is
 
          if Debug_Trace_Get_Global then
             Indent;
-            Write_Str ("proof ins");
-            Write_Eol;
+            Write_Line ("proof ins");
             Indent;
             for PI of Proof_Ins loop
                Sprint_Flow_Id (PI);
@@ -2137,8 +2129,7 @@ package body Flow_Utility is
             end loop;
             Outdent;
 
-            Write_Str ("reads");
-            Write_Eol;
+            Write_Line ("reads");
             Indent;
             for R of Reads loop
                Sprint_Flow_Id (R);
@@ -2146,8 +2137,7 @@ package body Flow_Utility is
             end loop;
             Outdent;
 
-            Write_Str ("writes");
-            Write_Eol;
+            Write_Line ("writes");
             Indent;
             for W of Writes loop
                Sprint_Flow_Id (W);
@@ -2164,8 +2154,7 @@ package body Flow_Utility is
 
          if Debug_Trace_Get_Global then
             Indent;
-            Write_Str ("using yannick globals");
-            Write_Eol;
+            Write_Line ("using yannick globals");
             Outdent;
          end if;
 
@@ -4323,8 +4312,7 @@ package body Flow_Utility is
       function Up (E : Entity_Id) return Entity_Id;
       --  Get parent type, but don't consider record subtypes' ancestors.
 
-      function Up (E : Entity_Id) return Entity_Id
-      is
+      function Up (E : Entity_Id) return Entity_Id is
          A : constant Entity_Id := Etype (E);
          B : Entity_Id;
       begin
@@ -4423,8 +4411,7 @@ package body Flow_Utility is
    -- Has_Variable_Input --
    ------------------------
 
-   function Has_Variable_Input (F : Flow_Id) return Boolean
-   is
+   function Has_Variable_Input (F : Flow_Id) return Boolean is
       function Get_Declaration (E : Entity_Id) return Node_Id
         with Post => Nkind (Get_Declaration'Result) = N_Object_Declaration;
       --  Returns the N_Object_Declaration corresponding to entity E
@@ -4476,7 +4463,7 @@ package body Flow_Utility is
       end if;
 
       Decl := Get_Declaration (E);
-      if not Present (Expression (Decl)) then
+      if No (Expression (Decl)) then
          --  We are dealing with a deferred constant so we need to get
          --  to the full view.
          E    := Full_View (E);
