@@ -2651,16 +2651,18 @@ package body SPARK_Definition is
          ---------------------------------
 
          procedure Mark_Function_Specification (N : Node_Id) is
-            Id       : constant Entity_Id := Defining_Entity (N);
-            Params   : constant List_Id   := Parameter_Specifications (N);
-            Param    : Node_Id;
-            Param_Id : Entity_Id;
+            Id               : constant Entity_Id := Defining_Entity (N);
+            Is_Volatile_Func : constant Boolean   := Is_Volatile_Function (Id);
+            Params           : constant List_Id   :=
+              Parameter_Specifications (N);
+            Param            : Node_Id;
+            Param_Id         : Entity_Id;
 
          begin
             --  A nonvolatile function shall not have a result of an
             --  effectively volatile type (SPARK RM 7.1.3(9)).
 
-            if not Is_Volatile_Function (Id)
+            if not Is_Volatile_Func
               and then Is_Effectively_Volatile (Etype (Id))
             then
                Mark_Violation
@@ -2674,7 +2676,7 @@ package body SPARK_Definition is
                --  A nonvolatile function shall not have a formal parameter
                --  of an effectively volatile type (SPARK RM 7.1.3(9)).
 
-               if not Is_Volatile_Function (Id)
+               if not Is_Volatile_Func
                  and then Is_Effectively_Volatile (Etype (Param_Id))
                then
                   Mark_Violation
