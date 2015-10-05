@@ -418,6 +418,15 @@ clauses are ignored. As representation clauses have no effect on |GNATprove|'s
 analysis, and their validity is checked by |GNAT Pro| when compiling the
 original code, the formal verification results are valid for the original code.
 
+For constants, an alternative way to obtain a similar result as the getter
+function is to define the constant as a deferred constant, whose initial
+declaration in the visible part of a package spec does not specify the value of
+the constant. Then, the private part of the package spec which defines the
+completion of the deferred constant must be marked ``SPARK_Mode => Off``, so
+that clients of the package only see the visible constant declaration without
+value. In such a case, the analysis of client units with |GNATprove| is valid
+for all possible values of the constant.
+
 .. _Safe Optimization of Run-Time Checks:
 
 Safe Optimization of Run-Time Checks
