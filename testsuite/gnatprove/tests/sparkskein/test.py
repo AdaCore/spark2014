@@ -10,4 +10,7 @@ from test_support import *
 # . CVC4 proves all other checks except 2
 # . Alt-Ergo and Z3 each prove one remaining check
 
-prove_all(opt=["--prover=cvc4,altergo,z3"],procs=4,steps=1000)
+# Do not use Z3, as the step limit fluctuates too much between platforms, thus
+# making it impossible to share a common expected output when Z3 is used.
+
+prove_all(opt=["--prover=cvc4,altergo"],procs=4,steps=1000)
