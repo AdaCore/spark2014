@@ -1,0 +1,6 @@
+po_t.adb:9:34: info: overflow check proved
+po_t.adb:21:34: info: overflow check proved
+po_t.adb:30:04: info: initialization of "The_Protected_Int" constituent of "P_Int" proved
+po_t.adb:32:19: info: initialization of "The_Protected_Int" constituent of "P_Int" proved
+po_t.adb:32:19: medium: assertion might fail, requires P_Int.Get = Hidden_PO(Hidden_PO.Get)
+po_t.ads:33:14: info: initialization of "The_Protected_Int" constituent of "P_Int" proved

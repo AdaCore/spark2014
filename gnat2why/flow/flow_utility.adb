@@ -2245,14 +2245,16 @@ package body Flow_Utility is
       Proof_Ins : Flow_Id_Sets.Set;
       Tmp_In    : Flow_Id_Sets.Set;
       Tmp_Out   : Flow_Id_Sets.Set;
-      Body_E    : constant Entity_Id := Get_Body_Entity (Subprogram);
+      Body_E    : constant Entity_Id  := Get_Body_Entity (Subprogram);
+      S         : constant Flow_Scope := (if Present (Body_E) and then
+                                            Entity_Body_In_SPARK (Subprogram)
+                                          then Get_Flow_Scope (Body_E)
+                                          else Get_Flow_Scope (Subprogram));
+      Subpr_F   : constant Flow_Id    :=  Direct_Mapping_Id (Subprogram);
    begin
       Get_Globals
         (Subprogram             => Subprogram,
-         Scope                  => (if Present (Body_E) and then
-                                      Entity_Body_In_SPARK (Subprogram)
-                                    then Get_Flow_Scope (Body_E)
-                                    else Get_Flow_Scope (Subprogram)),
+         Scope                  => S,
          Classwide              => Classwide,
          Proof_Ins              => Proof_Ins,
          Reads                  => Tmp_In,
@@ -2262,6 +2264,36 @@ package body Flow_Utility is
 
       --  Merge the proof ins with the reads.
       Tmp_In.Union (Proof_Ins);
+
+      --  Iff Subprogram is directly enclosed by a protected object, then when
+      --  we are dealing with a:
+      --
+      --    * procedure or entry, we add the constituents of the protected
+      --      object to the global Reads and Writes sets.
+      --
+      --    * function, we add the constituents of the protected object to
+      --      the global Reads set.
+
+      if Belongs_To_Protected_Object (Subpr_F) then
+         declare
+            PO : constant Entity_Id        :=
+              Get_Enclosing_Concurrent_Object (Subpr_F);
+
+            FV : constant Flow_Id_Sets.Set := Flatten_Variable (PO, S);
+         begin
+            case Ekind (Subprogram) is
+               when E_Function            =>
+                  Tmp_In.Union (Change_Variant (FV, In_View));
+
+               when E_Procedure | E_Entry =>
+                  Tmp_In.Union (Change_Variant (FV, In_View));
+                  Tmp_Out.Union (Change_Variant (FV, Out_View));
+
+               when others                =>
+                  raise Why.Unexpected_Node;
+            end case;
+         end;
+      end if;
 
       --  Expand all variables.
       Reads := Flow_Id_Sets.Empty_Set;
