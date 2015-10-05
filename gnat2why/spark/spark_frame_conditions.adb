@@ -121,7 +121,7 @@ package body SPARK_Frame_Conditions is
 
    function Count_In_Map
      (Map : Id_Map.Map;
-      Ent : Entity_Name) return Nat;
+      Ent : Entity_Name) return Count_Type;
    --  Return the number of elements in the set associated to Ent in Map, or
    --  else 0.
 
@@ -377,13 +377,13 @@ package body SPARK_Frame_Conditions is
 
    function Count_In_Map
      (Map : Id_Map.Map;
-      Ent : Entity_Name) return Nat is
+      Ent : Entity_Name) return Count_Type is
    begin
       if Map.Contains (Ent) then
          declare
             Set : constant Id_Set.Set := Map.Element (Ent);
          begin
-            return Nat (Set.Length);
+            return Set.Length;
          end;
       else
          return 0;
@@ -1146,8 +1146,8 @@ package body SPARK_Frame_Conditions is
 
       procedure Update_Subprogram (Subp : Entity_Name; Updated : out Boolean)
       is
-         Num_Reads   : constant Nat := Count_In_Map (Reads, Subp);
-         Num_Writes  : constant Nat := Count_In_Map (Writes, Subp);
+         Num_Reads   : constant Count_Type := Count_In_Map (Reads, Subp);
+         Num_Writes  : constant Count_Type := Count_In_Map (Writes, Subp);
          Called_Subp : constant Id_Set.Set := Calls.Element (Subp);
 
       begin
