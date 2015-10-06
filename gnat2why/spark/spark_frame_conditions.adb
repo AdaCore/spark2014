@@ -59,15 +59,6 @@ package body SPARK_Frame_Conditions is
       "="             => "=");
    use Id_Map;
 
-   package Value_Map is new Hashed_Maps
-     (Key_Type        => Entity_Name,
-      Element_Type    => Integer,
-      Hash            => Name_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
-   --  Map used internally in strongly connected component computation. Not to
-   --  be confused with map over ids.
-
    package Name_To_Entity_Map is new Hashed_Maps
      (Key_Type        => Entity_Name,
       Element_Type    => Entity_Id,
@@ -192,6 +183,15 @@ package body SPARK_Frame_Conditions is
 
       Cur_SCCs     : SCCs (Node_Range);
       Cur_SCCs_Num : Natural := 0;
+
+      package Value_Map is new Hashed_Maps
+        (Key_Type        => Entity_Name,
+         Element_Type    => Integer,
+         Hash            => Name_Hash,
+         Equivalent_Keys => "=",
+         "="             => "=");
+      --  Map used internally in strongly connected component computation. Not
+      --  to be confused with map over ids.
 
       Indexes  : Value_Map.Map;
       Lowlinks : Value_Map.Map;
