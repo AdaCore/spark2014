@@ -23,6 +23,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Ordered_Maps;
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Assumption_Types;           use Assumption_Types;
@@ -465,11 +466,14 @@ package body Flow_Error_Messages is
                type Record_Fields_Map_Ptr is access all
                  Record_Fields.Map;
 
+               package Vars_List is
+                 new Ada.Containers.Doubly_Linked_Lists
+                   (Element_Type => Unbounded_String);
+
                --  Represents variables at given source code location.
-               type Variables_Info (Variables_Number : Natural) is record
-                  Variables_Order : Unbounded_String_Array
-                    (1 .. Variables_Number);
-                  --  Array of variable names in the order in that variables
+               type Variables_Info is record
+                  Variables_Order : Vars_List.List;
+                  --  Vector of variable names in the order in that variables
                   --  should be displayed
 
                   Variables_Map : aliased Record_Fields.Map;
@@ -638,8 +642,14 @@ package body Flow_Error_Messages is
                                  end if;
 
                                  --  Store variable name to Variable_List
-                                 Variables.Variables_Order (Var_Index) :=
-                                   Field_Name;
+                                 if not Vars_List.Contains
+                                   (Variables.Variables_Order,
+                                    Field_Name)
+                                 then
+                                    Vars_List.Append
+                                      (Variables.Variables_Order,
+                                       Field_Name);
+                                 end if;
                               end if;
 
                               Current_Var_Or_Field := Insert_Var_Or_Field
@@ -663,14 +673,14 @@ package body Flow_Error_Messages is
                   end loop;
                end Build_Variables_Info;
 
-               procedure Create_Pretty_Line
+               procedure Build_Pretty_Line
                  (Variables : Variables_Info;
                   Pretty_Line_Cntexmp_Arr : out JSON_Array);
-               --  Create pretty printed JSON array of counterexample elements.
+               --  Build pretty printed JSON array of counterexample elements.
                --  @Variables stores information about values and fields of
                --    variables at a single source code location (line).
 
-               procedure Create_Pretty_Line
+               procedure Build_Pretty_Line
                  (Variables : Variables_Info;
                   Pretty_Line_Cntexmp_Arr : out JSON_Array)
                is
@@ -741,14 +751,18 @@ package body Flow_Error_Messages is
                      end case;
                   end Get_Var_Or_Field_Value;
 
+                  Var_Name_Cursor : Vars_List.Cursor :=
+                    Vars_List.First (Variables.Variables_Order);
+
                begin
                   Pretty_Line_Cntexmp_Arr := Empty_Array;
-                  for Var_Index in Variables.Variables_Order'Range loop
+                  while Vars_List.Has_Element (Var_Name_Cursor) loop
                      declare
+                        Var_Name : constant String :=
+                          To_String (Vars_List.Element (Var_Name_Cursor));
                         Variable : Cursor := Find
                           (Variables.Variables_Map,
-                           To_String (Variables.Variables_Order (Var_Index)));
-                        Var_Name : constant String := Key (Variable);
+                           Var_Name);
                         Var_Value : constant String :=
                           Get_Var_Or_Field_Value (Element (Variable));
                         Pretty_Var : constant JSON_Value := Create_Object;
@@ -761,11 +775,11 @@ package body Flow_Error_Messages is
 
                         Next (Variable);
                      end;
+                     Var_Name_Cursor := Vars_List.Next (Var_Name_Cursor);
                   end loop;
-               end Create_Pretty_Line;
+               end Build_Pretty_Line;
 
-               Variables : Variables_Info
-                 (GNATCOLL.JSON.Length (Get (Line_Cntexmp)));
+               Variables : Variables_Info;
             begin
                Build_Variables_Info (Get (Line_Cntexmp), Variables);
 
@@ -773,7 +787,7 @@ package body Flow_Error_Messages is
                   declare
                      Pretty_Line_Cntexmp_Arr : JSON_Array;
                   begin
-                     Create_Pretty_Line
+                     Build_Pretty_Line
                        (Variables, Pretty_Line_Cntexmp_Arr);
                      Set_Field
                        (File_Cntexmp, Line, Create (Pretty_Line_Cntexmp_Arr));
@@ -946,7 +960,7 @@ package body Flow_Error_Messages is
       Msg3     : constant String :=
         (if Is_Empty (Pretty_Cntexmp) then Msg2
          else Msg2 &
-         ", counterexample: " & Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
+           ", counterexample: " & Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
       Kind     : constant Msg_Kind :=
         (if Is_Proved then Info_Kind else Medium_Check_Kind);
       Suppr    : String_Id := No_String;
