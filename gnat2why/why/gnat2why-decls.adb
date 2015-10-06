@@ -92,7 +92,6 @@ package body Gnat2Why.Decls is
       E    : Entity_Id)
    is
       Typ    : constant W_Type_Id  := Type_Of_Node (Etype (E));
-      Labels : Name_Id_Sets.Set    := Name_Id_Sets.Empty_Set;
    begin
       --  Start with opening the theory to define, as the creation of a
       --  function for the logic term needs the current theory to insert an
@@ -116,15 +115,13 @@ package body Gnat2Why.Decls is
 
       Insert_Entity (E, To_Why_Id (E, No_Comp => True, Typ => Typ));
 
-      Add_Counterexample_Labels (E, Labels);
-
       Emit (File.Cur_Theory,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Why_Id
                  (E, No_Comp => True, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
-               Labels      => Labels,
+               Labels      => Get_Counterexample_Labels (E),
                Return_Type => Typ));
 
       Close_Theory (File,
@@ -343,7 +340,6 @@ package body Gnat2Why.Decls is
       E    : Entity_Id)
    is
       Var    : constant Item_Type := Mk_Item_Of_Entity (E);
-      Labels : Name_Id_Sets.Set   := Name_Id_Sets.Empty_Set;
    begin
       Open_Theory (File, E_Module (E),
                    Comment =>
@@ -364,7 +360,7 @@ package body Gnat2Why.Decls is
            (File.Cur_Theory,
             New_Global_Ref_Declaration
               (Name     => To_Local (Var.Main.B_Name),
-               Labels   => Labels,
+               Labels   => Name_Id_Sets.Empty_Set,
                Ref_Type => Get_Typ (Var.Main.B_Name)));
 
       --  If E is in SPARK, declare various objects depending on its type and
@@ -373,8 +369,6 @@ package body Gnat2Why.Decls is
       else
          case Var.Kind is
          when DRecord =>
-            Add_Counterexample_Labels (E, Labels);
-
             if Var.Fields.Present then
 
                --  generate a global ref for the fields
@@ -383,7 +377,7 @@ package body Gnat2Why.Decls is
                  (File.Cur_Theory,
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Fields.Binder.B_Name),
-                     Labels   => Labels,
+                     Labels   => Get_Counterexample_Labels (E),
                      Ref_Type => Get_Typ (Var.Fields.Binder.B_Name)));
             end if;
 
@@ -396,7 +390,7 @@ package body Gnat2Why.Decls is
                     (File.Cur_Theory,
                      New_Global_Ref_Declaration
                        (Name     => To_Local (Var.Discrs.Binder.B_Name),
-                        Labels   => Labels,
+                        Labels   => Name_Id_Sets.Empty_Set,
                         Ref_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                else
                   Emit
@@ -406,7 +400,7 @@ package body Gnat2Why.Decls is
                         Name        =>
                           To_Local (Var.Discrs.Binder.B_Name),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Labels,
+                        Labels      => Name_Id_Sets.Empty_Set,
                         Return_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                end if;
             end if;
@@ -421,7 +415,7 @@ package body Gnat2Why.Decls is
                        (Domain      => EW_Term,
                         Name        => To_Local (Var.Constr.Id),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Labels,
+                        Labels      => Name_Id_Sets.Empty_Set,
                         Return_Type => Get_Typ (Var.Constr.Id)));
             end if;
 
@@ -435,12 +429,11 @@ package body Gnat2Why.Decls is
                        (Domain      => EW_Term,
                         Name        => To_Local (Var.Tag.Id),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Labels,
+                        Labels      => Name_Id_Sets.Empty_Set,
                         Return_Type => Get_Typ (Var.Tag.Id)));
             end if;
 
          when UCArray =>
-            Add_Counterexample_Labels (E, Labels);
 
             --  generate a global ref for the content
 
@@ -448,7 +441,7 @@ package body Gnat2Why.Decls is
               (File.Cur_Theory,
                New_Global_Ref_Declaration
                  (Name     => To_Local (Var.Content.B_Name),
-                  Labels   => Labels,
+                  Labels   => Get_Counterexample_Labels (E),
                   Ref_Type => Get_Typ (Var.Content.B_Name)));
 
             for D in 1 .. Var.Dim loop
@@ -467,7 +460,7 @@ package body Gnat2Why.Decls is
                        (Domain      => EW_Term,
                         Name        => To_Local (Var.Bounds (D).First),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Labels,
+                        Labels      => Name_Id_Sets.Empty_Set,
                         Return_Type => Ty_First));
                   Emit
                     (File.Cur_Theory,
@@ -475,7 +468,7 @@ package body Gnat2Why.Decls is
                        (Domain      => EW_Term,
                         Name        => To_Local (Var.Bounds (D).Last),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Labels,
+                        Labels      => Name_Id_Sets.Empty_Set,
                         Return_Type => Ty_Last));
                end;
             end loop;
@@ -485,15 +478,13 @@ package body Gnat2Why.Decls is
                --  Currently only generate values for scalar variables in
                --  counterexamples, which are always of the Regular kind.
 
-               Add_Counterexample_Labels (E, Labels);
-
                --  generate a global ref
 
                Emit
                  (File.Cur_Theory,
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Main.B_Name),
-                     Labels   => Labels,
+                     Labels   => Get_Counterexample_Labels (E),
                      Ref_Type => Get_Typ (Var.Main.B_Name)));
             end;
 

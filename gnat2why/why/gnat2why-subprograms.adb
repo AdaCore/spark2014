@@ -1856,17 +1856,12 @@ package body Gnat2Why.Subprograms is
       --  Declare a global variable to hold the result of a function
 
       if Ekind (E) = E_Function then
-         declare
-            Labels : Name_Id_Sets.Set   := Name_Id_Sets.Empty_Set;
-         begin
-            Add_Counterexample_Labels (E, Labels);
-            Emit
-              (File.Cur_Theory,
-               New_Global_Ref_Declaration
-                 (Name     => Result_Name,
-                  Labels   => Labels,
-                  Ref_Type => Type_Of_Node (Etype (E))));
-         end;
+         Emit
+           (File.Cur_Theory,
+            New_Global_Ref_Declaration
+              (Name     => Result_Name,
+               Labels   => Get_Counterexample_Labels (E),
+               Ref_Type => Type_Of_Node (Etype (E))));
       end if;
 
       --  add declarations for 'Old variables
@@ -2120,17 +2115,12 @@ package body Gnat2Why.Subprograms is
          --  Declare a global variable to hold the result of a function
 
          if Ekind (E) = E_Function then
-            declare
-               Labels : Name_Id_Sets.Set   := Name_Id_Sets.Empty_Set;
-            begin
-               Add_Counterexample_Labels (E, Labels);
-               Emit
-                 (File.Cur_Theory,
-                  New_Global_Ref_Declaration
-                    (Name     => Result_Name,
-                     Labels   => Labels,
-                     Ref_Type => Type_Of_Node (Etype (E))));
-            end;
+            Emit
+              (File.Cur_Theory,
+               New_Global_Ref_Declaration
+                 (Name     => Result_Name,
+                  Labels   => Get_Counterexample_Labels (E),
+                  Ref_Type => Type_Of_Node (Etype (E))));
          end if;
 
          --  Declare global variable to hold the state of a protected object

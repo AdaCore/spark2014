@@ -258,13 +258,13 @@ package body Gnat2Why.Util is
    end Ada_Ent_To_Why;
 
    -------------------------------
-   -- Add_Counterexample_Labels --
+   -- Get_Counterexample_Labels --
    -------------------------------
 
-   procedure Add_Counterexample_Labels
-     (E      : Entity_Id;
-      Labels : in out Name_Id_Sets.Set)
+   function Get_Counterexample_Labels
+     (E      : Entity_Id) return Name_Id_Sets.Set
    is
+      Labels : Name_Id_Sets.Set   := Name_Id_Sets.Empty_Set;
       Model_Trace : constant Name_Id := Get_Model_Trace_Label (E);
    begin
       --  Currently only generate values for scalar, record, and array
@@ -299,7 +299,9 @@ package body Gnat2Why.Util is
          Labels.Include (Model_Trace);
          Labels.Include (NID (Model_Proj_Label));
       end if;
-   end Add_Counterexample_Labels;
+
+      return Labels;
+   end Get_Counterexample_Labels;
 
    ------------------
    -- Add_To_Graph --
