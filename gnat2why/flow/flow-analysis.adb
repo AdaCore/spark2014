@@ -3422,12 +3422,8 @@ package body Flow.Analysis is
                     and then State_Refinement_Is_Visible
                                (Get_Direct_Mapping_Id (Wrong_Var),
                                 FA.B_Scope)
-                    --  ??? Change the following into
-                    --  Has_Null_Refinement (Get_Direct_Mapping_Id (Wrong_Var))
-                    --  once O914-008 is fixed.
-                    and then Flow_Generated_Globals.GG_Get_Constituents
-                               (To_Entity_Name
-                                  (Get_Direct_Mapping_Id (Wrong_Var))).Is_Empty
+                    and then Has_Null_Refinement
+                               (Get_Direct_Mapping_Id (Wrong_Var))
                   then
                      --  If the depends contract mentions a state with visible
                      --  null refinement then we do not need to emit a message

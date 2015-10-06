@@ -30,6 +30,7 @@ with Flow_Error_Messages; use Flow_Error_Messages;
 with Flow_Utility;        use Flow_Utility;
 with Gnat2Why_Args;
 with Sem_Aux;             use Sem_Aux;
+with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
