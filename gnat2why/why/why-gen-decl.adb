@@ -195,7 +195,8 @@ package body Why.Gen.Decl is
       end if;
 
       if SPARK_Node /= Empty then
-         Labels.Include (Get_Model_Trace_Label (SPARK_Node));
+         Labels.Include (Get_Model_Trace_Label (E               => SPARK_Node,
+                                                Is_Record_Field => True));
       end if;
 
       Emit

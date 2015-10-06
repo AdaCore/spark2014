@@ -264,8 +264,11 @@ package Gnat2Why.Util is
    --  Add labels relevant for generating counterexample model
 
    function Get_Model_Trace_Label
-     (E   : Entity_Id) return Name_Id;
+     (E               : Entity_Id;
+      Is_Record_Field : Boolean := False) return Name_Id;
    --  Gets model trace label for given entity.
+   --  @param E the entity for that get trace label
+   --  @param Is_Record true if the entity is record field
 
    function Compute_Spec
      (Params : Transformation_Params;

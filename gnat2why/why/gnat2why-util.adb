@@ -565,14 +565,17 @@ package body Gnat2Why.Util is
    ---------------------------
 
    function Get_Model_Trace_Label
-     (E   : Entity_Id) return Name_Id
+     (E               : Entity_Id;
+      Is_Record_Field : Boolean := False) return Name_Id
    is
    begin
       return NID
         (Model_Trace_Label &
          (if E = Empty
             then ""
-            else Trim (Entity_Id'Image (E), Both)) &
+            else (if Is_Record_Field then "."
+                                     else "") & Trim (Entity_Id'Image (E),
+                                                      Both)) &
          --  Add information whether labels are generated for a variable
          --  holding result of a function.
          (if Ekind (E) = E_Function

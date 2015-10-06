@@ -665,7 +665,9 @@ package body Why.Gen.Binders is
          declare
             Labels : Name_Id_Set;
          begin
-            Labels.Include (Get_Model_Trace_Label (Binders (B).Ada_Node));
+            Labels.Include
+              (Get_Model_Trace_Label (E               => Binders (B).Ada_Node,
+                                      Is_Record_Field => True));
             Result (B) := New_Record_Binder
               (Ada_Node   => Binders (B).Ada_Node,
                Domain     => Domain,
