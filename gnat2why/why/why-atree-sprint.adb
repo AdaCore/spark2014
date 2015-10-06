@@ -931,7 +931,7 @@ package body Why.Atree.Sprint is
             --  printing of location tag, because location tag before
             --  "val" or "let" keywords is not alowed in why.
             --  See printing of location tags in [Print_Node].
-            Print_Sloc_Tag;
+            Print_Sloc_Tag (Force => True);
             P (O, Get_Labels (Node), As_String => True);
             Relative_Indent (O, 1);
             NL (O);
@@ -1021,7 +1021,7 @@ package body Why.Atree.Sprint is
       --  printing of location tag, because location tag before
       --  "val" keyword is not alowed in why.
       --  See printing of location tags in [Print_Node].
-      Print_Sloc_Tag;
+      Print_Sloc_Tag (Force => True);
       P (O, Get_Labels (Node), As_String => True);
 
       P (O, " : ");
