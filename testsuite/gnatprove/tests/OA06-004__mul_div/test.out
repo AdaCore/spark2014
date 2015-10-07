@@ -1,0 +1,30 @@
+p.adb:25:27: info: division check proved
+p.adb:26:27: info: division check proved
+p.adb:40:15: info: initialization of "V_Hi" proved
+p.adb:41:15: info: initialization of "V_Lo" proved
+p.adb:42:15: info: initialization of "V_Hi" proved
+p.adb:42:22: info: initialization of "V_Lo" proved
+p.adb:42:27: info: division check proved
+p.adb:43:15: info: initialization of "V_Lo" proved
+p.adb:43:20: info: division check proved
+p.adb:47:20: info: initialization of "V_Hi" proved
+p.adb:47:25: info: division check proved
+p.adb:49:10: info: initialization of "Result_Hi" proved
+p.adb:54:10: medium: exception might be raised
+p.adb:57:20: info: initialization of "V_Hi" proved
+p.adb:57:27: info: initialization of "Result_Hi" proved
+p.adb:59:20: info: initialization of "Result_Hi" proved
+p.adb:64:10: info: initialization of "V_Lo" proved
+p.adb:64:17: info: initialization of "Remainder" proved
+p.adb:64:50: info: division check proved
+p.adb:64:50: info: range check proved
+p.adb:64:56: info: division check proved
+p.adb:66:10: info: initialization of "Result_Lo" proved
+p.adb:66:38: info: initialization of "Result_Hi" proved
+p.adb:70:10: medium: exception might be raised
+p.adb:73:14: info: initialization of "Result_Hi" proved
+p.adb:73:26: info: initialization of "Result_Lo" proved
+p.ads:11:15: info: division check proved
+p.ads:11:15: info: range check proved
+p.ads:14:15: info: division check proved
+p.ads:14:15: info: range check proved
