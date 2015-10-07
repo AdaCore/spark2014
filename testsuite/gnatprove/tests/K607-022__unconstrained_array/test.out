@@ -13,8 +13,8 @@ my_test.adb:17:10: info: discriminant check proved
 my_test.adb:17:10: info: precondition proved
 my_test.adb:17:15: info: initialization of "T1.V" proved
 my_test.adb:17:19: info: initialization of "T2.V" proved
-my_test.adb:18:04: info: assertion proved
 my_test.adb:18:48: info: initialization of "T3.V" proved
+my_test.adb:18:48: medium: assertion might fail, requires T3.V (I) = 9
 my_test.adb:18:54: info: index check proved
 my_test.adb:20:10: medium: discriminant check might fail
 my_test.adb:20:23: info: initialization of "T1.V" proved

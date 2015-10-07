@@ -18,7 +18,7 @@ p.adb:64:10: info: initialization of "V_Lo" proved
 p.adb:64:17: info: initialization of "Remainder" proved
 p.adb:64:50: info: division check proved
 p.adb:64:50: info: range check proved
-p.adb:64:56: info: division check proved
+p.adb:64:56: medium: divide by zero might fail
 p.adb:66:10: info: initialization of "Result_Lo" proved
 p.adb:66:38: info: initialization of "Result_Hi" proved
 p.adb:70:10: medium: exception might be raised
