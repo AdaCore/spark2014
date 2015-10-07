@@ -28,6 +28,3 @@ p.ads:11:15: info: division check proved
 p.ads:11:15: info: range check proved
 p.ads:14:15: info: division check proved
 p.ads:14:15: info: range check proved
-Phase 1 of 2: generation of Global contracts ...
-Phase 2 of 2: flow analysis and proof ...
-Summary logged in gnatprove/gnatprove.out
