@@ -212,12 +212,12 @@ prover(s) specified with option ``--prover`` is/are called repeatedly for each
 check or assertion. Using the option ``--timeout``, one can change the maximal
 time that is allocated to each prover to prove each check or assertion
 (default: 1s). Using the option ``--steps`` (default: not used explicitly but
-set by default level, see switch ``--level`` below), one can set the maximum
-number of reasoning steps that the prover is allowed to perform before giving
-up. The ``steps`` option should be used when predictable results are required,
-because the results with a timeout may differ depending on the computing power
-or current load of the machine. The option ``-j`` activates parallel
-compilation and parallel proofs.
+set by default proof level, see switch ``--level`` below), one can set the
+maximum number of reasoning steps that the prover is allowed to perform before
+giving up. The ``steps`` option should be used when predictable results are
+required, because the results with a timeout may differ depending on the
+computing power or current load of the machine. The option ``-j`` activates
+parallel compilation and parallel proofs.
 
 The way checks are passed to the prover can also be influenced using the option
 ``--proof``. By default, the prover is invoked a single time for each check or
@@ -242,9 +242,9 @@ proof and can be selected with ``all``.
 
 Instead of setting individually switches that influence the speed and power of
 proof, one may use the switch ``--level``, which corresponds to predefined
-levels of proof, from the faster level 0 (the default value) to the more
-powerful level 4. More precisely, each value of ``--level`` is equivalent to
-directly setting a collection of other switches discussed above:
+proof levels, from the faster level 0 (the default value) to the more powerful
+level 4. More precisely, each value of ``--level`` is equivalent to directly
+setting a collection of other switches discussed above:
 
 * ``--level=0`` is equivalent to
   ``--prover=cvc4 --proof=per_check --steps=100 --timeout=1``
@@ -458,6 +458,14 @@ When editing an Ada file, |GNATprove| can also be run from a
    "Prove Subprogram",   "This runs |GNATprove| on the current subprogram."
    "Prove Line",         "This runs |GNATprove| on the current line."
    "Prove Check",        "This runs |GNATprove| on the current failing condition. |GNATprove| must have been run at least once for this option to be available in order to know which conditions are failing."
+
+The menus :menuselection:`SPARK --> Prove ...` open a panel which allows
+setting various switches for |GNATprove|'s analysis. By default, this panel
+offers a few simple choices, like the proof level (see description of switch
+``--level`` in :ref:`Running GNATprove from the Command Line`). If the user
+changes its ``User profile`` for |SPARK| in :menuselection:`Edit -->
+Preferences --> Plugins --> gnatprove` from ``Basic`` to ``Advanced``, then a
+more complex panel is displayed for proof, with more detailed switches.
 
 |GNATprove| project switches can be edited from the panel ``GNATprove`` (in
 :menuselection:`Project --> Edit Project Properties --> Switches`).
