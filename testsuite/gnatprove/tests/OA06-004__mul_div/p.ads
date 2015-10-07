@@ -16,7 +16,7 @@ is
    --  integers within a single expression.
 
    function Mul_Div (V : Uint_64; M : Natural; D : Natural) return Uint_64 with
-      Pre => D > 0 and then
+      Pre => D /= 0 and then
              (Hi (V) * (2 ** 32) + Lo (V)) * LLI (M) <= ((2 ** 63) - 1) * LLI (D);
    --  Compute V * M / D. Constraint_Error is raised in case of overflow,
    --  results above (2 ** 63) - 1 are considered as overflow. Therefore,
