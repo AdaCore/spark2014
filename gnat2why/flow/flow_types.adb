@@ -32,6 +32,7 @@ with Namet;                  use Namet;
 with Output;                 use Output;
 with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;
+with Stand;                  use Stand;
 with Why;
 
 package body Flow_Types is
@@ -301,6 +302,16 @@ package body Flow_Types is
                                                           E_Entry;
    end Is_Concurrent_Comp_Or_Disc;
 
+   ------------------------
+   -- Is_Concurrent_Comp --
+   ------------------------
+
+   function Is_Concurrent_Comp (F : Flow_Id) return Boolean is
+   begin
+      return Is_Concurrent_Comp_Or_Disc (F)
+        and then not Is_Discriminant (F);
+   end Is_Concurrent_Comp;
+
    ---------------------
    -- Is_Discriminant --
    ---------------------
@@ -410,21 +421,49 @@ package body Flow_Types is
                pragma Assert (Nkind (E) in N_Entity);
 
                Is_Vol : constant Boolean :=
-                 (case Ekind (E) is
-                  when E_Abstract_State => Is_External_State (E),
-                  when Object_Kind      => Is_Effectively_Volatile (E),
-                  when others           => False);
+                 (if Ekind (E) = E_Abstract_State then
+                     Is_External_State (E)
+                  elsif Is_Part_Of_Concurrent_Object (E) then
+                     True
+                  elsif Ekind (E) in Object_Kind then
+                     Is_Effectively_Volatile (E)
+                  else
+                     Is_Effectively_Volatile_Object (E));
+
+               CO  : Entity_Id := Empty;
+               Tmp : Entity_Id;
             begin
-               if Scope = Null_Flow_Scope or else not Is_Vol then
+               if not Present (Scope) or else not Is_Vol then
                   return Is_Vol;
                end if;
 
-               --  When we are dealing with a protected type and we are given a
-               --  Scope, we only consider the protected type to be volatile
-               --  when we are outside it.
-               return not Is_Protected_Type (Etype (E))
-                 or else not Is_Visible (Body_Scope (Get_Flow_Scope (E)),
-                                         Scope);
+               --  When we are given a Scope and F is:
+               --    * a protected object or
+               --    * a component of a single concurrent type
+               --  then we only consider F to be volatile when we are outside
+               --  its enclosing concurrent object.
+               if Is_Protected_Type (Etype (E)) then
+                  CO := Etype (E);
+               elsif Is_Concurrent_Comp (F) then
+                  CO := Etype (Get_Enclosing_Concurrent_Object (F));
+               end if;
+
+               if No (CO) then
+                  --  There is no enclosing concurrent object. We just return
+                  --  Is_Vol.
+                  return Is_Vol;
+               end if;
+
+               Tmp := Scope.Ent;
+               while Tmp /= Standard_Standard loop
+                  if Tmp = CO then
+                     return False;
+                  end if;
+                  Tmp := Sinfo.Scope (Tmp);
+               end loop;
+
+               --  We are outside the CO so F is indeed volatile.
+               return True;
             end;
 
          when Synthetic_Null_Export =>
@@ -437,16 +476,20 @@ package body Flow_Types is
    -- Has_Async_Readers --
    -----------------------
 
-   function Has_Async_Readers (F : Flow_Id) return Boolean is
+   function Has_Async_Readers
+     (F     : Flow_Id;
+      Scope : Flow_Scope := Null_Flow_Scope)
+      return Boolean
+   is
    begin
       case F.Kind is
          when Synthetic_Null_Export =>
             return True;
          when Magic_String =>
-            return Is_Volatile (F)
+            return Is_Volatile (F, Scope)
               and then GG_Has_Async_Readers (F.Name);
          when others =>
-            return Is_Volatile (F)
+            return Is_Volatile (F, Scope)
               and then Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
                                             Pragma_Async_Readers);
       end case;
@@ -456,16 +499,20 @@ package body Flow_Types is
    -- Has_Async_Writers --
    -----------------------
 
-   function Has_Async_Writers (F : Flow_Id) return Boolean is
+   function Has_Async_Writers
+     (F     : Flow_Id;
+      Scope : Flow_Scope := Null_Flow_Scope)
+      return Boolean
+   is
    begin
       case F.Kind is
          when Synthetic_Null_Export =>
             return False;
          when Magic_String =>
-            return Is_Volatile (F)
+            return Is_Volatile (F, Scope)
               and then GG_Has_Async_Writers (F.Name);
          when others =>
-            return Is_Volatile (F)
+            return Is_Volatile (F, Scope)
               and then Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
                                             Pragma_Async_Writers);
       end case;
@@ -475,16 +522,20 @@ package body Flow_Types is
    -- Has_Effective_Reads --
    -------------------------
 
-   function Has_Effective_Reads (F : Flow_Id) return Boolean is
+   function Has_Effective_Reads
+     (F     : Flow_Id;
+      Scope : Flow_Scope := Null_Flow_Scope)
+      return Boolean
+   is
    begin
       case F.Kind is
          when Synthetic_Null_Export =>
             return False;
          when Magic_String =>
-            return Is_Volatile (F)
+            return Is_Volatile (F, Scope)
               and then GG_Has_Effective_Reads (F.Name);
          when others =>
-            return Is_Volatile (F)
+            return Is_Volatile (F, Scope)
                and then Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
                                              Pragma_Effective_Reads);
       end case;
@@ -494,16 +545,20 @@ package body Flow_Types is
    -- Has_Effective_Writes --
    --------------------------
 
-   function Has_Effective_Writes (F : Flow_Id) return Boolean is
+   function Has_Effective_Writes
+     (F     : Flow_Id;
+      Scope : Flow_Scope := Null_Flow_Scope)
+      return Boolean
+   is
    begin
       case F.Kind is
          when Synthetic_Null_Export =>
             return True;
          when Magic_String =>
-            return Is_Volatile (F)
+            return Is_Volatile (F, Scope)
               and then GG_Has_Effective_Writes (F.Name);
          when others =>
-            return Is_Volatile (F)
+            return Is_Volatile (F, Scope)
               and then Has_Volatile_Flavor (Get_Direct_Mapping_Id (F),
                                             Pragma_Effective_Writes);
       end case;

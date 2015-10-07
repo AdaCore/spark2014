@@ -3035,7 +3035,8 @@ package body Flow.Analysis is
          while Present (State) loop
 
             if not Initializable.Contains (Direct_Mapping_Id (State))
-              and then not Has_Async_Writers (Direct_Mapping_Id (State))
+              and then not Has_Async_Writers (Direct_Mapping_Id (State),
+                                              FA.B_Scope)
             then
                --  For every state abstraction that is not mentioned
                --  in an Initializes aspect, is not a pure Output of
@@ -3045,7 +3046,7 @@ package body Flow.Analysis is
                Error_Msg_Flow
                  (FA   => FA,
                   Msg  => "no procedure exists that can initialize " &
-                    "abstract state &",
+                          "abstract state &",
                   N    => State,
                   F1   => Direct_Mapping_Id (State),
                   Tag  => Impossible_To_Initialize_State,

@@ -274,7 +274,15 @@ package Flow_Types is
    function Is_Concurrent_Comp_Or_Disc (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
    --  @return True iff F is a component or discriminant of a concurrent
-   --    object. It will return False for subprograms that belong to
+   --    object. It will return False for subprograms and entries that belong
+   --    to concurrent objects.
+
+   function Is_Concurrent_Comp (F : Flow_Id) return Boolean
+   with Post => (if Is_Concurrent_Comp'Result
+                 then Is_Concurrent_Comp_Or_Disc (F));
+   --  @param F is the Flow_Id which will be checked
+   --  @return True iff F is a component of a concurrent object. It will return
+   --    False for subprograms, entries and discriminants that belong to
    --    concurrent objects.
 
    function Is_Discriminant (F : Flow_Id) return Boolean;
@@ -330,26 +338,40 @@ package Flow_Types is
      (F     : Flow_Id;
       Scope : Flow_Scope := Null_Flow_Scope)
       return Boolean;
-   --  Returns True if the given Flow_Id is volatile in any way. When Scope is
-   --  provided we check if F is volatile from Scope. This is only ever used
-   --  when dealing with protected objects. The protected objects are volatile
-   --  when seen from the outside but are not volatile for their nested
-   --  subprograms/entries.
+   --  Returns True if the given Flow_Id is volatile in any way.
+   --
+   --  When Scope is provided we check if F is volatile from Scope. This is
+   --  only ever used when dealing with protected objects and components of
+   --  concurrent types. These are only volatile when seen from the outside.
 
-   function Has_Async_Readers (F : Flow_Id) return Boolean
-   with Post => (if Has_Async_Readers'Result then Is_Volatile (F));
+   function Has_Async_Readers
+     (F     : Flow_Id;
+      Scope : Flow_Scope := Null_Flow_Scope)
+      return Boolean
+   with Post => (if Has_Async_Readers'Result then Is_Volatile (F, Scope));
    --  Checks if F has async readers.
 
-   function Has_Async_Writers (F : Flow_Id) return Boolean
-   with Post => (if Has_Async_Writers'Result then Is_Volatile (F));
+   function Has_Async_Writers
+     (F     : Flow_Id;
+      Scope : Flow_Scope := Null_Flow_Scope)
+      return Boolean
+   with Post => (if Has_Async_Writers'Result then Is_Volatile (F, Scope));
    --  Checks if F has async writers.
 
-   function Has_Effective_Reads (F : Flow_Id) return Boolean
-   with Post => (if Has_Effective_Reads'Result then Has_Async_Writers (F));
+   function Has_Effective_Reads
+     (F     : Flow_Id;
+      Scope : Flow_Scope := Null_Flow_Scope)
+      return Boolean
+   with Post => (if Has_Effective_Reads'Result
+                 then Has_Async_Writers (F, Scope));
    --  Checks if reads of F are always effective.
 
-   function Has_Effective_Writes (F : Flow_Id) return Boolean
-   with Post => (if Has_Effective_Writes'Result then Has_Async_Readers (F));
+   function Has_Effective_Writes
+     (F     : Flow_Id;
+      Scope : Flow_Scope := Null_Flow_Scope)
+      return Boolean
+   with Post => (if Has_Effective_Writes'Result
+                 then Has_Async_Readers (F, Scope));
    --  Checks if writes to F are always effective.
 
    function Is_Abstract_State (F : Flow_Id) return Boolean;

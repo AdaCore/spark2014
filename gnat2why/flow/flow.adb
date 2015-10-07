@@ -303,6 +303,7 @@ package body Flow is
 
    procedure Print_Graph
      (Filename          : String;
+      Analyzed_Entity   : Entity_Id;
       G                 : Graph;
       M                 : Attribute_Maps.Map;
       Start_Vertex      : Vertex_Id := Null_Vertex;
@@ -346,8 +347,7 @@ package body Flow is
          -- Print_Node --
          ----------------
 
-         procedure Print_Node (N : Node_Id)
-         is
+         procedure Print_Node (N : Node_Id) is
          begin
             if Comes_From_Source (N) then
                po (Union_Id (N));
@@ -598,11 +598,9 @@ package body Flow is
                            then
                               --  While loop.
                               Write_Str ("while ");
-                              Print_Node
-                                (Condition (Iteration_Scheme (N)));
+                              Print_Node (Condition (Iteration_Scheme (N)));
                            else
-                              Print_Node
-                                (Iteration_Scheme (N));
+                              Print_Node (Iteration_Scheme (N));
                            end if;
 
                         when N_Procedure_Call_Statement =>
@@ -645,21 +643,29 @@ package body Flow is
                when Initial_Value =>
                   Rv.Shape := Shape_None;
                   Write_Str ("'initial");
-                  if Is_Volatile (F) then
-                     Write_Str ("\nvolatile:");
-                     if Has_Async_Readers (F) then
-                        Write_Str ("&nbsp;AR");
+
+                  declare
+                     S : constant Flow_Scope :=
+                       (if F.Kind in Direct_Mapping | Record_Field
+                        then Get_Flow_Scope (Analyzed_Entity)
+                        else Null_Flow_Scope);
+                  begin
+                     if Is_Volatile (F, S) then
+                        Write_Str ("\nvolatile:");
+                        if Has_Async_Readers (F, S) then
+                           Write_Str ("&nbsp;AR");
+                        end if;
+                        if Has_Async_Writers (F, S) then
+                           Write_Str ("&nbsp;AW");
+                        end if;
+                        if Has_Effective_Reads (F, S) then
+                           Write_Str ("&nbsp;ER");
+                        end if;
+                        if Has_Effective_Writes (F, S) then
+                           Write_Str ("&nbsp;EW");
+                        end if;
                      end if;
-                     if Has_Async_Writers (F) then
-                        Write_Str ("&nbsp;AW");
-                     end if;
-                     if Has_Effective_Reads (F) then
-                        Write_Str ("&nbsp;ER");
-                     end if;
-                     if Has_Effective_Writes (F) then
-                        Write_Str ("&nbsp;EW");
-                     end if;
-                  end if;
+                  end;
 
                   if not A.Is_Initialized then
                      Rv.Colour := To_Unbounded_String ("red");
@@ -1163,6 +1169,7 @@ package body Flow is
       if Debug_Print_CFG then
          Print_Graph (Filename          =>
                         To_String (FA.Base_Filename) & "_cfg",
+                      Analyzed_Entity   => FA.Analyzed_Entity,
                       G                 => FA.CFG,
                       M                 => FA.Atr,
                       Start_Vertex      => FA.Start_Vertex,
@@ -1175,6 +1182,7 @@ package body Flow is
       if Debug_Print_Intermediates then
          Print_Graph (Filename          =>
                         To_String (FA.Base_Filename) & "_cdg",
+                      Analyzed_Entity   => FA.Analyzed_Entity,
                       G                 => FA.CDG,
                       M                 => FA.Atr,
                       Start_Vertex      => FA.Start_Vertex,
@@ -1189,6 +1197,7 @@ package body Flow is
       if Debug_Print_Intermediates then
          Print_Graph (Filename          =>
                         To_String (FA.Base_Filename) & "_ddg",
+                      Analyzed_Entity   => FA.Analyzed_Entity,
                       G                 => FA.DDG,
                       M                 => FA.Atr,
                       Start_Vertex      => FA.Start_Vertex,
@@ -1199,6 +1208,7 @@ package body Flow is
       if Debug_Print_PDG then
          Print_Graph (Filename          =>
                         To_String (FA.Base_Filename) & "_pdg",
+                      Analyzed_Entity   => FA.Analyzed_Entity,
                       G                 => FA.PDG,
                       M                 => FA.Atr,
                       Start_Vertex      => FA.Start_Vertex,

@@ -1860,13 +1860,14 @@ package body SPARK_Util is
    ------------------
 
    function Has_Volatile (E : Entity_Id) return Boolean is
-     (case Ekind (E) is
-         when E_Abstract_State =>
-            Is_External_State (E),
-         when Object_Kind =>
-            Is_Effectively_Volatile (E),
-         when others =>
-            raise Program_Error);
+     (if Ekind (E) = E_Abstract_State then
+         Is_External_State (E)
+      elsif Is_Part_Of_Concurrent_Object (E) then
+         True
+      elsif Ekind (E) in Object_Kind then
+         Is_Effectively_Volatile (E)
+      else
+         Is_Effectively_Volatile_Object (E));
 
    -------------------------
    -- Has_Volatile_Flavor --
@@ -1877,6 +1878,14 @@ package body SPARK_Util is
       A : Pragma_Id) return Boolean
    is
    begin
+      --  Protected objects and components of a concurrent object are
+      --  considered to be fully volatile.
+      if Ekind (E) in Protected_Kind
+        or else Is_Concurrent_Comp (Direct_Mapping_Id (E))
+      then
+         return True;
+      end if;
+
       case Ekind (E) is
          when E_Abstract_State | E_Variable =>
             case A is

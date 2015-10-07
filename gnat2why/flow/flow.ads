@@ -276,7 +276,7 @@ package Flow is
    function Is_Valid (X : Flow_Analysis_Graphs_Root) return Boolean;
 
    subtype Flow_Analysis_Graphs is Flow_Analysis_Graphs_Root
-     with Dynamic_Predicate => Is_Valid (Flow_Analysis_Graphs);
+   with Dynamic_Predicate => Is_Valid (Flow_Analysis_Graphs);
 
    package Analysis_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
@@ -290,9 +290,9 @@ package Flow is
    ----------------------------------------------------------------------
 
    function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id
-     with Pre  => Ekind (E) = E_Loop,
-          Post => not Present (Loop_Parameter_From_Loop'Result) or else
-                  Ekind (Loop_Parameter_From_Loop'Result) = E_Loop_Parameter;
+   with Pre  => Ekind (E) = E_Loop,
+        Post => not Present (Loop_Parameter_From_Loop'Result) or else
+                Ekind (Loop_Parameter_From_Loop'Result) = E_Loop_Parameter;
    --  Given a loop label, returns the identifier of the loop
    --  parameter or Empty.
 
@@ -302,6 +302,7 @@ package Flow is
 
    procedure Print_Graph
      (Filename          : String;
+      Analyzed_Entity   : Entity_Id;
       G                 : Flow_Graphs.Graph;
       M                 : Attribute_Maps.Map;
       Start_Vertex      : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;

@@ -31,7 +31,8 @@ package body Flow.Control_Flow_Graph.Utility is
 
    procedure Add_Volatile_Effects
      (A      : in out V_Attributes;
-      Global : Flow_Id := Null_Flow_Id);
+      S      : Flow_Scope;
+      Global : Flow_Id    := Null_Flow_Id);
    --  This helper procedure inspects the variables used by a particular
    --  vertex. Any with a volatile property causing reads or writes to be
    --  effective will be noted in the volatiles_read and volatiles_written
@@ -57,25 +58,26 @@ package body Flow.Control_Flow_Graph.Utility is
 
    procedure Add_Volatile_Effects
      (A      : in out V_Attributes;
+      S      : Flow_Scope;
       Global : Flow_Id := Null_Flow_Id)
    is
    begin
       if Present (Global) then
-         if Has_Effective_Reads (Global) then
+         if Has_Effective_Reads (Global, S) then
             A.Volatiles_Read.Include (Global);
          end if;
-         if Has_Effective_Writes (Global) then
+         if Has_Effective_Writes (Global, S) then
             A.Volatiles_Written.Include (Global);
          end if;
       end if;
 
       for F of A.Variables_Explicitly_Used loop
-         if Has_Effective_Reads (F) then
+         if Has_Effective_Reads (F, S) then
             A.Volatiles_Read.Include (F);
          end if;
       end loop;
       for F of A.Variables_Defined loop
-         if Has_Effective_Writes (F) then
+         if Has_Effective_Writes (F, S) then
             A.Volatiles_Written.Include (F);
          end if;
       end loop;
@@ -108,7 +110,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Pretty_Print_Kind         := Print_Hint;
       A.Is_Proof                  := Refers_To_Ghost (FA, A);
 
-      Add_Volatile_Effects (A);
+      Add_Volatile_Effects (A, FA.B_Scope);
       return A;
    end Make_Basic_Attributes;
 
@@ -138,7 +140,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Aux_Node                  := Object_Returned;
       A.Is_Proof                  := Refers_To_Ghost (FA, A);
 
-      Add_Volatile_Effects (A);
+      Add_Volatile_Effects (A, FA.B_Scope);
       return A;
    end Make_Extended_Return_Attributes;
 
@@ -178,7 +180,7 @@ package body Flow.Control_Flow_Graph.Utility is
          A.Pretty_Print_Kind := Pretty_Print_DIC;
       end if;
 
-      Add_Volatile_Effects (A);
+      Add_Volatile_Effects (A, FA.B_Scope);
       return A;
    end Make_Sink_Vertex_Attributes;
 
@@ -366,7 +368,7 @@ package body Flow.Control_Flow_Graph.Utility is
       end if;
 
       A.Is_Proof := Refers_To_Ghost (FA, A);
-      Add_Volatile_Effects (A);
+      Add_Volatile_Effects (A, Scope);
       return A;
    end Make_Parameter_Attributes;
 
@@ -434,7 +436,7 @@ package body Flow.Control_Flow_Graph.Utility is
       end case;
 
       A.Is_Proof := Refers_To_Ghost (FA, A);
-      Add_Volatile_Effects (A, Global);
+      Add_Volatile_Effects (A, Scope, Global);
       return A;
    end Make_Global_Attributes;
 
@@ -510,7 +512,7 @@ package body Flow.Control_Flow_Graph.Utility is
                end if;
             end if;
 
-            if Has_Async_Writers (F_Ent) then
+            if Has_Async_Writers (F_Ent, FA.B_Scope) then
                --  SRM 7.1.2(14) states that objects with async_writers are
                --  always considered to be initialized.
                A.Is_Initialized := True;
@@ -644,7 +646,7 @@ package body Flow.Control_Flow_Graph.Utility is
       end if;
       A.Is_Proof          := Refers_To_Ghost (FA, A);
 
-      Add_Volatile_Effects (A);
+      Add_Volatile_Effects (A, Scope);
       return A;
    end Make_Default_Initialization_Attributes;
 
