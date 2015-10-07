@@ -18,13 +18,13 @@ records.adb:66:19: info: postcondition proved
 records.adb:76:15: info: precondition proved
 records.adb:81:14: info: initialization of "R.A" proved
 records.adb:81:14: info: initialization of "R.B" proved
-records.adb:87:25: medium: postcondition might fail, requires Safe_Add_Pair_B'Result = PairPair'(A => A.A + B.A), (B => A.B + B.B), counterexample: Safe_Add_Pair_B'Result = (A => 0, B => 0) and Safe_Add_Pair_B'Result = (A => 0, B => 0) and A = (A => 255, B => 0) and A = (A => 255, B => 0) and B = (A => 0, B => 0) and B = (A => 0, B => 0)
+records.adb:87:25: medium: postcondition might fail, requires Safe_Add_Pair_B'Result = PairPair'(A => A.A + B.A), (B => A.B + B.B), counterexample: Safe_Add_Pair_B'Result = (A => 0, B => 0) and A = (A => 255, B => 0) and B = (A => 0, B => 0)
 records.adb:95:15: info: precondition proved
 records.adb:100:14: info: initialization of "R.A" proved
 records.adb:100:14: info: initialization of "R.B" proved
 records.adb:104:19: info: postcondition proved
 records.adb:112:19: info: postcondition proved
-records.adb:120:19: medium: postcondition might fail, requires Is_Valid_C'Result = (if not (A.Exists) then A.The_Pair = Null_Pair else true, counterexample: Is_Valid_C'Result = False and A = (Exists => False, The_Pair => (A => 0, B => 0)) and A = (Exists => False, The_Pair => (A => 0, B => 0)) and A = (Exists => False, The_Pair => (A => 0, B => 0)) and Null_Pair'Old = (A => 0, B => 0) and Null_Pair'Old = (A => 0, B => 0)
+records.adb:120:19: medium: postcondition might fail, requires Is_Valid_C'Result = (if not (A.Exists) then A.The_Pair = Null_Pair else true, counterexample: Is_Valid_C'Result = False and A = (Exists => False, The_Pair => (A => 0, B => 0)) and Null_Pair'Old = (A => 0, B => 0)
 records.adb:130:25: info: initialization of "Dst.Exists" proved
 records.adb:130:25: info: initialization of "Dst.The_Pair.A" proved
 records.adb:130:25: info: initialization of "Dst.The_Pair.B" proved
@@ -35,7 +35,7 @@ records.adb:133:32: info: initialization of "Dst.The_Pair.B" proved
 records.adb:140:25: info: initialization of "Dst.Exists" proved
 records.adb:140:25: info: initialization of "Dst.The_Pair.A" proved
 records.adb:140:25: info: initialization of "Dst.The_Pair.B" proved
-records.adb:143:22: medium: postcondition might fail, counterexample: Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => True, The_Pair => (A => 1, B => 0)) and Src = (Exists => True, The_Pair => (A => 1, B => 0)) and Src = (Exists => True, The_Pair => (A => 1, B => 0))
+records.adb:143:22: medium: postcondition might fail, counterexample: Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => True, The_Pair => (A => 1, B => 0))
 records.adb:143:32: info: initialization of "Dst.Exists" proved
 records.adb:143:32: info: initialization of "Dst.The_Pair.A" proved
 records.adb:143:32: info: initialization of "Dst.The_Pair.B" proved
@@ -44,12 +44,12 @@ records.adb:153:22: info: postcondition proved
 records.adb:153:36: info: initialization of "Dst.Exists" proved
 records.adb:164:32: info: initialization of "Dst.Exists" proved
 records.adb:166:22: info: initialization of "Dst.Exists" proved
-records.adb:166:22: medium: postcondition might fail, requires Dst = Src, counterexample: Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0))
+records.adb:166:22: medium: postcondition might fail, requires Dst = Src, counterexample: Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => False, The_Pair => (A => 0, B => 0))
 records.adb:177:22: info: postcondition proved
 records.adb:186:23: info: initialization of "Tmp" proved
-records.adb:191:22: medium: postcondition might fail, counterexample: X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0))
+records.adb:191:22: medium: postcondition might fail, counterexample: X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0))
 records.adb:200:23: info: initialization of "Tmp" proved
-records.adb:205:22: medium: postcondition might fail, counterexample: X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0))
+records.adb:205:22: medium: postcondition might fail, counterexample: X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0))
 records.adb:214:07: info: assertion proved
 records.adb:215:36: info: initialization of "Tmp" proved
 records.adb:217:07: info: assertion proved
@@ -59,17 +59,17 @@ records.adb:226:22: info: postcondition proved
 records.adb:236:26: info: initialization of "Tmp" proved
 records.adb:242:22: info: postcondition proved
 records.adb:250:23: info: initialization of "Tmp" proved
-records.adb:255:22: medium: postcondition might fail, requires X = X'Old'update, counterexample: X = (Exists => False, The_Pair => (A => 1, B => 1)) and X = (Exists => False, The_Pair => (A => 1, B => 1)) and X = (Exists => False, The_Pair => (A => 1, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1))
+records.adb:255:22: medium: postcondition might fail, requires X = X'Old'update, counterexample: X = (Exists => False, The_Pair => (A => 1, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1))
 records.adb:264:23: info: initialization of "Tmp" proved
-records.adb:269:22: medium: postcondition might fail, requires X = X'Old'update, counterexample: X = (Exists => False, The_Pair => (A => 1, B => 0)) and X = (Exists => False, The_Pair => (A => 1, B => 0)) and X = (Exists => False, The_Pair => (A => 1, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0))
+records.adb:269:22: medium: postcondition might fail, requires X = X'Old'update, counterexample: X = (Exists => False, The_Pair => (A => 1, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0))
 records.adb:279:26: info: initialization of "Tmp" proved
 records.adb:285:22: info: postcondition proved
-records.adb:296:22: medium: postcondition might fail, counterexample: X = (Exists => True, The_Pair => (A => 5, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 0, B => 5)) and X = (Exists => True, The_Pair => (A => 5, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 0, B => 5)) and X = (Exists => True, The_Pair => (A => 5, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 0, B => 5))
+records.adb:296:22: medium: postcondition might fail, counterexample: X = (Exists => True, The_Pair => (A => 5, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 0, B => 5))
 records.adb:308:19: info: postcondition proved
 records.adb:315:14: info: initialization of "Tmp.Exists" proved
 records.adb:315:14: info: initialization of "Tmp.The_Pair.A" proved
 records.adb:315:14: info: initialization of "Tmp.The_Pair.B" proved
-records.adb:322:19: medium: postcondition might fail, requires Update_B'Result = X'update, counterexample: Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 0)) and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 0)) and Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 0)) and X = (Exists => False, The_Pair => (A => 1, B => 0)) and X = (Exists => False, The_Pair => (A => 1, B => 0)) and X = (Exists => False, The_Pair => (A => 1, B => 0)) and N = 0 and X = (Exists => False, The_Pair => (A => 1, B => 0)) and X = (Exists => False, The_Pair => (A => 1, B => 0))
+records.adb:322:19: medium: postcondition might fail, requires Update_B'Result = X'update, counterexample: Update_B'Result = (Exists => False, The_Pair => (A => 1, B => 0)) and X = (Exists => False, The_Pair => (A => 1, B => 0)) and N = 0
 records.adb:328:27: info: range check proved
 records.adb:329:14: info: initialization of "Tmp.Exists" proved
 records.adb:329:14: info: initialization of "Tmp.The_Pair.A" proved
@@ -82,7 +82,7 @@ records.adb:365:19: info: postcondition proved
 records.adb:375:14: info: initialization of "R.Exists" proved
 records.adb:375:14: info: initialization of "R.The_Pair.A" proved
 records.adb:375:14: info: initialization of "R.The_Pair.B" proved
-records.adb:379:19: medium: postcondition might fail, requires Make_Optional_Pair_A_2'Result =  Optional_PairOptional_Pair'(Exists => false), (The_Pair => X), counterexample: Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0) and X = (A => 0, B => 0)
+records.adb:379:19: medium: postcondition might fail, requires Make_Optional_Pair_A_2'Result =  Optional_PairOptional_Pair'(Exists => false), (The_Pair => X), counterexample: Make_Optional_Pair_A_2'Result = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (A => 0, B => 0)
 records.adb:389:14: info: initialization of "R.Exists" proved
 records.adb:389:14: info: initialization of "R.The_Pair.A" proved
 records.adb:389:14: info: initialization of "R.The_Pair.B" proved
@@ -91,8 +91,8 @@ records.adb:401:14: info: initialization of "R.Exists" proved
 records.adb:401:14: info: initialization of "R.The_Pair.A" proved
 records.adb:401:14: info: initialization of "R.The_Pair.B" proved
 records.adb:409:22: medium: assertion might fail, requires X.The_Pair.A = 0, counterexample: X = (, The_Pair => (A => 1))
-records.adb:417:22: medium: assertion might fail, requires X.The_Pair.A = X.The_Pair.B, counterexample: X = (, The_Pair => (A => 0, B => 1)) and X = (, The_Pair => (A => 0, B => 1))
-records.adb:425:22: medium: assertion might fail, requires X.The_Pair.A /= X.The_Pair.B, counterexample: X = (, The_Pair => (A => 0, B => 0)) and X = (, The_Pair => (A => 0, B => 0))
+records.adb:417:22: medium: assertion might fail, requires X.The_Pair.A = X.The_Pair.B, counterexample: X = (, The_Pair => (A => 0, B => 1))
+records.adb:425:22: medium: assertion might fail, requires X.The_Pair.A /= X.The_Pair.B, counterexample: X = (, The_Pair => (A => 0, B => 0))
 records.adb:428:22: info: initialization of "X.Exists" proved
 records.adb:428:22: info: initialization of "X.The_Pair.A" proved
 records.adb:428:22: info: initialization of "X.The_Pair.B" proved
@@ -105,10 +105,10 @@ records.adb:459:14: info: initialization of "R.A" proved
 records.adb:459:14: info: initialization of "R.B" proved
 records.adb:465:22: info: postcondition proved
 records.adb:473:07: info: assertion proved
-records.adb:482:22: medium: postcondition might fail, requires R = R'Old'update, counterexample: R = (Exists => False, The_Pair => (A => 1, B => 0)) and R = (Exists => False, The_Pair => (A => 1, B => 0)) and R = (Exists => False, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => False) and X = 1
+records.adb:482:22: medium: postcondition might fail, requires R = R'Old'update, counterexample: R = (Exists => False, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => False) and X = 1
 records.adb:490:07: info: assertion proved
 records.adb:500:19: info: postcondition proved
-records.adb:503:22: medium: assertion might fail, requires R.Exists, counterexample: R = (Exists => False, The_Pair => (A => 0, B => 0)) and R = (Exists => False, The_Pair => (A => 0, B => 0)) and R = (Exists => False, The_Pair => (A => 0, B => 0))
+records.adb:503:22: medium: assertion might fail, requires R.Exists, counterexample: R = (Exists => False, The_Pair => (A => 0, B => 0))
 records.adb:513:22: info: postcondition proved
 records.adb:522:19: info: postcondition proved
 records.adb:533:22: medium: assertion might fail, requires F_Of_Pair (PairPair'(A => 5), (B => 5))
