@@ -333,8 +333,9 @@ Subprogram Contracts
 ====================
 
 The most important feature to specify the intended behavior of a |SPARK|
-program is the ability to attach a contract to subprograms. This contract is
-made up of various optional parts:
+program is the ability to attach a contract to subprograms. In this document, a
+`subprogram` can be a procedure, a function or a protected entry. This contract
+is made up of various optional parts:
 
 * The `precondition` introduced by aspect ``Pre`` specifies constraints on
   callers of the subprogram.
@@ -636,6 +637,13 @@ specified for procedure ``Add_To_Total`` which increments global counter
    procedure Add_To_Total (Incr : in Integer) with
      Global => (In_Out => Total);
 
+For protected subprograms, the protected object is considered as an implicit
+parameter of the subprogram:
+
+* it is an implicit parameter of mode ``in`` of a protected function; and
+* it is an implicit parameter of mode ``in out`` of a protected procedure or a
+  protected entry.
+
 Data dependencies have no impact on compilation and the run-time behavior of a
 program. When a subprogram is analyzed with |GNATprove|, it checks that the
 implementation of the subprogram:
@@ -726,6 +734,15 @@ global inputs). For example, flow dependencies can be specified for procedure
 The above flow dependencies can be read as "the output value of global variable
 ``Total`` depends on the input values of global variable ``Total`` and
 parameter ``Incr``".
+
+For protected subprograms, the protected object is considered as an implicit
+parameter of the subprogram which may be mentioned in the flow dependencies,
+under the name of the protected unit (type or object) being declared:
+
+* as an implicit parameter of mode ``in`` of a protected function, it can be
+  mentioned on the right-hand side of flow dependencies; and
+* as an implicit parameter of mode ``in out`` of a protected procedure or a
+  protected entry, it can be mentioned on both sides of flow dependencies.
 
 Flow dependencies have no impact on compilation and the run-time behavior of a
 program. When a subprogram is analyzed with |GNATprove|, it checks that, in the
@@ -851,6 +868,10 @@ particular when the abstract state is refined into multiple concrete variables
 ``Account`` and the more precise refined contract (refined data and flow
 dependencies) of ``Init_Total`` and ``Add_To_Total`` when analyzing calls
 inside package ``Account``.
+
+Refined dependencies can be specified on both subprograms and tasks for which
+data and/or flow dependencies that are specified include abstract states which
+are refined in the current unit.
 
 .. _State Abstraction and Functional Contracts:
 
@@ -1484,6 +1505,70 @@ An external abstract state on which none of the four aspects ``Async_Writers``,
 assumed to have all four aspects set to ``True``. An external abstract state on
 which some of the four aspects are set to ``True`` is assumed to have the
 remaining ones set to ``False``. See SPARK RM 7.1.2 for details.
+
+Task Contracts
+==============
+
+Dependency contracts can be specified on tasks. As tasks should not terminate
+in |SPARK|, such contracts specify the dependencies between outputs and inputs
+of the task `updated while the task runs`:
+
+* The `data dependencies` introduced by aspect ``Global`` specify the global
+  data read and written by the task.
+* The `flow dependencies` introduced by aspect ``Depends`` specify how
+  task outputs depend on task inputs.
+
+This is a difference between tasks and subprograms, for which such contracts
+describe the dependencies between outputs and inputs `when the subprogram
+returns`.
+
+Data Dependencies
+-----------------
+
+Data dependencies on tasks follow the same syntax as the ones on subprograms
+(see :ref:`Data Dependencies`). For example, data dependencies can be specified
+for task ``Account_Management`` as follows:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      Num_Accounts : Natural := 0;
+
+      task type Account_Management with
+        Global => (In_Out => Account.Num_Accounts);
+   end Account;
+
+for the following implementation of the task:
+
+.. code-block:: ada
+
+   package body Account with SPARK_Mode is
+
+      task body Account_Management is
+      begin
+         loop
+            Get_Next_Account_Created;
+            Num_Accounts := Num_Accounts + 1;
+         end loop;
+      end Account_Management;
+
+   end Account;
+
+Flow Dependencies
+-----------------
+
+Flow dependencies on tasks follow the same syntax as the ones on subprograms
+(see :ref:`Flow Dependencies`). For example, flow dependencies can be specified
+for task ``Account_Management`` defined above as follows:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      Num_Accounts : Natural := 0;
+
+      task type Account_Management with
+        Depends => (Account.Num_Accounts => Account.Num_Accounts);
+   end Account;
 
 .. _Type Contracts:
 
