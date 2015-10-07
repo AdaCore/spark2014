@@ -13,6 +13,8 @@ package body Pck is pragma SPARK_Mode (On);
       --  We check absence of overflow in the final result by checking that
       --  M is 0, and that there is no carry when adding N0 and OP.
 
+      --  Initially, A = 0, BC = V
+
       V_Hi : Uint_64 := V / 2 ** 32;   -- AB
       V_Lo : Uint_64 := V rem 2 ** 32; --  C
 
@@ -33,7 +35,7 @@ package body Pck is pragma SPARK_Mode (On);
       V_Hi := V_Hi + V_Lo / 2 ** 32;
       V_Lo := V_Lo rem 2 ** 32;
 
-      --  First division
+      --  First quotient
 
       Result_Hi := V_Hi / Uint_64 (D);
 
@@ -50,7 +52,7 @@ package body Pck is pragma SPARK_Mode (On);
 
       Result_Hi := Result_Hi * 2 ** 32;
 
-      --  Second division. To improve rounding, D / 2 is added
+      --  Second quotient. To improve rounding, D / 2 is added
 
       Result_Lo :=
         (V_Lo + Remainder * 2 ** 32 + Uint_64 (D) / 2) / Uint_64 (D);
