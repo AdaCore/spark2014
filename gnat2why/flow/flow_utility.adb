@@ -4261,10 +4261,10 @@ package body Flow_Utility is
       case Contract is
          when Pragma_Depends =>
             declare
-               Body_N : constant Node_Id := Subprogram_Body_Entity (Unit);
+               Body_E : constant Node_Id := Get_Body_Entity (Unit);
             begin
-               Contract_N := (if Present (Body_N)
-                              then Get_Pragma (Body_N, Pragma_Refined_Depends)
+               Contract_N := (if Present (Body_E)
+                              then Get_Pragma (Body_E, Pragma_Refined_Depends)
                               else Empty);
             end;
             if No (Contract_N) then
