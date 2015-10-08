@@ -1904,10 +1904,10 @@ variables during elaboration, from either constants or variables:
 
 .. code-block:: ada
 
-   Initializes => ((Start_From_Zero,
-                    Start_From_Zero_Bis,
-                    Start_From_Val,
-                    Start_From_Val_Bis) => External_Data.Val)
+   Initializes => (Start_From_Zero     => External_Data.Val,
+                   Start_From_Zero_Bis => External_Data.Val,
+                   Start_From_Val      => External_Data.Val,
+                   Start_From_Val_Bis  => External_Data.Val)
 
 As a result, |GNATprove| can check that global variables are properly
 initialized when calling the main procedure ``Main_Proc``, and it does not
