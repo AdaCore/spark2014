@@ -1065,7 +1065,7 @@ module Unconstr_Array
 
   (* An unconstrained array comes with its bounds *)
   type __t =
-    { elts "model_trace:" : map; rt "model_trace:@hide_field" : I1.t }
+    { elts "model_trace:" : map; rt : I1.t }
 
   function to_array (a : __t) : map = a.elts
 
@@ -1149,8 +1149,8 @@ module Unconstr_Array_2
 
   type __t =
     { elts "model_trace:" : map;
-      rt   "model_trace:@hide_field" : I1.t;
-      rt_2 "model_trace:@hide_field" : I2.t
+      rt : I1.t;
+      rt_2 : I2.t
     }
 
   function to_array (a : __t) : map =
@@ -1266,9 +1266,9 @@ module Unconstr_Array_3
 
   type __t =
     { elts "model_trace:" : map;
-      rt   "model_trace:@hide_field" : I1.t;
-      rt_2 "model_trace:@hide_field" : I2.t;
-      rt_3 "model_trace:@hide_field" : I3.t
+      rt   : I1.t;
+      rt_2 : I2.t;
+      rt_3 : I3.t
     }
 
   function to_array (a : __t) : map =
@@ -1415,10 +1415,10 @@ module Unconstr_Array_4
 
   type __t =
     { elts "model_trace:" : map;
-      rt   "model_trace:@hide_field" : I1.t;
-      rt_2 "model_trace:@hide_field" : I2.t;
-      rt_3 "model_trace:@hide_field" : I3.t;
-      rt_4 "model_trace:@hide_field" : I4.t
+      rt   : I1.t;
+      rt_2 : I2.t;
+      rt_3 : I3.t;
+      rt_4 : I4.t
     }
 
   function to_array (a : __t) : map =
