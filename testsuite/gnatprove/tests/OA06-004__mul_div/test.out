@@ -28,3 +28,31 @@ p.ads:11:15: info: division check proved
 p.ads:11:15: info: range check proved
 p.ads:14:15: info: division check proved
 p.ads:14:15: info: range check proved
+q.adb:13:46: info: overflow check proved
+q.adb:13:46: info: range check proved
+q.adb:29:27: info: division check proved
+q.adb:30:27: info: division check proved
+q.adb:44:15: info: initialization of "V_Hi" proved
+q.adb:45:15: info: initialization of "V_Lo" proved
+q.adb:46:15: info: initialization of "V_Hi" proved
+q.adb:46:22: info: initialization of "V_Lo" proved
+q.adb:46:27: info: division check proved
+q.adb:47:15: info: initialization of "V_Lo" proved
+q.adb:47:20: info: division check proved
+q.adb:51:20: info: initialization of "V_Hi" proved
+q.adb:51:25: info: division check proved
+q.adb:53:10: info: initialization of "Result_Hi" proved
+q.adb:58:10: medium: exception might be raised
+q.adb:61:20: info: initialization of "V_Hi" proved
+q.adb:61:27: info: initialization of "Result_Hi" proved
+q.adb:63:20: info: initialization of "Result_Hi" proved
+q.adb:68:10: info: initialization of "V_Lo" proved
+q.adb:68:17: info: initialization of "Remainder" proved
+q.adb:68:50: info: division check proved
+q.adb:68:50: info: range check proved
+q.adb:68:56: info: division check proved
+q.adb:70:10: info: initialization of "Result_Lo" proved
+q.adb:70:38: info: initialization of "Result_Hi" proved
+q.adb:74:10: medium: exception might be raised
+q.adb:77:14: info: initialization of "Result_Hi" proved
+q.adb:77:26: info: initialization of "Result_Lo" proved
