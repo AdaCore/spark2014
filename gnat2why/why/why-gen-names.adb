@@ -170,15 +170,30 @@ package body Why.Gen.Names is
 
                   --  Only certain conversions are OK
 
-                  if From = EW_Int_Type and then To = EW_Real_Type then
-                     return M_Floating.Real_Of_Int;
+                  if From = EW_Int_Type and then Why_Type_Is_Float (To) then
+                     return MF_Floats (To).Of_Int;
 
                   --  Conversions from real to int in Ada round to the nearest
                   --  integer, and away from zero in case of tie, exactly like
                   --  'Rounding attribute.
 
-                  elsif From = EW_Real_Type and then To = EW_Int_Type then
-                     return M_Floating.Round;
+                  elsif Why_Type_Is_Float (From) then
+                     return (if To = EW_Int_Type then
+                                MF_Floats (From).To_Int
+                             elsif To = EW_BitVector_8_Type then
+                                MF_Floats (From).To_BV8
+                             elsif To = EW_BitVector_16_Type then
+                                MF_Floats (From).To_BV16
+                             elsif To = EW_BitVector_32_Type then
+                                MF_Floats (From).To_BV32
+                             elsif To = EW_BitVector_64_Type then
+                                MF_Floats (From).To_BV64
+                             elsif To = EW_Float_64_Type then
+                                M_Floating_Conv.To_Float64
+                             elsif To = EW_Float_32_Type then
+                                M_Floating_Conv.To_Float32
+                             else
+                                raise Program_Error);
                   elsif From = EW_Bool_Type and then To = EW_Int_Type then
                      return M_Boolean.To_Int;
                   elsif From = EW_Int_Type and then To = EW_Bool_Type then
@@ -187,6 +202,18 @@ package body Why.Gen.Names is
                     To = EW_Int_Type
                   then
                      return MF_BVs (From).To_Int;
+                  elsif Why_Type_Is_BitVector (From) and then
+                    Why_Type_Is_Float (To)
+                  then
+                     return (if From = EW_BitVector_8_Type then
+                                MF_Floats (To).Of_BV8
+                             elsif From = EW_BitVector_16_Type then
+                                MF_Floats (To).Of_BV16
+                             elsif From = EW_BitVector_32_Type then
+                                MF_Floats (To).Of_BV32
+                             elsif From = EW_BitVector_64_Type then
+                                MF_Floats (To).Of_BV64
+                             else raise Program_Error);
                   elsif From = EW_Int_Type and then
                     Why_Type_Is_BitVector (To)
                   then
@@ -210,10 +237,11 @@ package body Why.Gen.Names is
                   begin
                      if Base_Why_Type (To) = From and then
                        (From = EW_Int_Type or else
-                        Why_Type_Is_BitVector (From))
+                        Why_Type_Is_BitVector (From) or else
+                        Why_Type_Is_Float (From))
                      then
                         --  if we're converting from the representation type
-                        --  of a discrete kind
+                        --  of a scalar kind
                         return E_Symb (A, WNE_Of_Rep);
                      else
                         return E_Symb (A, Convert_From (From));
@@ -229,7 +257,8 @@ package body Why.Gen.Names is
                   begin
                      if Base_Why_Type (From) = To and then
                        (To = EW_Int_Type or else
-                        Why_Type_Is_BitVector (To))
+                        Why_Type_Is_BitVector (To) or else
+                        Why_Type_Is_Float (To))
                      then
                         --  if we're converting to the representation type
                         --  of a discrete kind
@@ -239,8 +268,8 @@ package body Why.Gen.Names is
                            return E_Symb (A, WNE_To_Int);
                         elsif To = EW_Fixed_Type then
                            return E_Symb (A, WNE_To_Fixed);
-                        elsif To = EW_Real_Type then
-                           return E_Symb (A, WNE_To_Real);
+--                          elsif Why_Type_Is_Float (To) then
+--                             return E_Symb (A, WNE_To_Real);
                         elsif Why_Type_Is_BitVector (To) then
                            return E_Symb (A, WNE_To_BitVector);
                         else
@@ -280,8 +309,6 @@ package body Why.Gen.Names is
          return WNE_Of_Int;
       elsif Kind = EW_Fixed_Type then
          return WNE_Of_Fixed;
-      elsif Kind = EW_Real_Type then
-         return WNE_Of_Real;
       elsif Why_Type_Is_BitVector (Kind) then
          return WNE_Of_BitVector;
       else
@@ -446,8 +473,8 @@ package body Why.Gen.Names is
 
    function New_Abs (Kind : W_Type_Id) return W_Identifier_Id is
    begin
-      if Kind = EW_Real_Type then
-         return M_Floating.Abs_Real;
+      if Why_Type_Is_Float (Kind) then
+         return MF_Floats (Kind).Abs_Float;
       elsif Kind = EW_Int_Type or else Kind = EW_Fixed_Type then
          return M_Int_Abs.Abs_Id;
       elsif Why_Type_Is_BitVector (Kind) then
@@ -463,8 +490,8 @@ package body Why.Gen.Names is
 
    function New_Division (Kind : W_Type_Id) return W_Identifier_Id is
    begin
-      if Kind = EW_Real_Type then
-         return M_Floating.Div_Real;
+      if Why_Type_Is_Float (Kind) then
+         return MF_Floats (Kind).Div;
       elsif Kind = EW_Int_Type then
          return M_Int_Div.Div;
       elsif Why_Type_Is_BitVector (Kind) then
@@ -482,8 +509,8 @@ package body Why.Gen.Names is
 
    function New_Exp (Kind : W_Type_Id) return W_Identifier_Id is
    begin
-      if Kind = EW_Real_Type then
-         return M_Floating.Power;
+      if Why_Type_Is_Float (Kind) then
+         return MF_Floats (Kind).Power;
       elsif Kind = EW_Int_Type then
          return M_Int_Power.Power;
       elsif Why_Type_Is_BitVector (Kind) then
@@ -715,8 +742,6 @@ package body Why.Gen.Names is
               WNE_Attr_Length_4 |
               WNE_Attr_Image  |
               WNE_Attr_Value |
-              WNE_Float_Round_Tmp |
-              WNE_Float_Round |
               WNE_Float_Pred |
               WNE_Float_Succ |
               WNE_Attr_Modulus |
@@ -743,10 +768,8 @@ package body Why.Gen.Names is
               WNE_To_Int_4 |
               WNE_Of_Int |
               WNE_Of_Fixed |
-              WNE_Of_Real |
               WNE_Of_BitVector |
               WNE_To_Fixed |
-              WNE_To_Real |
               WNE_To_BitVector |
               WNE_To_Array |
               WNE_Of_Array |

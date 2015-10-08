@@ -27,6 +27,7 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Common_Containers;     use Common_Containers;
+with Einfo;                 use Einfo;
 with Namet;                 use Namet;
 with Sinfo;                 use Sinfo;
 with SPARK_Util;            use SPARK_Util;
@@ -317,6 +318,15 @@ package Gnat2Why.Util is
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  static call.
 
+   function Cast_Real_Litteral
+     (E  : Node_Id;
+      Ty : W_Type_Id) return W_Float_Constant_Id
+     with Pre => Why_Type_Is_Float (Ty)
+     and Is_Floating_Point_Type (Etype (E));
+   --  cast a real constant (litteral) into either a float32 or a float64,
+   --  This function will do the actual computation in order to produce
+   --  a float_constant from a real_constant, i.e., a bitstream for a ureal.
+
    -------------
    -- Queries --
    -------------
@@ -379,6 +389,9 @@ package Gnat2Why.Util is
    --  [Insert_Entity] and [Insert_Item]).
    --  @param E variable or constant of scalar type
    --  @return True iff E has a builtin type in Why3
+
+   function Why_Type_Is_Float (Typ : W_Type_Id) return Boolean;
+   --  Return wether Typ is a Float type.
 
    function Why_Type_Is_BitVector (Typ : W_Type_Id) return Boolean;
    --  Return wether Typ is a bitvector type.

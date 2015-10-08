@@ -195,6 +195,9 @@ package body Why.Gen.Expr is
          when W_Real_Constant =>
             return EW_Real_Type;
 
+         when W_Float_Constant =>
+            return +Get_Typ (W_Float_Constant_Id (E));
+
          when W_Modular_Constant =>
             return +Get_Typ (W_Modular_Constant_Id (E));
 
@@ -594,7 +597,6 @@ package body Why.Gen.Expr is
 
    function Insert_Checked_Conversion
      (Ada_Node : Node_Id;
-      Ada_Type : Entity_Id;
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
       To       : W_Type_Id) return W_Expr_Id
@@ -683,23 +685,11 @@ package body Why.Gen.Expr is
                   else False)
                else False);
 
-            --  When converting to a floating-point, from either a discrete
-            --  type or another real type, rounding should be applied on the
-            --  value of type real. Round_Func is the appropriate rounding
-            --  function for the type.
-
-            Round_Func : constant W_Identifier_Id :=
-              (if Nkind (Ada_Node) = N_Type_Conversion
-                 and then Is_Floating_Point_Type (Ada_Type)
-               then E_Symb (Ada_Type, WNE_Float_Round)
-               else Why_Empty);
-
          begin
             T := Insert_Scalar_Conversion (Domain      => Domain,
                                            Ada_Node    => Ada_Node,
                                            Expr        => T,
                                            To          => To,
-                                           Round_Func  => Round_Func,
                                            Do_Check    => Do_Check);
          end;
       end if;
@@ -1093,7 +1083,6 @@ package body Why.Gen.Expr is
       Ada_Node      : Node_Id := Empty;
       Expr          : W_Expr_Id;
       To            : W_Type_Id;
-      Round_Func    : W_Identifier_Id := Why_Empty;
       Do_Check      : Boolean := False) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
@@ -1457,7 +1446,6 @@ package body Why.Gen.Expr is
       --        (Other boolean types in Ada have a base type of EW_Int.)
 
       if Eq_Base (To, From)
-        and then No (Round_Func)
         and then not Do_Predicate_Check
         and then (not Do_Check
                   or else To = EW_Bool_Type)
@@ -1476,7 +1464,6 @@ package body Why.Gen.Expr is
          Ada_Node    => Ada_Node,
          Expr        => Expr,
          To          => To,
-         Round_Func  => Round_Func,
          Range_Type  => Range_Type,
          Check_Kind  => Check_Kind);
    end Insert_Scalar_Conversion;
@@ -1486,44 +1473,15 @@ package body Why.Gen.Expr is
       Ada_Node      : Node_Id := Empty;
       Expr          : W_Expr_Id;
       To            : W_Type_Id;
-      Round_Func    : W_Identifier_Id := Why_Empty;
       Range_Type    : Entity_Id;
       Check_Kind    : Range_Check_Kind) return W_Expr_Id
    is
-      function Same_Precision_Float_Types
-        (Typ_From, Typ_To : Entity_Id) return Boolean
-      --  Return True iff Typ_From and Typ_To are both single precision
-      --  floating point types, or both double precision floating point types.
-      is
-        ((Is_Single_Precision_Floating_Point_Type (Typ_From)
-            and then
-          Is_Single_Precision_Floating_Point_Type (Typ_To))
-            or else
-         (Is_Double_Precision_Floating_Point_Type (Typ_From)
-            and then
-          Is_Double_Precision_Floating_Point_Type (Typ_To)));
-
       From : constant W_Type_Id := Get_Type (Expr);
 
       Do_Predicate_Check : constant Boolean :=
         Present (Get_Ada_Node (+To))
           and then Has_Predicates (Get_Ada_Node (+To))
           and then Get_Ada_Node (+To) /= Get_Ada_Node (+From);
-
-      --  When converting from a floating point type to another floating point
-      --  type with the same precision (single or double), no rounding is
-      --  necessary. Get the source/target types from Ada_Node if present, as
-      --  types From/To may be already using "real", as a result of using the
-      --  base type of variables as much as possible instead of the abstract
-      --  type which maintains the link to the source Ada type.
-
-      Skip_Float_Rounding : constant Boolean :=
-        Present (Ada_Node)
-          and then Nkind (Ada_Node) in N_Qualified_Expression
-                                     | N_Type_Conversion
-                                     | N_Unchecked_Type_Conversion
-          and then Same_Precision_Float_Types
-                     (Etype (Ada_Node), Etype (Expression (Ada_Node)));
 
       --  Current result expression
       Result : W_Expr_Id := Expr;
@@ -1540,6 +1498,8 @@ package body Why.Gen.Expr is
       --  If the check is a range check on a floating-point type, and we can
       --  determine that the expression is always within bounds, then issue a
       --  check always true.
+
+      --  clem : keep this ?? /!\
 
       if Present (Range_Type)
         and then Is_Floating_Point_Type (Range_Type)
@@ -1644,12 +1604,14 @@ package body Why.Gen.Expr is
                Cur := Shadow_To;
             end;
 
-         --  2.2. If From is a modular type and To is not, insert a convertion
-         --       to int since we only support direct convertion from bitvector
-         --       to int or other bitvector types.
+         --  2.2. If From is a modular type and To is neither a modular nor
+         --       float, insert a convertion to int since we only support
+         --       Direct convertion from bitvector to int, float or another
+         --       bitvector types.
 
          elsif Why_Type_Is_BitVector (Base_Why_Type (From))
-           and then not (Why_Type_Is_BitVector (Base_Why_Type (To)))
+           and then not Why_Type_Is_BitVector (Base_Why_Type (To))
+           and then not Why_Type_Is_Float (Base_Why_Type (To))
          then
             Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                                 Domain   => Domain,
@@ -1669,7 +1631,8 @@ package body Why.Gen.Expr is
          --       between two integers, see Ada RM 4.6(33)).
 
          elsif Why_Type_Is_BitVector (Base_Why_Type (To))
-           and then not (Why_Type_Is_BitVector (Base_Why_Type (From)))
+           and then not Why_Type_Is_BitVector (Base_Why_Type (From))
+           and then not Why_Type_Is_Float (Base_Why_Type (From))
          then
             Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                                 Domain   => Domain,
@@ -1745,21 +1708,7 @@ package body Why.Gen.Expr is
          end if;
       end if;
 
-      --  5. When converting to a floating-point type, always perform
-      --     a rounding operation, unless From and To are floating point types
-      --     of the same precision.
-
-      if Present (Round_Func)
-        and then not Skip_Float_Rounding
-      then
-         pragma Assert (Cur = EW_Real_Type);
-         Result := New_Call (Domain   => Domain,
-                             Name     => Round_Func,
-                             Args     => (1 => Result),
-                             Typ      => EW_Real_Type);
-      end if;
-
-      --  6. Possibly perform the range check, if not already applied
+      --  5. Possibly perform the range check, if not already applied
 
       if Present (Range_Type)
         and then not Range_Check_Applied
@@ -1775,7 +1724,7 @@ package body Why.Gen.Expr is
                                     Check_Kind => Check_Kind);
       end if;
 
-      --  7. Perform a predicate check if needed, before the final conversion
+      --  6. Perform a predicate check if needed, before the final conversion
       --  to the target abstract type if any, if the predicate function takes
       --  a Why3 native type as input as detected by Use_Split_Form_For_Type.
 
@@ -1788,7 +1737,7 @@ package body Why.Gen.Expr is
                                             W_Expr   => +Result);
       end if;
 
-      --  8. If To is an abstract type, convert from int, __fixed or real to it
+      --  7. If To is an abstract type, convert from int, __fixed or real to it
 
       if Get_Type_Kind (To) = EW_Abstract then
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
@@ -1798,7 +1747,7 @@ package body Why.Gen.Expr is
                                              Expr     => Result);
       end if;
 
-      --  9. Perform a predicate check if needed, after the final conversion
+      --  8. Perform a predicate check if needed, after the final conversion
       --  to the target abstract type if any, if the predicate function takes
       --  an abstract type as input as detected by Use_Split_Form_For_Type.
 
@@ -3115,7 +3064,7 @@ package body Why.Gen.Expr is
       Le : constant W_Identifier_Id :=
         (if Ty = EW_Int_Type or else Ty = EW_Fixed_Type then Int_Infix_Le
          elsif Why_Type_Is_BitVector (Ty) then MF_BVs (Ty).Ule
-         else Real_Infix_Le);
+         else MF_Floats (Ty).Le);
    begin
       return
          New_And_Expr

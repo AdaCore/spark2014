@@ -135,103 +135,89 @@ module Int_Division
 end
 
 module Floating
-  use real.Real
-  use import real.RealInfix
-  use real.Abs as AbsReal
-  use export real.Truncate
-  use export real.PowerInt
-  use real.MinMax
-  use real.FromInt
+  clone export _gnatprove_standard_th.Floating_Func
 
-  use floating_point.Rounding
-  use floating_point.Single
-  use floating_point.Double
+  constant zeroF   : t
+  function div t t : t
+  function rem t t : t
+  function mod t t : t
 
-  function round_single (x : real) : real = Single.round Rounding.NearestTiesToEven x
+  val div_ (x:t) (y:t) : t
+     requires { y <> zeroF }
+     ensures { result = div x y }
 
-  function round_double (x : real) : real = Double.round Rounding.NearestTiesToEven x
+  val rem_ (x:t) (y:t) : t
+     requires { y <> zeroF }
+     ensures{ result = rem x y }
 
-  (* The rounding error on a floating-point operation can be bounded, see page 7 of
-     paper "The pitfalls of verifying floating-point computations" by David Monniaux:
-     http://arxiv.org/abs/cs/0701192
+  (* power axiomatisation *)
 
-     "As a result, for any floating-point type with a bounded number of bits,
-      there exist two positive reals εrel and εabs such that
-        |x − r(x)| ≤ max(εrel.|x|, εabs)
-      The following, coarser, property may be easier to use in some contexts:
-        |x − r(x)| ≤ εrel.|x| + εabs"
+  use import int.Int
+  constant one : t
 
-     The first part is the error made when rounding to a normal number (which is
-     proportional to the absolute value of the exact mathematical result), and the
-     second part is the error made when rounding to a subnormal number. In the case
-     of round-to-even, we have:
+  function ( * ) t t : t
 
-     εrel = 2 ** (-p) where p is the number of bits of the mantissa
-     εabs = 2 ** (Emin - p) where Emin is the minimal value of the exponent
+  function power t int : t
 
-     with for single precision: p = 24, Emin = -126
-          for double precision: p = 53, Emin = -1022
-  *)
+  axiom Power_0 : forall x: t. power x 0 = one
 
-  lemma round_single_bound :
-    forall x : real [round_single x].
-      x -. 0x1p-24 *. AbsReal.abs (x) -. 0x1p-150 <=. round_single x <=. x +. 0x1p-24 *. AbsReal.abs (x) +. 0x1p-150
+  lemma Power_1 : forall x : t. power x 1 = x
 
-  lemma round_double_bound :
-    forall x : real [round_double x].
-      x -. 0x1p-53 *. AbsReal.abs (x) -. 0x1p-1075 <=. round_double x <=. x +. 0x1p-53 *. AbsReal.abs (x) +. 0x1p-1075
+  axiom Power_s : forall x: t, n: int. n >= 0 -> power x (n+1) = x * power x n
 
-  (* this lemma expresses that every single is also a double *)
-  lemma round_double_single :
-    forall x : real [ round_single x ].
-      round_double (round_single x) = round_single x
+  lemma Power_s_alt: forall x: t, n: int. n > 0 -> power x n = x * power x (n-1)
 
-  use export _gnatprove_standard_th.Floating_Func
+  lemma Power_sum : forall x: t, n m: int. 0 <= n -> 0 <= m ->
+    power x (n+m) = power x n * power x m
 
-  function real_of_int (x : int) : real = FromInt.from_int x
+  lemma Power_mult : forall x:t, n m : int. 0 <= n -> 0 <= m ->
+    power x (Int.( * ) n m) = power (power x n) m
 
-  function round real : int
+  lemma Power_mult2 : forall x y: t, n: int. 0 <= n ->
+    power (x * y) n = power x n * power y n
 
-  axiom Round_down:
-    forall x:real. x -. real_of_int (floor x) <. 0.5 -> round (x) = floor (x)
+end
 
-  axiom Round_up:
-    forall x:real. real_of_int (ceil x) -. x <. 0.5 -> round (x) = ceil (x)
+module Float32
+  use export float.Float32
 
-  axiom Round_neg_tie:
-    forall x:real.
-      x -. real_of_int (floor x) = 0.5 /\ x <. 0.0 -> round (x) = floor (x)
+  clone export Floating with
+    type t = t,
+    predicate lt = lt,
+    predicate le = le,
+    predicate gt = gt,
+    predicate ge = ge,
+    predicate eq = eq,
+    function div = div,
+    function rem = rem,
+    constant zeroF = zeroF,
+    constant one = oneF,
+    function ( * ) = mul
+end
 
-  axiom Round_pos_tie:
-    forall x:real.
-      real_of_int (ceil x) -. x = 0.5 /\ x >. 0.0 -> round (x) = ceil (x)
+module Float64
+  use export float.Float64
 
-  axiom Round_int :
-    forall i:int [round (real_of_int i)]. round (real_of_int i) = i
+  clone export Floating with
+    type t = t,
+    predicate lt = lt,
+    predicate le = le,
+    predicate gt = gt,
+    predicate ge = ge,
+    predicate eq = eq,
+    function div = div,
+    function rem = rem,
+    constant zeroF = zeroF,
+    constant one = oneF,
+    function ( * ) = mul
+end
 
-  axiom Round_near_int :
-    forall i:int. forall x:real.
-      -.0.5 <. x /\ x <. 0.5 -> (round (real_of_int (i) +. x) = i)
+module FloatConv
+  use export float.FloatConverter
 
-  axiom Round_monotonic:
-    forall x y:real. x <=. y -> Int.(<=) (round x) (round y)
-
-  axiom Round_monotonic_int1:
-    forall x:real, i:int. x <=. real_of_int i -> Int.(<=) (round x) i
-
-  axiom Round_monotonic_int2:
-    forall x:real, i:int. real_of_int i <=. x -> Int.(<=) i (round x)
-
-  axiom Round_bound:
-    forall x:real.
-      x -. 0.5 <=. real_of_int (round x) /\ real_of_int (round x) <=. x +. 0.5
-
-  function div_real (x : real) (y : real) : real = x /. y
-
-  val div_real_ (x:real) (y:real) : real
-    requires { y <> 0.0 }
-    ensures { result = div_real x y }
-
+  val range_check_ (f l x : Float64.t) : Float64.t
+    requires { (Float64.le f x) /\ (Float64.le x l) }
+    ensures { result = x }
 end
 
 module Boolean
@@ -697,7 +683,7 @@ module BV8
   val t__havoc (x : t__ref) : unit
      writes { x }
 
-  function one : t = of_int 1
+  function one : t = of_uint 1
 
   clone export BVAda with
     type t = t,
@@ -709,9 +695,9 @@ module BV8
     function ( * ) = mul,
     function one = one
 
-  val of_int_ (i : int) : t
+  val of_uint_ (i : int) : t
     requires{ uint_in_range i }
-    ensures{ result = of_int i }
+    ensures{ result = of_uint i }
 
   val udiv_ (x : t) (y : t) : t
     requires{ y <> zero }
@@ -729,7 +715,7 @@ module BV16
   val t__havoc (x : t__ref) : unit
      writes { x }
 
-  function one : t = of_int 1
+  function one : t = of_uint 1
 
   clone export BVAda with
     type t = t,
@@ -741,9 +727,9 @@ module BV16
     function ( * ) = mul,
     function one = one
 
-  val of_int_ (i : int) : t
+  val of_uint_ (i : int) : t
     requires{ uint_in_range i }
-    ensures{ result = of_int i }
+    ensures{ result = of_uint i }
 
   val udiv_ (x : t) (y : t) : t
     requires{ y <> zero }
@@ -761,7 +747,7 @@ module BV32
   val t__havoc (x : t__ref) : unit
      writes { x }
 
-  function one : t = of_int 1
+  function one : t = of_uint 1
 
   clone export BVAda with
     type t = t,
@@ -773,9 +759,9 @@ module BV32
     function ( * ) = mul,
     function one = one
 
-  val of_int_ (i : int) : t
+  val of_uint_ (i : int) : t
     requires{ uint_in_range i }
-    ensures{ result = of_int i }
+    ensures{ result = of_uint i }
 
   val udiv_ (x : t) (y : t) : t
     requires{ y <> zero }
@@ -793,7 +779,7 @@ module BV64
   val t__havoc (x : t__ref) : unit
      writes { x }
 
-  function one : t = of_int 1
+  function one : t = of_uint 1
 
   clone export BVAda with
     type t = t,
@@ -805,9 +791,9 @@ module BV64
     function ( * ) = mul,
     function one = one
 
-  val of_int_ (i : int) : t
+  val of_uint_ (i : int) : t
     requires{ uint_in_range i }
-    ensures{ result = of_int i }
+    ensures{ result = of_uint i }
 
   val udiv_ (x : t) (y : t) : t
     requires{ y <> zero }

@@ -35,7 +35,7 @@ with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Xrefs;            use SPARK_Xrefs;
 with String_Utils;           use String_Utils;
-with Uintp;
+with Uintp;                  use Uintp;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;
@@ -180,8 +180,6 @@ package body Why.Inter is
 
          if Node = Int_Unary_Minus then
             State.S.Include (+Int_Module);
-         elsif Node = Real_Unary_Minus then
-            State.S.Include (+RealInfix);
          end if;
 
          --  ??? Little optimization that also works around a bug
@@ -909,7 +907,13 @@ package body Why.Inter is
             return EW_Fixed_Type;
 
          when Float_Kind =>
-            return EW_Real_Type;
+            if Is_Single_Precision_Floating_Point_Type (Etype (Ty)) then
+               return EW_Float_32_Type;
+            elsif Is_Double_Precision_Floating_Point_Type (Etype (Ty)) then
+               return EW_Float_64_Type;
+            else
+               raise Program_Error;
+            end if;
 
          when Discrete_Kind =>
             --  In the case of Standard.Boolean, the base type 'bool' is

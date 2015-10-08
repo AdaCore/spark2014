@@ -653,48 +653,49 @@ module Floating_Point_Base
   (* The module that is used as basis for all floating-point types. *)
 
   use import "_gnatprove_standard".Main
-  use        "_gnatprove_standard".Floating
-  use import real.RealInfix
-  use export "ada__model_th".Floating_Point_Theory
+
+  type rep_type                 (* either float32 or float64 *)
+
+  (* this render ada__model_th.why obsolete right ? *)
+  function bool_eq (x : rep_type) (y : rep_type) : bool =
+    if x = y then True else False
 
   type t
 
-  (* This module will be cloned and round_real_tmp possibly replaced.
-     We keep round_real to denote the resulting rounding function. *)
+  function to_rep t : rep_type
+  function of_rep rep_type : t
 
-  function round_real_tmp real : real
-  function round_real (x : real) : real = round_real_tmp (x)
-
-  function to_real t : real
-
-  function of_real real : t
-
-  val of_real (x : real) : t
+  val of_rep (x : rep_type) : t
     requires { true }
-    ensures  { to_real (result) = x }
+    ensures  { to_rep (result) = x }
 
   function user_eq (x : t) (y : t) : bool
+
+  (* nothing in smtlib, find an encoding ? *)
 
   (* Next and previous representable reals. The functions return respectively
      the representable real greater than or lower than the argument x, which
      may or not be representable. *)
 
-  function next_representable (x : real) : real
-  function prev_representable (x : real) : real
+  function next_representable (x : rep_type) : rep_type
+  function prev_representable (x : rep_type) : rep_type
+
+  predicate lt rep_type rep_type
+  predicate gt rep_type rep_type
 
   axiom next_representable_def :
-    forall x : real [next_representable x]. next_representable x >. x
+    forall x : rep_type [next_representable x]. gt (next_representable x) x
 
   axiom prev_representable_def :
-    forall x : real [prev_representable x]. prev_representable x <. x
+    forall x : rep_type [prev_representable x]. lt (prev_representable x) x
 
-  function attr__ATTRIBUTE_IMAGE real : __image
+  function attr__ATTRIBUTE_IMAGE rep_type : __image
 
   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
 
-  function attr__ATTRIBUTE_VALUE __image : real
+  function attr__ATTRIBUTE_VALUE __image : rep_type
 
-  val attr__ATTRIBUTE_VALUE_ (x : __image) : real
+  val attr__ATTRIBUTE_VALUE_ (x : __image) : rep_type
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
@@ -704,71 +705,81 @@ end
 module Static_Floating_Point
   (* The module that is used as basis for all "static" floating-point types. *)
 
-  use import real.RealInfix
   clone export Floating_Point_Base
 
   axiom inversion_axiom :
-    forall x : t [to_real x].
-      of_real (to_real (x)) = x
+    forall x : t [to_rep x].
+      of_rep (to_rep (x)) = x
 
-  function first : real
+  function first : rep_type
 
-  function last  : real
+  function last  : rep_type
 
-  (* The first and last value of the floating-point type are exactly
-     represented. So round_real is the identity on such values. *)
-
-  axiom representable_first :
-    round_real first = first
-
-  axiom representable_last :
-    round_real last = last
-
-  val check_not_last (n : real) : real
+  val check_not_last (n : rep_type) : rep_type
     requires { n <> last }
     ensures { result = n }
 
-  val check_not_first (n : real) : real
+  val check_not_first (n : rep_type) : rep_type
     requires { n <> first }
     ensures { result = n }
 
-  predicate in_range (x : real)
+  predicate in_range (x : rep_type)
 
-  val range_check_ (n : real) : real
+  val range_check_ (n : rep_type) : rep_type
     requires { in_range n }
     ensures { result = n }
 
   axiom range_axiom :
-    forall x : t. in_range (to_real x)
+    forall x : t. in_range (to_rep x)
+end
+
+module Static_Float32
+  use import _gnatprove_standard.Float32
+
+  clone export Static_Floating_Point with
+    type rep_type = t,
+    predicate gt = gt,
+    predicate lt = lt
+end
+
+module Static_Float64
+  use import _gnatprove_standard.Float64
+
+  clone export Static_Floating_Point with
+    type rep_type = t,
+    predicate gt = gt,
+    predicate lt = lt
 end
 
 module Dynamic_Floating_Point
   (* The module that is used as basis for all "dynamic" floating-point types. *)
 
-  use import real.RealInfix
-
  type t
+ type rep_type
 
- function base_to_rep t : real
- function base_of_rep real : t
+ function base_to_rep t : rep_type
+ function base_of_rep rep_type : t
 
- function to_real "inline" (x : t) : real = base_to_rep x
- function of_real "inline" (x : real) : t = base_of_rep x
+ function to_rep "inline" (x : t) : rep_type = base_to_rep x
+ function of_rep "inline" (x : rep_type) : t = base_of_rep x
 
-  clone export Floating_Point_Base
-      with type t = t, function of_real = of_real, function to_real = to_real
+  clone export Floating_Point_Base with
+      type t = t,
+      type rep_type = rep_type,
+      function of_rep = base_of_rep,
+      function to_rep = base_to_rep
 
-  predicate dynamic_property (first last n : real)
+  predicate dynamic_property (first last n : rep_type)
 
-  val check_not_last (first last n : real) : real
+  val check_not_last (first last n : rep_type) : rep_type
     requires { n <> last }
     ensures { result = n }
 
-  val check_not_first (first last n : real) : real
+  val check_not_first (first last n : rep_type) : rep_type
     requires { n <> first }
     ensures { result = n }
 
-  val range_check_ (first last n : real) : real
+  val range_check_ (first last n : rep_type) : rep_type
     requires { dynamic_property first last n }
     ensures { result = n /\ dynamic_property first last n }
 end

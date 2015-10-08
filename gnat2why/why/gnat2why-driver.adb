@@ -80,6 +80,8 @@ with Why.Inter;                use Why.Inter;
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
 pragma Warnings (On,  "unit ""Why.Atree.Treepr"" is not referenced");
+with Uintp;
+use Uintp;
 
 package body Gnat2Why.Driver is
 
@@ -642,8 +644,16 @@ package body Gnat2Why.Driver is
         (Process : not null access procedure (E : Entity_Id))
       is
       begin
-         for E of Entities_To_Translate loop
-            Process (E);
+         for E of List_Entities loop
+            --  clem  ! /!\ discuss that !!!!
+            if (not Is_Floating_Point_Type (E) or else
+                Uintp.UI_Le (Esize (E), Uint_64))
+              and then
+                (not Is_Floating_Point_Type (Etype (E)) or else
+                 Uintp.UI_Le (Esize (Etype (E)), Uint_64))
+            then
+               Process (E);
+            end if;
          end loop;
       end For_All_Entities;
 
@@ -870,7 +880,19 @@ package body Gnat2Why.Driver is
             when N_Full_Type_Declaration |
                  N_Subtype_Declaration   |
                  N_Object_Declaration    =>
-               Translate (Defining_Entity (Decl));
+               declare
+                  Def_Ent : constant Node_Id := Defining_Entity (Decl);
+               begin
+                  --  /!\ clem !!! discuss a solution for that !
+                  if
+                  not Is_Floating_Point_Type (Def_Ent) or else
+                    Uintp.UI_Le (Esize (Def_Ent), Uint_64)
+                  --                 Decl /= Standard_Long_Long_Float
+                  --                 and then Decl /= Universal_Real
+                  then
+                     Translate_Entity (Def_Ent);
+                  end if;
+               end;
             when others =>
                null;
          end case;
@@ -886,7 +908,8 @@ package body Gnat2Why.Driver is
       Translate (Standard_Integer_32);
       Translate (Standard_Integer_64);
       Translate (Universal_Integer);
-      Translate (Universal_Real);
+      --  /!\ clem ! same here
+      --  Translate (Universal_Real);
 
    end Translate_Standard_Package;
 

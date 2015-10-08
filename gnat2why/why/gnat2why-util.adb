@@ -26,7 +26,7 @@
 with Ada.Strings;            use Ada.Strings;
 with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
 with Atree;                  use Atree;
-with Einfo;                  use Einfo;
+with Eval_Fat;
 with Flow_Types;
 with Flow_Utility;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
@@ -34,6 +34,7 @@ with Sem_Util;               use Sem_Util;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with String_Utils;           use String_Utils;
+with Urealp;                 use Urealp;
 with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
@@ -41,6 +42,7 @@ with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
+with Stand;                  use Stand;
 
 package body Gnat2Why.Util is
 
@@ -629,6 +631,204 @@ package body Gnat2Why.Util is
       return +Get_Static_Call_Contract (Params, E, Kind, EW_Pred);
    end Get_Static_Call_Contract;
 
+   -------------------------
+   --  Cast_Real_Litteral --
+   -------------------------
+
+   function Cast_Real_Litteral
+     (E  : Node_Id;
+      Ty : W_Type_Id) return W_Float_Constant_Id
+   is
+      function Ureal_To_Bitsream
+        (Rval : Ureal;
+         Ty   : W_Type_Id) return Uint;
+
+      function Ureal_To_Bitsream
+        (Rval : Ureal;
+         Ty   : W_Type_Id) return Uint
+      is
+         Base : constant Nat := Rbase (Rval);
+         Den  : Uint := Denominator (Rval);
+         Num  : Uint := Numerator (Rval);
+         --  Rval = num * Base ** (- Den)
+         --  We expect the frontend to give us Rval in a format such that :
+         --  - Base is either 2 or 16 (exept for 0 in base 10)
+         --  - Den is greater to eoffset + sig_size - 1
+         --    or equal if Rval is a denormal
+         --  - Num is smaller than Base**(Sig_Size+1)
+         --  - Num is greater than Base**Sig_Size if Rval is normal
+         --  All other cases should raise an error
+
+         --  denormal of base 16 are not treated yet.
+
+         Eoffset : constant Nat := (if Ty = EW_Float_32_Type then
+                                       127
+                                    else
+                                       1023);
+         --  the exponent offset
+
+         Sig_Size : constant Nat := (if Ty = EW_Float_32_Type then
+                                        23
+                                     else
+                                        52);
+         --  the size of the significand (or mantissa)
+
+         Size : constant Int := (if Ty = EW_Float_32_Type
+                                 then 32
+                                 else 64);
+
+         Sign_Bit : constant Uint := (if UR_Is_Negative (Rval) then
+                                         UI_Expon (Uint_2, Size - 1)
+                                      else Uint_0);
+         --  the bit of sign
+
+         Exppat : Uint;
+         Bitpat : Uint;
+      begin
+
+         if UR_Eq (Rval, Ureal_0) then
+            return Uint_0;
+         end if;
+         --  0 is might be represented in base 0 so we make a special case for
+         --  it since we only deal with number in base 2, 10 or 16
+
+         if Base /= 2 and Base /= 10 and Base /= 16 then
+            raise Program_Error;
+         end if;
+         --  fail on unexpected base
+
+         if (Base = 2 and UI_Ge (Num, UI_Expon (Uint_2, Sig_Size + 1)))
+           or else
+             (Base = 16 and UI_Ge (Num,
+                                   UI_Expon (Uint_16, (Sig_Size / 4) + 1)))
+         then
+            raise Program_Error;
+         end if;
+         --  Check that Num fit inside the significand.
+
+         if Base = 10 then
+            --  in case of base 10 rval we recast it in base 2 through
+            --  Eval_Fat.Machine and don't directly send the pattern
+            --  in order to check it with the original rval in base 10.
+
+            Bitpat := Ureal_To_Bitsream
+              (Rval  => Eval_Fat.Machine (RT    => (if Ty = EW_Float_32_Type
+                                                    then Standard_Float
+                                                    else Standard_Long_Float),
+                                          X     => Rval,
+                                          Mode  => Eval_Fat.Round_Even,
+                                          Enode => E),
+               Ty => Ty);
+
+         elsif Base = 2 and (UI_Lt (Num, UI_Expon (Uint_2, Sig_Size)))
+         then
+            --  We deal with subnormals for base 2
+
+            if not UI_Eq (Den, Sig_Size + Eoffset - 1) then
+               --  If Rval is not in the expected form, raise an error
+               raise Program_Error;
+            end if;
+
+            Bitpat := Num + Sign_Bit;
+
+         elsif Base = 2 and (UI_Gt (Den, UI_From_Int (149))) then
+            --  second format for subnormals
+
+            --  Here we expect subnormal of the form
+            --    2^sig_size <= Num < 2^(sig_size+1)
+            --    Eoffset + 2 Sig_Size - 1 <= Den < Eoffset + Sig_Size
+            --  for example
+            --  Succ'(0.0) = 2^sig_size * 2^-(eoffest + 2 sig_size - 1)
+
+            declare
+               Min_Den : constant Uint := Eoffset + 2 * Sig_Size - Uint_1;
+            begin
+               pragma Assert (UI_Le (Den, Min_Den));
+
+               Bitpat := UI_Div (Num,
+                                 UI_Expon (Uint_2, Sig_Size - Min_Den + Den));
+
+               pragma Assert (Num = Bitpat * UI_Expon (Uint_2,
+                              Sig_Size - Min_Den + Den));
+            end;
+
+         elsif Base = 16 and (UI_Lt (Num, UI_Expon (Uint_16, (Sig_Size / 4))))
+         then
+
+            raise Program_Error;
+            --  subnormal of base 16 are not dealed with yet
+
+         else
+            --  We're left to deal with nomrmals
+
+            Den := UI_Negate (Den);
+            --  invert the sign of the exponent : we want a multiplication,
+            --  not a division.
+
+            if Base = 16 then
+               Den := UI_Mul (Uint_4, Den);
+
+               while UI_Gt (Num, UI_Expon (Uint_2, Sig_Size + 1)) loop
+                  Num := UI_Div (Num, Uint_2);
+                  Den := UI_Add (Den, Uint_1);
+               end loop;
+            end if;
+            --  change of base for rval of base 16
+
+            Exppat := Eoffset + Den + Sig_Size;
+            --  compute the pattern for the exponent
+
+            Bitpat := (Num - UI_Expon (Uint_2, Sig_Size));
+            --  remove the implicit most significand bit of the significand
+
+            Bitpat := Bitpat
+              + Exppat * UI_Expon (Uint_2, Sig_Size)
+              + Sign_Bit;
+            --  add the exponent pattern and sign bit
+            --  to complete the bit pattern
+         end if;
+
+         pragma Assert (0 <= Bitpat and Bitpat < UI_Expon (2, Size));
+
+         declare
+            NB : constant Uint := UI_Div (Bitpat, UI_Expon (Uint_2, Size - 1));
+            D  : constant Uint := UI_Div (Bitpat - UI_Mul (NB,
+                                          UI_Expon (Uint_2, Size - 1)),
+                                          UI_Expon (Uint_2, Sig_Size));
+            N  : constant Uint := Bitpat
+              - UI_Mul (NB, UI_Expon (Uint_2, Size - 1))
+              - UI_Mul (D,  UI_Expon (Uint_2, Sig_Size));
+            Bitpat_R : constant Ureal :=
+              (if UI_Eq (D, Uint_0) then
+                    UR_From_Components
+                 (Num      => N,
+                  Den      => Eoffset - Uint_1 + Sig_Size,
+                  Rbase    => 2,
+                  Negative => (NB = 1))
+               else
+                  UR_From_Components
+                 (Num      => N + UI_Expon (Uint_2, Sig_Size),
+                  Den      => -(D - Eoffset - Sig_Size),
+                  Rbase    => 2,
+                  Negative => (NB = 1)));
+         begin
+            --  let's checkout the pattern is correct !
+            pragma Assert (UR_Eq (Rval, Bitpat_R));
+         end;
+
+         return Bitpat;
+
+      end Ureal_To_Bitsream;
+
+   begin
+
+      return New_Float_Constant (Ada_Node => E,
+                                 Value    => Ureal_To_Bitsream
+                                   (Rval => Realval (E),
+                                    Ty   => Ty),
+                                 Typ      => Ty);
+   end Cast_Real_Litteral;
+
    -----------------------
    -- Init_Why_Sections --
    -----------------------
@@ -895,6 +1095,16 @@ package body Gnat2Why.Util is
          end;
       end if;
    end Why_Type_Of_Entity;
+
+   -----------------------
+   -- Why_Type_Is_Float --
+   -----------------------
+
+   function Why_Type_Is_Float (Typ : W_Type_Id) return Boolean is
+   begin
+      return Typ = EW_Float_32_Type
+        or else Typ = EW_Float_64_Type;
+   end Why_Type_Is_Float;
 
    ---------------------------
    -- Why_Type_Is_BitVector --

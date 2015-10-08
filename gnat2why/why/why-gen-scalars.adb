@@ -26,7 +26,6 @@
 with Common_Containers;   use Common_Containers;
 with Namet;               use Namet;
 with Sem_Eval;            use Sem_Eval;
-with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
 with SPARK_Util;          use SPARK_Util;
 with Uintp;               use Uintp;
@@ -87,36 +86,19 @@ package body Why.Gen.Scalars is
       -------------------------
 
       function Compute_Clone_Subst return W_Clone_Substitution_Array is
-         Has_Round_Real : constant Boolean :=
-           Is_Single_Precision_Floating_Point_Type (E)
-             or else
-           Is_Double_Precision_Floating_Point_Type (E);
-         Round_Id : constant W_Identifier_Id :=
-           (if Is_Single_Precision_Floating_Point_Type (E) then
-                 M_Floating.Round_Single
-            elsif Is_Double_Precision_Floating_Point_Type (E) then
-                 M_Floating.Round_Double
-            else
-               M_Floating.Round);
          Default_Clone_Subst : constant W_Clone_Substitution_Id :=
            New_Clone_Substitution
              (Kind      => EW_Type_Subst,
               Orig_Name => New_Name (Symbol => NID ("t")),
               Image     => Why_Name);
          Rep_Type_Clone_Substitution : constant W_Clone_Substitution_Array :=
-           (if not Is_Static and Has_Discrete_Type (E) then
+           (if not Is_Static and (Has_Discrete_Type (E)
+            or Has_Floating_Point_Type (E)) then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Type_Subst,
                   Orig_Name => New_Name
                     (Symbol => NID ("rep_type")),
                   Image     => Get_Name (Base_Why_Type (E))))
-            else (1 .. 0 => <>));
-         Round_Clone_Subst : constant W_Clone_Substitution_Array :=
-           (if Has_Round_Real then
-              (1 => New_Clone_Substitution
-                   (Kind      => EW_Function,
-                    Orig_Name => To_Local (E_Symb (E, WNE_Float_Round_Tmp)),
-                    Image     => Get_Name (Round_Id)))
             else (1 .. 0 => <>));
          Static_Clone_Subst : constant W_Clone_Substitution_Array :=
            (if Is_Static then
@@ -192,13 +174,9 @@ package body Why.Gen.Scalars is
             else (1 .. 0 => <>));
       begin
 
-         --  If the type Entity has a rounding operation, use it in the clone
-         --  substitution to replace the default one.
-
          return
            Default_Clone_Subst &
            Rep_Type_Clone_Substitution &
-           Round_Clone_Subst &
            Static_Clone_Subst &
            Dynamic_Conv_Subst &
            Mod_Clone_Subst &
@@ -345,12 +323,12 @@ package body Why.Gen.Scalars is
       ----------------
 
       function Pick_Clone return W_Module_Id is
+         Typ : constant W_Type_Id := Base_Why_Type (E);
       begin
          if Is_Static then
             if Has_Modular_Integer_Type (E) then
                declare
                   Modulus_Val : constant Uint := Modulus (E);
-                  Typ : constant W_Type_Id := Base_Why_Type (E);
                begin
                   return (if Typ = EW_BitVector_8_Type then
                             (if UI_Lt (Modulus_Val, UI_Expon (2, 8)) then
@@ -381,7 +359,9 @@ package body Why.Gen.Scalars is
                return Static_Fixed_Point;
             else
                pragma Assert (Has_Floating_Point_Type (E));
-               return Static_Floating_Point;
+               return (if Typ = EW_Float_32_Type then
+                          Static_Float32
+                       else Static_Float64);
             end if;
          else
             if Has_Modular_Integer_Type (E) then
@@ -392,7 +372,7 @@ package body Why.Gen.Scalars is
                return Dynamic_Fixed_Point;
             else
                pragma Assert (Has_Floating_Point_Type (E));
-               return Dynamic_Floating_Point;
+               return Dynamic_Float;
             end if;
          end if;
       end Pick_Clone;
@@ -484,8 +464,8 @@ package body Why.Gen.Scalars is
       if Is_Discrete_Type (E) and then Is_Static then
          --  Note that if E is dynamic type, to_rep is not projection function
          Emit_Projection_Metas (Section => File, Projection_Fun => "to_rep");
-      elsif Is_Floating_Point_Type (E) then
-         Emit_Projection_Metas (Section => File, Projection_Fun => "to_real");
+      elsif Is_Floating_Point_Type (E) and then Is_Static then
+         Emit_Projection_Metas (Section => File, Projection_Fun => "to_rep");
       end if;
 
    end Declare_Scalar_Type;
@@ -627,6 +607,8 @@ package body Why.Gen.Scalars is
          return New_Integer_Constant (Value => Expr_Value (N));
       elsif Is_Fixed_Point_Type (Ty) then
          return New_Fixed_Constant (Value => Expr_Value (N));
+      elsif Is_Floating_Point_Type (Ty) then
+         return +Cast_Real_Litteral (N, Base_Why_Type (Ty));
       else
          return New_Real_Constant (Value => Expr_Value_R (N));
       end if;
