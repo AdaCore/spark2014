@@ -2,13 +2,13 @@ logic.adb:17:07: info: assertion proved
 logic.adb:18:07: info: assertion proved
 logic.adb:19:07: info: assertion proved
 logic.adb:20:07: info: assertion proved
-logic.adb:24:22: medium: assertion might fail, requires not (if F then F else true, counterexample: the check fails with all inputs
+logic.adb:24:22: medium: assertion might fail, requires not (if F then F else true, counterexample: no information for location of the check
 logic.adb:26:07: info: assertion proved
 logic.adb:27:22: medium: assertion might fail, requires not (if F then T else true, counterexample: F = False and T = True
 logic.adb:29:07: info: assertion proved
 logic.adb:30:33: medium: assertion might fail, requires F, counterexample: F = False
 logic.adb:32:07: info: assertion proved
-logic.adb:33:22: medium: assertion might fail, requires not (if T then T else true, counterexample: the check fails with all inputs
+logic.adb:33:22: medium: assertion might fail, requires not (if T then T else true, counterexample: no information for location of the check
 logic.adb:43:07: info: assertion proved
 logic.adb:44:07: info: assertion proved
 logic.adb:45:07: info: assertion proved
