@@ -25,6 +25,7 @@
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings;                use Ada.Strings;
+with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Assumption_Types;           use Assumption_Types;
 with Atree;                      use Atree;
@@ -591,6 +592,19 @@ package body Flow_Error_Messages is
                           Variables.Variables_Map'Unchecked_Access;
                      begin
 
+                        --  If the value of a model element contains "@",
+                        --  it is an abstract value that should not be
+                        --  displayed.
+                        --  To display such value, projection to SPARK value
+                        --  must be defined.
+                        --  These internal values can appear because there are
+                        --  not yet defined projections. These are mainly the
+                        --  values of types defined in share/spark/theories
+
+                        if Index (Value, "@") /= 0 then
+                           goto Next_Model_Element;
+                        end if;
+
                         --  There is either one model element with its name
                         --  corresponding to an error message. No variable map
                         --  is built in this case.
@@ -670,6 +684,7 @@ package body Flow_Error_Messages is
                            end;
                         end loop;
                      end;
+                     <<Next_Model_Element>>
                   end loop;
                end Build_Variables_Info;
 
@@ -780,19 +795,12 @@ package body Flow_Error_Messages is
                end Build_Pretty_Line;
 
                Variables : Variables_Info;
+               Pretty_Line_Cntexmp_Arr : JSON_Array;
             begin
                Build_Variables_Info (Get (Line_Cntexmp), Variables);
-
-               if not Is_Empty (Variables.Variables_Map) then
-                  declare
-                     Pretty_Line_Cntexmp_Arr : JSON_Array;
-                  begin
-                     Build_Pretty_Line
-                       (Variables, Pretty_Line_Cntexmp_Arr);
-                     Set_Field
-                       (File_Cntexmp, Line, Create (Pretty_Line_Cntexmp_Arr));
-                  end;
-               end if;
+               Build_Pretty_Line (Variables, Pretty_Line_Cntexmp_Arr);
+               Set_Field
+                 (File_Cntexmp, Line, Create (Pretty_Line_Cntexmp_Arr));
             end Create_Pretty_Line;
          begin
             Map_JSON_Object (File_Cntexmp, Create_Pretty_Line'Access);
@@ -947,9 +955,17 @@ package body Flow_Error_Messages is
          Cntexmp_Line_Str : constant String :=
            Get_Cntexmp_Line_Str (Cntexmp_Line);
       begin
-            return (if Cntexmp_Line_Str = "" then
-                       "error: cannot get location of the check"
-                    else Cntexmp_Line_Str);
+         return (if Cntexmp_Line_Str = ""
+                 then
+                   (if Has_Field (Cntexmp_File, Line_Str)
+                    then
+                    --  This can happen if there are some counterexample
+                    --  elements on the VC line, but all have abstract values,
+                    --  which are not displayed in counterexample.
+                       "no information for location of the check"
+                    else
+                       "error: cannot get location of the check")
+                 else Cntexmp_Line_Str);
       end Get_Cntexmp_One_Liner;
 
       Msg2     : constant String :=
