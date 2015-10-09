@@ -429,7 +429,8 @@ package body Why.Gen.Scalars is
       --      two different functions, it is necessary emit projection meta
       --      for cloned projection functions.
 
-      if Is_Discrete_Type (E) and then not Type_Is_Modeled_As_Base (E) then
+      if Is_Discrete_Type (E) and then Is_Static then
+         --  Note that if E is dynamic type, to_rep is not projection function
          Emit_Projection_Metas (Theory => Theory, Projection_Fun => "to_rep");
       elsif Is_Floating_Point_Type (E) then
          Emit_Projection_Metas (Theory => Theory, Projection_Fun => "to_real");
