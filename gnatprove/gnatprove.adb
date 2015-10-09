@@ -358,17 +358,13 @@ procedure Gnatprove is
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all),
                6 => new String'("--why3-conf"),
-               7 => new String'(Gnatwhy3_Conf),
-               8 => new String'("--counterexample"),
-               9 => new String'(Counterexample.all))
+               7 => new String'(Gnatwhy3_Conf))
             else
               (1 => new String'("--prepare-shared"),
                2 => new String'("--prover"),
                3 => new String'(Alter_Prover.all),
                4 => new String'("--proof-dir"),
-               5 => new String'(Proof_Dir.all),
-               6 => new String'("--counterexample"),
-               7 => new String'(Counterexample.all)));
+               5 => new String'(Proof_Dir.all)));
          Res : Boolean;
          Old_Dir  : constant String := Current_Directory;
          Gnatwhy3 : constant String := Compose (Libexec_Bin_Dir, "gnatwhy3");
