@@ -6,33 +6,40 @@ pck.adb:33:15: info: initialization of "V_Hi" proved
 pck.adb:33:20: info: overflow check proved
 pck.adb:33:20: info: range check proved
 pck.adb:34:15: info: initialization of "V_Lo" proved
-pck.adb:34:20: info: division check proved
-pck.adb:38:20: info: initialization of "V_Hi" proved
-pck.adb:38:25: info: division check proved
-pck.adb:38:25: info: range check proved
-pck.adb:40:22: info: initialization of "Result_Hi" proved
-pck.adb:40:22: medium: assertion might fail, requires Result_Hi < 16#7FFF_FFFF#
-pck.adb:49:20: info: initialization of "V_Hi" proved
-pck.adb:49:25: info: overflow check proved
-pck.adb:49:25: info: range check proved
-pck.adb:49:27: info: initialization of "Result_Hi" proved
-pck.adb:49:37: info: overflow check proved
-pck.adb:51:20: info: initialization of "Result_Hi" proved
-pck.adb:51:30: info: overflow check proved
-pck.adb:51:30: info: range check proved
-pck.adb:56:10: info: initialization of "V_Lo" proved
-pck.adb:56:15: info: overflow check proved
-pck.adb:56:17: info: initialization of "Remainder" proved
-pck.adb:56:27: info: overflow check proved
-pck.adb:56:37: info: overflow check proved
-pck.adb:56:51: info: division check proved
-pck.adb:56:56: info: division check proved
-pck.adb:56:56: info: range check proved
-pck.adb:59:11: info: initialization of "Result_Lo" proved
-pck.adb:59:11: medium: assertion might fail, requires Result_Lo <= Uint_64 (Natural'Last) * 2 ** 32 - Result_Hi
-pck.adb:59:59: info: initialization of "Result_Hi" proved
-pck.adb:68:14: info: initialization of "Result_Hi" proved
-pck.adb:68:24: info: overflow check proved
-pck.adb:68:26: info: initialization of "Result_Lo" proved
+pck.adb:34:20: info: range check proved
+pck.adb:34:20: medium: overflow check might fail
+pck.adb:35:15: info: initialization of "V_Hi" proved
+pck.adb:35:20: medium: overflow check might fail
+pck.adb:35:22: info: initialization of "V_Lo" proved
+pck.adb:35:27: info: division check proved
+pck.adb:36:15: info: initialization of "V_Lo" proved
+pck.adb:36:20: info: division check proved
+pck.adb:40:20: info: initialization of "V_Hi" proved
+pck.adb:40:25: info: division check proved
+pck.adb:40:25: info: range check proved
+pck.adb:42:22: info: initialization of "Result_Hi" proved
+pck.adb:42:22: medium: assertion might fail, requires Result_Hi < 16#7FFF_FFFF#
+pck.adb:51:20: info: initialization of "V_Hi" proved
+pck.adb:51:25: info: overflow check proved
+pck.adb:51:25: info: range check proved
+pck.adb:51:27: info: initialization of "Result_Hi" proved
+pck.adb:51:37: info: overflow check proved
+pck.adb:53:20: info: initialization of "Result_Hi" proved
+pck.adb:53:30: info: overflow check proved
+pck.adb:53:30: info: range check proved
+pck.adb:58:10: info: initialization of "V_Lo" proved
+pck.adb:58:15: info: overflow check proved
+pck.adb:58:17: info: initialization of "Remainder" proved
+pck.adb:58:27: info: overflow check proved
+pck.adb:58:37: info: overflow check proved
+pck.adb:58:51: info: division check proved
+pck.adb:58:56: info: division check proved
+pck.adb:58:56: info: range check proved
+pck.adb:61:11: info: initialization of "Result_Lo" proved
+pck.adb:61:11: medium: assertion might fail, requires Result_Lo <= Uint_64 (Natural'Last) * 2 ** 32 - Result_Hi
+pck.adb:61:59: info: initialization of "Result_Hi" proved
+pck.adb:70:14: info: initialization of "Result_Hi" proved
+pck.adb:70:24: info: overflow check proved
+pck.adb:70:26: info: initialization of "Result_Lo" proved
 pck.ads:6:14: medium: postcondition might fail, requires Int64 (Mul_Div'Result) = Int64 (V) * Int64 (M) / D
 pck.ads:6:61: info: division check proved
