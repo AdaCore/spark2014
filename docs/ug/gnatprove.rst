@@ -464,7 +464,7 @@ setting various switches for |GNATprove|'s analysis. By default, this panel
 offers a few simple choices, like the proof level (see description of switch
 ``--level`` in :ref:`Running GNATprove from the Command Line`). If the user
 changes its ``User profile`` for |SPARK| in :menuselection:`Edit -->
-Preferences --> Plugins --> gnatprove` from ``Basic`` to ``Advanced``, then a
+Preferences --> SPARK` from ``Basic`` to ``Advanced``, then a
 more complex panel is displayed for proof, with more detailed switches.
 
 |GNATprove| project switches can be edited from the panel ``GNATprove`` (in
