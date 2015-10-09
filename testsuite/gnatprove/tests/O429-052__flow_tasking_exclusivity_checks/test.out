@@ -2,8 +2,7 @@ entry_call_from_elaboration.adb:23:08: possible data race when accessing variabl
 entry_call_from_elaboration.adb:23:08: with task "entry_call_from_elaboration.t1"
 entry_call_from_elaboration.adb:23:08: with task "entry_call_from_elaboration.t2"
 nested_po.adb:4:24: warning: statement has no effect
-nested_po.adb:12:29: warning: statement has no effect
-nested_po.adb:12:29: warning: unused assignment to "Outer_Rec"
+nested_po.ads:21:14: medium: "Outer_Rec" might not be initialized before start of tasks of type "TT"
 nested_po.ads:21:14: medium: the task might terminate, which is not allowed in SPARK
 pack.adb:7:18: warning: assuming "Put_Line" has no effect on global items
 pack.adb:7:18: warning: no Global contract available for "Put_Line"
@@ -31,10 +30,6 @@ two_tasks_single_po.adb:4:20: warning: statement has no effect
 two_tasks_single_po.adb:11:09: multiple tasks might suspend on protected object "two_tasks_single_po.po" (SPARK RM 9(11))
 two_tasks_single_po.adb:11:09: with task "two_tasks_single_po.t1"
 two_tasks_single_po.adb:11:09: with task "two_tasks_single_po.t2"
-two_tasks_single_po.adb:15:09: warning: statement has no effect
-two_tasks_single_po.adb:15:09: warning: unused assignment to "PO"
-two_tasks_single_po.adb:20:09: warning: statement has no effect
-two_tasks_single_po.adb:20:09: warning: unused assignment to "PO"
 two_tasks_single_so.ads:7:09: medium: "SO" might not be initialized before start of tasks of type "T1tk"
 two_tasks_single_so.ads:9:09: medium: "SO" might not be initialized before start of tasks of type "T2tk"
 two_tasks_single_so.ads:9:09: multiple tasks might suspend on suspension object "two_tasks_single_so.so" (SPARK RM 9(11))

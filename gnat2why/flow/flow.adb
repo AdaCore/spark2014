@@ -860,15 +860,14 @@ package body Flow is
                                  return Flow_Analysis_Graphs
    is
       FA : Flow_Analysis_Graphs_Root
-        (Kind            =>
-           (case Ekind (E) is
-            when Subprogram_Kind => Kind_Subprogram,
-            when E_Task_Type     => Kind_Task,
-            when E_Entry         => Kind_Entry,
-            when E_Package       => Kind_Package,
-            when E_Package_Body  => Kind_Package_Body,
-            when others          => raise Program_Error),
-          Generating_Globals => Generating_Globals);
+        (Kind               => (case Ekind (E) is
+                                when Subprogram_Kind => Kind_Subprogram,
+                                when E_Task_Type     => Kind_Task,
+                                when E_Entry         => Kind_Entry,
+                                when E_Package       => Kind_Package,
+                                when E_Package_Body  => Kind_Package_Body,
+                                when others          => raise Program_Error),
+         Generating_Globals => Generating_Globals);
 
       Phase : constant String := (if Generating_Globals
                                   then "Global generation"

@@ -796,7 +796,7 @@ package body Flow.Analysis is
       is
          EV : constant Flow_Id := Entire_Variable (F);
       begin
-         return Ekind (Get_Direct_Mapping_Id (EV)) in Concurrent_Kind;
+         return Ekind (Etype (Get_Direct_Mapping_Id (EV))) in Concurrent_Kind;
       end Is_Or_Belongs_To_Concurrent_Object;
 
    begin
@@ -1070,9 +1070,11 @@ package body Flow.Analysis is
                end if;
             else
                --  We suppress this warning when we are dealing with a
-               --  protected type.
-               if not (F.Kind = Direct_Mapping)
-                 or else Ekind (Get_Direct_Mapping_Id (F)) /= E_Protected_Type
+               --  concurrent type or a component of a concurrent type.
+               if F.Kind /= Direct_Mapping
+                 or else (Ekind (Etype (Get_Direct_Mapping_Id (F))) not in
+                            Concurrent_Kind
+                          and then not Is_Concurrent_Comp_Or_Disc (F))
                then
                   Error_Msg_Flow
                     (FA       => FA,
@@ -1138,15 +1140,23 @@ package body Flow.Analysis is
                      Severity => Warning_Kind);
                end if;
             else
-               Error_Msg_Flow
-                 (FA       => FA,
-                  Msg      => "unused initial value of &",
-                  --  ??? find_import
-                  N        => Error_Location (FA.PDG, FA.Atr, V),
-                  F1       => F,
-                  F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag      => Unused_Initial_Value,
-                  Severity => Warning_Kind);
+               --  We suppress this warning when we are dealing with a
+               --  concurrent type or a component of a concurrent type.
+               if F.Kind /= Direct_Mapping
+                 or else (Ekind (Etype (Get_Direct_Mapping_Id (F))) not in
+                            Concurrent_Kind
+                          and then not Is_Concurrent_Comp_Or_Disc (F))
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "unused initial value of &",
+                     --  ??? find_import
+                     N        => Error_Location (FA.PDG, FA.Atr, V),
+                     F1       => F,
+                     F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                     Tag      => Unused_Initial_Value,
+                     Severity => Warning_Kind);
+               end if;
             end if;
          end;
       end loop;
@@ -3449,8 +3459,8 @@ package body Flow.Analysis is
                         Tag      => Depends_Wrong,
                         Severity => Medium_Check_Kind);
                      --  ??? show a path?
-                  elsif F_Out = Direct_Mapping_Id
-                    (FA.Analyzed_Entity)
+                  elsif F_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
+                    and then Ekind (FA.Analyzed_Entity) = E_Function
                   then
                      Error_Msg_Flow
                        (FA       => FA,

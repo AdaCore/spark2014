@@ -37,10 +37,10 @@ package Flow_Refinement is
    -- Flow_Scope --
    ----------------
 
-   --  The scopes we care about in flow analysis are restricted to packages and
-   --  protected objects.
+   --  The scopes we care about in flow analysis are restricted to packages,
+   --  protected objects and task objects.
    --
-   --  There are six places any particular variable or subprogram can be
+   --  There are eight places any particular variable or subprogram can be
    --  declared or implemented in a:
    --    * package's spec
    --    * package's private part
@@ -48,6 +48,8 @@ package Flow_Refinement is
    --    * protected object's spec
    --    * protected object's private part
    --    * protected object's body
+   --    * task object's spec
+   --    * task object's body
    --
    --  Therefore flow scope is an entity + spec|priv|body.
 
@@ -58,7 +60,10 @@ package Flow_Refinement is
    subtype Scope_Id is Entity_Id
    with Dynamic_Predicate => No (Scope_Id) or else
      (Nkind (Scope_Id) in N_Entity and then
-      Ekind (Scope_Id) in E_Package | E_Generic_Package | E_Protected_Type);
+      Ekind (Scope_Id) in E_Generic_Package |
+                          E_Package         |
+                          Protected_Kind    |
+                          Task_Kind);
 
    type Flow_Scope is record
       Ent     : Scope_Id;
@@ -166,7 +171,7 @@ package Flow_Refinement is
 
    function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope
    with Pre => S.Section = Body_Part;
-   --  Returns the flow scope of the enclosing package or protected object if
+   --  Returns the flow scope of the enclosing package or concurrent object if
    --  it exists and the null scope otherwise.
 
    function Is_Initialized_At_Elaboration (E : Entity_Id;
@@ -201,5 +206,12 @@ package Flow_Refinement is
    --     * no refined global, but global mentions state with visible
    --       refinement
    --     * ditto for depends and refined depends
+
+   function Nested_Inside_Concurrent_Object
+     (CO : Entity_Id;
+      S  : Flow_Scope)
+      return Boolean
+   with Pre => Present (CO);
+   --  Returns True iff S is nested inside concurrent object CO.
 
 end Flow_Refinement;

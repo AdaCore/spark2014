@@ -44,6 +44,10 @@ package body Flow_Utility.Initialization is
       --  Recursively look for simple default values given by
       --  Default_Value and Default_Component_Value.
 
+      ----------------------------------
+      -- Get_Component_From_Aggregate --
+      ----------------------------------
+
       function Get_Component_From_Aggregate (A : Node_Id;
                                              C : Node_Id)
                                              return Node_Id
@@ -67,12 +71,14 @@ package body Flow_Utility.Initialization is
          raise Why.Unexpected_Node;
       end Get_Component_From_Aggregate;
 
-      function Get_Simple_Default (E : Entity_Id) return Node_Id
-      is
+      ------------------------
+      -- Get_Simple_Default --
+      ------------------------
+
+      function Get_Simple_Default (E : Entity_Id) return Node_Id is
       begin
          if Has_Aspect (E, Aspect_Default_Value) then
-            return Expression
-              (Find_Aspect (E, Aspect_Default_Value));
+            return Expression (Find_Aspect (E, Aspect_Default_Value));
          elsif Has_Aspect (E, Aspect_Default_Component_Value) then
             return Expression
               (Find_Aspect (E, Aspect_Default_Component_Value));
@@ -115,8 +121,8 @@ package body Flow_Utility.Initialization is
                   --  This is a field with a default initalization.
 
                   --  We can try and untangle any record aggregates.
-                  while Comp_Id < Positive (F.Component.Length) and then
-                    Nkind (N) = N_Aggregate
+                  while Comp_Id < Positive (F.Component.Length)
+                    and then Nkind (N) = N_Aggregate
                   loop
                      Comp_Id := Comp_Id + 1;
                      N := Get_Component_From_Aggregate

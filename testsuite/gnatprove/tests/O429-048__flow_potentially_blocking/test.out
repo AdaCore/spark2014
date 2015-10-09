@@ -18,9 +18,11 @@ complex.adb:12:07: warning: assuming "Put" has no effect on global items
 complex.adb:12:07: warning: no Global contract available for "Put"
 complex.adb:12:13: info: initialization of "X.Im" proved
 complex.adb:12:13: info: initialization of "X.Re" proved
+external_separate_calls.adb:4:24: warning: statement has no effect
+external_separate_calls.adb:6:10: warning: statement has no effect
+external_separate_calls.adb:6:10: warning: unused assignment to "PO2"
 external_separate_calls.ads:4:13: potentially blocking operation in protected operation "Enter"
 external_separate_calls.ads:5:17: warning: subprogram "Reenter" has no effect
-external_separate_calls.ads:12:14: warning: subprogram "Divert_Control_From_PO1_To_PO2" has no effect
 floatio.adb:3:11: medium: "Default_Aft" might not be initialized after elaboration of main program "Floatio"
 floatio.adb:3:11: medium: "Default_Exp" might not be initialized after elaboration of main program "Floatio"
 floatio.adb:3:11: medium: "Default_Fore" might not be initialized after elaboration of main program "Floatio"
@@ -54,6 +56,7 @@ nested_pb_call.adb:19:13: warning: statement has no effect
 p-po_stub_1.adb:3:38: warning: statement has no effect
 p-po_stub_2.adb:3:44: warning: statement has no effect
 p-po_stub_2.adb:5:07: warning: statement has no effect
+p-po_stub_2.adb:10:07: warning: statement has no effect
 p.adb:10:04: use of remote abstract state "Real_Time.Clock_Time" during elaboration of "P" - Elaborate_All pragma required for "Real_Time" (SPARK RM 7.7.1(4))
 p.adb:35:07: warning: statement has no effect
 p.adb:36:10: warning: statement has no effect
@@ -110,13 +113,10 @@ p.ads:41:17: warning: subprogram "Directly_Blocking_Object_Proc" has no effect
 p.ads:45:13: potentially blocking operation in protected operation "Indirectly_Blocking_Object_Entry"
 p.ads:46:17: potentially blocking operation in protected operation "Indirectly_Blocking_Object_Proc"
 p.ads:46:17: warning: subprogram "Indirectly_Blocking_Object_Proc" has no effect
-p.ads:51:17: warning: subprogram "Nonblocking_Stub_Proc" has no effect
 p.ads:55:13: potentially blocking operation in protected operation "Directly_Blocking_Stub_Entry"
 p.ads:56:17: potentially blocking operation in protected operation "Directly_Blocking_Stub_Proc"
-p.ads:56:17: warning: subprogram "Directly_Blocking_Stub_Proc" has no effect
 p.ads:60:13: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Entry"
 p.ads:61:17: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Proc"
-p.ads:61:17: warning: subprogram "Indirectly_Blocking_Stub_Proc" has no effect
 p.ads:71:13: potentially blocking operation in protected operation "Yielding_Entry"
 p.ads:72:17: potentially blocking operation in protected operation "Yielding_Proc"
 p.ads:72:17: warning: subprogram "Yielding_Proc" has no effect
@@ -138,13 +138,15 @@ p.ads:114:17: potentially blocking operation in protected operation "Proc_Call_T
 p.ads:114:17: warning: subprogram "Proc_Call_To_Library_Level_Procedure" has no effect
 p.ads:115:16: potentially blocking operation in protected operation "Func_Call_To_Library_Level_Function"
 p.ads:116:17: warning: subprogram "Dummy_Proc" has no effect
-pack.adb:78:17: warning: statement has no effect
-pack.adb:78:17: warning: unused assignment to "PO_Proc"
+pack.adb:13:25: warning: statement has no effect
+pack.adb:15:11: warning: statement has no effect
+pack.adb:15:11: warning: unused assignment to "PO_Proc"
+pack.adb:30:25: warning: statement has no effect
+pack.adb:32:10: warning: statement has no effect
+pack.adb:32:10: warning: unused assignment to "PO_Func"
 pack.ads:4:17: warning: subprogram "Proc" has no effect
 pack.ads:5:13: potentially blocking operation in protected operation "E_Proc"
 pack.ads:10:13: potentially blocking operation in protected operation "E_Func"
-pack.ads:13:14: warning: subprogram "External_Call_To_Protected_Proc" has no effect
-pack.ads:14:14: warning: subprogram "External_Call_To_Protected_Func" has no effect
 pack.ads:18:17: warning: subprogram "Proc" has no effect
 remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored (not yet supported)
 remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored in flow analysis (not yet supported)

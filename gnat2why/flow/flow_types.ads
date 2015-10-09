@@ -227,8 +227,8 @@ package Flow_Types is
    function Get_Direct_Mapping_Id
      (F : Flow_Id)
       return Node_Id
-      with Pre  => (F.Kind in Direct_Mapping | Record_Field),
-           Post => (Present (Get_Direct_Mapping_Id'Result));
+   with Pre  => (F.Kind in Direct_Mapping | Record_Field),
+        Post => (Present (Get_Direct_Mapping_Id'Result));
    --  Given a direct mapping Flow_Id, return the associated node or
    --  entity. In case of a record field, return the entire variable.
 
@@ -237,7 +237,7 @@ package Flow_Types is
       Variant : Flow_Id_Variant  := Normal_Use;
       Facet   : Variable_Facet_T := Normal_Part)
       return Flow_Id
-      with Pre => Present (N) and then Nkind (N) = N_Selected_Component;
+   with Pre => Present (N) and then Nkind (N) = N_Selected_Component;
    --  Create a Flow_Id for the given record field.
 
    function Add_Component
@@ -457,8 +457,8 @@ package Flow_Types is
 
    function To_Entire_Variables (S : Flow_Id_Sets.Set)
                                  return Flow_Id_Sets.Set
-     with Post => (for all X of To_Entire_Variables'Result =>
-                     X.Kind /= Record_Field);
+   with Post => (for all X of To_Entire_Variables'Result =>
+                   X.Kind /= Record_Field);
    --  Convert a set containing flattened records into a set
    --  containing only entire variables.
 
@@ -467,12 +467,12 @@ package Flow_Types is
    --  changed into entire variables.
 
    function To_Node_Set (S : Flow_Id_Sets.Set) return Node_Sets.Set
-     with Pre => (for all F of S => F.Kind = Direct_Mapping);
+   with Pre => (for all F of S => F.Kind = Direct_Mapping);
    --  Convert a simple Flow_Id set to a node set.
 
    function To_Flow_Id_Set (S : Node_Sets.Set) return Flow_Id_Sets.Set
-     with Post => (for all F of To_Flow_Id_Set'Result =>
-                     F.Kind = Direct_Mapping);
+   with Post => (for all F of To_Flow_Id_Set'Result =>
+                   F.Kind = Direct_Mapping);
    --  Convert a node set to a Flow_Id set.
 
    function Change_Variant (FS      : Flow_Id_Sets.Set;

@@ -1845,6 +1845,8 @@ package body SPARK_Util is
          Is_External_State (E)
       elsif Is_Part_Of_Concurrent_Object (E) then
          True
+      elsif Is_Concurrent_Type (Etype (E)) then
+         True
       elsif Ekind (E) in Object_Kind then
          Is_Effectively_Volatile (E)
       else
@@ -1859,12 +1861,26 @@ package body SPARK_Util is
       A : Pragma_Id) return Boolean
    is
    begin
-      --  Protected objects and components of a concurrent object are
-      --  considered to be fully volatile.
-      if Ekind (E) in Protected_Kind
+      --  Protected objects and components of concurrent objects are considered
+      --  to be fully volatile.
+      if Ekind (Etype (E)) in Protected_Kind
         or else Is_Concurrent_Comp (Direct_Mapping_Id (E))
       then
          return True;
+      end if;
+
+      --  Tasks are considered to have Async_Readers and Async_Writers
+      if Ekind (Etype (E)) in Task_Kind then
+         case A is
+            when Pragma_Async_Readers |
+                 Pragma_Async_Writers =>
+               return True;
+            when Pragma_Effective_Reads  |
+                 Pragma_Effective_Writes =>
+               return False;
+            when others =>
+               raise Program_Error;
+         end case;
       end if;
 
       case Ekind (E) is
@@ -1885,13 +1901,13 @@ package body SPARK_Util is
          --  Why restrict the flavors of volatility for IN and OUT
          --  parameters???
 
-         when E_In_Parameter =>
+         when E_In_Parameter  =>
             case A is
                when Pragma_Async_Writers =>
                   return True;
-               when Pragma_Async_Readers
-                  | Pragma_Effective_Reads
-                  | Pragma_Effective_Writes =>
+               when Pragma_Async_Readers    |
+                    Pragma_Effective_Reads  |
+                    Pragma_Effective_Writes =>
                   return False;
                when others =>
                   raise Program_Error;
@@ -1899,11 +1915,11 @@ package body SPARK_Util is
 
          when E_Out_Parameter =>
             case A is
-               when Pragma_Async_Writers
-                  | Pragma_Effective_Reads =>
+               when Pragma_Async_Writers   |
+                    Pragma_Effective_Reads =>
                   return False;
-               when Pragma_Async_Readers
-                  | Pragma_Effective_Writes =>
+               when Pragma_Async_Readers    |
+                    Pragma_Effective_Writes =>
                   return True;
                when others =>
                   raise Program_Error;

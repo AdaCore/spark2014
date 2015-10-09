@@ -309,8 +309,8 @@ package body Flow.Control_Flow_Graph.Utility is
             Consider_Extensions  => Ext_Relevant_To_Formal);
 
          for F of Tmp_Used loop
-            if (if Discriminants_Or_Bounds_Only
-                then Is_Record_Discriminant (F))
+            if not Discriminants_Or_Bounds_Only
+              or else Is_Record_Discriminant (F)
             then
                A.Variables_Used.Include (F);
                A.Variables_Explicitly_Used.Include (F);
@@ -479,7 +479,8 @@ package body Flow.Control_Flow_Graph.Utility is
       return V_Attributes
    is
       A          : V_Attributes       := Null_Attributes;
-      Entire_Var : constant Entity_Id := F_Ent.Node;
+      Entire_Var : constant Entity_Id :=
+        Get_Direct_Mapping_Id (Entire_Variable (F_Ent));
    begin
       A.Error_Location     := E_Loc;
       A.Is_Constant        :=
@@ -490,18 +491,28 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case F_Ent.Variant is
          when Initial_Value =>
-            A.Is_Initialized := Ekind (Entire_Var) in
-              E_In_Out_Parameter |
-              E_In_Parameter     |
-              E_Loop_Parameter
+            A.Is_Initialized := Ekind (Entire_Var) in E_In_Out_Parameter |
+                                                      E_In_Parameter     |
+                                                      E_Loop_Parameter
               or else A.Mode in Initialized_Global_Modes;
 
-            A.Is_Import := Ekind (Entire_Var) in
-              E_In_Out_Parameter | E_In_Parameter;
+            --  Is_Import is True for:
+            --    * formal "in" and "in out" parameters
+            --    * concurrent types ( since they are implicit formal
+            --      parameters)
+            --    * components of protected objects
+            --    * parts of task objects that are initialized
+            A.Is_Import := Ekind (Entire_Var) in E_In_Out_Parameter |
+                                                 E_In_Parameter
+              or else Ekind (Etype (Get_Direct_Mapping_Id (F_Ent))) in
+                        Concurrent_Kind
+              or else (Is_Concurrent_Comp_Or_Disc (F_Ent)
+                         and then (Belongs_To_Protected_Object (F_Ent)
+                                     or else Is_Default_Initialized (F_Ent)));
 
-            if Is_Discriminant (F_Ent) or else
-              Is_Bound (F_Ent) or else
-              Is_Record_Tag (F_Ent)
+            if Is_Discriminant (F_Ent)
+              or else Is_Bound (F_Ent)
+              or else Is_Record_Tag (F_Ent)
             then
                --  Discriminants, array bounds and tags are *always*
                --  initialized. They are also implicit imports if they are
@@ -524,10 +535,13 @@ package body Flow.Control_Flow_Graph.Utility is
                                                           (F_Ent, Normal_Use));
 
          when Final_Value =>
-            A.Is_Export := Ekind (Entire_Var) in
-              E_In_Out_Parameter |
-                 E_Out_Parameter |
-                 E_Function
+            --  Is_Export is True for:
+            --    * formal "in" and "in out" parameters
+            --    * function results
+            --    * exported modes (modes "in", "out" and "in out")
+            A.Is_Export := Ekind (Entire_Var) in E_In_Out_Parameter |
+                                                 E_Out_Parameter    |
+                                                 E_Function
               or else A.Mode in Exported_Global_Modes;
 
             if Is_Bound (F_Ent) then
@@ -571,12 +585,12 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case F.Variant is
          when Initial_Value =>
-            A.Is_Initialized    := (not Uninit) and
-              Mode in Initialized_Global_Modes;
+            A.Is_Initialized    := not Uninit
+              and then Mode in Initialized_Global_Modes;
 
-            if Is_Discriminant (F) or else
-              Is_Bound (F) or else
-              Is_Record_Tag (F)
+            if Is_Discriminant (F)
+              or else Is_Bound (F)
+              or else Is_Record_Tag (F)
             then
                --  Discriminants, array bounds and tags are *always*
                --  initialized imports.

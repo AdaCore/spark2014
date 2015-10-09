@@ -815,8 +815,7 @@ package body Flow_Utility is
 
          when N_Selected_Component =>
             if Debug_Trace_Untangle_Record then
-               Write_Str ("processing selected component");
-               Write_Eol;
+               Write_Line ("processing selected component");
             end if;
 
             declare
@@ -3278,8 +3277,8 @@ package body Flow_Utility is
          Indent;
       end if;
 
-      if not (F.Kind in Direct_Mapping | Record_Field
-                and then F.Facet = Normal_Part)
+      if F.Kind not in Direct_Mapping | Record_Field
+        or else F.Facet /= Normal_Part
       then
          if Debug_Trace_Flatten then
             Outdent;
@@ -3346,38 +3345,44 @@ package body Flow_Utility is
                Ids := Flow_Id_Sets.To_Set (F);
             end if;
 
-         when Record_Kind | E_Protected_Type | E_Task_Type =>
+         when Record_Kind | Protected_Kind | Task_Kind =>
             if Debug_Trace_Flatten then
                case Ekind (T) is
-                  when Record_Kind      =>
+                  when Record_Kind    =>
                      Write_Line ("processing record type");
-                  when E_Protected_Type =>
+                  when Protected_Kind =>
                      Write_Line ("processing protected type");
-                  when E_Task_Type      =>
+                  when Task_Kind      =>
                      Write_Line ("processing task type");
-                  when others           =>
+                  when others         =>
                      raise Why.Unexpected_Node;
                end case;
             end if;
 
-            --  Include constituents that belong to the protected object/task
-            --  due to a Part_Of.
-
             Ids := Flow_Id_Sets.Empty_Set;
 
             if Ekind (T) in Concurrent_Kind then
-               if Present (Anonymous_Object (T)) then
-                  declare
-                     AO  : constant Node_Id := Anonymous_Object (T);
-                     Ptr : Elmt_Id := First_Elmt (Part_Of_Constituents (AO));
-                  begin
-                     while Present (Ptr) loop
-                        Ids.Union
-                          (Flatten_Variable (Direct_Mapping_Id (Node (Ptr)),
-                                             Scope));
-                        Ptr := Next_Elmt (Ptr);
-                     end loop;
-                  end;
+               if Nested_Inside_Concurrent_Object (T, Scope) then
+                  --  Include constituents that belong to the concurrent object
+                  --  due to a Part_Of.
+                  if Present (Anonymous_Object (T)) then
+                     declare
+                        AO  : constant Node_Id := Anonymous_Object (T);
+                        Ptr : Elmt_Id :=
+                          First_Elmt (Part_Of_Constituents (AO));
+                     begin
+                        while Present (Ptr) loop
+                           Ids.Union
+                             (Flatten_Variable (Direct_Mapping_Id (Node (Ptr)),
+                                                Scope));
+                           Ptr := Next_Elmt (Ptr);
+                        end loop;
+                     end;
+                  end if;
+               else
+                  --  From outside a concurrent object, all that we see is the
+                  --  object itself.
+                  return Flow_Id_Sets.To_Set (F);
                end if;
             end if;
 
@@ -3385,7 +3390,7 @@ package body Flow_Utility is
 
             for Ptr of All_Components (T) loop
                if Is_Visible (Get_Root_Component (Ptr), Scope) then
-                  if Ekind (T) = E_Protected_Type then
+                  if Ekind (T) in Concurrent_Kind then
                      Ids.Union (Flatten_Variable (Direct_Mapping_Id (Ptr),
                                                   Scope));
                   else
@@ -3934,8 +3939,7 @@ package body Flow_Utility is
    -- Add_Loop --
    --------------
 
-   procedure Add_Loop (E : Entity_Id)
-   is
+   procedure Add_Loop (E : Entity_Id) is
    begin
       pragma Assert (not Loop_Info_Frozen);
       Loop_Info.Insert (E, Flow_Id_Sets.Empty_Set);
@@ -4331,7 +4335,7 @@ package body Flow_Utility is
 
    begin
       if not (Is_Record_Type (E)
-                or else Is_Protected_Type (E)
+                or else Is_Concurrent_Type (E)
                 or else Is_Incomplete_Or_Private_Type (E)
                 or else Has_Discriminants (E))
       then

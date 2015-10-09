@@ -32,7 +32,6 @@ with Namet;                  use Namet;
 with Output;                 use Output;
 with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;
-with Stand;                  use Stand;
 with Why;
 
 package body Flow_Types is
@@ -425,24 +424,25 @@ package body Flow_Types is
                      Is_External_State (E)
                   elsif Is_Part_Of_Concurrent_Object (E) then
                      True
+                  elsif Is_Concurrent_Type (Etype (E)) then
+                     True
                   elsif Ekind (E) in Object_Kind then
                      Is_Effectively_Volatile (E)
                   else
                      Is_Effectively_Volatile_Object (E));
 
-               CO  : Entity_Id := Empty;
-               Tmp : Entity_Id;
+               CO : Entity_Id := Empty;
             begin
                if not Present (Scope) or else not Is_Vol then
                   return Is_Vol;
                end if;
 
                --  When we are given a Scope and F is:
-               --    * a protected object or
+               --    * a concurrent object or
                --    * a component of a single concurrent type
                --  then we only consider F to be volatile when we are outside
                --  its enclosing concurrent object.
-               if Is_Protected_Type (Etype (E)) then
+               if Is_Concurrent_Type (Etype (E)) then
                   CO := Etype (E);
                elsif Is_Concurrent_Comp (F) then
                   CO := Etype (Get_Enclosing_Concurrent_Object (F));
@@ -454,13 +454,9 @@ package body Flow_Types is
                   return Is_Vol;
                end if;
 
-               Tmp := Scope.Ent;
-               while Tmp /= Standard_Standard loop
-                  if Tmp = CO then
-                     return False;
-                  end if;
-                  Tmp := Sinfo.Scope (Tmp);
-               end loop;
+               if Nested_Inside_Concurrent_Object (CO, Scope) then
+                  return False;
+               end if;
 
                --  We are outside the CO so F is indeed volatile.
                return True;
@@ -702,7 +698,7 @@ package body Flow_Types is
             return F;
 
          when Direct_Mapping | Record_Field =>
-            if Belongs_To_Protected_Object (F) then
+            if Is_Concurrent_Comp_Or_Disc (F) then
                return Flow_Id'(Kind    => Direct_Mapping,
                                Variant => F.Variant,
                                Node    => Get_Enclosing_Concurrent_Object (F),
@@ -781,16 +777,14 @@ package body Flow_Types is
    -- Flow_Id_To_String --
    -----------------------
 
-   function Flow_Id_To_String (F : Flow_Id) return String
-   is
+   function Flow_Id_To_String (F : Flow_Id) return String is
       function Get_Unmangled_Name (N : Node_Id) return String;
 
       ------------------------
       -- Get_Unmangled_Name --
       ------------------------
 
-      function Get_Unmangled_Name (N : Node_Id) return String
-      is
+      function Get_Unmangled_Name (N : Node_Id) return String is
       begin
          if Nkind (N) in N_Entity
            and then Is_Subprogram (N)

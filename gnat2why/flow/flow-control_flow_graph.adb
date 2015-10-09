@@ -23,7 +23,6 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Elists;                             use Elists;
 with Errout;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
@@ -1056,16 +1055,13 @@ package body Flow.Control_Flow_Graph is
    is
    begin
       if Is_Record_Discriminant (F)
-        or else Belongs_To_Protected_Object (F)
+        or else Is_Concurrent_Discriminant (F)
       then
          --  The discriminants (for example r.x.d) do not live in the tree,
          --  but we should make the parent tree anyway, so that we get the
          --  important root node (in this example r). This is important for
          --  discriminated null records which have no other way of
          --  producing this otherwise.
-         --
-         --  Notice that discriminants of tasks are excluded from the creation
-         --  of the corresponding group vertex.
          declare
             P : constant Flow_Id :=
               Change_Variant (Entire_Variable (F),
@@ -1089,7 +1085,7 @@ package body Flow.Control_Flow_Graph is
                when Direct_Mapping | Record_Field =>
                   if F.Kind = Record_Field
                     or else F.Facet in Private_Part | Extension_Part
-                    or else Belongs_To_Protected_Object (F)
+                    or else Is_Concurrent_Comp_Or_Disc (F)
                   then
                      declare
                         P : constant Flow_Id :=
@@ -1108,6 +1104,8 @@ package body Flow.Control_Flow_Graph is
             case F.Kind is
                when Null_Value =>
                   raise Program_Error;
+               when Magic_String | Synthetic_Null_Export =>
+                  null;
                when Direct_Mapping | Record_Field =>
                   --  Only proceed if we don't have this vertex yet.
                   if FA.CFG.Get_Vertex (F) = Flow_Graphs.Null_Vertex then
@@ -1124,8 +1122,6 @@ package body Flow.Control_Flow_Graph is
                                 FA.CFG.Get_Vertex (F));
                      end if;
                   end if;
-               when Magic_String | Synthetic_Null_Export =>
-                  null;
             end case;
       end case;
    end Create_Record_Tree;
@@ -1148,8 +1144,16 @@ package body Flow.Control_Flow_Graph is
       -------------
 
       procedure Process (F : Flow_Id) is
-         V : Flow_Graphs.Vertex_Id;
-         A : V_Attributes;
+         V   : Flow_Graphs.Vertex_Id;
+         A   : V_Attributes;
+
+         PM : constant Param_Mode :=
+           (if F.Kind in Direct_Mapping | Record_Field
+              and then Ekind (Get_Direct_Mapping_Id (F)) = E_Discriminant
+            then
+               Mode_In
+            else
+               M);
       begin
          --  Setup the n'initial vertex. Note that initialization for
          --  variables is detected (and set) when building the flow graph
@@ -1157,7 +1161,7 @@ package body Flow.Control_Flow_Graph is
          A := Make_Variable_Attributes
            (FA    => FA,
             F_Ent => Change_Variant (F, Initial_Value),
-            Mode  => M,
+            Mode  => PM,
             E_Loc => E);
 
          Add_Vertex
@@ -1177,7 +1181,7 @@ package body Flow.Control_Flow_Graph is
             Change_Variant (F, Final_Value),
             Make_Variable_Attributes (FA    => FA,
                                       F_Ent => Change_Variant (F, Final_Value),
-                                      Mode  => M,
+                                      Mode  => PM,
                                       E_Loc => E),
             V);
          Linkup (FA, FA.End_Vertex, V);
@@ -2997,7 +3001,7 @@ package body Flow.Control_Flow_Graph is
         To_Entity_Name (Defining_Identifier (N));
 
       procedure Find_Tasks (T : Entity_Id; Array_Component : Boolean)
-        with Pre => Is_Type (T);
+      with Pre => Is_Type (T);
       --  Update the map with number of task instances.
       --
       --  It checks which and how many tasks are instantiated when an object of
@@ -3115,14 +3119,21 @@ package body Flow.Control_Flow_Graph is
          end if;
       end if;
 
-      --  First, we need a 'initial and 'final vertex for this object. We only
-      --  create these if we are not dealing with a Part_Of a single concurrent
-      --  type.
-      if not Is_Part_Of_Concurrent_Object (Defining_Identifier (N)) then
-         Create_Initial_And_Final_Vertices (Defining_Identifier (N),
-                                            Variable_Kind,
-                                            FA);
+      --  We ignore declarations of objects that are Part_Of a single
+      --  concurrent type.
+      if Is_Part_Of_Concurrent_Object (Defining_Identifier (N)) then
+         Add_Vertex (FA,
+                     Direct_Mapping_Id (N),
+                     Null_Node_Attributes,
+                     V);
+         CM.Include (Union_Id (N), Trivial_Connection (V));
+         return;
       end if;
+
+      --  First, we need a 'initial and 'final vertex for this object.
+      Create_Initial_And_Final_Vertices (Defining_Identifier (N),
+                                         Variable_Kind,
+                                         FA);
 
       if No (Expression (N)) then
          --  No initializing expression, so we fall back to the
@@ -5793,39 +5804,18 @@ package body Flow.Control_Flow_Graph is
             end;
 
          when Kind_Task =>
-            --  Tasks see their discriminants as formal in parameters
-            declare
-               Discr : Entity_Id := First_Discriminant (FA.Analyzed_Entity);
-            begin
-               while Present (Discr) loop
-                  Create_Initial_And_Final_Vertices (Discr,
-                                                     Parameter_Kind,
-                                                     FA);
-                  Next_Discriminant (Discr);
-               end loop;
-            end;
-
-            --  Add variables that are Part_Of the task as formal in out
-            --  parameters to the task.
-            declare
-               T   : constant Entity_Id := Get_Type (FA.Analyzed_Entity,
-                                                     FA.B_Scope);
-
-               AO  : Node_Id;
-               Ptr : Elmt_Id;
-            begin
-               if Present (Anonymous_Object (T)) then
-                  AO  := Anonymous_Object (T);
-                  Ptr := First_Elmt (Part_Of_Constituents (AO));
-                  while Present (Ptr) loop
-                     Create_Initial_And_Final_Vertices
-                       (Node (Ptr),
-                        Parameter_Kind,
-                        FA);
-                     Ptr := Next_Elmt (Ptr);
-                  end loop;
-               end if;
-            end;
+            --  Tasks see themselves as formal in out parameters.
+            --
+            --  This includes:
+            --    * variables that are Part_Of tasks,
+            --    * discriminants of tasks (but these are only considered to be
+            --      formal in parameters)
+            Create_Initial_And_Final_Vertices
+              ((if Present (Anonymous_Object (FA.Analyzed_Entity))
+                then Anonymous_Object (FA.Analyzed_Entity)
+                else FA.Analyzed_Entity),
+               Parameter_Kind,
+               FA);
 
          when Kind_Package | Kind_Package_Body =>
             --  We create initial and final vertices for the package's state

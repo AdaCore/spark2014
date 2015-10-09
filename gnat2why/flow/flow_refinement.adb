@@ -215,8 +215,9 @@ package body Flow_Refinement is
       Enclosing_Scope : Flow_Scope := S;
       Ptr             : Node_Id    := S.Ent;
    begin
-      while not (Nkind (Ptr) in N_Package_Declaration        |
-                                N_Protected_Type_Declaration)
+      while Nkind (Ptr) not in N_Package_Declaration        |
+                               N_Protected_Type_Declaration |
+                               N_Task_Type_Declaration
       loop
          Ptr := Parent (Ptr);
       end loop;
@@ -227,7 +228,9 @@ package body Flow_Refinement is
       then
          Ptr := Scope (S.Ent);
          while Present (Ptr)
-           and then not (Ekind (Ptr) in E_Package | E_Protected_Type)
+           and then Ekind (Ptr) not in E_Package      |
+                                       Protected_Kind |
+                                       Task_Kind
          loop
             Ptr := Scope (Ptr);
          end loop;
@@ -254,9 +257,10 @@ package body Flow_Refinement is
    begin
       P := S.Ent;
       while Present (P)
-        and then not (Nkind (P) in N_Generic_Package_Declaration |
-                                   N_Package_Declaration         |
-                                   N_Protected_Type_Declaration)
+        and then Nkind (P) not in N_Generic_Package_Declaration |
+                                  N_Package_Declaration         |
+                                  N_Protected_Type_Declaration  |
+                                  N_Task_Type_Declaration
       loop
          P := Parent (P);
       end loop;
@@ -264,7 +268,8 @@ package body Flow_Refinement is
       case Nkind (P) is
          when N_Generic_Package_Declaration |
               N_Package_Declaration         |
-              N_Protected_Type_Declaration  =>
+              N_Protected_Type_Declaration  |
+              N_Task_Type_Declaration       =>
             P := Corresponding_Body (P);
 
          when others =>
@@ -272,8 +277,12 @@ package body Flow_Refinement is
       end case;
 
       --  We need to get to the node that is above the
-      --  N_Package_Body/N_Protected_Body that corresponds to flow scope S.
-      while not (Nkind (P) in N_Package_Body | N_Protected_Body) loop
+      --  N_Package_Body/N_Protected_Body/N_Task_Body that corresponds to flow
+      --  scope S.
+      while Nkind (P) not in N_Package_Body   |
+                             N_Protected_Body |
+                             N_Task_Body
+      loop
          P := Parent (P);
       end loop;
       P := Parent (P);
@@ -292,7 +301,7 @@ package body Flow_Refinement is
       while Present (P) loop
          P := Get_Body_Or_Stub (P);
          case Nkind (P) is
-            when N_Package_Body | N_Protected_Body =>
+            when N_Package_Body | N_Protected_Body | N_Task_Body =>
                V := Body_Part;
                case Nkind (P) is
                   when N_Package_Body =>
@@ -302,7 +311,7 @@ package body Flow_Refinement is
                      end if;
                      P := Spec_Entity (P);
 
-                  when N_Protected_Body =>
+                  when N_Protected_Body | N_Task_Body =>
                      P := Corresponding_Spec (P);
 
                   when others =>
@@ -310,13 +319,16 @@ package body Flow_Refinement is
                end case;
                exit;
 
-            when N_Package_Specification | N_Protected_Definition =>
-               if Tree_Contains (Private_Declarations (P),
-                                 Get_Body_Or_Stub (N))
+            when N_Package_Specification |
+                 N_Protected_Definition  |
+                 N_Task_Definition       =>
+               if Nkind (P) = N_Task_Definition
+                 or else not Tree_Contains (Private_Declarations (P),
+                                            Get_Body_Or_Stub (N))
                then
-                  V := Private_Part;
-               else
                   V := Spec_Part;
+               else
+                  V := Private_Part;
                end if;
 
                case Nkind (P) is
@@ -326,7 +338,7 @@ package body Flow_Refinement is
                         P := Defining_Identifier (P);
                      end if;
 
-                  when N_Protected_Definition  =>
+                  when N_Protected_Definition | N_Task_Definition  =>
                      P := Defining_Identifier (Parent (P));
 
                   when others =>
@@ -597,13 +609,13 @@ package body Flow_Refinement is
          Element_Type => Flow_Scope);
 
       function Ancestor (S : Flow_Scope) return Flow_Scope
-        with Pre => Present (S);
+      with Pre => Present (S);
       --  Determine the immediate ancestor of S.
 
       function Heritage (S : Flow_Scope) return Scope_Vectors.Vector
-        with Post => not Heritage'Result.Is_Empty and then
-                     Heritage'Result.First_Element = Null_Flow_Scope and then
-                     Heritage'Result.Last_Element = S;
+      with Post => not Heritage'Result.Is_Empty and then
+                   Heritage'Result.First_Element = Null_Flow_Scope and then
+                   Heritage'Result.Last_Element = S;
       --  Determine all ancestors of S up to and including Standard.
 
       function Common_Ancestor (A, B : Flow_Scope) return Flow_Scope;
@@ -862,5 +874,29 @@ package body Flow_Refinement is
 
       return False;
    end Refinement_Needed;
+
+   -------------------------------------
+   -- Nested_Inside_Concurrent_Object --
+   -------------------------------------
+
+   function Nested_Inside_Concurrent_Object
+     (CO : Entity_Id;
+      S  : Flow_Scope)
+      return Boolean
+   is
+      Tmp : Entity_Id;
+   begin
+      Tmp := S.Ent;
+      while Present (Tmp)
+        and then Tmp /= Standard_Standard
+      loop
+         if Tmp = CO then
+            return True;
+         end if;
+         Tmp := Scope (Tmp);
+      end loop;
+
+      return False;
+   end Nested_Inside_Concurrent_Object;
 
 end Flow_Refinement;

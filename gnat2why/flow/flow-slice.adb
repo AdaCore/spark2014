@@ -21,7 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Elists;           use Elists;
 with Flow_Utility;     use Flow_Utility;
 with Nlists;           use Nlists;
 with Opt;              use Opt;
@@ -156,8 +155,7 @@ package body Flow.Slice is
       --  Given a flow id, return the view the dependency relation
       --  cares about.
 
-      function Flow_Equivalent (F : Flow_Id) return Flow_Id
-      is
+      function Flow_Equivalent (F : Flow_Id) return Flow_Id is
       begin
          case F.Kind is
             when Direct_Mapping        |
@@ -806,42 +804,11 @@ package body Flow.Slice is
                   end;
 
                when Kind_Task =>
-                  --  The discriminants of a task effectively act as its formal
-                  --  parameters.
-                  if Has_Discriminants (FA.Analyzed_Entity) then
-                     E := First_Discriminant (FA.Analyzed_Entity);
-
-                     while Present (E) loop
-                        if Ekind (E) = E_Constant
-                          and then Present (Full_View (E))
-                        then
-                           --  If the Full_View is present then add that
-                           Local_Vars.Insert (Full_View (E));
-                        else
-                           Local_Vars.Insert (E);
-                        end if;
-                        Next_Discriminant (E);
-                     end loop;
-                  end if;
-
-                  --  Variables that are Part_Of the task act as formal
-                  --  parameters to the task.
-                  declare
-                     T   : constant Entity_Id := Get_Type (FA.Analyzed_Entity,
-                                                           FA.B_Scope);
-
-                     AO  : Node_Id;
-                     Ptr : Elmt_Id;
-                  begin
-                     if Present (Anonymous_Object (T)) then
-                        AO  := Anonymous_Object (T);
-                        Ptr := First_Elmt (Part_Of_Constituents (AO));
-                        while Present (Ptr) loop
-                           Local_Vars.Insert (Node (Ptr));
-                           Ptr := Next_Elmt (Ptr);
-                        end loop;
-                     end if;
-                  end;
+                  --  The task is a formal parameter of itself.
+                  Local_Vars.Insert
+                    ((if Present (Anonymous_Object (FA.Analyzed_Entity))
+                      then Anonymous_Object (FA.Analyzed_Entity)
+                      else FA.Analyzed_Entity));
 
                when Kind_Package | Kind_Package_Body =>
                   --  State abstractions of a package effectively act as
