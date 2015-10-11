@@ -431,20 +431,32 @@ package body Flow_Error_Messages is
       function Create_Pretty_Cntexmp (Cntexmp : JSON_Value;
                                   VC_Loc : Source_Ptr) return JSON_Value
       is
-         procedure Create_Pretty_File (File : String;
+         procedure Gen_JSON_Object is new
+           Gen_Map_JSON_Object (Mapped => JSON_Value);
+
+         procedure Create_Pretty_File (Pretty_Cntexmp : in out JSON_Value;
+                                       File : String;
                                        File_Cntexmp : JSON_Value);
-         --  Pretty prints model element names in counterexample file.
+         --  Creates counterexample file with pretty printed model element
+         --  names and adds the counterexample file into the Pretty_Cntexmp
+         --  @param Pretty_Cntexmp pretty printed counterexample
+         --  @param File the name of the field of Pretty_Cntexmp to that pretty
+         --    printed counterexample file should be added.
+         --    Note that if it is not Ada file, the file will not be added.
+         --  @param File_Cntexmp counterexample file before pretty printing
 
          ------------------------
          -- Create_Pretty_File --
          ------------------------
 
-         procedure Create_Pretty_File (File : String;
+         procedure Create_Pretty_File (Pretty_Cntexmp : in out JSON_Value;
+                                       File : String;
                                        File_Cntexmp : JSON_Value)
          is
-            pragma Unreferenced (File);
-            procedure Create_Pretty_Line (Line : String;
-                                          Line_Cntexmp : JSON_Value);
+            procedure Create_Pretty_Line
+              (Pretty_File_Cntexmp : in out JSON_Value;
+               Line : String;
+               Line_Cntexmp : JSON_Value);
             --  Pretty prints counterexample model elements at a single source
             --  code location (line).
 
@@ -452,8 +464,10 @@ package body Flow_Error_Messages is
             -- Create_Pretty_Line --
             ------------------------
 
-            procedure Create_Pretty_Line (Line : String;
-                                          Line_Cntexmp : JSON_Value)
+            procedure Create_Pretty_Line
+              (Pretty_File_Cntexmp : in out JSON_Value;
+               Line : String;
+               Line_Cntexmp : JSON_Value)
             is
                type Var_Or_Field (<>);
                type Var_Or_Field_Ptr is access all Var_Or_Field;
@@ -798,12 +812,24 @@ package body Flow_Error_Messages is
                Pretty_Line_Cntexmp_Arr : JSON_Array;
             begin
                Build_Variables_Info (Get (Line_Cntexmp), Variables);
-               Build_Pretty_Line (Variables, Pretty_Line_Cntexmp_Arr);
-               Set_Field
-                 (File_Cntexmp, Line, Create (Pretty_Line_Cntexmp_Arr));
+               if not Is_Empty (Variables.Variables_Map) then
+                  Build_Pretty_Line (Variables, Pretty_Line_Cntexmp_Arr);
+                  Set_Field (Pretty_File_Cntexmp,
+                             Line,
+                             Create (Pretty_Line_Cntexmp_Arr));
+               end if;
             end Create_Pretty_Line;
+
+            Pretty_File_Cntexmp : JSON_Value := Create_Object;
          begin
-            Map_JSON_Object (File_Cntexmp, Create_Pretty_Line'Access);
+            Gen_JSON_Object
+              (File_Cntexmp, Create_Pretty_Line'Access, Pretty_File_Cntexmp);
+            if File'Length >= 4 and then
+              (File ((File'Last - 2) .. File'Last) = "adb" or else
+               File ((File'Last - 2) .. File'Last) = "ads")
+            then
+               Set_Field (Pretty_Cntexmp, File, Pretty_File_Cntexmp);
+            end if;
          end Create_Pretty_File;
 
          function Remap_VC_Info (Cntexmp : JSON_Value;
@@ -819,8 +845,6 @@ package body Flow_Error_Messages is
                                  VC_File     : String;
                                  VC_Line     : Integer) return JSON_Value
          is
-            procedure Gen_JSON is new Gen_Map_JSON_Object
-              (Mapped => JSON_Value);
 
             procedure Remove_VC_Line (New_Cntexmp : in out JSON_Value;
                                       File_Name : UTF8_String;
@@ -849,7 +873,7 @@ package body Flow_Error_Messages is
 
                New_File : JSON_Value := Create_Object;
             begin
-               Gen_JSON (Orig_File, Add_Non_VC_Line'Access, New_File);
+               Gen_JSON_Object (Orig_File, Add_Non_VC_Line'Access, New_File);
                Set_Field (New_Cntexmp, File_Name, New_File);
             end Remove_VC_Line;
 
@@ -859,30 +883,34 @@ package body Flow_Error_Messages is
               (if Has_Field (Cntexmp_File, "vc_line") then
                     Get (Get (Cntexmp_File, "vc_line"))
                else Empty_Array);
-            Pretty_Cntexmp : JSON_Value := Create_Object;
+            Remapped_Cntexmp : JSON_Value := Create_Object;
             VC_Line_Str : constant String :=
               To_String
                 (Trim (To_Unbounded_String (Integer'Image (VC_Line)), Both));
          begin
             --  Remove information related to the construct triggering VC
-            Gen_JSON (Cntexmp, Remove_VC_Line'Access, Pretty_Cntexmp);
+            Gen_JSON_Object (Cntexmp, Remove_VC_Line'Access, Remapped_Cntexmp);
 
             --  Map the information related to the construct triggering VC to
             --  the location of that construct
-            Set_Field (JSON_Get_Opt (Pretty_Cntexmp, VC_File, Create_Object),
-                       VC_Line_Str, Cntexmp_VC_Line);
+            Set_Field (JSON_Get_Opt (Remapped_Cntexmp, VC_File, Create_Object),
+                       VC_Line_Str,
+                       Cntexmp_VC_Line);
 
-            return Pretty_Cntexmp;
+            return Remapped_Cntexmp;
          end Remap_VC_Info;
 
          File  : constant String :=
               File_Name (VC_Loc);
          Line  : constant Integer :=
            Integer (Get_Logical_Line_Number (VC_Loc));
-         Pretty_Cntexmp : constant JSON_Value :=
+         Remapped_Cntexmp : constant JSON_Value :=
            Remap_VC_Info (Cntexmp, File, Line);
+         Pretty_Cntexmp : JSON_Value := Create_Object;
       begin
-         Map_JSON_Object (Pretty_Cntexmp, Create_Pretty_File'Access);
+         Gen_JSON_Object (Remapped_Cntexmp,
+                   Create_Pretty_File'Access,
+                   Pretty_Cntexmp);
 
          return Pretty_Cntexmp;
       end Create_Pretty_Cntexmp;
