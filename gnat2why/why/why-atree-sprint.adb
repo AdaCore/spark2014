@@ -936,9 +936,9 @@ package body Why.Atree.Sprint is
             Relative_Indent (O, 1);
             NL (O);
             declare
-               Pre         : constant W_Pred_Id := Get_Pre (Node);
-               Effects     : constant W_Effects_Id := Get_Effects (Node);
-               Post        : constant W_Pred_Id := Get_Post (Node);
+               Pre     : constant W_Pred_Id := Get_Pre (Node);
+               Effects : constant W_Effects_Id := Get_Effects (Node);
+               Post    : constant W_Pred_Id := Get_Post (Node);
             begin
                if not Is_Empty (+Binders) then
                   P (O, " (");

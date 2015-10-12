@@ -42,10 +42,10 @@ package Why.Gen.Decl is
 
    procedure Emit
      (Theory : W_Theory_Declaration_Id;
-      Decl : W_Declaration_Id);
+      Decl   : W_Declaration_Id);
 
    procedure Emit_Projection_Metas
-     (Theory : W_Theory_Declaration_Id;
+     (Theory         : W_Theory_Declaration_Id;
       Projection_Fun : String);
    --  Emit meta that marks a function as a projection function and disables
    --  inlining of this function in Why3.
@@ -54,9 +54,9 @@ package Why.Gen.Decl is
    --      projection.
 
    procedure Emit_Record_Declaration
-     (Theory : W_Theory_Declaration_Id;
-      Name     : W_Name_Id;
-      Binders  : Binder_Array;
+     (Theory       : W_Theory_Declaration_Id;
+      Name         : W_Name_Id;
+      Binders      : Binder_Array;
       SPARK_Record : Boolean := False);
    --  Emit declaration of a Why3 record type and counterexample projections
    --  for this record type. The projections project values of the record type
@@ -73,7 +73,7 @@ package Why.Gen.Decl is
 
    procedure Emit_Ref_Type_Definition
      (Theory : W_Theory_Declaration_Id;
-      Name : W_Name_Id);
+      Name   : W_Name_Id);
    --  Emit definition of a record type with one mutable field of type Name and
    --  counterexample projection from this type to this field.
    --  For more information about counterexample projections see documentation

@@ -74,7 +74,7 @@ package body Why.Gen.Decl is
 
    procedure Emit
      (Theory : W_Theory_Declaration_Id;
-      Decl : W_Declaration_Id) is
+      Decl   : W_Declaration_Id) is
    begin
       Theory_Declaration_Append_To_Declarations
         (Id => Theory,
@@ -105,9 +105,9 @@ package body Why.Gen.Decl is
    -- Emit_Record_Declaration --
    -----------------------------
    procedure Emit_Record_Declaration
-     (Theory : W_Theory_Declaration_Id;
-      Name     : W_Name_Id;
-      Binders  : Why.Gen.Binders.Binder_Array;
+     (Theory       : W_Theory_Declaration_Id;
+      Name         : W_Name_Id;
+      Binders      : Why.Gen.Binders.Binder_Array;
       SPARK_Record : Boolean := False)
    is
    begin
@@ -153,10 +153,10 @@ package body Why.Gen.Decl is
    ----------------------------------------
 
    procedure Emit_Record_Projection_Declaration
-     (Theory           : W_Theory_Declaration_Id;
-      Param_Ty_Name    : W_Name_Id;
-      Field_Id         : W_Identifier_Id;
-      SPARK_Node       : Node_Or_Entity_Id := Empty)
+     (Theory        : W_Theory_Declaration_Id;
+      Param_Ty_Name : W_Name_Id;
+      Field_Id      : W_Identifier_Id;
+      SPARK_Node    : Node_Or_Entity_Id := Empty)
    is
       --  Projection function name
       Param_Ty_Name_Str : constant String :=
@@ -220,7 +220,7 @@ package body Why.Gen.Decl is
    ------------------------------
    procedure Emit_Ref_Type_Definition
      (Theory : W_Theory_Declaration_Id;
-      Name : W_Name_Id)
+      Name   : W_Name_Id)
    is
       Field_Typ : constant W_Type_Id := New_Type
         (Type_Kind  => EW_Abstract,
