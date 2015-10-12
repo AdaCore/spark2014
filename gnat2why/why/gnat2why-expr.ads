@@ -210,7 +210,7 @@ package Gnat2Why.Expr is
    --  to assert/assume statements, object declarations to assignment
    --  statements
    --  @param L a list of declarations
-   --  param Core an expression to which the statements resulting from L are
+   --  @param Core an expression to which the statements resulting from L are
    --    prepended
 
    function Transform_Declarations_For_Body (L : List_Id) return W_Prog_Id;
