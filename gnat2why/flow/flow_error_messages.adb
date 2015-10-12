@@ -984,17 +984,7 @@ package body Flow_Error_Messages is
          Cntexmp_Line_Str : constant String :=
            Get_Cntexmp_Line_Str (Cntexmp_Line);
       begin
-         return (if Cntexmp_Line_Str = ""
-                 then
-                   (if Has_Field (Cntexmp_File, Line_Str)
-                    then
-                    --  This can happen if there are some counterexample
-                    --  elements on the VC line, but all have abstract values,
-                    --  which are not displayed in counterexample.
-                       "no information for location of the check"
-                    else
-                       "error: cannot get location of the check")
-                 else Cntexmp_Line_Str);
+         return Cntexmp_Line_Str;
       end Get_Cntexmp_One_Liner;
 
       Msg2     : constant String :=
@@ -1002,10 +992,12 @@ package body Flow_Error_Messages is
       Slc      : constant Source_Ptr := Compute_Sloc (N, Place_First);
       Pretty_Cntexmp  : constant JSON_Value :=
         Create_Pretty_Cntexmp (Cntexmp, Slc);
+      One_Liner : constant String :=
+        (if Is_Empty (Pretty_Cntexmp) then ""
+         else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
       Msg3     : constant String :=
-        (if Is_Empty (Pretty_Cntexmp) then Msg2
-         else Msg2 &
-           ", counterexample: " & Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
+        (if One_Liner = "" then Msg2
+         else (Msg2 & " (e.g. when " & One_Liner & ")"));
       Severity : constant Msg_Severity :=
         (if Is_Proved then Info_Kind else Medium_Check_Kind);
       Suppr    : String_Id := No_String;
