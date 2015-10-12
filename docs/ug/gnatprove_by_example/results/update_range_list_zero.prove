@@ -20,14 +20,14 @@ update_range_list_zero.adb:13:07: info: loop invariant initialization proved
 update_range_list_zero.adb:13:30: info: precondition proved
 update_range_list_zero.adb:13:45: medium: precondition might fail
 update_range_list_zero.adb:13:77: info: precondition proved
-update_range_list_zero.adb:13:77: medium: loop invariant might fail after first iteration, cannot prove Element (L, Cu2) = Element (L'Loop_Entry, Cu2)
+update_range_list_zero.adb:13:77: medium: loop invariant might fail after first iteration, requires Element (L, Cu2) = Element (L'Loop_Entry, Cu2)
 update_range_list_zero.adb:13:96: medium: precondition might fail
 update_range_list_zero.adb:14:30: info: precondition proved
 update_range_list_zero.adb:14:45: medium: precondition might fail
 update_range_list_zero.adb:14:62: medium: precondition might fail
 update_range_list_zero.adb:14:84: info: initialization of "Cu" proved
-update_range_list_zero.adb:14:99: medium: loop invariant might fail after first iteration, cannot prove Element (L, Cu2) = 0
-update_range_list_zero.adb:14:99: medium: loop invariant might fail in first iteration, cannot prove Element (L, Cu2) = 0
+update_range_list_zero.adb:14:99: medium: loop invariant might fail after first iteration, requires Element (L, Cu2) = 0
+update_range_list_zero.adb:14:99: medium: loop invariant might fail in first iteration, requires Element (L, Cu2) = 0
 update_range_list_zero.adb:14:99: medium: precondition might fail
 update_range_list_zero.adb:15:07: info: loop invariant initialization proved
 update_range_list_zero.adb:15:07: info: loop invariant preservation proved
