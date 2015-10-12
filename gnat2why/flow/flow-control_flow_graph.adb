@@ -4556,12 +4556,12 @@ package body Flow.Control_Flow_Graph is
                                                 Explicit_Only => True)
          then
             Error_Msg_Flow
-              (FA   => FA,
-               Msg  => "type & is not fully initialized",
-               N    => N,
-               F1   => Direct_Mapping_Id (Typ),
-               Tag  => Default_Initialization_Missmatch,
-               Kind => Medium_Check_Kind);
+              (FA       => FA,
+               Msg      => "type & is not fully initialized",
+               N        => N,
+               F1       => Direct_Mapping_Id (Typ),
+               Tag      => Default_Initialization_Missmatch,
+               Severity => Medium_Check_Kind);
          end if;
       end if;
    end Do_Type_Declaration;
@@ -5260,11 +5260,11 @@ package body Flow.Control_Flow_Graph is
             --  We warn about this, but only for subprograms not
             --  annotated with No_Return.
             Error_Msg_Flow
-              (FA   => FA,
-               Msg  => "no paths in subprogram will return normally",
-               N    => FA.Analyzed_Entity,
-               Kind => High_Check_Kind,
-               Tag  => Missing_Return);
+              (FA       => FA,
+               Msg      => "no paths in subprogram will return normally",
+               N        => FA.Analyzed_Entity,
+               Severity => High_Check_Kind,
+               Tag      => Missing_Return);
          end if;
          FA.CFG.Add_Edge (FA.Start_Vertex, FA.End_Vertex, EC_Default);
       end if;
@@ -5952,13 +5952,13 @@ package body Flow.Control_Flow_Graph is
                         --  global output, we raise an error.
                         if Ekind (FA.Analyzed_Entity) = E_Function then
                            Error_Msg_Flow
-                             (FA   => FA,
-                              Msg  => "function with output global & " &
-                                "is not allowed in SPARK",
-                              N    => FA.Analyzed_Entity,
-                              F1   => G,
-                              Kind => Error_Kind,
-                              Tag  => Side_Effects);
+                             (FA       => FA,
+                              Msg      => "function with output global & " &
+                                          "is not allowed in SPARK",
+                              N        => FA.Analyzed_Entity,
+                              F1       => G,
+                              Severity => Error_Kind,
+                              Tag      => Side_Effects);
 
                            FA.Function_Side_Effects_Present := True;
                         end if;

@@ -31,15 +31,15 @@ with VC_Kinds;      use VC_Kinds;
 
 package Flow_Error_Messages is
 
-   type Msg_Kind is
+   type Msg_Severity is
      (Error_Kind,
-      Warning_Kind,
-      Info_Kind,
       High_Check_Kind,
       Medium_Check_Kind,
-      Low_Check_Kind);
+      Low_Check_Kind,
+      Warning_Kind,
+      Info_Kind);
 
-   subtype Check_Kind is Msg_Kind range High_Check_Kind .. Low_Check_Kind;
+   subtype Check_Kind is Msg_Severity range High_Check_Kind .. Low_Check_Kind;
 
    --  describes the kinds of messages issued by gnat2why.
    --  * Errors may be issued whenever a SPARK legality issue is encountered.
@@ -67,7 +67,7 @@ package Flow_Error_Messages is
    procedure Error_Msg_Flow
      (E            : Entity_Id;
       Msg          : String;
-      Kind         : Msg_Kind;
+      Severity     : Msg_Severity;
       N            : Node_Id;
       Suppressed   : out Boolean;
       F1           : Flow_Id       := Null_Flow_Id;
@@ -97,7 +97,7 @@ package Flow_Error_Messages is
    procedure Error_Msg_Flow
      (FA           : in out Flow_Analysis_Graphs;
       Msg          : String;
-      Kind         : Msg_Kind;
+      Severity     : Msg_Severity;
       N            : Node_Id;
       F1           : Flow_Id               := Null_Flow_Id;
       F2           : Flow_Id               := Null_Flow_Id;

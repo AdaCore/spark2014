@@ -57,12 +57,12 @@ package body Flow.Analysis.Sanity is
       then
          if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
-              (FA   => FA,
-               Msg  => "flow analysis of & abandoned due to " &
-                         "function with side effects",
-               N    => FA.Analyzed_Entity,
-               Kind => Error_Kind,
-               F1   => Direct_Mapping_Id (FA.Analyzed_Entity));
+              (FA       => FA,
+               Msg      => "flow analysis of & abandoned due to " &
+                           "function with side effects",
+               N        => FA.Analyzed_Entity,
+               Severity => Error_Kind,
+               F1       => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
 
          Sane := False;
@@ -154,12 +154,12 @@ package body Flow.Analysis.Sanity is
                                            E_Discriminant)
                then
                   Error_Msg_Flow
-                    (FA      => FA,
-                     Msg     => Err_Desc & " cannot depend on &",
-                     SRM_Ref => "4.4(2)",
-                     N       => Err_Node,
-                     Kind    => Error_Kind,
-                     F1      => F);
+                    (FA       => FA,
+                     Msg      => Err_Desc & " cannot depend on &",
+                     SRM_Ref  => "4.4(2)",
+                     N        => Err_Node,
+                     Severity => Error_Kind,
+                     F1       => F);
                   Sane := False;
                end if;
             end loop;
@@ -389,12 +389,12 @@ package body Flow.Analysis.Sanity is
       if not Sane then
          if Gnat2Why_Args.Debug_Mode then
             Error_Msg_Flow
-              (FA        => FA,
-               Msg       => "flow analysis of & abandoned due to " &
-                 "expressions with variable inputs",
-               N         => FA.Analyzed_Entity,
-               Kind      => Error_Kind,
-               F1        => Direct_Mapping_Id (FA.Analyzed_Entity));
+              (FA       => FA,
+               Msg      => "flow analysis of & abandoned due to" &
+                           " expressions with variable inputs",
+               N        => FA.Analyzed_Entity,
+               Severity => Error_Kind,
+               F1       => Direct_Mapping_Id (FA.Analyzed_Entity));
          end if;
       end if;
    end Check_Variable_Free_Expressions;
@@ -435,14 +435,14 @@ package body Flow.Analysis.Sanity is
                   case F.Kind is
                      when Direct_Mapping | Record_Field =>
                         Error_Msg_Flow
-                          (FA      => FA,
-                           Msg     => "cannot write & during " &
-                             "elaboration of &",
-                           SRM_Ref => "7.7.1(6)",
-                           N       => Error_Location (FA.PDG, FA.Atr, V),
-                           Kind    => Error_Kind,
-                           F1      => Entire_Variable (Var),
-                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity));
+                          (FA       => FA,
+                           Msg      => "cannot write & during" &
+                                       " elaboration of &",
+                           SRM_Ref  => "7.7.1(6)",
+                           N        => Error_Location (FA.PDG, FA.Atr, V),
+                           Severity => Error_Kind,
+                           F1       => Entire_Variable (Var),
+                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity));
 
                      when Magic_String =>
                         Global_Required (FA, Var);
@@ -479,27 +479,27 @@ package body Flow.Analysis.Sanity is
                   then
                      if FA.Kind in Kind_Package | Kind_Package_Body then
                         Error_Msg_Flow
-                          (FA      => FA,
-                           Msg     => "cannot write & during " &
-                                        "elaboration of &",
-                           SRM_Ref => "7.7.1(6)",
-                           N       => Error_Location (FA.PDG, FA.Atr, V),
-                           Kind    => Error_Kind,
-                           F1      => Var,
-                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity));
+                          (FA       => FA,
+                           Msg      => "cannot write & during" &
+                                        " elaboration of &",
+                           SRM_Ref  => "7.7.1(6)",
+                           N        => Error_Location (FA.PDG, FA.Atr, V),
+                           Severity => Error_Kind,
+                           F1       => Var,
+                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity));
 
                      else
                         Error_Msg_Flow
-                          (FA      => FA,
-                           Msg     => "& must be a global output of &",
-                           SRM_Ref => "6.1.4(16)",
-                           N       => Error_Location (FA.PDG, FA.Atr, V),
-                           Kind    => Error_Kind,
-                           F1      => (if A.Is_Parameter
-                                       then A.Parameter_Formal
-                                       else Var),
-                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-                           Tag     => Illegal_Update);
+                          (FA       => FA,
+                           Msg      => "& must be a global output of &",
+                           SRM_Ref  => "6.1.4(16)",
+                           N        => Error_Location (FA.PDG, FA.Atr, V),
+                           Severity => Error_Kind,
+                           F1       => (if A.Is_Parameter
+                                        then A.Parameter_Formal
+                                        else Var),
+                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           Tag      => Illegal_Update);
                      end if;
 
                      Sane := False;
@@ -585,20 +585,20 @@ package body Flow.Analysis.Sanity is
                   case F.Kind is
                      when Direct_Mapping | Record_Field =>
                         Error_Msg_Flow
-                          (FA      => FA,
-                           Msg     => "& must be listed in the " &
-                                        Aspect_To_Fix & " aspect of &",
-                           SRM_Ref => SRM_Ref,
-                           N       => First_Variable_Use (FA      => FA,
-                                                          Var     => Var,
-                                                          Kind    => Use_Any,
-                                                          Precise => False),
-                           F1      => (if Gnat2Why_Args.Flow_Advanced_Debug
-                                       then Var
-                                       else Entire_Variable (Var)),
-                           Kind    => Error_Kind,
-                           F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-                           Vertex  => V);
+                          (FA       => FA,
+                           Msg      => "& must be listed in the " &
+                                       Aspect_To_Fix & " aspect of &",
+                           SRM_Ref  => SRM_Ref,
+                           N        => First_Variable_Use (FA      => FA,
+                                                           Var     => Var,
+                                                           Kind    => Use_Any,
+                                                           Precise => False),
+                           F1       => (if Gnat2Why_Args.Flow_Advanced_Debug
+                                        then Var
+                                        else Entire_Variable (Var)),
+                           Severity => Error_Kind,
+                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           Vertex   => V);
 
                      when Magic_String =>
                         Global_Required (FA, Var);
@@ -852,14 +852,14 @@ package body Flow.Analysis.Sanity is
             Sane := False;
 
             Error_Msg_Flow
-              (FA      => FA,
-               Msg     => "& must be a global output of &",
-               SRM_Ref => "6.1.4",
-               N       => FA.Global_N,
-               Kind    => Error_Kind,
-               F1      => W,
-               F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag     => Global_Missing);
+              (FA       => FA,
+               Msg      => "& must be a global output of &",
+               SRM_Ref  => "6.1.4",
+               N        => FA.Global_N,
+               Severity => Error_Kind,
+               F1       => W,
+               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag      => Global_Missing);
          end if;
       end loop;
 
@@ -877,13 +877,13 @@ package body Flow.Analysis.Sanity is
                   Sane := False;
 
                   Error_Msg_Flow
-                    (FA   => FA,
-                     Msg  => "global output & of & not written",
-                     N    => FA.Global_N,
-                     Kind => Error_Kind,
-                     F1   => W,
-                     F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
-                     Tag  => Global_Wrong);
+                    (FA       => FA,
+                     Msg      => "global output & of & not written",
+                     N        => FA.Global_N,
+                     Severity => Error_Kind,
+                     F1       => W,
+                     F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                     Tag      => Global_Wrong);
                end if;
 
             elsif Ekind (E) = E_Abstract_State
@@ -894,13 +894,13 @@ package body Flow.Analysis.Sanity is
                Sane := False;
 
                Error_Msg_Flow
-                 (FA   => FA,
-                  Msg  => "global output & of & not fully written",
-                  N    => FA.Global_N,
-                  Kind => Error_Kind,
-                  F1   => W,
-                  F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Tag  => Global_Wrong);
+                 (FA       => FA,
+                  Msg      => "global output & of & not fully written",
+                  N        => FA.Global_N,
+                  Severity => Error_Kind,
+                  F1       => W,
+                  F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag      => Global_Wrong);
             end if;
          end;
       end loop;
@@ -911,14 +911,14 @@ package body Flow.Analysis.Sanity is
             Sane := False;
 
             Error_Msg_Flow
-              (FA      => FA,
-               Msg     => "& must be a global input of &",
-               SRM_Ref => "6.1.4",
-               N       => FA.Global_N,
-               Kind    => Error_Kind,
-               F1      => R,
-               F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag     => Global_Missing);
+              (FA       => FA,
+               Msg      => "& must be a global input of &",
+               SRM_Ref  => "6.1.4",
+               N        => FA.Global_N,
+               Severity => Error_Kind,
+               F1       => R,
+               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag      => Global_Missing);
          end if;
       end loop;
 
@@ -931,13 +931,13 @@ package body Flow.Analysis.Sanity is
             Sane := False;
 
             Error_Msg_Flow
-              (FA   => FA,
-               Msg  => "global input & of & not read",
-               N    => FA.Global_N,
-               Kind => Low_Check_Kind,
-               F1   => R,
-               F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag  => Global_Wrong);
+              (FA       => FA,
+               Msg      => "global input & of & not read",
+               N        => FA.Global_N,
+               Severity => Low_Check_Kind,
+               F1       => R,
+               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag      => Global_Wrong);
          end if;
       end loop;
 
@@ -947,14 +947,14 @@ package body Flow.Analysis.Sanity is
             Sane := False;
 
             Error_Msg_Flow
-              (FA      => FA,
-               Msg     => "& must be a global Proof_In of &",
-               SRM_Ref => "6.1.4",
-               N       => FA.Global_N,
-               Kind    => Error_Kind,
-               F1      => P,
-               F2      => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag     => Global_Missing);
+              (FA       => FA,
+               Msg      => "& must be a global Proof_In of &",
+               SRM_Ref  => "6.1.4",
+               N        => FA.Global_N,
+               Severity => Error_Kind,
+               F1       => P,
+               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag      => Global_Missing);
          end if;
       end loop;
 
@@ -963,13 +963,13 @@ package body Flow.Analysis.Sanity is
             Sane := False;
 
             Error_Msg_Flow
-              (FA   => FA,
-               Msg  => "global Proof_In & of & not read",
-               N    => FA.Global_N,
-               Kind => Error_Kind,
-               F1   => P,
-               F2   => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag  => Global_Wrong);
+              (FA       => FA,
+               Msg      => "global Proof_In & of & not read",
+               N        => FA.Global_N,
+               Severity => Error_Kind,
+               F1       => P,
+               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag      => Global_Wrong);
          end if;
       end loop;
    end Check_Generated_Refined_Global;

@@ -53,7 +53,7 @@ package body Flow_Error_Messages is
    --  This set will contain flow related messages. It is used so as
    --  to not emit duplicate messages.
 
-   function Msg_Kind_To_String (Kind : Msg_Kind) return String;
+   function Msg_Severity_To_String (Severity : Msg_Severity) return String;
    --  Transform the msg kind into a string, for the JSON output.
 
    type Message_Id is new Integer;
@@ -86,7 +86,7 @@ package body Flow_Error_Messages is
    procedure Add_Json_Msg
      (Suppr       : String_Id;
       Tag         : String;
-      Kind        : Msg_Kind;
+      Severity    : Msg_Severity;
       Slc         : Source_Ptr;
       Msg_List    : in out GNATCOLL.JSON.JSON_Array;
       E           : Entity_Id;
@@ -104,7 +104,7 @@ package body Flow_Error_Messages is
       F1  : Flow_Id := Null_Flow_Id;
       F2  : Flow_Id := Null_Flow_Id;
       F3  : Flow_Id := Null_Flow_Id)
-     return String_Id;
+      return String_Id;
    --  Check if the warning for the given node, message and flow id is
    --  suppressed. If the function returns No_String, the warning is not
    --  suppressed. If it returns Null_String_Id the warning is suppressed,
@@ -112,10 +112,11 @@ package body Flow_Error_Messages is
    --  is provided.
 
    function Print_Regular_Msg
-     (Msg  : String;
-      Slc  : Source_Ptr;
-      Kind : Msg_Kind;
-      Continuation : Boolean := False) return Message_Id;
+     (Msg          : String;
+      Slc          : Source_Ptr;
+      Severity     : Msg_Severity;
+      Continuation : Boolean := False)
+      return Message_Id;
    --  Print a regular error, warning or info message using the frontend
    --  mechanism. Return an Id which can be used to identify this message.
 
@@ -229,7 +230,7 @@ package body Flow_Error_Messages is
    procedure Error_Msg_Flow
      (E            : Entity_Id;
       Msg          : String;
-      Kind         : Msg_Kind;
+      Severity     : Msg_Severity;
       N            : Node_Id;
       Suppressed   : out Boolean;
       F1           : Flow_Id       := Null_Flow_Id;
@@ -250,7 +251,7 @@ package body Flow_Error_Messages is
       Unb_Msg : constant Unbounded_String :=
         To_Unbounded_String (Msg3 &
                              Source_Ptr'Image (Slc) &
-                             Msg_Kind_To_String (Kind));
+                             Msg_Severity_To_String (Severity));
 
       function Is_Specified_Line return Boolean;
       --  Returns True if command line argument "--limit-line" was not
@@ -285,7 +286,7 @@ package body Flow_Error_Messages is
       else
          Flow_Msgs_Set.Insert (Unb_Msg);
 
-         case Kind is
+         case Severity is
             when Warning_Kind =>
                Suppr := Warning_Is_Suppressed (N, Msg3, F1, F2, F3);
                Suppressed := Suppr /= No_String;
@@ -321,13 +322,13 @@ package body Flow_Error_Messages is
          --  the specified line (errors are emitted anyway).
 
          if not Suppressed and then Is_Specified_Line then
-            Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind, Continuation);
+            Msg_Id := Print_Regular_Msg (Msg3, Slc, Severity, Continuation);
          end if;
 
          Add_Json_Msg
            (Suppr     => Suppr,
             Tag       => Flow_Tag_Kind'Image (Tag),
-            Kind      => Kind,
+            Severity  => Severity,
             Slc       => Slc,
             Msg_List  => Flow_Msgs,
             E         => E,
@@ -339,7 +340,7 @@ package body Flow_Error_Messages is
    procedure Error_Msg_Flow
      (FA           : in out Flow_Analysis_Graphs;
       Msg          : String;
-      Kind         : Msg_Kind;
+      Severity     : Msg_Severity;
       N            : Node_Id;
       F1           : Flow_Id               := Null_Flow_Id;
       F2           : Flow_Id               := Null_Flow_Id;
@@ -372,7 +373,7 @@ package body Flow_Error_Messages is
 
       Error_Msg_Flow (E            => E,
                       Msg          => Tmp,
-                      Kind         => Kind,
+                      Severity     => Severity,
                       N            => N,
                       Suppressed   => Suppressed,
                       F1           => F1,
@@ -536,11 +537,11 @@ package body Flow_Error_Messages is
                   Variables : in out Variables_Info)
                is
                   function Insert_Var_Or_Field
-                    (Name : String;
-                     Value : String;
-                     Kind : Var_Or_Field_Kind;
+                    (Name   : String;
+                     Value  : String;
+                     Kind   : Var_Or_Field_Kind;
                      Entity : Entity_Id;
-                     Map : Record_Fields_Map_Ptr)
+                     Map    : Record_Fields_Map_Ptr)
                      return Var_Or_Field_Ptr;
                   --  Insert variable or field with given name, value, kind,
                   --  and entity to given map.
@@ -552,11 +553,11 @@ package body Flow_Error_Messages is
                   -- Insert_Var_Or_Field --
                   ---------------------------------------------------
                   function Insert_Var_Or_Field
-                    (Name : String;
-                     Value : String;
-                     Kind : Var_Or_Field_Kind;
+                    (Name   : String;
+                     Value  : String;
+                     Kind   : Var_Or_Field_Kind;
                      Entity : Entity_Id;
-                     Map : Record_Fields_Map_Ptr)
+                     Map    : Record_Fields_Map_Ptr)
                      return Var_Or_Field_Ptr
                   is
                   begin
@@ -1005,7 +1006,7 @@ package body Flow_Error_Messages is
         (if Is_Empty (Pretty_Cntexmp) then Msg2
          else Msg2 &
            ", counterexample: " & Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
-      Kind     : constant Msg_Kind :=
+      Severity : constant Msg_Severity :=
         (if Is_Proved then Info_Kind else Medium_Check_Kind);
       Suppr    : String_Id := No_String;
       Msg_Id   : Message_Id := No_Message_Id;
@@ -1019,28 +1020,28 @@ package body Flow_Error_Messages is
       --  that also in the Info_Kind case, we want to know whether the check
       --  corresponds to a pragma Annotate.
 
-      Check_Is_Annotated (N, Msg, Kind in Check_Kind, Is_Annot, Info);
+      Check_Is_Annotated (N, Msg, Severity in Check_Kind, Is_Annot, Info);
 
-      case Kind is
+      case Severity is
          when Check_Kind =>
             if Is_Annot then
                Suppr := Info.Reason;
             else
-               Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind);
+               Msg_Id := Print_Regular_Msg (Msg3, Slc, Severity);
             end if;
          when Info_Kind =>
             if Report_Mode /= GPR_Fail then
-               Msg_Id := Print_Regular_Msg (Msg3, Slc, Kind);
+               Msg_Id := Print_Regular_Msg (Msg3, Slc, Severity);
             end if;
          when Error_Kind | Warning_Kind =>
             --  cannot happen
-            null;
+            raise Program_Error;
       end case;
 
       Add_Json_Msg
         (Suppr       => Suppr,
          Tag         => VC_Kind'Image (Tag),
-         Kind        => Kind,
+         Severity    => Severity,
          Slc         => Slc,
          Msg_List    => Proof_Msgs,
          Msg_Id      => Msg_Id,
@@ -1104,9 +1105,9 @@ package body Flow_Error_Messages is
    -- Msg_Kind_To_String --
    ------------------------
 
-   function Msg_Kind_To_String (Kind : Msg_Kind) return String is
+   function Msg_Severity_To_String (Severity : Msg_Severity) return String is
    begin
-      case Kind is
+      case Severity is
          when Error_Kind =>
             return "error";
          when Warning_Kind =>
@@ -1120,7 +1121,7 @@ package body Flow_Error_Messages is
          when Low_Check_Kind =>
             return "low";
       end case;
-   end Msg_Kind_To_String;
+   end Msg_Severity_To_String;
 
    ------------------
    -- Add_Json_Msg --
@@ -1129,7 +1130,7 @@ package body Flow_Error_Messages is
    procedure Add_Json_Msg
      (Suppr       : String_Id;
       Tag         : String;
-      Kind        : Msg_Kind;
+      Severity    : Msg_Severity;
       Slc         : Source_Ptr;
       Msg_List    : in out GNATCOLL.JSON.JSON_Array;
       E           : Entity_Id;
@@ -1164,7 +1165,7 @@ package body Flow_Error_Messages is
       end if;
 
       Set_Field (Value, "rule", Tag);
-      Set_Field (Value, "severity", Msg_Kind_To_String (Kind));
+      Set_Field (Value, "severity", Msg_Severity_To_String (Severity));
       Set_Field (Value, "entity", To_JSON (Entity_To_Subp (E)));
 
       if Tracefile /= "" then
@@ -1203,16 +1204,16 @@ package body Flow_Error_Messages is
    -----------------------
 
    function Print_Regular_Msg
-     (Msg  : String;
-      Slc  : Source_Ptr;
-      Kind : Msg_Kind;
+     (Msg          : String;
+      Slc          : Source_Ptr;
+      Severity     : Msg_Severity;
       Continuation : Boolean := False)
       return Message_Id
    is
       Id         : constant Message_Id := Message_Id_Counter;
       Prefix     : constant String :=
         (if Continuation then "\" else "") &
-        (case Kind is
+        (case Severity is
             when Info_Kind         => "info: ?",
             when Low_Check_Kind    => "low: ",
             when Medium_Check_Kind => "medium: ",

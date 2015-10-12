@@ -1487,13 +1487,14 @@ package body Flow is
                                          (FA.Analyzed_Entity)
                         then
                            Error_Msg_Flow
-                             (FA   => FA,
+                             (FA       => FA,
                               --  ??? another message for entries and tasks
-                              Msg  => "subprogram & has no effect",
-                              N    => FA.Analyzed_Entity,
-                              F1   => Direct_Mapping_Id (FA.Analyzed_Entity),
-                              Tag  => Ineffective,
-                              Kind => Warning_Kind);
+                              Msg      => "subprogram & has no effect",
+                              N        => FA.Analyzed_Entity,
+                              F1       => Direct_Mapping_Id
+                                (FA.Analyzed_Entity),
+                              Tag      => Ineffective,
+                              Severity => Warning_Kind);
                         end if;
                      else
                         Analysis.Find_Ineffective_Imports_And_Unused_Objects
@@ -1549,12 +1550,13 @@ package body Flow is
          then
             --  ??? issue different warning if the blocking status is unknown
             if Is_Potentially_Blocking (FA.Analyzed_Entity) then
-               Error_Msg_Flow (FA   => FA,
-                               Msg  => "potentially blocking operation " &
-                                 "in protected operation &",
-                               N    => FA.Analyzed_Entity,
-                               F1   => Direct_Mapping_Id (FA.Analyzed_Entity),
-                               Kind => Error_Kind);
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "potentially blocking operation " &
+                    "in protected operation &",
+                  N        => FA.Analyzed_Entity,
+                  F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Severity => Error_Kind);
             end if;
          end if;
 

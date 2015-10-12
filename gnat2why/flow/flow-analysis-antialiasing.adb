@@ -617,20 +617,20 @@ package body Flow.Analysis.Antialiasing is
             Append (Msg, " proved");
       end case;
 
-      Error_Msg_Flow (FA      => FA,
-                      Msg     => To_String (Msg),
-                      Kind    =>
+      Error_Msg_Flow (FA       => FA,
+                      Msg      => To_String (Msg),
+                      Severity =>
                         (case Tmp is
-                            when Impossible | No_Aliasing => Info_Kind,
-                            when Possible_Aliasing        => Medium_Check_Kind,
-                            when Definite_Aliasing        => High_Check_Kind),
-                      N       => A,
-                      F1      => Direct_Mapping_Id (A_Formal),
-                      F2      => Direct_Mapping_Id (B_Node),
-                      Tag     => Aliasing,
-                      SRM_Ref => (if Tmp = No_Aliasing
-                                  then ""
-                                  else "6.4.2"));
+                         when Impossible | No_Aliasing => Info_Kind,
+                         when Possible_Aliasing        => Medium_Check_Kind,
+                         when Definite_Aliasing        => High_Check_Kind),
+                      N        => A,
+                      F1       => Direct_Mapping_Id (A_Formal),
+                      F2       => Direct_Mapping_Id (B_Node),
+                      Tag      => Aliasing,
+                      SRM_Ref  => (if Tmp = No_Aliasing
+                                   then ""
+                                   else "6.4.2"));
    end Check_Node_Against_Node;
 
    ----------------------------------------------------

@@ -162,7 +162,7 @@ package body Flow_Classwide is
                  "class-wide proof_in & must also be a " &
                  "class-wide (proof) input " &
                  "of overridden subprogram #",
-               Kind       => Error_Kind,
+               Severity   => Error_Kind,
                N          => E,
                Suppressed => Suppressed,
                F1         => F,
@@ -182,7 +182,7 @@ package body Flow_Classwide is
                  "class-wide " & Mode (F) & " & must also be a " &
                  "class-wide input " &
                  "of overridden subprogram #",
-               Kind       => Error_Kind,
+               Severity   => Error_Kind,
                N          => E,
                Suppressed => Suppressed,
                F1         => F,
@@ -204,7 +204,7 @@ package body Flow_Classwide is
                  "class-wide " & Mode (F) & " & must also be a " &
                  "class-wide output " &
                  "of overridden subprogram #",
-               Kind       => Error_Kind,
+               Severity   => Error_Kind,
                N          => E,
                Suppressed => Suppressed,
                F1         => F,
@@ -242,7 +242,7 @@ package body Flow_Classwide is
                     "class-wide output & of overridden subprogram # " &
                     "must also be a " &
                     "class-wide output here",
-                  Kind       => Error_Kind,
+                  Severity   => Error_Kind,
                   N          => E,
                   Suppressed => Suppressed,
                   F1         => F_Out,
@@ -415,7 +415,7 @@ package body Flow_Classwide is
                   Msg        =>
                     "class-wide dependency ""% => %"" is not a " &
                     "class-wide dependency of overridden subprogram #",
-                  Kind       => Error_Kind,
+                  Severity   => Error_Kind,
                   N          => Search_Contract
                                   (E,
                                    Pragma_Depends,
