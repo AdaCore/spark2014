@@ -905,9 +905,9 @@ package body Why.Atree.Sprint is
             if not Is_Empty (+Binders) then
                P (O, " (");
                Print_List (+Binders, ") (");
-               P (O, ") ");
+               P (O, ")");
             end if;
-            P (O, " :");
+            P (O, " : ");
             Print_Node (+Return_Type);
 
             if Def /= Why_Empty then
@@ -943,11 +943,11 @@ package body Why.Atree.Sprint is
                if not Is_Empty (+Binders) then
                   P (O, " (");
                   Print_List (+Binders, ") (");
-                  P (O, ") ");
+                  P (O, ")");
                end if;
 
                if Def = Why_Empty then
-                  P (O, " :");
+                  P (O, " : ");
                   Print_Node (+Return_Type);
                end if;
                NL (O);
