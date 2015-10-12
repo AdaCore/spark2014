@@ -869,6 +869,9 @@ The following table shows all flow analysis messages, (E)rrors,
    "export must not depend on Proof_In", "E", "Flow analysis has detected an output of a subprogram that depends on a constant which is marked Proof_In."
    "class-wide mode must also be a class-wide mode of overridden subprogram", "E", "Miss-match between Global contracts of overridding and overridden subprograms."
    "class-wide dependency is not class-wide dependency of overridden subprogram", "E", "Miss-match between Depends contracts of overridding and overridden subprograms."
+   "volatile function", E, "A nonvolatile function may not have a volatile global."
+   "tasking exclusivity", E, "No two tasks may suspend on the same protected object or the same suspension object."
+   "tasking exclusivity", E, "No two tasks may read and write from the same unsynchronized object."
    "missing dependency", "C", "A dependency is missing from the dependency relation."
    "dependency relation", "C", "An out parameter or global is missing from the dependency relation."
    "missing null dependency", "C", "A variable is missing from the null dependency."
@@ -877,6 +880,7 @@ The following table shows all flow analysis messages, (E)rrors,
    "initialization must not depend on something", "C", "Wrong Initializes aspect detected."
    "type is not fully initialized", "C", "A type promised to be default initialized but is not."
    "needs to be a constituent of some state abstraction", "C", "Flow analysis detected a constituent that has to be exposed through some state abstraction."
+   "constant after elaboration", "C", "An object which is constant after elaboration must not be changed after elaboration and as such cannot be the output of any subprogram."
    "is not modified", "W", "The variable is declared with mode in out, but is never modified, so could be declared with mode in."
    "unused assignment", "W", "Flow analysis has detected an assignment to a variable which is not read after the assignment."
    "initialization has no effect", "W", "Flow analysis has detected an object which is initialized, but never read."
@@ -887,6 +891,7 @@ The following table shows all flow analysis messages, (E)rrors,
    "missing return", "W", "A return statement seems to be missing from the function."
    "no procedure exists that can initialize abstract state", "W", "Flow analysis detected a state abstraction that is impossible to initialize."
    "subprogram has no effect", "W", "A subprogram that has no exports has been detected."
+   "volatile function", E, "A volatile function that has no volatile globals does not have to be a volatile function."
 
 .. note::
 
