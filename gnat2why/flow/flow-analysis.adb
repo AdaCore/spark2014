@@ -4114,7 +4114,7 @@ package body Flow.Analysis is
          --  Pointer to other task possibly accessing the object
 
          Dummy : Boolean;
-         --  Dummy variable required by the Flow_Error_Msg API
+         --  Dummy variable required by the Error_Msg_Flow API
 
          Msg : constant String :=
            (case Owning_Kind is
