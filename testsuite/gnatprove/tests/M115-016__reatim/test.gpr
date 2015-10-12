@@ -7,7 +7,7 @@ project Test is
    for Library_Dir use "lib";
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnatp", "-gnat12", "-gnato13");
+      for Default_Switches ("ada") use ("-gnatp", "-gnato13");
    end Compiler;
 
    for Library_Interface use ("pck");
