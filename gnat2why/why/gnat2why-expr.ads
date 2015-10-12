@@ -317,8 +317,6 @@ package Gnat2Why.Expr is
    --  @return The translated pragma into Why3.
 
    function Transform_Statements_And_Declarations
-     (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id;
-   function Transform_Statements_And_Declarations
      (Stmts_And_Decls : List_Id) return W_Prog_Id;
    --  Transforms a list of statements and declarations into a Why expression.
    --  An empty list is transformed into the void expression.

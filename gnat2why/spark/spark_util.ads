@@ -1030,11 +1030,6 @@ package SPARK_Util is
    --  Returns True if location Loc is in a unit of the standard library, as
    --  computed by Unit_In_Standard_Library.
 
-   function Get_Statement_And_Declaration_List
-     (Stmts : List_Id) return Node_Lists.List;
-   --  Given a list of statements and declarations Stmts, returns the same list
-   --  seen as a container list of nodes.
-
    function Get_Flat_Statement_And_Declaration_List
      (Stmts : List_Id) return Node_Lists.List;
    --  Given a list of statements and declarations Stmts, returns the flattened

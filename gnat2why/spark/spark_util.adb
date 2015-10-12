@@ -1749,25 +1749,6 @@ package body SPARK_Util is
       end if;
    end Get_Specific_Type_From_Classwide;
 
-   ----------------------------------------
-   -- Get_Statement_And_Declaration_List --
-   ----------------------------------------
-
-   function Get_Statement_And_Declaration_List
-     (Stmts : List_Id) return Node_Lists.List
-   is
-      Cur_Stmt   : Node_Id := Nlists.First (Stmts);
-      New_Stmts : Node_Lists.List;
-
-   begin
-      while Present (Cur_Stmt) loop
-         New_Stmts.Append (Cur_Stmt);
-         Nlists.Next (Cur_Stmt);
-      end loop;
-
-      return New_Stmts;
-   end Get_Statement_And_Declaration_List;
-
    -------------------
    -- Has_Contracts --
    -------------------

@@ -12961,24 +12961,23 @@ package body Gnat2Why.Expr is
    -------------------------------------------
 
    function Transform_Statements_And_Declarations
-     (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id
+     (Stmts_And_Decls : List_Id) return W_Prog_Id
    is
-      Result : W_Prog_Id := New_Void;
+      Cur_Stmt_Or_Decl : Node_Id   := Nlists.First (Stmts_And_Decls);
+      Result           : W_Prog_Id := New_Void;
+
    begin
-      for Cur_Stmt_Or_Decl of Stmts_And_Decls loop
+      while Present (Cur_Stmt_Or_Decl) loop
          Result :=
            Transform_Statement_Or_Declaration_In_List
              (Stmt_Or_Decl => Cur_Stmt_Or_Decl,
               Prev_Prog    => Result);
+
+         Nlists.Next (Cur_Stmt_Or_Decl);
       end loop;
+
       return Result;
    end Transform_Statements_And_Declarations;
-
-   function Transform_Statements_And_Declarations
-     (Stmts_And_Decls : List_Id) return W_Prog_Id
-   is
-     (Transform_Statements_And_Declarations
-        (Get_Statement_And_Declaration_List (Stmts_And_Decls)));
 
    ------------------------------
    -- Transform_String_Literal --
