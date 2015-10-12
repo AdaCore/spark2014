@@ -19,7 +19,7 @@ stackp.ads:39:34: info: range check proved
 stackp.ads:42:20: info: postcondition proved
 stackp.ads:42:20: medium: class-wide postcondition might be weaker than overridden one
 stackp.ads:42:54: info: range check proved
-stackp.ads:49:20: medium: postcondition might fail, requires Get_Model (S) = E & Get_Model (S)'old
+stackp.ads:49:20: medium: postcondition might fail, cannot prove Get_Model (S) = E & Get_Model (S)'old
 stackp.ads:49:38: info: range check proved
 stackp.ads:52:13: info: postcondition proved
 stackp.ads:55:14: info: postcondition proved
@@ -28,10 +28,10 @@ stackp.ads:55:21: info: initialization of "S.Length" proved
 stackp.ads:55:21: medium: input value of "S.Content" will be used in "Reset"
 stackp.ads:57:38: info: initialization of "E" proved
 stackp.ads:58:20: medium: class-wide postcondition might be weaker than overridden one
-stackp.ads:58:20: medium: postcondition might fail, requires Get_Model (S) & (1 => E) = Get_Model (S)'old
+stackp.ads:58:20: medium: postcondition might fail, cannot prove Get_Model (S) & (1 => E) = Get_Model (S)'old
 stackp.ads:58:34: info: range check proved
 stackp.ads:61:20: medium: class-wide postcondition might be weaker than overridden one
-stackp.ads:61:20: medium: postcondition might fail, requires Get_Model (S) = Get_Model (S)'Old & (1 => E)
+stackp.ads:61:20: medium: postcondition might fail, cannot prove Get_Model (S) = Get_Model (S)'Old & (1 => E)
 stackp.ads:61:54: info: range check proved
 stackp.ads:65:04: medium: type "Stack_Root" is not fully initialized
 stackp.ads:71:04: medium: type "Stack" is not fully initialized
@@ -43,3 +43,4 @@ stackp.ads:90:20: info: range check proved
 stackp.ads:90:46: info: range check proved
 stackp.ads:90:49: info: range check proved
 stackp.ads:91:20: info: range check proved
+

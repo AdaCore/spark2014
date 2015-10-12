@@ -2,7 +2,7 @@ aco-math-very_longs.adb:21:54: info: initialization of "Digit" proved
 aco-math-very_longs.adb:21:77: info: initialization of "Valid" proved
 aco-math-very_longs.adb:39:52: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:39:76: info: initialization of "Carry" proved
-aco-math-very_longs.adb:43:16: medium: postcondition might fail, requires Result.Octet_Length = L.Octet_Length
+aco-math-very_longs.adb:43:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length
 aco-math-very_longs.adb:49:26: info: length check proved
 aco-math-very_longs.adb:49:29: info: length check proved
 aco-math-very_longs.adb:52:52: info: index check proved
@@ -16,7 +16,7 @@ aco-math-very_longs.adb:56:32: info: initialization of "Result.Long_Digits" prov
 aco-math-very_longs.adb:56:50: info: initialization of "Sum" proved
 aco-math-very_longs.adb:62:58: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:62:82: info: initialization of "Borrow" proved
-aco-math-very_longs.adb:66:16: medium: postcondition might fail, requires Result.Octet_Length = L.Octet_Length
+aco-math-very_longs.adb:66:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length
 aco-math-very_longs.adb:72:26: info: length check proved
 aco-math-very_longs.adb:72:29: info: length check proved
 aco-math-very_longs.adb:75:55: info: index check proved
@@ -44,7 +44,7 @@ aco-math-very_longs.adb:122:41: info: range check proved
 aco-math-very_longs.adb:123:29: info: range check proved
 aco-math-very_longs.adb:125:10: info: loop invariant preservation proved
 aco-math-very_longs.adb:125:32: info: initialization of "String_Index" proved
-aco-math-very_longs.adb:125:32: medium: loop invariant might fail in first iteration, requires String_Index = 2 * Result.Long_Digits'last - Index + 1
+aco-math-very_longs.adb:125:32: medium: loop invariant might fail in first iteration, cannot prove String_Index = 2 * Result.Long_Digits'last - Index + 1
 aco-math-very_longs.adb:125:58: info: overflow check proved
 aco-math-very_longs.adb:125:85: info: overflow check proved
 aco-math-very_longs.adb:125:87: info: initialization of "Index" proved

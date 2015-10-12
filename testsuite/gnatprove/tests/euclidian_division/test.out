@@ -14,7 +14,7 @@ linear_div.adb:25:20: info: initialization of "Remainder" proved
 linear_div.adb:25:30: info: overflow check proved
 random_testing.adb:9:27: info: initialization of "Result" proved
 random_testing.adb:10:16: info: initialization of "Result" proved
-random_testing.adb:10:16: medium: postcondition might fail, requires Result
+random_testing.adb:10:16: medium: postcondition might fail, cannot prove Result
 random_testing.adb:15:04: info: precondition proved
 random_testing.adb:16:04: info: precondition proved
 random_testing.adb:17:04: info: precondition proved

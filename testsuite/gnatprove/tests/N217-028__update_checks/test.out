@@ -48,7 +48,7 @@ ar.ads:19:38: info: range check proved
 ar.ads:19:47: info: range check proved
 ar.ads:19:54: info: range check proved
 ar.ads:19:63: info: range check proved
-ar.ads:24:06: medium: postcondition might fail, requires A = A'Old'update
+ar.ads:24:06: medium: postcondition might fail, cannot prove A = A'Old'update
 ar.ads:24:26: medium: range check might fail
 ar.ads:24:39: medium: range check might fail
 ar.ads:24:48: medium: range check might fail

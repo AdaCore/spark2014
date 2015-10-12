@@ -7,4 +7,4 @@ state_machine.adb:29:35: info: contract case proved
 state_machine.adb:36:20: info: overflow check proved
 state_machine.adb:39:17: info: overflow check proved
 state_machine.adb:41:20: info: overflow check proved
-state_machine.adb:44:24: medium: assertion might fail, requires false
+state_machine.adb:44:24: medium: assertion might fail, cannot prove false

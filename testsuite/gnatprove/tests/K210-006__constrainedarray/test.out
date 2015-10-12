@@ -1,2 +1,2 @@
 constr.adb:6:24: medium: overflow check might fail
-constr.ads:6:20: medium: postcondition might fail, requires X(1) = 1
+constr.ads:6:20: medium: postcondition might fail, cannot prove X(1) = 1

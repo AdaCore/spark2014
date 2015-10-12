@@ -192,12 +192,12 @@ hermes-der-decode.ads:71:07: info: initialization of "Stop" proved
 hermes-der-decode.ads:72:07: info: initialization of "Value" proved
 hermes-der-decode.ads:73:07: info: initialization of "Status" proved
 hermes-der-decode.ads:77:16: info: initialization of "Stop" proved
-hermes-der-decode.ads:77:16: medium: postcondition might fail, requires Stop in Start .. Message'last
+hermes-der-decode.ads:77:16: medium: postcondition might fail, cannot prove Stop in Start .. Message'last
 hermes-der-decode.ads:98:07: info: initialization of "Stop" proved
 hermes-der-decode.ads:99:07: info: initialization of "Value" proved
 hermes-der-decode.ads:100:07: info: initialization of "Status" proved
 hermes-der-decode.ads:104:16: info: initialization of "Stop" proved
-hermes-der-decode.ads:104:16: medium: postcondition might fail, requires Stop in Start .. Message'last
+hermes-der-decode.ads:104:16: medium: postcondition might fail, cannot prove Stop in Start .. Message'last
 hermes-der-encode.adb:20:09: info: length check proved
 hermes-der-encode.adb:26:09: info: length check proved
 hermes-der-encode.adb:30:09: info: length check proved

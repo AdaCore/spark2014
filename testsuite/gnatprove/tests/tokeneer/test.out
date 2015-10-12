@@ -1817,7 +1817,7 @@ enrolment.adb:255:14: info: initialization of "DataOK" proved
 enrolment.ads:55:24: info: initialization of "DataOK" proved
 enrolment.ads:56:24: info: initialization of "Description" proved
 enrolment.ads:78:22: info: initialization of "DataOK" proved
-enrolment.ads:78:22: medium: postcondition might fail, requires DataOK = KeyStore(KeyStore.privatekeypresent)
+enrolment.ads:78:22: medium: postcondition might fail, cannot prove DataOK = KeyStore(KeyStore.privatekeypresent)
 file.adb:93:36: warning: index for "TheName" may assume lower bound of 1
 file.adb:93:36: warning: suggested replacement: "TheName'First"
 file.adb:93:39: warning: index for "TheName" may assume lower bound of 1

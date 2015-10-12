@@ -11,11 +11,11 @@ deceleration_curve.adb:41:34: info: overflow check proved
 deceleration_curve.adb:41:35: info: initialization of "speed" proved
 deceleration_curve.adb:41:48: info: division check proved
 deceleration_curve.adb:41:48: info: overflow check proved
-deceleration_curve.adb:43:14: medium: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
+deceleration_curve.adb:43:14: medium: assertion might fail, cannot prove Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:44:38: info: division check proved
 deceleration_curve.adb:44:38: medium: overflow check might fail
 deceleration_curve.adb:44:40: info: initialization of "speed" proved
-deceleration_curve.adb:46:14: medium: assertion might fail, requires Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
+deceleration_curve.adb:46:14: medium: assertion might fail, cannot prove Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:48:39: info: division check proved
 deceleration_curve.adb:48:39: medium: overflow check might fail
 deceleration_curve.adb:48:41: info: initialization of "speed" proved
@@ -73,7 +73,7 @@ deceleration_curve.ads:81:32: info: initialization of "Braking_Curve.end_point" 
 deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved
 deceleration_curve_test.adb:15:19: info: precondition proved
-deceleration_curve_test.adb:15:19: medium: assertion might fail, requires Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
+deceleration_curve_test.adb:15:19: medium: assertion might fail, cannot prove Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
 deceleration_curve_test.adb:15:37: info: initialization of "initial_speed" proved
 deceleration_curve_test.adb:17:04: info: precondition proved
 deceleration_curve_test.adb:17:22: info: initialization of "target.location" proved
@@ -129,7 +129,7 @@ section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:49:04: info: initialization of private part of "Connections" proved
 section_3_5_3.ads:51:53: info: precondition proved
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
-section_3_5_3.ads:75:14: medium: postcondition might fail, requires Contains(Connections, destination)
+section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Contains(Connections, destination)
 section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect
 section_4_6.ads:102:24: warning: unused variable "mode"
 section_4_6.ads:106:06: medium: contract cases might not be complete
@@ -200,25 +200,25 @@ step_function.adb:106:10: info: loop invariant initialization proved
 step_function.adb:107:16: info: initialization of "im" proved
 step_function.adb:107:28: info: initialization of "Merge.Step" proved
 step_function.adb:107:28: medium: "Merge.Step" might not be initialized
-step_function.adb:107:28: medium: loop invariant might fail after first iteration, requires Merge.Step(0).Delimiter = Function_Range'first
+step_function.adb:107:28: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(0).Delimiter = Function_Range'first
 step_function.adb:108:10: info: loop invariant initialization proved
 step_function.adb:109:32: info: initialization of "scan_sfun1" proved
 step_function.adb:110:16: info: initialization of "Merge.Step" proved
-step_function.adb:110:16: medium: loop invariant might fail after first iteration, requires Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
+step_function.adb:110:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
 step_function.adb:110:27: info: initialization of "im" proved
 step_function.adb:110:29: info: index check proved
 step_function.adb:110:56: info: initialization of "i1" proved
 step_function.adb:111:10: info: loop invariant initialization proved
 step_function.adb:112:32: info: initialization of "scan_sfun2" proved
 step_function.adb:113:16: info: initialization of "Merge.Step" proved
-step_function.adb:113:16: medium: loop invariant might fail after first iteration, requires Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter
+step_function.adb:113:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter
 step_function.adb:113:27: info: initialization of "im" proved
 step_function.adb:113:29: info: index check proved
 step_function.adb:113:56: info: initialization of "i2" proved
 step_function.adb:114:10: info: loop invariant initialization proved
 step_function.adb:115:29: info: initialization of "im" proved
 step_function.adb:116:15: info: initialization of "Merge.Step" proved
-step_function.adb:116:15: medium: loop invariant might fail after first iteration, requires Merge.Step(i-1).Delimiter < Merge.Step(i).Delimiter
+step_function.adb:116:15: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(i-1).Delimiter < Merge.Step(i).Delimiter
 step_function.adb:116:27: info: index check proved
 step_function.adb:116:54: info: index check proved
 step_function.adb:119:10: info: loop invariant initialization proved
@@ -252,7 +252,7 @@ step_function.adb:138:62: info: index check proved
 step_function.adb:141:10: info: loop invariant initialization proved
 step_function.adb:142:29: info: initialization of "im" proved
 step_function.adb:143:15: info: initialization of "Merge.Step" proved
-step_function.adb:143:15: medium: loop invariant might fail after first iteration, requires Merge.Step(i).Value = Min(Get_Value(SFun1, Merge.Step(i).Delimiter), Get_Value(SFun2, Merge.Step(i).Delimiter)
+step_function.adb:143:15: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(i).Value = Min(Get_Value(SFun1, Merge.Step(i).Delimiter), Get_Value(SFun2, Merge.Step(i).Delimiter)
 step_function.adb:143:26: info: index check proved
 step_function.adb:144:19: info: precondition proved
 step_function.adb:144:47: info: index check proved
@@ -396,7 +396,7 @@ step_function_test.adb:56:22: info: initialization of "sfun3.Step" proved
 step_function_test.adb:56:29: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:56:29: info: initialization of "sfun4.Step" proved
 step_function_test.adb:61:22: info: precondition proved
-step_function_test.adb:61:22: medium: assertion might fail, requires Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
+step_function_test.adb:61:22: medium: assertion might fail, cannot prove Get_Value(sfun_merge, i) = Min(Get_Value(sfun3, i), Get_Value(sfun4, i)
 step_function_test.adb:61:32: info: initialization of "sfun_merge.Number_Of_Delimiters" proved
 step_function_test.adb:61:32: info: initialization of "sfun_merge.Step" proved
 step_function_test.adb:62:28: info: precondition proved
@@ -410,11 +410,11 @@ step_function_test.adb:65:19: info: precondition proved
 step_function_test.adb:65:39: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:65:39: info: initialization of "sfun4.Step" proved
 step_function_test.adb:66:19: info: precondition proved
-step_function_test.adb:66:19: medium: assertion might fail, requires Minimum_Until_Point(sfun4, 5) =
+step_function_test.adb:66:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun4, 5) =
 step_function_test.adb:66:39: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:66:39: info: initialization of "sfun4.Step" proved
 step_function_test.adb:67:19: info: precondition proved
-step_function_test.adb:67:19: medium: assertion might fail, requires Minimum_Until_Point(sfun_merge, 11) =
+step_function_test.adb:67:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun_merge, 11) =
 step_function_test.adb:67:39: info: initialization of "sfun_merge.Number_Of_Delimiters" proved
 step_function_test.adb:67:39: info: initialization of "sfun_merge.Step" proved
 units.adb:24:38: info: overflow check proved

@@ -5,7 +5,7 @@ usergroup_examples.adb:51:27: info: initialization of "Tmp" proved
 usergroup_examples.adb:51:27: medium: range check might fail
 usergroup_examples.adb:51:32: info: division check proved
 usergroup_examples.adb:51:32: medium: array index check might fail
-usergroup_examples.adb:59:19: medium: postcondition might fail, requires Example_5'Result > 0
+usergroup_examples.adb:59:19: medium: postcondition might fail, cannot prove Example_5'Result > 0
 usergroup_examples.adb:68:25: info: initialization of "V" proved
 usergroup_examples.adb:73:22: info: postcondition proved
 usergroup_examples.adb:73:32: info: initialization of "V" proved

@@ -20,7 +20,7 @@ my_test.adb:20:10: medium: discriminant check might fail
 my_test.adb:20:23: info: initialization of "T1.V" proved
 my_test.adb:21:16: info: initialization of "T1.V" proved
 my_test.adb:22:19: info: initialization of "T1.V" proved
-my_test.adb:22:19: medium: assertion might fail, requires T1 = T3
+my_test.adb:22:19: medium: assertion might fail, cannot prove T1 = T3
 my_test.adb:22:24: info: initialization of "T3.V" proved
 simple_unc_arrays.adb:10:07: medium: "C.V" might not be initialized
 simple_unc_arrays.adb:12:13: info: loop invariant initialization proved
@@ -144,7 +144,7 @@ simple_unc_arrays.ads:22:40: info: index check proved
 simple_unc_arrays.ads:22:50: info: index check proved
 simple_unc_arrays.ads:22:53: info: overflow check proved
 simple_unc_arrays.ads:22:60: info: index check proved
-simple_unc_arrays.ads:30:20: medium: postcondition might fail, requires A.V (J) = A.V'Old (A.Last - J + 1)
+simple_unc_arrays.ads:30:20: medium: postcondition might fail, cannot prove A.V (J) = A.V'Old (A.Last - J + 1)
 simple_unc_arrays.ads:30:26: info: index check proved
 simple_unc_arrays.ads:30:51: info: index check proved
 simple_unc_arrays.ads:30:51: info: overflow check proved
@@ -157,7 +157,7 @@ simple_unc_arrays.ads:54:68: info: index check proved
 simple_unc_arrays.ads:64:14: info: precondition proved
 simple_unc_arrays.ads:64:14: medium: postcondition might fail
 simple_unc_arrays.ads:65:15: info: precondition proved
-simple_unc_arrays.ads:74:17: medium: postcondition might fail, requires Search'Result = 0 and then Not_In (A, V, 1 ,A.Last)) or else (A.V (Search'Result) = V and then Not_In (A, V, 1, Search'Result-1)
+simple_unc_arrays.ads:74:17: medium: postcondition might fail, cannot prove Search'Result = 0 and then Not_In (A, V, 1 ,A.Last)) or else (A.V (Search'Result) = V and then Not_In (A, V, 1, Search'Result-1)
 simple_unc_arrays.ads:75:26: medium: array index check might fail
 simple_unc_arrays.ads:76:54: info: range check proved
 simple_unc_arrays.ads:84:17: medium: postcondition might fail

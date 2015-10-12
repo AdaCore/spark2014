@@ -118,7 +118,7 @@ stable_marriage.adb:272:12: info: initialization of "Unmatched_G1_Set.Elements" 
 stable_marriage.adb:272:15: info: initialization of "G1" proved, in call inlined at stable_marriage.adb:326
 stable_marriage.adb:277:18: info: precondition proved
 stable_marriage.adb:279:17: info: postcondition proved
-stable_marriage.adb:300:25: medium: assertion might fail, requires Proposals_Made (G1) < Count'last
+stable_marriage.adb:300:25: medium: assertion might fail, cannot prove Proposals_Made (G1) < Count'last
 stable_marriage.adb:300:41: info: initialization of "G1" proved
 stable_marriage.adb:302:43: info: initialization of "G1" proved
 stable_marriage.adb:303:13: info: initialization of "Already_Asked" proved
@@ -139,7 +139,7 @@ stable_marriage.adb:313:31: info: initialization of "G2" proved
 stable_marriage.adb:316:35: info: initialization of "G2" proved
 stable_marriage.adb:321:39: info: initialization of "G2" proved
 stable_marriage.adb:322:28: info: precondition proved
-stable_marriage.adb:322:28: medium: assertion might fail, requires Is_Preferred_1 (G1, Result (G2), Ranking_2 (G2)
+stable_marriage.adb:322:28: medium: assertion might fail, cannot prove Is_Preferred_1 (G1, Result (G2), Ranking_2 (G2)
 stable_marriage.adb:322:44: info: initialization of "G1" proved
 stable_marriage.adb:322:72: info: initialization of "G2" proved
 stable_marriage.adb:329:13: info: initialization of "Accepted" proved
@@ -200,13 +200,13 @@ stable_marriage.adb:396:10: info: initialization of "Unmatched_G1_Set.Elements" 
 stable_marriage.adb:396:10: info: initialization of "Unmatched_G2_Set" proved
 stable_marriage.adb:396:10: info: precondition proved
 stable_marriage.adb:399:14: info: initialization of "Result" proved
-stable_marriage.ads:21:14: medium: postcondition might fail, requires Is_Permutation_1'Result = (for all G1 in Group1_Id => (for some Rank in Ranking => (R1 (Rank) = G1
-stable_marriage.ads:30:49: medium: postcondition might fail, requires R1 (Rank1) /= R1 (Rank2)
-stable_marriage.ads:33:14: medium: postcondition might fail, requires Is_Permutation_2'Result = (for all G2 in Group2_Id => (for some Rank in Ranking => (R2 (Rank) = G2
-stable_marriage.ads:42:49: medium: postcondition might fail, requires R2 (Rank1) /= R2 (Rank2)
+stable_marriage.ads:21:14: medium: postcondition might fail, cannot prove Is_Permutation_1'Result = (for all G1 in Group1_Id => (for some Rank in Ranking => (R1 (Rank) = G1
+stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2)
+stable_marriage.ads:33:14: medium: postcondition might fail, cannot prove Is_Permutation_2'Result = (for all G2 in Group2_Id => (for some Rank in Ranking => (R2 (Rank) = G2
+stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2)
 stable_marriage.ads:50:14: medium: postcondition might fail
 stable_marriage.ads:56:14: medium: postcondition might fail
-stable_marriage.ads:65:45: medium: postcondition might fail, requires G2_To_G1 (G21) /= G2_To_G1 (G22)
+stable_marriage.ads:65:45: medium: postcondition might fail, cannot prove G2_To_G1 (G21) /= G2_To_G1 (G22)
 stable_marriage.ads:71:07: medium: postcondition might fail
 stable_marriage.ads:77:14: info: postcondition proved
 stable_marriage.ads:78:09: info: precondition proved

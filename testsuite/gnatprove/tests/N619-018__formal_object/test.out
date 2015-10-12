@@ -5,7 +5,7 @@ gen.ads:6:18: info: postcondition proved, in instantiation at user.adb:7
 gen.ads:6:18: info: postcondition proved, in instantiation at user.adb:8
 user.adb:7:30: info: initialization of "X" proved
 user.adb:8:30: info: initialization of "Y" proved
-user.adb:11:19: medium: assertion might fail, requires Gen_X.Get = 0
+user.adb:11:19: medium: assertion might fail, cannot prove Gen_X.Get = 0
 user.adb:11:24: info: initialization of "X" proved
-user.adb:13:19: medium: assertion might fail, requires Gen_Y.Get = 0
+user.adb:13:19: medium: assertion might fail, cannot prove Gen_Y.Get = 0
 user.adb:13:24: info: initialization of "Y" proved

@@ -353,7 +353,7 @@ package body Gnat2Why.Error_Messages is
                  String_Of_Node (Extra)
             else "");
          Extra_Msg  : constant String :=
-           (if Extra_Text /= "" then ", requires ~"
+           (if Extra_Text /= "" then ", cannot prove ~"
             else "");
          Node   : constant Node_Id :=
            (if Present (Extra) then Extra else VC.Node);

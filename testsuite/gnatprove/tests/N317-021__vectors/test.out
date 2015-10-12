@@ -223,7 +223,7 @@ bounded.adb:107:07: info: assertion proved
 bounded.adb:107:22: info: precondition proved
 bounded.adb:107:32: info: initialization of private part of "V" proved
 bounded.adb:108:22: info: precondition proved
-bounded.adb:108:22: medium: assertion might fail, requires Element (V, 1) = 3
+bounded.adb:108:22: medium: assertion might fail, cannot prove Element (V, 1) = 3
 bounded.adb:108:31: info: initialization of private part of "V" proved
 bounded.adb:109:07: info: assertion proved
 bounded.adb:109:22: info: precondition proved
@@ -243,7 +243,7 @@ bounded.adb:113:66: info: initialization of private part of "V" proved
 bounded.adb:115:07: info: assertion proved
 bounded.adb:115:22: info: precondition proved
 bounded.adb:115:32: info: initialization of private part of "V" proved
-bounded.adb:117:37: medium: assertion might fail, requires false
+bounded.adb:117:37: medium: assertion might fail, cannot prove false
 bounded.ads:13:14: warning: subprogram "Test" has no effect
 indefinite_bounded.adb:12:07: info: precondition proved
 indefinite_bounded.adb:12:14: info: initialization of private part of "V" proved
@@ -468,7 +468,7 @@ indefinite_bounded.adb:106:07: info: assertion proved
 indefinite_bounded.adb:106:22: info: precondition proved
 indefinite_bounded.adb:106:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:107:22: info: precondition proved
-indefinite_bounded.adb:107:22: medium: assertion might fail, requires Element (V, 1) = 3
+indefinite_bounded.adb:107:22: medium: assertion might fail, cannot prove Element (V, 1) = 3
 indefinite_bounded.adb:107:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:108:07: info: assertion proved
 indefinite_bounded.adb:108:22: info: precondition proved
@@ -488,7 +488,7 @@ indefinite_bounded.adb:112:66: info: initialization of private part of "V" prove
 indefinite_bounded.adb:114:07: info: assertion proved
 indefinite_bounded.adb:114:22: info: precondition proved
 indefinite_bounded.adb:114:32: info: initialization of private part of "V" proved
-indefinite_bounded.adb:116:37: medium: assertion might fail, requires false
+indefinite_bounded.adb:116:37: medium: assertion might fail, cannot prove false
 indefinite_bounded.ads:14:14: warning: subprogram "Test" has no effect
 indefinite_bounded_tagged.adb:14:07: info: precondition proved
 indefinite_bounded_tagged.adb:14:14: info: initialization of private part of "V" proved
@@ -549,13 +549,13 @@ indefinite_bounded_tagged.adb:40:10: info: assertion proved
 indefinite_bounded_tagged.adb:40:25: info: precondition proved
 indefinite_bounded_tagged.adb:40:35: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:41:25: info: precondition proved
-indefinite_bounded_tagged.adb:41:25: medium: assertion might fail, requires Element (W, 1) = F(1)
+indefinite_bounded_tagged.adb:41:25: medium: assertion might fail, cannot prove Element (W, 1) = F(1)
 indefinite_bounded_tagged.adb:41:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:42:25: info: precondition proved
-indefinite_bounded_tagged.adb:42:25: medium: assertion might fail, requires Element (W, 2) = F(2)
+indefinite_bounded_tagged.adb:42:25: medium: assertion might fail, cannot prove Element (W, 2) = F(2)
 indefinite_bounded_tagged.adb:42:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:43:25: info: precondition proved
-indefinite_bounded_tagged.adb:43:25: medium: assertion might fail, requires Element (W, 3) = F(3)
+indefinite_bounded_tagged.adb:43:25: medium: assertion might fail, cannot prove Element (W, 3) = F(3)
 indefinite_bounded_tagged.adb:43:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:45:10: info: precondition proved
 indefinite_bounded_tagged.adb:45:18: info: initialization of private part of "W" proved
@@ -666,13 +666,13 @@ indefinite_bounded_tagged.adb:88:07: info: assertion proved
 indefinite_bounded_tagged.adb:88:22: info: precondition proved
 indefinite_bounded_tagged.adb:88:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:90:22: info: precondition proved
-indefinite_bounded_tagged.adb:90:22: medium: assertion might fail, requires Find_Index (V, F(0)) = No_Index
+indefinite_bounded_tagged.adb:90:22: medium: assertion might fail, cannot prove Find_Index (V, F(0)) = No_Index
 indefinite_bounded_tagged.adb:90:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:91:07: info: assertion proved
 indefinite_bounded_tagged.adb:91:22: info: precondition proved
 indefinite_bounded_tagged.adb:91:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:92:22: info: precondition proved
-indefinite_bounded_tagged.adb:92:22: medium: assertion might fail, requires Find_Index (V, F(4), 2) = No_Index
+indefinite_bounded_tagged.adb:92:22: medium: assertion might fail, cannot prove Find_Index (V, F(4), 2) = No_Index
 indefinite_bounded_tagged.adb:92:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:94:07: info: assertion proved
 indefinite_bounded_tagged.adb:94:22: info: precondition proved
@@ -698,7 +698,7 @@ indefinite_bounded_tagged.adb:101:39: info: initialization of private part of "V
 indefinite_bounded_tagged.adb:102:07: info: assertion proved
 indefinite_bounded_tagged.adb:102:26: info: precondition proved
 indefinite_bounded_tagged.adb:102:39: info: initialization of private part of "V" proved
-indefinite_bounded_tagged.adb:104:22: medium: assertion might fail, requires not Sort.Is_Sorted (V)
+indefinite_bounded_tagged.adb:104:22: medium: assertion might fail, cannot prove not Sort.Is_Sorted (V)
 indefinite_bounded_tagged.adb:104:30: info: precondition proved
 indefinite_bounded_tagged.adb:104:42: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:105:11: info: precondition proved
@@ -713,10 +713,10 @@ indefinite_bounded_tagged.adb:108:07: info: assertion proved
 indefinite_bounded_tagged.adb:108:22: info: precondition proved
 indefinite_bounded_tagged.adb:108:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:109:22: info: precondition proved
-indefinite_bounded_tagged.adb:109:22: medium: assertion might fail, requires Element (V, 1) = F(3)
+indefinite_bounded_tagged.adb:109:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
 indefinite_bounded_tagged.adb:109:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:110:22: info: precondition proved
-indefinite_bounded_tagged.adb:110:22: medium: assertion might fail, requires Element (V, 2) = F(4)
+indefinite_bounded_tagged.adb:110:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
 indefinite_bounded_tagged.adb:110:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:111:07: info: assertion proved
 indefinite_bounded_tagged.adb:111:26: info: precondition proved
@@ -733,7 +733,7 @@ indefinite_bounded_tagged.adb:114:66: info: initialization of private part of "V
 indefinite_bounded_tagged.adb:116:07: info: assertion proved
 indefinite_bounded_tagged.adb:116:22: info: precondition proved
 indefinite_bounded_tagged.adb:116:32: info: initialization of private part of "V" proved
-indefinite_bounded_tagged.adb:118:37: medium: assertion might fail, requires false
+indefinite_bounded_tagged.adb:118:37: medium: assertion might fail, cannot prove false
 indefinite_bounded_tagged.ads:20:14: warning: subprogram "Test" has no effect
 indefinite_unbounded.adb:13:07: info: precondition proved
 indefinite_unbounded.adb:13:14: info: initialization of private part of "V" proved
@@ -745,7 +745,7 @@ indefinite_unbounded.adb:15:22: info: initialization of private part of "V" prov
 indefinite_unbounded.adb:15:24: info: precondition proved
 indefinite_unbounded.adb:15:26: info: precondition proved
 indefinite_unbounded.adb:17:22: info: precondition proved
-indefinite_unbounded.adb:17:22: medium: assertion might fail, requires Capacity (V) = 2
+indefinite_unbounded.adb:17:22: medium: assertion might fail, cannot prove Capacity (V) = 2
 indefinite_unbounded.adb:17:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:19:07: info: precondition proved
 indefinite_unbounded.adb:19:15: info: initialization of private part of "V" proved
@@ -958,7 +958,7 @@ indefinite_unbounded.adb:108:07: info: assertion proved
 indefinite_unbounded.adb:108:22: info: precondition proved
 indefinite_unbounded.adb:108:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:109:22: info: precondition proved
-indefinite_unbounded.adb:109:22: medium: assertion might fail, requires Element (V, 1) = 3
+indefinite_unbounded.adb:109:22: medium: assertion might fail, cannot prove Element (V, 1) = 3
 indefinite_unbounded.adb:109:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:110:07: info: assertion proved
 indefinite_unbounded.adb:110:22: info: precondition proved
@@ -976,9 +976,9 @@ indefinite_unbounded.adb:114:47: info: precondition proved
 indefinite_unbounded.adb:114:49: info: precondition proved
 indefinite_unbounded.adb:114:66: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:117:22: info: precondition proved
-indefinite_unbounded.adb:117:22: medium: assertion might fail, requires Capacity (V) = 10
+indefinite_unbounded.adb:117:22: medium: assertion might fail, cannot prove Capacity (V) = 10
 indefinite_unbounded.adb:117:32: info: initialization of private part of "V" proved
-indefinite_unbounded.adb:119:37: medium: assertion might fail, requires false
+indefinite_unbounded.adb:119:37: medium: assertion might fail, cannot prove false
 indefinite_unbounded.ads:16:14: warning: subprogram "Test" has no effect
 indefinite_unbounded_tagged.adb:14:07: info: precondition proved
 indefinite_unbounded_tagged.adb:14:14: info: initialization of private part of "V" proved
@@ -990,7 +990,7 @@ indefinite_unbounded_tagged.adb:16:22: info: initialization of private part of "
 indefinite_unbounded_tagged.adb:16:24: info: precondition proved
 indefinite_unbounded_tagged.adb:16:26: info: precondition proved
 indefinite_unbounded_tagged.adb:18:22: info: precondition proved
-indefinite_unbounded_tagged.adb:18:22: medium: assertion might fail, requires Capacity (V) = 2
+indefinite_unbounded_tagged.adb:18:22: medium: assertion might fail, cannot prove Capacity (V) = 2
 indefinite_unbounded_tagged.adb:18:32: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:20:07: info: precondition proved
 indefinite_unbounded_tagged.adb:20:15: info: initialization of private part of "V" proved
@@ -1039,13 +1039,13 @@ indefinite_unbounded_tagged.adb:41:10: info: assertion proved
 indefinite_unbounded_tagged.adb:41:25: info: precondition proved
 indefinite_unbounded_tagged.adb:41:35: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:42:25: info: precondition proved
-indefinite_unbounded_tagged.adb:42:25: medium: assertion might fail, requires Element (W, 1) = F(1)
+indefinite_unbounded_tagged.adb:42:25: medium: assertion might fail, cannot prove Element (W, 1) = F(1)
 indefinite_unbounded_tagged.adb:42:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:43:25: info: precondition proved
-indefinite_unbounded_tagged.adb:43:25: medium: assertion might fail, requires Element (W, 2) = F(2)
+indefinite_unbounded_tagged.adb:43:25: medium: assertion might fail, cannot prove Element (W, 2) = F(2)
 indefinite_unbounded_tagged.adb:43:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:44:25: info: precondition proved
-indefinite_unbounded_tagged.adb:44:25: medium: assertion might fail, requires Element (W, 3) = F(3)
+indefinite_unbounded_tagged.adb:44:25: medium: assertion might fail, cannot prove Element (W, 3) = F(3)
 indefinite_unbounded_tagged.adb:44:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:46:10: info: precondition proved
 indefinite_unbounded_tagged.adb:46:18: info: initialization of private part of "W" proved
@@ -1069,13 +1069,13 @@ indefinite_unbounded_tagged.adb:52:10: info: assertion proved
 indefinite_unbounded_tagged.adb:52:25: info: precondition proved
 indefinite_unbounded_tagged.adb:52:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:53:25: info: precondition proved
-indefinite_unbounded_tagged.adb:53:25: medium: assertion might fail, requires Element (W, 4) = F(1)
+indefinite_unbounded_tagged.adb:53:25: medium: assertion might fail, cannot prove Element (W, 4) = F(1)
 indefinite_unbounded_tagged.adb:53:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:54:25: info: precondition proved
-indefinite_unbounded_tagged.adb:54:25: medium: assertion might fail, requires Element (W, 5) = F(2)
+indefinite_unbounded_tagged.adb:54:25: medium: assertion might fail, cannot prove Element (W, 5) = F(2)
 indefinite_unbounded_tagged.adb:54:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:55:25: info: precondition proved
-indefinite_unbounded_tagged.adb:55:25: medium: assertion might fail, requires Element (W, 6) = F(3)
+indefinite_unbounded_tagged.adb:55:25: medium: assertion might fail, cannot prove Element (W, 6) = F(3)
 indefinite_unbounded_tagged.adb:55:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:57:10: info: precondition proved
 indefinite_unbounded_tagged.adb:57:18: info: initialization of private part of "W" proved
@@ -1090,13 +1090,13 @@ indefinite_unbounded_tagged.adb:59:29: info: precondition proved
 indefinite_unbounded_tagged.adb:62:07: info: precondition proved
 indefinite_unbounded_tagged.adb:62:24: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:63:22: info: precondition proved
-indefinite_unbounded_tagged.adb:63:22: medium: assertion might fail, requires Element (V, 1) = F(1)
+indefinite_unbounded_tagged.adb:63:22: medium: assertion might fail, cannot prove Element (V, 1) = F(1)
 indefinite_unbounded_tagged.adb:63:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:64:07: info: assertion proved
 indefinite_unbounded_tagged.adb:64:22: info: precondition proved
 indefinite_unbounded_tagged.adb:64:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:65:22: info: precondition proved
-indefinite_unbounded_tagged.adb:65:22: medium: assertion might fail, requires Element (V, 3) = F(3)
+indefinite_unbounded_tagged.adb:65:22: medium: assertion might fail, cannot prove Element (V, 3) = F(3)
 indefinite_unbounded_tagged.adb:65:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:67:07: info: precondition proved
 indefinite_unbounded_tagged.adb:67:13: info: initialization of private part of "V" proved
@@ -1156,13 +1156,13 @@ indefinite_unbounded_tagged.adb:89:07: info: assertion proved
 indefinite_unbounded_tagged.adb:89:22: info: precondition proved
 indefinite_unbounded_tagged.adb:89:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:91:22: info: precondition proved
-indefinite_unbounded_tagged.adb:91:22: medium: assertion might fail, requires Find_Index (V, F(0)) = No_Index
+indefinite_unbounded_tagged.adb:91:22: medium: assertion might fail, cannot prove Find_Index (V, F(0)) = No_Index
 indefinite_unbounded_tagged.adb:91:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:92:07: info: assertion proved
 indefinite_unbounded_tagged.adb:92:22: info: precondition proved
 indefinite_unbounded_tagged.adb:92:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:93:22: info: precondition proved
-indefinite_unbounded_tagged.adb:93:22: medium: assertion might fail, requires Find_Index (V, F(4), 2) = No_Index
+indefinite_unbounded_tagged.adb:93:22: medium: assertion might fail, cannot prove Find_Index (V, F(4), 2) = No_Index
 indefinite_unbounded_tagged.adb:93:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:95:07: info: assertion proved
 indefinite_unbounded_tagged.adb:95:22: info: precondition proved
@@ -1188,7 +1188,7 @@ indefinite_unbounded_tagged.adb:102:39: info: initialization of private part of 
 indefinite_unbounded_tagged.adb:103:07: info: assertion proved
 indefinite_unbounded_tagged.adb:103:26: info: precondition proved
 indefinite_unbounded_tagged.adb:103:39: info: initialization of private part of "V" proved
-indefinite_unbounded_tagged.adb:105:22: medium: assertion might fail, requires not Sort.Is_Sorted (V)
+indefinite_unbounded_tagged.adb:105:22: medium: assertion might fail, cannot prove not Sort.Is_Sorted (V)
 indefinite_unbounded_tagged.adb:105:30: info: precondition proved
 indefinite_unbounded_tagged.adb:105:42: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:106:11: info: precondition proved
@@ -1203,10 +1203,10 @@ indefinite_unbounded_tagged.adb:109:07: info: assertion proved
 indefinite_unbounded_tagged.adb:109:22: info: precondition proved
 indefinite_unbounded_tagged.adb:109:32: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:110:22: info: precondition proved
-indefinite_unbounded_tagged.adb:110:22: medium: assertion might fail, requires Element (V, 1) = F(3)
+indefinite_unbounded_tagged.adb:110:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
 indefinite_unbounded_tagged.adb:110:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:111:22: info: precondition proved
-indefinite_unbounded_tagged.adb:111:22: medium: assertion might fail, requires Element (V, 2) = F(4)
+indefinite_unbounded_tagged.adb:111:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
 indefinite_unbounded_tagged.adb:111:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:112:07: info: assertion proved
 indefinite_unbounded_tagged.adb:112:26: info: precondition proved
@@ -1221,9 +1221,9 @@ indefinite_unbounded_tagged.adb:115:47: info: precondition proved
 indefinite_unbounded_tagged.adb:115:49: info: precondition proved
 indefinite_unbounded_tagged.adb:115:66: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:118:22: info: precondition proved
-indefinite_unbounded_tagged.adb:118:22: medium: assertion might fail, requires Capacity (V) = 10
+indefinite_unbounded_tagged.adb:118:22: medium: assertion might fail, cannot prove Capacity (V) = 10
 indefinite_unbounded_tagged.adb:118:32: info: initialization of private part of "V" proved
-indefinite_unbounded_tagged.adb:120:37: medium: assertion might fail, requires false
+indefinite_unbounded_tagged.adb:120:37: medium: assertion might fail, cannot prove false
 indefinite_unbounded_tagged.ads:22:14: warning: subprogram "Test" has no effect
 unbounded.adb:10:07: info: initialization of private part of "V" proved
 unbounded.adb:12:07: info: precondition proved
@@ -1236,7 +1236,7 @@ unbounded.adb:14:22: info: initialization of private part of "V" proved
 unbounded.adb:14:24: info: precondition proved
 unbounded.adb:14:26: info: precondition proved
 unbounded.adb:16:22: info: precondition proved
-unbounded.adb:16:22: medium: assertion might fail, requires Capacity (V) = 2
+unbounded.adb:16:22: medium: assertion might fail, cannot prove Capacity (V) = 2
 unbounded.adb:16:32: info: initialization of private part of "V" proved
 unbounded.adb:18:07: info: precondition proved
 unbounded.adb:18:15: info: initialization of private part of "V" proved
@@ -1450,7 +1450,7 @@ unbounded.adb:107:07: info: assertion proved
 unbounded.adb:107:22: info: precondition proved
 unbounded.adb:107:32: info: initialization of private part of "V" proved
 unbounded.adb:108:22: info: precondition proved
-unbounded.adb:108:22: medium: assertion might fail, requires Element (V, 1) = 3
+unbounded.adb:108:22: medium: assertion might fail, cannot prove Element (V, 1) = 3
 unbounded.adb:108:31: info: initialization of private part of "V" proved
 unbounded.adb:109:07: info: assertion proved
 unbounded.adb:109:22: info: precondition proved
@@ -1468,7 +1468,7 @@ unbounded.adb:113:47: info: precondition proved
 unbounded.adb:113:49: info: precondition proved
 unbounded.adb:113:66: info: initialization of private part of "V" proved
 unbounded.adb:116:22: info: precondition proved
-unbounded.adb:116:22: medium: assertion might fail, requires Capacity (V) = 10
+unbounded.adb:116:22: medium: assertion might fail, cannot prove Capacity (V) = 10
 unbounded.adb:116:32: info: initialization of private part of "V" proved
-unbounded.adb:118:37: medium: assertion might fail, requires false
+unbounded.adb:118:37: medium: assertion might fail, cannot prove false
 unbounded.ads:15:14: warning: subprogram "Test" has no effect

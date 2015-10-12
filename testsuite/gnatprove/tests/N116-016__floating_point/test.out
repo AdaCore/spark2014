@@ -21,7 +21,7 @@ precise.adb:13:04: info: assertion proved
 precise.adb:13:19: info: initialization of "Z" proved
 test_18.adb:2:20: info: initialization of "Z" proved
 test_18.adb:4:16: info: initialization of "Z" proved
-test_18.adb:4:16: medium: postcondition might fail, requires Z >= X
+test_18.adb:4:16: medium: postcondition might fail, cannot prove Z >= X
 test_18.adb:7:12: info: overflow check proved
 test_18.adb:7:19: info: overflow check proved
 test_float.adb:8:14: info: postcondition proved

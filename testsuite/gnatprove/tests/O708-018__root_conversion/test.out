@@ -1,12 +1,12 @@
-fxp_false_check_1a.adb:7:19: medium: assertion might fail, requires Duration (MD) >= 1.0 or Duration (MS) >=
+fxp_false_check_1a.adb:7:19: medium: assertion might fail, cannot prove Duration (MD) >= 1.0 or Duration (MS) >=
 fxp_false_check_1a.adb:7:29: info: initialization of "MD" proved
 fxp_false_check_1a.adb:7:53: info: initialization of "MS" proved
-fxp_false_check_1b.adb:7:19: medium: assertion might fail, requires Duration (MD) < 0.0 or Duration (MS) <
+fxp_false_check_1b.adb:7:19: medium: assertion might fail, cannot prove Duration (MD) < 0.0 or Duration (MS) <
 fxp_false_check_1b.adb:7:29: info: initialization of "MD" proved
 fxp_false_check_1b.adb:7:52: info: initialization of "MS" proved
 fxp_false_check_2.adb:8:25: info: initialization of "MD" proved
 fxp_false_check_2.adb:8:25: medium: range check might fail
-fxp_false_check_3.adb:6:19: medium: assertion might fail, requires My_Subduration (My_Duration (M)) >=
+fxp_false_check_3.adb:6:19: medium: assertion might fail, cannot prove My_Subduration (My_Duration (M)) >=
 fxp_false_check_3.adb:6:35: medium: range check might fail
 fxp_false_check_3.adb:6:48: info: initialization of "M" proved
 fxp_true_check_1.adb:7:04: info: assertion proved
@@ -28,7 +28,7 @@ fxp_true_check_4.adb:8:04: info: assertion proved
 fxp_true_check_4.adb:8:29: info: initialization of "MD" proved
 fxp_true_check_4.adb:8:45: info: overflow check proved
 fxp_true_check_4.adb:8:46: info: initialization of "MD2" proved
-integer_false_check.adb:6:19: medium: assertion might fail, requires Integer (MI) < 0
+integer_false_check.adb:6:19: medium: assertion might fail, cannot prove Integer (MI) < 0
 integer_false_check.adb:6:28: info: initialization of "MI" proved
 integer_true_check.adb:6:04: info: assertion proved
 integer_true_check.adb:6:28: info: initialization of "MI" proved

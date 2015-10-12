@@ -29,22 +29,22 @@ update_checks_1.adb:107:18: info: length check proved
 update_checks_1.adb:107:21: info: length check proved
 update_checks_1.adb:107:24: info: range check proved
 update_checks_1.adb:114:21: medium: range check might fail
-update_checks_1.ads:25:19: medium: postcondition might fail, requires A = A'Old'update
+update_checks_1.ads:25:19: medium: postcondition might fail, cannot prove A = A'Old'update
 update_checks_1.ads:25:37: info: range check proved
-update_checks_1.ads:28:19: medium: postcondition might fail, requires A = A'Old'update
+update_checks_1.ads:28:19: medium: postcondition might fail, cannot prove A = A'Old'update
 update_checks_1.ads:28:39: info: range check proved
-update_checks_1.ads:31:19: medium: postcondition might fail, requires A = A'Old'update
+update_checks_1.ads:31:19: medium: postcondition might fail, cannot prove A = A'Old'update
 update_checks_1.ads:31:42: info: range check proved
-update_checks_1.ads:34:19: medium: postcondition might fail, requires A = A'Old'update
+update_checks_1.ads:34:19: medium: postcondition might fail, cannot prove A = A'Old'update
 update_checks_1.ads:34:42: info: range check proved
 update_checks_1.ads:34:50: info: range check proved
 update_checks_1.ads:34:55: info: range check proved
 update_checks_1.ads:34:59: info: range check proved
-update_checks_1.ads:38:14: medium: postcondition might fail, requires A = A'Old'update
+update_checks_1.ads:38:14: medium: postcondition might fail, cannot prove A = A'Old'update
 update_checks_1.ads:38:32: info: range check proved
 update_checks_1.ads:43:19: info: postcondition proved
 update_checks_1.ads:43:22: info: index check proved
-update_checks_1.ads:46:19: medium: postcondition might fail, requires A (1 .. I) = (1..I => New_Val)
+update_checks_1.ads:46:19: medium: postcondition might fail, cannot prove A (1 .. I) = (1..I => New_Val)
 update_checks_1.ads:46:19: medium: range check might fail
 update_checks_1.ads:46:35: info: range check proved
 update_checks_1.ads:49:19: info: postcondition proved

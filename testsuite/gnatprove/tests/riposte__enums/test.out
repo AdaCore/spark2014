@@ -1,11 +1,11 @@
 enums.adb:10:19: info: postcondition proved
-enums.adb:19:22: medium: postcondition might fail, requires Enum_Equals_Broken_A'Result = (A = B
+enums.adb:19:22: medium: postcondition might fail, cannot prove Enum_Equals_Broken_A'Result = (A = B
 enums.adb:23:14: info: initialization of "Tmp" proved
-enums.adb:27:19: medium: postcondition might fail, requires Enum_Equals_Broken_B'Result = (A = B
+enums.adb:27:19: medium: postcondition might fail, cannot prove Enum_Equals_Broken_B'Result = (A = B
 enums.adb:36:19: info: postcondition proved
 enums.adb:43:19: info: postcondition proved
 enums.adb:63:14: info: initialization of "R" proved
-enums.adb:67:19: medium: postcondition might fail, requires Enum_LT_5_Broken_A'Result = (A < Elem_5
+enums.adb:67:19: medium: postcondition might fail, cannot prove Enum_LT_5_Broken_A'Result = (A < Elem_5
 enums.adb:85:14: info: initialization of "R" proved
 enums.adb:89:19: info: postcondition proved
 enums.adb:102:14: info: initialization of "R" proved

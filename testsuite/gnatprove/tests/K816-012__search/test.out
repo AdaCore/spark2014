@@ -1,16 +1,16 @@
 search.adb:19:10: info: range check proved
-search.adb:20:24: medium: assertion might fail, requires Found = 0 and not Found1 and not Found2) or else (Found = 1 and (Found1 or Found2)) or else (Found = 2 and Found1 and Found2
+search.adb:20:24: medium: assertion might fail, cannot prove Found = 0 and not Found1 and not Found2) or else (Found = 1 and (Found1 or Found2)) or else (Found = 2 and Found1 and Found2
 search.adb:20:25: info: initialization of "Found" proved
 search.adb:20:43: info: initialization of "Found1" proved
 search.adb:20:58: info: initialization of "Found2" proved
 search.adb:23:24: info: initialization of "Found1" proved
-search.adb:23:24: medium: assertion might fail, requires Found1 = False or else Found2 = false
+search.adb:23:24: medium: assertion might fail, cannot prove Found1 = False or else Found2 = false
 search.adb:23:47: info: initialization of "Found2" proved
-search.adb:24:24: medium: assertion might fail, requires not Found1 or else Table(Index1) = Value1
+search.adb:24:24: medium: assertion might fail, cannot prove not Found1 or else Table(Index1) = Value1
 search.adb:24:28: info: initialization of "Found1" proved
 search.adb:24:49: info: initialization of "Index1" proved
 search.adb:24:49: medium: array index check might fail
-search.adb:25:24: medium: assertion might fail, requires not Found2 or else Table(Index2) = Value2
+search.adb:25:24: medium: assertion might fail, cannot prove not Found2 or else Table(Index2) = Value2
 search.adb:25:28: info: initialization of "Found2" proved
 search.adb:25:49: info: initialization of "Index2" proved
 search.adb:25:49: medium: array index check might fail

@@ -53,7 +53,7 @@ slice_sums.adb:71:43: info: overflow check proved
 slice_sums.adb:71:57: info: overflow check proved
 slice_sums.adb:72:13: info: loop invariant initialization proved
 slice_sums.adb:73:16: info: initialization of "Current_Sum" proved
-slice_sums.adb:73:16: medium: loop invariant might fail after first iteration, requires Current_Sum = Sum (X, Slice_BoundsSlice_Bounds'(Lo => Current_Lo), (Hi => Current_Hi - 1))
+slice_sums.adb:73:16: medium: loop invariant might fail after first iteration, cannot prove Current_Sum = Sum (X, Slice_BoundsSlice_Bounds'(Lo => Current_Lo), (Hi => Current_Hi - 1))
 slice_sums.adb:73:30: info: precondition proved
 slice_sums.adb:73:52: info: initialization of "Current_Lo" proved
 slice_sums.adb:74:36: info: overflow check proved
@@ -69,20 +69,20 @@ slice_sums.adb:81:24: info: range check proved
 slice_sums.adb:81:70: info: overflow check proved
 slice_sums.adb:82:30: info: range check proved
 slice_sums.adb:82:76: info: overflow check proved
-slice_sums.adb:83:24: medium: loop invariant might fail after first iteration, requires Max_Sum >= Sum (X, Slice_BoundsSlice_Bounds'(Lo => Lo_Index), (Hi => Hi_Index))
+slice_sums.adb:83:24: medium: loop invariant might fail after first iteration, cannot prove Max_Sum >= Sum (X, Slice_BoundsSlice_Bounds'(Lo => Lo_Index), (Hi => Hi_Index))
 slice_sums.adb:83:25: info: initialization of "Max_Sum" proved
 slice_sums.adb:83:36: info: precondition proved
 slice_sums.adb:85:13: info: loop invariant initialization proved
 slice_sums.adb:86:24: info: range check proved
 slice_sums.adb:86:59: info: initialization of "Current_Lo" proved
 slice_sums.adb:87:18: info: precondition proved
-slice_sums.adb:87:18: medium: loop invariant might fail after first iteration, requires Sum (X, Slice_Bounds'(Lo_Index, Current_Lo - 1)) <= 0
+slice_sums.adb:87:18: medium: loop invariant might fail after first iteration, cannot prove Sum (X, Slice_Bounds'(Lo_Index, Current_Lo - 1)) <= 0
 slice_sums.adb:88:13: info: loop invariant initialization proved
 slice_sums.adb:89:24: info: range check proved
 slice_sums.adb:89:48: info: initialization of "Current_Lo" proved
 slice_sums.adb:89:73: info: overflow check proved
 slice_sums.adb:90:18: info: precondition proved
-slice_sums.adb:90:18: medium: loop invariant might fail after first iteration, requires Sum (X, Slice_Bounds'(Current_Lo, Hi_Index)) >= 0
+slice_sums.adb:90:18: medium: loop invariant might fail after first iteration, cannot prove Sum (X, Slice_Bounds'(Current_Lo, Hi_Index)) >= 0
 slice_sums.adb:92:28: info: initialization of "Current_Sum" proved
 slice_sums.adb:92:40: info: overflow check proved
 slice_sums.adb:93:16: info: initialization of "Current_Sum" proved

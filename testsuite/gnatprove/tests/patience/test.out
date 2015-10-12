@@ -86,7 +86,7 @@ patience.adb:66:25: info: index check proved
 patience.adb:66:30: info: initialization of "Idx" proved
 patience.adb:66:33: info: initialization of "StackISize" proved
 patience.adb:70:07: info: assertion proved
-patience.adb:80:13: medium: assertion might fail, requires S.StackSizes(I) >= 1
+patience.adb:80:13: medium: assertion might fail, cannot prove S.StackSizes(I) >= 1
 patience.adb:80:26: info: index check proved
 patience.adb:82:07: info: assertion proved
 patience.adb:83:26: info: index check proved

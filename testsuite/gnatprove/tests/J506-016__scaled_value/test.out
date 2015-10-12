@@ -1,3 +1,3 @@
 sv.adb:9:33: info: division check proved
 sv.adb:9:33: info: range check proved
-sv.ads:15:14: medium: postcondition might fail, requires Scale'Result <= Capacity
+sv.ads:15:14: medium: postcondition might fail, cannot prove Scale'Result <= Capacity

@@ -79,7 +79,7 @@ array_arith.ads:12:14: info: postcondition proved
 array_arith.ads:12:35: info: initialization of "X" proved
 array_arith.ads:14:21: info: initialization of "X" proved
 array_arith.ads:15:35: info: initialization of "X" proved
-array_arith.ads:15:35: medium: postcondition might fail, requires X(J) = Natural(J) + 1
+array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1
 array_arith.ads:17:20: info: initialization of "X" proved
 array_arith.ads:18:14: info: postcondition proved
 array_arith.ads:18:35: info: initialization of "X" proved
@@ -88,7 +88,7 @@ ident.adb:15:12: info: initialization of "X" proved, in call inlined at ident.ad
 ident.adb:35:12: info: initialization of "X" proved, in call inlined at ident.adb:52
 ident.adb:43:25: info: initialization of "X" proved
 ident.adb:44:22: info: initialization of "Res" proved
-ident.adb:44:22: medium: assertion might fail, requires Res = X
+ident.adb:44:22: medium: assertion might fail, cannot prove Res = X
 ident.adb:44:28: info: initialization of "X" proved
 ident.adb:45:26: info: initialization of "X" proved
 ident.adb:46:07: info: assertion proved
@@ -100,7 +100,7 @@ ident.adb:48:22: info: initialization of "Res" proved
 ident.adb:48:28: info: initialization of "X" proved
 ident.adb:50:20: info: initialization of "X" proved
 ident.adb:51:22: info: initialization of "Y" proved
-ident.adb:51:22: medium: assertion might fail, requires Y = 9
+ident.adb:51:22: medium: assertion might fail, cannot prove Y = 9
 ident.adb:53:07: info: assertion proved
 ident.adb:53:22: info: initialization of "Y" proved
 ident.adb:55:07: info: assertion proved

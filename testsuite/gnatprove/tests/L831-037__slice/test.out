@@ -6,7 +6,7 @@ lcp.adb:11:20: info: overflow check proved
 lcp.adb:11:32: info: index check proved
 lcp.adb:11:32: info: overflow check proved
 lcp.adb:13:07: info: loop invariant initialization proved
-lcp.adb:13:30: medium: loop invariant might fail after first iteration, requires A (X .. X + L - 1) = A (Y..R9b)
+lcp.adb:13:30: medium: loop invariant might fail after first iteration, cannot prove A (X .. X + L - 1) = A (Y..R9b)
 lcp.adb:13:30: medium: range check might fail
 lcp.adb:13:40: info: overflow check proved
 lcp.adb:13:42: info: initialization of "L" proved

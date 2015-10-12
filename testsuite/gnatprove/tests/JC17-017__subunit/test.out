@@ -13,7 +13,7 @@ main.adb:27:04: info: assertion proved
 main.adb:27:19: info: initialization of "B" proved
 main.adb:29:04: info: assertion proved
 main.adb:29:19: info: initialization of "B" proved
-main.adb:31:19: medium: assertion might fail, requires not B
+main.adb:31:19: medium: assertion might fail, cannot prove not B
 main.adb:31:23: info: initialization of "B" proved
 main.adb:33:04: info: assertion proved
 main.adb:33:19: info: initialization of "B" proved

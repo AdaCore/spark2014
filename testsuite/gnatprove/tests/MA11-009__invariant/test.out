@@ -6,8 +6,8 @@ kmp.adb:13:13: info: loop invariant initialization proved
 kmp.adb:13:13: medium: loop invariant might fail after first iteration
 kmp.adb:14:17: info: initialization of "J" proved
 kmp.adb:14:34: info: initialization of "I" proved
-kmp.adb:16:17: medium: loop invariant might fail after first iteration, requires P (I - J .. J) = P (0..R12b)
-kmp.adb:16:17: medium: loop invariant might fail in first iteration, requires P (I - J .. J) = P (0..R12b)
+kmp.adb:16:17: medium: loop invariant might fail after first iteration, cannot prove P (I - J .. J) = P (0..R12b)
+kmp.adb:16:17: medium: loop invariant might fail in first iteration, cannot prove P (I - J .. J) = P (0..R12b)
 kmp.adb:16:17: medium: range check might fail
 kmp.adb:16:20: info: initialization of "I" proved
 kmp.adb:16:22: medium: overflow check might fail

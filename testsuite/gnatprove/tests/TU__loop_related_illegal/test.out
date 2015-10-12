@@ -18,7 +18,7 @@ loop_related_illegal_2.adb:16:15: info: initialization of "X" proved
 loop_related_illegal_2.adb:16:17: info: overflow check proved
 loop_related_illegal_2.adb:17:20: info: initialization of "X" proved
 loop_related_illegal_2.adb:19:22: info: initialization of "Y" proved
-loop_related_illegal_2.adb:19:22: medium: assertion might fail, requires Y = 10
+loop_related_illegal_2.adb:19:22: medium: assertion might fail, cannot prove Y = 10
 loop_related_illegal_2.adb:30:10: info: loop invariant initialization proved
 loop_related_illegal_2.adb:30:10: info: loop invariant preservation proved
 loop_related_illegal_2.adb:30:33: info: initialization of "X" proved
@@ -35,8 +35,8 @@ loop_related_illegal_3.adb:4:27: info: initialization of "Par" proved
 loop_related_illegal_3.adb:16:20: info: initialization of "Y" proved
 loop_related_illegal_3.adb:16:25: info: initialization of "X" proved
 loop_related_illegal_3.adb:17:33: info: initialization of "Y" proved
-loop_related_illegal_3.adb:17:33: medium: loop invariant might fail after first iteration, requires Y > X'loop_entry
-loop_related_illegal_3.adb:17:33: medium: loop invariant might fail in first iteration, requires Y > X'loop_entry
+loop_related_illegal_3.adb:17:33: medium: loop invariant might fail after first iteration, cannot prove Y > X'loop_entry
+loop_related_illegal_3.adb:17:33: medium: loop invariant might fail in first iteration, cannot prove Y > X'loop_entry
 loop_related_illegal_3.adb:17:38: high: "X" is not initialized
 loop_related_illegal_3.adb:19:15: info: initialization of "Y" proved
 loop_related_illegal_3.adb:19:17: info: overflow check proved

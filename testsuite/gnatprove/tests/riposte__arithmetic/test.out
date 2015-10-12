@@ -19,10 +19,10 @@ arithmetic.adb:37:14: info: initialization of "R" proved
 arithmetic.adb:45:14: info: overflow check proved
 arithmetic.adb:45:14: info: range check proved
 arithmetic.adb:46:14: info: initialization of "R" proved
-arithmetic.adb:59:22: medium: assertion might fail, requires Double_A * Double_B /= C
+arithmetic.adb:59:22: medium: assertion might fail, cannot prove Double_A * Double_B /= C
 arithmetic.adb:59:31: medium: overflow check might fail
 arithmetic.adb:59:45: info: initialization of "C" proved
-arithmetic.adb:71:22: medium: assertion might fail, requires A * B /= C
+arithmetic.adb:71:22: medium: assertion might fail, cannot prove A * B /= C
 arithmetic.adb:71:24: medium: overflow check might fail
 arithmetic.adb:71:31: info: initialization of "C" proved
 arithmetic.adb:76:21: medium: overflow check might fail
@@ -50,7 +50,7 @@ arithmetic.adb:107:10: info: loop invariant initialization proved
 arithmetic.adb:107:10: info: loop invariant preservation proved
 arithmetic.adb:107:33: info: initialization of "R" proved
 arithmetic.adb:109:14: info: initialization of "R" proved
-arithmetic.adb:113:19: medium: postcondition might fail, requires Halve_B'Result + Halve_B'Result = N  or Halve_B'Result + Halve_B'Result + 1 = N
+arithmetic.adb:113:19: medium: postcondition might fail, cannot prove Halve_B'Result + Halve_B'Result = N  or Halve_B'Result + Halve_B'Result + 1 = N
 arithmetic.adb:119:07: info: assertion proved
 arithmetic.adb:122:20: info: initialization of "R" proved
 arithmetic.adb:123:10: info: loop invariant initialization proved
@@ -87,16 +87,16 @@ arithmetic.adb:191:19: info: postcondition proved
 arithmetic.adb:191:39: info: overflow check proved
 arithmetic.adb:194:14: info: range check proved
 arithmetic.adb:194:14: medium: overflow check might fail
-arithmetic.adb:198:19: medium: postcondition might fail, requires Test_Mod_A'Result = N
+arithmetic.adb:198:19: medium: postcondition might fail, cannot prove Test_Mod_A'Result = N
 arithmetic.adb:201:16: info: division check proved
-arithmetic.adb:205:19: medium: postcondition might fail, requires Test_Mod_B'Result = N
+arithmetic.adb:205:19: medium: postcondition might fail, cannot prove Test_Mod_B'Result = N
 arithmetic.adb:208:16: info: division check proved
-arithmetic.adb:215:19: medium: postcondition might fail, requires Test_Mod_C'Result = A
+arithmetic.adb:215:19: medium: postcondition might fail, cannot prove Test_Mod_C'Result = A
 arithmetic.adb:218:16: info: division check proved
 arithmetic.adb:223:04: warning: analyzing unreferenced function "Test_Div_A"
-arithmetic.adb:226:36: medium: assertion might fail, requires N / 10 < 0
+arithmetic.adb:226:36: medium: assertion might fail, cannot prove N / 10 < 0
 arithmetic.adb:226:38: info: division check proved
-arithmetic.adb:234:19: medium: postcondition might fail, requires Test_Rem_A'Result = A
+arithmetic.adb:234:19: medium: postcondition might fail, cannot prove Test_Rem_A'Result = A
 arithmetic.adb:237:16: info: division check proved
 arithmetic.adb:244:19: info: postcondition proved
 arithmetic.adb:244:39: medium: overflow check might fail
@@ -112,7 +112,7 @@ arithmetic.adb:257:30: info: division check proved
 arithmetic.adb:257:37: medium: overflow check might fail
 arithmetic.adb:266:07: info: assertion proved
 arithmetic.adb:266:26: info: division check proved
-arithmetic.adb:277:22: medium: assertion might fail, requires 100 rem A /= 0
+arithmetic.adb:277:22: medium: assertion might fail, cannot prove 100 rem A /= 0
 arithmetic.adb:277:26: info: division check proved
 arithmetic.adb:283:19: info: postcondition proved
 arithmetic.adb:288:29: info: range check proved

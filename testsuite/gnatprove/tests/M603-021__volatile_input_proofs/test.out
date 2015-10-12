@@ -20,7 +20,7 @@ port.adb:124:10: info: initialization of "T" proved
 port.adb:124:10: warning: attribute Valid is assumed to return True
 port.adb:125:15: info: initialization of "T" proved
 port.adb:143:22: info: initialization of "T1" proved
-port.adb:143:22: medium: assertion might fail, requires T1 = T2
+port.adb:143:22: medium: assertion might fail, cannot prove T1 = T2
 port.adb:143:27: info: initialization of "T2" proved
 port.adb:145:13: info: initialization of "T1" proved
 port.adb:145:18: info: initialization of "T2" proved

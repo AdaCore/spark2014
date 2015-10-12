@@ -20,6 +20,6 @@ sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:1
 sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15
 sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16
 sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
-sccs.adb:21:19: medium: assertion might fail, requires B
-sccs.adb:23:19: medium: assertion might fail, requires B
-sccs.adb:25:19: medium: assertion might fail, requires B
+sccs.adb:21:19: medium: assertion might fail, cannot prove B
+sccs.adb:23:19: medium: assertion might fail, cannot prove B
+sccs.adb:25:19: medium: assertion might fail, cannot prove B
