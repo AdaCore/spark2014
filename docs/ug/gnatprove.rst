@@ -1702,7 +1702,7 @@ Command Line` or :ref:`Running GNATprove from GPS`), and highlighting the path
 on which the postcondition is not proved, shows that when the last branch of
 the if-statement is taken, the following property is not proved::
 
-  functional.ads:31:14: medium: postcondition might fail, requires Max_Value_Seen /= (Second_Max_Value_Seen)
+  functional.ads:31:14: medium: postcondition might fail, cannot prove Max_Value_Seen /= (Second_Max_Value_Seen)
 
 Indeed, it could be the case that ``Max = Snd = 10`` on entry to procedure
 ``Seen_Two``, with values of parameters ``X = 1`` and ``Y = 2``, in which case
