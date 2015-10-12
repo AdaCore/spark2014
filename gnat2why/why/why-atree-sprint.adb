@@ -1652,7 +1652,7 @@ package body Why.Atree.Sprint is
         Get_Physical_Line_Number (Curr_Sloc);
 
       Sloc_Tag : constant String :=
-        "#""" & File & """ " &
+        "#""" & File & """" &
         Physical_Line_Number'Image (Line) & " " &
         "0" & " " &  --  dummy line 0
         "0" & "#";   --  dummy column 0
