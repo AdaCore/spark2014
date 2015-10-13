@@ -367,6 +367,9 @@ discriminated task) is effectively a constant, one might think that a
 mode of **in** would make more sense. However, the current instance of
 a task unit is, strictly speaking, a variable; for example, it may be
 passed as an actual **out** or **in out** mode parameter in a call.]
+The Depends and Refined_Depends aspect of a task unit T need not mention
+this implicit parameter; an implicit specification of "T => T" is
+assumed, although this may be confirmed explicitly.
 
 Similarly, for purposes of the rules concerning the Global, Refined_Global,
 Depends, and Refined_Depends aspects as they apply to protected operations,
