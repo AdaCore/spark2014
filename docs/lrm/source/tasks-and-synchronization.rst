@@ -98,7 +98,7 @@ are in |SPARK|.
    a protected component could not be). [There is one obscure exception
    to these rules, described in the next paragraph: a subprogram which
    is declared within the statement list of the body of the immediately
-   enclosing package.]
+   enclosing package (this is possible via a block statement).]
 
    The notional equivalences described above break down in the case of
    package elaboration.
@@ -110,9 +110,10 @@ are in |SPARK|.
    library unit elaboration; or at least that's one way to view it. For example
    such an object can be accessed from within the elaboration code of its
    immediately enclosing package. On the other hand, it could not be accessed
-   from within a subprogram that is declared neither within
-   the task or protected unit in question, nor within a block statement
-   within the statement list of the body of the immediately enclosing package.]
+   from within a subprogram unless the subprogram is declared within either
+   the task unit body in question (in the task case) or within
+   the statement list of the body of the immediately enclosing package
+   (in either the task or the protected case).]
 
 .. _tu-tasks_and_synchronization-03:
 
