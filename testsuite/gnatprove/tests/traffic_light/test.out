@@ -1,4 +1,4 @@
 traffic.ads:12:06: info: length check proved
-traffic.ads:33:46: medium: postcondition might fail, requires L (C.Left) = Red or L (C.Right) = Red
+traffic.ads:33:46: medium: postcondition might fail, cannot prove L (C.Left) = Red or L (C.Right) = Red
 traffic.ads:38:19: info: postcondition proved
 traffic.ads:44:19: info: postcondition proved
