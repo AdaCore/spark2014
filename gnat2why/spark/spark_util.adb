@@ -1695,6 +1695,25 @@ package body SPARK_Util is
       end if;
    end Get_Global_Items;
 
+   --------------------------------------
+   -- Get_Priority_From_Protected_Type --
+   --------------------------------------
+
+   function Get_Priority_From_Protected_Type (E : Entity_Id) return Node_Id is
+      Pragma_Node : Node_Id := Get_Pragma (E, Pragma_Priority);
+   begin
+      if No (Pragma_Node) then
+         Pragma_Node := Get_Pragma (E, Pragma_Interrupt_Priority);
+      end if;
+
+      if Present (Pragma_Node) then
+         return Expression
+           (First (Pragma_Argument_Associations (Pragma_Node)));
+      else
+         return Empty;
+      end if;
+   end Get_Priority_From_Protected_Type;
+
    ---------------
    -- Get_Range --
    ---------------
@@ -2958,6 +2977,27 @@ package body SPARK_Util is
       pragma Assert (Nkind (Ptr) = N_Protected_Type_Declaration);
       return Protected_Definition (Ptr);
    end PO_Definition;
+
+   ---------------------------------
+   -- Requires_Interrupt_Priority --
+   ---------------------------------
+
+   function Requires_Interrupt_Priority (E : Entity_Id) return Boolean is
+      Decls : constant List_Id := Visible_Declarations_of_Prot_Type (E);
+      Decl  : Node_Id := First (Decls);
+   begin
+      while Present (Decl) loop
+         if Nkind (Decl) in N_Subprogram_Declaration
+           | N_Abstract_Subprogram_Declaration
+           and then Present (Get_Pragma (Defining_Entity (Decl),
+                             Pragma_Attach_Handler))
+         then
+            return True;
+         end if;
+         Next (Decl);
+      end loop;
+      return False;
+   end Requires_Interrupt_Priority;
 
    ---------------------------
    -- Root_Record_Component --

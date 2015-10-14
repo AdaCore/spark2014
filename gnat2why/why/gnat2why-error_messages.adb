@@ -234,7 +234,7 @@ package body Gnat2Why.Error_Messages is
             return "overflow check might fail";
          when VC_Range_Check               =>
             return "range check might fail";
-         when VC_Predicate_Check               =>
+         when VC_Predicate_Check           =>
             return "predicate check might fail";
          when VC_Length_Check              =>
             return "length check might fail";
@@ -242,7 +242,9 @@ package body Gnat2Why.Error_Messages is
             return "discriminant check might fail";
          when VC_Tag_Check                 =>
             return "tag check might fail";
-         when VC_Task_Termination =>
+         when VC_Ceiling_Interrupt         =>
+            return "ceiling priority might not be in Interrupt_Priority";
+         when VC_Task_Termination          =>
             return "the task might terminate, which is not allowed in SPARK";
 
          --  VC_Assert_Kind - assertions
@@ -448,6 +450,8 @@ package body Gnat2Why.Error_Messages is
             return "discriminant check proved";
          when VC_Tag_Check                 =>
             return "tag check proved";
+         when VC_Ceiling_Interrupt         =>
+            return "ceiling priority in Interrupt_Priority proved";
          when VC_Task_Termination          =>
             return "nontermination of task proved";
 

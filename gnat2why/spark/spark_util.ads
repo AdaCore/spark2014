@@ -575,6 +575,19 @@ package SPARK_Util is
    --  @return True iff the entity is a component or discriminant of a
    --            protected type
 
+   function Requires_Interrupt_Priority (E : Entity_Id) return Boolean with
+     Pre => Is_Protected_Type (E);
+   --  @param E the entity of a protected type
+   --  @return True if E contains a protected procedure with Attach_Handler
+   --  specified. Note that Interrupt_Handler cannot be TRue with the Ravenscar
+   --  profile.
+
+   function Get_Priority_From_Protected_Type (E : Entity_Id) return Node_Id
+   with Pre => Is_Protected_Type (E);
+   --  @param E the entity of a protected type
+   --  @return The Ada node of the expression for the Priority or
+   --  Interrupt_Priority specified on E if any.
+
    ------------------------------------
    -- Queries related to subprograms --
    ------------------------------------
@@ -815,7 +828,7 @@ package SPARK_Util is
    --  @return the enclosing protected type
 
    function Visible_Declarations_of_Prot_Type (E : Entity_Id) return List_Id
-   is (Visible_Declarations (PO_Definition (E)))
+   is (Visible_Declarations (PO_Definition (Base_Type (E))))
    with Pre => Is_Protected_Type (E);
    --  @param E a protected type entity
    --  @return the list of visible declarations of the protected type

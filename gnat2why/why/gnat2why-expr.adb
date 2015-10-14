@@ -49,6 +49,7 @@ with Snames;                 use Snames;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with Stand;                  use Stand;
+with System;                 use System;
 with Uintp;                  use Uintp;
 with Urealp;                 use Urealp;
 with VC_Kinds;               use VC_Kinds;
@@ -60,6 +61,7 @@ with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Arrays;         use Why.Gen.Arrays;
 with Why.Gen.Binders;        use Why.Gen.Binders;
+with Why.Gen.Consts;         use Why.Gen.Consts;
 with Why.Gen.Decl;           use Why.Gen.Decl;
 with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
@@ -1600,10 +1602,10 @@ package body Gnat2Why.Expr is
                   begin
                      --  external call, pass the object itself
 
-                     if Nkind (Name (Call)) = N_Selected_Component then
+                     if Nkind (Sinfo.Name (Call)) = N_Selected_Component then
                         Why_Args (Arg_Cnt) :=
                           Transform_Expr
-                            (Prefix (Name (Call)),
+                            (Prefix (Sinfo.Name (Call)),
                              Get_Typ (Prot),
                              Domain,
                              Params);
@@ -3619,7 +3621,7 @@ package body Gnat2Why.Expr is
    function Get_Container_In_Iterator_Specification
      (N : Node_Id) return Node_Id
    is
-      Iter : constant Node_Id := Name (N);
+      Iter : constant Node_Id := Sinfo.Name (N);
    begin
       return (Iter);
    end Get_Container_In_Iterator_Specification;
@@ -3742,7 +3744,7 @@ package body Gnat2Why.Expr is
       Let_Fetch       : W_Prog_Array (1 .. Nb_Of_Lets);
       Store       : constant W_Statement_Sequence_Unchecked_Id :=
         New_Unchecked_Statement_Sequence;
-      Subp        : constant Entity_Id := Entity (Name (Ada_Call));
+      Subp        : constant Entity_Id := Entity (Sinfo.Name (Ada_Call));
       Binders     : constant Item_Array :=
         Compute_Subprogram_Parameters (Subp, EW_Prog);
       Bind_Cnt    : Positive := Binders'First;
@@ -7578,7 +7580,7 @@ package body Gnat2Why.Expr is
 
    function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id
    is
-      Lvalue     : constant Node_Id := Name (Stmt);
+      Lvalue     : constant Node_Id := Sinfo.Name (Stmt);
       Exp_Entity : constant W_Type_Id := Expected_Type_Of_Prefix (Lvalue);
       L_Type     : constant W_Type_Id := Type_Of_Node (Etype (Lvalue));
       T          : W_Prog_Id :=
@@ -8950,6 +8952,106 @@ package body Gnat2Why.Expr is
                         Ty          => Etype (Lvalue),
                         Initialized => Present (Expression (Decl)),
                         Only_Var    => False));
+               end;
+            end if;
+
+            if Is_Protected_Type (Etype (Defining_Identifier (Decl)))
+              and then Requires_Interrupt_Priority
+                (Etype (Defining_Identifier (Decl)))
+            then
+               declare
+                  Lvalue : Entity_Id := Defining_Identifier (Decl);
+                  P      : constant Node_Id :=
+                    Get_Priority_From_Protected_Type
+                      (Etype (Defining_Identifier (Decl)));
+               begin
+                  if Is_Full_View (Lvalue) then
+                     Lvalue := Partial_View (Lvalue);
+                  end if;
+
+                  --  If no priority was specified, the default priority
+                  --  respects the ceiling priority.
+
+                  if Present (P) then
+
+                     --  Store the value of Decl's discriminants in the
+                     --  symbol table
+
+                     declare
+                        Num_Discrs : constant Natural :=
+                          (if Has_Discriminants (Etype (Lvalue)) then
+                              Natural (Number_Discriminants (Etype (Lvalue)))
+                           else 0);
+                        Discr_Ids  : W_Identifier_Array (1 .. Num_Discrs);
+                        Discr_Vals : W_Expr_Array (1 .. Num_Discrs);
+                        D          : Node_Id :=
+                          First_Discriminant (Etype (Lvalue));
+                        P_Expr     : W_Expr_Id;
+                     begin
+                        Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+                        for I in Discr_Ids'Range loop
+                           while Is_Completely_Hidden (D) loop
+                              Next_Discriminant (D);
+                           end loop;
+                           pragma Assert (Present (D));
+
+                           Discr_Ids (I) :=
+                             New_Temp_Identifier
+                               (Typ => EW_Abstract (Etype (D)));
+
+                           Insert_Entity (Discriminal (D), Discr_Ids (I));
+
+                           Discr_Vals (I) :=
+                             New_Ada_Record_Access
+                               (Ada_Node => Empty,
+                                Domain   => EW_Term,
+                                Name     =>
+                                  +Transform_Identifier
+                                  (Expr   => Lvalue,
+                                   Ent    => Lvalue,
+                                   Domain => EW_Term,
+                                   Params => Body_Params),
+                                Field    => D,
+                                Ty       => Etype (Lvalue));
+
+                           Next_Discriminant (D);
+                        end loop;
+                        pragma Assert (No (D));
+
+                        P_Expr := Transform_Expr
+                          (Expr          => P,
+                           Domain        => EW_Term,
+                           Params        => Body_Params,
+                           Expected_Type => EW_Int_Type);
+
+                        for I in Discr_Ids'Range loop
+                           P_Expr := New_Typed_Binding
+                             (Domain   => EW_Term,
+                              Name     => Discr_Ids (I),
+                              Def      => Discr_Vals (I),
+                              Context  => P_Expr);
+                        end loop;
+
+                        R := Sequence
+                          (R,
+                           New_Located_Assert
+                             (Ada_Node => Decl,
+                              Pred     => +New_Range_Expr
+                                (Domain => EW_Pred,
+                                 Low    => +New_Constant
+                                   (UI_From_Int (Int
+                                    (Interrupt_Priority'First))),
+                                 High   => +New_Constant
+                                   (UI_From_Int (Int
+                                    (Interrupt_Priority'Last))),
+                                 Expr   => P_Expr),
+                              Reason   => VC_Ceiling_Interrupt,
+                              Kind     => EW_Check));
+
+                        Ada_Ent_To_Why. Pop_Scope (Symbol_Table);
+                     end;
+                  end if;
                end;
             end if;
 
@@ -12378,7 +12480,7 @@ package body Gnat2Why.Expr is
       function ECI (Left, Right : String) return Boolean
         renames Ada.Strings.Equal_Case_Insensitive;
 
-      Subp        : constant Entity_Id := Entity (Name (Expr));
+      Subp        : constant Entity_Id := Entity (Sinfo.Name (Expr));
       Nb_Of_Refs  : Natural;
       Nb_Of_Lets  : Natural;
 
