@@ -227,8 +227,8 @@ package Flow_Types is
    function Get_Direct_Mapping_Id
      (F : Flow_Id)
       return Node_Id
-   with Pre  => (F.Kind in Direct_Mapping | Record_Field),
-        Post => (Present (Get_Direct_Mapping_Id'Result));
+   with Pre  => F.Kind in Direct_Mapping | Record_Field,
+        Post => Present (Get_Direct_Mapping_Id'Result);
    --  Given a direct mapping Flow_Id, return the associated node or
    --  entity. In case of a record field, return the entire variable.
 

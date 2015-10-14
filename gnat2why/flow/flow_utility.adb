@@ -542,7 +542,7 @@ package body Flow_Utility is
    begin
       case F.Kind is
          when Direct_Mapping =>
-            E := F.Node;
+            E := Get_Direct_Mapping_Id (F);
          when Record_Field =>
             E := F.Component.Last_Element;
          when others =>
@@ -3095,7 +3095,8 @@ package body Flow_Utility is
             case F.Kind is
                when Direct_Mapping | Record_Field =>
                   declare
-                     N : constant Node_Id := Parent (F.Node);
+                     N : constant Node_Id :=
+                       Parent (Get_Direct_Mapping_Id (F));
                   begin
                      if Nkind (N) = N_Object_Declaration
                        and then Is_Action (N)
@@ -3286,7 +3287,7 @@ package body Flow_Utility is
          return Flow_Id_Sets.To_Set (F);
       end if;
 
-      pragma Assert (Nkind (F.Node) in N_Entity);
+      pragma Assert (Nkind (Get_Direct_Mapping_Id (F)) in N_Entity);
       T         := Get_Type (F, Scope);
       Classwide := Ekind (T) in Class_Wide_Kind;
       while Ekind (T) in Class_Wide_Kind loop
@@ -3306,8 +3307,7 @@ package body Flow_Utility is
          declare
             Root : Node_Id := T;
          begin
-            while (Is_Derived_Type (Root)
-                     or else Is_Itype (Root))
+            while (Is_Derived_Type (Root) or else Is_Itype (Root))
               and then Etype (Root) /= Root
             loop
                Root := Etype (Root);

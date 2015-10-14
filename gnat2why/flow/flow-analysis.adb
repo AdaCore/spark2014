@@ -2007,8 +2007,9 @@ package body Flow.Analysis is
 
          The_Var_Is_Array : constant Boolean :=
            (The_Var.Kind = Direct_Mapping
-              and then Is_Type (Etype (The_Var.Node))
-              and then Has_Array_Type (Etype (The_Var.Node)))
+              and then Is_Type (Etype (Get_Direct_Mapping_Id (The_Var)))
+              and then Has_Array_Type
+                         (Etype (Get_Direct_Mapping_Id (The_Var))))
            or else
            (The_Var.Kind = Record_Field
               and then The_Var.Facet = Normal_Part
@@ -2345,7 +2346,7 @@ package body Flow.Analysis is
          end if;
 
          if Kind = Init and then Is_Function_Entity (Var) then
-            pragma Assert (Var.Node = FA.Analyzed_Entity);
+            pragma Assert (Get_Direct_Mapping_Id (Var) = FA.Analyzed_Entity);
             --  We special case this, so we don't emit "X" is initialized
             --  messages for the "variable" we use to model the value of
             --  the function return.
@@ -2383,7 +2384,8 @@ package body Flow.Analysis is
                Msg          => To_String (Msg),
                N            => N,
                F1           => Direct_Mapping_Id
-                                 (Encapsulating_State (Var.Node)),
+                                 (Encapsulating_State
+                                    (Get_Direct_Mapping_Id (Var))),
                F2           => Direct_Mapping_Id (FA.Initializes_N),
                Tag          => Uninitialized,
                Severity     => (case Kind is

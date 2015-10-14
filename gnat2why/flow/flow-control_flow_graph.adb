@@ -1333,7 +1333,7 @@ package body Flow.Control_Flow_Graph is
    begin
       for F of The_Set loop
          if F.Kind in Direct_Mapping | Record_Field
-           and then F.Node = Of_This
+           and then Get_Direct_Mapping_Id (F) = Of_This
          then
             FS.Include (F'Update (Node => With_This));
          else
@@ -2639,11 +2639,12 @@ package body Flow.Control_Flow_Graph is
                   Fully_Defined := False;
                   Tv            := Flow_Graphs.Abort_Traversal;
 
-               elsif A.Variables_Defined.Contains (T.Var) and then
-                 F.Kind = Direct_Mapping and then
-                 Present (F.Node) and then
-                 Nkind (F.Node) = N_Assignment_Statement and then
-                 Get_Array_Index (Name (F.Node)) = T
+               elsif A.Variables_Defined.Contains (T.Var)
+                 and then F.Kind = Direct_Mapping
+                 and then Nkind (Get_Direct_Mapping_Id (F)) =
+                            N_Assignment_Statement
+                 and then Get_Array_Index (Name (Get_Direct_Mapping_Id (F))) =
+                            T
                then
                   FA.CFG.DFS (Start         => V,
                               Include_Start => False,
@@ -3423,8 +3424,8 @@ package body Flow.Control_Flow_Graph is
                if Final_V_Id /= Flow_Graphs.Null_Vertex then
                   declare
                      Final_Atr : V_Attributes := FA.Atr (Final_V_Id);
-
-                     Entire_Var : constant Entity_Id := Final_F_Id.Node;
+                     Entire_Var : constant Entity_Id :=
+                       Get_Direct_Mapping_Id (Entire_Variable (Final_F_Id));
                   begin
                      Final_Atr.Is_Export := Final_Atr.Is_Export
                        or else Is_Initialized_At_Elaboration (Entire_Var,

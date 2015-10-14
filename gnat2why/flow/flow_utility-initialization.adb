@@ -101,7 +101,7 @@ package body Flow_Utility.Initialization is
    begin
       case F.Kind is
          when Direct_Mapping =>
-            return Get_Simple_Default (Etype (F.Node));
+            return Get_Simple_Default (Etype (Get_Direct_Mapping_Id (F)));
 
          when Record_Field =>
             --  If the Flow_Id represents the 'Hidden part of a record

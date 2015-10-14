@@ -179,9 +179,9 @@ package body Flow is
       function Flow_Id_Image (F : Flow_Id) return String is
         ((case F.Kind is
              when Direct_Mapping =>
-                (if Nkind (F.Node) in N_Entity
+                (if Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
                  then Flow_Id_To_String (F)
-                 else Node_Or_Entity_Id'Image (F.Node)),
+                 else Node_Or_Entity_Id'Image (Get_Direct_Mapping_Id (F))),
              when others =>
                 Flow_Id_To_String (F)) & "|" & F.Variant'Img);
 
@@ -461,10 +461,10 @@ package body Flow is
                when In_View =>
                   pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
-                  Print_Node (A.Parameter_Formal.Node);
+                  Print_Node (Get_Direct_Mapping_Id (A.Parameter_Formal));
                   Write_Str ("'in");
                   Write_Str ("&nbsp;:=&nbsp;");
-                  Print_Node (A.Parameter_Actual.Node);
+                  Print_Node (Get_Direct_Mapping_Id (A.Parameter_Actual));
                   if A.Is_Discr_Or_Bounds_Parameter then
                      Write_Str ("'discr_or_bounds");
                   end if;
@@ -473,9 +473,9 @@ package body Flow is
                   pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
                   pragma Assert (not A.Is_Discr_Or_Bounds_Parameter);
-                  Print_Node (A.Parameter_Actual.Node);
+                  Print_Node (Get_Direct_Mapping_Id (A.Parameter_Actual));
                   Write_Str ("&nbsp;:=&nbsp;");
-                  Print_Node (A.Parameter_Formal.Node);
+                  Print_Node (Get_Direct_Mapping_Id (A.Parameter_Formal));
                   Write_Str ("'out");
 
                when others =>

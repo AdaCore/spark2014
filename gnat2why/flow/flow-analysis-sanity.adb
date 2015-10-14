@@ -425,8 +425,8 @@ package body Flow.Analysis.Sanity is
             for Var of Written_Vars loop
                F := Change_Variant (Var, Normal_Use);
 
-               if not (FA.All_Vars.Contains (F) or else Synthetic (F)) and then
-                 FA.Kind in Kind_Package | Kind_Package_Body
+               if not (FA.All_Vars.Contains (F) or else Synthetic (F))
+                 and then FA.Kind in Kind_Package | Kind_Package_Body
                then
 
                   --  We have a write to a variable a package knows
