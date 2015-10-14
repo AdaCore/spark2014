@@ -2777,8 +2777,7 @@ package body Flow_Generated_Globals is
       -- Calls_Potentially_Blocking_Subprogram --
       -------------------------------------------
 
-      function Calls_Potentially_Blocking_Subprogram return Boolean
-      is
+      function Calls_Potentially_Blocking_Subprogram return Boolean is
          use Entity_Name_Graphs;
 
          Caller : constant Vertex_Id :=
