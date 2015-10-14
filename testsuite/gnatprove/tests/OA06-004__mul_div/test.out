@@ -1,58 +1,46 @@
-p.adb:25:27: info: division check proved
-p.adb:26:27: info: division check proved
-p.adb:40:15: info: initialization of "V_Hi" proved
-p.adb:41:15: info: initialization of "V_Lo" proved
-p.adb:42:15: info: initialization of "V_Hi" proved
-p.adb:42:22: info: initialization of "V_Lo" proved
-p.adb:42:27: info: division check proved
-p.adb:43:15: info: initialization of "V_Lo" proved
-p.adb:43:20: info: division check proved
-p.adb:47:20: info: initialization of "V_Hi" proved
-p.adb:47:25: info: division check proved
-p.adb:49:10: info: initialization of "Result_Hi" proved
-p.adb:54:10: medium: exception might be raised
-p.adb:57:20: info: initialization of "V_Hi" proved
-p.adb:57:27: info: initialization of "Result_Hi" proved
-p.adb:59:20: info: initialization of "Result_Hi" proved
-p.adb:64:10: info: initialization of "V_Lo" proved
-p.adb:64:17: info: initialization of "Remainder" proved
-p.adb:64:50: info: division check proved
-p.adb:64:50: info: range check proved
-p.adb:64:56: info: division check proved
-p.adb:66:10: info: initialization of "Result_Lo" proved
-p.adb:66:38: info: initialization of "Result_Hi" proved
-p.adb:70:10: medium: exception might be raised
-p.adb:73:14: info: initialization of "Result_Hi" proved
-p.adb:73:26: info: initialization of "Result_Lo" proved
-p.ads:11:15: info: division check proved
-p.ads:11:15: info: range check proved
-p.ads:14:15: info: division check proved
-p.ads:14:15: info: range check proved
-q.adb:13:46: info: overflow check proved
-q.adb:13:46: info: range check proved
-q.adb:29:27: info: division check proved
-q.adb:30:27: info: division check proved
-q.adb:44:15: info: initialization of "V_Hi" proved
-q.adb:45:15: info: initialization of "V_Lo" proved
-q.adb:46:15: info: initialization of "V_Hi" proved
-q.adb:46:22: info: initialization of "V_Lo" proved
-q.adb:46:27: info: division check proved
-q.adb:47:15: info: initialization of "V_Lo" proved
-q.adb:47:20: info: division check proved
-q.adb:51:20: info: initialization of "V_Hi" proved
-q.adb:51:25: info: division check proved
-q.adb:53:10: info: initialization of "Result_Hi" proved
-q.adb:58:10: medium: exception might be raised
-q.adb:61:20: info: initialization of "V_Hi" proved
-q.adb:61:27: info: initialization of "Result_Hi" proved
-q.adb:63:20: info: initialization of "Result_Hi" proved
-q.adb:68:10: info: initialization of "V_Lo" proved
-q.adb:68:17: info: initialization of "Remainder" proved
-q.adb:68:50: info: division check proved
-q.adb:68:50: info: range check proved
-q.adb:68:56: info: division check proved
-q.adb:70:10: info: initialization of "Result_Lo" proved
-q.adb:70:38: info: initialization of "Result_Hi" proved
-q.adb:74:10: medium: exception might be raised
-q.adb:77:14: info: initialization of "Result_Hi" proved
-q.adb:77:26: info: initialization of "Result_Lo" proved
+mul_div_2.adb:11:23: info: division check proved
+mul_div_2.adb:12:23: info: division check proved
+mul_div_2.adb:27:15: info: initialization of "V_Hi" proved
+mul_div_2.adb:27:20: info: overflow check proved
+mul_div_2.adb:28:15: info: initialization of "V_Lo" proved
+mul_div_2.adb:28:20: info: overflow check proved
+mul_div_2.adb:29:15: info: initialization of "V_Hi" proved
+mul_div_2.adb:29:20: info: overflow check proved
+mul_div_2.adb:29:22: info: initialization of "V_Lo" proved
+mul_div_2.adb:29:27: info: division check proved
+mul_div_2.adb:30:15: info: initialization of "V_Lo" proved
+mul_div_2.adb:30:20: info: division check proved
+mul_div_2.adb:33:20: info: initialization of "V_Hi" proved
+mul_div_2.adb:33:25: info: division check proved
+mul_div_2.adb:35:10: info: initialization of "Result_Hi" proved
+mul_div_2.adb:39:10: medium: exception might be raised
+mul_div_2.adb:42:20: info: initialization of "V_Hi" proved
+mul_div_2.adb:42:25: info: division check proved
+mul_div_2.adb:44:20: info: initialization of "Result_Hi" proved
+mul_div_2.adb:44:30: info: overflow check proved
+mul_div_2.adb:50:10: info: initialization of "V_Lo" proved
+mul_div_2.adb:50:15: info: overflow check proved
+mul_div_2.adb:50:17: info: initialization of "Remainder" proved
+mul_div_2.adb:50:27: info: overflow check proved
+mul_div_2.adb:50:37: info: overflow check proved
+mul_div_2.adb:51:39: info: overflow check proved
+mul_div_2.adb:51:48: info: division check proved
+mul_div_2.adb:51:54: info: division check proved
+mul_div_2.adb:54:38: medium: overflow check might fail
+mul_div_2.adb:55:16: info: initialization of "Result_Lo" proved
+mul_div_2.adb:55:38: info: overflow check proved
+mul_div_2.adb:55:40: info: initialization of "Result_Hi" proved
+mul_div_2.adb:60:10: medium: exception might be raised
+mul_div_2.adb:63:14: info: initialization of "Result_Hi" proved
+mul_div_2.adb:63:24: info: overflow check proved
+mul_div_2.adb:63:26: info: initialization of "Result_Lo" proved
+mul_div_2.ads:7:04: warning: pragma Overflow_Mode in code is ignored
+mul_div_2.ads:11:42: info: division check proved
+mul_div_2.ads:11:47: info: division check proved
+mul_div_2.ads:12:47: info: division check proved
+mul_div_2.ads:12:52: info: division check proved
+mul_div_2.ads:13:14: medium: postcondition might fail, requires Mul_Div'Result = (if V >= 0 then V * M + D / 2 / D else --V * M + ... / ...
+mul_div_2.ads:15:43: info: division check proved
+mul_div_2.ads:15:48: info: division check proved
+mul_div_2.ads:16:48: info: division check proved
+mul_div_2.ads:16:53: info: division check proved
