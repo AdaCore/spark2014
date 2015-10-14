@@ -814,6 +814,12 @@ package SPARK_Util is
    --            type
    --  @return the enclosing protected type
 
+   function Visible_Declarations_of_Prot_Type (E : Entity_Id) return List_Id
+   is (Visible_Declarations (PO_Definition (E)))
+   with Pre => Is_Protected_Type (E);
+   --  @param E a protected type entity
+   --  @return the list of visible declarations of the protected type
+
    --------------------------------
    -- Queries related to entries --
    --------------------------------
