@@ -3414,6 +3414,15 @@ package body Flow_Utility is
                end if;
             end if;
 
+            --  For concurrent types we need to make sure that we never return
+            --  an empty set. Instead return a singleton set with the type
+            --  itself.
+            if Ekind (T) in Concurrent_Kind
+              and then Ids.Is_Empty
+            then
+               Ids.Include (F);
+            end if;
+
             if Classwide then
                --  Ids.Include (F'Update (Facet => The_Tag));
                Ids.Include (F'Update (Facet => Extension_Part));
