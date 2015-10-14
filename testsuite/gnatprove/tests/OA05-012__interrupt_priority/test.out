@@ -1,8 +1,5 @@
 interrupt_priority.adb:6:20: info: overflow check proved
 interrupt_priority.adb:14:20: info: overflow check proved
 interrupt_priority.adb:22:20: info: overflow check proved
-interrupt_priority.ads:7:07: warning: pragma "Priority" ignored (not yet supported)
-interrupt_priority.ads:13:07: warning: pragma "Priority" ignored (not yet supported)
-interrupt_priority.ads:19:07: warning: pragma "Priority" ignored (not yet supported)
 ko.ads:4:03: medium: ceiling priority might not be in Interrupt_Priority
 ok.ads:8:04: info: ceiling priority in Interrupt_Priority proved

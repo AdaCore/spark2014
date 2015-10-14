@@ -4135,9 +4135,11 @@ package body SPARK_Definition is
                Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);
             end if;
 
-         --  Need to mark the expression of a pragma Attach_Handler
+         --  Need to mark the expression of a pragma Attach_Handler and
+         --  Priority
 
-         when Pragma_Attach_Handler =>
+         when Pragma_Attach_Handler |
+              Pragma_Priority        =>
             Mark (Expression (Arg1));
 
          when Unknown_Pragma =>
@@ -4411,7 +4413,6 @@ package body SPARK_Definition is
            Pragma_Shared_Passive                 |
            Pragma_Interrupt_Priority             |
            Pragma_Lock_Free                      |
-           Pragma_Priority                       |
            Pragma_Storage_Size                   =>
 
             if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then

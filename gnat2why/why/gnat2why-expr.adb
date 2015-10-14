@@ -9063,7 +9063,7 @@ package body Gnat2Why.Expr is
                declare
                   Lvalue : Entity_Id := Defining_Identifier (Decl);
                   P      : constant Node_Id :=
-                    Get_Priority_From_Protected_Type
+                    Get_Priority_Or_Interrupt_Priority
                       (Etype (Defining_Identifier (Decl)));
                begin
                   if Is_Full_View (Lvalue) then

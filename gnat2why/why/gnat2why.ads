@@ -254,6 +254,11 @@
 --  The checks related to pragma Attach_Handler (Ada RM C.3.1(10/3)) are done
 --  on translation of the declaration of a protected object.
 
+--  The checks related to the ceiling priority protocol are done when
+--  processing a task type body. There, we analyze the "call graph" of the task
+--  and check whether the call graph violates the ceiling protocol (Ada RM D.1
+--  and D.3).
+
 ------------------------------------
 -- Labels Interpreted by gnatwhy3 --
 ------------------------------------

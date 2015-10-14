@@ -1699,7 +1699,8 @@ package body SPARK_Util is
    -- Get_Priority_From_Protected_Type --
    --------------------------------------
 
-   function Get_Priority_From_Protected_Type (E : Entity_Id) return Node_Id is
+   function Get_Priority_Or_Interrupt_Priority (E : Entity_Id) return Node_Id
+   is
       Pragma_Node : Node_Id := Get_Pragma (E, Pragma_Priority);
    begin
       if No (Pragma_Node) then
@@ -1712,7 +1713,7 @@ package body SPARK_Util is
       else
          return Empty;
       end if;
-   end Get_Priority_From_Protected_Type;
+   end Get_Priority_Or_Interrupt_Priority;
 
    ---------------
    -- Get_Range --

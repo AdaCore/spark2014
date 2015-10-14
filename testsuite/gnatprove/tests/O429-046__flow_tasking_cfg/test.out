@@ -1,5 +1,6 @@
 foo.adb:11:38: info: initialization of "G" proved
 foo.adb:15:22: info: postcondition proved
+foo.adb:43:14: info: ceiling priority protocol is respected
 foo.adb:43:14: info: nontermination of task proved
 foo.adb:50:14: medium: precondition might fail
 foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
@@ -24,6 +25,7 @@ prot.ads:8:22: info: initialization of "X" proved
 prot.ads:12:13: info: initialization of "Hidden" constituent of "State" proved
 q.adb:16:27: info: initialization of "Tmp" proved
 support.adb:5:29: medium: overflow check might fail
+support.ads:11:14: info: ceiling priority protocol is respected
 support.ads:11:14: medium: the task might terminate, which is not allowed in SPARK
 tasks.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved

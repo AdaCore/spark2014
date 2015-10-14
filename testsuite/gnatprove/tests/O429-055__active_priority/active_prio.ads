@@ -14,8 +14,10 @@ package Active_Prio is
    end;
 
    protected type Q_Type is
-      pragma Priority(10);
+      pragma Priority(8);
       procedure Simple;
+      procedure Not_Called;
+      procedure Indirect;
    private
       A : Integer := 0;
 

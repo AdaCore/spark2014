@@ -339,6 +339,12 @@ package Flow_Generated_Globals is
    --  Returns the set of objects (e.g. suspension objects or entries,
    --  depending on the Kind) accessed by a main-like subprogram Subp.
 
+   function Directly_Called_Tasking_Objects
+     (Ent : Entity_Name) return Name_Sets.Set;
+   --  @param an entity name that refers to a task or protected operation
+   --  @return the set of protected operations that are called "directly", that
+   --    is without going through other protected operations
+
 private
 
    Current_Mode : GG_Mode_T := GG_No_Mode;

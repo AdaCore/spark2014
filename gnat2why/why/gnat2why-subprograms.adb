@@ -26,6 +26,7 @@
 with Common_Containers;      use Common_Containers;
 with Errout;                 use Errout;
 with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
+with Flow_Generated_Globals; use Flow_Generated_Globals;
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Types;             use Flow_Types;
 with Flow_Utility;           use Flow_Utility;
@@ -43,6 +44,7 @@ with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 with Stand;                  use Stand;
+with System;                 use System;
 with Uintp;                  use Uintp;
 with VC_Kinds;               use VC_Kinds;
 with Why;                    use Why;
@@ -51,6 +53,7 @@ with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Atree.Mutators;     use Why.Atree.Mutators;
 with Why.Conversions;        use Why.Conversions;
+with Why.Gen.Consts;         use Why.Gen.Consts;
 with Why.Gen.Decl;           use Why.Gen.Decl;
 with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
@@ -197,6 +200,18 @@ package body Gnat2Why.Subprograms is
       E    : Entity_Id);
    --  Generate an axiom stating the postcondition of a Subprogram
 
+   function Check_Ceiling_Protocol
+     (Params : Transformation_Params;
+      E      : Entity_Id) return W_Prog_Id
+     with Pre => Is_Task_Type (E);
+   --  @param Params the transformation params
+   --  @param E a task type entity
+   --  @return an assertion or sequence of assertion that expresses that the
+   --    ceiling protocol is respected in the call graph starting from this
+   --    task, i.e. basically that external calls to protected operations are
+   --    made with a priority lower or equal to the priority of the object in
+   --    question.
+
    ----------------------------------
    -- Add_Dependencies_For_Effects --
    ----------------------------------
@@ -253,6 +268,99 @@ package body Gnat2Why.Subprograms is
       end loop;
       Why_Expr := Sequence (Assumes, Why_Expr);
    end Assume_Value_Of_Constants;
+
+   ----------------------------
+   -- Check_Ceiling_Protocol --
+   ----------------------------
+
+   function Check_Ceiling_Protocol
+     (Params : Transformation_Params;
+      E      : Entity_Id) return W_Prog_Id is
+
+      function Check_Local_Call (Ent : Entity_Name; Prio : W_Expr_Id)
+                                 return W_Prog_Id;
+      --  @param E the entity of the calling object/task
+      --  @param Prio the active priority of the task used for all the calls
+      --  @return one or several assertions checking for violations of the
+      --    ceiling protocol
+
+      ----------------------
+      -- Check_Local_Call --
+      ----------------------
+
+      function Check_Local_Call (Ent : Entity_Name; Prio : W_Expr_Id)
+                                 return W_Prog_Id
+      is
+         S : W_Prog_Id := New_Void;
+      begin
+         if Prio = Why_Empty then
+            return
+              New_Located_Assert (Ada_Node => E,
+                                  Pred     => False_Pred,
+                                  Reason   =>
+                                    VC_Ceiling_Priority_Protocol,
+                                  Kind     => EW_Check);
+         end if;
+
+         --  both the current priority and object priority are present
+
+         for Name of Directly_Called_Tasking_Objects (Ent) loop
+
+            --  skip regular calls
+
+            if not Is_Protected_Subprogram (Find_Entity (Name)) then
+               return Check_Local_Call (Name, Prio);
+            end if;
+
+            --  we are computing the ceiling priority of the object here. See
+            --  ARM Annex D.3, 7-11, with the extra twist that we assume the
+            --  ceiling priority to be Interrupt_Priority'Last even in the
+            --  presence of Attach_Handler (so we basically ignore rule 10/3).
+
+            declare
+               Ada_Obj_Prio : constant Node_Id :=
+                 Get_Priority_Or_Interrupt_Priority
+                   (Containing_Protected_Type (Find_Entity (Name)));
+               Obj_Prio : constant W_Expr_Id :=
+                 (if Present (Ada_Obj_Prio) then
+                       Transform_Expr
+                         (Ada_Obj_Prio, EW_Int_Type, EW_Pterm, Params)
+                  else
+                    +New_Constant
+                    (UI_From_Int (Int (Interrupt_Priority'Last))));
+                     Pred     : constant W_Pred_Id :=
+                       +New_Comparison (Symbol => Int_Infix_Le,
+                                        Left   => Prio,
+                                        Right  => Obj_Prio,
+                                        Domain => EW_Pred);
+                     Check    : constant W_Prog_Id :=
+                       New_Located_Assert (Ada_Node => E,
+                                           Pred     => Pred,
+                                           Reason   =>
+                                             VC_Ceiling_Priority_Protocol,
+                                           Kind     => EW_Check);
+            begin
+               S :=
+                 Sequence ((1 => S,
+                            2 => Check,
+                            3 => Check_Local_Call (Name, Obj_Prio)));
+            end;
+         end loop;
+         return S;
+      end Check_Local_Call;
+
+      --  start processing of Check_Ceiling_Protocol
+
+      Task_Prio : constant Node_Id :=
+        Get_Priority_Or_Interrupt_Priority (E);
+      Why_Prio : constant W_Expr_Id :=
+        (if Present (Task_Prio) then
+              Transform_Expr (Task_Prio, EW_Int_Type, EW_Pterm, Params)
+         else
+            +New_Constant (UI_From_Int (Int (Interrupt_Priority'Last))));
+   begin
+      return Check_Local_Call (To_Entity_Name (E), Why_Prio);
+   end Check_Ceiling_Protocol;
 
    ------------------
    -- Compute_Args --
@@ -2439,6 +2547,14 @@ package body Gnat2Why.Subprograms is
          Why_Body :=
            Transform_Declarations_Block (Declarations (Body_N), Why_Body);
       end if;
+
+      --  We check that the call graph starting from this task respects the
+      --  ceiling priority protocol.
+
+      Why_Body :=
+        Sequence
+          (Check_Ceiling_Protocol (Params, E),
+           Why_Body);
 
       --  We assume that objects used in the program are in range, if
       --  they are of a dynamic type

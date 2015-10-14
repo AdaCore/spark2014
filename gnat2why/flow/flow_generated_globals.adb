@@ -473,6 +473,28 @@ package body Flow_Generated_Globals is
       end if;
    end Add_To_Volatile_Sets_If_Volatile;
 
+   -------------------------------------
+   -- Directly_Called_Tasking_Objects --
+   -------------------------------------
+
+   function Directly_Called_Tasking_Objects
+     (Ent : Entity_Name) return Name_Sets.Set is
+
+      use Entity_Name_Graphs;
+
+      Res : Name_Sets.Set := Name_Sets.Empty_Set;
+      V   : constant Vertex_Id :=
+        Tasking_Call_Graph.Get_Vertex (Ent);
+   begin
+      if V = Null_Vertex then
+         return Res;
+      end if;
+      for Obj of Tasking_Call_Graph.Get_Collection (V, Out_Neighbours) loop
+         Res.Include (Tasking_Call_Graph.Get_Key (Obj));
+      end loop;
+      return Res;
+   end Directly_Called_Tasking_Objects;
+
    ------------------------
    -- GG_Enclosing_State --
    ------------------------
@@ -1877,9 +1899,10 @@ package body Flow_Generated_Globals is
 
       procedure Process_Tasking_Graph is
          use Entity_Name_Graphs;
+         G : Entity_Name_Graphs.Graph := Tasking_Call_Graph;
       begin
          --  Do the transitive closure
-         Tasking_Call_Graph.Close;
+         G.Close;
 
          --  Collect information for each main-like subprogram
          --  ??? we should only care about main-like subprograms

@@ -579,11 +579,11 @@ package SPARK_Util is
      Pre => Is_Protected_Type (E);
    --  @param E the entity of a protected type
    --  @return True if E contains a protected procedure with Attach_Handler
-   --  specified. Note that Interrupt_Handler cannot be TRue with the Ravenscar
+   --  specified. Note that Interrupt_Handler cannot be True with the Ravenscar
    --  profile.
 
-   function Get_Priority_From_Protected_Type (E : Entity_Id) return Node_Id
-   with Pre => Is_Protected_Type (E);
+   function Get_Priority_Or_Interrupt_Priority (E : Entity_Id) return Node_Id
+   with Pre => Is_Protected_Type (E) or else Is_Task_Type (E);
    --  @param E the entity of a protected type
    --  @return The Ada node of the expression for the Priority or
    --  Interrupt_Priority specified on E if any.

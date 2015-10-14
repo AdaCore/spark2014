@@ -17,7 +17,7 @@ package body Active_Prio is
 
       procedure Jump is
       begin
-         Q.Simple; -- this call is from a high priority to a lower one, so a problem
+         Q.Indirect; -- this call is from a high priority to a lower one, so a problem
       end Jump;
    end;
 
@@ -26,6 +26,16 @@ package body Active_Prio is
       begin
          A := A + 1;
       end Simple;
+
+      procedure Indirect is
+      begin
+         A := A + 1;
+      end Indirect;
+
+      procedure Not_Called is
+      begin
+         A := A - 1;
+      end Not_Called;
    end;
 
 end Active_Prio;
