@@ -2023,9 +2023,10 @@ package body Flow_Utility is
          end if;
 
          declare
-            D_Map  : Dependency_Maps.Map;
-            Params : Node_Sets.Set;
-            E      : Entity_Id;
+            D_Map        : Dependency_Maps.Map;
+            Params       : Node_Sets.Set;
+            E            : Entity_Id;
+            Subprogram_F : constant Flow_Id := Direct_Mapping_Id (Subprogram);
          begin
             Get_Depends (Subprogram           => Subprogram,
                          Scope                => Scope,
@@ -2033,14 +2034,28 @@ package body Flow_Utility is
                          Depends              => D_Map,
                          Use_Computed_Globals => Use_Computed_Globals);
 
-            --  We need to make sure not to include our own parameters in
-            --  the globals we produce here.
-
+            --  We need to make sure not to include our own parameters in the
+            --  globals we produce here. Note that the formal parameters that
+            --  we collect here will also include implicit formal parameters of
+            --  subprograms that belong to concurrent types.
             E := First_Formal (Subprogram);
             while Present (E) loop
                Params.Include (E);
                E := Next_Formal (E);
             end loop;
+
+            if Belongs_To_Protected_Object (Subprogram_F) then
+               --  A subprogram that is directly enclosed by a protected object
+               --  sees the proteted object as a formal parameter.
+               Params.Include (Get_Enclosing_Concurrent_Object (Subprogram_F));
+            end if;
+
+            if Ekind (Subprogram) in Task_Kind then
+               --  A task sees itself as a formal parameter.
+               Params.Include ((if Present (Anonymous_Object (Subprogram))
+                                then Anonymous_Object (Subprogram)
+                                else Subprogram));
+            end if;
 
             --  Always OK to call direct_mapping here since you can't refer
             --  to hidden state in user-written depends contracts.
@@ -2054,7 +2069,9 @@ package body Flow_Utility is
                   E := (if Present (Output)
                         then Get_Direct_Mapping_Id (Output)
                         else Empty);
-                  if Present (E) and then E /= Subprogram
+
+                  if Present (E)
+                    and then E /= Subprogram
                     and then not Params.Contains (E)
                   then
                      --  Note we also filter out the function'result
@@ -2066,6 +2083,7 @@ package body Flow_Utility is
                      E := (if Present (R)
                            then Get_Direct_Mapping_Id (R)
                            else Empty);
+
                      if Present (E) and then not Params.Contains (E) then
                         Reads.Include (Change_Variant (R, In_View));
 
@@ -4389,7 +4407,7 @@ package body Flow_Utility is
       begin
          --  There is no point in up-projecting if any of the
          --  following is True.
-         if not (Ekind (N) in E_Abstract_State | E_Constant | E_Variable)
+         if Ekind (N) not in E_Abstract_State | E_Constant | E_Variable
            or else No (Encapsulating_State (N))
            or else Is_Visible (N, Scope)
          then
@@ -4412,7 +4430,6 @@ package body Flow_Utility is
       Enclosing : Flow_Id;
    begin
       Enclosing := F;
-
       while Is_Non_Visible_Constituent (Enclosing, Scope) loop
          Enclosing := Direct_Mapping_Id
            (Encapsulating_State (Get_Direct_Mapping_Id (Enclosing)));
@@ -4427,7 +4444,7 @@ package body Flow_Utility is
 
    function Has_Variable_Input (F : Flow_Id) return Boolean is
       function Get_Declaration (E : Entity_Id) return Node_Id
-        with Post => Nkind (Get_Declaration'Result) = N_Object_Declaration;
+      with Post => Nkind (Get_Declaration'Result) = N_Object_Declaration;
       --  Returns the N_Object_Declaration corresponding to entity E
       --  @param E is the entity whose declaration we are looking for
       --  @return the N_Object_Declaration of entity E
@@ -4526,7 +4543,7 @@ package body Flow_Utility is
 
    function Is_Variable (F : Flow_Id) return Boolean is
    begin
-      if not (F.Kind in Direct_Mapping | Record_Field) then
+      if F.Kind not in Direct_Mapping | Record_Field then
          --  Consider anything that is not a Direct_Mapping or a
          --  Record_Field to be a variable.
          return True;
