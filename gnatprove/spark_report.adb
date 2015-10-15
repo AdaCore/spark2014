@@ -883,6 +883,7 @@ procedure SPARK_Report is
             | VC_Discriminant_Check
             | VC_Tag_Check
             | VC_Ceiling_Interrupt
+            | VC_Interrupt_Reserved
             | VC_Task_Termination
             | VC_Raise
          =>

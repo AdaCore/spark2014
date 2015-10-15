@@ -590,6 +590,7 @@ failing condition reported by |GNATprove|:
    "length check might fail",                           "VC_LENGTH_CHECK"
    "discriminant check might fail",                     "VC_DISCRIMINANT_CHECK"
    "tag check might fail",                              "VC_TAG_CHECK"
+   "interrupt might be reserved",                       "VC_INTERRUPT_RESERRED"
    "task might terminate",                              "VC_TASK_TERMINATION"
 
    **assertions**
@@ -821,6 +822,7 @@ The following table shows the kinds of check messages issued by proof.
    "length check", "Check that the given array is of the length of the expected array subtype."
    "discriminant check", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
    "tag check",          "Check that the tag of the given tagged object has the expected value."
+   "interrupt is reserved",   "Check that the interrupt specified by Attach_Handler is not reserved"
    "task termination",   "Check that the task does not terminate, as required by Ravenscar"
 
    **assertions**

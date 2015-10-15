@@ -244,6 +244,8 @@ package body Gnat2Why.Error_Messages is
             return "tag check might fail";
          when VC_Ceiling_Interrupt         =>
             return "ceiling priority might not be in Interrupt_Priority";
+         when VC_Interrupt_Reserved        =>
+            return "this interrupt might be reserved";
          when VC_Task_Termination          =>
             return "the task might terminate, which is not allowed in SPARK";
 
@@ -452,6 +454,8 @@ package body Gnat2Why.Error_Messages is
             return "tag check proved";
          when VC_Ceiling_Interrupt         =>
             return "ceiling priority in Interrupt_Priority proved";
+         when VC_Interrupt_Reserved        =>
+            return "availability of interrupt proved";
          when VC_Task_Termination          =>
             return "nontermination of task proved";
 
