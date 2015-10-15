@@ -1,9 +1,9 @@
 mul_div_2.adb:11:23: info: division check proved
 mul_div_2.adb:12:23: info: division check proved
 mul_div_2.adb:27:15: info: initialization of "V_Hi" proved
-mul_div_2.adb:27:20: info: overflow check proved
+mul_div_2.adb:27:20: medium: overflow check might fail
 mul_div_2.adb:28:15: info: initialization of "V_Lo" proved
-mul_div_2.adb:28:20: info: overflow check proved
+mul_div_2.adb:28:20: medium: overflow check might fail
 mul_div_2.adb:29:15: info: initialization of "V_Hi" proved
 mul_div_2.adb:29:20: info: overflow check proved
 mul_div_2.adb:29:22: info: initialization of "V_Lo" proved
@@ -26,7 +26,7 @@ mul_div_2.adb:50:37: info: overflow check proved
 mul_div_2.adb:51:39: info: overflow check proved
 mul_div_2.adb:51:48: info: division check proved
 mul_div_2.adb:51:54: info: division check proved
-mul_div_2.adb:54:38: medium: overflow check might fail
+mul_div_2.adb:54:38: info: overflow check proved
 mul_div_2.adb:55:16: info: initialization of "Result_Lo" proved
 mul_div_2.adb:55:38: info: overflow check proved
 mul_div_2.adb:55:40: info: initialization of "Result_Hi" proved
@@ -39,7 +39,7 @@ mul_div_2.ads:11:42: info: division check proved
 mul_div_2.ads:11:47: info: division check proved
 mul_div_2.ads:12:47: info: division check proved
 mul_div_2.ads:12:52: info: division check proved
-mul_div_2.ads:13:14: medium: postcondition might fail, requires Mul_Div'Result = (if V >= 0 then V * M + D / 2 / D else --V * M + ... / ...
+mul_div_2.ads:13:14: medium: postcondition might fail, cannot prove Mul_Div'Result = (if V >= 0 then V * M + D / 2 / D else --V * M + ... / ...
 mul_div_2.ads:15:43: info: division check proved
 mul_div_2.ads:15:48: info: division check proved
 mul_div_2.ads:16:48: info: division check proved
