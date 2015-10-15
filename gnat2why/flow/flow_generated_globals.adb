@@ -397,113 +397,6 @@ package body Flow_Generated_Globals is
 
    procedure Serialize (A : in out Archive; V : in out ALI_Entry);
 
-   ---------------
-   -- Serialize --
-   ---------------
-
-   procedure Serialize (A : in out Archive; V : in out Entity_Name) is
-      S : Unbounded_String;
-   begin
-      if A.Kind = Serialisation.Output then
-         S := To_Unbounded_String (To_String (V));
-      end if;
-      Serialize (A, S);
-      if A.Kind = Serialisation.Input then
-         V := To_Entity_Name (To_String (S));
-      end if;
-   end Serialize;
-
-   procedure Serialize (A : in out Archive; V : in out Task_Object) is
-      procedure Serialize is new Serialisation.Serialize_Discrete
-        (T => Instance_Number);
-   begin
-      Serialize (A, V.Name);
-      Serialize (A, V.Instances);
-      --  ??? Serialize (A, V.Node);
-      if A.Kind = Serialisation.Input then
-         V.Node := Find_Entity (V.Name);
-      end if;
-   end Serialize;
-
-   procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info) is
-   begin
-      for Kind in Tasking_Info_Kind loop
-         Serialize (A, V (Kind), Kind'Img);
-      end loop;
-   end Serialize;
-
-   procedure Serialize (A : in out Archive; V : in out Global_Phase_1_Info) is
-      procedure Serialize is new Serialisation.Serialize_Discrete
-        (T => Analyzed_Subject_Kind);
-      procedure Serialize is new Serialisation.Serialize_Discrete
-        (T => Globals_Origin_T);
-   begin
-      Serialize (A, V.Name);
-      Serialize (A, V.Kind);
-      Serialize (A, V.Globals_Origin);
-      Serialize (A, V.Inputs_Proof,          "var_proof");
-      Serialize (A, V.Inputs,                "var_in");
-      Serialize (A, V.Outputs,               "var_out");
-      Serialize (A, V.Proof_Calls,           "calls_proof");
-      Serialize (A, V.Definite_Calls,        "calls");
-      Serialize (A, V.Conditional_Calls,     "calls_conditional");
-      Serialize (A, V.Local_Variables,       "local_var");
-      Serialize (A, V.Local_Subprograms,     "local_sub");
-      Serialize (A, V.Local_Definite_Writes, "local_init");
-   end Serialize;
-
-   procedure Serialize (A : in out Archive; V : in out ALI_Entry) is
-      procedure Serialize is new Serialisation.Serialize_Discrete
-        (T => ALI_Entry_Kind);
-
-      Kind : ALI_Entry_Kind := ALI_Entry_Kind'First;
-   begin
-      if A.Kind = Serialisation.Output then
-         Kind := V.Kind;
-      end if;
-      Serialize (A, Kind);
-      if A.Kind = Serialisation.Input then
-         V := Null_ALI_Entry (Kind);
-      end if;
-
-      case V.Kind is
-         when EK_Error =>
-            raise Program_Error;
-
-         when EK_End_Marker =>
-            null;
-
-         when EK_State_Map =>
-            Serialize (A, V.The_State);
-            Serialize (A, V.The_Constituents);
-
-         when EK_Volatiles =>
-            Serialize (A, V.All_Async_Readers,    "AR");
-            Serialize (A, V.All_Async_Writers,    "AW");
-            Serialize (A, V.All_Effective_Reads,  "ER");
-            Serialize (A, V.All_Effective_Writes, "EW");
-
-         when EK_Globals =>
-            Serialize (A, V.The_Global_Info);
-
-         when EK_Tasking_Instance_Count =>
-            Serialize (A, V.The_Type);
-            Serialize (A, V.The_Objects);
-
-         when EK_Tasking_Info =>
-            Serialize (A, V.The_Entity);
-            Serialize (A, V.The_Tasking_Info);
-
-         when EK_Tasking_Nonblocking =>
-            Serialize (A, V.The_Nonblocking_Subprograms);
-      end case;
-
-   exception
-      when Serialisation.Parse_Error =>
-         pragma Assert (A.Kind = Serialisation.Input);
-         V := (Kind => EK_Error);
-   end Serialize;
-
    ----------------------------------------------------------------------
    --  Local subprograms
    ----------------------------------------------------------------------
@@ -526,19 +419,6 @@ package body Flow_Generated_Globals is
    procedure Print_Name_Set (Header : String; Set : Name_Sets.Set);
    --  Print Header followed by elements of Set
 
-   --------------------
-   -- Print_Name_Set --
-   --------------------
-
-   procedure Print_Name_Set (Header : String; Set : Name_Sets.Set) is
-   begin
-      Write_Line (Header);
-      for Name of Set loop
-         Write_Line ("   " & To_String (Name));
-         --  ??? use Indent/Outdent instead of fixed amount of spaces
-      end loop;
-   end Print_Name_Set;
-
    procedure GG_Get_MR_Globals (EN          : Entity_Name;
                                 Proof_Reads : out Name_Sets.Set;
                                 Reads       : out Name_Sets.Set;
@@ -557,8 +437,6 @@ package body Flow_Generated_Globals is
    --  (otherwise repeat the process). When Processing_Writes is set, we also
    --  check if all constituents are used and if they are not we also add them
    --  on the Reads set.
-
-   ----------------------------------------------------------------------
 
    --------------------------------------
    -- Add_To_Volatile_Sets_If_Volatile --
@@ -595,447 +473,391 @@ package body Flow_Generated_Globals is
       end if;
    end Add_To_Volatile_Sets_If_Volatile;
 
-   -------------------------------
-   -- Print_Global_Phase_1_Info --
-   -------------------------------
+   ------------------------
+   -- GG_Enclosing_State --
+   ------------------------
 
-   procedure Print_Global_Phase_1_Info (Info : Global_Phase_1_Info) is
+   function GG_Enclosing_State (EN : Entity_Name) return Entity_Name is
    begin
-      Write_Line ((case Info.Kind is
-                   when Kind_Subprogram                  => "Subprogram ",
-                   when Kind_Entry                       => "Entry ",
-                   when Kind_Task                        => "Task ",
-                   when Kind_Package | Kind_Package_Body => "Package ")
-        & To_String (Info.Name));
+      return (if Comp_State_Map.Contains (EN)
+              then Comp_State_Map.Element (EN)
+              else Null_Entity_Name);
+   end GG_Enclosing_State;
 
-      Print_Name_Set ("Proof_Ins            :", Info.Inputs_Proof);
-      Print_Name_Set ("Inputs               :", Info.Inputs);
-      Print_Name_Set ("Outputs              :", Info.Outputs);
-      Print_Name_Set ("Proof calls          :", Info.Proof_Calls);
-      Print_Name_Set ("Definite calls       :", Info.Definite_Calls);
-      Print_Name_Set ("Conditional calls    :", Info.Conditional_Calls);
-      Print_Name_Set ("Local variables      :", Info.Local_Variables);
+   --------------
+   -- GG_Exist --
+   --------------
 
-      if Info.Kind in Kind_Package | Kind_Package_Body then
-         Print_Name_Set ("Local definite writes:", Info.Local_Definite_Writes);
+   function GG_Exist (E : Entity_Id) return Boolean is
+      Name : constant Entity_Name := To_Entity_Name (E);
+   begin
+      return GG_Exists_Cache.Contains (Name);
+   end GG_Exist;
+
+   ---------------------
+   -- GG_Fully_Refine --
+   ---------------------
+
+   function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
+      NS       : Name_Sets.Set;
+      Tmp_Name : Entity_Name;
+   begin
+      NS := GG_Get_Constituents (EN);
+
+      while (for some S of NS => GG_Has_Refinement (S)) loop
+         Tmp_Name := Null_Entity_Name;
+         for S of NS loop
+            if GG_Has_Refinement (S) then
+               Tmp_Name := S;
+               exit;
+            end if;
+         end loop;
+
+         if Tmp_Name /= Null_Entity_Name then
+            NS.Union (GG_Get_Constituents (Tmp_Name));
+            NS.Exclude (Tmp_Name);
+         end if;
+      end loop;
+
+      return NS;
+   end GG_Fully_Refine;
+
+   -----------------------------------
+   -- GG_Get_All_State_Abstractions --
+   -----------------------------------
+
+   function GG_Get_All_State_Abstractions return Name_Sets.Set is
+      Tmp : Name_Sets.Set := Name_Sets.Empty_Set;
+   begin
+      for C in State_Comp_Map.Iterate loop
+         Tmp.Insert (Key (C));
+      end loop;
+
+      return Tmp;
+   end GG_Get_All_State_Abstractions;
+
+   -------------------------
+   -- GG_Get_Constituents --
+   -------------------------
+
+   function GG_Get_Constituents (EN : Entity_Name) return Name_Sets.Set is
+   begin
+      return (if State_Comp_Map.Contains (EN)
+              then State_Comp_Map.Element (EN)
+              else Name_Sets.Empty_Set);
+   end GG_Get_Constituents;
+
+   --------------------
+   -- GG_Get_Globals --
+   --------------------
+
+   procedure GG_Get_Globals (E           : Entity_Id;
+                             S           : Flow_Scope;
+                             Proof_Reads : out Flow_Id_Sets.Set;
+                             Reads       : out Flow_Id_Sets.Set;
+                             Writes      : out Flow_Id_Sets.Set)
+   is
+      MR_Proof_Reads  : Name_Sets.Set := Name_Sets.Empty_Set;
+      MR_Reads        : Name_Sets.Set := Name_Sets.Empty_Set;
+      MR_Writes       : Name_Sets.Set := Name_Sets.Empty_Set;
+      --  The above 3 sets will contain the most refined views of their
+      --  respective globals.
+
+      Temp_NS         : Name_Sets.Set;
+      Unused          : Flow_Id_Sets.Set;
+
+   begin
+      --  Initialize the Proof_Reads, Reads and Writes sets
+      Proof_Reads := Flow_Id_Sets.Empty_Set;
+      Reads       := Flow_Id_Sets.Empty_Set;
+      Writes      := Flow_Id_Sets.Empty_Set;
+
+      --  Call GG_Get_MR_Globals to calculate MR_Proof_Reads, MR_Reads and
+      --  MR_Writes.
+      GG_Get_MR_Globals (To_Entity_Name (E),
+                         MR_Proof_Reads,
+                         MR_Reads,
+                         MR_Writes);
+
+      --  Up project variables based on scope S and give Flow_Ids
+      --  their correct views.
+      Up_Project (Most_Refined => MR_Proof_Reads,
+                  Final_View   => Temp_NS,
+                  Scope        => S,
+                  Reads        => Unused);
+      Proof_Reads.Union (To_Flow_Id_Set (Temp_NS, In_View, S));
+
+      Up_Project (Most_Refined => MR_Reads,
+                  Final_View   => Temp_NS,
+                  Scope        => S,
+                  Reads        => Unused);
+      Reads.Union (To_Flow_Id_Set (Temp_NS, In_View, S));
+
+      Up_Project (Most_Refined      => MR_Writes,
+                  Final_View        => Temp_NS,
+                  Scope             => S,
+                  Reads             => Reads,
+                  Processing_Writes => True);
+      Writes.Union (To_Flow_Id_Set (Temp_NS, Out_View, S));
+   end GG_Get_Globals;
+
+   ------------------------
+   -- GG_Get_Initializes --
+   ------------------------
+
+   function GG_Get_Initializes
+     (EN : Entity_Name;
+      S  : Flow_Scope)
+      return Dependency_Maps.Map
+   is
+   begin
+      --  If we have no info for this package then we cannot have possibly
+      --  generated an initializes package for it.
+      if not GG_Exists_Cache.Contains (EN) then
+         return Dependency_Maps.Empty_Map;
       end if;
-   end Print_Global_Phase_1_Info;
 
-   ------------------------
-   -- Print_Global_Graph --
-   ------------------------
+      --  Retrieve the relevant Name_Dependency_Map, up project it to S and
+      --  then convert it into a Dependency_Map.
+      declare
+         Pkg          : constant Entity_Id        := Find_Entity (EN);
+         LHS_Scope    : Flow_Scope;
 
-   procedure Print_Global_Graph (Filename : String;
-                                 G        : Global_Graphs.Graph)
+         DM           : Dependency_Maps.Map;
+         II           : constant Initializes_Info :=
+           Initializes_Aspects_Map.Element (EN);
+
+         All_LHS_UP   : Name_Sets.Set;
+         LHS_UP       : Name_Sets.Set;
+         LHS_Proof_UP : Name_Sets.Set;
+         RHS_UP       : Name_Sets.Set;
+         RHS_Proof_UP : Name_Sets.Set;
+
+         To_Remove    : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
+         --  This set will hold the names of non fully initialized
+         --  states. These will have to be removed from the left hand side
+         --  sets.
+
+         FS_LHS       : Flow_Id_Sets.Set;
+         FS_LHS_Proof : Flow_Id_Sets.Set;
+         FS_RHS       : Flow_Id_Sets.Set;
+         FS_RHS_Proof : Flow_Id_Sets.Set;
+         --  These will hold the final flow sets that will be used to populate
+         --  the dependency map.
+
+         Unused       : Flow_Id_Sets.Set;
+      begin
+
+         if Present (Pkg) then
+            LHS_Scope := Flow_Scope'(Ent     => Pkg,
+                                     Section => Spec_Part);
+         else
+            LHS_Scope := S;
+         end if;
+
+         --  Up project left hand side
+         Up_Project (Most_Refined      => II.LHS or II.LHS_Proof,
+                     Final_View        => All_LHS_UP,
+                     Scope             => LHS_Scope,
+                     Reads             => To_Remove,
+                     Processing_Writes => True);
+
+         Up_Project (Most_Refined => II.LHS,
+                     Final_View   => LHS_UP,
+                     Scope        => LHS_Scope,
+                     Reads        => Unused);
+
+         Up_Project (Most_Refined => II.LHS_Proof,
+                     Final_View   => LHS_Proof_UP,
+                     Scope        => LHS_Scope,
+                     Reads        => Unused);
+
+         --  Up project right hand side
+         Up_Project (Most_Refined => II.RHS,
+                     Final_View   => RHS_UP,
+                     Scope        => S,
+                     Reads        => Unused);
+
+         Up_Project (Most_Refined => II.RHS_Proof,
+                     Final_View   => RHS_Proof_UP,
+                     Scope        => S,
+                     Reads        => Unused);
+
+         --  Populate and return DM
+         FS_LHS       := To_Flow_Id_Set (LHS_UP);
+         FS_LHS_Proof := To_Flow_Id_Set (LHS_Proof_UP);
+         FS_RHS       := To_Flow_Id_Set (RHS_UP);
+         FS_RHS_Proof := To_Flow_Id_Set (RHS_Proof_UP);
+
+         --  Remove state abstractions that are only partially initialized from
+         --  the left hand side.
+         FS_LHS       := FS_LHS - To_Remove;
+         FS_LHS_Proof := FS_LHS_Proof - To_Remove;
+
+         --  Add regular variables
+         for F of FS_LHS loop
+            DM.Insert (F, FS_RHS);
+         end loop;
+         --  Add proof variables
+         for F of FS_LHS_Proof loop
+            DM.Insert (F, FS_RHS_Proof);
+         end loop;
+
+         return DM;
+      end;
+   end GG_Get_Initializes;
+
+   ----------------------------
+   -- GG_Get_Local_Variables --
+   ----------------------------
+
+   function GG_Get_Local_Variables (EN : Entity_Name) return Name_Sets.Set is
+   begin
+      if not GG_Exists_Cache.Contains (EN) then
+         return Name_Sets.Empty_Set;
+      end if;
+
+      return Package_To_Locals_Map.Element (EN);
+   end GG_Get_Local_Variables;
+
+   -----------------------
+   -- GG_Get_MR_Globals --
+   -----------------------
+
+   procedure GG_Get_MR_Globals (EN          : Entity_Name;
+                                Proof_Reads : out Name_Sets.Set;
+                                Reads       : out Name_Sets.Set;
+                                Writes      : out Name_Sets.Set)
    is
       use Global_Graphs;
 
-      function NDI
-        (G : Graph;
-         V : Vertex_Id)
-         return Node_Display_Info;
-      --  Pretty-printing for each vertex in the dot output
+      G_Proof_Ins     : constant Global_Id :=
+        Global_Id'(Kind => Proof_Ins_Kind,
+                   Name => EN);
+      G_Ins           : constant Global_Id :=
+        Global_Id'(Kind => Ins_Kind,
+                   Name => EN);
+      G_Outs          : constant Global_Id :=
+        Global_Id'(Kind => Outs_Kind,
+                   Name => EN);
+      --  The above 3 Global_Ids correspond to the subprogram's Ins,
+      --  Outs and Proof_Ins.
 
-      function EDI
-        (G      : Graph;
-         A      : Vertex_Id;
-         B      : Vertex_Id;
-         Marked : Boolean;
-         Colour : GG_Edge_Colours)
-         return Edge_Display_Info;
-      --  Pretty-printing for each edge in the dot output
+      V_Proof_Ins     : constant Vertex_Id :=
+        Global_Graph.Get_Vertex (G_Proof_Ins);
+      V_Ins           : constant Vertex_Id :=
+        Global_Graph.Get_Vertex (G_Ins);
+      V_Outs          : constant Vertex_Id :=
+        Global_Graph.Get_Vertex (G_Outs);
+      --  The above 3 Vertex_Ids correspond to the subprogram's Ins,
+      --  Outs and Proof_Ins.
 
-      ---------
-      -- NDI --
-      ---------
-
-      function NDI
-        (G : Graph;
-         V : Vertex_Id) return Node_Display_Info
-      is
-         G_Id  : constant Global_Id := G.Get_Key (V);
-
-         Shape : constant Node_Shape_T := (if G_Id.Kind = Variable_Kind
-                                           then Shape_Oval
-                                           else Shape_Box);
-
-         Label : constant String :=
-           (case G_Id.Kind is
-              when Subprogram_Kind => "Subprogram " & To_String (G_Id.Name),
-              when Proof_Ins_Kind  => To_String (G_Id.Name) & "'Proof_Ins",
-              when Ins_Kind        => To_String (G_Id.Name) & "'Ins",
-              when Outs_Kind       => To_String (G_Id.Name) & "'Outs",
-              when Variable_Kind   => To_String (G_Id.Name),
-              when Null_Kind       => raise Program_Error);
-
-         Rv : constant Node_Display_Info := Node_Display_Info'
-           (Show        => True,
-            Shape       => Shape,
-            Colour      => Null_Unbounded_String,
-            Fill_Colour => Null_Unbounded_String,
-            Label       => To_Unbounded_String (Label));
-      begin
-         return Rv;
-      end NDI;
-
-      ---------
-      -- EDI --
-      ---------
-
-      function EDI
-        (G      : Graph;
-         A      : Vertex_Id;
-         B      : Vertex_Id;
-         Marked : Boolean;
-         Colour : GG_Edge_Colours)
-         return Edge_Display_Info
-      is
-         pragma Unreferenced (G, A, B, Marked, Colour);
-
-         Rv : constant Edge_Display_Info :=
-           Edge_Display_Info'(Show   => True,
-                              Shape  => Edge_Normal,
-                              Colour => Null_Unbounded_String,
-                              Label  => Null_Unbounded_String);
-      begin
-         return Rv;
-      end EDI;
-
-   begin
-      if Gnat2Why_Args.Debug_Mode then
-         if Gnat2Why_Args.Flow_Advanced_Debug then
-            G.Write_Pdf_File
-              (Filename  => Filename,
-               Node_Info => NDI'Access,
-               Edge_Info => EDI'Access);
-         else
-            G.Write_Dot_File
-              (Filename  => Filename,
-               Node_Info => NDI'Access,
-               Edge_Info => EDI'Access);
-         end if;
-      end if;
-   end Print_Global_Graph;
-
-   -----------------------------------------
-   -- Print_Generated_Initializes_Aspects --
-   -----------------------------------------
-
-   procedure Print_Generated_Initializes_Aspects is
-   begin
-      Write_Line ("Synthesized initializes aspects:");
-      for Init in Initializes_Aspects_Map.Iterate loop
-         declare
-            Pkg : constant Entity_Name         :=
-              Initializes_Aspects_Maps.Key (Init);
-
-            II  : constant Initializes_Info :=
-              Initializes_Aspects_Maps.Element (Init);
-         begin
-            Indent;
-            Write_Line ("Package " & To_String (Pkg)  & ":");
-            Indent;
-            Print_Name_Set ("LHS      : ", II.LHS);
-            Print_Name_Set ("LHS_Proof: ", II.LHS_Proof);
-            Print_Name_Set ("RHS      : ", II.RHS);
-            Print_Name_Set ("RHS_Proof: ", II.RHS_Proof);
-            Outdent;
-            Outdent;
-         end;
-      end loop;
-   end Print_Generated_Initializes_Aspects;
-
-   ----------------
-   -- Up_Project --
-   ----------------
-
-   procedure Up_Project
-     (Most_Refined      : Name_Sets.Set;
-      Final_View        : out Name_Sets.Set;
-      Scope             : Flow_Scope;
-      Reads             : in out Flow_Id_Sets.Set;
-      Processing_Writes : Boolean := False)
-   is
-      Abstract_States : Name_Sets.Set := Name_Sets.Empty_Set;
-   begin
-      --  Initializing Final_View to empty
-      Final_View := Name_Sets.Empty_Set;
-
-      for N of Most_Refined loop
-         if GG_Enclosing_State (N) /= Null_Entity_Name
-           and then (No (Find_Entity (N))
-                       or else not Is_Visible (Find_Entity (N), Scope))
-         then
-            declare
-               Var               : Entity_Name :=
-                 (if Present (Find_Entity (N))
-                    and then Is_Visible (Find_Entity (N), Scope)
-                  then N
-                  else GG_Enclosing_State (N));
-               ES                : Entity_Name := GG_Enclosing_State (N);
-               Is_Abstract_State : Boolean     :=
-                 No (Find_Entity (N))
-                   or else not Is_Visible (Find_Entity (N), Scope);
-            begin
-               while No (Find_Entity (ES))
-                 or else not Is_Visible (Find_Entity (ES), Scope)
-               loop
-                  Is_Abstract_State := True;
-                  Var := ES;
-
-                  if GG_Enclosing_State (ES) /= Null_Entity_Name then
-                     ES := GG_Enclosing_State (ES);
-                  else
-                     --  We cannot go any further up and we still do not have
-                     --  visibility of the variable or state abstraction that
-                     --  we are making use of. This means that the user has
-                     --  neglected to provide some state abstraction and the
-                     --  refinement thereof. Unfortunately, we might now refer
-                     --  to a variable or state that the caller should not have
-                     --  vision of.
-                     exit;
-                  end if;
-               end loop;
-
-               Final_View.Include (Var);
-
-               --  We add the enclosing abstract state that we just added to
-               --  the Final_View set to the Abstract_States set.
-               if Is_Abstract_State then
-                  Abstract_States.Include (Var);
-               end if;
-            end;
-         else
-            --  Add variables that are directly visible or do not belong to any
-            --  state abstraction to the Final_View set.
-            Final_View.Include (N);
-         end if;
-      end loop;
-
-      --  If we Write some but not all constituents of a state abstraction then
-      --  this state abstraction is also a Read.
-      if Processing_Writes then
-         for AS of Abstract_States loop
-            declare
-               Constituents : constant Name_Sets.Set := GG_Fully_Refine (AS);
-            begin
-               if not (for all C of Constituents => Most_Refined.Contains (C))
-               then
-                  Reads.Include (Get_Flow_Id (AS, In_View, Scope));
-               end if;
-            end;
-         end loop;
-      end if;
-   end Up_Project;
-
-   -------------------------
-   -- GG_Write_Initialize --
-   -------------------------
-
-   procedure GG_Write_Initialize is
-   begin
-      --  Open output library info for writing
-      Open_Output_Library_Info;
-
-      --  Set mode to writing mode
-      Current_Mode := GG_Write_Mode;
-   end GG_Write_Initialize;
-
-   -------------------------
-   -- GG_Write_State_Info --
-   -------------------------
-
-   procedure GG_Write_State_Info (DM : Dependency_Maps.Map) is
-   begin
-      for S in DM.Iterate loop
-         declare
-            State_F      : constant Flow_Id := Dependency_Maps.Key (S);
-
-            State_N      : constant Entity_Name :=
-              To_Entity_Name (Get_Direct_Mapping_Id (State_F));
-
-            Constituents : constant Name_Sets.Set :=
-              To_Name_Set (To_Node_Set (Dependency_Maps.Element (S)));
-         begin
-            --  Insert new state info into State_Comp_Map.
-            State_Comp_Map.Insert (State_N, Constituents);
-
-            --  Check if State_F if volatile and if it is then add it on
-            --  the appropriate sets.
-            Add_To_Volatile_Sets_If_Volatile (State_F);
-         end;
-      end loop;
-   end GG_Write_State_Info;
-
-   --------------------------
-   -- GG_Write_Global_Info --
-   --------------------------
-
-   procedure GG_Write_Global_Info (GI : Global_Phase_1_Info) is
-      procedure Process_Volatiles (NS : Name_Sets.Set);
-      --  Goes through NS, finds volatiles and stores them in the
-      --  appropriate sets based on their properties.
-
-      ------------------------
-      -- Processs_Volatiles --
-      ------------------------
-
-      procedure Process_Volatiles (NS : Name_Sets.Set) is
-      begin
-         for Name of NS loop
-            declare
-               E : constant Entity_Id := Find_Entity (Name);
-            begin
-               if Present (E) then
-                  Add_To_Volatile_Sets_If_Volatile (Direct_Mapping_Id (E));
-               end if;
-            end;
-         end loop;
-      end Process_Volatiles;
-
-   --  Start of processing for GG_Write_Global_Info
-
-   begin
-      case GI.Kind is
-         when Kind_Entry | Kind_Subprogram | Kind_Task =>
-            Subprogram_Info_List.Append (GI);
-
-         when Kind_Package | Kind_Package_Body =>
-            Package_Info_List.Append (GI);
-      end case;
-      GG_Exists_Cache.Insert (GI.Name);
-
-      --  Gather and save volatile variables
-      Process_Volatiles (GI.Inputs_Proof);
-      Process_Volatiles (GI.Inputs);
-      Process_Volatiles (GI.Outputs);
-      Process_Volatiles (GI.Local_Variables);
-   end GG_Write_Global_Info;
-
-   -----------------------------
-   -- GG_Register_Nonblocking --
-   -----------------------------
-
-   procedure GG_Register_Nonblocking (EN : Entity_Name) is
-   begin
-      Nonblocking_Subprograms_Set.Insert (EN);
-   end GG_Register_Nonblocking;
-
-   ------------------------------
-   -- GG_Register_Tasking_Info --
-   ------------------------------
-
-   procedure GG_Register_Tasking_Info (EN : Entity_Name;
-                                       TI : Tasking_Info)
-   is
-   begin
-      for Kind in Tasking_Info_Kind loop
-         Tasking_Info_Bag (Phase_1, Kind).Insert (EN, To_Name_Set (TI (Kind)));
-      end loop;
-   end GG_Register_Tasking_Info;
-
-   -----------------------
-   -- GG_Write_Finalize --
-   -----------------------
-
-   procedure GG_Write_Finalize
-   is
-      procedure Write_To_ALI (V : in out ALI_Entry);
-      --  Helper subprogram to write the given entry to the ALI file.
-      --  Second parameter has to be in out because of the way serialize
-      --  works.
+      function Calculate_MR (Start : Vertex_Id) return Name_Sets.Set;
+      --  Returns a set of all vertices that can be reached from Start and are
+      --  of the Variable_Kind.
 
       ------------------
-      -- Write_To_ALI --
+      -- Calculate_MR --
       ------------------
 
-      procedure Write_To_ALI (V : in out ALI_Entry) is
-         A : Archive (Serialisation.Output);
+      function Calculate_MR (Start : Vertex_Id) return Name_Sets.Set is
+         NS : Name_Sets.Set := Name_Sets.Empty_Set;
+         G  : Global_Id;
       begin
-         Serialize (A, V);
-         Write_Info_Str ("GG " & To_String (To_String (A)));
-         Write_Info_Terminate;
-      end Write_To_ALI;
+         for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
+            G := Global_Graph.Get_Key (V);
 
-      V : ALI_Entry;
+            if G.Kind = Variable_Kind then
+               NS.Include (G.Name);
+            end if;
+         end loop;
+
+         return NS;
+      end Calculate_MR;
+
+      --  start processing for GG_Get_MR_Globals
+
    begin
-      --  Write State info
-      for C in State_Comp_Map.Iterate loop
-         V := (Kind             => EK_State_Map,
-               The_State        => Key (C),
-               The_Constituents => Element (C));
-         Write_To_ALI (V);
-      end loop;
+      --  Calculate MR_Proof_Reads, MR_Reads and MR_Writes
+      Proof_Reads := Calculate_MR (V_Proof_Ins);
+      Reads       := Calculate_MR (V_Ins);
+      Writes      := Calculate_MR (V_Outs);
+   end GG_Get_MR_Globals;
 
-      --  Write globals for package and subprograms/tasks
-      for Info of Package_Info_List loop
-         V := (Kind            => EK_Globals,
-               The_Global_Info => Info);
-         Write_To_ALI (V);
-      end loop;
+   --------------------------
+   -- GG_Has_Async_Readers --
+   --------------------------
 
-      for Info of Subprogram_Info_List loop
-         V := (Kind            => EK_Globals,
-               The_Global_Info => Info);
-         Write_To_ALI (V);
-      end loop;
+   function GG_Has_Async_Readers (EN : Entity_Name) return Boolean is
+   begin
+      return Async_Readers_Vars.Contains (EN);
+   end GG_Has_Async_Readers;
 
-      --  Write Volatile info
-      V := (Kind                 => EK_Volatiles,
-            All_Async_Readers    => Async_Readers_Vars,
-            All_Async_Writers    => Async_Writers_Vars,
-            All_Effective_Reads  => Effective_Reads_Vars,
-            All_Effective_Writes => Effective_Writes_Vars);
-      Write_To_ALI (V);
+   --------------------------
+   -- GG_Has_Async_Writers --
+   --------------------------
 
-      --  Write nonblocking subprograms
-      V := (Kind                        => EK_Tasking_Nonblocking,
-            The_Nonblocking_Subprograms => Nonblocking_Subprograms_Set);
-      Write_To_ALI (V);
+   function GG_Has_Async_Writers (EN : Entity_Name) return Boolean is
+   begin
+      return Async_Writers_Vars.Contains (EN);
+   end GG_Has_Async_Writers;
 
-      --  Write tasking-related information. This is a bit awkward since we
-      --  need to rotate the information in Tasking_Info_Bag.
-      declare
-         All_Names : Name_Sets.Set := Name_Sets.Empty_Set;
-      begin
-         for Kind in Tasking_Info_Kind loop
-            for C in Tasking_Info_Bag (Phase_1, Kind).Iterate loop
-               All_Names.Include (Key (C));
-            end loop;
-         end loop;
-         for Name of All_Names loop
-            V := (Kind             => EK_Tasking_Info,
-                  The_Entity       => Name,
-                  The_Tasking_Info => <>);
-            for Kind in Tasking_Info_Kind loop
-               declare
-                  C : constant Name_Graphs.Cursor :=
-                    Tasking_Info_Bag (Phase_1, Kind).Find (Name);
-               begin
-                  V.The_Tasking_Info (Kind) := (if Has_Element (C)
-                                                then Element (C)
-                                                else Name_Sets.Empty_Set);
-               end;
-            end loop;
-            Write_To_ALI (V);
-         end loop;
-      end;
+   ----------------------------
+   -- GG_Has_Effective_Reads --
+   ----------------------------
 
-      for C in Task_Instances.Iterate loop
-         V := (Kind        => EK_Tasking_Instance_Count,
-               The_Type    => Task_Instances_Maps.Key (C),
-               The_Objects => Task_Instances_Maps.Element (C));
-         Write_To_ALI (V);
-      end loop;
+   function GG_Has_Effective_Reads (EN : Entity_Name) return Boolean is
+   begin
+      return Effective_Reads_Vars.Contains (EN);
+   end GG_Has_Effective_Reads;
 
-      --  Write the finalization string.
-      V := (Kind => EK_End_Marker);
-      Write_To_ALI (V);
+   -----------------------------
+   -- GG_Has_Effective_Writes --
+   -----------------------------
 
-      --  Close file and put the package out of writing mode.
-      Close_Output_Library_Info;
-      Current_Mode := GG_No_Mode;
-   end GG_Write_Finalize;
+   function GG_Has_Effective_Writes (EN : Entity_Name) return Boolean is
+   begin
+      return Effective_Writes_Vars.Contains (EN);
+   end GG_Has_Effective_Writes;
+
+   -----------------------
+   -- GG_Has_Refinement --
+   -----------------------
+
+   function GG_Has_Refinement (EN : Entity_Name) return Boolean is
+   begin
+      return State_Comp_Map.Contains (EN);
+   end GG_Has_Refinement;
+
+   -----------------------
+   -- GG_Is_Constituent --
+   -----------------------
+
+   function GG_Is_Constituent (EN : Entity_Name) return Boolean is
+   begin
+      return Comp_State_Map.Contains (EN);
+   end GG_Is_Constituent;
+
+   --------------------------------------
+   -- GG_Is_Initialized_At_Elaboration --
+   --------------------------------------
+
+   function GG_Is_Initialized_At_Elaboration
+     (EN : Entity_Name)
+      return Boolean
+   is
+   begin
+      return All_Initialized_Names.Contains (EN);
+   end GG_Is_Initialized_At_Elaboration;
+
+   --------------------
+   -- GG_Is_Volatile --
+   --------------------
+
+   function GG_Is_Volatile (EN : Entity_Name) return Boolean is
+   begin
+      return All_Volatile_Vars.Contains (EN);
+   end GG_Is_Volatile;
 
    -------------
    -- GG_Read --
@@ -2375,389 +2197,214 @@ package body Flow_Generated_Globals is
 
    end GG_Read;
 
-   --------------
-   -- GG_Exist --
-   --------------
+   -----------------------------
+   -- GG_Register_Nonblocking --
+   -----------------------------
 
-   function GG_Exist (E : Entity_Id) return Boolean is
-      Name : constant Entity_Name := To_Entity_Name (E);
+   procedure GG_Register_Nonblocking (EN : Entity_Name) is
    begin
-      return GG_Exists_Cache.Contains (Name);
-   end GG_Exist;
+      Nonblocking_Subprograms_Set.Insert (EN);
+   end GG_Register_Nonblocking;
 
-   -----------------------
-   -- GG_Has_Refinement --
-   -----------------------
+   ------------------------------
+   -- GG_Register_Tasking_Info --
+   ------------------------------
 
-   function GG_Has_Refinement (EN : Entity_Name) return Boolean is
+   procedure GG_Register_Tasking_Info (EN : Entity_Name;
+                                       TI : Tasking_Info)
+   is
    begin
-      return State_Comp_Map.Contains (EN);
-   end GG_Has_Refinement;
-
-   -----------------------
-   -- GG_Is_Constituent --
-   -----------------------
-
-   function GG_Is_Constituent (EN : Entity_Name) return Boolean is
-   begin
-      return Comp_State_Map.Contains (EN);
-   end GG_Is_Constituent;
-
-   -------------------------
-   -- GG_Get_Constituents --
-   -------------------------
-
-   function GG_Get_Constituents (EN : Entity_Name) return Name_Sets.Set is
-   begin
-      return (if State_Comp_Map.Contains (EN)
-              then State_Comp_Map.Element (EN)
-              else Name_Sets.Empty_Set);
-   end GG_Get_Constituents;
-
-   ------------------------
-   -- GG_Enclosing_State --
-   ------------------------
-
-   function GG_Enclosing_State (EN : Entity_Name) return Entity_Name is
-   begin
-      return (if Comp_State_Map.Contains (EN)
-              then Comp_State_Map.Element (EN)
-              else Null_Entity_Name);
-   end GG_Enclosing_State;
-
-   ---------------------
-   -- GG_Fully_Refine --
-   ---------------------
-
-   function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
-      NS       : Name_Sets.Set;
-      Tmp_Name : Entity_Name;
-   begin
-      NS := GG_Get_Constituents (EN);
-
-      while (for some S of NS => GG_Has_Refinement (S)) loop
-         Tmp_Name := Null_Entity_Name;
-         for S of NS loop
-            if GG_Has_Refinement (S) then
-               Tmp_Name := S;
-               exit;
-            end if;
-         end loop;
-
-         if Tmp_Name /= Null_Entity_Name then
-            NS.Union (GG_Get_Constituents (Tmp_Name));
-            NS.Exclude (Tmp_Name);
-         end if;
+      for Kind in Tasking_Info_Kind loop
+         Tasking_Info_Bag (Phase_1, Kind).Insert (EN, To_Name_Set (TI (Kind)));
       end loop;
-
-      return NS;
-   end GG_Fully_Refine;
+   end GG_Register_Tasking_Info;
 
    -----------------------
-   -- GG_Get_MR_Globals --
+   -- GG_Write_Finalize --
    -----------------------
 
-   procedure GG_Get_MR_Globals (EN          : Entity_Name;
-                                Proof_Reads : out Name_Sets.Set;
-                                Reads       : out Name_Sets.Set;
-                                Writes      : out Name_Sets.Set)
+   procedure GG_Write_Finalize
    is
-      use Global_Graphs;
-
-      G_Proof_Ins     : constant Global_Id :=
-        Global_Id'(Kind => Proof_Ins_Kind,
-                   Name => EN);
-      G_Ins           : constant Global_Id :=
-        Global_Id'(Kind => Ins_Kind,
-                   Name => EN);
-      G_Outs          : constant Global_Id :=
-        Global_Id'(Kind => Outs_Kind,
-                   Name => EN);
-      --  The above 3 Global_Ids correspond to the subprogram's Ins,
-      --  Outs and Proof_Ins.
-
-      V_Proof_Ins     : constant Vertex_Id :=
-        Global_Graph.Get_Vertex (G_Proof_Ins);
-      V_Ins           : constant Vertex_Id :=
-        Global_Graph.Get_Vertex (G_Ins);
-      V_Outs          : constant Vertex_Id :=
-        Global_Graph.Get_Vertex (G_Outs);
-      --  The above 3 Vertex_Ids correspond to the subprogram's Ins,
-      --  Outs and Proof_Ins.
-
-      function Calculate_MR (Start : Vertex_Id) return Name_Sets.Set;
-      --  Returns a set of all vertices that can be reached from Start and are
-      --  of the Variable_Kind.
+      procedure Write_To_ALI (V : in out ALI_Entry);
+      --  Helper subprogram to write the given entry to the ALI file.
+      --  Second parameter has to be in out because of the way serialize
+      --  works.
 
       ------------------
-      -- Calculate_MR --
+      -- Write_To_ALI --
       ------------------
 
-      function Calculate_MR (Start : Vertex_Id) return Name_Sets.Set is
-         NS : Name_Sets.Set := Name_Sets.Empty_Set;
-         G  : Global_Id;
+      procedure Write_To_ALI (V : in out ALI_Entry) is
+         A : Archive (Serialisation.Output);
       begin
-         for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
-            G := Global_Graph.Get_Key (V);
+         Serialize (A, V);
+         Write_Info_Str ("GG " & To_String (To_String (A)));
+         Write_Info_Terminate;
+      end Write_To_ALI;
 
-            if G.Kind = Variable_Kind then
-               NS.Include (G.Name);
-            end if;
-         end loop;
-
-         return NS;
-      end Calculate_MR;
-
+      V : ALI_Entry;
    begin
-      --  Calculate MR_Proof_Reads, MR_Reads and MR_Writes
-      Proof_Reads := Calculate_MR (V_Proof_Ins);
-      Reads       := Calculate_MR (V_Ins);
-      Writes      := Calculate_MR (V_Outs);
-   end GG_Get_MR_Globals;
-
-   --------------------
-   -- GG_Get_Globals --
-   --------------------
-
-   procedure GG_Get_Globals (E           : Entity_Id;
-                             S           : Flow_Scope;
-                             Proof_Reads : out Flow_Id_Sets.Set;
-                             Reads       : out Flow_Id_Sets.Set;
-                             Writes      : out Flow_Id_Sets.Set)
-   is
-      MR_Proof_Reads  : Name_Sets.Set := Name_Sets.Empty_Set;
-      MR_Reads        : Name_Sets.Set := Name_Sets.Empty_Set;
-      MR_Writes       : Name_Sets.Set := Name_Sets.Empty_Set;
-      --  The above 3 sets will contain the most refined views of their
-      --  respective globals.
-
-      Temp_NS         : Name_Sets.Set;
-      Unused          : Flow_Id_Sets.Set;
-
-   begin
-      --  Initialize the Proof_Reads, Reads and Writes sets
-      Proof_Reads := Flow_Id_Sets.Empty_Set;
-      Reads       := Flow_Id_Sets.Empty_Set;
-      Writes      := Flow_Id_Sets.Empty_Set;
-
-      --  Call GG_Get_MR_Globals to calculate MR_Proof_Reads, MR_Reads and
-      --  MR_Writes.
-      GG_Get_MR_Globals (To_Entity_Name (E),
-                         MR_Proof_Reads,
-                         MR_Reads,
-                         MR_Writes);
-
-      --  Up project variables based on scope S and give Flow_Ids
-      --  their correct views.
-      Up_Project (Most_Refined => MR_Proof_Reads,
-                  Final_View   => Temp_NS,
-                  Scope        => S,
-                  Reads        => Unused);
-      Proof_Reads.Union (To_Flow_Id_Set (Temp_NS, In_View, S));
-
-      Up_Project (Most_Refined => MR_Reads,
-                  Final_View   => Temp_NS,
-                  Scope        => S,
-                  Reads        => Unused);
-      Reads.Union (To_Flow_Id_Set (Temp_NS, In_View, S));
-
-      Up_Project (Most_Refined      => MR_Writes,
-                  Final_View        => Temp_NS,
-                  Scope             => S,
-                  Reads             => Reads,
-                  Processing_Writes => True);
-      Writes.Union (To_Flow_Id_Set (Temp_NS, Out_View, S));
-   end GG_Get_Globals;
-
-   -----------------------------------
-   -- GG_Get_All_State_Abstractions --
-   -----------------------------------
-
-   function GG_Get_All_State_Abstractions return Name_Sets.Set is
-      Tmp : Name_Sets.Set := Name_Sets.Empty_Set;
-   begin
+      --  Write State info
       for C in State_Comp_Map.Iterate loop
-         Tmp.Insert (Key (C));
+         V := (Kind             => EK_State_Map,
+               The_State        => Key (C),
+               The_Constituents => Element (C));
+         Write_To_ALI (V);
       end loop;
 
-      return Tmp;
-   end GG_Get_All_State_Abstractions;
+      --  Write globals for package and subprograms/tasks
+      for Info of Package_Info_List loop
+         V := (Kind            => EK_Globals,
+               The_Global_Info => Info);
+         Write_To_ALI (V);
+      end loop;
 
-   ------------------------
-   -- GG_Get_Initializes --
-   ------------------------
+      for Info of Subprogram_Info_List loop
+         V := (Kind            => EK_Globals,
+               The_Global_Info => Info);
+         Write_To_ALI (V);
+      end loop;
 
-   function GG_Get_Initializes
-     (EN : Entity_Name;
-      S  : Flow_Scope)
-      return Dependency_Maps.Map
-   is
-   begin
-      --  If we have no info for this package then we cannot have possibly
-      --  generated an initializes package for it.
-      if not GG_Exists_Cache.Contains (EN) then
-         return Dependency_Maps.Empty_Map;
-      end if;
+      --  Write Volatile info
+      V := (Kind                 => EK_Volatiles,
+            All_Async_Readers    => Async_Readers_Vars,
+            All_Async_Writers    => Async_Writers_Vars,
+            All_Effective_Reads  => Effective_Reads_Vars,
+            All_Effective_Writes => Effective_Writes_Vars);
+      Write_To_ALI (V);
 
-      --  Retrieve the relevant Name_Dependency_Map, up project it to S and
-      --  then convert it into a Dependency_Map.
+      --  Write nonblocking subprograms
+      V := (Kind                        => EK_Tasking_Nonblocking,
+            The_Nonblocking_Subprograms => Nonblocking_Subprograms_Set);
+      Write_To_ALI (V);
+
+      --  Write tasking-related information. This is a bit awkward since we
+      --  need to rotate the information in Tasking_Info_Bag.
       declare
-         Pkg          : constant Entity_Id        := Find_Entity (EN);
-         LHS_Scope    : Flow_Scope;
-
-         DM           : Dependency_Maps.Map;
-         II           : constant Initializes_Info :=
-           Initializes_Aspects_Map.Element (EN);
-
-         All_LHS_UP   : Name_Sets.Set;
-         LHS_UP       : Name_Sets.Set;
-         LHS_Proof_UP : Name_Sets.Set;
-         RHS_UP       : Name_Sets.Set;
-         RHS_Proof_UP : Name_Sets.Set;
-
-         To_Remove    : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
-         --  This set will hold the names of non fully initialized
-         --  states. These will have to be removed from the left hand side
-         --  sets.
-
-         FS_LHS       : Flow_Id_Sets.Set;
-         FS_LHS_Proof : Flow_Id_Sets.Set;
-         FS_RHS       : Flow_Id_Sets.Set;
-         FS_RHS_Proof : Flow_Id_Sets.Set;
-         --  These will hold the final flow sets that will be used to populate
-         --  the dependency map.
-
-         Unused       : Flow_Id_Sets.Set;
+         All_Names : Name_Sets.Set := Name_Sets.Empty_Set;
       begin
-
-         if Present (Pkg) then
-            LHS_Scope := Flow_Scope'(Ent     => Pkg,
-                                     Section => Spec_Part);
-         else
-            LHS_Scope := S;
-         end if;
-
-         --  Up project left hand side
-         Up_Project (Most_Refined      => II.LHS or II.LHS_Proof,
-                     Final_View        => All_LHS_UP,
-                     Scope             => LHS_Scope,
-                     Reads             => To_Remove,
-                     Processing_Writes => True);
-
-         Up_Project (Most_Refined => II.LHS,
-                     Final_View   => LHS_UP,
-                     Scope        => LHS_Scope,
-                     Reads        => Unused);
-
-         Up_Project (Most_Refined => II.LHS_Proof,
-                     Final_View   => LHS_Proof_UP,
-                     Scope        => LHS_Scope,
-                     Reads        => Unused);
-
-         --  Up project right hand side
-         Up_Project (Most_Refined => II.RHS,
-                     Final_View   => RHS_UP,
-                     Scope        => S,
-                     Reads        => Unused);
-
-         Up_Project (Most_Refined => II.RHS_Proof,
-                     Final_View   => RHS_Proof_UP,
-                     Scope        => S,
-                     Reads        => Unused);
-
-         --  Populate and return DM
-         FS_LHS       := To_Flow_Id_Set (LHS_UP);
-         FS_LHS_Proof := To_Flow_Id_Set (LHS_Proof_UP);
-         FS_RHS       := To_Flow_Id_Set (RHS_UP);
-         FS_RHS_Proof := To_Flow_Id_Set (RHS_Proof_UP);
-
-         --  Remove state abstractions that are only partially initialized from
-         --  the left hand side.
-         FS_LHS       := FS_LHS - To_Remove;
-         FS_LHS_Proof := FS_LHS_Proof - To_Remove;
-
-         --  Add regular variables
-         for F of FS_LHS loop
-            DM.Insert (F, FS_RHS);
+         for Kind in Tasking_Info_Kind loop
+            for C in Tasking_Info_Bag (Phase_1, Kind).Iterate loop
+               All_Names.Include (Key (C));
+            end loop;
          end loop;
-         --  Add proof variables
-         for F of FS_LHS_Proof loop
-            DM.Insert (F, FS_RHS_Proof);
+         for Name of All_Names loop
+            V := (Kind             => EK_Tasking_Info,
+                  The_Entity       => Name,
+                  The_Tasking_Info => <>);
+            for Kind in Tasking_Info_Kind loop
+               declare
+                  C : constant Name_Graphs.Cursor :=
+                    Tasking_Info_Bag (Phase_1, Kind).Find (Name);
+               begin
+                  V.The_Tasking_Info (Kind) := (if Has_Element (C)
+                                                then Element (C)
+                                                else Name_Sets.Empty_Set);
+               end;
+            end loop;
+            Write_To_ALI (V);
          end loop;
-
-         return DM;
       end;
-   end GG_Get_Initializes;
 
-   ----------------------------
-   -- GG_Get_Local_Variables --
-   ----------------------------
+      for C in Task_Instances.Iterate loop
+         V := (Kind        => EK_Tasking_Instance_Count,
+               The_Type    => Task_Instances_Maps.Key (C),
+               The_Objects => Task_Instances_Maps.Element (C));
+         Write_To_ALI (V);
+      end loop;
 
-   function GG_Get_Local_Variables (EN : Entity_Name) return Name_Sets.Set is
-   begin
-      if not GG_Exists_Cache.Contains (EN) then
-         return Name_Sets.Empty_Set;
-      end if;
+      --  Write the finalization string.
+      V := (Kind => EK_End_Marker);
+      Write_To_ALI (V);
 
-      return Package_To_Locals_Map.Element (EN);
-   end GG_Get_Local_Variables;
-
-   --------------------------------------
-   -- GG_Is_Initialized_At_Elaboration --
-   --------------------------------------
-
-   function GG_Is_Initialized_At_Elaboration
-     (EN : Entity_Name)
-      return Boolean
-   is
-   begin
-      return All_Initialized_Names.Contains (EN);
-   end GG_Is_Initialized_At_Elaboration;
-
-   --------------------
-   -- GG_Is_Volatile --
-   --------------------
-
-   function GG_Is_Volatile (EN : Entity_Name) return Boolean is
-   begin
-      return All_Volatile_Vars.Contains (EN);
-   end GG_Is_Volatile;
+      --  Close file and put the package out of writing mode.
+      Close_Output_Library_Info;
+      Current_Mode := GG_No_Mode;
+   end GG_Write_Finalize;
 
    --------------------------
-   -- GG_Has_Async_Writers --
+   -- GG_Write_Global_Info --
    --------------------------
 
-   function GG_Has_Async_Writers (EN : Entity_Name) return Boolean is
+   procedure GG_Write_Global_Info (GI : Global_Phase_1_Info) is
+      procedure Process_Volatiles (NS : Name_Sets.Set);
+      --  Goes through NS, finds volatiles and stores them in the
+      --  appropriate sets based on their properties.
+
+      ------------------------
+      -- Processs_Volatiles --
+      ------------------------
+
+      procedure Process_Volatiles (NS : Name_Sets.Set) is
+      begin
+         for Name of NS loop
+            declare
+               E : constant Entity_Id := Find_Entity (Name);
+            begin
+               if Present (E) then
+                  Add_To_Volatile_Sets_If_Volatile (Direct_Mapping_Id (E));
+               end if;
+            end;
+         end loop;
+      end Process_Volatiles;
+
+   --  Start of processing for GG_Write_Global_Info
+
    begin
-      return Async_Writers_Vars.Contains (EN);
-   end GG_Has_Async_Writers;
+      case GI.Kind is
+         when Kind_Entry | Kind_Subprogram | Kind_Task =>
+            Subprogram_Info_List.Append (GI);
 
-   --------------------------
-   -- GG_Has_Async_Readers --
-   --------------------------
+         when Kind_Package | Kind_Package_Body =>
+            Package_Info_List.Append (GI);
+      end case;
+      GG_Exists_Cache.Insert (GI.Name);
 
-   function GG_Has_Async_Readers (EN : Entity_Name) return Boolean is
+      --  Gather and save volatile variables
+      Process_Volatiles (GI.Inputs_Proof);
+      Process_Volatiles (GI.Inputs);
+      Process_Volatiles (GI.Outputs);
+      Process_Volatiles (GI.Local_Variables);
+   end GG_Write_Global_Info;
+
+   -------------------------
+   -- GG_Write_Initialize --
+   -------------------------
+
+   procedure GG_Write_Initialize is
    begin
-      return Async_Readers_Vars.Contains (EN);
-   end GG_Has_Async_Readers;
+      --  Open output library info for writing
+      Open_Output_Library_Info;
 
-   ----------------------------
-   -- GG_Has_Effective_Reads --
-   ----------------------------
+      --  Set mode to writing mode
+      Current_Mode := GG_Write_Mode;
+   end GG_Write_Initialize;
 
-   function GG_Has_Effective_Reads (EN : Entity_Name) return Boolean is
+   -------------------------
+   -- GG_Write_State_Info --
+   -------------------------
+
+   procedure GG_Write_State_Info (DM : Dependency_Maps.Map) is
    begin
-      return Effective_Reads_Vars.Contains (EN);
-   end GG_Has_Effective_Reads;
+      for S in DM.Iterate loop
+         declare
+            State_F      : constant Flow_Id := Dependency_Maps.Key (S);
 
-   -----------------------------
-   -- GG_Has_Effective_Writes --
-   -----------------------------
+            State_N      : constant Entity_Name :=
+              To_Entity_Name (Get_Direct_Mapping_Id (State_F));
 
-   function GG_Has_Effective_Writes (EN : Entity_Name) return Boolean is
-   begin
-      return Effective_Writes_Vars.Contains (EN);
-   end GG_Has_Effective_Writes;
+            Constituents : constant Name_Sets.Set :=
+              To_Name_Set (To_Node_Set (Dependency_Maps.Element (S)));
+         begin
+            --  Insert new state info into State_Comp_Map.
+            State_Comp_Map.Insert (State_N, Constituents);
+
+            --  Check if State_F if volatile and if it is then add it on
+            --  the appropriate sets.
+            Add_To_Volatile_Sets_If_Volatile (State_F);
+         end;
+      end loop;
+   end GG_Write_State_Info;
 
    -----------------------------
    -- Is_Potentially_Blocking --
@@ -2887,6 +2534,276 @@ package body Flow_Generated_Globals is
         or else Calls_Potentially_Blocking_Subprogram;
    end Is_Potentially_Blocking;
 
+   -----------------------------------------
+   -- Print_Generated_Initializes_Aspects --
+   -----------------------------------------
+
+   procedure Print_Generated_Initializes_Aspects is
+   begin
+      Write_Line ("Synthesized initializes aspects:");
+      for Init in Initializes_Aspects_Map.Iterate loop
+         declare
+            Pkg : constant Entity_Name         :=
+              Initializes_Aspects_Maps.Key (Init);
+
+            II  : constant Initializes_Info :=
+              Initializes_Aspects_Maps.Element (Init);
+         begin
+            Indent;
+            Write_Line ("Package " & To_String (Pkg)  & ":");
+            Indent;
+            Print_Name_Set ("LHS      : ", II.LHS);
+            Print_Name_Set ("LHS_Proof: ", II.LHS_Proof);
+            Print_Name_Set ("RHS      : ", II.RHS);
+            Print_Name_Set ("RHS_Proof: ", II.RHS_Proof);
+            Outdent;
+            Outdent;
+         end;
+      end loop;
+   end Print_Generated_Initializes_Aspects;
+
+   ------------------------
+   -- Print_Global_Graph --
+   ------------------------
+
+   procedure Print_Global_Graph (Filename : String;
+                                 G        : Global_Graphs.Graph)
+   is
+      use Global_Graphs;
+
+      function NDI
+        (G : Graph;
+         V : Vertex_Id)
+         return Node_Display_Info;
+      --  Pretty-printing for each vertex in the dot output
+
+      function EDI
+        (G      : Graph;
+         A      : Vertex_Id;
+         B      : Vertex_Id;
+         Marked : Boolean;
+         Colour : GG_Edge_Colours)
+         return Edge_Display_Info;
+      --  Pretty-printing for each edge in the dot output
+
+      ---------
+      -- NDI --
+      ---------
+
+      function NDI
+        (G : Graph;
+         V : Vertex_Id) return Node_Display_Info
+      is
+         G_Id  : constant Global_Id := G.Get_Key (V);
+
+         Shape : constant Node_Shape_T := (if G_Id.Kind = Variable_Kind
+                                           then Shape_Oval
+                                           else Shape_Box);
+
+         Label : constant String :=
+           (case G_Id.Kind is
+              when Subprogram_Kind => "Subprogram " & To_String (G_Id.Name),
+              when Proof_Ins_Kind  => To_String (G_Id.Name) & "'Proof_Ins",
+              when Ins_Kind        => To_String (G_Id.Name) & "'Ins",
+              when Outs_Kind       => To_String (G_Id.Name) & "'Outs",
+              when Variable_Kind   => To_String (G_Id.Name),
+              when Null_Kind       => raise Program_Error);
+
+         Rv : constant Node_Display_Info := Node_Display_Info'
+           (Show        => True,
+            Shape       => Shape,
+            Colour      => Null_Unbounded_String,
+            Fill_Colour => Null_Unbounded_String,
+            Label       => To_Unbounded_String (Label));
+      begin
+         return Rv;
+      end NDI;
+
+      ---------
+      -- EDI --
+      ---------
+
+      function EDI
+        (G      : Graph;
+         A      : Vertex_Id;
+         B      : Vertex_Id;
+         Marked : Boolean;
+         Colour : GG_Edge_Colours)
+         return Edge_Display_Info
+      is
+         pragma Unreferenced (G, A, B, Marked, Colour);
+
+         Rv : constant Edge_Display_Info :=
+           Edge_Display_Info'(Show   => True,
+                              Shape  => Edge_Normal,
+                              Colour => Null_Unbounded_String,
+                              Label  => Null_Unbounded_String);
+      begin
+         return Rv;
+      end EDI;
+
+   begin
+      if Gnat2Why_Args.Debug_Mode then
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            G.Write_Pdf_File
+              (Filename  => Filename,
+               Node_Info => NDI'Access,
+               Edge_Info => EDI'Access);
+         else
+            G.Write_Dot_File
+              (Filename  => Filename,
+               Node_Info => NDI'Access,
+               Edge_Info => EDI'Access);
+         end if;
+      end if;
+   end Print_Global_Graph;
+
+   -------------------------------
+   -- Print_Global_Phase_1_Info --
+   -------------------------------
+
+   procedure Print_Global_Phase_1_Info (Info : Global_Phase_1_Info) is
+   begin
+      Write_Line ((case Info.Kind is
+                   when Kind_Subprogram                  => "Subprogram ",
+                   when Kind_Entry                       => "Entry ",
+                   when Kind_Task                        => "Task ",
+                   when Kind_Package | Kind_Package_Body => "Package ")
+        & To_String (Info.Name));
+
+      Print_Name_Set ("Proof_Ins            :", Info.Inputs_Proof);
+      Print_Name_Set ("Inputs               :", Info.Inputs);
+      Print_Name_Set ("Outputs              :", Info.Outputs);
+      Print_Name_Set ("Proof calls          :", Info.Proof_Calls);
+      Print_Name_Set ("Definite calls       :", Info.Definite_Calls);
+      Print_Name_Set ("Conditional calls    :", Info.Conditional_Calls);
+      Print_Name_Set ("Local variables      :", Info.Local_Variables);
+
+      if Info.Kind in Kind_Package | Kind_Package_Body then
+         Print_Name_Set ("Local definite writes:", Info.Local_Definite_Writes);
+      end if;
+   end Print_Global_Phase_1_Info;
+
+   --------------------
+   -- Print_Name_Set --
+   --------------------
+
+   procedure Print_Name_Set (Header : String; Set : Name_Sets.Set) is
+   begin
+      Write_Line (Header);
+      for Name of Set loop
+         Write_Line ("   " & To_String (Name));
+         --  ??? use Indent/Outdent instead of fixed amount of spaces
+      end loop;
+   end Print_Name_Set;
+
+   ---------------
+   -- Serialize --
+   ---------------
+
+   procedure Serialize (A : in out Archive; V : in out Entity_Name) is
+      S : Unbounded_String;
+   begin
+      if A.Kind = Serialisation.Output then
+         S := To_Unbounded_String (To_String (V));
+      end if;
+      Serialize (A, S);
+      if A.Kind = Serialisation.Input then
+         V := To_Entity_Name (To_String (S));
+      end if;
+   end Serialize;
+
+   procedure Serialize (A : in out Archive; V : in out Task_Object) is
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Instance_Number);
+   begin
+      Serialize (A, V.Name);
+      Serialize (A, V.Instances);
+      --  ??? Serialize (A, V.Node);
+      if A.Kind = Serialisation.Input then
+         V.Node := Find_Entity (V.Name);
+      end if;
+   end Serialize;
+
+   procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info) is
+   begin
+      for Kind in Tasking_Info_Kind loop
+         Serialize (A, V (Kind), Kind'Img);
+      end loop;
+   end Serialize;
+
+   procedure Serialize (A : in out Archive; V : in out Global_Phase_1_Info) is
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Analyzed_Subject_Kind);
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Globals_Origin_T);
+   begin
+      Serialize (A, V.Name);
+      Serialize (A, V.Kind);
+      Serialize (A, V.Globals_Origin);
+      Serialize (A, V.Inputs_Proof,          "var_proof");
+      Serialize (A, V.Inputs,                "var_in");
+      Serialize (A, V.Outputs,               "var_out");
+      Serialize (A, V.Proof_Calls,           "calls_proof");
+      Serialize (A, V.Definite_Calls,        "calls");
+      Serialize (A, V.Conditional_Calls,     "calls_conditional");
+      Serialize (A, V.Local_Variables,       "local_var");
+      Serialize (A, V.Local_Subprograms,     "local_sub");
+      Serialize (A, V.Local_Definite_Writes, "local_init");
+   end Serialize;
+
+   procedure Serialize (A : in out Archive; V : in out ALI_Entry) is
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => ALI_Entry_Kind);
+
+      Kind : ALI_Entry_Kind := ALI_Entry_Kind'First;
+   begin
+      if A.Kind = Serialisation.Output then
+         Kind := V.Kind;
+      end if;
+      Serialize (A, Kind);
+      if A.Kind = Serialisation.Input then
+         V := Null_ALI_Entry (Kind);
+      end if;
+
+      case V.Kind is
+         when EK_Error =>
+            raise Program_Error;
+
+         when EK_End_Marker =>
+            null;
+
+         when EK_State_Map =>
+            Serialize (A, V.The_State);
+            Serialize (A, V.The_Constituents);
+
+         when EK_Volatiles =>
+            Serialize (A, V.All_Async_Readers,    "AR");
+            Serialize (A, V.All_Async_Writers,    "AW");
+            Serialize (A, V.All_Effective_Reads,  "ER");
+            Serialize (A, V.All_Effective_Writes, "EW");
+
+         when EK_Globals =>
+            Serialize (A, V.The_Global_Info);
+
+         when EK_Tasking_Instance_Count =>
+            Serialize (A, V.The_Type);
+            Serialize (A, V.The_Objects);
+
+         when EK_Tasking_Info =>
+            Serialize (A, V.The_Entity);
+            Serialize (A, V.The_Tasking_Info);
+
+         when EK_Tasking_Nonblocking =>
+            Serialize (A, V.The_Nonblocking_Subprograms);
+      end case;
+
+   exception
+      when Serialisation.Parse_Error =>
+         pragma Assert (A.Kind = Serialisation.Input);
+         V := (Kind => EK_Error);
+   end Serialize;
+
    ---------------------
    -- Tasking_Objects --
    ---------------------
@@ -2903,5 +2820,88 @@ package body Flow_Generated_Globals is
               then Element (C)
               else Name_Sets.Empty_Set);
    end Tasking_Objects;
+
+   ----------------
+   -- Up_Project --
+   ----------------
+
+   procedure Up_Project
+     (Most_Refined      : Name_Sets.Set;
+      Final_View        : out Name_Sets.Set;
+      Scope             : Flow_Scope;
+      Reads             : in out Flow_Id_Sets.Set;
+      Processing_Writes : Boolean := False)
+   is
+      Abstract_States : Name_Sets.Set := Name_Sets.Empty_Set;
+   begin
+      --  Initializing Final_View to empty
+      Final_View := Name_Sets.Empty_Set;
+
+      for N of Most_Refined loop
+         if GG_Enclosing_State (N) /= Null_Entity_Name
+           and then (No (Find_Entity (N))
+                       or else not Is_Visible (Find_Entity (N), Scope))
+         then
+            declare
+               Var               : Entity_Name :=
+                 (if Present (Find_Entity (N))
+                    and then Is_Visible (Find_Entity (N), Scope)
+                  then N
+                  else GG_Enclosing_State (N));
+               ES                : Entity_Name := GG_Enclosing_State (N);
+               Is_Abstract_State : Boolean     :=
+                 No (Find_Entity (N))
+                   or else not Is_Visible (Find_Entity (N), Scope);
+            begin
+               while No (Find_Entity (ES))
+                 or else not Is_Visible (Find_Entity (ES), Scope)
+               loop
+                  Is_Abstract_State := True;
+                  Var := ES;
+
+                  if GG_Enclosing_State (ES) /= Null_Entity_Name then
+                     ES := GG_Enclosing_State (ES);
+                  else
+                     --  We cannot go any further up and we still do not have
+                     --  visibility of the variable or state abstraction that
+                     --  we are making use of. This means that the user has
+                     --  neglected to provide some state abstraction and the
+                     --  refinement thereof. Unfortunately, we might now refer
+                     --  to a variable or state that the caller should not have
+                     --  vision of.
+                     exit;
+                  end if;
+               end loop;
+
+               Final_View.Include (Var);
+
+               --  We add the enclosing abstract state that we just added to
+               --  the Final_View set to the Abstract_States set.
+               if Is_Abstract_State then
+                  Abstract_States.Include (Var);
+               end if;
+            end;
+         else
+            --  Add variables that are directly visible or do not belong to any
+            --  state abstraction to the Final_View set.
+            Final_View.Include (N);
+         end if;
+      end loop;
+
+      --  If we Write some but not all constituents of a state abstraction then
+      --  this state abstraction is also a Read.
+      if Processing_Writes then
+         for AS of Abstract_States loop
+            declare
+               Constituents : constant Name_Sets.Set := GG_Fully_Refine (AS);
+            begin
+               if not (for all C of Constituents => Most_Refined.Contains (C))
+               then
+                  Reads.Include (Get_Flow_Id (AS, In_View, Scope));
+               end if;
+            end;
+         end loop;
+      end if;
+   end Up_Project;
 
 end Flow_Generated_Globals;
