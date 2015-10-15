@@ -591,6 +591,7 @@ failing condition reported by |GNATprove|:
    "discriminant check might fail",                     "VC_DISCRIMINANT_CHECK"
    "tag check might fail",                              "VC_TAG_CHECK"
    "interrupt might be reserved",                       "VC_INTERRUPT_RESERRED"
+   "ceiling priority might not be in Interrupt_Priority", "VC_CEILING_INTERRUPT"
    "task might terminate",                              "VC_TASK_TERMINATION"
 
    **assertions**
@@ -823,6 +824,7 @@ The following table shows the kinds of check messages issued by proof.
    "discriminant check", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
    "tag check",          "Check that the tag of the given tagged object has the expected value."
    "interrupt is reserved",   "Check that the interrupt specified by Attach_Handler is not reserved"
+   "ceiling priority in Interrupt_Priority", "Check that the ceiling priority specified for a protected object containing a procedure with an aspect Attach_Handler is in Interrupt_Priority"
    "task termination",   "Check that the task does not terminate, as required by Ravenscar"
 
    **assertions**
