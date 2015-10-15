@@ -642,9 +642,9 @@ is
      (F     : Flow_Id;
       Scope : Flow_Scope)
       return Boolean;
-   --  Returns True if F is not visible from Scope and is a
-   --  constituent of some state abstraction. This means that F will
-   --  have to be up projected.
+   --  Returns True if F is not visible from Scope and is either a constituent
+   --  of some state abstraction or a constituent of a concurrent type. This
+   --  means that F will have to be up projected.
 
    function Up_Project_Constituent
      (F     : Flow_Id;

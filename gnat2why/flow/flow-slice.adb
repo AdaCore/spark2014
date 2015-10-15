@@ -151,7 +151,7 @@ package body Flow.Slice is
    is
 
       function Flow_Equivalent (F : Flow_Id) return Flow_Id
-        with Post => Flow_Equivalent'Result.Variant = Normal_Use;
+      with Post => Flow_Equivalent'Result.Variant = Normal_Use;
       --  Given a flow id, return the view the dependency relation
       --  cares about.
 

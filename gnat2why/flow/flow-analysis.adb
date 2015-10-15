@@ -3089,7 +3089,8 @@ package body Flow.Analysis is
          else
             FA.Analyzed_Entity);
 
-      Params           : Node_Sets.Set;
+      Params           : Node_Sets.Set := Node_Sets.Empty_Set;
+      Implicit_Params  : Node_Sets.Set := Node_Sets.Empty_Set;
       --  This set will hold all local parameters of the subprogram
 
       Depends_Scope    : constant Flow_Scope :=
@@ -3167,8 +3168,7 @@ package body Flow.Analysis is
          Constituents_Written : Node_Sets.Set       := Node_Sets.Empty_Set;
          Up_Projected_Map     : Dependency_Maps.Map :=
            Dependency_Maps.Empty_Map;
-
-      begin  --  Up_Project_Map
+      begin
 
          for C in DM.Iterate loop
             declare
@@ -3269,6 +3269,30 @@ package body Flow.Analysis is
             E := Next_Formal (E);
          end loop;
       end;
+
+      --  Add implicit formal parameters caused by concurrent types
+      declare
+         F : constant Flow_Id := Direct_Mapping_Id (FA.Analyzed_Entity);
+      begin
+         if Belongs_To_Protected_Object (F) then
+            --  A subprogram that is directly enclosed by a protected object
+            --  sees the proteted object as a formal parameter.
+            Params.Include (Get_Enclosing_Concurrent_Object (F));
+            Implicit_Params.Include (Get_Enclosing_Concurrent_Object (F));
+         end if;
+      end;
+      if Ekind (FA.Analyzed_Entity) in Task_Kind then
+         --  A task sees itself as a formal parameter.
+         declare
+            E : constant Entity_Id :=
+              (if Present (Anonymous_Object (FA.Analyzed_Entity))
+               then Anonymous_Object (FA.Analyzed_Entity)
+               else FA.Analyzed_Entity);
+         begin
+            Params.Include (E);
+            Implicit_Params.Include (E);
+         end;
+      end if;
 
       --  Up project the dependencies
       User_Deps   := Up_Project_Map (User_Deps);
@@ -3376,6 +3400,14 @@ package body Flow.Analysis is
                        and then FA.Atr.Element (V).Mode = Mode_Proof
                      then
                         null;
+                     elsif F_Out = Null_Flow_Id
+                       and then Missing_Var.Kind = Direct_Mapping
+                       and then Implicit_Params.Contains
+                                  (Get_Direct_Mapping_Id (Missing_Var))
+                     then
+                        --  Suppress missing dependencies related to implicit
+                        --  concurrent objects.
+                        null;
                      else
                         --  Something that the user dependency fails to
                         --  mention.
@@ -3443,6 +3475,16 @@ package body Flow.Analysis is
                      --  If the depends contract mentions a state with visible
                      --  null refinement then we do not need to emit a message
                      --  since this is trivially True.
+                     null;
+                  elsif F_Out.Kind = Direct_Mapping
+                    and then Implicit_Params.Contains
+                               (Get_Direct_Mapping_Id (Wrong_Var))
+                    and then Wrong_Var.Kind = Direct_Mapping
+                    and then Implicit_Params.Contains
+                               (Get_Direct_Mapping_Id (Wrong_Var))
+                  then
+                     --  Suppress incorrect dependencies related to implicit
+                     --  concurrent objects.
                      null;
                   elsif not Is_Variable (Wrong_Var) then
                      Error_Msg_Flow
@@ -3602,7 +3644,9 @@ package body Flow.Analysis is
          procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
             F : constant Flow_Id := FA.CFG.Get_Key (V);
          begin
-            if (not To.Contains (V)) and F.Kind = Direct_Mapping then
+            if not To.Contains (V)
+              and then F.Kind = Direct_Mapping
+            then
                Path.Include (V);
             end if;
          end Add_Loc;

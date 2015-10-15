@@ -4408,7 +4408,8 @@ package body Flow_Utility is
          --  There is no point in up-projecting if any of the
          --  following is True.
          if Ekind (N) not in E_Abstract_State | E_Constant | E_Variable
-           or else No (Encapsulating_State (N))
+           or else (No (Encapsulating_State (N))
+                      and then not Is_Concurrent_Comp_Or_Disc (F))
            or else Is_Visible (N, Scope)
          then
             return False;
@@ -4427,15 +4428,22 @@ package body Flow_Utility is
       Scope : Flow_Scope)
       return Flow_Id
    is
-      Enclosing : Flow_Id;
+      Enclosing_F : Flow_Id;
+      Enclosing_E : Entity_Id;
    begin
-      Enclosing := F;
-      while Is_Non_Visible_Constituent (Enclosing, Scope) loop
-         Enclosing := Direct_Mapping_Id
-           (Encapsulating_State (Get_Direct_Mapping_Id (Enclosing)));
+      Enclosing_F := F;
+      Enclosing_E := Get_Direct_Mapping_Id (F);
+      while Is_Non_Visible_Constituent (Enclosing_F, Scope) loop
+         if Present (Encapsulating_State (Enclosing_E)) then
+            Enclosing_E := Encapsulating_State (Enclosing_E);
+         else
+            pragma Assert (Is_Concurrent_Comp_Or_Disc (F));
+            Enclosing_E := Get_Enclosing_Concurrent_Object (F);
+         end if;
+         Enclosing_F := Direct_Mapping_Id (Enclosing_E);
       end loop;
 
-      return Enclosing;
+      return Enclosing_F;
    end Up_Project_Constituent;
 
    ------------------------
