@@ -4721,12 +4721,16 @@ package body Gnat2Why.Expr is
 
       if Is_Protected_Component_Or_Discr (Entity (Left_Side)) then
          Result :=
-           +One_Level_Update (Left_Side,
-                              New_Deref (Right => +Self_Name,
-                                         Typ   => Get_Typ (Self_Name)),
-                              +Right_Side,
-                              EW_Prog,
-                              Body_Params);
+           New_Assignment
+             (Ada_Node => Ada_Node,
+              Name     => Self_Name,
+              Value    => +One_Level_Update (Left_Side,
+                New_Deref (Right => +Self_Name,
+                           Typ   => Get_Typ (Self_Name)),
+                +Right_Side,
+                EW_Prog,
+                Body_Params),
+              Typ     => Get_Typ (Self_Name));
       else
          declare
             Binder : constant Item_Type :=
