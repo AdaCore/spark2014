@@ -251,6 +251,9 @@
 --  * When translating references to fields: The self object needs to be
 --    prepended
 
+--  The checks related to pragma Attach_Handler (Ada RM C.3.1(10/3)) are done
+--  on translation of the declaration of a protected object.
+
 ------------------------------------
 -- Labels Interpreted by gnatwhy3 --
 ------------------------------------
