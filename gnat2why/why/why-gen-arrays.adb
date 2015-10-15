@@ -942,11 +942,14 @@ package body Why.Gen.Arrays is
                As_Name       => No_Name,
                Origin        => Clone,
                Substitutions => Subst));
+      --  Declare the abstract type of the unconstrained array and mark
+      --  function "to_array" as projection (from this type to why3 map type)
       Emit (Theory,
             New_Type_Decl
               (Why3_Type_Name,
                Alias =>
                  New_Named_Type (To_String (WNE_Array_Type))));
+      Emit_Projection_Metas (Theory, "to_array");
       if Und_Ent = Standard_String then
          declare
             Dummy_Ident : constant W_Identifier_Id :=
