@@ -614,7 +614,7 @@ package body Gnat2Why.Expr is
          --  we perform the modulo on bitvectors.
 
          else
-            pragma Assert (not Non_Binary_Modulus (E));
+            pragma Assert (Non_Binary_Modulus (E));
             return New_Call (Name   => MF_BVs (BV_Type).Urem,
                              Domain => Domain,
                              Args   => (1 => T,
@@ -5432,10 +5432,26 @@ package body Gnat2Why.Expr is
                begin
                   if Op = N_Op_And then
                      T := New_And_Expr (L_Why, R_Why, Domain, Base);
-                  elsif Op = N_Op_Or then
-                     T := New_Or_Expr (L_Why, R_Why, Domain, Base);
                   else
-                     T := New_Xor_Expr (L_Why, R_Why, Domain, Base);
+                     if Op = N_Op_Or then
+                        T := New_Or_Expr (L_Why, R_Why, Domain, Base);
+                     else
+                        T := New_Xor_Expr (L_Why, R_Why, Domain, Base);
+                     end if;
+
+                     --  If we're dealing with modulars of non binary modulus
+                     --  or and xor might overflow : we need to take the
+                     --  modulo of the result.
+
+                     if Is_Modular_Integer_Type (Return_Type) and then
+                       Non_Binary_Modulus (Return_Type)
+                     then
+                        T := Apply_Modulus_Or_Rounding
+                          (Op     => Op,
+                           E      => Return_Type,
+                           T      => T,
+                           Domain => Domain);
+                     end if;
                   end if;
                end;
             end if;
@@ -12632,32 +12648,70 @@ package body Gnat2Why.Expr is
       declare
          Arg1   : constant W_Expr_Id := Args (Args'First);
          Arg2   : constant W_Expr_Id := Args (Args'First + 1);
+         Arg2_M : constant W_Expr_Id :=
+           Insert_Simple_Conversion (Domain => EW_Term,
+                                     Expr   => Arg2,
+                                     To     => Typ);
          Name_S : constant String    := Name_Buffer (1 .. Name_Len);
-
+         Name   : constant W_Identifier_Id :=
+           (if ECI (Name_S, Get_Name_String (Name_Shift_Right)) then
+               MF_BVs (Typ).Lsr
+            elsif ECI (Name_S,
+              Get_Name_String (Name_Shift_Right_Arithmetic))
+            then
+               MF_BVs (Typ).Asr
+            elsif ECI (Name_S, Get_Name_String (Name_Shift_Left)) then
+               MF_BVs (Typ).Lsl
+            elsif ECI (Name_S, Get_Name_String (Name_Rotate_Left)) then
+               MF_BVs (Typ).Rotate_Left
+            elsif ECI (Name_S, Get_Name_String (Name_Rotate_Right)) then
+               MF_BVs (Typ).Rotate_Right
+            else
+               raise Program_Error);
+         --         function Actual_Call (Amount : W_Expr_Id) return W_Expr_Id
       begin
-         T := New_Call
-           (Domain => EW_Term,
-            Name   =>
-              (if ECI (Name_S, Get_Name_String (Name_Shift_Right)) then
-                 MF_BVs (Typ).Lsr
-               elsif ECI (Name_S,
-                          Get_Name_String (Name_Shift_Right_Arithmetic))
-               then
-                  MF_BVs (Typ).Asr
-               elsif ECI (Name_S, Get_Name_String (Name_Shift_Left)) then
-                  MF_BVs (Typ).Lsl
-               elsif ECI (Name_S, Get_Name_String (Name_Rotate_Left)) then
-                  MF_BVs (Typ).Rotate_Left
-               elsif ECI (Name_S, Get_Name_String (Name_Rotate_Right)) then
-                  MF_BVs (Typ).Rotate_Right
-               else
-                 raise Program_Error),
-            Args   => (1 => Arg1,
-                       2 => Insert_Simple_Conversion
-                              (Domain => EW_Term,
-                               Expr   => Arg2,
-                               To     => Typ)),
-            Typ    => Typ);
+
+         --  A special care need to be put in the case of shifts on a bitvector
+         --  of size smaller than 32. Indeed, in this case the amount of
+         --  the shift can be greater than 2**(Size of the underlying bv),
+         --  resulting in a modulo on the amount of the shift Introduced by
+         --  the convertion at the why3 level.
+         if Nb_Of_Bits < 32
+           and Name /= MF_BVs (Typ).Rotate_Left
+           and Name /= MF_BVs (Typ).Rotate_Right
+         then
+            declare
+               Nb_Of_Bits_M : constant W_Expr_Id :=
+                 New_Modular_Constant (Value => UI_From_Int (Nb_Of_Bits),
+                                       Typ => Typ);
+            begin
+               T := New_Call
+                 (Domain => EW_Term,
+                  Name   => Name,
+                  Args   =>
+                    (1 => Arg1,
+                     2 => New_Conditional
+                       (Ada_Node    => Expr,
+                        Domain      => EW_Term,
+                        Condition   => New_Call
+                          (Domain   => Domain,
+                           Name     => MF_BVs (Typ).Ult,
+                           Args     => (1 => Arg2_M,
+                                        2 => Nb_Of_Bits_M),
+                           Typ      => EW_Bool_Type),
+                        Then_Part   => Arg2_M,
+                        Else_Part   => Nb_Of_Bits_M,
+                        Typ         => Typ)),
+                  Typ    => Typ);
+            end;
+         else
+            T := New_Call
+              (Domain => EW_Term,
+               Name   => Name,
+               Args   => (1 => Arg1,
+                          2 => Arg2_M),
+               Typ    => Typ);
+         end if;
       end;
 
       return T;
