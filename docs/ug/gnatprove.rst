@@ -583,16 +583,16 @@ failing condition reported by |GNATprove|:
    :widths: 2, 1
 
    **run-time checks**
-   "divide by zero might fail",                         "VC_DIVISION_CHECK"
-   "array index check might fail",                      "VC_INDEX_CHECK"
-   "overflow check might fail",                         "VC_OVERFLOW_CHECK"
-   "range check might fail",                            "VC_RANGE_CHECK"
-   "length check might fail",                           "VC_LENGTH_CHECK"
-   "discriminant check might fail",                     "VC_DISCRIMINANT_CHECK"
-   "tag check might fail",                              "VC_TAG_CHECK"
-   "interrupt might be reserved",                       "VC_INTERRUPT_RESERRED"
-   "ceiling priority might not be in Interrupt_Priority", "VC_CEILING_INTERRUPT"
-   "task might terminate",                              "VC_TASK_TERMINATION"
+   "divide by zero might fail",                            "VC_DIVISION_CHECK"
+   "array index check might fail",                         "VC_INDEX_CHECK"
+   "overflow check might fail",                            "VC_OVERFLOW_CHECK"
+   "range check might fail",                               "VC_RANGE_CHECK"
+   "length check might fail",                              "VC_LENGTH_CHECK"
+   "discriminant check might fail",                        "VC_DISCRIMINANT_CHECK"
+   "tag check might fail",                                 "VC_TAG_CHECK"
+   "interrupt might be reserved",                          "VC_INTERRUPT_RESERRED"
+   "ceiling priority might not be in Interrupt_Priority",  "VC_CEILING_INTERRUPT"
+   "task might terminate",                                 "VC_TASK_TERMINATION"
 
    **assertions**
    "initial condition might fail",                      "VC_INITIAL_CONDITION"
