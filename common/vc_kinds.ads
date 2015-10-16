@@ -51,6 +51,7 @@ package VC_Kinds is
       VC_Tag_Check,
       VC_Ceiling_Interrupt,
       VC_Interrupt_Reserved,
+      VC_Ceiling_Priority_Protocol,
       VC_Task_Termination,
 
       --  VC_Assert_Kind - assertions

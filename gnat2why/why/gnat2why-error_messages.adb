@@ -246,6 +246,8 @@ package body Gnat2Why.Error_Messages is
             return "ceiling priority might not be in Interrupt_Priority";
          when VC_Interrupt_Reserved        =>
             return "this interrupt might be reserved";
+         when VC_Ceiling_Priority_Protocol =>
+            return "ceiling priority protocol might not be respected";
          when VC_Task_Termination          =>
             return "the task might terminate, which is not allowed in SPARK";
 
@@ -456,6 +458,8 @@ package body Gnat2Why.Error_Messages is
             return "ceiling priority in Interrupt_Priority proved";
          when VC_Interrupt_Reserved        =>
             return "availability of interrupt proved";
+         when VC_Ceiling_Priority_Protocol =>
+            return "ceiling priority protocol is respected";
          when VC_Task_Termination          =>
             return "nontermination of task proved";
 
