@@ -590,8 +590,8 @@ failing condition reported by |GNATprove|:
    "length check might fail",                              "VC_LENGTH_CHECK"
    "discriminant check might fail",                        "VC_DISCRIMINANT_CHECK"
    "tag check might fail",                                 "VC_TAG_CHECK"
-   "interrupt might be reserved",                          "VC_INTERRUPT_RESERRED"
    "ceiling priority might not be in Interrupt_Priority",  "VC_CEILING_INTERRUPT"
+   "interrupt might be reserved",                          "VC_INTERRUPT_RESERRED"
    "ceiling priority protocol might not be respected",     "VC_CEILING_PRIORITY_PROTOCOL"
    "task might terminate",                                 "VC_TASK_TERMINATION"
 
@@ -824,8 +824,8 @@ The following table shows the kinds of check messages issued by proof.
    "length check", "Check that the given array is of the length of the expected array subtype."
    "discriminant check", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
    "tag check",          "Check that the tag of the given tagged object has the expected value."
-   "interrupt is reserved",   "Check that the interrupt specified by Attach_Handler is not reserved"
    "ceiling priority in Interrupt_Priority", "Check that the ceiling priority specified for a protected object containing a procedure with an aspect Attach_Handler is in Interrupt_Priority"
+   "interrupt is reserved",   "Check that the interrupt specified by Attach_Handler is not reserved"
    "ceiling priority protocol", "Check that the ceiling priority protocol is respected, i.e., when a task calls a protected operation, the active priority of the task is not higher than the priority of the protected object (ARM Annex D.3)"
    "task termination",   "Check that the task does not terminate, as required by Ravenscar"
 
