@@ -217,9 +217,7 @@ ASCII.LF &
 ASCII.LF &
 "gnatprove advanced switches:" &
 ASCII.LF &
-" --counterexample=c  Generate a counterexample for unproved formulas" &
-ASCII.LF &
-"                     (c=on, off*)" &
+" --no-counterexample Do not generate a counterexample for unproved formulas" &
 ASCII.LF &
 " -d, --debug         Debug mode" &
 ASCII.LF &
@@ -929,8 +927,8 @@ ASCII.LF;
 
       Define_Switch
         (Config,
-         Counterexample'Access,
-         Long_Switch => "--counterexample=");
+         No_Counterexample'Access,
+         Long_Switch => "--no-counterexample");
 
       Define_Switch
         (Config,

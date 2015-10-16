@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(opt=["--counterexample=on"], steps=1500)
+prove_all_counterexample(steps=1500)

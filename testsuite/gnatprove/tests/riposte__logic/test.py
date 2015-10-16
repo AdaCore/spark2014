@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all (opt=["--counterexample=on"])
+prove_all_counterexample ()

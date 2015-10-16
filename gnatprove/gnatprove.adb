@@ -589,7 +589,11 @@ procedure Gnatprove is
       end if;
 
       Args.Append ("--counterexample");
-      Args.Append (Counterexample.all);
+      if No_Counterexample then
+         Args.Append ("off");
+      else
+         Args.Append ("on");
+      end if;
 
       return Args;
    end Compute_Why3_Args;

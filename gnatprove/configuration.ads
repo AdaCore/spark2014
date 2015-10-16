@@ -81,9 +81,8 @@ package Configuration is
    --  Set to non-empty string when option --limit-subp= was given
    Alter_Prover      : aliased GNAT.Strings.String_Access;
    --  Set to non-empty string when option --prover= was given
-   Counterexample    : aliased GNAT.Strings.String_Access :=
-     new String'("off");
-   --  Set to "on" if a counterexample should be get and to "off" elsewhere
+   No_Counterexample : aliased Boolean := False;
+   --  Set to True if no counterexample should be get
    Benchmark_Mode    : aliased Boolean;
    --  Provides the fake_* binaries instead of the real prover binaries.
 
