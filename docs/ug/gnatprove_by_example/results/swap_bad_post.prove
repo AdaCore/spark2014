@@ -1,1 +1,1 @@
-swap_bad_post.adb:3:11: medium: postcondition might fail
+swap_bad_post.adb:3:11: medium: postcondition might fail (e.g. when X = -1 and Y'Old = -1 and Y = -1 and X'Old = 0)
