@@ -645,6 +645,12 @@ package body Gnat2Why.Expr is
       Rexpr  : constant Node_Id := Expression (N);
    begin
 
+      --  we ignore part_of objects as a first approximation
+
+      if Is_Part_Of_Protected_Object (Lvalue) then
+         return New_Void;
+      end if;
+
       --  In our Why translation, all objects are declared at top-level.
       --  Object declarations in Ada inside Subprograms are therefore
       --  translated to assignments to initialize these objects.
@@ -4719,18 +4725,35 @@ package body Gnat2Why.Expr is
       --  in the case of protected components, we have to generate the record
       --  code ourselves on top
 
-      if Is_Protected_Component_Or_Discr (Entity (Left_Side)) then
-         Result :=
-           New_Assignment
-             (Ada_Node => Ada_Node,
-              Name     => Self_Name,
-              Value    => +One_Level_Update (Left_Side,
-                New_Deref (Right => +Self_Name,
-                           Typ   => Get_Typ (Self_Name)),
-                +Right_Side,
-                EW_Prog,
-                Body_Params),
-              Typ     => Get_Typ (Self_Name));
+      if Is_Protected_Component_Or_Discr_Or_Part_Of (Entity (Left_Side)) then
+         declare
+            Left : constant Node_Id := Entity (Left_Side);
+            Ada_Obj : constant Node_Id :=
+              (if Is_Part_Of_Protected_Object (Left) then
+                    Get_Enclosing_Concurrent_Object (Left)
+               else Empty);
+            Prot_Obj : constant W_Identifier_Id :=
+              (if Is_Part_Of_Protected_Object (Left) then
+                  To_Why_Id
+                 (E      => Ada_Obj,
+                  Domain => EW_Prog,
+                  Typ    => Type_Of_Node (Etype (Ada_Obj)))
+               else Self_Name);
+         begin
+            Result :=
+              New_Assignment
+                (Ada_Node => Ada_Node,
+                 Name     => Prot_Obj,
+                 Value    =>
+                   +One_Level_Update
+                   (Left_Side,
+                    New_Deref (Right => +Prot_Obj,
+                               Typ   => Get_Typ (Prot_Obj)),
+                    +Right_Side,
+                    EW_Prog,
+                    Body_Params),
+                 Typ     => Get_Typ (Prot_Obj));
+         end;
       else
          declare
             Binder : constant Item_Type :=
@@ -5635,8 +5658,9 @@ package body Gnat2Why.Expr is
             --  protected objects. But this is the only case, and we assert
             --  this here.
 
-            pragma Assert (if Nkind (N) = N_Identifier
-                           then Is_Protected_Component (Entity (N)));
+            pragma Assert
+              (if Nkind (N) = N_Identifier
+               then Is_Protected_Component_Or_Discr_Or_Part_Of (Entity (N)));
 
             --  The code should never update a discrimiant by assigning to it.
 
@@ -10834,9 +10858,14 @@ package body Gnat2Why.Expr is
          T :=
            New_Integer_Constant
              (Value => Char_Literal_Value (Constant_Value (Ent)));
-      elsif Is_Protected_Component_Or_Discr (Ent) then
+      elsif Is_Protected_Component_Or_Discr (Ent)
+        or else Is_Part_Of_Protected_Object (Ent)
+      then
          declare
-            Prot : constant Entity_Id := Containing_Protected_Type (Ent);
+            Obj_Or_Ty : constant Entity_Id :=
+              Get_Enclosing_Concurrent_Object (Ent);
+            Prot : constant Entity_Id :=
+              (if Is_Type (Obj_Or_Ty) then Obj_Or_Ty else Etype (Obj_Or_Ty));
             Id   : constant W_Identifier_Id :=
               New_Identifier
                 (Name => "self__",
@@ -10868,6 +10897,7 @@ package body Gnat2Why.Expr is
       if Has_Async_Writers (Direct_Mapping_Id (Ent))
         and then Domain = EW_Prog
         and then not Is_Deref
+        and then not Is_Part_Of_Protected_Object (Ent)
       then
          pragma Assert (Is_Mutable_In_Why (Ent));
          pragma Assert (Params.Ref_Allowed);

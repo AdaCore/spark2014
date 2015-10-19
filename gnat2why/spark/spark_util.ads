@@ -402,6 +402,16 @@ package SPARK_Util is
    --  @return The unscoped name of E as it appears in the source code;
    --          "" if E is equal to Empty.
 
+   function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean;
+   --  @param E an object entity
+   --  @return True iff the object has a part_of pragma that makes is part of a
+   --    task or protected object.
+
+   function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean;
+   --  @param E an object entity
+   --  @return True iff the object has a part_of pragma that makes is part of a
+   --    protected object.
+
    ------------------------------
    -- Queries related to types --
    ------------------------------
@@ -434,12 +444,14 @@ package SPARK_Util is
    --     a record type. E should be a "Representative Type in SPARK".
    --  @return the number of regular fields in the record representing E into
    --     Why3, which contains:
-   --     - A field per component of E visible in SPARK
+   --     - One field per component of E visible in SPARK
    --       (use Component_Is_Visible_In_SPARK)
-   --     - A field for the private part of E if E is a private type
-   --     - A field for the extensions of E if E is tagged
-   --     - A field for the private components of E's private ancestors if E is
-   --       tagged and has private ancestors (use Has_Private_Ancestor_Or_Root)
+   --     - One field for the private part of E if E is a private type
+   --     - One field for the extensions of E if E is tagged
+   --     - One field for the private components of E's private ancestors if E
+   --       is tagged and has private ancestors (use
+   --       Has_Private_Ancestor_Or_Root)
+   --     - One field for each part_of variable, if E is a protected type
 
    function Count_Why_Top_Level_Fields (E : Entity_Id) return Natural;
    --  @param E record type or private type whose most underlying type is
@@ -574,6 +586,14 @@ package SPARK_Util is
    --  @param E an entity
    --  @return True iff the entity is a component or discriminant of a
    --            protected type
+
+   function Is_Protected_Component_Or_Discr_Or_Part_Of
+     (E : Entity_Id) return Boolean
+   is (Is_Protected_Component_Or_Discr (E) or else
+       Is_Part_Of_Protected_Object (E));
+   --  @param E an entity
+   --  @return True iff E is logically part of a protected object, either being
+   --    a discriminant of field of the object, or being a "part_of".
 
    function Requires_Interrupt_Priority (E : Entity_Id) return Boolean with
      Pre => Is_Protected_Type (E);
@@ -1080,8 +1100,5 @@ package SPARK_Util is
    function Has_Only_Nonblocking_Statements (N : Node_Id) return Boolean
      with Pre => Nkind (N) in N_Subprogram_Body | N_Entry_Body;
    --  Check if subprogram body N contains no potentially blocking statements
-
-   function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean;
-   --  Check if object E has Part_Of aspect that points to a concurrent object
 
 end SPARK_Util;

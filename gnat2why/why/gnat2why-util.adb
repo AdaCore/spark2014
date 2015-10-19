@@ -721,6 +721,12 @@ package body Gnat2Why.Util is
       then
          return False;
 
+      --  same for objects that have Part_Of specified (for a protected
+      --  object), they are like components for proof
+
+      elsif Is_Part_Of_Protected_Object (N) then
+         return False;
+
       --  Constants defined locally to a loop inside a subprogram (or any
       --  other dynamic scope) may end up having different values, so should
       --  be mutable in Why, except when they are defined inside "actions" (in

@@ -810,6 +810,11 @@ package body Gnat2Why.Driver is
                   end if;
                end if;
 
+            --  variables that are part of a protected object are not
+            --  translated separately
+
+            elsif Is_Part_Of_Protected_Object (E) then
+               null;
             else
                Translate_Variable (File, E);
                Generate_Empty_Axiom_Theory (File, E);

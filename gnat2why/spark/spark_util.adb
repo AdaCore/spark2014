@@ -691,6 +691,13 @@ package body SPARK_Util is
          end if;
       end if;
 
+      if Is_Protected_Type (E) then
+         for Part of Get_Part_Of_Variables (E) loop
+            pragma Unreferenced (Part);
+            Count := Count + 1;
+         end loop;
+      end if;
+
       return Count;
    end Count_Why_Regular_Fields;
 
@@ -3401,5 +3408,19 @@ package body SPARK_Util is
           Ekind (Etype (Expression (Get_Argument (Part_Of_Pragma))))
              in Concurrent_Kind;
    end Is_Part_Of_Concurrent_Object;
+
+   ---------------------------------
+   -- Is_Part_Of_Protected_Object --
+   ---------------------------------
+
+   function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean is
+      Part_Of_Pragma : constant Node_Id := Get_Pragma (E, Pragma_Part_Of);
+   begin
+      return Ekind (E) in E_Abstract_State | Object_Kind
+        and then Present (Part_Of_Pragma)
+        and then
+          Ekind (Etype (Expression (Get_Argument (Part_Of_Pragma))))
+             in Protected_Kind;
+   end Is_Part_Of_Protected_Object;
 
 end SPARK_Util;

@@ -25,6 +25,7 @@
 
 with Atree;                  use Atree;
 with Flow_Utility;
+with Flow_Types;             use Flow_Types;
 with Namet;                  use Namet;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
@@ -1196,12 +1197,18 @@ package body Why.Inter is
       --  Components names are prefixed by a constant string, and are always
       --  expressed wrt to their record.
 
-      if Ekind (E) in E_Component | E_Discriminant and then not No_Comp then
+      if (Ekind (E) in E_Component | E_Discriminant
+            or else Is_Part_Of_Protected_Object (E))
+          and then not No_Comp
+      then
          declare
             Field : constant String :=
               To_String (WNE_Rec_Comp_Prefix) & Get_Name_String (Chars (E));
             Ada_N : constant Node_Id :=
-              Retysp (if Rec = Empty then Scope (E) else Rec);
+              Retysp (if Rec /= Empty then Rec
+                      elsif Is_Part_Of_Protected_Object (E) then
+                           Etype (Get_Enclosing_Concurrent_Object (E))
+                      else Scope (E));
             Module : constant W_Module_Id :=
               E_Module (if Rec = Empty and Ekind (E) = E_Discriminant then
                              Root_Record_Type (Ada_N)

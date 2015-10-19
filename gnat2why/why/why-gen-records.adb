@@ -27,6 +27,7 @@ with Ada.Containers.Hashed_Maps;
 with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
 with Elists;                     use Elists;
+with Flow_Utility;               use Flow_Utility;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
@@ -1769,6 +1770,19 @@ package body Why.Gen.Records is
                Index := Index + 1;
             end if;
 
+            if Is_Protected_Type (E) then
+               for Part of Get_Part_Of_Variables (E) loop
+                  Binders_F (Index) :=
+                    (B_Name =>
+                       To_Why_Id
+                         (Part,
+                          Local => True,
+                          Typ => EW_Abstract (Etype (Part))),
+                     others => <>);
+                  Index := Index + 1;
+               end loop;
+            end if;
+
             pragma Assert (Index = Binders_F'Last + 1);
 
             Emit_Record_Declaration (Theory  => Theory,
@@ -2631,7 +2645,10 @@ package body Why.Gen.Records is
          else Root_Record_Type (Ty));
       Call_Id   : constant W_Identifier_Id := To_Why_Id (Field, Rec => Rec);
       Ret_Ty    : constant W_Type_Id :=
-        EW_Abstract (Etype (Search_Component_By_Name (Ty, Field)));
+        (if Is_Part_Of_Protected_Object (Field) then
+              EW_Abstract (Etype (Field))
+         else
+            EW_Abstract (Etype (Search_Component_By_Name (Ty, Field))));
       Top_Field : constant W_Expr_Id :=
         (if Ekind (Field) = E_Discriminant then
               New_Discriminants_Access (Ada_Node, Domain, Name, Ty)
@@ -2806,7 +2823,9 @@ package body Why.Gen.Records is
       T           : W_Expr_Id;
    begin
       pragma Assert (Ekind (Field) /= E_Discriminant);
-      if Domain = EW_Prog then
+      if Domain = EW_Prog
+        and then not Is_Protected_Component_Or_Discr_Or_Part_Of (Field)
+      then
          T := +Sequence
            (+New_Ignore
               (Ada_Node => Ada_Node,

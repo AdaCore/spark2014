@@ -271,6 +271,11 @@ package Flow_Types is
    --  @param F is the Flow_Id of a constituent of a concurrent object
    --  @return the entity of the enclosing concurrent object
 
+   function Get_Enclosing_Concurrent_Object (E : Entity_Id) return Entity_Id;
+   --  same as above, but for an entity
+   --  @param an entity which is part of a concurrent object
+   --  @return the entity of the enclosing concurrent object
+
    function Is_Concurrent_Comp_Or_Disc (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
    --  @return True iff F is a component or discriminant of a concurrent

@@ -264,8 +264,7 @@ package body Flow_Types is
    -- Get_Enclosing_Concurrent_Object --
    -------------------------------------
 
-   function Get_Enclosing_Concurrent_Object (F : Flow_Id) return Entity_Id is
-      E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+   function Get_Enclosing_Concurrent_Object (E : Entity_Id) return Entity_Id is
 
       function Get_Anonymous_Object (PT : Entity_Id) return Entity_Id
       with Pre => Ekind (PT) in Concurrent_Kind;
@@ -288,6 +287,12 @@ package body Flow_Types is
       else
          raise Why.Unexpected_Node;
       end if;
+   end Get_Enclosing_Concurrent_Object;
+
+   function Get_Enclosing_Concurrent_Object (F : Flow_Id) return Entity_Id is
+      E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+   begin
+      return Get_Enclosing_Concurrent_Object (E);
    end Get_Enclosing_Concurrent_Object;
 
    --------------------------------
