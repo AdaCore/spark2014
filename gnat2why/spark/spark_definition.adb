@@ -900,7 +900,7 @@ package body SPARK_Definition is
               and then Is_Update_Unconstr_Multidim_Aggr (N)
             then
                Error_Msg_N
-                 ("?update attribute of unconstrained multidimensional array "
+                 ("update attribute of unconstrained multidimensional array "
                     & "is not yet fully supported, checks may be missing",
                   N);
             end if;
