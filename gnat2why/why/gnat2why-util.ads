@@ -260,12 +260,16 @@ package Gnat2Why.Util is
 
    function Get_Counterexample_Labels
      (E      : Entity_Id) return Name_Id_Sets.Set;
-   --  Get labels relevant for generating counterexample model
+   --  Get labels relevant for generating counterexample model.
+   --  Note that if the entity does not come from source, return empty set of
+   --  labels - these entitities should not be displayed in counterexample.
 
    function Get_Model_Trace_Label
      (E               : Entity_Id;
-      Is_Record_Field : Boolean := False) return Name_Id;
+      Is_Record_Field : Boolean := False) return Name_Id_Sets.Set;
    --  Gets model trace label for given entity.
+   --  Note that if the entity does not come from source, return empty set of
+   --  labels - these entitities should not be displayed in counterexample.
    --  @param E the entity for that get trace label
    --  @param Is_Record true if the entity is record field
 

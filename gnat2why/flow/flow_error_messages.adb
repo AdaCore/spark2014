@@ -607,6 +607,14 @@ package body Flow_Error_Messages is
                           Variables.Variables_Map'Unchecked_Access;
                      begin
 
+                        --  There is either one model element with its name
+                        --  corresponding to an error message. No variable map
+                        --  is built in this case.
+
+                        if Kind = "error_message" then
+                           return;
+                        end if;
+
                         --  If the value of a model element contains "@",
                         --  it is an abstract value that should not be
                         --  displayed.
@@ -618,14 +626,6 @@ package body Flow_Error_Messages is
 
                         if Index (Value, "@") /= 0 then
                            goto Next_Model_Element;
-                        end if;
-
-                        --  There is either one model element with its name
-                        --  corresponding to an error message. No variable map
-                        --  is built in this case.
-
-                        if Kind = "error_message" then
-                           return;
                         end if;
 
                         --  Or model elements are of the form:

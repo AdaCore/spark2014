@@ -662,20 +662,15 @@ package body Why.Gen.Binders is
 
    begin
       for B in Binders'Range loop
-         declare
-            Labels : Name_Id_Set;
-         begin
-            Labels.Include
-              (Get_Model_Trace_Label (E               => Binders (B).Ada_Node,
-                                      Is_Record_Field => True));
-            Result (B) := New_Record_Binder
-              (Ada_Node   => Binders (B).Ada_Node,
-               Domain     => Domain,
-               Name       => Binders (B).B_Name,
-               Labels     => Labels,
-               Arg_Type   => New_Arg_Type (Binders (B)),
-               Is_Mutable => Binders (B).Mutable);
-         end;
+         Result (B) := New_Record_Binder
+           (Ada_Node   => Binders (B).Ada_Node,
+            Domain     => Domain,
+            Name       => Binders (B).B_Name,
+            Labels     => Get_Model_Trace_Label
+              (E               => Binders (B).Ada_Node,
+               Is_Record_Field => True),
+            Arg_Type   => New_Arg_Type (Binders (B)),
+            Is_Mutable => Binders (B).Mutable);
       end loop;
 
       return Result;

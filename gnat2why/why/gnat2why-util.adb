@@ -265,13 +265,17 @@ package body Gnat2Why.Util is
      (E      : Entity_Id) return Name_Id_Sets.Set
    is
       Labels : Name_Id_Sets.Set   := Name_Id_Sets.Empty_Set;
-      Model_Trace : constant Name_Id := Get_Model_Trace_Label (E);
+      Model_Trace : constant Name_Id_Sets.Set := Get_Model_Trace_Label (E);
    begin
       --  Currently only generate values for scalar, record, and array
       --  variables in counterexamples.
 
+      if not Comes_From_Source (E) then
+         return Name_Id_Sets.Empty_Set;
+      end if;
+
       if Is_Scalar_Type (Etype (E)) then
-         Labels.Include (Model_Trace);
+         Labels.Union (Model_Trace);
 
          --  If E's type is directly a native prover type, simply request the
          --  value of E in the counterexample. This is known by querying the
@@ -291,12 +295,12 @@ package body Gnat2Why.Util is
       end if;
 
       if Is_Record_Type (Etype (E)) then
-         Labels.Include (Model_Trace);
+         Labels.Union (Model_Trace);
          Labels.Include (NID (Model_Proj_Label));
       end if;
 
       if Is_Array_Type (Etype (E)) then
-         Labels.Include (Model_Trace);
+         Labels.Union (Model_Trace);
          Labels.Include (NID (Model_Proj_Label));
       end if;
 
@@ -568,21 +572,27 @@ package body Gnat2Why.Util is
 
    function Get_Model_Trace_Label
      (E               : Entity_Id;
-      Is_Record_Field : Boolean := False) return Name_Id
+      Is_Record_Field : Boolean := False) return Name_Id_Sets.Set
    is
+      Labels : Name_Id_Sets.Set := Name_Id_Sets.Empty_Set;
    begin
-      return NID
-        (Model_Trace_Label &
-         (if E = Empty
-            then ""
-            else (if Is_Record_Field then "."
-                                     else "") & Trim (Entity_Id'Image (E),
-                                                      Both)) &
-         --  Add information whether labels are generated for a variable
-         --  holding result of a function.
-         (if Ekind (E) = E_Function
-            then "@result"
-            else ""));
+      if not Comes_From_Source (E) then
+         Labels.Include
+           (NID
+              (Model_Trace_Label &
+               (if E = Empty
+                  then ""
+                  else (if Is_Record_Field then "."
+                    else "") & Trim (Entity_Id'Image (E),
+                    Both)) &
+               --  Add information whether labels are generated for a variable
+               --  holding result of a function.
+               (if Ekind (E) = E_Function
+                  then "@result"
+                  else "")));
+      end if;
+
+      return Labels;
    end Get_Model_Trace_Label;
 
    ------------------------------

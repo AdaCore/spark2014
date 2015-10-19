@@ -184,19 +184,12 @@ package body Why.Gen.Decl is
           (Name  => +Param_Ident,
            Field => Field_Id);
 
-      Labels : Name_Id_Set := Name_Id_Sets.Empty_Set;
-
    begin
       --  Update number of declarations of projection with name Proj_Name
       if Proj_Name_Cursor = No_Element then
          Projection_Names_Decls.Insert (Proj_Name, 2);
       else
          Projection_Names_Decls (Proj_Name) := Proj_Name_Decls_Num + 1;
-      end if;
-
-      if SPARK_Node /= Empty then
-         Labels.Include (Get_Model_Trace_Label (E               => SPARK_Node,
-                                                Is_Record_Field => True));
       end if;
 
       Emit
@@ -209,7 +202,10 @@ package body Why.Gen.Decl is
                                              Name => Param_Ident,
                                              Arg_Type => Param_Ty)),
             Return_Type => Get_Type (+Field_Id),
-            Labels      => Labels,
+            Labels      => (if SPARK_Node = Empty then Name_Id_Sets.Empty_Set
+                            else Get_Model_Trace_Label
+                              (E               => SPARK_Node,
+                               Is_Record_Field => True)),
             Def         => Field_Access));
 
       Emit_Projection_Metas (Theory, Proj_Fun_Name);
