@@ -746,10 +746,33 @@ package body Flow_Error_Messages is
                            --  of Var_Or_Field_Type
 
                            declare
+                              function Get_Fields_Declared return Natural;
+                              --  Return the number of declared fields of the
+                              --  (record) type of the variable or the field
+                              --  thats value is currently computed.
+
+                              function Get_Fields_Declared return Natural
+                              is
+                                 Res : Natural :=
+                                   0;
+                                 Comp : Entity_Id :=
+                                   First_Component (Var_Or_Field_Type);
+                              begin
+                                 while Present (Comp) loop
+                                    Res := Res + 1;
+                                    Next_Component (Comp);
+                                 end loop;
+
+                                 return Res;
+                              end Get_Fields_Declared;
+
+                              Fields_Present : constant Natural :=
+                                Natural (Length (Var_Or_Field.Fields.all));
+                              Fields_Declared : constant Natural :=
+                                Get_Fields_Declared;
                               Decl_Field : Entity_Id :=
                                 First_Component (Var_Or_Field_Type);
-                              First_Decl_Field : constant Entity_Id :=
-                                Decl_Field;
+                              Is_Field_Before : Boolean := False;
                               Value : Unbounded_String :=
                                 To_Unbounded_String ("(");
                            begin
@@ -760,20 +783,31 @@ package body Flow_Error_Messages is
                                     Field : constant Cursor := Find
                                       (Var_Or_Field.Fields.all, Field_Name);
                                  begin
-                                    if Has_Element (Field) then
+                                    if Has_Element (Field) or else
+                                      Fields_Declared - Fields_Present <= 1
+                                    then
                                        Value := Value &
-                                       (if Decl_Field /= First_Decl_Field then
-                                           ", "
-                                        else
-                                           "") &
-                                         Key (Field) &
+                                       (if Is_Field_Before then ", " else "") &
+                                         Field_Name &
                                          " => " &
-                                         Get_Var_Or_Field_Value (Element (
-                                                                 Field));
+                                       (if Has_Element (Field) then
+                                           Get_Var_Or_Field_Value (Element
+                                          (Field))
+                                        else "?");
+                                       Is_Field_Before := True;
                                     end if;
                                     Next_Component (Decl_Field);
                                  end;
                               end loop;
+
+                              --  If there are more than one field that is not
+                              --  mentioned in the counterexample, summarize
+                              --  them using the field others
+                              if Fields_Declared - Fields_Present > 1 then
+                                 Value := Value &
+                                 (if Is_Field_Before then ", " else "") &
+                                   "others => ?";
+                              end if;
                               Value := Value & ")";
 
                               return To_String (Value);
