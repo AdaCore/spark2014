@@ -1072,6 +1072,11 @@ Proof Limitations
    Wide_Width, Wide_Wide_Image, Wide_Wide_Value, Wide_Wide_Width,
    Width.
 
+#. The 'Update attribute on multidimensional unconstrained arrays is not
+   yet fully supported in proof. Checks might be missing so currently an
+   error is emitted for any use of the 'Update attribute on
+   multidimensional unconstrained arrays.
+
 #. The difference between the floating-point values +0 and -0 (as defined in
    IEEE-754 standard) is ignored in proof. This is correct for all programs that
    do not exploit the difference in bit-pattern between +0 and -0. For example,
