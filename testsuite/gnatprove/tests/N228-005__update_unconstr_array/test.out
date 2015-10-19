@@ -40,15 +40,3 @@ update_checks_1.ads:27:35: info: range check proved
 update_checks_1.ads:30:19: info: postcondition proved
 update_checks_1.ads:30:37: info: range check proved
 update_checks_1.ads:33:19: info: postcondition proved
-update_checks_multidim_unconstr.adb:14:09: medium: length check might fail
-update_checks_multidim_unconstr.adb:14:21: warning: update attribute of unconstrained multidimensional array is not yet fully supported, checks may be missing
-update_checks_multidim_unconstr.adb:17:04: warning: analyzing unreferenced procedure "Test3"
-update_checks_multidim_unconstr.adb:26:12: medium: length check might fail
-update_checks_multidim_unconstr.adb:26:24: warning: update attribute of unconstrained multidimensional array is not yet fully supported, checks may be missing
-update_checks_multidim_unconstr.adb:26:28: medium: range check might fail
-update_checks_multidim_unconstr.adb:26:35: medium: range check might fail
-update_checks_multidim_unconstr.adb:26:42: medium: range check might fail
-update_checks_multidim_unconstr.adb:26:58: info: range check proved
-update_checks_multidim_unconstr.adb:30:04: warning: analyzing unreferenced procedure "Test4"
-update_checks_multidim_unconstr.adb:38:09: medium: length check might fail
-update_checks_multidim_unconstr.adb:38:21: warning: update attribute of unconstrained multidimensional array is not yet fully supported, checks may be missing
