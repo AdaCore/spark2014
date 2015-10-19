@@ -262,9 +262,9 @@ package body Gnat2Why.Util is
    -------------------------------
 
    function Get_Counterexample_Labels
-     (E      : Entity_Id) return Name_Id_Sets.Set
+     (E : Entity_Id) return Name_Id_Sets.Set
    is
-      Labels : Name_Id_Sets.Set   := Name_Id_Sets.Empty_Set;
+      Labels : Name_Id_Sets.Set := Name_Id_Sets.Empty_Set;
       Model_Trace : constant Name_Id_Sets.Set := Get_Model_Trace_Label (E);
    begin
       --  Currently only generate values for scalar, record, and array
