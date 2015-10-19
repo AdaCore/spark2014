@@ -655,8 +655,7 @@ package body SPARK_Definition is
       --  Detect whether Aggr is an aggregate node modelling 'Update. Returns
       --  false for a normal aggregate.
 
-      function Is_Update_Unconstr_Multidim_Aggr (Aggr : Node_Id)
-                                                return Boolean
+      function Is_Update_Unconstr_Multidim_Aggr (Aggr : Node_Id) return Boolean
         with Pre => Is_Update_Aggregate (N);
       --  Detect whether a 'Update aggregate is an update of an
       --  unconstrained multidimensional array.
@@ -814,67 +813,68 @@ package body SPARK_Definition is
       -------------------------
 
       function Is_Update_Aggregate (Aggr : Node_Id) return Boolean is
-         Result : Boolean := False;
-         Par    : Node_Id;
+         Par : Node_Id;
       begin
          if Nkind (Aggr) = N_Aggregate then
             Par := Parent (Aggr);
+
             if Present (Par)
               and then Nkind (Par) = N_Attribute_Reference
               and then Get_Attribute_Id
                          (Attribute_Name (Par)) = Attribute_Update
             then
-               Result := True;
+               return True;
             end if;
          end if;
-         return Result;
+
+         return False;
       end Is_Update_Aggregate;
 
       --------------------------------------
       -- Is_Update_Unconstr_Multidim_Aggr --
       --------------------------------------
 
-      function Is_Update_Unconstr_Multidim_Aggr (Aggr : Node_Id)
-                                                return Boolean is
-         Result : Boolean := False;
+      function Is_Update_Unconstr_Multidim_Aggr
+        (Aggr : Node_Id) return Boolean
+      is
          Pref_Type : constant Entity_Id := Etype (Prefix (Parent (Aggr)));
       begin
-         if Is_Array_Type (Pref_Type)
+         return Is_Array_Type (Pref_Type)
            and then Number_Dimensions (Pref_Type) > 1
-           and then not Is_Static_Array_Type (Pref_Type)
-         then
-            Result := True;
-         end if;
-         return Result;
+           and then not Is_Static_Array_Type (Pref_Type);
       end Is_Update_Unconstr_Multidim_Aggr;
 
       -------------------------------------
       -- Is_Special_Multidim_Update_Aggr --
       -------------------------------------
 
-      function Is_Special_Multidim_Update_Aggr (Aggr : Node_Id) return Boolean
+      function Is_Special_Multidim_Update_Aggr
+        (Aggr : Node_Id) return Boolean
       is
-         Result : Boolean := False;
          Pref, Par, Grand_Par, Grand_Grand_Par : Node_Id;
       begin
          if Nkind (Aggr) = N_Aggregate then
             Par := Parent (Aggr);
+
             if Present (Par) then
                Grand_Par := Parent (Par);
+
                if Present (Grand_Par)
                  and then Is_Update_Aggregate (Grand_Par)
                then
                   Grand_Grand_Par := Parent (Grand_Par);
                   Pref := Prefix (Grand_Grand_Par);
+
                   if Is_Array_Type (Etype (Pref))
                     and then Number_Dimensions (Etype (Pref)) > 1
                   then
-                     Result := True;
+                     return True;
                   end if;
                end if;
             end if;
          end if;
-         return Result;
+
+         return False;
       end Is_Special_Multidim_Update_Aggr;
 
    --  Start of processing for Mark
