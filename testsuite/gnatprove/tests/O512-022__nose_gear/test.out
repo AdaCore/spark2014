@@ -8,7 +8,7 @@ ng.adb:36:62: info: overflow check proved
 ng.adb:37:29: info: overflow check proved
 ng.adb:38:22: info: overflow check proved
 ng.adb:39:22: info: division check proved
-ng.adb:40:19: info: overflow check proved
+ng.adb:40:19: medium: overflow check might fail
 ng.adb:41:19: medium: divide by zero might fail
 ng.adb:41:19: medium: range check might fail
 ng.adb:61:18: info: overflow check proved
