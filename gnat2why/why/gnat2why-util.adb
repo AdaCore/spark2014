@@ -574,29 +574,22 @@ package body Gnat2Why.Util is
      (E               : Entity_Id;
       Is_Record_Field : Boolean := False) return Name_Id_Sets.Set
    is
+      Labels : Name_Id_Sets.Set := Name_Id_Sets.Empty_Set;
    begin
-      if Comes_From_Source (E) then
-         declare
-            Labels : Name_Id_Sets.Set := Name_Id_Sets.Empty_Set;
-         begin
-            Labels.Include
-              (NID
-                 (Model_Trace_Label &
-                  (if E = Empty
-                     then ""
-                     else (if Is_Record_Field then "."
-                       else "") & Trim (Entity_Id'Image (E),
-                       Both)) &
-                  --  Add information whether labels are generated for a
-                  --  variable holding result of a function.
-                  (if Ekind (E) = E_Function
-                     then "@result"
-                     else "")));
-            return Labels;
-         end;
-      end if;
-
-      return Name_Id_Sets.Empty_Set;
+      Labels.Include
+        (NID
+           (Model_Trace_Label &
+            (if E = Empty or else not Comes_From_Source (E)
+               then ""
+               else (if Is_Record_Field then "."
+                 else "") & Trim (Entity_Id'Image (E),
+                 Both)) &
+            --  Add information whether labels are generated for a
+            --  variable holding result of a function.
+            (if Ekind (E) = E_Function
+               then "@result"
+               else "")));
+      return Labels;
    end Get_Model_Trace_Label;
 
    ------------------------------

@@ -268,8 +268,8 @@ package Gnat2Why.Util is
      (E               : Entity_Id;
       Is_Record_Field : Boolean := False) return Name_Id_Sets.Set;
    --  Gets model trace label for given entity.
-   --  Note that if the entity does not come from source, return empty set of
-   --  labels - these entitities should not be displayed in counterexample.
+   --  Note that if the entity is empty or does not come from source code,
+   --  return the label "model_trace:".
    --  @param E the entity for that get trace label
    --  @param Is_Record true if the entity is record field
 
