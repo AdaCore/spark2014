@@ -1097,6 +1097,13 @@ package body Why.Gen.Expr is
       Round_Func    : W_Identifier_Id := Why_Empty;
       Do_Check      : Boolean := False) return W_Expr_Id
    is
+      From : constant W_Type_Id := Get_Type (Expr);
+
+      Do_Predicate_Check : constant Boolean :=
+        Present (Get_Ada_Node (+To))
+          and then Has_Predicates (Get_Ada_Node (+To))
+          and then Get_Ada_Node (+To) /= Get_Ada_Node (+From);
+
       procedure Get_Range_Check_Info
         (Expr       : Node_Id;
          Check_Type : out Entity_Id;
@@ -1434,18 +1441,9 @@ package body Why.Gen.Expr is
          end if;
       end Get_Range_Check_Info;
 
-      From : constant W_Type_Id := Get_Type (Expr);
-
-      --  Current result expression
-
       --  Type and kind for the range check
       Range_Type : Entity_Id := Empty;
       Check_Kind : Range_Check_Kind := RCK_Range;
-
-      Do_Predicate_Check : constant Boolean :=
-        Present (Get_Ada_Node (+To))
-          and then Has_Predicates (Get_Ada_Node (+To))
-          and then Get_Ada_Node (+To) /= Get_Ada_Node (+From);
 
    --  Start of processing for Insert_Scalar_Conversion
 
@@ -1494,6 +1492,11 @@ package body Why.Gen.Expr is
       Check_Kind    : Range_Check_Kind) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
+
+      Do_Predicate_Check : constant Boolean :=
+        Present (Get_Ada_Node (+To))
+          and then Has_Predicates (Get_Ada_Node (+To))
+          and then Get_Ada_Node (+To) /= Get_Ada_Node (+From);
 
       --  Current result expression
       Result : W_Expr_Id := Expr;
