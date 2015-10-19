@@ -3146,8 +3146,12 @@ the boolean array ``Arr`` already seen has been set to ``True``:
    :language: none
    :lines: 3,5
 
-Let's add a loop invariant stating that the part of the boolean array ``Arr``
-not already seen is still set to ``False`` (the frame condition):
+The counterexample displayed by |GNATprove| mentions an array ``Arr`` where all
+components would be ``False`` at the end of a loop iteration, which is not
+possible. To make it possible for |GNATprove| to prove that, let's add a loop
+invariant stating that the part of the boolean array ``Arr`` not already seen
+is still set to ``False`` (the frame condition), so that changing ``Arr(J)`` in
+``not Arr(J)`` can only change ``False`` into ``True``:
 
 .. literalinclude:: gnatprove_by_example/examples/array_loops.adb
    :language: ada
@@ -3288,7 +3292,10 @@ the same assertion on line 12 holds:
 
 |GNATprove| *forgets* the exact value of ``X`` after line 9. All it knows is
 the information given in pragma ``Assert_And_Cut``, here that ``X > 0``. And
-indeed |GNATprove| proves that such an assertion holds on line 11.
+indeed |GNATprove| proves that such an assertion holds on line 11. But it
+cannot prove the assertion on line 12, and the counterexample displayed
+mentions a possible value of 2 for ``X``, showing indeed that |GNATprove|
+forgot its value of 1.
 
 Pragma ``Assert_And_Cut`` may be useful in two cases:
 

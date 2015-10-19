@@ -1703,18 +1703,24 @@ complete):
 .. literalinclude:: gnatprove_by_example/results/functional.prove
    :language: none
 
-Running |GNATprove| in mode ``per_path`` (see :ref:`Running GNATprove from the
-Command Line` or :ref:`Running GNATprove from GPS`), and highlighting the path
-on which the postcondition is not proved, shows that when the last branch of
-the if-statement is taken, the following property is not proved::
+The counterexample displayed for the postcondition not proved corresponds to a
+case where ``Max = Snd = 2`` on entry to procedure ``Seen_Two``. Then, we can
+find values of its parameters, for example ``X = 1`` and ``Y = 2``, for which
+``Max`` and ``Snd`` would still be equal to 2 on exit, thus violating the part
+of the postcondition stating that ``Max_Value_Seen /= Second_Max_Value_Seen``
+on exit.
+
+To help understand it, one can run |GNATprove| in mode ``per_path`` (see
+:ref:`Running GNATprove from the Command Line` or :ref:`Running GNATprove from
+GPS`), and highlight the path on which the postcondition is not proved, which
+shows that when the last branch of the if-statement is taken, the following
+property is not proved::
 
   functional.ads:31:14: medium: postcondition might fail, cannot prove Max_Value_Seen /= (Second_Max_Value_Seen)
 
-Indeed, it could be the case that ``Max = Snd = 10`` on entry to procedure
-``Seen_Two``, with values of parameters ``X = 1`` and ``Y = 2``, in which case
-``Max`` and ``Snd`` would still be equal to 10 on exit. The missing piece of
-information here is that ``Max`` and ``Snd`` are never equal, except when they
-are both zero (the initial value). This can be added to function ``Invariant`` as follows:
+The missing piece of information here is that ``Max`` and ``Snd`` are never
+equal, except when they are both zero (the initial value). This can be added to
+function ``Invariant`` as follows:
 
 .. literalinclude:: gnatprove_by_example/examples/functional_proved.adb
    :language: ada

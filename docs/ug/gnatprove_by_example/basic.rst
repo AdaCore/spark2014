@@ -24,9 +24,9 @@ check failure on ``X + 1``:
 .. literalinclude:: gnatprove_by_example/results/increment.prove
    :language: none
 
-This is a real vulnerability, as ``Increment`` could be called on value
-``Integer'Last`` for parameter ``X``, which would cause the increment to raise
-a run-time error. One way to eliminate this vulnerability is to add a
+The counterexample displayed tells us that ``Increment`` could be called on
+value ``Integer'Last`` for parameter ``X``, which would cause the increment to
+raise a run-time error. One way to eliminate this vulnerability is to add a
 precondition to ``Increment`` specifying that ``X`` should be less than
 ``Integer'Last`` when calling the procedure:
 
@@ -172,7 +172,8 @@ equal to the initial value of ``Y`` (resp. ``X``):
    :linenos:
 
 |GNATprove| issues one check message on the unproved postcondition of
-``Swap_Bad_Post``:
+``Swap_Bad_Post``, with a counterexample giving concrete values of a wrong
+execution:
 
 .. literalinclude:: gnatprove_by_example/results/swap_bad_post.prove
    :language: none
