@@ -16,14 +16,17 @@ update_checks_1.adb:51:09: medium: length check might fail
 update_checks_1.adb:51:21: info: range check proved
 update_checks_1.adb:58:04: warning: analyzing unreferenced procedure "Test1"
 update_checks_1.adb:65:09: medium: length check might fail
+update_checks_1.adb:65:21: warning: update attribute of unconstrained multidimensional array is not yet fully supported, checks may be missing
 update_checks_1.adb:68:04: warning: analyzing unreferenced procedure "Test3"
 update_checks_1.adb:77:12: medium: length check might fail
+update_checks_1.adb:77:24: warning: update attribute of unconstrained multidimensional array is not yet fully supported, checks may be missing
 update_checks_1.adb:77:28: medium: range check might fail
 update_checks_1.adb:77:35: medium: range check might fail
 update_checks_1.adb:77:42: medium: range check might fail
 update_checks_1.adb:77:58: info: range check proved
 update_checks_1.adb:81:04: warning: analyzing unreferenced procedure "Test4"
 update_checks_1.adb:89:09: medium: length check might fail
+update_checks_1.adb:89:21: warning: update attribute of unconstrained multidimensional array is not yet fully supported, checks may be missing
 update_checks_1.adb:100:10: medium: array index check might fail
 update_checks_1.adb:107:18: info: length check proved
 update_checks_1.adb:107:21: info: length check proved

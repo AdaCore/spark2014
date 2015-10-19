@@ -655,6 +655,12 @@ package body SPARK_Definition is
       --  Detect whether Aggr is an aggregate node modelling 'Update. Returns
       --  false for a normal aggregate.
 
+      function Is_Update_Unconstr_Multidim_Aggr (Aggr : Node_Id)
+                                                return Boolean
+        with Pre => Is_Update_Aggregate (N);
+      --  Detect whether a 'Update aggregate is an update of an
+      --  unconstrained multidimensional array.
+
       function Is_Special_Multidim_Update_Aggr (Aggr : Node_Id) return Boolean;
       --  Detect special case of AST node.
       --  For an 'Update of a multidimensional array, the indexed components
@@ -824,6 +830,24 @@ package body SPARK_Definition is
          return Result;
       end Is_Update_Aggregate;
 
+      --------------------------------------
+      -- Is_Update_Unconstr_Multidim_Aggr --
+      --------------------------------------
+
+      function Is_Update_Unconstr_Multidim_Aggr (Aggr : Node_Id)
+                                                return Boolean is
+         Result : Boolean := False;
+         Pref_Type : constant Entity_Id := Etype (Prefix (Parent (Aggr)));
+      begin
+         if Is_Array_Type (Pref_Type)
+           and then Number_Dimensions (Pref_Type) > 1
+           and then not Is_Static_Array_Type (Pref_Type)
+         then
+            Result := True;
+         end if;
+         return Result;
+      end Is_Update_Unconstr_Multidim_Aggr;
+
       -------------------------------------
       -- Is_Special_Multidim_Update_Aggr --
       -------------------------------------
@@ -872,6 +896,13 @@ package body SPARK_Definition is
                                   SRM_Reference => "SPARK RM 4.3");
                end if;
                Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
+            elsif Is_Update_Aggregate (N)
+              and then Is_Update_Unconstr_Multidim_Aggr (N)
+            then
+               Error_Msg_N
+                 ("?update attribute of unconstrained multidimensional array "
+                    & "is not yet fully supported, checks may be missing",
+                  N);
             end if;
             Mark_List (Expressions (N));
             Mark_List (Component_Associations (N));
