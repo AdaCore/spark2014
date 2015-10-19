@@ -1747,8 +1747,7 @@ package body Why.Gen.Expr is
       --  a Why3 native type as input as detected by Use_Split_Form_For_Type.
 
       if Domain = EW_Prog
-        and then Has_Predicates (Get_Ada_Node (+To))
-        and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
+        and then Do_Predicate_Check
         and then Use_Split_Form_For_Type (Get_Ada_Node (+To))
       then
          Result := +Insert_Predicate_Check (Ada_Node => Ada_Node,
@@ -1771,8 +1770,7 @@ package body Why.Gen.Expr is
       --  an abstract type as input as detected by Use_Split_Form_For_Type.
 
       if Domain = EW_Prog
-        and then Has_Predicates (Get_Ada_Node (+To))
-        and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
+        and then Do_Predicate_Check
         and then not Use_Split_Form_For_Type (Get_Ada_Node (+To))
       then
          Result := +Insert_Predicate_Check (Ada_Node => Ada_Node,
