@@ -899,9 +899,10 @@ package body SPARK_Definition is
             elsif Is_Update_Aggregate (N)
               and then Is_Update_Unconstr_Multidim_Aggr (N)
             then
+               Error_Msg_Name_1 := Name_Update;
                Error_Msg_N
-                 ("update attribute of unconstrained multidimensional array "
-                    & "is not yet fully supported, checks may be missing",
+                 ("attribute % of unconstrained multidimensional array "
+                    & "is not yet supported",
                   N);
             end if;
             Mark_List (Expressions (N));
