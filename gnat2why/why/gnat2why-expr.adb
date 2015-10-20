@@ -13218,6 +13218,38 @@ package body Gnat2Why.Expr is
               Expr     => +Result,
               Post     => Cut_Assertion,
               Reason   => VC_Assert);
+
+         --  Assume the dynamic property of variables referenced in
+         --  Cut_Assertion.
+         --  ??? We should add the dynamic property of variables modified
+         --  in the previous statements, but it is more difficult to get.
+
+         declare
+            Vars : constant Node_Sets.Set :=
+              Compute_Ada_Node_Set (+Cut_Assertion);
+         begin
+            for V of Vars loop
+               if Nkind (V) in N_Entity
+                 and then Is_Object (V)
+                 and then Entity_In_SPARK (V)
+                 and then Ada_Ent_To_Why.Has_Element (Symbol_Table, V)
+                 and then Is_Mutable_In_Why (V)
+               then
+                  Result := Sequence
+                    (Result,
+                     Assume_Dynamic_Invariant
+                       (Expr          => +Transform_Identifier
+                            (Params   => Body_Params,
+                             Expr     => V,
+                             Ent      => V,
+                             Domain   => EW_Term),
+                        Ty            => Etype (V),
+                        Initialized   => False,
+                        Only_Var      => True,
+                        Top_Predicate => True));
+               end if;
+            end loop;
+         end;
       end if;
 
       return Result;
