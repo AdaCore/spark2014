@@ -1585,7 +1585,7 @@ package body Gnat2Why.Subprograms is
       Params := (File        => File.File,
                  Theory      => File.Cur_Theory,
                  Phase       => Generate_VCs_For_Body,
-                 Gen_Marker   => False,
+                 Gen_Marker  => False,
                  Ref_Allowed => True);
 
       --  Translate initial condition of E
