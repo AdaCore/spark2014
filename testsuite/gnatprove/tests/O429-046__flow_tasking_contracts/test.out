@@ -1,1 +1,2 @@
-NOT IMPLEMENTED YET
+sensor.ads:5:20: info: initialization of "T" proved
+watchdog.adb:9:13: info: initialization of "T" proved

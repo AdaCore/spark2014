@@ -1,9 +1,8 @@
 with System.Storage_Elements;
 
 Package body Alarm
-  --  with Refined_State => (Blinkenlights => (Blinken_Task,
-  --                                           Blinken_PO,
-  --                                           The_Light))
+  with Refined_State => (Blinkenlights => (Blinken_Task,
+                                           Blinken_PO))
 is
 
    The_Light : Boolean := False with
@@ -26,7 +25,6 @@ is
    procedure Turn_On is
    begin
       Blinken_PO.Turn_On;
-      --The_Light := True;  -- NOT ALLOWED
    end Turn_On;
 
    procedure Turn_Off is
