@@ -90,22 +90,22 @@ records.adb:393:19: info: postcondition proved
 records.adb:401:14: info: initialization of "R.Exists" proved
 records.adb:401:14: info: initialization of "R.The_Pair.A" proved
 records.adb:401:14: info: initialization of "R.The_Pair.B" proved
-records.adb:409:22: medium: assertion might fail, cannot prove X.The_Pair.A = 0 (e.g. when X = (, The_Pair => (A => 1)))
-records.adb:417:22: medium: assertion might fail, cannot prove X.The_Pair.A = X.The_Pair.B (e.g. when X = (, The_Pair => (A => 0, B => 1)))
-records.adb:425:22: medium: assertion might fail, cannot prove X.The_Pair.A /= X.The_Pair.B (e.g. when X = (, The_Pair => (A => 0, B => 0)))
+records.adb:409:22: medium: assertion might fail, cannot prove X.The_Pair.A = 0 (e.g. when X = (Exists => ?, The_Pair => (A => 1, B => ?)))
+records.adb:417:22: medium: assertion might fail, cannot prove X.The_Pair.A = X.The_Pair.B (e.g. when X = (Exists => ?, The_Pair => (A => 0, B => 1)))
+records.adb:425:22: medium: assertion might fail, cannot prove X.The_Pair.A /= X.The_Pair.B (e.g. when X = (Exists => ?, The_Pair => (A => 0, B => 0)))
 records.adb:428:22: info: initialization of "X.Exists" proved
 records.adb:428:22: info: initialization of "X.The_Pair.A" proved
 records.adb:428:22: info: initialization of "X.The_Pair.B" proved
-records.adb:435:22: medium: assertion might fail, cannot prove not X.Exists (e.g. when X = (Exists => True))
+records.adb:435:22: medium: assertion might fail, cannot prove not X.Exists (e.g. when X = (Exists => True, The_Pair => ?))
 records.adb:435:26: info: initialization of "X.Exists" proved
 records.adb:445:04: warning: analyzing unreferenced function "Apply_Command"
 records.adb:452:20: info: initialization of "R.A" proved
-records.adb:452:24: medium: range check might fail (e.g. when R = (A => 255))
+records.adb:452:24: medium: range check might fail (e.g. when R = (A => 255, B => ?))
 records.adb:459:14: info: initialization of "R.A" proved
 records.adb:459:14: info: initialization of "R.B" proved
 records.adb:465:22: info: postcondition proved
 records.adb:473:07: info: assertion proved
-records.adb:482:22: medium: postcondition might fail, cannot prove R = R'Old'update (e.g. when R = (Exists => False, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => False) and X = 1)
+records.adb:482:22: medium: postcondition might fail, cannot prove R = R'Old'update (e.g. when R = (Exists => False, The_Pair => (A => 1, B => 0)) and R'Old = (Exists => False, The_Pair => ?) and X = 1)
 records.adb:490:07: info: assertion proved
 records.adb:500:19: info: postcondition proved
 records.adb:503:22: medium: assertion might fail, cannot prove R.Exists (e.g. when R = (Exists => False, The_Pair => (A => 0, B => 0)))
