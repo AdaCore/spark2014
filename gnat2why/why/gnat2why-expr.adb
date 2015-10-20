@@ -12681,28 +12681,29 @@ package body Gnat2Why.Expr is
            and Name /= MF_BVs (Typ).Rotate_Right
          then
             declare
-               Nb_Of_Bits_M : constant W_Expr_Id :=
-                 New_Modular_Constant (Value => UI_From_Int (Nb_Of_Bits),
-                                       Typ => Typ);
+               Nb_Of_Buits_UI : constant Uint := UI_From_Int (Nb_Of_Bits);
             begin
-               T := New_Call
-                 (Domain => EW_Term,
-                  Name   => Name,
-                  Args   =>
-                    (1 => Arg1,
-                     2 => New_Conditional
-                       (Ada_Node    => Expr,
-                        Domain      => EW_Term,
-                        Condition   => New_Call
-                          (Domain   => Domain,
-                           Name     => MF_BVs (Typ).Ult,
-                           Args     => (1 => Arg2_M,
-                                        2 => Nb_Of_Bits_M),
-                           Typ      => EW_Bool_Type),
-                        Then_Part   => Arg2_M,
-                        Else_Part   => Nb_Of_Bits_M,
-                        Typ         => Typ)),
-                  Typ    => Typ);
+               T := New_Conditional
+                 (Ada_Node    => Expr,
+                  Domain      => EW_Term,
+                  Condition   => New_Call
+                    (Domain   => Domain,
+                     Name     => Int_Infix_Lt,
+                     Args     => (1 => Arg2,
+                                  2 => New_Integer_Constant
+                                    (Value => Nb_Of_Buits_UI)),
+                     Typ      => EW_Bool_Type),
+                  Then_Part   => New_Call
+                       (Domain => EW_Term,
+                        Name   => Name,
+                        Args   =>
+                          (1 => Arg1,
+                           2 => Arg2_M),
+                        Typ    => Typ),
+                  Else_Part   =>
+                    New_Modular_Constant (Value => Uint_0,
+                                          Typ => Typ),
+                  Typ         => Typ);
             end;
          else
             T := New_Call
