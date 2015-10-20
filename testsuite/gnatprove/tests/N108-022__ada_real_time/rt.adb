@@ -1,8 +1,6 @@
-package body RT
-  with SPARK_Mode => On
-is
+package body RT is
 
-   function F1 return Boolean is
+   procedure P1 (X : out Boolean) is
       T1, T2 : Time;
    begin
       T1 := Clock;
@@ -11,8 +9,7 @@ is
       -- should NOT prove, since Clock accesses volatile state
       pragma Assert (T1 = T2);  -- @ASSERT:FAIL
 
-      return T1 = T2;
-   end F1;
-
+      X := T1 = T2;
+   end P1;
 
 end RT;
