@@ -1,0 +1,6 @@
+alarm.adb:26:07: "The_Light" is constituent of single task type "Blinken_PO"
+alarm.adb:26:07: reference to variable "The_Light" cannot appear in this context
+   compilation of alarm.adb failed
+
+
+gnatprove: error during generation of Global contracts
