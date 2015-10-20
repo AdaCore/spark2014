@@ -270,7 +270,9 @@ package body Gnat2Why.Util is
       --  Currently only generate values for scalar, record, and array
       --  variables in counterexamples.
 
-      if not Comes_From_Source (E) then
+      if not Comes_From_Source (E) and then
+        not Comes_From_Source (Parent (E))
+      then
          return Name_Id_Sets.Empty_Set;
       end if;
 
@@ -579,16 +581,17 @@ package body Gnat2Why.Util is
       Labels.Include
         (NID
            (Model_Trace_Label &
-            (if E = Empty or else not Comes_From_Source (E)
+            (if E = Empty
                then ""
                else (if Is_Record_Field then "."
                  else "") & Trim (Entity_Id'Image (E),
-                 Both)) &
-            --  Add information whether labels are generated for a
-            --  variable holding result of a function.
-            (if Ekind (E) = E_Function
-               then "@result"
-               else "")));
+                 Both) &
+                 --  Add information whether labels are generated for a
+                 --  variable holding result of a function.
+                 (if Ekind (E) = E_Function then "@result" else "")
+             )
+           )
+        );
       return Labels;
    end Get_Model_Trace_Label;
 
