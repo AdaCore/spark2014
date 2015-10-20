@@ -4,8 +4,6 @@ is
 
    subtype LLI is Long_Long_Integer;
 
-   pragma Overflow_Mode (General => Strict, Assertions => ELIMINATED);
-
    function Mul_Div (V : LLI; M : Natural; D : Positive) return LLI with
      Pre => (if V >= 0
              then (V * LLI (M) + LLI (D) / 2) / LLI (D) <= LLI'Last

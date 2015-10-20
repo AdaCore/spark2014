@@ -1,46 +1,37 @@
-mul_div_2.adb:11:23: info: division check proved
-mul_div_2.adb:12:23: info: division check proved
-mul_div_2.adb:27:15: info: initialization of "V_Hi" proved
-mul_div_2.adb:27:20: medium: overflow check might fail
-mul_div_2.adb:28:15: info: initialization of "V_Lo" proved
-mul_div_2.adb:28:20: medium: overflow check might fail
-mul_div_2.adb:29:15: info: initialization of "V_Hi" proved
-mul_div_2.adb:29:20: info: overflow check proved
-mul_div_2.adb:29:22: info: initialization of "V_Lo" proved
-mul_div_2.adb:29:27: info: division check proved
-mul_div_2.adb:30:15: info: initialization of "V_Lo" proved
-mul_div_2.adb:30:20: info: division check proved
-mul_div_2.adb:33:20: info: initialization of "V_Hi" proved
-mul_div_2.adb:33:25: info: division check proved
-mul_div_2.adb:35:10: info: initialization of "Result_Hi" proved
-mul_div_2.adb:39:10: medium: exception might be raised
-mul_div_2.adb:42:20: info: initialization of "V_Hi" proved
-mul_div_2.adb:42:25: info: division check proved
-mul_div_2.adb:44:20: info: initialization of "Result_Hi" proved
-mul_div_2.adb:44:30: info: overflow check proved
-mul_div_2.adb:50:10: info: initialization of "V_Lo" proved
-mul_div_2.adb:50:15: info: overflow check proved
-mul_div_2.adb:50:17: info: initialization of "Remainder" proved
-mul_div_2.adb:50:27: info: overflow check proved
-mul_div_2.adb:50:37: info: overflow check proved
-mul_div_2.adb:51:39: info: overflow check proved
-mul_div_2.adb:51:48: info: division check proved
-mul_div_2.adb:51:54: info: division check proved
-mul_div_2.adb:54:38: info: overflow check proved
-mul_div_2.adb:55:16: info: initialization of "Result_Lo" proved
-mul_div_2.adb:55:38: info: overflow check proved
-mul_div_2.adb:55:40: info: initialization of "Result_Hi" proved
-mul_div_2.adb:60:10: medium: exception might be raised
-mul_div_2.adb:63:14: info: initialization of "Result_Hi" proved
-mul_div_2.adb:63:24: info: overflow check proved
-mul_div_2.adb:63:26: info: initialization of "Result_Lo" proved
-mul_div_2.ads:7:04: warning: pragma Overflow_Mode in code is ignored
-mul_div_2.ads:11:42: info: division check proved
-mul_div_2.ads:11:47: info: division check proved
-mul_div_2.ads:12:47: info: division check proved
-mul_div_2.ads:12:52: info: division check proved
-mul_div_2.ads:13:14: medium: postcondition might fail, cannot prove Mul_Div'Result = (if V >= 0 then V * M + D / 2 / D else --V * M + ... / ...
-mul_div_2.ads:15:43: info: division check proved
-mul_div_2.ads:15:48: info: division check proved
-mul_div_2.ads:16:48: info: division check proved
-mul_div_2.ads:16:53: info: division check proved
+mul_div_2.adb:10:32: info: division check proved
+mul_div_2.adb:11:32: info: division check proved
+mul_div_2.adb:25:22: info: overflow check proved
+mul_div_2.adb:25:32: info: overflow check proved
+mul_div_2.adb:25:61: info: overflow check proved
+mul_div_2.adb:25:70: info: division check proved
+mul_div_2.adb:26:22: info: overflow check proved
+mul_div_2.adb:26:32: medium: overflow check might fail
+mul_div_2.adb:26:34: info: initialization of "V_M_Lo" proved
+mul_div_2.adb:26:41: info: division check proved
+mul_div_2.adb:27:17: info: initialization of "V_M_Lo" proved
+mul_div_2.adb:27:24: info: division check proved
+mul_div_2.adb:30:20: info: initialization of "V_M_Hi" proved
+mul_div_2.adb:30:27: info: division check proved
+mul_div_2.adb:32:10: info: initialization of "Result_Hi" proved
+mul_div_2.adb:36:10: medium: exception might be raised
+mul_div_2.adb:39:20: info: initialization of "V_M_Hi" proved
+mul_div_2.adb:39:27: info: division check proved
+mul_div_2.adb:41:20: info: initialization of "Result_Hi" proved
+mul_div_2.adb:41:30: info: overflow check proved
+mul_div_2.adb:45:21: info: initialization of "V_M_Lo" proved
+mul_div_2.adb:45:28: info: overflow check proved
+mul_div_2.adb:45:30: info: initialization of "Remainder" proved
+mul_div_2.adb:45:40: info: overflow check proved
+mul_div_2.adb:45:51: info: division check proved
+mul_div_2.adb:49:14: info: initialization of "Result_Hi" proved
+mul_div_2.adb:49:24: medium: overflow check might fail
+mul_div_2.adb:49:26: info: initialization of "Result_Lo" proved
+mul_div_2.ads:9:42: info: division check proved
+mul_div_2.ads:9:47: info: division check proved
+mul_div_2.ads:10:47: info: division check proved
+mul_div_2.ads:10:52: info: division check proved
+mul_div_2.ads:11:14: medium: postcondition might fail, cannot prove Mul_Div'Result = (if V >= 0 then V * M + D / 2 / D else --V * M + ... / ...
+mul_div_2.ads:13:43: info: division check proved
+mul_div_2.ads:13:48: info: division check proved
+mul_div_2.ads:14:48: info: division check proved
+mul_div_2.ads:14:53: info: division check proved
