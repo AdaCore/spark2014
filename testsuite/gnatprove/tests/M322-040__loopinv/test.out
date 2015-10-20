@@ -2,8 +2,8 @@ max.adb:8:25: info: range check proved
 max.adb:8:53: info: index check proved
 max.adb:10:26: info: range check proved
 max.adb:10:54: info: index check proved
-max.adb:11:18: medium: assertion might fail, cannot prove M = Max
-max.adb:12:07: medium: assertion might fail
+max.adb:11:18: medium: assertion might fail, cannot prove M = Max (e.g. when Max = 1)
+max.adb:12:07: medium: assertion might fail (e.g. when I = 0 and A = (others => 0) and Max = 0)
 max.adb:14:19: info: range check proved
 max.adb:14:49: info: index check proved
 max.adb:16:20: info: range check proved
@@ -12,8 +12,8 @@ max.adb:23:25: info: range check proved
 max.adb:23:53: info: index check proved
 max.adb:25:26: info: range check proved
 max.adb:25:54: info: index check proved
-max.adb:26:18: medium: assertion might fail, cannot prove M = Max
-max.adb:35:10: medium: assertion might fail
+max.adb:26:18: medium: assertion might fail, cannot prove M = Max (e.g. when Max = 0)
+max.adb:35:10: medium: assertion might fail (e.g. when I = 1 and A = (others => 0) and Max = 0)
 max.adb:35:34: info: range check proved
 max.adb:35:64: info: index check proved
 max.adb:35:70: info: initialization of "Max" proved

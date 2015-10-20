@@ -1,7 +1,7 @@
 p.adb:13:35: info: overflow check proved
-p.adb:13:42: medium: overflow check might fail
+p.adb:13:42: medium: overflow check might fail (e.g. when N = 2147483647)
 p.adb:21:31: info: range check proved
-p.adb:21:38: medium: range check might fail
+p.adb:21:38: medium: range check might fail (e.g. when C = 2)
 p.adb:29:18: info: range check proved
 p.adb:29:29: info: overflow check proved
 p.adb:29:36: info: overflow check proved
@@ -9,4 +9,4 @@ p.adb:37:19: info: range check proved
 p.adb:37:31: info: overflow check proved
 p.adb:37:38: info: overflow check proved
 p.adb:45:31: info: overflow check proved
-p.adb:45:38: medium: overflow check might fail
+p.adb:45:38: medium: overflow check might fail (e.g. when F = 340282346638528859811704183484516925440.0)

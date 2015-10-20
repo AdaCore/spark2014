@@ -13,6 +13,6 @@ math.ads:7:31: info: contract case proved
 math.ads:11:14: info: postcondition proved
 math.ads:12:06: info: complete contract cases proved
 math.ads:12:06: info: disjoint contract cases proved
-math.ads:12:27: medium: overflow check might fail
+math.ads:12:27: medium: overflow check might fail (e.g. when X = 1073741824)
 math.ads:12:35: info: contract case proved
 math.ads:13:35: medium: contract case might fail

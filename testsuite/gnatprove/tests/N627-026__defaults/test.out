@@ -55,8 +55,8 @@ with_default.adb:202:07: info: assertion proved
 with_default.adb:202:22: info: initialization of "Wrap.Content.F1" proved
 with_default.adb:202:26: info: discriminant check proved
 with_default.adb:202:34: info: discriminant check proved
-with_default.adb:206:39: medium: range check might fail
-with_default.adb:219:39: medium: range check might fail
+with_default.adb:206:39: medium: range check might fail (e.g. when C = 0)
+with_default.adb:219:39: medium: range check might fail (e.g. when C = 0)
 with_default.adb:233:40: info: range check proved
 with_default.ads:3:14: warning: subprogram "Bad_Scalar" has no effect
 with_default.ads:5:14: warning: subprogram "OK_Scalar" has no effect

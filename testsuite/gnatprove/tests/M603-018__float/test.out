@@ -21,7 +21,7 @@ testfloat.adb:29:37: info: initialization of "T" proved
 testfloat.adb:31:07: info: assertion proved
 testfloat.adb:32:07: info: assertion proved
 testfloat.adb:32:22: info: initialization of "T" proved
-testfloat.adb:36:19: medium: assertion might fail, cannot prove Float'Floor (X) = X
+testfloat.adb:36:19: medium: assertion might fail, cannot prove Float'Floor (X) = X (e.g. when X = (/ 11080303 1048576))
 testfloat.adb:36:32: info: initialization of "X" proved
 testfloat.adb:37:04: info: assertion proved
 testfloat.adb:37:32: info: initialization of "Y" proved

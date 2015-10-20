@@ -1,17 +1,17 @@
 aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 aliasing.adb:26:16: info: index check proved
-aliasing.adb:26:16: medium: array index check might fail
+aliasing.adb:26:16: medium: array index check might fail (e.g. when I = 0)
 aliasing.adb:26:23: info: index check proved
-aliasing.adb:26:23: medium: array index check might fail
+aliasing.adb:26:23: medium: array index check might fail (e.g. when J = 0)
 global_stack.adb:7:03: warning: variable "Content" is read but never assigned
 global_stack.ads:4:12: function with output global "Top" is not allowed in SPARK
 search_array.adb:9:20: info: range check proved
 search_array.adb:12:07: medium: exception might be raised
 stack.ads:7:13: function with "in" "out" parameter is not allowed in SPARK
 stack.ads:7:13: violation of aspect SPARK_Mode at line 1
-use_access.adb:3:41: medium: range check might fail
-use_access.adb:3:45: medium: array index check might fail
+use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = 0)
+use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 0 and W = (others => 0))
    compilation of global_stack.adb failed
    compilation of stack.ads failed
 
@@ -32,15 +32,15 @@ p.adb:54:65: info: index check proved
 p.adb:56:07: info: raise statement proved unreachable
 p.adb:65:20: info: discriminant check proved
 p.adb:70:14: info: discriminant check proved
-p.adb:78:38: medium: overflow check might fail
+p.adb:78:38: medium: overflow check might fail (e.g. when A = (others => 0))
 p.adb:82:31: info: initialization of "End_Of_Seq" proved
-p.adb:88:30: medium: overflow check might fail
+p.adb:88:30: medium: overflow check might fail (e.g. when Beginning = 2147483647)
 p.adb:89:20: info: postcondition proved
-p.adb:89:41: medium: overflow check might fail
+p.adb:89:41: medium: overflow check might fail (e.g. when A = (others => 0))
 p.adb:93:16: info: index check proved
 p.adb:94:23: info: index check proved
 p.adb:99:42: info: range check proved
-p.adb:99:42: medium: overflow check might fail
+p.adb:99:42: medium: overflow check might fail (e.g. when Current_Index = 0 and Beginning = -2147483648)
 p.adb:107:10: info: loop invariant initialization proved
 p.adb:107:10: info: loop invariant preservation proved
 p.adb:107:33: info: initialization of "Beginning" proved
@@ -125,7 +125,7 @@ stacks.adb:8:22: info: range check proved
 stacks.adb:9:19: info: index check proved
 stacks.ads:8:14: info: postcondition proved
 stacks.ads:27:52: info: index check proved
-communication.adb:5:15: medium: length check might fail
+communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 0))
 communication.adb:19:25: medium: array index check might fail
 communication.adb:20:32: medium: overflow check might fail
 communication.adb:21:24: medium: overflow check might fail
@@ -144,7 +144,7 @@ communication.adb:41:32: info: overflow check proved
 communication.ads:4:22: medium: initialization of "Communication.State" does not depend on "V_Ext" (SPARK RM 7.1.5(11))
 communication.ads:10:23: info: initialization of "Message" proved
 communication.ads:15:26: info: initialization of "E" proved
-communication.ads:16:33: medium: range check might fail
+communication.ads:16:33: medium: range check might fail (e.g. when Max = 0 and V_Ext = -1)
 communication.ads:18:07: info: range check proved
 communication.ads:19:07: medium: type "Buffer" is not fully initialized
 counting.adb:7:35: info: initialization of "Black_Counter" constituent of "State" proved
@@ -167,13 +167,13 @@ data_package.adb:11:17: info: initialization of "Data.Field_3" proved
 data_package.ads:6:04: info: initialization of "Data_1" proved
 data_package.ads:7:04: info: initialization of "Data_2" proved
 data_package.ads:8:04: info: initialization of "Data_3" proved
-stack.adb:9:21: medium: array index check might fail
+stack.adb:9:21: medium: array index check might fail (e.g. when Top = 0)
 stack.adb:10:18: info: range check proved
-stack.adb:14:18: medium: range check might fail
+stack.adb:14:18: medium: range check might fail (e.g. when Top = 100)
 stack.adb:15:16: info: index check proved
-stack.adb:24:23: medium: array index check might fail
+stack.adb:24:23: medium: array index check might fail (e.g. when B_Top = 0)
 stack.adb:25:22: info: range check proved
-stack.adb:32:22: medium: range check might fail
+stack.adb:32:22: medium: range check might fail (e.g. when B_Top = 100)
 stack.adb:33:18: info: index check proved
 stack.adb:41:22: info: range check proved
 stack.adb:42:18: info: index check proved
@@ -193,12 +193,12 @@ stack.ads:56:55: info: length check proved
 stack.ads:57:49: info: index check proved
 use_stack.adb:2:11: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:2:11: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
-use_stack.adb:3:10: medium: precondition of main program might fail
+use_stack.adb:3:10: medium: precondition of main program might fail (e.g. when P_Top = 1)
 use_stack.adb:7:06: warning: unused assignment
 use_stack.adb:7:09: info: precondition proved
 use_stack.adb:8:11: info: initialization of "E" proved
 use_stack.adb:9:19: info: precondition proved
-use_stack.adb:9:19: medium: assertion might fail, cannot prove Peek = E or Peek = F
+use_stack.adb:9:19: medium: assertion might fail, cannot prove Peek = E or Peek = F (e.g. when E = 1 and F = 1)
 use_stack.adb:9:26: info: initialization of "E" proved
 use_stack.adb:9:31: info: precondition proved
 use_stack.adb:9:38: info: initialization of "F" proved
@@ -344,7 +344,7 @@ ring_buffer.adb:49:70: info: overflow check proved
 ring_buffer.adb:50:07: info: assertion proved
 ring_buffer.adb:50:65: info: index check proved
 ring_buffer.adb:50:73: info: index check proved
-ring_buffer.adb:51:22: medium: assertion might fail, cannot prove Get_Model (Length) = E
+ring_buffer.adb:51:22: medium: assertion might fail, cannot prove Get_Model (Length) = E (e.g. when Content = (others => 0) and First = 0 and Length = 0 and E = 0)
 ring_buffer.adb:51:33: info: index check proved
 ring_buffer.adb:56:13: info: discriminant check proved
 ring_buffer.adb:56:30: info: range check proved
@@ -366,16 +366,16 @@ ring_buffer.adb:81:46: info: length check proved, in call inlined at ring_buffer
 ring_buffer.adb:81:46: info: range check proved, in call inlined at ring_buffer.adb:94
 ring_buffer.adb:87:27: info: range check proved
 ring_buffer.adb:89:28: info: range check proved
-ring_buffer.ads:13:14: medium: postcondition might fail
-ring_buffer.ads:19:14: medium: postcondition might fail, cannot prove Get_Model = Get_Model'Old & E
+ring_buffer.ads:13:14: medium: postcondition might fail (e.g. when Get_Model'Result = (others => 0) and Content = (others => 0) and First = 0 and Length = 0)
+ring_buffer.ads:19:14: medium: postcondition might fail, cannot prove Get_Model = Get_Model'Old & E (e.g. when Content = (others => 0) and First = 0 and Length = 1 and E = 0)
 ring_buffer.ads:19:40: info: range check proved
-ring_buffer.ads:23:14: medium: postcondition might fail
+ring_buffer.ads:23:14: medium: postcondition might fail (e.g. when Model = (Content => (others => 0)) and Content = (others => 0) and First = 0 and Length = 0 and E = 0)
 ring_buffer.ads:23:64: info: range check proved
 ring_buffer.ads:25:25: info: initialization of "E" proved
-ring_buffer.ads:27:14: medium: postcondition might fail
+ring_buffer.ads:27:14: medium: postcondition might fail (e.g. when Model = (Content => (others => 0)) and Content = (others => 0) and First = 0 and Length = 0 and E = 0)
 ring_buffer.ads:27:30: info: initialization of "E" proved
 ring_buffer.ads:27:32: info: range check proved
-ring_buffer.ads:33:24: medium: postcondition might fail, cannot prove (Valid_Model)
-ring_buffer.ads:35:24: medium: contract case might fail
+ring_buffer.ads:33:24: medium: postcondition might fail, cannot prove (Valid_Model) (e.g. when Model = (Content => (others => 0)) and Content = (others => 0) and First = 0 and Length = 0)
+ring_buffer.ads:35:24: medium: contract case might fail (e.g. when E = 0 and Model = (Content => (others => 0)))
 ring_buffer.ads:35:29: info: range check proved
 ring_buffer.ads:36:24: info: contract case proved

@@ -28,7 +28,7 @@ fxp_true_check_4.adb:8:04: info: assertion proved
 fxp_true_check_4.adb:8:29: info: initialization of "MD" proved
 fxp_true_check_4.adb:8:45: info: overflow check proved
 fxp_true_check_4.adb:8:46: info: initialization of "MD2" proved
-integer_false_check.adb:6:19: medium: assertion might fail, cannot prove Integer (MI) < 0
+integer_false_check.adb:6:19: medium: assertion might fail, cannot prove Integer (MI) < 0 (e.g. when MI = 0)
 integer_false_check.adb:6:28: info: initialization of "MI" proved
 integer_true_check.adb:6:04: info: assertion proved
 integer_true_check.adb:6:28: info: initialization of "MI" proved

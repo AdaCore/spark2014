@@ -1,1 +1,1 @@
-iandatypes.adb:6:37: medium: range check might fail
+iandatypes.adb:6:37: medium: range check might fail (e.g. when X = 10 and Y = 1)

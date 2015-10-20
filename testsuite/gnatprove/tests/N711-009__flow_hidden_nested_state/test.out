@@ -3,7 +3,7 @@ p.adb:11:07: info: initialization of "Pr_Var" proved
 p.adb:11:07: medium: "Pr_Var" needs to be a constituent of some state abstraction
 p.adb:17:07: info: initialization of "GN" proved
 p.adb:17:07: medium: "GN" needs to be a constituent of some state abstraction
-p.adb:19:42: medium: overflow check might fail
+p.adb:19:42: medium: overflow check might fail (e.g. when GN = -1 and Pr_Var = -2147483648)
 p.adb:24:07: info: assertion proved
 p.adb:24:28: info: overflow check proved
 p.adb:25:16: info: overflow check proved

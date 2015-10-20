@@ -1,8 +1,8 @@
 cascade.adb:1:20: warning: unused initial value of "X"
 cascade.adb:3:57: info: initialization of "Err" proved
-cascade.adb:7:18: medium: overflow check might fail
+cascade.adb:7:18: medium: overflow check might fail (e.g. when Nid = 1 and Buf = 2147483647)
 cascade.adb:13:07: warning: unused assignment
-cascade.adb:13:12: medium: overflow check might fail
+cascade.adb:13:12: medium: overflow check might fail (e.g. when X = 1073741824)
 cascade.adb:14:04: warning: statement has no effect
 cascade.adb:14:07: info: initialization of "T1" proved
 cascade.adb:15:10: warning: unused assignment
@@ -13,7 +13,7 @@ cascade.adb:19:10: info: initialization of "T2" proved
 cascade.adb:19:13: info: overflow check proved
 cascade.adb:19:15: info: initialization of "T1" proved
 cascade.adb:20:07: warning: unused assignment
-cascade.adb:20:12: medium: overflow check might fail
+cascade.adb:20:12: medium: overflow check might fail (e.g. when T3 = 1073741824)
 cascade.adb:20:14: info: initialization of "T3" proved
 cascade.adb:21:07: warning: unused assignment
 cascade.adb:21:14: info: initialization of "T1" proved

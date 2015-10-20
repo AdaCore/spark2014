@@ -3,7 +3,7 @@ initial_condition_illegal_2.ads:10:32: "Initial_Condition_Illegal_2.State" must 
 
 
 gnatprove: error during flow analysis and proof
-initial_condition_illegal_3.ads:13:08: medium: initial condition might fail
+initial_condition_illegal_3.ads:13:08: medium: initial condition might fail (e.g. when Var = -1)
 initial_condition_illegal_3.ads:13:29: info: initialization of "Var" proved
 initial_condition_illegal_3.ads:15:04: info: initialization of "Var" proved
 initial_condition_illegal_3.ads:15:04: warning: initialization of Var has no effect

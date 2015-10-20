@@ -1,1 +1,1 @@
-pack.adb:5:30: medium: overflow check might fail
+pack.adb:5:30: medium: overflow check might fail (e.g. when Col_Count = 2147483647 and C = 1)

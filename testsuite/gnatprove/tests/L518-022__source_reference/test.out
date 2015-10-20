@@ -1,1 +1,1 @@
-master_file.adb:15:11: medium: overflow check might fail
+master_file.adb:15:11: medium: overflow check might fail (e.g. when X = 2147483647)

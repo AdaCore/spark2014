@@ -1,1 +1,1 @@
-skein.adb:17:14: medium: overflow check might fail
+skein.adb:17:14: medium: overflow check might fail (e.g. when F = 2147483647)

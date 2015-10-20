@@ -3,32 +3,32 @@ do_checks.adb:6:14: warning: subprogram "Do_Length_Check" has no effect
 do_checks.adb:7:14: warning: subprogram "Do_Discriminant_Check" has no effect
 do_checks.adb:17:24: medium: range check might fail
 do_checks.adb:23:24: info: range check proved
-do_checks.adb:23:57: medium: overflow check might fail
+do_checks.adb:23:57: medium: overflow check might fail (e.g. when Zero = -2147483648)
 do_checks.adb:31:16: medium: range check might fail
 do_checks.adb:38:16: info: range check proved
-do_checks.adb:38:48: medium: overflow check might fail
+do_checks.adb:38:48: medium: overflow check might fail (e.g. when Zero = -2147483648)
 do_checks.adb:47:21: medium: range check might fail
 do_checks.adb:53:21: info: range check proved
 do_checks.adb:61:16: medium: range check might fail
 do_checks.adb:67:16: info: range check proved
-do_checks.adb:67:61: medium: overflow check might fail
+do_checks.adb:67:61: medium: overflow check might fail (e.g. when Zero = -2147483648)
 do_checks.adb:74:17: medium: range check might fail
 do_checks.adb:78:17: info: range check proved
-do_checks.adb:78:50: medium: overflow check might fail
+do_checks.adb:78:50: medium: overflow check might fail (e.g. when Zero = -2147483648)
 do_checks.adb:86:19: medium: range check might fail
 do_checks.adb:94:19: info: range check proved
-do_checks.adb:94:51: medium: overflow check might fail
+do_checks.adb:94:51: medium: overflow check might fail (e.g. when Zero = -2147483648)
 do_checks.adb:103:16: medium: range check might fail
 do_checks.adb:109:16: info: range check proved
-do_checks.adb:109:65: medium: overflow check might fail
+do_checks.adb:109:65: medium: overflow check might fail (e.g. when Zero = -2147483648)
 do_checks.adb:137:25: medium: range check might fail
 do_checks.adb:150:25: info: range check proved
-do_checks.adb:150:57: medium: overflow check might fail
+do_checks.adb:150:57: medium: overflow check might fail (e.g. when Zero = -2147483648)
 do_checks.adb:162:39: medium: length check might fail
 do_checks.adb:162:40: medium: range check might fail
 do_checks.adb:168:38: info: length check proved
 do_checks.adb:168:39: info: range check proved
-do_checks.adb:168:67: medium: overflow check might fail
+do_checks.adb:168:67: medium: overflow check might fail (e.g. when Zero = -2147483648)
 do_checks.adb:211:32: warning: "Y" is not modified, could be IN
 do_checks.adb:213:21: info: length check proved
 do_checks.adb:213:26: medium: length check might fail
@@ -46,7 +46,7 @@ do_checks.adb:229:16: info: precondition proved
 do_checks.adb:229:19: info: initialization of "X" proved
 do_checks.adb:229:22: info: initialization of "Y" proved
 do_checks.adb:235:37: info: initialization of "Y" proved
-do_checks.adb:237:24: medium: length check might fail
+do_checks.adb:237:24: medium: length check might fail (e.g. when X = (others => false))
 do_checks.adb:239:35: info: length check proved
 do_checks.adb:242:16: info: precondition proved
 do_checks.adb:242:19: info: initialization of "X" proved
@@ -70,9 +70,9 @@ do_checks.adb:285:35: info: length check proved
 do_checks.adb:287:16: info: precondition proved
 do_checks.adb:287:20: info: initialization of "X" proved
 do_checks.adb:313:32: warning: "Y" is not modified, could be IN
-do_checks.adb:315:20: medium: discriminant check might fail
+do_checks.adb:315:20: medium: discriminant check might fail (e.g. when X = (Arr => (others => false)))
 do_checks.adb:315:25: medium: array index check might fail
-do_checks.adb:315:32: medium: discriminant check might fail
+do_checks.adb:315:32: medium: discriminant check might fail (e.g. when Y = (Arr => (others => false)))
 do_checks.adb:315:37: medium: array index check might fail
 do_checks.adb:317:30: info: discriminant check proved
 do_checks.adb:318:30: info: discriminant check proved

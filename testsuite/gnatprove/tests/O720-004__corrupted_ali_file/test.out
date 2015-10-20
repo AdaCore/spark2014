@@ -5,7 +5,7 @@ test.adb:20:38: info: division check proved
 test.adb:21:15: info: division check proved
 test.adb:28:04: warning: analyzing unreferenced function "Ext_Return_01"
 test.adb:30:07: info: initialization of "R" proved
-test.adb:31:17: medium: overflow check might fail
+test.adb:31:17: medium: overflow check might fail (e.g. when N = 2147483647)
 test.adb:44:07: medium: exception might be raised
    compilation of test.adb failed
 

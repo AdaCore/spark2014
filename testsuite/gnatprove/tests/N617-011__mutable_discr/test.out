@@ -27,7 +27,7 @@ discr.adb:71:17: info: discriminant check proved
 discr.adb:72:07: info: assertion proved
 discr.adb:73:07: info: assertion proved
 discr.adb:77:48: info: range check proved
-discr.adb:77:48: medium: overflow check might fail
+discr.adb:77:48: medium: overflow check might fail (e.g. when C = 2147483647)
 discr.adb:80:53: info: range check proved
 discr.adb:83:46: medium: precondition might fail
 discr.adb:92:09: info: discriminant check proved

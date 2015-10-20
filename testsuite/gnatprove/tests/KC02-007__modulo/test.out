@@ -1,6 +1,6 @@
 p.adb:6:22: info: initialization of "Y" proved
 p.adb:12:22: info: initialization of "Y" proved
-p.ads:7:14: medium: postcondition might fail, cannot prove F'Result = 17
+p.ads:7:14: medium: postcondition might fail, cannot prove F'Result = 17 (e.g. when F'Result = 1)
 p.ads:12:14: info: postcondition proved
 p.ads:16:19: info: postcondition proved
 p.ads:19:20: info: postcondition proved

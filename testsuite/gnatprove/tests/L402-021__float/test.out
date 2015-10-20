@@ -3,12 +3,12 @@ p.adb:7:04: info: assertion proved
 p.adb:7:19: info: initialization of "C" proved
 p.adb:8:19: info: initialization of "C" proved
 p.adb:8:19: medium: assertion might fail, cannot prove C-1.0 < X
-p.adb:8:20: medium: overflow check might fail
+p.adb:8:20: medium: overflow check might fail (e.g. when C = -340282346638528859811704183484516925440.0)
 p.adb:9:04: info: assertion proved
 p.adb:9:19: info: initialization of "F" proved
 p.adb:10:19: info: initialization of "F" proved
 p.adb:10:19: medium: assertion might fail, cannot prove F+1.0 > X
-p.adb:10:20: medium: overflow check might fail
+p.adb:10:20: medium: overflow check might fail (e.g. when F = 340282346638528859811704183484516925440.0)
 p.adb:11:04: info: assertion proved
 p.adb:11:19: info: initialization of "R" proved
 p.adb:11:23: info: initialization of "C" proved

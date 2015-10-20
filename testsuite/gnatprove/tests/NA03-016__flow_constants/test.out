@@ -10,5 +10,5 @@ raster_graphics.adb:16:26: info: initialization of "Delta_Y" proved
 raster_graphics.adb:16:33: info: overflow check proved
 raster_graphics.adb:16:51: info: overflow check proved
 raster_graphics.adb:25:10: info: initialization of "Status" proved
-raster_graphics.adb:29:41: medium: overflow check might fail
+raster_graphics.adb:29:41: medium: overflow check might fail (e.g. when Line_Count = 2147483647)
 raster_graphics.ads:18:32: info: initialization of "Status" proved

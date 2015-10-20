@@ -9,7 +9,7 @@ ident.adb:10:14: info: initialization of "X" proved
 ident.adb:30:14: info: initialization of "X" proved
 ident.adb:43:25: info: initialization of "X" proved
 ident.adb:44:22: info: initialization of "Res" proved
-ident.adb:44:22: medium: assertion might fail, cannot prove Res = X
+ident.adb:44:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 0 and X = 10)
 ident.adb:44:28: info: initialization of "X" proved
 ident.adb:46:07: info: assertion proved
 ident.adb:46:22: info: initialization of "Res" proved
@@ -20,7 +20,7 @@ ident.adb:48:28: info: initialization of "X" proved
 ident.adb:50:20: info: initialization of "X" proved
 ident.adb:50:20: info: range check proved
 ident.adb:51:22: info: initialization of "Y" proved
-ident.adb:51:22: medium: assertion might fail, cannot prove Y = 9
+ident.adb:51:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0)
 ident.adb:52:21: info: initialization of "X" proved
 ident.adb:52:21: info: range check proved
 ident.adb:53:07: info: assertion proved

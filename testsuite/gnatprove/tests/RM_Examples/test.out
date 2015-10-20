@@ -2,7 +2,7 @@ update_examples.ads:23:19: info: postcondition proved
 update_examples.ads:30:19: info: postcondition proved
 update_examples.ads:38:19: info: postcondition proved
 update_examples.ads:54:19: info: postcondition proved
-update_examples.ads:69:08: medium: postcondition might fail, cannot prove NA = NA'Old'update
+update_examples.ads:69:08: medium: postcondition might fail, cannot prove NA = NA'Old'update (e.g. when NA = () and NA'Old = ())
 loop_var_loop_invar.adb:7:10: info: initialization of "I" proved
 loop_var_loop_invar.adb:8:07: info: loop invariant initialization proved
 loop_var_loop_invar.adb:8:07: info: loop invariant preservation proved
@@ -99,7 +99,7 @@ stacks_2.adb:35:61: info: range check proved
 stacks_2.adb:40:30: info: range check proved
 stacks_2.adb:41:17: info: index check proved
 stacks_2.adb:46:29: info: refined post proved
-stacks_2.adb:51:30: medium: range check might fail
+stacks_2.adb:51:30: medium: range check might fail (e.g. when A_Pointer = 0)
 stacks_2.adb:54:46: info: index check proved
 stacks_2.ads:17:21: info: postcondition proved
 stacks_2.ads:21:16: info: postcondition proved
@@ -109,7 +109,7 @@ externals.adb:27:04: high: initialization of "Externals.Complex_Device" is speci
 externals.adb:49:25: info: initialization of "Press" proved
 externals.adb:49:31: medium: overflow check might fail
 externals.adb:49:33: info: initialization of "Temp" proved
-externals.adb:49:38: medium: overflow check might fail
+externals.adb:49:38: medium: overflow check might fail (e.g. when Temp = 1740263)
 externals.adb:53:54: info: initialization of "Main_Display.State" constituent of "Externals.Displays" proved
 externals.adb:54:59: info: initialization of "Secondary_Display.State" constituent of "Externals.Displays" proved
 externals.adb:74:41: medium: "Out_Reg" constituent of "Complex_Device" might not be written
@@ -128,15 +128,15 @@ hal.ads:27:24: info: initialization of "A_Byte" proved
 hal.ads:35:44: info: initialization of "Found" proved
 hal.ads:44:31: info: initialization of "A_Byte" proved
 hal.ads:69:30: info: initialization of "Result" proved
-inter_unit_elaboration_examples.adb:8:14: medium: overflow check might fail
-intra_unit_elaboration_order_examples.adb:3:50: medium: overflow check might fail
+inter_unit_elaboration_examples.adb:8:14: medium: overflow check might fail (e.g. when I = -1073741825)
+intra_unit_elaboration_order_examples.adb:3:50: medium: overflow check might fail (e.g. when I = 2147483647)
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved
-intra_unit_elaboration_order_examples.adb:35:14: medium: overflow check might fail
+intra_unit_elaboration_order_examples.adb:35:14: medium: overflow check might fail (e.g. when A = -1 and Y = -2147483648)
 intra_unit_elaboration_order_examples.adb:42:07: info: initialization of "X" proved
 intra_unit_elaboration_order_examples.ads:12:04: info: initialization of "X" proved
 intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved
 intra_unit_elaboration_order_examples.ads:27:50: info: overflow check proved
-initialization_and_elaboration.ads:8:08: medium: initial condition might fail
+initialization_and_elaboration.ads:8:08: medium: initial condition might fail (e.g. when V = 0 and VP = 0)
 initialization_and_elaboration.ads:8:29: info: initialization of "V" proved
 initialization_and_elaboration.ads:10:04: info: initialization of "V" proved

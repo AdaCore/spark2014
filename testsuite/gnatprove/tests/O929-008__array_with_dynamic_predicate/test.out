@@ -2,6 +2,6 @@ u.adb:8:10: medium: predicate check might fail
 u.adb:8:13: info: index check proved
 u.adb:10:10: info: loop invariant initialization proved
 u.adb:10:10: info: loop invariant preservation proved
-u.adb:11:27: medium: overflow check might fail
+u.adb:11:27: medium: overflow check might fail (e.g. when I = 2147483647)
 u.adb:12:18: info: index check proved
 u.adb:12:37: info: index check proved

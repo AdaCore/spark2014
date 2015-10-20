@@ -1,4 +1,4 @@
-bad_useless.adb:8:14: medium: overflow check might fail
+bad_useless.adb:8:14: medium: overflow check might fail (e.g. when X = 2147483647)
 bad_useless.adb:9:07: info: loop invariant initialization proved
 bad_useless.adb:9:07: info: loop invariant preservation proved
 bad_useless.adb:9:34: info: initialization of "Tmp" proved

@@ -8,7 +8,7 @@ const_in_loop.adb:10:12: info: initialization of "Z" proved
 const_in_loop.adb:11:15: warning: unused assignment
 const_in_loop.adb:13:12: warning: unused assignment
 const_in_loop.adb:14:24: info: initialization of "V1" proved
-const_in_loop.adb:14:24: medium: assertion might fail, cannot prove V1 = V2
+const_in_loop.adb:14:24: medium: assertion might fail, cannot prove V1 = V2 (e.g. when V1 = 1 and V2 = 2)
 const_in_loop.adb:14:29: info: initialization of "V2" proved
 const_in_loop.adb:15:09: info: loop invariant initialization proved
 const_in_loop.adb:15:09: info: loop invariant preservation proved
@@ -19,4 +19,4 @@ dynamic_in_loop.adb:7:18: info: range check proved
 dynamic_in_loop.adb:9:09: info: loop invariant initialization proved
 dynamic_in_loop.adb:9:09: info: loop invariant preservation proved
 dynamic_in_loop.adb:9:32: info: initialization of "X" proved
-dynamic_in_loop.adb:10:16: medium: overflow check might fail
+dynamic_in_loop.adb:10:16: medium: overflow check might fail (e.g. when Z = 2147483647)

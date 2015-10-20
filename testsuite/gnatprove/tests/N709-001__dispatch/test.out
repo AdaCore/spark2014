@@ -1,4 +1,4 @@
-object.ads:7:13: medium: precondition is stronger than the default class-wide precondition of True
+object.ads:7:13: medium: precondition is stronger than the default class-wide precondition of True (e.g. when Obj = (Area => -1, Max_Width => -1, Max_Height => -1))
 object.ads:14:20: info: postcondition proved
 object.ads:15:31: info: precondition proved
 object.ads:30:61: info: range check proved
@@ -12,9 +12,9 @@ window.adb:5:32: medium: range check might fail
 window.adb:18:07: high: "Rec" is not initialized
 window.adb:19:07: info: initialization of "Rec" proved
 window.adb:20:24: info: initialization of "Rec" proved
-window.adb:21:07: medium: precondition might fail
+window.adb:21:07: medium: precondition might fail (e.g. when Rec = (Width => 0, Height => 0))
 window.adb:21:13: info: initialization of "Rec" proved
 window.ads:11:16: info: postcondition proved
 window.ads:11:44: info: overflow check proved
-window.ads:15:16: medium: postcondition might fail, cannot prove Obj.Has_Stored_Area
-window.ads:19:14: medium: postcondition might fail, cannot prove Total_Area = Total_Area'Old - 100
+window.ads:15:16: medium: postcondition might fail, cannot prove Obj.Has_Stored_Area (e.g. when Obj = ())
+window.ads:19:14: medium: postcondition might fail, cannot prove Total_Area = Total_Area'Old - 100 (e.g. when Total_Area = 101)

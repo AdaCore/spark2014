@@ -23,6 +23,4 @@ number_theory.ads:23:47: info: division check proved
 number_theory.ads:23:47: info: overflow check proved
 number_theory.ads:23:55: info: overflow check proved
 number_theory.ads:27:19: info: postcondition proved
-number_theory.ads:31:19: medium: postcondition might fail, cannot prove Fibonacci2'Result = Fib(N)
-
-
+number_theory.ads:31:19: medium: postcondition might fail, cannot prove Fibonacci2'Result = Fib(N) (e.g. when Fibonacci2'Result = 0 and N = 0)

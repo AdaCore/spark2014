@@ -58,7 +58,7 @@ array_arith.adb:58:15: info: initialization of "X" proved, in call inlined at ar
 array_arith.adb:58:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
 array_arith.adb:59:16: info: initialization of "X" proved, in call inlined at array_arith.adb:66
 array_arith.adb:59:19: info: initialization of "One" proved, in call inlined at array_arith.adb:66
-array_arith.adb:63:19: medium: overflow check might fail
+array_arith.adb:63:19: medium: overflow check might fail (e.g. when Y = 1 and One = 2147483647)
 array_arith.adb:63:19: medium: range check might fail
 array_arith.adb:70:29: info: initialization of "Y" proved
 array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:77
@@ -79,7 +79,7 @@ array_arith.ads:12:14: info: postcondition proved
 array_arith.ads:12:35: info: initialization of "X" proved
 array_arith.ads:14:21: info: initialization of "X" proved
 array_arith.ads:15:35: info: initialization of "X" proved
-array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1
+array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when X = (others => 0))
 array_arith.ads:17:20: info: initialization of "X" proved
 array_arith.ads:18:14: info: postcondition proved
 array_arith.ads:18:35: info: initialization of "X" proved
@@ -88,7 +88,7 @@ ident.adb:15:12: info: initialization of "X" proved, in call inlined at ident.ad
 ident.adb:35:12: info: initialization of "X" proved, in call inlined at ident.adb:52
 ident.adb:43:25: info: initialization of "X" proved
 ident.adb:44:22: info: initialization of "Res" proved
-ident.adb:44:22: medium: assertion might fail, cannot prove Res = X
+ident.adb:44:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 0 and X = 10)
 ident.adb:44:28: info: initialization of "X" proved
 ident.adb:45:26: info: initialization of "X" proved
 ident.adb:46:07: info: assertion proved
@@ -108,10 +108,10 @@ ident.adb:55:22: info: initialization of "Y" proved
 ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
 ident.ads:9:45: info: initialization of "Y" proved
-incr_expr_fun.adb:4:62: medium: overflow check might fail
-incr_expr_fun.adb:6:63: medium: overflow check might fail
-incr_expr_fun.adb:8:58: medium: overflow check might fail
-incr_expr_fun.adb:11:63: medium: overflow check might fail
+incr_expr_fun.adb:4:62: medium: overflow check might fail (e.g. when X = 2147483647)
+incr_expr_fun.adb:6:63: medium: overflow check might fail (e.g. when X = 2147483647)
+incr_expr_fun.adb:8:58: medium: overflow check might fail (e.g. when X = 2147483647)
+incr_expr_fun.adb:11:63: medium: overflow check might fail (e.g. when X = 2147483647)
 incr_expr_fun.adb:16:07: info: assertion proved
 incr_expr_fun.adb:16:32: info: initialization of "X" proved
 incr_expr_fun.adb:16:39: info: overflow check proved
@@ -139,9 +139,9 @@ incr_expr_fun.adb:23:40: info: overflow check proved
 incr_expr_fun.adb:24:07: info: assertion proved
 incr_expr_fun.adb:24:38: info: initialization of "X" proved
 incr_expr_fun.adb:24:45: info: overflow check proved
-incr_expr_fun.ads:4:57: medium: overflow check might fail
-incr_expr_fun.ads:7:61: medium: overflow check might fail
+incr_expr_fun.ads:4:57: medium: overflow check might fail (e.g. when X = 2147483647)
+incr_expr_fun.ads:7:61: medium: overflow check might fail (e.g. when X = 2147483647)
 incr_expr_fun.ads:13:14: warning: subprogram "Test" has no effect
-incr_expr_fun.ads:15:62: medium: overflow check might fail
-incr_expr_fun.ads:17:58: medium: overflow check might fail
-incr_expr_fun.ads:20:63: medium: overflow check might fail
+incr_expr_fun.ads:15:62: medium: overflow check might fail (e.g. when X = 2147483647)
+incr_expr_fun.ads:17:58: medium: overflow check might fail (e.g. when X = 2147483647)
+incr_expr_fun.ads:20:63: medium: overflow check might fail (e.g. when X = 2147483647)

@@ -1,5 +1,5 @@
 pupils.adb:20:08: info: length check proved
-pupils.adb:25:49: medium: array index check might fail
+pupils.adb:25:49: medium: array index check might fail (e.g. when P = (NumberOfPupils => 250, PupilEntries => ?))
 pupils.adb:26:15: info: initialization of "Subject_Scores" proved
 pupils.adb:27:23: info: initialization of "Success" proved
 pupils.adb:29:43: info: index check proved
@@ -13,7 +13,7 @@ pupils.ads:40:17: info: length check proved
 pupils.ads:46:46: info: length check proved
 pupils.ads:76:32: info: length check proved
 pupils.ads:99:44: info: initialization of "Success" proved
-pupils.ads:102:16: medium: postcondition might fail
+pupils.ads:102:16: medium: postcondition might fail (e.g. when P'Old = (NumberOfPupils => 0, PupilEntries => ()) and P = (NumberOfPupils => 0, PupilEntries => ()) and Success = False and Subj0 = 0 and Subj1 = 0 and Subj2 = 0 and Subj3 = 0 and Subj4 = 0 and Subj5 = 0 and Subj6 = 0 and Subj7 = 0 and Subj8 = 0 and Subj9 = 0 and SName = (others => 0) and FName = (others => 0) and Fm = 0 and Score0 = 0 and Score1 = 0 and Score2 = 0 and Score3 = 0 and Score4 = 0 and Score5 = 0 and Score6 = 0 and Score7 = 0 and Score8 = 0 and Score9 = 0)
 pupils.ads:102:25: info: range check proved
 pupils.ads:103:35: info: index check proved
 pupils.ads:103:60: info: index check proved

@@ -21,7 +21,7 @@ state_machine_with_oop.adb:33:07: info: raise statement proved unreachable
 state_machine_with_oop.adb:39:55: info: overflow check proved
 state_machine_with_oop.adb:50:07: info: raise statement proved unreachable
 state_machine_with_oop.adb:55:07: info: raise statement proved unreachable
-state_machine_with_oop.adb:60:52: medium: overflow check might fail
+state_machine_with_oop.adb:60:52: medium: overflow check might fail (e.g. when Current = (Common_Value => 2147483647, Value_For_C => ?))
 state_machine_with_oop.adb:66:16: info: precondition proved
 state_machine_with_oop.adb:66:40: info: precondition proved
 state_machine_with_oop.adb:67:10: info: loop invariant initialization proved
@@ -32,15 +32,15 @@ state_machine_with_oop.adb:70:37: info: precondition proved
 state_machine_with_oop.adb:72:31: info: initialization of "E.Common_Value" proved
 state_machine_with_oop.adb:72:31: info: initialization of extension of "E" proved
 state_machine_with_oop.adb:73:16: info: precondition proved
-state_machine_with_oop.adb:73:44: medium: precondition might fail
+state_machine_with_oop.adb:73:44: medium: precondition might fail (e.g. when E = ())
 state_machine_with_oop.adb:73:55: info: initialization of "E.Common_Value" proved
 state_machine_with_oop.adb:73:55: info: initialization of extension of "E" proved
 state_machine_with_oop.adb:75:16: info: precondition proved
-state_machine_with_oop.adb:75:44: medium: precondition might fail
+state_machine_with_oop.adb:75:44: medium: precondition might fail (e.g. when E = ())
 state_machine_with_oop.adb:75:55: info: initialization of "E.Common_Value" proved
 state_machine_with_oop.adb:75:55: info: initialization of extension of "E" proved
 state_machine_with_oop.adb:77:16: info: precondition proved
-state_machine_with_oop.adb:77:44: medium: precondition might fail
+state_machine_with_oop.adb:77:44: medium: precondition might fail (e.g. when E = ())
 state_machine_with_oop.adb:77:55: info: initialization of "E.Common_Value" proved
 state_machine_with_oop.adb:77:55: info: initialization of extension of "E" proved
 state_machine_with_oop.adb:79:16: info: precondition proved

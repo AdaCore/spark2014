@@ -1,1 +1,1 @@
-callee.adb:4:14: medium: overflow check might fail
+callee.adb:4:14: medium: overflow check might fail (e.g. when A = -2147483648 and B = -1)

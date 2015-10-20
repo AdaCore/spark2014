@@ -1,6 +1,6 @@
 p.adb:8:10: info: loop invariant initialization proved
 p.adb:8:10: info: loop invariant preservation proved
-p.adb:10:55: medium: range check might fail
+p.adb:10:55: medium: range check might fail (e.g. when C = 0)
 p.adb:21:07: info: precondition proved
 p.ads:18:14: info: postcondition proved
 p.ads:33:14: info: postcondition proved

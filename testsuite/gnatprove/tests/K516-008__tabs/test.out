@@ -1,4 +1,4 @@
-tab.adb:6:49: medium: range check might fail
+tab.adb:6:49: medium: range check might fail (e.g. when X = 1)
 tab.adb:9:10: info: loop invariant initialization proved
 tab.adb:9:10: info: loop invariant preservation proved
 tab.adb:10:21: info: range check proved

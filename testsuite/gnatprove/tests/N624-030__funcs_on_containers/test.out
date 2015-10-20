@@ -36,7 +36,7 @@ find_map.adb:40:13: info: precondition proved
 find_map.adb:40:34: info: precondition proved
 find_map.adb:41:18: info: range check proved
 find_map.adb:41:46: medium: precondition might fail
-find_map.adb:42:17: medium: array index check might fail
+find_map.adb:42:17: medium: array index check might fail (e.g. when A = (others => 0))
 find_map.adb:42:35: info: precondition proved
 find_map.adb:43:17: info: postcondition proved
 find_map.adb:44:29: info: range check proved

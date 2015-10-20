@@ -137,7 +137,7 @@ admintoken.ads:148:33: info: initialization of "IDCert.Contents" constituent of 
 admintoken.ads:148:33: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:217:22: medium: postcondition might fail
+admintoken.ads:217:22: medium: postcondition might fail (e.g. when IDCert = (Valid => False, Contents => ()) and AuthCert = (Valid => False, Contents => ()))
 admintoken.ads:217:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:217:26: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
@@ -244,7 +244,7 @@ auditlog.adb:582:28: warning: unused variable "E"
 auditlog.adb:588:68: info: initialization of "ElementText" proved
 auditlog.adb:588:68: info: initialization of "ElementText" proved, in call inlined at auditlog.adb:636
 auditlog.adb:588:68: info: length check proved, in call inlined at auditlog.adb:636
-auditlog.adb:589:31: medium: length check might fail, in call inlined at auditlog.adb:636
+auditlog.adb:589:31: medium: length check might fail, in call inlined at auditlog.adb:636 (e.g. when ElementID = 0)
 auditlog.adb:591:17: info: initialization of "ElementText" proved
 auditlog.adb:591:17: info: initialization of "ElementText" proved, in call inlined at auditlog.adb:636
 auditlog.adb:601:14: info: initialization of "OK" proved
@@ -255,10 +255,10 @@ auditlog.adb:610:52: info: initialization of "Now.Month" proved
 auditlog.adb:610:52: info: initialization of "Now.Year" proved
 auditlog.adb:636:35: info: initialization of "C76b" proved
 auditlog.adb:667:14: info: initialization of "OK" proved
-auditlog.adb:717:59: medium: range check might fail
+auditlog.adb:717:59: medium: range check might fail (e.g. when UsedLogFiles = (Length => 0, others => ?))
 auditlog.adb:717:64: info: overflow check proved
 auditlog.adb:718:42: info: overflow check proved
-auditlog.adb:719:22: medium: postcondition might fail
+auditlog.adb:719:22: medium: postcondition might fail (e.g. when NumberLogEntries = 2 and UsedLogFiles = (Length => 1, others => ?) and LogFileEntries = (others => 0) and CurrentLogFile = 1)
 auditlog.adb:720:59: info: range check proved
 auditlog.adb:720:64: info: overflow check proved
 auditlog.adb:721:42: info: overflow check proved
@@ -286,7 +286,7 @@ auditlog.adb:942:22: info: initialization of "Head" proved
 auditlog.adb:945:22: info: initialization of "Head" proved
 auditlog.adb:949:50: info: range check proved
 auditlog.adb:951:44: info: range check proved
-auditlog.adb:1008:56: medium: range check might fail
+auditlog.adb:1008:56: medium: range check might fail (e.g. when UsedLogFiles = (Length => 0, others => ?))
 auditlog.adb:1008:61: info: overflow check proved
 auditlog.adb:1009:39: info: overflow check proved
 auditlog.adb:1010:19: info: postcondition proved
@@ -349,9 +349,9 @@ auditlog.adb:1232:48: info: initialization of "UsedLogFiles.LastI" constituent o
 auditlog.adb:1233:47: info: initialization of "FileAges" proved
 auditlog.adb:1233:56: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1236:45: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1236:64: medium: range check might fail
+auditlog.adb:1236:64: medium: range check might fail (e.g. when UsedLogFiles = (LastI => 17, others => ?))
 auditlog.adb:1237:45: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:1237:65: medium: range check might fail
+auditlog.adb:1237:65: medium: range check might fail (e.g. when UsedLogFiles = (Length => 17, others => ?))
 auditlog.adb:1238:26: info: range check proved
 auditlog.adb:1239:32: info: overflow check proved
 auditlog.adb:1239:37: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
@@ -362,9 +362,9 @@ auditlog.adb:1241:69: info: overflow check proved
 auditlog.adb:1243:43: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1246:26: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
 auditlog.adb:1248:45: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:1248:64: medium: range check might fail
+auditlog.adb:1248:64: medium: range check might fail (e.g. when UsedLogFiles = (LastI => 17, others => ?))
 auditlog.adb:1249:45: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:1249:65: medium: range check might fail
+auditlog.adb:1249:65: medium: range check might fail (e.g. when UsedLogFiles = (Length => 17, others => ?))
 auditlog.adb:1250:60: info: initialization of "UsedLogFiles.LastI" constituent of "State" proved
 auditlog.adb:1250:60: info: initialization of "UsedLogFiles.List" constituent of "State" proved
 auditlog.adb:1258:10: info: initialization of "UsedLogFiles.Length" constituent of "State" proved
@@ -1508,7 +1508,7 @@ door.adb:114:18: medium: precondition might fail
 door.adb:115:33: info: initialization of "ID" proved
 door.adb:116:33: info: initialization of "Severity" proved
 door.adb:122:20: info: initialization of "LocalAlarm" proved
-door.adb:169:30: medium: refined postcondition might fail
+door.adb:169:30: medium: refined postcondition might fail (e.g. when SystemFault = False and NewDoor = 0 and DoorAlarm = 1 and CurrentDoor = 0 and ID = 0 and AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0))
 door.adb:197:10: info: initialization of "SystemFault" proved
 door.adb:200:18: medium: precondition might fail
 door.adb:209:28: info: initialization of "NewDoor" proved
@@ -1541,7 +1541,7 @@ door.adb:322:41: info: initialization of "AlarmTimeout.Day" constituent of "Stat
 door.adb:322:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.adb:322:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
 door.adb:322:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:347:30: medium: refined postcondition might fail
+door.adb:347:30: medium: refined postcondition might fail (e.g. when AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0) and DoorAlarm = 1 and CurrentDoor = 0)
 door.adb:350:57: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
 door.adb:350:57: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.adb:350:57: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
@@ -1609,7 +1609,7 @@ enclave.adb:399:15: medium: precondition might fail
 enclave.adb:438:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:481:18: medium: precondition might fail
 enclave.adb:487:19: medium: precondition might fail
-enclave.adb:490:06: medium: postcondition might fail
+enclave.adb:490:06: medium: postcondition might fail (e.g. when Status = 3)
 enclave.adb:490:07: info: initialization of "Status" constituent of "State" proved
 enclave.adb:504:18: medium: precondition might fail
 enclave.adb:510:19: medium: precondition might fail
@@ -1663,7 +1663,7 @@ enclave.adb:1108:15: medium: precondition might fail
 enclave.adb:1119:12: medium: precondition might fail
 enclave.adb:1182:11: medium: precondition might fail
 enclave.adb:1197:19: medium: precondition might fail
-enclave.adb:1206:06: medium: postcondition might fail
+enclave.adb:1206:06: medium: postcondition might fail (e.g. when Status = 8)
 enclave.adb:1215:18: medium: precondition might fail
 enclave.adb:1223:15: medium: precondition might fail
 enclave.adb:1243:18: medium: precondition might fail
@@ -1673,7 +1673,7 @@ enclave.adb:1295:39: medium: "Floppy.Output" might not be written
 enclave.adb:1375:18: medium: precondition might fail
 enclave.adb:1394:18: medium: precondition might fail
 enclave.adb:1400:19: medium: precondition might fail
-enclave.adb:1409:06: medium: postcondition might fail
+enclave.adb:1409:06: medium: postcondition might fail (e.g. when Status = 6)
 enclave.adb:1433:18: medium: precondition might fail
 enclave.adb:1454:18: medium: precondition might fail
 enclave.adb:1460:19: medium: precondition might fail
@@ -1692,16 +1692,16 @@ enclave.adb:1623:12: info: initialization of "LocalStatus" proved
 enclave.adb:1625:13: info: precondition proved
 enclave.adb:1628:13: info: precondition proved
 enclave.adb:1631:13: info: precondition proved
-enclave.adb:1670:31: medium: refined postcondition might fail
+enclave.adb:1670:31: medium: refined postcondition might fail (e.g. when Status = 4)
 enclave.adb:1685:21: medium: precondition might fail
 enclave.adb:1704:18: medium: precondition might fail
 enclave.adb:1731:47: medium: "Floppy.Output" might not be written
-enclave.adb:1887:06: medium: refined postcondition might fail
+enclave.adb:1887:06: medium: refined postcondition might fail (e.g. when Status = 3 and LocalStatus = 4)
 enclave.adb:1906:18: medium: precondition might fail
 enclave.adb:1912:19: medium: precondition might fail
 enclave.adb:1937:18: medium: precondition might fail
 enclave.adb:1943:18: info: precondition proved
-enclave.adb:1947:42: medium: range check might fail
+enclave.adb:1947:42: medium: range check might fail (e.g. when Status = 3)
 enclave.adb:1949:12: info: initialization of "LocalStatus" proved
 enclave.adb:1952:13: info: precondition proved
 enclave.adb:1957:13: info: precondition proved
@@ -1711,7 +1711,7 @@ enclave.adb:2078:18: medium: precondition might fail
 enclave.adb:2084:19: medium: precondition might fail
 enclave.adb:2179:21: medium: precondition might fail
 enclave.adb:2185:22: medium: precondition might fail
-enclave.adb:2188:09: medium: postcondition might fail
+enclave.adb:2188:09: medium: postcondition might fail (e.g. when Status = 6)
 enclave.adb:2197:21: medium: precondition might fail
 enclave.adb:2203:22: medium: precondition might fail
 enclave.adb:2207:21: medium: precondition might fail
@@ -1809,7 +1809,7 @@ enrolment.adb:228:27: info: overflow check proved
 enrolment.adb:229:10: info: initialization of "CertNo" proved
 enrolment.adb:236:45: info: initialization of "DataOK" proved
 enrolment.adb:238:23: info: initialization of "CertNo" proved
-enrolment.adb:238:30: medium: overflow check might fail
+enrolment.adb:238:30: medium: overflow check might fail (e.g. when CertNo = 2147483647)
 enrolment.adb:239:13: info: initialization of "CertNo" proved
 enrolment.adb:250:14: info: initialization of "ClosedOK" proved
 enrolment.adb:251:25: info: initialization of "CertNo" proved
@@ -1817,7 +1817,7 @@ enrolment.adb:255:14: info: initialization of "DataOK" proved
 enrolment.ads:55:24: info: initialization of "DataOK" proved
 enrolment.ads:56:24: info: initialization of "Description" proved
 enrolment.ads:78:22: info: initialization of "DataOK" proved
-enrolment.ads:78:22: medium: postcondition might fail, cannot prove DataOK = KeyStore(KeyStore.privatekeypresent)
+enrolment.ads:78:22: medium: postcondition might fail, cannot prove DataOK = KeyStore(KeyStore.privatekeypresent) (e.g. when DataOK = True)
 file.adb:93:36: warning: index for "TheName" may assume lower bound of 1
 file.adb:93:36: warning: suggested replacement: "TheName'First"
 file.adb:93:39: warning: index for "TheName" may assume lower bound of 1
@@ -2207,9 +2207,9 @@ screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at
 screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at screen.adb:603
 screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at screen.adb:609
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:591
-screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:597
-screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:603
-screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:609
+screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:597 (e.g. when Str = (others => 0))
+screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:603 (e.g. when Str = (others => 0))
+screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:609 (e.g. when Str = (others => 0))
 screen.adb:440:41: info: initialization of "Str" proved
 screen.adb:440:41: info: initialization of "Str" proved, in call inlined at screen.adb:591
 screen.adb:440:41: info: initialization of "Str" proved, in call inlined at screen.adb:597
@@ -2229,9 +2229,9 @@ screen.adb:440:44: info: length check proved, in call inlined at screen.adb:597
 screen.adb:440:44: info: length check proved, in call inlined at screen.adb:603
 screen.adb:440:44: info: length check proved, in call inlined at screen.adb:609
 screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:591
-screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:597
-screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:603
-screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:609
+screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:597 (e.g. when Str = (others => 0))
+screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:603 (e.g. when Str = (others => 0))
+screen.adb:440:44: medium: range check might fail, in call inlined at screen.adb:609 (e.g. when Str = (others => 0))
 screen.adb:440:72: info: overflow check proved, in call inlined at screen.adb:591
 screen.adb:440:72: info: overflow check proved, in call inlined at screen.adb:597
 screen.adb:440:72: info: overflow check proved, in call inlined at screen.adb:603
@@ -2252,7 +2252,7 @@ screen.adb:475:54: info: initialization of "MinPreservedLog" proved, in call inl
 screen.adb:475:59: info: division check proved, in call inlined at screen.adb:651
 screen.adb:475:59: info: division check proved, in call inlined at screen.adb:657
 screen.adb:475:67: medium: range check might fail, in call inlined at screen.adb:651
-screen.adb:475:67: medium: range check might fail, in call inlined at screen.adb:657
+screen.adb:475:67: medium: range check might fail, in call inlined at screen.adb:657 (e.g. when Data = (others => 0))
 screen.adb:476:38: info: length check proved, in call inlined at screen.adb:651
 screen.adb:476:38: info: length check proved, in call inlined at screen.adb:657
 screen.adb:478:37: info: initialization of "Result" proved
@@ -2266,7 +2266,7 @@ screen.adb:478:40: info: initialization of "Data" proved, in call inlined at scr
 screen.adb:478:40: info: length check proved, in call inlined at screen.adb:651
 screen.adb:478:40: info: length check proved, in call inlined at screen.adb:657
 screen.adb:478:40: medium: range check might fail, in call inlined at screen.adb:651
-screen.adb:478:40: medium: range check might fail, in call inlined at screen.adb:657
+screen.adb:478:40: medium: range check might fail, in call inlined at screen.adb:657 (e.g. when Result = (others => 0))
 screen.adb:479:17: info: initialization of "Result" proved
 screen.adb:479:17: info: initialization of "Result" proved, in call inlined at screen.adb:651
 screen.adb:479:17: info: initialization of "Result" proved, in call inlined at screen.adb:657
@@ -2293,7 +2293,7 @@ screen.adb:517:36: info: initialization of "Data" proved
 screen.adb:517:36: info: initialization of "Data" proved, in call inlined at screen.adb:639
 screen.adb:517:36: info: initialization of "Data" proved, in call inlined at screen.adb:645
 screen.adb:517:36: medium: length check might fail, in call inlined at screen.adb:639
-screen.adb:517:36: medium: length check might fail, in call inlined at screen.adb:645
+screen.adb:517:36: medium: length check might fail, in call inlined at screen.adb:645 (e.g. when Result = (others => 0))
 screen.adb:518:17: info: initialization of "Result" proved
 screen.adb:518:17: info: initialization of "Result" proved, in call inlined at screen.adb:639
 screen.adb:518:17: info: initialization of "Result" proved, in call inlined at screen.adb:645
@@ -2432,9 +2432,9 @@ screen.adb:784:40: info: length check proved, in call inlined at screen.adb:812
 screen.adb:784:40: info: length check proved, in call inlined at screen.adb:818
 screen.adb:784:40: info: length check proved, in call inlined at screen.adb:824
 screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:806
-screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:812
-screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:818
-screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:824
+screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:812 (e.g. when Result = (others => 0))
+screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:818 (e.g. when Result = (others => 0))
+screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:824 (e.g. when Result = (others => 0))
 screen.adb:785:17: info: initialization of "Result" proved
 screen.adb:785:17: info: initialization of "Result" proved, in call inlined at screen.adb:806
 screen.adb:785:17: info: initialization of "Result" proved, in call inlined at screen.adb:812
@@ -2616,7 +2616,7 @@ tismain.adb:749:43: medium: "UserToken.Output" might not be written
 tismain.adb:1078:25: medium: precondition might fail
 tismain.adb:1084:26: medium: precondition might fail
 tismain.adb:1091:25: medium: precondition might fail
-tismain.adb:1118:13: medium: postcondition might fail
+tismain.adb:1118:13: medium: postcondition might fail (e.g. when SystemFault = False)
 tismain.adb:1122:19: info: initialization of "SystemFault" proved
 tismain.adb:1134:51: info: initialization of "Clock.CurrentTime" proved
 tismain.adb:1156:25: medium: precondition might fail
@@ -2703,15 +2703,15 @@ tokenreader.adb:97:40: info: range check proved
 tokenreader.adb:116:39: info: range check proved
 tokenreader.adb:135:37: info: range check proved
 tokenreader.adb:164:07: info: no contextual analysis of "MakeDescription" (nested subprogram)
-tokenreader.adb:173:47: medium: range check might fail
-tokenreader.adb:174:12: medium: range check might fail
-tokenreader.adb:174:55: medium: range check might fail
-tokenreader.adb:175:12: medium: range check might fail
-tokenreader.adb:175:56: medium: range check might fail
+tokenreader.adb:173:47: medium: range check might fail (e.g. when FullString = (others => 0))
+tokenreader.adb:174:12: medium: range check might fail (e.g. when FullString = (others => 0))
+tokenreader.adb:174:55: medium: range check might fail (e.g. when FullString = (others => 0))
+tokenreader.adb:175:12: medium: range check might fail (e.g. when FullString = (others => 0))
+tokenreader.adb:175:56: medium: range check might fail (e.g. when FullString = (others => 0))
 tokenreader.adb:180:43: info: length check proved
-tokenreader.adb:180:46: medium: length check might fail
+tokenreader.adb:180:46: medium: length check might fail (e.g. when FullString = (others => 0))
 tokenreader.adb:182:23: info: length check proved
-tokenreader.adb:182:23: medium: range check might fail
+tokenreader.adb:182:23: medium: range check might fail (e.g. when FullString = (others => 0))
 tokenreader.adb:188:07: info: initialization of "Result" proved
 tokenreader.adb:188:07: info: initialization of "TheCodeName" proved
 tokenreader.adb:189:14: info: initialization of "Result" proved
@@ -2844,7 +2844,7 @@ userentry.adb:923:33: info: initialization of "Status" constituent of "State" pr
 userentry.adb:941:15: medium: precondition might fail
 userentry.adb:1027:47: info: initialization of "NewMsg" proved
 userentry.adb:1045:50: medium: "UserToken.Output" might not be written
-userentry.adb:1183:13: medium: refined postcondition might fail
+userentry.adb:1183:13: medium: refined postcondition might fail (e.g. when Status = 0 and FingerTimeout = (Year => 0, Month => 0, Day => 0, MilliSec => 0) and TokenRemovalTimeout = (Year => 0, Month => 0, Day => 0, MilliSec => 0) and LocalStatus = 5)
 userentry.adb:1197:37: info: range check proved
 userentry.adb:1199:12: info: initialization of "LocalStatus" proved
 userentry.adb:1203:13: info: precondition proved
@@ -3079,6 +3079,3 @@ usertoken.ads:179:36: info: initialization of "AuthCertOK" proved
 usertoken.ads:223:07: info: initialization of "Description" proved
 usertoken.ads:224:07: info: initialization of "TokenOK" proved
 usertoken.ads:263:27: info: initialization of "Success" proved
-
-
-

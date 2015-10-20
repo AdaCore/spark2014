@@ -5,4 +5,4 @@ pack.adb:10:42: info: precondition proved
 pack.adb:10:52: info: precondition proved
 pack.ads:15:19: info: postcondition proved
 pack.ads:15:37: info: overflow check proved
-pack.ads:18:19: medium: postcondition might fail, cannot prove Associativity_Test'Result = true
+pack.ads:18:19: medium: postcondition might fail, cannot prove Associativity_Test'Result = true (e.g. when Associativity_Test'Result = False)

@@ -3,7 +3,7 @@ dynamic_in_post.adb:3:57: info: range check proved
 dynamic_in_post.adb:3:57: info: range check proved, in call inlined at dynamic_in_post.adb:35
 dynamic_in_post.adb:7:32: info: initialization of "X" proved
 dynamic_in_post.adb:7:32: info: initialization of "X" proved, in call inlined at dynamic_in_post.adb:35
-dynamic_in_post.adb:7:35: medium: assertion might fail, cannot prove Get_Last (X) = Get_Last (Y), in call inlined at dynamic_in_post.adb:35
+dynamic_in_post.adb:7:35: medium: assertion might fail, cannot prove Get_Last (X) = Get_Last (Y), in call inlined at dynamic_in_post.adb:35 (e.g. when X = (others => 0) and Y = (others => 0))
 dynamic_in_post.adb:7:47: info: initialization of "Y" proved
 dynamic_in_post.adb:7:47: info: initialization of "Y" proved, in call inlined at dynamic_in_post.adb:35
 dynamic_in_post.adb:10:14: warning: subprogram "Test_2" has no effect
@@ -12,7 +12,7 @@ dynamic_in_post.adb:12:40: info: range check proved
 dynamic_in_post.adb:19:32: info: initialization of "X" proved
 dynamic_in_post.adb:20:32: info: initialization of "Y" proved
 dynamic_in_post.adb:22:22: info: initialization of "A" proved
-dynamic_in_post.adb:22:22: medium: assertion might fail, cannot prove A = B
+dynamic_in_post.adb:22:22: medium: assertion might fail, cannot prove A = B (e.g. when A = 5 and B = 3)
 dynamic_in_post.adb:22:26: info: initialization of "B" proved
 dynamic_in_post.adb:25:14: warning: subprogram "Test_3" has no effect
 dynamic_in_post.adb:29:13: info: range check proved, in call inlined at dynamic_in_post.adb:37

@@ -2,9 +2,9 @@ flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at 
 flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:43
 flight_manager.adb:16:43: info: division check proved, in call inlined at flight_manager.adb:42
 flight_manager.adb:16:43: info: division check proved, in call inlined at flight_manager.adb:43
-flight_manager.adb:23:20: medium: overflow check might fail
+flight_manager.adb:23:20: medium: overflow check might fail (e.g. when I = -2147483648)
 flight_manager.adb:42:21: medium: "Result.X_Speed" might not be initialized
-flight_manager.adb:42:56: medium: overflow check might fail
+flight_manager.adb:42:56: medium: overflow check might fail (e.g. when Position_X = -2147483648 and Target_X = 1)
 flight_manager.adb:43:21: medium: "Result.Y_Speed" might not be initialized
 flight_manager.adb:43:56: medium: overflow check might fail
 flight_manager.adb:45:14: medium: "Result.X_Speed" might not be initialized
