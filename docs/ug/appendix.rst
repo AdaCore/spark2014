@@ -97,16 +97,18 @@ Installed with |SPARK|
 ----------------------
 
 The provers Alt-Ergo, CVC4 and Z3 are installed with the |SPARK| tool. By
-default, |GNATprove| uses a combination of the provers CVC4 and Alt-Ergo (in
-that order). Switch ``--prover`` allows to use another prover, or a list of
-provers. Prover names ``altergo``, ``cvc4`` and z3 are used to refer to the
-versions of provers CVC4 and Alt-Ergo that are installed with the |SPARK|
-toolset. The string ``alt-ergo`` can also be used to refer to Alt-Ergo. More
-information on Alt-Ergo and CVC4 can be found on their respective websites:
+default, |GNATprove| uses prover CVC4 only. Switch ``--level`` changes the
+default to use one or more provers depending on the chosen level (see
+:ref:`Running GNATprove from the Command Line`). Switch ``--prover`` allows to
+use another prover, or a list of provers. Prover names ``altergo``, ``cvc4``
+and ``z3`` are used to refer to the versions of provers Alt-Ergo, CVC4 and Z3
+that are installed with the |SPARK| toolset. The string ``alt-ergo`` can also
+be used to refer to Alt-Ergo. More information on Alt-Ergo, CVC4 and Z3 can be
+found on their respective websites:
 
  * Alt-Ergo: http://alt-ergo.ocamlpro.com
  * CVC4: http://cvc4.cs.nyu.edu
- * Z3: https://z3.codeplex.com/
+ * Z3: https://z3.codeplex.com
 
 Other Automatic or Manual Provers
 ---------------------------------
