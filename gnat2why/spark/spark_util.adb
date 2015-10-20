@@ -2884,7 +2884,7 @@ package body SPARK_Util is
                                      N_Procedure_Specification);
 
       --  Check if it has no parameters
-      if Parameter_Associations (Spec) /= No_List then
+      if Parameter_Specifications (Spec) /= No_List then
          return False;
       end if;
 
