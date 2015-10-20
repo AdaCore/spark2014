@@ -1645,7 +1645,7 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  We assume that objects used in the program are in range, if
-      --  they are of a dynamic type
+      --  they are of a dynamic type.
 
       Why_Body :=
         Sequence
