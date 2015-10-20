@@ -52,8 +52,7 @@ Command Line Invocation
     . off           - Do not issue warnings
 
  gnatprove advanced switches:
-  --counterexample=c  Generate a counterexample for unproved formulas
-                      (c=on, off*)
+  --no-counterexample Do not generate a counterexample for unproved formulas
   -d, --debug         Debug mode
   --dbg-proof-only    Disable flow analysis (possibly unsound results)
   --flow-debug        Extra debugging for flow analysis (requires graphviz)
