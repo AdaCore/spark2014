@@ -1,0 +1,49 @@
+patris.adb:41:04: info: initialization of "Score_Nbr" constituent of "Score_State" proved
+patris.adb:42:04: info: initialization of "Level_Nbr" constituent of "Score_State" proved
+patris.adb:43:04: info: initialization of "Line_Counter" constituent of "Score_State" proved
+patris.adb:46:04: info: initialization of "Best_Score_Nbr" constituent of "Best_Score_State" proved
+patris.adb:49:04: info: initialization of "Cur_Board" constituent of "Game_State" proved
+patris.adb:49:04: warning: initialization of Cur_Board has no effect
+patris.adb:50:04: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
+patris.adb:50:04: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
+patris.adb:50:04: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
+patris.adb:50:04: info: initialization of "Cur_Piece.Y" constituent of "Game_State" proved
+patris.adb:51:04: info: initialization of "Next_Piece.D" constituent of "Game_State" proved
+patris.adb:51:04: info: initialization of "Next_Piece.S" constituent of "Game_State" proved
+patris.adb:51:04: info: initialization of "Next_Piece.X" constituent of "Game_State" proved
+patris.adb:51:04: info: initialization of "Next_Piece.Y" constituent of "Game_State" proved
+patris.adb:52:04: info: initialization of "Cur_State" constituent of "Game_State" proved
+patris.adb:52:04: warning: initialization of Cur_State has no effect
+patris.adb:53:04: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
+patris.adb:54:04: info: initialization of "Speed_Up" constituent of "Game_State" proved
+patris.adb:67:49: warning: assuming "Rand" has no effect on global items
+patris.adb:67:49: warning: no Global contract available for "Rand"
+patris.adb:68:50: warning: assuming "Rand" has no effect on global items
+patris.adb:68:50: warning: no Global contract available for "Rand"
+patris.adb:165:31: info: initialization of "Complete_Lines" proved
+patris.adb:176:10: info: initialization of "Complete_Lines" proved
+patris.adb:177:52: info: initialization of "To_Line" proved
+patris.adb:179:48: info: initialization of "To_Line" proved
+patris.adb:181:36: info: initialization of "To_Line" proved
+patris.adb:183:27: info: initialization of "To_Line" proved
+patris.adb:189:12: info: initialization of "Complete_Lines" proved
+patris.adb:197:38: info: initialization of "Complete_Lines" proved
+patris.adb:219:36: info: initialization of "Candidate.D" proved
+patris.adb:219:36: info: initialization of "Candidate.S" proved
+patris.adb:219:36: info: initialization of "Candidate.X" proved
+patris.adb:219:36: info: initialization of "Candidate.Y" proved
+patris.adb:220:26: info: initialization of "Candidate.D" proved
+patris.adb:220:26: info: initialization of "Candidate.S" proved
+patris.adb:220:26: info: initialization of "Candidate.X" proved
+patris.adb:220:26: info: initialization of "Candidate.Y" proved
+patris.adb:292:17: info: initialization of "Success" proved
+patris.adb:420:16: info: initialization of "Success" proved
+patris.adb:434:50: info: initialization of "Interval" proved
+patris.ads:236:37: info: initialization of "Success" proved
+patris.ads:272:07: info: initialization of "Redraw_Board" proved
+patris.ads:272:21: info: initialization of "Redraw_Score" proved
+patris.ads:272:35: info: initialization of "Redraw_Current_Piece" proved
+patris.ads:283:14: info: initialization of "Score_Nbr" constituent of "Score_State" proved
+patris.ads:289:14: info: initialization of "Best_Score_Nbr" constituent of "Best_Score_State" proved
+patris.ads:295:14: info: initialization of "Level_Nbr" constituent of "Score_State" proved
+patris.ads:301:14: info: initialization of "Line_Counter" constituent of "Score_State" proved
