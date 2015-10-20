@@ -36,10 +36,14 @@ is
    --  * the expression of a type conversion occurring in a non-interfering
    --    context.
    --  The same restrictions also apply to a call to a volatile function
-   --  and to the evaluation of any attribute which is defined to introduce
-   --  an implicit dependency on a volatile state abstraction [(these are
-   --  the Callable, Caller, Count, and Terminated attributes; see section
-   --  :ref:`tasks-and-synchronization`)].
+   --  (except not in the case of an internal call to a protected function
+   --  which is nonvolatile for internal calls) and to the evaluation of any
+   --  attribute which is defined to introduce an implicit dependency on a
+   --  volatile state abstraction [(these are the Callable, Caller, Count, and
+   --  Terminated attributes; see section
+   --  :ref:`tasks-and-synchronization`)]. [An internal call to a protected
+   --  function is treated like a call to a nonvolatile function if the
+   --  function's Volatile_Function aspect is False.]
 
    type R is record
       F1 : Integer;

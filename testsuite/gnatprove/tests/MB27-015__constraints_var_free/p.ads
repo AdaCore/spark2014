@@ -4,9 +4,10 @@
 package P
   with SPARK_Mode => On
 is
-   -- TU: 1. A ``constraint``, excluding the ``range`` of a
-   -- ``loop_parameter_specification``, shall not be defined using an
-   -- expression with a variable input.
+   --  TU: 1. [A ``constraint``, excluding the ``range`` of a
+   --  ``loop_parameter_specification``, shall not be defined using an
+   --  expression with a variable input; see :ref:`expressions` for the
+   --  statement of this rule.]
 
    A : Integer := 1;
    B : Integer := 10;

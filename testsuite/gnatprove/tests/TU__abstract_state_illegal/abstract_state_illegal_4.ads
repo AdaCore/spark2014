@@ -4,7 +4,7 @@ package Abstract_State_Illegal_4
   --  whose ``name`` denote a state abstraction, this indicates that
   --  it is a constituent (see :ref:`state_refinement`) of the denoted
   --  state abstraction. [Alternatively, the name may denote a task
-  --  or protected unit (see section ref:`tasks-and-synchronization`).]
+  --  or protected unit (see section :ref:`tasks-and-synchronization`).]
   with SPARK_Mode,
        Abstract_State => State
 is

@@ -420,7 +420,7 @@ Async_Writers aspect specification.
    an implicit dependency on a volatile state abstraction [(these are
    the Callable, Caller, Count, and Terminated attributes; see section
    :ref:`tasks-and-synchronization`)]. [An internal call to a protected
-   function is treated like a call to nonvolatile function if the
+   function is treated like a call to a nonvolatile function if the
    function's Volatile_Function aspect is False.]
 
 .. _etu-external_state_variables-lr:
@@ -1311,7 +1311,7 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
       mode is Input;
 
    d. Otherwise, the effective mode is Proof_In.
-   
+
 .. _tu-fe-refined_global_aspects-06:
 
 6. If the Global aspect specification references a state abstraction with a

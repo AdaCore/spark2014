@@ -21,14 +21,24 @@ is
    --  could not be).  An object or state abstraction which "belongs" to a
    --  protected unit in this way is treated as a component of the (anonymous)
    --  protected type (e.g., it can never be named in any Global aspect
-   --  specification, just as a protected component could not be).  However,
-   --  the presence or absence of such a Part_Of aspect specification is
-   --  ignored in determining the legality of an Initializes or
-   --  Initial_Condition aspect specification; the notional equivalence
-   --  described above breaks down in that case. [Very roughly speaking, the
+   --  specification, just as a protected component could not be). [There is
+   --  one obscure exception to these rules, described in the next paragraph: a
+   --  subprogram which is declared within the statement list of the body of
+   --  the immediately enclosing package (this is possible via a block
+   --  statement).]
+   --  The notional equivalences described above break down in the case of
+   --  package elaboration.  The presence or absence of such a Part_Of aspect
+   --  specification is ignored in determining the legality of an Initializes
+   --  or Initial_Condition aspect specification.  [Very roughly speaking, the
    --  restrictions implied by such a Part_Of aspect specification are not
    --  really "in effect" during library unit elaboration; or at least that's
-   --  one way to view it.]
+   --  one way to view it. For example such an object can be accessed from
+   --  within the elaboration code of its immediately enclosing package. On the
+   --  other hand, it could not be accessed from within a subprogram unless the
+   --  subprogram is declared within either the task unit body in question (in
+   --  the task case) or within the statement list of the body of the
+   --  immediately enclosing package (in either the task or the protected
+   --  case).]
 
    protected P_Int is
       function Get return Integer;

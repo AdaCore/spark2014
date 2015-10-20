@@ -23,11 +23,14 @@ is
 
    function F return Boolean
      with Global => Vol;
-   --  TU: 8. A ``global_item`` of a nonvolatile function shall not
-   --  denote either an effectively volatile object or an external
-   --  state abstraction.
+   --  TU: 8. A ``global_item`` of a nonvolatile function, or of a function
+   --  which is nonvolatile for internal calls, shall not denote either an
+   --  effectively volatile object or an external state abstraction.
 
    function F2 (Par : Vol_T) return Boolean;
-   --  TU: 9. A nonvolatile function shall not have a formal parameter
-   --  (or result) of an effectively volatile type.
+   --  TU: 9. A formal parameter (or result) of a nonvolatile function, or of a
+   --  function which is nonvolatile for internal calls, shall not be of an
+   --  effectively volatile type. [For a protected function, this rule does not
+   --  apply to the notional parameter denoting the current instance of the
+   --  associated protected unit described in section :ref:`global-aspects` .]
 end Volatiles_Illegal_3;

@@ -1,4 +1,3 @@
-initial_condition_illegal.adb:6:11: aspect "Initial_Condition" must apply to a package declaration
 initial_condition_illegal_2.ads:10:32: "Initial_Condition_Illegal_2.State" must be initialized at elaboration
    compilation of initial_condition_illegal_2.adb failed
 

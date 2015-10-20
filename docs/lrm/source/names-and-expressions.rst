@@ -143,9 +143,9 @@ free from side-effects only retrieves or computes a value.
 .. _tu-expressions-02:
 
 2. An expression (or range) in |SPARK| occurring in certain contexts
-   (listed below) shall not have a variable input.  This means that
+   (listed below) shall not have a variable input. This means that
    such an expression shall not read a variable, nor shall it call a
-   function which (directly or indirectly) reads a variable.  These
+   function which (directly or indirectly) reads a variable. These
    contexts include:
 
     * a constraint other than the range of a loop parameter
@@ -160,7 +160,7 @@ free from side-effects only retrieves or computes a value.
     * a Dynamic_Predicate or Type_Invariant aspect specification
       (see :ref:`subtype_predicates`);
 
-    * an indexing expresssion of an indexed_component or the discrete_range
+    * an indexing expression of an indexed_component or the discrete_range
       of a slice in an object renaming declaration which renames
       part of that index or slice (see :ref:`object_renaming_declarations`);
 

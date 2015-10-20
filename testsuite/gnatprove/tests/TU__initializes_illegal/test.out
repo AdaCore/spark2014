@@ -1,7 +1,6 @@
 initializes_illegal.adb:5:11: aspect "Initializes" must apply to a package declaration
 initializes_illegal.ads:11:36: cannot mix null and non-null initialization items
 initializes_illegal.ads:17:12: package "Incorrect_Placement" requires state refinement
-cannot generate code for file initializes_illegal_2.ads (package spec)
 initializes_illegal_3.ads:24:30: initialization item must denote object or state
 initializes_illegal_3.ads:26:27: initialization item "PrivVar" must appear in the visible declarations of package "Initializes_Illegal_3"
 initializes_illegal_3.ads:28:30: initialization item "SS" must appear in the visible declarations of package "Initializes_Illegal_3"

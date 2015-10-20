@@ -1,9 +1,9 @@
 legal.adb:48:33: medium: range check might fail
 legal.adb:80:12: info: initialization of "Tmp" proved
-legal.ads:68:19: info: initialization of "X" proved
-legal.ads:72:32: info: initialization of "V1" proved
-legal.ads:76:19: info: initialization of "X" proved
-legal.ads:84:19: info: initialization of "X" proved
-legal.ads:87:21: info: initialization of "X" proved
-legal.ads:95:19: info: initialization of "X" proved
-legal.ads:101:20: info: initialization of "X" proved
+legal.ads:72:19: info: initialization of "X" proved
+legal.ads:76:32: info: initialization of "V1" proved
+legal.ads:80:19: info: initialization of "X" proved
+legal.ads:88:19: info: initialization of "X" proved
+legal.ads:91:21: info: initialization of "X" proved
+legal.ads:99:19: info: initialization of "X" proved
+legal.ads:105:20: info: initialization of "X" proved

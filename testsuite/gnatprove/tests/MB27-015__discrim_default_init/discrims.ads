@@ -6,8 +6,9 @@
 package Discrims
   with SPARK_Mode => On
 is
-   -- TU: 3. The ``default_expression`` of a ``discriminant_specification``
-   -- shall not have a variable input.
+   --  TU: 3. [The ``default_expression`` of a ``discriminant_specification``
+   --  shall not have a variable input; see
+   --  :ref:`expressions` for the statement of this rule.]
 
    C0 : constant Integer := 0;
 
