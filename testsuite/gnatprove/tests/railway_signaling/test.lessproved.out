@@ -8,7 +8,7 @@ trains.adb:35:47: info: index check proved
 trains.adb:57:10: info: assertion proved
 trains.adb:58:25: medium: assertion might fail, cannot prove (Previous_Tracks_On_Orange_Or_Red)
 trains.adb:59:10: info: assertion proved
-trains.adb:65:10: info: assertion proved
+trains.adb:65:25: medium: assertion might fail, cannot prove (Previous_Tracks_On_Orange_Or_Red)
 trains.adb:72:10: info: assertion proved
 trains.adb:73:10: info: assertion proved
 trains.adb:83:16: info: initialization of "Prev" proved

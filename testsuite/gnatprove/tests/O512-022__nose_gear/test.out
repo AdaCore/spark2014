@@ -53,7 +53,7 @@ ng_v2.adb:52:44: medium: precondition might fail (e.g. when ThisTime = 0 and Pre
 ng_v2.adb:65:13: info: precondition proved
 ng_v2.adb:68:36: info: initialization of "D1" proved
 ng_v2.adb:68:41: info: initialization of "D2" proved
-ng_v2.adb:68:53: medium: divide by zero might fail (e.g. when T1 = 32768 and T2 = 32768)
+ng_v2.adb:68:53: medium: divide by zero might fail (e.g. when T1 = 8 and T2 = 65528)
 ng_v2.adb:68:56: info: initialization of "T1" proved
 ng_v2.adb:68:61: info: initialization of "T2" proved
 ng_v2.ads:11:14: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
