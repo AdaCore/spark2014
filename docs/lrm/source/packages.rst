@@ -109,7 +109,7 @@ of an effectively volatile type.
 External state is an effectively volatile object or a state abstraction which
 represents one or more effectively volatile objects (or it could be a null state
 abstraction; see :ref:`abstract-state-aspect`). [The term "external" does
-not necessarily mean that this state is accessed outside outside of
+not necessarily mean that this state is accessed outside of
 the SPARK portion of the program (although it might be); it refers to the
 state being potentially visible to multiple tasks (as well as to the outside
 world), so that it is externally visible from the perspective of any one task.]
@@ -607,7 +607,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
     to avoid unnecessary complications associated with the use of an
     Ada reserved word.] Every synchronized state abstraction is
     also (by definition) an external state abstraction. A synchronized
-    state abstraction for which the  ``simple_option`` External is
+    state abstraction for which the ``simple_option`` External is
     not (explicitly) specified has (by definition) its Async_Readers
     and Async_Writers aspects specified to be True and its
     Effective_Writes and Effective_Reads aspects specified to be False.
