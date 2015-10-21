@@ -16,7 +16,7 @@ def get_result(result_file):
 
 for result_file in glob("out/*.result"):
     if get_result(result_file) == "DIFF":
-        new_out_file = result_file.replace(".result", ".out")
+        new_out_file = result_file.replace(".result", ".out.filtered")
         old_out_file = result_file\
             .replace("out/", "tests/")\
             .replace(".result", "/test.out")
@@ -32,4 +32,3 @@ for result_file in glob("out/*.result"):
             if os.path.exists(old_out_file):
                 os.remove(old_out_file)
                 print "Remove output %s" % old_out_file
-
