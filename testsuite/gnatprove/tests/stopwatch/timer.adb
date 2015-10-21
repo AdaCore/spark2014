@@ -9,18 +9,18 @@ is
    Operate : Ada.Synchronous_Task_Control.Suspension_Object;
 
    task TimingLoop with
-     Global  => (Output => Operate,
-                 In_Out => Display.State,
-                 Input  => Ada.Real_Time.Clock_Time),
-     Depends => (Operate       => null,
-                 Display.State =>+ null,
-                 null          => Ada.Real_Time.Clock_Time),
+     Global   => (Output => Operate,
+                  In_Out => Display.State,
+                  Input  => Ada.Real_Time.Clock_Time),
+     Depends  => (Operate       =>  null,
+                  Display.State =>+ null,
+                  TimingLoop    =>  TimingLoop,
+                  null          =>  Ada.Real_Time.Clock_Time),
      Priority => TuningData.TimerPriority;
 
    task body TimingLoop is
       Release_Time : Ada.Real_Time.Time;
-      Period : constant Ada.Real_Time.Time_Span :=
-        TuningData.TimerPeriod;
+      Period : constant Ada.Real_Time.Time_Span := TuningData.TimerPeriod;
    begin
       Display.Initialize; -- ensure we get 0 on the screen at start up
       loop
@@ -38,14 +38,12 @@ is
       end loop;
    end TimingLoop;
 
-   procedure StartClock
-   is
+   procedure StartClock is
    begin
       Ada.Synchronous_Task_Control.Set_True (Operate);
    end StartClock;
 
-   procedure StopClock
-   is
+   procedure StopClock is
    begin
       Ada.Synchronous_Task_Control.Set_False (Operate);
    end StopClock;

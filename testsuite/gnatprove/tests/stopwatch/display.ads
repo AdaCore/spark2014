@@ -2,7 +2,9 @@ with TuningData;
 
 package Display with
   SPARK_Mode,
-  Abstract_State => (State with External => (Async_Readers, Effective_Writes))
+  Abstract_State => (State with External => (Async_Readers,
+                                             Async_Writers,
+                                             Effective_Writes))
 is
    procedure Initialize with
      Global  => (Output => State),
