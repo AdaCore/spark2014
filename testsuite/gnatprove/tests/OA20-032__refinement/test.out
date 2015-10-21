@@ -150,7 +150,7 @@ patris.ads:232:66: info: range check proved
 patris.ads:236:37: info: initialization of "Success" proved
 patris.ads:239:14: info: postcondition proved
 patris.ads:245:16: info: postcondition proved
-patris.ads:254:16: medium: postcondition might fail
+patris.ads:254:16: medium: postcondition might fail (e.g. when Cur_State = 3 and Cur_Piece = (S => 0, D => 0, X => 0, Y => 0) and Next_Piece = (S => 0, D => 0, X => 0, Y => 0) and Speed_Up = False and Action_Request_Nbr = 0)
 patris.ads:260:14: info: initialization of "Cur_State" constituent of "Game_State" proved
 patris.ads:260:14: info: postcondition proved
 patris.ads:261:24: info: initialization of "Cur_Board" constituent of "Game_State" proved
