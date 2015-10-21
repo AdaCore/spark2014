@@ -1665,17 +1665,24 @@ package body Flow_Utility is
          return S;
       end if;
 
-      for Fid of Flatten_Variable (E, Get_Flow_Scope (Inner)) loop
-         declare
-            Ent : constant Entity_Id :=
-              (if Fid.Kind in Direct_Mapping | Record_Field then Fid.Node
-               else Empty);
-         begin
-            if Present (Ent) and then Is_Part_Of_Concurrent_Object (Ent) then
-               S.Include (Ent);
-            end if;
-         end;
-      end loop;
+      declare
+         Parts : constant Flow_Id_Sets.Set :=
+           Flatten_Variable (E, Get_Flow_Scope (Inner));
+      begin
+         for Fid of Parts loop
+            declare
+               Ent : constant Entity_Id :=
+                 (if Fid.Kind in Direct_Mapping | Record_Field then Fid.Node
+                  else Empty);
+            begin
+               if Present (Ent)
+                 and then Is_Part_Of_Concurrent_Object (Ent)
+               then
+                  S.Include (Ent);
+               end if;
+            end;
+         end loop;
+      end;
       return S;
    end Get_Part_Of_Variables;
 
