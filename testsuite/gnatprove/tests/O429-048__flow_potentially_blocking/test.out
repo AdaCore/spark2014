@@ -5,9 +5,9 @@ a-tiflio.ads:48:04: info: initialization of "Default_Fore" proved, in instantiat
 a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiation at p.adb:231
 a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at p.adb:231
 barrier.adb:5:04: "Synchronous_Barrier" is not allowed in SPARK
-barrier.adb:5:04: violation of pragma SPARK_Mode at /tmp/tmp-test-O429-048__flow_potentially_blocking-30452/src/test.adc:1
+barrier.adb:5:04: violation of pragma SPARK_Mode at /tmp/tmp-test-O429-048__flow_potentially_blocking-14480/src/test.adc:1
 barrier.adb:5:33: subtype of "Synchronous_Barrier" is not allowed in SPARK
-barrier.adb:5:33: violation of pragma SPARK_Mode at /tmp/tmp-test-O429-048__flow_potentially_blocking-30452/src/test.adc:1
+barrier.adb:5:33: violation of pragma SPARK_Mode at /tmp/tmp-test-O429-048__flow_potentially_blocking-14480/src/test.adc:1
 blocking_contract.adb:9:07: warning: statement has no effect
 blocking_contract.adb:13:14: warning: subprogram "Proc" has no effect
 blocking_contract.adb:21:13: potentially blocking operation in protected operation "Dummy"
