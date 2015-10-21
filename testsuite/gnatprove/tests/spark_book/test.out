@@ -67,7 +67,7 @@ average_with_use.adb:13:04: warning: assuming "New_Line" has no effect on global
 average_with_use.adb:13:04: warning: no Global contract available for "New_Line"
 average_with_use.adb:15:16: info: initialization of "A" proved
 average_with_use.adb:15:18: info: range check proved
-average_with_use.adb:15:18: medium: overflow check might fail (e.g. when A = -2147483648 and B = -1)
+average_with_use.adb:15:18: medium: overflow check might fail (e.g. when A = 2147483647 and B = 1)
 average_with_use.adb:15:20: info: initialization of "B" proved
 average_with_use.adb:15:23: info: division check proved
 average_with_use.adb:15:23: info: overflow check proved
@@ -316,7 +316,7 @@ control_structures.adb:152:26: warning: assuming "Get" has no effect on global i
 control_structures.adb:152:26: warning: no Global contract available for "Get"
 control_structures.adb:153:17: info: initialization of "Value" proved
 control_structures.adb:154:14: info: initialization of "Sum" proved
-control_structures.adb:154:18: medium: overflow check might fail (e.g. when Sum = 2147483647 and Value = 1)
+control_structures.adb:154:18: medium: overflow check might fail (e.g. when Sum = 1 and Value = 2147483647)
 control_structures.adb:154:20: info: initialization of "Value" proved
 control_structures.adb:158:14: info: initialization of "X" proved
 control_structures.adb:158:16: info: division check proved
@@ -600,7 +600,7 @@ generic_examples.adb:3:11: medium: "Default_Width" might not be initialized afte
 generic_examples.adb:11:21: info: index check proved, in call inlined at generic_examples.adb:89
 generic_examples.adb:12:23: info: initialization of "Result" proved
 generic_examples.adb:12:23: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
-generic_examples.adb:12:30: medium: overflow check might fail, in call inlined at generic_examples.adb:89
+generic_examples.adb:12:30: medium: overflow check might fail, in call inlined at generic_examples.adb:89 (e.g. when Result = 2147483647)
 generic_examples.adb:15:14: info: initialization of "Result" proved
 generic_examples.adb:15:14: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
 generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
@@ -724,7 +724,7 @@ good_types.adb:21:11: warning: assuming "Get" has no effect on global items
 good_types.adb:21:11: warning: no Global contract available for "Get"
 good_types.adb:22:13: info: initialization of "Room_Length" proved
 good_types.adb:22:25: info: overflow check proved
-good_types.adb:22:25: medium: range check might fail (e.g. when Room_Length = 100.0 and Wall_Thickness = (/ 1 15699724534694966961406529798100794642268160000))
+good_types.adb:22:25: medium: range check might fail (e.g. when Room_Length = (/ 331763144480631111824000942144370271448739140225443707784298828916686648907256665510024283807063709059231765791152996113769913126948846128140862322922160880432200572454946258665212417561918666141723243450763919964162379879186406717796312577042097642065164785399744527319584218730804725629318588396081104605871699342131 3317631444806311118240009421443702714487391402281908390565072558385884173698282430803939154705198426798770381645909072453508111509109507867066593529487079998258932862662553476681327693852271589093624180063044276151047518458212506073670974335461557860147310965277122347374586427091772009423467448853444454938312704000) and Wall_Thickness = (/ 1 15699724534694966961406529798100794642268160000))
 good_types.adb:22:31: info: overflow check proved
 good_types.adb:23:11: info: initialization of "Default_Aft" proved
 good_types.adb:23:11: info: initialization of "Default_Exp" proved
@@ -1786,4 +1786,3 @@ workspaces.adb:9:27: medium: overflow check might fail (e.g. when Size = 2147483
 workspaces.adb:9:32: info: index check proved
 workspaces.adb:9:37: info: initialization of "Workspace" proved
 workspaces.adb:11:14: info: initialization of "Workspace" proved
-440736956555270413618581675255342293149119973622969239858152417678164812112068608)))
