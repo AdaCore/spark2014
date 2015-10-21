@@ -785,12 +785,31 @@ package body Flow_Generated_Globals is
       function Calculate_MR (Start : Vertex_Id) return Name_Sets.Set is
          NS : Name_Sets.Set := Name_Sets.Empty_Set;
          G  : Global_Id;
+
+         procedure Expand_State (State : Entity_Name);
+         --  Expands State as much as possible and adds the constituents to NS.
+
+         ------------------
+         -- Expand_State --
+         ------------------
+
+         procedure Expand_State (State : Entity_Name) is
+         begin
+            if GG_Has_Refinement (State) then
+               for Constituent of GG_Get_Constituents (State) loop
+                  Expand_State (Constituent);
+               end loop;
+            else
+               NS.Include (State);
+            end if;
+         end Expand_State;
+
       begin
          for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
             G := Global_Graph.Get_Key (V);
 
             if G.Kind = Variable_Kind then
-               NS.Include (G.Name);
+               Expand_State (G.Name);
             end if;
          end loop;
 
