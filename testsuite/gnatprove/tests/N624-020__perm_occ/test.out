@@ -2,9 +2,9 @@ perm.adb:9:07: info: precondition proved
 perm.adb:9:15: info: precondition proved
 perm.adb:9:32: info: precondition proved
 perm.adb:11:14: info: index check proved
-perm.adb:12:25: medium: assertion might fail, cannot prove B (B'Last) = E (e.g. when B = (others => 0) and E = 0)
+perm.adb:12:25: medium: assertion might fail, cannot prove B (B'Last) = E
 perm.adb:12:29: info: index check proved
-perm.adb:14:25: medium: assertion might fail, cannot prove B (B'Last) /= E (e.g. when B = (others => 0) and E = 0)
+perm.adb:14:25: medium: assertion might fail, cannot prove B (B'Last) /= E
 perm.adb:14:29: info: index check proved
 perm.adb:21:15: info: index check proved
 perm.adb:21:18: info: initialization of "Result" proved
@@ -42,7 +42,7 @@ perm.ads:36:31: info: precondition proved
 perm.ads:37:18: info: index check proved
 perm.ads:37:35: info: precondition proved
 perm.ads:38:19: info: precondition proved
-sort.adb:14:16: medium: postcondition might fail, cannot prove Values = Set (Set (Values'Old, X, Values'Old (Y)), Y, Values'Old (X) (e.g. when Values'Old = (others => 0) and X = 0 and Y = 0 and Values = (others => 0))
+sort.adb:14:16: medium: postcondition might fail, cannot prove Values = Set (Set (Values'Old, X, Values'Old (Y)), Y, Values'Old (X)
 sort.adb:15:10: info: precondition proved
 sort.adb:15:15: info: precondition proved
 sort.adb:15:32: info: range check proved
@@ -53,7 +53,7 @@ sort.adb:20:53: info: length check proved
 sort.adb:24:29: info: index check proved
 sort.adb:25:15: info: index check proved
 sort.adb:25:29: info: index check proved
-sort.adb:28:22: medium: assertion might fail, cannot prove Values = Set (Init, X, Init (Y) (e.g. when Init = (others => 0) and X = 99 and Y = 100 and Values = (others => 0))
+sort.adb:28:22: medium: assertion might fail, cannot prove Values = Set (Init, X, Init (Y)
 sort.adb:28:31: info: precondition proved
 sort.adb:28:42: info: range check proved
 sort.adb:28:51: info: index check proved
@@ -62,7 +62,7 @@ sort.adb:29:17: info: length check proved
 sort.adb:31:15: info: index check proved
 sort.adb:31:21: info: initialization of "Temp" proved
 sort.adb:31:21: info: range check proved
-sort.adb:34:22: medium: assertion might fail, cannot prove Values = Set (Interm, Y, Init (X) (e.g. when Interm = (others => 0) and Y = 98 and Init = (others => 0) and X = 99 and Values = (others => 0))
+sort.adb:34:22: medium: assertion might fail, cannot prove Values = Set (Interm, Y, Init (X)
 sort.adb:34:31: info: precondition proved
 sort.adb:34:36: info: initialization of "Interm" proved
 sort.adb:34:44: info: range check proved

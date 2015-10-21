@@ -26,13 +26,13 @@ bitwise.ads:19:45: info: initialization of "FstHalf" proved
 bitwise.ads:19:54: info: initialization of "SndHalf" proved
 bitwise.ads:22:62: info: initialization of "Res" proved
 counter_examples.adb:8:38: info: overflow check proved
-counter_examples.adb:9:16: medium: overflow check might fail (e.g. when X = (/ 1 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608) and Y = -340282346638528859811704183484516925440.0)
+counter_examples.adb:9:16: medium: overflow check might fail
 counter_examples.adb:17:24: info: division check proved
 counter_examples.adb:18:07: warning: statement has no effect
 counter_examples.adb:19:25: info: initialization of "Res" proved
-counter_examples.adb:19:25: medium: assertion might fail, cannot prove Res <= X (e.g. when Res = 64 and X = 32)
+counter_examples.adb:19:25: medium: assertion might fail, cannot prove Res <= X
 counter_examples.adb:21:25: info: initialization of "Res" proved
-counter_examples.adb:21:25: medium: assertion might fail, cannot prove Res >= X (e.g. when Res = 0 and X = 4294967257)
+counter_examples.adb:21:25: medium: assertion might fail, cannot prove Res >= X
 counter_examples.ads:8:40: info: initialization of "Res" proved
 counter_examples.ads:14:07: info: initialization of "Res" proved
 floating_point.adb:10:16: info: overflow check proved
@@ -88,11 +88,11 @@ floating_point.adb:90:14: info: initialization of "Tmp" proved
 floating_point.adb:98:67: info: range check proved
 floating_point.adb:98:70: info: overflow check proved
 floating_point.adb:99:22: info: overflow check proved
-floating_point.adb:100:22: medium: assertion might fail, cannot prove State in C .. Float_32 (X + 1) * C (e.g. when State = (/ 898846567431157953864652595394512366808988489471153286367150405788663379027504815663542386612037680105600569399356966788293948844072083112464237153197370621888839467124327426381511098006230470597265414760425028844190753411712314407369565552704136185816752553422931491199736229692398581524176781648121120686079 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608) and X = 8)
+floating_point.adb:100:22: medium: assertion might fail, cannot prove State in C .. Float_32 (X + 1) * C
 floating_point.adb:100:48: info: range check proved
 floating_point.adb:100:53: info: overflow check proved
 floating_point.adb:114:40: info: overflow check proved
-floating_point.adb:119:25: medium: overflow check might fail (e.g. when I = -1100041282)
+floating_point.adb:119:25: medium: overflow check might fail
 floating_point.adb:119:28: info: initialization of "I" proved
 floating_point.adb:119:30: info: division check proved
 floating_point.adb:120:22: info: initialization of "I" proved
@@ -142,29 +142,29 @@ floating_point.adb:183:16: medium: overflow check might fail
 floating_point.adb:184:22: info: initialization of "Res" proved
 floating_point.adb:184:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:193:22: info: initialization of "Res" proved
-floating_point.adb:193:22: medium: assertion might fail, cannot prove Res (e.g. when Res = False)
+floating_point.adb:193:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:205:17: info: overflow check proved
-floating_point.adb:205:22: medium: divide by zero might fail (e.g. when X = (/ 1 1427247607635368150823670103605843278440693760) and Z = 0.0)
+floating_point.adb:205:22: medium: divide by zero might fail
 floating_point.adb:205:22: medium: overflow check might fail
 floating_point.adb:205:27: info: overflow check proved
 floating_point.adb:206:22: info: initialization of "Res" proved
 floating_point.adb:206:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:221:17: info: overflow check proved
-floating_point.adb:221:22: medium: divide by zero might fail (e.g. when X = (/ 1 1427247607635368150823670103605843278440693760) and Z = 0.0)
+floating_point.adb:221:22: medium: divide by zero might fail
 floating_point.adb:221:22: medium: overflow check might fail
 floating_point.adb:221:27: info: overflow check proved
 floating_point.adb:222:22: info: initialization of "Res" proved
 floating_point.adb:222:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:229:28: medium: overflow check might fail
-floating_point.adb:229:45: medium: overflow check might fail (e.g. when B = 340282346638528859811704183484516925440.0)
+floating_point.adb:229:45: medium: overflow check might fail
 floating_point.adb:231:07: info: assertion proved
 floating_point.adb:231:22: info: initialization of "Res" proved
-floating_point.adb:238:37: medium: overflow check might fail (e.g. when B = 340282346638528859811704183484516925440.0)
+floating_point.adb:238:37: medium: overflow check might fail
 floating_point.adb:239:16: info: division check proved
 floating_point.adb:239:16: medium: overflow check might fail
 floating_point.adb:240:22: info: initialization of "Res" proved
 floating_point.adb:240:22: medium: assertion might fail, cannot prove Res
-floating_point.adb:247:37: medium: overflow check might fail (e.g. when B = 340282346638528859811704183484516925440.0)
+floating_point.adb:247:37: medium: overflow check might fail
 floating_point.adb:248:16: info: division check proved
 floating_point.adb:248:16: medium: overflow check might fail
 floating_point.adb:249:22: info: initialization of "Res" proved
@@ -242,7 +242,7 @@ nonlinear.adb:11:22: info: initialization of "Res" proved
 nonlinear.adb:11:22: medium: assertion might fail, cannot prove Res <= X
 nonlinear.adb:18:22: info: division check proved
 nonlinear.adb:19:22: info: initialization of "Res" proved
-nonlinear.adb:19:22: medium: assertion might fail, cannot prove Res <= X (e.g. when Res = 0 and X = 0)
+nonlinear.adb:19:22: medium: assertion might fail, cannot prove Res <= X
 nonlinear.adb:25:16: info: division check proved
 nonlinear.adb:25:16: info: range check proved
 nonlinear.adb:26:22: medium: assertion might fail, cannot prove Res * Y) / Res = Y
@@ -274,7 +274,7 @@ nonlinear.ads:17:36: info: initialization of "Res" proved
 nonlinear.ads:20:44: info: initialization of "Res" proved
 quantifiers.adb:8:17: info: postcondition proved
 quantifiers.adb:10:37: info: length check proved
-quantifiers.adb:16:07: medium: assertion might fail (e.g. when X = (others => 0))
-quantifiers.adb:24:22: medium: assertion might fail, cannot prove not (for all J in X'Range => Property (X(J), J) (e.g. when X = (others => 0))
+quantifiers.adb:16:07: medium: assertion might fail
+quantifiers.adb:24:22: medium: assertion might fail, cannot prove not (for all J in X'Range => Property (X(J), J)
 quantifiers.ads:7:14: warning: subprogram "Previous_Seen" has no effect
 quantifiers.ads:10:14: warning: subprogram "Not_For_Some" has no effect

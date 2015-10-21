@@ -16,7 +16,7 @@ skein.adb:262:47: info: index check proved, in call inlined at skein.adb:582
 skein.adb:263:47: info: index check proved, in call inlined at skein.adb:582
 skein.adb:264:47: info: index check proved, in call inlined at skein.adb:582
 skein.adb:265:47: info: index check proved, in call inlined at skein.adb:582
-skein.adb:266:47: medium: array index check might fail, in call inlined at skein.adb:582 (e.g. when Block = (others => 0) and Src_Index = 18446744073709551552)
+skein.adb:266:47: medium: array index check might fail, in call inlined at skein.adb:582
 skein.adb:304:19: info: postcondition proved
 skein.adb:326:23: info: initialization of "KS" proved, in call inlined at skein.adb:578
 skein.adb:328:30: info: initialization of "KS" proved, in call inlined at skein.adb:578
@@ -88,7 +88,7 @@ skein.adb:702:36: info: index check proved, in call inlined at skein.adb:728
 skein.adb:702:36: info: initialization of "Src" proved
 skein.adb:702:36: info: initialization of "Src" proved, in call inlined at skein.adb:728
 skein.adb:702:36: info: initialization of "Src" proved, in call inlined at skein.adb:768
-skein.adb:702:36: medium: array index check might fail, in call inlined at skein.adb:768 (e.g. when Msg = (others => 0) and Src = 1)
+skein.adb:702:36: medium: array index check might fail, in call inlined at skein.adb:768
 skein.adb:704:16: info: loop invariant initialization proved, in call inlined at skein.adb:728
 skein.adb:704:16: info: loop invariant initialization proved, in call inlined at skein.adb:768
 skein.adb:704:16: info: loop invariant preservation proved, in call inlined at skein.adb:728
@@ -126,7 +126,7 @@ skein.adb:744:13: info: initialization of "Msg_Byte_Count" proved
 skein.adb:747:29: info: initialization of "Msg_Byte_Count" proved
 skein.adb:747:49: info: division check proved
 skein.adb:747:49: info: range check proved
-skein.adb:749:13: medium: precondition might fail (e.g. when Msg = (others => 0) and Current_Msg_Offset = 0 and Block_Count = 288230376151711743)
+skein.adb:749:13: medium: precondition might fail
 skein.adb:752:35: info: initialization of "Current_Msg_Offset" proved
 skein.adb:753:35: info: initialization of "Block_Count" proved
 skein.adb:756:29: info: initialization of "Block_Count" proved

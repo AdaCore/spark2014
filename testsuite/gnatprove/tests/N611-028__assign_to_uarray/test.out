@@ -11,5 +11,5 @@ dyn_arrays.ads:9:45: info: overflow check proved
 dyn_arrays.ads:11:46: info: initialization of "To" proved
 dyn_arrays.ads:12:51: info: overflow check proved
 dyn_arrays.ads:14:40: info: initialization of "To" proved
-dyn_arrays.ads:14:40: medium: postcondition might fail, cannot prove To (I) = From (I) (e.g. when To = (others => 0) and From = (others => 0))
+dyn_arrays.ads:14:40: medium: postcondition might fail, cannot prove To (I) = From (I)
 dyn_arrays.ads:14:44: info: index check proved

@@ -1,4 +1,4 @@
-array_applications.adb:16:20: medium: postcondition might fail, cannot prove A(30) /= 832040 (e.g. when A = (others => 0))
+array_applications.adb:16:20: medium: postcondition might fail, cannot prove A(30) /= 832040
 array_applications.adb:23:27: info: overflow check proved
 array_applications.adb:25:10: info: loop invariant initialization proved
 array_applications.adb:25:10: info: loop invariant preservation proved

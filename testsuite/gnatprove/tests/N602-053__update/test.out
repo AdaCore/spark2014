@@ -1,4 +1,4 @@
-sorters.adb:15:16: medium: postcondition might fail, cannot prove Values = Values'Old'update (e.g. when Values'Old = (others => 0) and X = 0 and Y = 0 and Values = (others => 0))
+sorters.adb:15:16: medium: postcondition might fail, cannot prove Values = Values'Old'update
 sorters.adb:15:45: info: range check proved
 sorters.adb:15:62: info: index check proved
 sorters.adb:16:45: info: range check proved
@@ -29,8 +29,8 @@ sorters.adb:58:13: info: initialization of "Smallest" proved
 sorters.adb:59:13: info: precondition proved
 sorters.adb:60:29: info: range check proved
 sorters.adb:61:29: info: initialization of "Smallest" proved
-sorters.adb:73:18: medium: loop invariant might fail after first iteration, cannot prove Values (Current) <= Values (J) (e.g. when Current = 0)
-sorters.adb:73:18: medium: loop invariant might fail in first iteration, cannot prove Values (Current) <= Values (J) (e.g. when Current = 1)
+sorters.adb:73:18: medium: loop invariant might fail after first iteration, cannot prove Values (Current) <= Values (J)
+sorters.adb:73:18: medium: loop invariant might fail in first iteration, cannot prove Values (Current) <= Values (J)
 sorters.adb:73:26: info: index check proved
 sorters.adb:73:46: info: index check proved
 sorters.adb:75:11: info: loop invariant initialization proved

@@ -2,7 +2,7 @@ skein.adb:34:14: info: range check proved, in call inlined at skein.adb:139
 skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139
 skein.adb:35:34: info: initialization of "Hash" proved, in call inlined at skein.adb:139
 skein.adb:36:77: info: division check proved, in call inlined at skein.adb:139
-skein.adb:36:77: medium: array index check might fail, in call inlined at skein.adb:139 (e.g. when N = 0)
+skein.adb:36:77: medium: array index check might fail, in call inlined at skein.adb:139
 skein.adb:37:57: info: range check proved, in call inlined at skein.adb:139
 skein.adb:37:71: info: range check proved, in call inlined at skein.adb:139
 skein.adb:48:23: warning: unused assignment, in call inlined at skein.adb:127
@@ -69,31 +69,3 @@ skein.ads:121:21: info: length check proved
 skein.ads:132:31: info: initialization of "Hash" proved
 skein.ads:268:52: info: length check proved
 skein.ads:269:52: info: length check proved
-Summary of SPARK analysis
-=========================
-
--
-SPARK Analysis results Total Flow Interval Provers Justified Unproved
--
-Data Dependencies . . . . . .
-Flow Dependencies . . . . . .
-Initialization 27 27 . . . .
-Non-Aliasing . . . . . .
-Run-time Checks 28 . . 23 . 5
-Assertions . . . . . .
-Functional Contracts . . . . . .
-LSP Verification . . . . . .
--
-Total 55 27 (49%) . 23 (42%) . 5 (9%)
-
-
-Analyzed 1 unit
-in unit skein, 7 subprograms and packages out of 7 analyzed
- Skein at skein.ads:6 flow analyzed (0 errors and 0 warnings) and proved (6 checks)
- Skein.Put_64_LSB_First at skein.adb:27 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
- Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors and 15 warnings) and not proved, 16 checks out of 21 proved
- Skein.Skein_512_Final.Set_B_Counter at skein.adb:92 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
- Skein.Skein_512_Final.Zero_Pad_B at skein.adb:84 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
- Skein.Skein_Start_New_Type at skein.adb:42 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
- Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors and 0 warnings) and proved (1 checks)
-

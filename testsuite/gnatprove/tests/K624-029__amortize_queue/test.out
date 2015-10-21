@@ -277,7 +277,7 @@ amortized_queue.ads:75:40: info: precondition proved
 amortized_queue.ads:75:54: info: precondition proved
 amortized_queue.ads:79:25: info: precondition proved
 amortized_queue.ads:79:44: info: precondition proved
-amortized_queue.ads:80:14: medium: postcondition might fail (e.g. when V = 0)
+amortized_queue.ads:80:14: medium: postcondition might fail
 amortized_queue.ads:81:08: info: precondition proved
 amortized_queue.ads:81:10: info: precondition proved
 amortized_queue.ads:81:20: info: precondition proved
