@@ -2929,6 +2929,12 @@ package body SPARK_Definition is
          --  return True if E is declared in a private part with
          --  SPARK_Mode => Off;
 
+         function Is_Synchronous_Barrier (E : Entity_Id) return Boolean;
+         --  Return True if E is Ada.Synchronous_Barriers.Synchronous_Barrier
+         --
+         --  Synchronous barriers are allowed by the Ravenscar profile, but we
+         --  do not want them in SPARK.
+
          function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean
          is
             Decl : constant Node_Id :=
@@ -2947,9 +2953,46 @@ package body SPARK_Definition is
                 (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl))) = Off;
          end Is_Private_Entity_Mode_Off;
 
+         ----------------------------
+         -- Is_Synchronous_Barrier --
+         ----------------------------
+
+         function Is_Synchronous_Barrier (E : Entity_Id) return Boolean is
+            S_Ptr : Entity_Id := E;
+            --  Scope pointer
+
+            Name_Synchronous_Barrier : constant Name_Id :=
+              Name_Find_Str ("synchronous_barrier");
+            --  ??? this should be moved to snames.ads-tmpl
+         begin
+            if Chars (S_Ptr) /= Name_Synchronous_Barrier then
+               return False;
+            end if;
+
+            S_Ptr := Scope (S_Ptr);
+
+            if Chars (S_Ptr) /= Name_Synchronous_Barriers then
+               return False;
+            end if;
+
+            S_Ptr := Scope (S_Ptr);
+
+            if Chars (S_Ptr) /= Name_Ada then
+               return False;
+            end if;
+
+            return Scope (S_Ptr) = Standard_Standard;
+         end Is_Synchronous_Barrier;
+
       --  Start of processing for Mark_Type_Entity
 
       begin
+         --  Synchronous barriers are allowed by the Ravenscar profile, but
+         --  we do not want them in SPARK.
+         if Is_Synchronous_Barrier (E) then
+            Mark_Violation ("synchronous barriers", E);
+         end if;
+
          --  The base type or original type should be marked before the current
          --  type. We also protect ourselves against the case where the Etype
          --  of a full view points to the partial view.

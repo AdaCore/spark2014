@@ -1041,6 +1041,9 @@ Legality Rules
 #. The case of a Refined_Post specification for a (protected) entry
    is not currently supported.
 
+#. The use Ada.Synchronous_Barriers.Synchronous_Barrier type is not currently
+   allowed in |SPARK|.
+
 Flow Analysis Limitations
 -------------------------
 
