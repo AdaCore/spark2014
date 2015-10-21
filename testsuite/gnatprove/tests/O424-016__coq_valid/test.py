@@ -12,10 +12,10 @@ def edit_session():
 
 
 write_why3_config_file_with_coq(conf_file)
-prove_all()
+prove_all(counterexample=False)
 print "======================================="
-prove_all(opt=["--prover=coq", "--why3-conf=" + conf_file, "--limit-line=greatest_common_divisor.adb:10"])
+prove_all(opt=["--prover=coq", "--why3-conf=" + conf_file, "--limit-line=greatest_common_divisor.adb:10"], counterexample=False)
 print "======================================="
 edit_session()
 print "======================================="
-prove_all()
+prove_all(counterexample=False)
