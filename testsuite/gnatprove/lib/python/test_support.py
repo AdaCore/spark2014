@@ -502,17 +502,6 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
     prove(fullopt, steps, procs, vc_timeout, mode="all")
 
 
-def prove_all_no_counterexample(opt=None, steps=max_steps,
-                                procs=parallel_procs,
-                                vc_timeout=vc_timeout()):
-    """Call gnatprove with standard options to prove all VCs"""
-    fullopt = ["--no-counterexample"]
-    # Add opt last, so that it may include switch -cargs
-    if opt is not None:
-        fullopt += opt
-    prove(fullopt, steps, procs, vc_timeout, mode="all")
-
-
 def clean():
     """Call gnatprove with standard options to clean proof artifacts"""
     prove(opt=["--clean"])
