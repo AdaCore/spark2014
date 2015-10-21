@@ -2716,14 +2716,16 @@ package body SPARK_Definition is
                        "parameter", Id);
                end if;
 
+               --  A function declaration shall not have a
+               --  parameter_specification with a mode of OUT or IN OUT
+               --  (SPARK RM 6.1(5)).
+
                case Ekind (Param_Id) is
                   when E_Out_Parameter =>
                      Mark_Violation ("function with OUT parameter", Id);
-                     return;
 
                   when E_In_Out_Parameter =>
                      Mark_Violation ("function with IN OUT parameter", Id);
-                     return;
 
                   when others =>
                      null;
@@ -2731,7 +2733,6 @@ package body SPARK_Definition is
 
                Next (Param);
             end loop;
-
          end Mark_Function_Specification;
 
          -----------------------------------
