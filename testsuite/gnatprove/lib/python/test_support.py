@@ -490,9 +490,16 @@ def do_flow(opt=None, procs=parallel_procs):
 
 
 def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
-              vc_timeout=vc_timeout()):
+              vc_timeout=vc_timeout(), counterexample=True):
     """Call gnatprove with standard options to prove all VCs"""
-    prove(opt, steps, procs, vc_timeout, mode="all")
+    if not counterexample:
+        fullopt = ["--no-counterexample"]
+        # Add opt last, so that it may include switch -cargs
+        if opt is not None:
+            fullopt += opt
+    else:
+        fullopt = opt
+    prove(fullopt, steps, procs, vc_timeout, mode="all")
 
 
 def prove_all_no_counterexample(opt=None, steps=max_steps,
@@ -503,7 +510,7 @@ def prove_all_no_counterexample(opt=None, steps=max_steps,
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
-    prove(opt, steps, procs, vc_timeout, mode="all")
+    prove(fullopt, steps, procs, vc_timeout, mode="all")
 
 
 def clean():
