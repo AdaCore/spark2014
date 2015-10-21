@@ -251,6 +251,11 @@
 --  * When translating references to fields: The self object needs to be
 --    prepended
 
+--  Global variables which are "part_of" a protected object are considered
+--  fields of the corresponding protected type (and are generated as why3
+--  fields). Variables "part_of" a task are handled just as other variables
+--  in proof.
+
 --  The checks related to pragma Attach_Handler (Ada RM C.3.1(10/3)) are done
 --  on translation of the declaration of a protected object.
 
