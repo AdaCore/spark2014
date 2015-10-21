@@ -3704,11 +3704,13 @@ package body SPARK_Definition is
       --  If the entity is declared in the scope of SPARK_Mode => Off, then
       --  do not consider whether it could be in SPARK or not. An exception to
       --  this rule is abstract state, which has to be added to the Entity_List
-      --  regardless of SPARK status.
+      --  regardless of SPARK status. Restore SPARK_Mode pragma before
+      --  returning.
 
       if SPARK_Pragma_Is (Opt.Off)
         and then Ekind (E) /= E_Abstract_State
       then
+         Current_SPARK_Pragma := Save_SPARK_Pragma;
          return;
       end if;
 
@@ -4017,17 +4019,16 @@ package body SPARK_Definition is
 
       Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
 
-      --  Do not analyze bodies for packages with external axioms.
-      --  Only check that their SPARK_Mode is Off.
+      --  Do not analyze bodies for packages with external axioms. Only check
+      --  that their SPARK_Mode is Off, and restore SPARK_Mode pragma before
+      --  returning.
 
       if Entity_In_Ext_Axioms (Id) then
          if Present (SPARK_Pragma (Defining_Entity (N)))
            and then Get_SPARK_Mode_From_Pragma
              (SPARK_Pragma (Defining_Entity (N))) /= Off
          then
-            Mark_Violation
-                 ("Body of package with External_Axiomatization",
-                  N);
+            Mark_Violation ("Body of package with External_Axiomatization", N);
          end if;
 
          Current_SPARK_Pragma := Save_SPARK_Pragma;
