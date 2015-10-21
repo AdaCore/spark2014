@@ -116,6 +116,11 @@ package body Gnat2Why.Expr is
    --  If E is a modular type, apply a modulus on T. If E is a floating-point
    --  type, apply the corresponding rounding operation. If E is neither,
    --  return T unchanged.
+   --  Beware that for additions, substractions and multiplications on a
+   --  modular type with a modulus that is not a power of two, it is not
+   --  correct to use this function. Instead, one should directly use
+   --  "Transform_Non_Binary_Modular_Operation" to deal with the whole
+   --  transformation.
    --  Optimization: if E is a modular type, and Op is division, do not add the
    --  modulus operation.
 
@@ -610,11 +615,9 @@ package body Gnat2Why.Expr is
          if Modulus_Val = UI_Expon (2, Esize (E)) then
             return T;
 
-         --  Otherwise, the base type should be a binary modular type and
-         --  we perform the modulo on bitvectors.
+         --  Otherwise we perform the modulo on bitvectors.
 
          else
-            pragma Assert (Non_Binary_Modulus (E));
             return New_Call (Name   => MF_BVs (BV_Type).Urem,
                              Domain => Domain,
                              Args   => (1 => T,
