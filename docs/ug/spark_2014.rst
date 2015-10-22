@@ -3597,6 +3597,8 @@ schedulability analysis and memory-boundedness. This profile is compatible with
 the Ravenscar Ada run-time supporting task synchronization and communication,
 while remaining small enough to be certifiable to the highest integrity levels.
 
+.. _Tasks and Data Races:
+
 Tasks and Data Races
 --------------------
 
@@ -3606,7 +3608,7 @@ only library level, nonterminating tasks are allowed. Like ordinary objects,
 tasks have a type in Ada and can be stored in composite objects such as arrays
 and records.
 
-Like for packages or subprograms, a task type's definition is made of two
+Like for subprograms, a task type's definition is made of two
 parts, a declaration, usually empty as Ravenscar does not allow tasks to have
 entries, and a body containing the list of statements to be executed by objects
 of the task type. For task objects of a given type to be parametrized, task
@@ -3668,7 +3670,8 @@ objects (tasks cannot communicate directly as they do not have entries). In
 erroneous concurrent access to shared data (a.k.a. data races).
 More precisely, tasks can only share `synchronized` objects, that is, objects
 that are protected against concurrent accesses. These include atomic objects
-as well as protected objects and suspension objects (add references). As an
+as well as protected objects (see :ref:`Protected Objects`) and suspension
+objects (see :ref:`Suspension Objects`). As an
 example, our previous definition of the ``Account_Management`` task type was
 not in |SPARK|. Indeed, data races could occur when accessing the global
 variable ``Num_Accounts``. To avoid this problem, ``Num_Account`` can be
@@ -3684,7 +3687,9 @@ declared atomic:
 
 As they cannot cause data races, constant and constant after elaboration objects
 (see :ref:`Aspect Constant_After_Elaboration`) are considered as synchronized
-and can be accessed by multiple tasks.
+and can be accessed by multiple tasks. For example, we can declare a global
+constant ``Max_Accounts`` and use it inside ``Account_Management`` without
+risking data races:
 
 .. code-block:: ada
 
@@ -3713,7 +3718,11 @@ It is still possible for a task to access an unsynchronized global object
 declared in the same package if it is the only one to do so. To allow this
 property to be statically verified, only tasks declared using a single task
 declaration are allowed to access unsynchronized objects and the objects should
-be declared to belong to the task using a ``Part_Of`` annotation.
+be declared to belong to the task using a ``Part_Of`` annotation. Variables
+declared to be belong to a task are handled just like local variables of the
+task.
+As an example, we can state that ``Num_Accounts`` is only accessed by the single
+task ``Account_Management`` in the following way:
 
 .. code-block:: ada
 
@@ -3786,6 +3795,193 @@ for task ``Account_Management`` defined above as follows:
       task type Account_Management with
         Depends => (Account.Num_Accounts => Account.Num_Accounts);
    end Account;
+
+.. _Protected Objects:
+
+Protected Objects
+-----------------
+
+Protected objects are used to encapsulate shared data and protect it against
+data races. Definitions of protected types resemble package definitions. They
+are made of two parts, a declaration, divided into a public part and a private
+part and a body. The public part of a protected type's declaration contains the
+declaration of the subprograms that can be used to access the data declared in
+its private part. The body of these subprograms are located in the protected
+type's body. In Ravenscar, protected objects should be declared at library
+level. As an example, here is how a protected type can be used to coordinate
+concurrent accesses to the global variable ``Num_Accounts``:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      protected type Protected_Natural is
+         procedure Incr;
+         function Get return Natural;
+      private
+         The_Data : Natural := 0;
+      end Protected_Natural;
+
+      Num_Accounts : Protected_Natural;
+   end Account;
+
+   package body Account with SPARK_Mode is
+      protected body Protected_Natural is
+         procedure Incr is
+         begin
+            The_Data := The_Data + 1;
+         end Incr;
+
+         function Get return Natural is (The_Data);
+      end Protected_Natural;
+   end Account;
+
+Protected procedures provide exclusive read-write access to the private data of
+a protected object whereas protected functions offer concurrent read-only
+access to it. It is also possible to specify ``entries`` in a protected type's
+public declaration. An entry is a procedure with a guard. When an entry is
+called, the caller waits until the condition of the guard is true to be able
+to access the protected object. So that scheduling is deterministic, Ravenscar
+requires that at most one entry is specified in a protected type and at most
+one task is waiting on a given entry at a given time. To ensure this,
+|GNATprove| checks that no two tasks can call the same protected object's
+entry. For example, we could replace the procedure ``Incr`` of
+``Protected_Natural`` to wait until ``The_Data`` is smaller than 100 before
+incrementing it:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      protected type Protected_Natural is
+         entry Incr;
+      private
+         The_Data : Natural := 0;
+      end Protected_Natural;
+
+      Num_Accounts : Protected_Natural;
+   end Account;
+
+   package body Account with SPARK_Mode is
+      protected body Protected_Natural is
+         entry Incr when The_Data < 100 is
+         begin
+            The_Data := The_Data + 1;
+         end Incr;
+      end Protected_Natural;
+   end Account;
+
+Note that, on a multicore architecture, it can be the case that Incr's
+guard is not true anymore when we finally access its body.
+
+Just like for tasks, it is possible to directly declare a protected object if
+it is the only one of its type. In this case, an anonymous protected type is
+implicitly declared for it. For example, if ``Num_Account`` is the only
+``Protected_Natural`` we need, we can directly declare:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      protected Num_Accounts is
+         procedure Incr;
+         function Get return Natural;
+      private
+         The_Data : Natural := 0;
+      end Num_Accounts;
+   end Account;
+
+   package body Account with SPARK_Mode is
+      protected body Num_Accounts is
+         procedure Incr is
+         begin
+            The_Data := The_Data + 1;
+         end Incr;
+
+         function Get return Natural is (The_Data);
+      end Num_Accounts;
+   end Account;
+
+To avoid data races, protected subprograms should not access unsynchronized
+objects (see :ref:`Tasks and Data Races`). Like for tasks, it is still possible
+for subprograms of a protected object of an anonymous protected type to access
+an unsynchronized object declared in the same package as long as it is not
+accessed by any task or subprograms from other protected objects. In this case,
+the unsynchronized object should have a ``Part_Of`` aspect referring to the
+protected object. It is then handled as if it was a private variable of the
+protected object. Here is how this could be done with ``Num_Account``:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      protected Protected_Num_Accounts is
+         procedure Incr;
+         function Get return Natural;
+      end Protected_Num_Accounts;
+
+      Num_Accounts : Natural := 0 with Part_Of => Protected_Num_Accounts;
+   end Account;
+
+Note that, in |SPARK|, to avoid initialization issues on protected objects,
+both private variables and variables belonging to a protected object must be
+initialized at declaration (either explicitly or through default
+initialization).
+
+Priority Ceiling Protocol
+-------------------------
+
+To ensure absence of deadlocks on monocore systems, Ravenscar requires the use
+of the Priority Ceiling Protocol. This protocol ensures that no two tasks
+can be blocked trying to access a protected object the other task has locked. It
+works by increasing the priority of a task holding a resource to the highest
+priority of any task that can access this resource so that it is not preempted
+by one of them while it still detains the resource.
+
+To enforce this protocol, every task is associated to a `base priority`, either
+given at declaration using the ``Priority`` aspect or chosen by default. This
+base priority is static and cannot be modified after the task's declaration. A
+task also has an `active priority` which is initially the task's base priority
+but will be increased when the task enters a protected action.
+For example, we can set the base priority of ``Account_Management`` to 5 at
+declaration:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      task type Account_Management with Priority => 5;
+   end Account;
+
+Likewise, each protected object is associated at declaration with a
+`ceiling priority` which should be higher than the active priority of any task
+accessing it. The ceiling priority of a protected object does not need to be
+static, it can be set using a discriminant for example. Still, like for tasks,
+Ravenscar requires that it is set once and for all at the object's declaration
+and cannot be changed afterwards.
+If one of the protected object's procedures is attach to an
+interruption using the aspect ``Attach_Handler``, then its ceiling priority
+should be an ``Interrupt_Priority``.
+As an example, let us attach a ceiling priority to the protected object
+``Num_Accounts``. As ``Num_Accounts`` will be used by ``Account_Management``,
+its ceiling priority should be higher than 5:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      protected Num_Accounts with Priority => 7 is
+         procedure Incr;
+         function Get return Natural;
+      private
+         The_Data : Natural := 0;
+      end Num_Accounts;
+
+      task type Account_Management with Priority => 5;
+   end Account;
+
+Then, for the protocol to be enforced, it is enough to bump the active priority
+of tasks executing a protected action to the ceiling priority of the associated
+protected object.
+
+.. _Suspension Objects:
+
+Suspension Objects
+------------------
 
 |SPARK| Libraries
 =================
