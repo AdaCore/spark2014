@@ -1506,70 +1506,6 @@ assumed to have all four aspects set to ``True``. An external abstract state on
 which some of the four aspects are set to ``True`` is assumed to have the
 remaining ones set to ``False``. See SPARK RM 7.1.2 for details.
 
-Task Contracts
-==============
-
-Dependency contracts can be specified on tasks. As tasks should not terminate
-in |SPARK|, such contracts specify the dependencies between outputs and inputs
-of the task `updated while the task runs`:
-
-* The `data dependencies` introduced by aspect ``Global`` specify the global
-  data read and written by the task.
-* The `flow dependencies` introduced by aspect ``Depends`` specify how
-  task outputs depend on task inputs.
-
-This is a difference between tasks and subprograms, for which such contracts
-describe the dependencies between outputs and inputs `when the subprogram
-returns`.
-
-Data Dependencies
------------------
-
-Data dependencies on tasks follow the same syntax as the ones on subprograms
-(see :ref:`Data Dependencies`). For example, data dependencies can be specified
-for task ``Account_Management`` as follows:
-
-.. code-block:: ada
-
-   package Account with SPARK_Mode is
-      Num_Accounts : Natural := 0;
-
-      task type Account_Management with
-        Global => (In_Out => Account.Num_Accounts);
-   end Account;
-
-for the following implementation of the task:
-
-.. code-block:: ada
-
-   package body Account with SPARK_Mode is
-
-      task body Account_Management is
-      begin
-         loop
-            Get_Next_Account_Created;
-            Num_Accounts := Num_Accounts + 1;
-         end loop;
-      end Account_Management;
-
-   end Account;
-
-Flow Dependencies
------------------
-
-Flow dependencies on tasks follow the same syntax as the ones on subprograms
-(see :ref:`Flow Dependencies`). For example, flow dependencies can be specified
-for task ``Account_Management`` defined above as follows:
-
-.. code-block:: ada
-
-   package Account with SPARK_Mode is
-      Num_Accounts : Natural := 0;
-
-      task type Account_Management with
-        Depends => (Account.Num_Accounts => Account.Num_Accounts);
-   end Account;
-
 .. _Type Contracts:
 
 Type Contracts
@@ -3647,6 +3583,209 @@ specific tagged type requires that the constraints described in :ref:`Data
 Initialization Policy` apply to all components of the object, as if the
 parameter was of a class-wide type. This allows converting this object to a
 class-wide type.
+
+Tasking and Ravenscar
+=====================
+
+In |SPARK|, the use of tasking requires enabling the Ravenscar profile (see
+`Guide for the use of the Ada Ravenscar Profile in high integrity systems`
+by Alan Burns, Brian Dobbing, and Tullio Vardanega).
+
+The Ravenscar Profile defines a subset of Ada's tasking features targeted at
+realtime systems. In particular, it is concerned with determinism,
+schedulability analysis and memory-boundedness. This profile is compatible with
+the Ravenscar Ada run-time supporting task synchronization and communication,
+while remaining small enough to be certifiable to the highest integrity levels.
+
+Tasks and Data Races
+--------------------
+
+Concurrent Ada programs are made of several `tasks`, that is, separate threads
+of control which share the same address space. In Ravenscar,
+only library level, nonterminating tasks are allowed. Like ordinary objects,
+tasks have a type in Ada and can be stored in composite objects such as arrays
+and records.
+
+Like for packages or subprograms, a task type's definition is made of two
+parts, a declaration, usually empty as Ravenscar does not allow tasks to have
+entries, and a body containing the list of statements to be executed by objects
+of the task type. For task objects of a given type to be parametrized, task
+types can have discriminants. For example, a task type ``Account_Management``
+can be declared as follows:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      Num_Accounts : Natural := 0;
+
+      task type Account_Management;
+   end Account;
+
+with the following body:
+
+.. code-block:: ada
+
+   package body Account with SPARK_Mode is
+
+      task body Account_Management is
+      begin
+         loop
+            Get_Next_Account_Created;
+            Num_Accounts := Num_Accounts + 1;
+         end loop;
+      end Account_Management;
+
+   end Account;
+
+If only one object of a given task type is needed, then the task object can be
+declared directly giving a declaration and a body. An anonymous task type is
+declared implicitly for every single task declarations. For example, if we only
+need one task ``Account_Management`` then we can write:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      Num_Accounts : Natural := 0;
+
+      task Account_Management;
+   end Account;
+
+   package body Account with SPARK_Mode is
+
+      task body Account_Management is
+      begin
+         loop
+            Get_Next_Account_Created;
+            Num_Accounts := Num_Accounts + 1;
+         end loop;
+      end Account_Management;
+
+   end Account;
+
+In Ravenscar, communication between tasks can only be done through shared
+objects (tasks cannot communicate directly as they do not have entries). In
+|SPARK|, the language is further restricted to avoid the possibility of
+erroneous concurrent access to shared data (a.k.a. data races).
+More precisely, tasks can only share `synchronized` objects, that is, objects
+that are protected against concurrent accesses. These include atomic objects
+as well as protected objects and suspension objects (add references). As an
+example, our previous definition of the ``Account_Management`` task type was
+not in |SPARK|. Indeed, data races could occur when accessing the global
+variable ``Num_Accounts``. To avoid this problem, ``Num_Account`` can be
+declared atomic:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      Num_Accounts : Natural := 0 with Atomic;
+
+      task type Account_Management;
+   end Account;
+
+As they cannot cause data races, constant and constant after elaboration objects
+(see :ref:`Aspect Constant_After_Elaboration`) are considered as synchronized
+and can be accessed by multiple tasks.
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      Num_Accounts : Natural := 0 with Atomic;
+      Max_Accounts : constant Natural := 100;
+
+      task type Account_Management;
+   end Account;
+
+   package body Account with SPARK_Mode is
+
+      task body Account_Management is
+      begin
+         loop
+            Get_Next_Account_Created;
+            if Num_Accounts < Max_Accounts then
+               Num_Accounts := Num_Accounts + 1;
+            end if;
+         end loop;
+      end Account_Management;
+
+   end Account;
+
+It is still possible for a task to access an unsynchronized global object
+declared in the same package if it is the only one to do so. To allow this
+property to be statically verified, only tasks declared using a single task
+declaration are allowed to access unsynchronized objects and the objects should
+be declared to belong to the task using a ``Part_Of`` annotation.
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      Num_Accounts : Natural := 0 with Part_Of => Account_Management;
+
+      task Account_Management;
+   end Account;
+
+Task Contracts
+--------------
+
+Dependency contracts can be specified on tasks. As tasks should not terminate
+in |SPARK|, such contracts specify the dependencies between outputs and inputs
+of the task `updated while the task runs`:
+
+* The `data dependencies` introduced by aspect ``Global`` specify the global
+  data read and written by the task.
+* The `flow dependencies` introduced by aspect ``Depends`` specify how
+  task outputs depend on task inputs.
+
+This is a difference between tasks and subprograms, for which such contracts
+describe the dependencies between outputs and inputs `when the subprogram
+returns`.
+
+Data Dependencies
+^^^^^^^^^^^^^^^^^
+
+Data dependencies on tasks follow the same syntax as the ones on subprograms
+(see :ref:`Data Dependencies`). For example, data dependencies can be specified
+for task ``Account_Management`` as follows:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      Num_Accounts : Natural := 0 with Atomic;
+
+      task type Account_Management with
+        Global => (In_Out => Account.Num_Accounts);
+   end Account;
+
+for the following implementation of the task:
+
+.. code-block:: ada
+
+   package body Account with SPARK_Mode is
+
+      task body Account_Management is
+      begin
+         loop
+            Get_Next_Account_Created;
+            Num_Accounts := Num_Accounts + 1;
+         end loop;
+      end Account_Management;
+
+   end Account;
+
+Flow Dependencies
+^^^^^^^^^^^^^^^^^
+
+Flow dependencies on tasks follow the same syntax as the ones on subprograms
+(see :ref:`Flow Dependencies`). For example, flow dependencies can be specified
+for task ``Account_Management`` defined above as follows:
+
+.. code-block:: ada
+
+   package Account with SPARK_Mode is
+      Num_Accounts : Natural := 0 with Atomic;
+
+      task type Account_Management with
+        Depends => (Account.Num_Accounts => Account.Num_Accounts);
+   end Account;
 
 |SPARK| Libraries
 =================
