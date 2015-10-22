@@ -7,12 +7,12 @@ is
    Sensor_1 : Float with
      Volatile,
      Async_Writers,
-     Address => System.Storage_Elements.To_Address (16#0000_A000_0000_0000#);
+     Address => System.Storage_Elements.To_Address (16#FFFF_EEEE#);
 
    Sensor_2 : Float with
      Volatile,
      Async_Writers,
-     Address => System.Storage_Elements.To_Address (16#0000_A000_0000_0004#);
+     Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#);
 
    procedure Read (T : out Float)
    with Refined_Global => (Sensor_1, Sensor_2),

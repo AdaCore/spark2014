@@ -7,7 +7,7 @@ is
      Volatile,
      Atomic,
      Async_Readers, Async_Writers,
-     Address => System.Storage_Elements.To_Address (16#0000_B000_0000_0000#),
+     Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#),
      Part_Of => Blinken_PO;
 
    protected Blinken_PO is
