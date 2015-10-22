@@ -70,9 +70,9 @@ do_checks.adb:285:35: info: length check proved
 do_checks.adb:287:16: info: precondition proved
 do_checks.adb:287:20: info: initialization of "X" proved
 do_checks.adb:313:32: warning: "Y" is not modified, could be IN
-do_checks.adb:315:20: medium: discriminant check might fail (e.g. when X = (Arr => (others => false)))
+do_checks.adb:315:20: medium: discriminant check might fail (e.g. when X = (J => ?, Arr => (others => false)))
 do_checks.adb:315:25: medium: array index check might fail
-do_checks.adb:315:32: medium: discriminant check might fail (e.g. when Y = (Arr => (others => false)))
+do_checks.adb:315:32: medium: discriminant check might fail (e.g. when Y = (J => ?, Arr => (others => false)))
 do_checks.adb:315:37: medium: array index check might fail
 do_checks.adb:317:30: info: discriminant check proved
 do_checks.adb:318:30: info: discriminant check proved

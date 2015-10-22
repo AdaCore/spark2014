@@ -746,17 +746,20 @@ package body Flow_Error_Messages is
                            --  of Var_Or_Field_Type
 
                            declare
-                              function Get_Fields_Declared return Natural;
-                              --  Return the number of declared fields of the
-                              --  (record) type of the variable or the field
-                              --  thats value is currently computed.
+                              function Get_Fields_Descr_Declared
+                                return Natural;
+                              --  Return the number of declared fields and
+                              --  descriminants of the (record) type of the
+                              --  variable or the field thats value is
+                              --  currently computed.
 
-                              function Get_Fields_Declared return Natural
+                              function Get_Fields_Descr_Declared return Natural
                               is
                                  Res : Natural :=
                                    0;
                                  Comp : Entity_Id :=
-                                   First_Component (Var_Or_Field_Type);
+                                   First_Component_Or_Discriminant
+                                     (Var_Or_Field_Type);
                               begin
                                  while Present (Comp) loop
                                     Res := Res + 1;
@@ -764,35 +767,38 @@ package body Flow_Error_Messages is
                                  end loop;
 
                                  return Res;
-                              end Get_Fields_Declared;
+                              end Get_Fields_Descr_Declared;
 
-                              Fields_Present : constant Natural :=
+                              Fields_Descr_Present : constant Natural :=
                                 Natural (Length (Var_Or_Field.Fields.all));
-                              Fields_Declared : constant Natural :=
-                                Get_Fields_Declared;
+                              Fields_Descr_Declared : constant Natural :=
+                                Get_Fields_Descr_Declared;
                               Decl_Field : Entity_Id :=
-                                First_Component (Var_Or_Field_Type);
+                                First_Component_Or_Discriminant
+                                  (Var_Or_Field_Type);
                               Is_Field_Before : Boolean := False;
                               Value : Unbounded_String :=
                                 To_Unbounded_String ("(");
                            begin
                               while Present (Decl_Field) loop
                                  declare
-                                    Field_Name : constant String :=
+                                    Field_Descr_Name : constant String :=
                                       Source_Name (Decl_Field);
-                                    Field : constant Cursor := Find
-                                      (Var_Or_Field.Fields.all, Field_Name);
+                                    Field_Descr : constant Cursor :=
+                                      Find (Var_Or_Field.Fields.all,
+                                            Field_Descr_Name);
                                  begin
-                                    if Has_Element (Field) or else
-                                      Fields_Declared - Fields_Present <= 1
+                                    if Has_Element (Field_Descr) or else
+                                      Fields_Descr_Declared -
+                                        Fields_Descr_Present <= 1
                                     then
                                        Value := Value &
                                        (if Is_Field_Before then ", " else "") &
-                                         Field_Name &
+                                         Field_Descr_Name &
                                          " => " &
-                                       (if Has_Element (Field) then
+                                       (if Has_Element (Field_Descr) then
                                            Get_Var_Or_Field_Value (Element
-                                          (Field))
+                                          (Field_Descr))
                                         else "?");
                                        Is_Field_Before := True;
                                     end if;
@@ -803,7 +809,9 @@ package body Flow_Error_Messages is
                               --  If there are more than one field that is not
                               --  mentioned in the counterexample, summarize
                               --  them using the field others
-                              if Fields_Declared - Fields_Present > 1 then
+                              if Fields_Descr_Declared -
+                                Fields_Descr_Present > 1
+                              then
                                  Value := Value &
                                  (if Is_Field_Before then ", " else "") &
                                    "others => ?";

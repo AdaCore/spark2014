@@ -93,12 +93,12 @@ bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Front" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Items" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Rear" is not initialized
-bounded_queue_example_v1.adb:12:07: medium: precondition might fail (e.g. when My_Queue = (Count => 0, Front => 100, Rear => 100, Items => (others => 0)))
+bounded_queue_example_v1.adb:12:07: medium: precondition might fail (e.g. when My_Queue = (Max_Size => ?, Count => 0, Front => 100, Rear => 100, Items => (others => 0)))
 bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Count" proved
 bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Front" proved
 bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Items" proved
 bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Rear" proved
-bounded_queue_example_v1.adb:15:07: medium: precondition might fail (e.g. when My_Queue = (Count => 0, Front => 100, Rear => 100, Items => (others => 0)))
+bounded_queue_example_v1.adb:15:07: medium: precondition might fail (e.g. when My_Queue = (Max_Size => ?, Count => 0, Front => 100, Rear => 100, Items => (others => 0)))
 bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Count" proved
 bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Front" proved
 bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Items" proved
@@ -130,7 +130,7 @@ bounded_queue_v1.adb:48:34: info: division check proved
 bounded_queue_v1.adb:48:53: info: overflow check proved
 bounded_queue_v1.adb:48:53: info: range check proved
 bounded_queue_v1.adb:49:34: medium: range check might fail
-bounded_queue_v1.ads:31:18: medium: postcondition might fail (e.g. when Queue = (Count => 0, Front => 1, Rear => 1, Items => (others => 0)))
+bounded_queue_v1.ads:31:18: medium: postcondition might fail (e.g. when Queue = (Max_Size => ?, Count => 0, Front => 1, Rear => 1, Items => (others => 0)))
 bounded_queue_v1.ads:37:18: medium: postcondition might fail
 bounded_queue_v1.ads:38:50: medium: overflow check might fail
 bounded_queue_v1.ads:39:18: info: precondition proved

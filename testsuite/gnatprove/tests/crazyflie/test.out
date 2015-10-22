@@ -105,7 +105,7 @@ free_fall_pack.adb:52:16: info: initialization of "Variance" proved
 free_fall_pack.adb:52:16: info: initialization of "Variance" proved, in call inlined at free_fall_pack.adb:74
 free_fall_pack.adb:76:10: info: initialization of "Has_Landed" proved
 free_fall_pack.adb:83:30: info: initialization of "Has_Detected_FF" proved
-free_fall_pack.adb:133:45: medium: array index check might fail (e.g. when Data_Collector = (Index => 0, Samples => ?))
+free_fall_pack.adb:133:45: medium: array index check might fail (e.g. when Data_Collector = (Index => 0, others => ?))
 free_fall_pack.adb:136:31: info: division check proved
 free_fall_pack.adb:136:69: info: overflow check proved
 free_fall_pack.adb:148:66: info: index check proved
