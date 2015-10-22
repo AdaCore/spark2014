@@ -680,7 +680,7 @@ package SPARK_Util is
 
    function Get_Expr_From_Return_Only_Func (E : Entity_Id) return Node_Id
      with Pre => Ekind (E) = E_Function;
-   --  @param E procedure
+   --  @param E function
    --  @return the expression in the first return statement found in the body
    --     of E, if any, or Empty otherwise
    --  Extract a condition being checked from a procedure intended to test

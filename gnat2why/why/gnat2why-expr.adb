@@ -212,6 +212,19 @@ package body Gnat2Why.Expr is
    --  Returns True if N has a Related_Expression attribute associated to
    --  a parameter entity.
 
+   function Dynamic_Predicate_Expression
+     (Expr      : W_Expr_Id;
+      Pred_Subp : Entity_Id;
+      Domain    : EW_Domain;
+      Params    : Transformation_Params) return W_Expr_Id;
+   --  Transform the expression of a dynamic_predicate
+   --  @param Expr expression on which the predicate is called
+   --  @param Pred_Subp entity of the predicate function
+   --  @param Domain Domain where we want to do the transformation
+   --  @param Params transformation parameters
+   --  @return the translation of the expression contained in the predicate
+   --  applied on Expr.
+
    function Discrete_Choice_Is_Range (Choice : Node_Id) return Boolean;
    --  Return whether Choice is a range ("others" counts as a range)
 
@@ -3485,62 +3498,11 @@ package body Gnat2Why.Expr is
          Result := New_Predicate_Call (Ty_Ext, Expr, Params);
 
       else
-         declare
-            Pred_Subp  : constant Entity_Id := Predicate_Function (Ty);
-            Pred_Expr  : constant Node_Id :=
-              Get_Expr_From_Return_Only_Func (Pred_Subp);
-            Pred_Param : constant Entity_Id :=
-              Defining_Entity (First (Parameter_Specifications
-                               (Subprogram_Specification (Pred_Subp))));
-            Pred_Id    : constant W_Identifier_Id :=
-              New_Temp_Identifier (Pred_Param, Get_Type (+Expr));
-
-         begin
-            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-            --  Register the temporary identifier Pred_Id for parameter
-            --  Pred_Param in the symbol table. This ensures both that a
-            --  distinct name is used each time (preventing name capture), and
-            --  that the type of Expr is used as the type used to represent
-            --  Pred_Param (avoiding type conversion).
-
-            if Get_Type_Kind (Get_Type (+Expr)) = EW_Split
-              and then Has_Array_Type (Ty_Ext)
-            then
-               declare
-                  E : constant Item_Type :=
-                    Ada_Ent_To_Why.Element
-                      (Symbol_Table, Get_Entity_Of_Variable (+Expr));
-               begin
-                  Insert_Item
-                    (I => Item_Type'(Kind     => UCArray,
-                                     Content  =>
-                                       Binder_Type'(B_Name => Pred_Id,
-                                                    others => <>),
-                                     Dim      => E.Dim,
-                                     Bounds   => E.Bounds),
-                     E => Pred_Param);
-               end;
-            else
-               Insert_Entity (Pred_Param, Pred_Id);
-            end if;
-
-            --  Transform the predicate expression into Why3
-
-            Result := +Transform_Expr (Expr   => Pred_Expr,
-                                       Domain => EW_Pred,
-                                       Params => Params);
-
-            --  Relate the name Pred_Id used in the predicate expression to the
-            --  value Expr for which the predicate is checked.
-
-            Result := New_Binding (Name    => Pred_Id,
-                                   Def     => +Expr,
-                                   Context => +Result,
-                                   Typ     => Get_Type (+Result));
-
-            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-         end;
+         Result := +Dynamic_Predicate_Expression
+           (Expr      => +Expr,
+            Pred_Subp => Predicate_Function (Ty),
+            Domain    => EW_Pred,
+            Params    => Params);
       end if;
 
       return Result;
@@ -3680,6 +3642,75 @@ package body Gnat2Why.Expr is
       end case;
       return Is_Range;
    end Discrete_Choice_Is_Range;
+
+   ----------------------------------
+   -- Dynamic_Predicate_Expression --
+   ----------------------------------
+
+   function Dynamic_Predicate_Expression
+     (Expr      : W_Expr_Id;
+      Pred_Subp : Entity_Id;
+      Domain    : EW_Domain;
+      Params    : Transformation_Params) return W_Expr_Id
+   is
+      Result : W_Expr_Id;
+      Pred_Expr  : constant Node_Id :=
+        Get_Expr_From_Return_Only_Func (Pred_Subp);
+      Pred_Param : constant Entity_Id :=
+        Defining_Entity (First (Parameter_Specifications
+                         (Subprogram_Specification (Pred_Subp))));
+      Pred_Id    : constant W_Identifier_Id :=
+        New_Temp_Identifier (Pred_Param, Get_Type (+Expr));
+
+   begin
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+      --  Register the temporary identifier Pred_Id for parameter
+      --  Pred_Param in the symbol table. This ensures both that a
+      --  distinct name is used each time (preventing name capture), and
+      --  that the type of Expr is used as the type used to represent
+      --  Pred_Param (avoiding type conversion).
+
+      if Get_Type_Kind (Get_Type (+Expr)) = EW_Split
+        and then Has_Array_Type (Get_Ada_Node (+Get_Type (+Expr)))
+      then
+         declare
+            E : constant Item_Type :=
+              Ada_Ent_To_Why.Element
+                (Symbol_Table, Get_Entity_Of_Variable (+Expr));
+         begin
+            Insert_Item
+              (I => Item_Type'(Kind     => UCArray,
+                               Content  =>
+                                 Binder_Type'(B_Name => Pred_Id,
+                                              others => <>),
+                               Dim      => E.Dim,
+                               Bounds   => E.Bounds),
+               E => Pred_Param);
+         end;
+      else
+         Insert_Entity (Pred_Param, Pred_Id);
+      end if;
+
+      --  Transform the predicate expression into Why3
+
+      Result := +Transform_Expr (Expr   => Pred_Expr,
+                                 Domain => Domain,
+                                 Params => Params);
+
+      --  Relate the name Pred_Id used in the predicate expression to the
+      --  value Expr for which the predicate is checked.
+
+      Result := New_Binding (Name    => Pred_Id,
+                             Def     => +Expr,
+                             Context => +Result,
+                             Domain  => Domain,
+                             Typ     => Get_Type (+Result));
+
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      return Result;
+   end Dynamic_Predicate_Expression;
 
    -----------------------------
    -- Expected_Type_Of_Prefix --
@@ -9713,7 +9744,9 @@ package body Gnat2Why.Expr is
          not (Nkind (Expr) in N_Identifier | N_Expanded_Name and then
               Ekind (Entity (Expr)) in E_Enumeration_Literal and then
               (Entity (Expr) = Standard_True or else
-               Entity (Expr) = Standard_False))
+               Entity (Expr) = Standard_False)) and then
+        not (Nkind (Expr) = N_Function_Call
+             and then Is_Predicate_Function (Get_Called_Entity (Expr)))
       then
          T := +Pred_Of_Boolean_Term
                  (+Transform_Expr (Expr, EW_Bool_Type, EW_Term, Local_Params));
@@ -10417,6 +10450,29 @@ package body Gnat2Why.Expr is
             if Is_Simple_Shift_Or_Rotate (Get_Called_Entity (Expr)) then
                T := Transform_Shift_Or_Rotate_Call
                       (Expr, Domain, Local_Params);
+            elsif Is_Predicate_Function (Get_Called_Entity (Expr)) then
+
+               --  Calls to predicate functions should be replaced by their
+               --  expression.
+
+               declare
+                  Func   : constant Entity_Id := Get_Called_Entity (Expr);
+                  Params : constant List_Id := Parameter_Associations (Expr);
+                  Arg    : constant Node_Id := First (Params);
+               begin
+                  pragma Assert (Present (Arg) and then No (Next (Arg)));
+
+                  T := Dynamic_Predicate_Expression
+                    (Expr      => Transform_Expr
+                       (Expr          => Arg,
+                        Expected_Type => Type_Of_Node (Arg),
+                        Domain        =>
+                          (if Domain = EW_Pred then EW_Term else Domain),
+                        Params        => Local_Params),
+                     Pred_Subp => Func,
+                     Domain    => Domain,
+                     Params    => Local_Params);
+               end;
             else
                T := Transform_Function_Call (Expr, Domain, Local_Params);
             end if;

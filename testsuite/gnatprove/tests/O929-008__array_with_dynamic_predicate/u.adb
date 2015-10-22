@@ -5,11 +5,11 @@ package body U with SPARK_Mode is
 
       for I in 0 .. Sq'Last loop
 
-         Sq(I) := 0;
-
          pragma Loop_Invariant
-           (for all J in I+1 .. Sq'Last =>
+           (for all J in I .. Sq'Last =>
               Sq(J) = Sq'Loop_Entry(J));
+
+         Sq(I) := 0;
 
       end loop;
 
