@@ -1,0 +1,2 @@
+counterex_unprovable.adb:19:20: info: initialization of "Result" proved
+counterex_unprovable.adb:21:12: info: initialization of "Result" proved
