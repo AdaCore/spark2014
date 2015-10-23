@@ -3672,7 +3672,8 @@ objects (tasks cannot communicate directly as they do not have entries). In
 erroneous concurrent access to shared data (a.k.a. data races).
 More precisely, tasks can only share `synchronized` objects, that is, objects
 that are protected against concurrent accesses. These include atomic objects
-as well as protected objects (see :ref:`Protected Objects`) and suspension
+as well as protected objects
+(see :ref:`Protected Objects and Deadlock Avoidance`) and suspension
 objects (see :ref:`Suspension Objects`). As an
 example, our previous definition of the ``Account_Management`` task type was
 not in |SPARK|. Indeed, data races could occur when accessing the global
@@ -3798,7 +3799,7 @@ for task ``Account_Management`` defined above as follows:
         Depends => (Account.Num_Accounts => Account.Num_Accounts);
    end Account;
 
-.. _Protected Objects:
+.. _Protected Objects and Deadlock Avoidance:
 
 Protected Objects and Deadlock Avoidance
 ----------------------------------------
@@ -3875,6 +3876,8 @@ implicitly declared for it. For example, if ``Num_Account`` is the only
          function Get return Natural is (The_Data);
       end Num_Accounts;
    end Account;
+
+.. _Protected Subprograms and Entries:
 
 Protected Subprograms and Entries
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -4047,6 +4050,80 @@ its ceiling priority should be higher than 5:
 
 Suspension Objects
 ------------------
+
+The language-defined package ``Ada.Synchronous_Task_Control`` provides a type
+for semaphores called `suspension objects`. They allow lighter synchroniaation
+mechanisms than protected objects (see 
+:ref:`Protected Objects and Deadlock Avoidance`).
+More precisely, a suspension object has a
+Boolean state which can be set atomically to True using the ``Set_True``
+procedure.
+When a task suspends on a suspension object calling the ``Suspend_Until_True``
+procedure, it is blocked until the state of the suspension object
+is True. At that point, the state of the suspension object is set back to False
+and the task is unblocked. Note that ``Suspend_Until_True`` is potentially
+blocking and therefore should not be called directly or indirectly from
+within a protected subprogram (see :ref:`Protected Subprograms and Entries`).
+In the following example, the suspension object ``Semaphore`` is used to make
+sure ``T1`` has initialized the shared data by the time ``T2`` begins processing
+it:
+
+.. code-block:: ada
+
+   Semaphore : Suspension_Object;
+   task T1;
+   task T2;
+
+   task body T1 is
+   begin
+     Initialize_Shared_Data;
+     Set_True (Semaphore);
+     loop
+       ...
+     end loop;
+   end T1;
+
+   task body T2 is
+   begin
+     Suspend_Until_True (Semaphore);
+     loop
+       ...
+     end loop;
+   end T2;
+
+In Ada, an exception is raised if a task tries to suspend on a suspension object
+on which another task is already waiting. Like for verifying that no two tasks
+can be queued on a protected entry, this verification is done by |GNATprove| by
+checking that no two tasks ever suspend on the same suspension object.
+In the following example, the suspension objects ``Semaphore1`` and 
+``Semaphore2`` are used to ensure that ``T1`` and ``T2`` never call
+``Enter_Protected_Region`` at the same time. |GNATprove| will successfully
+verify that only one task can suspend on each suspension object:
+
+.. code-block:: ada
+
+   Semaphore1, Semaphore2 : Suspension_Object;
+   task T1;
+   task T2;
+
+   task body T1 is
+   begin
+     loop
+       Suspend_Until_True (Semaphore1);
+       Enter_Protected_Region;
+       Set_True (Semaphore2);
+     end loop;
+   end T1;
+
+   task body T2 is
+   begin
+     loop
+       Suspend_Until_True (Semaphore2);
+       Enter_Protected_Region;
+       Set_True (Semaphore1);
+     end loop;
+   end T2;
+
 
 |SPARK| Libraries
 =================
