@@ -1251,7 +1251,7 @@ package body Flow_Generated_Globals is
          --  potentially blocking anyway (they are "leaves" of the call graph).
 
          declare
-            Protected_Operations_Stack : Name_Sets.Set;
+            Stack : Name_Sets.Set;
             --  We collect protected operations in SPARK and use them as seeds
             --  to grow the call graph.
          begin
@@ -1264,19 +1264,19 @@ package body Flow_Generated_Globals is
                  and then Entity_Body_In_SPARK (E)
                  and then Entity_Body_Valid_SPARK (E)
                then
-                  Protected_Operations_Stack.Insert (To_Entity_Name (E));
+                  Stack.Insert (To_Entity_Name (E));
                end if;
             end loop;
 
             --  Then create a call graph for them
-            while not Protected_Operations_Stack.Is_Empty loop
+            while not Stack.Is_Empty loop
 
                declare
                   V_Caller, V_Callee : Entity_Name_Graphs.Vertex_Id;
                   --  Call graph vertices for the caller and the callee
 
                   Caller : constant Entity_Name :=
-                    Name_Sets.Element (Protected_Operations_Stack.First);
+                    Name_Sets.Element (Stack.First);
                   --  Name of the caller
 
                begin
@@ -1301,7 +1301,7 @@ package body Flow_Generated_Globals is
                         if V_Callee = Entity_Name_Graphs.Null_Vertex then
                            Protected_Operation_Call_Graph.
                              Add_Vertex (Callee, V_Callee);
-                           Protected_Operations_Stack.Include (Callee);
+                           Stack.Include (Callee);
                         end if;
 
                         Protected_Operation_Call_Graph.
@@ -1310,7 +1310,7 @@ package body Flow_Generated_Globals is
                   end if;
 
                   --  Pop the caller from the stack
-                  Protected_Operations_Stack.Delete (Caller);
+                  Stack.Delete (Caller);
                end;
             end loop;
 
