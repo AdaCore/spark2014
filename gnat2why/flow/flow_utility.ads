@@ -676,7 +676,7 @@ is
    --     which Has_Variable_Input
 
    function Is_Constant_After_Elaboration (N : Node_Id) return Boolean
-   with Pre => N = Empty or else Nkind (N) = N_Pragma;
+   with Pre => (if Present (N) then Nkind (N) = N_Pragma);
    --  @param N is the node corresponding to the
    --     Pragma_Constant_After_Elaboration. N might be Empty.
    --  @return True iff Constant_After_Elaboration is True
