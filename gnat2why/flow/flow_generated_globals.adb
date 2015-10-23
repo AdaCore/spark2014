@@ -1636,8 +1636,8 @@ package body Flow_Generated_Globals is
                end loop;
                LHS.Union (Name_Sets.Intersection (LV, ODC));
 
-               --  Add Reads and Writes of conditional calls to the RHS set
-               --  and their Proof_Reads to the RHS_Proof set.
+               --  Add Reads and Writes of conditional calls to the RHS set and
+               --  their Proof_Reads to the RHS_Proof set.
                for Conditional_Call of P.Conditional_Calls loop
                   declare
                      Proof_Reads : Name_Sets.Set;
@@ -1656,6 +1656,11 @@ package body Flow_Generated_Globals is
                      end if;
                   end;
                end loop;
+
+               --  Remove local variables from the sets since they should not
+               --  appear in Initializes aspects.
+               RHS       := RHS - P.Local_Variables;
+               RHS_Proof := RHS_Proof - P.Local_Variables;
 
                --  Populate II
                II.LHS       := LHS;

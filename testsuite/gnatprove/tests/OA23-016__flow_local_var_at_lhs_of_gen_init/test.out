@@ -1,0 +1,4 @@
+t.adb:2:14: info: initialization of "V" proved
+t.adb:9:12: info: initialization of "V" proved, in call inlined at t.adb:19
+t.adb:9:14: info: overflow check proved, in call inlined at t.adb:19
+t.ads:5:14: warning: subprogram "Do_Nothing" has no effect
