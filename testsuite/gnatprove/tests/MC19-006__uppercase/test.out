@@ -1,2 +1,2 @@
-base.adb:5:50: medium: overflow check might fail
+base.adb:5:50: medium: overflow check might fail (e.g. when X = 2147483647)
 base.adb:7:12: info: initialization of "X" proved
