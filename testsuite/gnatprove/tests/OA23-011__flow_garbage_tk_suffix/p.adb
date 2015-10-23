@@ -10,13 +10,6 @@ package body P is
       PO.Dummy;
    end;
 
-   task body T1 is
-   begin
-      loop
-         PO.Dummy;
-      end loop;
-   end;
-
    task body T2 is
    begin
       loop

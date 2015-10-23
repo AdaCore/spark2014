@@ -973,9 +973,6 @@ package body Flow_Generated_Globals is
          --  Check if we should add the given edge to the graph based
          --  wheather it is in the local graph or not.
 
-         procedure Add_Tasking_Edge (From, To : Entity_Name);
-         --  Add edge to tasking call graphs
-
          -------------------
          -- Edge_Selector --
          -------------------
@@ -1007,19 +1004,6 @@ package body Flow_Generated_Globals is
             --  Check if local variable B can act as global of subprogram A
             return Local_Graph.Edge_Exists (Key_B, Key_A);
          end Edge_Selector;
-
-         procedure Add_Tasking_Edge (From, To : Entity_Name) is
-         begin
-            --  Record the call in the tasking-info graphs, but only for calls
-            --  between subprograms in SPARK.
-            if Tasking_Call_Graph.Get_Vertex (From) /=
-                Entity_Name_Graphs.Null_Vertex
-              and then Tasking_Call_Graph.Get_Vertex (To) /=
-                Entity_Name_Graphs.Null_Vertex
-            then
-               Tasking_Call_Graph.Add_Edge (From, To);
-            end if;
-         end Add_Tasking_Edge;
 
       --  Start of processing for Add_All_Edges
 
@@ -1087,9 +1071,6 @@ package body Flow_Generated_Globals is
                Global_Graph.Add_Edge (G_Outs,
                                       Global_Id'(Kind => Outs_Kind,
                                                  Name => Definite_Call));
-
-               --  Also record the call in the tasking-info graphs
-               Add_Tasking_Edge (Info.Name, Definite_Call);
             end loop;
 
             --  As above but also add an edge from the subprogram's
@@ -1110,9 +1091,6 @@ package body Flow_Generated_Globals is
                Global_Graph.Add_Edge (G_Outs,
                                       Global_Id'(Kind => Outs_Kind,
                                                  Name => Conditional_Call));
-
-               --  Also record the call in the tasking-info graph
-               Add_Tasking_Edge (Info.Name, Conditional_Call);
             end loop;
          end loop;
 
@@ -1191,9 +1169,78 @@ package body Flow_Generated_Globals is
          --  graph.
          Global_Graph.Conditional_Close (Edge_Selector'Access);
 
-         -----------------------
-         -- Create call graph --
-         -----------------------
+         ----------------------------------------
+         -- Create tasking-related call graphs --
+         ----------------------------------------
+
+         --  For task ownership checks we create a call graph rooted at
+         --  tasks and main-like subprograms. Vertices correspond to callable
+         --  entities (i.e. entries, functions and procedures).
+
+         Add_Tasking_Edges : declare
+            use Entity_Name_Graphs;
+
+            Stack : Name_Sets.Set;
+            --  Subprograms from which we still need to add edges
+
+         --  Start of processing for Add_Tasking_Edges
+
+         begin
+            --  First collect tasks and main-like subprograms in SPARK
+            for TC in Task_Instances.Iterate loop
+               declare
+                  S : constant Entity_Name := Task_Instances_Maps.Key (TC);
+               begin
+                  Stack.Insert (S);
+               end;
+            end loop;
+
+            --  Then create a call graph for them
+            while not Stack.Is_Empty loop
+
+               declare
+                  V_Caller, V_Callee : Entity_Name_Graphs.Vertex_Id;
+                  --  Call graph vertices for the caller and the callee
+
+                  Caller : constant Entity_Name :=
+                    Name_Sets.Element (Stack.First);
+                  --  Name of the caller
+
+               begin
+                  --  Create vertex for a caller if it does not already exist
+                  V_Caller := Tasking_Call_Graph.Get_Vertex (Caller);
+                  if V_Caller = Entity_Name_Graphs.Null_Vertex then
+                     Tasking_Call_Graph.Add_Vertex (Caller, V_Caller);
+                  end if;
+
+                  --  If the caller is in SPARK then check its callees;
+                  --  otherwise leave it as a leaf of the call graph.
+
+                  --  ??? how about subprogram with SPEC with SPARK_Mode => On,
+                  --  but BODY with SPARK_Mode => Off, especially those which
+                  --  call another subprogram in its contract?
+                  for Callee of Computed_Calls (Caller) loop
+                     --  Get vertex for the callee
+                     V_Callee := Tasking_Call_Graph.Get_Vertex (Callee);
+
+                     --  If there is no vertex for the callee then create
+                     --  one and put the callee on the stack.
+                     if V_Callee = Entity_Name_Graphs.Null_Vertex then
+                        Tasking_Call_Graph.Add_Vertex (Callee, V_Callee);
+                        Stack.Include (Callee);
+                     end if;
+
+                     Tasking_Call_Graph.Add_Edge (V_Caller, V_Callee);
+                  end loop;
+
+                  --  Pop the caller from the stack
+                  Stack.Delete (Caller);
+               end;
+            end loop;
+
+            --  Transitive closure
+            Tasking_Call_Graph.Close;
+         end Add_Tasking_Edges;
 
          --  To detect potentially blocking operations in protected actions
          --  we create a call graph with vertices corresponding to callable
@@ -1851,9 +1898,6 @@ package body Flow_Generated_Globals is
                      end;
 
                   when EK_Tasking_Info =>
-                     --  Register subprogram with tasking-related info
-                     Tasking_Call_Graph.Add_Vertex (V.The_Entity);
-
                      for Kind in Tasking_Info_Kind loop
                         if not V.The_Tasking_Info (Kind).Is_Empty then
                            Tasking_Info_Bag (Phase_1, Kind).Insert
@@ -1929,34 +1973,88 @@ package body Flow_Generated_Globals is
          G.Close;
 
          --  Collect information for each main-like subprogram
-         --  ??? we should only care about main-like subprograms
          for TC in Task_Instances.Iterate loop
             declare
-               S : constant Entity_Name := Task_Instances_Maps.Key (TC);
+               TN : constant Entity_Name := Task_Instances_Maps.Key (TC);
+               --  Name of task or main-like subprogram
+
+               TV : constant Vertex_Id := Tasking_Call_Graph.Get_Vertex (TN);
+               --  Corresponding vertex in tasking call graph
+
+               procedure Collect_From (S : Entity_Name);
+               --  Collect tasking objects accessed by subprogram S as
+               --  they were accessed by task task TN.
+
+               ------------------
+               -- Collect_From --
+               ------------------
+
+               procedure Collect_From (S : Entity_Name) is
+               begin
+                  for Kind in Tasking_Info_Kind loop
+                     declare
+
+                        S_C : constant Name_Graphs.Cursor :=
+                          Tasking_Info_Bag (Phase_1, Kind).Find (S);
+                        --  Pointer to objects accessed by subprogram S
+
+                        T_C : Name_Graphs.Cursor;
+                        --  Pointer to objects accessed by task T
+
+                        Inserted : Boolean;
+                        --  Flag that indicates if a key was inserted or if
+                        --  it already existed in a map. It is required by
+                        --  the hashed-maps API, but not used here.
+
+                        procedure Union_With_S_Objects
+                          (Key     : Entity_Name;
+                           Element : in out Name_Sets.Set);
+                        --  Record objects accessed by S as accessed also by TN
+
+                        --------------------------
+                        -- Union_With_S_Objects --
+                        --------------------------
+
+                        procedure Union_With_S_Objects
+                          (Key     : Entity_Name;
+                           Element : in out Name_Sets.Set)
+                        is
+                           pragma Unreferenced (Key);
+                        begin
+                           Element.Union (Name_Graphs.Element (S_C));
+                        end Union_With_S_Objects;
+
+                     begin
+                        --  Only do something if S accesses any objects
+                        if Name_Graphs.Has_Element (S_C) then
+                           Tasking_Info_Bag (Phase_2, Kind).Insert
+                             (Key      => TN,
+                              Position => T_C,
+                              Inserted => Inserted);
+
+                           Tasking_Info_Bag (Phase_2, Kind).Update_Element
+                             (Position => T_C,
+                              Process  => Union_With_S_Objects'Access);
+                        end if;
+                     end;
+                  end loop;
+               end Collect_From;
 
             begin
 
-               for Kind in Tasking_Info_Kind loop
+               --  Now graph G is a transitive (but not reflexive!) closure.
+               --  We need to explicitly collect objects accessed by the task
+               --  itself, and then all subprogram called it calls (directly
+               --  or indirectly).
+
+--                 Ada.Text_IO.Put_Line ("Main: " & To_String (TN));
+               Collect_From (TN);
+               for SV of G.Get_Collection (TV, Out_Neighbours) loop
                   declare
-                     C : constant Name_Graphs.Cursor :=
-                       Tasking_Info_Bag (Phase_1, Kind).Find (S);
-
-                     Objs_1 : constant Name_Sets.Set :=
-                       (if Name_Graphs.Has_Element (C)
-                        then Tasking_Info_Bag (Phase_1, Kind).Element (S)
-                        else Name_Sets.Empty_Set);
-
-                     Objs_2 : Name_Sets.Set;
+                     S : constant Entity_Name := G.Get_Key (SV);
                   begin
-                     --  Collect objects directly accesses by the subprogram
-                     for Obj of Objs_1 loop
-                        Objs_2.Insert (Obj);
-                     end loop;
-
-                     --  Store the non-empty results
-                     if not Objs_2.Is_Empty then
-                        Tasking_Info_Bag (Phase_2, Kind).Insert (S, Objs_2);
-                     end if;
+--                       Ada.Text_IO.Put_Line ("   ->" & To_String (S));
+                     Collect_From (S);
                   end;
                end loop;
             end;
@@ -2174,7 +2272,8 @@ package body Flow_Generated_Globals is
 
       end Detect_Main_Subprogram;
 
-      --  Add all edges in the Global_Graph and Tasking_Call_Graph
+      --  Add all edges in the Global_Graph, Tasking_Call_Graph and
+      --  Protected_Operation_Call_Graph.
       Add_All_Edges;
       if Debug_GG_Read_Timing then
          Note_Time ("gg_read - edges added");

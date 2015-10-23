@@ -1,6 +1,5 @@
 foo.adb:11:38: info: initialization of "G" proved
 foo.adb:15:22: info: postcondition proved
-foo.adb:43:14: info: ceiling priority protocol is respected
 foo.adb:43:14: info: nontermination of task proved
 foo.adb:50:14: medium: precondition might fail (e.g. when B = False)
 foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
