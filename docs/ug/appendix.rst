@@ -1044,6 +1044,8 @@ Legality Rules
 #. The use Ada.Synchronous_Barriers.Synchronous_Barrier type is not currently
    allowed in |SPARK|.
 
+#. Entry families are not currently allowed in |SPARK|.
+
 Flow Analysis Limitations
 -------------------------
 

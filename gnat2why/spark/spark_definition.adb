@@ -1594,7 +1594,11 @@ package body SPARK_Definition is
 
          when N_Entry_Body =>
             if Is_SPARK_Tasking_Configuration then
-               Mark_Subprogram_Body (N);
+               if Ekind (Unique_Defining_Entity (N)) /= E_Entry_Family then
+                  Mark_Subprogram_Body (N);
+               else
+                  Mark_Violation ("entry family", N);
+               end if;
             else
                Mark_Violation_In_Tasking (N);
             end if;
@@ -1608,7 +1612,11 @@ package body SPARK_Definition is
 
          when N_Entry_Declaration =>
             if Is_SPARK_Tasking_Configuration then
-               Mark_Subprogram_Declaration (N);
+               if Ekind (Defining_Entity (N)) /= E_Entry_Family then
+                  Mark_Subprogram_Declaration (N);
+               else
+                  Mark_Violation ("entry family", N);
+               end if;
             else
                Mark_Violation_In_Tasking (N);
             end if;
