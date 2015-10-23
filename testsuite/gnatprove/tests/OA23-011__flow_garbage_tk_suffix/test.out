@@ -1,0 +1,5 @@
+p.adb:23:10: "PO" must be listed in the Global aspect of "T2tk" (SPARK RM 6.1.4(13))
+   compilation of p.adb failed
+
+
+gnatprove: error during flow analysis and proof
