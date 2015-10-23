@@ -1,11 +1,11 @@
-tag_check.adb:12:09: medium: tag check might fail (e.g. when Y = ())
+tag_check.adb:12:09: medium: tag check might fail
 tag_check.adb:13:21: medium: assertion might fail, cannot prove false
 tag_check.adb:33:04: warning: analyzing unreferenced procedure "Use_Two"
 tag_check.adb:33:14: warning: subprogram "Use_Two" has no effect
-tag_check.adb:35:07: medium: tag check might fail (e.g. when X = () and Y = ())
+tag_check.adb:35:07: medium: tag check might fail
 tag_check.adb:38:04: warning: analyzing unreferenced procedure "Use_Three"
 tag_check.adb:38:14: warning: subprogram "Use_Three" has no effect
-tag_check.adb:40:07: medium: tag check might fail (e.g. when X = () and Y = () and Z = ())
+tag_check.adb:40:07: medium: tag check might fail
 tag_check.ads:7:14: warning: subprogram "Two" has no effect
 tag_check.ads:8:14: warning: subprogram "Three" has no effect
 tag_check.ads:12:14: high: no paths in subprogram will return normally

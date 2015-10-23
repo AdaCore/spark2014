@@ -16,5 +16,5 @@ window.adb:21:07: medium: precondition might fail (e.g. when Rec = (Width => 0, 
 window.adb:21:13: info: initialization of "Rec" proved
 window.ads:11:16: info: postcondition proved
 window.ads:11:44: info: overflow check proved
-window.ads:15:16: medium: postcondition might fail, cannot prove Obj.Has_Stored_Area (e.g. when Obj = ())
+window.ads:15:16: medium: postcondition might fail, cannot prove Obj.Has_Stored_Area
 window.ads:19:14: medium: postcondition might fail, cannot prove Total_Area = Total_Area'Old - 100 (e.g. when Total_Area = 101)

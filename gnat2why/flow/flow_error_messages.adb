@@ -719,6 +719,8 @@ package body Flow_Error_Messages is
                   --  Gets the string value of given variable or record field.
                   --  If the variable or record field is of record type, the
                   --  returned value is record aggregate.
+                  --  If the value should not be displayed in countereexample,
+                  --  value "@not_display" is returned.
 
                   function Get_Var_Or_Field_Value
                     (Var_Or_Field : Var_Or_Field_Ptr) return String
@@ -769,51 +771,86 @@ package body Flow_Error_Messages is
                                  return Res;
                               end Get_Fields_Descr_Declared;
 
-                              Fields_Descr_Present : constant Natural :=
+                              Fields_Discrs_Collected : constant Natural :=
                                 Natural (Length (Var_Or_Field.Fields.all));
-                              Fields_Descr_Declared : constant Natural :=
+                              Fields_Discrs_Declared : constant Natural :=
                                 Get_Fields_Descr_Declared;
-                              Decl_Field : Entity_Id :=
+                              Fields_Discrs_With_Value : Natural := 0;
+                              Decl_Field_Discr : Entity_Id :=
                                 First_Component_Or_Discriminant
                                   (Var_Or_Field_Type);
-                              Is_Field_Before : Boolean := False;
+                              Is_Before : Boolean := False;
                               Value : Unbounded_String :=
                                 To_Unbounded_String ("(");
                            begin
-                              while Present (Decl_Field) loop
+                              --  If the record type of the value has no fields
+                              --  and discriminats or if there were no
+                              --  counterexample values for fields and
+                              --  discriminants of the processed value
+                              --  collected, do not display the value
+                              if Fields_Discrs_Collected = 0 or else
+                                Fields_Discrs_Declared = 0
+                              then
+                                 return "@not_display";
+                              end if;
+
+                              while Present (Decl_Field_Discr) loop
                                  declare
                                     Field_Descr_Name : constant String :=
-                                      Source_Name (Decl_Field);
+                                      Source_Name (Decl_Field_Discr);
                                     Field_Descr : constant Cursor :=
                                       Find (Var_Or_Field.Fields.all,
                                             Field_Descr_Name);
                                  begin
                                     if Has_Element (Field_Descr) or else
-                                      Fields_Descr_Declared -
-                                        Fields_Descr_Present <= 1
+                                      Fields_Discrs_Declared -
+                                        Fields_Discrs_Collected <= 1
                                     then
-                                       Value := Value &
-                                       (if Is_Field_Before then ", " else "") &
-                                         Field_Descr_Name &
-                                         " => " &
-                                       (if Has_Element (Field_Descr) then
-                                           Get_Var_Or_Field_Value (Element
-                                          (Field_Descr))
-                                        else "?");
-                                       Is_Field_Before := True;
+                                       declare
+                                          Field_Descr_Val : constant String :=
+                                            (if Has_Element (Field_Descr) then
+                                                  Get_Var_Or_Field_Value
+                                                      (Element (Field_Descr))
+                                             else "?");
+                                       begin
+                                          if Field_Descr_Val /= "@not_display"
+                                          then
+                                             Value := Value &
+                                               (if Is_Before then ", "
+                                                else "") &
+                                               Field_Descr_Name &
+                                               " => " &
+                                               Field_Descr_Val;
+                                             Is_Before := True;
+                                             if Has_Element (Field_Descr) then
+                                                Fields_Discrs_With_Value :=
+                                                  Fields_Discrs_With_Value + 1;
+                                             end if;
+                                          end if;
+                                       end;
                                     end if;
-                                    Next_Component (Decl_Field);
+                                    Next_Component (Decl_Field_Discr);
                                  end;
                               end loop;
+
+                              --  If there are no fields and discriminants of
+                              --  the processed value with values that can be
+                              --  displayed do not display the value (this can
+                              --  happen if there were collected fields or
+                              --  discrinants, but there values should not be
+                              --  displayed)
+                              if Fields_Discrs_With_Value = 0 then
+                                 return "@not_display";
+                              end if;
 
                               --  If there are more than one field that is not
                               --  mentioned in the counterexample, summarize
                               --  them using the field others
-                              if Fields_Descr_Declared -
-                                Fields_Descr_Present > 1
+                              if Fields_Discrs_Declared -
+                                Fields_Discrs_Collected > 1
                               then
                                  Value := Value &
-                                 (if Is_Field_Before then ", " else "") &
+                                 (if Is_Before then ", " else "") &
                                    "others => ?";
                               end if;
                               Value := Value & ")";
@@ -839,11 +876,17 @@ package body Flow_Error_Messages is
                           Get_Var_Or_Field_Value (Element (Variable));
                         Pretty_Var : constant JSON_Value := Create_Object;
                      begin
-                        Set_Field (Pretty_Var, "name", Create (Var_Name));
-                        Set_Field (Pretty_Var, "value", Create (Var_Value));
-                        Set_Field (Pretty_Var, "kind", Create ("variable"));
 
-                        Append (Pretty_Line_Cntexmp_Arr, Pretty_Var);
+                        --  If the value of the variable should not be
+                        --  displayed in the counterexample, do not display
+                        --  the variable.
+                        if Var_Value /= "@not_display" then
+                           Set_Field (Pretty_Var, "name", Create (Var_Name));
+                           Set_Field (Pretty_Var, "value", Create (Var_Value));
+                           Set_Field (Pretty_Var, "kind", Create ("variable"));
+
+                           Append (Pretty_Line_Cntexmp_Arr, Pretty_Var);
+                        end if;
 
                         Next (Variable);
                      end;
@@ -852,14 +895,20 @@ package body Flow_Error_Messages is
                end Build_Pretty_Line;
 
                Variables : Variables_Info;
-               Pretty_Line_Cntexmp_Arr : JSON_Array;
+               Pretty_Line_Cntexmp_Arr : JSON_Array := Empty_Array;
             begin
                Build_Variables_Info (Get (Line_Cntexmp), Variables);
+
                if not Is_Empty (Variables.Variables_Map) then
                   Build_Pretty_Line (Variables, Pretty_Line_Cntexmp_Arr);
-                  Set_Field (Pretty_File_Cntexmp,
-                             Line,
-                             Create (Pretty_Line_Cntexmp_Arr));
+
+                  --  Add the counterexample line only if there are some
+                  --  pretty printed counterexample elements
+                  if Pretty_Line_Cntexmp_Arr /= Empty_Array then
+                     Set_Field (Pretty_File_Cntexmp,
+                                Line,
+                                Create (Pretty_Line_Cntexmp_Arr));
+                  end if;
                end if;
             end Create_Pretty_Line;
 
