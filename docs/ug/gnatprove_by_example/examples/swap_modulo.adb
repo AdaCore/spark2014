@@ -2,7 +2,6 @@ with Interfaces; use Interfaces;
 
 procedure Swap_Modulo (X, Y : in out Unsigned_32) with
   SPARK_Mode,
-  Depends => (X => Y, Y => X),
   Post    => X = Y'Old and Y = X'Old
 is
 begin
