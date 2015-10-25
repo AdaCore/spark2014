@@ -1,2 +1,1 @@
-NT XFAIL crash on Windows for two files (O913-002)
 darwin XFAIL crash due to too many open files (OA09-032)
