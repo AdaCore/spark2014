@@ -456,8 +456,8 @@ def gnatprove(opt=["-P", "test.gpr"]):
     gnatprove_(opt)
 
 
-def prove(opt=None, steps=max_steps, procs=parallel_procs,
-          vc_timeout=vc_timeout(), mode="prove"):
+def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
+              vc_timeout=vc_timeout(), mode="all", counterexample=True):
     """Call gnatprove with standard options.
 
        For option steps the default is max_steps set above, setting this
@@ -475,6 +475,8 @@ def prove(opt=None, steps=max_steps, procs=parallel_procs,
         fullopt += ["--benchmark"]
     if inverse_prover():
         fullopt += ["--prover=z3,altergo,cvc4"]
+    if not counterexample:
+        fullopt += ["--no-counterexample"]
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
@@ -486,25 +488,12 @@ def do_flow(opt=None, procs=parallel_procs):
     if opt is None:
         opt = []
     opt += ["--debug"]
-    prove(opt, mode="flow")
-
-
-def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
-              vc_timeout=vc_timeout(), counterexample=True):
-    """Call gnatprove with standard options to prove all VCs"""
-    if not counterexample:
-        fullopt = ["--no-counterexample"]
-        # Add opt last, so that it may include switch -cargs
-        if opt is not None:
-            fullopt += opt
-    else:
-        fullopt = opt
-    prove(fullopt, steps, procs, vc_timeout, mode="all")
+    prove_all(opt, mode="flow")
 
 
 def clean():
     """Call gnatprove with standard options to clean proof artifacts"""
-    prove(opt=["--clean"])
+    prove_all(opt=["--clean"])
 
 
 def to_list(arg):

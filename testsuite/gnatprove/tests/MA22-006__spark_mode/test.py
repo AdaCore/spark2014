@@ -5,7 +5,7 @@ do_flow()
 check_output_file()
 clean()
 
-prove(opt=["--report=fail"])
+prove_all(opt=["--report=fail"])
 check_output_file()
 clean()
 
