@@ -2,4 +2,7 @@ from test_support import *
 
 # Do not use Z3, as the step limit fluctuates too much between platforms, thus
 # making it impossible to share a common expected output when Z3 is used.
-prove_all(opt=["--prover=cvc4,altergo"], steps=3000)
+
+# Do not run with counterexamples, as on Darwin this takes too much time.
+
+prove_all(opt=["--prover=cvc4,altergo"], steps=3000, counterexample=False)

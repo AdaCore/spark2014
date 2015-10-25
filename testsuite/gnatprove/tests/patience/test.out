@@ -95,7 +95,7 @@ patience.adb:87:30: info: index check proved
 patience.adb:87:33: info: index check proved
 patience.adb:87:49: info: index check proved
 patience.adb:87:52: info: index check proved
-patience.adb:90:07: medium: assertion might fail (e.g. when S = (NumElts => 0, Values => (others => 0), NumStacks => 0, StackSizes => (others => 0), Stacks => ?, PosStack => (others => 0), PosHeight => (others => 0), Preds => (others => 0)))
+patience.adb:90:07: medium: assertion might fail
 patience.adb:92:24: info: index check proved
 patience.adb:94:25: info: index check proved
 patience.adb:94:50: info: index check proved
