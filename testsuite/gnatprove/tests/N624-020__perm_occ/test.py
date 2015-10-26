@@ -3,4 +3,4 @@ from test_support import *
 counterexample on Darwin and returns (dummy) counterexample on Linux.
 See ticket OA21-004 for more information.
 """
-prove_all(counterexample=False)
+prove_all(counterexample=False,steps=500)
