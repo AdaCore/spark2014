@@ -3400,13 +3400,21 @@ package body SPARK_Util is
    ----------------------------------
 
    function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean is
-      Part_Of_Pragma : constant Node_Id := Get_Pragma (E, Pragma_Part_Of);
    begin
-      return Ekind (E) in E_Abstract_State | Object_Kind
-        and then Present (Part_Of_Pragma)
-        and then
-          Ekind (Etype (Expression (Get_Argument (Part_Of_Pragma))))
-             in Concurrent_Kind;
+      if Ekind (E) in E_Abstract_State | E_Constant | E_Variable then
+         declare
+            Part_Of_Pragma : constant Node_Id :=
+              Get_Pragma (E, Pragma_Part_Of);
+         begin
+
+            return Present (Part_Of_Pragma)
+              and then
+                Ekind (Etype (Expression (Get_Argument (Part_Of_Pragma))))
+            in Concurrent_Kind;
+         end;
+      else
+         return False;
+      end if;
    end Is_Part_Of_Concurrent_Object;
 
    ---------------------------------
@@ -3414,13 +3422,21 @@ package body SPARK_Util is
    ---------------------------------
 
    function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean is
-      Part_Of_Pragma : constant Node_Id := Get_Pragma (E, Pragma_Part_Of);
    begin
-      return Ekind (E) in E_Abstract_State | Object_Kind
-        and then Present (Part_Of_Pragma)
-        and then
-          Ekind (Etype (Expression (Get_Argument (Part_Of_Pragma))))
-             in Protected_Kind;
+      if Ekind (E) in E_Abstract_State | E_Constant | E_Variable then
+         declare
+            Part_Of_Pragma : constant Node_Id :=
+              Get_Pragma (E, Pragma_Part_Of);
+         begin
+
+            return Present (Part_Of_Pragma)
+              and then
+                Ekind (Etype (Expression (Get_Argument (Part_Of_Pragma))))
+            in Protected_Kind;
+         end;
+      else
+         return False;
+      end if;
    end Is_Part_Of_Protected_Object;
 
 end SPARK_Util;
