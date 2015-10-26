@@ -993,6 +993,11 @@ feasible execution of the program:
    execution. One can rerun |GNATprove| with value ``progressive`` or
    ``per_path`` to separate possible execution paths in the counterexample.
 
+#. Currently, counterexamples may include a value for declarations of variables
+   without an initialization expression or a default initialization, which
+   correspond in reality to uninitialized variables. These values should be
+   ignored when interpreting a counterexample.
+
 .. _How to Use GNATprove in a Team:
 
 How to Use |GNATprove| in a Team
