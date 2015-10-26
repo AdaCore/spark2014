@@ -4,35 +4,57 @@ package body Sort
 is
 
    -----------------------------------------------------------------------------
+   
    procedure Swap (Values : in out Nat_Array;
                    X      : in     Positive;
                    Y      : in     Positive)
-   with
-      Pre  => (X in Values'Range and then
+     with
+       Pre  => (X in Values'Range and then
                   Y in Values'Range and then
-                  X /= Y),
+                    X /= Y),
 
-       Post => Values =
-         Set (Set (Values'Old, X, Values'Old (Y)), Y, Values'Old (X))
+       Post => Is_Perm (Values'Old, Values)
+     and Values (X) = Values'Old (Y)
+     and Values (Y) = Values'Old (X)
+     and (for all Z in Values'Range =>
+            (if Z /= X and Z /= Y then Values (Z) = Values'Old (Z)))
    is
       Temp : Integer;
 
       --  Ghost variables
-      Init   : constant Nat_Array (Values'Range) := Values;
-      Interm : Nat_Array (Values'Range);
+      Init   : constant Nat_Array (Values'Range) := Values with Ghost;
+      Interm : Nat_Array (Values'Range) with Ghost;
+      
+      --  Ghost procedure
+      procedure Prove_Perm with Ghost,
+        Pre  => X in Values'Range and then Y in Values'Range and then
+        Is_Set (Init, X, Init (Y), Interm) 
+        and then Is_Set (Interm, Y, Init (X), Values),
+        Post => Is_Perm (Init, Values)
+      is
+      begin
+         for E in Natural loop
+            Occ_Set (Init, X, Init (Y), E, Interm);
+            Occ_Set (Interm, Y, Init (X), E, Values);
+            pragma Loop_Invariant
+              (for all F in Natural'First .. E =>
+                 Occ (Values, F) = Occ (Init, F));
+         end loop;
+      end Prove_Perm;
 
    begin
       Temp       := Values (X);
       Values (X) := Values (Y);
 
       --  Ghost code
-      pragma Assert (Values = Set (Init, X, Init (Y)));
+      pragma Assert (Is_Set (Init, X, Init (Y), Values));
       Interm := Values;
 
       Values (Y) := Temp;
 
       --  Ghost code
-      pragma Assert (Values = Set (Interm, Y, Init (X)));
+      pragma Assert (Is_Set (Interm, Y, Init (X), Values));
+      Prove_Perm;
    end Swap;
 
    -- Finds the index of the smallest element in the array
@@ -61,25 +83,6 @@ is
 
    procedure Selection_Sort (Values : in out Nat_Array) is
       Smallest : Positive;  -- Index of the smallest value in the unsorted part
-
-      --  Ghost variable
-      Previous : Nat_Array (Values'Range);
-
-      --  Ghost procedure
-      procedure Prove_Swap_Perm (Values, Next : Nat_Array; X, Y : Index) with
-        Pre  => X in Values'Range and then Y in Values'Range and then
-           Next = Set (Set (Values, X, Values (Y)), Y, Values (X)),
-        Post => Is_Perm (Values, Next) is
-      begin
-         for E in Natural loop
-            Occ_Set (Values, X, Values (Y), E);
-            Occ_Set (Set (Values, X, Values (Y)), Y, Values (X), E);
-            Occ_Eq (Next, Set (Set (Values, X, Values (Y)), Y, Values (X)), E);
-            pragma Loop_Invariant
-              (for all F in Natural'First .. E =>
-                 Occ (Values, F) = Occ (Next, F));
-         end loop;
-      end Prove_Swap_Perm;
    begin
       if Values'Length = 0 then
          return;
@@ -89,16 +92,9 @@ is
          Smallest := Index_Of_Minimum (Values (Current .. Values'Last));
 
          if Smallest /= Current then
-
-            --  Ghost code
-            Previous := Values;
-
             Swap (Values => Values,
                   X      => Current,
                   Y      => Smallest);
-
-            --  Ghost code
-            Prove_Swap_Perm (Previous, Values, Current, Smallest);
          end if;
 
          pragma Loop_Invariant

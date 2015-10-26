@@ -1,8 +1,6 @@
-package Perm with SPARK_Mode is
-   subtype Index is Integer range 1 .. 100;
-   subtype Nb_Occ is Integer range 0 .. 100;
-   type Nat_Array is array (Index range <>) of Natural;
+with Sort_Types; use Sort_Types;
 
+package Perm with SPARK_Mode, Ghost is
    function Remove_Last (A : Nat_Array) return Nat_Array is
      (A (A'First .. A'Last - 1))
    with Pre  => A'Length > 0;

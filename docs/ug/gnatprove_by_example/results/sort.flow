@@ -1,11 +1,9 @@
-sort.adb:30:14: warning: unused assignment
-sort.adb:32:21: info: initialization of "Temp" proved
-sort.adb:35:36: info: initialization of "Interm" proved
-sort.adb:51:38: info: initialization of "Min" proved
-sort.adb:55:13: info: initialization of "Min" proved
-sort.adb:59:14: info: initialization of "Min" proved
-sort.adb:69:17: warning: subprogram "Prove_Swap_Perm" has no effect
-sort.adb:91:13: info: initialization of "Smallest" proved
-sort.adb:98:29: info: initialization of "Smallest" proved
-sort.adb:101:30: info: initialization of "Previous" proved
-sort.adb:101:57: info: initialization of "Smallest" proved
+sort.adb:29:17: warning: subprogram "Prove_Perm" has no effect
+sort.adb:53:21: info: initialization of "Temp" proved
+sort.adb:56:30: info: initialization of "Interm" proved
+sort.adb:57:07: info: initialization of "Interm" proved
+sort.adb:73:38: info: initialization of "Min" proved
+sort.adb:77:13: info: initialization of "Min" proved
+sort.adb:81:14: info: initialization of "Min" proved
+sort.adb:94:13: info: initialization of "Smallest" proved
+sort.adb:97:29: info: initialization of "Smallest" proved

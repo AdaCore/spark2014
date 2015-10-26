@@ -1,3 +1,4 @@
+with Sort_Types; use Sort_Types;
 with Perm; use Perm;
 
 package Sort with SPARK_Mode is
