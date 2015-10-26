@@ -34,6 +34,7 @@ with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Output;                      use Output;
+with Sem_Aux;                     use Sem_Aux;
 with Sem_Util;                    use Sem_Util;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
@@ -3246,7 +3247,9 @@ package body Flow.Analysis is
          return Up_Projected_Map;
       end Up_Project_Map;
 
-   begin  --  Check_Depends_Contract
+   --  Start of processing for Check_Depends_Contract
+
+   begin
 
       if No (FA.Depends_N) then
          --  If the user has not specified a dependency relation we
@@ -3263,36 +3266,42 @@ package body Flow.Analysis is
       declare
          E : Entity_Id;
       begin
-         E := First_Formal (FA.Analyzed_Entity);
-         while Present (E) loop
-            Params.Include (E);
-            E := Next_Formal (E);
-         end loop;
-      end;
+         if Ekind (FA.Analyzed_Entity) in Task_Kind then
+            --  Add the task itself. The task is an implicit parameter of
+            --  itself.
+            E := (if Present (Anonymous_Object (FA.Analyzed_Entity))
+                  then Anonymous_Object (FA.Analyzed_Entity)
+                  else FA.Analyzed_Entity);
+            Implicit_Params.Include (E);
 
-      --  Add implicit formal parameters caused by concurrent types
-      declare
-         F : constant Flow_Id := Direct_Mapping_Id (FA.Analyzed_Entity);
-      begin
-         if Belongs_To_Protected_Object (F) then
-            --  A subprogram that is directly enclosed by a protected object
-            --  sees the proteted object as a formal parameter.
-            Params.Include (Get_Enclosing_Concurrent_Object (F));
-            Implicit_Params.Include (Get_Enclosing_Concurrent_Object (F));
+            --  Add the discriminants of the task
+            E := First_Discriminant (FA.Analyzed_Entity);
+            while Present (E) loop
+               Params.Include (E);
+               E := Next_Discriminant (E);
+            end loop;
+         else
+            --  Add implicit formal parameters caused by concurrent types
+            declare
+               F : constant Flow_Id := Direct_Mapping_Id (FA.Analyzed_Entity);
+            begin
+               if Belongs_To_Protected_Object (F) then
+                  --  A subprogram that is directly enclosed by a protected
+                  --  object sees the proteted object as a formal parameter.
+                  Params.Include (Get_Enclosing_Concurrent_Object (F));
+                  Implicit_Params.Include
+                    (Get_Enclosing_Concurrent_Object (F));
+               end if;
+            end;
+
+            --  Add formal parameters of the subprograms
+            E := First_Formal (FA.Analyzed_Entity);
+            while Present (E) loop
+               Params.Include (E);
+               E := Next_Formal (E);
+            end loop;
          end if;
       end;
-      if Ekind (FA.Analyzed_Entity) in Task_Kind then
-         --  A task sees itself as a formal parameter.
-         declare
-            E : constant Entity_Id :=
-              (if Present (Anonymous_Object (FA.Analyzed_Entity))
-               then Anonymous_Object (FA.Analyzed_Entity)
-               else FA.Analyzed_Entity);
-         begin
-            Params.Include (E);
-            Implicit_Params.Include (E);
-         end;
-      end if;
 
       --  Up project the dependencies
       User_Deps   := Up_Project_Map (User_Deps);
