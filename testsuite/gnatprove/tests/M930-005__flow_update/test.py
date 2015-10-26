@@ -7,4 +7,3 @@ prove_all(opt=["-u", "update_uninitialized_2.adb"])
 prove_all(opt=["-u", "update_uninitialized_3.adb"])
 call(["gnatmake", "-gnata", "main.adb"])
 call(["./main"])
-

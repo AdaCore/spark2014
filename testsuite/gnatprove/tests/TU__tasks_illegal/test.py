@@ -6,4 +6,3 @@ prove_all(opt=["-P", "test3.gpr", "-u", "t.adb"])
 prove_all(opt=["-P", "test.gpr", "-u", "po_t.adb"])
 prove_all(opt=["-P", "test.gpr", "-u", "po_t2.adb"])
 prove_all(opt=["-P", "test.gpr", "-u", "po_t3.adb"])
-
