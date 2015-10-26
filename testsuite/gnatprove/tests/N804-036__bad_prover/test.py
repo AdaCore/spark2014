@@ -4,4 +4,4 @@ from test_support import *
 # gives an error (here: the prover executable doesn't exist). The intent is to
 # test the output of gnatprove in this specific case
 
-prove_all(opt=["--prover=plop", "--why3-conf=test.conf"])
+prove_all(prover=["plop"], opt=["--why3-conf=test.conf"])

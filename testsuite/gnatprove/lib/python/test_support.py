@@ -11,18 +11,20 @@ import json
 from gnatpython import fileutils
 from gnatpython.env import Env
 from test_util import sort_key_for_errors
+from gnatpython.ex import Run
+
 
 max_steps = 200
 default_vc_timeout = 120
 parallel_procs = 1
+default_provers = ["cvc4", "altergo", "z3"]
+
 #  Change directory
 
 TEST = sys.modules['__main__']
 TESTDIR = os.path.dirname(TEST.__file__)
 TEST_NAME = os.path.basename(TESTDIR)
 os.chdir(TESTDIR)
-
-from gnatpython.ex import Run
 
 
 def debug_mode():
@@ -64,6 +66,12 @@ def print_sorted(strlist):
     strlist.sort(key=sort_key_for_errors)
     for line in strlist:
         print line
+
+
+def build_prover_switch(proverlist):
+    """from a list of prover names, produce the option to be passed to
+       gnatprove"""
+    return "--prover=" + ','.join(proverlist)
 
 
 def cat(filename, sort=False):
@@ -411,8 +419,8 @@ def gnatprove_(opt=["-P", "test.gpr"]):
             f_prj.write('project Test is\n')
             f_prj.write('  package Compiler is\n')
             f_prj.write('    for Default_Switches ("Ada") use ("-gnatws");\n')
-            f_prj.write('    for Local_Configuration_Pragmas '
-                        + 'use "test.adc";\n')
+            f_prj.write('    for Local_Configuration_Pragmas' +
+                        ' use "test.adc";\n')
             f_prj.write('  end Compiler;\n')
             f_prj.write('end Test;\n')
         with open("test.adc", 'w') as f_adc:
@@ -457,7 +465,8 @@ def gnatprove(opt=["-P", "test.gpr"]):
 
 
 def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
-              vc_timeout=vc_timeout(), mode="all", counterexample=True):
+              vc_timeout=vc_timeout(), mode="all", counterexample=True,
+              prover=default_provers):
     """Call gnatprove with standard options.
 
        For option steps the default is max_steps set above, setting this
@@ -470,11 +479,14 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
         fullopt += ["--steps=%d" % (steps)]
     fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]
-    fullopt += ["--prover=cvc4,altergo,z3"]
+    if inverse_prover():
+        inverse = prover
+        inverse.reverse()
+        fullopt += [build_prover_switch(inverse)]
+    else:
+        fullopt += [build_prover_switch(prover)]
     if benchmark_mode():
         fullopt += ["--benchmark"]
-    if inverse_prover():
-        fullopt += ["--prover=z3,altergo,cvc4"]
     if not counterexample:
         fullopt += ["--no-counterexample"]
     # Add opt last, so that it may include switch -cargs

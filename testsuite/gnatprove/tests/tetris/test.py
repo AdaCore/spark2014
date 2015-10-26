@@ -9,4 +9,4 @@ from test_support import *
 # $ gnatprove -P test.gpr --timeout=10
 # <no unproved checks>
 
-prove_all(steps=1200,procs=0, opt=["--prover=cvc4,altergo"])
+prove_all(prover=["cvc4", "altergo"],steps=1200,procs=0)

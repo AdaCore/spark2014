@@ -18,6 +18,6 @@ def check_session_file():
 write_why3_config_file_with_coq(conf_file)
 prove_all(opt=['--proof=progressive'], counterexample=False)
 print "======================================="
-prove_all(opt=["--prover=coq", "--why3-conf=" + conf_file, "--limit-line=greatest_common_divisor.ads:10", "--proof=progressive"], counterexample=False)
+prove_all(prover=["coq"], opt=["--why3-conf=" + conf_file, "--limit-line=greatest_common_divisor.ads:10", "--proof=progressive"], counterexample=False)
 print "======================================="
 check_session_file()
