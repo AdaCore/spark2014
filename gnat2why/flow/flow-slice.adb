@@ -645,7 +645,7 @@ package body Flow.Slice is
                   --  variables
                   declare
                      AS_Pragma : constant Node_Id :=
-                       Get_Pragma (Defining_Unit_Name (Specification (N)),
+                       Get_Pragma (Defining_Entity (N),
                                    Pragma_Abstract_State);
 
                      PAA       : Node_Id;
