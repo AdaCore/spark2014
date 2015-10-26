@@ -1513,7 +1513,8 @@ given by the user for ``Set_Global_Conditionally``:
 Case 2: State Abstraction Without Dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If abstract state is declared by the user but no dependencies are specified on
+If an abstract state (see :ref:`State Abstraction`)
+is declared by the user but no dependencies are specified on
 subprogram declarations, then |GNATprove| generates data and flow dependencies
 which take abstract state into account.
 

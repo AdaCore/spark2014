@@ -32,8 +32,8 @@ package body Perm.Lemma_Subprograms with SPARK_Mode is
          Occ_Eq (B, Remove_Last (R), E);
       else
          B (I) := V;
-         Occ_Set (Remove_Last (A), I, V, E, B);
          Occ_Eq (Remove_Last (R), B, E);
+         Occ_Set (Remove_Last (A), I, V, E, B);
       end if;
    end Occ_Set;
 

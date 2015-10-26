@@ -1,6 +1,8 @@
 with Sort_Types; use Sort_Types;
 
 package Perm with SPARK_Mode, Ghost is
+   subtype Nb_Occ is Integer range 0 .. 100;
+
    function Remove_Last (A : Nat_Array) return Nat_Array is
      (A (A'First .. A'Last - 1))
    with Pre  => A'Length > 0;
