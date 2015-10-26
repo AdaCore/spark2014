@@ -8,4 +8,4 @@ See ticket OA21-004 for more information.
 # with 10.000 steps and 120s timeout, with --prover=cvc4,altergo,z3 and
 # --proof=per_path. This is likely related to the changes in how arrays are
 # handled in provers now, to be investigated.
-prove_all(steps=570, counterexample=False)
+prove_all(steps=700, counterexample=False)
