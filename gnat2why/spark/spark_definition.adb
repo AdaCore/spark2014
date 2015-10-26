@@ -1541,7 +1541,7 @@ package body SPARK_Definition is
                end if;
 
                --  We avoid marking the subprograms of a protected type when
-               --  marked the type entity. Instead, we do it here directly on
+               --  marking the type entity. Instead, we do it here directly on
                --  the type declaration. This is needed to avoid that certain
                --  pure functions are declared before the type in Why.
 
