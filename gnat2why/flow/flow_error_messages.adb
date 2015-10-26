@@ -663,6 +663,10 @@ package body Flow_Error_Messages is
                                  --  attributes 'Old or 'Result after its name
 
                                  if Kind = "old" and then
+                                   Nkind_In
+                                     (Nkind (Parent (Field_Entity)),
+                                      N_Formal_Object_Declaration,
+                                      N_Parameter_Specification) and then
                                    Out_Present (Parent (Field_Entity))
                                  then
                                     Field_Name := Field_Name & "'Old";

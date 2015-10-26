@@ -24,7 +24,7 @@ records.adb:100:14: info: initialization of "R.A" proved
 records.adb:100:14: info: initialization of "R.B" proved
 records.adb:104:19: info: postcondition proved
 records.adb:112:19: info: postcondition proved
-records.adb:120:19: medium: postcondition might fail, cannot prove Is_Valid_C'Result = (if not (A.Exists) then A.The_Pair = Null_Pair else true (e.g. when Is_Valid_C'Result = False and A = (Exists => False, The_Pair => (A => 0, B => 0)) and Null_Pair'Old = (A => 0, B => 0))
+records.adb:120:19: medium: postcondition might fail, cannot prove Is_Valid_C'Result = (if not (A.Exists) then A.The_Pair = Null_Pair else true (e.g. when Is_Valid_C'Result = False and A = (Exists => False, The_Pair => (A => 0, B => 0)) and Null_Pair = (A => 0, B => 0))
 records.adb:130:25: info: initialization of "Dst.Exists" proved
 records.adb:130:25: info: initialization of "Dst.The_Pair.A" proved
 records.adb:130:25: info: initialization of "Dst.The_Pair.B" proved

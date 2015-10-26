@@ -8,7 +8,7 @@ p.ads:25:34: info: initialization of "Full_S.B" proved
 p.ads:25:42: info: initialization of "Raw_S" proved
 p.ads:27:22: info: initialization of "Full_S.A" proved
 p.ads:27:22: info: initialization of "Full_S.B" proved
-p.ads:27:22: medium: postcondition might fail (e.g. when Full_S = (A => 0, B => 0.0) and Null_R'Old = (A => 0, B => 0.0) and Raw_S = (others => 0) and Null_Raw_R'Old = (others => 0))
+p.ads:27:22: medium: postcondition might fail (e.g. when Full_S = (A => 0, B => 0.0) and Null_R = (A => 0, B => 0.0) and Raw_S = (others => 0) and Null_Raw_R = (others => 0))
 p.ads:28:22: info: initialization of "Raw_S" proved
 p.ads:32:41: warning: unused initial value of "Raw_S"
 p.ads:33:11: medium: missing dependency "null => Raw_S"
@@ -24,7 +24,7 @@ p2.ads:25:34: info: initialization of "Full_S.B" proved
 p2.ads:25:42: info: initialization of "Raw_S" proved
 p2.ads:27:22: info: initialization of "Full_S.A" proved
 p2.ads:27:22: info: initialization of "Full_S.B" proved
-p2.ads:27:22: medium: postcondition might fail (e.g. when Full_S = (A => 0, B => 0.0) and Null_R'Old = (A => 0, B => 0.0) and Raw_S = (others => 0) and Null_Raw_R'Old = (others => 0))
+p2.ads:27:22: medium: postcondition might fail (e.g. when Full_S = (A => 0, B => 0.0) and Null_R = (A => 0, B => 0.0) and Raw_S = (others => 0) and Null_Raw_R = (others => 0))
 p2.ads:28:22: info: initialization of "Raw_S" proved
 p2.ads:33:32: info: initialization of "Raw_S" proved
 2743390017637675840033189907125014416630549357001845762282961525475758353283060544082722018666500587521 179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639474124377767893424865485276302219601246094119453082952085005768838150682342462881473913110540827237163350510684586298239947245938479716304835356329624224137216))
