@@ -548,7 +548,7 @@ package body Gnat2Why.Driver is
    ------------------------------
 
    function Is_Translated_Subprogram (E : Entity_Id) return Boolean is
-      (Entity_In_SPARK (E)
+     (Entity_In_SPARK (E)
 
        --  Ignore inlined subprograms. Either these are not analyzed
        --  (when referenced and analysis was not specifically requested
@@ -565,9 +565,9 @@ package body Gnat2Why.Driver is
        --  Subprograms entities of actual parameter of generic packages with
        --  external axioms are only needed for check of runtime errors.
 
-       and then not (Is_Generic_Actual_Subprogram (E)
-                       and then
-                     Entity_In_Ext_Axioms (E))
+       and then not (Ekind (E) /= E_Entry
+                     and then Is_Generic_Actual_Subprogram (E)
+                     and then Entity_In_Ext_Axioms (E))
 
        --  Ignore simple shifts and rotates
 
