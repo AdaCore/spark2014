@@ -12246,13 +12246,13 @@ package body Gnat2Why.Expr is
       Quant_Type := Etype (Quant_Var);
 
       if Over_Array then
-         Bound_Expr := Etype (First_Index (Etype (Over_Expr)));
+         Bound_Expr := First_Index (Etype (Over_Expr));
       else
          Bound_Expr := Over_Expr;
       end if;
 
       if Over_Array then
-         Index_Type := First_Index (Etype (Over_Expr));
+         Index_Type := Etype (First_Index (Etype (Over_Expr)));
       elsif Over_Content then
          Index_Type := Get_Cursor_Type (Etype (Bound_Expr));
       else

@@ -845,6 +845,7 @@ package body Gnat2Why.Util is
    function Use_Base_Type_For_Type (E : Entity_Id) return Boolean
    is
    begin
+      pragma Assert (Nkind (E) in N_Entity);
       return Is_Scalar_Type (E) and then
         not Is_Standard_Boolean_Type (E);
    end Use_Base_Type_For_Type;
