@@ -1545,7 +1545,7 @@ package body SPARK_Definition is
                --  the type declaration. This is needed to avoid that certain
                --  pure functions are declared before the type in Why.
 
-               if Ekind (E) in Protected_Kind then
+               if Ekind (E) = E_Protected_Type then
                   Mark_Stmt_Or_Decl_List
                     (Visible_Declarations (Protected_Definition (N)));
                end if;
