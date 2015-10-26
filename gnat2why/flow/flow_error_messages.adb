@@ -743,6 +743,20 @@ package body Flow_Error_Messages is
                            return Var_Or_Field.Value;
                         when Record_Type =>
 
+                           --  Check whether the type of the variable or field
+                           --  can have fields or discriminants
+
+                           if not Is_Concurrent_Type
+                             (Var_Or_Field_Type) and then
+                             not Is_Incomplete_Or_Private_Type
+                               (Var_Or_Field_Type) and then
+                             not Is_Record_Type (Var_Or_Field_Type) and then
+                             not Has_Discriminants (Var_Or_Field_Type)
+                           then
+--                                return "@not_display";
+                              pragma Assert (False);
+                           end if;
+
                            --  Create aggregate representing the value of
                            --  Var_Or_Field
                            --  Go through all fields of Var_Or_Field.
