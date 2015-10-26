@@ -404,12 +404,12 @@ package SPARK_Util is
 
    function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean;
    --  @param E an object entity
-   --  @return True iff the object has a part_of pragma that makes is part of a
+   --  @return True iff the object has a Part_Of pragma that makes it part of a
    --    task or protected object.
 
    function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean;
    --  @param E an object entity
-   --  @return True iff the object has a part_of pragma that makes is part of a
+   --  @return True iff the object has a Part_Of pragma that makes it part of a
    --    protected object.
 
    ------------------------------
