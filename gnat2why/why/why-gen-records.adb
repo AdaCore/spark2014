@@ -2646,12 +2646,12 @@ package body Why.Gen.Records is
       Call_Id   : constant W_Identifier_Id := To_Why_Id (Field, Rec => Rec);
       Ret_Ty    : constant W_Type_Id :=
         (if Is_Part_Of_Protected_Object (Field) then
-              EW_Abstract (Etype (Field))
+            EW_Abstract (Etype (Field))
          else
             EW_Abstract (Etype (Search_Component_By_Name (Ty, Field))));
       Top_Field : constant W_Expr_Id :=
-        (if Ekind (Field) = E_Discriminant then
-              New_Discriminants_Access (Ada_Node, Domain, Name, Ty)
+        (if Ekind (Field) = E_Discriminant
+         then New_Discriminants_Access (Ada_Node, Domain, Name, Ty)
          else New_Fields_Access (Ada_Node, Domain, Name, Ty));
    begin
       if Domain = EW_Prog and then
@@ -2690,8 +2690,8 @@ package body Why.Gen.Records is
    is
       Num_All    : constant Natural := Count_Why_Top_Level_Fields (Ty);
       Num_Discr  : constant Natural :=
-        (if Has_Discriminants (Ty) then
-           Natural (Number_Discriminants (Ty))
+        (if Has_Discriminants (Ty)
+         then Natural (Number_Discriminants (Ty))
          else 0);
       Num_Fields : constant Natural := Count_Why_Regular_Fields (Ty);
       Assoc      : W_Field_Association_Id;
