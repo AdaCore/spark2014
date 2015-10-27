@@ -1525,7 +1525,7 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params) return W_Prog_Id
    is
       function Single_Attach_Handler_Check (Proc : Entity_Id) return W_Prog_Id;
-      --  @param Proc a procedure with an attach_handler pragma
+      --  @param Proc a procedure with an Attach_Handler pragma
       --  @return an assertion statement that expresses the attach handler
       --    check for this pragma
 
@@ -9204,7 +9204,7 @@ package body Gnat2Why.Expr is
                end;
             end if;
 
-            --  check that no attach_handler expression of the protected
+            --  check that no Attach_Handler expression of the protected
             --  object corresponds to a reserved signal
 
             if Is_Protected_Type (Etype (Defining_Entity (Decl))) then
