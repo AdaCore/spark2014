@@ -9065,13 +9065,13 @@ package body Gnat2Why.Expr is
       case Nkind (Decl) is
          when N_Object_Declaration =>
 
-            --  we can ignore task declarations
+            --  We can ignore task declarations
 
             if Is_Task_Type (Etype (Defining_Entity (Decl))) then
                return R;
             end if;
 
-            --  non scalar object declaration should not appear before the
+            --  Non-scalar object declaration should not appear before the
             --  loop invariant in a loop.
 
             pragma Assert
@@ -9124,7 +9124,7 @@ package body Gnat2Why.Expr is
                   if Present (P) then
 
                      --  Store the value of Decl's discriminants in the
-                     --  symbol table
+                     --  symbol table.
 
                      declare
                         Num_Discrs : constant Natural :=
@@ -9204,8 +9204,8 @@ package body Gnat2Why.Expr is
                end;
             end if;
 
-            --  check that no Attach_Handler expression of the protected
-            --  object corresponds to a reserved signal
+            --  Check that no Attach_Handler expression of the protected
+            --  object corresponds to a reserved signal.
 
             if Is_Protected_Type (Etype (Defining_Entity (Decl))) then
                R := Sequence
