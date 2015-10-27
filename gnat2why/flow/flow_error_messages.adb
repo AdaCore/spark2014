@@ -753,8 +753,7 @@ package body Flow_Error_Messages is
                              not Is_Record_Type (Var_Or_Field_Type) and then
                              not Has_Discriminants (Var_Or_Field_Type)
                            then
---                                return "@not_display";
-                              pragma Assert (False);
+                              return "@not_display";
                            end if;
 
                            --  Create aggregate representing the value of
