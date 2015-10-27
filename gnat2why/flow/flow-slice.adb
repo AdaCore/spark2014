@@ -822,20 +822,22 @@ package body Flow.Slice is
                      AS_E      : Entity_Id;
                   begin
                      if Present (AS_Pragma) then
-                        PAA  :=
+                        PAA :=
                           First (Pragma_Argument_Associations (AS_Pragma));
 
-                        AS_N := First (Expressions (Expression (PAA)));
+                        --  Check that we don't have Abstract_State => null
+                        if Nkind (Expression (PAA)) /= N_Null then
+                           AS_N := First (Expressions (Expression (PAA)));
+                           while Present (AS_N) loop
+                              AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
+                                       then Entity (Ancestor_Part (AS_N))
+                                       else Entity (AS_N));
 
-                        while Present (AS_N) loop
-                           AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
-                                    then Entity (Ancestor_Part (AS_N))
-                                    else Entity (AS_N));
+                                       Local_Vars.Insert (AS_E);
 
-                           Local_Vars.Insert (AS_E);
-
-                           Next (AS_N);
-                        end loop;
+                              Next (AS_N);
+                           end loop;
+                        end if;
                      end if;
                   end;
             end case;
