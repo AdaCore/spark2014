@@ -3553,7 +3553,10 @@ package body Gnat2Why.Expr is
      (Call   : Node_Id;
       Params : Transformation_Params) return W_Prog_Id
    is
-      Controlling_Arg : constant Node_Id := Controlling_Argument (Call);
+      Controlling_Arg : constant Node_Id :=
+        (if Nkind (Call) = N_Entry_Call_Statement
+         then Empty
+         else Controlling_Argument (Call));
       Control_Tag     : W_Expr_Id;
       Check           : W_Pred_Id := True_Pred;
       Needs_Check     : Boolean := False;
@@ -13022,7 +13025,9 @@ package body Gnat2Why.Expr is
                   --  When the call is dispatching, use the Dispatch variant of
                   --  the program function, which has the appropriate contract.
 
-                  elsif Present (Controlling_Argument (Stmt_Or_Decl)) then
+                  elsif Nkind (Stmt_Or_Decl) = N_Procedure_Call_Statement
+                    and then Present (Controlling_Argument (Stmt_Or_Decl))
+                  then
                      Dispatch
 
                   --  When the call has visibility over the refined
