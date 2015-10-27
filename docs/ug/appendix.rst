@@ -598,232 +598,22 @@ What should the translation look like?
   with their value. Beware that they might be architecture dependent.
 
 Example of standard package
----------------------------------------------------
+---------------------------
 For example, let us consider the following package, stored in a file sum.ads,
 providing a summation function for slices of arrays of integers:
 
-.. code-block:: ada
-
-  package Sums is
-     pragma Annotate (GNATprove, External_Axiomatization);
-
-     subtype Extended_Index is Integer range 0 .. 2 ** 16;
-     subtype Index is Integer range 1 .. Extended_Index'Last;
-
-     subtype Vector_Element is
-       Integer range Integer'First / Index'Last .. Integer'Last / Index'Last;
-
-     type Vector is array (Index range <>) of Vector_Element;
-
-     type Slice_Bounds is
-        record
-           Lo : Index;
-           Hi : Extended_Index;
-        end record;
-
-     function Sum (X : Vector; Bounds : Slice_Bounds) return Integer with
-       Pre => (Bounds.Lo > Bounds.Hi)
-               or else (X'First <= Bounds.Lo and Bounds.Hi <= X'Last);
-
-  end Sums;
+.. literalinclude:: gnatprove_by_example/examples/sums.ads
+   :language: ada
+   :linenos:
 
 We can provide the following Why3 translation for it, that we should store in a
-file named sum.mlw::
+file named sum.mlw:
 
-  module Sums__extended_index
-   use import "_gnatprove_standard".Main
-   use        "_gnatprove_standard".Integer
-   use import "int".Int
-
-   type extended_index
-
-   function first  : int = 0
-
-   function last  : int = 65536
-
-   predicate in_range (x : int)  = first <= x /\ x <= last
-
-   (* Clone of the model module for discrete types with static bounds *)
-   clone export "ada__model".Static_Discrete with
-   type t = extended_index,
-   function first = first,
-   function last = last,
-   predicate in_range = in_range
-
-  end
-
-  module Sums__index
-   use import "_gnatprove_standard".Main
-   use        "_gnatprove_standard".Integer
-   use import "int".Int
-
-   type index
-
-   function first  : int = 1
-
-   function last  : int = 65536
-
-   ...
-
-  end
-
-  module Sums__vector_element
-   use import "_gnatprove_standard".Main
-   use        "_gnatprove_standard".Integer
-   use import Standard__integer
-   use import "int".Int
-
-   type vector_element
-
-   function first  : int = Integer.div Standard__integer.first 65536
-
-   function last  : int  = Integer.div Standard__integer.last 65536
-
-   ...
-
-  end
-
-  module Sums__vector
-   use import "int".Int
-   use import "_gnatprove_standard".Main
-   use        "_gnatprove_standard".Integer
-   use        "_gnatprove_standard".Array__1
-   use import Standard__integer
-   use import Sums__index
-   use import Sums__vector_element
-
-   predicate index_dynamic_property (first : int) (last : int) (x : int) =
-        first <= x /\ x <= last
-
-   (* Clone of the model module for unconstrained arrays *)
-   clone export "ada__model".Unconstr_Array with
-   type component_type = Sums__vector_element.vector_element,
-   type base_type = Standard__integer.integer,
-   function to_int = Standard__integer.to_int,
-   predicate in_range_base = Standard__integer.in_range,
-   predicate index_dynamic_property = index_dynamic_property
-
-   type vector  = __t
-
-   (* Clone of the axiom module for array comparison *)
-   clone export "ada__model".Array_Comparison_Axiom with
-   type component_type = Sums__vector_element.vector_element,
-   function to_int = Sums__vector_element.to_int
-
-   (* Helper function *)
-   function _get "inline" (v : vector) (i : int) : int =
-     	  Sums__vector_element.to_int (Array__1.get (to_array v) i)
-  end
-
-  module Sums__slice_bounds
-   use import "int".Int
-   use import "_gnatprove_standard".Main
-   use        "_gnatprove_standard".Integer
-   use import Sums__index
-   use import Sums__extended_index
-
-   (* Fields for record type *)
-   type __split_fields  =
-    { rec__lo : Sums__index.index; rec__hi : Sums__extended_index.extended_index }
-
-   (* Record type *)
-   type slice_bounds  = { __split_fields : __split_fields }
-
-   (* Helper function *)
-   function _rec__lo "inline" (b : slice_bounds) : int =
-   	  Sums__index.to_int (rec__lo (__split_fields (b)))
-
-   (* Helper function *)
-   function _rec__hi "inline" (b : slice_bounds) : int =
-   	  Sums__extended_index.to_int (rec__hi (__split_fields (b)))
-
-   (* Condition to be allowed to access Lo *)
-   predicate lo__pred  (a : slice_bounds) = true
-
-   val rec__lo_
-     (a : slice_bounds)  :Sums__index.index
-    requires { lo__pred a }
-    ensures  { result = a.__split_fields.rec__lo }
-
-   (* Condition to be allowed to access Hi *)
-   predicate hi__pred  (a : slice_bounds) =  true
-
-   val rec__hi_
-     (a : slice_bounds)  :Sums__extended_index.extended_index
-    requires { hi__pred a }
-    ensures  { result = a.__split_fields.rec__hi }
-
-
-   (* Equality function over slice_bounds *)
-   function bool_eq  (a : slice_bounds) (b : slice_bounds) : bool =
-    if  a.__split_fields.rec__lo = b.__split_fields.rec__lo /\
-        a.__split_fields.rec__hi = b.__split_fields.rec__hi then True else False
-
-   (* User overloadable equality function over slice_bounds *)
-   function user_eq (a : slice_bounds) (b : slice_bounds)  :bool
-
-   function dummy : slice_bounds
-  end
-
-  module Sums__sum
-   use import "_gnatprove_standard".Main
-   use import Sums__slice_bounds
-   use import Sums__index
-   use import Standard__integer
-   use import Sums__extended_index
-   use import Sums__vector
-   use        "_gnatprove_standard".Integer
-   use import "int".Int
-   use        "_gnatprove_standard".Array__1
-
-   (* Logic complete function for sum *)
-   function sum
-     (x : vector) (bounds : slice_bounds)  :integer
-
-   (* Helper function *)
-   function _sum "inline" (x : vector) (bounds : slice_bounds)  :int =
-     	  Standard__integer.to_int (sum x bounds)
-
-   (* Axiom for defining the sum function *)
-   axiom sum_def:
-      forall v : vector, b : slice_bounds
-        [sum v b].
-        (* Case of the empty slice *)
-        (_rec__lo b > _rec__hi b -> _sum v b = 0) /\
-
-        (* Case of a non-empty slice  *)
-        (first v <= _rec__lo b <= _rec__hi b <= last v ->
-
-           (* If the slice only contains one element *)
-           (_rec__lo b = _rec__hi b -> _sum v b = _get v (_rec__lo b)) /\
-
-           (* Link to smaller slices of the same vector *)
-           (forall b1 : slice_bounds [sum v b1].
-
-             (* Ending at the same index *)
-             ((_rec__hi b1 = _rec__hi b /\
-                _rec__lo b < _rec__lo b1 <= _rec__hi b) ->
-              let b2 = {__split_fields =
-	      	         {rec__lo = rec__lo (__split_fields b);
-                          rec__hi = Sums__extended_index.of_int ((_rec__lo b1) - 1)}} in
-                 _sum v b = _sum v b1 + _sum v b2) /\
-             (* Sartind at the same index *)
-             ((_rec__lo b1 = _rec__lo b /\ _rec__lo b <= _rec__hi b1 < _rec__hi b) ->
-              let b2 = {__split_fields =
-	      	         {rec__lo = Sums__index.of_int ((_rec__hi b1) + 1);
-                          rec__hi = rec__hi (__split_fields b)}} in
-                 _sum v b = _sum v b1 + _sum v b2)))
-
-   (* Program partial function with a precondition for sum *)
-   val sum (x : vector) (bounds : slice_bounds)  :integer
-    requires { _rec__lo bounds > _rec__hi bounds \/
-               first x <= _rec__lo bounds /\ _rec__hi bounds <= last x }
-    ensures  { result = sum x bounds }
-
-  end
+.. literalinclude:: gnatprove_by_example/examples/proof/_theories/sums.mlw
+   :language: none
 
 And for generic packages?
--------------------------------------------
+--------------------------
 - External axiomatizations can also be used for a generic package P, with the
   restriction that P will then have to be instantiated at library level only.
 - A generic package with external axiomatization can have type and function
@@ -914,16 +704,16 @@ ada__containers__formal_doubly_linked_lists.mlw::
     use import Ada__containers__formal_doubly_linked_lists__cursor
     use import Ada__containers__formal_doubly_linked_lists__element
 
-    function oeq__2 list list : bool
+    function oeq__2__logic list list : bool
 
     (* Two lists that are equal have the same length... *)
     axiom oeq__2_length_:
-     forall co1 co2 : list [oeq__2 co1 co2].
-         oeq__2 co1 co2 = True -> length_ co1 = length_ co2
+     forall co1 co2 : list.
+         oeq__2__logic co1 co2 = True -> length_ co1 = length_ co2
 
     (* ...and contain the same elements at the same position. *)
     axiom oeq__2_element:
-     forall co1 co2 : list [oeq__2 co1 co2]. oeq__2 co1 co2 = True ->
+     forall co1 co2 : list. oeq__2__logic co1 co2 = True ->
        forall cu1 : cursor [element co1 cu1]. position co1 cu1 > 0 ->
            Ada__containers__formal_doubly_linked_lists__oeq.oeq
             (Ada__containers__formal_doubly_linked_lists__element_type.to_base
@@ -934,7 +724,7 @@ ada__containers__formal_doubly_linked_lists.mlw::
     (* Two lists that are not equal either do not have the same length or
        are different at some position. *)
     axiom oeq__2_inv:
-     forall co1 co2 : list [oeq__2 co1 co2]. oeq__2 co1 co2 <> True ->
+     forall co1 co2 : list. oeq__2__logic co1 co2 <> True ->
      (length_ co1 <> length_ co2 \/
      exists i : int. 0 < i <= length_ co1 /\
       Ada__containers__formal_doubly_linked_lists__oeq.oeq
@@ -945,17 +735,17 @@ ada__containers__formal_doubly_linked_lists.mlw::
 
     (* Symmetry axiom *)
     axiom oeq__2_sym :
-     forall e1 e2 : list [oeq__2 e1 e2].
-	  oeq__2 e1 e2 = True -> oeq__2 e2 e1 = True
+     forall e1 e2 : list.
+	  oeq__2__logic e1 e2 = True -> oeq__2__logic e2 e1 = True
 
     (* Transitivity axiom *)
     axiom oeq__2_trans :
-     forall e1 e2 e3 : list
-        [oeq__2 e1 e2, oeq__2 e1 e3 | oeq__2 e1 e2, oeq__2 e2 e3].
-	  oeq__2 e1 e2 = True -> oeq__2 e2 e3 = True -> oeq__2 e1 e3 = True
+     forall e1 e2 e3 : list.
+	  oeq__2__logic e1 e2 = True -> oeq__2__logic e2 e3 = True ->
+                oeq__2__logic e1 e3 = True
 
     val oeq__2 (co1:list) (co2:list) : bool
-       ensures  { result  = oeq__2 co1 co2 }
+       ensures  { result  = oeq__2__logic co1 co2 }
   end
 
 .. _GNATprove_Limitations:

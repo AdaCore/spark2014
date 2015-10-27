@@ -16,4 +16,8 @@ project No_SPARK_Mode is
       for Switches ("warns2.adb") use ("-gnatw.w");
    end Compiler;
 
+  package Prove is
+    for Proof_Dir use "../examples/proof";
+  end Prove;
+
 end No_SPARK_Mode;

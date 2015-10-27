@@ -3,4 +3,5 @@ with "no_spark_mode";
 with "illegal";
 
 project Intro is
+  package Prove renames No_Spark_Mode.Prove;
 end Intro;
