@@ -3275,7 +3275,10 @@ package body Flow.Analysis is
             Implicit_Params.Include (E);
 
             --  Add the discriminants of the task
-            E := First_Discriminant (FA.Analyzed_Entity);
+            E := (if Has_Discriminants (FA.Analyzed_Entity)
+                     or else Has_Unknown_Discriminants (FA.Analyzed_Entity)
+                  then First_Discriminant (FA.Analyzed_Entity)
+                  else Empty);
             while Present (E) loop
                Params.Include (E);
                E := Next_Discriminant (E);
