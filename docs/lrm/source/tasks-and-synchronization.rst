@@ -192,7 +192,7 @@ are in |SPARK|.
 .. _tu-tasks_and_synchronization-11:
 
 12. The verification condition associated with the Ada rule that it is a bounded
-    error to invoke an operation that is potentially blocking 
+    error to invoke an operation that is potentially blocking
     (including due to cyclic locking) during a
     protected action (see Ada RM 9.5.1(8)) is discharged via (potentially
     conservative) flow analysis, as opposed to by introducing verification
@@ -224,7 +224,7 @@ are in |SPARK|.
 13. The end of a task body shall not be reachable. [This follows from
     from Ravenscar's No_Task_Termination restriction.]
 
-.. _tu-tasks_and_synchronization-13:
+.. _tu-nt-tasks_and_synchronization-13:
 
 14. A nonvolatile function shall not be potentially blocking.
     [Strictly speaking this rule is already implied by other rules of |SPARK|,
@@ -235,7 +235,7 @@ are in |SPARK|.
     the corresponding primitive operation of any descendant of T is
     potentially blocking.]
 
-.. _tu-tasks_and_synchronization-14:
+.. _tu-nt-tasks_and_synchronization-14:
 
 15. The package Ada.Task_Identification declares a synchronized
     external state abstraction named Tasking_State. The package
@@ -291,7 +291,7 @@ are in |SPARK|.
   [Functions already excluded by Ravenscar, such as Ada.Calendar.Clock, are
   not on this list.]
 
-.. _tu-tasks_and_synchronization-15:
+.. _tu-nt-tasks_and_synchronization-15:
 
 16. For each of the following language-defined procedures, the
     Global aspect of the procedure specifies that the
@@ -322,7 +322,7 @@ are in |SPARK|.
     [On the other hand, use of the Identity, Priority, or Storage_Size
     attributes introduces no such dependency.]
 
-.. _tu-tasks_and_synchronization-18:
+.. _tu-nt-tasks_and_synchronization-18:
 
 19. Preconditions are added to suprogram specifications as needed in order
     to avoid the failure of language-defined runtime checks for the
@@ -345,7 +345,7 @@ are in |SPARK|.
     preconditions are defined to ensure that the result belongs to the
     result type.
 
-.. _tu-tasks_and_synchronization-19:
+.. _tu-nt-tasks_and_synchronization-19:
 
 20. All procedures declared in the visible part of Ada.Synchronous_Task_Control
     have a dependency "(S => null)" despite the fact that S has mode **in

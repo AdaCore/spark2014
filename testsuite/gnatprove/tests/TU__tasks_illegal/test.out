@@ -46,10 +46,20 @@ po_t2.ads:14:14: aspect "Part_Of" must apply to package instantiation, object, s
 
 gnatprove: error during generation of Global contracts
 po_t3.adb:1:14: body of package "PO_T3" has unused hidden states
-po_t3.adb:1:14: variable "P_Int" defined at line 17
+po_t3.adb:1:14: variable "P_Int" defined at line 42
 po_t3.adb:2:35: "HIDDEN" is constituent of single task type "P_Int"
 po_t3.adb:2:35: reference to variable "Hidden" cannot appear in this context
    compilation of po_t3.adb failed
+
+
+gnatprove: error during generation of Global contracts
+po_t4.ads:19:07: component "PO" of non-synchronized type "MIX" cannot be synchronized
+   compilation of po_t4.adb failed
+
+
+gnatprove: error during generation of Global contracts
+po_t5.adb:2:35: constituent of synchronized state "State" must be synchronized
+   compilation of po_t5.adb failed
 
 
 gnatprove: error during generation of Global contracts

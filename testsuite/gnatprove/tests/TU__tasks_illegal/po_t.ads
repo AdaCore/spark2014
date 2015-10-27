@@ -1,6 +1,6 @@
 package PO_T is
 
-   --  4. A protected type shall define full default initialization. A
+   --  TU: 4. A protected type shall define full default initialization. A
    --  variable whose Part_Of aspect specifies a task unit or protected unit
    --  shall be of a type which defines full default initialization, or shall
    --  be declared with an initial value expression, or shall be imported.

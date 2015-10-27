@@ -5,12 +5,12 @@ use type Ada.Real_Time.Time;
 
 pragma Warnings (Off, "assuming * has no effect on global items");
 
---  2. Task and protected units are in |SPARK|, but their use requires the
+--  TU: 2. Task and protected units are in |SPARK|, but their use requires the
 --  Ravenscar Profile. [In other words, a task or protected unit is not in
 --  |SPARK| if the Ravenscar profile does not apply to the enclosing
 --  compilation unit.] Similarly, the use of task or protected units also
 --  requires a Partition_Elaboration_Policy of Sequential. [This is to prevent
---  data races during library unit elaboration.] Similarly, the use of any
+--  data races during library unit elaboration.]  Similarly, the use of any
 --  subprogram which references the predefined state abstraction
 --  Ada.Task_Identification.Tasking_State (described below) as a global
 --  requires the Ravenscar Profile.
