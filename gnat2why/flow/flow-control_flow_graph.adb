@@ -5831,21 +5831,24 @@ package body Flow.Control_Flow_Graph is
             begin
                if Present (AS_Pragma) then
                   PAA  := First (Pragma_Argument_Associations (AS_Pragma));
-                  AS_N := First (Expressions (Expression (PAA)));
 
-                  while Present (AS_N) loop
-                     AS_E := Entity (if Nkind (AS_N) = N_Extension_Aggregate
-                                     then Ancestor_Part (AS_N)
-                                     else AS_N);
+                  --  Check that we don't have an Abstract_State => null
+                  if Nkind (Expression (PAA)) /= N_Null then
+                     AS_N := First (Expressions (Expression (PAA)));
 
-                     --  ??? Are those arguments correct ???
-                     Create_Initial_And_Final_Vertices
-                       (AS_E,
-                        Variable_Kind,
-                        FA);
+                     while Present (AS_N) loop
+                        AS_E := Entity (if Nkind (AS_N) = N_Extension_Aggregate
+                                        then Ancestor_Part (AS_N)
+                                        else AS_N);
 
-                     Next (AS_N);
-                  end loop;
+                        Create_Initial_And_Final_Vertices
+                          (AS_E,
+                           Variable_Kind,
+                           FA);
+
+                        Next (AS_N);
+                     end loop;
+                  end if;
                end if;
             end;
 
