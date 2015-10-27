@@ -1,0 +1,7 @@
+project Test is
+   for Object_Dir use "o;no";
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatdk", "-gnatws");
+      for Local_Configuration_Pragmas use "test.adc";
+   end Compiler;
+end Test;
