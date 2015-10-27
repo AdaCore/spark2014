@@ -696,7 +696,7 @@ package body Flow.Slice is
                      --  Skip bodies of nested packages that have an abstract
                      --  state contract
                      if Present (AS_Pragma)
-                       and then Unique_Entity (Defining_Unit_Name (N)) /=
+                       and then Unique_Defining_Entity (N) /=
                                   Unique_Entity (FA.Analyzed_Entity)
                      then
                         return Skip;
