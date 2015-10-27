@@ -2655,6 +2655,7 @@ package body Why.Gen.Records is
          else New_Fields_Access (Ada_Node, Domain, Name, Ty));
    begin
       if Domain = EW_Prog and then
+        Nkind (Ada_Node) /= N_Identifier and then
         Do_Discriminant_Check (Ada_Node)
       then
          return
