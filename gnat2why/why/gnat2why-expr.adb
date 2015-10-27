@@ -3623,6 +3623,8 @@ package body Gnat2Why.Expr is
 
       procedure Iterate_Call is new Iterate_Call_Arguments (One_Arg);
 
+   --  Start of processing for Compute_Tag_Check
+
    begin
       if not Present (Controlling_Arg) then
          return New_Void (Call);
