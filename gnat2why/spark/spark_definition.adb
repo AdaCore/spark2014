@@ -3149,31 +3149,8 @@ package body SPARK_Definition is
 
          if Ekind (E) in Record_Kind | Concurrent_Kind then
             declare
-               --  ??? Einfo.First_Component_Or_Discriminant does not work for
-               --  concurrent types; see O508-008.
-
-               function First_Component_Or_Discriminant
-                 (Id : Entity_Id) return Entity_Id;
-
                function Mentions_Type_Name (N : Node_Id) return Boolean;
                --  Returns True iff node [N] mentions the type name [E]
-
-               -------------------------------------
-               -- First_Component_Or_Discriminant --
-               -------------------------------------
-
-               function First_Component_Or_Discriminant
-                 (Id : Entity_Id) return Entity_Id is
-                  Comp_Id : Entity_Id;
-               begin
-                  Comp_Id := First_Entity (Id);
-                  while Present (Comp_Id) loop
-                     exit when Ekind_In (Comp_Id, E_Component, E_Discriminant);
-                     Comp_Id := Next_Entity (Comp_Id);
-                  end loop;
-
-                  return Comp_Id;
-               end First_Component_Or_Discriminant;
 
                ------------------------
                -- Mentions_Type_Name --
