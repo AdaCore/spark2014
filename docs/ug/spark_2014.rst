@@ -4276,13 +4276,15 @@ State Abstraction and Concurrency
 [SPARK]
 
 Protected objects, as well as suspension objects, are `effectively volatile`
-which means that, if they are part of a state abstraction, the volatility of
-the abstract name must be specified by using the ``External`` aspect (see
-`External State Abstraction`). Note that task objects, though they can be part
-of a package's hidden state are not effectively volatile and can therefore be
-stored inside normal state abstractions. For example, the package
+which means that their value as seen from a given task may change at any time
+due to some other task accessing the protected object or suspension object. If
+they are part of a state abstraction, the volatility of the abstract state must
+be specified by using the ``External`` aspect (see :ref:`External State
+Abstraction`). Note that task objects, though they can be part of a package's
+hidden state, are not effectively volatile and can therefore be components of
+normal state abstractions. For example, the package
 ``Synchronous_Abstractions`` defines two abstract states, one for external
-objects, containing the atomic variable ``V``, the supension object ``S``, and
+objects, containing the atomic variable ``V``, the suspension object ``S``, and
 the protected object ``P``, and one for normal objects, containing the task
 ``T``:
 
@@ -4293,11 +4295,11 @@ the protected object ``P``, and one for normal objects, containing the task
    is
    end Synchronous_Abstractions;
 
-   package body Synchronous_Abstractions with 
-     Refined_State => (Synchronouus_State => (P,V,S), Normal_State => T)
+   package body Synchronous_Abstractions with
+     Refined_State => (Synchronous_State => (P,V,S), Normal_State => T)
    is
      task T;
-   
+
      S : Suspension_Object;
 
      V : Natural := 0 with Atomic, Async_Readers, Async_Writers;
@@ -4307,19 +4309,19 @@ the protected object ``P``, and one for normal objects, containing the task
      private
        V : Natural := 0;
      end P;
-   
+
      protected body P is
        function Read return Natural is (V);
      end P;
-   
+
      task body T is ...
    end  Synchronous_Abstractions;
 
 To avoid data races, task bodies, as well as protected subprograms, should only
 access synchronized objects (see :ref:`Preventing Data Races`). State
 abstractions containing only synchronized objects can be specified to be
-synchronized using the ``Synchronous`` keyword. Only synchronized state
-abstractions can be accessed by task bodies and protected subprograms. For
+synchronized using the ``Synchronous`` aspect. Only synchronized state
+abstractions can be accessed from task bodies and protected subprograms. For
 example, if we want the procedure ``Do_Something`` to be callable from the task
 ``Use_Synchronized_State``, then the state abstraction ``Synchronous_State``
 must be annotated using the ``Synchronous`` aspect:
@@ -4327,7 +4329,7 @@ must be annotated using the ``Synchronous`` aspect:
 .. code-block:: ada
 
    package Synchronous_Abstractions with
-     Abstract_State => (Normal_State, 
+     Abstract_State => (Normal_State,
                         (Synchronous_State with Synchronous, External))
    is
      procedure Do_Something with Global => (In_Out => Synchronous_State);
