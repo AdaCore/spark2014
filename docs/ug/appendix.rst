@@ -926,6 +926,10 @@ Proof Limitations
    about their values needed after the loop invariant must be stated explicitly
    in the loop invariant.
 
+#. Preconditions on arithmetic and conversion operators (including Time_Of) in
+   Ada.Execution_Time and Ada.Real_Time packages described in |SPARK| Reference
+   Manual 9.19 are not yet implemented.
+
 .. _Portability Issues:
 
 Portability Issues
