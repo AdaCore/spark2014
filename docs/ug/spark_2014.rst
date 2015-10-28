@@ -28,8 +28,10 @@ subset than previous versions of |SPARK|. It includes in particular:
 
 In the rest of this chapter, the marker [Ada 2005] (resp. [Ada 2012]) is used
 to denote that a feature defined in Ada 2005 (resp. Ada 2012) is supported in
-|SPARK|, and the marker [|SPARK|] is used to denote that a feature is specific
-to |SPARK|. Both the |GNAT Pro| compiler and |GNATprove| analyzer support all
+|SPARK|, and the marker [Ravenscar] is used to denote that a concurrency
+feature from Ada which belongs to the Ravenscar profile is supported in
+|SPARK|.  The marker [|SPARK|] is used to denote that a feature is specific to
+|SPARK|. Both the |GNAT Pro| compiler and |GNATprove| analyzer support all
 features listed here.
 
 Some code snippets presented in this section are available in the example
@@ -3617,6 +3619,8 @@ start of files:
 Tasks and Data Races
 --------------------
 
+[Ravenscar]
+
 Concurrent Ada programs are made of several `tasks`, that is, separate threads
 of control which share the same address space. In Ravenscar, only library
 level, nonterminating tasks are allowed.
@@ -3806,6 +3810,8 @@ state that ``Num_Accounts`` is only accessed by the task object
 Task Contracts
 --------------
 
+[SPARK]
+
 Dependency contracts can be specified on tasks. As tasks should not terminate
 in |SPARK|, such contracts specify the dependencies between outputs and inputs
 of the task `updated while the task runs`:
@@ -3868,6 +3874,8 @@ Notice that the task unit itself is both an input and an output of the task:
 
 Protected Objects and Deadlocks
 -------------------------------
+
+[Ravenscar]
 
 In Ada, protected objects are used to encapsulate shared data and protect it
 against data races (low-level unprotected concurrent access to data) and race
@@ -4188,6 +4196,8 @@ protected object ``Num_Accounts``. As ``Num_Accounts`` will be used by
 Suspension Objects
 ------------------
 
+[Ravenscar]
+
 The language-defined package ``Ada.Synchronous_Task_Control`` provides a type
 for semaphores called `suspension objects`. They allow lighter synchronization
 mechanisms than protected objects (see :ref:`Protected Objects and Deadlocks`).
@@ -4258,6 +4268,14 @@ each suspension object:
      end loop;
    end T2;
 
+.. _State Abstraction and Concurrency:
+
+State Abstraction and Concurrency
+---------------------------------
+
+[SPARK]
+
+TO BE COMPLETED
 
 |SPARK| Libraries
 =================
