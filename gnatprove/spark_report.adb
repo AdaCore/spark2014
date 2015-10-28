@@ -457,9 +457,11 @@ procedure SPARK_Report is
             | Missing_Return
             | Not_Constant_After_Elaboration
             | Pragma_Elaborate_All_Needed
+            | Reference_To_Non_CAE_Variable
             | Stable
             | Unused
             | Unused_Initial_Value =>
+
             return No_Entry;
       end case;
    end Flow_Kind_To_Summary;

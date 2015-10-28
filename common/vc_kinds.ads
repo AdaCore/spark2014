@@ -177,8 +177,12 @@ package VC_Kinds is
       Non_Volatile_Function_With_Volatile_Effects,
       --  Non Volatile_Function refers to globals with volatile effects
 
-      Volatile_Function_Without_Volatile_Effects
+      Volatile_Function_Without_Volatile_Effects,
       --  Function has been marked as volatile but has no volatile effects
+
+      Reference_To_Non_CAE_Variable
+      --  The precondition of a protected operation refers to a global variable
+      --  that does not have Constant_After_Elaboration set.
      );
 
    --  Returns True if this kind of VC should be considered like an assertion

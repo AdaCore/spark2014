@@ -1506,9 +1506,10 @@ package body Flow is
                   Analysis.Check_Aliasing (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   if FA.Kind /= Kind_Task then
-                     --  We exclude Tasks from this check since they do not
+                     --  We exclude Tasks from these checks since they do not
                      --  have pre- and postconditions.
                      Analysis.Check_Prefixes_Of_Attribute_Old (FA);
+                     Analysis.Check_CAE_In_Preconditions (FA);
                   end if;
                   Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   Analysis.Analyse_Main (FA);

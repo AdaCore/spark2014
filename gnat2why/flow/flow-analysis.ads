@@ -176,6 +176,11 @@ package Flow.Analysis is
    with Pre => Nkind (GNAT_Root) = N_Compilation_Unit;
    --  Check exclusivity rules for concurrent accesses to library-level objects
 
+   procedure Check_CAE_In_Preconditions (FA : in out Flow_Analysis_Graphs)
+   with Pre => FA.Kind in Kind_Subprogram | Kind_Entry;
+   --  Check that preconditions of protected operations only reference global
+   --  variables that have Constant_After_Elaboration set.
+
 private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);

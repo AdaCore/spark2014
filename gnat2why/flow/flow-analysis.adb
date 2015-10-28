@@ -4282,4 +4282,92 @@ package body Flow.Analysis is
 
    end Check_Concurrent_Accesses;
 
+   --------------------------------
+   -- Check_CAE_In_Preconditions --
+   --------------------------------
+
+   procedure Check_CAE_In_Preconditions (FA : in out Flow_Analysis_Graphs) is
+
+      Preconditions : Node_Lists.List;
+
+      Reads         : Flow_Id_Sets.Set;
+      Proof_Ins     : Flow_Id_Sets.Set;
+      Unused        : Flow_Id_Sets.Set;
+      --  The above 3 sets will contain the relevant globals.
+
+      function Variable_Has_CAE (F : Flow_Id) return Boolean;
+      --  Returns True iff F does not have Constant_After_Elaboration set.
+
+      ----------------------
+      -- Variable_Has_CAE --
+      ----------------------
+
+      function Variable_Has_CAE (F : Flow_Id) return Boolean is
+      begin
+         if F.Kind not in Direct_Mapping | Record_Field then
+            return False;
+         end if;
+
+         declare
+            E   : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            CAE : constant Node_Id :=
+              (if Ekind (E) = E_Variable
+               then Get_Pragma (E, Pragma_Constant_After_Elaboration)
+               else Empty);
+         begin
+            return Is_Constant_After_Elaboration (CAE);
+         end;
+      end Variable_Has_CAE;
+
+   begin
+      if not Belongs_To_Protected_Object
+               (Direct_Mapping_Id (FA.Analyzed_Entity))
+      then
+         --  We only perform this check on protected operations.
+         return;
+      end if;
+
+      Preconditions := Get_Precondition_Expressions (FA.Analyzed_Entity);
+
+      --  Populate global sets
+      Get_Globals (Subprogram => FA.Analyzed_Entity,
+                   Scope      => FA.S_Scope,
+                   Classwide  => False,
+                   Proof_Ins  => Proof_Ins,
+                   Reads      => Reads,
+                   Writes     => Unused);
+
+      --  Add Proof_Ins to Reads
+      Reads.Union (Proof_Ins);
+
+      for Precondition of Preconditions loop
+         declare
+            VU : constant Flow_Id_Sets.Set :=
+              Get_Variable_Set (Precondition,
+                                Scope                => FA.S_Scope,
+                                Local_Constants      => FA.Local_Constants,
+                                Fold_Functions       => False,
+                                Use_Computed_Globals => True);
+            --  The above set contains all variables used in the precondition.
+         begin
+            for Var of VU loop
+               if Reads.Contains (Change_Variant (Var, In_View))
+                 and then not Variable_Has_CAE (Var)
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "variable & cannot be referenced in " &
+                                 "precondition of protected operation & ",
+                     Severity => High_Check_Kind,
+                     N        => Precondition,
+                     F1       => Var,
+                     F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                     SRM_Ref  => "9(10)",
+                     Tag      => Reference_To_Non_CAE_Variable);
+               end if;
+            end loop;
+         end;
+      end loop;
+   end Check_CAE_In_Preconditions;
+
 end Flow.Analysis;
