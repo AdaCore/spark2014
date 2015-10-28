@@ -634,6 +634,10 @@ package body Gnat2Why.Subprograms is
       return Dynamic_Prop_Inputs;
    end Compute_Dynamic_Property_For_Inputs;
 
+   ------------------------------------------
+   -- Compute_Dynamic_Property_For_Effects --
+   ------------------------------------------
+
    function Compute_Dynamic_Property_For_Effects
      (E      : Entity_Id;
       Params : Transformation_Params) return W_Pred_Id
