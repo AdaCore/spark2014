@@ -1654,8 +1654,8 @@ package body Why.Atree.Sprint is
       Sloc_Tag : constant String :=
         "#""" & File & """" &
         Physical_Line_Number'Image (Line) & " " &
-        "0" & " " &  --  dummy line 0
-        "0" & "#";   --  dummy column 0
+        "0" & " " &  --  dummy column1 0
+        "0" & "#";   --  dummy column2 0
    begin
       if Force
         or else Line /= Get_Physical_Line_Number (Prev_Sloc)
