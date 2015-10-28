@@ -5,7 +5,7 @@ Formal Verification with |GNATprove|
 ************************************
 
 The |GNATprove| tool is packaged as an executable called ``gnatprove``. Like
-other tools in |GNAT Pro| Toolsuite, |GNATprove| is based on the structure of
+other tools in |GNAT Pro| toolsuite, |GNATprove| is based on the structure of
 GNAT projects, defined in ``.gpr`` files.
 
 A crucial feature of |GNATprove| is that it interprets annotations exactly like

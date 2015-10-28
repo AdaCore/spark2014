@@ -70,7 +70,7 @@ an ``out`` parameter:
 
 .. image:: static/search_not_spark.png
 
-This recent permission in Ada to have ``out`` parameters to functions is not
+The permission in Ada 2012 to have ``out`` parameters to functions is not
 allowed in |SPARK|, because it causes calls to have side-effects (assigning to
 their ``out`` parameters), which means that various calls in the same
 expression may be conflicting, yielding different results depending on the
@@ -111,14 +111,14 @@ message, or on line 23 in file ``linear_search.adb``, to show the path on which
 
 Another click on the icon makes the path disappear.
 
-This shows that, when the value is not found, the component ``At_Index`` of
-the value returned is indeed not initialized. Although that is allowed in
-Ada, |SPARK| requires that all inputs and outputs of subprograms are
-completely initialized (and the value returned by a function is such an
-output). Although we could give a dummy value to component ``At_Index``
-when the search fails, we choose to turn the type ``Search_Result`` into a
-discriminant record, so that the component ``At_Index`` is only usable when
-the search succeeds:
+This shows that, when the value is not found, the component ``At_Index`` of the
+value returned is indeed not initialized. Although that is allowed in Ada,
+|SPARK| requires that all inputs and outputs of subprograms are completely
+initialized (and the value returned by a function is such an output). As a
+solution, we could give a dummy value to component ``At_Index`` when the search
+fails, but we choose here to turn the type ``Search_Result`` into a
+discriminant record, so that the component ``At_Index`` is only usable when the
+search succeeds:
 
 .. literalinclude:: examples/linear_search_prove/linear_search.ads
    :language: ada
@@ -309,12 +309,12 @@ Formal verification of |SPARK| programs is a two-step process:
 Step 1 is implemented as a static analysis pass in the tool |GNATprove|, in
 ``flow`` mode. We have seen this flow analysis at work earlier (see
 :ref:`Checking SPARK Initialization Policy`). Step 2 is implemented as a
-deductive verification pass in the tool |GNATprove|, in the default ``all``
-mode.
+deductive verification (a.k.a. `proof`) pass in the tool |GNATprove|, in the
+default ``all`` mode.
 
-The difference between these two steps should be emphasized. Static analysis in
+The difference between these two steps should be emphasized. Flow analysis in
 step 1 is a terminating algorithm, which typically takes 2 to 10 times as long
-as compilation to complete. Deductive verification in step 2 is based on the
+as compilation to complete. Proof in step 2 is based on the
 generation of logical formulas for each check to prove, which are then passed
 on to automatic provers to decide whether the logical formula holds or
 not. The generation of logical formulas is a translation phase, which typically
@@ -339,6 +339,12 @@ mode ``all`` of |GNATprove| reached through the :menuselection:`SPARK -->
 Prove File` menu.
 
 .. image:: static/search_prove_file.png
+
+.. note::
+
+   The proof panels presented in this tutorial correspond to an advanced user
+   profile. A simpler proof panel is displayed when the basic user profile is
+   selected (the default). See :ref:`Running GNATprove from GPS` for details.
 
 We use the default settings and click on :menuselection:`Execute`. It completes
 in a few seconds, with a message stating that some checks could not be proved:
@@ -433,10 +439,12 @@ Here, testing does not show any problems:
    > OK: Found existing value at first index
    > OK: Did not find non-existing value
 
-The next easy thing to do is to increase the timeout of automatic
-provers. Its default of 1s is deliberately low, to facilitate interaction with
-|GNATprove| during the development of annotations, but it is not sufficient to
-prove the more complex checks. Let's increase it to 10s, and rerun |GNATprove|:
+The next easy thing to do is to increase the timeout of automatic provers. Its
+default of 1s is deliberately low, to facilitate interaction with |GNATprove|
+during the development of annotations, but it is not sufficient to prove the
+more complex checks. Let's increase it to 10s (or equivalently set the ``Proof
+level`` to 2 in the proof panel corresponding to a basic user profile), and
+rerun |GNATprove|:
 
 .. image:: static/search_10s_timeout.png
 
@@ -447,8 +455,9 @@ available on line 35:
 .. image:: static/search_prove_line.png
 
 We select the ``Progressively split`` value for choice ``Proof strategy`` in
-the window raised, in order to maximize proof precision, and click on
-:menuselection:`Execute`:
+the window raised in order to maximize proof precision (or equivalently set the
+``Proof level`` to 3 in the proof panel corresponding to a basic user profile),
+and click on :menuselection:`Execute`:
 
 .. image:: static/search_prove_line_by_path.png
 
