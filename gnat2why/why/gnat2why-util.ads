@@ -80,8 +80,8 @@ package Gnat2Why.Util is
    private
 
       --  The implementation is a simple map from Ada entities to Items. In
-      --  fact we need two maps, because some of the keys are not entities,
-      --  but entity_names.
+      --  fact we need two maps, because some of the keys are not Entity_Ids,
+      --  but Entity_Names.
 
       --  To implement scopes, for all modifications to the maps, we register
       --  the inverse action into a stack, which is replayed in reverse order
