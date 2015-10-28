@@ -1,3 +1,4 @@
-# CVC4 does not prove a VC on Linux 32bits and Darwin (O731-006)
+# CVC4 does not prove a VC on Linux 32bits, Darwin and Windows (O731-006)
 Linux,32bits OUT test.lessproved.out
 Darwin       OUT test.lessproved.out
+Windows      OUT test.lessproved.out
