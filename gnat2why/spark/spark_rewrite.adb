@@ -271,6 +271,13 @@ package body SPARK_Rewrite is
             end;
          end if;
 
+         --  Explicitly traverse procedure calls rewritten as null statements
+         if Nkind (N) = N_Null_Statement
+           and then Nkind (Original_Node (N)) = N_Procedure_Call_Statement
+         then
+            Rewrite_Nodes (Original_Node (N));
+         end if;
+
          --  Register packages and protected types
          if Nkind (N) in N_Entity
            and then Ekind (N) in E_Package        |
