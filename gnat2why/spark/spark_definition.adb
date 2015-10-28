@@ -773,17 +773,15 @@ package body SPARK_Definition is
                   when N_If_Statement =>
                      Check_Loop_Invariant_Placement
                        (Then_Statements (N), True);
-                     if Present (Elsif_Parts (N)) then
-                        declare
-                           Cur : Node_Id := First (Elsif_Parts (N));
-                        begin
-                           while Present (Cur) loop
-                              Check_Loop_Invariant_Placement
-                                (Then_Statements (Cur), True);
-                              Next (Cur);
-                           end loop;
-                        end;
-                     end if;
+                     declare
+                        Cur : Node_Id := First (Elsif_Parts (N));
+                     begin
+                        while Present (Cur) loop
+                           Check_Loop_Invariant_Placement
+                             (Then_Statements (Cur), True);
+                           Next (Cur);
+                        end loop;
+                     end;
                      Check_Loop_Invariant_Placement
                        (Else_Statements (N), True);
                   when N_Case_Statement =>
@@ -2484,21 +2482,17 @@ package body SPARK_Definition is
                      --  Add the subprogram entity and its parameters to the
                      --  list of entities to be translated.
 
-                     if Present (Parameter_Specifications
-                                 (Subprogram_Specification (Id)))
-                     then
-                        declare
-                           Param_Spec : Node_Id :=
-                             First (Parameter_Specifications
-                                    (Subprogram_Specification (Id)));
-                        begin
-                           while Present (Param_Spec) loop
-                              Entity_List.Append
-                                (Defining_Identifier (Param_Spec));
-                              Next (Param_Spec);
-                           end loop;
-                        end;
-                     end if;
+                     declare
+                        Param_Spec : Node_Id :=
+                          First (Parameter_Specifications
+                                 (Subprogram_Specification (Id)));
+                     begin
+                        while Present (Param_Spec) loop
+                           Entity_List.Append
+                             (Defining_Identifier (Param_Spec));
+                           Next (Param_Spec);
+                        end loop;
+                     end;
 
                      Entity_List.Append (Id);
                   elsif Is_Type (Id) then
@@ -2805,17 +2799,15 @@ package body SPARK_Definition is
                Mark_Function_Specification (N);
             end if;
 
-            if Present (Formals) then
-               Param_Spec := First (Formals);
-               while Present (Param_Spec) loop
-                  Formal := Defining_Identifier (Param_Spec);
-                  if not In_SPARK (Etype (Formal)) then
-                     Mark_Violation (E, From => Etype (Formal));
-                  end if;
-                  Mark_Entity (Formal);
-                  Next (Param_Spec);
-               end loop;
-            end if;
+            Param_Spec := First (Formals);
+            while Present (Param_Spec) loop
+               Formal := Defining_Identifier (Param_Spec);
+               if not In_SPARK (Etype (Formal)) then
+                  Mark_Violation (E, From => Etype (Formal));
+               end if;
+               Mark_Entity (Formal);
+               Next (Param_Spec);
+            end loop;
 
             --  If the result type of a subprogram is not in SPARK, then the
             --  subprogram is not in SPARK.
@@ -3922,20 +3914,18 @@ package body SPARK_Definition is
 
       Mark_Stmt_Or_Decl_List (Then_Statements (N));
 
-      if Present (Elsif_Parts (N)) then
-         declare
-            Part : Node_Id;
+      declare
+         Part : Node_Id;
 
-         begin
-            Part := First (Elsif_Parts (N));
-            while Present (Part) loop
-               Mark_Actions (N, Condition_Actions (Part));
-               Mark (Condition (Part));
-               Mark_Stmt_Or_Decl_List (Then_Statements (Part));
-               Next (Part);
-            end loop;
-         end;
-      end if;
+      begin
+         Part := First (Elsif_Parts (N));
+         while Present (Part) loop
+            Mark_Actions (N, Condition_Actions (Part));
+            Mark (Condition (Part));
+            Mark_Stmt_Or_Decl_List (Then_Statements (Part));
+            Next (Part);
+         end loop;
+      end;
 
       if Present (Else_Statements (N)) then
          Mark_Stmt_Or_Decl_List (Else_Statements (N));
@@ -4734,19 +4724,17 @@ package body SPARK_Definition is
                Formal     : Node_Id;
                Sub        : Node_Id;
             begin
-               if Present (Formals) then
-                  Param_Spec := First (Formals);
-                  while Present (Param_Spec) loop
-                     Formal := Defining_Identifier (Param_Spec);
-                     Sub := Actual_Subtype (Formal);
-                     if Present (Sub)
-                       and then not In_SPARK (Sub)
-                     then
-                        Mark_Violation (Formal, From => Sub);
-                     end if;
-                     Next (Param_Spec);
-                  end loop;
-               end if;
+               Param_Spec := First (Formals);
+               while Present (Param_Spec) loop
+                  Formal := Defining_Identifier (Param_Spec);
+                  Sub := Actual_Subtype (Formal);
+                  if Present (Sub)
+                    and then not In_SPARK (Sub)
+                  then
+                     Mark_Violation (Formal, From => Sub);
+                  end if;
+                  Next (Param_Spec);
+               end loop;
             end;
 
             --  Mark Task discriminants
