@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# SPARK 2014 Toolset User's Guide documentation build configuration file,
+# SPARK 2014 User's Guide documentation build configuration file,
 # created by sphinx-quickstart on Mon Apr 4 14:49:11 2011.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -56,7 +56,7 @@ def get_copyright():
     return u'2011-%s, AdaCore and Altran UK Ltd' % time.strftime("%Y")
 
 # General information about the project.
-project = u'SPARK 2014 Toolset User\'s Guide'
+project = u'SPARK 2014 User\'s Guide'
 copyright = get_copyright()
 
 def get_version():
@@ -195,7 +195,7 @@ html_static_path = []
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'SPARK2014ToolsetUsersGuidedoc'
+htmlhelp_basename = 'SPARK2014UsersGuidedoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -217,7 +217,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'spark2014_ug.tex', u'SPARK 2014 Toolset User\'s Guide',
+  ('index', 'spark2014_ug.tex', u'SPARK 2014 User\'s Guide',
    u'AdaCore and Altran UK Ltd', 'manual'),
 ]
 
@@ -250,5 +250,5 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'spark2014toolsetusersguide', u'SPARK 2014 Toolset User\'s Guide',
+    ('index', 'spark2014usersguide', u'SPARK 2014 User\'s Guide',
      [u'AdaCore and Altran UK Ltd'], 1)]

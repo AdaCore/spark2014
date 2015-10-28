@@ -12,7 +12,7 @@ illustration.
 
    This User's Guide applies to the latest development version of the |SPARK|
    toolset. If you're using a SPARK GPL release, some of the described features
-   do not apply. Refer to the version of the |SPARK| Toolset User's Guide
+   do not apply. Refer to the version of the SPARK 2014 User's Guide
    shipping with your release, available through :menuselection:`Help -->
    SPARK` in GPS and GNATbench IDEs, or under ``share/doc/spark`` in your
    |SPARK| installation.

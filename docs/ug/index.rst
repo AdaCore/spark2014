@@ -1,10 +1,10 @@
-.. SPARK 2014 Toolset User's Guide documentation master file, created by
+.. SPARK 2014 User's Guide documentation master file, created by
    sphinx-quickstart on Mon Apr  4 14:49:11 2011.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-SPARK 2014 Toolset User's Guide
-===============================
+SPARK 2014 User's Guide
+=======================
 
 .. Copyright notice for latex is in gfdl.tex. It is included specifically
    before the table of contents in LaTeX output (see conf.py), to avoid having
