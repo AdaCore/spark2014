@@ -1,3 +1,9 @@
 illegal_update.adb
 --  test gen_refined_global.adb should be fixed by O303-022
 gen_refined_global.adb
+account7.ads
+account7.adb
+bank7.ads
+--  Remove the following lines when OA27-011 is corrected
+bank1.ads
+bank6.ads

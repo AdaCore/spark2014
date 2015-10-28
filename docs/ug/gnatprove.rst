@@ -689,11 +689,11 @@ The following table explains the lines of the summary table:
    "Data Dependencies", "Verification of :ref:`Data Dependencies` and parameter modes"
    "Flow Dependencies", "Verification of :ref:`Flow Dependencies`"
    "Initialization", "Verification of :ref:`Data Initialization Policy`"
-   "Non-Aliasing", "Verification of :ref:`Absence of Interference`"
+   "Non-Aliasing", "Verification of :ref:`Absence of Interferences`"
    "Run-time Checks", "Verification of absence of run-time errors (AoRTE) (except those raising ``Storage_Error``)"
    "Assertions", "Verification of :ref:`Assertion Pragmas`"
    "Functional Contracts", "Verification of functional contracts (includes :ref:`Subprogram Contracts`, :ref:`Package Contracts` and :ref:`Type Contracts`)"
-   "LSP Verification", "Verification related to :ref:`Tagged Types and Liskov Substitution Principle`"
+   "LSP Verification", "Verification related to :ref:`Object Oriented Programming and Liskov Substitution Principle`"
 
 We now explain the columns of the table.
 
@@ -1395,14 +1395,14 @@ contract for ``Swap``:
    :language: ada
    :linenos:
 
-This results in false alarms when |GNATprove| verifies the information flow
-contract of procedure ``Call_Swap`` which calls ``Swap``, while it succeeds in
-verifying the information flow contract of ``Call_Add`` which calls ``Add``:
+This results in false alarms when |GNATprove| verifies the dependency contract
+of procedure ``Call_Swap`` which calls ``Swap``, while it succeeds in verifying
+the dependency contract of ``Call_Add`` which calls ``Add``:
 
 .. literalinclude:: gnatprove_by_example/results/only_data_dependencies.flow
    :language: none
 
-The most precise information flow contract for ``Swap`` would be:
+The most precise dependency contract for ``Swap`` would be:
 
 .. code-block:: ada
 
@@ -1411,12 +1411,12 @@ The most precise information flow contract for ``Swap`` would be:
      Depends => (V => X, X => V);
 
 If you add this precise contract in the program, then |GNATprove| can also
-verify the flow dependencies of ``Call_Swap``.
+verify the dependency contract of ``Call_Swap``.
 
-Note that the generated flow dependencies are used in the analysis of callers,
-but |GNATprove| generates no warnings or check messages if the body of ``Add``
-or ``Swap`` have fewer flow dependencies, as seen above. That's a difference
-between these contracts being present in the code or auto completed.
+Note that the generated dependency contracts are used in the analysis of
+callers, but |GNATprove| generates no warnings or check messages if the body of
+``Add`` or ``Swap`` have fewer flow dependencies, as seen above. That's a
+difference between these contracts being present in the code or auto completed.
 
 Writing Only the Flow Dependencies
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -3005,6 +3005,6 @@ Tokeneer code into SPARK 2014. The core system now consists of approximately
 supporting code written in Ada which mimick the drivers to peripherals
 connected to the core system.
 
-Data and information flow contracts are given for all subprograms. Partial
+Data and flow dependency contracts are given for all subprograms. Partial
 functional contracts are also given for a subset of subprograms. |GNATprove|
 currently proves automatically 90% of all checks in Tokeneer.

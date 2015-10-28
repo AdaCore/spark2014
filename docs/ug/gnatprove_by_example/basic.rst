@@ -3,7 +3,8 @@ Basic Examples
 
 The examples in this section have no loops, and do not use more complex
 features of |SPARK| like :ref:`Ghost Code`, :ref:`Interfaces to the Physical
-World`, or :ref:`Tagged Types and Liskov Substitution Principle`.
+World`, or :ref:`Object Oriented Programming and Liskov Substitution
+Principle`.
 
 .. _Increment:
 

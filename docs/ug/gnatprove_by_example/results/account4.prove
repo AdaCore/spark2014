@@ -1,0 +1,2 @@
+account4.adb:19:36: info: overflow check proved
+account4.ads:7:14: info: nontermination of task proved

@@ -86,7 +86,7 @@ errors:
 * uses of uninitialized variables (see :ref:`Data Initialization Policy`)
 
 * aliasing of parameters that can cause interferences, which are often not
-  accounted for by programmers (see :ref:`Absence of Interference`)
+  accounted for by programmers (see :ref:`Absence of Interferences`)
 
 It will also warn systematically about the following suspicious behaviors:
 
@@ -739,7 +739,7 @@ description of the different modes):
   messages on possible parameter aliasing, when such an aliasing may lead to
   interferences. This includes all cases where the choice of parameter passing
   mechanism in a compiler (by copy or by reference) might influence the
-  behavior of the subprogram. See :ref:`Absence of Interference`.
+  behavior of the subprogram. See :ref:`Absence of Interferences`.
 
 * In modes ``flow``, ``prove`` and ``all``, |GNATprove| issues check messages
   on possible reads of uninitialized data. These messages should be reviewed

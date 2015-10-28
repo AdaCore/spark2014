@@ -1,0 +1,2 @@
+account6.adb:7:31: medium: overflow check might fail
+account6.ads:15:14: info: nontermination of task proved

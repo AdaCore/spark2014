@@ -839,10 +839,10 @@ Legality Rules
 Flow Analysis Limitations
 -------------------------
 
-#. Flow of information caused by record assignments is not captured
-   with perfect accuracy. This means that information of one field
-   might incorrectly be considered to participate in the derivation of
-   another field that it does not really participate in.
+#. Flow dependencies caused by record assignments is not captured with perfect
+   accuracy. This means that the value of one field might incorrectly be
+   considered to participate in the derivation of another field that it does
+   not really participate in.
 
 Proof Limitations
 -----------------

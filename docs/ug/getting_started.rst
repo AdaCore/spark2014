@@ -89,6 +89,6 @@ place then |GNATprove| will report no errors or warnings. All checks are proved
 so we can be confident that no exceptions will be raised by the execution of
 this code.
 
-This short example was intended to give a flavour of the types of analysis that
+This short example was intended to give a flavor of the types of analysis that
 can be performed with the |SPARK| tools. A more in-depth example is presented
 later in :ref:`spark tutorial`.
