@@ -1578,6 +1578,7 @@ package body Gnat2Why.Expr is
                    Pred     => Pred));
       end Single_Attach_Handler_Check;
 
+      pragma Assert (Nkind (Parent (Ty)) = N_Protected_Type_Declaration);
       Proc : Node_Id :=
         First (Visible_Declarations (Protected_Definition (Parent (Ty))));
       Stat : W_Prog_Id := New_Void;
@@ -9210,7 +9211,7 @@ package body Gnat2Why.Expr is
                R := Sequence
                  (R,
                   Compute_Attach_Handler_Check
-                    (Etype (Defining_Entity (Decl)), Body_Params));
+                    (Base_Type (Etype (Defining_Entity (Decl))), Body_Params));
             end if;
 
          when N_Subtype_Declaration | N_Full_Type_Declaration =>
