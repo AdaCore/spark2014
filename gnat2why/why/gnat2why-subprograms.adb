@@ -281,8 +281,8 @@ package body Gnat2Why.Subprograms is
                                  return W_Prog_Id;
       --  @param E the entity of the calling object/task
       --  @param Prio the active priority of the task used for all the calls
-      --  @return one or several assertions checking for violations of the
-      --    ceiling protocol
+      --  @return one or several assertions checking violations of the ceiling
+      --    protocol
 
       ----------------------
       -- Check_Local_Call --
@@ -297,22 +297,21 @@ package body Gnat2Why.Subprograms is
             return
               New_Located_Assert (Ada_Node => E,
                                   Pred     => False_Pred,
-                                  Reason   =>
-                                    VC_Ceiling_Priority_Protocol,
+                                  Reason   => VC_Ceiling_Priority_Protocol,
                                   Kind     => EW_Check);
          end if;
 
-         --  both the current priority and object priority are present
+         --  Both the current priority and object priority are present
 
          for Name of Directly_Called_Tasking_Objects (Ent) loop
 
-            --  skip regular calls
+            --  Skip regular calls
 
             if not Is_Protected_Subprogram (Find_Entity (Name)) then
                return Check_Local_Call (Name, Prio);
             end if;
 
-            --  we are computing the ceiling priority of the object here. See
+            --  We are computing the ceiling priority of the object here. See
             --  ARM Annex D.3, 7-11, with the extra twist that we assume the
             --  ceiling priority to be Interrupt_Priority'Last even in the
             --  presence of Attach_Handler (so we basically ignore rule 10/3).
@@ -349,7 +348,7 @@ package body Gnat2Why.Subprograms is
          return S;
       end Check_Local_Call;
 
-      --  start processing of Check_Ceiling_Protocol
+      --  Start of processing for Check_Ceiling_Protocol
 
       Task_Prio : constant Node_Id :=
         Get_Priority_Or_Interrupt_Priority (E);
