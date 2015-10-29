@@ -1,6 +1,7 @@
 \documentclass[conference,compsoc]{IEEEtran}
 \usepackage[nocompress]{cite}
 \usepackage{todonotes}
+\usepackage{listings}
 
 \begin{document}
 \title{High-Integrity Multitasking in SPARK:\\
@@ -48,15 +49,9 @@ Email: moy@adacore.com}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % key review comments
 
-% r1: language safety, not system safety
-
-% r1: brief summary of spark toolset
-
 % r1: are all checks done with why3 (and why)
 
 % r1: more how, not what
-
-% r2: example of annotation
 
 % r2, r3: illustration (e.g. for cyclic locking checks)
 
@@ -80,7 +75,7 @@ development and formal verification of software systems providing the
 highest level of safety and security. The 2014 version of the SPARK
 language is based on the Ada 2012 programming language standard \cite{lrm},
 subsetted to enable formal verification, and augmented using the Ada 2012
-annotation syntax to support more complete behavioral specifications. The
+annotation syntax to support more complete behavioural specifications. The
 additional annotations allow the full specification of functional effects
 and information flow of every component of the software system, which can
 then be verified fully statically, or using a combination of static and
@@ -151,10 +146,14 @@ race. This includes protected objects, \emph{atomic} objects (all access is
 via atomic instructions), and \emph{suspension} objects (a kind of private
 semaphore). Normal objects, such as integer or floating point variables,
 are not synchronized, and, if global, may be referenced only by the task
-they are associated with via a \verb|Part_Of| annotation. If the global
-variable has no \verb|Part_Of| annotation, then it may only be referenced
-by the \emph{environment task} of the program, that is the \emph{main}
-task, the task in which execution of the program begins.
+they are associated with via a \verb|Part_Of| annotation; for example:
+\begin{lstlisting}[language=Ada,basicstyle=\tt]
+Aux_Stack : Stack_T with
+  Part_Of => Watchdog_Task;
+\end{lstlisting}
+If the global variable has no \verb|Part_Of| annotation, then it may only
+be referenced by the \emph{environment task} of the program, that is the
+\emph{main} task, the task in which execution of the program begins.
 
 The data race rule is enforced relatively easily in SPARK because all
 subprograms must identify the global variables they manipulate with a
@@ -219,7 +218,7 @@ considered part of ensuring the overall safety of the software.
 % \section{Conclusion}
 % TODO
 
-\section*{Acknowledgments}
+\section*{Acknowledgements}
 This work was performed as part of a joint development project of AdaCore
 and Altran UK.
 
