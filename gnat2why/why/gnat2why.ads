@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 ------------------------------------------------------
--- Translation From GNAT AST to Why3: General Model --
+-- Translation from GNAT AST to Why3: General Model --
 ------------------------------------------------------
 
 --  Translation involves 4 phases:
@@ -231,10 +231,10 @@
 --         multidimensional) aggregate.
 
 --  -------------------------------------------------
---  -- Translation of specific language constructs --
+--  -- Translation of Specific Language Constructs --
 --  -------------------------------------------------
 
---  Protected types
+--  Protected Types
 --  ---------------
 --
 --  The frontend generated protected types even for proctected objects without
@@ -283,7 +283,7 @@
 --  < >.
 --
 --  ----------------------
---  -- Labels for terms --
+--  -- Labels for Terms --
 --  ----------------------
 --
 --  "GP_Sloc:<file1:line1:col1:...:file_n:line_n:col_n>"
@@ -316,7 +316,7 @@
 --
 
 --  -----------------------------
---  -- Labels for declarations --
+--  -- Labels for Declarations --
 --  -----------------------------
 
 --  "GP_Subp:<file:line>"
