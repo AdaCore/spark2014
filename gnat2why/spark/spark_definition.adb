@@ -3162,6 +3162,9 @@ package body SPARK_Definition is
                   function Find_Type (N : Node_Id) return Traverse_Result;
                   --  Sets [Found] to True if type name for [E] is found
 
+                  Unique_E : constant Entity_Id := Unique_Entity (E);
+                  --  Unique entity of E
+
                   ---------------
                   -- Find_Type --
                   ---------------
@@ -3172,7 +3175,7 @@ package body SPARK_Definition is
                         when N_Identifier | N_Expanded_Name =>
                            if Present (Entity (N))
                                 and then
-                              Unique_Entity (Entity (N)) = Unique_Entity (E)
+                              Unique_Entity (Entity (N)) = Unique_E
                            then
                               Found := True;
                            end if;
