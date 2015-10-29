@@ -1,5 +1,6 @@
 \documentclass[conference,compsoc]{IEEEtran}
 \usepackage[nocompress]{cite}
+\usepackage{todonotes}
 
 \begin{document}
 \title{High-Integrity Multitasking in SPARK:\\
@@ -43,6 +44,35 @@ Email: moy@adacore.com}}
 %
 % formal verification; multitasking; SPARK subset of Ada; race detection;
 % deadlock detection.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% key review comments
+
+% r1: language safety, not system safety
+
+% r1: brief summary of spark toolset
+
+% r1: are all checks done with why3 (and why)
+
+% r1: more how, not what
+
+% r2: example of annotation
+
+% r2, r3: illustration (e.g. for cyclic locking checks)
+
+% r2: For the locking cycles, an operation can invoke an external call
+% based on the data provided on its input (with an if structure for
+% instance). Are the domain of data considered to detect cyclic locking? If
+% it is not so, a violation of this rule can be triggered while the data
+% don't allow to effectively violate this rule in practice. The last remark
+% is about the solution proposed: is this solution built specifically for
+% the case of multitasking? Does a similar approach was already proposed
+% for a monotasking? (and what is the difference with the proposed
+% approach)?
+
+% r3: clarify contribution
+
+% r3: future plans
 
 \section{Introduction}
 The SPARK language and toolset \cite{spark} are designed to support the
