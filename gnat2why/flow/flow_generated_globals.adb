@@ -483,15 +483,14 @@ package body Flow_Generated_Globals is
       use Entity_Name_Graphs;
 
       Res : Name_Sets.Set := Name_Sets.Empty_Set;
-      V   : constant Vertex_Id :=
-        Tasking_Call_Graph.Get_Vertex (Ent);
+      V   : constant Vertex_Id := Tasking_Call_Graph.Get_Vertex (Ent);
    begin
-      if V = Null_Vertex then
-         return Res;
+      if V /= Null_Vertex then
+         for Obj of Tasking_Call_Graph.Get_Collection (V, Out_Neighbours) loop
+            Res.Include (Tasking_Call_Graph.Get_Key (Obj));
+         end loop;
       end if;
-      for Obj of Tasking_Call_Graph.Get_Collection (V, Out_Neighbours) loop
-         Res.Include (Tasking_Call_Graph.Get_Key (Obj));
-      end loop;
+
       return Res;
    end Directly_Called_Tasking_Objects;
 
