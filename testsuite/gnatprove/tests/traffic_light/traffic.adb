@@ -7,10 +7,10 @@ is
       L (P) := Green;
    end To_Green;
 
-   procedure To_Amber (L : in out Lights_Type; P : Path) is
+   procedure To_Yellow (L : in out Lights_Type; P : Path) is
    begin
-      L (P) := Amber;
-   end To_Amber;
+      L (P) := Yellow;
+   end To_Yellow;
 
    procedure To_Red (L : in out Lights_Type; P : Path) is
    begin
