@@ -4196,6 +4196,9 @@ package body Flow.Analysis is
                   "possible data race when accessing variable &");
          --  Main error message
 
+         Severity : constant Check_Kind := High_Check_Kind;
+         --  Severity of the error message
+
          SRM_Ref : constant String :=
            (if Owning_Kind in Suspends_On | Entry_Calls
             then "9(11)"
@@ -4221,7 +4224,7 @@ package body Flow.Analysis is
               (E            => Msg_Attach_Node,
                N            => Msg_Attach_Node,
                Suppressed   => Dummy,
-               Severity     => Error_Kind,
+               Severity     => Severity,
                Msg          => Msg,
                F1           => Magic_String_Id (Object),
                SRM_Ref      => SRM_Ref,
@@ -4231,7 +4234,7 @@ package body Flow.Analysis is
               (E            => Msg_Attach_Node,
                N            => Msg_Attach_Node,
                Suppressed   => Dummy,
-               Severity     => Error_Kind,
+               Severity     => Severity,
                Msg          => "with task &",
                F1           => Magic_String_Id (Task_Instance.Name),
                Continuation => True);
@@ -4243,7 +4246,7 @@ package body Flow.Analysis is
                  (E            => Msg_Attach_Node,
                   N            => Msg_Attach_Node,
                   Suppressed   => Dummy,
-                  Severity     => Error_Kind,
+                  Severity     => Severity,
                   Msg          => "with task &",
                   F1           =>
                     Magic_String_Id (Name_Maps.Element (Other_Task)),

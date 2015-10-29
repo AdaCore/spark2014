@@ -1,68 +1,44 @@
 t.ads:2:14: info: initialization of "X" proved
 t.ads:2:14: info: nontermination of task proved
-client2.ads:3:04: possible data race when accessing variable "t.x"
-client2.ads:3:04: with task "client1.t1"
-client2.ads:3:04: with task "client2.t2"
-   compilation of main2.adb failed
-
-
-gnatprove: error during flow analysis and proof
-main3.adb:4:11: possible data race when accessing variable "t.x"
-main3.adb:4:11: with task "client1.t1"
-main3.adb:4:11: with task "client3.t3"
-   compilation of main3.adb failed
-
-
-gnatprove: error during flow analysis and proof
+client2.ads:3:04: high: possible data race when accessing variable "t.x"
+client2.ads:3:04: high: with task "client1.t1"
+client2.ads:3:04: high: with task "client2.t2"
+t.ads:2:14: info: initialization of "X" proved
+t.ads:2:14: info: nontermination of task proved
+main3.adb:4:11: high: possible data race when accessing variable "t.x"
+main3.adb:4:11: high: with task "client1.t1"
+main3.adb:4:11: high: with task "client3.t3"
+t.ads:2:14: info: initialization of "X" proved
+t.ads:2:14: info: nontermination of task proved
 pt.ads:2:09: info: nontermination of task proved
 pt.ads:2:09: info: nontermination of task proved
-pt.ads:2:09: possible data race when accessing variable "p.x"
-pt.ads:2:09: with task "original_main_func"
-pt.ads:2:09: with task "pt.t"
-   compilation of original_main_func.adb failed
-
-
-gnatprove: error during flow analysis and proof
+pt.ads:2:09: high: possible data race when accessing variable "p.x"
+pt.ads:2:09: high: with task "original_main_func"
+pt.ads:2:09: high: with task "pt.t"
 pt.ads:2:09: info: nontermination of task proved
-pt.ads:2:09: possible data race when accessing variable "p.x"
-pt.ads:2:09: with task "original_main_func"
-pt.ads:2:09: with task "pt.t"
-   compilation of original_main_func.adb failed
-
-
-gnatprove: error during flow analysis and proof
-pt.ads:2:09: possible data race when accessing variable "p.x"
-pt.ads:2:09: with task "gen_inst"
-pt.ads:2:09: with task "pt.t"
-   compilation of gen_inst.ads failed
-
-
-gnatprove: error during flow analysis and proof
-pt2.ads:2:09: possible data race when accessing variable "p.x"
-pt2.ads:2:09: with task "pt.t"
-pt2.ads:2:09: with task "pt2.t"
-   compilation of original_main_spec.ads failed
-
-
-gnatprove: error during flow analysis and proof
-pt2.ads:2:09: possible data race when accessing variable "p.x"
-pt2.ads:2:09: with task "pt.t"
-pt2.ads:2:09: with task "pt2.t"
-   compilation of original_main_body.adb failed
-
-
-gnatprove: error during flow analysis and proof
-pt.ads:2:09: possible data race when accessing variable "p.x"
-pt.ads:2:09: with task "main_with_no_spec"
-pt.ads:2:09: with task "pt.t"
-   compilation of main_with_no_spec.adb failed
-
-
-gnatprove: error during flow analysis and proof
-pt.ads:2:09: possible data race when accessing variable "p.x"
-pt.ads:2:09: with task "main_spec_only"
-pt.ads:2:09: with task "pt.t"
-   compilation of main_spec_only.ads failed
-
-
-gnatprove: error during flow analysis and proof
+pt.ads:2:09: high: possible data race when accessing variable "p.x"
+pt.ads:2:09: high: with task "original_main_func"
+pt.ads:2:09: high: with task "pt.t"
+pt.ads:2:09: info: nontermination of task proved
+pt.ads:2:09: high: possible data race when accessing variable "p.x"
+pt.ads:2:09: high: with task "gen_inst"
+pt.ads:2:09: high: with task "pt.t"
+pt.ads:2:09: info: nontermination of task proved
+pt.ads:2:09: info: nontermination of task proved
+pt2.ads:2:09: high: possible data race when accessing variable "p.x"
+pt2.ads:2:09: high: with task "pt.t"
+pt2.ads:2:09: high: with task "pt2.t"
+pt2.ads:2:09: info: nontermination of task proved
+pt.ads:2:09: info: nontermination of task proved
+pt2.ads:2:09: high: possible data race when accessing variable "p.x"
+pt2.ads:2:09: high: with task "pt.t"
+pt2.ads:2:09: high: with task "pt2.t"
+pt2.ads:2:09: info: nontermination of task proved
+pt.ads:2:09: high: possible data race when accessing variable "p.x"
+pt.ads:2:09: high: with task "main_with_no_spec"
+pt.ads:2:09: high: with task "pt.t"
+pt.ads:2:09: info: nontermination of task proved
+pt.ads:2:09: high: possible data race when accessing variable "p.x"
+pt.ads:2:09: high: with task "main_spec_only"
+pt.ads:2:09: high: with task "pt.t"
+pt.ads:2:09: info: nontermination of task proved
