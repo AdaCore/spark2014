@@ -44,21 +44,6 @@ package body SPARK_Frame_Conditions is
    -- Local Types --
    -----------------
 
-   package Id_Set is new Hashed_Sets
-     (Element_Type        => Entity_Name,
-      Hash                => Name_Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
-   use Id_Set;
-
-   package Id_Map is new Hashed_Maps
-     (Key_Type        => Entity_Name,
-      Element_Type    => Id_Set.Set,
-      Hash            => Name_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
-   use Id_Map;
-
    package Name_To_Entity_Map is new Hashed_Maps
      (Key_Type        => Entity_Name,
       Element_Type    => Entity_Id,
@@ -85,33 +70,33 @@ package body SPARK_Frame_Conditions is
    --  By default, propagate an error if a scope is missing, unless set to
    --  False for a degraded mode of operation in which such errors are ignored.
 
-   Scopes       : Id_Set.Set;  --  All scope entities
-   Constants    : Id_Set.Set;  --  All constants
+   Scopes       : Name_Sets.Set;  --  All scope entities
+   Constants    : Name_Sets.Set;  --  All constants
 
-   File_Defines : Name_Maps.Map;  --  File defining each entities
-   Defines      : Id_Map.Map;  --  Entities defined by each scope
-   Writes       : Id_Map.Map;  --  Entities written in each scope
-   Reads        : Id_Map.Map;  --  Entities read in each scope
-   Callers      : Id_Map.Map;  --  Callers for each subprogram
-   Calls        : Id_Map.Map;  --  Subprograms called in each subprogram
+   File_Defines : Name_Maps.Map;    --  File defining each entities
+   Defines      : Name_Graphs.Map;  --  Entities defined by each scope
+   Writes       : Name_Graphs.Map;  --  Entities written in each scope
+   Reads        : Name_Graphs.Map;  --  Entities read in each scope
+   Callers      : Name_Graphs.Map;  --  Callers for each subprogram
+   Calls        : Name_Graphs.Map;  --  Subprograms called in each subprogram
 
-   Non_Rec_Subp : Id_Set.Set;
+   Non_Rec_Subp : Name_Sets.Set;
    --  All non-recursive subprograms containing at least one call
 
    -----------------------
    -- Local Subprograms --
    -----------------------
 
-   procedure Add_To_Map (Map : in out Id_Map.Map; From, To : Entity_Name);
+   procedure Add_To_Map (Map : in out Name_Graphs.Map; From, To : Entity_Name);
    --  Add the relation From -> To in map Map
 
    function Compute_Strongly_Connected_Components
-     (Nodes : Id_Set.Set) return SCCs;
+     (Nodes : Name_Sets.Set) return SCCs;
    --  Computation of strongly connected components from Tarjan. Individual
    --  components are dynamically allocated.
 
    function Count_In_Map
-     (Map : Id_Map.Map;
+     (Map : Name_Graphs.Map;
       Ent : Entity_Name) return Count_Type;
    --  Return the number of elements in the set associated to Ent in Map, or
    --  else 0.
@@ -124,31 +109,26 @@ package body SPARK_Frame_Conditions is
    --  Build a name for an entity, making sure the name is not empty
 
    procedure Set_Default_To_Empty
-     (Map : in out Id_Map.Map;
-      Set : Id_Set.Set);
+     (Map : in out Name_Graphs.Map;
+      Set : Name_Sets.Set);
    --  Make sure each element in Set has an entry in Map. If not already
    --  present, add one which maps the element to the empty set.
-
-   function To_Names (Ids : Id_Set.Set) return Name_Sets.Set;
-   --  Convert set of identities to set of names
-
-   function To_Ids (Names : Name_Sets.Set) return Id_Set.Set;
-   --  Convert set of names to set of ids
 
    ----------------
    -- Add_To_Map --
    ----------------
 
-   procedure Add_To_Map (Map : in out Id_Map.Map; From, To : Entity_Name) is
+   procedure Add_To_Map (Map : in out Name_Graphs.Map; From, To : Entity_Name)
+   is
 
-      procedure Add_To_Set (Ignored : Entity_Name; Set : in out Id_Set.Set);
+      procedure Add_To_Set (Ignored : Entity_Name; Set : in out Name_Sets.Set);
       --  Add entity representative To to set Set
 
       ----------------
       -- Add_To_Set --
       ----------------
 
-      procedure Add_To_Set (Ignored : Entity_Name; Set : in out Id_Set.Set)
+      procedure Add_To_Set (Ignored : Entity_Name; Set : in out Name_Sets.Set)
       is
          pragma Unreferenced (Ignored);
       begin
@@ -162,7 +142,7 @@ package body SPARK_Frame_Conditions is
          Map.Update_Element (Map.Find (From), Add_To_Set'Access);
       else
          declare
-            S : Id_Set.Set;
+            S : Name_Sets.Set;
          begin
             S.Include (To);
             Map.Insert (From, S);
@@ -175,7 +155,7 @@ package body SPARK_Frame_Conditions is
    -------------------------------------------
 
    function Compute_Strongly_Connected_Components
-     (Nodes : Id_Set.Set) return SCCs
+     (Nodes : Name_Sets.Set) return SCCs
    is
       subtype Node_Range is Integer range 1 .. Integer (Nodes.Length);
 
@@ -213,7 +193,7 @@ package body SPARK_Frame_Conditions is
       type Stack_Data is array (Node_Range) of Entity_Name;
       type Stack is record
          Data    : Stack_Data;
-         Content : Id_Set.Set;
+         Content : Name_Sets.Set;
       end record;
 
       S : Stack;
@@ -254,7 +234,7 @@ package body SPARK_Frame_Conditions is
       --------------------
 
       procedure Strong_Connect (V : Entity_Name) is
-         Called_Subp : Id_Set.Set;
+         Called_Subp : Name_Sets.Set;
       begin
          --  Set the depth index for V to the smallest unused index
 
@@ -274,11 +254,11 @@ package body SPARK_Frame_Conditions is
 --           end loop;
 
          declare
-            C : Id_Set.Cursor;
+            C : Name_Sets.Cursor;
             W : Entity_Name;
          begin
             C := Called_Subp.First;
-            while C /= Id_Set.No_Element loop
+            while C /= Name_Sets.No_Element loop
                W := Element (C);
 
                --  Ignore leaf nodes in call-graph as no treatment is needed
@@ -359,10 +339,10 @@ package body SPARK_Frame_Conditions is
 --           end loop;
 
       declare
-         C : Id_Set.Cursor;
+         C : Name_Sets.Cursor;
       begin
          C := Nodes.First;
-         while C /= Id_Set.No_Element loop
+         while C /= Name_Sets.No_Element loop
             if not Indexes.Contains (Element (C)) then
                Strong_Connect (Element (C));
             end if;
@@ -378,13 +358,13 @@ package body SPARK_Frame_Conditions is
    ------------------
 
    function Count_In_Map
-     (Map : Id_Map.Map;
+     (Map : Name_Graphs.Map;
       Ent : Entity_Name) return Count_Type
    is
-      C : constant Id_Map.Cursor := Map.Find (Ent);
+      C : constant Name_Graphs.Cursor := Map.Find (Ent);
    begin
-      return (if Id_Map.Has_Element (C)
-              then Id_Map.Element (C).Length
+      return (if Name_Graphs.Has_Element (C)
+              then Name_Graphs.Element (C).Length
               else 0);
    end Count_In_Map;
 
@@ -394,9 +374,11 @@ package body SPARK_Frame_Conditions is
 
    procedure Display_Maps is
 
+      use Name_Graphs;
+
       procedure Display_Entity (E : Entity_Name);
-      procedure Display_One_Map (Map : Id_Map.Map; Name, Action : String);
-      procedure Display_One_Set (Set : Id_Set.Set);
+      procedure Display_One_Map (Map : Name_Graphs.Map; Name, Action : String);
+      procedure Display_One_Set (Set : Name_Sets.Set);
 
       --------------------
       -- Display_Entity --
@@ -411,18 +393,18 @@ package body SPARK_Frame_Conditions is
       -- Display_One_Map --
       ---------------------
 
-      procedure Display_One_Map (Map : Id_Map.Map; Name, Action : String)
+      procedure Display_One_Map (Map : Name_Graphs.Map; Name, Action : String)
       is
-         Cu : Id_Map.Cursor;
+         Cu : Name_Graphs.Cursor;
       begin
          Put_Line ("-- " & Name & " --");
 
          Cu := Map.First;
          while Has_Element (Cu) loop
-            Display_Entity (Id_Map.Key (Cu));
+            Display_Entity (Name_Graphs.Key (Cu));
             Put_Line (" " & Action);
-            Display_One_Set (Id_Map.Element (Cu));
-            Id_Map.Next (Cu);
+            Display_One_Set (Name_Graphs.Element (Cu));
+            Name_Graphs.Next (Cu);
          end loop;
       end Display_One_Map;
 
@@ -430,7 +412,7 @@ package body SPARK_Frame_Conditions is
       -- Display_One_Set --
       ---------------------
 
-      procedure Display_One_Set (Set : Id_Set.Set) is
+      procedure Display_One_Set (Set : Name_Sets.Set) is
       begin
 --  Workaround for K526-008
 
@@ -439,10 +421,10 @@ package body SPARK_Frame_Conditions is
 --           end loop;
 
          declare
-            C : Id_Set.Cursor;
+            C : Name_Sets.Cursor;
          begin
             C := Set.First;
-            while C /= Id_Set.No_Element loop
+            while C /= Name_Sets.No_Element loop
                Put ("  "); Display_Entity (Element (C)); Put_Line ("");
                Next (C);
             end loop;
@@ -492,14 +474,14 @@ package body SPARK_Frame_Conditions is
    procedure For_All_External_Objects
      (Process : not null access procedure (E : Entity_Name))
    is
-      procedure For_All_Define_Sets (Key : Entity_Name; S : Id_Set.Set);
+      procedure For_All_Define_Sets (Key : Entity_Name; S : Name_Sets.Set);
       --  will be called for all "define sets" for all subprograms
 
       -------------------------
       -- For_All_Define_Sets --
       -------------------------
 
-      procedure For_All_Define_Sets (Key : Entity_Name; S : Id_Set.Set) is
+      procedure For_All_Define_Sets (Key : Entity_Name; S : Name_Sets.Set) is
          pragma Unreferenced (Key);
       begin
          --  External objects are those in the sets of defined objects Defines,
@@ -523,7 +505,7 @@ package body SPARK_Frame_Conditions is
 
    begin
       for C in Defines.Iterate loop
-         Id_Map.Query_Element (C, For_All_Define_Sets'Access);
+         Name_Graphs.Query_Element (C, For_All_Define_Sets'Access);
       end loop;
    end For_All_External_Objects;
 
@@ -564,7 +546,7 @@ package body SPARK_Frame_Conditions is
    --------------------
 
    function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
-   is (To_Names (Calls.Element (E_Name)));
+   is (Calls.Element (E_Name));
 
    -------------------------
    -- Get_Generated_Reads --
@@ -577,7 +559,7 @@ package body SPARK_Frame_Conditions is
       E_Alias  : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
       E_Name   : constant Entity_Name := To_Entity_Name (E_Alias);
-      Read_Ids : Id_Set.Set := Id_Set.Empty_Set;
+      Read_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
 
    begin
       --  ??? O429-046, O603-033 Task types, entries and Abstract subprograms
@@ -601,7 +583,7 @@ package body SPARK_Frame_Conditions is
          Read_Ids := Read_Ids - Constants;
       end if;
 
-      return To_Names (Read_Ids - Defines.Element (E_Name));
+      return Read_Ids - Defines.Element (E_Name);
    exception
       when Constraint_Error =>
          if Propagate_Error_For_Missing_Scope then
@@ -620,7 +602,7 @@ package body SPARK_Frame_Conditions is
       E_Alias   : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
       E_Name    : constant Entity_Name := To_Entity_Name (E_Alias);
-      Write_Ids : Id_Set.Set := Id_Set.Empty_Set;
+      Write_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
 
    begin
       --  ??? O429-046, O603-033 Task types, entries and Abstract subprograms
@@ -657,7 +639,7 @@ package body SPARK_Frame_Conditions is
 
       Write_Ids := Write_Ids or Writes.Element (E_Name);
 
-      return To_Names (Write_Ids - Defines.Element (E_Name));
+      return Write_Ids - Defines.Element (E_Name);
    exception
       when Constraint_Error =>
          if Propagate_Error_For_Missing_Scope then
@@ -1048,18 +1030,18 @@ package body SPARK_Frame_Conditions is
       -----------------------
 
       procedure Propagate_On_Call (Caller, Callee : Entity_Name) is
-         Prop_Reads  : Id_Set.Set;
-         Prop_Writes : Id_Set.Set;
+         Prop_Reads  : Name_Sets.Set;
+         Prop_Writes : Name_Sets.Set;
 
          procedure Union_With_Reads
            (Ignored : Entity_Name;
-            Set     : in out Id_Set.Set);
+            Set     : in out Name_Sets.Set);
          --  In place union of caller's reads with the set propagated from
          --  callee.
 
          procedure Union_With_Writes
            (Ignored : Entity_Name;
-            Set     : in out Id_Set.Set);
+            Set     : in out Name_Sets.Set);
          --  In place union of caller's writes with the set propagated from
          --  callee.
 
@@ -1069,7 +1051,7 @@ package body SPARK_Frame_Conditions is
 
          procedure Union_With_Reads
            (Ignored : Entity_Name;
-            Set     : in out Id_Set.Set)
+            Set     : in out Name_Sets.Set)
          is
             pragma Unreferenced (Ignored);
          begin
@@ -1082,7 +1064,7 @@ package body SPARK_Frame_Conditions is
 
          procedure Union_With_Writes
            (Ignored : Entity_Name;
-            Set     : in out Id_Set.Set)
+            Set     : in out Name_Sets.Set)
          is
             pragma Unreferenced (Ignored);
          begin
@@ -1112,8 +1094,8 @@ package body SPARK_Frame_Conditions is
                                      Reads                => Read_Ids,
                                      Writes               => Write_Ids,
                                      Use_Computed_Globals => False);
-                  Prop_Reads  := To_Ids (Flow_Types.To_Name_Set (Read_Ids));
-                  Prop_Writes := To_Ids (Flow_Types.To_Name_Set (Write_Ids));
+                  Prop_Reads  := Flow_Types.To_Name_Set (Read_Ids);
+                  Prop_Writes := Flow_Types.To_Name_Set (Write_Ids);
                end;
             else
                Prop_Reads  :=
@@ -1146,7 +1128,7 @@ package body SPARK_Frame_Conditions is
       is
          Num_Reads   : constant Count_Type := Count_In_Map (Reads, Subp);
          Num_Writes  : constant Count_Type := Count_In_Map (Writes, Subp);
-         Called_Subp : constant Id_Set.Set := Calls.Element (Subp);
+         Called_Subp : constant Name_Sets.Set := Calls.Element (Subp);
 
       begin
          Updated := False;
@@ -1164,10 +1146,10 @@ package body SPARK_Frame_Conditions is
 --           end loop;
 
          declare
-            C : Id_Set.Cursor;
+            C : Name_Sets.Cursor;
          begin
             C := Called_Subp.First;
-            while C /= Id_Set.No_Element loop
+            while C /= Name_Sets.No_Element loop
                Propagate_On_Call (Caller => Subp, Callee => Element (C));
                Next (C);
             end loop;
@@ -1186,8 +1168,10 @@ package body SPARK_Frame_Conditions is
             end if;
       end Update_Subprogram;
 
-      Cu        : Id_Map.Cursor;
-      Subp_Rest : Id_Set.Set;
+      Cu        : Name_Graphs.Cursor;
+      Subp_Rest : Name_Sets.Set;
+
+      use Name_Graphs;
 
    --  Start of processing for Propagate_Through_Call_Graph
 
@@ -1237,7 +1221,7 @@ package body SPARK_Frame_Conditions is
                declare
                   E : constant Entity_Name := Cur_SCCs (J) (1);
                begin
-                  if not Id_Set.Contains (Calls.Element (E), E) then
+                  if not Name_Sets.Contains (Calls.Element (E), E) then
                      Non_Rec_Subp.Insert (E);
                   end if;
                end;
@@ -1281,8 +1265,8 @@ package body SPARK_Frame_Conditions is
    --------------------------
 
    procedure Set_Default_To_Empty
-     (Map : in out Id_Map.Map;
-      Set : Id_Set.Set)
+     (Map : in out Name_Graphs.Map;
+      Set : Name_Sets.Set)
    is
    begin
 --  Workaround for K526-008
@@ -1293,12 +1277,12 @@ package body SPARK_Frame_Conditions is
 --        end loop;
 
       declare
-         C : Id_Set.Cursor;
+         C : Name_Sets.Cursor;
       begin
          C := Set.First;
-         while C /= Id_Set.No_Element loop
+         while C /= Name_Sets.No_Element loop
             if not Map.Contains (Element (C)) then
-               Map.Insert (Element (C), Id_Set.Empty_Set);
+               Map.Insert (Element (C), Name_Sets.Empty_Set);
             end if;
             Next (C);
          end loop;
@@ -1341,7 +1325,7 @@ package body SPARK_Frame_Conditions is
 
       E_Name  := To_Entity_Name (E_Alias);
 
-      Called_Subprograms := To_Names (Calls.Element (E_Name));
+      Called_Subprograms := Calls.Element (E_Name);
       Inputs             := Get_Generated_Reads (E, False);
       Outputs            := Get_Generated_Writes (E);
 
@@ -1357,37 +1341,5 @@ package body SPARK_Frame_Conditions is
    begin
       Propagate_Error_For_Missing_Scope := not Ignore_Errors;
    end Set_Ignore_Errors;
-
-   --------------
-   -- To_Names --
-   --------------
-
-   function To_Names (Ids : Id_Set.Set) return Name_Sets.Set is
-      Names : Name_Sets.Set;
-      C : Id_Set.Cursor;
-   begin
-      C := Ids.First;
-      while C /= Id_Set.No_Element loop
-         Names.Include (Element (C));
-         Next (C);
-      end loop;
-      return Names;
-   end To_Names;
-
-   ------------
-   -- To_Ids --
-   ------------
-
-   function To_Ids (Names : Name_Sets.Set) return Id_Set.Set is
-      Ids : Id_Set.Set;
-      C : Name_Sets.Cursor;
-   begin
-      C := Names.First;
-      while C /= Name_Sets.No_Element loop
-         Ids.Include (Element (C));
-         Next (C);
-      end loop;
-      return Ids;
-   end To_Ids;
 
 end SPARK_Frame_Conditions;
