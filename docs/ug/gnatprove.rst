@@ -478,7 +478,7 @@ the corresponding line in the editor. The path is hidden again when re-clicking
 on the same icon.
 
 For checks verified in proof, |GNATprove| may also generate counterexample
-information for the user to see (see :`Understanding Counterexamples`). The
+information for the user to see (see :ref:`Understanding Counterexamples`). The
 user can display this counterexample in GPS by clicking on the icon to the left
 of the failed proof message, or to the left of the corresponding line in the
 editor. The counterexample is hidden again when re-clicking on the same icon.
@@ -2373,9 +2373,10 @@ simpler assertion and trying to prove it.
 
 |GNATprove| provides path information that might help the code review. You can
 display inside the editor the path on which the proof failed, as described in
-:ref:`Running GNATprove from GPS`. In many cases, this is sufficient to spot a
-missing assertion. To further assist the user, we plan to add to this path some
-information about the values taken by variables from a counterexample.
+:ref:`Running GNATprove from GPS`. In some cases, a counterexample is also
+generated on the path, with values of variables which exhibit the problem (see
+:ref:`Understanding Counterexamples`). In many cases, this is sufficient to
+spot a missing assertion.
 
 A property can also be conceptually provable, but the model used by
 |GNATProve| can currently not reason about it [MODEL]. (See
