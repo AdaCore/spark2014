@@ -485,5 +485,5 @@ postcondition of ``Update_Range_Vec_Zero``:
    :language: none
 
 We don't show here a variant of the same update loop over a list, which
-requires more involved postconditions and loop invariants, and is not proved
-completely with the default provers Alt-Ergo and CVC4.
+requires more involved postconditions and loop invariants, and is proved
+completely with the provers Alt-Ergo, CVC4 and Z3.
