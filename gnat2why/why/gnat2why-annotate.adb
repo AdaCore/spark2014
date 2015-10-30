@@ -181,6 +181,14 @@ package body Gnat2Why.Annotate is
    procedure Generate_Useless_Pragma_Annotate_Warnings is
    begin
 
+         --  If the analysis is requested for a specific subprogram/task,
+         --  we do not issue this warning, because it's likely to be a false
+         --  positive.
+
+         if Gnat2Why_Args.Limit_Subp /= Null_Unbounded_String then
+            return;
+         end if;
+
       --  we do not issue any warnings on nodes which stem from inlining or
       --  instantiation
 
@@ -324,21 +332,6 @@ package body Gnat2Why.Annotate is
          Decl : constant Node_Id := Enclosing_Declaration (Preceding);
          Ent  : constant Entity_Id := Unique_Defining_Entity (Decl);
       begin
-
-         --  If the analysis is requested for a specific subprogram/task
-         --  (possibly the implicit elaboration subprogram for a package)
-         --  or line, check whether the annotation is on this subprogram
-         --  spec or body. If not, ignore the annotation.
-
-         if Gnat2Why_Args.Limit_Subp /= Null_Unbounded_String
-           and then
-             not (Is_Requested_Subprogram_Or_Task (Ent)
-                  or else
-                  Is_Requested_Subprogram_Or_Task
-                    (Unique_Entity (Enclosing_Package_Or_Subprogram (Ent))))
-         then
-            return;
-         end if;
 
          --  Also, if the requested subprogram is always inlined, and also
          --  referenced, the pragma should be ignored
