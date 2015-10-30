@@ -10,7 +10,7 @@ barrier.adb:5:33: subtype of "Synchronous_Barrier" is not allowed in SPARK
 barrier.adb:5:33: violation of pragma SPARK_Mode at test.adc:1
 blocking_contract.adb:9:07: warning: statement has no effect
 blocking_contract.adb:13:14: warning: subprogram "Proc" has no effect
-blocking_contract.adb:21:13: potentially blocking operation in protected operation "Dummy"
+blocking_contract.adb:21:13: high: potentially blocking operation in protected operation "Dummy"
 complex.adb:4:11: medium: "Current_Out" might not be initialized after elaboration of main program "Complex"
 complex.adb:12:07: info: initialization of "Default_Aft" proved
 complex.adb:12:07: info: initialization of "Default_Exp" proved
@@ -19,7 +19,7 @@ complex.adb:12:07: warning: assuming "Put" has no effect on global items
 complex.adb:12:07: warning: no Global contract available for "Put"
 complex.adb:12:13: info: initialization of "X.Im" proved
 complex.adb:12:13: info: initialization of "X.Re" proved
-external_separate_calls.ads:4:13: potentially blocking operation in protected operation "Enter"
+external_separate_calls.ads:4:13: high: potentially blocking operation in protected operation "Enter"
 floatio.adb:3:11: medium: "Default_Aft" might not be initialized after elaboration of main program "Floatio"
 floatio.adb:3:11: medium: "Default_Exp" might not be initialized after elaboration of main program "Floatio"
 floatio.adb:3:11: medium: "Default_Fore" might not be initialized after elaboration of main program "Floatio"
@@ -29,13 +29,13 @@ floatio.adb:7:27: info: initialization of "X" proved
 internal_protected_call.adb:7:33: warning: statement has no effect
 internal_protected_call.adb:22:26: warning: statement has no effect
 internal_protected_call.adb:44:20: warning: statement has no effect
-internal_protected_call.ads:3:13: potentially blocking operation in protected operation "E"
-internal_protected_call.ads:4:17: potentially blocking operation in protected operation "P"
-internal_protected_call.ads:13:17: potentially blocking operation in protected operation "P1"
-internal_protected_call.ads:14:17: potentially blocking operation in protected operation "P2"
+internal_protected_call.ads:3:13: high: potentially blocking operation in protected operation "E"
+internal_protected_call.ads:4:17: high: potentially blocking operation in protected operation "P"
+internal_protected_call.ads:13:17: high: potentially blocking operation in protected operation "P1"
+internal_protected_call.ads:14:17: high: potentially blocking operation in protected operation "P2"
 library_level_function.adb:5:32: warning: unused initial value of "Real_Time.Clock_Time"
 library_level_function.adb:8:04: warning: statement has no effect
-nested_pb_call.adb:6:13: potentially blocking operation in protected operation "Dummy"
+nested_pb_call.adb:6:13: high: potentially blocking operation in protected operation "Dummy"
 nested_pb_call.adb:11:24: warning: statement has no effect
 nested_pb_call.adb:19:13: warning: statement has no effect
 p-po_stub_1.adb:3:38: warning: statement has no effect
@@ -73,34 +73,34 @@ p.adb:233:26: warning: no Global contract available for "Put"
 p.ads:5:14: warning: subprogram "Potentially_Blocking_Proc" has no effect
 p.ads:7:14: warning: subprogram "Blocking_Proc" has no effect
 p.ads:9:14: warning: subprogram "Nonblocking_Proc" has no effect
-p.ads:25:13: potentially blocking operation in protected operation "Directly_Blocking_Type_Entry"
-p.ads:26:17: potentially blocking operation in protected operation "Directly_Blocking_Type_Proc"
-p.ads:30:13: potentially blocking operation in protected operation "Indirectly_Blocking_Type_Entry"
-p.ads:31:17: potentially blocking operation in protected operation "Indirectly_Blocking_Type_Proc"
-p.ads:40:13: potentially blocking operation in protected operation "Directly_Blocking_Object_Entry"
-p.ads:41:17: potentially blocking operation in protected operation "Directly_Blocking_Object_Proc"
-p.ads:45:13: potentially blocking operation in protected operation "Indirectly_Blocking_Object_Entry"
-p.ads:46:17: potentially blocking operation in protected operation "Indirectly_Blocking_Object_Proc"
-p.ads:55:13: potentially blocking operation in protected operation "Directly_Blocking_Stub_Entry"
-p.ads:56:17: potentially blocking operation in protected operation "Directly_Blocking_Stub_Proc"
-p.ads:60:13: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Entry"
-p.ads:61:17: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Proc"
-p.ads:71:13: potentially blocking operation in protected operation "Yielding_Entry"
-p.ads:72:17: potentially blocking operation in protected operation "Yielding_Proc"
-p.ads:86:13: potentially blocking operation in protected operation "Barrier_Entry"
-p.ads:87:17: potentially blocking operation in protected operation "Barrier_Proc"
-p.ads:91:13: potentially blocking operation in protected operation "File_Entry"
-p.ads:92:17: potentially blocking operation in protected operation "File_Proc"
-p.ads:96:13: potentially blocking operation in protected operation "Text_Entry"
-p.ads:97:17: potentially blocking operation in protected operation "Text_Proc"
-p.ads:101:13: potentially blocking operation in protected operation "My_Text_Entry"
-p.ads:105:13: potentially blocking operation in protected operation "Complex_Print_Entry"
-p.ads:109:13: potentially blocking operation in protected operation "Floatio_Print_Entry"
-p.ads:113:13: potentially blocking operation in protected operation "Entry_Call_To_Library_Level_Procedure"
-p.ads:114:17: potentially blocking operation in protected operation "Proc_Call_To_Library_Level_Procedure"
-p.ads:115:16: potentially blocking operation in protected operation "Func_Call_To_Library_Level_Function"
-pack.ads:5:13: potentially blocking operation in protected operation "E_Proc"
-pack.ads:10:13: potentially blocking operation in protected operation "E_Func"
+p.ads:25:13: high: potentially blocking operation in protected operation "Directly_Blocking_Type_Entry"
+p.ads:26:17: high: potentially blocking operation in protected operation "Directly_Blocking_Type_Proc"
+p.ads:30:13: high: potentially blocking operation in protected operation "Indirectly_Blocking_Type_Entry"
+p.ads:31:17: high: potentially blocking operation in protected operation "Indirectly_Blocking_Type_Proc"
+p.ads:40:13: high: potentially blocking operation in protected operation "Directly_Blocking_Object_Entry"
+p.ads:41:17: high: potentially blocking operation in protected operation "Directly_Blocking_Object_Proc"
+p.ads:45:13: high: potentially blocking operation in protected operation "Indirectly_Blocking_Object_Entry"
+p.ads:46:17: high: potentially blocking operation in protected operation "Indirectly_Blocking_Object_Proc"
+p.ads:55:13: high: potentially blocking operation in protected operation "Directly_Blocking_Stub_Entry"
+p.ads:56:17: high: potentially blocking operation in protected operation "Directly_Blocking_Stub_Proc"
+p.ads:60:13: high: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Entry"
+p.ads:61:17: high: potentially blocking operation in protected operation "Indirectly_Blocking_Stub_Proc"
+p.ads:71:13: high: potentially blocking operation in protected operation "Yielding_Entry"
+p.ads:72:17: high: potentially blocking operation in protected operation "Yielding_Proc"
+p.ads:86:13: high: potentially blocking operation in protected operation "Barrier_Entry"
+p.ads:87:17: high: potentially blocking operation in protected operation "Barrier_Proc"
+p.ads:91:13: high: potentially blocking operation in protected operation "File_Entry"
+p.ads:92:17: high: potentially blocking operation in protected operation "File_Proc"
+p.ads:96:13: high: potentially blocking operation in protected operation "Text_Entry"
+p.ads:97:17: high: potentially blocking operation in protected operation "Text_Proc"
+p.ads:101:13: high: potentially blocking operation in protected operation "My_Text_Entry"
+p.ads:105:13: high: potentially blocking operation in protected operation "Complex_Print_Entry"
+p.ads:109:13: high: potentially blocking operation in protected operation "Floatio_Print_Entry"
+p.ads:113:13: high: potentially blocking operation in protected operation "Entry_Call_To_Library_Level_Procedure"
+p.ads:114:17: high: potentially blocking operation in protected operation "Proc_Call_To_Library_Level_Procedure"
+p.ads:115:16: high: potentially blocking operation in protected operation "Func_Call_To_Library_Level_Function"
+pack.ads:5:13: high: potentially blocking operation in protected operation "E_Proc"
+pack.ads:10:13: high: potentially blocking operation in protected operation "E_Func"
 remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored (not yet supported)
 remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored in flow analysis (not yet supported)
 remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored (not yet supported)
@@ -108,12 +108,7 @@ remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored in flow analysis (no
 remote.ads:7:14: warning: subprogram "Remote_Call" has no effect
 simple_package.ads:3:14: warning: subprogram "Dummy" has no effect
    compilation of barrier.adb failed
-   compilation of blocking_contract.adb failed
-   compilation of external_separate_calls.adb failed
-   compilation of internal_protected_call.adb failed
-   compilation of nested_pb_call.adb failed
    compilation of p.adb failed
-   compilation of pack.adb failed
 
 
 gnatprove: error during analysis of data and information flow

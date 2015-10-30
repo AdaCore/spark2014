@@ -1556,7 +1556,7 @@ package body Flow is
                     "in protected operation &",
                   N        => FA.Analyzed_Entity,
                   F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
-                  Severity => Error_Kind);
+                  Severity => High_Check_Kind);
             end if;
          end if;
 
