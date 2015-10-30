@@ -9,4 +9,4 @@
 	url = git+ssh://scm.forge.open-do.org/scmrepos/git/spark2014/cvc4.git
 [submodule "z3"]
 	path = z3
-	url = git+ssh://scm.forge.open-do.org//scmrepos/git/spark2014/z3.git
+	url = git+ssh://scm.forge.open-do.org/scmrepos/git/spark2014/z3.git
