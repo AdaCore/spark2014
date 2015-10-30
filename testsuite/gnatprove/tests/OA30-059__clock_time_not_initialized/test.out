@@ -1,0 +1,5 @@
+client.adb:3:11: medium: "ada.real_time.clock_time" might not be initialized after elaboration of main program "Client"
+p.adb:7:07: warning: statement has no effect
+p.adb:12:52: warning: statement has no effect
+p.ads:6:13: high: potentially blocking operation in protected operation "Dummy"
+p.ads:6:20: warning: unused variable "Arg"
