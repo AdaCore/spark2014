@@ -6,8 +6,4 @@ p.adb:11:26: info: initialization of "Default_Exp" proved
 p.adb:11:26: info: initialization of "Default_Fore" proved
 p.adb:11:26: warning: assuming "Put" has no effect on global items
 p.adb:11:26: warning: no Global contract available for "Put"
-p.ads:4:13: potentially blocking operation in protected operation "My_Text_Entry"
-   compilation of p.adb failed
-
-
-gnatprove: error during flow analysis and proof
+p.ads:4:13: high: potentially blocking operation in protected operation "My_Text_Entry"
