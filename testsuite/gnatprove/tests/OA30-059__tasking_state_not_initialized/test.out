@@ -1,0 +1,1 @@
+client.adb:3:11: medium: "ada.task_identification.tasking_state" might not be initialized after elaboration of main program "Client"

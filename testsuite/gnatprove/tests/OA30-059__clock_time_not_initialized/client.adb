@@ -2,5 +2,5 @@ with P;
 
 procedure Client is
 begin
-   P.PO.Dummy;
+   P.Blocking;
 end;
