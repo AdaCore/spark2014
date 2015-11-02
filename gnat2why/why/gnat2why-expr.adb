@@ -50,7 +50,6 @@ with Snames;                 use Snames;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with Stand;                  use Stand;
-with System;                 use System;
 with Uintp;                  use Uintp;
 with Urealp;                 use Urealp;
 with VC_Kinds;               use VC_Kinds;
@@ -62,7 +61,6 @@ with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Arrays;         use Why.Gen.Arrays;
 with Why.Gen.Binders;        use Why.Gen.Binders;
-with Why.Gen.Consts;         use Why.Gen.Consts;
 with Why.Gen.Decl;           use Why.Gen.Decl;
 with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
@@ -9211,12 +9209,18 @@ package body Gnat2Why.Expr is
                                 (Ada_Node => Decl,
                                  Pred     => +New_Range_Expr
                                    (Domain => EW_Pred,
-                                    Low    => +New_Constant
-                                      (UI_From_Int (Int
-                                       (Interrupt_Priority'First))),
-                                    High   => +New_Constant
-                                      (UI_From_Int (Int
-                                       (Interrupt_Priority'Last))),
+                                    Low    =>
+                                      New_Attribute_Expr
+                                        (Domain => EW_Term,
+                                         Ty     => RTE (RE_Interrupt_Priority),
+                                         Attr   => Attribute_First,
+                                         Params => Body_Params),
+                                    High   =>
+                                      New_Attribute_Expr
+                                        (Domain => EW_Term,
+                                         Ty     => RTE (RE_Interrupt_Priority),
+                                         Attr   => Attribute_Last,
+                                         Params => Body_Params),
                                     Expr   => P_Expr),
                                  Reason   => VC_Ceiling_Interrupt,
                                  Kind     => EW_Check));

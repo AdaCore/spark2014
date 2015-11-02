@@ -34,6 +34,7 @@ with GNAT.Source_Info;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
+with Rtsfind;                use Rtsfind;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Disp;               use Sem_Disp;
 with Sem_Util;               use Sem_Util;
@@ -44,7 +45,6 @@ with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
 with Stand;                  use Stand;
-with System;                 use System;
 with Uintp;                  use Uintp;
 with VC_Kinds;               use VC_Kinds;
 with Why;                    use Why;
@@ -53,7 +53,6 @@ with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Modules;      use Why.Atree.Modules;
 with Why.Atree.Mutators;     use Why.Atree.Mutators;
 with Why.Conversions;        use Why.Conversions;
-with Why.Gen.Consts;         use Why.Gen.Consts;
 with Why.Gen.Decl;           use Why.Gen.Decl;
 with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
@@ -325,8 +324,11 @@ package body Gnat2Why.Subprograms is
                        Transform_Expr
                          (Ada_Obj_Prio, EW_Int_Type, EW_Pterm, Params)
                   else
-                    +New_Constant
-                    (UI_From_Int (Int (Interrupt_Priority'Last))));
+                     New_Attribute_Expr
+                    (Domain => EW_Term,
+                     Ty     => RTE (RE_Interrupt_Priority),
+                     Attr   => Attribute_Last,
+                     Params => Params));
                      Pred     : constant W_Pred_Id :=
                        +New_Comparison (Symbol => Int_Infix_Le,
                                         Left   => Prio,
@@ -356,7 +358,11 @@ package body Gnat2Why.Subprograms is
         (if Present (Task_Prio) then
               Transform_Expr (Task_Prio, EW_Int_Type, EW_Pterm, Params)
          else
-            +New_Constant (UI_From_Int (Int (Interrupt_Priority'Last))));
+            New_Attribute_Expr
+           (Domain => EW_Term,
+            Ty     => RTE (RE_Interrupt_Priority),
+            Attr   => Attribute_Last,
+            Params => Params));
    begin
       return Check_Local_Call (To_Entity_Name (E), Why_Prio);
    end Check_Ceiling_Protocol;
