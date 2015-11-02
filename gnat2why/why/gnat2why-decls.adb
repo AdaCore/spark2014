@@ -295,7 +295,7 @@ package body Gnat2Why.Decls is
         (File,
          New_Module (Name =>
                          NID (Capitalize_First (To_String (E)) & "__axiom"),
-                       File => No_Name),
+                     File => No_Name),
          Comment =>
            "Module giving an empty axiom for the entity "
          & """" & To_String (E) & """"

@@ -596,7 +596,7 @@ package body Why.Gen.Names is
 
    New_Temp_Identifier_Counter : Natural := 0;
 
-   function New_Temp_Identifier  return String is
+   function New_Temp_Identifier return String is
       Counter_Img : constant String :=
                       Natural'Image (New_Temp_Identifier_Counter);
    begin
