@@ -1,0 +1,4 @@
+dates.adb:7:20: warning: unused variable "Days"
+dates.adb:12:14: info: initialization of "T.Year" proved
+dates.ads:8:12: info: division check proved
+dates.ads:8:32: info: division check proved
