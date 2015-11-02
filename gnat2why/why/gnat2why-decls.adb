@@ -315,7 +315,8 @@ package body Gnat2Why.Decls is
    begin
       Open_Theory (File, E_Module (E),
                    Comment =>
-                     "Module for defining the loop exit exception for the loop"
+                     "Module for defining "
+                   & "the loop exit exception for the loop "
                    & """" & Get_Name_String (Chars (E)) & """"
                    & (if Sloc (E) > 0 then
                      " defined at " & Build_Location_String (Sloc (E))
