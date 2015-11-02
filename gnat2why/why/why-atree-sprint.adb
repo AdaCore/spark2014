@@ -1821,7 +1821,6 @@ package body Why.Atree.Sprint is
       use Why_Node_Lists;
 
       Args       : constant List := Get_List (+Get_Args (Node));
-      Nb_Args    : constant Count_Type := Length (Args);
       Position   : Cursor := First (Args);
       Name       : constant W_Name_Id := Get_Name (Node);
       Definition : constant W_Type_Definition_Id := Get_Definition (Node);
@@ -1838,36 +1837,30 @@ package body Why.Atree.Sprint is
       Print_Sloc_Tag;
       P (O, Get_Labels (Node));
 
-      if Nb_Args > 1 then
-         P (O, " (");
-      end if;
+      if Position /= No_Element then
+         P (O, "(");
 
-      if Nb_Args > 0 then
-         P (O, " ");
-      end if;
+         while Position /= No_Element loop
+            P (O, "'");
 
-      while Position /= No_Element loop
-         P (O, "'");
+            declare
+               Param : constant Why_Node_Id := Element (Position);
+            begin
+               Print_Node (Param);
+            end;
 
-         declare
-            Param : constant Why_Node_Id := Element (Position);
-         begin
-            Print_Node (Param);
-         end;
+            Position := Next (Position);
 
-         Position := Next (Position);
+            if Position /= No_Element then
+               P (O, ", ");
+            end if;
+         end loop;
 
-         if Position /= No_Element then
-            P (O, ", ");
-         end if;
-      end loop;
-
-      if Nb_Args > 1 then
-         P (O, ")");
+         P (O, ") ");
       end if;
 
       if Definition /= Why_Empty then
-         P (O, " = ");
+         P (O, "=");
          NL (O);
          Relative_Indent (O, 1);
          Print_Node (+Definition);
