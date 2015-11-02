@@ -52,11 +52,11 @@ package Flow.Control_Flow_Graph.Utility is
       Loops           : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc           : Node_Or_Entity_Id := Empty)
       return V_Attributes
-     with Pre  => Present (Object_Returned),
-          Post =>
-        not Make_Extended_Return_Attributes'Result.Is_Null_Node and
-        Make_Extended_Return_Attributes'Result.Is_Program_Node and
-        Make_Extended_Return_Attributes'Result.Aux_Node = Object_Returned;
+   with Pre  => Present (Object_Returned),
+        Post =>
+      not Make_Extended_Return_Attributes'Result.Is_Null_Node and
+      Make_Extended_Return_Attributes'Result.Is_Program_Node and
+      Make_Extended_Return_Attributes'Result.Aux_Node = Object_Returned;
    --  Create attributes for the implicit return of an extended return
    --  statement.
 
@@ -73,12 +73,12 @@ package Flow.Control_Flow_Graph.Utility is
       E_Loc            : Node_Or_Entity_Id := Empty;
       Execution        : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
-     with Pre  => (if Is_DIC
-                     or Is_Precondition
-                     or Is_Postcondition
-                   then Is_Proof),
-          Post => not Make_Sink_Vertex_Attributes'Result.Is_Null_Node and
-                  not Make_Sink_Vertex_Attributes'Result.Is_Program_Node;
+   with Pre  => (if Is_DIC
+                   or Is_Precondition
+                   or Is_Postcondition
+                 then Is_Proof),
+        Post => not Make_Sink_Vertex_Attributes'Result.Is_Null_Node and
+                not Make_Sink_Vertex_Attributes'Result.Is_Program_Node;
    --  Create attributes for vertices modelling the following
    --  constructs:
    --
@@ -89,8 +89,8 @@ package Flow.Control_Flow_Graph.Utility is
      (E_Loc     : Node_Or_Entity_Id := Empty;
       Execution : Execution_Kind_T  := Normal_Execution)
       return V_Attributes
-      with Post => not Make_Aux_Vertex_Attributes'Result.Is_Null_Node and
-                   not Make_Aux_Vertex_Attributes'Result.Is_Program_Node;
+    with Post => not Make_Aux_Vertex_Attributes'Result.Is_Null_Node and
+                 not Make_Aux_Vertex_Attributes'Result.Is_Program_Node;
    --  Create attributes for vertices modelling the following
    --  constructs:
    --
@@ -112,10 +112,10 @@ package Flow.Control_Flow_Graph.Utility is
       Loops      : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc      : Node_Or_Entity_Id := Empty)
       return V_Attributes
-     with Pre  => Present (Callsite),
-          Post => not Make_Call_Attributes'Result.Is_Null_Node and
-                  Make_Call_Attributes'Result.Is_Program_Node and
-                  Make_Call_Attributes'Result.Is_Callsite;
+   with Pre  => Present (Callsite),
+        Post => not Make_Call_Attributes'Result.Is_Null_Node and
+                Make_Call_Attributes'Result.Is_Program_Node and
+                Make_Call_Attributes'Result.Is_Callsite;
    --  Create attributes for callsite vertices. Automatically sets the
    --  following:
    --     * Perform_IPFA
@@ -132,14 +132,14 @@ package Flow.Control_Flow_Graph.Utility is
       Loops                        : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
-     with Pre  => (if Discriminants_Or_Bounds_Only then In_Vertex),
-          Post =>
-            not Make_Parameter_Attributes'Result.Is_Null_Node and
-            not Make_Parameter_Attributes'Result.Is_Program_Node and
-            not Make_Parameter_Attributes'Result.Is_Global_Parameter and
-            Make_Parameter_Attributes'Result.Is_Parameter and
-            Make_Parameter_Attributes'Result.Is_Discr_Or_Bounds_Parameter =
-              Discriminants_Or_Bounds_Only;
+   with Pre  => (if Discriminants_Or_Bounds_Only then In_Vertex),
+        Post =>
+          not Make_Parameter_Attributes'Result.Is_Null_Node and
+          not Make_Parameter_Attributes'Result.Is_Program_Node and
+          not Make_Parameter_Attributes'Result.Is_Global_Parameter and
+          Make_Parameter_Attributes'Result.Is_Parameter and
+          Make_Parameter_Attributes'Result.Is_Discr_Or_Bounds_Parameter =
+            Discriminants_Or_Bounds_Only;
    --  Create attributes for parameters for subprogram calls. If
    --  In_Vertex is true, create the attributes for the in version of
    --  a parameter; if In_Vertex is false create the attributes for
@@ -154,14 +154,30 @@ package Flow.Control_Flow_Graph.Utility is
       Loops                        : Node_Sets.Set;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
-     with Pre  => (if Discriminants_Or_Bounds_Only
-                   then Global.Variant = In_View),
-          Post => not Make_Global_Attributes'Result.Is_Null_Node and
-                  not Make_Global_Attributes'Result.Is_Program_Node and
-                  not Make_Global_Attributes'Result.Is_Parameter and
-                  Make_Global_Attributes'Result.Is_Global_Parameter;
+   with Pre  => (if Discriminants_Or_Bounds_Only
+                 then Global.Variant = In_View),
+        Post => not Make_Global_Attributes'Result.Is_Null_Node and
+                not Make_Global_Attributes'Result.Is_Program_Node and
+                not Make_Global_Attributes'Result.Is_Parameter and
+                Make_Global_Attributes'Result.Is_Global_Parameter;
    --  Create attributes for globals. Note that variables defined and
-   --  used is calculated automatically.
+   --  used are calculated automatically.
+
+   function Make_Implicit_Parameter_Attributes
+     (FA          : Flow_Analysis_Graphs;
+      Call_Vertex : Node_Id;
+      Implicit    : Flow_Id;
+      Loops       : Node_Sets.Set;
+      E_Loc       : Node_Or_Entity_Id := Empty)
+      return V_Attributes
+   with Post =>
+     not Make_Implicit_Parameter_Attributes'Result.Is_Null_Node and
+     not Make_Implicit_Parameter_Attributes'Result.Is_Program_Node and
+     not Make_Implicit_Parameter_Attributes'Result.Is_Parameter and
+     Make_Implicit_Parameter_Attributes'Result.Is_Implicit_Parameter;
+   --  Creates the attributes for the implicit formal parameters of
+   --  protected operations. Note that variables defined and used are
+   --  calculated automatically.
 
    function Make_Null_Export_Attributes (F : Flow_Id) return V_Attributes;
    --  Creates the attributes for the synthetic null export.
@@ -172,10 +188,10 @@ package Flow.Control_Flow_Graph.Utility is
       Mode  : Param_Mode;
       E_Loc : Node_Or_Entity_Id := Empty)
       return V_Attributes
-     with Pre  => F_Ent.Kind in Direct_Mapping | Record_Field,
-          Post => not Make_Variable_Attributes'Result.Is_Null_Node and
-                  not Make_Variable_Attributes'Result.Is_Program_Node and
-                  not Make_Variable_Attributes'Result.Is_Global;
+   with Pre  => F_Ent.Kind in Direct_Mapping | Record_Field,
+        Post => not Make_Variable_Attributes'Result.Is_Null_Node and
+                not Make_Variable_Attributes'Result.Is_Program_Node and
+                not Make_Variable_Attributes'Result.Is_Global;
    --  Create attributes for the initial_value and final_use
    --  vertices. We also calculate the following attributes
    --  automatically:
@@ -193,11 +209,10 @@ package Flow.Control_Flow_Graph.Utility is
       Uninit : Boolean           := False;
       E_Loc  : Node_Or_Entity_Id := Empty)
       return V_Attributes
-     with Pre  => F.Variant in Initial_Or_Final_Variant,
-          Post => not Make_Global_Variable_Attributes'Result.Is_Null_Node and
-            not Make_Global_Variable_Attributes'Result.Is_Program_Node and
-            Make_Global_Variable_Attributes'Result.Is_Global;
-
+   with Pre  => F.Variant in Initial_Or_Final_Variant,
+        Post => not Make_Global_Variable_Attributes'Result.Is_Null_Node and
+          not Make_Global_Variable_Attributes'Result.Is_Program_Node and
+          Make_Global_Variable_Attributes'Result.Is_Global;
    --  Create attributes for the initial_value and final_use vertices
    --  for globals. The following is calculated automatically:
    --     * Is_Initialized
@@ -214,10 +229,10 @@ package Flow.Control_Flow_Graph.Utility is
       F     : Flow_Id;
       Loops : Node_Sets.Set := Node_Sets.Empty_Set)
       return V_Attributes
-     with
-       Pre  => Is_Default_Initialized (F),
-       Post => not Make_Default_Initialization_Attributes'Result.Is_Null_Node
-         and Make_Default_Initialization_Attributes'Result.Is_Default_Init;
+   with Pre  => Is_Default_Initialized (F),
+        Post =>
+          not Make_Default_Initialization_Attributes'Result.Is_Null_Node
+          and Make_Default_Initialization_Attributes'Result.Is_Default_Init;
    --  Create attributes for the default initialization vertices.
 
    function Make_Package_Initialization_Attributes

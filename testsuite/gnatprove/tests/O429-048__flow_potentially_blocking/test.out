@@ -26,8 +26,6 @@ floatio.adb:3:11: medium: "Default_Fore" might not be initialized after elaborat
 floatio.adb:7:21: warning: assuming "Put" has no effect on global items
 floatio.adb:7:21: warning: no Global contract available for "Put"
 floatio.adb:7:27: info: initialization of "X" proved
-internal_protected_call.adb:7:33: warning: statement has no effect
-internal_protected_call.adb:22:26: warning: statement has no effect
 internal_protected_call.adb:44:20: warning: statement has no effect
 internal_protected_call.ads:3:13: potentially blocking operation in protected operation "E"
 internal_protected_call.ads:4:17: potentially blocking operation in protected operation "P"

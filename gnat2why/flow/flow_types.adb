@@ -178,8 +178,13 @@ package body Flow_Types is
    begin
       P := N;
       while Nkind (P) = N_Selected_Component loop
-         F.Component.Append
-           (Original_Record_Component (Entity (Selector_Name (P))));
+         if Ekind (Entity (Selector_Name (P))) in E_Component | E_Discriminant
+         then
+            F.Component.Append
+              (Original_Record_Component (Entity (Selector_Name (P))));
+         else
+            F.Component.Append (Entity (Selector_Name (P)));
+         end if;
          P := Prefix (P);
       end loop;
       F.Component.Reverse_Elements;
@@ -199,6 +204,26 @@ package body Flow_Types is
 
       return F;
    end Record_Field_Id;
+
+   --------------------------
+   -- Concurrent_Object_Id --
+   --------------------------
+
+   function Concurrent_Object_Id (N : Node_Id) return Flow_Id is
+   begin
+      case Nkind (N) is
+         when N_Entity =>
+            return Direct_Mapping_Id (N);
+         when N_Identifier | N_Expanded_Name =>
+            return Direct_Mapping_Id (Unique_Entity (Entity (N)));
+         when N_Indexed_Component =>
+            return Concurrent_Object_Id (Prefix (N));
+         when N_Selected_Component =>
+            return Record_Field_Id (N);
+         when others =>
+            raise Why.Unexpected_Node;
+      end case;
+   end Concurrent_Object_Id;
 
    -------------------
    -- Add_Component --
@@ -264,7 +289,12 @@ package body Flow_Types is
    -- Get_Enclosing_Concurrent_Object --
    -------------------------------------
 
-   function Get_Enclosing_Concurrent_Object (E : Entity_Id) return Entity_Id is
+   function Get_Enclosing_Concurrent_Object
+     (E        : Entity_Id;
+      Callsite : Node_Id := Empty;
+      Entire   : Boolean := True)
+      return Entity_Id
+   is
 
       function Get_Anonymous_Object (PT : Entity_Id) return Entity_Id
       with Pre => Ekind (PT) in Concurrent_Kind;
@@ -280,19 +310,44 @@ package body Flow_Types is
          else PT);
 
    begin
-      if Is_Part_Of_Concurrent_Object (E) then
-         return Get_Anonymous_Object (Etype (Encapsulating_State (E)));
-      elsif Ekind (Scope (E)) in Concurrent_Kind then
-         return Get_Anonymous_Object (Scope (E));
-      else
-         raise Why.Unexpected_Node;
+      if No (Callsite) then
+         if Is_Part_Of_Concurrent_Object (E) then
+            return Get_Anonymous_Object (Etype (Encapsulating_State (E)));
+         elsif Ekind (Scope (E)) in Concurrent_Kind then
+            return Get_Anonymous_Object (Scope (E));
+         else
+            raise Why.Unexpected_Node;
+         end if;
       end if;
+
+      declare
+         Orig_Name : constant Node_Id := Original_Node (Name (Callsite));
+      begin
+         case Nkind (Orig_Name) is
+            when N_Identifier | N_Expanded_Name =>
+               return Get_Enclosing_Concurrent_Object (E);
+            when N_Selected_Component =>
+               if Entire then
+                  return Get_Direct_Mapping_Id
+                           (Concurrent_Object_Id (Prefix (Orig_Name)));
+               else
+                  return Prefix (Orig_Name);
+               end if;
+            when others =>
+               raise Why.Unexpected_Node;
+         end case;
+      end;
    end Get_Enclosing_Concurrent_Object;
 
-   function Get_Enclosing_Concurrent_Object (F : Flow_Id) return Entity_Id is
+   function Get_Enclosing_Concurrent_Object
+     (F        : Flow_Id;
+      Callsite : Node_Id := Empty;
+      Entire   : Boolean := True)
+      return Entity_Id
+   is
       E : constant Entity_Id := Get_Direct_Mapping_Id (F);
    begin
-      return Get_Enclosing_Concurrent_Object (E);
+      return Get_Enclosing_Concurrent_Object (E, Callsite, Entire);
    end Get_Enclosing_Concurrent_Object;
 
    --------------------------------

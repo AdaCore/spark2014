@@ -4175,58 +4175,19 @@ package body Flow.Control_Flow_Graph is
                                      FA, CM, Ctx);
       end if;
 
-      --  For subprogram and entry calls that are declared directly inside a
-      --  protected object we need an extra magic parameter that models the
-      --  protected object itself.
+      --  Collect tasking-related information
       if Belongs_To_Protected_Object (Called_Thing_F) then
          declare
-            --  For external calls we get the protected *object*;
-            --  for internal calls we get the protected *type.
-            The_PO_Ent : constant Entity_Id :=
-              (if Nkind (Name (N)) = N_Selected_Component
-               then Get_Enclosing_Object (Name (N))
-               else Scope (Called_Thing));
-
-            The_PO : constant Flow_Id := Direct_Mapping_Id (The_PO_Ent);
-
-            V      : Flow_Graphs.Vertex_Id;
+            The_PO : constant Entity_Id :=
+              Get_Enclosing_Concurrent_Object (Called_Thing, N);
          begin
-            --  Reading
-            Add_Vertex
-              (FA,
-               Make_Global_Attributes
-                 (FA                           => FA,
-                  Call_Vertex                  => N,
-                  Global                       => Change_Variant (The_PO,
-                                                                  In_View),
-                  Discriminants_Or_Bounds_Only => False,
-                  Loops                        => Ctx.Current_Loops,
-                  E_Loc                        => N),
-               V);
-            Ins.Append (V);
-
-            --  Writing
-            Add_Vertex
-              (FA,
-               Make_Global_Attributes
-                 (FA                           => FA,
-                  Call_Vertex                  => N,
-                  Global                       => Change_Variant (The_PO,
-                                                                  Out_View),
-                  Discriminants_Or_Bounds_Only => False,
-                  Loops                        => Ctx.Current_Loops,
-                  E_Loc                        => N),
-               V);
-            Outs.Append (V);
-
-            --  Collect tasking-related information
             case Convention (Called_Thing) is
                when Convention_Entry =>
-                  FA.Tasking (Entry_Calls).Include (The_PO_Ent);
-                  FA.Tasking (Write_Locks).Include (The_PO_Ent);
+                  FA.Tasking (Entry_Calls).Include (The_PO);
+                  FA.Tasking (Write_Locks).Include (The_PO);
 
                when Convention_Protected =>
-                  FA.Tasking (Write_Locks).Include (The_PO_Ent);
+                  FA.Tasking (Write_Locks).Include (The_PO);
 
                when others =>
                   null;
@@ -4733,7 +4694,6 @@ package body Flow.Control_Flow_Graph is
                      V);
          Outs.Append (V);
       end loop;
-
    end Process_Subprogram_Globals;
 
    --------------------------------------
@@ -4750,16 +4710,17 @@ package body Flow.Control_Flow_Graph is
    is
       pragma Unreferenced (CM);
 
-      Called_Subprogram : constant Entity_Id := Get_Called_Entity (Callsite);
+      Called_Thing   : constant Entity_Id := Get_Called_Entity (Callsite);
+      Called_Thing_F : constant Flow_Id   := Direct_Mapping_Id (Called_Thing);
 
-      P                 : Node_Id;
+      P              : Node_Id;
 
-      V                 : Flow_Graphs.Vertex_Id;
+      V              : Flow_Graphs.Vertex_Id;
 
-      Actual            : Node_Id;
-      Formal            : Node_Id;
-      Call              : Node_Id;
-      Funcs             : Node_Sets.Set;
+      Actual         : Node_Id;
+      Formal         : Node_Id;
+      Call           : Node_Id;
+      Funcs          : Node_Sets.Set;
    begin
       --  Create initial nodes for the statements.
       P := First (Parameter_Associations (Callsite));
@@ -4774,7 +4735,7 @@ package body Flow.Control_Flow_Graph is
          end case;
 
          Find_Actual (Actual, Formal, Call);
-         pragma Assert (Get_Called_Entity (Call) = Called_Subprogram);
+         pragma Assert (Get_Called_Entity (Call) = Called_Thing);
          pragma Assert (Is_Formal (Formal));
 
          --  Build an in vertex.
@@ -4822,6 +4783,45 @@ package body Flow.Control_Flow_Graph is
          --  Go to the next statement
          P := Next (P);
       end loop;
+
+      if Belongs_To_Protected_Object (Called_Thing_F) then
+         declare
+            --  Create vertices for the implicit formal parameter.
+            The_PO : constant Flow_Id :=
+              Concurrent_Object_Id
+                (Get_Enclosing_Concurrent_Object (E            => Called_Thing,
+                                                  Callsite     => Callsite,
+                                                  Entire       => False));
+
+            V      : Flow_Graphs.Vertex_Id;
+         begin
+            --  Reading
+            Add_Vertex
+              (FA,
+               Make_Implicit_Parameter_Attributes
+                 (FA          => FA,
+                  Call_Vertex => Callsite,
+                  Implicit    => Change_Variant (The_PO, In_View),
+                  Loops       => Ctx.Current_Loops,
+                  E_Loc       => Callsite),
+               V);
+            Ins.Append (V);
+
+            --  Writing
+            if Ekind (Called_Thing) /= E_Function then
+               Add_Vertex
+                 (FA,
+                  Make_Implicit_Parameter_Attributes
+                    (FA          => FA,
+                     Call_Vertex => Callsite,
+                     Implicit    => Change_Variant (The_PO, Out_View),
+                     Loops       => Ctx.Current_Loops,
+                     E_Loc       => Callsite),
+                  V);
+               Outs.Append (V);
+            end if;
+         end;
+      end if;
    end Process_Parameter_Associations;
 
    ------------------------------

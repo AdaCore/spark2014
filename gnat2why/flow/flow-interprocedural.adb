@@ -69,16 +69,26 @@ package body Flow.Interprocedural is
                   return V;
                end if;
 
-            elsif A.Is_Global_Parameter then
-               --  Globals can be direct mappings or magic strings,
-               --  but in either case the parameter and the formal
-               --  will always match in kind.
+            elsif A.Is_Global_Parameter
+              or else A.Is_Implicit_Parameter
+            then
+               --  Globals and Implicit_Parameters can be direct mappings,
+               --  record fields or magic strings, but in any case the
+               --  parameter and the formal will always match in kind.
                case A.Parameter_Formal.Kind is
                   when Direct_Mapping =>
-                     if Parameter.Kind = Direct_Mapping and then
-                       A.Parameter_Formal.Variant = Parameter.Variant and then
-                       Get_Direct_Mapping_Id (Parameter) =
-                       Get_Direct_Mapping_Id (A.Parameter_Formal)
+                     if Parameter.Kind = Direct_Mapping
+                       and then A.Parameter_Formal.Variant = Parameter.Variant
+                       and then Get_Direct_Mapping_Id (Parameter) =
+                                  Get_Direct_Mapping_Id (A.Parameter_Formal)
+                     then
+                        return V;
+                     end if;
+                  when Record_Field =>
+                     if Parameter.Kind = Record_Field
+                       and then A.Parameter_Formal.Variant = Parameter.Variant
+                       and then Get_Direct_Mapping_Id (Parameter) =
+                                  Get_Direct_Mapping_Id (A.Parameter_Formal)
                      then
                         return V;
                      end if;
@@ -100,9 +110,9 @@ package body Flow.Interprocedural is
                end case;
 
             else
-               --  We have a parameter which is neither a parameter or
-               --  a global, i.e. we have messed up in the graph
-               --  construction.
+               --  We have a parameter which is neither a parameter, nor a
+               --  global, nor an implicit global i.e. we have messed up in the
+               --  graph construction.
                raise Program_Error;
             end if;
          end;
@@ -126,7 +136,8 @@ package body Flow.Interprocedural is
       pragma Assert (A.Is_Callsite);
       pragma Assert (not A.Perform_IPFA);
 
-      Called_Procedure : constant Entity_Id := Get_Called_Entity (N);
+      Called_Thing   : constant Entity_Id := Get_Called_Entity (N);
+      Called_Thing_F : constant Flow_Id   := Direct_Mapping_Id (Called_Thing);
 
       procedure Add_TD_Edge (A, B : Flow_Id);
       --  Add a parameter dependency edge from the input A to the
@@ -155,9 +166,9 @@ package body Flow.Interprocedural is
    --  Start of processing for Add_Simple_Procedure_Dependency
 
    begin
-      if Has_Depends (Called_Procedure)
+      if Has_Depends (Called_Thing)
         and then (not FA.Generating_Globals
-                    or else not Rely_On_Generated_Global (Called_Procedure,
+                    or else not Rely_On_Generated_Global (Called_Thing,
                                                           FA.B_Scope))
       then
          --  We have a dependency aspect, so we should use it if:
@@ -171,7 +182,7 @@ package body Flow.Interprocedural is
          declare
             Deps : Dependency_Maps.Map;
          begin
-            Get_Depends (Subprogram           => Called_Procedure,
+            Get_Depends (Subprogram           => Called_Thing,
                          Scope                => FA.B_Scope,
                          Classwide            => Is_Dispatching_Call (N),
                          Depends              => Deps,
@@ -207,7 +218,7 @@ package body Flow.Interprocedural is
             The_Out   : Flow_Id;
          begin
             --  Collect all the globals first.
-            Get_Globals (Subprogram             => Called_Procedure,
+            Get_Globals (Subprogram             => Called_Thing,
                          Scope                  => FA.B_Scope,
                          Classwide              => Is_Dispatching_Call (N),
                          Proof_Ins              => Proof_Ins,
@@ -217,7 +228,7 @@ package body Flow.Interprocedural is
                          Use_Computed_Globals   => not FA.Generating_Globals);
 
             --  Add parameters.
-            E := First_Formal (Called_Procedure);
+            E := First_Formal (Called_Thing);
             while Present (E) loop
                The_In  := Direct_Mapping_Id (Unique_Entity (E), In_View);
                The_Out := Direct_Mapping_Id (Unique_Entity (E), Out_View);
@@ -246,20 +257,18 @@ package body Flow.Interprocedural is
                E := Next_Formal (E);
             end loop;
 
-            --  Add something for the PO in an entry call
-            if Nkind (N) = N_Entry_Call_Statement then
+            --  Add implicit parameter of protected operations
+            if Belongs_To_Protected_Object (Called_Thing_F) then
                declare
-                  --  Make sure that it is an external call for which we can
-                  --  indeed get the enclosing object; for internal calls we
-                  --  can only get the protected type itself, but apparently
-                  --  we are not hitting this code???
-                  pragma Assert (Nkind (Name (N)) = N_Selected_Component);
-
                   The_PO : constant Flow_Id :=
-                    Direct_Mapping_Id (Get_Enclosing_Object (Name (N)));
+                    Concurrent_Object_Id
+                      (Get_Enclosing_Concurrent_Object (Called_Thing,
+                                                        N,
+                                                        False));
                begin
                   Inputs.Insert (Change_Variant (The_PO, In_View));
-                  if Ekind (Called_Procedure) /= E_Function then
+
+                  if Ekind (Called_Thing) /= E_Function then
                      Outputs.Insert (Change_Variant (The_PO, Out_View));
                   end if;
                end;

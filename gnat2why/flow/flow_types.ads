@@ -240,6 +240,15 @@ package Flow_Types is
    with Pre => Present (N) and then Nkind (N) = N_Selected_Component;
    --  Create a Flow_Id for the given record field.
 
+   function Concurrent_Object_Id (N : Node_Id) return Flow_Id
+   with Pre => Nkind (N) in N_Entity            |
+                            N_Expanded_Name     |
+                            N_Identifier        |
+                            N_Indexed_Component |
+                            N_Selected_Component;
+   --  Returns the Flow_Id for a concurrent object. This can be either a
+   --  Direct_mapping or a Record_Field.
+
    function Add_Component
      (F    : Flow_Id;
       Comp : Entity_Id)
@@ -265,15 +274,35 @@ package Flow_Types is
    --  @param F is the Flow_Id which will be checked
    --  @return True iff F belongs to a protected object
 
-   function Get_Enclosing_Concurrent_Object (F : Flow_Id) return Entity_Id
+   function Get_Enclosing_Concurrent_Object
+     (F        : Flow_Id;
+      Callsite : Node_Id := Empty;
+      Entire   : Boolean := True)
+      return Entity_Id
    with Pre  => Belongs_To_Concurrent_Object (F),
         Post => Present (Get_Enclosing_Concurrent_Object'Result);
    --  @param F is the Flow_Id of a constituent of a concurrent object
+   --  @param Callsite is the node id from where the protected operation was
+   --     called.
+   --  @param Entire is a boolean flag. When Entire is set we return the
+   --     outermost construct that encloses the concurrent object (that might
+   --     be a record or an array). Entire is set to off when we are want to
+   --     generate a flow id based on the selected component.
    --  @return the entity of the enclosing concurrent object
 
-   function Get_Enclosing_Concurrent_Object (E : Entity_Id) return Entity_Id;
+   function Get_Enclosing_Concurrent_Object
+     (E        : Entity_Id;
+      Callsite : Node_Id := Empty;
+      Entire   : Boolean := True)
+      return Entity_Id;
    --  same as above, but for an entity
-   --  @param an entity which is part of a concurrent object
+   --  @param E is an entity which is part of a concurrent object
+   --  @param Callsite is the node id from where the protected operation was
+   --     called.
+   --  @param Entire is a boolean flag. When Entire is set we return the
+   --     outermost construct that encloses the concurrent object (that might
+   --     be a record or an array). Entire is set to off when we are want to
+   --     generate a flow id based on the selected component.
    --  @return the entity of the enclosing concurrent object
 
    function Is_Concurrent_Comp_Or_Disc (F : Flow_Id) return Boolean;
@@ -592,6 +621,10 @@ package Flow_Types is
       --  True if this vertex models a global for a procedure or
       --  function call.
 
+      Is_Implicit_Parameter        : Boolean;
+      --  True if this vertex models an implicit formal parameter of a
+      --  subprogram.
+
       Execution                    : Execution_Kind_T;
       --  Determines how we should treat edges from this vertex. Most nodes
       --  will have Normal_Execution set here.
@@ -676,6 +709,7 @@ package Flow_Types is
                    Is_Parameter                    => False,
                    Is_Discr_Or_Bounds_Parameter    => False,
                    Is_Global_Parameter             => False,
+                   Is_Implicit_Parameter           => False,
                    Execution                       => Normal_Execution,
                    Perform_IPFA                    => False,
                    Call_Vertex                     => Null_Flow_Id,
