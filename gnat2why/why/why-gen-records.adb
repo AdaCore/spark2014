@@ -1358,154 +1358,164 @@ package body Why.Gen.Records is
       procedure Declare_Equality_Function is
          B_Ident   : constant W_Identifier_Id :=
            New_Identifier (Name => "b", Typ => Abstr_Ty);
-         Condition : W_Pred_Id := True_Pred;
-         Comp      : Entity_Id := First_Component_Or_Discriminant (E);
       begin
-         while Present (Comp) loop
-            if Is_Not_Hidden_Discriminant (Comp)
-              and then Component_Is_Visible_In_SPARK (Comp)
-            then
-               declare
-                  Field_Ident    : constant W_Identifier_Id :=
-                    To_Ident (if Ekind (Comp) = E_Discriminant
-                              then WNE_Rec_Split_Discrs
-                              else WNE_Rec_Split_Fields);
-                  A_Access       : constant W_Expr_Id :=
-                    New_Record_Access (Name  => +A_Ident,
-                                       Field => Field_Ident);
-                  B_Access       : constant W_Expr_Id :=
-                    New_Record_Access (Name  => +B_Ident,
-                                       Field => Field_Ident);
-                  Field          : constant W_Identifier_Id :=
-                    (if Is_Root or else Ekind (Comp) /= E_Discriminant
-                     then To_Why_Id (Comp, Local => True)
-                     else To_Why_Id (Comp, Rec => Root));
-                  Comparison     : constant W_Pred_Id :=
-                    +New_Ada_Equality
-                    (Typ    => Retysp (Etype (Comp)),
-                     Domain => EW_Pred,
-                     Left   =>
-                       New_Record_Access
-                         (Name  => A_Access,
-                          Field => Field,
-                          Typ   => EW_Abstract (Etype (Comp))),
-                     Right  =>
-                       New_Record_Access
-                         (Name  => B_Access,
-                          Field => Field,
-                          Typ   => EW_Abstract (Etype (Comp))),
-                     Force_Predefined =>
-                        not Is_Record_Type (Etype (Comp)));
-                  Always_Present : constant Boolean :=
-                    not (Has_Discriminants (E)) or else
-                    Ekind (Comp) = E_Discriminant;
-               begin
-                  Condition :=
-                    +New_And_Then_Expr
-                    (Domain => EW_Pred,
-                     Left   => +Condition,
-                     Right  =>
-                       (if Always_Present then +Comparison
-                        else
-                        New_Connection
-                          (Domain => EW_Pred,
-                           Op     => EW_Imply,
+         --  There is no language-defined equality function for limited types
+         if not Is_Limited_Type (E) then
+            declare
+               Condition : W_Pred_Id := True_Pred;
+               Comp      : Entity_Id := First_Component_Or_Discriminant (E);
+            begin
+               while Present (Comp) loop
+                  if Is_Not_Hidden_Discriminant (Comp)
+                    and then Component_Is_Visible_In_SPARK (Comp)
+                  then
+                     declare
+                        Field_Ident    : constant W_Identifier_Id :=
+                          To_Ident (if Ekind (Comp) = E_Discriminant
+                                    then WNE_Rec_Split_Discrs
+                                    else WNE_Rec_Split_Fields);
+                        A_Access       : constant W_Expr_Id :=
+                          New_Record_Access (Name  => +A_Ident,
+                                             Field => Field_Ident);
+                        B_Access       : constant W_Expr_Id :=
+                          New_Record_Access (Name  => +B_Ident,
+                                             Field => Field_Ident);
+                        Field          : constant W_Identifier_Id :=
+                          (if Is_Root or else Ekind (Comp) /= E_Discriminant
+                           then To_Why_Id (Comp, Local => True)
+                           else To_Why_Id (Comp, Rec => Root));
+                        Comparison     : constant W_Pred_Id :=
+                          +New_Ada_Equality
+                          (Typ    => Retysp (Etype (Comp)),
+                           Domain => EW_Pred,
                            Left   =>
-                             +Discriminant_Check_Pred_Call (Comp, A_Ident),
-                           Right  => +Comparison)));
-               end;
-            end if;
-            Next_Component_Or_Discriminant (Comp);
-         end loop;
+                             New_Record_Access
+                               (Name  => A_Access,
+                                Field => Field,
+                                Typ   => EW_Abstract (Etype (Comp))),
+                           Right  =>
+                             New_Record_Access
+                               (Name  => B_Access,
+                                Field => Field,
+                                Typ   => EW_Abstract (Etype (Comp))),
+                           Force_Predefined =>
+                              not Is_Record_Type (Etype (Comp)));
+                        Always_Present : constant Boolean :=
+                          not (Has_Discriminants (E)) or else
+                          Ekind (Comp) = E_Discriminant;
+                     begin
+                        Condition :=
+                          +New_And_Then_Expr
+                          (Domain => EW_Pred,
+                           Left   => +Condition,
+                           Right  =>
+                             (if Always_Present then +Comparison
+                              else
+                                 New_Connection
+                                (Domain => EW_Pred,
+                                 Op     => EW_Imply,
+                                 Left   =>
+                                   +Discriminant_Check_Pred_Call
+                                   (Comp, A_Ident),
+                                 Right  => +Comparison)));
+                     end;
+                  end if;
+                  Next_Component_Or_Discriminant (Comp);
+               end loop;
 
-         --  Equality of the invisible ancestor part
+               --  Equality of the invisible ancestor part
 
-         if Has_Private_Ancestor_Or_Root (E) then
-            declare
-               Field_Ident : constant W_Identifier_Id :=
-                 To_Ident (WNE_Rec_Split_Fields);
-               A_Access    : constant W_Expr_Id :=
-                 New_Record_Access
-                   (Name  => +A_Ident,
-                    Field => Field_Ident);
-               B_Access    : constant W_Expr_Id :=
-                 New_Record_Access
-                   (Name  => +B_Ident,
-                    Field => Field_Ident);
-               Comparison  : constant W_Pred_Id :=
-                 +New_Comparison
-                 (Symbol => Why_Eq,
-                  Left   => New_Record_Access
-                    (Name  => A_Access,
-                     Field => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
-                     Typ   => EW_Private_Type),
-                  Right  => New_Record_Access
-                    (Name  => B_Access,
-                     Field => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
-                     Typ   => EW_Private_Type),
-                  Domain => EW_Pred);
-            begin
-               Condition :=
-                 +New_And_Then_Expr
-                 (Domain => EW_Pred,
-                  Left   => +Condition,
-                  Right  => +Comparison);
+               if Has_Private_Ancestor_Or_Root (E) then
+                  declare
+                     Field_Ident : constant W_Identifier_Id :=
+                       To_Ident (WNE_Rec_Split_Fields);
+                     A_Access    : constant W_Expr_Id :=
+                       New_Record_Access
+                         (Name  => +A_Ident,
+                          Field => Field_Ident);
+                     B_Access    : constant W_Expr_Id :=
+                       New_Record_Access
+                         (Name  => +B_Ident,
+                          Field => Field_Ident);
+                     Comparison  : constant W_Pred_Id :=
+                       +New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => New_Record_Access
+                          (Name  => A_Access,
+                           Field => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
+                           Typ   => EW_Private_Type),
+                        Right  => New_Record_Access
+                          (Name  => B_Access,
+                           Field => To_Local (E_Symb (E, WNE_Rec_Ancestor)),
+                           Typ   => EW_Private_Type),
+                        Domain => EW_Pred);
+                  begin
+                     Condition :=
+                       +New_And_Then_Expr
+                       (Domain => EW_Pred,
+                        Left   => +Condition,
+                        Right  => +Comparison);
+                  end;
+               end if;
+
+               --  Equality of the invisible private part
+
+               if Is_Private_Type (E) or else Is_Task_Type (E) then
+                  declare
+                     Field_Ident : constant W_Identifier_Id :=
+                       To_Ident (WNE_Rec_Split_Fields);
+                     A_Access    : constant W_Expr_Id :=
+                       New_Record_Access
+                         (Name  => +A_Ident,
+                          Field => Field_Ident);
+                     B_Access    : constant W_Expr_Id :=
+                       New_Record_Access
+                         (Name  => +B_Ident,
+                          Field => Field_Ident);
+                     Comparison  : constant W_Pred_Id :=
+                       +New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => New_Record_Access
+                          (Name  => A_Access,
+                           Field => To_Local (E_Symb (E, WNE_Rec_Main)),
+                           Typ   => EW_Private_Type),
+                        Right  => New_Record_Access
+                          (Name  => B_Access,
+                           Field => To_Local (E_Symb (E, WNE_Rec_Main)),
+                           Typ   => EW_Private_Type),
+                        Domain => EW_Pred);
+                  begin
+                     Condition :=
+                       +New_And_Then_Expr
+                       (Domain => EW_Pred,
+                        Left   => +Condition,
+                        Right  => +Comparison);
+                  end;
+               end if;
+
+               Emit
+                 (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
+                     Binders     =>
+                       R_Binder &
+                       Binder_Array'(1 =>
+                                         Binder_Type'(B_Name => B_Ident,
+                                                      others => <>)),
+                     Return_Type => +EW_Bool_Type,
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Def         =>
+                       New_Conditional
+                         (Domain    => EW_Term,
+                          Condition => +Condition,
+                          Then_Part => +True_Term,
+                          Else_Part => +False_Term)));
+
             end;
          end if;
 
-         --  Equality of the invisible private part
-
-         if Is_Private_Type (E) or else Is_Task_Type (E) then
-            declare
-               Field_Ident : constant W_Identifier_Id :=
-                 To_Ident (WNE_Rec_Split_Fields);
-               A_Access    : constant W_Expr_Id :=
-                 New_Record_Access
-                   (Name  => +A_Ident,
-                    Field => Field_Ident);
-               B_Access    : constant W_Expr_Id :=
-                 New_Record_Access
-                   (Name  => +B_Ident,
-                    Field => Field_Ident);
-               Comparison  : constant W_Pred_Id :=
-                 +New_Comparison
-                 (Symbol => Why_Eq,
-                  Left   => New_Record_Access
-                    (Name  => A_Access,
-                     Field => To_Local (E_Symb (E, WNE_Rec_Main)),
-                     Typ   => EW_Private_Type),
-                  Right  => New_Record_Access
-                    (Name  => B_Access,
-                     Field => To_Local (E_Symb (E, WNE_Rec_Main)),
-                     Typ   => EW_Private_Type),
-                  Domain => EW_Pred);
-            begin
-               Condition :=
-                 +New_And_Then_Expr
-                 (Domain => EW_Pred,
-                  Left   => +Condition,
-                  Right  => +Comparison);
-            end;
-         end if;
-
-         Emit
-           (Theory,
-            New_Function_Decl
-              (Domain      => EW_Term,
-               Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
-               Binders     =>
-                 R_Binder &
-               Binder_Array'(1 =>
-                  Binder_Type'(B_Name => B_Ident,
-                               others => <>)),
-               Return_Type => +EW_Bool_Type,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Def         =>
-                 New_Conditional
-                   (Domain    => EW_Term,
-                    Condition => +Condition,
-                    Then_Part => +True_Term,
-                    Else_Part => +False_Term)));
+         --  Declare user-defined equality operator
          Emit
            (Theory,
             New_Function_Decl
@@ -1517,8 +1527,7 @@ package body Why.Gen.Records is
                                                  others => <>)),
                Labels      => Name_Id_Sets.Empty_Set));
 
-         --  declare the dispatching equality function in root types
-
+         --  Declare the dispatching equality function in root types
          if Is_Root and then Is_Tagged_Type (E) then
             Emit
               (Theory,
@@ -2103,7 +2112,7 @@ package body Why.Gen.Records is
                      Alias => EW_Abstract (Root)));
          end if;
 
-         --  Conversion functions are identity.
+         --  Conversion functions are identity
 
          if not Is_Root then
             declare
@@ -2132,26 +2141,27 @@ package body Why.Gen.Records is
             end;
          end if;
 
-         --  Equality function returns always true.
+         --  Equality function returns always true
+         if not Is_Limited_Type (E) then
+            declare
+               B_Ident : constant W_Identifier_Id :=
+                 New_Identifier (Name => "b", Typ => Abstr_Ty);
+            begin
 
-         declare
-            B_Ident : constant W_Identifier_Id :=
-              New_Identifier (Name => "b", Typ => Abstr_Ty);
-         begin
-
-            Emit
-              (Theory,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
-                  Binders     =>
-                    R_Binder &
-                    Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
-                                                    others => <>)),
-                  Return_Type => +EW_Bool_Type,
-                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
-                  Def         => +True_Term));
-         end;
+               Emit
+                 (Theory,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
+                     Binders     =>
+                       R_Binder &
+                       Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
+                                                       others => <>)),
+                     Return_Type => +EW_Bool_Type,
+                     Labels      => Name_Id_Sets.To_Set (NID ("inline")),
+                     Def         => +True_Term));
+            end;
+         end if;
 
          Declare_Attributes;
 

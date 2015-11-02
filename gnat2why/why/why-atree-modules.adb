@@ -29,6 +29,7 @@ with Common_Containers;  use Common_Containers;
 with Einfo;              use Einfo;
 with GNATCOLL.Utils;     use GNATCOLL.Utils;
 with Gnat2Why.Util;      use Gnat2Why.Util;
+with Sem_Aux;            use Sem_Aux;
 with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with SPARK_Util;         use SPARK_Util;
@@ -1409,13 +1410,15 @@ package body Why.Atree.Modules is
          Ty : constant W_Type_Id   := EW_Abstract (E);
 
       begin
-         Insert_Symbol
-           (E, WNE_Bool_Eq,
-            New_Identifier
-              (Symbol => NID ("bool_eq"),
-               Module => M,
-               Domain => EW_Term,
-               Typ    => EW_Bool_Type));
+         if not Is_Limited_Type (E) then
+            Insert_Symbol
+              (E, WNE_Bool_Eq,
+               New_Identifier
+                 (Symbol => NID ("bool_eq"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
+         end if;
 
          Insert_Symbol
            (E, WNE_Dummy,
