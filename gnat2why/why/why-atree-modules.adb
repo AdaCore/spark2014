@@ -1364,12 +1364,12 @@ package body Why.Atree.Modules is
 
       procedure Insert_Type_Symbols (E : Entity_Id)
         with Pre => Is_Type (E);
-      --  add the symbols in the case E is a type
+      --  add the symbols for type entity E
       --  @param E a type entity
 
       procedure Insert_Object_Symbols (E : Entity_Id)
         with Pre => Is_Object (E);
-      --  add the symbols in the case E is a object
+      --  add the symbols for object entity E
       --  @param E an object entity
 
       -------------------
