@@ -1890,7 +1890,6 @@ package body Why.Atree.Sprint is
    begin
       P (O, "(forall ");
       Print_List (+Variables, " ");
-      P (O, " ");
       P (O, " : ");
       Print_Node (+Var_Type);
 
