@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
 with Atree;               use Atree;
 with GNATCOLL.Utils;      use GNATCOLL.Utils;
 with SPARK_Definition;    use SPARK_Definition;
@@ -603,7 +604,7 @@ package body Why.Gen.Names is
       New_Temp_Identifier_Counter := New_Temp_Identifier_Counter + 1;
       return
         "temp___" & To_String (New_Temp_Identifier_Suffix) & "_"
-        & Counter_Img (Counter_Img'First + 1 .. Counter_Img'Last);
+        & Trim (Counter_Img, Ada.Strings.Left);
    end New_Temp_Identifier;
 
    function New_Temp_Identifier
