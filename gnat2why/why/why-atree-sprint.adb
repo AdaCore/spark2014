@@ -1613,7 +1613,7 @@ package body Why.Atree.Sprint is
       Print_Node (+Get_Name (Node));
       P (O, " ");
       P (O, Get_Labels (Node), As_String => True);
-      P (O, " : ");
+      P (O, ": ");
       Print_Node (+Get_Arg_Type (Node));
    end Print_Record_Binder;
 
