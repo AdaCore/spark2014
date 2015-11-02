@@ -375,8 +375,7 @@ datebook.adb:174:33: info: initialization of "Index" proved
 datebook.adb:182:20: info: initialization of "Index" proved
 datebook.adb:183:19: info: initialization of "Index" proved
 datebook.adb:183:25: info: range check proved
-datebook.adb:210:12: info: call appears in potentially unevaluated context
-datebook.adb:210:12: info: no contextual analysis of "Is_After"
+datebook.adb:210:12: info: no contextual analysis of "Is_After" (in potentially unevaluated context)
 datebook.adb:228:10: info: loop invariant initialization proved
 datebook.adb:228:10: info: loop invariant preservation proved
 datebook.adb:228:32: info: initialization of "Count" proved
@@ -427,8 +426,7 @@ datebooks.adb:124:68: info: initialization of "I" proved
 datebooks.adb:132:20: info: initialization of "I" proved
 datebooks.adb:133:15: info: initialization of "I" proved
 datebooks.adb:133:17: info: range check proved
-datebooks.adb:152:38: info: call appears in potentially unevaluated context
-datebooks.adb:152:38: info: no contextual analysis of "Is_After"
+datebooks.adb:152:38: info: no contextual analysis of "Is_After" (in potentially unevaluated context)
 datebooks.adb:165:10: info: loop invariant initialization proved
 datebooks.adb:165:10: info: loop invariant preservation proved
 datebooks.adb:165:32: info: initialization of "Count" proved
