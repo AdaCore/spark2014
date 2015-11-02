@@ -707,8 +707,9 @@ ASCII.LF;
       Com_Lin : aliased String_List :=
         (1 .. Ada.Command_Line.Argument_Count => <>);
 
-   begin
+   --  Start of processing for Read_Command_Line
 
+   begin
       Set_Usage
         (First_Config,
          Usage     => Usage_Message,
@@ -816,14 +817,14 @@ ASCII.LF;
          "-f");
 
       Define_Switch
-         (Config, Parallel'Access,
-          Long_Switch => "-j:",
-          Initial => 1);
+        (Config, Parallel'Access,
+         Long_Switch => "-j:",
+         Initial => 1);
 
       Define_Switch
-         (Config,
-          Continue_On_Error'Access,
-          "-k");
+        (Config,
+         Continue_On_Error'Access,
+         "-k");
 
       Define_Switch
         (Config,
@@ -1004,7 +1005,35 @@ ASCII.LF;
 
       if Parallel = 0 then
          Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
+      elsif Parallel < 0 then
+         Abort_Msg (Config,
+                    "error: wrong argument for -j",
+                    With_Help => False);
       end if;
+
+      --  Check value of integer switches --steps, --level and --timeout, to
+      --  make sure they are either the special invalid value or an expected
+      --  value.
+
+      if Steps < 0 and Steps /= Invalid_Step then
+         Abort_Msg (Config,
+                    "error: wrong argument for --steps",
+                    With_Help => False);
+      end if;
+
+      if Level not in 0 .. 4 and Level /= Invalid_Level then
+         Abort_Msg (Config,
+                    "error: wrong argument for --level",
+                    With_Help => False);
+      end if;
+
+      if Timeout < 0 and Timeout /= Invalid_Timeout then
+         Abort_Msg (Config,
+                    "error: wrong argument for --timeout",
+                    With_Help => False);
+      end if;
+
+      --  Set modes from string values passed in argument to switches
 
       if MMode_Input.all = "prove" then
          MMode := GPM_Prove;
@@ -1016,7 +1045,7 @@ ASCII.LF;
          MMode := GPM_All;
       else
          Abort_Msg (Config,
-                    "mode should be one of (check | prove | flow | all)",
+                    "error: wrong argument for --mode",
                     With_Help => False);
       end if;
 
@@ -1033,7 +1062,7 @@ ASCII.LF;
          Warning_Mode := Opt.Normal;
       else
          Abort_Msg (Config,
-                    "warnings should be one of (off | continue | error)",
+                    "error: wrong argument for --warnings",
                     With_Help => False);
       end if;
 
@@ -1045,7 +1074,7 @@ ASCII.LF;
          Report := GPR_Statistics;
       else
          Abort_Msg (Config,
-                    "report should be one of (fail | all | statistics)",
+                    "error: wrong argument for --report",
                     With_Help => False);
       end if;
 
@@ -1177,6 +1206,7 @@ ASCII.LF;
             exit;
          end if;
       end loop;
+
       declare
          Proof_Input : constant String :=
            (if Find_Colon /= 0 then Input (Input'First .. Find_Colon - 1)
@@ -1204,11 +1234,9 @@ ASCII.LF;
          elsif Proof_Input = "" then
             Proof := No_Split;
          else
-            Abort_Msg
-              (Config,
-               "proof mode should be one of " &
-               "(per_check | per_path | progressive)",
-               With_Help => False);
+            Abort_Msg (Config,
+                       "error: wrong argument for --proof",
+                       With_Help => False);
          end if;
 
          if Lazy_Input = "all" then
@@ -1216,10 +1244,9 @@ ASCII.LF;
          elsif Lazy_Input = "lazy" or else Lazy_Input = "" then
             Lazy := True;
          else
-            Abort_Msg
-              (Config,
-               "lazy mode should be one of (lazy | all)",
-               With_Help => False);
+            Abort_Msg (Config,
+                       "error: wrong argument for --proof",
+                       With_Help => False);
          end if;
       end;
    end Set_Proof_Mode;
