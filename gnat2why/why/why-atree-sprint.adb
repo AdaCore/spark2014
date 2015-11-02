@@ -744,19 +744,19 @@ package body Why.Atree.Sprint is
       if not Is_Empty (+Reads) then
          P (O, "reads {");
          Print_List (+Reads, ", ");
-         PL (O, " }");
+         PL (O, "}");
       end if;
 
       if not Is_Empty (+Writes) then
          P (O, "writes {");
          Print_List (+Writes, ", ");
-         PL (O, " }");
+         PL (O, "}");
       end if;
 
       if not Is_Empty (+Raises) then
          P (O, "raises { ");
          Print_List (+Raises, ", ");
-         PL (O, " }");
+         PL (O, "}");
       end if;
    end Print_Effects;
 
@@ -965,7 +965,6 @@ package body Why.Atree.Sprint is
                end if;
                if Effects /= Why_Empty then
                   Print_Node (+Effects);
-                  NL (O);
                end if;
                if Def /= Why_Empty then
                   PL (O, " =");
