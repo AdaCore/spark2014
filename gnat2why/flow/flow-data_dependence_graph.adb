@@ -77,9 +77,11 @@ package body Flow.Data_Dependence_Graph is
                        or else Atr.Volatiles_Read.Contains (Var)
                      then
                         if (Atr_Def.Is_Parameter
-                            or Atr_Def.Is_Global_Parameter)
+                              or else Atr_Def.Is_Global_Parameter
+                              or else Atr_Def.Is_Implicit_Parameter)
                           and then (Atr.Is_Parameter
-                                    or Atr.Is_Global_Parameter)
+                                      or else Atr.Is_Global_Parameter
+                                      or else Atr.Is_Implicit_Parameter)
                           and then Atr_Def.Call_Vertex = Atr.Call_Vertex
                         then
                            --  We have a definite order in which we assign
@@ -97,7 +99,7 @@ package body Flow.Data_Dependence_Graph is
                      elsif FA.Generating_Globals
                        and then Var.Kind = Direct_Mapping
                        and then Atr.Subprograms_Called.Contains
-                       (Get_Direct_Mapping_Id (Var))
+                                  (Get_Direct_Mapping_Id (Var))
                      then
                         TV := Flow_Graphs.Skip_Children;
 

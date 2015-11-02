@@ -440,6 +440,52 @@ package body Flow.Control_Flow_Graph.Utility is
       return A;
    end Make_Global_Attributes;
 
+   ----------------------------------------
+   -- Make_Implicit_Parameter_Attributes --
+   ----------------------------------------
+
+   function Make_Implicit_Parameter_Attributes
+     (FA          : Flow_Analysis_Graphs;
+      Call_Vertex : Node_Id;
+      Implicit    : Flow_Id;
+      Loops       : Node_Sets.Set;
+      E_Loc       : Node_Or_Entity_Id := Empty)
+      return V_Attributes
+   is
+      I     : constant Flow_Id    := Change_Variant (Implicit, Normal_Use);
+      A     : V_Attributes        := Null_Attributes;
+      Scope : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
+      Tmp   : Flow_Id_Sets.Set;
+   begin
+      A.Is_Implicit_Parameter := True;
+      A.Call_Vertex           := Direct_Mapping_Id (Call_Vertex);
+      A.Parameter_Formal      := Implicit;
+      A.Loops                 := Loops;
+      A.Error_Location        := E_Loc;
+
+      case Implicit.Variant is
+         when In_View =>
+            Tmp := Flatten_Variable (I, Scope);
+            for F of Tmp loop
+               A.Variables_Used.Include (F);
+               A.Variables_Explicitly_Used.Include (F);
+            end loop;
+
+         when Out_View =>
+            Tmp := Flatten_Variable (I, Scope);
+            for F of Tmp loop
+               A.Variables_Defined.Include (F);
+            end loop;
+
+         when others =>
+            raise Program_Error;
+      end case;
+
+      A.Is_Proof := Refers_To_Ghost (FA, A);
+      Add_Volatile_Effects (A, Scope, I);
+      return A;
+   end Make_Implicit_Parameter_Attributes;
+
    ---------------------------------
    -- Make_Null_Export_Attributes --
    ---------------------------------

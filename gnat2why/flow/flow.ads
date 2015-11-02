@@ -154,7 +154,7 @@ package Flow is
    --  entity.
 
    type Tasking_Info is array (Tasking_Info_Kind) of Node_Sets.Set;
-   --  Named array type for sets of nodes realted to tasking
+   --  Named array type for sets of nodes related to tasking
 
    type Flow_Analysis_Graphs_Root
      (Kind               : Analyzed_Subject_Kind := Kind_Subprogram;

@@ -502,6 +502,22 @@ package body Flow is
                   raise Program_Error;
             end case;
 
+         elsif A.Is_Implicit_Parameter then
+            Rv.Shape := Shape_None;
+
+            Write_Str ("implicit&nbsp;");
+            Sprint_Flow_Id (A.Parameter_Formal);
+            case A.Parameter_Formal.Variant is
+               when In_View =>
+                  Write_Str ("'in");
+
+               when Out_View =>
+                  Write_Str ("'out");
+
+               when others =>
+                  raise Program_Error;
+            end case;
+
          elsif A.Is_Default_Init then
             Rv.Shape := Shape_None;
 

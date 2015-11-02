@@ -55,7 +55,10 @@ package body Flow.Control_Dependence_Graph is
             CV : constant Flow_Graphs.Vertex_Id :=
               FA.CDG.Get_Vertex (A.Call_Vertex);
          begin
-            if A.Is_Parameter or A.Is_Global_Parameter then
+            if A.Is_Parameter
+              or else A.Is_Global_Parameter
+              or else A.Is_Implicit_Parameter
+            then
                --  Sanity check that we will not lose control
                --  dependence.
                for P of FA.CDG.Get_Collection (V,
