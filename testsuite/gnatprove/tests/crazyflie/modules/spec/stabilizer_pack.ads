@@ -1,3 +1,4 @@
+with Ada.Real_Time;
 with Interfaces.C.Extensions; use Interfaces.C.Extensions;
 
 with Types; use Types;
@@ -61,10 +62,10 @@ is
      (Attitude_Update_Counter : in out T_Uint32;
       Alt_Hold_Update_Counter : in out T_Uint32)
      with
-       Global => (Input  => (FF_Parameters,
-                             V_Speed_Parameters,
+       Global => (Input  => (V_Speed_Parameters,
                              Asl_Parameters,
-                             Alt_Hold_Parameters),
+                             Alt_Hold_Parameters,
+                             Ada.Real_Time.Clock_Time),
                   In_Out => (FF_State,
                              SensFusion6_State,
                              IMU_Outputs,

@@ -2,14 +2,37 @@ with Safety_Pack; use Safety_Pack;
 
 package body Free_Fall_Pack
 with SPARK_Mode,
-  Refined_State => (FF_Parameters => (FF_Mode,
-                                      FF_DURATION,
-                                      LANDING_VARIANCE_THRESHOLD),
-                    FF_State      => (FF_Duration_Counter,
+  Refined_State => (FF_State      => (FF_Mode,
+                                      FF_Duration_Counter,
                                       In_Recovery,
                                       Recovery_Thrust,
+                                      Last_Landing_Time,
+                                      Last_FF_Detected_Time,
                                       Landing_Data_Collector))
 is
+
+   procedure Add_Acc_Z_Sample
+     (Acc_Z            : T_Acc;
+      Data_Collector   : in out FF_Acc_Data_Collector) is
+   begin
+      Data_Collector.Samples (Data_Collector.Index) := Acc_Z;
+
+      Data_Collector.Index :=
+        (Data_Collector.Index mod Data_Collector.Samples'Last) + 1;
+   end Add_Acc_Z_Sample;
+
+   function Calculate_Last_Derivative
+     (Data_Collector : FF_Acc_Data_Collector) return Float is
+      Last_Sample        : Float
+        := Data_Collector.Samples (Data_Collector.Index);
+      Penultimate_Sample : Float
+        := (if Data_Collector.Index - 1 >= Data_Collector.Samples'First then
+               Data_Collector.Samples (Data_Collector.Index - 1)
+            else
+               Data_Collector.Samples (Data_Collector.Samples'First));
+   begin
+      return (Last_Sample - Penultimate_Sample);
+   end Calculate_Last_Derivative;
 
    procedure FF_Detect_Free_Fall
      (Acc         :  Accelerometer_Data;
@@ -32,29 +55,38 @@ is
 
    procedure FF_Detect_Landing (Landing_Detected : out Boolean)
    is
-      Variance : Float;
-      Mean     : Float;
-      pragma Unreferenced (Mean);
+      Derivative : Float;
    begin
       Landing_Detected := False;
 
       --  Try to detect landing only if a free fall has
       --  been detected and we still are in recovery mode.
       if In_Recovery = 1 then
-         Calculate_Variance_And_Mean (Data_Collector => Landing_Data_Collector,
-                                      Variance       => Variance,
-                                      Mean           => Mean);
 
-         --  If the acc Z variance is superior to the defined threshold
+         Derivative := Calculate_Last_Derivative (Landing_Data_Collector);
+         --  If the derivative between two samples of the Z acceleration
+         --  is superior to the defined threshold
          --  and if the drone is already in the descending phase,
          --  a landing has been detected.
          if Recovery_Thrust <= MIN_RECOVERY_THRUST
-           and Variance > LANDING_VARIANCE_THRESHOLD
+           and Derivative > LANDING_DERIVATIVE_THRESHOLD
          then
             Landing_Detected := True;
          end if;
       end if;
    end FF_Detect_Landing;
+
+   procedure FF_Watchdog is
+   begin
+      --  if the drone is in recovery mode and it has not recovered after
+      --  the specified timeout, disable the free fall mode in emergency.
+      if In_Recovery = 1 and
+        Get_Time_Since_Last_Free_Fall > RECOVERY_TIMEOUT
+      then
+         In_Recovery := 0;
+         FF_Mode := DISABLED;
+      end if;
+   end FF_Watchdog;
 
    procedure FF_Check_Event (Acc : Accelerometer_Data) is
       Has_Detected_FF  : Boolean;
@@ -74,17 +106,22 @@ is
       FF_Detect_Landing (Has_Landed);
 
       if Has_Landed then
+         Last_Landing_Time := Clock;
          In_Recovery := 0;
       end if;
 
       --  Detect if the drone is in free fall.
       FF_Detect_Free_Fall (Acc, Has_Detected_FF);
 
-      if In_Recovery = 0 and Has_Detected_FF
+      if In_Recovery = 0 and Has_Detected_FF and
+        Get_Time_Since_Last_Landing > STABILIZATION_PERIOD_AFTER_LANDING
       then
+         Last_FF_Detected_Time := Clock;
          In_Recovery := 1;
          Recovery_Thrust := MAX_RECOVERY_THRUST;
       end if;
+
+      FF_Watchdog;
    end FF_Check_Event;
 
    procedure FF_Get_Recovery_Commands
@@ -125,36 +162,5 @@ is
          Recovery_Thrust := Recovery_Thrust - RECOVERY_THRUST_DECREMENT;
       end if;
    end FF_Get_Recovery_Thrust;
-
-   procedure Add_Acc_Z_Sample
-     (Acc_Z            : T_Acc;
-      Data_Collector   : in out FF_Acc_Data_Collector) is
-   begin
-      Data_Collector.Samples (Data_Collector.Index) := Acc_Z;
-
-      Data_Collector.Index :=
-        (Data_Collector.Index mod Data_Collector.Number_Of_Samples) + 1;
-   end Add_Acc_Z_Sample;
-
-   procedure Calculate_Variance_And_Mean
-     (Data_Collector : FF_Acc_Data_Collector;
-      Variance       : out Float;
-      Mean           : out Float) is
-      Sum        : Float := 0.0;
-      Sum_Square : Float := 0.0;
-   begin
-      for J in Data_Collector.Samples'Range loop
-         declare
-            Acc_Z_Sample : Float renames Data_Collector.Samples (J);
-         begin
-            Sum := Sum + Acc_Z_Sample;
-            Sum_Square := Sum_Square + (Acc_Z_Sample * Acc_Z_Sample);
-         end;
-      end loop;
-
-      Mean := Sum / Float (Data_Collector.Number_Of_Samples);
-      Variance :=
-        (Sum_Square - Sum) / Float (Data_Collector.Number_Of_Samples);
-   end Calculate_Variance_And_Mean;
 
 end Free_Fall_Pack;

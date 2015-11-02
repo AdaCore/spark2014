@@ -100,43 +100,30 @@ controller_pack.ads:91:07: info: initialization of "Roll_Rate_Desired" proved
 controller_pack.ads:92:07: info: initialization of "Pitch_Rate_Desired" proved
 controller_pack.ads:93:07: info: initialization of "Yaw_Rate_Desired" proved
 controller_pack.ads:117:04: info: initialization of "Is_Init" constituent of "Controller_State" proved
-free_fall_pack.adb:46:39: warning: unused assignment to "Mean", in call inlined at free_fall_pack.adb:74
-free_fall_pack.adb:52:16: info: initialization of "Variance" proved
-free_fall_pack.adb:52:16: info: initialization of "Variance" proved, in call inlined at free_fall_pack.adb:74
-free_fall_pack.adb:76:10: info: initialization of "Has_Landed" proved
-free_fall_pack.adb:83:30: info: initialization of "Has_Detected_FF" proved
-free_fall_pack.adb:133:45: medium: array index check might fail (e.g. when Data_Collector = (Index => 0, others => ?))
-free_fall_pack.adb:136:31: info: division check proved
-free_fall_pack.adb:136:69: info: overflow check proved
-free_fall_pack.adb:148:66: info: index check proved
-free_fall_pack.adb:150:20: info: initialization of "Sum" proved
-free_fall_pack.adb:150:24: medium: overflow check might fail
-free_fall_pack.adb:151:27: info: initialization of "Sum_Square" proved
-free_fall_pack.adb:151:38: medium: overflow check might fail
-free_fall_pack.adb:151:54: info: overflow check proved
-free_fall_pack.adb:155:15: info: initialization of "Sum" proved
-free_fall_pack.adb:155:19: medium: divide by zero might fail
-free_fall_pack.adb:155:19: medium: overflow check might fail
-free_fall_pack.adb:155:42: info: range check proved
-free_fall_pack.adb:157:10: info: initialization of "Sum_Square" proved
-free_fall_pack.adb:157:21: medium: overflow check might fail
-free_fall_pack.adb:157:23: info: initialization of "Sum" proved
-free_fall_pack.adb:157:28: medium: divide by zero might fail
-free_fall_pack.adb:157:28: medium: overflow check might fail
-free_fall_pack.adb:157:51: info: range check proved
-free_fall_pack.ads:46:57: info: length check proved
-free_fall_pack.ads:62:04: info: initialization of "FF_DURATION" constituent of "FF_Parameters" proved
-free_fall_pack.ads:68:04: info: initialization of "LANDING_VARIANCE_THRESHOLD" constituent of "FF_Parameters" proved
-free_fall_pack.ads:74:04: info: initialization of "FF_Mode" constituent of "FF_Parameters" proved
-free_fall_pack.ads:79:04: info: initialization of "FF_Duration_Counter" constituent of "FF_State" proved
-free_fall_pack.ads:81:04: info: initialization of "In_Recovery" constituent of "FF_State" proved
-free_fall_pack.ads:83:04: info: initialization of "Recovery_Thrust" constituent of "FF_State" proved
-free_fall_pack.ads:85:04: info: initialization of "Landing_Data_Collector.Index" constituent of "FF_State" proved
-free_fall_pack.ads:85:04: info: initialization of "Landing_Data_Collector.Samples" constituent of "FF_State" proved
-free_fall_pack.ads:93:07: info: initialization of "FF_Detected" proved
-free_fall_pack.ads:96:33: info: initialization of "Landing_Detected" proved
-free_fall_pack.ads:108:07: info: initialization of "Variance" proved
-free_fall_pack.ads:109:07: info: initialization of "Mean" proved
+free_fall_pack.adb:21:31: info: division check proved, in call inlined at free_fall_pack.adb:102
+free_fall_pack.adb:30:61: info: index check proved, in call inlined at free_fall_pack.adb:66, in call inlined at free_fall_pack.adb:106
+free_fall_pack.adb:34:15: info: initialization of "Last_Sample" proved
+free_fall_pack.adb:34:15: info: initialization of "Last_Sample" proved, in call inlined at free_fall_pack.adb:66
+free_fall_pack.adb:34:15: info: initialization of "Last_Sample" proved, in call inlined at free_fall_pack.adb:66, in call inlined at free_fall_pack.adb:106
+free_fall_pack.adb:34:27: info: overflow check proved, in call inlined at free_fall_pack.adb:66, in call inlined at free_fall_pack.adb:106
+free_fall_pack.adb:34:29: info: initialization of "Penultimate_Sample" proved
+free_fall_pack.adb:34:29: info: initialization of "Penultimate_Sample" proved, in call inlined at free_fall_pack.adb:66
+free_fall_pack.adb:34:29: info: initialization of "Penultimate_Sample" proved, in call inlined at free_fall_pack.adb:66, in call inlined at free_fall_pack.adb:106
+free_fall_pack.adb:72:16: info: initialization of "Derivative" proved
+free_fall_pack.adb:72:16: info: initialization of "Derivative" proved, in call inlined at free_fall_pack.adb:106
+free_fall_pack.adb:108:10: info: initialization of "Has_Landed" proved
+free_fall_pack.adb:116:30: info: initialization of "Has_Detected_FF" proved
+free_fall_pack.ads:80:61: info: length check proved
+free_fall_pack.ads:87:04: info: initialization of "FF_Mode" constituent of "FF_State" proved
+free_fall_pack.ads:91:04: info: initialization of "FF_Duration_Counter" constituent of "FF_State" proved
+free_fall_pack.ads:93:04: info: initialization of "In_Recovery" constituent of "FF_State" proved
+free_fall_pack.ads:95:04: info: initialization of "Recovery_Thrust" constituent of "FF_State" proved
+free_fall_pack.ads:97:04: info: initialization of "Last_Landing_Time" constituent of "FF_State" proved
+free_fall_pack.ads:99:04: info: initialization of "Last_FF_Detected_Time" constituent of "FF_State" proved
+free_fall_pack.ads:101:04: info: initialization of "Landing_Data_Collector.Index" constituent of "FF_State" proved
+free_fall_pack.ads:101:04: info: initialization of "Landing_Data_Collector.Samples" constituent of "FF_State" proved
+free_fall_pack.ads:109:07: info: initialization of "FF_Detected" proved
+free_fall_pack.ads:112:33: info: initialization of "Landing_Detected" proved
 maths_pack.adb:15:18: info: division check proved
 maths_pack.adb:15:18: info: overflow check proved
 maths_pack.adb:15:20: info: precondition proved
@@ -145,133 +132,133 @@ maths_pack.adb:31:14: info: range check proved
 maths_pack.ads:18:16: medium: postcondition might fail
 pid_pack.adb:47:35: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:47:35: info: overflow check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:47:35: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:47:35: info: overflow check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:47:35: info: range check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:47:35: info: range check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:47:35: info: range check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:47:35: info: range check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:50:07: info: assertion proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:50:07: info: assertion proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:50:07: info: assertion proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:50:07: info: assertion proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:50:32: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:50:32: info: overflow check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:50:32: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:50:32: info: overflow check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:54:20: info: range check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:54:20: info: range check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:54:20: info: range check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:54:20: info: range check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:54:40: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:54:40: info: overflow check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:54:40: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:54:40: info: overflow check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:54:52: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:54:52: info: overflow check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:54:52: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:54:52: info: overflow check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:58:31: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:58:31: info: overflow check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:58:31: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:58:31: info: overflow check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:58:49: info: division check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:58:49: info: division check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:58:49: info: division check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:58:49: info: division check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:58:49: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:58:49: info: overflow check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:58:49: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:58:49: info: overflow check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:58:49: info: range check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:58:49: info: range check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:58:49: info: range check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:58:49: info: range check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:60:27: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:60:27: info: overflow check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:60:27: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:60:27: info: overflow check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:60:27: info: range check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:60:27: info: range check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:60:27: info: range check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:60:27: info: range check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:62:07: info: assertion proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:62:07: info: assertion proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:62:07: info: assertion proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:62:07: info: assertion proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:64:27: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:64:27: info: overflow check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:64:27: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:64:27: info: overflow check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:64:27: info: range check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:64:27: info: range check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:64:27: info: range check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:64:27: info: range check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:66:27: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:66:27: info: overflow check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:66:27: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:66:27: info: overflow check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:66:27: info: range check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:66:27: info: range check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:66:27: info: range check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:66:27: info: range check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:72:17: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:72:17: info: overflow check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:72:17: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:72:17: info: overflow check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:72:29: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:72:29: info: overflow check proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:72:29: info: overflow check proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:72:29: info: overflow check proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.adb:81:14: info: initialization of "Is_Active" proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:81:14: info: initialization of "Is_Active" proved, in instantiation at controller_pack.ads:24
-pid_pack.adb:81:14: info: initialization of "Is_Active" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.adb:81:14: info: initialization of "Is_Active" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.Deriv" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Deriv" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.Deriv" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.Deriv" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.Desired" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Desired" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.Desired" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.Desired" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.Dt" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Dt" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.Dt" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.Dt" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.Error" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Error" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.Error" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.Error" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.I_Limit_High" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.I_Limit_High" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.I_Limit_High" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.I_Limit_High" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.I_Limit_Low" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.I_Limit_Low" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.I_Limit_Low" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.I_Limit_Low" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.Integ" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Integ" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.Integ" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.Integ" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.Kd" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Kd" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.Kd" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.Kd" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.Ki" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Ki" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.Ki" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.Ki" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.Kp" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Kp" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.Kp" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.Kp" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.Out_D" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Out_D" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.Out_D" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.Out_D" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.Out_I" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Out_I" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.Out_I" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.Out_I" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.Out_P" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Out_P" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.Out_P" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.Out_P" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:50:07: info: initialization of "Pid.Prev_Error" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Prev_Error" proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:50:07: info: initialization of "Pid.Prev_Error" proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:50:07: info: initialization of "Pid.Prev_Error" proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:82:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:82:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:82:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:82:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:92:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:92:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:92:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:92:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:99:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:99:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:99:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:99:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:106:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:106:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:106:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:106:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:113:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:113:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:113:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:113:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:120:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:120:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:120:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:120:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:127:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:127:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:127:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:127:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
 pid_pack.ads:135:20: info: postcondition proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:135:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:135:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:44
+pid_pack.ads:135:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
 safety_pack.ads:16:16: info: overflow check proved
 safety_pack.ads:18:16: info: overflow check proved
 safety_pack.ads:56:21: info: range check proved
@@ -954,104 +941,104 @@ stabilizer_pack.adb:277:62: info: initialization of "Raw_Thrust" proved
 stabilizer_pack.adb:317:33: info: range check proved
 stabilizer_pack.adb:318:33: info: range check proved
 stabilizer_pack.adb:362:55: info: overflow check proved
-stabilizer_pack.ads:86:14: info: initialization of "Alt_Hold" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:86:14: info: initialization of "Alt_Hold_Change" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:86:14: info: initialization of "Asl_Raw" constituent of "Asl_Variables" proved
-stabilizer_pack.ads:86:14: info: initialization of "Pressure" constituent of "Asl_Variables" proved
-stabilizer_pack.ads:86:14: info: initialization of "Set_Alt_Hold" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:86:14: info: initialization of "Temperature" constituent of "Asl_Variables" proved
-stabilizer_pack.ads:86:14: info: initialization of "V_Speed_ASL" constituent of "V_Speed_Variables" proved
-stabilizer_pack.ads:86:14: info: initialization of "V_Speed_Acc" constituent of "V_Speed_Variables" proved
-stabilizer_pack.ads:97:14: info: initialization of "Acc_MAG" constituent of "V_Speed_Variables" proved
-stabilizer_pack.ads:97:14: info: initialization of "Acc_WZ" constituent of "V_Speed_Variables" proved
-stabilizer_pack.ads:97:14: info: initialization of "Euler_Pitch_Actual" constituent of "Actual_Angles" proved
-stabilizer_pack.ads:97:14: info: initialization of "Euler_Roll_Actual" constituent of "Actual_Angles" proved
-stabilizer_pack.ads:97:14: info: initialization of "Euler_Yaw_Actual" constituent of "Actual_Angles" proved
-stabilizer_pack.ads:97:14: info: initialization of "Pitch_Rate_Desired" constituent of "Desired_Rates" proved
-stabilizer_pack.ads:97:14: info: initialization of "Roll_Rate_Desired" constituent of "Desired_Rates" proved
-stabilizer_pack.ads:97:14: info: initialization of "Yaw_Rate_Desired" constituent of "Desired_Rates" proved
-stabilizer_pack.ads:109:14: info: initialization of "Actuator_Pitch" constituent of "Actuator_Commands" proved
-stabilizer_pack.ads:109:14: info: initialization of "Actuator_Roll" constituent of "Actuator_Commands" proved
-stabilizer_pack.ads:109:14: info: initialization of "Actuator_Yaw" constituent of "Actuator_Commands" proved
-stabilizer_pack.ads:142:04: info: initialization of "Gyro.X" constituent of "IMU_Outputs" proved
-stabilizer_pack.ads:142:04: info: initialization of "Gyro.Y" constituent of "IMU_Outputs" proved
-stabilizer_pack.ads:142:04: info: initialization of "Gyro.Z" constituent of "IMU_Outputs" proved
-stabilizer_pack.ads:144:04: info: initialization of "Acc.X" constituent of "IMU_Outputs" proved
-stabilizer_pack.ads:144:04: info: initialization of "Acc.Y" constituent of "IMU_Outputs" proved
-stabilizer_pack.ads:144:04: info: initialization of "Acc.Z" constituent of "IMU_Outputs" proved
-stabilizer_pack.ads:146:04: info: initialization of "Mag.X" constituent of "IMU_Outputs" proved
-stabilizer_pack.ads:146:04: info: initialization of "Mag.Y" constituent of "IMU_Outputs" proved
-stabilizer_pack.ads:146:04: info: initialization of "Mag.Z" constituent of "IMU_Outputs" proved
-stabilizer_pack.ads:151:04: info: initialization of "Euler_Roll_Actual" constituent of "Actual_Angles" proved
-stabilizer_pack.ads:153:04: info: initialization of "Euler_Pitch_Actual" constituent of "Actual_Angles" proved
-stabilizer_pack.ads:155:04: info: initialization of "Euler_Yaw_Actual" constituent of "Actual_Angles" proved
-stabilizer_pack.ads:159:04: info: initialization of "Euler_Roll_Desired" constituent of "Desired_Angles" proved
-stabilizer_pack.ads:161:04: info: initialization of "Euler_Pitch_Desired" constituent of "Desired_Angles" proved
-stabilizer_pack.ads:163:04: info: initialization of "Euler_Yaw_Desired" constituent of "Desired_Angles" proved
-stabilizer_pack.ads:169:04: info: initialization of "Roll_Rate_Desired" constituent of "Desired_Rates" proved
-stabilizer_pack.ads:171:04: info: initialization of "Pitch_Rate_Desired" constituent of "Desired_Rates" proved
-stabilizer_pack.ads:173:04: info: initialization of "Yaw_Rate_Desired" constituent of "Desired_Rates" proved
-stabilizer_pack.ads:177:04: info: initialization of "Temperature" constituent of "Asl_Variables" proved
-stabilizer_pack.ads:179:04: info: initialization of "Pressure" constituent of "Asl_Variables" proved
-stabilizer_pack.ads:181:04: info: initialization of "Asl" constituent of "Asl_Variables" proved
-stabilizer_pack.ads:183:04: info: initialization of "Asl_Raw" constituent of "Asl_Variables" proved
-stabilizer_pack.ads:185:04: info: initialization of "Asl_Long" constituent of "Asl_Variables" proved
-stabilizer_pack.ads:189:04: info: initialization of "Acc_WZ" constituent of "V_Speed_Variables" proved
-stabilizer_pack.ads:191:04: info: initialization of "Acc_MAG" constituent of "V_Speed_Variables" proved
-stabilizer_pack.ads:193:04: info: initialization of "V_Speed_ASL" constituent of "V_Speed_Variables" proved
-stabilizer_pack.ads:195:04: info: initialization of "V_Speed_Acc" constituent of "V_Speed_Variables" proved
-stabilizer_pack.ads:197:04: info: initialization of "V_Speed" constituent of "V_Speed_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.Deriv" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.Desired" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.Dt" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.Error" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.I_Limit_High" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.I_Limit_Low" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.Integ" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.Kd" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.Ki" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.Kp" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.Out_D" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.Out_I" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.Out_P" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:203:04: info: initialization of "Alt_Hold_PID.Prev_Error" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:209:04: info: initialization of "Alt_Hold" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:211:04: info: initialization of "Set_Alt_Hold" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:213:04: info: initialization of "Alt_Hold_PID_Val" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:215:04: info: initialization of "Alt_Hold_Err" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:217:04: info: initialization of "Alt_Hold_Change" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:219:04: info: initialization of "Alt_Hold_Target" constituent of "Alt_Hold_Variables" proved
-stabilizer_pack.ads:230:04: info: initialization of "V_Speed_ASL_Fac" constituent of "V_Speed_Parameters" proved
-stabilizer_pack.ads:232:04: info: initialization of "V_Speed_Acc_Fac" constituent of "V_Speed_Parameters" proved
-stabilizer_pack.ads:234:04: info: initialization of "V_Acc_Deadband" constituent of "V_Speed_Parameters" proved
-stabilizer_pack.ads:236:04: info: initialization of "V_Speed_ASL_Deadband" constituent of "V_Speed_Parameters" proved
-stabilizer_pack.ads:239:04: info: initialization of "V_Speed_Limit" constituent of "V_Speed_Parameters" proved
-stabilizer_pack.ads:241:04: info: initialization of "V_Bias_Alpha" constituent of "V_Speed_Parameters" proved
-stabilizer_pack.ads:246:04: info: initialization of "Asl_Err_Deadband" constituent of "Asl_Parameters" proved
-stabilizer_pack.ads:248:04: info: initialization of "Asl_Alpha" constituent of "Asl_Parameters" proved
-stabilizer_pack.ads:250:04: info: initialization of "Asl_Alpha_Long" constituent of "Asl_Parameters" proved
-stabilizer_pack.ads:254:04: info: initialization of "Alt_Hold_Err_Max" constituent of "Alt_Hold_Parameters" proved
-stabilizer_pack.ads:258:04: info: initialization of "Alt_Hold_Change_SENS" constituent of "Alt_Hold_Parameters" proved
-stabilizer_pack.ads:264:04: info: initialization of "Alt_Pid_Asl_Fac" constituent of "Alt_Hold_Parameters" proved
-stabilizer_pack.ads:266:04: info: initialization of "Alt_Pid_Alpha" constituent of "Alt_Hold_Parameters" proved
-stabilizer_pack.ads:268:04: info: initialization of "Alt_Hold_Min_Thrust" constituent of "Alt_Hold_Parameters" proved
-stabilizer_pack.ads:270:04: info: initialization of "Alt_Hold_Base_Thrust" constituent of "Alt_Hold_Parameters" proved
-stabilizer_pack.ads:275:04: info: initialization of "Alt_Hold_Max_Thrust" constituent of "Alt_Hold_Parameters" proved
-stabilizer_pack.ads:279:04: info: initialization of "Roll_Type" constituent of "Command_Types" proved
-stabilizer_pack.ads:281:04: info: initialization of "Pitch_Type" constituent of "Command_Types" proved
-stabilizer_pack.ads:283:04: info: initialization of "Yaw_Type" constituent of "Command_Types" proved
-stabilizer_pack.ads:287:04: info: initialization of "Actuator_Thrust" constituent of "Actuator_Commands" proved
-stabilizer_pack.ads:289:04: info: initialization of "Actuator_Roll" constituent of "Actuator_Commands" proved
-stabilizer_pack.ads:291:04: info: initialization of "Actuator_Pitch" constituent of "Actuator_Commands" proved
-stabilizer_pack.ads:293:04: info: initialization of "Actuator_Yaw" constituent of "Actuator_Commands" proved
-stabilizer_pack.ads:297:04: info: initialization of "Motor_Power_M4" constituent of "Motor_Powers" proved
-stabilizer_pack.ads:299:04: info: initialization of "Motor_Power_M2" constituent of "Motor_Powers" proved
-stabilizer_pack.ads:301:04: info: initialization of "Motor_Power_M1" constituent of "Motor_Powers" proved
-stabilizer_pack.ads:303:04: info: initialization of "Motor_Power_M3" constituent of "Motor_Powers" proved
-stabilizer_pack.ads:377:14: info: initialization of "Motor_Power_M1" constituent of "Motor_Powers" proved
-stabilizer_pack.ads:377:14: info: initialization of "Motor_Power_M2" constituent of "Motor_Powers" proved
-stabilizer_pack.ads:377:14: info: initialization of "Motor_Power_M3" constituent of "Motor_Powers" proved
-stabilizer_pack.ads:377:14: info: initialization of "Motor_Power_M4" constituent of "Motor_Powers" proved
+stabilizer_pack.ads:87:14: info: initialization of "Alt_Hold" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:87:14: info: initialization of "Alt_Hold_Change" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:87:14: info: initialization of "Asl_Raw" constituent of "Asl_Variables" proved
+stabilizer_pack.ads:87:14: info: initialization of "Pressure" constituent of "Asl_Variables" proved
+stabilizer_pack.ads:87:14: info: initialization of "Set_Alt_Hold" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:87:14: info: initialization of "Temperature" constituent of "Asl_Variables" proved
+stabilizer_pack.ads:87:14: info: initialization of "V_Speed_ASL" constituent of "V_Speed_Variables" proved
+stabilizer_pack.ads:87:14: info: initialization of "V_Speed_Acc" constituent of "V_Speed_Variables" proved
+stabilizer_pack.ads:98:14: info: initialization of "Acc_MAG" constituent of "V_Speed_Variables" proved
+stabilizer_pack.ads:98:14: info: initialization of "Acc_WZ" constituent of "V_Speed_Variables" proved
+stabilizer_pack.ads:98:14: info: initialization of "Euler_Pitch_Actual" constituent of "Actual_Angles" proved
+stabilizer_pack.ads:98:14: info: initialization of "Euler_Roll_Actual" constituent of "Actual_Angles" proved
+stabilizer_pack.ads:98:14: info: initialization of "Euler_Yaw_Actual" constituent of "Actual_Angles" proved
+stabilizer_pack.ads:98:14: info: initialization of "Pitch_Rate_Desired" constituent of "Desired_Rates" proved
+stabilizer_pack.ads:98:14: info: initialization of "Roll_Rate_Desired" constituent of "Desired_Rates" proved
+stabilizer_pack.ads:98:14: info: initialization of "Yaw_Rate_Desired" constituent of "Desired_Rates" proved
+stabilizer_pack.ads:110:14: info: initialization of "Actuator_Pitch" constituent of "Actuator_Commands" proved
+stabilizer_pack.ads:110:14: info: initialization of "Actuator_Roll" constituent of "Actuator_Commands" proved
+stabilizer_pack.ads:110:14: info: initialization of "Actuator_Yaw" constituent of "Actuator_Commands" proved
+stabilizer_pack.ads:143:04: info: initialization of "Gyro.X" constituent of "IMU_Outputs" proved
+stabilizer_pack.ads:143:04: info: initialization of "Gyro.Y" constituent of "IMU_Outputs" proved
+stabilizer_pack.ads:143:04: info: initialization of "Gyro.Z" constituent of "IMU_Outputs" proved
+stabilizer_pack.ads:145:04: info: initialization of "Acc.X" constituent of "IMU_Outputs" proved
+stabilizer_pack.ads:145:04: info: initialization of "Acc.Y" constituent of "IMU_Outputs" proved
+stabilizer_pack.ads:145:04: info: initialization of "Acc.Z" constituent of "IMU_Outputs" proved
+stabilizer_pack.ads:147:04: info: initialization of "Mag.X" constituent of "IMU_Outputs" proved
+stabilizer_pack.ads:147:04: info: initialization of "Mag.Y" constituent of "IMU_Outputs" proved
+stabilizer_pack.ads:147:04: info: initialization of "Mag.Z" constituent of "IMU_Outputs" proved
+stabilizer_pack.ads:152:04: info: initialization of "Euler_Roll_Actual" constituent of "Actual_Angles" proved
+stabilizer_pack.ads:154:04: info: initialization of "Euler_Pitch_Actual" constituent of "Actual_Angles" proved
+stabilizer_pack.ads:156:04: info: initialization of "Euler_Yaw_Actual" constituent of "Actual_Angles" proved
+stabilizer_pack.ads:160:04: info: initialization of "Euler_Roll_Desired" constituent of "Desired_Angles" proved
+stabilizer_pack.ads:162:04: info: initialization of "Euler_Pitch_Desired" constituent of "Desired_Angles" proved
+stabilizer_pack.ads:164:04: info: initialization of "Euler_Yaw_Desired" constituent of "Desired_Angles" proved
+stabilizer_pack.ads:170:04: info: initialization of "Roll_Rate_Desired" constituent of "Desired_Rates" proved
+stabilizer_pack.ads:172:04: info: initialization of "Pitch_Rate_Desired" constituent of "Desired_Rates" proved
+stabilizer_pack.ads:174:04: info: initialization of "Yaw_Rate_Desired" constituent of "Desired_Rates" proved
+stabilizer_pack.ads:178:04: info: initialization of "Temperature" constituent of "Asl_Variables" proved
+stabilizer_pack.ads:180:04: info: initialization of "Pressure" constituent of "Asl_Variables" proved
+stabilizer_pack.ads:182:04: info: initialization of "Asl" constituent of "Asl_Variables" proved
+stabilizer_pack.ads:184:04: info: initialization of "Asl_Raw" constituent of "Asl_Variables" proved
+stabilizer_pack.ads:186:04: info: initialization of "Asl_Long" constituent of "Asl_Variables" proved
+stabilizer_pack.ads:190:04: info: initialization of "Acc_WZ" constituent of "V_Speed_Variables" proved
+stabilizer_pack.ads:192:04: info: initialization of "Acc_MAG" constituent of "V_Speed_Variables" proved
+stabilizer_pack.ads:194:04: info: initialization of "V_Speed_ASL" constituent of "V_Speed_Variables" proved
+stabilizer_pack.ads:196:04: info: initialization of "V_Speed_Acc" constituent of "V_Speed_Variables" proved
+stabilizer_pack.ads:198:04: info: initialization of "V_Speed" constituent of "V_Speed_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.Deriv" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.Desired" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.Dt" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.Error" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.I_Limit_High" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.I_Limit_Low" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.Integ" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.Kd" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.Ki" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.Kp" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.Out_D" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.Out_I" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.Out_P" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:204:04: info: initialization of "Alt_Hold_PID.Prev_Error" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:210:04: info: initialization of "Alt_Hold" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:212:04: info: initialization of "Set_Alt_Hold" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:214:04: info: initialization of "Alt_Hold_PID_Val" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:216:04: info: initialization of "Alt_Hold_Err" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:218:04: info: initialization of "Alt_Hold_Change" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:220:04: info: initialization of "Alt_Hold_Target" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.ads:231:04: info: initialization of "V_Speed_ASL_Fac" constituent of "V_Speed_Parameters" proved
+stabilizer_pack.ads:233:04: info: initialization of "V_Speed_Acc_Fac" constituent of "V_Speed_Parameters" proved
+stabilizer_pack.ads:235:04: info: initialization of "V_Acc_Deadband" constituent of "V_Speed_Parameters" proved
+stabilizer_pack.ads:237:04: info: initialization of "V_Speed_ASL_Deadband" constituent of "V_Speed_Parameters" proved
+stabilizer_pack.ads:240:04: info: initialization of "V_Speed_Limit" constituent of "V_Speed_Parameters" proved
+stabilizer_pack.ads:242:04: info: initialization of "V_Bias_Alpha" constituent of "V_Speed_Parameters" proved
+stabilizer_pack.ads:247:04: info: initialization of "Asl_Err_Deadband" constituent of "Asl_Parameters" proved
+stabilizer_pack.ads:249:04: info: initialization of "Asl_Alpha" constituent of "Asl_Parameters" proved
+stabilizer_pack.ads:251:04: info: initialization of "Asl_Alpha_Long" constituent of "Asl_Parameters" proved
+stabilizer_pack.ads:255:04: info: initialization of "Alt_Hold_Err_Max" constituent of "Alt_Hold_Parameters" proved
+stabilizer_pack.ads:259:04: info: initialization of "Alt_Hold_Change_SENS" constituent of "Alt_Hold_Parameters" proved
+stabilizer_pack.ads:265:04: info: initialization of "Alt_Pid_Asl_Fac" constituent of "Alt_Hold_Parameters" proved
+stabilizer_pack.ads:267:04: info: initialization of "Alt_Pid_Alpha" constituent of "Alt_Hold_Parameters" proved
+stabilizer_pack.ads:269:04: info: initialization of "Alt_Hold_Min_Thrust" constituent of "Alt_Hold_Parameters" proved
+stabilizer_pack.ads:271:04: info: initialization of "Alt_Hold_Base_Thrust" constituent of "Alt_Hold_Parameters" proved
+stabilizer_pack.ads:276:04: info: initialization of "Alt_Hold_Max_Thrust" constituent of "Alt_Hold_Parameters" proved
+stabilizer_pack.ads:280:04: info: initialization of "Roll_Type" constituent of "Command_Types" proved
+stabilizer_pack.ads:282:04: info: initialization of "Pitch_Type" constituent of "Command_Types" proved
+stabilizer_pack.ads:284:04: info: initialization of "Yaw_Type" constituent of "Command_Types" proved
+stabilizer_pack.ads:288:04: info: initialization of "Actuator_Thrust" constituent of "Actuator_Commands" proved
+stabilizer_pack.ads:290:04: info: initialization of "Actuator_Roll" constituent of "Actuator_Commands" proved
+stabilizer_pack.ads:292:04: info: initialization of "Actuator_Pitch" constituent of "Actuator_Commands" proved
+stabilizer_pack.ads:294:04: info: initialization of "Actuator_Yaw" constituent of "Actuator_Commands" proved
+stabilizer_pack.ads:298:04: info: initialization of "Motor_Power_M4" constituent of "Motor_Powers" proved
+stabilizer_pack.ads:300:04: info: initialization of "Motor_Power_M2" constituent of "Motor_Powers" proved
+stabilizer_pack.ads:302:04: info: initialization of "Motor_Power_M1" constituent of "Motor_Powers" proved
+stabilizer_pack.ads:304:04: info: initialization of "Motor_Power_M3" constituent of "Motor_Powers" proved
+stabilizer_pack.ads:378:14: info: initialization of "Motor_Power_M1" constituent of "Motor_Powers" proved
+stabilizer_pack.ads:378:14: info: initialization of "Motor_Power_M2" constituent of "Motor_Powers" proved
+stabilizer_pack.ads:378:14: info: initialization of "Motor_Power_M3" constituent of "Motor_Powers" proved
+stabilizer_pack.ads:378:14: info: initialization of "Motor_Power_M4" constituent of "Motor_Powers" proved
 worker_pack.adb:8:58: info: division check proved
 worker_pack.adb:27:50: info: initialization of "Work.Arg" proved
 worker_pack.adb:27:50: info: initialization of "Work.Func" proved
