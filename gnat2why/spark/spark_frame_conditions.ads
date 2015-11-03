@@ -48,7 +48,7 @@ package SPARK_Frame_Conditions is
    --  that are actually translated to Why
 
    function File_Name_Hash (F : File_Name_Type) return Hash_Type is
-      (Hash_Type (F));
+     (Hash_Type (F));
 
    package File_Name_Set is new Hashed_Sets
      (Element_Type        => File_Name_Type,

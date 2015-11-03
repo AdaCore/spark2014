@@ -660,23 +660,23 @@ package body SPARK_Frame_Conditions is
    ----------------------
 
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean is
-      (To_String (Ent) = SPARK_Xrefs.Name_Of_Heap_Variable);
+     (To_String (Ent) = SPARK_Xrefs.Name_Of_Heap_Variable);
 
    -----------------
    -- Is_Constant --
    -----------------
 
    function Is_Constant (Ent : Entity_Name) return Boolean is
-      (Constants.Contains (Ent));
+     (Constants.Contains (Ent));
 
    ---------------------------------
    -- Is_Non_Recursive_Subprogram --
    ---------------------------------
 
    function Is_Non_Recursive_Subprogram (E : Entity_Id) return Boolean is
-      E_Alias  : constant Entity_Id :=
+      E_Alias : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
-      E_Name   : constant Entity_Name := To_Entity_Name (E);
+      E_Name  : constant Entity_Name := To_Entity_Name (E);
    begin
       --  Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, instead return false.
