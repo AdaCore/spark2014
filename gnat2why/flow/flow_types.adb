@@ -846,11 +846,22 @@ package body Flow_Types is
 
       function Get_Unmangled_Name (N : Node_Id) return String is
       begin
-         if Nkind (N) in N_Entity
-           and then Is_Subprogram (N)
-           and then Present (Overridden_Operation (N))
-         then
-            return Get_Unmangled_Name (Overridden_Operation (N));
+         if Nkind (N) in N_Entity then
+            if Is_Subprogram (N)
+              and then Present (Overridden_Operation (N))
+            then
+               return Get_Unmangled_Name (Overridden_Operation (N));
+            elsif Ekind (N) = E_Task_Type then
+               declare
+                  Task_Object : constant Entity_Id := Anonymous_Object (N);
+                  --  For single task declarations return the original name,
+                  --  i.e. without the "tk" suffix added by expansion.
+               begin
+                  if Present (Task_Object) then
+                     return Get_Unmangled_Name (Anonymous_Object (N));
+                  end if;
+               end;
+            end if;
          end if;
 
          Get_Name_String (Chars (N));

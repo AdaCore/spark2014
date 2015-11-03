@@ -1,4 +1,4 @@
-p.adb:16:10: "PO" must be listed in the Global aspect of "T2tk" (SPARK RM 6.1.4(13))
+p.adb:16:10: "PO" must be listed in the Global aspect of "T2" (SPARK RM 6.1.4(13))
    compilation of p.adb failed
 
 
