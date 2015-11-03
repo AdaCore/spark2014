@@ -640,11 +640,13 @@ package body Flow.Analysis is
                   when Kind_Subprogram | Kind_Entry =>
                      Vars_Known := Flow_Id_Sets.Empty_Set;
 
-                     --  We need to assemble the variables known from
-                     --  the spec: these are parameters and globals.
+                     --  We need to assemble the variables known from the spec:
+                     --  these are parameters, globals and implicit parameters.
                      declare
                         E                   : Entity_Id;
                         Tmp_A, Tmp_B, Tmp_C : Flow_Id_Sets.Set;
+                        Analyzed_Flow_Id    : constant Flow_Id :=
+                          Direct_Mapping_Id (FA.Analyzed_Entity);
                      begin
                         E := First_Formal (FA.Spec_Entity);
                         while Present (E) loop
@@ -664,6 +666,13 @@ package body Flow.Analysis is
                         loop
                            Vars_Known.Include (Change_Variant (F, Normal_Use));
                         end loop;
+
+                        if Belongs_To_Protected_Object (Analyzed_Flow_Id) then
+                           Vars_Known.Include
+                              (Concurrent_Object_Id
+                                 (Get_Enclosing_Concurrent_Object
+                                    (Analyzed_Flow_Id)));
+                        end if;
                      end;
 
                   when Kind_Package | Kind_Package_Body =>
