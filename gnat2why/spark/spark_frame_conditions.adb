@@ -714,7 +714,8 @@ package body SPARK_Frame_Conditions is
    begin
       Open (ALI_File, In_File, ALI_Filename);
 
-      Scan_ALI : loop
+      --  Skip lines until one that starts with 'F'
+      Skip_Non_SPARK_Lines : loop
          if End_Of_File (ALI_File) then
             --  No SPARK cross-reference information in this ALI
 
@@ -725,12 +726,12 @@ package body SPARK_Frame_Conditions is
          Get_Line (ALI_File, Line, Last);
          case Line (1) is
             when 'F' =>
-               exit Scan_ALI;
+               exit Skip_Non_SPARK_Lines;
 
             when others =>
                null;
          end case;
-      end loop Scan_ALI;
+      end loop Skip_Non_SPARK_Lines;
 
       Index := 1;
 
