@@ -1114,7 +1114,7 @@ package body SPARK_Frame_Conditions is
                declare
                   E : constant Entity_Name := Cur_SCCs (J) (1);
                begin
-                  if not Name_Sets.Contains (Calls.Element (E), E) then
+                  if not Calls.Element (E).Contains (E) then
                      Non_Rec_Subp.Insert (E);
                   end if;
                end;
