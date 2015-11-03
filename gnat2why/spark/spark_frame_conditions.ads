@@ -57,9 +57,6 @@ package SPARK_Frame_Conditions is
       "="                 => "=");
    use File_Name_Set;
 
-   Loaded_ALI_Files : File_Name_Set.Set := File_Name_Set.Empty_Set;
-   --  Set of ALI files with SPARK Xrefs loaded for computing Global contracts
-
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
    --  Return whether Ent is the special variable "__HEAP"
 
@@ -68,9 +65,6 @@ package SPARK_Frame_Conditions is
 
    procedure Display_Maps;
    --  Send maps to output for debug
-
-   function Has_Computed_Global (E : Entity_Id) return Boolean;
-   --  Returns whether a Global contract has been computed for subprogram E
 
    function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
    with Pre => E_Name /= Null_Entity_Name;
@@ -89,9 +83,8 @@ package SPARK_Frame_Conditions is
    function File_Of_Entity (E : Entity_Name) return Entity_Name;
    --  Return the name of the file defining the entity E
 
-   procedure Load_SPARK_Xrefs (ALI_Filename    : String;
-                               Has_SPARK_Xrefs : out Boolean);
-   --  Extract xref information from an ALI file.
+   procedure Load_SPARK_Xrefs (ALI_Filename : String);
+   --  Extract xref information from an ALI file
 
    procedure Collect_Direct_Computed_Globals
      (E                  : Entity_Id;

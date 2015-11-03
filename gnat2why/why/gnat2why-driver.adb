@@ -266,13 +266,8 @@ package body Gnat2Why.Driver is
               ALIs.Table (Main_Lib_Id).Afile;
             ALI_File_Name_Str : constant String :=
               Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
-            Has_SPARK_Xrefs : Boolean;
          begin
-            Load_SPARK_Xrefs (ALI_File_Name_Str, Has_SPARK_Xrefs);
-
-            if Has_SPARK_Xrefs then
-               Loaded_ALI_Files.Include (ALI_File_Name);
-            end if;
+            Load_SPARK_Xrefs (ALI_File_Name_Str);
          end;
       else
          Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => True);
@@ -286,13 +281,8 @@ package body Gnat2Why.Driver is
                  ALIs.Table (Index).Afile;
                ALI_File_Name_Str : constant String :=
                  Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
-               Has_SPARK_Xrefs : Boolean;
             begin
-               Load_SPARK_Xrefs (ALI_File_Name_Str, Has_SPARK_Xrefs);
-
-               if Has_SPARK_Xrefs then
-                  Loaded_ALI_Files.Include (ALI_File_Name);
-               end if;
+               Load_SPARK_Xrefs (ALI_File_Name_Str);
             end;
          end loop;
       end if;
