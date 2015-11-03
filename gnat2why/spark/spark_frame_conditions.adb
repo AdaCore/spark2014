@@ -247,45 +247,30 @@ package body SPARK_Frame_Conditions is
 
          Called_Subp := Calls.Element (V);
 
---  Workaround for K526-008
+         for W of Called_Subp loop
+            --  Ignore leaf nodes in call-graph as no treatment is needed
+            --  for them.
 
---           for W of Called_Subp loop
---              ...
---           end loop;
-
-         declare
-            C : Name_Sets.Cursor;
-            W : Entity_Name;
-         begin
-            C := Called_Subp.First;
-            while C /= Name_Sets.No_Element loop
-               W := Element (C);
-
-               --  Ignore leaf nodes in call-graph as no treatment is needed
-               --  for them.
-
-               if not Nodes.Contains (W) then
-                  null;
+            if not Nodes.Contains (W) then
+               null;
 
                --  Successor W has not yet been visited; recurse on it
 
-               elsif not Indexes.Contains (W) then
-                  Strong_Connect (W);
-                  Lowlinks.Include
-                    (V, Natural'Min
-                       (Lowlinks.Element (V), Lowlinks.Element (W)));
+            elsif not Indexes.Contains (W) then
+               Strong_Connect (W);
+               Lowlinks.Include
+                 (V, Natural'Min
+                    (Lowlinks.Element (V), Lowlinks.Element (W)));
 
                --  Successor W is in stack S and hence in the current SCC
 
-               elsif Has (W) then
-                  Lowlinks.Include
-                    (V, Natural'Min
-                       (Lowlinks.Element (V), Indexes.Element (W)));
-               end if;
+            elsif Has (W) then
+               Lowlinks.Include
+                 (V, Natural'Min
+                    (Lowlinks.Element (V), Indexes.Element (W)));
+            end if;
 
-               Next (C);
-            end loop;
-         end;
+         end loop;
 
          --  If V is a root node, pop the stack and generate an SCC
 
@@ -330,25 +315,12 @@ package body SPARK_Frame_Conditions is
    --  Start of processing for Compute_Strongly_Connected_Components
 
    begin
---  Workaround for K526-008
 
---           for V of Nodes loop
---              if not Indexes.Contains (V) then
---                 Strong_Connect (V);
---              end if;
---           end loop;
-
-      declare
-         C : Name_Sets.Cursor;
-      begin
-         C := Nodes.First;
-         while C /= Name_Sets.No_Element loop
-            if not Indexes.Contains (Element (C)) then
-               Strong_Connect (Element (C));
-            end if;
-            Next (C);
-         end loop;
-      end;
+      for V of Nodes loop
+         if not Indexes.Contains (V) then
+            Strong_Connect (V);
+         end if;
+      end loop;
 
       return Cur_SCCs (1 .. Cur_SCCs_Num);
    end Compute_Strongly_Connected_Components;
@@ -414,21 +386,9 @@ package body SPARK_Frame_Conditions is
 
       procedure Display_One_Set (Set : Name_Sets.Set) is
       begin
---  Workaround for K526-008
-
---           for Ent of Set loop
---              Put ("  "); Display_Entity (Ent); Put_Line ("");
---           end loop;
-
-         declare
-            C : Name_Sets.Cursor;
-         begin
-            C := Set.First;
-            while C /= Name_Sets.No_Element loop
-               Put ("  "); Display_Entity (Element (C)); Put_Line ("");
-               Next (C);
-            end loop;
-         end;
+         for Ent of Set loop
+            Put ("  "); Display_Entity (Ent); Put_Line ("");
+         end loop;
       end Display_One_Set;
 
    --  Start of processing for Display_Maps
@@ -1139,21 +1099,9 @@ package body SPARK_Frame_Conditions is
             return;
          end if;
 
---  Workaround for K526-008
-
---           for S of Called_Subp loop
---              Propagate_On_Call (Caller => Subp, Callee => S);
---           end loop;
-
-         declare
-            C : Name_Sets.Cursor;
-         begin
-            C := Called_Subp.First;
-            while C /= Name_Sets.No_Element loop
-               Propagate_On_Call (Caller => Subp, Callee => Element (C));
-               Next (C);
-            end loop;
-         end;
+         for S of Called_Subp loop
+            Propagate_On_Call (Caller => Subp, Callee => S);
+         end loop;
 
          if Num_Reads /= Count_In_Map (Reads, Subp)
            or else Num_Writes /= Count_In_Map (Writes, Subp)
@@ -1268,25 +1216,16 @@ package body SPARK_Frame_Conditions is
      (Map : in out Name_Graphs.Map;
       Set : Name_Sets.Set)
    is
+      Inserted : Boolean;
+      Position : Name_Graphs.Cursor;
+      --  Dummy variables required by the container API
    begin
---  Workaround for K526-008
---        for Ent of Set loop
---           if not Map.Contains (Ent) then
---              Map.Insert (Ent, Name_Set.Empty_Set);
---           end if;
---        end loop;
-
-      declare
-         C : Name_Sets.Cursor;
-      begin
-         C := Set.First;
-         while C /= Name_Sets.No_Element loop
-            if not Map.Contains (Element (C)) then
-               Map.Insert (Element (C), Name_Sets.Empty_Set);
-            end if;
-            Next (C);
-         end loop;
-      end;
+      for Ent of Set loop
+         Map.Insert (Key      => Ent,
+                     Position => Position,
+                     Inserted => Inserted);
+         --  Attempt to map entity Ent to a default element (i.e. empty set)
+      end loop;
    end Set_Default_To_Empty;
 
    -------------------------------------
