@@ -2116,7 +2116,6 @@ latch.ads:150:22: info: initialization of "LatchTimeout.MilliSec" constituent of
 latch.ads:150:22: info: initialization of "LatchTimeout.Month" constituent of "State" proved
 latch.ads:150:22: info: initialization of "LatchTimeout.Year" constituent of "State" proved
 latch.ads:150:22: info: postcondition proved
-latchapi.adb:76:07: info: no contextual analysis of "ReadBack" (exception handler)
 latchapi.adb:95:37: medium: length check might fail
 latchapi.adb:95:37: warning: assuming "Overwrite" has no effect on global items
 latchapi.adb:95:37: warning: no Global contract available for "Overwrite"
