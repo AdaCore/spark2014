@@ -743,8 +743,8 @@ package body SPARK_Frame_Conditions is
       Walk_SPARK_Tables : declare
 
          type Scope_Name is record
-            File_Num  : Nat;
-            Scope_Num : Nat;
+            File_Num  : Pos;
+            Scope_Num : Pos;
          end record;
          --  Name representative of a scope
 
