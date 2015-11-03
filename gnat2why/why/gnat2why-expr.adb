@@ -9065,11 +9065,9 @@ package body Gnat2Why.Expr is
                      declare
                         S : constant Node_Id := Subtype_Indication (T_Def);
                      begin
-                        if Nkind (S) = N_Subtype_Indication then
-                           return Entity (Subtype_Mark (S));
-                        else
-                           return Entity (S);
-                        end if;
+                        return Entity (if Nkind (S) = N_Subtype_Indication
+                                       then Subtype_Mark (S)
+                                       else S);
                      end;
 
                   when others =>
@@ -9080,11 +9078,9 @@ package body Gnat2Why.Expr is
             declare
                S : constant Node_Id := Subtype_Indication (N);
             begin
-               if Nkind (S) = N_Subtype_Indication then
-                  return Entity (Subtype_Mark (S));
-               else
-                  return Entity (S);
-               end if;
+               return Entity (if Nkind (S) = N_Subtype_Indication
+                              then Subtype_Mark (S)
+                              else S);
             end;
          end if;
       end Get_Base_Type;
