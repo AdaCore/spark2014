@@ -860,25 +860,16 @@ package body Flow_Types is
 
       R : Unbounded_String := Null_Unbounded_String;
    begin
-      case F.Kind is
-         when Direct_Mapping | Record_Field =>
-            if Nkind (F.Node) in N_Entity
-              and then Ekind (F.Node) = E_Abstract_State
-            then
-               --  Print "Prefix.State" instead of just "State", but only
-               --  for abstract state for now. (However, the code below
-               --  would work for any other flow id as well.)
-               case Nkind (F.Node) is
-                  when N_Entity =>
-                     Append (R, Get_Unmangled_Name (Scope (F.Node)));
-                  when others =>
-                     Append (R, Get_Unmangled_Name (Scope (Entity (F.Node))));
-               end case;
-               Append (R, ".");
-            end if;
-         when Null_Value | Magic_String | Synthetic_Null_Export =>
-            null;
-      end case;
+      --  Return "Prefix.State" instead of just "State", but only for abstract
+      --  state for now. (However, the code below would work for any other flow
+      --  id as well.)
+      if F.Kind in Direct_Mapping | Record_Field
+         and then Nkind (F.Node) in N_Entity
+         and then Ekind (F.Node) = E_Abstract_State
+      then
+         Append (R, Get_Unmangled_Name (Scope (F.Node)));
+         Append (R, ".");
+      end if;
 
       case F.Kind is
          when Null_Value =>
