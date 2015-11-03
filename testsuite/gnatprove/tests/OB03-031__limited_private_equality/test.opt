@@ -1,0 +1,1 @@
+ALL XFAIL equality for limited private types (OB03-031,OB02-023)
