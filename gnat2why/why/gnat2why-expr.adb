@@ -5482,12 +5482,12 @@ package body Gnat2Why.Expr is
                   Base  : constant W_Type_Id :=
                     (if Is_Boolean_Type (Return_Type) then EW_Bool_Type
                      else Base_Why_Type (Return_Type));
-                  L_Why : constant W_Expr_Id :=  Insert_Simple_Conversion
+                  L_Why : constant W_Expr_Id := Insert_Simple_Conversion
                     (Ada_Node => Ada_Node,
                      Domain   => Domain,
                      Expr     => Left,
                      To       => Base);
-                  R_Why : constant W_Expr_Id :=  Insert_Simple_Conversion
+                  R_Why : constant W_Expr_Id := Insert_Simple_Conversion
                     (Ada_Node => Ada_Node,
                      Domain   => Domain,
                      Expr     => Right,
@@ -7630,12 +7630,12 @@ package body Gnat2Why.Expr is
          if not Is_Standard_Boolean_Type (Component_Type (Left_Type)) and then
            W_Op = Array_Theory.Xorb
          then
-            T :=  +Sequence (New_Ignore (Prog =>
-                     New_Located_Assert (Ada_Node,
-                                         +Range_Check,
-                                         VC_Range_Check,
-                                         EW_Assert)),
-                             +T);
+            T := +Sequence (New_Ignore (Prog =>
+                                          New_Located_Assert (Ada_Node,
+                                            +Range_Check,
+                                            VC_Range_Check,
+                                            EW_Assert)),
+                            +T);
          end if;
       end if;
 
@@ -7723,12 +7723,12 @@ package body Gnat2Why.Expr is
          --  is to call it on an array of a singleton subtype of boolean.
 
          if not Is_Standard_Boolean_Type (Component_Type (Right_Type)) then
-            T :=  +Sequence (New_Ignore (Prog =>
-                     New_Located_Assert (Ada_Node,
-                                         +Range_Check,
-                                         VC_Range_Check,
-                                         EW_Assert)),
-                             +T);
+            T := +Sequence (New_Ignore (Prog =>
+                                          New_Located_Assert (Ada_Node,
+                                            +Range_Check,
+                                            VC_Range_Check,
+                                            EW_Assert)),
+                            +T);
          end if;
       end if;
 
@@ -8729,8 +8729,8 @@ package body Gnat2Why.Expr is
       Domain             : EW_Domain;
       Ada_Node           : Node_Id) return W_Expr_Id
    is
-      Left_Expr  : W_Expr_Id :=  Left;
-      Right_Expr : W_Expr_Id :=  Right;
+      Left_Expr  : W_Expr_Id := Left;
+      Right_Expr : W_Expr_Id := Right;
       Args       : W_Expr_Array (1 .. 6);
       Arg_Ind    : Positive := 1;
       T          : W_Expr_Id;
@@ -9020,7 +9020,7 @@ package body Gnat2Why.Expr is
       T := Binding_For_Temp (Domain  => Domain,
                              Tmp     => Left_Expr,
                              Context => T);
-      T :=  Binding_For_Temp (Domain  => Domain,
+      T := Binding_For_Temp (Domain  => Domain,
                              Tmp     => Right_Expr,
                              Context => T);
       return T;
@@ -11349,12 +11349,12 @@ package body Gnat2Why.Expr is
                        2 => Right_Opnd),
                     Typ      => Rep_Type);
             begin
-               T :=  New_Call (Domain => Domain,
-                               Name   => MF_BVs (Rep_Type).Urem,
-                               Args   =>
-                                 (1 => Sub,
-                                  2 => Modulus_Expr),
-                               Typ    => Rep_Type);
+               T := New_Call (Domain => Domain,
+                              Name   => MF_BVs (Rep_Type).Urem,
+                              Args   =>
+                                (1 => Sub,
+                                 2 => Modulus_Expr),
+                              Typ    => Rep_Type);
             end;
 
          --  Transform (X + Y) into:

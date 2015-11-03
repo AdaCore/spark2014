@@ -2773,7 +2773,7 @@ package body Why.Gen.Expr is
          when N_Full_Type_Declaration | N_Incomplete_Type_Declaration
             | N_Protected_Type_Declaration | N_Private_Type_Declaration
             | N_Subtype_Declaration =>
-            Buf :=  Get_Name_String (Chars (Defining_Identifier (Node_It)))
+            Buf := Get_Name_String (Chars (Defining_Identifier (Node_It)))
               & "_def" & Label_Append (Buf);
 
          when N_Private_Extension_Declaration =>

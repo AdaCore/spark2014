@@ -322,8 +322,8 @@ package body Gnat2Why.External_Axioms is
 
       if Present (Generic_Parent (Package_Specification (E))) then
          declare
-            Assoc : constant List_Id :=  Get_Association_List (E);
-            Labs  : constant List_Id :=  Get_Label_List (E);
+            Assoc : constant List_Id := Get_Association_List (E);
+            Labs  : constant List_Id := Get_Label_List (E);
             Instance_Name : constant String := Get_Instance_Name (E);
             CurAssoc  : Node_Id := First (Assoc);
             CurLabs   : Node_Id := First (Labs);
@@ -918,8 +918,8 @@ package body Gnat2Why.External_Axioms is
      (Package_Entity : Entity_Id;
       G_Parents      : List_Of_Entity.List)
    is
-      Assoc : constant List_Id :=  Get_Association_List (Package_Entity);
-      Labs  : constant List_Id :=  Get_Label_List (Package_Entity);
+      Assoc : constant List_Id := Get_Association_List (Package_Entity);
+      Labs  : constant List_Id := Get_Label_List (Package_Entity);
       Instance_Name : constant String := Get_Instance_Name (Package_Entity);
 
       function Get_Logic_Type_Of_Ada_Type

@@ -2507,7 +2507,7 @@ package body Why.Gen.Records is
            then 1 else 0);
       Args     : W_Expr_Array (1 .. Num_Args);
       Index    : Natural := 0;
-      Field    : Node_Id :=  First_Component_Or_Discriminant (Root);
+      Field    : Node_Id := First_Component_Or_Discriminant (Root);
    begin
       while Present (Field)
       loop
