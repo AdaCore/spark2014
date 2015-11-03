@@ -846,11 +846,10 @@ package body SPARK_Frame_Conditions is
                      --  instead of the file name of the subunit, as only unit
                      --  names are relevant in the generated Why code.
 
-                     if Frec.Unit_File_Name /= null then
-                        File_Entity := Make_Entity_Name (Frec.Unit_File_Name);
-                     else
-                        File_Entity := Make_Entity_Name (Frec.File_Name);
-                     end if;
+                     File_Entity :=
+                       Make_Entity_Name (if Frec.Unit_File_Name /= null
+                                         then Frec.Unit_File_Name
+                                         else Frec.File_Name);
 
                      --  Compute the entity for the scope being referenced
 
