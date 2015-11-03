@@ -756,16 +756,14 @@ package body SPARK_Frame_Conditions is
            (Key_Type        => Scope_Name,
             Element_Type    => Entity_Name,
             Hash            => Scope_Hash,
-            Equivalent_Keys => "=",
-            "="             => "=");
+            Equivalent_Keys => "=");
          --  Map each scope to its entity representative
 
          package Scope_Spec is new Hashed_Maps
            (Key_Type        => Scope_Name,
             Element_Type    => Scope_Name,
             Hash            => Scope_Hash,
-            Equivalent_Keys => "=",
-            "="             => "=");
+            Equivalent_Keys => "=");
          --  Map body scopes to their spec scope, when different
 
          Scope_Entities : Scope_Entity.Map;
