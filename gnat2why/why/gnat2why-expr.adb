@@ -9048,10 +9048,10 @@ package body Gnat2Why.Expr is
          --  scalar types, and then only when the range is non-static.
 
          if Nkind (N) = N_Full_Type_Declaration then
-            if Is_Scalar_Type (Ent) then
-               if Is_OK_Static_Range (Get_Range (Ent)) then
-                  return Empty;
-               end if;
+            if Is_Scalar_Type (Ent)
+              and then Is_OK_Static_Range (Get_Range (Ent))
+            then
+               return Empty;
             end if;
 
             declare
