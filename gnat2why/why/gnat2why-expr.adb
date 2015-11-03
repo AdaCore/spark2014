@@ -9172,11 +9172,6 @@ package body Gnat2Why.Expr is
                            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
                            for I in Discr_Ids'Range loop
-                              while Is_Completely_Hidden (D) loop
-                                 Next_Discriminant (D);
-                              end loop;
-                              pragma Assert (Present (D));
-
                               Discr_Ids (I) :=
                                 New_Temp_Identifier
                                   (Typ => EW_Abstract (Etype (D)));
