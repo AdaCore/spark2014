@@ -30,7 +30,7 @@ p.adb:35:18: info: initialization of "J" proved
 p.adb:36:12: info: initialization of "J" proved
 p.adb:36:14: info: overflow check proved
 p.adb:37:12: info: initialization of "K" proved
-p.adb:37:14: medium: overflow check might fail (e.g. when K = 1)
+p.adb:37:14: medium: overflow check might fail (e.g. when K = 2147483647)
 p.adb:38:07: info: loop variant proved
 p.adb:38:41: info: initialization of "J" proved
 p.adb:39:07: info: loop variant proved
@@ -64,13 +64,13 @@ p.adb:58:62: medium: array index check might fail
 p.adb:59:07: info: loop variant proved
 p.adb:59:41: info: initialization of "J" proved
 p.adb:66:10: info: initialization of "J" proved
-p.adb:67:12: medium: array index check might fail (e.g. when Tab = (others => 0) and J = 0)
+p.adb:67:12: medium: array index check might fail (e.g. when Tab = (0 => -1, others => 1) and J = 99)
 p.adb:67:15: medium: "Tab" might not be initialized
 p.adb:67:18: info: initialization of "J" proved
 p.adb:68:12: info: initialization of "J" proved
 p.adb:68:14: info: overflow check proved
 p.adb:69:12: info: initialization of "K" proved
-p.adb:69:14: medium: overflow check might fail (e.g. when K = 1)
+p.adb:69:14: medium: overflow check might fail (e.g. when K = 2147483647)
 p.adb:70:07: info: loop invariant initialization proved
 p.adb:70:07: info: loop invariant preservation proved
 p.adb:70:30: info: initialization of "J" proved

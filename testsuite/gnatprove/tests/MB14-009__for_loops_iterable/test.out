@@ -32,7 +32,7 @@ for_loops_on_lists.adb:44:34: info: precondition proved
 for_loops_on_lists.adb:44:50: info: range check proved
 for_loops_on_lists.adb:53:11: info: precondition proved
 for_loops_on_lists.adb:55:24: info: initialization of "Count_0" proved
-for_loops_on_lists.adb:55:32: medium: overflow check might fail (e.g. when Count_0 = 0)
+for_loops_on_lists.adb:55:32: medium: overflow check might fail (e.g. when Count_0 = 2147483647)
 for_loops_on_lists.adb:57:10: info: loop invariant initialization proved
 for_loops_on_lists.adb:57:10: info: loop invariant preservation proved
 for_loops_on_lists.adb:58:16: info: initialization of "Count_0" proved

@@ -561,7 +561,18 @@ package body Flow_Error_Messages is
                      return Var_Or_Field_Ptr
                   is
                   begin
-                     if Contains (Map.all, Name) then
+                     --  If the Kind is Non_Record_Type and Name is contained
+                     --  in Map, value of given counterexample element is
+                     --  inserted second time. In this case, do not use the
+                     --  first value, but create Element with new value.
+                     --  Note that this happens in the case of variables
+                     --  modfified in the loop. The value inserted for the
+                     --  first time is the value corresponding to 'Loop_Entry
+                     --  and displaying this kind of value is not yet
+                     --  supported.
+                     if Contains (Map.all, Name) and then
+                       Kind = Record_Type
+                     then
                         return Element (Map.all, Name);
                      end if;
 

@@ -27,4 +27,4 @@ subprograms.ads:32:35: info: overflow check proved
 subprograms.ads:32:44: info: contract case proved
 subprograms.ads:32:61: info: overflow check proved
 subprograms.ads:33:35: info: overflow check proved
-subprograms.ads:33:44: medium: contract case might fail (e.g. when Val = 0)
+subprograms.ads:33:44: medium: contract case might fail (e.g. when Val = -1)
