@@ -363,16 +363,13 @@ package body SPARK_Frame_Conditions is
 
       procedure Display_One_Map (Map : Name_Graphs.Map; Name, Action : String)
       is
-         Cu : Name_Graphs.Cursor;
       begin
          Put_Line ("-- " & Name & " --");
 
-         Cu := Map.First;
-         while Has_Element (Cu) loop
-            Display_Entity (Name_Graphs.Key (Cu));
+         for Cu in Map.Iterate loop
+            Display_Entity (Key (Cu));
             Put_Line (" " & Action);
-            Display_One_Set (Name_Graphs.Element (Cu));
-            Name_Graphs.Next (Cu);
+            Display_One_Set (Element (Cu));
          end loop;
       end Display_One_Map;
 
