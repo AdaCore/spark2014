@@ -1,0 +1,5 @@
+concat_string.adb:4:21: medium: range check might fail
+concat_string.adb:5:31: medium: range check might fail
+concat_string.adb:7:11: info: initialization of "S1" proved
+concat_string.adb:7:14: medium: range check might fail
+concat_string.adb:7:16: info: initialization of "S2" proved
