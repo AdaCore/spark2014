@@ -15,6 +15,5 @@ is
    task type Account_Management with
      Priority => 5,
      Global   => (In_Out => Num_Accounts),
-     Depends  => (Account_Management => Account_Management,
-                  Num_Accounts => Num_Accounts);
+     Depends  => (Num_Accounts => Num_Accounts);
 end Account8;
