@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;           use Atree;
 with Einfo;           use Einfo;
 with Gnat2Why.Util;   use Gnat2Why.Util;
 with SPARK_Util;      use SPARK_Util;
@@ -39,9 +40,11 @@ package Why.Gen.Records is
    procedure Declare_Ada_Record
      (P       : Why_Section;
       Theory  : W_Theory_Declaration_Id;
-      E       : Entity_Id);
+      E       : Entity_Id) with
+      Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
+                          Private_Kind  | Concurrent_Kind;
    --  Emit all necessary Why3 declarations to support Ada records. This also
-   --  supports variant records, private types and protected types.
+   --  supports variant records, private types and concurrent types.
    --  @param P the Why section to insert the declaration
    --  @param Theory the theory in which to insert the type declaration
    --  @param E the type entity to translate
