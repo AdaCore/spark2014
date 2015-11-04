@@ -141,7 +141,7 @@ package body SPARK_Frame_Conditions is
       Map.Insert (Key      => From,
                   Position => Position,
                   Inserted => Inserted);
-      Map.Update_Element (Map.Find (From), Add_To_Set'Access);
+      Map.Update_Element (Position, Add_To_Set'Access);
    end Add_To_Map;
 
    -------------------------------------------
