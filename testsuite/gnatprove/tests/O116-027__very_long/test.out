@@ -245,7 +245,7 @@ very_longs.adb:199:14: info: initialization of "Result" proved
 very_longs.adb:205:17: info: precondition proved
 very_longs.adb:211:21: info: precondition proved
 very_longs.adb:217:21: info: precondition proved
-very_longs.adb:224:07: medium: refined postcondition might fail (e.g. when Index = 1 and Digit_Count = 2 and Number_Of_Digits'Result = 2)
+very_longs.adb:224:07: medium: refined postcondition might fail (e.g. when Index = 2 and Digit_Count = 2 and Number_Of_Digits'Result = 2)
 very_longs.adb:225:45: medium: array index check might fail (e.g. when Number_Of_Digits'Result = 2)
 very_longs.adb:227:36: info: index check proved
 very_longs.adb:233:33: info: index check proved
