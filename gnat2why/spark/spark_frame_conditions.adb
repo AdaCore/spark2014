@@ -1125,16 +1125,17 @@ package body SPARK_Frame_Conditions is
 
          for J in Cur_SCCs'Range loop
             declare
-               Continue : Boolean := True;
+               Continue : Boolean;
                Updated  : Boolean;
             begin
-               while Continue loop
+               loop
                   Continue := False;
 
                   for K in Cur_SCCs (J)'Range loop
                      Update_Subprogram (Cur_SCCs (J) (K), Updated);
                      Continue := Continue or else Updated;
                   end loop;
+                  exit when not Continue;
                end loop;
             end;
          end loop;
