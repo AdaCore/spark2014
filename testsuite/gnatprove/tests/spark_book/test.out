@@ -116,7 +116,7 @@ bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Items" pro
 bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Rear" proved
 bounded_queue_example_v1.adb:20:04: warning: assuming "Put_Line" has no effect on global items
 bounded_queue_example_v1.adb:20:04: warning: no Global contract available for "Put_Line"
-bounded_queue_example_v1.adb:20:42: medium: range check might fail
+bounded_queue_example_v1.adb:20:42: low: range check might fail
 bounded_queue_example_v1.adb:20:59: info: initialization of "Value" proved
 bounded_queue_v1.adb:20:32: medium: array index check might fail (e.g. when Queue = 1)
 bounded_queue_v1.adb:25:32: medium: array index check might fail (e.g. when Queue = 1)
@@ -352,7 +352,7 @@ datebook.adb:45:71: info: length check proved
 datebook.adb:80:17: info: initialization of "Found" proved
 datebook.adb:86:54: info: initialization of "Available" proved
 datebook.adb:86:69: info: length check proved
-datebook.adb:86:69: medium: range check might fail
+datebook.adb:86:69: low: range check might fail
 datebook.adb:87:21: info: range check proved
 datebook.adb:88:54: info: initialization of "Available" proved
 datebook.adb:89:45: info: initialization of "Available" proved
@@ -918,7 +918,7 @@ search_demo.adb:23:18: warning: assuming "Put_Line" has no effect on global item
 search_demo.adb:23:18: warning: no Global contract available for "Put_Line"
 search_demo.adb:25:18: warning: assuming "Put_Line" has no effect on global items
 search_demo.adb:25:18: warning: no Global contract available for "Put_Line"
-search_demo.adb:25:63: medium: range check might fail
+search_demo.adb:25:63: low: range check might fail
 search_demo.adb:25:79: info: initialization of "Result_Index" proved
 searchers.adb:18:30: info: initialization of "Low_Index" proved
 searchers.adb:18:50: info: initialization of "High_Index" proved

@@ -467,12 +467,12 @@ bio.adb:122:25: info: initialization of "C27b" proved, in call inlined at bio.ad
 bio.adb:122:25: info: initialization of "C4b" proved
 bio.adb:127:14: info: initialization of "Result" proved
 bio.adb:127:14: info: initialization of "Result" proved, in call inlined at bio.adb:181
-bio.adb:165:38: medium: range check might fail, in call inlined at bio.adb:183
-bio.adb:166:12: medium: range check might fail, in call inlined at bio.adb:183
+bio.adb:165:38: low: range check might fail, in call inlined at bio.adb:183
+bio.adb:166:12: low: range check might fail, in call inlined at bio.adb:183
 bio.adb:166:28: info: initialization of "TheCodeName" proved, in call inlined at bio.adb:183
-bio.adb:166:41: medium: range check might fail, in call inlined at bio.adb:183
-bio.adb:167:12: medium: range check might fail, in call inlined at bio.adb:183
-bio.adb:167:56: medium: range check might fail, in call inlined at bio.adb:183
+bio.adb:166:41: low: range check might fail, in call inlined at bio.adb:183
+bio.adb:167:12: low: range check might fail, in call inlined at bio.adb:183
+bio.adb:167:56: low: range check might fail, in call inlined at bio.adb:183
 bio.adb:173:42: info: initialization of "Result" proved, in call inlined at bio.adb:183
 bio.adb:173:42: info: length check proved, in call inlined at bio.adb:183
 bio.adb:173:45: info: initialization of "FullString" proved
@@ -738,9 +738,9 @@ cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.MilliSec" 
 cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Month" proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Year" proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.Role" proved
-cert-attr.adb:38:09: medium: range check might fail
-cert-attr.adb:39:09: medium: range check might fail
-cert-attr.adb:40:09: medium: range check might fail
+cert-attr.adb:38:09: low: range check might fail
+cert-attr.adb:39:09: low: range check might fail
+cert-attr.adb:40:09: low: range check might fail
 cert-attr.adb:47:43: info: initialization of "LocalUser" proved
 cert-attr.adb:47:43: info: length check proved
 cert-attr.adb:47:46: info: initialization of "FullString" proved
@@ -815,9 +815,9 @@ cert-id.ads:92:21: info: initialization of "Contents.Subject.NameLength" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.AlgorithmID" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyID" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyLength" proved
-cert.adb:63:09: medium: range check might fail
-cert.adb:64:09: medium: range check might fail
-cert.adb:65:09: medium: range check might fail
+cert.adb:63:09: low: range check might fail
+cert.adb:64:09: low: range check might fail
+cert.adb:65:09: low: range check might fail
 cert.adb:71:43: info: initialization of "LocalUser" proved
 cert.adb:71:43: info: length check proved
 cert.adb:71:46: info: initialization of "FullString" proved
@@ -1288,38 +1288,38 @@ configdata.ads:247:08: info: initialization of "NotAfter.MilliSec" proved
 configdata.ads:247:08: info: initialization of "NotAfter.Month" proved
 configdata.ads:247:08: info: initialization of "NotAfter.Year" proved
 configuration.adb:99:57: info: division check proved
-configuration.adb:99:63: medium: range check might fail
-configuration.adb:100:12: medium: range check might fail
+configuration.adb:99:63: low: range check might fail
+configuration.adb:100:12: low: range check might fail
 configuration.adb:100:59: info: division check proved
-configuration.adb:100:65: medium: range check might fail
-configuration.adb:101:12: medium: range check might fail
+configuration.adb:100:65: low: range check might fail
+configuration.adb:101:12: low: range check might fail
 configuration.adb:101:60: info: division check proved
-configuration.adb:101:66: medium: range check might fail
-configuration.adb:102:12: medium: range check might fail
+configuration.adb:101:66: low: range check might fail
+configuration.adb:102:12: low: range check might fail
 configuration.adb:102:58: info: division check proved
-configuration.adb:102:64: medium: range check might fail
-configuration.adb:103:12: medium: range check might fail
-configuration.adb:103:58: medium: range check might fail
-configuration.adb:104:12: medium: range check might fail
+configuration.adb:102:64: low: range check might fail
+configuration.adb:103:12: low: range check might fail
+configuration.adb:103:58: low: range check might fail
+configuration.adb:104:12: low: range check might fail
 configuration.adb:104:19: info: range check proved
-configuration.adb:104:64: medium: range check might fail
-configuration.adb:105:12: medium: range check might fail
+configuration.adb:104:64: low: range check might fail
+configuration.adb:105:12: low: range check might fail
 configuration.adb:105:19: info: range check proved
-configuration.adb:105:62: medium: range check might fail
-configuration.adb:106:12: medium: range check might fail
+configuration.adb:105:62: low: range check might fail
+configuration.adb:106:12: low: range check might fail
 configuration.adb:106:19: info: range check proved
-configuration.adb:106:62: medium: range check might fail
-configuration.adb:107:12: medium: range check might fail
-configuration.adb:107:62: medium: range check might fail
-configuration.adb:108:12: medium: range check might fail
-configuration.adb:108:55: medium: range check might fail
-configuration.adb:109:12: medium: range check might fail
+configuration.adb:106:62: low: range check might fail
+configuration.adb:107:12: low: range check might fail
+configuration.adb:107:62: low: range check might fail
+configuration.adb:108:12: low: range check might fail
+configuration.adb:108:55: low: range check might fail
+configuration.adb:109:12: low: range check might fail
 configuration.adb:109:64: info: division check proved
-configuration.adb:109:72: medium: range check might fail
-configuration.adb:110:12: medium: range check might fail
+configuration.adb:109:72: low: range check might fail
+configuration.adb:110:12: low: range check might fail
 configuration.adb:110:63: info: division check proved
-configuration.adb:110:71: medium: range check might fail
-configuration.adb:111:12: medium: range check might fail
+configuration.adb:110:71: low: range check might fail
+configuration.adb:111:12: low: range check might fail
 configuration.adb:116:26: info: initialization of "Str" proved
 configuration.adb:116:26: info: length check proved
 configuration.adb:116:26: medium: range check might fail
@@ -1746,9 +1746,9 @@ enclave.ads:603:13: info: postcondition proved
 enclave.ads:632:29: medium: precondition might fail
 enclave.ads:642:29: medium: precondition might fail
 enclave.ads:648:30: medium: precondition might fail
-enrolment.adb:66:66: medium: range check might fail
-enrolment.adb:67:55: medium: range check might fail
-enrolment.adb:67:63: medium: range check might fail
+enrolment.adb:66:66: low: range check might fail
+enrolment.adb:67:55: low: range check might fail
+enrolment.adb:67:63: low: range check might fail
 enrolment.adb:71:40: info: initialization of "Result" proved
 enrolment.adb:71:40: info: length check proved
 enrolment.adb:71:43: info: length check proved
@@ -1834,16 +1834,16 @@ keyboard.ads:76:20: info: initialization of "DataPresence" proved
 keyboard.ads:77:20: info: initialization of "Data.Length" proved
 keyboard.ads:77:20: info: initialization of "Data.Text" proved
 keystore.adb:58:06: info: length check proved
-keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:268
-keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:276
-keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:284
-keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:347
-keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:355
-keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:363
-keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:542
-keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:694
-keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:762
-keystore.adb:112:09: medium: range check might fail, in call inlined at keystore.adb:847
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:268
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:276
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:284
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:347
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:355
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:363
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:542
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:694
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:762
+keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:847
 keystore.adb:112:40: info: initialization of "RetVal" proved, in call inlined at keystore.adb:542
 keystore.adb:112:40: info: initialization of "RetVal" proved, in call inlined at keystore.adb:694
 keystore.adb:112:40: info: initialization of "RetVal" proved, in call inlined at keystore.adb:762
@@ -2249,8 +2249,8 @@ screen.adb:475:54: info: initialization of "AlarmThreshold" proved, in call inli
 screen.adb:475:54: info: initialization of "MinPreservedLog" proved, in call inlined at screen.adb:651
 screen.adb:475:59: info: division check proved, in call inlined at screen.adb:651
 screen.adb:475:59: info: division check proved, in call inlined at screen.adb:657
-screen.adb:475:67: medium: range check might fail, in call inlined at screen.adb:651
-screen.adb:475:67: medium: range check might fail, in call inlined at screen.adb:657
+screen.adb:475:67: low: range check might fail, in call inlined at screen.adb:651
+screen.adb:475:67: low: range check might fail, in call inlined at screen.adb:657
 screen.adb:476:38: info: length check proved, in call inlined at screen.adb:651
 screen.adb:476:38: info: length check proved, in call inlined at screen.adb:657
 screen.adb:478:37: info: initialization of "Result" proved
@@ -2701,11 +2701,11 @@ tokenreader.adb:97:40: info: range check proved
 tokenreader.adb:116:39: info: range check proved
 tokenreader.adb:135:37: info: range check proved
 tokenreader.adb:164:07: info: no contextual analysis of "MakeDescription" (nested subprogram)
-tokenreader.adb:173:47: medium: range check might fail
-tokenreader.adb:174:12: medium: range check might fail
-tokenreader.adb:174:55: medium: range check might fail
-tokenreader.adb:175:12: medium: range check might fail
-tokenreader.adb:175:56: medium: range check might fail
+tokenreader.adb:173:47: low: range check might fail
+tokenreader.adb:174:12: low: range check might fail
+tokenreader.adb:174:55: low: range check might fail
+tokenreader.adb:175:12: low: range check might fail
+tokenreader.adb:175:56: low: range check might fail
 tokenreader.adb:180:43: info: length check proved
 tokenreader.adb:180:46: medium: length check might fail
 tokenreader.adb:182:23: info: length check proved
@@ -2804,7 +2804,7 @@ userentry.adb:361:21: medium: precondition might fail
 userentry.adb:375:16: info: initialization of "FingerPresence" proved
 userentry.adb:379:24: medium: precondition might fail
 userentry.adb:419:33: info: initialization of "Status" constituent of "State" proved
-userentry.adb:476:15: medium: range check might fail
+userentry.adb:476:15: low: range check might fail
 userentry.adb:482:45: info: length check proved
 userentry.adb:482:48: info: initialization of "FullString" proved
 userentry.adb:482:48: info: length check proved
@@ -3077,3 +3077,6 @@ usertoken.ads:179:36: info: initialization of "AuthCertOK" proved
 usertoken.ads:223:07: info: initialization of "Description" proved
 usertoken.ads:224:07: info: initialization of "TokenOK" proved
 usertoken.ads:263:27: info: initialization of "Success" proved
+
+
+

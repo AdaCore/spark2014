@@ -77,13 +77,13 @@ copy.adb:283:19: info: initialization of "Count" proved
 copy.adb:284:28: info: initialization of "Count" proved
 copy.adb:284:34: info: overflow check proved
 copy.adb:291:16: info: precondition proved
-copy.adb:292:73: medium: range check might fail
+copy.adb:292:73: low: range check might fail
 copy.adb:293:19: info: precondition proved
 copy.adb:296:16: info: precondition proved
 copy.adb:298:16: info: precondition proved
 copy.adb:299:16: info: precondition proved
 copy.adb:305:13: info: precondition proved
-copy.adb:305:55: medium: range check might fail
+copy.adb:305:55: low: range check might fail
 copy.adb:306:23: info: precondition proved
 copy.adb:309:13: info: precondition proved
 copy.adb:311:13: info: precondition proved

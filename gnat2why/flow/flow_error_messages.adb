@@ -417,7 +417,7 @@ package body Flow_Error_Messages is
          else Opt_Result);
 
       function Create_Pretty_Cntexmp (Cntexmp : JSON_Value;
-                                  VC_Loc : Source_Ptr) return JSON_Value;
+                                      VC_Loc  : Source_Ptr) return JSON_Value;
       --  Create pretty printed counterexample.
       --  Note that deep copy of Cntexmp is made and thus the content of
       --  Cntexmp is not impacted by pretty printing.
@@ -425,12 +425,23 @@ package body Flow_Error_Messages is
       --  @param VC_Loc the location of the construct that triggers VC
       --  @return pretty printed counterexample.
 
+      function Get_Cntexmp_One_Liner
+        (Cntexmp : JSON_Value; VC_Loc : Source_Ptr) return String;
+      --  Get the part of the counterexample corresponding to the location of
+      --  the construct that triggers VC.
+
+      function Get_Severity
+        (N         : Node_Id;
+         Is_Proved : Boolean;
+         Tag       : VC_Kind) return Msg_Severity;
+      --  @result Severity of the proof message
+
       ---------------------------
       -- Create_Pretty_Cntexmp --
       ---------------------------
 
       function Create_Pretty_Cntexmp (Cntexmp : JSON_Value;
-                                  VC_Loc : Source_Ptr) return JSON_Value
+                                      VC_Loc  : Source_Ptr) return JSON_Value
       is
          procedure Gen_JSON_Object is new
            Gen_Map_JSON_Object (Mapped => JSON_Value);
@@ -1035,14 +1046,10 @@ package body Flow_Error_Messages is
          return Pretty_Cntexmp;
       end Create_Pretty_Cntexmp;
 
-      function Get_Cntexmp_One_Liner
-        (Cntexmp : JSON_Value; VC_Loc : Source_Ptr) return String;
-      --  Get the part of the counterexample corresponding to the location of
-      --  the construct that triggers VC.
-
       ---------------------------
       -- Get_Cntexmp_One_Liner --
       ---------------------------
+
       function Get_Cntexmp_One_Liner
         (Cntexmp : JSON_Value; VC_Loc : Source_Ptr) return String
       is
@@ -1106,6 +1113,41 @@ package body Flow_Error_Messages is
          return Cntexmp_Line_Str;
       end Get_Cntexmp_One_Liner;
 
+      ------------------
+      -- Get_Severity --
+      ------------------
+
+      function Get_Severity
+        (N         : Node_Id;
+         Is_Proved : Boolean;
+         Tag       : VC_Kind) return Msg_Severity
+      is
+         Result : Msg_Severity;
+
+      begin
+         if Is_Proved then
+            Result := Info_Kind;
+
+         --  Range checks on concatenation of strings are likely to be
+         --  unprovable because argument types do not bound the size of the
+         --  strings being concatenated. Issue a low severity message in such
+         --  cases.
+
+         elsif Tag = VC_Range_Check
+           and then Is_String_Type (Etype (N))
+           and then Nkind (N) = N_Op_Concat
+         then
+            Result := Low_Check_Kind;
+
+         --  Default for unproved checks is to issue a medium severity message
+
+         else
+            Result := Medium_Check_Kind;
+         end if;
+
+         return Result;
+      end Get_Severity;
+
       Msg2     : constant String :=
         Compute_Message (Msg, N);
       Slc      : constant Source_Ptr := Compute_Sloc (N, Place_First);
@@ -1117,15 +1159,15 @@ package body Flow_Error_Messages is
       Msg3     : constant String :=
         (if One_Liner = "" then Msg2
          else (Msg2 & " (e.g. when " & One_Liner & ")"));
-      Severity : constant Msg_Severity :=
-        (if Is_Proved then Info_Kind else Medium_Check_Kind);
+      Severity : constant Msg_Severity := Get_Severity (N, Is_Proved, Tag);
       Suppr    : String_Id := No_String;
       Msg_Id   : Message_Id := No_Message_Id;
       Is_Annot : Boolean;
       Info     : Annotated_Range;
 
-   begin
+   --  Start of processing for Error_Msg_Proof
 
+   begin
       --  The call to Check_Is_Annotated needs to happen on all paths, even
       --  though we only need the info in the Check_Kind path. The reason is
       --  that also in the Info_Kind case, we want to know whether the check
