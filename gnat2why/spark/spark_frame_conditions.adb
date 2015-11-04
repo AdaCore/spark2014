@@ -1061,7 +1061,6 @@ package body SPARK_Frame_Conditions is
             end if;
       end Update_Subprogram;
 
-      Cu        : Name_Graphs.Cursor;
       Subp_Rest : Name_Sets.Set;
 
       use Name_Graphs;
@@ -1077,18 +1076,14 @@ package body SPARK_Frame_Conditions is
       --  K523-007) until a proper treatment of generics. We take into account
       --  all subprograms called.
 
-      Cu := Callers.First;
-      while Has_Element (Cu) loop
-         Scopes.Include (Key (Cu));
-         Next (Cu);
+      for C in Callers.Iterate loop
+         Scopes.Include (Key (C));
       end loop;
 
       --  Initialize the work-set
 
-      Cu := Calls.First;
-      while Has_Element (Cu) loop
-         Subp_Rest.Insert (Key (Cu));
-         Next (Cu);
+      for C in Calls.Iterate loop
+         Subp_Rest.Insert (Key (C));
       end loop;
 
       declare
