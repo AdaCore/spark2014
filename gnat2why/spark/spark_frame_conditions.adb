@@ -131,19 +131,17 @@ package body SPARK_Frame_Conditions is
          Set.Include (To);
       end Add_To_Set;
 
+      Inserted : Boolean;
+      Position : Name_Graphs.Cursor;
+
    --  Start of processing for Add_To_Map
 
    begin
-      if Map.Contains (From) then
-         Map.Update_Element (Map.Find (From), Add_To_Set'Access);
-      else
-         declare
-            S : Name_Sets.Set;
-         begin
-            S.Include (To);
-            Map.Insert (From, S);
-         end;
-      end if;
+      --  Try to insert a default value (i.e. empty set) and then update it
+      Map.Insert (Key      => From,
+                  Position => Position,
+                  Inserted => Inserted);
+      Map.Update_Element (Map.Find (From), Add_To_Set'Access);
    end Add_To_Map;
 
    -------------------------------------------
