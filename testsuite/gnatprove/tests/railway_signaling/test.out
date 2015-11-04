@@ -43,7 +43,7 @@ trains.adb:144:82: info: range check proved
 trains.adb:146:19: info: loop invariant initialization proved
 trains.adb:146:19: info: loop invariant preservation proved
 trains.adb:153:16: info: assertion proved
-trains.adb:154:16: info: assertion proved
+trains.adb:154:31: medium: assertion might fail, cannot prove (Previous_Tracks_On_Orange_Or_Red)
 trains.adb:155:16: info: assertion proved
 trains.ads:28:06: info: length check proved
 trains.ads:47:06: info: length check proved
