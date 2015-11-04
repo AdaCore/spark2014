@@ -129,7 +129,7 @@ maths_pack.adb:15:18: info: overflow check proved
 maths_pack.adb:15:20: info: precondition proved
 maths_pack.adb:23:14: info: range check proved
 maths_pack.adb:31:14: info: range check proved
-maths_pack.ads:18:16: medium: postcondition might fail
+maths_pack.ads:18:16: info: postcondition proved
 pid_pack.adb:47:35: info: overflow check proved, in instantiation at controller_pack.ads:16
 pid_pack.adb:47:35: info: overflow check proved, in instantiation at controller_pack.ads:24
 pid_pack.adb:47:35: info: overflow check proved, in instantiation at stabilizer_pack.ads:45
