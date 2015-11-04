@@ -1,0 +1,4 @@
+floatround.adb:7:44: medium: predicate check might fail
+floatround.adb:7:47: info: range check proved
+floatround.adb:11:15: info: precondition proved
+floatround.adb:11:24: info: initialization of "X1" proved
