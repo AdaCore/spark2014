@@ -54,23 +54,13 @@ package body Why.Atree.Sprint is
    -----------------------------------
 
    --  Counterexamples use Why3 locations, contrary to VCs which are based
-   --  on special GP_Sloc labels. Location information is printed in the Why3
-   --  output file for every change of file or line.
-
-   Prev_Sloc : Source_Ptr := -1;
-   --  The source code location of the node that was printed before the
-   --  currently printed node.
+   --  on special GP_Sloc labels.
 
    Curr_Sloc : Source_Ptr := -1;
    --  The source code location of currently printed node
 
-   procedure Print_Sloc_Tag (Force : Boolean := False);
+   procedure Print_Sloc_Tag;
    --  Print the location tag for currently printed node.
-   --  The tag is printed only if Force is set to true, the location of the ada
-   --  node corresponing to the currently printed node is different from the
-   --  location of the ada node corresponding to the previously printed node.
-   --  @param Force if set to true, the location tag is prined even if the
-   --  location is the same as the previously printed location.
 
    -----------------------
    -- Local Subprograms --
@@ -931,7 +921,7 @@ package body Why.Atree.Sprint is
             --  printing of location tag, because location tag before
             --  "val" or "let" keywords is not alowed in why.
             --  See printing of location tags in [Print_Node].
-            Print_Sloc_Tag (Force => True);
+            Print_Sloc_Tag;
             P (O, Get_Labels (Node), As_String => True);
             Relative_Indent (O, 1);
             NL (O);
@@ -1020,7 +1010,7 @@ package body Why.Atree.Sprint is
       --  printing of location tag, because location tag before
       --  "val" keyword is not alowed in why.
       --  See printing of location tags in [Print_Node].
-      Print_Sloc_Tag (Force => True);
+      Print_Sloc_Tag;
       P (O, Get_Labels (Node), As_String => True);
 
       P (O, " : ");
@@ -1158,7 +1148,7 @@ package body Why.Atree.Sprint is
       if Labels.Contains (NID (Model_VC_Label)) or else
         Labels.Contains (NID (Model_VC_Post_Label))
       then
-         Print_Sloc_Tag (Force => True);
+         Print_Sloc_Tag;
       end if;
       P (O, Labels, As_String => True);
       Print_Node (+Get_Def (Node));
@@ -1309,12 +1299,12 @@ package body Why.Atree.Sprint is
    procedure Print_Node (N : Why_Node_Id) is
       N_Kind : constant Why_Node_Kind := Get_Kind (N);
    begin
-      Prev_Sloc := Curr_Sloc;
-      Curr_Sloc := First_Sloc (Get_Ada_Node (N));
+      if Get_Ada_Node (N) /= Empty then
+         Curr_Sloc := First_Sloc (Get_Ada_Node (N));
+      end if;
 
       case N_Kind is
          when W_Raise |
-              W_Try_Block |
               W_While_Loop |
               W_Abstract_Expr |
               W_Any_Expr |
@@ -1329,6 +1319,7 @@ package body Why.Atree.Sprint is
 
             --  Location tags are printed in order to display correct locations
             --  in counterexamples.
+
             Print_Sloc_Tag;
          when others => null;
       end case;
@@ -1645,7 +1636,7 @@ package body Why.Atree.Sprint is
    -- Print_Sloc_Tag --
    --------------------
 
-   procedure Print_Sloc_Tag (Force : Boolean := False) is
+   procedure Print_Sloc_Tag is
       File : constant String := File_Name (Curr_Sloc);
       Line : constant Physical_Line_Number :=
         Get_Physical_Line_Number (Curr_Sloc);
@@ -1656,13 +1647,8 @@ package body Why.Atree.Sprint is
         "0" & " " &  --  dummy column1 0
         "0" & "#";   --  dummy column2 0
    begin
-      if Force
-        or else Line /= Get_Physical_Line_Number (Prev_Sloc)
-        or else File /= File_Name (Prev_Sloc)
-      then
-         P (O, Sloc_Tag);
-         P (O, " ");
-      end if;
+      P (O, Sloc_Tag);
+      P (O, " ");
    end Print_Sloc_Tag;
 
    ---------------------
