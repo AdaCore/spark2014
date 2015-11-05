@@ -49,7 +49,7 @@ unit3.ads:13:20: info: postcondition proved
 unit3.ads:13:38: info: initialization of "X.C2" proved
 unit3.ads:13:56: info: initialization of "X.C3" proved
 unit3.ads:24:20: medium: class-wide precondition might be stronger than overridden one (e.g. when X = (C1 => 0, C2 => 0, C3 => 2147483647))
-unit3.ads:25:20: medium: class-wide postcondition might be weaker than overridden one (e.g. when X = (C1 => 0, C2 => 0, C3 => 0))
+unit3.ads:25:20: medium: class-wide postcondition might be weaker than overridden one (e.g. when X = (C1 => -2, C2 => 0, C3 => 0))
 unit3.ads:25:36: medium: overflow check might fail (e.g. when X = (C1 => 2147483647, others => ?))
 unit3.ads:25:65: medium: overflow check might fail (e.g. when X = (C2 => 2147483647, others => ?))
 unit3.ads:25:94: medium: overflow check might fail (e.g. when X = (C3 => 2147483647, others => ?))
