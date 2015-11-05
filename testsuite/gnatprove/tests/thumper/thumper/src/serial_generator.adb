@@ -8,7 +8,6 @@
 --      Peter Chapin <PChapin@vtc.vsc.edu>
 ---------------------------------------------------------------------------
 pragma SPARK_Mode(On);
-with Ada.Calendar;
 
 package body Serial_Generator
   with Refined_State => (State => Current)

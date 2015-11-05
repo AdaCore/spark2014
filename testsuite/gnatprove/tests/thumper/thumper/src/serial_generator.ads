@@ -10,11 +10,13 @@
 --      Peter Chapin <PChapin@vtc.vsc.edu>
 ---------------------------------------------------------------------------
 pragma SPARK_Mode(On);
+with Ada.Calendar;
+pragma Elaborate_All (Ada.Calendar);
 
 package Serial_Generator
   with
      Abstract_State => State,
-     Initializes => State
+     Initializes => (State => Ada.Calendar.Clock_Time)
 is
    type Serial_Number_Type is mod 2**64;
 
@@ -28,4 +30,3 @@ is
         Depends => ((State, Number) => State);
 
 end Serial_Generator;
-
