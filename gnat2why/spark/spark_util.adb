@@ -3299,13 +3299,14 @@ package body SPARK_Util is
    -- Subp_Location --
    -------------------
 
+   --  Only consider the first location in the chain of locations for an
+   --  instantiation or an inlining. This matches the location given by
+   --  users inside a generic/inlined subprogram.
+
    function Subp_Location (E : Entity_Id) return String is
       S : constant Subp_Type := Entity_To_Subp (E);
       B : constant Base_Sloc := Subp_Sloc (S).First_Element;
-
    begin
-      --  ??? Probably need to change this code to take M412-032 into account
-
       return GP_Subp_Marker & Base_Sloc_File (B) & ":" & Image (B.Line, 1);
    end Subp_Location;
 

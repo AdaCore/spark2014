@@ -1088,43 +1088,52 @@ ASCII.LF;
                     With_Help => False);
       end if;
 
-      declare
-         Limit_String : GNAT.Strings.String_Access := null;
-      begin
+      --  Unless -U is specified, use of --limit-line or --limit-subp leads
+      --  to only the file with the given line or subprogram to be analyzed.
+      --  Specifying -U with --limit-line or --limit-subp is useful to
+      --  force analysis of all files, when the line or subprogram is
+      --  inside a generic or itself a generic, so that all instances of
+      --  the line/subprogram are analyzed.
 
-         --  Limit_Line and Limit_Subp both imply -u for the corresponding
-         --  file. We take care of that using the Limit_String variable, note
-         --  that "Limit_Line" is stronger naturally.
+      if not All_Projects then
+         declare
+            Limit_String : GNAT.Strings.String_Access := null;
 
-         if Limit_Subp /= null and then Limit_Subp.all /= "" then
-            Limit_String := Limit_Subp;
-         end if;
+         begin
+            --  Limit_Line and Limit_Subp both imply -u for the corresponding
+            --  file. We take care of that using the Limit_String variable,
+            --  note that "Limit_Line" is stronger naturally.
 
-         if Limit_Line /= null and then Limit_Line.all /= "" then
-            Limit_String := Limit_Line;
-         end if;
+            if Limit_Subp /= null and then Limit_Subp.all /= "" then
+               Limit_String := Limit_Subp;
+            end if;
 
-         if Limit_String /= null then
-            declare
-               Index : Integer := Limit_String.all'First;
-            begin
-               while Index < Limit_String.all'Last and then
-                 Limit_String.all (Index) /= ':' loop
-                  Index := Index + 1;
-               end loop;
-               if Index = Limit_String.all'Last then
-                  Abort_Msg
-                    (Config,
-                     "limit-line: incorrect line specification" &
-                       " - missing ':' followed by operand",
-                     With_Help => False);
-               end if;
-               File_List.Append
-                 (Limit_String.all (Limit_String.all'First .. Index - 1));
-            end;
-            Only_Given := True;
-         end if;
-      end;
+            if Limit_Line /= null and then Limit_Line.all /= "" then
+               Limit_String := Limit_Line;
+            end if;
+
+            if Limit_String /= null then
+               declare
+                  Index : Integer := Limit_String.all'First;
+               begin
+                  while Index < Limit_String.all'Last and then
+                    Limit_String.all (Index) /= ':' loop
+                     Index := Index + 1;
+                  end loop;
+                  if Index = Limit_String.all'Last then
+                     Abort_Msg
+                       (Config,
+                        "limit-line: incorrect line specification" &
+                          " - missing ':' followed by operand",
+                        With_Help => False);
+                  end if;
+                  File_List.Append
+                    (Limit_String.all (Limit_String.all'First .. Index - 1));
+               end;
+               Only_Given := True;
+            end if;
+         end;
+      end if;
 
       if Is_Coq_Prover then
          Prepare_Prover_Lib (Config);

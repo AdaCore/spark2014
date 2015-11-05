@@ -1,1 +1,3 @@
-dummy output
+gene.adb:5:14: medium: overflow check might fail, in instantiation at main.adb:5 (e.g. when Y = 2147483647)
+gene2.adb:5:14: medium: overflow check might fail, in instantiation at main.adb:6 (e.g. when Y = 2147483647)
+gene.adb:5:14: medium: overflow check might fail, in instantiation at main.adb:5 (e.g. when Y = 2147483647)
