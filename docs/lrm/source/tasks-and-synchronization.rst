@@ -147,9 +147,7 @@ are in |SPARK|.
 
 7. A ``global_item`` occurring in a Global aspect specification of a
    task unit or of a protected operation shall not denote an object
-   or state abstraction which is not synchronized unless the
-   Part_Of aspect of the object or state abstraction denotes the
-   task or protected unit.
+   or state abstraction which is not synchronized.
 
 .. _tu-tasks_and_synchronization-07:
 
