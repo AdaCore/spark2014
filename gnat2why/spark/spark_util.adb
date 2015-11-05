@@ -103,7 +103,7 @@ package body SPARK_Util is
    function Entity_In_Ext_Axioms (E : Entity_Id) return Boolean is
      (Present (Containing_Package_With_Ext_Axioms (E))
       and then Present (SPARK_Pragma (Containing_Package_With_Ext_Axioms (E)))
-      and then Get_SPARK_Mode_From_Pragma
+      and then Get_SPARK_Mode_From_Annotation
         (SPARK_Pragma (Containing_Package_With_Ext_Axioms (E))) = On);
 
    function Is_Access_To_Ext_Axioms_Discriminant

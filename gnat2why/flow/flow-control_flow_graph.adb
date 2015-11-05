@@ -3542,7 +3542,7 @@ package body Flow.Control_Flow_Graph is
          if No (Init_Pragma)
            and then Present (Private_Decls)
            and then (No (SPARK_Aux_Pragma (Defining_Entity (N)))
-                       or else Get_SPARK_Mode_From_Pragma
+                       or else Get_SPARK_Mode_From_Annotation
                                (SPARK_Aux_Pragma (Defining_Entity (N))) /= Off)
          then
             --  We only process the private declarations if there is no

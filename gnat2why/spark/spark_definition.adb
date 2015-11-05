@@ -2603,7 +2603,8 @@ package body SPARK_Definition is
 
             pragma Assert
               (Present (SPARK_Pragma (E))
-               and then Get_SPARK_Mode_From_Pragma (SPARK_Pragma (E)) = On);
+                 and then
+               Get_SPARK_Mode_From_Annotation (SPARK_Pragma (E)) = On);
 
             --  For other verifications, use the SPARK pragma of the package
 
@@ -2618,7 +2619,7 @@ package body SPARK_Definition is
                if Present (Private_Declarations (Package_Specification (E)))
                  and then Present (SPARK_Aux_Pragma (E))
                  and then
-                   Get_SPARK_Mode_From_Pragma (SPARK_Aux_Pragma (E)) /= Off
+                   Get_SPARK_Mode_From_Annotation (SPARK_Aux_Pragma (E)) /= Off
                then
                   Mark_Violation
                     ("private part of package with External_Axiomatization",
@@ -2950,7 +2951,7 @@ package body SPARK_Definition is
 
             return
               Present (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl)))
-              and then Get_SPARK_Mode_From_Pragma
+              and then Get_SPARK_Mode_From_Annotation
                 (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl))) = Off;
          end Is_Private_Entity_Mode_Off;
 
@@ -4005,7 +4006,7 @@ package body SPARK_Definition is
 
       if Entity_In_Ext_Axioms (Id) then
          if Present (SPARK_Pragma (Defining_Entity (N)))
-           and then Get_SPARK_Mode_From_Pragma
+           and then Get_SPARK_Mode_From_Annotation
              (SPARK_Pragma (Defining_Entity (N))) /= Off
          then
             Mark_Violation ("Body of package with External_Axiomatization", N);
@@ -5035,7 +5036,7 @@ package body SPARK_Definition is
      --  current mode from the pragma.
 
      (if Nkind (Current_SPARK_Pragma) = N_Pragma then
-        Get_SPARK_Mode_From_Pragma (Current_SPARK_Pragma) = Mode
+        Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = Mode
 
      --  If Current_SPARK_Pragma is not a pragma node, then we are analyzing a
      --  deferred type aspect of a type marked to be in SPARK although no

@@ -568,7 +568,7 @@ package body Flow.Slice is
                         end if;
 
                         if Present (SPARK_Aux_Pragma (Scp))
-                          and then Get_SPARK_Mode_From_Pragma
+                          and then Get_SPARK_Mode_From_Annotation
                                      (SPARK_Aux_Pragma (Scp)) = Off
                         then
                            --  Eclosing scope has SPARK_Mode => Off
