@@ -33,6 +33,8 @@ with Sinput;                 use Sinput;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions;
 with SPARK_Util;             use SPARK_Util;
+with Ada.Strings;            use Ada.Strings;
+with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
 with String_Utils;           use String_Utils;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Builders;     use Why.Atree.Builders;
@@ -447,6 +449,15 @@ package body Gnat2Why.Decls is
 
             for D in 1 .. Var.Dim loop
                declare
+                  function Bound_Dimension_To_Str
+                    (Total_Dim, Num_Dim : Integer;
+                     Bound_Name : String) return String
+                  is
+                    (if Total_Dim = 1 then Bound_Name
+                     else Bound_Name &
+                       " (" & Trim (Integer'Image (Num_Dim), Both) &
+                       ")");
+
                   Ty_First   : constant W_Type_Id :=
                     Get_Typ (Var.Bounds (D).First);
                   Ty_Last    : constant W_Type_Id :=
@@ -461,7 +472,8 @@ package body Gnat2Why.Decls is
                        (Domain      => EW_Term,
                         Name        => To_Local (Var.Bounds (D).First),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Name_Id_Sets.Empty_Set,
+                        Labels      => Get_Counterexample_Labels
+                          (E, Bound_Dimension_To_Str (Var.Dim, D, "'First")),
                         Return_Type => Ty_First));
                   Emit
                     (File.Cur_Theory,
@@ -469,7 +481,8 @@ package body Gnat2Why.Decls is
                        (Domain      => EW_Term,
                         Name        => To_Local (Var.Bounds (D).Last),
                         Binders     => (1 .. 0 => <>),
-                        Labels      => Name_Id_Sets.Empty_Set,
+                        Labels      => Get_Counterexample_Labels
+                          (E, Bound_Dimension_To_Str (Var.Dim, D, "'Last")),
                         Return_Type => Ty_Last));
                end;
             end loop;

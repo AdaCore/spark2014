@@ -662,30 +662,48 @@ package body Flow_Error_Messages is
                         end if;
 
                         --  Or model elements are of the form:
-                        --    "Entity_Id"{".Entity_Id"}*
-                        --    The first Entity_Id corresponds to a variable,
-                        --    other to record fields.
-                        --  Split Name into sequence of Entity_Id
+                        --  Name ::= Parts
+                        --  Parts ::= Part Parts | <empty>
+                        --  Part ::= "Entity_Id" Added_Part
+                        --  Added_Part ::= "'" "Arbitrary text without '.'"
+                        --
+                        --  The Entity_Id in first Part corresponds to a
+                        --  variable, others to record fields.
+
+                        --  Split Name into sequence of Part
 
                         String_Split.Create (S => Name_Parts,
                                              From => Name,
                                              Separators => ".",
                                              Mode => String_Split.Single);
 
-                        --  For every Entity_Id, get information about it and
-                        --  insert it to the variable map being built
+                        --  For every Part, split it to Entity_Id and
+                        --  Added_Part and use these to get information needed
+                        --  to insert the part into the variable map being
+                        --  built.
 
                         for Var_Slice_Num in 1 .. String_Split.Slice_Count
                           (Name_Parts) loop
                            declare
                               use GNAT.String_Split;
 
-                              Field_Entity : constant Entity_Id :=
-                                Entity_Id'Value (Slice (Name_Parts,
-                                                 Var_Slice_Num));
-                              Field_Name : Unbounded_String :=
+                              --  Split Part to Entity_Id_Str and Added_Part
+                              Part : constant String :=
+                                Slice (Name_Parts, Var_Slice_Num);
+                              Tick_Index : constant Natural :=
+                                Index (Part, "'");
+                              Entity_Id_Str : constant String :=
+                                (if Tick_Index = 0 then Part
+                                 else Part (Part'First .. Tick_Index - 1));
+                              Added_Part : constant String :=
+                                (if Tick_Index = 0 then ""
+                                 else Part (Tick_Index .. Part'Last));
+
+                              Part_Entity : constant Entity_Id :=
+                                Entity_Id'Value (Entity_Id_Str);
+                              Part_Name : Unbounded_String :=
                                 To_Unbounded_String
-                                  (Source_Name (Field_Entity));
+                                  (Source_Name (Part_Entity) & Added_Part);
                               Current_Var_Or_Field : Var_Or_Field_Ptr;
 
                            begin
@@ -697,36 +715,36 @@ package body Flow_Error_Messages is
 
                                  if Kind = "old" and then
                                    Nkind_In
-                                     (Nkind (Parent (Field_Entity)),
+                                     (Nkind (Parent (Part_Entity)),
                                       N_Formal_Object_Declaration,
                                       N_Parameter_Specification) and then
-                                   Out_Present (Parent (Field_Entity))
+                                   Out_Present (Parent (Part_Entity))
                                  then
-                                    Field_Name := Field_Name & "'Old";
+                                    Part_Name := Part_Name & "'Old";
                                  elsif Kind = "result" then
-                                    Field_Name := Field_Name & "'Result";
+                                    Part_Name := Part_Name & "'Result";
                                  end if;
 
                                  --  Store variable name to Variable_List
                                  if not Vars_List.Contains
                                    (Variables.Variables_Order,
-                                    Field_Name)
+                                    Part_Name)
                                  then
                                     Vars_List.Append
                                       (Variables.Variables_Order,
-                                       Field_Name);
+                                       Part_Name);
                                  end if;
                               end if;
 
                               Current_Var_Or_Field := Insert_Var_Or_Field
-                                (Name   => To_String (Field_Name),
+                                (Name   => To_String (Part_Name),
                                  Kind   =>
                                    (if Var_Slice_Num = Slice_Count
                                         (Name_Parts) then
                                          Non_Record_Type
                                     else Record_Type),
                                  Value  => Value,
-                                 Entity => Field_Entity,
+                                 Entity => Part_Entity,
                                  Map    => Current_Subfields_Map);
 
                               if Current_Var_Or_Field.Kind = Record_Type then

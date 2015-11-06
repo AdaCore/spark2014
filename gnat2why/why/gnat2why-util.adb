@@ -262,10 +262,12 @@ package body Gnat2Why.Util is
    -------------------------------
 
    function Get_Counterexample_Labels
-     (E : Entity_Id) return Name_Id_Sets.Set
+     (E              : Entity_Id;
+      Append_To_Name : String := "") return Name_Id_Sets.Set
    is
       Labels : Name_Id_Sets.Set := Name_Id_Sets.Empty_Set;
-      Model_Trace : constant Name_Id_Sets.Set := Get_Model_Trace_Label (E);
+      Model_Trace : constant Name_Id_Sets.Set := Get_Model_Trace_Label
+        (E, False, Append_To_Name);
    begin
       --  Currently only generate values for scalar, record, and array
       --  variables in counterexamples.
@@ -574,7 +576,8 @@ package body Gnat2Why.Util is
 
    function Get_Model_Trace_Label
      (E               : Entity_Id;
-      Is_Record_Field : Boolean := False) return Name_Id_Sets.Set
+      Is_Record_Field : Boolean := False;
+      Append : String := "") return Name_Id_Sets.Set
    is
       Labels : Name_Id_Sets.Set := Name_Id_Sets.Empty_Set;
    begin
@@ -584,8 +587,8 @@ package body Gnat2Why.Util is
             (if E = Empty
                then ""
                else (if Is_Record_Field then "."
-                 else "") & Trim (Entity_Id'Image (E),
-                 Both) &
+                 else "") & Trim (Entity_Id'Image (E), Both) &
+                 Append &
                  --  Add information whether labels are generated for a
                  --  variable holding result of a function.
                  (if Ekind (E) = E_Function then "@result" else "")
