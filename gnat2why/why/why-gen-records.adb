@@ -1358,7 +1358,7 @@ package body Why.Gen.Records is
          B_Ident : constant W_Identifier_Id :=
            New_Identifier (Name => "b", Typ => Abstr_Ty);
       begin
-         if Ekind (E) not in Concurrent_Kind then
+         if not Is_Limited_View (E) then
             declare
                Condition : W_Pred_Id := True_Pred;
                Comp      : Entity_Id := First_Component_Or_Discriminant (E);
