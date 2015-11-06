@@ -561,15 +561,26 @@ package body Flow_Error_Messages is
                      return Var_Or_Field_Ptr
                   is
                   begin
-                     --  If the Kind is Non_Record_Type and Name is contained
-                     --  in Map, value of given counterexample element is
-                     --  inserted second time. In this case, do not use the
-                     --  first value, but create Element with new value.
-                     --  Note that this happens in the case of variables
-                     --  modfified in the loop. The value inserted for the
-                     --  first time is the value corresponding to 'Loop_Entry
-                     --  and displaying this kind of value is not yet
-                     --  supported.
+                     --  If the Kind is Non_Record_Type and Name is already
+                     --  contained in Map, value of given counterexample
+                     --  element is inserted second time. In this case, do not
+                     --  use the first value, but create Element with new
+                     --  value.
+                     --  Note that this happens if a loop is unrolled (see
+                     --  Gnat2Why.Expr.Loops.Wrap_Loop) and the VC for that the
+                     --  counterexample was generated is for a  loop iteration.
+                     --  In this case, there are both counterexample elements
+                     --  for variables in an unrolling of the loop and a loop
+                     --  iteration and these counterexample elements have the
+                     --  same names and locations (but can have different
+                     --  values). Note that in this case only the
+                     --  counterexample elements for the loop iteration are
+                     --  relevant for the proof. Counterexample elements are
+                     --  reported in the order in  that the corresponding
+                     --  variables are in generated why code and thus using the
+                     --  last counterexample elemement with given Name ensures
+                     --  the correct behavior.
+
                      if Contains (Map.all, Name) and then
                        Kind = Record_Type
                      then
