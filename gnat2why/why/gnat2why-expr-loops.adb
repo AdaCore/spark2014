@@ -1536,7 +1536,8 @@ package body Gnat2Why.Expr.Loops is
 
       Loop_Stmt : constant W_Prog_Id :=
         New_While_Loop
-          (Condition    => True_Prog,
+          (Ada_Node     => Loop_Id,
+           Condition    => True_Prog,
            Invariants   => User_Invariants,
            Loop_Content => Loop_Body);
 
