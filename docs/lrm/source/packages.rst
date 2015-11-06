@@ -2161,23 +2161,18 @@ abstraction on to external states which are given in this section.
 
 .. _tu-fe-refined_external_states-02:
 
-2. An External state abstraction shall have at least one ``constituent``
-   that is External state, or shall have a null refinement.
-
-.. _tu-fe-refined_external_states-03:
-
-3. An External state abstraction shall have each of the properties set to True
+2. An External state abstraction shall have each of the properties set to True
    which are True for any of its ``constituents``.
 
-.. _tu-cbatu-refined_external_states-04:
+.. _tu-cbatu-refined_external_states-03:
 
-4. Refined_Global aspects must respect the rules related to external
+3. Refined_Global aspects must respect the rules related to external
    properties of constituents which are external states given in
    :ref:`external_state` and :ref:`external_state-variables`.
 
-.. _tu-cbatu-refined_external_states-05:
+.. _tu-cbatu-refined_external_states-04:
 
-5. All other rules for Refined_State, Refined_Global and Refined_Depends aspect
+4. All other rules for Refined_State, Refined_Global and Refined_Depends aspect
    also apply.
 
 .. _etu-refined_external_states-lr:
