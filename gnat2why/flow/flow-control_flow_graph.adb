@@ -4789,9 +4789,9 @@ package body Flow.Control_Flow_Graph is
             --  Create vertices for the implicit formal parameter.
             The_PO : constant Flow_Id :=
               Concurrent_Object_Id
-                (Get_Enclosing_Concurrent_Object (E            => Called_Thing,
-                                                  Callsite     => Callsite,
-                                                  Entire       => False));
+                (Get_Enclosing_Concurrent_Object (E        => Called_Thing,
+                                                  Callsite => Callsite,
+                                                  Entire   => False));
 
             V      : Flow_Graphs.Vertex_Id;
          begin
@@ -5783,29 +5783,12 @@ package body Flow.Control_Flow_Graph is
       --  initial and final vertices.
       case FA.Kind is
          when Kind_Subprogram | Kind_Entry =>
-            declare
-               E : Entity_Id;
-               F : constant Flow_Id := Direct_Mapping_Id (FA.Analyzed_Entity);
-            begin
-               E := First_Formal (Subprogram_Spec);
-               while Present (E) loop
-                  Create_Initial_And_Final_Vertices (E, Parameter_Kind, FA);
-                  E := Next_Formal (E);
-               end loop;
-
-               --  If the subprogram is directly enclosed in a protected object
-               --  then add the protected object as a formal parameter to the
-               --  subprogram.
-               if Belongs_To_Protected_Object (F) then
-                  Create_Initial_And_Final_Vertices
-                    (Get_Enclosing_Concurrent_Object (F),
-                     Parameter_Kind,
-                     FA);
-               end if;
-            end;
+            for Param of Get_Formals (FA.Analyzed_Entity) loop
+               Create_Initial_And_Final_Vertices (Param, Parameter_Kind, FA);
+            end loop;
 
          when Kind_Task =>
-            --  Tasks see themselves as formal in out parameters.
+            --  Tasks see themselves as formal "in out" parameters.
             --
             --  This includes:
             --    * variables that are Part_Of tasks,

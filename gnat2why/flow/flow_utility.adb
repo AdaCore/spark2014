@@ -826,7 +826,6 @@ package body Flow_Utility is
       All_Reads     : Flow_Id_Sets.Set;
       All_Writes    : Flow_Id_Sets.Set;
 
-      Param         : Entity_Id;
       F             : Flow_Id;
 
       function Trimming_Required return Boolean;
@@ -887,8 +886,7 @@ package body Flow_Utility is
 
          --  Add formal parameters so that we have the complete set of
          --  Proof_Ins, Reads and Writes.
-         Param := First_Formal (Subprogram);
-         while Present (Param) loop
+         for Param of Get_Formals (Subprogram) loop
             case Ekind (Param) is
                when E_In_Parameter     =>
                   F := Direct_Mapping_Id (Param);
@@ -906,10 +904,15 @@ package body Flow_Utility is
                   All_Writes.Insert (F);
 
                when others             =>
-                  null;
+                  F := Concurrent_Object_Id (Param);
+                  All_Reads.Insert (F);
+                  All_Proof_Ins.Insert (F);
+                  if Ekind (Subprogram) not in E_Function         |
+                                               E_Generic_Function
+                  then
+                     All_Writes.Insert (F);
+                  end if;
             end case;
-
-            Param := Next_Formal (Param);
          end loop;
 
          --  If Subprogram is a function then we need to add it to the
@@ -1408,10 +1411,8 @@ package body Flow_Utility is
          end if;
 
          declare
-            D_Map        : Dependency_Maps.Map;
-            Params       : Node_Sets.Set;
-            E            : Entity_Id;
-            Subprogram_F : constant Flow_Id := Direct_Mapping_Id (Subprogram);
+            D_Map  : Dependency_Maps.Map;
+            Params : Node_Sets.Set;
          begin
             Get_Depends (Subprogram           => Subprogram,
                          Scope                => Scope,
@@ -1423,30 +1424,14 @@ package body Flow_Utility is
             --  globals we produce here. Note that the formal parameters that
             --  we collect here will also include implicit formal parameters of
             --  subprograms that belong to concurrent types.
-            E := First_Formal (Subprogram);
-            while Present (E) loop
-               Params.Include (E);
-               E := Next_Formal (E);
-            end loop;
-
-            if Belongs_To_Protected_Object (Subprogram_F) then
-               --  A subprogram that is directly enclosed by a protected object
-               --  sees the proteted object as a formal parameter.
-               Params.Include (Get_Enclosing_Concurrent_Object (Subprogram_F));
-            end if;
-
-            if Ekind (Subprogram) in Task_Kind then
-               --  A task sees itself as a formal parameter.
-               Params.Include ((if Present (Anonymous_Object (Subprogram))
-                                then Anonymous_Object (Subprogram)
-                                else Subprogram));
-            end if;
+            Params.Union (Get_Formals (Subprogram));
 
             --  Always OK to call direct_mapping here since you can't refer
             --  to hidden state in user-written depends contracts.
 
             for C in D_Map.Iterate loop
                declare
+                  E      : Entity_Id;
                   Output : constant Flow_Id := Dependency_Maps.Key (C);
                   Inputs : constant Flow_Id_Sets.Set :=
                     Dependency_Maps.Element (C);
@@ -1885,6 +1870,86 @@ package body Flow_Utility is
 
       return T;
    end Get_Type;
+
+   --------------------------
+   -- Get_Implicit_Formals --
+   --------------------------
+
+   function Get_Implicit_Formals
+     (E        : Entity_Id;
+      Callsite : Node_Id := Empty;
+      Entire   : Boolean := True)
+      return Node_Sets.Set
+   is
+      F      : constant Flow_Id := Direct_Mapping_Id (E);
+      Params : Node_Sets.Set    := Node_Sets.Empty_Set;
+   begin
+      case Ekind (E) is
+         when E_Entry | Subprogram_Kind =>
+            --  If E is directly enclosed in a protected object then add the
+            --  protected object as an implicit formal parameter of the
+            --  entry/subprogram.
+            if Belongs_To_Protected_Object (F) then
+               Params.Insert (Get_Enclosing_Concurrent_Object (F,
+                                                               Callsite,
+                                                               Entire));
+            end if;
+
+         when E_Task_Type =>
+            --  A task sees itself as a formal parameter.
+            Params.Include ((if Present (Anonymous_Object (E))
+                             then Anonymous_Object (E)
+                             else E));
+
+         when others =>
+            raise Why.Unexpected_Node;
+
+      end case;
+
+      return Params;
+   end Get_Implicit_Formals;
+
+   -----------------
+   -- Get_Formals --
+   -----------------
+
+   function Get_Formals
+     (E        : Entity_Id;
+      Callsite : Node_Id := Empty;
+      Entire   : Boolean := True)
+      return Node_Sets.Set
+   is
+      Param  : Entity_Id;
+      Params : Node_Sets.Set := Get_Implicit_Formals (E, Callsite, Entire);
+   begin
+      case Ekind (E) is
+         when E_Entry | Subprogram_Kind =>
+            --  Collect explicit formal parameters
+            Param := First_Formal (E);
+            while Present (Param) loop
+               Params.Insert (Param);
+               Param := Next_Formal (Param);
+            end loop;
+
+         when E_Task_Type =>
+            --  Add discriminants of task as formal parameters.
+            if Has_Discriminants (E)
+              or else Has_Unknown_Discriminants (E)
+            then
+               Param :=  First_Discriminant (E);
+               while Present (Param) loop
+                  Params.Include (Param);
+                  Param := Next_Discriminant (Param);
+               end loop;
+            end if;
+
+         when others =>
+            raise Why.Unexpected_Node;
+
+      end case;
+
+      return Params;
+   end Get_Formals;
 
    ----------------------
    -- Get_Variable_Set --

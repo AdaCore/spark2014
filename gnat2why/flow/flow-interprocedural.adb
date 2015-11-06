@@ -136,8 +136,7 @@ package body Flow.Interprocedural is
       pragma Assert (A.Is_Callsite);
       pragma Assert (not A.Perform_IPFA);
 
-      Called_Thing   : constant Entity_Id := Get_Called_Entity (N);
-      Called_Thing_F : constant Flow_Id   := Direct_Mapping_Id (Called_Thing);
+      Called_Thing : constant Entity_Id := Get_Called_Entity (N);
 
       procedure Add_TD_Edge (A, B : Flow_Id);
       --  Add a parameter dependency edge from the input A to the
@@ -213,7 +212,6 @@ package body Flow.Interprocedural is
             Proof_Ins : Flow_Id_Sets.Set;
             Inputs    : Flow_Id_Sets.Set;
             Outputs   : Flow_Id_Sets.Set;
-            E         : Entity_Id;
             The_In    : Flow_Id;
             The_Out   : Flow_Id;
          begin
@@ -228,51 +226,65 @@ package body Flow.Interprocedural is
                          Use_Computed_Globals   => not FA.Generating_Globals);
 
             --  Add parameters.
-            E := First_Formal (Called_Thing);
-            while Present (E) loop
-               The_In  := Direct_Mapping_Id (Unique_Entity (E), In_View);
-               The_Out := Direct_Mapping_Id (Unique_Entity (E), Out_View);
-               case Ekind (E) is
-                  when E_In_Parameter =>
-                     Inputs.Insert (The_In);
-
-                  when E_In_Out_Parameter =>
-                     Inputs.Insert (The_In);
-                     Outputs.Insert (The_Out);
-
-                  when E_Out_Parameter =>
-                     if Contains_Discriminants (The_In, FA.B_Scope)
-                       or else Has_Bounds (The_In, FA.B_Scope)
-                     then
-                        --  Discriminated out parameters or out parameters
-                        --  for which we need to keep track of the bounds
-                        --  also appear as an input.
+            for E of Get_Formals (Called_Thing, N, False) loop
+               if Nkind (E) in N_Entity then
+                  case Ekind (E) is
+                     when E_In_Parameter =>
+                        The_In := Direct_Mapping_Id (Unique_Entity (E),
+                                                     In_View);
                         Inputs.Insert (The_In);
-                     end if;
+
+                     when E_In_Out_Parameter =>
+                        The_In  := Direct_Mapping_Id (Unique_Entity (E),
+                                                      In_View);
+                        The_Out := Direct_Mapping_Id (Unique_Entity (E),
+                                                      Out_View);
+                        Inputs.Insert (The_In);
+                        Outputs.Insert (The_Out);
+
+                     when E_Out_Parameter =>
+                        The_In  := Direct_Mapping_Id (Unique_Entity (E),
+                                                      In_View);
+                        The_Out := Direct_Mapping_Id (Unique_Entity (E),
+                                                      Out_View);
+                        if Contains_Discriminants (The_In, FA.B_Scope)
+                          or else Has_Bounds (The_In, FA.B_Scope)
+                        then
+                           --  Discriminated out parameters or out parameters
+                           --  for which we need to keep track of the bounds
+                           --  also appear as an input.
+                           Inputs.Insert (The_In);
+                        end if;
+                        Outputs.Insert (The_Out);
+
+                     when E_Variable | Concurrent_Kind =>
+                        The_In  := Change_Variant (Concurrent_Object_Id (E),
+                                                   In_View);
+                        The_Out := Change_Variant (Concurrent_Object_Id (E),
+                                                   Out_View);
+                        Inputs.Insert (The_In);
+                        if Ekind (Called_Thing) not in E_Function         |
+                                                       E_Generic_Function
+                        then
+                           Outputs.Insert (The_Out);
+                        end if;
+
+                     when others =>
+                        raise Why.Unexpected_Node;
+                  end case;
+               else
+                  The_In  := Change_Variant (Concurrent_Object_Id (E),
+                                             In_View);
+                  The_Out := Change_Variant (Concurrent_Object_Id (E),
+                                             Out_View);
+                  Inputs.Insert (The_In);
+                  if Ekind (Called_Thing) not in E_Function         |
+                                                 E_Generic_Function
+                  then
                      Outputs.Insert (The_Out);
-
-                  when others =>
-                     raise Why.Unexpected_Node;
-               end case;
-               E := Next_Formal (E);
-            end loop;
-
-            --  Add implicit parameter of protected operations
-            if Belongs_To_Protected_Object (Called_Thing_F) then
-               declare
-                  The_PO : constant Flow_Id :=
-                    Concurrent_Object_Id
-                      (Get_Enclosing_Concurrent_Object (Called_Thing,
-                                                        N,
-                                                        False));
-               begin
-                  Inputs.Insert (Change_Variant (The_PO, In_View));
-
-                  if Ekind (Called_Thing) /= E_Function then
-                     Outputs.Insert (Change_Variant (The_PO, Out_View));
                   end if;
-               end;
-            end if;
+               end if;
+            end loop;
 
             if not Outputs.Is_Empty then
                --  Each output depends on all inputs.
