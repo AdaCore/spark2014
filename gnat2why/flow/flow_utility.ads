@@ -590,6 +590,41 @@ is
    --    of the type is not visible from Scope, then we return the non-full
    --    view.
 
+   function Get_Implicit_Formals
+     (E        : Entity_Id;
+      Callsite : Node_Id := Empty;
+      Entire   : Boolean := True)
+      return Node_Sets.Set
+   with Pre => Present (E)
+               and then Ekind (E) in E_Entry         |
+                                     E_Task_Type     |
+                                     Subprogram_Kind;
+   --  This function returns a set of nodes containing all implicit formal
+   --  parameters of an Entry or Subprogram. For tasks it returns a singleton
+   --  set containing task itself.
+   --  @param E is the entity of an entry/task/subprogram
+   --  @param Callsite is the place from where the entry/subprogram is called
+   --  @param Entire returns the entire object as opposed to a record field
+   --  @return the set of explicit and implicit formal parameters of E
+
+   function Get_Formals
+     (E        : Entity_Id;
+      Callsite : Node_Id := Empty;
+      Entire   : Boolean := True)
+      return Node_Sets.Set
+   with Pre => Present (E)
+               and then Ekind (E) in E_Entry         |
+                                     E_Task_Type     |
+                                     Subprogram_Kind;
+   --  This function returns a set of nodes containing all implicit and
+   --  explicit formal parameters of an Entry or Subprogram. For tasks it
+   --  returns a set containing all discriminants of the task and the task
+   --  itself.
+   --  @param E is the entity of an entry/task/subprogram
+   --  @param Callsite is the place from where the entry/subprogram is called
+   --  @param Entire returns the entire object as opposed to a record field
+   --  @return the set of explicit and implicit formal parameters of E
+
    function Extensions_Visible (E     : Entity_Id;
                                 Scope : Flow_Scope)
                                 return Boolean

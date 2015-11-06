@@ -34,7 +34,6 @@ with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Output;                      use Output;
-with Sem_Aux;                     use Sem_Aux;
 with Sem_Util;                    use Sem_Util;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
@@ -641,18 +640,13 @@ package body Flow.Analysis is
                      Vars_Known := Flow_Id_Sets.Empty_Set;
 
                      --  We need to assemble the variables known from the spec:
-                     --  these are parameters, globals and implicit parameters.
+                     --  these are parameters (both explicit and implicit) and
+                     --  globals.
                      declare
-                        E                   : Entity_Id;
                         Tmp_A, Tmp_B, Tmp_C : Flow_Id_Sets.Set;
-                        Analyzed_Flow_Id    : constant Flow_Id :=
-                          Direct_Mapping_Id (FA.Analyzed_Entity);
                      begin
-                        E := First_Formal (FA.Spec_Entity);
-                        while Present (E) loop
-                           Vars_Known.Include (Direct_Mapping_Id (E));
-                           E := Next_Formal (E);
-                        end loop;
+                        Vars_Known.Union
+                          (To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity)));
 
                         Get_Globals (Subprogram => FA.Spec_Entity,
                                      Scope      => FA.S_Scope,
@@ -666,13 +660,6 @@ package body Flow.Analysis is
                         loop
                            Vars_Known.Include (Change_Variant (F, Normal_Use));
                         end loop;
-
-                        if Belongs_To_Protected_Object (Analyzed_Flow_Id) then
-                           Vars_Known.Include
-                              (Concurrent_Object_Id
-                                 (Get_Enclosing_Concurrent_Object
-                                    (Analyzed_Flow_Id)));
-                        end if;
                      end;
 
                   when Kind_Package | Kind_Package_Body =>
@@ -3271,49 +3258,9 @@ package body Flow.Analysis is
                    Classwide  => False,
                    Depends    => User_Deps);
 
-      --  Populate the Params set
-      declare
-         E : Entity_Id;
-      begin
-         if Ekind (FA.Analyzed_Entity) in Task_Kind then
-            --  Add the task itself. The task is an implicit parameter of
-            --  itself.
-            E := (if Present (Anonymous_Object (FA.Analyzed_Entity))
-                  then Anonymous_Object (FA.Analyzed_Entity)
-                  else FA.Analyzed_Entity);
-            Implicit_Params.Include (E);
-
-            --  Add the discriminants of the task
-            E := (if Has_Discriminants (FA.Analyzed_Entity)
-                     or else Has_Unknown_Discriminants (FA.Analyzed_Entity)
-                  then First_Discriminant (FA.Analyzed_Entity)
-                  else Empty);
-            while Present (E) loop
-               Params.Include (E);
-               E := Next_Discriminant (E);
-            end loop;
-         else
-            --  Add implicit formal parameters caused by concurrent types
-            declare
-               F : constant Flow_Id := Direct_Mapping_Id (FA.Analyzed_Entity);
-            begin
-               if Belongs_To_Protected_Object (F) then
-                  --  A subprogram that is directly enclosed by a protected
-                  --  object sees the proteted object as a formal parameter.
-                  Params.Include (Get_Enclosing_Concurrent_Object (F));
-                  Implicit_Params.Include
-                    (Get_Enclosing_Concurrent_Object (F));
-               end if;
-            end;
-
-            --  Add formal parameters of the subprograms
-            E := First_Formal (FA.Analyzed_Entity);
-            while Present (E) loop
-               Params.Include (E);
-               E := Next_Formal (E);
-            end loop;
-         end if;
-      end;
+      --  Populate the Params and Implicit_Params sets
+      Params := Get_Formals (FA.Analyzed_Entity);
+      Implicit_Params := Get_Implicit_Formals (FA.Analyzed_Entity);
 
       --  Up project the dependencies
       User_Deps   := Up_Project_Map (User_Deps);
@@ -3355,8 +3302,7 @@ package body Flow.Analysis is
       for C in Actual_Deps.Iterate loop
          declare
             F_Out  : constant Flow_Id          := Dependency_Maps.Key (C);
-            A_Deps : constant Flow_Id_Sets.Set :=
-              Dependency_Maps.Element (C);
+            A_Deps : constant Flow_Id_Sets.Set := Dependency_Maps.Element (C);
             U_Deps : Flow_Id_Sets.Set;
 
             Missing_Deps : Ordered_Flow_Id_Sets.Set;
@@ -4103,7 +4049,7 @@ package body Flow.Analysis is
       end Check_Set_For_Volatiles;
 
    begin
-      if not (Ekind (FA.Analyzed_Entity) in E_Function | E_Generic_Function)
+      if Ekind (FA.Analyzed_Entity) not in E_Function | E_Generic_Function
       then
          --  If we are not dealing with a [generic] function then we have
          --  nothing to do here.
@@ -4114,9 +4060,7 @@ package body Flow.Analysis is
          Proof_Ins         : Flow_Id_Sets.Set;
          Reads             : Flow_Id_Sets.Set;
          Writes            : Flow_Id_Sets.Set;
-         Formal_Parameters : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-
-         E                 : Entity_Id;
+         Formal_Parameters : Flow_Id_Sets.Set;
       begin
          --  Populate global sets
          Get_Globals (Subprogram => FA.Analyzed_Entity,
@@ -4127,11 +4071,8 @@ package body Flow.Analysis is
                       Writes     => Writes);
 
          --  Populate formal parameters set
-         E := First_Formal (FA.Spec_Entity);
-         while Present (E) loop
-            Formal_Parameters.Include (Direct_Mapping_Id (E));
-            E := Next_Formal (E);
-         end loop;
+         Formal_Parameters :=
+           To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity));
 
          --  Check globals and formal parameters for volatiles and emit
          --  messages if needed

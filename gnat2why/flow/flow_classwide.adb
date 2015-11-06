@@ -311,22 +311,26 @@ package body Flow_Classwide is
             end;
 
             --  ... all parameters...
-            declare
-               Ptr  : Node_Id := First_Formal (E);
-               Kind : Formal_Kind;
-            begin
-               while Present (Ptr) loop
-                  Kind := Ekind (Ptr);
-                  if Kind in E_Out_Parameter | E_In_Out_Parameter then
-                     Outputs.Include (Direct_Mapping_Id (Unique_Entity (Ptr)));
-                  end if;
-                  if Kind in E_In_Parameter | E_In_Out_Parameter then
-                     Inputs.Include (Direct_Mapping_Id (Unique_Entity (Ptr)));
-                  end if;
+            for P of Get_Formals (E) loop
+               case Ekind (P) is
+                  when E_In_Parameter     =>
+                     Inputs.Include (Direct_Mapping_Id (Unique_Entity (P)));
 
-                  Next_Formal (Ptr);
-               end loop;
-            end;
+                  when E_Out_Parameter    =>
+                     Outputs.Include (Direct_Mapping_Id (Unique_Entity (P)));
+
+                  when E_In_Out_Parameter =>
+                     Inputs.Include (Direct_Mapping_Id (Unique_Entity (P)));
+                     Outputs.Include (Direct_Mapping_Id (Unique_Entity (P)));
+
+                  when others             =>
+                     Inputs.Include (Concurrent_Object_Id (P));
+
+                     if Ekind (E) not in E_Function | E_Generic_Function then
+                        Outputs.Include (Concurrent_Object_Id (P));
+                     end if;
+               end case;
+            end loop;
 
             --  ... and the function symbol if we're dealing with a function.
             if Ekind (E) = E_Function then

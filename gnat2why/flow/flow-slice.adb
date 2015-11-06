@@ -774,77 +774,41 @@ package body Flow.Slice is
 
          --  Gather formal parameters of the entry/subprogram/task or state
          --  abstractions of the package.
-         declare
-            E : Entity_Id;
-         begin
-            case FA.Kind is
-               when Kind_Subprogram | Kind_Entry  =>
-                  E := First_Formal (FA.Analyzed_Entity);
+         case FA.Kind is
+            when Kind_Subprogram | Kind_Entry | Kind_Task =>
+               Local_Vars := Get_Formals (FA.Analyzed_Entity);
 
-                  while Present (E) loop
-                     if Ekind (E) = E_Constant
-                       and then Present (Full_View (E))
-                     then
-                        --  If the Full_View is present then add that
-                        Local_Vars.Include (Full_View (E));
-                     else
-                        Local_Vars.Include (E);
+            when Kind_Package | Kind_Package_Body =>
+               --  State abstractions of a package effectively act as local
+               --  variables.
+               declare
+                  AS_Pragma : constant Node_Id :=
+                    Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State);
+
+                  PAA       : Node_Id;
+                  AS_N      : Node_Id;
+                  AS_E      : Entity_Id;
+               begin
+                  if Present (AS_Pragma) then
+                     PAA :=
+                       First (Pragma_Argument_Associations (AS_Pragma));
+
+                     --  Check that we don't have Abstract_State => null
+                     if Nkind (Expression (PAA)) /= N_Null then
+                        AS_N := First (Expressions (Expression (PAA)));
+                        while Present (AS_N) loop
+                           AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
+                                    then Entity (Ancestor_Part (AS_N))
+                                    else Entity (AS_N));
+
+                           Local_Vars.Insert (AS_E);
+
+                           Next (AS_N);
+                        end loop;
                      end if;
-                     Next_Formal (E);
-                  end loop;
-
-                  --  If the analyzed entity belongs to a protected object then
-                  --  we add the protected type to the local variables. The
-                  --  protected object is treated as a formal parameter.
-                  declare
-                     F : constant Flow_Id :=
-                       Direct_Mapping_Id (FA.Analyzed_Entity);
-                  begin
-                     if Belongs_To_Protected_Object (F) then
-                        Local_Vars.Include
-                          (Get_Enclosing_Concurrent_Object (F));
-                     end if;
-                  end;
-
-               when Kind_Task =>
-                  --  The task is a formal parameter of itself.
-                  Local_Vars.Insert
-                    ((if Present (Anonymous_Object (FA.Analyzed_Entity))
-                      then Anonymous_Object (FA.Analyzed_Entity)
-                      else FA.Analyzed_Entity));
-
-               when Kind_Package | Kind_Package_Body =>
-                  --  State abstractions of a package effectively act as
-                  --  local variables.
-                  declare
-                     AS_Pragma : constant Node_Id :=
-                       Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State);
-
-                     PAA       : Node_Id;
-                     AS_N      : Node_Id;
-                     AS_E      : Entity_Id;
-                  begin
-                     if Present (AS_Pragma) then
-                        PAA :=
-                          First (Pragma_Argument_Associations (AS_Pragma));
-
-                        --  Check that we don't have Abstract_State => null
-                        if Nkind (Expression (PAA)) /= N_Null then
-                           AS_N := First (Expressions (Expression (PAA)));
-                           while Present (AS_N) loop
-                              AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
-                                       then Entity (Ancestor_Part (AS_N))
-                                       else Entity (AS_N));
-
-                                       Local_Vars.Insert (AS_E);
-
-                              Next (AS_N);
-                           end loop;
-                        end if;
-                     end if;
-                  end;
-            end case;
-         end;
+                  end if;
+               end;
+         end case;
 
          --  Gather local parameters and subprograms
          case FA.Kind is
