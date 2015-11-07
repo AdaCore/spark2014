@@ -8,7 +8,4 @@ local_type_ext.adb:40:15: violation of aspect SPARK_Mode at line 2
 local_type_ext.adb:42:15: local derived type from non-local interface is not allowed in SPARK (SPARK RM 3.9.1(1))
 local_type_ext.adb:42:15: violation of aspect SPARK_Mode at line 2
 local_type_ext.adb:48:04: warning: analyzing unreferenced procedure "OK"
-   compilation of local_type_ext.adb failed
-
-
 gnatprove: error during flow analysis and proof

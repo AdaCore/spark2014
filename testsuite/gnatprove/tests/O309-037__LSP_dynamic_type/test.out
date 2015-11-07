@@ -11,7 +11,4 @@ lsp_checks.adb:69:04: info: initialization of "Glob" proved
 lsp_checks.adb:69:18: info: initialization of "R2.F1" proved
 lsp_checks.adb:69:18: info: initialization of extension of "R2" proved
 lsp_checks.adb:70:19: info: initialization of "Glob" proved
-   compilation of lsp_checks.adb failed
-
-
 gnatprove: error during flow analysis and proof

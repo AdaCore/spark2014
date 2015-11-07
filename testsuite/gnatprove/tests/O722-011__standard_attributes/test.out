@@ -6,8 +6,4 @@ objects.ads:5:52: attribute "Storage_Unit" is not permitted in SPARK
 objects.ads:6:52: attribute "System_Allocator_Alignment" is not permitted in SPARK
 objects.ads:7:52: attribute "Wchar_T_Size" is not permitted in SPARK
 objects.ads:8:52: attribute "Word_Size" is not permitted in SPARK
-   compilation of discr_rec.ads failed
-   compilation of objects.ads failed
-
-
 gnatprove: error during flow analysis and proof

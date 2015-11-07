@@ -13,7 +13,4 @@ refined_global_illegal_2.adb:5:04: info: initialization of "X" constituent of "S
 refined_global_illegal_2.adb:5:07: info: initialization of "Y" constituent of "State" proved
 refined_global_illegal_2.adb:12:18: "Y" constituent of "State" must be listed in the Refined_Global aspect of "P1" (SPARK RM 6.1.4(13))
 refined_global_illegal_2.adb:20:18: "Y" constituent of "State" must be listed in the Refined_Global aspect of "P2" (SPARK RM 6.1.4(13))
-   compilation of refined_global_illegal_2.adb failed
-
-
 gnatprove: error during flow analysis and proof

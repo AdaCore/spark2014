@@ -45,7 +45,4 @@ test.ads:20:21: medium: missing dependency "Y => Y"
 test.ads:24:21: medium: missing dependency "X => X"
 test.ads:25:21: medium: missing dependency "Y => Y"
 test.ads:34:41: info: initialization of "Y" proved
-   compilation of test.adb failed
-
-
 gnatprove: error during analysis of data and information flow

@@ -33,7 +33,4 @@ global_illegal_3.adb:115:34: info: initialization of "Y" proved
 global_illegal_3.adb:116:34: export "Y" must not depend on Proof_In "X" (SPARK RM 6.1.4(18))
 global_illegal_3.adb:133:32: info: initialization of "Arr2" proved
 global_illegal_3.adb:136:15: medium: "Arr2" might not be initialized
-   compilation of global_illegal_3.adb failed
-
-
 gnatprove: error during flow analysis and proof

@@ -3,7 +3,4 @@ p.ads:87:09: violation of aspect SPARK_Mode at line 2
 q.ads:37:04: medium: type "T1" is not fully initialized
 q.ads:42:04: medium: type "T3" is not fully initialized
 q.ads:47:04: medium: type "T5" is not fully initialized
-   compilation of p.ads failed
-
-
 gnatprove: error during flow analysis and proof

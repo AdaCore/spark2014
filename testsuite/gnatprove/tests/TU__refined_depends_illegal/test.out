@@ -14,7 +14,4 @@ refined_depends_illegal_2.adb:11:18: "Y" constituent of "State" must be listed i
 refined_depends_illegal_2.adb:16:42: info: initialization of "X" constituent of "State" proved
 refined_depends_illegal_2.adb:16:45: info: initialization of "Y" constituent of "State" proved
 refined_depends_illegal_2.adb:18:31: medium: missing dependency "Y constituent of State => Par"
-   compilation of refined_depends_illegal_2.adb failed
-
-
 gnatprove: error during flow analysis and proof

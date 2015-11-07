@@ -5,9 +5,6 @@ p.adb:3:04: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
 p.adb:3:04: violation of pragma SPARK_Mode at bad_profile.adc:1
 p.ads:3:09: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
 p.ads:3:09: violation of pragma SPARK_Mode at bad_profile.adc:1
-   compilation of p.adb failed
-
-
 Phase 1 of 2: generation of Global contracts ...
 Phase 2 of 2: checking of SPARK legality rules ...
 Summary logged in gnatprove/gnatprove.out
@@ -15,9 +12,6 @@ p.adb:3:04: tasking in SPARK requires sequential elaboration (SPARK RM 9(2))
 p.adb:3:04: violation of pragma SPARK_Mode at bad_pep.adc:1
 p.ads:3:09: tasking in SPARK requires sequential elaboration (SPARK RM 9(2))
 p.ads:3:09: violation of pragma SPARK_Mode at bad_pep.adc:1
-   compilation of p.adb failed
-
-
 Phase 1 of 2: generation of Global contracts ...
 Phase 2 of 2: checking of SPARK legality rules ...
 Summary logged in gnatprove/gnatprove.out

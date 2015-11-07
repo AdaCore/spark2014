@@ -3,7 +3,4 @@ no_primitive_call.adb:9:07: dispatching call on primitive of untagged private is
 no_primitive_call.adb:9:07: violation of aspect SPARK_Mode at line 1
 no_primitive_use.adb:7:04: medium: precondition might fail
 no_primitive_use.adb:7:10: info: initialization of "X" proved
-   compilation of no_primitive_call.adb failed
-
-
 gnatprove: error during flow analysis and proof

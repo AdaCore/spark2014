@@ -43,7 +43,4 @@ part.ads:36:44: info: index check proved
 part.ads:37:12: info: range check proved
 part.ads:37:20: info: index check proved
 part.ads:37:31: info: index check proved
-   compilation of main.adb failed
-
-
 gnatprove: error during flow analysis and proof

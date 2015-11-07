@@ -22,7 +22,4 @@ vc.ads:65:11: aspect "ASYNC_READERS" must apply to a volatile object
 vc.ads:77:11: incorrect placement of aspect "ASYNC_READERS"
 vc.ads:82:11: incorrect placement of aspect "ASYNC_READERS"
 vc.ads:87:11: incorrect placement of aspect "ASYNC_READERS"
-   compilation of vc.ads failed
-
-
 gnatprove: error during generation of Global contracts

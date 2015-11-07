@@ -2,5 +2,4 @@ p_no_return.adb:4:07: implied return after this statement would have raised Prog
 p_no_return.adb:4:07: procedure "Returning" is marked as No_Return
 p_no_return.adb:12:26: implied return after this statement would have raised Program_Error
 p_no_return.adb:12:26: procedure "Difficult_Non_Returning" is marked as No_Return
-compilation of p_no_return.adb failed
 gnatprove: error during generation of Global contracts

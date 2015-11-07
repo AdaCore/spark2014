@@ -23,7 +23,4 @@ p.ads:56:18: subtype constraint cannot depend on "A" (SPARK RM 4.4(2))
 p.ads:56:18: subtype constraint cannot depend on "B" (SPARK RM 4.4(2))
 p.ads:65:19: info: initialization of "L" proved
 p.ads:69:19: info: initialization of "L" proved
-   compilation of p.adb failed
-
-
 gnatprove: error during flow analysis and proof

@@ -6,7 +6,4 @@ discr.adb:18:11: "Square" is not allowed in SPARK
 discr.adb:18:11: violation of pragma SPARK_Mode at test.adc:1
 discr.adb:18:21: "Square" is not allowed in SPARK
 discr.adb:18:21: violation of pragma SPARK_Mode at test.adc:1
-   compilation of discr.adb failed
-
-
 gnatprove: error during flow analysis and proof

@@ -8,7 +8,4 @@ p.ads:44:28: write-only global "A" cannot appear as input in dependence relation
 p.ads:50:23: write-only global "A" cannot appear as input in dependence relation
 p.ads:56:11: parameter "X" is missing from input dependence list
 p.ads:61:11: global "A" is missing from input dependence list
-   compilation of p.ads failed
-
-
 gnatprove: error during generation of Global contracts

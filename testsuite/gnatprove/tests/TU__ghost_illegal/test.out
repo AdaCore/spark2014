@@ -4,7 +4,4 @@ ghost_illegal_2.adb:50:10: ghost entity cannot appear in this context
 ghost_illegal_2.ads:14:04: ghost object "Vol_Ghost" cannot be volatile
 ghost_illegal_2.ads:31:32: ghost entity cannot appear in this context
 ghost_illegal_2.ads:34:36: ghost entity cannot appear in this context
-   compilation of ghost_illegal_2.adb failed
-
-
 gnatprove: error during generation of Global contracts

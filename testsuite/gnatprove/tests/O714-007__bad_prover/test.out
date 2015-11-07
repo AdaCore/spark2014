@@ -1,5 +1,2 @@
-   compilation of dummy.adb failed
-
-
 gnatprove: Selected prover not installed or not configured.
 gnatprove: error during flow analysis and proof

@@ -48,9 +48,6 @@ param_1_illegal.adb:9:10: info: index check proved
 param_1_illegal.adb:9:13: medium: "X" might not be initialized
 param_1_legal.adb:7:10: info: index check proved
 anti_aliasing.adb:62:16: writable actual for "X" overlaps with actual for "Y"
-   compilation of anti_aliasing.adb failed
-
-
 gnatprove: error during generation of Global contracts
 gnatprove: error during generation of Global contracts
 refined_global_examples.adb:6:04: info: initialization of "A" constituent of "S1" proved

@@ -1,5 +1,2 @@
 pack.ads:7:44: subtype constraint cannot depend on "Min" (SPARK RM 4.4(2))
-   compilation of pack.ads failed
-
-
 gnatprove: error during flow analysis and proof

@@ -3,7 +3,4 @@ discrims.adb:18:33: default initialization cannot depend on "V0" (SPARK RM 4.4(2
 discrims.ads:21:29: default initialization cannot depend on "V0" (SPARK RM 4.4(2))
 discrims.ads:29:30: default initialization cannot depend on "V0" (SPARK RM 4.4(2))
 discrims.ads:43:30: default initialization cannot depend on "V0" (SPARK RM 4.4(2))
-   compilation of discrims.adb failed
-
-
 gnatprove: error during flow analysis and proof

@@ -11,9 +11,4 @@ q.adb:81:26: renamed index cannot depend on "V" (SPARK RM 4.4(2))
 q.adb:85:26: renamed index cannot depend on "V" (SPARK RM 4.4(2))
 q.adb:87:26: renamed index cannot depend on "V" (SPARK RM 4.4(2))
 r.ads:24:25: renamed index cannot depend on "V" (SPARK RM 4.4(2))
-   compilation of p.ads failed
-   compilation of q.adb failed
-   compilation of r.ads failed
-
-
 gnatprove: error during flow analysis and proof

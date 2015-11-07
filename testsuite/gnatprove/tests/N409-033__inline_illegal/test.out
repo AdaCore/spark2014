@@ -4,7 +4,4 @@ discr.adb:13:07: error in inlined body at line 8
 discr.adb:13:07: error in inlined body at line 8
 discr.adb:13:07: static expression fails Constraint_Check
 discr.adb:13:07: static expression fails Constraint_Check
-   compilation of discr.adb failed
-
-
 gnatprove: error during generation of Global contracts

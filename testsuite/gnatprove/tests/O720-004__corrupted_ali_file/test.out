@@ -7,8 +7,5 @@ test.adb:28:04: warning: analyzing unreferenced function "Ext_Return_01"
 test.adb:30:07: info: initialization of "R" proved
 test.adb:31:17: medium: overflow check might fail (e.g. when N = 2147483647)
 test.adb:44:07: medium: exception might be raised (e.g. when No_Return'Result = False)
-   compilation of test.adb failed
-
-
 Corrupted ali file detected (test.ali): missing end marker. Call gnatprove with "--clean".
 gnatprove: error during flow analysis and proof

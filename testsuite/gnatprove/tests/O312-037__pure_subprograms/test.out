@@ -1,5 +1,2 @@
 call.adb:30:23: called subprogram "Pure_Function" requires GLOBAL aspect to make state "state.y" visible
-   compilation of call.adb failed
-
-
 gnatprove: error during analysis of data and information flow

@@ -4,9 +4,6 @@ foo.adb:54:09: implied return after this statement would have raised Program_Err
 foo.adb:54:09: procedure "Nr_Test_02" is marked as No_Return
 foo.adb:65:09: implied return after this statement would have raised Program_Error
 foo.adb:65:09: procedure "Nr_Test_03" is marked as No_Return
-   compilation of foo.adb failed
-
-
 gnatprove: error during generation of Global contracts
 main1.adb:5:31: info: initialization of "Lights.State" proved
 main1.adb:13:13: info: initialization of "Lights.State" proved

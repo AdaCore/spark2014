@@ -10,9 +10,4 @@ zero.adb:5:07: entry family is not allowed in SPARK
 zero.adb:5:07: violation of pragma SPARK_Mode at test.adc:1
 zero.ads:6:07: entry family is not allowed in SPARK
 zero.ads:6:07: violation of pragma SPARK_Mode at test.adc:1
-   compilation of one.adb failed
-   compilation of var.adb failed
-   compilation of zero.adb failed
-
-
 gnatprove: error during flow analysis and proof

@@ -12,7 +12,4 @@ test.ads:18:47: info: initialization of "Equals" proved
 test.ads:25:34: info: initialization of "Y" proved
 test.ads:30:47: medium: "Par2" might not be initialized in "Check_Contract_6"
 test.ads:34:24: medium: missing dependency "X => Par1"
-   compilation of test.adb failed
-
-
 gnatprove: error during analysis of data and information flow

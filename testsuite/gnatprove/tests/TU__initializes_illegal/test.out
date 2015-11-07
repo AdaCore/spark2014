@@ -32,9 +32,6 @@ initializes_illegal_4.ads:52:32: "G_Var2" must be listed in the Initializes aspe
 initializes_illegal_4.ads:52:32: info: initialization of "G_Var2" proved
 initializes_illegal_4.ads:64:22: "G_Var" must be listed in the Initializes aspect of "Pac4" (SPARK RM 7.1.5(12))
 initializes_illegal_4.ads:64:22: info: initialization of "G_Var" proved
-   compilation of initializes_illegal_4.adb failed
-
-
 gnatprove: error during flow analysis and proof
 initializes_illegal_5.ads:1:14: current unit must also be private descendant of "Initializes_Illegal_5"
 initializes_illegal_5.ads:14:66: input item "Pr_Var" cannot denote a visible object or state of package "Initializes_Illegal_5"

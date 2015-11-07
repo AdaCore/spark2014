@@ -22,9 +22,6 @@ illegal_1.ads:31:52: info: initialization of "O.X" proved
 illegal_1.ads:31:52: info: initialization of "O.Y" proved
 illegal_1.ads:34:14: class-wide output "G" must also be a class-wide output of overridden subprogram "Update_Global_Based_On_Object" at root.ads:31 (SPARK RM 6.1.6)
 illegal_1.ads:34:14: info: initialization of "G" proved
-   compilation of illegal_1.adb failed
-
-
 gnatprove: error during flow analysis and proof
 root.adb:4:04: info: initialization of "Counter" constituent of "State" proved
 root.adb:11:29: info: overflow check proved
@@ -43,9 +40,6 @@ simple_illegal_with_contracts.ads:45:42: info: initialization of "O" proved
 simple_illegal_with_contracts.ads:54:35: info: initialization of "IO" proved
 simple_illegal_with_contracts.ads:54:39: info: initialization of "O" proved
 simple_illegal_with_contracts.ads:62:34: info: initialization of "O" proved
-   compilation of simple_illegal_with_contracts.adb failed
-
-
 gnatprove: error during flow analysis and proof
 simple_illegal_without_contracts.adb:50:13: info: initialization of "IO" proved
 simple_illegal_without_contracts.ads:15:14: info: initialization of "O" proved
@@ -60,7 +54,4 @@ simple_illegal_without_contracts.ads:33:14: info: initialization of "O" proved
 simple_illegal_without_contracts.ads:39:14: info: initialization of "IO" proved
 simple_illegal_without_contracts.ads:39:14: info: initialization of "O" proved
 simple_illegal_without_contracts.ads:45:14: info: initialization of "O" proved
-   compilation of simple_illegal_without_contracts.adb failed
-
-
 gnatprove: error during flow analysis and proof

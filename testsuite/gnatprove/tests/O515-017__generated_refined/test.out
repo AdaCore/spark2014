@@ -1,5 +1,2 @@
 justifinit.ads:6:11: global output "Justifinit.State" of "P" not fully written
-   compilation of justifinit.adb failed
-
-
 gnatprove: error during flow analysis and proof

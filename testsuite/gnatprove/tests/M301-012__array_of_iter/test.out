@@ -17,7 +17,4 @@ iter_multi_array.adb:6:27: iterator specification over array of dimension 2 is n
 iter_multi_array.adb:11:27: iterator specification over array of dimension 2 is not yet supported
 iter_multi_array.adb:14:28: nested loops before loop-invariant not yet supported
 iter_multi_array.adb:30:27: iterator specification over array of dimension 2 is not yet supported
-   compilation of iter_multi_array.adb failed
-
-
 gnatprove: error during flow analysis and proof

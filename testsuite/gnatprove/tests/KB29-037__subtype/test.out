@@ -13,7 +13,4 @@ p.adb:11:08: medium: predicate check might fail, in call inlined at p.adb:17
 sub.adb:43:17: info: initialization of "Global" proved
 sub.ads:11:12: predicate cannot depend on "Global" (SPARK RM 4.4(2))
 sub.ads:24:14: info: initialization of "Global" proved
-   compilation of sub.adb failed
-
-
 gnatprove: error during flow analysis and proof

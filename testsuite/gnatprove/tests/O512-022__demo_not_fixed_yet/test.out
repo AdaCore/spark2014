@@ -77,8 +77,4 @@ use_stacks.adb:50:19: medium: "Stack_Vector" might not be initialized
 use_stacks.ads:3:14: info: initialization of "Random_Numbers.State" proved
 use_stacks.ads:4:14: info: initialization of "Random_Numbers.State" proved
 use_stacks.ads:6:14: warning: subprogram "Fill_Generic_Stack" has no effect
-   compilation of main.adb failed
-   compilation of random_numbers.adb failed
-
-
 gnatprove: error during flow analysis and proof

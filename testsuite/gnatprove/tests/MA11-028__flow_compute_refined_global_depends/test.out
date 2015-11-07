@@ -78,8 +78,4 @@ user.ads:14:27: info: initialization of "X" proved
 user.ads:18:14: info: initialization of "Lots_Of_Tests.State2" proved
 user.ads:24:35: info: initialization of "G1" proved
 user.ads:30:32: info: initialization of "G1" proved
-   compilation of bad_refinement.adb failed
-   compilation of lots_of_tests.adb failed
-
-
 gnatprove: error during flow analysis and proof

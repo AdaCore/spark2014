@@ -1,7 +1,4 @@
 initial_condition_illegal_2.ads:10:32: "Initial_Condition_Illegal_2.State" must be initialized at elaboration
-   compilation of initial_condition_illegal_2.adb failed
-
-
 gnatprove: error during flow analysis and proof
 initial_condition_illegal_3.ads:13:08: medium: initial condition might fail (e.g. when Var = -1)
 initial_condition_illegal_3.ads:13:29: info: initialization of "Var" proved

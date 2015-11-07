@@ -2,7 +2,4 @@ tasks.ads:17:19: protected type "Bad_Store" must define full default initializat
 tasks.ads:46:19: protected type "Invalid_Protected_Stub" must define full default initialization
 tasks.ads:54:19: protected type "Store_With_No_Initialization" must define full default initialization
 tasks.ads:64:19: protected type "Store_With_Mixed_Initialization" must define full default initialization
-   compilation of tasks.adb failed
-
-
 gnatprove: error during generation of Global contracts

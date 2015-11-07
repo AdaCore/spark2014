@@ -5,7 +5,4 @@ warn.adb:7:11: info: overflow check proved
 warn.adb:8:04: info: assertion proved
 warn.adb:8:19: info: initialization of "X" proved
 warn.adb:9:09: info: initialization of "X" proved
-   compilation of warn.adb failed
-
-
 gnatprove: error during flow analysis and proof

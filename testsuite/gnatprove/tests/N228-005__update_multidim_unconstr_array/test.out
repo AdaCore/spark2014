@@ -1,7 +1,4 @@
 update_checks_multidim_unconstr.adb:14:21: attribute "Update" of unconstrained multidimensional array is not yet supported
 update_checks_multidim_unconstr.adb:26:24: attribute "Update" of unconstrained multidimensional array is not yet supported
 update_checks_multidim_unconstr.adb:38:21: attribute "Update" of unconstrained multidimensional array is not yet supported
-   compilation of update_checks_multidim_unconstr.adb failed
-
-
 gnatprove: error during generation of Global contracts

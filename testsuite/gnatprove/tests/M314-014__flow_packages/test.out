@@ -50,9 +50,4 @@ pkg_e.ads:4:08: warning: initialization of Vis_D is not mentioned in Initializes
 pkg_e.ads:7:03: high: "Vis_A" is not initialized in "Pkg_E"
 pkg_e.ads:8:03: info: initialization of "Vis_B" proved
 uninitialized.adb:8:40: info: initialization of "Var" constituent of "State" proved
-   compilation of ic.adb failed
-   compilation of pkg_b.adb failed
-   compilation of pkg_c.adb failed
-
-
 gnatprove: error during analysis of data and information flow

@@ -1,9 +1,6 @@
 t.adb:26:07: sequential elaboration supported only in restricted profile
 t.adb:27:07: sequential elaboration supported only in restricted profile
 t.adb:28:07: sequential elaboration supported only in restricted profile
-   compilation of t.adb failed
-
-
 gnatprove: error during generation of Global contracts
 t.adb:26:07: from profile "Ravenscar" at test2.adc:2
 t.adb:26:07: violation of restriction "No_Task_Hierarchy"
@@ -11,9 +8,6 @@ t.adb:27:07: from profile "Ravenscar" at test2.adc:2
 t.adb:27:07: violation of restriction "No_Task_Hierarchy"
 t.adb:28:07: from profile "Ravenscar" at test2.adc:2
 t.adb:28:07: violation of restriction "No_Task_Hierarchy"
-   compilation of t.adb failed
-
-
 gnatprove: error during generation of Global contracts
 t.adb:26:12: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
 t.adb:26:12: violation of pragma SPARK_Mode at test3.adc:1
@@ -31,45 +25,24 @@ t.adb:58:07: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
 t.adb:58:07: violation of pragma SPARK_Mode at test3.adc:1
 t.adb:61:07: tasking in SPARK requires Ravenscar profile (SPARK RM 9(2))
 t.adb:61:07: violation of pragma SPARK_Mode at test3.adc:1
-   compilation of t.adb failed
-
-
 gnatprove: error during flow analysis and proof
 po_t.ads:14:14: aspect "Part_Of" must apply to package instantiation, object, single protected type or single task type
-   compilation of po_t.adb failed
-
-
 gnatprove: error during generation of Global contracts
 po_t2.ads:14:14: aspect "Part_Of" must apply to package instantiation, object, single protected type or single task type
-   compilation of po_t2.adb failed
-
-
 gnatprove: error during generation of Global contracts
 po_t3.adb:1:14: body of package "PO_T3" has unused hidden states
 po_t3.adb:1:14: variable "P_Int" defined at line 42
 po_t3.adb:2:35: "HIDDEN" is constituent of single task type "P_Int"
 po_t3.adb:2:35: reference to variable "Hidden" cannot appear in this context
-   compilation of po_t3.adb failed
-
-
 gnatprove: error during generation of Global contracts
 po_t4.ads:19:07: component "PO" of non-synchronized type "MIX" cannot be synchronized
-   compilation of po_t4.adb failed
-
-
 gnatprove: error during generation of Global contracts
 po_t5.adb:2:35: constituent of synchronized state "State" must be synchronized
-   compilation of po_t5.adb failed
-
-
 gnatprove: error during generation of Global contracts
 main.adb:8:29: "The_Protected_Int" is constituent of single task type "P_Int"
 main.adb:8:29: reference to variable "The_Protected_Int" cannot appear in this context
 main.adb:11:04: "The_Protected_Int" is constituent of single task type "P_Int"
 main.adb:11:04: reference to variable "The_Protected_Int" cannot appear in this context
-   compilation of main.adb failed
-
-
 gnatprove: error during generation of Global contracts
 po_t7.adb:11:34: info: overflow check proved
 po_t7.adb:18:52: info: overflow check proved

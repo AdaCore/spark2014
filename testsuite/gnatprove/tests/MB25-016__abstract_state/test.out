@@ -1,5 +1,2 @@
 foo.ads:13:47: useless refinement, subprogram "F2" does not depend on abstract state with visible refinement
-   compilation of foo.adb failed
-
-
 gnatprove: error during generation of Global contracts

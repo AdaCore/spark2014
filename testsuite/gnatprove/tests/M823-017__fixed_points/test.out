@@ -262,7 +262,4 @@ unsupported.adb:20:13: operation between fixed-point type and universal real is 
 unsupported.adb:21:14: operation between fixed-point type and universal real is not yet supported
 unsupported.adb:22:10: conversion between different fixed-point types is not yet supported
 unsupported.adb:23:10: conversion between different fixed-point types is not yet supported
-   compilation of unsupported.adb failed
-
-
 gnatprove: error during flow analysis and proof

@@ -8,7 +8,4 @@ discr.adb:12:20: "U" is not allowed in SPARK
 discr.adb:12:20: violation of aspect SPARK_Mode at line 1
 discr.adb:12:46: "U" is not allowed in SPARK
 discr.adb:12:46: violation of aspect SPARK_Mode at line 1
-   compilation of discr.adb failed
-
-
 gnatprove: error during flow analysis and proof

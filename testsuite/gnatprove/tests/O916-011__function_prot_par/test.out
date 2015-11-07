@@ -1,5 +1,2 @@
 fun_prot_par.ads:8:16: nonvolatile function "F" cannot have a volatile parameter
-   compilation of fun_prot_par.adb failed
-
-
 gnatprove: error during generation of Global contracts

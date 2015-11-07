@@ -1,5 +1,2 @@
 prot.ads:12:47: volatile object "P" with property Effective_Reads must have mode In_Out or Output
-   compilation of prot.adb failed
-
-
 gnatprove: error during generation of Global contracts

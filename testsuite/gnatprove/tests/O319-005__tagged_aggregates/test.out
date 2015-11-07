@@ -7,5 +7,4 @@ tagged_aggregate_with_root.adb:18:22: "C4" is not allowed in SPARK
 tagged_aggregate_with_root.adb:18:22: violation of aspect SPARK_Mode at line 1
 tagged_aggregate_with_root.adb:19:22: "C5" is not allowed in SPARK
 tagged_aggregate_with_root.adb:19:22: violation of aspect SPARK_Mode at line 1
-compilation of tagged_aggregate_with_root.adb failed
 gnatprove: error during flow analysis and proof
