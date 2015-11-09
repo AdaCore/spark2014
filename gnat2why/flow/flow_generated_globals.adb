@@ -981,9 +981,9 @@ package body Flow_Generated_Globals is
             Key_B : constant Global_Id := Global_Graph.Get_Key (B);
          begin
             if Key_B.Kind /= Variable_Kind
-              or else not (Key_A.Kind in Proof_Ins_Kind |
-                             Ins_Kind       |
-                             Outs_Kind)
+              or else Key_A.Kind not in Proof_Ins_Kind |
+                                        Ins_Kind       |
+                                        Outs_Kind
             then
                --  We only need to consult the Local_Graph when attempting
                --  to establish a link between a subprogram and a variable.

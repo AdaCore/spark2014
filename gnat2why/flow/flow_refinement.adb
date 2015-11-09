@@ -552,7 +552,7 @@ package body Flow_Refinement is
       --  package, that abstract state.
 
    begin
-      while not (Ekind (P) in E_Package | E_Generic_Package) loop
+      while Ekind (P) not in E_Package | E_Generic_Package loop
          case Ekind (P) is
             when E_Package_Body =>
                raise Why.Not_Implemented;

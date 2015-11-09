@@ -337,7 +337,7 @@ is
       Scope : Flow_Scope)
       return Flow_Id_Sets.Set
    is (Flatten_Variable (Direct_Mapping_Id (Unique_Entity (E)), Scope))
-   with Pre  => Nkind (E) in N_Entity;
+   with Pre => Nkind (E) in N_Entity;
    --  As above, but conveniently taking an Entity_Id instead of a Flow_Id
 
    function Get_Part_Of_Variables (E : Entity_Id) return Node_Sets.Set;
@@ -470,8 +470,8 @@ is
       Use_Computed_Globals         : Boolean;
       Expand_Synthesized_Constants : Boolean)
       return Flow_Id_Sets.Set
-     with Pre => Nkind (N) = N_Selected_Component
-                 or else Is_Attribute_Update (N);
+   with Pre => Nkind (N) = N_Selected_Component
+               or else Is_Attribute_Update (N);
    --  Process a node describing one or more record fields and return a
    --  variable set with all variables referenced.
    --
@@ -530,7 +530,7 @@ is
    --  initializes aspect.
    --
    --  This function is a wrapper around Is_Initialized_At_Elaboration from
-   --  Flow_Refinement and GG_Is_Initialized_At_Elaboration fromm
+   --  Flow_Refinement and GG_Is_Initialized_At_Elaboration from
    --  Flow_Generated_Globals.
 
    function Is_Initialized_In_Specification (F : Flow_Id;
@@ -556,7 +556,7 @@ is
    --  Get_Loop_Writes.
 
    function Loop_Writes_Known (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) = E_Loop;
+   with Pre => Ekind (E) = E_Loop;
    --  Checks if the variables written by loop E are known.
 
    function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
