@@ -182,15 +182,17 @@ package Flow_Generated_Globals is
    --  property.
 
    procedure GG_Register_Nonblocking (EN : Entity_Name)
-   with Pre  => GG_Mode = GG_Write_Mode,
+   with Pre  => EN /= Null_Entity_Name and then
+                GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
-   --  Record entity with no potentially blocking statements.
+   --  Register entity with no potentially blocking statements.
 
    procedure GG_Register_Tasking_Info (EN : Entity_Name;
                                        TI : Tasking_Info)
-   with Pre  => GG_Mode = GG_Write_Mode,
+   with Pre  => EN /= Null_Entity_Name and then
+                GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
-   --  Record tasking-related information for entity.
+   --  Register tasking-related information for entity.
 
    procedure GG_Write_Finalize
    with Pre => GG_Mode = GG_Write_Mode;
