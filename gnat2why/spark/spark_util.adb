@@ -1702,9 +1702,9 @@ package body SPARK_Util is
       end if;
    end Get_Global_Items;
 
-   --------------------------------------
-   -- Get_Priority_From_Protected_Type --
-   --------------------------------------
+   ----------------------------------------
+   -- Get_Priority_Or_Interrupt_Priority --
+   ----------------------------------------
 
    function Get_Priority_Or_Interrupt_Priority (E : Entity_Id) return Node_Id
    is

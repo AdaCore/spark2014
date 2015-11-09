@@ -356,7 +356,7 @@ package body Flow is
             end if;
          end Print_Node;
 
-      --  Start of processing for Print_Graph
+      --  Start of processing for NDI
 
       begin
          Temp_String := Null_Unbounded_String;
@@ -850,6 +850,9 @@ package body Flow is
          end case;
          return Rv;
       end EDI;
+
+   --  Start of processing for Print_Graph
+
    begin
       if Gnat2Why_Args.Debug_Mode then
          if Gnat2Why_Args.Flow_Advanced_Debug then

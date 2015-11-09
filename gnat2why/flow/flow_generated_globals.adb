@@ -803,6 +803,8 @@ package body Flow_Generated_Globals is
             end if;
          end Expand_State;
 
+      --  Start of processing for Calculate_MR
+
       begin
          for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
             G := Global_Graph.Get_Key (V);
@@ -815,7 +817,7 @@ package body Flow_Generated_Globals is
          return NS;
       end Calculate_MR;
 
-      --  start processing for GG_Get_MR_Globals
+      --  Start of processing for GG_Get_MR_Globals
 
    begin
       --  Calculate MR_Proof_Reads, MR_Reads and MR_Writes
@@ -2788,6 +2790,8 @@ package body Flow_Generated_Globals is
          return Rv;
       end EDI;
 
+   --  Start of processing for Print_Global_Graph
+
    begin
       if Gnat2Why_Args.Debug_Mode then
          if Gnat2Why_Args.Flow_Advanced_Debug then
@@ -2903,6 +2907,9 @@ package body Flow_Generated_Globals is
         (T => ALI_Entry_Kind);
 
       Kind : ALI_Entry_Kind := ALI_Entry_Kind'First;
+
+   --  Start of processing for Serialize
+
    begin
       if A.Kind = Serialisation.Output then
          Kind := V.Kind;

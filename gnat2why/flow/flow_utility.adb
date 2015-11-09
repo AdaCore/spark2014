@@ -2639,7 +2639,7 @@ package body Flow_Utility is
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
 
-      --  start of processing for Get_Variable_Set
+      --  Start of processing for Get_Variable_Set
 
    begin
       Traverse (N);
