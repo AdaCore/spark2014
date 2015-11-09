@@ -387,6 +387,12 @@ def gcc(src, opt=["-c"]):
     print_sorted(str.splitlines(process.out))
 
 
+def spark_install_path():
+    """the location of the SPARK install"""
+    exec_loc = fileutils.which("gnatprove")
+    return os.path.dirname(os.path.dirname(exec_loc))
+
+
 def altergo(src, timeout=10, opt=None):
     """Invoke alt-ergo with why3-cpulimit wrapper
 
@@ -396,7 +402,7 @@ def altergo(src, timeout=10, opt=None):
       opt: additional command line options for alt-ergo
     """
     # add libexec/spark/bin to the PATH
-    installdir = os.path.dirname(os.path.dirname(fileutils.which('gnatprove')))
+    installdir = spark_install_path()
     bindir = os.path.join(installdir, 'libexec', 'spark', 'bin')
     Env().add_path(bindir)
     # run alt-ergo
@@ -544,12 +550,6 @@ def touch(fname, times=None):
     """
     with open(fname, 'a'):
         os.utime(fname, times)
-
-
-def spark_install_path():
-    """the location of the SPARK install"""
-    exec_loc = fileutils.which("gnatprove")
-    return os.path.dirname(os.path.dirname(exec_loc))
 
 
 def write_why3_config_file_with_coq(fname):
