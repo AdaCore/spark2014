@@ -2404,11 +2404,12 @@ package body SPARK_Definition is
       ------------------------
 
       procedure Mark_Object_Entity (E : Entity_Id) is
-         N    : constant Node_Id   := Parent (E);
-         Def  : constant Node_Id   := Object_Definition (N);
-         Expr : constant Node_Id   := Expression (N);
-         T    : constant Entity_Id := Etype (E);
-         Sub  : constant Entity_Id := Actual_Subtype (E);
+         N        : constant Node_Id   := Parent (E);
+         Def      : constant Node_Id   := Object_Definition (N);
+         Expr     : constant Node_Id   := Expression (N);
+         T        : constant Entity_Id := Etype (E);
+         Sub      : constant Entity_Id := Actual_Subtype (E);
+         Encap_Id : constant Entity_Id := Encapsulating_State (E);
 
       begin
          --  A constant object (other than a formal parameter of mode in) shall
@@ -2418,6 +2419,23 @@ package body SPARK_Definition is
 
          if Ekind (E) = E_Constant and then Is_Effectively_Volatile (T) then
             Mark_Violation ("volatile constant", Def);
+         end if;
+
+         --  A variable whose Part_Of pragma specifies a single concurrent
+         --  type as encapsulator must be (SPARK RM 9.4):
+         --    * Of a type that defines full default initialization, or
+         --    * Declared with a default value, or
+         --    * Imported
+
+         if Present (Encap_Id)
+           and then Is_Single_Concurrent_Object (Encap_Id)
+           and then Default_Initialization (Etype (E)) not in
+             Full_Default_Initialization | No_Possible_Initialization
+           and then not Has_Initial_Value (E)
+           and then not Is_Imported (E)
+         then
+            Mark_Violation ("not fully initialized part of protected type",
+                            Def, SRM_Reference => "SPARK RM 9.4");
          end if;
 
          --  The object is in SPARK if-and-only-if its type is in SPARK and
