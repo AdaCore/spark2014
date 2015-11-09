@@ -45,7 +45,7 @@ ng_v1.adb:33:56: info: initialization of "T1" proved
 ng_v1.adb:33:61: info: initialization of "T2" proved
 ng_v1.ads:26:14: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v1.ads:27:18: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
-ng_v1.ads:28:17: medium: postcondition might fail, cannot prove EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime (e.g. when EstimatedGroundVelocity = 0 and ThisCount = 0 and PrevCount = 0 and CurrTime = 0 and ThisTime = 0 and PrevTime = 0)
+ng_v1.ads:28:17: medium: postcondition might fail, cannot prove EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime (e.g. when EstimatedGroundVelocity = 0 and ThisCount = 0 and PrevCount = 0 and ThisTime = 0 and CurrTime = 0 and PrevTime = 0)
 ng_v1.ads:31:23: info: division check proved
 ng_v1.ads:32:28: medium: divide by zero might fail (e.g. when CurrTime = 33904 and PrevTime = 33904)
 ng_v2.adb:49:09: info: division check proved

@@ -54,7 +54,7 @@ arithmetic.adb:113:19: medium: postcondition might fail, cannot prove Halve_B'Re
 arithmetic.adb:119:07: info: assertion proved
 arithmetic.adb:122:20: info: initialization of "R" proved
 arithmetic.adb:123:10: info: loop invariant initialization proved
-arithmetic.adb:123:10: medium: loop invariant might fail after first iteration (e.g. when R = 2 and N = 2)
+arithmetic.adb:123:10: medium: loop invariant might fail after first iteration (e.g. when N = 2 and R = 2)
 arithmetic.adb:124:17: info: initialization of "R" proved
 arithmetic.adb:126:14: info: initialization of "R" proved
 arithmetic.adb:130:19: info: postcondition proved

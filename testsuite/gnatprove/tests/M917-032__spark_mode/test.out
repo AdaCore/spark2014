@@ -1,5 +1,5 @@
 arith.adb:21:15: info: initialization of "Z" proved
-arith.adb:21:23: medium: overflow check might fail (e.g. when X = (others => 0) and J = 1 and Y = (others => 0))
+arith.adb:21:23: medium: overflow check might fail (e.g. when X = (others => 0) and Y = (others => 0) and J = 1)
 arith.adb:23:14: info: initialization of "Z" proved
 arith.ads:6:40: info: overflow check proved
 arith.ads:6:68: info: overflow check proved

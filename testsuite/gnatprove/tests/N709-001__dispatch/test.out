@@ -1,4 +1,4 @@
-object.ads:7:13: medium: precondition is stronger than the default class-wide precondition of True (e.g. when Obj = (Area => -1, Max_Width => -1, Max_Height => -1))
+object.ads:7:13: medium: precondition is stronger than the default class-wide precondition of True (e.g. when Obj = 0)
 object.ads:14:20: info: postcondition proved
 object.ads:15:31: info: precondition proved
 object.ads:30:61: info: range check proved
