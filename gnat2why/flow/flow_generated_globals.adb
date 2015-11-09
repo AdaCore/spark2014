@@ -887,7 +887,8 @@ package body Flow_Generated_Globals is
       return Boolean
    is
    begin
-      return All_Initialized_Names.Contains (EN);
+      return All_Initialized_Names.Contains (EN)
+        or else GG_Has_Async_Writers (EN);
    end GG_Is_Initialized_At_Elaboration;
 
    --------------------
