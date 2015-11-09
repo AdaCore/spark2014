@@ -82,6 +82,7 @@ install-all:
         # all internal binaries even if not strictly needed.
 	mkdir -p install/libexec/spark/bin
 	$(MV) install/bin/why3server install/libexec/spark/bin
+	$(MV) install/bin/why3realize install/libexec/spark/bin
 	$(MV) install/bin/gnatwhy3 install/libexec/spark/bin
 	$(MV) install/bin/why3config install/libexec/spark/bin
 	$(MV) install/bin/alt-ergo install/libexec/spark/bin
