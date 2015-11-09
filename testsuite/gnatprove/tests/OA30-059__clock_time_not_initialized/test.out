@@ -1,2 +1,1 @@
-client.adb:3:11: medium: "ada.real_time.clock_time" might not be initialized after elaboration of main program "Client"
 p.ads:3:14: warning: subprogram "Blocking" has no effect
