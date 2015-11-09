@@ -1,4 +1,4 @@
-\documentclass[conference,compsoc]{IEEEtran}
+\documentclass[10pt,conference,compsocconf]{IEEEtran}
 \usepackage[nocompress]{cite}
 \usepackage{todonotes}
 \usepackage{listings}
@@ -41,10 +41,16 @@ Email: moy@adacore.com}}
 
 %\IEEEpeerreviewmaketitle
 
-% Keywords (not in IEEE style)
-%
-% formal verification; multitasking; SPARK subset of Ada; race detection;
-% deadlock detection.
+\begin{IEEEkeywords}
+  % See http://www.ieee.org/documents/taxonomy_v101.pdf for allowed keywords.
+
+  formal verification,
+  multitasking.
+  % SPARK subset of Ada,
+  % race detection;
+  % deadlock detection.
+\end{IEEEkeywords}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % key review comments
@@ -102,9 +108,12 @@ As part of supporting concurrency in the new release of SPARK 2014, an
 additional set of safety requirements with corresponding static checks has
 been specified to ensure that there are no data races, no locking cycles,
 and no task suspensions while holding a lock, in the resulting programs.
-The remainder of this article will describe the particular safety
-requirements associated with SPARK 2014 multitasking, and the corresponding
-static checks that are performed by the SPARK 2014 toolset.
+This article makes the following contributions:
+\begin{itemize}
+\item Language features which facilitate static checking of safety
+  requirements,
+\item and which static checks are performed by the SPARK 2014 toolset.
+\end{itemize}
 
 \section{Multitasking safety requirements}
 The Ada language defines a set of rules for the safe use of data objects
@@ -146,25 +155,21 @@ race. This includes protected objects, \emph{atomic} objects (all access is
 via atomic instructions), and \emph{suspension} objects (a kind of private
 semaphore). Normal objects, such as integer or floating point variables,
 are not synchronized, and, if global, may be referenced only by the task
-they are associated with via a \verb|Part_Of| annotation; for example:
-\begin{lstlisting}[language=Ada,basicstyle=\tt]
-Aux_Stack : Stack_T with
-  Part_Of => Watchdog_Task;
-\end{lstlisting}
-If the global variable has no \verb|Part_Of| annotation, then it may only
-be referenced by the \emph{environment task} of the program, that is the
-\emph{main} task, the task in which execution of the program begins.
+they are associated with via a \verb|Part_Of| annotation. If the global
+variable has no \verb|Part_Of| annotation, then it may only be referenced
+by the \emph{environment task} of the program, that is the \emph{main}
+task, the task in which execution of the program begins.
 
 The data race rule is enforced relatively easily in SPARK because all
 subprograms must identify the global variables they manipulate with a
-Global annotation. Hence, the main body of a task must not call a
-subprogram whose Global annotation identifies an object which is not
-synchronized and not \verb|Part_Of| the calling task. The Global annotation
-of a subprogram includes all indirect references as well as direct
-references, so no hidden side effects are possible. Note that, as a
+\verb|Global| annotation. Hence, the main body of a task must not call a
+subprogram whose \verb|Global| annotation identifies an object which is not
+synchronized and not \verb|Part_Of| the calling task. The \verb|Global|
+annotation of a subprogram includes all indirect references as well as
+direct references, so no hidden side effects are possible. Note that, as a
 convenience to the user, the SPARK 2014 toolset can also \emph{infer}
-Global annotations automatically, but the rule remains effectively the
-same, based on the inferred Global annotations.
+\verb|Global| annotations automatically, but the rule remains effectively
+the same, based on the inferred \verb|Global| annotations.
 
 Cyclic locking, potential violations of ceiling priority rules, and use of
 potentially blocking operations while holding a lock, are all checked for
@@ -189,16 +194,16 @@ does not invoke, directly or indirectly, a potentially blocking operation.
 
 The data-race rule is checked in a \emph{modular} fashion, in that it can
 be performed without access to the complete program, thanks to the
-user-provided Global annotations. By contrast, these locking-related checks
-all rely on a propagation of information across calls, globally throughout
-the program. This means that these checks are \emph{not} modular and cannot
-be performed without access to the entire program. Once the SPARK toolset
-supports the explicit specification on a subprogram of the protected and
-potentially blocking operations it performs, these checks can be performed
-in a modular fashion. Nevertheless, the toolset will still provide support
-for \emph{inferring} these annotations, so the programmer can still have
-the convenience of omitting these explicit annotations, presuming they do
-not have a requirement for modular checking.
+user-provided \verb|Global| annotations. By contrast, these locking-related
+checks all rely on a propagation of information across calls, globally
+throughout the program. This means that these checks are \emph{not} modular
+and cannot be performed without access to the entire program. Once the
+SPARK toolset supports the explicit specification on a subprogram of the
+protected and potentially blocking operations it performs, these checks can
+be performed in a modular fashion. Nevertheless, the toolset will still
+provide support for \emph{inferring} these annotations, so the programmer
+can still have the convenience of omitting these explicit annotations,
+presuming they do not have a requirement for modular checking.
 
 \section{Related work}
 Detection of race conditions and deadlocks has a relatively long history,
@@ -213,10 +218,18 @@ highest level of criticality. In other contexts, identifying race
 conditions or deadlocks is seen as simply finding another kind of program
 defect. In SPARK, if multitasking is used, then eliminating possible data
 races, cyclic locking, and other sources of potential deadlocks is
-considered part of ensuring the overall safety of the software.
+considered part of ensuring the overall safety of the software. The work
+presented in this article was based on the RavenSPARK \cite{ravenspark}
+profile of earlier SPARK toolsets; a more restricted language with less
+support for the standard Ada run-time and implementation that only
+supported modular analysis as it could not infer contracts.
 
-% \section{Conclusion}
-% TODO
+\section{Future Work}
+Some incremental extensions to the language will be natural, such as
+annotations for announcing tasks and relaxing the Ravenscar profile.
+Automatic abstraction to communicating sequential processes (CSP) may be
+one way to achieve this. Other work could include support for the proposed
+parallel programming extensions \cite{parallelada} for Ada.
 
 \section*{Acknowledgements}
 This work was performed as part of a joint development project of AdaCore
