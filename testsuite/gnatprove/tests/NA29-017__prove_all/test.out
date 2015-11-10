@@ -65,7 +65,7 @@ sorting.adb:89:44: info: overflow check proved
 sorting.adb:89:51: info: overflow check proved
 sorting.adb:89:64: info: overflow check proved
 sorting.adb:89:64: info: range check proved
-sorting.adb:90:11: medium: loop invariant might fail after first iteration, cannot prove Le_Array (B, A, B'First, A_First + Length1 + J, I + J, Length2 - J) (e.g. when B = (others => 0) and A = (others => 0) and A_First = 0 and Length1 = 1 and J = 0 and I = 1 and Length2 = 0)
+sorting.adb:90:11: medium: loop invariant might fail after first iteration, cannot prove Le_Array (B, A, B'First, A_First + Length1 + J, I + J, Length2 - J) (e.g. when B = (others => 0) and A = (others => 0) and A_First = 0 and Length1 = 1 and I = 1 and Length2 = 0 and J = 0)
 sorting.adb:90:28: info: range check proved
 sorting.adb:90:44: medium: overflow check might fail (e.g. when A_First = 1 and Length1 = 2147483647)
 sorting.adb:90:54: medium: overflow check might fail

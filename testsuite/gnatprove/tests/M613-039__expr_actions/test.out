@@ -6,8 +6,8 @@ list.adb:23:10: medium: precondition might fail
 list.adb:23:16: info: initialization of "S" proved
 list.adb:23:19: info: precondition proved
 list.adb:23:31: info: range check proved
-list.adb:24:10: medium: loop invariant might fail after first iteration (e.g. when I = 2 and First = 1)
-list.adb:24:10: medium: loop invariant might fail in first iteration (e.g. when I = 1 and First = 1)
+list.adb:24:10: medium: loop invariant might fail after first iteration (e.g. when First = 1 and I = 2)
+list.adb:24:10: medium: loop invariant might fail in first iteration (e.g. when First = 1 and I = 1)
 list.adb:25:23: info: initialization of "S" proved
 list.adb:25:35: info: overflow check proved
 list.adb:25:43: info: overflow check proved
@@ -21,7 +21,7 @@ list.adb:30:28: info: initialization of "S" proved
 list.adb:31:10: medium: precondition might fail
 list.adb:31:15: info: initialization of "S" proved
 list.adb:32:10: medium: loop invariant might fail after first iteration (e.g. when Last = 2 and I = 2 and First = 1)
-list.adb:32:10: medium: loop invariant might fail in first iteration (e.g. when Last = 1 and I = 1 and First = 1)
+list.adb:32:10: medium: loop invariant might fail in first iteration (e.g. when Last = 1 and First = 1 and I = 1)
 list.adb:33:23: info: initialization of "S" proved
 list.adb:33:38: info: overflow check proved
 list.adb:34:21: medium: range check might fail (e.g. when First = 1)
