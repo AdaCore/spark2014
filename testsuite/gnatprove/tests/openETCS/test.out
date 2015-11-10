@@ -13,17 +13,17 @@ deceleration_curve.adb:41:48: info: division check proved
 deceleration_curve.adb:41:48: info: overflow check proved
 deceleration_curve.adb:43:14: medium: assertion might fail, cannot prove Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) <= Speed_t(Acceleration) / speed
 deceleration_curve.adb:44:38: info: division check proved
-deceleration_curve.adb:44:38: medium: overflow check might fail
+deceleration_curve.adb:44:38: info: overflow check proved
 deceleration_curve.adb:44:40: info: initialization of "speed" proved
 deceleration_curve.adb:46:14: medium: assertion might fail, cannot prove Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
 deceleration_curve.adb:48:39: info: division check proved
-deceleration_curve.adb:48:39: medium: overflow check might fail
+deceleration_curve.adb:48:39: info: overflow check proved
 deceleration_curve.adb:48:41: info: initialization of "speed" proved
-deceleration_curve.adb:48:48: medium: overflow check might fail
+deceleration_curve.adb:48:48: info: overflow check proved
 deceleration_curve.adb:50:48: info: division check proved
-deceleration_curve.adb:50:48: medium: overflow check might fail
+deceleration_curve.adb:50:48: info: overflow check proved
 deceleration_curve.adb:50:50: info: initialization of "speed" proved
-deceleration_curve.adb:51:12: medium: overflow check might fail
+deceleration_curve.adb:51:12: info: overflow check proved
 deceleration_curve.adb:53:10: medium: assertion might fail
 deceleration_curve.adb:55:47: info: initialization of "delta_speed" proved
 deceleration_curve.adb:59:19: info: initialization of "speed" proved

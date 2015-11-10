@@ -1491,12 +1491,40 @@ package body Why.Gen.Expr is
       Range_Type    : Entity_Id;
       Check_Kind    : Range_Check_Kind) return W_Expr_Id
    is
+      function Same_Precision_Float_Types
+        (Typ_From, Typ_To : Entity_Id) return Boolean
+      --  Return True iff Typ_From and Typ_To are both single precision
+      --  floating point types, or both double precision floating point types.
+      is
+        ((Is_Single_Precision_Floating_Point_Type (Typ_From)
+            and then
+          Is_Single_Precision_Floating_Point_Type (Typ_To))
+            or else
+         (Is_Double_Precision_Floating_Point_Type (Typ_From)
+            and then
+          Is_Double_Precision_Floating_Point_Type (Typ_To)));
+
       From : constant W_Type_Id := Get_Type (Expr);
 
       Do_Predicate_Check : constant Boolean :=
         Present (Get_Ada_Node (+To))
           and then Has_Predicates (Get_Ada_Node (+To))
           and then Get_Ada_Node (+To) /= Get_Ada_Node (+From);
+
+      --  When converting from a floating point type to another floating point
+      --  type with the same precision (single or double), no rounding is
+      --  necessary. Get the source/target types from Ada_Node if present, as
+      --  types From/To may be already using "real", as a result of using the
+      --  base type of variables as much as possible instead of the abstract
+      --  type which maintains the link to the source Ada type.
+
+      Skip_Float_Rounding : constant Boolean :=
+        Present (Ada_Node)
+          and then Nkind (Ada_Node) in N_Qualified_Expression
+                                     | N_Type_Conversion
+                                     | N_Unchecked_Type_Conversion
+          and then Same_Precision_Float_Types
+                     (Etype (Ada_Node), Etype (Expression (Ada_Node)));
 
       --  Current result expression
       Result : W_Expr_Id := Expr;
@@ -1719,9 +1747,12 @@ package body Why.Gen.Expr is
       end if;
 
       --  5. When converting to a floating-point type, always perform
-      --     a rounding operation.
+      --     a rounding operation, unless From and To are floating point types
+      --     of the same precision.
 
-      if Present (Round_Func) then
+      if Present (Round_Func)
+        and then not Skip_Float_Rounding
+      then
          pragma Assert (Cur = EW_Real_Type);
          Result := New_Call (Domain   => Domain,
                              Name     => Round_Func,
