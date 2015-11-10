@@ -3017,49 +3017,28 @@ package body Flow.Control_Flow_Graph is
       ----------------
 
       procedure Find_Tasks (T : Entity_Id; Array_Component : Boolean) is
-         C : Entity_Id;
-         X : Node_Id;
 
          type Array_Elements is (Zero, One, Many);
          --  Type for checking the number of elements in an array
 
-         S : Array_Elements;
-         --  Number of elements in the array
+         function Number_Elements return Array_Elements
+           with Pre => Is_Array_Type (T);
+         --  Returns the number of elements in the array type T
 
-      begin
-         if not Has_Task (T) then
-            return;
+         ---------------------
+         -- Number_Elements --
+         ---------------------
 
-         elsif Is_Task_Type (T) then
-            declare
-               --  For discriminated tasks record the number of instances of
-               --  the base type.
-               TN : constant Entity_Name := To_Entity_Name (Etype (T));
-            begin
-               Register_Task_Object
-                 (Type_Name => TN,
-                  Object => (Name => Object_Name,
-                             Instances =>
-                               (if Array_Component
-                                then Many
-                                else One),
-                             Node => N));
-            end;
+         function Number_Elements return Array_Elements is
+            C : Entity_Id;
+            X : Node_Id := First_Index (T);
 
-         elsif Is_Record_Type (T) then
-            --  Ignore record variants and simply find any task components
-            C := First_Component (T);
-            while Present (C) loop
-               Find_Tasks (Etype (C), Array_Component);
-               Next_Component (C);
-            end loop;
-
-         elsif Is_Array_Type (T) then
+            S : Array_Elements := One;
+            --  Number of elements in the array
+         begin
             --  Check whether the array is empty (at least one index range
             --  statically equal zero) or has exectly one component (all ranges
             --  statically equal one); otherwise assume it has many components.
-            S := One;
-            X := First_Index (T);
 
             while Present (X) loop
                C := Etype (X);
@@ -3087,12 +3066,53 @@ package body Flow.Control_Flow_Graph is
                Next_Index (X);
             end loop;
 
-            if S = Zero then
-               null;
-            else
-               Find_Tasks (Component_Type (T),
-                           Array_Component => S = Many);
-            end if;
+            return S;
+         end Number_Elements;
+
+      --  Start of processing for Find_Tasks
+
+      begin
+         if not Has_Task (T) then
+            return;
+
+         elsif Is_Task_Type (T) then
+            declare
+               --  For discriminated tasks record the number of instances of
+               --  the base type.
+               TN : constant Entity_Name := To_Entity_Name (Etype (T));
+            begin
+               Register_Task_Object
+                 (Type_Name => TN,
+                  Object => (Name => Object_Name,
+                             Instances =>
+                               (if Array_Component
+                                then Many
+                                else One),
+                             Node => N));
+            end;
+
+         elsif Is_Record_Type (T) then
+            --  Ignore record variants and simply find any task components
+            declare
+               C : Entity_Id := First_Component (T);
+               --  Component type
+            begin
+               while Present (C) loop
+                  Find_Tasks (Etype (C), Array_Component);
+                  Next_Component (C);
+               end loop;
+            end;
+
+         elsif Is_Array_Type (T) then
+            declare
+               Size : constant Array_Elements := Number_Elements;
+               --  Number of components
+            begin
+               if Size /= Zero then
+                  Find_Tasks (Component_Type (T),
+                              Array_Component => Size = Many);
+               end if;
+            end;
          end if;
       end Find_Tasks;
 
