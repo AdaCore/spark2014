@@ -9055,20 +9055,25 @@ package body Gnat2Why.Expr is
                  First_Elmt (Stored_Constraint (Ent));
             begin
                while Present (Discr) loop
-                  R :=
-                    Sequence
-                      (Do_Range_Check
-                         (Ada_Node => Node (Elmt),
-                          W_Expr =>
-                            +Transform_Expr
-                            (Node (Elmt),
-                             EW_Prog,
-                             Body_Params),
-                          Ty => Etype (Discr),
-                          Check_Kind => RCK_Range),
-                       R);
-                  Next_Discriminant (Discr);
-                  Next_Elmt (Elmt);
+                  declare
+                     Value   : constant Node_Id := Node (Elmt);
+                     Typ     : constant W_Type_Id :=
+                       Base_Why_Type_No_Bool (Node_Id'(Type_Of_Node (Value)));
+                     W_Value : constant W_Expr_Id :=
+                       +Transform_Expr (Value,
+                                        Typ,
+                                        EW_Prog,
+                                        Body_Params);
+                  begin
+                     R := Sequence
+                       (Do_Range_Check (Ada_Node   => Value,
+                                        W_Expr     => W_Value,
+                                        Ty         => Etype (Discr),
+                                        Check_Kind => RCK_Range),
+                        R);
+                     Next_Discriminant (Discr);
+                     Next_Elmt (Elmt);
+                  end;
                end loop;
             end;
          end if;
