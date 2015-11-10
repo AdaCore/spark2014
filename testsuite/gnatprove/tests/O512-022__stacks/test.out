@@ -6,6 +6,7 @@ main.adb:9:09: medium: range check might fail
 main.adb:10:04: warning: assuming "Skip_Line" has no effect on global items
 main.adb:10:04: warning: no Global contract available for "Skip_Line"
 main.adb:13:38: info: initialization of "Max" proved
+main.adb:14:18: info: range check proved
 main.adb:18:10: warning: assuming "Put_Line" has no effect on global items
 main.adb:18:10: warning: no Global contract available for "Put_Line"
 main.adb:21:38: warning: assuming "Get_Line" has no effect on global items
@@ -33,6 +34,7 @@ main.adb:37:16: warning: no Global contract available for "New_Line"
 stacks.adb:11:22: medium: overflow check might fail (e.g. when S = (Top => 2147483647, others => ?))
 stacks.adb:12:16: medium: array index check might fail (e.g. when S = (Top => 3, others => ?))
 stacks.adb:21:22: info: range check proved
+stacks.adb:24:14: info: range check proved
 stacks.adb:26:07: warning: assuming "Put" has no effect on global items
 stacks.adb:26:07: warning: no Global contract available for "Put"
 stacks.adb:28:10: warning: assuming "Put" has no effect on global items
@@ -47,4 +49,8 @@ stacks.ads:47:14: medium: precondition is stronger than the default class-wide p
 stacks.ads:48:14: info: postcondition proved
 stacks.ads:67:13: medium: precondition is stronger than the default class-wide precondition of True (e.g. when S = 0)
 stacks.ads:69:14: warning: subprogram "Print" has no effect
+stacks.ads:78:13: info: range check proved
+stacks.ads:80:13: info: range check proved
+stacks.ads:82:13: info: range check proved
+stacks.ads:84:13: info: range check proved
 stacks.ads:84:58: medium: array index check might fail (e.g. when S = 0)

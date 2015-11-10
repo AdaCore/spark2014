@@ -5,3 +5,4 @@ counters.adb:23:24: medium: overflow check might fail
 counters.adb:26:21: medium: overflow check might fail
 counters.adb:29:24: medium: overflow check might fail
 counters.adb:31:24: medium: overflow check might fail
+counters.adb:40:13: info: range check proved

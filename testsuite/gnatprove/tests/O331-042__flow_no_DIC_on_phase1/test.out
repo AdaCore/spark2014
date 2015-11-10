@@ -1,4 +1,6 @@
+types.ads:5:13: info: range check proved
 types.ads:5:20: warning: unused variable "X"
 types.ads:8:04: medium: type "T" is not fully initialized
 use_types.adb:5:04: info: default initial condition proved
 use_types.adb:5:04: info: initialization of private part of "X" proved
+use_types.adb:5:11: info: range check proved

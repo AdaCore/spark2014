@@ -3,6 +3,8 @@ with_iterable.adb:4:27: info: discriminant check proved
 with_iterable.adb:4:27: info: predicate check proved
 with_iterable.adb:7:07: info: assertion proved
 with_iterable.adb:7:38: info: initialization of "First.I" proved
+with_iterable.ads:10:09: info: range check proved
+with_iterable.ads:14:36: info: range check proved
 with_iterable.ads:17:18: info: index check proved
 with_iterable.ads:21:20: warning: unused variable "A"
 with_iterable.ads:22:07: info: discriminant check proved

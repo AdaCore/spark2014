@@ -1,2 +1,3 @@
+discr_dyn.adb:15:22: info: range check proved
 discr_dyn.adb:15:29: medium: discriminant check might fail
 discr_dyn.adb:15:44: info: length check proved

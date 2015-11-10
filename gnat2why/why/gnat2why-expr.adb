@@ -9035,6 +9035,45 @@ package body Gnat2Why.Expr is
       --  declaration which requires a check.
       --  Return Empty otherwise.
 
+      function Check_Discr_Of_Subtype (Base, Ent : Entity_Id) return W_Prog_Id;
+      --  @param Ent a type entity
+      --  @param Base the base type of Ent; Empty if Ent has no base type
+      --  @return a program to check that the constraints on the discriminants
+      --  of Ent are in fact allowed by Base. Return Void if there is nothing
+      --  to check.
+
+      function Check_Discr_Of_Subtype (Base, Ent : Entity_Id) return W_Prog_Id
+      is
+         R : W_Prog_Id := New_Void;
+      begin
+         if Present (Base)
+           and then Present (Stored_Constraint (Ent))
+         then
+            declare
+               Discr : Entity_Id := First_Discriminant (Base);
+               Elmt  : Elmt_Id :=
+                 First_Elmt (Stored_Constraint (Ent));
+            begin
+               while Present (Discr) loop
+                  R :=
+                    Sequence
+                      (Do_Range_Check
+                         (Ada_Node => Node (Elmt),
+                          W_Expr =>
+                            +Transform_Expr
+                            (Node (Elmt),
+                             EW_Prog,
+                             Body_Params),
+                          Ty => Etype (Discr),
+                          Check_Kind => RCK_Range),
+                       R);
+                  Next_Discriminant (Discr);
+                  Next_Elmt (Elmt);
+               end loop;
+            end;
+         end if;
+         return R;
+      end Check_Discr_Of_Subtype;
       -------------------
       -- Get_Base_Type --
       -------------------
@@ -9336,11 +9375,22 @@ package body Gnat2Why.Expr is
                         end loop;
                      end;
 
+                     --  We need to check that the new discriminants of
+                     --  the subtype fit into the base type
+
+                     R := Sequence (Check_Discr_Of_Subtype (Base, Ent), R);
+
+                  when E_Protected_Subtype =>
+
+                     --  We need to check that the new discriminants of
+                     --  the subtype fit into the base type
+
+                     R := Sequence (Check_Discr_Of_Subtype (Base, Ent), R);
+
                   when Private_Kind
                      | E_Class_Wide_Type
                      | E_Class_Wide_Subtype
                      | E_Protected_Type
-                     | E_Protected_Subtype
                      | E_Task_Type
                      | E_Task_Subtype
                      =>

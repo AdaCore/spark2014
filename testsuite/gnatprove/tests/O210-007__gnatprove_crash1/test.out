@@ -7,3 +7,4 @@ main.adb:22:42: info: initialization of "Branch.M_Nodes" proved
 main.adb:26:13: info: assertion proved
 main.adb:27:29: info: index check proved
 main.adb:27:32: info: initialization of "Branch.M_Nodes" proved
+main.adb:34:21: info: range check proved

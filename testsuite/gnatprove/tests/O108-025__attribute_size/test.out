@@ -1,3 +1,5 @@
+size_attr.adb:22:23: info: range check proved
+size_attr.adb:67:13: info: range check proved
 size_attr.adb:74:30: info: length check proved
 size_attr.adb:75:41: info: length check proved
 size_attr.adb:77:31: info: length check proved

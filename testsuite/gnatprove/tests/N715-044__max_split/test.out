@@ -1,3 +1,4 @@
+very_longs.adb:8:26: info: range check proved
 very_longs.adb:11:26: info: length check proved
 very_longs.adb:11:29: info: length check proved
 very_longs.adb:14:29: info: index check proved

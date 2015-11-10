@@ -4,7 +4,7 @@ package body Extended_Returns is
      (Discr    : Integer;
       Init_Val : Natural) return Record_T is
    begin
-      return Result : Record_T (Discr) do
+      return Result : Record_T (Discr) do --@RANGE_CHECK:FAIL
          Result.A := Init_Val;
 
          if Discr = 0 then

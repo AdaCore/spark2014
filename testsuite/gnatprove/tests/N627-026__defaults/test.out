@@ -27,6 +27,7 @@ with_default.adb:76:15: info: range check proved
 with_default.adb:80:36: medium: range check might fail
 with_default.adb:89:69: medium: range check might fail
 with_default.adb:90:15: info: range check proved
+with_default.adb:102:29: info: range check proved
 with_default.adb:108:69: info: range check proved
 with_default.adb:108:69: medium: range check might fail
 with_default.adb:109:15: info: range check proved
@@ -36,6 +37,7 @@ with_default.adb:130:15: info: range check proved
 with_default.adb:134:36: info: range check proved
 with_default.adb:169:43: info: range check proved
 with_default.adb:187:57: info: range check proved
+with_default.adb:189:32: info: range check proved
 with_default.adb:195:07: info: assertion proved
 with_default.adb:195:22: info: initialization of "Simple.F1" proved
 with_default.adb:196:07: info: assertion proved
@@ -54,6 +56,7 @@ with_default.adb:201:07: info: assertion proved
 with_default.adb:202:07: info: assertion proved
 with_default.adb:202:22: info: initialization of "Wrap.Content.F1" proved
 with_default.adb:202:26: info: discriminant check proved
+with_default.adb:202:26: info: range check proved
 with_default.adb:202:34: info: discriminant check proved
 with_default.adb:206:39: medium: range check might fail (e.g. when C = 0)
 with_default.adb:219:39: medium: range check might fail (e.g. when C = 0)

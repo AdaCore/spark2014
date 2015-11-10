@@ -4,6 +4,7 @@ communications.adb:5:73: info: length check proved
 communications.adb:7:16: info: length check proved
 communications.adb:7:19: info: length check proved
 communications.adb:11:07: warning: type invariant ignored (not yet supported)
+communications.adb:11:30: medium: range check might fail
 communications.adb:13:17: info: length check proved
 communications.adb:13:20: info: length check proved
 communications.adb:14:14: info: initialization of "Coms.Msgs" proved
@@ -21,4 +22,5 @@ main.adb:5:42: info: length check proved
 main.adb:6:07: medium: predicate check might fail
 main.adb:6:16: info: length check proved
 main.adb:6:42: info: length check proved
+main.adb:7:26: info: range check proved
 messages.adb:6:12: medium: predicate check might fail

@@ -1,9 +1,11 @@
+basic.adb:3:14: info: range check proved
 basic.adb:8:17: info: discriminant check proved
 basic.adb:13:17: medium: discriminant check might fail
 basic.adb:17:17: info: discriminant check proved
 basic.adb:18:22: info: discriminant check proved
 basic.ads:45:14: warning: subprogram "P" has no effect
 conv.adb:6:20: info: postcondition proved
+conv.adb:8:13: info: range check proved
 conv.adb:15:17: info: discriminant check proved
 conv.adb:17:17: info: discriminant check proved
 conv.adb:17:21: info: initialization of "X.A_Field" proved
@@ -20,6 +22,7 @@ special.adb:7:07: info: assertion proved
 special.adb:8:08: info: discriminant check proved
 special.adb:14:07: info: assertion proved
 special.adb:15:08: info: discriminant check proved
+special.ads:6:32: info: range check proved
 special.ads:11:14: warning: subprogram "T" has no effect
 subty.adb:4:16: info: discriminant check proved
 subty.adb:6:07: info: assertion proved
@@ -38,4 +41,5 @@ subty.adb:12:23: info: discriminant check proved
 subty.adb:12:35: info: discriminant check proved
 subty.adb:12:44: info: overflow check proved
 subty.adb:13:07: info: assertion proved
+subty.ads:5:20: info: range check proved
 subty.ads:7:14: warning: subprogram "P" has no effect

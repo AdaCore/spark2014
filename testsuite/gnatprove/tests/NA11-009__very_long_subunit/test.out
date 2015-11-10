@@ -1,8 +1,12 @@
+very_longs-divide.adb:7:11: info: range check proved
 very_longs-divide.adb:15:12: info: range check proved
 very_longs-divide.adb:19:12: info: range check proved
 very_longs-divide.adb:20:48: info: overflow check proved
 very_longs-divide.adb:20:64: info: overflow check proved
+very_longs-divide.adb:29:48: medium: range check might fail
+very_longs-divide.adb:30:39: info: range check proved
 very_longs-divide.adb:47:14: info: initialization of "Distance" proved
+very_longs-divide.adb:52:07: info: range check proved
 very_longs-divide.adb:52:30: info: initialization of "Result.Long_Digits" proved
 very_longs-divide.adb:61:26: info: length check proved
 very_longs-divide.adb:61:29: info: length check proved
@@ -155,6 +159,8 @@ very_longs-divide.adb:242:16: info: initialization of "Remainder.Long_Digits" pr
 very_longs-divide.adb:242:27: info: initialization of "Shift_Distance" proved
 very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
+very_longs.adb:50:07: info: range check proved
+very_longs.adb:50:10: info: range check proved
 very_longs.adb:50:28: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:50:52: info: initialization of "Carry" proved
 very_longs.adb:59:26: info: length check proved
@@ -168,6 +174,8 @@ very_longs.adb:65:33: info: initialization of "Sum" proved
 very_longs.adb:66:29: info: index check proved
 very_longs.adb:66:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:66:50: info: initialization of "Sum" proved
+very_longs.adb:73:07: info: range check proved
+very_longs.adb:73:10: info: range check proved
 very_longs.adb:73:28: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:73:52: info: initialization of "Borrow" proved
 very_longs.adb:82:26: info: length check proved
@@ -181,6 +189,7 @@ very_longs.adb:88:14: info: initialization of "Difference" proved
 very_longs.adb:93:29: info: index check proved
 very_longs.adb:93:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:93:50: info: initialization of "Difference" proved
+very_longs.adb:109:26: info: range check proved
 very_longs.adb:112:07: info: assertion proved
 very_longs.adb:113:26: info: length check proved
 very_longs.adb:113:29: info: length check proved
@@ -221,14 +230,19 @@ very_longs.adb:150:19: info: initialization of "Index" proved
 very_longs.adb:150:25: info: range check proved
 very_longs.adb:151:26: info: initialization of "String_Index" proved
 very_longs.adb:151:39: info: overflow check proved
+very_longs.adb:160:13: info: range check proved
 very_longs.adb:164:27: info: index check proved
 very_longs.adb:164:46: info: index check proved
 very_longs.adb:168:27: info: index check proved
 very_longs.adb:168:46: info: index check proved
 very_longs.adb:174:14: info: initialization of "Result" proved
+very_longs.adb:178:13: info: range check proved
 very_longs.adb:180:17: info: precondition proved
+very_longs.adb:184:13: info: range check proved
 very_longs.adb:186:21: info: precondition proved
+very_longs.adb:190:13: info: range check proved
 very_longs.adb:192:21: info: precondition proved
+very_longs.adb:196:13: info: range check proved
 very_longs.adb:199:10: medium: refined postcondition might fail (e.g. when Digit_Count = 2 and Number_Of_Digits'Result = 2)
 very_longs.adb:200:48: medium: array index check might fail (e.g. when Number_Of_Digits'Result = 2)
 very_longs.adb:202:32: info: index check proved
@@ -239,6 +253,8 @@ very_longs.adb:212:13: info: loop invariant preservation proved
 very_longs.adb:214:32: info: initialization of "Digit_Count" proved
 very_longs.adb:214:75: info: index check proved
 very_longs.adb:217:14: info: initialization of "Digit_Count" proved
+very_longs.adb:225:13: info: range check proved
+very_longs.adb:226:28: info: range check proved
 very_longs.adb:232:26: info: length check proved
 very_longs.adb:232:29: info: length check proved
 very_longs.adb:235:48: info: index check proved
@@ -251,6 +267,8 @@ very_longs.adb:239:29: info: index check proved
 very_longs.adb:239:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:239:50: info: initialization of "Sum" proved
 very_longs.adb:241:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:245:13: info: range check proved
+very_longs.adb:246:31: info: range check proved
 very_longs.adb:252:26: info: length check proved
 very_longs.adb:252:29: info: length check proved
 very_longs.adb:255:51: info: index check proved
@@ -263,6 +281,8 @@ very_longs.adb:263:29: info: index check proved
 very_longs.adb:263:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:263:50: info: initialization of "Difference" proved
 very_longs.adb:265:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:273:13: info: range check proved
+very_longs.adb:274:27: info: range check proved
 very_longs.adb:282:26: info: length check proved
 very_longs.adb:282:29: info: length check proved
 very_longs.adb:288:51: info: index check proved
@@ -281,6 +301,8 @@ very_longs.adb:293:46: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:293:64: info: initialization of "Temp" proved
 very_longs.adb:294:39: info: initialization of "Temp" proved
 very_longs.adb:298:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:302:13: info: range check proved
+very_longs.adb:303:36: medium: range check might fail
 very_longs.adb:311:26: info: length check proved
 very_longs.adb:311:29: info: length check proved
 very_longs.adb:317:52: info: index check proved
@@ -313,4 +335,5 @@ very_longs.ads:62:19: info: postcondition proved
 very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
 very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
 very_longs.ads:75:37: info: overflow check proved
+very_longs.ads:89:13: info: range check proved
 very_longs.ads:90:68: info: index check proved

@@ -1,3 +1,4 @@
 main.adb:12:30: info: initialization of "D.M_Array" proved
 main.adb:14:17: info: length check proved
 main.adb:14:20: info: length check proved
+main.adb:17:20: info: range check proved

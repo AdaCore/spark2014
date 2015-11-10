@@ -1,5 +1,7 @@
 test_globals.adb:1:11: warning: subprogram "Test_Globals" has no effect
 test_globals.adb:4:04: info: range check proved
+test_globals.adb:8:35: info: range check proved
+test_globals.adb:9:34: info: range check proved
 test_globals.adb:11:24: info: range check proved
 test_globals.adb:12:26: info: length check proved
 test_globals.adb:13:25: info: length check proved

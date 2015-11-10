@@ -89,6 +89,7 @@ bad_types.adb:9:33: info: initialization of "Wall_Thickness" proved
 bad_types.adb:10:21: warning: assuming "Put" has no effect on global items
 bad_types.adb:10:21: warning: no Global contract available for "Put"
 bad_types.adb:10:35: info: initialization of "Total" proved
+bounded_queue_example_v1.adb:6:56: info: range check proved
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Front" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Items" is not initialized
@@ -118,7 +119,12 @@ bounded_queue_example_v1.adb:20:04: warning: assuming "Put_Line" has no effect o
 bounded_queue_example_v1.adb:20:04: warning: no Global contract available for "Put_Line"
 bounded_queue_example_v1.adb:20:42: low: range check might fail
 bounded_queue_example_v1.adb:20:59: info: initialization of "Value" proved
+bounded_queue_v1.adb:3:13: info: range check proved
+bounded_queue_v1.adb:8:13: info: range check proved
+bounded_queue_v1.adb:13:13: info: range check proved
+bounded_queue_v1.adb:18:13: info: range check proved
 bounded_queue_v1.adb:20:32: medium: array index check might fail (e.g. when Queue = 1)
+bounded_queue_v1.adb:23:13: info: range check proved
 bounded_queue_v1.adb:25:32: medium: array index check might fail (e.g. when Queue = 1)
 bounded_queue_v1.adb:38:32: info: division check proved
 bounded_queue_v1.adb:38:51: info: overflow check proved
@@ -1211,7 +1217,9 @@ sqrt.adb:6:31: medium: overflow check might fail
 sqrt.adb:6:35: medium: divide by zero might fail
 sqrt.adb:6:35: medium: overflow check might fail
 sqrt.adb:8:11: info: initialization of "Approx" proved
+stacks-more.adb:2:13: info: range check proved
 stacks-more.adb:4:32: medium: array index check might fail
+stacks.adb:8:13: info: range check proved
 stacks.adb:14:30: medium: overflow check might fail
 stacks.adb:15:25: medium: array index check might fail
 stacks.adb:21:33: medium: array index check might fail
@@ -1451,11 +1459,15 @@ various.adb:20:07: info: assertion proved
 various.adb:20:23: medium: overflow check might fail (e.g. when X = 2147483647 and Y = 1)
 various.adb:20:26: info: division check proved
 various.adb:21:13: info: division check proved
+very_longs-divide.adb:7:11: info: range check proved
 very_longs-divide.adb:15:12: info: range check proved
 very_longs-divide.adb:19:12: info: range check proved
 very_longs-divide.adb:20:48: info: overflow check proved
 very_longs-divide.adb:20:64: info: overflow check proved
+very_longs-divide.adb:29:48: medium: range check might fail
+very_longs-divide.adb:30:39: info: range check proved
 very_longs-divide.adb:47:14: info: initialization of "Distance" proved
+very_longs-divide.adb:52:07: info: range check proved
 very_longs-divide.adb:52:30: info: initialization of "Result.Long_Digits" proved
 very_longs-divide.adb:61:26: info: length check proved
 very_longs-divide.adb:61:29: info: length check proved
@@ -1608,6 +1620,8 @@ very_longs-divide.adb:242:16: info: initialization of "Remainder.Long_Digits" pr
 very_longs-divide.adb:242:27: info: initialization of "Shift_Distance" proved
 very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
+very_longs.adb:50:07: info: range check proved
+very_longs.adb:50:10: info: range check proved
 very_longs.adb:50:28: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:50:52: info: initialization of "Carry" proved
 very_longs.adb:59:26: info: length check proved
@@ -1621,6 +1635,8 @@ very_longs.adb:65:33: info: initialization of "Sum" proved
 very_longs.adb:66:29: info: index check proved
 very_longs.adb:66:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:66:50: info: initialization of "Sum" proved
+very_longs.adb:73:07: info: range check proved
+very_longs.adb:73:10: info: range check proved
 very_longs.adb:73:28: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:73:52: info: initialization of "Borrow" proved
 very_longs.adb:82:26: info: length check proved
@@ -1634,6 +1650,7 @@ very_longs.adb:88:14: info: initialization of "Difference" proved
 very_longs.adb:93:29: info: index check proved
 very_longs.adb:93:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:93:50: info: initialization of "Difference" proved
+very_longs.adb:109:26: info: range check proved
 very_longs.adb:112:07: info: assertion proved
 very_longs.adb:113:26: info: length check proved
 very_longs.adb:113:29: info: length check proved
@@ -1681,14 +1698,19 @@ very_longs.adb:154:19: info: initialization of "Index" proved
 very_longs.adb:154:25: info: range check proved
 very_longs.adb:155:26: info: initialization of "String_Index" proved
 very_longs.adb:155:39: info: overflow check proved
+very_longs.adb:164:13: info: range check proved
 very_longs.adb:168:27: info: index check proved
 very_longs.adb:168:46: info: index check proved
 very_longs.adb:172:27: info: index check proved
 very_longs.adb:172:46: info: index check proved
 very_longs.adb:178:14: info: initialization of "Result" proved
+very_longs.adb:182:13: info: range check proved
 very_longs.adb:184:17: info: precondition proved
+very_longs.adb:188:13: info: range check proved
 very_longs.adb:190:21: info: precondition proved
+very_longs.adb:194:13: info: range check proved
 very_longs.adb:196:21: info: precondition proved
+very_longs.adb:200:10: info: range check proved
 very_longs.adb:203:07: info: refined post proved
 very_longs.adb:205:46: info: index check proved
 very_longs.adb:207:33: info: index check proved
@@ -1700,6 +1722,8 @@ very_longs.adb:219:37: info: index check proved
 very_longs.adb:219:37: info: initialization of "Digit_Count" proved
 very_longs.adb:223:39: info: index check proved
 very_longs.adb:226:11: info: initialization of "Digit_Count" proved
+very_longs.adb:234:13: info: range check proved
+very_longs.adb:235:28: info: range check proved
 very_longs.adb:241:26: info: length check proved
 very_longs.adb:241:29: info: length check proved
 very_longs.adb:244:48: info: index check proved
@@ -1712,6 +1736,8 @@ very_longs.adb:248:29: info: index check proved
 very_longs.adb:248:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:248:50: info: initialization of "Sum" proved
 very_longs.adb:250:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:254:13: info: range check proved
+very_longs.adb:255:31: info: range check proved
 very_longs.adb:261:26: info: length check proved
 very_longs.adb:261:29: info: length check proved
 very_longs.adb:264:51: info: index check proved
@@ -1724,6 +1750,8 @@ very_longs.adb:272:29: info: index check proved
 very_longs.adb:272:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:272:50: info: initialization of "Difference" proved
 very_longs.adb:274:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:282:13: info: range check proved
+very_longs.adb:283:27: info: range check proved
 very_longs.adb:291:26: info: length check proved
 very_longs.adb:291:29: info: length check proved
 very_longs.adb:297:51: info: index check proved
@@ -1742,6 +1770,8 @@ very_longs.adb:302:46: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:302:64: info: initialization of "Temp" proved
 very_longs.adb:303:39: info: initialization of "Temp" proved
 very_longs.adb:307:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:311:13: info: range check proved
+very_longs.adb:312:36: medium: range check might fail
 very_longs.adb:320:26: info: length check proved
 very_longs.adb:320:29: info: length check proved
 very_longs.adb:326:52: info: index check proved
@@ -1774,6 +1804,7 @@ very_longs.ads:62:19: info: postcondition proved
 very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
 very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
 very_longs.ads:75:37: info: overflow check proved
+very_longs.ads:89:13: info: range check proved
 very_longs.ads:90:68: info: index check proved
 workspaces.adb:5:07: info: range check proved
 workspaces.adb:5:48: info: length check proved

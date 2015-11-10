@@ -1,4 +1,5 @@
 record_discr.adb:5:07: info: assertion proved
+record_discr.adb:17:13: info: range check proved
 record_discr.adb:22:07: warning: analyzing unreferenced function "Bad"
 record_discr.adb:24:28: medium: discriminant check might fail
 record_discr.adb:29:53: info: range check proved
@@ -7,9 +8,11 @@ record_discr.adb:34:43: info: index check proved
 record_discr.adb:38:39: info: range check proved
 record_discr.adb:39:33: info: length check proved
 record_discr.adb:39:33: info: range check proved
+record_discr.adb:45:53: info: range check proved
 record_discr.adb:47:46: info: discriminant check proved
 record_discr.adb:47:56: info: range check proved
 record_discr.adb:47:76: info: length check proved
+record_discr.ads:11:39: info: range check proved
 record_discr.ads:14:14: info: postcondition proved
 record_discr.ads:15:18: info: precondition proved
 record_discr.ads:16:44: info: index check proved

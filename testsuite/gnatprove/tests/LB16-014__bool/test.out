@@ -1,3 +1,5 @@
 data.ads:14:18: info: postcondition proved
 data.ads:15:24: info: precondition proved
+data.ads:29:13: info: range check proved
+data.ads:32:13: info: range check proved
 data.ads:33:24: info: discriminant check proved

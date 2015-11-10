@@ -1,3 +1,4 @@
+q.adb:2:13: info: range check proved
 q.adb:7:16: info: discriminant check proved
 q.adb:9:16: info: discriminant check proved
 q.adb:11:14: info: initialization of "Res.A" proved

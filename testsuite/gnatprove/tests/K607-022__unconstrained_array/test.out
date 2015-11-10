@@ -1,6 +1,7 @@
 my_test.adb:5:23: info: length check proved
 my_test.adb:6:04: warning: "T2" is not modified, could be declared constant
 my_test.adb:6:23: info: length check proved
+my_test.adb:8:16: info: range check proved
 my_test.adb:11:22: info: precondition proved
 my_test.adb:11:27: info: initialization of "T1.V" proved
 my_test.adb:12:22: info: precondition proved
@@ -22,7 +23,9 @@ my_test.adb:21:16: info: initialization of "T1.V" proved
 my_test.adb:22:19: info: initialization of "T1.V" proved
 my_test.adb:22:19: medium: assertion might fail, cannot prove T1 = T3
 my_test.adb:22:24: info: initialization of "T3.V" proved
+simple_unc_arrays.adb:8:13: info: range check proved
 simple_unc_arrays.adb:10:07: medium: "C.V" might not be initialized
+simple_unc_arrays.adb:10:26: info: range check proved
 simple_unc_arrays.adb:12:13: info: loop invariant initialization proved
 simple_unc_arrays.adb:12:13: info: loop invariant preservation proved
 simple_unc_arrays.adb:13:42: medium: "C.V" might not be initialized
@@ -53,6 +56,7 @@ simple_unc_arrays.adb:35:18: info: initialization of "Low" proved
 simple_unc_arrays.adb:35:22: info: overflow check proved
 simple_unc_arrays.adb:36:18: info: initialization of "High" proved
 simple_unc_arrays.adb:36:23: info: range check proved
+simple_unc_arrays.adb:44:13: info: range check proved
 simple_unc_arrays.adb:45:26: info: index check proved
 simple_unc_arrays.adb:48:10: info: loop invariant initialization proved
 simple_unc_arrays.adb:48:10: info: loop invariant preservation proved
@@ -62,6 +66,7 @@ simple_unc_arrays.adb:50:13: info: initialization of "Res" proved
 simple_unc_arrays.adb:50:24: info: index check proved
 simple_unc_arrays.adb:51:25: info: index check proved
 simple_unc_arrays.adb:55:14: info: initialization of "Res" proved
+simple_unc_arrays.adb:62:13: info: range check proved
 simple_unc_arrays.adb:64:06: info: initialization of "Res" proved
 simple_unc_arrays.adb:64:33: info: index check proved
 simple_unc_arrays.adb:66:11: info: loop invariant initialization proved
@@ -71,16 +76,19 @@ simple_unc_arrays.adb:66:73: info: index check proved
 simple_unc_arrays.adb:68:13: info: initialization of "Res" proved
 simple_unc_arrays.adb:68:24: info: index check proved
 simple_unc_arrays.adb:69:25: info: index check proved
+simple_unc_arrays.adb:79:13: info: range check proved
 simple_unc_arrays.adb:84:16: info: initialization of "Sum" proved
 simple_unc_arrays.adb:84:20: medium: overflow check might fail
 simple_unc_arrays.adb:84:27: info: index check proved
 simple_unc_arrays.adb:87:14: info: initialization of "Sum" proved
 simple_unc_arrays.adb:87:18: info: division check proved
+simple_unc_arrays.adb:94:13: info: range check proved
 simple_unc_arrays.adb:98:10: info: loop invariant initialization proved
 simple_unc_arrays.adb:98:10: info: loop invariant preservation proved
 simple_unc_arrays.adb:98:65: info: index check proved
 simple_unc_arrays.adb:100:18: info: index check proved
 simple_unc_arrays.adb:106:14: info: initialization of "Pos" proved
+simple_unc_arrays.adb:113:13: info: range check proved
 simple_unc_arrays.adb:117:13: info: initialization of "Bull" proved
 simple_unc_arrays.adb:120:16: info: initialization of "Res.V" proved
 simple_unc_arrays.adb:120:25: info: index check proved
@@ -172,6 +180,9 @@ simple_unc_arrays.ads:96:68: info: index check proved
 simple_unc_arrays.ads:96:68: info: overflow check proved
 simple_unc_arrays.ads:98:55: info: index check proved
 simple_unc_arrays.ads:98:65: info: index check proved
+simple_unc_arrays.ads:105:13: info: range check proved
+simple_unc_arrays.ads:106:13: info: range check proved
+simple_unc_arrays.ads:107:13: info: range check proved
 simple_unc_arrays.ads:112:61: info: index check proved
 simple_unc_arrays.ads:116:18: info: postcondition proved
 simple_unc_arrays.ads:121:20: medium: postcondition might fail

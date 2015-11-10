@@ -1,1 +1,2 @@
+bad.ads:6:32: medium: range check might fail
 interrupt_priority.adb:6:20: info: overflow check proved

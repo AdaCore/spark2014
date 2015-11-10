@@ -1,5 +1,6 @@
 discr.adb:7:09: info: discriminant check proved
 discr.adb:8:09: medium: discriminant check might fail
+discr.adb:14:26: info: range check proved
 discr.adb:17:07: info: assertion proved
 discr.adb:18:07: info: assertion proved
 discr.adb:19:07: info: assertion proved
@@ -8,8 +9,10 @@ discr.adb:21:09: info: discriminant check proved
 discr.adb:22:07: info: assertion proved
 discr.adb:23:07: info: assertion proved
 discr.adb:24:10: info: discriminant check proved
+discr.adb:28:25: info: range check proved
 discr.adb:30:12: info: discriminant check proved
 discr.adb:31:12: medium: discriminant check might fail
+discr.adb:36:26: info: range check proved
 discr.adb:36:32: info: discriminant check proved
 discr.adb:43:12: medium: discriminant check might fail
 discr.adb:51:12: info: discriminant check proved
@@ -17,6 +20,7 @@ discr.adb:55:07: info: precondition proved
 discr.adb:56:07: info: precondition proved
 discr.adb:57:07: info: precondition proved
 discr.adb:58:07: medium: precondition might fail
+discr.adb:62:26: info: range check proved
 discr.adb:62:32: info: discriminant check proved
 discr.adb:66:07: info: assertion proved
 discr.adb:67:07: info: assertion proved

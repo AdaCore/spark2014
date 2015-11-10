@@ -1,7 +1,9 @@
+const.adb:2:13: info: range check proved
 const.adb:6:19: info: index check proved
 const.adb:22:09: warning: unused assignment
 const.adb:22:19: info: index check proved
 const.ads:12:13: warning: subprogram "Simple" has no effect
+mutable.adb:2:13: info: range check proved
 mutable.adb:6:19: info: index check proved
 mutable.adb:10:21: warning: unused initial value of "X"
 mutable.adb:12:09: medium: discriminant check might fail
