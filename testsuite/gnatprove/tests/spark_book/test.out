@@ -1446,7 +1446,7 @@ utility.adb:12:10: info: loop invariant preservation proved
 utility.adb:13:67: info: index check proved
 utility.adb:15:07: info: raise statement proved unreachable
 utility.ads:12:16: info: postcondition proved
-various.adb:12:07: medium: exception might be raised
+various.adb:12:07: medium: exception might be raised (e.g. when J = 10 and Search_For_Zero'Result = 0)
 various.adb:20:07: info: assertion proved
 various.adb:20:23: medium: overflow check might fail (e.g. when X = 2147483647 and Y = 1)
 various.adb:20:26: info: division check proved
