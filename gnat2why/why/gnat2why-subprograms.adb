@@ -2093,11 +2093,16 @@ package body Gnat2Why.Subprograms is
          else New_Void);
 
       if Is_Protected_Subprogram (E) then
-         Self_Name :=
-           New_Identifier
-             (Name => "self__",
-              Typ  => Type_Of_Node (Containing_Protected_Type (E)));
-         Self_Is_Mutable := True;
+         declare
+            CPT : constant Entity_Id := Containing_Protected_Type (E);
+         begin
+            Self_Name :=
+              New_Identifier
+                (Name     => "self__",
+                 Ada_Node => CPT,
+                 Typ      => Type_Of_Node (CPT));
+            Self_Is_Mutable := True;
+         end;
       end if;
 
       Params :=

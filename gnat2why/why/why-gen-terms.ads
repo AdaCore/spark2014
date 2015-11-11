@@ -38,7 +38,9 @@ package Why.Gen.Terms is
    --  Return True if T contains a dereference
 
    function Has_Dereference_Or_Any (T : W_Term_Id) return Boolean;
-   --  Return True if T contains a dereference or any constructs
+   --  Return True if T contains a dereference or "any" constructs
+   --  ??? also return true if there are references to a "self" object
+   --  ??? to be removed in OB11-002
 
    function New_Old (Expr : W_Expr_Id; Domain : EW_Domain) return W_Expr_Id;
    --  Build the expression old Expr
