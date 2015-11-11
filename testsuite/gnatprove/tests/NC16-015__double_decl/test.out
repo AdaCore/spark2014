@@ -1,4 +1,4 @@
-controller.adb:28:40: medium: range check might fail
+controller.adb:28:40: medium: range check might fail (e.g. when Piece_count = 1000)
 tetris.adb:9:21: info: length check proved
 tetris.adb:9:32: info: length check proved
 tetris.adb:41:16: info: initialization of "Xnew" proved
