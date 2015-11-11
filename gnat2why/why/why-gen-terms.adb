@@ -23,6 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;               use Atree;
+with Einfo;               use Einfo;
+with Sinfo;               use Sinfo;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Atree.Traversal; use Why.Atree.Traversal;
@@ -76,6 +79,10 @@ package body Why.Gen.Terms is
         (State : in out Search_State;
          Node  : W_Any_Expr_Id);
 
+      procedure Identifier_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Identifier_Id);
+
       ------------------
       -- Deref_Pre_Op --
       ------------------
@@ -104,7 +111,28 @@ package body Why.Gen.Terms is
          State.Control := Terminate_Immediately;
       end Any_Expr_Pre_Op;
 
+      procedure Identifier_Pre_Op
+        (State : in out Search_State;
+         Node  : W_Identifier_Id) is
+      begin
+
+         --  ??? this code to be removed in OB11-002
+
+         if Nkind (Get_Ada_Node (+Node)) in N_Entity
+           and then
+             Ekind (Get_Ada_Node (+Node)) in
+               E_Protected_Type | E_Private_Subtype
+         then
+            State.Found   := True;
+            State.Control := Terminate_Immediately;
+         end if;
+         State.Control := Abandon_Children;
+      end Identifier_Pre_Op;
+
       SS : Search_State := (Control => Continue, Found => False);
+
+      --  Start of Processing for Has_Dereference_Or_Any
+
    begin
       Traverse (SS, +T);
       return SS.Found;

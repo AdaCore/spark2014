@@ -10889,8 +10889,9 @@ package body Gnat2Why.Expr is
               (if Is_Type (Obj_Or_Ty) then Obj_Or_Ty else Etype (Obj_Or_Ty));
             Id   : constant W_Identifier_Id :=
               New_Identifier
-                (Name => "self__",
-                 Typ  => Type_Of_Node (Prot));
+                (Name     => "self__",
+                 Ada_Node => Prot,
+                 Typ      => Type_Of_Node (Prot));
          begin
             T := New_Ada_Record_Access
               (Ada_Node => Expr,
