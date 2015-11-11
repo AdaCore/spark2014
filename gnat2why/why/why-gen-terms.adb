@@ -66,7 +66,7 @@ package body Why.Gen.Terms is
    -- Has_Dereference_Or_Any --
    ----------------------------
 
-   function Has_Dereference_Or_Any (T : W_Term_Id) return Boolean is
+   function Has_Dereference_Or_Any_Or_Self (T : W_Term_Id) return Boolean is
       type Search_State is new Traversal_State with record
          Found : Boolean;
       end record;
@@ -115,9 +115,6 @@ package body Why.Gen.Terms is
         (State : in out Search_State;
          Node  : W_Identifier_Id) is
       begin
-
-         --  ??? this code to be removed in OB11-002
-
          if Nkind (Get_Ada_Node (+Node)) in N_Entity
            and then
              Ekind (Get_Ada_Node (+Node)) in
@@ -136,7 +133,7 @@ package body Why.Gen.Terms is
    begin
       Traverse (SS, +T);
       return SS.Found;
-   end Has_Dereference_Or_Any;
+   end Has_Dereference_Or_Any_Or_Self;
 
    -------------
    -- New_Old --

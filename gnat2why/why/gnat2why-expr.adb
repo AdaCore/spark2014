@@ -3791,7 +3791,7 @@ package body Gnat2Why.Expr is
       Result : constant W_Term_Id :=
         +Transform_Expr (Expr, Expected_Type, EW_Term, Params);
    begin
-      if Has_Dereference_Or_Any (Result) then
+      if Has_Dereference_Or_Any_Or_Self (Result) then
          return Why_Empty;
       else
          return Result;
