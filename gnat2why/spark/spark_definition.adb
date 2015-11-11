@@ -3740,8 +3740,6 @@ package body SPARK_Definition is
 
          --  Discriminants of task types are marked, but those of records and
          --  protected objects are not.
-         --  ??? why task discriminants are marked while processing task body
-         --  and not task type declaration?
 
          when E_Discriminant   => Mark_Parameter_Entity (E);
 
