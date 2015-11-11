@@ -1720,13 +1720,19 @@ package body Gnat2Why.Expr is
                   begin
                      --  external call, pass the object itself
 
-                     if Nkind (Sinfo.Name (Call)) = N_Selected_Component then
+                     if Nkind (Sinfo.Name (Call)) = N_Selected_Component
+                       and then
+                         not Is_Type (Entity (Prefix (Sinfo.Name (Call))))
+                     then
                         Why_Args (Arg_Cnt) :=
                           Transform_Expr
                             (Prefix (Sinfo.Name (Call)),
                              Get_Typ (Prot),
                              Domain,
                              Params);
+
+                     --  the other two branches are internal calls
+
                      elsif Self_Is_Mutable then
                         Why_Args (Arg_Cnt) :=
                           New_Deref (Right => Prot,

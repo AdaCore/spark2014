@@ -11,6 +11,7 @@ barrier.adb:5:33: violation of pragma SPARK_Mode at test.adc:1
 blocking_contract.adb:9:07: warning: statement has no effect
 blocking_contract.adb:13:14: warning: subprogram "Proc" has no effect
 blocking_contract.adb:21:13: high: potentially blocking operation in protected operation "Dummy"
+blocking_contract.adb:27:10: medium: precondition might fail
 complex.adb:4:11: medium: "Current_Out" might not be initialized after elaboration of main program "Complex"
 complex.adb:12:07: info: initialization of "Default_Aft" proved
 complex.adb:12:07: info: initialization of "Default_Exp" proved
@@ -101,8 +102,10 @@ pack.ads:5:13: high: potentially blocking operation in protected operation "E_Pr
 pack.ads:10:13: high: potentially blocking operation in protected operation "E_Func"
 remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored (not yet supported)
 remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored in flow analysis (not yet supported)
+remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored in proof (not yet supported)
 remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored (not yet supported)
 remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored in flow analysis (not yet supported)
+remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored in proof (not yet supported)
 remote.ads:7:14: warning: subprogram "Remote_Call" has no effect
 simple_package.ads:3:14: warning: subprogram "Dummy" has no effect
-gnatprove: error during analysis of data and information flow
+gnatprove: error during flow analysis and proof
