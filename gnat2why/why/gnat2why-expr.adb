@@ -10870,8 +10870,18 @@ package body Gnat2Why.Expr is
       Domain   : EW_Domain;
       Selector : Selection_Kind := Why.Inter.Standard) return W_Expr_Id
    is
+
+      --  in some strange cases (e.g. OA28-021) we may encounter a
+      --  "discriminal" instead of a "regular" entity. We check this here
+      --  and follow the discriminal link in that case.
+
+      Lookup_Ent : constant Entity_Id :=
+        (if Ekind (Ent) in E_In_Parameter | E_Constant
+            and then Present (Discriminal_Link (Ent))
+         then Discriminal_Link (Ent)
+         else Ent);
       C        : constant Ada_Ent_To_Why.Cursor :=
-        Ada_Ent_To_Why.Find (Symbol_Table, Ent);
+        Ada_Ent_To_Why.Find (Symbol_Table, Lookup_Ent);
       T        : W_Expr_Id;
       Is_Deref : Boolean := False;
    begin
