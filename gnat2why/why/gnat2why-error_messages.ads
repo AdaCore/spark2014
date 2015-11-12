@@ -29,7 +29,7 @@ with VC_Kinds;      use VC_Kinds;
 
 package Gnat2Why.Error_Messages is
 
-   type VC_Id is new Integer;
+   type VC_Id is new Natural;
 
    function Register_VC (N : Node_Id; E : Entity_Id) return VC_Id;
    --  register a VC for entity E, located at node N
