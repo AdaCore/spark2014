@@ -333,19 +333,14 @@ package body Gnat2Why.Util is
          Set.Include (To);
       end Add_To_Set;
 
+      Position : Node_Graphs.Cursor;
+      Ignored  : Boolean;
+
    --  Start of processing for Add_To_Graph
 
    begin
-      if Map.Contains (From) then
-         Map.Update_Element (Map.Find (From), Add_To_Set'Access);
-      else
-         declare
-            S : Node_Sets.Set;
-         begin
-            S.Include (To);
-            Map.Insert (From, S);
-         end;
-      end if;
+      Map.Insert (Key => From, Position => Position, Inserted => Ignored);
+      Map.Update_Element (Position, Add_To_Set'Access);
    end Add_To_Graph;
 
    ------------------------
