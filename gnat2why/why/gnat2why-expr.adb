@@ -1722,7 +1722,10 @@ package body Gnat2Why.Expr is
 
                      if Nkind (Sinfo.Name (Call)) = N_Selected_Component
                        and then
-                         not Is_Type (Entity (Prefix (Sinfo.Name (Call))))
+                         not (Nkind (Prefix (Sinfo.Name (Call))) in
+                                N_Has_Entity
+                              and then
+                              Is_Type (Entity (Prefix (Sinfo.Name (Call)))))
                      then
                         Why_Args (Arg_Cnt) :=
                           Transform_Expr
