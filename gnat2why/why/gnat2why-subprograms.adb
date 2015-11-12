@@ -2526,7 +2526,7 @@ package body Gnat2Why.Subprograms is
                       File => No_Name),
                    Comment =>
                      "Module for checking absence of run-time errors and "
-                       & "non-termination of task body of the task "
+                       & "non-termination of task body of the task type "
                        & """" & Get_Name_String (Chars (E)) & """"
                        & (if Sloc (E) > 0 then
                             " defined at " & Build_Location_String (Sloc (E))
@@ -2573,7 +2573,7 @@ package body Gnat2Why.Subprograms is
            Why_Body);
 
       --  We assume that objects used in the program are in range, if
-      --  they are of a dynamic type
+      --  they are of a dynamic type.
 
       Why_Body :=
         Sequence
@@ -3506,7 +3506,7 @@ package body Gnat2Why.Subprograms is
       E    : Entity_Id)
    is
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
-      Why_Type     : W_Type_Id := Why_Empty;
+      Why_Type           : W_Type_Id;
    begin
       Open_Theory (File, E_Module (E),
                    Comment =>
@@ -3553,6 +3553,7 @@ package body Gnat2Why.Subprograms is
                              Labels      => Name_Id_Sets.Empty_Set,
                              Return_Type => Why_Type))));
             end if;
+
             if Has_Contracts (E, Name_Refined_Post) then
                Emit
                  (File.Cur_Theory,
@@ -3570,7 +3571,7 @@ package body Gnat2Why.Subprograms is
 
          Ada_Ent_To_Why.Insert (Symbol_Table, E, Mk_Item_Of_Entity (E));
       else
-         Insert_Entity (E, To_Why_Id (E, Typ => Why_Type));
+         Insert_Entity (E, To_Why_Id (E, Typ => Why_Empty));
       end if;
 
       Close_Theory (File,

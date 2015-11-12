@@ -230,6 +230,8 @@ package body Gnat2Why.Util is
          C : Undo_Stacks.Cursor := M.Undo_Stack.Last;
          Tmp : Undo_Stacks.Cursor;
 
+      --  Start of processing for Pop_Scope
+
       begin
          while Undo_Stacks.Has_Element (C) and then
            Undo_Stacks.Element (C).Kind /= Boundary loop
@@ -383,11 +385,13 @@ package body Gnat2Why.Util is
       Nodes  : Node_Lists.List;
       Domain : EW_Domain) return W_Expr_Id
    is
-      Cur_Spec : W_Expr_Id := Why_Empty;
+      Cur_Spec : W_Expr_Id;
    begin
       if Nodes.Is_Empty then
          return New_Literal (Value => EW_True, Domain => Domain);
       end if;
+
+      Cur_Spec := Why_Empty;
 
       for Node of Nodes loop
          declare
@@ -431,9 +435,8 @@ package body Gnat2Why.Util is
      (Vars : Why_Node_Lists.List;
       Prog : W_Prog_Id) return W_Prog_Id
    is
-      Result   : W_Prog_Id;
+      Result : W_Prog_Id := Prog;
    begin
-      Result := Prog;
       for V of Vars loop
          Result :=
            New_Binding_Ref (Name     => W_Identifier_Id (V),
@@ -816,37 +819,33 @@ package body Gnat2Why.Util is
    ------------------
 
    function Type_Of_Node (N : Node_Id) return Entity_Id is
-      T : Entity_Id;
-   begin
-      if Nkind (N) in N_Entity then
-         if Ekind (N) in Type_Kind then
-            T := N;
-         else
-            T := Etype (N);
-         end if;
-      elsif Nkind (N) in N_Identifier | N_Expanded_Name then
-         T := Etype (Entity (N));
-      else
-         T := Etype (N);
-      end if;
+      T : constant Entity_Id :=
+        (case Nkind (N) is
+            when N_Entity =>
+              (if Ekind (N) in Type_Kind then
+                 N
+               else
+                 Etype (N)),
+            when N_Identifier | N_Expanded_Name =>
+               Etype (Entity (N)),
+            when others =>
+               Etype (N));
 
+   begin
       --  The type of a node is either its most underlying type, or else the
       --  special private type in all other cases, represented in the AST by
       --  its type.
 
-      if Ekind (T) in Type_Kind then
-         return Retysp (T);
-      else
-         return T;
-      end if;
+      return (case Ekind (T) is
+                 when Type_Kind => Retysp (T),
+                 when others => T);
    end Type_Of_Node;
 
    ----------------------------
    -- Use_Base_Type_For_Type --
    ----------------------------
 
-   function Use_Base_Type_For_Type (E : Entity_Id) return Boolean
-   is
+   function Use_Base_Type_For_Type (E : Entity_Id) return Boolean is
    begin
       pragma Assert (Nkind (E) in N_Entity);
       return Is_Scalar_Type (E) and then
@@ -881,7 +880,7 @@ package body Gnat2Why.Util is
    function Why_Type_Of_Entity (E : Entity_Id) return W_Type_Id is
    begin
 
-      --  entities for ASCII characters are not translated. Instead we use
+      --  Entities for ASCII characters are not translated. Instead we use
       --  directly their integer translation.
 
       if Sloc (E) = Standard_ASCII_Location then
@@ -902,10 +901,10 @@ package body Gnat2Why.Util is
 
    function Why_Type_Is_BitVector (Typ : W_Type_Id) return Boolean is
    begin
-      return Typ = EW_BitVector_8_Type
-        or else Typ = EW_BitVector_16_Type
-        or else Typ = EW_BitVector_32_Type
-        or else Typ = EW_BitVector_64_Type;
+      return Typ in EW_BitVector_8_Type  |
+                    EW_BitVector_16_Type |
+                    EW_BitVector_32_Type |
+                    EW_BitVector_64_Type;
    end Why_Type_Is_BitVector;
 
 begin
