@@ -1548,6 +1548,17 @@ package body SPARK_Definition is
                     (Visible_Declarations (Protected_Definition (N)));
                end if;
 
+               if Has_Discriminants (E) then
+                  declare
+                     Discr : Entity_Id := First_Discriminant (E);
+                  begin
+                     while Present (Discr) loop
+                        Mark_Entity (Discr);
+                        Next_Discriminant (Discr);
+                     end loop;
+                  end;
+               end if;
+
             end;
 
          --  Supported tasking constructs
