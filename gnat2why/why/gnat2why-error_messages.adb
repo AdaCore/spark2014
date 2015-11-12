@@ -139,9 +139,11 @@ package body Gnat2Why.Error_Messages is
       Stats       : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       Editor_Cmd  : String := "") is
       Msg : constant String :=
-        (if Proved then Proved_Message (Node, Kind)
+        (if Proved
+         then Proved_Message (Node, Kind)
          else Not_Proved_Message (Node, Kind)) &
-        Extra_Msg & (if VC_File /= "" then ", vc file: " & VC_File else "");
+              Extra_Msg &
+              (if VC_File /= "" then ", vc file: " & VC_File else "");
    begin
       Error_Msg_Proof
         (Node,
@@ -355,8 +357,7 @@ package body Gnat2Why.Error_Messages is
          Extra     : constant Node_Id :=
            Node_Id (Integer'(Get (Get (V, "extra_info"))));
          Extra_Text : constant String :=
-           (if not Proved and then Present (Extra) then
-                 String_Of_Node (Extra)
+           (if not Proved and then Present (Extra) then String_Of_Node (Extra)
             else "");
          Extra_Msg  : constant String :=
            (if Extra_Text /= "" then ", cannot prove ~"
@@ -400,7 +401,7 @@ package body Gnat2Why.Error_Messages is
    begin
       declare
          File : constant JSON_Value := Read (S, "");
-         Results  : constant JSON_Array := Get (Get (File, "results"));
+         Results : constant JSON_Array := Get (Get (File, "results"));
       begin
          if Has_Field (File, "error") then
             declare
