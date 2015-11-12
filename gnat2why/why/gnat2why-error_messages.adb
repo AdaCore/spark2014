@@ -113,13 +113,11 @@ package body Gnat2Why.Error_Messages is
       end Add_To_Set;
 
       use Ent_Id_Set_Maps;
-      C : constant Cursor := VC_Set_Table.Find (E);
+      Dummy    : Boolean;
+      Position : Cursor;
    begin
-      if C /= No_Element then
-         VC_Set_Table.Update_Element (C, Add_To_Set'Access);
-      else
-         VC_Set_Table.Insert (E, Id_Sets.To_Set (Id));
-      end if;
+      VC_Set_Table.Insert (Key => E, Position => Position, Inserted => Dummy);
+      VC_Set_Table.Update_Element (Position, Add_To_Set'Access);
    end Add_Id_To_Entity;
 
    -----------------------
