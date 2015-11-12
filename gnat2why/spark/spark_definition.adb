@@ -2993,7 +2993,7 @@ package body SPARK_Definition is
             --  Scope pointer
 
             Name_Synchronous_Barrier : constant Name_Id :=
-              Name_Find_Str ("synchronous_barrier");
+              Name_Find ("synchronous_barrier");
             --  ??? this should be moved to snames.ads-tmpl
          begin
             if Chars (S_Ptr) /= Name_Synchronous_Barrier then
