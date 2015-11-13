@@ -3,11 +3,11 @@ interrupt_priority.adb:14:20: info: overflow check proved
 interrupt_priority.adb:22:20: info: overflow check proved
 interrupt_priority.ads:14:43: medium: this interrupt might be reserved
 interrupt_priority.ads:14:43: medium: this interrupt might be reserved
-ko.ads:5:03: medium: ceiling priority might not be in Interrupt_Priority
+ko.ads:5:03: medium: ceiling priority might not be in Interrupt_Priority (e.g. when C = 0)
 ko.ads:5:47: info: range check proved
 ok.ads:5:51: info: range check proved
 ok.ads:6:57: info: range check proved
 ok.ads:7:51: info: range check proved
 ok.ads:8:57: info: range check proved
-ok.ads:9:04: info: ceiling priority in Interrupt_Priority proved
+ok.ads:9:04: medium: ceiling priority might not be in Interrupt_Priority (e.g. when C = 0)
 ok.ads:9:54: info: range check proved
