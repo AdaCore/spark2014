@@ -3,5 +3,5 @@ active_prio.adb:27:17: medium: overflow check might fail
 active_prio.adb:32:17: medium: overflow check might fail
 active_prio.adb:37:17: medium: overflow check might fail
 active_prio.ads:3:14: info: ceiling priority protocol is respected
-active_prio.ads:3:14: medium: ceiling priority protocol might not be respected
 active_prio.ads:3:14: medium: the task might terminate, which is not allowed in SPARK
+active_prio.ads:10:17: medium: ceiling priority protocol might not be respected

@@ -581,7 +581,7 @@ package SPARK_Util is
    --  @return the static length of dimension Dim of E
 
    function Is_Protected_Component_Or_Discr (E : Entity_Id) return Boolean is
-     (Ekind (E) in E_Component | E_Discriminant and then
+     (Ekind (E) in E_Component | E_Discriminant | E_In_Parameter and then
       Ekind (Scope (E)) in Protected_Kind);
    --  @param E an entity
    --  @return True iff the entity is a component or discriminant of a
@@ -603,8 +603,8 @@ package SPARK_Util is
    --  profile.
 
    function Get_Priority_Or_Interrupt_Priority (E : Entity_Id) return Node_Id
-   with Pre => Is_Protected_Type (E) or else Is_Task_Type (E);
-   --  @param E the entity of a protected type
+   with Pre => Ekind (E) in Protected_Kind | E_Task_Type | Subprogram_Kind;
+   --  @param E the entity of a concurrent type or subprogram
    --  @return The Ada node of the expression for the Priority or
    --  Interrupt_Priority specified on E if any.
 

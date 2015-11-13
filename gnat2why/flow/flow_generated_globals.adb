@@ -166,6 +166,43 @@ package body Flow_Generated_Globals is
    --  subprogram and stored in the ALI file. In phase 2 it is populated
    --  with objects directly and indirectly accessed by each subprogram.
 
+   type Object_Priority is
+      record
+         Variable : Entity_Name;
+         Priority : Priority_Value;
+      end record;
+   --  Protected object and its priority
+
+   package Entity_Name_To_Priority_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Element_Type => Object_Priority);
+   --  List of variables containing protected objects and their static
+   --  priorities; for priority ceiling checks.
+
+   package Entity_Name_To_Priorities_Maps is
+     new Ada.Containers.Hashed_Maps
+       (Key_Type        => Entity_Name,
+        Element_Type    => Object_Priority_Lists.List,
+        Hash            => Name_Hash,
+        Equivalent_Keys => "=",
+        "="             => Object_Priority_Lists."=");
+   --  Maps from variables containing protected objects to their static
+   --  priorities; for priority ceiling checks.
+
+   type Protected_Objects_T is
+     record
+        Phase_1 : Entity_Name_To_Priority_Lists.List;
+        Phase_2 : Entity_Name_To_Priorities_Maps.Map;
+     end record;
+
+   Protected_Objects : Protected_Objects_T;
+   --  Mapping from variables containing protected objects to their static
+   --  priorities; for priority ceiling checks.
+   --
+   --  In phase 1 it is populated with information from current compilation
+   --  unit. In phase 2 this information is collected for all variables
+   --  accessible from the current compilation unit (including variables
+   --  declared in bodies of other packages).
+
    ----------------------------------------------------------------------
    --  Global_Id
    ----------------------------------------------------------------------
@@ -237,6 +274,15 @@ package body Flow_Generated_Globals is
    --  from the body (otherwise they have no body or the body is not in SPARK).
    --  Edges correspond to subprogram calls.
 
+   Ceiling_Priority_Call_Graph : Entity_Name_Graphs.Graph :=
+     Entity_Name_Graphs.Create;
+   --  Call graph for ceiling priority checks
+   --
+   --  It is similar to other call graphs, but rooted at task types, main-like
+   --  subprograms and protected operations (i.e. entries, protected functions
+   --  and protected procedures) in current compilation unit and is cut at
+   --  protected operations.
+
    type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
    --  Similar to Tasking_Info_Bag, but with sets of object names.
 
@@ -299,6 +345,7 @@ package body Flow_Generated_Globals is
                            EK_State_Map,
                            EK_Volatiles,
                            EK_Globals,
+                           EK_Protected_Variable,
                            EK_Tasking_Instance_Count,
                            EK_Tasking_Info,
                            EK_Tasking_Nonblocking);
@@ -317,6 +364,9 @@ package body Flow_Generated_Globals is
             All_Effective_Writes        : Name_Sets.Set;
          when EK_Globals =>
             The_Global_Info             : Global_Phase_1_Info;
+         when EK_Protected_Variable =>
+            The_Variable                : Entity_Name;
+            The_Priority                : Priority_Value;
          when EK_Tasking_Instance_Count =>
             The_Type                    : Entity_Name;
             The_Objects                 : Task_Lists.List;
@@ -345,6 +395,12 @@ package body Flow_Generated_Globals is
 
       EK_Globals                => (Kind            => EK_Globals,
                                     The_Global_Info => Null_Global_Info),
+
+      EK_Protected_Variable     => (Kind         => EK_Protected_Variable,
+                                    The_Variable => Null_Entity_Name,
+                                    The_Priority => Priority_Value'
+                                      (Kind => Priority_Kind'First,
+                                       Value => 0)),
 
       EK_Tasking_Instance_Count => (Kind     => EK_Tasking_Instance_Count,
                                     The_Type => Null_Entity_Name,
@@ -473,26 +529,80 @@ package body Flow_Generated_Globals is
       end if;
    end Add_To_Volatile_Sets_If_Volatile;
 
-   -------------------------------------
-   -- Directly_Called_Tasking_Objects --
-   -------------------------------------
+   --------------------------
+   -- Component_Priorities --
+   --------------------------
 
-   function Directly_Called_Tasking_Objects
-     (Ent : Entity_Name) return Name_Sets.Set is
+   function Component_Priorities
+     (Obj : Entity_Name)
+      return Object_Priority_Lists.List
+   is
+   begin
+      return Protected_Objects.Phase_2.Element (Key => Obj);
+   end Component_Priorities;
 
+   ---------------------------------------
+   -- Directly_Called_Protected_Objects --
+   ---------------------------------------
+
+   function Directly_Called_Protected_Objects
+     (Ent : Entity_Name) return Name_Sets.Set
+   is
       use Entity_Name_Graphs;
 
-      Res : Name_Sets.Set := Name_Sets.Empty_Set;
-      V   : constant Vertex_Id := Tasking_Call_Graph.Get_Vertex (Ent);
+      Call_Graph :  Entity_Name_Graphs.Graph renames
+        Ceiling_Priority_Call_Graph;
+
+      Res : Name_Sets.Set;
+      V   : constant Vertex_Id := Call_Graph.Get_Vertex (Ent);
+
+      procedure Collect_Objects_From_Subprogram (S : Entity_Name);
+      --  Collect protected objects directly accessed from subprogram S
+
+      -------------------------------------
+      -- Collect_Objects_From_Subprogram --
+      -------------------------------------
+
+      procedure Collect_Objects_From_Subprogram (S : Entity_Name) is
+
+         subtype Protected_Info_Kind is Tasking_Info_Kind with
+           Static_Predicate =>
+             Protected_Info_Kind in Entry_Calls | Write_Locks | Read_Locks;
+         --  Accesses to protected objects that trigger ceiling priority checks
+
+      begin
+         for Kind in Protected_Info_Kind loop
+            declare
+               C : constant Name_Graphs.Cursor :=
+                 Tasking_Info_Bag (Phase_1, Kind).Find (S);
+            begin
+               if Has_Element (C) then
+                  Res.Union (Element (C));
+               end if;
+            end;
+         end loop;
+      end Collect_Objects_From_Subprogram;
+
+   --  Start of processing for Directly_Called_Protected_Objects
+
    begin
+      --  Vertex V might be null if we only have a spec for entity Ent
       if V /= Null_Vertex then
-         for Obj of Tasking_Call_Graph.Get_Collection (V, Out_Neighbours) loop
-            Res.Include (Tasking_Call_Graph.Get_Key (Obj));
+         --  Collect objects from the caller subprogram it self
+         Collect_Objects_From_Subprogram (Ent);
+
+         --  and from all its callees
+         for Obj of Call_Graph.Get_Collection (V, Out_Neighbours) loop
+            declare
+               Callee : constant Entity_Name := Call_Graph.Get_Key (Obj);
+            begin
+               Collect_Objects_From_Subprogram (Callee);
+            end;
          end loop;
       end if;
 
       return Res;
-   end Directly_Called_Tasking_Objects;
+   end Directly_Called_Protected_Objects;
 
    ------------------------
    -- GG_Enclosing_State --
@@ -926,7 +1036,7 @@ package body Flow_Generated_Globals is
       --  of the Global_Graph. While adding edges we consult the Local_Graph so
       --  as not to add edges to local variables.
       --  It also created edges for (conditional and unconditional) subprogram
-      --  calls in the Tasking_Call_Graph.
+      --  calls in the tasking-related call graphs.
 
       procedure Create_All_Vertices;
       --  Creates all the vertices of the Global_Graph and subprogram vertices
@@ -1252,7 +1362,7 @@ package body Flow_Generated_Globals is
          --  in SPARK, since subprograms not in SPARK are considered to be
          --  potentially blocking anyway (they are "leaves" of the call graph).
 
-         declare
+         Add_Protected_Operation_Edges : declare
             Stack : Name_Sets.Set;
             --  We collect protected operations in SPARK and use them as seeds
             --  to grow the call graph.
@@ -1318,7 +1428,82 @@ package body Flow_Generated_Globals is
 
             --  Close the call graph; for an empty graph it will be a no-op
             Protected_Operation_Call_Graph.Close;
-         end;
+         end Add_Protected_Operation_Edges;
+
+         Add_Ceiling_Priority_Edges : declare
+            Stack : Name_Sets.Set;
+            --  We collect protected operations in SPARK and use them as seeds
+            --  to grow the call graph.
+
+         begin
+            --  First collect SPARK-compliant protected operations, task types
+            --  and main-like subprograms in the current compilation unit.
+            for E of Entity_Set loop
+               if (case Ekind (E) is
+                      when E_Entry | E_Task_Type =>
+                         True,
+                      when Einfo.Subprogram_Kind =>
+                         Convention (E) = Convention_Protected
+                         or else Might_Be_Main (E),
+                      when others =>
+                         False)
+                 and then Entity_Body_In_SPARK (E)
+                 and then Entity_Body_Valid_SPARK (E)
+                 and then Analysis_Requested (E, With_Inlined => True)
+               then
+                  Stack.Insert (To_Entity_Name (E));
+               end if;
+            end loop;
+
+            --  Then create a call graph for them
+            while not Stack.Is_Empty loop
+
+               declare
+                  V_Caller, V_Callee : Entity_Name_Graphs.Vertex_Id;
+                  --  Call graph vertices for the caller and the callee
+
+                  Caller : constant Entity_Name :=
+                    Name_Sets.Element (Stack.First);
+                  --  Name of the caller
+
+               begin
+                  --  Create vertex for a caller if it does not already exist
+                  V_Caller :=
+                    Ceiling_Priority_Call_Graph.Get_Vertex (Caller);
+                  if V_Caller = Entity_Name_Graphs.Null_Vertex then
+                     Ceiling_Priority_Call_Graph.Add_Vertex (Caller, V_Caller);
+                  end if;
+
+                  for Callee of Computed_Calls (Caller) loop
+                     --  Get vertex for the callee
+                     V_Callee :=
+                       Ceiling_Priority_Call_Graph.Get_Vertex (Callee);
+
+                     --  If there is no vertex for the callee then create
+                     --  one and put the callee on the stack.
+                     if V_Callee = Entity_Name_Graphs.Null_Vertex then
+                        Ceiling_Priority_Call_Graph.
+                          Add_Vertex (Callee, V_Callee);
+                     end if;
+
+                     Ceiling_Priority_Call_Graph.Add_Edge (V_Caller, V_Callee);
+
+                     --  If the callee is a protected subprogram or entry
+                     --  then do not put it on the stack; if its analysis
+                     --  is requested then it is already a root of the graph.
+                     if not Is_Protected_Operation (Callee) then
+                        Stack.Include (Callee);
+                     end if;
+
+                  end loop;
+
+                  --  Pop the caller from the stack
+                  Stack.Delete (Caller);
+               end;
+            end loop;
+
+            Ceiling_Priority_Call_Graph.Close;
+         end Add_Ceiling_Priority_Edges;
       end Add_All_Edges;
 
       -------------------------
@@ -1886,6 +2071,40 @@ package body Flow_Generated_Globals is
 
                      GG_Exists_Cache.Insert (V.The_Global_Info.Name);
 
+                  when EK_Protected_Variable =>
+                     declare
+                        C     : Entity_Name_To_Priorities_Maps.Cursor;
+                        Dummy : Boolean;
+
+                        procedure Append
+                          (Key     : Entity_Name;
+                           Element : in out Object_Priority_Lists.List);
+                        --  Append element to multiset
+
+                        ------------
+                        -- Append --
+                        ------------
+
+                        procedure Append
+                          (Key     : Entity_Name;
+                           Element : in out Object_Priority_Lists.List)
+                        is
+                           pragma Unreferenced (Key);
+                        begin
+                           Element.Append (V.The_Priority);
+                        end Append;
+
+                     begin
+                        Protected_Objects.Phase_2.Insert
+                          (Key      => V.The_Variable,
+                           Position => C,
+                           Inserted => Dummy);
+
+                        Protected_Objects.Phase_2.Update_Element
+                          (Position => C,
+                           Process  => Append'Access);
+                     end;
+
                   when EK_Tasking_Instance_Count =>
                      declare
                         use type Task_Lists.Cursor;
@@ -2274,8 +2493,7 @@ package body Flow_Generated_Globals is
 
       end Detect_Main_Subprogram;
 
-      --  Add all edges in the Global_Graph, Tasking_Call_Graph and
-      --  Protected_Operation_Call_Graph.
+      --  Add all edges in the Global_Graph and tasking-related graphs.
       Add_All_Edges;
       if Debug_GG_Read_Timing then
          Note_Time ("gg_read - edges added");
@@ -2353,6 +2571,18 @@ package body Flow_Generated_Globals is
    begin
       Nonblocking_Subprograms_Set.Insert (EN);
    end GG_Register_Nonblocking;
+
+   ----------------------------------
+   -- GG_Register_Protected_Object --
+   ----------------------------------
+
+   procedure GG_Register_Protected_Object (PO   : Entity_Name;
+                                           Prio : Priority_Value)
+   is
+   begin
+      Protected_Objects.Phase_1.Append (Object_Priority'(Variable => PO,
+                                                         Priority => Prio));
+   end GG_Register_Protected_Object;
 
    ------------------------------
    -- GG_Register_Tasking_Info --
@@ -2458,6 +2688,13 @@ package body Flow_Generated_Globals is
          V := (Kind        => EK_Tasking_Instance_Count,
                The_Type    => Task_Instances_Maps.Key (C),
                The_Objects => Task_Instances_Maps.Element (C));
+         Write_To_ALI (V);
+      end loop;
+
+      for PO of Protected_Objects.Phase_1 loop
+         V := (Kind         => EK_Protected_Variable,
+               The_Variable => PO.Variable,
+               The_Priority => PO.Priority);
          Write_To_ALI (V);
       end loop;
 
@@ -2906,6 +3143,12 @@ package body Flow_Generated_Globals is
       procedure Serialize is new Serialisation.Serialize_Discrete
         (T => ALI_Entry_Kind);
 
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Priority_Kind);
+
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Int);
+
       Kind : ALI_Entry_Kind := ALI_Entry_Kind'First;
 
    --  Start of processing for Serialize
@@ -2938,6 +3181,13 @@ package body Flow_Generated_Globals is
 
          when EK_Globals =>
             Serialize (A, V.The_Global_Info);
+
+         when EK_Protected_Variable =>
+            Serialize (A, V.The_Variable);
+            Serialize (A, V.The_Priority.Kind);
+            if V.The_Priority.Kind = Static then
+               Serialize (A, V.The_Priority.Value);
+            end if;
 
          when EK_Tasking_Instance_Count =>
             Serialize (A, V.The_Type);

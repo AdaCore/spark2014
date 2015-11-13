@@ -1,4 +1,4 @@
-with Ada.Real_Time; use type Ada.Real_Time.Time;
+
 
 package body P is
 

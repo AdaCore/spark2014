@@ -51,3 +51,4 @@ po_t7.ads:14:21: high: variable "Not_CAE" cannot be referenced in precondition o
 po_t8.ads:30:09: high: multiple tasks might suspend on protected object "po_t8.p_int" (SPARK RM 9(11))
 po_t8.ads:30:09: high: with task "po_t8.t"
 po_t8.ads:30:09: high: with task "use_po_t8"
+use_po_t8.adb:3:11: info: ceiling priority protocol is respected

@@ -122,6 +122,10 @@ package SPARK_Frame_Conditions is
    function Is_Non_Recursive_Subprogram (E : Entity_Id) return Boolean;
    --  Returns True if E is not a (mutually) recursive subprogram.
 
+   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean with
+     Pre => E_Name /= Null_Entity_Name;
+   --  Returns True if E_Name refers to entry or protected subprogram
+
    --  -----------------------------------------
    --  Mapping between Entities and Entity_Names
    --  -----------------------------------------

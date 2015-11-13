@@ -86,7 +86,7 @@ package Gnat2Why.Subprograms is
    procedure Generate_VCs_For_Task
      (File : in out Why_Section;
       E    : Entity_Id)
-   with Pre => Ekind (E) in Task_Kind;
+   with Pre => Ekind (E) = E_Task_Type;
    --  @param File the file and section in which the VCs should be generated
    --  @param E the task entity to be translated
 

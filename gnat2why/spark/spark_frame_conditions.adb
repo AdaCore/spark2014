@@ -29,6 +29,7 @@ with Flow_Generated_Globals;     use Flow_Generated_Globals;
 with Flow_Types;                 use Flow_Types;
 with Flow_Utility;               use Flow_Utility;
 with Get_SPARK_Xrefs;
+with Lib.Xref;                   use Lib.Xref;
 with Sem_Aux;                    use Sem_Aux;
 with Snames;                     use Snames;
 with SPARK_Xrefs;                use SPARK_Xrefs;
@@ -78,6 +79,10 @@ package body SPARK_Frame_Conditions is
 
    Non_Rec_Subp : Name_Sets.Set;
    --  All non-recursive subprograms containing at least one call
+
+   Protected_Operations : Name_Sets.Set;
+   --  All protected operations, i.e. entries, protected functions and
+   --  protected procedures.
 
    -----------------------
    -- Local Subprograms --
@@ -638,6 +643,13 @@ package body SPARK_Frame_Conditions is
         or else Non_Rec_Subp.Contains (E_Name);
    end Is_Non_Recursive_Subprogram;
 
+   ----------------------------
+   -- Is_Protected_Operation --
+   ----------------------------
+
+   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean is
+     (Protected_Operations.Contains (E_Name));
+
    ----------------------
    -- Load_SPARK_Xrefs --
    ----------------------
@@ -801,6 +813,10 @@ package body SPARK_Frame_Conditions is
                      Scope_Specs.Insert (Sco,
                        Scope_Name'(File_Num  => Srec.Spec_File_Num,
                                    Scope_Num => Srec.Spec_Scope_Num));
+                  end if;
+
+                  if Srec.Stype = Xref_Entity_Letters (E_Entry) then
+                     Protected_Operations.Include (Ent);
                   end if;
                end;
             end loop;

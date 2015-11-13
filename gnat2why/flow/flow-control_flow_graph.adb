@@ -46,6 +46,7 @@ with Flow_Classwide;                     use Flow_Classwide;
 with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
 with Flow_Debug;                         use Flow_Debug;
 with Flow_Error_Messages;                use Flow_Error_Messages;
+with Flow_Generated_Globals;             use Flow_Generated_Globals;
 with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
 with Flow_Utility;                       use Flow_Utility;
 
@@ -3001,6 +3002,10 @@ package body Flow.Control_Flow_Graph is
       Object_Name : constant Entity_Name :=
         To_Entity_Name (Defining_Identifier (N));
 
+      procedure Find_Protected_Components (T : Entity_Id)
+      with Pre => Is_Type (T);
+      --  Update map with priorities of protected components
+
       procedure Find_Tasks (T : Entity_Id; Array_Component : Boolean)
       with Pre => Is_Type (T);
       --  Update the map with number of task instances.
@@ -3011,6 +3016,63 @@ package body Flow.Control_Flow_Graph is
       --
       --  This procedure mirrors Count_Tasks from
       --  Sem_Ch3.Analyze_Object_Declaration.
+
+      -------------------------------
+      -- Find_Protected_Components --
+      -------------------------------
+
+      procedure Find_Protected_Components (T : Entity_Id) is
+         Dummy : constant Int := 0;
+         --  Dummy priority value, only used to ensure full initialization
+
+      begin
+         if not Has_Protected (T) then
+            return;
+
+         elsif Is_Protected_Type (T) then
+            declare
+               Priority_Expr : constant Node_Id :=
+                 Get_Priority_Or_Interrupt_Priority (T);
+
+               Priority : constant Priority_Value :=
+                 (if Present (Priority_Expr)
+                  then (if Is_OK_Static_Expression (Priority_Expr)
+                    then
+                       Priority_Value'
+                      (Kind  => Static,
+                       Value =>
+                         UI_To_Int (Expr_Value (Priority_Expr)))
+                    else
+                       Priority_Value'(Kind  => Nonstatic,
+                                       Value => Dummy))
+                  else
+                     Priority_Value'
+                    (Kind  => (if Has_Attach_Handler (T)
+                                 or else Has_Interrupt_Handler (T)
+                               then Default_Interrupt_Prio
+                               else Default_Prio),
+                     Value => Dummy));
+            begin
+               GG_Register_Protected_Object (Object_Name, Priority);
+            end;
+
+         elsif Is_Record_Type (T) then
+            --  Ignore record variants and simply find any protected
+            --  components
+            declare
+               C : Entity_Id := First_Component (T);
+            begin
+               while Present (C) loop
+                  Find_Protected_Components (Etype (C));
+                  Next_Component (C);
+               end loop;
+            end;
+
+         elsif Is_Array_Type (T) then
+            Find_Protected_Components (Component_Type (T));
+         end if;
+
+      end Find_Protected_Components;
 
       ----------------
       -- Find_Tasks --
@@ -3458,11 +3520,18 @@ package body Flow.Control_Flow_Graph is
          end loop;
 
          --  In phase 1 we count task instances (which can be only declared at
-         --  library level because of the Ravenscar profile restrictions).
+         --  library level because of the Ravenscar profile restrictions) and
+         --  register priorities of objects containing protected types.
          if FA.Generating_Globals then
-            --  Register task objects
-            Find_Tasks (Etype (Defining_Identifier (N)),
-                        Array_Component => False);
+            declare
+               T : constant Entity_Id := Etype (Defining_Identifier (N));
+            begin
+               --  Register task objects
+               Find_Tasks (T, Array_Component => False);
+
+               --  Register priorities of protected components
+               Find_Protected_Components (T);
+            end;
          end if;
       end if;
    end Do_Object_Declaration;
@@ -4201,17 +4270,23 @@ package body Flow.Control_Flow_Graph is
             The_PO : constant Entity_Id :=
               Get_Enclosing_Concurrent_Object (Called_Thing, N);
          begin
-            case Convention (Called_Thing) is
-               when Convention_Entry =>
-                  FA.Tasking (Entry_Calls).Include (The_PO);
-                  FA.Tasking (Write_Locks).Include (The_PO);
+            --  For internal calls The_PO will represent protected type. We do
+            --  not record such a case and miss the violation when an entry is
+            --  internally called from a protected procedure. However, such a
+            --  call is reported as potentially blocking anyway.
+            if Ekind (The_PO) in Object_Kind then
+               case Convention (Called_Thing) is
+                  when Convention_Entry =>
+                     FA.Tasking (Entry_Calls).Include (The_PO);
+                     FA.Tasking (Write_Locks).Include (The_PO);
 
-               when Convention_Protected =>
-                  FA.Tasking (Write_Locks).Include (The_PO);
+                  when Convention_Protected =>
+                     FA.Tasking (Write_Locks).Include (The_PO);
 
-               when others =>
-                  null;
-            end case;
+                  when others =>
+                     null;
+               end case;
+            end if;
          end;
       end if;
 

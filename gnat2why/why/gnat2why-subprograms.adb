@@ -202,14 +202,16 @@ package body Gnat2Why.Subprograms is
    function Check_Ceiling_Protocol
      (Params : Transformation_Params;
       E      : Entity_Id) return W_Prog_Id
-     with Pre => Is_Task_Type (E);
+     with Pre => Ekind (E) in E_Task_Type | E_Entry or else
+                 Might_Be_Main (E) or else
+                 (Ekind (E) in E_Function | E_Procedure and then
+                  Is_Protected_Type (Scope (E)));
    --  @param Params the transformation params
-   --  @param E a task type entity
+   --  @param E a task type, entry, main-like or protected subprogram entity
    --  @return an assertion or sequence of assertion that expresses that the
    --    ceiling protocol is respected in the call graph starting from this
-   --    task, i.e. basically that external calls to protected operations are
-   --    made with a priority lower or equal to the priority of the object in
-   --    question.
+   --    entity, i.e. that external calls to protected operations are made with
+   --    a priority lower or equal to the priority of the object in question.
 
    ----------------------------------
    -- Add_Dependencies_For_Effects --
@@ -276,95 +278,159 @@ package body Gnat2Why.Subprograms is
      (Params : Transformation_Params;
       E      : Entity_Id) return W_Prog_Id is
 
-      function Check_Local_Call (Ent : Entity_Name; Prio : W_Expr_Id)
-                                 return W_Prog_Id;
-      --  @param E the entity of the calling object/task
-      --  @param Prio the active priority of the task used for all the calls
-      --  @return one or several assertions checking violations of the ceiling
-      --    protocol
+      function Self_Priority return W_Expr_Id;
+      --  @return expression for the priority of entity E
 
-      ----------------------
-      -- Check_Local_Call --
-      ----------------------
+      -------------------
+      -- Self_Priority --
+      -------------------
 
-      function Check_Local_Call (Ent : Entity_Name; Prio : W_Expr_Id)
-                                 return W_Prog_Id
-      is
-         S : W_Prog_Id := New_Void;
+      function Self_Priority return W_Expr_Id is
+         --  If the priority is not explicitly specified then assume then use:
+         --    * for main-like subprograms -> System.Default_Priority,
+         --    * for tasks                 -> System.Priority'Last
+         --    * for protected subprograms ->
+         --        System.Priority'Last or System.Interrupt_Priority'Last
+         --  which are worst-cases for tasks and protected subprograms
+         --  and exact value for main-like subprograms.
+
+         --  To know the exact value for tasks we would have to know the
+         --  priority inherited from the enviromental task; the exact value
+         --  for protected subprograms with Interrupt_Handler or Attach_Handler
+         --  present is implementation-specific (but in GNAT it is
+         --  System.Interrupt_Priority'Last, so we are exact).
+         --
+         --  For details on default priorities see RM D.1 (19) and D.3 (10,11).
+
+         Pragma_Entity : constant Entity_Id :=
+           (if Ekind (E) = E_Task_Type
+              then E
+            elsif Ekind (E) in Subprogram_Kind and then Might_Be_Main (E)
+              then E
+            elsif Ekind (E) = E_Entry
+              or else (Ekind (E) in E_Function | E_Procedure
+                         and then Is_Protected_Type (Scope (E)))
+              then Scope (E)
+            else raise Program_Error);
+         --  Entity where Priority or Interrupt_Priority pragma is attached
+
+         Prio_Expr     : constant Node_Id :=
+           Get_Priority_Or_Interrupt_Priority (Pragma_Entity);
+         --  Priority expression
+
       begin
-         if Prio = Why_Empty then
-            return
-              New_Located_Assert (Ada_Node => E,
-                                  Pred     => False_Pred,
-                                  Reason   => VC_Ceiling_Priority_Protocol,
-                                  Kind     => EW_Check);
+         if Present (Prio_Expr) then
+            return Transform_Expr (Prio_Expr, EW_Int_Type, EW_Pterm, Params);
          end if;
 
-         --  Both the current priority and object priority are present
+         --  No explicit priority was given
 
-         for Name of Directly_Called_Tasking_Objects (Ent) loop
+         if Ekind (E) = E_Task_Type then
+            --  Build expression for System.Priority'Last
+            return
+              New_Attribute_Expr
+                (Domain => EW_Term,
+                 Ty     => RTE (RE_Priority),
+                 Attr   => Attribute_Last,
+                 Params => Params);
 
-            --  Skip regular calls
+         elsif Ekind (E) in Subprogram_Kind and then Might_Be_Main (E) then
+            --  ??? here we should translate System.Default_Priority, but it
+            --  is difficult to get it; instead, we translate the worst-case,
+            --  i.e. System.Priority'Last, which is imprecise but safe.
+            return
+              New_Attribute_Expr
+                (Domain => EW_Term,
+                 Ty     => RTE (RE_Priority),
+                 Attr   => Attribute_Last,
+                 Params => Params);
 
-            if not Is_Protected_Subprogram (Find_Entity (Name)) then
-               return Check_Local_Call (Name, Prio);
-            end if;
+         else
+            declare
+               PT : constant Entity_Id := Scope (E);
+            begin
+               return
+                 New_Attribute_Expr
+                   (Domain => EW_Term,
+                    Ty     => RTE (if Has_Interrupt_Handler (PT)
+                                     or else Has_Attach_Handler (PT)
+                                   then RE_Interrupt_Priority
+                                   else RE_Priority),
+                    Attr   => Attribute_Last,
+                    Params => Params);
+            end;
+         end if;
 
-            --  We are computing the ceiling priority of the object here. See
-            --  ARM Annex D.3, 7-11, with the extra twist that we assume the
-            --  ceiling priority to be Interrupt_Priority'Last even in the
-            --  presence of Attach_Handler (so we basically ignore rule 10/3).
+      end Self_Priority;
+
+      Ent  : constant Entity_Name := To_Entity_Name (E);
+      Prio : constant W_Expr_Id := Self_Priority;
+
+      S    : W_Prog_Id := New_Void;
+      --  Placeholder for a Why3 sequence that will represent the check
+
+   --  Start of processing for Check_Ceiling_Protocol
+
+   begin
+      for Obj_Name of Directly_Called_Protected_Objects (Ent) loop
+
+         --  Create a check that compares priorities of the task and of a
+         --  single protected component of an object. See ARM, D.3 (7-11)
+         --  for details.
+
+         for Obj_Prio of Component_Priorities (Obj_Name) loop
 
             declare
-               Ada_Obj_Prio : constant Node_Id :=
-                 Get_Priority_Or_Interrupt_Priority
-                   (Containing_Protected_Type (Find_Entity (Name)));
-               Obj_Prio : constant W_Expr_Id :=
-                 (if Present (Ada_Obj_Prio) then
-                       Transform_Expr
-                         (Ada_Obj_Prio, EW_Int_Type, EW_Pterm, Params)
-                  else
-                     New_Attribute_Expr
+               Obj_Prio_Expr : constant W_Expr_Id :=
+                 (case Obj_Prio.Kind is
+                  --  ??? if type of the component is visible we should try
+                  --  to transform the expression.
+                     when Nonstatic =>
+                        New_Attribute_Expr (Domain => EW_Term,
+                                            Ty     => RTE (RE_Any_Priority),
+                                            Attr   => Attribute_First,
+                                            Params => Params),
+
+                     when Static =>
+                        New_Integer_Constant
+                    (Value => UI_From_Int (Obj_Prio.Value)),
+
+                     when Default_Prio =>
+                        New_Attribute_Expr
+                    (Domain => EW_Term,
+                     Ty     => RTE (RE_Priority),
+                     Attr   => Attribute_Last,
+                     Params => Params),
+
+                     when Default_Interrupt_Prio =>
+                        New_Attribute_Expr
                     (Domain => EW_Term,
                      Ty     => RTE (RE_Interrupt_Priority),
-                     Attr   => Attribute_Last,
+                     Attr   => Attribute_First,
                      Params => Params));
-                     Pred     : constant W_Pred_Id :=
-                       +New_Comparison (Symbol => Int_Infix_Le,
-                                        Left   => Prio,
-                                        Right  => Obj_Prio,
-                                        Domain => EW_Pred);
-                     Check    : constant W_Prog_Id :=
-                       New_Located_Assert (Ada_Node => E,
-                                           Pred     => Pred,
-                                           Reason   =>
-                                             VC_Ceiling_Priority_Protocol,
-                                           Kind     => EW_Check);
+
+               Pred         : constant W_Pred_Id :=
+                 +New_Comparison
+                 (Symbol => (case Obj_Prio.Kind is
+                                when Nonstatic => Why_Eq,
+                                when others    => Int_Infix_Le),
+                  Left   => Prio,
+                  Right  => Obj_Prio_Expr,
+                  Domain => EW_Pred);
+
+               Check        : constant W_Prog_Id :=
+                 New_Located_Assert (Ada_Node => E,
+                                     Pred     => Pred,
+                                     Reason   =>
+                                       VC_Ceiling_Priority_Protocol,
+                                     Kind     => EW_Check);
             begin
-               S :=
-                 Sequence ((1 => S,
-                            2 => Check,
-                            3 => Check_Local_Call (Name, Obj_Prio)));
+               S := Sequence (S, Check);
             end;
          end loop;
-         return S;
-      end Check_Local_Call;
+      end loop;
 
-      --  Start of processing for Check_Ceiling_Protocol
-
-      Task_Prio : constant Node_Id :=
-        Get_Priority_Or_Interrupt_Priority (E);
-      Why_Prio : constant W_Expr_Id :=
-        (if Present (Task_Prio) then
-              Transform_Expr (Task_Prio, EW_Int_Type, EW_Pterm, Params)
-         else
-            New_Attribute_Expr
-           (Domain => EW_Term,
-            Ty     => RTE (RE_Interrupt_Priority),
-            Attr   => Attribute_Last,
-            Params => Params));
-   begin
-      return Check_Local_Call (To_Entity_Name (E), Why_Prio);
+      return S;
    end Check_Ceiling_Protocol;
 
    ------------------
@@ -2271,6 +2337,18 @@ package body Gnat2Why.Subprograms is
            Sequence
              (Transform_Declarations_For_Body (Declarations (Body_N)),
               Why_Body);
+
+         --  Check that the call graph starting from this subprogram respects
+         --  the ceiling priority protocol.
+
+         if (Is_Subprogram (E) and then Might_Be_Main (E))
+           or else Is_Protected_Type (Scope (E))
+           --  ??? we should check only public protected subprograms here
+         then
+            Why_Body :=
+              Sequence (Check_Ceiling_Protocol (Params, E),
+                        Why_Body);
+         end if;
 
          --  Enclose the subprogram body in a try-block, so that return
          --  statements can be translated as raising exceptions.

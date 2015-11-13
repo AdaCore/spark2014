@@ -2,10 +2,12 @@ foo.adb:11:38: info: initialization of "G" proved
 foo.adb:14:28: high: variable "B" cannot be referenced in precondition of protected operation "Ent"  (SPARK RM 9(10))
 foo.adb:15:22: info: postcondition proved
 foo.adb:41:18: info: range check proved
+foo.adb:43:14: info: ceiling priority protocol is respected
 foo.adb:43:14: info: nontermination of task proved
 foo.adb:50:14: medium: precondition might fail (e.g. when B = False)
 foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
 p.adb:16:27: info: initialization of "Tmp" proved
+p.ads:7:17: info: ceiling priority protocol is respected
 p2.adb:5:24: warning: statement has no effect
 p2.adb:6:10: warning: initialization of X has no effect
 p2.adb:24:10: info: precondition proved
@@ -25,6 +27,7 @@ prot.ads:5:04: info: initialization of "Visible" proved
 prot.ads:8:22: info: initialization of "X" proved
 prot.ads:12:13: info: initialization of "Hidden" constituent of "State" proved
 q.adb:16:27: info: initialization of "Tmp" proved
+q.ads:7:17: info: ceiling priority protocol is respected
 support.adb:5:29: medium: overflow check might fail (e.g. when X = 2147483647)
 support.ads:11:14: info: ceiling priority protocol is respected
 support.ads:11:14: medium: the task might terminate, which is not allowed in SPARK
@@ -37,6 +40,7 @@ tasks.ads:7:09: medium: the task might terminate, which is not allowed in SPARK
 tasks.ads:9:14: medium: the task might terminate, which is not allowed in SPARK
 tasks.ads:11:14: info: initialization of "Visible" proved
 tasks.ads:11:14: medium: the task might terminate, which is not allowed in SPARK
+test.adb:6:11: info: ceiling priority protocol is respected
 test.adb:6:11: medium: "Default_Aft" might not be initialized after elaboration of main program "Test"
 test.adb:6:11: medium: "Default_Exp" might not be initialized after elaboration of main program "Test"
 test.adb:6:11: medium: "Default_Fore" might not be initialized after elaboration of main program "Test"

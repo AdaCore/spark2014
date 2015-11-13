@@ -402,6 +402,7 @@ package body Gnat2Why.Driver is
       Atree.Unlock;
       Nlists.Unlock;
       Sem.Scope_Stack.Locked := False;
+      Lib.Unlock;
 
       --  Before any analysis takes place, perform some rewritings of the tree
       --  that facilitates analysis.

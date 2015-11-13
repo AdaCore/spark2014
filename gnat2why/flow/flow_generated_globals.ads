@@ -150,6 +150,21 @@ package Flow_Generated_Globals is
    package Global_Info_Lists is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Global_Phase_1_Info);
 
+   type Priority_Kind is (Nonstatic,
+                          Static,
+                          Default_Prio,
+                          Default_Interrupt_Prio);
+   --  Kind of expression that denotes a protected object priority
+
+   type Priority_Value is
+      record
+         Kind  : Priority_Kind;
+         Value : Int;
+      end record;
+   --  Priority of a protected type; Value is only relevant if Kind is Static.
+   --  (This should really be a discriminated record but storing such records
+   --  in containers is troublesome).
+
    ----------------------------------------------------------------------
 
    function GG_Mode return GG_Mode_T;
@@ -193,6 +208,13 @@ package Flow_Generated_Globals is
                 GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register tasking-related information for entity.
+
+   procedure GG_Register_Protected_Object (PO   : Entity_Name;
+                                           Prio : Priority_Value)
+   with Pre  => PO /= Null_Entity_Name and then
+                GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Register protected object and its priority
 
    procedure GG_Write_Finalize
    with Pre => GG_Mode = GG_Write_Mode;
@@ -341,11 +363,26 @@ package Flow_Generated_Globals is
    --  Returns the set of objects (e.g. suspension objects or entries,
    --  depending on the Kind) accessed by a main-like subprogram Subp.
 
-   function Directly_Called_Tasking_Objects
-     (Ent : Entity_Name) return Name_Sets.Set;
-   --  @param an entity name that refers to a task or protected operation
+   function Directly_Called_Protected_Objects
+     (Ent : Entity_Name) return Name_Sets.Set
+   with Pre => Ent /= Null_Entity_Name;
+   --  @param an entity name that refers to a task, main-like subprogram or
+   --    protected operation
    --  @return the set of protected operations that are called "directly", that
    --    is without going through other protected operations
+
+   package Object_Priority_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Element_Type => Priority_Value);
+   --  Containers with priorities of protected components
+
+   function Component_Priorities
+     (Obj : Entity_Name)
+      return Object_Priority_Lists.List
+   with
+     Post => not Object_Priority_Lists.Is_Empty (Component_Priorities'Result);
+   --  @param an entity name that refers to a library-level object with
+   --    protected components
+   --  @return priorities of protected object components
 
 private
 
