@@ -2050,12 +2050,8 @@ package body Flow_Utility is
             The_CO       : Entity_Id;
          begin
             if Belongs_To_Concurrent_Object (Subprogram_F) then
-               if Nkind (Name (Callsite)) = N_Selected_Component then
-                  The_CO := Entity (Prefix (Name (Callsite)));
-               else
-                  The_CO := Sinfo.Scope (Subprogram);
-               end if;
-
+               The_CO := Get_Enclosing_Concurrent_Object (Subprogram_F,
+                                                          Callsite);
                V.Union (Flatten_Variable (The_CO, Scope));
             end if;
          end;
