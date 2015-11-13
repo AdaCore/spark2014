@@ -488,7 +488,7 @@ density_altitude.adb:24:29: info: range check proved
 density_altitude.adb:24:42: medium: overflow check might fail (e.g. when Temperature = 180)
 density_altitude.adb:25:29: info: initialization of "Pressure" proved
 density_altitude.adb:25:39: medium: overflow check might fail (e.g. when Temperature = 0 and Humidity = 0)
-density_altitude.adb:25:39: medium: range check might fail (e.g. when Temperature = 0 and Humidity = 0)
+density_altitude.adb:25:39: medium: range check might fail
 density_altitude.adb:26:29: info: initialization of "Humidity" proved
 density_altitude.adb:26:29: info: range check proved
 density_altitude.ads:7:20: info: initialization of "Value" proved
