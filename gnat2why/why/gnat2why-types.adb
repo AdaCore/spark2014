@@ -227,7 +227,6 @@ package body Gnat2Why.Types is
          Variables : Flow_Id_Sets.Set;
 
       begin
-
          --  Get the set of variables used in E's dynamic property
 
          Variables_In_Dynamic_Invariant (E, Variables);
@@ -236,19 +235,23 @@ package body Gnat2Why.Types is
             Items    : Item_Array :=
               Get_Binders_From_Variables (To_Name_Set (Variables));
             Init_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => EW_Bool_Type);
+              New_Temp_Identifier (Typ       => EW_Bool_Type,
+                                   Base_Name => "is_init");
             --  Is the object known to be initialized
 
             Ovar_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => EW_Bool_Type);
+              New_Temp_Identifier (Typ       => EW_Bool_Type,
+                                   Base_Name => "do_constant");
             --  Do we need to assume the properties on constant parts
 
             Top_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => EW_Bool_Type);
+              New_Temp_Identifier (Typ       => EW_Bool_Type,
+                                   Base_Name => "do_toplevel");
             --  Should we check the toplevel predicate
 
             Main_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ => Type_Of_Node (E));
+              New_Temp_Identifier (Typ       => Type_Of_Node (E),
+                                   Base_Name => "expr");
             --  Expression on which we want to assume the property
 
             Def : W_Pred_Id;

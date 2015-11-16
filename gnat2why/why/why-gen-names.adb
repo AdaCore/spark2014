@@ -597,26 +597,24 @@ package body Why.Gen.Names is
 
    New_Temp_Identifier_Counter : Natural := 0;
 
-   function New_Temp_Identifier return String is
+   function New_Temp_Identifier (Base_Name : String := "") return String is
       Counter_Img : constant String :=
-                      Natural'Image (New_Temp_Identifier_Counter);
+        Natural'Image (New_Temp_Identifier_Counter);
+      Use_Base_Name : constant String :=
+        (if Base_Name = "" then "" else Base_Name & "_");
    begin
       New_Temp_Identifier_Counter := New_Temp_Identifier_Counter + 1;
-      return
-        "temp___" & To_String (New_Temp_Identifier_Suffix) & "_"
-        & Trim (Counter_Img, Ada.Strings.Left);
+      return "temp___" & Use_Base_Name & Trim (Counter_Img, Ada.Strings.Left);
    end New_Temp_Identifier;
 
    function New_Temp_Identifier
-     (Ada_Node : Node_Id := Empty;
-      Typ      : W_Type_Id := Why_Empty)
-      return W_Identifier_Id is
+     (Ada_Node  : Node_Id   := Empty;
+      Typ       : W_Type_Id := Why_Empty;
+      Base_Name : String    := "") return W_Identifier_Id is
    begin
-      return
-        New_Identifier
-          (Ada_Node => Ada_Node,
-           Name     => New_Temp_Identifier,
-           Typ      => Typ);
+      return New_Identifier (Ada_Node => Ada_Node,
+                             Name     => New_Temp_Identifier (Base_Name),
+                             Typ      => Typ);
    end New_Temp_Identifier;
 
    --------------------------

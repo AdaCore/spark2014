@@ -75,7 +75,6 @@ with Switch;                   use Switch;
 with Why;                      use Why;
 with Why.Atree.Modules;        use Why.Atree.Modules;
 with Why.Atree.Sprint;         use Why.Atree.Sprint;
-with Why.Gen.Names;            use Why.Gen.Names;
 with Why.Inter;                use Why.Inter;
 with Why.Types;                use Why.Types;
 
@@ -387,13 +386,6 @@ package body Gnat2Why.Driver is
 
          return;
       end if;
-
-      --  All temporaries created for this unit should be different from
-      --  temporaries created for other units. To that end, use the unit name
-      --  as a suffix for creating temporary names.
-
-      New_Temp_Identifier_Suffix :=
-        To_Unbounded_String (Full_Name (Defining_Entity (N)));
 
       Mark_Standard_Package;
 

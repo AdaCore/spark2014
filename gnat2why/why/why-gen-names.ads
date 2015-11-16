@@ -23,23 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Gnat2Why.Util;         use Gnat2Why.Util;
-with Namet;                 use Namet;
-with Snames;                use Snames;
-with Types;                 use Types;
-with Why.Ids;               use Why.Ids;
-with Why.Sinfo;             use Why.Sinfo;
+with Gnat2Why.Util; use Gnat2Why.Util;
+with Namet;         use Namet;
+with Snames;        use Snames;
+with Types;         use Types;
+with Why.Ids;       use Why.Ids;
+with Why.Sinfo;     use Why.Sinfo;
 with Why.Types;
 
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
    --  to create identifiers from their string representation
-
-   New_Temp_Identifier_Suffix : Unbounded_String;
-   --  Suffix for all temporary names, so that the final name is
-   --    _temp_<suffix>_<num>
-   --  where <num> is a counter increased by one at each new temporary.
 
    function NID (Name : String) return Name_Id;
    --  Return Name_Id for Name
@@ -111,18 +105,21 @@ package Why.Gen.Names is
       Infix     : Boolean := False)
       return W_Identifier_Id;
 
-   function New_Temp_Identifier
-     (Ada_Node : Node_Id := Empty;
-      Typ      : W_Type_Id := Why.Types.Why_Empty)
-      return W_Identifier_Id;
+   function New_Temp_Identifier (Base_Name : String := "") return String;
+   --  @param Base_Name optional basis for the name of the temporary
+   --  @return a new unique identifier, either based on Base_Name when provided
+   --     or otherwise dependent on the current compilation unit
 
-   function New_Temp_Identifier return String;
-   --  Return a new unique identifier
+   function New_Temp_Identifier
+     (Ada_Node  : Node_Id   := Empty;
+      Typ       : W_Type_Id := Why.Types.Why_Empty;
+      Base_Name : String    := "") return W_Identifier_Id;
+   --  @param Base_Name optional basis for the name of the temporary
+   --  @return a new unique identifier
 
    function New_Temp_Identifiers
      (Num : Positive;
-      Typ : W_Type_Id)
-      return W_Identifier_Array;
+      Typ : W_Type_Id) return W_Identifier_Array;
    --  Return an array of new unique identifiers with Num elements
 
    function New_Result_Ident (Typ : W_Type_Id) return W_Identifier_Id;
