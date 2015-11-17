@@ -101,6 +101,7 @@ package Flow_Generated_Globals is
    --  summary we record the following information:
    --
    --  * Abstract States and their constituents
+   --  * Remote abstract states
    --  * Variables and subprograms used by subprograms
    --  * Volatile variables and external state abstractions
    --  * Nonblocking subprograms
@@ -156,11 +157,10 @@ package Flow_Generated_Globals is
                           Default_Interrupt_Prio);
    --  Kind of expression that denotes a protected object priority
 
-   type Priority_Value is
-      record
-         Kind  : Priority_Kind;
-         Value : Int;
-      end record;
+   type Priority_Value is record
+      Kind  : Priority_Kind;
+      Value : Int;
+   end record;
    --  Priority of a protected type; Value is only relevant if Kind is Static.
    --  (This should really be a discriminated record but storing such records
    --  in containers is troublesome).
@@ -174,7 +174,7 @@ package Flow_Generated_Globals is
    -- Writing --
    -------------
 
-   procedure GG_Write_Initialize
+   procedure GG_Write_Initialize (GNAT_Root : Node_Id)
    with Pre  => GG_Mode = GG_No_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Must be called before the first call to
@@ -386,9 +386,14 @@ package Flow_Generated_Globals is
 
 private
 
-   Current_Mode : GG_Mode_T := GG_No_Mode;
+   Current_Mode      : GG_Mode_T := GG_No_Mode;
 
-   GG_Generated : Boolean   := False;
+   Current_Comp_Unit : Node_Id;
+   --  This node will hold the current compilation unit that is being analyzed.
+   --  On phase 1 GG_Write_Initialize is responsible for setting the node.
+   --  On phase 2 GG_Read is responsible for setting the node.
+
+   GG_Generated      : Boolean   := False;
    --  Set to True by GG_Read once the Global Graph has been generated.
 
    -------------

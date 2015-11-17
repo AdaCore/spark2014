@@ -1,0 +1,8 @@
+client.adb:3:11: info: ceiling priority protocol is respected
+client.adb:7:06: warning: unused assignment
+client.adb:8:04: info: assertion proved
+client.adb:8:19: info: initialization of "X" proved
+p.adb:7:07: warning: statement has no effect
+p.adb:12:52: warning: statement has no effect
+p.ads:6:13: high: potentially blocking operation in protected operation "Dummy"
+p.ads:6:20: warning: unused variable "Arg"

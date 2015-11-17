@@ -1614,10 +1614,9 @@ package body Flow is
    ---------------------------
 
    procedure Generate_Flow_Globals (GNAT_Root : Node_Id) is
-      pragma Unreferenced (GNAT_Root);
       Global_Info_List : Global_Info_Lists.List;
    begin
-      GG_Write_Initialize;
+      GG_Write_Initialize (GNAT_Root);
 
       --  Process entities and construct graphs if necessary
       Build_Graphs_For_Compilation_Unit
