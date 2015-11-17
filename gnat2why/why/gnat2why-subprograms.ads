@@ -66,7 +66,8 @@ package Gnat2Why.Subprograms is
 
    procedure Generate_VCs_For_Subprogram
      (File : in out Why_Section;
-      E    : Entity_Id);
+      E    : Entity_Id)
+     with Pre => Ekind (E) in Subprogram_Kind | Entry_Kind;
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the absence of run-time errors in E.
 
