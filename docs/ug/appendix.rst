@@ -936,6 +936,9 @@ Proof Limitations
    discriminants are in the subtype allowed by the base type definition is
    not done in some cases.
 
+#. The verification conditions associated with the ceiling priority protocol
+   and described in |SPARK| Reference Manual 9.12 in some cases may be missing.
+
 .. _Portability Issues:
 
 Portability Issues
