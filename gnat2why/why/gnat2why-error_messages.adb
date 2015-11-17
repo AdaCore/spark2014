@@ -27,7 +27,6 @@ with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Text_IO;
-with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
 with Errout;                     use Errout;
 with Flow_Error_Messages;        use Flow_Error_Messages;

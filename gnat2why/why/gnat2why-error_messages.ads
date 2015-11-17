@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;         use Atree;
 with GNATCOLL.JSON;
 with Types;         use Types;
 with VC_Kinds;      use VC_Kinds;
@@ -31,7 +32,8 @@ package Gnat2Why.Error_Messages is
 
    type VC_Id is new Natural;
 
-   function Register_VC (N : Node_Id; E : Entity_Id) return VC_Id;
+   function Register_VC (N : Node_Id; E : Entity_Id) return VC_Id
+     with Pre => Present (N) and then Present (E);
    --  register a VC for entity E, located at node N
 
    function Has_Registered_VCs return Boolean;
