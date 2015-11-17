@@ -1,1 +1,1 @@
-main.adb:3:11: medium: ceiling priority protocol might not be respected
+main.adb:3:11: info: ceiling priority protocol is respected

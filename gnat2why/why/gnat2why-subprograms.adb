@@ -335,14 +335,11 @@ package body Gnat2Why.Subprograms is
                  Params => Params);
 
          elsif Ekind (E) in Subprogram_Kind and then Might_Be_Main (E) then
-            --  ??? here we should translate System.Default_Priority, but it
-            --  is difficult to get it; instead, we translate the worst-case,
-            --  i.e. System.Priority'Last, which is imprecise but safe.
+            --  Return expression used that defined System.Default_Priority
             return
-              New_Attribute_Expr
-                (Domain => EW_Term,
-                 Ty     => RTE (RE_Priority),
-                 Attr   => Attribute_Last,
+              Transform_Expr
+                (Expr   => Expression (Parent (RTE (RE_Default_Priority))),
+                 Domain => EW_Term,
                  Params => Params);
 
          else
