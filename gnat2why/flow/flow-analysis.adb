@@ -4097,17 +4097,17 @@ package body Flow.Analysis is
       end if;
    end Check_Function_For_Volatile_Effects;
 
-   subtype Tasking_Owners_Kind is Tasking_Info_Kind
-   range
-     Suspends_On ..
-     --  Entry_Calls
-     Unsynch_Accesses;
-
    -------------------------------
    -- Check_Concurrent_Accesses --
    -------------------------------
 
    procedure Check_Concurrent_Accesses (GNAT_Root : Node_Id) is
+
+      subtype Tasking_Owners_Kind is Tasking_Info_Kind
+        range
+        Suspends_On ..
+        --  Entry_Calls
+        Unsynch_Accesses;
 
       Concurrent_Object_Owner : array (Tasking_Owners_Kind) of Name_Maps.Map;
       --  Mapping from concurrent objects to a task instance that owns them,
