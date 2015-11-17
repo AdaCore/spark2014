@@ -4,7 +4,7 @@ package body Pre_Should_Hold is
 
       entry Increase when Condition is
       begin
-         pragma Assert (Is_Positive);  --  This doesn't prove...
+         pragma Assert (Is_Positive);  --@ASSERT:FAIL
          if The_Int /= Integer'Last then
             The_Int := The_Int + 1;
          end if;
