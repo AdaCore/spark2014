@@ -1300,6 +1300,7 @@ package body Flow_Generated_Globals is
                   S : constant Entity_Name := Task_Instances_Maps.Key (TC);
                begin
                   Stack.Insert (S);
+                  Tasking_Call_Graph.Add_Vertex (S);
                end;
             end loop;
 
@@ -1307,20 +1308,17 @@ package body Flow_Generated_Globals is
             while not Stack.Is_Empty loop
 
                declare
-                  V_Caller, V_Callee : Entity_Name_Graphs.Vertex_Id;
-                  --  Call graph vertices for the caller and the callee
-
                   Caller : constant Entity_Name :=
                     Name_Sets.Element (Stack.First);
                   --  Name of the caller
 
-               begin
-                  --  Create vertex for a caller if it does not already exist
-                  V_Caller := Tasking_Call_Graph.Get_Vertex (Caller);
-                  if V_Caller = Entity_Name_Graphs.Null_Vertex then
-                     Tasking_Call_Graph.Add_Vertex (Caller, V_Caller);
-                  end if;
+                  V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
+                    Tasking_Call_Graph.Get_Vertex (Caller);
 
+                  V_Callee : Entity_Name_Graphs.Vertex_Id;
+                  --  Call graph vertices for the caller and the callee
+
+               begin
                   --  If the caller is in SPARK then check its callees;
                   --  otherwise leave it as a leaf of the call graph.
 
@@ -1376,7 +1374,12 @@ package body Flow_Generated_Globals is
                  and then Entity_Body_In_SPARK (E)
                  and then Entity_Body_Valid_SPARK (E)
                then
-                  Stack.Insert (To_Entity_Name (E));
+                  declare
+                     E_Name : constant Entity_Name := To_Entity_Name (E);
+                  begin
+                     Stack.Insert (E_Name);
+                     Call_Graph.Add_Vertex (E_Name);
+                  end;
                end if;
             end loop;
 
@@ -1384,28 +1387,23 @@ package body Flow_Generated_Globals is
             while not Stack.Is_Empty loop
 
                declare
-                  V_Caller, V_Callee : Entity_Name_Graphs.Vertex_Id;
-                  --  Call graph vertices for the caller and the callee
-
                   Caller : constant Entity_Name :=
                     Name_Sets.Element (Stack.First);
                   --  Name of the caller
 
+                  V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
+                    Call_Graph.Get_Vertex (Caller);
+
+                  V_Callee : Entity_Name_Graphs.Vertex_Id;
+                  --  Call graph vertices for the caller and the callee
+
                begin
-                  --  Create vertex for a caller if it does not already exist
-                  V_Caller := Call_Graph.Get_Vertex (Caller);
-
-                  if V_Caller = Entity_Name_Graphs.Null_Vertex then
-                     Call_Graph.Add_Vertex (Caller, V_Caller);
-                  end if;
-
                   --  If the caller is nonblocking then check its callees;
                   --  otherwise leave it as a leaf of the call graph.
                   if Nonblocking_Subprograms_Set.Contains (Caller) then
                      for Callee of Computed_Calls (Caller) loop
                         --  Get vertex for the callee
-                        V_Callee := Call_Graph.
-                          Get_Vertex (Callee);
+                        V_Callee := Call_Graph.Get_Vertex (Callee);
 
                         --  If there is no vertex for the callee then create
                         --  one and put the callee on the stack.
@@ -1451,7 +1449,12 @@ package body Flow_Generated_Globals is
                  and then Entity_Body_Valid_SPARK (E)
                  and then Analysis_Requested (E, With_Inlined => True)
                then
-                  Stack.Insert (To_Entity_Name (E));
+                  declare
+                     E_Name : constant Entity_Name := To_Entity_Name (E);
+                  begin
+                     Stack.Insert (E_Name);
+                     Call_Graph.Add_Vertex (E_Name);
+                  end;
                end if;
             end loop;
 
@@ -1459,21 +1462,17 @@ package body Flow_Generated_Globals is
             while not Stack.Is_Empty loop
 
                declare
-                  V_Caller, V_Callee : Entity_Name_Graphs.Vertex_Id;
-                  --  Call graph vertices for the caller and the callee
-
                   Caller : constant Entity_Name :=
                     Name_Sets.Element (Stack.First);
                   --  Name of the caller
 
+                  V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
+                    Call_Graph.Get_Vertex (Caller);
+
+                  V_Callee : Entity_Name_Graphs.Vertex_Id;
+                  --  Call graph vertices for the caller and the callee
+
                begin
-                  --  Create vertex for a caller if it does not already exist
-                  V_Caller := Call_Graph.Get_Vertex (Caller);
-
-                  if V_Caller = Entity_Name_Graphs.Null_Vertex then
-                     Call_Graph.Add_Vertex (Caller, V_Caller);
-                  end if;
-
                   for Callee of Computed_Calls (Caller) loop
                      --  Get vertex for the callee
                      V_Callee := Call_Graph.Get_Vertex (Callee);
