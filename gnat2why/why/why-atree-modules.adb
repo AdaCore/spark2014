@@ -1767,6 +1767,41 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Typ    => Base));
                   Insert_Symbol
+                    (E, WNE_Of_Real,
+                     New_Identifier
+                       (Symbol => NID ("of_real"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Fixed_Type));
+                  Insert_Symbol
+                    (E, WNE_Of_Float32,
+                     New_Identifier
+                       (Symbol => NID ("of_float32"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Fixed_Type));
+                  Insert_Symbol
+                    (E, WNE_Of_Float64,
+                     New_Identifier
+                       (Symbol => NID ("of_float64"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Fixed_Type));
+                  Insert_Symbol
+                    (E, WNE_To_Float32,
+                     New_Identifier
+                       (Symbol => NID ("to_float32"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => M_Floats (Float32).T));
+                  Insert_Symbol
+                    (E, WNE_To_Float64,
+                        New_Identifier
+                       (Symbol => NID ("to_float64"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => M_Floats (Float64).T));
+                  Insert_Symbol
                     (E, WNE_Fixed_Point_Mult,
                      New_Identifier
                        (Symbol => NID ("fxp_mult"),

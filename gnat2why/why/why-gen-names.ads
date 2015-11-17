@@ -282,6 +282,9 @@ package Why.Gen.Names is
       WNE_Of_Rep,
       WNE_Of_Int,
       WNE_Of_Fixed,
+      WNE_Of_Real,                --  for fixed
+      WNE_Of_Float32,             --  idem
+      WNE_Of_Float64,             --  idem
       WNE_Of_BitVector,
       WNE_Range_Check_Fun,
       WNE_Range_Check_Fun_BV_Int, --  for convertion from int to bitvector
@@ -297,6 +300,8 @@ package Why.Gen.Names is
       WNE_To_Int_3,
       WNE_To_Int_4,
       WNE_To_Fixed,
+      WNE_To_Float32,             --  for fixed (y not in a specific module ?)
+      WNE_To_Float64,             --  for fixed
       WNE_To_BitVector
      );
 

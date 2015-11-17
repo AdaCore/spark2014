@@ -693,7 +693,18 @@ package body Gnat2Why.Util is
          --  it since we only deal with number in base 2, 10 or 16
 
          if Base /= 2 and Base /= 10 and Base /= 16 then
-            raise Program_Error;
+            declare
+               Tmp : Ureal := Eval_Fat.Machine
+                 (RT    => (if Ty = EW_Float_32_Type
+                            then Standard_Float
+                            else Standard_Long_Float),
+                  X     => Rval,
+                  Mode  => Eval_Fat.Round_Even,
+                  Enode => E);
+               pragma Unreferenced (Tmp);
+            begin
+               raise Program_Error;
+            end;
          end if;
          --  fail on unexpected base
 
@@ -710,6 +721,7 @@ package body Gnat2Why.Util is
             --  in case of base 10 rval we recast it in base 2 through
             --  Eval_Fat.Machine and don't directly send the pattern
             --  in order to check it with the original rval in base 10.
+            --  This will most probably be incorrect for subnormals !
 
             Bitpat := Ureal_To_Bitsream
               (Rval  => Eval_Fat.Machine (RT    => (if Ty = EW_Float_32_Type
@@ -726,7 +738,18 @@ package body Gnat2Why.Util is
 
             if not UI_Eq (Den, Sig_Size + Eoffset - 1) then
                --  If Rval is not in the expected form, raise an error
-               raise Program_Error;
+               declare
+                  Tmp : Ureal := Eval_Fat.Machine
+                    (RT    => (if Ty = EW_Float_32_Type
+                               then Standard_Float
+                               else Standard_Long_Float),
+                     X     => Rval,
+                     Mode  => Eval_Fat.Round_Even,
+                     Enode => E);
+                  pragma Unreferenced (Tmp);
+               begin
+                  raise Program_Error;
+               end;
             end if;
 
             Bitpat := Num + Sign_Bit;

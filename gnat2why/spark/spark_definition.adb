@@ -4668,7 +4668,7 @@ package body SPARK_Definition is
          S_Short_Float         => True,
          S_Float               => True,
          S_Long_Float          => True,
-         S_Long_Long_Float     => True,
+         S_Long_Long_Float     => False,
 
          S_Character           => True,
          S_Wide_Character      => True,

@@ -566,11 +566,18 @@ module Fixed_Point_Base
       else (* x < 0 *)
         pos_div_relation (- (to_int x)) (-x) inv_small
 
-  (* conversion functions from/to real *)
-
-  function to_real __fixed : real
+  (* conversion functions from real & to float*)
 
   function of_real real : __fixed
+
+  use "_gnatprove_standard".Float32
+  use "_gnatprove_standard".Float64
+
+  function to_float32 __fixed : Float32.t
+  function of_float32 Float32.t : __fixed
+
+  function to_float64 __fixed : Float64.t
+  function of_float64 Float64.t : __fixed
 end
 
 module Static_Fixed_Point

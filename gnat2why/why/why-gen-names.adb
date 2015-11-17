@@ -268,8 +268,10 @@ package body Why.Gen.Names is
                            return E_Symb (A, WNE_To_Int);
                         elsif To = EW_Fixed_Type then
                            return E_Symb (A, WNE_To_Fixed);
---                          elsif Why_Type_Is_Float (To) then
---                             return E_Symb (A, WNE_To_Real);
+                        elsif To = EW_Float_32_Type then
+                           return E_Symb (A, WNE_To_Float32);
+                        elsif To = EW_Float_64_Type then
+                           return E_Symb (A, WNE_To_Float64);
                         elsif Why_Type_Is_BitVector (To) then
                            return E_Symb (A, WNE_To_BitVector);
                         else
@@ -309,8 +311,14 @@ package body Why.Gen.Names is
          return WNE_Of_Int;
       elsif Kind = EW_Fixed_Type then
          return WNE_Of_Fixed;
+      elsif Kind = EW_Float_32_Type then
+         return WNE_Of_Float32;
+      elsif Kind = EW_Float_64_Type then
+         return WNE_Of_Float64;
       elsif Why_Type_Is_BitVector (Kind) then
          return WNE_Of_BitVector;
+      elsif Kind = EW_Real_Type then
+         return WNE_Of_Real;
       else
          raise Why.Not_Implemented;
       end if;
@@ -768,8 +776,13 @@ package body Why.Gen.Names is
               WNE_To_Int_4 |
               WNE_Of_Int |
               WNE_Of_Fixed |
+              WNE_Of_Real |
+              WNE_Of_Float32 |
+              WNE_Of_Float64 |
               WNE_Of_BitVector |
               WNE_To_Fixed |
+              WNE_To_Float32 |
+              WNE_To_Float64 |
               WNE_To_BitVector |
               WNE_To_Array |
               WNE_Of_Array |
