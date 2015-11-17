@@ -930,6 +930,12 @@ Proof Limitations
    Ada.Execution_Time and Ada.Real_Time packages described in |SPARK| Reference
    Manual 9.19 are not yet implemented.
 
+#. If a variable is defined at library level, and the type of the variable is
+   a subtype of a record type with discriminants or a protected type with
+   discriminants, then the check that the concrete values provided for the
+   discriminants are in the subtype allowed by the base type definition is
+   not done in some cases.
+
 .. _Portability Issues:
 
 Portability Issues
