@@ -1,5 +1,5 @@
-substract.adb:4:20: medium: overflow check might fail (e.g. when First = 0 and Second = -2147483648)
-substract.adb:10:20: medium: overflow check might fail (e.g. when First = 1 and Second = 2147483647)
+substract.adb:4:20: medium: overflow check might fail (e.g. when First = -2147483648 and Second = 1)
+substract.adb:10:20: medium: overflow check might fail (e.g. when First = -2147483648 and Second = -1)
 substract.adb:10:29: medium: overflow check might fail
 substract.ads:3:20: info: postcondition proved
 substract.ads:3:40: info: overflow check proved

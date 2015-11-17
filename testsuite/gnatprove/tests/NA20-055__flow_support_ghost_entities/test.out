@@ -1,4 +1,4 @@
-casper.adb:4:17: medium: overflow check might fail (e.g. when G1 = 1 and G2 = 2147483647)
+casper.adb:4:17: medium: overflow check might fail (e.g. when G1 = -2147483648 and G2 = -1)
 casper.adb:8:27: medium: overflow check might fail (e.g. when G2 = 2147483647)
 casper.adb:11:07: info: assertion proved
 casper.adb:11:22: info: initialization of "Tmp" proved

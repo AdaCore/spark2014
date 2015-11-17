@@ -1,8 +1,8 @@
 p1.adb:12:10: info: initialization of "S" proved
-p1.adb:15:14: medium: overflow check might fail (e.g. when X = 1 and S = 2147483647)
+p1.adb:15:14: medium: overflow check might fail (e.g. when X = -2147483648 and S = -1)
 p1.adb:15:17: info: initialization of "S" proved
 p1.adb:26:10: info: initialization of "S" proved
-p1.adb:29:14: medium: overflow check might fail (e.g. when X = 1 and S = 2147483647)
+p1.adb:29:14: medium: overflow check might fail (e.g. when X = -2147483648 and S = -1)
 p1.adb:29:17: info: initialization of "S" proved
 p1.adb:30:14: medium: overflow check might fail (e.g. when X = 2147483647)
 p1.adb:43:13: info: initialization of "S" proved

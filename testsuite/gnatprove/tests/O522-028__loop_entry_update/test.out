@@ -3,5 +3,5 @@ loop_entry_test.adb:21:10: info: loop invariant initialization proved
 loop_entry_test.adb:21:10: info: loop invariant preservation proved
 loop_entry_test.adb:21:37: info: initialization of "A_Loop_Entry" proved
 loop_entry_test.adb:21:67: info: range check proved
-loop_entry_test.ads:8:14: medium: postcondition might fail, cannot prove A = A'Old'update (e.g. when A = (others => 0) and A'Old = (others => 0) and First = 1000 and Last = 999)
+loop_entry_test.ads:8:14: medium: postcondition might fail, cannot prove A = A'Old'update (e.g. when A = (1001 => 0, 1000 => 0, others => 1) and A'Old = (others => 0) and First = 1000 and Last = 1)
 loop_entry_test.ads:11:14: info: postcondition proved

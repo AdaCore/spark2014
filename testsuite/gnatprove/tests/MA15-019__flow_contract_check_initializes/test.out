@@ -2,9 +2,9 @@ init.adb:5:04: info: initialization of "C" constituent of "State" proved
 init.adb:5:19: info: initialization of "A" proved
 init.adb:6:04: info: initialization of "D" constituent of "State" proved
 init.adb:6:19: info: initialization of "B" constituent of "State" proved
-init.adb:8:44: medium: overflow check might fail (e.g. when B = 2147483647 and C = 1)
+init.adb:8:44: medium: overflow check might fail (e.g. when B = -1 and C = -2147483648)
 init.adb:8:48: medium: overflow check might fail
-init.adb:11:42: medium: overflow check might fail (e.g. when A = 1 and B = 2147483647)
+init.adb:11:42: medium: overflow check might fail (e.g. when A = -2147483648 and B = -1)
 init.adb:11:46: medium: overflow check might fail
 init.adb:11:50: medium: overflow check might fail
 init.ads:5:08: info: initial condition proved
@@ -16,7 +16,7 @@ init.ads:7:04: info: initialization of "A" proved
 init.ads:15:04: info: initialization of "B" constituent of "State" proved
 init_2.ads:8:08: medium: initial condition might fail (e.g. when X = -1 and Y = 0)
 init_2.ads:8:29: info: initialization of "X" proved
-init_2.ads:8:31: medium: overflow check might fail (e.g. when X = 1 and Y = 2147483647)
+init_2.ads:8:31: medium: overflow check might fail (e.g. when X = -2147483648 and Y = -1)
 init_2.ads:8:33: info: initialization of "Y" proved
 init_2.ads:10:04: info: initialization of "X" proved
 init_2.ads:11:04: info: initialization of "Y" proved

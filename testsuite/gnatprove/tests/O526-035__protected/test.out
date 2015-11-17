@@ -1,4 +1,4 @@
-prot.adb:9:21: medium: overflow check might fail (e.g. when X = -2147483648)
+prot.adb:9:21: medium: overflow check might fail (e.g. when X = -1)
 prot.adb:14:50: medium: overflow check might fail
 prot.adb:18:58: medium: overflow check might fail
 prot.ads:9:16: warning: volatile function "Get_Vol" has no volatile effects

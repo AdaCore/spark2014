@@ -45,7 +45,7 @@ average.adb:13:15: warning: assuming "New_Line" has no effect on global items
 average.adb:13:15: warning: no Global contract available for "New_Line"
 average.adb:15:16: info: initialization of "A" proved
 average.adb:15:18: info: range check proved
-average.adb:15:18: medium: overflow check might fail (e.g. when A = 2147483647 and B = 1)
+average.adb:15:18: medium: overflow check might fail (e.g. when A = -2147483648 and B = -1)
 average.adb:15:20: info: initialization of "B" proved
 average.adb:15:23: info: division check proved
 average.adb:15:23: info: overflow check proved
@@ -67,7 +67,7 @@ average_with_use.adb:13:04: warning: assuming "New_Line" has no effect on global
 average_with_use.adb:13:04: warning: no Global contract available for "New_Line"
 average_with_use.adb:15:16: info: initialization of "A" proved
 average_with_use.adb:15:18: info: range check proved
-average_with_use.adb:15:18: medium: overflow check might fail (e.g. when A = 2147483647 and B = 1)
+average_with_use.adb:15:18: medium: overflow check might fail (e.g. when A = -2147483648 and B = -1)
 average_with_use.adb:15:20: info: initialization of "B" proved
 average_with_use.adb:15:23: info: division check proved
 average_with_use.adb:15:23: info: overflow check proved
@@ -83,8 +83,8 @@ bad_types.adb:7:21: warning: no Global contract available for "Get"
 bad_types.adb:8:21: warning: assuming "Get" has no effect on global items
 bad_types.adb:8:21: warning: no Global contract available for "Get"
 bad_types.adb:9:13: info: initialization of "Room_Length" proved
-bad_types.adb:9:25: medium: overflow check might fail (e.g. when Room_Length = (- (/ 57896041167784924316503598786966022788122266107265795934535514422694452920321 1427247692705959881058285969449495136382746624)) and Wall_Thickness = 340282346638528859811704183484516925440.0)
-bad_types.adb:9:31: medium: overflow check might fail (e.g. when Wall_Thickness = 340282346638528859811704183484516925440.0)
+bad_types.adb:9:25: medium: overflow check might fail (e.g. when Room_Length = (- (/ 1 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608)) and Wall_Thickness = (- (/ 15293080961673054794255256003018678842606179585660414776756226674583517278135730989808699495587095569426093566393641219710132417706537810448304368738751039839083346231344629295449916292722881218679060438583166264621549858273323939002657788374046371695008818837920016594953562507208315274678500922881141480762737879176641530272041361009333250293761 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231
+bad_types.adb:9:31: medium: overflow check might fail (e.g. when Wall_Thickness = (- (/ 15293080961673054794255256003018678842606179585660414776756226674583517278135730989808699495587095569426093566393641219710132417706537810448304368738751039839083346231344629295449916292722881218679060438583166264621549858273323939002657788374046371695008818837920016594953562507208315274678500922881141480762737879176641530272041361009333250293761 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608)))
 bad_types.adb:9:33: info: initialization of "Wall_Thickness" proved
 bad_types.adb:10:21: warning: assuming "Put" has no effect on global items
 bad_types.adb:10:21: warning: no Global contract available for "Put"
@@ -322,7 +322,7 @@ control_structures.adb:152:26: warning: assuming "Get" has no effect on global i
 control_structures.adb:152:26: warning: no Global contract available for "Get"
 control_structures.adb:153:17: info: initialization of "Value" proved
 control_structures.adb:154:14: info: initialization of "Sum" proved
-control_structures.adb:154:18: medium: overflow check might fail (e.g. when Sum = 1 and Value = 2147483647)
+control_structures.adb:154:18: medium: overflow check might fail (e.g. when Sum = 2147483647 and Value = 1)
 control_structures.adb:154:20: info: initialization of "Value" proved
 control_structures.adb:158:14: info: initialization of "X" proved
 control_structures.adb:158:16: info: division check proved
@@ -772,14 +772,14 @@ hierarchical_state_demo_nested.adb:49:43: info: division check proved
 hierarchical_state_demo_nested.ads:7:28: info: initialization of "Success" proved
 initializer_demo.adb:6:07: warning: initialization of Sum has no effect
 initializer_demo.adb:10:17: info: initialization of "Sum" proved
-initializer_demo.adb:10:21: medium: overflow check might fail (e.g. when Sum = -2147483648 and A = (others => 0) and Index = 1)
+initializer_demo.adb:10:21: medium: overflow check might fail (e.g. when Sum = -1 and A = (1 => -2147483648, others => 0) and Index = 1)
 initializer_demo.adb:12:14: info: initialization of "Sum" proved
 initializer_demo.adb:23:17: info: initialization of "Sum" proved
-initializer_demo.adb:23:21: medium: overflow check might fail (e.g. when Sum = -1 and A = (others => 0) and Index = 1)
+initializer_demo.adb:23:21: medium: overflow check might fail (e.g. when Sum = -1 and A = (1 => -2147483648, others => 0) and Index = 1)
 initializer_demo.adb:25:23: info: initialization of "Sum" proved
 initializer_demo.adb:35:19: info: overflow check proved
 initializer_demo.adb:35:21: info: initialization of "Offset.X" proved
-initializer_demo.adb:35:35: medium: overflow check might fail (e.g. when P = (X => 0, Y => 2147483647) and Offset = (X => ?, Y => 1))
+initializer_demo.adb:35:35: medium: overflow check might fail (e.g. when P = (X => 2147483647, Y => 2147483647) and Offset = (X => ?, Y => 1))
 initializer_demo.adb:35:37: info: initialization of "Offset.Y" proved
 initializer_demo.ads:12:28: info: range check proved
 interval.ads:13:09: warning: type invariant ignored (not yet supported)
@@ -1815,3 +1815,4 @@ workspaces.adb:9:27: medium: overflow check might fail (e.g. when Size = 2147483
 workspaces.adb:9:32: info: index check proved
 workspaces.adb:9:37: info: initialization of "Workspace" proved
 workspaces.adb:11:14: info: initialization of "Workspace" proved
+440736956555270413618581675255342293149119973622969239858152417678164812112068608)))

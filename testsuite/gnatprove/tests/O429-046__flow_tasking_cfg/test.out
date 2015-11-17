@@ -18,9 +18,9 @@ p2.ads:24:30: info: initialization of "X" proved
 p2.ads:26:27: info: initialization of "Y" proved
 prot.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
-prot.adb:19:35: medium: overflow check might fail (e.g. when Visible = 2147483647)
+prot.adb:19:35: medium: overflow check might fail (e.g. when Visible = -1)
 prot.adb:19:45: medium: overflow check might fail
-prot.adb:25:33: medium: overflow check might fail (e.g. when X = -2147483649 and D = 0)
+prot.adb:25:33: medium: overflow check might fail (e.g. when X = -2147483649)
 prot.adb:25:37: medium: overflow check might fail
 prot.adb:25:39: info: initialization of "Hidden" constituent of "State" proved
 prot.ads:5:04: info: initialization of "Visible" proved

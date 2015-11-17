@@ -13,7 +13,7 @@ aco-math-very_longs.adb:54:21: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:54:31: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:54:41: info: initialization of "Carry" proved
 aco-math-very_longs.adb:55:57: info: initialization of "Sum" proved
-aco-math-very_longs.adb:56:29: medium: array index check might fail (e.g. when I = 2)
+aco-math-very_longs.adb:56:29: medium: array index check might fail (e.g. when I = 2147483647)
 aco-math-very_longs.adb:56:32: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:56:50: info: initialization of "Sum" proved
 aco-math-very_longs.adb:62:37: info: range check proved
@@ -29,7 +29,7 @@ aco-math-very_longs.adb:77:25: info: initialization of "L_Digit" proved
 aco-math-very_longs.adb:77:35: info: initialization of "R_Digit" proved
 aco-math-very_longs.adb:77:46: info: initialization of "Borrow" proved
 aco-math-very_longs.adb:78:14: info: initialization of "Difference" proved
-aco-math-very_longs.adb:83:29: medium: array index check might fail (e.g. when I = 2)
+aco-math-very_longs.adb:83:29: medium: array index check might fail (e.g. when I = 2147483647)
 aco-math-very_longs.adb:83:32: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:83:50: info: initialization of "Difference" proved
 aco-math-very_longs.adb:97:26: info: range check proved
@@ -49,7 +49,7 @@ aco-math-very_longs.adb:122:41: info: range check proved
 aco-math-very_longs.adb:123:29: info: range check proved
 aco-math-very_longs.adb:125:10: info: loop invariant preservation proved
 aco-math-very_longs.adb:125:32: info: initialization of "String_Index" proved
-aco-math-very_longs.adb:125:32: medium: loop invariant might fail in first iteration, cannot prove String_Index = 2 * Result.Long_Digits'last - Index + 1 (e.g. when String_Index = 2 and Index = 1)
+aco-math-very_longs.adb:125:32: medium: loop invariant might fail in first iteration, cannot prove String_Index = 2 * Result.Long_Digits'last - Index + 1 (e.g. when String_Index = 2 and Index = 1073741823)
 aco-math-very_longs.adb:125:58: info: overflow check proved
 aco-math-very_longs.adb:125:85: info: overflow check proved
 aco-math-very_longs.adb:125:87: info: initialization of "Index" proved
@@ -118,7 +118,7 @@ aco-math-very_longs.adb:250:26: info: length check proved
 aco-math-very_longs.adb:250:29: info: length check proved
 aco-math-very_longs.adb:256:55: info: index check proved
 aco-math-very_longs.adb:257:55: info: index check proved
-aco-math-very_longs.adb:258:18: medium: overflow check might fail (e.g. when I = 1073741824 and J = 1073741824)
+aco-math-very_longs.adb:258:18: medium: overflow check might fail (e.g. when I = 2147483647 and J = 1)
 aco-math-very_longs.adb:259:44: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:259:65: info: overflow check proved
 aco-math-very_longs.adb:259:69: info: index check proved
@@ -280,7 +280,7 @@ aco-math-very_longs.adb:489:47: medium: range check might fail (e.g. when Q_Hat 
 aco-math-very_longs.adb:493:34: info: index check proved
 aco-math-very_longs.adb:493:61: info: index check proved
 aco-math-very_longs.adb:495:17: info: range check proved
-aco-math-very_longs.adb:496:56: medium: overflow check might fail (e.g. when J = 1073741825 and Divisor_Index = 1073741823)
+aco-math-very_longs.adb:496:56: medium: overflow check might fail (e.g. when J = 2147483647 and Divisor_Index = 1)
 aco-math-very_longs.adb:496:72: medium: array index check might fail
 aco-math-very_longs.adb:496:111: info: index check proved
 aco-math-very_longs.adb:496:129: info: initialization of "Carry" proved
@@ -300,7 +300,7 @@ aco-math-very_longs.adb:506:32: info: length check proved
 aco-math-very_longs.adb:509:12: info: precondition proved
 aco-math-very_longs.adb:509:29: medium: overflow check might fail
 aco-math-very_longs.adb:509:29: medium: range check might fail
-aco-math-very_longs.adb:510:15: medium: range check might fail (e.g. when N = 25)
+aco-math-very_longs.adb:510:15: medium: range check might fail (e.g. when N = 2)
 aco-math-very_longs.adb:510:17: info: initialization of "N" proved
 aco-math-very_longs.adb:513:25: info: precondition proved
 aco-math-very_longs.adb:513:64: info: initialization of "N" proved

@@ -2,7 +2,7 @@ refined_post_legal.adb:4:04: info: initialization of "X" constituent of "State" 
 refined_post_legal.adb:9:29: info: initialization of "Par2" proved
 refined_post_legal.adb:9:29: info: refined post proved
 refined_post_legal.adb:9:40: info: overflow check proved
-refined_post_legal.adb:12:19: medium: overflow check might fail (e.g. when Par = 2147483647 and X = 1)
+refined_post_legal.adb:12:19: medium: overflow check might fail (e.g. when Par = 1 and X = 2147483647)
 refined_post_legal.adb:17:29: info: refined post proved
 refined_post_legal.adb:17:47: info: overflow check proved
 refined_post_legal.adb:20:18: medium: overflow check might fail (e.g. when Par = 1 and X = 2147483647)

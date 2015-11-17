@@ -13,5 +13,5 @@ semantics.adb:35:34: medium: overflow check might fail, in call inlined at seman
 semantics.ads:12:19: info: postcondition proved
 semantics.ads:12:43: info: overflow check proved
 semantics.ads:13:41: info: contract case proved
-semantics.ads:14:41: medium: contract case might fail (e.g. when Formal = 3)
+semantics.ads:14:41: medium: contract case might fail (e.g. when Formal = 0)
 semantics.ads:14:68: info: overflow check proved

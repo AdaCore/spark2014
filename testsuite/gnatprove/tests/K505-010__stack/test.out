@@ -8,9 +8,9 @@ stacks.ads:21:14: info: postcondition proved
 stacks.ads:21:34: info: overflow check proved
 stacks.ads:24:25: medium: precondition is stronger than the default class-wide precondition of True (e.g. when S = (Max => ?, Top => 0, Data => (others => 0)))
 stacks.ads:25:26: info: postcondition proved
-stacks.ads:28:13: medium: precondition is stronger than the default class-wide precondition of True (e.g. when S = 0)
+stacks.ads:28:13: medium: precondition is stronger than the default class-wide precondition of True (e.g. when S = -1)
 stacks.ads:37:13: info: range check proved
 stacks.ads:39:13: info: range check proved
 stacks.ads:41:13: info: range check proved
 stacks.ads:43:13: info: range check proved
-stacks.ads:43:58: medium: array index check might fail (e.g. when S = 0)
+stacks.ads:43:58: medium: array index check might fail (e.g. when S = -1)

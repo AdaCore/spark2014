@@ -1,6 +1,6 @@
 arithmetic.adb:7:19: info: postcondition proved
 arithmetic.adb:7:38: info: overflow check proved
-arithmetic.adb:10:16: medium: overflow check might fail (e.g. when A = 0 and B = -2147483648)
+arithmetic.adb:10:16: medium: overflow check might fail (e.g. when A = -2147483648 and B = 1)
 arithmetic.adb:14:19: info: postcondition proved
 arithmetic.adb:14:39: info: overflow check proved
 arithmetic.adb:17:14: medium: overflow check might fail (e.g. when A = -2147483648)
@@ -50,7 +50,7 @@ arithmetic.adb:107:10: info: loop invariant initialization proved
 arithmetic.adb:107:10: info: loop invariant preservation proved
 arithmetic.adb:107:33: info: initialization of "R" proved
 arithmetic.adb:109:14: info: initialization of "R" proved
-arithmetic.adb:113:19: medium: postcondition might fail, cannot prove Halve_B'Result + Halve_B'Result = N  or Halve_B'Result + Halve_B'Result + 1 = N (e.g. when Halve_B'Result = 1 and N = 4)
+arithmetic.adb:113:19: medium: postcondition might fail, cannot prove Halve_B'Result + Halve_B'Result = N  or Halve_B'Result + Halve_B'Result + 1 = N (e.g. when Halve_B'Result = 0 and N = 2)
 arithmetic.adb:119:07: info: assertion proved
 arithmetic.adb:122:20: info: initialization of "R" proved
 arithmetic.adb:123:10: info: loop invariant initialization proved

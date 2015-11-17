@@ -38,12 +38,12 @@ longest_common_prefix.adb:32:17: info: overflow check proved
 longest_common_prefix.adb:34:14: info: initialization of "L" proved
 longest_common_prefix.ads:6:04: info: initialization of "A" proved
 longest_common_prefix.ads:6:28: info: length check proved
-longest_common_prefix.ads:10:57: medium: postcondition might fail, cannot prove A(X + I)= A(Y + I) (e.g. when X = 997 and A = (others => 0) and Y = 995)
+longest_common_prefix.ads:10:57: medium: postcondition might fail, cannot prove A(X + I)= A(Y + I) (e.g. when X = 998 and A = (999 => -1, others => 0) and Y = 1)
 longest_common_prefix.ads:10:61: info: index check proved
 longest_common_prefix.ads:10:61: info: overflow check proved
 longest_common_prefix.ads:10:71: info: index check proved
 longest_common_prefix.ads:10:71: info: overflow check proved
-longest_common_prefix.ads:14:57: medium: postcondition might fail, cannot prove A(I + X)= A(I + Y) (e.g. when X = 997 and A = (others => 0) and Y = 995)
+longest_common_prefix.ads:14:57: medium: postcondition might fail, cannot prove A(I + X)= A(I + Y) (e.g. when X = 998 and A = (999 => -1, others => 0) and Y = 1)
 longest_common_prefix.ads:14:61: info: index check proved
 longest_common_prefix.ads:14:61: info: overflow check proved
 longest_common_prefix.ads:14:71: info: index check proved

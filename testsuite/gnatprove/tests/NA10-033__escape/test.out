@@ -8,12 +8,12 @@ escape.adb:14:48: info: range check proved
 escape.adb:14:48: medium: overflow check might fail (e.g. when Len = 0 and S = (others => 0) and Count_Bs = 2147483647)
 escape.adb:14:50: info: initialization of "Count_Bs" proved
 escape.adb:15:10: info: range check proved
-escape.adb:19:21: medium: array index check might fail (e.g. when Result'First = 1 and TI = 2147483647 and Result'Last = 2147483646)
+escape.adb:19:21: medium: array index check might fail (e.g. when Result'First = 1 and TI = 2 and Result'Last = 1)
 escape.adb:19:25: info: initialization of "TI" proved
 escape.adb:19:25: medium: "Result" might not be initialized
 escape.adb:20:19: info: initialization of "TI" proved
 escape.adb:20:22: medium: overflow check might fail (e.g. when TI = 2147483647)
-escape.adb:22:24: medium: array index check might fail (e.g. when Result'First = 1 and TI = 2147483647 and Result'Last = 2147483646)
+escape.adb:22:24: medium: array index check might fail (e.g. when Result'First = 1 and TI = 3 and Result'Last = 2)
 escape.adb:22:28: info: initialization of "Result" proved
 escape.adb:22:28: info: initialization of "TI" proved
 escape.adb:23:22: info: initialization of "TI" proved

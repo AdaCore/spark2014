@@ -32,6 +32,6 @@ binary_search.adb:32:26: info: range check proved
 binary_search.adb:34:20: info: initialization of "Med" proved
 binary_search.ads:12:66: info: index check proved
 binary_search.ads:12:76: info: index check proved
-binary_search.ads:16:14: medium: postcondition might fail
+binary_search.ads:16:14: medium: postcondition might fail (e.g. when Search'Result = 0 and A = (3 => 1, 4 => 1, 0 => 1, others => 0) and I = 1)
 binary_search.ads:16:57: info: index check proved
 binary_search.ads:17:52: info: index check proved
