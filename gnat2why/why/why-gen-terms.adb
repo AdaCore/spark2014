@@ -121,7 +121,7 @@ package body Why.Gen.Terms is
          if Nkind (Get_Ada_Node (+Node)) in N_Entity
            and then
              Ekind (Get_Ada_Node (+Node)) in
-               E_Protected_Type | E_Private_Subtype
+               E_Protected_Type | E_Protected_Subtype
          then
             State.Found   := True;
             State.Control := Terminate_Immediately;

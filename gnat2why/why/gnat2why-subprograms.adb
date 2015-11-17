@@ -2092,6 +2092,10 @@ package body Gnat2Why.Subprograms is
          declare
             CPT : constant Entity_Id := Containing_Protected_Type (E);
          begin
+
+            --  the Ada_Node is important here, because that's how we detect
+            --  occurrences of "self" in a term later
+
             Self_Name :=
               New_Identifier
                 (Name     => "self__",
