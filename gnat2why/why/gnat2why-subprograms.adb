@@ -2279,7 +2279,7 @@ package body Gnat2Why.Subprograms is
 
          --  Translate contract of E. A No_Return subprogram, from the inside,
          --  has postcondition true as non termination verification is done by
-         --  the frontend, but the precondition is unchanged
+         --  the frontend, but the precondition is unchanged.
 
          if No_Return (E) then
             Post := True_Pred;
