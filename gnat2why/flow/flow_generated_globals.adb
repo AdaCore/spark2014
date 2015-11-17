@@ -1362,6 +1362,10 @@ package body Flow_Generated_Globals is
             Stack : Name_Sets.Set;
             --  We collect protected operations in SPARK and use them as seeds
             --  to grow the call graph.
+
+            Call_Graph : Entity_Name_Graphs.Graph renames
+              Protected_Operation_Call_Graph;
+
          begin
             --  First collect SPARK-compliant protected operations in the
             --  current compilation unit.
@@ -1389,11 +1393,10 @@ package body Flow_Generated_Globals is
 
                begin
                   --  Create vertex for a caller if it does not already exist
-                  V_Caller :=
-                    Protected_Operation_Call_Graph.Get_Vertex (Caller);
+                  V_Caller := Call_Graph.Get_Vertex (Caller);
+
                   if V_Caller = Entity_Name_Graphs.Null_Vertex then
-                     Protected_Operation_Call_Graph.
-                       Add_Vertex (Caller, V_Caller);
+                     Call_Graph.Add_Vertex (Caller, V_Caller);
                   end if;
 
                   --  If the caller is nonblocking then check its callees;
@@ -1401,19 +1404,17 @@ package body Flow_Generated_Globals is
                   if Nonblocking_Subprograms_Set.Contains (Caller) then
                      for Callee of Computed_Calls (Caller) loop
                         --  Get vertex for the callee
-                        V_Callee := Protected_Operation_Call_Graph.
+                        V_Callee := Call_Graph.
                           Get_Vertex (Callee);
 
                         --  If there is no vertex for the callee then create
                         --  one and put the callee on the stack.
                         if V_Callee = Entity_Name_Graphs.Null_Vertex then
-                           Protected_Operation_Call_Graph.
-                             Add_Vertex (Callee, V_Callee);
+                           Call_Graph.Add_Vertex (Callee, V_Callee);
                            Stack.Include (Callee);
                         end if;
 
-                        Protected_Operation_Call_Graph.
-                          Add_Edge (V_Caller, V_Callee);
+                        Call_Graph.Add_Edge (V_Caller, V_Callee);
                      end loop;
                   end if;
 
@@ -1423,13 +1424,16 @@ package body Flow_Generated_Globals is
             end loop;
 
             --  Close the call graph; for an empty graph it will be a no-op
-            Protected_Operation_Call_Graph.Close;
+            Call_Graph.Close;
          end Add_Protected_Operation_Edges;
 
          Add_Ceiling_Priority_Edges : declare
             Stack : Name_Sets.Set;
             --  We collect protected operations in SPARK and use them as seeds
             --  to grow the call graph.
+
+            Call_Graph : Entity_Name_Graphs.Graph renames
+              Ceiling_Priority_Call_Graph;
 
          begin
             --  First collect SPARK-compliant protected operations, task types
@@ -1464,22 +1468,20 @@ package body Flow_Generated_Globals is
 
                begin
                   --  Create vertex for a caller if it does not already exist
-                  V_Caller :=
-                    Ceiling_Priority_Call_Graph.Get_Vertex (Caller);
+                  V_Caller := Call_Graph.Get_Vertex (Caller);
+
                   if V_Caller = Entity_Name_Graphs.Null_Vertex then
-                     Ceiling_Priority_Call_Graph.Add_Vertex (Caller, V_Caller);
+                     Call_Graph.Add_Vertex (Caller, V_Caller);
                   end if;
 
                   for Callee of Computed_Calls (Caller) loop
                      --  Get vertex for the callee
-                     V_Callee :=
-                       Ceiling_Priority_Call_Graph.Get_Vertex (Callee);
+                     V_Callee := Call_Graph.Get_Vertex (Callee);
 
                      --  If there is no vertex for the callee then create
                      --  one and put the callee on the stack.
                      if V_Callee = Entity_Name_Graphs.Null_Vertex then
-                        Ceiling_Priority_Call_Graph.
-                          Add_Vertex (Callee, V_Callee);
+                        Call_Graph.Add_Vertex (Callee, V_Callee);
 
                         --  If the callee is a protected subprogram or entry
                         --  then do not put it on the stack; if its analysis is
@@ -1490,7 +1492,7 @@ package body Flow_Generated_Globals is
 
                      end if;
 
-                     Ceiling_Priority_Call_Graph.Add_Edge (V_Caller, V_Callee);
+                     Call_Graph.Add_Edge (V_Caller, V_Callee);
 
                   end loop;
 
@@ -1499,7 +1501,7 @@ package body Flow_Generated_Globals is
                end;
             end loop;
 
-            Ceiling_Priority_Call_Graph.Close;
+            Call_Graph.Close;
          end Add_Ceiling_Priority_Edges;
       end Add_All_Edges;
 
