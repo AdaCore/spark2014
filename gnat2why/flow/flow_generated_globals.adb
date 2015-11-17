@@ -105,16 +105,23 @@ package body Flow_Generated_Globals is
    --  State information
    ----------------------------------------------------------------------
 
-   State_Comp_Map : Name_Graphs.Map := Name_Graphs.Empty_Map;
+   State_Comp_Map         : Name_Graphs.Map := Name_Graphs.Empty_Map;
    --  state -> {components}
    --
    --  This maps abstract state to its constituents.
 
-   Comp_State_Map : Name_Maps.Map   := Name_Maps.Empty_Map;
+   Comp_State_Map         : Name_Maps.Map   := Name_Maps.Empty_Map;
    --  component -> state
    --
    --  This is the reverse of the above, and is filled in at the end of
    --  GG_Read from state_comp_map, in order to speed up some queries.
+
+   All_State_Abstractions : Name_Sets.Set   := Name_Sets.Empty_Set;
+   --  This will hold all the state abstractions that the GG knows of.
+
+   Remote_States          : Name_Sets.Set   := Name_Sets.Empty_Set;
+   --  This will hold all state abstractions that are somehow used in this
+   --  compilation unit but are not declared inside it.
 
    ----------------------------------------------------------------------
    --  Initializes information
@@ -297,6 +304,7 @@ package body Flow_Generated_Globals is
    type ALI_Entry_Kind is (EK_Error,
                            EK_End_Marker,
                            EK_State_Map,
+                           EK_Remote_States,
                            EK_Volatiles,
                            EK_Globals,
                            EK_Tasking_Instance_Count,
@@ -310,6 +318,8 @@ package body Flow_Generated_Globals is
          when EK_State_Map =>
             The_State                   : Entity_Name;
             The_Constituents            : Name_Sets.Set;
+         when EK_Remote_States =>
+            Remote_States               : Name_Sets.Set;
          when EK_Volatiles =>
             All_Async_Readers           : Name_Sets.Set;
             All_Async_Writers           : Name_Sets.Set;
@@ -339,6 +349,9 @@ package body Flow_Generated_Globals is
       EK_State_Map              => (Kind      => EK_State_Map,
                                     The_State => Null_Entity_Name,
                                     others    => <>),
+
+      EK_Remote_States          => (Kind          => EK_Remote_States,
+                                    Remote_States => Name_Sets.Empty_Set),
 
       EK_Volatiles              => (Kind   => EK_Volatiles,
                                     others => <>),
@@ -401,6 +414,10 @@ package body Flow_Generated_Globals is
    --  Local subprograms
    ----------------------------------------------------------------------
 
+   procedure Add_To_Remote_States (F : Flow_Id);
+   --  Processes F and adds it to Remote_States if it is a remote state
+   --  abstraction.
+
    procedure Add_To_Volatile_Sets_If_Volatile (F : Flow_Id);
    --  Processes F and adds it to All_Volatile_Vars, Async_Writers_Vars,
    --  Async_Readers_Vars, Effective_Reads_Vars, or Effective_Writes_Vars
@@ -437,6 +454,39 @@ package body Flow_Generated_Globals is
    --  (otherwise repeat the process). When Processing_Writes is set, we also
    --  check if all constituents are used and if they are not we also add them
    --  on the Reads set.
+
+   --------------------------
+   -- Add_To_Remote_States --
+   --------------------------
+
+   procedure Add_To_Remote_States (F : Flow_Id) is
+   begin
+      --  If we are not dealing with a state abstraction then we have nothing
+      --  to do.
+      if not Is_Abstract_State (F) then
+         return;
+      end if;
+
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            declare
+               N : Entity_Name;
+            begin
+               N := To_Entity_Name (Get_Direct_Mapping_Id (F));
+               if Enclosing_Comp_Unit_Node (Get_Direct_Mapping_Id (F)) /=
+                 Current_Comp_Unit
+               then
+                  Remote_States.Include (N);
+               end if;
+            end;
+
+         when Magic_String =>
+            Remote_States.Include (F.Name);
+
+         when others =>
+            return;
+      end case;
+   end Add_To_Remote_States;
 
    --------------------------------------
    -- Add_To_Volatile_Sets_If_Volatile --
@@ -548,13 +598,8 @@ package body Flow_Generated_Globals is
    -----------------------------------
 
    function GG_Get_All_State_Abstractions return Name_Sets.Set is
-      Tmp : Name_Sets.Set := Name_Sets.Empty_Set;
    begin
-      for C in State_Comp_Map.Iterate loop
-         Tmp.Insert (Key (C));
-      end loop;
-
-      return Tmp;
+      return All_State_Abstractions;
    end GG_Get_All_State_Abstractions;
 
    -------------------------
@@ -1746,7 +1791,7 @@ package body Flow_Generated_Globals is
                      end if;
                   end loop;
 
-                  --  Remove constituents whose eclosing state abstraction is
+                  --  Remove constituents whose enclosing state abstraction is
                   --  not fully initialized.
                   All_Initialized_Names := All_Initialized_Names - To_Remove;
                   II.LHS                := II.LHS - To_Remove;
@@ -1841,6 +1886,22 @@ package body Flow_Generated_Globals is
                   when EK_State_Map =>
                      State_Comp_Map.Include (V.The_State,
                                              V.The_Constituents);
+                     All_State_Abstractions.Include (V.The_State);
+
+                  when EK_Remote_States =>
+                     All_State_Abstractions.Union (V.Remote_States);
+                     declare
+                        F   : Flow_Id;
+                        Tmp : constant Name_Sets.Set := V.Remote_States;
+                     begin
+                        for State of Tmp loop
+                           F := (if Present (Find_Entity (State))
+                                 then Direct_Mapping_Id (Find_Entity (State))
+                                 else Magic_String_Id (State));
+
+                           Add_To_Remote_States (F);
+                        end loop;
+                     end;
 
                   when EK_Volatiles =>
                      Async_Writers_Vars.Union (V.All_Async_Writers);
@@ -2065,8 +2126,7 @@ package body Flow_Generated_Globals is
       -- Remove_Constants_Without_Variable_Input --
       ---------------------------------------------
 
-      procedure Remove_Constants_Without_Variable_Input
-      is
+      procedure Remove_Constants_Without_Variable_Input is
          use Global_Graphs;
 
          All_Constants : Name_Sets.Set := Name_Sets.Empty_Set;
@@ -2104,7 +2164,8 @@ package body Flow_Generated_Globals is
    --  Start of processing for GG_Read
 
    begin
-      Current_Mode := GG_Read_Mode;
+      Current_Comp_Unit := GNAT_Root;
+      Current_Mode      := GG_Read_Mode;
 
       if Debug_GG_Read_Timing then
          Init_Time ("gg_read");
@@ -2369,8 +2430,7 @@ package body Flow_Generated_Globals is
    -- GG_Write_Finalize --
    -----------------------
 
-   procedure GG_Write_Finalize
-   is
+   procedure GG_Write_Finalize is
       procedure Write_To_ALI (V : in out ALI_Entry);
       --  Helper subprogram to write the given entry to the ALI file.
       --  Second parameter has to be in out because of the way serialize
@@ -2397,6 +2457,11 @@ package body Flow_Generated_Globals is
                The_Constituents => Element (C));
          Write_To_ALI (V);
       end loop;
+
+      --  Write remote states
+      V := (Kind          => EK_Remote_States,
+            Remote_States => Remote_States);
+      Write_To_ALI (V);
 
       --  Write globals for package and subprograms/tasks
       for Info of Package_Info_List loop
@@ -2473,15 +2538,15 @@ package body Flow_Generated_Globals is
    --------------------------
 
    procedure GG_Write_Global_Info (GI : Global_Phase_1_Info) is
-      procedure Process_Volatiles (NS : Name_Sets.Set);
-      --  Goes through NS, finds volatiles and stores them in the
-      --  appropriate sets based on their properties.
+      procedure Process_Volatiles_And_States (NS : Name_Sets.Set);
+      --  Goes through NS, finds volatiles and remote states and stores them in
+      --  the appropriate sets.
 
-      ------------------------
-      -- Processs_Volatiles --
-      ------------------------
+      -----------------------------------
+      -- Processs_Volatiles_And_States --
+      -----------------------------------
 
-      procedure Process_Volatiles (NS : Name_Sets.Set) is
+      procedure Process_Volatiles_And_States (NS : Name_Sets.Set) is
       begin
          for Name of NS loop
             declare
@@ -2489,10 +2554,11 @@ package body Flow_Generated_Globals is
             begin
                if Present (E) then
                   Add_To_Volatile_Sets_If_Volatile (Direct_Mapping_Id (E));
+                  Add_To_Remote_States (Direct_Mapping_Id (E));
                end if;
             end;
          end loop;
-      end Process_Volatiles;
+      end Process_Volatiles_And_States;
 
    --  Start of processing for GG_Write_Global_Info
 
@@ -2506,24 +2572,27 @@ package body Flow_Generated_Globals is
       end case;
       GG_Exists_Cache.Insert (GI.Name);
 
-      --  Gather and save volatile variables
-      Process_Volatiles (GI.Inputs_Proof);
-      Process_Volatiles (GI.Inputs);
-      Process_Volatiles (GI.Outputs);
-      Process_Volatiles (GI.Local_Variables);
+      --  Gather and save volatile variables and state abstractions
+      Process_Volatiles_And_States (GI.Inputs_Proof);
+      Process_Volatiles_And_States (GI.Inputs);
+      Process_Volatiles_And_States (GI.Outputs);
+      Process_Volatiles_And_States (GI.Local_Variables);
    end GG_Write_Global_Info;
 
    -------------------------
    -- GG_Write_Initialize --
    -------------------------
 
-   procedure GG_Write_Initialize is
+   procedure GG_Write_Initialize (GNAT_Root : Node_Id) is
    begin
       --  Open output library info for writing
       Open_Output_Library_Info;
 
       --  Set mode to writing mode
       Current_Mode := GG_Write_Mode;
+
+      --  Store the current compilation unit on which we are working.
+      Current_Comp_Unit := GNAT_Root;
    end GG_Write_Initialize;
 
    -------------------------
@@ -2543,10 +2612,13 @@ package body Flow_Generated_Globals is
               To_Name_Set (To_Node_Set (Dependency_Maps.Element (S)));
          begin
             --  Insert new state info into State_Comp_Map.
+            if State_Comp_Map.Contains (State_N) then
+               State_Comp_Map.Delete (State_N);
+            end if;
             State_Comp_Map.Insert (State_N, Constituents);
 
-            --  Check if State_F if volatile and if it is then add it on
-            --  the appropriate sets.
+            --  Check if State_F is volatile and if it is then add it to the
+            --  appropriate sets.
             Add_To_Volatile_Sets_If_Volatile (State_F);
          end;
       end loop;
@@ -2922,6 +2994,9 @@ package body Flow_Generated_Globals is
          when EK_State_Map =>
             Serialize (A, V.The_State);
             Serialize (A, V.The_Constituents);
+
+         when EK_Remote_States =>
+            Serialize (A, V.Remote_States, "RS");
 
          when EK_Volatiles =>
             Serialize (A, V.All_Async_Readers,    "AR");
