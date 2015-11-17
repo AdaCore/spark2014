@@ -246,18 +246,22 @@ package body Why.Gen.Scalars is
       begin
          --  Optimisation:
          --  check if E is (equivalent to) Unsigned_8/16/..
-         if Is_Static and Has_Modular_Integer_Type (E)
-           and ((Ty = EW_BitVector_8_Type and
-                     Modulus (E) = UI_Expon (Uint_2, Uint_8))
-                or (Ty = EW_BitVector_16_Type and
-                        Modulus (E) = UI_Expon (Uint_2, Uint_16))
-                or (Ty = EW_BitVector_32_Type and
-                        Modulus (E) = UI_Expon (Uint_2, Uint_32))
-                or (Ty = EW_BitVector_64_Type and
-                        Modulus (E) = UI_Expon (Uint_2, Uint_64)))
-           and Intval (Low_Bound (Scalar_Range (E))) = Uint_0
-           and Intval (High_Bound (Scalar_Range (E))) = UI_Sub (Modulus (E),
-                                                                Uint_1)
+         if Is_Static
+           and then Has_Modular_Integer_Type (E)
+           and then ((Ty = EW_BitVector_8_Type
+                      and then Modulus (E) = UI_Expon (Uint_2, Uint_8))
+                     or else
+                       (Ty = EW_BitVector_16_Type
+                        and then Modulus (E) = UI_Expon (Uint_2, Uint_16))
+                     or else
+                       (Ty = EW_BitVector_32_Type
+                        and then Modulus (E) = UI_Expon (Uint_2, Uint_32))
+                     or else
+                       (Ty = EW_BitVector_64_Type
+                        and then Modulus (E) = UI_Expon (Uint_2, Uint_64)))
+           and then Intval (Low_Bound (Scalar_Range (E))) = Uint_0
+           and then Intval (High_Bound (Scalar_Range (E)))
+                  = UI_Sub (Modulus (E), Uint_1)
          then
 
             --  In which case we know that all values are necessary in range,
