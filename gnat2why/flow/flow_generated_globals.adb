@@ -284,7 +284,7 @@ package body Flow_Generated_Globals is
    --  protected operations.
 
    type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
-   --  Similar to Tasking_Info_Bag, but with sets of object names.
+   --  Similar to Tasking_Info_Bag, but with sets of object names
 
    use type Entity_Name_Graphs.Vertex_Id;
 
