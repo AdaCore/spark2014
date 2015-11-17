@@ -3917,9 +3917,9 @@ package body Gnat2Why.Expr is
                   declare
                      --  Types:
 
-                     Formal_T : constant W_Type_Id :=
+                     Formal_T             : constant W_Type_Id :=
                        Get_Typ (Binders (Bind_Cnt).Main.B_Name);
-                     Actual_T      : constant W_Type_Id :=
+                     Actual_T             : constant W_Type_Id :=
                        Type_Of_Node (Actual);
 
                      --  Variables:
@@ -3928,11 +3928,11 @@ package body Gnat2Why.Expr is
                      --  because there is no real dependency here; We only
                      --  use the Formal to get a sensible name.
 
-                     Tmp_Var       : constant W_Identifier_Id :=
+                     Tmp_Var             : constant W_Identifier_Id :=
                        New_Identifier (Ada_Node => Empty,
                                        Name     => Full_Name (Formal),
                                        Typ      => Formal_T);
-                     Tmp_Var_Deref : constant W_Prog_Id :=
+                     Tmp_Var_Deref       : constant W_Prog_Id :=
                        New_Deref (Right => Tmp_Var,
                                   Typ   => Formal_T);
 
@@ -3955,12 +3955,12 @@ package body Gnat2Why.Expr is
                      --
                      --  ... with the appropriate checks if needed.
 
-                     Prefetch_Actual : constant W_Prog_Id :=
+                     Prefetch_Actual     : constant W_Prog_Id :=
                        +Transform_Expr (Actual,
                                         EW_Prog,
                                         Params);
 
-                     Fetch_Actual  : constant W_Prog_Id :=
+                     Fetch_Actual         : constant W_Prog_Id :=
                        (if Need_Check_On_Fetch then
                         +Insert_Checked_Conversion (Ada_Node => Actual,
                                                     Ada_Type => Etype (Actual),
@@ -4000,17 +4000,17 @@ package body Gnat2Why.Expr is
                      --  the other direction. So we retrieve the type of that
                      --  expression here, and use it also as an Ada_ node.
 
-                     Actual_Target_T : constant W_Type_Id :=
+                     Actual_Target_T     : constant W_Type_Id :=
                        (if Nkind (Actual) = N_Type_Conversion then
                              Type_Of_Node (Expression (Actual))
                         else Actual_T);
 
-                     Actual_Target_Node : constant Node_Id :=
+                     Actual_Target_Node  : constant Node_Id :=
                        (if Nkind (Actual) = N_Type_Conversion then
                              Expression (Actual)
                         else Actual);
 
-                     Arg_Value     : constant W_Prog_Id :=
+                     Arg_Value           : constant W_Prog_Id :=
                        (if Need_Check_On_Store then
                            +Insert_Checked_Conversion
                             (Ada_Node => Actual,
@@ -4027,7 +4027,7 @@ package body Gnat2Why.Expr is
 
                      --  ...then store it into the actual:
 
-                     Store_Value   : constant W_Prog_Id :=
+                     Store_Value         : constant W_Prog_Id :=
                        New_Assignment
                          (Ada_Node => Actual,
                           Lvalue   => Actual,
