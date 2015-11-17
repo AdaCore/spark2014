@@ -295,7 +295,7 @@ package body Flow_Types is
      (E        : Entity_Id;
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
-      return Entity_Id
+      return Node_Id
    is
 
       function Get_Anonymous_Object (PT : Entity_Id) return Entity_Id
@@ -328,13 +328,19 @@ package body Flow_Types is
          case Nkind (Orig_Name) is
             when N_Identifier | N_Expanded_Name =>
                return Get_Enclosing_Concurrent_Object (E);
+
             when N_Selected_Component =>
-               if Entire then
-                  return Get_Direct_Mapping_Id
-                           (Concurrent_Object_Id (Prefix (Orig_Name)));
-               else
-                  return Prefix (Orig_Name);
-               end if;
+               declare
+                  Pref : constant Node_Id := Prefix (Orig_Name);
+               begin
+                  if Entire then
+                     return Get_Direct_Mapping_Id
+                              (Concurrent_Object_Id (Pref));
+                  end if;
+
+                  return Pref;
+               end;
+
             when others =>
                raise Why.Unexpected_Node;
          end case;
@@ -345,7 +351,7 @@ package body Flow_Types is
      (F        : Flow_Id;
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
-      return Entity_Id
+      return Node_Id
    is
       E : constant Entity_Id := Get_Direct_Mapping_Id (F);
    begin

@@ -278,7 +278,7 @@ package Flow_Types is
      (F        : Flow_Id;
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
-      return Entity_Id
+      return Node_Id
    with Pre  => Belongs_To_Concurrent_Object (F),
         Post => Present (Get_Enclosing_Concurrent_Object'Result);
    --  @param F is the Flow_Id of a constituent of a concurrent object
@@ -286,24 +286,20 @@ package Flow_Types is
    --     called.
    --  @param Entire is a boolean flag. When Entire is set we return the
    --     outermost construct that encloses the concurrent object (that might
-   --     be a record or an array). Entire is set to off when we are want to
-   --     generate a flow id based on the selected component.
-   --  @return the entity of the enclosing concurrent object
+   --     be a record or an array). Entire is set to False when we try to be
+   --     as precise as possible (we use this for example when we want to
+   --     get the N_Selected_Component that corresponds to our enclosing
+   --     protected object).
+   --  @return the node that best represents the enclosing concurrent object
 
    function Get_Enclosing_Concurrent_Object
      (E        : Entity_Id;
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
-      return Entity_Id;
-   --  same as above, but for an entity
-   --  @param E is an entity which is part of a concurrent object
-   --  @param Callsite is the node id from where the protected operation was
-   --     called.
-   --  @param Entire is a boolean flag. When Entire is set we return the
-   --     outermost construct that encloses the concurrent object (that might
-   --     be a record or an array). Entire is set to off when we are want to
-   --     generate a flow id based on the selected component.
-   --  @return the entity of the enclosing concurrent object
+      return Node_Id
+   with Pre  => Belongs_To_Concurrent_Object (Direct_Mapping_Id (E)),
+        Post => Present (Get_Enclosing_Concurrent_Object'Result);
+   --  Same as above, but for an entity
 
    function Is_Concurrent_Comp_Or_Disc (F : Flow_Id) return Boolean;
    --  @param F is the Flow_Id which will be checked
