@@ -2036,8 +2036,6 @@ package body Gnat2Why.Subprograms is
       Contract_Check : W_Prog_Id;
       Post_Check     : W_Prog_Id;
       Precondition   : W_Prog_Id;
-      Entry_Havoc    : W_Prog_Id;
-
       Result_Var : W_Prog_Id;
 
    begin
@@ -2137,6 +2135,9 @@ package body Gnat2Why.Subprograms is
          end if;
       end loop;
 
+      --  need to prove precondition of Main before use. The test for entries
+      --  is just to protect the call to Might_Be_Main.
+
       declare
          Pre : constant W_Pred_Id :=
            Get_Static_Call_Contract (Params, E, Name_Precondition);
@@ -2166,13 +2167,6 @@ package body Gnat2Why.Subprograms is
          Others_Guard_Ident => Others_Guard_Ident,
          Others_Guard_Expr  => Others_Guard_Expr);
 
-      if Is_Entry (E) then
-         Entry_Havoc :=
-           New_Havoc_Call (Self_Name);
-      else
-         Entry_Havoc := New_Void;
-      end if;
-
       Init_Prog := Sequence
         ((1 => New_Comment
           (Comment => NID ("Declarations introduced by the compiler at the"
@@ -2190,8 +2184,7 @@ package body Gnat2Why.Subprograms is
           (Comment => NID ("Assume Pre of the subprogram"
            & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
              else ""))),
-          6 => Precondition,
-          7 => Entry_Havoc));
+          6 => Precondition));
 
       Prog := Compute_Contract_Cases_Entry_Checks (E, Guard_Map);
 
