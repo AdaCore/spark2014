@@ -1290,12 +1290,8 @@ package body Flow_Generated_Globals is
          --  entities (i.e. entries, functions and procedures).
 
          Add_Tasking_Edges : declare
-            use Entity_Name_Graphs;
-
             Stack : Name_Sets.Set;
             --  Subprograms from which we still need to add edges
-
-         --  Start of processing for Add_Tasking_Edges
 
          begin
             --  First collect tasks and main-like subprograms in SPARK
