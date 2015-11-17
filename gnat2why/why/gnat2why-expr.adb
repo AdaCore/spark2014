@@ -10981,8 +10981,7 @@ package body Gnat2Why.Expr is
          T :=
            New_Integer_Constant
              (Value => Char_Literal_Value (Constant_Value (Ent)));
-      elsif Is_Protected_Component_Or_Discr (Ent)
-        or else Is_Part_Of_Protected_Object (Ent)
+      elsif Is_Protected_Component_Or_Discr_Or_Part_Of (Ent)
       then
          declare
             Obj_Or_Ty : constant Entity_Id :=
