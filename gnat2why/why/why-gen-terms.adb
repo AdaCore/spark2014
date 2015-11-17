@@ -82,6 +82,9 @@ package body Why.Gen.Terms is
       procedure Identifier_Pre_Op
         (State : in out Search_State;
          Node  : W_Identifier_Id);
+      --  Search for occurrences of the "self" special parameter of protected
+      --  subprograms, which can be identified by its Ada_Node pointing to the
+      --  corresponding protected type.
 
       ------------------
       -- Deref_Pre_Op --
@@ -110,6 +113,10 @@ package body Why.Gen.Terms is
          State.Found   := True;
          State.Control := Terminate_Immediately;
       end Any_Expr_Pre_Op;
+
+      ------------------------
+      -- Identifier__Pre_Op --
+      ------------------------
 
       procedure Identifier_Pre_Op
         (State : in out Search_State;
