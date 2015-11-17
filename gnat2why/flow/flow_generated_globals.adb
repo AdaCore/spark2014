@@ -1484,16 +1484,17 @@ package body Flow_Generated_Globals is
                      if V_Callee = Entity_Name_Graphs.Null_Vertex then
                         Ceiling_Priority_Call_Graph.
                           Add_Vertex (Callee, V_Callee);
+
+                        --  If the callee is a protected subprogram or entry
+                        --  then do not put it on the stack; if its analysis is
+                        --  requested then it is already a root of the graph.
+                        if not Is_Protected_Operation (Callee) then
+                           Stack.Include (Callee);
+                        end if;
+
                      end if;
 
                      Ceiling_Priority_Call_Graph.Add_Edge (V_Caller, V_Callee);
-
-                     --  If the callee is a protected subprogram or entry
-                     --  then do not put it on the stack; if its analysis
-                     --  is requested then it is already a root of the graph.
-                     if not Is_Protected_Operation (Callee) then
-                        Stack.Include (Callee);
-                     end if;
 
                   end loop;
 
