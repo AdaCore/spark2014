@@ -8324,58 +8324,56 @@ package body Gnat2Why.Expr is
                            Typ      => EW_Abstract (Standard_String));
 
          when Attribute_Size =>
+
+            --  For arrays and records we do not know the exact value of
+            --  attribute size, which is decided by the back-end when
+            --  generating executable code. Instead, we generate call to an
+            --  uninterpreted function, either:
+            --
+            --  * "value__size", which corresponds to
+            --  ** Type'Size in Ada
+            --  ** Type'Value_Size in GNAT
+            --  ** RM_Size field in GNAT AST
+            --
+            --  or
+            --
+            --  * "object__size", which corresponds to
+            --  ** Object'Size in Ada
+            --  ** Type'Object_Size in GNAT
+            --  ** Esize field in GNAT AST
+
             if Nkind (Var) in N_Has_Entity
               and then Present (Entity (Var))
+                and then Ekind (Entity (Var)) in Type_Kind
             then
-               --  For arrays and records we do not know the exact value of
-               --  attribute size, which is decided by the back-end when
-               --  generating executable code. Instead, we generate call to an
-               --  uninterpreted function, either:
-               --
-               --  * "value__size", which corresponds to
-               --  ** Type'Size in Ada
-               --  ** Type'Value_Size in GNAT
-               --  ** RM_Size field in GNAT AST
-               --
-               --  or
-               --
-               --  * "object__size", which corresponds to
-               --  ** Object'Size in Ada
-               --  ** Type'Object_Size in GNAT
-               --  ** Esize field in GNAT AST
 
-               case Ekind (Entity (Var)) is
-                  when Type_Kind =>
-                     T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+               T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
 
-                  when Object_Kind =>
-                     if Known_Esize (Etype (Var)) then
-                        return New_Integer_Constant (Expr,
-                                                     Esize (Etype (Var)));
-                     else
-                        declare
-                           Name : constant W_Identifier_Id :=
-                             E_Symb (Etype (Var), WNE_Attr_Object_Size);
-                           Arg  : constant W_Expr_Id :=
-                             Transform_Expr (Var, Domain, Params);
-                        begin
-                           return New_Call (Ada_Node => Parent (Var),
-                                            Domain   => Domain,
-                                            Name     => Name,
-                                            Args     => (1 => Arg),
-                                            Typ      => EW_Int_Type);
-                        end;
-                     end if;
-
-                  when others =>
-                     Ada.Text_IO.Put_Line ("[Transform_Attr] kind ="
-                                           & Node_Kind'Image (Nkind (Var)));
-                     raise Not_Implemented;
-               end case;
+            elsif Known_Esize (Etype (Var)) then
+               return New_Integer_Constant (Expr,
+                                            Esize (Etype (Var)));
             else
-               Ada.Text_IO.Put_Line ("[Transform_Attr] id ="
-                                     & Attribute_Id'Image (Attr_Id));
-               raise Not_Implemented;
+               declare
+                  Name : constant W_Identifier_Id :=
+                    E_Symb (Etype (Var), WNE_Attr_Object_Size);
+                  Arg  : W_Expr_Id :=
+                    Transform_Expr (Var, Domain, Params);
+               begin
+                  if Is_Array_Type (Etype (Var)) and then
+                    not Is_Static_Array_Type (Etype (Var))
+                    and then
+                      not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (Arg)))
+                    and then Get_Type_Kind (Get_Type (Arg)) /= EW_Split
+                  then
+                     Arg := Array_Convert_To_Base (Domain, Arg);
+                  end if;
+
+                  return New_Call (Ada_Node => Parent (Var),
+                                   Domain   => Domain,
+                                   Name     => Name,
+                                   Args     => (1 => Arg),
+                                   Typ      => EW_Int_Type);
+               end;
             end if;
 
          when Attribute_Value =>
