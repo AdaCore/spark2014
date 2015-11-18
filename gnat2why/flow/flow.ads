@@ -150,6 +150,7 @@ package Flow is
                               Unsynch_Accesses,
                               Read_Locks,
                               Write_Locks);
+   pragma Ordered (Tasking_Info_Kind);
    --  Tasking-related information that needs to be collected for each analyzed
    --  entity.
 

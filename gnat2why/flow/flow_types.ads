@@ -65,6 +65,7 @@ package Flow_Types is
                        Mode_In,
                        Mode_In_Out,
                        Mode_Out);
+   pragma Ordered (Param_Mode);
 
    subtype In_Global_Modes is Param_Mode
      range Mode_Proof .. Mode_In;
@@ -99,6 +100,7 @@ package Flow_Types is
                          EC_TDG
                          --  Transitive call dependencies
                         );
+   pragma Ordered (Edge_Colours);
    --  ??? by convention type name are in singular (e.g. Kind not Kinds)
 
    type Flow_Id_Kind is (Null_Value,
