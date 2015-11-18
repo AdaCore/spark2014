@@ -3819,65 +3819,61 @@ package body SPARK_Definition is
    --------------------------------------
 
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id) is
-      E : Entity_Id;
+      E : constant Entity_Id := Entity (N);
    begin
-      if Is_Entity_Name (N) and then Present (Entity (N)) then
-         E := Entity (N);
+      case Ekind (E) is
+         when Object_Kind =>
+            if (Ekind_In (E, E_Variable, E_Constant)
+                or else Is_Formal (E))
+              and then not In_SPARK (E)
+            then
+               Mark_Violation (N, From => E);
+            end if;
 
-         case Ekind (E) is
-            when Object_Kind =>
-               if (Ekind_In (E, E_Variable, E_Constant)
-                    or else Is_Formal (E))
-                 and then not In_SPARK (E)
-               then
-                  Mark_Violation (N, From => E);
-               end if;
+         when Named_Kind =>
+            if not In_SPARK (Entity (N)) then
+               Mark_Violation (N, From => E);
+            end if;
 
-            when Named_Kind =>
-               if not In_SPARK (Entity (N)) then
-                  Mark_Violation (N, From => E);
-               end if;
-
-            when Type_Kind =>
-               if not In_SPARK (Entity (N)) then
-                  Mark_Violation (N, From => E);
-               end if;
+         when Type_Kind =>
+            if not In_SPARK (Entity (N)) then
+               Mark_Violation (N, From => E);
+            end if;
 
             --  Subprogram name appears for example in Sub'Result
 
-            when E_Void                  |
-                 E_Enumeration_Literal   |
-                 Subprogram_Kind         |
-                 E_Block                 |
-                 Generic_Subprogram_Kind |
-                 E_Generic_Package       |
-                 E_Label                 |
-                 E_Loop                  |
-                 E_Return_Statement      |
-                 E_Package               |
-                 E_Package_Body          |
-                 E_Subprogram_Body       |
-                 E_Exception             =>
-               null;
+         when E_Void                  |
+              E_Enumeration_Literal   |
+              Subprogram_Kind         |
+              E_Block                 |
+              Generic_Subprogram_Kind |
+              E_Generic_Package       |
+              E_Label                 |
+              E_Loop                  |
+              E_Return_Statement      |
+              E_Package               |
+              E_Package_Body          |
+              E_Subprogram_Body       |
+              E_Exception             =>
+            null;
 
             --  Abstract state entities are passed directly to Mark_Entity
 
-            when E_Abstract_State =>
-               raise Program_Error;
+         when E_Abstract_State =>
+            raise Program_Error;
 
             --  Entry name appears for example in Sub'Caller
 
-            when E_Entry =>
-               null;
+         when E_Entry =>
+            null;
 
-            when E_Entry_Family          |
-                 E_Entry_Index_Parameter |
-                 E_Protected_Object      |
-                 E_Protected_Body        |
-                 E_Task_Body             =>
-               Mark_Violation ("tasking", N);
-         end case;
-      end if;
+         when E_Entry_Family          |
+              E_Entry_Index_Parameter |
+              E_Protected_Object      |
+              E_Protected_Body        |
+              E_Task_Body             =>
+            Mark_Violation ("tasking", N);
+      end case;
    end Mark_Identifier_Or_Expanded_Name;
 
    ------------------------
