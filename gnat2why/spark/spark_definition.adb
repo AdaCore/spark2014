@@ -3828,19 +3828,19 @@ package body SPARK_Definition is
             when Object_Kind =>
                if (Ekind_In (E, E_Variable, E_Constant)
                     or else Is_Formal (E))
-                 and then not In_SPARK (Entity (N))
+                 and then not In_SPARK (E)
                then
-                  Mark_Violation (N, From => Entity (N));
+                  Mark_Violation (N, From => E);
                end if;
 
             when Named_Kind =>
                if not In_SPARK (Entity (N)) then
-                  Mark_Violation (N, From => Entity (N));
+                  Mark_Violation (N, From => E);
                end if;
 
             when Type_Kind =>
                if not In_SPARK (Entity (N)) then
-                  Mark_Violation (N, From => Entity (N));
+                  Mark_Violation (N, From => E);
                end if;
 
             --  Subprogram name appears for example in Sub'Result
