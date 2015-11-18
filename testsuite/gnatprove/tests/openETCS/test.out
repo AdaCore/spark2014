@@ -57,14 +57,14 @@ deceleration_curve.adb:99:42: info: initialization of "Braking_Curve.curve" prov
 deceleration_curve.adb:99:45: info: initialization of "location" proved
 deceleration_curve.adb:100:39: info: initialization of "Braking_Curve.curve" proved
 deceleration_curve.adb:100:42: info: initialization of "speed" proved
-deceleration_curve.adb:107:09: medium: precondition might fail
+deceleration_curve.adb:107:09: medium: precondition might fail (e.g. when Braking_Curve = (end_point => 5001))
 deceleration_curve.adb:108:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:108:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:109:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:109:10: warning: no Global contract available for "Put"
 deceleration_curve.adb:110:10: warning: assuming "Put" has no effect on global items
 deceleration_curve.adb:110:10: warning: no Global contract available for "Put"
-deceleration_curve.adb:111:12: medium: precondition might fail
+deceleration_curve.adb:111:12: medium: precondition might fail (e.g. when Braking_Curve = (end_point => 5001) and i = 0)
 deceleration_curve.adb:112:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:112:10: warning: no Global contract available for "New_Line"
 deceleration_curve.ads:28:06: info: precondition proved
@@ -73,7 +73,7 @@ deceleration_curve.ads:81:32: info: initialization of "Braking_Curve.end_point" 
 deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved
 deceleration_curve_test.adb:15:19: info: precondition proved
-deceleration_curve_test.adb:15:19: medium: assertion might fail, cannot prove Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
+deceleration_curve_test.adb:15:19: medium: assertion might fail, cannot prove Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000 (e.g. when initial_speed = (/ 63433227006016362258829782382481923486253055999 1427247692705959881058285969449495136382746624))
 deceleration_curve_test.adb:15:37: info: initialization of "initial_speed" proved
 deceleration_curve_test.adb:17:04: info: precondition proved
 deceleration_curve_test.adb:17:22: info: initialization of "target.location" proved
@@ -129,11 +129,11 @@ section_3_5_3.adb:41:54: info: overflow check proved
 section_3_5_3.ads:49:04: info: initialization of private part of "Connections" proved
 section_3_5_3.ads:51:53: info: precondition proved
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
-section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Contains(Connections, destination)
+section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Contains(Connections, destination) (e.g. when destination = 1)
 section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect
 section_4_6.ads:102:24: warning: unused variable "mode"
 section_4_6.ads:106:06: medium: contract cases might not be complete
-section_4_6.ads:106:06: medium: contract cases might not be disjoint
+section_4_6.ads:106:06: medium: contract cases might not be disjoint (e.g. when ertms_etcs_level = 2 and an_acknowledge_request_for_shunting_is_displayed_to_the_driver = False and driver_acknowledges = False and driver_selects_shunting_mode = False and note_5_conditions_for_shunting_mode = False and reception_of_information_shunting_granted_by_rbc = True and train_is_at_standstill = True and ma_ssp_gardient_on_board = True and no_specific_mode_is_required_by_a_mode_profile = True and valid_train_data_is_stored_on_board = True and driver_isolates_ERTMS_ETCS_on_board_equipment = False and priority = 7)
 section_4_6.ads:106:55: info: contract case proved
 section_4_6.ads:107:55: info: contract case proved
 section_4_6.ads:108:55: info: contract case proved
