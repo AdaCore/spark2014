@@ -317,7 +317,7 @@ are in |SPARK|.
     like a call to a volatile function which takes the attribute prefix
     as a parameter (in the case where the prefix denotes an object or value)
     and references the Tasking_State state abstraction as an Input global.]
-    [On the other hand, use of the Identity, Priority, or Storage_Size
+    [On the other hand, use of the Identity or Storage_Size
     attributes introduces no such dependency.]
 
 .. _tu-nt-tasks_and_synchronization-18:

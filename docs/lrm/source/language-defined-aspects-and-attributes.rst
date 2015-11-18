@@ -201,7 +201,7 @@ D'Partition_Id			      Yes
 S'Pos				      Yes
 R.C'Position			      Warn                   Warning in pedantic mode
 S'Pred				      Yes
-P'Priority	   		      No
+P'Priority	   		      No                     Ravenscar
 A'Range				      Yes
 S'Range				      Yes
 A'Range(N)	   		      Yes
