@@ -1,0 +1,5 @@
+div_zero.adb:6:09: info: initialization of "C" proved
+div_zero.adb:6:11: medium: divide by zero might fail (e.g. when C = 0)
+div_zero.adb:6:11: medium: overflow check might fail (e.g. when C = 0)
+div_zero.adb:6:11: warning: "Constraint_Error" will be raised at run time
+div_zero.adb:6:11: warning: division by zero
