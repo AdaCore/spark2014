@@ -514,6 +514,12 @@ package body Flow_Utility is
       Contains_Non_Visible : Boolean       := False;
       Root_Components      : Node_Sets.Set := Node_Sets.Empty_Set;
 
+      subtype Private_Nonrecord_Kind is Private_Kind with
+        Static_Predicate =>
+          Private_Nonrecord_Kind not in E_Record_Type_With_Private |
+                                        E_Record_Subtype_With_Private;
+      --  Kind of non-record private types
+
       function Get_Root_Component (N : Node_Id) return Node_Id;
       --  Returns N's equilavent component of the root type. If this
       --  is not available then N's Original_Record_Component is
@@ -604,7 +610,7 @@ package body Flow_Utility is
       end if;
 
       case Ekind (T) is
-         when E_Private_Type .. Private_Kind'Last =>
+         when Private_Nonrecord_Kind =>
             if Debug_Trace_Flatten then
                Write_Line ("processing private type");
             end if;
