@@ -1756,6 +1756,10 @@ package body Flow.Analysis is
 
       function Edge_Selector (A, B : Flow_Graphs.Vertex_Id) return Boolean;
 
+      ---------------
+      -- Flag_Live --
+      ---------------
+
       procedure Flag_Live (V  : Flow_Graphs.Vertex_Id;
                            TV : out Flow_Graphs.Simple_Traversal_Instruction)
       is
@@ -1763,6 +1767,10 @@ package body Flow.Analysis is
          Dead_Code.Exclude (V);
          TV := Flow_Graphs.Continue;
       end Flag_Live;
+
+      -------------------
+      -- Edge_Selector --
+      -------------------
 
       function Edge_Selector (A, B : Flow_Graphs.Vertex_Id) return Boolean is
       begin
@@ -1775,6 +1783,8 @@ package body Flow.Analysis is
                raise Program_Error;
          end case;
       end Edge_Selector;
+
+   --  Start of processing for Find_Dead_Code
 
    begin
       --  Guilty until proven innocent.
@@ -1838,7 +1848,7 @@ package body Flow.Analysis is
       --  define Var. If V_Allowed is set, then the path that we return is
       --  allowed to contain V_Allowed even if V_Allowed does set Var.
 
-      function Mentioned_On_Gen_Init (Var  : Flow_Id) return Boolean
+      function Mentioned_On_Gen_Init (Var : Flow_Id) return Boolean
       with Pre => Ekind (FA.Analyzed_Entity) in E_Package | E_Package_Body;
       --  Returns True if Var is mentioned on the LHS of a generated
       --  Initializes aspect.
@@ -1968,7 +1978,7 @@ package body Flow.Analysis is
       -- Mentioned_On_Gen_Init --
       ---------------------------
 
-      function Mentioned_On_Gen_Init (Var  : Flow_Id) return Boolean is
+      function Mentioned_On_Gen_Init (Var : Flow_Id) return Boolean is
          DM : constant Dependency_Maps.Map :=
            Flow_Generated_Globals.GG_Get_Initializes
              (To_Entity_Name (Unique_Entity (FA.Spec_Entity)),
@@ -2260,7 +2270,7 @@ package body Flow.Analysis is
             elsif Is_Initialized                   then Init
             else                                        Err);
 
-         N            : Node_Id           := V_Atr.Error_Location;
+         N            : Node_Id := V_Atr.Error_Location;
          Msg          : Unbounded_String;
 
          V_Error      : Flow_Graphs.Vertex_Id;
