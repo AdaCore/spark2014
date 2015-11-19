@@ -1231,12 +1231,20 @@ package body SPARK_Definition is
             --  context only. Issue an error in that case.
 
             declare
+               Name        : constant Node_Id   := Prefix (N);
                Selector    : constant Entity_Id := Entity (Selector_Name (N));
                Prefix_Type : constant Entity_Id :=
-                 Unique_Entity (Etype (Prefix (N)));
+                 Unique_Entity (Etype (Name));
+
             begin
                if Has_Access_Type (Prefix_Type) then
                   Mark_Violation ("implicit dereference", N);
+
+               --  Detect cases where the prefix is a concurrent object, which
+               --  should not be submitted to this check.
+
+               elsif Is_Concurrent_Type (Prefix_Type) then
+                  null;
 
                elsif No (Search_Component_By_Name (Prefix_Type, Selector)) then
                   Violation_Detected := True;
@@ -2213,6 +2221,8 @@ package body SPARK_Definition is
                --  issue a generic error message about "indirect calls".
 
                Mark_Violation ("indirect call", N);
+            else
+               Mark (Nam);
             end if;
          end if;
 
