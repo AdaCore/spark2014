@@ -5,10 +5,10 @@ refined_global_illegal.adb:51:43: cannot mention state "State" in global refinem
 refined_global_illegal.adb:51:43: use its constituents instead
 refined_global_illegal.adb:59:47: extra global item "Y"
 refined_global_illegal.adb:67:47: duplicate global item
-refined_global_illegal.adb:75:14: global refinement of state "State" redefines the mode of its constituents
+refined_global_illegal.adb:75:14: global refinement of state "State" must include at least one constituent of mode "In_Out", "Input", or "Proof_In"
 refined_global_illegal.adb:83:14: global refinement of state "State" redefines the mode of its constituents
+refined_global_illegal.adb:91:14: "Output" state "State2" must be replaced by all its constituents in global refinement
 refined_global_illegal.adb:91:14: constituent "Z" is missing in output list
-refined_global_illegal.adb:91:14: output state "State2" must be replaced by all its constituents in global refinement
 refined_global_illegal_2.adb:5:04: info: initialization of "X" constituent of "State" proved
 refined_global_illegal_2.adb:5:07: info: initialization of "Y" constituent of "State" proved
 refined_global_illegal_2.adb:12:18: "Y" constituent of "State" must be listed in the Refined_Global aspect of "P1" (SPARK RM 6.1.4(13))
