@@ -1,0 +1,2 @@
+ss.ads:5:38: attribute "STORAGE_SIZE" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
