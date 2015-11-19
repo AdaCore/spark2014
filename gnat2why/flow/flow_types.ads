@@ -100,7 +100,6 @@ package Flow_Types is
                          EC_TDG
                          --  Transitive call dependencies
                         );
-   pragma Ordered (Edge_Colours);
    --  ??? by convention type name are in singular (e.g. Kind not Kinds)
 
    type Flow_Id_Kind is (Null_Value,

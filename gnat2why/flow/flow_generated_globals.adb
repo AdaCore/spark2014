@@ -59,7 +59,9 @@ package body Flow_Generated_Globals is
 
    use Name_Graphs;
 
-   subtype GG_Edge_Colours is Edge_Colours range EC_Default .. EC_Default;
+   type No_Colours is (Dummy_Color);
+   --  Dummy type inhabited by only a single value (similar to unit type in
+   --  OCaml); used to instantiate graphs with colorless edges.
 
    ----------------------------------------------------------------------
    --  Debug flags
@@ -256,7 +258,7 @@ package body Flow_Generated_Globals is
 
    package Entity_Name_Graphs is new Graphs
      (Vertex_Key   => Entity_Name,
-      Edge_Colours => GG_Edge_Colours,
+      Edge_Colours => No_Colours,
       Null_Key     => Null_Entity_Name,
       Key_Hash     => Name_Hash,
       Test_Key     => "=");
@@ -302,7 +304,7 @@ package body Flow_Generated_Globals is
    package Global_Graphs is new Graphs
      (Vertex_Key   => Global_Id,
       Key_Hash     => Global_Hash,
-      Edge_Colours => GG_Edge_Colours,
+      Edge_Colours => No_Colours,
       Null_Key     => Null_Global_Id,
       Test_Key     => "=");
 
@@ -3037,7 +3039,7 @@ package body Flow_Generated_Globals is
          A      : Vertex_Id;
          B      : Vertex_Id;
          Marked : Boolean;
-         Colour : GG_Edge_Colours)
+         Colour : No_Colours)
          return Edge_Display_Info;
       --  Pretty-printing for each edge in the dot output
 
@@ -3083,7 +3085,7 @@ package body Flow_Generated_Globals is
          A      : Vertex_Id;
          B      : Vertex_Id;
          Marked : Boolean;
-         Colour : GG_Edge_Colours)
+         Colour : No_Colours)
          return Edge_Display_Info
       is
          pragma Unreferenced (G, A, B, Marked, Colour);
