@@ -45,7 +45,7 @@ arrays.ads:61:19: info: postcondition proved
 arrays.ads:61:32: info: length check proved
 arrays.ads:65:19: info: postcondition proved
 arrays.ads:69:19: info: postcondition proved
-arrays.ads:75:19: medium: postcondition might fail, cannot prove A = A'Old'update (e.g. when A'Old = (2 => 0, 1 => 0, others => -2) and A'Last'Old = 1 and I = 1 and New_Val = 0 and A = (others => 0) and A'First'Old = 1)
+arrays.ads:75:19: info: postcondition proved
 arrays.ads:75:37: info: range check proved
 records.adb:21:27: medium: range check might fail (e.g. when New_Data = -1)
 records.adb:33:20: medium: overflow check might fail (e.g. when R = (S1 => 2147483647, others => ?))

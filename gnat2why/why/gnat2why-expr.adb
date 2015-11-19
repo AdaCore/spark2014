@@ -6358,6 +6358,7 @@ package body Gnat2Why.Expr is
 
          Aggr          : W_Expr_Id;
          Def_Pred      : W_Pred_Id;
+         Axiom_Body    : W_Pred_Id;
 
          Aggr_Temp     : constant W_Identifier_Id :=
            New_Temp_Identifier (Typ => Ret_Type);
@@ -6415,17 +6416,53 @@ package body Gnat2Why.Expr is
                      Args     => Call_Args,
                      Typ      => Type_Of_Node (Etype (Expr)));
 
+         Axiom_Body :=
+           +Transform_Array_Component_Associations
+           (Expr   => Expr,
+            Arr    => +Aggr_Temp,
+            Args   => Args_Map,
+            Params => Params_No_Ref);
+
+         --  This is the equality that states that update cannot change
+         --  first/last attributes of the array
+
+         if In_Attribute_Update then
+            declare
+               First_Eq : constant W_Pred_Id :=
+                 +New_Comparison
+                   (Symbol => Why_Eq,
+                    Domain => EW_Pred,
+                    Left   =>
+                      +Get_Array_Attr
+                        (EW_Term, +Aggr_Temp, Attribute_First, 1),
+                    Right  =>
+                      +Get_Array_Attr
+                      (EW_Term, +Call_Args (1), Attribute_First, 1));
+               Last_Eq : constant W_Pred_Id :=
+                 +New_Comparison
+                   (Symbol => Why_Eq,
+                    Domain => EW_Pred,
+                    Left   =>
+                      +Get_Array_Attr
+                        (EW_Term, +Aggr_Temp, Attribute_Last, 1),
+                    Right  =>
+                      +Get_Array_Attr
+                        (EW_Term, +Call_Args (1), Attribute_Last, 1));
+            begin
+               Axiom_Body :=
+                 +New_And_Then_Expr
+                 (Domain => EW_Pred,
+                  Left   => New_And_Expr (+First_Eq, +Last_Eq, EW_Pred),
+                  Right  => +Axiom_Body);
+            end;
+         end if;
+
          Def_Pred :=
            +New_Typed_Binding
              (Name   => Aggr_Temp,
               Domain => EW_Pred,
               Def    => Aggr,
-              Context =>
-                +Transform_Array_Component_Associations
-                  (Expr   => Expr,
-                   Arr    => +Aggr_Temp,
-                   Args   => Args_Map,
-                   Params => Params_No_Ref));
+              Context => +Axiom_Body);
 
          --  Generate the necessary logic function and axiom declarations
 

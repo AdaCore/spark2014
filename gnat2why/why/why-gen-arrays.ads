@@ -283,7 +283,7 @@ package Why.Gen.Arrays is
       Dim    : Positive) return W_Expr_Id
      with Pre =>
        Attr in Attribute_First | Attribute_Last | Attribute_Length;
-   --  Get the expression for the attribute (first/last) of the array.
+   --  Get the expression for the attribute (first/last/length) of the array.
    --  For constrained arrays, this refers to the introduced constant,
    --  for unconstrained arrays this is translated to a field access.
    --  @param Domain The domain of the returned expression.
