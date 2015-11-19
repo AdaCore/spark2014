@@ -1,0 +1,6 @@
+traffic_lights.adb:67:23: medium: precondition might fail
+traffic_lights.ads:20:22: medium: postcondition might fail, cannot prove (Valid_Combination)
+traffic_lights.ads:33:09: info: ceiling priority protocol is respected
+traffic_lights.ads:33:09: info: nontermination of task proved
+traffic_lights.ads:37:09: info: ceiling priority protocol is respected
+traffic_lights.ads:37:09: info: nontermination of task proved

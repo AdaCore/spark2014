@@ -1,1 +1,1 @@
-ALL XFAIL problem with constants with variable input (O121-031)
+ALL XFAIL crash in proof (OB19-001)

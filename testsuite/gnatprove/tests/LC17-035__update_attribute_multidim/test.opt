@@ -1,1 +1,1 @@
-ALL XFAIL update of unconstrained mdim arrays to be supported after release 16
+ALL XFAIL update of unconstrained mdim arrays to be supported after release 16 (OB19-002)
