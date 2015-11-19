@@ -14,14 +14,14 @@ single_compilation_unit.adb:54:18: info: initialization of "Fact" proved
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="across_compilation_units__swap__temp"];
-    2 [label="across_compilation_units__child__x"];
-    3 [label="across_compilation_units__child__y"];
-    4 [label="across_compilation_units__child__z"];
-    5 [label="across_compilation_units__prime__x"];
-    6 [label="across_compilation_units__swap__x"];
-    7 [label="across_compilation_units__swap__y"];
-    8 [label="across_compilation_units__prime__L_1__i"];
+    1 [label="across_compilation_units__prime__x"];
+    2 [label="across_compilation_units__swap__x"];
+    3 [label="across_compilation_units__child__x"];
+    4 [label="across_compilation_units__swap__y"];
+    5 [label="across_compilation_units__child__y"];
+    6 [label="across_compilation_units__prime__L_1__i"];
+    7 [label="across_compilation_units__child__z"];
+    8 [label="across_compilation_units__swap__temp"];
     9 [label="across_compilation_units__swap'Ins",shape="box"];
     10 [label="across_compilation_units__swap'Outs",shape="box"];
     11 [label="across_compilation_units__swap'Proof_Ins",shape="box"];
@@ -44,21 +44,21 @@ digraph G {
     28 [label="across_compilation_units__child__round_swap_with_depends_2'Outs",shape="box"];
     29 [label="across_compilation_units__child__round_swap_with_depends_2'Proof_Ins",shape="box"];
 
-    18 ->  2 [arrowType="normal"];
     18 ->  3 [arrowType="normal"];
-    18 ->  4 [arrowType="normal"];
+    18 ->  5 [arrowType="normal"];
+    18 ->  7 [arrowType="normal"];
     18 ->  9 [arrowType="normal"];
-    19 ->  2 [arrowType="normal"];
     19 ->  3 [arrowType="normal"];
-    19 ->  4 [arrowType="normal"];
+    19 ->  5 [arrowType="normal"];
+    19 ->  7 [arrowType="normal"];
     19 ->  10 [arrowType="normal"];
     20 ->  11 [arrowType="normal"];
-    21 ->  2 [arrowType="normal"];
     21 ->  3 [arrowType="normal"];
-    21 ->  4 [arrowType="normal"];
-    22 ->  2 [arrowType="normal"];
+    21 ->  5 [arrowType="normal"];
+    21 ->  7 [arrowType="normal"];
     22 ->  3 [arrowType="normal"];
-    22 ->  4 [arrowType="normal"];
+    22 ->  5 [arrowType="normal"];
+    22 ->  7 [arrowType="normal"];
 }
 
 // across_compilation_units-child_locals_graph
@@ -71,9 +71,9 @@ digraph G {
     4 [label="across_compilation_units__prime__x"];
     5 [label="across_compilation_units__prime__L_1__i"];
     6 [label="Subprogram across_compilation_units__swap",shape="box"];
-    7 [label="across_compilation_units__swap__temp"];
-    8 [label="across_compilation_units__swap__x"];
-    9 [label="across_compilation_units__swap__y"];
+    7 [label="across_compilation_units__swap__x"];
+    8 [label="across_compilation_units__swap__y"];
+    9 [label="across_compilation_units__swap__temp"];
 
     3 ->  4 [arrowType="normal"];
     3 ->  5 [arrowType="normal"];
@@ -126,17 +126,17 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="across_compilation_units__swap__y"];
-    2 [label="across_compilation_units__prime__L_1__i"];
-    3 [label="across_compilation_units__swap__temp"];
-    4 [label="caller_of_across_compilation_units__min__y"];
-    5 [label="caller_of_across_compilation_units__min__x"];
-    6 [label="caller_of_across_compilation_units__coprime__y"];
-    7 [label="caller_of_across_compilation_units__coprime__x"];
-    8 [label="caller_of_across_compilation_units__coprime__L_1__R4b"];
-    9 [label="caller_of_across_compilation_units__coprime__L_1__i"];
-    10 [label="across_compilation_units__prime__x"];
-    11 [label="across_compilation_units__swap__x"];
+    1 [label="caller_of_across_compilation_units__min__y"];
+    2 [label="caller_of_across_compilation_units__min__x"];
+    3 [label="caller_of_across_compilation_units__coprime__y"];
+    4 [label="caller_of_across_compilation_units__coprime__x"];
+    5 [label="caller_of_across_compilation_units__coprime__L_1__R4b"];
+    6 [label="caller_of_across_compilation_units__coprime__L_1__i"];
+    7 [label="across_compilation_units__prime__x"];
+    8 [label="across_compilation_units__swap__x"];
+    9 [label="across_compilation_units__swap__y"];
+    10 [label="across_compilation_units__prime__L_1__i"];
+    11 [label="across_compilation_units__swap__temp"];
     12 [label="across_compilation_units__prime'Ins",shape="box"];
     13 [label="across_compilation_units__prime'Outs",shape="box"];
     14 [label="across_compilation_units__prime'Proof_Ins",shape="box"];
@@ -175,12 +175,12 @@ digraph G {
     7 [label="caller_of_across_compilation_units__min__y"];
     8 [label="caller_of_across_compilation_units__min__x"];
     9 [label="Subprogram across_compilation_units__prime",shape="box"];
-    10 [label="across_compilation_units__prime__L_1__i"];
-    11 [label="across_compilation_units__prime__x"];
+    10 [label="across_compilation_units__prime__x"];
+    11 [label="across_compilation_units__prime__L_1__i"];
     12 [label="Subprogram across_compilation_units__swap",shape="box"];
-    13 [label="across_compilation_units__swap__y"];
-    14 [label="across_compilation_units__swap__temp"];
-    15 [label="across_compilation_units__swap__x"];
+    13 [label="across_compilation_units__swap__x"];
+    14 [label="across_compilation_units__swap__y"];
+    15 [label="across_compilation_units__swap__temp"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  3 [arrowType="normal"];
@@ -199,17 +199,17 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="X'initial\nVD: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="X'final\nVU: {X}\n<VId: 8>",shape="plaintext"];
-    10 [label="Y'initial\nVD: {Y}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Y'final\nVU: {Y}\n<VId: 11>",shape="plaintext"];
-    13 [label="Z'initial\nVD: {Z}\n<VId: 13>",shape="plaintext",fontcolor="red"];
-    14 [label="Z'final\nVU: {Z}\n<VId: 14>",shape="plaintext"];
-    21 [label="null;\n<VId: 21>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="X'initial/nVD: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="X'final/nVU: {X}/n<VId: 8>",shape="plaintext"];
+    10 [label="Y'initial/nVD: {Y}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Y'final/nVU: {Y}/n<VId: 11>",shape="plaintext"];
+    13 [label="Z'initial/nVD: {Z}/n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="Z'final/nVU: {Z}/n<VId: 14>",shape="plaintext"];
+    21 [label="null;/n<VId: 21>"];
 
     1 ->  21 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -226,16 +226,16 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="X'initial\nVD: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="X'final\nVU: {X}\n<VId: 8>",shape="plaintext"];
-    10 [label="Y'initial\nVD: {Y}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Y'final\nVU: {Y}\n<VId: 11>",shape="plaintext"];
-    13 [label="Z'initial\nVD: {Z}\n<VId: 13>",shape="plaintext",fontcolor="red"];
-    14 [label="Z'final\nVU: {Z}\n<VId: 14>",shape="plaintext"];
-    21 [label="null;\n<VId: 21>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="X'initial/nVD: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="X'final/nVU: {X}/n<VId: 8>",shape="plaintext"];
+    10 [label="Y'initial/nVD: {Y}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Y'final/nVU: {Y}/n<VId: 11>",shape="plaintext"];
+    13 [label="Z'initial/nVD: {Z}/n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="Z'final/nVU: {Z}/n<VId: 14>",shape="plaintext"];
+    21 [label="null;/n<VId: 21>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  21 [arrowType="normal"];
@@ -248,11 +248,11 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="null;\n<VId: 9>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;/n<VId: 9>"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -263,10 +263,10 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="null;\n<VId: 9>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;/n<VId: 9>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  9 [arrowType="normal"];
@@ -276,11 +276,11 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="null;\n<VId: 9>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;/n<VId: 9>"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -291,10 +291,10 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="null;\n<VId: 9>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;/n<VId: 9>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  9 [arrowType="normal"];
@@ -304,17 +304,17 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    8 [label="Condition'initial\nVD: {Condition}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Condition'final\nVU: {Condition}\n<VId: 9>",shape="plaintext"];
-    11 [label="X'initial\nVD: {X}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    12 [label="X'final\nVU: {X}\n<VId: 12>",shape="plaintext"];
-    14 [label="Y'initial\nVD: {Y}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="Y'final\nVU: {Y}\n<VId: 15>",shape="plaintext"];
-    23 [label="null;\n<VId: 23>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    8 [label="Condition'initial/nVD: {Condition}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Condition'final/nVU: {Condition}/n<VId: 9>",shape="plaintext"];
+    11 [label="X'initial/nVD: {X}/n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="X'final/nVU: {X}/n<VId: 12>",shape="plaintext"];
+    14 [label="Y'initial/nVD: {Y}/n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="Y'final/nVU: {Y}/n<VId: 15>",shape="plaintext"];
+    23 [label="null;/n<VId: 23>"];
 
     1 ->  23 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -331,16 +331,16 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    8 [label="Condition'initial\nVD: {Condition}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Condition'final\nVU: {Condition}\n<VId: 9>",shape="plaintext"];
-    11 [label="X'initial\nVD: {X}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    12 [label="X'final\nVU: {X}\n<VId: 12>",shape="plaintext"];
-    14 [label="Y'initial\nVD: {Y}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="Y'final\nVU: {Y}\n<VId: 15>",shape="plaintext"];
-    23 [label="null;\n<VId: 23>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    8 [label="Condition'initial/nVD: {Condition}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Condition'final/nVU: {Condition}/n<VId: 9>",shape="plaintext"];
+    11 [label="X'initial/nVD: {X}/n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="X'final/nVU: {X}/n<VId: 12>",shape="plaintext"];
+    14 [label="Y'initial/nVD: {Y}/n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="Y'final/nVU: {Y}/n<VId: 15>",shape="plaintext"];
+    23 [label="null;/n<VId: 23>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  23 [arrowType="normal"];
@@ -353,37 +353,37 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
-    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Z'initial/n(global)/nVD: {Z}/n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final/n(global)/nVU: {Z}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial/n(global)/nVD: {X}/n<VId: 8>",shape="plaintext"];
+    9 [label="X'final/n(global)/nVU: {X}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final/n(global)/nVU: {Y}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    15 [label="call swap\nSC: {Swap}\n<VId: 15>",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 17>",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 18>",shape="plaintext"];
-    19 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 19>",shape="plaintext"];
+    15 [label="call swap/nSC: {Swap}/n<VId: 15>",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 17>",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;y/nVU: {Y}/n<VId: 18>",shape="plaintext"];
+    19 [label="y&nbsp;:=&nbsp;y'out/nVD: {Y}/n<VId: 19>",shape="plaintext"];
 }
 
 subgraph cluster2 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    20 [label="call swap\nSC: {Swap}\n<VId: 20>",shape="box"];
-    21 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 21>",shape="plaintext"];
-    22 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
-    23 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 23>",shape="plaintext"];
-    24 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 24>",shape="plaintext"];
+    20 [label="call swap/nSC: {Swap}/n<VId: 20>",shape="box"];
+    21 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 21>",shape="plaintext"];
+    22 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 22>",shape="plaintext"];
+    23 [label="y'in&nbsp;:=&nbsp;z/nVU: {Z}/n<VId: 23>",shape="plaintext"];
+    24 [label="z&nbsp;:=&nbsp;y'out/nVD: {Z}/n<VId: 24>",shape="plaintext"];
 }
 
     1 ->  15 [arrowType="normal"];
@@ -410,25 +410,25 @@ subgraph cluster2 {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
-    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="call swap\nSC: {Swap}\n<VId: 15>",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 17>",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 18>",shape="plaintext"];
-    19 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 19>",shape="plaintext"];
-    20 [label="call swap\nSC: {Swap}\n<VId: 20>",shape="box"];
-    21 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 21>",shape="plaintext"];
-    22 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
-    23 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 23>",shape="plaintext"];
-    24 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 24>",shape="plaintext"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Z'initial/n(global)/nVD: {Z}/n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final/n(global)/nVU: {Z}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial/n(global)/nVD: {X}/n<VId: 8>",shape="plaintext"];
+    9 [label="X'final/n(global)/nVU: {X}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final/n(global)/nVU: {Y}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="call swap/nSC: {Swap}/n<VId: 15>",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 17>",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;y/nVU: {Y}/n<VId: 18>",shape="plaintext"];
+    19 [label="y&nbsp;:=&nbsp;y'out/nVD: {Y}/n<VId: 19>",shape="plaintext"];
+    20 [label="call swap/nSC: {Swap}/n<VId: 20>",shape="box"];
+    21 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 21>",shape="plaintext"];
+    22 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 22>",shape="plaintext"];
+    23 [label="y'in&nbsp;:=&nbsp;z/nVU: {Z}/n<VId: 23>",shape="plaintext"];
+    24 [label="z&nbsp;:=&nbsp;y'out/nVD: {Z}/n<VId: 24>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -462,37 +462,37 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
-    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Z'initial/n(global)/nVD: {Z}/n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final/n(global)/nVU: {Z}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial/n(global)/nVD: {X}/n<VId: 8>",shape="plaintext"];
+    9 [label="X'final/n(global)/nVU: {X}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final/n(global)/nVU: {Y}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    15 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 15>",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 17>",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 18>",shape="plaintext"];
-    19 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 19>",shape="plaintext"];
+    15 [label="call swap_with_depends/nSC: {Swap_With_Depends}/n<VId: 15>",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 17>",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;y/nVU: {Y}/n<VId: 18>",shape="plaintext"];
+    19 [label="y&nbsp;:=&nbsp;y'out/nVD: {Y}/n<VId: 19>",shape="plaintext"];
 }
 
 subgraph cluster2 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    20 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 20>",shape="box"];
-    21 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 21>",shape="plaintext"];
-    22 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
-    23 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 23>",shape="plaintext"];
-    24 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 24>",shape="plaintext"];
+    20 [label="call swap_with_depends/nSC: {Swap_With_Depends}/n<VId: 20>",shape="box"];
+    21 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 21>",shape="plaintext"];
+    22 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 22>",shape="plaintext"];
+    23 [label="y'in&nbsp;:=&nbsp;z/nVU: {Z}/n<VId: 23>",shape="plaintext"];
+    24 [label="z&nbsp;:=&nbsp;y'out/nVD: {Z}/n<VId: 24>",shape="plaintext"];
 }
 
     1 ->  15 [arrowType="normal"];
@@ -519,25 +519,25 @@ subgraph cluster2 {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
-    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 15>",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 17>",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 18>",shape="plaintext"];
-    19 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 19>",shape="plaintext"];
-    20 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 20>",shape="box"];
-    21 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 21>",shape="plaintext"];
-    22 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
-    23 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 23>",shape="plaintext"];
-    24 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 24>",shape="plaintext"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Z'initial/n(global)/nVD: {Z}/n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final/n(global)/nVU: {Z}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial/n(global)/nVD: {X}/n<VId: 8>",shape="plaintext"];
+    9 [label="X'final/n(global)/nVU: {X}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final/n(global)/nVU: {Y}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="call swap_with_depends/nSC: {Swap_With_Depends}/n<VId: 15>",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 17>",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;y/nVU: {Y}/n<VId: 18>",shape="plaintext"];
+    19 [label="y&nbsp;:=&nbsp;y'out/nVD: {Y}/n<VId: 19>",shape="plaintext"];
+    20 [label="call swap_with_depends/nSC: {Swap_With_Depends}/n<VId: 20>",shape="box"];
+    21 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 21>",shape="plaintext"];
+    22 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 22>",shape="plaintext"];
+    23 [label="y'in&nbsp;:=&nbsp;z/nVU: {Z}/n<VId: 23>",shape="plaintext"];
+    24 [label="z&nbsp;:=&nbsp;y'out/nVD: {Z}/n<VId: 24>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -567,37 +567,37 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
-    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Z'initial/n(global)/nVD: {Z}/n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final/n(global)/nVU: {Z}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial/n(global)/nVD: {X}/n<VId: 8>",shape="plaintext"];
+    9 [label="X'final/n(global)/nVU: {X}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final/n(global)/nVU: {Y}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    15 [label="call swap\nSC: {Swap}\n<VId: 15>",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 17>",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 18>",shape="plaintext"];
-    19 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 19>",shape="plaintext"];
+    15 [label="call swap/nSC: {Swap}/n<VId: 15>",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 17>",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;y/nVU: {Y}/n<VId: 18>",shape="plaintext"];
+    19 [label="y&nbsp;:=&nbsp;y'out/nVD: {Y}/n<VId: 19>",shape="plaintext"];
 }
 
 subgraph cluster2 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    20 [label="call swap\nSC: {Swap}\n<VId: 20>",shape="box"];
-    21 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 21>",shape="plaintext"];
-    22 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
-    23 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 23>",shape="plaintext"];
-    24 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 24>",shape="plaintext"];
+    20 [label="call swap/nSC: {Swap}/n<VId: 20>",shape="box"];
+    21 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 21>",shape="plaintext"];
+    22 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 22>",shape="plaintext"];
+    23 [label="y'in&nbsp;:=&nbsp;z/nVU: {Z}/n<VId: 23>",shape="plaintext"];
+    24 [label="z&nbsp;:=&nbsp;y'out/nVD: {Z}/n<VId: 24>",shape="plaintext"];
 }
 
     1 ->  15 [arrowType="normal"];
@@ -624,25 +624,25 @@ subgraph cluster2 {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
-    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="call swap\nSC: {Swap}\n<VId: 15>",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 17>",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 18>",shape="plaintext"];
-    19 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 19>",shape="plaintext"];
-    20 [label="call swap\nSC: {Swap}\n<VId: 20>",shape="box"];
-    21 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 21>",shape="plaintext"];
-    22 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
-    23 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 23>",shape="plaintext"];
-    24 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 24>",shape="plaintext"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Z'initial/n(global)/nVD: {Z}/n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final/n(global)/nVU: {Z}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial/n(global)/nVD: {X}/n<VId: 8>",shape="plaintext"];
+    9 [label="X'final/n(global)/nVU: {X}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final/n(global)/nVU: {Y}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="call swap/nSC: {Swap}/n<VId: 15>",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 17>",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;y/nVU: {Y}/n<VId: 18>",shape="plaintext"];
+    19 [label="y&nbsp;:=&nbsp;y'out/nVD: {Y}/n<VId: 19>",shape="plaintext"];
+    20 [label="call swap/nSC: {Swap}/n<VId: 20>",shape="box"];
+    21 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 21>",shape="plaintext"];
+    22 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 22>",shape="plaintext"];
+    23 [label="y'in&nbsp;:=&nbsp;z/nVU: {Z}/n<VId: 23>",shape="plaintext"];
+    24 [label="z&nbsp;:=&nbsp;y'out/nVD: {Z}/n<VId: 24>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -676,37 +676,37 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
-    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Z'initial/n(global)/nVD: {Z}/n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final/n(global)/nVU: {Z}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial/n(global)/nVD: {X}/n<VId: 8>",shape="plaintext"];
+    9 [label="X'final/n(global)/nVU: {X}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final/n(global)/nVU: {Y}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    15 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 15>",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 17>",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 18>",shape="plaintext"];
-    19 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 19>",shape="plaintext"];
+    15 [label="call swap_with_depends/nSC: {Swap_With_Depends}/n<VId: 15>",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 17>",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;y/nVU: {Y}/n<VId: 18>",shape="plaintext"];
+    19 [label="y&nbsp;:=&nbsp;y'out/nVD: {Y}/n<VId: 19>",shape="plaintext"];
 }
 
 subgraph cluster2 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    20 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 20>",shape="box"];
-    21 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 21>",shape="plaintext"];
-    22 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
-    23 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 23>",shape="plaintext"];
-    24 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 24>",shape="plaintext"];
+    20 [label="call swap_with_depends/nSC: {Swap_With_Depends}/n<VId: 20>",shape="box"];
+    21 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 21>",shape="plaintext"];
+    22 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 22>",shape="plaintext"];
+    23 [label="y'in&nbsp;:=&nbsp;z/nVU: {Z}/n<VId: 23>",shape="plaintext"];
+    24 [label="z&nbsp;:=&nbsp;y'out/nVD: {Z}/n<VId: 24>",shape="plaintext"];
 }
 
     1 ->  15 [arrowType="normal"];
@@ -733,25 +733,25 @@ subgraph cluster2 {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 6>",shape="plaintext"];
-    7 [label="Z'final\n(global)\nVU: {Z}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 15>",shape="box"];
-    16 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 17>",shape="plaintext"];
-    18 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 18>",shape="plaintext"];
-    19 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 19>",shape="plaintext"];
-    20 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 20>",shape="box"];
-    21 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 21>",shape="plaintext"];
-    22 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
-    23 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 23>",shape="plaintext"];
-    24 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 24>",shape="plaintext"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Z'initial/n(global)/nVD: {Z}/n<VId: 6>",shape="plaintext"];
+    7 [label="Z'final/n(global)/nVU: {Z}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial/n(global)/nVD: {X}/n<VId: 8>",shape="plaintext"];
+    9 [label="X'final/n(global)/nVU: {X}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final/n(global)/nVU: {Y}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="call swap_with_depends/nSC: {Swap_With_Depends}/n<VId: 15>",shape="box"];
+    16 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 17>",shape="plaintext"];
+    18 [label="y'in&nbsp;:=&nbsp;y/nVU: {Y}/n<VId: 18>",shape="plaintext"];
+    19 [label="y&nbsp;:=&nbsp;y'out/nVD: {Y}/n<VId: 19>",shape="plaintext"];
+    20 [label="call swap_with_depends/nSC: {Swap_With_Depends}/n<VId: 20>",shape="box"];
+    21 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 21>",shape="plaintext"];
+    22 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 22>",shape="plaintext"];
+    23 [label="y'in&nbsp;:=&nbsp;z/nVU: {Z}/n<VId: 23>",shape="plaintext"];
+    24 [label="z&nbsp;:=&nbsp;y'out/nVD: {Z}/n<VId: 24>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -781,20 +781,20 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Prime'initial\nVD: {Prime}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Prime'final\nVU: {Prime}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if (x mod i) = 0\nLoops:&nbsp;L_1\nVU: {X, I}\n<VId: 13>",shape="diamond"];
-    14 [label="return false;\nLoops:&nbsp;L_1\nVD: {Prime}\n<VId: 14>"];
-    15 [label="I'initial\nVD: {I}\n<VId: 15>",shape="plaintext"];
-    16 [label="I'final\nVU: {I}\n<VId: 16>",shape="plaintext",fontcolor="red"];
-    17 [label="for i in 2 .. x / 2\nLoops:&nbsp;L_1\nVU: {X}\nVD: {I}\n<VId: 17>",shape="diamond"];
-    18 [label="return true;\nVD: {Prime}\n<VId: 18>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Prime'initial/nVD: {Prime}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Prime'final/nVU: {Prime}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="if (x mod i) = 0/nLoops:&nbsp;L_1/nVU: {X, I}/n<VId: 13>",shape="diamond"];
+    14 [label="return false;/nLoops:&nbsp;L_1/nVD: {Prime}/n<VId: 14>"];
+    15 [label="I'initial/nVD: {I}/n<VId: 15>",shape="plaintext"];
+    16 [label="I'final/nVU: {I}/n<VId: 16>",shape="plaintext",fontcolor="red"];
+    17 [label="for i in 2 .. x / 2/nLoops:&nbsp;L_1/nVU: {X}/nVD: {I}/n<VId: 17>",shape="diamond"];
+    18 [label="return true;/nVD: {Prime}/n<VId: 18>"];
 
     1 ->  17 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -816,19 +816,19 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Prime'initial\nVD: {Prime}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Prime'final\nVU: {Prime}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if (x mod i) = 0\nLoops:&nbsp;L_1\nVU: {X, I}\n<VId: 13>",shape="diamond"];
-    14 [label="return false;\nLoops:&nbsp;L_1\nVD: {Prime}\n<VId: 14>"];
-    15 [label="I'initial\nVD: {I}\n<VId: 15>",shape="plaintext"];
-    16 [label="I'final\nVU: {I}\n<VId: 16>",shape="plaintext",fontcolor="red"];
-    17 [label="for i in 2 .. x / 2\nLoops:&nbsp;L_1\nVU: {X}\nVD: {I}\n<VId: 17>",shape="diamond"];
-    18 [label="return true;\nVD: {Prime}\n<VId: 18>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Prime'initial/nVD: {Prime}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Prime'final/nVU: {Prime}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="if (x mod i) = 0/nLoops:&nbsp;L_1/nVU: {X, I}/n<VId: 13>",shape="diamond"];
+    14 [label="return false;/nLoops:&nbsp;L_1/nVD: {Prime}/n<VId: 14>"];
+    15 [label="I'initial/nVD: {I}/n<VId: 15>",shape="plaintext"];
+    16 [label="I'final/nVU: {I}/n<VId: 16>",shape="plaintext",fontcolor="red"];
+    17 [label="for i in 2 .. x / 2/nLoops:&nbsp;L_1/nVU: {X}/nVD: {I}/n<VId: 17>",shape="diamond"];
+    18 [label="return true;/nVD: {Prime}/n<VId: 18>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  17 [arrowType="normal"];
@@ -848,19 +848,19 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    12 [label="Temp'initial\nVD: {Temp}\n<VId: 12>",shape="plaintext",fontcolor="red"];
-    13 [label="Temp'final\nVU: {Temp}\n<VId: 13>",shape="plaintext"];
-    15 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 15>"];
-    16 [label="x := y;\nVU: {Y}\nVD: {X}\n<VId: 16>"];
-    17 [label="y := temp;\nVU: {Temp}\nVD: {Y}\n<VId: 17>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    12 [label="Temp'initial/nVD: {Temp}/n<VId: 12>",shape="plaintext",fontcolor="red"];
+    13 [label="Temp'final/nVU: {Temp}/n<VId: 13>",shape="plaintext"];
+    15 [label="temp := x;/nVU: {X}/nVD: {Temp}/n<VId: 15>"];
+    16 [label="x := y;/nVU: {Y}/nVD: {X}/n<VId: 16>"];
+    17 [label="y := temp;/nVU: {Temp}/nVD: {Y}/n<VId: 17>"];
 
     1 ->  15 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -879,18 +879,18 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    12 [label="Temp'initial\nVD: {Temp}\n<VId: 12>",shape="plaintext",fontcolor="red"];
-    13 [label="Temp'final\nVU: {Temp}\n<VId: 13>",shape="plaintext"];
-    15 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 15>"];
-    16 [label="x := y;\nVU: {Y}\nVD: {X}\n<VId: 16>"];
-    17 [label="y := temp;\nVU: {Temp}\nVD: {Y}\n<VId: 17>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    12 [label="Temp'initial/nVD: {Temp}/n<VId: 12>",shape="plaintext",fontcolor="red"];
+    13 [label="Temp'final/nVU: {Temp}/n<VId: 13>",shape="plaintext"];
+    15 [label="temp := x;/nVU: {X}/nVD: {Temp}/n<VId: 15>"];
+    16 [label="x := y;/nVU: {Y}/nVD: {X}/n<VId: 16>"];
+    17 [label="y := temp;/nVU: {Temp}/nVD: {Y}/n<VId: 17>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -908,19 +908,19 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    12 [label="Temp'initial\nVD: {Temp}\n<VId: 12>",shape="plaintext",fontcolor="red"];
-    13 [label="Temp'final\nVU: {Temp}\n<VId: 13>",shape="plaintext"];
-    15 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 15>"];
-    16 [label="x := y;\nVU: {Y}\nVD: {X}\n<VId: 16>"];
-    17 [label="y := temp;\nVU: {Temp}\nVD: {Y}\n<VId: 17>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    12 [label="Temp'initial/nVD: {Temp}/n<VId: 12>",shape="plaintext",fontcolor="red"];
+    13 [label="Temp'final/nVU: {Temp}/n<VId: 13>",shape="plaintext"];
+    15 [label="temp := x;/nVU: {X}/nVD: {Temp}/n<VId: 15>"];
+    16 [label="x := y;/nVU: {Y}/nVD: {X}/n<VId: 16>"];
+    17 [label="y := temp;/nVU: {Temp}/nVD: {Y}/n<VId: 17>"];
 
     1 ->  15 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -939,18 +939,18 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    12 [label="Temp'initial\nVD: {Temp}\n<VId: 12>",shape="plaintext",fontcolor="red"];
-    13 [label="Temp'final\nVU: {Temp}\n<VId: 13>",shape="plaintext"];
-    15 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 15>"];
-    16 [label="x := y;\nVU: {Y}\nVD: {X}\n<VId: 16>"];
-    17 [label="y := temp;\nVU: {Temp}\nVD: {Y}\n<VId: 17>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    12 [label="Temp'initial/nVD: {Temp}/n<VId: 12>",shape="plaintext",fontcolor="red"];
+    13 [label="Temp'final/nVU: {Temp}/n<VId: 13>",shape="plaintext"];
+    15 [label="temp := x;/nVU: {X}/nVD: {Temp}/n<VId: 15>"];
+    16 [label="x := y;/nVU: {Y}/nVD: {X}/n<VId: 16>"];
+    17 [label="y := temp;/nVU: {Temp}/nVD: {Y}/n<VId: 17>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -968,27 +968,27 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="Coprime'initial\nVD: {Coprime}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Coprime'final\nVU: {Coprime}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if prime (x) or else prime (y)\nVU: {X, Y}\nSC: {Prime}\n<VId: 15>",shape="diamond"];
-    16 [label="return true;\nVD: {Coprime}\n<VId: 16>"];
-    17 [label="R4b'initial\nVD: {R4b}\n<VId: 17>",shape="plaintext",fontcolor="red"];
-    18 [label="R4b'final\nVU: {R4b}\n<VId: 18>",shape="plaintext"];
-    19 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nSC: {Min}\nVD: {R4b}\n<VId: 19>"];
-    20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {X, Y, I}\n<VId: 20>",shape="diamond"];
-    21 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 21>"];
-    22 [label="I'initial\nVD: {I}\n<VId: 22>",shape="plaintext"];
-    23 [label="I'final\nVU: {I}\n<VId: 23>",shape="plaintext",fontcolor="red"];
-    24 [label="for i in 2 .. min (x, y)\nLoops:&nbsp;L_1\nVU: {R4b}\nVD: {I}\n<VId: 24>",shape="diamond"];
-    25 [label="return true;\nVD: {Coprime}\n<VId: 25>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Coprime'initial/nVD: {Coprime}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Coprime'final/nVU: {Coprime}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="if prime (x) or else prime (y)/nVU: {X, Y}/nSC: {Prime}/n<VId: 15>",shape="diamond"];
+    16 [label="return true;/nVD: {Coprime}/n<VId: 16>"];
+    17 [label="R4b'initial/nVD: {R4b}/n<VId: 17>",shape="plaintext",fontcolor="red"];
+    18 [label="R4b'final/nVU: {R4b}/n<VId: 18>",shape="plaintext"];
+    19 [label="R4b : constant natural := min (x, y);/nVU: {X, Y}/nSC: {Min}/nVD: {R4b}/n<VId: 19>"];
+    20 [label="if (x mod i) = 0 and then (y mod i) = 0/nLoops:&nbsp;L_1/nVU: {X, Y, I}/n<VId: 20>",shape="diamond"];
+    21 [label="return false;/nLoops:&nbsp;L_1/nVD: {Coprime}/n<VId: 21>"];
+    22 [label="I'initial/nVD: {I}/n<VId: 22>",shape="plaintext"];
+    23 [label="I'final/nVU: {I}/n<VId: 23>",shape="plaintext",fontcolor="red"];
+    24 [label="for i in 2 .. min (x, y)/nLoops:&nbsp;L_1/nVU: {R4b}/nVD: {I}/n<VId: 24>",shape="diamond"];
+    25 [label="return true;/nVD: {Coprime}/n<VId: 25>"];
 
     1 ->  15 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1018,26 +1018,26 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="Coprime'initial\nVD: {Coprime}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Coprime'final\nVU: {Coprime}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if prime (x) or else prime (y)\nVU: {X, Y}\nSC: {Prime}\n<VId: 15>",shape="diamond"];
-    16 [label="return true;\nVD: {Coprime}\n<VId: 16>"];
-    17 [label="R4b'initial\nVD: {R4b}\n<VId: 17>",shape="plaintext",fontcolor="red"];
-    18 [label="R4b'final\nVU: {R4b}\n<VId: 18>",shape="plaintext"];
-    19 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nSC: {Min}\nVD: {R4b}\n<VId: 19>"];
-    20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {X, Y, I}\n<VId: 20>",shape="diamond"];
-    21 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 21>"];
-    22 [label="I'initial\nVD: {I}\n<VId: 22>",shape="plaintext"];
-    23 [label="I'final\nVU: {I}\n<VId: 23>",shape="plaintext",fontcolor="red"];
-    24 [label="for i in 2 .. min (x, y)\nLoops:&nbsp;L_1\nVU: {R4b}\nVD: {I}\n<VId: 24>",shape="diamond"];
-    25 [label="return true;\nVD: {Coprime}\n<VId: 25>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Coprime'initial/nVD: {Coprime}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Coprime'final/nVU: {Coprime}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="if prime (x) or else prime (y)/nVU: {X, Y}/nSC: {Prime}/n<VId: 15>",shape="diamond"];
+    16 [label="return true;/nVD: {Coprime}/n<VId: 16>"];
+    17 [label="R4b'initial/nVD: {R4b}/n<VId: 17>",shape="plaintext",fontcolor="red"];
+    18 [label="R4b'final/nVU: {R4b}/n<VId: 18>",shape="plaintext"];
+    19 [label="R4b : constant natural := min (x, y);/nVU: {X, Y}/nSC: {Min}/nVD: {R4b}/n<VId: 19>"];
+    20 [label="if (x mod i) = 0 and then (y mod i) = 0/nLoops:&nbsp;L_1/nVU: {X, Y, I}/n<VId: 20>",shape="diamond"];
+    21 [label="return false;/nLoops:&nbsp;L_1/nVD: {Coprime}/n<VId: 21>"];
+    22 [label="I'initial/nVD: {I}/n<VId: 22>",shape="plaintext"];
+    23 [label="I'final/nVU: {I}/n<VId: 23>",shape="plaintext",fontcolor="red"];
+    24 [label="for i in 2 .. min (x, y)/nLoops:&nbsp;L_1/nVU: {R4b}/nVD: {I}/n<VId: 24>",shape="diamond"];
+    25 [label="return true;/nVD: {Coprime}/n<VId: 25>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -1070,19 +1070,19 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="Min'initial\nVD: {Min}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Min'final\nVU: {Min}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if x < y\nVU: {X, Y}\n<VId: 15>",shape="diamond"];
-    16 [label="return x;\nVU: {X}\nVD: {Min}\n<VId: 16>"];
-    17 [label="return y;\nVU: {Y}\nVD: {Min}\n<VId: 17>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Min'initial/nVD: {Min}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Min'final/nVU: {Min}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="if x < y/nVU: {X, Y}/n<VId: 15>",shape="diamond"];
+    16 [label="return x;/nVU: {X}/nVD: {Min}/n<VId: 16>"];
+    17 [label="return y;/nVU: {Y}/nVD: {Min}/n<VId: 17>"];
 
     1 ->  15 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1102,18 +1102,18 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="Min'initial\nVD: {Min}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Min'final\nVU: {Min}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if x < y\nVU: {X, Y}\n<VId: 15>",shape="diamond"];
-    16 [label="return x;\nVU: {X}\nVD: {Min}\n<VId: 16>"];
-    17 [label="return y;\nVU: {Y}\nVD: {Min}\n<VId: 17>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Min'initial/nVD: {Min}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Min'final/nVU: {Min}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="if x < y/nVU: {X, Y}/n<VId: 15>",shape="diamond"];
+    16 [label="return x;/nVU: {X}/nVD: {Min}/n<VId: 16>"];
+    17 [label="return y;/nVU: {Y}/nVD: {Min}/n<VId: 17>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -1133,29 +1133,29 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="Double_Max'initial\nVD: {Double_Max}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Double_Max'final\nVU: {Double_Max}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    14 [label="Temp'initial\nVD: {Temp}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="Temp'final\nVU: {Temp}\n<VId: 15>",shape="plaintext"];
-    22 [label="return 2 {*} temp;\nVU: {Temp}\nVD: {Double_Max}\n<VId: 22>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/n(global)/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/n(global)/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/n(global)/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Double_Max'initial/nVD: {Double_Max}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Double_Max'final/nVU: {Double_Max}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    14 [label="Temp'initial/nVD: {Temp}/n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="Temp'final/nVU: {Temp}/n<VId: 15>",shape="plaintext"];
+    22 [label="return 2 {*} temp;/nVU: {Temp}/nVD: {Double_Max}/n<VId: 22>"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    17 [label="call max\nSC: {Max}\n<VId: 17>",shape="box"];
-    18 [label="maximum'in&nbsp;:=&nbsp;temp'discr_or_bounds\n<VId: 18>",shape="plaintext"];
-    19 [label="temp&nbsp;:=&nbsp;maximum'out\nVD: {Temp}\n<VId: 19>",shape="plaintext"];
-    20 [label="global&nbsp;X'in\nVU: {X}\n<VId: 20>",shape="plaintext"];
-    21 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 21>",shape="plaintext"];
+    17 [label="call max/nSC: {Max}/n<VId: 17>",shape="box"];
+    18 [label="maximum'in&nbsp;:=&nbsp;temp'discr_or_bounds/n<VId: 18>",shape="plaintext"];
+    19 [label="temp&nbsp;:=&nbsp;maximum'out/nVD: {Temp}/n<VId: 19>",shape="plaintext"];
+    20 [label="global&nbsp;X'in/nVU: {X}/n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;Y'in/nVU: {Y}/n<VId: 21>",shape="plaintext"];
 }
 
     1 ->  17 [arrowType="normal"];
@@ -1180,23 +1180,23 @@ subgraph cluster1 {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="Double_Max'initial\nVD: {Double_Max}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Double_Max'final\nVU: {Double_Max}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    14 [label="Temp'initial\nVD: {Temp}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="Temp'final\nVU: {Temp}\n<VId: 15>",shape="plaintext"];
-    17 [label="call max\nSC: {Max}\n<VId: 17>",shape="box"];
-    18 [label="maximum'in&nbsp;:=&nbsp;temp'discr_or_bounds\n<VId: 18>",shape="plaintext"];
-    19 [label="temp&nbsp;:=&nbsp;maximum'out\nVD: {Temp}\n<VId: 19>",shape="plaintext"];
-    20 [label="global&nbsp;X'in\nVU: {X}\n<VId: 20>",shape="plaintext"];
-    21 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 21>",shape="plaintext"];
-    22 [label="return 2 {*} temp;\nVU: {Temp}\nVD: {Double_Max}\n<VId: 22>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/n(global)/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/n(global)/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/n(global)/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Double_Max'initial/nVD: {Double_Max}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Double_Max'final/nVU: {Double_Max}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    14 [label="Temp'initial/nVD: {Temp}/n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="Temp'final/nVU: {Temp}/n<VId: 15>",shape="plaintext"];
+    17 [label="call max/nSC: {Max}/n<VId: 17>",shape="box"];
+    18 [label="maximum'in&nbsp;:=&nbsp;temp'discr_or_bounds/n<VId: 18>",shape="plaintext"];
+    19 [label="temp&nbsp;:=&nbsp;maximum'out/nVD: {Temp}/n<VId: 19>",shape="plaintext"];
+    20 [label="global&nbsp;X'in/nVU: {X}/n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;Y'in/nVU: {Y}/n<VId: 21>",shape="plaintext"];
+    22 [label="return 2 {*} temp;/nVU: {Temp}/nVD: {Double_Max}/n<VId: 22>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  17 [arrowType="normal"];
@@ -1220,26 +1220,26 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Var'initial\nVD: {Var}\n<VId: 6>",shape="plaintext"];
-    7 [label="Var'final\nVU: {Var}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Fact'initial\nVD: {Fact}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Fact'final\nVU: {Fact}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if var > 1\nVU: {Var}\n<VId: 13>",shape="diamond"];
-    18 [label="fact := {fact {*} var};\nVU: {Var, Fact}\nVD: {Fact}\n<VId: 18>"];
-    19 [label="fact := 1;\nVD: {Fact}\n<VId: 19>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Var'initial/nVD: {Var}/n<VId: 6>",shape="plaintext"];
+    7 [label="Var'final/nVU: {Var}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Fact'initial/nVD: {Fact}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Fact'final/nVU: {Fact}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="if var > 1/nVU: {Var}/n<VId: 13>",shape="diamond"];
+    18 [label="fact := {fact {*} var};/nVU: {Var, Fact}/nVD: {Fact}/n<VId: 18>"];
+    19 [label="fact := 1;/nVD: {Fact}/n<VId: 19>"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    14 [label="call factorial\nSC: {Factorial}\n<VId: 14>",shape="box"];
-    15 [label="var'in&nbsp;:=&nbsp;{var - 1}\nVU: {Var}\n<VId: 15>",shape="plaintext"];
-    16 [label="fact'in&nbsp;:=&nbsp;fact'discr_or_bounds\n<VId: 16>",shape="plaintext"];
-    17 [label="fact&nbsp;:=&nbsp;fact'out\nVD: {Fact}\n<VId: 17>",shape="plaintext"];
+    14 [label="call factorial/nSC: {Factorial}/n<VId: 14>",shape="box"];
+    15 [label="var'in&nbsp;:=&nbsp;{var - 1}/nVU: {Var}/n<VId: 15>",shape="plaintext"];
+    16 [label="fact'in&nbsp;:=&nbsp;fact'discr_or_bounds/n<VId: 16>",shape="plaintext"];
+    17 [label="fact&nbsp;:=&nbsp;fact'out/nVD: {Fact}/n<VId: 17>",shape="plaintext"];
 }
 
     1 ->  13 [arrowType="normal"];
@@ -1262,20 +1262,20 @@ subgraph cluster1 {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Var'initial\nVD: {Var}\n<VId: 6>",shape="plaintext"];
-    7 [label="Var'final\nVU: {Var}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Fact'initial\nVD: {Fact}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Fact'final\nVU: {Fact}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if var > 1\nVU: {Var}\n<VId: 13>",shape="diamond"];
-    14 [label="call factorial\nSC: {Factorial}\n<VId: 14>",shape="box"];
-    15 [label="var'in&nbsp;:=&nbsp;{var - 1}\nVU: {Var}\n<VId: 15>",shape="plaintext"];
-    16 [label="fact'in&nbsp;:=&nbsp;fact'discr_or_bounds\n<VId: 16>",shape="plaintext"];
-    17 [label="fact&nbsp;:=&nbsp;fact'out\nVD: {Fact}\n<VId: 17>",shape="plaintext"];
-    18 [label="fact := {fact {*} var};\nVU: {Var, Fact}\nVD: {Fact}\n<VId: 18>"];
-    19 [label="fact := 1;\nVD: {Fact}\n<VId: 19>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Var'initial/nVD: {Var}/n<VId: 6>",shape="plaintext"];
+    7 [label="Var'final/nVU: {Var}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Fact'initial/nVD: {Fact}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Fact'final/nVU: {Fact}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="if var > 1/nVU: {Var}/n<VId: 13>",shape="diamond"];
+    14 [label="call factorial/nSC: {Factorial}/n<VId: 14>",shape="box"];
+    15 [label="var'in&nbsp;:=&nbsp;{var - 1}/nVU: {Var}/n<VId: 15>",shape="plaintext"];
+    16 [label="fact'in&nbsp;:=&nbsp;fact'discr_or_bounds/n<VId: 16>",shape="plaintext"];
+    17 [label="fact&nbsp;:=&nbsp;fact'out/nVD: {Fact}/n<VId: 17>",shape="plaintext"];
+    18 [label="fact := {fact {*} var};/nVU: {Var, Fact}/nVD: {Fact}/n<VId: 18>"];
+    19 [label="fact := 1;/nVD: {Fact}/n<VId: 19>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];
@@ -1300,17 +1300,17 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="N'initial\nVD: {N}\n<VId: 6>",shape="plaintext"];
-    7 [label="N'final\nVU: {N}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Fibonacci'initial\nVD: {Fibonacci}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Fibonacci'final\nVU: {Fibonacci}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if n < 3\nVU: {N}\n<VId: 13>",shape="diamond"];
-    14 [label="return 1;\nVD: {Fibonacci}\n<VId: 14>"];
-    15 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);\nVU: {N}\nSC: {Fibonacci}\nVD: {Fibonacci}\n<VId: 15>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="N'initial/nVD: {N}/n<VId: 6>",shape="plaintext"];
+    7 [label="N'final/nVU: {N}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Fibonacci'initial/nVD: {Fibonacci}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Fibonacci'final/nVU: {Fibonacci}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="if n < 3/nVU: {N}/n<VId: 13>",shape="diamond"];
+    14 [label="return 1;/nVD: {Fibonacci}/n<VId: 14>"];
+    15 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);/nVU: {N}/nSC: {Fibonacci}/nVD: {Fibonacci}/n<VId: 15>"];
 
     1 ->  13 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1328,16 +1328,16 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="N'initial\nVD: {N}\n<VId: 6>",shape="plaintext"];
-    7 [label="N'final\nVU: {N}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Fibonacci'initial\nVD: {Fibonacci}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Fibonacci'final\nVU: {Fibonacci}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if n < 3\nVU: {N}\n<VId: 13>",shape="diamond"];
-    14 [label="return 1;\nVD: {Fibonacci}\n<VId: 14>"];
-    15 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);\nVU: {N}\nSC: {Fibonacci}\nVD: {Fibonacci}\n<VId: 15>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="N'initial/nVD: {N}/n<VId: 6>",shape="plaintext"];
+    7 [label="N'final/nVU: {N}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Fibonacci'initial/nVD: {Fibonacci}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Fibonacci'final/nVU: {Fibonacci}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="if n < 3/nVU: {N}/n<VId: 13>",shape="diamond"];
+    14 [label="return 1;/nVD: {Fibonacci}/n<VId: 14>"];
+    15 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);/nVU: {N}/nSC: {Fibonacci}/nVD: {Fibonacci}/n<VId: 15>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];
@@ -1354,20 +1354,20 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Maximum'initial\nVD: {Maximum}\n<VId: 6>",shape="plaintext",fontcolor="red"];
-    7 [label="Maximum'final\nVU: {Maximum}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    15 [label="if x > y\nVU: {X, Y}\n<VId: 15>",shape="diamond"];
-    16 [label="maximum := x;\nVU: {X}\nVD: {Maximum}\n<VId: 16>"];
-    17 [label="return;\n<VId: 17>"];
-    18 [label="maximum := y;\nVU: {Y}\nVD: {Maximum}\n<VId: 18>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Maximum'initial/nVD: {Maximum}/n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="Maximum'final/nVU: {Maximum}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial/n(global)/nVD: {X}/n<VId: 8>",shape="plaintext"];
+    9 [label="X'final/n(global)/nVU: {X}/n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final/n(global)/nVU: {Y}/n<VId: 11>",shape="plaintext",fontcolor="red"];
+    15 [label="if x > y/nVU: {X, Y}/n<VId: 15>",shape="diamond"];
+    16 [label="maximum := x;/nVU: {X}/nVD: {Maximum}/n<VId: 16>"];
+    17 [label="return;/n<VId: 17>"];
+    18 [label="maximum := y;/nVU: {Y}/nVD: {Maximum}/n<VId: 18>"];
 
     1 ->  15 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1388,19 +1388,19 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Maximum'initial\nVD: {Maximum}\n<VId: 6>",shape="plaintext",fontcolor="red"];
-    7 [label="Maximum'final\nVU: {Maximum}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="X'initial\n(global)\nVD: {X}\n<VId: 8>",shape="plaintext"];
-    9 [label="X'final\n(global)\nVU: {X}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 10>",shape="plaintext"];
-    11 [label="Y'final\n(global)\nVU: {Y}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    15 [label="if x > y\nVU: {X, Y}\n<VId: 15>",shape="diamond"];
-    16 [label="maximum := x;\nVU: {X}\nVD: {Maximum}\n<VId: 16>"];
-    17 [label="return;\n<VId: 17>"];
-    18 [label="maximum := y;\nVU: {Y}\nVD: {Maximum}\n<VId: 18>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Maximum'initial/nVD: {Maximum}/n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="Maximum'final/nVU: {Maximum}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="X'initial/n(global)/nVD: {X}/n<VId: 8>",shape="plaintext"];
+    9 [label="X'final/n(global)/nVU: {X}/n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 10>",shape="plaintext"];
+    11 [label="Y'final/n(global)/nVU: {Y}/n<VId: 11>",shape="plaintext",fontcolor="red"];
+    15 [label="if x > y/nVU: {X, Y}/n<VId: 15>",shape="diamond"];
+    16 [label="maximum := x;/nVU: {X}/nVD: {Maximum}/n<VId: 16>"];
+    17 [label="return;/n<VId: 17>"];
+    18 [label="maximum := y;/nVU: {Y}/nVD: {Maximum}/n<VId: 18>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -1421,31 +1421,31 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Condition'initial\n(global)\nVD: {Condition}\n<VId: 10>",shape="plaintext"];
-    11 [label="Condition'final\n(global)\nVU: {Condition}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if condition\nVU: {Condition}\n<VId: 15>",shape="diamond"];
-    16 [label="condition := false;\nVD: {Condition}\n<VId: 16>"];
-    17 [label="x := 2 {*} x;\nVU: {X}\nVD: {X}\n<VId: 17>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/n(global)/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/n(global)/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/n(global)/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Condition'initial/n(global)/nVD: {Condition}/n<VId: 10>",shape="plaintext"];
+    11 [label="Condition'final/n(global)/nVU: {Condition}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="if condition/nVU: {Condition}/n<VId: 15>",shape="diamond"];
+    16 [label="condition := false;/nVD: {Condition}/n<VId: 16>"];
+    17 [label="x := 2 {*} x;/nVU: {X}/nVD: {X}/n<VId: 17>"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    18 [label="call mutual_recursion_b\nSC: {Mutual_Recursion_B}\n<VId: 18>",shape="box"];
-    19 [label="global&nbsp;X'in\nVU: {X}\n<VId: 19>",shape="plaintext"];
-    20 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 20>",shape="plaintext"];
-    21 [label="global&nbsp;Condition'in\nVU: {Condition}\n<VId: 21>",shape="plaintext"];
-    22 [label="global&nbsp;X'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
-    23 [label="global&nbsp;Y'out\nVD: {Y}\n<VId: 23>",shape="plaintext"];
-    24 [label="global&nbsp;Condition'out\nVD: {Condition}\n<VId: 24>",shape="plaintext"];
+    18 [label="call mutual_recursion_b/nSC: {Mutual_Recursion_B}/n<VId: 18>",shape="box"];
+    19 [label="global&nbsp;X'in/nVU: {X}/n<VId: 19>",shape="plaintext"];
+    20 [label="global&nbsp;Y'in/nVU: {Y}/n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;Condition'in/nVU: {Condition}/n<VId: 21>",shape="plaintext"];
+    22 [label="global&nbsp;X'out/nVD: {X}/n<VId: 22>",shape="plaintext"];
+    23 [label="global&nbsp;Y'out/nVD: {Y}/n<VId: 23>",shape="plaintext"];
+    24 [label="global&nbsp;Condition'out/nVD: {Condition}/n<VId: 24>",shape="plaintext"];
 }
 
     1 ->  15 [arrowType="normal"];
@@ -1473,25 +1473,25 @@ subgraph cluster1 {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Condition'initial\n(global)\nVD: {Condition}\n<VId: 10>",shape="plaintext"];
-    11 [label="Condition'final\n(global)\nVU: {Condition}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if condition\nVU: {Condition}\n<VId: 15>",shape="diamond"];
-    16 [label="condition := false;\nVD: {Condition}\n<VId: 16>"];
-    17 [label="x := 2 {*} x;\nVU: {X}\nVD: {X}\n<VId: 17>"];
-    18 [label="call mutual_recursion_b\nSC: {Mutual_Recursion_B}\n<VId: 18>",shape="box"];
-    19 [label="global&nbsp;X'in\nVU: {X}\n<VId: 19>",shape="plaintext"];
-    20 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 20>",shape="plaintext"];
-    21 [label="global&nbsp;Condition'in\nVU: {Condition}\n<VId: 21>",shape="plaintext"];
-    22 [label="global&nbsp;X'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
-    23 [label="global&nbsp;Y'out\nVD: {Y}\n<VId: 23>",shape="plaintext"];
-    24 [label="global&nbsp;Condition'out\nVD: {Condition}\n<VId: 24>",shape="plaintext"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/n(global)/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/n(global)/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/n(global)/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Condition'initial/n(global)/nVD: {Condition}/n<VId: 10>",shape="plaintext"];
+    11 [label="Condition'final/n(global)/nVU: {Condition}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="if condition/nVU: {Condition}/n<VId: 15>",shape="diamond"];
+    16 [label="condition := false;/nVD: {Condition}/n<VId: 16>"];
+    17 [label="x := 2 {*} x;/nVU: {X}/nVD: {X}/n<VId: 17>"];
+    18 [label="call mutual_recursion_b/nSC: {Mutual_Recursion_B}/n<VId: 18>",shape="box"];
+    19 [label="global&nbsp;X'in/nVU: {X}/n<VId: 19>",shape="plaintext"];
+    20 [label="global&nbsp;Y'in/nVU: {Y}/n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;Condition'in/nVU: {Condition}/n<VId: 21>",shape="plaintext"];
+    22 [label="global&nbsp;X'out/nVD: {X}/n<VId: 22>",shape="plaintext"];
+    23 [label="global&nbsp;Y'out/nVD: {Y}/n<VId: 23>",shape="plaintext"];
+    24 [label="global&nbsp;Condition'out/nVD: {Condition}/n<VId: 24>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -1527,31 +1527,31 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Condition'initial\n(global)\nVD: {Condition}\n<VId: 10>",shape="plaintext"];
-    11 [label="Condition'final\n(global)\nVU: {Condition}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if condition\nVU: {Condition}\n<VId: 15>",shape="diamond"];
-    16 [label="condition := false;\nVD: {Condition}\n<VId: 16>"];
-    17 [label="y := 2 {*} y;\nVU: {Y}\nVD: {Y}\n<VId: 17>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/n(global)/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/n(global)/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/n(global)/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Condition'initial/n(global)/nVD: {Condition}/n<VId: 10>",shape="plaintext"];
+    11 [label="Condition'final/n(global)/nVU: {Condition}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="if condition/nVU: {Condition}/n<VId: 15>",shape="diamond"];
+    16 [label="condition := false;/nVD: {Condition}/n<VId: 16>"];
+    17 [label="y := 2 {*} y;/nVU: {Y}/nVD: {Y}/n<VId: 17>"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    18 [label="call mutual_recursion_a\nSC: {Mutual_Recursion_A}\n<VId: 18>",shape="box"];
-    19 [label="global&nbsp;X'in\nVU: {X}\n<VId: 19>",shape="plaintext"];
-    20 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 20>",shape="plaintext"];
-    21 [label="global&nbsp;Condition'in\nVU: {Condition}\n<VId: 21>",shape="plaintext"];
-    22 [label="global&nbsp;X'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
-    23 [label="global&nbsp;Y'out\nVD: {Y}\n<VId: 23>",shape="plaintext"];
-    24 [label="global&nbsp;Condition'out\nVD: {Condition}\n<VId: 24>",shape="plaintext"];
+    18 [label="call mutual_recursion_a/nSC: {Mutual_Recursion_A}/n<VId: 18>",shape="box"];
+    19 [label="global&nbsp;X'in/nVU: {X}/n<VId: 19>",shape="plaintext"];
+    20 [label="global&nbsp;Y'in/nVU: {Y}/n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;Condition'in/nVU: {Condition}/n<VId: 21>",shape="plaintext"];
+    22 [label="global&nbsp;X'out/nVD: {X}/n<VId: 22>",shape="plaintext"];
+    23 [label="global&nbsp;Y'out/nVD: {Y}/n<VId: 23>",shape="plaintext"];
+    24 [label="global&nbsp;Condition'out/nVD: {Condition}/n<VId: 24>",shape="plaintext"];
 }
 
     1 ->  15 [arrowType="normal"];
@@ -1579,25 +1579,25 @@ subgraph cluster1 {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\n(global)\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\n(global)\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\n(global)\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    10 [label="Condition'initial\n(global)\nVD: {Condition}\n<VId: 10>",shape="plaintext"];
-    11 [label="Condition'final\n(global)\nVU: {Condition}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if condition\nVU: {Condition}\n<VId: 15>",shape="diamond"];
-    16 [label="condition := false;\nVD: {Condition}\n<VId: 16>"];
-    17 [label="y := 2 {*} y;\nVU: {Y}\nVD: {Y}\n<VId: 17>"];
-    18 [label="call mutual_recursion_a\nSC: {Mutual_Recursion_A}\n<VId: 18>",shape="box"];
-    19 [label="global&nbsp;X'in\nVU: {X}\n<VId: 19>",shape="plaintext"];
-    20 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 20>",shape="plaintext"];
-    21 [label="global&nbsp;Condition'in\nVU: {Condition}\n<VId: 21>",shape="plaintext"];
-    22 [label="global&nbsp;X'out\nVD: {X}\n<VId: 22>",shape="plaintext"];
-    23 [label="global&nbsp;Y'out\nVD: {Y}\n<VId: 23>",shape="plaintext"];
-    24 [label="global&nbsp;Condition'out\nVD: {Condition}\n<VId: 24>",shape="plaintext"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/n(global)/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/n(global)/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/n(global)/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    10 [label="Condition'initial/n(global)/nVD: {Condition}/n<VId: 10>",shape="plaintext"];
+    11 [label="Condition'final/n(global)/nVU: {Condition}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="if condition/nVU: {Condition}/n<VId: 15>",shape="diamond"];
+    16 [label="condition := false;/nVD: {Condition}/n<VId: 16>"];
+    17 [label="y := 2 {*} y;/nVU: {Y}/nVD: {Y}/n<VId: 17>"];
+    18 [label="call mutual_recursion_a/nSC: {Mutual_Recursion_A}/n<VId: 18>",shape="box"];
+    19 [label="global&nbsp;X'in/nVU: {X}/n<VId: 19>",shape="plaintext"];
+    20 [label="global&nbsp;Y'in/nVU: {Y}/n<VId: 20>",shape="plaintext"];
+    21 [label="global&nbsp;Condition'in/nVU: {Condition}/n<VId: 21>",shape="plaintext"];
+    22 [label="global&nbsp;X'out/nVD: {X}/n<VId: 22>",shape="plaintext"];
+    23 [label="global&nbsp;Y'out/nVD: {Y}/n<VId: 23>",shape="plaintext"];
+    24 [label="global&nbsp;Condition'out/nVD: {Condition}/n<VId: 24>",shape="plaintext"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -1633,17 +1633,17 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="X'initial\nVD: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="X'final\nVU: {X}\n<VId: 8>",shape="plaintext"];
-    10 [label="Y'initial\nVD: {Y}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Y'final\nVU: {Y}\n<VId: 11>",shape="plaintext"];
-    13 [label="Z'initial\nVD: {Z}\n<VId: 13>",shape="plaintext",fontcolor="red"];
-    14 [label="Z'final\nVU: {Z}\n<VId: 14>",shape="plaintext"];
-    21 [label="null;\n<VId: 21>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="X'initial/nVD: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="X'final/nVU: {X}/n<VId: 8>",shape="plaintext"];
+    10 [label="Y'initial/nVD: {Y}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Y'final/nVU: {Y}/n<VId: 11>",shape="plaintext"];
+    13 [label="Z'initial/nVD: {Z}/n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="Z'final/nVU: {Z}/n<VId: 14>",shape="plaintext"];
+    21 [label="null;/n<VId: 21>"];
 
     1 ->  21 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1660,16 +1660,16 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    7 [label="X'initial\nVD: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="X'final\nVU: {X}\n<VId: 8>",shape="plaintext"];
-    10 [label="Y'initial\nVD: {Y}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Y'final\nVU: {Y}\n<VId: 11>",shape="plaintext"];
-    13 [label="Z'initial\nVD: {Z}\n<VId: 13>",shape="plaintext",fontcolor="red"];
-    14 [label="Z'final\nVU: {Z}\n<VId: 14>",shape="plaintext"];
-    21 [label="null;\n<VId: 21>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    7 [label="X'initial/nVD: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="X'final/nVU: {X}/n<VId: 8>",shape="plaintext"];
+    10 [label="Y'initial/nVD: {Y}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Y'final/nVU: {Y}/n<VId: 11>",shape="plaintext"];
+    13 [label="Z'initial/nVD: {Z}/n<VId: 13>",shape="plaintext",fontcolor="red"];
+    14 [label="Z'final/nVU: {Z}/n<VId: 14>",shape="plaintext"];
+    21 [label="null;/n<VId: 21>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  21 [arrowType="normal"];
@@ -1682,11 +1682,11 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="null;\n<VId: 9>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;/n<VId: 9>"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1697,10 +1697,10 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="null;\n<VId: 9>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;/n<VId: 9>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  9 [arrowType="normal"];
@@ -1710,11 +1710,11 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="null;\n<VId: 9>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;/n<VId: 9>"];
 
     1 ->  9 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1725,10 +1725,10 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="null;\n<VId: 9>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="null;/n<VId: 9>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  9 [arrowType="normal"];
@@ -1738,17 +1738,17 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    8 [label="Condition'initial\nVD: {Condition}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Condition'final\nVU: {Condition}\n<VId: 9>",shape="plaintext"];
-    11 [label="X'initial\nVD: {X}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    12 [label="X'final\nVU: {X}\n<VId: 12>",shape="plaintext"];
-    14 [label="Y'initial\nVD: {Y}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="Y'final\nVU: {Y}\n<VId: 15>",shape="plaintext"];
-    23 [label="null;\n<VId: 23>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    8 [label="Condition'initial/nVD: {Condition}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Condition'final/nVU: {Condition}/n<VId: 9>",shape="plaintext"];
+    11 [label="X'initial/nVD: {X}/n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="X'final/nVU: {X}/n<VId: 12>",shape="plaintext"];
+    14 [label="Y'initial/nVD: {Y}/n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="Y'final/nVU: {Y}/n<VId: 15>",shape="plaintext"];
+    23 [label="null;/n<VId: 23>"];
 
     1 ->  23 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -1765,16 +1765,16 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    8 [label="Condition'initial\nVD: {Condition}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Condition'final\nVU: {Condition}\n<VId: 9>",shape="plaintext"];
-    11 [label="X'initial\nVD: {X}\n<VId: 11>",shape="plaintext",fontcolor="red"];
-    12 [label="X'final\nVU: {X}\n<VId: 12>",shape="plaintext"];
-    14 [label="Y'initial\nVD: {Y}\n<VId: 14>",shape="plaintext",fontcolor="red"];
-    15 [label="Y'final\nVU: {Y}\n<VId: 15>",shape="plaintext"];
-    23 [label="null;\n<VId: 23>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    8 [label="Condition'initial/nVD: {Condition}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Condition'final/nVU: {Condition}/n<VId: 9>",shape="plaintext"];
+    11 [label="X'initial/nVD: {X}/n<VId: 11>",shape="plaintext",fontcolor="red"];
+    12 [label="X'final/nVU: {X}/n<VId: 12>",shape="plaintext"];
+    14 [label="Y'initial/nVD: {Y}/n<VId: 14>",shape="plaintext",fontcolor="red"];
+    15 [label="Y'final/nVU: {Y}/n<VId: 15>",shape="plaintext"];
+    23 [label="null;/n<VId: 23>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  23 [arrowType="normal"];
@@ -1787,39 +1787,39 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    19 [label="X'initial\n(global)\nVD: {X}\n<VId: 19>",shape="plaintext"];
-    20 [label="X'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
-    21 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
-    22 [label="Y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
-    23 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
-    24 [label="Z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
-    25 [label="Swap'initial\nVD: {Swap}\n<VId: 25>",shape="plaintext"];
-    26 [label="Swap'final\nVU: {Swap}\n<VId: 26>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    19 [label="X'initial/n(global)/nVD: {X}/n<VId: 19>",shape="plaintext"];
+    20 [label="X'final/n(global)/nVU: {X}/n<VId: 20>",shape="plaintext",fontcolor="blue"];
+    21 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 21>",shape="plaintext"];
+    22 [label="Y'final/n(global)/nVU: {Y}/n<VId: 22>",shape="plaintext",fontcolor="blue"];
+    23 [label="Z'initial/n(global)/nVD: {Z}/n<VId: 23>",shape="plaintext"];
+    24 [label="Z'final/n(global)/nVU: {Z}/n<VId: 24>",shape="plaintext",fontcolor="blue"];
+    25 [label="Swap'initial/nVD: {Swap}/n<VId: 25>",shape="plaintext"];
+    26 [label="Swap'final/nVU: {Swap}/n<VId: 26>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    9 [label="call swap\nSC: {Swap}\n<VId: 9>",shape="box"];
-    10 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 10>",shape="plaintext"];
-    11 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 11>",shape="plaintext"];
-    12 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 12>",shape="plaintext"];
-    13 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 13>",shape="plaintext"];
+    9 [label="call swap/nSC: {Swap}/n<VId: 9>",shape="box"];
+    10 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 10>",shape="plaintext"];
+    11 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 11>",shape="plaintext"];
+    12 [label="y'in&nbsp;:=&nbsp;y/nVU: {Y}/n<VId: 12>",shape="plaintext"];
+    13 [label="y&nbsp;:=&nbsp;y'out/nVD: {Y}/n<VId: 13>",shape="plaintext"];
 }
 
 subgraph cluster2 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    14 [label="call swap\nSC: {Swap}\n<VId: 14>",shape="box"];
-    15 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 15>",shape="plaintext"];
-    16 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 17>",shape="plaintext"];
-    18 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 18>",shape="plaintext"];
+    14 [label="call swap/nSC: {Swap}/n<VId: 14>",shape="box"];
+    15 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 15>",shape="plaintext"];
+    16 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="y'in&nbsp;:=&nbsp;z/nVU: {Z}/n<VId: 17>",shape="plaintext"];
+    18 [label="z&nbsp;:=&nbsp;y'out/nVD: {Z}/n<VId: 18>",shape="plaintext"];
 }
 
     1 ->  9 [arrowType="normal"];
@@ -1848,27 +1848,27 @@ subgraph cluster2 {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="call swap\nSC: {Swap}\n<VId: 9>",shape="box"];
-    10 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 10>",shape="plaintext"];
-    11 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 11>",shape="plaintext"];
-    12 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 12>",shape="plaintext"];
-    13 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 13>",shape="plaintext"];
-    14 [label="call swap\nSC: {Swap}\n<VId: 14>",shape="box"];
-    15 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 15>",shape="plaintext"];
-    16 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 17>",shape="plaintext"];
-    18 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 18>",shape="plaintext"];
-    19 [label="X'initial\n(global)\nVD: {X}\n<VId: 19>",shape="plaintext"];
-    20 [label="X'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
-    21 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
-    22 [label="Y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
-    23 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
-    24 [label="Z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
-    25 [label="Swap'initial\nVD: {Swap}\n<VId: 25>",shape="plaintext"];
-    26 [label="Swap'final\nVU: {Swap}\n<VId: 26>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="call swap/nSC: {Swap}/n<VId: 9>",shape="box"];
+    10 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 10>",shape="plaintext"];
+    11 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 11>",shape="plaintext"];
+    12 [label="y'in&nbsp;:=&nbsp;y/nVU: {Y}/n<VId: 12>",shape="plaintext"];
+    13 [label="y&nbsp;:=&nbsp;y'out/nVD: {Y}/n<VId: 13>",shape="plaintext"];
+    14 [label="call swap/nSC: {Swap}/n<VId: 14>",shape="box"];
+    15 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 15>",shape="plaintext"];
+    16 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="y'in&nbsp;:=&nbsp;z/nVU: {Z}/n<VId: 17>",shape="plaintext"];
+    18 [label="z&nbsp;:=&nbsp;y'out/nVD: {Z}/n<VId: 18>",shape="plaintext"];
+    19 [label="X'initial/n(global)/nVD: {X}/n<VId: 19>",shape="plaintext"];
+    20 [label="X'final/n(global)/nVU: {X}/n<VId: 20>",shape="plaintext",fontcolor="blue"];
+    21 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 21>",shape="plaintext"];
+    22 [label="Y'final/n(global)/nVU: {Y}/n<VId: 22>",shape="plaintext",fontcolor="blue"];
+    23 [label="Z'initial/n(global)/nVD: {Z}/n<VId: 23>",shape="plaintext"];
+    24 [label="Z'final/n(global)/nVU: {Z}/n<VId: 24>",shape="plaintext",fontcolor="blue"];
+    25 [label="Swap'initial/nVD: {Swap}/n<VId: 25>",shape="plaintext"];
+    26 [label="Swap'final/nVU: {Swap}/n<VId: 26>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  9 [arrowType="normal"];
@@ -1903,39 +1903,39 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    19 [label="X'initial\n(global)\nVD: {X}\n<VId: 19>",shape="plaintext"];
-    20 [label="X'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
-    21 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
-    22 [label="Y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
-    23 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
-    24 [label="Z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
-    25 [label="Swap_With_Depends'initial\nVD: {Swap_With_Depends}\n<VId: 25>",shape="plaintext"];
-    26 [label="Swap_With_Depends'final\nVU: {Swap_With_Depends}\n<VId: 26>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    19 [label="X'initial/n(global)/nVD: {X}/n<VId: 19>",shape="plaintext"];
+    20 [label="X'final/n(global)/nVU: {X}/n<VId: 20>",shape="plaintext",fontcolor="blue"];
+    21 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 21>",shape="plaintext"];
+    22 [label="Y'final/n(global)/nVU: {Y}/n<VId: 22>",shape="plaintext",fontcolor="blue"];
+    23 [label="Z'initial/n(global)/nVD: {Z}/n<VId: 23>",shape="plaintext"];
+    24 [label="Z'final/n(global)/nVU: {Z}/n<VId: 24>",shape="plaintext",fontcolor="blue"];
+    25 [label="Swap_With_Depends'initial/nVD: {Swap_With_Depends}/n<VId: 25>",shape="plaintext"];
+    26 [label="Swap_With_Depends'final/nVU: {Swap_With_Depends}/n<VId: 26>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    9 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 9>",shape="box"];
-    10 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 10>",shape="plaintext"];
-    11 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 11>",shape="plaintext"];
-    12 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 12>",shape="plaintext"];
-    13 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 13>",shape="plaintext"];
+    9 [label="call swap_with_depends/nSC: {Swap_With_Depends}/n<VId: 9>",shape="box"];
+    10 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 10>",shape="plaintext"];
+    11 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 11>",shape="plaintext"];
+    12 [label="y'in&nbsp;:=&nbsp;y/nVU: {Y}/n<VId: 12>",shape="plaintext"];
+    13 [label="y&nbsp;:=&nbsp;y'out/nVD: {Y}/n<VId: 13>",shape="plaintext"];
 }
 
 subgraph cluster2 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    14 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 14>",shape="box"];
-    15 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 15>",shape="plaintext"];
-    16 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 17>",shape="plaintext"];
-    18 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 18>",shape="plaintext"];
+    14 [label="call swap_with_depends/nSC: {Swap_With_Depends}/n<VId: 14>",shape="box"];
+    15 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 15>",shape="plaintext"];
+    16 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="y'in&nbsp;:=&nbsp;z/nVU: {Z}/n<VId: 17>",shape="plaintext"];
+    18 [label="z&nbsp;:=&nbsp;y'out/nVD: {Z}/n<VId: 18>",shape="plaintext"];
 }
 
     1 ->  9 [arrowType="normal"];
@@ -1964,27 +1964,27 @@ subgraph cluster2 {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    9 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 9>",shape="box"];
-    10 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 10>",shape="plaintext"];
-    11 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 11>",shape="plaintext"];
-    12 [label="y'in&nbsp;:=&nbsp;y\nVU: {Y}\n<VId: 12>",shape="plaintext"];
-    13 [label="y&nbsp;:=&nbsp;y'out\nVD: {Y}\n<VId: 13>",shape="plaintext"];
-    14 [label="call swap_with_depends\nSC: {Swap_With_Depends}\n<VId: 14>",shape="box"];
-    15 [label="x'in&nbsp;:=&nbsp;x\nVU: {X}\n<VId: 15>",shape="plaintext"];
-    16 [label="x&nbsp;:=&nbsp;x'out\nVD: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="y'in&nbsp;:=&nbsp;z\nVU: {Z}\n<VId: 17>",shape="plaintext"];
-    18 [label="z&nbsp;:=&nbsp;y'out\nVD: {Z}\n<VId: 18>",shape="plaintext"];
-    19 [label="X'initial\n(global)\nVD: {X}\n<VId: 19>",shape="plaintext"];
-    20 [label="X'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
-    21 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
-    22 [label="Y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
-    23 [label="Z'initial\n(global)\nVD: {Z}\n<VId: 23>",shape="plaintext"];
-    24 [label="Z'final\n(global)\nVU: {Z}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
-    25 [label="Swap_With_Depends'initial\nVD: {Swap_With_Depends}\n<VId: 25>",shape="plaintext"];
-    26 [label="Swap_With_Depends'final\nVU: {Swap_With_Depends}\n<VId: 26>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    9 [label="call swap_with_depends/nSC: {Swap_With_Depends}/n<VId: 9>",shape="box"];
+    10 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 10>",shape="plaintext"];
+    11 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 11>",shape="plaintext"];
+    12 [label="y'in&nbsp;:=&nbsp;y/nVU: {Y}/n<VId: 12>",shape="plaintext"];
+    13 [label="y&nbsp;:=&nbsp;y'out/nVD: {Y}/n<VId: 13>",shape="plaintext"];
+    14 [label="call swap_with_depends/nSC: {Swap_With_Depends}/n<VId: 14>",shape="box"];
+    15 [label="x'in&nbsp;:=&nbsp;x/nVU: {X}/n<VId: 15>",shape="plaintext"];
+    16 [label="x&nbsp;:=&nbsp;x'out/nVD: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="y'in&nbsp;:=&nbsp;z/nVU: {Z}/n<VId: 17>",shape="plaintext"];
+    18 [label="z&nbsp;:=&nbsp;y'out/nVD: {Z}/n<VId: 18>",shape="plaintext"];
+    19 [label="X'initial/n(global)/nVD: {X}/n<VId: 19>",shape="plaintext"];
+    20 [label="X'final/n(global)/nVU: {X}/n<VId: 20>",shape="plaintext",fontcolor="blue"];
+    21 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 21>",shape="plaintext"];
+    22 [label="Y'final/n(global)/nVU: {Y}/n<VId: 22>",shape="plaintext",fontcolor="blue"];
+    23 [label="Z'initial/n(global)/nVD: {Z}/n<VId: 23>",shape="plaintext"];
+    24 [label="Z'final/n(global)/nVU: {Z}/n<VId: 24>",shape="plaintext",fontcolor="blue"];
+    25 [label="Swap_With_Depends'initial/nVD: {Swap_With_Depends}/n<VId: 25>",shape="plaintext"];
+    26 [label="Swap_With_Depends'final/nVU: {Swap_With_Depends}/n<VId: 26>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  9 [arrowType="normal"];
@@ -2015,20 +2015,20 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Prime'initial\nVD: {Prime}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Prime'final\nVU: {Prime}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if (x mod i) = 0\nLoops:&nbsp;L_1\nVU: {X, I}\n<VId: 13>",shape="diamond"];
-    14 [label="return false;\nLoops:&nbsp;L_1\nVD: {Prime}\n<VId: 14>"];
-    15 [label="I'initial\nVD: {I}\n<VId: 15>",shape="plaintext"];
-    16 [label="I'final\nVU: {I}\n<VId: 16>",shape="plaintext",fontcolor="red"];
-    17 [label="for i in 2 .. x / 2\nLoops:&nbsp;L_1\nVU: {X}\nVD: {I}\n<VId: 17>",shape="diamond"];
-    18 [label="return true;\nVD: {Prime}\n<VId: 18>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Prime'initial/nVD: {Prime}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Prime'final/nVU: {Prime}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="if (x mod i) = 0/nLoops:&nbsp;L_1/nVU: {X, I}/n<VId: 13>",shape="diamond"];
+    14 [label="return false;/nLoops:&nbsp;L_1/nVD: {Prime}/n<VId: 14>"];
+    15 [label="I'initial/nVD: {I}/n<VId: 15>",shape="plaintext"];
+    16 [label="I'final/nVU: {I}/n<VId: 16>",shape="plaintext",fontcolor="red"];
+    17 [label="for i in 2 .. x / 2/nLoops:&nbsp;L_1/nVU: {X}/nVD: {I}/n<VId: 17>",shape="diamond"];
+    18 [label="return true;/nVD: {Prime}/n<VId: 18>"];
 
     1 ->  17 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -2050,19 +2050,19 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Prime'initial\nVD: {Prime}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Prime'final\nVU: {Prime}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if (x mod i) = 0\nLoops:&nbsp;L_1\nVU: {X, I}\n<VId: 13>",shape="diamond"];
-    14 [label="return false;\nLoops:&nbsp;L_1\nVD: {Prime}\n<VId: 14>"];
-    15 [label="I'initial\nVD: {I}\n<VId: 15>",shape="plaintext"];
-    16 [label="I'final\nVU: {I}\n<VId: 16>",shape="plaintext",fontcolor="red"];
-    17 [label="for i in 2 .. x / 2\nLoops:&nbsp;L_1\nVU: {X}\nVD: {I}\n<VId: 17>",shape="diamond"];
-    18 [label="return true;\nVD: {Prime}\n<VId: 18>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Prime'initial/nVD: {Prime}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Prime'final/nVU: {Prime}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="if (x mod i) = 0/nLoops:&nbsp;L_1/nVU: {X, I}/n<VId: 13>",shape="diamond"];
+    14 [label="return false;/nLoops:&nbsp;L_1/nVD: {Prime}/n<VId: 14>"];
+    15 [label="I'initial/nVD: {I}/n<VId: 15>",shape="plaintext"];
+    16 [label="I'final/nVU: {I}/n<VId: 16>",shape="plaintext",fontcolor="red"];
+    17 [label="for i in 2 .. x / 2/nLoops:&nbsp;L_1/nVU: {X}/nVD: {I}/n<VId: 17>",shape="diamond"];
+    18 [label="return true;/nVD: {Prime}/n<VId: 18>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  17 [arrowType="normal"];
@@ -2082,19 +2082,19 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    12 [label="Temp'initial\nVD: {Temp}\n<VId: 12>",shape="plaintext",fontcolor="red"];
-    13 [label="Temp'final\nVU: {Temp}\n<VId: 13>",shape="plaintext"];
-    15 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 15>"];
-    16 [label="x := y;\nVU: {Y}\nVD: {X}\n<VId: 16>"];
-    17 [label="y := temp;\nVU: {Temp}\nVD: {Y}\n<VId: 17>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    12 [label="Temp'initial/nVD: {Temp}/n<VId: 12>",shape="plaintext",fontcolor="red"];
+    13 [label="Temp'final/nVU: {Temp}/n<VId: 13>",shape="plaintext"];
+    15 [label="temp := x;/nVU: {X}/nVD: {Temp}/n<VId: 15>"];
+    16 [label="x := y;/nVU: {Y}/nVD: {X}/n<VId: 16>"];
+    17 [label="y := temp;/nVU: {Temp}/nVD: {Y}/n<VId: 17>"];
 
     1 ->  15 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -2113,18 +2113,18 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    12 [label="Temp'initial\nVD: {Temp}\n<VId: 12>",shape="plaintext",fontcolor="red"];
-    13 [label="Temp'final\nVU: {Temp}\n<VId: 13>",shape="plaintext"];
-    15 [label="temp := x;\nVU: {X}\nVD: {Temp}\n<VId: 15>"];
-    16 [label="x := y;\nVU: {Y}\nVD: {X}\n<VId: 16>"];
-    17 [label="y := temp;\nVU: {Temp}\nVD: {Y}\n<VId: 17>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    12 [label="Temp'initial/nVD: {Temp}/n<VId: 12>",shape="plaintext",fontcolor="red"];
+    13 [label="Temp'final/nVU: {Temp}/n<VId: 13>",shape="plaintext"];
+    15 [label="temp := x;/nVU: {X}/nVD: {Temp}/n<VId: 15>"];
+    16 [label="x := y;/nVU: {Y}/nVD: {X}/n<VId: 16>"];
+    17 [label="y := temp;/nVU: {Temp}/nVD: {Y}/n<VId: 17>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -2142,31 +2142,31 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="Coprime'initial\nVD: {Coprime}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Coprime'final\nVU: {Coprime}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if prime (x) or else prime (y)\nVU: {X, Y}\nSC: {Prime}\n<VId: 15>",shape="diamond"];
-    16 [label="return true;\nVD: {Coprime}\n<VId: 16>"];
-    17 [label="R4b'initial\nVD: {R4b}\n<VId: 17>",shape="plaintext",fontcolor="red"];
-    18 [label="R4b'final\nVU: {R4b}\n<VId: 18>",shape="plaintext"];
-    19 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nSC: {Min}\nVD: {R4b}\n<VId: 19>"];
-    20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {X, Y, I}\n<VId: 20>",shape="diamond"];
-    21 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 21>"];
-    22 [label="I'initial\nVD: {I}\n<VId: 22>",shape="plaintext"];
-    23 [label="I'final\nVU: {I}\n<VId: 23>",shape="plaintext",fontcolor="red"];
-    24 [label="for i in 2 .. min (x, y)\nLoops:&nbsp;L_1\nVU: {R4b}\nVD: {I}\n<VId: 24>",shape="diamond"];
-    25 [label="return true;\nVD: {Coprime}\n<VId: 25>"];
-    26 [label="Min'initial\nVD: {Min}\n<VId: 26>",shape="plaintext"];
-    27 [label="Min'final\nVU: {Min}\n<VId: 27>",shape="plaintext",fontcolor="blue"];
-    28 [label="Prime'initial\nVD: {Prime}\n<VId: 28>",shape="plaintext"];
-    29 [label="Prime'final\nVU: {Prime}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Coprime'initial/nVD: {Coprime}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Coprime'final/nVU: {Coprime}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="if prime (x) or else prime (y)/nVU: {X, Y}/nSC: {Prime}/n<VId: 15>",shape="diamond"];
+    16 [label="return true;/nVD: {Coprime}/n<VId: 16>"];
+    17 [label="R4b'initial/nVD: {R4b}/n<VId: 17>",shape="plaintext",fontcolor="red"];
+    18 [label="R4b'final/nVU: {R4b}/n<VId: 18>",shape="plaintext"];
+    19 [label="R4b : constant natural := min (x, y);/nVU: {X, Y}/nSC: {Min}/nVD: {R4b}/n<VId: 19>"];
+    20 [label="if (x mod i) = 0 and then (y mod i) = 0/nLoops:&nbsp;L_1/nVU: {X, Y, I}/n<VId: 20>",shape="diamond"];
+    21 [label="return false;/nLoops:&nbsp;L_1/nVD: {Coprime}/n<VId: 21>"];
+    22 [label="I'initial/nVD: {I}/n<VId: 22>",shape="plaintext"];
+    23 [label="I'final/nVU: {I}/n<VId: 23>",shape="plaintext",fontcolor="red"];
+    24 [label="for i in 2 .. min (x, y)/nLoops:&nbsp;L_1/nVU: {R4b}/nVD: {I}/n<VId: 24>",shape="diamond"];
+    25 [label="return true;/nVD: {Coprime}/n<VId: 25>"];
+    26 [label="Min'initial/nVD: {Min}/n<VId: 26>",shape="plaintext"];
+    27 [label="Min'final/nVU: {Min}/n<VId: 27>",shape="plaintext",fontcolor="blue"];
+    28 [label="Prime'initial/nVD: {Prime}/n<VId: 28>",shape="plaintext"];
+    29 [label="Prime'final/nVU: {Prime}/n<VId: 29>",shape="plaintext",fontcolor="blue"];
 
     1 ->  15 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -2200,30 +2200,30 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="Coprime'initial\nVD: {Coprime}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Coprime'final\nVU: {Coprime}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if prime (x) or else prime (y)\nVU: {X, Y}\nSC: {Prime}\n<VId: 15>",shape="diamond"];
-    16 [label="return true;\nVD: {Coprime}\n<VId: 16>"];
-    17 [label="R4b'initial\nVD: {R4b}\n<VId: 17>",shape="plaintext",fontcolor="red"];
-    18 [label="R4b'final\nVU: {R4b}\n<VId: 18>",shape="plaintext"];
-    19 [label="R4b : constant natural := min (x, y);\nVU: {X, Y}\nSC: {Min}\nVD: {R4b}\n<VId: 19>"];
-    20 [label="if (x mod i) = 0 and then (y mod i) = 0\nLoops:&nbsp;L_1\nVU: {X, Y, I}\n<VId: 20>",shape="diamond"];
-    21 [label="return false;\nLoops:&nbsp;L_1\nVD: {Coprime}\n<VId: 21>"];
-    22 [label="I'initial\nVD: {I}\n<VId: 22>",shape="plaintext"];
-    23 [label="I'final\nVU: {I}\n<VId: 23>",shape="plaintext",fontcolor="red"];
-    24 [label="for i in 2 .. min (x, y)\nLoops:&nbsp;L_1\nVU: {R4b}\nVD: {I}\n<VId: 24>",shape="diamond"];
-    25 [label="return true;\nVD: {Coprime}\n<VId: 25>"];
-    26 [label="Min'initial\nVD: {Min}\n<VId: 26>",shape="plaintext"];
-    27 [label="Min'final\nVU: {Min}\n<VId: 27>",shape="plaintext",fontcolor="blue"];
-    28 [label="Prime'initial\nVD: {Prime}\n<VId: 28>",shape="plaintext"];
-    29 [label="Prime'final\nVU: {Prime}\n<VId: 29>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Coprime'initial/nVD: {Coprime}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Coprime'final/nVU: {Coprime}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="if prime (x) or else prime (y)/nVU: {X, Y}/nSC: {Prime}/n<VId: 15>",shape="diamond"];
+    16 [label="return true;/nVD: {Coprime}/n<VId: 16>"];
+    17 [label="R4b'initial/nVD: {R4b}/n<VId: 17>",shape="plaintext",fontcolor="red"];
+    18 [label="R4b'final/nVU: {R4b}/n<VId: 18>",shape="plaintext"];
+    19 [label="R4b : constant natural := min (x, y);/nVU: {X, Y}/nSC: {Min}/nVD: {R4b}/n<VId: 19>"];
+    20 [label="if (x mod i) = 0 and then (y mod i) = 0/nLoops:&nbsp;L_1/nVU: {X, Y, I}/n<VId: 20>",shape="diamond"];
+    21 [label="return false;/nLoops:&nbsp;L_1/nVD: {Coprime}/n<VId: 21>"];
+    22 [label="I'initial/nVD: {I}/n<VId: 22>",shape="plaintext"];
+    23 [label="I'final/nVU: {I}/n<VId: 23>",shape="plaintext",fontcolor="red"];
+    24 [label="for i in 2 .. min (x, y)/nLoops:&nbsp;L_1/nVU: {R4b}/nVD: {I}/n<VId: 24>",shape="diamond"];
+    25 [label="return true;/nVD: {Coprime}/n<VId: 25>"];
+    26 [label="Min'initial/nVD: {Min}/n<VId: 26>",shape="plaintext"];
+    27 [label="Min'final/nVU: {Min}/n<VId: 27>",shape="plaintext",fontcolor="blue"];
+    28 [label="Prime'initial/nVD: {Prime}/n<VId: 28>",shape="plaintext"];
+    29 [label="Prime'final/nVU: {Prime}/n<VId: 29>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -2259,19 +2259,19 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="Min'initial\nVD: {Min}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Min'final\nVU: {Min}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if x < y\nVU: {X, Y}\n<VId: 15>",shape="diamond"];
-    16 [label="return x;\nVU: {X}\nVD: {Min}\n<VId: 16>"];
-    17 [label="return y;\nVU: {Y}\nVD: {Min}\n<VId: 17>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Min'initial/nVD: {Min}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Min'final/nVU: {Min}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="if x < y/nVU: {X, Y}/n<VId: 15>",shape="diamond"];
+    16 [label="return x;/nVU: {X}/nVD: {Min}/n<VId: 16>"];
+    17 [label="return y;/nVU: {Y}/nVD: {Min}/n<VId: 17>"];
 
     1 ->  15 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -2291,18 +2291,18 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="X'initial\nVD: {X}\n<VId: 6>",shape="plaintext"];
-    7 [label="X'final\nVU: {X}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Y'initial\nVD: {Y}\n<VId: 8>",shape="plaintext"];
-    9 [label="Y'final\nVU: {Y}\n<VId: 9>",shape="plaintext",fontcolor="red"];
-    10 [label="Min'initial\nVD: {Min}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Min'final\nVU: {Min}\n<VId: 11>",shape="plaintext",fontcolor="blue"];
-    15 [label="if x < y\nVU: {X, Y}\n<VId: 15>",shape="diamond"];
-    16 [label="return x;\nVU: {X}\nVD: {Min}\n<VId: 16>"];
-    17 [label="return y;\nVU: {Y}\nVD: {Min}\n<VId: 17>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="X'initial/nVD: {X}/n<VId: 6>",shape="plaintext"];
+    7 [label="X'final/nVU: {X}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Y'initial/nVD: {Y}/n<VId: 8>",shape="plaintext"];
+    9 [label="Y'final/nVU: {Y}/n<VId: 9>",shape="plaintext",fontcolor="red"];
+    10 [label="Min'initial/nVD: {Min}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Min'final/nVU: {Min}/n<VId: 11>",shape="plaintext",fontcolor="blue"];
+    15 [label="if x < y/nVU: {X, Y}/n<VId: 15>",shape="diamond"];
+    16 [label="return x;/nVU: {X}/nVD: {Min}/n<VId: 16>"];
+    17 [label="return y;/nVU: {Y}/nVD: {Min}/n<VId: 17>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  15 [arrowType="normal"];
@@ -2322,31 +2322,31 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Double_Max'initial\nVD: {Double_Max}\n<VId: 6>",shape="plaintext",fontcolor="red"];
-    7 [label="Double_Max'final\nVU: {Double_Max}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    10 [label="Temp'initial\nVD: {Temp}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Temp'final\nVU: {Temp}\n<VId: 11>",shape="plaintext"];
-    18 [label="return 2 {*} temp;\nVU: {Temp}\nVD: {Double_Max}\n<VId: 18>"];
-    19 [label="X'initial\n(global)\nVD: {X}\n<VId: 19>",shape="plaintext"];
-    20 [label="X'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
-    21 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
-    22 [label="Y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
-    23 [label="Max'initial\nVD: {Max}\n<VId: 23>",shape="plaintext"];
-    24 [label="Max'final\nVU: {Max}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Double_Max'initial/nVD: {Double_Max}/n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="Double_Max'final/nVU: {Double_Max}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    10 [label="Temp'initial/nVD: {Temp}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Temp'final/nVU: {Temp}/n<VId: 11>",shape="plaintext"];
+    18 [label="return 2 {*} temp;/nVU: {Temp}/nVD: {Double_Max}/n<VId: 18>"];
+    19 [label="X'initial/n(global)/nVD: {X}/n<VId: 19>",shape="plaintext"];
+    20 [label="X'final/n(global)/nVU: {X}/n<VId: 20>",shape="plaintext",fontcolor="blue"];
+    21 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 21>",shape="plaintext"];
+    22 [label="Y'final/n(global)/nVU: {Y}/n<VId: 22>",shape="plaintext",fontcolor="blue"];
+    23 [label="Max'initial/nVD: {Max}/n<VId: 23>",shape="plaintext"];
+    24 [label="Max'final/nVU: {Max}/n<VId: 24>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    13 [label="call max\nSC: {Max}\n<VId: 13>",shape="box"];
-    14 [label="maximum'in&nbsp;:=&nbsp;temp'discr_or_bounds\n<VId: 14>",shape="plaintext"];
-    15 [label="temp&nbsp;:=&nbsp;maximum'out\nVD: {Temp}\n<VId: 15>",shape="plaintext"];
-    16 [label="global&nbsp;X'in\nVU: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 17>",shape="plaintext"];
+    13 [label="call max/nSC: {Max}/n<VId: 13>",shape="box"];
+    14 [label="maximum'in&nbsp;:=&nbsp;temp'discr_or_bounds/n<VId: 14>",shape="plaintext"];
+    15 [label="temp&nbsp;:=&nbsp;maximum'out/nVD: {Temp}/n<VId: 15>",shape="plaintext"];
+    16 [label="global&nbsp;X'in/nVU: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="global&nbsp;Y'in/nVU: {Y}/n<VId: 17>",shape="plaintext"];
 }
 
     1 ->  13 [arrowType="normal"];
@@ -2373,25 +2373,25 @@ subgraph cluster1 {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Double_Max'initial\nVD: {Double_Max}\n<VId: 6>",shape="plaintext",fontcolor="red"];
-    7 [label="Double_Max'final\nVU: {Double_Max}\n<VId: 7>",shape="plaintext",fontcolor="blue"];
-    10 [label="Temp'initial\nVD: {Temp}\n<VId: 10>",shape="plaintext",fontcolor="red"];
-    11 [label="Temp'final\nVU: {Temp}\n<VId: 11>",shape="plaintext"];
-    13 [label="call max\nSC: {Max}\n<VId: 13>",shape="box"];
-    14 [label="maximum'in&nbsp;:=&nbsp;temp'discr_or_bounds\n<VId: 14>",shape="plaintext"];
-    15 [label="temp&nbsp;:=&nbsp;maximum'out\nVD: {Temp}\n<VId: 15>",shape="plaintext"];
-    16 [label="global&nbsp;X'in\nVU: {X}\n<VId: 16>",shape="plaintext"];
-    17 [label="global&nbsp;Y'in\nVU: {Y}\n<VId: 17>",shape="plaintext"];
-    18 [label="return 2 {*} temp;\nVU: {Temp}\nVD: {Double_Max}\n<VId: 18>"];
-    19 [label="X'initial\n(global)\nVD: {X}\n<VId: 19>",shape="plaintext"];
-    20 [label="X'final\n(global)\nVU: {X}\n<VId: 20>",shape="plaintext",fontcolor="blue"];
-    21 [label="Y'initial\n(global)\nVD: {Y}\n<VId: 21>",shape="plaintext"];
-    22 [label="Y'final\n(global)\nVU: {Y}\n<VId: 22>",shape="plaintext",fontcolor="blue"];
-    23 [label="Max'initial\nVD: {Max}\n<VId: 23>",shape="plaintext"];
-    24 [label="Max'final\nVU: {Max}\n<VId: 24>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Double_Max'initial/nVD: {Double_Max}/n<VId: 6>",shape="plaintext",fontcolor="red"];
+    7 [label="Double_Max'final/nVU: {Double_Max}/n<VId: 7>",shape="plaintext",fontcolor="blue"];
+    10 [label="Temp'initial/nVD: {Temp}/n<VId: 10>",shape="plaintext",fontcolor="red"];
+    11 [label="Temp'final/nVU: {Temp}/n<VId: 11>",shape="plaintext"];
+    13 [label="call max/nSC: {Max}/n<VId: 13>",shape="box"];
+    14 [label="maximum'in&nbsp;:=&nbsp;temp'discr_or_bounds/n<VId: 14>",shape="plaintext"];
+    15 [label="temp&nbsp;:=&nbsp;maximum'out/nVD: {Temp}/n<VId: 15>",shape="plaintext"];
+    16 [label="global&nbsp;X'in/nVU: {X}/n<VId: 16>",shape="plaintext"];
+    17 [label="global&nbsp;Y'in/nVU: {Y}/n<VId: 17>",shape="plaintext"];
+    18 [label="return 2 {*} temp;/nVU: {Temp}/nVD: {Double_Max}/n<VId: 18>"];
+    19 [label="X'initial/n(global)/nVD: {X}/n<VId: 19>",shape="plaintext"];
+    20 [label="X'final/n(global)/nVU: {X}/n<VId: 20>",shape="plaintext",fontcolor="blue"];
+    21 [label="Y'initial/n(global)/nVD: {Y}/n<VId: 21>",shape="plaintext"];
+    22 [label="Y'final/n(global)/nVU: {Y}/n<VId: 22>",shape="plaintext",fontcolor="blue"];
+    23 [label="Max'initial/nVD: {Max}/n<VId: 23>",shape="plaintext"];
+    24 [label="Max'final/nVU: {Max}/n<VId: 24>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];
@@ -2416,28 +2416,28 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Var'initial\nVD: {Var}\n<VId: 6>",shape="plaintext"];
-    7 [label="Var'final\nVU: {Var}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Fact'initial\nVD: {Fact}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Fact'final\nVU: {Fact}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if var > 1\nVU: {Var}\n<VId: 13>",shape="diamond"];
-    18 [label="fact := {fact {*} var};\nVU: {Var, Fact}\nVD: {Fact}\n<VId: 18>"];
-    19 [label="fact := 1;\nVD: {Fact}\n<VId: 19>"];
-    20 [label="Factorial'initial\nVD: {Factorial}\n<VId: 20>",shape="plaintext"];
-    21 [label="Factorial'final\nVU: {Factorial}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Var'initial/nVD: {Var}/n<VId: 6>",shape="plaintext"];
+    7 [label="Var'final/nVU: {Var}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Fact'initial/nVD: {Fact}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Fact'final/nVU: {Fact}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="if var > 1/nVU: {Var}/n<VId: 13>",shape="diamond"];
+    18 [label="fact := {fact {*} var};/nVU: {Var, Fact}/nVD: {Fact}/n<VId: 18>"];
+    19 [label="fact := 1;/nVD: {Fact}/n<VId: 19>"];
+    20 [label="Factorial'initial/nVD: {Factorial}/n<VId: 20>",shape="plaintext"];
+    21 [label="Factorial'final/nVU: {Factorial}/n<VId: 21>",shape="plaintext",fontcolor="blue"];
 
 subgraph cluster1 {
   style=filled;
   color=lightgrey;
   node [style=filled,color=white];
-    14 [label="call factorial\nSC: {Factorial}\n<VId: 14>",shape="box"];
-    15 [label="var'in&nbsp;:=&nbsp;{var - 1}\nVU: {Var}\n<VId: 15>",shape="plaintext"];
-    16 [label="fact'in&nbsp;:=&nbsp;fact'discr_or_bounds\n<VId: 16>",shape="plaintext"];
-    17 [label="fact&nbsp;:=&nbsp;fact'out\nVD: {Fact}\n<VId: 17>",shape="plaintext"];
+    14 [label="call factorial/nSC: {Factorial}/n<VId: 14>",shape="box"];
+    15 [label="var'in&nbsp;:=&nbsp;{var - 1}/nVU: {Var}/n<VId: 15>",shape="plaintext"];
+    16 [label="fact'in&nbsp;:=&nbsp;fact'discr_or_bounds/n<VId: 16>",shape="plaintext"];
+    17 [label="fact&nbsp;:=&nbsp;fact'out/nVD: {Fact}/n<VId: 17>",shape="plaintext"];
 }
 
     1 ->  13 [arrowType="normal"];
@@ -2462,22 +2462,22 @@ subgraph cluster1 {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="Var'initial\nVD: {Var}\n<VId: 6>",shape="plaintext"];
-    7 [label="Var'final\nVU: {Var}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Fact'initial\nVD: {Fact}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Fact'final\nVU: {Fact}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if var > 1\nVU: {Var}\n<VId: 13>",shape="diamond"];
-    14 [label="call factorial\nSC: {Factorial}\n<VId: 14>",shape="box"];
-    15 [label="var'in&nbsp;:=&nbsp;{var - 1}\nVU: {Var}\n<VId: 15>",shape="plaintext"];
-    16 [label="fact'in&nbsp;:=&nbsp;fact'discr_or_bounds\n<VId: 16>",shape="plaintext"];
-    17 [label="fact&nbsp;:=&nbsp;fact'out\nVD: {Fact}\n<VId: 17>",shape="plaintext"];
-    18 [label="fact := {fact {*} var};\nVU: {Var, Fact}\nVD: {Fact}\n<VId: 18>"];
-    19 [label="fact := 1;\nVD: {Fact}\n<VId: 19>"];
-    20 [label="Factorial'initial\nVD: {Factorial}\n<VId: 20>",shape="plaintext"];
-    21 [label="Factorial'final\nVU: {Factorial}\n<VId: 21>",shape="plaintext",fontcolor="blue"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="Var'initial/nVD: {Var}/n<VId: 6>",shape="plaintext"];
+    7 [label="Var'final/nVU: {Var}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Fact'initial/nVD: {Fact}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Fact'final/nVU: {Fact}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="if var > 1/nVU: {Var}/n<VId: 13>",shape="diamond"];
+    14 [label="call factorial/nSC: {Factorial}/n<VId: 14>",shape="box"];
+    15 [label="var'in&nbsp;:=&nbsp;{var - 1}/nVU: {Var}/n<VId: 15>",shape="plaintext"];
+    16 [label="fact'in&nbsp;:=&nbsp;fact'discr_or_bounds/n<VId: 16>",shape="plaintext"];
+    17 [label="fact&nbsp;:=&nbsp;fact'out/nVD: {Fact}/n<VId: 17>",shape="plaintext"];
+    18 [label="fact := {fact {*} var};/nVU: {Var, Fact}/nVD: {Fact}/n<VId: 18>"];
+    19 [label="fact := 1;/nVD: {Fact}/n<VId: 19>"];
+    20 [label="Factorial'initial/nVD: {Factorial}/n<VId: 20>",shape="plaintext"];
+    21 [label="Factorial'final/nVU: {Factorial}/n<VId: 21>",shape="plaintext",fontcolor="blue"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];
@@ -2504,17 +2504,17 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    3 [label="end\n<VId: 3>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="N'initial\nVD: {N}\n<VId: 6>",shape="plaintext"];
-    7 [label="N'final\nVU: {N}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Fibonacci'initial\nVD: {Fibonacci}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Fibonacci'final\nVU: {Fibonacci}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if n < 3\nVU: {N}\n<VId: 13>",shape="diamond"];
-    14 [label="return 1;\nVD: {Fibonacci}\n<VId: 14>"];
-    15 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);\nVU: {N}\nSC: {Fibonacci}\nVD: {Fibonacci}\n<VId: 15>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    3 [label="end/n<VId: 3>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="N'initial/nVD: {N}/n<VId: 6>",shape="plaintext"];
+    7 [label="N'final/nVU: {N}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Fibonacci'initial/nVD: {Fibonacci}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Fibonacci'final/nVU: {Fibonacci}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="if n < 3/nVU: {N}/n<VId: 13>",shape="diamond"];
+    14 [label="return 1;/nVD: {Fibonacci}/n<VId: 14>"];
+    15 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);/nVU: {N}/nSC: {Fibonacci}/nVD: {Fibonacci}/n<VId: 15>"];
 
     1 ->  13 [arrowType="normal"];
     2 ->  3 [arrowType="normal"];
@@ -2532,16 +2532,16 @@ digraph G {
 digraph G {
    graph [splines=True];
    edge [labelfloat=True];
-    1 [label="start\n<VId: 1>",shape="plaintext"];
-    2 [label="helper end\n<VId: 2>",shape="plaintext"];
-    5 [label="null\nVU: {null}\n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
-    6 [label="N'initial\nVD: {N}\n<VId: 6>",shape="plaintext"];
-    7 [label="N'final\nVU: {N}\n<VId: 7>",shape="plaintext",fontcolor="red"];
-    8 [label="Fibonacci'initial\nVD: {Fibonacci}\n<VId: 8>",shape="plaintext",fontcolor="red"];
-    9 [label="Fibonacci'final\nVU: {Fibonacci}\n<VId: 9>",shape="plaintext",fontcolor="blue"];
-    13 [label="if n < 3\nVU: {N}\n<VId: 13>",shape="diamond"];
-    14 [label="return 1;\nVD: {Fibonacci}\n<VId: 14>"];
-    15 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);\nVU: {N}\nSC: {Fibonacci}\nVD: {Fibonacci}\n<VId: 15>"];
+    1 [label="start/n<VId: 1>",shape="plaintext"];
+    2 [label="helper end/n<VId: 2>",shape="plaintext"];
+    5 [label="null/nVU: {null}/n<VId: 5>",shape="plaintext",fontcolor="chartreuse"];
+    6 [label="N'initial/nVD: {N}/n<VId: 6>",shape="plaintext"];
+    7 [label="N'final/nVU: {N}/n<VId: 7>",shape="plaintext",fontcolor="red"];
+    8 [label="Fibonacci'initial/nVD: {Fibonacci}/n<VId: 8>",shape="plaintext",fontcolor="red"];
+    9 [label="Fibonacci'final/nVU: {Fibonacci}/n<VId: 9>",shape="plaintext",fontcolor="blue"];
+    13 [label="if n < 3/nVU: {N}/n<VId: 13>",shape="diamond"];
+    14 [label="return 1;/nVD: {Fibonacci}/n<VId: 14>"];
+    15 [label="return fibonacci (n {-} 1) {+} fibonacci (n {-} 2);/nVU: {N}/nSC: {Fibonacci}/nVD: {Fibonacci}/n<VId: 15>"];
 
     1 ->  2 [arrowType="normal"];
     1 ->  13 [arrowType="normal"];
