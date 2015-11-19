@@ -150,7 +150,7 @@ stable_marriage.adb:335:10: info: assertion proved
 stable_marriage.adb:343:10: info: assertion proved
 stable_marriage.adb:346:29: info: range check proved
 stable_marriage.adb:348:51: info: index check proved
-stable_marriage.adb:350:10: medium: assertion might fail
+stable_marriage.adb:350:10: medium: assertion might fail (e.g. when Unmatched_G2_Set = (others => false) and Result = (1 => 2, others => 0))
 stable_marriage.adb:352:24: info: range check proved
 stable_marriage.adb:354:61: info: index check proved
 stable_marriage.adb:355:54: info: index check proved
@@ -214,7 +214,7 @@ stable_marriage.ads:78:33: info: precondition proved
 stable_marriage.ads:83:14: info: postcondition proved
 stable_marriage.ads:84:09: info: precondition proved
 stable_marriage.ads:84:33: info: precondition proved
-stable_marriage.ads:95:08: medium: postcondition might fail
+stable_marriage.ads:95:08: medium: postcondition might fail (e.g. when Matching'Result = (64 => 64, others => 7))
 stable_marriage.ads:99:16: info: precondition proved
 stable_marriage.ads:100:17: medium: precondition might fail
 stable_marriage.ads:101:18: info: precondition proved
