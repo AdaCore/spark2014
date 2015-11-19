@@ -1,0 +1,6 @@
+test.adb:5:07: medium: assertion might fail (e.g. when X = 0)
+test.ads:3:14: warning: subprogram "P" has no effect
+5
+test.adb:5:07: medium: assertion might fail (e.g. when X = 0)
+test.ads:3:14: warning: subprogram "P" has no effect
+9
