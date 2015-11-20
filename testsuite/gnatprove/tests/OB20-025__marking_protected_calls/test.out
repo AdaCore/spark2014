@@ -1,0 +1,9 @@
+ps_not_in_spark.adb:13:07: "Dummy" is not allowed in SPARK
+ps_not_in_spark.adb:13:07: violation of aspect SPARK_Mode at line 11
+ps_not_in_spark.adb:18:07: "Dummy" is not allowed in SPARK
+ps_not_in_spark.adb:18:07: violation of aspect SPARK_Mode at line 16
+pt_not_in_spark.adb:14:07: "Dummy" is not allowed in SPARK
+pt_not_in_spark.adb:14:07: violation of aspect SPARK_Mode at line 12
+pt_not_in_spark.adb:19:07: "Dummy" is not allowed in SPARK
+pt_not_in_spark.adb:19:07: violation of aspect SPARK_Mode at line 17
+gnatprove: error during flow analysis and proof

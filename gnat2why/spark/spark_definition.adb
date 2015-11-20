@@ -534,7 +534,10 @@ package body SPARK_Definition is
 
    procedure Mark_Attribute_Reference         (N : Node_Id);
    procedure Mark_Binary_Op                   (N : Node_Id);
-   procedure Mark_Call                        (N : Node_Id);
+
+   procedure Mark_Call                        (N : Node_Id) with
+     Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
+
    procedure Mark_Component_Declaration       (N : Node_Id);
    procedure Mark_Handled_Statements          (N : Node_Id);
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id);
@@ -1611,6 +1614,8 @@ package body SPARK_Definition is
 
          when N_Entry_Call_Statement =>
             if Is_SPARK_Tasking_Configuration then
+               --  This might be either protected entry or protected subprogram
+               --  call.
                Mark_Call (N);
             else
                Mark_Violation_In_Tasking (N);
@@ -2187,52 +2192,43 @@ package body SPARK_Definition is
    ---------------
 
    procedure Mark_Call (N : Node_Id) is
-      Nam     : constant Node_Id := Name (N);
-      E       : constant Entity_Id := (if Nkind (Nam) in N_Has_Entity
-                                       then Entity (Nam)
-                                       else Empty);
       Actuals : constant List_Id := Parameter_Associations (N);
+      Nam     : constant Node_Id := Name (N);
+      E       : Entity_Id;
+      --  Entity of the called subprogram or entry
 
    begin
-      if Present (Actuals) then
-         Mark_List (Actuals);
-      end if;
+      case Nkind (Nam) is
+         when N_Explicit_Dereference =>
 
-      --  If this is an indirect call then the call is not in SPARK
+            --  Indirect calls are not in SPARK
+            Mark_Violation
+              ("call through access to " &
+               (case Nkind (N) is
+                  when N_Procedure_Call_Statement => "procedure",
+                  when N_Function_Call            => "function",
+                  when others                     => raise Program_Error),
+               N);
 
-      if not Is_Entity_Name (Nam)
-        or else No (E)
-      then
-         if Nkind (Nam) = N_Explicit_Dereference then
-            if Nkind (N) = N_Procedure_Call_Statement then
-               Mark_Violation ("call through access to procedure", N);
-            else
-               pragma Assert (Nkind (N) = N_Function_Call);
-               Mark_Violation ("call through access to function", N);
-            end if;
+            return;
 
-         else
-            --  Entry calls are now in SPARK
-            --  ??? what is "indirect call"? should we check more?
-            if not (Nkind (N) in N_Entry_Call_Statement |
-                                 N_Function_Call)
-            then
-               --  Are there cases where we reach here??? For the moment,
-               --  issue a generic error message about "indirect calls".
+         when N_Selected_Component =>
+            E := Entity (Selector_Name (Nam));
 
-               Mark_Violation ("indirect call", N);
-            else
-               Mark (Nam);
-            end if;
-         end if;
+         when others =>
+            E := Entity (Nam);
 
-      --  If the subprogram called is not in SPARK then the call is not in
-      --  SPARK.
+      end case;
 
-      elsif not In_SPARK (E) then
+      Mark_List (Actuals);
+
+      --  Call is only in SPARK if the subprogram called is in SPARK
+
+      if not In_SPARK (E) then
          Mark_Violation (N, From => E);
 
-      elsif Present (Controlling_Argument (N))
+      elsif Nkind (N) in N_Subprogram_Call
+        and then Present (Controlling_Argument (N))
         and then Is_Invisible_Dispatching_Operation (E)
       then
          Mark_Violation
