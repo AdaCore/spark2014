@@ -2012,9 +2012,9 @@ be a Boolean ``expression``.
 
 .. centered:: **Dynamic Semantics**
 
-.. _tu-fe-refined_postcondition_aspects-07:
+.. _tu-fe-refined_postcondition_aspects-06:
 
-7. When a subprogram or entry with a Refined Postcondition is called,
+6. When a subprogram or entry with a Refined Postcondition is called,
    the Refined Postcondition is evaluated
    immediately before the evaluation of the postcondition or, if there is no
    postcondition, immediately before the point at which a postcondition would
@@ -2027,9 +2027,9 @@ be a Boolean ``expression``.
 
 .. centered:: **Verification Rules**
 
-.. _tu-pr-refined_postcondition_aspects-08:
+.. _tu-pr-refined_postcondition_aspects-07:
 
-8. If a subprogram has both a Refined_Postcondition aspect and a
+7. If a subprogram has both a Refined_Postcondition aspect and a
    Postcondition aspect, then the verification condition associated with
    the Postcondition aspect is discharged in two steps. The success
    of the Refined_Postcondition run-time check must be proven as usual.
@@ -2042,9 +2042,9 @@ be a Boolean ``expression``.
    [Note that this step does not depend on the statements or
    declarations within the subprogram.]
 
-.. _tu-pr-refined_postcondition_aspects-09:
+.. _tu-pr-refined_postcondition_aspects-08:
 
-9. If a Refined_Postcondition aspect specification is visible at the
+8. If a Refined_Postcondition aspect specification is visible at the
    point of a call to the subprogram, then the Refined_Postcondition
    is used instead of the Postcondition aspect for purposes of formal
    analysis of the call. Similarly for using the Refined_Global aspect
