@@ -32,8 +32,8 @@ generic_float_tests.adb:72:39: info: postcondition proved, in instantiation at f
 generic_float_tests.adb:72:39: info: postcondition proved, in instantiation at foo.ads:15
 generic_float_tests.adb:75:18: info: overflow check proved, in instantiation at foo.ads:10
 generic_float_tests.adb:75:18: info: overflow check proved, in instantiation at foo.ads:15
-generic_float_tests.adb:80:38: medium: postcondition might fail, cannot prove Underflow_1'Result > , in instantiation at foo.ads:10
-generic_float_tests.adb:80:38: medium: postcondition might fail, cannot prove Underflow_1'Result > , in instantiation at foo.ads:15
+generic_float_tests.adb:80:38: medium: postcondition might fail, cannot prove Underflow_1'Result > 0.0, in instantiation at foo.ads:10
+generic_float_tests.adb:80:38: medium: postcondition might fail, cannot prove Underflow_1'Result > 0.0, in instantiation at foo.ads:15
 generic_float_tests.adb:83:16: info: division check proved, in instantiation at foo.ads:10
 generic_float_tests.adb:83:16: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:83:16: medium: overflow check might fail, in instantiation at foo.ads:10
@@ -52,8 +52,8 @@ generic_float_tests.adb:97:20: medium: overflow check might fail, in instantiati
 generic_float_tests.adb:97:20: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:98:30: medium: postcondition might fail, cannot prove Underflow_2'result, in instantiation at foo.ads:10
 generic_float_tests.adb:98:30: medium: postcondition might fail, cannot prove Underflow_2'result, in instantiation at foo.ads:15
-generic_float_tests.adb:106:38: medium: postcondition might fail, cannot prove Underflow_3'Result > , in instantiation at foo.ads:10
-generic_float_tests.adb:106:38: medium: postcondition might fail, cannot prove Underflow_3'Result > , in instantiation at foo.ads:15
+generic_float_tests.adb:106:38: medium: postcondition might fail, cannot prove Underflow_3'Result > 0.0, in instantiation at foo.ads:10
+generic_float_tests.adb:106:38: medium: postcondition might fail, cannot prove Underflow_3'Result > 0.0, in instantiation at foo.ads:15
 generic_float_tests.adb:109:16: medium: overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:109:16: medium: overflow check might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:113:20: medium: overflow check might fail, in instantiation at foo.ads:10
@@ -110,8 +110,8 @@ generic_float_tests.adb:159:26: info: division check proved, in instantiation at
 generic_float_tests.adb:159:26: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:159:26: medium: overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:159:26: medium: overflow check might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:159:30: medium: assertion might fail, cannot prove 1.0 / X > , in instantiation at foo.ads:10
-generic_float_tests.adb:159:30: medium: assertion might fail, cannot prove 1.0 / X > , in instantiation at foo.ads:15
+generic_float_tests.adb:159:30: medium: assertion might fail, cannot prove 1.0 / X > 0.0, in instantiation at foo.ads:10
+generic_float_tests.adb:159:30: medium: assertion might fail, cannot prove 1.0 / X > 0.0, in instantiation at foo.ads:15
 generic_float_tests.adb:162:14: warning: subprogram "Not_So_Associative" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:162:14: warning: subprogram "Not_So_Associative" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:165:25: medium: overflow check might fail, in instantiation at foo.ads:10 (e.g. when A = (- (/ 30586161923346109588510512006037357685212359171320829553512453349167034556271461979617398991174191138852187132787282439420264835413075620896608737477502079678166692462689258590899832585445762437358120877166332529243099716546647878005315576748092743390017637675840033189907125014416630549357001845762282961525475758353283060544082722018666500587521 179769313486231590772930519078902473361797697894230657273430081157732675805500963132708477322407536021120113879871393357658789768814416622492847430639474124377767893424865485276302219601246094119453082952085005768838150682342462881473913110540827237163350510684586298239947245938479716304835356329624224137216)) and B = (- (/ 305861619233461095885105120060373576852123591713208295535124533491670345562714619796173989911741911388521871327872824394202648354130756208966087374775020796781666924626892585908998325854457624373581208771663
@@ -184,8 +184,8 @@ generic_float_tests.adb:236:10: info: assertion proved, in instantiation at foo.
 generic_float_tests.adb:236:10: info: assertion proved, in instantiation at foo.ads:15
 generic_float_tests.adb:241:14: warning: subprogram "Negation_1" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:241:14: warning: subprogram "Negation_1" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:245:24: medium: assertion might fail, cannot prove F = , in instantiation at foo.ads:10 (e.g. when F = (- (/ 1 3016028512645563681305266885113608299073889444975403943782978895765770593380525743935005222714894210650344701947143478646710091420594647182344648552459760191359615356970001304992599381378429789575347114826506316102540838619131544563238797883818780106159140219790356853918865653741373942825086465161394642370374402048)))
-generic_float_tests.adb:245:24: medium: assertion might fail, cannot prove F = , in instantiation at foo.ads:15 (e.g. when F = (- (/ 1 1619218026458484856935306030635543069931193658661900265956361917104114079828922196269345166861015429607257961710766484731061529963389668985541222792317596832948424074475468702031788549504003092578808340804734900821954583824894657169869485673961835713769925181685251574743411974628694900283867650829309897688783497116635889664)))
+generic_float_tests.adb:245:24: medium: assertion might fail, cannot prove F = 0.0, in instantiation at foo.ads:10 (e.g. when F = (- (/ 1 3016028512645563681305266885113608299073889444975403943782978895765770593380525743935005222714894210650344701947143478646710091420594647182344648552459760191359615356970001304992599381378429789575347114826506316102540838619131544563238797883818780106159140219790356853918865653741373942825086465161394642370374402048)))
+generic_float_tests.adb:245:24: medium: assertion might fail, cannot prove F = 0.0, in instantiation at foo.ads:15 (e.g. when F = (- (/ 1 1619218026458484856935306030635543069931193658661900265956361917104114079828922196269345166861015429607257961710766484731061529963389668985541222792317596832948424074475468702031788549504003092578808340804734900821954583824894657169869485673961835713769925181685251574743411974628694900283867650829309897688783497116635889664)))
 generic_float_tests.adb:249:21: medium: postcondition might fail, cannot prove F = F'old, in instantiation at foo.ads:10 (e.g. when F = (/ 513150614612791199980002389685370047916710070474471391397632435016445409662995915995310131553441176694913317177172753538840563848592540458784976141485262248594283686336582657794809158960680637263966968594443456485599900136441091021663071420134979427796144592742205507081354784292697444485708154913454603550846511297504282065072019852113324731858956582913 1508014301265110212210531135789433919262563062937126445449153766240405586123431823342743394534566435927056356253600209291203385124994765794776479899441737755548338772926974008712671009764769795099197087276523896072521861519103442867235119310387667688286379400732806098106007386857498456032472308789536403591243235328) and F'Old = (/ 30586161923346109588510512006037357685212359171320829553512453349167034556271461979617398991174191138852187132787282439420264835413075620896608737477502079678166692462689258
 generic_float_tests.adb:249:21: medium: postcondition might fail, cannot prove F = F'old, in instantiation at foo.ads:15 (e.g. when F = (/ 291085713000972554089768334276650285936288238823918419407439516134730719234578654641610437335259707947534791310521626176209767446125553493995869972682871687717314240989585995846953682616892479508874998013958807440282909666090461980367004283657814021166506236657923248580177557823447928502670309676637865793922936089216259292189357177013148564322401950300977477927398854504839124689291439485972753931792709776578349135372125758159510994120266833731527606486081116297823920889335137512673238699284379431704697278981319100298653473359796006296974274068837748734806597261714850010474942671865806849651202938379400214705986046418921455613 16192180264584849468199627737513384563964531981131369468552108642194427165439627751356830696114969959614966229145344952911184698990863478149361071995259080793721393942125308909157352619367457307299181414277819605484960598673975
 generic_float_tests.adb:252:14: info: overflow check proved, in instantiation at foo.ads:10
@@ -196,8 +196,8 @@ generic_float_tests.adb:259:24: info: division check proved, in instantiation at
 generic_float_tests.adb:259:24: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:259:24: medium: overflow check might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:259:24: medium: overflow check might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:259:28: medium: assertion might fail, cannot prove X / X = , in instantiation at foo.ads:10
-generic_float_tests.adb:259:28: medium: assertion might fail, cannot prove X / X = , in instantiation at foo.ads:15
+generic_float_tests.adb:259:28: medium: assertion might fail, cannot prove X / X = 1.0, in instantiation at foo.ads:10
+generic_float_tests.adb:259:28: medium: assertion might fail, cannot prove X / X = 1.0, in instantiation at foo.ads:15
 generic_float_tests.adb:268:37: info: initialization of "A" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:268:37: info: initialization of "A" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:268:40: info: initialization of "B" proved, in instantiation at foo.ads:10
@@ -366,8 +366,8 @@ generic_float_tests.adb:396:28: info: initialization of "Y" proved, in instantia
 generic_float_tests.adb:396:28: info: initialization of "Y" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:398:19: info: initialization of "Y" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:398:19: info: initialization of "Y" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:398:21: medium: postcondition might fail, cannot prove Y in X - 0.5 .. X + , in instantiation at foo.ads:10
-generic_float_tests.adb:398:21: medium: postcondition might fail, cannot prove Y in X - 0.5 .. X + , in instantiation at foo.ads:15
+generic_float_tests.adb:398:21: medium: postcondition might fail, cannot prove Y in X - 0.5 .. X + 0.5, in instantiation at foo.ads:10
+generic_float_tests.adb:398:21: medium: postcondition might fail, cannot prove Y in X - 0.5 .. X + 0.5, in instantiation at foo.ads:15
 generic_float_tests.adb:398:26: info: overflow check proved, in instantiation at foo.ads:10
 generic_float_tests.adb:398:26: info: overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:398:37: info: overflow check proved, in instantiation at foo.ads:10
@@ -442,36 +442,36 @@ generic_interval_tests.adb:5:23: info: initialization of "Z" proved, in instanti
 generic_interval_tests.adb:5:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:8:19: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:8:19: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:8:21: medium: postcondition might fail, cannot prove Z in 5.0 .. , in instantiation at bar.ads:12 (e.g. when Z = (/ 2024022533073105958813311609399684604332417649013329481321891212485981803892352021753759080138167329066274125633748092713755737534616237695182922981386606983155885943423008141434802296339075568034623175227109801369266384727989715938492680628412993721016712389089541241335195790419432225387805851986814681588881665380654776319 404804506614621236704990693437834614099113299528284236713802716054860679135990693783920767402874248990374155728633623822779617474771586953734026799881477019843034848553132722728933815484186432682479535356945490137124014966849385397236206711298319112681620113024717539104666829230461005064372655017292012526615415482186989568))
-generic_interval_tests.adb:8:21: medium: postcondition might fail, cannot prove Z in 5.0 .. , in instantiation at bar.ads:8 (e.g. when Z = (/ 7136238038176840754118350518029216392203468799 1427247692705959881058285969449495136382746624))
+generic_interval_tests.adb:8:21: medium: postcondition might fail, cannot prove Z in 5.0 .. 20.0, in instantiation at bar.ads:12 (e.g. when Z = (/ 2024022533073105958813311609399684604332417649013329481321891212485981803892352021753759080138167329066274125633748092713755737534616237695182922981386606983155885943423008141434802296339075568034623175227109801369266384727989715938492680628412993721016712389089541241335195790419432225387805851986814681588881665380654776319 404804506614621236704990693437834614099113299528284236713802716054860679135990693783920767402874248990374155728633623822779617474771586953734026799881477019843034848553132722728933815484186432682479535356945490137124014966849385397236206711298319112681620113024717539104666829230461005064372655017292012526615415482186989568))
+generic_interval_tests.adb:8:21: medium: postcondition might fail, cannot prove Z in 5.0 .. 20.0, in instantiation at bar.ads:8 (e.g. when Z = (/ 7136238038176840754118350518029216392203468799 1427247692705959881058285969449495136382746624))
 generic_interval_tests.adb:11:14: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:11:14: info: overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:15:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:15:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:18:19: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:18:19: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:18:21: medium: postcondition might fail, cannot prove Z in 10.0 .. , in instantiation at bar.ads:12 (e.g. when Z = (/ 2024022533073105958813311609399684604332417649013329481321891212485981803892352021753759080138167329066274125633748092713755737534616237695182922981386606983155885943423008141434802296339075568034623175227109801369266384727989715938492680628412993721016712389089541241335195790419432225387805851986814681588881665380654776319 404804506614621236704990693437834614099113299528284236713802716054860679135990693783920767402874248990374155728633623822779617474771586953734026799881477019843034848553132722728933815484186432682479535356945490137124014966849385397236206711298319112681620113024717539104666829230461005064372655017292012526615415482186989568))
-generic_interval_tests.adb:18:21: medium: postcondition might fail, cannot prove Z in 10.0 .. , in instantiation at bar.ads:8 (e.g. when Z = (/ 7136238038176840754118350518029216392203468799 1427247692705959881058285969449495136382746624))
+generic_interval_tests.adb:18:21: medium: postcondition might fail, cannot prove Z in 10.0 .. 20.0, in instantiation at bar.ads:12 (e.g. when Z = (/ 2024022533073105958813311609399684604332417649013329481321891212485981803892352021753759080138167329066274125633748092713755737534616237695182922981386606983155885943423008141434802296339075568034623175227109801369266384727989715938492680628412993721016712389089541241335195790419432225387805851986814681588881665380654776319 404804506614621236704990693437834614099113299528284236713802716054860679135990693783920767402874248990374155728633623822779617474771586953734026799881477019843034848553132722728933815484186432682479535356945490137124014966849385397236206711298319112681620113024717539104666829230461005064372655017292012526615415482186989568))
+generic_interval_tests.adb:18:21: medium: postcondition might fail, cannot prove Z in 10.0 .. 20.0, in instantiation at bar.ads:8 (e.g. when Z = (/ 7136238038176840754118350518029216392203468799 1427247692705959881058285969449495136382746624))
 generic_interval_tests.adb:21:14: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:21:14: info: overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:24:14: warning: subprogram "Test_03" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:24:14: warning: subprogram "Test_03" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:25:21: medium: overflow check might fail, in instantiation at bar.ads:12
 generic_interval_tests.adb:25:21: medium: overflow check might fail, in instantiation at bar.ads:8
-generic_interval_tests.adb:26:25: medium: postcondition might fail, cannot prove X in 0.0 .. , in instantiation at bar.ads:12
-generic_interval_tests.adb:26:25: medium: postcondition might fail, cannot prove X in 0.0 .. , in instantiation at bar.ads:8
+generic_interval_tests.adb:26:25: medium: postcondition might fail, cannot prove X in 0.0 .. 1.0, in instantiation at bar.ads:12
+generic_interval_tests.adb:26:25: medium: postcondition might fail, cannot prove X in 0.0 .. 1.0, in instantiation at bar.ads:8
 generic_interval_tests.adb:32:14: warning: subprogram "Test_04" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:32:14: warning: subprogram "Test_04" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:34:21: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:34:21: info: overflow check proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:34:25: medium: postcondition might fail, cannot prove X * X in 0.0 .. , in instantiation at bar.ads:12
-generic_interval_tests.adb:34:25: medium: postcondition might fail, cannot prove X * X in 0.0 .. , in instantiation at bar.ads:8
+generic_interval_tests.adb:34:25: medium: postcondition might fail, cannot prove X * X in 0.0 .. 1.0, in instantiation at bar.ads:12
+generic_interval_tests.adb:34:25: medium: postcondition might fail, cannot prove X * X in 0.0 .. 1.0, in instantiation at bar.ads:8
 generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:41:21: medium: overflow check might fail, in instantiation at bar.ads:12
 generic_interval_tests.adb:41:21: medium: overflow check might fail, in instantiation at bar.ads:8
-generic_interval_tests.adb:42:29: medium: postcondition might fail, cannot prove X in 0.0 .. , in instantiation at bar.ads:12
-generic_interval_tests.adb:42:29: medium: postcondition might fail, cannot prove X in 0.0 .. , in instantiation at bar.ads:8
+generic_interval_tests.adb:42:29: medium: postcondition might fail, cannot prove X in 0.0 .. 1.0, in instantiation at bar.ads:12
+generic_interval_tests.adb:42:29: medium: postcondition might fail, cannot prove X in 0.0 .. 1.0, in instantiation at bar.ads:8
 generic_interval_tests.adb:48:14: warning: subprogram "Test_06" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:48:14: warning: subprogram "Test_06" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:50:21: medium: overflow check might fail, in instantiation at bar.ads:12
@@ -496,34 +496,34 @@ generic_interval_tests.adb:72:14: warning: subprogram "Test_09" has no effect, i
 generic_interval_tests.adb:72:14: warning: subprogram "Test_09" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:77:12: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:77:12: info: overflow check proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:78:27: medium: assertion might fail, cannot prove X < , in instantiation at bar.ads:12
-generic_interval_tests.adb:78:27: medium: assertion might fail, cannot prove X < , in instantiation at bar.ads:8
+generic_interval_tests.adb:78:27: medium: assertion might fail, cannot prove X < 0.0, in instantiation at bar.ads:12
+generic_interval_tests.adb:78:27: medium: assertion might fail, cannot prove X < 0.0, in instantiation at bar.ads:8
 generic_interval_tests.adb:82:14: warning: subprogram "Test_10" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:82:14: warning: subprogram "Test_10" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:87:12: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:87:12: info: overflow check proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:88:27: medium: assertion might fail, cannot prove X < , in instantiation at bar.ads:12
-generic_interval_tests.adb:88:27: medium: assertion might fail, cannot prove X < , in instantiation at bar.ads:8
+generic_interval_tests.adb:88:27: medium: assertion might fail, cannot prove X < 0.0, in instantiation at bar.ads:12
+generic_interval_tests.adb:88:27: medium: assertion might fail, cannot prove X < 0.0, in instantiation at bar.ads:8
 generic_interval_tests.adb:92:14: warning: subprogram "Test_11" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:92:14: warning: subprogram "Test_11" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:97:12: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:97:12: info: overflow check proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:98:27: medium: assertion might fail, cannot prove X < , in instantiation at bar.ads:12
-generic_interval_tests.adb:98:27: medium: assertion might fail, cannot prove X < , in instantiation at bar.ads:8
+generic_interval_tests.adb:98:27: medium: assertion might fail, cannot prove X < 0.0, in instantiation at bar.ads:12
+generic_interval_tests.adb:98:27: medium: assertion might fail, cannot prove X < 0.0, in instantiation at bar.ads:8
 generic_interval_tests.adb:127:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:127:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:129:20: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:129:20: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:129:30: medium: postcondition might fail, cannot prove Z <= 6.0) xor (Z >= , in instantiation at bar.ads:12
-generic_interval_tests.adb:129:30: medium: postcondition might fail, cannot prove Z <= 6.0) xor (Z >= , in instantiation at bar.ads:8
+generic_interval_tests.adb:129:30: medium: postcondition might fail, cannot prove Z <= 6.0) xor (Z >= 11.0, in instantiation at bar.ads:12
+generic_interval_tests.adb:129:30: medium: postcondition might fail, cannot prove Z <= 6.0) xor (Z >= 11.0, in instantiation at bar.ads:8
 generic_interval_tests.adb:132:14: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:132:14: info: overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:136:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:136:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:138:19: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:138:19: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:138:21: medium: postcondition might fail, cannot prove Z in 10.0 .. , in instantiation at bar.ads:12 (e.g. when Z = (/ 4048045066146211917626623218799369208664835298026658962643782424971963607784704043507518160276334658132548251267496185427511475069232475390365845962773213966311771886846016282869604592678151136069246350454219602738532769455979431876985361256825987442033424778179082482670391580838864450775611703973629363177763330761309552639 404804506614621236704990693437834614099113299528284236713802716054860679135990693783920767402874248990374155728633623822779617474771586953734026799881477019843034848553132722728933815484186432682479535356945490137124014966849385397236206711298319112681620113024717539104666829230461005064372655017292012526615415482186989568))
-generic_interval_tests.adb:138:21: medium: postcondition might fail, cannot prove Z in 10.0 .. , in instantiation at bar.ads:8 (e.g. when Z = (/ 14272476076353681508236701036058432784406937599 1427247692705959881058285969449495136382746624))
+generic_interval_tests.adb:138:21: medium: postcondition might fail, cannot prove Z in 10.0 .. 20.0, in instantiation at bar.ads:12 (e.g. when Z = (/ 4048045066146211917626623218799369208664835298026658962643782424971963607784704043507518160276334658132548251267496185427511475069232475390365845962773213966311771886846016282869604592678151136069246350454219602738532769455979431876985361256825987442033424778179082482670391580838864450775611703973629363177763330761309552639 404804506614621236704990693437834614099113299528284236713802716054860679135990693783920767402874248990374155728633623822779617474771586953734026799881477019843034848553132722728933815484186432682479535356945490137124014966849385397236206711298319112681620113024717539104666829230461005064372655017292012526615415482186989568))
+generic_interval_tests.adb:138:21: medium: postcondition might fail, cannot prove Z in 10.0 .. 20.0, in instantiation at bar.ads:8 (e.g. when Z = (/ 14272476076353681508236701036058432784406937599 1427247692705959881058285969449495136382746624))
 generic_interval_tests.adb:141:14: info: overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:141:14: info: overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:145:23: info: initialization of "Z" proved, in instantiation at bar.ads:12

@@ -15,8 +15,8 @@ q.adb:28:31: info: initialization of "X" proved
 q.adb:28:31: info: range check proved
 q.ads:11:17: info: initialization of "Value" proved
 test.adb:16:19: info: initialization of "Value" proved
-test.adb:16:19: medium: assertion might fail, cannot prove Value in -0.0001 .. +
+test.adb:16:19: medium: assertion might fail, cannot prove Value in -0.0001 .. +1.0E-4
 test.adb:22:19: info: initialization of "Value" proved
-test.adb:22:19: medium: assertion might fail, cannot prove Value in -0.0015 .. -
+test.adb:22:19: medium: assertion might fail, cannot prove Value in -0.0015 .. -1.0E-3
 test.adb:28:19: info: initialization of "Value" proved
-test.adb:28:19: medium: assertion might fail, cannot prove Value >=
+test.adb:28:19: medium: assertion might fail, cannot prove Value >= 3.1999E1

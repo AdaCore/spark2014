@@ -410,11 +410,11 @@ step_function_test.adb:65:19: info: precondition proved
 step_function_test.adb:65:39: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:65:39: info: initialization of "sfun4.Step" proved
 step_function_test.adb:66:19: info: precondition proved
-step_function_test.adb:66:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun4, 5) =
+step_function_test.adb:66:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun4, 5) = 6.0
 step_function_test.adb:66:39: info: initialization of "sfun4.Number_Of_Delimiters" proved
 step_function_test.adb:66:39: info: initialization of "sfun4.Step" proved
 step_function_test.adb:67:19: info: precondition proved
-step_function_test.adb:67:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun_merge, 11) =
+step_function_test.adb:67:19: medium: assertion might fail, cannot prove Minimum_Until_Point(sfun_merge, 11) = 0.5
 step_function_test.adb:67:39: info: initialization of "sfun_merge.Number_Of_Delimiters" proved
 step_function_test.adb:67:39: info: initialization of "sfun_merge.Step" proved
 units.adb:24:38: info: overflow check proved

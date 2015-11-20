@@ -37,6 +37,7 @@ with Flow_Utility;                       use Flow_Utility;
 with Fname;                              use Fname;
 with Nlists;                             use Nlists;
 with Opt;                                use Opt;
+with Output;
 with Pprint;                             use Pprint;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Disp;                           use Sem_Disp;
@@ -3270,10 +3271,31 @@ package body SPARK_Util is
       ----------------
 
       function Real_Image (U : Ureal) return String is
+         Max_Length : constant := 10;
+         Result : String (1 .. Max_Length);
+         Last   : Natural := 0;
+
+         procedure Output_Result (S : String);
+         --  Callback to print value of U in string Result
+
+         -------------------
+         -- Output_Result --
+         -------------------
+
+         procedure Output_Result (S : String) is
+         begin
+            --  Last character is always ASCII.LF which should be ignored
+            pragma Assert (S (S'Last) = ASCII.LF);
+            Last := Integer'Min (Max_Length, S'Length - 1);
+            Result (1 .. Last) := S (S'First .. Last - S'First + 1);
+         end Output_Result;
+
       begin
-         pragma Unreferenced (U);
-         --  ??? still to be done
-         return "";
+         Output.Set_Special_Output (Output_Result'Unrestricted_Access);
+         UR_Write (U);
+         Output.Write_Eol;
+         Output.Cancel_Special_Output;
+         return Result (1 .. Last);
       end Real_Image;
 
       ------------------
