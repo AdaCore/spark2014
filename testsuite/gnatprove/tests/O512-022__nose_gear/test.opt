@@ -1,2 +1,0 @@
-Darwin XFAIL O311-024 diff in a VC due to cvc4 crash
-inverse-prover XFAIL Z3 proof depends on variable names (OA05-042)
