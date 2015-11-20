@@ -1,0 +1,1 @@
+ALL XFAIL wrong marking of protected calls (OB20-025)
