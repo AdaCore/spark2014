@@ -685,6 +685,73 @@ package body Flow_Error_Messages is
                         for Var_Slice_Num in 1 .. String_Split.Slice_Count
                           (Name_Parts) loop
                            declare
+                              function Is_Uninitialized
+                                (Element_Decl : Entity_Id;
+                                 Element_File : String;
+                                 Element_Line : Logical_Line_Number)
+                                 return Boolean;
+                              --  Return True if the counterexample element
+                              --  with given declaration at given position
+                              --  is uninitialized.
+
+                              function Is_Uninitialized
+                                (Element_Decl : Entity_Id;
+                                 Element_File : String;
+                                 Element_Line : Logical_Line_Number)
+                                 return Boolean is
+                              begin
+                                 --  Counterexample element can be
+                                 --  uninitialized only if its location is the
+                                 --  same as location of its declaration
+                                 --  (otherwise it has been assigned or it is a
+                                 --  part of construct that triggers VC - and
+                                 --  flow analysis would issue an error in this
+                                 --  case)
+                                 if Get_Logical_Line_Number (Sloc
+                                                             (Element_Decl)) =
+                                   Element_Line and then
+                                   File_Name (Sloc (Element_Decl)) =
+                                     Element_File
+                                 then
+                                    --  Uninitialized variable
+                                    if Nkind (Parent (Element_Decl)) =
+                                      N_Object_Declaration
+                                    then
+                                       declare
+                                          No_Init_Expr : constant  Boolean :=
+                                            not Present
+                                              (Expression
+                                                 (Parent (Element_Decl)));
+                                          No_Default_Init : constant Boolean :=
+                                            Default_Initialization
+                                              (Etype (Element_Decl)) =
+                                                No_Default_Initialization;
+                                       begin
+                                          if No_Init_Expr and then
+                                            No_Default_Init
+                                          then
+                                             return True;
+                                          end if;
+                                       end;
+                                    end if;
+
+                                    --  Uninitialized function argument
+                                    if Nkind_In (Nkind
+                                                 (Parent (Element_Decl)),
+                                                 N_Formal_Object_Declaration,
+                                                 N_Parameter_Specification)
+                                      and then Out_Present
+                                        (Parent (Element_Decl))
+                                      and then not In_Present
+                                        (Parent (Element_Decl))
+                                    then
+                                       return True;
+                                    end if;
+                                 end if;
+
+                                 return False;
+                              end Is_Uninitialized;
+
                               use GNAT.String_Split;
 
                               --  Split Part to Entity_Id_Str and Added_Part
@@ -701,6 +768,14 @@ package body Flow_Error_Messages is
 
                               Part_Entity : constant Entity_Id :=
                                 Entity_Id'Value (Entity_Id_Str);
+                              --  Note that if Var_Slice_Num = 1, Part_Entity
+                              --  is Entity_Id of either declaration of
+                              --  argument of a function or declaration of a
+                              --  variable (corresponding to the counterexample
+                              --  element being processed)
+                              --  If Var_Slice_Num > 1, Part_Entity is
+                              --  Entity_Id of declaration of record field or
+                              --  discriminant.
                               Part_Name : Unbounded_String :=
                                 To_Unbounded_String
                                   (Source_Name (Part_Entity) & Added_Part);
@@ -723,6 +798,18 @@ package body Flow_Error_Messages is
                                     Part_Name := Part_Name & "'Old";
                                  elsif Kind = "result" then
                                     Part_Name := Part_Name & "'Result";
+                                 end if;
+
+                                 --  Do not display uninitialized
+                                 --  counterexample elements (elements
+                                 --  corresponding to uninitialized variables
+                                 --  or function arguments)
+                                 if Is_Uninitialized
+                                   (Part_Entity,
+                                    File,
+                                    Logical_Line_Number'Value (Line))
+                                 then
+                                    goto Next_Model_Element;
                                  end if;
 
                                  --  Store variable name to Variable_List
