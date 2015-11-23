@@ -1,0 +1,1 @@
+pragma Overflow_Mode (General => Strict, Assertions => Eliminated);

@@ -1,0 +1,12 @@
+project Default is
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-g", "-O2");
+      for Local_Configuration_Pragmas use "p.adc";
+   end Compiler;
+
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+
+end Default;
