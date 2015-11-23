@@ -1243,12 +1243,6 @@ package body SPARK_Definition is
                if Has_Access_Type (Prefix_Type) then
                   Mark_Violation ("implicit dereference", N);
 
-               --  Detect cases where the prefix is a concurrent object, which
-               --  should not be submitted to this check.
-
-               elsif Is_Concurrent_Type (Prefix_Type) then
-                  null;
-
                elsif No (Search_Component_By_Name (Prefix_Type, Selector)) then
                   Violation_Detected := True;
                   if SPARK_Pragma_Is (Opt.On) then
@@ -2215,8 +2209,11 @@ package body SPARK_Definition is
          when N_Selected_Component =>
             E := Entity (Selector_Name (Nam));
 
-         when others =>
+         when N_Identifier | N_Expanded_Name =>
             E := Entity (Nam);
+
+         when others =>
+            raise Program_Error;
 
       end case;
 
