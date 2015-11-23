@@ -1,2 +1,3 @@
 from test_support import *
-prove_all(steps = 300)
+# Z3 has problem between mac and linux arch
+prove_all(steps = 300, prover = ["cvc4"])

@@ -5,7 +5,7 @@ stable_marriage.adb:10:16: info: initialization of "Seen" proved
 stable_marriage.adb:11:26: info: range check proved
 stable_marriage.adb:12:26: info: index check proved
 stable_marriage.adb:13:27: info: initialization of "Seen" proved
-stable_marriage.adb:15:07: info: assertion proved
+stable_marriage.adb:15:22: medium: assertion might fail, cannot prove Seen = Group1_Flags'(others => True)) = (for all G1 in Group1_Id => Seen (G1) and then (for some Rank in Ranking => (R1 (Rank) = G1 (e.g. when Seen = (65 => true, 1 => true, others => false) and R1 = (64 => 1, others => 0))
 stable_marriage.adb:15:23: info: initialization of "Seen" proved
 stable_marriage.adb:15:43: info: length check proved
 stable_marriage.adb:19:14: info: initialization of "Seen" proved
@@ -17,7 +17,7 @@ stable_marriage.adb:31:16: info: initialization of "Seen" proved
 stable_marriage.adb:32:26: info: range check proved
 stable_marriage.adb:33:26: info: index check proved
 stable_marriage.adb:34:27: info: initialization of "Seen" proved
-stable_marriage.adb:36:07: info: assertion proved
+stable_marriage.adb:36:22: medium: assertion might fail, cannot prove Seen = Group2_Flags'(others => True)) = (for all G2 in Group2_Id => Seen (G2) and then (for some Rank in Ranking => (R2 (Rank) = G2 (e.g. when Seen = (65 => true, 1 => true, others => false) and R2 = (64 => 1, others => 0))
 stable_marriage.adb:36:23: info: initialization of "Seen" proved
 stable_marriage.adb:36:43: info: length check proved
 stable_marriage.adb:40:14: info: initialization of "Seen" proved
