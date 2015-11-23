@@ -803,6 +803,9 @@ Tool Limitations
    single protected declaration (see |SPARK| RM 9(3)). An error is raised
    instead in such cases.
 
+#. Classwide Global and Depends contracts as defined in SPARK RM 6.1.6 are not
+   supported.
+
 Legality Rules
 --------------
 
