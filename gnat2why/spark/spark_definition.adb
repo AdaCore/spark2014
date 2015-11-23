@@ -2023,9 +2023,7 @@ package body SPARK_Definition is
       end case;
 
       Mark (P);
-      if Present (Exprs) then
-         Mark_List (Exprs);
-      end if;
+      Mark_List (Exprs);
    end Mark_Attribute_Reference;
 
    --------------------
