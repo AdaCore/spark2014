@@ -1,3 +1,5 @@
+with Ada.Task_Identification;
+
 package TTI is
 
     task T;
