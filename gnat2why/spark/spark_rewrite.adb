@@ -53,6 +53,14 @@ package body SPARK_Rewrite is
    --  the original subprograms; we prefer the original names when outputting
    --  error messages and generating Why code.
 
+   procedure Rewrite_Real_Literal (N : Node_Id);
+   --  Rewrite real literals that are not sub-expressions of static expressions
+   --  into machine numbers, when the frontend has not done so already as part
+   --  of Eval_Real_Literal. This can only be performed here and not as part
+   --  of evaluation or expansion in the frontend, because the information that
+   --  the parent expression is static is only available after the real literal
+   --  node has been evaluated and expanded.
+
    ------------------
    -- Rewrite_Call --
    ------------------
@@ -156,6 +164,26 @@ package body SPARK_Rewrite is
          end;
       end if;
    end Rewrite_Identifier;
+
+   --------------------------
+   -- Rewrite_Real_Literal --
+   --------------------------
+
+   --  Only rewrite real literals that are not part of a static expression, as
+   --  it is allowed for a literal sub-expression to be outside the bounds of
+   --  the expression type in a static expression. For an example where this
+   --  is needed, see definition of Forever in g-socket.ads. In such a case,
+   --  GNATprove will use the value computed by the frontend for the static
+   --  expression when in bounds, otherwise an error should have been emitted.
+
+   procedure Rewrite_Real_Literal (N : Node_Id) is
+      Par : constant Node_Id := Parent (N);
+      PK  : constant Node_Kind := Nkind (Par);
+   begin
+      if not (PK in N_Subexpr and then Is_Static_Expression (Par)) then
+         Check_Non_Static_Context (N);
+      end if;
+   end Rewrite_Real_Literal;
 
    --------------------------------------
    -- Rewrite_Subprogram_Instantiation --
@@ -299,6 +327,9 @@ package body SPARK_Rewrite is
          --  And finally rewrite the node.
 
          case Nkind (N) is
+            when N_Real_Literal =>
+               Rewrite_Real_Literal (N);
+
             when N_Identifier | N_Expanded_Name =>
                Rewrite_Identifier (N);
 
