@@ -235,12 +235,14 @@ are in |SPARK|.
 
 .. _tu-nt-tasks_and_synchronization-14:
 
-15. The package Ada.Task_Identification declares a synchronized
-    external state abstraction named Tasking_State. The package
-    Ada.Real_Time declares a synchronized external state abstraction named
-    Clock_Time. The Async_Readers and Async_Writers aspects of both state
+15. The package Ada.Task_Identification declares (and initializes)
+    a synchronized external state abstraction named Tasking_State.
+    The package Ada.Real_Time declares (and initializes) a synchronized
+    external state abstraction named Clock_Time.
+    The Async_Readers and Async_Writers aspects of both state
     abstractions are True, and their Effective_Reads and Effective_Writes
     aspects are False.
+    Each is listed in the Initializes aspect of its respective package.
     For each of the following language-defined functions, the
     Volatile_Function aspect of the function is defined to be True
     and the Global aspect of the function specifies that one of these
