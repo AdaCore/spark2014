@@ -76,6 +76,9 @@ package body Gnat2Why.Error_Messages is
       E    : Entity_Id);
    --  remove the VC_Id from the map from entities to Id_Sets
 
+   procedure Mark_Subprograms_With_No_VC_As_Proved;
+   --  for all subprograms that do not contain any VC, issue related claims
+
    function Proved_Message
      (Node : Node_Id;
       Kind : VC_Kind) return String;
@@ -116,6 +119,7 @@ package body Gnat2Why.Error_Messages is
       Position : Cursor;
    begin
       VC_Set_Table.Insert (Key => E, Position => Position, Inserted => Dummy);
+      pragma Assert (not Dummy);
       VC_Set_Table.Update_Element (Position, Add_To_Set'Access);
    end Add_Id_To_Entity;
 
@@ -165,6 +169,21 @@ package body Gnat2Why.Error_Messages is
    begin
       return not (VC_Table.Is_Empty);
    end Has_Registered_VCs;
+
+   -------------------------------------------
+   -- Mark_Subprograms_With_No_VC_As_Proved --
+   -------------------------------------------
+
+   procedure Mark_Subprograms_With_No_VC_As_Proved
+   is
+      use Ent_Id_Set_Maps;
+   begin
+      for C in VC_Set_Table.Iterate loop
+         if Element (C).Is_Empty then
+            Register_Proof_Claims (Key (C));
+         end if;
+      end loop;
+   end Mark_Subprograms_With_No_VC_As_Proved;
 
    ----------------------------------
    -- Mark_VC_As_Proved_For_Entity --
@@ -396,6 +415,7 @@ package body Gnat2Why.Error_Messages is
       end Handle_Result;
 
    begin
+      Mark_Subprograms_With_No_VC_As_Proved;
       declare
          File : constant JSON_Value := Read (S, "");
          Results : constant JSON_Array := Get (Get (File, "results"));
@@ -517,5 +537,17 @@ package body Gnat2Why.Error_Messages is
       Add_Id_To_Entity (Tmp, E);
       return Tmp;
    end Register_VC;
+
+   ------------------------
+   -- Register_VC_Entity --
+   ------------------------
+
+   procedure Register_VC_Entity (E : Entity_Id) is
+      Position : Ent_Id_Set_Maps.Cursor;
+      Dummy : Boolean;
+      pragma Unreferenced (Position, Dummy);
+   begin
+      VC_Set_Table.Insert (Key => E, Position => Position, Inserted => Dummy);
+   end Register_VC_Entity;
 
 end Gnat2Why.Error_Messages;

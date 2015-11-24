@@ -34,7 +34,14 @@ package Gnat2Why.Error_Messages is
 
    function Register_VC (N : Node_Id; E : Entity_Id) return VC_Id
      with Pre => Present (N) and then Present (E);
-   --  register a VC for entity E, located at node N
+   --  @param N node at which the VC is located
+   --  @param E entity of the subprogram/package elaboration to which the VC
+   --    belongs
+   --  @return a fresh ID for this VC
+
+   procedure Register_VC_Entity (E : Entity_Id);
+   --  @param E entity of a subprogram/package which will be considered by
+   --  proof
 
    function Has_Registered_VCs return Boolean;
    --  returns true when the function Register_VC has been called

@@ -23,44 +23,45 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;      use Common_Containers;
-with Errout;                 use Errout;
-with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
-with Flow_Generated_Globals; use Flow_Generated_Globals;
-with Flow_Refinement;        use Flow_Refinement;
-with Flow_Types;             use Flow_Types;
-with Flow_Utility;           use Flow_Utility;
+with Common_Containers;       use Common_Containers;
+with Errout;                  use Errout;
+with Flow_Dependency_Maps;    use Flow_Dependency_Maps;
+with Flow_Generated_Globals;  use Flow_Generated_Globals;
+with Flow_Refinement;         use Flow_Refinement;
+with Flow_Types;              use Flow_Types;
+with Flow_Utility;            use Flow_Utility;
 with GNAT.Source_Info;
-with Gnat2Why.Expr;          use Gnat2Why.Expr;
-with Namet;                  use Namet;
-with Nlists;                 use Nlists;
-with Rtsfind;                use Rtsfind;
-with Sem_Aux;                use Sem_Aux;
-with Sem_Disp;               use Sem_Disp;
-with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
-with Sinput;                 use Sinput;
-with Snames;                 use Snames;
-with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
-with SPARK_Util;             use SPARK_Util;
-with Stand;                  use Stand;
-with Uintp;                  use Uintp;
-with VC_Kinds;               use VC_Kinds;
-with Why;                    use Why;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
-with Why.Atree.Builders;     use Why.Atree.Builders;
-with Why.Atree.Modules;      use Why.Atree.Modules;
-with Why.Atree.Mutators;     use Why.Atree.Mutators;
-with Why.Conversions;        use Why.Conversions;
-with Why.Gen.Decl;           use Why.Gen.Decl;
-with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Gen.Names;          use Why.Gen.Names;
-with Why.Gen.Preds;          use Why.Gen.Preds;
-with Why.Gen.Progs;          use Why.Gen.Progs;
-with Why.Gen.Terms;          use Why.Gen.Terms;
-with Why.Inter;              use Why.Inter;
-with Why.Types;              use Why.Types;
+with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;           use Gnat2Why.Expr;
+with Namet;                   use Namet;
+with Nlists;                  use Nlists;
+with Rtsfind;                 use Rtsfind;
+with Sem_Aux;                 use Sem_Aux;
+with Sem_Disp;                use Sem_Disp;
+with Sem_Util;                use Sem_Util;
+with Sinfo;                   use Sinfo;
+with Sinput;                  use Sinput;
+with Snames;                  use Snames;
+with SPARK_Definition;        use SPARK_Definition;
+with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
+with SPARK_Util;              use SPARK_Util;
+with Stand;                   use Stand;
+with Uintp;                   use Uintp;
+with VC_Kinds;                use VC_Kinds;
+with Why;                     use Why;
+with Why.Atree.Accessors;     use Why.Atree.Accessors;
+with Why.Atree.Builders;      use Why.Atree.Builders;
+with Why.Atree.Modules;       use Why.Atree.Modules;
+with Why.Atree.Mutators;      use Why.Atree.Mutators;
+with Why.Conversions;         use Why.Conversions;
+with Why.Gen.Decl;            use Why.Gen.Decl;
+with Why.Gen.Expr;            use Why.Gen.Expr;
+with Why.Gen.Names;           use Why.Gen.Names;
+with Why.Gen.Preds;           use Why.Gen.Preds;
+with Why.Gen.Progs;           use Why.Gen.Progs;
+with Why.Gen.Terms;           use Why.Gen.Terms;
+with Why.Inter;               use Why.Inter;
+with Why.Types;               use Why.Types;
 
 package body Gnat2Why.Subprograms is
 
@@ -1654,6 +1655,8 @@ package body Gnat2Why.Subprograms is
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       Current_Subp := E;
 
+      Register_VC_Entity (E);
+
       Params := (File        => File.File,
                  Theory      => File.Cur_Theory,
                  Phase       => Generate_VCs_For_Body,
@@ -2120,6 +2123,8 @@ package body Gnat2Why.Subprograms is
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Current_Subp := E;
+
+      Register_VC_Entity (E);
 
       --  There might be no specific postcondition for E. In that case, the
       --  classwide or inherited postcondition is checked if present. Locate
@@ -2605,6 +2610,8 @@ package body Gnat2Why.Subprograms is
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       Current_Subp := E;
+
+      Register_VC_Entity (E);
 
       Params := (File        => File.File,
                  Theory      => File.Cur_Theory,
