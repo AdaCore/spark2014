@@ -26,6 +26,7 @@
 with Ada.Characters.Handling;
 with Ada.Command_Line;
 with Ada.Containers;            use Ada.Containers;
+with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Text_IO;               use Ada.Text_IO;
 with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
@@ -1177,15 +1178,26 @@ ASCII.LF;
                   end if;
                end;
                when Unit_Separate =>
+
+                  --  Here we try to find the proper unit to which belongs
+                  --  the separate file. The "unit_name" function of
+                  --  gnatcoll.projects sometimes returns the proper unit name,
+                  --  but sometimes returns something like "unit.separate". If
+                  --  there is a dot in what has been returned, we remove it.
+
                   declare
                      Ptype : constant Project_Type := Tree.Root_Project;
-                     Other_VF : Virtual_File;
+                     Sep_Name : constant String := Unit_Name (Info);
+                     Find_Dot : constant Natural := Index (Sep_Name, ".");
+                     U_Name : constant String :=
+                       (if Find_Dot = 0 then Sep_Name
+                        else Sep_Name (Sep_Name'First .. Find_Dot - 1));
+                     Other_VF : constant Virtual_File :=
+                       Create_From_Base (Ptype.File_From_Unit
+                                           (U_Name,
+                                            Unit_Body,
+                                            "Ada"));
                   begin
-                     Other_VF :=
-                       Create_From_Base
-                         (Ptype.File_From_Unit (Unit_Name (Info),
-                          Unit_Body,
-                          "Ada"));
                      if Is_Regular_File (Other_VF) then
                         File_List.Replace_Element
                           (Cursor,
