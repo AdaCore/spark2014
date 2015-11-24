@@ -15,7 +15,7 @@ possible :ref:`Project Scenarios`:
 
 * the `brown field` scenario: :ref:`Maintenance and Evolution of Existing Ada Software`
 * the `green field` scenario: :ref:`New Developments in SPARK`
-* the `migration` scenario: :ref:`Convertion of Existing SPARK Software to SPARK 2014`
+* the `migration` scenario: :ref:`Conversion of Existing SPARK Software to SPARK 2014`
 * the `frozen` scenario: :ref:`Analysis of Frozen Ada Software`
 
 The end of this section examines each of these scenarios in turn and describes
@@ -1101,9 +1101,9 @@ process for this scenario might be:
    or ``proof`` depending on the objectives) to verify it (against its
    contract, and/or to show absence of run-time errors).
 
-.. _Convertion of Existing SPARK Software to SPARK 2014:
+.. _Conversion of Existing SPARK Software to SPARK 2014:
 
-Convertion of Existing SPARK Software to SPARK 2014
+Conversion of Existing SPARK Software to SPARK 2014
 ---------------------------------------------------
 
 If an existing piece of software has been developed in a previous version of
