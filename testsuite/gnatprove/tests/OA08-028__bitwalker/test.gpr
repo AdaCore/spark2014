@@ -1,4 +1,4 @@
-project Default is
+project Test is
 
    package Compiler is
       for Default_Switches ("Ada") use ("-g", "-O2");
@@ -9,4 +9,4 @@ project Default is
       for Proof_Dir use "proof";
    end Prove;
 
-end Default;
+end Test;

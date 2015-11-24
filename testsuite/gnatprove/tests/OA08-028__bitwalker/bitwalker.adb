@@ -20,7 +20,6 @@ is
          R : constant Unsigned_64 :=
            (if Flag then (Value or Mask) else (Value and (not Mask)));
       begin
-
          pragma Assert (for all I in Unsigned_64
                         range 0 .. 63 =>
                           (if I /= 63 - Left_Bv then
@@ -58,10 +57,6 @@ is
               (for all J in Length - I .. Length - 1 =>
                  Nth8_Stream (Addr, Start + Length - J - 1)
                = Nth (Retval, J));
-
-            pragma Loop_Invariant
-              (for all J in 0 .. Length - I - 1 =>
-                  not Nth (Retval, J) );
 
             pragma Loop_Invariant
               (for all J in Length .. 63 =>

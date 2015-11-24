@@ -7,180 +7,177 @@ bitwalker.adb:15:22: medium: assertion might fail, cannot prove Left_Bv < 64
 bitwalker.adb:16:22: medium: assertion might fail, cannot prove 63 - Left_Bv = 63 - Left
 bitwalker.adb:16:53: info: range check proved
 bitwalker.adb:19:59: info: range check proved
-bitwalker.adb:27:31: info: precondition proved
-bitwalker.adb:27:31: medium: assertion might fail, cannot prove Nth_Bv (R, I) = Nth_Bv (Value, I)
-bitwalker.adb:27:47: info: precondition proved
-bitwalker.adb:29:10: medium: assertion might fail
-bitwalker.adb:34:10: info: assertion proved
-bitwalker.adb:34:32: info: precondition proved
-bitwalker.adb:48:16: info: overflow check proved
-bitwalker.adb:48:29: info: overflow check proved
-bitwalker.adb:57:13: info: loop invariant initialization proved
+bitwalker.adb:26:31: info: precondition proved
+bitwalker.adb:26:31: medium: assertion might fail, cannot prove Nth_Bv (R, I) = Nth_Bv (Value, I)
+bitwalker.adb:26:47: info: precondition proved
+bitwalker.adb:28:10: medium: assertion might fail
+bitwalker.adb:33:10: info: assertion proved
+bitwalker.adb:33:32: info: precondition proved
+bitwalker.adb:47:16: info: overflow check proved
+bitwalker.adb:47:29: info: overflow check proved
+bitwalker.adb:56:13: info: loop invariant initialization proved
+bitwalker.adb:58:18: info: precondition proved
+bitwalker.adb:58:18: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr, Start + Length - J - 1) = Nth (Retval, J)
+bitwalker.adb:58:56: info: range check proved
 bitwalker.adb:59:18: info: precondition proved
-bitwalker.adb:59:18: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr, Start + Length - J - 1) = Nth (Retval, J)
-bitwalker.adb:59:56: info: range check proved
-bitwalker.adb:60:18: info: precondition proved
-bitwalker.adb:60:23: info: initialization of "Retval" proved
-bitwalker.adb:60:31: info: range check proved
-bitwalker.adb:62:13: info: loop invariant initialization proved
-bitwalker.adb:64:19: medium: loop invariant might fail after first iteration, cannot prove not Nth (Retval, J)
-bitwalker.adb:64:23: info: precondition proved
-bitwalker.adb:64:28: info: initialization of "Retval" proved
-bitwalker.adb:66:13: info: loop invariant initialization proved
-bitwalker.adb:68:18: medium: loop invariant might fail after first iteration, cannot prove not Nth (Retval, J)
-bitwalker.adb:68:22: info: precondition proved
-bitwalker.adb:68:27: info: initialization of "Retval" proved
-bitwalker.adb:68:35: info: range check proved
-bitwalker.adb:70:21: info: precondition proved
-bitwalker.adb:70:48: info: overflow check proved
-bitwalker.adb:71:23: info: precondition proved
-bitwalker.adb:71:34: info: initialization of "Retval" proved
-bitwalker.adb:71:56: info: overflow check proved
-bitwalker.adb:71:56: info: range check proved
-bitwalker.adb:71:61: info: initialization of "Flag" proved
-bitwalker.adb:74:17: info: initialization of "Retval" proved
-bitwalker.adb:83:54: info: range check proved
-bitwalker.adb:96:18: info: division check proved
-bitwalker.adb:96:18: info: index check proved
-bitwalker.adb:96:26: info: precondition proved
-bitwalker.adb:96:46: info: division check proved
-bitwalker.adb:96:46: info: index check proved
-bitwalker.adb:96:57: info: division check proved
-bitwalker.adb:106:16: info: overflow check proved
-bitwalker.adb:106:36: info: overflow check proved
-bitwalker.adb:115:10: info: loop invariant initialization proved
-bitwalker.adb:115:10: info: loop invariant preservation proved
-bitwalker.adb:116:10: info: loop invariant initialization proved
-bitwalker.adb:118:15: info: precondition proved
-bitwalker.adb:118:15: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr'Loop_Entry, J) = Nth8_Stream (Addr, J)
-bitwalker.adb:118:50: info: precondition proved
-bitwalker.adb:119:10: info: loop invariant initialization proved
-bitwalker.adb:121:15: info: precondition proved
-bitwalker.adb:121:15: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr, J) = Nth (Value, Len - J - 1 + Start)
-bitwalker.adb:121:34: info: range check proved
-bitwalker.adb:121:39: info: precondition proved
-bitwalker.adb:121:63: info: range check proved
-bitwalker.adb:122:10: info: loop invariant initialization proved
-bitwalker.adb:124:15: info: precondition proved
-bitwalker.adb:124:15: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr, J) = Nth8_Stream (Addr'Loop_Entry, J)
-bitwalker.adb:124:34: info: range check proved
-bitwalker.adb:124:39: info: precondition proved
-bitwalker.adb:124:69: info: range check proved
-bitwalker.adb:126:18: info: precondition proved
-bitwalker.adb:126:47: info: overflow check proved
-bitwalker.adb:126:47: info: range check proved
-bitwalker.adb:128:10: info: precondition proved
-bitwalker.adb:129:31: info: overflow check proved
-bitwalker.adb:130:25: info: initialization of "Flag" proved
-bitwalker.adb:132:25: info: precondition proved
-bitwalker.adb:132:25: medium: assertion might fail, cannot prove Nth8_Stream (Addr, Start + I) = Nth (Value, Len - I - 1)
-bitwalker.adb:133:25: info: precondition proved
-bitwalker.adb:133:45: info: range check proved
-bitwalker.adb:134:10: medium: assertion might fail
-bitwalker.adb:138:13: info: precondition proved
-bitwalker.adb:138:32: info: range check proved
-bitwalker.adb:138:37: info: precondition proved
-bitwalker.adb:138:65: info: range check proved
-bitwalker.adb:145:53: info: range check proved
-bitwalker.adb:147:07: info: assertion proved
-bitwalker.adb:148:24: info: precondition proved
-bitwalker.adb:148:32: info: range check proved
-bitwalker.adb:148:37: info: precondition proved
-bitwalker.adb:148:59: info: range check proved
-bitwalker.adb:149:22: info: precondition proved
-bitwalker.adb:149:22: medium: assertion might fail, cannot prove Eq_Sub (X, 0, Natural (Len_Bv), 64 - Len_Bv)
-bitwalker.adb:149:45: info: range check proved
-bitwalker.adb:149:66: medium: range check might fail
-bitwalker.adb:150:22: info: precondition proved
-bitwalker.adb:150:22: medium: assertion might fail, cannot prove Eq_Sub_Bv (X, 0, Len_Bv, 64 - Len_Bv)
-bitwalker.adb:151:22: medium: assertion might fail, cannot prove X and (MaxValue (Len) - 1)) = X
-bitwalker.adb:151:40: info: range check proved
-bitwalker.adb:163:16: info: precondition proved
-bitwalker.adb:165:12: info: precondition proved
-bitwalker.adb:165:27: info: initialization of "Value" proved
-bitwalker.adb:167:07: info: precondition proved
-bitwalker.adb:167:31: info: initialization of "Value" proved
-bitwalker.adb:169:07: info: assertion proved
-bitwalker.adb:169:22: info: initialization of "Result" proved
-bitwalker.adb:171:07: info: assertion proved
-bitwalker.adb:173:12: info: precondition proved
-bitwalker.adb:173:31: info: range check proved
-bitwalker.adb:173:36: info: precondition proved
-bitwalker.adb:173:58: info: range check proved
-bitwalker.adb:183:48: medium: assertion might fail, cannot prove not Nth (Value, I)
-bitwalker.adb:183:52: info: precondition proved
-bitwalker.adb:183:64: info: range check proved
-bitwalker.adb:185:07: info: precondition proved
-bitwalker.adb:187:07: info: assertion proved
-bitwalker.adb:187:22: info: initialization of "PokeResult" proved
-bitwalker.adb:189:17: info: precondition proved
-bitwalker.adb:191:07: info: assertion proved
-bitwalker.adb:191:22: info: precondition proved
-bitwalker.adb:191:26: info: initialization of "Result" proved
-bitwalker.ads:11:35: info: range check proved
-bitwalker.ads:19:08: info: precondition proved
-bitwalker.ads:19:29: info: division check proved
-bitwalker.ads:19:29: info: index check proved
-bitwalker.ads:19:40: info: division check proved
-bitwalker.ads:24:18: info: postcondition proved
-bitwalker.ads:24:41: info: precondition proved
-bitwalker.ads:33:18: medium: postcondition might fail
-bitwalker.ads:35:28: info: precondition proved
-bitwalker.ads:35:56: info: precondition proved
-bitwalker.ads:37:28: info: precondition proved
-bitwalker.ads:37:54: info: range check proved
-bitwalker.ads:48:08: info: complete contract cases proved
-bitwalker.ads:48:08: info: disjoint contract cases proved
-bitwalker.ads:49:44: info: contract case proved
-bitwalker.ads:51:46: medium: contract case might fail
-bitwalker.ads:53:21: info: precondition proved
-bitwalker.ads:53:59: info: range check proved
-bitwalker.ads:54:21: info: precondition proved
-bitwalker.ads:56:46: info: precondition proved
-bitwalker.ads:56:64: info: range check proved
-bitwalker.ads:62:36: info: range check proved
-bitwalker.ads:65:16: info: postcondition proved
-bitwalker.ads:65:35: info: precondition proved
-bitwalker.ads:65:51: info: range check proved
-bitwalker.ads:74:10: info: postcondition proved
-bitwalker.ads:76:15: info: precondition proved
-bitwalker.ads:76:42: info: precondition proved
-bitwalker.ads:77:10: info: precondition proved
-bitwalker.ads:77:34: info: range check proved
-bitwalker.ads:85:10: info: postcondition proved
-bitwalker.ads:87:22: info: precondition proved
-bitwalker.ads:87:46: info: precondition proved
-bitwalker.ads:89:13: info: precondition proved
-bitwalker.ads:94:20: info: initialization of "Result" proved
-bitwalker.ads:100:16: medium: postcondition might fail
-bitwalker.ads:100:17: info: initialization of "Result" proved
-bitwalker.ads:101:18: info: initialization of "Result" proved
+bitwalker.adb:59:23: info: initialization of "Retval" proved
+bitwalker.adb:59:31: info: range check proved
+bitwalker.adb:61:13: info: loop invariant initialization proved
+bitwalker.adb:63:18: medium: loop invariant might fail after first iteration, cannot prove not Nth (Retval, J)
+bitwalker.adb:63:22: info: precondition proved
+bitwalker.adb:63:27: info: initialization of "Retval" proved
+bitwalker.adb:63:35: info: range check proved
+bitwalker.adb:65:21: info: precondition proved
+bitwalker.adb:65:48: info: overflow check proved
+bitwalker.adb:66:23: info: precondition proved
+bitwalker.adb:66:34: info: initialization of "Retval" proved
+bitwalker.adb:66:56: info: overflow check proved
+bitwalker.adb:66:56: info: range check proved
+bitwalker.adb:66:61: info: initialization of "Flag" proved
+bitwalker.adb:69:17: info: initialization of "Retval" proved
+bitwalker.adb:78:54: info: range check proved
+bitwalker.adb:91:18: info: division check proved
+bitwalker.adb:91:18: info: index check proved
+bitwalker.adb:91:26: info: precondition proved
+bitwalker.adb:91:46: info: division check proved
+bitwalker.adb:91:46: info: index check proved
+bitwalker.adb:91:57: info: division check proved
+bitwalker.adb:101:16: info: overflow check proved
+bitwalker.adb:101:36: info: overflow check proved
+bitwalker.adb:110:10: info: loop invariant initialization proved
+bitwalker.adb:110:10: info: loop invariant preservation proved
+bitwalker.adb:111:10: info: loop invariant initialization proved
+bitwalker.adb:113:15: info: precondition proved
+bitwalker.adb:113:15: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr'Loop_Entry, J) = Nth8_Stream (Addr, J)
+bitwalker.adb:113:50: info: precondition proved
+bitwalker.adb:114:10: info: loop invariant initialization proved
+bitwalker.adb:116:15: info: precondition proved
+bitwalker.adb:116:15: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr, J) = Nth (Value, Len - J - 1 + Start)
+bitwalker.adb:116:34: info: range check proved
+bitwalker.adb:116:39: info: precondition proved
+bitwalker.adb:116:63: info: range check proved
+bitwalker.adb:117:10: info: loop invariant initialization proved
+bitwalker.adb:119:15: info: precondition proved
+bitwalker.adb:119:15: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr, J) = Nth8_Stream (Addr'Loop_Entry, J)
+bitwalker.adb:119:34: info: range check proved
+bitwalker.adb:119:39: info: precondition proved
+bitwalker.adb:119:69: info: range check proved
+bitwalker.adb:121:18: info: precondition proved
+bitwalker.adb:121:47: info: overflow check proved
+bitwalker.adb:121:47: info: range check proved
+bitwalker.adb:123:10: info: precondition proved
+bitwalker.adb:124:31: info: overflow check proved
+bitwalker.adb:125:25: info: initialization of "Flag" proved
+bitwalker.adb:127:25: info: precondition proved
+bitwalker.adb:127:25: medium: assertion might fail, cannot prove Nth8_Stream (Addr, Start + I) = Nth (Value, Len - I - 1)
+bitwalker.adb:128:25: info: precondition proved
+bitwalker.adb:128:45: info: range check proved
+bitwalker.adb:129:10: medium: assertion might fail
+bitwalker.adb:133:13: info: precondition proved
+bitwalker.adb:133:32: info: range check proved
+bitwalker.adb:133:37: info: precondition proved
+bitwalker.adb:133:65: info: range check proved
+bitwalker.adb:140:53: info: range check proved
+bitwalker.adb:142:07: info: assertion proved
+bitwalker.adb:143:24: info: precondition proved
+bitwalker.adb:143:32: info: range check proved
+bitwalker.adb:143:37: info: precondition proved
+bitwalker.adb:143:59: info: range check proved
+bitwalker.adb:144:22: info: precondition proved
+bitwalker.adb:144:22: medium: assertion might fail, cannot prove Eq_Sub (X, 0, Natural (Len_Bv), 64 - Len_Bv)
+bitwalker.adb:144:45: info: range check proved
+bitwalker.adb:144:66: medium: range check might fail
+bitwalker.adb:145:22: info: precondition proved
+bitwalker.adb:145:22: medium: assertion might fail, cannot prove Eq_Sub_Bv (X, 0, Len_Bv, 64 - Len_Bv)
+bitwalker.adb:146:22: medium: assertion might fail, cannot prove X and (MaxValue (Len) - 1)) = X
+bitwalker.adb:146:40: info: range check proved
+bitwalker.adb:158:16: info: precondition proved
+bitwalker.adb:160:12: info: precondition proved
+bitwalker.adb:160:27: info: initialization of "Value" proved
+bitwalker.adb:162:07: info: precondition proved
+bitwalker.adb:162:31: info: initialization of "Value" proved
+bitwalker.adb:164:07: info: assertion proved
+bitwalker.adb:164:22: info: initialization of "Result" proved
+bitwalker.adb:166:07: info: assertion proved
+bitwalker.adb:168:12: info: precondition proved
+bitwalker.adb:168:31: info: range check proved
+bitwalker.adb:168:36: info: precondition proved
+bitwalker.adb:168:58: info: range check proved
+bitwalker.adb:178:48: medium: assertion might fail, cannot prove not Nth (Value, I)
+bitwalker.adb:178:52: info: precondition proved
+bitwalker.adb:178:64: info: range check proved
+bitwalker.adb:180:07: info: precondition proved
+bitwalker.adb:182:07: info: assertion proved
+bitwalker.adb:182:22: info: initialization of "PokeResult" proved
+bitwalker.adb:184:17: info: precondition proved
+bitwalker.adb:186:07: info: assertion proved
+bitwalker.adb:186:22: info: precondition proved
+bitwalker.adb:186:26: info: initialization of "Result" proved
+bitwalker.ads:10:35: info: range check proved
+bitwalker.ads:13:14: info: postcondition proved
+bitwalker.ads:13:32: info: precondition proved
+bitwalker.ads:13:45: info: range check proved
+bitwalker.ads:16:07: info: precondition proved
+bitwalker.ads:16:28: info: division check proved
+bitwalker.ads:16:28: info: index check proved
+bitwalker.ads:16:39: info: division check proved
+bitwalker.ads:21:16: info: postcondition proved
+bitwalker.ads:21:39: info: precondition proved
+bitwalker.ads:30:16: medium: postcondition might fail
+bitwalker.ads:32:26: info: precondition proved
+bitwalker.ads:32:54: info: precondition proved
+bitwalker.ads:34:26: info: precondition proved
+bitwalker.ads:34:52: info: range check proved
+bitwalker.ads:45:08: info: complete contract cases proved
+bitwalker.ads:45:08: info: disjoint contract cases proved
+bitwalker.ads:46:44: info: contract case proved
+bitwalker.ads:48:46: medium: contract case might fail
+bitwalker.ads:50:21: info: precondition proved
+bitwalker.ads:50:59: info: range check proved
+bitwalker.ads:51:21: info: precondition proved
+bitwalker.ads:53:46: info: precondition proved
+bitwalker.ads:53:64: info: range check proved
+bitwalker.ads:59:36: info: range check proved
+bitwalker.ads:62:16: info: postcondition proved
+bitwalker.ads:62:35: info: precondition proved
+bitwalker.ads:62:51: info: range check proved
+bitwalker.ads:71:10: info: postcondition proved
+bitwalker.ads:73:15: info: precondition proved
+bitwalker.ads:73:42: info: precondition proved
+bitwalker.ads:74:10: info: precondition proved
+bitwalker.ads:74:34: info: range check proved
+bitwalker.ads:82:10: info: postcondition proved
+bitwalker.ads:84:22: info: precondition proved
+bitwalker.ads:84:46: info: precondition proved
+bitwalker.ads:86:13: info: precondition proved
+bitwalker.ads:91:20: info: initialization of "Result" proved
+bitwalker.ads:97:16: medium: postcondition might fail
+bitwalker.ads:97:17: info: initialization of "Result" proved
+bitwalker.ads:98:18: info: initialization of "Result" proved
+bitwalker.ads:99:18: info: initialization of "Result" proved
 bitwalker.ads:102:18: info: initialization of "Result" proved
-bitwalker.ads:105:18: info: initialization of "Result" proved
-bitwalker.ads:108:20: info: initialization of "Result" proved
-bitwalker.ads:110:26: medium: precondition might fail
-bitwalker.ads:110:54: medium: precondition might fail
-bitwalker.ads:112:20: info: initialization of "Result" proved
-bitwalker.ads:114:26: medium: precondition might fail
-bitwalker.ads:114:45: info: range check proved
-bitwalker.ads:115:22: info: precondition proved
-bitwalker.ads:115:46: info: range check proved
-bitwalker.ads:117:20: info: initialization of "Result" proved
-bitwalker.ads:119:26: medium: precondition might fail
-bitwalker.ads:119:45: info: range check proved
-bitwalker.ads:120:22: medium: precondition might fail
-bitwalker.ads:120:45: medium: range check might fail
-bitwalker.ads:126:47: info: precondition proved
-bitwalker.ads:126:55: info: range check proved
-bitwalker.ads:127:16: medium: postcondition might fail
-bitwalker.ads:128:30: info: range check proved
-bitwalker.ads:132:28: info: initialization of "Result" proved
-bitwalker.ads:141:12: info: initialization of "Result" proved
-bitwalker.ads:141:12: info: postcondition proved
-bitwalker.ads:143:15: info: precondition proved
-bitwalker.ads:143:39: info: precondition proved
-bitwalker.ads:148:28: info: initialization of "Result" proved
-bitwalker.ads:158:10: info: initialization of "Result" proved
-bitwalker.ads:158:10: medium: postcondition might fail, cannot prove Result = Value
-
-gnatprove: test.gpr:1:17: warning: file name does not match project name, should be "default.gpr"
+bitwalker.ads:105:20: info: initialization of "Result" proved
+bitwalker.ads:107:26: medium: precondition might fail
+bitwalker.ads:107:54: medium: precondition might fail
+bitwalker.ads:109:20: info: initialization of "Result" proved
+bitwalker.ads:111:26: medium: precondition might fail
+bitwalker.ads:111:45: info: range check proved
+bitwalker.ads:112:22: info: precondition proved
+bitwalker.ads:112:46: info: range check proved
+bitwalker.ads:114:20: info: initialization of "Result" proved
+bitwalker.ads:116:26: medium: precondition might fail
+bitwalker.ads:116:45: info: range check proved
+bitwalker.ads:117:22: medium: precondition might fail
+bitwalker.ads:117:45: medium: range check might fail
+bitwalker.ads:123:47: info: precondition proved
+bitwalker.ads:123:55: info: range check proved
+bitwalker.ads:124:16: medium: postcondition might fail
+bitwalker.ads:125:30: info: range check proved
+bitwalker.ads:129:28: info: initialization of "Result" proved
+bitwalker.ads:138:12: info: initialization of "Result" proved
+bitwalker.ads:138:12: info: postcondition proved
+bitwalker.ads:140:15: info: precondition proved
+bitwalker.ads:140:39: info: precondition proved
+bitwalker.ads:145:28: info: initialization of "Result" proved
+bitwalker.ads:155:10: info: initialization of "Result" proved
+bitwalker.ads:155:10: medium: postcondition might fail, cannot prove Result = Value

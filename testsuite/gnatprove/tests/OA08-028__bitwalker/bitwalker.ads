@@ -6,35 +6,32 @@ with Bvext;      use Bvext;
 package Bitwalker with
 SPARK_Mode
 is
-   function PeekBit8 (Byte : Unsigned_8; Left : Natural) return Boolean
-   is
+   function PeekBit8 (Byte : Unsigned_8; Left : Natural) return Boolean is
       ((Byte and Shift_Left (1, 7 - Left)) /= 0)
    with
-     Pre => Left < 8;
+     Pre  => Left < 8,
+     Post => PeekBit8'Result = Nth (Byte, 7 - Left);
 
-   function PeekBit8Array
-     (Addr : Byte_Sequence;
-      Left : Natural) return Boolean
-   is
-      (PeekBit8 (Addr (Left / 8), Left rem 8))
-     with
-       Pre    => Addr'First = 0
-        and then Left < 8 * Addr'Length,
-       Global => null,
-       Post   => PeekBit8Array'Result = Nth8_Stream (Addr, Left);
+   function PeekBit8Array (Addr : Byte_Sequence; Left : Natural) return Boolean is
+     (PeekBit8 (Addr (Left / 8), Left rem 8))
+   with
+     Pre    => Addr'First = 0 and then
+               Left < 8 * Addr'Length,
+     Global => null,
+     Post   => PeekBit8Array'Result = Nth8_Stream (Addr, Left);
 
    function PokeBit64
       (Value : Unsigned_64;
        Left  : Natural;
        Flag  : Boolean) return Unsigned_64
-     with
-       Pre    => Left < 64,
-       Global => null,
-       Post   => (for all I in Natural range 0 .. 63 =>
-                    (if I /= 63 - Left then
-                           Nth (PokeBit64'Result, I) = Nth (Value, I)))
-                 and
-                   (Flag = Nth (PokeBit64'Result, 63 - Left));
+   with
+     Pre    => Left < 64,
+     Global => null,
+     Post   => (for all I in Natural range 0 .. 63 =>
+                  (if I /= 63 - Left then
+                         Nth (PokeBit64'Result, I) = Nth (Value, I)))
+               and
+                 (Flag = Nth (PokeBit64'Result, 63 - Left));
 
    function Peek
      (Start, Length : Natural;
