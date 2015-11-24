@@ -169,18 +169,21 @@ package body SPARK_Rewrite is
    -- Rewrite_Real_Literal --
    --------------------------
 
-   --  Only rewrite real literals that are not part of a static expression, as
-   --  it is allowed for a literal sub-expression to be outside the bounds of
-   --  the expression type in a static expression. For an example where this
-   --  is needed, see definition of Forever in g-socket.ads. In such a case,
-   --  GNATprove will use the value computed by the frontend for the static
-   --  expression when in bounds, otherwise an error should have been emitted.
+   --  Only rewrite real literals that are sub-expressions (otherwise frontend
+   --  has already converted them to machine numbers) and not part of a static
+   --  expression, as it is allowed for a literal sub-expression to be outside
+   --  the bounds of the expression type in a static expression. For an example
+   --  where this is needed, see definition of Forever in g-socket.ads. In such
+   --  a case, GNATprove will use the value computed by the frontend for the
+   --  static expression when in bounds, otherwise an error should have been
+   --  emitted.
 
    procedure Rewrite_Real_Literal (N : Node_Id) is
       Par : constant Node_Id := Parent (N);
       PK  : constant Node_Kind := Nkind (Par);
    begin
-      if not (PK in N_Subexpr and then Is_Static_Expression (Par)) then
+      if PK in N_Subexpr and then not Is_Static_Expression (Par) then
+         pragma Assert (Present (Etype (N)));
          Check_Non_Static_Context (N);
       end if;
    end Rewrite_Real_Literal;
