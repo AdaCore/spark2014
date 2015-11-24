@@ -872,7 +872,7 @@ package body Flow_Types is
                   --  i.e. without the "tk" suffix added by expansion.
                begin
                   if Present (Task_Object) then
-                     return Get_Unmangled_Name (Anonymous_Object (N));
+                     return Get_Unmangled_Name (Task_Object);
                   end if;
                end;
             end if;
