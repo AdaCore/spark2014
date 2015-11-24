@@ -598,19 +598,6 @@ def check_all_spark(result_file, expected_len):
             assert entry["spark"] == "all"
 
 
-def check_dot_files(opt=None):
-    """Call do_flow"""
-    do_flow(opt)
-
-    # Create a list that contains all dot files lying under directory
-    # gnatprove.
-    dot_files = glob.glob('gnatprove/*.dot')
-
-    # Dump the contents of all dot files on stdout
-    for dot_file in sorted(dot_files):
-        cat(dot_file)
-
-
 def check_trace_files(opt=None):
     # Note that in order for check_trace_files to work, we have to call one of
     # the other functions first. Otherwise, no trace files will have been
