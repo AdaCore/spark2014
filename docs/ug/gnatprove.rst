@@ -2767,6 +2767,22 @@ complete program, including the BSP to run it on the ATMEL SAM4S board, is
 available online (see
 http://blog.adacore.com/tetris-in-spark-on-arm-cortex-m4).
 
+.. rubric:: ``traffic_light``
+
+This program implements two small simulators of traffic lights:
+
+* Unit ``Road_Traffic`` defines safety rules for operating traffic lights over
+  a crossroads. All procedures that change the state of the lights must
+  maintain the safety property.
+
+* Unit ``Traffic_Lights`` defines a concurrent program for operating traffic
+  lights at a pedestian crossing, using two tasks that communicate over a
+  protected object, where the invariant maintained by the protected data is
+  expressed using a type predicate.
+
+|GNATprove| proves all checks on this program, including the safe usage of
+concurrency (absence of data races, absence of deadlocks).
+
 Multi-Units Demos
 -----------------
 

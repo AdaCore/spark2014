@@ -1,4 +1,4 @@
-package Traffic
+package Road_Traffic
   with SPARK_Mode
 is
 
@@ -25,7 +25,7 @@ is
 
    procedure To_Green (L : in out Lights_Type; P : Path)
      with Pre =>
-   Safety_Property (L) and L (P) = Red and
+     Safety_Property (L) and L (P) = Red and
      (for all C of Conflicts => C.Left /= C.Right and
                                (if C.Left = P then L (C.Right) = Red) and
                                 (if C.Right = P then L (C.Left) = Red)),
@@ -42,4 +42,4 @@ is
           Post => Safety_Property (L) and
                   L = L'Old'Update (P => Yellow);
 
-end Traffic;
+end Road_Traffic;

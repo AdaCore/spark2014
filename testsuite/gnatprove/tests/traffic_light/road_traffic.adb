@@ -1,4 +1,4 @@
-package body Traffic
+package body Road_Traffic
   with SPARK_Mode
 is
 
@@ -17,4 +17,4 @@ is
       L (P) := Red;
    end To_Red;
 
-end Traffic;
+end Road_Traffic;
