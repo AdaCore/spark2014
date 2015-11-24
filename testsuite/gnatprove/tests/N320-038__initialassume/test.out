@@ -14,13 +14,9 @@ my_pack.ads:14:22: info: postcondition proved
  My_Pack at my_pack.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
  My_Pack.Bump at my_pack.ads:7 skipped
  My_Pack.Use_Bump at my_pack.ads:11 flow analyzed (0 errors and 0 warnings) and proved (2 checks)
- absence of run-time errors of My_Pack.Bump
- absence of run-time errors of My_Pack.Bump
  effects on parameters and Global variables of My_Pack.Bump
  effects on parameters and Global variables of My_Pack.Bump
  effects on parameters and Global variables of My_Pack.Bump
- the postcondition of My_Pack.Bump
- the postcondition of My_Pack.Bump
 -
 -
 -
@@ -37,8 +33,10 @@ Run-time Checks 2 . . 2 . .
 SPARK Analysis results Total Flow Interval Provers Justified Unproved
 Summary of SPARK analysis
 Total 7 . . 7 (100%) . .
+absence of run-time errors of Full fully established
 absence of run-time errors of Full.Bump fully established
 absence of run-time errors of Full.Use_Bump fully established
+absence of run-time errors of My_Pack fully established
 absence of run-time errors of My_Pack.Use_Bump depends on
 effects on parameters and Global variables of Full.Bump fully established
 effects on parameters and Global variables of Full.Use_Bump fully established
