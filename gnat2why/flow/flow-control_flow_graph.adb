@@ -987,12 +987,16 @@ package body Flow.Control_Flow_Graph is
       -- Get_Colour --
       ----------------
 
-      function Get_Colour (V : Flow_Graphs.Vertex_Id) return Edge_Colours
-        is (case FA.Atr (V).Execution is
-               when Normal_Execution     => EC_Default,
-               when Barrier              => EC_Barrier,
-               when Abnormal_Termination => EC_Abend,
-               when Infinite_Loop        => EC_Inf);
+      function Get_Colour (V : Flow_Graphs.Vertex_Id) return Edge_Colours is
+      begin
+         case FA.Atr (V).Execution is
+            when Normal_Execution     => return EC_Default;
+            when Barrier              => return EC_Barrier;
+            when Abnormal_Termination => return EC_Abend;
+            when Infinite_Loop        => return EC_Inf;
+         end case;
+      end Get_Colour;
+
    begin
       if FA.Atr (From).Is_Parameter or FA.Atr (From).Is_Global_Parameter then
          Col := Get_Colour (FA.CFG.Get_Vertex (FA.Atr (From).Call_Vertex));
