@@ -1036,12 +1036,12 @@ package body Why.Atree.Modules is
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Rotate_Left :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("rotate_left"),
+                           Symbol => NID ("rotate_left_bv"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Rotate_Right :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("rotate_right"),
+                           Symbol => NID ("rotate_right_bv"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Of_Int :=

@@ -47,8 +47,8 @@ bitwalker.adb:101:36: info: overflow check proved
 bitwalker.adb:110:10: info: loop invariant initialization proved
 bitwalker.adb:110:10: info: loop invariant preservation proved
 bitwalker.adb:111:10: info: loop invariant initialization proved
+bitwalker.adb:111:10: info: loop invariant preservation proved
 bitwalker.adb:113:15: info: precondition proved
-bitwalker.adb:113:15: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr'Loop_Entry, J) = Nth8_Stream (Addr, J)
 bitwalker.adb:113:50: info: precondition proved
 bitwalker.adb:114:10: info: loop invariant initialization proved
 bitwalker.adb:116:15: info: precondition proved
@@ -114,7 +114,7 @@ bitwalker.adb:186:07: info: assertion proved
 bitwalker.adb:186:22: info: precondition proved
 bitwalker.adb:186:26: info: initialization of "Result" proved
 bitwalker.ads:10:35: info: range check proved
-bitwalker.ads:13:14: info: postcondition proved
+bitwalker.ads:13:14: medium: postcondition might fail, cannot prove PeekBit8'Result = Nth (Byte, 7 - Left)
 bitwalker.ads:13:32: info: precondition proved
 bitwalker.ads:13:45: info: range check proved
 bitwalker.ads:16:07: info: precondition proved
@@ -138,10 +138,10 @@ bitwalker.ads:51:21: info: precondition proved
 bitwalker.ads:53:46: info: precondition proved
 bitwalker.ads:53:64: info: range check proved
 bitwalker.ads:59:36: info: range check proved
-bitwalker.ads:62:16: info: postcondition proved
+bitwalker.ads:62:16: medium: postcondition might fail, cannot prove PeekBit64'Result = Nth (Value, (63 - Left)
 bitwalker.ads:62:35: info: precondition proved
 bitwalker.ads:62:51: info: range check proved
-bitwalker.ads:71:10: info: postcondition proved
+bitwalker.ads:71:10: medium: postcondition might fail
 bitwalker.ads:73:15: info: precondition proved
 bitwalker.ads:73:42: info: precondition proved
 bitwalker.ads:74:10: info: precondition proved

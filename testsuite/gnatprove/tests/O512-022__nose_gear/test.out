@@ -8,7 +8,7 @@ ng.adb:36:62: info: overflow check proved
 ng.adb:37:29: info: overflow check proved
 ng.adb:38:22: info: overflow check proved
 ng.adb:39:22: medium: divide by zero might fail
-ng.adb:40:19: info: overflow check proved
+ng.adb:40:19: medium: overflow check might fail
 ng.adb:41:19: medium: divide by zero might fail
 ng.adb:41:19: medium: range check might fail
 ng.adb:61:18: info: overflow check proved
@@ -26,7 +26,7 @@ ng.adb:65:29: medium: overflow check might fail
 ng.adb:65:37: medium: divide by zero might fail
 ng.adb:65:37: medium: range check might fail
 ng.adb:65:40: info: initialization of "T1" proved
-ng.adb:65:43: medium: overflow check might fail
+ng.adb:65:43: info: overflow check proved
 ng.adb:65:45: info: initialization of "T2" proved
 ng.adb:73:10: info: initialization of "ThisTime" proved
 ng.adb:78:07: medium: precondition might fail (e.g. when ThisTime = 5 and PrevTime = 0 and ThisCount = 20 and PrevCount = 20)
@@ -46,7 +46,7 @@ ng_v1.adb:33:61: info: initialization of "T2" proved
 ng_v1.ads:26:14: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v1.ads:27:18: info: initialization of "EstimatedGroundVelocityIsAvailable" proved
 ng_v1.ads:28:17: medium: postcondition might fail, cannot prove EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime
-ng_v1.ads:31:23: info: division check proved
+ng_v1.ads:31:23: medium: divide by zero might fail
 ng_v1.ads:32:28: medium: divide by zero might fail (e.g. when CurrTime = 65535 and PrevTime = 65535)
 ng_v2.adb:49:09: medium: divide by zero might fail
 ng_v2.adb:52:44: medium: precondition might fail (e.g. when ThisTime = 0 and PrevTime = 0)
