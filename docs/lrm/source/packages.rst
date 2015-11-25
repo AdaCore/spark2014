@@ -415,7 +415,15 @@ Async_Writers aspect specification.
      or ``attribute_reference`` which is itself a name occurring in a
      non-interfering context; or
 
+   * the prefix of an ``attribute_reference`` whose ``attribute_designator`` is
+     either Address, Alignment, Component_Size, First_Bit, Last_Bit, Position,
+     Size, or Storage_Size; or
+
    * the expression of a type conversion occurring in a non-interfering context.
+
+   [The attributes listed above all have the property that when their prefix
+   denotes an object, evaluation of the attribute involves evaluation of only
+   the name, not the value, of the object.]
 
    The same restrictions also apply to a call to a volatile function
    (except not in the case of an internal call to a protected function
