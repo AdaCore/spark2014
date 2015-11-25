@@ -2209,7 +2209,7 @@ package body SPARK_Definition is
          when N_Selected_Component =>
             E := Entity (Selector_Name (Nam));
 
-         when N_Identifier | N_Expanded_Name =>
+         when N_Identifier | N_Expanded_Name | N_Operator_Symbol =>
             E := Entity (Nam);
 
          when others =>
