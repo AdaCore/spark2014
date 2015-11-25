@@ -41,7 +41,8 @@ with Why.Types;                  use Why.Types;
 package Gnat2Why.Expr is
 
    function Assignment_Of_Obj_Decl (N : Node_Id) return W_Prog_Id;
-   --  Generate an assignment from an object declaration
+   --  @param N the object declaration
+   --  @return an assignment of the declared variable to its initial value
 
    procedure Assume_Declaration_Of_Entity
      (E             : Entity_Id;

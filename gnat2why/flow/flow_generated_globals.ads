@@ -366,7 +366,7 @@ package Flow_Generated_Globals is
    function Directly_Called_Protected_Objects
      (Ent : Entity_Name) return Name_Sets.Set
    with Pre => Ent /= Null_Entity_Name;
-   --  @param an entity name that refers to a task, main-like subprogram or
+   --  @param Ent an entity name that refers to a task, main-like subprogram or
    --    protected operation
    --  @return the set of protected operations that are called "directly", that
    --    is without going through other protected operations
@@ -380,7 +380,7 @@ package Flow_Generated_Globals is
       return Object_Priority_Lists.List
    with
      Post => not Object_Priority_Lists.Is_Empty (Component_Priorities'Result);
-   --  @param an entity name that refers to a library-level object with
+   --  @param Obj an entity name that refers to a library-level object with
    --    protected components
    --  @return priorities of protected object components
 

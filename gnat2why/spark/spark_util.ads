@@ -543,7 +543,7 @@ package SPARK_Util is
    function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id
    with Pre => Is_Array_Type (E);
    --  @param E array type
-   --  @param D dimension
+   --  @param Dim dimension
    --  @return the argument E in the special case where E is a string literal
    --    subtype; otherwise the index type entity which corresponds to the
    --    selected dimension
@@ -792,7 +792,7 @@ package SPARK_Util is
    --    GNATprove.
 
    function Is_Protected_Subprogram (E : Entity_Id) return Boolean;
-   --  @param any entity
+   --  @param E any entity
    --  @return True iff the entity is an entry or a subprogram that is part of
    --    (directly or in a nested way) a protected type.
 
@@ -959,11 +959,11 @@ package SPARK_Util is
    --    of the instance, not the generic.
 
    function Spec_File_Name_Without_Suffix (N : Node_Id) return String;
-   --  @param any node
+   --  @param N any node
    --  @return same as Spec_File_Name but without the suffix.
 
    function String_Of_Node (N : Node_Id) return String;
-   --  @param any expression node
+   --  @param N any expression node
    --  @return the node as pretty printed Ada code, limited to 50 chars
 
    function Get_Body (E : Entity_Id) return Node_Id
