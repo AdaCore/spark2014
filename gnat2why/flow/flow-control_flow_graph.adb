@@ -977,7 +977,7 @@ package body Flow.Control_Flow_Graph is
                      From  : Flow_Graphs.Vertex_Id;
                      To    : Flow_Graphs.Vertex_Id)
    is
-      Col : Edge_Colours := EC_Default;
+      Col : Edge_Colours;
 
       function Get_Colour (V : Flow_Graphs.Vertex_Id) return Edge_Colours;
       --  Produce the correct colour for outbound edges depending on the
@@ -1000,6 +1000,8 @@ package body Flow.Control_Flow_Graph is
          Col := Get_Colour (FA.CFG.Get_Vertex (FA.Atr (From).Call_Vertex));
       elsif not FA.Atr (From).Is_Callsite then
          Col := Get_Colour (From);
+      else
+         Col := EC_Default;
       end if;
       FA.CFG.Add_Edge (From, To, Col);
    end Linkup;
