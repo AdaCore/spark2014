@@ -1,0 +1,2 @@
+tti.ads:7:67: attribute "IDENTITY" is not permitted in SPARK
+gnatprove: error during flow analysis and proof

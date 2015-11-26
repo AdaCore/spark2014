@@ -803,6 +803,8 @@ Tool Limitations
    single protected declaration (see |SPARK| RM 9(3)). An error is raised
    instead in such cases.
 
+#. Task attribute Identity is not supported.
+
 Legality Rules
 --------------
 
