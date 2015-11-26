@@ -1,4 +1,4 @@
-package body SS is
+package body SS_Default is
 
     task body TT is
        X : Boolean := False;
