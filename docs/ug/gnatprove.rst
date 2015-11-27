@@ -2816,6 +2816,24 @@ Data and flow dependency contracts are given for all subprograms. |GNATprove|
 proves all checks on this program, except for 4 runtime checks related to
 scaling quantities using a division (a known limitation of automatic provers).
 
+
+.. rubric:: ``bitwalker``
+
+This example introduces a main function that reads, and a main
+procedure that writes, a word of bits of a given length from
+(resp. to) a stream of bytes at a given position. It heavily uses
+bitwise arithmetic and is fully specified and automatically proved in
+Spark2014. In addition to their specifications, two procedures provide
+proofs of properties on their interplay.
+
+In this example we use an external axiomatization in order to lift
+some operators from the underlying Why3 theory of bitvectors to
+Spark2014. In particular the "Nth" function, at the core of the
+specification of the example, let's us check if a specific bit in a
+modular value is set or not. Note that while such a function could be
+easily implemented in Spark, using the one defined in the Why3 theory
+let the provers use the associated axioms and lemmas.
+
 .. rubric:: ``crazyflie``
 
 This program is a translation of the stabilization system of the Crazyflie 2.0,
