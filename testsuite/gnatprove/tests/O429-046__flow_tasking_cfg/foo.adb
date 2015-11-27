@@ -52,9 +52,9 @@ package body Foo is
       end loop;
    end Test_Task_01;
 
-   procedure Test_Delay_01 is
+   procedure Test_Delay_01 is Now : constant Time := Clock;
    begin
-      delay until Clock + Seconds (5);
+      delay until Now + Seconds (5);
    end Test_Delay_01;
 
 

@@ -1,0 +1,1 @@
+volatile_actual_call.ads:3:13: warning: volatile function "Vol_Func" has no volatile effects

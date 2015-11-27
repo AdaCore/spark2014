@@ -1,12 +1,12 @@
-with Ada.Real_Time;
+with Ada.Real_Time, Ada.Dispatching;
 
 package body Blocking_Contract is
 
    function Blocking return Boolean
-     with Volatile_Function
+
    is
    begin
-      delay until Ada.Real_Time.Clock;
+      Ada.Dispatching.Yield;
       return True;
    end;
 

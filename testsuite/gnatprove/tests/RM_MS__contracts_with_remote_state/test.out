@@ -1,17 +1,13 @@
-calculate.adb:6:17: info: precondition proved
-calculate.ads:7:37: info: initialization of "Value" proved
-processing.adb:7:04: info: initialization of "S" constituent of "State" proved
-processing.adb:19:10: info: initialization of "Local_Value" proved
-processing.adb:19:62: info: overflow check proved
-processing.adb:22:18: info: overflow check proved
-processing.adb:22:20: info: initialization of "Local_Value" proved
-processing.adb:23:31: info: overflow check proved
-processing.adb:23:33: info: initialization of "Local_Value" proved
-processing.adb:24:17: info: overflow check proved
-processing.adb:24:17: info: range check proved
-processing.adb:24:19: info: initialization of "Local_Value" proved
-processing.ads:7:34: info: initialization of "Value" proved
+calculate.adb:6:07: "Get_Processed_Data" is not allowed in SPARK
+calculate.adb:6:07: violation of aspect SPARK_Mode at line 2
+calculate.ads:13:22: call to a volatile function in interfering context is not allowed in SPARK
+calculate.ads:13:22: violation of aspect SPARK_Mode at line 5
+processing.ads:13:22: call to a volatile function in interfering context is not allowed in SPARK
+processing.ads:13:22: call to a volatile function in interfering context is not allowed in SPARK
+processing.ads:13:22: violation of aspect SPARK_Mode at line 4
+processing.ads:13:22: violation of aspect SPARK_Mode at line 4
 raw_data.adb:12:04: info: initialization of "Last_Read" constituent of "State" proved
 raw_data.adb:30:40: info: initialization of "Last_Read" constituent of "State" proved
 raw_data.ads:6:13: warning: volatile function "Data_Is_Valid" has no volatile effects
 raw_data.ads:10:13: warning: volatile function "Get_Value" has no volatile effects
+gnatprove: error during flow analysis and proof

@@ -88,8 +88,13 @@ is
       ChangeToSlowMode : Boolean;
       ChangeToFastMode : Boolean;
 
+      CurrentMode : constant AdvanceButton.AdvanceModes :=
+        AdvanceButton.CurrentMode;
+      --  ??? a workaround for OB27-021: protected calls are not allowed in
+      --  case-expressions
+
    begin --CheckAdvanceButton
-      case AdvanceButton.CurrentMode is
+      case CurrentMode is
          when AdvanceButton.Slow =>
             AdvanceButton.JustPressed (SlowAdvance);
             if SlowAdvance then

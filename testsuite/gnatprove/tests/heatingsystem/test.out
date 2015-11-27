@@ -38,40 +38,40 @@ heatingsystem_dfa.adb:70:46: info: division check proved
 heatingsystem_dfa.adb:71:39: info: initialization of "Minute" proved
 heatingsystem_dfa.adb:71:46: info: division check proved
 heatingsystem_dfa.adb:72:22: info: initialization of "TheDisplay" proved
-heatingsystem_dfa.adb:95:16: info: initialization of "SlowAdvance" proved
-heatingsystem_dfa.adb:96:49: info: division check proved
-heatingsystem_dfa.adb:100:16: info: initialization of "ChangeToFastMode" proved
-heatingsystem_dfa.adb:106:16: info: initialization of "FastAdvance" proved
-heatingsystem_dfa.adb:107:54: info: division check proved
-heatingsystem_dfa.adb:111:16: info: initialization of "ChangeToSlowMode" proved
-heatingsystem_dfa.adb:124:22: info: postcondition proved
-heatingsystem_dfa.adb:124:48: info: division check proved
-heatingsystem_dfa.adb:127:30: info: division check proved
-heatingsystem_dfa.adb:135:40: info: initialization of "Display.Outputs" proved
-heatingsystem_dfa.adb:158:23: info: initialization of "Timer" proved
+heatingsystem_dfa.adb:100:16: info: initialization of "SlowAdvance" proved
+heatingsystem_dfa.adb:101:49: info: division check proved
+heatingsystem_dfa.adb:105:16: info: initialization of "ChangeToFastMode" proved
+heatingsystem_dfa.adb:111:16: info: initialization of "FastAdvance" proved
+heatingsystem_dfa.adb:112:54: info: division check proved
+heatingsystem_dfa.adb:116:16: info: initialization of "ChangeToSlowMode" proved
+heatingsystem_dfa.adb:129:22: info: postcondition proved
+heatingsystem_dfa.adb:129:48: info: division check proved
+heatingsystem_dfa.adb:132:30: info: division check proved
+heatingsystem_dfa.adb:140:40: info: initialization of "Display.Outputs" proved
 heatingsystem_dfa.adb:163:23: info: initialization of "Timer" proved
-heatingsystem_dfa.adb:166:32: info: index check proved
-heatingsystem_dfa.adb:166:32: info: initialization of "SwitchPosition" proved
-heatingsystem_dfa.adb:167:33: info: initialization of "Timer" proved
-heatingsystem_dfa.adb:168:23: info: index check proved
-heatingsystem_dfa.adb:168:23: info: initialization of "SwitchPosition" proved
-heatingsystem_dfa.adb:168:39: info: initialization of "SwitchPosition" proved
-heatingsystem_dfa.adb:168:42: info: initialization of "Timer" proved
-heatingsystem_dfa.adb:171:22: info: initialization of "Timer" proved
-heatingsystem_dfa.adb:180:42: info: initialization of "Indicator.Outputs" proved
-heatingsystem_dfa.adb:240:45: info: initialization of "Indicator.Outputs" proved
-heatingsystem_dfa.adb:267:17: info: initialization of "CurrentTime" proved
-heatingsystem_dfa.adb:270:12: info: initialization of "ModeSetting" proved
-heatingsystem_dfa.adb:276:37: info: initialization of "CurrentTime" proved
-heatingsystem_dfa.adb:283:07: info: initialization of "AboveTemp" proved
-heatingsystem_dfa.adb:283:07: info: initialization of "MayOperate" proved
-heatingsystem_dfa.adb:292:28: info: length check proved
-heatingsystem_dfa.adb:298:07: info: initialization of "ClockOffset" proved
-heatingsystem_dfa.adb:298:07: info: initialization of "OnOffTime" proved
-heatingsystem_dfa.adb:299:07: info: initialization of "Actuator.Outputs" proved
-heatingsystem_dfa.adb:299:07: info: initialization of "ClockOffset" proved
-heatingsystem_dfa.adb:299:07: info: initialization of "HeatingIsOn" proved
-heatingsystem_dfa.adb:299:07: info: initialization of "OnOffTime" proved
+heatingsystem_dfa.adb:168:23: info: initialization of "Timer" proved
+heatingsystem_dfa.adb:171:32: info: index check proved
+heatingsystem_dfa.adb:171:32: info: initialization of "SwitchPosition" proved
+heatingsystem_dfa.adb:172:33: info: initialization of "Timer" proved
+heatingsystem_dfa.adb:173:23: info: index check proved
+heatingsystem_dfa.adb:173:23: info: initialization of "SwitchPosition" proved
+heatingsystem_dfa.adb:173:39: info: initialization of "SwitchPosition" proved
+heatingsystem_dfa.adb:173:42: info: initialization of "Timer" proved
+heatingsystem_dfa.adb:176:22: info: initialization of "Timer" proved
+heatingsystem_dfa.adb:185:42: info: initialization of "Indicator.Outputs" proved
+heatingsystem_dfa.adb:245:45: info: initialization of "Indicator.Outputs" proved
+heatingsystem_dfa.adb:272:17: info: initialization of "CurrentTime" proved
+heatingsystem_dfa.adb:275:12: info: initialization of "ModeSetting" proved
+heatingsystem_dfa.adb:281:37: info: initialization of "CurrentTime" proved
+heatingsystem_dfa.adb:288:07: info: initialization of "AboveTemp" proved
+heatingsystem_dfa.adb:288:07: info: initialization of "MayOperate" proved
+heatingsystem_dfa.adb:297:28: info: length check proved
+heatingsystem_dfa.adb:303:07: info: initialization of "ClockOffset" proved
+heatingsystem_dfa.adb:303:07: info: initialization of "OnOffTime" proved
+heatingsystem_dfa.adb:304:07: info: initialization of "Actuator.Outputs" proved
+heatingsystem_dfa.adb:304:07: info: initialization of "ClockOffset" proved
+heatingsystem_dfa.adb:304:07: info: initialization of "HeatingIsOn" proved
+heatingsystem_dfa.adb:304:07: info: initialization of "OnOffTime" proved
 indicator.adb:14:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
 indicator.adb:22:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
 modeswitch.ads:6:20: info: initialization of "Value" proved

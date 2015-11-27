@@ -1,10 +1,10 @@
-
+with Ada.Dispatching;
 
 package body P is
 
    function Blocking return Boolean is
    begin
-      delay until Ada.Real_Time.Clock;
+      Ada.Dispatching.Yield;
       return True;
    end;
 

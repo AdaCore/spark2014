@@ -2216,6 +2216,15 @@ package body SPARK_Definition is
 
       end case;
 
+      if Ekind (E) in E_Function | E_Generic_Function
+        and then Is_Volatile_Function (E)
+        and then not Is_OK_Volatile_Context (Context => Parent (N),
+                                             Obj_Ref => N)
+      then
+         Mark_Violation ("call to a volatile function in interfering context",
+                         N);
+      end if;
+
       Mark_List (Actuals);
 
       --  Call is only in SPARK if the subprogram called is in SPARK

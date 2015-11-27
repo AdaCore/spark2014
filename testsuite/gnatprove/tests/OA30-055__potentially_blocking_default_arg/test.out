@@ -1,5 +1,6 @@
 client.adb:3:11: info: ceiling priority protocol is respected
-p.adb:7:07: warning: statement has no effect
+p.adb:7:22: warning: assuming "Yield" has no effect on global items
+p.adb:7:22: warning: no Global contract available for "Yield"
 p.adb:12:52: warning: statement has no effect
 p.ads:6:13: high: potentially blocking operation in protected operation "Dummy"
 p.ads:6:20: warning: unused variable "Arg"

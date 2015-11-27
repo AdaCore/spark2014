@@ -80,11 +80,16 @@ is
    begin
       --  if the drone is in recovery mode and it has not recovered after
       --  the specified timeout, disable the free fall mode in emergency.
-      if In_Recovery = 1 and
-        Get_Time_Since_Last_Free_Fall > RECOVERY_TIMEOUT
-      then
-         In_Recovery := 0;
-         FF_Mode := DISABLED;
+      if In_Recovery = 1 then
+         declare
+            Time_Since_Last_Free_Fall : constant Time_Span :=
+              Get_Time_Since_Last_Free_Fall;
+         begin
+            if Time_Since_Last_Free_Fall > RECOVERY_TIMEOUT then
+               In_Recovery := 0;
+               FF_Mode := DISABLED;
+            end if;
+         end;
       end if;
    end FF_Watchdog;
 
@@ -113,12 +118,18 @@ is
       --  Detect if the drone is in free fall.
       FF_Detect_Free_Fall (Acc, Has_Detected_FF);
 
-      if In_Recovery = 0 and Has_Detected_FF and
-        Get_Time_Since_Last_Landing > STABILIZATION_PERIOD_AFTER_LANDING
-      then
-         Last_FF_Detected_Time := Clock;
-         In_Recovery := 1;
-         Recovery_Thrust := MAX_RECOVERY_THRUST;
+      if In_Recovery = 0 and then Has_Detected_FF then
+         declare
+            Time_Since_Last_Landing : constant Time_Span :=
+              Get_Time_Since_Last_Landing;
+         begin
+            if Time_Since_Last_Landing > STABILIZATION_PERIOD_AFTER_LANDING
+            then
+               Last_FF_Detected_Time := Clock;
+               In_Recovery := 1;
+               Recovery_Thrust := MAX_RECOVERY_THRUST;
+            end if;
+         end;
       end if;
 
       FF_Watchdog;
