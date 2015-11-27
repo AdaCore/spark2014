@@ -359,7 +359,7 @@ Async_Writers aspect specification.
    function which is nonvolatile for internal calls, shall not be of
    an effectively volatile type. [For a protected function, this rule
    does not apply to the notional parameter denoting the current instance of
-   the associated protected unit described in section :ref:`global-aspects` .]
+   the associated protected unit described in section :ref:`global-aspects`.]
 
 .. _tu-fe-external_state_variables-10:
 
@@ -1674,7 +1674,7 @@ were declared within a protected unit or task unit (see section
 
    * update of a ``constituent`` of the state abstraction shall be
      treated as an update of the encapsulating state abstraction of
-     the ``constituent`` .  An update of such a ``constituent`` is
+     the ``constituent``.  An update of such a ``constituent`` is
      regarded as updating its enclosing state abstraction with a self
      dependency as it is unknown what other ``constituents`` the state
      abstraction encapsulates.
