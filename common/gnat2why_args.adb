@@ -192,7 +192,7 @@ package body Gnat2Why_Args is
 
    function Set (Obj_Dir : String) return String is
       Cur_Dir : constant String := Get_Current_Dir;
-      Content : Unbounded_String := Null_Unbounded_String;
+      Content : Unbounded_String;
 
       procedure Add_Line (S : String);
       --  Write S to FD, and add a newline

@@ -253,8 +253,7 @@ procedure Gnatprove is
       Proj         : Project_Tree;
       Status       : out Integer)
    is
-      use String_Lists;
-      Args     : List := Empty_List;
+      Args     : String_Lists.List;
       Obj_Dir  : constant String :=
          Proj.Root_Project.Object_Dir.Display_Full_Name;
       Opt_File : constant String :=
@@ -310,7 +309,7 @@ procedure Gnatprove is
 
    function Compute_Why3_Args return String_Lists.List is
 
-      Args    : String_Lists.List := String_Lists.Empty_List;
+      Args    : String_Lists.List;
       Why3_VF : constant Virtual_File :=
         (if Why3_Config_File.all /= ""
          then Create (Filesystem_String (Why3_Config_File.all))
@@ -792,7 +791,7 @@ procedure Gnatprove is
 
       Success : Boolean;
 
-      Args    : String_Lists.List := String_Lists.Empty_List;
+      Args    : String_Lists.List;
 
    begin
       Create (Obj_Dir_File, Out_File, Obj_Dir_Fn);
@@ -1163,7 +1162,7 @@ procedure Gnatprove is
    function Spawn_VC_Server
      (Proj_Type : Project_Type)
       return Process_Descriptor is
-      Args    : String_Lists.List := String_Lists.Empty_List;
+      Args    : String_Lists.List;
       Cur     : constant String := Ada.Directories.Current_Directory;
       Id      : Process_Descriptor;
    begin
@@ -1212,7 +1211,7 @@ procedure Gnatprove is
    is
       use String_Lists;
       Cur     : Cursor := First (Cargs_List);
-      Args    : String_Lists.List := Empty_List;
+      Args    : String_Lists.List;
       Obj_Dir : constant String :=
          Proj.Root_Project.Object_Dir.Display_Full_Name;
       Opt_File : aliased constant String :=

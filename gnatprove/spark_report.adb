@@ -931,7 +931,7 @@ procedure SPARK_Report is
       use Ada.Strings.Unbounded;
 
       First : Boolean := True;
-      UB    : Unbounded_String := Null_Unbounded_String;
+      UB    : Unbounded_String;
    begin
       for S of Sloc loop
          if not First then
