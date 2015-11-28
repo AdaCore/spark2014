@@ -972,13 +972,8 @@ package body Graphs is
    -- Get_Cluster --
    -----------------
 
-   function Get_Cluster (G : Graph;
-                         V : Vertex_Id)
-                         return Cluster_Id
-   is
-   begin
-      return G.Vertices (V).Cluster;
-   end Get_Cluster;
+   function Get_Cluster (G : Graph; V : Vertex_Id) return Cluster_Id is
+     (G.Vertices (V).Cluster);
 
    --------------------
    -- Get_Collection --
@@ -1035,9 +1030,7 @@ package body Graphs is
    -------------
 
    function Get_Key (G : Graph; V : Vertex_Id) return Vertex_Key is
-   begin
-      return G.Vertices (V).Key;
-   end Get_Key;
+     (G.Vertices (V).Key);
 
    ----------------
    -- Get_Vertex --
@@ -1046,11 +1039,9 @@ package body Graphs is
    function Get_Vertex (G : Graph; V : Vertex_Key) return Vertex_Id is
       C : constant Key_To_Id_Maps.Cursor := G.Key_To_Id.Find (V);
    begin
-      if Key_To_Id_Maps.Has_Element (C) then
-         return Key_To_Id_Maps.Element (C);
-      else
-         return Null_Vertex;
-      end if;
+      return (if Key_To_Id_Maps.Has_Element (C)
+              then Key_To_Id_Maps.Element (C)
+              else Null_Vertex);
    end Get_Vertex;
 
    -----------------
@@ -1094,12 +1085,8 @@ package body Graphs is
    --  In_Neighbour_Count  --
    --------------------------
 
-   function In_Neighbour_Count
-     (G : Graph;
-      V : Vertex_Id) return Natural is
-   begin
-      return Natural (G.Vertices (V).In_Neighbours.Length);
-   end In_Neighbour_Count;
+   function In_Neighbour_Count (G : Graph; V : Vertex_Id) return Natural is
+     (Natural (G.Vertices (V).In_Neighbours.Length));
 
    ---------------
    -- Mark_Edge --
@@ -1243,20 +1230,14 @@ package body Graphs is
    ------------------
 
    function Num_Vertices (G : Graph) return Natural is
-   begin
-      return Natural (G.Vertices.Length);
-   end Num_Vertices;
+     (Natural (G.Vertices.Length));
 
    ---------------------------
    --  Out_Neighbour_Count  --
    ---------------------------
 
-   function Out_Neighbour_Count
-     (G : Graph;
-      V : Vertex_Id) return Natural is
-   begin
-      return Natural (G.Vertices (V).Out_Neighbours.Length);
-   end Out_Neighbour_Count;
+   function Out_Neighbour_Count (G : Graph; V : Vertex_Id) return Natural is
+     (Natural (G.Vertices (V).Out_Neighbours.Length));
 
    ------------
    -- Parent --
@@ -1358,6 +1339,8 @@ package body Graphs is
 
          Tree.Include (V, Origin);
       end Make_Tree;
+
+   --  Start of processing for Shortest_Path
 
    begin
 
