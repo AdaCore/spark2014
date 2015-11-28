@@ -1209,7 +1209,6 @@ procedure Gnatprove is
       Status       : out Integer)
    is
       use String_Lists;
-      Cur      : Cursor := First (Cargs_List);
       Args     : String_Lists.List;
       Obj_Dir  : constant String :=
         Proj.Root_Project.Object_Dir.Display_Full_Name;
@@ -1249,9 +1248,8 @@ procedure Gnatprove is
 
       Args.Append ("-gnates=" & Opt_File);
 
-      while Has_Element (Cur) loop
-         Args.Append (Element (Cur));
-         Next (Cur);
+      for Carg of Cargs_List loop
+         Args.Append (Carg);
       end loop;
       if RTS_Dir.all /= "" then
          Args.Append ("--RTS=" & RTS_Dir.all);
