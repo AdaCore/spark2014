@@ -367,7 +367,7 @@ package body Report_Database is
 
    function Num_Subps (Unit : Unit_Type) return Integer is
 
-      Count : aliased Integer := 0;
+      Count : Integer := 0;
 
       procedure Update (Subp : Subp_Type; Stat : Stat_Rec);
 
@@ -388,7 +388,7 @@ package body Report_Database is
 
    function Num_Subps_SPARK (Unit : Unit_Type) return Integer
    is
-      Count : aliased Integer := 0;
+      Count : Integer := 0;
 
       procedure Update (Subp : Subp_Type; Stat : Stat_Rec);
 
@@ -410,7 +410,7 @@ package body Report_Database is
    ---------------
 
    function Num_Units return Integer is
-      Count : aliased Integer := 0;
+      Count : Integer := 0;
 
       procedure Update (U : Unit_Type);
 

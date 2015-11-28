@@ -1213,7 +1213,7 @@ procedure Gnatprove is
       Args     : String_Lists.List;
       Obj_Dir  : constant String :=
         Proj.Root_Project.Object_Dir.Display_Full_Name;
-      Opt_File : aliased constant String :=
+      Opt_File : constant String :=
         Pass_Extra_Options_To_Gnat2why
           (Translation_Phase => True,
            Obj_Dir           => Obj_Dir);
