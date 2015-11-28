@@ -1154,14 +1154,24 @@ package body Flow_Generated_Globals is
             Key_A := Global_Id'(Kind => Subprogram_Kind,
                                 Name => Key_A.Name);
 
-            if Local_Graph.Contains (Key_A)
-              and then Local_Graph.Contains (Key_B)
-            then
+            declare
+               Vertex_A, Vertex_B : Vertex_Id;
+            begin
+               Vertex_A := Local_Graph.Get_Vertex (Key_A);
+
+               if Vertex_A = Null_Vertex then
+                  return True;
+               end if;
+
+               Vertex_B := Local_Graph.Get_Vertex (Key_B);
+
+               if Vertex_B = Null_Vertex then
+                  return True;
+               end if;
+
                --  Check if local variable B can act as global of subprogram A
-               return Local_Graph.Edge_Exists (Key_B, Key_A);
-            else
-               return True;
-            end if;
+               return Local_Graph.Edge_Exists (Vertex_B, Vertex_A);
+            end;
          end Edge_Selector;
 
       --  Start of processing for Add_All_Edges
