@@ -25,8 +25,8 @@
 
 package body Print_Table is
 
-   Cur_Line : Natural := 1;
-   Cur_Col  : Natural := 1;
+   Cur_Line : Positive := 1;
+   Cur_Col  : Positive := 1;
 
    ------------------
    -- Create_Table --
@@ -56,7 +56,7 @@ package body Print_Table is
    end Put_Cell;
 
    procedure Put_Cell (T     : in out Table;
-                       S     : Integer;
+                       S     : Natural;
                        Align : Alignment_Type := Right_Align) is
    begin
       if S = 0 then

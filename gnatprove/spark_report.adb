@@ -827,7 +827,7 @@ procedure SPARK_Report is
 
       end For_Each_Unit;
 
-      N_Un : constant Integer := Num_Units;
+      N_Un : constant Natural := Num_Units;
 
    --  Start of processing for Print_Analysis_Report
 

@@ -59,7 +59,7 @@ package Print_Table is
 
    procedure Put_Cell
      (T     : in out Table;
-      S     : Integer;
+      S     : Natural;
       Align : Alignment_Type := Right_Align);
    --  same as Put_Cell for strings, but for numbers; if S is 0, prints a dot
    --  instead

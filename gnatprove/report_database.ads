@@ -149,13 +149,13 @@ package Report_Database is
                               Stat : Stat_Rec));
    --  Iterate over all subprograms of all units
 
-   function Num_Units return Integer;
+   function Num_Units return Natural;
    --  Return the number of units
 
-   function Num_Subps (Unit : Unit_Type) return Integer;
+   function Num_Subps (Unit : Unit_Type) return Natural;
    --  return the number of subprograms in the unit
 
-   function Num_Subps_SPARK (Unit : Unit_Type) return Integer;
+   function Num_Subps_SPARK (Unit : Unit_Type) return Natural;
    --  return the number of subprograms in SPARK in the unit
 
    procedure Iter_Units
