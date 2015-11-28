@@ -263,7 +263,7 @@ package body Report_Database is
 
       use Unit_Maps;
 
-      --  beginning of processing for Iter_Subps
+   --  Start of processing for Iter_Subps
 
    begin
       for Unit_C in Unit_Map.Iterate loop
@@ -353,7 +353,7 @@ package body Report_Database is
 
       C : constant Unit_Maps.Cursor := Unit_Map.Find (Unit);
 
-      --  beginning of processing for Iter_Unit_Subps
+   --  Start of processing for Iter_Unit_Subps
 
    begin
       if Unit_Maps.Has_Element (C) then

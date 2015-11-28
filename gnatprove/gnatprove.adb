@@ -88,35 +88,35 @@ procedure Gnatprove is
    type Gnatprove_Step is (GS_ALI, GS_Gnat2Why);
 
    function Step_Image (S : Gnatprove_Step) return String is
-      (Image (Gnatprove_Step'Pos (S) + 1, Min_Width => 1));
+     (Image (Gnatprove_Step'Pos (S) + 1, Min_Width => 1));
 
    procedure Call_Gprbuild
-      (Project_File : String;
-       Config_File  : String;
-       New_File     : String;
-       Args         : in out String_Lists.List;
-       Status       : out Integer);
+     (Project_File : String;
+      Config_File  : String;
+      New_File     : String;
+      Args         : in out String_Lists.List;
+      Status       : out Integer);
    --  Call gprbuild with the given arguments. Pass in explicitly a number of
    --  parallel processes, so that we can force sequential execution when
    --  needed.
 
    procedure Compute_ALI_Information
-      (Project_File : String;
-       Proj         : Project_Tree;
-       Status : out Integer);
+     (Project_File : String;
+      Proj         : Project_Tree;
+      Status       : out Integer);
    --  Compute ALI information for all source units, using gprbuild.
 
    function CVC4_Resource_Step_Flags return String;
    --  Work out the flags to use for controlling CVC4's resource counting.
 
    procedure Execute_Step
-      (Step         : Gnatprove_Step;
-       Project_File : String;
-       Proj         : Project_Tree);
+     (Step         : Gnatprove_Step;
+      Project_File : String;
+      Proj         : Project_Tree);
 
    procedure Generate_SPARK_Report
-     (Obj_Dir : String;
-      Obj_Path  : File_Array);
+     (Obj_Dir  : String;
+      Obj_Path : File_Array);
    --  Generate the SPARK report.
 
    function Report_File_Is_Empty (Filename : String) return Boolean;
@@ -130,9 +130,9 @@ procedure Gnatprove is
    --  gnat2why, which then passes it to gnatwhy3
 
    procedure Flow_Analysis_And_Proof
-      (Project_File     : String;
-       Proj             : Project_Tree;
-       Status           : out Integer);
+     (Project_File : String;
+      Proj         : Project_Tree;
+      Status       : out Integer);
    --  Translate all source units to Why, using gnat2why, driven by gprbuild.
    --  In the process, do flow analysis. Then call gnatwhy3 inside gnat2why to
    --  prove the program.
@@ -645,6 +645,9 @@ procedure Gnatprove is
       end Flag_Name;
 
       S : Unbounded_String;
+
+   --  Start of processing for CVC4_Resource_Step_Flags
+
    begin
       for R in CVC4_Resource_Kind loop
          if CVC4_Resource (R) /= 1 then
@@ -742,7 +745,7 @@ procedure Gnatprove is
 
       procedure Copy_File is new For_Line_In_File (Copy_Replace_Line);
 
-      --  beginning of processing for Replace_Config_File_If_Needed);
+   --  Start of processing for Replace_Config_File_If_Needed
 
    begin
       if RTS_Dir.all = "" and then
@@ -785,13 +788,11 @@ procedure Gnatprove is
    is
       Obj_Dir_File : File_Type;
       Obj_Dir_Fn   : constant String :=
-         Ada.Directories.Compose
-            (Obj_Dir,
-             "gnatprove.alfad");
+        Ada.Directories.Compose (Obj_Dir, "gnatprove.alfad");
 
-      Success : Boolean;
+      Success      : Boolean;
 
-      Args    : String_Lists.List;
+      Args         : String_Lists.List;
 
    begin
       Create (Obj_Dir_File, Out_File, Obj_Dir_Fn);
@@ -858,10 +859,10 @@ procedure Gnatprove is
       Altergo_Binary : constant String :=
         (if Benchmark_Mode then "fake_" else "") & "alt-ergo";
 
-      CVC4_Binary : constant String :=
+      CVC4_Binary    : constant String :=
         (if Benchmark_Mode then "fake_" else "") & "cvc4";
 
-      Z3_Binary : constant String :=
+      Z3_Binary      : constant String :=
         (if Benchmark_Mode then "fake_" else "") & "z3";
 
       --  The CVC4 options explained.
@@ -1015,9 +1016,7 @@ procedure Gnatprove is
 
       procedure Start_Section (Section : String) is
       begin
-         Put (File, "[");
-         Put (File, Section);
-         Put_Line (File, "]");
+         Put_Line (File, "[" & Section & "]");
       end Start_Section;
 
       ---------------------------
@@ -1162,9 +1161,9 @@ procedure Gnatprove is
    function Spawn_VC_Server
      (Proj_Type : Project_Type)
       return Process_Descriptor is
-      Args    : String_Lists.List;
-      Cur     : constant String := Ada.Directories.Current_Directory;
-      Id      : Process_Descriptor;
+      Args : String_Lists.List;
+      Cur  : constant String := Ada.Directories.Current_Directory;
+      Id   : Process_Descriptor;
    begin
       Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
       Args.Append ("-j");
@@ -1205,21 +1204,21 @@ procedure Gnatprove is
    ----------------------
 
    procedure Flow_Analysis_And_Proof
-      (Project_File     : String;
-       Proj             : Project_Tree;
-       Status           : out Integer)
+     (Project_File : String;
+      Proj         : Project_Tree;
+      Status       : out Integer)
    is
       use String_Lists;
-      Cur     : Cursor := First (Cargs_List);
-      Args    : String_Lists.List;
-      Obj_Dir : constant String :=
-         Proj.Root_Project.Object_Dir.Display_Full_Name;
+      Cur      : Cursor := First (Cargs_List);
+      Args     : String_Lists.List;
+      Obj_Dir  : constant String :=
+        Proj.Root_Project.Object_Dir.Display_Full_Name;
       Opt_File : aliased constant String :=
-         Pass_Extra_Options_To_Gnat2why
-            (Translation_Phase => True,
-             Obj_Dir           => Obj_Dir);
+        Pass_Extra_Options_To_Gnat2why
+          (Translation_Phase => True,
+           Obj_Dir           => Obj_Dir);
       Del_Succ : Boolean;
-      Id        : Process_Descriptor;
+      Id       : Process_Descriptor;
    begin
 
       Generate_Why3_Conf_File (Obj_Dir);
