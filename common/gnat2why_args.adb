@@ -227,7 +227,7 @@ package body Gnat2Why_Args is
          Close (FT);
          Change_Dir (Cur_Dir);
 
-         return Obj_Dir & Dir_Separator & File_Name;
+         return Obj_Dir & File_Name;
       end Write_To_File;
 
       --  beginning of processing for Set
