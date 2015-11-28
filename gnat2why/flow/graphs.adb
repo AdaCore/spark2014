@@ -273,7 +273,7 @@ package body Graphs is
       for V_I of G.Vertices (V).In_Neighbours loop
          G.Vertices (V_I).Out_Neighbours.Delete (V);
       end loop;
-      G.Vertices (V).In_Neighbours := Empty_Set;
+      G.Vertices (V).In_Neighbours.Clear;
 
       for C in G.Vertices (V).Out_Neighbours.Iterate loop
          declare
@@ -282,7 +282,7 @@ package body Graphs is
             G.Vertices (V_O).In_Neighbours.Delete (V);
          end;
       end loop;
-      G.Vertices (V).Out_Neighbours := Empty_Map;
+      G.Vertices (V).Out_Neighbours.Clear;
    end Clear_Vertex;
 
    -----------
