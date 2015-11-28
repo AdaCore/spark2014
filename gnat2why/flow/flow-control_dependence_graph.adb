@@ -93,8 +93,8 @@ package body Flow.Control_Dependence_Graph is
                      null;
 
                   elsif S = CV
-                    or else CV = FA.CDG.Get_Vertex
-                    (FA.Atr.Element (S).Call_Vertex)
+                    or else
+                      CV = FA.CDG.Get_Vertex (FA.Atr.Element (S).Call_Vertex)
                   then
                      --  This can happen if we have infinite loops.
                      null;
