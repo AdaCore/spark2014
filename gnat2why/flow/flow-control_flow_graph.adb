@@ -6494,9 +6494,7 @@ package body Flow.Control_Flow_Graph is
                V : Flow_Graphs.Vertex_Id;
                A : V_Attributes;
             begin
-               if FA.CFG.Get_Vertex (Change_Variant (F, Initial_Value)) =
-                 Flow_Graphs.Null_Vertex
-               then
+               if not FA.CFG.Contains (Change_Variant (F, Initial_Value)) then
                   --  If the 'Initial and 'Final vertices do not
                   --  already exist then we create them.
 

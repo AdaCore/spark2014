@@ -1154,14 +1154,14 @@ package body Flow_Generated_Globals is
             Key_A := Global_Id'(Kind => Subprogram_Kind,
                                 Name => Key_A.Name);
 
-            if Local_Graph.Get_Vertex (Key_A) = Null_Vertex
-              or else Local_Graph.Get_Vertex (Key_B) = Null_Vertex
+            if Local_Graph.Contains (Key_A)
+              and then Local_Graph.Contains (Key_B)
             then
+               --  Check if local variable B can act as global of subprogram A
+               return Local_Graph.Edge_Exists (Key_B, Key_A);
+            else
                return True;
             end if;
-
-            --  Check if local variable B can act as global of subprogram A
-            return Local_Graph.Edge_Exists (Key_B, Key_A);
          end Edge_Selector;
 
       --  Start of processing for Add_All_Edges
@@ -1616,7 +1616,7 @@ package body Flow_Generated_Globals is
                      G   := Global_Id'(Kind => Variable_Kind,
                                        Name => Nam);
 
-                     if Global_Graph.Get_Vertex (G) = Null_Vertex then
+                     if not Global_Graph.Contains (G) then
                         Global_Graph.Add_Vertex (G);
                      end if;
                   end loop;
@@ -1657,7 +1657,7 @@ package body Flow_Generated_Globals is
             G_Subp := Global_Id'(Kind => Subprogram_Kind,
                                  Name => Info.Name);
 
-            if Local_Graph.Get_Vertex (G_Subp) = Null_Vertex then
+            if not Local_Graph.Contains (G_Subp) then
                --  Create a vertex for the subprogram if one does not already
                --  exist.
                Local_Graph.Add_Vertex (G_Subp);
@@ -1671,7 +1671,7 @@ package body Flow_Generated_Globals is
 
                --  Create a vertex for every local variable if one does not
                --  already exist.
-               if Local_Graph.Get_Vertex (G_Local_Var) = Null_Vertex then
+               if not Local_Graph.Contains (G_Local_Var) then
                   Local_Graph.Add_Vertex (G_Local_Var);
                end if;
 
@@ -1685,7 +1685,7 @@ package body Flow_Generated_Globals is
                G_Local_Subp := Global_Id'(Kind => Subprogram_Kind,
                                           Name => Local_Subprogram);
 
-               if Local_Graph.Get_Vertex (G_Local_Subp) = Null_Vertex then
+               if not Local_Graph.Contains (G_Local_Subp) then
                   --  Create a vertex for every local subprogram if one does
                   --  not already exist.
                   Local_Graph.Add_Vertex (G_Local_Subp);

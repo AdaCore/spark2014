@@ -442,6 +442,18 @@ package body Graphs is
       G.Close (Visitor'Access);
    end Conditional_Close;
 
+   --------------
+   -- Contains --
+   --------------
+
+   function Contains
+     (G : Graph;
+      V : Vertex_Key)
+      return Boolean is
+   begin
+      return Get_Vertex (G, V) /= Null_Vertex;
+   end Contains;
+
    ------------------
    --  Copy_Edges  --
    ------------------

@@ -152,6 +152,14 @@ package Graphs is
    --  As a consequence all vertex ids are valid for the lifetime of
    --  the graph object.
 
+   function Contains
+     (G : Graph;
+      V : Vertex_Key)
+      return Boolean;
+   --  Returns True iff the graph contains a vertex with key V.
+   --
+   --  Complexity is O(1)
+
    function Get_Vertex
      (G : Graph;
       V : Vertex_Key)
@@ -174,8 +182,7 @@ package Graphs is
      (G  : in out Graph;
       V  : Vertex_Key;
       Id : out Vertex_Id)
-   with Pre  => not G.Is_Frozen and
-                G.Get_Vertex (V) = Null_Vertex,
+   with Pre  => not G.Is_Frozen and then not G.Contains (V),
         Post => Id /= Null_Vertex;
    --  Add a new vertex to the graph, with no edges attached.
    --
@@ -193,8 +200,7 @@ package Graphs is
    procedure Add_Vertex
      (G  : in out Graph;
       V  : Vertex_Key)
-   with Pre  => not G.Is_Frozen and
-                G.Get_Vertex (V) = Null_Vertex;
+   with Pre  => not G.Is_Frozen and then not G.Contains (V);
    --  Add a new keyed vertex, but do not return its Id.
 
    function Vertex_Hash
@@ -233,8 +239,7 @@ package Graphs is
    function Edge_Exists
      (G        : Graph;
       V_1, V_2 : Vertex_Key) return Boolean
-   with Pre => G.Get_Vertex (V_1) /= Null_Vertex and
-               G.Get_Vertex (V_2) /= Null_Vertex;
+   with Pre => G.Contains (V_1) and then G.Contains (V_2);
    --  Same as above but takes Vertex_Keys as parameters.
 
    function Edge_Colour
@@ -247,8 +252,7 @@ package Graphs is
      (G        : in out Graph;
       V_1, V_2 : Vertex_Id;
       Colour   : Edge_Colours := Edge_Colours'First)
-   with Pre  => V_1 /= Null_Vertex and
-                V_2 /= Null_Vertex,
+   with Pre  => V_1 /= Null_Vertex and then V_2 /= Null_Vertex,
         Post => G.Edge_Exists (V_1, V_2);
    --  Adds an unmarked edge from V_1 to V_2. If the edge already
    --  exists, we do nothing (i.e. existing edge attributes do not
@@ -260,8 +264,7 @@ package Graphs is
      (G        : in out Graph;
       V_1, V_2 : Vertex_Key;
       Colour   : Edge_Colours := Edge_Colours'First)
-   with Pre => G.Get_Vertex (V_1) /= Null_Vertex and
-               G.Get_Vertex (V_2) /= Null_Vertex;
+   with Pre => G.Contains (V_1) and then G.Contains (V_2);
    --  Convenience function to add an edge between two vertices given
    --  by key (instead of id).
    --
@@ -270,8 +273,7 @@ package Graphs is
    procedure Remove_Edge
      (G        : in out Graph;
       V_1, V_2 : Vertex_Id)
-   with Pre  => V_1 /= Null_Vertex and
-                V_2 /= Null_Vertex,
+   with Pre  => V_1 /= Null_Vertex and then V_2 /= Null_Vertex,
         Post => not G.Edge_Exists (V_1, V_2);
    --  Removes the edge from V_1 to V_2 from the graph, if it exists.
    --
