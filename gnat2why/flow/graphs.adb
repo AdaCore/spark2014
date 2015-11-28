@@ -1071,11 +1071,9 @@ package body Graphs is
    ------------
 
    function Invert (G : Graph) return Graph is
-      R : Graph;
-   begin
+      R : Graph := Create (G);
       --  Start with an empty graph, with the same vertices.
-      R := Create (G);
-
+   begin
       --  Add reversed edges.
       for V_1 in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          for C in G.Vertices (V_1).Out_Neighbours.Iterate loop
