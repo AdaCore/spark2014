@@ -145,12 +145,11 @@ package body Flow.Data_Dependence_Graph is
                                                              Final_Value));
                      begin
                         if V_Final /= Flow_Graphs.Null_Vertex then
-                           --  If V_Final is null, then we're doing
-                           --  something involving a variable that has
-                           --  been missed out of the global
-                           --  annotation. We just ignore the connection
-                           --  in that case, and flow analysis sanity
-                           --  check will pick up the pieces later.
+                           --  If V_Final is null, then we're doing something
+                           --  involving a variable that has been missed out
+                           --  of the global annotation. We just ignore the
+                           --  connection in that case, and flow analysis
+                           --  sanity check will pick up the pieces later.
                            FA.DDG.Add_Edge (V_D, V_Final, EC_DDG);
                         end if;
                      end;

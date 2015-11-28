@@ -146,9 +146,8 @@ package Graphs is
    --  Vertex operations
    ----------------------------------------------------------------------
 
-   --  Please note there is no Remove_Vertex, this is not an accident
-   --  as it is not needed. It would also not be possible to
-   --  implement.
+   --  Please note there is no Remove_Vertex, this is not an accident as it is
+   --  not needed. Also, it would not be possible to implement.
    --
    --  As a consequence all vertex ids are valid for the lifetime of
    --  the graph object.
