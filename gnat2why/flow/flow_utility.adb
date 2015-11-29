@@ -650,8 +650,6 @@ package body Flow_Utility is
                end case;
             end if;
 
-            Ids := Flow_Id_Sets.Empty_Set;
-
             if Ekind (T) in Concurrent_Kind then
                if Nested_Inside_Concurrent_Object (T, Scope) then
                   --  Include constituents that belong to the concurrent object
