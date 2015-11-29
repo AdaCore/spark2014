@@ -2925,10 +2925,19 @@ package body Flow_Utility is
                  Label  => Null_Unbounded_String);
       end Edge_Info;
 
-      Ptr  : Entity_Id;
-      Ptr2 : Entity_Id;
+      Ptr      : Entity_Id;
+      Ptr2     : Entity_Id;
 
-      S    : Node_Sets.Set;
+      S        : Node_Sets.Set;
+
+      Inserted : Boolean;
+      --  Indicates than an element was inserted to a set
+
+      Unused    : Node_Sets.Cursor;
+      --  Dummy variable required by the standard containers API
+
+   --  Start of processing for Initialize
+
    begin
       Comp_Graph := Component_Graphs.Create;
 
@@ -2938,24 +2947,46 @@ package body Flow_Utility is
            or else Ekind (E) in E_Protected_Type | E_Task_Type
          then
             Ptr := First_Component_Or_Discriminant (E);
+
             while Present (Ptr) loop
-               if not S.Contains (Ptr) then
-                  S.Include (Ptr);
+               S.Insert (New_Item => Ptr,
+                         Position => Unused,
+                         Inserted => Inserted);
+
+               if Inserted then
                   Comp_Graph.Add_Vertex (Ptr);
                end if;
-               if Present (Original_Record_Component (Ptr))
-                 and then not S.Contains (Original_Record_Component (Ptr))
-               then
-                  S.Include (Original_Record_Component (Ptr));
-                  Comp_Graph.Add_Vertex (Original_Record_Component (Ptr));
+
+               declare
+                  Orig_Rec_Comp : constant Node_Id :=
+                    Original_Record_Component (Ptr);
+               begin
+                  if Present (Orig_Rec_Comp) then
+                     S.Insert (New_Item => Orig_Rec_Comp,
+                               Position => Unused,
+                               Inserted => Inserted);
+                     if Inserted then
+                        Comp_Graph.Add_Vertex (Orig_Rec_Comp);
+                     end if;
+                  end if;
+               end;
+
+               if Ekind (Ptr) = E_Discriminant then
+                  declare
+                     Corr_Discr : constant Node_Id :=
+                       Corresponding_Discriminant (Ptr);
+                  begin
+                     if Present (Corr_Discr) then
+                        S.Insert (New_Item => Corr_Discr,
+                                  Position => Unused,
+                                  Inserted => Inserted);
+                        if Inserted then
+                           Comp_Graph.Add_Vertex (Corr_Discr);
+                        end if;
+                     end if;
+                  end;
                end if;
-               if Ekind (Ptr) = E_Discriminant
-                 and then Present (Corresponding_Discriminant (Ptr))
-                 and then not S.Contains (Corresponding_Discriminant (Ptr))
-               then
-                  S.Include (Corresponding_Discriminant (Ptr));
-                  Comp_Graph.Add_Vertex (Corresponding_Discriminant (Ptr));
-               end if;
+
                Next_Component_Or_Discriminant (Ptr);
             end loop;
          end if;
