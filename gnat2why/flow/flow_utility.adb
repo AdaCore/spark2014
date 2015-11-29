@@ -176,7 +176,11 @@ package body Flow_Utility is
       S   : Component_Sets.Set := Component_Sets.Empty_Set;
 
       function Up (E : Entity_Id) return Entity_Id;
-      --  Get parent type, but don't consider record subtypes' ancestors.
+      --  Get parent type, but don't consider record subtypes' ancestors
+
+      --------
+      -- Up --
+      --------
 
       function Up (E : Entity_Id) return Entity_Id is
          A : constant Entity_Id := Etype (E);
@@ -193,6 +197,8 @@ package body Flow_Utility is
             return A;
          end if;
       end Up;
+
+   --  Start of processing for All_Components
 
    begin
       if not (Is_Record_Type (E)
@@ -553,6 +559,8 @@ package body Flow_Utility is
          --  Original_Record_Component.
          return ORC;
       end Get_Root_Component;
+
+   --  Start of processing for Flatten_Variable
 
    begin
       if Debug_Trace_Flatten then
