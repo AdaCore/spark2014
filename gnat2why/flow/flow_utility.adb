@@ -2435,8 +2435,8 @@ package body Flow_Utility is
                         Expand_Synthesized_Constants =>
                           Expand_Synthesized_Constants);
                   begin
-                     for C in M.Iterate loop
-                        VS.Union (Flow_Id_Maps.Element (C));
+                     for FS of M loop
+                        VS.Union (FS);
                      end loop;
                   end;
 
