@@ -3257,6 +3257,10 @@ package body Flow_Utility is
 
       function Proc (N : Node_Id) return Traverse_Result;
 
+      ----------
+      -- Proc --
+      ----------
+
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
@@ -3281,6 +3285,9 @@ package body Flow_Utility is
       end Proc;
 
       procedure Traverse is new Traverse_Proc (Proc);
+
+   --  Start of processing for Quantified_Variables
+
    begin
       Traverse (N);
       return RV;
@@ -3382,6 +3389,10 @@ package body Flow_Utility is
       function Proc (N : Node_Id) return Traverse_Result;
       --  Searches under contract for Output and sets needle to the
       --  node, if found.
+
+      ----------
+      -- Proc --
+      ----------
 
       function Proc (N : Node_Id) return Traverse_Result is
          Tmp, Tmp2 : Node_Id;
@@ -3526,6 +3537,8 @@ package body Flow_Utility is
 
       procedure Find_Export_Internal is new Traverse_Proc (Proc);
 
+   --  Start of processing for Search_Contract
+
    begin
       case Contract is
          when Pragma_Depends =>
@@ -3576,7 +3589,7 @@ package body Flow_Utility is
    function To_Flow_Id_Set
      (NS    : Name_Sets.Set;
       View  : Flow_Id_Variant := Normal_Use;
-      Scope : Flow_Scope        := Null_Flow_Scope)
+      Scope : Flow_Scope      := Null_Flow_Scope)
       return Flow_Id_Sets.Set
    is
       FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -4126,6 +4139,9 @@ package body Flow_Utility is
       All_Vars      : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
       Depends_Vars  : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
       Proof_Vars    : constant Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
+   --  Start of processing for Untangle_Record_Fields
+
    begin
       if Debug_Trace_Untangle_Fields then
          Write_Str ("Untangle_Record_Field on ");
