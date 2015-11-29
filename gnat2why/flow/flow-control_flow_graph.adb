@@ -6453,10 +6453,11 @@ package body Flow.Control_Flow_Graph is
          begin
             for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
                declare
-                  Atr  : constant V_Attributes     := FA.Atr (V);
+                  Atr  : constant Attribute_Maps.Constant_Reference_Type :=
+                    FA.Atr (V);
                   Vars : constant Flow_Id_Sets.Set :=
                     To_Entire_Variables (Atr.Variables_Used or
-                                           Atr.Variables_Defined);
+                                         Atr.Variables_Defined);
                begin
                   for Var of Vars loop
                      if not Synthetic (Var)
