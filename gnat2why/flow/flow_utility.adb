@@ -3393,14 +3393,12 @@ package body Flow_Utility is
    --------------------
 
    function Same_Component (C1, C2 : Entity_Id) return Boolean is
-      use Component_Graphs;
+      use type Component_Graphs.Cluster_Id;
 
-      A : constant Cluster_Id :=
-        Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (C1));
-      B : constant Cluster_Id :=
-        Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (C2));
    begin
-      return A = B;
+      return C1 = C2 or else
+        Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (C1)) =
+          Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (C2));
    end Same_Component;
 
    ---------------------
