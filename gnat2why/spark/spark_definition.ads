@@ -42,12 +42,14 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Doubly_Linked_Lists;
-with Atree;             use Atree;
-with Common_Containers; use Common_Containers;
-with Einfo;             use Einfo;
-with GNATCOLL.JSON;     use GNATCOLL.JSON;
-with Sinfo;             use Sinfo;
-with Types;             use Types;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Atree;                 use Atree;
+with Common_Containers;     use Common_Containers;
+with Einfo;                 use Einfo;
+with Gnat2Why_Args;
+with GNATCOLL.JSON;         use GNATCOLL.JSON;
+with Sinfo;                 use Sinfo;
+with Types;                 use Types;
 
 package SPARK_Definition is
 
@@ -99,6 +101,14 @@ package SPARK_Definition is
    --  Emit messages only if this is set. We do not want to produce any
    --  error messages during marking when we generate globals (only the
    --  marking itself is important).
+
+   --  Emit warning/info messages only when messages should be emitted, and
+   --  analysis is not restricted to a single subprogram/line (typically during
+   --  interactive use in IDEs), to avoid reporting messages on pieces of code
+   --  not belonging to the analyzed subprogram/line.
+   function Emit_Warning_Info_Messages return Boolean is
+     (Emit_Messages
+       and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String);
 
    procedure Mark_Compilation_Unit (N : Node_Id)
      with Pre => Nkind (N) in N_Compilation_Unit               |

@@ -1,3 +1,1 @@
-warnings.adb:12:18: warning: assuming "Put_Line" has no effect on global items
-warnings.adb:12:18: warning: no Global contract available for "Put_Line"
 warnings.ads:4:14: warning: subprogram "P1" has no effect

@@ -33,7 +33,6 @@ with Exp_Util;             use Exp_Util;
 with Fname;                use Fname;
 with Gnat2Why.Annotate;    use Gnat2Why.Annotate;
 with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
-with Gnat2Why_Args;
 with Lib;                  use Lib;
 with Namet;                use Namet;
 with Nlists;               use Nlists;
@@ -1999,7 +1998,7 @@ package body SPARK_Definition is
            Attribute_Position       |
            Attribute_Size
          =>
-            if Emit_Messages
+            if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
               and then Gnat2Why_Args.Pedantic
             then
@@ -2009,7 +2008,9 @@ package body SPARK_Definition is
             end if;
 
          when Attribute_Valid =>
-            if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+            if Emit_Warning_Info_Messages
+              and then SPARK_Pragma_Is (Opt.On)
+            then
                Error_Msg_F ("?attribute Valid is assumed to return True", N);
             end if;
 
@@ -2129,7 +2130,7 @@ package body SPARK_Definition is
       then
          case N_Binary_Op'(Nkind (N)) is
             when N_Op_Add | N_Op_Subtract =>
-               if Emit_Messages
+               if Emit_Warning_Info_Messages
                  and then SPARK_Pragma_Is (Opt.On)
                  and then Nkind (Left_Opnd (N)) in N_Op_Add | N_Op_Subtract
                  and then Paren_Count (Left_Opnd (N)) = 0
@@ -2139,7 +2140,7 @@ package body SPARK_Definition is
                      Left_Opnd (N));
                end if;
 
-               if Emit_Messages
+               if Emit_Warning_Info_Messages
                  and then SPARK_Pragma_Is (Opt.On)
                  and then Nkind (Right_Opnd (N)) in N_Op_Add | N_Op_Subtract
                  and then Paren_Count (Right_Opnd (N)) = 0
@@ -2150,7 +2151,7 @@ package body SPARK_Definition is
                end if;
 
             when N_Op_Multiply | N_Op_Divide | N_Op_Mod | N_Op_Rem =>
-               if Emit_Messages
+               if Emit_Warning_Info_Messages
                  and then SPARK_Pragma_Is (Opt.On)
                  and then Nkind (Left_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Left_Opnd (N)) = 0
@@ -2160,7 +2161,7 @@ package body SPARK_Definition is
                      Left_Opnd (N));
                end if;
 
-               if Emit_Messages
+               if Emit_Warning_Info_Messages
                  and then SPARK_Pragma_Is (Opt.On)
                  and then Nkind (Right_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Right_Opnd (N)) = 0
@@ -2249,7 +2250,7 @@ package body SPARK_Definition is
             --  should not have any effect on global items. Exempt
             --  also pure subprograms which have no global effects.
 
-            if Emit_Messages
+            if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
               and then ((Is_Imported (E)
                            and then Convention (E) not in Convention_Ada)
@@ -3261,7 +3262,9 @@ package body SPARK_Definition is
             elsif Is_Itype (E) then
                null;
 
-            elsif Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+            elsif Emit_Warning_Info_Messages
+              and then SPARK_Pragma_Is (Opt.On)
+            then
                Error_Msg_N ("?type invariant ignored (not yet supported)", E);
             end if;
          end if;
@@ -4202,7 +4205,9 @@ package body SPARK_Definition is
          --  a warning in code marked SPARK_Mode Off though.
 
          when Pragma_Overflow_Mode =>
-            if Emit_Messages and then not SPARK_Pragma_Is (Opt.Off) then
+            if Emit_Warning_Info_Messages
+              and then not SPARK_Pragma_Is (Opt.Off)
+            then
                Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);
             end if;
 
@@ -4486,7 +4491,9 @@ package body SPARK_Definition is
            Pragma_Lock_Free                      |
            Pragma_Storage_Size                   =>
 
-            if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+            if Emit_Warning_Info_Messages
+              and then SPARK_Pragma_Is (Opt.On)
+            then
                Error_Msg_Name_1 := Pname;
                Error_Msg_N ("?pragma % ignored (not yet supported)", N);
             end if;
@@ -4687,7 +4694,8 @@ package body SPARK_Definition is
             if Is_Local_Subprogram_Always_Inlined (E)
               and then not Referenced (E)
               and then not Has_Unreferenced (E)
-              and then Emit_Messages and then SPARK_Pragma_Is (Opt.On)
+              and then Emit_Warning_Info_Messages
+              and then SPARK_Pragma_Is (Opt.On)
             then
                case Ekind (E) is
                when E_Function =>
