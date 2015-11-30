@@ -20,6 +20,7 @@
 -- should be opened in GPS or GNATbench when selecting the example.
 --
 adacore_u
+bitwalker
 autopilot
 binary_search
 binary_search_unconstrained
