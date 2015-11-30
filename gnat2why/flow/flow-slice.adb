@@ -192,10 +192,9 @@ package body Flow.Slice is
       for V_Final of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             F_Final : constant Flow_Id      := FA.PDG.Get_Key (V_Final);
-            Attr    : constant V_Attributes := FA.Atr (V_Final);
          begin
             if F_Final.Variant = Final_Value
-              and Attr.Is_Export
+              and FA.Atr (V_Final).Is_Export
               and not Synthetic (F_Final)
             then
                Out_Vertices.Include (V_Final);
@@ -207,8 +206,9 @@ package body Flow.Slice is
 
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
+            use Attribute_Maps;
             F_Initial : constant Flow_Id      := FA.PDG.Get_Key (V_Initial);
-            Attr      : constant V_Attributes := FA.Atr (V_Initial);
+            Attr      : constant Constant_Reference_Type := FA.Atr (V_Initial);
          begin
             if F_Initial.Variant = Initial_Value
               and Attr.Is_Import
@@ -432,21 +432,24 @@ package body Flow.Slice is
 
       function Get_Proof_Ins return Node_Sets.Set is
          All_Proof_Ins : Node_Sets.Set := Get_Inputs_Or_Proof_Ins;
-         A             : V_Attributes;
       begin
          for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
             --  We go through all vertices in the graph and we
             --  subtract from the All_Proof_Ins set the variables that
             --  are used on vertices that are not related to proof.
 
-            A := FA.Atr.Element (V);
+            declare
+               use Attribute_Maps;
+               A : constant Constant_Reference_Type := FA.Atr (V);
+            begin
 
-            if FA.PDG.Get_Key (V).Variant /= Final_Value
-              and then not A.Is_Proof
-            then
-               All_Proof_Ins := All_Proof_Ins -
-                 To_Node_Set (To_Entire_Variables (A.Variables_Used));
-            end if;
+               if FA.PDG.Get_Key (V).Variant /= Final_Value
+                 and then not A.Is_Proof
+               then
+                  All_Proof_Ins := All_Proof_Ins -
+                    To_Node_Set (To_Entire_Variables (A.Variables_Used));
+               end if;
+            end;
          end loop;
 
          return All_Proof_Ins;
@@ -458,7 +461,6 @@ package body Flow.Slice is
 
       function Get_Proof_Subprograms return Node_Sets.Set is
          All_Proof_Subprograms : Node_Sets.Set := FA.Direct_Calls;
-         A                     : V_Attributes;
       begin
          for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
             --  We go through all vertices in the graph and we
@@ -466,12 +468,15 @@ package body Flow.Slice is
             --  subprograms that are called on vertices that are not
             --  related to proof.
 
-            A := FA.Atr.Element (V);
-
-            if not A.Is_Proof then
-               All_Proof_Subprograms := All_Proof_Subprograms -
-                                          A.Subprograms_Called;
-            end if;
+            declare
+               use Attribute_Maps;
+               A : constant Constant_Reference_Type := FA.Atr (V);
+            begin
+               if not A.Is_Proof then
+                  All_Proof_Subprograms :=
+                    All_Proof_Subprograms - A.Subprograms_Called;
+               end if;
+            end;
          end loop;
 
          return Subprograms_Without_Contracts (All_Proof_Subprograms);

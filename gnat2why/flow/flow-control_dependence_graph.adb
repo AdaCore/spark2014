@@ -51,7 +51,8 @@ package body Flow.Control_Dependence_Graph is
 
       for V of FA.CDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            A  : constant V_Attributes := FA.Atr (V);
+            use Attribute_Maps;
+            A  : constant Constant_Reference_Type := FA.Atr (V);
             CV : constant Flow_Graphs.Vertex_Id :=
               FA.CDG.Get_Vertex (A.Call_Vertex);
          begin

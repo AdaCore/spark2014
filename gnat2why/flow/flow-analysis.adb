@@ -767,11 +767,6 @@ package body Flow.Analysis is
    ----------------------------
 
    procedure Find_Unwritten_Exports (FA : in out Flow_Analysis_Graphs) is
-      F_Final   : Flow_Id;
-      A_Final   : V_Attributes;
-      F_Initial : Flow_Id;
-      A_Initial : V_Attributes;
-      Unwritten : Boolean;
 
       Written_Entire_Vars : Flow_Id_Sets.Set;
       Unwritten_Vars      : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
@@ -796,73 +791,94 @@ package body Flow.Analysis is
          return Ekind (Etype (Get_Direct_Mapping_Id (EV))) in Concurrent_Kind;
       end Is_Or_Belongs_To_Concurrent_Object;
 
+   --  Start of processing for Find_Unwritten_Exports
+
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         F_Final := FA.PDG.Get_Key (V);
-         A_Final := FA.Atr.Element (V);
-         if F_Final.Variant = Final_Value
-           and then A_Final.Is_Export
-         then
+         declare
+            F_Final : constant Flow_Id := FA.PDG.Get_Key (V);
+            A_Final : constant Attribute_Maps.Constant_Reference_Type :=
+              FA.Atr (V);
 
-            --  We have a final use vertex which is an export that has
-            --  a single in-link. If this in-link is its initial value
-            --  then clearly we do not set this output on any path.
+            Unwritten : Boolean;
 
-            Unwritten := False;
-            if FA.PDG.In_Neighbour_Count (V) = 1 then
-               F_Initial := FA.PDG.Get_Key (FA.PDG.Parent (V));
-               A_Initial := FA.Atr.Element (FA.PDG.Parent (V));
-               if F_Initial.Variant = Initial_Value
-                 and then A_Initial.Is_Import
-                 and then Change_Variant (F_Initial, Final_Value) = F_Final
-               then
-                  Unwritten := True;
+         begin
+            if F_Final.Variant = Final_Value
+              and then A_Final.Is_Export
+            then
+
+               --  We have a final use vertex which is an export that has
+               --  a single in-link. If this in-link is its initial value
+               --  then clearly we do not set this output on any path.
+
+               Unwritten := False;
+               if FA.PDG.In_Neighbour_Count (V) = 1 then
+                  declare
+                     F_Initial : constant Flow_Id :=
+                       FA.PDG.Get_Key (FA.PDG.Parent (V));
+                     A_Initial :
+                     constant Attribute_Maps.Constant_Reference_Type :=
+                       FA.Atr (FA.PDG.Parent (V));
+                  begin
+                     if F_Initial.Variant = Initial_Value
+                       and then A_Initial.Is_Import
+                       and then
+                         Change_Variant (F_Initial, Final_Value) = F_Final
+                     then
+                        Unwritten := True;
+                     end if;
+                  end;
+               end if;
+
+               if Unwritten then
+                  Unwritten_Vars.Include (V);
+               else
+                  Written_Entire_Vars.Include (Entire_Variable (F_Final));
                end if;
             end if;
-
-            if Unwritten then
-               Unwritten_Vars.Include (V);
-            else
-               Written_Entire_Vars.Include (Entire_Variable (F_Final));
-            end if;
-         end if;
+         end;
       end loop;
 
       for V of Unwritten_Vars loop
-         F_Final := FA.PDG.Get_Key (V);
-         A_Final := FA.Atr.Element (V);
-
-         if not Written_Entire_Vars.Contains (Entire_Variable (F_Final)) then
-            --  We do not issue messages:
-            --    * for variables that have been marked as unmodified or
-            --    * for variables that are/belong to a concurrent object.
-            if F_Final.Kind not in Direct_Mapping | Record_Field
-              or else (not FA.Unmodified_Vars.Contains
-                             (Get_Direct_Mapping_Id (F_Final))
-                         and then not Is_Or_Belongs_To_Concurrent_Object
-                                        (F_Final))
+         declare
+            F_Final : constant Flow_Id := FA.PDG.Get_Key (V);
+            A_Final : constant Attribute_Maps.Constant_Reference_Type :=
+              FA.Atr (V);
+         begin
+            if not Written_Entire_Vars.Contains (Entire_Variable (F_Final))
             then
-               if A_Final.Is_Global then
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "& is not modified, could be INPUT",
-                     N        => Find_Global (FA.Analyzed_Entity, F_Final),
-                     F1       => Entire_Variable (F_Final),
-                     Tag      => Inout_Only_Read,
-                     Severity => Warning_Kind,
-                     Vertex   => V);
-               else
-                  Error_Msg_Flow
-                    (FA       => FA,
-                     Msg      => "& is not modified, could be IN",
-                     N        => Error_Location (FA.PDG, FA.Atr, V),
-                     F1       => Entire_Variable (F_Final),
-                     Tag      => Inout_Only_Read,
-                     Severity => Warning_Kind,
-                     Vertex   => V);
+               --  We do not issue messages:
+               --    * for variables that have been marked as unmodified or
+               --    * for variables that are/belong to a concurrent object.
+               if F_Final.Kind not in Direct_Mapping | Record_Field
+                 or else (not FA.Unmodified_Vars.Contains
+                          (Get_Direct_Mapping_Id (F_Final))
+                          and then not Is_Or_Belongs_To_Concurrent_Object
+                            (F_Final))
+               then
+                  if A_Final.Is_Global then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "& is not modified, could be INPUT",
+                        N        => Find_Global (FA.Analyzed_Entity, F_Final),
+                        F1       => Entire_Variable (F_Final),
+                        Tag      => Inout_Only_Read,
+                        Severity => Warning_Kind,
+                        Vertex   => V);
+                  else
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      => "& is not modified, could be IN",
+                        N        => Error_Location (FA.PDG, FA.Atr, V),
+                        F1       => Entire_Variable (F_Final),
+                        Tag      => Inout_Only_Read,
+                        Severity => Warning_Kind,
+                        Vertex   => V);
+                  end if;
                end if;
             end if;
-         end if;
+         end;
+
       end loop;
    end Find_Unwritten_Exports;
 
@@ -875,10 +891,10 @@ package body Flow.Analysis is
    is
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean
       is ((FA.PDG.Get_Key (V).Variant = Final_Value and then
-            FA.Atr.Element (V).Is_Export)
-         or else FA.Atr.Element (V).Is_Precondition
-         or else FA.Atr.Element (V).Is_Postcondition
-         or else FA.Atr.Element (V).Is_Proof);
+            FA.Atr (V).Is_Export)
+         or else FA.Atr (V).Is_Precondition
+         or else FA.Atr (V).Is_Postcondition
+         or else FA.Atr (V).Is_Proof);
       --  Checks if the given vertex V is a final-use vertex or is useful for
       --  proof.
 
@@ -936,8 +952,9 @@ package body Flow.Analysis is
 
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            Key : constant Flow_Id      := FA.PDG.Get_Key (V);
-            Atr : constant V_Attributes := FA.Atr.Element (V);
+            use Attribute_Maps;
+            Key : constant Flow_Id                 := FA.PDG.Get_Key (V);
+            Atr : constant Constant_Reference_Type := FA.Atr (V);
 
             E              : Flow_Id;
             Disuse_Not_Bad : Boolean;
@@ -1380,10 +1397,8 @@ package body Flow.Analysis is
         (V : Flow_Graphs.Vertex_Id)
          return Boolean
       is
-         Vars_Defined : constant Flow_Id_Sets.Set :=
-           FA.Atr.Element (V).Variables_Defined;
       begin
-         for Var_Def of Vars_Defined loop
+         for Var_Def of FA.Atr (V).Variables_Defined loop
             declare
                Initial_Var : constant Flow_Id :=
                  Change_Variant (Var_Def, Final_Value);
@@ -1407,7 +1422,7 @@ package body Flow.Analysis is
       is
          Mask         : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
          Vars_Defined : constant Flow_Id_Sets.Set :=
-           FA.Atr.Element (Ineffective_Statement).Variables_Defined;
+           FA.Atr (Ineffective_Statement).Variables_Defined;
 
          procedure Visitor
            (V  : Flow_Graphs.Vertex_Id;
@@ -1420,8 +1435,7 @@ package body Flow.Analysis is
          is
             Intersection : constant Flow_Id_Sets.Set :=
               Vars_Defined and
-              (FA.Atr.Element (V).Variables_Defined -
-                 FA.Atr.Element (V).Variables_Used);
+              (FA.Atr (V).Variables_Defined - FA.Atr (V).Variables_Used);
          begin
             if V /= Ineffective_Statement and then
               Intersection.Length >= 1
@@ -1463,9 +1477,8 @@ package body Flow.Analysis is
          procedure Visitor (V  : Flow_Graphs.Vertex_Id;
                             TV : out Flow_Graphs.Simple_Traversal_Instruction)
          is
-            Atr : constant V_Attributes := FA.Atr.Element (V);
          begin
-            if Atr.Execution /= Normal_Execution then
+            if FA.Atr (V).Execution /= Normal_Execution then
                TV := Flow_Graphs.Skip_Children;
             elsif V = FA.Helper_End_Vertex then
                Dead_End := False;
@@ -1491,7 +1504,7 @@ package body Flow.Analysis is
       is
       begin
          return FA.PDG.Get_Key (V).Variant = Final_Value and then
-           FA.Atr.Element (V).Is_Export;
+           FA.Atr (V).Is_Export;
       end Is_Final_Use_Any_Export;
 
       -------------------------------
@@ -1537,17 +1550,13 @@ package body Flow.Analysis is
       is
       begin
          if FA.Other_Fields.Contains (V) then
-            declare
-               VS : constant Vertex_Sets.Set := FA.Other_Fields.Element (V);
-            begin
-               for Other_Field of VS loop
-                  if FA.PDG.Non_Trivial_Path_Exists
-                    (Other_Field, Is_Final_Use_Any_Export'Access)
-                  then
-                     return False;
-                  end if;
-               end loop;
-            end;
+            for Other_Field of FA.Other_Fields (V) loop
+               if FA.PDG.Non_Trivial_Path_Exists
+                 (Other_Field, Is_Final_Use_Any_Export'Access)
+               then
+                  return False;
+               end if;
+            end loop;
          end if;
 
          --  If we reach this point then all other fields are
@@ -1558,9 +1567,10 @@ package body Flow.Analysis is
    begin --  Find_Ineffective_Statements
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
+            use Attribute_Maps;
             N         : Node_Id;
-            Key       : constant Flow_Id      := FA.PDG.Get_Key (V);
-            Atr       : constant V_Attributes := FA.Atr.Element (V);
+            Key       : constant Flow_Id                 := FA.PDG.Get_Key (V);
+            Atr       : constant Constant_Reference_Type := FA.Atr (V);
             Mask      : Vertex_Sets.Set;
             Tag       : constant Flow_Tag_Kind := Ineffective;
             Tmp       : Flow_Id;
@@ -1790,7 +1800,8 @@ package body Flow.Analysis is
       --  Guilty until proven innocent.
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            Atr : constant V_Attributes := FA.Atr.Element (V);
+            use Attribute_Maps;
+            Atr : constant Constant_Reference_Type := FA.Atr (V);
          begin
             if Atr.Is_Program_Node or
               Atr.Is_Parameter or
@@ -1809,16 +1820,12 @@ package body Flow.Analysis is
 
       --  Anything remaining is dead
       for V of Dead_Code loop
-         declare
-            A : constant V_Attributes := FA.Atr.Element (V);
-         begin
-            Error_Msg_Flow (FA       => FA,
-                            Msg      => "this statement is never reached",
-                            Severity => Warning_Kind,
-                            N        => A.Error_Location,
-                            Tag      => VC_Kinds.Dead_Code,
-                            Vertex   => V);
-         end;
+         Error_Msg_Flow (FA       => FA,
+                         Msg      => "this statement is never reached",
+                         Severity => Warning_Kind,
+                         N        => FA.Atr (V).Error_Location,
+                         Tag      => VC_Kinds.Dead_Code,
+                         Vertex   => V);
       end loop;
    end Find_Dead_Code;
 
@@ -1884,8 +1891,9 @@ package body Flow.Analysis is
       ---------------------
 
       function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean is
-         V_Key : constant Flow_Id      := FA.PDG.Get_Key (V);
-         V_Atr : constant V_Attributes := FA.Atr.Element (V);
+         use Attribute_Maps;
+         V_Key : constant Flow_Id                 := FA.PDG.Get_Key (V);
+         V_Atr : constant Constant_Reference_Type := FA.Atr (V);
       begin
          --  Ignore exceptional paths
          if V_Atr.Is_Exceptional_Path then
@@ -1932,13 +1940,12 @@ package body Flow.Analysis is
            (V           : Flow_Graphs.Vertex_Id;
             Instruction : out Flow_Graphs.Traversal_Instruction)
          is
-            A : constant V_Attributes := FA.Atr.Element (V);
          begin
             if V = To then
                Instruction := Flow_Graphs.Found_Destination;
                Path_Found  := True;
             elsif V /= V_Allowed
-              and then A.Variables_Defined.Contains (Var)
+              and then FA.Atr (V).Variables_Defined.Contains (Var)
             then
                Instruction := Flow_Graphs.Skip_Children;
             else
@@ -2412,30 +2419,32 @@ package body Flow.Analysis is
          end if;
       end Emit_Message;
 
-      V_Atr            : V_Attributes;
       Def_Atr          : V_Attributes;
       Def_Key          : Flow_Id;
-      Var_Atr          : V_Attributes;
       Is_Uninitialized : Boolean;
       Is_Initialized   : Boolean;
 
-   begin --  Find_Use_Of_Uninitialized_Variables
+   --  Start of processing for Find_Use_Of_Uninitialized_Variables
+
+   begin
 
       --  We look at all vertices except for:
       --     * exceptional ones and
       --     * synthetic null output
       for V of FA.DDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         V_Atr := FA.Atr.Element (V);
+
          if Consider_Vertex (V) then
             --  For each variable read...
-            for Var_Read of V_Atr.Variables_Used loop
+            --  ??? workaround for OB26-003: explicitly call Element
+            for Var_Read of FA.Atr.Element (V).Variables_Used loop
                Is_Uninitialized := False;
                Is_Initialized   := False;
-               Var_Atr          := FA.Atr.Element
-                 (FA.PDG.Get_Vertex (Change_Variant
-                                       (Var_Read, Initial_Value)));
 
-               if not Var_Atr.Is_Initialized
+               if not
+                 FA.Atr
+                   (FA.PDG.Get_Vertex
+                      (Change_Variant
+                         (Var_Read, Initial_Value))).Is_Initialized
                  and then (if Ekind (FA.Analyzed_Entity) in
                              E_Package | E_Package_Body
                            then not Is_Abstract_State (Var_Read) and then
@@ -3921,7 +3930,8 @@ package body Flow.Analysis is
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            Atr : constant V_Attributes := FA.Atr.Element (V);
+            use Attribute_Maps;
+            Atr : constant Constant_Reference_Type := FA.Atr (V);
          begin
             if Atr.Is_Program_Node
               and not Atr.Is_Exceptional_Path

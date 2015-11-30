@@ -3743,20 +3743,22 @@ package body Flow_Utility is
       procedure Merge (Component : Entity_Id;
                        Input     : Node_Id)
       is
-         F      : constant Flow_Id := Add_Component (Map_Root, Component);
-         Tmp    : Flow_Id_Maps.Map;
-         Output : Flow_Id;
-         Inputs : Flow_Id_Sets.Set;
+         F   : constant Flow_Id := Add_Component (Map_Root, Component);
+         Tmp : Flow_Id_Maps.Map;
       begin
          case Ekind (Get_Type (Component, Scope)) is
             when Record_Kind =>
                Tmp := Recurse_On (Input, F);
 
                for C in Tmp.Iterate loop
-                  Output := Flow_Id_Maps.Key (C);
-                  Inputs := Flow_Id_Maps.Element (C);
-
-                  M.Include (Output, Inputs);
+                  declare
+                     use Flow_Id_Maps;
+                     Output : constant Flow_Id := Flow_Id_Maps.Key (C);
+                     Inputs : constant Flow_Id_Maps.Constant_Reference_Type :=
+                       Tmp (C);
+                  begin
+                     M.Include (Output, Inputs);
+                  end;
                end loop;
 
             when others =>
@@ -3770,6 +3772,8 @@ package body Flow_Utility is
                end;
          end case;
       end Merge;
+
+   --  Start of processing for Untangle_Record_Assignment
 
    begin
       if Debug_Trace_Untangle_Record then

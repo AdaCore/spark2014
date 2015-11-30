@@ -413,7 +413,7 @@ package body Flow.Analysis.Sanity is
 
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            A : constant V_Attributes := FA.Atr.Element (V);
+            A : constant Attribute_Maps.Constant_Reference_Type := FA.Atr (V);
 
             Written_Vars : constant Ordered_Flow_Id_Sets.Set :=
               To_Ordered_Flow_Id_Set (A.Variables_Defined);
@@ -561,7 +561,8 @@ package body Flow.Analysis.Sanity is
 
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            A : constant V_Attributes := FA.Atr.Element (V);
+            use Attribute_Maps;
+            A : constant Constant_Reference_Type := FA.Atr (V);
 
             All_Vars : constant Ordered_Flow_Id_Sets.Set :=
               To_Ordered_Flow_Id_Set (A.Variables_Used or A.Variables_Defined);
