@@ -87,18 +87,18 @@ package body Flow_Types is
             end if;
 
             if Left.Kind = Record_Field then
-               if Left.Component.Length = Right.Component.Length then
-                  for I in Natural range 1 .. Natural (Left.Component.Length)
-                  loop
-                     if not Same_Component (Left.Component (I),
-                                            Right.Component (I))
-                     then
-                        return False;
-                     end if;
-                  end loop;
-               else
-                  return False;
-               end if;
+               declare
+                  Left_Len : constant Ada.Containers.Count_Type :=
+                    Left.Component.Length;
+               begin
+                  return
+                    Left_Len > 0
+                    and then Left_Len = Right.Component.Length
+                    and then
+                    (for all J in Positive range 1 .. Positive (Left_Len) =>
+                       Same_Component (Left.Component (J),
+                                       Right.Component (J)));
+               end;
             end if;
 
             return True;
