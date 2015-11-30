@@ -436,16 +436,16 @@ pi_compute.adb:105:40: info: initialization of "A9" proved, in call inlined at p
 pi_compute.adb:105:43: medium: overflow check might fail, in call inlined at pi_compute.adb:120
 pi_compute.adb:106:22: info: initialization of "A10" proved
 pi_compute.adb:106:22: info: initialization of "A10" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:106:26: medium: overflow check might fail, in call inlined at pi_compute.adb:120
-pi_compute.adb:106:32: medium: overflow check might fail, in call inlined at pi_compute.adb:120
+pi_compute.adb:106:26: info: overflow check proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:106:32: info: overflow check proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:106:34: info: initialization of "A9" proved
 pi_compute.adb:106:34: info: initialization of "A9" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:106:37: medium: overflow check might fail, in call inlined at pi_compute.adb:120
+pi_compute.adb:106:37: info: overflow check proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:106:39: info: initialization of "A8" proved
 pi_compute.adb:106:39: info: initialization of "A8" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:112:07: info: assertion proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:112:22: info: initialization of "Den" proved
 pi_compute.adb:112:22: info: initialization of "Den" proved, in call inlined at pi_compute.adb:120
-pi_compute.adb:112:26: medium: assertion might fail, cannot prove Den in -0.11146 .. -1.1145E-1, in call inlined at pi_compute.adb:120
 pi_compute.adb:113:14: info: initialization of "Num" proved
 pi_compute.adb:113:14: info: initialization of "Num" proved, in call inlined at pi_compute.adb:120
 pi_compute.adb:113:18: info: division check proved, in call inlined at pi_compute.adb:120
