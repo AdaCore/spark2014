@@ -1,4 +1,4 @@
-package body Lists is
+package body Lists with SPARK_Mode is
    function Search (L : List) return Cursor is
       C : Cursor := First (L);
    begin

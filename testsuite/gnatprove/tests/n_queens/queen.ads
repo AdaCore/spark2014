@@ -1,4 +1,4 @@
-package Queen is
+package Queen with SPARK_Mode is
 
    -------------------------------------------------------
    --         SPARK 2014 - Queen Example                --
