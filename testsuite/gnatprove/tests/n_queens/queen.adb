@@ -1,4 +1,4 @@
-package body Queen is 
+package body Queen with SPARK_Mode is
 
    procedure Add_next (B : in out Board; I : Index;
                        Done : in out Boolean; C : in Board)

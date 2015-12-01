@@ -8,7 +8,7 @@ with Ada.Containers.Formal_Doubly_Linked_Lists; use Ada.Containers;
 -- doubly linked list in SPARK 2014.              --
 ----------------------------------------------------
 
-package Lists is
+package Lists with SPARK_Mode is
    function My_Eq (I1, I2 : Integer) return Boolean is (I1 = I2);
 
    package L is new Formal_Doubly_Linked_Lists (Integer, My_Eq);
