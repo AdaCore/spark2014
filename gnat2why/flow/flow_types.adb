@@ -135,10 +135,25 @@ package body Flow_Types is
 
                H : Ada.Containers.Hash_Type :=
                  Generic_Integer_Hash (Integer (N.Node));
+
+               procedure Hash_Component (C : Entity_Vectors.Cursor);
+               --  Update hash with a component C. Especially in debug mode
+               --  this is faster than iterating over a component, because the
+               --  tampering check is accessed only once for Iterate and not
+               --  for each call to Element.
+
+               --------------------
+               -- Hash_Component --
+               --------------------
+
+               procedure Hash_Component (C : Entity_Vectors.Cursor) is
+                  use Entity_Vectors;
+               begin
+                  H := H + Component_Hash (Element (C));
+               end Hash_Component;
+
             begin
-               for C of N.Component loop
-                  H := H + Component_Hash (C);
-               end loop;
+               N.Component.Iterate (Hash_Component'Access);
                return H;
             end;
          when Magic_String =>
