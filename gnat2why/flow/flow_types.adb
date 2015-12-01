@@ -127,8 +127,20 @@ package body Flow_Types is
             return Generic_Integer_Hash (-1);
          when Synthetic_Null_Export =>
             return Generic_Integer_Hash (-2);
-         when Direct_Mapping | Record_Field =>
+         when Direct_Mapping =>
             return Generic_Integer_Hash (Integer (N.Node));
+         when Record_Field =>
+            declare
+               use type Ada.Containers.Hash_Type;
+
+               H : Ada.Containers.Hash_Type :=
+                 Generic_Integer_Hash (Integer (N.Node));
+            begin
+               for C of N.Component loop
+                  H := H + Component_Hash (C);
+               end loop;
+               return H;
+            end;
          when Magic_String =>
             return Name_Hash (N.Name);
       end case;
