@@ -2,7 +2,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Patience; use Patience;
 
 
-procedure Test_Patience is
+procedure Test_Patience with SPARK_Mode is
 
    procedure PrintCardStack (S : CardStack) is
    begin
