@@ -2612,6 +2612,21 @@ global variables discussed later in this section.
     apply except that only an Elaborate (as opposed to an Elaborate_All)
     pragma is required.
 
+.. _tu-nt-elaboration_issues-12:
+
+12. An implementation is permitted to accept constructs which
+    violate the preceding rules in this section (e.g., an
+    implementation might choose to behave, for purposes of defining
+    an early call region, as though some non-preelaborable construct
+    is preelaborable), but only if the
+    implementation is able to statically ensure that accepting
+    these constructs does not introduce the possibility of
+    failing an elaboration check (either for a call or for
+    an instantiation), reading an uninitialized variable, or
+    unsafe reliance on a package's Initial_Condition. [If an implementation
+    chooses to take advantage of this permission, then the burden
+    is entirely on the implementation to "get it right".]
+
 .. _etu-elaboration_issues-lr:
 
 [These rules correctly prohibit the following example:
