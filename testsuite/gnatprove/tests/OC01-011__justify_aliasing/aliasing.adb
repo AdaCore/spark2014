@@ -11,6 +11,6 @@ is
    procedure Swap_Indexes (A : in out P_Array; I, J : Natural) is
    begin
       Swap (A (I), A (J));
-      pragma Annotate (GNATprove, False_Positive, "aliasing", "I /= J");
+      pragma Annotate (GNATprove, False_Positive, "aliased", "I /= J");
    end Swap_Indexes;
 end Aliasing;
