@@ -155,6 +155,10 @@ package body Flow.Slice is
       --  Given a flow id, return the view the dependency relation
       --  cares about.
 
+      ---------------------
+      -- Flow_Equivalent --
+      ---------------------
+
       function Flow_Equivalent (F : Flow_Id) return Flow_Id is
       begin
          case F.Kind is
@@ -184,6 +188,8 @@ package body Flow.Slice is
       DM            : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
 
       use type Vertex_Sets.Set;
+
+   --  Start of processing for Compute_Dependency_Relation
 
    begin
 

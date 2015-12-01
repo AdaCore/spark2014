@@ -79,7 +79,7 @@ is
    --  Given two record components, checks if one can be considered to be
    --  the `same' component (for purposes of flow analysis). For example a
    --  record might contain component x, and its derived record also
-   --  contains this component x (but its a different entity). This
+   --  contains this component x (but it is a different entity). This
    --  function can be used to check for this equivalence.
 
    function Get_Flow_Id

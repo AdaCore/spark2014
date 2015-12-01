@@ -4182,6 +4182,7 @@ package body Flow.Control_Flow_Graph is
 
       function Suspends_On_Suspension_Object return Boolean is
          Scop : Entity_Id := Called_Thing;
+         --  Currently analyzed scope
 
          procedure Scope_Up;
          --  Climb up the scope

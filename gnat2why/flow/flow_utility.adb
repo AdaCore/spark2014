@@ -4596,6 +4596,10 @@ package body Flow_Utility is
 
                      function In_Type (C : Entity_Id) return Boolean;
 
+                     -------------
+                     -- In_Type --
+                     -------------
+
                      function In_Type (C : Entity_Id) return Boolean is
                      begin
                         for Ptr of All_Components (New_Typ) loop

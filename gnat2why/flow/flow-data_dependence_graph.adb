@@ -53,7 +53,7 @@ package body Flow.Data_Dependence_Graph is
                      --  Var.
 
                      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id)
-                                          return Boolean;
+                                             return Boolean;
                      --  Check if we should go down the given edge based on
                      --  colour.
 
