@@ -1,0 +1,6 @@
+aliasing.adb:13:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
+aliasing.adb:13:16: info: index check proved
+aliasing.adb:13:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0 and A'Last = 1)
+aliasing.adb:13:23: info: index check proved
+aliasing.adb:13:23: medium: array index check might fail (e.g. when A'First = 1 and J = 0 and A'Last = 0)
+aliasing.adb:14:07: warning: no check message justified by this pragma
