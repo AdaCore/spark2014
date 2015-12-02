@@ -686,6 +686,8 @@ package body Flow_Utility is
 
             for Ptr of All_Components (T) loop
                if Is_Visible (Get_Root_Component (Ptr), Scope) then
+                  --  Here we union disjoint sets, so possibly we could
+                  --  optimize this.
                   if Ekind (T) in Concurrent_Kind then
                      Ids.Union (Flatten_Variable (Direct_Mapping_Id (Ptr),
                                                   Scope));
