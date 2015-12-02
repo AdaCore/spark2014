@@ -1,2 +1,0 @@
-dummy.adb:5:19: warning: assuming "Yield" has no effect on global items
-dummy.adb:5:19: warning: no Global contract available for "Yield"

@@ -8,8 +8,6 @@ barrier.adb:5:04: "Synchronous_Barrier" is not allowed in SPARK
 barrier.adb:5:04: violation of pragma SPARK_Mode at test.adc:1
 barrier.adb:5:33: subtype of "Synchronous_Barrier" is not allowed in SPARK
 barrier.adb:5:33: violation of pragma SPARK_Mode at test.adc:1
-blocking_contract.adb:9:22: warning: assuming "Yield" has no effect on global items
-blocking_contract.adb:9:22: warning: no Global contract available for "Yield"
 blocking_contract.adb:13:14: warning: subprogram "Proc" has no effect
 blocking_contract.adb:21:13: high: potentially blocking operation in protected operation "Dummy"
 blocking_contract.adb:27:10: medium: precondition might fail
@@ -57,8 +55,6 @@ p.adb:109:49: warning: statement has no effect
 p.adb:111:10: warning: statement has no effect
 p.adb:116:10: warning: statement has no effect
 p.adb:142:07: warning: statement has no effect
-p.adb:161:25: warning: assuming "Yield" has no effect on global items
-p.adb:161:25: warning: no Global contract available for "Yield"
 p.adb:174:12: warning: unused assignment
 p.adb:211:21: warning: assuming "Open" has no effect on global items
 p.adb:211:21: warning: no Global contract available for "Open"
