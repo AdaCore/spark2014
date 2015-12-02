@@ -1,2 +1,2 @@
 pragma Profile (Ravenscar);
--- pragma SPARK_Mode;
+pragma Partition_Elaboration_Policy (Sequential);
