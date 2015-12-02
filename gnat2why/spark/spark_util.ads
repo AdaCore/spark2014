@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                        Copyright (C) 2012-2015, AdaCore                  --
+--                        Copyright (C) 2012-2016, AdaCore                  --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -745,10 +745,6 @@ package SPARK_Util is
    --  @return True iff Subp is an intrisic shift or rotate for a modular type
    --     of modulus smaller or equal to 2 ** 64, with no functional contract
    --     (precondition, postcondition or contract cases).
-
-   function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean;
-   --  @param E subprogram
-   --  @return True iff E is an instance of Ada.Unchecked_Conversion
 
    function Might_Be_Main (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in Subprogram_Kind;

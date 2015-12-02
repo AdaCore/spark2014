@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2011-2015, AdaCore                  --
+--                        Copyright (C) 2011-2016, AdaCore                  --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -34,7 +34,6 @@ with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Exp_Util;                           use Exp_Util;
 with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
-with Fname;                              use Fname;
 with Nlists;                             use Nlists;
 with Opt;                                use Opt;
 with Pprint;                             use Pprint;
@@ -2780,27 +2779,6 @@ package body SPARK_Util is
      (Is_Array_Type (E)
        and then Is_Constrained (E)
        and then Has_Static_Array_Bounds (E));
-
-   --------------------------------------
-   -- Is_Unchecked_Conversion_Instance --
-   --------------------------------------
-
-   function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean is
-      Conv : Entity_Id := Empty;
-
-   begin
-      if Present (Associated_Node (E))
-        and then Present (Parent (Associated_Node (E)))
-      then
-         Conv := Generic_Parent (Parent (Associated_Node (E)));
-      end if;
-
-      return Present (Conv)
-        and then Chars (Conv) = Name_Unchecked_Conversion
-        and then Is_Predefined_File_Name
-          (Unit_File_Name (Get_Source_Unit (Conv)))
-        and then Is_Intrinsic_Subprogram (Conv);
-   end Is_Unchecked_Conversion_Instance;
 
    ----------------------------
    -- Iterate_Call_Arguments --
