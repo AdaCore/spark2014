@@ -175,7 +175,7 @@ package body Flow_Utility is
       L   : Node_Lists.List    := Node_Lists.Empty_List;
       S   : Component_Sets.Set := Component_Sets.Empty_Set;
 
-      function Up (E : Entity_Id) return Entity_Id;
+      function Up (E : Entity_Id) return Entity_Id with Pure_Function;
       --  Get parent type, but don't consider record subtypes' ancestors
 
       --------
