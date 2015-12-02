@@ -134,14 +134,16 @@ package SPARK_Definition is
    --  without being marked by the user in SPARK, in which case it can be
    --  called from SPARK code, but no VC will be generated for E.
    --
-   --  Further note for subprograms this only works for the specification.
-   --  To check if a subprogram's body is in SPARK and contains no SPARK
-   --  violations use Entity_Body_Valid_SPARK.
+   --  Also note that for specification entities it only checks that the
+   --  specification itself is in SPARK. To check if the body is in SPARK
+   --  and contains no SPARK violations use Entity_Body_Valid_SPARK.
 
    function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean;
-   --  @param E a subprogram, package or task entity
+   --  @param E an entity
    --  @return True if the spec of E was marked in SPARK. Note this does not
-   --    mean that the subprogram is valid SPARK, only that SPARK_Mode is On.
+   --    mean that the entity is valid SPARK, only that SPARK_Mode is On. It
+   --    applies to subprogram, package, entry, protected type or task
+   --    type entities.
 
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean;
    --  Returns True if the body of subprogram or package E was marked in
