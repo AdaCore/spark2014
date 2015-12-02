@@ -3162,10 +3162,9 @@ package body Flow_Utility is
             end;
 
          when Magic_String =>
-            --  The fact that we have a Magic_String instead of an entity means
-            --  that we this comes from another compilation unit (via an
-            --  indirect call) and therefore has to have already been
-            --  elaborated.
+            --  The fact it is a Magic_String instead of an entity means that
+            --  it comes from another compilation unit (via an indirect call)
+            --  and therefore has to have already been elaborated.
             return True;
 
          when others =>
