@@ -213,10 +213,17 @@ package body Flow_Utility is
       loop
          Ptr := First_Component_Or_Discriminant (T);
          while Present (Ptr) loop
-            if not S.Contains (Ptr) then
-               S.Include (Ptr);
-               L.Append (Ptr);
-            end if;
+            declare
+               Inserted : Boolean;
+               Unused   : Component_Sets.Cursor;
+            begin
+               S.Insert (New_Item => Ptr,
+                         Position => Unused,
+                         Inserted => Inserted);
+               if Inserted then
+                  L.Append (Ptr);
+               end if;
+            end;
             Next_Component_Or_Discriminant (Ptr);
          end loop;
          exit when Up (T) = T;
