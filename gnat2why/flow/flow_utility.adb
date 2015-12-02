@@ -3104,8 +3104,7 @@ package body Flow_Utility is
       if Present (Expr) then
          return Is_True (Expr_Value (Get_Pragma_Arg (Expr)));
       else
-         --  Otherwise the lack of expression enables the property
-         --  by default.
+         --  Otherwise the lack of expression enables the property by default
          return True;
       end if;
    end Is_Constant_After_Elaboration;
