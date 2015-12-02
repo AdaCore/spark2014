@@ -209,7 +209,23 @@ No extensions or restrictions.
 Scalar Types
 ------------
 
-No extensions or restrictions.
+The Ada RM states that, in the case of a fixed point type declaration,
+"The base range of the type does not necessarily include the specified
+bounds themselves". A fixed point type for which this inclusion does
+not hold is not in |SPARK|.
+
+For example, given
+
+.. code-block:: ada
+
+   type T is delta 1.0 range -(2.0 ** 31) .. (2.0 ** 31);
+
+it might be the case that (2.0 ** 31) is greater
+than T'Base'Last. If this is the case, then the type T is not in |SPARK|.
+
+[This rule applies even in the case where the bounds
+specified in the ``real_range_specification`` of an
+``ordinary_fixed_point_definition`` define a null range.]
 
 Array Types
 -----------
