@@ -89,8 +89,8 @@ package STM32F4.I2C is
       Duty_Cycle  : I2C_Duty_Cycle;
       Own_Address : Half_Word;
       Ack         : I2C_Acknowledgement;
-      Ack_Address : I2C_Acknowledge_Address)
-     with Post => Port_Enabled (Port);
+      Ack_Address : I2C_Acknowledge_Address);
+--     with Post => Port_Enabled (Port);
 
    type I2C_State is (Enabled, Disabled);
 
