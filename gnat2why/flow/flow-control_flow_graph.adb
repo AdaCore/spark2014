@@ -1306,12 +1306,11 @@ package body Flow.Control_Flow_Graph is
          FA.All_Vars.Include (F);
       end Process;
 
-      FS : Flow_Id_Sets.Set;
+      FS : constant Flow_Id_Sets.Set := Flatten_Variable (F, FA.B_Scope);
 
    --  Start of processing for Create_Initial_And_Final_Vertices
 
    begin
-      FS := Flatten_Variable (F, FA.B_Scope);
       for Tmp of FS loop
          Process (Tmp);
          if Has_Bounds (Tmp, FA.B_Scope) then
