@@ -746,10 +746,6 @@ package SPARK_Util is
    --     of modulus smaller or equal to 2 ** 64, with no functional contract
    --     (precondition, postcondition or contract cases).
 
-   function Is_Unchecked_Conversion_Instance (E : Entity_Id) return Boolean;
-   --  @param E subprogram
-   --  @return True iff E is an instance of Ada.Unchecked_Conversion
-
    function Might_Be_Main (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in Subprogram_Kind;
    --  @param E subprogram
