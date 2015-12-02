@@ -1036,7 +1036,7 @@ package body Why.Inter is
 
       --  There are no other uses of this subprogram for now
 
-      pragma Assert (False);
+      raise Program_Error;
    end LCA;
 
    -------------------------
