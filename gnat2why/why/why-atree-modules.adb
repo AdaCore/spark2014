@@ -1118,7 +1118,7 @@ package body Why.Atree.Modules is
          M_Floats (Fl).Rounding :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("roundNE"),
+                           Symbol => NID ("rounding"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_Int :=
            New_Identifier (Module => M_Floats (Fl).Module,
@@ -1849,14 +1849,14 @@ package body Why.Atree.Modules is
                        (Symbol => NID ("prev_representable"),
                         Module => M,
                         Domain => EW_Term,
-                        Typ    => Ty));
+                        Typ    => Base));
                   Insert_Symbol
                     (E, WNE_Float_Succ,
                      New_Identifier
                        (Symbol => NID ("next_representable"),
                         Module => M,
                         Domain => EW_Term,
-                        Typ    => Ty));
+                        Typ    => Base));
                end if;
             end;
 

@@ -67,43 +67,12 @@ theory Floating_Func
   predicate ge t t
   predicate eq t t
 
-  function bool_lt t t : bool
-  function bool_le t t : bool
-  function bool_gt t t : bool
-  function bool_ge t t : bool
-  function bool_eq t t : bool
-  function bool_neq t t : bool
-
-  axiom Bool_real__lt_axiom:
-    forall x:t.
-    forall y:t.
-      bool_lt x y = True <-> lt x y
-
-  axiom Bool_real__le_axiom:
-    forall x:t.
-    forall y:t.
-      bool_le x y = True <-> le x y
-
-  axiom Bool_real__gt_axiom:
-    forall x:t.
-    forall y:t.
-        bool_gt x y = True <-> gt x y
-
-  axiom Bool_real__ge_axiom:
-    forall x:t.
-    forall y:t.
-      bool_ge x y = True <-> ge x y
-
-  axiom Bool_real__eq_axiom:
-    forall x:t.
-    forall y:t.
-      bool_eq x y = True <-> eq x y
-
-  axiom Bool_real__neq_axiom:
-    forall x:t.
-    forall y:t.
-       bool_neq x y = True <-> not (eq x y)
-
+  function bool_lt  (x: t) (y: t) : bool = lt x y
+  function bool_le  (x: t) (y: t) : bool = le x y
+  function bool_gt  (x: t) (y: t) : bool = gt x y
+  function bool_ge  (x: t) (y: t) : bool = ge x y
+  function bool_eq  (x: t) (y: t) : bool = eq x y
+  function bool_neq (x: t) (y: t) : bool = not (eq x y)
 end
 
 theory Boolean_Func

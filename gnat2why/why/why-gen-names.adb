@@ -261,7 +261,7 @@ package body Why.Gen.Names is
                         Why_Type_Is_Float (To))
                      then
                         --  if we're converting to the representation type
-                        --  of a discrete kind
+                        --  of a discrete/float kind
                         return E_Symb (A, WNE_To_Rep);
                      else
                         if To = EW_Int_Type then

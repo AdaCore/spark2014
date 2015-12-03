@@ -1105,7 +1105,8 @@ package body Why.Inter is
 
          --  Discrete types split forms are their base why type
 
-         pragma Assert (Has_Discrete_Type (E));
+         pragma Assert (Has_Discrete_Type (E) or else
+                        Has_Floating_Point_Type (E));
          return New_Type
            (Ada_Node   => E,
             Is_Mutable => False,

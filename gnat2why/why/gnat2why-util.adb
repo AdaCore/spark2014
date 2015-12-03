@@ -1082,8 +1082,10 @@ package body Gnat2Why.Util is
 
    function Use_Split_Form_For_Type (E : Entity_Id) return Boolean is
    begin
-      return Has_Discrete_Type (E) and then
-        not Is_Standard_Boolean_Type (Retysp (E));
+      return (Has_Discrete_Type (E) or else
+              Has_Floating_Point_Type (E))
+        and then
+          not Is_Standard_Boolean_Type (Retysp (E));
    end Use_Split_Form_For_Type;
 
    -----------------------

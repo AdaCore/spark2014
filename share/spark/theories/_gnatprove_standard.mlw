@@ -215,6 +215,8 @@ module Float32
     constant zeroF = zeroF,
     constant one = oneF,
     function ( * ) = mul
+
+  type t__ref = { mutable t__content "model_trace:" : t }
 end
 
 module Float64
@@ -232,6 +234,8 @@ module Float64
     constant zeroF = zeroF,
     constant one = oneF,
     function ( * ) = mul
+
+  type t__ref = { mutable t__content "model_trace:" : t }
 end
 
 module FloatConv

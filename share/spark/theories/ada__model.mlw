@@ -737,25 +737,31 @@ module Static_Floating_Point
     ensures { result = n }
 
   axiom range_axiom :
-    forall x : t. in_range (to_rep x)
+    forall x : t[to_rep x]. in_range (to_rep x)
+
+  predicate dynamic_property "inline" (f l x : rep_type) = in_range x
 end
 
 module Static_Float32
-  use import _gnatprove_standard.Float32
+  use _gnatprove_standard.Float32
 
   clone export Static_Floating_Point with
-    type rep_type = t,
-    predicate gt = gt,
-    predicate lt = lt
+    type rep_type = Float32.t,
+    predicate gt = Float32.gt,
+    predicate lt = Float32.lt
+
+  function to_int (x:t) : int = Float32.to_int (to_rep x)
 end
 
 module Static_Float64
-  use import _gnatprove_standard.Float64
+  use _gnatprove_standard.Float64
 
   clone export Static_Floating_Point with
-    type rep_type = t,
-    predicate gt = gt,
-    predicate lt = lt
+    type rep_type = Float64.t,
+    predicate gt = Float64.gt,
+    predicate lt = Float64.lt
+
+  function to_int (x:t) : int = Float64.to_int (to_rep x)
 end
 
 module Dynamic_Floating_Point
