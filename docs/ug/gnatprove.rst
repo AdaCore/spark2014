@@ -981,7 +981,13 @@ feasible execution of the program:
 
 #. When some property cannot be proved due to prover shortcomings (see details
    in section on :ref:`Investigating Prover Shortcomings`), the counterexample
-   may explain why the prover cannot prove the property.
+   may explain why the prover cannot prove the property. However, note that
+   since the counterexample is always generated only using CVC4 prover, it can
+   just explain why this prover cannot prove the property. Also note that if
+   CVC4 is not selected and generating of a counterexample is not disabled by
+   ``--no-counterexample`` switch, a counterexample is still attempted to be
+   generated using CVC4, but the proof result of CVC4 is not taken into account
+   in this case.
 
 #. When using a short value of timeout or steps, the prover may hit the
    resource bound before it has produced a full counterexample. In such a case,
