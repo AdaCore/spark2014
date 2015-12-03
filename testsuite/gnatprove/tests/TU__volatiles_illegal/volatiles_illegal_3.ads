@@ -32,5 +32,5 @@ is
    --  function which is nonvolatile for internal calls, shall not be of an
    --  effectively volatile type. [For a protected function, this rule does not
    --  apply to the notional parameter denoting the current instance of the
-   --  associated protected unit described in section :ref:`global-aspects` .]
+   --  associated protected unit described in section :ref:`global-aspects`.]
 end Volatiles_Illegal_3;

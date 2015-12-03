@@ -15,26 +15,45 @@ is
    --  discrepancy, a name denoting such an object shall only occur in
    --  a *non-interfering context*. A name occurs in a non-interfering
    --  context if it is:
+   --
    --  * the name on the left-hand side of an assignment statement; or
+   --
    --  * the [right-hand side] expression of an assignment statement; or
+   --
    --  * the expression of an initialization expression of an object
    --    declaration; or
+   --
    --  * the ``object_name`` of an ``object_renaming_declaration``; or
+   --
    --  * the actual parameter in a call to an instance of Unchecked_Conversion
    --    whose result is renamed [in an object renaming declaration]; or
+   --
    --  * an actual parameter in a call for which the corresponding
    --    formal parameter is of a non-scalar effectively volatile type; or
    --  * the (protected) prefix of a name denoting a protected operation; or
+   --
    --  * the return expression of a ``simple_return_statement`` which applies
    --    to a volatile function; or
+   --
    --  * the initial value expression of the
    --    ``extended_return_object_declaration`` of an
    --   ``extended_return_statement`` which applies to a volatile function; or
+   --
    --  * the prefix of a ``slice``, ``selected_component``,
    --    ``indexed_component``, or ``attribute_reference`` which is itself a
    --    name occurring in a non-interfering context; or
+   --
+   --  * the prefix of an ``attribute_reference`` whose
+   --    ``attribute_designator`` is either Address, Alignment, Component_Size,
+   --    First_Bit, Last_Bit, Position, Size, or Storage_Size; or
+   --
    --  * the expression of a type conversion occurring in a non-interfering
    --    context.
+   --
+   --  [The attributes listed above all have the property that when their
+   --  prefix denotes an object, evaluation of the attribute involves
+   --  evaluation of only the name, not the value, of the object.]
+   --
    --  The same restrictions also apply to a call to a volatile function
    --  (except not in the case of an internal call to a protected function
    --  which is nonvolatile for internal calls) and to the evaluation of any

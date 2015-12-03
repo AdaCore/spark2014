@@ -24,9 +24,9 @@ refined_post_illegal_2.adb:26:27: info: refined post proved
 refined_post_illegal_2.adb:33:23: medium: overflow check might fail
 refined_post_illegal_2.adb:35:23: medium: overflow check might fail
 refined_post_illegal_2.ads:4:18: info: initialization of "Par" proved
-refined_post_illegal_2.ads:10:19: info: initialization of "Par" proved
-refined_post_illegal_2.ads:10:19: medium: postcondition might fail, cannot prove Par >= 10
-refined_post_illegal_2.ads:15:14: warning: subprogram "Calls_F1" has no effect
-refined_post_illegal_2.ads:18:41: info: initialization of "Par3" proved
-refined_post_illegal_2.ads:34:19: info: initialization of "Par3" proved
-refined_post_illegal_2.ads:34:19: medium: postcondition might fail, cannot prove Par3 > 101
+refined_post_illegal_2.ads:13:19: info: initialization of "Par" proved
+refined_post_illegal_2.ads:13:19: medium: postcondition might fail, cannot prove Par >= 10
+refined_post_illegal_2.ads:17:14: warning: subprogram "Calls_F1" has no effect
+refined_post_illegal_2.ads:19:41: info: initialization of "Par3" proved
+refined_post_illegal_2.ads:47:19: info: initialization of "Par3" proved
+refined_post_illegal_2.ads:47:19: medium: postcondition might fail, cannot prove Par3 > 101

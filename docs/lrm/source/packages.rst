@@ -2011,7 +2011,7 @@ be a Boolean ``expression``.
    its postcondition. This means that it is perfectly logical for the
    declaration not to have a postcondition (which in its absence
    defaults to True) but for the body or body stub to have a
-   Refined Postcondition. It also means that caller who sees the
+   Refined Postcondition. It also means that a caller who sees the
    Refined Postcondition of a subprogram will always be able to
    prove at least as much about the results of the call as if the
    usual precondition were used instead.]
