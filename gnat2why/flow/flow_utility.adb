@@ -599,7 +599,7 @@ package body Flow_Utility is
       end if;
 
       --  If we are dealing with a derived type then we want to get to
-      --  the root and then Populate the Root_Components set. However,
+      --  the root and then populate the Root_Components set. However,
       --  we don't want to consider Itypes.
       if Is_Derived_Type (T) then
          declare
