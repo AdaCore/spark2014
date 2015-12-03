@@ -8941,17 +8941,18 @@ package body Gnat2Why.Expr is
             Target    : constant Entity_Id := Nth_Index_Type (Exp_Type, 1);
             Last_Expr : W_Expr_Id := Build_Last_Expr;
          begin
-            if Domain = EW_Prog then
-               Last_Expr :=
-                 Insert_Simple_Conversion
-                   (Domain         => EW_Prog,
-                    Expr           =>
-                      +Do_Range_Check (Ada_Node   => Ada_Node,
-                                       Ty         => Target,
-                                       W_Expr     => Last_Expr,
-                                       Check_Kind => RCK_Range),
-                    To             => Get_Type (First_Expr));
-            end if;
+            Last_Expr :=
+              Insert_Simple_Conversion
+                (Domain         => EW_Prog,
+                 Expr           =>
+                   (if Domain = EW_Prog then
+                           +Do_Range_Check (Ada_Node   => Ada_Node,
+                                            Ty         => Target,
+                                            W_Expr     => Last_Expr,
+                                            Check_Kind => RCK_Range)
+                    else Last_Expr),
+                 To             => Get_Type (First_Expr));
+
             T := Array_Convert_From_Base
               (Domain => Domain,
                Target => Exp_Type,
