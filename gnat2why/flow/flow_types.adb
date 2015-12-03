@@ -28,6 +28,7 @@ with Flow_Generated_Globals; use Flow_Generated_Globals;
 with Flow_Utility;           use Flow_Utility;
 with Gnat2Why_Args;
 with Hashing;                use Hashing;
+with Interfaces;
 with Namet;                  use Namet;
 with Output;                 use Output;
 with Sem_Util;               use Sem_Util;
@@ -132,9 +133,10 @@ package body Flow_Types is
          when Record_Field =>
             declare
                use type Ada.Containers.Hash_Type;
+               use Interfaces;
 
-               H : Ada.Containers.Hash_Type :=
-                 Generic_Integer_Hash (Integer (N.Node));
+               H : Unsigned_32 :=
+                 Unsigned_32 (Generic_Integer_Hash (Integer (N.Node)));
 
                procedure Hash_Component (C : Entity_Vectors.Cursor);
                --  Update hash with a component C. Especially in debug mode
@@ -148,13 +150,15 @@ package body Flow_Types is
 
                procedure Hash_Component (C : Entity_Vectors.Cursor) is
                   use Entity_Vectors;
+
                begin
-                  H := H + Component_Hash (Element (C));
+                  H := Rotate_Left (H, 5);
+                  H := H + Unsigned_32 (Component_Hash (Element (C))) + 1;
                end Hash_Component;
 
             begin
                N.Component.Iterate (Hash_Component'Access);
-               return H;
+               return Ada.Containers.Hash_Type (H);
             end;
          when Magic_String =>
             return Name_Hash (N.Name);
