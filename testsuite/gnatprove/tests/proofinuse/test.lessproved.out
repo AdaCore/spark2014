@@ -1,0 +1,473 @@
+bitwise.adb:6:53: info: range check proved
+bitwise.adb:7:07: info: assertion proved
+bitwise.adb:7:22: info: initialization of "Res" proved
+bitwise.adb:14:07: info: assertion proved
+bitwise.adb:14:29: info: initialization of "Res" proved
+bitwise.adb:20:07: info: assertion proved
+bitwise.adb:20:22: info: initialization of "Res" proved
+bitwise.adb:20:30: info: division check proved
+bitwise.adb:21:27: info: initialization of "Res" proved
+bitwise.adb:22:07: info: assertion proved
+bitwise.adb:22:22: info: initialization of "Res" proved
+bitwise.adb:22:30: info: division check proved
+bitwise.adb:32:07: info: assertion proved
+bitwise.adb:33:07: info: assertion proved
+bitwise.adb:38:34: info: range check proved
+bitwise.adb:39:50: info: range check proved
+bitwise.adb:40:07: info: assertion proved
+bitwise.adb:41:35: info: initialization of "FstHalf" proved
+bitwise.adb:42:50: info: initialization of "SndHalf" proved
+bitwise.adb:51:07: info: assertion proved
+bitwise.adb:51:22: info: initialization of "Res" proved
+bitwise.ads:7:37: info: initialization of "Res" proved
+bitwise.ads:10:46: info: initialization of "Res" proved
+bitwise.ads:13:45: info: initialization of "Res" proved
+bitwise.ads:19:45: info: initialization of "FstHalf" proved
+bitwise.ads:19:54: info: initialization of "SndHalf" proved
+bitwise.ads:22:62: info: initialization of "Res" proved
+counter_examples.adb:8:38: info: overflow check proved
+counter_examples.adb:9:16: medium: overflow check might fail (e.g. when X = (/ 1 1427247692705959881058285969449495136382746624) and Y = -340282346638528859811704183484516925440.0)
+counter_examples.adb:17:24: info: division check proved
+counter_examples.adb:18:07: warning: statement has no effect
+counter_examples.adb:19:25: info: initialization of "Res" proved
+counter_examples.adb:19:25: medium: assertion might fail, cannot prove Res <= X (e.g. when Res = 64 and X = 32)
+counter_examples.adb:21:25: info: initialization of "Res" proved
+counter_examples.adb:21:25: medium: assertion might fail, cannot prove Res >= X (e.g. when Res = 0 and X = 4294967257)
+counter_examples.ads:8:40: info: initialization of "Res" proved
+counter_examples.ads:14:07: info: initialization of "Res" proved
+floating_point.adb:10:16: info: overflow check proved
+floating_point.adb:11:22: info: initialization of "Res" proved
+floating_point.adb:11:22: medium: assertion might fail, cannot prove Res >= 12.0
+floating_point.adb:18:16: info: overflow check proved
+floating_point.adb:18:22: info: overflow check proved
+floating_point.adb:19:22: info: initialization of "Res" proved
+floating_point.adb:19:22: medium: assertion might fail, cannot prove Res >= X
+floating_point.adb:28:24: info: overflow check proved
+floating_point.adb:29:16: medium: overflow check might fail
+floating_point.adb:29:20: info: overflow check proved
+floating_point.adb:30:07: medium: assertion might fail
+floating_point.adb:30:22: info: initialization of "Res" proved
+floating_point.adb:40:24: info: division check proved
+floating_point.adb:40:24: info: overflow check proved
+floating_point.adb:41:16: info: division check proved
+floating_point.adb:41:16: medium: overflow check might fail
+floating_point.adb:42:22: info: initialization of "Res" proved
+floating_point.adb:42:22: medium: assertion might fail, cannot prove Res < Threshold
+floating_point.adb:49:33: medium: overflow check might fail
+floating_point.adb:49:41: info: division check proved
+floating_point.adb:49:41: info: overflow check proved
+floating_point.adb:49:49: info: overflow check proved
+floating_point.adb:50:33: medium: overflow check might fail
+floating_point.adb:50:41: info: division check proved
+floating_point.adb:50:41: info: overflow check proved
+floating_point.adb:50:49: info: overflow check proved
+floating_point.adb:51:16: medium: overflow check might fail
+floating_point.adb:52:22: info: initialization of "Res" proved
+floating_point.adb:52:22: medium: assertion might fail, cannot prove Res < (1.6181**N)/2.2360 + 1.0
+floating_point.adb:52:35: medium: overflow check might fail
+floating_point.adb:52:39: info: division check proved
+floating_point.adb:52:39: info: overflow check proved
+floating_point.adb:52:47: info: overflow check proved
+floating_point.adb:65:24: info: range check proved
+floating_point.adb:65:27: info: division check proved
+floating_point.adb:65:27: info: overflow check proved
+floating_point.adb:66:10: info: initialization of "Res" proved
+floating_point.adb:67:17: info: initialization of "Res" proved
+floating_point.adb:67:21: info: overflow check proved
+floating_point.adb:69:14: info: initialization of "Res" proved
+floating_point.adb:69:18: info: division check proved
+floating_point.adb:69:18: medium: overflow check might fail
+floating_point.adb:77:07: info: assertion proved
+floating_point.adb:77:32: info: range check proved
+floating_point.adb:78:16: info: division check proved
+floating_point.adb:78:16: info: overflow check proved
+floating_point.adb:78:28: info: range check proved
+floating_point.adb:87:07: info: assertion proved
+floating_point.adb:88:13: info: initialization of "Tmp" proved
+floating_point.adb:90:14: info: initialization of "Tmp" proved
+floating_point.adb:98:67: info: range check proved
+floating_point.adb:98:70: info: overflow check proved
+floating_point.adb:99:22: info: overflow check proved
+floating_point.adb:100:22: medium: assertion might fail, cannot prove State in C .. Float_32 (X + 1) * C (e.g. when State = (/ 898846567431157953864652595394512366808988489471153286367150405788663379027504815663542386612037680105600569399356966788293948844072083112464237153197370621888839467124327426381511098006230470597265414760425028844190753411712314407369565552704136185816752553422931491199736229692398581524176781648121120686079 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608) and X = 8)
+floating_point.adb:100:48: info: range check proved
+floating_point.adb:100:53: info: overflow check proved
+floating_point.adb:114:40: info: overflow check proved
+floating_point.adb:119:25: medium: overflow check might fail (e.g. when I = -1100041282)
+floating_point.adb:119:28: info: initialization of "I" proved
+floating_point.adb:119:30: info: division check proved
+floating_point.adb:120:22: info: initialization of "I" proved
+floating_point.adb:121:12: info: initialization of "Y" proved
+floating_point.adb:121:14: medium: overflow check might fail
+floating_point.adb:121:28: medium: overflow check might fail
+floating_point.adb:121:34: medium: overflow check might fail
+floating_point.adb:121:39: medium: overflow check might fail
+floating_point.adb:124:22: medium: assertion might fail, cannot prove Y * Y) * X in 1.0 - 0.005 .. 1.0 + 5.0E-3
+floating_point.adb:124:23: info: initialization of "Y" proved
+floating_point.adb:124:25: medium: overflow check might fail
+floating_point.adb:124:30: medium: overflow check might fail
+floating_point.adb:125:14: info: initialization of "Y" proved
+floating_point.adb:133:40: info: overflow check proved
+floating_point.adb:134:40: info: overflow check proved
+floating_point.adb:135:40: info: overflow check proved
+floating_point.adb:136:40: info: overflow check proved
+floating_point.adb:138:46: medium: overflow check might fail
+floating_point.adb:138:57: medium: overflow check might fail
+floating_point.adb:139:46: medium: overflow check might fail
+floating_point.adb:142:15: info: overflow check proved
+floating_point.adb:142:22: medium: overflow check might fail
+floating_point.adb:142:27: medium: overflow check might fail
+floating_point.adb:142:34: info: overflow check proved
+floating_point.adb:142:41: medium: overflow check might fail
+floating_point.adb:145:15: info: overflow check proved
+floating_point.adb:145:22: medium: overflow check might fail
+floating_point.adb:145:27: medium: overflow check might fail
+floating_point.adb:145:34: info: overflow check proved
+floating_point.adb:145:41: medium: overflow check might fail
+floating_point.adb:149:24: medium: divide by zero might fail
+floating_point.adb:149:24: medium: overflow check might fail
+floating_point.adb:149:37: medium: overflow check might fail
+floating_point.adb:150:22: info: initialization of "Res" proved
+floating_point.adb:150:22: medium: assertion might fail, cannot prove Res in -1.00001 .. 1.00001E0
+floating_point.adb:151:22: info: initialization of "Res" proved
+floating_point.adb:151:22: medium: assertion might fail, cannot prove Res in -1.0 .. 1.0
+floating_point.adb:163:19: info: overflow check proved
+floating_point.adb:164:22: info: initialization of "Res" proved
+floating_point.adb:164:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:173:16: info: division check proved
+floating_point.adb:173:16: medium: overflow check might fail
+floating_point.adb:174:22: info: initialization of "Res" proved
+floating_point.adb:174:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:183:16: info: division check proved
+floating_point.adb:183:16: medium: overflow check might fail
+floating_point.adb:184:22: info: initialization of "Res" proved
+floating_point.adb:184:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:193:22: info: initialization of "Res" proved
+floating_point.adb:193:22: medium: assertion might fail, cannot prove Res (e.g. when Res = False)
+floating_point.adb:205:17: info: overflow check proved
+floating_point.adb:205:22: medium: divide by zero might fail (e.g. when X = (/ 1 1427247607635368150823670103605843278440693760) and Z = 0.0)
+floating_point.adb:205:22: medium: overflow check might fail
+floating_point.adb:205:27: info: overflow check proved
+floating_point.adb:206:22: info: initialization of "Res" proved
+floating_point.adb:206:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:221:17: info: overflow check proved
+floating_point.adb:221:22: medium: divide by zero might fail (e.g. when X = (/ 1 1427247607635368150823670103605843278440693760) and Z = 0.0)
+floating_point.adb:221:22: medium: overflow check might fail
+floating_point.adb:221:27: info: overflow check proved
+floating_point.adb:222:22: info: initialization of "Res" proved
+floating_point.adb:222:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:229:28: medium: overflow check might fail
+floating_point.adb:229:45: medium: overflow check might fail (e.g. when B = (/ 764654048083652739712762800150933942130308979283020738837811333729175863906786549490434974779354778471304678319682060985506620885326890522415218436937551991954167311567231464772495814636144060933953021929158313231077492913666196950132889418702318584750440941896000829747678125360415763733925046144057074038136893958832076513602068050466662514833 13033275227751790331037462633220429318730333097331722652323680883935618995898819827121364605874546361531208256290676018430262258239045205130731438721361874017388172273302747682531910921090341823660348514026162918240765924469828558906858700514209974694342912024632506622396175330539779432100563333897756249948160))
+floating_point.adb:231:07: info: assertion proved
+floating_point.adb:231:22: info: initialization of "Res" proved
+floating_point.adb:238:37: medium: overflow check might fail (e.g. when B = (/ 764654048083652739712762800150933942130308979283020738837811333729175863906786549490434974779354778471304678319682060985506620885326890522415218436937551991954167311567231464772495814636144060933953021929158313231077492913666196950132889418702318584750440941896000829747678125360415763733925046144057074038136893958832076513602068050466662514833 13033275227751790331037462633220429318730333097331722652323680883935618995898819827121364605874546361531208256290676018430262258239045205130731438721361874017388172273302747682531910921090341823660348514026162918240765924469828558906858700514209974694342912024632506622396175330539779432100563333897756249948160))
+floating_point.adb:239:16: info: division check proved
+floating_point.adb:239:16: medium: overflow check might fail
+floating_point.adb:240:22: info: initialization of "Res" proved
+floating_point.adb:240:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:247:37: medium: overflow check might fail (e.g. when B = (/ 764654048083652739712762800150933942130308979283020738837811333729175863906786549490434974779354778471304678319682060985506620885326890522415218436937551991954167311567231464772495814636144060933953021929158313231077492913666196950132889418702318584750440941896000829747678125360415763733925046144057074038136893958832076513602068050466662514833 13033275227751790331037462633220429318730333097331722652323680883935618995898819827121364605874546361531208256290676018430262258239045205130731438721361874017388172273302747682531910921090341823660348514026162918240765924469828558906858700514209974694342912024632506622396175330539779432100563333897756249948160))
+floating_point.adb:248:16: info: division check proved
+floating_point.adb:248:16: medium: overflow check might fail
+floating_point.adb:249:22: info: initialization of "Res" proved
+floating_point.adb:249:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:260:17: medium: overflow check might fail
+floating_point.adb:260:22: medium: overflow check might fail
+floating_point.adb:260:26: medium: overflow check might fail
+floating_point.adb:260:31: medium: overflow check might fail
+floating_point.adb:260:36: medium: overflow check might fail
+floating_point.adb:261:22: info: initialization of "Res" proved
+floating_point.adb:261:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:273:17: info: overflow check proved
+floating_point.adb:273:22: medium: overflow check might fail
+floating_point.adb:273:26: medium: overflow check might fail
+floating_point.adb:273:31: info: overflow check proved
+floating_point.adb:273:36: medium: overflow check might fail
+floating_point.adb:274:22: info: initialization of "Res" proved
+floating_point.adb:274:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:284:17: medium: overflow check might fail
+floating_point.adb:284:24: info: overflow check proved
+floating_point.adb:284:30: medium: overflow check might fail
+floating_point.adb:285:22: info: initialization of "Res" proved
+floating_point.adb:285:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:296:17: medium: overflow check might fail
+floating_point.adb:296:24: info: overflow check proved
+floating_point.adb:296:30: medium: overflow check might fail
+floating_point.adb:297:22: info: initialization of "Res" proved
+floating_point.adb:297:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:307:16: info: overflow check proved
+floating_point.adb:307:20: medium: overflow check might fail
+floating_point.adb:307:24: info: overflow check proved
+floating_point.adb:308:22: info: initialization of "Res" proved
+floating_point.adb:308:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:318:22: info: overflow check proved
+floating_point.adb:318:26: medium: overflow check might fail
+floating_point.adb:318:30: info: overflow check proved
+floating_point.adb:319:22: info: initialization of "Res" proved
+floating_point.adb:319:22: medium: assertion might fail, cannot prove Res
+floating_point.adb:329:04: warning: analyzing unreferenced procedure "Polynomial"
+floating_point.adb:329:14: warning: subprogram "Polynomial" has no effect
+floating_point.adb:333:22: medium: assertion might fail, cannot prove X + 2.0) * X + 3.0) + 4.0) * X + 5.0 in Float'range
+floating_point.adb:333:27: info: overflow check proved
+floating_point.adb:333:34: info: overflow check proved
+floating_point.adb:333:38: medium: overflow check might fail
+floating_point.adb:333:45: medium: overflow check might fail
+floating_point.adb:333:52: medium: overflow check might fail
+floating_point.adb:333:56: medium: overflow check might fail
+floating_point.ads:8:39: info: initialization of "Res" proved
+floating_point.ads:11:40: info: initialization of "Res" proved
+floating_point.ads:14:50: info: initialization of "Res" proved
+floating_point.ads:17:44: info: initialization of "Res" proved
+floating_point.ads:20:56: info: initialization of "Res" proved
+floating_point.ads:25:36: info: initialization of "Res" proved
+floating_point.ads:28:52: info: initialization of "Res" proved
+floating_point.ads:53:29: info: initialization of "Res" proved
+floating_point.ads:62:27: info: initialization of "Res" proved
+floating_point.ads:65:27: info: initialization of "Res" proved
+floating_point.ads:68:27: info: initialization of "Res" proved
+floating_point.ads:71:27: info: initialization of "Res" proved
+floating_point.ads:74:27: info: initialization of "Res" proved
+floating_point.ads:77:27: info: initialization of "Res" proved
+floating_point.ads:80:27: info: initialization of "Res" proved
+floating_point.ads:83:27: info: initialization of "Res" proved
+floating_point.ads:86:28: info: initialization of "Res" proved
+floating_point.ads:89:28: info: initialization of "Res" proved
+floating_point.ads:92:28: info: initialization of "Res" proved
+floating_point.ads:95:28: info: initialization of "Res" proved
+floating_point.ads:98:28: info: initialization of "Res" proved
+floating_point.ads:101:28: info: initialization of "Res" proved
+floating_point.ads:104:28: info: initialization of "Res" proved
+nonlinear.adb:10:17: info: overflow check proved
+nonlinear.adb:10:22: info: division check proved
+nonlinear.adb:10:22: info: range check proved
+nonlinear.adb:11:22: info: initialization of "Res" proved
+nonlinear.adb:11:22: medium: assertion might fail, cannot prove Res <= X
+nonlinear.adb:18:22: info: division check proved
+nonlinear.adb:19:22: info: initialization of "Res" proved
+nonlinear.adb:19:22: medium: assertion might fail, cannot prove Res <= X
+nonlinear.adb:25:16: info: division check proved
+nonlinear.adb:25:16: info: range check proved
+nonlinear.adb:26:22: medium: assertion might fail, cannot prove Res * Y) / Res = Y
+nonlinear.adb:26:23: info: initialization of "Res" proved
+nonlinear.adb:26:27: info: overflow check proved
+nonlinear.adb:26:32: info: division check proved
+nonlinear.adb:32:07: info: assertion proved
+nonlinear.adb:32:24: info: overflow check proved
+nonlinear.adb:32:29: info: overflow check proved
+nonlinear.adb:32:33: info: overflow check proved
+nonlinear.adb:32:38: info: range check proved
+nonlinear.adb:32:46: medium: overflow check might fail
+nonlinear.adb:32:51: info: overflow check proved
+nonlinear.adb:38:16: info: overflow check proved
+nonlinear.adb:38:20: info: overflow check proved
+nonlinear.adb:39:22: info: initialization of "Res" proved
+nonlinear.adb:39:22: medium: assertion might fail, cannot prove Res in -99 .. -Y
+nonlinear.adb:39:36: info: overflow check proved
+nonlinear.adb:45:17: medium: overflow check might fail
+nonlinear.adb:45:22: info: division check proved
+nonlinear.adb:45:22: info: range check proved
+nonlinear.adb:46:22: info: initialization of "Res" proved
+nonlinear.adb:46:22: medium: assertion might fail, cannot prove Res <= X
+nonlinear.ads:7:43: info: initialization of "Res" proved
+nonlinear.ads:8:53: info: initialization of "Res" proved
+nonlinear.ads:11:42: info: initialization of "Res" proved
+nonlinear.ads:14:14: warning: subprogram "Power" has no effect
+nonlinear.ads:17:36: info: initialization of "Res" proved
+nonlinear.ads:20:44: info: initialization of "Res" proved
+pi_compute.adb:11:19: info: postcondition proved
+pi_compute.adb:24:16: info: overflow check proved
+pi_compute.adb:24:16: info: range check proved
+pi_compute.adb:24:19: info: initialization of "T1" proved
+pi_compute.adb:24:22: info: overflow check proved
+pi_compute.adb:24:24: info: initialization of "T2" proved
+pi_compute.adb:24:27: info: overflow check proved
+pi_compute.adb:24:29: info: initialization of "T3" proved
+pi_compute.adb:24:32: info: overflow check proved
+pi_compute.adb:24:34: info: initialization of "T4" proved
+pi_compute.adb:24:37: info: overflow check proved
+pi_compute.adb:24:39: info: initialization of "T5" proved
+pi_compute.adb:24:42: info: overflow check proved
+pi_compute.adb:24:44: info: initialization of "T6" proved
+pi_compute.adb:24:47: info: overflow check proved
+pi_compute.adb:24:49: info: initialization of "T7" proved
+pi_compute.adb:24:52: info: overflow check proved
+pi_compute.adb:24:54: info: initialization of "T8" proved
+pi_compute.adb:24:57: info: overflow check proved
+pi_compute.adb:24:59: info: initialization of "T9" proved
+pi_compute.adb:24:62: info: overflow check proved
+pi_compute.adb:24:64: info: initialization of "T10" proved
+pi_compute.adb:29:19: info: postcondition proved
+pi_compute.adb:42:18: info: overflow check proved
+pi_compute.adb:42:21: info: initialization of "T1" proved
+pi_compute.adb:42:24: info: overflow check proved
+pi_compute.adb:42:26: info: initialization of "T2" proved
+pi_compute.adb:42:29: info: overflow check proved
+pi_compute.adb:42:31: info: initialization of "T3" proved
+pi_compute.adb:42:34: info: overflow check proved
+pi_compute.adb:42:36: info: initialization of "T4" proved
+pi_compute.adb:42:39: info: overflow check proved
+pi_compute.adb:42:41: info: initialization of "T5" proved
+pi_compute.adb:42:44: info: overflow check proved
+pi_compute.adb:42:46: info: initialization of "T6" proved
+pi_compute.adb:42:49: info: overflow check proved
+pi_compute.adb:42:51: info: initialization of "T7" proved
+pi_compute.adb:42:54: info: overflow check proved
+pi_compute.adb:42:56: info: initialization of "T8" proved
+pi_compute.adb:42:59: info: overflow check proved
+pi_compute.adb:42:61: info: initialization of "T9" proved
+pi_compute.adb:42:64: info: overflow check proved
+pi_compute.adb:42:66: info: initialization of "T10" proved
+pi_compute.adb:47:19: info: postcondition proved
+pi_compute.adb:60:22: info: initialization of "T1" proved
+pi_compute.adb:61:22: info: initialization of "A1" proved
+pi_compute.adb:61:25: info: overflow check proved
+pi_compute.adb:61:25: info: range check proved
+pi_compute.adb:61:27: info: initialization of "T2" proved
+pi_compute.adb:62:22: info: initialization of "A2" proved
+pi_compute.adb:62:25: info: overflow check proved
+pi_compute.adb:62:25: info: range check proved
+pi_compute.adb:62:27: info: initialization of "T3" proved
+pi_compute.adb:63:22: info: initialization of "A3" proved
+pi_compute.adb:63:25: info: overflow check proved
+pi_compute.adb:63:25: info: range check proved
+pi_compute.adb:63:27: info: initialization of "T4" proved
+pi_compute.adb:64:22: info: initialization of "A4" proved
+pi_compute.adb:64:25: info: overflow check proved
+pi_compute.adb:64:25: info: range check proved
+pi_compute.adb:64:27: info: initialization of "T5" proved
+pi_compute.adb:65:22: info: initialization of "A5" proved
+pi_compute.adb:65:25: info: overflow check proved
+pi_compute.adb:65:25: info: range check proved
+pi_compute.adb:65:27: info: initialization of "T6" proved
+pi_compute.adb:66:22: info: initialization of "A6" proved
+pi_compute.adb:66:25: info: overflow check proved
+pi_compute.adb:66:25: info: range check proved
+pi_compute.adb:66:27: info: initialization of "T7" proved
+pi_compute.adb:67:22: info: initialization of "A7" proved
+pi_compute.adb:67:25: info: overflow check proved
+pi_compute.adb:67:25: info: range check proved
+pi_compute.adb:67:27: info: initialization of "T8" proved
+pi_compute.adb:68:22: info: initialization of "A8" proved
+pi_compute.adb:68:25: info: overflow check proved
+pi_compute.adb:68:25: info: range check proved
+pi_compute.adb:68:27: info: initialization of "T9" proved
+pi_compute.adb:69:22: info: initialization of "A9" proved
+pi_compute.adb:69:25: info: overflow check proved
+pi_compute.adb:69:25: info: range check proved
+pi_compute.adb:69:27: info: initialization of "T10" proved
+pi_compute.adb:71:24: medium: overflow check might fail
+pi_compute.adb:71:24: medium: range check might fail
+pi_compute.adb:71:27: info: initialization of "A10" proved
+pi_compute.adb:71:31: info: overflow check proved
+pi_compute.adb:71:33: info: initialization of "A8" proved
+pi_compute.adb:71:36: medium: overflow check might fail
+pi_compute.adb:71:38: info: initialization of "A9" proved
+pi_compute.adb:71:41: info: overflow check proved
+pi_compute.adb:72:22: info: initialization of "A10" proved
+pi_compute.adb:72:26: info: overflow check proved
+pi_compute.adb:72:30: info: overflow check proved
+pi_compute.adb:72:32: info: initialization of "A9" proved
+pi_compute.adb:72:35: info: overflow check proved
+pi_compute.adb:72:35: info: range check proved
+pi_compute.adb:72:37: info: initialization of "A8" proved
+pi_compute.adb:74:22: info: initialization of "Num" proved
+pi_compute.adb:74:22: medium: assertion might fail, cannot prove Num in -0.4 .. -0.3
+pi_compute.adb:76:07: info: assertion proved
+pi_compute.adb:76:22: info: initialization of "Den" proved
+pi_compute.adb:77:14: info: initialization of "Num" proved
+pi_compute.adb:77:18: info: division check proved
+pi_compute.adb:77:18: info: overflow check proved
+pi_compute.adb:77:18: info: range check proved
+pi_compute.adb:77:20: info: initialization of "Den" proved
+pi_compute.adb:94:22: info: initialization of "T1" proved
+pi_compute.adb:94:22: info: initialization of "T1" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:95:22: info: initialization of "A1" proved
+pi_compute.adb:95:22: info: initialization of "A1" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:95:25: info: overflow check proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:95:27: info: initialization of "T2" proved
+pi_compute.adb:95:27: info: initialization of "T2" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:96:22: info: initialization of "A2" proved
+pi_compute.adb:96:22: info: initialization of "A2" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:96:25: info: overflow check proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:96:27: info: initialization of "T3" proved
+pi_compute.adb:96:27: info: initialization of "T3" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:97:22: info: initialization of "A3" proved
+pi_compute.adb:97:22: info: initialization of "A3" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:97:25: info: overflow check proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:97:27: info: initialization of "T4" proved
+pi_compute.adb:97:27: info: initialization of "T4" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:98:22: info: initialization of "A4" proved
+pi_compute.adb:98:22: info: initialization of "A4" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:98:25: info: overflow check proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:98:27: info: initialization of "T5" proved
+pi_compute.adb:98:27: info: initialization of "T5" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:99:22: info: initialization of "A5" proved
+pi_compute.adb:99:22: info: initialization of "A5" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:99:25: info: overflow check proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:99:27: info: initialization of "T6" proved
+pi_compute.adb:99:27: info: initialization of "T6" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:100:22: info: initialization of "A6" proved
+pi_compute.adb:100:22: info: initialization of "A6" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:100:25: info: overflow check proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:100:27: info: initialization of "T7" proved
+pi_compute.adb:100:27: info: initialization of "T7" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:101:22: info: initialization of "A7" proved
+pi_compute.adb:101:22: info: initialization of "A7" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:101:25: info: overflow check proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:101:27: info: initialization of "T8" proved
+pi_compute.adb:101:27: info: initialization of "T8" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:102:22: info: initialization of "A8" proved
+pi_compute.adb:102:22: info: initialization of "A8" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:102:25: info: overflow check proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:102:27: info: initialization of "T9" proved
+pi_compute.adb:102:27: info: initialization of "T9" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:103:22: info: initialization of "A9" proved
+pi_compute.adb:103:22: info: initialization of "A9" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:103:25: info: overflow check proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:103:27: info: initialization of "T10" proved
+pi_compute.adb:103:27: info: initialization of "T10" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:105:26: medium: overflow check might fail, in call inlined at pi_compute.adb:120
+pi_compute.adb:105:29: info: initialization of "A10" proved
+pi_compute.adb:105:29: info: initialization of "A10" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:105:33: medium: overflow check might fail, in call inlined at pi_compute.adb:120
+pi_compute.adb:105:35: info: initialization of "A8" proved
+pi_compute.adb:105:35: info: initialization of "A8" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:105:38: medium: overflow check might fail, in call inlined at pi_compute.adb:120
+pi_compute.adb:105:40: info: initialization of "A9" proved
+pi_compute.adb:105:40: info: initialization of "A9" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:105:43: medium: overflow check might fail, in call inlined at pi_compute.adb:120
+pi_compute.adb:106:22: info: initialization of "A10" proved
+pi_compute.adb:106:22: info: initialization of "A10" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:106:26: medium: overflow check might fail, in call inlined at pi_compute.adb:120
+pi_compute.adb:106:32: medium: overflow check might fail, in call inlined at pi_compute.adb:120
+pi_compute.adb:106:34: info: initialization of "A9" proved
+pi_compute.adb:106:34: info: initialization of "A9" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:106:37: medium: overflow check might fail, in call inlined at pi_compute.adb:120
+pi_compute.adb:106:39: info: initialization of "A8" proved
+pi_compute.adb:106:39: info: initialization of "A8" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:112:22: info: initialization of "Den" proved
+pi_compute.adb:112:22: info: initialization of "Den" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:112:26: medium: assertion might fail, cannot prove Den in -0.11146 .. -1.1145E-1, in call inlined at pi_compute.adb:120
+pi_compute.adb:113:14: info: initialization of "Num" proved
+pi_compute.adb:113:14: info: initialization of "Num" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:113:18: info: division check proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:113:18: medium: overflow check might fail, in call inlined at pi_compute.adb:120
+pi_compute.adb:113:20: info: initialization of "Den" proved
+pi_compute.adb:113:20: info: initialization of "Den" proved, in call inlined at pi_compute.adb:120
+pi_compute.adb:117:04: warning: assuming "Put_Line" has no effect on global items
+pi_compute.adb:117:04: warning: no Global contract available for "Put_Line"
+pi_compute.adb:117:46: low: range check might fail
+pi_compute.adb:118:04: warning: assuming "Put_Line" has no effect on global items
+pi_compute.adb:118:04: warning: no Global contract available for "Put_Line"
+pi_compute.adb:118:47: low: range check might fail
+pi_compute.adb:119:04: warning: assuming "Put_Line" has no effect on global items
+pi_compute.adb:119:04: warning: no Global contract available for "Put_Line"
+pi_compute.adb:119:45: low: range check might fail
+pi_compute.adb:120:04: warning: assuming "Put_Line" has no effect on global items
+pi_compute.adb:120:04: warning: no Global contract available for "Put_Line"
+pi_compute.adb:120:45: low: range check might fail
+pi_compute.adb:120:60: info: initialization of "C12b" proved
+quantifiers.adb:8:17: info: postcondition proved
+quantifiers.adb:10:37: info: length check proved
+quantifiers.adb:16:07: medium: assertion might fail (e.g. when X = (others => 0))
+quantifiers.adb:24:22: medium: assertion might fail, cannot prove not (for all J in X'Range => Property (X(J), J) (e.g. when X = (others => 0))
+quantifiers.ads:7:14: warning: subprogram "Previous_Seen" has no effect
+quantifiers.ads:10:14: warning: subprogram "Not_For_Some" has no effect
