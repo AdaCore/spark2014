@@ -111,14 +111,15 @@ package SPARK_Definition is
        and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String);
 
    procedure Mark_Compilation_Unit (N : Node_Id)
-     with Pre => Nkind (N) in N_Compilation_Unit               |
-                              N_Generic_Package_Declaration    |
-                              N_Generic_Subprogram_Declaration |
-                              N_Package_Body                   |
-                              N_Package_Declaration            |
-                              N_Package_Renaming_Declaration   |
-                              N_Subprogram_Body                |
-                              N_Subprogram_Declaration         |
+     with Pre => Nkind (N) in N_Compilation_Unit                     |
+                              N_Generic_Package_Declaration          |
+                              N_Generic_Subprogram_Declaration       |
+                              N_Generic_Package_Renaming_Declaration |
+                              N_Package_Body                         |
+                              N_Package_Declaration                  |
+                              N_Package_Renaming_Declaration         |
+                              N_Subprogram_Body                      |
+                              N_Subprogram_Declaration               |
                               N_Subprogram_Renaming_Declaration;
    --  Put marks on a compilation unit. This should be called after all
    --  compilation units on which it depends have been marked.
