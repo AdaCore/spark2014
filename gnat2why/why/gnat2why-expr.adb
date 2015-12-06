@@ -11034,7 +11034,7 @@ package body Gnat2Why.Expr is
             --  the Ada_Node is important here, because that's how we detect
             --  occurrences of "self" in a term later
 
-            Id        : constant W_Identifier_Id :=
+            Id : constant W_Identifier_Id :=
               New_Identifier
                 (Name     => "self__",
                  Ada_Node => Prot,
