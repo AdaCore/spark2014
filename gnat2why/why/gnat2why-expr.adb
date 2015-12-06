@@ -11028,13 +11028,13 @@ package body Gnat2Why.Expr is
          declare
             Obj_Or_Ty : constant Entity_Id :=
               Get_Enclosing_Concurrent_Object (Ent);
-            Prot : constant Entity_Id :=
+            Prot      : constant Entity_Id :=
               (if Is_Type (Obj_Or_Ty) then Obj_Or_Ty else Etype (Obj_Or_Ty));
 
             --  the Ada_Node is important here, because that's how we detect
             --  occurrences of "self" in a term later
 
-            Id   : constant W_Identifier_Id :=
+            Id        : constant W_Identifier_Id :=
               New_Identifier
                 (Name     => "self__",
                  Ada_Node => Prot,
