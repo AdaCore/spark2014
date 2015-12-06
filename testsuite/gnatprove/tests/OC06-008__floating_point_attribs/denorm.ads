@@ -1,0 +1,1 @@
+function Denorm return Boolean;
