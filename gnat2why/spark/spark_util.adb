@@ -2556,18 +2556,43 @@ package body SPARK_Util is
    ----------------------------------------
 
    function Is_Local_Subprogram_Always_Inlined
-     (E : Entity_Id) return Boolean is
+     (E : Entity_Id) return Boolean
+   is
+      Spec : Node_Id;
+
+      function Has_Renaming_As_Body (E : Entity_Id) return Boolean;
+      --  Returns true iff subprogram E is completed by renaming-as-body
+
+      function Has_Renaming_As_Body (E : Entity_Id) return Boolean is
+         B : constant Node_Id := Subprogram_Body (E);
+      begin
+         return Present (B)
+           and then Present (Prev (B))
+           and then Nkind (Prev (B)) = N_Subprogram_Renaming_Declaration
+           and then Corresponding_Spec (Prev (B)) = E;
+      end Has_Renaming_As_Body;
+
+   --  Start of processing for Is_Local_Subprogram_Always_Inlined
+
    begin
-      --  A subprogram always inlined should have Body_To_Inline set and flag
-      --  Is_Inlined_Always set to True.
+      --  A subprogram always inlined should have Body_To_Inline set and
+      --  flag Is_Inlined_Always set to True. However, subprograms with
+      --  renaming-as-body satisfy these conditions and are not always inlined.
 
-      --  subprograms of protected objects are never inlined.
+      --  Also, subprograms of protected objects are never inlined.
 
-      return Is_Subprogram (E)
-        and then Present (Subprogram_Spec (E))
-        and then Present (Body_To_Inline (Subprogram_Spec (E)))
-        and then Is_Inlined_Always (E)
-        and then Convention (E) /= Convention_Protected;
+      if not Is_Subprogram (E)
+        or else not Is_Inlined_Always (E)
+        or else Convention (E) = Convention_Protected
+      then
+         return False;
+      end if;
+
+      Spec := Subprogram_Spec (E);
+
+      return Present (Spec)
+           and then Present (Body_To_Inline (Spec))
+           and then not Has_Renaming_As_Body (E);
    end Is_Local_Subprogram_Always_Inlined;
 
    -------------------
