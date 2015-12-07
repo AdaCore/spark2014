@@ -27,6 +27,7 @@ with Ada.Containers;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Strings.Hash;
+with GNAT.Strings; use GNAT.Strings;
 
 package String_Utils is
 
@@ -52,5 +53,9 @@ package String_Utils is
 
    function Hash_Image (N : Ada.Containers.Hash_Type) return String;
    --  Generate a string from an hash, without the leading space
+
+   function Null_Or_Empty_String (S : String_Access) return Boolean is
+     (S = null or else S.all = "");
+   --  Return True iff S is null or the empty string
 
 end String_Utils;
