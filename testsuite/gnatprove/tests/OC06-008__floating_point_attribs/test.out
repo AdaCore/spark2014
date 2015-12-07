@@ -1,0 +1,24 @@
+exponent.adb:3:16: attribute "Exponent" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
+fraction.adb:3:16: attribute "Fraction" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
+compose.adb:3:16: attribute "Compose" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
+scaling.adb:3:16: attribute "Scaling" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
+unbiased_rounding.adb:3:16: attribute "Unbiased_Rounding" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
+machine_rounding.adb:3:16: attribute "Machine_Rounding" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
+remainder.adb:3:16: attribute "Remainder" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
+adjacent.adb:3:16: attribute "Adjacent" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
+copy_sign.adb:3:16: attribute "Copy_Sign" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
+leading_part.adb:3:16: attribute "Leading_Part" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
+machine.adb:3:16: attribute "Machine" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
+model.adb:3:16: attribute "Model" is not permitted in SPARK
+gnatprove: error during flow analysis and proof
