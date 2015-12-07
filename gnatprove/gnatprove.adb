@@ -749,14 +749,14 @@ procedure Gnatprove is
 
    begin
       if RTS_Dir.all = "" and then
-        (Target_Dir = null or else Target_Dir.all = "")
+        Null_Or_Empty_String (Target_Dir)
       then
          return Config_File;
       end if;
       if RTS_Dir.all /= "" then
          RTS_Set := True;
       end if;
-      if Target_Dir /= null and then Target_Dir.all /= "" then
+      if not Null_Or_Empty_String (Target_Dir) then
          Target_Set := True;
       end if;
 

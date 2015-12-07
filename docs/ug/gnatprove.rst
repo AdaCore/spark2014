@@ -277,6 +277,110 @@ When an error is detected (which does not included issuing check messages),
 |GNATprove| returns with a non-zero exit status. Otherwise, |GNATprove| returns
 with an exit status of zero, even when warnings and check messages are issued.
 
+Using the GNAT Target Runtime Directory
+---------------------------------------
+
+If you are using GNAT as your target compiler, and the runtime used is
+not compatible with |GNATprove|'s default runtime, you can use the GNAT
+runtime directory from your GNAT installation, either directly or by
+copying it to the |SPARK| installation.
+
+To find the location of the target GNAT runtime, you can use the
+``<target>-gnatls -v`` command, and if you are using the ``--RTS`` switch,
+specify it also when running ``gnatls``.
+
+If the argument of the ``--RTS`` switch passed to |GNATprove| is a valid
+absolute or relative directory name, then |GNATprove| will use this directory
+as the runtime directory.
+
+Otherwise, |GNATprove| will search the runtime library in predefined
+locations. There are two possible cases, depending on the kind of runtime used:
+
+* Full runtime
+
+  For example, if you are using ``powerpc-vxworks-gnatmake`` as your builder
+  and ``--RTS=kernel``, then you can use:
+
+  .. code-block:: sh
+
+    powerpc-vxworks-gnatls -v --RTS=kernel | grep adalib
+
+  To find where the :file:`rts-kernel` directory is located and then copy
+  this directory to the |SPARK| installation, under
+  :file:`<spark-install>/share/spark/runtimes`, for example
+  using `bash` syntax:
+
+  .. code-block:: sh
+
+    cp -pr $(dirname $(powerpc-vxworks-gnatls -v --RTS=kernel | grep adalib)) \
+      <spark-install>/share/spark/runtimes
+
+  Then if not already present in your project file, you can then add
+  the following:
+
+  .. code-block:: ada
+
+     package Builder is
+        for Switches ("Ada") use ("--RTS=kernel");
+     end Builder;
+
+  Or alternatively if you are using a recent version of GNAT and |SPARK|,
+  you can specify instead the runtime via the `Runtime` project attribute:
+
+  .. code-block:: ada
+
+    for Runtime ("Ada") use "kernel";
+
+* Configurable runtime
+
+  The simplest way to use configurable runtimes in |SPARK| is to install
+  both |SPARK| and your cross GNAT compiler under the same root directory.
+
+  If you do that and have in your project file the Target and Runtime
+  properties set, then |GNATprove| (starting with version 16.0.1) will find the
+  runtime automatically, e.g:
+
+  .. code-block:: ada
+
+     for Target use "arm-eabi";
+     for Runtime ("Ada") use "ravenscar-sfp-stm32f4";
+
+  If you cannot use the above simple solution then you will first need to
+  find the location of the GNAT configurable runtime using the following
+  command:
+
+  .. code-block:: sh
+
+     <target>-gnatls -v --RTS=<runtime> | grep adalib
+
+  which gives the path to :file:`<runtime directory>/adalib`.
+
+  In the following example we want to use the ravenscar-sfp-stm32f4
+  runtime library on arm-eabi target architecture:
+
+  .. code-block:: sh
+
+     arm-eabi-gnatls -v --RTS=ravenscar-sfp-stm32f4 | grep adalib
+
+  This command gives the path to :file:`<ravenscar-sfp-stm32f4 runtime>/adalib`.
+
+  You then need to copy (or make a symbolic link under unix) the
+  <ravenscar-sfp-stm32f4 runtime> directory to the |SPARK| installation, under
+  :file:`<spark-prefix>/libexec/share/spark/runtimes`, for example using `bash`
+  syntax:
+
+  .. code-block:: sh
+
+    cp -pr $(dirname $(arm-eabi-gnatls -v --RTS=ravenscar-sfp-stm32f4 | grep adalib)) \
+      <spark-prefix>/libexec/share/spark/runtimes
+
+  Then if not already present in your project file, you need to add the
+  following:
+
+  .. code-block:: ada
+
+    for Runtime ("Ada") use "ravenscar-sfp-stm32f4";
+
 Setting Up the Runtime Library
 ------------------------------
 

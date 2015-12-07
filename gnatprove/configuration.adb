@@ -1105,11 +1105,11 @@ ASCII.LF;
             --  file. We take care of that using the Limit_String variable,
             --  note that "Limit_Line" is stronger naturally.
 
-            if Limit_Subp /= null and then Limit_Subp.all /= "" then
+            if not Null_Or_Empty_String (Limit_Subp) then
                Limit_String := Limit_Subp;
             end if;
 
-            if Limit_Line /= null and then Limit_Line.all /= "" then
+            if not Null_Or_Empty_String (Limit_Line) then
                Limit_String := Limit_Line;
             end if;
 
@@ -1281,22 +1281,56 @@ ASCII.LF;
       Proj_Type : Project_Type;
       RTS_Dir   : in out GNAT.Strings.String_Access) is
    begin
-      if RTS_Dir = null or else RTS_Dir.all = "" then
+      --  When command-line switch --RTS is not provided, consider attribute
+      --  Runtime of project file.
 
-         --  commandline switch --RTS was not provided, but maybe something was
-         --  in the project file
+      if Null_Or_Empty_String (RTS_Dir) then
 
-         if Has_Attribute (Proj_Type, Runtime_Attribute, "Ada") then
-            RTS_Dir :=
-              new String'(Attribute_Value
-                            (Proj_Type,
-                             Runtime_Attribute,
-                             "Ada",
-                             Default => ""));
-         else
-            return;
+         --  If project has a target and runtime attribute specified, then
+         --  look for a corresponding runtime directory in the compiler
+         --  installation, which should work if GNAT and SPARK were
+         --  installed at the same location.
+
+         if Proj_Type.Has_Attribute (Target_Attribute)
+           and then Proj_Type.Has_Attribute (Runtime_Attribute)
+         then
+            declare
+               Target  : constant String :=
+                 Proj_Type.Attribute_Value (Target_Attribute);
+               Runtime : constant String :=
+                 Proj_Type.Attribute_Value (Runtime_Attribute, Index => "Ada");
+               Dir     : constant String :=
+                 Executable_Location & Target &
+                 GNAT.Directory_Operations.Dir_Separator & "lib" &
+                 GNAT.Directory_Operations.Dir_Separator & "gnat" &
+                 GNAT.Directory_Operations.Dir_Separator & Runtime;
+
+            begin
+               if GNAT.OS_Lib.Is_Directory (Dir) then
+                  RTS_Dir := new String'(Dir);
+               end if;
+            end;
+         end if;
+
+         --  Otherwise, pass the value of the runtime attribute directly, which
+         --  should work if the runtime has been copied in SPARK installation.
+
+         if Null_Or_Empty_String (RTS_Dir)
+           and then Proj_Type.Has_Attribute (Runtime_Attribute)
+         then
+            RTS_Dir := new String'
+              (Proj_Type.Attribute_Value (Runtime_Attribute, Index => "Ada"));
          end if;
       end if;
+
+      --  When --RTS is not provided and attribute Runtime is not set in the
+      --  project file, return.
+
+      if Null_Or_Empty_String (RTS_Dir) then
+         return;
+      end if;
+
+      --  Search for the full path to the runtime directory
 
       declare
          Dir : Virtual_File :=
