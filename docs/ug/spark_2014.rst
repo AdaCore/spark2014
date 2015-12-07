@@ -1871,6 +1871,8 @@ that variables of that type should always be explicitly initialized (otherwise
 |GNATprove| will not be able to prove the condition ``False`` on the default
 initialization and will issue a message during proof).
 
+.. _Specification Features:
+
 Specification Features
 ======================
 

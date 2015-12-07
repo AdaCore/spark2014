@@ -2793,6 +2793,31 @@ program, when using provers CVC4, Alt-Ergo and Z3. This program was proposed as
 a formal verification challenge during VSTTE Verification Competition in 2014
 (see http://vscomp.org/).
 
+.. rubric:: ``prime_numbers``
+
+This program implements two functions ``Nearest_Number`` and
+``Nearest_Prime_Number`` which respectively find the closest coprime number and
+prime number for a given argument value and a given searching mode among three
+possibilities: above the value only, below the value only, or both. The spec of
+both functions is expressed in a ``Contract_Cases`` aspect, and proved
+automatically with |GNATprove|. |GNATprove| also proves automatically the
+functional contract of ``Initialize_Coprime_List`` which initializes the list
+of coprimes for a given argument, using Euclid's method, and returns this list
+to be used with ``Nearest_Number``. The list of prime numbers is initialized at
+package elaboration using the sieve of Erathosthenes, a procedure which is
+currently not fully proved by |GNATprove|, due to the use of non-linear integer
+arithmetic and floating-point square root function.
+
+This program offers a nice display of many |SPARK| features in a simple setting:
+
+* :ref:`State Abstraction`
+* :ref:`Subprogram Contracts`
+* :ref:`Specification Features`
+* :ref:`Loop Invariants`
+* :ref:`Ghost Code`
+
+The original code was contributed by Guillaume Foliard.
+
 .. rubric:: ``railway_signaling``
 
 This program implements a simple signaling algorithm to avoid collision of
