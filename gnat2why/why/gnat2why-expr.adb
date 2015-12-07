@@ -8639,7 +8639,7 @@ package body Gnat2Why.Expr is
             T := +False_Term;
 
          when others =>
-            Ada.Text_IO.Put_Line ("[Transform_Attr] id ="
+            Ada.Text_IO.Put_Line ("[Transform_Attr] not implemented: "
                                   & Attribute_Id'Image (Attr_Id));
             raise Not_Implemented;
       end case;
