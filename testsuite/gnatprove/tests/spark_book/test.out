@@ -45,7 +45,7 @@ average.adb:13:15: warning: assuming "New_Line" has no effect on global items
 average.adb:13:15: warning: no Global contract available for "New_Line"
 average.adb:15:16: info: initialization of "A" proved
 average.adb:15:18: info: range check proved
-average.adb:15:18: medium: overflow check might fail (e.g. when A = -2147483648 and B = -1)
+average.adb:15:18: medium: overflow check might fail
 average.adb:15:20: info: initialization of "B" proved
 average.adb:15:23: info: division check proved
 average.adb:15:23: info: overflow check proved
@@ -67,7 +67,7 @@ average_with_use.adb:13:04: warning: assuming "New_Line" has no effect on global
 average_with_use.adb:13:04: warning: no Global contract available for "New_Line"
 average_with_use.adb:15:16: info: initialization of "A" proved
 average_with_use.adb:15:18: info: range check proved
-average_with_use.adb:15:18: medium: overflow check might fail (e.g. when A = -2147483648 and B = -1)
+average_with_use.adb:15:18: medium: overflow check might fail
 average_with_use.adb:15:20: info: initialization of "B" proved
 average_with_use.adb:15:23: info: division check proved
 average_with_use.adb:15:23: info: overflow check proved
@@ -83,8 +83,8 @@ bad_types.adb:7:21: warning: no Global contract available for "Get"
 bad_types.adb:8:21: warning: assuming "Get" has no effect on global items
 bad_types.adb:8:21: warning: no Global contract available for "Get"
 bad_types.adb:9:13: info: initialization of "Room_Length" proved
-bad_types.adb:9:25: medium: overflow check might fail (e.g. when Room_Length = (- (/ 1 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608)) and Wall_Thickness = (- (/ 15293080961673054794255256003018678842606179585660414776756226674583517278135730989808699495587095569426093566393641219710132417706537810448304368738751039839083346231344629295449916292722881218679060438583166264621549858273323939002657788374046371695008818837920016594953562507208315274678500922881141480762737879176641530272041361009333250293761 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231
-bad_types.adb:9:31: medium: overflow check might fail (e.g. when Wall_Thickness = (- (/ 15293080961673054794255256003018678842606179585660414776756226674583517278135730989808699495587095569426093566393641219710132417706537810448304368738751039839083346231344629295449916292722881218679060438583166264621549858273323939002657788374046371695008818837920016594953562507208315274678500922881141480762737879176641530272041361009333250293761 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608)))
+bad_types.adb:9:25: medium: overflow check might fail
+bad_types.adb:9:31: medium: overflow check might fail
 bad_types.adb:9:33: info: initialization of "Wall_Thickness" proved
 bad_types.adb:10:21: warning: assuming "Put" has no effect on global items
 bad_types.adb:10:21: warning: no Global contract available for "Put"
@@ -94,12 +94,12 @@ bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Front" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Items" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Rear" is not initialized
-bounded_queue_example_v1.adb:12:07: medium: precondition might fail (e.g. when My_Queue = (Max_Size => ?, Count => 0, Front => 100, Rear => 100, Items => (others => 0)))
+bounded_queue_example_v1.adb:12:07: medium: precondition might fail
 bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Count" proved
 bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Front" proved
 bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Items" proved
 bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Rear" proved
-bounded_queue_example_v1.adb:15:07: medium: precondition might fail (e.g. when My_Queue = (Max_Size => ?, Count => 0, Front => 100, Rear => 100, Items => (others => 0)))
+bounded_queue_example_v1.adb:15:07: medium: precondition might fail
 bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Count" proved
 bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Front" proved
 bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Items" proved
@@ -123,20 +123,20 @@ bounded_queue_v1.adb:3:13: info: range check proved
 bounded_queue_v1.adb:8:13: info: range check proved
 bounded_queue_v1.adb:13:13: info: range check proved
 bounded_queue_v1.adb:18:13: info: range check proved
-bounded_queue_v1.adb:20:32: medium: array index check might fail (e.g. when Queue = 1)
+bounded_queue_v1.adb:20:32: medium: array index check might fail
 bounded_queue_v1.adb:23:13: info: range check proved
-bounded_queue_v1.adb:25:32: medium: array index check might fail (e.g. when Queue = 1)
+bounded_queue_v1.adb:25:32: medium: array index check might fail
 bounded_queue_v1.adb:38:32: info: division check proved
 bounded_queue_v1.adb:38:51: info: overflow check proved
 bounded_queue_v1.adb:38:51: info: range check proved
 bounded_queue_v1.adb:39:25: info: index check proved
 bounded_queue_v1.adb:40:34: medium: overflow check might fail
-bounded_queue_v1.adb:47:33: medium: array index check might fail (e.g. when Queue = (Front => 2, others => ?))
+bounded_queue_v1.adb:47:33: medium: array index check might fail
 bounded_queue_v1.adb:48:34: info: division check proved
 bounded_queue_v1.adb:48:53: info: overflow check proved
 bounded_queue_v1.adb:48:53: info: range check proved
 bounded_queue_v1.adb:49:34: medium: range check might fail
-bounded_queue_v1.ads:31:18: medium: postcondition might fail (e.g. when Queue = (Max_Size => ?, Count => 0, Front => 1, Rear => 1, Items => (others => 0)))
+bounded_queue_v1.ads:31:18: medium: postcondition might fail
 bounded_queue_v1.ads:37:18: medium: postcondition might fail
 bounded_queue_v1.ads:38:50: medium: overflow check might fail
 bounded_queue_v1.ads:39:18: info: precondition proved
@@ -212,7 +212,7 @@ buffers.ads:45:23: info: initialization of "Valid" proved
 buffers.ads:53:24: info: initialization of "Buffer" proved
 buffers.ads:75:25: info: initialization of "Destination" proved
 calculate.adb:3:21: info: initialization of "A" proved
-calculate.adb:12:11: medium: overflow check might fail (e.g. when C = 2147483647)
+calculate.adb:12:11: medium: overflow check might fail
 circle_demo.adb:14:14: info: precondition proved
 circle_demo.adb:14:50: info: initialization of "My_Circle" proved
 circle_demo.adb:15:18: warning: assuming "Put_Line" has no effect on global items
@@ -223,7 +223,7 @@ contains.adb:6:39: info: length check proved
 contains.adb:9:37: warning: assuming "Index" has no effect on global items
 contains.adb:9:37: warning: no Global contract available for "Index"
 contains.adb:10:56: info: initialization of "Search_String" proved
-contains.adb:11:57: medium: range check might fail (e.g. when S = (others => 0))
+contains.adb:11:57: medium: range check might fail
 contains.adb:12:11: info: initialization of "Result_Index" proved
 contains2.adb:8:39: info: length check proved
 contains2.adb:11:37: warning: assuming "Index" has no effect on global items
@@ -248,9 +248,9 @@ control_structures.adb:7:11: medium: "Default_Width" might not be initialized af
 control_structures.adb:24:31: info: initialization of "New_Setting" proved
 control_structures.adb:26:24: medium: overflow check might fail, in call inlined at control_structures.adb:184
 control_structures.adb:26:26: info: initialization of "Temperature" proved, in call inlined at control_structures.adb:184
-control_structures.adb:31:08: medium: overflow check might fail (e.g. when Second = -2147483648)
+control_structures.adb:31:08: medium: overflow check might fail
 control_structures.adb:31:23: medium: overflow check might fail
-control_structures.adb:31:25: medium: overflow check might fail (e.g. when First = -2147483648)
+control_structures.adb:31:25: medium: overflow check might fail
 control_structures.adb:44:07: info: initialization of "A" proved
 control_structures.adb:45:12: info: overflow check proved
 control_structures.adb:45:13: info: initialization of "A" proved
@@ -322,7 +322,7 @@ control_structures.adb:152:26: warning: assuming "Get" has no effect on global i
 control_structures.adb:152:26: warning: no Global contract available for "Get"
 control_structures.adb:153:17: info: initialization of "Value" proved
 control_structures.adb:154:14: info: initialization of "Sum" proved
-control_structures.adb:154:18: medium: overflow check might fail (e.g. when Sum = 2147483647 and Value = 1)
+control_structures.adb:154:18: medium: overflow check might fail
 control_structures.adb:154:20: info: initialization of "Value" proved
 control_structures.adb:158:14: info: initialization of "X" proved
 control_structures.adb:158:16: info: division check proved
@@ -485,9 +485,9 @@ density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude.adb:24:29: info: initialization of "Temperature" proved
 density_altitude.adb:24:29: info: range check proved
-density_altitude.adb:24:42: medium: overflow check might fail (e.g. when Temperature = 180)
+density_altitude.adb:24:42: medium: overflow check might fail
 density_altitude.adb:25:29: info: initialization of "Pressure" proved
-density_altitude.adb:25:39: medium: overflow check might fail (e.g. when Temperature = 0 and Humidity = 0)
+density_altitude.adb:25:39: medium: overflow check might fail
 density_altitude.adb:25:39: medium: range check might fail
 density_altitude.adb:26:29: info: initialization of "Humidity" proved
 density_altitude.adb:26:29: info: range check proved
@@ -579,7 +579,7 @@ enum_example.adb:48:07: warning: no Global contract available for "Put_Line"
 enum_example.adb:50:04: warning: assuming "New_Line" has no effect on global items
 enum_example.adb:50:04: warning: no Global contract available for "New_Line"
 enum_example.adb:54:16: info: initialization of "Count" proved
-enum_example.adb:54:22: medium: overflow check might fail (e.g. when Count = 2147483647)
+enum_example.adb:54:22: medium: overflow check might fail
 enum_example.adb:56:04: warning: assuming "Put" has no effect on global items
 enum_example.adb:56:04: warning: no Global contract available for "Put"
 enum_example.adb:56:17: info: initialization of "Count" proved
@@ -604,18 +604,18 @@ generic_examples.adb:3:11: medium: "Default_Width" might not be initialized afte
 generic_examples.adb:11:21: info: index check proved, in call inlined at generic_examples.adb:89
 generic_examples.adb:12:23: info: initialization of "Result" proved
 generic_examples.adb:12:23: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
-generic_examples.adb:12:30: medium: overflow check might fail, in call inlined at generic_examples.adb:89 (e.g. when Result = 2147483647)
+generic_examples.adb:12:30: medium: overflow check might fail, in call inlined at generic_examples.adb:89
 generic_examples.adb:15:14: info: initialization of "Result" proved
 generic_examples.adb:15:14: info: initialization of "Result" proved, in call inlined at generic_examples.adb:89
 generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
 generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
-generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:39 (e.g. when Result = 2147483647)
-generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:46 (e.g. when Result = 2147483647)
+generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:39
+generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:46
 generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
 generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
 generic_examples.adb:59:21: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
 generic_examples.adb:70:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
-generic_examples.adb:70:30: medium: overflow check might fail, in instantiation at generic_examples.adb:77 (e.g. when Result = 2147483647)
+generic_examples.adb:70:30: medium: overflow check might fail, in instantiation at generic_examples.adb:77
 generic_examples.adb:91:23: warning: assuming "Put" has no effect on global items
 generic_examples.adb:91:23: warning: no Global contract available for "Put"
 generic_examples.adb:91:29: info: initialization of "The_Count" proved
@@ -728,7 +728,7 @@ good_types.adb:21:11: warning: assuming "Get" has no effect on global items
 good_types.adb:21:11: warning: no Global contract available for "Get"
 good_types.adb:22:13: info: initialization of "Room_Length" proved
 good_types.adb:22:25: info: overflow check proved
-good_types.adb:22:25: medium: range check might fail (e.g. when Room_Length = 100.0 and Wall_Thickness = (/ 3 178405940320597052573631779720273927562330112))
+good_types.adb:22:25: medium: range check might fail
 good_types.adb:22:31: info: overflow check proved
 good_types.adb:23:11: info: initialization of "Default_Aft" proved
 good_types.adb:23:11: info: initialization of "Default_Exp" proved
@@ -772,14 +772,14 @@ hierarchical_state_demo_nested.adb:49:43: info: division check proved
 hierarchical_state_demo_nested.ads:7:28: info: initialization of "Success" proved
 initializer_demo.adb:6:07: warning: initialization of Sum has no effect
 initializer_demo.adb:10:17: info: initialization of "Sum" proved
-initializer_demo.adb:10:21: medium: overflow check might fail (e.g. when Sum = -1 and A = (1 => -2147483648, others => 0) and Index = 1)
+initializer_demo.adb:10:21: medium: overflow check might fail
 initializer_demo.adb:12:14: info: initialization of "Sum" proved
 initializer_demo.adb:23:17: info: initialization of "Sum" proved
-initializer_demo.adb:23:21: medium: overflow check might fail (e.g. when Sum = -1 and A = (1 => -2147483648, others => 0) and Index = 1)
+initializer_demo.adb:23:21: medium: overflow check might fail
 initializer_demo.adb:25:23: info: initialization of "Sum" proved
 initializer_demo.adb:35:19: info: overflow check proved
 initializer_demo.adb:35:21: info: initialization of "Offset.X" proved
-initializer_demo.adb:35:35: medium: overflow check might fail (e.g. when P = (X => 2147483647, Y => 2147483647) and Offset = (X => ?, Y => 1))
+initializer_demo.adb:35:35: medium: overflow check might fail
 initializer_demo.adb:35:37: info: initialization of "Offset.Y" proved
 initializer_demo.ads:12:28: info: range check proved
 interval.ads:13:09: warning: type invariant ignored (not yet supported)
@@ -842,7 +842,7 @@ operator_overload.adb:38:07: warning: assuming "Put_Line" has no effect on globa
 operator_overload.adb:38:07: warning: no Global contract available for "Put_Line"
 operator_overload.adb:40:07: warning: assuming "Put_Line" has no effect on global items
 operator_overload.adb:40:07: warning: no Global contract available for "Put_Line"
-overflow.adb:7:15: medium: overflow check might fail (e.g. when A = 2147483647 and B = 1)
+overflow.adb:7:15: medium: overflow check might fail
 overflow.adb:7:20: info: division check proved
 overflow.ads:5:19: info: initialization of "C" proved
 parent-public1.adb:11:20: info: initialization of "Temp" proved
@@ -866,7 +866,7 @@ raster_graphics.adb:18:24: medium: overflow check might fail
 raster_graphics.adb:18:26: info: initialization of "Delta_Y" proved
 raster_graphics.adb:18:33: info: overflow check proved
 raster_graphics.adb:27:10: info: initialization of "Status" proved
-raster_graphics.adb:31:41: medium: overflow check might fail (e.g. when Line_Count = 2147483647)
+raster_graphics.adb:31:41: medium: overflow check might fail
 raster_graphics.ads:21:29: info: initialization of "Status" proved
 region_checks.ads:8:08: info: complete contract cases proved
 region_checks.ads:8:08: info: disjoint contract cases proved
@@ -1047,9 +1047,9 @@ searches.ads:30:24: info: initialization of "Found" proved
 searches.ads:30:45: info: index check proved
 searches.ads:30:45: info: initialization of "Position" proved
 searches.ads:33:57: info: index check proved
-serial_numbers.adb:8:34: medium: overflow check might fail (e.g. when Next_Number = 2147483647)
+serial_numbers.adb:8:34: medium: overflow check might fail
 serial_numbers.ads:3:24: info: initialization of "Number" proved
-serial_numbers2.adb:8:34: medium: overflow check might fail (e.g. when Next_Number = 2147483647)
+serial_numbers2.adb:8:34: medium: overflow check might fail
 serial_numbers2.ads:3:24: info: initialization of "Number" proved
 shapes.adb:12:34: info: overflow check proved
 shapes.adb:12:34: info: range check proved
@@ -1137,14 +1137,14 @@ shapes5.adb:44:32: info: initialization of "Delta_Y" proved
 shapes5.adb:44:39: info: overflow check proved
 shapes5.adb:44:75: info: overflow check proved
 shapes5.adb:44:75: info: range check proved
-shapes5.ads:14:18: medium: postcondition might fail, cannot prove In_Bounds (Make_Circle'result) (e.g. when Wild_Man = 0)
+shapes5.ads:14:18: medium: postcondition might fail, cannot prove In_Bounds (Make_Circle'result)
 shapes5.ads:21:04: info: initialization of "Wild_Man" proved
 silly.adb:3:21: info: initialization of "Result" proved
-silly.adb:6:21: medium: overflow check might fail (e.g. when X = 2147483647 and Y = 1)
+silly.adb:6:21: medium: overflow check might fail
 silly.adb:6:26: info: division check proved
 silly.adb:12:22: info: division check proved
 simple_math.adb:10:10: info: initialization of "Q" proved
-simple_math.adb:12:19: medium: divide by zero might fail (e.g. when Q = 0)
+simple_math.adb:12:19: medium: divide by zero might fail
 simple_math.adb:12:19: medium: range check might fail
 simple_math.adb:12:20: info: initialization of "Q" proved
 simple_math.adb:13:23: info: initialization of "Q" proved
@@ -1260,10 +1260,10 @@ strings.adb:20:21: info: initialization of "Current" proved
 strings.adb:22:28: info: initialization of "Current" proved
 strings.adb:39:34: info: range check proved
 strings.adb:43:13: info: initialization of "Equals_Found" proved
-strings.adb:44:23: medium: range check might fail (e.g. when Text = (others => 0))
+strings.adb:44:23: medium: range check might fail
 strings.adb:44:43: info: initialization of "Equals_Position" proved
 strings.adb:45:32: medium: precondition might fail
-strings.adb:45:40: medium: range check might fail (e.g. when Text = (others => 0))
+strings.adb:45:40: medium: range check might fail
 strings.adb:45:46: info: initialization of "Equals_Position" proved
 strings.adb:45:62: medium: overflow check might fail
 strings.ads:8:22: info: initialization of "Found" proved
@@ -1437,7 +1437,7 @@ terminal.ads:7:24: info: initialization of "Buffer" proved
 terminal.ads:8:24: info: initialization of "Count" proved
 terminal.ads:9:24: info: initialization of "Status" proved
 ticktock.adb:6:04: info: initialization of "Clock_Value" constituent of "TickTock_State" proved
-ticktock.adb:14:34: medium: overflow check might fail (e.g. when Clock_Value = 9223372036854775807)
+ticktock.adb:14:34: medium: overflow check might fail
 transitive.adb:16:19: info: postcondition proved
 transitive.adb:20:37: info: division check proved
 transitive.adb:21:14: info: division check proved
@@ -1445,7 +1445,7 @@ transitive.adb:31:10: info: loop invariant initialization proved
 transitive.adb:31:10: info: loop invariant preservation proved
 transitive.adb:38:56: info: initialization of "X_Last" proved
 transitive.ads:10:19: info: postcondition proved
-unused_parameter.adb:7:15: medium: overflow check might fail (e.g. when A = 1073741824)
+unused_parameter.adb:7:15: medium: overflow check might fail
 unused_parameter.adb:7:20: info: division check proved
 unused_parameter.ads:4:19: warning: unused variable "B"
 unused_parameter.ads:5:19: info: initialization of "C" proved
@@ -1454,9 +1454,9 @@ utility.adb:12:10: info: loop invariant preservation proved
 utility.adb:13:67: info: index check proved
 utility.adb:15:07: info: raise statement proved unreachable
 utility.ads:12:16: info: postcondition proved
-various.adb:12:07: medium: exception might be raised (e.g. when J = 11 and Search_For_Zero'Result = 0)
+various.adb:12:07: medium: exception might be raised
 various.adb:20:07: info: assertion proved
-various.adb:20:23: medium: overflow check might fail (e.g. when X = 2147483647 and Y = 1)
+various.adb:20:23: medium: overflow check might fail
 various.adb:20:26: info: division check proved
 various.adb:21:13: info: division check proved
 very_longs-divide.adb:7:11: info: range check proved
@@ -1557,8 +1557,8 @@ very_longs-divide.adb:181:54: info: initialization of "Carry" proved
 very_longs-divide.adb:181:63: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:181:79: info: range check proved
 very_longs-divide.adb:182:25: info: initialization of "Future_Borrow" proved
-very_longs-divide.adb:194:28: medium: array index check might fail (e.g. when J = 2)
-very_longs-divide.adb:194:40: medium: range check might fail (e.g. when Q_Hat = 256)
+very_longs-divide.adb:194:28: medium: array index check might fail
+very_longs-divide.adb:194:40: medium: range check might fail
 very_longs-divide.adb:198:31: info: index check proved
 very_longs-divide.adb:198:58: info: index check proved
 very_longs-divide.adb:200:14: info: range check proved
@@ -1811,8 +1811,38 @@ workspaces.adb:5:48: info: length check proved
 workspaces.adb:7:26: info: division check proved
 workspaces.adb:8:21: info: index check proved
 workspaces.adb:8:24: info: initialization of "Workspace" proved
-workspaces.adb:9:27: medium: overflow check might fail (e.g. when Size = 2147483647)
+workspaces.adb:9:27: medium: overflow check might fail
 workspaces.adb:9:32: info: index check proved
 workspaces.adb:9:37: info: initialization of "Workspace" proved
 workspaces.adb:11:14: info: initialization of "Workspace" proved
-440736956555270413618581675255342293149119973622969239858152417678164812112068608)))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
