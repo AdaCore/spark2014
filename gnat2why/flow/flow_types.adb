@@ -127,9 +127,10 @@ package body Flow_Types is
          when Null_Value =>
             return Generic_Integer_Hash (-1);
          when Synthetic_Null_Export =>
-            return Generic_Integer_Hash (-2);
+            return Generic_Integer_Hash (-2 - Flow_Id_Variant'Pos (N.Variant));
          when Direct_Mapping =>
-            return Generic_Integer_Hash (Integer (N.Node));
+            return Generic_Integer_Hash
+              (Integer (N.Node) + Variable_Facet_T'Pos (N.Facet));
          when Record_Field =>
             declare
                use type Ada.Containers.Hash_Type;
@@ -157,6 +158,8 @@ package body Flow_Types is
                end Hash_Component;
 
             begin
+               H := H + Flow_Id_Variant'Pos (N.Variant) * 19;
+               H := H + Variable_Facet_T'Pos (N.Facet) * 17;
                N.Component.Iterate (Hash_Component'Access);
                return Ada.Containers.Hash_Type (H);
             end;
