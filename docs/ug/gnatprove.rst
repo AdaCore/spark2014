@@ -381,45 +381,6 @@ locations. There are two possible cases, depending on the kind of runtime used:
 
     for Runtime ("Ada") use "ravenscar-sfp-stm32f4";
 
-Setting Up the Runtime Library
-------------------------------
-
-Just as other GNAT tools, |GNATprove| provides a way to select the runtime
-library to be used along with the project code. To do this, you can either use
-the ``--RTS=<runtime>`` switch, or the ``for Runtime ("Ada") use "..."``
-attribute of the project file. Both are identical, and in the following
-explanation we assume the command line switch was used.
-
-|GNATprove| will search the runtime library in the following locations:
-
- * if the argument of the ``--RTS`` switch is a valid absolute or relative
-   directory name, then this directory is interpreted as the runtime
-   directory;
- * if not, |GNATprove| looks for the runtime library in the directory
-   ``<spark-install>/share/spark/runtimes``.
-
-The first option is the simplest, but the second one is more convenient, as the
-same |GNATprove| command line can be used on different machines. However, it
-requires copying the appropriate runtime library into the above-mentioned
-directory. To do this, first find out the location of the target GNAT runtime
-library.  You can use the ``<target>-gnatls -v`` command, and if you are using
-the ``--RTS`` switch, specify it also when running gnatls.
-
-For example, if you are using ``powerpc-vxworks-gnatmake`` as your builder and
-``--RTS=kernel``, you can use::
-
-    powerpc-vxworks-gnatls -v --RTS=kernel | grep adalib
-
-This command will give you a directory of the form::
-
-    <runtime_dir>/adalib
-
-You need to copy the ``<runtime-dir>`` directory to the |GNATprove|
-installation, under ``<spark-install>/share/spark/runtimes``, for example
-using this bash command::
-
-    cp -pr <runtime-dir> <spark-install>/libexec/share/spark/runtimes
-
 .. _implementation_defined:
 
 Implementation-Defined Behavior
