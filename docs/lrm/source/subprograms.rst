@@ -385,7 +385,7 @@ other parameter of the protected operation.]
 
 [Note that AI12-0169 modifies the Ada RM syntax for an ``entry_body``
 to allow an optional ``aspect_specification`` immediately before the
-``entry_barrier``. This is relevant for aspects such as Refined_Globals
+``entry_barrier``. This is relevant for aspects such as Refined_Global
 and Refined_Depends.]
 
 .. centered:: **Syntax**
