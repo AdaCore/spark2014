@@ -1243,7 +1243,13 @@ Global Aspect of the subprogram; that is, the Refined_Global aspect
 repeats the Global aspect of the subprogram except that references to
 state abstractions whose refinements are visible at the point of the
 subprogram_body are replaced with references to [some or all of the]
-constituents of those abstractions.
+constituents of those abstractions. References to a state abstraction
+whose refinement is not visible at the point of the subprogram_body
+may also be similarly replaced if Part_Of aspect specifications
+which are visible at the point of the subprogram body
+identify one or more constituents of the abstraction; such a state
+abstraction is said to be "optionally refinable" at the point of the
+subprogram body.
 
 See section :ref:`global-aspects` regarding how the rules given in this
 section apply to protected operations and to task bodies.
@@ -1268,7 +1274,8 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
    the stub or body is the completion of a declaration occurring in the
    specification of an enclosing package, the declaration has a
    Global aspect which denotes a state abstraction declared by the package and
-   the refinement of the state abstraction is visible.
+   either the refinement of the state abstraction is visible or a Part_Of
+   specification specifying a constituent of the state abstraction is visible.
 
 .. _tu-fe-refined_global_aspects-03:
 
@@ -1284,19 +1291,36 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 
    b. For each ``global_item`` in the Global aspect which denotes a
       state abstraction whose **null** refinement is visible at the
-      point of the Refined_Global aspect specification, the
-      Refined_Global specification shall be omitted, or if required by
-      the syntax of a ``global_specification`` replaced by a **null**
-      in the Refined_Global aspect.
+      point of the Refined_Global aspect specification, there are no
+      corresponding ``global_items`` in the Refined_Global specification.
+      If this results in a Refined_Global specification with no
+      ``global_items``, then the Refined_Global specification shall
+      include a ``null_global_specification``.
 
    c. For each ``global_item`` in the Global aspect which does not
-      denote a state abstraction whose refinement is visible, the
+      denote a state abstraction whose refinement is visible and
+      does not denote an optionally refinable state abstraction, the
       Refined_Global specification shall include exactly one
       ``global_item`` which denotes the same entity as the
       ``global_item`` in the Global aspect.
 
-   d. No other ``global_items`` shall be included in the Refined_Global
+   d. For each ``global_item`` in the Global aspect which designates
+      a state abstraction which is optionally refinable, refinement
+      of the abstraction is optional in the following sense: either the
+      reference to the state abstraction may be replaced with references
+      to its constituents (following the rules of case 'a' above) or
+      not (in which case the rules of case 'c' above apply). However,
+      only the latter option is available if the mode of the state
+      abstraction in the Global specification is Output.
+
+   e. No other ``global_items`` shall be included in the Refined_Global
       aspect specification.
+
+   f. At least one state abstraction mentioned in the Global aspect
+      aspect specification shall be unmentioned in the Refined_Global
+      aspect specification. [This usually follows as a consequence of
+      other rules, but not in some cases involving optionally refinable
+      state abstractions where the option is declined.]
 
 .. _tu-fe-refined_global_aspects-04:
 
@@ -1307,17 +1331,18 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 
 5. The mode of each ``global_item`` in a Refined_Global aspect shall match
    that of the corresponding ``global_item`` in the Global aspect unless
-   that corresponding ``global_item`` denotes a state abstraction whose
-   refinement is visible. In that case, the modes of the ``global_items``
-   in the Refined_Global aspect which denote (direct or indirect)
-   constituents of that state abstraction collectively determine (as
-   described below) an "effective mode" for the abstraction. That
-   "effective mode" shall match that of the corresponding ``global_item``
+   that corresponding ``global_item`` denotes a state abstraction which
+   is not mentioned in the Refined_Global aspect. In that case, the modes
+   of the ``global_items`` in the Refined_Global aspect which denote (direct
+   or indirect) constituents of that state abstraction collectively determine
+   (as described below) an "effective mode" for the abstraction. If there is
+   at least one such constituent, then that "effective mode" shall match that
+   of the corresponding ``global_item``
    in the Global aspect; it is determined as follows:
 
-   a. If every constituent of the abstraction is mentioned in the
-      Refined_Global aspect with a mode of Output, then the effective mode
-      is Output;
+   a. If the refinement of the abstraction is visible and every constituent
+      of the abstraction is mentioned in the Refined_Global aspect with a mode
+      of Output, then the effective mode is Output;
 
    b. Otherwise, if at least one consistituent of the abstraction is mentioned
       in the Refined_Global aspect with a mode of Output or In_Out, then
@@ -1329,12 +1354,14 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 
    d. Otherwise, the effective mode is Proof_In.
 
+   [If there is no such consituent (e.g., because a *null* refinement is
+   visible) then the mode of the state abstraction in the Global aspect
+   plays no role in determining the legality of the Refined_Global aspect.]
+
 .. _tu-fe-refined_global_aspects-06:
 
-6. If the Global aspect specification references a state abstraction with a
-   ``mode_selector`` of Output, whose refinement is visible, then every
-   ``constituent`` of that state abstraction shall be referenced in the
-   Refined_Global aspect specification.
+6. [If a ``global_item`` in the Global aspect denotes a state abstraction
+   whose null 
 
 .. _tu-cbatu-refined_global_aspects-07:
 
@@ -1557,7 +1584,7 @@ Abstract_State, Package Hierarchy and Part_Of
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In order to avoid aliasing-related problems (see :ref:`anti-aliasing`), |SPARK|
-must ensure that if a given piece of state (either a variable or a state
+must ensure that if a given piece of state (either an object or a state
 abstraction) is going to be a constituent of a given state abstraction, that
 relationship must be known at the point where the constituent is declared.
 
