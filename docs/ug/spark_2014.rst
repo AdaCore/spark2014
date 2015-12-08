@@ -3488,7 +3488,7 @@ Dispatching Calls and Controlling Operands
 In a dispatching call, the *controlling operand* is the parameter of class-wide
 type whose dynamic type determinates the actual subprogram called. The dynamic
 type of this controlling operand may be any type derived from the specific type
-corresponding to the classe-wide type of the parameter (the specific type is
+corresponding to the class-wide type of the parameter (the specific type is
 ``T`` when the class-wide type is ``T'Class``). Thus, in general it is not
 possible to know in advance which subprograms may be called in a dispatching
 call, when separately analyzing a unit.
