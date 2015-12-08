@@ -2386,6 +2386,20 @@ Default_Initial_Condition Aspects
    Default_Initial_Condition assertion is an assertion aspect, which means
    that it may be used in an Assertion_Policy pragma.
 
+   Within the Boolean expression of the Default_Initial_Condition aspect of
+   a tagged type T, a name that denotes the current instance of the
+   tagged type is interpreted as though it had a (notional) type NT
+   that is a formal derived type whose ancestor type is T, with
+   directly visible primitive operations. [This name resolution rule
+   is similar to the "notional formal derived type" name resolution
+   rule introduced in Ada RM 6.1.1 for certain subexpressions of
+   class-wide precondition and postcondition expressions.]
+   Any operations within a Default_Initial_Condition expression that
+   were resolved in this way (i.e., as primitive operations of the (notional)
+   formal derived type NT), are in the evaluation of the the expression
+   (i.e., at run-time) bound to the corresponding operations of the type of the
+   object being "initialized by default" (see Ada RM 3.3.1).
+
 Deferred Constants
 ------------------
 
