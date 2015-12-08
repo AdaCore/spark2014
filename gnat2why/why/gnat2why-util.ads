@@ -176,7 +176,8 @@ package Gnat2Why.Util is
    --     parameter, which means essentially converting predicate to term.
 
    type W_Section_Id is
-     (WF_Pure,
+     (WF_Float_Literals,
+      WF_Pure,
       WF_Variables,
       WF_Context,
       WF_Main);
@@ -318,9 +319,9 @@ package Gnat2Why.Util is
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  static call.
 
-   function Cast_Real_Litteral
+   function Cast_Real_Literal
      (E  : Node_Id;
-      Ty : W_Type_Id) return W_Float_Constant_Id
+      Ty : W_Type_Id) return W_Modular_Constant_Id
      with Pre => Why_Type_Is_Float (Ty)
      and Is_Floating_Point_Type (Etype (E));
    --  cast a real constant (litteral) into either a float32 or a float64,

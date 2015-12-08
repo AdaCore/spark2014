@@ -718,6 +718,8 @@ module Static_Floating_Point
     forall x : t [to_rep x].
       of_rep (to_rep (x)) = x
 
+  predicate is_finite rep_type
+
   function first : rep_type
 
   function last  : rep_type
@@ -734,7 +736,7 @@ module Static_Floating_Point
 
   val range_check_ (n : rep_type) : rep_type
     requires { in_range n }
-    ensures { result = n }
+    ensures { result = n /\ is_finite n }
 
   axiom range_axiom :
     forall x : t[to_rep x]. in_range (to_rep x)
@@ -748,7 +750,8 @@ module Static_Float32
   clone export Static_Floating_Point with
     type rep_type = Float32.t,
     predicate gt = Float32.gt,
-    predicate lt = Float32.lt
+    predicate lt = Float32.lt,
+    predicate is_finite = Float32.is_finite
 
   function to_int (x:t) : int = Float32.to_int (to_rep x)
 end
@@ -759,7 +762,8 @@ module Static_Float64
   clone export Static_Floating_Point with
     type rep_type = Float64.t,
     predicate gt = Float64.gt,
-    predicate lt = Float64.lt
+    predicate lt = Float64.lt,
+    predicate is_finite = Float64.is_finite
 
   function to_int (x:t) : int = Float64.to_int (to_rep x)
 end
@@ -795,6 +799,30 @@ module Dynamic_Floating_Point
   val range_check_ (first last n : rep_type) : rep_type
     requires { dynamic_property first last n }
     ensures { result = n /\ dynamic_property first last n }
+end
+
+theory Finite_Float_Literal
+
+  type t                        (* either Float32 or Float64 *)
+  type bv                       (* either BV32 or BV64 *)
+
+  function from_bv bv : t
+  function to_real t  : real
+
+  predicate is_finite t
+
+  constant l : t                (* the constant representing the literal *)
+
+  constant binary_rep  : bv        (* it's binary representation *)
+
+  constant decimal_rep : real      (* it's decimal representation *)
+
+  axiom l_real : to_real l = decimal_rep
+
+  axiom l_bin : l = from_bv binary_rep
+
+  axiom l_is_finite : is_finite l
+
 end
 
 (* The following modules are templates for unconstrained and constrained array

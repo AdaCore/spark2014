@@ -24,10 +24,12 @@
 ------------------------------------------------------------------------------
 
 with Common_Containers;   use Common_Containers;
+with Gnat2Why.Expr;       use Gnat2Why.Expr;
 with Namet;               use Namet;
 with Sem_Eval;            use Sem_Eval;
 with Sinfo;               use Sinfo;
 with SPARK_Util;          use SPARK_Util;
+with Stand;               use Stand;
 with Uintp;               use Uintp;
 with Urealp;              use Urealp;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -272,6 +274,54 @@ package body Why.Gen.Scalars is
                                       others => <>))));
 
             return;
+         elsif Has_Floating_Point_Type (E)
+         then
+            --  Optimisation for static floating point, check if we are dealing
+            --  with a Float32 or Float64, in which case reduce the range
+            --  predicate to "is_finite".
+
+            if Is_Static
+              and then UR_Eq (Realval (Low_Bound (Scalar_Range (E))),
+                              Realval (Low_Bound (Scalar_Range
+                                (if Ty = EW_Float_32_Type
+                                     then Standard_Float
+                                     else Standard_Long_Float))))
+              and then UR_Eq (Realval (High_Bound (Scalar_Range (E))),
+                              Realval (High_Bound (Scalar_Range
+                                (if Ty = EW_Float_32_Type
+                                     then Standard_Float
+                                     else Standard_Long_Float))))
+            then
+
+               --  In which case we know that all values are necessary in range
+               --  so we define the range predicate as "is_finite".
+               Emit (Theory,
+                     Why.Gen.Binders.New_Function_Decl
+                       (Domain  => EW_Pred,
+                        Name    => To_Local (E_Symb (E, Name)),
+                        Def     => New_Call (Domain => EW_Pred,
+                                             Name   =>
+                                               MF_Floats (Ty).Is_Finite,
+                                             Args   => (1 => +Var)),
+                        Labels  => Name_Id_Sets.Empty_Set,
+                        Binders => (1 => Binder_Type'(B_Name => Var,
+                                                      others => <>))));
+
+               return;
+
+            --  In the other case, add "is_finite" to the predicate
+            else
+               Def := +New_And_Then_Expr
+                 (Left   => New_Call (Domain => EW_Pred,
+                                      Name   =>
+                                        MF_Floats (Ty).Is_Finite,
+                                      Args   => (1 => +Var)),
+                  Right  => +New_Range_Expr (Domain => EW_Pred,
+                                             Low    => +Fst,
+                                             High   => +Lst,
+                                             Expr   => +Var),
+                  Domain => EW_Pred);
+            end if;
          else
 
             --  Else, express the range constraints
@@ -608,7 +658,7 @@ package body Why.Gen.Scalars is
       elsif Is_Fixed_Point_Type (Ty) then
          return New_Fixed_Constant (Value => Expr_Value (N));
       elsif Is_Floating_Point_Type (Ty) then
-         return +Cast_Real_Litteral (N, Base_Why_Type (Ty));
+         return +Transform_Float_Literal (N, Base_Why_Type (Ty));
       else
          return New_Real_Constant (Value => Expr_Value_R (N));
       end if;

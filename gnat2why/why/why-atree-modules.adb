@@ -282,6 +282,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Dynamic_Floating_Point"));
+      Finite_Float_Literal :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Finite_Float_Literal"));
 
       Constr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,
@@ -1105,6 +1109,11 @@ package body Why.Atree.Modules is
                            Domain => EW_Term,
                            Symbol => NID ("floor"),
                            Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Is_Finite :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("is_finite"),
+                           Typ    => EW_Bool_Type);
          M_Floats (Fl).Power :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,

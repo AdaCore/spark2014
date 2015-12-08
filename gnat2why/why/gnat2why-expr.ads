@@ -322,6 +322,12 @@ package Gnat2Why.Expr is
    --  Transforms a list of statements and declarations into a Why expression.
    --  An empty list is transformed into the void expression.
 
+   function Transform_Float_Literal (E  : Entity_Id;
+                                     Ty : W_Type_Id) return W_Identifier_Id;
+   --  Generate a theory, clone of spark "Float_Literal" theory, that defines
+   --  a finite float literal and its projection(s). It is expected that the
+   --  literal's value is indeed finite (i.e. neither an infinity or a NaN).
+
    function Transform_Statement_Or_Declaration_In_List
      (Stmt_Or_Decl : Node_Id;
       Prev_Prog    : W_Prog_Id) return W_Prog_Id;

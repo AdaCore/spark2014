@@ -1605,34 +1605,13 @@ package body Why.Gen.Expr is
             end;
 
          --  2.2. If From is a modular type and To is neither a modular nor
-         --       float, insert a convertion to int since we only support
+         --       a float, insert a convertion to int since we only support
          --       Direct convertion from bitvector to int, float or another
          --       bitvector types.
 
          elsif Why_Type_Is_BitVector (Base_Why_Type (From))
            and then not Why_Type_Is_BitVector (Base_Why_Type (To))
            and then not Why_Type_Is_Float (Base_Why_Type (To))
-         then
-            Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
-                                                Domain   => Domain,
-                                                To       => EW_Int_Type,
-                                                Expr     => Result);
-            Cur := EW_Int_Type;
-
-         --  2.3. If To is a modular type and From is not, insert a convertion
-         --       to int since we only support direct convertion to bitvector
-         --       from int or other bitvector types. The case of From being
-         --       a fixed-point type is already treated in 2.1, so the
-         --       remaining cases here are floating-point types and signed
-         --       integer types. For both, the convertion to int is correctly
-         --       getting at the value on which to perform the range check
-         --       (obviously this includes rounding when From is a real type,
-         --       to the nearest integer and away from zero if exactly halfway
-         --       between two integers, see Ada RM 4.6(33)).
-
-         elsif Why_Type_Is_BitVector (Base_Why_Type (To))
-           and then not Why_Type_Is_BitVector (Base_Why_Type (From))
-           and then not Why_Type_Is_Float (Base_Why_Type (From))
          then
             Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                                 Domain   => Domain,

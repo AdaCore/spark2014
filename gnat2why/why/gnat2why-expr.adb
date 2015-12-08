@@ -25,6 +25,7 @@
 
 with Ada.Containers;         use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                 use Checks;
@@ -41,6 +42,7 @@ with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Opt;
+with Output;
 with Rtsfind;                use Rtsfind;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Disp;               use Sem_Disp;
@@ -10087,17 +10089,28 @@ package body Gnat2Why.Expr is
                   T := New_Real_Constant (Ada_Node => Expr,
                                           Value    => Realval (Expr));
                else
-                  T := +Cast_Real_Litteral
-                    (E  => Expr,
-                     Ty => (if Is_Single_Precision_Floating_Point_Type
-                            (Etype (Expr))
-                            then
-                               EW_Float_32_Type
-                            elsif Is_Double_Precision_Floating_Point_Type
-                              (Etype (Expr))
-                            then
-                               EW_Float_64_Type
-                            else raise Program_Error));
+                  T := +Transform_Float_Literal
+                    (Expr,
+                     (if Is_Single_Precision_Floating_Point_Type
+                          (Etype (Expr))
+                      then
+                         EW_Float_32_Type
+                      elsif Is_Double_Precision_Floating_Point_Type
+                        (Etype (Expr))
+                      then
+                         EW_Float_64_Type
+                      else raise Program_Error));
+--                      +Cast_Real_Literal
+--                      (E  => Expr,
+--                       Ty => (if Is_Single_Precision_Floating_Point_Type
+--                              (Etype (Expr))
+--                              then
+--                                 EW_Float_32_Type
+--                              elsif Is_Double_Precision_Floating_Point_Type
+--                                (Etype (Expr))
+--                              then
+--                                 EW_Float_64_Type
+--                              else raise Program_Error));
                end if;
             end if;
 
@@ -13598,6 +13611,182 @@ package body Gnat2Why.Expr is
          Why_Sections (Decl_File).Cur_Theory := Save_Theory;
       end if;
    end Transform_String_Literal;
+
+   -----------------------------
+   -- Transform_Float_Literal --
+   -----------------------------
+
+   package Finite_Float_Literal_Map is new Ada.Containers.Ordered_Maps
+     (Key_Type     => Ureal,
+      Element_Type => W_Identifier_Id,
+      "<"          => UR_Lt);
+
+   Float_Literals : Finite_Float_Literal_Map.Map;
+
+   function Transform_Float_Literal (E  : Entity_Id;
+                                     Ty : W_Type_Id) return W_Identifier_Id
+   is
+      procedure Declare_Literal_Theory (Literal_Id : out W_Identifier_Id);
+
+      procedure Declare_Literal_Theory (Literal_Id : out W_Identifier_Id)
+      is
+         function Real_Image (U : Ureal) return String;
+
+         function Real_Image (U : Ureal) return String is
+            Max_Length : constant := 20;
+            Result : String (1 .. Max_Length);
+            Last   : Natural := 0;
+
+            procedure Output_Result (S : String);
+            --  Callback to print value of U in string Result
+
+            -------------------
+            -- Output_Result --
+            -------------------
+
+            procedure Output_Result (S : String) is
+            begin
+               --  Last character is always ASCII.LF which should be ignored
+               pragma Assert (S (S'Last) = ASCII.LF);
+               Last := Integer'Min (Max_Length, S'Length - 1);
+               Result (1 .. Last) := S (S'First .. Last - S'First + 1);
+            end Output_Result;
+
+         begin
+            Output.Set_Special_Output (Output_Result'Unrestricted_Access);
+            UR_Write (U);
+            Output.Write_Eol;
+            Output.Cancel_Special_Output;
+            return Result (1 .. Last);
+         end Real_Image;
+
+         Decl_File : Why_Section renames Why_Sections (WF_Float_Literals);
+
+         Bv_Typ : constant W_Type_Id := (if Ty = EW_Float_32_Type
+                                         then EW_BitVector_32_Type
+                                         else EW_BitVector_64_Type);
+
+         Module : constant W_Module_Id :=
+           New_Module (File => No_Name,
+                       Name => NID (New_Temp_Identifier
+                         (Base_Name => "finite_float_literal")));
+
+         Bin_Rep_Id : constant W_Identifier_Id :=
+           New_Identifier (Name => "binary_rep");
+
+         Dec_Rep_Id : constant W_Identifier_Id :=
+           New_Identifier (Name => "decimal_rep");
+
+         Subst : W_Clone_Substitution_Array (1 .. 7);
+
+      begin
+         Literal_Id := New_Identifier (Domain => EW_Term,
+                                       Symbol => NID ("l"),
+                                       Typ    => Ty,
+                                       Module => Module);
+
+         --  Start with opening the theory to define, as the creation of a
+         --  function for the logic term needs the current theory to insert an
+         --  include declaration.
+
+         Open_Theory (Decl_File, Module,
+                      Comment =>
+                        "Module for defining the literal "
+                      & """" & Real_Image (Realval (E))
+                      & """"
+                      & (if Sloc (E) > 0 then
+                           " defined at " & Build_Location_String (Sloc (E))
+                        else "")
+                      & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+         Subst (1) := New_Clone_Substitution
+           (Kind      => EW_Type_Subst,
+            Orig_Name => New_Name (Symbol => NID ("t")),
+            Image     => Get_Name (Ty));
+
+         Subst (2) := New_Clone_Substitution
+           (Kind      => EW_Type_Subst,
+            Orig_Name => New_Name (Symbol => NID ("bv")),
+            Image     => Get_Name (Bv_Typ));
+
+         Subst (3) := New_Clone_Substitution
+           (Kind      => EW_Function,
+            Orig_Name => New_Name (Symbol => NID ("from_bv")),
+            Image     => New_Name (Symbol => NID ("from_bv"),
+                                   Module => MF_Floats (Ty).Module));
+
+         Subst (4) := New_Clone_Substitution
+           (Kind      => EW_Function,
+            Orig_Name => New_Name (Symbol => NID ("to_real")),
+            Image     => New_Name (Symbol => NID ("to_real"),
+                                   Module => MF_Floats (Ty).Module));
+
+         Subst (5) := New_Clone_Substitution
+           (Kind      => EW_Predicate,
+            Orig_Name => New_Name (Symbol => NID ("is_finite")),
+            Image     => Get_Name (MF_Floats (Ty).Is_Finite));
+
+         Emit (Decl_File.Cur_Theory,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain  => EW_Term,
+                  Name    => Bin_Rep_Id,
+                  Binders => (1 .. 0 => <>),
+                  Return_Type => Bv_Typ,
+                  Labels  => Name_Id_Sets.Empty_Set,
+                  Def     => W_Expr_Id (Cast_Real_Literal (E  => E,
+                                                           Ty => Ty))));
+
+         Subst (6) := New_Clone_Substitution
+           (Kind      => EW_Function,
+            Orig_Name => Get_Name (Bin_Rep_Id),
+            Image     => Get_Name (Bin_Rep_Id));
+
+         Emit (Decl_File.Cur_Theory,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain  => EW_Term,
+                  Name    => Dec_Rep_Id,
+                  Labels  => Name_Id_Sets.Empty_Set,
+                  Binders => (1 .. 0 => <>),
+                  Def     => New_Real_Constant (Ada_Node => E,
+                                                Value    => Realval (E)),
+                  Return_Type => EW_Real_Type));
+
+         Subst (7) := New_Clone_Substitution
+           (Kind      => EW_Function,
+            Orig_Name => Get_Name (Dec_Rep_Id),
+            Image     => Get_Name (Dec_Rep_Id));
+
+         --  clone the appropriate module
+
+         Emit (Decl_File.Cur_Theory,
+               New_Clone_Declaration (Theory_Kind   => EW_Theory,
+                                      Clone_Kind    => EW_Export,
+                                      As_Name       => No_Name,
+                                      Origin        => Finite_Float_Literal,
+                                      Substitutions => Subst));
+
+         Close_Theory (Decl_File,
+                       Kind => Definition_Theory,
+                       Defined_Entity => E);
+      end Declare_Literal_Theory;
+
+      Literal_Id : W_Identifier_Id;
+
+      C : constant Finite_Float_Literal_Map.Cursor :=
+        Float_Literals.Find (Key => Realval (E));
+   begin
+
+      if Finite_Float_Literal_Map.Has_Element (C) then
+         Literal_Id := Finite_Float_Literal_Map.Element (C);
+      else
+         Declare_Literal_Theory (Literal_Id);
+
+         Float_Literals.Insert (Key      => Realval (E),
+                                New_Item => Literal_Id);
+      end if;
+
+      return Literal_Id;
+   end Transform_Float_Literal;
 
    -------------------------------
    -- Variables_In_Default_Init --

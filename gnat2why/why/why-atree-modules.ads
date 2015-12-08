@@ -88,6 +88,7 @@ package Why.Atree.Modules is
    Static_Float32         : W_Module_Id;
    Static_Float64         : W_Module_Id;
    Dynamic_Float          : W_Module_Id;
+   Finite_Float_Literal          : W_Module_Id;
 
    Constr_Arrays                : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays              : W_Module_Array (1 .. Max_Array_Dimensions);
@@ -162,6 +163,7 @@ package Why.Atree.Modules is
       Abs_Float    : W_Identifier_Id;
       Ceil         : W_Identifier_Id;
       Floor        : W_Identifier_Id;
+      Is_Finite    : W_Identifier_Id;
       Power        : W_Identifier_Id;
       Rounding     : W_Identifier_Id;
       Of_Int       : W_Identifier_Id;
