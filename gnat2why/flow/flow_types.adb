@@ -890,14 +890,17 @@ package body Flow_Types is
       ------------------------
 
       function Get_Unmangled_Name (N : Node_Id) return String is
+         Nam : Node_Id := N;
       begin
          if Nkind (N) in N_Entity then
             if Is_Subprogram (N) then
                if Present (Overridden_Operation (N)) then
-                  return Get_Unmangled_Name (Overridden_Operation (N));
-               elsif Present (Homonym (N)) then
-                  return Get_Unmangled_Name (Homonym (N));
+                  Nam := Overridden_Operation (N);
                end if;
+
+               while Present (Homonym (Nam)) loop
+                  Nam := Homonym (Nam);
+               end loop;
 
             elsif Ekind (N) = E_Task_Type then
                declare
@@ -906,14 +909,14 @@ package body Flow_Types is
                   --  i.e. without the "tk" suffix added by expansion.
                begin
                   if Present (Task_Object) then
-                     return Get_Unmangled_Name (Task_Object);
+                     Nam := Task_Object;
                   end if;
                end;
             end if;
          end if;
 
-         Get_Name_String (Chars (N));
-         Adjust_Name_Case (Sloc (N));
+         Get_Name_String (Chars (Nam));
+         Adjust_Name_Case (Sloc (Nam));
          return Name_Buffer (1 .. Name_Len);
       end Get_Unmangled_Name;
 
