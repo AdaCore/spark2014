@@ -604,7 +604,7 @@ package body SPARK_Util is
 
       --  should not reach this - we should be in the scope of a protected type
 
-      pragma Assert (False);
+      raise Program_Error;
 
    end Containing_Protected_Type;
 
