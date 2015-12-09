@@ -806,7 +806,7 @@ Tool Limitations
 #. Classwide Global and Depends contracts as defined in SPARK RM 6.1.6 are not
    supported.
 
-#. Task attribute Identity is not supported.
+#. Task attributes Identity and Storage_Size are not supported.
 
 Legality Rules
 --------------

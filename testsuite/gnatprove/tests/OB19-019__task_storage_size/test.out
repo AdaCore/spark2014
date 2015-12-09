@@ -1,2 +1,13 @@
-ss.ads:5:38: attribute "STORAGE_SIZE" is not permitted in SPARK
+aspect.adb:7:20: info: initialization of "X" proved
+aspect.ads:3:14: info: nontermination of task proved
+prag.adb:7:20: info: initialization of "X" proved
+prag.ads:3:14: info: nontermination of task proved
+rep.adb:7:20: info: initialization of "X" proved
+rep.ads:3:14: info: nontermination of task proved
+ss_default.ads:5:38: attribute "STORAGE_SIZE" is not permitted in SPARK
+ss_default.ads:7:22: attribute "STORAGE_SIZE" is not permitted in SPARK
+ss_defined.ads:7:23: attribute "Storage_Size" is not permitted in SPARK
+ss_defined.ads:7:42: attribute "Storage_Size" is not permitted in SPARK
+unsupported.adb:3:09: access type is not allowed in SPARK
+unsupported.adb:3:09: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

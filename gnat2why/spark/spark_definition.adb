@@ -1967,7 +1967,6 @@ package body SPARK_Definition is
            Attribute_Scale             |
            Attribute_Scaling           |
            Attribute_Small             |
-           Attribute_Storage_Size      |
            Attribute_Succ              |
            Attribute_Terminated        |
            Attribute_Truncation        |
