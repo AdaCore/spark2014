@@ -4658,8 +4658,8 @@ package body SPARK_Definition is
 
    procedure Mark_Subprogram_Body (N : Node_Id) is
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
-      E   : constant Entity_Id := Unique_Defining_Entity (N);
-      HSS : constant Node_Id   := Handled_Statement_Sequence (N);
+      Def_E             : constant Entity_Id := Defining_Entity (N);
+      E                 : constant Entity_Id := Unique_Entity (Def_E);
 
    begin
       --  Ignore bodies defined in the standard library, unless the main unit
@@ -4690,7 +4690,7 @@ package body SPARK_Definition is
       else
          --  For entries and task bodies reuse the value of SPARK_Pragma from
          --  the context; workaround for O506-007.
-         Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
+         Current_SPARK_Pragma := SPARK_Pragma (Def_E);
 
          --  Only analyze subprogram body declarations in SPARK_Mode => On
 
@@ -4801,7 +4801,7 @@ package body SPARK_Definition is
             --  Detect violations in the body itself
 
             Mark_Stmt_Or_Decl_List (Declarations (N));
-            Mark (HSS);
+            Mark (Handled_Statement_Sequence (N));
 
             --  For the special case of an expression function, the frontend
             --  generates a distinct body if not already in source code. Use as
@@ -4814,7 +4814,7 @@ package body SPARK_Definition is
             if Ekind (E) = E_Function
               and then Present (Get_Expression_Function (E))
             then
-               Entity_List.Append (Defining_Entity (N));
+               Entity_List.Append (Def_E);
             end if;
 
             if not Violation_Detected then
