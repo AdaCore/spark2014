@@ -31,6 +31,7 @@ with Sem_Aux;                            use Sem_Aux;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Eval;                           use Sem_Eval;
 with Sem_Prag;                           use Sem_Prag;
+with Sem_Type;                           use Sem_Type;
 with Sem_Util;                           use Sem_Util;
 with Sinfo;                              use Sinfo;
 with Snames;                             use Snames;
@@ -353,15 +354,15 @@ package body Flow.Control_Flow_Graph is
      (FA    : in out Flow_Analysis_Graphs;
       Froms : Vertex_Sets.Set;
       To    : Flow_Graphs.Vertex_Id)
-      with Pre => To /= Flow_Graphs.Null_Vertex;
+   with Pre => To /= Flow_Graphs.Null_Vertex;
    --  Link all vertices in Froms to the To vertex in the given graph.
 
    procedure Linkup
      (FA    : in out Flow_Analysis_Graphs;
       From  : Flow_Graphs.Vertex_Id;
       To    : Flow_Graphs.Vertex_Id)
-      with Pre => From /= Flow_Graphs.Null_Vertex and then
-                  To   /= Flow_Graphs.Null_Vertex;
+   with Pre => From /= Flow_Graphs.Null_Vertex and then
+               To   /= Flow_Graphs.Null_Vertex;
    --  Link the From to the To vertex in the given graph.
 
    procedure Join
@@ -428,7 +429,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) = N_Assignment_Statement;
+   with Pre => Nkind (N) = N_Assignment_Statement;
    --  Process assignment statements. Pretty obvious stuff.
 
    procedure Do_Call_Statement
@@ -523,7 +524,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) = N_Exit_Statement;
+   with Pre => Nkind (N) = N_Exit_Statement;
    --  Deal with loop exit statements. We do this by actually finding
    --  the loop we are associated with and changing the connection map
    --  of that loop and not just our own. This procedure is somewhat
@@ -535,7 +536,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) = N_Extended_Return_Statement;
+   with Pre => Nkind (N) = N_Extended_Return_Statement;
    --  The CFG that we generate for extended return statements looks
    --  like the following:
    --
@@ -565,7 +566,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) = N_Handled_Sequence_Of_Statements;
+   with Pre => Nkind (N) = N_Handled_Sequence_Of_Statements;
    --  Simply calls Process_Statement_List.
 
    procedure Do_If_Statement
@@ -573,7 +574,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) = N_If_Statement;
+   with Pre => Nkind (N) = N_If_Statement;
    --  Deals with if statements. We generate a CFG which looks like
    --  this:
    --
@@ -596,9 +597,9 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre  => Nkind (N) = N_Loop_Statement and then
-                   Present (Identifier (N)),
-           Post => Ctx.Current_Loops.Length = Ctx.Current_Loops'Old.Length;
+   with Pre  => Nkind (N) = N_Loop_Statement and then
+                Present (Identifier (N)),
+        Post => Ctx.Current_Loops.Length = Ctx.Current_Loops'Old.Length;
    --  Deals with all three kinds of loops SPARK supports:
    --
    --     * for loops
@@ -616,11 +617,11 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) in N_Null_Statement
-                             | N_Raise_Statement
-                             | N_Raise_xxx_Error
-                             | N_Exception_Declaration
-                             | N_Exception_Renaming_Declaration;
+   with Pre => Nkind (N) in N_Null_Statement
+                          | N_Raise_Statement
+                          | N_Raise_xxx_Error
+                          | N_Exception_Declaration
+                          | N_Exception_Renaming_Declaration;
    --  Deals with null and raise statements. We create a new vertex that has
    --  control flow in from the top and leave from the bottom (nothing happens
    --  in between). Exception declarations are treated like null statements.
@@ -630,7 +631,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-     with Pre => Nkind (N) = N_Object_Declaration;
+   with Pre => Nkind (N) = N_Object_Declaration;
    --  Deal with declarations (with an optional initialization). We
    --  either generate a null vertex which is then stripped from the
    --  graph or a simple defining vertex. Additionally, if the
@@ -644,7 +645,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) in N_Package_Body | N_Package_Body_Stub;
+   with Pre => Nkind (N) in N_Package_Body | N_Package_Body_Stub;
    --  When we find a nested package body, we bring its initializes clause
    --  to bear.
    --
@@ -698,7 +699,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) = N_Package_Declaration;
+   with Pre => Nkind (N) = N_Package_Declaration;
    --  When we find a nested package, we add 'initial and 'final
    --  vertices for all variables and state_abstractions it
    --  introduces.
@@ -739,7 +740,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-      with Pre => Nkind (N) = N_Pragma;
+   with Pre => Nkind (N) = N_Pragma;
    --  Deals with pragmas. We only check for uninitialized variables. We
    --  do not check for ineffective statements since all pragmas ought to
    --  be ineffective by definition.
@@ -1194,8 +1195,13 @@ package body Flow.Control_Flow_Graph is
          FA.All_Vars.Include (F);
       end Process;
 
+   --  Start of processing for Create_Initial_And_Final_Vertices
+
    begin
-      if Ekind (E) = E_Constant and not FA.Local_Constants.Contains (E) then
+      if not In_Generic_Actual (E)
+        and then (Ekind (E) = E_Constant
+                    and then not FA.Local_Constants.Contains (E))
+      then
          --  We ignore non-local constants (for now).
          return;
       end if;
@@ -1230,7 +1236,16 @@ package body Flow.Control_Flow_Graph is
                                    Quantified_Variable_Kind |
                                    Variable_Kind);
             if Kind = Parameter_Kind then
-               if Ekind (FA.Analyzed_Entity) = E_Function then
+               if In_Generic_Actual (E) then
+                  case Nkind (Parent (E)) is
+                     when N_Object_Declaration          =>
+                        M := Mode_In;
+                     when N_Object_Renaming_Declaration =>
+                        M := Mode_In_Out;
+                     when others                        =>
+                        raise Why.Unexpected_Node;
+                  end case;
+               elsif Ekind (FA.Analyzed_Entity) = E_Function then
                   M := Mode_In;
                else
                   M := Mode_In_Out;
@@ -3187,15 +3202,14 @@ package body Flow.Control_Flow_Graph is
       --  We are dealing with a local constant. These constants are *not*
       --  ignored.
       if Is_Constant then
-         if Present (Expression (N))
-           or else Is_Imported (Defining_Identifier (N))
+         if not In_Generic_Actual (Defining_Identifier (N))
+           and then (Present (Expression (N))
+                       or else Is_Imported (Defining_Identifier (N)))
          then
             FA.Local_Constants.Include (Defining_Identifier (N));
+
          else
-            --  This is a deferred constant. We ignore it - we will deal
-            --  with it once we get to the actual constant.
-            --
-            --  ??? What should we do if the private part is not in SPARK?
+            --  This is a deferred constant or a generic actual. We ignore it.
             Add_Vertex (FA,
                         Direct_Mapping_Id (N),
                         Null_Node_Attributes,
@@ -3222,8 +3236,8 @@ package body Flow.Control_Flow_Graph is
                                          FA);
 
       if No (Expression (N)) then
-         --  No initializing expression, so we fall back to the
-         --  default initialization (if any).
+         --  We have no initializing expression so we fall back to the default
+         --  initialization (if any).
          FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
 
          for F of FS loop
@@ -3549,16 +3563,19 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
+      Spec_E      : constant Entity_Id :=
+        Defining_Unit_Name (Specification (N));
+
       AS_Pragma   : constant Node_Id :=
-        Get_Pragma (Defining_Unit_Name (Specification (N)),
+        Get_Pragma (Spec_E,
                     Pragma_Abstract_State);
 
       Init_Pragma : constant Node_Id :=
-        Get_Pragma (Defining_Unit_Name (Specification (N)),
+        Get_Pragma (Spec_E,
                     Pragma_Initializes);
    begin
 
-      --  Introduce variables from the abstract state of the nested
+      --  Introduce variables from the Abstract_State aspect of the nested
       --  package.
 
       if Present (AS_Pragma) then
@@ -3567,56 +3584,57 @@ package body Flow.Control_Flow_Graph is
             AS  : Node_Id;
          begin
             PAA := First (Pragma_Argument_Associations (AS_Pragma));
-            AS := First (Expressions (Expression (PAA)));
-            while Present (AS) loop
-               --  Creating 'Initial and 'Final vertices for every
-               --  state abstraction and setting Is_Export to True
-               --  if the corresponding entity is initialized.
-               declare
-                  New_E : constant Entity_Id :=
-                    (if Nkind (AS) = N_Extension_Aggregate then
-                       Entity (Ancestor_Part (AS))
-                     else
-                       Entity (AS));
 
-                  Final_F_Id : constant Flow_Id :=
-                    Change_Variant (Direct_Mapping_Id (New_E),
-                                    Final_Value);
+            if Nkind (Expression (PAA)) /= N_Null then
+               AS := First (Expressions (Expression (PAA)));
+               while Present (AS) loop
+                  --  Creating 'Initial and 'Final vertices for every
+                  --  state abstraction and setting Is_Export to True
+                  --  if the corresponding entity is initialized.
+                  declare
+                     New_E      : constant Entity_Id :=
+                       (if Nkind (AS) = N_Extension_Aggregate then
+                           Entity (Ancestor_Part (AS))
+                        else
+                           Entity (AS));
 
-                  Final_V_Id : Flow_Graphs.Vertex_Id :=
-                    FA.CFG.Get_Vertex (Final_F_Id);
-               begin
-                  --  Both the Refined_State aspect of the
-                  --  Analyzed_Entity and the Abstract_State aspect of
-                  --  the nested packages add vertices for state
-                  --  abstractions so we have to be careful not to
-                  --  add something that already exists.
-                  if Final_V_Id = Flow_Graphs.Null_Vertex then
+                     Final_F_Id : constant Flow_Id :=
+                       Change_Variant (Direct_Mapping_Id (New_E),
+                                       Final_Value);
 
-                     Create_Initial_And_Final_Vertices
-                       (New_E, Variable_Kind, FA);
+                     Final_V_Id : Flow_Graphs.Vertex_Id :=
+                       FA.CFG.Get_Vertex (Final_F_Id);
+                  begin
+                     --  Both the Refined_State aspect of the Analyzed_Entity
+                     --  and the Abstract_State aspect of the nested packages
+                     --  add vertices for state abstractions so we have to be
+                     --  careful not to add something that already exists.
+                     if Final_V_Id = Flow_Graphs.Null_Vertex then
+                        Create_Initial_And_Final_Vertices
+                          (New_E, Variable_Kind, FA);
 
-                     Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
+                        Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
 
-                     if Ekind (FA.Analyzed_Entity) in E_Package |
-                                                      E_Package_Body
-                     then
-                        declare
-                           Final_Atr  : V_Attributes := FA.Atr (Final_V_Id);
-                        begin
-                           Final_Atr.Is_Export := Final_Atr.Is_Export
-                             or else Is_Initialized_At_Elaboration
-                                       (New_E,
-                                        FA.B_Scope);
+                        if Ekind (FA.Analyzed_Entity) in E_Package |
+                                                         E_Package_Body
+                        then
+                           declare
+                              Final_Atr  : V_Attributes := FA.Atr (Final_V_Id);
+                           begin
+                              Final_Atr.Is_Export := Final_Atr.Is_Export
+                                or else Is_Initialized_At_Elaboration
+                                          (New_E,
+                                           FA.B_Scope);
 
-                           FA.Atr (Final_V_Id) := Final_Atr;
-                        end;
+                              FA.Atr (Final_V_Id) := Final_Atr;
+                           end;
+                        end if;
                      end if;
-                  end if;
-               end;
+                  end;
 
-               Next (AS);
-            end loop;
+                  Next (AS);
+               end loop;
+            end if;
          end;
       end if;
 
@@ -5934,10 +5952,10 @@ package body Flow.Control_Flow_Graph is
                end if;
             end;
 
-            if Is_Generic_Instance (FA.Analyzed_Entity) then
+            if Is_Generic_Instance (FA.Spec_Entity) then
                declare
                   Instance    : constant Node_Id :=
-                   Get_Package_Instantiation_Node (FA.Spec_Entity);
+                    Get_Package_Instantiation_Node (FA.Spec_Entity);
                   Association : Node_Id;
                   Parameter   : Node_Id;
                begin
@@ -5950,16 +5968,26 @@ package body Flow.Control_Flow_Graph is
                      Parameter := Explicit_Generic_Actual_Parameter
                                     (Association);
 
-                     if Nkind (Parameter) = N_Identifier
-                       and then Ekind (Entity (Parameter)) in
-                             E_Constant | E_Variable
-                     then
-                        Create_Initial_And_Final_Vertices
-                          (Direct_Mapping_Id (Entity (Parameter)),
-                           Mode_In,
-                           False,
-                           FA);
-                     end if;
+                     case Nkind (Parent (Parameter)) is
+                        when N_Object_Declaration          =>
+                           Create_Initial_And_Final_Vertices
+                             (Direct_Mapping_Id
+                                (Defining_Identifier (Parent (Parameter))),
+                              Mode_In,
+                              False,
+                              FA);
+
+                        when N_Object_Renaming_Declaration =>
+                           Create_Initial_And_Final_Vertices
+                             (Direct_Mapping_Id
+                                (Defining_Identifier (Parent (Parameter))),
+                              Mode_In_Out,
+                              False,
+                              FA);
+
+                        when others                        =>
+                           null;
+                     end case;
 
                      Next (Association);
                   end loop;
@@ -6080,9 +6108,8 @@ package body Flow.Control_Flow_Graph is
             --  are only allowed to initialize their own state.
             declare
                Global_Ins : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-               --  We need to make sure to only add each global once
-               --  (an entity might be used to derive more than one of
-               --  our states).
+               --  We need to make sure to only add each global once (an entity
+               --  might be used to derive more than one of our states).
 
                The_Out : Flow_Id;
                The_In  : Flow_Id_Sets.Set;
@@ -6096,7 +6123,15 @@ package body Flow.Control_Flow_Graph is
                   The_In  := Dependency_Maps.Element (C);
 
                   for G of The_In loop
-                     if not Global_Ins.Contains (G) then
+                     if not Global_Ins.Contains (G)
+                       and then (G.Kind in Direct_Mapping | Record_Field
+                                   and then not In_Generic_Actual
+                                                  (Get_Direct_Mapping_Id (G)))
+                     then
+                        --  We have already introduced initial and final
+                        --  vertices for formals of generics so these have to
+                        --  also be excluded.
+
                         Global_Ins.Include (G);
                         Create_Initial_And_Final_Vertices
                           (F             => G,

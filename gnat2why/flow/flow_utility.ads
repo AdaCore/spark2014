@@ -70,6 +70,21 @@ is
                  Ekind (E) in E_Component | E_Discriminant;
    --  Compute a suitable hash for the given record component.
 
+   function Filter_Out_Constants
+     (FS : Flow_Id_Sets.Set;
+      NS : Node_Sets.Set := Node_Sets.Empty_Set;
+      GF : Boolean       := False)
+      return Flow_Id_Sets.Set;
+   --  Removes from FS all constants (without variable input) that are not
+   --  contained in NS.
+   --  @param FS is the initial Flow_Ids set
+   --  @param NS is the Nodes set based on which filtering will occur
+   --  @param GF is True when we only want to remove generic formals without
+   --    variable input
+   --  @return a subset of S so that all Flow_Ids that do not correspond to
+   --    constants that Has_Variable_Input or constants that are not
+   --    contained in C have been removed.
+
    function Same_Component (C1, C2 : Entity_Id) return Boolean
    with Pre => Is_Initialized and then
                Nkind (C1) in N_Entity and then
@@ -327,9 +342,8 @@ is
    --
    --  For tagged types T we just return all components as usual. For
    --  classwide types we also return T'Extension and T'Tag.
-   --  @param F is the Flow_Id who's parts we need to gather
-   --  @param Scope is the scope relative to which we will return the
-   --    parts
+   --  @param F is the Flow_Id whose parts we need to gather
+   --  @param Scope is the scope relative to which we will return the parts
    --  @return all parts of F that are visible from Scope.
 
    function Flatten_Variable

@@ -26,6 +26,7 @@ with Nlists;           use Nlists;
 with Opt;              use Opt;
 with Sem_Aux;          use Sem_Aux;
 with Sem_Prag;         use Sem_Prag;
+with Sem_Type;         use Sem_Type;
 with Sem_Util;         use Sem_Util;
 with Sinfo;            use Sinfo;
 with Snames;           use Snames;
@@ -603,10 +604,16 @@ package body Flow.Slice is
                   declare
                      E : constant Entity_Id := Defining_Entity (N);
                   begin
-                     if Hidden_In_Package (E) then
-                        --  We do not want to process object declarations that
-                        --  occur in the private part of nested packages that
-                        --  have an Initializes aspect.
+                     if Hidden_In_Package (E)
+                       or else In_Generic_Actual (E)
+                     then
+                        --  We do not want to process:
+                        --
+                        --   * formals of nested instantiations,
+                        --
+                        --   * object declarations that occur in the private
+                        --     part of nested packages that have an Initializes
+                        --     aspect.
                         return Skip;
                      else
                         if Ekind (E) /= E_Constant then
@@ -653,7 +660,7 @@ package body Flow.Slice is
 
                when N_Package_Declaration =>
                   --  State abstractions of nested packages appear as local
-                  --  variables
+                  --  variables.
                   declare
                      AS_Pragma : constant Node_Id :=
                        Get_Pragma (Defining_Entity (N),
@@ -801,8 +808,7 @@ package body Flow.Slice is
                   AS_E      : Entity_Id;
                begin
                   if Present (AS_Pragma) then
-                     PAA :=
-                       First (Pragma_Argument_Associations (AS_Pragma));
+                     PAA := First (Pragma_Argument_Associations (AS_Pragma));
 
                      --  Check that we don't have Abstract_State => null
                      if Nkind (Expression (PAA)) /= N_Null then
@@ -872,7 +878,7 @@ package body Flow.Slice is
 
             Guilty := False;  --  Innocent till found guilty
 
-            FS := Flatten_Variable (Direct_Mapping_Id (LV), FA.B_Scope);
+            FS := Flatten_Variable (LV, FA.B_Scope);
 
             for Comp of FS loop
                V_Initial := FA.PDG.Get_Vertex

@@ -1,0 +1,18 @@
+gen.ads:6:04: info: initialization of "Y" proved, in instantiation at main.adb:7
+gen.ads:6:04: info: initialization of "Y" proved, in instantiation at main.adb:8
+gen.ads:13:32: info: initialization of "Y" proved, in instantiation at main.adb:7
+gen.ads:13:32: info: initialization of "Y" proved, in instantiation at main.adb:8
+gen.ads:14:21: info: initialization of "Y" proved, in instantiation at main.adb:7
+gen.ads:14:21: info: initialization of "Y" proved, in instantiation at main.adb:8
+gen.ads:14:23: info: postcondition proved, in instantiation at main.adb:7
+gen.ads:14:23: info: postcondition proved, in instantiation at main.adb:8
+gen2.ads:5:27: info: initialization of "Var" proved, in instantiation at main.adb:9
+gen2.ads:6:18: info: postcondition proved, in instantiation at main.adb:9
+main.adb:4:11: warning: subprogram "Main" has no effect
+main.adb:9:31: info: initialization of "Var" proved
+main.adb:11:04: info: assertion proved
+main.adb:12:04: info: assertion proved
+main.adb:15:04: info: assertion proved
+main.adb:15:19: info: initialization of "Var" proved
+main.adb:16:04: info: assertion proved
+main.adb:16:24: info: initialization of "Var" proved

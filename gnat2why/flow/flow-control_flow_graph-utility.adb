@@ -22,6 +22,7 @@
 ------------------------------------------------------------------------------
 
 with Flow_Utility; use Flow_Utility;
+with Sem_Type;     use Sem_Type;
 with Sinfo;        use Sinfo;
 with Why;
 
@@ -540,7 +541,8 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Is_Initialized := Ekind (Entire_Var) in E_In_Out_Parameter |
                                                       E_In_Parameter     |
                                                       E_Loop_Parameter
-              or else A.Mode in Initialized_Global_Modes;
+              or else A.Mode in Initialized_Global_Modes
+              or else In_Generic_Actual (Entire_Var);
 
             --  Is_Import is True for:
             --    * formal "in" and "in out" parameters
@@ -554,7 +556,8 @@ package body Flow.Control_Flow_Graph.Utility is
                         Concurrent_Kind
               or else (Is_Concurrent_Comp_Or_Disc (F_Ent)
                          and then (Belongs_To_Protected_Object (F_Ent)
-                                     or else Is_Default_Initialized (F_Ent)));
+                                     or else Is_Default_Initialized (F_Ent)))
+              or else In_Generic_Actual (Entire_Var);
 
             if Is_Discriminant (F_Ent)
               or else Is_Bound (F_Ent)

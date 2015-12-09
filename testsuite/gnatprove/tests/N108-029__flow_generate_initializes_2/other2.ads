@@ -1,4 +1,6 @@
-package Other2 is
+package Other2
+  with Abstract_State => State
+is
    Visible_Var : Integer := 0;
 
    function Get_Private return Integer;
@@ -6,5 +8,6 @@ package Other2 is
    function Get_Hidden return Integer;
 
 private
-   Priv_Var : Integer;
+   Priv_Var : Integer
+     with Part_Of => state;
 end Other2;

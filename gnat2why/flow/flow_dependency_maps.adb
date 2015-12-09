@@ -25,6 +25,7 @@ with Common_Containers;      use Common_Containers;
 with Einfo;                  use Einfo;
 with Elists;                 use Elists;
 with Flow_Generated_Globals; use Flow_Generated_Globals;
+with Flow_Utility;           use Flow_Utility;
 with Nlists;                 use Nlists;
 with Sem_Util;               use Sem_Util;
 with Treepr;                 use Treepr;
@@ -34,17 +35,18 @@ package body Flow_Dependency_Maps is
 
    use Dependency_Maps;
 
-   function Parse_Raw_Dependency_Map (N : Node_Id)
-                                      return Dependency_Maps.Map
+   function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
    with Pre => Nkind (N) = N_Pragma and then
                Get_Pragma_Id (Chars (Pragma_Identifier (N))) in
                  Pragma_Depends         |
                  Pragma_Refined_Depends |
                  Pragma_Refined_State   |
                  Pragma_Initializes;
-   --  Helper function to parse something that looks like a dependency
-   --  map; in particular we can parse either a depends or an
-   --  initializes aspect.
+   --  Helper function to parse something that looks like a dependency map; in
+   --  particular we can parse either a depends or an initializes aspect.
+   --
+   --  Generic formals without variable input are excluded from the returned
+   --  map.
 
    ------------------------------
    -- Parse_Raw_Dependency_Map --
@@ -101,10 +103,7 @@ package body Flow_Dependency_Maps is
       Row := First (Expressions (Expression (PAA)));
       while Present (Row) loop
          declare
-            E : constant Entity_Id :=
-              (if Present (Original_Node (Row))
-               then Entity (Original_Node (Row))
-               else Entity (Row));
+            E : constant Entity_Id := Entity (Original_Node (Row));
          begin
             M.Include (Direct_Mapping_Id (Unique_Entity (E)),
                        Flow_Id_Sets.Empty_Set);
@@ -153,7 +152,7 @@ package body Flow_Dependency_Maps is
             when N_Numeric_Or_String_Literal =>
                --  We should only ever get here if we are dealing with
                --  a rewritten constant.
-               pragma Assert (Present (Original_Node (LHS)));
+               pragma Assert (LHS /= Original_Node (LHS));
 
                --  We process the entity of the Original_Node instead
                Outputs.Include
@@ -175,9 +174,7 @@ package body Flow_Dependency_Maps is
                   if Nkind (RHS) in N_Numeric_Or_String_Literal then
                      --  We should only ever get here if we are
                      --  dealing with a rewritten constant.
-                     pragma Assert
-                       (Present (Original_Node (RHS))
-                          and then Present (Entity (Original_Node (RHS))));
+                     pragma Assert (RHS /= Original_Node (RHS));
                      Inputs.Include
                        (Direct_Mapping_Id
                           (Unique_Entity (Entity (Original_Node (RHS)))));
@@ -197,7 +194,7 @@ package body Flow_Dependency_Maps is
             when N_Numeric_Or_String_Literal =>
                --  We should only ever get here if we are dealing with
                --  a rewritten constant.
-               pragma Assert (Present (Original_Node (RHS)));
+               pragma Assert (RHS /= Original_Node (RHS));
 
                --  We process the entity of the Original_Node instead
                Inputs.Include
@@ -208,6 +205,12 @@ package body Flow_Dependency_Maps is
                Print_Node_Subtree (RHS);
                raise Why.Unexpected_Node;
          end case;
+
+         --  Filter out generic formals without variable output
+
+         Inputs := Filter_Out_Constants (Inputs,
+                                         Node_Sets.Empty_Set,
+                                         True);
 
          --  Assemble map
 
@@ -229,8 +232,6 @@ package body Flow_Dependency_Maps is
 
          Row := Next (Row);
       end loop;
-
-      --  Print_Dependency_Map (M);
 
       return M;
    end Parse_Raw_Dependency_Map;

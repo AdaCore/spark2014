@@ -1,4 +1,6 @@
-package body Other2 is
+package body Other2
+  with Refined_State => (State => (Priv_Var, Hidden_Var))
+is
    Hidden_Var : Integer;  --  not initialized
 
    function Get_Private return Integer is (Priv_Var);

@@ -23,6 +23,7 @@
 
 with Aspects;    use Aspects;
 with Nlists;     use Nlists;
+with Sem_Type;   use Sem_Type;
 with SPARK_Util; use SPARK_Util;
 with Why;
 
@@ -187,9 +188,14 @@ package body Flow_Utility.Initialization is
       case F.Kind is
          when Direct_Mapping =>
             return Is_Imported (Get_Direct_Mapping_Id (F))
+              or else In_Generic_Actual (Get_Direct_Mapping_Id (F))
               or else Call_Default_Initialization;
 
          when Record_Field =>
+            if In_Generic_Actual (Get_Direct_Mapping_Id (F)) then
+               return True;
+            end if;
+
             if Is_Discriminant (F) then
                return Present (Discriminant_Default_Value
                                  (F.Component.Last_Element));

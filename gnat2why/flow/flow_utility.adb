@@ -38,6 +38,7 @@ with Nlists;                     use Nlists;
 with Output;                     use Output;
 with Sem_Aux;                    use Sem_Aux;
 with Sem_Eval;                   use Sem_Eval;
+with Sem_Type;                   use Sem_Type;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
@@ -113,19 +114,6 @@ package body Flow_Utility is
      (Element_Type        => Entity_Id,
       Hash                => Component_Hash,
       Equivalent_Elements => Same_Component);
-
-   function Filter_Out_Constants
-     (S : Flow_Id_Sets.Set;
-      C : Node_Sets.Set)
-      return Flow_Id_Sets.Set;
-   --  Remove from set S all Flow_Ids that do not correspond to
-   --  constants that have Has_Variable_Input and are not
-   --  contained in C.
-   --  @param S is the initial set of Flow_Ids
-   --  @param C is the set of Node base on which filtering will occur
-   --  @return a subset of S so that all Flow_Ids that do not correspond to
-   --    constants that Has_Variable_Input or constants that are not
-   --    contained in C have been removed.
 
    --------------
    -- Add_Loop --
@@ -475,13 +463,14 @@ package body Flow_Utility is
    --------------------------
 
    function Filter_Out_Constants
-     (S : Flow_Id_Sets.Set;
-      C : Node_Sets.Set)
+     (FS : Flow_Id_Sets.Set;
+      NS : Node_Sets.Set := Node_Sets.Empty_Set;
+      GF : Boolean       := False)
       return Flow_Id_Sets.Set
    is
    begin
       return R : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set do
-         for F of S loop
+         for F of FS loop
             case F.Kind is
                when Direct_Mapping | Record_Field =>
                   declare
@@ -489,8 +478,12 @@ package body Flow_Utility is
                      pragma Assert (Nkind (E) in N_Entity);
                   begin
                      if Ekind (E) /= E_Constant
-                       or else C.Contains (E)
+                       or else NS.Contains (E)
                        or else Has_Variable_Input (F)
+                     then
+                        R.Include (F);
+                     elsif GF
+                       and then not In_Generic_Actual (E)
                      then
                         R.Include (F);
                      end if;
@@ -948,6 +941,17 @@ package body Flow_Utility is
          All_Reads     := Change_Variant (All_Reads, Normal_Use);
          All_Writes    := Change_Variant (All_Writes, Normal_Use);
 
+         --  Remove generic formals without variable input
+         All_Proof_Ins := Filter_Out_Constants (All_Proof_Ins,
+                                                Node_Sets.Empty_Set,
+                                                True);
+         All_Reads     := Filter_Out_Constants (All_Reads,
+                                                Node_Sets.Empty_Set,
+                                                True);
+         All_Writes    := Filter_Out_Constants (All_Writes,
+                                                Node_Sets.Empty_Set,
+                                                True);
+
          for C in Tmp.Iterate loop
             declare
                D_Out : constant Flow_Id_Sets.Set :=
@@ -1222,7 +1226,7 @@ package body Flow_Utility is
                      when N_Numeric_Or_String_Literal =>
                         --  We should only ever get here if we are
                         --  dealing with a rewritten constant.
-                        pragma Assert (Present (Original_Node (RHS)));
+                        pragma Assert (RHS /= Original_Node (RHS));
 
                         --  We process the entity of the Original_Node instead
                         Process (Name_Input, Entity (Original_Node (RHS)));
@@ -1254,7 +1258,18 @@ package body Flow_Utility is
                         when N_Aggregate =>
                            RHS := First (Expressions (RHS));
                            while Present (RHS) loop
-                              Process (The_Mode, Entity (RHS));
+                              case Nkind (RHS) is
+                                 when N_Numeric_Or_String_Literal =>
+                                    --  We should only ever get here if we are
+                                    --  dealing with a rewritten constant.
+                                    pragma Assert (RHS /= Original_Node (RHS));
+
+                                    Process (The_Mode,
+                                             Entity (Original_Node (RHS)));
+
+                                 when others =>
+                                    Process (The_Mode, Entity (RHS));
+                              end case;
                               RHS := Next (RHS);
                            end loop;
                         when N_Identifier | N_Expanded_Name =>
@@ -1264,7 +1279,7 @@ package body Flow_Utility is
                         when N_Numeric_Or_String_Literal =>
                            --  We should only ever get here if we are
                            --  dealing with a rewritten constant.
-                           pragma Assert (Present (Original_Node (RHS)));
+                           pragma Assert (RHS /= Original_Node (RHS));
 
                            --  We process the entity of the
                            --  Original_Node instead.
@@ -1385,6 +1400,20 @@ package body Flow_Utility is
             for V of G_Out loop
                Writes.Include (Direct_Mapping_Id (V, Out_View));
             end loop;
+
+            ---------------------------------------------------------------
+            --  Step 6: Remove generic formals without variable input
+            ---------------------------------------------------------------
+
+            Proof_Ins := Filter_Out_Constants (Proof_Ins,
+                                               Node_Sets.Empty_Set,
+                                               True);
+            Reads     := Filter_Out_Constants (Reads,
+                                               Node_Sets.Empty_Set,
+                                               True);
+            Writes    := Filter_Out_Constants (Writes,
+                                               Node_Sets.Empty_Set,
+                                               True);
 
             if Debug_Trace_Get_Global then
                Indent;
@@ -2148,8 +2177,8 @@ package body Flow_Utility is
                             Call   => Call);
                pragma Assert (Call = Callsite);
 
-               if (if Folding
-                   then Used_Reads.Contains (Direct_Mapping_Id (Formal)))
+               if not Folding
+                 or else Used_Reads.Contains (Direct_Mapping_Id (Formal))
                then
                   V.Union
                     (Recurse_On
@@ -2582,8 +2611,7 @@ package body Flow_Utility is
                   --  Merge variables used in predicate functions for the
                   --  given type.
 
-                  procedure Process_Type (E : Entity_Id)
-                  is
+                  procedure Process_Type (E : Entity_Id) is
                      P          : Node_Id;
                      GP, GI, GO : Flow_Id_Sets.Set;
                   begin
@@ -2819,17 +2847,24 @@ package body Flow_Utility is
       end if;
 
       if Nkind (E) in N_Entity
-        and then Ekind (E) in Formal_Kind
+        and then Ekind (E) in Formal_Kind | E_Loop_Parameter
       then
-         --  If we are dealing with a formal parameter then we
-         --  consider this to be a variable.
+         --  If we are dealing with a formal parameter or a loop parameter then
+         --  we consider this to be a variable.
          return True;
       end if;
 
-      --  If we are dealing with an imported constant, we consider this to have
-      --  potentially variable input.
+      if In_Generic_Actual (E)
+        and then Nkind (Parent (E)) = N_Object_Renaming_Declaration
+      then
+         --  Actuals of generics that are in out formal parameters have
+         --  variable input.
+         return True;
+      end if;
 
       if Is_Imported (E) then
+         --  If we are dealing with an imported constant, we consider this to
+         --  have potentially variable input.
          return True;
       end if;
 
@@ -3448,7 +3483,7 @@ package body Flow_Utility is
                      when N_Numeric_Or_String_Literal =>
                         --  We should only ever get here if we are
                         --  dealing with a rewritten constant.
-                        pragma Assert (Present (Original_Node (Tmp)));
+                        pragma Assert (Tmp /= Original_Node (Tmp));
 
                         --  We process the entity of the
                         --  Original_Node instead
@@ -3488,7 +3523,7 @@ package body Flow_Utility is
                                     --  if we are dealing with a
                                     --  rewritten constant.
                                     pragma Assert
-                                      (Present (Original_Node (Tmp2)));
+                                      (Tmp2 /= Original_Node (Tmp2));
 
                                     --  We process the entity of the
                                     --  Original_Node instead
@@ -3506,7 +3541,7 @@ package body Flow_Utility is
                         when N_Numeric_Or_String_Literal =>
                            --  We should only ever get here if we are
                            --  dealing with a rewritten constant.
-                           pragma Assert (Present (Original_Node (Tmp2)));
+                           pragma Assert (Tmp2 /= Original_Node (Tmp2));
 
                            --  We process the entity of the
                            --  Original_Node instead
@@ -3549,7 +3584,7 @@ package body Flow_Utility is
                      when N_Numeric_Or_String_Literal =>
                         --  We should only ever get here if we are
                         --  dealing with a rewritten constant.
-                        pragma Assert (Present (Original_Node (Tmp)));
+                        pragma Assert (Tmp /= Original_Node (Tmp));
 
                         --  We process the entity of the Original_Node
                         --  instead.
