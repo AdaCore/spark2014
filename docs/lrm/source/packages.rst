@@ -1358,14 +1358,9 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
    visible) then the mode of the state abstraction in the Global aspect
    plays no role in determining the legality of the Refined_Global aspect.]
 
-.. _tu-fe-refined_global_aspects-06:
+.. _tu-cbatu-refined_global_aspects-06:
 
-6. [If a ``global_item`` in the Global aspect denotes a state abstraction
-   whose null
-
-.. _tu-cbatu-refined_global_aspects-07:
-
-7. The legality rules for :ref:`global-aspects` and External states described in
+6. The legality rules for :ref:`global-aspects` and External states described in
    :ref:`refined_external_states` also apply.
 
 .. _etu-refined_global_aspects-lr:
