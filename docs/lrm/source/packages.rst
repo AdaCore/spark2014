@@ -1344,7 +1344,7 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
       of the abstraction is mentioned in the Refined_Global aspect with a mode
       of Output, then the effective mode is Output;
 
-   b. Otherwise, if at least one consistituent of the abstraction is mentioned
+   b. Otherwise, if at least one constituent of the abstraction is mentioned
       in the Refined_Global aspect with a mode of Output or In_Out, then
       the effective mode is In_Out;
 
@@ -1361,7 +1361,7 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
 .. _tu-fe-refined_global_aspects-06:
 
 6. [If a ``global_item`` in the Global aspect denotes a state abstraction
-   whose null 
+   whose null
 
 .. _tu-cbatu-refined_global_aspects-07:
 
