@@ -223,10 +223,8 @@ package body SPARK_Frame_Conditions is
          return S.Data (S_Size - Lookahead);
       end Peer;
 
-      function Has (E : Entity_Name) return Boolean is
-      begin
-         return S.Content.Contains (E);
-      end Has;
+      function Has (E : Entity_Name) return Boolean
+        renames S.Content.Contains;
 
       --------------------
       -- Strong_Connect --
@@ -617,8 +615,8 @@ package body SPARK_Frame_Conditions is
    -- Is_Constant --
    -----------------
 
-   function Is_Constant (Ent : Entity_Name) return Boolean is
-     (Constants.Contains (Ent));
+   function Is_Constant (Ent : Entity_Name) return Boolean
+     renames Constants.Contains;
 
    ---------------------------------
    -- Is_Non_Recursive_Subprogram --
@@ -647,8 +645,8 @@ package body SPARK_Frame_Conditions is
    -- Is_Protected_Operation --
    ----------------------------
 
-   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean is
-     (Protected_Operations.Contains (E_Name));
+   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean
+     renames Protected_Operations.Contains;
 
    ----------------------
    -- Load_SPARK_Xrefs --

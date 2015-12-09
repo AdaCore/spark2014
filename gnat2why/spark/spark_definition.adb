@@ -180,29 +180,29 @@ package body SPARK_Definition is
    --  Set of entities defined in actions which require a special translation.
    --  See gnat2why.ads for details.
 
-   function Entity_In_SPARK (E : Entity_Id) return Boolean is
-     (Entities_In_SPARK.Contains (E));
+   function Entity_In_SPARK (E : Entity_Id) return Boolean
+     renames Entities_In_SPARK.Contains;
 
-   function Entity_Marked (E : Entity_Id) return Boolean is
-     (Entity_Set.Contains (E));
+   function Entity_Marked (E : Entity_Id) return Boolean
+     renames Entity_Set.Contains;
 
-   function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean is
-     (Specs_In_SPARK.Contains (E));
+   function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean
+     renames Specs_In_SPARK.Contains;
 
-   function Entity_Body_In_SPARK (E : Entity_Id) return Boolean is
-     (Bodies_In_SPARK.Contains (E));
+   function Entity_Body_In_SPARK (E : Entity_Id) return Boolean
+     renames Bodies_In_SPARK.Contains;
 
-   function Entity_Body_Valid_SPARK (E : Entity_Id) return Boolean is
-     (Bodies_Valid_SPARK.Contains (E));
+   function Entity_Body_Valid_SPARK (E : Entity_Id) return Boolean
+     renames Bodies_Valid_SPARK.Contains;
 
-   function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean is
-     (Full_Views_Not_In_SPARK.Contains (E));
+   function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
+     renames Full_Views_Not_In_SPARK.Contains;
 
-   function Is_Loop_Entity (E : Entity_Id) return Boolean is
-     (Loop_Entity_Set.Contains (E));
+   function Is_Loop_Entity (E : Entity_Id) return Boolean
+     renames Loop_Entity_Set.Contains;
 
-   function Is_Actions_Entity (E : Entity_Id) return Boolean is
-     (Actions_Entity_Set.Contains (E));
+   function Is_Actions_Entity (E : Entity_Id) return Boolean
+     renames Actions_Entity_Set.Contains;
 
    procedure Discard_Underlying_Type (T : Entity_Id);
    --  Mark T's underlying type as seen and store T as its partial view

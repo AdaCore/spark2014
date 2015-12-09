@@ -987,55 +987,43 @@ package body Flow_Generated_Globals is
    -- GG_Has_Async_Readers --
    --------------------------
 
-   function GG_Has_Async_Readers (EN : Entity_Name) return Boolean is
-   begin
-      return Async_Readers_Vars.Contains (EN);
-   end GG_Has_Async_Readers;
+   function GG_Has_Async_Readers (EN : Entity_Name) return Boolean
+     renames Async_Readers_Vars.Contains;
 
    --------------------------
    -- GG_Has_Async_Writers --
    --------------------------
 
-   function GG_Has_Async_Writers (EN : Entity_Name) return Boolean is
-   begin
-      return Async_Writers_Vars.Contains (EN);
-   end GG_Has_Async_Writers;
+   function GG_Has_Async_Writers (EN : Entity_Name) return Boolean
+     renames Async_Writers_Vars.Contains;
 
    ----------------------------
    -- GG_Has_Effective_Reads --
    ----------------------------
 
-   function GG_Has_Effective_Reads (EN : Entity_Name) return Boolean is
-   begin
-      return Effective_Reads_Vars.Contains (EN);
-   end GG_Has_Effective_Reads;
+   function GG_Has_Effective_Reads (EN : Entity_Name) return Boolean
+     renames Effective_Reads_Vars.Contains;
 
    -----------------------------
    -- GG_Has_Effective_Writes --
    -----------------------------
 
-   function GG_Has_Effective_Writes (EN : Entity_Name) return Boolean is
-   begin
-      return Effective_Writes_Vars.Contains (EN);
-   end GG_Has_Effective_Writes;
+   function GG_Has_Effective_Writes (EN : Entity_Name) return Boolean
+     renames Effective_Writes_Vars.Contains;
 
    -----------------------
    -- GG_Has_Refinement --
    -----------------------
 
-   function GG_Has_Refinement (EN : Entity_Name) return Boolean is
-   begin
-      return State_Comp_Map.Contains (EN);
-   end GG_Has_Refinement;
+   function GG_Has_Refinement (EN : Entity_Name) return Boolean
+     renames State_Comp_Map.Contains;
 
    -----------------------
    -- GG_Is_Constituent --
    -----------------------
 
-   function GG_Is_Constituent (EN : Entity_Name) return Boolean is
-   begin
-      return Comp_State_Map.Contains (EN);
-   end GG_Is_Constituent;
+   function GG_Is_Constituent (EN : Entity_Name) return Boolean
+     renames Comp_State_Map.Contains (EN);
 
    --------------------------------------
    -- GG_Is_Initialized_At_Elaboration --
@@ -1054,10 +1042,8 @@ package body Flow_Generated_Globals is
    -- GG_Is_Volatile --
    --------------------
 
-   function GG_Is_Volatile (EN : Entity_Name) return Boolean is
-   begin
-      return All_Volatile_Vars.Contains (EN);
-   end GG_Is_Volatile;
+   function GG_Is_Volatile (EN : Entity_Name) return Boolean
+     renames All_Volatile_Vars.Contains (EN);
 
    -------------
    -- GG_Read --
