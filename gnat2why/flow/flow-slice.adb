@@ -575,7 +575,7 @@ package body Flow.Slice is
                   case Ekind (Scp) is
                      when E_Package      =>
                         if Present (Get_Pragma (Scp, Pragma_Initializes)) then
-                           --  Eclosing scope has Initializes
+                           --  Enclosing scope has Initializes
                            return True;
                         end if;
 
@@ -583,7 +583,7 @@ package body Flow.Slice is
                           and then Get_SPARK_Mode_From_Annotation
                                      (SPARK_Aux_Pragma (Scp)) = Off
                         then
-                           --  Eclosing scope has SPARK_Mode => Off
+                           --  Enclosing scope has SPARK_Mode => Off
                            return True;
                         end if;
 
