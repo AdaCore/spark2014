@@ -1023,7 +1023,7 @@ package body Flow_Generated_Globals is
    -----------------------
 
    function GG_Is_Constituent (EN : Entity_Name) return Boolean
-     renames Comp_State_Map.Contains (EN);
+     renames Comp_State_Map.Contains;
 
    --------------------------------------
    -- GG_Is_Initialized_At_Elaboration --
@@ -1043,7 +1043,7 @@ package body Flow_Generated_Globals is
    --------------------
 
    function GG_Is_Volatile (EN : Entity_Name) return Boolean
-     renames All_Volatile_Vars.Contains (EN);
+     renames All_Volatile_Vars.Contains;
 
    -------------
    -- GG_Read --
