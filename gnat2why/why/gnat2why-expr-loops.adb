@@ -56,11 +56,11 @@ package body Gnat2Why.Expr.Loops is
    -- Local Subprograms --
    -----------------------
 
-   In_Loop_Initial_Statements : Boolean := False;
+   In_Loop_Initial_Statements : Boolean := False with Ghost;
    --  Ghost variable. True when analyzing the initial statements of a loop.
 
    function Is_In_Loop_Initial_Statements return Boolean is
-      (In_Loop_Initial_Statements);
+     (In_Loop_Initial_Statements);
 
    procedure Get_Loop_Invariant
      (Loop_Stmts      : Node_Lists.List;
