@@ -9320,7 +9320,7 @@ package body Gnat2Why.Expr is
                                  Reason   => VC_Ceiling_Interrupt,
                                  Kind     => EW_Check));
 
-                           Ada_Ent_To_Why. Pop_Scope (Symbol_Table);
+                           Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                         end;
                      end if;
                   end;
