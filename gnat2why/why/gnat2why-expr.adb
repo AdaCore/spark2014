@@ -9185,32 +9185,35 @@ package body Gnat2Why.Expr is
    begin
       case Nkind (Decl) is
          when N_Object_Declaration =>
+            declare
+               Obj      : constant Entity_Id := Defining_Identifier (Decl);
+               Obj_Type : constant Entity_Id := Etype (Obj);
 
-            --  We can ignore task declarations
+               Lvalue      : constant Entity_Id := (if Is_Full_View (Obj)
+                                                    then Partial_View (Obj)
+                                                    else Obj);
+               Lvalue_Type : constant Entity_Id := Etype (Lvalue);
 
-            if Is_Task_Type (Etype (Defining_Entity (Decl))) then
-               return R;
-            end if;
+            begin
+               --  We can ignore task declarations
 
-            --  Non-scalar object declaration should not appear before the
-            --  loop invariant in a loop.
+               if Is_Task_Type (Obj_Type) then
+                  --  ??? missing checks for priority range and assertions
+                  return R;
+               end if;
 
-            pragma Assert
-              (not Is_In_Loop_Initial_Statements
-               or else (Is_Scalar_Type (Etype (Defining_Entity (Decl)))
-                 and then Is_Loop_Entity (Defining_Entity (Decl)))
-               or else Is_Actions_Entity (Defining_Entity (Decl)));
+               --  Non-scalar object declaration should not appear before the
+               --  loop invariant in a loop.
 
-            R := Assignment_Of_Obj_Decl (Decl);
+               pragma Assert
+                 (not Is_In_Loop_Initial_Statements
+                  or else (Is_Scalar_Type (Obj_Type)
+                    and then Is_Loop_Entity (Obj))
+                  or else Is_Actions_Entity (Obj));
 
-            if not Is_Partial_View (Defining_Identifier (Decl)) then
-               declare
-                  Lvalue : Entity_Id := Defining_Identifier (Decl);
-               begin
-                  if Is_Full_View (Lvalue) then
-                     Lvalue := Partial_View (Lvalue);
-                  end if;
+               R := Assignment_Of_Obj_Decl (Decl);
 
+               if not Is_Partial_View (Obj) then
                   R := Sequence
                     (R,
                      Assume_Dynamic_Invariant
@@ -9222,118 +9225,124 @@ package body Gnat2Why.Expr is
                         Ty          => Etype (Lvalue),
                         Initialized => Present (Expression (Decl)),
                         Only_Var    => False));
-               end;
-            end if;
-
-            if Is_Protected_Type (Etype (Defining_Identifier (Decl))) then
-
-               if Requires_Interrupt_Priority
-                 (Etype (Defining_Identifier (Decl)))
-               then
-                  declare
-                     Lvalue : Entity_Id := Defining_Identifier (Decl);
-                     P      : constant Node_Id :=
-                       Get_Priority_Or_Interrupt_Priority (Etype (Lvalue));
-                  begin
-                     if Is_Full_View (Lvalue) then
-                        Lvalue := Partial_View (Lvalue);
-                     end if;
-
-                     --  If no priority was specified, the default priority
-                     --  respects the ceiling priority.
-
-                     if Present (P) then
-
-                        --  Store the value of Decl's discriminants in the
-                        --  symbol table.
-
-                        declare
-                           Num_Discrs : constant Natural :=
-                             (if Has_Discriminants (Etype (Lvalue)) then
-                                Natural (Number_Discriminants (Etype (Lvalue)))
-                              else 0);
-                           Discr_Ids  : W_Identifier_Array (1 .. Num_Discrs);
-                           Discr_Vals : W_Expr_Array (1 .. Num_Discrs);
-                           D          : Node_Id :=
-                             First_Discriminant (Etype (Lvalue));
-                           P_Expr     : W_Expr_Id;
-                        begin
-                           Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-                           for I in Discr_Ids'Range loop
-                              Discr_Ids (I) :=
-                                New_Temp_Identifier
-                                  (Typ => EW_Abstract (Etype (D)));
-
-                              Insert_Entity (Discriminal (D), Discr_Ids (I));
-
-                              Discr_Vals (I) :=
-                                New_Ada_Record_Access
-                                  (Ada_Node => Empty,
-                                   Domain   => EW_Term,
-                                   Name     =>
-                                     +Transform_Identifier
-                                     (Expr   => Lvalue,
-                                      Ent    => Lvalue,
-                                      Domain => EW_Term,
-                                      Params => Body_Params),
-                                   Field    => D,
-                                   Ty       => Etype (Lvalue));
-
-                              Next_Discriminant (D);
-                           end loop;
-                           pragma Assert (No (D));
-
-                           P_Expr := Transform_Expr
-                             (Expr          => P,
-                              Domain        => EW_Term,
-                              Params        => Body_Params,
-                              Expected_Type => EW_Int_Type);
-
-                           for I in Discr_Ids'Range loop
-                              P_Expr := New_Typed_Binding
-                                (Domain   => EW_Term,
-                                 Name     => Discr_Ids (I),
-                                 Def      => Discr_Vals (I),
-                                 Context  => P_Expr);
-                           end loop;
-
-                           R := Sequence
-                             (R,
-                              New_Located_Assert
-                                (Ada_Node => Decl,
-                                 Pred     => +New_Range_Expr
-                                   (Domain => EW_Pred,
-                                    Low    =>
-                                      New_Attribute_Expr
-                                        (Domain => EW_Term,
-                                         Ty     => RTE (RE_Interrupt_Priority),
-                                         Attr   => Attribute_First,
-                                         Params => Body_Params),
-                                    High   =>
-                                      New_Attribute_Expr
-                                        (Domain => EW_Term,
-                                         Ty     => RTE (RE_Interrupt_Priority),
-                                         Attr   => Attribute_Last,
-                                         Params => Body_Params),
-                                    Expr   => P_Expr),
-                                 Reason   => VC_Ceiling_Interrupt,
-                                 Kind     => EW_Check));
-
-                           Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-                        end;
-                     end if;
-                  end;
                end if;
 
-               --  Check that no Attach_Handler expression of the protected
-               --  object corresponds to a reserved signal.
+               if Is_Protected_Type (Obj_Type) then
 
-               R := Sequence
-                 (R,
-                  Compute_Attach_Handler_Check
-                    (Base_Type (Etype (Defining_Entity (Decl))), Body_Params));
-            end if;
+                  if Requires_Interrupt_Priority (Obj_Type) then
+                     declare
+                        P : constant Node_Id :=
+                          Get_Priority_Or_Interrupt_Priority (Obj_Type);
+                     begin
+                        --  If no priority was specified, the default priority
+                        --  respects the ceiling priority.
+
+                        if Present (P) then
+
+                           --  ??? why discriminants are translated only when
+                           --  priority is given?
+
+                           --  Store the value of Decl's discriminants in the
+                           --  symbol table.
+
+                           declare
+                              Num_Discrs : constant Natural :=
+                                (if Has_Discriminants (Lvalue_Type) then
+                                    Natural
+                                      (Number_Discriminants (Lvalue_Type))
+                                 else 0);
+
+                              subtype Discr_Index is Positive
+                                range 1 .. Num_Discrs;
+
+                              Discr_Ids  : W_Identifier_Array (Discr_Index);
+                              Discr_Vals : W_Expr_Array (Discr_Index);
+
+                              D          : Node_Id :=
+                                First_Discriminant (Lvalue_Type);
+                              P_Expr     : W_Expr_Id;
+                           begin
+                              Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+                              for I in Discr_Ids'Range loop
+                                 Discr_Ids (I) :=
+                                   New_Temp_Identifier
+                                     (Typ => EW_Abstract (Etype (D)));
+
+                                 Insert_Entity (Discriminal (D),
+                                                Discr_Ids (I));
+
+                                 Discr_Vals (I) :=
+                                   New_Ada_Record_Access
+                                     (Ada_Node => Empty,
+                                      Domain   => EW_Term,
+                                      Name     =>
+                                        +Transform_Identifier
+                                        (Expr   => Lvalue,
+                                         Ent    => Lvalue,
+                                         Domain => EW_Term,
+                                         Params => Body_Params),
+                                      Field    => D,
+                                      Ty       => Lvalue_Type);
+
+                                 Next_Discriminant (D);
+                              end loop;
+                              pragma Assert (No (D));
+
+                              P_Expr := Transform_Expr
+                                (Expr          => P,
+                                 Domain        => EW_Term,
+                                 Params        => Body_Params,
+                                 Expected_Type => EW_Int_Type);
+
+                              for I in Discr_Ids'Range loop
+                                 P_Expr := New_Typed_Binding
+                                   (Domain   => EW_Term,
+                                    Name     => Discr_Ids (I),
+                                    Def      => Discr_Vals (I),
+                                    Context  => P_Expr);
+                              end loop;
+
+                              R := Sequence
+                                (R,
+                                 New_Located_Assert
+                                   (Ada_Node => Decl,
+                                    Pred     => +New_Range_Expr
+                                      (Domain => EW_Pred,
+                                       Low    =>
+                                         New_Attribute_Expr
+                                           (Domain => EW_Term,
+                                            Ty     =>
+                                              RTE (RE_Interrupt_Priority),
+                                            Attr   => Attribute_First,
+                                            Params => Body_Params),
+                                       High   =>
+                                         New_Attribute_Expr
+                                           (Domain => EW_Term,
+                                            Ty     =>
+                                              RTE (RE_Interrupt_Priority),
+                                            Attr   => Attribute_Last,
+                                            Params => Body_Params),
+                                       Expr   => P_Expr),
+                                    Reason   => VC_Ceiling_Interrupt,
+                                    Kind     => EW_Check));
+
+                              Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+                           end;
+                        end if;
+                     end;
+                  end if;
+
+                  --  Check that no Attach_Handler expression of the protected
+                  --  object corresponds to a reserved signal.
+
+                  R := Sequence
+                    (R,
+                     Compute_Attach_Handler_Check
+                       (Base_Type (Obj_Type), Body_Params));
+               end if;
+
+            end;
 
          when N_Subtype_Declaration | N_Full_Type_Declaration =>
             declare
