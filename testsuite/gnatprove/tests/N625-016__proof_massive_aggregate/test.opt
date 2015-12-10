@@ -1,1 +1,1 @@
-ALL XFAIL Test passes on Darwin only
+!Darwin XFAIL Test passes on Darwin only
