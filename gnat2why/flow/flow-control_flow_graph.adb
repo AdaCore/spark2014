@@ -3065,10 +3065,18 @@ package body Flow.Control_Flow_Graph is
                                           Value => Dummy))
                   else
                     Priority_Value'
-                      (Kind  => (if Has_Attach_Handler (T)
+                      (Kind  => (if Present
+                                   (Get_Pragma (T, Pragma_Interrupt_Priority))
+                                 then
+                                   Last_Interrupt_Prio
+
+                                 elsif Has_Attach_Handler (T)
                                    or else Has_Interrupt_Handler (T)
-                                 then Default_Interrupt_Prio
-                                 else Default_Prio),
+                                 then
+                                   Default_Interrupt_Prio
+
+                                 else
+                                   Default_Prio),
                        Value => Dummy));
             begin
                GG_Register_Protected_Object (Object_Name, Priority);

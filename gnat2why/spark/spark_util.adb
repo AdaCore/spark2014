@@ -1708,18 +1708,41 @@ package body SPARK_Util is
 
    function Get_Priority_Or_Interrupt_Priority (E : Entity_Id) return Node_Id
    is
-      Pragma_Node : Node_Id := Get_Pragma (E, Pragma_Priority);
+      Pragma_Priority_Node : constant Node_Id :=
+        Get_Pragma (E, Pragma_Priority);
    begin
-      if No (Pragma_Node) then
-         Pragma_Node := Get_Pragma (E, Pragma_Interrupt_Priority);
+      if Present (Pragma_Priority_Node) then
+         --  Expression is mandatory for pragma Priority
+
+         return Expression
+           (First (Pragma_Argument_Associations (Pragma_Priority_Node)));
+
+      else
+         declare
+            Interrupt_Priority_Pragma_Node : constant Node_Id :=
+              Get_Pragma (E, Pragma_Interrupt_Priority);
+         begin
+            if Present (Interrupt_Priority_Pragma_Node) then
+               declare
+                  Arg : constant Node_Id :=
+                    First
+                      (Pragma_Argument_Associations
+                         (Interrupt_Priority_Pragma_Node));
+               begin
+                  --  Expression is optional for pragma Interrupt_Priority
+                  return (if Present (Arg)
+                          then Expression (Arg)
+                          --  Here priority defaults to Interrupt_Priority'Last
+                          else Empty);
+               end;
+            else
+               --  None of pragma Priority or Interrupt_Priority is present
+
+               return Empty;
+            end if;
+         end;
       end if;
 
-      if Present (Pragma_Node) then
-         return Expression
-           (First (Pragma_Argument_Associations (Pragma_Node)));
-      else
-         return Empty;
-      end if;
    end Get_Priority_Or_Interrupt_Priority;
 
    ---------------

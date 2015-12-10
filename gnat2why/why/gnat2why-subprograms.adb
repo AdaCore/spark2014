@@ -327,11 +327,16 @@ package body Gnat2Why.Subprograms is
          --  No explicit priority was given
 
          if Ekind (E) = E_Task_Type then
-            --  Build expression for System.Priority'Last
+            --  If pragma Interrupt_Priority is present then build expression
+            --  for System.Interrupt_Priority'Last; otherwise for
+            --  System.Priority'Last.
             return
               New_Attribute_Expr
                 (Domain => EW_Term,
-                 Ty     => RTE (RE_Priority),
+                 Ty     =>
+                   RTE (if Present (Get_Pragma (E, Pragma_Interrupt_Priority))
+                        then RE_Interrupt_Priority
+                        else RE_Priority),
                  Attr   => Attribute_Last,
                  Params => Params);
 
@@ -346,16 +351,40 @@ package body Gnat2Why.Subprograms is
          else
             declare
                PT : constant Entity_Id := Scope (E);
+
+               Type_Id : RE_Id;
+               Attr_Id : Supported_Attribute_Id;
+               --  Type and attribute for priority expression
             begin
+               if Present (Get_Pragma (PT, Pragma_Interrupt_Priority))
+               then
+                  --  Pragma Interrupt_Priority without expression defaults to
+                  --  Interrupt_Priority'Last; RM J.15(12).
+                  Type_Id := RE_Interrupt_Priority;
+                  Attr_Id := Attribute_Last;
+
+               elsif Has_Interrupt_Handler (PT)
+                 or else Has_Attach_Handler (PT)
+               then
+                  --  Assume the worst case of implementation-defined value
+                  --  within Interrupt_Priority; RM D.3(10).
+                  Type_Id := RE_Interrupt_Priority;
+                  Attr_Id := Attribute_First;
+
+               else
+                  --  Default priority for protected type is Priority'Last
+                  Type_Id := RE_Priority;
+                  Attr_Id := Attribute_Last;
+
+               end if;
+
                return
                  New_Attribute_Expr
                    (Domain => EW_Term,
-                    Ty     => RTE (if Has_Interrupt_Handler (PT)
-                                     or else Has_Attach_Handler (PT)
-                                   then RE_Interrupt_Priority
-                                   else RE_Priority),
-                    Attr   => Attribute_Last,
+                    Ty     => RTE (Type_Id),
+                    Attr   => Attr_Id,
                     Params => Params);
+
             end;
          end if;
 
@@ -405,6 +434,13 @@ package body Gnat2Why.Subprograms is
                           (Domain => EW_Term,
                            Ty     => RTE (RE_Interrupt_Priority),
                            Attr   => Attribute_First,
+                           Params => Params),
+
+                     when Last_Interrupt_Prio =>
+                        New_Attribute_Expr
+                          (Domain => EW_Term,
+                           Ty     => RTE (RE_Interrupt_Priority),
+                           Attr   => Attribute_Last,
                            Params => Params));
 
                Pred         : constant W_Pred_Id :=

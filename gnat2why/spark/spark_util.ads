@@ -606,7 +606,10 @@ package SPARK_Util is
    with Pre => Ekind (E) in Protected_Kind | E_Task_Type | Subprogram_Kind;
    --  @param E the entity of a concurrent type or subprogram
    --  @return The Ada node of the expression for the Priority or
-   --  Interrupt_Priority specified on E if any.
+   --  Interrupt_Priority specified on E if any
+   --
+   --  Note that if pragma Interrupt_Priority with no expression is present
+   --  then Empty is returned but it really means Interrupt_Priority'Last.
 
    ------------------------------------
    -- Queries related to subprograms --

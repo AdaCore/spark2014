@@ -154,7 +154,8 @@ package Flow_Generated_Globals is
    type Priority_Kind is (Nonstatic,
                           Static,
                           Default_Prio,
-                          Default_Interrupt_Prio);
+                          Default_Interrupt_Prio,
+                          Last_Interrupt_Prio);
    --  Kind of expression that denotes a protected object priority
 
    type Priority_Value is record
