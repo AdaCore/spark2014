@@ -662,10 +662,14 @@ package body Flow_Error_Messages is
                         end if;
 
                         --  Or model elements are of the form:
-                        --  Name ::= Parts
-                        --  Parts ::= Part Parts | <empty>
-                        --  Part ::= "Entity_Id" Added_Part
-                        --  Added_Part ::= "'" "Arbitrary text without '.'"
+                        --  Name ::= | Variable
+                        --           | Variable Record_Fields
+                        --  Record_Fields ::= | Record_Field "." Record_Field
+                        --                    | <empty>
+                        --  Variable ::= "Entity_Id" Added_Part
+                        --  Record_Field ::= "Entity_Id" Added_Part
+                        --  Added_Part ::= | "'" "Arbitrary text without '.'"
+                        --                 | <empty>
                         --
                         --  The Entity_Id in first Part corresponds to a
                         --  variable, others to record fields.
