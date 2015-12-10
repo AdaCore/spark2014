@@ -131,10 +131,6 @@ is
 
 
       procedure Not_All_Constituents_Are_Referenced
-        --  TU: 6. If the Global aspect specification references a state
-        --  abstraction with a ``mode_selector`` of Output, whose refinement is
-        --  visible, then every ``constituent`` of that state abstraction shall
-        --  be referenced in the Refined_Global aspect specification.
         with Global => (Output => State2);
    end Refinement_Is_Visible;
 end Refined_Global_Illegal;
