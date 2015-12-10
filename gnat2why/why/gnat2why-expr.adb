@@ -9347,7 +9347,7 @@ package body Gnat2Why.Expr is
                   end if;
 
                   --  Check that no Attach_Handler expression of the protected
-                  --  object corresponds to a reserved signal.
+                  --  object corresponds to a reserved interrupt.
 
                   R := Sequence (R,
                                  Compute_Attach_Handler_Check
