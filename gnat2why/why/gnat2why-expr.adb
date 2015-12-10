@@ -1541,6 +1541,12 @@ package body Gnat2Why.Expr is
       --  @return an assertion statement that expresses the attach handler
       --    check for this pragma
 
+      procedure Process_Declarations (L : List_Id);
+      --  @param L list of declarations to check for interrupt attachments
+
+      Stat : W_Prog_Id := New_Void;
+      --  Why3 program with static checks
+
       ---------------------------------
       -- Single_Attach_Handler_Check --
       ---------------------------------
@@ -1570,8 +1576,9 @@ package body Gnat2Why.Expr is
                  Domain => EW_Prog,
                  Args   =>
                    (1 =>
-                       Transform_Expr (Att_Val, EW_Int_Type, EW_Term, Params)),
+                      Transform_Expr (Att_Val, EW_Int_Type, EW_Term, Params)),
                  Typ    => EW_Bool_Type));
+
          Pred    : constant W_Pred_Id :=
            New_Call
              (Name => Why_Eq,
@@ -1590,29 +1597,42 @@ package body Gnat2Why.Expr is
                    Pred     => Pred));
       end Single_Attach_Handler_Check;
 
+      --------------------------
+      -- Process_Declarations --
+      --------------------------
+
+      procedure Process_Declarations (L : List_Id) is
+         Proc : Node_Id := First (L);
+      begin
+         while Present (Proc) loop
+            if Nkind (Proc) = N_Subprogram_Declaration then
+               declare
+                  Ent : constant Entity_Id := Defining_Entity (Proc);
+               begin
+                  if Ekind (Ent) = E_Procedure
+                    and Get_Pragma (Ent, Pragma_Attach_Handler) /= Empty
+                  then
+                     Stat := Sequence (Stat,
+                                       Single_Attach_Handler_Check (Ent));
+                  end if;
+               end;
+            end if;
+            Next (Proc);
+         end loop;
+      end Process_Declarations;
+
       pragma Assert (Nkind (Parent (Ty)) = N_Protected_Type_Declaration);
-      Proc : Node_Id :=
-        First (Visible_Declarations (Protected_Definition (Parent (Ty))));
-      Stat : W_Prog_Id := New_Void;
+
+      PT_Def : constant Node_Id := Protected_Definition (Parent (Ty));
 
       --  Start of processing for Compute_Attach_Handler_Check
 
    begin
-      while Present (Proc) loop
-         if Nkind (Proc) = N_Subprogram_Declaration then
-            declare
-               Ent : constant Entity_Id := Defining_Entity (Proc);
-            begin
-               if Ekind (Ent) = E_Procedure
-                 and Get_Pragma (Ent, Pragma_Attach_Handler) /= Empty
-               then
-                  Stat := Sequence (Stat,
-                                    Single_Attach_Handler_Check (Ent));
-               end if;
-            end;
-         end if;
-         Next (Proc);
-      end loop;
+      Process_Declarations (Visible_Declarations (PT_Def));
+
+      --  ??? only if private part has SPARK_Mode => On
+      Process_Declarations (Private_Declarations (PT_Def));
+
       return Stat;
    end Compute_Attach_Handler_Check;
 
