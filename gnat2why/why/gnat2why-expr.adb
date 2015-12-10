@@ -1610,7 +1610,7 @@ package body Gnat2Why.Expr is
                   Ent : constant Entity_Id := Defining_Entity (Proc);
                begin
                   if Ekind (Ent) = E_Procedure
-                    and Get_Pragma (Ent, Pragma_Attach_Handler) /= Empty
+                    and then Present (Get_Pragma (Ent, Pragma_Attach_Handler))
                   then
                      Stat := Sequence (Stat,
                                        Single_Attach_Handler_Check (Ent));
