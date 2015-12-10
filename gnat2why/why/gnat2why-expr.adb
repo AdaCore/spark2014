@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;         use Ada.Containers;
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                 use Checks;
@@ -9207,24 +9208,25 @@ package body Gnat2Why.Expr is
 
                pragma Assert
                  (not Is_In_Loop_Initial_Statements
-                  or else (Is_Scalar_Type (Obj_Type)
-                    and then Is_Loop_Entity (Obj))
-                  or else Is_Actions_Entity (Obj));
+                    or else (Is_Scalar_Type (Obj_Type)
+                               and then Is_Loop_Entity (Obj))
+                    or else Is_Actions_Entity (Obj));
 
                R := Assignment_Of_Obj_Decl (Decl);
 
                if not Is_Partial_View (Obj) then
-                  R := Sequence
-                    (R,
-                     Assume_Dynamic_Invariant
-                       (Expr        =>
-                          +Transform_Identifier (Expr   => Lvalue,
-                                                 Ent    => Lvalue,
-                                                 Domain => EW_Term,
-                                                 Params => Body_Params),
-                        Ty          => Etype (Lvalue),
-                        Initialized => Present (Expression (Decl)),
-                        Only_Var    => False));
+                  R :=
+                    Sequence
+                      (R,
+                       Assume_Dynamic_Invariant
+                         (Expr        =>
+                            +Transform_Identifier (Expr   => Lvalue,
+                                                   Ent    => Lvalue,
+                                                   Domain => EW_Term,
+                                                   Params => Body_Params),
+                          Ty          => Etype (Lvalue),
+                          Initialized => Present (Expression (Decl)),
+                          Only_Var    => False));
                end if;
 
                if Is_Protected_Type (Obj_Type) then
@@ -9246,84 +9248,95 @@ package body Gnat2Why.Expr is
                            --  symbol table.
 
                            declare
-                              Num_Discrs : constant Natural :=
-                                (if Has_Discriminants (Lvalue_Type) then
-                                    Natural
-                                      (Number_Discriminants (Lvalue_Type))
-                                 else 0);
+                              type Discr is record
+                                 Id  : W_Identifier_Id;
+                                 Val : W_Expr_Id;
+                              end record;
+                              --  Why3 representation of discriminants
 
-                              subtype Discr_Index is Positive
-                                range 1 .. Num_Discrs;
+                              package Discriminant_Lists is new
+                                Ada.Containers.Doubly_Linked_Lists
+                                  (Element_Type => Discr);
 
-                              Discr_Ids  : W_Identifier_Array (Discr_Index);
-                              Discr_Vals : W_Expr_Array (Discr_Index);
+                              W_Discriminants : Discriminant_Lists.List;
+                              --  Container for Why3 representations
 
-                              D          : Node_Id :=
-                                First_Discriminant (Lvalue_Type);
-                              P_Expr     : W_Expr_Id;
+                              Discr_N : Node_Id;
+                              --  Discriminant node in SPARK AST
+
+                              P_Expr : W_Expr_Id;
                            begin
                               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-                              for I in Discr_Ids'Range loop
-                                 Discr_Ids (I) :=
-                                   New_Temp_Identifier
-                                     (Typ => EW_Abstract (Etype (D)));
+                              Discr_N := First_Discriminant (Lvalue_Type);
+                              while Present (Discr_N) loop
+                                 declare
+                                    Discr_W : constant Discr :=
+                                      (Id =>
+                                         New_Temp_Identifier
+                                           (Typ =>
+                                              EW_Abstract (Etype (Discr_N))),
 
-                                 Insert_Entity (Discriminal (D),
-                                                Discr_Ids (I));
+                                       Val =>
+                                         New_Ada_Record_Access
+                                           (Ada_Node => Empty,
+                                            Domain   => EW_Term,
+                                            Name     =>
+                                              +Transform_Identifier
+                                                (Expr   => Lvalue,
+                                                 Ent    => Lvalue,
+                                                 Domain => EW_Term,
+                                                 Params => Body_Params),
+                                            Field    => Discr_N,
+                                            Ty       => Lvalue_Type));
+                                 begin
+                                    Insert_Entity (Discriminal (Discr_N),
+                                                   Discr_W.Id);
 
-                                 Discr_Vals (I) :=
-                                   New_Ada_Record_Access
-                                     (Ada_Node => Empty,
-                                      Domain   => EW_Term,
-                                      Name     =>
-                                        +Transform_Identifier
-                                        (Expr   => Lvalue,
-                                         Ent    => Lvalue,
-                                         Domain => EW_Term,
-                                         Params => Body_Params),
-                                      Field    => D,
-                                      Ty       => Lvalue_Type);
+                                    W_Discriminants.Append (Discr_W);
+                                 end;
 
-                                 Next_Discriminant (D);
+                                 Next_Discriminant (Discr_N);
                               end loop;
-                              pragma Assert (No (D));
 
-                              P_Expr := Transform_Expr
-                                (Expr          => P,
-                                 Domain        => EW_Term,
-                                 Params        => Body_Params,
-                                 Expected_Type => EW_Int_Type);
+                              P_Expr :=
+                                Transform_Expr
+                                  (Expr          => P,
+                                   Domain        => EW_Term,
+                                   Params        => Body_Params,
+                                   Expected_Type => EW_Int_Type);
 
-                              for I in Discr_Ids'Range loop
-                                 P_Expr := New_Typed_Binding
-                                   (Domain   => EW_Term,
-                                    Name     => Discr_Ids (I),
-                                    Def      => Discr_Vals (I),
-                                    Context  => P_Expr);
+                              for W_D of reverse W_Discriminants loop
+                                 P_Expr :=
+                                   New_Typed_Binding
+                                     (Domain   => EW_Term,
+                                      Name     => W_D.Id,
+                                      Def      => W_D.Val,
+                                      Context  => P_Expr);
                               end loop;
 
                               R := Sequence
                                 (R,
                                  New_Located_Assert
                                    (Ada_Node => Decl,
-                                    Pred     => +New_Range_Expr
-                                      (Domain => EW_Pred,
-                                       Low    =>
-                                         New_Attribute_Expr
-                                           (Domain => EW_Term,
-                                            Ty     =>
-                                              RTE (RE_Interrupt_Priority),
-                                            Attr   => Attribute_First,
-                                            Params => Body_Params),
-                                       High   =>
-                                         New_Attribute_Expr
-                                           (Domain => EW_Term,
-                                            Ty     =>
-                                              RTE (RE_Interrupt_Priority),
-                                            Attr   => Attribute_Last,
-                                            Params => Body_Params),
-                                       Expr   => P_Expr),
+                                    Pred     =>
+                                      +New_Range_Expr
+                                        (Domain => EW_Pred,
+                                         Low    =>
+                                           New_Attribute_Expr
+                                             (Domain => EW_Term,
+                                              Ty     =>
+                                                RTE (RE_Interrupt_Priority),
+                                              Attr   => Attribute_First,
+                                              Params => Body_Params),
+                                         High   =>
+                                           New_Attribute_Expr
+                                             (Domain => EW_Term,
+                                              Ty     =>
+                                                RTE (RE_Interrupt_Priority),
+                                              Attr   => Attribute_Last,
+                                              Params => Body_Params),
+                                         Expr   => P_Expr),
                                     Reason   => VC_Ceiling_Interrupt,
                                     Kind     => EW_Check));
 
@@ -9336,10 +9349,9 @@ package body Gnat2Why.Expr is
                   --  Check that no Attach_Handler expression of the protected
                   --  object corresponds to a reserved signal.
 
-                  R := Sequence
-                    (R,
-                     Compute_Attach_Handler_Check
-                       (Base_Type (Obj_Type), Body_Params));
+                  R := Sequence (R,
+                                 Compute_Attach_Handler_Check
+                                   (Base_Type (Obj_Type), Body_Params));
                end if;
 
             end;
