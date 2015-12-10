@@ -3055,21 +3055,21 @@ package body Flow.Control_Flow_Graph is
                Priority : constant Priority_Value :=
                  (if Present (Priority_Expr)
                   then (if Is_OK_Static_Expression (Priority_Expr)
-                    then
-                       Priority_Value'
-                      (Kind  => Static,
-                       Value =>
-                         UI_To_Int (Expr_Value (Priority_Expr)))
-                    else
-                       Priority_Value'(Kind  => Nonstatic,
-                                       Value => Dummy))
+                        then
+                          Priority_Value'
+                            (Kind  => Static,
+                             Value =>
+                               UI_To_Int (Expr_Value (Priority_Expr)))
+                        else
+                          Priority_Value'(Kind  => Nonstatic,
+                                          Value => Dummy))
                   else
-                     Priority_Value'
-                    (Kind  => (if Has_Attach_Handler (T)
-                                 or else Has_Interrupt_Handler (T)
-                               then Default_Interrupt_Prio
-                               else Default_Prio),
-                     Value => Dummy));
+                    Priority_Value'
+                      (Kind  => (if Has_Attach_Handler (T)
+                                   or else Has_Interrupt_Handler (T)
+                                 then Default_Interrupt_Prio
+                                 else Default_Prio),
+                       Value => Dummy));
             begin
                GG_Register_Protected_Object (Object_Name, Priority);
             end;

@@ -381,8 +381,8 @@ package body Gnat2Why.Subprograms is
             declare
                Obj_Prio_Expr : constant W_Expr_Id :=
                  (case Obj_Prio.Kind is
-                  --  ??? if type of the component is visible we should try
-                  --  to transform the expression.
+                     --  ??? if type of the component is visible we should try
+                     --  to transform the expression.
                      when Nonstatic =>
                         New_Attribute_Expr (Domain => EW_Term,
                                             Ty     => RTE (RE_Any_Priority),
@@ -391,30 +391,30 @@ package body Gnat2Why.Subprograms is
 
                      when Static =>
                         New_Integer_Constant
-                    (Value => UI_From_Int (Obj_Prio.Value)),
+                          (Value => UI_From_Int (Obj_Prio.Value)),
 
                      when Default_Prio =>
                         New_Attribute_Expr
-                    (Domain => EW_Term,
-                     Ty     => RTE (RE_Priority),
-                     Attr   => Attribute_Last,
-                     Params => Params),
+                          (Domain => EW_Term,
+                           Ty     => RTE (RE_Priority),
+                           Attr   => Attribute_Last,
+                           Params => Params),
 
                      when Default_Interrupt_Prio =>
                         New_Attribute_Expr
-                    (Domain => EW_Term,
-                     Ty     => RTE (RE_Interrupt_Priority),
-                     Attr   => Attribute_First,
-                     Params => Params));
+                          (Domain => EW_Term,
+                           Ty     => RTE (RE_Interrupt_Priority),
+                           Attr   => Attribute_First,
+                           Params => Params));
 
                Pred         : constant W_Pred_Id :=
                  +New_Comparison
-                 (Symbol => (case Obj_Prio.Kind is
-                                when Nonstatic => Why_Eq,
-                                when others    => Int_Infix_Le),
-                  Left   => Prio,
-                  Right  => Obj_Prio_Expr,
-                  Domain => EW_Pred);
+                   (Symbol => (case Obj_Prio.Kind is
+                                  when Nonstatic => Why_Eq,
+                                  when others    => Int_Infix_Le),
+                    Left   => Prio,
+                    Right  => Obj_Prio_Expr,
+                    Domain => EW_Pred);
 
                Check        : constant W_Prog_Id :=
                  New_Located_Assert (Ada_Node => E,
