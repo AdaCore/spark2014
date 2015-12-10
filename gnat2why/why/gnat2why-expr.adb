@@ -1548,13 +1548,13 @@ package body Gnat2Why.Expr is
       function Single_Attach_Handler_Check (Proc : Entity_Id) return W_Prog_Id
       is
 
-         --  the interrupt is given as the second argument of the pragma
-         --  Attach_Handler
+         --  The interrupt is given as the second argument of the pragma
+         --  Attach_Handler.
          Att_Val : constant Node_Id :=
            Expression (Next (First (Pragma_Argument_Associations
                        (Get_Pragma (Proc, Pragma_Attach_Handler)))));
 
-         --  to check whether the attach handler is reserved, we call the
+         --  To check whether the attach handler is reserved, we call the
          --  Ada.Interrupts.Is_Reserved. However, this function reads a global
          --  state, which makes it a bit difficult to generate a call in
          --  the logic (we would have to come up with the state object - not
