@@ -111,8 +111,8 @@ package body Gnat2Why.Driver is
    --  Translates entity E into Why
 
    procedure Do_Generate_VCs (E : Entity_Id);
-   --  Generates VCs for entity E. This is currently a noop if E is not a
-   --  subprogram or a package.
+   --  Generates VCs for entity E. This is currently a noop for E other than
+   --  subprogram, entry, task or package.
 
    procedure Print_Why_File;
    --  Print the input Why3 file on disk
