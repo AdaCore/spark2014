@@ -299,46 +299,52 @@ package body Gnat2Why.Driver is
 
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
-      if Ekind (E) in Subprogram_Kind | Entry_Kind
-        and then Analysis_Requested (E, With_Inlined => False)
-        and then Entity_Spec_In_SPARK (E)
+      case Ekind (E) is
+         when Subprogram_Kind | Entry_Kind =>
+            if Analysis_Requested (E, With_Inlined => False)
+              and then Entity_Spec_In_SPARK (E)
 
-        --  Ignore predicate functions and invariant procedures
+              --  Ignore predicate functions and invariant procedures
+              and then not Subprogram_Is_Ignored_For_Proof (E)
+            then
+               if Is_Dispatching_Operation (E) then
+                  Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+                  Update_Symbol_Table_For_Inherited_Contracts (E);
+               end if;
 
-        and then not Subprogram_Is_Ignored_For_Proof (E)
-      then
-         if Is_Dispatching_Operation (E) then
-            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-            Update_Symbol_Table_For_Inherited_Contracts (E);
-         end if;
+               --  Generate Why3 code to check absence of run-time errors in
+               --  contracts and body.
 
-         --  Generate Why3 code to check absence of run-time errors in
-         --  contracts and body.
+               Generate_VCs_For_Subprogram (Why_Sections (WF_Main), E);
 
-         Generate_VCs_For_Subprogram (Why_Sections (WF_Main), E);
+               --  Generate Why3 code to check LSP for primitive of tagged
+               --  types.
 
-         --  Generate Why3 code to check LSP for primitive of tagged types
+               if Is_Dispatching_Operation (E)
+                 and then not Is_Invisible_Dispatching_Operation (E)
+               then
+                  Generate_VCs_For_LSP (Why_Sections (WF_Main), E);
+                  Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+               end if;
+            end if;
 
-         if Is_Dispatching_Operation (E)
-           and then not Is_Invisible_Dispatching_Operation (E)
-         then
-            Generate_VCs_For_LSP (Why_Sections (WF_Main), E);
-            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-         end if;
+         when E_Package =>
+            if (if Present (Package_Body (E))
+                then Entity_Body_In_SPARK (E)
+                else Entity_Spec_In_SPARK (E))
+            then
+               Generate_VCs_For_Package_Elaboration
+                 (Why_Sections (WF_Main), E);
+            end if;
 
-      elsif Ekind (E) = E_Package
-              and then
-            (if Present (Package_Body (E)) then
-               Entity_Body_In_SPARK (E)
-             else
-               Entity_Spec_In_SPARK (E))
-      then
-         Generate_VCs_For_Package_Elaboration (Why_Sections (WF_Main), E);
-      elsif Ekind (E) = E_Task_Type
-        and then Entity_Spec_In_SPARK (E)
-      then
-         Generate_VCs_For_Task (Why_Sections (WF_Main), E);
-      end if;
+         when E_Task_Type =>
+            if Entity_Spec_In_SPARK (E) then
+               Generate_VCs_For_Task (Why_Sections (WF_Main), E);
+            end if;
+
+         when others =>
+            null;
+      end case;
    end Do_Generate_VCs;
 
    -----------------
