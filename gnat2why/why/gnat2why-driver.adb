@@ -826,7 +826,7 @@ package body Gnat2Why.Driver is
             else
 
                --  ??? We should deal with elaboration at this point
-               --  See M618-019
+               --  See M618-009
 
                null;
             end if;
