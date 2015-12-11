@@ -98,7 +98,7 @@ package body Gnat2Why.External_Axioms is
 
    function Get_Generic_Parents (E : Entity_Id) return List_Of_Entity.List;
    --  Returns the list of every instance of generic package up to the first
-   --  package with external axioms
+   --  package with external axioms.
 
    function Get_Instance_Name (E : Entity_Id) return String is
      (Capitalize_First (Full_Name (E)));
@@ -398,10 +398,14 @@ package body Gnat2Why.External_Axioms is
    procedure Compute_Length (G_Parents    :     List_Of_Entity.List;
                              Subst_Length : out Natural) is
 
-      procedure Compute_Length_Package (Labs         :     List_Id;
+      procedure Compute_Length_Package (Labs         :        List_Id;
                                         Subst_Length : in out Natural);
 
-      procedure Compute_Length_Package (Labs         :     List_Id;
+      ----------------------------
+      -- Compute_Length_Package --
+      ----------------------------
+
+      procedure Compute_Length_Package (Labs         :        List_Id;
                                         Subst_Length : in out Natural) is
          CurLabs  : Node_Id := First (Labs);
       begin
@@ -423,8 +427,10 @@ package body Gnat2Why.External_Axioms is
          end loop;
       end Compute_Length_Package;
 
-      CurGParent : List_Of_Entity.Cursor :=
-        List_Of_Entity.First (G_Parents);
+      CurGParent : List_Of_Entity.Cursor := List_Of_Entity.First (G_Parents);
+
+   --  Start of processing for Compute_Length
+
    begin
       Subst_Length := 0;
 
