@@ -3415,7 +3415,7 @@ package body Gnat2Why.Expr is
                                   (Ada_Node => Empty,
                                    Domain   => EW_Term,
                                    Name     => R_Acc,
-                                   Ty       => Etype (Field)),
+                                   Ty       => Retysp (Etype (Field))),
                                 2 => +False_Term)),
                         Domain => EW_Pred);
                   end if;
