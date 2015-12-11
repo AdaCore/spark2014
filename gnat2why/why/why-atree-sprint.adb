@@ -493,7 +493,7 @@ package body Why.Atree.Sprint is
    -- Print_Custom_Declaration --
    -------------------------------
 
-   procedure Print_Custom_Declaration (Node  : W_Custom_Declaration_Id) is
+   procedure Print_Custom_Declaration (Node : W_Custom_Declaration_Id) is
       use GNAT.Regpat;
 
       function Get_Whole_File return String;
@@ -546,6 +546,9 @@ package body Why.Atree.Sprint is
 
             return "";
          end Get_Proof_Dir;
+
+      --  Start of processing for Locate_File
+
       begin
          if Dir = null then
             Error_Msg_N
