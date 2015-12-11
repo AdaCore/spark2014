@@ -133,8 +133,8 @@ package body SPARK_Util is
       return Type_Based_On_Ext_Axioms (Etype (Typ));
    end Is_Ext_Axioms_Discriminant;
 
-   function Package_Has_Ext_Axioms (E : Entity_Id) return Boolean is
-      (Has_Annotate_Pragma_For_External_Axiomatization (E));
+   function Package_Has_Ext_Axioms (E : Entity_Id) return Boolean
+     renames Has_Annotate_Pragma_For_External_Axiomatization;
 
    function Type_Based_On_Ext_Axioms (E : Entity_Id) return Boolean is
      (Present (Underlying_Ext_Axioms_Type (E)));
