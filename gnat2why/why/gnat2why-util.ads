@@ -162,18 +162,18 @@ package Gnat2Why.Util is
 
    Symbol_Table : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
 
-   --  @return the term domain corresponding to the [Domain] parameter
    function Term_Domain (Domain : EW_Domain) return EW_Domain is
       (case Domain is
           when EW_Pred | EW_Term  => EW_Term,
           when EW_Prog | EW_Pterm => EW_Pterm);
+   --  @return the term domain corresponding to the [Domain] parameter
 
-   --  @return the program or term domain corresponding to the [Domain]
-   --     parameter, which means essentially converting predicate to term.
    function Prog_Or_Term_Domain (Domain : EW_Domain) return EW_Domain is
       (case Domain is
           when EW_Pred => EW_Term,
           when others  => Domain);
+   --  @return the program or term domain corresponding to the [Domain]
+   --     parameter, which means essentially converting predicate to term.
 
    type Transformation_Params is record
       File        : W_File_Id;
