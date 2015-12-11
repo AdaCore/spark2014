@@ -137,55 +137,60 @@ package body Gnat2Why.Driver is
 
    procedure Complete_Declaration (E : Entity_Id) is
    begin
-      if Ekind (E) in Subprogram_Kind | Entry_Kind
-        and then Is_Translated_Subprogram (E)
+      case Ekind (E) is
+         when Subprogram_Kind | Entry_Kind =>
+            if Is_Translated_Subprogram (E)
 
-        --  Axioms for a SPARK expression function are issued in the same
-        --  module as the function declaration.
-        and then (Ekind (E) in Entry_Kind
-                  or else not (Present (Get_Expression_Function (E)))
-                  or else not Entity_Body_In_SPARK (E))
-      then
-         declare
-            Compl_File : Why_Section renames
-              Why_Sections (Dispatch_Entity_Completion (E));
-         begin
-            Generate_Subprogram_Completion (Compl_File, E);
-         end;
+              --  Axioms for a SPARK expression function are issued in the same
+              --  module as the function declaration.
+              and then (Ekind (E) in Entry_Kind
+                        or else not Present (Get_Expression_Function (E))
+                        or else not Entity_Body_In_SPARK (E))
+            then
+               declare
+                  Compl_File : Why_Section renames
+                    Why_Sections (Dispatch_Entity_Completion (E));
+               begin
+                  Generate_Subprogram_Completion (Compl_File, E);
+               end;
+            end if;
 
-         --  An entity E_Subprogram_Body should be present only for
-         --  expression functions.
-         --  ??? special case of expression functions still necessary ?
+            --  An entity E_Subprogram_Body should be present only for
+            --  expression functions.
+            --  ??? special case of expression functions still necessary ?
 
-      elsif Ekind (E) = E_Subprogram_Body then
-         declare
-            Decl_E : constant Entity_Id := Unique_Entity (E);
-            File   : Why_Section renames
-              Why_Sections (Dispatch_Entity (E));
-         begin
-            pragma Assert (Present (Get_Expression_Function (Decl_E)));
-
-            Translate_Expression_Function_Body (File, Decl_E);
-         end;
-
-      elsif Ekind (E) in Type_Kind
-        and then Entity_In_SPARK (E)
-        and then Retysp (E) = E
-      then
-         if not Is_Standard_Boolean_Type (E)
-           and then E /= Universal_Fixed
-         then
+         when E_Subprogram_Body =>
             declare
-               Compl_File : Why_Section renames
-                 Why_Sections (Dispatch_Entity_Completion (E));
+               Decl_E : constant Entity_Id := Unique_Entity (E);
+               File   : Why_Section renames Why_Sections (Dispatch_Entity (E));
             begin
-               Generate_Type_Completion (Compl_File, E);
-            end;
-         end if;
+               pragma Assert (Present (Get_Expression_Function (Decl_E)));
 
-      elsif Ekind (E) = E_Package and then Entity_In_Ext_Axioms (E) then
-         Complete_External_Entities (E);
-      end if;
+               Translate_Expression_Function_Body (File, Decl_E);
+            end;
+
+         when Type_Kind =>
+            if Entity_In_SPARK (E)
+              and then Retysp (E) = E
+              and then not Is_Standard_Boolean_Type (E)
+              and then E /= Universal_Fixed
+            then
+               declare
+                  Compl_File : Why_Section renames
+                    Why_Sections (Dispatch_Entity_Completion (E));
+               begin
+                  Generate_Type_Completion (Compl_File, E);
+               end;
+            end if;
+
+         when E_Package =>
+            if Entity_In_Ext_Axioms (E) then
+               Complete_External_Entities (E);
+            end if;
+
+         when others =>
+            null;
+      end case;
    end Complete_Declaration;
 
    ----------------------
