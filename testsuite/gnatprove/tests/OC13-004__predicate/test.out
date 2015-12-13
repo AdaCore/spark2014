@@ -1,0 +1,4 @@
+dyn_pred.ads:6:11: medium: predicate check might fail
+dyn_pred.ads:7:44: info: predicate check proved
+dyn_pred.ads:19:38: info: predicate check proved
+dyn_pred2.ads:7:11: medium: predicate check might fail
