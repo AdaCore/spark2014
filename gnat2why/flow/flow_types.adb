@@ -491,11 +491,8 @@ package body Flow_Types is
             end if;
       end case;
 
-      if Is_Array_Type (T) then
-         return not Is_Constrained (T);
-      else
-         return False;
-      end if;
+      return Is_Array_Type (T)
+        and then not Is_Constrained (T);
    end Has_Bounds;
 
    -----------------
