@@ -1997,13 +1997,9 @@ package body Flow.Analysis is
             return False;
          end if;
 
-         for Init_Var in DM.Iterate loop
-            if Dependency_Maps.Key (Init_Var) = Var then
-               return True;
-            end if;
-         end loop;
-
-         return False;
+         return
+           (for some Init_Var in DM.Iterate =>
+              Dependency_Maps.Key (Init_Var) = Var);
       end Mentioned_On_Gen_Init;
 
       ------------------------------------

@@ -756,28 +756,20 @@ package body Flow.Control_Flow_Graph.Utility is
       All_Vars : constant Flow_Id_Sets.Set :=
         Atr.Variables_Used or Atr.Variables_Defined;
    begin
-      --  Check if the analyzed entity is a ghost
-      if Is_Ghost_Entity (FA.Analyzed_Entity) then
-         return True;
-      end if;
+      return
+        --  Check if the analyzed entity is a ghost
+        Is_Ghost_Entity (FA.Analyzed_Entity)
 
-      --  Check if any of the variables used or defined is a ghost
-      for Var of All_Vars loop
-         if Var.Kind in Direct_Mapping | Record_Field
-           and then Is_Ghost_Entity (Get_Direct_Mapping_Id (Var))
-         then
-            return True;
-         end if;
-      end loop;
+        --  Check if any of the variables used or defined is a ghost
+        or else
+          (for some Var of All_Vars =>
+             Var.Kind in Direct_Mapping | Record_Field
+               and then Is_Ghost_Entity (Get_Direct_Mapping_Id (Var)))
 
-      --  Check if any of the subprograms called is a ghost
-      for Sub of Atr.Subprograms_Called loop
-         if Is_Ghost_Entity (Sub) then
-            return True;
-         end if;
-      end loop;
-
-      return False;
+        --  Check if any of the subprograms called is a ghost
+        or else
+          (for some Sub of Atr.Subprograms_Called =>
+             Is_Ghost_Entity (Sub));
    end Refers_To_Ghost;
 
 end Flow.Control_Flow_Graph.Utility;
