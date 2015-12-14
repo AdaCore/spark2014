@@ -311,8 +311,9 @@ package body Why.Gen.Scalars is
 
             --  In the other case, add "is_finite" to the predicate
             else
-               Def := +New_And_Then_Expr
-                 (Left   => New_Call (Domain => EW_Pred,
+               Def := +W_Connection_Id'(New_Connection
+                 (Op     => EW_And_Then,
+                  Left   => New_Call (Domain => EW_Pred,
                                       Name   =>
                                         MF_Floats (Ty).Is_Finite,
                                       Args   => (1 => +Var)),
@@ -320,7 +321,7 @@ package body Why.Gen.Scalars is
                                              Low    => +Fst,
                                              High   => +Lst,
                                              Expr   => +Var),
-                  Domain => EW_Pred);
+                  Domain => EW_Pred));
             end if;
          else
 

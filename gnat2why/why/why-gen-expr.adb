@@ -1500,6 +1500,7 @@ package body Why.Gen.Expr is
       --  check always true.
 
       --  clem : keep this ?? /!\
+      --  -> if we keep it, generate a is_finite instead of true
 
       if Present (Range_Type)
         and then Is_Floating_Point_Type (Range_Type)

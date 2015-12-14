@@ -663,9 +663,20 @@ module Floating_Point_Base
 
   type rep_type                 (* either float32 or float64 *)
 
+  predicate eq rep_type rep_type
+
+  predicate lt rep_type rep_type
+  predicate gt rep_type rep_type
+
+  predicate is_finite rep_type
+
+  function neg rep_type : rep_type
+
+  constant max_value : rep_type
+
   (* this render ada__model_th.why obsolete right ? *)
   function bool_eq (x : rep_type) (y : rep_type) : bool =
-    if x = y then True else False
+    if eq x y then True else False
 
   type t
 
@@ -687,14 +698,19 @@ module Floating_Point_Base
   function next_representable (x : rep_type) : rep_type
   function prev_representable (x : rep_type) : rep_type
 
-  predicate lt rep_type rep_type
-  predicate gt rep_type rep_type
-
   axiom next_representable_def :
     forall x : rep_type [next_representable x]. gt (next_representable x) x
 
   axiom prev_representable_def :
     forall x : rep_type [prev_representable x]. lt (prev_representable x) x
+
+  axiom next_representable_finite :
+    forall x : rep_type [is_finite (next_representable x)].
+      is_finite x -> not (eq x max_value) -> is_finite (next_representable x)
+
+  axiom prev_representable_finite :
+    forall x : rep_type [is_finite (prev_representable x)].
+      is_finite x -> not (eq x (neg max_value)) -> is_finite (prev_representable x)
 
   function attr__ATTRIBUTE_IMAGE rep_type : __image
 
@@ -717,8 +733,6 @@ module Static_Floating_Point
   axiom inversion_axiom :
     forall x : t [to_rep x].
       of_rep (to_rep (x)) = x
-
-  predicate is_finite rep_type
 
   function first : rep_type
 
@@ -751,7 +765,10 @@ module Static_Float32
     type rep_type = Float32.t,
     predicate gt = Float32.gt,
     predicate lt = Float32.lt,
-    predicate is_finite = Float32.is_finite
+    predicate eq = Float32.eq,
+    predicate is_finite = Float32.is_finite,
+    function max_value = Float32.max_value,
+    function neg = Float32.neg
 
   function to_int (x:t) : int = Float32.to_int (to_rep x)
 end
@@ -763,7 +780,10 @@ module Static_Float64
     type rep_type = Float64.t,
     predicate gt = Float64.gt,
     predicate lt = Float64.lt,
-    predicate is_finite = Float64.is_finite
+    predicate eq = Float64.eq,
+    predicate is_finite = Float64.is_finite,
+    function max_value = Float64.max_value,
+    function neg = Float64.neg
 
   function to_int (x:t) : int = Float64.to_int (to_rep x)
 end
