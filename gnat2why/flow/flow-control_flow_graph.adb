@@ -6082,20 +6082,14 @@ package body Flow.Control_Flow_Graph is
                         G : constant Flow_Id := Global_Maps.Key (C);
                         P : constant G_Prop  := Global_Maps.Element (C);
 
-                        Mode : Param_Mode;
-                     begin
-                        if P.Is_Read and P.Is_Write then
-                           Mode := Mode_In_Out;
-                        elsif P.Is_Read then
-                           Mode := Mode_In;
-                        elsif P.Is_Write then
-                           Mode := Mode_Out;
-                        elsif P.Is_Proof_In then
-                           Mode := Mode_Proof;
-                        else
-                           raise Program_Error;
-                        end if;
+                        Mode : constant Param_Mode :=
+                          (if P.Is_Read and P.Is_Write then Mode_In_Out
+                           elsif P.Is_Read then Mode_In
+                           elsif P.Is_Write then Mode_Out
+                           elsif P.Is_Proof_In then Mode_Proof
+                           else raise Program_Error);
 
+                     begin
                         Create_Initial_And_Final_Vertices (G, Mode, False, FA);
                      end;
                   end loop;
