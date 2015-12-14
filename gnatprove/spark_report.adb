@@ -100,9 +100,10 @@
 --  - "suppressed" - if present, the message is in fact suppressed by a pragma
 --    Annotate, and this field contains the justification message.
 --  - "how_proved" - if present, indicates how the VC has been proved (i.e.
---    which prover). A special value is the string "interval" which designates
---    the special interval analysis done in the frontend, and wich corresponds
---    to the Interval column in the summary table.
+--    which prover). Special values are "interval" and "codepeer", which
+--    designate the special interval analysis, done in the frontend, and the
+--    CodePeer analysis, respectively. Both have their own column in the
+--    summary table.
 --
 --  -----------------
 --  --  Flow Entry --
@@ -219,7 +220,7 @@ procedure SPARK_Report is
 
    procedure Dump_Summary_Table (Handle : Ada.Text_IO.File_Type) is
 
-      T               : Table := Create_Table (Lines => 10, Cols => 7);
+      T               : Table := Create_Table (Lines => 10, Cols => 8);
 
       procedure Print_Table_Header;
       --  print the header of the table
@@ -263,6 +264,8 @@ procedure SPARK_Report is
             Tot.Flow := Tot.Flow + Summary (Entr).Flow;
             Tot.Interval :=
               Tot.Interval + Summary (Entr).Interval;
+            Tot.CodePeer :=
+              Tot.CodePeer + Summary (Entr).CodePeer;
             Tot.Provers.Total :=
               Tot.Provers.Total + Summary (Entr).Provers.Total;
             Tot.Justified := Tot.Justified + Summary (Entr).Justified;
@@ -293,6 +296,7 @@ procedure SPARK_Report is
          Put_Cell (T, "Total");
          Put_Cell (T, "Flow");
          Put_Cell (T, "Interval");
+         Put_Cell (T, "CodePeer");
          Put_Cell (T, "Provers");
          Put_Cell (T, "Justified");
          Put_Cell (T, "Unproved");
@@ -306,13 +310,14 @@ procedure SPARK_Report is
       procedure Print_Table_Line (Line : Summary_Entries) is
          Elt : Summary_Line := Summary (Line);
          Total : constant Natural :=
-           Elt.Flow + Elt.Interval + Elt.Provers.Total +
+           Elt.Flow + Elt.Interval + Elt.CodePeer + Elt.Provers.Total +
              Elt.Justified + Elt.Unproved;
       begin
          Put_Cell (T, To_String (Line), Align => Left_Align);
          Put_Cell (T, Total);
          Put_Cell (T, Elt.Flow);
          Put_Cell (T, Elt.Interval);
+         Put_Cell (T, Elt.CodePeer);
          Put_Provers_Cell (Elt.Provers);
          Put_Cell (T, Elt.Justified);
          Put_Cell (T, Elt.Unproved);
@@ -327,13 +332,14 @@ procedure SPARK_Report is
       is
          Elt : constant Summary_Line := Summary (Total);
          Tot : constant Natural :=
-           Elt.Flow + Elt.Interval + Elt.Provers.Total +
+           Elt.Flow + Elt.Interval + Elt.CodePeer + Elt.Provers.Total +
              Elt.Justified + Elt.Unproved;
       begin
          Put_Cell (T, To_String (Total), Align => Left_Align);
          Put_Cell (T, Tot);
          Put_Total_Cell (Elt.Flow, Tot);
          Put_Total_Cell (Elt.Interval, Tot);
+         Put_Total_Cell (Elt.CodePeer, Tot);
          Put_Total_Cell (Elt.Provers.Total, Tot);
          Put_Total_Cell (Elt.Justified, Tot);
          Put_Total_Cell (Elt.Unproved, Tot);
@@ -559,6 +565,10 @@ procedure SPARK_Report is
                     and then Get (Get (Result, "how_proved")) = "interval"
                   then
                      Increment (Summary (Category).Interval);
+                  elsif Has_Field (Result, "how_proved")
+                    and then Get (Get (Result, "how_proved")) = "codepeer"
+                  then
+                     Increment (Summary (Category).CodePeer);
                   else
                      if Has_Field (Result, "stats") then
                         Process_Stats (Category, Get (Result, "stats"));

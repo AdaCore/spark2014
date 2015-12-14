@@ -85,7 +85,7 @@ with String_Utils;               use String_Utils;
 
 procedure Gnatprove is
 
-   type Gnatprove_Step is (GS_ALI, GS_Gnat2Why);
+   type Gnatprove_Step is (GS_ALI, GS_CodePeer, GS_Gnat2Why);
 
    function Step_Image (S : Gnatprove_Step) return String is
      (Image (Gnatprove_Step'Pos (S) + 1, Min_Width => 1));
@@ -137,6 +137,16 @@ procedure Gnatprove is
    --  In the process, do flow analysis. Then call gnatwhy3 inside gnat2why to
    --  prove the program.
 
+   procedure Run_CodePeer
+     (Project_File : String;
+      Proj         : Project_Tree;
+      Status       : out Integer);
+   --  Run CodePeer on the project to get the CodePeer results. Do nothing if
+   --  CodePeer analysis is disabled.
+   --  @param Project_File the project file as a string
+   --  @param Proj the project tree object
+   --  @param Status out parameter which indicates an error; 0 = OK
+
    function Spawn_VC_Server
      (Proj_Type : Project_Type)
       return Process_Descriptor;
@@ -151,7 +161,8 @@ procedure Gnatprove is
 
    function Pass_Extra_Options_To_Gnat2why
       (Translation_Phase : Boolean;
-       Obj_Dir           : String) return String;
+       Obj_Dir           : String;
+       Proj_Name         : String) return String;
    --  Set the environment variable which passes some options to gnat2why.
    --  Translation_Phase is False for globals generation, and True for
    --  translation to Why.
@@ -259,7 +270,8 @@ procedure Gnatprove is
       Opt_File : constant String :=
          Pass_Extra_Options_To_Gnat2why
             (Translation_Phase => False,
-             Obj_Dir           => Obj_Dir);
+             Obj_Dir           => Obj_Dir,
+             Proj_Name         => Project_File);
       Del_Succ : Boolean;
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
@@ -681,6 +693,9 @@ procedure Gnatprove is
          when GS_ALI =>
             Compute_ALI_Information (Project_File, Proj, Status);
 
+         when GS_CodePeer =>
+            Run_CodePeer (Project_File, Proj, Status);
+
          when GS_Gnat2Why =>
             Flow_Analysis_And_Proof (Project_File, Proj, Status);
 
@@ -714,7 +729,8 @@ procedure Gnatprove is
       Opt_File : constant String :=
         Pass_Extra_Options_To_Gnat2why
           (Translation_Phase => True,
-           Obj_Dir           => Obj_Dir);
+           Obj_Dir           => Obj_Dir,
+           Proj_Name         => Project_File);
       Del_Succ : Boolean;
       Id       : Process_Descriptor;
    begin
@@ -1083,7 +1099,8 @@ procedure Gnatprove is
 
    function Pass_Extra_Options_To_Gnat2why
       (Translation_Phase : Boolean;
-       Obj_Dir           : String) return String is
+       Obj_Dir           : String;
+       Proj_Name         : String) return String is
       use Ada.Strings.Unbounded;
    begin
       --  Always set debug flags
@@ -1109,6 +1126,13 @@ procedure Gnatprove is
          Gnat2Why_Args.Why3_Args := Compute_Why3_Args;
          Gnat2Why_Args.Report_Mode := Report;
          Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
+         Gnat2Why_Args.CP_Res_Dir :=
+           To_Unbounded_String
+             (Compose
+                (Compose
+                   (Compose (Obj_Dir, "codepeer"),
+                    Base_Name (Proj_Name) & ".output"),
+                 "sam"));
 
       --  In the globals generation phase, only set Global_Gen_Mode
 
@@ -1195,6 +1219,62 @@ procedure Gnatprove is
       return Ada.Directories.Size (Filename) <= 3;
    end Report_File_Is_Empty;
 
+   ------------------
+   -- Run_CodePeer --
+   ------------------
+
+   procedure Run_CodePeer
+     (Project_File : String;
+      Proj         : Project_Tree;
+      Status       : out Integer)
+   is
+      pragma Unreferenced (Proj);
+      Args : String_Lists.List;
+   begin
+      if Verbose then
+         Args.Append ("-v");
+      else
+         Args.Append ("-quiet");
+      end if;
+
+      if Parallel > 1 then
+         Args.Append ("-j" & Image (Parallel, Min_Width => 1));
+      end if;
+
+      if All_Projects then
+         Args.Append ("-U");
+      end if;
+
+      if Project_File /= "" then
+         Args.Append ("-P");
+         Args.Append (Project_File);
+      end if;
+
+      Args.Append ("-level");
+      Args.Append ("max");
+
+      --  Args.Append ("-json-output");
+      Args.Append ("-no-preconditions");
+
+      --  codepeer subdirs option is relative to the object dir(s), so this is
+      --  what we want
+      Args.Append ("--subdirs=gnatprove/codepeer");
+
+      if not GPR_Project_Path.Is_Empty then
+         for S of GPR_Project_Path loop
+            Args.Append ("-aP");
+            Args.Append (S);
+         end loop;
+      end if;
+
+      Call_With_Status
+        (Command   => "codepeer",
+         Arguments => Args,
+         Status    => Status,
+         Verbose   => Verbose);
+
+   end Run_CodePeer;
+
    ---------------------
    -- Set_Environment --
    ---------------------
@@ -1252,6 +1332,9 @@ procedure Gnatprove is
          when GS_ALI =>
             return "generation of Global contracts";
 
+         when GS_CodePeer =>
+            return "CodePeer analysis";
+
          when GS_Gnat2Why =>
             case MMode is
                when GPM_Check =>
@@ -1278,6 +1361,7 @@ begin
    Proj_Type := Root_Project (Tree);
 
    Execute_Step (GS_ALI, Project_File.all, Tree);
+   Execute_Step (GS_CodePeer, Project_File.all, Tree);
    Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
 
    declare

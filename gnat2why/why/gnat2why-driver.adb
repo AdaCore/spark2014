@@ -469,6 +469,7 @@ package body Gnat2Why.Driver is
            and then Is_In_Analyzed_Files (N)
          then
             Proof_Done := True;
+            Load_Codepeer_Results;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
             Translate_Standard_Package;

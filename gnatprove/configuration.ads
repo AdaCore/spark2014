@@ -68,8 +68,8 @@ package Configuration is
    --  True if --ide-progress-bar switch is present. Generate information on
    --  progress for display in IDE.
    Assumptions       : aliased Boolean;
-   --  True if --ide-progress-bar switch is present. Generate information on
-   --  progress for display in IDE.
+   --  True if --assumptions switch is present. Generate assumption information
+   --  in the gnatprove.out file.
    RTS_Dir           : aliased GNAT.Strings.String_Access;
    --  The RTS dir set by option --RTS or by the project file via "Runtime"
    --  attribute

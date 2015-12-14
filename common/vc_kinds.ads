@@ -201,12 +201,13 @@ package VC_Kinds is
    --  A few labels are used to communicate information from gnat2why to
    --  gnatwhy3. Changes here should be propagated to the code of gnatwhy3.
 
-   GP_Id_Marker         : constant String := "GP_Id:";
-   GP_Pretty_Ada_Marker : constant String := "GP_Pretty_Ada:";
-   GP_Reason_Marker     : constant String := "GP_Reason:";
-   GP_Shape_Marker      : constant String := "GP_Shape:";
-   GP_Sloc_Marker       : constant String := "GP_Sloc:";
-   GP_Subp_Marker       : constant String := "GP_Subp:";
+   GP_Id_Marker             : constant String := "GP_Id:";
+   GP_Pretty_Ada_Marker     : constant String := "GP_Pretty_Ada:";
+   GP_Reason_Marker         : constant String := "GP_Reason:";
+   GP_Shape_Marker          : constant String := "GP_Shape:";
+   GP_Sloc_Marker           : constant String := "GP_Sloc:";
+   GP_Subp_Marker           : constant String := "GP_Subp:";
+   GP_Already_Proved_Marker : constant String := "GP_Already_Proved";
 
    --  A few labels are used in Why3 to identify variables and terms whose
    --  value is interesting in counter-examples.

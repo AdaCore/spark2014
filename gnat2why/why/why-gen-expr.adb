@@ -95,6 +95,18 @@ package body Why.Gen.Expr is
    --  an unconstrained array. This is useful for producing the extra
    --  checks required for updates of unconstrained arrays.
 
+   function New_Located_Label (Input : Source_Ptr) return Name_Id;
+   --  @param Input a source pointer
+   --  @return a Why3 label which identifies this source location in Why3
+
+   function Compute_VC_Sloc (N         : Node_Id;
+                             Left_Most : Boolean := False) return Source_Ptr;
+   --  @param N a node where a Check is located
+   --  @param Left_Most whether the returned source_pointer should be oriented
+   --    at the left_most of the tree rooted in N
+   --  @return the source_pointer of node N, taking into account "Left_Most"
+   --    argument and other special cases
+
    Temp_Names_Map : Why_Node_Maps.Map := Why_Node_Maps.Empty_Map;
 
    --------------------------------------
@@ -169,6 +181,43 @@ package body Why.Gen.Expr is
          return Context;
       end if;
    end Binding_For_Temp;
+
+   ---------------------
+   -- Compute_VC_Sloc --
+   ---------------------
+
+   function Compute_VC_Sloc (N         : Node_Id;
+                             Left_Most : Boolean := False) return Source_Ptr
+   is
+      Slc : Source_Ptr;
+   begin
+      --  For VCs, we mostly want to point directly to the relevant node [N].
+      --  For other nodes (e.g. pretty printing labels) it's more sensible to
+      --  point to the beginning of the expression instead of the operator.
+      --  This is achieved by calling [First_Sloc] instead of [Sloc]. However,
+      --  [First_Sloc] does not work for N_And_Then nodes in assertions which
+      --  are rewritten in a strange manner, so we do not do this optimization
+      --  in that case. See also [New_Pretty_Label].
+
+      if not Left_Most
+            or else
+         (Comes_From_Source (N)
+           and then Original_Node (N) /= N
+           and then Nkind (Original_Node (N)) = N_And_Then)
+      then
+         Slc := Sloc (N);
+
+      --  First_Sloc does some magic to point before the opening parentheses in
+      --  an expression, which does not work on locations inside instances of
+      --  generics. Use Sloc on First_Node instead in that case.
+
+      elsif Instantiation_Location (Sloc (N)) /= No_Location then
+         Slc := Sloc (First_Node (N));
+      else
+         Slc := First_Sloc (N);
+      end if;
+      return Slc;
+   end Compute_VC_Sloc;
 
    -------------------
    -- Cur_Subp_Sloc --
@@ -2564,41 +2613,10 @@ package body Why.Gen.Expr is
    -- New_Located_Label --
    -----------------------
 
-   function New_Located_Label
-     (N         : Node_Id;
-      Left_Most : Boolean := False)
-      return Name_Id
-   is
-      Slc : Source_Ptr;
-      Buf : Unbounded_String := Null_Unbounded_String;
-
+   function New_Located_Label (Input : Source_Ptr) return Name_Id is
+      Slc : Source_Ptr := Input;
+      Buf : Unbounded_String;
    begin
-      --  For VCs, we mostly want to point directly to the relevant node [N].
-      --  For other nodes (e.g. pretty printing labels) it's more sensible to
-      --  point to the beginning of the expression instead of the operator.
-      --  This is achieved by calling [First_Sloc] instead of [Sloc]. However,
-      --  [First_Sloc] does not work for N_And_Then nodes in assertions which
-      --  are rewritten in a strange manner, so we do not do this optimization
-      --  in that case. See also [New_Pretty_Label].
-
-      if not Left_Most
-            or else
-         (Comes_From_Source (N)
-           and then Original_Node (N) /= N
-           and then Nkind (Original_Node (N)) = N_And_Then)
-      then
-         Slc := Sloc (N);
-
-      --  First_Sloc does some magic to point before the opening parentheses in
-      --  an expression, which does not work on locations inside instances of
-      --  generics. Use Sloc on First_Node instead in that case.
-
-      elsif Instantiation_Location (Sloc (N)) /= No_Location then
-         Slc := Sloc (First_Node (N));
-      else
-         Slc := First_Sloc (N);
-      end if;
-
       loop
          declare
             File   : constant String := File_Name (Slc);
@@ -2623,6 +2641,18 @@ package body Why.Gen.Expr is
          end;
       end loop;
       return NID (GP_Sloc_Marker & To_String (Buf));
+   end New_Located_Label;
+
+   -----------------------
+   -- New_Located_Label --
+   -----------------------
+
+   function New_Located_Label
+     (N         : Node_Id;
+      Left_Most : Boolean := False)
+      return Name_Id is
+   begin
+      return New_Located_Label (Compute_VC_Sloc (N, Left_Most));
    end New_Located_Label;
 
    --------------------
@@ -3305,15 +3335,23 @@ package body Why.Gen.Expr is
       --  For a node inside an instantiation, we use the location of the
       --  top-level instantiation. This could be refined in the future.
 
+      Sloc : constant Source_Ptr := Compute_VC_Sloc
+        (N, Left_Most => Locate_On_First_Token (Reason));
       Set : Name_Id_Set := Name_Id_Sets.Empty_Set;
       Id  : constant VC_Id := Register_VC (N, Current_Subp);
-      Location_Lab : Name_Id;
+      Location_Lab : constant Name_Id := New_Located_Label (Sloc);
    begin
+      if CodePeer_Has_Proved (Sloc, Reason) then
+         Emit_Proof_Result
+           (N,
+            Reason,
+            True,
+            Current_Subp,
+            How_Proved => "codepeer");
+         Set.Include (NID (GP_Already_Proved_Marker));
+      end if;
       Set.Include (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));
       Set.Include (NID (GP_Id_Marker & Image (Integer (Id), 1)));
-
-      Location_Lab := New_Located_Label
-        (N, Left_Most => Locate_On_First_Token (Reason));
       Set.Include (Location_Lab);
 
       --  Do not generate comment labels in Why3 to facilitate debugging

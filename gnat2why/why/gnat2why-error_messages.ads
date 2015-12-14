@@ -47,6 +47,20 @@ package Gnat2Why.Error_Messages is
    function Has_Registered_VCs return Boolean;
    --  returns true when the function Register_VC has been called
 
+   procedure Load_Codepeer_Results;
+   --  load the codepeer result file and store results. Can be queried with
+   --  "CodePeer_Has_Proved" function.
+
+   function CodePeer_Has_Proved (Slc : Source_Ptr; Kind : VC_Kind)
+                                 return Boolean;
+   --  @param Slc a source location (possibly an sloc chain)
+   --  @param Kind a VC kind
+   --  @return True if we have received from codepeer the information that the
+   --    check identified by (Slc, Kind) always succeeds; return False
+   --    otherwise or if we are not sure
+   --  It is OK to call this function even when Load_CodePeer_Results was not
+   --  called before. The function will return "False" in that case.
+
    procedure Parse_Why3_Results (S : String);
 
    procedure Emit_Proof_Result

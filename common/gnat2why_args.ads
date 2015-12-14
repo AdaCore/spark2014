@@ -134,6 +134,10 @@ package Gnat2Why_Args is
 
    Why3_Dir : Unbounded_String := Null_Unbounded_String;
 
+   --  CodePeer results will be in this directory
+
+   CP_Res_Dir : Unbounded_String := Null_Unbounded_String;
+
    --  IDE mode. Error messages may be formatted differently in this mode (e.g.
    --  JSON dict)
 
