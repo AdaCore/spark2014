@@ -13660,7 +13660,7 @@ package body Gnat2Why.Expr is
             return Result (1 .. Last);
          end Real_Image;
 
-         Decl_File : Why_Section renames Why_Sections (WF_Float_Literals);
+         Decl_File : W_Section_Id renames WF_Float_Literals;
 
          Bv_Typ : constant W_Type_Id := (if Ty = EW_Float_32_Type
                                          then EW_BitVector_32_Type
@@ -13726,7 +13726,7 @@ package body Gnat2Why.Expr is
             Orig_Name => New_Name (Symbol => NID ("is_finite")),
             Image     => Get_Name (MF_Floats (Ty).Is_Finite));
 
-         Emit (Decl_File.Cur_Theory,
+         Emit (Decl_File,
                Why.Atree.Builders.New_Function_Decl
                  (Domain  => EW_Term,
                   Name    => Bin_Rep_Id,
@@ -13741,7 +13741,7 @@ package body Gnat2Why.Expr is
             Orig_Name => Get_Name (Bin_Rep_Id),
             Image     => Get_Name (Bin_Rep_Id));
 
-         Emit (Decl_File.Cur_Theory,
+         Emit (Decl_File,
                Why.Atree.Builders.New_Function_Decl
                  (Domain  => EW_Term,
                   Name    => Dec_Rep_Id,
@@ -13758,7 +13758,7 @@ package body Gnat2Why.Expr is
 
          --  clone the appropriate module
 
-         Emit (Decl_File.Cur_Theory,
+         Emit (Decl_File,
                New_Clone_Declaration (Theory_Kind   => EW_Theory,
                                       Clone_Kind    => EW_Export,
                                       As_Name       => No_Name,

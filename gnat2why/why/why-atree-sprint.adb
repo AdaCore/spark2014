@@ -119,7 +119,6 @@ package body Why.Atree.Sprint is
    procedure Print_Integer_Constant (Node : W_Integer_Constant_Id);
    procedure Print_Meta_Declaration (Node : W_Meta_Declaration_Id);
    procedure Print_Modular_Constant (Node : W_Modular_Constant_Id);
-   procedure Print_Float_Constant (Node : W_Float_Constant_Id);
    procedure Print_Label (Node : W_Label_Id);
    procedure Print_Literal (Node : W_Literal_Id);
    procedure Print_Name (Node : W_Name_Id);
@@ -1128,27 +1127,6 @@ package body Why.Atree.Sprint is
       P (O, " )");
    end Print_Modular_Constant;
 
-   --------------------------
-   -- Print_Float_Constant --
-   --------------------------
-
-   procedure Print_Float_Constant (Node : W_Float_Constant_Id) is
-      Value : constant Uint := Get_Value (Node);
-      Typ : constant W_Type_Id := Get_Typ (Node);
-   begin
-      P (O, "( ");
-      if Typ = EW_Float_32_Type then
-         P (O, "Float32.");
-      elsif Typ = EW_Float_64_Type then
-         P (O, "Float64.");
-      else
-         raise Unexpected_Node;
-      end if;
-      P (O, "from_intbv ");
-      P (O, Value);
-      P (O, " )");
-   end Print_Float_Constant;
-
    ------------------
    -- Print_Label --
    ------------------
@@ -1435,9 +1413,6 @@ package body Why.Atree.Sprint is
 
          when W_Modular_Constant =>
             Print_Modular_Constant (+N);
-
-         when W_Float_Constant =>
-            Print_Float_Constant (+N);
 
          when W_Fixed_Constant =>
             Print_Fixed_Constant (+N);

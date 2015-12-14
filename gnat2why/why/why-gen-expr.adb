@@ -195,9 +195,6 @@ package body Why.Gen.Expr is
          when W_Real_Constant =>
             return EW_Real_Type;
 
-         when W_Float_Constant =>
-            return +Get_Typ (W_Float_Constant_Id (E));
-
          when W_Modular_Constant =>
             return +Get_Typ (W_Modular_Constant_Id (E));
 

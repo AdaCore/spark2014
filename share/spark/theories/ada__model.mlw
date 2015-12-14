@@ -667,6 +667,8 @@ module Floating_Point_Base
 
   predicate lt rep_type rep_type
   predicate gt rep_type rep_type
+  predicate le rep_type rep_type
+  predicate ge rep_type rep_type
 
   predicate is_finite rep_type
 
@@ -698,11 +700,19 @@ module Floating_Point_Base
   function next_representable (x : rep_type) : rep_type
   function prev_representable (x : rep_type) : rep_type
 
+ (* need to guard with is_finite since the axiom cannot hold when x is NaN *)
   axiom next_representable_def :
-    forall x : rep_type [next_representable x]. gt (next_representable x) x
+    forall x : rep_type [next_representable x]. is_finite x -> gt (next_representable x) x
 
   axiom prev_representable_def :
-    forall x : rep_type [prev_representable x]. lt (prev_representable x) x
+    forall x : rep_type [prev_representable x]. is_finite x -> lt (prev_representable x) x
+
+  (* does not need is finite since gt y x implies that neither x or y is NaN *)
+  axiom next_representable_def2 :
+    forall x y : rep_type. gt y x -> ge y (next_representable x)
+
+  axiom prev_representable_def2 :
+    forall x y : rep_type. lt y x -> le y (prev_representable x)
 
   axiom next_representable_finite :
     forall x : rep_type [is_finite (next_representable x)].
@@ -765,6 +775,8 @@ module Static_Float32
     type rep_type = Float32.t,
     predicate gt = Float32.gt,
     predicate lt = Float32.lt,
+    predicate ge = Float32.ge,
+    predicate le = Float32.le,
     predicate eq = Float32.eq,
     predicate is_finite = Float32.is_finite,
     function max_value = Float32.max_value,
@@ -780,6 +792,8 @@ module Static_Float64
     type rep_type = Float64.t,
     predicate gt = Float64.gt,
     predicate lt = Float64.lt,
+    predicate ge = Float64.ge,
+    predicate le = Float64.le,
     predicate eq = Float64.eq,
     predicate is_finite = Float64.is_finite,
     function max_value = Float64.max_value,

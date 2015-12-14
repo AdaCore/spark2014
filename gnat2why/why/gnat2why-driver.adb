@@ -642,7 +642,7 @@ package body Gnat2Why.Driver is
         (Process : not null access procedure (E : Entity_Id))
       is
       begin
-         for E of List_Entities loop
+         for E of Entities_To_Translate loop
             Process (E);
          end loop;
       end For_All_Entities;
@@ -749,7 +749,7 @@ package body Gnat2Why.Driver is
             end if;
 
          when Named_Kind =>
-            --  We should not have to treat that ... right ?
+            --  clem /!\ We should not have to treat that ... right ?
             if False and then Entity_In_SPARK (E) then
                Translate_Constant (File, E);
                Translate_Constant_Value (Compl_File, E);
@@ -871,7 +871,7 @@ package body Gnat2Why.Driver is
             when N_Full_Type_Declaration |
                  N_Subtype_Declaration   |
                  N_Object_Declaration    =>
-               Translate_Entity (Defining_Entity (Decl));
+               Translate (Defining_Entity (Decl));
             when others =>
                null;
          end case;
@@ -887,7 +887,7 @@ package body Gnat2Why.Driver is
       Translate (Standard_Integer_32);
       Translate (Standard_Integer_64);
       Translate (Universal_Integer);
-      Translate (Universal_Real);
+--      Translate (Universal_Real);
 
    end Translate_Standard_Package;
 

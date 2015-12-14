@@ -295,7 +295,7 @@ package body Why.Gen.Scalars is
 
                --  In which case we know that all values are necessary in range
                --  so we define the range predicate as "is_finite".
-               Emit (Theory,
+               Emit (File,
                      Why.Gen.Binders.New_Function_Decl
                        (Domain  => EW_Pred,
                         Name    => To_Local (E_Symb (E, Name)),
