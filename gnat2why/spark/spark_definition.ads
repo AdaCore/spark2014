@@ -156,7 +156,8 @@ package SPARK_Definition is
                  and then Entity_Body_In_SPARK (E);
    --  Returns True if the given entitys' body contains no SPARK violations
 
-   function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean;
+   function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
+     with Pre => Is_Type (E);
    --  Returns True if the underlying type of the type E is not in SPARK,
    --  declared in a private part with SPARK_Mode => Off or in a private part
    --  of a package with external axioms. Also returns True if E is a subtype
