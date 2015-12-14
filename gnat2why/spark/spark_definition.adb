@@ -103,7 +103,7 @@ package body SPARK_Definition is
    --  type obtained by taking:
    --  . for a private type, its underlying type
    --  . for a record subtype, its base type
-   --  . for all other types, itself
+   --  . for any other type, the type itself
    --  until reaching a non-private type that is not a record subtype.
 
    --  Partial views of deferred constants may be in SPARK even if their full
