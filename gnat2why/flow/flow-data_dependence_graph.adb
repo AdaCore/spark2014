@@ -48,9 +48,8 @@ package body Flow.Data_Dependence_Graph is
                      procedure Visitor
                        (V_U : Flow_Graphs.Vertex_Id;
                         TV  : out Flow_Graphs.Simple_Traversal_Instruction);
-                     --  For Var, check if there is a def-use link from V_D
-                     --  to V_U. Stop traversal if node V_U also defined
-                     --  Var.
+                     --  For Var, check if there is a def-use link from V_D to
+                     --  V_U. Stop traversal if node V_U also defined Var.
 
                      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id)
                                              return Boolean;
