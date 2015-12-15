@@ -2164,7 +2164,7 @@ package body Flow_Utility is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
-            when N_Procedure_Call_Statement =>
+            when N_Procedure_Call_Statement | N_Entry_Call_Statement =>
                if not Allow_Statements then
                   --  If we ever get one of these we have a problem -
                   --  Get_Variable_Set is only really meant to be
@@ -2366,7 +2366,8 @@ package body Flow_Utility is
                VS.Union (Recurse_On (Aggregate_Bounds (N)));
 
             when N_Selected_Component =>
-               if Ekind (Entity (Selector_Name (N))) in E_Entry    |
+               if Ekind (Entity (Selector_Name (N))) in E_Entry     |
+                                                        E_Procedure |
                                                         E_Function
                then
                   --  Here we are dealing with a call of a protected
