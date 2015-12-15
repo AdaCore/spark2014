@@ -3605,7 +3605,7 @@ package body SPARK_Definition is
                         if Present (Type_Def) then
                            --  We do not mark the visible declarations here, we
                            --  mark them independently of the type entity when
-                           --  processing the type declaration
+                           --  processing the type declaration.
 
                            --  ??? components of protected types were already
                            --  marked when dealing with discriminants
@@ -4625,7 +4625,7 @@ package body SPARK_Definition is
          if Is_Pragma_Annotate_GNATprove (Cur) then
 
             --  Handle all the following pragma Annotate, with the same
-            --  "Preceding" node
+            --  "Preceding" node.
 
             loop
                Mark_Pragma_Annotate (Cur, Preceding,
@@ -4639,7 +4639,7 @@ package body SPARK_Definition is
          else
             Mark (Cur);
 
-            --  if the current declaration does not come from source, we
+            --  If the current declaration does not come from source, we
             --  consider it to be part of the preceding one as far as pragma
             --  Annotate is concerned, so we don't update the "preceding" node
             --  in that case.
