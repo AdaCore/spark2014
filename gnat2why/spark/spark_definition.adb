@@ -594,13 +594,15 @@ package body SPARK_Definition is
       if Analysis_Requested (Id, With_Inlined => True) then
          declare
             V : constant JSON_Value := To_JSON (Entity_To_Subp (Id));
+
             SPARK_Status : constant String :=
-              (if Entity_Body_In_SPARK (Id) then "all"
-               elsif Entity_Spec_In_SPARK (Id) then
-                   (if Ekind (Id) = E_Package
-                    and then
-                    No (Package_Body (Id))
-                    then "all" else "spec")
+              (if Entity_Body_In_SPARK (Id)
+               then "all"
+               elsif Entity_Spec_In_SPARK (Id)
+               then
+                  (if Ekind (Id) = E_Package and then No (Package_Body (Id))
+                   then "all"
+                   else "spec")
                else "no");
          begin
             Set_Field (V, "spark", SPARK_Status);
