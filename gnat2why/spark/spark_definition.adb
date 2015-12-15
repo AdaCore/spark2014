@@ -131,7 +131,8 @@ package body SPARK_Definition is
 
    procedure Initialize;
 
-   function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean;
+   function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean
+      with Global => (Input => Current_SPARK_Pragma);
    --  Returns whether Current_SPARK_Pragma is not Empty, and corresponds to
    --  the given Mode.
 
@@ -214,7 +215,9 @@ package body SPARK_Definition is
    procedure Mark_Violation
      (Msg           : String;
       N             : Node_Id;
-      SRM_Reference : String := "");
+      SRM_Reference : String := "")
+   with Global => (Output => Violation_Detected,
+                   Input  => Current_SPARK_Pragma);
    --  Mark node N as a violation of SPARK. An error message pointing to the
    --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
    --  If SRM_Reference is set, the reference to the SRM is appended to the
@@ -222,13 +225,17 @@ package body SPARK_Definition is
 
    procedure Mark_Violation
      (N    : Node_Id;
-      From : Entity_Id);
+      From : Entity_Id)
+   with Global => (Output => Violation_Detected,
+                   Input  => Current_SPARK_Pragma);
    --  Mark node N as a violation of SPARK, due to the use of entity From which
    --  is not in SPARK. An error message is issued if current SPARK_Mode is On.
 
    procedure Mark_Violation_In_Tasking
      (N : Node_Id)
-     with Pre => not Is_SPARK_Tasking_Configuration;
+   with Pre => not Is_SPARK_Tasking_Configuration,
+        Global => (Output => Violation_Detected,
+                   Input  => Current_SPARK_Pragma);
    --  Mark node N as a violation of SPARK because of unsupported tasking
    --  configuration. An error message is issued if current SPARK_Mode is On.
 
@@ -4837,7 +4844,6 @@ package body SPARK_Definition is
    ---------------------------------
 
    procedure Mark_Subprogram_Declaration (N : Node_Id) is
-      Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
       E : constant Entity_Id := Defining_Entity (N);
 
    begin
@@ -4858,15 +4864,20 @@ package body SPARK_Definition is
       --  Mark entity
 
       else
-         Current_SPARK_Pragma := SPARK_Pragma (E);
+         declare
+            Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+         begin
 
-         if SPARK_Pragma_Is (Opt.On) then
-            Specs_In_SPARK.Include (E);
-         end if;
+            Current_SPARK_Pragma := SPARK_Pragma (E);
 
-         Mark_Entity (E);
+            if SPARK_Pragma_Is (Opt.On) then
+               Specs_In_SPARK.Include (E);
+            end if;
 
-         Current_SPARK_Pragma := Save_SPARK_Pragma;
+            Mark_Entity (E);
+
+            Current_SPARK_Pragma := Save_SPARK_Pragma;
+         end;
       end if;
    end Mark_Subprogram_Declaration;
 
