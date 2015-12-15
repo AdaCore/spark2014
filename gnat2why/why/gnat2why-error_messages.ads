@@ -41,7 +41,8 @@ package Gnat2Why.Error_Messages is
 
    procedure Register_VC_Entity (E : Entity_Id);
    --  @param E entity of a subprogram/package which will be considered by
-   --  proof
+   --    proof. This is required to know the list of subprograms which don't
+   --    have any VC associated with them. This is useful for assumptions.
 
    function Has_Registered_VCs return Boolean;
    --  returns true when the function Register_VC has been called

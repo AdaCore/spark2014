@@ -2583,12 +2583,6 @@ package body Gnat2Why.Subprograms is
 
       Assume_Value_Of_Constants (Prog, E, Params);
 
-      --  We always need to add the int theory as
-      --  Compute_Contract_Cases_Entry_Checks may make use of the
-      --  infix operators.
-
-      Add_With_Clause (File.Cur_Theory, Int_Module, EW_Import, EW_Theory);
-
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
       begin
