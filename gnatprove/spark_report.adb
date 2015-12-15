@@ -25,7 +25,7 @@
 
 --  This program (SPARK_Report) is run at the very end of SPARK analysis (see
 --  also the comment in gnatprove.adb). The different bits of analysis have
---  stored the results of the analysis in one result file per unit, This
+--  stored the results of the analysis in one result file per unit. This
 --  program reads all those files in and prints a summary in a file called
 --  "gnatprove.out".
 --
@@ -109,7 +109,7 @@
 --  -----------------
 --
 --  Flow entries are of the same form as for proof. Differences are in the
---  possible values for "rule", which can only be tho ones for flow messages.
+--  possible values for "rule", which can only be the ones for flow messages.
 --  Also "how_proved" field is never set.
 
 with Ada.Containers;
