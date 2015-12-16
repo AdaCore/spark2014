@@ -203,10 +203,7 @@ package body Gnat2Why.Subprograms is
    function Check_Ceiling_Protocol
      (Params : Transformation_Params;
       E      : Entity_Id) return W_Prog_Id
-     with Pre => Ekind (E) in E_Task_Type | E_Entry or else
-                 Might_Be_Main (E) or else
-                 (Ekind (E) in E_Function | E_Procedure and then
-                  Is_Protected_Type (Scope (E)));
+     with Pre => Ekind (E) in E_Task_Type | E_Entry | E_Function | E_Procedure;
    --  @param Params the transformation params
    --  @param E a task type, entry, main-like or protected subprogram entity
    --  @return an assertion or sequence of assertion that expresses that the
@@ -320,6 +317,7 @@ package body Gnat2Why.Subprograms is
          --  Priority expression
 
       begin
+
          if Present (Prio_Expr) then
             return Transform_Expr (Prio_Expr, EW_Int_Type, EW_Pterm, Params);
          end if;
@@ -390,81 +388,94 @@ package body Gnat2Why.Subprograms is
 
       end Self_Priority;
 
-      Ent  : constant Entity_Name := To_Entity_Name (E);
-      Prio : constant W_Expr_Id := Self_Priority;
-
-      S    : W_Prog_Id := New_Void;
-      --  Placeholder for a Why3 sequence that will represent the check
-
    --  Start of processing for Check_Ceiling_Protocol
 
    begin
-      for Obj_Name of Directly_Called_Protected_Objects (Ent) loop
 
-         --  Create a check that compares priorities of the task and of a
-         --  single protected component of an object. See ARM, D.3 (7-11)
-         --  for details.
+      if Ekind (E) not in E_Task_Type | E_Entry
+        and then not Might_Be_Main (E)
+        and then
+          (Ekind (E) not in E_Function | E_Procedure or else
+                 not Is_Protected_Type (Scope (E)))
+      then
+         return New_Void;
+      end if;
 
-         for Obj_Prio of Component_Priorities (Obj_Name) loop
+      declare
 
-            declare
-               Obj_Prio_Expr : constant W_Expr_Id :=
-                 (case Obj_Prio.Kind is
+         Ent  : constant Entity_Name := To_Entity_Name (E);
+         Prio : constant W_Expr_Id := Self_Priority;
+
+         S    : W_Prog_Id := New_Void;
+      begin
+         --  Placeholder for a Why3 sequence that will represent the check
+         for Obj_Name of Directly_Called_Protected_Objects (Ent) loop
+
+            --  Create a check that compares priorities of the task and of a
+            --  single protected component of an object. See ARM, D.3 (7-11)
+            --  for details.
+
+            for Obj_Prio of Component_Priorities (Obj_Name) loop
+
+               declare
+                  Obj_Prio_Expr : constant W_Expr_Id :=
+                    (case Obj_Prio.Kind is
                      --  ??? if type of the component is visible we should try
                      --  to transform the expression.
-                     when Nonstatic =>
-                        New_Attribute_Expr (Domain => EW_Term,
-                                            Ty     => RTE (RE_Any_Priority),
-                                            Attr   => Attribute_First,
-                                            Params => Params),
+                        when Nonstatic =>
+                           New_Attribute_Expr (Domain => EW_Term,
+                                               Ty     => RTE (RE_Any_Priority),
+                                               Attr   => Attribute_First,
+                                               Params => Params),
 
-                     when Static =>
-                        New_Integer_Constant
-                          (Value => UI_From_Int (Obj_Prio.Value)),
+                        when Static =>
+                           New_Integer_Constant
+                       (Value => UI_From_Int (Obj_Prio.Value)),
 
-                     when Default_Prio =>
-                        New_Attribute_Expr
-                          (Domain => EW_Term,
-                           Ty     => RTE (RE_Priority),
-                           Attr   => Attribute_Last,
-                           Params => Params),
+                        when Default_Prio =>
+                           New_Attribute_Expr
+                       (Domain => EW_Term,
+                        Ty     => RTE (RE_Priority),
+                        Attr   => Attribute_Last,
+                        Params => Params),
 
-                     when Default_Interrupt_Prio =>
-                        New_Attribute_Expr
-                          (Domain => EW_Term,
-                           Ty     => RTE (RE_Interrupt_Priority),
-                           Attr   => Attribute_First,
-                           Params => Params),
+                        when Default_Interrupt_Prio =>
+                           New_Attribute_Expr
+                       (Domain => EW_Term,
+                        Ty     => RTE (RE_Interrupt_Priority),
+                        Attr   => Attribute_First,
+                        Params => Params),
 
-                     when Last_Interrupt_Prio =>
-                        New_Attribute_Expr
-                          (Domain => EW_Term,
-                           Ty     => RTE (RE_Interrupt_Priority),
-                           Attr   => Attribute_Last,
-                           Params => Params));
+                        when Last_Interrupt_Prio =>
+                           New_Attribute_Expr
+                       (Domain => EW_Term,
+                        Ty     => RTE (RE_Interrupt_Priority),
+                        Attr   => Attribute_Last,
+                        Params => Params));
 
-               Pred         : constant W_Pred_Id :=
-                 +New_Comparison
-                   (Symbol => (case Obj_Prio.Kind is
-                                  when Nonstatic => Why_Eq,
-                                  when others    => Int_Infix_Le),
-                    Left   => Prio,
-                    Right  => Obj_Prio_Expr,
-                    Domain => EW_Pred);
+                  Pred         : constant W_Pred_Id :=
+                    +New_Comparison
+                    (Symbol => (case Obj_Prio.Kind is
+                                   when Nonstatic => Why_Eq,
+                                   when others    => Int_Infix_Le),
+                     Left   => Prio,
+                     Right  => Obj_Prio_Expr,
+                     Domain => EW_Pred);
 
-               Check        : constant W_Prog_Id :=
-                 New_Located_Assert (Ada_Node => E,
-                                     Pred     => Pred,
-                                     Reason   =>
-                                       VC_Ceiling_Priority_Protocol,
-                                     Kind     => EW_Check);
-            begin
-               S := Sequence (S, Check);
-            end;
+                  Check        : constant W_Prog_Id :=
+                    New_Located_Assert (Ada_Node => E,
+                                        Pred     => Pred,
+                                        Reason   =>
+                                          VC_Ceiling_Priority_Protocol,
+                                        Kind     => EW_Check);
+               begin
+                  S := Sequence (S, Check);
+               end;
+            end loop;
          end loop;
-      end loop;
 
-      return S;
+         return S;
+      end;
    end Check_Ceiling_Protocol;
 
    ------------------
@@ -2121,17 +2132,53 @@ package body Gnat2Why.Subprograms is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Name      : constant String := Full_Name (E);
-      Params    : Transformation_Params;
 
       Body_N    : constant Node_Id :=
         (if Is_Entry (E) then Entry_Body (E) else Subprogram_Body (E));
-      Post_N    : Node_Id;
-      Assume    : W_Prog_Id;
-      Init_Prog : W_Prog_Id;
-      Prog      : W_Prog_Id;
-      Why_Body  : W_Prog_Id;
-      Post      : W_Pred_Id;
+
+      function Assume_For_Input return W_Prog_Id;
+      --  Generate assumptions for dynamic types used in the program. An
+      --  exception is made for predicate functions generated by the frontend,
+      --  for which we should not assume that the predicate holds for checking
+      --  the absence of RTE in the predicate itself.
+
+      function Comp_Decl_At_Subp_Start return W_Prog_Id;
+      --  The body of the subprogram may contain declarations that are in fact
+      --  essential to prove absence of RTE in the pre, e.g. compiler-generated
+      --  subtype declarations. We need to take those into account.
+
+      function RTE_Of_Pre return W_Prog_Id;
+      --  compute an expression which contains the RTE checks of the
+      --  precondition
+
+      function Assume_Or_Assert_Of_Pre return W_Prog_Id;
+      --  usually assumes the precondition, except for main programs where
+      --  the precondition needs to be proved in fact. In this latter case
+      --  an assertion is returned instead of an assumption.
+
+      function Checking_Of_Refined_Post (Arg : W_Prog_Id) return W_Prog_Id;
+      --  Encapsulate the translated body inside an abstract program with
+      --  the Refined_Post as a postcondition.
+      --  Assume the dynamic property of modified variables after the call.
+
+      function Post_As_Pred return W_Pred_Id;
+      --  compute the postcondition predicate based on the Ada postcondition
+
+      function Try_Block (Prog : W_Prog_Id) return W_Prog_Id;
+      --  adding try/catch block for the return exception on top of the program
+
+      Pre_Prags  : Node_Lists.List;
+      Post_Prags : Node_Lists.List;
+
+      procedure Get_Pre_Post_Pragmas (Decls : Node_Lists.List);
+      --  Retrieve pragmas Precondition and Postcondition from the list
+      --  of body declarations, and add them to Pre_Prags and Post_Prags
+      --  when they do not come from aspects.
+
+      function Transform_All_Pragmas
+        (Prags   : Node_Lists.List;
+         Comment : String) return W_Prog_Id;
+      --  Translate the pragma list in Prags into Why3.
 
       --  Mapping from guards to temporary names, and Why program to check
       --  contract cases on exit.
@@ -2139,10 +2186,357 @@ package body Gnat2Why.Subprograms is
       Others_Guard_Ident : W_Identifier_Id;
       Others_Guard_Expr  : W_Expr_Id;
 
-      Contract_Check : W_Prog_Id;
-      Post_Check     : W_Prog_Id;
-      Precondition   : W_Prog_Id;
+      function CC_And_RTE_Post return W_Prog_Id;
+      --  return verification of the contract cases, plus runtime checks for
+      --  the Post
+
+      Body_Params : Transformation_Params;
+      Contract_Params : Transformation_Params;
+
+      function Declare_Old_Variables (P : W_Prog_Id) return W_Prog_Id;
+
+      function Wrap_Decls_For_CC_Guards (P : W_Prog_Id) return W_Prog_Id;
+
+      ----------------------
+      -- Assume_For_Input --
+      ----------------------
+
+      function Assume_For_Input return W_Prog_Id is
+         Pred_Fun_Param : constant Entity_Id :=
+           (if Ekind (E) in E_Function | E_Procedure
+            and then Is_Predicate_Function (E)
+            then
+               Defining_Entity (First (Parameter_Specifications
+              (Subprogram_Specification (E))))
+            else
+               Empty);
+         Params : constant Transformation_Params :=
+           (File        => File.File,
+            Theory      => File.Cur_Theory,
+            Phase       => Generate_VCs_For_Contract,
+            Gen_Marker  => False,
+            Ref_Allowed => True);
+      begin
+         return
+           Sequence
+             ((1 => New_Comment
+               (Comment => NID ("Assume dynamic invariants of inputs of the"
+                & " subprogram "
+                & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+                  else ""))),
+               2 =>
+                 Compute_Dynamic_Property_For_Inputs
+                   (Params         => Params,
+                    E              => E,
+                    Pred_Fun_Param => Pred_Fun_Param)));
+      end Assume_For_Input;
+
+      -----------------------------
+      -- Assume_Or_Assert_Of_Pre --
+      -----------------------------
+
+      function Assume_Or_Assert_Of_Pre return W_Prog_Id is
+         Params : constant Transformation_Params :=
+           (File        => File.File,
+            Theory      => File.Cur_Theory,
+            Phase       => Generate_VCs_For_Contract,
+            Gen_Marker  => False,
+            Ref_Allowed => True);
+         Pre : constant W_Pred_Id :=
+           Get_Static_Call_Contract (Params, E, Name_Precondition);
+         Stmt : W_Prog_Id;
+      begin
+
+         --  need to prove precondition of Main before use. The test for
+         --  entries is just to protect the call to Might_Be_Main.
+
+         if not Is_Entry (E) and then Might_Be_Main (E) then
+            Stmt :=
+              New_Located_Assert
+                (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition),
+                 Pred     => Pre,
+                 Reason   => VC_Precondition_Main,
+                 Kind     => EW_Assert);
+         else
+            Stmt := New_Assume_Statement (Pred => Pre);
+         end if;
+         return
+           Sequence
+             (New_Comment
+                (Comment => NID ("Assume Pre of the subprogram"
+                 & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+                   else ""))),
+              Stmt);
+      end Assume_Or_Assert_Of_Pre;
+
+      ---------------------
+      -- CC_And_RTE_Post --
+      ---------------------
+
+      function CC_And_RTE_Post return W_Prog_Id is
+         Params : constant Transformation_Params :=
+           (File        => File.File,
+            Theory      => File.Cur_Theory,
+            Phase       => Generate_VCs_For_Contract,
+            Gen_Marker  => False,
+            Ref_Allowed => True);
+      begin
+         return
+           Sequence
+             (New_Ignore
+                (Prog =>
+                       +Compute_Spec (Params, E, Name_Postcondition, EW_Prog)),
+              Compute_Contract_Cases_Exit_Checks
+                (Params             => Params,
+                 E                  => E,
+                 Guard_Map          => Guard_Map,
+                 Others_Guard_Ident => Others_Guard_Ident));
+      end CC_And_RTE_Post;
+
+      ------------------------------
+      -- Checking_Of_Refined_Post --
+      ------------------------------
+
+      function Checking_Of_Refined_Post (Arg : W_Prog_Id) return W_Prog_Id
+      is
+         Params : constant Transformation_Params :=
+           (File        => File.File,
+            Theory      => File.Cur_Theory,
+            Phase       => Generate_VCs_For_Contract,
+            Gen_Marker  => False,
+            Ref_Allowed => True);
+
+         Prog : W_Prog_Id := Arg;
+      begin
+         if Has_Contracts (E, Name_Refined_Post) then
+            Prog :=
+              Sequence
+                (Prog,
+                 New_Ignore
+                   (Prog => +Compute_Spec
+                      (Params, E, Name_Refined_Post, EW_Prog)));
+            Prog :=
+              New_Located_Abstract
+                (Ada_Node => Get_Location_For_Aspect (E, Name_Refined_Post),
+                 Expr => Prog,
+                 Reason => VC_Refined_Post,
+                 Post => +Compute_Spec
+                   (Params, E, Name_Refined_Post, EW_Pred));
+            Prog := Sequence
+              (Prog,
+               New_Assume_Statement
+                 (Pred => Compute_Dynamic_Property_For_Effects (E, Params)));
+         end if;
+         return Prog;
+      end Checking_Of_Refined_Post;
+
+      -----------------------------
+      -- Comp_Decl_At_Subp_Start --
+      -----------------------------
+
+      function Comp_Decl_At_Subp_Start return W_Prog_Id is
+      begin
+         if Present (Body_N) and then Entity_Body_In_SPARK (E) then
+            return
+           Sequence
+             ((New_Comment
+              (Comment => NID ("Declarations introduced by the compiler at the"
+               & " beginning of the subprogram"
+               & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+                 else ""))),
+              Transform_Declarations_For_Params (Declarations (Body_N))));
+         else
+            return New_Void;
+         end if;
+      end Comp_Decl_At_Subp_Start;
+
+      ---------------------------
+      -- Declare_Old_Variables --
+      ---------------------------
+
+      function Declare_Old_Variables (P : W_Prog_Id) return W_Prog_Id is
+      begin
+         return
+           Bind_From_Mapping_In_Expr
+             (Params                 => Body_Params,
+              Map                    => Map_For_Old,
+              Expr                   => P,
+              Guard_Map              => Guard_Map,
+              Others_Guard_Ident     => Others_Guard_Ident,
+              Do_Runtime_Error_Check => True,
+              Bind_Value_Of_Old      => True);
+      end Declare_Old_Variables;
+
+      --------------------------
+      -- Get_Pre_Post_Pragmas --
+      --------------------------
+
+      procedure Get_Pre_Post_Pragmas (Decls : Node_Lists.List) is
+      begin
+         for Decl of Decls loop
+            if Is_Pragma (Decl, Pragma_Precondition) and then
+              not From_Aspect_Specification (Decl)
+            then
+               Pre_Prags.Append (Decl);
+
+            elsif Is_Pragma (Decl, Pragma_Postcondition) and then
+              not From_Aspect_Specification (Decl)
+            then
+               Post_Prags.Append (Decl);
+            end if;
+         end loop;
+      end Get_Pre_Post_Pragmas;
+
+      ------------------
+      -- Post_As_Pred --
+      ------------------
+
+      function Post_As_Pred return W_Pred_Id is
+         Params : constant Transformation_Params :=
+           (File        => File.File,
+            Theory      => File.Cur_Theory,
+            Phase       => Generate_Contract_For_Body,
+            Gen_Marker  => False,
+            Ref_Allowed => True);
+         Mark_Params : Transformation_Params := Params;
+         Post_N    : Node_Id;
+      begin
+
+         Mark_Params.Gen_Marker := True;
+
+         --  There might be no specific postcondition for E. In that case, the
+         --  classwide or inherited postcondition is checked if present. Locate
+         --  it on E for the inherited case.
+
+         if Has_Contracts (E, Name_Postcondition) then
+            Post_N := Get_Location_For_Aspect (E, Name_Postcondition);
+         elsif Has_Contracts (E, Name_Postcondition, Classwide => True) then
+            Post_N :=
+              Get_Location_For_Aspect
+               (E, Name_Postcondition, Classwide => True);
+         elsif Has_Contracts (E, Name_Postcondition, Inherited => True) then
+            Post_N := E;
+         else
+            Post_N := Empty;
+         end if;
+         if Present (Body_N) and then Entity_Body_In_SPARK (E) then
+
+            --  Translate contract of E. A No_Return subprogram, from the
+            --  inside, has postcondition true as non termination verification
+            --  is done by the frontend, but the precondition is unchanged.
+
+            if No_Return (E) then
+               return True_Pred;
+            else
+               return
+                 +New_VC_Expr (Post_N,
+                               +Get_Static_Call_Contract
+                                 (Mark_Params, E, Name_Postcondition),
+                               VC_Postcondition,
+                               EW_Pred);
+            end if;
+         else
+            return True_Pred;
+         end if;
+      end Post_As_Pred;
+
+      ----------------
+      -- RTE_Of_Pre --
+      ----------------
+
+      function RTE_Of_Pre return W_Prog_Id is
+         Params : constant Transformation_Params :=
+           (File        => File.File,
+            Theory      => File.Cur_Theory,
+            Phase       => Generate_VCs_For_Contract,
+            Gen_Marker  => False,
+            Ref_Allowed => True);
+      begin
+         return
+           Sequence
+             (New_Comment
+                (Comment => NID ("Check for RTE in the Pre of the subprogram"
+                 & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
+                   else ""))),
+              New_Ignore
+                (Prog => +Compute_Spec (Params, E, Name_Precondition, EW_Prog))
+             );
+      end RTE_Of_Pre;
+
+      ---------------------------
+      -- Transform_All_Pragmas --
+      ---------------------------
+
+      function Transform_All_Pragmas
+        (Prags   : Node_Lists.List;
+         Comment : String) return W_Prog_Id
+      is
+         Result : W_Prog_Id := New_Void;
+      begin
+         for Prag of Prags loop
+            Result :=
+              Sequence (Result, Transform_Pragma (Prag, Force => True));
+         end loop;
+         return
+           Sequence (New_Comment
+                     (Comment => NID (Comment
+                      & (if Sloc (E) > 0 then
+                           " " & Build_Location_String (Sloc (E))
+                        else ""))),
+                     Result);
+      end Transform_All_Pragmas;
+
+      ---------------
+      -- Try_Block --
+      ---------------
+
+      function Try_Block (Prog : W_Prog_Id) return W_Prog_Id is
+      begin
+         return
+           New_Try_Block
+             (Prog    => Prog,
+              Handler =>
+                (1 =>
+                       New_Handler
+                   (Name => M_Main.Return_Exc,
+                    Def  => New_Void)));
+      end Try_Block;
+
+      ------------------------------
+      -- Wrap_Decls_For_CC_Guards --
+      ------------------------------
+
+      function Wrap_Decls_For_CC_Guards (P : W_Prog_Id) return W_Prog_Id is
+         Prog : W_Prog_Id := P;
+      begin
+         if Present (Others_Guard_Ident) then
+            Prog := +New_Typed_Binding (Name    => Others_Guard_Ident,
+                                        Domain  => EW_Prog,
+                                        Def     => Others_Guard_Expr,
+                                        Context => +Prog);
+         end if;
+
+         Prog := Bind_From_Mapping_In_Expr
+           (Params                 => Contract_Params,
+            Map                    => Guard_Map,
+            Expr                   => Prog,
+            Do_Runtime_Error_Check => True);
+         return Prog;
+      end Wrap_Decls_For_CC_Guards;
+
+      Name      : constant String := Full_Name (E);
+
+      Prog      : W_Prog_Id;
+      Why_Body  : W_Prog_Id;
+
       Result_Var : W_Prog_Id;
+
+      Raise_Stmt : constant W_Prog_Id :=
+        New_Raise
+          (Ada_Node => Body_N,
+           Name     => M_Main.Return_Exc);
+
+      --  beginning of processing for Generate_VCs_For_Subprogram
 
    begin
       Open_Theory (File,
@@ -2156,26 +2550,25 @@ package body Gnat2Why.Subprograms is
                        & (if Sloc (E) > 0 then
                             " defined at " & Build_Location_String (Sloc (E))
                           else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+                   & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Current_Subp := E;
 
       Register_VC_Entity (E);
 
-      --  There might be no specific postcondition for E. In that case, the
-      --  classwide or inherited postcondition is checked if present. Locate
-      --  it on E for the inherited case.
+      Body_Params :=
+        (File        => File.File,
+         Theory      => File.Cur_Theory,
+         Phase       => Generate_VCs_For_Body,
+         Gen_Marker  => False,
+         Ref_Allowed => True);
 
-      if Has_Contracts (E, Name_Postcondition) then
-         Post_N := Get_Location_For_Aspect (E, Name_Postcondition);
-      elsif Has_Contracts (E, Name_Postcondition, Classwide => True) then
-         Post_N :=
-          Get_Location_For_Aspect (E, Name_Postcondition, Classwide => True);
-      elsif Has_Contracts (E, Name_Postcondition, Inherited => True) then
-         Post_N := E;
-      else
-         Post_N := Empty;
-      end if;
+      Contract_Params :=
+        (File        => File.File,
+         Theory      => File.Cur_Theory,
+         Phase       => Generate_VCs_For_Contract,
+         Gen_Marker  => False,
+         Ref_Allowed => True);
 
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
@@ -2211,29 +2604,6 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
 
-      Params :=
-        (File        => File.File,
-         Theory      => File.Cur_Theory,
-         Phase       => Generate_VCs_For_Contract,
-         Gen_Marker  => False,
-         Ref_Allowed => True);
-
-      --  The body of the subprogram may contain declarations that are in fact
-      --  essential to prove absence of RTE in the pre, e.g. compiler-generated
-      --  subtype declarations. We need to take those into account.
-
-      if Present (Body_N) and then Entity_Body_In_SPARK (E) then
-         Assume := Transform_Declarations_For_Params (Declarations (Body_N));
-      else
-         Assume := New_Void;
-      end if;
-
-      --  In the following declare block, we define the variable "Precondition"
-      --  to contain the precondition assumption for this subprogram. In fact,
-      --  if the subprogram is a main, the precondition needs to be *proved*,
-      --  and in this case the assumption is realized using an assertion
-      --  expression.
-
       for Expr of Get_Precondition_Expressions (E) loop
          if Nkind (Expr) = N_Identifier
            and then Entity (Expr) = Standard_False
@@ -2242,25 +2612,6 @@ package body Gnat2Why.Subprograms is
                          N    => Expr);
          end if;
       end loop;
-
-      --  need to prove precondition of Main before use. The test for entries
-      --  is just to protect the call to Might_Be_Main.
-
-      declare
-         Pre : constant W_Pred_Id :=
-           Get_Static_Call_Contract (Params, E, Name_Precondition);
-      begin
-         if not Is_Entry (E) and then Might_Be_Main (E) then
-            Precondition :=
-              New_Located_Assert
-                (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition),
-                 Pred     => Pre,
-                 Reason   => VC_Precondition_Main,
-                 Kind     => EW_Assert);
-         else
-            Precondition := New_Assume_Statement (Pred => Pre);
-         end if;
-      end;
 
       --  If contract cases are present, generate checks for absence of
       --  run-time errors in guards, and check that contract cases are disjoint
@@ -2275,65 +2626,13 @@ package body Gnat2Why.Subprograms is
          Others_Guard_Ident => Others_Guard_Ident,
          Others_Guard_Expr  => Others_Guard_Expr);
 
-      Init_Prog := Sequence
-        ((1 => New_Comment
-          (Comment => NID ("Declarations introduced by the compiler at the"
-           & " beginning of the subprogram"
-           & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
-             else ""))),
-          2 => Assume,
-          3 => New_Comment
-          (Comment => NID ("Check for RTE in the Pre of the subprogram"
-           & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
-             else ""))),
-          4 => New_Ignore
-            (Prog => +Compute_Spec (Params, E, Name_Precondition, EW_Prog)),
-          5 => New_Comment
-          (Comment => NID ("Assume Pre of the subprogram"
-           & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
-             else ""))),
-          6 => Precondition));
-
       Prog := Compute_Contract_Cases_Entry_Checks (E, Guard_Map);
 
       if Present (Body_N) and then Entity_Body_In_SPARK (E) then
-         Contract_Check := Compute_Contract_Cases_Exit_Checks
-           (Params             => Params,
-            E                  => E,
-            Guard_Map          => Guard_Map,
-            Others_Guard_Ident => Others_Guard_Ident);
 
-         Post_Check :=
-           Sequence
-             (New_Ignore
-                (Prog =>
-                       +Compute_Spec (Params, E, Name_Postcondition, EW_Prog)),
-              Contract_Check);
-
-         --  Set the phase to Generate_Contract_For_Body from now on, so that
-         --  occurrences of F'Result are properly translated as Result_Name.
-
-         Params.Phase := Generate_Contract_For_Body;
-
-         --  Translate contract of E. A No_Return subprogram, from the inside,
-         --  has postcondition true as non termination verification is done by
-         --  the frontend, but the precondition is unchanged.
-
-         if No_Return (E) then
-            Post := True_Pred;
-         else
-            Params.Gen_Marker := True;
-            Post := Get_Static_Call_Contract (Params, E, Name_Postcondition);
-            Params.Gen_Marker := False;
-
-            Post := +New_VC_Expr (Post_N, +Post, VC_Postcondition, EW_Pred);
-         end if;
-
-         --  Set the phase to Generate_VCs_For_Body from now on, so that
-         --  occurrences of X'Old are properly translated as reference to
-         --  the corresponding binder.
-
-         Params.Phase := Generate_VCs_For_Body;
+         Get_Pre_Post_Pragmas
+           (Get_Flat_Statement_And_Declaration_List
+              (Declarations (Body_N)));
 
          --  Declare a global variable to hold the result of a function
 
@@ -2359,229 +2658,62 @@ package body Gnat2Why.Subprograms is
                     Type_Of_Node (Containing_Protected_Type (E))));
          end if;
 
-         --  Translate statements in the body of the subp
-
-         Why_Body :=
-           Transform_Statements_And_Declarations
-             (Statements
-                (Handled_Statement_Sequence (Body_N)));
-
-         --  Translate statements in declaration block
-
          Why_Body :=
            Sequence
-             (Transform_Declarations_For_Body (Declarations (Body_N)),
-              Why_Body);
-
-         --  Check that the call graph starting from this subprogram respects
-         --  the ceiling priority protocol.
-
-         if (Is_Subprogram (E) and then Might_Be_Main (E))
-           or else Is_Protected_Type (Scope (E))
-           --  ??? we should check only public protected subprograms here
-         then
-            Why_Body :=
-              Sequence (Check_Ceiling_Protocol (Params, E),
-                        Why_Body);
-         end if;
+             ((Check_Ceiling_Protocol (Body_Params, E),
+              Transform_Declarations_For_Body (Declarations (Body_N)),
+              Transform_Statements_And_Declarations
+                (Statements
+                   (Handled_Statement_Sequence (Body_N))),
+              Raise_Stmt));
 
          --  Enclose the subprogram body in a try-block, so that return
          --  statements can be translated as raising exceptions.
 
-         declare
-            Raise_Stmt : constant W_Prog_Id :=
-              New_Raise
-                (Ada_Node => Body_N,
-                 Name     => M_Main.Return_Exc);
-         begin
-            Why_Body :=
-              New_Try_Block
-                (Prog    => Sequence (Why_Body, Raise_Stmt),
-                 Handler =>
-                   (1 =>
-                          New_Handler
-                      (Name => M_Main.Return_Exc,
-                       Def  => New_Void)));
-         end;
+         Why_Body := Try_Block (Why_Body);
 
          --  Check pragmas Precondition and Postcondition in the body of the
          --  subprogram as plain assertions.
 
-         declare
-            Pre_Prags  : Node_Lists.List;
-            Post_Prags : Node_Lists.List;
+         Why_Body := Sequence
+           ((1 =>
+                 Transform_All_Pragmas
+               (Pre_Prags,
+                "checking of pragma precondition"),
+             2 => Why_Body,
+             3 => Transform_All_Pragmas
+               (Post_Prags,
+                "checking of pragma postcondition")));
 
-            procedure Get_Pre_Post_Pragmas (Decls : Node_Lists.List);
-            --  Retrieve pragmas Precondition and Postcondition from the list
-            --  of body declarations, and add them to Pre_Prags and Post_Prags
-            --  when they do not come from aspects.
-
-            function Transform_All_Pragmas
-              (Prags : Node_Lists.List) return W_Prog_Id;
-            --  Force the translation of all pragmas in Prags into Why3.
-
-            procedure Get_Pre_Post_Pragmas (Decls : Node_Lists.List) is
-            begin
-               for Decl of Decls loop
-                  if Is_Pragma (Decl, Pragma_Precondition) and then
-                    not From_Aspect_Specification (Decl)
-                  then
-                     Pre_Prags.Append (Decl);
-
-                  elsif Is_Pragma (Decl, Pragma_Postcondition) and then
-                    not From_Aspect_Specification (Decl)
-                  then
-                     Post_Prags.Append (Decl);
-                  end if;
-               end loop;
-            end Get_Pre_Post_Pragmas;
-
-            function Transform_All_Pragmas
-              (Prags : Node_Lists.List) return W_Prog_Id
-            is
-               Result : W_Prog_Id := New_Void;
-            begin
-               for Prag of Prags loop
-                  Result :=
-                    Sequence (Result, Transform_Pragma (Prag, Force => True));
-               end loop;
-               return Result;
-            end Transform_All_Pragmas;
-
-         begin
-            Get_Pre_Post_Pragmas
-              (Get_Flat_Statement_And_Declaration_List
-                 (Declarations (Body_N)));
-            Why_Body := Sequence
-              ((1 => Transform_All_Pragmas (Pre_Prags),
-                2 => New_Comment
-                  (Comment => NID ("Body of the subprogram"
-                   & (if Sloc (E) > 0 then
-                        " " & Build_Location_String (Sloc (E))
-                     else ""))),
-                3 => Why_Body,
-                4 => New_Comment
-                  (Comment => NID ("Check additional Posts and RTE in Post of"
-                   & " the subprogram"
-                   & (if Sloc (E) > 0 then
-                        " " & Build_Location_String (Sloc (E))
-                     else ""))),
-                5 => Transform_All_Pragmas (Post_Prags)));
-         end;
-
-         --  Refined_Post
-         --  Encapsulate the translated body inside an abstract program with
-         --  the Refined_Post as a postcondition.
-         --  Assume the dynamic property of modified variables after the call.
-
-         if Has_Contracts (E, Name_Refined_Post) then
-            Why_Body :=
-              Sequence
-                (Why_Body,
-                 New_Ignore
-                   (Prog => +Compute_Spec
-                      (Params, E, Name_Refined_Post, EW_Prog)));
-            Why_Body :=
-              New_Located_Abstract
-                (Ada_Node => Get_Location_For_Aspect (E, Name_Refined_Post),
-                 Expr => Why_Body,
-                 Reason => VC_Refined_Post,
-                 Post => +Compute_Spec
-                   (Params, E, Name_Refined_Post, EW_Pred));
-            Why_Body := Sequence
-              (Why_Body,
-               New_Assume_Statement
-                 (Pred => Compute_Dynamic_Property_For_Effects (E, Params)));
-         end if;
+         Why_Body := Checking_Of_Refined_Post (Why_Body);
 
          --  check absence of runtime errors in Post and RTE + validity of
          --  contract cases
 
          Why_Body := Sequence
-           ((1 => New_Comment
-                (Comment => NID ("Check additional Pres of the subprogram"
-                 & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
-                   else ""))),
-             2 => Why_Body,
-             3 => Post_Check));
-
-         --  return the result variable, so that result = result_var in the
-         --  postcondition
-
-         Why_Body := Sequence (Why_Body, Result_Var);
+           ((1 => Why_Body,
+             2 => CC_And_RTE_Post,
+             3 => Result_Var));
 
          --  add declarations for 'Old variables
 
-         Why_Body := Bind_From_Mapping_In_Expr
-           (Params                 => Params,
-            Map                    => Map_For_Old,
-            Expr                   => Why_Body,
-            Guard_Map              => Guard_Map,
-            Others_Guard_Ident     => Others_Guard_Ident,
-            Do_Runtime_Error_Check => True,
-            Bind_Value_Of_Old      => True);
+         Why_Body := Declare_Old_Variables (Why_Body);
 
          Prog := Sequence (Prog, Why_Body);
-      else
-         Post := True_Pred;
       end if;
 
-      --  Bind value of guard expressions, checking for run-time errors
+      Prog := Wrap_Decls_For_CC_Guards (Prog);
 
-      Params.Phase := Generate_VCs_For_Contract;
-
-      if Present (Others_Guard_Ident) then
-         Prog := +New_Typed_Binding (Name    => Others_Guard_Ident,
-                                     Domain  => EW_Prog,
-                                     Def     => Others_Guard_Expr,
-                                     Context => +Prog);
-      end if;
-
-      Prog := Bind_From_Mapping_In_Expr
-        (Params                 => Params,
-         Map                    => Guard_Map,
-         Expr                   => Prog,
-         Do_Runtime_Error_Check => True);
-
-      --  Now that identifiers for guard expressions are bound, in the correct
-      --  context assuming precondition, glue together the initial part of the
-      --  program and the rest of it.
-
-      Prog := Sequence (Init_Prog, Prog);
-
-      --  Generate assumptions for dynamic types used in the program. An
-      --  exception is made for predicate functions generated by the frontend,
-      --  for which we should not assume that the predicate holds for checking
-      --  the absence of RTE in the predicate itself.
-
-      declare
-         Pred_Fun_Param : constant Entity_Id :=
-           (if Ekind (E) in E_Function | E_Procedure
-              and then Is_Predicate_Function (E)
-            then
-              Defining_Entity (First (Parameter_Specifications
-                (Subprogram_Specification (E))))
-            else
-              Empty);
-         Assume_For_Input : constant W_Prog_Id :=
-           Compute_Dynamic_Property_For_Inputs
-             (Params         => Params,
-              E              => E,
-              Pred_Fun_Param => Pred_Fun_Param);
-      begin
-         Prog := Sequence
-           ((1 => New_Comment
-             (Comment => NID ("Assume dynamic invariants of inputs of the"
-              & " subprogram "
-              & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
-                else ""))),
-             2 => Assume_For_Input,
-             3 => Prog));
-      end;
+      Prog := Sequence
+        ((Assume_For_Input,
+         Comp_Decl_At_Subp_Start,
+         RTE_Of_Pre,
+         Assume_Or_Assert_Of_Pre,
+         Prog));
 
       --  Assume values of constants
 
-      Assume_Value_Of_Constants (Prog, E, Params);
+      Assume_Value_Of_Constants (Prog, E, Contract_Params);
 
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
@@ -2593,7 +2725,7 @@ package body Gnat2Why.Subprograms is
                   Name    => Def_Name,
                   Binders => (1 => Unit_Param),
                   Labels  => Label_Set,
-                  Post    => Post,
+                  Post    => Post_As_Pred,
                   Def     => +Prog));
       end;
 
