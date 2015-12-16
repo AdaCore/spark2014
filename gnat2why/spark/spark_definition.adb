@@ -4880,6 +4880,14 @@ package body SPARK_Definition is
             Current_SPARK_Pragma := Save_SPARK_Pragma;
          end;
       end if;
+
+      --  Postprocessing: indicate in output file if the entity is in SPARK or
+      --  not, for reporting, debug and verification. Only do so if there is no
+      --  corresponding body, otherwise it is reported when marking the body.
+
+      if In_Main_Unit (E) and then No (Get_Body (E)) then
+         Generate_Output_In_Out_SPARK (E);
+      end if;
    end Mark_Subprogram_Declaration;
 
    -----------------------------
