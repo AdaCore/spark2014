@@ -3,4 +3,4 @@ from os.path import join
 
 prove_all()
 result_file = os.path.join("gnatprove", "p.spark")
-check_all_spark(result_file, expected_len = 1)
+check_spec_spark(result_file, expected_len = 1)

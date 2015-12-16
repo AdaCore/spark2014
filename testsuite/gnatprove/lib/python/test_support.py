@@ -581,12 +581,32 @@ version = "8.4pl6"
 
 
 def check_all_spark(result_file, expected_len):
-    """Using a gnatprove result file, check that all subprograms of that unit
+    """Using a gnatprove result file, check that all subprograms, entries, task
+       bodies and packages of that unit are in SPARK. Also check that there are
+       as many entries as expected.
+
+    PARAMETERS
+        result_file      the file to read
+        expected_len     the number of entities expected
+    RESULT
+        none
+
+    """
+    with open(result_file, 'r') as f:
+        result = json.load(f)
+        spark_result = result["spark"]
+        assert len(spark_result) == expected_len
+        for entry in spark_result:
+            assert entry["spark"] == "all"
+
+
+def check_spec_spark(result_file, expected_len):
+    """Using a gnatprove result file, check that all specs of that unit
        are in SPARK. Also check that there are as many entries as expected.
 
     PARAMETERS
         result_file      the file to read
-        expected_len     the number of subprograms expected
+        expected_len     the number of entities expected
     RESULT
         none
     """
@@ -595,7 +615,7 @@ def check_all_spark(result_file, expected_len):
         spark_result = result["spark"]
         assert len(spark_result) == expected_len
         for entry in spark_result:
-            assert entry["spark"] == "all"
+            assert entry["spark"] == "spec"
 
 
 def check_trace_files(opt=None):
