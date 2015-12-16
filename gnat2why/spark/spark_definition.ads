@@ -139,20 +139,34 @@ package SPARK_Definition is
    --  specification itself is in SPARK. To check if the body is in SPARK
    --  and contains no SPARK violations use Entity_Body_Valid_SPARK.
 
-   function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean;
+   function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) in E_Entry          |
+                         E_Function       |
+                         E_Package        |
+                         E_Procedure      |
+                         E_Protected_Type |
+                         E_Task_Type;
    --  @param E an entity
    --  @return True if the spec of E was marked in SPARK. Note this does not
    --    mean that the entity is valid SPARK, only that SPARK_Mode is On. It
    --    applies to subprogram, package, entry, protected type or task
    --    type entities.
 
-   function Entity_Body_In_SPARK (E : Entity_Id) return Boolean;
+   function Entity_Body_In_SPARK (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) in E_Entry     |
+                         E_Function  |
+                         E_Procedure |
+                         E_Package   |
+                         E_Task_Type;
    --  Returns True if the body of subprogram or package E was marked in
    --  SPARK. Note this does not mean that the subprogram is valid SPARK,
    --  only that SPARK_Mode is On.
 
-   function Entity_Body_Valid_SPARK (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry
+   function Entity_Body_Valid_SPARK (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) in E_Entry     |
+                         E_Function  |
+                         E_Procedure |
+                         E_Task_Type
                  and then Entity_Body_In_SPARK (E);
    --  Returns True if the given entitys' body contains no SPARK violations
 
