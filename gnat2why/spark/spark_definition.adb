@@ -4066,12 +4066,13 @@ package body SPARK_Definition is
          end if;
       end if;
 
+      Current_SPARK_Pragma := Save_SPARK_Pragma;
+
       --  Postprocessing: indicate in output file if package is in
       --  SPARK or not, for reporting, debug and verification.
 
       Generate_Output_In_Out_SPARK (Id);
 
-      Current_SPARK_Pragma := Save_SPARK_Pragma;
    end Mark_Package_Body;
 
    ------------------------------
