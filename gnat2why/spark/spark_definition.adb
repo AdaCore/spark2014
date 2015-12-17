@@ -239,7 +239,8 @@ package body SPARK_Definition is
    --  Mark node N as a violation of SPARK because of unsupported tasking
    --  configuration. An error message is issued if current SPARK_Mode is On.
 
-   procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id);
+   procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id)
+   with Global => (Input => Current_SPARK_Pragma);
    --  Issue an error continuation message for node N with the location of the
    --  violated SPARK_Mode pragma/aspect.
 
