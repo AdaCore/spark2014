@@ -5059,8 +5059,7 @@ package body SPARK_Definition is
    -- Mark_Violation_Of_SPARK_Mode --
    ----------------------------------
 
-   procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id)
-   is
+   procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id) is
    begin
       Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
 
