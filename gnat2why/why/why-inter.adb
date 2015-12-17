@@ -490,7 +490,7 @@ package body Why.Inter is
       procedure Add_Axiom_Imports (S : Node_Sets.Set) is
       begin
          for N of S loop
-            if not (Nkind (N) in N_Entity)
+            if Nkind (N) not in N_Entity
               or else not Entity_In_Ext_Axioms (N)
             then
                Add_With_Clause (P,
