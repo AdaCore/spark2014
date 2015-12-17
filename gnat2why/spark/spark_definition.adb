@@ -2636,7 +2636,8 @@ package body SPARK_Definition is
 
          if Entity_In_Ext_Axioms (E) then
 
-            --  Packages with external axioms should have SPARK_Mode On.
+            --  Packages with external axioms should have SPARK_Mode On;
+            --  this is enforced by Entity_In_Ext_Axioms (E).
 
             pragma Assert
               (Present (SPARK_Pragma (E))

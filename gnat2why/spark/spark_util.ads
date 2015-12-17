@@ -166,6 +166,7 @@ package SPARK_Util is
    function Entity_In_Ext_Axioms (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True iff E is declared in a package with external axiomatization
+   --     with SPARK_Mode => On.
 
    function Is_Access_To_Ext_Axioms_Discriminant
      (N : Node_Id) return Boolean
