@@ -4020,38 +4020,46 @@ package body SPARK_Definition is
    -----------------------
 
    procedure Mark_Package_Body (N : Node_Id) is
+      Body_E : constant Entity_Id := Defining_Entity (N);
+      Spec_E : constant Entity_Id := Unique_Entity (Body_E);
+
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
-      Id  : constant Entity_Id := Unique_Defining_Entity (N);
-      HSS : constant Node_Id := Handled_Statement_Sequence (N);
 
    begin
       --  Do not analyze generic bodies
 
-      if Ekind (Id) = E_Generic_Package then
+      if Ekind (Spec_E) = E_Generic_Package then
          return;
       end if;
-
-      Current_SPARK_Pragma := SPARK_Pragma (Defining_Entity (N));
 
       --  Do not analyze bodies for packages with external axioms. Only check
-      --  that their SPARK_Mode is Off, and restore SPARK_Mode pragma before
-      --  returning.
+      --  that their SPARK_Mode is Off.
 
-      if Entity_In_Ext_Axioms (Id) then
-         if Present (SPARK_Pragma (Defining_Entity (N)))
-           and then Get_SPARK_Mode_From_Annotation
-             (SPARK_Pragma (Defining_Entity (N))) /= Off
+      if Entity_In_Ext_Axioms (Spec_E) then
+
+         if Present (SPARK_Pragma (Body_E))
+           and then
+             Get_SPARK_Mode_From_Annotation (SPARK_Pragma (Body_E)) /= Off
          then
+            --  Call to Mark_Violation will only emit a message if
+            --  Current_SPARK_Pragma is points to On. Here we know that pragma
+            --  on body entity is not Off, so it must be On.
+
+            Current_SPARK_Pragma := SPARK_Pragma (Body_E);
+
             Mark_Violation ("Body of package with External_Axiomatization", N);
+
+            Current_SPARK_Pragma := Save_SPARK_Pragma;
          end if;
 
-         Current_SPARK_Pragma := Save_SPARK_Pragma;
          return;
       end if;
+
+      Current_SPARK_Pragma := SPARK_Pragma (Body_E);
 
       Mark_Stmt_Or_Decl_List (Declarations (N));
 
-      Current_SPARK_Pragma := SPARK_Aux_Pragma (Defining_Entity (N));
+      Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
 
       --  Only analyze package body statements in SPARK_Mode => On
 
@@ -4059,11 +4067,16 @@ package body SPARK_Definition is
 
          --  Always mark the body in SPARK
 
-         Bodies_In_SPARK.Include (Id);
+         Bodies_In_SPARK.Include (Spec_E);
 
-         if Present (HSS) then
-            Mark (HSS);
-         end if;
+         declare
+            HSS : constant Node_Id := Handled_Statement_Sequence (N);
+         begin
+            if Present (HSS) then
+               Mark (HSS);
+            end if;
+         end;
+
       end if;
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;
@@ -4071,7 +4084,7 @@ package body SPARK_Definition is
       --  Postprocessing: indicate in output file if package is in
       --  SPARK or not, for reporting, debug and verification.
 
-      Generate_Output_In_Out_SPARK (Id);
+      Generate_Output_In_Out_SPARK (Spec_E);
 
    end Mark_Package_Body;
 
