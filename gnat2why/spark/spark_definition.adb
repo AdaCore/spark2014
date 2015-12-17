@@ -4090,7 +4090,7 @@ package body SPARK_Definition is
 
       if Entity_In_Ext_Axioms (Id) then
 
-         --  Mark the package entity.
+         --  Mark the package entity
 
          Mark_Entity (Id);
          Specs_In_SPARK.Include (Id);
