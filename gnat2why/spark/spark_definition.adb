@@ -4045,7 +4045,7 @@ package body SPARK_Definition is
          then
             --  Call to Mark_Violation will only emit a message if
             --  Current_SPARK_Pragma is points to On. Here we know that pragma
-            --  on body entity is not Off, so it must be On.
+            --  on the body entity is not Off, so it must be On.
 
             Current_SPARK_Pragma := SPARK_Pragma (Body_E);
 
