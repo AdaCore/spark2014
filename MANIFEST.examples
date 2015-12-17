@@ -17,12 +17,16 @@
 --
 --
 -- The examples that follow all provide a test.gpr project file that
--- should be opened in GPS or GNATbench when selecting the example.
+-- should be opened in GPS or GNATbench when selecting the example,
+-- except for adacore_u, crazyflie, ipstack and thumper that are handled
+-- specially.
 --
 adacore_u
 autopilot
 binary_search
 binary_search_unconstrained
+bitwalker
+crazyflie
 database
 euclidian_division
 evoting
