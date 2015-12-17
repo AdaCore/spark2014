@@ -4718,8 +4718,6 @@ package body SPARK_Definition is
          return;
 
       else
-         --  For entries and task bodies reuse the value of SPARK_Pragma from
-         --  the context; workaround for O506-007.
          Current_SPARK_Pragma := SPARK_Pragma (Def_E);
 
          --  Only analyze subprogram body declarations in SPARK_Mode => On
