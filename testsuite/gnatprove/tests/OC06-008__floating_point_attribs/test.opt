@@ -1,1 +1,1 @@
-ALL XFAIL unsupported floating-point attributes (OC06-008)
+ALL DEAD unsupported floating-point attributes (OC06-008)
