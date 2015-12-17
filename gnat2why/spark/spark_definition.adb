@@ -4054,37 +4054,38 @@ package body SPARK_Definition is
             Current_SPARK_Pragma := Save_SPARK_Pragma;
          end if;
 
-         return;
+      else
+
+         Current_SPARK_Pragma := SPARK_Pragma (Body_E);
+
+         Mark_Stmt_Or_Decl_List (Declarations (N));
+
+         Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
+
+         --  Only analyze package body statements in SPARK_Mode => On
+
+         if SPARK_Pragma_Is (Opt.On) then
+
+            --  Always mark the body in SPARK
+
+            Bodies_In_SPARK.Include (Spec_E);
+
+            declare
+               HSS : constant Node_Id := Handled_Statement_Sequence (N);
+            begin
+               if Present (HSS) then
+                  Mark (HSS);
+               end if;
+            end;
+
+         end if;
+
+         Current_SPARK_Pragma := Save_SPARK_Pragma;
+
       end if;
 
-      Current_SPARK_Pragma := SPARK_Pragma (Body_E);
-
-      Mark_Stmt_Or_Decl_List (Declarations (N));
-
-      Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
-
-      --  Only analyze package body statements in SPARK_Mode => On
-
-      if SPARK_Pragma_Is (Opt.On) then
-
-         --  Always mark the body in SPARK
-
-         Bodies_In_SPARK.Include (Spec_E);
-
-         declare
-            HSS : constant Node_Id := Handled_Statement_Sequence (N);
-         begin
-            if Present (HSS) then
-               Mark (HSS);
-            end if;
-         end;
-
-      end if;
-
-      Current_SPARK_Pragma := Save_SPARK_Pragma;
-
-      --  Postprocessing: indicate in output file if package is in
-      --  SPARK or not, for reporting, debug and verification.
+      --  Postprocessing: indicate in output file if package is in SPARK or
+      --  not, for reporting, debug and verification.
 
       Generate_Output_In_Out_SPARK (Spec_E);
 
@@ -4095,11 +4096,7 @@ package body SPARK_Definition is
    ------------------------------
 
    procedure Mark_Package_Declaration (N : Node_Id) is
-      Id                : constant Entity_Id := Defining_Entity (N);
-      Spec              : constant Node_Id := Specification (N);
-      Vis_Decls         : constant List_Id := Visible_Declarations (Spec);
-      Priv_Decls        : constant List_Id := Private_Declarations (Spec);
-      Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+      Id : constant Entity_Id := Defining_Entity (N);
 
    begin
 
@@ -4110,46 +4107,55 @@ package body SPARK_Definition is
          Mark_Entity (Id);
          Specs_In_SPARK.Include (Id);
 
-         return;
+      else
+         declare
+            Spec       : constant Node_Id := Specification (N);
+            Vis_Decls  : constant List_Id := Visible_Declarations (Spec);
+            Priv_Decls : constant List_Id := Private_Declarations (Spec);
+
+            Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+         begin
+
+            --  Mark package in SPARK if fully in SPARK_Mode => On (including
+            --  the private part).
+
+            Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
+
+            Mark_Entity (Id);
+
+            Current_SPARK_Pragma := SPARK_Pragma (Id);
+
+            --  Mark abstract state entities
+
+            declare
+               States : constant Elist_Id := Abstract_States (Id);
+               State  : Elmt_Id;
+            begin
+               if Present (States) then
+                  State := First_Elmt (States);
+                  while Present (State)
+                    and then not Is_Null_State (Node (State))
+                  loop
+                     Mark_Entity (Node (State));
+                     Next_Elmt (State);
+                  end loop;
+               end if;
+            end;
+
+            if SPARK_Pragma_Is (Opt.On) then
+               Specs_In_SPARK.Include (Id);
+            end if;
+
+            Mark_Stmt_Or_Decl_List (Vis_Decls);
+
+            Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
+
+            Mark_Stmt_Or_Decl_List (Priv_Decls);
+
+            Current_SPARK_Pragma := Save_SPARK_Pragma;
+         end;
+
       end if;
-
-      --  Mark package in SPARK if fully in SPARK_Mode => On (including the
-      --  private part).
-
-      Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
-
-      Mark_Entity (Id);
-
-      Current_SPARK_Pragma := SPARK_Pragma (Id);
-
-      --  Mark abstract state entities
-
-      declare
-         States : constant Elist_Id := Abstract_States (Id);
-         State  : Elmt_Id;
-      begin
-         if Present (States) then
-            State := First_Elmt (States);
-            while Present (State)
-              and then not Is_Null_State (Node (State))
-            loop
-               Mark_Entity (Node (State));
-               Next_Elmt (State);
-            end loop;
-         end if;
-      end;
-
-      if SPARK_Pragma_Is (Opt.On) then
-         Specs_In_SPARK.Include (Id);
-      end if;
-
-      Mark_Stmt_Or_Decl_List (Vis_Decls);
-
-      Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
-
-      Mark_Stmt_Or_Decl_List (Priv_Decls);
-
-      Current_SPARK_Pragma := Save_SPARK_Pragma;
 
       --  Postprocessing: indicate in output file if package is in SPARK or
       --  not, for reporting, debug and verification. Only do so if there
