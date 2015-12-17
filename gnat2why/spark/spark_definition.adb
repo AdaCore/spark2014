@@ -2652,19 +2652,6 @@ package body SPARK_Definition is
             begin
                Current_SPARK_Pragma := SPARK_Pragma (E);
 
-               --  For packages with external axiomatization, check that the
-               --  private part (if any) has SPARK_Mode => Off.
-
-               if Present (Private_Declarations (Package_Specification (E)))
-                 and then Present (SPARK_Aux_Pragma (E))
-                 and then
-                   Get_SPARK_Mode_From_Annotation (SPARK_Aux_Pragma (E)) /= Off
-               then
-                  Mark_Violation
-                    ("private part of package with External_Axiomatization",
-                     E);
-               end if;
-
                --  If E is a package instance, mark its actual parameters
 
                declare
@@ -2682,6 +2669,19 @@ package body SPARK_Definition is
                --  axioms as in SPARK or not.
 
                Declare_In_Package_With_External_Axioms (Vis_Decls);
+
+               --  Check that the private part (if any) of a package with
+               --  External_Axiomatization has SPARK_Mode => Off.
+
+               if Present (Private_Declarations (Package_Specification (E)))
+                 and then Present (SPARK_Aux_Pragma (E))
+                 and then
+                   Get_SPARK_Mode_From_Annotation (SPARK_Aux_Pragma (E)) /= Off
+               then
+                  Mark_Violation
+                    ("private part of package with External_Axiomatization",
+                     E);
+               end if;
 
                if not Violation_Detected then
 
