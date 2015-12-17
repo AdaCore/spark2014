@@ -873,7 +873,7 @@ package body Why.Gen.Binders is
       Result : W_Expr_Array (Binders'Range);
    begin
       if Binders'Length = 0 and then Domain = EW_Prog then
-         return (1 => New_Void);
+         return (1 => +Void);
       else
          for B in Binders'Range loop
             Result (B) := +Binders (B).B_Name;

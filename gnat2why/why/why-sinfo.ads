@@ -700,7 +700,6 @@ package Why.Sinfo is
       W_Modular_Constant,
       W_Fixed_Constant,
       W_Real_Constant,
-      W_Void,
       W_Comment,
       W_Deref,
       W_Record_Access,

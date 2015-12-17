@@ -663,7 +663,7 @@ package body Gnat2Why.Expr is
       --  we ignore part_of objects as a first approximation
 
       if Is_Part_Of_Protected_Object (Lvalue) then
-         return New_Void;
+         return +Void;
       end if;
 
       --  In our Why translation, all objects are declared at top-level.
@@ -714,7 +714,7 @@ package body Gnat2Why.Expr is
                   Tmp_Var : constant W_Identifier_Id :=
                     New_Identifier (Name => L_Name & "__assume",
                                     Typ  => Why_Ty);
-                  Res     : W_Prog_Id := New_Void;
+                  Res     : W_Prog_Id := +Void;
                begin
                   if Binder.Fields.Present then
                      Res := New_Assignment
@@ -967,7 +967,7 @@ package body Gnat2Why.Expr is
 
             --  Generate assumption
 
-            if Default_Checks /= New_Void then
+            if Default_Checks /= +Void then
                Default_Checks := +New_Ignore
                  (Ada_Node => Lvalue,
                   Prog     => Default_Checks);
@@ -986,7 +986,7 @@ package body Gnat2Why.Expr is
             end if;
          end;
       else
-         return New_Void;
+         return +Void;
       end if;
    end Assignment_Of_Obj_Decl;
 
@@ -1119,7 +1119,7 @@ package body Gnat2Why.Expr is
          return New_Assume_Statement (Ada_Node => Ty,
                                       Pred     => T);
       else
-         return New_Void;
+         return +Void;
       end if;
    end Assume_Dynamic_Invariant;
 
@@ -1227,7 +1227,7 @@ package body Gnat2Why.Expr is
                  else
                    New_Ignore (Prog => +Transform_Expr (N, EW_Prog, Params)))
                else
-                 New_Void);
+                 +Void);
 
             --  Generate a term definition for the value of the object at
             --  subprogram entry, and link with rest of code. This
@@ -1417,7 +1417,7 @@ package body Gnat2Why.Expr is
       if Is_OK_Static_Range (Get_Range (N))
         and then (No (Base) or else Has_Static_Scalar_Subtype (Base))
       then
-         return New_Void;
+         return +Void;
       else
          pragma Assert (Present (Base));
          declare
@@ -1524,7 +1524,7 @@ package body Gnat2Why.Expr is
                                     N        => Sub_Type,
                                     Base     => Etype (Subtype_Mark (N)));
       else
-         return New_Void;
+         return +Void;
       end if;
    end Check_Subtype_Indication;
 
@@ -1544,7 +1544,7 @@ package body Gnat2Why.Expr is
       procedure Process_Declarations (L : List_Id);
       --  @param L list of declarations to check for interrupt attachments
 
-      Stat : W_Prog_Id := New_Void;
+      Stat : W_Prog_Id := +Void;
       --  Why3 program with static checks
 
       ---------------------------------
@@ -1656,7 +1656,7 @@ package body Gnat2Why.Expr is
       Nb_Of_Lets := 0;
 
       if Binders'Length = 0 then
-         return (1 => New_Void (Call));
+         return (1 => +Void);
       end if;
 
       declare
@@ -2113,7 +2113,7 @@ package body Gnat2Why.Expr is
       --  kind.
 
       Ty_Ext : constant Entity_Id := Retysp (Ty);
-      Checks : W_Prog_Id := New_Void;
+      Checks : W_Prog_Id := +Void;
    begin
       if Is_Scalar_Type (Ty_Ext) then
          if Has_Default_Aspect (Ty_Ext) then
@@ -2191,7 +2191,7 @@ package body Gnat2Why.Expr is
                   Params => Params);
             end if;
 
-            if T_Comp /= New_Void then
+            if T_Comp /= +Void then
                T_Comp := New_Conditional
                  (Ada_Node    => Ty,
                   Domain      => EW_Prog,
@@ -2201,7 +2201,7 @@ package body Gnat2Why.Expr is
 
                Checks := +T_Comp;
             else
-               Checks := New_Void;
+               Checks := +Void;
             end if;
          end;
 
@@ -2362,7 +2362,7 @@ package body Gnat2Why.Expr is
                           +Compute_Default_Check (Etype (Field), Params);
                      end if;
 
-                     if T_Comp /= New_Void then
+                     if T_Comp /= +Void then
 
                         --  Check values of record fields only if they are in
                         --  the proper variant part.
@@ -2389,7 +2389,7 @@ package body Gnat2Why.Expr is
             --  create bindings for Tmp_Exp
             --  let expr = any <type> ensures { expr.discr1 = tmp1 .. } in
 
-            if Checks /= New_Void and then Is_Record_Type (Ty_Ext) then
+            if Checks /= +Void and then Is_Record_Type (Ty_Ext) then
 
                   Checks := +New_Typed_Binding
                     (Domain   => EW_Prog,
@@ -2406,7 +2406,7 @@ package body Gnat2Why.Expr is
             --  Generate the bindings if we have some fields to check
             --  or if we need to check the bindings themselves.
 
-            if Checks /= New_Void or else not Is_Constrained (Ty_Ext) then
+            if Checks /= +Void or else not Is_Constrained (Ty_Ext) then
                for I in 1 .. Discrs loop
                   Checks := +New_Typed_Binding
                     (Domain   => EW_Prog,
@@ -3618,7 +3618,7 @@ package body Gnat2Why.Expr is
 
    begin
       if not Present (Controlling_Arg) then
-         return New_Void (Call);
+         return +Void;
       end if;
 
       Iterate_Call (Call);
@@ -3630,7 +3630,7 @@ package body Gnat2Why.Expr is
               Reason   => VC_Tag_Check,
               Kind     => EW_Assert);
       else
-         return New_Void (Call);
+         return +Void;
       end if;
    end Compute_Tag_Check;
 
@@ -4848,7 +4848,7 @@ package body Gnat2Why.Expr is
                declare
                   Tmp : constant W_Expr_Id := New_Temp_For_Expr (+Right_Side);
                begin
-                  Result := New_Void;
+                  Result := +Void;
 
                   if Binder.Fields.Present then
                      Result := New_Assignment
@@ -9116,7 +9116,7 @@ package body Gnat2Why.Expr is
 
       function Check_Discr_Of_Subtype (Base, Ent : Entity_Id) return W_Prog_Id
       is
-         R : W_Prog_Id := New_Void;
+         R : W_Prog_Id := +Void;
       begin
          if Present (Base)
            and then Present (Stored_Constraint (Ent))
@@ -9199,7 +9199,7 @@ package body Gnat2Why.Expr is
          end if;
       end Get_Base_Type;
 
-      R : W_Prog_Id := New_Void;
+      R : W_Prog_Id := +Void;
 
    --  Start of processing for Transform_Declaration
 
@@ -9661,7 +9661,7 @@ package body Gnat2Why.Expr is
      (L : List_Id) return W_Prog_Id
    is
       Cur_Decl : Node_Id := First (L);
-      Result   : W_Prog_Id := New_Void;
+      Result   : W_Prog_Id := +Void;
    begin
       while Present (Cur_Decl)
         and then Declaration_Is_Associated_To_Parameter (Cur_Decl)
@@ -9683,7 +9683,7 @@ package body Gnat2Why.Expr is
      (L : List_Id) return W_Prog_Id
    is
       Cur_Decl : Node_Id := First (L);
-      Result   : W_Prog_Id := New_Void;
+      Result   : W_Prog_Id := +Void;
    begin
       while  Present (Cur_Decl)
         and then Declaration_Is_Associated_To_Parameter (Cur_Decl)
@@ -11703,7 +11703,7 @@ package body Gnat2Why.Expr is
          --  during marking).
 
          when Pragma_Overflow_Mode =>
-            return New_Void (Prag);
+            return +Void;
 
          --  Unless Force is True to force the translation of pragmas
          --  Precondition and Postcondition (for those pragmas declared in
@@ -11732,7 +11732,7 @@ package body Gnat2Why.Expr is
                   return Result;
                end;
             else
-               return New_Void (Prag);
+               return +Void;
             end if;
 
          --  Pragma Inspection_Point is ignored, but we insert a call to a
@@ -11740,7 +11740,7 @@ package body Gnat2Why.Expr is
 
          when Pragma_Inspection_Point =>
             tip;
-            return New_Void (Prag);
+            return +Void;
 
          --  Do not issue a warning on invariant pragmas, as one is already
          --  issued on the corresponding type in SPARK.Definition.
@@ -11748,18 +11748,18 @@ package body Gnat2Why.Expr is
          when Pragma_Invariant
             | Pragma_Type_Invariant
             | Pragma_Type_Invariant_Class =>
-            return New_Void (Prag);
+            return +Void;
 
          --  ??? Currently ignored, see NA03-001
 
          when Pragma_Extensions_Visible =>
-            return New_Void (Prag);
+            return +Void;
 
          --  Do not issue a warning on unknown pragmas, as one is already
          --  issued in SPARK.Definition.
 
          when Unknown_Pragma =>
-            return New_Void (Prag);
+            return +Void;
 
          --  Remaining pragmas fall into two major groups:
          --
@@ -11860,7 +11860,7 @@ package body Gnat2Why.Expr is
               Pragma_Validity_Checks              |
               Pragma_Warnings                     |
               Pragma_Weak_External                =>
-            return New_Void (Prag);
+            return +Void;
 
          --  Group 1d - pragma that are re-written and/or removed
          --  by the front-end in GNATprove, so they should
@@ -12029,7 +12029,7 @@ package body Gnat2Why.Expr is
             Error_Msg_Name_1 := Pragma_Name (Prag);
             Error_Msg_N
               ("?pragma % ignored in proof (not yet supported)", Prag);
-            return New_Void (Prag);
+            return +Void;
       end case;
    end Transform_Pragma;
 
@@ -12050,7 +12050,7 @@ package body Gnat2Why.Expr is
 
    begin
       if not Force and then Is_Ignored_Pragma_Check (Stmt) then
-         Runtime := New_Void (Stmt);
+         Runtime := +Void;
          Pred := True_Pred;
          return;
       end if;
@@ -12089,7 +12089,7 @@ package body Gnat2Why.Expr is
 
       if not Force and then Is_Ignored_Pragma_Check (Prag)
       then
-         return New_Void (Prag);
+         return +Void;
       end if;
 
       Transform_Pragma_Check (Prag, Force, Check_Expr, Pred);
@@ -12100,7 +12100,7 @@ package body Gnat2Why.Expr is
          if Check_Expr /= Why_Empty then
             return Check_Expr;
          else
-            return New_Void (Prag);
+            return +Void;
          end if;
       end if;
 
@@ -12114,7 +12114,7 @@ package body Gnat2Why.Expr is
             Reason   => Reason,
             Domain   => EW_Prog);
       elsif Is_True_Boolean (+Pred) then
-         return New_Void (Prag);
+         return +Void;
       end if;
 
       --  Now handle remaining cases of "regular" pragma Check/Assert
@@ -13119,7 +13119,7 @@ package body Gnat2Why.Expr is
 
       case Nkind (Stmt_Or_Decl) is
          when N_Label | N_Null_Statement =>
-            return New_Void (Stmt_Or_Decl);
+            return +Void;
 
          when N_Assignment_Statement =>
 
@@ -13388,24 +13388,24 @@ package body Gnat2Why.Expr is
          --  Freeze nodes do not have any impact on proof
 
          when N_Freeze_Entity =>
-            return New_Void;
+            return +Void;
 
          --  Renamings are replaced by the renamed object in the frontend, but
          --  the renaming objects are not removed from the tree. We can safely
          --  ignore them.
 
          when N_Object_Renaming_Declaration =>
-            return New_Void;
+            return +Void;
 
          --  Nothing to do for an implicit label declaration
 
          when N_Implicit_Label_Declaration =>
-            return New_Void;
+            return +Void;
 
          --  Nothing to do for a number declaration
 
          when N_Number_Declaration =>
-            return New_Void;
+            return +Void;
 
          --  Subprogram and package declarations are already taken care of
          --  explicitly. They should not be treated as part of a list of
@@ -13420,12 +13420,12 @@ package body Gnat2Why.Expr is
             | N_Use_Package_Clause
             | N_Use_Type_Clause
             | N_Validate_Unchecked_Conversion =>
-            return New_Void;
+            return +Void;
 
          --  delay statements can be ignored for proof
 
          when N_Delay_Until_Statement =>
-            return New_Void;
+            return +Void;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Statement] kind ="
@@ -13506,7 +13506,7 @@ package body Gnat2Why.Expr is
      (Stmts_And_Decls : List_Id) return W_Prog_Id
    is
       Cur_Stmt_Or_Decl : Node_Id   := Nlists.First (Stmts_And_Decls);
-      Result           : W_Prog_Id := New_Void;
+      Result           : W_Prog_Id := +Void;
 
    begin
       while Present (Cur_Stmt_Or_Decl) loop

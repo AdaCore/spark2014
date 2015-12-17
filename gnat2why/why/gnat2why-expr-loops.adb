@@ -335,7 +335,7 @@ package body Gnat2Why.Expr.Loops is
    function Transform_Loop_Body_Statements
      (Stmts_And_Decls : Node_Lists.List) return W_Prog_Id
    is
-      Body_Prog : W_Prog_Id := New_Void;
+      Body_Prog : W_Prog_Id := +Void;
    begin
       for Stmt_Or_Decl of Stmts_And_Decls loop
 
@@ -372,7 +372,7 @@ package body Gnat2Why.Expr.Loops is
       --  Variables for the selected loop invariants, default initialized to
       --  the proper values when the loop does not have an invariant.
 
-      Inv_Check       : W_Prog_Id := New_Void;
+      Inv_Check       : W_Prog_Id := +Void;
 
       --  Variable for the implicit invariant for dynamic properties of
       --  modified objects.
@@ -382,8 +382,8 @@ package body Gnat2Why.Expr.Loops is
       --  Variables for the selected loop variants, default initialized to the
       --  proper values when the loop does not have a selected variant.
 
-      Variant_Check   : W_Prog_Id := New_Void;
-      Variant_Update  : W_Prog_Id := New_Void;
+      Variant_Check   : W_Prog_Id := +Void;
+      Variant_Update  : W_Prog_Id := +Void;
       Variant_Tmps    : Why_Node_Lists.List;
 
       Loop_Param_Ent  : Entity_Id := Empty;
@@ -604,10 +604,7 @@ package body Gnat2Why.Expr.Loops is
                --  always correct.
 
                Impl_Pred : constant W_Pred_Id :=
-                 (if Get_Kind (+Initial_Prog) = W_Void then
-                       Cond_Pred
-                  else
-                     True_Pred);
+                 (if Initial_Prog = +Void then Cond_Pred else True_Pred);
 
                Impl_Inv  : constant W_Pred_Id :=
                  +New_And_Expr (Left   => +Dyn_Types_Inv,
@@ -1375,8 +1372,8 @@ package body Gnat2Why.Expr.Loops is
       --  Unused initialization to avoid compiler warning that variable may be
       --  used before being assigned to.
 
-      Check_Prog := New_Void;
-      Update_Prog := New_Void;
+      Check_Prog := +Void;
+      Update_Prog := +Void;
       Progress_Pred := True_Pred;
       Same_Or_Progress_Pred := True_Pred;
 
@@ -1570,7 +1567,7 @@ package body Gnat2Why.Expr.Loops is
         New_Try_Block
           (Prog    => Try_Body,
            Handler => (1 => New_Handler (Name => Loop_Ident,
-                                         Def  => New_Void)));
+                                         Def  => +Void)));
    begin
       return
         Sequence

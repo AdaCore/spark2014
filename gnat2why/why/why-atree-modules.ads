@@ -350,6 +350,10 @@ package Why.Atree.Modules is
    Fixed_Unary_Minus         : W_Identifier_Id;
    Real_Unary_Minus          : W_Identifier_Id;
 
+   --  built_in void ident
+
+   Void : W_Identifier_Id;
+
    --  builtin infix symbols
 
    Why_Eq                    : W_Identifier_Id;

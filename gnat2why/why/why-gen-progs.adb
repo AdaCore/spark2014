@@ -115,7 +115,7 @@ package body Why.Gen.Progs is
           (Ada_Node => Ada_Node,
            Name     => New_Identifier (Domain => EW_Prog, Name => "_"),
            Def      => +Prog,
-           Context  => New_Void (Ada_Node => Ada_Node),
+           Context  => +Void,
            Typ      => EW_Unit_Type);
    begin
       return New_Abstract_Expr (Expr => Call, Post => True_Pred);
@@ -204,18 +204,6 @@ package body Why.Gen.Progs is
 
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id is
 
-      function Is_Void (N : W_Prog_Id) return Boolean;
-      --  Detect if the node represents the Void Literal
-
-      --------------
-      -- Is_Void --
-      --------------
-
-      function Is_Void (N : W_Prog_Id) return Boolean is
-      begin
-         return Get_Kind (+N) = W_Void;
-      end Is_Void;
-
    --  Start of processing for Sequence
 
    begin
@@ -224,9 +212,9 @@ package body Why.Gen.Progs is
       --  sequence statement.
       --  If both are sequences, or both are non-sequences, we use
       --  New_Statement_Sequence.
-      if Is_Void (Left) then
+      if Left = +Void then
          return Right;
-      elsif Is_Void (Right) then
+      elsif Right = +Void then
          return Left;
       end if;
 

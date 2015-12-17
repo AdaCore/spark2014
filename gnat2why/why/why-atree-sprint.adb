@@ -141,7 +141,6 @@ package body Why.Atree.Sprint is
    procedure Print_Type (Node : W_Type_Id);
    procedure Print_Type_Decl (Node : W_Type_Decl_Id);
    procedure Print_Universal_Quantif (Node : W_Universal_Quantif_Id);
-   procedure Print_Void (Node : W_Void_Id);
    procedure Print_While_Loop (Node : W_While_Loop_Id);
 
    --------------------------
@@ -1418,9 +1417,6 @@ package body Why.Atree.Sprint is
          when W_Real_Constant =>
             Print_Real_Constant (+N);
 
-         when W_Void =>
-            Print_Void (+N);
-
          when W_Comment =>
             Print_Comment (+N);
 
@@ -1892,16 +1888,6 @@ package body Why.Atree.Sprint is
       end if;
       P (O, ")");
    end Print_Universal_Quantif;
-
-   -----------------
-   -- Print_Void --
-   -----------------
-
-   procedure Print_Void (Node : W_Void_Id) is
-      pragma Unreferenced (Node);
-   begin
-      P (O, "()");
-   end Print_Void;
 
    -----------------------
    -- Print_While_Loop --

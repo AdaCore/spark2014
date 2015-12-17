@@ -201,6 +201,8 @@ package body Why.Atree.Modules is
                   Name       => New_Name (Symbol => NID ("unit")),
                   Is_Mutable => False);
 
+      --  built-in void ident
+
       Init_Main_Module;
       Init_Integer_Module;
       Init_Int_Power_Module;
@@ -329,7 +331,7 @@ package body Why.Atree.Modules is
           (File => Ada_Model_File,
            Name => NID ("Subtype_Array_Logical_Op_Axioms"));
 
-      --  builtin unary minus
+      --  builtin unary minus and void
 
       Int_Unary_Minus :=
         New_Identifier (Domain => EW_Term,
@@ -343,6 +345,10 @@ package body Why.Atree.Modules is
         New_Identifier (Domain => EW_Term,
                         Symbol => NID ("-."),
                         Typ    => EW_Real_Type);
+
+      Void := New_Identifier (Domain => EW_Term,
+                              Symbol => NID ("()"),
+                              Typ    => EW_Unit_Type);
 
       --  builtin infix operations
 

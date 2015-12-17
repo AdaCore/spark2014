@@ -248,7 +248,7 @@ package body Gnat2Why.Subprograms is
       Params   : Transformation_Params)
    is
       Include : constant Node_Sets.Set := Compute_Ada_Node_Set (+Why_Expr);
-      Assumes : W_Prog_Id := New_Void;
+      Assumes : W_Prog_Id := +Void;
    begin
       for N of Include loop
          if Present (N)
@@ -398,7 +398,7 @@ package body Gnat2Why.Subprograms is
           (Ekind (E) not in E_Function | E_Procedure or else
                  not Is_Protected_Type (Scope (E)))
       then
-         return New_Void;
+         return +Void;
       end if;
 
       declare
@@ -406,7 +406,7 @@ package body Gnat2Why.Subprograms is
          Ent  : constant Entity_Name := To_Entity_Name (E);
          Prio : constant W_Expr_Id := Self_Priority;
 
-         S    : W_Prog_Id := New_Void;
+         S    : W_Prog_Id := +Void;
       begin
          --  Placeholder for a Why3 sequence that will represent the check
          for Obj_Name of Directly_Called_Protected_Objects (Ent) loop
@@ -501,7 +501,7 @@ package body Gnat2Why.Subprograms is
       if Arg_Length = 0
         and then not Flow_Utility.Has_Proof_Global_Reads (E, Classwide => True)
       then
-         return W_Expr_Array'(1 => New_Void);
+         return W_Expr_Array'(1 => +Void);
       end if;
 
       while Cnt <= Integer (Arg_Length) loop
@@ -575,7 +575,7 @@ package body Gnat2Why.Subprograms is
       end Is_Initialized;
 
       Includes            : Node_Sets.Set;
-      Dynamic_Prop_Inputs : W_Prog_Id := New_Void;
+      Dynamic_Prop_Inputs : W_Prog_Id := +Void;
 
    begin
       --  Collect global variables read or written in E
@@ -694,7 +694,7 @@ package body Gnat2Why.Subprograms is
 
       begin
          while not Node_Sets.Is_Empty (Includes) loop
-            Prop_For_Include := New_Void;
+            Prop_For_Include := +Void;
             Flow_Id_Sets.Clear (Variables);
             for Obj of Includes loop
 
@@ -1356,7 +1356,7 @@ package body Gnat2Why.Subprograms is
       Count       : W_Expr_Id := New_Integer_Constant (Value => Uint_0);
       --  Count of the guards enabled
 
-      Result      : W_Prog_Id := New_Void;
+      Result      : W_Prog_Id := +Void;
       --  Why program for these checks
 
    --  Start of processing for Compute_Contract_Cases_Entry_Checks
@@ -1547,7 +1547,7 @@ package body Gnat2Why.Subprograms is
                Assert_Kind => EW_Assert));
       end Do_One_Contract_Case;
 
-      Result : W_Prog_Id := New_Void;
+      Result : W_Prog_Id := +Void;
 
    --  Start of processing for Compute_Contract_Cases_Exit_Checks
 
@@ -1682,7 +1682,7 @@ package body Gnat2Why.Subprograms is
         Get_Pragma (E, Pragma_Initial_Condition);
       Params     : Transformation_Params;
 
-      Why_Body   : W_Prog_Id := New_Void;
+      Why_Body   : W_Prog_Id := +Void;
       Post       : W_Pred_Id;
 
    begin
@@ -1833,13 +1833,13 @@ package body Gnat2Why.Subprograms is
       Classwide_Post_Assume : W_Prog_Id;
       Inherited_Post_Check  : W_Prog_Id;
 
-      Why_Body                : W_Prog_Id := New_Void;
-      Classwide_Pre_RTE       : W_Prog_Id := New_Void;
-      Classwide_Weaker_Pre    : W_Prog_Id := New_Void;
-      Weaker_Pre              : W_Prog_Id := New_Void;
-      Stronger_Post           : W_Prog_Id := New_Void;
-      Classwide_Post_RTE      : W_Prog_Id := New_Void;
-      Stronger_Classwide_Post : W_Prog_Id := New_Void;
+      Why_Body                : W_Prog_Id := +Void;
+      Classwide_Pre_RTE       : W_Prog_Id := +Void;
+      Classwide_Weaker_Pre    : W_Prog_Id := +Void;
+      Weaker_Pre              : W_Prog_Id := +Void;
+      Stronger_Post           : W_Prog_Id := +Void;
+      Classwide_Post_RTE      : W_Prog_Id := +Void;
+      Stronger_Classwide_Post : W_Prog_Id := +Void;
 
    begin
       Open_Theory (File,
@@ -2346,7 +2346,7 @@ package body Gnat2Why.Subprograms is
                  else ""))),
               Transform_Declarations_For_Params (Declarations (Body_N))));
          else
-            return New_Void;
+            return +Void;
          end if;
       end Comp_Decl_At_Subp_Start;
 
@@ -2471,7 +2471,7 @@ package body Gnat2Why.Subprograms is
         (Prags   : Node_Lists.List;
          Comment : String) return W_Prog_Id
       is
-         Result : W_Prog_Id := New_Void;
+         Result : W_Prog_Id := +Void;
       begin
          for Prag of Prags loop
             Result :=
@@ -2499,7 +2499,7 @@ package body Gnat2Why.Subprograms is
                 (1 =>
                        New_Handler
                    (Name => M_Main.Return_Exc,
-                    Def  => New_Void)));
+                    Def  => +Void)));
       end Try_Block;
 
       ------------------------------
@@ -2585,7 +2585,7 @@ package body Gnat2Why.Subprograms is
            (Ada_Node => Body_N,
             Right    => Result_Name,
             Typ      => Type_Of_Node (Etype (E)))
-         else New_Void);
+         else +Void);
 
       if Is_Protected_Subprogram (E) then
          declare
@@ -2754,7 +2754,7 @@ package body Gnat2Why.Subprograms is
       Body_N     : constant Node_Id := Task_Body (E);
       Params     : Transformation_Params;
 
-      Why_Body   : W_Prog_Id := New_Void;
+      Why_Body   : W_Prog_Id := +Void;
       Post       : W_Pred_Id;
    begin
       --  We open a new theory, so that the context is fresh for this task
