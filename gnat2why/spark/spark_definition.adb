@@ -4116,12 +4116,17 @@ package body SPARK_Definition is
             Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
          begin
 
-            --  Mark package in SPARK if fully in SPARK_Mode => On (including
-            --  the private part).
+            Entity_Set.Insert (Id);
 
             Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
 
-            Mark_Entity (Id);
+            --  Mark package declaration in SPARK if fully in SPARK_Mode => On
+            --  (including the private part).
+
+            if not SPARK_Pragma_Is (Opt.Off) then
+               Entities_In_SPARK.Include (Id);
+               Entity_List.Append (Id);
+            end if;
 
             Current_SPARK_Pragma := SPARK_Pragma (Id);
 
