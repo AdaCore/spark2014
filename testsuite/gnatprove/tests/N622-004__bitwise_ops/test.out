@@ -133,7 +133,6 @@ aco-math-very_longs.adb:261:64: info: initialization of "Temp" proved
 aco-math-very_longs.adb:262:63: info: initialization of "Temp" proved
 aco-math-very_longs.adb:266:14: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:270:13: info: range check proved
-aco-math-very_longs.adb:271:42: info: overflow check proved
 aco-math-very_longs.adb:271:42: info: range check proved
 aco-math-very_longs.adb:271:42: medium: overflow check might fail
 aco-math-very_longs.adb:279:26: info: length check proved
