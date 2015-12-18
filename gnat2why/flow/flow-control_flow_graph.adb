@@ -994,6 +994,9 @@ package body Flow.Control_Flow_Graph is
                when Barrier              => EC_Barrier,
                when Abnormal_Termination => EC_Abend,
                when Infinite_Loop        => EC_Inf);
+
+   --  Start of processing for Linkup
+
    begin
       if FA.Atr (From).Is_Parameter or FA.Atr (From).Is_Global_Parameter then
          Col := Get_Colour (FA.CFG.Get_Vertex (FA.Atr (From).Call_Vertex));
