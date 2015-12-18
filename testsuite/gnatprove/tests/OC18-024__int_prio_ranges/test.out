@@ -1,0 +1,7 @@
+p.ads:10:07: warning: pragma "Interrupt_Priority" ignored (not yet supported)
+t.adb:10:20: info: initialization of "Wakeup" proved
+t.adb:11:22: info: initialization of "Wakeup" proved
+t.adb:20:20: info: initialization of "Wakeup" proved
+t.adb:21:22: info: initialization of "Wakeup" proved
+t.ads:5:14: info: nontermination of task proved
+t.ads:9:14: info: nontermination of task proved
