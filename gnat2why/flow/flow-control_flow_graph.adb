@@ -989,13 +989,11 @@ package body Flow.Control_Flow_Graph is
       ----------------
 
       function Get_Colour (V : Flow_Graphs.Vertex_Id) return Edge_Colours
-        is (case FA.Atr.Element (V).Execution is
+        is (case FA.Atr (V).Execution is
                when Normal_Execution     => EC_Default,
                when Barrier              => EC_Barrier,
                when Abnormal_Termination => EC_Abend,
                when Infinite_Loop        => EC_Inf);
-      --  ??? workaround for OB26-003: explicitly call "Element (V)"
-      --      and not just "V".
    begin
       if FA.Atr (From).Is_Parameter or FA.Atr (From).Is_Global_Parameter then
          Col := Get_Colour (FA.CFG.Get_Vertex (FA.Atr (From).Call_Vertex));
