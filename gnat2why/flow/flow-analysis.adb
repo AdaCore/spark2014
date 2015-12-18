@@ -2461,8 +2461,8 @@ package body Flow.Analysis is
                   --  up). We also skip this check when checking final vertices
                   --  of variables that are mentioned on a generated
                   --  Initializes aspect.
-                  for V_Def of FA.DDG.Get_Collection
-                    (V, Flow_Graphs.In_Neighbours)
+                  for V_Def of
+                    FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                   loop
                      Def_Atr := FA.Atr.Element (V_Def);
                      Def_Key := FA.DDG.Get_Key (V_Def);
