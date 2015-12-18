@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2015, AdaCore                   --
+--                       Copyright (C) 2010-2016, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -2544,7 +2544,10 @@ package body Gnat2Why.Subprograms is
       --  Translate declarations and statements in the task body, if there
       --  is one.
 
-      if Present (Body_N) then
+      if Present (Body_N)
+        and then Entity_Body_In_SPARK (E)
+        and then Entity_Body_Valid_SPARK (E)
+      then
          if Present (Handled_Statement_Sequence (Body_N)) then
             Why_Body :=
               Sequence
