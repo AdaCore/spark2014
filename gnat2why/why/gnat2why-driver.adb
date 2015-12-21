@@ -318,7 +318,9 @@ package body Gnat2Why.Driver is
 
         and then not Subprogram_Is_Ignored_For_Proof (E)
       then
-         if Is_Dispatching_Operation (E) then
+         if Is_Dispatching_Operation (E)
+           and then not Is_Invisible_Dispatching_Operation (E)
+         then
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
             Update_Symbol_Table_For_Inherited_Contracts (E);
          end if;
