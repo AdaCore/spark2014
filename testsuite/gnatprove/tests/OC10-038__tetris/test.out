@@ -1,0 +1,2 @@
+tetris.adb:17:19: medium: range check might fail (e.g. when Y = 1)
+tetris.adb:21:14: info: initialization of "tmp" proved
