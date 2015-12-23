@@ -4,7 +4,7 @@ is
    function Get_Y_After_Action (Y : Y_Coord; The_Action : Action)
                                 return Y_Coord
    is (case The_Action is
-       when Down => Y - 1,
+       when Down => Y - 1, -- @RANGE_CHECK:FAIL
        when others => Y)
    with Pre => True;
 
