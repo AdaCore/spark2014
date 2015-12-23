@@ -8,7 +8,7 @@ package Simple_Allocator with
   Initializes       => State,
   Initial_Condition => All_Available
 is
-   Capacity : constant := 3;
+   Capacity : constant := 10_000;
 
    type Resource is new Integer range 0 .. Capacity;
    subtype Valid_Resource is Resource range 1 .. Capacity;
