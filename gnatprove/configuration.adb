@@ -338,7 +338,7 @@ ASCII.LF;
       Put_Line
         (Standard_Error,
          "warning: to specify target properties, specify option ""-gnateT"" " &
-           " using ""Builder.Global_Compilation_Switches""");
+           "using ""Builder.Global_Compilation_Switches""");
    end Check_gnateT_Switch;
 
    --------------
