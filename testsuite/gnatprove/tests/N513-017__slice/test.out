@@ -40,7 +40,7 @@ sorters.adb:62:13: info: precondition proved
 sorters.adb:62:26: info: range check proved
 sorters.adb:63:26: info: initialization of "Smallest" proved
 sorters.adb:66:10: info: loop invariant initialization proved
-sorters.adb:66:10: medium: loop invariant might fail after first iteration
+sorters.adb:66:10: info: loop invariant preservation proved
 sorters.adb:69:22: info: range check proved
 sorters.adb:69:66: info: overflow check proved
 sorters.adb:70:24: info: index check proved
