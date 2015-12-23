@@ -524,6 +524,14 @@ When editing an Ada file, |GNATprove| can also be run from a
    "Prove Line",         "This runs |GNATprove| on the current line."
    "Prove Check",        "This runs |GNATprove| on the current failing condition. |GNATprove| must have been run at least once for this option to be available in order to know which conditions are failing."
 
+Except from :menuselection:`Examine File` and :menuselection:`Prove File`, all
+other submenus are also applicable to code inside generic units, in which case
+the corresponding action is applied to all instances of the generic unit in the
+project. For example, if a generic unit is instantiated twice, selecting
+:menuselection:`Prove Subprogram` on a subprogram inside the generic unit will
+apply proof to the two corresponding subprograms in instances of the generic
+unit.
+
 The menus :menuselection:`SPARK --> Prove ...` open a panel which allows
 setting various switches for |GNATprove|'s analysis. By default, this panel
 offers a few simple choices, like the proof level (see description of switch
