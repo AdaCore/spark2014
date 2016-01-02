@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---               Copyright (C) 2013-2015, Altran UK Limited                 --
+--               Copyright (C) 2013-2016, Altran UK Limited                 --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -4326,7 +4326,7 @@ package body Flow.Analysis is
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "variable & cannot be referenced in " &
-                                 "precondition of protected operation & ",
+                                 "precondition of protected operation &",
                      Severity => High_Check_Kind,
                      N        => Precondition,
                      F1       => Var,

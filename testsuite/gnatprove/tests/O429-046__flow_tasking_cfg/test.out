@@ -1,5 +1,5 @@
 foo.adb:11:38: info: initialization of "G" proved
-foo.adb:14:28: high: variable "B" cannot be referenced in precondition of protected operation "Ent"  (SPARK RM 9(10))
+foo.adb:14:28: high: variable "B" cannot be referenced in precondition of protected operation "Ent" (SPARK RM 9(10))
 foo.adb:15:22: info: postcondition proved
 foo.adb:41:18: info: range check proved
 foo.adb:43:14: info: ceiling priority protocol is respected
