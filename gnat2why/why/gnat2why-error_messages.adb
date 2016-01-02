@@ -336,7 +336,7 @@ package body Gnat2Why.Error_Messages is
    procedure Parse_Why3_Results (S : String) is
 
       --  See the file gnat_report.mli for a description of the format that we
-      --  parse here
+      --  parse here.
 
       use GNATCOLL.JSON;
 
