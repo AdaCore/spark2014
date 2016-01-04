@@ -9251,13 +9251,18 @@ package body Gnat2Why.Expr is
 
                if Is_Protected_Type (Obj_Type) then
 
+                  --  If protected object attaches an interrupt, the priority
+                  --  must be in range of System.Interrupt_Priorioty; see RM
+                  --  C.3.1(11/3).
+
                   if Requires_Interrupt_Priority (Obj_Type) then
                      declare
                         P : constant Node_Id :=
                           Get_Priority_Or_Interrupt_Priority (Obj_Type);
                      begin
                         --  If no priority was specified, the default priority
-                        --  respects the ceiling priority.
+                        --  is implementation-defined (RM D.3 (10/3)), but in
+                        --  range of System.Interrupt_Priority.
 
                         if Present (P) then
 
@@ -9334,6 +9339,10 @@ package body Gnat2Why.Expr is
                                       Def      => W_D.Val,
                                       Context  => P_Expr);
                               end loop;
+
+                              --  Generate a range check, but with a reason of
+                              --  ceiling check, as specified in RM index for
+                              --  "Ceiling_Check".
 
                               R := Sequence
                                 (R,
