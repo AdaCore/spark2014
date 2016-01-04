@@ -912,6 +912,7 @@ begin
    Why3_Keywords.Include ("axiom");
    Why3_Keywords.Include ("begin");
    Why3_Keywords.Include ("bool");
+   Why3_Keywords.Include ("by");
    Why3_Keywords.Include ("check");
    Why3_Keywords.Include ("clone");
    Why3_Keywords.Include ("coinductive");
@@ -960,6 +961,7 @@ begin
    Why3_Keywords.Include ("real");
    Why3_Keywords.Include ("result");
    Why3_Keywords.Include ("returns");
+   Why3_Keywords.Include ("so");
    Why3_Keywords.Include ("then");
    Why3_Keywords.Include ("theory");
    Why3_Keywords.Include ("to");
