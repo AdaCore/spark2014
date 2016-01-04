@@ -402,7 +402,6 @@ package body Gnat2Why.Subprograms is
       end if;
 
       declare
-
          Ent  : constant Entity_Name := To_Entity_Name (E);
          Prio : constant W_Expr_Id := Self_Priority;
 
@@ -430,34 +429,34 @@ package body Gnat2Why.Subprograms is
 
                         when Static =>
                            New_Integer_Constant
-                       (Value => UI_From_Int (Obj_Prio.Value)),
+                             (Value => UI_From_Int (Obj_Prio.Value)),
 
                         when Default_Prio =>
                            New_Attribute_Expr
-                       (Domain => EW_Term,
-                        Ty     => RTE (RE_Priority),
-                        Attr   => Attribute_Last,
-                        Params => Params),
+                             (Domain => EW_Term,
+                              Ty     => RTE (RE_Priority),
+                              Attr   => Attribute_Last,
+                              Params => Params),
 
                         when Default_Interrupt_Prio =>
                            New_Attribute_Expr
-                       (Domain => EW_Term,
-                        Ty     => RTE (RE_Interrupt_Priority),
-                        Attr   => Attribute_First,
-                        Params => Params),
+                             (Domain => EW_Term,
+                              Ty     => RTE (RE_Interrupt_Priority),
+                              Attr   => Attribute_First,
+                              Params => Params),
 
                         when Last_Interrupt_Prio =>
                            New_Attribute_Expr
-                       (Domain => EW_Term,
-                        Ty     => RTE (RE_Interrupt_Priority),
-                        Attr   => Attribute_Last,
-                        Params => Params));
+                             (Domain => EW_Term,
+                              Ty     => RTE (RE_Interrupt_Priority),
+                              Attr   => Attribute_Last,
+                              Params => Params));
 
                   Pred         : constant W_Pred_Id :=
                     +New_Comparison
-                    (Symbol => (case Obj_Prio.Kind is
-                                   when Nonstatic => Why_Eq,
-                                   when others    => Int_Infix_Le),
+                      (Symbol => (case Obj_Prio.Kind is
+                                     when Nonstatic => Why_Eq,
+                                     when others    => Int_Infix_Le),
                      Left   => Prio,
                      Right  => Obj_Prio_Expr,
                      Domain => EW_Pred);
