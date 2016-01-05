@@ -637,42 +637,41 @@ package body Gnat2Why.Driver is
 
    procedure Translate_CUnit is
 
-      procedure Complete_Declarations (List_Entities : Entity_Collection);
-      --  Generate completion for every subprogram or type entity in
-      --  List_Entities
+      procedure Complete_Declarations;
+      --  Generate completion for subprogram and types
 
-      procedure Translate_List_Entities (List_Entities : Entity_Collection);
-      --  Translate the list of entities from the spec or body, in batches, in
-      --  order to ensure proper definition before use in Why files.
+      procedure Translate_Entities;
+      --  Translate entities from the spec or body, in batches, in order to
+      --  ensure proper definition before use in Why files.
 
       ---------------------------
       -- Complete_declarations --
       ---------------------------
 
-      procedure Complete_Declarations (List_Entities : Entity_Collection) is
+      procedure Complete_Declarations is
       begin
-         for E of List_Entities loop
+         for E of Entities_To_Translate loop
             Complete_Declaration (E);
          end loop;
       end Complete_Declarations;
 
-      -----------------------------
-      -- Translate_List_Entities --
-      -----------------------------
+      ------------------------
+      -- Translate_Entities --
+      ------------------------
 
-      procedure Translate_List_Entities (List_Entities : Entity_Collection) is
+      procedure Translate_Entities is
       begin
-         for E of List_Entities loop
+         for E of Entities_To_Translate loop
             Translate_Entity (E);
          end loop;
-      end Translate_List_Entities;
+      end Translate_Entities;
 
    --  Start of processing for Translate_CUnit
 
    begin
       --  Translate Ada entities into Why3
 
-      Translate_List_Entities (Entities_To_Translate);
+      Translate_Entities;
 
       --  For all objects whose declaration is not visible (has not been
       --  translated to Why), we generate a dummy declaration. This must
@@ -685,7 +684,7 @@ package body Gnat2Why.Driver is
 
       For_All_External_States (Translate_External_Object'Access);
 
-      Complete_Declarations (Entities_To_Translate);
+      Complete_Declarations;
 
       --  Generate VCs for entities of unit. This must follow the generation of
       --  modules for entities, so that all completions for deferred constants
