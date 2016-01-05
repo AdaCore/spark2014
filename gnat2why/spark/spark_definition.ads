@@ -121,7 +121,8 @@ package SPARK_Definition is
                               N_Subprogram_Declaration               |
                               N_Subprogram_Renaming_Declaration;
    --  Put marks on a compilation unit. This should be called after all
-   --  compilation units on which it depends have been marked.
+   --  compilation units on which this compilation unit depends have been
+   --  marked.
 
    procedure Mark_Standard_Package;
    --  Put marks on package Standard
