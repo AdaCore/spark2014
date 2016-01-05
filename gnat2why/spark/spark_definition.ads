@@ -57,10 +57,9 @@ package SPARK_Definition is
    Max_Array_Dimensions : constant Positive := 4;
    --  Maximal number of array dimensions that are currently supported
 
-   Emit_Messages : Boolean := True;
-   --  Emit messages only if this is set. We do not want to produce any
-   --  error messages during marking when we generate globals (only the
-   --  marking itself is important).
+   procedure Inhibit_Messages;
+   --  We do not want to produce any error messages during marking when we
+   --  generate globals (only the marking itself is important).
 
    ----------------------------------------------------------------------
    --  Marking procedures

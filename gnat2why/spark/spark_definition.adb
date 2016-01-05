@@ -116,6 +116,9 @@ package body SPARK_Definition is
    -- Adding Entities for Translation --
    -------------------------------------
 
+   Emit_Messages : Boolean := True;
+   --  Messages are emitted only if this flag is set
+
    Current_SPARK_Pragma : Node_Id;
    --  The current applicable SPARK_Mode pragma, if any, to reference in error
    --  messages when a violation is encountered. For analysis of the delayed
@@ -280,6 +283,15 @@ package body SPARK_Definition is
 
    function Is_SPARK_Tasking_Configuration return Boolean
    is (Ravenscar_Profile and then Sequential_Elaboration);
+
+   ----------------------
+   -- Inhibit_Messages --
+   ----------------------
+
+   procedure Inhibit_Messages is
+   begin
+      Emit_Messages := False;
+   end Inhibit_Messages;
 
    -----------------------
    -- Ravenscar_Profile --

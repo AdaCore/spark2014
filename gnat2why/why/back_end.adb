@@ -138,7 +138,7 @@ package body Back_End is
          --  In this mode, we should run the compiler with warnings as required
          --  by the user through switches -gnatw?
 
-         SPARK_Definition.Emit_Messages := False;
+         SPARK_Definition.Inhibit_Messages;
 
          --  In this mode, we should run the frontend with no warnings. They
          --  will be issued in the second run.
