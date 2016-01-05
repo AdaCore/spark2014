@@ -3417,17 +3417,10 @@ package body Flow_Utility is
    is
       Body_E : constant Entity_Id := Get_Body_Entity (E);
    begin
-      if Present (Body_E)
+      return Present (Body_E)
         and then Entity_Body_In_SPARK (E)
         and then Is_Visible (Body_E, Scope)
-        and then Refinement_Needed (E)
-      then
-         return True;
-      end if;
-
-      --  If we reach here then we must not rely on the generated
-      --  globals.
-      return False;
+        and then Refinement_Needed (E);
    end Rely_On_Generated_Global;
 
    --------------------
