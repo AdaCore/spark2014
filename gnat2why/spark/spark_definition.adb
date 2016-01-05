@@ -3622,8 +3622,7 @@ package body SPARK_Definition is
 
                case Ekind (E) is
                   when E_Protected_Subtype | E_Task_Subtype =>
-                     if not In_SPARK (Base_Type (E))
-                     then
+                     if not In_SPARK (Base_Type (E)) then
                         Mark_Violation (E, From => Base_Type (E));
                      end if;
 
@@ -3647,6 +3646,7 @@ package body SPARK_Definition is
                            Mark_Stmt_Or_Decl_List
                              (Private_Declarations (Type_Def));
                         end if;
+
                         if Ekind (E) = E_Task_Type
                           and then SPARK_Pragma_Is (Opt.On)
                         then
