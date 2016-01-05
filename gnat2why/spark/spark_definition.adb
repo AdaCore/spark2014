@@ -330,6 +330,8 @@ package body SPARK_Definition is
             end if;
          end Same_Unit;
 
+      --  Start of processing for Restriction_No_Dependence
+
       begin
          --  Loop to look for entry
 
@@ -347,6 +349,8 @@ package body SPARK_Definition is
 
          return False;
       end Restriction_No_Dependence;
+
+   --  Start of processing for Ravenscar_Profile
 
    begin
       if Ravenscar_Profile_Cached then
