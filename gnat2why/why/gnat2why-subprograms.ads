@@ -67,20 +67,22 @@ package Gnat2Why.Subprograms is
    procedure Generate_VCs_For_Subprogram
      (File : in out Why_Section;
       E    : Entity_Id)
-     with Pre => Ekind (E) in Subprogram_Kind | Entry_Kind;
+     with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the absence of run-time errors in E.
 
    procedure Generate_VCs_For_Package_Elaboration
      (File : in out Why_Section;
-      E    : Entity_Id);
+      E    : Entity_Id) with
+     Pre => Ekind (E) = E_Package;
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the Initial_Condition of E and the absence of run-time
    --  errors in the declarations and body statements of E.
 
    procedure Generate_VCs_For_LSP
      (File : in out Why_Section;
-      E    : Entity_Id);
+      E    : Entity_Id) with
+     Pre => Ekind (E) in E_Function | E_Procedure;
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the verification of LSP for dispatching subprogram E.
 
@@ -93,9 +95,9 @@ package Gnat2Why.Subprograms is
 
    procedure Translate_Subprogram_Spec
      (File : in out Why_Section;
-      E    : Entity_Id);
-   --  Generate a Why logic declaration that corresponds to an Ada subprogram.
-   --  Entity E is a E_Function or E_Procedure.
+      E    : Entity_Id) with
+     Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
+   --  Generate a Why logic declaration that corresponds to an Ada subprogram
 
    function Get_Logic_Arg
      (Binder      : Binder_Type;
@@ -105,9 +107,10 @@ package Gnat2Why.Subprograms is
 
    procedure Generate_Subprogram_Completion
      (File : in out Why_Section;
-      E    : Entity_Id);
+      E    : Entity_Id) with
+     Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Generate a Why program declaration and potentially a defining axiom for
-   --  an Ada subprogram. Entity E is a E_Function or E_Procedure.
+   --  an Ada subprogram.
 
    procedure Translate_Expression_Function_Body
      (File : in out Why_Section;
