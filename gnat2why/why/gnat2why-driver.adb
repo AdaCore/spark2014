@@ -875,7 +875,7 @@ package body Gnat2Why.Driver is
       end loop;
 
       --  The following types are not in the tree of the standard package, but
-      --  still are referenced elsewhere
+      --  still are referenced elsewhere.
 
       Translate_Entity (Standard_Integer_8);
       Complete_Declaration (Standard_Integer_8);
