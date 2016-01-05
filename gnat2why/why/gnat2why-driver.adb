@@ -856,8 +856,24 @@ package body Gnat2Why.Driver is
    --------------------------------
 
    procedure Translate_Standard_Package is
+
+      procedure Translate (E : Entity_Id);
+      --  Translate and complete declaration of entity E
+
+      ---------------
+      -- Translate --
+      ---------------
+
+      procedure Translate (E : Entity_Id) is
+      begin
+         Translate_Entity (E);
+         Complete_Declaration (E);
+      end Translate;
+
       Decl : Node_Id :=
         First (Visible_Declarations (Specification (Standard_Package_Node)));
+
+--  Start of processing for Translate_Standard_Package
 
    begin
       while Present (Decl) loop
@@ -865,8 +881,7 @@ package body Gnat2Why.Driver is
             when N_Full_Type_Declaration |
                  N_Subtype_Declaration   |
                  N_Object_Declaration    =>
-               Translate_Entity (Defining_Entity (Decl));
-               Complete_Declaration (Defining_Entity (Decl));
+               Translate (Defining_Entity (Decl));
             when others =>
                null;
          end case;
@@ -877,18 +892,12 @@ package body Gnat2Why.Driver is
       --  The following types are not in the tree of the standard package, but
       --  still are referenced elsewhere.
 
-      Translate_Entity (Standard_Integer_8);
-      Complete_Declaration (Standard_Integer_8);
-      Translate_Entity (Standard_Integer_16);
-      Complete_Declaration (Standard_Integer_16);
-      Translate_Entity (Standard_Integer_32);
-      Complete_Declaration (Standard_Integer_32);
-      Translate_Entity (Standard_Integer_64);
-      Complete_Declaration (Standard_Integer_64);
-      Translate_Entity (Universal_Integer);
-      Complete_Declaration (Universal_Integer);
-      Translate_Entity (Universal_Real);
-      Complete_Declaration (Universal_Real);
+      Translate (Standard_Integer_8);
+      Translate (Standard_Integer_16);
+      Translate (Standard_Integer_32);
+      Translate (Standard_Integer_64);
+      Translate (Universal_Integer);
+      Translate (Universal_Real);
 
    end Translate_Standard_Package;
 
