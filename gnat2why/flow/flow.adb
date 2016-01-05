@@ -1062,7 +1062,7 @@ package body Flow is
                                                    else "no"));
 
                   Write_Line ("Body in SPARK: " &
-                                (if Entity_Body_Valid_SPARK (E)
+                                (if Entity_Body_In_SPARK (E)
                                  then "yes"
                                  else "no"));
                end if;
@@ -1265,7 +1265,6 @@ package body Flow is
                if Generating_Globals
                  and then Ekind (E) in Subprogram_Kind | E_Entry
                  and then Entity_Body_In_SPARK (E)
-                 and then Entity_Body_Valid_SPARK (E)
                then
                   declare
                      Body_N : constant Node_Id := Get_Body (E);
@@ -1279,9 +1278,7 @@ package body Flow is
                end if;
 
                if SPARK_Util.Analysis_Requested (E, With_Inlined => True) then
-                  if Entity_Body_In_SPARK (E)
-                    and then Entity_Body_Valid_SPARK (E)
-                  then
+                  if Entity_Body_In_SPARK (E) then
                      --  Body is in SPARK, so we just analyze it
                      FA_Graphs.Include (E, Flow_Analyse_Entity
                                           (E,

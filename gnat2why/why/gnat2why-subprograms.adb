@@ -2793,7 +2793,6 @@ package body Gnat2Why.Subprograms is
 
       if Present (Body_N)
         and then Entity_Body_In_SPARK (E)
-        and then Entity_Body_Valid_SPARK (E)
       then
          if Present (Handled_Statement_Sequence (Body_N)) then
             Why_Body :=

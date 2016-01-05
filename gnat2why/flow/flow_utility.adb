@@ -3419,7 +3419,6 @@ package body Flow_Utility is
    begin
       if Present (Body_E)
         and then Entity_Body_In_SPARK (E)
-        and then Entity_Body_Valid_SPARK (E)
         and then Is_Visible (Body_E, Scope)
         and then Refinement_Needed (E)
       then

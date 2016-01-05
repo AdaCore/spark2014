@@ -487,7 +487,6 @@ package body Gnat2Why.Driver is
             when Subprogram_Kind =>
                if SPARK_Util.Analysis_Requested (E, With_Inlined => True)
                  and then Entity_Body_In_SPARK (E)
-                 and then Entity_Body_Valid_SPARK (E)
                then
                   for C of Direct_Calls (E) loop
                      Register_Assumptions_For_Call (E, C);

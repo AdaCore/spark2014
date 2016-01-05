@@ -172,11 +172,6 @@ package body SPARK_Definition is
    --  Unique defining entities of subprograms, entries, tasks and packages
    --  whose body is marked in SPARK.
 
-   Bodies_Valid_SPARK : Node_Sets.Set;
-   --  Unique defining entities of subprograms, entries and tasks whose body
-   --  contains no SPARK violations (but not package bodies because they are
-   --  never called).
-
    Full_Views_Not_In_SPARK : Node_Maps.Map;
    --  Maps type entities in SPARK whose full view was declared in a private
    --  part with SPARK_Mode => Off or a subtype or derived type of such an
@@ -207,9 +202,6 @@ package body SPARK_Definition is
 
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean
      renames Bodies_In_SPARK.Contains;
-
-   function Entity_Body_Valid_SPARK (E : Entity_Id) return Boolean
-     renames Bodies_Valid_SPARK.Contains;
 
    function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
      renames Full_Views_Not_In_SPARK.Contains;
@@ -4105,10 +4097,6 @@ package body SPARK_Definition is
 
          if SPARK_Pragma_Is (Opt.On) then
 
-            --  Always mark the body in SPARK
-
-            Bodies_In_SPARK.Include (Spec_E);
-
             declare
                HSS : constant Node_Id := Handled_Statement_Sequence (N);
             begin
@@ -4116,6 +4104,10 @@ package body SPARK_Definition is
                   Mark (HSS);
                end if;
             end;
+
+            if not Violation_Detected then
+               Bodies_In_SPARK.Insert (Spec_E);
+            end if;
 
          end if;
 
@@ -4791,10 +4783,6 @@ package body SPARK_Definition is
                end case;
             end if;
 
-            --  Always mark the body in SPARK
-
-            Bodies_In_SPARK.Include (E);
-
             --  Mark Actual_Subtypes of parameters if any
 
             declare
@@ -4890,7 +4878,7 @@ package body SPARK_Definition is
             end if;
 
             if not Violation_Detected then
-               Bodies_Valid_SPARK.Insert (E);
+               Bodies_In_SPARK.Insert (E);
             end if;
          end if;
 

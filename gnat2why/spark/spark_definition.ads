@@ -123,14 +123,6 @@ package SPARK_Definition is
    --  SPARK. Note this does not mean that the subprogram is valid SPARK,
    --  only that SPARK_Mode is On.
 
-   function Entity_Body_Valid_SPARK (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) in E_Entry     |
-                         E_Function  |
-                         E_Procedure |
-                         E_Task_Type
-            and then Entity_Body_In_SPARK (E);
-   --  Returns True if the given entitys' body contains no SPARK violations
-
    function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
      with Pre => Is_Type (E);
    --  Returns True if the underlying type of the type E is not in SPARK,

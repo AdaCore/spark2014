@@ -1415,7 +1415,6 @@ package body Flow_Generated_Globals is
                    or else (Ekind (E) in Einfo.Subprogram_Kind
                             and then Convention (E) = Convention_Protected))
                  and then Entity_Body_In_SPARK (E)
-                 and then Entity_Body_Valid_SPARK (E)
                then
                   declare
                      E_Name : constant Entity_Name := To_Entity_Name (E);
@@ -1489,7 +1488,6 @@ package body Flow_Generated_Globals is
                       when others =>
                          False)
                  and then Entity_Body_In_SPARK (E)
-                 and then Entity_Body_Valid_SPARK (E)
                  and then Analysis_Requested (E, With_Inlined => True)
                then
                   declare
