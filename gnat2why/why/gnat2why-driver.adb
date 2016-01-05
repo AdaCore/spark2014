@@ -873,7 +873,7 @@ package body Gnat2Why.Driver is
       Decl : Node_Id :=
         First (Visible_Declarations (Specification (Standard_Package_Node)));
 
---  Start of processing for Translate_Standard_Package
+   --  Start of processing for Translate_Standard_Package
 
    begin
       while Present (Decl) loop
