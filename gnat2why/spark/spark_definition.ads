@@ -139,7 +139,7 @@ package SPARK_Definition is
    --  or derived type of such an entity.
 
    function Get_First_Ancestor_In_SPARK (E : Entity_Id) return Entity_Id with
-     Pre  => Full_View_Not_In_SPARK (E),
+     Pre  => Is_Type (E) and then Full_View_Not_In_SPARK (E),
      Post => Entity_In_SPARK (Get_First_Ancestor_In_SPARK'Result);
    --  Returns the first type in SPARK in the ancestors of E
 
