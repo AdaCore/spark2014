@@ -167,7 +167,7 @@ package SPARK_Definition is
                          E_Function  |
                          E_Procedure |
                          E_Task_Type
-                 and then Entity_Body_In_SPARK (E);
+            and then Entity_Body_In_SPARK (E);
    --  Returns True if the given entitys' body contains no SPARK violations
 
    function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
