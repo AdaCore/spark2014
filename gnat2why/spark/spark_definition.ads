@@ -52,47 +52,9 @@ with Types;                 use Types;
 
 package SPARK_Definition is
 
-   Entity_List : Node_Lists.List;
-   --  List of entities that should be translated to Why3. This list contains
-   --  both entities in SPARK and entities not in SPARK. VCs should be
-   --  generated only for entities in the current unit. Each entity may
-   --  be attached to a declaration or not (for Itypes).
-
-   Entity_Set : Node_Sets.Set;
-   --  Set of all entities marked so far. It contains entities from both the
-   --  current compilation unit and other units.
-
-   type Instance_Number is (One, Many);
-   --  Number of task type instances in an object declaration
-
-   type Task_Object is
-      record
-         Name      : Entity_Name;
-         Instances : Instance_Number;
-         Node      : Node_Id;
-      end record;
-   --  Task object with the name of the library-level object and task type
-   --  instances (which can be many, e.g. for task arrays or records with
-   --  two components of a given task type).
-   --
-   --  Error messages related to a task object will be attached to Node.
-
-   package Task_Lists is
-     new Ada.Containers.Doubly_Linked_Lists (Task_Object);
-   --  Containers with task instances
-
-   package Task_Instances_Maps is
-     new Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
-                                     Element_Type    => Task_Lists.List,
-                                     Hash            => Name_Hash,
-                                     Equivalent_Keys => "=",
-                                     "="             => Task_Lists."=");
-   --  Containers that map task types to objects with task instances (e.g. task
-   --  arrays may contain several instances of a task type and task record may
-   --  contain instances of several tasks).
-
-   Task_Instances : Task_Instances_Maps.Map;
-   --  Task instances
+   ----------------------------------------------------------------------
+   --  Settings
+   ----------------------------------------------------------------------
 
    Max_Array_Dimensions : constant Positive := 4;
    --  Maximal number of array dimensions that are currently supported
@@ -108,6 +70,10 @@ package SPARK_Definition is
    --  analysis is not restricted to a single subprogram/line (typically during
    --  interactive use in IDEs), to avoid reporting messages on pieces of code
    --  not belonging to the analyzed subprogram/line.
+
+   ----------------------------------------------------------------------
+   --  Marking procedures
+   ----------------------------------------------------------------------
 
    procedure Mark_Compilation_Unit (N : Node_Id)
      with Pre => Nkind (N) in N_Compilation_Unit                     |
@@ -126,6 +92,10 @@ package SPARK_Definition is
 
    procedure Mark_Standard_Package;
    --  Put marks on package Standard
+
+   ----------------------------------------------------------------------
+   --  Marking results queries
+   ----------------------------------------------------------------------
 
    function Entity_Marked (E : Entity_Id) return Boolean;
    --  Returns True if entity E has already been considered for marking
@@ -194,8 +164,88 @@ package SPARK_Definition is
    --  Returns True iff entity E is defined in loop before the invariants and
    --  thus may require a special translation. See gnat2why.ads for details.
 
+   ----------------------------------------------------------------------
+   --  Marked entity collections
+   ----------------------------------------------------------------------
+
+   type Entity_Collection is
+     (Entities_To_Translate,
+      Marked_Entities)
+   with Iterable => (First       => First_Cursor,
+                     Next        => Next_Cursor,
+                     Has_Element => Has_Element,
+                     Element     => Get_Element);
+
+   type Cursor (Kind : Entity_Collection) is private;
+
+   function First_Cursor (Kind : Entity_Collection)
+                          return Cursor;
+
+   function Next_Cursor (Kind : Entity_Collection;
+                         C    : Cursor)
+                         return Cursor;
+
+   function Has_Element (Kind : Entity_Collection;
+                         C    : Cursor)
+                         return Boolean;
+
+   function Get_Element (Kind : Entity_Collection;
+                         C    : Cursor)
+                         return Entity_Id;
+
+   ----------------------------------------------------------------------
+   --  Task instances
+   ----------------------------------------------------------------------
+
+   --  ??? Task instances have nothing to do with marking; they are here only
+   --  because conceptually they are similar to entity containers. Perhaps
+   --  Flow_Generated_Globals is a better place.
+
+   type Instance_Number is (One, Many);
+   --  Number of task type instances in an object declaration
+
+   type Task_Object is
+      record
+         Name      : Entity_Name;
+         Instances : Instance_Number;
+         Node      : Node_Id;
+      end record;
+   --  Task object with the name of the library-level object and task type
+   --  instances (which can be many, e.g. for task arrays or records with
+   --  two components of a given task type).
+   --
+   --  Error messages related to a task object will be attached to Node.
+
+   package Task_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Task_Object);
+   --  Containers with task instances
+
+   package Task_Instances_Maps is
+     new Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
+                                     Element_Type    => Task_Lists.List,
+                                     Hash            => Name_Hash,
+                                     Equivalent_Keys => "=",
+                                     "="             => Task_Lists."=");
+   --  Containers that map task types to objects with task instances (e.g. task
+   --  arrays may contain several instances of a task type and task record may
+   --  contain instances of several tasks).
+
+   Task_Instances : Task_Instances_Maps.Map;
+   --  Task instances
+
    procedure Register_Task_Object (Type_Name : Entity_Name;
                                    Object    : Task_Object);
    --  Register object that instantiates tasks of a given type
+
+private
+
+   type Cursor (Kind : Entity_Collection) is record
+      case Kind is
+         when Entities_To_Translate =>
+            Entity_To_Translate_Cursor : Node_Lists.Cursor;
+         when Marked_Entities =>
+            Marked_Entities_Cursor     : Node_Sets.Cursor;
+      end case;
+   end record;
 
 end SPARK_Definition;

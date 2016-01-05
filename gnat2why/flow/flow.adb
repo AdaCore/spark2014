@@ -1255,7 +1255,7 @@ package body Flow is
       --  Initialize the Global_Info_List to the empty set
       Global_Info_List := Global_Info_Lists.Empty_List;
 
-      for E of Entity_Set loop
+      for E of Marked_Entities loop --  ??? why Entity_Set and not Entity_List?
          case Ekind (E) is
             when E_Entry | E_Task_Type | Subprogram_Kind =>
 
@@ -1444,7 +1444,8 @@ package body Flow is
       --  Check that classwide contracts conform to the legality rules laid
       --  out in SRM 6.1.6.
       Success := True;
-      for E of Entity_Set loop
+      for E of Marked_Entities loop
+         --  ??? why Entity_Set and not Entity_List?
          if Is_Subprogram (E)
            and then SPARK_Util.Analysis_Requested (E, With_Inlined => True)
            and then Entity_In_SPARK (E)

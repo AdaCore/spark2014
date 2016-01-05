@@ -144,6 +144,16 @@ package body SPARK_Definition is
    --  are attached to the entity itself, which is directly added to the lists
    --  for translation after marking.
 
+   Entity_List : Node_Lists.List;
+   --  List of entities that should be translated to Why3. This list contains
+   --  both entities in SPARK and entities not in SPARK. VCs should be
+   --  generated only for entities in the current unit. Each entity may
+   --  be attached to a declaration or not (for Itypes).
+
+   Entity_Set : Node_Sets.Set;
+   --  Set of all entities marked so far. It contains entities from both the
+   --  current compilation unit and other units.
+
    Entities_In_SPARK  : Node_Sets.Set;
    --  Entities in SPARK. An entity is added to this set if, after marking,
    --  no violations where attached to the corresponding scope. Standard
@@ -5158,5 +5168,53 @@ package body SPARK_Definition is
                              Inserted => Inserted);
       Task_Instances.Update_Element (C, Append_Object'Access);
    end Register_Task_Object;
+
+   ----------------------------------------------------------------------
+   --  Iterators
+   ----------------------------------------------------------------------
+
+   function First_Cursor (Kind : Entity_Collection) return Cursor is
+     ((case Kind is
+          when Entities_To_Translate =>
+            Cursor'(Kind => Entities_To_Translate,
+                    Entity_To_Translate_Cursor => Entity_List.First),
+
+          when Marked_Entities =>
+            Cursor'(Kind => Marked_Entities,
+                    Marked_Entities_Cursor     => Entity_Set.First)));
+
+   function Next_Cursor (Kind : Entity_Collection;
+                         C    : Cursor)
+                         return Cursor is
+     ((case Kind is
+          when Entities_To_Translate =>
+            Cursor'(Kind => Entities_To_Translate,
+                    Entity_To_Translate_Cursor =>
+                      Node_Lists.Next (C.Entity_To_Translate_Cursor)),
+
+          when Marked_Entities =>
+            Cursor'(Kind => Marked_Entities,
+                    Marked_Entities_Cursor     =>
+                      Node_Sets.Next (C.Marked_Entities_Cursor))));
+
+   function Has_Element (Kind : Entity_Collection;
+                         C    : Cursor)
+                         return Boolean is
+     ((case Kind is
+          when Entities_To_Translate =>
+            Node_Lists.Has_Element (C.Entity_To_Translate_Cursor),
+
+          when Marked_Entities =>
+            Node_Sets.Has_Element (C.Marked_Entities_Cursor)));
+
+   function Get_Element (Kind : Entity_Collection;
+                         C    : Cursor)
+                         return Entity_Id is
+     ((case Kind is
+          when Entities_To_Translate =>
+            Node_Lists.Element (C.Entity_To_Translate_Cursor),
+
+          when Marked_Entities =>
+            Node_Sets.Element (C.Marked_Entities_Cursor)));
 
 end SPARK_Definition;

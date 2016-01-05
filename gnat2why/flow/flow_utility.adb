@@ -2987,7 +2987,7 @@ package body Flow_Utility is
       Comp_Graph := Component_Graphs.Create;
 
       S := Node_Sets.Empty_Set;
-      for E of Entity_Set loop
+      for E of Marked_Entities loop
          if Is_Record_Type (E)
            or else Ekind (E) in E_Protected_Type | E_Task_Type
          then

@@ -1410,7 +1410,7 @@ package body Flow_Generated_Globals is
          begin
             --  First collect SPARK-compliant protected operations in the
             --  current compilation unit.
-            for E of Entity_Set loop
+            for E of Marked_Entities loop
                if (Ekind (E) = E_Entry
                    or else (Ekind (E) in Einfo.Subprogram_Kind
                             and then Convention (E) = Convention_Protected))
@@ -1479,7 +1479,7 @@ package body Flow_Generated_Globals is
          begin
             --  First collect SPARK-compliant protected operations, task types
             --  and main-like subprograms in the current compilation unit.
-            for E of Entity_Set loop
+            for E of Marked_Entities loop
                if (case Ekind (E) is
                       when E_Entry | E_Task_Type =>
                          True,
