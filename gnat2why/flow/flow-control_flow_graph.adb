@@ -3084,8 +3084,7 @@ package body Flow.Control_Flow_Graph is
             end;
 
          elsif Is_Record_Type (T) then
-            --  Ignore record variants and simply find any protected
-            --  components
+            --  Ignore record variants and simply find any protected components
             declare
                C : Entity_Id := First_Component (T);
             begin
