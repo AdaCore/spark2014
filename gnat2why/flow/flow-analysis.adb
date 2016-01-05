@@ -4145,7 +4145,7 @@ package body Flow.Analysis is
       is
          use Name_Maps;
 
-         Other_Task : constant Cursor :=
+         Other_Task : constant Name_Maps.Cursor :=
            Concurrent_Object_Owner (Owning_Kind).Find (Object);
          --  Pointer to other task possibly accessing the object
 

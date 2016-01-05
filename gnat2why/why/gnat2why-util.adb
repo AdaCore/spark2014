@@ -528,7 +528,7 @@ package body Gnat2Why.Util is
       use Node_Sets;
       Result   : Set;
       Work_Set : Set;
-      First    : Cursor;
+      First    : Node_Sets.Cursor;
       Cur_Node : Node_Id;
 
       procedure Update_Work_Set (Ignored : Node_Id; New_Set : Set);

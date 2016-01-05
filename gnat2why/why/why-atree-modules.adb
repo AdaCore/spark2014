@@ -91,7 +91,7 @@ package body Why.Atree.Modules is
       use Ada_To_Why;
       E2 : constant Entity_Id :=
         (if Nkind (E) in N_Entity then Unique_Entity (E) else E);
-      C  : constant Cursor := Entity_Modules.Find (E2);
+      C  : constant Ada_To_Why.Cursor := Entity_Modules.Find (E2);
    begin
       if Has_Element (C) then
          return W_Module_Id (Element (C));
@@ -121,7 +121,7 @@ package body Why.Atree.Modules is
       use Why_Symb_Maps;
       E2 : constant Entity_Id := (if Is_Type (E) then Retysp (E) else E);
       Key : constant Why_Symb := Why_Symb'(Entity => E2, Symb => S);
-      C : constant Cursor := Why_Symb_Map.Find (Key);
+      C : constant Why_Symb_Maps.Cursor := Why_Symb_Map.Find (Key);
    begin
       if Has_Element (C) then
          return Element (C);
@@ -137,7 +137,7 @@ package body Why.Atree.Modules is
 
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id is
       use Ada_To_Why;
-      C : constant Cursor := Axiom_Modules.Find (E);
+      C : constant Ada_To_Why.Cursor := Axiom_Modules.Find (E);
    begin
       if Has_Element (C) then
          return W_Module_Id (Element (C));
