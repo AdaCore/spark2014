@@ -155,8 +155,8 @@ package SPARK_Definition is
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean with
      Pre => Ekind (E) in E_Entry     |
                          E_Function  |
-                         E_Procedure |
                          E_Package   |
+                         E_Procedure |
                          E_Task_Type;
    --  Returns True if the body of subprogram or package E was marked in
    --  SPARK. Note this does not mean that the subprogram is valid SPARK,
