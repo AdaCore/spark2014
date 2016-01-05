@@ -79,7 +79,7 @@ package SPARK_Definition is
 
    package Task_Lists is
      new Ada.Containers.Doubly_Linked_Lists (Task_Object);
-   --  Container with task instances
+   --  Containers with task instances
 
    package Task_Instances_Maps is
      new Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
