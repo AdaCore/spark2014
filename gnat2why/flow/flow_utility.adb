@@ -315,6 +315,9 @@ package body Flow_Utility is
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
       --  AST traversal procedure
+
+   --  Start of processing for Collect_Functions_And_Read_Locked_POs
+
    begin
       Functions_Called := Node_Sets.Empty_Set;
       Traverse (N);
