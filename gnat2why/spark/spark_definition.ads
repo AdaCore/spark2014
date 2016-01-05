@@ -89,6 +89,7 @@ package SPARK_Definition is
 
    function Entity_Marked (E : Entity_Id) return Boolean;
    --  Returns True if entity E has already been considered for marking
+   --  ??? Exposing this function seems suspiocious; it is only used by Retysp
 
    function Entity_In_SPARK (E : Entity_Id) return Boolean;
    --  Returns True if entity E is in SPARK. Note that E may be in SPARK
