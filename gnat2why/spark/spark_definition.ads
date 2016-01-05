@@ -28,10 +28,9 @@
 -- Detection of SPARK Entities --
 ---------------------------------
 
---  All entities from the program are marked as being in SPARK or not in SPARK,
---  so that the translation to Why3 processes adequately the entity depending
---  on its status. The order of definition in Why3 follows the order in which
---  marking is applied to entities.
+--  All entities from the program are marked as being in SPARK or not in SPARK.
+--  Their marking status determines how they are translated to Why3 and the
+--  marking order determines the order of definition in Why3.
 
 --  An error is issued if an entity which should be in SPARK, according to the
 --  applicable SPARK_Mode pragma, is not in SPARK.
