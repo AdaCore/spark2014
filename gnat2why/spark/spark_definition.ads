@@ -102,13 +102,12 @@ package SPARK_Definition is
    --  error messages during marking when we generate globals (only the
    --  marking itself is important).
 
+   function Emit_Warning_Info_Messages return Boolean is
+     (Emit_Messages and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String);
    --  Emit warning/info messages only when messages should be emitted, and
    --  analysis is not restricted to a single subprogram/line (typically during
    --  interactive use in IDEs), to avoid reporting messages on pieces of code
    --  not belonging to the analyzed subprogram/line.
-   function Emit_Warning_Info_Messages return Boolean is
-     (Emit_Messages
-       and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String);
 
    procedure Mark_Compilation_Unit (N : Node_Id)
      with Pre => Nkind (N) in N_Compilation_Unit                     |
