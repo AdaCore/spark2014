@@ -281,6 +281,10 @@ package body SPARK_Definition is
    --  Check tasking configuration required by SPARK and possibly
    --  mark violation on node N.
 
+   ------------------------------------
+   -- Is_SPARK_Tasking_Configuration --
+   ------------------------------------
+
    function Is_SPARK_Tasking_Configuration return Boolean
    is (Ravenscar_Profile and then Sequential_Elaboration);
 
@@ -5185,6 +5189,9 @@ package body SPARK_Definition is
       begin
          Element.Append (Object);
       end Append_Object;
+
+   --  Start of processing for Register_Task_Object
+
    begin
       --  Find a list of instances of the task type; if it does not exist then
       --  initialize with an empty list.
@@ -5198,6 +5205,10 @@ package body SPARK_Definition is
    --  Iterators
    ----------------------------------------------------------------------
 
+   ------------------
+   -- First_Cursor --
+   ------------------
+
    function First_Cursor (Kind : Entity_Collection) return Cursor is
      ((case Kind is
           when Entities_To_Translate =>
@@ -5207,6 +5218,10 @@ package body SPARK_Definition is
           when Marked_Entities =>
             Cursor'(Kind => Marked_Entities,
                     Marked_Entities_Cursor     => Entity_Set.First)));
+
+   -----------------
+   -- Next_Cursor --
+   -----------------
 
    function Next_Cursor (Kind : Entity_Collection;
                          C    : Cursor)
@@ -5222,6 +5237,10 @@ package body SPARK_Definition is
                     Marked_Entities_Cursor     =>
                       Node_Sets.Next (C.Marked_Entities_Cursor))));
 
+   -----------------
+   -- Has_Element --
+   -----------------
+
    function Has_Element (Kind : Entity_Collection;
                          C    : Cursor)
                          return Boolean is
@@ -5231,6 +5250,10 @@ package body SPARK_Definition is
 
           when Marked_Entities =>
             Node_Sets.Has_Element (C.Marked_Entities_Cursor)));
+
+   -----------------
+   -- Get_Element --
+   -----------------
 
    function Get_Element (Kind : Entity_Collection;
                          C    : Cursor)
