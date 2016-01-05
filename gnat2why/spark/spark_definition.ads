@@ -87,8 +87,9 @@ package SPARK_Definition is
                                      Hash            => Name_Hash,
                                      Equivalent_Keys => "=",
                                      "="             => Task_Lists."=");
-   --  Containers that map task types to task objects with task instances
-   --  (e.g. task arrays may contain several instances of a task type).
+   --  Containers that map task types to objects with task instances (e.g. task
+   --  arrays may contain several instances of a task type and task record may
+   --  contain instances of several tasks).
 
    Task_Instances : Task_Instances_Maps.Map;
    --  Task instances
