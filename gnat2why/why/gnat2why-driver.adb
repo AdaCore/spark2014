@@ -639,7 +639,7 @@ package body Gnat2Why.Driver is
 
       procedure For_All_Entities
         (Process : not null access procedure (E : Entity_Id));
-      --  Travelsal procedure to process entities which need translation
+      --  Traversal procedure to process entities which need translation
 
       procedure Generate_VCs (E : Entity_Id);
       --  Check if E is in main unit and then generate VCs
