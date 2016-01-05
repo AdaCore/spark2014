@@ -24,6 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;          use Ada.Text_IO;
 with Aspects;              use Aspects;
 with Assumption_Types;     use Assumption_Types;
@@ -32,6 +33,7 @@ with Errout;               use Errout;
 with Exp_Util;             use Exp_Util;
 with Fname;                use Fname;
 with Gnat2Why.Annotate;    use Gnat2Why.Annotate;
+with Gnat2Why_Args;
 with Gnat2Why.Assumptions; use Gnat2Why.Assumptions;
 with Lib;                  use Lib;
 with Namet;                use Namet;
@@ -582,6 +584,13 @@ package body SPARK_Definition is
    procedure Mark_Most_Underlying_Type_In_SPARK (Id : Entity_Id; N : Node_Id);
    --  The most underlying type for type Id should be in SPARK, otherwise mark
    --  node N as not in SPARK.
+
+   function Emit_Warning_Info_Messages return Boolean is
+     (Emit_Messages and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String);
+   --  Emit warning/info messages only when messages should be emitted, and
+   --  analysis is not restricted to a single subprogram/line (typically during
+   --  interactive use in IDEs), to avoid reporting messages on pieces of code
+   --  not belonging to the analyzed subprogram/line.
 
    -----------------------------
    -- Discard_Underlying_Type --
