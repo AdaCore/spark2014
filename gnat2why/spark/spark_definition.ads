@@ -128,7 +128,7 @@ package SPARK_Definition is
    --  Put marks on package Standard
 
    function Entity_Marked (E : Entity_Id) return Boolean;
-   --  Returns True if entity E has already been considered for marking.
+   --  Returns True if entity E has already been considered for marking
 
    function Entity_In_SPARK (E : Entity_Id) return Boolean;
    --  Returns True if entity E is in SPARK. Note that E may be in SPARK
@@ -180,7 +180,7 @@ package SPARK_Definition is
    function Get_First_Ancestor_In_SPARK (E : Entity_Id) return Entity_Id with
      Pre  => Full_View_Not_In_SPARK (E),
      Post => Entity_In_SPARK (Get_First_Ancestor_In_SPARK'Result);
-   --  Returns the first type in SPARK in the ancestors of E.
+   --  Returns the first type in SPARK in the ancestors of E
 
    function Get_SPARK_JSON return JSON_Array;
    --  Should be called after marking is finished. Returns the result of
