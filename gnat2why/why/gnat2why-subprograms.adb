@@ -522,17 +522,16 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Binders (E : Entity_Id; Domain : EW_Domain)
                              return Item_Array is
-      Binders     : constant Item_Array :=
-        Compute_Subprogram_Parameters  (E, Domain);
+      Binders : constant Item_Array :=
+        Compute_Subprogram_Parameters (E, Domain);
    begin
+      --  If E has no parameters, return a singleton of unit type.
 
-         --  If E has no parameters, return a singleton of unit type.
-
-         if Binders'Length = 0 then
-            return (1 => (Regular, Unit_Param));
-         else
-            return Binders;
-         end if;
+      if Binders'Length = 0 then
+         return (1 => (Regular, Unit_Param));
+      else
+         return Binders;
+      end if;
    end Compute_Binders;
 
    -----------------------------------------
@@ -543,14 +542,18 @@ package body Gnat2Why.Subprograms is
      (E              : Entity_Id;
       Params         : Transformation_Params;
       Pred_Fun_Param : Entity_Id := Empty;
-      Initialized    : Boolean := False) return W_Prog_Id
+      Initialized    : Boolean   := False) return W_Prog_Id
    is
-      Read_Ids   : Flow_Types.Flow_Id_Sets.Set;
+      Read_Ids : Flow_Types.Flow_Id_Sets.Set;
 
       function Is_Initialized (Obj : Entity_Id) return Boolean with
         Pre => not Is_Declared_In_Unit (Obj, E)
-        and then Is_Mutable_In_Why (Obj);
-      --  Returns True if Obj is always initialized in the scope of E.
+               and then Is_Mutable_In_Why (Obj);
+      --  Returns True if Obj is always initialized in the scope of E
+
+      --------------------
+      -- Is_Initialized --
+      --------------------
 
       function Is_Initialized (Obj : Entity_Id) return Boolean is
       begin
@@ -576,14 +579,37 @@ package body Gnat2Why.Subprograms is
       Includes            : Node_Sets.Set;
       Dynamic_Prop_Inputs : W_Prog_Id := +Void;
 
+   --  Start of processing for Compute_Dynamic_Property_For_Inputs
+
    begin
       --  Collect global variables read or written in E
 
       if Ekind (E) in E_Function | E_Procedure | E_Task_Type then
          declare
             Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-            Read_Names  : Name_Sets.Set;
-            Write_Names : Name_Sets.Set;
+
+            procedure Include (S : Flow_Types.Flow_Id_Sets.Set);
+            --  Include entities represented in S (as Flow_Ids) in Includes
+
+            -------------
+            -- Include --
+            -------------
+
+            procedure Include (S : Flow_Types.Flow_Id_Sets.Set) is
+               Names : constant Name_Sets.Set := Flow_Types.To_Name_Set (S);
+               --  ??? why not directly convert from Flow_Id to Entity?
+            begin
+               for N of Names loop
+                  declare
+                     Entity : constant Entity_Id := Find_Entity (N);
+                  begin
+                     if Present (Entity) then
+                        Includes.Include (Entity);
+                     end if;
+                  end;
+               end loop;
+            end Include;
+
          begin
 
             --  Also get references to global constants with variable inputs
@@ -595,29 +621,11 @@ package body Gnat2Why.Subprograms is
                                             Writes         => Write_Ids,
                                             Keep_Constants => True);
 
-            Read_Names  := Flow_Types.To_Name_Set (Read_Ids);
-            Write_Names := Flow_Types.To_Name_Set (Write_Ids);
+            Include (Read_Ids);
+            Include (Write_Ids);
 
-            for R of Read_Names loop
-               declare
-                  Entity : constant Entity_Id := Find_Entity (R);
-               begin
-                  if Present (Entity) then
-                     Includes.Insert (Entity);
-                  end if;
-               end;
-            end loop;
-
-            for R of Write_Names loop
-               declare
-                  Entity : constant Entity_Id := Find_Entity (R);
-               begin
-                  if Present (Entity) then
-                     Includes.Include (Entity);
-                  end if;
-               end;
-            end loop;
          end;
+
       elsif Ekind (E) = E_Package and then not Is_Wrapper_Package (E) then
 
          --  For packages, we use the Initializes aspect to get the variables

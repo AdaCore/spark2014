@@ -116,8 +116,9 @@ package Gnat2Why.Subprograms is
    --  function F with expression E, states that: "for all <args> => F(<args>)
    --  = E". Also generate a program function for E.
 
-   function Compute_Subprogram_Parameters (E : Entity_Id; Domain : EW_Domain)
-                             return Item_Array;
+   function Compute_Subprogram_Parameters
+     (E : Entity_Id;
+      Domain : EW_Domain) return Item_Array;
    --  Return Why binders for the parameters of subprogram E.
    --  If Domain is EW_Term also generates binders for E's read effects.
 
