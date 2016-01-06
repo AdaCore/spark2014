@@ -159,16 +159,16 @@ package body SPARK_Definition is
    --  Set of all entities marked so far. It contains entities from both the
    --  current compilation unit and other units.
 
-   Entities_In_SPARK  : Node_Sets.Set;
+   Entities_In_SPARK : Node_Sets.Set;
    --  Entities in SPARK. An entity is added to this set if, after marking,
    --  no violations where attached to the corresponding scope. Standard
    --  entities are individually added to this set.
 
-   Specs_In_SPARK     : Node_Sets.Set;
+   Specs_In_SPARK    : Node_Sets.Set;
    --  Defining entities of subprograms, entries and packages whose spec is
    --  marked in SPARK.
 
-   Bodies_In_SPARK    : Node_Sets.Set;
+   Bodies_In_SPARK   : Node_Sets.Set;
    --  Unique defining entities of subprograms, entries, tasks and packages
    --  whose body is marked in SPARK.
 
