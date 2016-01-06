@@ -138,7 +138,7 @@ package body Gnat2Why.Driver is
    procedure Complete_Declaration (E : Entity_Id) is
    begin
       case Ekind (E) is
-         when Subprogram_Kind | Entry_Kind =>
+         when E_Entry | E_Function | E_Procedure =>
             if Is_Translated_Subprogram (E)
 
               --  Axioms for a SPARK expression function are issued in the same
