@@ -211,6 +211,7 @@ package body Gnat2Why.Driver is
          Set_Field (Full, "proof", Create (Get_Proof_JSON));
       end if;
       Set_Field (Full, "assumptions", Get_Assume_JSON);
+
       Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, File_Name);
       Ada.Text_IO.Put (FD, GNATCOLL.JSON.Write (Full, Compact => False));
       Ada.Text_IO.Close (FD);
