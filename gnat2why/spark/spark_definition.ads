@@ -109,9 +109,7 @@ package SPARK_Definition is
                          E_Task_Type;
    --  @param E an entity
    --  @return True if the spec of E was marked in SPARK. Note this does not
-   --    mean that the entity is valid SPARK, only that SPARK_Mode is On. It
-   --    applies to subprogram, package, entry, protected type or task
-   --    type entities.
+   --    mean that the entity is valid SPARK, only that SPARK_Mode is On.
 
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean with
      Pre => Ekind (E) in E_Entry     |
@@ -119,9 +117,8 @@ package SPARK_Definition is
                          E_Package   |
                          E_Procedure |
                          E_Task_Type;
-   --  Returns True if the body of subprogram or package E was marked in
-   --  SPARK. Note this does not mean that the subprogram is valid SPARK,
-   --  only that SPARK_Mode is On.
+   --  Returns True iff the body of E was marked in SPARK. Note this does not
+   --  mean that the subprogram is valid SPARK, only that SPARK_Mode is On.
 
    function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
      with Pre => Is_Type (E);

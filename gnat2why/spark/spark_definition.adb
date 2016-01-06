@@ -165,12 +165,12 @@ package body SPARK_Definition is
    --  entities are individually added to this set.
 
    Specs_In_SPARK    : Node_Sets.Set;
-   --  Defining entities of subprograms, entries and packages whose spec is
-   --  marked in SPARK.
+   --  Defining entities whose spec is marked in SPARK; for kinds of entities
+   --  in this set see the contract of Entity_Spec_In_SPARK.
 
    Bodies_In_SPARK   : Node_Sets.Set;
-   --  Unique defining entities of subprograms, entries, tasks and packages
-   --  whose body is marked in SPARK.
+   --  Unique defining entities whose body is marked in SPARK; for kinds of
+   --  entities in this set see the contract of Entity_Body_In_SPARK.
 
    Full_Views_Not_In_SPARK : Node_Maps.Map;
    --  Maps type entities in SPARK whose full view was declared in a private
