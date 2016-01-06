@@ -778,8 +778,8 @@ package body Gnat2Why.Driver is
                return;
             end if;
 
-            --  We need to fill the set of translated object entities, so that
-            --  we do not generate a dummy declaration for those
+            --  Fill the set of translated object entities and do not generate
+            --  a dummy declaration for those.
 
             Translated_Object_Entities.Include (To_Entity_Name (E));
 
