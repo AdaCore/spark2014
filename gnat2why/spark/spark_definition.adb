@@ -164,10 +164,6 @@ package body SPARK_Definition is
    --  no violations where attached to the corresponding scope. Standard
    --  entities are individually added to this set.
 
-   Specs_In_SPARK    : Node_Sets.Set;
-   --  Defining entities whose spec is marked in SPARK; for kinds of entities
-   --  in this set see the contract of Entity_Spec_In_SPARK.
-
    Bodies_In_SPARK   : Node_Sets.Set;
    --  Unique defining entities whose body is marked in SPARK; for kinds of
    --  entities in this set see the contract of Entity_Body_In_SPARK.
@@ -197,9 +193,6 @@ package body SPARK_Definition is
    function Entity_Marked (E : Entity_Id) return Boolean
      renames Entity_Set.Contains;
 
-   function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean
-     renames Specs_In_SPARK.Contains;
-
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean
      renames Bodies_In_SPARK.Contains;
 
@@ -214,6 +207,19 @@ package body SPARK_Definition is
 
    procedure Discard_Underlying_Type (T : Entity_Id);
    --  Mark T's underlying type as seen and store T as its partial view
+
+   --------------------------
+   -- Entity_Spec_In_SPARK --
+   --------------------------
+
+   function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean is
+      Prag : constant Node_Id := SPARK_Pragma (E);
+
+   begin
+      return
+        Present (Prag) and then
+        Get_SPARK_Mode_From_Annotation (Prag) = Opt.On;
+   end Entity_Spec_In_SPARK;
 
    ----------------------
    -- SPARK Violations --
@@ -3650,12 +3656,6 @@ package body SPARK_Definition is
                              (Private_Declarations (Type_Def));
                         end if;
 
-                        if Ekind (E) = E_Task_Type
-                          and then SPARK_Pragma_Is (Opt.On)
-                        then
-                           Specs_In_SPARK.Include (E);
-                        end if;
-
                      end;
 
                   when others =>
@@ -4139,7 +4139,6 @@ package body SPARK_Definition is
          --  Mark the package entity
 
          Mark_Entity (Id);
-         Specs_In_SPARK.Include (Id);
 
       else
          declare
@@ -4186,10 +4185,6 @@ package body SPARK_Definition is
                   end loop;
                end if;
             end;
-
-            if SPARK_Pragma_Is (Opt.On) then
-               Specs_In_SPARK.Include (Id);
-            end if;
 
             Mark_Stmt_Or_Decl_List (Vis_Decls);
 
@@ -4930,10 +4925,6 @@ package body SPARK_Definition is
          begin
 
             Current_SPARK_Pragma := SPARK_Pragma (E);
-
-            if SPARK_Pragma_Is (Opt.On) then
-               Specs_In_SPARK.Include (E);
-            end if;
 
             Mark_Entity (E);
 
