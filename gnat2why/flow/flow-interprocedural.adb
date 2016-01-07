@@ -171,7 +171,7 @@ package body Flow.Interprocedural is
                                                           FA.B_Scope))
       then
          --  We have a dependency aspect, so we should use it if:
-         --     a) we have already synthesized it's refined version
+         --     a) we have already synthesized its refined version
          --     b) we don't need to rely on its refined version
 
          --  The implicit in parameter for out parameters of unconstrained
