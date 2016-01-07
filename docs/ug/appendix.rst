@@ -838,6 +838,9 @@ Legality Rules
 
 #. Entry families are not currently allowed in |SPARK|.
 
+#. Calls to protected functions in preconditions are not rejected by
+   |GNATprove|, although they are forbidden in |SPARK|.
+
 Flow Analysis Limitations
 -------------------------
 
