@@ -46,10 +46,10 @@ with Why.Types;           use Why.Types;
 package body Why.Gen.Decl is
 
    procedure Emit_Record_Projection_Declaration
-     (Theory           : W_Theory_Declaration_Id;
-      Param_Ty_Name    : W_Name_Id;
-      Field_Id         : W_Identifier_Id;
-      SPARK_Node       : Node_Or_Entity_Id := Empty);
+     (Theory        : W_Theory_Declaration_Id;
+      Param_Ty_Name : W_Name_Id;
+      Field_Id      : W_Identifier_Id;
+      SPARK_Node    : Node_Or_Entity_Id := Empty);
    --  Emit declaration of a projection for a Why3 record type. The projection
    --  projects values of the record type to given field of this type.
    --  The declaration consists of a declaration  of a function that returns a

@@ -134,20 +134,20 @@ package Why.Gen.Binders is
 
    function New_Binders
      (Anonymous_Binders : W_Type_Array)
-     return Binder_Array;
+      return Binder_Array;
 
    function New_Universal_Quantif
      (Ada_Node : Node_Id := Empty;
       Binders  : Binder_Array;
       Triggers : W_Triggers_OId := Why_Empty;
       Pred     : W_Pred_Id)
-     return W_Pred_Id;
+      return W_Pred_Id;
 
    function New_Existential_Quantif
      (Ada_Node : Node_Id := Empty;
       Binders  : Binder_Array;
       Pred     : W_Pred_Id)
-     return W_Pred_Id;
+      return W_Pred_Id;
 
    function New_Call
      (Ada_Node : Node_Id := Empty;
@@ -178,7 +178,7 @@ package Why.Gen.Binders is
       Def         : W_Expr_Id := Why_Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id := True_Pred)
-     return W_Declaration_Id;
+      return W_Declaration_Id;
 
    function New_Function_Decl
      (Ada_Node    : Node_Id := Empty;
@@ -196,9 +196,10 @@ package Why.Gen.Binders is
    --  function parameters.
 
    function New_Record_Definition
-      (Ada_Node : Node_Id := Empty;
-       Name     : W_Name_Id;
-       Binders  : Binder_Array) return W_Declaration_Id;
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Name_Id;
+      Binders  : Binder_Array)
+      return W_Declaration_Id;
 
    function New_Guarded_Axiom
      (Ada_Node : Node_Id := Empty;
@@ -207,7 +208,7 @@ package Why.Gen.Binders is
       Triggers : W_Triggers_OId := Why_Empty;
       Pre      : W_Pred_OId := Why_Empty;
       Def      : W_Pred_Id)
-     return W_Declaration_Id;
+      return W_Declaration_Id;
    --  generate an axiom of the form:
    --
    --   axiom <name>:
@@ -220,7 +221,7 @@ package Why.Gen.Binders is
       Binders     : Binder_Array;
       Pre         : W_Pred_OId := Why_Empty;
       Def         : W_Term_Id)
-     return W_Declaration_Id;
+      return W_Declaration_Id;
    --  generate an axiom of the form:
    --
    --   axiom <name>___def:
@@ -233,7 +234,7 @@ package Why.Gen.Binders is
       Binders  : Binder_Array;
       Pre      : W_Pred_Id := Why_Empty;
       Def      : W_Pred_Id)
-     return W_Declaration_Id;
+      return W_Declaration_Id;
    --  Same as new_defining_axiom, but for functions returning booleans.
    --  (for those, predicates are generated instead of logics).
 
@@ -264,7 +265,7 @@ package Why.Gen.Binders is
      (E           : Entity_Id;
       Local       : Boolean := False;
       In_Fun_Decl : Boolean := False)
-     return Item_Type;
+      return Item_Type;
    --  Create an Item from an Entity
    --  @param E Ada Entity to be translated into an item.
    --  @param Local do not prefix names.

@@ -106,7 +106,7 @@ package body Why.Gen.Binders is
 
    function Get_Args_From_Variables (Variables : Name_Sets.Set;
                                      Ref_Allowed : Boolean)
-                                   return W_Expr_Array is
+                                     return W_Expr_Array is
       Items   : constant Item_Array := Get_Binders_From_Variables (Variables);
       Binders : constant Binder_Array := Get_Parameters_From_Binders (Items);
       Args    : W_Expr_Array (1 .. Binders'Length);
@@ -253,6 +253,9 @@ package body Why.Gen.Binders is
 
       Params : Binder_Array (1 .. Parameter_Length);
       I      : Positive := 1;
+
+   --  Start of processing for Get_Parameters_From_Binders
+
    begin
       for B of Binders loop
          case B.Kind is
@@ -420,7 +423,7 @@ package body Why.Gen.Binders is
          then Get_Specific_Type_From_Classwide (Use_Ty)
          else Use_Ty);
 
-      Ty     : constant Entity_Id :=
+      Ty : constant Entity_Id :=
         (if Is_Type (Spec_Ty) then Retysp (Spec_Ty) else Spec_Ty);
    begin
 
@@ -440,7 +443,7 @@ package body Why.Gen.Binders is
 
       elsif Ekind (E) = E_Function then
          declare
-            Typ    : constant W_Type_Id := Type_Of_Node (Ty);
+            Typ : constant W_Type_Id := Type_Of_Node (Ty);
          begin
             return (Func,
                     For_Logic => Binder_Type'
@@ -682,7 +685,7 @@ package body Why.Gen.Binders is
 
    function New_Binders
      (Anonymous_Binders : W_Type_Array)
-     return Binder_Array
+      return Binder_Array
    is
       Result : Binder_Array (Anonymous_Binders'Range);
       N      : Character := 'a';
@@ -709,7 +712,7 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Pre         : W_Pred_OId := Why_Empty;
       Def         : W_Term_Id)
-     return W_Declaration_Id
+      return W_Declaration_Id
    is
       Left       : constant W_Term_Id := +New_Call (Domain  => EW_Term,
                                                     Name    => Name,
@@ -717,8 +720,8 @@ package body Why.Gen.Binders is
       Equality   : W_Pred_Id;
       Node_Name  : constant String :=
         (Get_Name_String (Get_Symbol (Get_Name (Name))));
-      Axiom_Name : constant String := (if Node_Name /= "" then
-                                          Node_Name & "__"
+      Axiom_Name : constant String := (if Node_Name /= ""
+                                       then Node_Name & "__"
                                        else "") & Def_Axiom;
    begin
       Equality :=
@@ -746,7 +749,7 @@ package body Why.Gen.Binders is
       Binders  : Binder_Array;
       Pre      : W_Pred_Id := Why_Empty;
       Def      : W_Pred_Id)
-     return W_Declaration_Id
+      return W_Declaration_Id
    is
       Left     : constant W_Term_Id :=
                    +New_Call
@@ -778,11 +781,11 @@ package body Why.Gen.Binders is
    function New_Binders
      (Domain  : EW_Domain;
       Binders : Binder_Array)
-     return W_Binder_Array is
+      return W_Binder_Array is
 
       function New_Arg_Type
         (Binder : Binder_Type)
-        return W_Type_Id;
+         return W_Type_Id;
 
       ------------------
       -- New_Arg_Type --
@@ -790,7 +793,7 @@ package body Why.Gen.Binders is
 
       function New_Arg_Type
         (Binder : Binder_Type)
-        return W_Type_Id is
+         return W_Type_Id is
       begin
          if Domain = EW_Prog and then Binder.Mutable then
             return New_Ref_Type (Ty => Get_Type (+Binder.B_Name));
@@ -825,7 +828,7 @@ package body Why.Gen.Binders is
       Name     : W_Identifier_Id;
       Binders  : Binder_Array;
       Typ      : W_Type_Id := Why_Empty)
-     return W_Expr_Id is
+      return W_Expr_Id is
    begin
       return New_Call
         (Ada_Node => Ada_Node,
@@ -843,7 +846,7 @@ package body Why.Gen.Binders is
      (Ada_Node : Node_Id := Empty;
       Binders  : Binder_Array;
       Pred     : W_Pred_Id)
-     return W_Pred_Id is
+      return W_Pred_Id is
    begin
       if Binders'Length = 0 then
          return Pred;
@@ -868,7 +871,7 @@ package body Why.Gen.Binders is
    function New_Expr_Array
      (Domain  : EW_Domain;
       Binders : Binder_Array)
-     return W_Expr_Array
+      return W_Expr_Array
    is
       Result : W_Expr_Array (Binders'Range);
    begin
@@ -898,7 +901,7 @@ package body Why.Gen.Binders is
       Def         : W_Expr_Id := Why_Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id := True_Pred)
-     return W_Declaration_Id is
+      return W_Declaration_Id is
    begin
       return New_Function_Decl
         (Ada_Node    => Ada_Node,
@@ -924,7 +927,7 @@ package body Why.Gen.Binders is
       Def         : W_Expr_Id := Why_Empty;
       Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id := True_Pred)
-     return W_Declaration_Id is
+      return W_Declaration_Id is
       Loc_Items : Item_Array := Items;
    begin
       Localize_Variable_Parts (Loc_Items);
@@ -953,7 +956,7 @@ package body Why.Gen.Binders is
       Triggers : W_Triggers_OId := Why_Empty;
       Pre      : W_Pred_OId := Why_Empty;
       Def      : W_Pred_Id)
-     return W_Declaration_Id
+      return W_Declaration_Id
    is
       Ax_Body  : constant W_Pred_Id :=
                    (if Pre = Why_Empty then
@@ -981,7 +984,8 @@ package body Why.Gen.Binders is
    function New_Record_Definition
       (Ada_Node : Node_Id := Empty;
        Name     : W_Name_Id;
-       Binders  : Binder_Array) return W_Declaration_Id is
+       Binders  : Binder_Array)
+       return W_Declaration_Id is
    begin
       return
          New_Type_Decl
@@ -1001,7 +1005,8 @@ package body Why.Gen.Binders is
      (Ada_Node : Node_Id := Empty;
       Binders  : Binder_Array;
       Triggers : W_Triggers_OId := Why_Empty;
-      Pred     : W_Pred_Id) return W_Pred_Id
+      Pred     : W_Pred_Id)
+      return W_Pred_Id
    is
       Cnt : Natural;
       Typ : W_Type_Id;

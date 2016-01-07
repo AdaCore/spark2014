@@ -93,7 +93,7 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Typ    : constant W_Type_Id  := Type_Of_Node (Etype (E));
+      Typ : constant W_Type_Id := Type_Of_Node (Etype (E));
    begin
       --  Start with opening the theory to define, as the creation of a
       --  function for the logic term needs the current theory to insert an
@@ -139,9 +139,9 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Typ    : constant W_Type_Id := Type_Of_Node (Etype (E));
-      Decl   : constant Node_Id := Parent (E);
-      Def    : W_Term_Id;
+      Typ  : constant W_Type_Id := Type_Of_Node (Etype (E));
+      Decl : constant Node_Id   := Parent (E);
+      Def  : W_Term_Id;
 
       --  Always use the Ada type for the equality between the constant result
       --  and the translation of its initialization expression. Using "int"
@@ -342,7 +342,7 @@ package body Gnat2Why.Decls is
      (File : in out Why_Section;
       E    : Entity_Id)
    is
-      Var    : constant Item_Type := Mk_Item_Of_Entity (E);
+      Var : constant Item_Type := Mk_Item_Of_Entity (E);
    begin
       Open_Theory (File, E_Module (E),
                    Comment =>
