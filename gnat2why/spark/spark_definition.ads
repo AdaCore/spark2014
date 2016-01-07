@@ -93,7 +93,12 @@ package SPARK_Definition is
    --  ??? Exposing this function seems suspiocious; it is only used by Retysp
 
    function Entity_In_SPARK (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) not in E_Package | Generic_Unit_Kind;
+     Pre => Ekind (E) not in E_Package         |
+                             E_Package_Body    |
+                             E_Protected_Body  |
+                             E_Subprogram_Body |
+                             E_Task_Body       |
+                             Generic_Unit_Kind;
    --  Returns True if entity E is in SPARK. Note that E may be in SPARK
    --  without being marked by the user in SPARK, in which case it can be
    --  called from SPARK code, but no VC will be generated for E.
@@ -103,8 +108,10 @@ package SPARK_Definition is
    --  and contains no SPARK violations use Entity_Body_Valid_SPARK.
    --
    --  This call is only allowed for entities that are referenced from other
-   --  code, i.e. almost anything except E_Package (and generic units which
-   --  should be expanded by the front end).
+   --  code, i.e. almost anything except E_Package (since packages are never
+   --  referenced), body entities (since their status should be queried with a
+   --  dedicated function), and generic units (which should be expanded by the
+   --  front end).
 
    function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean with
      Pre => Ekind (E) in E_Entry          |
