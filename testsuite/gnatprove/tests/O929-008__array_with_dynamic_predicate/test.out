@@ -1,4 +1,4 @@
-u.adb:8:10: medium: predicate check might fail
+u.adb:8:10: medium: predicate check might fail (e.g. when I = 0)
 u.adb:8:13: info: index check proved
 u.adb:10:10: info: loop invariant initialization proved
 u.adb:10:10: info: loop invariant preservation proved

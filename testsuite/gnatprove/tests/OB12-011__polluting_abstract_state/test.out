@@ -1,4 +1,3 @@
-client.adb:3:11: info: ceiling priority protocol is respected
 client.adb:7:06: warning: unused assignment
 client.adb:8:04: info: assertion proved
 client.adb:8:19: info: initialization of "X" proved

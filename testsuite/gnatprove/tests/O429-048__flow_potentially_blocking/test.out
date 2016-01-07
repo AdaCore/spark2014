@@ -108,4 +108,6 @@ remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored in flow analysis (no
 remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored in proof (not yet supported)
 remote.ads:7:14: warning: subprogram "Remote_Call" has no effect
 simple_package.ads:3:14: warning: subprogram "Dummy" has no effect
+compilation of barrier.adb failed
+compilation of p.adb failed
 gnatprove: error during flow analysis and proof

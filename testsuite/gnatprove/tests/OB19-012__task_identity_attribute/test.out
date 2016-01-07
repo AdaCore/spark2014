@@ -1,2 +1,3 @@
 tti.ads:7:67: attribute "IDENTITY" is not permitted in SPARK
+compilation of tti.adb failed
 gnatprove: error during flow analysis and proof

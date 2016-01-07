@@ -1,25 +1,6 @@
-tasking_aspects.ads:7:14: medium: the task might terminate, which is not allowed in SPARK
-tasks-invalid_protected_stub.adb:2:01: "Invalid_Protected_Stub" is not allowed in SPARK
-tasks-invalid_protected_stub.adb:2:01: violation of pragma SPARK_Mode at test.adc:1
-tasks.adb:25:04: "Bad_Store" is not allowed in SPARK
-tasks.adb:25:04: violation of pragma SPARK_Mode at test.adc:1
-tasks.adb:89:34: attribute "Identity" is not permitted in SPARK
-tasks.adb:95:04: "Store_With_No_Initialization" is not allowed in SPARK
-tasks.adb:95:04: violation of pragma SPARK_Mode at test.adc:1
-tasks.adb:105:04: "Store_With_Mixed_Initialization" is not allowed in SPARK
-tasks.adb:105:04: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:3:46: access type is not allowed in SPARK
-tasks.ads:3:46: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:17:19: protected type with no default initialization is not allowed in SPARK (SPARK RM 9.4)
-tasks.ads:17:19: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:25:07: access type is not allowed in SPARK
-tasks.ads:25:07: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:25:27: access type is not allowed in SPARK
-tasks.ads:25:27: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:46:19: protected type with no default initialization is not allowed in SPARK (SPARK RM 9.4)
-tasks.ads:46:19: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:54:19: protected type with no default initialization is not allowed in SPARK (SPARK RM 9.4)
-tasks.ads:54:19: violation of pragma SPARK_Mode at test.adc:1
-tasks.ads:64:19: protected type with no default initialization is not allowed in SPARK (SPARK RM 9.4)
-tasks.ads:64:19: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
+tasks.ads:17:19: protected type "Bad_Store" must define full default initialization
+tasks.ads:46:19: protected type "Invalid_Protected_Stub" must define full default initialization
+tasks.ads:54:19: protected type "Store_With_No_Initialization" must define full default initialization
+tasks.ads:64:19: protected type "Store_With_Mixed_Initialization" must define full default initialization
+compilation of tasks.adb failed
+gnatprove: error during generation of Global contracts

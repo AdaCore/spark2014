@@ -20,9 +20,9 @@ pt.ads:2:09: high: possible data race when accessing variable "p.x"
 pt.ads:2:09: high: with task "original_main_func"
 pt.ads:2:09: high: with task "pt.t"
 pt.ads:2:09: info: nontermination of task proved
-pt.ads:2:09: high: possible data race when accessing variable "p.x"
-pt.ads:2:09: high: with task "gen_inst"
-pt.ads:2:09: high: with task "pt.t"
+gen_inst.ads:5:11: high: possible data race when accessing variable "p.x"
+gen_inst.ads:5:11: high: with task "gen_inst"
+gen_inst.ads:5:11: high: with task "pt.t"
 pt.ads:2:09: info: nontermination of task proved
 pt.ads:2:09: info: nontermination of task proved
 pt2.ads:2:09: high: possible data race when accessing variable "p.x"
