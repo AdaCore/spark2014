@@ -4147,10 +4147,10 @@ package body SPARK_Definition is
 
             Entity_Set.Insert (Id);
 
-            Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
-
             --  Mark package declaration in SPARK if fully in SPARK_Mode => On
             --  (including the private part).
+
+            Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
 
             if not SPARK_Pragma_Is (Opt.Off) then
                Entities_In_SPARK.Include (Id);
