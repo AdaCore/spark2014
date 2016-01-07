@@ -305,6 +305,9 @@ package body Gnat2Why.Driver is
 
    procedure Do_Generate_VCs (E : Entity_Id) is
    begin
+      --  ??? early return if
+      --      Analysis_Requested (E, With_Inlined => False) and then
+      --      Entity_Spec_In_SPARK (E)
       case Ekind (E) is
          when Subprogram_Kind | Entry_Kind =>
             if Analysis_Requested (E, With_Inlined => False)
@@ -339,9 +342,8 @@ package body Gnat2Why.Driver is
             end if;
 
          when E_Package =>
-            if (if Present (Package_Body (E))
-                then Entity_Body_In_SPARK (E)
-                else Entity_Spec_In_SPARK (E))
+            if Entity_Spec_In_SPARK (E) and then
+              not Entity_In_Ext_Axioms (E)
             then
                Generate_VCs_For_Package_Elaboration
                  (Why_Sections (WF_Main), E);

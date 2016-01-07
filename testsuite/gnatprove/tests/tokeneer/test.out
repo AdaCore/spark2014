@@ -490,6 +490,8 @@ bio.adb:250:35: info: initialization of "NumericReturn" proved
 bio.ads:40:20: info: initialization of "FingerPresent" proved
 bio.ads:56:22: info: initialization of "MatchResult" proved
 bio.ads:57:22: info: initialization of "AchievedFAR" proved
+bioapi.ads:42:19: info: length check proved
+bioapi.ads:58:25: info: length check proved
 cert-attr-auth.adb:66:35: info: initialization of "LocalContents.Issuer.ID" proved
 cert-attr-auth.adb:66:35: info: initialization of "LocalContents.Issuer.Name" proved
 cert-attr-auth.adb:66:35: info: initialization of "LocalContents.Issuer.NameLength" proved
@@ -867,6 +869,7 @@ certificatestore.adb:352:41: info: initialization of "Overflow" constituent of "
 certificatestore.adb:357:15: info: initialization of "Exists" proved
 certificatestore.adb:357:26: info: initialization of "Written" proved
 certificatestore.adb:358:18: medium: precondition might fail
+certproc.ads:65:55: info: length check proved
 certtypes.ads:35:22: info: length check proved
 clock.adb:73:11: info: range check proved
 clock.adb:74:12: info: index check proved
@@ -1833,6 +1836,7 @@ keyboard.adb:76:32: info: initialization of "LocalData" proved
 keyboard.ads:76:20: info: initialization of "DataPresence" proved
 keyboard.ads:77:20: info: initialization of "Data.Length" proved
 keyboard.ads:77:20: info: initialization of "Data.Text" proved
+keystore-interfac.ads:111:42: info: length check proved
 keystore.adb:58:06: info: length check proved
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:268
 keystore.adb:112:09: low: range check might fail, in call inlined at keystore.adb:276
@@ -2529,6 +2533,7 @@ stats.ads:101:28: info: initialization of "FailBio" proved
 tcpip.ads:30:41: info: length check proved
 tcpip.ads:30:41: info: length check proved
 tcpip.ads:30:41: info: length check proved
+tcpip.ads:34:46: info: length check proved
 tismain.adb:60:41: info: initialization of "AdminToken.State" proved
 tismain.adb:61:36: info: initialization of "Alarm.Output" proved
 tismain.adb:62:39: info: initialization of "AuditLog.State" proved
@@ -2692,6 +2697,7 @@ tismain.adb:1531:25: info: initialization of "AdminToken.State" proved
 tismain.adb:1536:22: medium: precondition might fail
 tismain.adb:1542:23: medium: precondition might fail
 tismain.adb:1549:22: medium: precondition might fail
+tokenapi.ads:175:54: info: length check proved
 tokenreader.adb:51:37: info: length check proved
 tokenreader.adb:62:23: info: length check proved
 tokenreader.adb:67:23: info: length check proved

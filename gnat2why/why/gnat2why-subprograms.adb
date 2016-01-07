@@ -1748,9 +1748,11 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  Translate declarations and statements in the package body, if there
-      --  is one.
+      --  is one and it is in SPARK.
 
-      if Present (Body_N) then
+      if Present (Body_N) and then
+        Entity_Body_In_SPARK (E)
+      then
          if Present (Handled_Statement_Sequence (Body_N)) then
             Why_Body :=
               Sequence

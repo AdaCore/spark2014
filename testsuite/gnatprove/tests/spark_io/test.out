@@ -120,6 +120,7 @@ echo_1.adb:55:13: info: precondition proved
 hello_world.adb:31:13: medium: precondition of main program might fail
 hello_world.adb:35:04: info: precondition proved
 hello_world.adb:37:07: info: precondition proved
+spark-text_io.ads:29:08: medium: initial condition might fail
 spark-text_io.ads:134:31: info: precondition proved
 spark-text_io.ads:139:12: info: precondition proved
 spark-text_io.ads:139:43: info: precondition proved
