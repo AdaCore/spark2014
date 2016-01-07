@@ -2199,7 +2199,7 @@ package body Gnat2Why.Subprograms is
       --  return verification of the contract cases, plus runtime checks for
       --  the Post
 
-      Body_Params : Transformation_Params;
+      Body_Params     : Transformation_Params;
       Contract_Params : Transformation_Params;
 
       function Declare_Old_Variables (P : W_Prog_Id) return W_Prog_Id;
@@ -2545,7 +2545,7 @@ package body Gnat2Why.Subprograms is
           (Ada_Node => Body_N,
            Name     => M_Main.Return_Exc);
 
-      --  beginning of processing for Generate_VCs_For_Subprogram
+   --  Start of processing for Generate_VCs_For_Subprogram
 
    begin
       Open_Theory (File,
