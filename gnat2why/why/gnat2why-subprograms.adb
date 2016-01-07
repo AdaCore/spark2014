@@ -2142,8 +2142,7 @@ package body Gnat2Why.Subprograms is
       E    : Entity_Id)
    is
 
-      Body_N    : constant Node_Id :=
-        (if Is_Entry (E) then Entry_Body (E) else Subprogram_Body (E));
+      Body_N : constant Node_Id := Get_Body (E);
 
       function Assume_For_Input return W_Prog_Id;
       --  Generate assumptions for dynamic types used in the program. An
