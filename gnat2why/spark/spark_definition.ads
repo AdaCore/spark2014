@@ -58,8 +58,9 @@ package SPARK_Definition is
    --  Maximal number of array dimensions that are currently supported
 
    procedure Inhibit_Messages;
-   --  We do not want to produce any error messages during marking when we
-   --  generate globals (only the marking itself is important).
+   --  Disable error messages during marking when generating globals (only
+   --  the marking itself is important). Use this procedure only once, before
+   --  starting the marking itself.
 
    ----------------------------------------------------------------------
    --  Marking procedures

@@ -286,6 +286,9 @@ package body SPARK_Definition is
 
    procedure Inhibit_Messages is
    begin
+      --  This procedure can be called only once, before the marking itself.
+      pragma Assert (Emit_Messages and then Entity_Set.Is_Empty);
+
       Emit_Messages := False;
    end Inhibit_Messages;
 
