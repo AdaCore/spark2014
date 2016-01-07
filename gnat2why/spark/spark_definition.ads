@@ -123,8 +123,8 @@ package SPARK_Definition is
                          E_Package   |
                          E_Procedure |
                          E_Task_Type;
-   --  Returns True iff the body of E was marked in SPARK. Note this does not
-   --  mean that the subprogram is valid SPARK, only that SPARK_Mode is On.
+   --  Returns True iff the body of E was marked in SPARK and contains no SPARK
+   --  violations.
 
    function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
      with Pre => Is_Type (E);

@@ -4103,10 +4103,15 @@ package body SPARK_Definition is
                end if;
             end;
 
-            if not Violation_Detected then
-               Bodies_In_SPARK.Insert (Spec_E);
-            end if;
+         end if;
 
+         --  Finally check if SPARK_Mode => On applies to body and no violation
+         --  was detected.
+
+         Current_SPARK_Pragma := SPARK_Pragma (Body_E);
+
+         if SPARK_Pragma_Is (Opt.On) and then not Violation_Detected then
+            Bodies_In_SPARK.Insert (Spec_E);
          end if;
 
          Current_SPARK_Pragma := Save_SPARK_Pragma;
