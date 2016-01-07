@@ -4145,6 +4145,12 @@ package body SPARK_Definition is
             Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
          begin
 
+            --  Marking status of package entities, which are never referenced
+            --  by other code, is queried only with Spec_In_SPARK and
+            --  Body_In_SPARK; however, adding them to Entity_Set and later to
+            --  Entities_In_SPARK makes them visible while iterating over
+            --  marked entities and entities in SPARK.
+
             Entity_Set.Insert (Id);
 
             --  Mark package declaration in SPARK if fully in SPARK_Mode => On

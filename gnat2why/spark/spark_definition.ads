@@ -92,7 +92,8 @@ package SPARK_Definition is
    --  Returns True if entity E has already been considered for marking
    --  ??? Exposing this function seems suspiocious; it is only used by Retysp
 
-   function Entity_In_SPARK (E : Entity_Id) return Boolean;
+   function Entity_In_SPARK (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) not in E_Package | Generic_Unit_Kind;
    --  Returns True if entity E is in SPARK. Note that E may be in SPARK
    --  without being marked by the user in SPARK, in which case it can be
    --  called from SPARK code, but no VC will be generated for E.
@@ -100,6 +101,10 @@ package SPARK_Definition is
    --  Also note that for specification entities it only checks that the
    --  specification itself is in SPARK. To check if the body is in SPARK
    --  and contains no SPARK violations use Entity_Body_Valid_SPARK.
+   --
+   --  This call is only allowed for entities that are referenced from other
+   --  code, i.e. almost anything except E_Package (and generic units which
+   --  should be expanded by the front end).
 
    function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean with
      Pre => Ekind (E) in E_Entry          |

@@ -1076,7 +1076,7 @@ package body Flow is
                   end if;
                   FA.GG.Aborted := True;
                else
-                  if Entity_In_SPARK (E) then
+                  if Entity_Spec_In_SPARK (E) then
                      if Gnat2Why_Args.Flow_Advanced_Debug then
                         Write_Line ("Spec in SPARK: yes");
                      end if;
