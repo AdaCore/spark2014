@@ -1,0 +1,4 @@
+dummy.adb:3:13: medium: divide by zero might fail, vc file: gnatprove/Dummy__return__div1.v
+dummy.adb:3:13: medium: overflow check might fail, vc file: gnatprove/Dummy__return__div.v
+dummy.adb:3:13: medium: divide by zero might fail (e.g. when Y = 0)
+dummy.adb:3:13: medium: overflow check might fail
