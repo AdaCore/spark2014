@@ -23,9 +23,7 @@
 
 with Flow_Utility;     use Flow_Utility;
 with Nlists;           use Nlists;
-with Opt;              use Opt;
 with Sem_Aux;          use Sem_Aux;
-with Sem_Prag;         use Sem_Prag;
 with Sem_Type;         use Sem_Type;
 with Sem_Util;         use Sem_Util;
 with Sinfo;            use Sinfo;
@@ -573,23 +571,15 @@ package body Flow.Slice is
                   Scp : constant Entity_Id := Scope (E);
                begin
                   case Ekind (Scp) is
-                     when E_Package      =>
-                        if Present (Get_Pragma (Scp, Pragma_Initializes)) then
-                           --  Enclosing scope has Initializes
-                           return True;
-                        end if;
+                     when E_Package =>
+                        return
+                          --  Enclosing scope has Initializes
+                          Present (Get_Pragma (Scp, Pragma_Initializes))
 
-                        if Present (SPARK_Aux_Pragma (Scp))
-                          and then Get_SPARK_Mode_From_Annotation
-                                     (SPARK_Aux_Pragma (Scp)) = Off
-                        then
-                           --  Enclosing scope has SPARK_Mode => Off
-                           return True;
-                        end if;
+                          --  Enclosing scope has SPARK_Mode => Off
+                          or else not Private_Spec_In_SPARK (Scp);
 
-                        return False;
-
-                     when others         =>
+                     when others    =>
                         return False;
                   end case;
                end;

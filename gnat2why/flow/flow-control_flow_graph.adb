@@ -26,11 +26,9 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Errout;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
-with Opt;                                use Opt;
 with Sem_Aux;                            use Sem_Aux;
 with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Eval;                           use Sem_Eval;
-with Sem_Prag;                           use Sem_Prag;
 with Sem_Type;                           use Sem_Type;
 with Sem_Util;                           use Sem_Util;
 with Sinfo;                              use Sinfo;
@@ -3659,9 +3657,7 @@ package body Flow.Control_Flow_Graph is
 
          if No (Init_Pragma)
            and then Present (Private_Decls)
-           and then (No (SPARK_Aux_Pragma (Defining_Entity (N)))
-                       or else Get_SPARK_Mode_From_Annotation
-                               (SPARK_Aux_Pragma (Defining_Entity (N))) /= Off)
+           and then Private_Spec_In_SPARK (Defining_Entity (N))
          then
             --  We only process the private declarations if there is no
             --  initializes pragma and if the private declarations are
