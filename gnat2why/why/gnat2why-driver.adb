@@ -535,13 +535,7 @@ package body Gnat2Why.Driver is
       --  will have no effect.
       --  This permits compatibility with existing scripts.
 
-      case Switch (First) is
-         when 'f' | 'g' | 'm' | 'O' | 'W' | 'w' =>
-            return True;
-
-         when others =>
-            return False;
-      end case;
+      return Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w';
    end Is_Back_End_Switch;
 
    ------------------------------
