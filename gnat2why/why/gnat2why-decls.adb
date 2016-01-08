@@ -55,7 +55,7 @@ package body Gnat2Why.Decls is
    ------------------------------
 
    procedure Translate_Abstract_State
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
       Var : constant Item_Type := Mk_Item_Of_Entity (E);
@@ -73,7 +73,7 @@ package body Gnat2Why.Decls is
       --  We generate a global ref
 
       Emit
-        (File.Cur_Theory,
+        (File,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
@@ -90,7 +90,7 @@ package body Gnat2Why.Decls is
    ------------------------
 
    procedure Translate_Constant
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
       Typ : constant W_Type_Id := Type_Of_Node (Etype (E));
@@ -117,7 +117,7 @@ package body Gnat2Why.Decls is
 
       Insert_Entity (E, To_Why_Id (E, No_Comp => True, Typ => Typ));
 
-      Emit (File.Cur_Theory,
+      Emit (File,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Why_Id
@@ -136,7 +136,7 @@ package body Gnat2Why.Decls is
    ------------------------------
 
    procedure Translate_Constant_Value
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
       Typ  : constant W_Type_Id := Type_Of_Node (Etype (E));
@@ -212,7 +212,7 @@ package body Gnat2Why.Decls is
             end if;
 
             Emit
-              (File.Cur_Theory,
+              (File,
                New_Defining_Axiom
                  (Ada_Node    => E,
                   Name        =>
@@ -225,7 +225,7 @@ package body Gnat2Why.Decls is
 
          else
             Emit
-              (File.Cur_Theory,
+              (File,
                New_Defining_Axiom
                  (Ada_Node    => E,
                   Name        =>
@@ -251,7 +251,7 @@ package body Gnat2Why.Decls is
    -------------------------------
 
    procedure Translate_External_Object (E : Entity_Name) is
-      File : Why_Section renames Why_Sections (WF_Variables);
+      File : constant W_Section_Id := WF_Variables;
 
    begin
       --  Objects in axiomatized units should not be treated as external
@@ -279,10 +279,10 @@ package body Gnat2Why.Decls is
            "Module declaring the external object """ & To_String (E) &
            ","" created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Add_With_Clause (File.Cur_Theory, Ref_Module, EW_Import, EW_Module);
+      Add_With_Clause (File, Ref_Module, EW_Import, EW_Module);
 
       Emit
-        (File.Cur_Theory,
+        (File,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (To_String (E), Local => True),
             Labels   => Name_Id_Sets.Empty_Set,
@@ -311,7 +311,7 @@ package body Gnat2Why.Decls is
    ---------------------------
 
    procedure Translate_Loop_Entity
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
    begin
@@ -325,7 +325,7 @@ package body Gnat2Why.Decls is
                      else "")
                    & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Emit (File.Cur_Theory,
+      Emit (File,
             New_Exception_Declaration
               (Name => Loop_Exception_Name (E, Local => True),
                Arg  => Why_Empty));
@@ -339,7 +339,7 @@ package body Gnat2Why.Decls is
    ------------------------
 
    procedure Translate_Variable
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
       Var : constant Item_Type := Mk_Item_Of_Entity (E);
@@ -360,7 +360,7 @@ package body Gnat2Why.Decls is
 
       if not Entity_In_SPARK (E) then
          Emit
-           (File.Cur_Theory,
+           (File,
             New_Global_Ref_Declaration
               (Name     => To_Local (Var.Main.B_Name),
                Labels   => Name_Id_Sets.Empty_Set,
@@ -377,7 +377,7 @@ package body Gnat2Why.Decls is
                --  generate a global ref for the fields
 
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Fields.Binder.B_Name),
                      Labels   => Get_Counterexample_Labels (E),
@@ -390,14 +390,14 @@ package body Gnat2Why.Decls is
 
                if Var.Discrs.Binder.Mutable then
                   Emit
-                    (File.Cur_Theory,
+                    (File,
                      New_Global_Ref_Declaration
                        (Name     => To_Local (Var.Discrs.Binder.B_Name),
                         Labels   => Name_Id_Sets.Empty_Set,
                         Ref_Type => Get_Typ (Var.Discrs.Binder.B_Name)));
                else
                   Emit
-                    (File.Cur_Theory,
+                    (File,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
                         Name        =>
@@ -413,7 +413,7 @@ package body Gnat2Why.Decls is
                --  generate a constant for 'Constrained attribute
 
                   Emit
-                    (File.Cur_Theory,
+                    (File,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
                         Name        => To_Local (Var.Constr.Id),
@@ -427,7 +427,7 @@ package body Gnat2Why.Decls is
                --  generate a constant for 'Tag attribute
 
                   Emit
-                    (File.Cur_Theory,
+                    (File,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
                         Name        => To_Local (Var.Tag.Id),
@@ -441,7 +441,7 @@ package body Gnat2Why.Decls is
             --  generate a global ref for the content
 
             Emit
-              (File.Cur_Theory,
+              (File,
                New_Global_Ref_Declaration
                  (Name     => To_Local (Var.Content.B_Name),
                   Labels   => Get_Counterexample_Labels (E),
@@ -467,7 +467,7 @@ package body Gnat2Why.Decls is
                   --  generate constants for bounds
 
                   Emit
-                    (File.Cur_Theory,
+                    (File,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
                         Name        => To_Local (Var.Bounds (D).First),
@@ -476,7 +476,7 @@ package body Gnat2Why.Decls is
                           (E, Bound_Dimension_To_Str (Var.Dim, D, "'First")),
                         Return_Type => Ty_First));
                   Emit
-                    (File.Cur_Theory,
+                    (File,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
                         Name        => To_Local (Var.Bounds (D).Last),
@@ -495,7 +495,7 @@ package body Gnat2Why.Decls is
                --  generate a global ref
 
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Main.B_Name),
                      Labels   => Get_Counterexample_Labels (E),
@@ -507,7 +507,7 @@ package body Gnat2Why.Decls is
          end case;
       end if;
 
-      Emit (File.Cur_Theory,
+      Emit (File,
             Why.Atree.Builders.New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Local (E_Symb (E, WNE_Attr_Address)),

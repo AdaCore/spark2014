@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Common_Containers;   use Common_Containers;
-with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
 with Sem_Eval;            use Sem_Eval;
 with Sem_Util;            use Sem_Util;
@@ -41,6 +40,7 @@ with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Preds;       use Why.Gen.Preds;
 with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Ids;             use Why.Ids;
 with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
@@ -48,7 +48,7 @@ with Why.Types;           use Why.Types;
 package body Why.Gen.Scalars is
 
    procedure Define_Scalar_Attributes
-     (Theory     : W_Theory_Declaration_Id;
+     (Section    : W_Section_Id;
       E          : Entity_Id;
       Base_Type  : W_Type_Id);
    --  Define the attributes first, last, modulus, small for the given type.
@@ -63,7 +63,7 @@ package body Why.Gen.Scalars is
    -------------------------
 
    procedure Declare_Scalar_Type
-     (Theory : W_Theory_Declaration_Id;
+     (File : W_Section_Id;
       E      : Entity_Id)
    is
       Why_Name         : constant W_Name_Id := To_Why_Type (E, Local => True);
@@ -266,7 +266,7 @@ package body Why.Gen.Scalars is
 
             --  In which case we know that all values are necessary in range,
             --  So we define the range predicate as always true.
-            Emit (Theory,
+            Emit (File,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain  => EW_Pred,
                      Name    => To_Local (E_Symb (E, Name)),
@@ -278,7 +278,7 @@ package body Why.Gen.Scalars is
             --  And we directly use the function uint_in_range from the
             --  underlying why3 theory for checking the range againts integers
             --  instead of generating it.
-            Emit (Theory,
+            Emit (File,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain  => EW_Pred,
                      Name    => To_Local (E_Symb (E, WNE_Range_Pred_BV_Int)),
@@ -321,7 +321,7 @@ package body Why.Gen.Scalars is
                                                     others => <>))
                & Static_Binders);
          begin
-            Emit (Theory,
+            Emit (File,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain  => EW_Pred,
                      Name    => To_Local (E_Symb (E, Name)),
@@ -409,12 +409,12 @@ package body Why.Gen.Scalars is
       --  if the type is dynamic, declare an alias of its base type
 
       if not Is_Static then
-         Emit (Theory,
+         Emit (File,
                New_Type_Decl
                  (Name  => Why_Name,
                   Alias => Base_Type_In_Why));
       else
-         Emit (Theory,
+         Emit (File,
                New_Type_Decl
                  (Name => Why_Name,
                   Labels => Name_Id_Sets.Empty_Set));
@@ -423,14 +423,14 @@ package body Why.Gen.Scalars is
       --  retrieve and declare the attributes first, last, small, and modulus
 
       Define_Scalar_Attributes
-        (Theory    => Theory,
+        (Section    => File,
          E         => E,
          Base_Type => Base_Why_Type (E));
 
       --  define first_int and last_int for static modular types
 
       if Is_Static and then Is_Modular_Integer_Type (E) then
-         Emit (Theory,
+         Emit (File,
                Why.Atree.Builders.New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => New_Identifier
@@ -441,7 +441,7 @@ package body Why.Gen.Scalars is
                   Labels      => Name_Id_Sets.Empty_Set,
                   Def         => New_Integer_Constant
                     (Value => Expr_Value (Low_Bound (Rng)))));
-         Emit (Theory,
+         Emit (File,
                Why.Atree.Builders.New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => New_Identifier
@@ -460,7 +460,7 @@ package body Why.Gen.Scalars is
 
       --  clone the appropriate module
 
-      Emit (Theory,
+      Emit (File,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
                                    As_Name       => No_Name,
@@ -483,9 +483,9 @@ package body Why.Gen.Scalars is
 
       if Is_Discrete_Type (E) and then Is_Static then
          --  Note that if E is dynamic type, to_rep is not projection function
-         Emit_Projection_Metas (Theory => Theory, Projection_Fun => "to_rep");
+         Emit_Projection_Metas (Section => File, Projection_Fun => "to_rep");
       elsif Is_Floating_Point_Type (E) then
-         Emit_Projection_Metas (Theory => Theory, Projection_Fun => "to_real");
+         Emit_Projection_Metas (Section => File, Projection_Fun => "to_real");
       end if;
 
    end Declare_Scalar_Type;
@@ -495,7 +495,7 @@ package body Why.Gen.Scalars is
    ------------------------------
 
    procedure Define_Scalar_Attributes
-     (Theory     : W_Theory_Declaration_Id;
+     (Section    : W_Section_Id;
       E          : Entity_Id;
       Base_Type  : W_Type_Id) is
 
@@ -541,7 +541,7 @@ package body Why.Gen.Scalars is
                       else
                          raise Program_Error);
 
-            Emit (Theory,
+            Emit (Section,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        =>
@@ -563,7 +563,7 @@ package body Why.Gen.Scalars is
             pragma Assert (Norm_Den (Inv_Small) = Uint_1);
             Small := New_Integer_Constant (Value => Norm_Num (Inv_Small));
 
-            Emit (Theory,
+            Emit (Section,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        =>
@@ -589,7 +589,7 @@ package body Why.Gen.Scalars is
          Last := +Num_Constant (E, High_Bound (Rng));
       end if;
 
-      Emit (Theory,
+      Emit (Section,
             New_Function_Decl
               (Domain      => EW_Term,
                Name        =>
@@ -599,7 +599,7 @@ package body Why.Gen.Scalars is
                Return_Type => Base_Type,
                Labels      => Name_Id_Sets.Empty_Set,
                Def         => +First));
-      Emit (Theory,
+      Emit (Section,
             New_Function_Decl
               (Domain      => EW_Term,
                Name        =>

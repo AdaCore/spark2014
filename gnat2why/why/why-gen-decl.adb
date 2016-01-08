@@ -27,7 +27,6 @@ with Ada.Containers.Indefinite_Ordered_Maps;
 with Ada.Strings;         use Ada.Strings;
 with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
 with Common_Containers;   use Common_Containers;
-with Gnat2Why.Util;       use Gnat2Why.Util;
 with Namet;               use Namet;
 with SPARK_Util;          use SPARK_Util;
 with Types;               use Types;
@@ -46,7 +45,7 @@ with Why.Types;           use Why.Types;
 package body Why.Gen.Decl is
 
    procedure Emit_Record_Projection_Declaration
-     (Theory        : W_Theory_Declaration_Id;
+     (Section       : W_Section_Id;
       Param_Ty_Name : W_Name_Id;
       Field_Id      : W_Identifier_Id;
       SPARK_Node    : Node_Or_Entity_Id := Empty);
@@ -55,7 +54,7 @@ package body Why.Gen.Decl is
    --  The declaration consists of a declaration  of a function that returns a
    --  value of a field Field_Id of a value of the type Param_Ty_Name and
    --  declaration projection metas (see Emit_Projection_Metas).
-   --  @param Theory the theory where the projection declaration will be
+   --  @param Section the section where the projection declaration will be
    --      emitted.
    --  @param Param_Ty_Name the name of the record type being projected.
    --  @param Field_Id the identifier of the field to that the record is
@@ -81,21 +80,32 @@ package body Why.Gen.Decl is
          New_Item => +Decl);
    end Emit;
 
+   ----------
+   -- Emit --
+   ----------
+
+   procedure Emit
+     (S    : W_Section_Id;
+      Decl : W_Declaration_Id) is
+   begin
+      Emit (Why_Sections (S).Cur_Theory, Decl);
+   end Emit;
+
    ---------------------------
    -- Emit_Projection_Metas --
    ---------------------------
 
    procedure Emit_Projection_Metas
-     (Theory : W_Theory_Declaration_Id; Projection_Fun : String) is
+     (Section : W_Section_Id; Projection_Fun : String) is
    begin
       --  mark function as projection function
-      Emit (Theory,
+      Emit (Section,
             New_Meta_Declaration (Name      => NID (Model_Proj_Meta),
                                   Parameter => NID ("function " &
                                       Projection_Fun)));
 
       --  disable inlining of projection functions
-      Emit (Theory,
+      Emit (Section,
             New_Meta_Declaration (Name      => NID ("inline : no"),
                                   Parameter => NID ("function " &
                                       Projection_Fun)));
@@ -105,25 +115,25 @@ package body Why.Gen.Decl is
    -- Emit_Record_Declaration --
    -----------------------------
    procedure Emit_Record_Declaration
-     (Theory       : W_Theory_Declaration_Id;
+     (Section      : W_Section_Id;
       Name         : W_Name_Id;
       Binders      : Why.Gen.Binders.Binder_Array;
       SPARK_Record : Boolean := False)
    is
    begin
       --  Emit declaration of the record
-      Emit (Theory => Theory,
+      Emit (Section,
             Decl   => New_Record_Definition (Name     => Name,
                                              Binders  => Binders));
 
       --  For each record field, emit projection from the record to the field
       for Binder in Binders'Range loop
          Emit_Record_Projection_Declaration
-           (Theory => Theory,
+           (Section       => Section,
             Param_Ty_Name => Name,
-            Field_Id => Binders (Binder).B_Name,
-            SPARK_Node => (if SPARK_Record then Binders (Binder).Ada_Node
-                           else Empty));
+            Field_Id      => Binders (Binder).B_Name,
+            SPARK_Node    => (if SPARK_Record then Binders (Binder).Ada_Node
+                              else Empty));
       end loop;
    end Emit_Record_Declaration;
 
@@ -153,7 +163,7 @@ package body Why.Gen.Decl is
    ----------------------------------------
 
    procedure Emit_Record_Projection_Declaration
-     (Theory        : W_Theory_Declaration_Id;
+     (Section       : W_Section_Id;
       Param_Ty_Name : W_Name_Id;
       Field_Id      : W_Identifier_Id;
       SPARK_Node    : Node_Or_Entity_Id := Empty)
@@ -193,7 +203,7 @@ package body Why.Gen.Decl is
       end if;
 
       Emit
-        (Theory,
+        (Section,
          Why.Atree.Builders.New_Function_Decl
            (Domain      => EW_Term,
             Name        => Why.Gen.Names.New_Identifier (
@@ -208,22 +218,23 @@ package body Why.Gen.Decl is
                                Is_Record_Field => True)),
             Def         => Field_Access));
 
-      Emit_Projection_Metas (Theory, Proj_Fun_Name);
+      Emit_Projection_Metas (Section, Proj_Fun_Name);
    end Emit_Record_Projection_Declaration;
 
    ------------------------------
    -- Emit_Ref_Type_Definition --
    ------------------------------
+
    procedure Emit_Ref_Type_Definition
-     (Theory : W_Theory_Declaration_Id;
-      Name   : W_Name_Id)
+     (File : W_Section_Id;
+      Name : W_Name_Id)
    is
       Field_Typ : constant W_Type_Id := New_Type
         (Type_Kind  => EW_Abstract,
          Name       => Name);
    begin
       Emit_Record_Declaration
-        (Theory  => Theory,
+        (Section => File,
          Name    => Ref_Append (Name),
          Binders => (1 => (B_Name  => Content_Append (Name, Field_Typ),
                            Mutable => True,

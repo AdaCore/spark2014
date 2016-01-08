@@ -620,13 +620,6 @@ package Why.Sinfo is
    --  the code can be found as well as a substitution from Name_Ids to Why3
    --  nodes which will be applied to the content of the file before the
    --  insertion.
-   --
-   --  ------------
-   --  -- W_File --
-   --  ------------
-   --  Theories      W_Generic_Theory_List
-   --
-   --  A Why file holds a list of theories.
 
    type Why_Node_Kind is
      (
@@ -743,8 +736,7 @@ package Why.Sinfo is
       -- Input files --
       -----------------
 
-      W_Module,
-      W_File
+      W_Module
 
       );
 

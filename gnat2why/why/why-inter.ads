@@ -57,7 +57,7 @@ package Why.Inter is
    function Compute_Ada_Node_Set (W : Why_Node_Id) return Node_Sets.Set;
 
    procedure Close_Theory
-     (P              : in out Why_Section;
+     (P              : W_Section_Id;
       Kind           : Theory_Kind;
       Defined_Entity : Entity_Id := Empty);
    --  Close the current theory by adding all necessary imports and adding
@@ -70,18 +70,18 @@ package Why.Inter is
       New_Dependency : Entity_Id);
    --  Add an extra dependency New_Dependency for entity Defined_Entity
 
-   procedure Discard_Theory (P : in out Why_Section);
+   procedure Discard_Theory (P : W_Section_Id);
    --  Remove the current theory from P
 
    procedure Open_Theory
-     (P       : in out Why_Section;
+     (P       : W_Section_Id;
       Module  : W_Module_Id;
       Comment : String)
-     with Pre => P.Cur_Theory = Why_Empty;
+     with Pre => Why_Sections (P).Cur_Theory = Why_Empty;
    --  Open a new theory in the file
 
    procedure Add_Use_For_Entity
-     (P               : Why_Section;
+     (P               : W_Section_Id;
       N               : Entity_Id;
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True);
@@ -89,7 +89,7 @@ package Why.Inter is
    --  With_Completion is True if the completion theories for N should be
    --  added too.
 
-   procedure Add_Effect_Imports (P : Why_Section;
+   procedure Add_Effect_Imports (P : W_Section_Id;
                                  S : Name_Sets.Set);
 
    procedure Add_With_Clause (T        : W_Theory_Declaration_Id;
@@ -97,7 +97,7 @@ package Why.Inter is
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
 
-   procedure Add_With_Clause (P        : Why_Section;
+   procedure Add_With_Clause (P        : W_Section_Id;
                               Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module);
@@ -106,11 +106,11 @@ package Why.Inter is
                                  S : Name_Sets.Set);
    --  Add all import clauses that are necessary for the given set of variables
 
-   function Dispatch_Entity (E : Entity_Id) return Why_Section_Enum;
+   function Dispatch_Entity (E : Entity_Id) return W_Section_Id;
    --  Given an Ada Entity, return the appropriate Why file to insert the
    --  entity.
 
-   function Dispatch_Entity_Completion (E : Entity_Id) return Why_Section_Enum;
+   function Dispatch_Entity_Completion (E : Entity_Id) return W_Section_Id;
    --  Given an Ada Entity, return the appropriate Why file to insert the
    --  completion theory for the entity.
 

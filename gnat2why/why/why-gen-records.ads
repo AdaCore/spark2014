@@ -38,8 +38,7 @@ package Why.Gen.Records is
    --  also includes records with variant parts.
 
    procedure Declare_Ada_Record
-     (P       : Why_Section;
-      Theory  : W_Theory_Declaration_Id;
+     (P       : W_Section_Id;
       E       : Entity_Id) with
       Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
                           Private_Kind  | Concurrent_Kind;

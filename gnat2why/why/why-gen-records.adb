@@ -136,9 +136,9 @@ package body Why.Gen.Records is
    --  that are not present in the representation of E.
 
    procedure Declare_Conversion_Check_Function
-     (Theory : W_Theory_Declaration_Id;
-      E      : Entity_Id;
-      Root   : Entity_Id);
+     (Section : W_Section_Id;
+      E       : Entity_Id;
+      Root    : Entity_Id);
    --  generate the program function which is used to insert subtype
    --  discriminant checks
 
@@ -214,8 +214,7 @@ package body Why.Gen.Records is
    -----------------------
 
    procedure Declare_Ada_Record
-     (P      : Why_Section;
-      Theory : W_Theory_Declaration_Id;
+     (P      : W_Section_Id;
       E      : Entity_Id)
    is
       procedure Declare_Attributes;
@@ -449,7 +448,7 @@ package body Why.Gen.Records is
       begin
          --  The static tag for the type is defined as a logic constant
          if Is_Tagged_Type (E) then
-            Emit (Theory,
+            Emit (P,
                   New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Local (E_Symb (E, WNE_Tag)),
@@ -459,7 +458,7 @@ package body Why.Gen.Records is
 
          --  The value size is defined as a logic constant
 
-         Emit (Theory,
+         Emit (P,
                New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
@@ -468,7 +467,7 @@ package body Why.Gen.Records is
 
          --  The object size is defined as a logic function
 
-         Emit (Theory,
+         Emit (P,
                New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => To_Local (E_Symb (E, WNE_Attr_Object_Size)),
@@ -511,12 +510,12 @@ package body Why.Gen.Records is
                                      Pred    => Object_Size_Pred);
 
          begin
-            Emit (Theory,
+            Emit (P,
                   New_Axiom (Ada_Node => E,
                              Name     => NID ("value__size_axiom"),
                              Def      => Value_Size_Axiom));
 
-            Emit (Theory,
+            Emit (P,
                   New_Axiom (Ada_Node => E,
                              Name     => NID ("object__size_axiom"),
                              Def      => Object_Size_Axiom));
@@ -1060,7 +1059,7 @@ package body Why.Gen.Records is
          pragma Assert (From_Root_Aggr'Last = From_Index);
 
          Emit
-           (Theory,
+           (P,
             New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Local (E_Symb (E, WNE_To_Base)),
@@ -1071,7 +1070,7 @@ package body Why.Gen.Records is
                  New_Record_Aggregate
                    (Associations => To_Root_Aggr)));
          Emit
-           (Theory,
+           (P,
             New_Function_Decl
               (Domain      => EW_Term,
                Name        => To_Local (E_Symb (E, WNE_Of_Base)),
@@ -1206,7 +1205,7 @@ package body Why.Gen.Records is
          --    or
          --  function hide__anc__ (comp1 : typ1; .. ; x : __private)
          --                       : __private
-         Emit (Theory,
+         Emit (P,
                New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => Hide_Name,
@@ -1238,7 +1237,7 @@ package body Why.Gen.Records is
                      Typ      => EW_Abstract (Etype (Field)))
                   else Why_Empty);
             begin
-               Emit (Theory,
+               Emit (P,
                      New_Function_Decl
                        (Domain      => EW_Term,
                         Name        => Extract_Fun (Field, Is_Ancestor),
@@ -1251,7 +1250,7 @@ package body Why.Gen.Records is
             --  Declare an axiom for the extraction function stating:
             --  forall .... extract__<comp> (hide__ext (...)) = comp
 
-            Emit (Theory,
+            Emit (P,
                   New_Guarded_Axiom
                     (Name     =>
                        NID (Get_Name_String (Get_Symbol
@@ -1279,7 +1278,7 @@ package body Why.Gen.Records is
 
          if not Is_Ancestor then
             --  function extract__ext__ (x : __private) : __private
-            Emit (Theory,
+            Emit (P,
                   New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => Extract_Func,
@@ -1292,7 +1291,7 @@ package body Why.Gen.Records is
          --    or
          --  function extract_anc__main__ (x : __private) : __private
          if Needs_Main then
-            Emit (Theory,
+            Emit (P,
                   New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => Extract_Main_Fun (Is_Ancestor),
@@ -1492,7 +1491,7 @@ package body Why.Gen.Records is
                end if;
 
                Emit
-                 (Theory,
+                 (P,
                   New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
@@ -1513,7 +1512,7 @@ package body Why.Gen.Records is
          end if;
 
          Emit
-           (Theory,
+           (P,
             New_Function_Decl
               (Domain      => EW_Term,
                Name        => New_Identifier (Name => "user_eq"),
@@ -1526,7 +1525,7 @@ package body Why.Gen.Records is
          --  Declare the dispatching equality function in root types
          if Is_Root and then Is_Tagged_Type (E) then
             Emit
-              (Theory,
+              (P,
                New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => To_Local (E_Symb (E, WNE_Dispatch_Eq)),
@@ -1570,7 +1569,7 @@ package body Why.Gen.Records is
                           (if Ekind (Field) = E_Discriminant then True_Pred
                            else Compute_Discriminant_Check (Field));
                      begin
-                        Emit (Theory,
+                        Emit (P,
                               New_Function_Decl
                                 (Domain => EW_Pred,
                                  Name   => Pred_Name,
@@ -1616,7 +1615,7 @@ package body Why.Gen.Records is
                        (if Ekind (Field) = E_Discriminant then True_Pred
                         else Discriminant_Check_Pred_Call (Field, A_Ident));
                   begin
-                     Emit (Theory,
+                     Emit (P,
                            New_Function_Decl
                              (Domain      => EW_Prog,
                               Name        => Prog_Name,
@@ -1683,17 +1682,17 @@ package body Why.Gen.Records is
                      Next_Discriminant (Field);
                   end loop;
 
-                  Emit_Record_Declaration (Theory  => Theory,
+                  Emit_Record_Declaration (Section => P,
                                            Name    => Discr_Name,
                                            Binders => Binders_D);
 
                   --  Generate a mutable record to hold elements of type
                   --  __split_discrs, as well as an havoc function for it.
 
-                  Emit_Ref_Type_Definition (Theory =>  Theory,
+                  Emit_Ref_Type_Definition (File => P,
                                             Name => Discr_Name);
                   Emit
-                    (Theory,
+                    (P,
                      New_Havoc_Declaration (Name => Discr_Name));
                end if;
 
@@ -1790,19 +1789,20 @@ package body Why.Gen.Records is
 
             pragma Assert (Index = Binders_F'Last + 1);
 
-            Emit_Record_Declaration (Theory  => Theory,
-                                     Name    => To_Name (WNE_Rec_Split_Fields),
-                                     Binders => Binders_F,
+            Emit_Record_Declaration (Section      => P,
+                                     Name         =>
+                                       To_Name (WNE_Rec_Split_Fields),
+                                     Binders      => Binders_F,
                                      SPARK_Record => True);
 
             --  Generate a mutable record to hold elements of type
             --  __split_fields, as well as an havoc function for it.
 
             Emit_Ref_Type_Definition
-              (Theory => Theory,
-               Name   => To_Name (WNE_Rec_Split_Fields));
+              (File => P,
+               Name => To_Name (WNE_Rec_Split_Fields));
             Emit
-              (Theory,
+              (P,
                New_Havoc_Declaration (To_Name (WNE_Rec_Split_Fields)));
 
             Binders_A (Index_All) :=
@@ -1841,7 +1841,7 @@ package body Why.Gen.Records is
 
          pragma Assert (Index_All = Num_All + 1);
 
-         Emit_Record_Declaration (Theory  => Theory,
+         Emit_Record_Declaration (Section => P,
                                   Name    => Ty_Name,
                                   Binders => Binders_A);
       end Declare_Record_Type;
@@ -2097,12 +2097,12 @@ package body Why.Gen.Records is
          --  then it is an alias of its root type.
 
          if Is_Root then
-            Emit (Theory,
+            Emit (P,
                   New_Type_Decl
                     (Name  => Ty_Name,
                      Labels => Name_Id_Sets.Empty_Set));
          else
-            Emit (Theory,
+            Emit (P,
                   New_Type_Decl
                     (Name  => Ty_Name,
                      Alias => EW_Abstract (Root)));
@@ -2116,7 +2116,7 @@ package body Why.Gen.Records is
                  New_Identifier (Name => "r", Typ => EW_Abstract (Root));
             begin
                Emit
-                 (Theory,
+                 (P,
                   New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Local (E_Symb (E, WNE_To_Base)),
@@ -2125,7 +2125,7 @@ package body Why.Gen.Records is
                      Return_Type => EW_Abstract (Root),
                      Def         => +A_Ident));
                Emit
-                 (Theory,
+                 (P,
                   New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Local (E_Symb (E, WNE_Of_Base)),
@@ -2145,7 +2145,7 @@ package body Why.Gen.Records is
          begin
 
             Emit
-              (Theory,
+              (P,
                New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
@@ -2183,7 +2183,7 @@ package body Why.Gen.Records is
             --  the type name.
 
             if Short_Name (E) /= Short_Name (Clone) then
-               Emit (Theory,
+               Emit (P,
                      New_Type_Decl
                        (Name => Ty_Name,
                         Alias =>
@@ -2198,7 +2198,7 @@ package body Why.Gen.Records is
 
             if Root_Record_Type (Clone) = Retysp (Clone) then
                Emit
-                 (Theory,
+                 (P,
                   New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Local (E_Symb (E, WNE_To_Base)),
@@ -2207,7 +2207,7 @@ package body Why.Gen.Records is
                      Return_Type => Abstr_Ty,
                      Def         => +A_Ident));
                Emit
-                 (Theory,
+                 (P,
                   New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Local (E_Symb (E, WNE_Of_Base)),
@@ -2258,7 +2258,7 @@ package body Why.Gen.Records is
         and then Has_Discriminants (E)
         and then Is_Constrained (E)
       then
-         Declare_Conversion_Check_Function (Theory, E, Root);
+         Declare_Conversion_Check_Function (P, E, Root);
       end if;
    end Declare_Ada_Record;
 
@@ -2267,9 +2267,9 @@ package body Why.Gen.Records is
    ---------------------------------------
 
    procedure Declare_Conversion_Check_Function
-     (Theory : W_Theory_Declaration_Id;
-      E      : Entity_Id;
-      Root   : Entity_Id)
+     (Section : W_Section_Id;
+      E       : Entity_Id;
+      Root    : Entity_Id)
    is
       Root_Name  : constant W_Name_Id := To_Why_Type (Root);
       Root_Abstr : constant W_Type_Id :=
@@ -2344,7 +2344,7 @@ package body Why.Gen.Records is
          end if;
          Next_Discriminant (Discr);
       end loop;
-      Emit (Theory,
+      Emit (Section,
             New_Function_Decl
               (Domain      => EW_Pred,
                Name        => To_Local (E_Symb (E, WNE_Range_Pred)),
@@ -2354,7 +2354,7 @@ package body Why.Gen.Records is
       Pre_Cond :=
         New_Call (Name   => To_Local (E_Symb (E, WNE_Range_Pred)),
                   Args   => Args);
-      Emit (Theory,
+      Emit (Section,
             New_Function_Decl
               (Domain      => EW_Prog,
                Name        => To_Local (E_Symb (E, WNE_Range_Check_Fun)),

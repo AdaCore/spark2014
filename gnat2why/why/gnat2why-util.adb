@@ -40,10 +40,16 @@ with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Inter;              use Why.Inter;
+with Why.Types;              use Why.Types;
 
 package body Gnat2Why.Util is
 
    Why3_Keywords : String_Utils.String_Sets.Set;
+
+   procedure Make_Empty_Why_Section
+     (Kind : W_Section_Id; Section : out Why_Section)
+     with Post => (Section.Cur_Theory = Why.Types.Why_Empty);
+   --  Return an empty Why_Section with the given kind
 
    --------------------
    -- Ada_Ent_To_Why --
@@ -631,8 +637,8 @@ package body Gnat2Why.Util is
       Body_Prefix : constant String := Unit_Name;
    begin
       Why_File_Name := new String'(Body_Prefix & Why_File_Suffix);
-      for Kind in Why_Section_Enum'First ..
-                  Why_Section_Enum'Pred (Why_Section_Enum'Last)
+      for Kind in W_Section_Id'First ..
+                  W_Section_Id'Pred (W_Section_Id'Last)
       loop
          Make_Empty_Why_Section (Kind => Kind, Section => Why_Sections (Kind));
       end loop;
@@ -762,10 +768,10 @@ package body Gnat2Why.Util is
    -------------------------
 
    procedure Make_Empty_Why_Section
-     (Kind : Why_Section_Enum; Section : out Why_Section) is
+     (Kind : W_Section_Id; Section : out Why_Section) is
    begin
-      Section.File := New_File;
       Section.Kind := Kind;
+      Section.Theories := Why_Node_Lists.Empty_List;
       Section.Cur_Theory := Why.Types.Why_Empty;
    end Make_Empty_Why_Section;
 

@@ -191,12 +191,12 @@ package body Gnat2Why.Subprograms is
    --  if any.
 
    procedure Generate_Subprogram_Program_Fun
-     (File : Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id);
    --  Generate a why program function for E
 
    procedure Generate_Axiom_For_Post
-     (File : Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id);
    --  Generate an axiom stating the postcondition of a Subprogram
 
@@ -216,7 +216,7 @@ package body Gnat2Why.Subprograms is
    ----------------------------------
 
    procedure Add_Dependencies_For_Effects
-     (T : W_Theory_Declaration_Id;
+     (T : W_Section_Id;
       E : Entity_Id)
    is
       Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
@@ -1677,7 +1677,7 @@ package body Gnat2Why.Subprograms is
    ------------------------------------------
 
    procedure Generate_VCs_For_Package_Elaboration
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
       Name       : constant String  := Full_Name (E);
@@ -1711,8 +1711,8 @@ package body Gnat2Why.Subprograms is
 
       Register_VC_Entity (E);
 
-      Params := (File        => File.File,
-                 Theory      => File.Cur_Theory,
+      Params := (File        => File,
+                 Theory      => Why_Sections (File).Cur_Theory,
                  Phase       => Generate_VCs_For_Body,
                  Gen_Marker  => False,
                  Ref_Allowed => True);
@@ -1796,7 +1796,7 @@ package body Gnat2Why.Subprograms is
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
       begin
          Label_Set.Include (NID ("W:diverges:N"));
-         Emit (File.Cur_Theory,
+         Emit (File,
                 Why.Gen.Binders.New_Function_Decl
                  (Domain  => EW_Prog,
                   Name    => Def_Name,
@@ -1815,7 +1815,7 @@ package body Gnat2Why.Subprograms is
    --------------------------
 
    procedure Generate_VCs_For_LSP
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
       Name      : constant String := Full_Name (E);
@@ -1881,8 +1881,8 @@ package body Gnat2Why.Subprograms is
       end if;
 
       Params :=
-        (File        => File.File,
-         Theory      => File.Cur_Theory,
+        (File        => File,
+         Theory      => Why_Sections (File).Cur_Theory,
          Phase       => Generate_VCs_For_Contract,
          Gen_Marker  => False,
          Ref_Allowed => True);
@@ -2100,7 +2100,7 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) = E_Function then
          Emit
-           (File.Cur_Theory,
+           (File,
             New_Global_Ref_Declaration
               (Name     => Result_Name,
                Labels   => Get_Counterexample_Labels (E),
@@ -2120,7 +2120,7 @@ package body Gnat2Why.Subprograms is
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
       begin
          Label_Set.Include (NID ("W:diverges:N"));
-         Emit (File.Cur_Theory,
+         Emit (File,
                Why.Gen.Binders.New_Function_Decl
                  (Domain  => EW_Prog,
                   Name    => Def_Name,
@@ -2142,7 +2142,7 @@ package body Gnat2Why.Subprograms is
    ---------------------------------
 
    procedure Generate_VCs_For_Subprogram
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
 
@@ -2223,8 +2223,8 @@ package body Gnat2Why.Subprograms is
             else
                Empty);
          Params : constant Transformation_Params :=
-           (File        => File.File,
-            Theory      => File.Cur_Theory,
+           (File        => File,
+            Theory      => Why_Sections (File).Cur_Theory,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
@@ -2249,8 +2249,8 @@ package body Gnat2Why.Subprograms is
 
       function Assume_Or_Assert_Of_Pre return W_Prog_Id is
          Params : constant Transformation_Params :=
-           (File        => File.File,
-            Theory      => File.Cur_Theory,
+           (File        => File,
+            Theory      => Why_Sections (File).Cur_Theory,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
@@ -2287,8 +2287,8 @@ package body Gnat2Why.Subprograms is
 
       function CC_And_RTE_Post return W_Prog_Id is
          Params : constant Transformation_Params :=
-           (File        => File.File,
-            Theory      => File.Cur_Theory,
+           (File        => File,
+            Theory      => Why_Sections (File).Cur_Theory,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
@@ -2312,8 +2312,8 @@ package body Gnat2Why.Subprograms is
       function Checking_Of_Refined_Post (Arg : W_Prog_Id) return W_Prog_Id
       is
          Params : constant Transformation_Params :=
-           (File        => File.File,
-            Theory      => File.Cur_Theory,
+           (File        => File,
+            Theory      => Why_Sections (File).Cur_Theory,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
@@ -2405,8 +2405,8 @@ package body Gnat2Why.Subprograms is
 
       function Post_As_Pred return W_Pred_Id is
          Params : constant Transformation_Params :=
-           (File        => File.File,
-            Theory      => File.Cur_Theory,
+           (File        => File,
+            Theory      => Why_Sections (File).Cur_Theory,
             Phase       => Generate_Contract_For_Body,
             Gen_Marker  => False,
             Ref_Allowed => True);
@@ -2458,8 +2458,8 @@ package body Gnat2Why.Subprograms is
 
       function RTE_Of_Pre return W_Prog_Id is
          Params : constant Transformation_Params :=
-           (File        => File.File,
-            Theory      => File.Cur_Theory,
+           (File        => File,
+            Theory      => Why_Sections (File).Cur_Theory,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
@@ -2569,15 +2569,15 @@ package body Gnat2Why.Subprograms is
       Register_VC_Entity (E);
 
       Body_Params :=
-        (File        => File.File,
-         Theory      => File.Cur_Theory,
+        (File        => File,
+         Theory      => Why_Sections (File).Cur_Theory,
          Phase       => Generate_VCs_For_Body,
          Gen_Marker  => False,
          Ref_Allowed => True);
 
       Contract_Params :=
-        (File        => File.File,
-         Theory      => File.Cur_Theory,
+        (File        => File,
+         Theory      => Why_Sections (File).Cur_Theory,
          Phase       => Generate_VCs_For_Contract,
          Gen_Marker  => False,
          Ref_Allowed => True);
@@ -2650,7 +2650,7 @@ package body Gnat2Why.Subprograms is
 
          if Ekind (E) = E_Function then
             Emit
-              (File.Cur_Theory,
+              (File,
                New_Global_Ref_Declaration
                  (Name     => Result_Name,
                   Labels   => Get_Counterexample_Labels (E),
@@ -2661,7 +2661,7 @@ package body Gnat2Why.Subprograms is
 
          if Is_Protected_Subprogram (E) then
             Emit
-              (File.Cur_Theory,
+              (File,
                New_Global_Ref_Declaration
                  (Ada_Node    => Containing_Protected_Type (E),
                   Name        => Self_Name,
@@ -2731,7 +2731,7 @@ package body Gnat2Why.Subprograms is
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
       begin
          Label_Set.Include (NID ("W:diverges:N"));
-         Emit (File.Cur_Theory,
+         Emit (File,
                Why.Gen.Binders.New_Function_Decl
                  (Domain  => EW_Prog,
                   Name    => Def_Name,
@@ -2759,7 +2759,7 @@ package body Gnat2Why.Subprograms is
    ---------------------------
 
    procedure Generate_VCs_For_Task
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
       Name       : constant String  := Full_Name (E);
@@ -2787,8 +2787,8 @@ package body Gnat2Why.Subprograms is
 
       Register_VC_Entity (E);
 
-      Params := (File        => File.File,
-                 Theory      => File.Cur_Theory,
+      Params := (File        => File,
+                 Theory      => Why_Sections (File).Cur_Theory,
                  Phase       => Generate_VCs_For_Body,
                  Gen_Marker  => False,
                  Ref_Allowed => True);
@@ -2844,7 +2844,7 @@ package body Gnat2Why.Subprograms is
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
       begin
          Label_Set.Include (NID ("W:diverges:N"));
-         Emit (File.Cur_Theory,
+         Emit (File,
                 Why.Gen.Binders.New_Function_Decl
                  (Domain  => EW_Prog,
                   Name    => Def_Name,
@@ -2900,7 +2900,7 @@ package body Gnat2Why.Subprograms is
    -----------------------------
 
    procedure Generate_Axiom_For_Post
-     (File : Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
@@ -2929,8 +2929,8 @@ package body Gnat2Why.Subprograms is
       --           let result = f (args) in post (args)
 
       Params :=
-        (File        => File.File,
-         Theory      => File.Cur_Theory,
+        (File        => File,
+         Theory      => Why_Sections (File).Cur_Theory,
          Phase       => Generate_Logic,
          Gen_Marker  => False,
          Ref_Allowed => False);
@@ -3028,7 +3028,7 @@ package body Gnat2Why.Subprograms is
          begin
             if not Is_True_Boolean (+Complete_Post) then
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Guarded_Axiom
                     (Ada_Node => Empty,
                      Name     => NID (Short_Name (E) & "__" & Suffix),
@@ -3089,7 +3089,7 @@ package body Gnat2Why.Subprograms is
    ------------------------------------
 
    procedure Generate_Subprogram_Completion
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id) is
    begin
       Open_Theory (File, E_Axiom_Module (E),
@@ -3102,7 +3102,7 @@ package body Gnat2Why.Subprograms is
                           else "")
                    & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Add_Dependencies_For_Effects (File.Cur_Theory, E);
+      Add_Dependencies_For_Effects (File, E);
 
       --  Store an appropriate value for the result identifier in Result_Name.
 
@@ -3124,7 +3124,7 @@ package body Gnat2Why.Subprograms is
    --------------------------------------
 
    procedure Generate_Subprogram_Program_Fun
-     (File : Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
@@ -3144,8 +3144,8 @@ package body Gnat2Why.Subprograms is
 
    begin
       Params :=
-        (File        => File.File,
-         Theory      => File.Cur_Theory,
+        (File        => File,
+         Theory      => Why_Sections (File).Cur_Theory,
          Phase       => Generate_Logic,
          Gen_Marker  => False,
          Ref_Allowed => True);
@@ -3359,7 +3359,7 @@ package body Gnat2Why.Subprograms is
 
             if Is_Volatile_Function (E) then
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Global_Ref_Declaration
                     (Ada_Node => E,
                      Labels   => Name_Id_Sets.Empty_Set,
@@ -3368,7 +3368,7 @@ package body Gnat2Why.Subprograms is
             end if;
 
             Emit
-              (File.Cur_Theory,
+              (File,
                Create_Function_Decl (Logic_Id => Logic_Id,
                                      Prog_Id  => Prog_Id,
                                      Pre      => Pre,
@@ -3376,7 +3376,7 @@ package body Gnat2Why.Subprograms is
 
             if Is_Dispatching_Operation (E) then
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Namespace_Declaration
                     (Name    => NID (To_String (WNE_Dispatch_Module)),
                      Declarations =>
@@ -3389,7 +3389,7 @@ package body Gnat2Why.Subprograms is
 
             if Has_Contracts (E, Name_Refined_Post) then
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Namespace_Declaration
                     (Name    => NID (To_String (WNE_Refine_Module)),
                      Declarations =>
@@ -3410,7 +3410,7 @@ package body Gnat2Why.Subprograms is
 
          begin
             Emit
-              (File.Cur_Theory,
+              (File,
                New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
@@ -3426,7 +3426,7 @@ package body Gnat2Why.Subprograms is
 
             if Is_Dispatching_Operation (E) then
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Namespace_Declaration
                     (Name    => NID (To_String (WNE_Dispatch_Module)),
                      Declarations =>
@@ -3453,7 +3453,7 @@ package body Gnat2Why.Subprograms is
 
             if Is_Error_Signaling_Procedure (E) then
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Namespace_Declaration
                     (Name    => NID (To_String (WNE_No_Return_Module)),
                      Declarations =>
@@ -3470,7 +3470,7 @@ package body Gnat2Why.Subprograms is
 
             if Has_Contracts (E, Name_Refined_Post) then
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Namespace_Declaration
                     (Name    => NID (To_String (WNE_Refine_Module)),
                      Declarations =>
@@ -3544,7 +3544,7 @@ package body Gnat2Why.Subprograms is
    ----------------------------------------
 
    procedure Translate_Expression_Function_Body
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
       Expr_Fun_N         : constant Node_Id := Get_Expression_Function (E);
@@ -3571,7 +3571,7 @@ package body Gnat2Why.Subprograms is
                           else "")
                    & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Add_Dependencies_For_Effects (File.Cur_Theory, E);
+      Add_Dependencies_For_Effects (File, E);
 
       --  Store an appropriate value for the result identifier in Result_Name.
 
@@ -3591,8 +3591,8 @@ package body Gnat2Why.Subprograms is
       end if;
 
       Params :=
-        (File        => File.File,
-         Theory      => File.Cur_Theory,
+        (File        => File,
+         Theory      => Why_Sections (File).Cur_Theory,
          Phase       => Generate_Logic,
          Gen_Marker   => False,
          Ref_Allowed => False);
@@ -3633,7 +3633,7 @@ package body Gnat2Why.Subprograms is
 
       if Is_Standard_Boolean_Type (Etype (E)) then
          Emit
-           (File.Cur_Theory,
+           (File,
             New_Defining_Bool_Axiom
               (Ada_Node => E,
                Name     => Logic_Id,
@@ -3674,7 +3674,7 @@ package body Gnat2Why.Subprograms is
                  Compute_Guard_Formula (Logic_Func_Binders);
             begin
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Defining_Axiom
                     (Ada_Node    => E,
                      Name        => Logic_Id,
@@ -3700,7 +3700,7 @@ package body Gnat2Why.Subprograms is
                  +Compute_Spec (Params, E, Name_Precondition, EW_Pred);
             begin
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Guarded_Axiom
                     (Ada_Node => Empty,
                      Name     => NID (Short_Name (E) & "__" & Def_Axiom),
@@ -3757,7 +3757,7 @@ package body Gnat2Why.Subprograms is
    -------------------------------
 
    procedure Translate_Subprogram_Spec
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    is
       Logic_Func_Binders : constant Item_Array := Compute_Binders (E, EW_Term);
@@ -3784,10 +3784,10 @@ package body Gnat2Why.Subprograms is
          begin
             --  Generate a logic function
 
-            Add_Dependencies_For_Effects (File.Cur_Theory, E);
+            Add_Dependencies_For_Effects (File, E);
 
             Emit
-              (File.Cur_Theory,
+              (File,
                New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => Logic_Id,
@@ -3797,7 +3797,7 @@ package body Gnat2Why.Subprograms is
 
             if Is_Dispatching_Operation (E) then
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Namespace_Declaration
                     (Name    => NID (To_String (WNE_Dispatch_Module)),
                      Declarations =>
@@ -3811,7 +3811,7 @@ package body Gnat2Why.Subprograms is
 
             if Has_Contracts (E, Name_Refined_Post) then
                Emit
-                 (File.Cur_Theory,
+                 (File,
                   New_Namespace_Declaration
                     (Name    => NID (To_String (WNE_Refine_Module)),
                      Declarations =>

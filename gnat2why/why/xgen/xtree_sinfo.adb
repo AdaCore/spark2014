@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2015, AdaCore                   --
+--                       Copyright (C) 2010-2016, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -64,7 +64,7 @@ package body Xtree_Sinfo is
                  W_Clone_Declaration);
       New_Class ("W_Any_Node",
                  W_Type,
-                 W_File);
+                 W_Module);
       New_Class ("W_Generic_Theory",
                  W_Theory_Declaration,
                  W_Custom_Declaration);
@@ -685,15 +685,6 @@ package body Xtree_Sinfo is
 
       New_Field (W_Custom_Declaration,
                  "Subst", "W_Custom_Substitution", Id_Set);
-
-      ------------
-      -- W_File --
-      ------------
-
-      Set_Mutable (W_File);
-      New_Field (W_File,
-                 "Theories", "W_Generic_Theory", Id_Set);
-      Set_Domain (W_File, EW_Prog);
 
    end Build_AST;
 

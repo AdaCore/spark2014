@@ -30,7 +30,6 @@ with Ada.Strings.Unbounded;
 with Errout;                use Errout;
 with GNAT.Regpat;
 with GNAT.OS_Lib;           use GNAT.OS_Lib;
-with Gnat2Why.Util;         use Gnat2Why.Util;
 with Gnat2Why_Args;
 with Namet;                 use Namet;
 with Sinput;                use Sinput;
@@ -71,6 +70,11 @@ package body Why.Atree.Sprint is
    --  package as needed
 
    procedure Print_List
+     (Nodes     : Why_Node_Lists.List;
+      Separator : String := ", ";
+      Newline   : Boolean := False);
+
+   procedure Print_List
      (List_Id   : Why_Node_List;
       Separator : String := ", ";
       Newline   : Boolean := False);
@@ -105,7 +109,6 @@ package body Why.Atree.Sprint is
    procedure Print_Existential_Quantif (Node : W_Existential_Quantif_Id);
    procedure Print_Exn_Condition (Node : W_Exn_Condition_Id);
    procedure Print_Field_Association (Node : W_Field_Association_Id);
-   procedure Print_File (Node : W_File_Id);
    procedure Print_Fixed_Constant (Node : W_Fixed_Constant_Id);
    procedure Print_Function_Decl (Node : W_Function_Decl_Id);
    procedure Print_Global_Ref_Declaration (Node : W_Global_Ref_Declaration_Id);
@@ -842,15 +845,6 @@ package body Why.Atree.Sprint is
       Print_Node (+Get_Value (Node));
    end Print_Field_Association;
 
-   -----------------
-   -- Print_File --
-   -----------------
-
-   procedure Print_File (Node : W_File_Id) is
-   begin
-      Print_List (+Get_Theories (Node), "", Newline => True);
-   end Print_File;
-
    ---------------------------
    -- Print_Fixed_Constant --
    ---------------------------
@@ -1168,9 +1162,18 @@ package body Why.Atree.Sprint is
       Separator : String := ", ";
       Newline   : Boolean := False)
    is
+      Nodes    : constant Why_Node_Lists.List := Get_List (List_Id);
+   begin
+      Print_List (Nodes, Separator, Newline);
+   end Print_List;
+
+   procedure Print_List
+     (Nodes   : Why_Node_Lists.List;
+      Separator : String := ", ";
+      Newline   : Boolean := False)
+   is
       use Why_Node_Lists;
 
-      Nodes    : constant List := Get_List (List_Id);
       Position : Cursor := First (Nodes);
    begin
       while Position /= No_Element loop
@@ -1503,9 +1506,6 @@ package body Why.Atree.Sprint is
 
          when W_Module =>
             Print_Module_Id (+N);
-
-         when W_File =>
-            Print_File (+N);
       end case;
    end Print_Node;
 
@@ -1659,6 +1659,13 @@ package body Why.Atree.Sprint is
       O := To;
       Print_Node (Node);
    end Sprint_Why_Node;
+
+   procedure Print_Section
+     (WF : Why_Section; To : Output_Id := Stdout) is
+   begin
+      O := To;
+      Print_List (WF.Theories, "", Newline => True);
+   end Print_Section;
 
    -------------------------------
    -- Print_Statement_Sequence --

@@ -49,22 +49,22 @@ with Why.Inter;             use Why.Inter;
 package body Why.Gen.Arrays is
 
    procedure Declare_Constrained
-     (Theory         : W_Theory_Declaration_Id;
+     (Section        : W_Section_Id;
       Und_Ent        : Entity_Id);
    --  Output a declaration for statically constrained array types.
-   --  @param Theory The theory in which the declaration should be added
+   --  @param Section The section in which the declaration should be added
    --  @param Und_Ent The entity of the array type to be translated. It should
    --                 be a statically constrained array type.
    --  Here we don't need a name for the type in why as no type will be
    --  declared in this module.
 
    procedure Declare_Unconstrained
-     (Theory         : W_Theory_Declaration_Id;
+     (Section        : W_Section_Id;
       Why3_Type_Name : W_Name_Id;
       Und_Ent        : Entity_Id);
    --  Output a declaration for unconstrained and dynamically constrained array
    --  types.
-   --  @param Theory The theory in which the declaration should be added
+   --  @param Section The section in which the declaration should be added
    --  @param Why3_Type_Name Name to be used in Why for the type
    --  @param Und_Ent The entity of the array type to be translated. It should
    --                 be either an unconstrained array type or a dynamically
@@ -82,7 +82,7 @@ package body Why.Gen.Arrays is
       Dim    : Positive) return W_Expr_Id;
 
    function Prepare_Indices_Substitutions
-     (Theory      : W_Theory_Declaration_Id;
+     (Section     : W_Section_Id;
       Typ         : Entity_Id;
       Prefix      : String;
       Declare_One : Boolean := True) return W_Clone_Substitution_Array;
@@ -95,7 +95,7 @@ package body Why.Gen.Arrays is
    --          _gnatprove_standard.mlw
 
    function Prepare_Standard_Array_Logical_Substitutions
-     (Theory       : W_Theory_Declaration_Id;
+     (Section      : W_Section_Id;
       Und_Ent      : Entity_Id)
       return W_Clone_Substitution_Array;
    --  @param Und_Ent Entity of the array type.
@@ -103,15 +103,15 @@ package body Why.Gen.Arrays is
    --          Standard_Array_Logical_Ax.
 
    function Prepare_Subtype_Array_Logical_Substitutions
-     (Theory       : W_Theory_Declaration_Id;
+     (Section      : W_Section_Id;
       Und_Ent      : Entity_Id)
       return W_Clone_Substitution_Array;
-   --  @param Und_E!nt Entity of the array type.
+   --  @param Und_Ent Entity of the array type.
    --  @return An array of substitutions for cloning the module
    --          Subtype_Array_Logical_Ax.
 
-   procedure Declare_Additional_Symbols (E      : Entity_Id;
-                                         Theory : W_Theory_Declaration_Id);
+   procedure Declare_Additional_Symbols (E       : Entity_Id;
+                                         Section : W_Section_Id);
    --  @param E Entity of the one dimensional array type.
    --  @return Declares logical operators and comparison function when
    --          necessary.
@@ -356,15 +356,15 @@ package body Why.Gen.Arrays is
    -----------------------
 
    procedure Declare_Ada_Array
-     (Theory : W_Theory_Declaration_Id;
+     (File : W_Section_Id;
       E      : Entity_Id)
    is
       Why_Name : constant W_Name_Id := To_Why_Type (E, Local => True);
    begin
       if Is_Static_Array_Type (E) then
-         Declare_Constrained (Theory, E);
+         Declare_Constrained (File, E);
       else
-         Declare_Unconstrained (Theory, Why_Name, E);
+         Declare_Unconstrained (File, Why_Name, E);
       end if;
    end Declare_Ada_Array;
 
@@ -373,7 +373,7 @@ package body Why.Gen.Arrays is
    --------------------------------
 
    procedure Declare_Additional_Symbols (E      : Entity_Id;
-                                         Theory : W_Theory_Declaration_Id) is
+                                         Section : W_Section_Id) is
    begin
 
       if Has_Discrete_Type (Component_Type (E)) then
@@ -413,7 +413,7 @@ package body Why.Gen.Arrays is
                     Image     => New_Name (Symbol => NID ("map"))))
               &
               Prepare_Indices_Substitutions
-              (Theory, Base_Type (Etype (Fst_Idx)), "Index")
+              (Section, Base_Type (Etype (Fst_Idx)), "Index")
               &
               (1 =>
                  New_Clone_Substitution
@@ -428,7 +428,7 @@ package body Why.Gen.Arrays is
          begin
 
             if Has_Modular_Integer_Type (Component_Type (E)) then
-               Emit (Theory,
+               Emit (Section,
                      New_Clone_Declaration
                        (Theory_Kind   => EW_Module,
                         Clone_Kind    => EW_Export,
@@ -445,7 +445,7 @@ package body Why.Gen.Arrays is
                         As_Name       => No_Name,
                         Substitutions => Sbst));
             else
-               Emit (Theory,
+               Emit (Section,
                      New_Clone_Declaration
                        (Theory_Kind   => EW_Module,
                         Clone_Kind    => EW_Export,
@@ -465,7 +465,7 @@ package body Why.Gen.Arrays is
 
             --  For Boolean, use the module Standard_Array_Logical_Op_Axioms
 
-            Emit (Theory,
+            Emit (Section,
                   New_Clone_Declaration
                     (Theory_Kind   => EW_Module,
                      Clone_Kind    => EW_Export,
@@ -473,13 +473,13 @@ package body Why.Gen.Arrays is
                      As_Name       => No_Name,
                      Substitutions =>
                        Prepare_Standard_Array_Logical_Substitutions
-                         (Theory, E)));
+                         (Section, E)));
          else
 
             --  We clone a specific module Subtype_Array_Logical_Op_Axioms
             --  which needs an additional parameter to_int.
 
-            Emit (Theory,
+            Emit (Section,
                   New_Clone_Declaration
                     (Theory_Kind   => EW_Module,
                      Clone_Kind    => EW_Export,
@@ -487,7 +487,7 @@ package body Why.Gen.Arrays is
                      As_Name       => No_Name,
                      Substitutions =>
                        Prepare_Subtype_Array_Logical_Substitutions
-                         (Theory, E)));
+                         (Section, E)));
          end if;
       end if;
    end Declare_Additional_Symbols;
@@ -497,7 +497,7 @@ package body Why.Gen.Arrays is
    -----------------------------------
 
    function Prepare_Indices_Substitutions
-     (Theory      : W_Theory_Declaration_Id;
+     (Section      : W_Section_Id;
       Typ         : Entity_Id;
       Prefix      : String;
       Declare_One : Boolean := True) return W_Clone_Substitution_Array
@@ -508,7 +508,7 @@ package body Why.Gen.Arrays is
 
    begin
       if Declare_One then
-         Emit (Theory,
+         Emit (Section,
                Why.Gen.Binders.New_Function_Decl
                  (Domain      => EW_Term,
                   Name        => One_Id,
@@ -585,7 +585,7 @@ package body Why.Gen.Arrays is
    --------------------------------------------------
 
    function Prepare_Standard_Array_Logical_Substitutions
-     (Theory       : W_Theory_Declaration_Id;
+     (Section      : W_Section_Id;
       Und_Ent      : Entity_Id)
       return W_Clone_Substitution_Array
    is
@@ -600,7 +600,7 @@ package body Why.Gen.Arrays is
           Orig_Name => New_Name (Symbol => NID ("get")),
           Image     => New_Name (Symbol => NID ("get"))))
       & Prepare_Indices_Substitutions
-        (Theory, Etype (First_Index (Und_Ent)), "Index",
+        (Section, Etype (First_Index (Und_Ent)), "Index",
          False));
 
    -------------------------------------------------
@@ -608,11 +608,11 @@ package body Why.Gen.Arrays is
    -------------------------------------------------
 
    function Prepare_Subtype_Array_Logical_Substitutions
-     (Theory       : W_Theory_Declaration_Id;
+     (Section      : W_Section_Id;
       Und_Ent      : Entity_Id)
       return W_Clone_Substitution_Array
    is
-     (Prepare_Standard_Array_Logical_Substitutions (Theory, Und_Ent)
+     (Prepare_Standard_Array_Logical_Substitutions (Section, Und_Ent)
       & (1 =>
               New_Clone_Substitution
            (Kind      => EW_Type_Subst,
@@ -649,7 +649,7 @@ package body Why.Gen.Arrays is
    -------------------------
 
    procedure Declare_Constrained
-     (Theory         : W_Theory_Declaration_Id;
+     (Section        : W_Section_Id;
       Und_Ent        : Entity_Id)
    is
       Dimension       : constant Pos := Number_Dimensions (Und_Ent);
@@ -679,7 +679,7 @@ package body Why.Gen.Arrays is
       is
          Attr_Name : constant W_Name_Id := To_Local (E_Symb (Und_Ent, Kind));
       begin
-            Emit (Theory,
+            Emit (Section,
                   Why.Atree.Builders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => New_Identifier (Attr_Name),
@@ -699,7 +699,7 @@ package body Why.Gen.Arrays is
 
    begin
 
-      Emit (Theory,
+      Emit (Section,
             New_Type_Decl (Name => To_Name (WNE_Array_Component_Type),
                            Alias => EW_Abstract (Component_Type (Und_Ent))));
 
@@ -776,7 +776,7 @@ package body Why.Gen.Arrays is
          end;
       end if;
 
-      Emit (Theory,
+      Emit (Section,
             New_Clone_Declaration
               (Theory_Kind   => EW_Module,
                Clone_Kind    => EW_Export,
@@ -790,7 +790,7 @@ package body Why.Gen.Arrays is
    ---------------------------
 
    procedure Declare_Unconstrained
-     (Theory         : W_Theory_Declaration_Id;
+     (Section         : W_Section_Id;
       Why3_Type_Name : W_Name_Id;
       Und_Ent        : Entity_Id)
    is
@@ -807,7 +807,7 @@ package body Why.Gen.Arrays is
         Get_Array_Theory (Und_Ent).Module;
    begin
 
-      Emit (Theory,
+      Emit (Section,
             New_Type_Decl (Name => To_Name (WNE_Array_Component_Type),
                            Alias => EW_Abstract (Component_Type (Und_Ent))));
 
@@ -868,7 +868,7 @@ package body Why.Gen.Arrays is
                   X_Id : constant W_Identifier_Id :=
                     New_Identifier (Name => "x", Typ => R_Ty);
                begin
-                  Emit (Theory,
+                  Emit (Section,
                         Why.Gen.Binders.New_Function_Decl
                           (Domain  => EW_Term,
                            Name    => Id_Id,
@@ -935,7 +935,7 @@ package body Why.Gen.Arrays is
          Next_Index (Index);
       end loop;
 
-      Emit (Theory,
+      Emit (Section,
             New_Clone_Declaration
               (Theory_Kind   => EW_Module,
                Clone_Kind    => EW_Export,
@@ -944,12 +944,12 @@ package body Why.Gen.Arrays is
                Substitutions => Subst));
       --  Declare the abstract type of the unconstrained array and mark
       --  function "to_array" as projection (from this type to why3 map type)
-      Emit (Theory,
+      Emit (Section,
             New_Type_Decl
               (Why3_Type_Name,
                Alias =>
                  New_Named_Type (To_String (WNE_Array_Type))));
-      Emit_Projection_Metas (Theory, "to_array");
+      Emit_Projection_Metas (Section, "to_array");
       if Und_Ent = Standard_String then
          declare
             Dummy_Ident : constant W_Identifier_Id :=
@@ -959,7 +959,7 @@ package body Why.Gen.Arrays is
             Dummy_Ident2 : constant W_Identifier_Id :=
               New_Identifier (Name => "x", Typ => Str_Typ);
          begin
-            Emit (Theory,
+            Emit (Section,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Local (To_String_Id),
@@ -972,7 +972,7 @@ package body Why.Gen.Arrays is
                           B_Ent    => Null_Entity_Name,
                           B_Name   => Dummy_Ident)),
                      Return_Type => Str_Typ));
-            Emit (Theory,
+            Emit (Section,
                   Why.Gen.Binders.New_Function_Decl
                     (Domain      => EW_Term,
                      Name        => To_Local (Of_String_Id),
@@ -1372,10 +1372,10 @@ package body Why.Gen.Arrays is
    -----------------------------
 
    procedure Create_Rep_Array_Theory
-     (File   : in out Why_Section;
-      E      :        Entity_Id;
-      Name   :        Name_Id;
-      Module :    out W_Module_Id);
+     (File   : W_Section_Id;
+      E      : Entity_Id;
+      Name   : Name_Id;
+      Module : out W_Module_Id);
    --  Create an Array theory
    --  @param File the current why file
    --  @param E the entity of type array
@@ -1383,10 +1383,10 @@ package body Why.Gen.Arrays is
    --         given by "Get_Array_Theory_Name"
 
    procedure Create_Rep_Array_Theory
-     (File   : in out Why_Section;
-      E      :        Entity_Id;
-      Name   :        Name_Id;
-      Module :    out W_Module_Id)
+     (File   : W_Section_Id;
+      E      : Entity_Id;
+      Name   : Name_Id;
+      Module : out W_Module_Id)
    is
       Typ : constant Entity_Id := Retysp (Etype (E));
 
@@ -1418,7 +1418,7 @@ package body Why.Gen.Arrays is
          for I in 0 .. Dim - 1 loop
 
             Subst (I * 7 + 1 .. I * 7 + 7) := Prepare_Indices_Substitutions
-              (File.Cur_Theory,
+              (File,
                Retysp (Etype (Index)),
                "I" & Image (I + 1, 1));
 
@@ -1437,11 +1437,11 @@ package body Why.Gen.Arrays is
 
       --  Declare the component type and clone the appropriate array theory.
 
-      Emit (File.Cur_Theory,
+      Emit (File,
             New_Type_Decl (Name  => To_Name (WNE_Array_Component_Type),
                            Alias => EW_Abstract (Component_Type (Typ))));
 
-      Emit (File.Cur_Theory,
+      Emit (File,
             New_Clone_Declaration
               (Theory_Kind   => EW_Theory,
                Clone_Kind    => EW_Export,
@@ -1455,7 +1455,7 @@ package body Why.Gen.Arrays is
       --  boolean).
 
       if Dim = 1 then
-         Declare_Additional_Symbols (Typ, File.Cur_Theory);
+         Declare_Additional_Symbols (Typ, File);
       end if;
 
       Close_Theory (File, Kind => Definition_Theory);
@@ -1466,9 +1466,9 @@ package body Why.Gen.Arrays is
    ---------------------------------------
 
    procedure Create_Rep_Array_Theory_If_Needed
-     (File          : in out Why_Section;
-      E             :        Entity_Id;
-      Register_Only :        Boolean := False)
+     (File          : W_Section_Id;
+      E             : Entity_Id;
+      Register_Only : Boolean := False)
    is
       Name : constant Name_Id := Get_Array_Theory_Name (E);
       Module : W_Module_Id;

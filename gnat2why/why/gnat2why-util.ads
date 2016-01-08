@@ -38,7 +38,6 @@ with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Ids;               use Why.Ids;
 with Why.Sinfo;             use Why.Sinfo;
-with Why.Types;             use Why.Types;
 
 package Gnat2Why.Util is
 
@@ -175,8 +174,14 @@ package Gnat2Why.Util is
    --  @return the program or term domain corresponding to the [Domain]
    --     parameter, which means essentially converting predicate to term.
 
+   type W_Section_Id is
+     (WF_Pure,
+      WF_Variables,
+      WF_Context,
+      WF_Main);
+
    type Transformation_Params is record
-      File        : W_File_Id;
+      File        : W_Section_Id;
       --  Identity of the current Why3 file. If needed, new theories and
       --  modules will be created in this file (e.g. for string literals).
       Theory      : W_Theory_Declaration_Id;
@@ -194,27 +199,15 @@ package Gnat2Why.Util is
    end record;
    --  Set of parameters for the transformation phase
 
-   type Why_Section_Enum is
-     (
-      WF_Pure,
-      WF_Variables,
-      WF_Context,
-      WF_Main);
-
    type Why_Section is limited
       record
-         File        : W_File_Id;
-         Kind        : Why_Section_Enum;
-         Cur_Theory  : W_Theory_Declaration_Id;
+         Kind       : W_Section_Id;
+         Theories   : Why_Node_Lists.List;
+         Cur_Theory : W_Theory_Declaration_Id;
       end record;
    --  Making this type limited is a way to force by-reference passing
    --  of objects of this type. This is needed because we have aliasing between
    --  parameters of many functions and the global variable Why_Sections below.
-
-   procedure Make_Empty_Why_Section
-     (Kind : Why_Section_Enum; Section : out Why_Section)
-     with Post => (Section.Cur_Theory = Why.Types.Why_Empty);
-   --  Return an empty Why_Section with the given kind
 
    Why_File_Name : String_Access;
 
@@ -223,16 +216,16 @@ package Gnat2Why.Util is
    --  file. The Unit node is used to initialize the above Why_File_Name
    --  variable.
 
-   Why_Sections : array (Why_Section_Enum) of Why_Section;
+   Why_Sections : array (W_Section_Id) of Why_Section;
 
    Why_File_Suffix : constant String := ".mlw";
 
    function Usual_Params
      (Phase : Transformation_Phase;
-      Kind  : Why_Section_Enum := WF_Main) return Transformation_Params
+      Kind  : W_Section_Id := WF_Main) return Transformation_Params
    is
      (Transformation_Params'
-        (File        => Why_Sections (Kind).File,
+        (File        => Kind,
          Theory      => Why_Sections (Kind).Cur_Theory,
          Phase       => Phase,
          Gen_Marker   => False,
@@ -250,7 +243,7 @@ package Gnat2Why.Util is
      (Usual_Params (Generate_VCs_For_Assert));
 
    function Logic_Params
-     (Kind : Why_Section_Enum := WF_Main) return Transformation_Params
+     (Kind : W_Section_Id := WF_Main) return Transformation_Params
    is (Usual_Params (Generate_Logic, Kind));
 
    --------------

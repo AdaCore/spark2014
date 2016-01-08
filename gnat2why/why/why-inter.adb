@@ -290,11 +290,11 @@ package body Why.Inter is
    -- Add_Effect_Imports --
    ------------------------
 
-   procedure Add_Effect_Imports (P : Why_Section;
+   procedure Add_Effect_Imports (P : W_Section_Id;
                                  S : Name_Sets.Set)
    is
    begin
-      Add_Effect_Imports (P.Cur_Theory, S);
+      Add_Effect_Imports (Why_Sections (P).Cur_Theory, S);
    end Add_Effect_Imports;
 
    --------------------------
@@ -315,7 +315,7 @@ package body Why.Inter is
    ------------------------
 
    procedure Add_Use_For_Entity
-     (P               : Why_Section;
+     (P               : W_Section_Id;
       N               : Entity_Id;
       Use_Kind        : EW_Clone_Type := EW_Clone_Default;
       With_Completion : Boolean := True)
@@ -366,12 +366,12 @@ package body Why.Inter is
             Kind     => Th_Type));
    end Add_With_Clause;
 
-   procedure Add_With_Clause (P        : Why_Section;
+   procedure Add_With_Clause (P        : W_Section_Id;
                               Module   : W_Module_Id;
                               Use_Kind : EW_Clone_Type;
                               Th_Type  : EW_Theory_Type := EW_Module) is
    begin
-      Add_With_Clause (P.Cur_Theory, Module, Use_Kind, Th_Type);
+      Add_With_Clause (Why_Sections (P).Cur_Theory, Module, Use_Kind, Th_Type);
    end Add_With_Clause;
 
    -------------------
@@ -460,12 +460,12 @@ package body Why.Inter is
    ------------------
 
    procedure Close_Theory
-     (P              : in out Why_Section;
+     (P              : W_Section_Id;
       Kind           : Theory_Kind;
       Defined_Entity : Entity_Id := Empty)
    is
       use Why_Node_Sets;
-      S : constant Set := Compute_Module_Set (+P.Cur_Theory);
+      S : constant Set := Compute_Module_Set (+(Why_Sections (P).Cur_Theory));
 
       function Is_Relevant_Node_For_Imports
         (N             : Node_Id;
@@ -613,24 +613,24 @@ package body Why.Inter is
             end;
       end case;
 
-      File_Append_To_Theories (P.File, +P.Cur_Theory);
-      P.Cur_Theory := Why_Empty;
+      Why_Sections (P).Theories.Append (+Why_Sections (P).Cur_Theory);
+      Why_Sections (P).Cur_Theory := Why_Empty;
    end Close_Theory;
 
    --------------------
    -- Discard_Theory --
    --------------------
 
-   procedure Discard_Theory (P : in out Why_Section) is
+   procedure Discard_Theory (P : W_Section_Id) is
    begin
-      P.Cur_Theory := Why_Empty;
+      Why_Sections (P).Cur_Theory := Why_Empty;
    end Discard_Theory;
 
    ---------------------
    -- Dispatch_Entity --
    ---------------------
 
-   function Dispatch_Entity (E : Entity_Id) return Why_Section_Enum is
+   function Dispatch_Entity (E : Entity_Id) return W_Section_Id is
    begin
       --  Theories for nodes that are not entities may depend on constants
       --  declared in modules for variables (bounds of arrays for example).
@@ -709,7 +709,7 @@ package body Why.Inter is
    --------------------------------
 
    function Dispatch_Entity_Completion (E : Entity_Id)
-                                        return Why_Section_Enum is
+                                        return W_Section_Id is
    begin
 
       --  Completion modules of types are only used by VC generation modules
@@ -1154,14 +1154,14 @@ package body Why.Inter is
    -----------------
 
    procedure Open_Theory
-     (P       : in out Why_Section;
+     (P       : W_Section_Id;
       Module  : W_Module_Id;
       Comment : String)
    is
       S : constant String :=
         Capitalize_First (Get_Name_String (Get_Name (Module)));
    begin
-      P.Cur_Theory :=
+      Why_Sections (P).Cur_Theory :=
         New_Theory_Declaration (Name    => NID (S),
                                 Kind    => EW_Module,
                                 Comment => NID (Comment));

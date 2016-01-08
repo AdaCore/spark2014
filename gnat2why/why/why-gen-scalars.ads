@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Einfo;   use Einfo;
-with Types;   use Types;
-with Why.Ids; use Why.Ids;
+with Einfo;         use Einfo;
+with Gnat2Why.Util; use Gnat2Why.Util;
+with Types;         use Types;
 
 package Why.Gen.Scalars is
    --  This package implements the generation of Why modules for scalar types
@@ -33,8 +33,8 @@ package Why.Gen.Scalars is
    --  scalar types, and how this relates to ada__model.mlw
 
    procedure Declare_Scalar_Type
-     (Theory : W_Theory_Declaration_Id;
-      E      : Entity_Id)
+     (File : W_Section_Id;
+      E    : Entity_Id)
      with Pre => Is_Scalar_Type (E);
    --  Populate the Theory with all the necessary declarations for Entity E
    --  (which must be a scalar type)

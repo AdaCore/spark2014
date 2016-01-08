@@ -47,7 +47,6 @@ with Stand;                              use Stand;
 with String_Utils;                       use String_Utils;
 with Why.Atree.Accessors;                use Why.Atree.Accessors;
 with Why.Atree.Builders;                 use Why.Atree.Builders;
-with Why.Atree.Mutators;                 use Why.Atree.Mutators;
 with Why.Atree.Modules;                  use Why.Atree.Modules;
 with Why.Conversions;                    use Why.Conversions;
 with Why.Gen.Arrays;                     use Why.Gen.Arrays;
@@ -283,8 +282,8 @@ package body Gnat2Why.External_Axioms is
                     and then E /= Universal_Fixed
                   then
                      declare
-                        Compl_File : Why_Section renames
-                          Why_Sections (Dispatch_Entity_Completion (E));
+                        Compl_File : constant W_Section_Id :=
+                          Dispatch_Entity_Completion (E);
                      begin
                         Generate_Type_Completion (Compl_File, E);
                      end;
@@ -347,9 +346,8 @@ package body Gnat2Why.External_Axioms is
                     and then not Is_Itype (Retysp (Actual))
                   then
                      declare
-                        Compl_File : Why_Section renames
-                          Why_Sections (Dispatch_Entity_Completion
-                                        (Retysp (Actual)));
+                        Compl_File : constant W_Section_Id :=
+                          Dispatch_Entity_Completion (Retysp (Actual));
                      begin
 
                         Open_Theory
@@ -1024,8 +1022,7 @@ package body Gnat2Why.External_Axioms is
          end if;
       end Get_Logic_Type_Of_Ada_Type;
 
-      TFile     : Why_Section renames
-        Why_Sections (Dispatch_Entity (Package_Entity));
+      TFile    : constant W_Section_Id := Dispatch_Entity (Package_Entity);
       CurAssoc  : Node_Id := First (Assoc);
       CurLabs   : Node_Id := First (Labs);
 
@@ -1057,8 +1054,8 @@ package body Gnat2Why.External_Axioms is
                   Typ    : constant W_Type_Id := Type_Of_Node (Etype (Formal));
                   Def    : W_Term_Id;
                   Params : constant Transformation_Params :=
-                    (File        => TFile.File,
-                     Theory      => TFile.Cur_Theory,
+                    (File        => TFile,
+                     Theory      => Why_Sections (TFile).Cur_Theory,
                      Phase       => Generate_Logic,
                      Gen_Marker  => False,
                      Ref_Allowed => False);
@@ -1086,7 +1083,7 @@ package body Gnat2Why.External_Axioms is
 
                   --  We generate a "logic", whose axiom will be given
 
-                  Emit (TFile.Cur_Theory,
+                  Emit (TFile,
                      Why.Atree.Builders.New_Function_Decl
                        (Domain      => EW_Term,
                         Name        =>
@@ -1104,7 +1101,7 @@ package body Gnat2Why.External_Axioms is
 
                   if Def /= Why_Empty then
                      Emit
-                       (TFile.Cur_Theory,
+                       (TFile,
                         New_Defining_Axiom
                           (Ada_Node    => Formal,
                            Name        =>
@@ -1153,7 +1150,7 @@ package body Gnat2Why.External_Axioms is
 
                if Short_Name (Formal) /= Short_Name (Actual) then
                   Emit
-                    (TFile.Cur_Theory,
+                    (TFile,
                      New_Type_Decl
                        (Name  =>
                             New_Name (Symbol => NID (Short_Name (Formal))),
@@ -1178,7 +1175,7 @@ package body Gnat2Why.External_Axioms is
                   begin
 
                      Emit
-                       (TFile.Cur_Theory,
+                       (TFile,
                         New_Function_Decl
                           (Domain      => EW_Term,
                            Name        =>
@@ -1188,7 +1185,7 @@ package body Gnat2Why.External_Axioms is
                            Return_Type => F_Ty,
                            Def         => +A_Ident));
                      Emit
-                       (TFile.Cur_Theory,
+                       (TFile,
                         New_Function_Decl
                           (Domain      => EW_Term,
                            Name        =>
@@ -1256,8 +1253,8 @@ package body Gnat2Why.External_Axioms is
                      Logic_Id           : constant W_Identifier_Id :=
                        To_Why_Id (Actual, Domain => EW_Term, Local => True);
                      Params             : constant Transformation_Params :=
-                       (File        => TFile.File,
-                        Theory      => TFile.Cur_Theory,
+                       (File        => TFile,
+                        Theory      => Why_Sections (TFile).Cur_Theory,
                         Phase       => Generate_Logic,
                         Gen_Marker   => False,
                         Ref_Allowed => False);
@@ -1286,7 +1283,7 @@ package body Gnat2Why.External_Axioms is
                      end loop;
 
                      Emit
-                       (TFile.Cur_Theory,
+                       (TFile,
                         New_Function_Decl
                           (Domain      => EW_Term,
                            Name        => Logic_Id,
@@ -1381,7 +1378,7 @@ package body Gnat2Why.External_Axioms is
                      end loop;
 
                      Emit
-                       (TFile.Cur_Theory,
+                       (TFile,
                         New_Function_Decl
                           (Domain      => EW_Term,
                            Name        =>
@@ -1491,7 +1488,7 @@ package body Gnat2Why.External_Axioms is
                               when EW_Abstract | EW_Split =>
                                  E_Module (Get_Ada_Node (+F_W_Type)));
                      begin
-                        Add_With_Clause (TFile.Cur_Theory,
+                        Add_With_Clause (TFile,
                                          M,
                                          EW_Clone_Default);
                         Binders (Count) :=
@@ -1514,7 +1511,7 @@ package body Gnat2Why.External_Axioms is
                   end loop;
 
                   Emit
-                    (TFile.Cur_Theory,
+                    (TFile,
                      New_Function_Decl
                        (Domain      => EW_Term,
                         Name        =>
@@ -1624,8 +1621,8 @@ package body Gnat2Why.External_Axioms is
               and then Is_Array_Type (Defining_Identifier (N))
             then
                declare
-                  File : Why_Section renames
-                    Why_Sections (Dispatch_Entity (Defining_Identifier (N)));
+                  File : constant W_Section_Id :=
+                    Dispatch_Entity (Defining_Identifier (N));
                   Element_Is_Local : constant Boolean :=
                     Containing_Package_With_Ext_Axioms
                       (Component_Type (Defining_Identifier (N))) = E;
@@ -1686,11 +1683,15 @@ package body Gnat2Why.External_Axioms is
       Register_External_Entities (Package_Entity);
 
       if List_Of_Entity.Is_Empty (G_Parents) then
-         File_Append_To_Theories
-           (TFile.File, New_Custom_Declaration
+         declare
+            Decl : constant W_Custom_Declaration_Id :=
+              New_Custom_Declaration
               (Ada_Node  => Package_Entity,
                Domain    => EW_Prog,
-               File_Name => NID (Full_Name (Package_Entity) & ".mlw")));
+               File_Name => NID (Full_Name (Package_Entity) & ".mlw"));
+         begin
+            TFile.Theories.Append (Why_Node_Id (Decl));
+         end;
       else
          --  Translation will always be called on top-level packages with
          --  external axiomatization only, that is, either packages with
@@ -1707,17 +1708,18 @@ package body Gnat2Why.External_Axioms is
             Subst : W_Custom_Substitution_Array (1 .. Subst_Length);
          begin
             Compute_Substitution (G_Parents, Subst);
-
-            File_Append_To_Theories
-              (TFile.File, New_Custom_Declaration
-                 (Domain    => EW_Prog,
-                  File_Name =>
-                    NID (Get_Generic_Name (Package_Entity,
-                      List_Of_Entity.First (G_Parents)) & ".mlw"),
-                  Subst     => Subst));
-
-            Add_Dependencies (Package_Entity, G_Parents);
-
+            declare
+               Decl : constant W_Custom_Declaration_Id :=
+                 New_Custom_Declaration
+                   (Domain    => EW_Prog,
+                    File_Name =>
+                      NID (Get_Generic_Name (Package_Entity,
+                        List_Of_Entity.First (G_Parents)) & ".mlw"),
+                    Subst     => Subst);
+            begin
+               TFile.Theories.Append (Why_Node_Id (Decl));
+               Add_Dependencies (Package_Entity, G_Parents);
+            end;
          end;
       end if;
    end Translate_Package_With_External_Axioms;

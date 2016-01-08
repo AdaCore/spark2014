@@ -25,6 +25,7 @@
 
 with Why.Ids;               use Why.Ids;
 with Why.Gen.Binders;       use Why.Gen.Binders;
+with Gnat2Why.Util;         use Gnat2Why.Util;
 
 package Why.Gen.Decl is
    --  This package contains all subprograms that are used to build Why
@@ -44,8 +45,12 @@ package Why.Gen.Decl is
      (Theory : W_Theory_Declaration_Id;
       Decl   : W_Declaration_Id);
 
+   procedure Emit
+     (S    : W_Section_Id;
+      Decl : W_Declaration_Id);
+
    procedure Emit_Projection_Metas
-     (Theory         : W_Theory_Declaration_Id;
+     (Section        : W_Section_Id;
       Projection_Fun : String);
    --  Emit meta that marks a function as a projection function and disables
    --  inlining of this function in Why3.
@@ -54,7 +59,7 @@ package Why.Gen.Decl is
    --      projection.
 
    procedure Emit_Record_Declaration
-     (Theory       : W_Theory_Declaration_Id;
+     (Section      : W_Section_Id;
       Name         : W_Name_Id;
       Binders      : Binder_Array;
       SPARK_Record : Boolean := False);
@@ -72,8 +77,8 @@ package Why.Gen.Decl is
    --      name of the field to the variable being projected.
 
    procedure Emit_Ref_Type_Definition
-     (Theory : W_Theory_Declaration_Id;
-      Name   : W_Name_Id);
+     (File : W_Section_Id;
+      Name : W_Name_Id);
    --  Emit definition of a record type with one mutable field of type Name and
    --  counterexample projection from this type to this field.
    --  For more information about counterexample projections see documentation

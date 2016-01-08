@@ -77,7 +77,7 @@ with Why.Ids;       use Why.Ids;
 package Gnat2Why.Types is
 
    procedure Translate_Type
-     (File       : in out Why_Section;
+     (File       : W_Section_Id;
       E          : Entity_Id;
       New_Theory : out Boolean);
    --  Generate the Why3 declaration module for the type entity in argument.
@@ -90,7 +90,7 @@ package Gnat2Why.Types is
    --  works with Boolean, but not with things like Universal_Integer.
 
    procedure Generate_Type_Completion
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id);
    --  Generate the Why3 completion module for the type entity in argument.
    --  Today, this is useful only for user-defined equalities

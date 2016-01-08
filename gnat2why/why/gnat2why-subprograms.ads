@@ -65,14 +65,14 @@ package Gnat2Why.Subprograms is
    Current_Subp : Entity_Id := Empty;
 
    procedure Generate_VCs_For_Subprogram
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
      with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the absence of run-time errors in E.
 
    procedure Generate_VCs_For_Package_Elaboration
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id) with
      Pre => Ekind (E) = E_Package;
    --  Generate Why code from which Why VC generator will generate all VCs
@@ -80,21 +80,21 @@ package Gnat2Why.Subprograms is
    --  errors in the declarations and body statements of E.
 
    procedure Generate_VCs_For_LSP
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id) with
      Pre => Ekind (E) in E_Function | E_Procedure;
    --  Generate Why code from which Why VC generator will generate all VCs
    --  related to the verification of LSP for dispatching subprogram E.
 
    procedure Generate_VCs_For_Task
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id)
    with Pre => Ekind (E) = E_Task_Type;
    --  @param File the file and section in which the VCs should be generated
    --  @param E the task entity to be translated
 
    procedure Translate_Subprogram_Spec
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id) with
      Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Generate a Why logic declaration that corresponds to an Ada subprogram
@@ -106,14 +106,14 @@ package Gnat2Why.Subprograms is
    --  binder.
 
    procedure Generate_Subprogram_Completion
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id) with
      Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Generate a Why program declaration and potentially a defining axiom for
    --  an Ada subprogram.
 
    procedure Translate_Expression_Function_Body
-     (File : in out Why_Section;
+     (File : W_Section_Id;
       E    : Entity_Id);
    --  If subprogram E's body is in SPARK, generate a Why axiom that, given a
    --  function F with expression E, states that: "for all <args> => F(<args>)
@@ -126,7 +126,7 @@ package Gnat2Why.Subprograms is
    --  If Domain is EW_Term also generates binders for E's read effects.
 
    procedure Add_Dependencies_For_Effects
-     (T : W_Theory_Declaration_Id;
+     (T : W_Section_Id;
       E : Entity_Id);
    --  Adds imports for the globals of a subprogram E in the current theory
 

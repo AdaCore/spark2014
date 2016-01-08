@@ -59,6 +59,7 @@ with Why.Atree.Builders;     use Why.Atree.Builders;
 with Why.Atree.Accessors;    use Why.Atree.Accessors;
 with Why.Atree.Mutators;     use Why.Atree.Mutators;
 with Why.Atree.Modules;      use Why.Atree.Modules;
+with Why.Atree.Tables;       use Why.Atree.Tables;
 with Why.Conversions;        use Why.Conversions;
 with Why.Gen.Arrays;         use Why.Gen.Arrays;
 with Why.Gen.Binders;        use Why.Gen.Binders;
@@ -2095,7 +2096,7 @@ package body Gnat2Why.Expr is
          --  We also need to add inclusions to allow the usage of those read
          --  variables
 
-         Add_Dependencies_For_Effects (Params.Theory, Subp);
+         Add_Dependencies_For_Effects (Params.File, Subp);
 
          return Why_Args;
       end;
@@ -3802,13 +3803,13 @@ package body Gnat2Why.Expr is
    -------------------------------------
 
    function Get_Pure_Logic_Term_If_Possible
-     (File          : Why_Section;
+     (File          : W_Section_Id;
       Expr          : Node_Id;
       Expected_Type : W_Type_Id) return W_Term_Id
    is
       Params : constant Transformation_Params :=
-        (Theory      => File.Cur_Theory,
-         File        => File.File,
+        (Theory      => Why_Sections (File).Cur_Theory,
+         File        => File,
          Phase       => Generate_Logic,
          Gen_Marker   => False,
          Ref_Allowed => True);
@@ -6386,8 +6387,7 @@ package body Gnat2Why.Expr is
 
          --  Select file for the declarations
 
-         Decl_File     : Why_Section renames
-           Why_Sections (Dispatch_Entity (Expr));
+         Decl_File     : constant W_Section_Id := Dispatch_Entity (Expr);
 
       --  Start of processing for Generate_Logic_Function
 
@@ -6487,8 +6487,8 @@ package body Gnat2Why.Expr is
 
          --  Generate the necessary logic function and axiom declarations
 
-         if Params.File = Decl_File.File then
-            Decl_File.Cur_Theory := Why_Empty;
+         if Params.File = Decl_File then
+            Why_Sections (Decl_File).Cur_Theory := Why_Empty;
          end if;
          Open_Theory
            (Decl_File, E_Module (Expr),
@@ -6503,13 +6503,13 @@ package body Gnat2Why.Expr is
                    else "<no location>")
                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-         Emit (Decl_File.Cur_Theory,
+         Emit (Decl_File,
                New_Function_Decl (Domain      => EW_Term,
                                   Name        => Func,
                                   Labels      => Name_Id_Sets.Empty_Set,
                                   Binders     => Call_Params,
                                   Return_Type => Ret_Type));
-         Emit (Decl_File.Cur_Theory,
+         Emit (Decl_File,
                New_Guarded_Axiom (Name     => NID (Def_Axiom),
                                   Binders  => Call_Params,
                                   Def      => Def_Pred));
@@ -6517,8 +6517,8 @@ package body Gnat2Why.Expr is
          Close_Theory (Decl_File,
                        Kind => Definition_Theory,
                        Defined_Entity => Expr);
-         if Params.File = Decl_File.File then
-            Decl_File.Cur_Theory := Params.Theory;
+         if Params.File = Decl_File then
+            Why_Sections (Decl_File).Cur_Theory := Params.Theory;
          end if;
       end Generate_Logic_Function;
 
@@ -13546,10 +13546,10 @@ package body Gnat2Why.Expr is
         New_Identifier (Ada_Node => N,
                         Name     => Name,
                         Typ      => Why_Type);
-      Decl_File : Why_Section renames Why_Sections (Dispatch_Entity (N));
+      Decl_File : constant W_Section_Id := Dispatch_Entity (N);
    begin
-      if Params.File = Decl_File.File then
-         Decl_File.Cur_Theory := Why_Empty;
+      if Params.File = Decl_File then
+         Why_Sections (Decl_File).Cur_Theory := Why_Empty;
       end if;
 
       Insert_Extra_Module
@@ -13564,7 +13564,7 @@ package body Gnat2Why.Expr is
                           else "")
                        & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       Emit
-        (Decl_File.Cur_Theory,
+        (Decl_File,
          Why.Atree.Builders.New_Function_Decl
            (Domain      => EW_Term,
             Name        => Id,
@@ -13575,8 +13575,8 @@ package body Gnat2Why.Expr is
                     Kind => Definition_Theory,
                     Defined_Entity => N);
 
-      if Params.File = Decl_File.File then
-         Decl_File.Cur_Theory := Params.Theory;
+      if Params.File = Why_Sections (Decl_File).Kind then
+         Why_Sections (Decl_File).Cur_Theory := Params.Theory;
       end if;
    end Transform_String_Literal;
 

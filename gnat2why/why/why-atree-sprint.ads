@@ -25,6 +25,7 @@
 
 with Outputs;          use Outputs;
 with Why.Atree.Tables; use Why.Atree.Tables;
+with Gnat2Why.Util;    use Gnat2Why.Util;
 
 package Why.Atree.Sprint is
 
@@ -35,6 +36,9 @@ package Why.Atree.Sprint is
      (Node : Why_Node_Id; To : Output_Id := Stdout) with
      Pre => (Get_Kind (Node) /= W_Unused_At_Start);
    --  Generate why code for Node and send it to Output_Id.
+
+   procedure Print_Section
+     (WF : Why_Section; To : Output_Id := Stdout);
 
    procedure wpg (Node : Why_Node_Id);
    pragma Export (Ada, wpg);

@@ -74,8 +74,8 @@ with Switch;                   use Switch;
 with Why;                      use Why;
 with Why.Atree.Modules;        use Why.Atree.Modules;
 with Why.Atree.Sprint;         use Why.Atree.Sprint;
+with Why.Atree.Tables;         use Why.Atree.Tables;
 with Why.Inter;                use Why.Inter;
-with Why.Types;                use Why.Types;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
@@ -147,8 +147,8 @@ package body Gnat2Why.Driver is
                         or else not Entity_Body_In_SPARK (E))
             then
                declare
-                  Compl_File : Why_Section renames
-                    Why_Sections (Dispatch_Entity_Completion (E));
+                  Compl_File : constant W_Section_Id :=
+                    Dispatch_Entity_Completion (E);
                begin
                   Generate_Subprogram_Completion (Compl_File, E);
                end;
@@ -161,7 +161,7 @@ package body Gnat2Why.Driver is
          when E_Subprogram_Body =>
             declare
                Decl_E : constant Entity_Id := Unique_Entity (E);
-               File   : Why_Section renames Why_Sections (Dispatch_Entity (E));
+               File   : constant W_Section_Id := Dispatch_Entity (E);
             begin
                pragma Assert (Present (Get_Expression_Function (Decl_E)));
 
@@ -175,8 +175,8 @@ package body Gnat2Why.Driver is
               and then E /= Universal_Fixed
             then
                declare
-                  Compl_File : Why_Section renames
-                    Why_Sections (Dispatch_Entity_Completion (E));
+                  Compl_File : constant W_Section_Id :=
+                    Dispatch_Entity_Completion (E);
                begin
                   Generate_Type_Completion (Compl_File, E);
                end;
@@ -328,13 +328,13 @@ package body Gnat2Why.Driver is
                   --  Generate Why3 code to check absence of run-time errors in
                   --  contracts and body.
 
-                  Generate_VCs_For_Subprogram (Why_Sections (WF_Main), E);
+                  Generate_VCs_For_Subprogram (WF_Main, E);
 
                   --  Generate Why3 code to check LSP for primitive of tagged
                   --  types.
 
                   if LSP_Applies then
-                     Generate_VCs_For_LSP (Why_Sections (WF_Main), E);
+                     Generate_VCs_For_LSP (WF_Main, E);
                      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                   end if;
                end;
@@ -345,15 +345,14 @@ package body Gnat2Why.Driver is
               not Entity_In_Ext_Axioms (E) and then
               Analysis_Requested (E, With_Inlined => False)
             then
-               Generate_VCs_For_Package_Elaboration
-                 (Why_Sections (WF_Main), E);
+               Generate_VCs_For_Package_Elaboration (WF_Main, E);
             end if;
 
          when E_Task_Type =>
             if Entity_Spec_In_SPARK (E) and then
               Analysis_Requested (E, With_Inlined => False)
             then
-               Generate_VCs_For_Task (Why_Sections (WF_Main), E);
+               Generate_VCs_For_Task (WF_Main, E);
             end if;
 
          when others =>
@@ -569,8 +568,8 @@ package body Gnat2Why.Driver is
    procedure Print_Why_File is
    begin
       Open_Current_File (Why_File_Name.all);
-      for WF in Why_Section_Enum loop
-         Sprint_Why_Node (Why_Node_Id (Why_Sections (WF).File), Current_File);
+      for WF in W_Section_Id loop
+         Print_Section (Why_Sections (WF), Current_File);
       end loop;
       Close_Current_File;
    end Print_Why_File;
@@ -695,7 +694,7 @@ package body Gnat2Why.Driver is
    procedure Translate_Entity (E : Entity_Id) is
 
       procedure Generate_Empty_Axiom_Theory
-        (File : in out Why_Section;
+        (File : W_Section_Id;
          E    : Entity_Id);
       --  Generates an empty theory for the axiom related to E. This is done
       --  for every entity for which there is no axiom theory generated, so
@@ -707,7 +706,7 @@ package body Gnat2Why.Driver is
       ---------------------------------
 
       procedure Generate_Empty_Axiom_Theory
-        (File : in out Why_Section;
+        (File : W_Section_Id;
          E    : Entity_Id) is
       begin
          Open_Theory
@@ -723,9 +722,8 @@ package body Gnat2Why.Driver is
                        Kind => Standalone_Theory);
       end Generate_Empty_Axiom_Theory;
 
-      File       : Why_Section renames Why_Sections (Dispatch_Entity (E));
-      Compl_File : Why_Section renames
-        Why_Sections (Dispatch_Entity_Completion (E));
+      File       : constant W_Section_Id := Dispatch_Entity (E);
+      Compl_File : constant W_Section_Id := Dispatch_Entity_Completion (E);
       New_Theory : Boolean;
 
    --  Start of processing for Translate_Entity

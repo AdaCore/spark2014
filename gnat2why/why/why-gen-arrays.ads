@@ -153,8 +153,8 @@ package Why.Gen.Arrays is
    --  This variant of Add_Attr_Arg will only work for constrained types
 
    procedure Declare_Ada_Array
-     (Theory : W_Theory_Declaration_Id;
-      E      : Entity_Id);
+     (File : W_Section_Id;
+      E    : Entity_Id);
    --  Introduce all the necessary declarations for an Ada array declaration
    --  Und_Ent is the entity which contains the relevant type information (the
    --  underlying type)
@@ -324,9 +324,9 @@ package Why.Gen.Arrays is
    --          The name is the key to this theory in M_Array(_1) hash maps.
 
    procedure Create_Rep_Array_Theory_If_Needed
-     (File          : in out Why_Section;
-      E             :        Entity_Id;
-      Register_Only :        Boolean := False);
+     (File          : W_Section_Id;
+      E             : Entity_Id;
+      Register_Only : Boolean := False);
    --  Check if the Array theory of the representation type of E has already
    --  been created. If not create it.
    --  @param File the current why file
