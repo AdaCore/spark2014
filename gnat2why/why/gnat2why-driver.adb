@@ -62,7 +62,6 @@ with Osint;                    use Osint;
 with Output;                   use Output;
 with Outputs;                  use Outputs;
 with Sem;
-with Sem_Aux;                  use Sem_Aux;
 with Sem_Util;                 use Sem_Util;
 with Sinfo;                    use Sinfo;
 with Sinput;                   use Sinput;
