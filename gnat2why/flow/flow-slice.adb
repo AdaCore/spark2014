@@ -921,7 +921,7 @@ package body Flow.Slice is
          return Subs_Without_Contracts;
       end Subprograms_Without_Contracts;
 
-   --  Beginning of Compute_Globals
+   --  Start of processing for Compute_Globals
 
    begin
       Inputs_Proof          := Get_Proof_Ins;

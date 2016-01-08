@@ -5136,7 +5136,11 @@ package body Flow.Control_Flow_Graph is
                               return Boolean is
 
       function Rec (N : Node_Id) return Boolean;
-      --  Recursive helper function.
+      --  Recursive helper function
+
+      ---------
+      -- Rec --
+      ---------
 
       function Rec (N : Node_Id) return Boolean is
          T : constant Entity_Id := Get_Type (N, Scope);
@@ -5177,6 +5181,9 @@ package body Flow.Control_Flow_Graph is
                    else
                       Defining_Identifier (N)),
                   Scope);
+
+   --  Start of processing for RHS_Split_Useful
+
    begin
       return not Is_Class_Wide_Type (T)
         and then not Is_Tagged_Type (T)
@@ -5461,6 +5468,8 @@ package body Flow.Control_Flow_Graph is
             TV := Flow_Graphs.Continue;
          end if;
       end Mark_Dead;
+
+   --  Start of processing for Separate_Dead_Paths
 
    begin
       FA.CFG.DFS (Start         => FA.Start_Vertex,
