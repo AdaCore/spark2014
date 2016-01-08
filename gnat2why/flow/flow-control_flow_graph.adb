@@ -4531,18 +4531,20 @@ package body Flow.Control_Flow_Graph is
    is
       L     : Union_Lists.List := Union_Lists.Empty_List;
       Block : Graph_Connections;
+      Decls : constant List_Id := Declarations (N);
+      HSS   : constant Node_Id := Handled_Statement_Sequence (N);
    begin
-      if Present (Declarations (N)) then
-         Process_Statement_List (Declarations (N), FA, CM, Ctx);
-         L.Append (Union_Id (Declarations (N)));
+      if Present (Decls) then
+         Process_Statement_List (Decls, FA, CM, Ctx);
+         L.Append (Union_Id (Decls));
       end if;
 
-      if Present (Handled_Statement_Sequence (N)) and then
+      if Present (HSS) and then
         (if Nkind (N) = N_Package_Body
          then Body_Statements_In_SPARK (Unique_Defining_Entity (N)))
       then
-         Process_Statement (Handled_Statement_Sequence (N), FA, CM, Ctx);
-         L.Append (Union_Id (Handled_Statement_Sequence (N)));
+         Process_Statement (HSS, FA, CM, Ctx);
+         L.Append (Union_Id (HSS));
       end if;
 
       Join (FA, CM, L, Block);
