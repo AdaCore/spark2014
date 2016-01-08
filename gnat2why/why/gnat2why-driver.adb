@@ -518,15 +518,8 @@ package body Gnat2Why.Driver is
 
    function Is_Back_End_Switch (Switch : String) return Boolean is
       First : constant Positive := Switch'First + 1;
-      Last  : Natural           := Switch'Last;
 
    begin
-      if Last >= First
-        and then Switch (Last) = ASCII.NUL
-      then
-         Last := Last - 1;
-      end if;
-
       if not Is_Switch (Switch) then
          return False;
       end if;
