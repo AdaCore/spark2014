@@ -1,7 +1,7 @@
-package body P is
+package body Q is
 
 begin
-   pragma SPARK_Mode (Off);
+
    declare
       X     : aliased Integer;
       X_Ptr : access Integer := X'Access;

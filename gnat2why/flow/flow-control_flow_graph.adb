@@ -4537,7 +4537,10 @@ package body Flow.Control_Flow_Graph is
          L.Append (Union_Id (Declarations (N)));
       end if;
 
-      if Present (Handled_Statement_Sequence (N)) then
+      if Present (Handled_Statement_Sequence (N)) and then
+        (if Nkind (N) = N_Package_Body
+         then Body_Statements_In_SPARK (Unique_Defining_Entity (N)))
+      then
          Process_Statement (Handled_Statement_Sequence (N), FA, CM, Ctx);
          L.Append (Union_Id (Handled_Statement_Sequence (N)));
       end if;

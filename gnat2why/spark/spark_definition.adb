@@ -208,6 +208,18 @@ package body SPARK_Definition is
    procedure Discard_Underlying_Type (T : Entity_Id);
    --  Mark T's underlying type as seen and store T as its partial view
 
+   ------------------------------
+   -- Body_Statements_In_SPARK --
+   ------------------------------
+
+   function Body_Statements_In_SPARK (E : Entity_Id) return Boolean is
+   begin
+      return
+        Entity_Body_In_SPARK (E) and then
+        Get_SPARK_Mode_From_Annotation
+          (SPARK_Aux_Pragma (Defining_Entity (Package_Body (E)))) /= Off;
+   end Body_Statements_In_SPARK;
+
    --------------------------
    -- Entity_Spec_In_SPARK --
    --------------------------
@@ -220,6 +232,17 @@ package body SPARK_Definition is
         Present (Prag) and then
         Get_SPARK_Mode_From_Annotation (Prag) = Opt.On;
    end Entity_Spec_In_SPARK;
+
+   ---------------------------
+   -- Private_Spec_In_SPARK --
+   ---------------------------
+
+   function Private_Spec_In_SPARK (E : Entity_Id) return Boolean is
+   begin
+      return
+        Entity_Spec_In_SPARK (E) and then
+        Get_SPARK_Mode_From_Annotation (SPARK_Aux_Pragma (E)) /= Off;
+   end Private_Spec_In_SPARK;
 
    ----------------------
    -- SPARK Violations --
@@ -4157,17 +4180,15 @@ package body SPARK_Definition is
 
             Entity_Set.Insert (Id);
 
-            --  Mark package declaration in SPARK if fully in SPARK_Mode => On
-            --  (including the private part).
+            Current_SPARK_Pragma := SPARK_Pragma (Id);
 
-            Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
+            --  Mark package declaration in SPARK if at least its visible
+            --  declarations have SPARK_Mode => On.
 
             if not SPARK_Pragma_Is (Opt.Off) then
                Entities_In_SPARK.Include (Id);
                Entity_List.Append (Id);
             end if;
-
-            Current_SPARK_Pragma := SPARK_Pragma (Id);
 
             --  Mark abstract state entities
 

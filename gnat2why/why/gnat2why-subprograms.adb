@@ -1753,7 +1753,9 @@ package body Gnat2Why.Subprograms is
       if Present (Body_N) and then
         Entity_Body_In_SPARK (E)
       then
-         if Present (Handled_Statement_Sequence (Body_N)) then
+         if Present (Handled_Statement_Sequence (Body_N)) and then
+           Body_Statements_In_SPARK (E)
+         then
             Why_Body :=
               Sequence
                 (Transform_Statements_And_Declarations
@@ -1767,7 +1769,9 @@ package body Gnat2Why.Subprograms is
 
       --  Translate public and private declarations of the package
 
-      if Present (Priv_Decls) then
+      if Present (Priv_Decls) and then
+        Private_Spec_In_SPARK (E)
+      then
          Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
       end if;
 

@@ -133,6 +133,16 @@ package SPARK_Definition is
    --  Returns True iff the body of E was marked in SPARK and contains no SPARK
    --  violations.
 
+   function Private_Spec_In_SPARK (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) in E_Package        |
+                         E_Protected_Type |
+                         E_Task_Type;
+   --  Returns True iff the private part of spec is in SPARK
+
+   function Body_Statements_In_SPARK (E : Entity_Id) return Boolean with
+     Pre => Ekind (E) = E_Package;
+   --  Returns True iff the package body statements are in SPARK
+
    function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
      with Pre => Is_Type (E);
    --  Returns True if the underlying type of the type E is not in SPARK,
