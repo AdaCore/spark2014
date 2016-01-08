@@ -41,7 +41,7 @@ package body Back_End is
 
    package GNAT2Why_BE is new Adabkend
      (Product_Name       => "GNAT2WHY",
-      Copyright_Years    => "2010-2011",
+      Copyright_Years    => "2010-2016",
       Driver             => Gnat2Why.Driver.GNAT_To_Why,
       Is_Back_End_Switch => Gnat2Why.Driver.Is_Back_End_Switch);
 
