@@ -523,15 +523,13 @@ package body Gnat2Why.Driver is
       First : constant Positive := Switch'First + 1;
 
    begin
-      if not Is_Switch (Switch) then
-         return False;
-      end if;
-
       --  For now we allow the -g/-O/-f/-m/-W/-w switches, even though they
       --  will have no effect.
       --  This permits compatibility with existing scripts.
 
-      return Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w';
+      return
+        Is_Switch (Switch) and then
+        Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w';
    end Is_Back_End_Switch;
 
    ------------------------------
