@@ -342,14 +342,17 @@ package body Gnat2Why.Driver is
 
          when E_Package =>
             if Entity_Spec_In_SPARK (E) and then
-              not Entity_In_Ext_Axioms (E)
+              not Entity_In_Ext_Axioms (E) and then
+              Analysis_Requested (E, With_Inlined => False)
             then
                Generate_VCs_For_Package_Elaboration
                  (Why_Sections (WF_Main), E);
             end if;
 
          when E_Task_Type =>
-            if Entity_Spec_In_SPARK (E) then
+            if Entity_Spec_In_SPARK (E) and then
+              Analysis_Requested (E, With_Inlined => False)
+            then
                Generate_VCs_For_Task (Why_Sections (WF_Main), E);
             end if;
 
