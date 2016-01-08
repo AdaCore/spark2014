@@ -429,6 +429,13 @@ package body Gnat2Why.Driver is
 
       Flow_Utility.Initialize;
 
+      --  Finalize has to be called before we call Compilation_Errors.
+      Finalize (Last_Call => False);
+
+      if Compilation_Errors or else Gnat2Why_Args.Check_Mode then
+         return;
+      end if;
+
       if Gnat2Why_Args.Global_Gen_Mode then
 
          --  Compute basic globals. These will be used for subprograms
@@ -440,12 +447,6 @@ package body Gnat2Why.Driver is
          end if;
 
       else
-         --  Finalize has to be called before we call Compilation_Errors.
-         Finalize (Last_Call => False);
-
-         if Compilation_Errors or else Gnat2Why_Args.Check_Mode then
-            return;
-         end if;
 
          --  Compute basic globals
          Compute_Global_Effects;
