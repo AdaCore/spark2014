@@ -135,7 +135,8 @@ is
       Scope                : Flow_Scope;
       Classwide            : Boolean;
       Depends              : out Dependency_Maps.Map;
-      Use_Computed_Globals : Boolean := True)
+      Use_Computed_Globals : Boolean := True;
+      Callsite             : Node_Id := Empty)
    with Pre  => Ekind (Subprogram) in E_Entry | E_Task_Type | Subprogram_Kind
                   and then Has_Depends (Subprogram),
         Post => (for all C in Depends.Iterate =>
@@ -706,6 +707,15 @@ is
    with Pre => Is_Non_Visible_Constituent (F, Scope);
    --  Returns the Flow_Id of the closest enclosing state of F that
    --  Is_Visible from Scope.
+
+   function Replace_Flow_Ids
+     (Of_This   : Entity_Id;
+      With_This : Entity_Id;
+      The_Set   : Flow_Id_Sets.Set)
+      return Flow_Id_Sets.Set;
+   --  Returns a flow set that replaces all Flow_Ids of The_Set that
+   --  correspond to Of_This with equivalent Flow_Ids that correspond to
+   --  With_This.
 
    function Has_Variable_Input (F : Flow_Id) return Boolean
    with Pre => F.Kind in Direct_Mapping | Record_Field;

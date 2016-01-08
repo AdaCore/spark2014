@@ -816,6 +816,7 @@ package body Flow_Utility is
          end case;
       end loop;
    end Get_Assignment_Target_Properties;
+
    -----------------
    -- Get_Depends --
    -----------------
@@ -825,7 +826,8 @@ package body Flow_Utility is
       Scope                : Flow_Scope;
       Classwide            : Boolean;
       Depends              : out Dependency_Maps.Map;
-      Use_Computed_Globals : Boolean := True)
+      Use_Computed_Globals : Boolean := True;
+      Callsite             : Node_Id := Empty)
    is
       pragma Unreferenced (Classwide);
       --  For now we assume classwide globals are the same as the actual
@@ -1038,6 +1040,47 @@ package body Flow_Utility is
       else
          --  Create new dependency where "null => All_Proof_Ins"
          Depends.Insert (Null_Flow_Id, All_Proof_Ins);
+      end if;
+
+      ----------------------------------------------------------------------
+      --  Step 4: If we are dealing with a protected operation and the
+      --  Callsite is present then we need to substitute references to the
+      --  protected type with references to the protected object.
+      ----------------------------------------------------------------------
+
+      if Present (Callsite)
+        and then Belongs_To_Protected_Object (Direct_Mapping_Id (Subprogram))
+      then
+         declare
+            PO_Type : constant Entity_Id :=
+              Get_Enclosing_Concurrent_Object  (E        => Subprogram,
+                                                Callsite => Empty,
+                                                Entire   => True);
+
+            The_PO  : constant Entity_Id :=
+              Get_Enclosing_Concurrent_Object  (E        => Subprogram,
+                                                Callsite => Callsite,
+                                                Entire   => True);
+
+            New_Map : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
+            New_Key : Flow_Id;
+         begin
+            for D in Depends.Iterate loop
+               New_Key :=
+                 (if Dependency_Maps.Key (D) = Direct_Mapping_Id (PO_Type)
+                  then Direct_Mapping_Id (The_PO)
+                  else Dependency_Maps.Key (D));
+
+               New_Map.Insert
+                    (New_Key,
+                     Replace_Flow_Ids
+                       (Of_This   => PO_Type,
+                        With_This => The_PO,
+                        The_Set   => Dependency_Maps.Element (D)));
+            end loop;
+
+            Depends := New_Map;
+         end;
       end if;
 
    end Get_Depends;
@@ -2118,7 +2161,8 @@ package body Flow_Utility is
                             Classwide            =>
                               Is_Dispatching_Call (Callsite),
                             Depends              => Depends,
-                            Use_Computed_Globals => Use_Computed_Globals);
+                            Use_Computed_Globals => Use_Computed_Globals,
+                            Callsite             => Callsite);
                pragma Assert (Depends.Length in 1 .. 2);
                Used_Reads := Depends (Direct_Mapping_Id (Subprogram));
             end;
@@ -4756,5 +4800,29 @@ package body Flow_Utility is
 
       return Enclosing_F;
    end Up_Project_Constituent;
+
+   ----------------------
+   -- Replace_Flow_Ids --
+   ----------------------
+
+   function Replace_Flow_Ids
+     (Of_This   : Entity_Id;
+      With_This : Entity_Id;
+      The_Set   : Flow_Id_Sets.Set)
+      return Flow_Id_Sets.Set
+   is
+      FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+   begin
+      for F of The_Set loop
+         if F.Kind in Direct_Mapping | Record_Field
+           and then Get_Direct_Mapping_Id (F) = Of_This
+         then
+            FS.Include (F'Update (Node => With_This));
+         else
+            FS.Include (F);
+         end if;
+      end loop;
+      return FS;
+   end Replace_Flow_Ids;
 
 end Flow_Utility;

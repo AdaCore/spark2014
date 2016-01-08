@@ -413,15 +413,6 @@ package body Flow.Control_Flow_Graph is
    --  Create the 'initial and 'final vertices for the given global
    --  and link them up to the start and end vertices.
 
-   function Replace_Flow_Ids
-     (Of_This   : Entity_Id;
-      With_This : Entity_Id;
-      The_Set   : Flow_Id_Sets.Set)
-      return Flow_Id_Sets.Set;
-   --  Returns a flow set that replaces all Flow_Ids of The_Set that
-   --  correspond to Of_This with equivalent Flow_Ids that correspond to
-   --  With_This.
-
    procedure Do_Assignment_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -1336,30 +1327,6 @@ package body Flow.Control_Flow_Graph is
          Process (F'Update (Facet => Extension_Part));
       end if;
    end Create_Initial_And_Final_Vertices;
-
-   ----------------------
-   -- Replace_Flow_Ids --
-   ----------------------
-
-   function Replace_Flow_Ids
-     (Of_This   : Entity_Id;
-      With_This : Entity_Id;
-      The_Set   : Flow_Id_Sets.Set)
-      return Flow_Id_Sets.Set
-   is
-      FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-   begin
-      for F of The_Set loop
-         if F.Kind in Direct_Mapping | Record_Field
-           and then Get_Direct_Mapping_Id (F) = Of_This
-         then
-            FS.Include (F'Update (Node => With_This));
-         else
-            FS.Include (F);
-         end if;
-      end loop;
-      return FS;
-   end Replace_Flow_Ids;
 
    -------------------------------
    --  Do_Assignment_Statement  --
@@ -4343,7 +4310,8 @@ package body Flow.Control_Flow_Graph is
                          Scope                => FA.B_Scope,
                          Classwide            => Is_Dispatching_Call (N),
                          Depends              => D_Map,
-                         Use_Computed_Globals => not FA.Generating_Globals);
+                         Use_Computed_Globals => not FA.Generating_Globals,
+                         Callsite             => N);
             if D_Map.Contains (Null_Flow_Id)
               and then D_Map (Null_Flow_Id).Length >= 1
             then
