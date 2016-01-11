@@ -3039,6 +3039,10 @@ package body SPARK_Definition is
          --  Synchronous barriers are allowed by the Ravenscar profile, but we
          --  do not want them in SPARK.
 
+         --------------------------------
+         -- Is_Private_Entity_Mode_Off --
+         --------------------------------
+
          function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean
          is
             Decl : constant Node_Id :=
