@@ -500,7 +500,17 @@ package body Why.Gen.Scalars is
       Base_Type  : W_Type_Id) is
 
       Rng : constant Node_Id := Get_Range (E);
-      First, Last : W_Term_OId := Why_Empty;
+
+      First : constant W_Term_OId :=
+        (if Is_Static_Expression (Low_Bound (Rng))
+         then +Num_Constant (E, Low_Bound (Rng))
+         else Why_Empty);
+
+      Last : constant W_Term_OId :=
+        (if Is_Static_Expression (High_Bound (Rng))
+         then +Num_Constant (E, High_Bound (Rng))
+         else Why_Empty);
+
    begin
 
       --  Compute and declare the modulus attribute of modular integer types
@@ -580,13 +590,6 @@ package body Why.Gen.Scalars is
       --  the variables they may read. These functions will be defined later
       --  in the axiom module of E.
       --  Compute the binders as the objects are not declared at that point.
-
-      if Is_Static_Expression (Low_Bound (Rng)) then
-         First := +Num_Constant (E, Low_Bound (Rng));
-      end if;
-      if Is_Static_Expression (High_Bound (Rng)) then
-         Last := +Num_Constant (E, High_Bound (Rng));
-      end if;
 
       Emit (Section,
             New_Function_Decl
