@@ -184,9 +184,6 @@ package Gnat2Why.Util is
       File        : W_Section_Id;
       --  Identity of the current Why3 file. If needed, new theories and
       --  modules will be created in this file (e.g. for string literals).
-      Theory      : W_Theory_Declaration_Id;
-      --  Identity of the current theory or module. New declarations are
-      --  emitted in this theory.
       Phase       : Transformation_Phase;
       --  Current transformation phase, which impacts the way code is
       --  transformed from Ada to Why3.
@@ -226,7 +223,6 @@ package Gnat2Why.Util is
    is
      (Transformation_Params'
         (File        => Kind,
-         Theory      => Why_Sections (Kind).Cur_Theory,
          Phase       => Phase,
          Gen_Marker   => False,
          Ref_Allowed => (if Phase = Generate_Logic then False else True)));

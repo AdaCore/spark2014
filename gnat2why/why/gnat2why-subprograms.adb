@@ -1712,7 +1712,6 @@ package body Gnat2Why.Subprograms is
       Register_VC_Entity (E);
 
       Params := (File        => File,
-                 Theory      => Why_Sections (File).Cur_Theory,
                  Phase       => Generate_VCs_For_Body,
                  Gen_Marker  => False,
                  Ref_Allowed => True);
@@ -1882,7 +1881,6 @@ package body Gnat2Why.Subprograms is
 
       Params :=
         (File        => File,
-         Theory      => Why_Sections (File).Cur_Theory,
          Phase       => Generate_VCs_For_Contract,
          Gen_Marker  => False,
          Ref_Allowed => True);
@@ -2224,7 +2222,6 @@ package body Gnat2Why.Subprograms is
                Empty);
          Params : constant Transformation_Params :=
            (File        => File,
-            Theory      => Why_Sections (File).Cur_Theory,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
@@ -2250,7 +2247,6 @@ package body Gnat2Why.Subprograms is
       function Assume_Or_Assert_Of_Pre return W_Prog_Id is
          Params : constant Transformation_Params :=
            (File        => File,
-            Theory      => Why_Sections (File).Cur_Theory,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
@@ -2288,7 +2284,6 @@ package body Gnat2Why.Subprograms is
       function CC_And_RTE_Post return W_Prog_Id is
          Params : constant Transformation_Params :=
            (File        => File,
-            Theory      => Why_Sections (File).Cur_Theory,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
@@ -2313,7 +2308,6 @@ package body Gnat2Why.Subprograms is
       is
          Params : constant Transformation_Params :=
            (File        => File,
-            Theory      => Why_Sections (File).Cur_Theory,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
@@ -2406,7 +2400,6 @@ package body Gnat2Why.Subprograms is
       function Post_As_Pred return W_Pred_Id is
          Params : constant Transformation_Params :=
            (File        => File,
-            Theory      => Why_Sections (File).Cur_Theory,
             Phase       => Generate_Contract_For_Body,
             Gen_Marker  => False,
             Ref_Allowed => True);
@@ -2459,7 +2452,6 @@ package body Gnat2Why.Subprograms is
       function RTE_Of_Pre return W_Prog_Id is
          Params : constant Transformation_Params :=
            (File        => File,
-            Theory      => Why_Sections (File).Cur_Theory,
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
@@ -2570,14 +2562,12 @@ package body Gnat2Why.Subprograms is
 
       Body_Params :=
         (File        => File,
-         Theory      => Why_Sections (File).Cur_Theory,
          Phase       => Generate_VCs_For_Body,
          Gen_Marker  => False,
          Ref_Allowed => True);
 
       Contract_Params :=
         (File        => File,
-         Theory      => Why_Sections (File).Cur_Theory,
          Phase       => Generate_VCs_For_Contract,
          Gen_Marker  => False,
          Ref_Allowed => True);
@@ -2788,7 +2778,6 @@ package body Gnat2Why.Subprograms is
       Register_VC_Entity (E);
 
       Params := (File        => File,
-                 Theory      => Why_Sections (File).Cur_Theory,
                  Phase       => Generate_VCs_For_Body,
                  Gen_Marker  => False,
                  Ref_Allowed => True);
@@ -2930,7 +2919,6 @@ package body Gnat2Why.Subprograms is
 
       Params :=
         (File        => File,
-         Theory      => Why_Sections (File).Cur_Theory,
          Phase       => Generate_Logic,
          Gen_Marker  => False,
          Ref_Allowed => False);
@@ -3145,7 +3133,6 @@ package body Gnat2Why.Subprograms is
    begin
       Params :=
         (File        => File,
-         Theory      => Why_Sections (File).Cur_Theory,
          Phase       => Generate_Logic,
          Gen_Marker  => False,
          Ref_Allowed => True);
@@ -3592,7 +3579,6 @@ package body Gnat2Why.Subprograms is
 
       Params :=
         (File        => File,
-         Theory      => Why_Sections (File).Cur_Theory,
          Phase       => Generate_Logic,
          Gen_Marker   => False,
          Ref_Allowed => False);

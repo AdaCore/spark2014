@@ -3808,8 +3808,7 @@ package body Gnat2Why.Expr is
       Expected_Type : W_Type_Id) return W_Term_Id
    is
       Params : constant Transformation_Params :=
-        (Theory      => Why_Sections (File).Cur_Theory,
-         File        => File,
+        (File        => File,
          Phase       => Generate_Logic,
          Gen_Marker   => False,
          Ref_Allowed => True);
@@ -6350,8 +6349,7 @@ package body Gnat2Why.Expr is
          --  Predicate used to define the aggregate/updated object
 
          Params_No_Ref : constant Transformation_Params :=
-                           (Theory      => Params.Theory,
-                            File        => Params.File,
+                           (File        => Params.File,
                             Phase       => Params.Phase,
                             Gen_Marker   => False,
                             Ref_Allowed => False);
@@ -6388,6 +6386,9 @@ package body Gnat2Why.Expr is
          --  Select file for the declarations
 
          Decl_File     : constant W_Section_Id := Dispatch_Entity (Expr);
+
+         --  use this variable to temporarily store current theory
+         Save_Theory   : W_Theory_Declaration_Id;
 
       --  Start of processing for Generate_Logic_Function
 
@@ -6488,6 +6489,7 @@ package body Gnat2Why.Expr is
          --  Generate the necessary logic function and axiom declarations
 
          if Params.File = Decl_File then
+            Save_Theory := Why_Sections (Decl_File).Cur_Theory;
             Why_Sections (Decl_File).Cur_Theory := Why_Empty;
          end if;
          Open_Theory
@@ -6518,7 +6520,7 @@ package body Gnat2Why.Expr is
                        Kind => Definition_Theory,
                        Defined_Entity => Expr);
          if Params.File = Decl_File then
-            Why_Sections (Decl_File).Cur_Theory := Params.Theory;
+            Why_Sections (Decl_File).Cur_Theory := Save_Theory;
          end if;
       end Generate_Logic_Function;
 
@@ -13547,8 +13549,10 @@ package body Gnat2Why.Expr is
                         Name     => Name,
                         Typ      => Why_Type);
       Decl_File : constant W_Section_Id := Dispatch_Entity (N);
+      Save_Theory : W_Theory_Declaration_Id;
    begin
       if Params.File = Decl_File then
+         Save_Theory := Why_Sections (Decl_File).Cur_Theory;
          Why_Sections (Decl_File).Cur_Theory := Why_Empty;
       end if;
 
@@ -13576,7 +13580,7 @@ package body Gnat2Why.Expr is
                     Defined_Entity => N);
 
       if Params.File = Why_Sections (Decl_File).Kind then
-         Why_Sections (Decl_File).Cur_Theory := Params.Theory;
+         Why_Sections (Decl_File).Cur_Theory := Save_Theory;
       end if;
    end Transform_String_Literal;
 

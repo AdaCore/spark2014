@@ -1055,7 +1055,6 @@ package body Gnat2Why.External_Axioms is
                   Def    : W_Term_Id;
                   Params : constant Transformation_Params :=
                     (File        => TFile,
-                     Theory      => Why_Sections (TFile).Cur_Theory,
                      Phase       => Generate_Logic,
                      Gen_Marker  => False,
                      Ref_Allowed => False);
@@ -1254,7 +1253,6 @@ package body Gnat2Why.External_Axioms is
                        To_Why_Id (Actual, Domain => EW_Term, Local => True);
                      Params             : constant Transformation_Params :=
                        (File        => TFile,
-                        Theory      => Why_Sections (TFile).Cur_Theory,
                         Phase       => Generate_Logic,
                         Gen_Marker   => False,
                         Ref_Allowed => False);
