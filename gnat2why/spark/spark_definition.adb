@@ -3150,8 +3150,7 @@ package body SPARK_Definition is
               and then Defining_Entity (Parent (E)) = E
             then
                declare
-                  Subty : constant Node_Id :=
-                    Subtype_Indication (Parent (E));
+                  Subty : constant Node_Id := Subtype_Indication (Parent (E));
                   Ty : Node_Id := Empty;
                begin
                   case Nkind (Subty) is
