@@ -3377,7 +3377,7 @@ package body SPARK_Definition is
               SPARK_Util.Default_Initialization (E);
          begin
             --  Protected types need full default initialization
-            if Ekind (E) in Protected_Kind then
+            if Ekind (E) = E_Protected_Type then
                if DI not in
                  Full_Default_Initialization | No_Possible_Initialization
                then
