@@ -124,11 +124,11 @@ package Why.Gen.Binders is
 
    function Item_Array_Length (Arr : Item_Array) return Natural;
    --  Return the number of variables that is introduced by the given
-   --  item_array (counting items plus e.g. array bounds)
+   --  item_array (counting items plus e.g. array bounds).
 
    function To_Binder_Array (A : Item_Array) return Binder_Array;
    --  "Flatten" the Item_Array to a binder_array, transforming e.g. array
-   --  bounds to binders
+   --  bounds to binders.
 
    function New_Binders
      (Anonymous_Binders : W_Type_Array)
