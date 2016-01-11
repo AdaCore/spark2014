@@ -306,8 +306,8 @@ package body SPARK_Definition is
    -- Is_SPARK_Tasking_Configuration --
    ------------------------------------
 
-   function Is_SPARK_Tasking_Configuration return Boolean
-   is (Ravenscar_Profile and then Sequential_Elaboration);
+   function Is_SPARK_Tasking_Configuration
+     return Boolean is (Ravenscar_Profile and then Sequential_Elaboration);
 
    ----------------------
    -- Inhibit_Messages --
@@ -548,8 +548,8 @@ package body SPARK_Definition is
    -- Sequential_Elaboration --
    ----------------------------
 
-   function Sequential_Elaboration return Boolean
-   is (Partition_Elaboration_Policy = 'S');
+   function Sequential_Elaboration
+     return Boolean is (Partition_Elaboration_Policy = 'S');
 
    ------------------------------
    -- Output SPARK Information --
@@ -3043,14 +3043,14 @@ package body SPARK_Definition is
          -- Is_Private_Entity_Mode_Off --
          --------------------------------
 
-         function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean
-         is
+         function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean is
             Decl : constant Node_Id :=
               (if No (Parent (Parent (E)))
                and then Is_Itype (E) then
                     Associated_Node_For_Itype (E)
                else Parent (E));
             Pack_Decl : constant Node_Id := Parent (Parent (Decl));
+
          begin
             pragma Assert
               (Nkind (Pack_Decl) = N_Package_Declaration);
@@ -5071,8 +5071,7 @@ package body SPARK_Definition is
 
    procedure Mark_Violation
      (N    : Node_Id;
-      From : Entity_Id)
-   is
+      From : Entity_Id) is
    begin
       --  Flag the violation, so that the current entity is marked accordingly
 
@@ -5091,8 +5090,7 @@ package body SPARK_Definition is
    -- Mark_Violation_In_Tasking --
    ----------------------------
 
-   procedure Mark_Violation_In_Tasking (N : Node_Id)
-   is
+   procedure Mark_Violation_In_Tasking (N : Node_Id) is
       Msg_Prefix : constant String := "tasking in SPARK requires ";
       Msg_Suffix : constant String := " (SPARK RM 9(2))";
    begin
@@ -5140,7 +5138,8 @@ package body SPARK_Definition is
    -- Most_Underlying_Type_In_SPARK --
    ----------------------------------
 
-   procedure Mark_Most_Underlying_Type_In_SPARK (Id : Entity_Id; N : Node_Id)
+   procedure Mark_Most_Underlying_Type_In_SPARK
+     (Id : Entity_Id; N : Node_Id)
    is
       Typ : constant Entity_Id := Retysp (Id);
    begin
@@ -5186,16 +5185,18 @@ package body SPARK_Definition is
       --  Flag that indicates if a key was inserted or if it already existed in
       --  a map. It is required by the hashed-maps API, but not used here.
 
-      procedure Append_Object (Key     : Entity_Name;
-                               Element : in out Task_Lists.List);
+      procedure Append_Object
+        (Key     : Entity_Name;
+         Element : in out Task_Lists.List);
       --  Append object to a list of task type instances
 
       -------------------
       -- Append_Object --
       -------------------
 
-      procedure Append_Object (Key     : Entity_Name;
-                               Element : in out Task_Lists.List)
+      procedure Append_Object
+        (Key     : Entity_Name;
+         Element : in out Task_Lists.List)
       is
          pragma Unreferenced (Key);
       begin
