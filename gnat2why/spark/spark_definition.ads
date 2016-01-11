@@ -104,8 +104,8 @@ package SPARK_Definition is
    --  called from SPARK code, but no VC will be generated for E.
    --
    --  Also note that for specification entities it only checks that the
-   --  specification itself is in SPARK. To check if the body is in SPARK
-   --  and contains no SPARK violations use Entity_Body_Valid_SPARK.
+   --  specification itself is in SPARK, i.e. the entity may be referenced
+   --  from SPARK code.
    --
    --  This call is only allowed for entities that are referenced from other
    --  code, i.e. almost anything except E_Package (since packages are never
