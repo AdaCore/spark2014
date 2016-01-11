@@ -3399,7 +3399,7 @@ package body SPARK_Definition is
 
          if Is_Array_Type (E) then
             declare
-               Component_Typ : constant Node_Id := Component_Type (E);
+               Component_Typ : constant Entity_Id := Component_Type (E);
                Index         : Node_Id := First_Index (E);
 
             begin
