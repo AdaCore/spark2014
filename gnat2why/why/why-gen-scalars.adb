@@ -551,11 +551,10 @@ package body Why.Gen.Scalars is
                      Labels      => Name_Id_Sets.Empty_Set,
                      Def         => +Modul));
          end;
-      end if;
 
       --  Compute and declare the small attribute of fixed point types
 
-      if Has_Fixed_Point_Type (E) then
+      elsif Has_Fixed_Point_Type (E) then
          declare
             Inv_Small : constant Ureal := UR_Div (Uint_1, Small_Value (E));
             Small     : W_Term_OId;
