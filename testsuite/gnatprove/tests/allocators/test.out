@@ -29,12 +29,6 @@ list_allocator.adb:216:44: info: index check proved
 list_allocator.adb:218:16: info: index check proved
 list_allocator.adb:222:19: info: index check proved
 list_allocator.adb:226:29: info: precondition proved
-list_allocator.adb:229:10: info: assertion proved
-list_allocator.adb:231:13: info: precondition proved
-list_allocator.adb:233:19: info: index check proved
-list_allocator.adb:233:19: info: precondition proved
-list_allocator.adb:234:53: info: precondition proved
-list_allocator.adb:234:77: info: overflow check proved
 list_allocator.adb:355:47: info: range check proved
 list_allocator.adb:356:07: info: loop invariant initialization proved
 list_allocator.adb:356:07: info: loop invariant preservation proved

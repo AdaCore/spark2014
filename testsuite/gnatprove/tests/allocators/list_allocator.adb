@@ -226,12 +226,12 @@ is
          Model.Allocated := Remove (Model.Allocated, Res);
          Model.Available := Prepend (Model.Available, Res);
 
-         pragma Assert (
-          (for all J in 1 .. Length (Model.Available) =>
-            Get (Model.Available, J) in Valid_Resource
-              and then
-            Data (Get (Model.Available, J)).Next =
-              (if J < Length (Model.Available) then Get (Model.Available, J + 1) else No_Resource)));
+--           pragma Assert (
+--            (for all J in 1 .. Length (Model.Available) =>
+--              Get (Model.Available, J) in Valid_Resource
+--                and then
+--              Data (Get (Model.Available, J)).Next =
+--                (if J < Length (Model.Available) then Get (Model.Available, J + 1) else No_Resource)));
 
 --          pragma Assert
 --           (for all J in 1 .. Length (Model.Allocated) =>
