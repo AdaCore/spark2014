@@ -555,8 +555,23 @@ shall follow the grammar of ``abstract_state_list`` given below.
 .. _tu-fe-abstract_state_aspects-04:
 
 4. A package_declaration or generic_package_declaration that contains a
-   non-null Abstract_State aspect must have a completion (i.e., such a
-   package requires a body).
+   non-null Abstract_State aspect shall have a completion (i.e., a body).
+
+   [Ada RM 7.1's rule defining when a package "requires a completion"
+   is unaffected by the presence of an Abstract_State aspect
+   specification; such an aspect spec does not cause a
+   package to "require a completion".
+   This rule therefore implies that if an Abstract_State aspect
+   specification occurs anywhere within the specification of a library
+   unit package or generic package, then that library unit is
+   going to have to contain a basic_declarative_item that requires
+   a completion (or have an Elaborate_Body pragma) because otherwise
+   it would be impossible to  simultaneously satisfy this rule and Ada's
+   rule that a library unit cannot have a package body unless it is required
+   (Ada RM 7.2(4)). One could imagine a simpler rule that an
+   Abstract_State aspect specification causes a package to "require a
+   completion", but we want a SPARK program with its SPARK aspects removed
+   (or ignored) to remain a legal Ada program.] 
 
 .. _tu-abstract_state_aspects-05:
 
