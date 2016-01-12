@@ -5,13 +5,13 @@ is
    type Status is (Available, Allocated);
 
    type Cell is record
-      Stat       : Status;
-      Prev, Next : Resource;
+      Stat : Status;
+      Next : Resource;
    end record;
 
    type A is array (Valid_Resource) of Cell;
 
-   Data : A := (others => Cell'(Stat => Available, Prev => No_Resource, Next => No_Resource));
+   Data : A := (others => Cell'(Stat => Available, Next => No_Resource));
    First_Available : Resource := 1;
 
    function Is_Available (Res : Resource) return Boolean is
@@ -37,9 +37,6 @@ is
               and then
             Data (Get (Model.Available, J)).Next =
               (if J < Length (Model.Available) then Get (Model.Available, J + 1) else No_Resource)
-              and then
-            Data (Get (Model.Available, J)).Prev =
-              (if J > 1 then Get (Model.Available, J - 1) else No_Resource)
               and then
             (for all K in 1 .. Length (Model.Available) =>
                (if J /= K then Get (Model.Available, J) /= Get (Model.Available, K))))
@@ -67,12 +64,7 @@ is
          Res := First_Available;
          Next_Avail := Data (First_Available).Next;
 
-         Data (Res) := Cell'(Stat => Allocated,
-                             Prev => No_Resource,
-                             Next => No_Resource);
-         if Next_Avail /= No_Resource then
-            Data (Next_Avail).Prev := No_Resource;
-         end if;
+         Data (Res) := Cell'(Stat => Allocated, Next => No_Resource);
          First_Available := Next_Avail;
 
          Model.Available := Remove_At (Model.Available, 1);
@@ -215,12 +207,7 @@ is
    begin
       if Res /= No_Resource and then Data (Res).Stat = Allocated then
 
-         Data (Res) := Cell'(Stat => Available,
-                             Prev => No_Resource,
-                             Next => First_Available);
-         if First_Available /= No_Resource then
-            Data (First_Available).Prev := Res;
-         end if;
+         Data (Res) := Cell'(Stat => Available, Next => First_Available);
          First_Available := Res;
 
          Model.Allocated := Remove (Model.Allocated, Res);
@@ -351,11 +338,7 @@ is
 
 begin
    for R in Valid_Resource loop
-      if R > 1 then Data (R).Prev := R - 1; end if;
       if R < Capacity then Data (R).Next := R + 1; end if;
-      pragma Loop_Invariant
-        (for all RR in 1 .. R =>
-           Data (RR).Prev = (if RR = 1 then No_Resource else RR - 1));
       pragma Loop_Invariant
         (for all RR in 1 .. R =>
            Data (RR).Next = (if RR = Capacity then No_Resource else RR + 1));
