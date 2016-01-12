@@ -26,12 +26,12 @@ is
 
    package M is -- with Ghost is
 
-      package S is new Functional_Sequences (Element_Type => Resource);
-      use S;
+      package S1 is new Functional_Sequences (Element_Type => Resource);
+      use S1;
 
-      package SS is new Functional_Sets (Element_Type => Resource,
-                                        No_Element   => No_Resource);
-      use SS;
+      package S2 is new Functional_Sets (Element_Type => Resource,
+                                         No_Element   => No_Resource);
+      use S2;
 
       type T is record
          Available : Sequence;
@@ -49,7 +49,7 @@ is
 
    end M;
 
-   use M; use M.S; use M.SS;
+   use M; use M.S1; use M.S2;
 
    procedure Alloc (Res : out Resource) with
      Pre  => Is_Valid,
