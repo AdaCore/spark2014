@@ -39,6 +39,12 @@ package body Functional_Sets with SPARK_Mode => Off is
       return SS;
    end Add;
 
+   function Remove (S : Set; E : Element_Type) return Set is
+      SS : Set := Copy (S);
+   begin
+      Delete (SS, Find_Index (SS, E));
+      return SS;
+   end Remove;
 
    function Is_Intersection (S1, S2, Result : Set) return Boolean is
      ((for all E in Result =>

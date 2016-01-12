@@ -67,6 +67,15 @@ package Functional_Sets with SPARK_Mode is
      Pre    => E /= No_Element and then not Mem (S, E),
      Post   => Is_Add (S, E, Add'Result);
 
+   function Remove (S : Set; E : Element_Type) return Set with
+   --  Returns S without E.
+   --  Is_Add (Result, E, S) should be used instead of S = Add (Result, E)
+   --  whenever possible both for execution and for proof.
+
+     Global => null,
+     Pre    => E /= No_Element and then Mem (S, E),
+     Post   => Is_Add (Remove'Result, E, S);
+
    function Is_Intersection (S1, S2, Result : Set) return Boolean with
    --  Returns True if Result is the intersection of S1 and S2.
 
