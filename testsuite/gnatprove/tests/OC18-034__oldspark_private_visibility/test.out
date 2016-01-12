@@ -1,0 +1,2 @@
+f.adb:15:14: info: initialization of "Y" proved
+f.ads:11:17: info: postcondition proved
