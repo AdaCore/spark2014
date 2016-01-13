@@ -3558,7 +3558,7 @@ package body SPARK_Definition is
 
             if not Is_Interface (E) then
                declare
-                  Field : Node_Id := First_Component_Or_Discriminant (E);
+                  Field : Entity_Id := First_Component_Or_Discriminant (E);
                   Typ   : Entity_Id;
 
                begin
