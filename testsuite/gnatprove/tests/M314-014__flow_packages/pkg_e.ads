@@ -3,6 +3,7 @@ package Pkg_E
                           Meant_To_Be_Unint),
        Initializes => (Vis_A, Vis_B, Meant_To_Be_Init)
 is
+   pragma Elaborate_Body;
 
   Vis_A : Integer;
   Vis_B : Integer := 0;

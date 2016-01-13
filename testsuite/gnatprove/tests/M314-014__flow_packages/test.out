@@ -47,7 +47,7 @@ pkg_e.adb:14:06: warning: unused assignment
 pkg_e.adb:14:09: info: initialization of "Y" constituent of "Meant_To_Be_Init" proved
 pkg_e.ads:3:27: warning: no procedure exists that can initialize abstract state "Pkg_E.Meant_To_Be_Unint"
 pkg_e.ads:4:08: warning: initialization of Vis_D is not mentioned in Initializes contract
-pkg_e.ads:7:03: high: "Vis_A" is not initialized in "Pkg_E"
-pkg_e.ads:8:03: info: initialization of "Vis_B" proved
+pkg_e.ads:8:03: high: "Vis_A" is not initialized in "Pkg_E"
+pkg_e.ads:9:03: info: initialization of "Vis_B" proved
 uninitialized.adb:8:40: info: initialization of "Var" constituent of "State" proved
 gnatprove: error during analysis of data and information flow

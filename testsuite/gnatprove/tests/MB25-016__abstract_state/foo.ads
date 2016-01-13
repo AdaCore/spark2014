@@ -3,6 +3,7 @@ package Foo with
    Initializes       => State,
    Initial_Condition => F2
 is
+   pragma Elaborate_Body;
 
    function F2 return Boolean with Global => State;
 

@@ -1,2 +1,2 @@
-foo.ads:13:47: useless refinement, subprogram "F2" does not depend on abstract state with visible refinement
+foo.ads:14:47: useless refinement, subprogram "F2" does not depend on abstract state with visible refinement
 gnatprove: error during generation of Global contracts
