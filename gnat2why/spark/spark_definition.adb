@@ -3930,12 +3930,12 @@ package body SPARK_Definition is
             end if;
 
          when Named_Kind =>
-            if not In_SPARK (Entity (N)) then
+            if not In_SPARK (E) then
                Mark_Violation (N, From => E);
             end if;
 
          when Type_Kind =>
-            if not In_SPARK (Entity (N)) then
+            if not In_SPARK (E) then
                Mark_Violation (N, From => E);
             end if;
 
