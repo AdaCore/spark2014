@@ -21,9 +21,6 @@ is
    function All_Available return Boolean is
      (for all R in Valid_Resource => Data (R).Stat = Available);
 
-   function Mem (S : Sequence; E : Resource) return Boolean is
-      (for some I in 1 .. Length (S) => Get (S, I) = E);
-
    package body M is
 
       function Is_Valid return Boolean is
@@ -51,8 +48,13 @@ is
    begin
       for R in Valid_Resource loop
          Model.Available := Add (Model.Available, R);
-         pragma Loop_Invariant (for all RR in 1 .. R => Mem (Model.Available, RR));
          pragma Loop_Invariant (Is_Empty (Model.Allocated));
+         pragma Loop_Invariant (Length (Model.Available) = Natural (R));
+         pragma Loop_Invariant (Get (Model.Available, 1) = 1);
+         pragma Loop_Invariant
+           (for all RR in 1 .. R => Get (Model.Available, Natural (RR)) = RR);
+         pragma Loop_Invariant
+           (for all RR in 1 .. R => Mem (Model.Available, RR));
       end loop;
    end M;
 

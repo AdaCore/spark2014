@@ -8,7 +8,7 @@ package List_Allocator with
   SPARK_Mode,
   Abstract_State    => State,
   Initializes       => State,
-  Initial_Condition => All_Available
+  Initial_Condition => All_Available and Is_Valid
 is
    pragma Elaborate_Body;
 
@@ -24,8 +24,18 @@ is
 
    function All_Available return Boolean with Ghost;
 
-   package M is -- with Ghost is
-
+   package M with
+     Initial_Condition =>
+       (Is_Empty (Model.Allocated)
+          and then
+        Length (Model.Available) = Capacity
+          and then
+        Get (Model.Available, 1) = 1
+          and then
+        (for all RR in 1 .. Capacity => Get (Model.Available, RR) = Resource (RR))
+          and then
+        (for all RR in 1 .. Capacity => Mem (Model.Available, Resource (RR))))
+   is -- with Ghost is
       package S1 is new Functional_Sequences (Element_Type => Resource);
       use S1;
 
@@ -37,6 +47,9 @@ is
          Available : Sequence;
          Allocated : Set;
       end record;
+
+      function Mem (S : Sequence; E : Resource) return Boolean is
+        (for some I in 1 .. Length (S) => Get (S, I) = E);
 
       function "=" (X, Y : T) return Boolean is
         (X.Available = Y.Available

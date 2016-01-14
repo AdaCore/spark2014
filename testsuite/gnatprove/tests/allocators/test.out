@@ -1,44 +1,55 @@
 list_allocator.adb:14:16: info: length check proved
 list_allocator.adb:18:39: info: index check proved
 list_allocator.adb:20:39: info: index check proved
-list_allocator.adb:25:41: info: precondition proved
-list_allocator.adb:31:51: info: precondition proved
-list_allocator.adb:36:13: info: precondition proved
-list_allocator.adb:38:19: info: index check proved
-list_allocator.adb:38:19: info: precondition proved
-list_allocator.adb:39:53: info: precondition proved
-list_allocator.adb:39:77: info: overflow check proved
-list_allocator.adb:42:32: info: precondition proved
-list_allocator.adb:42:60: info: precondition proved
-list_allocator.adb:44:11: info: precondition proved
+list_allocator.adb:28:51: info: precondition proved
+list_allocator.adb:33:13: info: precondition proved
+list_allocator.adb:35:19: info: index check proved
+list_allocator.adb:35:19: info: precondition proved
+list_allocator.adb:36:53: info: precondition proved
+list_allocator.adb:36:77: info: overflow check proved
+list_allocator.adb:39:32: info: precondition proved
+list_allocator.adb:39:60: info: precondition proved
+list_allocator.adb:41:11: info: precondition proved
+list_allocator.adb:51:10: info: loop invariant initialization proved
+list_allocator.adb:51:10: info: loop invariant preservation proved
+list_allocator.adb:52:10: info: loop invariant initialization proved
+list_allocator.adb:52:10: info: loop invariant preservation proved
+list_allocator.adb:53:10: info: loop invariant initialization proved
+list_allocator.adb:53:10: info: loop invariant preservation proved
+list_allocator.adb:53:33: info: precondition proved
 list_allocator.adb:54:10: info: loop invariant initialization proved
 list_allocator.adb:54:10: info: loop invariant preservation proved
-list_allocator.adb:54:79: info: range check proved
-list_allocator.adb:55:10: info: loop invariant initialization proved
-list_allocator.adb:55:10: info: loop invariant preservation proved
-list_allocator.adb:65:30: info: index check proved
-list_allocator.adb:67:16: info: index check proved
-list_allocator.adb:70:29: info: precondition proved
-list_allocator.adb:71:29: info: precondition proved
-list_allocator.adb:208:44: info: index check proved
-list_allocator.adb:210:16: info: index check proved
-list_allocator.adb:213:29: info: precondition proved
-list_allocator.adb:341:47: info: range check proved
-list_allocator.adb:342:07: info: loop invariant initialization proved
-list_allocator.adb:342:07: info: loop invariant preservation proved
-list_allocator.adb:344:18: info: index check proved
-list_allocator.adb:344:72: info: overflow check proved
-list_allocator.adb:345:07: info: loop invariant initialization proved
-list_allocator.adb:345:07: info: loop invariant preservation proved
-list_allocator.adb:346:07: info: loop invariant initialization proved
-list_allocator.adb:346:07: info: loop invariant preservation proved
+list_allocator.adb:55:37: info: precondition proved
+list_allocator.adb:56:10: info: loop invariant initialization proved
+list_allocator.adb:56:10: info: loop invariant preservation proved
+list_allocator.adb:57:59: info: range check proved
+list_allocator.adb:67:30: info: index check proved
+list_allocator.adb:69:16: info: index check proved
+list_allocator.adb:72:29: info: precondition proved
+list_allocator.adb:73:29: info: precondition proved
+list_allocator.adb:210:44: info: index check proved
+list_allocator.adb:212:16: info: index check proved
+list_allocator.adb:215:29: info: precondition proved
+list_allocator.adb:343:47: info: range check proved
+list_allocator.adb:344:07: info: loop invariant initialization proved
+list_allocator.adb:344:07: info: loop invariant preservation proved
+list_allocator.adb:346:18: info: index check proved
+list_allocator.adb:346:72: info: overflow check proved
+list_allocator.adb:347:07: info: loop invariant initialization proved
+list_allocator.adb:347:07: info: loop invariant preservation proved
+list_allocator.adb:348:07: info: loop invariant initialization proved
+list_allocator.adb:348:07: info: loop invariant preservation proved
 list_allocator.ads:11:03: info: initial condition proved
-list_allocator.ads:56:14: info: postcondition proved
-list_allocator.ads:62:38: info: contract case proved
-list_allocator.ads:69:16: info: contract case proved
-list_allocator.ads:76:14: info: postcondition proved
-list_allocator.ads:81:36: info: contract case proved
-list_allocator.ads:88:16: info: contract case proved
+list_allocator.ads:28:06: info: initial condition proved
+list_allocator.ads:33:09: info: precondition proved
+list_allocator.ads:35:41: info: precondition proved
+list_allocator.ads:52:43: info: precondition proved
+list_allocator.ads:69:14: info: postcondition proved
+list_allocator.ads:75:38: info: contract case proved
+list_allocator.ads:82:16: info: contract case proved
+list_allocator.ads:89:14: info: postcondition proved
+list_allocator.ads:94:36: info: contract case proved
+list_allocator.ads:101:16: info: contract case proved
 simple_allocator.adb:9:16: info: length check proved
 simple_allocator.adb:12:39: info: index check proved
 simple_allocator.adb:14:39: info: index check proved
