@@ -2845,6 +2845,13 @@ package body SPARK_Definition is
 
                Next (Param);
             end loop;
+
+            --  If the result type of a subprogram is not in SPARK, then the
+            --  subprogram is not in SPARK.
+
+            if not In_SPARK (Etype (Id)) then
+               Mark_Violation (Result_Definition (N), From => Etype (Id));
+            end if;
          end Mark_Function_Specification;
 
          -----------------------------------
@@ -2918,15 +2925,6 @@ package body SPARK_Definition is
                Mark_Entity (Formal);
                Next (Param_Spec);
             end loop;
-
-            --  If the result type of a subprogram is not in SPARK, then the
-            --  subprogram is not in SPARK.
-
-            if Nkind (N) = N_Function_Specification
-              and then not In_SPARK (Etype (Id))
-            then
-               Mark_Violation (Result_Definition (N), From => Etype (Id));
-            end if;
 
             --  Mark global items that appear in Global and Depends contracts,
             --  so that they get translated to Why3, even if this is the only
