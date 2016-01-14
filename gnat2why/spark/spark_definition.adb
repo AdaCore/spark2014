@@ -3569,7 +3569,7 @@ package body SPARK_Definition is
                        and then Is_Object (Field)
                        and then not In_SPARK (Typ)
                      then
-                        Mark_Violation (Typ, From => Typ);
+                        Mark_Violation (Field, From => Typ);
                      end if;
 
                      Next_Component_Or_Discriminant (Field);
