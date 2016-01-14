@@ -1,0 +1,8 @@
+client1.ads:3:11: "T2" is not allowed in SPARK
+client1.ads:3:11: violation of aspect SPARK_Mode at line 3
+client1.ads:3:20: "T2" is not allowed in SPARK
+client1.ads:3:20: violation of aspect SPARK_Mode at line 3
+gnatprove: error during flow analysis and proof
+p2.ads:5:31: visibility of aspect for "T" changes after freeze point
+p2.ads:5:44: "Fun" is undefined
+gnatprove: error during generation of Global contracts
