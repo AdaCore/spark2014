@@ -10,6 +10,6 @@ package P2 is
 
    G : T2;
 
-   function Fun return Boolean with Pre => T2'Size >= 0;
+   function Fun return Boolean with Global => G;
 
 end;
