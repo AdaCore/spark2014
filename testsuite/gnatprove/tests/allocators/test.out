@@ -24,21 +24,21 @@ list_allocator.adb:56:10: info: loop invariant initialization proved
 list_allocator.adb:56:10: info: loop invariant preservation proved
 list_allocator.adb:57:59: info: range check proved
 list_allocator.adb:67:30: info: index check proved
-list_allocator.adb:69:16: info: index check proved
+list_allocator.adb:68:16: info: index check proved
+list_allocator.adb:71:29: info: precondition proved
 list_allocator.adb:72:29: info: precondition proved
-list_allocator.adb:73:29: info: precondition proved
-list_allocator.adb:210:44: info: index check proved
-list_allocator.adb:212:16: info: index check proved
-list_allocator.adb:215:29: info: precondition proved
-list_allocator.adb:343:47: info: range check proved
-list_allocator.adb:344:07: info: loop invariant initialization proved
-list_allocator.adb:344:07: info: loop invariant preservation proved
-list_allocator.adb:346:18: info: index check proved
-list_allocator.adb:346:72: info: overflow check proved
-list_allocator.adb:347:07: info: loop invariant initialization proved
-list_allocator.adb:347:07: info: loop invariant preservation proved
-list_allocator.adb:348:07: info: loop invariant initialization proved
-list_allocator.adb:348:07: info: loop invariant preservation proved
+list_allocator.adb:80:44: info: index check proved
+list_allocator.adb:81:16: info: index check proved
+list_allocator.adb:84:29: info: precondition proved
+list_allocator.adb:91:47: info: range check proved
+list_allocator.adb:92:07: info: loop invariant initialization proved
+list_allocator.adb:92:07: info: loop invariant preservation proved
+list_allocator.adb:94:18: info: index check proved
+list_allocator.adb:94:72: info: overflow check proved
+list_allocator.adb:95:07: info: loop invariant initialization proved
+list_allocator.adb:95:07: info: loop invariant preservation proved
+list_allocator.adb:96:07: info: loop invariant initialization proved
+list_allocator.adb:96:07: info: loop invariant preservation proved
 list_allocator.ads:11:03: info: initial condition proved
 list_allocator.ads:28:06: info: initial condition proved
 list_allocator.ads:33:09: info: precondition proved
