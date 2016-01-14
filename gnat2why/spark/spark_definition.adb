@@ -4821,7 +4821,9 @@ package body SPARK_Definition is
 
          --  Only analyze subprogram body declarations in SPARK_Mode => On
 
-         if SPARK_Pragma_Is (Opt.On) then
+         if SPARK_Pragma_Is (Opt.On) or else
+           (Ekind (E) = E_Function and then Is_Predicate_Function (E))
+         then
 
             --  Issue warning on unreferenced local subprograms, which are
             --  analyzed anyway, unless the subprogram is marked with pragma
