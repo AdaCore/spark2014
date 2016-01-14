@@ -3920,8 +3920,7 @@ package body SPARK_Definition is
    begin
       case Ekind (E) is
          when Object_Kind =>
-            if (Ekind_In (E, E_Variable, E_Constant)
-                or else Is_Formal (E))
+            if Ekind (E) in E_Variable | E_Constant | Formal_Kind
               and then not In_SPARK (E)
             then
                Mark_Violation (N, From => E);
