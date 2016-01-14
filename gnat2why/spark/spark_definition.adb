@@ -4087,9 +4087,7 @@ package body SPARK_Definition is
 
    procedure Mark_Object_Declaration (N : Node_Id) is
       E : constant Entity_Id := Defining_Entity (N);
-
    begin
-      --  Mark entity
       Mark_Entity (E);
    end Mark_Object_Declaration;
 
