@@ -8,15 +8,14 @@ is
       I: Unsigned64 := 0;
       Matched: Boolean;
    begin
-      if (bottom <= Unsigned64'Last - range_size) then
+      if (bottom <= Unsigned64'Last - Range_Size + 1) then
          Matched := (bottom <= var and var <= bottom + range_size - 1);
       else
          Matched := (bottom <= var and var <= Unsigned64'Last) or
-           (var < range_size - (Unsigned64'Last - bottom));
+           (var < range_size - (Unsigned64'Last - bottom) - 1);
       end if;
       return Matched;
    end InRange64;
    -----------------------------------------------------------------------
 
 end Inrange6;
-
