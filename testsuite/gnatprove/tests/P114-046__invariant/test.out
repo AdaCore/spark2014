@@ -3,14 +3,17 @@ inrange1.adb:12:40: info: initialization of "Matched" proved
 inrange1.adb:13:10: info: loop variant proved
 inrange1.adb:13:43: info: initialization of "I" proved
 inrange1.adb:14:10: info: loop invariant initialization proved
+inrange1.adb:14:10: info: loop invariant preservation proved
 inrange1.adb:14:32: info: initialization of "Matched" proved
-inrange1.adb:14:32: medium: loop invariant might fail after first iteration, cannot prove Matched = ((I > 0) and then (for some N in Unsigned64 range 0 .. (I - 1) => (var = (bottom + N (e.g. when Matched = False and I = 36882 and var = 28672 and bottom = 11951)
 inrange1.adb:14:44: info: initialization of "I" proved
 inrange1.adb:14:70: info: range check proved
-inrange1.adb:15:29: info: initialization of "I" proved
-inrange1.adb:19:15: info: initialization of "I" proved
-inrange1.adb:21:14: info: initialization of "Matched" proved
-inrange1.ads:18:14: medium: postcondition might fail, cannot prove InRange64'Result = (for some N in Unsigned64 range 0 .. (range_size - 1) => (var = (bottom + N (e.g. when InRange64'Result = False and range_size = 9888 and var = 0 and bottom = 0)
+inrange1.adb:16:10: info: loop invariant initialization proved
+inrange1.adb:16:10: info: loop invariant preservation proved
+inrange1.adb:16:37: info: initialization of "Matched" proved
+inrange1.adb:17:29: info: initialization of "I" proved
+inrange1.adb:21:15: info: initialization of "I" proved
+inrange1.adb:23:14: info: initialization of "Matched" proved
+inrange1.ads:18:14: info: postcondition proved
 inrange1.ads:18:44: info: range check proved
 inrange2.adb:12:15: info: initialization of "I" proved
 inrange2.adb:12:40: info: initialization of "Matched" proved
@@ -19,12 +22,15 @@ inrange2.adb:17:15: info: initialization of "I" proved
 inrange2.adb:18:10: info: loop variant proved
 inrange2.adb:18:43: info: initialization of "I" proved
 inrange2.adb:19:10: info: loop invariant initialization proved
+inrange2.adb:19:10: info: loop invariant preservation proved
 inrange2.adb:19:32: info: initialization of "Matched" proved
-inrange2.adb:19:32: medium: loop invariant might fail after first iteration, cannot prove Matched = (for some N in Unsigned64 range 0 .. (I - 1) => (var = (bottom + N (e.g. when Matched = False and I = 65535 and var = 1 and bottom = 0)
 inrange2.adb:19:52: info: range check proved
-inrange2.adb:19:80: info: initialization of "I" proved
-inrange2.adb:21:14: info: initialization of "Matched" proved
-inrange2.ads:18:14: medium: postcondition might fail, cannot prove InRange64'Result = (for some N in Unsigned64 range 0 .. (range_size - 1) => (var = (bottom + N (e.g. when InRange64'Result = False and range_size = 65532 and var = 1024 and bottom = 768)
+inrange2.adb:19:81: info: initialization of "I" proved
+inrange2.adb:20:10: info: loop invariant initialization proved
+inrange2.adb:20:10: info: loop invariant preservation proved
+inrange2.adb:20:37: info: initialization of "Matched" proved
+inrange2.adb:22:14: info: initialization of "Matched" proved
+inrange2.ads:18:14: info: postcondition proved
 inrange2.ads:18:44: info: range check proved
 inrange3.adb:11:14: info: initialization of "I" proved
 inrange3.adb:12:10: info: loop variant proved
@@ -39,8 +45,11 @@ inrange3.ads:18:14: info: postcondition proved
 inrange3.ads:18:44: info: range check proved
 inrange4.adb:16:10: info: loop invariant initialization proved
 inrange4.adb:16:10: info: loop invariant preservation proved
-inrange4.adb:18:14: info: initialization of "Matched" proved
-inrange4.ads:19:08: medium: postcondition might fail (e.g. when range_size = 2 and var = 0 and bottom = 0)
+inrange4.adb:17:10: info: loop invariant initialization proved
+inrange4.adb:17:10: info: loop invariant preservation proved
+inrange4.adb:17:37: info: initialization of "Matched" proved
+inrange4.adb:19:14: info: initialization of "Matched" proved
+inrange4.ads:19:08: info: postcondition proved
 inrange5.ads:20:08: info: postcondition proved
 inrange6.adb:17:14: info: initialization of "Matched" proved
 inrange6.ads:18:14: medium: postcondition might fail, cannot prove InRange64'Result = (for some N in Unsigned64 range 0 .. (range_size - 1) => (var = (bottom + N (e.g. when InRange64'Result = True and range_size = 33024 and var = 18446744073709551615 and bottom = 18446744073709551488)

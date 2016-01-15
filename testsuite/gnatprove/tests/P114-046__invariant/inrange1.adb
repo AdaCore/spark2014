@@ -13,6 +13,7 @@ is
          pragma Loop_Variant(Increases => I);
          pragma Loop_Invariant(Matched = ((I > 0) and then (for some N in
          Unsigned64 range 0 .. (I - 1) => (var = (bottom + N))))); --@ LOOP_INVARIANT:PASS
+         pragma Loop_Invariant (not Matched);
          if (var = bottom + I) then
             Matched := True;
             exit While_Loop;
@@ -24,4 +25,3 @@ is
    -----------------------------------------------------------------------
 
 end Inrange1;
-

@@ -13,11 +13,11 @@ is
             Matched := True;
             exit;
          end if;
-         pragma Loop_Invariant ((for all K in 0 .. I => var /= bottom + K)); --@LOOP_INVARANT:PASS
+         pragma Loop_Invariant ((for all K in 0 .. I => var /= bottom + K)); --@ LOOP_INVARIANT:PASS
+         pragma Loop_Invariant (not Matched);
       end loop;
       return Matched;
    end InRange64;
    -----------------------------------------------------------------------
 
 end Inrange4;
-

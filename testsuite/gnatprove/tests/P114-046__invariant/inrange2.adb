@@ -17,10 +17,10 @@ is
          I := I + 1;
          pragma Loop_Variant(Increases => I);
          pragma Loop_Invariant(Matched = (for some N in Unsigned64 range 0 ..  (I - 1) => (var = (bottom + N)))); --@ LOOP_INVARIANT:PASS
+         pragma Loop_Invariant (not Matched);
       end loop While_Loop;
       return Matched;
    end InRange64;
    -----------------------------------------------------------------------
 
 end Inrange2;
-
