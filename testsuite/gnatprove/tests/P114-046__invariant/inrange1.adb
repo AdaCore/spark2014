@@ -11,7 +11,7 @@ is
       While_Loop:
       while ((I < range_size) and (not Matched)) loop
          pragma Loop_Variant(Increases => I);
-         pragma Loop_Invariant(Matched = ((I > 0) and then (for some N in --@LOOP_INVARIANT:PASS
+         pragma Loop_Invariant(Matched = ((I > 0) and then (for some N in
          Unsigned64 range 0 .. (I - 1) => (var = (bottom + N)))));
          pragma Loop_Invariant (not Matched);
          if (var = bottom + I) then

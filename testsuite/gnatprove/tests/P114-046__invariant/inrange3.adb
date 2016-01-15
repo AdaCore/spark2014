@@ -10,7 +10,7 @@ is
       While_Loop:
       while (I < range_size) loop
          pragma Loop_Variant(Increases => I);
-         pragma Loop_Invariant --@LOOP_INVARIANT:PASS
+         pragma Loop_Invariant
           (I in 0 .. range_size - 1 and
           ((I = 0) or else (for all N in Unsigned64 range 0 .. (I - 1) => (var /= (bottom + N)))));
          if (var = bottom + I) then
