@@ -2913,7 +2913,7 @@ package body SPARK_Definition is
             while Present (Param_Spec) loop
                Formal := Defining_Identifier (Param_Spec);
                if not In_SPARK (Etype (Formal)) then
-                  Mark_Violation (E, From => Etype (Formal));
+                  Mark_Violation (Formal, From => Etype (Formal));
                end if;
                Mark_Entity (Formal);
                Next (Param_Spec);

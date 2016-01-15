@@ -8,4 +8,6 @@ package P with SPARK_Mode is
 
    function F2 return Callback;
 
+   function F3 (Arg : Callback) return Callback;
+
 end;
