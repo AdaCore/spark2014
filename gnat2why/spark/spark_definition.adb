@@ -299,8 +299,8 @@ package body SPARK_Definition is
    --  Check if Partition_Elaboration_Policy is set to Sequential
 
    function Is_SPARK_Tasking_Configuration return Boolean;
-   --  Check tasking configuration required by SPARK and possibly
-   --  mark violation on node N.
+   --  Check tasking configuration required by SPARK and possibly mark
+   --  violation on node N.
 
    ------------------------------------
    -- Is_SPARK_Tasking_Configuration --
@@ -315,7 +315,7 @@ package body SPARK_Definition is
 
    procedure Inhibit_Messages is
    begin
-      --  This procedure can be called only once, before the marking itself.
+      --  This procedure can be called only once, before the marking itself
       pragma Assert (Emit_Messages and then Entity_Set.Is_Empty);
 
       Emit_Messages := False;
