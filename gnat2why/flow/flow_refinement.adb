@@ -482,14 +482,18 @@ package body Flow_Refinement is
       ------------
 
       function Expand (E : Entity_Id) return Node_Sets.Set is
-         Tmp : Node_Sets.Set := Node_Sets.Empty_Set;
-         Ptr : Elmt_Id;
-         Hs  : Boolean := False;
+         Tmp                        : Node_Sets.Set := Node_Sets.Empty_Set;
+         Ptr                        : Elmt_Id;
+         Possible_Hidden_Components : Boolean       := False;
+         L                          : Elist_Id;
       begin
          case Ekind (E) is
             when E_Abstract_State =>
                if State_Refinement_Is_Visible (E, S) then
-                  Ptr := First_Elmt (Refinement_Constituents (E));
+                  L   := Refinement_Constituents (E);
+                  Ptr := (if Present (L)
+                          then First_Elmt (L)
+                          else No_Elmt);
                   while Present (Ptr) loop
                      if Nkind (Node (Ptr)) /= N_Null then
                         Tmp.Union (Expand (Node (Ptr)));
@@ -497,20 +501,23 @@ package body Flow_Refinement is
                      Ptr := Next_Elmt (Ptr);
                   end loop;
                else
-                  Hs := True;
+                  Possible_Hidden_Components := True;
                end if;
 
-               Ptr := First_Elmt (Part_Of_Constituents (E));
+               L   := Part_Of_Constituents (E);
+               Ptr := (if Present (L)
+                       then First_Elmt (L)
+                       else No_Elmt);
                while Present (Ptr) loop
                   if Is_Visible (Node (Ptr), S) then
                      Tmp.Union (Expand (Node (Ptr)));
                   else
-                     Hs := True;
+                     Possible_Hidden_Components := True;
                   end if;
                   Ptr := Next_Elmt (Ptr);
                end loop;
 
-               if Hs then
+               if Possible_Hidden_Components then
                   --  We seem to have an abstract state which has no
                   --  refinement, or where we have unexpanded state. Lets
                   --  include the abstract state itself.

@@ -3230,12 +3230,16 @@ package body Flow.Analysis is
          --  on itself.
          for State of States_Written loop
             declare
+               L            : constant Elist_Id :=
+                 Refinement_Constituents (State);
                Constit_Elmt : Elmt_Id;
                Constit_Id   : Entity_Id;
                Keep_Going   : Boolean          := True;
                AS           : constant Flow_Id := Direct_Mapping_Id (State);
             begin
-               Constit_Elmt := First_Elmt (Refinement_Constituents (State));
+               Constit_Elmt := (if Present (L)
+                                then First_Elmt (L)
+                                else No_Elmt);
                while Present (Constit_Elmt)
                  and then Keep_Going
                loop

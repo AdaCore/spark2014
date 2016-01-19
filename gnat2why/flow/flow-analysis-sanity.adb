@@ -732,12 +732,14 @@ package body Flow.Analysis.Sanity is
          end if;
 
          declare
+            L                   : Elist_Id;
             Ptr                 : Elmt_Id;
             Constit             : Flow_Id;
             Writes_At_Least_One : Boolean := False;
             One_Is_Missing      : Boolean := False;
          begin
-            Ptr := First_Elmt (Refinement_Constituents (E));
+            L   := Refinement_Constituents (E);
+            Ptr := (if Present (L) then First_Elmt (L) else No_Elmt);
             while Present (Ptr) loop
                --  Check that at least one constituent is written
                if Nkind (Node (Ptr)) /= N_Null then

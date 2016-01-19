@@ -355,15 +355,15 @@ package body Flow_Utility is
       return Flow_Id_Sets.Set
    is
       Tmp : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      L   : Elist_Id;
       Ptr : Elmt_Id;
    begin
       case F.Kind is
          when Direct_Mapping =>
             if Ekind (Get_Direct_Mapping_Id (F)) = E_Abstract_State then
-               Ptr := First_Elmt (Refinement_Constituents
-                                  (Get_Direct_Mapping_Id (F)));
+               L   := Refinement_Constituents (Get_Direct_Mapping_Id (F));
+               Ptr := (if Present (L) then First_Elmt (L) else No_Elmt);
                while Present (Ptr) loop
-
                   --  We simply ignore the null refinement, it is
                   --  treated as if it was not present.
 
@@ -375,10 +375,9 @@ package body Flow_Utility is
                   Ptr := Next_Elmt (Ptr);
                end loop;
 
-               Ptr := First_Elmt (Part_Of_Constituents
-                                  (Get_Direct_Mapping_Id (F)));
+               L   := Part_Of_Constituents (Get_Direct_Mapping_Id (F));
+               Ptr := (if Present (L) then First_Elmt (L) else No_Elmt);
                while Present (Ptr) loop
-
                   --  Part_of cannot include a null refinement.
 
                   Tmp.Union
@@ -388,7 +387,6 @@ package body Flow_Utility is
                end loop;
 
                if Tmp.Is_Empty then
-
                   --  If we can't refine this state (maybe the body
                   --  is not in SPARK, or simply not implemented or
                   --  there is a null refinement) then we use the
@@ -657,9 +655,9 @@ package body Flow_Utility is
                   --  due to a Part_Of.
                   if Present (Anonymous_Object (T)) then
                      declare
-                        AO  : constant Node_Id := Anonymous_Object (T);
-                        Ptr : Elmt_Id :=
-                          First_Elmt (Part_Of_Constituents (AO));
+                        AO  : constant Node_Id  := Anonymous_Object (T);
+                        L   : constant Elist_Id := Part_Of_Constituents (AO);
+                        Ptr : Elmt_Id           := First_Elmt (L);
                      begin
                         while Present (Ptr) loop
                            Ids.Union
