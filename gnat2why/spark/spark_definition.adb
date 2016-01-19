@@ -2383,7 +2383,7 @@ package body SPARK_Definition is
 
       Mark (N);
 
-      --  Mark delayed type aspects.
+      --  Mark delayed type aspects
 
       --  If no SPARK_Mode is set for the type, we only mark delayed aspects
       --  for types which have been found to be in SPARK. In this case, every
@@ -4832,7 +4832,7 @@ package body SPARK_Definition is
                end loop;
             end;
 
-            --  Mark Task discriminants
+            --  Mark task discriminants
 
             if Nkind (N) = N_Task_Body
               and then Has_Discriminants (E)
