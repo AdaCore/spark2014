@@ -26,25 +26,28 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
-with Elists;                     use Elists;
+
 with Errout;                     use Errout;
-with Flow_Classwide;             use Flow_Classwide;
-with Flow_Debug;                 use Flow_Debug;
-with Flow_Generated_Globals;     use Flow_Generated_Globals;
-with Gnat2Why.Util;
-with Graphs;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
 with Output;                     use Output;
 with Sem_Aux;                    use Sem_Aux;
 with Sem_Eval;                   use Sem_Eval;
 with Sem_Type;                   use Sem_Type;
+with Sprint;                     use Sprint;
+with Treepr;                     use Treepr;
+
+with Common_Iterators;           use Common_Iterators;
+with Gnat2Why.Util;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
-with Sprint;                     use Sprint;
-with Treepr;                     use Treepr;
 with Why;
+
+with Flow_Classwide;             use Flow_Classwide;
+with Flow_Debug;                 use Flow_Debug;
+with Flow_Generated_Globals;     use Flow_Generated_Globals;
+with Graphs;
 
 package body Flow_Utility is
 
@@ -355,35 +358,31 @@ package body Flow_Utility is
       return Flow_Id_Sets.Set
    is
       Tmp : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      L   : Elist_Id;
-      Ptr : Elmt_Id;
    begin
       case F.Kind is
          when Direct_Mapping =>
             if Ekind (Get_Direct_Mapping_Id (F)) = E_Abstract_State then
-               L   := Refinement_Constituents (Get_Direct_Mapping_Id (F));
-               Ptr := (if Present (L) then First_Elmt (L) else No_Elmt);
-               while Present (Ptr) loop
+               for C of Iter (Refinement_Constituents
+                                (Get_Direct_Mapping_Id (F)))
+               loop
                   --  We simply ignore the null refinement, it is
                   --  treated as if it was not present.
-
-                  if Nkind (Node (Ptr)) /= N_Null then
+                  if Nkind (C) /= N_Null then
                      Tmp.Union
-                       (Expand_Abstract_State (Direct_Mapping_Id (Node (Ptr),
-                        F.Variant), Erase_Constants));
+                       (Expand_Abstract_State (Direct_Mapping_Id (C,
+                                                                  F.Variant),
+                                               Erase_Constants));
                   end if;
-                  Ptr := Next_Elmt (Ptr);
                end loop;
 
-               L   := Part_Of_Constituents (Get_Direct_Mapping_Id (F));
-               Ptr := (if Present (L) then First_Elmt (L) else No_Elmt);
-               while Present (Ptr) loop
+               for C of Iter (Part_Of_Constituents
+                                (Get_Direct_Mapping_Id (F)))
+               loop
                   --  Part_of cannot include a null refinement.
-
                   Tmp.Union
-                    (Expand_Abstract_State (Direct_Mapping_Id (Node (Ptr),
-                     F.Variant), Erase_Constants));
-                  Ptr := Next_Elmt (Ptr);
+                    (Expand_Abstract_State (Direct_Mapping_Id (C,
+                                                               F.Variant),
+                                            Erase_Constants));
                end loop;
 
                if Tmp.Is_Empty then
@@ -654,18 +653,12 @@ package body Flow_Utility is
                   --  Include constituents that belong to the concurrent object
                   --  due to a Part_Of.
                   if Present (Anonymous_Object (T)) then
-                     declare
-                        AO  : constant Node_Id  := Anonymous_Object (T);
-                        L   : constant Elist_Id := Part_Of_Constituents (AO);
-                        Ptr : Elmt_Id           := First_Elmt (L);
-                     begin
-                        while Present (Ptr) loop
-                           Ids.Union
-                             (Flatten_Variable (Direct_Mapping_Id (Node (Ptr)),
-                                                Scope));
-                           Ptr := Next_Elmt (Ptr);
-                        end loop;
-                     end;
+                     for C of Iter (Part_Of_Constituents
+                                      (Anonymous_Object (T)))
+                     loop
+                        Ids.Union (Flatten_Variable (Direct_Mapping_Id (C),
+                                                     Scope));
+                     end loop;
                   end if;
                else
                   --  From outside a concurrent object, all that we see is the

@@ -22,8 +22,22 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;
+
 with Elists;                      use Elists;
 with Errout;                      use Errout;
+with Namet;                       use Namet;
+with Nlists;                      use Nlists;
+with Output;                      use Output;
+with Sem_Util;                    use Sem_Util;
+with Sinput;                      use Sinput;
+with Snames;                      use Snames;
+with Stand;                       use Stand;
+
+with Common_Iterators;            use Common_Iterators;
+with SPARK_Definition;
+with SPARK_Util;                  use SPARK_Util;
+with VC_Kinds;                    use VC_Kinds;
+
 with Flow.Analysis.Antialiasing;
 with Flow.Analysis.Sanity;
 with Flow_Debug;                  use Flow_Debug;
@@ -31,16 +45,7 @@ with Flow_Generated_Globals;
 with Flow_Error_Messages;         use Flow_Error_Messages;
 with Flow_Utility;                use Flow_Utility;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
-with Namet;                       use Namet;
-with Nlists;                      use Nlists;
-with Output;                      use Output;
-with Sem_Util;                    use Sem_Util;
-with Sinput;                      use Sinput;
-with Snames;                      use Snames;
-with SPARK_Definition;
-with SPARK_Util;                  use SPARK_Util;
-with Stand;                       use Stand;
-with VC_Kinds;                    use VC_Kinds;
+
 with Why;
 
 package body Flow.Analysis is
@@ -2773,21 +2778,17 @@ package body Flow.Analysis is
       ---------------------------------
 
       function Enclosing_Package_Has_State (E : Entity_Id) return Boolean is
-         Scop : Entity_Id;
+         Scop : Entity_Id := E;
       begin
-         Scop := E;
-         while Present (Scop) loop
+         --  If we reach Standard_Standard then there is no
+         --  enclosing package which has state.
 
-            --  If we reach Standard_Standard then there is no
-            --  enclosing package which has state.
-
-            if Scop = Standard_Standard then
-               return False;
+         while Present (Scop) and then Scop /= Standard_Standard loop
 
             --  If we find a body then we need to look if the entity
             --  of the spec has abstract state.
 
-            elsif Ekind (Scop) = E_Package_Body
+            if Ekind (Scop) = E_Package_Body
               and then Present (Abstract_States (Spec_Entity (Scop)))
             then
                return True;
@@ -3033,56 +3034,35 @@ package body Flow.Analysis is
          return FS;
       end Outputs_Of_Procedures;
 
+      --  All flow ids that are or can potentially be initialized.
+      Initializable : constant Flow_Id_Sets.Set :=
+        Initialized_By_Initializes_Aspect or Outputs_Of_Procedures;
+
    begin  --  Find_Impossible_To_Initialize_State
 
-      --  If the package either has no state abstractions, or has
-      --  "Abstract_State => null" then there is nothing to do here.
+      for State of Iter (Abstract_States (FA.Spec_Entity)) loop
+         if not Is_Null_State (State)
+           and then not Initializable.Contains (Direct_Mapping_Id (State))
+           and then not Has_Async_Writers (Direct_Mapping_Id (State),
+                                           FA.B_Scope)
+         then
+            --  For every (non-null) state abstraction that is not
+            --  mentioned in an Initializes aspect, is not a pure output of
+            --  any procedure and does not have Async_Writers we emit a
+            --  warning.
 
-      if No (Abstract_States (FA.Spec_Entity))
-        or else Is_Null_State
-                  (Node (First_Elmt (Abstract_States (FA.Spec_Entity))))
-      then
-         return;
-      end if;
+            --  ??? FS: why do we special case async_writers?
 
-      declare
-         State_Elmt : Elmt_Id;
-         State      : Entity_Id;
-
-         --  The following is the set of all flow ids that are or can
-         --  potentially be initialized.
-         Initializable : constant Flow_Id_Sets.Set :=
-           Initialized_By_Initializes_Aspect or Outputs_Of_Procedures;
-      begin
-         State_Elmt := First_Elmt (Abstract_States (FA.Spec_Entity));
-         State := Node (State_Elmt);
-
-         while Present (State) loop
-
-            if not Initializable.Contains (Direct_Mapping_Id (State))
-              and then not Has_Async_Writers (Direct_Mapping_Id (State),
-                                              FA.B_Scope)
-            then
-               --  For every state abstraction that is not mentioned
-               --  in an Initializes aspect, is not a pure Output of
-               --  any procedure and does not have Async_Writers we
-               --  emit a warning.
-
-               Error_Msg_Flow
-                 (FA       => FA,
-                  Msg      => "no procedure exists that can initialize " &
-                                "abstract state &",
-                  N        => State,
-                  F1       => Direct_Mapping_Id (State),
-                  Tag      => Impossible_To_Initialize_State,
-                  Severity => Warning_Kind);
-            end if;
-
-            --  Move on to the next state abstraction
-            Next_Elmt (State_Elmt);
-            State := Node (State_Elmt);
-         end loop;
-      end;
+            Error_Msg_Flow
+              (FA       => FA,
+               Msg      => "no procedure exists that can initialize " &
+                 "abstract state &",
+               N        => State,
+               F1       => Direct_Mapping_Id (State),
+               Tag      => Impossible_To_Initialize_State,
+               Severity => Warning_Kind);
+         end if;
+      end loop;
 
    end Find_Impossible_To_Initialize_State;
 
@@ -3229,34 +3209,20 @@ package body Flow.Analysis is
          --  not been written, then the state abstraction also depends
          --  on itself.
          for State of States_Written loop
-            declare
-               L            : constant Elist_Id :=
-                 Refinement_Constituents (State);
-               Constit_Elmt : Elmt_Id;
-               Constit_Id   : Entity_Id;
-               Keep_Going   : Boolean          := True;
-               AS           : constant Flow_Id := Direct_Mapping_Id (State);
-            begin
-               Constit_Elmt := (if Present (L)
-                                then First_Elmt (L)
-                                else No_Elmt);
-               while Present (Constit_Elmt)
-                 and then Keep_Going
-               loop
-                  Constit_Id := Node (Constit_Elmt);
-
-                  if not Constituents_Written.Contains (Constit_Id) then
+            for RC of Iter (Refinement_Constituents (State)) loop
+               if not Constituents_Written.Contains (RC) then
+                  declare
+                     AS : constant Flow_Id := Direct_Mapping_Id (State);
+                  begin
                      --  Abstract state also depends on itself
                      Up_Projected_Map (AS).Include (AS);
+                  end;
 
-                     --  There is no need to check the rest of the
-                     --  constituents.
-                     Keep_Going := False;
-                  end if;
-
-                  Next_Elmt (Constit_Elmt);
-               end loop;
-            end;
+                  --  There is no need to check the rest of the
+                  --  constituents.
+                  exit;
+               end if;
+            end loop;
          end loop;
 
          return Up_Projected_Map;
