@@ -1,0 +1,10 @@
+project Test is
+
+   for Main use ("call_client_unit.adb", "call_concurrency_example.adb", "call_concurrency_example_fixed.adb", "call_counter_example.adb");
+
+   package Compiler is
+      for Local_Configuration_Pragmas use "test.adc";
+      for Default_Switches ("ada") use ("-gnata", "-g");
+   end Compiler;
+
+end Test;
