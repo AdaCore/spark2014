@@ -213,9 +213,9 @@ package body Flow.Analysis.Sanity is
 
       begin
          case Nkind (N) is
-            when N_Subprogram_Body |
+            when N_Subprogram_Body       |
                  N_Package_Specification |
-                 N_Package_Body =>
+                 N_Package_Body          =>
 
                --  We do not want to process declarations of any nested
                --  subprograms or packages. These will be analyzed by their
@@ -227,8 +227,8 @@ package body Flow.Analysis.Sanity is
                   return Skip;
                end if;
 
-            when N_Full_Type_Declaration |
-                 N_Subtype_Declaration   |
+            when N_Full_Type_Declaration         |
+                 N_Subtype_Declaration           |
                  N_Private_Extension_Declaration =>
                declare
                   E          : constant Entity_Id := Defining_Identifier (N);
@@ -316,8 +316,8 @@ package body Flow.Analysis.Sanity is
 
                         return Skip;
 
-                     when N_Digits_Constraint |
-                          N_Delta_Constraint =>
+                     when N_Delta_Constraint  |
+                          N_Digits_Constraint =>
 
                         --  Ada LRM requires these constraints to be
                         --  static, so no further action required here.
