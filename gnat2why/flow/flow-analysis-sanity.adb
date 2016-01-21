@@ -232,7 +232,7 @@ package body Flow.Analysis.Sanity is
                  N_Private_Extension_Declaration =>
                declare
                   E          : constant Entity_Id := Defining_Identifier (N);
-                  P          : constant Node_Id := Predicate_Function (E);
+                  P          : constant Entity_Id := Predicate_Function (E);
                   GP, GI, GO : Flow_Id_Sets.Set;
                   Deps       : Ordered_Flow_Id_Sets.Set;
                begin
