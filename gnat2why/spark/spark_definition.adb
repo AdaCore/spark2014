@@ -138,6 +138,8 @@ package body SPARK_Definition is
    SPARK_Status_JSON : JSON_Array := Empty_Array;
 
    procedure Initialize;
+   --  Initialize internal global variables; must be called before marking next
+   --  compilation.
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean
       with Global => (Input => (Current_SPARK_Pragma,
