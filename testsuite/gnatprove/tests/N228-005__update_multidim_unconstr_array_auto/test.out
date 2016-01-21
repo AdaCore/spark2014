@@ -1,0 +1,3 @@
+update_checks_multidim_unconstr.ads:8:32: attribute "Update" of unconstrained multidimensional array is not yet supported
+update_checks_multidim_unconstr.ads:8:32: attribute "Update" of unconstrained multidimensional array is not yet supported
+gnatprove: error during generation of Global contracts
