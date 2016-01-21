@@ -22,6 +22,6 @@ package body Dic_Not_Spark is
          else
             return False;
          end if;
-   end Add;
+      end Add;
    end With_SPARK_Mode;
 end Dic_Not_Spark;
