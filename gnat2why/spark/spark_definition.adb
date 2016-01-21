@@ -979,11 +979,15 @@ package body SPARK_Definition is
             elsif Is_Update_Aggregate (N)
               and then Is_Update_Unconstr_Multidim_Aggr (N)
             then
-               Error_Msg_Name_1 := Name_Update;
-               Error_Msg_N
-                 ("attribute % of unconstrained multidimensional array "
-                    & "is not yet supported",
-                  N);
+               Violation_Detected := True;
+
+               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                  Error_Msg_Name_1 := Name_Update;
+                  Error_Msg_N
+                    ("attribute % of unconstrained multidimensional array "
+                       & "is not yet supported",
+                     N);
+               end if;
             end if;
             Mark_List (Expressions (N));
             Mark_List (Component_Associations (N));
