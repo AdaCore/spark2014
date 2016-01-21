@@ -39,8 +39,28 @@ is
       pragma Assume (Y < 1.0);
       pragma Assume (X / Threshold <= Y);
       Res := X / Y;
-      pragma Assert (Res < Threshold);  --@ASSERT:FAIL
+      pragma Assert (Res <= Threshold);  --@ASSERT:FAIL
    end Guarded_Div;
+
+   procedure Guarded_Div_Original (X, Y : Float_32; Res : out Float_32) is
+      Threshold : constant Float_32 := 1000.0;
+   begin
+      pragma Assume (X >= 0.0);
+      pragma Assume (Y > 0.0);
+      pragma Assume (Y < 1.0);
+      pragma Assume (X / Float_32'Last <= Y);
+      Res := X / Y;  --@OVERFLOW_CHECK:FAIL
+   end Guarded_Div_Original;
+
+   procedure Guarded_Div_Original_Fixed (X, Y : Float_32; Res : out Float_32) is
+      Threshold : constant Float_32 := 1000.0;
+   begin
+      pragma Assume (X >= 0.0);
+      pragma Assume (Y > 0.1);
+      pragma Assume (Y < 1.0);
+      pragma Assume (X / Float_32'Last <= Y);
+      Res := X / Y;
+   end Guarded_Div_Original_Fixed;
 
    --  NOT TRUE. Counterexample posted to N131-061.
    procedure Fibonacci (N : Positive; X, Y : Float_32; Res : out Float_32) is
