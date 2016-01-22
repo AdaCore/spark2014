@@ -951,7 +951,7 @@ package body Gnat2Why.Expr.Loops is
                      --  Loop_Index := Low_Id otherwise
 
                      declare
-                        Is_Reverse   : constant Boolean :=
+                        Is_Reverse : constant Boolean :=
                           Reverse_Present (LParam_Spec);
                         Init_Index : constant W_Expr_Id :=
                           (if Is_Reverse then +High_Id else +Low_Id);
