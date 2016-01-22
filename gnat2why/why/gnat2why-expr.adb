@@ -13463,8 +13463,8 @@ package body Gnat2Why.Expr is
         Sequence
           (Result,
            New_Label (Labels =>
-                            Name_Id_Sets.To_Set
-                        (New_Located_Label (Stmt_Or_Decl)),
+                        Name_Id_Sets.To_Set
+                          (New_Located_Label (Stmt_Or_Decl)),
                       Def    => +Prog));
       if Cut_Assertion /= Why_Empty then
          Result :=
