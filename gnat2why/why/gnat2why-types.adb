@@ -597,15 +597,13 @@ package body Gnat2Why.Types is
          --  If E is the full view of a private type, use its partial view as
          --  the filtering entity, as it is the entity used everywhere in AST.
 
-         if Is_Full_View (E) then
-            Close_Theory (File,
-                          Kind => Definition_Theory,
-                          Defined_Entity => Partial_View (E));
-         else
-            Close_Theory (File,
-                          Kind => Definition_Theory,
-                          Defined_Entity => E);
-         end if;
+         Close_Theory (File,
+                       Kind => Definition_Theory,
+                       Defined_Entity =>
+                         (if Is_Full_View (E)
+                          then Partial_View (E)
+                          else E));
+
       end if;
    end Translate_Type;
 
