@@ -680,21 +680,17 @@ procedure Gnatprove is
       case Step is
          when GS_ALI =>
             Compute_ALI_Information (Project_File, Proj, Status);
-            if Status /= 0
-              and then MMode = GPM_Check
-            then
-               Status := 0;
-            end if;
 
          when GS_Gnat2Why =>
             Flow_Analysis_And_Proof (Project_File, Proj, Status);
-            if Status /= 0
-              and then MMode = GPM_Check
-            then
-               Status := 0;
-            end if;
 
       end case;
+
+      if Status /= 0
+        and then MMode = GPM_Check
+      then
+         Status := 0;
+      end if;
 
       if Status /= 0 then
          Abort_With_Message
