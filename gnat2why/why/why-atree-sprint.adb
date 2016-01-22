@@ -27,6 +27,7 @@ with Ada.Containers;        use Ada.Containers;
 with Ada.Direct_IO;
 with Ada.Directories;
 with Ada.Strings.Unbounded;
+with Atree;                 use Atree;
 with Errout;                use Errout;
 with GNAT.Regpat;
 with GNAT.OS_Lib;           use GNAT.OS_Lib;
@@ -55,7 +56,7 @@ package body Why.Atree.Sprint is
    --  Counterexamples use Why3 locations, contrary to VCs which are based
    --  on special GP_Sloc labels.
 
-   Curr_Sloc : Source_Ptr := -1;
+   Curr_Sloc : Source_Ptr := No_Location;
    --  The source code location of currently printed node
 
    procedure Print_Sloc_Tag;
@@ -1791,7 +1792,7 @@ package body Why.Atree.Sprint is
          declare
             N : constant Node_Id := Get_Ada_Node (+Node);
          begin
-            pragma Assert (N /= 0);
+            pragma Assert (Present (N));
             P (O, Capitalize_First (Full_Name (N)));
             P (O, ".");
             P (O, Short_Name (N));
