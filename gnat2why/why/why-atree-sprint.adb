@@ -60,7 +60,7 @@ package body Why.Atree.Sprint is
    --  The source code location of currently printed node
 
    procedure Print_Sloc_Tag;
-   --  Print the location tag for currently printed node.
+   --  Print the location tag for currently printed node
 
    -----------------------
    -- Local Subprograms --
