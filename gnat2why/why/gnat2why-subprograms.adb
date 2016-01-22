@@ -2230,9 +2230,9 @@ package body Gnat2Why.Subprograms is
            Sequence
              ((1 => New_Comment
                (Comment => NID ("Assume dynamic invariants of inputs of the"
-                & " subprogram "
+                & " subprogram"
                 & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
-                  else ""))),
+                   else ""))),
                2 =>
                  Compute_Dynamic_Property_For_Inputs
                    (Params         => Params,
