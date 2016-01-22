@@ -365,6 +365,9 @@ ASCII.LF;
       Proj_Type : constant Project_Type := Root_Project (Tree);
       Iter      : Project_Iterator := Proj_Type.Start;
       Project   : Project_Type;
+
+   --  Start of processing for Clean_Up
+
    begin
       loop
          Project := Current (Iter);
