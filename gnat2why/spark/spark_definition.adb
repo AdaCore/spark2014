@@ -4839,7 +4839,6 @@ package body SPARK_Definition is
               and then not Referenced (E)
               and then not Has_Unreferenced (E)
               and then Emit_Warning_Info_Messages
-              and then SPARK_Pragma_Is (Opt.On)
             then
                case Ekind (E) is
                when E_Function =>
