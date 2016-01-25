@@ -13,7 +13,7 @@ private
       type Buffer is private with Default_Initial_Condition;
       procedure Enqueue (E :     Data; B : in out Buffer);
       procedure Dequeue (E : out Data; B : in out Buffer);
-      Max : constant Natural := V_Ext;
+      Max : constant Natural := V_Ext with Part_Of => State;
    private
       type Data_Array is array (Positive range 1 .. Max) of Data;
       type Buffer is record

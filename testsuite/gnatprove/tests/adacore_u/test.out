@@ -137,7 +137,6 @@ communication.adb:36:34: info: range check proved
 communication.adb:39:30: info: index check proved
 communication.adb:40:34: info: range check proved
 communication.adb:41:32: info: overflow check proved
-communication.ads:4:22: medium: initialization of "Communication.State" does not depend on "V_Ext" (SPARK RM 7.1.5(11))
 communication.ads:10:23: info: initialization of "Message" proved
 communication.ads:15:26: info: initialization of "E" proved
 communication.ads:16:33: medium: range check might fail (e.g. when Max = 0 and V_Ext = -1)
