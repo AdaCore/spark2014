@@ -1,3 +1,0 @@
-dyn_pred2.ads:7:11: "Non_Zero_Typepredicate" is not allowed in SPARK
-dyn_pred2.ads:7:11: violation of aspect SPARK_Mode at line 1
-gnatprove: error during flow analysis and proof
