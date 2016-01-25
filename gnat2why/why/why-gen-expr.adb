@@ -572,9 +572,13 @@ package body Why.Gen.Expr is
             end if;
 
             --  If the target type has a direct or inherited predicate,
-            --  generate a corresponding check.
+            --  generate a corresponding check. Do not generate a predicate
+            --  check for an internal call to a parent predicate function
+            --  inside the definition of a predicate function.
 
-            if Has_Predicates (Check_Type) then
+            if Has_Predicates (Check_Type)
+              and then not Is_Call_Arg_To_Predicate_Function (Ada_Node)
+            then
                T := +Insert_Predicate_Check (Ada_Node,
                                              Check_Type,
                                              +T);
@@ -732,8 +736,13 @@ package body Why.Gen.Expr is
         Need_Check and then Is_Constrained (R);
       Need_Tag_Check   : constant Boolean :=
         Need_Check and then Is_Tagged_Type (R) and then not Is_Ancestor (R, L);
+
+      --  Do not generate a predicate check for an internal call to a parent
+      --  predicate function inside the definition of a predicate function.
       Need_Pred_Check  : constant Boolean :=
-        Need_Check and then Has_Predicates (R);
+        Need_Check
+          and then Has_Predicates (R)
+          and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
       Check_Entity     : constant Entity_Id := Get_Ada_Node (+To);
 
    begin
@@ -1098,10 +1107,13 @@ package body Why.Gen.Expr is
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
+      --  Do not generate a predicate check for an internal call to a parent
+      --  predicate function inside the definition of a predicate function.
       Do_Predicate_Check : constant Boolean :=
         Present (Get_Ada_Node (+To))
           and then Has_Predicates (Get_Ada_Node (+To))
-          and then Get_Ada_Node (+To) /= Get_Ada_Node (+From);
+          and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
+          and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
 
       procedure Get_Range_Check_Info
         (Expr       : Node_Id;
@@ -1505,10 +1517,13 @@ package body Why.Gen.Expr is
 
       From : constant W_Type_Id := Get_Type (Expr);
 
+      --  Do not generate a predicate check for an internal call to a parent
+      --  predicate function inside the definition of a predicate function.
       Do_Predicate_Check : constant Boolean :=
         Present (Get_Ada_Node (+To))
           and then Has_Predicates (Get_Ada_Node (+To))
-          and then Get_Ada_Node (+To) /= Get_Ada_Node (+From);
+          and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
+          and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
 
       --  When converting from a floating point type to another floating point
       --  type with the same precision (single or double), no rounding is

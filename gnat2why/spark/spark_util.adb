@@ -2491,6 +2491,17 @@ package body SPARK_Util is
       end case;
    end Is_Action;
 
+   ---------------------------------------
+   -- Is_Call_Arg_To_Predicate_Function --
+   ---------------------------------------
+
+   function Is_Call_Arg_To_Predicate_Function (N : Node_Id) return Boolean is
+     (Present (N)
+        and then Present (Parent (N))
+        and then Nkind (Parent (N)) = N_Type_Conversion
+        and then Present (Parent (Parent (N)))
+        and then Is_Predicate_Function_Call (Parent (Parent (N))));
+
    -------------------------
    -- Is_Declared_In_Unit --
    -------------------------

@@ -1031,6 +1031,14 @@ package SPARK_Util is
    --  @param N is an object declaration
    --  @return if the given node N is an action
 
+   function Is_Call_Arg_To_Predicate_Function (N : Node_Id) return Boolean;
+   --  @param N expression node or Empty
+   --  @return True iff N is the argument to a call to a frontend-generated
+   --     predicate function. This should only occur when analyzing the code
+   --     for the predicate function of a derived type, so the argument
+   --     should take the form of a type conversion. Node N should be the
+   --     expression being converted rather than the type conversion itself.
+
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
    --  @param N any node
    --  @return True iff N is a call to a frontend-generated predicate function
