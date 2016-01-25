@@ -554,7 +554,7 @@ trigo.ads:14:46: medium: overflow check might fail
 trigo.ads:14:57: info: division check proved
 trigo.ads:14:57: info: overflow check proved
 trigo.ads:18:14: medium: postcondition might fail, cannot prove abs (Sin'Result - Approx_Sin (X)) < 3.0E-6
-trigo.ads:18:30: medium: overflow check might fail
+trigo.ads:18:30: info: overflow check proved
 trigo.ads:21:12: info: overflow check proved
 trigo.ads:21:23: info: division check proved
 trigo.ads:21:23: info: overflow check proved
