@@ -907,10 +907,10 @@ package body Gnat2Why.Expr is
                             (Name => Why_Eq,
                              Typ  => EW_Bool_Type,
                              Args => (New_Record_Attributes_Update
-                                      (Ada_Node => N,
-                                       Domain   => EW_Prog,
-                                       Name     => +Tmp_Var,
-                                       Ty       => Etype (Lvalue)),
+                                        (Ada_Node => N,
+                                         Domain   => EW_Prog,
+                                         Name     => +Tmp_Var,
+                                         Ty       => Etype (Lvalue)),
                                       +L_Id));
                      begin
                         return
@@ -921,8 +921,8 @@ package body Gnat2Why.Expr is
                            Def      => +Why_Expr,
                            Context  =>
                              +New_Assume_Statement
-                             (Ada_Node => N,
-                              Pred     => Eq));
+                               (Ada_Node => N,
+                                Pred     => Eq));
                      end;
                   end if;
                end;
@@ -3333,13 +3333,13 @@ package body Gnat2Why.Expr is
                        Name   => Why_Eq,
                        Args   =>
                          (1 =>
-                                New_Is_Constrained_Access
-                            (Ada_Node => Empty,
-                             Domain   => EW_Term,
-                             Name     =>
-                               New_Array_Access
-                                 (Empty, +Expr, Indices, EW_Term),
-                             Ty       => Component_Type (Ty_Ext)),
+                            New_Is_Constrained_Access
+                              (Ada_Node => Empty,
+                               Domain   => EW_Term,
+                               Name     =>
+                                 New_Array_Access
+                                   (Empty, +Expr, Indices, EW_Term),
+                               Ty       => Component_Type (Ty_Ext)),
                           2 => +False_Term)),
                   Domain => EW_Pred);
             end if;
@@ -13907,8 +13907,8 @@ package body Gnat2Why.Expr is
          --  Variables coming from the record's discriminants
 
          declare
-            Discr     : Entity_Id := First_Discriminant (Ty_Ext);
-            Elmt      : Elmt_Id := First_Elmt (Stored_Constraint (Ty_Ext));
+            Discr : Entity_Id := First_Discriminant (Ty_Ext);
+            Elmt  : Elmt_Id := First_Elmt (Stored_Constraint (Ty_Ext));
          begin
             while Present (Discr) loop
                if Is_Not_Hidden_Discriminant (Discr) then
