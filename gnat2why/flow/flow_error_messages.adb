@@ -1274,10 +1274,8 @@ package body Flow_Error_Messages is
            (if Has_Field (Cntexmp_File, Line_Str)
             then Get (Get (Cntexmp_File, Line_Str))
             else Empty_Array);
-         Cntexmp_Line_Str : constant String :=
-           Get_Cntexmp_Line_Str (Cntexmp_Line);
       begin
-         return Cntexmp_Line_Str;
+         return Get_Cntexmp_Line_Str (Cntexmp_Line);
       end Get_Cntexmp_One_Liner;
 
       ------------------
