@@ -810,9 +810,9 @@ package body Flow_Error_Messages is
                                       N_Parameter_Specification) and then
                                    Out_Present (Parent (Part_Entity))
                                  then
-                                    Part_Name := Part_Name & "'Old";
+                                    Append (Part_Name, "'Old");
                                  elsif Kind = "result" then
-                                    Part_Name := Part_Name & "'Result";
+                                    Append (Part_Name, "'Result");
                                  end if;
 
                                  --  Do not display uninitialized
@@ -995,12 +995,12 @@ package body Flow_Error_Messages is
                                        begin
                                           if Field_Descr_Val /= "@not_display"
                                           then
-                                             Value := Value &
+                                             Append (Value,
                                                (if Is_Before then ", "
                                                 else "") &
                                                Field_Descr_Name &
                                                " => " &
-                                               Field_Descr_Val;
+                                               Field_Descr_Val);
                                              Is_Before := True;
                                              if Has_Element (Field_Descr) then
                                                 Fields_Discrs_With_Value :=
@@ -1029,11 +1029,11 @@ package body Flow_Error_Messages is
                               if Fields_Discrs_Declared -
                                 Fields_Discrs_Collected > 1
                               then
-                                 Value := Value &
-                                 (if Is_Before then ", " else "") &
-                                   "others => ?";
+                                 Append (Value,
+                                         (if Is_Before then ", " else "") &
+                                           "others => ?");
                               end if;
-                              Value := Value & ")";
+                              Append (Value, ")");
 
                               return To_String (Value);
                            end;
@@ -1231,7 +1231,7 @@ package body Flow_Error_Messages is
          function Get_Cntexmp_Line_Str
            (Cntexmp_Line : JSON_Array) return String
          is
-            Cntexmp_Line_Str : Unbounded_String := To_Unbounded_String ("");
+            Cntexmp_Line_Str : Unbounded_String := Null_Unbounded_String;
 
             procedure Add_Cntexmp_Element
               (Add_Cntexmp_Element : JSON_Value);
@@ -1250,10 +1250,10 @@ package body Flow_Error_Messages is
                Element : constant String := Name &
                (if Kind = "error_message" then "" else " = " & Get (Value));
             begin
-               Cntexmp_Line_Str :=
-                 (if Cntexmp_Line_Str = "" then To_Unbounded_String (Element)
-                  else Cntexmp_Line_Str & " and " &
-                    To_Unbounded_String (Element));
+               if Cntexmp_Line_Str /= "" then
+                  Append (Cntexmp_Line_Str, " and ");
+               end if;
+               Append (Cntexmp_Line_Str, Element);
             end Add_Cntexmp_Element;
 
          begin
