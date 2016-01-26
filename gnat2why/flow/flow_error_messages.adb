@@ -730,10 +730,9 @@ package body Flow_Error_Messages is
                                    Get_Logical_Line_Number
                                       (Sloc (Element_Decl)) = Element_Line
                                  then
+                                    case Nkind (Parent (Element_Decl)) is
                                     --  Uninitialized variable
-                                    if Nkind (Parent (Element_Decl)) =
-                                      N_Object_Declaration
-                                    then
+                                    when N_Object_Declaration =>
                                        declare
                                           No_Init_Expr : constant Boolean :=
                                             No (Expression
@@ -743,25 +742,23 @@ package body Flow_Error_Messages is
                                               (Etype (Element_Decl)) =
                                                 No_Default_Initialization;
                                        begin
-                                          if No_Init_Expr and then
-                                            No_Default_Init
-                                          then
-                                             return True;
-                                          end if;
+                                          return No_Init_Expr
+                                            and then No_Default_Init;
                                        end;
-                                    end if;
 
                                     --  Uninitialized function argument
-                                    if Nkind (Parent (Element_Decl)) in
-                                        N_Formal_Object_Declaration |
-                                        N_Parameter_Specification
-                                      and then Out_Present
-                                        (Parent (Element_Decl))
-                                      and then not In_Present
-                                        (Parent (Element_Decl))
-                                    then
-                                       return True;
-                                    end if;
+                                    when N_Formal_Object_Declaration |
+                                         N_Parameter_Specification   =>
+                                       return
+                                         Out_Present (Parent (Element_Decl))
+                                         and then
+                                         not
+                                           In_Present (Parent (Element_Decl));
+
+                                    when others =>
+                                       return False;
+                                    end case;
+
                                  end if;
 
                                  return False;
