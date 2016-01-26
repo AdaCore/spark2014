@@ -352,6 +352,9 @@ package body Gnat2Why.Types is
       end Create_Dynamic_Predicate;
 
       Ty        : constant W_Type_Id := EW_Abstract (E);
+
+   --  Start of processing for Generate_Type_Completion
+
    begin
 
       Open_Theory
