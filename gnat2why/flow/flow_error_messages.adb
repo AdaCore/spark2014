@@ -516,12 +516,12 @@ package body Flow_Error_Messages is
                type Var_Or_Field_Kind is (Record_Type, Non_Record_Type);
 
                --  Represents information about variable or record field
-               type Var_Or_Field (Kind : Var_Or_Field_Kind;
+               type Var_Or_Field (Kind         : Var_Or_Field_Kind;
                                   Value_Length : Natural)
                is record
                   Entity : Entity_Id;
                   --  The element of SPARK AST corresponding to the variable
-                  --  or field
+                  --  or field.
                   case Kind is
                      when Record_Type =>
                         Fields : Record_Fields_Map_Ptr;
@@ -543,6 +543,10 @@ package body Flow_Error_Messages is
                --  @param Variables stores information about values and
                --    fields of variables at a single source code location.
 
+               --------------------------
+               -- Build_Variables_Info --
+               --------------------------
+
                procedure Build_Variables_Info
                  (Line_Cntexmp_Arr : JSON_Array;
                   Variables : in out Variables_Info)
@@ -560,9 +564,10 @@ package body Flow_Error_Messages is
                   --  the map, return existing entry corresponding to it,
                   --  create new entry, store it in the map, and return it.
 
-                  ---------------------------------------------------
+                  -------------------------
                   -- Insert_Var_Or_Field --
-                  ---------------------------------------------------
+                  -------------------------
+
                   function Insert_Var_Or_Field
                     (Name   : String;
                      Value  : String;
@@ -592,8 +597,8 @@ package body Flow_Error_Messages is
                      --  last counterexample elemement with given Name ensures
                      --  the correct behavior.
 
-                     if Contains (Map.all, Name) and then
-                       Kind = Record_Type
+                     if Contains (Map.all, Name)
+                       and then Kind = Record_Type
                      then
                         return Element (Map.all, Name);
                      end if;
@@ -611,7 +616,7 @@ package body Flow_Error_Messages is
 
                               when Non_Record_Type =>
                                  new Var_Or_Field'(Kind         =>
-                                                        Non_Record_Type,
+                                                      Non_Record_Type,
                                                    Value_Length =>
                                                       Value'Length,
                                                    Value        => Value,
@@ -623,8 +628,12 @@ package body Flow_Error_Messages is
                         return Var;
                      end;
                   end Insert_Var_Or_Field;
+
+               --  Start of processing for Build_Variables_Info
+
                begin
-                  for Var_Index in Integer range 1 .. Length (Line_Cntexmp_Arr)
+                  for Var_Index in Positive
+                     range 1 .. Length (Line_Cntexmp_Arr)
                   loop
                      declare
                         Cntexmp_Element : constant JSON_Value :=
@@ -698,6 +707,10 @@ package body Flow_Error_Messages is
                               --  with given declaration at given position
                               --  is uninitialized.
 
+                              ----------------------
+                              -- Is_Uninitialized --
+                              ----------------------
+
                               function Is_Uninitialized
                                 (Element_Decl : Entity_Id;
                                  Element_File : String;
@@ -705,27 +718,26 @@ package body Flow_Error_Messages is
                                  return Boolean is
                               begin
                                  --  Counterexample element can be
-                                 --  uninitialized only if its location is the
-                                 --  same as location of its declaration
-                                 --  (otherwise it has been assigned or it is a
-                                 --  part of construct that triggers VC - and
+                                 --  uninitialized only if its location is
+                                 --  the same as location of its declaration
+                                 --  (otherwise it has been assigned or it is
+                                 --  a part of construct that triggers VC - and
                                  --  flow analysis would issue an error in this
-                                 --  case)
-                                 if Get_Logical_Line_Number (Sloc
-                                                             (Element_Decl)) =
-                                   Element_Line and then
-                                   File_Name (Sloc (Element_Decl)) =
-                                     Element_File
+                                 --  case).
+                                 if File_Name
+                                     (Sloc (Element_Decl)) = Element_File
+                                     and then
+                                   Get_Logical_Line_Number
+                                      (Sloc (Element_Decl)) = Element_Line
                                  then
                                     --  Uninitialized variable
                                     if Nkind (Parent (Element_Decl)) =
                                       N_Object_Declaration
                                     then
                                        declare
-                                          No_Init_Expr : constant  Boolean :=
-                                            not Present
-                                              (Expression
-                                                 (Parent (Element_Decl)));
+                                          No_Init_Expr : constant Boolean :=
+                                            No (Expression
+                                                (Parent (Element_Decl)));
                                           No_Default_Init : constant Boolean :=
                                             Default_Initialization
                                               (Etype (Element_Decl)) =
@@ -740,10 +752,9 @@ package body Flow_Error_Messages is
                                     end if;
 
                                     --  Uninitialized function argument
-                                    if Nkind_In (Nkind
-                                                 (Parent (Element_Decl)),
-                                                 N_Formal_Object_Declaration,
-                                                 N_Parameter_Specification)
+                                    if Nkind (Parent (Element_Decl)) in
+                                        N_Formal_Object_Declaration |
+                                        N_Parameter_Specification
                                       and then Out_Present
                                         (Parent (Element_Decl))
                                       and then not In_Present
@@ -830,9 +841,8 @@ package body Flow_Error_Messages is
                               Current_Var_Or_Field := Insert_Var_Or_Field
                                 (Name   => To_String (Part_Name),
                                  Kind   =>
-                                   (if Var_Slice_Num = Slice_Count
-                                        (Name_Parts) then
-                                         Non_Record_Type
+                                   (if Var_Slice_Num = Slice_Count (Name_Parts)
+                                    then Non_Record_Type
                                     else Record_Type),
                                  Value  => Value,
                                  Entity => Part_Entity,
@@ -856,6 +866,10 @@ package body Flow_Error_Messages is
                --  @Variables stores information about values and fields of
                --    variables at a single source code location (line).
 
+               -----------------------
+               -- Build_Pretty_Line --
+               -----------------------
+
                procedure Build_Pretty_Line
                  (Variables : Variables_Info;
                   Pretty_Line_Cntexmp_Arr : out JSON_Array)
@@ -867,6 +881,10 @@ package body Flow_Error_Messages is
                   --  returned value is record aggregate.
                   --  If the value should not be displayed in countereexample,
                   --  value "@not_display" is returned.
+
+                  ----------------------------
+                  -- Get_Var_Or_Field_Value --
+                  ----------------------------
 
                   function Get_Var_Or_Field_Value
                     (Var_Or_Field : Var_Or_Field_Ptr) return String
@@ -914,10 +932,13 @@ package body Flow_Error_Messages is
                               --  variable or the field thats value is
                               --  currently computed.
 
+                              -------------------------------
+                              -- Get_Fields_Descr_Declared --
+                              -------------------------------
+
                               function Get_Fields_Descr_Declared return Natural
                               is
-                                 Res : Natural :=
-                                   0;
+                                 Res : Natural := 0;
                                  Comp : Entity_Id :=
                                    First_Component_Or_Discriminant
                                      (Var_Or_Field_Type);
@@ -1022,6 +1043,8 @@ package body Flow_Error_Messages is
                   Var_Name_Cursor : Vars_List.Cursor :=
                     Vars_List.First (Variables.Variables_Order);
 
+               --  Start of processing for Build_Pretty_Line
+
                begin
                   Pretty_Line_Cntexmp_Arr := Empty_Array;
                   while Vars_List.Has_Element (Var_Name_Cursor) loop
@@ -1055,6 +1078,9 @@ package body Flow_Error_Messages is
 
                Variables : Variables_Info;
                Pretty_Line_Cntexmp_Arr : JSON_Array := Empty_Array;
+
+            --  Start of processing for Create_Pretty_Line
+
             begin
                Build_Variables_Info (Get (Line_Cntexmp), Variables);
 
@@ -1072,37 +1098,47 @@ package body Flow_Error_Messages is
             end Create_Pretty_Line;
 
             Pretty_File_Cntexmp : JSON_Value := Create_Object;
+
+         --  Start of processing for Create_Pretty_File
+
          begin
             Gen_JSON_Object
               (File_Cntexmp, Create_Pretty_Line'Access, Pretty_File_Cntexmp);
             if File'Length >= 4 and then
-              (File ((File'Last - 2) .. File'Last) = "adb" or else
-               File ((File'Last - 2) .. File'Last) = "ads")
+              (File ((File'Last - 2) .. File'Last) in "adb" | "ads")
             then
                Set_Field (Pretty_Cntexmp, File, Pretty_File_Cntexmp);
             end if;
          end Create_Pretty_File;
 
          function Remap_VC_Info (Cntexmp : JSON_Value;
-                                 VC_File     : String;
-                                 VC_Line     : Integer) return JSON_Value;
+                                 VC_File : String;
+                                 VC_Line : Integer) return JSON_Value;
          --  Remap information related to the construct that triggers VC to the
          --  location of this construct.
          --  In Cntexmp, this information is mapped to the field "vc_line" of
          --  the JSON object representing the file where the construct that
          --  triggers VC is located.
 
+         -------------------
+         -- Remap_VC_Info --
+         -------------------
+
          function Remap_VC_Info (Cntexmp : JSON_Value;
-                                 VC_File     : String;
-                                 VC_Line     : Integer) return JSON_Value
+                                 VC_File : String;
+                                 VC_Line : Integer) return JSON_Value
          is
 
             procedure Remove_VC_Line (New_Cntexmp : in out JSON_Value;
                                       File_Name : UTF8_String;
                                       Orig_File : JSON_Value);
-            --  Create a copy of Orig_File with information related to the
-            --  construct triggering VC removed and add a mapping from
-            --  File_Name to this copy to New_Cntexmp.
+            --  Create a copy of Orig_File without information related to the
+            --  construct triggering VC and extend New_Cntexmp with a mapping
+            --  from File_Name to this copy.
+
+            --------------------
+            -- Remove_VC_Line --
+            --------------------
 
             procedure Remove_VC_Line (New_Cntexmp : in out JSON_Value;
                                       File_Name : UTF8_String;
@@ -1111,6 +1147,10 @@ package body Flow_Error_Messages is
                procedure Add_Non_VC_Line (New_File : in out JSON_Value;
                                           Line_Num : UTF8_String;
                                           Line : JSON_Value);
+
+               ---------------------
+               -- Add_Non_VC_Line --
+               ---------------------
 
                procedure Add_Non_VC_Line (New_File : in out JSON_Value;
                                           Line_Num : UTF8_String;
@@ -1123,6 +1163,9 @@ package body Flow_Error_Messages is
                end Add_Non_VC_Line;
 
                New_File : JSON_Value := Create_Object;
+
+            --  Start of processing for Remove_VC_Line
+
             begin
                Gen_JSON_Object (Orig_File, Add_Non_VC_Line'Access, New_File);
                Set_Field (New_Cntexmp, File_Name, New_File);
@@ -1131,19 +1174,22 @@ package body Flow_Error_Messages is
             Cntexmp_File : constant JSON_Value :=
               JSON_Get_Opt (Cntexmp, VC_File, Create_Object);
             Cntexmp_VC_Line : constant JSON_Array :=
-              (if Has_Field (Cntexmp_File, "vc_line") then
-                    Get (Get (Cntexmp_File, "vc_line"))
+              (if Has_Field (Cntexmp_File, "vc_line")
+               then Get (Get (Cntexmp_File, "vc_line"))
                else Empty_Array);
             Remapped_Cntexmp : JSON_Value := Create_Object;
             VC_Line_Str : constant String :=
               To_String
                 (Trim (To_Unbounded_String (Integer'Image (VC_Line)), Both));
+
+         --  Start of processing for Remap_VC_Info
+
          begin
             --  Remove information related to the construct triggering VC
             Gen_JSON_Object (Cntexmp, Remove_VC_Line'Access, Remapped_Cntexmp);
 
             --  Map the information related to the construct triggering VC to
-            --  the location of that construct
+            --  the location of that construct.
             Set_Field (JSON_Get_Opt (Remapped_Cntexmp, VC_File, Create_Object),
                        VC_Line_Str,
                        Cntexmp_VC_Line);
@@ -1151,17 +1197,19 @@ package body Flow_Error_Messages is
             return Remapped_Cntexmp;
          end Remap_VC_Info;
 
-         File  : constant String :=
-              File_Name (VC_Loc);
-         Line  : constant Integer :=
+         File : constant String := File_Name (VC_Loc);
+         Line : constant Integer :=
            Integer (Get_Logical_Line_Number (VC_Loc));
          Remapped_Cntexmp : constant JSON_Value :=
            Remap_VC_Info (Cntexmp, File, Line);
          Pretty_Cntexmp : JSON_Value := Create_Object;
+
+      --  Start of processing for Create_Pretty_Cntexmp
+
       begin
          Gen_JSON_Object (Remapped_Cntexmp,
-                   Create_Pretty_File'Access,
-                   Pretty_Cntexmp);
+                          Create_Pretty_File'Access,
+                          Pretty_Cntexmp);
 
          return Pretty_Cntexmp;
       end Create_Pretty_Cntexmp;
@@ -1184,6 +1232,7 @@ package body Flow_Error_Messages is
            (Cntexmp_Line : JSON_Array) return String
          is
             Cntexmp_Line_Str : Unbounded_String := To_Unbounded_String ("");
+
             procedure Add_Cntexmp_Element
               (Add_Cntexmp_Element : JSON_Value);
 
@@ -1208,16 +1257,15 @@ package body Flow_Error_Messages is
             end Add_Cntexmp_Element;
 
          begin
-            for I in Integer range 1 .. Length (Cntexmp_Line) loop
+            for I in Positive range 1 .. Length (Cntexmp_Line) loop
                Add_Cntexmp_Element (Get (Cntexmp_Line, I));
             end loop;
 
             return To_String (Cntexmp_Line_Str);
          end Get_Cntexmp_Line_Str;
 
-         File  : constant String :=
-              File_Name (VC_Loc);
-         Line  : constant Integer :=
+         File : constant String := File_Name (VC_Loc);
+         Line : constant Integer :=
            Integer (Get_Logical_Line_Number (VC_Loc));
          Line_Str : constant String :=
            To_String (Trim (To_Unbounded_String (Integer'Image (Line)), Both));
