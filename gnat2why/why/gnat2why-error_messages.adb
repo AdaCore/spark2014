@@ -414,6 +414,8 @@ package body Gnat2Why.Error_Messages is
             Extra_Msg   => Extra_Msg);
       end Handle_Result;
 
+   --  Start of processing for Parse_Why3_Results
+
    begin
       Mark_Subprograms_With_No_VC_As_Proved;
       declare
