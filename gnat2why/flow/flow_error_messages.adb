@@ -1051,9 +1051,9 @@ package body Flow_Error_Messages is
                      declare
                         Var_Name : constant String :=
                           To_String (Vars_List.Element (Var_Name_Cursor));
-                        Variable : Cursor := Find
-                          (Variables.Variables_Map,
-                           Var_Name);
+                        Variable : Cursor :=
+                          Find (Variables.Variables_Map,
+                                Var_Name);
                         Var_Value : constant String :=
                           Get_Var_Or_Field_Value (Element (Variable));
                         Pretty_Var : constant JSON_Value := Create_Object;
