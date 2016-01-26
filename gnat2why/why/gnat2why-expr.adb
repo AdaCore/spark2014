@@ -3505,8 +3505,6 @@ package body Gnat2Why.Expr is
       Params   : Transformation_Params := Body_Params;
       Use_Pred : Boolean := True) return W_Pred_Id
    is
-      Result : W_Pred_Id;
-
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
 
@@ -3514,7 +3512,7 @@ package body Gnat2Why.Expr is
 
    begin
       if not Has_Predicates (Ty_Ext) then
-         Result := True_Pred;
+         return True_Pred;
 
       --  If Use_Pred is true, then we already have generated a predicate for
       --  the dynamic predicate of elements of type Ty_Ext. We also avoid using
@@ -3524,17 +3522,15 @@ package body Gnat2Why.Expr is
       elsif Use_Pred
         and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Expr))
       then
-         Result := New_Predicate_Call (Ty_Ext, Expr, Params);
+         return New_Predicate_Call (Ty_Ext, Expr, Params);
 
       else
-         Result := +Dynamic_Predicate_Expression
+         return +Dynamic_Predicate_Expression
            (Expr      => +Expr,
             Pred_Subp => Predicate_Function (Ty),
             Domain    => EW_Pred,
             Params    => Params);
       end if;
-
-      return Result;
    end Compute_Dynamic_Predicate;
 
    -----------------------
