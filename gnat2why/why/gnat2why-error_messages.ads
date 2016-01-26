@@ -50,6 +50,9 @@ package Gnat2Why.Error_Messages is
    procedure Load_Codepeer_Results;
    --  load the codepeer result file and store results. Can be queried with
    --  "CodePeer_Has_Proved" function.
+   --  Skips loading if Codepeer processing is disabled (CP_Res_Dir set to
+   --  null) or when no result file is found. "CodePeer_Has_Proved" will always
+   --  return False in that case.
 
    function CodePeer_Has_Proved (Slc : Source_Ptr; Kind : VC_Kind)
                                  return Boolean;

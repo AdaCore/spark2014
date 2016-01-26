@@ -70,6 +70,9 @@ package Configuration is
    Assumptions       : aliased Boolean;
    --  True if --assumptions switch is present. Generate assumption information
    --  in the gnatprove.out file.
+   CodePeer         : aliased Boolean;
+   --  True if --codepeer=on switch is present. Generate assumption information
+   --  in the gnatprove.out file.
    RTS_Dir           : aliased GNAT.Strings.String_Access;
    --  The RTS dir set by option --RTS or by the project file via "Runtime"
    --  attribute
@@ -109,6 +112,9 @@ package Configuration is
 
    Proof_Input  : aliased GNAT.Strings.String_Access;
    --  The input variable for command line parsing set by option --proof
+
+   CodePeer_Input  : aliased GNAT.Strings.String_Access;
+   --  The input variable for command line parsing set by option --codepeer
 
    Proof        : Proof_Mode;
    Lazy         : Boolean;

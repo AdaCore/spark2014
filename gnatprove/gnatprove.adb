@@ -87,8 +87,7 @@ procedure Gnatprove is
 
    type Gnatprove_Step is (GS_ALI, GS_CodePeer, GS_Gnat2Why);
 
-   function Step_Image (S : Gnatprove_Step) return String is
-     (Image (Gnatprove_Step'Pos (S) + 1, Min_Width => 1));
+   type Plan_Type is array (Positive range <>) of Gnatprove_Step;
 
    procedure Call_Gprbuild
      (Project_File : String;
@@ -110,7 +109,8 @@ procedure Gnatprove is
    --  Work out the flags to use for controlling CVC4's resource counting.
 
    procedure Execute_Step
-     (Step         : Gnatprove_Step;
+     (Plan         : Plan_Type;
+      Step         : Positive;
       Project_File : String;
       Proj         : Project_Tree);
 
@@ -677,19 +677,20 @@ procedure Gnatprove is
    ------------------
 
    procedure Execute_Step
-     (Step         : Gnatprove_Step;
+     (Plan         : Plan_Type;
+      Step         : Positive;
       Project_File : String;
       Proj         : Project_Tree)
    is
       Status : Integer;
    begin
       if not Quiet then
-         Put_Line ("Phase " & Step_Image (Step)
-                   & " of " & Step_Image (GS_Gnat2Why)
-                   & ": " & Text_Of_Step (Step) & " ...");
+         Put_Line ("Phase" & Positive'Image (Step)
+                   & " of" & Positive'Image (Plan'Length)
+                   & ": " & Text_Of_Step (Plan (Step)) & " ...");
       end if;
 
-      case Step is
+      case Plan (Step) is
          when GS_ALI =>
             Compute_ALI_Information (Project_File, Proj, Status);
 
@@ -709,7 +710,7 @@ procedure Gnatprove is
 
       if Status /= 0 then
          Abort_With_Message
-           ("gnatprove: error during " & Text_Of_Step (Step));
+           ("gnatprove: error during " & Text_Of_Step (Plan (Step)));
       end if;
    end Execute_Step;
 
@@ -1126,13 +1127,15 @@ procedure Gnatprove is
          Gnat2Why_Args.Why3_Args := Compute_Why3_Args;
          Gnat2Why_Args.Report_Mode := Report;
          Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
-         Gnat2Why_Args.CP_Res_Dir :=
-           To_Unbounded_String
-             (Compose
+         if CodePeer then
+            Gnat2Why_Args.CP_Res_Dir :=
+              To_Unbounded_String
                 (Compose
-                   (Compose (Obj_Dir, "codepeer"),
-                    Base_Name (Proj_Name) & ".output"),
-                 "sam"));
+                   (Compose
+                      (Compose (Obj_Dir, "codepeer"),
+                       Base_Name (Proj_Name) & ".output"),
+                    "sam"));
+         end if;
 
       --  In the globals generation phase, only set Global_Gen_Mode
 
@@ -1238,7 +1241,8 @@ procedure Gnatprove is
       end if;
 
       if Parallel > 1 then
-         Args.Append ("-j" & Image (Parallel, Min_Width => 1));
+         Args.Append ("-jobs");
+         Args.Append (Image (Parallel, Min_Width => 1));
       end if;
 
       if All_Projects then
@@ -1253,7 +1257,7 @@ procedure Gnatprove is
       Args.Append ("-level");
       Args.Append ("max");
 
-      --  Args.Append ("-json-output");
+      Args.Append ("-sa-messages");
       Args.Append ("-no-preconditions");
 
       --  codepeer subdirs option is relative to the object dir(s), so this is
@@ -1360,9 +1364,15 @@ begin
    Read_Command_Line (Tree);
    Proj_Type := Root_Project (Tree);
 
-   Execute_Step (GS_ALI, Project_File.all, Tree);
-   Execute_Step (GS_CodePeer, Project_File.all, Tree);
-   Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
+   declare
+      Plan : constant Plan_Type :=
+        (if CodePeer then (GS_ALI, GS_CodePeer, GS_Gnat2Why)
+         else (GS_ALI, GS_Gnat2Why));
+   begin
+      for Step in Plan'Range loop
+         Execute_Step (Plan, Step, Project_File.all, Tree);
+      end loop;
+   end;
 
    declare
       Obj_Path : constant File_Array :=

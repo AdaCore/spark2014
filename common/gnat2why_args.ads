@@ -134,7 +134,8 @@ package Gnat2Why_Args is
 
    Why3_Dir : Unbounded_String := Null_Unbounded_String;
 
-   --  CodePeer results will be in this directory
+   --  If CP_Res_Dir is "null", then CodePeer processing will be disabled.
+   --  Otherwise, CodePeer results will be in this directory
 
    CP_Res_Dir : Unbounded_String := Null_Unbounded_String;
 

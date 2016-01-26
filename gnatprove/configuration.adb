@@ -110,6 +110,11 @@ package body Configuration is
       Lazy   : out Boolean);
    --  parse the "--proof" option into the two values "proof" and "lazy"
 
+   procedure Set_CodePeer_Mode
+     (Config : Command_Line_Configuration;
+      Input  : String);
+   --  parse the --codepeer option (possibilities are "on" and "off")
+
    procedure Set_RTS_Dir
      (Config    : Command_Line_Configuration;
       Proj_Type : Project_Type;
@@ -149,6 +154,8 @@ ASCII.LF &
 " -aP=p               Add path p to project path" &
 ASCII.LF &
 "     --assumptions   Output assumptions information" &
+ASCII.LF &
+"     --codepeer=c    Enable or disable CodePeer analysis (c=on,off*)" &
 ASCII.LF &
 "     --clean         Remove GNATprove intermediate files, and exit" &
 ASCII.LF &
@@ -852,6 +859,11 @@ ASCII.LF;
 
       Define_Switch
         (Config,
+         CodePeer_Input'Access,
+         Long_Switch => "--codepeer=");
+
+      Define_Switch
+        (Config,
          Pedantic'Access,
          Long_Switch => "--pedantic");
 
@@ -1083,6 +1095,7 @@ ASCII.LF;
       end if;
 
       Set_Proof_Mode (Config, Proof_Input.all, Proof,  Lazy);
+      Set_CodePeer_Mode (Config, CodePeer_Input.all);
       Set_RTS_Dir (Config, Tree.Root_Project, RTS_Dir);
       Set_Target_Dir (Tree.Root_Project);
 
@@ -1211,6 +1224,29 @@ ASCII.LF;
          end;
       end loop;
    end Sanitize_File_List;
+
+   -----------------------
+   -- Set_CodePeer_Mode --
+   -----------------------
+
+   procedure Set_CodePeer_Mode
+     (Config : Command_Line_Configuration;
+      Input  : String) is
+   begin
+      CodePeer := False;
+      if Input = "on" then
+         CodePeer := True;
+      elsif Input = "off" then
+         CodePeer := False;
+      elsif Input = "" then
+         null;
+      else
+         Abort_Msg (Config,
+                    "error: wrong argument for --codepeer, " &
+                      "must be one of (on, off)",
+                    With_Help => False);
+      end if;
+   end Set_CodePeer_Mode;
 
    --------------------
    -- Set_Proof_Mode --

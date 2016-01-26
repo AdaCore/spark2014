@@ -343,6 +343,9 @@ package body Gnat2Why.Error_Messages is
           (To_String (Gnat2Why_Args.CP_Res_Dir),
            Base_Name);
    begin
+      if Gnat2Why_Args.CP_Res_Dir = Null_Unbounded_String then
+         return;
+      end if;
       if not Exists (File_Name)
         or else Kind (File_Name) /= Ordinary_File
       then
