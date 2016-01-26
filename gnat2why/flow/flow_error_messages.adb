@@ -1113,7 +1113,8 @@ package body Flow_Error_Messages is
 
          function Remap_VC_Info (Cntexmp : JSON_Value;
                                  VC_File : String;
-                                 VC_Line : Integer) return JSON_Value;
+                                 VC_Line : Logical_Line_Number)
+                                 return JSON_Value;
          --  Remap information related to the construct that triggers VC to the
          --  location of this construct.
          --  In Cntexmp, this information is mapped to the field "vc_line" of
@@ -1126,7 +1127,8 @@ package body Flow_Error_Messages is
 
          function Remap_VC_Info (Cntexmp : JSON_Value;
                                  VC_File : String;
-                                 VC_Line : Integer) return JSON_Value
+                                 VC_Line : Logical_Line_Number)
+                                 return JSON_Value
          is
 
             procedure Remove_VC_Line (New_Cntexmp : in out JSON_Value;
@@ -1178,9 +1180,7 @@ package body Flow_Error_Messages is
                then Get (Get (Cntexmp_File, "vc_line"))
                else Empty_Array);
             Remapped_Cntexmp : JSON_Value := Create_Object;
-            VC_Line_Str : constant String :=
-              To_String
-                (Trim (To_Unbounded_String (Integer'Image (VC_Line)), Both));
+            VC_Line_Str : constant String := Trim (VC_Line'Img, Left);
 
          --  Start of processing for Remap_VC_Info
 
@@ -1198,8 +1198,8 @@ package body Flow_Error_Messages is
          end Remap_VC_Info;
 
          File : constant String := File_Name (VC_Loc);
-         Line : constant Integer :=
-           Integer (Get_Logical_Line_Number (VC_Loc));
+         Line : constant Logical_Line_Number :=
+           Get_Logical_Line_Number (VC_Loc);
          Remapped_Cntexmp : constant JSON_Value :=
            Remap_VC_Info (Cntexmp, File, Line);
          Pretty_Cntexmp : JSON_Value := Create_Object;
@@ -1265,15 +1265,14 @@ package body Flow_Error_Messages is
          end Get_Cntexmp_Line_Str;
 
          File : constant String := File_Name (VC_Loc);
-         Line : constant Integer :=
-           Integer (Get_Logical_Line_Number (VC_Loc));
-         Line_Str : constant String :=
-           To_String (Trim (To_Unbounded_String (Integer'Image (Line)), Both));
+         Line : constant Logical_Line_Number :=
+           Get_Logical_Line_Number (VC_Loc);
+         Line_Str : constant String := Trim (Line'Img, Left);
          Cntexmp_File : constant JSON_Value :=
            JSON_Get_Opt (Cntexmp, File, Create_Object);
          Cntexmp_Line : constant JSON_Array :=
-           (if Has_Field (Cntexmp_File, Line_Str) then
-                 Get (Get (Cntexmp_File, Line_Str))
+           (if Has_Field (Cntexmp_File, Line_Str)
+            then Get (Get (Cntexmp_File, Line_Str))
             else Empty_Array);
          Cntexmp_Line_Str : constant String :=
            Get_Cntexmp_Line_Str (Cntexmp_Line);
@@ -1465,8 +1464,8 @@ package body Flow_Error_Messages is
    is
       Value : constant JSON_Value := Create_Object;
       File  : constant String     := File_Name (Slc);
-      Line  : constant Integer    := Integer (Get_Logical_Line_Number (Slc));
-      Col   : constant Integer    := Integer (Get_Column_Number (Slc));
+      Line  : constant Natural    := Natural (Get_Logical_Line_Number (Slc));
+      Col   : constant Natural    := Natural (Get_Column_Number (Slc));
    begin
 
       Set_Field (Value, "file", File);
