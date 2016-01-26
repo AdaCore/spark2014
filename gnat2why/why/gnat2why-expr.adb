@@ -12106,7 +12106,7 @@ package body Gnat2Why.Expr is
 
       Transform_Pragma_Check (Prag, Force, Check_Expr, Pred);
 
-      --  assert and cut is not handled here, except for runtime errors.
+      --  Assert_And_Cut is not handled here, except for runtime errors
 
       if Is_Pragma_Assert_And_Cut (Prag) then
          if Check_Expr /= Why_Empty then
@@ -12116,7 +12116,7 @@ package body Gnat2Why.Expr is
          end if;
       end if;
 
-      --  get rid of simple cases true and false
+      --  Get rid of simple cases True and False
 
       if Is_False_Boolean (+Pred) then
          return
@@ -12131,8 +12131,8 @@ package body Gnat2Why.Expr is
 
       --  Now handle remaining cases of "regular" pragma Check/Assert
       --  and pragma Assume. This is also how pragmas Preconditions and
-      --  Postconditions inside a subprogram body are translated, as
-      --  regular assertions.
+      --  Postconditions inside a subprogram body are translated, i.e.
+      --  as regular assertions.
 
       if Is_Pragma_Check (Prag, Name_Assume) then
          T := New_Assume_Statement (Pred => Pred);
