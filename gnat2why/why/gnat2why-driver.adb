@@ -147,10 +147,10 @@ package body Gnat2Why.Driver is
                         or else not Entity_Body_In_SPARK (E))
             then
                declare
-                  Compl_File : constant W_Section_Id :=
+                  File : constant W_Section_Id :=
                     Dispatch_Entity_Completion (E);
                begin
-                  Generate_Subprogram_Completion (Compl_File, E);
+                  Generate_Subprogram_Completion (File, E);
                end;
             end if;
 
@@ -175,10 +175,10 @@ package body Gnat2Why.Driver is
               and then E /= Universal_Fixed
             then
                declare
-                  Compl_File : constant W_Section_Id :=
+                  File : constant W_Section_Id :=
                     Dispatch_Entity_Completion (E);
                begin
-                  Generate_Type_Completion (Compl_File, E);
+                  Generate_Type_Completion (File, E);
                end;
             end if;
 
