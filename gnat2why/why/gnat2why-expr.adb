@@ -4638,23 +4638,31 @@ package body Gnat2Why.Expr is
 
    function Name_For_Old (N : Node_Id) return W_Identifier_Id is
       Typ : W_Type_Id;
-      Nd  : Node_Id := Empty;
+      Nd  : Node_Id;
+
+      C     : Ada_To_Why_Ident.Cursor := Old_Map.Find (N);
+      Dummy : Boolean;
+
+      use Ada_To_Why_Ident;
    begin
-      if not Old_Map.Contains (N) then
+      if not Has_Element (C) then
          if Nkind (N) in N_Identifier | N_Expanded_Name then
             Typ := Why_Type_Of_Entity (Entity (N));
-            Nd := Entity (N);
+            Nd  := Entity (N);
          else
             Typ := Type_Of_Node (Etype (N));
+            Nd  := Empty;
          end if;
-         Old_Map.Include
-           (N,
-            New_Temp_Identifier
-              (Typ      => Typ,
-               Ada_Node => Nd));
+
+         Old_Map.Insert (Key      => N,
+                         New_Item => New_Temp_Identifier
+                                       (Typ      => Typ,
+                                        Ada_Node => Nd),
+                         Position => C,
+                         Inserted => Dummy);
       end if;
 
-      return Old_Map.Element (N);
+      return Old_Map (C);
    end Name_For_Old;
 
    ---------------------
