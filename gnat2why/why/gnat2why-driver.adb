@@ -795,8 +795,8 @@ package body Gnat2Why.Driver is
                   end if;
                end if;
 
-            --  variables that are part of a protected object are not
-            --  translated separately
+            --  Variables that are part of a protected object are not
+            --  translated separately.
 
             elsif Is_Part_Of_Protected_Object (E) then
                null;
