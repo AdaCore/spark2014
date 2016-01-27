@@ -4534,12 +4534,10 @@ package body Gnat2Why.Expr is
 
    function Is_Terminal_Node (N : Node_Id) return Boolean is
    begin
-      case Nkind (N) is
-         when N_Quantified_Expression | N_And_Then |
-              N_Op_And | N_If_Expression
-            => return False;
-         when others => return True;
-      end case;
+      return Nkind (N) not in N_Quantified_Expression |
+                              N_And_Then              |
+                              N_Op_And                |
+                              N_If_Expression;
    end Is_Terminal_Node;
 
    ------------------------
