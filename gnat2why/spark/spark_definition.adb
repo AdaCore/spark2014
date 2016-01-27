@@ -4726,7 +4726,7 @@ package body SPARK_Definition is
    begin
       --  We delay the initialization after checking that we really have a list
 
-      if not Present (Cur) then
+      if No (Cur) then
          return;
       end if;
 
@@ -4748,7 +4748,7 @@ package body SPARK_Definition is
                                      Consider_Next => not Is_Parent);
                Next (Cur);
                exit when
-                 not Present (Cur)
+                 No (Cur)
                  or else not Is_Pragma_Annotate_GNATprove (Cur);
             end loop;
 

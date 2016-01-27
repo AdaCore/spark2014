@@ -475,7 +475,7 @@ package body SPARK_Frame_Conditions is
          --  Any state abstraction for which we do NOT have a
          --  corresponding Entidy_Id is an External state abstraction.
 
-         if not Present (Find_Entity (State_Name)) then
+         if No (Find_Entity (State_Name)) then
             Process (State_Name);
          end if;
       end loop;

@@ -143,7 +143,7 @@ package body Gnat2Why.Driver is
               --  Axioms for a SPARK expression function are issued in the same
               --  module as the function declaration.
               and then (Ekind (E) in Entry_Kind
-                        or else not Present (Get_Expression_Function (E))
+                        or else No (Get_Expression_Function (E))
                         or else not Entity_Body_In_SPARK (E))
             then
                declare

@@ -981,8 +981,9 @@ package body Gnat2Why.External_Axioms is
                --  If Ty is a formal of the generic, goes through the list
                --  of enclosing instances to find the corresponding actual.
 
-               while List_Of_Entity.Has_Element (CurGParent) and then
-                 not Present (Actual) loop
+               while List_Of_Entity.Has_Element (CurGParent)
+                 and then No (Actual)
+               loop
                   Actual := Find_Actual
                     (Assoc => Get_Association_List (
                      List_Of_Entity.Element (CurGParent)),

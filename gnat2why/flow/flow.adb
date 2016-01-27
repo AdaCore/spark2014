@@ -283,13 +283,13 @@ package body Flow is
       pragma Assert (Nkind (N) = N_Loop_Statement);
 
       N := Iteration_Scheme (N);
-      if not Present (N) then
+      if No (N) then
          return Empty;
       end if;
       pragma Assert (Nkind (N) = N_Iteration_Scheme);
 
       N := Loop_Parameter_Specification (N);
-      if not Present (N) then
+      if No (N) then
          return Empty;
       end if;
       pragma Assert (Nkind (N) = N_Loop_Parameter_Specification);
@@ -604,7 +604,7 @@ package body Flow is
 
                         when N_Loop_Statement =>
                            Rv.Shape := Shape_Diamond;
-                           if not Present (Iteration_Scheme (N)) then
+                           if No (Iteration_Scheme (N)) then
                               --  Basic loop. Should never
                               --  appear as a vertex in the
                               --  graph.

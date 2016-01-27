@@ -402,7 +402,7 @@ package body Flow_Refinement is
    is
       Body_E : constant Entity_Id := Get_Body_Entity (E);
    begin
-      if not Present (S) then
+      if No (S) then
          --  From the standard scope we won't be able to see much...
          return False;
       end if;

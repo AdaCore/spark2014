@@ -532,7 +532,7 @@ package body Flow_Types is
 
                CO : Entity_Id := Empty;
             begin
-               if not Present (Scope) or else not Is_Vol then
+               if No (Scope) or else not Is_Vol then
                   return Is_Vol;
                end if;
 

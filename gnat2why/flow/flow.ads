@@ -292,7 +292,7 @@ package Flow is
 
    function Loop_Parameter_From_Loop (E : Entity_Id) return Entity_Id
    with Pre  => Ekind (E) = E_Loop,
-        Post => not Present (Loop_Parameter_From_Loop'Result) or else
+        Post => No (Loop_Parameter_From_Loop'Result) or else
                 Ekind (Loop_Parameter_From_Loop'Result) = E_Loop_Parameter;
    --  Given a loop label, returns the identifier of the loop
    --  parameter or Empty.

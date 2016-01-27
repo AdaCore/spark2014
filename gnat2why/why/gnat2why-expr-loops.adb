@@ -400,7 +400,7 @@ package body Gnat2Why.Expr.Loops is
       --  add the loop index to the entity table.
 
       if Present (Scheme)
-        and then not Present (Condition (Scheme))
+        and then No (Condition (Scheme))
       then
          if Present (Loop_Parameter_Specification (Scheme)) then
             Loop_Param_Ent  :=

@@ -3614,7 +3614,7 @@ package body Gnat2Why.Expr is
    --  Start of processing for Compute_Tag_Check
 
    begin
-      if not Present (Controlling_Arg) then
+      if No (Controlling_Arg) then
          return +Void;
       end if;
 

@@ -2044,7 +2044,7 @@ package body Why.Gen.Expr is
    is
       Why_Type : constant W_Type_Id := Type_Of_Node (Typ);
       Use_Predef : constant Boolean :=
-        Force_Predefined or else not Present (Get_User_Defined_Eq (Typ));
+        Force_Predefined or else No (Get_User_Defined_Eq (Typ));
       Eq_Str   : constant String :=
         (if Use_Predef then "bool_eq" else "user_eq");
       Module   : constant W_Module_Id :=
