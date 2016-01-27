@@ -1,0 +1,4 @@
+p.ads:5:09: info: default initial condition proved
+p.ads:5:09: medium: default initial condition might fail
+p.ads:5:68: medium: divide by zero might fail
+p.ads:5:68: medium: overflow check might fail
