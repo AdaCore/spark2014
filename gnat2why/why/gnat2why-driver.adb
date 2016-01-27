@@ -811,7 +811,7 @@ package body Gnat2Why.Driver is
 
          --  Generate a logic function for Ada functions
 
-         when Subprogram_Kind | Entry_Kind =>
+         when E_Entry | E_Function | E_Procedure =>
             if Is_Translated_Subprogram (E) then
                Translate_Subprogram_Spec (File, E);
             end if;
