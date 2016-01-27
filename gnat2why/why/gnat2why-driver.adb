@@ -554,7 +554,7 @@ package body Gnat2Why.Driver is
        --  Subprograms entities of actual parameter of generic packages with
        --  external axioms are only needed for check of runtime errors.
 
-       and then not (Ekind (E) /= E_Entry
+       and then not (Ekind (E) in E_Function | E_Procedure
                      and then Is_Generic_Actual_Subprogram (E)
                      and then Entity_In_Ext_Axioms (E))
 
