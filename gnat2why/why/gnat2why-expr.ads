@@ -447,14 +447,6 @@ private
    Old_Map        : Ada_To_Why_Ident.Map;
    Loop_Entry_Map : Loop_Entry_Nodes.Map;
 
-   function Map_For_Loop_Entry
-     (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map
-   is
-     (if Loop_Entry_Map.Contains (Loop_Id) then
-        Loop_Entry_Map.Element (Loop_Id)
-      else
-        Ada_To_Why_Ident.Empty_Map);
-
    function Map_For_Old return Ada_To_Why_Ident.Map is (Old_Map);
 
 end Gnat2Why.Expr;

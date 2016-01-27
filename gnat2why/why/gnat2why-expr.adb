@@ -4542,6 +4542,22 @@ package body Gnat2Why.Expr is
       end case;
    end Is_Terminal_Node;
 
+   ------------------------
+   -- Map_For_Loop_Entry --
+   ------------------------
+
+   function Map_For_Loop_Entry
+     (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map
+   is
+      use Loop_Entry_Nodes;
+      C : constant Loop_Entry_Nodes.Cursor := Loop_Entry_Map.Find (Loop_Id);
+   begin
+      return (if Has_Element (C) then
+                 Element (C)
+              else
+                 Ada_To_Why_Ident.Empty_Map);
+   end Map_For_Loop_Entry;
+
    -------------------------
    -- Name_For_Loop_Entry --
    -------------------------
@@ -4556,7 +4572,7 @@ package body Gnat2Why.Expr is
         (Loop_Id  : Node_Id;
          Loop_Map : in out Ada_To_Why_Ident.Map);
       --  Update the mapping Loop_Map with an entry for Expr if not already
-      --  present, and store in Result the corresponding identifier.
+      --  present, and store the corresponding identifier in Result.
 
       --------------
       -- Get_Name --
@@ -4567,41 +4583,50 @@ package body Gnat2Why.Expr is
          Loop_Map : in out Ada_To_Why_Ident.Map)
       is
          Typ : W_Type_Id;
-         Nd  : Node_Id := Empty;
+         Nd  : Node_Id;
+
+         Pos   : Ada_To_Why_Ident.Cursor := Loop_Map.Find (Expr);
+         Dummy : Boolean;
+
+         use Ada_To_Why_Ident;
+
       begin
          pragma Unreferenced (Loop_Id);
 
-         if not Loop_Map.Contains (Expr) then
+         if not Has_Element (Pos) then
 
             if Nkind (Expr) in N_Identifier | N_Expanded_Name then
                Typ := Why_Type_Of_Entity (Entity (Expr));
                Nd  := Entity (Expr);
             else
                Typ := Type_Of_Node (Etype (Expr));
+               Nd  := Empty;
             end if;
-            Loop_Map.Include
-              (Expr,
-               New_Temp_Identifier
-                 (Typ      => Typ,
-                  Ada_Node => Nd));
+
+            Loop_Map.Insert (Key      => Expr,
+                             New_Item => New_Temp_Identifier
+                                           (Typ      => Typ,
+                                            Ada_Node => Nd),
+                             Position => Pos,
+                             Inserted => Dummy);
          end if;
 
-         Result := Loop_Map.Element (Expr);
+         Result := Loop_Map (Pos);
       end Get_Name;
+
+      Cur   : Loop_Entry_Nodes.Cursor;
+      Dummy : Boolean;
 
    --  Start of processing for Name_For_Loop_Entry
 
    begin
-      if not Loop_Entry_Map.Contains (Loop_Id) then
-         declare
-            Empty_Map : Ada_To_Why_Ident.Map;
-         begin
-            Loop_Entry_Map.Include (Loop_Id, Empty_Map);
-         end;
-      end if;
+      Loop_Entry_Map.Insert
+        (Key      => Loop_Id,
+         Position => Cur,
+         Inserted => Dummy);
 
       Loop_Entry_Map.Update_Element
-        (Position => Loop_Entry_Map.Find (Loop_Id),
+        (Position => Cur,
          Process  => Get_Name'Access);
 
       return Result;
