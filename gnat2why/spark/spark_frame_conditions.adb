@@ -500,7 +500,7 @@ package body SPARK_Frame_Conditions is
    --------------------
 
    function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
-   is (Calls.Element (E_Name));
+   renames Calls.Element;
 
    -------------------------
    -- Get_Generated_Reads --
