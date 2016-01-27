@@ -8768,8 +8768,7 @@ package body Gnat2Why.Expr is
                  Name => (if Op = N_Op_Eq then "bool_eq" else "bool_ne"),
                  Typ    => EW_Bool_Type);
          else
-            pragma Assert (False);
-            return Why_Empty;
+            raise Program_Error;
          end if;
       elsif Ty = EW_Int_Type
            or else Ty = EW_Bool_Type
@@ -8806,8 +8805,7 @@ package body Gnat2Why.Expr is
       elsif Op = N_Op_Ne then
          return Why_Neq;
       else
-         pragma Assert (False);
-         return Why_Eq;
+         raise Program_Error;
       end if;
    end Transform_Compare_Op;
 
