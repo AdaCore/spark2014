@@ -1,12 +1,10 @@
 package P is
 
-   function Zero return Integer is (0);
+   function Really_False return Boolean is (False);
 
-   type Wrong is private with Default_Initial_Condition => Wrong.X / Zero = 0;
+   type Wrong is private with Default_Initial_Condition => Really_False;
 
 private
-   type Wrong is record
-      X : Integer := 0;
-   end record;
+   type Wrong is null record;
 
 end;
