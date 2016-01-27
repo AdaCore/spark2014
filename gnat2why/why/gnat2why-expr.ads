@@ -216,11 +216,11 @@ package Gnat2Why.Expr is
 
    function Transform_Declarations_For_Body (L : List_Id) return W_Prog_Id;
    --  Transform the declarations in the list, but excluding the leading
-   --  declarations with a Related_Expression wich is a parameter enity.
+   --  declarations with a Related_Expression which is a parameter enity.
 
    function Transform_Declarations_For_Params (L : List_Id) return W_Prog_Id;
    --  Transform the declarations in the list, only the first declarations
-   --  with a Related_Expression wich is a parameter enity.
+   --  with a Related_Expression which is a parameter enity.
 
    function Transform_Discrete_Choices
      (Choices      : List_Id;
