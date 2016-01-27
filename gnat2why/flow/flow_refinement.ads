@@ -89,7 +89,7 @@ package Flow_Refinement is
    --  Returns True iff S is not the Null_Flow_Scope.
 
    function No (S : Flow_Scope) return Boolean is (No (S.Ent));
-   --  Returns True iff S is not the Null_Flow_Scope.
+   --  Returns True iff S is Null_Flow_Scope
 
    function Private_Scope (S : Flow_Scope) return Flow_Scope
    is (Flow_Scope'(S.Ent, Private_Part))
