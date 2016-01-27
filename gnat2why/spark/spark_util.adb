@@ -3409,7 +3409,7 @@ package body SPARK_Util is
    --  context.
 
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean is
-     (Ekind (E) in E_Function | E_Procedure and then
+     (Ekind (E) = E_Procedure and then
        (Is_Invariant_Procedure (E)
           or else
         Is_Default_Init_Cond_Procedure (E)));
