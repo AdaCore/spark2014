@@ -8723,8 +8723,7 @@ package body Gnat2Why.Expr is
       return W_Identifier_Id is
    begin
       if Domain = EW_Term then
-         if Ty = EW_Int_Type or else Ty = EW_Fixed_Type or else
-           Ty = EW_Bool_Type
+         if Ty in EW_Int_Type | EW_Fixed_Type | EW_Bool_Type
          then
             case Op is
                when N_Op_Gt => return M_Integer.Bool_Gt;
@@ -8770,9 +8769,7 @@ package body Gnat2Why.Expr is
          else
             raise Program_Error;
          end if;
-      elsif Ty = EW_Int_Type
-           or else Ty = EW_Bool_Type
-           or else Ty = EW_Fixed_Type
+      elsif Ty in EW_Int_Type | EW_Bool_Type | EW_Fixed_Type
       then
          case Op is
             when N_Op_Gt => return Int_Infix_Gt;
