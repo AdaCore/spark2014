@@ -472,28 +472,27 @@ package body SPARK_Util is
      (E            : Entity_Id;
       With_Inlined : Boolean) return Boolean is
    begin
-      return Is_In_Analyzed_Files (E)
-
+      return
        --  Either the analysis is requested for the complete unit, or if it is
        --  requested for a specific subprogram/task, check whether it is E.
 
-        and then (Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
-                    or else
-                  Is_Requested_Subprogram_Or_Task (E))
+       Is_In_Analyzed_Files (E) and then
+        (
+         --  Always analyze the subprogram if analysis was specifically
+         --  requested for it.
+         Is_Requested_Subprogram_Or_Task (E)
 
-        --  Ignore inlined subprograms that are referenced. Unreferenced
-        --  subprograms are analyzed anyway, as they are likely to correspond
-        --  to an intermediate stage of development. Also always analyze the
-        --  subprogram if analysis was specifically requested for it, or if
-        --  With_Inlined is set to True.
+         --  Anlways analyze if With_Inlined is True. Also, always analyze
+         --  unreferenced subprograms, as they are likely to correspond to
+         --  an intermediate stage of development. Otherwise, only analyze
+         --  subprograms that are not inlined.
 
-        and then (With_Inlined
-                    or else
-                  not Is_Local_Subprogram_Always_Inlined (E)
-                    or else
-                  not Referenced (E)
-                    or else
-                  Is_Requested_Subprogram_Or_Task (E));
+         or else (Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
+                  and then
+                    (With_Inlined
+                     or else not Referenced (E)
+                     or else not Is_Local_Subprogram_Always_Inlined (E))));
+
    end Analysis_Requested;
 
    ------------
