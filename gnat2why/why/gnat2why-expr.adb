@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2015, AdaCore                   --
+--                       Copyright (C) 2010-2016, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -5763,11 +5763,15 @@ package body Gnat2Why.Expr is
                Value_Name  : constant W_Expr_Id :=
                  New_Temp_For_Expr (Value, True);
                Dim     : constant Pos :=
-                  Number_Dimensions (Type_Of_Node (Prefix (N)));
+                 Number_Dimensions (Type_Of_Node (Prefix (N)));
+               pragma Assert (Dim = 1);
+               --  Slices are only for one-dimentional arrays (Aada RM 4.1.2)
                Result_Id   : constant W_Identifier_Id :=
                  New_Result_Ident (Get_Type (Pref));
+               Binders_Type : constant W_Type_Id :=
+                 Base_Why_Type_No_Bool (Discrete_Range (N));
                Binders     : constant W_Identifier_Array :=
-                 New_Temp_Identifiers (Positive (Dim), Typ => EW_Int_Type);
+                 New_Temp_Identifiers (Positive (Dim), Typ => Binders_Type);
                Indexes     : constant W_Expr_Array := To_Exprs (Binders);
                Range_Pred  : constant W_Expr_Id :=
                                Transform_Discrete_Choice
@@ -5795,8 +5799,8 @@ package body Gnat2Why.Expr is
                Quantif     : constant W_Expr_Id :=
                                New_Universal_Quantif
                                  (Variables => Binders,
-                                  Var_Type  => +EW_Int_Type,
-                                  Labels      => Name_Id_Sets.Empty_Set,
+                                  Var_Type  => Binders_Type,
+                                  Labels    => Name_Id_Sets.Empty_Set,
                                   Pred      => Def);
 
                --  If the prefix is not in split form, then its bounds are
