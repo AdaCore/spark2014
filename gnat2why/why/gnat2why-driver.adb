@@ -312,7 +312,7 @@ package body Gnat2Why.Driver is
             if Analysis_Requested (E, With_Inlined => False)
               and then Entity_Spec_In_SPARK (E)
 
-              --  Ignore predicate functions and invariant procedures
+              --  Ignore invariant procedures and default initial conditions
               and then not Subprogram_Is_Ignored_For_Proof (E)
             then
                declare
