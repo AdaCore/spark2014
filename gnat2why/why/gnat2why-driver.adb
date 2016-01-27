@@ -547,7 +547,7 @@ package body Gnat2Why.Driver is
 
        and then not Is_Local_Subprogram_Always_Inlined (E)
 
-       --  Ignore predicate functions and invariant procedures
+       --  Ignore invariant procedures and default initialization conditions
 
        and then not Subprogram_Is_Ignored_For_Proof (E)
 
