@@ -55,7 +55,7 @@ very_longs.adb:140:63: info: overflow check proved
 very_longs.adb:140:65: info: initialization of "Index" proved
 very_longs.adb:140:73: info: overflow check proved
 very_longs.adb:142:31: info: initialization of "String_Index" proved
-very_longs.adb:142:31: medium: array index check might fail (e.g. when String_Index = 1 and Number = (others => 0))
+very_longs.adb:142:31: medium: array index check might fail (e.g. when Number = (others => 0) and Number'First = 3 and Number'Last = 4 and String_Index = 1)
 very_longs.adb:143:31: info: initialization of "String_Index" proved
 very_longs.adb:143:44: info: index check proved
 very_longs.adb:143:44: info: overflow check proved

@@ -47,9 +47,9 @@ records.adb:166:22: info: initialization of "Dst.Exists" proved
 records.adb:166:22: medium: postcondition might fail, cannot prove Dst = Src (e.g. when Dst = (Exists => False, The_Pair => (A => 0, B => 0)) and Src = (Exists => False, The_Pair => (A => 1, B => 0)))
 records.adb:177:22: info: postcondition proved
 records.adb:186:23: info: initialization of "Tmp" proved
-records.adb:191:22: medium: postcondition might fail (e.g. when X'Old = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 0, B => 0)))
+records.adb:191:22: medium: postcondition might fail (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0)))
 records.adb:200:23: info: initialization of "Tmp" proved
-records.adb:205:22: medium: postcondition might fail (e.g. when X'Old = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 0, B => 0)))
+records.adb:205:22: medium: postcondition might fail (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => True, The_Pair => (A => 1, B => 0)))
 records.adb:214:07: info: assertion proved
 records.adb:215:36: info: initialization of "Tmp" proved
 records.adb:217:07: info: assertion proved
@@ -64,7 +64,7 @@ records.adb:264:23: info: initialization of "Tmp" proved
 records.adb:269:22: medium: postcondition might fail, cannot prove X = X'Old'update (e.g. when X = (Exists => False, The_Pair => (A => 0, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1)))
 records.adb:279:26: info: initialization of "Tmp" proved
 records.adb:285:22: info: postcondition proved
-records.adb:296:22: medium: postcondition might fail (e.g. when X'Old = (Exists => True, The_Pair => (A => 0, B => 5)) and X = (Exists => True, The_Pair => (A => 5, B => 5)))
+records.adb:296:22: medium: postcondition might fail (e.g. when X = (Exists => True, The_Pair => (A => 5, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 0, B => 5)))
 records.adb:308:19: info: postcondition proved
 records.adb:315:14: info: initialization of "Tmp.Exists" proved
 records.adb:315:14: info: initialization of "Tmp.The_Pair.A" proved

@@ -485,17 +485,17 @@ package body Flow_Error_Messages is
                Line : String;
                Line_Cntexmp : JSON_Value)
             is
-               type Var_Or_Field (<>);
-               type Var_Or_Field_Ptr is access all Var_Or_Field;
+               type CNT_Element (<>);
+               type CNT_Element_Ptr is access all CNT_Element;
 
-               package Record_Fields is
+               package CNT_Elements is
                  new Ada.Containers.Indefinite_Ordered_Maps
                    (Key_Type => String,
-                    Element_Type => Var_Or_Field_Ptr
+                    Element_Type => CNT_Element_Ptr
                    );
 
-               type Record_Fields_Map_Ptr is access all
-                 Record_Fields.Map;
+               type CNT_Element_Map_Ptr is access all
+                 CNT_Elements.Map;
 
                package Vars_List is
                  new Ada.Containers.Doubly_Linked_Lists
@@ -507,45 +507,77 @@ package body Flow_Error_Messages is
                   --  Vector of variable names in the order in that variables
                   --  should be displayed
 
-                  Variables_Map : aliased Record_Fields.Map;
+                  Variables_Map : aliased CNT_Elements.Map;
                   --  Map from variable names to information about these
-                  --  variables. This includes values of variables and
-                  --  information about record fields of variables. Information
-                  --  about record fields is a map from field names to
-                  --  information about record subfields of these fields, ...
+                  --  variables. This includes values of variables,
+                  --  informations about possible record fields and
+                  --  informations about possible attributes.
                end record;
 
-               use Record_Fields;
+               use CNT_Elements;
 
-               type Var_Or_Field_Kind is (Record_Type, Non_Record_Type);
-
-               --  Represents information about variable or record field
-               type Var_Or_Field (Kind         : Var_Or_Field_Kind;
-                                  Value_Length : Natural)
+               --  Represents information about the element of a counter
+               --  example. An element can be either:
+               --  - a variable/field/attribute of a record type, in which case
+               --    Value = "@not_display",
+               --    Fields contains the CNT_Element of some/all of its fields
+               --    and Attributes may contain info on its attributes.
+               --  - a "flat" variable/field/attribute, in which case
+               --    Value is set to the counter example value
+               --    Fields is empty
+               --    and Attributes may contain info on its attributes.
+               type CNT_Element
                is record
                   Entity : Entity_Id;
-                  --  The element of SPARK AST corresponding to the variable
-                  --  or field.
-                  case Kind is
-                     when Record_Type =>
-                        Fields : Record_Fields_Map_Ptr;
-                        --  Subfields of the variable or the field
-                     when Non_Record_Type =>
-                        Value  : String (1 .. Value_Length);
-                        --  Value of the variable or the field
-                  end case;
+                  --  The corresponding element of SPARK AST
+
+                  Attributes : CNT_Element_Map_Ptr;
+                  Fields     : CNT_Element_Map_Ptr;
+                  Value      : Unbounded_String;
                end record;
+
+               function Print_CNT_Element_Debug (El : CNT_Element)
+                                                 return String;
+               --  Debug function, print a CNT_Element without any processing
+               function Print_CNT_Element_Debug (El : CNT_Element)
+                                                 return String
+               is
+                  R : Unbounded_String := "[ " & El.Value & " | ";
+               begin
+                  for F in El.Fields.Iterate loop
+                     R := R & "<F- " & CNT_Elements.Key (F) &
+                       " = " &
+                       Print_CNT_Element_Debug (CNT_Elements.Element (F).all)
+                     & " -F>";
+                  end loop;
+
+                  for F in El.Attributes.Iterate loop
+                     R := R & "<A- " & CNT_Elements.Key (F) &
+                       " = " &
+                       Print_CNT_Element_Debug (CNT_Elements.Element (F).all)
+                       & " -A>";
+                  end loop;
+
+                  return To_String (R & " ]");
+               end Print_CNT_Element_Debug;
+
+               Dont_Display : constant Unbounded_String :=
+                 To_Unbounded_String ("@not_display");
 
                procedure Build_Variables_Info
                  (Line_Cntexmp_Arr : JSON_Array;
                   Variables : in out Variables_Info);
-               --  Build a structure holding information about variables, their
-               --  fields (and subfields of these fields, ...) at a single
-               --  source code location.
+               --  Build a structure holding the informations associated to
+               --  the counterexample at a single source code location.
+               --  This structure associates to each variable mentioned in the
+               --  counterexample a CNT_Element gathering the infos given in
+               --  the counter example (fields if any, attributes and
+               --  associated value(s)).
                --  @param Line_Cntexmp_Arr counterexample model elements at a
                --    single source code location (line)
-               --  @param Variables stores information about values and
-               --    fields of variables at a single source code location.
+               --  @param Variables stores information about values, fields
+               --    and or attributes of variables at a single source code
+               --    location.
 
                --------------------------
                -- Build_Variables_Info --
@@ -555,83 +587,48 @@ package body Flow_Error_Messages is
                  (Line_Cntexmp_Arr : JSON_Array;
                   Variables : in out Variables_Info)
                is
-                  function Insert_Var_Or_Field
-                    (Name   : String;
-                     Value  : String;
-                     Kind   : Var_Or_Field_Kind;
-                     Entity : Entity_Id;
-                     Map    : Record_Fields_Map_Ptr)
-                     return Var_Or_Field_Ptr;
-                  --  Insert variable or field with given name, value, kind,
-                  --  and entity to given map.
-                  --  If the variable or the field already has been inserted to
-                  --  the map, return existing entry corresponding to it,
-                  --  create new entry, store it in the map, and return it.
+                  function Insert_CNT_Element
+                    (Name    : String;
+                     Entity  : Entity_Id;
+                     Map     : CNT_Element_Map_Ptr)
+                     return CNT_Element_Ptr;
+                  --  Insert a CNT_Element with given name and entity to
+                  --  the given map.
+                  --  If it has already been inserted, return the existing.
+                  --  If not, create new entry, store it in the map,
+                  --  and return it.
 
                   -------------------------
-                  -- Insert_Var_Or_Field --
+                  -- Insert_CNT_Element --
                   -------------------------
 
-                  function Insert_Var_Or_Field
-                    (Name   : String;
-                     Value  : String;
-                     Kind   : Var_Or_Field_Kind;
-                     Entity : Entity_Id;
-                     Map    : Record_Fields_Map_Ptr)
-                     return Var_Or_Field_Ptr
+                  function Insert_CNT_Element
+                    (Name    : String;
+                     Entity  : Entity_Id;
+                     Map     : CNT_Element_Map_Ptr)
+                     return CNT_Element_Ptr
                   is
+                     Var : CNT_Element_Ptr;
                   begin
-                     --  If the Kind is Non_Record_Type and Name is already
-                     --  contained in Map, value of given counterexample
-                     --  element is inserted second time. In this case, do not
-                     --  use the first value, but create Element with new
-                     --  value.
-                     --  Note that this happens if a loop is unrolled (see
-                     --  Gnat2Why.Expr.Loops.Wrap_Loop) and the VC for that the
-                     --  counterexample was generated is for a  loop iteration.
-                     --  In this case, there are both counterexample elements
-                     --  for variables in an unrolling of the loop and a loop
-                     --  iteration and these counterexample elements have the
-                     --  same names and locations (but can have different
-                     --  values). Note that in this case only the
-                     --  counterexample elements for the loop iteration are
-                     --  relevant for the proof. Counterexample elements are
-                     --  reported in the order in  that the corresponding
-                     --  variables are in generated why code and thus using the
-                     --  last counterexample elemement with given Name ensures
-                     --  the correct behavior.
 
                      if Contains (Map.all, Name)
-                       and then Kind = Record_Type
                      then
-                        return Element (Map.all, Name);
-                     end if;
+                        Var := Element (Map.all, Name);
+                     else
+                        Var := new CNT_Element'
+                          (Entity     => Entity,
+                           Attributes => new CNT_Elements.Map,
+                           Fields     => new CNT_Elements.Map,
+                           Value      => Dont_Display);
 
-                     declare
-                        Fields : constant Record_Fields_Map_Ptr :=
-                          new Record_Fields.Map;
-                        Var : constant Var_Or_Field_Ptr :=
-                          (case Kind is
-                              when Record_Type =>
-                                 new Var_Or_Field'(Kind         => Record_Type,
-                                                   Value_Length => 0,
-                                                   Entity       => Entity,
-                                                   Fields       => Fields),
-
-                              when Non_Record_Type =>
-                                 new Var_Or_Field'(Kind         =>
-                                                      Non_Record_Type,
-                                                   Value_Length =>
-                                                      Value'Length,
-                                                   Value        => Value,
-                                                   Entity       => Entity));
-                     begin
                         Include (Container => Map.all,
                                  Key       => Name,
                                  New_Item  => Var);
-                        return Var;
-                     end;
-                  end Insert_Var_Or_Field;
+                     end if;
+
+                     return Var;
+
+                  end Insert_CNT_Element;
 
                --  Start of processing for Build_Variables_Info
 
@@ -649,8 +646,10 @@ package body Flow_Error_Messages is
                         Value : constant String :=
                           Get (Cntexmp_Element, "value");
                         Name_Parts : String_Split.Slice_Set;
-                        Current_Subfields_Map : Record_Fields_Map_Ptr :=
+                        Current_Subfields_Map : CNT_Element_Map_Ptr :=
                           Variables.Variables_Map'Unchecked_Access;
+                        Current_Attributes_Map : CNT_Element_Map_Ptr :=
+                          new CNT_Elements.Map;
                      begin
 
                         --  There is either one model element with its name
@@ -674,30 +673,31 @@ package body Flow_Error_Messages is
                            goto Next_Model_Element;
                         end if;
 
-                        --  Or model elements are of the form:
+                        --  model elements are of the form:
                         --  Name ::= | Variable
-                        --           | Variable Record_Fields
-                        --  Record_Fields ::= | Record_Field "." Record_Field
-                        --                    | <empty>
-                        --  Variable ::= "Entity_Id" Added_Part
-                        --  Record_Field ::= "Entity_Id" Added_Part
-                        --  Added_Part ::= | "'" "Arbitrary text without '.'"
-                        --                 | <empty>
+                        --           | Variable "." Record_Fields
+                        --           | Variable "'" Attributes
+                        --  Record_Fields ::= | Record_Field "." Record_Fields
+                        --                    | Record_Field "'" Attributes
+                        --                    | Record_Field
+                        --  Attributes ::= | Attribute "." Record_Fields
+                        --                 | Attribute "'" Attributes
+                        --                 | Attribute
+                        --  Variable ::= ENTITY_ID
+                        --  Record_Field ::= ENTITY_ID
+                        --  Attribute ::= STRING
                         --
-                        --  The Entity_Id in first Part corresponds to a
+                        --  The ENTITY_ID in first Part corresponds to a
                         --  variable, others to record fields.
 
                         --  Split Name into sequence of Part
 
                         String_Split.Create (S => Name_Parts,
                                              From => Name,
-                                             Separators => ".",
+                                             Separators => ".'",
                                              Mode => String_Split.Single);
 
-                        --  For every Part, split it to Entity_Id and
-                        --  Added_Part and use these to get information needed
-                        --  to insert the part into the variable map being
-                        --  built.
+                        --  For every Part, we create a CNT_Element.
 
                         for Var_Slice_Num in 1 .. String_Split.Slice_Count
                           (Name_Parts) loop
@@ -768,22 +768,26 @@ package body Flow_Error_Messages is
                                  return False;
                               end Is_Uninitialized;
 
+                              function Try_Get_Part_Entity (Part : String)
+                                                            return Entity_Id;
+                              --  Try to cast Part into an Entity_Id,
+                              --  return empty id if it doesn't work.
+                              function Try_Get_Part_Entity (Part : String)
+                              return Entity_Id is
+                              begin
+                                 return Entity_Id'Value (Part);
+                              exception
+                                 when Constraint_Error =>
+                                    return Empty;
+                              end Try_Get_Part_Entity;
+
                               use GNAT.String_Split;
 
-                              --  Split Part to Entity_Id_Str and Added_Part
                               Part : constant String :=
                                 Slice (Name_Parts, Var_Slice_Num);
-                              Tick_Index : constant Natural :=
-                                Index (Part, "'");
-                              Entity_Id_Str : constant String :=
-                                (if Tick_Index = 0 then Part
-                                 else Part (Part'First .. Tick_Index - 1));
-                              Added_Part : constant String :=
-                                (if Tick_Index = 0 then ""
-                                 else Part (Tick_Index .. Part'Last));
 
                               Part_Entity : constant Entity_Id :=
-                                Entity_Id'Value (Entity_Id_Str);
+                               Try_Get_Part_Entity (Part);
                               --  Note that if Var_Slice_Num = 1, Part_Entity
                               --  is Entity_Id of either declaration of
                               --  argument of a function or declaration of a
@@ -792,29 +796,24 @@ package body Flow_Error_Messages is
                               --  If Var_Slice_Num > 1, Part_Entity is
                               --  Entity_Id of declaration of record field or
                               --  discriminant.
+
+                              Is_Attribute : Boolean :=
+                                No (Part_Entity);
+                              --  If Part does not cast into an entity_id it is
+                              --  treated as an attribute.
+
                               Part_Name : Unbounded_String :=
                                 To_Unbounded_String
-                                  (Source_Name (Part_Entity) & Added_Part);
-                              Current_Var_Or_Field : Var_Or_Field_Ptr;
+                                (if Is_Attribute
+                                 then Part
+                                 else Source_Name (Part_Entity));
+                              Current_CNT_Element : CNT_Element_Ptr;
 
                            begin
                               if Var_Slice_Num = 1 then
 
                                  --  Process the first Entity_Id, which
-                                 --  corresponds to a variable. Possibly append
-                                 --  attributes 'Old or 'Result after its name
-
-                                 if Kind = "old" and then
-                                   Nkind_In
-                                     (Nkind (Parent (Part_Entity)),
-                                      N_Formal_Object_Declaration,
-                                      N_Parameter_Specification) and then
-                                   Out_Present (Parent (Part_Entity))
-                                 then
-                                    Append (Part_Name, "'Old");
-                                 elsif Kind = "result" then
-                                    Append (Part_Name, "'Result");
-                                 end if;
+                                 --  corresponds to a variable.
 
                                  --  Do not display uninitialized
                                  --  counterexample elements (elements
@@ -837,22 +836,69 @@ package body Flow_Error_Messages is
                                       (Variables.Variables_Order,
                                        Part_Name);
                                  end if;
+
+                                 --  Possibly Append attributes 'Old or
+                                 --  'Result after its name
+                                 if (Kind = "old" and then
+                                     Nkind_In
+                                       (Nkind (Parent (Part_Entity)),
+                                        N_Formal_Object_Declaration,
+                                        N_Parameter_Specification) and then
+                                     Out_Present (Parent (Part_Entity)))
+                                   or else
+                                     Kind = "result"
+                                 then
+                                    Current_CNT_Element := Insert_CNT_Element
+                                      (Name   => To_String (Part_Name),
+                                       Entity => Part_Entity,
+                                       Map    => Current_Subfields_Map);
+
+                                    Current_Subfields_Map :=
+                                      Current_CNT_Element.Fields;
+                                    Current_Attributes_Map :=
+                                      Current_CNT_Element.Attributes;
+
+                                    Part_Name := To_Unbounded_String
+                                      (if Kind = "old"
+                                       then  "Old"
+                                       else "Result");
+                                    Is_Attribute := True;
+
+                                 end if;
                               end if;
 
-                              Current_Var_Or_Field := Insert_Var_Or_Field
+                              Current_CNT_Element := Insert_CNT_Element
                                 (Name   => To_String (Part_Name),
-                                 Kind   =>
-                                   (if Var_Slice_Num = Slice_Count (Name_Parts)
-                                    then Non_Record_Type
-                                    else Record_Type),
-                                 Value  => Value,
                                  Entity => Part_Entity,
-                                 Map    => Current_Subfields_Map);
+                                 Map    => (if Is_Attribute
+                                            then Current_Attributes_Map
+                                            else Current_Subfields_Map));
 
-                              if Current_Var_Or_Field.Kind = Record_Type then
-                                 Current_Subfields_Map :=
-                                   Current_Var_Or_Field.Fields;
+                   --  Note that Value is set even if it has already been set.
+                   --  Overriding of value happens if a loop is unrolled (see
+                   --  Gnat2Why.Expr.Loops.Wrap_Loop) and the VC for that the
+                   --  counterexample was generated is for a  loop iteration.
+                   --  In this case, there are both counterexample elements
+                   --  for variables in an unrolling of the loop and a loop
+                   --  iteration and these counterexample elements have the
+                   --  same names and locations (but can have different
+                   --  values). Note that in this case only the
+                   --  counterexample elements for the loop iteration are
+                   --  relevant for the proof. Counterexample elements are
+                   --  reported in the order in  that the corresponding
+                   --  variables are in generated why code and thus using the
+                   --  last counterexample elemement with given Name ensures
+                   --  the correct behavior.
+                              if Var_Slice_Num = Slice_Count (Name_Parts) then
+                                 Current_CNT_Element.Value :=
+                                   To_Unbounded_String (Value);
                               end if;
+
+                              Current_Subfields_Map :=
+                                Current_CNT_Element.Fields;
+
+                              Current_Attributes_Map :=
+                                Current_CNT_Element.Attributes;
                            end;
                         end loop;
                      end;
@@ -875,171 +921,222 @@ package body Flow_Error_Messages is
                  (Variables : Variables_Info;
                   Pretty_Line_Cntexmp_Arr : out JSON_Array)
                is
-                  function Get_Var_Or_Field_Value
-                    (Var_Or_Field : Var_Or_Field_Ptr) return String;
-                  --  Gets the string value of given variable or record field.
-                  --  If the variable or record field is of record type, the
-                  --  returned value is record aggregate.
+                  type Name_And_Value is record
+                     Name : Unbounded_String;
+                     Value : Unbounded_String;
+                  end record;
+                  --  type of a pairs of unbounded strings, used to represent
+                  --  the name and value of attributes.
+
+                  package Names_And_Values is
+                    new Ada.Containers.Doubly_Linked_Lists
+                      (Element_Type => Name_And_Value);
+
+                  package Attributes is
+                    new Ada.Containers.Indefinite_Ordered_Maps
+                      (Key_Type     => Unbounded_String,
+                       Element_Type => Unbounded_String);
+
+                  function Get_CNT_Element_Value_And_Attributes
+                    (CNT_Element : CNT_Element_Ptr;
+                     Prefix : Unbounded_String;
+                     Attributes : in out Names_And_Values.List)
+                     return Unbounded_String;
+                  --  Gets the string value of given variable, record field or
+                  --  Attribute.
+                  --  If the value is of record type, the returned value is
+                  --  a record aggregate.
                   --  If the value should not be displayed in countereexample,
                   --  value "@not_display" is returned.
+                  --  In addition, populate the list of attributes "Attributes"
+                  --  of CNT_Element if any is found.
 
-                  ----------------------------
-                  -- Get_Var_Or_Field_Value --
-                  ----------------------------
+                  ---------------------------
+                  -- Get_CNT_Element_Value --
+                  ---------------------------
 
-                  function Get_Var_Or_Field_Value
-                    (Var_Or_Field : Var_Or_Field_Ptr) return String
+                  function Get_CNT_Element_Value_And_Attributes
+                    (CNT_Element : CNT_Element_Ptr;
+                     Prefix : Unbounded_String;
+                     Attributes : in out Names_And_Values.List)
+                     return Unbounded_String
                   is
-                     Var_Or_Field_Type : constant Entity_Id :=
-                       Etype (Var_Or_Field.Entity);
+                     Element_Type : constant Entity_Id :=
+                       Etype (CNT_Element.Entity);
                   begin
-                     case Var_Or_Field.Kind is
-                        when Non_Record_Type =>
-                           if Var_Or_Field.Value = "true" then
-                              return "True";
-                           elsif Var_Or_Field.Value = "false" then
-                              return "False";
-                           end if;
 
-                           return Var_Or_Field.Value;
-                        when Record_Type =>
-
-                           --  Check whether the type of the variable or field
-                           --  can have fields or discriminants
-
-                           if not Is_Concurrent_Type
-                             (Var_Or_Field_Type) and then
-                             not Is_Incomplete_Or_Private_Type
-                               (Var_Or_Field_Type) and then
-                             not Is_Record_Type (Var_Or_Field_Type) and then
-                             not Has_Discriminants (Var_Or_Field_Type)
-                           then
-                              return "@not_display";
-                           end if;
-
-                           --  Create aggregate representing the value of
-                           --  Var_Or_Field
-                           --  Go through all fields of Var_Or_Field.
-                           --  To give the fields in the order of their
-                           --  declaration in the type of the Var_Or_Field
-                           --  (Var_Or_Field_Type), iterate through components
-                           --  of Var_Or_Field_Type
-
+                     --  We first treat attributes
+                     if not CNT_Element.Attributes.Is_Empty
+                     then
+                        for Att in CNT_Element.Attributes.Iterate loop
                            declare
-                              function Get_Fields_Descr_Declared
-                                return Natural;
-                              --  Return the number of declared fields and
-                              --  descriminants of the (record) type of the
-                              --  variable or the field thats value is
-                              --  currently computed.
+                              New_Prefix : constant Unbounded_String :=
+                                Prefix & "'" & CNT_Elements.Key (Att);
 
-                              -------------------------------
-                              -- Get_Fields_Descr_Declared --
-                              -------------------------------
-
-                              function Get_Fields_Descr_Declared return Natural
-                              is
-                                 Res : Natural := 0;
-                                 Comp : Entity_Id :=
-                                   First_Component_Or_Discriminant
-                                     (Var_Or_Field_Type);
-                              begin
-                                 while Present (Comp) loop
-                                    Res := Res + 1;
-                                    Next_Component (Comp);
-                                 end loop;
-
-                                 return Res;
-                              end Get_Fields_Descr_Declared;
-
-                              Fields_Discrs_Collected : constant Natural :=
-                                Natural (Length (Var_Or_Field.Fields.all));
-                              Fields_Discrs_Declared : constant Natural :=
-                                Get_Fields_Descr_Declared;
-                              Fields_Discrs_With_Value : Natural := 0;
-                              Decl_Field_Discr : Entity_Id :=
-                                First_Component_Or_Discriminant
-                                  (Var_Or_Field_Type);
-                              Is_Before : Boolean := False;
-                              Value : Unbounded_String :=
-                                To_Unbounded_String ("(");
+                              Attr_Value : constant Unbounded_String :=
+                                Get_CNT_Element_Value_And_Attributes
+                                  (CNT_Elements.Element (Att),
+                                   New_Prefix,
+                                   Attributes);
                            begin
-                              --  If the record type of the value has no fields
-                              --  and discriminats or if there were no
-                              --  counterexample values for fields and
-                              --  discriminants of the processed value
-                              --  collected, do not display the value
-                              if Fields_Discrs_Collected = 0 or else
-                                Fields_Discrs_Declared = 0
+                              if Attr_Value /= Dont_Display
                               then
-                                 return "@not_display";
+                                 Attributes.Append ((New_Prefix, Attr_Value));
                               end if;
+                           end;
+                        end loop;
+                     end if;
 
-                              while Present (Decl_Field_Discr) loop
+                     --  Now that the attributes are dealt with
+                     --  Check if we've got any field, if not we return the
+                     --  value of the node
+                     if CNT_Element.Fields.Is_Empty then
+                        return (if CNT_Element.Value = "true"
+                                then To_Unbounded_String ("True")
+                                elsif CNT_Element.Value = "false"
+                                then To_Unbounded_String ("False")
+                                else CNT_Element.Value);
+                     end if;
+
+                     --  If we've got fields, we're dealing with a record:
+
+                     --  Check whether the type can have fields or
+                     --  discriminants
+
+                     if not Is_Concurrent_Type (Element_Type) and then
+                      not Is_Incomplete_Or_Private_Type (Element_Type) and then
+                      not Is_Record_Type (Element_Type) and then
+                      not Has_Discriminants (Element_Type)
+                     then
+                        return Dont_Display;
+                     end if;
+
+                     --  Create aggregate representing the value of
+                     --  CNT_Element
+                     --  Go through all fields of CNT_Element.
+                     --  To give the fields in the order of their
+                     --  declaration in the type of the CNT_Element
+                     --  (CNT_Element_Type), iterate through components
+                     --  of CNT_Element_Type
+
+                     declare
+                        function Get_Fields_Descr_Declared
+                          return Natural;
+                        --  Return the number of declared fields and
+                        --  descriminants of the (record) type of the
+                        --  current CNT_Element.
+
+                        -------------------------------
+                        -- Get_Fields_Descr_Declared --
+                        -------------------------------
+
+                        function Get_Fields_Descr_Declared return Natural
+                        is
+                           Res : Natural := 0;
+                           Comp : Entity_Id :=
+                             First_Component_Or_Discriminant
+                               (Element_Type);
+                        begin
+                           while Present (Comp) loop
+                              Res := Res + 1;
+                              Next_Component (Comp);
+                           end loop;
+
+                           return Res;
+                        end Get_Fields_Descr_Declared;
+
+                        Fields_Discrs_Collected : constant Natural :=
+                          Natural (Length (CNT_Element.Fields.all));
+                        Fields_Discrs_Declared : constant Natural :=
+                          Get_Fields_Descr_Declared;
+                        Fields_Discrs_With_Value : Natural := 0;
+                        Decl_Field_Discr : Entity_Id :=
+                          First_Component_Or_Discriminant
+                            (Element_Type);
+                        Is_Before : Boolean := False;
+                        Value : Unbounded_String :=
+                          To_Unbounded_String ("(");
+                     begin
+
+                        --  If the record type of the value has no fields
+                        --  and discriminats or if there were no
+                        --  counterexample values for fields and
+                        --  discriminants of the processed value
+                        --  collected, do not display the value
+                        if Fields_Discrs_Collected = 0 or else
+                          Fields_Discrs_Declared = 0
+                        then
+                           return Dont_Display;
+                        end if;
+
+                        while Present (Decl_Field_Discr) loop
+                           declare
+                              Field_Descr_Name : constant String :=
+                                Source_Name (Decl_Field_Discr);
+                              Field_Descr : constant Cursor :=
+                                Find (CNT_Element.Fields.all,
+                                      Field_Descr_Name);
+                           begin
+                              if Has_Element (Field_Descr) or else
+                                Fields_Discrs_Declared -
+                                  Fields_Discrs_Collected <= 1
+                              then
                                  declare
-                                    Field_Descr_Name : constant String :=
-                                      Source_Name (Decl_Field_Discr);
-                                    Field_Descr : constant Cursor :=
-                                      Find (Var_Or_Field.Fields.all,
-                                            Field_Descr_Name);
+                                    Field_Descr_Val : constant Unbounded_String
+                                      :=
+                                      (if Has_Element (Field_Descr)
+                                       then
+                                          Get_CNT_Element_Value_And_Attributes
+                                         (Element (Field_Descr),
+                                          Prefix & "." & Field_Descr_Name,
+                                          Attributes)
+                                       else To_Unbounded_String ("?"));
                                  begin
-                                    if Has_Element (Field_Descr) or else
-                                      Fields_Discrs_Declared -
-                                        Fields_Discrs_Collected <= 1
+                                    if Field_Descr_Val /= Dont_Display
                                     then
-                                       declare
-                                          Field_Descr_Val : constant String :=
-                                            (if Has_Element (Field_Descr) then
-                                                  Get_Var_Or_Field_Value
-                                                      (Element (Field_Descr))
-                                             else "?");
-                                       begin
-                                          if Field_Descr_Val /= "@not_display"
-                                          then
-                                             Append (Value,
+                                       Append (Value,
                                                (if Is_Before then ", "
                                                 else "") &
-                                               Field_Descr_Name &
-                                               " => " &
-                                               Field_Descr_Val);
-                                             Is_Before := True;
-                                             if Has_Element (Field_Descr) then
-                                                Fields_Discrs_With_Value :=
-                                                  Fields_Discrs_With_Value + 1;
-                                             end if;
-                                          end if;
-                                       end;
+                                                 Field_Descr_Name &
+                                                 " => " &
+                                                 Field_Descr_Val);
+                                       Is_Before := True;
+                                       if Has_Element (Field_Descr) then
+                                          Fields_Discrs_With_Value :=
+                                            Fields_Discrs_With_Value + 1;
+                                       end if;
                                     end if;
-                                    Next_Component (Decl_Field_Discr);
                                  end;
-                              end loop;
-
-                              --  If there are no fields and discriminants of
-                              --  the processed value with values that can be
-                              --  displayed do not display the value (this can
-                              --  happen if there were collected fields or
-                              --  discrinants, but there values should not be
-                              --  displayed)
-                              if Fields_Discrs_With_Value = 0 then
-                                 return "@not_display";
                               end if;
-
-                              --  If there are more than one field that is not
-                              --  mentioned in the counterexample, summarize
-                              --  them using the field others
-                              if Fields_Discrs_Declared -
-                                Fields_Discrs_Collected > 1
-                              then
-                                 Append (Value,
-                                         (if Is_Before then ", " else "") &
-                                           "others => ?");
-                              end if;
-                              Append (Value, ")");
-
-                              return To_String (Value);
+                              Next_Component (Decl_Field_Discr);
                            end;
-                     end case;
-                  end Get_Var_Or_Field_Value;
+                        end loop;
+
+                        --  If there are no fields and discriminants of
+                        --  the processed value with values that can be
+                        --  displayed do not display the value (this can
+                        --  happen if there were collected fields or
+                        --  discrinants, but there values should not be
+                        --  displayed)
+                        if Fields_Discrs_With_Value = 0 then
+                           return Dont_Display;
+                        end if;
+
+                        --  If there are more than one field that is not
+                        --  mentioned in the counterexample, summarize
+                        --  them using the field others
+                        if Fields_Discrs_Declared -
+                          Fields_Discrs_Collected > 1
+                        then
+                           Append (Value,
+                                   (if Is_Before then ", " else "") &
+                                     "others => ?");
+                        end if;
+                        Append (Value, ")");
+
+                        return Value;
+                     end;
+                  end Get_CNT_Element_Value_And_Attributes;
 
                   Var_Name_Cursor : Vars_List.Cursor :=
                     Vars_List.First (Variables.Variables_Order);
@@ -1050,26 +1147,44 @@ package body Flow_Error_Messages is
                   Pretty_Line_Cntexmp_Arr := Empty_Array;
                   while Vars_List.Has_Element (Var_Name_Cursor) loop
                      declare
-                        Var_Name : constant String :=
-                          To_String (Vars_List.Element (Var_Name_Cursor));
+                        Var_Name : constant Unbounded_String :=
+                          Vars_List.Element (Var_Name_Cursor);
                         Variable : Cursor :=
                           Find (Variables.Variables_Map,
-                                Var_Name);
-                        Var_Value : constant String :=
-                          Get_Var_Or_Field_Value (Element (Variable));
-                        Pretty_Var : constant JSON_Value := Create_Object;
+                                To_String (Var_Name));
+                        Attributes : Names_And_Values.List :=
+                          Names_And_Values.Empty_List;
+                        Var_Value : constant Unbounded_String :=
+                          Get_CNT_Element_Value_And_Attributes
+                            (Element (Variable),
+                             Var_Name,
+                             Attributes);
+
+                        procedure Add_CNT (Name, Value : Unbounded_String);
+                        --  Append a variable cnt to Pretty_Line_Cntexmp_Arr
+
+                        procedure Add_CNT (Name, Value : Unbounded_String)
+                        is
+                           Pretty_Var : constant JSON_Value := Create_Object;
+                        begin
+                           --  If the value of the variable should not be
+                           --  displayed in the counterexample, do not display
+                           --  the variable.
+                           if Value /= Dont_Display then
+                              Set_Field (Pretty_Var, "name", Create (Name));
+                              Set_Field (Pretty_Var, "value", Create (Value));
+                              Set_Field (Pretty_Var, "kind",
+                                         Create ("variable"));
+
+                              Append (Pretty_Line_Cntexmp_Arr, Pretty_Var);
+                           end if;
+                        end Add_CNT;
                      begin
+                        Add_CNT (Var_Name, Var_Value);
 
-                        --  If the value of the variable should not be
-                        --  displayed in the counterexample, do not display
-                        --  the variable.
-                        if Var_Value /= "@not_display" then
-                           Set_Field (Pretty_Var, "name", Create (Var_Name));
-                           Set_Field (Pretty_Var, "value", Create (Var_Value));
-                           Set_Field (Pretty_Var, "kind", Create ("variable"));
-
-                           Append (Pretty_Line_Cntexmp_Arr, Pretty_Var);
-                        end if;
+                        for Att of Attributes loop
+                           Add_CNT (Att.Name, Att.Value);
+                        end loop;
 
                         Next (Variable);
                      end;
