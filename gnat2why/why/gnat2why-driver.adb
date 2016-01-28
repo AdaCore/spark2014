@@ -74,7 +74,7 @@ with Switch;                   use Switch;
 with Why;                      use Why;
 with Why.Atree.Modules;        use Why.Atree.Modules;
 with Why.Atree.Sprint;         use Why.Atree.Sprint;
-with Why.Atree.Tables;         use Why.Atree.Tables;
+with Why.Atree.Tables;         use Why.Atree.Tables; --  ??? unreferenced
 with Why.Inter;                use Why.Inter;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");

@@ -45,7 +45,7 @@ with Sinfo;                   use Sinfo;
 with Sinput;                  use Sinput;
 with SPARK_Util;              use SPARK_Util;
 with Stand;                   use Stand;
-with String_Utils;            use String_Utils;
+with String_Utils;            use String_Utils;  -- ??? unreferenced
 with Urealp;                  use Urealp;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Modules;       use Why.Atree.Modules;
