@@ -3212,9 +3212,10 @@ package body Flow_Utility is
    -------------------------------------
 
    function Is_Initialized_In_Specification (F : Flow_Id;
-                                             S : Flow_Scope) -- ??? unref
+                                             S : Flow_Scope)
                                              return Boolean
    is
+      pragma Unreferenced (S);
    begin
       case F.Kind is
          when Direct_Mapping | Record_Field =>
