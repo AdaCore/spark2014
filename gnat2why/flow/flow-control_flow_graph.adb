@@ -101,6 +101,7 @@ package body Flow.Control_Flow_Graph is
                                 N_Freeze_Generic_Entity           |
                                 N_Generic_Instantiation           |
                                 N_Generic_Package_Declaration     |
+                                N_Generic_Renaming_Declaration    |
                                 N_Generic_Subprogram_Declaration  |
                                 N_Implicit_Label_Declaration      |
                                 N_Incomplete_Type_Declaration     |
