@@ -107,8 +107,7 @@ package body Gnat2Why.Types is
             Bnd  : Node_Id;
             Typ  : W_Type_Id)
          is
-            Items : Item_Array :=
-              Get_Binders_From_Expression (Bnd);
+            Items : Item_Array := Get_Binders_From_Expression (Bnd);
             Def   : W_Term_Id;
 
          begin
@@ -136,7 +135,9 @@ package body Gnat2Why.Types is
             Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          end Create_Axiom_For_Expr;
 
-         Rng       : constant Node_Id := Get_Range (E);
+         Rng : constant Node_Id := Get_Range (E);
+
+      --  Start of processing for Create_Axioms_For_Scalar_Bounds
 
       begin
          if not Is_Static_Expression (Low_Bound (Rng)) then
@@ -351,7 +352,7 @@ package body Gnat2Why.Types is
          end;
       end Create_Dynamic_Predicate;
 
-      Ty        : constant W_Type_Id := EW_Abstract (E);
+      Ty : constant W_Type_Id := EW_Abstract (E);
 
    --  Start of processing for Generate_Type_Completion
 
@@ -368,7 +369,7 @@ package body Gnat2Why.Types is
          & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       declare
-         Eq  : Entity_Id := Get_User_Defined_Eq (E);
+         Eq : Entity_Id := Get_User_Defined_Eq (E);
       begin
 
          --  This module only contains an axiom when there is a user-provided
@@ -378,7 +379,7 @@ package body Gnat2Why.Types is
            and then Entity_In_SPARK (Eq)
          then
 
-            --  we may need to adjust for renamed subprograms
+            --  We may need to adjust for renamed subprograms
 
             if Present (Renamed_Entity (Eq)) then
                Eq := Renamed_Entity (Eq);
@@ -398,16 +399,16 @@ package body Gnat2Why.Types is
                Arg_A : constant W_Expr_Id :=
                  (if Need_Convert then
                      Insert_Simple_Conversion
-                    (Domain => EW_Term,
-                     Expr   => +Var_A,
-                     To     => Base_Why_Type (Ty))
+                       (Domain => EW_Term,
+                        Expr   => +Var_A,
+                        To     => Base_Why_Type (Ty))
                   else +Var_A);
                Arg_B : constant W_Expr_Id :=
                  (if Need_Convert then
                      Insert_Simple_Conversion
-                    (Domain => EW_Term,
-                     Expr   => +Var_B,
-                     To     => Base_Why_Type (Ty))
+                       (Domain => EW_Term,
+                        Expr   => +Var_B,
+                        To     => Base_Why_Type (Ty))
                   else +Var_B);
                Def   : constant W_Expr_Id :=
                  New_Call
@@ -422,15 +423,15 @@ package body Gnat2Why.Types is
                Emit
                  (File,
                   New_Defining_Axiom
-                    (Ada_Node    => E,
-                     Binders     =>
+                    (Ada_Node => E,
+                     Binders  =>
                        (1 => Binder_Type'(B_Name => Var_A, others => <>),
                         2 => Binder_Type'(B_Name => Var_B, others => <>)),
-                     Name        =>
+                     Name     =>
                        New_Identifier
                          (Module => E_Module (E),
-                          Name    => "user_eq"),
-                     Def         => +Def));
+                          Name   => "user_eq"),
+                     Def      => +Def));
             end;
          end if;
       end;
@@ -473,11 +474,10 @@ package body Gnat2Why.Types is
 
    function Ident_Of_Ada_Type (E : Entity_Id) return W_Name_Id is
    begin
-      if Is_Standard_Boolean_Type (E) then
-         return Get_Name (EW_Bool_Type);
-      else
-         return To_Why_Type (E);
-      end if;
+      return (if Is_Standard_Boolean_Type (E) then
+                Get_Name (EW_Bool_Type)
+              else
+                To_Why_Type (E));
    end Ident_Of_Ada_Type;
 
    --------------------
@@ -583,6 +583,7 @@ package body Gnat2Why.Types is
          --  clones of existing types and
          --  statically constrained array type are no new type is declared for
          --  them.
+         --  ??? the last sentence does not make sense
 
          if (not Has_Record_Type (E)
                or else not Record_Type_Is_Clone (Retysp (E)))
