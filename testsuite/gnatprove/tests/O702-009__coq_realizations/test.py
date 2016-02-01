@@ -9,7 +9,7 @@ from gnatpython.ex import Run
 why3_share = os.path.join(spark_install_path(), 'share', 'why3')
 coq_libs_dir = os.path.join(why3_share, 'libs', 'coq')
 driver_dir = os.path.join(why3_share, 'drivers')
-why3_bin = os.path.join(spark_install_path(), 'libexec', 'spark', 'bin', 'why3realize.opt')
+why3_bin = os.path.join(spark_install_path(), 'libexec', 'spark', 'bin', 'why3realize')
 realized = ['Integer', 'Int_Power', 'Int_Minmax', 'Int_Abs', 'Int_Division', 'Array__1']
 realize_subdir = 'realize'
 
