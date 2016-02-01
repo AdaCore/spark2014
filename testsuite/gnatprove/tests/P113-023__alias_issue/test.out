@@ -1,0 +1,18 @@
+aalias.adb:12:15: info: postcondition proved
+aalias.adb:18:13: info: initialization of "B" proved
+aalias.adb:27:50: info: index check proved
+aalias.adb:27:50: medium: array index check might fail
+aalias.adb:31:30: info: length check proved
+aalias.adb:34:04: info: precondition proved
+aalias.adb:34:17: info: initialization of "A" proved
+aalias.adb:34:17: info: non-aliasing of formal parameters "B1" and "B2" proved
+aalias.adb:34:17: info: range check proved
+aalias.adb:34:29: info: initialization of "A" proved
+aalias.adb:34:29: info: range check proved
+aconv.adb:22:04: this conversion between array types is not yet supported
+aslice.adb:8:30: info: length check proved
+aslice.adb:9:29: info: length check proved
+aslice.adb:11:17: info: initialization of "A" proved
+aslice.adb:11:20: info: initialization of "B" proved
+aslice.adb:11:20: info: length check proved
+gnatprove: error during flow analysis and proof
