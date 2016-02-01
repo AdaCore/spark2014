@@ -1,0 +1,432 @@
+\documentclass{article}
+
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage{color}
+
+\author{Florian Schanda}
+\title{Generated Globals With Partitions\\P118-034}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+  \color{red} DRAFT - WORK IN PROGRESS
+\end{center}
+
+\section{Motivation}
+A number of features (tasking, tagged types, generated globals) have been
+added to SPARK since the initial addition of flow analysis; which was then
+evolved along with these. It is now clear that lack of design causes some
+issues, in no order:
+\begin{itemize}
+\item Maintainability and clarity of code, in particular ability to debug
+  issues. We now have more than three graphs dedicated to global analysis,
+  in addition to two types of flow graphs, all combined over two phases.
+  Interaction between SPARK and non-SPARK code is complex. Generation
+  schemes (global, refined global, depends, and refined depends) are a
+  16-possibilities case-split. Add to this that results for tasking
+  analysis are mixed in here, so even if you don't need to generate globals
+  we still do in many cases just to be safe.
+
+\item Performance issues, i.e. analysis of large volumes of sparsely
+  annotated code. Another side-effect is that we have high memory
+  consumption as the graphs are \emph{huge}; we totally disregard the
+  performance benefits abstract state is designed to bring.
+
+\item Correctness issues: incorrect or unhelpful flow results, and cheating
+  with accuracy. In particular we do not respect abstraction and
+  visibility.
+\end{itemize}
+
+A new approach needs to solve all three issues. Abstract states, to some
+degree, are the root of all issues; so the solution discussed here is based
+on an efficient and \emph{simple} approach to this problem. Untangling
+frame condition analysis from tasking analysis is an orthogonal issue.
+
+\pagebreak
+\section{Approach}
+
+\subsection{Design criteria}
+\begin{itemize}
+\item Abstract state should be used as it was intended: to simplify (and
+  thus speed up), via \emph{partitioning}, the analysis by reducing the
+  size of graphs
+
+\item Generated globals should not break abstraction
+
+\item State of nested packages should not be special cased too much
+
+\item A call-chain from package 1 to 2 back to 1 should work correctly
+
+\item A call-chain involving entering and leaving an nested package should
+  work correctly
+
+\item Nested subprograms and packages nested in subprograms should not
+  bleed their local globals to the calling environment; this step should
+  ideally not be done as a post-processing step
+
+\item There should be no fixed-point iteration
+
+\end{itemize}
+
+\subsection{Overall approach}
+\begin{itemize}
+\item A package with hidden state but without explicit abstract state will
+  have a state synthesized. It may be useful in the future to allow users
+  to refer to this state.
+
+\item ALI files contain only the abstract (non-refined) view of a
+  subprogram, expressed in terms of abstract state.
+
+\item A limited form of the closure will be computed in phase 1 (to
+  generate refined globals), but we only store calls to external procedures
+  (internal calls have been summarized), and access to abstract state.
+
+\item Stripping of locals for nested procedures can also be done in phase 1
+  instead of phase 2. We can also annotate semi-refined computed globals
+  here, but we won't need them.
+
+\item Phase 2 will compute another closure but only in terms of abstract
+  state and external calls.
+
+\item Returning less precise results is OK, returning more precise results
+  than a global annotation would allow is never OK.
+\end{itemize}
+
+\pagebreak
+\section{Examples}
+
+\subsection{Inter-package analysis}
+Most precise globals possible annotated in comments, assuming the language
+extension to summarize hidden state.
+
+\begin{multicols}{2}
+
+\begin{lstlisting}
+package P is
+   procedure P0;
+   --  In_Out => (P, Q)
+   procedure P1;
+   --  In_Out => (P, Q)
+   procedure P4;
+   --  Output => P
+   procedure P5;
+   --  Output => P
+end PACK;
+\end{lstlisting}
+
+\vfill\columnbreak
+
+\begin{lstlisting}
+package Q is
+   procedure P2;
+   --  In_Out => (Q, P)
+   procedure P3;
+   --  Output => P
+end Q;
+\end{lstlisting}
+
+\end{multicols}
+
+\begin{multicols}{2}
+
+\begin{lstlisting}
+use Q;
+package body P is
+   G1 : Boolean;
+   G2 : Boolean;
+
+   procedure P0 is begin
+      P1;
+      G2 := False;
+   end P0;
+   --  In_Out => (G1, Q)
+   --  Output => G2
+
+   procedure P1 is begin
+      Q.P2;
+   end P1;
+   --  In_Out => (G1, G2, Q)
+
+   procedure P4 is begin
+      P5;
+   end P4;
+   --  Output => (G1, G2)
+
+   procedure P5 is begin
+      G1 := True;
+      G2 := True;
+   end P5;
+   --  Output => (G1, G2)
+end P;
+\end{lstlisting}
+
+\vfill\columnbreak
+
+\begin{lstlisting}
+use P;
+package body Q is
+   G3 : Boolean := False;
+
+   procedure P2 is begin
+      if G3 then
+         P3;
+      else
+         G3 := True;
+      end if;
+   end P2;
+   --  In_Out => (G3, P)
+
+   procedure P3 is begin
+      P.P4;
+   end P3;
+   --  Output => P
+end Q;
+\end{lstlisting}
+
+\end{multicols}
+
+\subsubsection{Phase 1 - CFG}
+During phase 1 we construct the following information for P and Q:
+
+\begin{multicols}{2}
+
+\begin{description}
+\item[P0]
+  \begin{tabular}{ll}
+    Variables R & \\
+    Variables W & G2 \\
+    Calls       & P1 (Local) \\
+    Maybe       & \\
+  \end{tabular}
+
+\item[P1]
+  \begin{tabular}{ll}
+    Variables R & \\
+    Variables W & \\
+    Calls       & P2 (Remote) \\
+    Maybe       & \\
+  \end{tabular}
+
+\item[P2]
+  \begin{tabular}{ll}
+    Variables R & G3 \\
+    Variables W & G3 \\
+    Calls       & \\
+    Maybe       & P3 (Local) \\
+  \end{tabular}
+
+\item[P3]
+  \begin{tabular}{ll}
+    Variables R & \\
+    Variables W & \\
+    Calls       & P4 (Remote) \\
+    Maybe       & \\
+  \end{tabular}
+
+\item[P4]
+  \begin{tabular}{ll}
+    Variables R & \\
+    Variables W & \\
+    Calls       & P5 (Local) \\
+    Maybe       & \\
+  \end{tabular}
+
+\item[P5]
+  \begin{tabular}{ll}
+    Variables R & \\
+    Variables W & G1, G2 \\
+    Calls       & \\
+    Maybe       & \\
+  \end{tabular}
+\end{description}
+
+\end{multicols}
+
+\noindent
+We then build the following graphs in phase 1.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{phase1_p.pdf}
+  \end{center}
+  \caption{Phase 1 for package P}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{phase1_q.pdf}
+  \end{center}
+  \caption{Phase 1 for package Q}
+\end{figure}
+
+\subsubsection{Phase 1 - Closure}
+For each package we take the closure to eliminate any local calls; so for
+package P:
+
+\begin{description}
+\item[P0]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & G2 \\
+      Calls       & P2 \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & P \\
+      Variables W & P \\
+      Calls       & P2 \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\item[P1]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & \\
+      Calls       & P2 \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & \\
+      Calls       & P2 \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\item[P4]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & G1, G2 \\
+      Calls       & \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & P \\
+      Calls       & \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\item[P5]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & G1, G2 \\
+      Calls       & P2 \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & P \\
+      Calls       & \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\end{description}
+
+\noindent
+And similarly for package Q:
+
+\begin{description}
+\item[P2]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & G3 \\
+      Variables W & G3 \\
+      Calls       & \\
+      Maybe       & P4 \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & Q \\
+      Variables W & Q \\
+      Calls       & \\
+      Maybe       & P4 \\
+    \end{tabular}
+  \end{multicols}
+
+\item[P3]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & \\
+      Calls       & P4 \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & \\
+      Calls       & P4 \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\end{description}
+
+\pagebreak
+\subsubsection{Phase 2}
+We can now glue everything together to get global contracts formulated in
+terms of abstract state.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{phase2.pdf}
+  \end{center}
+  \caption{Phase 2}
+\end{figure}
+
+\noindent
+The transitive closure of this will match the ideal (most-precise possible
+human-written global) contracts:
+
+\begin{table}[h]
+  \begin{center}
+    \begin{tabular}{lll}
+         & Reads & Writes \\
+      P0 & P, Q  & P, Q   \\
+      P1 & P, Q  & P, Q   \\
+      P2 & P, Q  & P, Q   \\
+      P3 &       & P      \\
+      P4 &       & P      \\
+      P5 &       & P      \\
+    \end{tabular}
+  \end{center}
+  \caption{Transitive closure for phase 2}
+\end{table}
+
+\noindent
+When performing flow analysis in phase 2 for either package we can replace
+the abstract state with an appropriate refined view (which may contain
+variables we do not use).
+
+
+
+
+\end{document}
