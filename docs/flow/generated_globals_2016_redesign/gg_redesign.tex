@@ -3,10 +3,29 @@
 \usepackage{listings}
 \usepackage{multicol}
 \usepackage{graphicx}
-\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
 
 \author{Florian Schanda}
 \title{Generated Globals With Partitions\\P118-034}
+
+%% Borrowed from the Altran LaTeX style
+\lstdefinelanguage{SPARK}{
+  language = [95]Ada,
+  morekeywords = {pre,post,assert,assume,check,derives,hide,global,depends,inherit,from,own,initializes,main_program,assert,loop_variant,loop_invariant,increases,decreases,ghost,spark_mode,abstract_state,refined_state,refined_global,refined_depends},
+  comment=[l][commentstyle]{--\ },
+  texcl=true,
+  showstringspaces=false
+}
+\lstdefinestyle{tinystyle}
+   {basicstyle=\scriptsize\tt,
+    keywordstyle=\color{RoyalBlue},
+    commentstyle=\rmfamily\it\color{Sepia},
+    captionpos=b,
+    caption={},label={},
+    numbers=none,
+    escapeinside={(*}{*)}}
+\lstset{language=SPARK}
+\lstset{style=tinystyle}
 
 \begin{document}
 
@@ -108,13 +127,13 @@ extension to summarize hidden state.
 \begin{lstlisting}
 package P is
    procedure P0;
-   --  In_Out => (P, Q)
+   --  In\_Out $\rightarrow$ (P, Q)
    procedure P1;
-   --  In_Out => (P, Q)
+   --  In\_Out $\rightarrow$ (P, Q)
    procedure P4;
-   --  Output => P
+   --  Output $\rightarrow$ P
    procedure P5;
-   --  Output => P
+   --  Output $\rightarrow$ P
 end PACK;
 \end{lstlisting}
 
@@ -123,9 +142,9 @@ end PACK;
 \begin{lstlisting}
 package Q is
    procedure P2;
-   --  In_Out => (Q, P)
+   --  In\_Out $\rightarrow$ (Q, P)
    procedure P3;
-   --  Output => P
+   --  Output $\rightarrow$ P
 end Q;
 \end{lstlisting}
 
@@ -143,24 +162,24 @@ package body P is
       P1;
       G2 := False;
    end P0;
-   --  In_Out => (G1, Q)
-   --  Output => G2
+   --  In\_Out $\rightarrow$ (G1, Q)
+   --  Output $\rightarrow$ G2
 
    procedure P1 is begin
       Q.P2;
    end P1;
-   --  In_Out => (G1, G2, Q)
+   --  In\_Out $\rightarrow$ (G1, G2, Q)
 
    procedure P4 is begin
       P5;
    end P4;
-   --  Output => (G1, G2)
+   --  Output $\rightarrow$ (G1, G2)
 
    procedure P5 is begin
       G1 := True;
       G2 := True;
    end P5;
-   --  Output => (G1, G2)
+   --  Output $\rightarrow$ (G1, G2)
 end P;
 \end{lstlisting}
 
@@ -178,17 +197,18 @@ package body Q is
          G3 := True;
       end if;
    end P2;
-   --  In_Out => (G3, P)
+   --  In\_Out $\rightarrow$ (G3, P)
 
    procedure P3 is begin
       P.P4;
    end P3;
-   --  Output => P
+   --  Output $\rightarrow$ P
 end Q;
 \end{lstlisting}
 
 \end{multicols}
 
+\pagebreak
 \subsubsection{Phase 1 - CFG}
 During phase 1 we construct the following information for P and Q:
 
@@ -426,7 +446,317 @@ When performing flow analysis in phase 2 for either package we can replace
 the abstract state with an appropriate refined view (which may contain
 variables we do not use).
 
+\newpage
+\subsection{Intra-package analysis}
 
+\begin{multicols}{2}
+\begin{lstlisting}
+package P with
+   Abstract_State => State
+is
+   procedure P0;
+
+   procedure P2;
+
+   procedure P3;
+end P;
+
+package body P with
+   Refined_State =>
+     (State => G0, G1, G2, Nested)
+is
+   G0 : Boolean;
+   G1 : Boolean;
+   G2 : Boolean;
+
+   package Q with
+      Abstract_State => Nested
+   is
+      procedure P1;
+
+      procedure P4;
+
+      procedure P5;
+   end Q;
+\end{lstlisting}
+\vfill\columnbreak
+\begin{lstlisting}
+   package body Q with
+      Refined_State =>
+        (Nested => (G3, G4))
+   is
+      G3 : Boolean := False;
+      G4 : Boolean := G1;
+   begin
+      procedure P1 is begin
+         P2;
+         G3 := False;
+      end P1;
+
+      procedure P4 is begin
+         P5;
+         G3 := not G3;
+      end P4;
+
+      procedure P5 is begin
+         G3 := G1;
+         G4 := G2;
+      end P5;
+   end Q;
+
+   procedure P0 is begin
+      Q.P1;
+      G1 := False;
+   end P0;
+
+   procedure P2 is begin
+      P3;
+      G0 := False;
+      G2 := False;
+   end P2;
+
+   procedure P3 is begin
+      Q.P4;
+   end P3;
+end P;
+\end{lstlisting}
+\end{multicols}
+
+\subsubsection{Phase 1 - CFG}
+Note calls from P to Q are remote, but calls from Q to P are local.
+\begin{multicols}{2}
+  \begin{description}
+  \item[P0]
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & G1 \\
+      Calls       & P1 (Remote) \\
+      Maybe       & \\
+    \end{tabular}
+
+  \item[P1]
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & G3 \\
+      Calls       & P2 (Remote) \\
+      Maybe       & \\
+    \end{tabular}
+
+  \item[P2]
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & G0, G2 \\
+      Calls       & P3 (Local) \\
+      Maybe       & \\
+    \end{tabular}
+
+  \item[P3]
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & \\
+      Calls       & P4 (Remote) \\
+      Maybe       & \\
+    \end{tabular}
+
+  \item[P4]
+    \begin{tabular}{ll}
+      Variables R & G3 \\
+      Variables W & G3 \\
+      Calls       & P5 (Local) \\
+      Maybe       & \\
+    \end{tabular}
+
+  \item[P5]
+    \begin{tabular}{ll}
+      Variables R & G1, G2 \\
+      Variables W & G3, G4 \\
+      Calls       & \\
+      Maybe       & \\
+    \end{tabular}
+  \end{description}
+\end{multicols}
+
+\noindent
+The graphs produces for P and Q:
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{ex2_phase1_p}
+  \end{center}
+  \caption{Phase 1 for P}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{ex2_phase1_q}
+  \end{center}
+  \caption{Phase 1 for Q}
+\end{figure}
+
+\subsubsection{Phase 1 - Closure}
+For each package we take the closure to eliminate any local calls; so for
+package P:
+
+\begin{description}
+\item[P0]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & G1 \\
+      Calls       & P1 \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & State \\
+      Variables W & State \\
+      Calls       & P1 \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\item[P2]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & G0, G2 \\
+      Calls       & P4 \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & State \\
+      Variables W & State \\
+      Calls       & P4 \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\item[P3]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & \\
+      Calls       & P4 \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & \\
+      Calls       & P4 \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+\end{description}
+
+\noindent
+And similarly for Q. For state that is contained in another state, we use
+the containing state to denote ``everything except the inner state''.
+
+\begin{description}
+\item[P1]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & G3 \\
+      Calls       & P2 \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & Nested \\
+      Variables W & Nested \\
+      Calls       & P2 \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\item[P4]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & G1, G2, G3 \\
+      Variables W & G3, G4 \\
+      Calls       & \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & State, Nested \\
+      Variables W & Nested \\
+      Calls       & \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\item[P5]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & G1, G2 \\
+      Variables W & G3, G4 \\
+      Calls       & \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & State \\
+      Variables W & Nested \\
+      Calls       & \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+\end{description}
+
+\subsubsection{Phase 2}
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{ex2_phase2}
+  \end{center}
+  \caption{Phase 2}
+\end{figure}
+
+\noindent
+The transitive closure of this will be an over-approximation of the most
+precise human-written globals:
+
+\begin{table}[h]
+  \begin{center}
+    \begin{multicols}{2}
+      \begin{tabular}{lll}
+           & Reads & Writes \\
+        P0 & S, N  & S, N   \\
+        P1 & S, N  & S, N   \\
+        P2 & S, N  & S, N   \\
+        P3 & S, N  & N      \\
+        P4 & S, N  & N      \\
+        P5 & S     & N      \\
+      \end{tabular}
+
+      \begin{tabular}{lll}
+           & Reads     & Writes    \\
+        P0 & G1, G2    & S, N      \\
+        P1 & G1, G2    & G0, G2, N \\
+        P2 & G1, G2    & G0, G2, N \\
+        P3 & G1, G2    & N         \\
+        P4 & G1, G2    & N         \\
+        P5 & G1, G2    & N         \\
+      \end{tabular}
+    \end{multicols}
+  \end{center}
+  \caption{Transitive closure for phase 2, and ideal annotations.}
+\end{table}
 
 
 \end{document}
