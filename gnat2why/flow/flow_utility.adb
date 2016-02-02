@@ -1966,32 +1966,31 @@ package body Flow_Utility is
       Entire   : Boolean := True)
       return Node_Sets.Set
    is
-      F      : constant Flow_Id := Direct_Mapping_Id (E);
-      Params : Node_Sets.Set    := Node_Sets.Empty_Set;
+      F : constant Flow_Id := Direct_Mapping_Id (E);
+      use Node_Sets;
    begin
       case Ekind (E) is
          when E_Entry | Subprogram_Kind =>
             --  If E is directly enclosed in a protected object then add the
             --  protected object as an implicit formal parameter of the
             --  entry/subprogram.
-            if Belongs_To_Protected_Object (F) then
-               Params.Insert (Get_Enclosing_Concurrent_Object (F,
-                                                               Callsite,
-                                                               Entire));
-            end if;
+            return
+              (if Belongs_To_Protected_Object (F)
+               then
+                  To_Set
+                    (Get_Enclosing_Concurrent_Object (F, Callsite, Entire))
+               else Empty_Set);
 
          when E_Task_Type =>
-            --  A task sees itself as a formal parameter.
-            Params.Include ((if Present (Anonymous_Object (E))
-                             then Anonymous_Object (E)
-                             else E));
+            --  A task sees itself as a formal parameter
+            return To_Set ((if Present (Anonymous_Object (E))
+                            then Anonymous_Object (E)
+                            else E));
 
          when others =>
             raise Why.Unexpected_Node;
 
       end case;
-
-      return Params;
    end Get_Implicit_Formals;
 
    -----------------
