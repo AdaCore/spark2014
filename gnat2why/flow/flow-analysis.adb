@@ -4063,9 +4063,7 @@ package body Flow.Analysis is
                       Writes     => Writes);
 
          --  Check globals for volatiles and emit messages if needed
-         Check_Set_For_Volatiles (Proof_Ins);
-         Check_Set_For_Volatiles (Reads);
-         Check_Set_For_Volatiles (Writes);
+         Check_Set_For_Volatiles (Proof_Ins or Reads or Writes);
       end;
 
       --  Issue warning if dealing with volatile function without volatile
