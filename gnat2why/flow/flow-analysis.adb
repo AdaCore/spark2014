@@ -4018,7 +4018,8 @@ package body Flow.Analysis is
                --  We just found a volatile effect
                Found_Volatile_Effect := True;
 
-               --  Issue error if dealing with nonvolatile function
+               --  Issue error if dealing with nonvolatile function; SPARK RM
+               --  7.1.3(8).
                if not Is_Volatile_Function (FA.Analyzed_Entity) then
                   Error_Msg_Flow
                     (FA       => FA,
@@ -4045,10 +4046,9 @@ package body Flow.Analysis is
       end if;
 
       declare
-         Proof_Ins         : Flow_Id_Sets.Set;
-         Reads             : Flow_Id_Sets.Set;
-         Writes            : Flow_Id_Sets.Set;
-         Formal_Parameters : Flow_Id_Sets.Set;
+         Proof_Ins : Flow_Id_Sets.Set;
+         Reads     : Flow_Id_Sets.Set;
+         Writes    : Flow_Id_Sets.Set;
       begin
          --  Populate global sets
          Get_Globals (Subprogram => FA.Analyzed_Entity,
@@ -4058,16 +4058,10 @@ package body Flow.Analysis is
                       Reads      => Reads,
                       Writes     => Writes);
 
-         --  Populate formal parameters set
-         Formal_Parameters :=
-           To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity));
-
-         --  Check globals and formal parameters for volatiles and emit
-         --  messages if needed.
+         --  Check globals for volatiles and emit messages if needed
          Check_Set_For_Volatiles (Proof_Ins);
          Check_Set_For_Volatiles (Reads);
          Check_Set_For_Volatiles (Writes);
-         Check_Set_For_Volatiles (Formal_Parameters);
       end;
 
       --  Issue warning if dealing with volatile function without volatile
