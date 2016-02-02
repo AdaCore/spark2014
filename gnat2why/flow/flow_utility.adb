@@ -2720,7 +2720,7 @@ package body Flow_Utility is
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
 
-      --  Start of processing for Get_Variable_Set
+   --  Start of processing for Get_Variable_Set
 
    begin
       Traverse (N);
@@ -2847,6 +2847,7 @@ package body Flow_Utility is
    ------------------------
 
    function Has_Variable_Input (F : Flow_Id) return Boolean is
+
       function Get_Declaration (E : Entity_Id) return Node_Id
       with Post => Nkind (Get_Declaration'Result) = N_Object_Declaration;
       --  Returns the N_Object_Declaration corresponding to entity E
@@ -2873,6 +2874,9 @@ package body Flow_Utility is
       E    : Entity_Id;
       Decl : Node_Id;
       FS   : Flow_Id_Sets.Set;
+
+   --  Start of processing for Has_Variable_Input
+
    begin
       E := Get_Direct_Mapping_Id (F);
 
@@ -4593,6 +4597,8 @@ package body Flow_Utility is
 
       Idx                      : Natural;
       Process_Type_Conversions : Boolean;
+
+   --  Start of processing for Untangle_Assignment_Target
 
    begin
 
