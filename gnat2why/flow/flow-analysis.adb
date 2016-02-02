@@ -4003,6 +4003,10 @@ package body Flow.Analysis is
    is
       Found_Volatile_Effect : Boolean := False;
 
+      Volatile_Function : constant Boolean :=
+        Ekind (FA.Analyzed_Entity) in E_Function | E_Generic_Function
+          and then Is_Volatile_Function (FA.Analyzed_Entity);
+
       procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set);
       --  Emits a high check for every volatile variable found in FS.
       --  @param FS is the Flow_Ids set that will be checked for volatiles
@@ -4020,7 +4024,7 @@ package body Flow.Analysis is
 
                --  Issue error if dealing with nonvolatile function; SPARK RM
                --  7.1.3(8).
-               if not Is_Volatile_Function (FA.Analyzed_Entity) then
+               if not Volatile_Function then
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "& cannot act as global item of " &
