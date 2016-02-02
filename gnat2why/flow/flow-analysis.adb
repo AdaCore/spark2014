@@ -4034,6 +4034,8 @@ package body Flow.Analysis is
          end loop;
       end Check_Set_For_Volatiles;
 
+   --  Start of processing for Check_Function_For_Volatile_Effects
+
    begin
       if Ekind (FA.Analyzed_Entity) not in E_Function | E_Generic_Function
       then
@@ -4061,7 +4063,7 @@ package body Flow.Analysis is
            To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity));
 
          --  Check globals and formal parameters for volatiles and emit
-         --  messages if needed
+         --  messages if needed.
          Check_Set_For_Volatiles (Proof_Ins);
          Check_Set_For_Volatiles (Reads);
          Check_Set_For_Volatiles (Writes);

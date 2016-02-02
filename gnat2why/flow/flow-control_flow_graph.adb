@@ -5917,7 +5917,7 @@ package body Flow.Control_Flow_Graph is
                AS_E      : Entity_Id;
             begin
                if Present (AS_Pragma) then
-                  PAA  := First (Pragma_Argument_Associations (AS_Pragma));
+                  PAA := First (Pragma_Argument_Associations (AS_Pragma));
 
                   --  Check that we don't have Abstract_State => null
                   if Nkind (Expression (PAA)) /= N_Null then
