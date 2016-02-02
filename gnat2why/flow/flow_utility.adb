@@ -1988,7 +1988,7 @@ package body Flow_Utility is
                             else E));
 
          when others =>
-            raise Why.Unexpected_Node;
+            raise Program_Error;
 
       end case;
    end Get_Implicit_Formals;
@@ -2028,7 +2028,7 @@ package body Flow_Utility is
             end if;
 
          when others =>
-            raise Why.Unexpected_Node;
+            raise Program_Error;
 
       end case;
 
