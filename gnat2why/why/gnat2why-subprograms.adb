@@ -520,8 +520,11 @@ package body Gnat2Why.Subprograms is
    -- Compute_Binders --
    ---------------------
 
-   function Compute_Binders (E : Entity_Id; Domain : EW_Domain)
-                             return Item_Array is
+   function Compute_Binders
+     (E : Entity_Id;
+      Domain : EW_Domain)
+      return Item_Array
+   is
       Binders : constant Item_Array :=
         Compute_Subprogram_Parameters (E, Domain);
    begin
@@ -586,7 +589,7 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) in E_Function | E_Procedure | E_Task_Type then
          declare
-            Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+            Write_Ids : Flow_Types.Flow_Id_Sets.Set;
 
             procedure Include (S : Flow_Types.Flow_Id_Sets.Set);
             --  Include entities represented in S (as Flow_Ids) in Includes
