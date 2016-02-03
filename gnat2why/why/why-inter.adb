@@ -1237,8 +1237,9 @@ package body Why.Inter is
       else
          declare
             Module : constant W_Module_Id :=
-              (if (Is_Subprogram (E) or else Is_Protected_Subprogram (E))
-                 and then Domain = EW_Prog then
+              (if Ekind (E) in Subprogram_Kind | Entry_Kind
+                 and then Domain = EW_Prog
+               then
                  E_Axiom_Module (E)
                else
                  E_Module (E));
