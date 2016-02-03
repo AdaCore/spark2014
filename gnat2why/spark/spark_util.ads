@@ -795,6 +795,8 @@ package SPARK_Util is
    --  @param E any entity
    --  @return True iff the entity is an entry or a subprogram that is part of
    --    (directly or in a nested way) a protected type.
+   --
+   --  Note: this is different than Ada RM concept of a "protected subprogram"
 
    ------------------------------
    -- Queries related to tasks --
