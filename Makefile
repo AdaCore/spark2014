@@ -40,7 +40,8 @@ GNATPROVEDIR=$(SHAREDIR)/spark
 CONFIGDIR=$(GNATPROVEDIR)/config
 THEORIESDIR=$(GNATPROVEDIR)/theories
 DOC=ug lrm
-
+# Control if gnatprove is built in production or debug mode
+PROD=-XBuild=Production
 CP=cp -pr
 MV=mv -f
 GNATMAKE=gnatmake
@@ -117,7 +118,7 @@ $(DOC):
 
 gnat2why-nightly:
 	$(MAKE) -C gnat2why/why/xgen
-	$(MAKE) -C gnat2why AUTOMATED=1
+	$(MAKE) -C gnat2why AUTOMATED=1 GPRARGS=$(PROD)
 
 gnat2why:
 	$(MAKE) -C gnat2why/why/xgen
@@ -132,7 +133,7 @@ gnatprove:
 	$(MAKE) -C gnatprove build
 
 gnatprove-nightly:
-	$(MAKE) -C gnatprove nightly
+	$(MAKE) -C gnatprove nightly PROD=$(PROD)
 
 install-examples:
 	mkdir -p $(EXAMPLESDIR)
