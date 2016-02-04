@@ -2746,29 +2746,29 @@ package body SPARK_Util is
    function Is_Protected_Subprogram (E : Entity_Id) return Boolean is
       Scop : Node_Id;
    begin
+      case Ekind (E) is
 
-      --  entries are always protected subprograms
-
-      if Ekind (E) = E_Entry then
-         return True;
-      end if;
-
-      --  make sure that only subprograms pass this test
-
-      if Ekind (E) not in Subprogram_Kind then
-         return False;
-      end if;
-
-      --  now check that we are in the scope of a protected type
-
-      Scop := Scope (E);
-      while Present (Scop) loop
-         if Ekind (Scop) in Protected_Kind then
+         --  entries are always protected subprograms
+         when E_Entry =>
             return True;
-         end if;
-         Scop := Scope (Scop);
-      end loop;
-      return False;
+
+         --  detect subprograms declared in scope of a protected type
+         when Subprogram_Kind =>
+
+            Scop := Scope (E);
+            while Present (Scop) loop
+               if Ekind (Scop) in Protected_Kind then
+                  return True;
+               end if;
+               Scop := Scope (Scop);
+            end loop;
+
+            return False;
+
+         when others =>
+            return False;
+
+      end case;
    end Is_Protected_Subprogram;
 
    ------------------------------
