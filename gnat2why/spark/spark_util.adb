@@ -2647,6 +2647,18 @@ package body SPARK_Util is
    function Is_Main_Cunit (N : Node_Id) return Boolean is
      (Get_Cunit_Unit_Number (Parent (N)) = Main_Unit);
 
+   ---------------------------------------
+   -- Is_Volatile_For_Internal_Calls --
+   ---------------------------------------
+
+   function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
+   is
+   begin
+      return Ekind (E) = E_Function
+        and then Is_Protected_Type (Scope (E))
+        and then Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function));
+   end Is_Volatile_For_Internal_Calls;
+
    -------------------
    -- Is_Null_Range --
    -------------------

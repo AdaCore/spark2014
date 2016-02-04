@@ -541,6 +541,11 @@ package SPARK_Util is
    --  @return True iff E is a constrained array type with statically known
    --     bounds
 
+   function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
+   with Pre => Is_Subprogram (E);
+   --  @param E any subprogram
+   --  @return True iff E is volatile for internal calls, see SPARK RM 7.1.2
+
    function Nth_Index_Type (E : Entity_Id; Dim : Positive) return Node_Id
    with Pre => Is_Array_Type (E);
    --  @param E array type

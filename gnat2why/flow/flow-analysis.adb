@@ -4001,11 +4001,8 @@ package body Flow.Analysis is
    procedure Check_Function_For_Volatile_Effects
      (FA : in out Flow_Analysis_Graphs)
    is
-      Found_Volatile_Effect : Boolean := False;
-
-      Volatile_Function : constant Boolean :=
-        Ekind (FA.Analyzed_Entity) in E_Function | E_Generic_Function
-          and then Is_Volatile_Function (FA.Analyzed_Entity);
+      Volatile_Effect_Found    : Boolean := False;
+      Volatile_Effect_Expected : Boolean;
 
       procedure Check_Set_For_Volatiles (FS : Flow_Id_Sets.Set);
       --  Emits a high check for every volatile variable found in FS.
@@ -4020,11 +4017,11 @@ package body Flow.Analysis is
          for F of FS loop
             if Is_Volatile (Change_Variant (F, Normal_Use), FA.B_Scope) then
                --  We just found a volatile effect
-               Found_Volatile_Effect := True;
+               Volatile_Effect_Found := True;
 
                --  Issue error if dealing with nonvolatile function; SPARK RM
                --  7.1.3(8).
-               if not Volatile_Function then
+               if not Volatile_Effect_Expected then
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "& cannot act as global item of " &
@@ -4049,6 +4046,11 @@ package body Flow.Analysis is
          return;
       end if;
 
+      Volatile_Effect_Expected :=
+        (if Is_Protected_Type (Scope (FA.Analyzed_Entity))
+         then Is_Volatile_For_Internal_Calls (FA.Analyzed_Entity)
+         else Is_Volatile_Function (FA.Analyzed_Entity));
+
       declare
          Proof_Ins : Flow_Id_Sets.Set;
          Reads     : Flow_Id_Sets.Set;
@@ -4066,10 +4068,9 @@ package body Flow.Analysis is
          Check_Set_For_Volatiles (Proof_Ins or Reads or Writes);
       end;
 
-      --  Issue warning if dealing with volatile function without volatile
-      --  effects.
-      if Is_Volatile_Function (FA.Analyzed_Entity)
-        and then not Found_Volatile_Effect
+      --  Warn about volatile function without volatile effects
+      if Volatile_Effect_Expected
+        and then not Volatile_Effect_Found
       then
          Error_Msg_Flow
            (FA       => FA,

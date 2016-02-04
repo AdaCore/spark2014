@@ -123,6 +123,8 @@ package body SPARK_Definition is
    --  The current applicable SPARK_Mode pragma, if any, to reference in error
    --  messages when a violation is encountered.
 
+   Current_Protected_Type : Entity_Id := Empty;
+
    Current_Delayed_Aspect_Type : Entity_Id := Empty;
    --  When processing delayed aspect type (e.g. Predicate) this is set to the
    --  delayed type itself; used to reference the type in the error message.
@@ -1675,7 +1677,16 @@ package body SPARK_Definition is
                   if Entity_In_SPARK (Spec) then
                      case Nkind (N) is
                         when N_Protected_Body =>
-                           Mark_Stmt_Or_Decl_List (Declarations (N));
+                           declare
+                              Save_Protected_Type : constant Entity_Id :=
+                                 Current_Protected_Type;
+                           begin
+                              Current_Protected_Type := Spec;
+
+                              Mark_Stmt_Or_Decl_List (Declarations (N));
+
+                              Current_Protected_Type := Save_Protected_Type;
+                           end;
 
                         when N_Task_Body =>
                            Mark_Subprogram_Body (N);
@@ -2321,10 +2332,18 @@ package body SPARK_Definition is
 
       end case;
 
+      --  Current_Protected_Type is either empty or points to what is says
+      pragma Assert (Present (Scope (E)));
+
       if Ekind (E) in E_Function | E_Generic_Function
-        and then Is_Volatile_Function (E)
         and then not Is_OK_Volatile_Context (Context => Parent (N),
                                              Obj_Ref => N)
+        and then
+          (if Current_Protected_Type = Scope (E) then
+              --  This is an internal call to protected functions
+              Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
+           else
+              Is_Volatile_Function (E))
       then
          Mark_Violation ("call to a volatile function in interfering context",
                          N);
@@ -2336,7 +2355,8 @@ package body SPARK_Definition is
 
       if not In_SPARK (E) then
          Mark_Violation (N,
-                         From => (if Is_Predicate_Function (E)
+                         From => (if Ekind (E) = E_Function
+                                    and then Is_Predicate_Function (E)
                                   then Etype (First_Formal (E))
                                   else E));
 
@@ -2486,6 +2506,8 @@ package body SPARK_Definition is
       --  Forget about delayed type aspects once they are processes
       Delayed_Type_Aspects.Clear;
 
+      --  Ensure that global variables are restored to their initial values
+      pragma Assert (No (Current_Protected_Type));
       pragma Assert (No (Current_Delayed_Aspect_Type));
    end Mark_Compilation_Unit;
 
@@ -3004,7 +3026,30 @@ package body SPARK_Definition is
          while Present (Prag) loop
             Expr :=
               Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
-            Mark (Expr);
+
+            --  Postconditions of protected subprograms declared in protected
+            --  type declarations are executed as part of protected operations,
+            --  so any calls to protected functions of the same protected type
+            --  are internal.
+            --
+            --  Subprograms declared in protected bodies can only be called
+            --  internally and then Current_Protected_Type is already set
+            --  anyway.
+
+            if Is_Pragma (Prag, Pragma_Postcondition)
+              and then Is_Protected_Type (Scope (E))
+            then
+               declare
+                  Save_Protected_Type : constant Entity_Id :=
+                     Current_Protected_Type;
+               begin
+                  Current_Protected_Type := Scope (E);
+                  Mark (Expr);
+                  Current_Protected_Type := Save_Protected_Type;
+               end;
+            else
+               Mark (Expr);
+            end if;
             Prag := Next_Pragma (Prag);
          end loop;
 
@@ -3023,7 +3068,25 @@ package body SPARK_Definition is
                   Conseq     := Expression (Contract_Case);
 
                   Mark (Case_Guard);
-                  Mark (Conseq);
+
+                  --  Consequences of protected subprograms declared in
+                  --  protected type declarations are executed as part of
+                  --  protected operations, so any calls to protected
+                  --  functions of the same protected type are internal.
+                  --
+                  --  Subprograms declared in protected bodies can only be
+                  --  called internally and then Current_Protected_Type is
+                  --  already set anyway.
+                  if Is_Protected_Type (Scope (E)) then
+                     declare
+                        Save_Protected_Type : constant Entity_Id :=
+                           Current_Protected_Type;
+                     begin
+                        Current_Protected_Type := Scope (E);
+                        Mark (Conseq);
+                        Current_Protected_Type := Save_Protected_Type;
+                     end;
+                  end if;
 
                   Next (Contract_Case);
                end loop;

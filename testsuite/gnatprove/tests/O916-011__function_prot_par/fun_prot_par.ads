@@ -5,6 +5,5 @@ package Fun_Prot_Par is
       A : Integer := 0;
    end Prot;
 
-   function F (X : Prot) return Integer
-      with Post => (F'Result = X.Get_A);
+   function F (X : Prot) return Integer;
 end Fun_Prot_Par;
