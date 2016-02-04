@@ -886,6 +886,7 @@ procedure Gnatprove is
       procedure Generate_Altergo_Section;
       procedure Generate_CVC4_Section;
       procedure Generate_CVC4_CE_Section;
+      procedure Generate_CVC4_Float_Section;
       procedure Generate_Z3_Section;
 
       ------------------------------
@@ -971,6 +972,32 @@ procedure Gnatprove is
          Put_Keyval ("version", "1.5");
       end Generate_CVC4_CE_Section;
 
+      ------------------------------
+      -- Generate_CVC4_CE_Section --
+      ------------------------------
+
+      procedure Generate_CVC4_Float_Section is
+         Command : constant String :=
+           CVC4_Binary & "_float " &
+           Common_CVC4_Options &
+           " --macros-quant " &
+           " --quiet ";
+      begin
+         Start_Section ("prover");
+         Put_Keyval ("command",
+                     Command &
+                       " %f");
+         Put_Keyval ("command_steps",
+                     Command &
+                       " --rlimit=%S" &
+                       " %f");
+         Put_Keyval ("driver",
+                     Ada.Directories.Compose
+                       (Why3_Drivers_Dir, "cvc4_float.drv"));
+         Put_Keyval ("name", "CVC4_FLOAT");
+         Put_Keyval ("shortcut", "cvc4_float");
+         Put_Keyval ("version", "1.5");
+      end Generate_CVC4_Float_Section;
       ---------------------------
       -- Generate_Main_Section --
       ---------------------------
@@ -1049,6 +1076,7 @@ procedure Gnatprove is
 
       Generate_CVC4_Section;
       Generate_CVC4_CE_Section;
+      Generate_CVC4_Float_Section;
       Generate_Z3_Section;
 
       Close (File);

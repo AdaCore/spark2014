@@ -699,6 +699,8 @@ module Static_Floating_Point
 
   clone export Floating_Point_Base
 
+  (* /!\ deal with minus zero here !
+     -> use a eq for t ? *)
   axiom inversion_axiom :
     forall x : t [to_rep x].
       of_rep (to_rep (x)) = x
