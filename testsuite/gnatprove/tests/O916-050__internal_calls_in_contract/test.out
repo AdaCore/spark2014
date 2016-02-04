@@ -1,0 +1,3 @@
+p.ads:7:36: info: postcondition proved
+p.ads:8:28: info: complete contract cases proved
+p.ads:8:52: info: contract case proved
