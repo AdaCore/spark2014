@@ -569,7 +569,9 @@ Next we move to the enclosing package P. Downward calls are local calls.
   \begin{center}
     \includegraphics[scale=0.4]{ex2_phase1_p}
   \end{center}
-  \caption{Phase 1 for P}
+  \caption{Phase 1 for P, after completion of closure for Q. Edges in
+    {\color{RoyalBlue}blue} are new information; edges in black are copied
+    from the projected result of the partial closure of Q.}
 \end{figure}
 
 \noindent
@@ -600,9 +602,15 @@ Each package will have its on overall projected globals. For package P:
 \end{center}
 
 \noindent
-And for package Q. We need to save this extra state for nested packages so
-that we have slightly more meaningful results when analysing Q in phase 2.
-However this step could be skipped.
+Incidentally, this matches the best possible human annotation, which is
+good news.
+
+\pagebreak
+\noindent
+For package Q, we can save this extra state so that we have slightly more
+meaningful results when analysing Q in phase 2. However this step could be
+skipped. This is not as precise as the best possible human annotation, but
+it is not far off.
 
 \begin{center}
   \begin{tabular}{lll}
@@ -613,7 +621,7 @@ However this step could be skipped.
   \end{tabular}
 \end{center}
 
-\noindent
+\subsubsection{Phase 2}
 There is nothing extra to do for phase 2 here, so we skip this.
 
 \end{document}

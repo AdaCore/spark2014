@@ -52,6 +52,8 @@ digraph G {
 
    // From phase1 cfg of P:
 
+   edge [color=RoyalBlue];
+
    p0_read  -> p1_read;
    p0_write -> p1_write;
    p0_call  -> p1_call;
