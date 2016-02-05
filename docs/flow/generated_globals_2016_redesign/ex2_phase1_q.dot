@@ -9,6 +9,7 @@ digraph G {
    g2     [shape=circle];
    g3     [shape=circle];
    g4     [shape=circle];
+
    p0 [shape=box];
    p2 [shape=box];
    p3 [shape=box];

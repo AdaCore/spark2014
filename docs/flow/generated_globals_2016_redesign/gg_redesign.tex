@@ -448,6 +448,9 @@ variables we do not use).
 
 \newpage
 \subsection{Intra-package analysis}
+Overall idea: nested packages get a partial closure first, and the phase 1
+partial closure will only be based on that. Any upwards calls are just
+another remote call.
 
 \begin{multicols}{2}
 \begin{lstlisting}
@@ -522,69 +525,11 @@ end P;
 \end{lstlisting}
 \end{multicols}
 
-\subsubsection{Phase 1 - CFG}
-Note calls from P to Q are remote, but calls from Q to P are local.
-\begin{multicols}{2}
-  \begin{description}
-  \item[P0]
-    \begin{tabular}{ll}
-      Variables R & \\
-      Variables W & G1 \\
-      Calls       & P1 (Remote) \\
-      Maybe       & \\
-    \end{tabular}
+\pagebreak
+\subsubsection{Phase 1}
 
-  \item[P1]
-    \begin{tabular}{ll}
-      Variables R & \\
-      Variables W & G3 \\
-      Calls       & P2 (Remote) \\
-      Maybe       & \\
-    \end{tabular}
-
-  \item[P2]
-    \begin{tabular}{ll}
-      Variables R & \\
-      Variables W & G0, G2 \\
-      Calls       & P3 (Local) \\
-      Maybe       & \\
-    \end{tabular}
-
-  \item[P3]
-    \begin{tabular}{ll}
-      Variables R & \\
-      Variables W & \\
-      Calls       & P4 (Remote) \\
-      Maybe       & \\
-    \end{tabular}
-
-  \item[P4]
-    \begin{tabular}{ll}
-      Variables R & G3 \\
-      Variables W & G3 \\
-      Calls       & P5 (Local) \\
-      Maybe       & \\
-    \end{tabular}
-
-  \item[P5]
-    \begin{tabular}{ll}
-      Variables R & G1, G2 \\
-      Variables W & G3, G4 \\
-      Calls       & \\
-      Maybe       & \\
-    \end{tabular}
-  \end{description}
-\end{multicols}
-
-\noindent
-The graphs produces for P and Q:
-
-\begin{figure}[h]
-  \begin{center}
-    \includegraphics[scale=0.4]{ex2_phase1_p}
-  \end{center}
-  \caption{Phase 1 for P}
-\end{figure}
+First we produce the closure for each nested package, inwards to outwards.
+So, for package Q:
 
 \begin{figure}[h]
   \begin{center}
@@ -593,170 +538,82 @@ The graphs produces for P and Q:
   \caption{Phase 1 for Q}
 \end{figure}
 
-\subsubsection{Phase 1 - Closure}
-For each package we take the closure to eliminate any local calls; so for
-package P:
+The final projected globals for this are then:
 
-\begin{description}
-\item[P0]
-  \begin{multicols}{2}
-    Raw:
-    \begin{tabular}{ll}
-      Variables R & \\
-      Variables W & G1 \\
-      Calls       & P1 \\
-      Maybe       & \\
-    \end{tabular}
+\begin{center}
+\begin{multicols}{2}
+  Raw:\\
+  \begin{tabular}{llll}
+       & Read       & Write  & RCall \\
+    P1 &            & G3     & P2    \\
+    P4 & G1, G2, G3 & G3, G4 &       \\
+    P5 & G1, G2     & G3, G4 &       \\
+  \end{tabular}
 
-    Projected:
-    \begin{tabular}{ll}
-      Variables R & State \\
-      Variables W & State \\
-      Calls       & P1 \\
-      Maybe       & \\
-    \end{tabular}
-  \end{multicols}
+  \columnbreak
+  Projected:\\
+  \begin{tabular}{|llll}
+       & Read           & Write  & RCall \\
+    P1 & Nested         & Nested & P2    \\
+    P4 & G1, G2, Nested & Nested &       \\
+    P5 & G1, G2         & Nested &       \\
+  \end{tabular}
+\end{multicols}
+\end{center}
 
-\item[P2]
-  \begin{multicols}{2}
-    Raw:
-    \begin{tabular}{ll}
-      Variables R & \\
-      Variables W & G0, G2 \\
-      Calls       & P4 \\
-      Maybe       & \\
-    \end{tabular}
-
-    Projected:
-    \begin{tabular}{ll}
-      Variables R & State \\
-      Variables W & State \\
-      Calls       & P4 \\
-      Maybe       & \\
-    \end{tabular}
-  \end{multicols}
-
-\item[P3]
-  \begin{multicols}{2}
-    Raw:
-    \begin{tabular}{ll}
-      Variables R & \\
-      Variables W & \\
-      Calls       & P4 \\
-      Maybe       & \\
-    \end{tabular}
-
-    Projected:
-    \begin{tabular}{ll}
-      Variables R & \\
-      Variables W & \\
-      Calls       & P4 \\
-      Maybe       & \\
-    \end{tabular}
-  \end{multicols}
-\end{description}
-
+\pagebreak
 \noindent
-And similarly for Q. For state that is contained in another state, we use
-the containing state to denote ``everything except the inner state''.
+Next we move to the enclosing package P. Downward calls are local calls.
 
-\begin{description}
-\item[P1]
-  \begin{multicols}{2}
-    Raw:
-    \begin{tabular}{ll}
-      Variables R & \\
-      Variables W & G3 \\
-      Calls       & P2 \\
-      Maybe       & \\
-    \end{tabular}
-
-    Projected:
-    \begin{tabular}{ll}
-      Variables R & Nested \\
-      Variables W & Nested \\
-      Calls       & P2 \\
-      Maybe       & \\
-    \end{tabular}
-  \end{multicols}
-
-\item[P4]
-  \begin{multicols}{2}
-    Raw:
-    \begin{tabular}{ll}
-      Variables R & G1, G2, G3 \\
-      Variables W & G3, G4 \\
-      Calls       & \\
-      Maybe       & \\
-    \end{tabular}
-
-    Projected:
-    \begin{tabular}{ll}
-      Variables R & State, Nested \\
-      Variables W & Nested \\
-      Calls       & \\
-      Maybe       & \\
-    \end{tabular}
-  \end{multicols}
-
-\item[P5]
-  \begin{multicols}{2}
-    Raw:
-    \begin{tabular}{ll}
-      Variables R & G1, G2 \\
-      Variables W & G3, G4 \\
-      Calls       & \\
-      Maybe       & \\
-    \end{tabular}
-
-    Projected:
-    \begin{tabular}{ll}
-      Variables R & State \\
-      Variables W & Nested \\
-      Calls       & \\
-      Maybe       & \\
-    \end{tabular}
-  \end{multicols}
-\end{description}
-
-\subsubsection{Phase 2}
 \begin{figure}[h]
   \begin{center}
-    \includegraphics[scale=0.4]{ex2_phase2}
+    \includegraphics[scale=0.4]{ex2_phase1_p}
   \end{center}
-  \caption{Phase 2}
+  \caption{Phase 1 for P}
 \end{figure}
 
 \noindent
-The transitive closure of this will be an over-approximation of the most
-precise human-written globals:
+The final, refined globals for package P this are thus:
 
-\begin{table}[h]
-  \begin{center}
-    \begin{multicols}{2}
-      \begin{tabular}{lll}
-           & Reads & Writes \\
-        P0 & S, N  & S, N   \\
-        P1 & S, N  & S, N   \\
-        P2 & S, N  & S, N   \\
-        P3 & S, N  & N      \\
-        P4 & S, N  & N      \\
-        P5 & S     & N      \\
-      \end{tabular}
+\begin{center}
+  \begin{tabular}{lll}
+       & Read           & Write              \\
+    P0 & G1, G2, Nested & G0, G1, G2, Nested \\
+    P1 & G1, G2, Nested & G0, G2, Nested     \\
+    P2 & G1, G2, Nested & G0, G2, Nested     \\
+    P3 & G1, G2, Nested & Nested             \\
+    P4 & G1, G2, Nested & Nested             \\
+    P5 & G1, G2         & Nested             \\
+  \end{tabular}
+\end{center}
 
-      \begin{tabular}{lll}
-           & Reads     & Writes    \\
-        P0 & G1, G2    & S, N      \\
-        P1 & G1, G2    & G0, G2, N \\
-        P2 & G1, G2    & G0, G2, N \\
-        P3 & G1, G2    & N         \\
-        P4 & G1, G2    & N         \\
-        P5 & G1, G2    & N         \\
-      \end{tabular}
-    \end{multicols}
-  \end{center}
-  \caption{Transitive closure for phase 2, and ideal annotations.}
-\end{table}
+\noindent
+Each package will have its on overall projected globals. For package P:
 
+\begin{center}
+  \begin{tabular}{lll}
+       & Read           & Write              \\
+    P0 & State          & State              \\
+    P2 & State          & State              \\
+    P3 & State          & State              \\
+  \end{tabular}
+\end{center}
+
+\noindent
+And for package Q. We need to save this extra state for nested packages so
+that we have slightly more meaningful results when analysing Q in phase 2.
+However this step could be skipped.
+
+\begin{center}
+  \begin{tabular}{lll}
+       & Read           & Write              \\
+    P1 & G1, G2, Nested & G0, G2, Nested     \\
+    P4 & G1, G2, Nested & Nested             \\
+    P5 & G1, G2         & Nested             \\
+  \end{tabular}
+\end{center}
+
+\noindent
+There is nothing extra to do for phase 2 here, so we skip this.
 
 \end{document}

@@ -8,13 +8,14 @@ digraph G {
    g1     [shape=circle];
    g2     [shape=circle];
    nested [shape=circle];
-   p1 [shape=box];
-   p4 [shape=box];
-   p5 [shape=box];
 
    p0_read;
    p0_write;
    p0_call;
+
+   p1_read;
+   p1_write;
+   p1_call;
 
    p2_read;
    p2_write;
@@ -24,21 +25,46 @@ digraph G {
    p3_write;
    p3_call;
 
-   // P0
+   p4_read;
+   p4_write;
+   p4_call;
 
+   p5_read;
+   p5_write;
+   p5_call;
+
+   // Known information from analysis of Q:
+
+   p1_read  -> nested;
+   p1_write -> nested;
+   p1_call  -> p2_call;
+   p1_read  -> p2_read;
+   p1_write -> p2_write;
+
+   p4_read  -> g1;
+   p4_read  -> g2;
+   p4_read  -> nested;
+   p4_write -> nested;
+
+   p5_read  -> g1;
+   p5_read  -> g2;
+   p5_write -> nested;
+
+   // From phase1 cfg of P:
+
+   p0_read  -> p1_read;
+   p0_write -> p1_write;
+   p0_call  -> p1_call;
    p0_write -> g1;
-   p0_call  -> p1;
 
-   // P2
-
-   p2_write -> g0;
-   p2_write -> g2;
    p2_read  -> p3_read;
    p2_write -> p3_write;
    p2_call  -> p3_call;
+   p2_write -> g0;
+   p2_write -> g2;
 
-   // P3
-
-   p3_call -> p4;
+   p3_read  -> p4_read;
+   p3_write -> p4_write;
+   p3_call  -> p4_call;
 
 }
