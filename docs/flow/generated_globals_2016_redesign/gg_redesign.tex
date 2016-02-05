@@ -4,6 +4,7 @@
 \usepackage{multicol}
 \usepackage{graphicx}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
 
 \author{Florian Schanda}
 \title{Generated Globals With Partitions\\P118-034}
@@ -34,6 +35,8 @@
 \begin{center}
   \color{red} DRAFT - WORK IN PROGRESS
 \end{center}
+
+\tableofcontents
 
 \section{Motivation}
 A number of features (tasking, tagged types, generated globals) have been
@@ -623,5 +626,70 @@ it is not far off.
 
 \subsubsection{Phase 2}
 There is nothing extra to do for phase 2 here, so we skip this.
+
+\newpage
+\subsection{Inception - we need to nest deeper}
+
+\begin{multicols}{2}
+\begin{lstlisting}
+package P with
+   Abstract_State => State
+is
+   procedure P0;
+   procedure P1;
+   --  When I get paid by the line, I always
+   --  write my initialisation like this.
+end P;
+
+package body P with
+   Refined_State =>
+     (State => G0, G1)
+is
+   G0 : Boolean;
+   G1 : Boolean;
+
+   procedure P0 is
+      G2 : Boolean;
+
+      package Q is
+         G3 : Boolean;
+         procedure P2;
+      end Q;
+
+      package body Q is
+         procedure P2 is begin
+            G1 := G3;
+         end P2;
+      end Q;
+   begin
+      Q.G3 := False;
+      G2   := False;
+      Q.P2;
+   end P0;
+\end{lstlisting}
+\vfill\columnbreak
+\begin{lstlisting}
+   procedure P1 is
+
+      package R is
+         procedure P3;
+      end R;
+
+      package body R is
+         G4 : Boolean;
+
+         procedure P3 is begin
+            G4 := False;
+            G0 := G4;
+            P0;
+         end P3;
+      end R;
+
+   begin
+      R.P3;
+   end P1;
+end P;
+\end{lstlisting}
+\end{multicols}
 
 \end{document}
