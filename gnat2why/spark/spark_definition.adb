@@ -1645,19 +1645,22 @@ package body SPARK_Definition is
                   Set_Specific_Tagged (Class_Wide_Type (E), E);
                end if;
 
-               Mark_Entity (E);
-               if Is_Itype (BT) then
-                  Mark_Entity (BT);
+               if Ekind (E) in E_Protected_Type | E_Task_Type then
+                  --  Pick SPARK_Mode from the concurrent type definition
+                  declare
+                     Save_SPARK_Pragma : constant Node_Id :=
+                        Current_SPARK_Pragma;
+                  begin
+                     Current_SPARK_Pragma := SPARK_Pragma (E);
+                     Mark_Entity (E);
+                     Current_SPARK_Pragma := Save_SPARK_Pragma;
+                  end;
+               else
+                  Mark_Entity (E);
                end if;
 
-               --  We avoid marking the subprograms of a protected type when
-               --  marking the type entity. Instead, we do it here directly on
-               --  the type declaration. This is needed to avoid that certain
-               --  pure functions are declared before the type in Why.
-
-               if Ekind (E) = E_Protected_Type then
-                  Mark_Stmt_Or_Decl_List
-                    (Visible_Declarations (Protected_Definition (N)));
+               if Is_Itype (BT) then
+                  Mark_Entity (BT);
                end if;
 
             end;
@@ -1712,15 +1715,7 @@ package body SPARK_Definition is
             end if;
 
          when N_Entry_Body =>
-            if Is_SPARK_Tasking_Configuration then
-               if Ekind (Unique_Defining_Entity (N)) /= E_Entry_Family then
-                  Mark_Subprogram_Body (N);
-               else
-                  Mark_Violation ("entry family", N);
-               end if;
-            else
-               Mark_Violation_In_Tasking (N);
-            end if;
+            Mark_Subprogram_Body (N);
 
          when N_Entry_Call_Statement =>
             if Is_SPARK_Tasking_Configuration then
@@ -1732,15 +1727,7 @@ package body SPARK_Definition is
             end if;
 
          when N_Entry_Declaration =>
-            if Is_SPARK_Tasking_Configuration then
-               if Ekind (Defining_Entity (N)) /= E_Entry_Family then
-                  Mark_Subprogram_Declaration (N);
-               else
-                  Mark_Violation ("entry family", N);
-               end if;
-            else
-               Mark_Violation_In_Tasking (N);
-            end if;
+            Mark_Subprogram_Declaration (N);
 
          --  Unsupported tasking constructs
 
@@ -2413,6 +2400,8 @@ package body SPARK_Definition is
       CU        : constant Node_Id := Parent (N);
       Context_N : Node_Id;
 
+      use type Node_Lists.Cursor;
+
    begin
       --  Avoid rewriting generic units which are only preanalyzed, which may
       --  cause rewriting to fail, as this is not needed.
@@ -2544,6 +2533,17 @@ package body SPARK_Definition is
       procedure Mark_Package_Entity    (E : Entity_Id);
       procedure Mark_Subprogram_Entity (E : Entity_Id);
       procedure Mark_Type_Entity       (E : Entity_Id);
+
+      use type Node_Lists.Cursor;
+
+      Current_Concurrent_Insert_Pos : Node_Lists.Cursor;
+      --  This variable is set at the start of marking concurrent type and
+      --  stores the position on the list where the type itself should be
+      --  inserted.
+      --
+      --  Concurrent types must be inserted into Entity_List before operations
+      --  defined in their scope, because these operations take the type as an
+      --  implicit argument.
 
       ------------------------
       -- Mark_Number_Entity --
@@ -2986,9 +2986,16 @@ package body SPARK_Definition is
          --  Start of processing for Mark_Subprogram_Specification
 
          begin
-            if Ekind (Id) = E_Function then
-               Mark_Function_Specification (N);
-            end if;
+            case Ekind (Id) is
+               when E_Function =>
+                  Mark_Function_Specification (N);
+
+               when E_Entry_Family =>
+                  Mark_Violation ("entry family", N);
+
+               when others =>
+                  null;
+            end case;
 
             Param_Spec := First (Formals);
             while Present (Param_Spec) loop
@@ -3015,7 +3022,7 @@ package body SPARK_Definition is
       --  Start of processing for Mark_Subprogram_Entity
 
       begin
-         Mark_Subprogram_Specification (if Ekind (E) = E_Entry
+         Mark_Subprogram_Specification (if Ekind (E) in Entry_Kind
                                         then Parent (E)
                                         else Subprogram_Specification (E));
 
@@ -3363,6 +3370,12 @@ package body SPARK_Definition is
                     (Default_Init_Cond_Procedure (E), Delayed_Mapping);
                end;
             end if;
+         end if;
+
+         --  Record position of where to insert concurrent type on the
+         --  Entity_List.
+         if Ekind (E) in E_Protected_Type | E_Task_Type then
+            Current_Concurrent_Insert_Pos := Entity_List.Last;
          end if;
 
          --  Now mark the type itself
@@ -3774,14 +3787,20 @@ package body SPARK_Definition is
                         Mark_List (Interface_List (Type_Decl));
 
                         if Present (Type_Def) then
-                           --  We do not mark the visible declarations here, we
-                           --  mark them independently of the type entity when
-                           --  processing the type declaration.
-
                            --  ??? components of protected types were already
                            --  marked when dealing with discriminants
                            Mark_Stmt_Or_Decl_List
-                             (Private_Declarations (Type_Def));
+                             (Visible_Declarations (Type_Def));
+
+                           declare
+                              Save_SPARK_Pragma : constant Node_Id :=
+                                Current_SPARK_Pragma;
+                           begin
+                              Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
+                              Mark_Stmt_Or_Decl_List
+                                (Private_Declarations (Type_Def));
+                              Current_SPARK_Pragma := Save_SPARK_Pragma;
+                           end;
                         end if;
 
                      end;
@@ -3848,8 +3867,16 @@ package body SPARK_Definition is
       --  types need to be marked at the point of their partial view
       --  declaration, to avoid out-of-order declarations in Why.
       --  Retrieve the appropriate SPARK_Mode pragma before marking.
+      --
+      --  For concurrent types SPARK_Mode can be queried directly and should be
+      --  already set by the caller.
+      --
+      --  ??? perhaps use SPARK_Pragma_Of_Type here, but not sure if that works
+      --  for itypes.
 
-      if Is_Type (E) then
+      if Is_Type (E)
+        and then not Is_Concurrent_Type (E)
+      then
          declare
             Decl : constant Node_Id :=
               (if No (Parent (Parent (E)))
@@ -3935,7 +3962,7 @@ package body SPARK_Definition is
 
          when E_Abstract_State => null;
 
-         when E_Entry          => Mark_Subprogram_Entity (E);
+         when Entry_Kind       => Mark_Subprogram_Entity (E);
 
          when others           =>
             Ada.Text_IO.Put_Line ("[Mark_Entity] kind ="
@@ -3952,9 +3979,24 @@ package body SPARK_Definition is
       --  Add entity to appropriate list. Entities from packages with external
       --  axioms are handled by a specific mechanism and thus should not be
       --  translated.
-
       if not Entity_In_Ext_Axioms (E) then
-         Entity_List.Append (E);
+         --  Protected type needs to go before its visible declarations (which
+         --  reference it as an implicit input).
+         if Ekind (E) in E_Protected_Type | E_Task_Type then
+
+            pragma Assert
+               (Current_Concurrent_Insert_Pos /= Node_Lists.No_Element);
+
+            Node_Lists.Next (Current_Concurrent_Insert_Pos);
+
+            --  If there were no entities defined within concurrent types then
+            --  Next will advance the cursor to No_Element and Insert will be
+            --  equivalent to Append. This is pricesely what we need.
+            Entity_List.Insert (Before   => Current_Concurrent_Insert_Pos,
+                                New_Item => E);
+         else
+            Entity_List.Append (E);
+         end if;
       end if;
 
       --  Update the information that a violation was detected

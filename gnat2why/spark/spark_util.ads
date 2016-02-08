@@ -609,7 +609,10 @@ package SPARK_Util is
    --  profile.
 
    function Get_Priority_Or_Interrupt_Priority (E : Entity_Id) return Node_Id
-   with Pre => Ekind (E) in Protected_Kind | E_Task_Type | Subprogram_Kind;
+   with Pre => Ekind (E) in Protected_Kind |
+                            E_Function     |
+                            E_Procedure    |
+                            E_Task_Type;
    --  @param E the entity of a concurrent type or subprogram
    --  @return The Ada node of the expression for the Priority or
    --  Interrupt_Priority specified on E if any
@@ -626,7 +629,11 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
-     with Pre => Ekind (E) in Subprogram_Kind | E_Package | E_Entry | Task_Kind
+     with Pre => Ekind (E) in E_Function  |
+                              E_Package   |
+                              E_Procedure |
+                              Entry_Kind  |
+                              Task_Kind
                and then not (Classwide and Inherited);
    --  @param E subprogram or package
    --  @param Name contract name
@@ -701,7 +708,11 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Boolean
-   with Pre => Ekind (E) in Subprogram_Kind | E_Entry | E_Package | Task_Kind;
+   with Pre => Ekind (E) in E_Function  |
+                            E_Package   |
+                            E_Procedure |
+                            Entry_Kind  |
+                            Task_Kind;
    --  @param E subprogram or package
    --  @param Name contract name
    --  @param Classwide True when asking for the classwide version of contract
@@ -709,12 +720,12 @@ package SPARK_Util is
    --  @return True iff there is at least one contract Name for E
 
    function Has_Extensions_Visible (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in Subprogram_Kind | E_Entry;
+     with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
    --  @param E subprogram
    --  @return True iff Extensions_Visible is specified for E
 
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in Subprogram_Kind | E_Entry;
+     with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
    --  @param E subprogram
    --  @return True iff E has a data dependencies (Global) or flow
    --     dependencies (Depends) contract
@@ -781,7 +792,10 @@ package SPARK_Util is
    --  @return the fully scoped name of E as it appears in the source
 
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Function | E_Procedure | E_Task_Type | E_Entry;
+   with Pre => Ekind (E) in E_Function  |
+                            E_Procedure |
+                            E_Task_Type |
+                            Entry_Kind;
    --  @param E subprogram
    --  @return True iff E should not be translated into Why3
 
@@ -843,12 +857,18 @@ package SPARK_Util is
    --  @return the protected definition for the given type
 
    function Containing_Protected_Type (E : Entity_Id) return Entity_Id
-     with Pre =>
-             Ekind (E) in E_Function | E_Procedure | E_Entry
-              | E_Component | E_Discriminant
-             and
-              (Is_Protected_Subprogram (E) or else
-                  Ekind (Scope (E)) in Protected_Kind),
+     with Pre => (case Ekind (E) is
+                     when E_Component    |
+                          E_Discriminant =>
+                        Ekind (Scope (E)) in Protected_Kind,
+
+                     when E_Function     |
+                          E_Procedure    |
+                          Entry_Kind     =>
+                        Is_Protected_Subprogram (E),
+
+                     when others         =>
+                        False),
           Post => Ekind (Containing_Protected_Type'Result) in Protected_Kind;
    --  @param E a subprogram or entry or field which is part of a protected
    --            type
@@ -865,8 +885,7 @@ package SPARK_Util is
    --------------------------------
 
    function Entry_Body (E : Entity_Id) return Node_Id
-   with Pre  => Nkind (E) in N_Entity and then
-                Ekind (E) = E_Entry and then
+   with Pre  => Ekind (E) in Entry_Kind and then
                 Nkind (Parent (E)) = N_Entry_Declaration,
         Post => (if Present (Entry_Body'Result)
                  then Nkind (Entry_Body'Result) = N_Entry_Body);
@@ -875,12 +894,10 @@ package SPARK_Util is
    --    Subprogram_Body might produce.
 
    function Entry_Body_Entity (E : Entity_Id) return Node_Id
-   with Pre  => Nkind (E) in N_Entity and then
-                Ekind (E) = E_Entry and then
+   with Pre  => Ekind (E) in Entry_Kind and then
                 Nkind (Parent (E)) = N_Entry_Declaration,
         Post => (if Present (Entry_Body_Entity'Result)
-                 then Nkind (Entry_Body_Entity'Result) in N_Entity and then
-                      Ekind (Entry_Body_Entity'Result) = E_Entry and then
+                 then Ekind (Entry_Body_Entity'Result) in Entry_Kind and then
                       Nkind (Parent (Entry_Body_Entity'Result)) =
                         N_Entry_Body);
    --  @param E entry
@@ -975,9 +992,10 @@ package SPARK_Util is
 
    function Get_Body (E : Entity_Id) return Node_Id
    with Pre  => Nkind (E) in N_Entity
-                  and then Ekind (E) in E_Entry         |
-                                        E_Task_Type     |
-                                        Subprogram_Kind,
+                  and then Ekind (E) in Entry_Kind  |
+                                        E_Function  |
+                                        E_Procedure |
+                                        E_Task_Type,
         Post => (if Present (Get_Body'Result)
                  then Nkind (Get_Body'Result) in N_Entry_Body      |
                                                  N_Subprogram_Body |
@@ -988,12 +1006,16 @@ package SPARK_Util is
 
    function Get_Body_Entity (E : Entity_Id) return Entity_Id
    with Pre  => Nkind (E) in N_Entity and then
-                Ekind (E) in E_Entry | E_Task_Type | Subprogram_Kind,
+                Ekind (E) in Entry_Kind  |
+                             E_Function  |
+                             E_Procedure |
+                             E_Task_Type,
         Post => (if Present (Get_Body_Entity'Result)
-                 then Ekind (Get_Body_Entity'Result) in E_Entry           |
+                 then Ekind (Get_Body_Entity'Result) in Entry_Kind        |
+                                                        E_Function        |
+                                                        E_Procedure       |
                                                         E_Subprogram_Body |
-                                                        E_Task_Body       |
-                                                        Subprogram_Kind);
+                                                        E_Task_Body);
    --  @param E is an entry, subprogram or task
    --  @return the body entity for the given entry/subprogram/task.
    --    This is a wrapper around Entry_Body_Entity, Subprogram_Body_Entity
@@ -1013,7 +1035,7 @@ package SPARK_Util is
         Post => Nkind (Get_Called_Entity'Result) in N_Entity and then
                 Ekind (Get_Called_Entity'Result) in E_Function  |
                                                     E_Procedure |
-                                                    E_Entry;
+                                                    Entry_Kind;
    --  @param N a call statement
    --  @return the subprogram or entry called
 
