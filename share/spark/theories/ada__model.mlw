@@ -138,7 +138,7 @@ module Static_Modular_64
 
   axiom coerce_axiom :
     forall x : rep_type [to_rep (of_rep x)].
-      to_rep (of_rep x) = x
+      in_range x -> to_rep (of_rep x) = x
 end
 
 module Static_Modular_lt32
@@ -171,7 +171,7 @@ module Static_Modular_32
 
   axiom coerce_axiom :
     forall x : rep_type [to_rep (of_rep x)].
-      to_rep (of_rep x) = x
+      in_range x -> to_rep (of_rep x) = x
 end
 
 module Static_Modular_lt16
@@ -204,7 +204,7 @@ module Static_Modular_16
 
   axiom coerce_axiom :
     forall x : rep_type [to_rep (of_rep x)].
-      to_rep (of_rep x) = x
+      in_range x -> to_rep (of_rep x) = x
 end
 
 module Static_Modular_lt8
@@ -237,7 +237,7 @@ module Static_Modular_8
 
   axiom coerce_axiom :
     forall x : rep_type [to_rep (of_rep x)].
-      to_rep (of_rep x) = x
+      in_range x -> to_rep (of_rep x) = x
 end
 
 module Dynamic_Discrete
