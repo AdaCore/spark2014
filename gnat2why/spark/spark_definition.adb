@@ -124,6 +124,8 @@ package body SPARK_Definition is
    --  messages when a violation is encountered.
 
    Current_Protected_Type : Entity_Id := Empty;
+   --  Set to protected type entity when marking inside the type to detect
+   --  internal calls.
 
    Current_Delayed_Aspect_Type : Entity_Id := Empty;
    --  When processing delayed aspect type (e.g. Predicate) this is set to the
