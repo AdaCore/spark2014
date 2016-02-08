@@ -4399,10 +4399,11 @@ package body SPARK_Definition is
    begin
       if Present (Pragma_Argument_Associations (N)) then
          Arg1 := First (Pragma_Argument_Associations (N));
-
-         if Present (Arg1) then
-            Arg2 := Next (Arg1);
-         end if;
+         pragma Assert (Present (Arg1));
+         Arg2 := Next (Arg1);
+      else
+         Arg1 := Empty;
+         Arg2 := Empty;
       end if;
 
       case Prag_Id is
@@ -4457,11 +4458,16 @@ package body SPARK_Definition is
                Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);
             end if;
 
-         --  Need to mark the expression of a pragma Attach_Handler and
-         --  Priority
+         when Pragma_Attach_Handler =>
+            Mark (Expression (Arg1));
 
-         when Pragma_Attach_Handler |
-              Pragma_Priority        =>
+         when Pragma_Interrupt_Priority =>
+            --  Priority expression is it is optional
+            if Present (Arg1) then
+               Mark (Expression (Arg1));
+            end if;
+
+         when Pragma_Priority =>
             Mark (Expression (Arg1));
 
          when Unknown_Pragma =>
@@ -4733,7 +4739,6 @@ package body SPARK_Definition is
            Pragma_Remote_Call_Interface          |
            Pragma_Remote_Types                   |
            Pragma_Shared_Passive                 |
-           Pragma_Interrupt_Priority             |
            Pragma_Lock_Free                      |
            Pragma_Storage_Size                   =>
 

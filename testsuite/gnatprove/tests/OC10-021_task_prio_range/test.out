@@ -1,3 +1,2 @@
 task_int_prio.adb:7:19: info: initialization of "X" proved
 task_int_prio.ads:5:14: info: nontermination of task proved
-task_int_prio.ads:7:07: warning: pragma "Interrupt_Priority" ignored (not yet supported)
