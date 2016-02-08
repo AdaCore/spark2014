@@ -4094,13 +4094,12 @@ package body Flow.Control_Flow_Graph is
       CM.Include (Union_Id (N), Trivial_Connection (V));
 
       --  We make a note of 'Loop_Entry uses.
-      case Get_Pragma_Id (N) is
-         when Pragma_Check | Pragma_Loop_Variant | Pragma_Loop_Invariant =>
-            Add_Loop_Entry_References (N);
-
-         when others =>
-            null;
-      end case;
+      if Get_Pragma_Id (N) in Pragma_Check          |
+                              Pragma_Loop_Variant   |
+                              Pragma_Loop_Invariant
+      then
+         Add_Loop_Entry_References (N);
+      end if;
 
    end Do_Pragma;
 
