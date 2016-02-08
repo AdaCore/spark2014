@@ -3887,19 +3887,19 @@ package body SPARK_Definition is
                else Parent (E));
 
          begin
-            if Present (Parent (Decl))
-              and then Nkind (Parent (Decl)) = N_Package_Specification
-            then
+            pragma Assert (Present (Parent (Decl)));
+
+            if Nkind (Parent (Decl)) = N_Package_Specification then
                declare
                   Pack_Decl : constant Node_Id := Parent (Parent (Decl));
-               begin
-
                   pragma Assert (Nkind (Pack_Decl) = N_Package_Declaration);
 
+                  Pack_Ent : constant Entity_Id := Defining_Entity (Pack_Decl);
+               begin
                   Current_SPARK_Pragma :=
                     (if In_Private_Declarations (Decl)
-                     then SPARK_Aux_Pragma (Defining_Entity (Pack_Decl))
-                     else SPARK_Pragma (Defining_Entity (Pack_Decl)));
+                     then SPARK_Aux_Pragma (Pack_Ent)
+                     else SPARK_Pragma (Pack_Ent));
                end;
             end if;
          end;
