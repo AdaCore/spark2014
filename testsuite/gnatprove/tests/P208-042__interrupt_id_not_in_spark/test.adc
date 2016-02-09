@@ -1,0 +1,2 @@
+pragma Profile (Ravenscar);
+pragma Partition_Elaboration_Policy (Sequential);

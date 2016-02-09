@@ -4459,7 +4459,9 @@ package body SPARK_Definition is
             end if;
 
          when Pragma_Attach_Handler =>
-            Mark (Expression (Arg1));
+            --  Arg1 is the handler name and it can be not in SPARK;
+            --  Arg2 is the interrupt ID.
+            Mark (Expression (Arg2));
 
          when Pragma_Interrupt_Priority =>
             --  Priority expression is it is optional
