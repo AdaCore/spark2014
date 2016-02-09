@@ -3458,10 +3458,10 @@ package body SPARK_Util is
    function Get_Body (E : Entity_Id) return Node_Id is
    begin
       return (case Ekind (E) is
-              when E_Entry => Entry_Body (E),
-              when E_Task_Type => Task_Body (E),
+              when Entry_Kind      => Entry_Body (E),
+              when E_Task_Type     => Task_Body (E),
               when Subprogram_Kind => Subprogram_Body (E),
-              when others => raise Program_Error);
+              when others          => raise Program_Error);
    end Get_Body;
 
    ---------------------
