@@ -46,7 +46,7 @@ dynamicsaturateassert.adb:71:07: info: assertion proved
 dynamicsaturateassert.ads:23:08: info: initialization of "Saturated_Value" proved
 errorexample.adb:28:07: info: assertion proved
 errorexample.adb:38:65: info: division check proved
-errorexample.adb:47:07: info: assertion proved
+errorexample.adb:47:22: medium: assertion might fail, cannot prove Long_Float (Abs_out1)) <= (0.01
 errorexample.adb:47:35: info: initialization of "Abs_out1" proved
 errorexample.adb:47:35: info: range check proved
 errorexample.adb:52:25: info: initialization of "Abs_out1" proved
@@ -54,6 +54,14 @@ errorexample.ads:22:08: info: initialization of "Relative_Error" proved
 errorexample.ads:26:14: info: initialization of "Relative_Error" proved
 errorexample.ads:26:14: info: postcondition proved
 errorexample.ads:26:77: info: division check proved
+errorexamplefloat.adb:29:07: info: assertion proved
+errorexamplefloat.adb:39:43: info: overflow check proved
+errorexamplefloat.adb:39:65: info: division check proved
+errorexamplefloat.adb:39:65: info: overflow check proved
+errorexamplefloat.adb:48:22: medium: assertion might fail, cannot prove Abs_out1) <= (0.01
+errorexamplefloat.adb:48:23: info: initialization of "Abs_out1" proved
+errorexamplefloat.adb:53:25: info: initialization of "Abs_out1" proved
+errorexamplefloat.ads:21:08: info: initialization of "Relative_Error" proved
 simulink_functions.adb:48:04: warning: types for unchecked conversion have different sizes
 simulink_functions.adb:50:04: warning: types for unchecked conversion have different sizes
 simulink_functions.adb:52:04: warning: types for unchecked conversion have different sizes
