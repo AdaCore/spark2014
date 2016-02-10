@@ -5378,59 +5378,59 @@ package body SPARK_Definition is
        --  Otherwise there is no applicable pragma, so SPARK_Mode is None
      ));
 
-      --------------------------
-      -- SPARK_Pragma_Of_Type --
-      --------------------------
+   --------------------------
+   -- SPARK_Pragma_Of_Type --
+   --------------------------
 
-      function SPARK_Pragma_Of_Type (E : Entity_Id) return Node_Id is
-         Def : Entity_Id := E;
-         --  Entity which defines type E
+   function SPARK_Pragma_Of_Type (E : Entity_Id) return Node_Id is
+      Def : Entity_Id := E;
+      --  Entity which defines type E
 
-         Def_Scop : Entity_Id := Scope (E);
-         --  Immediate scope of entity that defines E
+      Def_Scop : Entity_Id := Scope (E);
+      --  Immediate scope of entity that defines E
 
-         subtype SPARK_Pragma_Scope_With_Type_Decl is Entity_Kind
-           with Static_Predicate =>
-                  SPARK_Pragma_Scope_With_Type_Decl in
-                     E_Entry           |
-                     E_Entry_Family    |
-                     E_Function        |
-                     E_Package         |
-                     E_Package_Body    |
-                     E_Procedure       |
-                     E_Subprogram_Body |
-                     E_Task_Body;
+      subtype SPARK_Pragma_Scope_With_Type_Decl is Entity_Kind
+        with Static_Predicate =>
+               SPARK_Pragma_Scope_With_Type_Decl in
+                  E_Entry           |
+                  E_Entry_Family    |
+                  E_Function        |
+                  E_Package         |
+                  E_Package_Body    |
+                  E_Procedure       |
+                  E_Subprogram_Body |
+                  E_Task_Body;
 
-      begin
-         while Ekind (Def_Scop) not in SPARK_Pragma_Scope_With_Type_Decl
-         loop
-            Def := Def_Scop;
-            Def_Scop := Scope (Def_Scop);
-         end loop;
+   begin
+      while Ekind (Def_Scop) not in SPARK_Pragma_Scope_With_Type_Decl
+      loop
+         Def := Def_Scop;
+         Def_Scop := Scope (Def_Scop);
+      end loop;
 
-         case Ekind (Def_Scop) is
-            when E_Package =>
-               if List_Containing (Parent (Def)) =
-                 Private_Declarations (Specification (Package_Spec (Def_Scop)))
-               then
-                  return SPARK_Aux_Pragma (Def_Scop);
-               end if;
+      case Ekind (Def_Scop) is
+         when E_Package =>
+            if List_Containing (Parent (Def)) =
+              Private_Declarations (Specification (Package_Spec (Def_Scop)))
+            then
+               return SPARK_Aux_Pragma (Def_Scop);
+            end if;
 
-            when E_Package_Body =>
-               if List_Containing (Parent (Def)) =
-                 Statements (
-                   Handled_Statement_Sequence (Package_Body (Def_Scop)))
-               then
-                  return SPARK_Aux_Pragma (Def_Scop);
-               end if;
+         when E_Package_Body =>
+            if List_Containing (Parent (Def)) =
+              Statements (
+                Handled_Statement_Sequence (Package_Body (Def_Scop)))
+            then
+               return SPARK_Aux_Pragma (Def_Scop);
+            end if;
 
-            when others =>
-               null;
-         end case;
+         when others =>
+            null;
+      end case;
 
-         return SPARK_Pragma (Def_Scop);
+      return SPARK_Pragma (Def_Scop);
 
-      end SPARK_Pragma_Of_Type;
+   end SPARK_Pragma_Of_Type;
 
    --------------------------
    -- Register_Task_Object --
