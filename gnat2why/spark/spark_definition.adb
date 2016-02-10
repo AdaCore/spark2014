@@ -5349,7 +5349,8 @@ package body SPARK_Definition is
    ----------------------------------
 
    procedure Mark_Most_Underlying_Type_In_SPARK
-     (Id : Entity_Id; N : Node_Id)
+     (Id : Entity_Id;
+      N  : Node_Id)
    is
       Typ : constant Entity_Id := Retysp (Id);
    begin
