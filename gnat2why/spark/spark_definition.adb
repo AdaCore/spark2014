@@ -3799,8 +3799,10 @@ package body SPARK_Definition is
                                 Current_SPARK_Pragma;
                            begin
                               Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
-                              Mark_Stmt_Or_Decl_List
-                                (Private_Declarations (Type_Def));
+                              if not SPARK_Pragma_Is (Opt.Off) then
+                                 Mark_Stmt_Or_Decl_List
+                                   (Private_Declarations (Type_Def));
+                              end if;
                               Current_SPARK_Pragma := Save_SPARK_Pragma;
                            end;
                         end if;
