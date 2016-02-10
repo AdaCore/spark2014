@@ -2310,20 +2310,19 @@ package body Flow.Analysis is
                V_Error := Vertex;
          end case;
 
-         case Kind is
-            when Init =>
-               Msg := To_Unbounded_String ("initialization of & proved");
-            when Unknown =>
-               Msg := (if Default_Init
-                       then To_Unbounded_String
-                              ("input value of & might be used")
-                       else To_Unbounded_String ("& might not be "));
-            when Err =>
-               Msg := (if Default_Init
-                       then To_Unbounded_String
-                              ("input value of & will be used")
-                       else To_Unbounded_String ("& is not "));
-         end case;
+         Msg :=
+           To_Unbounded_String
+             ((case Kind is
+                  when Init =>
+                     "initialization of & proved",
+                  when Unknown =>
+                     (if Default_Init
+                      then "input value of & might be used"
+                      else "& might not be "),
+                  when Err =>
+                     (if Default_Init
+                      then "input value of & will be used"
+                      else "& is not ")));
 
          case Kind is
             when Unknown | Err =>
