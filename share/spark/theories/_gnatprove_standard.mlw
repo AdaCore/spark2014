@@ -178,6 +178,7 @@ module Floating
 
   use import int.Int
   constant one : t
+  predicate is_finite t
 
   function ( * ) t t : t
 
@@ -191,8 +192,43 @@ module Floating
 
   axiom Power_neg1 : forall x : t. is_finite x -> power x (-1) = div one x
 
+  (* next/prev representable  *)
 
+  (* nothing in smtlib, find an encoding ? *)
 
+  (* Next and previous representable reals. The functions return respectively
+     the representable real greater than or lower than the argument x, which
+     may or not be representable. *)
+
+  constant max_value : t
+  function neg t : t
+
+  function next_representable (x : t) : t
+  function prev_representable (x : t) : t
+
+  (* Note that Succ (-0) > +0 *)
+
+  (* need to guard with is_finite since the axiom cannot hold when x is NaN *)
+  axiom next_representable_def :
+    forall x : t [next_representable x]. is_finite x -> gt (next_representable x) x
+
+  axiom prev_representable_def :
+    forall x : t [prev_representable x]. is_finite x -> lt (prev_representable x) x
+
+  (* does not need is finite since gt y x implies that neither x or y is NaN *)
+  axiom next_representable_def2 :
+    forall x y : t. gt y x -> ge y (next_representable x)
+
+  axiom prev_representable_def2 :
+    forall x y : t. lt y x -> le y (prev_representable x)
+
+  axiom next_representable_finite :
+    forall x : t [is_finite (next_representable x)].
+      is_finite x -> not (eq x max_value) -> is_finite (next_representable x)
+
+  axiom prev_representable_finite :
+    forall x : t [is_finite (prev_representable x)].
+      is_finite x -> not (eq x (neg max_value)) -> is_finite (prev_representable x)
 
 end
 
@@ -208,8 +244,11 @@ module Float32
     predicate eq = eq,
     function div = div,
     function rem = rem,
+    function neg = neg,
     constant zeroF = zeroF,
     constant one = oneF,
+    constant max_value = max_value,
+    predicate is_finite = is_finite,
     function ( * ) = mul
 
   type t__ref = { mutable t__content "model_trace:" : t }
@@ -227,8 +266,11 @@ module Float64
     predicate eq = eq,
     function div = div,
     function rem = rem,
+    function neg = neg,
     constant zeroF = zeroF,
     constant one = oneF,
+    constant max_value = max_value,
+    predicate is_finite = is_finite,
     function ( * ) = mul
 
   type t__ref = { mutable t__content "model_trace:" : t }

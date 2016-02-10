@@ -750,8 +750,6 @@ package body Why.Gen.Names is
               WNE_Attr_Length_4 |
               WNE_Attr_Image  |
               WNE_Attr_Value |
-              WNE_Float_Pred |
-              WNE_Float_Succ |
               WNE_Attr_Modulus |
               WNE_Fixed_Point_Div |
               WNE_Fixed_Point_Div_Int |

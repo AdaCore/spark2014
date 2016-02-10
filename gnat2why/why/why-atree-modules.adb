@@ -1194,6 +1194,16 @@ package body Why.Atree.Modules is
                            Domain => EW_Term,
                            Symbol => NID ("neq"),
                            Typ    => EW_Bool_Type);
+         M_Floats (Fl).Prev_Rep :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("prev_representable"),
+                           Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Next_Rep :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("next_representable"),
+                           Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV8 :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
@@ -1845,27 +1855,6 @@ package body Why.Atree.Modules is
                         Module => M,
                         Domain => EW_Term,
                         Typ    => EW_Int_Type));
-               end if;
-
-               --  symbols for floating point types
-               --  clem to clem : demander à johannes si il faut utiliser ça
-               --  ou ajouter des element dans M_Floating_Type /!\
-
-               if Is_Floating_Point_Type (E) then
-                  Insert_Symbol
-                    (E, WNE_Float_Pred,
-                     New_Identifier
-                       (Symbol => NID ("prev_representable"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => Base));
-                  Insert_Symbol
-                    (E, WNE_Float_Succ,
-                     New_Identifier
-                       (Symbol => NID ("next_representable"),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => Base));
                end if;
             end;
 

@@ -243,10 +243,6 @@ package Why.Gen.Names is
       WNE_Fixed_Point_Mult,
       WNE_Fixed_Point_Mult_Int,
 
-      --  Predecessor and successor functions for a floating-point type
-      WNE_Float_Pred,
-      WNE_Float_Succ,
-
       WNE_Index_Dynamic_Property,
       WNE_Index_Dynamic_Property_2,
       WNE_Index_Dynamic_Property_3,

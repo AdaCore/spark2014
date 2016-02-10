@@ -8087,9 +8087,9 @@ package body Gnat2Why.Expr is
                   W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
                   Oper : constant W_Identifier_Id :=
                     (if Attr_Id = Attribute_Pred then
-                        E_Symb (Etype (Var), WNE_Float_Pred)
+                        MF_Floats (W_Type).Prev_Rep
                      else
-                       E_Symb (Etype (Var), WNE_Float_Succ));
+                        MF_Floats (W_Type).Next_Rep);
                   Arg : constant W_Expr_Id :=
                     Transform_Expr (First (Expressions (Expr)),
                                     W_Type,
@@ -13655,6 +13655,8 @@ package body Gnat2Why.Expr is
          begin
             Output.Set_Special_Output (Output_Result'Unrestricted_Access);
             UR_Write (U);
+            --  /!\ clem use Yannick function instead of this one !
+            --      or check that it provide good output for all litterals
             Output.Write_Eol;
             Output.Cancel_Special_Output;
             return Result (1 .. Last);

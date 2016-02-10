@@ -180,6 +180,8 @@ package Why.Atree.Modules is
       Gt           : W_Identifier_Id;
       Eq           : W_Identifier_Id;
       Neq          : W_Identifier_Id;
+      Next_Rep     : W_Identifier_Id;
+      Prev_Rep     : W_Identifier_Id;
       Of_BV8       : W_Identifier_Id;
       Of_BV16      : W_Identifier_Id;
       Of_BV32      : W_Identifier_Id;
