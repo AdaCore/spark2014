@@ -4467,7 +4467,7 @@ package body SPARK_Definition is
             Mark (Expression (Arg2));
 
          when Pragma_Interrupt_Priority =>
-            --  Priority expression is it is optional
+            --  Priority expression is optional
             if Present (Arg1) then
                Mark (Expression (Arg1));
             end if;
@@ -4813,6 +4813,8 @@ package body SPARK_Definition is
          S_Wide_Wide_String    => True,
 
          S_Duration            => True);
+
+   --  Start of processing for Mark_Standard_Package
 
    begin
       Initialize;
