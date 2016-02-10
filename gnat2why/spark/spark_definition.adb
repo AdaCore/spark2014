@@ -5176,16 +5176,16 @@ package body SPARK_Definition is
    -----------------------------
 
    procedure Mark_Subtype_Indication (N : Node_Id) is
-      T    : constant Entity_Id := (if Nkind (N) = N_Subtype_Indication
-                                    then Etype (Subtype_Mark (N))
-                                    else Etype (N));
+      T    : constant Entity_Id := Etype (if Nkind (N) = N_Subtype_Indication
+                                          then Subtype_Mark (N)
+                                          else N);
       Cstr : Node_Id;
 
    begin
       --  Check that the base type is in SPARK
 
       if not In_SPARK (T) then
-         Mark_Violation (N, From => T);
+         Mark_Violation (N, From => T); -- ?? N? similar below
       end if;
 
       if Nkind (N) = N_Subtype_Indication then
