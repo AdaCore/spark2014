@@ -7,7 +7,7 @@ package Interrupt_Handler_With_Current_Task with SPARK_Mode is
    protected type PT is
       entry Wait_For_SIGINT;
    private
-      procedure Handle;
+      procedure Handle with SPARK_Mode => Off;
       --  pragma Interrupt_Handler (Handle);
       pragma Attach_Handler (Handle, P.Bad_Interrupt_ID_Ptr.all); --Ada.Interrupts.Names.SIGINT);
       Received : Boolean := False;

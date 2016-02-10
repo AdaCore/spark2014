@@ -4053,21 +4053,19 @@ package body SPARK_Definition is
                Mark_Violation (N, From => E);
             end if;
 
-         when Named_Kind =>
+         --  Subprogram names appear for example in Sub'Result
+
+         when Entry_Kind  |
+              E_Function  |
+              E_Procedure |
+              Named_Kind  |
+              Type_Kind   =>
             if not In_SPARK (E) then
                Mark_Violation (N, From => E);
             end if;
-
-         when Type_Kind =>
-            if not In_SPARK (E) then
-               Mark_Violation (N, From => E);
-            end if;
-
-            --  Subprogram name appears for example in Sub'Result
 
          when E_Void                  |
               E_Enumeration_Literal   |
-              Subprogram_Kind         |
               E_Block                 |
               Generic_Subprogram_Kind |
               E_Generic_Package       |
@@ -4080,22 +4078,23 @@ package body SPARK_Definition is
               E_Exception             =>
             null;
 
-            --  Abstract state entities are passed directly to Mark_Entity
+         --  Abstract state entities are passed directly to Mark_Entity
 
          when E_Abstract_State =>
             raise Program_Error;
 
-            --  Entry name appears for example in Sub'Caller
+         --  ??? how about Protected_Object'Size?
 
-         when E_Entry =>
-            null;
-
-         when E_Entry_Family          |
-              E_Entry_Index_Parameter |
+         when E_Entry_Index_Parameter |
               E_Protected_Object      |
               E_Protected_Body        |
               E_Task_Body             =>
             Mark_Violation ("tasking", N);
+
+         --  Entities that we do not expect in SPARK
+
+         when E_Operator =>
+            raise Program_Error;
       end case;
    end Mark_Identifier_Or_Expanded_Name;
 
@@ -4459,8 +4458,10 @@ package body SPARK_Definition is
             end if;
 
          when Pragma_Attach_Handler =>
-            --  Arg1 is the handler name and it can be not in SPARK;
+            --  Arg1 is the handler name; check if it is in SPARK, because
+            --  SPARK code should not reference non-SPARK code.
             --  Arg2 is the interrupt ID.
+            Mark (Expression (Arg1));
             Mark (Expression (Arg2));
 
          when Pragma_Interrupt_Priority =>
