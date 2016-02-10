@@ -793,11 +793,8 @@ package body SPARK_Definition is
          --  We only call Check_Loop_Invariant_Placement on nested list of
          --  statements if an invariant has been found.
 
-         N          : Node_Id;
       begin
-
-         for Cur in reverse Loop_Stmts.Iterate loop
-            N := Element (Cur);
+         for N of reverse Loop_Stmts loop
 
             if not Inv_Found then
 
