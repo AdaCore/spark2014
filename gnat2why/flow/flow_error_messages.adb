@@ -336,6 +336,8 @@ package body Flow_Error_Messages is
             E         => E,
             Tracefile => Tracefile,
             Msg_Id    => Msg_Id);
+      else
+         Suppressed := True;
       end if;
    end Error_Msg_Flow;
 
