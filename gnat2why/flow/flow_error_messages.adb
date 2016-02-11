@@ -250,7 +250,7 @@ package body Flow_Error_Messages is
       Unb_Msg : constant Unbounded_String :=
         To_Unbounded_String (Msg3 &
                              Source_Ptr'Image (Slc) &
-                             Msg_Severity_To_String (Severity));
+                             Integer'Image (Msg_Severity'Pos (Severity)));
 
       function Is_Specified_Line return Boolean;
       --  Returns True if command line argument "--limit-line" was not
