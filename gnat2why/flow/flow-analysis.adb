@@ -2433,7 +2433,7 @@ package body Flow.Analysis is
 
          if Consider_Vertex (V) then
             --  For each variable read...
-            --  ??? workaround for OB26-003: explicitly call Element
+            --  ??? workaround for OC18-017: explicitly call Element
             for Var_Read of FA.Atr.Element (V).Variables_Used loop
                Is_Uninitialized := False;
                Is_Initialized   := False;
