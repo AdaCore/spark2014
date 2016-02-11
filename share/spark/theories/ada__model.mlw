@@ -785,20 +785,18 @@ module Dynamic_Floating_Point
 end
 
 theory Finite_Float_Literal
-
   type t                        (* either Float32 or Float64 *)
-  type bv                       (* either BV32 or BV64 *)
   (* don't use BV32/64 but just map it in the driver to not have the
      whole theory systematically ? *)
 
-  function from_bv bv : t
+  function from_bv int : t
   function to_real t  : real
 
   predicate is_finite t
 
   constant l : t                (* the constant representing the literal *)
 
-  constant binary_rep  : bv        (* it's binary representation *)
+  constant binary_rep  : int        (* it's binary representation *)
 
   constant decimal_rep : real      (* it's decimal representation *)
 
@@ -807,7 +805,24 @@ theory Finite_Float_Literal
   axiom l_bin : l = from_bv binary_rep
 
   axiom l_is_finite : is_finite l
+end
 
+theory Finite_Float32_Literal
+  use "_gnatprove_standard".Float32
+
+  clone export Finite_Float_Literal with
+    type t = Float32.t,
+    predicate is_finite = Float32.is_finite,
+    function to_real = Float32.to_real
+end
+
+theory Finite_Float64_Literal
+  use "_gnatprove_standard".Float64
+
+  clone export Finite_Float_Literal with
+    type t = Float64.t,
+    predicate is_finite = Float64.is_finite,
+    function to_real = Float64.to_real
 end
 
 (* The following modules are templates for unconstrained and constrained array

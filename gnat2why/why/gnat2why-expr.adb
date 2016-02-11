@@ -13664,9 +13664,9 @@ package body Gnat2Why.Expr is
 
          Decl_File : W_Section_Id renames WF_Float_Literals;
 
-         Bv_Typ : constant W_Type_Id := (if Ty = EW_Float_32_Type
-                                         then EW_BitVector_32_Type
-                                         else EW_BitVector_64_Type);
+--           Bv_Typ : constant W_Type_Id := (if Ty = EW_Float_32_Type
+--                                           then EW_BitVector_32_Type
+--                                           else EW_BitVector_64_Type);
 
          Module : constant W_Module_Id :=
            New_Module (File => No_Name,
@@ -13679,7 +13679,7 @@ package body Gnat2Why.Expr is
          Dec_Rep_Id : constant W_Identifier_Id :=
            New_Identifier (Name => "decimal_rep");
 
-         Subst : W_Clone_Substitution_Array (1 .. 7);
+         Subst : W_Clone_Substitution_Array (1 .. 2);
 
       begin
          Literal_Id := New_Identifier (Domain => EW_Term,
@@ -13701,44 +13701,43 @@ package body Gnat2Why.Expr is
                         else "")
                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-         Subst (1) := New_Clone_Substitution
-           (Kind      => EW_Type_Subst,
-            Orig_Name => New_Name (Symbol => NID ("t")),
-            Image     => Get_Name (Ty));
+--           Subst (1) := New_Clone_Substitution
+--             (Kind      => EW_Type_Subst,
+--              Orig_Name => New_Name (Symbol => NID ("t")),
+--              Image     => Get_Name (Ty));
 
-         Subst (2) := New_Clone_Substitution
-           (Kind      => EW_Type_Subst,
-            Orig_Name => New_Name (Symbol => NID ("bv")),
-            Image     => Get_Name (Bv_Typ));
+--           Subst (2) := New_Clone_Substitution
+--             (Kind      => EW_Type_Subst,
+--              Orig_Name => New_Name (Symbol => NID ("bv")),
+--              Image     => Get_Name (Bv_Typ));
 
-         Subst (3) := New_Clone_Substitution
-           (Kind      => EW_Function,
-            Orig_Name => New_Name (Symbol => NID ("from_bv")),
-            Image     => New_Name (Symbol => NID ("from_bv"),
-                                   Module => MF_Floats (Ty).Module));
+--           Subst (3) := New_Clone_Substitution
+--             (Kind      => EW_Function,
+--              Orig_Name => New_Name (Symbol => NID ("from_bv")),
+--              Image     => New_Name (Symbol => NID ("from_bv"),
+--                                     Module => MF_Floats (Ty).Module));
 
-         Subst (4) := New_Clone_Substitution
-           (Kind      => EW_Function,
-            Orig_Name => New_Name (Symbol => NID ("to_real")),
-            Image     => New_Name (Symbol => NID ("to_real"),
-                                   Module => MF_Floats (Ty).Module));
+--           Subst (1) := New_Clone_Substitution
+--             (Kind      => EW_Function,
+--              Orig_Name => New_Name (Symbol => NID ("to_real")),
+--              Image     => New_Name (Symbol => NID ("to_real")));
 
-         Subst (5) := New_Clone_Substitution
-           (Kind      => EW_Predicate,
-            Orig_Name => New_Name (Symbol => NID ("is_finite")),
-            Image     => Get_Name (MF_Floats (Ty).Is_Finite));
+--           Subst (2) := New_Clone_Substitution
+--             (Kind      => EW_Predicate,
+--              Orig_Name => New_Name (Symbol => NID ("is_finite")),
+--              Image     => Get_Name (MF_Floats (Ty).Is_Finite));
 
          Emit (Decl_File,
                Why.Atree.Builders.New_Function_Decl
                  (Domain  => EW_Term,
                   Name    => Bin_Rep_Id,
                   Binders => (1 .. 0 => <>),
-                  Return_Type => Bv_Typ,
                   Labels  => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type,
                   Def     => W_Expr_Id (Cast_Real_Literal (E  => E,
                                                            Ty => Ty))));
 
-         Subst (6) := New_Clone_Substitution
+         Subst (1) := New_Clone_Substitution
            (Kind      => EW_Function,
             Orig_Name => Get_Name (Bin_Rep_Id),
             Image     => Get_Name (Bin_Rep_Id));
@@ -13753,7 +13752,7 @@ package body Gnat2Why.Expr is
                                                 Value    => Realval (E)),
                   Return_Type => EW_Real_Type));
 
-         Subst (7) := New_Clone_Substitution
+         Subst (2) := New_Clone_Substitution
            (Kind      => EW_Function,
             Orig_Name => Get_Name (Dec_Rep_Id),
             Image     => Get_Name (Dec_Rep_Id));
@@ -13764,7 +13763,10 @@ package body Gnat2Why.Expr is
                New_Clone_Declaration (Theory_Kind   => EW_Theory,
                                       Clone_Kind    => EW_Export,
                                       As_Name       => No_Name,
-                                      Origin        => Finite_Float_Literal,
+                                      Origin        =>
+                                        (if Ty = EW_Float_32_Type
+                                         then Finite_Float32_Literal
+                                         else Finite_Float64_Literal),
                                       Substitutions => Subst));
 
          Close_Theory (Decl_File,

@@ -282,10 +282,14 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Dynamic_Floating_Point"));
-      Finite_Float_Literal :=
+      Finite_Float32_Literal :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Finite_Float_Literal"));
+           Name => NID ("Finite_Float32_Literal"));
+      Finite_Float64_Literal :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("Finite_Float64_Literal"));
 
       Constr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,
@@ -1040,6 +1044,12 @@ package body Why.Atree.Modules is
    --------------------------
 
    procedure Init_Floating_Module is
+      Float32_BV_Converter : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float32_BV_Converter"));
+      Float64_BV_Converter : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float64_BV_Converter"));
    begin
       M_Floats (Float32).Module :=
         New_Module (File => Gnatprove_Standard_File,
@@ -1047,6 +1057,18 @@ package body Why.Atree.Modules is
       M_Floats (Float64).Module :=
         New_Module (File => Gnatprove_Standard_File,
                     Name => NID ("Float64"));
+      M_Floats (Float32).Power_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float32_power"));
+      M_Floats (Float64).Power_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float64_power"));
+      M_Floats (Float32).Next_Prev_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float32_next_prev"));
+      M_Floats (Float64).Next_Prev_Module :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Float64_next_prev"));
 
       for Fl in Floating_Kind loop
          M_Floats (Fl).T :=
@@ -1115,7 +1137,7 @@ package body Why.Atree.Modules is
                            Symbol => NID ("is_finite"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Power :=
-           New_Identifier (Module => M_Floats (Fl).Module,
+           New_Identifier (Module => M_Floats (Fl).Power_Module,
                            Domain => EW_Term,
                            Symbol => NID ("power"),
                            Typ    => M_Floats (Fl).T);
@@ -1195,52 +1217,68 @@ package body Why.Atree.Modules is
                            Symbol => NID ("neq"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Prev_Rep :=
-           New_Identifier (Module => M_Floats (Fl).Module,
+           New_Identifier (Module => M_Floats (Fl).Next_Prev_Module,
                            Domain => EW_Term,
                            Symbol => NID ("prev_representable"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Next_Rep :=
-           New_Identifier (Module => M_Floats (Fl).Module,
+           New_Identifier (Module => M_Floats (Fl).Next_Prev_Module,
                            Domain => EW_Term,
                            Symbol => NID ("next_representable"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV8 :=
-           New_Identifier (Module => M_Floats (Fl).Module,
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
                            Domain => EW_Term,
                            Symbol => NID ("of_ubv8"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV16 :=
-           New_Identifier (Module => M_Floats (Fl).Module,
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
                            Domain => EW_Term,
                            Symbol => NID ("of_ubv16"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV32 :=
-           New_Identifier (Module => M_Floats (Fl).Module,
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
                            Domain => EW_Term,
                            Symbol => NID ("of_ubv32"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV64 :=
-           New_Identifier (Module => M_Floats (Fl).Module,
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
                            Domain => EW_Term,
                            Symbol => NID ("of_ubv64"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).To_BV8 :=
-           New_Identifier (Module => M_Floats (Fl).Module,
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
                            Domain => EW_Term,
                            Symbol => NID ("to_ubv8"),
                            Typ    => EW_BitVector_8_Type);
          M_Floats (Fl).To_BV16 :=
-           New_Identifier (Module => M_Floats (Fl).Module,
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
                            Domain => EW_Term,
                            Symbol => NID ("to_ubv16"),
                            Typ    => EW_BitVector_16_Type);
          M_Floats (Fl).To_BV32 :=
-           New_Identifier (Module => M_Floats (Fl).Module,
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
                            Domain => EW_Term,
                            Symbol => NID ("to_ubv32"),
                            Typ    => EW_BitVector_32_Type);
          M_Floats (Fl).To_BV64 :=
-           New_Identifier (Module => M_Floats (Fl).Module,
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
                            Domain => EW_Term,
                            Symbol => NID ("to_ubv64"),
                            Typ    => EW_BitVector_64_Type);

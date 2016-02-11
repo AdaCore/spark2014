@@ -321,7 +321,7 @@ package Gnat2Why.Util is
 
    function Cast_Real_Literal
      (E  : Node_Id;
-      Ty : W_Type_Id) return W_Modular_Constant_Id
+      Ty : W_Type_Id) return W_Integer_Constant_Id
      with Pre => Why_Type_Is_Float (Ty)
      and Is_Floating_Point_Type (Etype (E));
    --  cast a real constant (litteral) into either a float32 or a float64,

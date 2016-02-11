@@ -636,7 +636,7 @@ package body Gnat2Why.Util is
    -------------------------
 
    function Cast_Real_Literal (E  : Node_Id;
-                               Ty : W_Type_Id) return W_Modular_Constant_Id
+                               Ty : W_Type_Id) return W_Integer_Constant_Id
    is
       function Ureal_To_Bitsream
         (Rval : Ureal;
@@ -843,13 +843,17 @@ package body Gnat2Why.Util is
       end Ureal_To_Bitsream;
 
    begin
-      return New_Modular_Constant (Ada_Node => E,
-                                   Value    => Ureal_To_Bitsream
-                                     (Rval => Realval (E),
-                                      Ty   => Ty),
-                                   Typ      => (if Ty = EW_Float_32_Type
-                                                then EW_BitVector_32_Type
-                                                else EW_BitVector_64_Type));
+      return New_Integer_Constant
+        (Ada_Node => E,
+         Value    => Ureal_To_Bitsream (Rval => Realval (E),
+                                        Ty   => Ty));
+--          New_Modular_Constant (Ada_Node => E,
+--                                     Value    => Ureal_To_Bitsream
+--                                       (Rval => Realval (E),
+--                                        Ty   => Ty),
+--                                     Typ      => (if Ty = EW_Float_32_Type
+--                                                  then EW_BitVector_32_Type
+--                                                else EW_BitVector_64_Type));
    end Cast_Real_Literal;
 
    -----------------------

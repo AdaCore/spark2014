@@ -134,6 +134,78 @@ module Int_Division
 
 end
 
+module Floating_power
+  (* power axiomatisation *)
+
+  type t
+
+  use import int.Int
+  constant one : t
+  predicate is_finite t
+  predicate is_zero t
+
+  function ( * ) t t   : t
+  function div   t t   : t
+  function power t int : t
+
+  axiom Power_0 : forall x: t. is_finite x -> power x 0 = one
+
+  lemma Power_1 : forall x : t. is_finite x -> power x 1 = x
+
+  axiom Power_2 : forall x : t. is_finite x -> power x 2 = x * x
+
+  axiom Power_neg1 : forall x : t. is_finite x -> not (is_zero x) -> power x (-1) = div one x
+end
+
+module Floating_next_prev
+  (* next/prev representable  *)
+
+  (* nothing in smtlib, find an encoding ? *)
+
+  (* Next and previous representable reals. The functions return respectively
+     the representable real greater than or lower than the argument x, which
+     may or not be representable. *)
+
+  type t
+
+  constant max_value : t
+  function neg t : t
+
+  predicate is_finite t
+  predicate eq t t
+  predicate lt t t
+  predicate le t t
+  predicate gt t t
+  predicate ge t t
+
+  function next_representable (x : t) : t
+  function prev_representable (x : t) : t
+
+  (* Note that Succ (-0) > +0 *)
+
+  (* need to guard with is_finite since the axiom cannot hold when x is NaN *)
+  axiom next_representable_def :
+    forall x : t [next_representable x]. is_finite x -> gt (next_representable x) x
+
+  axiom prev_representable_def :
+    forall x : t [prev_representable x]. is_finite x -> lt (prev_representable x) x
+
+  (* does not need is finite since gt y x implies that neither x or y is NaN *)
+  axiom next_representable_def2 :
+    forall x y : t. gt y x -> ge y (next_representable x)
+
+  axiom prev_representable_def2 :
+    forall x y : t. lt y x -> le y (prev_representable x)
+
+  axiom next_representable_finite :
+    forall x : t [is_finite (next_representable x)].
+      is_finite x -> not (eq x max_value) -> is_finite (next_representable x)
+
+  axiom prev_representable_finite :
+    forall x : t [is_finite (prev_representable x)].
+      is_finite x -> not (eq x (neg max_value)) -> is_finite (prev_representable x)
+end
+
 module Floating
   (* The rounding error on a floating-point operation can be bounded, see page 7 of
      paper "The pitfalls of verifying floating-point computations" by David Monniaux:
@@ -164,73 +236,70 @@ module Floating
   constant zeroF   : t
   function div t t : t
   function rem t t : t
-  function mod t t : t
 
   val div_ (x:t) (y:t) : t
-     requires { y <> zeroF }
+     requires { not (eq y zeroF) }
      ensures { result = div x y }
 
   val rem_ (x:t) (y:t) : t
-     requires { y <> zeroF }
+     requires { not (eq y zeroF) }
      ensures{ result = rem x y }
-
-  (* power axiomatisation *)
-
-  use import int.Int
-  constant one : t
-  predicate is_finite t
-
-  function ( * ) t t : t
-
-  function power t int : t
-
-  axiom Power_0 : forall x: t. is_finite x -> power x 0 = one
-
-  lemma Power_1 : forall x : t. is_finite x -> power x 1 = x
-
-  axiom Power_2 : forall x : t. is_finite x -> power x 2 = x * x
-
-  axiom Power_neg1 : forall x : t. is_finite x -> power x (-1) = div one x
-
-  (* next/prev representable  *)
-
-  (* nothing in smtlib, find an encoding ? *)
-
-  (* Next and previous representable reals. The functions return respectively
-     the representable real greater than or lower than the argument x, which
-     may or not be representable. *)
-
-  constant max_value : t
-  function neg t : t
-
-  function next_representable (x : t) : t
-  function prev_representable (x : t) : t
-
-  (* Note that Succ (-0) > +0 *)
-
-  (* need to guard with is_finite since the axiom cannot hold when x is NaN *)
-  axiom next_representable_def :
-    forall x : t [next_representable x]. is_finite x -> gt (next_representable x) x
-
-  axiom prev_representable_def :
-    forall x : t [prev_representable x]. is_finite x -> lt (prev_representable x) x
-
-  (* does not need is finite since gt y x implies that neither x or y is NaN *)
-  axiom next_representable_def2 :
-    forall x y : t. gt y x -> ge y (next_representable x)
-
-  axiom prev_representable_def2 :
-    forall x y : t. lt y x -> le y (prev_representable x)
-
-  axiom next_representable_finite :
-    forall x : t [is_finite (next_representable x)].
-      is_finite x -> not (eq x max_value) -> is_finite (next_representable x)
-
-  axiom prev_representable_finite :
-    forall x : t [is_finite (prev_representable x)].
-      is_finite x -> not (eq x (neg max_value)) -> is_finite (prev_representable x)
-
 end
+
+module Float32_power
+  use export float.Float32
+
+  clone export Floating_power with
+    type t = t,
+    function one = oneF,
+    function ( * ) = mul,
+    function div = div,
+    predicate is_finite = is_finite,
+    predicate is_zero = is_zero
+end
+
+module Float64_power
+  use export float.Float64
+
+  clone export Floating_power with
+    type t = t,
+    function one = oneF,
+    function ( * ) = mul,
+    function div = div,
+    predicate is_finite = is_finite,
+    predicate is_zero = is_zero
+end
+
+module Float32_next_prev
+  use export float.Float32
+
+  clone export Floating_next_prev with
+    type t = t,
+    function max_value = max_value,
+    function neg = neg,
+    predicate eq = eq,
+    predicate is_finite = is_finite,
+    predicate lt = lt,
+    predicate gt = gt,
+    predicate le = le,
+    predicate ge = ge
+end
+
+module Float64_next_prev
+  use export float.Float64
+
+  clone export Floating_next_prev with
+    type t = t,
+    function max_value = max_value,
+    function neg = neg,
+    predicate eq = eq,
+    predicate is_finite = is_finite,
+    predicate lt = lt,
+    predicate gt = gt,
+    predicate le = le,
+    predicate ge = ge
+end
+
 
 module Float32
   use export float.Float32
@@ -244,12 +313,7 @@ module Float32
     predicate eq = eq,
     function div = div,
     function rem = rem,
-    function neg = neg,
-    constant zeroF = zeroF,
-    constant one = oneF,
-    constant max_value = max_value,
-    predicate is_finite = is_finite,
-    function ( * ) = mul
+    constant zeroF = zeroF
 
   type t__ref = { mutable t__content "model_trace:" : t }
 end
@@ -266,12 +330,7 @@ module Float64
     predicate eq = eq,
     function div = div,
     function rem = rem,
-    function neg = neg,
-    constant zeroF = zeroF,
-    constant one = oneF,
-    constant max_value = max_value,
-    predicate is_finite = is_finite,
-    function ( * ) = mul
+    constant zeroF = zeroF
 
   type t__ref = { mutable t__content "model_trace:" : t }
 end
@@ -282,6 +341,13 @@ module FloatConv
   val range_check_ (f l x : Float64.t) : Float64.t
     requires { (Float64.le f x) /\ (Float64.le x l) }
     ensures { result = x }
+end
+
+module Float32_BV_Converter
+  use export float.Float32_BV_Converter
+end
+module Float64_BV_Converter
+  use export float.Float64_BV_Converter
 end
 
 module Boolean
