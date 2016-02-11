@@ -274,17 +274,20 @@ package body Flow_Error_Messages is
                      To_String (Gnat2Why_Args.Limit_Line);
       end Is_Specified_Line;
 
+      Dummy    : Unbounded_String_Sets.Cursor;
+      Inserted : Boolean;
+
    --  Start of processing for Error_Msg_Flow
 
    begin
       --  If the message we are about to emit has already been emitted
       --  in the past then do nothing.
 
-      if Flow_Msgs_Set.Contains (Unb_Msg) then
-         Suppressed := True;
-      else
-         Flow_Msgs_Set.Insert (Unb_Msg);
+      Flow_Msgs_Set.Insert (New_Item => Unb_Msg,
+                            Position => Dummy,
+                            Inserted => Inserted);
 
+      if Inserted then
          case Severity is
             when Warning_Kind =>
                Suppr := Warning_Is_Suppressed (N, Msg3, F1, F2, F3);
