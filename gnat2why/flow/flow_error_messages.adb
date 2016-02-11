@@ -50,8 +50,7 @@ with Stringt;                    use Stringt;
 package body Flow_Error_Messages is
 
    Flow_Msgs_Set : Unbounded_String_Sets.Set;
-   --  This set will contain flow related messages. It is used so as
-   --  to not emit duplicate messages.
+   --  Container with flow-related messages; used to prevent duplicate messages
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
    --  Transform the msg kind into a string, for the JSON output.
