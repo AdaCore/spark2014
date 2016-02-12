@@ -841,10 +841,9 @@ package body Flow_Error_Messages is
                                  --  'Result after its name
                                  if (Kind = "old"
                                        and then
-                                       Nkind_In
-                                         (Nkind (Parent (Part_Entity)),
-                                          N_Formal_Object_Declaration,
-                                          N_Parameter_Specification)
+                                       Nkind (Parent (Part_Entity)) in
+                                          N_Formal_Object_Declaration |
+                                          N_Parameter_Specification
                                        and then
                                        Out_Present (Parent (Part_Entity)))
                                    or else Kind = "result"
