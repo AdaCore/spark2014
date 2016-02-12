@@ -146,8 +146,8 @@ package body SPARK_Definition is
    --  compilation.
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean
-      with Global => (Input => (Current_SPARK_Pragma,
-                                Current_Delayed_Aspect_Type));
+   with Global => (Input => (Current_SPARK_Pragma,
+                             Current_Delayed_Aspect_Type));
    --  Returns True iff Current_SPARK_Pragma is not Empty, and corresponds to
    --  the given Mode.
 
@@ -691,9 +691,9 @@ package body SPARK_Definition is
                then "all"
                elsif Entity_Spec_In_SPARK (Id)
                then
-                  (if Ekind (Id) = E_Package and then No (Package_Body (Id))
-                   then "all"
-                   else "spec")
+                 (if Ekind (Id) = E_Package and then No (Package_Body (Id))
+                  then "all"
+                  else "spec")
                else "no");
          begin
             Set_Field (V, "spark", SPARK_Status);
@@ -751,7 +751,7 @@ package body SPARK_Definition is
       --  false for a normal aggregate.
 
       function Is_Update_Unconstr_Multidim_Aggr (Aggr : Node_Id) return Boolean
-        with Pre => Is_Update_Aggregate (N);
+      with Pre => Is_Update_Aggregate (N);
       --  Detect whether a 'Update aggregate is an update of an
       --  unconstrained multidimensional array.
 
@@ -1145,7 +1145,7 @@ package body SPARK_Definition is
                   declare
                      Iterable_Component_Assoc : constant List_Id :=
                        Component_Associations (Expression
-                                               (Iterable_Aspect));
+                                                 (Iterable_Aspect));
                      Iterable_Field : Node_Id :=
                        First (Iterable_Component_Assoc);
 
@@ -1274,7 +1274,7 @@ package body SPARK_Definition is
          when N_Quantified_Expression =>
             if Present (Loop_Parameter_Specification (N)) then
                Mark (Discrete_Subtype_Definition
-                      (Loop_Parameter_Specification (N)));
+                       (Loop_Parameter_Specification (N)));
             else
                Mark (Iterator_Specification (N));
             end if;
@@ -1431,8 +1431,8 @@ package body SPARK_Definition is
          when N_Subtype_Indication =>
             Mark_Subtype_Indication (N);
 
-         when N_Type_Conversion
-            | N_Unchecked_Type_Conversion =>
+         when N_Type_Conversion           |
+              N_Unchecked_Type_Conversion =>
 
             --  Source unchecked type conversion nodes were rewritten as such
             --  by SPARK_Rewrite.Rewrite_Call, keeping the original call to an
@@ -1448,9 +1448,9 @@ package body SPARK_Definition is
                   Orig_N : constant Node_Id := Original_Node (N);
                begin
                   pragma Assert (Nkind (Orig_N) = N_Function_Call
-                                  and then Is_Entity_Name (Name (Orig_N))
-                                  and then Is_Unchecked_Conversion_Instance
-                                    (Entity (Name (Orig_N))));
+                                   and then Is_Entity_Name (Name (Orig_N))
+                                   and then Is_Unchecked_Conversion_Instance
+                                     (Entity (Name (Orig_N))));
 
                   Mark (Orig_N);
                end;
@@ -1558,7 +1558,7 @@ package body SPARK_Definition is
                         else
                           Etype (Right_Opnd (Expr)))
                      else
-                        Etype (Expr));
+                       Etype (Expr));
                   Source_Root_Type : constant Entity_Id :=
                     Root_Type (Expr_Type);
                begin
@@ -1629,7 +1629,7 @@ package body SPARK_Definition is
                if Ekind (E) in E_Record_Type | E_Record_Subtype
                  and then Is_Tagged_Type (E)
                  and then (if Ekind (E) = E_Record_Subtype then
-                               not (Present (Cloned_Subtype (E))))
+                             not (Present (Cloned_Subtype (E))))
                then
 
                   --  Only mark the classwide type associated to a record type
@@ -1648,7 +1648,7 @@ package body SPARK_Definition is
                   --  Pick SPARK_Mode from the concurrent type definition
                   declare
                      Save_SPARK_Pragma : constant Node_Id :=
-                        Current_SPARK_Pragma;
+                       Current_SPARK_Pragma;
                   begin
                      Current_SPARK_Pragma := SPARK_Pragma (E);
                      Mark_Entity (E);
@@ -1681,7 +1681,7 @@ package body SPARK_Definition is
                         when N_Protected_Body =>
                            declare
                               Save_Protected_Type : constant Entity_Id :=
-                                 Current_Protected_Type;
+                                Current_Protected_Type;
                            begin
                               Current_Protected_Type := Spec;
 
@@ -1948,8 +1948,8 @@ package body SPARK_Definition is
                      return False;
                   end if;
 
-               when N_Null_Statement
-                  | N_Freeze_Entity =>
+               when N_Null_Statement |
+                    N_Freeze_Entity  =>
                   null;
 
                when N_Pragma =>
@@ -2084,8 +2084,7 @@ package body SPARK_Definition is
            Attribute_Wide_Wide_Image   |
            Attribute_Wide_Wide_Value   |
            Attribute_Wide_Wide_Width   |
-           Attribute_Width
-         =>
+           Attribute_Width             =>
             null;
 
          --  These attributes are supported, but generate a warning in
@@ -2098,8 +2097,7 @@ package body SPARK_Definition is
            Attribute_First_Bit      |
            Attribute_Last_Bit       |
            Attribute_Position       |
-           Attribute_Size
-         =>
+           Attribute_Size           =>
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
               and then Gnat2Why_Args.Pedantic
@@ -2299,10 +2297,10 @@ package body SPARK_Definition is
             --  Indirect calls are not in SPARK
             Mark_Violation
               ("call through access to " &
-               (case Nkind (N) is
-                  when N_Procedure_Call_Statement => "procedure",
-                  when N_Function_Call            => "function",
-                  when others                     => raise Program_Error),
+                 (case Nkind (N) is
+                     when N_Procedure_Call_Statement => "procedure",
+                     when N_Function_Call            => "function",
+                     when others                     => raise Program_Error),
                N);
 
             return;
@@ -2470,10 +2468,10 @@ package body SPARK_Definition is
 
                   Subp : Entity_Id renames Node_Maps.Key (Cur);
                   Expr : constant Node_Id :=
-                     Get_Expr_From_Check_Only_Proc (Subp);
+                    Get_Expr_From_Check_Only_Proc (Subp);
 
                   Save_Delayed_Aspect_Type : constant Entity_Id :=
-                     Current_Delayed_Aspect_Type;
+                    Current_Delayed_Aspect_Type;
 
                begin
                   pragma Assert (Present (First_Formal (Subp)));
@@ -2666,7 +2664,7 @@ package body SPARK_Definition is
                      declare
                         Param_Spec : Node_Id :=
                           First (Parameter_Specifications
-                                 (Subprogram_Specification (Id)));
+                                   (Subprogram_Specification (Id)));
                      begin
                         while Present (Param_Spec) loop
                            Entity_List.Append
@@ -2735,7 +2733,7 @@ package body SPARK_Definition is
                      declare
                         EActual : constant Entity_Id :=
                           (if Ekind (Entity (Actual)) = E_Function then
-                              Get_Renamed_Entity (Entity (Actual))
+                             Get_Renamed_Entity (Entity (Actual))
                            else Entity (Actual));
                      begin
                         if Ekind (EActual) /= E_Operator then
@@ -3047,7 +3045,7 @@ package body SPARK_Definition is
             then
                declare
                   Save_Protected_Type : constant Entity_Id :=
-                     Current_Protected_Type;
+                    Current_Protected_Type;
                begin
                   Current_Protected_Type := Scope (E);
                   Mark (Expr);
@@ -3086,7 +3084,7 @@ package body SPARK_Definition is
                   if Is_Protected_Type (Scope (E)) then
                      declare
                         Save_Protected_Type : constant Entity_Id :=
-                           Current_Protected_Type;
+                          Current_Protected_Type;
                      begin
                         Current_Protected_Type := Scope (E);
                         Mark (Conseq);
@@ -3347,7 +3345,7 @@ package body SPARK_Definition is
                   elsif Full_View_Not_In_SPARK (Utype) then
                      Full_Views_Not_In_SPARK.Insert
                        (E, Get_First_Ancestor_In_SPARK (Utype));
-                        Discard_Underlying_Type (E);
+                     Discard_Underlying_Type (E);
                   end if;
                end;
             end if;
@@ -3554,8 +3552,8 @@ package body SPARK_Definition is
                function Only_Factor_Is
                  (Num    : Uint;
                   Factor : Uint) return Boolean
-                 with Pre => UI_Gt (Num, Uint_0)
-                 and then UI_Gt (Factor, Uint_0);
+               with Pre => UI_Gt (Num, Uint_0) and then
+                           UI_Gt (Factor, Uint_0);
                --  Returns True if Num is a power of Factor
 
                --------------------
@@ -3986,7 +3984,7 @@ package body SPARK_Definition is
          if Ekind (E) in E_Protected_Type | E_Task_Type then
 
             pragma Assert
-               (Current_Concurrent_Insert_Pos /= Node_Lists.No_Element);
+              (Current_Concurrent_Insert_Pos /= Node_Lists.No_Element);
 
             Node_Lists.Next (Current_Concurrent_Insert_Pos);
 
@@ -4161,7 +4159,7 @@ package body SPARK_Definition is
       elsif Present (Loop_Parameter_Specification (N)) then
          pragma Assert (No (Condition_Actions (N)));
          Mark (Discrete_Subtype_Definition
-               (Loop_Parameter_Specification (N)));
+                 (Loop_Parameter_Specification (N)));
 
          --  The loop parameter shall be added to the entities in SPARK
          declare
@@ -4438,9 +4436,9 @@ package body SPARK_Definition is
          --  Do not issue a warning on invariant pragmas, as one is already
          --  issued on the corresponding type.
 
-         when Pragma_Invariant
-            | Pragma_Type_Invariant
-            | Pragma_Type_Invariant_Class =>
+         when Pragma_Invariant            |
+              Pragma_Type_Invariant       |
+              Pragma_Type_Invariant_Class =>
             null;
 
          --  Emit warning on pragma Overflow_Mode being currently ignored, even
@@ -4948,7 +4946,7 @@ package body SPARK_Definition is
             Current_Delayed_Aspect_Type := Etype (First_Formal (E));
 
             Current_SPARK_Pragma :=
-               SPARK_Pragma_Of_Type (Current_Delayed_Aspect_Type);
+              SPARK_Pragma_Of_Type (Current_Delayed_Aspect_Type);
 
          else
             Current_SPARK_Pragma := SPARK_Pragma (Def_E);
@@ -5029,7 +5027,7 @@ package body SPARK_Definition is
             if Nkind (E) = N_Entry_Body then
                --  Entry barriers in Ravenscar are always of N_Identifier kind
                Mark_Identifier_Or_Expanded_Name
-                (Condition (Entry_Body_Formal_Part (N)));
+                 (Condition (Entry_Body_Formal_Part (N)));
             end if;
 
             --  For subprogram bodies (but not other subprogram-like nodes
@@ -5131,14 +5129,14 @@ package body SPARK_Definition is
             Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
 
             Save_Delayed_Aspect_Type : constant Entity_Id :=
-               Current_Delayed_Aspect_Type;
+              Current_Delayed_Aspect_Type;
 
          begin
             if In_Pred_Function_Decl then
                Current_Delayed_Aspect_Type := Etype (First_Formal (E));
 
                Current_SPARK_Pragma :=
-                  SPARK_Pragma_Of_Type (Current_Delayed_Aspect_Type);
+                 SPARK_Pragma_Of_Type (Current_Delayed_Aspect_Type);
 
             else
                Current_SPARK_Pragma := SPARK_Pragma (E);
@@ -5485,12 +5483,12 @@ package body SPARK_Definition is
    function First_Cursor (Kind : Entity_Collection) return Cursor is
      ((case Kind is
           when Entities_To_Translate =>
-            Cursor'(Kind => Entities_To_Translate,
-                    Entity_To_Translate_Cursor => Entity_List.First),
+             Cursor'(Kind => Entities_To_Translate,
+                     Entity_To_Translate_Cursor => Entity_List.First),
 
           when Marked_Entities =>
-            Cursor'(Kind => Marked_Entities,
-                    Marked_Entities_Cursor     => Entity_Set.First)));
+             Cursor'(Kind => Marked_Entities,
+                     Marked_Entities_Cursor     => Entity_Set.First)));
 
    -----------------
    -- Next_Cursor --
@@ -5501,14 +5499,14 @@ package body SPARK_Definition is
                          return Cursor is
      ((case Kind is
           when Entities_To_Translate =>
-            Cursor'(Kind => Entities_To_Translate,
-                    Entity_To_Translate_Cursor =>
-                      Node_Lists.Next (C.Entity_To_Translate_Cursor)),
+             Cursor'(Kind => Entities_To_Translate,
+                     Entity_To_Translate_Cursor =>
+                       Node_Lists.Next (C.Entity_To_Translate_Cursor)),
 
           when Marked_Entities =>
-            Cursor'(Kind => Marked_Entities,
-                    Marked_Entities_Cursor     =>
-                      Node_Sets.Next (C.Marked_Entities_Cursor))));
+             Cursor'(Kind => Marked_Entities,
+                     Marked_Entities_Cursor     =>
+                       Node_Sets.Next (C.Marked_Entities_Cursor))));
 
    -----------------
    -- Has_Element --
@@ -5519,10 +5517,10 @@ package body SPARK_Definition is
                          return Boolean is
      ((case Kind is
           when Entities_To_Translate =>
-            Node_Lists.Has_Element (C.Entity_To_Translate_Cursor),
+             Node_Lists.Has_Element (C.Entity_To_Translate_Cursor),
 
           when Marked_Entities =>
-            Node_Sets.Has_Element (C.Marked_Entities_Cursor)));
+             Node_Sets.Has_Element (C.Marked_Entities_Cursor)));
 
    -----------------
    -- Get_Element --
@@ -5533,9 +5531,9 @@ package body SPARK_Definition is
                          return Entity_Id is
      ((case Kind is
           when Entities_To_Translate =>
-            Node_Lists.Element (C.Entity_To_Translate_Cursor),
+             Node_Lists.Element (C.Entity_To_Translate_Cursor),
 
           when Marked_Entities =>
-            Node_Sets.Element (C.Marked_Entities_Cursor)));
+             Node_Sets.Element (C.Marked_Entities_Cursor)));
 
 end SPARK_Definition;
