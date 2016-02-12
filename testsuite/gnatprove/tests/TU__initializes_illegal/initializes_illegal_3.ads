@@ -33,8 +33,9 @@ package Initializes_Illegal_3
                           --  All entities of the input_list are declared
                           --  within the visible part of the package
 
-                          S2 => (SH, Var_H, SH, Var_H))
+                          S2 => (SH, Var_H, SH, Var_H)),
                           --  Not distinct input_list entities
+       Elaborate_Body
 is
    type RecordT is record
       A, B : Integer;
