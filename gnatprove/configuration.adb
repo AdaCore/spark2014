@@ -1318,7 +1318,10 @@ ASCII.LF;
    procedure Set_RTS_Dir
      (Config    : Command_Line_Configuration;
       Proj_Type : Project_Type;
-      RTS_Dir   : in out GNAT.Strings.String_Access) is
+      RTS_Dir   : in out GNAT.Strings.String_Access)
+   is
+      Target  : constant String := Proj_Type.Get_Target;
+      Runtime : constant String := Proj_Type.Get_Runtime;
    begin
       --  When command-line switch --RTS is not provided, consider attribute
       --  Runtime of project file.
@@ -1330,20 +1333,13 @@ ASCII.LF;
          --  installation, which should work if GNAT and SPARK were
          --  installed at the same location.
 
-         if Proj_Type.Has_Attribute (Target_Attribute)
-           and then Proj_Type.Has_Attribute (Runtime_Attribute)
-         then
+         if Target /= "" and then Runtime /= "" then
             declare
-               Target  : constant String :=
-                 Proj_Type.Attribute_Value (Target_Attribute);
-               Runtime : constant String :=
-                 Proj_Type.Attribute_Value (Runtime_Attribute, Index => "Ada");
                Dir     : constant String :=
                  Executable_Location & Target &
                  GNAT.Directory_Operations.Dir_Separator & "lib" &
                  GNAT.Directory_Operations.Dir_Separator & "gnat" &
                  GNAT.Directory_Operations.Dir_Separator & Runtime;
-
             begin
                if GNAT.OS_Lib.Is_Directory (Dir) then
                   RTS_Dir := new String'(Dir);
