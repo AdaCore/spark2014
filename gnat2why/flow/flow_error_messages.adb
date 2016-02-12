@@ -634,7 +634,7 @@ package body Flow_Error_Messages is
 
                begin
                   for Var_Index in Positive
-                     range 1 .. Length (Line_Cntexmp_Arr)
+                    range 1 .. Length (Line_Cntexmp_Arr)
                   loop
                      declare
                         Cntexmp_Element : constant JSON_Value :=
@@ -773,7 +773,7 @@ package body Flow_Error_Messages is
                               --  Try to cast Part into an Entity_Id,
                               --  return empty id if it doesn't work.
                               function Try_Get_Part_Entity (Part : String)
-                              return Entity_Id is
+                                                            return Entity_Id is
                               begin
                                  return Entity_Id'Value (Part);
                               exception
@@ -787,7 +787,7 @@ package body Flow_Error_Messages is
                                 Slice (Name_Parts, Var_Slice_Num);
 
                               Part_Entity : constant Entity_Id :=
-                               Try_Get_Part_Entity (Part);
+                                Try_Get_Part_Entity (Part);
                               --  Note that if Var_Slice_Num = 1, Part_Entity
                               --  is Entity_Id of either declaration of
                               --  argument of a function or declaration of a
@@ -804,9 +804,9 @@ package body Flow_Error_Messages is
 
                               Part_Name : Unbounded_String :=
                                 To_Unbounded_String
-                                (if Is_Attribute
-                                 then Part
-                                 else Source_Name (Part_Entity));
+                                  (if Is_Attribute
+                                   then Part
+                                   else Source_Name (Part_Entity));
                               Current_CNT_Element : CNT_Element_Ptr;
 
                            begin
@@ -839,14 +839,15 @@ package body Flow_Error_Messages is
 
                                  --  Possibly Append attributes 'Old or
                                  --  'Result after its name
-                                 if (Kind = "old" and then
-                                     Nkind_In
-                                       (Nkind (Parent (Part_Entity)),
-                                        N_Formal_Object_Declaration,
-                                        N_Parameter_Specification) and then
-                                     Out_Present (Parent (Part_Entity)))
-                                   or else
-                                     Kind = "result"
+                                 if (Kind = "old"
+                                       and then
+                                       Nkind_In
+                                         (Nkind (Parent (Part_Entity)),
+                                          N_Formal_Object_Declaration,
+                                          N_Parameter_Specification)
+                                       and then
+                                       Out_Present (Parent (Part_Entity)))
+                                   or else Kind = "result"
                                  then
                                     Current_CNT_Element := Insert_CNT_Element
                                       (Name   => To_String (Part_Name),
@@ -1003,10 +1004,11 @@ package body Flow_Error_Messages is
                      --  Check whether the type can have fields or
                      --  discriminants
 
-                     if not Is_Concurrent_Type (Element_Type) and then
-                      not Is_Incomplete_Or_Private_Type (Element_Type) and then
-                      not Is_Record_Type (Element_Type) and then
-                      not Has_Discriminants (Element_Type)
+                     if not Is_Concurrent_Type (Element_Type)
+                       and then
+                         not Is_Incomplete_Or_Private_Type (Element_Type)
+                       and then not Is_Record_Type (Element_Type)
+                       and then not Has_Discriminants (Element_Type)
                      then
                         return Dont_Display;
                      end if;
@@ -1079,17 +1081,17 @@ package body Flow_Error_Messages is
                            begin
                               if Has_Element (Field_Descr) or else
                                 Fields_Discrs_Declared -
-                                  Fields_Discrs_Collected <= 1
+                                Fields_Discrs_Collected <= 1
                               then
                                  declare
                                     Field_Descr_Val : constant Unbounded_String
                                       :=
                                       (if Has_Element (Field_Descr)
                                        then
-                                          Get_CNT_Element_Value_And_Attributes
-                                         (Element (Field_Descr),
-                                          Prefix & "." & Field_Descr_Name,
-                                          Attributes)
+                                         Get_CNT_Element_Value_And_Attributes
+                                           (Element (Field_Descr),
+                                            Prefix & "." & Field_Descr_Name,
+                                            Attributes)
                                        else To_Unbounded_String ("?"));
                                  begin
                                     if Field_Descr_Val /= Dont_Display
@@ -1364,7 +1366,7 @@ package body Flow_Error_Messages is
                  Get (Add_Cntexmp_Element, "value");
                Kind  : constant String := Get (Add_Cntexmp_Element, "kind");
                Element : constant String := Name &
-               (if Kind = "error_message" then "" else " = " & Get (Value));
+                 (if Kind = "error_message" then "" else " = " & Get (Value));
             begin
                if Cntexmp_Line_Str /= "" then
                   Append (Cntexmp_Line_Str, " and ");
@@ -1774,8 +1776,8 @@ package body Flow_Error_Messages is
                            while Index <= F_Name_String'Last loop
                               case F_Name_String (Index) is
                               when '_' =>
-                                 if Index < F_Name_String'Last and then
-                                   F_Name_String (Index + 1) = '_'
+                                 if Index < F_Name_String'Last
+                                   and then F_Name_String (Index + 1) = '_'
                                  then
                                     Append (R, ".");
                                     Index := Index + 2;
@@ -1846,7 +1848,7 @@ package body Flow_Error_Messages is
       F1  : Flow_Id := Null_Flow_Id;
       F2  : Flow_Id := Null_Flow_Id;
       F3  : Flow_Id := Null_Flow_Id)
-     return String_Id is
+      return String_Id is
 
       function Warning_Disabled_For_Entity return Boolean;
       --  Returns True if either of N, F1, F2 correspond to an entity that
