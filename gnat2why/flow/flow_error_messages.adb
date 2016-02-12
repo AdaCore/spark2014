@@ -887,7 +887,7 @@ package body Flow_Error_Messages is
                    --  relevant for the proof. Counterexample elements are
                    --  reported in the order in  that the corresponding
                    --  variables are in generated why code and thus using the
-                   --  last counterexample elemement with given Name ensures
+                   --  last counterexample element with given Name ensures
                    --  the correct behavior.
                               if Var_Slice_Num = Slice_Count (Name_Parts) then
                                  Current_CNT_Element.Value :=
