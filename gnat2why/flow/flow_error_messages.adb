@@ -961,8 +961,7 @@ package body Flow_Error_Messages is
                      Attributes : in out Names_And_Values.List)
                      return Unbounded_String
                   is
-                     Element_Type : constant Entity_Id :=
-                       Etype (CNT_Element.Entity);
+                     Element_Type : Entity_Id;
                   begin
 
                      --  We first treat attributes
@@ -999,6 +998,8 @@ package body Flow_Error_Messages is
                      end if;
 
                      --  If we've got fields, we're dealing with a record:
+                     --  we know that CNT_Element.Entity is present
+                     Element_Type := Etype (CNT_Element.Entity);
 
                      --  Check whether the type can have fields or
                      --  discriminants
