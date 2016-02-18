@@ -442,6 +442,17 @@ procedure Gnatprove is
    --  Start of processing for Compute_Why3_Args
 
    begin
+
+      --  the first "argument" is in fact the command name itself, because in
+      --  some cases we might want to change it
+
+      if Caching then
+         Args.Append ("cache_wrapper");
+         Args.Append ("gnatwhy3");
+      else
+         Args.Append ("gnatwhy3");
+      end if;
+
       --  Start by taking into account the --level switch if used. If a switch
       --  that is impacted by --level is also set independently, the latter
       --  setting takes precedence.

@@ -144,7 +144,9 @@ package Gnat2Why_Args is
 
    Ide_Mode : Boolean := False;
 
-   --  The cmd line args to be passed to gnatwhy3
+   --  The cmd line args to be passed to gnatwhy3. In fact the "gnatwhy3"
+   --  executable name is not hardcoded and is passed as a first argument
+   --  of this list.
 
    Why3_Args : String_Lists.List := String_Lists.Empty_List;
 

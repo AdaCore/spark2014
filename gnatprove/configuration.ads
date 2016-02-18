@@ -87,7 +87,10 @@ package Configuration is
    No_Counterexample : aliased Boolean := False;
    --  Set to True if no counterexample should be get
    Benchmark_Mode    : aliased Boolean;
-   --  Provides the fake_* binaries instead of the real prover binaries.
+   --  Provides the fake_* binaries instead of the real prover binaries
+   --  (undocumented)
+   Caching           : aliased Boolean;
+   --  Enables caching using memcached (undocumented).
 
    type GP_Mode is (GPM_Check, GPM_Flow, GPM_Prove, GPM_All);
    --  The four feature modes of GNATprove:

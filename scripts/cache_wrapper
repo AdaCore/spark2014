@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+import hashlib
+import memcache
+import subprocess
+import sys
+mc = memcache.Client(['127.0.0.1:11211'], debug=0)
+
+def hash_file(hasher, fn):
+    BLOCKSIZE = 65536
+    with open(fn, 'rb') as afile:
+        buf = afile.read(BLOCKSIZE)
+        while len(buf) > 0:
+            hasher.update(buf)
+            buf = afile.read(BLOCKSIZE)
+
+def hash_cmd_line(hasher):
+    """hash the commandline to avoid hashing different calls to programs. This
+    function is specialized to programs cached in SPARK testing (currently
+    only gnatwhy3. It does not hash the file argument (we hash the contents
+    instead), and some arguments are skipped."""
+
+    hash_next = True
+    for arg in sys.argv[1:-1]:
+        if hash_next:
+            hasher.update(arg)
+            if arg == "--socket":
+                hash_next = False
+        else:
+            hash_next = True
+
+assert len(sys.argv) > 2
+# we assume that the wrapped command is the first argument and the last
+# command is the filename
+wrapped_program = sys.argv[1]
+file_arg = sys.argv[-1]
+
+def compute_key():
+    hasher = hashlib.sha1()
+    hash_file(hasher, file_arg)
+    hash_cmd_line(hasher)
+    return hasher.hexdigest()
+
+key = compute_key()
+
+value = mc.get(key)
+if value == None:
+    try:
+        value = subprocess.check_output(sys.argv[1:],stderr=subprocess.STDOUT)
+        mc.set(key, value)
+    except subprocess.CalledProcessError as e:
+        print "called process error: " + e.output
+print value

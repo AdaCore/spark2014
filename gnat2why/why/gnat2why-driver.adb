@@ -584,24 +584,32 @@ package body Gnat2Why.Driver is
       Fn      : constant String :=
         Compose (Current_Directory, Why_File_Name.all);
       Old_Dir : constant String := Current_Directory;
-
+      Command : constant String := Gnat2Why_Args.Why3_Args.First_Element;
    begin
+
+      --  modifying the command line and printing it for debug purposes. We
+      --  need to append the file first, then print the debug output, because
+      --  this corresponds to the actual command line run, and finally remove
+      --  the first argument, which is the executable name.
+
+      Gnat2Why_Args.Why3_Args.Append (Fn);
+
+      if Gnat2Why_Args.Debug_Mode then
+         for Elt of Gnat2Why_Args.Why3_Args loop
+            Ada.Text_IO.Put (Elt);
+            Ada.Text_IO.Put (" ");
+         end loop;
+         Ada.Text_IO.New_Line;
+      end if;
+
+      Gnat2Why_Args.Why3_Args.Delete_First (1);
+
       if Has_Registered_VCs then
          Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
-         Gnat2Why_Args.Why3_Args.Append (Fn);
-
-         if Gnat2Why_Args.Debug_Mode then
-            Ada.Text_IO.Put ("gnatwhy3 ");
-            for Elt of Gnat2Why_Args.Why3_Args loop
-               Ada.Text_IO.Put (Elt);
-               Ada.Text_IO.Put (" ");
-            end loop;
-            Ada.Text_IO.New_Line;
-         end if;
 
          Parse_Why3_Results
            (GNAT.Expect.Get_Command_Output
-              ("gnatwhy3",
+              (Command,
                Call.Argument_List_Of_String_List (Gnat2Why_Args.Why3_Args),
                Err_To_Out => False,
                Input      => "",

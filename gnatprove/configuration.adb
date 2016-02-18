@@ -963,6 +963,13 @@ ASCII.LF;
          (Config, Benchmark_Mode'Access,
           Long_Switch => "--benchmark");
 
+      --  This switch is not documented on purpose. This enables memcached
+      --  caching for developers.
+
+      Define_Switch
+         (Config, Caching'Access,
+          Long_Switch => "--cache");
+
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
 
