@@ -2323,7 +2323,7 @@ package body SPARK_Definition is
                                              Obj_Ref => N)
         and then
           (if Current_Protected_Type = Scope (E) then
-              --  This is an internal call to protected functions
+              --  This is an internal call to protected function
               Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
            else
               Is_Volatile_Function (E))
@@ -2341,7 +2341,7 @@ package body SPARK_Definition is
          end loop;
       end Mark_Actuals;
 
-      --  Call is only in SPARK if the subprogram called is in SPARK
+      --  Call is in SPARK only if the subprogram called is in SPARK
 
       if not In_SPARK (E) then
          Mark_Violation (N,
