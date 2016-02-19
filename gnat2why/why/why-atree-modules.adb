@@ -33,6 +33,7 @@ with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with SPARK_Util;         use SPARK_Util;
 with Stand;              use Stand;
+with VC_Kinds;           use VC_Kinds;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Gen.Arrays;     use Why.Gen.Arrays;
 with Why.Inter;          use Why.Inter;
@@ -50,6 +51,7 @@ package body Why.Atree.Modules is
    procedure Init_Boolean_Module;
    procedure Init_BV_Modules;
    procedure Init_BV_Conv_Modules;
+   procedure Init_Labels;
 
    procedure Insert_Why_Symbols (E : Entity_Id);
    --  For the type entity E, add all the Why symbols which can be used for
@@ -213,6 +215,7 @@ package body Why.Atree.Modules is
       Init_Boolean_Module;
       Init_BV_Modules;
       Init_BV_Conv_Modules;
+      Init_Labels;
 
       --  modules of "ada__model" file
 
@@ -1295,6 +1298,21 @@ package body Why.Atree.Modules is
                         Symbol => NID ("power"),
                         Typ    => EW_Int_Type);
    end Init_Int_Power_Module;
+
+   -----------------
+   -- Init_Labels --
+   -----------------
+
+   procedure Init_Labels is
+   begin
+      Model := NID (Model_Label);
+      Model_Trace := NID (Model_Trace_Label);
+      Model_Projected := NID (Model_Proj_Label);
+      Model_VC := NID (Model_VC_Label);
+      Model_VC_Post := NID (Model_VC_Post_Label);
+      GP_Already_Proved := NID (GP_Already_Proved_Marker);
+      Keep_On_Simp := NID (Keep_On_Simp_Marker);
+   end Init_Labels;
 
    ----------------------
    -- Init_Main_Module --

@@ -37,11 +37,9 @@ with Sinput;                use Sinput;
 with SPARK_Util;            use SPARK_Util;
 with String_Utils;          use String_Utils;
 with Uintp;                 use Uintp;
-with VC_Kinds;              use VC_Kinds;
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Modules;     use Why.Atree.Modules;
 with Why.Conversions;       use Why.Conversions;
-with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Ids;               use Why.Ids;
 with Why.Images;            use Why.Images;
 
@@ -1142,8 +1140,7 @@ package body Why.Atree.Sprint is
       end if;
       --  Emit location for constructs that trigger VC (these constructs have
       --  either Model_VC_Label or Model_VC_Post_Label)
-      if Labels.Contains (NID (Model_VC_Label)) or else
-        Labels.Contains (NID (Model_VC_Post_Label))
+      if Labels.Contains (Model_VC) or else Labels.Contains (Model_VC_Post)
       then
          Print_Sloc_Tag;
       end if;

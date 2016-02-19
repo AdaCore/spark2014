@@ -3347,7 +3347,7 @@ package body Why.Gen.Expr is
             True,
             Current_Subp,
             How_Proved => "codepeer");
-         Set.Include (NID (GP_Already_Proved_Marker));
+         Set.Include (GP_Already_Proved);
       end if;
       Set.Include (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));
       Set.Include (NID (GP_Id_Marker & Image (Integer (Id), 1)));
@@ -3360,11 +3360,11 @@ package body Why.Gen.Expr is
       end if;
 
       Set.Include (New_Shape_Label (Node => N));
-      Set.Include (NID (Keep_On_Simp));
+      Set.Include (Keep_On_Simp);
       if Reason = VC_Postcondition then
-         Set.Include (NID (Model_VC_Post_Label));
+         Set.Include (Model_VC_Post);
       else
-         Set.Include (NID (Model_VC_Label));
+         Set.Include (Model_VC);
       end if;
       return Set;
    end New_VC_Labels;
