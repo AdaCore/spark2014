@@ -121,8 +121,15 @@ package body SPARK_Definition is
 
    Current_SPARK_Pragma : Node_Id;
    --  The current applicable SPARK_Mode pragma, if any, to reference in error
-   --  messages when a violation is encountered. For analysis of the delayed
-   --  aspects of a type T on discovery mode, this variable holds T's entity.
+   --  messages when a violation is encountered.
+
+   Current_Protected_Type : Entity_Id := Empty;
+   --  Set to protected type entity when marking inside the type to detect
+   --  internal calls.
+
+   Current_Delayed_Aspect_Type : Entity_Id := Empty;
+   --  When processing delayed aspect type (e.g. Predicate) this is set to the
+   --  delayed type itself; used to reference the type in the error message.
 
    Violation_Detected : Boolean;
    --  Set to True when a violation is detected
@@ -135,10 +142,13 @@ package body SPARK_Definition is
    SPARK_Status_JSON : JSON_Array := Empty_Array;
 
    procedure Initialize;
+   --  Initialize internal global variables; must be called before marking next
+   --  compilation.
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean
-      with Global => (Input => Current_SPARK_Pragma);
-   --  Returns whether Current_SPARK_Pragma is not Empty, and corresponds to
+   with Global => (Input => (Current_SPARK_Pragma,
+                             Current_Delayed_Aspect_Type));
+   --  Returns True iff Current_SPARK_Pragma is not Empty, and corresponds to
    --  the given Mode.
 
    --  There are two possibilities when marking an entity, depending on whether
@@ -148,6 +158,15 @@ package body SPARK_Definition is
    --  subprogram body has been fully marked. In the second case, violations
    --  are attached to the entity itself, which is directly added to the lists
    --  for translation after marking.
+
+   function SPARK_Pragma_Of_Type (E : Entity_Id) return Node_Id with
+     Pre => Is_Type (E);
+   --  Return SPARK_Pragma that applies to type E
+   --
+   --  SPARK_Pragma cannot be directly specified for types nor declare blocks
+   --  but comes from the most immediate scope where pragma SPARK_Mode can be
+   --  attached. Then, for SPARK_Pragma coming from package entity (either body
+   --  or spec) it may be the pragma given for private/statements section.
 
    Entity_List : Node_Lists.List;
    --  List of entities that should be translated to Why3. This list contains
@@ -276,7 +295,8 @@ package body SPARK_Definition is
    --  configuration. An error message is issued if current SPARK_Mode is On.
 
    procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id)
-   with Global => (Input => Current_SPARK_Pragma);
+   with Global => (Input => (Current_SPARK_Pragma,
+                             Current_Delayed_Aspect_Type));
    --  Issue an error continuation message for node N with the location of the
    --  violated SPARK_Mode pragma/aspect.
 
@@ -299,8 +319,8 @@ package body SPARK_Definition is
    --  Check if Partition_Elaboration_Policy is set to Sequential
 
    function Is_SPARK_Tasking_Configuration return Boolean;
-   --  Check tasking configuration required by SPARK and possibly
-   --  mark violation on node N.
+   --  Check tasking configuration required by SPARK and possibly mark
+   --  violation on node N.
 
    ------------------------------------
    -- Is_SPARK_Tasking_Configuration --
@@ -315,7 +335,7 @@ package body SPARK_Definition is
 
    procedure Inhibit_Messages is
    begin
-      --  This procedure can be called only once, before the marking itself.
+      --  This procedure can be called only once, before the marking itself
       pragma Assert (Emit_Messages and then Entity_Set.Is_Empty);
 
       Emit_Messages := False;
@@ -671,9 +691,9 @@ package body SPARK_Definition is
                then "all"
                elsif Entity_Spec_In_SPARK (Id)
                then
-                  (if Ekind (Id) = E_Package and then No (Package_Body (Id))
-                   then "all"
-                   else "spec")
+                 (if Ekind (Id) = E_Package and then No (Package_Body (Id))
+                  then "all"
+                  else "spec")
                else "no");
          begin
             Set_Field (V, "spark", SPARK_Status);
@@ -731,7 +751,7 @@ package body SPARK_Definition is
       --  false for a normal aggregate.
 
       function Is_Update_Unconstr_Multidim_Aggr (Aggr : Node_Id) return Boolean
-        with Pre => Is_Update_Aggregate (N);
+      with Pre => Is_Update_Aggregate (N);
       --  Detect whether a 'Update aggregate is an update of an
       --  unconstrained multidimensional array.
 
@@ -773,11 +793,8 @@ package body SPARK_Definition is
          --  We only call Check_Loop_Invariant_Placement on nested list of
          --  statements if an invariant has been found.
 
-         N          : Node_Id;
       begin
-
-         for Cur in reverse Loop_Stmts.Iterate loop
-            N := Element (Cur);
+         for N of reverse Loop_Stmts loop
 
             if not Inv_Found then
 
@@ -972,11 +989,15 @@ package body SPARK_Definition is
             elsif Is_Update_Aggregate (N)
               and then Is_Update_Unconstr_Multidim_Aggr (N)
             then
-               Error_Msg_Name_1 := Name_Update;
-               Error_Msg_N
-                 ("attribute % of unconstrained multidimensional array "
-                    & "is not yet supported",
-                  N);
+               Violation_Detected := True;
+
+               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                  Error_Msg_Name_1 := Name_Update;
+                  Error_Msg_N
+                    ("attribute % of unconstrained multidimensional array "
+                       & "is not yet supported",
+                     N);
+               end if;
             end if;
             Mark_List (Expressions (N));
             Mark_List (Component_Associations (N));
@@ -1124,7 +1145,7 @@ package body SPARK_Definition is
                   declare
                      Iterable_Component_Assoc : constant List_Id :=
                        Component_Associations (Expression
-                                               (Iterable_Aspect));
+                                                 (Iterable_Aspect));
                      Iterable_Field : Node_Id :=
                        First (Iterable_Component_Assoc);
 
@@ -1253,7 +1274,7 @@ package body SPARK_Definition is
          when N_Quantified_Expression =>
             if Present (Loop_Parameter_Specification (N)) then
                Mark (Discrete_Subtype_Definition
-                      (Loop_Parameter_Specification (N)));
+                       (Loop_Parameter_Specification (N)));
             else
                Mark (Iterator_Specification (N));
             end if;
@@ -1376,14 +1397,7 @@ package body SPARK_Definition is
                   Mark_Subprogram_Declaration (N);
                end if;
 
-               --  Predicate functions, which are generated by the front end,
-               --  are explicitly marked just after the type they correspond
-               --  to.
-               if not (Ekind (Unique_Defining_Entity (N)) = E_Function and then
-                       Is_Predicate_Function (Unique_Defining_Entity (N)))
-               then
-                  Mark_Subprogram_Body (N);
-               end if;
+               Mark_Subprogram_Body (N);
             end if;
 
          when N_Subprogram_Body_Stub =>
@@ -1417,8 +1431,35 @@ package body SPARK_Definition is
          when N_Subtype_Indication =>
             Mark_Subtype_Indication (N);
 
-         when N_Type_Conversion =>
-            if Has_Array_Type (Etype (N)) then
+         when N_Type_Conversion           |
+              N_Unchecked_Type_Conversion =>
+
+            --  Source unchecked type conversion nodes were rewritten as such
+            --  by SPARK_Rewrite.Rewrite_Call, keeping the original call to an
+            --  instance of Unchecked_Conversion as the Original_Node of the
+            --  new N_Unchecked_Type_Conversion node, and marking the node as
+            --  coming from source. We translate this original node to Why, so
+            --  it should be in SPARK too.
+
+            if Nkind (N) = N_Unchecked_Type_Conversion
+              and then Comes_From_Source (N)
+            then
+               declare
+                  Orig_N : constant Node_Id := Original_Node (N);
+               begin
+                  pragma Assert (Nkind (Orig_N) = N_Function_Call
+                                   and then Is_Entity_Name (Name (Orig_N))
+                                   and then Is_Unchecked_Conversion_Instance
+                                     (Entity (Name (Orig_N))));
+
+                  Mark (Orig_N);
+               end;
+
+            --  Otherwise, this is a type conversion that does not come from an
+            --  unchecked conversion in the source. Check various limitations
+            --  of GNATprove and issue an error on unsupported conversions.
+
+            elsif Has_Array_Type (Etype (N)) then
                declare
                   Target_Comp_Typ : constant Entity_Id :=
                     Retysp (Component_Type (Retysp (Etype (N))));
@@ -1517,7 +1558,7 @@ package body SPARK_Definition is
                         else
                           Etype (Right_Opnd (Expr)))
                      else
-                        Etype (Expr));
+                       Etype (Expr));
                   Source_Root_Type : constant Entity_Id :=
                     Root_Type (Expr_Type);
                begin
@@ -1536,20 +1577,6 @@ package body SPARK_Definition is
 
          when N_Unary_Op =>
             Mark_Unary_Op (N);
-
-         when N_Unchecked_Type_Conversion =>
-            Mark (Expression (N));
-
-            --  Source unchecked type conversion nodes were rewritten as such
-            --  by SPARK_Rewrite.Rewrite_Call, keeping the original call to an
-            --  instance of Unchecked_Conversion as the Original_Node of the
-            --  new N_Unchecked_Type_Conversion node, and marking the node as
-            --  coming from source. We translate this original node to Why, so
-            --  it should be in SPARK too.
-
-            if Comes_From_Source (N) then
-               Mark (Original_Node (N));
-            end if;
 
          when N_Variant_Part =>
             declare
@@ -1602,7 +1629,7 @@ package body SPARK_Definition is
                if Ekind (E) in E_Record_Type | E_Record_Subtype
                  and then Is_Tagged_Type (E)
                  and then (if Ekind (E) = E_Record_Subtype then
-                               not (Present (Cloned_Subtype (E))))
+                             not (Present (Cloned_Subtype (E))))
                then
 
                   --  Only mark the classwide type associated to a record type
@@ -1617,19 +1644,22 @@ package body SPARK_Definition is
                   Set_Specific_Tagged (Class_Wide_Type (E), E);
                end if;
 
-               Mark_Entity (E);
-               if Is_Itype (BT) then
-                  Mark_Entity (BT);
+               if Ekind (E) in E_Protected_Type | E_Task_Type then
+                  --  Pick SPARK_Mode from the concurrent type definition
+                  declare
+                     Save_SPARK_Pragma : constant Node_Id :=
+                       Current_SPARK_Pragma;
+                  begin
+                     Current_SPARK_Pragma := SPARK_Pragma (E);
+                     Mark_Entity (E);
+                     Current_SPARK_Pragma := Save_SPARK_Pragma;
+                  end;
+               else
+                  Mark_Entity (E);
                end if;
 
-               --  We avoid marking the subprograms of a protected type when
-               --  marking the type entity. Instead, we do it here directly on
-               --  the type declaration. This is needed to avoid that certain
-               --  pure functions are declared before the type in Why.
-
-               if Ekind (E) = E_Protected_Type then
-                  Mark_Stmt_Or_Decl_List
-                    (Visible_Declarations (Protected_Definition (N)));
+               if Is_Itype (BT) then
+                  Mark_Entity (BT);
                end if;
 
             end;
@@ -1649,7 +1679,16 @@ package body SPARK_Definition is
                   if Entity_In_SPARK (Spec) then
                      case Nkind (N) is
                         when N_Protected_Body =>
-                           Mark_Stmt_Or_Decl_List (Declarations (N));
+                           declare
+                              Save_Protected_Type : constant Entity_Id :=
+                                Current_Protected_Type;
+                           begin
+                              Current_Protected_Type := Spec;
+
+                              Mark_Stmt_Or_Decl_List (Declarations (N));
+
+                              Current_Protected_Type := Save_Protected_Type;
+                           end;
 
                         when N_Task_Body =>
                            Mark_Subprogram_Body (N);
@@ -1675,15 +1714,7 @@ package body SPARK_Definition is
             end if;
 
          when N_Entry_Body =>
-            if Is_SPARK_Tasking_Configuration then
-               if Ekind (Unique_Defining_Entity (N)) /= E_Entry_Family then
-                  Mark_Subprogram_Body (N);
-               else
-                  Mark_Violation ("entry family", N);
-               end if;
-            else
-               Mark_Violation_In_Tasking (N);
-            end if;
+            Mark_Subprogram_Body (N);
 
          when N_Entry_Call_Statement =>
             if Is_SPARK_Tasking_Configuration then
@@ -1695,15 +1726,7 @@ package body SPARK_Definition is
             end if;
 
          when N_Entry_Declaration =>
-            if Is_SPARK_Tasking_Configuration then
-               if Ekind (Defining_Entity (N)) /= E_Entry_Family then
-                  Mark_Subprogram_Declaration (N);
-               else
-                  Mark_Violation ("entry family", N);
-               end if;
-            else
-               Mark_Violation_In_Tasking (N);
-            end if;
+            Mark_Subprogram_Declaration (N);
 
          --  Unsupported tasking constructs
 
@@ -1925,8 +1948,8 @@ package body SPARK_Definition is
                      return False;
                   end if;
 
-               when N_Null_Statement
-                  | N_Freeze_Entity =>
+               when N_Null_Statement |
+                    N_Freeze_Entity  =>
                   null;
 
                when N_Pragma =>
@@ -2061,8 +2084,7 @@ package body SPARK_Definition is
            Attribute_Wide_Wide_Image   |
            Attribute_Wide_Wide_Value   |
            Attribute_Wide_Wide_Width   |
-           Attribute_Width
-         =>
+           Attribute_Width             =>
             null;
 
          --  These attributes are supported, but generate a warning in
@@ -2075,8 +2097,7 @@ package body SPARK_Definition is
            Attribute_First_Bit      |
            Attribute_Last_Bit       |
            Attribute_Position       |
-           Attribute_Size
-         =>
+           Attribute_Size           =>
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
               and then Gnat2Why_Args.Pedantic
@@ -2264,9 +2285,8 @@ package body SPARK_Definition is
    ---------------
 
    procedure Mark_Call (N : Node_Id) is
-      Actuals : constant List_Id := Parameter_Associations (N);
-      Nam     : constant Node_Id := Name (N);
-      E       : Entity_Id;
+      Nam : constant Node_Id := Name (N);
+      E   : Entity_Id;
       --  Entity of the called subprogram or entry
 
    begin
@@ -2276,10 +2296,10 @@ package body SPARK_Definition is
             --  Indirect calls are not in SPARK
             Mark_Violation
               ("call through access to " &
-               (case Nkind (N) is
-                  when N_Procedure_Call_Statement => "procedure",
-                  when N_Function_Call            => "function",
-                  when others                     => raise Program_Error),
+                 (case Nkind (N) is
+                     when N_Procedure_Call_Statement => "procedure",
+                     when N_Function_Call            => "function",
+                     when others                     => raise Program_Error),
                N);
 
             return;
@@ -2295,21 +2315,40 @@ package body SPARK_Definition is
 
       end case;
 
+      --  Current_Protected_Type is either empty or points to what is says
+      pragma Assert (Present (Scope (E)));
+
       if Ekind (E) in E_Function | E_Generic_Function
-        and then Is_Volatile_Function (E)
         and then not Is_OK_Volatile_Context (Context => Parent (N),
                                              Obj_Ref => N)
+        and then
+          (if Current_Protected_Type = Scope (E) then
+              --  This is an internal call to protected function
+              Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
+           else
+              Is_Volatile_Function (E))
       then
          Mark_Violation ("call to a volatile function in interfering context",
                          N);
       end if;
 
-      Mark_List (Actuals);
+      Mark_Actuals : declare
+         A : Node_Id := First_Actual (N);
+      begin
+         while Present (A) loop
+            Mark (A);
+            Next_Actual (A);
+         end loop;
+      end Mark_Actuals;
 
-      --  Call is only in SPARK if the subprogram called is in SPARK
+      --  Call is in SPARK only if the subprogram called is in SPARK
 
       if not In_SPARK (E) then
-         Mark_Violation (N, From => E);
+         Mark_Violation (N,
+                         From => (if Ekind (E) = E_Function
+                                    and then Is_Predicate_Function (E)
+                                  then Etype (First_Formal (E))
+                                  else E));
 
       elsif Nkind (N) in N_Subprogram_Call
         and then Present (Controlling_Argument (N))
@@ -2364,6 +2403,8 @@ package body SPARK_Definition is
       CU        : constant Node_Id := Parent (N);
       Context_N : Node_Id;
 
+      use type Node_Lists.Cursor;
+
    begin
       --  Avoid rewriting generic units which are only preanalyzed, which may
       --  cause rewriting to fail, as this is not needed.
@@ -2390,7 +2431,7 @@ package body SPARK_Definition is
 
       Mark (N);
 
-      --  Mark delayed type aspects.
+      --  Mark delayed type aspects
 
       --  If no SPARK_Mode is set for the type, we only mark delayed aspects
       --  for types which have been found to be in SPARK. In this case, every
@@ -2398,43 +2439,68 @@ package body SPARK_Definition is
       --  type to be out of SPARK.
 
       for Cur in Delayed_Type_Aspects.Iterate loop
-         Current_SPARK_Pragma := Node_Maps.Element (Cur);
+         declare
+            Delayed_Mapping : Node_Id renames Node_Maps.Element (Cur);
 
-         --  Consider delayed aspects only if type was in a scope marked
-         --  SPARK_Mode(On)...
+            Mark_DIC_Procedure : Boolean := False;
+         begin
+            --  Consider delayed aspects only if type was in a scope marked
+            --  SPARK_Mode(On)...
 
-         if Nkind (Current_SPARK_Pragma) = N_Pragma
+            if Nkind (Delayed_Mapping) = N_Pragma then
 
-           --  or if the type entity has been found to be in SPARK. In this
-           --  second case (scope not marked SPARK_Mode(On)), the type entity
-           --  was stored as value in the Delayed_Type_Aspects map.
+               Current_SPARK_Pragma := Delayed_Mapping;
 
-           or else Entity_In_SPARK (Current_SPARK_Pragma)
-         then
-            declare
-               --  Two type aspects are delayed: Predicate (and
-               --  variants Static_Predicate or Dynamic_Predicate) and
-               --  Default_Initial_Condition. In both cases, the subprogram
-               --  generated by the frontend is stored as key in the
-               --  Delayed_Type_Aspects map.
+               Mark_DIC_Procedure := True;
 
-               Subp   : constant Entity_Id := Node_Maps.Key (Cur);
-               Params : constant List_Id :=
-                 Parameter_Specifications (Subprogram_Specification (Subp));
-               Expr   : constant Node_Id :=
-                 (if Is_Predicate_Function (Subp) then
-                    Get_Expr_From_Return_Only_Func (Subp)
-                  else
-                    Get_Expr_From_Check_Only_Proc (Subp));
-            begin
-               pragma Assert (Present (First (Params)));
-               Mark_Entity (Defining_Identifier (First (Params)));
-               if Present (Expr) then
-                  Mark (Expr);
-               end if;
-            end;
-         end if;
+            --  or if the type entity has been found to be in SPARK. In this
+            --  case (scope not marked SPARK_Mode(On)), the type entity was
+            --  stored as value in the Delayed_Type_Aspects map.
+
+            elsif Entity_In_SPARK (Delayed_Mapping) then
+               Current_SPARK_Pragma := Empty;
+
+               Mark_DIC_Procedure := True;
+
+            else
+               Mark_DIC_Procedure := False;
+            end if;
+
+            if Mark_DIC_Procedure then
+               declare
+                  --  The subprogram generated by the frontend for
+                  --  Default_Initial_Condition is stored as key in
+                  --  the Delayed_Type_Aspects map.
+
+                  Subp : Entity_Id renames Node_Maps.Key (Cur);
+                  Expr : constant Node_Id :=
+                    Get_Expr_From_Check_Only_Proc (Subp);
+
+                  Save_Delayed_Aspect_Type : constant Entity_Id :=
+                    Current_Delayed_Aspect_Type;
+
+               begin
+                  pragma Assert (Present (First_Formal (Subp)));
+
+                  Current_Delayed_Aspect_Type := Etype (First_Formal (Subp));
+
+                  Mark_Entity (First_Formal (Subp));
+                  if Present (Expr) then
+                     Mark (Expr);
+                  end if;
+
+                  Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
+               end;
+            end if;
+         end;
       end loop;
+
+      --  Forget about delayed type aspects once they are processes
+      Delayed_Type_Aspects.Clear;
+
+      --  Ensure that global variables are restored to their initial values
+      pragma Assert (No (Current_Protected_Type));
+      pragma Assert (No (Current_Delayed_Aspect_Type));
    end Mark_Compilation_Unit;
 
    --------------------------------
@@ -2470,6 +2536,17 @@ package body SPARK_Definition is
       procedure Mark_Package_Entity    (E : Entity_Id);
       procedure Mark_Subprogram_Entity (E : Entity_Id);
       procedure Mark_Type_Entity       (E : Entity_Id);
+
+      use type Node_Lists.Cursor;
+
+      Current_Concurrent_Insert_Pos : Node_Lists.Cursor;
+      --  This variable is set at the start of marking concurrent type and
+      --  stores the position on the list where the type itself should be
+      --  inserted.
+      --
+      --  Concurrent types must be inserted into Entity_List before operations
+      --  defined in their scope, because these operations take the type as an
+      --  implicit argument.
 
       ------------------------
       -- Mark_Number_Entity --
@@ -2593,7 +2670,7 @@ package body SPARK_Definition is
                      declare
                         Param_Spec : Node_Id :=
                           First (Parameter_Specifications
-                                 (Subprogram_Specification (Id)));
+                                   (Subprogram_Specification (Id)));
                      begin
                         while Present (Param_Spec) loop
                            Entity_List.Append
@@ -2662,7 +2739,7 @@ package body SPARK_Definition is
                      declare
                         EActual : constant Entity_Id :=
                           (if Ekind (Entity (Actual)) = E_Function then
-                              Get_Renamed_Entity (Entity (Actual))
+                             Get_Renamed_Entity (Entity (Actual))
                            else Entity (Actual));
                      begin
                         if Ekind (EActual) /= E_Operator then
@@ -2845,6 +2922,13 @@ package body SPARK_Definition is
 
                Next (Param);
             end loop;
+
+            --  If the result type of a subprogram is not in SPARK, then the
+            --  subprogram is not in SPARK.
+
+            if not In_SPARK (Etype (Id)) then
+               Mark_Violation (Result_Definition (N), From => Etype (Id));
+            end if;
          end Mark_Function_Specification;
 
          -----------------------------------
@@ -2905,28 +2989,25 @@ package body SPARK_Definition is
          --  Start of processing for Mark_Subprogram_Specification
 
          begin
-            if Ekind (Id) = E_Function then
-               Mark_Function_Specification (N);
-            end if;
+            case Ekind (Id) is
+               when E_Function =>
+                  Mark_Function_Specification (N);
+
+               when E_Entry_Family =>
+                  Mark_Violation ("entry family", N);
+
+               when others =>
+                  null;
+            end case;
 
             Param_Spec := First (Formals);
             while Present (Param_Spec) loop
                Formal := Defining_Identifier (Param_Spec);
-               if not In_SPARK (Etype (Formal)) then
-                  Mark_Violation (E, From => Etype (Formal));
+               if not In_SPARK (Formal) then
+                  Mark_Violation (Formal, From => Etype (Formal));
                end if;
-               Mark_Entity (Formal);
                Next (Param_Spec);
             end loop;
-
-            --  If the result type of a subprogram is not in SPARK, then the
-            --  subprogram is not in SPARK.
-
-            if Nkind (N) = N_Function_Specification
-              and then not In_SPARK (Etype (Id))
-            then
-               Mark_Violation (Result_Definition (N), From => Etype (Id));
-            end if;
 
             --  Mark global items that appear in Global and Depends contracts,
             --  so that they get translated to Why3, even if this is the only
@@ -2944,7 +3025,7 @@ package body SPARK_Definition is
       --  Start of processing for Mark_Subprogram_Entity
 
       begin
-         Mark_Subprogram_Specification (if Ekind (E) = E_Entry
+         Mark_Subprogram_Specification (if Ekind (E) in Entry_Kind
                                         then Parent (E)
                                         else Subprogram_Specification (E));
 
@@ -2955,7 +3036,30 @@ package body SPARK_Definition is
          while Present (Prag) loop
             Expr :=
               Get_Pragma_Arg (First (Pragma_Argument_Associations (Prag)));
-            Mark (Expr);
+
+            --  Postconditions of protected subprograms declared in protected
+            --  type declarations are executed as part of protected operations,
+            --  so any calls to protected functions of the same protected type
+            --  are internal.
+            --
+            --  Subprograms declared in protected bodies can only be called
+            --  internally and then Current_Protected_Type is already set
+            --  anyway.
+
+            if Is_Pragma (Prag, Pragma_Postcondition)
+              and then Is_Protected_Type (Scope (E))
+            then
+               declare
+                  Save_Protected_Type : constant Entity_Id :=
+                    Current_Protected_Type;
+               begin
+                  Current_Protected_Type := Scope (E);
+                  Mark (Expr);
+                  Current_Protected_Type := Save_Protected_Type;
+               end;
+            else
+               Mark (Expr);
+            end if;
             Prag := Next_Pragma (Prag);
          end loop;
 
@@ -2974,7 +3078,25 @@ package body SPARK_Definition is
                   Conseq     := Expression (Contract_Case);
 
                   Mark (Case_Guard);
-                  Mark (Conseq);
+
+                  --  Consequences of protected subprograms declared in
+                  --  protected type declarations are executed as part of
+                  --  protected operations, so any calls to protected
+                  --  functions of the same protected type are internal.
+                  --
+                  --  Subprograms declared in protected bodies can only be
+                  --  called internally and then Current_Protected_Type is
+                  --  already set anyway.
+                  if Is_Protected_Type (Scope (E)) then
+                     declare
+                        Save_Protected_Type : constant Entity_Id :=
+                          Current_Protected_Type;
+                     begin
+                        Current_Protected_Type := Scope (E);
+                        Mark (Conseq);
+                        Current_Protected_Type := Save_Protected_Type;
+                     end;
+                  end if;
 
                   Next (Contract_Case);
                end loop;
@@ -3229,7 +3351,7 @@ package body SPARK_Definition is
                   elsif Full_View_Not_In_SPARK (Utype) then
                      Full_Views_Not_In_SPARK.Insert
                        (E, Get_First_Ancestor_In_SPARK (Utype));
-                        Discard_Underlying_Type (E);
+                     Discard_Underlying_Type (E);
                   end if;
                end;
             end if;
@@ -3251,6 +3373,12 @@ package body SPARK_Definition is
                     (Default_Init_Cond_Procedure (E), Delayed_Mapping);
                end;
             end if;
+         end if;
+
+         --  Record position of where to insert concurrent type on the
+         --  Entity_List.
+         if Ekind (E) in E_Protected_Type | E_Task_Type then
+            Current_Concurrent_Insert_Pos := Entity_List.Last;
          end if;
 
          --  Now mark the type itself
@@ -3430,8 +3558,8 @@ package body SPARK_Definition is
                function Only_Factor_Is
                  (Num    : Uint;
                   Factor : Uint) return Boolean
-                 with Pre => UI_Gt (Num, Uint_0)
-                 and then UI_Gt (Factor, Uint_0);
+               with Pre => UI_Gt (Num, Uint_0) and then
+                           UI_Gt (Factor, Uint_0);
                --  Returns True if Num is a power of Factor
 
                --------------------
@@ -3662,14 +3790,22 @@ package body SPARK_Definition is
                         Mark_List (Interface_List (Type_Decl));
 
                         if Present (Type_Def) then
-                           --  We do not mark the visible declarations here, we
-                           --  mark them independently of the type entity when
-                           --  processing the type declaration.
-
                            --  ??? components of protected types were already
                            --  marked when dealing with discriminants
                            Mark_Stmt_Or_Decl_List
-                             (Private_Declarations (Type_Def));
+                             (Visible_Declarations (Type_Def));
+
+                           declare
+                              Save_SPARK_Pragma : constant Node_Id :=
+                                Current_SPARK_Pragma;
+                           begin
+                              Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
+                              if not SPARK_Pragma_Is (Opt.Off) then
+                                 Mark_Stmt_Or_Decl_List
+                                   (Private_Declarations (Type_Def));
+                              end if;
+                              Current_SPARK_Pragma := Save_SPARK_Pragma;
+                           end;
                         end if;
 
                      end;
@@ -3736,8 +3872,16 @@ package body SPARK_Definition is
       --  types need to be marked at the point of their partial view
       --  declaration, to avoid out-of-order declarations in Why.
       --  Retrieve the appropriate SPARK_Mode pragma before marking.
+      --
+      --  For concurrent types SPARK_Mode can be queried directly and should be
+      --  already set by the caller.
+      --
+      --  ??? perhaps use SPARK_Pragma_Of_Type here, but not sure if that works
+      --  for itypes.
 
-      if Is_Type (E) then
+      if Is_Type (E)
+        and then not Is_Concurrent_Type (E)
+      then
          declare
             Decl : constant Node_Id :=
               (if No (Parent (Parent (E)))
@@ -3746,19 +3890,19 @@ package body SPARK_Definition is
                else Parent (E));
 
          begin
-            if Present (Parent (Decl))
-              and then Nkind (Parent (Decl)) = N_Package_Specification
-            then
+            pragma Assert (Present (Parent (Decl)));
+
+            if Nkind (Parent (Decl)) = N_Package_Specification then
                declare
                   Pack_Decl : constant Node_Id := Parent (Parent (Decl));
-               begin
-
                   pragma Assert (Nkind (Pack_Decl) = N_Package_Declaration);
 
+                  Pack_Ent : constant Entity_Id := Defining_Entity (Pack_Decl);
+               begin
                   Current_SPARK_Pragma :=
                     (if In_Private_Declarations (Decl)
-                     then SPARK_Aux_Pragma (Defining_Entity (Pack_Decl))
-                     else SPARK_Pragma (Defining_Entity (Pack_Decl)));
+                     then SPARK_Aux_Pragma (Pack_Ent)
+                     else SPARK_Pragma (Pack_Ent));
                end;
             end if;
          end;
@@ -3823,7 +3967,7 @@ package body SPARK_Definition is
 
          when E_Abstract_State => null;
 
-         when E_Entry          => Mark_Subprogram_Entity (E);
+         when Entry_Kind       => Mark_Subprogram_Entity (E);
 
          when others           =>
             Ada.Text_IO.Put_Line ("[Mark_Entity] kind ="
@@ -3831,49 +3975,33 @@ package body SPARK_Definition is
             raise Program_Error;
       end case;
 
-      --  Add entity to appropriate list. Entities from packages with external
-      --  axioms are handled by a specific mechanism and thus should not be
-      --  translated.
-
-      if not Entity_In_Ext_Axioms (E) then
-         Entity_List.Append (E);
-      end if;
-
       --  If a violation was detected, remove E from the set of SPARK entities
 
       if Violation_Detected then
          Entities_In_SPARK.Delete (E);
+      end if;
 
-      --  Otherwise, if we just marked a type with a type predicate (which
-      --  conceptually is a part of the type itself and impacts the SPARK
-      --  status of the type), we need to check for SPARK violations in the
-      --  predicate expression.
-      --
-      --  We delay it until now, because on the Entity_List the type entity
-      --  must appear *before* the predicate expression. It is because front
-      --  end expands predicate expression into a function and in Why3 the type
-      --  of the argument for this function needs to be translated *before* the
-      --  function itself.
-      --
-      --  If it is a predicate on the subtype generated by the front end for a
-      --  private type then we already marked it when marking the private type.
+      --  Add entity to appropriate list. Entities from packages with external
+      --  axioms are handled by a specific mechanism and thus should not be
+      --  translated.
+      if not Entity_In_Ext_Axioms (E) then
+         --  Protected type needs to go before its visible declarations (which
+         --  reference it as an implicit input).
+         if Ekind (E) in E_Protected_Type | E_Task_Type then
 
-      elsif Ekind (E) in Type_Kind and then
-        Has_Predicates (E) and then
-        Ekind (E) /= E_Private_Subtype
-      then
-         declare
-            Pred      : constant Entity_Id := Predicate_Function (E);
-            Pred_Body : constant Node_Id   := Subprogram_Body (Pred);
-         begin
-            Mark_Subprogram_Body (Pred_Body);
-            if not In_SPARK (Pred) or else
-              not Entity_Body_In_SPARK (Pred)
-            then
-               Mark_Violation (E, From => Predicate_Function (E));
-               Entities_In_SPARK.Delete (E);
-            end if;
-         end;
+            pragma Assert
+              (Current_Concurrent_Insert_Pos /= Node_Lists.No_Element);
+
+            Node_Lists.Next (Current_Concurrent_Insert_Pos);
+
+            --  If there were no entities defined within concurrent types then
+            --  Next will advance the cursor to No_Element and Insert will be
+            --  equivalent to Append. This is pricesely what we need.
+            Entity_List.Insert (Before   => Current_Concurrent_Insert_Pos,
+                                New_Item => E);
+         else
+            Entity_List.Append (E);
+         end if;
       end if;
 
       --  Update the information that a violation was detected
@@ -3922,28 +4050,25 @@ package body SPARK_Definition is
    begin
       case Ekind (E) is
          when Object_Kind =>
-            if (Ekind_In (E, E_Variable, E_Constant)
-                or else Is_Formal (E))
+            if Ekind (E) in E_Variable | E_Constant | Formal_Kind
               and then not In_SPARK (E)
             then
                Mark_Violation (N, From => E);
             end if;
 
-         when Named_Kind =>
+         --  Subprogram names appear for example in Sub'Result
+
+         when Entry_Kind  |
+              E_Function  |
+              E_Procedure |
+              Named_Kind  |
+              Type_Kind   =>
             if not In_SPARK (E) then
                Mark_Violation (N, From => E);
             end if;
-
-         when Type_Kind =>
-            if not In_SPARK (E) then
-               Mark_Violation (N, From => E);
-            end if;
-
-            --  Subprogram name appears for example in Sub'Result
 
          when E_Void                  |
               E_Enumeration_Literal   |
-              Subprogram_Kind         |
               E_Block                 |
               Generic_Subprogram_Kind |
               E_Generic_Package       |
@@ -3956,22 +4081,23 @@ package body SPARK_Definition is
               E_Exception             =>
             null;
 
-            --  Abstract state entities are passed directly to Mark_Entity
+         --  Abstract state entities are passed directly to Mark_Entity
 
          when E_Abstract_State =>
             raise Program_Error;
 
-            --  Entry name appears for example in Sub'Caller
+         --  ??? how about Protected_Object'Size?
 
-         when E_Entry =>
-            null;
-
-         when E_Entry_Family          |
-              E_Entry_Index_Parameter |
+         when E_Entry_Index_Parameter |
               E_Protected_Object      |
               E_Protected_Body        |
               E_Task_Body             =>
             Mark_Violation ("tasking", N);
+
+         --  Entities that we do not expect in SPARK
+
+         when E_Operator =>
+            raise Program_Error;
       end case;
    end Mark_Identifier_Or_Expanded_Name;
 
@@ -4039,7 +4165,7 @@ package body SPARK_Definition is
       elsif Present (Loop_Parameter_Specification (N)) then
          pragma Assert (No (Condition_Actions (N)));
          Mark (Discrete_Subtype_Definition
-               (Loop_Parameter_Specification (N)));
+                 (Loop_Parameter_Specification (N)));
 
          --  The loop parameter shall be added to the entities in SPARK
          declare
@@ -4275,10 +4401,11 @@ package body SPARK_Definition is
    begin
       if Present (Pragma_Argument_Associations (N)) then
          Arg1 := First (Pragma_Argument_Associations (N));
-
-         if Present (Arg1) then
-            Arg2 := Next (Arg1);
-         end if;
+         pragma Assert (Present (Arg1));
+         Arg2 := Next (Arg1);
+      else
+         Arg1 := Empty;
+         Arg2 := Empty;
       end if;
 
       case Prag_Id is
@@ -4315,9 +4442,9 @@ package body SPARK_Definition is
          --  Do not issue a warning on invariant pragmas, as one is already
          --  issued on the corresponding type.
 
-         when Pragma_Invariant
-            | Pragma_Type_Invariant
-            | Pragma_Type_Invariant_Class =>
+         when Pragma_Invariant            |
+              Pragma_Type_Invariant       |
+              Pragma_Type_Invariant_Class =>
             null;
 
          --  Emit warning on pragma Overflow_Mode being currently ignored, even
@@ -4333,11 +4460,20 @@ package body SPARK_Definition is
                Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);
             end if;
 
-         --  Need to mark the expression of a pragma Attach_Handler and
-         --  Priority
+         when Pragma_Attach_Handler =>
+            --  Arg1 is the handler name; check if it is in SPARK, because
+            --  SPARK code should not reference non-SPARK code.
+            --  Arg2 is the interrupt ID.
+            Mark (Expression (Arg1));
+            Mark (Expression (Arg2));
 
-         when Pragma_Attach_Handler |
-              Pragma_Priority        =>
+         when Pragma_Interrupt_Priority =>
+            --  Priority expression is optional
+            if Present (Arg1) then
+               Mark (Expression (Arg1));
+            end if;
+
+         when Pragma_Priority =>
             Mark (Expression (Arg1));
 
          when Unknown_Pragma =>
@@ -4609,7 +4745,6 @@ package body SPARK_Definition is
            Pragma_Remote_Call_Interface          |
            Pragma_Remote_Types                   |
            Pragma_Shared_Passive                 |
-           Pragma_Interrupt_Priority             |
            Pragma_Lock_Free                      |
            Pragma_Storage_Size                   =>
 
@@ -4680,6 +4815,8 @@ package body SPARK_Definition is
 
          S_Duration            => True);
 
+   --  Start of processing for Mark_Standard_Package
+
    begin
       Initialize;
 
@@ -4722,7 +4859,7 @@ package body SPARK_Definition is
    begin
       --  We delay the initialization after checking that we really have a list
 
-      if not Present (Cur) then
+      if No (Cur) then
          return;
       end if;
 
@@ -4744,7 +4881,7 @@ package body SPARK_Definition is
                                      Consider_Next => not Is_Parent);
                Next (Cur);
                exit when
-                 not Present (Cur)
+                 No (Cur)
                  or else not Is_Pragma_Annotate_GNATprove (Cur);
             end loop;
 
@@ -4774,6 +4911,16 @@ package body SPARK_Definition is
       Def_E             : constant Entity_Id := Defining_Entity (N);
       E                 : constant Entity_Id := Unique_Entity (Def_E);
 
+      In_Pred_Function_Body : constant Boolean :=
+        Ekind (E) = E_Function and then Is_Predicate_Function (E);
+      --  Set to True iff processing body of a predicate function, which is
+      --  generated by the front end.
+
+      Save_Delayed_Aspect_Type : constant Entity_Id :=
+        Current_Delayed_Aspect_Type;
+
+   --  Start of processing for Mark_Subprogram_Body
+
    begin
       --  Ignore bodies defined in the standard library, unless the main unit
       --  is from the standard library. In particular, ignore bodies from
@@ -4801,28 +4948,19 @@ package body SPARK_Definition is
          return;
 
       else
-         --  Bodies of predicate functions are generated by the front end and
-         --  inserted at the end declaration section, where for packages it may
-         --  be ruled by another SPARK_Mode pragma than the one that rules
-         --  the type with the original predicate expression.
-         if Ekind (E) = E_Function and then Is_Predicate_Function (E)
-         then
-            declare
-               Typ : constant Entity_Id := Etype (First_Formal (Def_E));
-            begin
-               if Ekind (Scope (Typ)) = E_Package then
-                  Current_SPARK_Pragma := SPARK_Pragma (Scope (Typ));
-                  --  ??? if Typ is declared in private part of a package we
-                  --  should use SPARK_Aux_Pragma.
-               else
-                  Current_SPARK_Pragma := SPARK_Pragma (Def_E);
-               end if;
-            end;
+         if In_Pred_Function_Body then
+            Current_Delayed_Aspect_Type := Etype (First_Formal (E));
+
+            Current_SPARK_Pragma :=
+              SPARK_Pragma_Of_Type (Current_Delayed_Aspect_Type);
+
          else
             Current_SPARK_Pragma := SPARK_Pragma (Def_E);
          end if;
 
          --  Only analyze subprogram body declarations in SPARK_Mode => On
+         --  (or while processing predicate function in discovery mode, which
+         --  is recognized by the call to SPARK_Pragma_Is).
 
          if SPARK_Pragma_Is (Opt.On) then
 
@@ -4834,7 +4972,6 @@ package body SPARK_Definition is
               and then not Referenced (E)
               and then not Has_Unreferenced (E)
               and then Emit_Warning_Info_Messages
-              and then SPARK_Pragma_Is (Opt.On)
             then
                case Ekind (E) is
                when E_Function =>
@@ -4876,7 +5013,7 @@ package body SPARK_Definition is
                end loop;
             end;
 
-            --  Mark Task discriminants
+            --  Mark task discriminants
 
             if Nkind (N) = N_Task_Body
               and then Has_Discriminants (E)
@@ -4896,7 +5033,7 @@ package body SPARK_Definition is
             if Nkind (E) = N_Entry_Body then
                --  Entry barriers in Ravenscar are always of N_Identifier kind
                Mark_Identifier_Or_Expanded_Name
-                (Condition (Entry_Body_Formal_Part (N)));
+                 (Condition (Entry_Body_Formal_Part (N)));
             end if;
 
             --  For subprogram bodies (but not other subprogram-like nodes
@@ -4943,9 +5080,16 @@ package body SPARK_Definition is
                Entity_List.Append (Def_E);
             end if;
 
-            if not Violation_Detected then
+            if Violation_Detected then
+               if In_Pred_Function_Body then
+                  Entities_In_SPARK.Delete (Current_Delayed_Aspect_Type);
+               end if;
+            else
                Bodies_In_SPARK.Insert (E);
             end if;
+
+            Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
+
          end if;
 
          --  Postprocessing: indicate in output file if subprogram is in
@@ -4963,6 +5107,11 @@ package body SPARK_Definition is
 
    procedure Mark_Subprogram_Declaration (N : Node_Id) is
       E : constant Entity_Id := Defining_Entity (N);
+
+      In_Pred_Function_Decl : constant Boolean :=
+        Ekind (E) = E_Function and then Is_Predicate_Function (E);
+      --  Set to True iff processing declaration of a predicate function, which
+      --  is generated by the front end.
 
    begin
       --  Ignore generic subprograms
@@ -4984,11 +5133,31 @@ package body SPARK_Definition is
       else
          declare
             Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
-         begin
 
-            Current_SPARK_Pragma := SPARK_Pragma (E);
+            Save_Delayed_Aspect_Type : constant Entity_Id :=
+              Current_Delayed_Aspect_Type;
+
+         begin
+            if In_Pred_Function_Decl then
+               Current_Delayed_Aspect_Type := Etype (First_Formal (E));
+
+               Current_SPARK_Pragma :=
+                 SPARK_Pragma_Of_Type (Current_Delayed_Aspect_Type);
+
+            else
+               Current_SPARK_Pragma := SPARK_Pragma (E);
+            end if;
 
             Mark_Entity (E);
+
+            if In_Pred_Function_Decl then
+               --  Type with predicate and spec of a function that implements
+               --  the predicate must have the same SPARK status.
+               pragma Assert
+                 (In_SPARK (Current_Delayed_Aspect_Type) = In_SPARK (E));
+
+               Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
+            end if;
 
             Current_SPARK_Pragma := Save_SPARK_Pragma;
          end;
@@ -5008,16 +5177,16 @@ package body SPARK_Definition is
    -----------------------------
 
    procedure Mark_Subtype_Indication (N : Node_Id) is
-      T    : constant Entity_Id := (if Nkind (N) = N_Subtype_Indication
-                                    then Etype (Subtype_Mark (N))
-                                    else Etype (N));
+      T    : constant Entity_Id := Etype (if Nkind (N) = N_Subtype_Indication
+                                          then Subtype_Mark (N)
+                                          else N);
       Cstr : Node_Id;
 
    begin
       --  Check that the base type is in SPARK
 
       if not In_SPARK (T) then
-         Mark_Violation (N, From => T);
+         Mark_Violation (N, From => T); -- ?? N? similar below
       end if;
 
       if Nkind (N) = N_Subtype_Indication then
@@ -5158,17 +5327,21 @@ package body SPARK_Definition is
 
    procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id) is
    begin
-      Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
+      if Present (Current_SPARK_Pragma) then
+         Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
 
-      if Nkind (Current_SPARK_Pragma) /= N_Pragma then
-         pragma Assert (Nkind (Current_SPARK_Pragma) in N_Entity);
+         Error_Msg_F ("\\violation of " &
+                      (if From_Aspect_Specification (Current_SPARK_Pragma)
+                       then "aspect"
+                       else "pragma") &
+                      " SPARK_Mode #", N);
+      else
+         pragma Assert (Present (Current_Delayed_Aspect_Type));
+         Error_Msg_Sloc := Sloc (Current_Delayed_Aspect_Type);
+
          Error_Msg_FE
            ("\\delayed type aspect on & is required to be in SPARK", N,
-            Current_SPARK_Pragma);
-      elsif From_Aspect_Specification (Current_SPARK_Pragma) then
-         Error_Msg_F ("\\violation of aspect SPARK_Mode #", N);
-      else
-         Error_Msg_F ("\\violation of pragma SPARK_Mode #", N);
+            Current_Delayed_Aspect_Type);
       end if;
    end Mark_Violation_Of_SPARK_Mode;
 
@@ -5177,7 +5350,8 @@ package body SPARK_Definition is
    ----------------------------------
 
    procedure Mark_Most_Underlying_Type_In_SPARK
-     (Id : Entity_Id; N : Node_Id)
+     (Id : Entity_Id;
+      N  : Node_Id)
    is
       Typ : constant Entity_Id := Retysp (Id);
    begin
@@ -5191,22 +5365,74 @@ package body SPARK_Definition is
    ---------------------
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
-     (Present (Current_SPARK_Pragma)
-        and then
+     ((if Present (Current_Delayed_Aspect_Type)
+       then Mode = Opt.On
+       --  Force SPARK_Mode => On for expressions of a delayed aspects; we
+       --  assume that types with such aspects are in SPARK when marking
+       --  everything between their declaration and freezing point.
 
-     --  In the usual case where Current_SPARK_Pragma is a pragma node, get the
-     --  current mode from the pragma.
+       elsif Present (Current_SPARK_Pragma)
+       then Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = Mode
+       --  In the usual case where Current_SPARK_Pragma is a pragma node, get
+       --  the current mode from the pragma.
 
-     (if Nkind (Current_SPARK_Pragma) = N_Pragma then
-        Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = Mode
+       else Mode = Opt.None
+       --  Otherwise there is no applicable pragma, so SPARK_Mode is None
+     ));
 
-     --  If Current_SPARK_Pragma is not a pragma node, then we are analyzing a
-     --  deferred type aspect of a type marked to be in SPARK although no
-     --  SPARK_Mode was set for the enclosing unit (discovery mode). In this
-     --  case, we consider SPARK_Mode to be On as we can't mark the type out of
-     --  SPARK easily.
+   --------------------------
+   -- SPARK_Pragma_Of_Type --
+   --------------------------
 
-      else Mode = Opt.On));
+   function SPARK_Pragma_Of_Type (E : Entity_Id) return Node_Id is
+      Def : Entity_Id := E;
+      --  Entity which defines type E
+
+      Def_Scop : Entity_Id := Scope (E);
+      --  Immediate scope of entity that defines E
+
+      subtype SPARK_Pragma_Scope_With_Type_Decl is Entity_Kind
+        with Static_Predicate =>
+               SPARK_Pragma_Scope_With_Type_Decl in
+                  E_Entry           |
+                  E_Entry_Family    |
+                  E_Function        |
+                  E_Package         |
+                  E_Package_Body    |
+                  E_Procedure       |
+                  E_Subprogram_Body |
+                  E_Task_Body;
+
+   begin
+      while Ekind (Def_Scop) not in SPARK_Pragma_Scope_With_Type_Decl
+      loop
+         Def := Def_Scop;
+         Def_Scop := Scope (Def_Scop);
+      end loop;
+
+      case Ekind (Def_Scop) is
+         when E_Package =>
+            if List_Containing (Parent (Def)) =
+              Private_Declarations (Specification (Package_Spec (Def_Scop)))
+            then
+               return SPARK_Aux_Pragma (Def_Scop);
+            end if;
+
+         when E_Package_Body =>
+            if List_Containing (Parent (Def)) =
+              Statements (
+                Handled_Statement_Sequence (Package_Body (Def_Scop)))
+            then
+               return SPARK_Aux_Pragma (Def_Scop);
+            end if;
+
+         when others =>
+            null;
+      end case;
+
+      return SPARK_Pragma (Def_Scop);
+
+   end SPARK_Pragma_Of_Type;
 
    --------------------------
    -- Register_Task_Object --
@@ -5263,12 +5489,12 @@ package body SPARK_Definition is
    function First_Cursor (Kind : Entity_Collection) return Cursor is
      ((case Kind is
           when Entities_To_Translate =>
-            Cursor'(Kind => Entities_To_Translate,
-                    Entity_To_Translate_Cursor => Entity_List.First),
+             Cursor'(Kind => Entities_To_Translate,
+                     Entity_To_Translate_Cursor => Entity_List.First),
 
           when Marked_Entities =>
-            Cursor'(Kind => Marked_Entities,
-                    Marked_Entities_Cursor     => Entity_Set.First)));
+             Cursor'(Kind => Marked_Entities,
+                     Marked_Entities_Cursor     => Entity_Set.First)));
 
    -----------------
    -- Next_Cursor --
@@ -5279,14 +5505,14 @@ package body SPARK_Definition is
                          return Cursor is
      ((case Kind is
           when Entities_To_Translate =>
-            Cursor'(Kind => Entities_To_Translate,
-                    Entity_To_Translate_Cursor =>
-                      Node_Lists.Next (C.Entity_To_Translate_Cursor)),
+             Cursor'(Kind => Entities_To_Translate,
+                     Entity_To_Translate_Cursor =>
+                       Node_Lists.Next (C.Entity_To_Translate_Cursor)),
 
           when Marked_Entities =>
-            Cursor'(Kind => Marked_Entities,
-                    Marked_Entities_Cursor     =>
-                      Node_Sets.Next (C.Marked_Entities_Cursor))));
+             Cursor'(Kind => Marked_Entities,
+                     Marked_Entities_Cursor     =>
+                       Node_Sets.Next (C.Marked_Entities_Cursor))));
 
    -----------------
    -- Has_Element --
@@ -5297,10 +5523,10 @@ package body SPARK_Definition is
                          return Boolean is
      ((case Kind is
           when Entities_To_Translate =>
-            Node_Lists.Has_Element (C.Entity_To_Translate_Cursor),
+             Node_Lists.Has_Element (C.Entity_To_Translate_Cursor),
 
           when Marked_Entities =>
-            Node_Sets.Has_Element (C.Marked_Entities_Cursor)));
+             Node_Sets.Has_Element (C.Marked_Entities_Cursor)));
 
    -----------------
    -- Get_Element --
@@ -5311,9 +5537,9 @@ package body SPARK_Definition is
                          return Entity_Id is
      ((case Kind is
           when Entities_To_Translate =>
-            Node_Lists.Element (C.Entity_To_Translate_Cursor),
+             Node_Lists.Element (C.Entity_To_Translate_Cursor),
 
           when Marked_Entities =>
-            Node_Sets.Element (C.Marked_Entities_Cursor)));
+             Node_Sets.Element (C.Marked_Entities_Cursor)));
 
 end SPARK_Definition;

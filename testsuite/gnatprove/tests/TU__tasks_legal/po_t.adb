@@ -29,5 +29,10 @@ is
 begin
    P_Int.Set (-10);
    Hidden_Po.Set (-10);
-   pragma Assert (P_Int.Get = Hidden_PO.Get);
+   declare
+      X : constant Integer := P_Int.Get with Ghost;
+      Y : constant Integer := Hidden_PO.Get with Ghost;
+   begin
+      pragma Assert (X = Y); --  not provable
+   end;
 end PO_T;

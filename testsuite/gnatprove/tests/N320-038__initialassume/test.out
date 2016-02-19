@@ -22,17 +22,17 @@ my_pack.ads:14:22: info: postcondition proved
 -
 =========================
 Analyzed 2 units
-Assertions . . . . . .
-Data Dependencies . . . . . .
-Flow Dependencies . . . . . .
-Functional Contracts 5 . . 5 . .
-Initialization . . . . . .
-LSP Verification . . . . . .
-Non-Aliasing . . . . . .
-Run-time Checks 2 . . 2 . .
-SPARK Analysis results Total Flow Interval Provers Justified Unproved
+Assertions . . . . . . .
+Data Dependencies . . . . . . .
+Flow Dependencies . . . . . . .
+Functional Contracts 5 . . . 5 . .
+Initialization . . . . . . .
+LSP Verification . . . . . . .
+Non-Aliasing . . . . . . .
+Run-time Checks 2 . . . 2 . .
+SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
 Summary of SPARK analysis
-Total 7 . . 7 (100%) . .
+Total 7 . . . 7 (100%) . .
 absence of run-time errors of Full fully established
 absence of run-time errors of Full.Bump fully established
 absence of run-time errors of Full.Use_Bump fully established

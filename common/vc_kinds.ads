@@ -198,15 +198,23 @@ package VC_Kinds is
    Flow_Suffix  : constant String := "flow";
    Proof_Suffix : constant String := "proof";
 
-   --  A few labels are used to communicate information from gnat2why to
-   --  gnatwhy3. Changes here should be propagated to the code of gnatwhy3.
+   ------------
+   -- Labels --
+   ------------
 
-   GP_Id_Marker         : constant String := "GP_Id:";
-   GP_Pretty_Ada_Marker : constant String := "GP_Pretty_Ada:";
-   GP_Reason_Marker     : constant String := "GP_Reason:";
-   GP_Shape_Marker      : constant String := "GP_Shape:";
-   GP_Sloc_Marker       : constant String := "GP_Sloc:";
-   GP_Subp_Marker       : constant String := "GP_Subp:";
+   --  These strings are used in Why3 labels to communicate information to
+   --  Why3. Changes here should be propagated to the code of gnatwhy3. In
+   --  gnat2why, use of the corresponding Name_Ids in Why.Atree.Modules is
+   --  preferred over using the strings here.
+
+   GP_Id_Marker             : constant String := "GP_Id:";
+   GP_Pretty_Ada_Marker     : constant String := "GP_Pretty_Ada:";
+   GP_Reason_Marker         : constant String := "GP_Reason:";
+   GP_Shape_Marker          : constant String := "GP_Shape:";
+   GP_Sloc_Marker           : constant String := "GP_Sloc:";
+   GP_Subp_Marker           : constant String := "GP_Subp:";
+   GP_Already_Proved_Marker : constant String := "GP_Already_Proved";
+   Keep_On_Simp_Marker      : constant String := "keep_on_simp";
 
    --  A few labels are used in Why3 to identify variables and terms whose
    --  value is interesting in counter-examples.

@@ -68,8 +68,11 @@ package Configuration is
    --  True if --ide-progress-bar switch is present. Generate information on
    --  progress for display in IDE.
    Assumptions       : aliased Boolean;
-   --  True if --ide-progress-bar switch is present. Generate information on
-   --  progress for display in IDE.
+   --  True if --assumptions switch is present. Generate assumption information
+   --  in the gnatprove.out file.
+   CodePeer         : aliased Boolean;
+   --  True if --codepeer=on switch is present. Generate assumption information
+   --  in the gnatprove.out file.
    RTS_Dir           : aliased GNAT.Strings.String_Access;
    --  The RTS dir set by option --RTS or by the project file via "Runtime"
    --  attribute
@@ -84,7 +87,10 @@ package Configuration is
    No_Counterexample : aliased Boolean := False;
    --  Set to True if no counterexample should be get
    Benchmark_Mode    : aliased Boolean;
-   --  Provides the fake_* binaries instead of the real prover binaries.
+   --  Provides the fake_* binaries instead of the real prover binaries
+   --  (undocumented)
+   Caching           : aliased Boolean;
+   --  Enables caching using memcached (undocumented).
 
    type GP_Mode is (GPM_Check, GPM_Flow, GPM_Prove, GPM_All);
    --  The four feature modes of GNATprove:
@@ -109,6 +115,9 @@ package Configuration is
 
    Proof_Input  : aliased GNAT.Strings.String_Access;
    --  The input variable for command line parsing set by option --proof
+
+   CodePeer_Input  : aliased GNAT.Strings.String_Access;
+   --  The input variable for command line parsing set by option --codepeer
 
    Proof        : Proof_Mode;
    Lazy         : Boolean;

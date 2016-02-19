@@ -58,6 +58,7 @@ package body Gnat2Why_Args is
    Report_Mode_Name         : constant String := "report_mode";
    Why3_Args_Name           : constant String := "why3_args";
    Why3_Dir_Name            : constant String := "why3_dir";
+   CP_Dir_Name              : constant String := "codepeer_dir";
    Prove_Only_Name          : constant String := "debug_prove_only";
 
    procedure Interpret_Token (Token : String);
@@ -175,6 +176,15 @@ package body Gnat2Why_Args is
          begin
             Why3_Dir := To_Unbounded_String (Token (Start .. Token'Last));
          end;
+      elsif GNATCOLL.Utils.Starts_With (Token, CP_Dir_Name) and then
+        Token (Token'First + CP_Dir_Name'Length) = '='
+      then
+         declare
+            Start : constant Integer :=
+              Token'First + CP_Dir_Name'Length + 1;
+         begin
+            CP_Res_Dir := To_Unbounded_String (Token (Start .. Token'Last));
+         end;
 
       else
 
@@ -289,6 +299,10 @@ package body Gnat2Why_Args is
 
       if Why3_Dir /= Null_Unbounded_String then
          Add_Line (Why3_Dir_Name & "=" & To_String (Why3_Dir));
+      end if;
+
+      if CP_Res_Dir /= Null_Unbounded_String then
+         Add_Line (CP_Dir_Name & "=" & To_String (CP_Res_Dir));
       end if;
 
       for File of Why3_Args loop

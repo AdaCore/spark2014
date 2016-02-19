@@ -1,0 +1,49 @@
+digraph G {
+   overlap=false;
+   splies=true;
+   sep=1;
+   node [shape=none];
+
+   g0     [shape=circle];
+   g1     [shape=circle];
+   g2     [shape=circle];
+   g3     [shape=circle];
+   g4     [shape=circle];
+
+   p0 [shape=box];
+   p2 [shape=box];
+   p3 [shape=box];
+
+   p1_read;
+   p1_write;
+   p1_call;
+
+   p4_read;
+   p4_write;
+   p4_call;
+
+   p5_read;
+   p5_write;
+   p5_call;
+
+   // P1
+
+   p1_write -> g3;
+   p1_call  -> p2;
+
+   // P4
+
+   p4_read  -> g3;
+   p4_write -> g3;
+   p4_read  -> p5_read;
+   p4_write -> p5_write;
+   p4_call  -> p5_call;
+
+   // P5
+
+   p5_read  -> g1;
+   p5_read  -> g2;
+   p5_write -> g3;
+   p5_write -> g4;
+
+}

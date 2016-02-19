@@ -1,11 +1,14 @@
 aspect.adb:7:20: info: initialization of "X" proved
 aspect.ads:3:14: info: nontermination of task proved
+aspect.ads:3:22: warning: pragma "Storage_Size" ignored (not yet supported)
 prag.adb:7:20: info: initialization of "X" proved
 prag.ads:3:14: info: nontermination of task proved
+prag.ads:4:06: warning: pragma "Storage_Size" ignored (not yet supported)
 rep.adb:7:20: info: initialization of "X" proved
 rep.ads:3:14: info: nontermination of task proved
 ss_default.ads:5:38: attribute "STORAGE_SIZE" is not permitted in SPARK
 ss_default.ads:7:22: attribute "STORAGE_SIZE" is not permitted in SPARK
+ss_defined.ads:3:24: warning: pragma "Storage_Size" ignored (not yet supported)
 ss_defined.ads:7:23: attribute "Storage_Size" is not permitted in SPARK
 ss_defined.ads:7:42: attribute "Storage_Size" is not permitted in SPARK
 unsupported.adb:3:09: access type is not allowed in SPARK

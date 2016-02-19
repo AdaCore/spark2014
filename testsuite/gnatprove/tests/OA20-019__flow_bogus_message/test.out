@@ -1,0 +1,2 @@
+test.ads:6:04: warning: in instantiation at dummy_task.ads:8
+test.ads:6:04: warning: pragma "Storage_Size" ignored (not yet supported)

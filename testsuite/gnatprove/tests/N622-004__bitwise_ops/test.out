@@ -56,7 +56,7 @@ aco-math-very_longs.adb:125:87: info: initialization of "Index" proved
 aco-math-very_longs.adb:125:94: info: overflow check proved
 aco-math-very_longs.adb:125:94: info: range check proved
 aco-math-very_longs.adb:127:31: info: initialization of "String_Index" proved
-aco-math-very_longs.adb:127:31: medium: array index check might fail (e.g. when String_Index = 1 and Number = (others => 0))
+aco-math-very_longs.adb:127:31: medium: array index check might fail (e.g. when Number = (others => 0) and Number'First = 2 and Number'Last = 3 and String_Index = 1)
 aco-math-very_longs.adb:128:31: info: initialization of "String_Index" proved
 aco-math-very_longs.adb:128:44: info: index check proved
 aco-math-very_longs.adb:128:44: info: overflow check proved

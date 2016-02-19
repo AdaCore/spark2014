@@ -9,9 +9,7 @@ is
    type A_Type is array (M64_Type range 1000 .. 1999) of Byte;
    type B_Type is array (M32_Type range    0 ..  999) of Byte;
 
-   procedure Foo (B : in out B_Type)
-   with Pre => True
-   is
+   procedure Foo (B : in out B_Type) is
    begin
       for I in B'Range loop
          B (I) := B (I) + 1;

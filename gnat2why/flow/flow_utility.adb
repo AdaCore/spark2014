@@ -26,25 +26,28 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
-with Elists;                     use Elists;
+
 with Errout;                     use Errout;
-with Flow_Classwide;             use Flow_Classwide;
-with Flow_Debug;                 use Flow_Debug;
-with Flow_Generated_Globals;     use Flow_Generated_Globals;
-with Gnat2Why.Util;
-with Graphs;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
 with Output;                     use Output;
 with Sem_Aux;                    use Sem_Aux;
 with Sem_Eval;                   use Sem_Eval;
 with Sem_Type;                   use Sem_Type;
+with Sprint;                     use Sprint;
+with Treepr;                     use Treepr;
+
+with Common_Iterators;           use Common_Iterators;
+with Gnat2Why.Util;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
-with Sprint;                     use Sprint;
-with Treepr;                     use Treepr;
 with Why;
+
+with Flow_Classwide;             use Flow_Classwide;
+with Flow_Debug;                 use Flow_Debug;
+with Flow_Generated_Globals;     use Flow_Generated_Globals;
+with Graphs;
 
 package body Flow_Utility is
 
@@ -355,40 +358,34 @@ package body Flow_Utility is
       return Flow_Id_Sets.Set
    is
       Tmp : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-      Ptr : Elmt_Id;
    begin
       case F.Kind is
          when Direct_Mapping =>
             if Ekind (Get_Direct_Mapping_Id (F)) = E_Abstract_State then
-               Ptr := First_Elmt (Refinement_Constituents
-                                  (Get_Direct_Mapping_Id (F)));
-               while Present (Ptr) loop
-
+               for C of Iter (Refinement_Constituents
+                                (Get_Direct_Mapping_Id (F)))
+               loop
                   --  We simply ignore the null refinement, it is
                   --  treated as if it was not present.
-
-                  if Nkind (Node (Ptr)) /= N_Null then
+                  if Nkind (C) /= N_Null then
                      Tmp.Union
-                       (Expand_Abstract_State (Direct_Mapping_Id (Node (Ptr),
-                        F.Variant), Erase_Constants));
+                       (Expand_Abstract_State (Direct_Mapping_Id (C,
+                                                                  F.Variant),
+                                               Erase_Constants));
                   end if;
-                  Ptr := Next_Elmt (Ptr);
                end loop;
 
-               Ptr := First_Elmt (Part_Of_Constituents
-                                  (Get_Direct_Mapping_Id (F)));
-               while Present (Ptr) loop
-
+               for C of Iter (Part_Of_Constituents
+                                (Get_Direct_Mapping_Id (F)))
+               loop
                   --  Part_of cannot include a null refinement.
-
                   Tmp.Union
-                    (Expand_Abstract_State (Direct_Mapping_Id (Node (Ptr),
-                     F.Variant), Erase_Constants));
-                  Ptr := Next_Elmt (Ptr);
+                    (Expand_Abstract_State (Direct_Mapping_Id (C,
+                                                               F.Variant),
+                                            Erase_Constants));
                end loop;
 
                if Tmp.Is_Empty then
-
                   --  If we can't refine this state (maybe the body
                   --  is not in SPARK, or simply not implemented or
                   --  there is a null refinement) then we use the
@@ -656,18 +653,12 @@ package body Flow_Utility is
                   --  Include constituents that belong to the concurrent object
                   --  due to a Part_Of.
                   if Present (Anonymous_Object (T)) then
-                     declare
-                        AO  : constant Node_Id := Anonymous_Object (T);
-                        Ptr : Elmt_Id :=
-                          First_Elmt (Part_Of_Constituents (AO));
-                     begin
-                        while Present (Ptr) loop
-                           Ids.Union
-                             (Flatten_Variable (Direct_Mapping_Id (Node (Ptr)),
-                                                Scope));
-                           Ptr := Next_Elmt (Ptr);
-                        end loop;
-                     end;
+                     for C of Iter (Part_Of_Constituents
+                                      (Anonymous_Object (T)))
+                     loop
+                        Ids.Union (Flatten_Variable (Direct_Mapping_Id (C),
+                                                     Scope));
+                     end loop;
                   end if;
                else
                   --  From outside a concurrent object, all that we see is the
@@ -1975,32 +1966,31 @@ package body Flow_Utility is
       Entire   : Boolean := True)
       return Node_Sets.Set
    is
-      F      : constant Flow_Id := Direct_Mapping_Id (E);
-      Params : Node_Sets.Set    := Node_Sets.Empty_Set;
+      F : constant Flow_Id := Direct_Mapping_Id (E);
+      use Node_Sets;
    begin
       case Ekind (E) is
          when E_Entry | Subprogram_Kind =>
             --  If E is directly enclosed in a protected object then add the
             --  protected object as an implicit formal parameter of the
             --  entry/subprogram.
-            if Belongs_To_Protected_Object (F) then
-               Params.Insert (Get_Enclosing_Concurrent_Object (F,
-                                                               Callsite,
-                                                               Entire));
-            end if;
+            return
+              (if Belongs_To_Protected_Object (F)
+               then
+                  To_Set
+                    (Get_Enclosing_Concurrent_Object (F, Callsite, Entire))
+               else Empty_Set);
 
          when E_Task_Type =>
-            --  A task sees itself as a formal parameter.
-            Params.Include ((if Present (Anonymous_Object (E))
-                             then Anonymous_Object (E)
-                             else E));
+            --  A task sees itself as a formal parameter
+            return To_Set ((if Present (Anonymous_Object (E))
+                            then Anonymous_Object (E)
+                            else E));
 
          when others =>
-            raise Why.Unexpected_Node;
+            raise Program_Error;
 
       end case;
-
-      return Params;
    end Get_Implicit_Formals;
 
    -----------------
@@ -2038,7 +2028,7 @@ package body Flow_Utility is
             end if;
 
          when others =>
-            raise Why.Unexpected_Node;
+            raise Program_Error;
 
       end case;
 
@@ -2730,7 +2720,7 @@ package body Flow_Utility is
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
 
-      --  Start of processing for Get_Variable_Set
+   --  Start of processing for Get_Variable_Set
 
    begin
       Traverse (N);
@@ -2857,6 +2847,7 @@ package body Flow_Utility is
    ------------------------
 
    function Has_Variable_Input (F : Flow_Id) return Boolean is
+
       function Get_Declaration (E : Entity_Id) return Node_Id
       with Post => Nkind (Get_Declaration'Result) = N_Object_Declaration;
       --  Returns the N_Object_Declaration corresponding to entity E
@@ -2883,6 +2874,9 @@ package body Flow_Utility is
       E    : Entity_Id;
       Decl : Node_Id;
       FS   : Flow_Id_Sets.Set;
+
+   --  Start of processing for Has_Variable_Input
+
    begin
       E := Get_Direct_Mapping_Id (F);
 
@@ -3224,6 +3218,7 @@ package body Flow_Utility is
                                              S : Flow_Scope)
                                              return Boolean
    is
+      pragma Unreferenced (S);
    begin
       case F.Kind is
          when Direct_Mapping | Record_Field =>
@@ -4602,6 +4597,8 @@ package body Flow_Utility is
 
       Idx                      : Natural;
       Process_Type_Conversions : Boolean;
+
+   --  Start of processing for Untangle_Assignment_Target
 
    begin
 

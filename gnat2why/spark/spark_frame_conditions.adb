@@ -475,7 +475,7 @@ package body SPARK_Frame_Conditions is
          --  Any state abstraction for which we do NOT have a
          --  corresponding Entidy_Id is an External state abstraction.
 
-         if not Present (Find_Entity (State_Name)) then
+         if No (Find_Entity (State_Name)) then
             Process (State_Name);
          end if;
       end loop;
@@ -500,7 +500,7 @@ package body SPARK_Frame_Conditions is
    --------------------
 
    function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
-   is (Calls.Element (E_Name));
+   renames Calls.Element;
 
    -------------------------
    -- Get_Generated_Reads --

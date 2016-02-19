@@ -6,7 +6,7 @@ package P is
       X : Boolean := False;
    end;
 
-   function Wrapper return Boolean;
+   function Wrapper return Boolean with Volatile_Function;
 
 --   protected P2 is
 --   private

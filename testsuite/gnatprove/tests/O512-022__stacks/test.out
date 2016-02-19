@@ -11,7 +11,7 @@ main.adb:18:10: warning: assuming "Put_Line" has no effect on global items
 main.adb:18:10: warning: no Global contract available for "Put_Line"
 main.adb:21:38: warning: assuming "Get_Line" has no effect on global items
 main.adb:21:38: warning: no Global contract available for "Get_Line"
-main.adb:26:40: medium: range check might fail (e.g. when Cmd = (others => 0))
+main.adb:26:40: medium: range check might fail (e.g. when Cmd = (others => 0) and Cmd'First = 2 and Cmd'Last = 4)
 main.adb:27:16: medium: private part of "S" might not be initialized
 main.adb:27:17: medium: precondition might fail (e.g. when S = (Max => ?, Top => 0, Data => (others => 0)))
 main.adb:28:16: warning: assuming "Put_Line" has no effect on global items
@@ -19,7 +19,7 @@ main.adb:28:16: warning: no Global contract available for "Put_Line"
 main.adb:29:16: info: initialization of private part of "S" proved
 main.adb:30:16: warning: assuming "New_Line" has no effect on global items
 main.adb:30:16: warning: no Global contract available for "New_Line"
-main.adb:32:44: medium: range check might fail (e.g. when Cmd = (others => 0))
+main.adb:32:44: medium: range check might fail (e.g. when Cmd = (others => 0) and Cmd'First = 2 and Cmd'Last = 7)
 main.adb:33:16: warning: assuming "Get" has no effect on global items
 main.adb:33:16: warning: no Global contract available for "Get"
 main.adb:33:21: info: range check proved
@@ -39,7 +39,7 @@ stacks.adb:26:07: warning: assuming "Put" has no effect on global items
 stacks.adb:26:07: warning: no Global contract available for "Put"
 stacks.adb:28:10: warning: assuming "Put" has no effect on global items
 stacks.adb:28:10: warning: no Global contract available for "Put"
-stacks.adb:28:38: medium: array index check might fail (e.g. when S = -1 and J = 2)
+stacks.adb:28:38: medium: array index check might fail (e.g. when S = (Max => ?, Top => 2, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1 and J = 2)
 stacks.adb:30:07: warning: assuming "Put" has no effect on global items
 stacks.adb:30:07: warning: no Global contract available for "Put"
 stacks.ads:27:14: medium: precondition is stronger than the default class-wide precondition of True (e.g. when S = (Max => ?, Top => 1, Data => (others => 0)))
@@ -47,10 +47,10 @@ stacks.ads:28:14: info: postcondition proved
 stacks.ads:28:34: info: overflow check proved
 stacks.ads:47:14: medium: precondition is stronger than the default class-wide precondition of True (e.g. when S = (Max => ?, Top => 0, Data => (others => 0)))
 stacks.ads:48:14: info: postcondition proved
-stacks.ads:67:13: medium: precondition is stronger than the default class-wide precondition of True (e.g. when S = -1)
+stacks.ads:67:13: medium: precondition is stronger than the default class-wide precondition of True (e.g. when S = (Max => ?, Top => 0, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.ads:69:14: warning: subprogram "Print" has no effect
 stacks.ads:78:13: info: range check proved
 stacks.ads:80:13: info: range check proved
 stacks.ads:82:13: info: range check proved
 stacks.ads:84:13: info: range check proved
-stacks.ads:84:58: medium: array index check might fail (e.g. when S = -1)
+stacks.ads:84:58: medium: array index check might fail (e.g. when S = (Max => ?, Top => 2, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)

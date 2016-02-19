@@ -27,6 +27,7 @@ with Ada.Containers;        use Ada.Containers;
 with Ada.Direct_IO;
 with Ada.Directories;
 with Ada.Strings.Unbounded;
+with Atree;                 use Atree;
 with Errout;                use Errout;
 with GNAT.Regpat;
 with GNAT.OS_Lib;           use GNAT.OS_Lib;
@@ -36,11 +37,9 @@ with Sinput;                use Sinput;
 with SPARK_Util;            use SPARK_Util;
 with String_Utils;          use String_Utils;
 with Uintp;                 use Uintp;
-with VC_Kinds;              use VC_Kinds;
 with Why.Atree.Accessors;   use Why.Atree.Accessors;
 with Why.Atree.Modules;     use Why.Atree.Modules;
 with Why.Conversions;       use Why.Conversions;
-with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Ids;               use Why.Ids;
 with Why.Images;            use Why.Images;
 
@@ -55,11 +54,11 @@ package body Why.Atree.Sprint is
    --  Counterexamples use Why3 locations, contrary to VCs which are based
    --  on special GP_Sloc labels.
 
-   Curr_Sloc : Source_Ptr := -1;
+   Curr_Sloc : Source_Ptr := No_Location;
    --  The source code location of currently printed node
 
    procedure Print_Sloc_Tag;
-   --  Print the location tag for currently printed node.
+   --  Print the location tag for currently printed node
 
    -----------------------
    -- Local Subprograms --
@@ -1141,8 +1140,7 @@ package body Why.Atree.Sprint is
       end if;
       --  Emit location for constructs that trigger VC (these constructs have
       --  either Model_VC_Label or Model_VC_Post_Label)
-      if Labels.Contains (NID (Model_VC_Label)) or else
-        Labels.Contains (NID (Model_VC_Post_Label))
+      if Labels.Contains (Model_VC) or else Labels.Contains (Model_VC_Post)
       then
          Print_Sloc_Tag;
       end if;
@@ -1232,19 +1230,18 @@ package body Why.Atree.Sprint is
       Module    : constant W_Module_Id := Get_Module (Node);
       Namespace : constant Name_Id := Get_Namespace (Node);
    begin
-      if not Get_Infix (Node)
-        and then Module /= Why_Empty
-        and then Get_Name (Module) /= No_Name
-      then
-         Print_Module_Id (Module);
-         P (O, ".");
-      end if;
+      if not Get_Infix (Node) then
+         if Module /= Why_Empty
+           and then Get_Name (Module) /= No_Name
+         then
+            Print_Module_Id (Module);
+            P (O, ".");
+         end if;
 
-      if not Get_Infix (Node)
-        and then Namespace /= No_Name
-      then
-         P (O, Namespace);
-         P (O, ".");
+         if Namespace /= No_Name then
+            P (O, Namespace);
+            P (O, ".");
+         end if;
       end if;
 
       P (O, Get_Symbol (Node));
@@ -1791,7 +1788,7 @@ package body Why.Atree.Sprint is
          declare
             N : constant Node_Id := Get_Ada_Node (+Node);
          begin
-            pragma Assert (N /= 0);
+            pragma Assert (Present (N));
             P (O, Capitalize_First (Full_Name (N)));
             P (O, ".");
             P (O, Short_Name (N));

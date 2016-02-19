@@ -23,19 +23,22 @@
 
 with Ada.Containers;         use Ada.Containers;
 with Ada.Containers.Vectors;
-with Elists;                 use Elists;
-with Flow_Debug;             use Flow_Debug;
-with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
-with Flow_Types;             use Flow_Types;
+
 with Nlists;                 use Nlists;
 with Output;                 use Output;
 with Sem_Util;               use Sem_Util;
 with Snames;                 use Snames;
-with SPARK_Util;             use SPARK_Util;
 with Sprint;                 use Sprint;
 with Stand;                  use Stand;
 with Treepr;                 use Treepr;
+
+with Common_Iterators;       use Common_Iterators;
+with SPARK_Util;             use SPARK_Util;
 with Why;
+
+with Flow_Debug;             use Flow_Debug;
+with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
+with Flow_Types;             use Flow_Types;
 
 package body Flow_Refinement is
 
@@ -399,7 +402,7 @@ package body Flow_Refinement is
    is
       Body_E : constant Entity_Id := Get_Body_Entity (E);
    begin
-      if not Present (S) then
+      if No (S) then
          --  From the standard scope we won't be able to see much...
          return False;
       end if;
@@ -482,35 +485,30 @@ package body Flow_Refinement is
       ------------
 
       function Expand (E : Entity_Id) return Node_Sets.Set is
-         Tmp : Node_Sets.Set := Node_Sets.Empty_Set;
-         Ptr : Elmt_Id;
-         Hs  : Boolean := False;
+         Tmp                        : Node_Sets.Set := Node_Sets.Empty_Set;
+         Possible_Hidden_Components : Boolean       := False;
       begin
          case Ekind (E) is
             when E_Abstract_State =>
                if State_Refinement_Is_Visible (E, S) then
-                  Ptr := First_Elmt (Refinement_Constituents (E));
-                  while Present (Ptr) loop
-                     if Nkind (Node (Ptr)) /= N_Null then
-                        Tmp.Union (Expand (Node (Ptr)));
+                  for C of Iter (Refinement_Constituents (E)) loop
+                     if Nkind (C) /= N_Null then
+                        Tmp.Union (Expand (C));
                      end if;
-                     Ptr := Next_Elmt (Ptr);
                   end loop;
                else
-                  Hs := True;
+                  Possible_Hidden_Components := True;
                end if;
 
-               Ptr := First_Elmt (Part_Of_Constituents (E));
-               while Present (Ptr) loop
-                  if Is_Visible (Node (Ptr), S) then
-                     Tmp.Union (Expand (Node (Ptr)));
+               for C of Iter (Part_Of_Constituents (E)) loop
+                  if Is_Visible (C, S) then
+                     Tmp.Union (Expand (C));
                   else
-                     Hs := True;
+                     Possible_Hidden_Components := True;
                   end if;
-                  Ptr := Next_Elmt (Ptr);
                end loop;
 
-               if Hs then
+               if Possible_Hidden_Components then
                   --  We seem to have an abstract state which has no
                   --  refinement, or where we have unexpanded state. Lets
                   --  include the abstract state itself.

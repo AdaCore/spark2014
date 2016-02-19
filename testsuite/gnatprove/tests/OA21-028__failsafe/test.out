@@ -1,3 +1,31 @@
+counter.adb:8:16: info: initialization of "Res" proved
+counter.adb:8:51: info: index check proved
+counter.adb:9:13: info: loop invariant initialization proved
+counter.adb:9:13: info: loop invariant preservation proved
+counter.adb:9:58: info: initialization of "Res" proved
+counter.adb:9:82: info: index check proved
+counter.adb:10:20: info: initialization of "Res" proved
+counter.adb:10:24: info: range check proved
+counter.adb:12:17: info: initialization of "Res" proved
+counter.adb:18:13: info: loop invariant initialization proved
+counter.adb:18:13: info: loop invariant preservation proved
+counter.adb:19:25: info: range check proved
+counter.adb:20:29: info: index check proved
+counter.adb:20:55: info: index check proved
+counter.adb:22:27: info: range check proved
+counter.adb:23:31: info: index check proved
+counter.adb:23:55: info: index check proved
+counter.adb:38:25: info: range check proved
+counter.adb:45:10: info: assertion proved
+counter.adb:46:76: info: index check proved
+counter.adb:47:10: info: assertion proved
+counter.adb:48:60: info: index check proved
+counter.adb:50:28: medium: assertion might fail, cannot prove Model.Current_Chain_Length = Count
+counter.ads:21:10: info: postcondition proved
+counter.ads:24:25: info: index check proved
+counter.ads:27:38: info: index check proved
+counter.ads:31:11: info: postcondition proved
+counter.ads:40:14: info: postcondition proved
 failsafe.adb:4:04: info: initialization of "Counter" constituent of "Failsafe_State" proved
 failsafe.adb:12:23: info: initialization of "Res" proved
 failsafe.adb:12:27: info: range check proved

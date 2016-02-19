@@ -26,14 +26,20 @@
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
+with Ada.Containers.Indefinite_Hashed_Sets;
+with Ada.Directories;       use Ada.Directories;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with Common_Containers;          use Common_Containers;
-with Errout;                     use Errout;
-with Flow_Error_Messages;        use Flow_Error_Messages;
-with Gnat2Why.Assumptions;       use Gnat2Why.Assumptions;
-with Osint;                      use Osint;
-with Sinfo;                      use Sinfo;
-with SPARK_Util;                 use SPARK_Util;
+with Common_Containers;     use Common_Containers;
+with Errout;                use Errout;
+with Flow_Error_Messages;   use Flow_Error_Messages;
+with Gnat2Why.Assumptions;  use Gnat2Why.Assumptions;
+with Gnat2Why_Args;         use Gnat2Why_Args;
+with Osint;                 use Osint;
+with SA_Messages;           use SA_Messages;
+with Sinfo;                 use Sinfo;
+with Sinput;                use Sinput;
+with SPARK_Util;            use SPARK_Util;
 
 package body Gnat2Why.Error_Messages is
 
@@ -45,7 +51,9 @@ package body Gnat2Why.Error_Messages is
    end record;
 
    function Hash (X : VC_Id) return Ada.Containers.Hash_Type is
-      (Ada.Containers.Hash_Type (X));
+     (Ada.Containers.Hash_Type (X));
+
+   function To_String (M : Message_And_Location) return String;
 
    package Id_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => VC_Id,
@@ -66,6 +74,12 @@ package body Gnat2Why.Error_Messages is
       Hash            => Node_Hash,
       Equivalent_Keys => "=",
       "="             => Id_Sets."=");
+
+   package Msg_Sets is new Ada.Containers.Indefinite_Hashed_Sets
+     (Element_Type        => SA_Messages.Message_And_Location,
+      Hash                => SA_Messages.Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
 
    procedure Add_Id_To_Entity (Id : VC_Id; E : Entity_Id);
    --  enter the VC_Id into the map from entities to Id_Sets
@@ -95,6 +109,13 @@ package body Gnat2Why.Error_Messages is
    VC_Set_Table : Ent_Id_Set_Maps.Map := Ent_Id_Set_Maps.Empty_Map;
    --  This table maps entities to the set of unproved VCs
 
+   Codepeer_Proved : Msg_Sets.Set;
+   --  This set contains the checks that codepeer has proved
+
+   CP_File_Present : Boolean := False;
+   --  Set to true when CodePeer results have been found - this allows to skip
+   --  costly work in case when codepeer is not there
+
    ----------------------
    -- Add_Id_To_Entity --
    ----------------------
@@ -122,6 +143,144 @@ package body Gnat2Why.Error_Messages is
       pragma Assert (not Dummy);
       VC_Set_Table.Update_Element (Position, Add_To_Set'Access);
    end Add_Id_To_Entity;
+
+   -------------------------
+   -- CodePeer_Has_Proved --
+   -------------------------
+
+   function CodePeer_Has_Proved (Slc : Source_Ptr; Kind : VC_Kind)
+                                 return Boolean is
+
+      function Make_CodePeer_Loc (Sloc : Source_Ptr) return Source_Location;
+      --  @param Sloc a source location as defined by the GNAT front-end
+      --  @return the equivalent a source location in the type defined by the
+      --    SA_Messages unit
+
+      type Opt_Msg (OK : Boolean) is record
+         case OK is
+            when True =>
+               Msg : SA_Message;
+            when False =>
+               null;
+         end case;
+      end record;
+
+      function Make_Codepeer_Msg (Kind : VC_Kind) return Opt_Msg;
+      --  @param Kind a VC Kind as defined by gnat2why
+      --  @return the same VC kind as defined by the type in the SA_Messages
+      --    unit. We use an option type here to allow not returning such a
+      --    kind. This is useful in the cases where there is no equivalent in
+      --    SA_Messages or when the mapping is not clear.
+
+      -----------------------
+      -- Make_CodePeer_Loc --
+      -----------------------
+
+      function Make_CodePeer_Loc (Sloc : Source_Ptr) return Source_Location is
+      begin
+         if Sloc = No_Location then
+            return Null_Location;
+         else
+            return Make (File_Name (Slc),
+                         Line_Number (Get_Physical_Line_Number (Slc)),
+                         SA_Messages.Column_Number (Get_Column_Number (Slc)),
+                         Make_CodePeer_Loc (Instantiation_Location (Sloc)));
+         end if;
+      end Make_CodePeer_Loc;
+
+      -----------------------
+      -- Make_Codepeer_Msg --
+      -----------------------
+
+      function Make_Codepeer_Msg (Kind : VC_Kind) return Opt_Msg is
+      begin
+         case Kind is
+            when VC_Division_Check =>
+               return (True,
+                       SA_Message'(Divide_By_Zero_Check,
+                                   Statically_Known_Success));
+
+            when VC_Index_Check    =>
+               return (True,
+                       SA_Message'(Array_Index_Check,
+                                   Statically_Known_Success));
+
+            when VC_Overflow_Check =>
+               return (True,
+                       SA_Message'(SA_Messages.Overflow_Check,
+                                   Statically_Known_Success));
+
+            when VC_Range_Check    =>
+               return (True,
+                       SA_Message'(SA_Messages.Range_Check,
+                                   Statically_Known_Success));
+
+            when VC_Discriminant_Check =>
+               return (True,
+                       SA_Message'(SA_Messages.Discriminant_Check,
+                                   Statically_Known_Success));
+
+            when VC_Tag_Check =>
+               return (True,
+                       SA_Message'(SA_Messages.Tag_Check,
+                                   Statically_Known_Success));
+
+            when VC_Precondition              |
+                 VC_Precondition_Main         |
+                 VC_Postcondition             |
+                 VC_Predicate_Check           |
+                 VC_Initial_Condition         |
+                 VC_Default_Initial_Condition |
+                 VC_Refined_Post              |
+                 VC_Contract_Case             |
+                 VC_Disjoint_Contract_Cases   |
+                 VC_Complete_Contract_Cases   |
+                 VC_Loop_Variant              |
+                 VC_Loop_Invariant            |
+                 VC_Loop_Invariant_Init       |
+                 VC_Loop_Invariant_Preserv    |
+                 VC_Assert            =>
+               return (True,
+                       SA_Message'(SA_Messages.Assertion_Check,
+                                   Statically_Known_Success));
+
+            when VC_Length_Check              |
+                 VC_Ceiling_Interrupt         |
+                 VC_Interrupt_Reserved        |
+                 VC_Ceiling_Priority_Protocol |
+                 VC_Task_Termination          |
+                 VC_Raise                     |
+                 VC_Weaker_Pre                |
+                 VC_Trivial_Weaker_Pre        |
+                 VC_Stronger_Post             |
+                 VC_Weaker_Classwide_Pre      |
+                 VC_Stronger_Classwide_Post  =>
+               return (OK => False);
+         end case;
+      end Make_Codepeer_Msg;
+
+   begin
+      if CP_File_Present then
+         declare
+            Opt : constant Opt_Msg := Make_Codepeer_Msg (Kind);
+         begin
+            if Opt.OK then
+               declare
+                  Msg : constant Message_And_Location :=
+                    Make_Msg_Loc (Loc => Make_CodePeer_Loc (Slc),
+                                  Msg => Opt.Msg);
+               begin
+                  Ada.Text_IO.Put_Line ("checking for " & To_String (Msg));
+                  return Codepeer_Proved.Contains (Msg);
+               end;
+            else
+               return False;
+            end if;
+         end;
+      else
+         return False;
+      end if;
+   end CodePeer_Has_Proved;
 
    -----------------------
    -- Emit_Proof_Result --
@@ -169,6 +328,49 @@ package body Gnat2Why.Error_Messages is
    begin
       return not (VC_Table.Is_Empty);
    end Has_Registered_VCs;
+
+   ---------------------------
+   -- Load_Codepeer_Results --
+   ---------------------------
+
+   procedure Load_Codepeer_Results is
+
+      use Reading;
+      Base_Name : constant String :=
+        Unit_Name & "__body.sam" & SA_Messages.File_Extension;
+      File_Name : constant String :=
+        Ada.Directories.Compose
+          (To_String (Gnat2Why_Args.CP_Res_Dir),
+           Base_Name);
+   begin
+      if Gnat2Why_Args.CP_Res_Dir = Null_Unbounded_String then
+         return;
+      end if;
+      if not Exists (File_Name)
+        or else Kind (File_Name) /= Ordinary_File
+      then
+         Ada.Text_IO.Put_Line ("did not find result file " & File_Name);
+         return;
+      end if;
+      CP_File_Present := True;
+
+      --  opening file with base name and not with full path. We will later
+      --  match messages that we construct in gnat2why with the messages that
+      --  we parse here, and the former only have basenames
+
+      Open (File_Name, Full_Path => False);
+      while not Done loop
+         declare
+            Msg : constant Message_And_Location := Get;
+         begin
+            if Message (Msg).Check_Result = Statically_Known_Success then
+               Ada.Text_IO.Put_Line
+                 ("adding " & To_String (Msg));
+               Codepeer_Proved.Include (Msg);
+            end if;
+         end;
+      end loop;
+   end Load_Codepeer_Results;
 
    -------------------------------------------
    -- Mark_Subprograms_With_No_VC_As_Proved --
@@ -414,6 +616,8 @@ package body Gnat2Why.Error_Messages is
             Extra_Msg   => Extra_Msg);
       end Handle_Result;
 
+   --  Start of processing for Parse_Why3_Results
+
    begin
       Mark_Subprograms_With_No_VC_As_Proved;
       declare
@@ -549,5 +753,19 @@ package body Gnat2Why.Error_Messages is
    begin
       VC_Set_Table.Insert (Key => E, Position => Position, Inserted => Dummy);
    end Register_VC_Entity;
+
+   ---------------
+   -- To_String --
+   ---------------
+
+   function To_String (M : Message_And_Location) return String is
+      L : constant Source_Location := Location (M);
+      H : constant Ada.Containers.Hash_Type := Hash (M);
+   begin
+      return File_Name (L) & Line_Number'Image (Line (L)) &
+        SA_Messages.Column_Number'Image (Column (L)) & " " &
+        Message_Kind'Image (Message (M).Kind) &
+        Ada.Containers.Hash_Type'Image (H);
+   end To_String;
 
 end Gnat2Why.Error_Messages;

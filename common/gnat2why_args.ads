@@ -134,12 +134,19 @@ package Gnat2Why_Args is
 
    Why3_Dir : Unbounded_String := Null_Unbounded_String;
 
+   --  If CP_Res_Dir is "null", then CodePeer processing will be disabled.
+   --  Otherwise, CodePeer results will be in this directory
+
+   CP_Res_Dir : Unbounded_String := Null_Unbounded_String;
+
    --  IDE mode. Error messages may be formatted differently in this mode (e.g.
    --  JSON dict)
 
    Ide_Mode : Boolean := False;
 
-   --  The cmd line args to be passed to gnatwhy3
+   --  The cmd line args to be passed to gnatwhy3. In fact the "gnatwhy3"
+   --  executable name is not hardcoded and is passed as a first argument
+   --  of this list.
 
    Why3_Args : String_Lists.List := String_Lists.Empty_List;
 

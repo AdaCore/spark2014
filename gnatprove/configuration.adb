@@ -110,6 +110,11 @@ package body Configuration is
       Lazy   : out Boolean);
    --  parse the "--proof" option into the two values "proof" and "lazy"
 
+   procedure Set_CodePeer_Mode
+     (Config : Command_Line_Configuration;
+      Input  : String);
+   --  parse the --codepeer option (possibilities are "on" and "off")
+
    procedure Set_RTS_Dir
      (Config    : Command_Line_Configuration;
       Proj_Type : Project_Type;
@@ -149,6 +154,8 @@ ASCII.LF &
 " -aP=p               Add path p to project path" &
 ASCII.LF &
 "     --assumptions   Output assumptions information" &
+ASCII.LF &
+"     --codepeer=c    Enable or disable CodePeer analysis (c=on,off*)" &
 ASCII.LF &
 "     --clean         Remove GNATprove intermediate files, and exit" &
 ASCII.LF &
@@ -365,6 +372,9 @@ ASCII.LF;
       Proj_Type : constant Project_Type := Root_Project (Tree);
       Iter      : Project_Iterator := Proj_Type.Start;
       Project   : Project_Type;
+
+   --  Start of processing for Clean_Up
+
    begin
       loop
          Project := Current (Iter);
@@ -849,6 +859,11 @@ ASCII.LF;
 
       Define_Switch
         (Config,
+         CodePeer_Input'Access,
+         Long_Switch => "--codepeer=");
+
+      Define_Switch
+        (Config,
          Pedantic'Access,
          Long_Switch => "--pedantic");
 
@@ -947,6 +962,13 @@ ASCII.LF;
       Define_Switch
          (Config, Benchmark_Mode'Access,
           Long_Switch => "--benchmark");
+
+      --  This switch is not documented on purpose. This enables memcached
+      --  caching for developers.
+
+      Define_Switch
+         (Config, Caching'Access,
+          Long_Switch => "--cache");
 
       Define_Section (Config, "cargs");
       Define_Switch (Config, "*", Section => "cargs");
@@ -1080,6 +1102,7 @@ ASCII.LF;
       end if;
 
       Set_Proof_Mode (Config, Proof_Input.all, Proof,  Lazy);
+      Set_CodePeer_Mode (Config, CodePeer_Input.all);
       Set_RTS_Dir (Config, Tree.Root_Project, RTS_Dir);
       Set_Target_Dir (Tree.Root_Project);
 
@@ -1209,6 +1232,29 @@ ASCII.LF;
       end loop;
    end Sanitize_File_List;
 
+   -----------------------
+   -- Set_CodePeer_Mode --
+   -----------------------
+
+   procedure Set_CodePeer_Mode
+     (Config : Command_Line_Configuration;
+      Input  : String) is
+   begin
+      CodePeer := False;
+      if Input = "on" then
+         CodePeer := True;
+      elsif Input = "off" then
+         CodePeer := False;
+      elsif Input = "" then
+         null;
+      else
+         Abort_Msg (Config,
+                    "error: wrong argument for --codepeer, " &
+                      "must be one of (on, off)",
+                    With_Help => False);
+      end if;
+   end Set_CodePeer_Mode;
+
    --------------------
    -- Set_Proof_Mode --
    --------------------
@@ -1279,7 +1325,10 @@ ASCII.LF;
    procedure Set_RTS_Dir
      (Config    : Command_Line_Configuration;
       Proj_Type : Project_Type;
-      RTS_Dir   : in out GNAT.Strings.String_Access) is
+      RTS_Dir   : in out GNAT.Strings.String_Access)
+   is
+      Target  : constant String := Proj_Type.Get_Target;
+      Runtime : constant String := Proj_Type.Get_Runtime;
    begin
       --  When command-line switch --RTS is not provided, consider attribute
       --  Runtime of project file.
@@ -1291,20 +1340,13 @@ ASCII.LF;
          --  installation, which should work if GNAT and SPARK were
          --  installed at the same location.
 
-         if Proj_Type.Has_Attribute (Target_Attribute)
-           and then Proj_Type.Has_Attribute (Runtime_Attribute)
-         then
+         if Target /= "" and then Runtime /= "" then
             declare
-               Target  : constant String :=
-                 Proj_Type.Attribute_Value (Target_Attribute);
-               Runtime : constant String :=
-                 Proj_Type.Attribute_Value (Runtime_Attribute, Index => "Ada");
                Dir     : constant String :=
                  Executable_Location & Target &
                  GNAT.Directory_Operations.Dir_Separator & "lib" &
                  GNAT.Directory_Operations.Dir_Separator & "gnat" &
                  GNAT.Directory_Operations.Dir_Separator & Runtime;
-
             begin
                if GNAT.OS_Lib.Is_Directory (Dir) then
                   RTS_Dir := new String'(Dir);

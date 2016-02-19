@@ -216,11 +216,11 @@ package Gnat2Why.Expr is
 
    function Transform_Declarations_For_Body (L : List_Id) return W_Prog_Id;
    --  Transform the declarations in the list, but excluding the leading
-   --  declarations with a Related_Expression wich is a parameter enity.
+   --  declarations with a Related_Expression which is a parameter enity.
 
    function Transform_Declarations_For_Params (L : List_Id) return W_Prog_Id;
    --  Transform the declarations in the list, only the first declarations
-   --  with a Related_Expression wich is a parameter enity.
+   --  with a Related_Expression which is a parameter enity.
 
    function Transform_Discrete_Choices
      (Choices      : List_Id;
@@ -452,14 +452,6 @@ private
 
    Old_Map        : Ada_To_Why_Ident.Map;
    Loop_Entry_Map : Loop_Entry_Nodes.Map;
-
-   function Map_For_Loop_Entry
-     (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map
-   is
-     (if Loop_Entry_Map.Contains (Loop_Id) then
-        Loop_Entry_Map.Element (Loop_Id)
-      else
-        Ada_To_Why_Ident.Empty_Map);
 
    function Map_For_Old return Ada_To_Why_Ident.Map is (Old_Map);
 

@@ -74,7 +74,6 @@ with Switch;                   use Switch;
 with Why;                      use Why;
 with Why.Atree.Modules;        use Why.Atree.Modules;
 with Why.Atree.Sprint;         use Why.Atree.Sprint;
-with Why.Atree.Tables;         use Why.Atree.Tables;
 with Why.Inter;                use Why.Inter;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
@@ -143,14 +142,14 @@ package body Gnat2Why.Driver is
               --  Axioms for a SPARK expression function are issued in the same
               --  module as the function declaration.
               and then (Ekind (E) in Entry_Kind
-                        or else not Present (Get_Expression_Function (E))
+                        or else No (Get_Expression_Function (E))
                         or else not Entity_Body_In_SPARK (E))
             then
                declare
-                  Compl_File : constant W_Section_Id :=
+                  File : constant W_Section_Id :=
                     Dispatch_Entity_Completion (E);
                begin
-                  Generate_Subprogram_Completion (Compl_File, E);
+                  Generate_Subprogram_Completion (File, E);
                end;
             end if;
 
@@ -175,10 +174,10 @@ package body Gnat2Why.Driver is
               and then E /= Universal_Fixed
             then
                declare
-                  Compl_File : constant W_Section_Id :=
+                  File : constant W_Section_Id :=
                     Dispatch_Entity_Completion (E);
                begin
-                  Generate_Type_Completion (Compl_File, E);
+                  Generate_Type_Completion (File, E);
                end;
             end if;
 
@@ -312,7 +311,7 @@ package body Gnat2Why.Driver is
             if Analysis_Requested (E, With_Inlined => False)
               and then Entity_Spec_In_SPARK (E)
 
-              --  Ignore predicate functions and invariant procedures
+              --  Ignore invariant procedures and default initial conditions
               and then not Subprogram_Is_Ignored_For_Proof (E)
             then
                declare
@@ -469,6 +468,7 @@ package body Gnat2Why.Driver is
            and then Is_In_Analyzed_Files (N)
          then
             Proof_Done := True;
+            Load_Codepeer_Results;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
             Translate_Standard_Package;
@@ -546,14 +546,14 @@ package body Gnat2Why.Driver is
 
        and then not Is_Local_Subprogram_Always_Inlined (E)
 
-       --  Ignore predicate functions and invariant procedures
+       --  Ignore invariant procedures and default initialization conditions
 
        and then not Subprogram_Is_Ignored_For_Proof (E)
 
        --  Subprograms entities of actual parameter of generic packages with
        --  external axioms are only needed for check of runtime errors.
 
-       and then not (Ekind (E) /= E_Entry
+       and then not (Ekind (E) in E_Function | E_Procedure
                      and then Is_Generic_Actual_Subprogram (E)
                      and then Entity_In_Ext_Axioms (E))
 
@@ -584,24 +584,32 @@ package body Gnat2Why.Driver is
       Fn      : constant String :=
         Compose (Current_Directory, Why_File_Name.all);
       Old_Dir : constant String := Current_Directory;
-
+      Command : constant String := Gnat2Why_Args.Why3_Args.First_Element;
    begin
+
+      --  modifying the command line and printing it for debug purposes. We
+      --  need to append the file first, then print the debug output, because
+      --  this corresponds to the actual command line run, and finally remove
+      --  the first argument, which is the executable name.
+
+      Gnat2Why_Args.Why3_Args.Append (Fn);
+
+      if Gnat2Why_Args.Debug_Mode then
+         for Elt of Gnat2Why_Args.Why3_Args loop
+            Ada.Text_IO.Put (Elt);
+            Ada.Text_IO.Put (" ");
+         end loop;
+         Ada.Text_IO.New_Line;
+      end if;
+
+      Gnat2Why_Args.Why3_Args.Delete_First (1);
+
       if Has_Registered_VCs then
          Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
-         Gnat2Why_Args.Why3_Args.Append (Fn);
-
-         if Gnat2Why_Args.Debug_Mode then
-            Ada.Text_IO.Put ("gnatwhy3 ");
-            for Elt of Gnat2Why_Args.Why3_Args loop
-               Ada.Text_IO.Put (Elt);
-               Ada.Text_IO.Put (" ");
-            end loop;
-            Ada.Text_IO.New_Line;
-         end if;
 
          Parse_Why3_Results
            (GNAT.Expect.Get_Command_Output
-              ("gnatwhy3",
+              (Command,
                Call.Argument_List_Of_String_List (Gnat2Why_Args.Why3_Args),
                Err_To_Out => False,
                Input      => "",
@@ -795,8 +803,8 @@ package body Gnat2Why.Driver is
                   end if;
                end if;
 
-            --  variables that are part of a protected object are not
-            --  translated separately
+            --  Variables that are part of a protected object are not
+            --  translated separately.
 
             elsif Is_Part_Of_Protected_Object (E) then
                null;
@@ -811,7 +819,7 @@ package body Gnat2Why.Driver is
 
          --  Generate a logic function for Ada functions
 
-         when Subprogram_Kind | Entry_Kind =>
+         when E_Entry | E_Function | E_Procedure =>
             if Is_Translated_Subprogram (E) then
                Translate_Subprogram_Spec (File, E);
             end if;

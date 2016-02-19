@@ -139,8 +139,6 @@ package Why.Gen.Names is
    Post_Refine_Axiom   : constant String := "post_refine_axiom";
    --  suffix for a postcondition axiom
 
-   Keep_On_Simp : constant String := "keep_on_simp";
-
    --  The following enumeration is used for two things:
    --    * a simple enumeration of strings, accessed using the "To_String"
    --      function below. In practice, many of these strings are used to build

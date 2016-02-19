@@ -85,10 +85,9 @@ with String_Utils;               use String_Utils;
 
 procedure Gnatprove is
 
-   type Gnatprove_Step is (GS_ALI, GS_Gnat2Why);
+   type Gnatprove_Step is (GS_ALI, GS_CodePeer, GS_Gnat2Why);
 
-   function Step_Image (S : Gnatprove_Step) return String is
-     (Image (Gnatprove_Step'Pos (S) + 1, Min_Width => 1));
+   type Plan_Type is array (Positive range <>) of Gnatprove_Step;
 
    procedure Call_Gprbuild
      (Project_File : String;
@@ -110,7 +109,8 @@ procedure Gnatprove is
    --  Work out the flags to use for controlling CVC4's resource counting.
 
    procedure Execute_Step
-     (Step         : Gnatprove_Step;
+     (Plan         : Plan_Type;
+      Step         : Positive;
       Project_File : String;
       Proj         : Project_Tree);
 
@@ -137,6 +137,16 @@ procedure Gnatprove is
    --  In the process, do flow analysis. Then call gnatwhy3 inside gnat2why to
    --  prove the program.
 
+   procedure Run_CodePeer
+     (Project_File : String;
+      Proj         : Project_Tree;
+      Status       : out Integer);
+   --  Run CodePeer on the project to get the CodePeer results. Do nothing if
+   --  CodePeer analysis is disabled.
+   --  @param Project_File the project file as a string
+   --  @param Proj the project tree object
+   --  @param Status out parameter which indicates an error; 0 = OK
+
    function Spawn_VC_Server
      (Proj_Type : Project_Type)
       return Process_Descriptor;
@@ -151,7 +161,8 @@ procedure Gnatprove is
 
    function Pass_Extra_Options_To_Gnat2why
       (Translation_Phase : Boolean;
-       Obj_Dir           : String) return String;
+       Obj_Dir           : String;
+       Proj_Name         : String) return String;
    --  Set the environment variable which passes some options to gnat2why.
    --  Translation_Phase is False for globals generation, and True for
    --  translation to Why.
@@ -259,7 +270,8 @@ procedure Gnatprove is
       Opt_File : constant String :=
          Pass_Extra_Options_To_Gnat2why
             (Translation_Phase => False,
-             Obj_Dir           => Obj_Dir);
+             Obj_Dir           => Obj_Dir,
+             Proj_Name         => Project_File);
       Del_Succ : Boolean;
    begin
       Args.Append ("--subdirs=" & String (Subdir_Name));
@@ -430,6 +442,17 @@ procedure Gnatprove is
    --  Start of processing for Compute_Why3_Args
 
    begin
+
+      --  the first "argument" is in fact the command name itself, because in
+      --  some cases we might want to change it
+
+      if Caching then
+         Args.Append ("cache_wrapper");
+         Args.Append ("gnatwhy3");
+      else
+         Args.Append ("gnatwhy3");
+      end if;
+
       --  Start by taking into account the --level switch if used. If a switch
       --  that is impacted by --level is also set independently, the latter
       --  setting takes precedence.
@@ -665,118 +688,112 @@ procedure Gnatprove is
    ------------------
 
    procedure Execute_Step
-     (Step         : Gnatprove_Step;
+     (Plan         : Plan_Type;
+      Step         : Positive;
       Project_File : String;
       Proj         : Project_Tree)
    is
       Status : Integer;
    begin
       if not Quiet then
-         Put_Line ("Phase " & Step_Image (Step)
-                   & " of " & Step_Image (GS_Gnat2Why)
-                   & ": " & Text_Of_Step (Step) & " ...");
+         Put_Line ("Phase" & Positive'Image (Step)
+                   & " of" & Positive'Image (Plan'Length)
+                   & ": " & Text_Of_Step (Plan (Step)) & " ...");
       end if;
 
-      case Step is
+      case Plan (Step) is
          when GS_ALI =>
             Compute_ALI_Information (Project_File, Proj, Status);
-            if Status /= 0
-              and then MMode = GPM_Check
-            then
-               Status := 0;
-            end if;
+
+         when GS_CodePeer =>
+            Run_CodePeer (Project_File, Proj, Status);
 
          when GS_Gnat2Why =>
             Flow_Analysis_And_Proof (Project_File, Proj, Status);
-            if Status /= 0
-              and then MMode = GPM_Check
-            then
-               Status := 0;
-            end if;
 
       end case;
 
+      if Status /= 0
+        and then MMode = GPM_Check
+      then
+         Status := 0;
+      end if;
+
       if Status /= 0 then
          Abort_With_Message
-           ("gnatprove: error during " & Text_Of_Step (Step));
+           ("gnatprove: error during " & Text_Of_Step (Plan (Step)));
       end if;
    end Execute_Step;
 
-   -----------------------------------
-   -- Replace_Config_File_If_Needed --
-   -----------------------------------
+   -----------------------------
+   -- Flow_Analysis_And_Proof --
+   -----------------------------
 
-   function Replace_Config_File_If_Needed
-     (Config_File : String;
-      New_File    : String) return String
+   procedure Flow_Analysis_And_Proof
+     (Project_File : String;
+      Proj         : Project_Tree;
+      Status       : out Integer)
    is
-      Handle     : File_Type;
-      RTS_Set    : Boolean := False;
-      Target_Set : Boolean := False;
-
-      procedure Copy_Replace_Line (Line : String);
-      --  copy the given line over to Handle. If the line corresponds to the
-      --  Runtime_library pattern, replace it by
-      --    for Runtime_Library_Dir ("Ada") use ("dir");
-
-      -----------------------
-      -- Copy_Replace_Line --
-      -----------------------
-
-      procedure Copy_Replace_Line (Line : String) is
-      begin
-         if RTS_Set and then
-           GNATCOLL.Utils.Starts_With (Line, "--RUNTIME_LIBRARY_DIR")
-         then
-            Put_Line
-              (Handle,
-               " for Runtime_Library_Dir (""Ada"") use """ & RTS_Dir.all &
-                 """;");
-         elsif Target_Set and then
-           GNATCOLL.Utils.Starts_With (Line, "--TARGET")
-         then
-            Put_Line
-              (Handle,
-               " for Target use """ & Target_Dir.all & """;");
-         else
-            Put_Line (Handle, Line);
-         end if;
-      end Copy_Replace_Line;
-
-      procedure Copy_File is new For_Line_In_File (Copy_Replace_Line);
-
-   --  Start of processing for Replace_Config_File_If_Needed
-
+      use String_Lists;
+      Args     : String_Lists.List;
+      Obj_Dir  : constant String :=
+        Proj.Root_Project.Object_Dir.Display_Full_Name;
+      Opt_File : constant String :=
+        Pass_Extra_Options_To_Gnat2why
+          (Translation_Phase => True,
+           Obj_Dir           => Obj_Dir,
+           Proj_Name         => Project_File);
+      Del_Succ : Boolean;
+      Id       : Process_Descriptor;
    begin
-      if RTS_Dir.all = "" and then
-        Null_Or_Empty_String (Target_Dir)
-      then
-         return Config_File;
+
+      Generate_Why3_Conf_File (Obj_Dir);
+
+      Args.Append ("--subdirs=" & String (Subdir_Name));
+      Args.Append ("--restricted-to-languages=ada");
+      Args.Append ("-s");
+
+      if Minimal_Compile then
+         Args.Append ("-m");
       end if;
+
+      if IDE_Progress_Bar then
+         Args.Append ("-d");
+      end if;
+
+      if Only_Given then
+         Args.Append ("-u");
+      end if;
+
+      for File of File_List loop
+         Args.Append (File);
+      end loop;
+
+      Args.Append ("-cargs:Ada");
+      Args.Append ("-gnatc");              --  No object file generation
+      Args.Prepend ("--complete-output");  --  Replay results if up-to-date
+
+      Args.Append ("-gnates=" & Opt_File);
+
+      for Carg of Cargs_List loop
+         Args.Append (Carg);
+      end loop;
       if RTS_Dir.all /= "" then
-         RTS_Set := True;
-      end if;
-      if not Null_Or_Empty_String (Target_Dir) then
-         Target_Set := True;
+         Args.Append ("--RTS=" & RTS_Dir.all);
       end if;
 
-      Create (Handle, Out_File, New_File);
-      Copy_File (Config_File);
-      Close (Handle);
-      return New_File;
-   end Replace_Config_File_If_Needed;
+      Id := Spawn_VC_Server (Proj.Root_Project);
 
-   --------------------------
-   -- Report_File_Is_Empty --
-   --------------------------
-
-   function Report_File_Is_Empty (Filename : String) return Boolean is
-   begin
-      --  ??? This is a bit of a hack; we assume that the report file is
-      --  basically empty when the character count is very low (but not zero).
-
-      return Ada.Directories.Size (Filename) <= 3;
-   end Report_File_Is_Empty;
+      Call_Gprbuild (Project_File,
+                     Gpr_Translation_Cnf_File,
+                     Compose (Obj_Dir, Gnat2why_Cgpr),
+                     Args,
+                     Status);
+      if Status = 0 and then not Debug then
+         GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
+      end if;
+      Kill (Id);
+   end Flow_Analysis_And_Proof;
 
    ---------------------------
    -- Generate_SPARK_Report --
@@ -1082,30 +1099,6 @@ procedure Gnatprove is
       Close (File);
    end Generate_Why3_Conf_File;
 
-   ---------------------
-   -- Set_Environment --
-   ---------------------
-
-   procedure Set_Environment is
-      use Ada.Environment_Variables, GNAT.OS_Lib;
-
-      Path_Val : constant String := Value ("PATH", "");
-      Gpr_Val  : constant String := Value ("GPR_PROJECT_PATH", "");
-      Libgnat  : constant String := Compose (Lib_Dir, "gnat");
-      Sharegpr : constant String := Compose (Share_Dir, "gpr");
-
-   begin
-      --  Add <prefix>/libexec/spark2014/bin in front of the PATH
-      Set ("PATH", Libexec_Bin_Dir & Path_Separator & Path_Val);
-
-      --  Add <prefix>/lib/gnat & <prefix>/share/gpr in GPR_PROJECT_PATH
-      --  so that project files installed with GNAT (not with SPARK)
-      --  are found automatically, if any.
-
-      Set ("GPR_PROJECT_PATH",
-           Libgnat & Path_Separator & Sharegpr & Path_Separator & Gpr_Val);
-   end Set_Environment;
-
    ----------
    -- Kill --
    ----------
@@ -1146,7 +1139,8 @@ procedure Gnatprove is
 
    function Pass_Extra_Options_To_Gnat2why
       (Translation_Phase : Boolean;
-       Obj_Dir           : String) return String is
+       Obj_Dir           : String;
+       Proj_Name         : String) return String is
       use Ada.Strings.Unbounded;
    begin
       --  Always set debug flags
@@ -1172,6 +1166,15 @@ procedure Gnatprove is
          Gnat2Why_Args.Why3_Args := Compute_Why3_Args;
          Gnat2Why_Args.Report_Mode := Report;
          Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
+         if CodePeer then
+            Gnat2Why_Args.CP_Res_Dir :=
+              To_Unbounded_String
+                (Compose
+                   (Compose
+                      (Compose (Obj_Dir, "codepeer"),
+                       Base_Name (Proj_Name) & ".output"),
+                    "sam"));
+         end if;
 
       --  In the globals generation phase, only set Global_Gen_Mode
 
@@ -1181,6 +1184,163 @@ procedure Gnatprove is
 
       return Gnat2Why_Args.Set (Obj_Dir);
    end Pass_Extra_Options_To_Gnat2why;
+
+   -----------------------------------
+   -- Replace_Config_File_If_Needed --
+   -----------------------------------
+
+   function Replace_Config_File_If_Needed
+     (Config_File : String;
+      New_File    : String) return String
+   is
+      Handle     : File_Type;
+      RTS_Set    : Boolean := False;
+      Target_Set : Boolean := False;
+
+      procedure Copy_Replace_Line (Line : String);
+      --  copy the given line over to Handle. If the line corresponds to the
+      --  Runtime_library pattern, replace it by
+      --    for Runtime_Library_Dir ("Ada") use ("dir");
+
+      -----------------------
+      -- Copy_Replace_Line --
+      -----------------------
+
+      procedure Copy_Replace_Line (Line : String) is
+      begin
+         if RTS_Set and then
+           GNATCOLL.Utils.Starts_With (Line, "--RUNTIME_LIBRARY_DIR")
+         then
+            Put_Line
+              (Handle,
+               " for Runtime_Library_Dir (""Ada"") use """ & RTS_Dir.all &
+                 """;");
+         elsif Target_Set and then
+           GNATCOLL.Utils.Starts_With (Line, "--TARGET")
+         then
+            Put_Line
+              (Handle,
+               " for Target use """ & Target_Dir.all & """;");
+         else
+            Put_Line (Handle, Line);
+         end if;
+      end Copy_Replace_Line;
+
+      procedure Copy_File is new For_Line_In_File (Copy_Replace_Line);
+
+   --  Start of processing for Replace_Config_File_If_Needed
+
+   begin
+      if RTS_Dir.all = "" and then
+        Null_Or_Empty_String (Target_Dir)
+      then
+         return Config_File;
+      end if;
+      if RTS_Dir.all /= "" then
+         RTS_Set := True;
+      end if;
+      if not Null_Or_Empty_String (Target_Dir) then
+         Target_Set := True;
+      end if;
+
+      Create (Handle, Out_File, New_File);
+      Copy_File (Config_File);
+      Close (Handle);
+      return New_File;
+   end Replace_Config_File_If_Needed;
+
+   --------------------------
+   -- Report_File_Is_Empty --
+   --------------------------
+
+   function Report_File_Is_Empty (Filename : String) return Boolean is
+   begin
+      --  ??? This is a bit of a hack; we assume that the report file is
+      --  basically empty when the character count is very low (but not zero).
+
+      return Ada.Directories.Size (Filename) <= 3;
+   end Report_File_Is_Empty;
+
+   ------------------
+   -- Run_CodePeer --
+   ------------------
+
+   procedure Run_CodePeer
+     (Project_File : String;
+      Proj         : Project_Tree;
+      Status       : out Integer)
+   is
+      pragma Unreferenced (Proj);
+      Args : String_Lists.List;
+   begin
+      if Verbose then
+         Args.Append ("-v");
+      else
+         Args.Append ("-quiet");
+      end if;
+
+      if Parallel > 1 then
+         Args.Append ("-jobs");
+         Args.Append (Image (Parallel, Min_Width => 1));
+      end if;
+
+      if All_Projects then
+         Args.Append ("-U");
+      end if;
+
+      if Project_File /= "" then
+         Args.Append ("-P");
+         Args.Append (Project_File);
+      end if;
+
+      Args.Append ("-level");
+      Args.Append ("max");
+
+      Args.Append ("-sa-messages");
+      Args.Append ("-no-preconditions");
+
+      --  codepeer subdirs option is relative to the object dir(s), so this is
+      --  what we want
+      Args.Append ("--subdirs=gnatprove/codepeer");
+
+      if not GPR_Project_Path.Is_Empty then
+         for S of GPR_Project_Path loop
+            Args.Append ("-aP");
+            Args.Append (S);
+         end loop;
+      end if;
+
+      Call_With_Status
+        (Command   => "codepeer",
+         Arguments => Args,
+         Status    => Status,
+         Verbose   => Verbose);
+
+   end Run_CodePeer;
+
+   ---------------------
+   -- Set_Environment --
+   ---------------------
+
+   procedure Set_Environment is
+      use Ada.Environment_Variables, GNAT.OS_Lib;
+
+      Path_Val : constant String := Value ("PATH", "");
+      Gpr_Val  : constant String := Value ("GPR_PROJECT_PATH", "");
+      Libgnat  : constant String := Compose (Lib_Dir, "gnat");
+      Sharegpr : constant String := Compose (Share_Dir, "gpr");
+
+   begin
+      --  Add <prefix>/libexec/spark2014/bin in front of the PATH
+      Set ("PATH", Libexec_Bin_Dir & Path_Separator & Path_Val);
+
+      --  Add <prefix>/lib/gnat & <prefix>/share/gpr in GPR_PROJECT_PATH
+      --  so that project files installed with GNAT (not with SPARK)
+      --  are found automatically, if any.
+
+      Set ("GPR_PROJECT_PATH",
+           Libgnat & Path_Separator & Sharegpr & Path_Separator & Gpr_Val);
+   end Set_Environment;
 
    ---------------------
    -- Spawn_VC_Server --
@@ -1215,6 +1375,9 @@ procedure Gnatprove is
          when GS_ALI =>
             return "generation of Global contracts";
 
+         when GS_CodePeer =>
+            return "CodePeer analysis";
+
          when GS_Gnat2Why =>
             case MMode is
                when GPM_Check =>
@@ -1226,75 +1389,6 @@ procedure Gnatprove is
             end case;
       end case;
    end Text_Of_Step;
-
-   ----------------------
-   -- Translate_To_Why --
-   ----------------------
-
-   procedure Flow_Analysis_And_Proof
-     (Project_File : String;
-      Proj         : Project_Tree;
-      Status       : out Integer)
-   is
-      use String_Lists;
-      Args     : String_Lists.List;
-      Obj_Dir  : constant String :=
-        Proj.Root_Project.Object_Dir.Display_Full_Name;
-      Opt_File : constant String :=
-        Pass_Extra_Options_To_Gnat2why
-          (Translation_Phase => True,
-           Obj_Dir           => Obj_Dir);
-      Del_Succ : Boolean;
-      Id       : Process_Descriptor;
-   begin
-
-      Generate_Why3_Conf_File (Obj_Dir);
-
-      Args.Append ("--subdirs=" & String (Subdir_Name));
-      Args.Append ("--restricted-to-languages=ada");
-      Args.Append ("-s");
-
-      if Minimal_Compile then
-         Args.Append ("-m");
-      end if;
-
-      if IDE_Progress_Bar then
-         Args.Append ("-d");
-      end if;
-
-      if Only_Given then
-         Args.Append ("-u");
-      end if;
-
-      for File of File_List loop
-         Args.Append (File);
-      end loop;
-
-      Args.Append ("-cargs:Ada");
-      Args.Append ("-gnatc");              --  No object file generation
-      Args.Prepend ("--complete-output");  --  Replay results if up-to-date
-
-      Args.Append ("-gnates=" & Opt_File);
-
-      for Carg of Cargs_List loop
-         Args.Append (Carg);
-      end loop;
-      if RTS_Dir.all /= "" then
-         Args.Append ("--RTS=" & RTS_Dir.all);
-      end if;
-
-      Id := Spawn_VC_Server (Proj.Root_Project);
-
-      Call_Gprbuild (Project_File,
-                     Gpr_Translation_Cnf_File,
-                     Compose (Obj_Dir, Gnat2why_Cgpr),
-                     Args,
-                     Status);
-      if Status = 0 and then not Debug then
-         GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
-      end if;
-      Kill (Id);
-   end Flow_Analysis_And_Proof;
 
    Tree      : Project_Tree;
    --  GNAT project tree
@@ -1309,8 +1403,15 @@ begin
    Read_Command_Line (Tree);
    Proj_Type := Root_Project (Tree);
 
-   Execute_Step (GS_ALI, Project_File.all, Tree);
-   Execute_Step (GS_Gnat2Why, Project_File.all, Tree);
+   declare
+      Plan : constant Plan_Type :=
+        (if CodePeer then (GS_ALI, GS_CodePeer, GS_Gnat2Why)
+         else (GS_ALI, GS_Gnat2Why));
+   begin
+      for Step in Plan'Range loop
+         Execute_Step (Plan, Step, Project_File.all, Tree);
+      end loop;
+   end;
 
    declare
       Obj_Path : constant File_Array :=

@@ -36,6 +36,8 @@ def run_testsuite(test_driver):
         os.environ["inverse_prover"] = "true"
     if options.benchmarks:
         os.environ["benchmarks"] = "true"
+    if options.cache:
+        os.environ["cache"] = "true"
 
     if options.test_list:
         with open(options.test_list, 'r') as f:
@@ -108,6 +110,8 @@ def __parse_options():
                  default=False, help="inverse order of default provers")
     m.add_option("--vc-timeout", dest="vc_timeout", action="store",
                  type="int", help="set timeout for prover")
+    m.add_option("--cache", dest="cache", action="store_true",
+                 default=False, help="use memcached to speed up testsuite")
     m.parse_args()
 
     if m.args:

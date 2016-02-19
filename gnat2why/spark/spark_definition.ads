@@ -114,7 +114,7 @@ package SPARK_Definition is
    --  front end).
 
    function Entity_Spec_In_SPARK (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) in E_Entry          |
+     Pre => Ekind (E) in Entry_Kind       |
                          E_Function       |
                          E_Package        |
                          E_Procedure      |
@@ -125,7 +125,7 @@ package SPARK_Definition is
    --    mean that the entity is valid SPARK, only that SPARK_Mode is On.
 
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) in E_Entry     |
+     Pre => Ekind (E) in Entry_Kind  |
                          E_Function  |
                          E_Package   |
                          E_Procedure |

@@ -1,0 +1,695 @@
+\documentclass{article}
+
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+
+\author{Florian Schanda}
+\title{Generated Globals With Partitions\\P118-034}
+
+%% Borrowed from the Altran LaTeX style
+\lstdefinelanguage{SPARK}{
+  language = [95]Ada,
+  morekeywords = {pre,post,assert,assume,check,derives,hide,global,depends,inherit,from,own,initializes,main_program,assert,loop_variant,loop_invariant,increases,decreases,ghost,spark_mode,abstract_state,refined_state,refined_global,refined_depends},
+  comment=[l][commentstyle]{--\ },
+  texcl=true,
+  showstringspaces=false
+}
+\lstdefinestyle{tinystyle}
+   {basicstyle=\scriptsize\tt,
+    keywordstyle=\color{RoyalBlue},
+    commentstyle=\rmfamily\it\color{Sepia},
+    captionpos=b,
+    caption={},label={},
+    numbers=none,
+    escapeinside={(*}{*)}}
+\lstset{language=SPARK}
+\lstset{style=tinystyle}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+  \color{red} DRAFT - WORK IN PROGRESS
+\end{center}
+
+\tableofcontents
+
+\section{Motivation}
+A number of features (tasking, tagged types, generated globals) have been
+added to SPARK since the initial addition of flow analysis; which was then
+evolved along with these. It is now clear that lack of design causes some
+issues, in no order:
+\begin{itemize}
+\item Maintainability and clarity of code, in particular ability to debug
+  issues. We now have more than three graphs dedicated to global analysis,
+  in addition to two types of flow graphs, all combined over two phases.
+  Interaction between SPARK and non-SPARK code is complex. Generation
+  schemes (global, refined global, depends, and refined depends) are a
+  16-possibilities case-split. Add to this that results for tasking
+  analysis are mixed in here, so even if you don't need to generate globals
+  we still do in many cases just to be safe.
+
+\item Performance issues, i.e. analysis of large volumes of sparsely
+  annotated code. Another side-effect is that we have high memory
+  consumption as the graphs are \emph{huge}; we totally disregard the
+  performance benefits abstract state is designed to bring.
+
+\item Correctness issues: incorrect or unhelpful flow results, and cheating
+  with accuracy. In particular we do not respect abstraction and
+  visibility.
+\end{itemize}
+
+A new approach needs to solve all three issues. Abstract states, to some
+degree, are the root of all issues; so the solution discussed here is based
+on an efficient and \emph{simple} approach to this problem. Untangling
+frame condition analysis from tasking analysis is an orthogonal issue.
+
+\pagebreak
+\section{Approach}
+
+\subsection{Design criteria}
+\begin{itemize}
+\item Abstract state should be used as it was intended: to simplify (and
+  thus speed up), via \emph{partitioning}, the analysis by reducing the
+  size of graphs
+
+\item Generated globals should not break abstraction
+
+\item State of nested packages should not be special cased too much
+
+\item A call-chain from package 1 to 2 back to 1 should work correctly
+
+\item A call-chain involving entering and leaving an nested package should
+  work correctly
+
+\item Nested subprograms and packages nested in subprograms should not
+  bleed their local globals to the calling environment; this step should
+  ideally not be done as a post-processing step
+
+\item There should be no fixed-point iteration
+
+\end{itemize}
+
+\subsection{Overall approach}
+\begin{itemize}
+\item A package with hidden state but without explicit abstract state will
+  have a state synthesized. It may be useful in the future to allow users
+  to refer to this state.
+
+\item ALI files contain only the abstract (non-refined) view of a
+  subprogram, expressed in terms of abstract state.
+
+\item A limited form of the closure will be computed in phase 1 (to
+  generate refined globals), but we only store calls to external procedures
+  (internal calls have been summarized), and access to abstract state.
+
+\item Stripping of locals for nested procedures can also be done in phase 1
+  instead of phase 2. We can also annotate semi-refined computed globals
+  here, but we won't need them.
+
+\item Phase 2 will compute another closure but only in terms of abstract
+  state and external calls.
+
+\item Returning less precise results is OK, returning more precise results
+  than a global annotation would allow is never OK.
+\end{itemize}
+
+\pagebreak
+\section{Examples}
+
+\subsection{Inter-package analysis}
+Most precise globals possible annotated in comments, assuming the language
+extension to summarize hidden state.
+
+\begin{multicols}{2}
+
+\begin{lstlisting}
+package P is
+   procedure P0;
+   --  In\_Out $\rightarrow$ (P, Q)
+   procedure P1;
+   --  In\_Out $\rightarrow$ (P, Q)
+   procedure P4;
+   --  Output $\rightarrow$ P
+   procedure P5;
+   --  Output $\rightarrow$ P
+end PACK;
+\end{lstlisting}
+
+\vfill\columnbreak
+
+\begin{lstlisting}
+package Q is
+   procedure P2;
+   --  In\_Out $\rightarrow$ (Q, P)
+   procedure P3;
+   --  Output $\rightarrow$ P
+end Q;
+\end{lstlisting}
+
+\end{multicols}
+
+\begin{multicols}{2}
+
+\begin{lstlisting}
+use Q;
+package body P is
+   G1 : Boolean;
+   G2 : Boolean;
+
+   procedure P0 is begin
+      P1;
+      G2 := False;
+   end P0;
+   --  In\_Out $\rightarrow$ (G1, Q)
+   --  Output $\rightarrow$ G2
+
+   procedure P1 is begin
+      Q.P2;
+   end P1;
+   --  In\_Out $\rightarrow$ (G1, G2, Q)
+
+   procedure P4 is begin
+      P5;
+   end P4;
+   --  Output $\rightarrow$ (G1, G2)
+
+   procedure P5 is begin
+      G1 := True;
+      G2 := True;
+   end P5;
+   --  Output $\rightarrow$ (G1, G2)
+end P;
+\end{lstlisting}
+
+\vfill\columnbreak
+
+\begin{lstlisting}
+use P;
+package body Q is
+   G3 : Boolean := False;
+
+   procedure P2 is begin
+      if G3 then
+         P3;
+      else
+         G3 := True;
+      end if;
+   end P2;
+   --  In\_Out $\rightarrow$ (G3, P)
+
+   procedure P3 is begin
+      P.P4;
+   end P3;
+   --  Output $\rightarrow$ P
+end Q;
+\end{lstlisting}
+
+\end{multicols}
+
+\pagebreak
+\subsubsection{Phase 1 - CFG}
+During phase 1 we construct the following information for P and Q:
+
+\begin{multicols}{2}
+
+\begin{description}
+\item[P0]
+  \begin{tabular}{ll}
+    Variables R & \\
+    Variables W & G2 \\
+    Calls       & P1 (Local) \\
+    Maybe       & \\
+  \end{tabular}
+
+\item[P1]
+  \begin{tabular}{ll}
+    Variables R & \\
+    Variables W & \\
+    Calls       & P2 (Remote) \\
+    Maybe       & \\
+  \end{tabular}
+
+\item[P2]
+  \begin{tabular}{ll}
+    Variables R & G3 \\
+    Variables W & G3 \\
+    Calls       & \\
+    Maybe       & P3 (Local) \\
+  \end{tabular}
+
+\item[P3]
+  \begin{tabular}{ll}
+    Variables R & \\
+    Variables W & \\
+    Calls       & P4 (Remote) \\
+    Maybe       & \\
+  \end{tabular}
+
+\item[P4]
+  \begin{tabular}{ll}
+    Variables R & \\
+    Variables W & \\
+    Calls       & P5 (Local) \\
+    Maybe       & \\
+  \end{tabular}
+
+\item[P5]
+  \begin{tabular}{ll}
+    Variables R & \\
+    Variables W & G1, G2 \\
+    Calls       & \\
+    Maybe       & \\
+  \end{tabular}
+\end{description}
+
+\end{multicols}
+
+\noindent
+We then build the following graphs in phase 1.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{ex1_phase1_p}
+  \end{center}
+  \caption{Phase 1 for package P}
+\end{figure}
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{ex1_phase1_q}
+  \end{center}
+  \caption{Phase 1 for package Q}
+\end{figure}
+
+\subsubsection{Phase 1 - Closure}
+For each package we take the closure to eliminate any local calls; so for
+package P:
+
+\begin{description}
+\item[P0]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & G2 \\
+      Calls       & P2 \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & P \\
+      Variables W & P \\
+      Calls       & P2 \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\item[P1]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & \\
+      Calls       & P2 \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & \\
+      Calls       & P2 \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\item[P4]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & G1, G2 \\
+      Calls       & \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & P \\
+      Calls       & \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\item[P5]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & G1, G2 \\
+      Calls       & P2 \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & P \\
+      Calls       & \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\end{description}
+
+\noindent
+And similarly for package Q:
+
+\begin{description}
+\item[P2]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & G3 \\
+      Variables W & G3 \\
+      Calls       & \\
+      Maybe       & P4 \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & Q \\
+      Variables W & Q \\
+      Calls       & \\
+      Maybe       & P4 \\
+    \end{tabular}
+  \end{multicols}
+
+\item[P3]
+  \begin{multicols}{2}
+    Raw:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & \\
+      Calls       & P4 \\
+      Maybe       & \\
+    \end{tabular}
+
+    Projected:
+    \begin{tabular}{ll}
+      Variables R & \\
+      Variables W & \\
+      Calls       & P4 \\
+      Maybe       & \\
+    \end{tabular}
+  \end{multicols}
+
+\end{description}
+
+\pagebreak
+\subsubsection{Phase 2}
+We can now glue everything together to get global contracts formulated in
+terms of abstract state.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{ex1_phase2}
+  \end{center}
+  \caption{Phase 2}
+\end{figure}
+
+\noindent
+The transitive closure of this will match the ideal (most-precise possible
+human-written global) contracts:
+
+\begin{table}[h]
+  \begin{center}
+    \begin{tabular}{lll}
+         & Reads & Writes \\
+      P0 & P, Q  & P, Q   \\
+      P1 & P, Q  & P, Q   \\
+      P2 & P, Q  & P, Q   \\
+      P3 &       & P      \\
+      P4 &       & P      \\
+      P5 &       & P      \\
+    \end{tabular}
+  \end{center}
+  \caption{Transitive closure for phase 2}
+\end{table}
+
+\noindent
+When performing flow analysis in phase 2 for either package we can replace
+the abstract state with an appropriate refined view (which may contain
+variables we do not use).
+
+\newpage
+\subsection{Intra-package analysis}
+Overall idea: nested packages get a partial closure first, and the phase 1
+partial closure will only be based on that. Any upwards calls are just
+another remote call.
+
+\begin{multicols}{2}
+\begin{lstlisting}
+package P with
+   Abstract_State => State
+is
+   procedure P0;
+
+   procedure P2;
+
+   procedure P3;
+end P;
+
+package body P with
+   Refined_State =>
+     (State => G0, G1, G2, Nested)
+is
+   G0 : Boolean;
+   G1 : Boolean;
+   G2 : Boolean;
+
+   package Q with
+      Abstract_State => Nested
+   is
+      procedure P1;
+
+      procedure P4;
+
+      procedure P5;
+   end Q;
+\end{lstlisting}
+\vfill\columnbreak
+\begin{lstlisting}
+   package body Q with
+      Refined_State =>
+        (Nested => (G3, G4))
+   is
+      G3 : Boolean := False;
+      G4 : Boolean := G1;
+   begin
+      procedure P1 is begin
+         P2;
+         G3 := False;
+      end P1;
+
+      procedure P4 is begin
+         P5;
+         G3 := not G3;
+      end P4;
+
+      procedure P5 is begin
+         G3 := G1;
+         G4 := G2;
+      end P5;
+   end Q;
+
+   procedure P0 is begin
+      Q.P1;
+      G1 := False;
+   end P0;
+
+   procedure P2 is begin
+      P3;
+      G0 := False;
+      G2 := False;
+   end P2;
+
+   procedure P3 is begin
+      Q.P4;
+   end P3;
+end P;
+\end{lstlisting}
+\end{multicols}
+
+\pagebreak
+\subsubsection{Phase 1}
+
+First we produce the closure for each nested package, inwards to outwards.
+So, for package Q:
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{ex2_phase1_q}
+  \end{center}
+  \caption{Phase 1 for Q}
+\end{figure}
+
+The final projected globals for this are then:
+
+\begin{center}
+\begin{multicols}{2}
+  Raw:\\
+  \begin{tabular}{llll}
+       & Read       & Write  & RCall \\
+    P1 &            & G3     & P2    \\
+    P4 & G1, G2, G3 & G3, G4 &       \\
+    P5 & G1, G2     & G3, G4 &       \\
+  \end{tabular}
+
+  \columnbreak
+  Projected:\\
+  \begin{tabular}{|llll}
+       & Read           & Write  & RCall \\
+    P1 & Nested         & Nested & P2    \\
+    P4 & G1, G2, Nested & Nested &       \\
+    P5 & G1, G2         & Nested &       \\
+  \end{tabular}
+\end{multicols}
+\end{center}
+
+\pagebreak
+\noindent
+Next we move to the enclosing package P. Downward calls are local calls.
+
+\begin{figure}[h]
+  \begin{center}
+    \includegraphics[scale=0.4]{ex2_phase1_p}
+  \end{center}
+  \caption{Phase 1 for P, after completion of closure for Q. Edges in
+    {\color{RoyalBlue}blue} are new information; edges in black are copied
+    from the projected result of the partial closure of Q.}
+\end{figure}
+
+\noindent
+The final, refined globals for package P this are thus:
+
+\begin{center}
+  \begin{tabular}{lll}
+       & Read           & Write              \\
+    P0 & G1, G2, Nested & G0, G1, G2, Nested \\
+    P1 & G1, G2, Nested & G0, G2, Nested     \\
+    P2 & G1, G2, Nested & G0, G2, Nested     \\
+    P3 & G1, G2, Nested & Nested             \\
+    P4 & G1, G2, Nested & Nested             \\
+    P5 & G1, G2         & Nested             \\
+  \end{tabular}
+\end{center}
+
+\noindent
+Each package will have its on overall projected globals. For package P:
+
+\begin{center}
+  \begin{tabular}{lll}
+       & Read           & Write              \\
+    P0 & State          & State              \\
+    P2 & State          & State              \\
+    P3 & State          & State              \\
+  \end{tabular}
+\end{center}
+
+\noindent
+Incidentally, this matches the best possible human annotation, which is
+good news.
+
+\pagebreak
+\noindent
+For package Q, we can save this extra state so that we have slightly more
+meaningful results when analysing Q in phase 2. However this step could be
+skipped. This is not as precise as the best possible human annotation, but
+it is not far off.
+
+\begin{center}
+  \begin{tabular}{lll}
+       & Read           & Write              \\
+    P1 & G1, G2, Nested & G0, G2, Nested     \\
+    P4 & G1, G2, Nested & Nested             \\
+    P5 & G1, G2         & Nested             \\
+  \end{tabular}
+\end{center}
+
+\subsubsection{Phase 2}
+There is nothing extra to do for phase 2 here, so we skip this.
+
+\newpage
+\subsection{Inception - we need to nest deeper}
+
+\begin{multicols}{2}
+\begin{lstlisting}
+package P with
+   Abstract_State => State
+is
+   procedure P0;
+   procedure P1;
+   --  When I get paid by the line, I always
+   --  write my initialisation like this.
+end P;
+
+package body P with
+   Refined_State =>
+     (State => G0, G1)
+is
+   G0 : Boolean;
+   G1 : Boolean;
+
+   procedure P0 is
+      G2 : Boolean;
+
+      package Q is
+         G3 : Boolean;
+         procedure P2;
+      end Q;
+
+      package body Q is
+         procedure P2 is begin
+            G1 := G3;
+         end P2;
+      end Q;
+   begin
+      Q.G3 := False;
+      G2   := False;
+      Q.P2;
+   end P0;
+\end{lstlisting}
+\vfill\columnbreak
+\begin{lstlisting}
+   procedure P1 is
+
+      package R is
+         procedure P3;
+      end R;
+
+      package body R is
+         G4 : Boolean;
+
+         procedure P3 is begin
+            G4 := False;
+            G0 := G4;
+            P0;
+         end P3;
+      end R;
+
+   begin
+      R.P3;
+   end P1;
+end P;
+\end{lstlisting}
+\end{multicols}
+
+\end{document}

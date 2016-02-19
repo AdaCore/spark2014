@@ -530,9 +530,9 @@ package body Flow_Types is
                   else
                      Is_Effectively_Volatile_Object (E));
 
-               CO : Entity_Id := Empty;
+               CO : Entity_Id;
             begin
-               if not Present (Scope) or else not Is_Vol then
+               if No (Scope) or else not Is_Vol then
                   return Is_Vol;
                end if;
 
@@ -545,20 +545,14 @@ package body Flow_Types is
                   CO := Etype (E);
                elsif Is_Concurrent_Comp (F) then
                   CO := Etype (Get_Enclosing_Concurrent_Object (F));
-               end if;
-
-               if No (CO) then
+               else
                   --  There is no enclosing concurrent object. We just return
                   --  Is_Vol.
                   return Is_Vol;
                end if;
 
-               if Nested_Inside_Concurrent_Object (CO, Scope) then
-                  return False;
-               end if;
-
-               --  We are outside the CO so F is indeed volatile.
-               return True;
+               --  If we are outside the CO then F is indeed volatile
+               return not Nested_Inside_Concurrent_Object (CO, Scope);
             end;
 
          when Synthetic_Null_Export =>

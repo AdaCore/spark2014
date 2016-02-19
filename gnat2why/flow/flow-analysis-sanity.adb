@@ -25,16 +25,19 @@
 --  the rest of flow analysis is performed.
 
 with Ada.Containers;      use Ada.Containers;
-with Elists;              use Elists;
-with Flow_Error_Messages; use Flow_Error_Messages;
-with Flow_Utility;        use Flow_Utility;
-with Gnat2Why_Args;
+
 with Sem_Aux;             use Sem_Aux;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
+
+with Gnat2Why_Args;
 with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
+with Common_Iterators;    use Common_Iterators;
 with Why;
+
+with Flow_Error_Messages; use Flow_Error_Messages;
+with Flow_Utility;        use Flow_Utility;
 
 package body Flow.Analysis.Sanity is
 
@@ -210,9 +213,9 @@ package body Flow.Analysis.Sanity is
 
       begin
          case Nkind (N) is
-            when N_Subprogram_Body |
+            when N_Subprogram_Body       |
                  N_Package_Specification |
-                 N_Package_Body =>
+                 N_Package_Body          =>
 
                --  We do not want to process declarations of any nested
                --  subprograms or packages. These will be analyzed by their
@@ -224,12 +227,12 @@ package body Flow.Analysis.Sanity is
                   return Skip;
                end if;
 
-            when N_Full_Type_Declaration |
-                 N_Subtype_Declaration   |
+            when N_Full_Type_Declaration         |
+                 N_Subtype_Declaration           |
                  N_Private_Extension_Declaration =>
                declare
                   E          : constant Entity_Id := Defining_Identifier (N);
-                  P          : constant Node_Id := Predicate_Function (E);
+                  P          : constant Entity_Id := Predicate_Function (E);
                   GP, GI, GO : Flow_Id_Sets.Set;
                   Deps       : Ordered_Flow_Id_Sets.Set;
                begin
@@ -313,8 +316,8 @@ package body Flow.Analysis.Sanity is
 
                         return Skip;
 
-                     when N_Digits_Constraint |
-                          N_Delta_Constraint =>
+                     when N_Delta_Constraint  |
+                          N_Digits_Constraint =>
 
                         --  Ada LRM requires these constraints to be
                         --  static, so no further action required here.
@@ -732,16 +735,14 @@ package body Flow.Analysis.Sanity is
          end if;
 
          declare
-            Ptr                 : Elmt_Id;
             Constit             : Flow_Id;
             Writes_At_Least_One : Boolean := False;
             One_Is_Missing      : Boolean := False;
          begin
-            Ptr := First_Elmt (Refinement_Constituents (E));
-            while Present (Ptr) loop
+            for RC of Iter (Refinement_Constituents (E)) loop
                --  Check that at least one constituent is written
-               if Nkind (Node (Ptr)) /= N_Null then
-                  Constit := Direct_Mapping_Id (Node (Ptr), Out_View);
+               if Nkind (RC) /= N_Null then
+                  Constit := Direct_Mapping_Id (RC, Out_View);
 
                   if Actual_Writes.Contains (Constit) then
                      Writes_At_Least_One := True;
@@ -751,8 +752,6 @@ package body Flow.Analysis.Sanity is
                      One_Is_Missing := True;
                   end if;
                end if;
-
-               Ptr := Next_Elmt (Ptr);
             end loop;
 
             if Writes_At_Least_One

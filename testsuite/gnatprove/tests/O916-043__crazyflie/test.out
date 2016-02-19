@@ -1,12 +1,7 @@
 crtp_pack.ads:117:09: access type is not allowed in SPARK
 crtp_pack.ads:117:09: violation of pragma SPARK_Mode at gnat.adc:2
-crtp_pack.ads:140:14: "CRTP_Callback" is not allowed in SPARK
-crtp_pack.ads:140:14: violation of pragma SPARK_Mode at gnat.adc:2
 crtp_pack.ads:158:04: instantiation error at generic_queue_pack.ads:38
-crtp_pack.ads:158:04: instantiation error at generic_queue_pack.ads:52
 crtp_pack.ads:158:04: tasking in SPARK requires sequential elaboration (SPARK RM 9(2))
-crtp_pack.ads:158:04: tasking in SPARK requires sequential elaboration (SPARK RM 9(2))
-crtp_pack.ads:158:04: violation of pragma SPARK_Mode at gnat.adc:2
 crtp_pack.ads:158:04: violation of pragma SPARK_Mode at gnat.adc:2
 crtp_pack.ads:169:25: subtype of "Protected_Queue" is not allowed in SPARK
 crtp_pack.ads:169:25: violation of pragma SPARK_Mode at gnat.adc:2
@@ -188,20 +183,13 @@ log_pack.ads:195:07: access type is not allowed in SPARK
 log_pack.ads:195:07: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:203:14: tasking in SPARK requires sequential elaboration (SPARK RM 9(2))
 log_pack.ads:203:14: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.ads:204:07: warning: pragma "Interrupt_Priority" ignored (not yet supported)
 log_pack.ads:211:39: "Timing_Event_Handler" is not allowed in SPARK
 log_pack.ads:211:39: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:212:53: attribute "Access" is not permitted in SPARK
 log_pack.ads:261:04: access type is not allowed in SPARK
 log_pack.ads:261:04: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.ads:261:14: access to "Log_Block" is not allowed in SPARK
-log_pack.ads:261:14: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.ads:272:04: access type is not allowed in SPARK
 log_pack.ads:272:04: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.ads:272:13: access to "Log_Block" is not allowed in SPARK
-log_pack.ads:272:13: violation of pragma SPARK_Mode at gnat.adc:2
-log_pack.ads:280:14: "Log_Variable" is not allowed in SPARK
-log_pack.ads:280:14: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-dma.ads:118:20: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-dma.ads:118:20: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-dma.ads:131:14: call to a volatile function in interfering context is not allowed in SPARK
@@ -280,38 +268,26 @@ stm32f4-gpio.ads:86:09: type with partial default initialization is not allowed 
 stm32f4-gpio.ads:86:09: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-gpio.ads:87:07: access type is not allowed in SPARK
 stm32f4-gpio.ads:87:07: violation of pragma SPARK_Mode at gnat.adc:2
-stm32f4-gpio.ads:112:13: "GPIO_Point" is not allowed in SPARK
-stm32f4-gpio.ads:112:13: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-gpio.ads:123:16: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-gpio.ads:123:16: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-gpio.ads:130:16: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-gpio.ads:130:16: violation of pragma SPARK_Mode at gnat.adc:2
-stm32f4-gpio.ads:134:14: "GPIO_Point" is not allowed in SPARK
-stm32f4-gpio.ads:134:14: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-gpio.ads:142:20: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-gpio.ads:142:20: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-gpio.ads:149:20: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-gpio.ads:149:20: violation of pragma SPARK_Mode at gnat.adc:2
-stm32f4-gpio.ads:153:14: "GPIO_Point" is not allowed in SPARK
-stm32f4-gpio.ads:153:14: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-gpio.ads:161:20: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-gpio.ads:161:20: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-gpio.ads:161:49: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-gpio.ads:161:49: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-gpio.ads:161:70: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-gpio.ads:161:70: violation of pragma SPARK_Mode at gnat.adc:2
-stm32f4-gpio.ads:170:14: "GPIO_Point" is not allowed in SPARK
-stm32f4-gpio.ads:170:14: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-gpio.ads:178:19: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-gpio.ads:178:19: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-gpio.ads:190:44: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-gpio.ads:190:44: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-gpio.ads:228:09: type with partial default initialization is not allowed in SPARK (SPARK RM 3.8(1))
 stm32f4-gpio.ads:228:09: violation of pragma SPARK_Mode at gnat.adc:2
-stm32f4-gpio.ads:236:14: "GPIO_Port_Configuration" is not allowed in SPARK
-stm32f4-gpio.ads:236:14: violation of pragma SPARK_Mode at gnat.adc:2
-stm32f4-gpio.ads:243:14: "GPIO_Port_Configuration" is not allowed in SPARK
-stm32f4-gpio.ads:243:14: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-i2c.ads:91:19: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-i2c.ads:91:19: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-i2c.ads:168:13: function with "in" "out" parameter is not allowed in SPARK
@@ -388,12 +364,8 @@ stm32f429_discovery.ads:153:23: "Timer" is not allowed in SPARK
 stm32f429_discovery.ads:153:23: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f429_discovery.ads:155:23: "Timer" is not allowed in SPARK
 stm32f429_discovery.ads:155:23: violation of pragma SPARK_Mode at gnat.adc:2
-stm32f429_discovery.ads:158:14: "Timer" is not allowed in SPARK
-stm32f429_discovery.ads:158:14: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f429_discovery.ads:158:28: "Timer" is not allowed in SPARK
 stm32f429_discovery.ads:158:28: violation of pragma SPARK_Mode at gnat.adc:2
-stm32f429_discovery.ads:160:14: "Timer" is not allowed in SPARK
-stm32f429_discovery.ads:160:14: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f429_discovery.ads:160:21: "Timer" is not allowed in SPARK
 stm32f429_discovery.ads:160:21: violation of pragma SPARK_Mode at gnat.adc:2
 gnatprove: error during flow analysis and proof

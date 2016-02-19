@@ -1,4 +1,4 @@
 aliasing.adb:13:16: info: index check proved
-aliasing.adb:13:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0 and A'Last = 1)
+aliasing.adb:13:16: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 1 and I = 0)
 aliasing.adb:13:23: info: index check proved
-aliasing.adb:13:23: medium: array index check might fail (e.g. when A'First = 1 and J = 0 and A'Last = 0)
+aliasing.adb:13:23: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 0 and J = 0)

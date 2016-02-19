@@ -1,9 +1,9 @@
 aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 aliasing.adb:26:16: info: index check proved
-aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0 and A'Last = 1)
+aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 1 and I = 0)
 aliasing.adb:26:23: info: index check proved
-aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and J = 0 and A'Last = 0)
+aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 0 and J = 0)
 global_stack.adb:7:03: warning: variable "Content" is read but never assigned
 global_stack.ads:4:12: function with output global "Top" is not allowed in SPARK
 search_array.adb:9:20: info: range check proved
@@ -11,7 +11,7 @@ search_array.adb:12:07: medium: exception might be raised (e.g. when I = 0 and S
 stack.ads:7:13: function with "in" "out" parameter is not allowed in SPARK
 stack.ads:7:13: violation of aspect SPARK_Mode at line 1
 use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = 0)
-use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 0 and W = (others => 0))
+use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 0 and W = (others => 0) and W'First = 2 and W'Last = 1)
 gnatprove: error during flow analysis and proof
 p.adb:13:41: info: index check proved
 p.adb:14:16: info: index check proved
@@ -28,11 +28,11 @@ p.adb:54:65: info: index check proved
 p.adb:56:07: info: raise statement proved unreachable
 p.adb:65:20: info: discriminant check proved
 p.adb:70:14: info: discriminant check proved
-p.adb:78:38: medium: overflow check might fail (e.g. when A = (others => 0))
+p.adb:78:38: medium: overflow check might fail (e.g. when A = (others => 0) and A'First = -2147483648 and A'Last = 0)
 p.adb:82:31: info: initialization of "End_Of_Seq" proved
 p.adb:88:30: medium: overflow check might fail (e.g. when Beginning = 2147483647)
 p.adb:89:20: info: postcondition proved
-p.adb:89:41: medium: overflow check might fail (e.g. when A = (0 => 1, others => 0))
+p.adb:89:41: medium: overflow check might fail (e.g. when A = (0 => 1, others => 0) and A'First = -2147483648 and A'Last = 0)
 p.adb:93:16: info: index check proved
 p.adb:94:23: info: index check proved
 p.adb:99:42: info: range check proved
@@ -121,7 +121,7 @@ stacks.adb:8:22: info: range check proved
 stacks.adb:9:19: info: index check proved
 stacks.ads:8:14: info: postcondition proved
 stacks.ads:27:52: info: index check proved
-communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 0))
+communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 0) and Address'First = 2 and Address'Last = 1)
 communication.adb:19:25: medium: array index check might fail
 communication.adb:20:32: medium: overflow check might fail
 communication.adb:21:24: medium: overflow check might fail
@@ -137,7 +137,6 @@ communication.adb:36:34: info: range check proved
 communication.adb:39:30: info: index check proved
 communication.adb:40:34: info: range check proved
 communication.adb:41:32: info: overflow check proved
-communication.ads:4:22: medium: initialization of "Communication.State" does not depend on "V_Ext" (SPARK RM 7.1.5(11))
 communication.ads:10:23: info: initialization of "Message" proved
 communication.ads:15:26: info: initialization of "E" proved
 communication.ads:16:33: medium: range check might fail (e.g. when Max = 0 and V_Ext = -1)

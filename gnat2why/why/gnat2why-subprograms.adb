@@ -485,7 +485,7 @@ package body Gnat2Why.Subprograms is
      (E       : Entity_Id;
       Binders : Binder_Array) return W_Expr_Array
    is
-      Cnt    : Integer := 1;
+      Cnt    : Natural := 1;
       Result : W_Expr_Array (1 .. Binders'Last);
       Ada_Binders : constant List_Id :=
         Parameter_Specifications (Subprogram_Specification (E));
@@ -503,7 +503,7 @@ package body Gnat2Why.Subprograms is
          return W_Expr_Array'(1 => +Void);
       end if;
 
-      while Cnt <= Integer (Arg_Length) loop
+      while Cnt <= Natural (Arg_Length) loop
          Result (Cnt) := +Binders (Cnt).B_Name;
          Cnt := Cnt + 1;
       end loop;
@@ -520,8 +520,11 @@ package body Gnat2Why.Subprograms is
    -- Compute_Binders --
    ---------------------
 
-   function Compute_Binders (E : Entity_Id; Domain : EW_Domain)
-                             return Item_Array is
+   function Compute_Binders
+     (E : Entity_Id;
+      Domain : EW_Domain)
+      return Item_Array
+   is
       Binders : constant Item_Array :=
         Compute_Subprogram_Parameters (E, Domain);
    begin
@@ -586,7 +589,7 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) in E_Function | E_Procedure | E_Task_Type then
          declare
-            Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+            Write_Ids : Flow_Types.Flow_Id_Sets.Set;
 
             procedure Include (S : Flow_Types.Flow_Id_Sets.Set);
             --  Include entities represented in S (as Flow_Ids) in Includes
@@ -1202,13 +1205,12 @@ package body Gnat2Why.Subprograms is
       Params        : constant List_Id :=
         (if Is_Entry (E) then Parameter_Specifications (Parent (E))
          else Parameter_Specifications (Subprogram_Specification (E)));
-      Ada_Param_Len : constant Integer := Integer (List_Length (Params));
-      Binder_Len    : constant Integer :=
-        (if Is_Protected_Subprogram (E) then Ada_Param_Len + 1
-         else Ada_Param_Len);
+      Ada_Param_Len : constant Natural := Natural (List_Length (Params));
+      Binder_Len    : constant Natural :=
+        Ada_Param_Len + (if Is_Protected_Subprogram (E) then 1 else 0);
       Result        : Item_Array (1 .. Binder_Len);
       Param         : Node_Id;
-      Count         : Integer;
+      Count         : Positive;
    begin
       Param := First (Params);
       Count := 1;
@@ -2230,9 +2232,9 @@ package body Gnat2Why.Subprograms is
            Sequence
              ((1 => New_Comment
                (Comment => NID ("Assume dynamic invariants of inputs of the"
-                & " subprogram "
+                & " subprogram"
                 & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
-                  else ""))),
+                   else ""))),
                2 =>
                  Compute_Dynamic_Property_For_Inputs
                    (Params         => Params,

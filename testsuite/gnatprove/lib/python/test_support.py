@@ -44,6 +44,10 @@ def benchmark_mode():
     return "benchmarks" in os.environ and os.environ["benchmarks"] == "true"
 
 
+def cache_mode():
+    return "cache" in os.environ and os.environ["cache"] == "true"
+
+
 def vc_timeout():
     if "vc_timeout" in os.environ:
         return int(os.environ["vc_timeout"])
@@ -493,6 +497,8 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
         fullopt += [build_prover_switch(prover)]
     if benchmark_mode():
         fullopt += ["--benchmark"]
+    if cache_mode():
+        fullopt += ["--cache"]
     if not counterexample:
         fullopt += ["--no-counterexample"]
     # Add opt last, so that it may include switch -cargs

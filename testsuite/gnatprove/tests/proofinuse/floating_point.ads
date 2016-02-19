@@ -15,6 +15,8 @@ is
 
    --  from MC13-026 (industrial user)
    procedure Guarded_Div (X, Y : Float_32; Res : out Float_32);
+   procedure Guarded_Div_Original (X, Y : Float_32; Res : out Float_32);
+   procedure Guarded_Div_Original_Fixed (X, Y : Float_32; Res : out Float_32);
 
    --  from N920-003 (teaching example)
    procedure Fibonacci (N : Positive; X, Y : Float_32; Res : out Float_32);

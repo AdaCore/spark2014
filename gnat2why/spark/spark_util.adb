@@ -472,28 +472,27 @@ package body SPARK_Util is
      (E            : Entity_Id;
       With_Inlined : Boolean) return Boolean is
    begin
-      return Is_In_Analyzed_Files (E)
-
+      return
        --  Either the analysis is requested for the complete unit, or if it is
        --  requested for a specific subprogram/task, check whether it is E.
 
-        and then (Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
-                    or else
-                  Is_Requested_Subprogram_Or_Task (E))
+       Is_In_Analyzed_Files (E) and then
+        (
+         --  Always analyze the subprogram if analysis was specifically
+         --  requested for it.
+         Is_Requested_Subprogram_Or_Task (E)
 
-        --  Ignore inlined subprograms that are referenced. Unreferenced
-        --  subprograms are analyzed anyway, as they are likely to correspond
-        --  to an intermediate stage of development. Also always analyze the
-        --  subprogram if analysis was specifically requested for it, or if
-        --  With_Inlined is set to True.
+         --  Anlways analyze if With_Inlined is True. Also, always analyze
+         --  unreferenced subprograms, as they are likely to correspond to
+         --  an intermediate stage of development. Otherwise, only analyze
+         --  subprograms that are not inlined.
 
-        and then (With_Inlined
-                    or else
-                  not Is_Local_Subprogram_Always_Inlined (E)
-                    or else
-                  not Referenced (E)
-                    or else
-                  Is_Requested_Subprogram_Or_Task (E));
+         or else (Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
+                  and then
+                    (With_Inlined
+                     or else not Referenced (E)
+                     or else not Is_Local_Subprogram_Always_Inlined (E))));
+
    end Analysis_Requested;
 
    ------------
@@ -2491,6 +2490,17 @@ package body SPARK_Util is
       end case;
    end Is_Action;
 
+   ---------------------------------------
+   -- Is_Call_Arg_To_Predicate_Function --
+   ---------------------------------------
+
+   function Is_Call_Arg_To_Predicate_Function (N : Node_Id) return Boolean is
+     (Present (N)
+        and then Present (Parent (N))
+        and then Nkind (Parent (N)) = N_Type_Conversion
+        and then Present (Parent (Parent (N)))
+        and then Is_Predicate_Function_Call (Parent (Parent (N))));
+
    -------------------------
    -- Is_Declared_In_Unit --
    -------------------------
@@ -2637,6 +2647,18 @@ package body SPARK_Util is
    function Is_Main_Cunit (N : Node_Id) return Boolean is
      (Get_Cunit_Unit_Number (Parent (N)) = Main_Unit);
 
+   ---------------------------------------
+   -- Is_Volatile_For_Internal_Calls --
+   ---------------------------------------
+
+   function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
+   is
+   begin
+      return Ekind (E) = E_Function
+        and then Is_Protected_Type (Scope (E))
+        and then Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function));
+   end Is_Volatile_For_Internal_Calls;
+
    -------------------
    -- Is_Null_Range --
    -------------------
@@ -2724,29 +2746,29 @@ package body SPARK_Util is
    function Is_Protected_Subprogram (E : Entity_Id) return Boolean is
       Scop : Node_Id;
    begin
+      case Ekind (E) is
 
-      --  entries are always protected subprograms
-
-      if Ekind (E) = E_Entry then
-         return True;
-      end if;
-
-      --  make sure that only subprograms pass this test
-
-      if Ekind (E) not in Subprogram_Kind then
-         return False;
-      end if;
-
-      --  now check that we are in the scope of a protected type
-
-      Scop := Scope (E);
-      while Present (Scop) loop
-         if Ekind (Scop) in Protected_Kind then
+         --  entries are always protected subprograms
+         when E_Entry =>
             return True;
-         end if;
-         Scop := Scope (Scop);
-      end loop;
-      return False;
+
+         --  detect subprograms declared in scope of a protected type
+         when Subprogram_Kind =>
+
+            Scop := Scope (E);
+            while Present (Scop) loop
+               if Ekind (Scop) in Protected_Kind then
+                  return True;
+               end if;
+               Scop := Scope (Scop);
+            end loop;
+
+            return False;
+
+         when others =>
+            return False;
+
+      end case;
    end Is_Protected_Subprogram;
 
    ------------------------------
@@ -3398,7 +3420,7 @@ package body SPARK_Util is
    --  context.
 
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean is
-     (Ekind (E) in E_Function | E_Procedure and then
+     (Ekind (E) = E_Procedure and then
        (Is_Invariant_Procedure (E)
           or else
         Is_Default_Init_Cond_Procedure (E)));
@@ -3436,10 +3458,10 @@ package body SPARK_Util is
    function Get_Body (E : Entity_Id) return Node_Id is
    begin
       return (case Ekind (E) is
-              when E_Entry => Entry_Body (E),
-              when E_Task_Type => Task_Body (E),
+              when Entry_Kind      => Entry_Body (E),
+              when E_Task_Type     => Task_Body (E),
               when Subprogram_Kind => Subprogram_Body (E),
-              when others => raise Program_Error);
+              when others          => raise Program_Error);
    end Get_Body;
 
    ---------------------

@@ -400,7 +400,7 @@ package body Gnat2Why.Expr.Loops is
       --  add the loop index to the entity table.
 
       if Present (Scheme)
-        and then not Present (Condition (Scheme))
+        and then No (Condition (Scheme))
       then
          if Present (Loop_Parameter_Specification (Scheme)) then
             Loop_Param_Ent  :=
@@ -951,7 +951,7 @@ package body Gnat2Why.Expr.Loops is
                      --  Loop_Index := Low_Id otherwise
 
                      declare
-                        Is_Reverse   : constant Boolean :=
+                        Is_Reverse : constant Boolean :=
                           Reverse_Present (LParam_Spec);
                         Init_Index : constant W_Expr_Id :=
                           (if Is_Reverse then +High_Id else +Low_Id);

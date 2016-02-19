@@ -45,7 +45,6 @@ with Sinfo;                   use Sinfo;
 with Sinput;                  use Sinput;
 with SPARK_Util;              use SPARK_Util;
 with Stand;                   use Stand;
-with String_Utils;            use String_Utils;
 with Urealp;                  use Urealp;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Modules;       use Why.Atree.Modules;
@@ -94,6 +93,18 @@ package body Why.Gen.Expr is
    --  Determines whether the node is some kind of a choice of a 'Update of
    --  an unconstrained array. This is useful for producing the extra
    --  checks required for updates of unconstrained arrays.
+
+   function New_Located_Label (Input : Source_Ptr) return Name_Id;
+   --  @param Input a source pointer
+   --  @return a Why3 label which identifies this source location in Why3
+
+   function Compute_VC_Sloc (N         : Node_Id;
+                             Left_Most : Boolean := False) return Source_Ptr;
+   --  @param N a node where a Check is located
+   --  @param Left_Most whether the returned source_pointer should be oriented
+   --    at the left_most of the tree rooted in N
+   --  @return the source_pointer of node N, taking into account "Left_Most"
+   --    argument and other special cases
 
    Temp_Names_Map : Why_Node_Maps.Map := Why_Node_Maps.Empty_Map;
 
@@ -169,6 +180,43 @@ package body Why.Gen.Expr is
          return Context;
       end if;
    end Binding_For_Temp;
+
+   ---------------------
+   -- Compute_VC_Sloc --
+   ---------------------
+
+   function Compute_VC_Sloc (N         : Node_Id;
+                             Left_Most : Boolean := False) return Source_Ptr
+   is
+      Slc : Source_Ptr;
+   begin
+      --  For VCs, we mostly want to point directly to the relevant node [N].
+      --  For other nodes (e.g. pretty printing labels) it's more sensible to
+      --  point to the beginning of the expression instead of the operator.
+      --  This is achieved by calling [First_Sloc] instead of [Sloc]. However,
+      --  [First_Sloc] does not work for N_And_Then nodes in assertions which
+      --  are rewritten in a strange manner, so we do not do this optimization
+      --  in that case. See also [New_Pretty_Label].
+
+      if not Left_Most
+            or else
+         (Comes_From_Source (N)
+           and then Original_Node (N) /= N
+           and then Nkind (Original_Node (N)) = N_And_Then)
+      then
+         Slc := Sloc (N);
+
+      --  First_Sloc does some magic to point before the opening parentheses in
+      --  an expression, which does not work on locations inside instances of
+      --  generics. Use Sloc on First_Node instead in that case.
+
+      elsif Instantiation_Location (Sloc (N)) /= No_Location then
+         Slc := Sloc (First_Node (N));
+      else
+         Slc := First_Sloc (N);
+      end if;
+      return Slc;
+   end Compute_VC_Sloc;
 
    -------------------
    -- Cur_Subp_Sloc --
@@ -572,9 +620,13 @@ package body Why.Gen.Expr is
             end if;
 
             --  If the target type has a direct or inherited predicate,
-            --  generate a corresponding check.
+            --  generate a corresponding check. Do not generate a predicate
+            --  check for an internal call to a parent predicate function
+            --  inside the definition of a predicate function.
 
-            if Has_Predicates (Check_Type) then
+            if Has_Predicates (Check_Type)
+              and then not Is_Call_Arg_To_Predicate_Function (Ada_Node)
+            then
                T := +Insert_Predicate_Check (Ada_Node,
                                              Check_Type,
                                              +T);
@@ -719,8 +771,13 @@ package body Why.Gen.Expr is
         Need_Check and then Is_Constrained (R);
       Need_Tag_Check   : constant Boolean :=
         Need_Check and then Is_Tagged_Type (R) and then not Is_Ancestor (R, L);
+
+      --  Do not generate a predicate check for an internal call to a parent
+      --  predicate function inside the definition of a predicate function.
       Need_Pred_Check  : constant Boolean :=
-        Need_Check and then Has_Predicates (R);
+        Need_Check
+          and then Has_Predicates (R)
+          and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
       Check_Entity     : constant Entity_Id := Get_Ada_Node (+To);
 
    begin
@@ -1084,10 +1141,13 @@ package body Why.Gen.Expr is
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
+      --  Do not generate a predicate check for an internal call to a parent
+      --  predicate function inside the definition of a predicate function.
       Do_Predicate_Check : constant Boolean :=
         Present (Get_Ada_Node (+To))
           and then Has_Predicates (Get_Ada_Node (+To))
-          and then Get_Ada_Node (+To) /= Get_Ada_Node (+From);
+          and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
+          and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
 
       procedure Get_Range_Check_Info
         (Expr       : Node_Id;
@@ -1475,10 +1535,13 @@ package body Why.Gen.Expr is
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
+      --  Do not generate a predicate check for an internal call to a parent
+      --  predicate function inside the definition of a predicate function.
       Do_Predicate_Check : constant Boolean :=
         Present (Get_Ada_Node (+To))
           and then Has_Predicates (Get_Ada_Node (+To))
-          and then Get_Ada_Node (+To) /= Get_Ada_Node (+From);
+          and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
+          and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
 
       --  Current result expression
       Result : W_Expr_Id := Expr;
@@ -1907,7 +1970,7 @@ package body Why.Gen.Expr is
    is
       Why_Type : constant W_Type_Id := Type_Of_Node (Typ);
       Use_Predef : constant Boolean :=
-        Force_Predefined or else not Present (Get_User_Defined_Eq (Typ));
+        Force_Predefined or else No (Get_User_Defined_Eq (Typ));
       Eq_Str   : constant String :=
         (if Use_Predef then "bool_eq" else "user_eq");
       Module   : constant W_Module_Id :=
@@ -2476,41 +2539,10 @@ package body Why.Gen.Expr is
    -- New_Located_Label --
    -----------------------
 
-   function New_Located_Label
-     (N         : Node_Id;
-      Left_Most : Boolean := False)
-      return Name_Id
-   is
-      Slc : Source_Ptr;
-      Buf : Unbounded_String := Null_Unbounded_String;
-
+   function New_Located_Label (Input : Source_Ptr) return Name_Id is
+      Slc : Source_Ptr := Input;
+      Buf : Unbounded_String;
    begin
-      --  For VCs, we mostly want to point directly to the relevant node [N].
-      --  For other nodes (e.g. pretty printing labels) it's more sensible to
-      --  point to the beginning of the expression instead of the operator.
-      --  This is achieved by calling [First_Sloc] instead of [Sloc]. However,
-      --  [First_Sloc] does not work for N_And_Then nodes in assertions which
-      --  are rewritten in a strange manner, so we do not do this optimization
-      --  in that case. See also [New_Pretty_Label].
-
-      if not Left_Most
-            or else
-         (Comes_From_Source (N)
-           and then Original_Node (N) /= N
-           and then Nkind (Original_Node (N)) = N_And_Then)
-      then
-         Slc := Sloc (N);
-
-      --  First_Sloc does some magic to point before the opening parentheses in
-      --  an expression, which does not work on locations inside instances of
-      --  generics. Use Sloc on First_Node instead in that case.
-
-      elsif Instantiation_Location (Sloc (N)) /= No_Location then
-         Slc := Sloc (First_Node (N));
-      else
-         Slc := First_Sloc (N);
-      end if;
-
       loop
          declare
             File   : constant String := File_Name (Slc);
@@ -2535,6 +2567,18 @@ package body Why.Gen.Expr is
          end;
       end loop;
       return NID (GP_Sloc_Marker & To_String (Buf));
+   end New_Located_Label;
+
+   -----------------------
+   -- New_Located_Label --
+   -----------------------
+
+   function New_Located_Label
+     (N         : Node_Id;
+      Left_Most : Boolean := False)
+      return Name_Id is
+   begin
+      return New_Located_Label (Compute_VC_Sloc (N, Left_Most));
    end New_Located_Label;
 
    --------------------
@@ -3217,15 +3261,23 @@ package body Why.Gen.Expr is
       --  For a node inside an instantiation, we use the location of the
       --  top-level instantiation. This could be refined in the future.
 
+      Sloc : constant Source_Ptr := Compute_VC_Sloc
+        (N, Left_Most => Locate_On_First_Token (Reason));
       Set : Name_Id_Set := Name_Id_Sets.Empty_Set;
       Id  : constant VC_Id := Register_VC (N, Current_Subp);
-      Location_Lab : Name_Id;
+      Location_Lab : constant Name_Id := New_Located_Label (Sloc);
    begin
+      if CodePeer_Has_Proved (Sloc, Reason) then
+         Emit_Proof_Result
+           (N,
+            Reason,
+            True,
+            Current_Subp,
+            How_Proved => "codepeer");
+         Set.Include (GP_Already_Proved);
+      end if;
       Set.Include (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));
       Set.Include (NID (GP_Id_Marker & Image (Integer (Id), 1)));
-
-      Location_Lab := New_Located_Label
-        (N, Left_Most => Locate_On_First_Token (Reason));
       Set.Include (Location_Lab);
 
       --  Do not generate comment labels in Why3 to facilitate debugging
@@ -3235,11 +3287,11 @@ package body Why.Gen.Expr is
       end if;
 
       Set.Include (New_Shape_Label (Node => N));
-      Set.Include (NID (Keep_On_Simp));
+      Set.Include (Keep_On_Simp);
       if Reason = VC_Postcondition then
-         Set.Include (NID (Model_VC_Post_Label));
+         Set.Include (Model_VC_Post);
       else
-         Set.Include (NID (Model_VC_Label));
+         Set.Include (Model_VC);
       end if;
       return Set;
    end New_VC_Labels;

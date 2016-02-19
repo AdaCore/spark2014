@@ -24,20 +24,16 @@ GNATbench plug-in for Eclipse instead of GPS, using the Eclipse installation
 mechanism.
 
 If you choose to install |GNATprove| in a different location, you should also
-modify environment variables ``GPR_PROJECT_PATH`` (if you installed GNAT) and
-``GPS_DOC_PATH`` (if you installed GPS). On Windows, edit the value of
-``GPR_PROJECT_PATH`` under the Environnement Variables panel, and add to it the
-value of ``<GNAT install dir>/lib/gnat``. Similarly, edit the value of
-``GPS_DOC_PATH`` and add to it the value of ``<SPARK install
-dir>/share/doc/spark``. On Linux/Mac with Bourne shell, use::
+modify the environment variables ``GPR_PROJECT_PATH`` (if you installed GNAT).
+On Windows, edit the value of ``GPR_PROJECT_PATH`` under the Environnement
+Variables panel, and add to it the value of ``<GNAT install dir>/lib/gnat``.
+On Linux/Mac with Bourne shell, use::
 
   export GPR_PROJECT_PATH=<GNAT install dir>/lib/gnat:$GPR_PROJECT_PATH
-  export GPS_DOC_PATH=<SPARK install dir>/share/doc/spark:$GPS_DOC_PATH
 
 or on Linux/Mac with C shell::
 
   setenv GPR_PROJECT_PATH <GNAT install dir>/lib/gnat:$GPR_PROJECT_PATH
-  setenv GPS_DOC_PATH <SPARK install dir>/share/doc/spark:$GPS_DOC_PATH
 
 See below for detailed installation instructions of GPS and |GNATprove|.
 

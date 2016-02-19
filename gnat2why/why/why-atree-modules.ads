@@ -421,6 +421,16 @@ package Why.Atree.Modules is
    Old_Tag                   : Name_Id;
    Def_Name                  : W_Identifier_Id;
 
+   --  Labels
+
+   Model             : Name_Id;
+   Model_Trace       : Name_Id;
+   Model_Projected   : Name_Id;
+   Model_VC          : Name_Id;
+   Model_VC_Post     : Name_Id;
+   GP_Already_Proved : Name_Id;
+   Keep_On_Simp      : Name_Id;
+
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package.
 

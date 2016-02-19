@@ -25,7 +25,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Integer_Text_IO;                use Ada.Integer_Text_IO;
 with Ada.Text_IO;                        use Ada.Text_IO;
 with GNAT.OS_Lib;                        use GNAT.OS_Lib;
-with System.Strings;
+with GNAT.Strings;
 
 with Hashing;                            use Hashing;
 
@@ -1558,9 +1558,9 @@ package body Graphs is
          Success     : Boolean;
          Return_Code : Integer;
 
-         Exec : System.Strings.String_Access :=
+         Exec : GNAT.Strings.String_Access :=
            Locate_Exec_On_Path ("dot");
-         Args : System.Strings.String_List_Access :=
+         Args : GNAT.Strings.String_List_Access :=
            Argument_String_To_List ("-Tpdf " & Filename & ".dot");
 
          pragma Unreferenced (Success, Return_Code);
@@ -1574,9 +1574,9 @@ package body Graphs is
                    Return_Code  => Return_Code,
                    Err_To_Out   => False);
 
-            System.Strings.Free (Exec);
+            GNAT.Strings.Free (Exec);
          end if;
-         System.Strings.Free (Args);
+         GNAT.Strings.Free (Args);
       end;
    end Write_Pdf_File;
 

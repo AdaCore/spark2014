@@ -101,6 +101,7 @@ package body Flow.Control_Flow_Graph is
                                 N_Freeze_Generic_Entity           |
                                 N_Generic_Instantiation           |
                                 N_Generic_Package_Declaration     |
+                                N_Generic_Renaming_Declaration    |
                                 N_Generic_Subprogram_Declaration  |
                                 N_Implicit_Label_Declaration      |
                                 N_Incomplete_Type_Declaration     |
@@ -4093,13 +4094,12 @@ package body Flow.Control_Flow_Graph is
       CM.Include (Union_Id (N), Trivial_Connection (V));
 
       --  We make a note of 'Loop_Entry uses.
-      case Get_Pragma_Id (N) is
-         when Pragma_Check | Pragma_Loop_Variant | Pragma_Loop_Invariant =>
-            Add_Loop_Entry_References (N);
-
-         when others =>
-            null;
-      end case;
+      if Get_Pragma_Id (N) in Pragma_Check          |
+                              Pragma_Loop_Variant   |
+                              Pragma_Loop_Invariant
+      then
+         Add_Loop_Entry_References (N);
+      end if;
 
    end Do_Pragma;
 
@@ -5916,7 +5916,7 @@ package body Flow.Control_Flow_Graph is
                AS_E      : Entity_Id;
             begin
                if Present (AS_Pragma) then
-                  PAA  := First (Pragma_Argument_Associations (AS_Pragma));
+                  PAA := First (Pragma_Argument_Associations (AS_Pragma));
 
                   --  Check that we don't have Abstract_State => null
                   if Nkind (Expression (PAA)) /= N_Null then

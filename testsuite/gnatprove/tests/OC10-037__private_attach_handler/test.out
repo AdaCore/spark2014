@@ -1,15 +1,12 @@
 p.ads:6:37: medium: this interrupt might be reserved
-p.ads:7:07: warning: pragma "Interrupt_Priority" ignored (not yet supported)
 p.ads:10:18: info: range check proved
 p.ads:10:26: info: range check proved
 p.ads:10:34: info: range check proved
 q.ads:7:37: medium: this interrupt might be reserved
-q.ads:8:07: warning: pragma "Interrupt_Priority" ignored (not yet supported)
 q.ads:11:18: info: range check proved
 q.ads:11:26: info: range check proved
 q.ads:11:34: info: range check proved
 r.ads:7:37: medium: this interrupt might be reserved
-r.ads:8:07: warning: pragma "Interrupt_Priority" ignored (not yet supported)
 r.ads:11:04: info: ceiling priority in Interrupt_Priority proved
 r.ads:11:18: info: range check proved
 r.ads:11:26: info: range check proved

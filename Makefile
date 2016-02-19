@@ -40,7 +40,8 @@ GNATPROVEDIR=$(SHAREDIR)/spark
 CONFIGDIR=$(GNATPROVEDIR)/config
 THEORIESDIR=$(GNATPROVEDIR)/theories
 DOC=ug lrm
-
+# Control if gnatprove is built in production or debug mode
+PROD=-XBuild=Production
 CP=cp -pr
 MV=mv -f
 GNATMAKE=gnatmake
@@ -82,11 +83,13 @@ install-all:
         # all internal binaries even if not strictly needed.
 	mkdir -p install/libexec/spark/bin
 	$(MV) install/bin/why3server install/libexec/spark/bin
+	$(MV) install/bin/why3realize install/libexec/spark/bin
 	$(MV) install/bin/gnatwhy3 install/libexec/spark/bin
 	$(MV) install/bin/why3config install/libexec/spark/bin
 	$(MV) install/bin/alt-ergo install/libexec/spark/bin
         # Create the fake prover scripts to help extract benchmarks.
 	$(CP) benchmark_script/fake_* install/libexec/spark/bin
+	$(CP) scripts/cache_wrapper install/libexec/spark/bin
         # It is ok for developers to not have a local build of CVC4. In that
         # case we don't want to have an error to be issued.
 	$(MV) install/bin/cvc4 install/libexec/spark/bin 2> /dev/null || true
@@ -116,7 +119,7 @@ $(DOC):
 
 gnat2why-nightly:
 	$(MAKE) -C gnat2why/why/xgen
-	$(MAKE) -C gnat2why AUTOMATED=1
+	$(MAKE) -C gnat2why AUTOMATED=1 GPRARGS=$(PROD)
 
 gnat2why:
 	$(MAKE) -C gnat2why/why/xgen
@@ -131,7 +134,7 @@ gnatprove:
 	$(MAKE) -C gnatprove build
 
 gnatprove-nightly:
-	$(MAKE) -C gnatprove nightly
+	$(MAKE) -C gnatprove nightly PROD=$(PROD)
 
 install-examples:
 	mkdir -p $(EXAMPLESDIR)

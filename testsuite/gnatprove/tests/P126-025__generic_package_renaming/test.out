@@ -1,0 +1,2 @@
+c.adb:9:04: info: assertion proved
+c.adb:9:19: info: initialization of "X" proved

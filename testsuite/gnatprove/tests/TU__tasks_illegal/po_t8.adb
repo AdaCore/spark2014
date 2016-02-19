@@ -23,7 +23,8 @@ package body PO_T8 is
       The_Last_Of_The_Integers : Integer := Integer'Last;
    begin
       loop
-         pragma Loop_Invariant (The_Last_Of_The_Integers >= P_Int.Get);
+         --  pragma Loop_Invariant (The_Last_Of_The_Integers >= P_Int.Get);
+         --  call to P_Int.Get is only allowed in non-interfering context
          P_Int.Allow_Increase;
          P_Int.Increase;
       end loop;

@@ -231,6 +231,7 @@ package body Flow.Control_Flow_Graph.Utility is
       return V_Attributes
    is
       A : V_Attributes := Null_Attributes;
+      pragma Unreferenced (Callsite);
    begin
       A.Subprograms_Called := Sub_Called;
       A.Is_Program_Node    := True;

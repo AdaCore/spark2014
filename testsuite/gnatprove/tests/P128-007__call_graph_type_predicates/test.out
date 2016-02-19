@@ -1,0 +1,3 @@
+client.adb:3:11: info: ceiling priority protocol is respected
+p.adb:20:52: info: initialization of "C5b" proved
+p.adb:27:20: warning: statement has no effect

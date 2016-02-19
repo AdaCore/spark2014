@@ -298,24 +298,24 @@ package body Gnat2Why.Util is
 
          if Get_Type_Kind (Type_Of_Node (Etype (E))) in EW_Builtin | EW_Split
          then
-            Labels.Include (NID (Model_Label));
+            Labels.Include (Model);
 
          --  If E's type needs a projection to a native prover type, request
          --  the value of the projection of E in the counterexample.
 
          else
-            Labels.Include (NID (Model_Proj_Label));
+            Labels.Include (Model_Projected);
          end if;
       end if;
 
       if Is_Record_Type (Etype (E)) then
          Labels.Union (Model_Trace);
-         Labels.Include (NID (Model_Proj_Label));
+         Labels.Include (Model_Projected);
       end if;
 
       if Is_Array_Type (Etype (E)) then
          Labels.Union (Model_Trace);
-         Labels.Include (NID (Model_Proj_Label));
+         Labels.Include (Model_Projected);
       end if;
 
       return Labels;

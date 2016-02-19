@@ -20,9 +20,13 @@ is
    begin
       loop
          Get_Next_Account_Created;
-         if Num_Accounts.Get < Max_Accounts then
-            Num_Accounts.Incr;
-         end if;
+         declare
+            X : constant Natural := Num_Accounts.Get;
+         begin
+            if X < Max_Accounts then
+               Num_Accounts.Incr;
+            end if;
+         end;
       end loop;
    end Account_Management;
 
