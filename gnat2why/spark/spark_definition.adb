@@ -2285,9 +2285,8 @@ package body SPARK_Definition is
    ---------------
 
    procedure Mark_Call (N : Node_Id) is
-      Actuals : constant List_Id := Parameter_Associations (N);
-      Nam     : constant Node_Id := Name (N);
-      E       : Entity_Id;
+      Nam : constant Node_Id := Name (N);
+      E   : Entity_Id;
       --  Entity of the called subprogram or entry
 
    begin
@@ -2333,7 +2332,14 @@ package body SPARK_Definition is
                          N);
       end if;
 
-      Mark_List (Actuals);
+      Mark_Actuals : declare
+         A : Node_Id := First_Actual (N);
+      begin
+         while Present (A) loop
+            Mark (A);
+            Next_Actual (A);
+         end loop;
+      end Mark_Actuals;
 
       --  Call is only in SPARK if the subprogram called is in SPARK
 
