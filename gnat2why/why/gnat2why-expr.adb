@@ -3866,13 +3866,33 @@ package body Gnat2Why.Expr is
 
       W_Seq : constant W_Prog_Id :=
         Sequence (New_Predicate_Check (Ada_Node, Check_Ty, +W_Tmp), +W_Tmp);
+
    begin
+      pragma Assert ((not Present (Get_Ada_Node (+Get_Type (+W_Expr))))
+                     or else
+                     --  /!\ do something with this ! confirm or raise
+--                       (Type_Of_Node (Check_Ty) = Get_Type (+W_Expr)
+--                     and then
+                     Is_Subtype_Of (Check_Ty,
+                       Get_Ada_Node (+Get_Type (+W_Expr)))
+                     or else
+                     Get_Ada_Node (+Get_Type (+W_Expr)) = Check_Ty);
       return +W_Expr_Id'(New_Binding (Ada_Node => Ada_Node,
                                       Domain   => EW_Prog,
                                       Name     => W_Tmp,
                                       Def      => +W_Expr,
                                       Context  => +W_Seq,
-                                      Typ      => Get_Type (+W_Expr)));
+                                      Typ      =>
+                                        New_Type (Ada_Node   => Check_Ty,
+                                                  Type_Kind  =>
+                                                    Type_Get_Type_Kind
+                                                      (+Get_Type (+W_Expr)),
+                                                  Name       =>
+                                                    +Type_Get_Name
+                                                    (+Get_Type (+W_Expr)),
+                                                  Is_Mutable =>
+                                                    Type_Get_Is_Mutable
+                                                      (+Get_Type (+W_Expr)))));
    end Insert_Predicate_Check;
 
    ------------------------
