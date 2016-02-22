@@ -157,10 +157,10 @@ package body Flow_Error_Messages is
       F1   : Flow_Id := Null_Flow_Id;
       F2   : Flow_Id := Null_Flow_Id;
       F3   : Flow_Id := Null_Flow_Id)
-      return String is
-      M : Unbounded_String := Null_Unbounded_String;
+      return String
+   is
+      M : Unbounded_String := To_Unbounded_String (Msg);
    begin
-      Append (M, Msg);
       if Present (F1) then
          M := Substitute (M, F1, Sloc (N));
          if Present (F2) then
