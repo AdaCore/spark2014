@@ -94,15 +94,15 @@ prime_and_coprime_numbers.adb:206:24: info: initialization of "Is_Prime" constit
 prime_and_coprime_numbers.adb:207:24: info: initialization of "Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:209:39: medium: range check might fail, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:211:10: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:211:41: medium: loop invariant might fail after first iteration, cannot prove Index_2 in 2 .. Max_Value, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:211:33: medium: loop invariant might fail after first iteration, cannot prove Index_2 in 2 .. Max_Value, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:212:10: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:213:42: medium: loop invariant might fail after first iteration, cannot prove Set.Is_Prime (V) = Is_Prime (V), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:213:45: info: initialization of "Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:213:56: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:213:59: medium: loop invariant might fail after first iteration, cannot prove Set.Is_Prime (V) = Is_Prime (V), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:214:10: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:216:15: medium: loop invariant might fail after first iteration, cannot prove Set.Is_Prime (V) = (for all Div in 2 .. Index_2 - 1 => V mod Div /= 0, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:216:18: info: initialization of "Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:216:29: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:216:32: medium: loop invariant might fail after first iteration, cannot prove Set.Is_Prime (V) = (for all Div in 2 .. Index_2 - 1 => V mod Div /= 0, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:217:55: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:219:16: info: initialization of "Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:219:27: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -116,10 +116,10 @@ prime_and_coprime_numbers.adb:228:16: info: loop invariant initialization proved
 prime_and_coprime_numbers.adb:228:16: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:229:51: info: initialization of "Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:229:62: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:232:21: medium: loop invariant might fail after first iteration, cannot prove Set.Is_Prime (V) = ((for all Div in 2 .. Index_2 - 1 => V mod Div /= 0) and (if V in Index_2 + 1..Index_3 then V mod Index_2 /= 0 else true, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:232:21: medium: loop invariant might fail in first iteration, cannot prove Set.Is_Prime (V) = ((for all Div in 2 .. Index_2 - 1 => V mod Div /= 0) and (if V in Index_2 + 1..Index_3 then V mod Index_2 /= 0 else true, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:232:24: info: initialization of "Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:232:35: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:232:38: medium: loop invariant might fail after first iteration, cannot prove Set.Is_Prime (V) = ((for all Div in 2 .. Index_2 - 1 => V mod Div /= 0) and (if V in Index_2 + 1..Index_3 then V mod Index_2 /= 0 else true, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:232:38: medium: loop invariant might fail in first iteration, cannot prove Set.Is_Prime (V) = ((for all Div in 2 .. Index_2 - 1 => V mod Div /= 0) and (if V in Index_2 + 1..Index_3 then V mod Index_2 /= 0 else true, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:233:62: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:235:41: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:235:48: info: initialization of "Index_3" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -128,9 +128,9 @@ prime_and_coprime_numbers.adb:236:16: info: loop invariant initialization proved
 prime_and_coprime_numbers.adb:236:16: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:236:39: info: initialization of "Index_3" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:237:39: info: initialization of "Index_3" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:237:39: medium: loop invariant might fail after first iteration, cannot prove Index_3 mod Index_2 = 0, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:237:39: medium: loop invariant might fail in first iteration, cannot prove Index_3 mod Index_2 = 0, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:237:47: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:237:59: medium: loop invariant might fail after first iteration, cannot prove Index_3 mod Index_2 = 0, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:237:59: medium: loop invariant might fail in first iteration, cannot prove Index_3 mod Index_2 = 0, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:239:27: info: initialization of "Index_3" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:239:35: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:239:37: info: initialization of "Index_1" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -140,11 +140,11 @@ prime_and_coprime_numbers.ads:25:65: info: division check proved, in instantiati
 prime_and_coprime_numbers.ads:34:18: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:34:35: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:40:50: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:57:09: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:57:07: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:68:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:69:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:70:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:71:36: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:71:14: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:72:44: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:73:06: info: complete contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:73:06: info: disjoint contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -169,7 +169,7 @@ prime_and_coprime_numbers.ads:102:76: info: overflow check proved, in instantiat
 prime_and_coprime_numbers.ads:102:87: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:102:112: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:103:27: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:117:44: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:117:16: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:119:06: info: complete contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:119:06: info: disjoint contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:123:26: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6

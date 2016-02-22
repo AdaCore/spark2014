@@ -206,18 +206,15 @@ package body Flow_Error_Messages is
      (N           : Node_Id;
       Place_First : Boolean := False) return Source_Ptr
    is
-      Slc : Source_Ptr;
+      Slc : Source_Ptr := (if Place_First
+                           then First_Sloc (N)
+                           else Sloc (N));
    begin
-      if Instantiation_Location (Sloc (N)) /= No_Location then
+      if Instantiation_Location (Slc) /= No_Location then
          --  If we are dealing with an instantiation of a generic we change
          --  the message to point at the implementation of the generic and we
          --  mention where the generic is instantiated.
-         Slc := Original_Location (Sloc (N));
-
-      elsif Place_First then
-         Slc := First_Sloc (N);
-      else
-         Slc := Sloc (N);
+         Slc := Original_Location (Slc);
       end if;
       return Slc;
    end Compute_Sloc;
