@@ -55,7 +55,7 @@ package body Flow_Error_Messages is
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
    --  Transform the msg kind into a string, for the JSON output.
 
-   type Message_Id is new Integer;
+   type Message_Id is new Integer range -1 .. Integer'Last;
    --  type used to identify a message issued by gnat2why
 
    function Compute_Message
