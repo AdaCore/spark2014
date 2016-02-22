@@ -3740,6 +3740,14 @@ package body SPARK_Definition is
                Mark_Violation (E, From => Base_Type (E));
             end if;
 
+            if Is_Null_Record_Type (E) and then Has_Predicates (E) then
+               Violation_Detected := True;
+               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                  Error_Msg_N ("predicate on null record type"
+                               & " is not supported", E);
+               end if;
+            end if;
+
             if not Is_Interface (E) then
                declare
                   Field : Entity_Id := First_Component_Or_Discriminant (E);
@@ -5135,9 +5143,13 @@ package body SPARK_Definition is
                Entity_List.Append (Def_E);
             end if;
 
+            --  If a violation was detected on a predicate function, then the
+            --  type to which the predicate applies is not in SPARK. Remove it
+            --  from the set Entities_In_SPARK if already marked in SPARK.
+
             if Violation_Detected then
                if In_Pred_Function_Body then
-                  Entities_In_SPARK.Delete (Current_Delayed_Aspect_Type);
+                  Entities_In_SPARK.Exclude (Current_Delayed_Aspect_Type);
                end if;
             else
                Bodies_In_SPARK.Insert (E);

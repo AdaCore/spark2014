@@ -313,11 +313,6 @@ is
    --  Return the set of entire variables which are introduced in a
    --  quantifier under node N.
 
-   function Is_Null_Record (E : Entity_Id) return Boolean
-   with Pre => Nkind (E) in N_Entity;
-   --  Checks if E is a record that contains no fields at all. If E is not
-   --  a record we return False.
-
    function Flatten_Variable
      (F     : Flow_Id;
       Scope : Flow_Scope)
@@ -411,7 +406,7 @@ is
       Vars_Proof           : out Flow_Id_Sets.Set;
       Partial_Definition   : out Boolean)
    with Pre  => Is_Valid_Assignment_Target (N),
-        Post => (if not Is_Null_Record (Etype (N))
+        Post => (if not Is_Null_Record_Type (Etype (N))
                  then not Vars_Defined.Is_Empty);
    --  Process the LHS of an assignment statement or an [in] out parameter,
    --  establising the sets of variables used. For example, assume we have

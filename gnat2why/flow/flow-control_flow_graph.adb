@@ -1521,7 +1521,7 @@ package body Flow.Control_Flow_Graph is
       --  update the connection map. ??? record update
 
       if Verts.Is_Empty then
-         pragma Assert (Is_Null_Record (Etype (Name (N))));
+         pragma Assert (Is_Null_Record_Type (Etype (Name (N))));
          --  Assigning null records does not produce any assignments, so we
          --  create a null vertex instead.
          Add_Vertex (FA,

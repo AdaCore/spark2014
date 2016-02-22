@@ -1,3 +1,4 @@
+odd.ads:7:09: predicate on null record type is not supported
 odd.ads:7:44: "Not_In_SPARK" is not allowed in SPARK
 odd.ads:7:44: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof
