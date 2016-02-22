@@ -3623,6 +3623,16 @@ package body SPARK_Definition is
                   Error_Msg_N ("modulus greater than 2 ** 64 "
                                & "is not yet supported", E);
                end if;
+            elsif Is_Floating_Point_Type (E)
+     and then not Is_Double_Precision_Floating_Point_Type (E)
+     and then not Is_Single_Precision_Floating_Point_Type (E)
+            then
+                        Violation_Detected := True;
+                        if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+                           Error_Msg_N ("Float that are not single or "
+                                        & "double precision type "
+                                        & "are not yet supported", E);
+                        end if;
             end if;
 
          elsif Is_Class_Wide_Type (E) then
@@ -4800,10 +4810,14 @@ package body SPARK_Definition is
          S_Natural             => True,
          S_Positive            => True,
 
-         S_Short_Float         => True,
+         S_Short_Float         =>
+           Is_Single_Precision_Floating_Point_Type
+             (Standard_Entity (S_Short_Float)),
          S_Float               => True,
          S_Long_Float          => True,
-         S_Long_Long_Float     => False,
+         S_Long_Long_Float     =>
+           Is_Double_Precision_Floating_Point_Type
+             (Standard_Entity (S_Long_Long_Float)),
 
          S_Character           => True,
          S_Wide_Character      => True,
