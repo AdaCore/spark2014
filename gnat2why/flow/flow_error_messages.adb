@@ -240,14 +240,17 @@ package body Flow_Error_Messages is
       Msg2    : constant String :=
         (if SRM_Ref'Length > 0 then Msg & " (SPARK RM " & SRM_Ref & ")"
          else Msg);
-      Msg3    : constant String := Compute_Message (Msg2, N, F1, F2, F3);
-      Suppr   : String_Id := No_String;
-      Slc     : constant Source_Ptr := Compute_Sloc (N);
-      Msg_Id  : Message_Id := No_Message_Id;
+
+      Msg3 : constant String     := Compute_Message (Msg2, N, F1, F2, F3);
+      Slc  : constant Source_Ptr := Compute_Sloc (N);
+
       Unb_Msg : constant Unbounded_String :=
         To_Unbounded_String (Msg3 &
                              Source_Ptr'Image (Slc) &
                              Integer'Image (Msg_Severity'Pos (Severity)));
+
+      Suppr  : String_Id  := No_String;
+      Msg_Id : Message_Id := No_Message_Id;
 
       function Is_Specified_Line return Boolean;
       --  Returns True if command line argument "--limit-line" was not
@@ -1427,8 +1430,9 @@ package body Flow_Error_Messages is
          return Result;
       end Get_Severity;
 
-      Msg2     : constant String := Compute_Message (Msg, N);
-      Slc      : constant Source_Ptr := Compute_Sloc (N, Place_First);
+      Msg2 : constant String     := Compute_Message (Msg, N);
+      Slc  : constant Source_Ptr := Compute_Sloc (N, Place_First);
+
       Pretty_Cntexmp  : constant JSON_Value :=
         Create_Pretty_Cntexmp (Cntexmp, Slc);
       One_Liner : constant String :=
