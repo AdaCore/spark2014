@@ -41,7 +41,6 @@ with Common_Iterators;           use Common_Iterators;
 with Gnat2Why.Util;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
-with SPARK_Util;                 use SPARK_Util;
 with Why;
 
 with Flow_Classwide;             use Flow_Classwide;
@@ -3279,32 +3278,6 @@ package body Flow_Utility is
          return True;
       end;
    end Is_Non_Visible_Constituent;
-
-   --------------------
-   -- Is_Null_Record --
-   --------------------
-
-   function Is_Null_Record (E : Entity_Id) return Boolean is
-   begin
-      if Is_Type (E) then
-         if Ekind (E) in Record_Kind then
-            case Ekind (E) is
-               when E_Class_Wide_Type | E_Class_Wide_Subtype =>
-                  --  We always have the tag.
-                  return False;
-               when others =>
-                  --  ??? there should be a cheaper way to check this
-                  return All_Components (E).Is_Empty;
-            end case;
-         else
-            return False;
-         end if;
-      elsif Ekind (E) = E_Abstract_State then
-         return False;
-      else
-         return Is_Null_Record (Get_Full_Type_Without_Checking (E));
-      end if;
-   end Is_Null_Record;
 
    ---------------------------
    -- Is_Precondition_Check --
