@@ -263,8 +263,7 @@ package body Flow_Error_Messages is
       -----------------------
 
       function Is_Specified_Line return Boolean is
-         Loc  : constant Source_Ptr :=
-           Translate_Location (Sloc (N));
+         Loc  : constant Source_Ptr := Translate_Location (Sloc (N));
          File : constant String := File_Name (Loc);
          Line : constant Physical_Line_Number :=
            Get_Physical_Line_Number (Loc);
@@ -1431,8 +1430,7 @@ package body Flow_Error_Messages is
          return Result;
       end Get_Severity;
 
-      Msg2     : constant String :=
-        Compute_Message (Msg, N);
+      Msg2     : constant String := Compute_Message (Msg, N);
       Slc      : constant Source_Ptr := Compute_Sloc (N, Place_First);
       Pretty_Cntexmp  : constant JSON_Value :=
         Create_Pretty_Cntexmp (Cntexmp, Slc);
