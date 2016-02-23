@@ -257,7 +257,7 @@ package body Gnat2Why.Annotate is
       Cur : Cursor := Annotations.First;
    begin
       Pragma_Set.Include (Prgma);
-      while Has_Element (Cur) and then First > Element (Cur).First loop
+      while Has_Element (Cur) and then First > Annotations (Cur).First loop
          Next (Cur);
       end loop;
       Annotations.Insert
