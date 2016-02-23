@@ -358,8 +358,8 @@ package body Flow_Error_Messages is
       Img     : constant String := Natural'Image
         (FA.CFG.Vertex_To_Natural (Vertex));
       Tmp     : constant String :=
-        (if Gnat2Why_Args.Flow_Advanced_Debug and then
-           Vertex /= Flow_Graphs.Null_Vertex
+        (if Gnat2Why_Args.Flow_Advanced_Debug
+           and then Vertex /= Flow_Graphs.Null_Vertex
          then Msg & " <" & Img (2 .. Img'Last) & ">"
          else Msg);
       Suppressed : Boolean;
