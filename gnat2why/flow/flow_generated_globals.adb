@@ -2397,6 +2397,9 @@ package body Flow_Generated_Globals is
       declare
          Read_Files : Unbounded_String_Sets.Set;
          Nam        : Unbounded_String;
+
+         Inserted : Boolean;
+         Dummy    : Unbounded_String_Sets.Cursor;
       begin
          for Index in ALIs.First .. ALIs.Last loop
             --  ??? The ALI table seems to incldue some entries twice, but
@@ -2408,8 +2411,12 @@ package body Flow_Generated_Globals is
             Nam := Trim (Source => Nam,
                          Left   => Null_Set,
                          Right  => To_Set (Character'Val (0)));
-            if not Read_Files.Contains (Nam) then
-               Read_Files.Insert (Nam);
+
+            Read_Files.Insert (New_Item => Nam,
+                               Position => Dummy,
+                               Inserted => Inserted);
+
+            if Inserted then
                Load_GG_Info_From_ALI (ALIs.Table (Index).Afile);
             end if;
          end loop;
