@@ -2398,7 +2398,6 @@ package body Flow_Generated_Globals is
          Read_Files : Unbounded_String_Sets.Set;
          Nam        : Unbounded_String;
       begin
-         Read_Files := Unbounded_String_Sets.Empty_Set;
          for Index in ALIs.First .. ALIs.Last loop
             --  ??? The ALI table seems to incldue some entries twice, but
             --  that is because some of them are null-terminated. See
