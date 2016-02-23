@@ -7,9 +7,9 @@ gen.ads:14:21: info: initialization of "Y" proved, in instantiation at main.adb:
 gen.ads:14:21: info: postcondition proved, in instantiation at main.adb:7
 gen.ads:14:21: info: postcondition proved, in instantiation at main.adb:8
 gen2.ads:5:27: info: initialization of "Var" proved, in instantiation at main.adb:9
+gen2.ads:6:16: info: initialization of "Var" proved, in instantiation at main.adb:9
 gen2.ads:6:16: info: postcondition proved, in instantiation at main.adb:9
 main.adb:4:11: warning: subprogram "Main" has no effect
-main.adb:9:31: info: initialization of "Var" proved
 main.adb:11:04: info: assertion proved
 main.adb:12:04: info: assertion proved
 main.adb:15:04: info: assertion proved

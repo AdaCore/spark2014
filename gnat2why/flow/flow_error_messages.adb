@@ -242,8 +242,24 @@ package body Flow_Error_Messages is
                then " (SPARK RM " & SRM_Ref & ")"
                else "");
 
-      Msg3 : constant String     := Compute_Message (Msg2, N, F1, F2, F3);
-      Slc  : constant Source_Ptr := Compute_Sloc (N);
+      Attach_Node : constant Node_Id :=
+        (if Instantiation_Location (Sloc (Original_Node (N))) = No_Location
+         then N
+         else Original_Node (N));
+      --  Node where the message is attached. For nodes coming from inlining
+      --  for proof and instantiations of generic units their Slocs is set to
+      --  the point of inlining/instantiation. We detect such nodes and attach
+      --  the message to the non-inlined/non-instantiated location, which is
+      --  kept in Original_Node.
+      --
+      --  Note: we cannot blindly call Original_Node, because for aggregate
+      --  notation (e.g. "Depends => ((Foo, Bar) => null)") it points to
+      --  N_Aggregate whose Sloc is on the opening bracket (this is perhaps an
+      --  artefact from parsing) and not to the component entity.
+
+      Msg3 : constant String     := Compute_Message (Msg2, Attach_Node,
+                                                     F1, F2, F3);
+      Slc  : constant Source_Ptr := Compute_Sloc (Attach_Node);
 
       Msg_Str : constant String :=
         Msg3 &

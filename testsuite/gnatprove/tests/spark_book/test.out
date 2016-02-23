@@ -585,12 +585,13 @@ enum_example.adb:56:04: warning: no Global contract available for "Put"
 enum_example.adb:56:17: info: initialization of "Count" proved
 example.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Example"
 example.adb:10:07: info: initialization of "Changed" proved
+example.adb:13:10: info: initialization of "Value" proved, in call inlined at example.adb:27
+example.adb:14:21: info: initialization of "Value" proved, in call inlined at example.adb:27
 example.adb:14:27: info: overflow check proved, in call inlined at example.adb:27
 example.adb:25:15: warning: assuming "Put_Line" has no effect on global items
 example.adb:25:15: warning: no Global contract available for "Put_Line"
 example.adb:26:23: warning: assuming "Get" has no effect on global items
 example.adb:26:23: warning: no Global contract available for "Get"
-example.adb:27:04: info: initialization of "Value" proved
 example.adb:30:07: info: initialization of "Modified" proved
 example.adb:31:18: warning: assuming "Put_Line" has no effect on global items
 example.adb:31:18: warning: no Global contract available for "Put_Line"
