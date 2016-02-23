@@ -1,0 +1,5 @@
+gen2.ads:4:14: info: initialization of "X" proved, in instantiation at gen1.ads:6, in instantiation at main.adb:5
+gen2.ads:5:17: info: postcondition proved, in instantiation at gen1.ads:6, in instantiation at main.adb:5
+main.adb:5:31: info: initialization of "X" proved
+main.adb:8:04: info: assertion proved
+main.adb:8:19: info: initialization of "X" proved
