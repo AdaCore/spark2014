@@ -1866,33 +1866,20 @@ package body Flow_Error_Messages is
                and then Has_Warnings_Off (N)));
          --  Returns True if N is an entity and Has_Warnings_Off (N)
 
+         function Is_Entity_And_Has_Warnings_Off
+           (F : Flow_Id) return Boolean
+         is
+           ((Present (F)
+               and then F.Kind in Direct_Mapping | Record_Field
+               and then
+                 Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F))));
+
       begin
-         if Is_Entity_And_Has_Warnings_Off (N) then
-            return True;
-         end if;
-
-         if Present (F1)
-           and then F1.Kind in Direct_Mapping | Record_Field
-           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F1))
-         then
-            return True;
-         end if;
-
-         if Present (F2)
-           and then F2.Kind in Direct_Mapping | Record_Field
-           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F2))
-         then
-            return True;
-         end if;
-
-         if Present (F3)
-           and then F3.Kind in Direct_Mapping | Record_Field
-           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F3))
-         then
-            return True;
-         end if;
-
-         return False;
+         --  ??? if Fn is not present, then there is no point to check F(n+1)
+         return Is_Entity_And_Has_Warnings_Off (N)
+           or else Is_Entity_And_Has_Warnings_Off (F1)
+           or else Is_Entity_And_Has_Warnings_Off (F2)
+           or else Is_Entity_And_Has_Warnings_Off (F3);
       end Warning_Disabled_For_Entity;
 
       Suppr_Reason : String_Id := Warnings_Suppressed (Sloc (N));
