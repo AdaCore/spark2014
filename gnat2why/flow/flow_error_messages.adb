@@ -238,8 +238,9 @@ package body Flow_Error_Messages is
       Continuation : Boolean := False)
    is
       Msg2    : constant String :=
-        (if SRM_Ref'Length > 0 then Msg & " (SPARK RM " & SRM_Ref & ")"
-         else Msg);
+        Msg & (if SRM_Ref'Length > 0
+               then " (SPARK RM " & SRM_Ref & ")"
+               else "");
 
       Msg3 : constant String     := Compute_Message (Msg2, N, F1, F2, F3);
       Slc  : constant Source_Ptr := Compute_Sloc (N);
