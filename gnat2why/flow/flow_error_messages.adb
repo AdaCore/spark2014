@@ -1843,7 +1843,8 @@ package body Flow_Error_Messages is
       F1  : Flow_Id := Null_Flow_Id;
       F2  : Flow_Id := Null_Flow_Id;
       F3  : Flow_Id := Null_Flow_Id)
-      return String_Id is
+      return String_Id
+   is
 
       function Warning_Disabled_For_Entity return Boolean;
       --  Returns True if either of N, F1, F2 correspond to an entity that
@@ -1883,6 +1884,8 @@ package body Flow_Error_Messages is
       end Warning_Disabled_For_Entity;
 
       Suppr_Reason : String_Id := Warnings_Suppressed (Sloc (N));
+
+   --  Start of processing for Warning_Is_Suppressed
 
    begin
       if Suppr_Reason = No_String then
