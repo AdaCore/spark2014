@@ -354,7 +354,6 @@ package body Flow_Error_Messages is
       Vertex       : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
       Continuation : Boolean               := False)
    is
-      E       : Entity_Id;
       Img     : constant String := Natural'Image
         (FA.CFG.Vertex_To_Natural (Vertex));
       Tmp     : constant String :=
@@ -363,17 +362,13 @@ package body Flow_Error_Messages is
          then Msg & " <" & Img (2 .. Img'Last) & ">"
          else Msg);
       Suppressed : Boolean;
-   begin
-      case FA.Kind is
-         when Kind_Subprogram |
-              Kind_Package    |
-              Kind_Task       |
-              Kind_Entry      =>
-            E := FA.Analyzed_Entity;
-         when Kind_Package_Body =>
-            E := Spec_Entity (FA.Analyzed_Entity);
-      end case;
 
+      E : constant Entity_Id :=
+        (if FA.Kind = Kind_Package_Body
+         then Spec_Entity (FA.Analyzed_Entity)
+         else FA.Analyzed_Entity);
+
+   begin
       Error_Msg_Flow (E            => E,
                       Msg          => Tmp,
                       Severity     => Severity,
