@@ -185,11 +185,11 @@ package body Flow_Error_Messages is
          begin
             loop
                exit when Instantiation_Location (Tmp) = No_Location;
-               if Comes_From_Inlined_Body (Tmp) then
-                  Context := To_Unbounded_String (", in call inlined at ");
-               else
-                  Context := To_Unbounded_String (", in instantiation at ");
-               end if;
+
+               Context :=
+                 To_Unbounded_String (if Comes_From_Inlined_Body (Tmp)
+                                      then ", in call inlined at "
+                                      else ", in instantiation at ");
 
                Tmp := Instantiation_Location (Tmp);
                File := To_Unbounded_String (File_Name (Tmp));
