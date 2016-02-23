@@ -59,36 +59,36 @@ package body Gnat2Why.Annotate is
 
    Annotations : Annot_Range_Vectors.Vector :=
      Annot_Range_Vectors.Empty_Vector;
-   --  a sorted vector of ranges
+   --  A sorted vector of ranges
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
       Pattern, Reason : String_Id;
       Range_Node      : Node_Id);
-   --  insert the node range into the sorted vector of node ranges
+   --  Insert the node range into the sorted vector of node ranges
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
       Pattern, Reason : String_Id;
       List            : List_Id);
-   --  same as above, but compute the node range from a list of nodes
+   --  Same as above, but compute the node range from a list of nodes
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
       Pattern, Reason : String_Id;
       First, Last     : Source_Ptr);
-   --  same as above, but take the node range in argument
+   --  Same as above, but take the node range in argument
 
    procedure Insert_With_Next
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
       Pattern, Reason : String_Id;
       First_Node      : Node_Id);
-   --  same as above, but also consider all nodes "next" after First_Node,
-   --  until (and excluding) a node which comes from source
+   --  Same as above, but also consider all nodes "next" after First_Node,
+   --  until (and excluding) a node which comes from source.
 
    procedure Syntax_Check_Pragma_Annotate_Gnatprove
      (Node     : Node_Id;
@@ -96,7 +96,7 @@ package body Gnat2Why.Annotate is
       Kind     : out Annotate_Kind;
       Pattern  : out String_Id;
       Reason   : out String_Id);
-   --  check validity of the pragma Annotate (Gnatprove, ...), and fill in the
+   --  Check validity of the pragma Annotate (Gnatprove, ...), and fill in the
    --  kind, pattern and reason of the pragma. The boolean Ok is always set,
    --  the others are only set if Ok is True. Ok is False if some syntax error
    --  has been detected, and Check_Pragma_Annotate_Gnatprove reports this
