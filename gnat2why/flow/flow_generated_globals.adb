@@ -2395,11 +2395,11 @@ package body Flow_Generated_Globals is
 
       --  Go through all ALI files and populate the Subprogram_Info_List.
       declare
-         Read_Files : Unbounded_String_Sets.Set;
+         Read_Files : String_Sets.Set;
          Nam        : Unbounded_String;
 
          Inserted : Boolean;
-         Dummy    : Unbounded_String_Sets.Cursor;
+         Dummy    : String_Sets.Cursor;
       begin
          for Index in ALIs.First .. ALIs.Last loop
             --  ??? The ALI table seems to incldue some entries twice, but
@@ -2412,7 +2412,7 @@ package body Flow_Generated_Globals is
                          Left   => Null_Set,
                          Right  => To_Set (Character'Val (0)));
 
-            Read_Files.Insert (New_Item => Nam,
+            Read_Files.Insert (New_Item => To_String (Nam),
                                Position => Dummy,
                                Inserted => Inserted);
 

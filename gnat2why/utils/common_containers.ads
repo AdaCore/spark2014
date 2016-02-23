@@ -26,10 +26,10 @@ with Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
+with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
-with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
-with Ada.Strings.Unbounded.Hash;
+with Ada.Strings.Hash;
 with Atree;                              use Atree;
 with Einfo;                              use Einfo;
 with Hashing;                            use Hashing;
@@ -115,11 +115,11 @@ package Common_Containers is
    package Name_Id_Sets is new Ada.Containers.Ordered_Sets
      (Element_Type => Name_Id);
 
-   package Unbounded_String_Sets is new Ada.Containers.Hashed_Sets
-     (Element_Type        => Unbounded_String,
-      Hash                => Ada.Strings.Unbounded.Hash,
-      Equivalent_Elements => Ada.Strings.Unbounded."=",
-      "="                 => Ada.Strings.Unbounded."=");
+   package String_Sets is new Ada.Containers.Indefinite_Hashed_Sets
+     (Element_Type        => String,
+      Hash                => Ada.Strings.Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
 
    function To_Name_Set (S : Node_Sets.Set) return Name_Sets.Set;
    --  Takes a set of Node_Ids and returns a set of Entity_Names.

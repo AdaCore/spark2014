@@ -49,7 +49,7 @@ with Stringt;                    use Stringt;
 
 package body Flow_Error_Messages is
 
-   Flow_Msgs_Set : Unbounded_String_Sets.Set;
+   Flow_Msgs_Set : String_Sets.Set;
    --  Container with flow-related messages; used to prevent duplicate messages
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
@@ -244,10 +244,10 @@ package body Flow_Error_Messages is
       Msg3 : constant String     := Compute_Message (Msg2, N, F1, F2, F3);
       Slc  : constant Source_Ptr := Compute_Sloc (N);
 
-      Unb_Msg : constant Unbounded_String :=
-        To_Unbounded_String (Msg3 &
-                             Source_Ptr'Image (Slc) &
-                             Integer'Image (Msg_Severity'Pos (Severity)));
+      Msg_Str : constant String :=
+        Msg3 &
+        Source_Ptr'Image (Slc) &
+        Integer'Image (Msg_Severity'Pos (Severity));
 
       Suppr  : String_Id  := No_String;
       Msg_Id : Message_Id := No_Message_Id;
@@ -273,7 +273,7 @@ package body Flow_Error_Messages is
                      To_String (Gnat2Why_Args.Limit_Line);
       end Is_Specified_Line;
 
-      Dummy    : Unbounded_String_Sets.Cursor;
+      Dummy    : String_Sets.Cursor;
       Inserted : Boolean;
 
    --  Start of processing for Error_Msg_Flow
@@ -282,7 +282,7 @@ package body Flow_Error_Messages is
       --  If the message we are about to emit has already been emitted
       --  in the past then do nothing.
 
-      Flow_Msgs_Set.Insert (New_Item => Unb_Msg,
+      Flow_Msgs_Set.Insert (New_Item => Msg_Str,
                             Position => Dummy,
                             Inserted => Inserted);
 

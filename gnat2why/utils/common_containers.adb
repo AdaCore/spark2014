@@ -22,7 +22,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Hash;
+with Ada.Strings.Unbounded;
 with Ada.Unchecked_Deallocation;
 with Sem_Util;                   use Sem_Util;
 
