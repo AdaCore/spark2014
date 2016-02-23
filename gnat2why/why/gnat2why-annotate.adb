@@ -117,20 +117,20 @@ package body Gnat2Why.Annotate is
    begin
       Found := False;
 
-      --  this is a simple linear search in a sorted list, the only subtle
+      --  This is a simple linear search in a sorted list, the only subtle
       --  thing is that several entries may match, or entries may include
       --  other entries.
 
       for E : Annotated_Range of Annotations loop
 
-         --  if the current annotation_range starts already after the one we
-         --  look for, then we can stop
+         --  If the current Annotation_Range starts already after the one we
+         --  look for, then we can stop.
 
          if Node_Slc < E.First then
             return;
 
-         --  this is the case where the ranges match, but we have to check
-         --  whether the pattern matches, too
+         --  This is the case where the ranges match, but we have to check
+         --  whether the pattern matches, too.
 
          elsif Node_Slc <= E.Last
            and then Match (String_Value (E.Pattern), Msg)
@@ -138,13 +138,13 @@ package body Gnat2Why.Annotate is
             Info := E;
             Found := True;
 
-            --  deal with useless pragma Annotate
-            --  Check = False means a proved message
+            --  Deal with useless pragma Annotate; Check = False means a proved
+            --  message.
 
             if not Check then
 
-               --  if this is the first check which corresponds to this pragma,
-               --  it possibly only corresponds to proved checks
+               --  If this is the first check which corresponds to this pragma,
+               --  it possibly only corresponds to proved checks.
 
                if Pragma_Set.Contains (Info.Prgma) then
                   Proved_Pragma.Include (Info.Prgma);
@@ -154,18 +154,18 @@ package body Gnat2Why.Annotate is
 
             else
 
-               --  a real check means the pragma is useful
+               --  A real check means the pragma is useful
 
                Proved_Pragma.Exclude (Info.Prgma);
             end if;
 
-            --  in all cases we have now encountered this pragma and can remove
-            --  it from pragma set
+            --  In all cases we have now encountered this pragma and can remove
+            --  it from pragma set.
 
             Pragma_Set.Exclude (Info.Prgma);
             return;
 
-         --  there is nothing to do in this case, but there may be other ranges
+         --  There is nothing to do in this case, but there may be other ranges
          --  later which may still be interesting.
 
          else
@@ -181,16 +181,15 @@ package body Gnat2Why.Annotate is
    procedure Generate_Useless_Pragma_Annotate_Warnings is
    begin
 
-         --  If the analysis is requested for a specific subprogram/task,
-         --  we do not issue this warning, because it's likely to be a false
-         --  positive.
+      --  If the analysis is requested for a specific subprogram/task, we do
+      --  not issue this warning, because it's likely to be a false positive.
 
-         if Gnat2Why_Args.Limit_Subp /= Null_Unbounded_String then
-            return;
-         end if;
+      if Gnat2Why_Args.Limit_Subp /= Null_Unbounded_String then
+         return;
+      end if;
 
-      --  we do not issue any warnings on nodes which stem from inlining or
-      --  instantiation
+      --  We do not issue any warnings on nodes which stem from inlining or
+      --  instantiation.
 
       for Prag of Pragma_Set loop
          if Instantiation_Location (Sloc (Prag)) = No_Location then
@@ -214,8 +213,8 @@ package body Gnat2Why.Annotate is
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
       Pattern, Reason : String_Id;
-      Range_Node      : Node_Id) is
-
+      Range_Node      : Node_Id)
+   is
       First_Sloc, Last_Sloc : Source_Ptr;
    begin
 
@@ -253,7 +252,6 @@ package body Gnat2Why.Annotate is
       Pattern, Reason : String_Id;
       First, Last     : Source_Ptr)
    is
-
       use Annot_Range_Vectors;
 
       Cur : Cursor := Annotations.First;
@@ -359,7 +357,8 @@ package body Gnat2Why.Annotate is
       Ok       : out Boolean;
       Kind     : out Annotate_Kind;
       Pattern  : out String_Id;
-      Reason   : out String_Id) is
+      Reason   : out String_Id)
+   is
       Arg1, Arg2, Arg3, Arg4 : Node_Id;
       Arg2_Exp, Arg3_Exp, Arg4_Exp : Node_Id;
 
