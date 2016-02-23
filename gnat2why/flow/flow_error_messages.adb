@@ -264,14 +264,19 @@ package body Flow_Error_Messages is
       -----------------------
 
       function Is_Specified_Line return Boolean is
-         Loc  : constant Source_Ptr := Translate_Location (Sloc (N));
-         File : constant String := File_Name (Loc);
-         Line : constant Physical_Line_Number :=
-           Get_Physical_Line_Number (Loc);
       begin
-         return Gnat2Why_Args.Limit_Line = Null_Unbounded_String
-           or else File & ":" & Image (Integer (Line), 1) =
-                     To_String (Gnat2Why_Args.Limit_Line);
+         if Gnat2Why_Args.Limit_Line = Null_Unbounded_String then
+            return True;
+         else
+            declare
+               File : constant String := File_Name (Slc);
+               Line : constant Physical_Line_Number :=
+                 Get_Physical_Line_Number (Slc);
+            begin
+               return To_String (Gnat2Why_Args.Limit_Line) =
+                 File & ":" & Image (Value => Positive (Line), Min_Width => 1);
+            end;
+         end if;
       end Is_Specified_Line;
 
       Dummy    : String_Sets.Cursor;

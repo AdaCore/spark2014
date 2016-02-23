@@ -1,0 +1,1 @@
+main.adb:10:30: info: initialization of "Dummy" proved, in instantiation at main.adb:23
