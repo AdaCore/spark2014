@@ -931,11 +931,6 @@ package body Flow_Error_Messages is
                     new Ada.Containers.Doubly_Linked_Lists
                       (Element_Type => Name_And_Value);
 
-                  package Attributes is
-                    new Ada.Containers.Indefinite_Ordered_Maps
-                      (Key_Type     => Unbounded_String,
-                       Element_Type => Unbounded_String);
-
                   function Get_CNT_Element_Value_And_Attributes
                     (CNT_Element : CNT_Element_Ptr;
                      Prefix : Unbounded_String;
