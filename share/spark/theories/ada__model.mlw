@@ -789,7 +789,7 @@ theory Finite_Float_Literal
   (* don't use BV32/64 but just map it in the driver to not have the
      whole theory systematically ? *)
 
-  function from_bv int : t
+  function from_binary int : t
   function to_real t  : real
 
   predicate is_finite t
@@ -802,7 +802,7 @@ theory Finite_Float_Literal
 
   axiom l_real : to_real l = decimal_rep
 
-  axiom l_bin : l = from_bv binary_rep
+  axiom l_bin : l = from_binary binary_rep
 
   axiom l_is_finite : is_finite l
 end
@@ -813,7 +813,8 @@ theory Finite_Float32_Literal
   clone export Finite_Float_Literal with
     type t = Float32.t,
     predicate is_finite = Float32.is_finite,
-    function to_real = Float32.to_real
+    function to_real = Float32.to_real,
+    function from_binary = Float32.from_binary
 end
 
 theory Finite_Float64_Literal
@@ -822,7 +823,8 @@ theory Finite_Float64_Literal
   clone export Finite_Float_Literal with
     type t = Float64.t,
     predicate is_finite = Float64.is_finite,
-    function to_real = Float64.to_real
+    function to_real = Float64.to_real,
+    function from_binary = Float64.from_binary
 end
 
 (* The following modules are templates for unconstrained and constrained array
