@@ -190,9 +190,9 @@ package VC_Kinds is
    --  checked expression. For example, this is not true for VC_Precondition,
    --  which should be positioned on the location of the call.
    function Locate_On_First_Token (V : VC_Kind) return Boolean is
-     (case V is when VC_RTE_Kind    => False,
-                when VC_Assert_Kind => V /= VC_Precondition,
-                when VC_LSP_Kind    => True);
+     ((case V is when VC_RTE_Kind    => False,
+                 when VC_Assert_Kind => V /= VC_Precondition,
+                 when VC_LSP_Kind    => True));
 
    SPARK_Suffix : constant String := "spark";
    Flow_Suffix  : constant String := "flow";
