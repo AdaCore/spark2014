@@ -2625,9 +2625,9 @@ package body Why.Gen.Expr is
          begin
             Append (Buf, File);
             Append (Buf, ':');
-            Append (Buf, Image (Integer (Line), 1));
+            Append (Buf, Image (Positive (Line), 1));
             Append (Buf, ':');
-            Append (Buf, Image (Integer (Column), 1));
+            Append (Buf, Image (Positive (Column), 1));
             exit when Instantiation_Location (Slc) = No_Location;
             Append (Buf, ':');
             if Comes_From_Inlined_Body (Slc) then
