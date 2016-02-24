@@ -2675,9 +2675,12 @@ package body Why.Gen.Expr is
       while Present (Node_It) loop
          case Nkind (Node_It) is
 
-         when N_Subprogram_Body | N_Subprogram_Specification
-            | N_Expression_Function | N_Package_Body
-            | N_Package_Specification | N_Generic_Subprogram_Declaration =>
+         when N_Subprogram_Body                |
+              N_Subprogram_Specification       |
+              N_Expression_Function            |
+              N_Package_Body                   |
+              N_Package_Specification          |
+              N_Generic_Subprogram_Declaration =>
             exit;
 
          when N_Loop_Statement =>
@@ -2686,8 +2689,8 @@ package body Why.Gen.Expr is
             begin
                if Present (It_Scheme) then
                   case Nkind (It_Scheme) is
-                  when N_Loop_Parameter_Specification
-                     | N_Iterator_Specification =>
+                  when N_Loop_Parameter_Specification |
+                       N_Iterator_Specification       =>
                      --  for
                      Buf := "for" & Label_Append (Buf);
                   when others =>
@@ -2834,8 +2837,10 @@ package body Why.Gen.Expr is
             Buf := Get_Name_String (Chars (Subtype_Mark (Node_It)))
               & "_ind" & Label_Append (Buf);
 
-         when N_Formal_Type_Declaration | N_Implicit_Label_Declaration
-            | N_Object_Declaration | N_Formal_Object_Declaration =>
+         when N_Formal_Type_Declaration    |
+              N_Implicit_Label_Declaration |
+              N_Object_Declaration         |
+              N_Formal_Object_Declaration  =>
             declare
                I_Name : constant Name_Id := Chars (Defining_Identifier
                                                    (Node_It));
@@ -2847,9 +2852,11 @@ package body Why.Gen.Expr is
                Buf := Name_Str & "decl" & Label_Append (Buf);
             end;
 
-         when N_Full_Type_Declaration | N_Incomplete_Type_Declaration
-            | N_Protected_Type_Declaration | N_Private_Type_Declaration
-            | N_Subtype_Declaration =>
+         when N_Full_Type_Declaration       |
+              N_Incomplete_Type_Declaration |
+              N_Protected_Type_Declaration  |
+              N_Private_Type_Declaration    |
+              N_Subtype_Declaration         =>
             Buf := Get_Name_String (Chars (Defining_Identifier (Node_It)))
               & "_def" & Label_Append (Buf);
 
