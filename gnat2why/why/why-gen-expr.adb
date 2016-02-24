@@ -2936,7 +2936,11 @@ package body Why.Gen.Expr is
    -------------------------
 
    function New_Comment_Label
-     (Node : Node_Id; Loc : Name_Id; Reason : VC_Kind) return Name_Id is
+     (Node   : Node_Id;
+      Loc    : Name_Id;
+      Reason : VC_Kind)
+      return Name_Id
+   is
       Prefix : constant String := "comment:";
       Str_Loc : constant String := Get_Name_String (Loc);
 
@@ -2950,6 +2954,10 @@ package body Why.Gen.Expr is
       Column : Natural;
 
       procedure Read_Loc_Label (Line : out Natural; Column : out Natural);
+
+      --------------------
+      -- Read_Loc_Label --
+      --------------------
 
       procedure Read_Loc_Label (Line : out Natural; Column : out Natural) is
          Delim_Start : Natural :=
@@ -2968,6 +2976,8 @@ package body Why.Gen.Expr is
 
          Column := Natural'Value (Str_Loc (Delim_Start .. Delim_End));
       end Read_Loc_Label;
+
+   --  Start of processing for New_Comment_Label
 
    begin
       Read_Loc_Label (Line, Column);
