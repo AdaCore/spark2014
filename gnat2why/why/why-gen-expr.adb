@@ -2630,11 +2630,9 @@ package body Why.Gen.Expr is
             Append (Buf, Image (Positive (Column), 1));
             exit when Instantiation_Location (Slc) = No_Location;
             Append (Buf, ':');
-            if Comes_From_Inlined_Body (Slc) then
-               Append (Buf, "inlined");
-            else
-               Append (Buf, "instantiated");
-            end if;
+            Append (Buf, (if Comes_From_Inlined_Body (Slc)
+                          then "inlined"
+                          else "instantiated"));
             Append (Buf, ':');
             Slc := Instantiation_Location (Slc);
          end;
