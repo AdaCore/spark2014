@@ -3342,7 +3342,7 @@ package body Why.Gen.Expr is
       --
       --  "GP_Reason:VC_Kind"     - the kind of the VC
       --  "GP_Sloc:file:line:col" - the sloc of the construct that triggers the
-      --  VC
+      --   VC
       --  "keep_on_simp"          - tag that disallows simplifying this VC away
       --  "model_vc"              - identifies the construct that triggers the
       --   VC and it is not postcondition (for generating counterexamples)
