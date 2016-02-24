@@ -2623,17 +2623,13 @@ package body Why.Gen.Expr is
               Get_Physical_Line_Number (Slc);
             Column : constant Column_Number := Get_Column_Number (Slc);
          begin
-            Append (Buf, File);
-            Append (Buf, ':');
-            Append (Buf, Image (Positive (Line), 1));
-            Append (Buf, ':');
-            Append (Buf, Image (Positive (Column), 1));
+            Append (Buf, File & ':' &
+                         Image (Positive (Line), 1) & ':' &
+                         Image (Positive (Column), 1));
             exit when Instantiation_Location (Slc) = No_Location;
-            Append (Buf, ':');
             Append (Buf, (if Comes_From_Inlined_Body (Slc)
-                          then "inlined"
-                          else "instantiated"));
-            Append (Buf, ':');
+                          then ":inlined:"
+                          else ":instantiated:"));
             Slc := Instantiation_Location (Slc);
          end;
       end loop;
