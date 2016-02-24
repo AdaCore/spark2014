@@ -1565,6 +1565,8 @@ package body SPARK_Util is
       --  N_Unchecked_Type_Conversion coming from source are handled using
       --  their original node.
 
+   --  Start of processing for Get_Formal_From_Actual
+
    begin
       if Nkind (Par) = N_Parameter_Association then
          Find_Expr_In_Call_Args (Parent (Par));
@@ -2087,7 +2089,9 @@ package body SPARK_Util is
          ----------------
 
          function Scope_Name (Nth : Scope_Index) return Name_Id is
-            (Chars (Scopes (Scope_Id + Nth)));
+           (Chars (Scopes (Scope_Id + Nth)));
+
+      --  Start of processing for Is_Predefined_Potentially_Blocking
 
       begin
          --  Start from the called subprogram
