@@ -2592,9 +2592,9 @@ package body Why.Gen.Expr is
      (Ada_Node : Node_Id := Empty;
       Value    : Uint;
       Typ      : W_Type_Id) return W_Expr_Id is
-     (if Why_Type_Is_BitVector (Typ)
-      then New_Modular_Constant (Ada_Node, Value, Typ)
-      else New_Integer_Constant (Ada_Node, Value));
+     ((if Why_Type_Is_BitVector (Typ)
+       then New_Modular_Constant (Ada_Node, Value, Typ)
+       else New_Integer_Constant (Ada_Node, Value)));
 
    --------------------
    -- New_Havoc_Call --
@@ -2660,10 +2660,13 @@ package body Why.Gen.Expr is
 
    function New_Shape_Label (Node : Node_Id) return Name_Id is
 
-      function Label_Append (Buf : Unbounded_String) return
-        Unbounded_String is
-          (if Buf /= Null_Unbounded_String then "__" & Buf
-           else Null_Unbounded_String);
+      function Label_Append
+        (Buf : Unbounded_String)
+         return Unbounded_String
+      is
+        ((if Buf = Null_Unbounded_String
+          then Null_Unbounded_String
+          else "__" & Buf));
 
       Buf     : Unbounded_String := Null_Unbounded_String;
       Node_It : Node_Id := Node;
