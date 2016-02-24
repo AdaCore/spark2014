@@ -15,10 +15,8 @@
 *.smf
 *.rep
 *.pyc
-sparkified
 GNAT-*
 gnat_src
-stdlib_tmp
 install
 gnat2why/obj
 benchmark_script/data
