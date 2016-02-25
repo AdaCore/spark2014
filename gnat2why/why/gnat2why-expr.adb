@@ -13666,7 +13666,8 @@ package body Gnat2Why.Expr is
       Element_Type => W_Identifier_Id,
       "<"          => UR_Lt);
 
-   Float_Literals : Finite_Float_Literal_Map.Map;
+   Float32_Literals : Finite_Float_Literal_Map.Map;
+   Float64_Literals : Finite_Float_Literal_Map.Map;
 
    function Transform_Float_Literal (E  : Entity_Id;
                                      Ty : W_Type_Id) return W_Identifier_Id
@@ -13820,6 +13821,12 @@ package body Gnat2Why.Expr is
       end Declare_Literal_Theory;
 
       Literal_Id : W_Identifier_Id;
+
+      Float_Literals : Finite_Float_Literal_Map.Map :=
+        (if Ty = EW_Float_32_Type then
+            Float32_Literals
+         else
+            Float64_Literals);
 
       C : constant Finite_Float_Literal_Map.Cursor :=
         Float_Literals.Find (Key => Realval (E));
