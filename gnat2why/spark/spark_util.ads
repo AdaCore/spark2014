@@ -1124,16 +1124,6 @@ package SPARK_Util is
    --  @return the file name of the source pointer (will return the file of the
    --    generic in case of instances)
 
-   function Translate_Location (Loc : Source_Ptr) return Source_Ptr is
-     (if Instantiation_Location (Loc) /= No_Location then
-         Instantiation_Location (Loc)
-      else
-         Loc);
-   --  ??? What is this function used for? It's strange to go only one level up
-   --  @param Loc any source pointer
-   --  @return if the source location has been instantiated, return the
-   --    instance location, otherwise Loc itself
-
    function Has_Only_Nonblocking_Statements (N : Node_Id) return Boolean
      with Pre => Nkind (N) in N_Subprogram_Body | N_Entry_Body;
    --  Check if subprogram body N contains no potentially blocking statements

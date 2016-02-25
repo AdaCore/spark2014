@@ -235,30 +235,30 @@ pid_pack.ads:50:07: info: initialization of "Pid.Out_P" proved, in instantiation
 pid_pack.ads:50:07: info: initialization of "Pid.Prev_Error" proved, in instantiation at controller_pack.ads:16
 pid_pack.ads:50:07: info: initialization of "Pid.Prev_Error" proved, in instantiation at controller_pack.ads:24
 pid_pack.ads:50:07: info: initialization of "Pid.Prev_Error" proved, in instantiation at stabilizer_pack.ads:45
-pid_pack.ads:82:20: info: postcondition proved, in instantiation at controller_pack.ads:16
-pid_pack.ads:82:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:82:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
-pid_pack.ads:92:20: info: postcondition proved, in instantiation at controller_pack.ads:16
-pid_pack.ads:92:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:92:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
-pid_pack.ads:99:20: info: postcondition proved, in instantiation at controller_pack.ads:16
-pid_pack.ads:99:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:99:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
-pid_pack.ads:106:20: info: postcondition proved, in instantiation at controller_pack.ads:16
-pid_pack.ads:106:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:106:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
-pid_pack.ads:113:20: info: postcondition proved, in instantiation at controller_pack.ads:16
-pid_pack.ads:113:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:113:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
-pid_pack.ads:120:20: info: postcondition proved, in instantiation at controller_pack.ads:16
-pid_pack.ads:120:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:120:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
-pid_pack.ads:127:20: info: postcondition proved, in instantiation at controller_pack.ads:16
-pid_pack.ads:127:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:127:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
-pid_pack.ads:135:20: info: postcondition proved, in instantiation at controller_pack.ads:16
-pid_pack.ads:135:20: info: postcondition proved, in instantiation at controller_pack.ads:24
-pid_pack.ads:135:20: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
+pid_pack.ads:82:16: info: postcondition proved, in instantiation at controller_pack.ads:16
+pid_pack.ads:82:16: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:82:16: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
+pid_pack.ads:92:16: info: postcondition proved, in instantiation at controller_pack.ads:16
+pid_pack.ads:92:16: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:92:16: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
+pid_pack.ads:99:16: info: postcondition proved, in instantiation at controller_pack.ads:16
+pid_pack.ads:99:16: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:99:16: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
+pid_pack.ads:106:16: info: postcondition proved, in instantiation at controller_pack.ads:16
+pid_pack.ads:106:16: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:106:16: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
+pid_pack.ads:113:16: info: postcondition proved, in instantiation at controller_pack.ads:16
+pid_pack.ads:113:16: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:113:16: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
+pid_pack.ads:120:16: info: postcondition proved, in instantiation at controller_pack.ads:16
+pid_pack.ads:120:16: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:120:16: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
+pid_pack.ads:127:16: info: postcondition proved, in instantiation at controller_pack.ads:16
+pid_pack.ads:127:16: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:127:16: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
+pid_pack.ads:135:16: info: postcondition proved, in instantiation at controller_pack.ads:16
+pid_pack.ads:135:16: info: postcondition proved, in instantiation at controller_pack.ads:24
+pid_pack.ads:135:16: info: postcondition proved, in instantiation at stabilizer_pack.ads:45
 safety_pack.ads:16:16: info: overflow check proved
 safety_pack.ads:18:16: info: overflow check proved
 safety_pack.ads:56:21: info: range check proved

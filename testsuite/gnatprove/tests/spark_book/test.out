@@ -527,7 +527,7 @@ double_list.adb:67:25: info: range check proved, in instantiation at list_handle
 double_list.ads:9:05: info: initial condition proved, in instantiation at list_handler.adb:8
 double_list.ads:9:26: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
 double_list.ads:19:19: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.ads:19:24: info: postcondition proved, in instantiation at list_handler.adb:8
+double_list.ads:19:19: info: postcondition proved, in instantiation at list_handler.adb:8
 double_list.ads:23:29: info: initialization of "Status" proved, in instantiation at list_handler.adb:8
 elaboration_demo.adb:2:29: warning: unused initial value of "Size"
 elaboration_demo.adb:3:29: high: "Count" is not initialized in "Elaboration_Demo"
@@ -585,12 +585,13 @@ enum_example.adb:56:04: warning: no Global contract available for "Put"
 enum_example.adb:56:17: info: initialization of "Count" proved
 example.adb:3:11: medium: "Default_Base" might not be initialized after elaboration of main program "Example"
 example.adb:10:07: info: initialization of "Changed" proved
+example.adb:13:10: info: initialization of "Value" proved, in call inlined at example.adb:27
+example.adb:14:21: info: initialization of "Value" proved, in call inlined at example.adb:27
 example.adb:14:27: info: overflow check proved, in call inlined at example.adb:27
 example.adb:25:15: warning: assuming "Put_Line" has no effect on global items
 example.adb:25:15: warning: no Global contract available for "Put_Line"
 example.adb:26:23: warning: assuming "Get" has no effect on global items
 example.adb:26:23: warning: no Global contract available for "Get"
-example.adb:27:04: info: initialization of "Value" proved
 example.adb:30:07: info: initialization of "Modified" proved
 example.adb:31:18: warning: assuming "Put_Line" has no effect on global items
 example.adb:31:18: warning: no Global contract available for "Put_Line"
@@ -711,8 +712,8 @@ generic_searchers.ads:12:29: info: initialization of "Result" proved, in instant
 generic_searchers.ads:12:29: info: initialization of "Result" proved, in instantiation at search_demo.adb:12
 generic_searchers.ads:15:74: info: index check proved, in instantiation at prime_search.adb:15
 generic_searchers.ads:15:74: info: index check proved, in instantiation at search_demo.adb:12
-generic_searchers.ads:16:17: info: postcondition proved, in instantiation at prime_search.adb:15
-generic_searchers.ads:16:17: info: postcondition proved, in instantiation at search_demo.adb:12
+generic_searchers.ads:16:05: info: postcondition proved, in instantiation at prime_search.adb:15
+generic_searchers.ads:16:05: info: postcondition proved, in instantiation at search_demo.adb:12
 generic_searchers.ads:16:20: info: initialization of "Found" proved, in instantiation at prime_search.adb:15
 generic_searchers.ads:16:20: info: initialization of "Found" proved, in instantiation at search_demo.adb:12
 generic_searchers.ads:17:41: info: initialization of "Result" proved, in instantiation at prime_search.adb:15

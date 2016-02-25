@@ -184,6 +184,7 @@ package body Gnat2Why.Error_Messages is
             return Make (File_Name (Slc),
                          Line_Number (Get_Physical_Line_Number (Slc)),
                          SA_Messages.Column_Number (Get_Column_Number (Slc)),
+                         Iteration_Id'(Kind => None),
                          Make_CodePeer_Loc (Instantiation_Location (Sloc)));
          end if;
       end Make_CodePeer_Loc;

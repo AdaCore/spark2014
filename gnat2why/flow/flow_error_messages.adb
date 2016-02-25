@@ -49,13 +49,13 @@ with Stringt;                    use Stringt;
 
 package body Flow_Error_Messages is
 
-   Flow_Msgs_Set : Unbounded_String_Sets.Set;
+   Flow_Msgs_Set : String_Sets.Set;
    --  Container with flow-related messages; used to prevent duplicate messages
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
    --  Transform the msg kind into a string, for the JSON output.
 
-   type Message_Id is new Integer;
+   type Message_Id is new Integer range -1 .. Integer'Last;
    --  type used to identify a message issued by gnat2why
 
    function Compute_Message
@@ -157,10 +157,10 @@ package body Flow_Error_Messages is
       F1   : Flow_Id := Null_Flow_Id;
       F2   : Flow_Id := Null_Flow_Id;
       F3   : Flow_Id := Null_Flow_Id)
-      return String is
-      M : Unbounded_String := Null_Unbounded_String;
+      return String
+   is
+      M : Unbounded_String := To_Unbounded_String (Msg);
    begin
-      Append (M, Msg);
       if Present (F1) then
          M := Substitute (M, F1, Sloc (N));
          if Present (F2) then
@@ -185,11 +185,11 @@ package body Flow_Error_Messages is
          begin
             loop
                exit when Instantiation_Location (Tmp) = No_Location;
-               if Comes_From_Inlined_Body (Tmp) then
-                  Context := To_Unbounded_String (", in call inlined at ");
-               else
-                  Context := To_Unbounded_String (", in instantiation at ");
-               end if;
+
+               Context :=
+                 To_Unbounded_String (if Comes_From_Inlined_Body (Tmp)
+                                      then ", in call inlined at "
+                                      else ", in instantiation at ");
 
                Tmp := Instantiation_Location (Tmp);
                File := To_Unbounded_String (File_Name (Tmp));
@@ -206,18 +206,15 @@ package body Flow_Error_Messages is
      (N           : Node_Id;
       Place_First : Boolean := False) return Source_Ptr
    is
-      Slc : Source_Ptr;
+      Slc : Source_Ptr := (if Place_First
+                           then First_Sloc (N)
+                           else Sloc (N));
    begin
-      if Instantiation_Location (Sloc (N)) /= No_Location then
+      if Instantiation_Location (Slc) /= No_Location then
          --  If we are dealing with an instantiation of a generic we change
          --  the message to point at the implementation of the generic and we
          --  mention where the generic is instantiated.
-         Slc := Original_Location (Sloc (N));
-
-      elsif Place_First then
-         Slc := First_Sloc (N);
-      else
-         Slc := Sloc (N);
+         Slc := Original_Location (Slc);
       end if;
       return Slc;
    end Compute_Sloc;
@@ -241,16 +238,36 @@ package body Flow_Error_Messages is
       Continuation : Boolean := False)
    is
       Msg2    : constant String :=
-        (if SRM_Ref'Length > 0 then Msg & " (SPARK RM " & SRM_Ref & ")"
-         else Msg);
-      Msg3    : constant String := Compute_Message (Msg2, N, F1, F2, F3);
-      Suppr   : String_Id := No_String;
-      Slc     : constant Source_Ptr := Compute_Sloc (N);
-      Msg_Id  : Message_Id := No_Message_Id;
-      Unb_Msg : constant Unbounded_String :=
-        To_Unbounded_String (Msg3 &
-                             Source_Ptr'Image (Slc) &
-                             Integer'Image (Msg_Severity'Pos (Severity)));
+        Msg & (if SRM_Ref'Length > 0
+               then " (SPARK RM " & SRM_Ref & ")"
+               else "");
+
+      Attach_Node : constant Node_Id :=
+        (if Instantiation_Location (Sloc (Original_Node (N))) = No_Location
+         then N
+         else Original_Node (N));
+      --  Node where the message is attached. For nodes coming from inlining
+      --  for proof and instantiations of generic units their Slocs is set to
+      --  the point of inlining/instantiation. We detect such nodes and attach
+      --  the message to the non-inlined/non-instantiated location, which is
+      --  kept in Original_Node.
+      --
+      --  Note: we cannot blindly call Original_Node, because for aggregate
+      --  notation (e.g. "Depends => ((Foo, Bar) => null)") it points to
+      --  N_Aggregate whose Sloc is on the opening bracket (this is perhaps an
+      --  artefact from parsing) and not to the component entity.
+
+      Msg3 : constant String     := Compute_Message (Msg2, Attach_Node,
+                                                     F1, F2, F3);
+      Slc  : constant Source_Ptr := Compute_Sloc (Attach_Node);
+
+      Msg_Str : constant String :=
+        Msg3 &
+        Source_Ptr'Image (Slc) &
+        Integer'Image (Msg_Severity'Pos (Severity));
+
+      Suppr  : String_Id  := No_String;
+      Msg_Id : Message_Id := No_Message_Id;
 
       function Is_Specified_Line return Boolean;
       --  Returns True if command line argument "--limit-line" was not
@@ -263,18 +280,22 @@ package body Flow_Error_Messages is
       -----------------------
 
       function Is_Specified_Line return Boolean is
-         Loc  : constant Source_Ptr :=
-           Translate_Location (Sloc (N));
-         File : constant String := File_Name (Loc);
-         Line : constant Physical_Line_Number :=
-           Get_Physical_Line_Number (Loc);
       begin
-         return Gnat2Why_Args.Limit_Line = Null_Unbounded_String
-           or else File & ":" & Image (Integer (Line), 1) =
-                     To_String (Gnat2Why_Args.Limit_Line);
+         if Gnat2Why_Args.Limit_Line = Null_Unbounded_String then
+            return True;
+         else
+            declare
+               File : constant String := File_Name (Slc);
+               Line : constant Physical_Line_Number :=
+                 Get_Physical_Line_Number (Slc);
+            begin
+               return To_String (Gnat2Why_Args.Limit_Line) =
+                 File & ":" & Image (Value => Positive (Line), Min_Width => 1);
+            end;
+         end if;
       end Is_Specified_Line;
 
-      Dummy    : Unbounded_String_Sets.Cursor;
+      Dummy    : String_Sets.Cursor;
       Inserted : Boolean;
 
    --  Start of processing for Error_Msg_Flow
@@ -283,7 +304,7 @@ package body Flow_Error_Messages is
       --  If the message we are about to emit has already been emitted
       --  in the past then do nothing.
 
-      Flow_Msgs_Set.Insert (New_Item => Unb_Msg,
+      Flow_Msgs_Set.Insert (New_Item => Msg_Str,
                             Position => Dummy,
                             Inserted => Inserted);
 
@@ -355,26 +376,21 @@ package body Flow_Error_Messages is
       Vertex       : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
       Continuation : Boolean               := False)
    is
-      E       : Entity_Id;
       Img     : constant String := Natural'Image
         (FA.CFG.Vertex_To_Natural (Vertex));
       Tmp     : constant String :=
-        (if Gnat2Why_Args.Flow_Advanced_Debug and then
-           Vertex /= Flow_Graphs.Null_Vertex
+        (if Gnat2Why_Args.Flow_Advanced_Debug
+           and then Vertex /= Flow_Graphs.Null_Vertex
          then Msg & " <" & Img (2 .. Img'Last) & ">"
          else Msg);
       Suppressed : Boolean;
-   begin
-      case FA.Kind is
-         when Kind_Subprogram |
-              Kind_Package    |
-              Kind_Task       |
-              Kind_Entry      =>
-            E := FA.Analyzed_Entity;
-         when Kind_Package_Body =>
-            E := Spec_Entity (FA.Analyzed_Entity);
-      end case;
 
+      E : constant Entity_Id :=
+        (if FA.Kind = Kind_Package_Body
+         then Spec_Entity (FA.Analyzed_Entity)
+         else FA.Analyzed_Entity);
+
+   begin
       Error_Msg_Flow (E            => E,
                       Msg          => Tmp,
                       Severity     => Severity,
@@ -932,11 +948,6 @@ package body Flow_Error_Messages is
                     new Ada.Containers.Doubly_Linked_Lists
                       (Element_Type => Name_And_Value);
 
-                  package Attributes is
-                    new Ada.Containers.Indefinite_Ordered_Maps
-                      (Key_Type     => Unbounded_String,
-                       Element_Type => Unbounded_String);
-
                   function Get_CNT_Element_Value_And_Attributes
                     (CNT_Element : CNT_Element_Ptr;
                      Prefix : Unbounded_String;
@@ -1431,9 +1442,9 @@ package body Flow_Error_Messages is
          return Result;
       end Get_Severity;
 
-      Msg2     : constant String :=
-        Compute_Message (Msg, N);
-      Slc      : constant Source_Ptr := Compute_Sloc (N, Place_First);
+      Msg2 : constant String     := Compute_Message (Msg, N);
+      Slc  : constant Source_Ptr := Compute_Sloc (N, Place_First);
+
       Pretty_Cntexmp  : constant JSON_Value :=
         Create_Pretty_Cntexmp (Cntexmp, Slc);
       One_Liner : constant String :=
@@ -1848,7 +1859,8 @@ package body Flow_Error_Messages is
       F1  : Flow_Id := Null_Flow_Id;
       F2  : Flow_Id := Null_Flow_Id;
       F3  : Flow_Id := Null_Flow_Id)
-      return String_Id is
+      return String_Id
+   is
 
       function Warning_Disabled_For_Entity return Boolean;
       --  Returns True if either of N, F1, F2 correspond to an entity that
@@ -1871,36 +1883,25 @@ package body Flow_Error_Messages is
                and then Has_Warnings_Off (N)));
          --  Returns True if N is an entity and Has_Warnings_Off (N)
 
+         function Is_Entity_And_Has_Warnings_Off
+           (F : Flow_Id) return Boolean
+         is
+           ((Present (F)
+               and then F.Kind in Direct_Mapping | Record_Field
+               and then
+                 Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F))));
+
       begin
-         if Is_Entity_And_Has_Warnings_Off (N) then
-            return True;
-         end if;
-
-         if Present (F1)
-           and then F1.Kind in Direct_Mapping | Record_Field
-           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F1))
-         then
-            return True;
-         end if;
-
-         if Present (F2)
-           and then F2.Kind in Direct_Mapping | Record_Field
-           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F2))
-         then
-            return True;
-         end if;
-
-         if Present (F3)
-           and then F3.Kind in Direct_Mapping | Record_Field
-           and then Is_Entity_And_Has_Warnings_Off (Get_Direct_Mapping_Id (F3))
-         then
-            return True;
-         end if;
-
-         return False;
+         --  ??? if Fn is not present, then there is no point to check F(n+1)
+         return Is_Entity_And_Has_Warnings_Off (N)
+           or else Is_Entity_And_Has_Warnings_Off (F1)
+           or else Is_Entity_And_Has_Warnings_Off (F2)
+           or else Is_Entity_And_Has_Warnings_Off (F3);
       end Warning_Disabled_For_Entity;
 
       Suppr_Reason : String_Id := Warnings_Suppressed (Sloc (N));
+
+   --  Start of processing for Warning_Is_Suppressed
 
    begin
       if Suppr_Reason = No_String then

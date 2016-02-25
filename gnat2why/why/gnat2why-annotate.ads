@@ -98,12 +98,12 @@ package Gnat2Why.Annotate is
       Check : Boolean;
       Found : out Boolean;
       Info  : out Annotated_Range);
-   --  for a given node and message string, search if there is a pragma
-   --  Annotate which applies to the message for this node. If so, set Found to
-   --  True and fill in the Info record. Otherwise, Found is set to False and
-   --  Info is uninitialized
+   --  For a given node and a message string, search if there is a pragma
+   --  Annotate that applies to the message for this node. If so, set Found to
+   --  True and fill in the Info record. Otherwise, set Found to False and
+   --  leave Info uninitialized.
 
-   --  This call also marks the corresponding pragma as covering a check.
+   --  This procedure also marks the corresponding pragma as covering a check.
    --  If Check is True, the pragma is marked as covering a failing check,
    --  otherwise it is marked as covering a proved check.
 

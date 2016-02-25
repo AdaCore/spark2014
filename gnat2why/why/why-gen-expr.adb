@@ -2550,19 +2550,13 @@ package body Why.Gen.Expr is
               Get_Physical_Line_Number (Slc);
             Column : constant Column_Number := Get_Column_Number (Slc);
          begin
-            Append (Buf, File);
-            Append (Buf, ':');
-            Append (Buf, Image (Integer (Line), 1));
-            Append (Buf, ':');
-            Append (Buf, Image (Integer (Column), 1));
+            Append (Buf, File & ':' &
+                         Image (Positive (Line), 1) & ':' &
+                         Image (Positive (Column), 1));
             exit when Instantiation_Location (Slc) = No_Location;
-            Append (Buf, ':');
-            if Comes_From_Inlined_Body (Slc) then
-               Append (Buf, "inlined");
-            else
-               Append (Buf, "instantiated");
-            end if;
-            Append (Buf, ':');
+            Append (Buf, (if Comes_From_Inlined_Body (Slc)
+                          then ":inlined:"
+                          else ":instantiated:"));
             Slc := Instantiation_Location (Slc);
          end;
       end loop;
@@ -2587,10 +2581,13 @@ package body Why.Gen.Expr is
 
    function New_Shape_Label (Node : Node_Id) return Name_Id is
 
-      function Label_Append (Buf : Unbounded_String) return
-        Unbounded_String is
-          (if Buf /= Null_Unbounded_String then "__" & Buf
-           else Null_Unbounded_String);
+      function Label_Append
+        (Buf : Unbounded_String)
+         return Unbounded_String
+      is
+        (if Buf = Null_Unbounded_String
+         then Null_Unbounded_String
+         else "__" & Buf);
 
       Buf     : Unbounded_String := Null_Unbounded_String;
       Node_It : Node_Id := Node;
@@ -2599,9 +2596,12 @@ package body Why.Gen.Expr is
       while Present (Node_It) loop
          case Nkind (Node_It) is
 
-         when N_Subprogram_Body | N_Subprogram_Specification
-            | N_Expression_Function | N_Package_Body
-            | N_Package_Specification | N_Generic_Subprogram_Declaration =>
+         when N_Subprogram_Body                |
+              N_Subprogram_Specification       |
+              N_Expression_Function            |
+              N_Package_Body                   |
+              N_Package_Specification          |
+              N_Generic_Subprogram_Declaration =>
             exit;
 
          when N_Loop_Statement =>
@@ -2610,8 +2610,8 @@ package body Why.Gen.Expr is
             begin
                if Present (It_Scheme) then
                   case Nkind (It_Scheme) is
-                  when N_Loop_Parameter_Specification
-                     | N_Iterator_Specification =>
+                  when N_Loop_Parameter_Specification |
+                       N_Iterator_Specification       =>
                      --  for
                      Buf := "for" & Label_Append (Buf);
                   when others =>
@@ -2758,8 +2758,10 @@ package body Why.Gen.Expr is
             Buf := Get_Name_String (Chars (Subtype_Mark (Node_It)))
               & "_ind" & Label_Append (Buf);
 
-         when N_Formal_Type_Declaration | N_Implicit_Label_Declaration
-            | N_Object_Declaration | N_Formal_Object_Declaration =>
+         when N_Formal_Type_Declaration    |
+              N_Implicit_Label_Declaration |
+              N_Object_Declaration         |
+              N_Formal_Object_Declaration  =>
             declare
                I_Name : constant Name_Id := Chars (Defining_Identifier
                                                    (Node_It));
@@ -2771,9 +2773,11 @@ package body Why.Gen.Expr is
                Buf := Name_Str & "decl" & Label_Append (Buf);
             end;
 
-         when N_Full_Type_Declaration | N_Incomplete_Type_Declaration
-            | N_Protected_Type_Declaration | N_Private_Type_Declaration
-            | N_Subtype_Declaration =>
+         when N_Full_Type_Declaration       |
+              N_Incomplete_Type_Declaration |
+              N_Protected_Type_Declaration  |
+              N_Private_Type_Declaration    |
+              N_Subtype_Declaration         =>
             Buf := Get_Name_String (Chars (Defining_Identifier (Node_It)))
               & "_def" & Label_Append (Buf);
 
@@ -2860,7 +2864,11 @@ package body Why.Gen.Expr is
    -------------------------
 
    function New_Comment_Label
-     (Node : Node_Id; Loc : Name_Id; Reason : VC_Kind) return Name_Id is
+     (Node   : Node_Id;
+      Loc    : Name_Id;
+      Reason : VC_Kind)
+      return Name_Id
+   is
       Prefix : constant String := "comment:";
       Str_Loc : constant String := Get_Name_String (Loc);
 
@@ -2874,6 +2882,10 @@ package body Why.Gen.Expr is
       Column : Natural;
 
       procedure Read_Loc_Label (Line : out Natural; Column : out Natural);
+
+      --------------------
+      -- Read_Loc_Label --
+      --------------------
 
       procedure Read_Loc_Label (Line : out Natural; Column : out Natural) is
          Delim_Start : Natural :=
@@ -2892,6 +2904,8 @@ package body Why.Gen.Expr is
 
          Column := Natural'Value (Str_Loc (Delim_Start .. Delim_End));
       end Read_Loc_Label;
+
+   --  Start of processing for New_Comment_Label
 
    begin
       Read_Loc_Label (Line, Column);
@@ -3251,7 +3265,7 @@ package body Why.Gen.Expr is
       --
       --  "GP_Reason:VC_Kind"     - the kind of the VC
       --  "GP_Sloc:file:line:col" - the sloc of the construct that triggers the
-      --  VC
+      --   VC
       --  "keep_on_simp"          - tag that disallows simplifying this VC away
       --  "model_vc"              - identifies the construct that triggers the
       --   VC and it is not postcondition (for generating counterexamples)

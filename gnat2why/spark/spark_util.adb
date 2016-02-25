@@ -23,22 +23,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;                        use Ada.Strings;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
+with Ada.Strings;                        use Ada.Strings;
 with Assumption_Types;                   use Assumption_Types;
 with Csets;                              use Csets;
-with Gnat2Why.Assumptions;               use Gnat2Why.Assumptions;
-with Gnat2Why_Args;
-with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Exp_Util;                           use Exp_Util;
 with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
+with Gnat2Why_Args;
+with Gnat2Why.Assumptions;               use Gnat2Why.Assumptions;
+with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Nlists;                             use Nlists;
 with Opt;                                use Opt;
 with Output;
 with Pprint;                             use Pprint;
 with Sem_Aux;                            use Sem_Aux;
+with Sem_Ch12;                           use Sem_Ch12;
 with Sem_Disp;                           use Sem_Disp;
 with Sem_Eval;                           use Sem_Eval;
 with Sem_Prag;                           use Sem_Prag;
@@ -47,7 +48,6 @@ with Stringt;                            use Stringt;
 with Treepr;                             use Treepr;
 with Urealp;                             use Urealp;
 with VC_Kinds;                           use VC_Kinds;
-with Sem_Ch12;                           use Sem_Ch12;
 
 package body SPARK_Util is
 
@@ -1565,6 +1565,8 @@ package body SPARK_Util is
       --  N_Unchecked_Type_Conversion coming from source are handled using
       --  their original node.
 
+   --  Start of processing for Get_Formal_From_Actual
+
    begin
       if Nkind (Par) = N_Parameter_Association then
          Find_Expr_In_Call_Args (Parent (Par));
@@ -2087,7 +2089,9 @@ package body SPARK_Util is
          ----------------
 
          function Scope_Name (Nth : Scope_Index) return Name_Id is
-            (Chars (Scopes (Scope_Id + Nth)));
+           (Chars (Scopes (Scope_Id + Nth)));
+
+      --  Start of processing for Is_Predefined_Potentially_Blocking
 
       begin
          --  Start from the called subprogram

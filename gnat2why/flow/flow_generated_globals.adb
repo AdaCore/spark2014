@@ -2395,10 +2395,12 @@ package body Flow_Generated_Globals is
 
       --  Go through all ALI files and populate the Subprogram_Info_List.
       declare
-         Read_Files : Unbounded_String_Sets.Set;
+         Read_Files : String_Sets.Set;
          Nam        : Unbounded_String;
+
+         Inserted : Boolean;
+         Dummy    : String_Sets.Cursor;
       begin
-         Read_Files := Unbounded_String_Sets.Empty_Set;
          for Index in ALIs.First .. ALIs.Last loop
             --  ??? The ALI table seems to incldue some entries twice, but
             --  that is because some of them are null-terminated. See
@@ -2409,8 +2411,12 @@ package body Flow_Generated_Globals is
             Nam := Trim (Source => Nam,
                          Left   => Null_Set,
                          Right  => To_Set (Character'Val (0)));
-            if not Read_Files.Contains (Nam) then
-               Read_Files.Insert (Nam);
+
+            Read_Files.Insert (New_Item => To_String (Nam),
+                               Position => Dummy,
+                               Inserted => Inserted);
+
+            if Inserted then
                Load_GG_Info_From_ALI (ALIs.Table (Index).Afile);
             end if;
          end loop;

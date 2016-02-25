@@ -4,7 +4,7 @@ p.adb:16:14: warning: subprogram "Sub" has no effect
 p.adb:22:22: info: postcondition proved
 p.adb:22:22: info: postcondition proved, in call inlined at p.adb:43
 p.adb:27:22: info: postcondition proved
-p.adb:27:33: info: postcondition proved, in call inlined at p.adb:43
+p.adb:27:22: info: postcondition proved, in call inlined at p.adb:43
 p.adb:32:07: info: assertion proved, in call inlined at p.adb:43
 p.adb:32:22: info: initialization of "Z" proved
 p.adb:32:22: info: initialization of "Z" proved, in call inlined at p.adb:43
