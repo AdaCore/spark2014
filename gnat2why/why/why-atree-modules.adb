@@ -272,6 +272,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Dynamic_Fixed_Point"));
+      Fixed_Point_Float_Conv :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => NID ("FixedPoint_Float_Conv"));
       Static_Float32 :=
         New_Module
           (File => Ada_Model_File,
@@ -1851,28 +1855,28 @@ package body Why.Atree.Modules is
                     (E, WNE_Of_Float32,
                      New_Identifier
                        (Symbol => NID ("of_float32"),
-                        Module => M,
+                        Module => Fixed_Point_Float_Conv,
                         Domain => EW_Term,
                         Typ    => EW_Fixed_Type));
                   Insert_Symbol
                     (E, WNE_Of_Float64,
                      New_Identifier
                        (Symbol => NID ("of_float64"),
-                        Module => M,
+                        Module => Fixed_Point_Float_Conv,
                         Domain => EW_Term,
                         Typ    => EW_Fixed_Type));
                   Insert_Symbol
                     (E, WNE_To_Float32,
                      New_Identifier
                        (Symbol => NID ("to_float32"),
-                        Module => M,
+                        Module => Fixed_Point_Float_Conv,
                         Domain => EW_Term,
                         Typ    => M_Floats (Float32).T));
                   Insert_Symbol
                     (E, WNE_To_Float64,
                         New_Identifier
                        (Symbol => NID ("to_float64"),
-                        Module => M,
+                        Module => Fixed_Point_Float_Conv,
                         Domain => EW_Term,
                         Typ    => M_Floats (Float64).T));
                   Insert_Symbol

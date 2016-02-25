@@ -85,6 +85,7 @@ package Why.Atree.Modules is
    Dynamic_Discrete       : W_Module_Id;
    Static_Fixed_Point     : W_Module_Id;
    Dynamic_Fixed_Point    : W_Module_Id;
+   Fixed_Point_Float_Conv : W_Module_Id;
    Static_Float32         : W_Module_Id;
    Static_Float64         : W_Module_Id;
    Dynamic_Float          : W_Module_Id;
