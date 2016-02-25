@@ -140,7 +140,7 @@ prime_and_coprime_numbers.ads:25:65: info: division check proved, in instantiati
 prime_and_coprime_numbers.ads:34:18: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:34:35: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:40:50: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:57:07: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:57:09: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:68:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:69:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:70:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6

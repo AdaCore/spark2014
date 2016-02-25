@@ -205,15 +205,8 @@ package body Why.Gen.Expr is
            and then Nkind (Original_Node (N)) = N_And_Then)
       then
          Slc := Sloc (N);
-
-      --  First_Sloc does some magic to point before the opening parentheses in
-      --  an expression, which does not work on locations inside instances of
-      --  generics. Use Sloc on First_Node instead in that case.
-
-      elsif Instantiation_Location (Sloc (N)) /= No_Location then
-         Slc := Sloc (First_Node (N));
       else
-         Slc := First_Sloc (N);
+         Slc := Safe_First_Sloc (N);
       end if;
       return Slc;
    end Compute_VC_Sloc;

@@ -1131,4 +1131,11 @@ package SPARK_Util is
      with Pre => Nkind (N) in N_Subprogram_Body | N_Entry_Body;
    --  Check if subprogram body N contains no potentially blocking statements
 
+   function Safe_First_Sloc (N : Node_Id) return Source_Ptr;
+   --  Wrapper for First_Sloc that is safe to use for nodes coming from
+   --  instances of generic units and subprograms inlined for proof.
+   --
+   --  ??? this is only a temporary fix and should be removed once the
+   --  underlying problem with First_Sloc is fixed.
+
 end SPARK_Util;
