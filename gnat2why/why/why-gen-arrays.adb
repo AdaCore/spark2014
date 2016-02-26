@@ -390,8 +390,8 @@ package body Why.Gen.Arrays is
               Base_Why_Type_No_Bool (Component_Type (E));
 
             Fst_Idx : constant Node_Id :=
-              (if Ekind (E) = E_String_Literal_Subtype then
-                    First_Index (Retysp (Etype (E)))
+              (if Ekind (E) = E_String_Literal_Subtype
+               then First_Index (Retysp (Etype (E)))
                else First_Index (E));
 
             Sbst : constant W_Clone_Substitution_Array :=
