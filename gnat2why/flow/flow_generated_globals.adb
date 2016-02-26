@@ -660,9 +660,11 @@ package body Flow_Generated_Globals is
    ------------------------
 
    function GG_Enclosing_State (EN : Entity_Name) return Entity_Name is
+      C : constant Name_Maps.Cursor := Comp_State_Map.Find (EN);
+      use Name_Maps;
    begin
-      return (if Comp_State_Map.Contains (EN)
-              then Comp_State_Map.Element (EN)
+      return (if Has_Element (C)
+              then Element (C)
               else Null_Entity_Name);
    end GG_Enclosing_State;
 
@@ -718,9 +720,10 @@ package body Flow_Generated_Globals is
    -------------------------
 
    function GG_Get_Constituents (EN : Entity_Name) return Name_Sets.Set is
+      C : constant Name_Graphs.Cursor := State_Comp_Map.Find (EN);
    begin
-      return (if State_Comp_Map.Contains (EN)
-              then State_Comp_Map.Element (EN)
+      return (if Has_Element (C)
+              then Element (C)
               else Name_Sets.Empty_Set);
    end GG_Get_Constituents;
 
