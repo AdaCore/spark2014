@@ -1487,10 +1487,21 @@ package body SPARK_Definition is
                declare
                   Target_Index : Node_Id :=
                     First_Index (Retysp (Etype (N)));
+
+                  Source_Type_Retysp : constant Entity_Id :=
+                    Retysp (Etype (Expression (N)));
+                  --  SPARK representation of the type of source expression
+
                   Source_Index : Node_Id :=
-                    First_Index (Retysp (Etype (Expression (N))));
-                  Dim          : constant Positive :=
-                    Positive (Number_Dimensions (Retysp (Etype (N))));
+                    First_Index
+                      (if Ekind (Source_Type_Retysp) = E_String_Literal_Subtype
+                       then Retysp (Etype (Source_Type_Retysp))
+                       else Source_Type_Retysp);
+                  --  Special case string literals, since First_Index cannot be
+                  --  directly called for them.
+
+                  Dim          : constant Pos :=
+                    Number_Dimensions (Retysp (Etype (N)));
                   Target_Type  : Entity_Id;
                   Source_Type  : Entity_Id;
 
