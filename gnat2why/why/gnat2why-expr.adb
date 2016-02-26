@@ -25,7 +25,7 @@
 
 with Ada.Containers;         use Ada.Containers;
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Ordered_Maps;
+--  with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                 use Checks;
@@ -71,6 +71,8 @@ with Why.Gen.Preds;          use Why.Gen.Preds;
 with Why.Gen.Progs;          use Why.Gen.Progs;
 with Why.Gen.Records;        use Why.Gen.Records;
 with Why.Unchecked_Ids;      use Why.Unchecked_Ids;
+with Ada.Unchecked_Conversion;
+with Ada.Containers.Ordered_Maps;
 
 package body Gnat2Why.Expr is
 
@@ -13662,12 +13664,12 @@ package body Gnat2Why.Expr is
    -----------------------------
 
    package Finite_Float_Literal_Map is new Ada.Containers.Ordered_Maps
-     (Key_Type     => Ureal,
-      Element_Type => W_Identifier_Id,
-      "<"          => UR_Lt);
+     (Key_Type        => Ureal,
+      Element_Type    => W_Identifier_Id,
+      "<"             => UR_Lt);
 
-   Float32_Literals : Finite_Float_Literal_Map.Map;
-   Float64_Literals : Finite_Float_Literal_Map.Map;
+   Float32_Literals : aliased Finite_Float_Literal_Map.Map;
+   Float64_Literals : aliased Finite_Float_Literal_Map.Map;
 
    function Transform_Float_Literal (E  : Entity_Id;
                                      Ty : W_Type_Id) return W_Identifier_Id
@@ -13822,11 +13824,11 @@ package body Gnat2Why.Expr is
 
       Literal_Id : W_Identifier_Id;
 
-      Float_Literals : Finite_Float_Literal_Map.Map :=
+      Float_Literals : constant access Finite_Float_Literal_Map.Map :=
         (if Ty = EW_Float_32_Type then
-            Float32_Literals
+            Float32_Literals'Access
          else
-            Float64_Literals);
+            Float64_Literals'Access);
 
       C : constant Finite_Float_Literal_Map.Cursor :=
         Float_Literals.Find (Key => Realval (E));
