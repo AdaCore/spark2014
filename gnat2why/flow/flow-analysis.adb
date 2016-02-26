@@ -1245,7 +1245,7 @@ package body Flow.Analysis is
                                          Normal_Use) /= F
                then
                   V_Use := Neighbour;
-                  V_Atr := FA.Atr.Element (Neighbour);
+                  V_Atr := FA.Atr (Neighbour);
                   exit;
                end if;
             end;
@@ -2086,13 +2086,13 @@ package body Flow.Analysis is
                if V = V_Use then
                   TV := Flow_Graphs.Skip_Children;
                elsif V /= Flow_Graphs.Null_Vertex
-                 and then FA.Atr.Element (V).Variables_Defined.Contains
+                 and then FA.Atr (V).Variables_Defined.Contains
                  (The_Var)
                then
                   TV := Flow_Graphs.Skip_Children;
                elsif V /= Flow_Graphs.Null_Vertex
                  and then FA.CFG.Get_Key (V).Variant /= Final_Value
-                 and then FA.Atr.Element (V).Variables_Explicitly_Used.Contains
+                 and then FA.Atr (V).Variables_Explicitly_Used.Contains
                    (The_Var)
                then
                   V_Exp_Use := V;
@@ -2172,7 +2172,7 @@ package body Flow.Analysis is
             else
 
                TV := Flow_Graphs.Continue;
-               if FA.Atr.Element (V).Variables_Defined.Contains (The_Var) then
+               if FA.Atr (V).Variables_Defined.Contains (The_Var) then
 
                   --  OK, so this vertex V does define The_Var. There
                   --  are a few cases where we can possibly issue a
@@ -2227,8 +2227,8 @@ package body Flow.Analysis is
                when Direct_Mapping | Record_Field =>
                   --  Check if node corresponds to an array.
                   if The_Var_Is_Array
-                    and then not FA.Atr.Element
-                      (V_Use).Variables_Explicitly_Used.Contains (The_Var)
+                    and then not FA.Atr (V_Use).
+                      Variables_Explicitly_Used.Contains (The_Var)
                   then
                      --  We set Found and we then check if
                      --  there exists a vertex that explicitly uses The_Var,
@@ -2720,7 +2720,7 @@ package body Flow.Analysis is
                      Vertices_Trail : Vertex_Sets.Set;
                   begin
                      if V /= Flow_Graphs.Null_Vertex
-                       and then FA.Atr.Element (V).Mode = Mode_Proof
+                       and then FA.Atr (V).Mode = Mode_Proof
                      then
                         Error_Msg_Flow
                           (FA        => FA,
@@ -3345,7 +3345,7 @@ package body Flow.Analysis is
                        Get_Initial_Vertex (FA.PDG, Missing_Var);
                   begin
                      if V /= Flow_Graphs.Null_Vertex
-                       and then FA.Atr.Element (V).Mode = Mode_Proof
+                       and then FA.Atr (V).Mode = Mode_Proof
                      then
                         null;
                      elsif F_Out = Null_Flow_Id
