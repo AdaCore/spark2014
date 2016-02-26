@@ -2676,6 +2676,9 @@ package body Flow_Generated_Globals is
       end Write_To_ALI;
 
       V : ALI_Entry;
+
+   --  Start of processing for GG_Write_Finalize
+
    begin
       --  Write State info
       for C in State_Comp_Map.Iterate loop
