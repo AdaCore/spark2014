@@ -892,13 +892,9 @@ package body Flow_Generated_Globals is
    ----------------------------
 
    function GG_Get_Local_Variables (EN : Entity_Name) return Name_Sets.Set is
-   begin
-      if not GG_Exists_Cache.Contains (EN) then
-         return Name_Sets.Empty_Set;
-      end if;
-
-      return Package_To_Locals_Map.Element (EN);
-   end GG_Get_Local_Variables;
+     (if GG_Exists_Cache.Contains (EN)
+      then Package_To_Locals_Map.Element (EN)
+      else Name_Sets.Empty_Set);
 
    -----------------------
    -- GG_Get_MR_Globals --
@@ -1033,12 +1029,9 @@ package body Flow_Generated_Globals is
 
    function GG_Is_Initialized_At_Elaboration
      (EN : Entity_Name)
-      return Boolean
-   is
-   begin
-      return All_Initialized_Names.Contains (EN)
-        or else GG_Has_Async_Writers (EN);
-   end GG_Is_Initialized_At_Elaboration;
+      return Boolean is
+     (All_Initialized_Names.Contains (EN)
+        or else GG_Has_Async_Writers (EN));
 
    --------------------
    -- GG_Is_Volatile --
