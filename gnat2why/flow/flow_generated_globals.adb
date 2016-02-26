@@ -737,14 +737,14 @@ package body Flow_Generated_Globals is
                              Reads       : out Flow_Id_Sets.Set;
                              Writes      : out Flow_Id_Sets.Set)
    is
-      MR_Proof_Reads  : Name_Sets.Set := Name_Sets.Empty_Set;
-      MR_Reads        : Name_Sets.Set := Name_Sets.Empty_Set;
-      MR_Writes       : Name_Sets.Set := Name_Sets.Empty_Set;
+      MR_Proof_Reads : Name_Sets.Set := Name_Sets.Empty_Set;
+      MR_Reads       : Name_Sets.Set := Name_Sets.Empty_Set;
+      MR_Writes      : Name_Sets.Set := Name_Sets.Empty_Set;
       --  The above 3 sets will contain the most refined views of their
       --  respective globals.
 
-      Temp_NS         : Name_Sets.Set;
-      Unused          : Flow_Id_Sets.Set;
+      Temp_NS : Name_Sets.Set;
+      Unused  : Flow_Id_Sets.Set;
 
    begin
       --  Initialize the Proof_Reads, Reads and Writes sets
@@ -911,23 +911,23 @@ package body Flow_Generated_Globals is
    is
       use Global_Graphs;
 
-      G_Proof_Ins     : constant Global_Id :=
+      G_Proof_Ins : constant Global_Id :=
         Global_Id'(Kind => Proof_Ins_Kind,
                    Name => EN);
-      G_Ins           : constant Global_Id :=
+      G_Ins       : constant Global_Id :=
         Global_Id'(Kind => Ins_Kind,
                    Name => EN);
-      G_Outs          : constant Global_Id :=
+      G_Outs      : constant Global_Id :=
         Global_Id'(Kind => Outs_Kind,
                    Name => EN);
       --  The above 3 Global_Ids correspond to the subprogram's Ins,
       --  Outs and Proof_Ins.
 
-      V_Proof_Ins     : constant Vertex_Id :=
+      V_Proof_Ins : constant Vertex_Id :=
         Global_Graph.Get_Vertex (G_Proof_Ins);
-      V_Ins           : constant Vertex_Id :=
+      V_Ins       : constant Vertex_Id :=
         Global_Graph.Get_Vertex (G_Ins);
-      V_Outs          : constant Vertex_Id :=
+      V_Outs      : constant Vertex_Id :=
         Global_Graph.Get_Vertex (G_Outs);
       --  The above 3 Vertex_Ids correspond to the subprogram's Ins,
       --  Outs and Proof_Ins.
@@ -3002,7 +3002,7 @@ package body Flow_Generated_Globals is
       Write_Line ("Synthesized initializes aspects:");
       for Init in Initializes_Aspects_Map.Iterate loop
          declare
-            Pkg : constant Entity_Name         :=
+            Pkg : constant Entity_Name :=
               Initializes_Aspects_Maps.Key (Init);
 
             II  : constant Initializes_Info :=
