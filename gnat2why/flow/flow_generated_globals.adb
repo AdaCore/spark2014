@@ -2848,11 +2848,8 @@ package body Flow_Generated_Globals is
             Constituents : constant Name_Sets.Set :=
               To_Name_Set (To_Node_Set (Dependency_Maps.Element (S)));
          begin
-            --  Insert new state info into State_Comp_Map.
-            if State_Comp_Map.Contains (State_N) then
-               State_Comp_Map.Delete (State_N);
-            end if;
-            State_Comp_Map.Insert (State_N, Constituents);
+            --  Include (possibly overwrite) new state info into State_Comp_Map
+            State_Comp_Map.Include (State_N, Constituents);
 
             --  Check if State_F is volatile and if it is then add it to the
             --  appropriate sets.
