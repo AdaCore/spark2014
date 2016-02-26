@@ -2510,7 +2510,7 @@ package body SPARK_Util is
          when N_And_Then | N_Or_Else =>
             return L = Actions (P);
          when N_If_Expression =>
-            return L = Then_Actions (P) or L = Else_Actions (P);
+            return L = Then_Actions (P) or else L = Else_Actions (P);
          when N_Case_Expression_Alternative =>
             return L = Actions (P);
          when N_Elsif_Part =>
@@ -2579,13 +2579,10 @@ package body SPARK_Util is
    --------------------------
 
    function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
-      Encl_Unit : Node_Id;
-
-   begin
+      Encl_Unit : constant Node_Id := Enclosing_Lib_Unit_Node (E);
       --  Retrieve the library unit containing E
 
-      Encl_Unit := Enclosing_Lib_Unit_Node (E);
-
+   begin
       --  case 1: the entity is neither in the spec or body compilation unit of
       --  the unit currently analyzed, so return False.
 
@@ -2646,6 +2643,10 @@ package body SPARK_Util is
       function Has_Renaming_As_Body (E : Entity_Id) return Boolean;
       --  Returns true iff subprogram E is completed by renaming-as-body
 
+      --------------------------
+      -- Has_Renaming_As_Body --
+      --------------------------
+
       function Has_Renaming_As_Body (E : Entity_Id) return Boolean is
          B : constant Node_Id := Subprogram_Body (E);
       begin
@@ -2689,8 +2690,7 @@ package body SPARK_Util is
    -- Is_Volatile_For_Internal_Calls --
    ---------------------------------------
 
-   function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
-   is
+   function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean is
    begin
       return Ekind (E) = E_Function
         and then Is_Protected_Type (Scope (E))
@@ -3535,10 +3535,10 @@ package body SPARK_Util is
    function Get_Body_Entity (E : Entity_Id) return Entity_Id is
    begin
       return (case Ekind (E) is
-              when E_Entry => Entry_Body_Entity (E),
-              when E_Task_Type => Task_Body_Entity (E),
+              when E_Entry         => Entry_Body_Entity (E),
+              when E_Task_Type     => Task_Body_Entity (E),
               when Subprogram_Kind => Subprogram_Body_Entity (E),
-              when others => raise Program_Error);
+              when others          => raise Program_Error);
    end Get_Body_Entity;
 
    ----------------------------------
