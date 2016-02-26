@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;           use AA_Util;
 with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
@@ -1114,6 +1113,10 @@ package SPARK_Util is
 
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element
+
+   function File_Name_Without_Suffix (File_Name : String) return String;
+
+   function String_Value (Str_Id : String_Id) return String;
 
    function Unit_Name return String is
      (File_Name_Without_Suffix (Get_Name_String (Unit_File_Name (Main_Unit))));

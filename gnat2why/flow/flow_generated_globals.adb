@@ -29,7 +29,6 @@ with Ada.Text_IO;                use Ada.Text_IO;
 with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
 with GNAT.Regpat;                use GNAT.Regpat;
 
-with AA_Util;                    use AA_Util;
 with ALI;                        use ALI;
 with Lib;                        use Lib;
 with Lib.Util;                   use Lib.Util;
@@ -2000,7 +1999,7 @@ package body Flow_Generated_Globals is
 
       procedure Load_GG_Info_From_ALI (ALI_File_Name : File_Name_Type) is
          ALI_File_Name_Str : constant String :=
-           Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
+           Get_Name_String (Full_Lib_File_Name (ALI_File_Name));
 
          Sanitized_Name : constant Unbounded_String :=
            Trim (Source => To_Unbounded_String (ALI_File_Name_Str),
@@ -2406,8 +2405,8 @@ package body Flow_Generated_Globals is
             --  that is because some of them are null-terminated. See
             --  O714-006; this is the workaround for now.
             Nam := To_Unbounded_String
-              (Name_String (Name_Id (Full_Lib_File_Name
-                                       (ALIs.Table (Index).Afile))));
+              (Get_Name_String (Full_Lib_File_Name
+               (ALIs.Table (Index).Afile)));
             Nam := Trim (Source => Nam,
                          Left   => Null_Set,
                          Right  => To_Set (Character'Val (0)));

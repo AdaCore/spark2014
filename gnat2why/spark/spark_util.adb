@@ -1191,6 +1191,39 @@ package body SPARK_Util is
       return Corresponding_Body (Ptr);
    end Entry_Body_Entity;
 
+   ------------------------------
+   -- File_Name_Without_Suffix --
+   ------------------------------
+
+   function File_Name_Without_Suffix (File_Name : String) return String is
+      Name_Index : Natural := File_Name'Last;
+
+   begin
+      pragma Assert (File_Name'Length > 0);
+
+      --  We loop in reverse to ensure that file names that follow nonstandard
+      --  naming conventions that include additional dots are handled properly,
+      --  preserving dots in front of the main file suffix (for example,
+      --  main.2.ada => main.2).
+
+      while Name_Index >= File_Name'First
+        and then File_Name (Name_Index) /= '.'
+      loop
+         Name_Index := Name_Index - 1;
+      end loop;
+
+      --  Return the part of the file name up to but not including the last dot
+      --  in the name, or return the whole name as is if no dot character was
+      --  found.
+
+      if Name_Index >= File_Name'First then
+         return File_Name (File_Name'First .. Name_Index - 1);
+
+      else
+         return File_Name;
+      end if;
+   end File_Name_Without_Suffix;
+
    --------------------
    -- Find_Contracts --
    --------------------
@@ -3379,6 +3412,23 @@ package body SPARK_Util is
    begin
       return Node_To_String (N, "");
    end String_Of_Node;
+
+   ------------------
+   -- String_Value --
+   ------------------
+
+   function String_Value (Str_Id : String_Id) return String is
+   begin
+      --  ??? pragma Assert (Str_Id /= No_String);
+
+      if Str_Id = No_String then
+         return "";
+      end if;
+
+      String_To_Name_Buffer (Str_Id);
+
+      return Name_Buffer (1 .. Name_Len);
+   end String_Value;
 
    -------------------
    -- Subp_Location --
