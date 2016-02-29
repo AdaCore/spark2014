@@ -2450,22 +2450,13 @@ package body SPARK_Util is
    -----------------------------
 
    function In_Private_Declarations (Decl : Node_Id) return Boolean is
-      N : Node_Id;
-
+      Par : constant Node_Id := Parent (Decl);
    begin
-      if Present (Parent (Decl))
-        and then Nkind (Parent (Decl)) = N_Package_Specification
-      then
-         N := First (Private_Declarations (Parent (Decl)));
-         while Present (N) loop
-            if Decl = N then
-               return True;
-            end if;
-            Next (N);
-         end loop;
-      end if;
-
-      return False;
+      return
+        Present (Par)
+        and then Nkind (Par) = N_Package_Specification
+        and then Is_List_Member (Decl)
+        and then List_Containing (Decl) = Private_Declarations (Par);
    end In_Private_Declarations;
 
    -----------------------------
@@ -2473,22 +2464,13 @@ package body SPARK_Util is
    -----------------------------
 
    function In_Visible_Declarations (Decl : Node_Id) return Boolean is
-      N : Node_Id;
-
+      Par : constant Node_Id := Parent (Decl);
    begin
-      if Present (Parent (Decl))
-        and then Nkind (Parent (Decl)) = N_Package_Specification
-      then
-         N := First (Visible_Declarations (Parent (Decl)));
-         while Present (N) loop
-            if Decl = N then
-               return True;
-            end if;
-            Next (N);
-         end loop;
-      end if;
-
-      return False;
+      return
+        Present (Par)
+        and then Nkind (Par) = N_Package_Specification
+        and then Is_List_Member (Decl)
+        and then List_Containing (Decl) = Visible_Declarations (Par);
    end In_Visible_Declarations;
 
    ---------------
