@@ -2538,23 +2538,17 @@ package body SPARK_Util is
    -----------------------------
 
    function Is_Ignored_Pragma_Check (N : Node_Id) return Boolean is
-   begin
-      return Is_Pragma_Check (N, Name_Precondition)
-               or else
-             Is_Pragma_Check (N, Name_Pre)
-               or else
-             Is_Pragma_Check (N, Name_Postcondition)
-               or else
-             Is_Pragma_Check (N, Name_Post)
-               or else
-             Is_Pragma_Check (N, Name_Refined_Post)
-               or else
-             Is_Pragma_Check (N, Name_Static_Predicate)
-               or else
-             Is_Pragma_Check (N, Name_Predicate)
-               or else
-             Is_Pragma_Check (N, Name_Dynamic_Predicate);
-   end Is_Ignored_Pragma_Check;
+     (Is_Pragma (N, Pragma_Check)
+        and then
+        Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N)))) in
+          Name_Precondition     |
+          Name_Pre              |
+          Name_Postcondition    |
+          Name_Post             |
+          Name_Refined_Post     |
+          Name_Static_Predicate |
+          Name_Predicate        |
+          Name_Dynamic_Predicate);
 
    --------------------------
    -- Is_In_Analyzed_Files --
