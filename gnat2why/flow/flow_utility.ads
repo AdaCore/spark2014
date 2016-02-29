@@ -35,7 +35,6 @@ with Flow_Types;           use Flow_Types;
 with Sem_Util;             use Sem_Util;
 with Sinfo;                use Sinfo;
 with Snames;               use Snames;
-with SPARK_Util;           use SPARK_Util;
 with Types;                use Types;
 
 use type Ada.Containers.Count_Type;
@@ -314,6 +313,11 @@ is
    function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set;
    --  Return the set of entire variables which are introduced in a
    --  quantifier under node N.
+
+   function Is_Null_Record (E : Entity_Id) return Boolean
+   with Pre => Nkind (E) in N_Entity;
+   --  Checks if E is a record that contains no fields at all. If E is not
+   --  a record we return False.
 
    function Flatten_Variable
      (F     : Flow_Id;

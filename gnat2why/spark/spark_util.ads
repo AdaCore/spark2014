@@ -530,11 +530,6 @@ package SPARK_Util is
    --  @returns True iff T is a scalar type whose range is statically known to
    --     be empty
 
-   function Is_Null_Record (E : Entity_Id) return Boolean
-   with Pre => Nkind (E) in N_Entity;
-   --  Checks if E is a record that contains no fields at all. If E is not
-   --  a record we return False.
-
    function Is_Standard_Boolean_Type (E : Entity_Id) return Boolean;
    --  @param E type
    --  @return True if we can determine that E is Standard_Boolean or a subtype
