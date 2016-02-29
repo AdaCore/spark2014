@@ -920,7 +920,7 @@ procedure Gnatprove is
                      Altergo_Command & " -steps-bound %S");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
-                       (Why3_Drivers_Dir, "alt_ergo.drv"));
+                       (Why3_Drivers_Dir, "alt-ergo_gnatprove.drv"));
          Put_Keyval ("name", "altergo");
          Put_Keyval ("shortcut", "altergo");
          Put_Keyval ("version", "0.99.1");
