@@ -3192,8 +3192,7 @@ package body SPARK_Definition is
             Pack_Decl : constant Node_Id := Parent (Parent (Decl));
 
          begin
-            pragma Assert
-              (Nkind (Pack_Decl) = N_Package_Declaration);
+            pragma Assert (Nkind (Pack_Decl) = N_Package_Declaration);
 
             return
               Present (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl)))
