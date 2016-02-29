@@ -66,6 +66,7 @@ theory Floating_Func
   predicate gt t t
   predicate ge t t
   predicate eq t t
+  predicate neq (x y : t) = not (eq x y)
 
   function bool_lt  (x: t) (y: t) : bool = lt x y
   function bool_le  (x: t) (y: t) : bool = le x y

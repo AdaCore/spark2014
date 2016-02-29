@@ -231,8 +231,6 @@ module Floating
 
   clone export _gnatprove_standard_th.Floating_Func
 
-  predicate neq (x y : t) = not (eq x y)
-
   constant zeroF   : t
   function div t t : t
   function rem t t : t
