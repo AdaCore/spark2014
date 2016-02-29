@@ -205,15 +205,8 @@ package body Why.Gen.Expr is
            and then Nkind (Original_Node (N)) = N_And_Then)
       then
          Slc := Sloc (N);
-
-      --  First_Sloc does some magic to point before the opening parentheses in
-      --  an expression, which does not work on locations inside instances of
-      --  generics. Use Sloc on First_Node instead in that case.
-
-      elsif Instantiation_Location (Sloc (N)) /= No_Location then
-         Slc := Sloc (First_Node (N));
       else
-         Slc := First_Sloc (N);
+         Slc := Safe_First_Sloc (N);
       end if;
       return Slc;
    end Compute_VC_Sloc;
@@ -363,7 +356,7 @@ package body Why.Gen.Expr is
         (Expr   : W_Expr_Id;
          To_Ent : Entity_Id) return W_Prog_Id
       is
-         Check   : W_Pred_Id;
+         Check : W_Pred_Id;
       begin
 
          --  ??? This seems to be true in the current code, see the call site
@@ -447,12 +440,12 @@ package body Why.Gen.Expr is
             declare
                Low_From : constant Node_Id :=
                  Get_Low_Bound (Nth_Index_Type (From_Ent, I));
-               Low_To : constant Node_Id :=
+               Low_To   : constant Node_Id :=
                  Get_Low_Bound (Nth_Index_Type (To_Ent, I));
             begin
-               if not Is_Static_Expression (Low_From) or else
-                 not Is_Static_Expression (Low_To) or else
-                 Expr_Value (Low_From) /= Expr_Value (Low_To)
+               if not Is_Static_Expression (Low_From)
+                 or else not Is_Static_Expression (Low_To)
+                 or else Expr_Value (Low_From) /= Expr_Value (Low_To)
                then
                   return True;
                end if;
@@ -465,10 +458,10 @@ package body Why.Gen.Expr is
          return False;
       end Needs_Slide;
 
-      Sliding     : constant Boolean :=
+      Sliding  : constant Boolean :=
         not Force_No_Slide and then Needs_Slide (From_Ent, To_Ent);
-      Arr_Expr    : W_Expr_Id;
-      T           : W_Expr_Id;
+      Arr_Expr : W_Expr_Id;
+      T        : W_Expr_Id;
 
    --  Beginning of processing for Insert_Array_Conversion
 
@@ -757,7 +750,7 @@ package body Why.Gen.Expr is
       To         : W_Type_Id;
       Need_Check : Boolean := False) return W_Expr_Id
    is
-      From       : constant W_Type_Id := Get_Type (Expr);
+      From   : constant W_Type_Id := Get_Type (Expr);
       --  Current result expression
       Result : W_Expr_Id := Expr;
 
@@ -774,11 +767,11 @@ package body Why.Gen.Expr is
 
       --  Do not generate a predicate check for an internal call to a parent
       --  predicate function inside the definition of a predicate function.
-      Need_Pred_Check  : constant Boolean :=
+      Need_Pred_Check : constant Boolean :=
         Need_Check
           and then Has_Predicates (R)
           and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
-      Check_Entity     : constant Entity_Id := Get_Ada_Node (+To);
+      Check_Entity    : constant Entity_Id := Get_Ada_Node (+To);
 
    begin
       --  When From = To and no check needs to be inserted, do nothing
@@ -839,9 +832,10 @@ package body Why.Gen.Expr is
    -- Insert_Conversion_To_Rep_No_Bool --
    --------------------------------------
 
-   function Insert_Conversion_To_Rep_No_Bool (Domain : EW_Domain;
-                                              Expr : W_Expr_Id)
-                                              return W_Expr_Id
+   function Insert_Conversion_To_Rep_No_Bool
+     (Domain : EW_Domain;
+      Expr : W_Expr_Id)
+      return W_Expr_Id
    is
       Rep_Typ : constant W_Type_Id := Base_Why_Type_No_Bool (Expr);
    begin
@@ -855,10 +849,10 @@ package body Why.Gen.Expr is
    --------------------
 
    function Do_Index_Check
-     (Ada_Node   : Node_Id;
-      Arr_Expr   : W_Expr_Id;
-      W_Expr     : W_Expr_Id;
-      Dim        : Positive) return W_Prog_Id
+     (Ada_Node : Node_Id;
+      Arr_Expr : W_Expr_Id;
+      W_Expr   : W_Expr_Id;
+      Dim      : Positive) return W_Prog_Id
    is
       Tmp        : constant W_Expr_Id :=
         New_Temp_For_Expr (W_Expr);
@@ -1133,11 +1127,11 @@ package body Why.Gen.Expr is
    ------------------------------
 
    function Insert_Scalar_Conversion
-     (Domain        : EW_Domain;
-      Ada_Node      : Node_Id := Empty;
-      Expr          : W_Expr_Id;
-      To            : W_Type_Id;
-      Do_Check      : Boolean := False) return W_Expr_Id
+     (Domain   : EW_Domain;
+      Ada_Node : Node_Id := Empty;
+      Expr     : W_Expr_Id;
+      To       : W_Type_Id;
+      Do_Check : Boolean := False) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
@@ -2592,6 +2586,8 @@ package body Why.Gen.Expr is
       Buf     : Unbounded_String := Null_Unbounded_String;
       Node_It : Node_Id := Node;
 
+   --  Start of processing for New_Shape_Label
+
    begin
       while Present (Node_It) loop
          case Nkind (Node_It) is
@@ -2869,16 +2865,16 @@ package body Why.Gen.Expr is
       Reason : VC_Kind)
       return Name_Id
    is
-      Prefix : constant String := "comment:";
+      Prefix  : constant String := "comment:";
       Str_Loc : constant String := Get_Name_String (Loc);
 
-      Pointer : Source_Ptr := Original_Location (Sloc (Node));
+      Pointer  : Source_Ptr := Original_Location (Sloc (Node));
       Src_Buff : constant Source_Buffer_Ptr :=
         Source_Text (Get_Source_File_Index (Pointer));
 
       Buf : Unbounded_String := Null_Unbounded_String;
 
-      Line : Natural;
+      Line   : Natural;
       Column : Natural;
 
       procedure Read_Loc_Label (Line : out Natural; Column : out Natural);
@@ -3234,10 +3230,10 @@ package body Why.Gen.Expr is
    -----------------
 
    function New_VC_Expr
-      (Ada_Node   : Node_Id;
-       Expr       : W_Expr_Id;
-       Reason     : VC_Kind;
-       Domain     : EW_Domain) return W_Expr_Id
+      (Ada_Node : Node_Id;
+       Expr     : W_Expr_Id;
+       Reason   : VC_Kind;
+       Domain   : EW_Domain) return W_Expr_Id
    is
    begin
       if Domain /= EW_Term and then Present (Ada_Node) then

@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with AA_Util;           use AA_Util;
 with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
@@ -236,10 +235,10 @@ package SPARK_Util is
    --     of type.
 
    --  The following functions provide wrappers for the query functions in
-   --  Einfo, that apply the query on the "Representative Type in SPARK" of its
-   --  argument, hence skipping all layers of pivate types. To avoid confusion,
-   --  the wrapper for function Einfo.Is_Such_And_Such_Type is called
-   --  Has_Such_And_Such_Type.
+   --  Einfo, that apply the query on the "Representative Type in SPARK" of
+   --  its argument, hence skipping all layers of private types. To avoid
+   --  confusion, the wrapper for function Einfo.Is_Such_And_Such_Type is
+   --  called Has_Such_And_Such_Type.
 
    function Has_Access_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Access_Kind);
@@ -282,7 +281,7 @@ package SPARK_Util is
 
    function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean;
    --  Returns whether type T has a scalar subtype with statically known
-   --  bounds. This included looking past private types.
+   --  bounds. This includes looking past private types.
 
    ---------------------------------
    -- Queries related to entities --
@@ -472,7 +471,7 @@ package SPARK_Util is
                 or else Is_Constrained (Typ)
                 or else Has_Defaulted_Discriminants (Typ))
       and then not Is_Class_Wide_Type (Typ));
-   --  Determine wether there can be default initialized variables of a type.
+   --  Determine whether there can be default initialized variables of a type.
    --  @param Typ any type
    --  @return False if Typ is unconstrained.
 
@@ -601,8 +600,8 @@ package SPARK_Util is
    --  @return True iff E is logically part of a protected object, either being
    --    a discriminant of field of the object, or being a "part_of".
 
-   function Requires_Interrupt_Priority (E : Entity_Id) return Boolean with
-     Pre => Is_Protected_Type (E);
+   function Requires_Interrupt_Priority (E : Entity_Id) return Boolean
+   with Pre => Is_Protected_Type (E);
    --  @param E the entity of a protected type
    --  @return True if E contains a protected procedure with Attach_Handler
    --  specified. Note that Interrupt_Handler cannot be True with the Ravenscar
@@ -720,12 +719,12 @@ package SPARK_Util is
    --  @return True iff there is at least one contract Name for E
 
    function Has_Extensions_Visible (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
+   with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
    --  @param E subprogram
    --  @return True iff Extensions_Visible is specified for E
 
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
+   with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
    --  @param E subprogram
    --  @return True iff E has a data dependencies (Global) or flow
    --     dependencies (Depends) contract
@@ -744,7 +743,7 @@ package SPARK_Util is
 
    function Is_Invisible_Dispatching_Operation
      (E : Entity_Id) return Boolean
-     with Pre => Is_Dispatching_Operation (E);
+   with Pre => Is_Dispatching_Operation (E);
    --  @param E subprogram
    --  @return True iff E has is a public operation on a private type whose
    --     public view is not tagged. Hence, Pre'Class and Post'Class cannot be
@@ -771,14 +770,14 @@ package SPARK_Util is
    --  @param E subprogram
    --  @return True iff E is a library level subprogram, has no formal
    --     parameters (E is allowed to have global parameters), and is either
-   --     a procedure or a function that return integer type
+   --     a procedure or a function that returns an integer type
    --
    --  Note: this check is equivalent to rules enforced by GNAT and is more
    --  restrictive than Ada RM (which allows pretty much every subprogram to
    --  be main). See Ada 95 Quality and Style Guide, 7.1.4 for details.
 
    function Subprogram_Full_Source_Name (E : Entity_Id) return String
-     with Pre => Present (E) and then Sloc (E) /= No_Location;
+   with Pre => Present (E) and then Sloc (E) /= No_Location;
    --  For a subprogram entity, return its scoped name, e.g. for subprogram
    --  Nested in
    --
@@ -800,10 +799,10 @@ package SPARK_Util is
    --  @return True iff E should not be translated into Why3
 
    function Subp_Location (E : Entity_Id) return String
-     with Pre => Ekind (E) in Subprogram_Kind |
-                              E_Package       |
-                              Task_Kind       |
-                              Entry_Kind;
+   with Pre => Ekind (E) in Subprogram_Kind |
+                            E_Package       |
+                            Task_Kind       |
+                            Entry_Kind;
    --  @param E subprogram, package, task or entry
    --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file and
    --    line where this entity is declared. This allows to identify the entity
@@ -857,18 +856,18 @@ package SPARK_Util is
    --  @return the protected definition for the given type
 
    function Containing_Protected_Type (E : Entity_Id) return Entity_Id
-     with Pre => (case Ekind (E) is
-                     when E_Component    |
-                          E_Discriminant =>
-                        Ekind (Scope (E)) in Protected_Kind,
+   with Pre => (case Ekind (E) is
+                   when E_Component    |
+                        E_Discriminant =>
+                      Ekind (Scope (E)) in Protected_Kind,
 
-                     when E_Function     |
-                          E_Procedure    |
-                          Entry_Kind     =>
-                        Is_Protected_Subprogram (E),
+                   when E_Function     |
+                        E_Procedure    |
+                        Entry_Kind     =>
+                      Is_Protected_Subprogram (E),
 
-                     when others         =>
-                        False),
+                   when others         =>
+                      False),
           Post => Ekind (Containing_Protected_Type'Result) in Protected_Kind;
    --  @param E a subprogram or entry or field which is part of a protected
    --            type
@@ -1040,23 +1039,23 @@ package SPARK_Util is
    --  @return the subprogram or entry called
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
-     with Pre => Nkind (Parent (Actual)) in N_Function_Call
-                                          | N_Parameter_Association
-                                          | N_Procedure_Call_Statement
-                                          | N_Unchecked_Type_Conversion;
+   with Pre => Nkind (Parent (Actual)) in N_Function_Call            |
+                                          N_Parameter_Association    |
+                                          N_Procedure_Call_Statement |
+                                          N_Unchecked_Type_Conversion;
    --  @param Actual actual parameter of a call
    --  @return the corresponding formal parameter
 
    function Get_Range (N : Node_Id) return Node_Id
-     with Post => Present (Low_Bound (Get_Range'Result)) and then
-                  Present (High_Bound (Get_Range'Result));
+   with Post => Present (Low_Bound (Get_Range'Result)) and then
+                Present (High_Bound (Get_Range'Result));
    --  @param N more or less any node which has some kind of range, e.g. a
    --     scalar type entity or occurrence, a variable of such type, the type
    --     declaration or a subtype indication.
    --  @return the N_Range node of such a node
 
    function Is_Action (N : Node_Id) return Boolean
-     with Pre => Nkind (N) = N_Object_Declaration;
+   with Pre => Nkind (N) = N_Object_Declaration;
    --  @param N is an object declaration
    --  @return if the given node N is an action
 
@@ -1098,7 +1097,7 @@ package SPARK_Util is
    --  Append all elements from list Elmts to the list To
 
    function Unit_In_Standard_Library (U : Unit_Number_Type) return Boolean is
-      (Get_Kind_Of_Unit (U) /= Not_Predefined_Unit);
+     (Get_Kind_Of_Unit (U) /= Not_Predefined_Unit);
    --  Returns True is unit U is in the standard library, which includes all
    --  units defined in Ada RM, and all units predefined by GNAT.
 
@@ -1115,6 +1114,10 @@ package SPARK_Util is
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element
 
+   function File_Name_Without_Suffix (File_Name : String) return String;
+
+   function String_Value (Str_Id : String_Id) return String;
+
    function Unit_Name return String is
      (File_Name_Without_Suffix (Get_Name_String (Unit_File_Name (Main_Unit))));
 
@@ -1125,7 +1128,14 @@ package SPARK_Util is
    --    generic in case of instances)
 
    function Has_Only_Nonblocking_Statements (N : Node_Id) return Boolean
-     with Pre => Nkind (N) in N_Subprogram_Body | N_Entry_Body;
+   with Pre => Nkind (N) in N_Subprogram_Body | N_Entry_Body;
    --  Check if subprogram body N contains no potentially blocking statements
+
+   function Safe_First_Sloc (N : Node_Id) return Source_Ptr;
+   --  Wrapper for First_Sloc that is safe to use for nodes coming from
+   --  instances of generic units and subprograms inlined for proof.
+   --
+   --  ??? this is only a temporary fix and should be removed once the
+   --  underlying problem with First_Sloc is fixed.
 
 end SPARK_Util;

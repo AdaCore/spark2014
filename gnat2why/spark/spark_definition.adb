@@ -1487,10 +1487,21 @@ package body SPARK_Definition is
                declare
                   Target_Index : Node_Id :=
                     First_Index (Retysp (Etype (N)));
+
+                  Source_Type_Retysp : constant Entity_Id :=
+                    Retysp (Etype (Expression (N)));
+                  --  SPARK representation of the type of source expression
+
                   Source_Index : Node_Id :=
-                    First_Index (Retysp (Etype (Expression (N))));
-                  Dim          : constant Positive :=
-                    Positive (Number_Dimensions (Retysp (Etype (N))));
+                    First_Index
+                      (if Ekind (Source_Type_Retysp) = E_String_Literal_Subtype
+                       then Retysp (Etype (Source_Type_Retysp))
+                       else Source_Type_Retysp);
+                  --  Special case string literals, since First_Index cannot be
+                  --  directly called for them.
+
+                  Dim          : constant Pos :=
+                    Number_Dimensions (Retysp (Etype (N)));
                   Target_Type  : Entity_Id;
                   Source_Type  : Entity_Id;
 
@@ -3158,9 +3169,10 @@ package body SPARK_Definition is
 
       procedure Mark_Type_Entity (E : Entity_Id) is
 
-         function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean;
-         --  return True if E is declared in a private part with
-         --  SPARK_Mode => Off;
+         function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean
+         with Pre => Is_Type (E);
+         --  Return True iff E is declared in a private part with
+         --  SPARK_Mode => Off.
 
          function Is_Synchronous_Barrier (E : Entity_Id) return Boolean;
          --  Return True if E is Ada.Synchronous_Barriers.Synchronous_Barrier
@@ -3174,15 +3186,13 @@ package body SPARK_Definition is
 
          function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean is
             Decl : constant Node_Id :=
-              (if No (Parent (Parent (E)))
-               and then Is_Itype (E) then
-                    Associated_Node_For_Itype (E)
+              (if Is_Itype (E)
+               then Associated_Node_For_Itype (E)
                else Parent (E));
             Pack_Decl : constant Node_Id := Parent (Parent (Decl));
 
          begin
-            pragma Assert
-              (Nkind (Pack_Decl) = N_Package_Declaration);
+            pragma Assert (Nkind (Pack_Decl) = N_Package_Declaration);
 
             return
               Present (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl)))
@@ -3894,8 +3904,7 @@ package body SPARK_Definition is
       then
          declare
             Decl : constant Node_Id :=
-              (if No (Parent (Parent (E)))
-                 and then Is_Itype (E)
+              (if Is_Itype (E)
                then Associated_Node_For_Itype (E)
                else Parent (E));
 

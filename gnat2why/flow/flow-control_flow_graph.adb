@@ -5287,7 +5287,7 @@ package body Flow.Control_Flow_Graph is
       is
       begin
          Dead.Exclude (V);
-         if V = FA.End_Vertex or FA.Atr.Element (V).Is_Exceptional_Path then
+         if V = FA.End_Vertex or else FA.Atr (V).Is_Exceptional_Path then
             --  !!! .Element used here because of container bug
             TV := Flow_Graphs.Skip_Children;
          else
@@ -6557,7 +6557,7 @@ package body Flow.Control_Flow_Graph is
                  FA.CFG.Get_Vertex (Change_Variant (F, Final_Value));
             begin
                pragma Assert (V /= Flow_Graphs.Null_Vertex);
-               if FA.Atr.Element (V).Is_Export then
+               if FA.Atr (V).Is_Export then
                   FA.No_Effects := False;
                   exit;
                end if;

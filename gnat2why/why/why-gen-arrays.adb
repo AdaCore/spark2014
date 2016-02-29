@@ -50,8 +50,8 @@ with Ada.Strings.Fixed;
 package body Why.Gen.Arrays is
 
    procedure Declare_Constrained
-     (Section        : W_Section_Id;
-      Und_Ent        : Entity_Id);
+     (Section : W_Section_Id;
+      Und_Ent : Entity_Id);
    --  Output a declaration for statically constrained array types.
    --  @param Section The section in which the declaration should be added
    --  @param Und_Ent The entity of the array type to be translated. It should
@@ -96,16 +96,16 @@ package body Why.Gen.Arrays is
    --          _gnatprove_standard.mlw
 
    function Prepare_Standard_Array_Logical_Substitutions
-     (Section      : W_Section_Id;
-      Und_Ent      : Entity_Id)
+     (Section : W_Section_Id;
+      Und_Ent : Entity_Id)
       return W_Clone_Substitution_Array;
    --  @param Und_Ent Entity of the array type.
    --  @return An array of substitutions for cloning the module
    --          Standard_Array_Logical_Ax.
 
    function Prepare_Subtype_Array_Logical_Substitutions
-     (Section      : W_Section_Id;
-      Und_Ent      : Entity_Id)
+     (Section : W_Section_Id;
+      Und_Ent : Entity_Id)
       return W_Clone_Substitution_Array;
    --  @param Und_Ent Entity of the array type.
    --  @return An array of substitutions for cloning the module
@@ -127,8 +127,8 @@ package body Why.Gen.Arrays is
       Expr    : W_Expr_Id;
       Arg_Ind : in out Positive)
    is
-      W_Ty    : constant W_Type_Id := Get_Type (Expr);
-      Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
+      W_Ty : constant W_Type_Id := Get_Type (Expr);
+      Ty   : constant Entity_Id := Get_Ada_Node (+W_Ty);
    begin
       if Is_Static_Array_Type (Ty) or else Get_Type_Kind (W_Ty) = EW_Split then
          Args (Arg_Ind) := Expr;
@@ -188,9 +188,9 @@ package body Why.Gen.Arrays is
       Expr    : W_Expr_Id;
       Arg_Ind : in out Positive)
    is
-      W_Ty    : constant W_Type_Id := Get_Type (Expr);
-      Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
-      Dim     : constant Positive := Positive (Number_Dimensions (Ty));
+      W_Ty : constant W_Type_Id := Get_Type (Expr);
+      Ty   : constant Entity_Id := Get_Ada_Node (+W_Ty);
+      Dim  : constant Positive := Positive (Number_Dimensions (Ty));
    begin
       Add_Map_Arg (Domain, Args, Expr, Arg_Ind);
       for I in 1 .. Dim loop
@@ -204,8 +204,8 @@ package body Why.Gen.Arrays is
    -----------------------------
 
    function Array_Convert_From_Base
-     (Domain    : EW_Domain;
-      Ar        : W_Expr_Id) return W_Expr_Id
+     (Domain : EW_Domain;
+      Ar     : W_Expr_Id) return W_Expr_Id
    is
       Ty     : constant W_Type_Id := Get_Type (Ar);
       Ty_Ent : constant Entity_Id := Get_Ada_Node (+Ty);
@@ -224,11 +224,11 @@ package body Why.Gen.Arrays is
    end Array_Convert_From_Base;
 
    function Array_Convert_From_Base
-     (Domain    : EW_Domain;
-      Target    : Entity_Id;
-      Ar        : W_Expr_Id;
-      First     : W_Expr_Id;
-      Last      : W_Expr_Id) return W_Expr_Id
+     (Domain : EW_Domain;
+      Target : Entity_Id;
+      Ar     : W_Expr_Id;
+      First  : W_Expr_Id;
+      Last   : W_Expr_Id) return W_Expr_Id
    is
       First_Int : constant W_Expr_Id :=
         Insert_Conversion_To_Rep_No_Bool
@@ -248,9 +248,9 @@ package body Why.Gen.Arrays is
    end Array_Convert_From_Base;
 
    function Array_Convert_From_Base
-     (Domain    : EW_Domain;
-      Old_Ar    : W_Expr_Id;
-      New_Base  : W_Expr_Id) return W_Expr_Id
+     (Domain   : EW_Domain;
+      Old_Ar   : W_Expr_Id;
+      New_Base : W_Expr_Id) return W_Expr_Id
    is
       Ty     : constant W_Type_Id := Get_Type (New_Base);
       Ty_Ent : constant Entity_Id := Get_Ada_Node (+Ty);
@@ -274,8 +274,8 @@ package body Why.Gen.Arrays is
    ---------------------------
 
    function Array_Convert_To_Base
-     (Domain    : EW_Domain;
-      Ar        : W_Expr_Id) return W_Expr_Id
+     (Domain : EW_Domain;
+      Ar     : W_Expr_Id) return W_Expr_Id
    is
       Ty     : constant W_Type_Id := Get_Type (Ar);
       Ty_Ent : constant Entity_Id := Get_Ada_Node (+Ty);
@@ -299,9 +299,9 @@ package body Why.Gen.Arrays is
    is
       First_Rep : constant W_Expr_Id :=
         Insert_Scalar_Conversion (Domain, Empty, First, Typ);
-      Last_Rep : constant W_Expr_Id :=
+      Last_Rep  : constant W_Expr_Id :=
         Insert_Scalar_Conversion (Domain, Empty, Last, Typ);
-      Cond : constant W_Expr_Id :=
+      Cond      : constant W_Expr_Id :=
         New_Call
           (Domain => Domain,
            Name   => (if Typ = EW_Int_Type
@@ -311,7 +311,7 @@ package body Why.Gen.Arrays is
                       else raise Program_Error),
            Typ    => EW_Bool_Type,
            Args   => (+First_Rep, +Last_Rep));
-      Len : constant W_Expr_Id :=
+      Len       : constant W_Expr_Id :=
         New_Discrete_Add
           (Domain,
            New_Discrete_Substract (Domain, Last_Rep, First_Rep),
@@ -358,7 +358,7 @@ package body Why.Gen.Arrays is
 
    procedure Declare_Ada_Array
      (File : W_Section_Id;
-      E      : Entity_Id)
+      E    : Entity_Id)
    is
       Why_Name : constant W_Name_Id := To_Why_Type (E, Local => True);
    begin
@@ -373,8 +373,9 @@ package body Why.Gen.Arrays is
    -- Declare_Additional_Symbols --
    --------------------------------
 
-   procedure Declare_Additional_Symbols (E      : Entity_Id;
-                                         Section : W_Section_Id) is
+   procedure Declare_Additional_Symbols
+     (E       : Entity_Id;
+      Section : W_Section_Id) is
    begin
 
       if Has_Discrete_Type (Component_Type (E)) then
@@ -389,8 +390,8 @@ package body Why.Gen.Arrays is
               Base_Why_Type_No_Bool (Component_Type (E));
 
             Fst_Idx : constant Node_Id :=
-              (if Ekind (E) = E_String_Literal_Subtype then
-                    First_Index (Retysp (Etype (E)))
+              (if Ekind (E) = E_String_Literal_Subtype
+               then First_Index (Retysp (Etype (E)))
                else First_Index (E));
 
             Sbst : constant W_Clone_Substitution_Array :=
@@ -498,12 +499,12 @@ package body Why.Gen.Arrays is
    -----------------------------------
 
    function Prepare_Indices_Substitutions
-     (Section      : W_Section_Id;
+     (Section     : W_Section_Id;
       Typ         : Entity_Id;
       Prefix      : String;
       Declare_One : Boolean := True) return W_Clone_Substitution_Array
    is
-      WTyp : constant W_Type_Id := Base_Why_Type_No_Bool (Base_Type (Typ));
+      WTyp   : constant W_Type_Id := Base_Why_Type_No_Bool (Base_Type (Typ));
       One_Id : constant W_Identifier_Id :=
         New_Identifier (Name => "index_" & Prefix & "_one");
 
@@ -586,8 +587,8 @@ package body Why.Gen.Arrays is
    --------------------------------------------------
 
    function Prepare_Standard_Array_Logical_Substitutions
-     (Section      : W_Section_Id;
-      Und_Ent      : Entity_Id)
+     (Section : W_Section_Id;
+      Und_Ent : Entity_Id)
       return W_Clone_Substitution_Array
    is
      ((1 =>
@@ -609,8 +610,8 @@ package body Why.Gen.Arrays is
    -------------------------------------------------
 
    function Prepare_Subtype_Array_Logical_Substitutions
-     (Section      : W_Section_Id;
-      Und_Ent      : Entity_Id)
+     (Section : W_Section_Id;
+      Und_Ent : Entity_Id)
       return W_Clone_Substitution_Array
    is
      (Prepare_Standard_Array_Logical_Substitutions (Section, Und_Ent)
@@ -650,8 +651,8 @@ package body Why.Gen.Arrays is
    -------------------------
 
    procedure Declare_Constrained
-     (Section        : W_Section_Id;
-      Und_Ent        : Entity_Id)
+     (Section : W_Section_Id;
+      Und_Ent : Entity_Id)
    is
       Dimension       : constant Pos := Number_Dimensions (Und_Ent);
       Index           : Entity_Id := First_Index (Und_Ent);
@@ -698,6 +699,8 @@ package body Why.Gen.Arrays is
          Cursor := Cursor + 1;
       end Declare_Attribute;
 
+   --  Start of processing for Declare_Constrained
+
    begin
 
       Emit (Section,
@@ -724,7 +727,7 @@ package body Why.Gen.Arrays is
          pragma Assert (Has_Array_Type (Etype (Und_Ent)) and then
                         Ekind (Etype (Und_Ent)) /= E_String_Literal_Subtype);
          declare
-            Low : constant Uint :=
+            Low  : constant Uint :=
               Expr_Value (String_Literal_Low_Bound (Und_Ent));
             R_Ty : constant W_Type_Id := Base_Why_Type_No_Bool
               (Base_Type (Retysp (Etype (
@@ -750,7 +753,7 @@ package body Why.Gen.Arrays is
          begin
             while Present (Index) loop
                declare
-                  Rng    : constant Node_Id := Get_Range (Index);
+                  Rng  : constant Node_Id := Get_Range (Index);
                   R_Ty : constant W_Type_Id := Base_Why_Type_No_Bool
                     (Base_Type (Retysp (Etype (Index))));
                begin
@@ -791,7 +794,7 @@ package body Why.Gen.Arrays is
    ---------------------------
 
    procedure Declare_Unconstrained
-     (Section         : W_Section_Id;
+     (Section        : W_Section_Id;
       Why3_Type_Name : W_Name_Id;
       Und_Ent        : Entity_Id)
    is
@@ -1040,8 +1043,8 @@ package body Why.Gen.Arrays is
       Attr   : Attribute_Id;
       Dim    : Positive) return W_Expr_Id
    is
-      W_Ty    : constant W_Type_Id := Get_Type (Expr);
-      Ty      : constant Entity_Id := Get_Ada_Node (+W_Ty);
+      W_Ty : constant W_Type_Id := Get_Type (Expr);
+      Ty   : constant Entity_Id := Get_Ada_Node (+W_Ty);
    begin
 
       --  If the type is constrained, just use the type information
@@ -1087,10 +1090,11 @@ package body Why.Gen.Arrays is
       end if;
    end Get_Array_Attr;
 
-   function Get_Array_Attr (Domain : EW_Domain;
-                            Item   : Item_Type;
-                            Attr   : Attribute_Id;
-                            Dim    : Positive) return W_Expr_Id
+   function Get_Array_Attr
+     (Domain : EW_Domain;
+      Item   : Item_Type;
+      Attr   : Attribute_Id;
+      Dim    : Positive) return W_Expr_Id
    is
    begin
       case Attr is
@@ -1181,11 +1185,11 @@ package body Why.Gen.Arrays is
    ----------------------
 
    function New_Array_Update
-     (Ada_Node  : Node_Id;
-      Ar        : W_Expr_Id;
-      Index     : W_Expr_Array;
-      Value     : W_Expr_Id;
-      Domain    : EW_Domain) return W_Expr_Id
+     (Ada_Node : Node_Id;
+      Ar       : W_Expr_Id;
+      Index    : W_Expr_Array;
+      Value    : W_Expr_Id;
+      Domain   : EW_Domain) return W_Expr_Id
    is
       W_Ty      : constant W_Type_Id := Get_Type (Ar);
       Ty_Entity : constant Entity_Id := Get_Ada_Node (+W_Ty);
@@ -1237,9 +1241,10 @@ package body Why.Gen.Arrays is
    --------------------------
 
    function New_Bounds_Equality
-     (Left_Arr   : W_Expr_Id;
-      Right_Arr  : W_Expr_Id;
-      Dim        : Positive) return W_Pred_Id is
+     (Left_Arr  : W_Expr_Id;
+      Right_Arr : W_Expr_Id;
+      Dim       : Positive) return W_Pred_Id
+   is
       Result : W_Expr_Id := +True_Pred;
    begin
       for I in 1 .. Dim loop
@@ -1303,24 +1308,24 @@ package body Why.Gen.Arrays is
    ---------------------------
 
    function New_Element_Equality
-     (Ada_Node   : Node_Id := Empty;
-      Left_Arr   : W_Expr_Id;
-      Right_Arr  : W_Expr_Id;
-      Index      : W_Expr_Array) return W_Pred_Id
+     (Ada_Node  : Node_Id := Empty;
+      Left_Arr  : W_Expr_Id;
+      Right_Arr : W_Expr_Id;
+      Index     : W_Expr_Array) return W_Pred_Id
    is
-      Left       : constant W_Expr_Id :=
+      Left   : constant W_Expr_Id :=
         New_Array_Access
           (Ada_Node  => Ada_Node,
            Domain    => EW_Term,
            Ar        => Left_Arr,
            Index     => Index);
-      Right      : constant W_Expr_Id :=
+      Right  : constant W_Expr_Id :=
         New_Array_Access
           (Ada_Node  => Ada_Node,
            Domain    => EW_Term,
            Ar        => Right_Arr,
            Index     => Index);
-      Result     : constant W_Pred_Id :=
+      Result : constant W_Pred_Id :=
         +New_Comparison
         (Domain    => EW_Pred,
          Symbol    => Why_Eq,
@@ -1352,10 +1357,10 @@ package body Why.Gen.Arrays is
    ---------------------------
 
    function Get_Array_Theory_Name (E : Entity_Id) return Name_Id is
-      Name : Unbounded_String := To_Unbounded_String ("Array_");
+      Name      : Unbounded_String := To_Unbounded_String ("Array_");
       Type_Name : Unbounded_String;
-      Index : Node_Id := First_Index (Retysp (Etype (E)));
-      Dim : constant Positive :=
+      Index     : Node_Id := First_Index (Retysp (Etype (E)));
+      Dim       : constant Positive :=
         Positive (Number_Dimensions (Retysp (Etype (E))));
    begin
       for I in 1 .. Dim loop
@@ -1483,7 +1488,7 @@ package body Why.Gen.Arrays is
       E             : Entity_Id;
       Register_Only : Boolean := False)
    is
-      Name : constant Name_Id := Get_Array_Theory_Name (E);
+      Name   : constant Name_Id := Get_Array_Theory_Name (E);
       Module : W_Module_Id;
 
    begin

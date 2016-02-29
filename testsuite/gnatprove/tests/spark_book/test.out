@@ -712,8 +712,8 @@ generic_searchers.ads:12:29: info: initialization of "Result" proved, in instant
 generic_searchers.ads:12:29: info: initialization of "Result" proved, in instantiation at search_demo.adb:12
 generic_searchers.ads:15:74: info: index check proved, in instantiation at prime_search.adb:15
 generic_searchers.ads:15:74: info: index check proved, in instantiation at search_demo.adb:12
-generic_searchers.ads:16:05: info: postcondition proved, in instantiation at prime_search.adb:15
-generic_searchers.ads:16:05: info: postcondition proved, in instantiation at search_demo.adb:12
+generic_searchers.ads:16:17: info: postcondition proved, in instantiation at prime_search.adb:15
+generic_searchers.ads:16:17: info: postcondition proved, in instantiation at search_demo.adb:12
 generic_searchers.ads:16:20: info: initialization of "Found" proved, in instantiation at prime_search.adb:15
 generic_searchers.ads:16:20: info: initialization of "Found" proved, in instantiation at search_demo.adb:12
 generic_searchers.ads:17:41: info: initialization of "Result" proved, in instantiation at prime_search.adb:15

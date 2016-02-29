@@ -27,7 +27,6 @@
 with Ada.Directories;
 with Ada.Strings.Unbounded;    use Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with AA_Util;                  use AA_Util;
 with ALI.Util;                 use ALI.Util;
 with ALI;                      use ALI;
 with Atree;                    use Atree;
@@ -268,7 +267,7 @@ package body Gnat2Why.Driver is
             ALI_File_Name : constant File_Name_Type :=
               ALIs.Table (Main_Lib_Id).Afile;
             ALI_File_Name_Str : constant String :=
-              Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
+              Get_Name_String (Full_Lib_File_Name (ALI_File_Name));
          begin
             Load_SPARK_Xrefs (ALI_File_Name_Str);
          end;
@@ -283,7 +282,7 @@ package body Gnat2Why.Driver is
                ALI_File_Name : constant File_Name_Type :=
                  ALIs.Table (Index).Afile;
                ALI_File_Name_Str : constant String :=
-                 Name_String (Name_Id (Full_Lib_File_Name (ALI_File_Name)));
+                 Get_Name_String (Full_Lib_File_Name (ALI_File_Name));
             begin
                Load_SPARK_Xrefs (ALI_File_Name_Str);
             end;

@@ -28,6 +28,7 @@ with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Ada.Strings;                        use Ada.Strings;
 with Assumption_Types;                   use Assumption_Types;
 with Csets;                              use Csets;
+with Errout;                             use Errout;
 with Exp_Util;                           use Exp_Util;
 with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
@@ -68,16 +69,16 @@ package body SPARK_Util is
    end Set_Partial_View;
 
    function Partial_View (E : Entity_Id) return Entity_Id is
-      (if Partial_Views.Contains (E) then
-         Partial_Views.Element (E)
-       else Empty);
+     (if Partial_Views.Contains (E) then
+        Partial_Views.Element (E)
+      else Empty);
 
    function Is_Full_View (E : Entity_Id) return Boolean is
-      (Present (Partial_View (E)));
+     (Present (Partial_View (E)));
 
    function Is_Partial_View (E : Entity_Id) return Boolean is
      ((Is_Type (E) or else Ekind (E) = E_Constant) and then
-      Present (Full_View (E)));
+        Present (Full_View (E)));
 
    Specific_Tagged_Types : Node_Maps.Map;
    --  Map from classwide types to the corresponding specific tagged type
@@ -473,10 +474,10 @@ package body SPARK_Util is
       With_Inlined : Boolean) return Boolean is
    begin
       return
-       --  Either the analysis is requested for the complete unit, or if it is
-       --  requested for a specific subprogram/task, check whether it is E.
+        --  Either the analysis is requested for the complete unit, or if it is
+        --  requested for a specific subprogram/task, check whether it is E.
 
-       Is_In_Analyzed_Files (E) and then
+        Is_In_Analyzed_Files (E) and then
         (
          --  Always analyze the subprogram if analysis was specifically
          --  requested for it.
@@ -488,10 +489,10 @@ package body SPARK_Util is
          --  subprograms that are not inlined.
 
          or else (Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
-                  and then
+                    and then
                     (With_Inlined
-                     or else not Referenced (E)
-                     or else not Is_Local_Subprogram_Always_Inlined (E))));
+                       or else not Referenced (E)
+                       or else not Is_Local_Subprogram_Always_Inlined (E))));
 
    end Analysis_Requested;
 
@@ -768,8 +769,8 @@ package body SPARK_Util is
       --  initialized component.
 
       function Get_Default_Init_Cond_Pragma (Typ : Entity_Id) return Node_Id
-        with Pre => Has_Default_Init_Cond (Typ) or else
-                    Has_Inherited_Default_Init_Cond (Typ);
+      with Pre => Has_Default_Init_Cond (Typ) or else
+                  Has_Inherited_Default_Init_Cond (Typ);
       --  Returns the unanalyzed pragma Default_Initial_Condition applying to a
       --  type.
 
@@ -1191,6 +1192,39 @@ package body SPARK_Util is
       return Corresponding_Body (Ptr);
    end Entry_Body_Entity;
 
+   ------------------------------
+   -- File_Name_Without_Suffix --
+   ------------------------------
+
+   function File_Name_Without_Suffix (File_Name : String) return String is
+      Name_Index : Natural := File_Name'Last;
+
+   begin
+      pragma Assert (File_Name'Length > 0);
+
+      --  We loop in reverse to ensure that file names that follow nonstandard
+      --  naming conventions that include additional dots are handled properly,
+      --  preserving dots in front of the main file suffix (for example,
+      --  main.2.ada => main.2).
+
+      while Name_Index >= File_Name'First
+        and then File_Name (Name_Index) /= '.'
+      loop
+         Name_Index := Name_Index - 1;
+      end loop;
+
+      --  Return the part of the file name up to but not including the last dot
+      --  in the name, or return the whole name as is if no dot character was
+      --  found.
+
+      if Name_Index >= File_Name'First then
+         return File_Name (File_Name'First .. Name_Index - 1);
+
+      else
+         return File_Name;
+      end if;
+   end File_Name_Without_Suffix;
+
    --------------------
    -- Find_Contracts --
    --------------------
@@ -1358,10 +1392,10 @@ package body SPARK_Util is
          Param := First (Params);
          while Present (Param) loop
             case Formal_Kind'(Ekind (Defining_Identifier (Param))) is
-            when E_Out_Parameter | E_In_Out_Parameter =>
-               return False;
-            when E_In_Parameter =>
-               null;
+               when E_Out_Parameter | E_In_Out_Parameter =>
+                  return False;
+               when E_In_Parameter =>
+                  null;
             end case;
             Next (Param);
          end loop;
@@ -1887,8 +1921,8 @@ package body SPARK_Util is
 
    function Has_Static_Discrete_Predicate (E : Entity_Id) return Boolean is
      (Is_Discrete_Type (E)
-       and then Has_Predicates (E)
-       and then Present (Static_Discrete_Predicate (E)));
+        and then Has_Predicates (E)
+        and then Present (Static_Discrete_Predicate (E)));
 
    -------------------------------
    -- Has_User_Supplied_Globals --
@@ -1896,7 +1930,7 @@ package body SPARK_Util is
 
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean is
      (Present (Get_Pragma (E, Pragma_Global))
-       or else Present (Get_Pragma (E, Pragma_Depends)));
+        or else Present (Get_Pragma (E, Pragma_Depends)));
 
    ------------------
    -- Has_Volatile --
@@ -1904,15 +1938,15 @@ package body SPARK_Util is
 
    function Has_Volatile (E : Entity_Id) return Boolean is
      (if Ekind (E) = E_Abstract_State then
-         Is_External_State (E)
+        Is_External_State (E)
       elsif Is_Part_Of_Concurrent_Object (E) then
-         True
+        True
       elsif Is_Concurrent_Type (Etype (E)) then
-         True
+        True
       elsif Ekind (E) in Object_Kind then
-         Is_Effectively_Volatile (E)
+        Is_Effectively_Volatile (E)
       else
-         Is_Effectively_Volatile_Object (E));
+        Is_Effectively_Volatile_Object (E));
 
    -------------------------
    -- Has_Volatile_Flavor --
@@ -2075,7 +2109,7 @@ package body SPARK_Util is
          --  Indexing variable
 
          function Scope_Name (Nth : Scope_Index) return Name_Id with
-         Pure_Function;
+           Pure_Function;
          --  Return name of the Nth scope for the analyzed entity.
          --  For 0 the result is always Standard,
          --  For 1 the result is Ada/Interfaces/System or user-defined,
@@ -2108,8 +2142,8 @@ package body SPARK_Util is
                  and then Is_Generic_Instance (Parent_Scope)
                then
                   Parent_Scope :=
-                    Entity (Name (
-                            Get_Package_Instantiation_Node (Parent_Scope)));
+                    Entity
+                      (Name (Get_Package_Instantiation_Node (Parent_Scope)));
                end if;
 
                Scope_Id := Scope_Id - 1;
@@ -2416,22 +2450,13 @@ package body SPARK_Util is
    -----------------------------
 
    function In_Private_Declarations (Decl : Node_Id) return Boolean is
-      N : Node_Id;
-
+      Par : constant Node_Id := Parent (Decl);
    begin
-      if Present (Parent (Decl))
-        and then Nkind (Parent (Decl)) = N_Package_Specification
-      then
-         N := First (Private_Declarations (Parent (Decl)));
-         while Present (N) loop
-            if Decl = N then
-               return True;
-            end if;
-            Next (N);
-         end loop;
-      end if;
-
-      return False;
+      return
+        Present (Par)
+        and then Nkind (Par) = N_Package_Specification
+        and then Is_List_Member (Decl)
+        and then List_Containing (Decl) = Private_Declarations (Par);
    end In_Private_Declarations;
 
    -----------------------------
@@ -2439,22 +2464,13 @@ package body SPARK_Util is
    -----------------------------
 
    function In_Visible_Declarations (Decl : Node_Id) return Boolean is
-      N : Node_Id;
-
+      Par : constant Node_Id := Parent (Decl);
    begin
-      if Present (Parent (Decl))
-        and then Nkind (Parent (Decl)) = N_Package_Specification
-      then
-         N := First (Visible_Declarations (Parent (Decl)));
-         while Present (N) loop
-            if Decl = N then
-               return True;
-            end if;
-            Next (N);
-         end loop;
-      end if;
-
-      return False;
+      return
+        Present (Par)
+        and then Nkind (Par) = N_Package_Specification
+        and then Is_List_Member (Decl)
+        and then List_Containing (Decl) = Visible_Declarations (Par);
    end In_Visible_Declarations;
 
    ---------------
@@ -2470,28 +2486,28 @@ package body SPARK_Util is
          return False;
       end if;
 
-      case Nkind (P) is
-         when N_Component_Association =>
-            return L = Loop_Actions (P);
-         when N_And_Then | N_Or_Else =>
-            return L = Actions (P);
-         when N_If_Expression =>
-            return L = Then_Actions (P) or L = Else_Actions (P);
-         when N_Case_Expression_Alternative =>
-            return L = Actions (P);
-         when N_Elsif_Part =>
-            return L = Condition_Actions (P);
-         when N_Iteration_Scheme =>
-            return L = Condition_Actions (P);
-         when N_Block_Statement =>
-            return L = Cleanup_Actions (P);
-         when N_Expression_With_Actions =>
-            return L = Actions (P);
-         when N_Freeze_Entity =>
-            return L = Actions (P);
-         when others =>
-            return False;
-      end case;
+      return
+        (case Nkind (P) is
+            when N_Component_Association =>
+               L = Loop_Actions (P),
+            when N_And_Then | N_Or_Else =>
+               L = Actions (P),
+            when N_If_Expression =>
+               L = Then_Actions (P) or else L = Else_Actions (P),
+            when N_Case_Expression_Alternative =>
+               L = Actions (P),
+            when N_Elsif_Part =>
+               L = Condition_Actions (P),
+            when N_Iteration_Scheme =>
+               L = Condition_Actions (P),
+            when N_Block_Statement =>
+               L = Cleanup_Actions (P),
+            when N_Expression_With_Actions =>
+               L = Actions (P),
+            when N_Freeze_Entity =>
+               L = Actions (P),
+            when others =>
+               False);
    end Is_Action;
 
    ---------------------------------------
@@ -2522,36 +2538,27 @@ package body SPARK_Util is
    -----------------------------
 
    function Is_Ignored_Pragma_Check (N : Node_Id) return Boolean is
-   begin
-      return Is_Pragma_Check (N, Name_Precondition)
-               or else
-             Is_Pragma_Check (N, Name_Pre)
-               or else
-             Is_Pragma_Check (N, Name_Postcondition)
-               or else
-             Is_Pragma_Check (N, Name_Post)
-               or else
-             Is_Pragma_Check (N, Name_Refined_Post)
-               or else
-             Is_Pragma_Check (N, Name_Static_Predicate)
-               or else
-             Is_Pragma_Check (N, Name_Predicate)
-               or else
-             Is_Pragma_Check (N, Name_Dynamic_Predicate);
-   end Is_Ignored_Pragma_Check;
+     (Is_Pragma (N, Pragma_Check)
+        and then
+        Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N)))) in
+          Name_Precondition     |
+          Name_Pre              |
+          Name_Postcondition    |
+          Name_Post             |
+          Name_Refined_Post     |
+          Name_Static_Predicate |
+          Name_Predicate        |
+          Name_Dynamic_Predicate);
 
    --------------------------
    -- Is_In_Analyzed_Files --
    --------------------------
 
    function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
-      Encl_Unit : Node_Id;
-
-   begin
+      Encl_Unit : constant Node_Id := Enclosing_Lib_Unit_Node (E);
       --  Retrieve the library unit containing E
 
-      Encl_Unit := Enclosing_Lib_Unit_Node (E);
-
+   begin
       --  case 1: the entity is neither in the spec or body compilation unit of
       --  the unit currently analyzed, so return False.
 
@@ -2612,6 +2619,10 @@ package body SPARK_Util is
       function Has_Renaming_As_Body (E : Entity_Id) return Boolean;
       --  Returns true iff subprogram E is completed by renaming-as-body
 
+      --------------------------
+      -- Has_Renaming_As_Body --
+      --------------------------
+
       function Has_Renaming_As_Body (E : Entity_Id) return Boolean is
          B : constant Node_Id := Subprogram_Body (E);
       begin
@@ -2640,8 +2651,8 @@ package body SPARK_Util is
       Spec := Subprogram_Spec (E);
 
       return Present (Spec)
-           and then Present (Body_To_Inline (Spec))
-           and then not Has_Renaming_As_Body (E);
+        and then Present (Body_To_Inline (Spec))
+        and then not Has_Renaming_As_Body (E);
    end Is_Local_Subprogram_Always_Inlined;
 
    -------------------
@@ -2655,8 +2666,7 @@ package body SPARK_Util is
    -- Is_Volatile_For_Internal_Calls --
    ---------------------------------------
 
-   function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
-   is
+   function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean is
    begin
       return Ekind (E) = E_Function
         and then Is_Protected_Type (Scope (E))
@@ -2668,7 +2678,7 @@ package body SPARK_Util is
    -------------------
 
    function Is_Null_Range (T : Entity_Id) return Boolean is
-      (Is_Discrete_Type (T)
+     (Is_Discrete_Type (T)
         and then Has_Static_Scalar_Subtype (T)
         and then Expr_Value (Low_Bound (Scalar_Range (T))) >
                  Expr_Value (High_Bound (Scalar_Range (T))));
@@ -2688,10 +2698,10 @@ package body SPARK_Util is
    ----------------------
 
    function Is_Package_State (E : Entity_Id) return Boolean is
-      (Ekind (E) = E_Abstract_State
-         or else
-      (Ekind (E) = E_Variable
-         and then Ekind (Scope (E)) in E_Package | E_Package_Body));
+     (Ekind (E) = E_Abstract_State
+        or else
+        (Ekind (E) = E_Variable
+           and then Ekind (Scope (E)) in E_Package | E_Package_Body));
 
    ---------------
    -- Is_Pragma --
@@ -2699,7 +2709,7 @@ package body SPARK_Util is
 
    function Is_Pragma (N : Node_Id; Name : Pragma_Id) return Boolean is
      (Nkind (N) = N_Pragma
-       and then Get_Pragma_Id (Pragma_Name (N)) = Name);
+        and then Get_Pragma_Id (Pragma_Name (N)) = Name);
 
    ----------------------------------
    -- Is_Pragma_Annotate_Gnatprove --
@@ -2721,8 +2731,8 @@ package body SPARK_Util is
 
    begin
       return
-        (Present (Orig) and then
-         Is_Pragma (Orig, Pragma_Assert_And_Cut));
+        (Present (Orig)
+           and then Is_Pragma (Orig, Pragma_Assert_And_Cut));
    end Is_Pragma_Assert_And_Cut;
 
    ---------------------
@@ -2741,7 +2751,7 @@ package body SPARK_Util is
 
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean is
      (Nkind (N) = N_Function_Call
-      and then Is_Predicate_Function (Entity (Name (N))));
+        and then Is_Predicate_Function (Entity (Name (N))));
 
    -----------------------------
    -- Is_Protected_Subprogram --
@@ -2781,8 +2791,8 @@ package body SPARK_Util is
 
    function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean is
      (Present (Scope (E))
-       and then Present (Parent (Scope (E)))
-       and then Nkind (Parent (Scope (E))) = N_Quantified_Expression);
+        and then Present (Parent (Scope (E)))
+        and then Nkind (Parent (Scope (E))) = N_Quantified_Expression);
 
    -------------------------------------
    -- Is_Requested_Subprogram_Or_Task --
@@ -2843,8 +2853,8 @@ package body SPARK_Util is
 
    function Is_Spec_Unit_Of_Main_Unit (N : Node_Id) return Boolean is
      (Present (Corresponding_Body (N))
-       and then Is_Main_Cunit
-        (Unit (Enclosing_Lib_Unit_Node (Corresponding_Body (N)))));
+        and then Is_Main_Cunit
+          (Unit (Enclosing_Lib_Unit_Node (Corresponding_Body (N)))));
 
    ------------------------------
    -- Is_Standard_Boolean_Type --
@@ -2863,8 +2873,8 @@ package body SPARK_Util is
 
    function Is_Static_Array_Type (E : Entity_Id) return Boolean is
      (Is_Array_Type (E)
-       and then Is_Constrained (E)
-       and then Has_Static_Array_Bounds (E));
+        and then Is_Constrained (E)
+        and then Has_Static_Array_Bounds (E));
 
    ----------------------------
    -- Iterate_Call_Arguments --
@@ -3062,7 +3072,7 @@ package body SPARK_Util is
          if Nkind (Decl) in N_Subprogram_Declaration
            | N_Abstract_Subprogram_Declaration
            and then Present (Get_Pragma (Defining_Entity (Decl),
-                             Pragma_Attach_Handler))
+                                         Pragma_Attach_Handler))
          then
             return True;
          end if;
@@ -3166,6 +3176,15 @@ package body SPARK_Util is
 
       return Result;
    end Root_Record_Type;
+
+   ---------------------
+   -- Safe_First_Sloc --
+   ---------------------
+
+   function Safe_First_Sloc (N : Node_Id) return Source_Ptr is
+     (if Instantiation_Location (Sloc (N)) = No_Location
+      then First_Sloc (N)
+      else Sloc (First_Node (N)));
 
    ------------------------------
    -- Search_Component_By_Name --
@@ -3380,6 +3399,23 @@ package body SPARK_Util is
       return Node_To_String (N, "");
    end String_Of_Node;
 
+   ------------------
+   -- String_Value --
+   ------------------
+
+   function String_Value (Str_Id : String_Id) return String is
+   begin
+      --  ??? pragma Assert (Str_Id /= No_String);
+
+      if Str_Id = No_String then
+         return "";
+      end if;
+
+      String_To_Name_Buffer (Str_Id);
+
+      return Name_Buffer (1 .. Name_Len);
+   end String_Value;
+
    -------------------
    -- Subp_Location --
    -------------------
@@ -3425,9 +3461,9 @@ package body SPARK_Util is
 
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean is
      (Ekind (E) = E_Procedure and then
-       (Is_Invariant_Procedure (E)
-          or else
-        Is_Default_Init_Cond_Procedure (E)));
+        (Is_Invariant_Procedure (E)
+           or else
+         Is_Default_Init_Cond_Procedure (E)));
 
    ---------------
    -- Task_Body --
@@ -3462,10 +3498,10 @@ package body SPARK_Util is
    function Get_Body (E : Entity_Id) return Node_Id is
    begin
       return (case Ekind (E) is
-              when Entry_Kind      => Entry_Body (E),
-              when E_Task_Type     => Task_Body (E),
-              when Subprogram_Kind => Subprogram_Body (E),
-              when others          => raise Program_Error);
+                 when Entry_Kind      => Entry_Body (E),
+                 when E_Task_Type     => Task_Body (E),
+                 when Subprogram_Kind => Subprogram_Body (E),
+                 when others          => raise Program_Error);
    end Get_Body;
 
    ---------------------
@@ -3475,10 +3511,10 @@ package body SPARK_Util is
    function Get_Body_Entity (E : Entity_Id) return Entity_Id is
    begin
       return (case Ekind (E) is
-              when E_Entry => Entry_Body_Entity (E),
-              when E_Task_Type => Task_Body_Entity (E),
-              when Subprogram_Kind => Subprogram_Body_Entity (E),
-              when others => raise Program_Error);
+                 when E_Entry         => Entry_Body_Entity (E),
+                 when E_Task_Type     => Task_Body_Entity (E),
+                 when Subprogram_Kind => Subprogram_Body_Entity (E),
+                 when others          => raise Program_Error);
    end Get_Body_Entity;
 
    ----------------------------------
