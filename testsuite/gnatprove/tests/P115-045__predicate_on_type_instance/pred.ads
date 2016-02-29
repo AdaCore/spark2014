@@ -8,5 +8,7 @@ package Pred is
   --  wrong.
 
 private
-  type A_Type is null record;
+  type A_Type is record
+     Dummy: Integer;
+  end record;
 end Pred;
