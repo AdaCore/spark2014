@@ -770,7 +770,7 @@ package SPARK_Util is
    --  @param E subprogram
    --  @return True iff E is a library level subprogram, has no formal
    --     parameters (E is allowed to have global parameters), and is either
-   --     a procedure or a function that return integer type
+   --     a procedure or a function that returns an integer type
    --
    --  Note: this check is equivalent to rules enforced by GNAT and is more
    --  restrictive than Ada RM (which allows pretty much every subprogram to
