@@ -281,7 +281,7 @@ package SPARK_Util is
 
    function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean;
    --  Returns whether type T has a scalar subtype with statically known
-   --  bounds. This included looking past private types.
+   --  bounds. This includes looking past private types.
 
    ---------------------------------
    -- Queries related to entities --
@@ -471,7 +471,7 @@ package SPARK_Util is
                 or else Is_Constrained (Typ)
                 or else Has_Defaulted_Discriminants (Typ))
       and then not Is_Class_Wide_Type (Typ));
-   --  Determine wether there can be default initialized variables of a type.
+   --  Determine whether there can be default initialized variables of a type.
    --  @param Typ any type
    --  @return False if Typ is unconstrained.
 
