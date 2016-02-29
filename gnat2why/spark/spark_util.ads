@@ -600,8 +600,8 @@ package SPARK_Util is
    --  @return True iff E is logically part of a protected object, either being
    --    a discriminant of field of the object, or being a "part_of".
 
-   function Requires_Interrupt_Priority (E : Entity_Id) return Boolean with
-     Pre => Is_Protected_Type (E);
+   function Requires_Interrupt_Priority (E : Entity_Id) return Boolean
+   with Pre => Is_Protected_Type (E);
    --  @param E the entity of a protected type
    --  @return True if E contains a protected procedure with Attach_Handler
    --  specified. Note that Interrupt_Handler cannot be True with the Ravenscar
@@ -719,12 +719,12 @@ package SPARK_Util is
    --  @return True iff there is at least one contract Name for E
 
    function Has_Extensions_Visible (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
+   with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
    --  @param E subprogram
    --  @return True iff Extensions_Visible is specified for E
 
    function Has_User_Supplied_Globals (E : Entity_Id) return Boolean
-     with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
+   with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
    --  @param E subprogram
    --  @return True iff E has a data dependencies (Global) or flow
    --     dependencies (Depends) contract
@@ -743,7 +743,7 @@ package SPARK_Util is
 
    function Is_Invisible_Dispatching_Operation
      (E : Entity_Id) return Boolean
-     with Pre => Is_Dispatching_Operation (E);
+   with Pre => Is_Dispatching_Operation (E);
    --  @param E subprogram
    --  @return True iff E has is a public operation on a private type whose
    --     public view is not tagged. Hence, Pre'Class and Post'Class cannot be
@@ -777,7 +777,7 @@ package SPARK_Util is
    --  be main). See Ada 95 Quality and Style Guide, 7.1.4 for details.
 
    function Subprogram_Full_Source_Name (E : Entity_Id) return String
-     with Pre => Present (E) and then Sloc (E) /= No_Location;
+   with Pre => Present (E) and then Sloc (E) /= No_Location;
    --  For a subprogram entity, return its scoped name, e.g. for subprogram
    --  Nested in
    --
@@ -799,10 +799,10 @@ package SPARK_Util is
    --  @return True iff E should not be translated into Why3
 
    function Subp_Location (E : Entity_Id) return String
-     with Pre => Ekind (E) in Subprogram_Kind |
-                              E_Package       |
-                              Task_Kind       |
-                              Entry_Kind;
+   with Pre => Ekind (E) in Subprogram_Kind |
+                            E_Package       |
+                            Task_Kind       |
+                            Entry_Kind;
    --  @param E subprogram, package, task or entry
    --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file and
    --    line where this entity is declared. This allows to identify the entity
@@ -856,18 +856,18 @@ package SPARK_Util is
    --  @return the protected definition for the given type
 
    function Containing_Protected_Type (E : Entity_Id) return Entity_Id
-     with Pre => (case Ekind (E) is
-                     when E_Component    |
-                          E_Discriminant =>
-                        Ekind (Scope (E)) in Protected_Kind,
+   with Pre => (case Ekind (E) is
+                   when E_Component    |
+                        E_Discriminant =>
+                      Ekind (Scope (E)) in Protected_Kind,
 
-                     when E_Function     |
-                          E_Procedure    |
-                          Entry_Kind     =>
-                        Is_Protected_Subprogram (E),
+                   when E_Function     |
+                        E_Procedure    |
+                        Entry_Kind     =>
+                      Is_Protected_Subprogram (E),
 
-                     when others         =>
-                        False),
+                   when others         =>
+                      False),
           Post => Ekind (Containing_Protected_Type'Result) in Protected_Kind;
    --  @param E a subprogram or entry or field which is part of a protected
    --            type
@@ -1039,23 +1039,23 @@ package SPARK_Util is
    --  @return the subprogram or entry called
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
-     with Pre => Nkind (Parent (Actual)) in N_Function_Call
-                                          | N_Parameter_Association
-                                          | N_Procedure_Call_Statement
-                                          | N_Unchecked_Type_Conversion;
+   with Pre => Nkind (Parent (Actual)) in N_Function_Call            |
+                                          N_Parameter_Association    |
+                                          N_Procedure_Call_Statement |
+                                          N_Unchecked_Type_Conversion;
    --  @param Actual actual parameter of a call
    --  @return the corresponding formal parameter
 
    function Get_Range (N : Node_Id) return Node_Id
-     with Post => Present (Low_Bound (Get_Range'Result)) and then
-                  Present (High_Bound (Get_Range'Result));
+   with Post => Present (Low_Bound (Get_Range'Result)) and then
+                Present (High_Bound (Get_Range'Result));
    --  @param N more or less any node which has some kind of range, e.g. a
    --     scalar type entity or occurrence, a variable of such type, the type
    --     declaration or a subtype indication.
    --  @return the N_Range node of such a node
 
    function Is_Action (N : Node_Id) return Boolean
-     with Pre => Nkind (N) = N_Object_Declaration;
+   with Pre => Nkind (N) = N_Object_Declaration;
    --  @param N is an object declaration
    --  @return if the given node N is an action
 
@@ -1097,7 +1097,7 @@ package SPARK_Util is
    --  Append all elements from list Elmts to the list To
 
    function Unit_In_Standard_Library (U : Unit_Number_Type) return Boolean is
-      (Get_Kind_Of_Unit (U) /= Not_Predefined_Unit);
+     (Get_Kind_Of_Unit (U) /= Not_Predefined_Unit);
    --  Returns True is unit U is in the standard library, which includes all
    --  units defined in Ada RM, and all units predefined by GNAT.
 
@@ -1128,7 +1128,7 @@ package SPARK_Util is
    --    generic in case of instances)
 
    function Has_Only_Nonblocking_Statements (N : Node_Id) return Boolean
-     with Pre => Nkind (N) in N_Subprogram_Body | N_Entry_Body;
+   with Pre => Nkind (N) in N_Subprogram_Body | N_Entry_Body;
    --  Check if subprogram body N contains no potentially blocking statements
 
    function Safe_First_Sloc (N : Node_Id) return Source_Ptr;
