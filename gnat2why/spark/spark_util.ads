@@ -235,10 +235,10 @@ package SPARK_Util is
    --     of type.
 
    --  The following functions provide wrappers for the query functions in
-   --  Einfo, that apply the query on the "Representative Type in SPARK" of its
-   --  argument, hence skipping all layers of pivate types. To avoid confusion,
-   --  the wrapper for function Einfo.Is_Such_And_Such_Type is called
-   --  Has_Such_And_Such_Type.
+   --  Einfo, that apply the query on the "Representative Type in SPARK" of
+   --  its argument, hence skipping all layers of private types. To avoid
+   --  confusion, the wrapper for function Einfo.Is_Such_And_Such_Type is
+   --  called Has_Such_And_Such_Type.
 
    function Has_Access_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Access_Kind);
