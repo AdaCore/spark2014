@@ -3169,9 +3169,10 @@ package body SPARK_Definition is
 
       procedure Mark_Type_Entity (E : Entity_Id) is
 
-         function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean;
-         --  return True if E is declared in a private part with
-         --  SPARK_Mode => Off;
+         function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean
+         with Pre => Is_Type (E);
+         --  Return True iff E is declared in a private part with
+         --  SPARK_Mode => Off.
 
          function Is_Synchronous_Barrier (E : Entity_Id) return Boolean;
          --  Return True if E is Ada.Synchronous_Barriers.Synchronous_Barrier
@@ -3185,9 +3186,8 @@ package body SPARK_Definition is
 
          function Is_Private_Entity_Mode_Off (E : Entity_Id) return Boolean is
             Decl : constant Node_Id :=
-              (if No (Parent (Parent (E)))
-               and then Is_Itype (E) then
-                    Associated_Node_For_Itype (E)
+              (if Is_Itype (E)
+               then Associated_Node_For_Itype (E)
                else Parent (E));
             Pack_Decl : constant Node_Id := Parent (Parent (Decl));
 
@@ -3894,8 +3894,7 @@ package body SPARK_Definition is
       then
          declare
             Decl : constant Node_Id :=
-              (if No (Parent (Parent (E)))
-                 and then Is_Itype (E)
+              (if Is_Itype (E)
                then Associated_Node_For_Itype (E)
                else Parent (E));
 
