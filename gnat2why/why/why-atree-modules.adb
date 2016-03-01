@@ -42,6 +42,7 @@ package body Why.Atree.Modules is
 
    --  procedures to initialize the various modules
    procedure Init_Main_Module;
+   procedure Init_Compat_Tags_Module;
    procedure Init_Integer_Module;
    procedure Init_Int_Power_Module;
    procedure Init_Int_Abs_Module;
@@ -85,6 +86,7 @@ package body Why.Atree.Modules is
    Why_Symb_Map : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
    Entity_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Axiom_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rep_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
    --------------
    -- E_Module --
@@ -160,6 +162,32 @@ package body Why.Atree.Modules is
       end if;
    end E_Axiom_Module;
 
+   --------------------
+   -- E_Rep_Module --
+   --------------------
+
+   function E_Rep_Module (E : Entity_Id) return W_Module_Id is
+      use Ada_To_Why;
+      C : constant Ada_To_Why.Cursor := Rep_Modules.Find (E);
+   begin
+      if Has_Element (C) then
+         return W_Module_Id (Element (C));
+      elsif Nkind (E) in N_Entity then
+         declare
+            M : constant W_Module_Id :=
+              New_Module
+                (Ada_Node => E,
+                 File     => No_Name,
+                 Name     => NID (Full_Name (E) & "__rep"));
+         begin
+            Rep_Modules.Insert (E, Why_Node_Id (M));
+            return M;
+         end;
+      else
+         return Why_Empty;
+      end if;
+   end E_Rep_Module;
+
    ----------------
    -- Initialize --
    ----------------
@@ -207,6 +235,7 @@ package body Why.Atree.Modules is
       --  built-in void ident
 
       Init_Main_Module;
+      Init_Compat_Tags_Module;
       Init_Integer_Module;
       Init_Int_Power_Module;
       Init_Int_Div_Module;
@@ -284,6 +313,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Static_Float64"));
+      Static_Float_Rep :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Static_Floating_Point_rep"));
       Dynamic_Float :=
         New_Module
           (File => Ada_Model_File,
@@ -1477,6 +1510,23 @@ package body Why.Atree.Modules is
       Keep_On_Simp := NID (Keep_On_Simp_Marker);
    end Init_Labels;
 
+   -----------------------------
+   -- Init_Compat_Tags_Module --
+   -----------------------------
+
+   procedure Init_Compat_Tags_Module is
+      M : constant W_Module_Id :=
+        New_Module (File => Gnatprove_Standard_File,
+                    Name => NID ("Compatible_Tags"));
+   begin
+      M_Compat_Tags.Module := M;
+      M_Compat_Tags.Compat_Tags_Id :=
+        New_Identifier (Domain => EW_Pred,
+                        Module => M,
+                        Symbol => NID ("__compatible_tags"),
+                        Typ    => EW_Bool_Type);
+   end Init_Compat_Tags_Module;
+
    ----------------------
    -- Init_Main_Module --
    ----------------------
@@ -1517,11 +1567,6 @@ package body Why.Atree.Modules is
                         Symbol => NID ("__null_ext__"),
                         Typ    => M_Main.Private_Type);
 
-      M_Main.Compat_Tags_Id :=
-        New_Identifier (Domain => EW_Pred,
-                        Module => M,
-                        Symbol => NID ("__compatible_tags"),
-                        Typ    => EW_Bool_Type);
       EW_Fixed_Type := M_Main.Fixed_Type;
       EW_Private_Type := M_Main.Private_Type;
    end Init_Main_Module;
@@ -1712,20 +1757,41 @@ package body Why.Atree.Modules is
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type));
-               Insert_Symbol
-                 (E, WNE_To_Rep,
-                  New_Identifier
-                    (Module => M,
-                     Domain => EW_Term,
-                     Symbol => NID ("to_rep"),
-                     Typ    => Base));
-               Insert_Symbol
-                 (E, WNE_Of_Rep,
-                  New_Identifier
-                    (Module => M,
-                     Domain => EW_Term,
-                     Symbol => NID ("of_rep"),
-                     Typ    => Ty));
+               if Is_Floating_Point_Type (E) then
+                  declare
+                     RM : constant W_Module_Id := E_Rep_Module (E);
+                  begin
+                     Insert_Symbol
+                       (E, WNE_To_Rep,
+                        New_Identifier
+                          (Module => RM,
+                           Domain => EW_Term,
+                           Symbol => NID ("to_rep"),
+                           Typ    => Base));
+                     Insert_Symbol
+                       (E, WNE_Of_Rep,
+                        New_Identifier
+                          (Module => RM,
+                           Domain => EW_Term,
+                           Symbol => NID ("of_rep"),
+                           Typ    => Ty));
+                  end;
+               else
+                  Insert_Symbol
+                    (E, WNE_To_Rep,
+                     New_Identifier
+                       (Module => M,
+                        Domain => EW_Term,
+                        Symbol => NID ("to_rep"),
+                        Typ    => Base));
+                  Insert_Symbol
+                    (E, WNE_Of_Rep,
+                     New_Identifier
+                       (Module => M,
+                        Domain => EW_Term,
+                        Symbol => NID ("of_rep"),
+                        Typ    => Ty));
+               end if;
                Insert_Symbol
                  (E, WNE_Attr_First,
                   New_Identifier

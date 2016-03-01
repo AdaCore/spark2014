@@ -88,6 +88,7 @@ package Why.Atree.Modules is
    Fixed_Point_Float_Conv : W_Module_Id;
    Static_Float32         : W_Module_Id;
    Static_Float64         : W_Module_Id;
+   Static_Float_Rep       : W_Module_Id;
    Dynamic_Float          : W_Module_Id;
    Finite_Float32_Literal : W_Module_Id;
    Finite_Float64_Literal : W_Module_Id;
@@ -113,7 +114,11 @@ package Why.Atree.Modules is
       Return_Exc        : W_Name_Id;
       String_Image_Type : W_Type_Id;
       Type_Of_Heap      : W_Type_Id;
-      Compat_Tags_Id    : W_Identifier_Id;
+   end record;
+
+   type M_Compat_Tags_Type is record
+      Module         : W_Module_Id;
+      Compat_Tags_Id : W_Identifier_Id;
    end record;
 
    type M_Integer_Type is record
@@ -317,6 +322,7 @@ package Why.Atree.Modules is
    end record;
 
    M_Main          : M_Main_Type;
+   M_Compat_Tags   : M_Compat_Tags_Type;
    M_Integer       : M_Integer_Type;
    M_Int_Power     : M_Int_Power_Type;
    M_Int_Div       : M_Int_Div_Type;
@@ -450,6 +456,7 @@ package Why.Atree.Modules is
    --  @param S a symbol which is allowed for that type entity
 
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
+   function E_Rep_Module (E : Entity_Id) return W_Module_Id;
 
    procedure Insert_Extra_Module (N : Node_Id; M : W_Module_Id);
    --  After a call to this procedure, E_Module (N) will return M.

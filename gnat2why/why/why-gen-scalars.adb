@@ -515,8 +515,6 @@ package body Why.Gen.Scalars is
       if Is_Discrete_Type (E) and then Is_Static then
          --  Note that if E is dynamic type, to_rep is not projection function
          Emit_Projection_Metas (Section => File, Projection_Fun => "to_rep");
-      elsif Is_Floating_Point_Type (E) and then Is_Static then
-         Emit_Projection_Metas (Section => File, Projection_Fun => "to_rep");
       end if;
 
    end Declare_Scalar_Type;

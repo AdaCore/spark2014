@@ -675,15 +675,6 @@ module Floating_Point_Base
 
   type t
 
-  function to_rep t : rep_type
-  function of_rep rep_type : t
-
-  val of_rep (x : rep_type) : t
-    requires { true }
-    ensures  { to_rep (result) = x }
-
-  function user_eq (x : t) (y : t) : bool
-
   function attr__ATTRIBUTE_IMAGE rep_type : __image
 
   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
@@ -701,12 +692,6 @@ module Static_Floating_Point
   (* The module that is used as basis for all "static" floating-point types. *)
 
   clone export Floating_Point_Base
-
-  (* /!\ deal with minus zero here !
-     -> use a eq for t ? *)
-  axiom inversion_axiom :
-    forall x : t [to_rep x].
-      of_rep (to_rep (x)) = x
 
   function first : rep_type
 
@@ -726,51 +711,70 @@ module Static_Floating_Point
     requires { in_range n }
     ensures { result = n /\ is_finite n }
 
-  axiom range_axiom :
-    forall x : t[to_rep x]. in_range (to_rep x)
-
   predicate dynamic_property "inline" (f l x : rep_type) = in_range x
 end
 
+module Static_Floating_Point_rep
+  type t
+  type rep_type
+
+  function to_rep t : rep_type
+  function of_rep rep_type : t
+
+  predicate in_range rep_type
+
+  val of_rep (x : rep_type) : t
+    requires { true }
+    ensures  { to_rep (result) = x }
+
+  function user_eq (x : t) (y : t) : bool
+
+  axiom inversion_axiom :
+    forall x : t [to_rep x].
+      (of_rep (to_rep (x))) = x
+
+  axiom range_axiom :
+    forall x : t[to_rep x]. in_range (to_rep x)
+
+end
+
 module Static_Float32
-  use _gnatprove_standard.Float32
+  use _gnatprove_standard.Float32Prefix
 
   clone export Static_Floating_Point with
-    type rep_type = Float32.t,
-    predicate eq = Float32.eq,
-    predicate is_finite = Float32.is_finite
-
-  function to_int (x:t) : int = Float32.to_int (to_rep x)
+    type rep_type = Float32Prefix.t,
+    predicate eq = Float32Prefix.eq,
+    predicate is_finite = Float32Prefix.is_finite
 end
 
 module Static_Float64
-  use _gnatprove_standard.Float64
+  use _gnatprove_standard.Float64Prefix
 
   clone export Static_Floating_Point with
-    type rep_type = Float64.t,
-    predicate eq = Float64.eq,
-    predicate is_finite = Float64.is_finite
-
-  function to_int (x:t) : int = Float64.to_int (to_rep x)
+    type rep_type = Float64Prefix.t,
+    predicate eq = Float64Prefix.eq,
+    predicate is_finite = Float64Prefix.is_finite
 end
 
 module Dynamic_Floating_Point
   (* The module that is used as basis for all "dynamic" floating-point types. *)
 
- type t
- type rep_type
-
- function base_to_rep t : rep_type
- function base_of_rep rep_type : t
-
- function to_rep "inline" (x : t) : rep_type = base_to_rep x
- function of_rep "inline" (x : rep_type) : t = base_of_rep x
+  type rep_type
 
   clone export Floating_Point_Base with
-      type t = t,
-      type rep_type = rep_type,
-      function of_rep = base_of_rep,
-      function to_rep = base_to_rep
+      type rep_type = rep_type
+
+  function user_eq (x : t) (y : t) : bool
+
+  function base_to_rep t : rep_type
+  function base_of_rep rep_type : t
+
+  val base_of_rep (x : rep_type) : t
+    requires { true }
+    ensures  { base_to_rep (result) = x }
+
+  function to_rep "inline" (x : t) : rep_type = base_to_rep x
+  function of_rep "inline" (x : rep_type) : t = base_of_rep x
 
   predicate dynamic_property (first last n : rep_type)
 

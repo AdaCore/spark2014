@@ -61,12 +61,13 @@ module Main
      writes { x }
   val __private__havoc (x : __private__ref) : unit
      writes { x }
+end
 
+module Compatible_Tags
   (* A prediacte to check compatibility between tags *)
   predicate __compatible_tags (from_tag : int) (to_tag : int)
   axiom __compatible_tags_refl :
     forall tag : int. __compatible_tags tag tag
-
 end
 
 module Integer

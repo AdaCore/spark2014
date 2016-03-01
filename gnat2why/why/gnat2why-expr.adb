@@ -11428,7 +11428,7 @@ package body Gnat2Why.Expr is
                            if not SPARK_Util.Is_Ancestor (Ty, Var_Type) then
                               Tag_Cond := New_Call
                                 (Domain => Domain,
-                                 Name => M_Main.Compat_Tags_Id,
+                                 Name => M_Compat_Tags.Compat_Tags_Id,
                                  Args => (1 => New_Tag_Access
                                           (Domain   => EW_Term,
                                            Name     => Var,

@@ -609,6 +609,57 @@ package body Gnat2Why.Types is
                           then Partial_View (E)
                           else E));
 
+         --  TODO: /!\ this should be placed in a separate function and
+         --  probably be called from else were
+         if Is_Floating_Point_Type (E) and then not Type_Is_Modeled_As_Base (E)
+         then
+            Open_Theory
+              (File, E_Rep_Module (E),
+               Comment =>
+                 "Module defining to_rep/of_rep for type "
+               & """" & Get_Name_String (Chars (E)) & """"
+               & (if Sloc (E) > 0 then
+                    " defined at " & Build_Location_String (Sloc (E))
+                 else "")
+               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+            declare
+               Rep_Type : constant W_Type_Id :=
+                 (if Is_Single_Precision_Floating_Point_Type (E) then
+                       EW_Float_32_Type
+                  else EW_Float_64_Type);
+               Substs : constant W_Clone_Substitution_Array :=
+                   (1 => New_Clone_Substitution
+                      (Kind      => EW_Type_Subst,
+                       Orig_Name => New_Name (Symbol => NID ("rep_type")),
+                       Image     => Get_Name (MF_Floats (Rep_Type).T)),
+                    2 => New_Clone_Substitution
+                      (Kind      => EW_Type_Subst,
+                       Orig_Name => New_Name (Symbol => NID ("t")),
+                       Image     => To_Why_Type (E)),
+                    3 => New_Clone_Substitution
+                      (Kind      => EW_Predicate,
+                       Orig_Name => New_Name (Symbol => NID ("in_range")),
+                       Image     =>
+                         Get_Name (E_Symb (E, WNE_Range_Pred))));
+            begin
+               Add_With_Clause (File, E_Module (E), EW_Clone_Default);
+               Add_With_Clause (File, MF_Floats (Rep_Type).Module,
+                                EW_Clone_Default);
+
+               Emit (File,
+                     New_Clone_Declaration (Theory_Kind   => EW_Module,
+                                            Clone_Kind    => EW_Export,
+                                            As_Name       => No_Name,
+                                            Origin        => Static_Float_Rep,
+                                            Substitutions => Substs));
+            end;
+
+            Emit_Projection_Metas (Section => File,
+                                   Projection_Fun => "to_rep");
+
+            Close_Theory (File, Kind => Standalone_Theory);
+         end if;
       end if;
    end Translate_Type;
 
