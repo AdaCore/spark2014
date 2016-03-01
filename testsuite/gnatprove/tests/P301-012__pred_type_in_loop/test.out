@@ -1,0 +1,3 @@
+main.adb:3:12: warning: unused variable "I1b"
+main.adb:6:18: info: range check proved
+main.adb:6:29: info: range check proved
