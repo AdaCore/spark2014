@@ -24,8 +24,6 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
-with Ada.Containers;      use Ada.Containers;
-
 with Sem_Aux;             use Sem_Aux;
 with Sem_Util;            use Sem_Util;
 with Sinfo;               use Sinfo;
@@ -243,8 +241,8 @@ package body Flow.Analysis.Sanity is
                                   Proof_Ins  => GP,
                                   Reads      => GI,
                                   Writes     => GO);
-                     pragma Assert (GO.Length = 0);
-                     Deps := Ordered_Flow_Id_Sets.Empty_Set;
+                     pragma Assert (GO.Is_Empty);
+
                      for F of GP loop
                         Deps.Insert (Change_Variant (F, Normal_Use));
                      end loop;

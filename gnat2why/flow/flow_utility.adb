@@ -2675,10 +2675,10 @@ package body Flow_Utility is
                         Reads                => GI,
                         Writes               => GO,
                         Use_Computed_Globals => Use_Computed_Globals);
-                     pragma Assert (GO.Length = 0);
+                     pragma Assert (GO.Is_Empty);
 
                      declare
-                        Effects : constant Flow_Id_Sets.Set := GP or GI or GO;
+                        Effects : constant Flow_Id_Sets.Set := GP or GI;
                      begin
                         for F of Effects loop
                            VS.Include (Change_Variant (F, Normal_Use));
