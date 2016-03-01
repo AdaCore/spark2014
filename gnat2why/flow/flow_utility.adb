@@ -248,18 +248,16 @@ package body Flow_Utility is
       -- Process_Type --
       ------------------
 
-      procedure Process_Type (E : Entity_Id)
-      is
-         P : Node_Id;
+      procedure Process_Type (E : Entity_Id) is
       begin
-         if Include_Predicates and then Present (E) then
-            P := Predicate_Function (E);
-         else
-            return;
-         end if;
-
-         if Present (P) then
-            Functions_Called.Include (P);
+         if Include_Predicates then
+            declare
+               P : constant Entity_Id := Predicate_Function (E);
+            begin
+               if Present (P) then
+                  Functions_Called.Include (P);
+               end if;
+            end;
          end if;
       end Process_Type;
 
@@ -2652,14 +2650,10 @@ package body Flow_Utility is
                   ------------------
 
                   procedure Process_Type (E : Entity_Id) is
-                     P          : Node_Id;
+                     P : constant Entity_Id := Predicate_Function (E);
+
                      GP, GI, GO : Flow_Id_Sets.Set;
                   begin
-                     if Present (E) then
-                        P := Predicate_Function (E);
-                     else
-                        P := Empty;
-                     end if;
                      if No (P) then
                         return;
                      end if;
