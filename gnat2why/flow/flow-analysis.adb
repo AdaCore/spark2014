@@ -2636,7 +2636,8 @@ package body Flow.Analysis is
                F : constant Flow_Id := (if CFG_Graph then FA.CFG.Get_Key (V)
                                         else FA.PDG.Get_Key (V));
             begin
-               if V /= To and V /= From and F.Kind = Direct_Mapping then
+               if V /= To and then V /= From and then F.Kind = Direct_Mapping
+               then
                   Vertices.Include (V);
                end if;
             end Add_Loc;
@@ -2657,7 +2658,9 @@ package body Flow.Analysis is
                end if;
             end Are_We_There_Yet;
 
-         begin --  Vertices_Between_Proof_In_And_Export
+         --  Start of processing for Vertices_Between_Proof_In_And_Export
+
+         begin
             if CFG_Graph then
                FA.CFG.Shortest_Path (Start         => From,
                                      Allow_Trivial => False,
@@ -2678,25 +2681,27 @@ package body Flow.Analysis is
                                          To   => To);
          Path              : Vertex_Sets.Set := Vertices_To_Cover;
          Start             : Flow_Graphs.Vertex_Id;
-      begin  --  Path_Leading_To_Proof_In_Dependency
+
+      --  Start of processing for Path_Leading_To_Proof_In_Dependency
+
+      begin
          --  Sanity check that we do not have an empty set.
          pragma Assert (Vertices_To_Cover.Length >= 1);
 
          Start := FA.Start_Vertex;
          for Vert of Vertices_To_Cover loop
-            Path.Union (Vertices_Between_From_And_To
-                          (From      => Start,
-                           To        => Vert,
-                           CFG_Graph => True));
-
+            Path.Union (Vertices_Between_From_And_To (From      => Start,
+                                                      To        => Vert,
+                                                      CFG_Graph => True));
             Start := Vert;
          end loop;
 
          return Path;
       end Path_Leading_To_Proof_In_Dependency;
 
-   begin  --  Find_Exports_Derived_From_Proof_Ins
+   --  Start of processing for Find_Exports_Derived_From_Proof_Ins
 
+   begin
       --  If we are dealing with a ghost subprogram then we do NOT
       --  need to perform this check.
       if Is_Ghost_Entity (FA.Analyzed_Entity) then
@@ -2850,6 +2855,8 @@ package body Flow.Analysis is
             end loop;
          end Warn_On_Non_Constant;
 
+      --  Start of processing for Warn_About_Hidden_States
+
       begin
          --  Warn about hidden states that lie in the private part
          Warn_On_Non_Constant (First_Private_Entity (E));
@@ -2907,6 +2914,8 @@ package body Flow.Analysis is
             end loop;
          end Warn_On_Unexposed_Constant;
 
+      --  Start of processing for Warn_About_Unreferenced_Constants
+
       begin
          --  Sanity check that we do have a Refined_State aspect
          pragma Assert (Present (Refined_State_N));
@@ -2927,8 +2936,9 @@ package body Flow.Analysis is
          Warn_On_Unexposed_Constant (First_Entity (Body_Entity (E)));
       end Warn_About_Unreferenced_Constants;
 
-   begin  --  Find_Hidden_Unexposed_State
+   --  Start of processing for Find_Hidden_Unexposed_State
 
+   begin
       if No (Abstract_States (FA.Spec_Entity))
         and then Enclosing_Package_Has_State (FA.Spec_Entity)
       then
@@ -3034,8 +3044,9 @@ package body Flow.Analysis is
       Initializable : constant Flow_Id_Sets.Set :=
         Initialized_By_Initializes_Aspect or Outputs_Of_Procedures;
 
-   begin  --  Find_Impossible_To_Initialize_State
+   --  Start of processing for Find_Impossible_To_Initialize_State
 
+   begin
       for State of Iter (Abstract_States (FA.Spec_Entity)) loop
          if not Is_Null_State (State)
            and then not Initializable.Contains (Direct_Mapping_Id (State))
