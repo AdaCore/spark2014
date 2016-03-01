@@ -269,9 +269,8 @@ is
         Post => (if Reduced
                  then (for all F of Get_Variable_Set'Result
                          => F.Kind /= Record_Field));
-   --  Obtain all variables used in an expression. We use Scope to
-   --  determine if called subprograms should provide their abstract or
-   --  refined view.
+   --  Obtain all variables used in an expression; use Scope to determine if
+   --  called subprograms should provide their abstract or refined view.
    --
    --  Local_Constants describes a set of constants (which should all come
    --  from source) which are treated as if they were variables; this means
