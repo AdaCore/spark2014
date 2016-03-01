@@ -2702,8 +2702,7 @@ package body Flow.Analysis is
    --  Start of processing for Find_Exports_Derived_From_Proof_Ins
 
    begin
-      --  If we are dealing with a ghost subprogram then we do NOT
-      --  need to perform this check.
+      --  For ghost subprograms we do NOT need to do this check
       if Is_Ghost_Entity (FA.Analyzed_Entity) then
          return;
       end if;
