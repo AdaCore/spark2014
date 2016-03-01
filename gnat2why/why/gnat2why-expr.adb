@@ -28,7 +28,6 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                 use Checks;
-with Einfo;                  use Einfo;
 with Elists;                 use Elists;
 with Errout;                 use Errout;
 with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
@@ -3507,28 +3506,38 @@ package body Gnat2Why.Expr is
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
 
-      Ty_Ext : constant Entity_Id := Retysp (Ty);
+      Rep_Ty : constant Entity_Id := Retysp (Ty);
 
    begin
-      if not Has_Predicates (Ty_Ext) then
-         return True_Pred;
+      if Has_Predicates (Rep_Ty) then
+         declare
+            Pred_Type : constant Entity_Id :=
+              (if Present (Predicate_Function (Rep_Ty))
+               then Rep_Ty
+               else Partial_View (Rep_Ty));
+            --  Type entity with predicate function attached
 
-      --  If Use_Pred is true, then we already have generated a predicate for
-      --  the dynamic predicate of elements of type Ty_Ext. We also avoid using
-      --  the predicate for objects in split form as it would introduce an
-      --  unnecessary conversion harmful to provers.
+         begin
+            --  If Use_Pred is true, then we already have generated a predicate
+            --  for the dynamic predicate of elements of type Ty_Ext. We also
+            --  avoid using the predicate for objects in split form as it would
+            --  introduce an unnecessary conversion harmful to provers.
 
-      elsif Use_Pred
-        and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Expr))
-      then
-         return New_Predicate_Call (Ty_Ext, Expr, Params);
-
+            if Use_Pred
+              and then Eq_Base (Type_Of_Node (Pred_Type), Get_Type (+Expr))
+            then
+               return New_Predicate_Call (Pred_Type, Expr, Params);
+            else
+               return
+                 +Dynamic_Predicate_Expression
+                 (Expr      => +Expr,
+                  Pred_Subp => Predicate_Function (Pred_Type),
+                  Domain    => EW_Pred,
+                  Params    => Params);
+            end if;
+         end;
       else
-         return +Dynamic_Predicate_Expression
-           (Expr      => +Expr,
-            Pred_Subp => Predicate_Function (Ty),
-            Domain    => EW_Pred,
-            Params    => Params);
+         return True_Pred;
       end if;
    end Compute_Dynamic_Predicate;
 
@@ -13799,12 +13808,17 @@ package body Gnat2Why.Expr is
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
    is
-      Ty_Ext : constant Entity_Id := Retysp (Ty);
-      Scope  : constant Flow_Scope := Get_Flow_Scope (Ty_Ext);
+      Rep_Type  : constant Entity_Id := Retysp (Ty);
+      Pred_Type : constant Entity_Id :=
+        (if Present (Predicate_Function (Rep_Type))
+         then Rep_Type
+         else Partial_View (Rep_Type));
+      --  Type entity with predicate function attached
 
-      Dynamic_Pred_Subp : constant Entity_Id := Predicate_Function (Ty_Ext);
       Dynamic_Pred_Expr : constant Node_Id :=
-        Get_Expr_From_Return_Only_Func (Dynamic_Pred_Subp);
+        Get_Expr_From_Return_Only_Func (Predicate_Function (Pred_Type));
+
+      Scope : constant Flow_Scope := Get_Flow_Scope (Pred_Type);
 
    begin
       Variables.Union

@@ -80,7 +80,8 @@ package body Gnat2Why.Types is
 
       procedure Create_Dynamic_Predicate
         (File : W_Section_Id;
-         E    : Entity_Id);
+         E    : Entity_Id)
+      with Pre => Has_Predicates (E);
       --  Create a function to express type E's predicate
 
       -------------------------------------

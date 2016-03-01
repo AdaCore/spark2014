@@ -26,6 +26,7 @@
 with Ada.Containers.Hashed_Maps;
 with Atree;                      use Atree;
 with Common_Containers;          use Common_Containers;
+with Einfo;                      use Einfo;
 with Flow_Types;                 use Flow_Types;
 with Gnat2Why.Util;              use Gnat2Why.Util;
 with Sem_Eval;                   use Sem_Eval;
@@ -338,7 +339,8 @@ package Gnat2Why.Expr is
 
    procedure Variables_In_Dynamic_Predicate
      (Ty        : Entity_Id;
-      Variables : in out Flow_Id_Sets.Set);
+      Variables : in out Flow_Id_Sets.Set)
+   with Pre => Has_Predicates (Ty);
    --  @param Ty a type with a predicate
    --  @param Variables used in the expression for Ty's predicate
 

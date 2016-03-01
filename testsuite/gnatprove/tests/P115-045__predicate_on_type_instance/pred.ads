@@ -9,6 +9,6 @@ package Pred is
 
 private
   type A_Type is record
-     Dummy: Integer;
+     Dummy: Integer := 0;
   end record;
 end Pred;
