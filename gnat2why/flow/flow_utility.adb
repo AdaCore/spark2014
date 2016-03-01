@@ -242,7 +242,7 @@ package body Flow_Utility is
       --  read-locked protected object.
 
       procedure Process_Type (E : Entity_Id);
-      --  Merge predicate function for the given type.
+      --  Merge predicate function for the given type
 
       ------------------
       -- Process_Type --
@@ -2646,6 +2646,10 @@ package body Flow_Utility is
                   procedure Process_Type (E : Entity_Id);
                   --  Merge variables used in predicate functions for the
                   --  given type.
+
+                  ------------------
+                  -- Process_Type --
+                  ------------------
 
                   procedure Process_Type (E : Entity_Id) is
                      P          : Node_Id;
