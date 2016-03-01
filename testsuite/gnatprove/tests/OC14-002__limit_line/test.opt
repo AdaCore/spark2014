@@ -1,1 +1,0 @@
-ALL XFAIL crash on use of --limit-line without --limit-subp
