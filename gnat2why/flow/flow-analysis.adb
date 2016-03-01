@@ -2731,7 +2731,7 @@ package body Flow.Analysis is
                            Tracefile => Tracefile,
                            Msg       => "export & must not depend " &
                              "on Proof_In &",
-                           SRM_Ref   => "6.1.4(18)",
+                           SRM_Ref   => "6.1.4(17)",
                            N         => Find_Global (FA.Analyzed_Entity,
                                                      Input),
                            F1        => Output,

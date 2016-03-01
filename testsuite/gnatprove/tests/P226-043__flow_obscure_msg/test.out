@@ -1,4 +1,4 @@
 use_ghost.adb:7:10: info: initialization of "Success" proved
-use_ghost.ads:10:14: export "X" must not depend on Proof_In "G_Var" (SPARK RM 6.1.4(18))
+use_ghost.ads:10:14: export "X" must not depend on Proof_In "G_Var" (SPARK RM 6.1.4(17))
 use_ghost.ads:10:20: info: initialization of "X" proved
 gnatprove: error during flow analysis and proof
