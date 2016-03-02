@@ -884,26 +884,30 @@ package body Flow_Types is
          Nam : Node_Id := N;
       begin
          if Nkind (N) in N_Entity then
-            if Is_Subprogram (N) then
-               if Present (Overridden_Operation (N)) then
-                  Nam := Overridden_Operation (N);
-               end if;
-
-               while Present (Homonym (Nam)) loop
-                  Nam := Homonym (Nam);
-               end loop;
-
-            elsif Ekind (N) = E_Task_Type then
-               declare
-                  Task_Object : constant Entity_Id := Anonymous_Object (N);
-                  --  For single task declarations return the original name,
-                  --  i.e. without the "tk" suffix added by expansion.
-               begin
-                  if Present (Task_Object) then
-                     Nam := Task_Object;
+            case Ekind (N) is
+               when E_Function | E_Procedure =>
+                  if Present (Overridden_Operation (N)) then
+                     Nam := Overridden_Operation (N);
                   end if;
-               end;
-            end if;
+
+                  while Present (Homonym (Nam)) loop
+                     Nam := Homonym (Nam);
+                  end loop;
+
+               when E_Task_Type =>
+                  declare
+                     Task_Object : constant Entity_Id := Anonymous_Object (N);
+                     --  For single task declarations return the original name,
+                     --  i.e. without the "tk" suffix added by expansion.
+                  begin
+                     if Present (Task_Object) then
+                        Nam := Task_Object;
+                     end if;
+                  end;
+
+               when others =>
+                  null;
+            end case;
          end if;
 
          Get_Name_String (Chars (Nam));
