@@ -3615,11 +3615,11 @@ package body Flow.Control_Flow_Graph is
       --  Traverse visible and private part of the specs and link them up.
 
       declare
-         Visible_Decls : constant List_Id :=
-           Visible_Declarations (Specification (N));
+         Spec : constant Node_Id := Specification (N);
 
-         Private_Decls : constant List_Id :=
-           Private_Declarations (Specification (N));
+         Visible_Decls : constant List_Id := Visible_Declarations (Spec);
+         Private_Decls : constant List_Id := Private_Declarations (Spec);
+
       begin
          Process_Statement_List (Visible_Decls, FA, CM, Ctx);
 
