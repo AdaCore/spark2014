@@ -1681,7 +1681,7 @@ package body Flow.Analysis is
                         --  Ditto for globals in views.
                         null;
 
-                     elsif Atr.Is_Discr_Or_Bounds_Parameter or
+                     elsif Atr.Is_Discr_Or_Bounds_Parameter or else
                        Is_Bound (Key)
                      then
                         --  These are not there by choice, so the user
