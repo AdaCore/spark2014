@@ -4977,54 +4977,75 @@ package body Flow.Control_Flow_Graph is
       case Nkind (N) is
          when N_Assignment_Statement =>
             Do_Assignment_Statement (N, FA, CM, Ctx);
+
          when N_Block_Statement =>
             Do_Subprogram_Or_Block (N, FA, CM, Ctx);
+
          when N_Case_Statement =>
             Do_Case_Statement (N, FA, CM, Ctx);
-         when N_Exit_Statement =>
-            Do_Exit_Statement (N, FA, CM, Ctx);
-         when N_Extended_Return_Statement =>
-            Do_Extended_Return_Statement (N, FA, CM, Ctx);
-         when N_Handled_Sequence_Of_Statements =>
-            Do_Handled_Sequence_Of_Statements (N, FA, CM, Ctx);
-         when N_If_Statement =>
-            Do_If_Statement (N, FA, CM, Ctx);
-         when N_Loop_Statement =>
-            Do_Loop_Statement (N, FA, CM, Ctx);
-         when N_Null_Statement =>
-            Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
-         when N_Object_Declaration =>
+
+         when N_Component_Declaration |
+              N_Object_Declaration    =>
             Do_Object_Declaration (N, FA, CM, Ctx);
-         when N_Package_Declaration =>
-            Do_Package_Declaration (N, FA, CM, Ctx);
-         when N_Package_Body | N_Package_Body_Stub =>
-            Do_Package_Body_Or_Stub (N, FA, CM, Ctx);
-         when N_Pragma =>
-            Do_Pragma (N, FA, CM, Ctx);
-         when N_Procedure_Call_Statement | N_Entry_Call_Statement =>
+
+         when N_Delay_Relative_Statement |
+              N_Delay_Until_Statement    =>
+            Do_Delay_Statement (N, FA, CM, Ctx);
+
+         when N_Entry_Call_Statement     |
+              N_Procedure_Call_Statement =>
             Do_Call_Statement (N, FA, CM, Ctx);
-         when N_Simple_Return_Statement =>
-            Do_Simple_Return_Statement (N, FA, CM, Ctx);
-         when N_Full_Type_Declaration         |
-              N_Subtype_Declaration           |
-              N_Private_Extension_Declaration =>
-            Do_Type_Declaration (N, FA, CM, Ctx);
-         when N_Raise_Statement |
-              N_Raise_xxx_Error =>
-            Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
+
          when N_Exception_Declaration          |
               N_Exception_Renaming_Declaration =>
             Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
-         when N_Delay_Until_Statement | N_Delay_Relative_Statement =>
-            Do_Delay_Statement (N, FA, CM, Ctx);
-         when N_Component_Declaration =>
-            Do_Object_Declaration (N, FA, CM, Ctx);
+
+         when N_Exit_Statement =>
+            Do_Exit_Statement (N, FA, CM, Ctx);
+
+         when N_Extended_Return_Statement =>
+            Do_Extended_Return_Statement (N, FA, CM, Ctx);
+
+         when N_Full_Type_Declaration         |
+              N_Private_Extension_Declaration |
+              N_Subtype_Declaration           =>
+            Do_Type_Declaration (N, FA, CM, Ctx);
+
+         when N_Handled_Sequence_Of_Statements =>
+            Do_Handled_Sequence_Of_Statements (N, FA, CM, Ctx);
+
+         when N_If_Statement =>
+            Do_If_Statement (N, FA, CM, Ctx);
+
+         when N_Loop_Statement =>
+            Do_Loop_Statement (N, FA, CM, Ctx);
+
+         when N_Null_Statement =>
+            Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
+
+         when N_Package_Body      |
+              N_Package_Body_Stub =>
+            Do_Package_Body_Or_Stub (N, FA, CM, Ctx);
+
+         when N_Package_Declaration =>
+            Do_Package_Declaration (N, FA, CM, Ctx);
+
+         when N_Pragma =>
+            Do_Pragma (N, FA, CM, Ctx);
+
+         when N_Raise_Statement |
+              N_Raise_xxx_Error =>
+            Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
+
+         when N_Simple_Return_Statement =>
+            Do_Simple_Return_Statement (N, FA, CM, Ctx);
+
          when others =>
             Print_Node_Subtree (N);
-            --  ??? To be added by various future tickets. Eventually
-            --  we will replace this with a Why.Unexpected_Node
-            --  exception.
+            --  ??? To be added by various future tickets. Eventually we will
+            --  replace this with a Why.Unexpected_Node exception.
             raise Why.Not_Implemented;
+
       end case;
 
       --  We chain the folded function checks in front of the actual vertex
