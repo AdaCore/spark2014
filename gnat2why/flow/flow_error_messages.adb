@@ -1698,6 +1698,8 @@ package body Flow_Error_Messages is
          end if;
       end Append_Quote;
 
+   --  Start of processing for Substitute
+
    begin
       for Index in Positive range 1 .. Length (S) loop
          if Do_Sub then

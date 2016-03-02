@@ -912,6 +912,9 @@ package body Flow_Types is
       end Get_Unmangled_Name;
 
       R : Unbounded_String := Null_Unbounded_String;
+
+   --  Start of processing Flow_Id_To_String
+
    begin
       --  Return "Prefix.State" instead of just "State", but only for abstract
       --  state for now. (However, the code below would work for any other flow

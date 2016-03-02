@@ -151,7 +151,7 @@ package body Flow.Analysis is
       Set      : Vertex_Sets.Set;
       Filename : String)
    is
-      FD       : Ada.Text_IO.File_Type;
+      FD : Ada.Text_IO.File_Type;
    begin
       if Set.Length > 1 then
          Ada.Text_IO.Create (FD, Ada.Text_IO.Out_File, Filename);
@@ -381,6 +381,8 @@ package body Flow.Analysis is
       --  This will narrow down the location of the searched for
       --  variable in the given node as far as possible.
 
+   --  Start of processing for First_Variable_Use
+
    begin
       if Targeted then
          case Nkind (N) is
@@ -520,6 +522,9 @@ package body Flow.Analysis is
                                           Var     => Var,
                                           Precise => Precise);
       end Proc;
+
+   --  Start of processing for First_Variable_Use
+
    begin
       FA.CFG.BFS (Start         => FA.Start_Vertex,
                   Include_Start => False,
@@ -1316,6 +1321,9 @@ package body Flow.Analysis is
             end;
          end if;
       end Check_If_From_Another_Non_Elaborated_CU;
+
+   --  Start of processing for Find_Non_Elaborated_State_Abstractions
+
    begin
       --  If we are not analyzing a compilation unit then there is
       --  nothing to do here.
@@ -1432,7 +1440,11 @@ package body Flow.Analysis is
          procedure Visitor
            (V  : Flow_Graphs.Vertex_Id;
             TV : out Flow_Graphs.Simple_Traversal_Instruction);
-         --  Check if V masks the ineffective statement.
+         --  Check if V masks the ineffective statement
+
+         -------------
+         -- Visitor --
+         -------------
 
          procedure Visitor
            (V  : Flow_Graphs.Vertex_Id;
@@ -1451,6 +1463,8 @@ package body Flow.Analysis is
                TV := Flow_Graphs.Continue;
             end if;
          end Visitor;
+
+      --  Start of processing for Find_Masking_Code
 
       begin
          FA.CFG.DFS (Start         => Ineffective_Statement,
@@ -1479,6 +1493,10 @@ package body Flow.Analysis is
          procedure Visitor (V  : Flow_Graphs.Vertex_Id;
                             TV : out Flow_Graphs.Simple_Traversal_Instruction);
 
+         -------------
+         -- Visitor --
+         -------------
+
          procedure Visitor (V  : Flow_Graphs.Vertex_Id;
                             TV : out Flow_Graphs.Simple_Traversal_Instruction)
          is
@@ -1492,6 +1510,9 @@ package body Flow.Analysis is
                TV := Flow_Graphs.Continue;
             end if;
          end Visitor;
+
+      --  Start of processing for Is_Dead_End
+
       begin
          FA.CFG.DFS (Start         => V,
                      Include_Start => True,
@@ -1564,12 +1585,13 @@ package body Flow.Analysis is
             end loop;
          end if;
 
-         --  If we reach this point then all other fields are
-         --  ineffective.
+         --  If we reach this point then all other fields are ineffective
          return True;
       end Other_Fields_Are_Ineffective;
 
-   begin --  Find_Ineffective_Statements
+   --  Start of processing for Find_Ineffective_Statements
+
+   begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             use Attribute_Maps;
@@ -1970,7 +1992,9 @@ package body Flow.Analysis is
             end if;
          end Add_Loc;
 
-      begin --  Mark_Definition_Free_Path
+      --  Start of processing for Mark_Definition_Free_Path
+
+      begin
          FA.CFG.Shortest_Path (Start         => From,
                                Allow_Trivial => False,
                                Search        => Are_We_There_Yet'Access,
@@ -2200,7 +2224,9 @@ package body Flow.Analysis is
 
          end Vertex_Defines_Variable;
 
-      begin --  Might_Be_Defined_In_Other_Path
+      --  Start of processing for Might_Be_Defined_In_Other_Path
+
+      begin
 
          --  We initialize V_Print to V_Use and we shall change it
          --  later on if so required. Ditto for Found.
@@ -2266,7 +2292,7 @@ package body Flow.Analysis is
       is
          type Msg_Kind is (Init, Unknown, Err);
 
-         V_Key        : constant Flow_Id      := FA.PDG.Get_Key (Vertex);
+         V_Key        : constant Flow_Id := FA.PDG.Get_Key (Vertex);
 
          V_Initial    : constant Flow_Graphs.Vertex_Id :=
            FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
@@ -3609,7 +3635,9 @@ package body Flow.Analysis is
             end if;
          end Add_Loc;
 
-      begin --  Write_Tracefile
+      --  Start of processing for Write_Tracefile
+
+      begin
          FA.PDG.Shortest_Path
            (Start         => From,
             Allow_Trivial => False,
