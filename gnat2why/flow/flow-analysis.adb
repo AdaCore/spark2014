@@ -161,8 +161,7 @@ package body Flow.Analysis is
                F : constant Flow_Id := FA.PDG.Get_Key (V);
             begin
                if F.Kind = Direct_Mapping then
-                  Ada.Text_IO.Put (FD, Get_Line (FA.PDG, FA.Atr, V));
-                  Ada.Text_IO.New_Line (FD);
+                  Ada.Text_IO.Put_Line (FD, Get_Line (FA.PDG, FA.Atr, V));
                end if;
             end;
          end loop;
