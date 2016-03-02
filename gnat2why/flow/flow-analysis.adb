@@ -1768,7 +1768,8 @@ package body Flow.Analysis is
                         Vertex    => V);
 
                   end if;
-                  if Mask.Length >= 1 then
+
+                  if not Mask.Is_Empty then
                      Write_Vertex_Set
                        (FA       => FA,
                         Set      => Mask,
