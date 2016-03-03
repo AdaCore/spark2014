@@ -667,114 +667,106 @@ package body Why.Gen.Names is
    -- To_String --
    ---------------
 
-   function To_String (W : Why_Name_Enum) return String
-   is
-   begin
-      case W is
-         when WNE_Array_Component_Type   => return "component_type";
-         when WNE_Array_Type             => return "__t";
-         when WNE_Attr_Constrained       => return "attr__constrained";
-         when WNE_Attr_First             => return "first";
-         when WNE_Attr_Last              => return "last";
-         when WNE_Attr_Tag               => return "attr__tag";
-         when WNE_Content                => return "__content";
-         when WNE_Havoc                  => return "__havoc";
-         when WNE_Rec_Extension_Suffix   => return "ext__";
-         when WNE_Rec_Ancestor_Suffix    => return "anc__";
-         when WNE_Rec_Comp_Prefix        => return "rec__";
-         when WNE_Rec_Main_Suffix        => return "main__";
-         when WNE_Ref                    => return "__ref";
-         when WNE_Extract_Prefix         => return "extract__";
-         when WNE_Ancestor_Prefix        => return "extract_anc__";
-         when WNE_Hide_Extension         => return "hide_ext__";
-         when WNE_Dispatch_Module        => return "Dispatch";
-         when WNE_No_Return_Module       => return "No_Return";
-         when WNE_Refine_Module          => return "Refine";
+   function To_String (W : Why_Name_Enum) return String is
+     (case W is
+         when WNE_Ancestor_Prefix      => "extract_anc__",
+         when WNE_Array_Component_Type => "component_type",
+         when WNE_Array_Type           => "__t",
+         when WNE_Attr_Constrained     => "attr__constrained",
+         when WNE_Attr_First           => "first",
+         when WNE_Attr_Last            => "last",
+         when WNE_Attr_Tag             => "attr__tag",
+         when WNE_Content              => "__content",
+         when WNE_Dispatch_Module      => "Dispatch",
+         when WNE_Extract_Prefix       => "extract__",
+         when WNE_Havoc                => "__havoc",
+         when WNE_Hide_Extension       => "hide_ext__",
+         when WNE_No_Return_Module     => "No_Return",
+         when WNE_Rec_Ancestor_Suffix  => "anc__",
+         when WNE_Rec_Comp_Prefix      => "rec__",
+         when WNE_Rec_Extension_Suffix => "ext__",
+         when WNE_Rec_Main_Suffix      => "main__",
+         when WNE_Refine_Module        => "Refine",
+         when WNE_Ref                  => "__ref",
 
          --  these are used both by E_Symb function and by To_String
 
-         when WNE_Rec_Split_Discrs       => return "__split_discrs";
-         when WNE_Rec_Split_Fields       => return "__split_fields";
+         when WNE_Rec_Split_Discrs     => "__split_discrs",
+         when WNE_Rec_Split_Fields     => "__split_fields",
 
          --  please use these only in conjunction with E_Symb function
 
-         when WNE_Array_Elts |
-              WNE_Attr_Object_Size |
-              WNE_Attr_Value_Size |
-              WNE_Attr_Address |
-              WNE_Attr_First_2 |
-              WNE_Attr_First_3 |
-              WNE_Attr_First_4 |
-              WNE_Attr_Last_2  |
-              WNE_Attr_Last_3  |
-              WNE_Attr_Last_4  |
-              WNE_Attr_Length |
-              WNE_Attr_Length_2 |
-              WNE_Attr_Length_3 |
-              WNE_Attr_Length_4 |
-              WNE_Attr_Image  |
-              WNE_Attr_Value |
-              WNE_Float_Round_Tmp |
-              WNE_Float_Round |
-              WNE_Float_Pred |
-              WNE_Float_Succ |
-              WNE_Attr_Modulus |
-              WNE_Fixed_Point_Div |
-              WNE_Fixed_Point_Div_Int |
+         when WNE_Array_Base_Range_Pred      |
+              WNE_Array_Base_Range_Pred_2    |
+              WNE_Array_Base_Range_Pred_3    |
+              WNE_Array_Base_Range_Pred_4    |
+              WNE_Array_Elts                 |
+              WNE_Attr_Address               |
+              WNE_Attr_First_2               |
+              WNE_Attr_First_3               |
+              WNE_Attr_First_4               |
+              WNE_Attr_Image                 |
+              WNE_Attr_Last_2                |
+              WNE_Attr_Last_3                |
+              WNE_Attr_Last_4                |
+              WNE_Attr_Length                |
+              WNE_Attr_Length_2              |
+              WNE_Attr_Length_3              |
+              WNE_Attr_Length_4              |
+              WNE_Attr_Modulus               |
+              WNE_Attr_Object_Size           |
+              WNE_Attr_Small                 |
+              WNE_Attr_Value                 |
+              WNE_Attr_Value_Size            |
+              WNE_Bool_Eq                    |
+              WNE_Check_Not_First            |
+              WNE_Check_Not_Last             |
+              WNE_Default_Init               |
+              WNE_Dispatch_Eq                |
+              WNE_Dummy                      |
+              WNE_Dynamic_Invariant          |
+              WNE_Dynamic_Predicate          |
+              WNE_Dynamic_Property           |
+              WNE_Dynamic_Property_BV_Int    |
+              WNE_Fixed_Point_Div            |
+              WNE_Fixed_Point_Div_Int        |
               WNE_Fixed_Point_Div_Result_Int |
-              WNE_Fixed_Point_Mult |
-              WNE_Fixed_Point_Mult_Int |
-              WNE_Attr_Small |
-              WNE_Check_Not_First |
-              WNE_Check_Not_Last  |
-              WNE_Range_Check_Fun |
-              WNE_Range_Pred |
-              WNE_Range_Pred_BV_Int |
-              WNE_Range_Check_Fun_BV_Int |
-              WNE_Default_Init |
-              WNE_Dynamic_Invariant |
-              WNE_Dynamic_Property |
-              WNE_Dynamic_Property_BV_Int |
-              WNE_Dynamic_Predicate |
-              WNE_To_Int |
-              WNE_To_Int_2 |
-              WNE_To_Int_3 |
-              WNE_To_Int_4 |
-              WNE_Of_Int |
-              WNE_Of_Fixed |
-              WNE_Of_Real |
-              WNE_Of_BitVector |
-              WNE_To_Fixed |
-              WNE_To_Real |
-              WNE_To_BitVector |
-              WNE_To_Array |
-              WNE_Of_Array |
-              WNE_To_Base |
-              WNE_Of_Base |
-              WNE_To_Rep |
-              WNE_Of_Rep |
-              WNE_Index_Dynamic_Property |
-              WNE_Index_Dynamic_Property_2 |
-              WNE_Index_Dynamic_Property_3 |
-              WNE_Index_Dynamic_Property_4 |
-              WNE_Array_Base_Range_Pred |
-              WNE_Array_Base_Range_Pred_2 |
-              WNE_Array_Base_Range_Pred_3 |
-              WNE_Array_Base_Range_Pred_4 |
-              WNE_Bool_Eq |
-              WNE_Dispatch_Eq |
-              WNE_Rec_Extension |
-              WNE_Rec_Main |
-              WNE_Tag  |
-              WNE_Rec_Ancestor |
-              WNE_Hide_Ancestor |
-              WNE_Dummy
-            =>
-
-            raise Program_Error;
-
-      end case;
-   end To_String;
+              WNE_Fixed_Point_Mult           |
+              WNE_Fixed_Point_Mult_Int       |
+              WNE_Float_Pred                 |
+              WNE_Float_Round                |
+              WNE_Float_Round_Tmp            |
+              WNE_Float_Succ                 |
+              WNE_Hide_Ancestor              |
+              WNE_Index_Dynamic_Property     |
+              WNE_Index_Dynamic_Property_2   |
+              WNE_Index_Dynamic_Property_3   |
+              WNE_Index_Dynamic_Property_4   |
+              WNE_Of_Array                   |
+              WNE_Of_Base                    |
+              WNE_Of_BitVector               |
+              WNE_Of_Fixed                   |
+              WNE_Of_Int                     |
+              WNE_Of_Real                    |
+              WNE_Of_Rep                     |
+              WNE_Range_Check_Fun            |
+              WNE_Range_Check_Fun_BV_Int     |
+              WNE_Range_Pred                 |
+              WNE_Range_Pred_BV_Int          |
+              WNE_Rec_Ancestor               |
+              WNE_Rec_Extension              |
+              WNE_Rec_Main                   |
+              WNE_Tag                        |
+              WNE_To_Array                   |
+              WNE_To_Base                    |
+              WNE_To_BitVector               |
+              WNE_To_Fixed                   |
+              WNE_To_Int                     |
+              WNE_To_Int_2                   |
+              WNE_To_Int_3                   |
+              WNE_To_Int_4                   |
+              WNE_To_Real                    |
+              WNE_To_Rep                     => raise Program_Error);
 
    --------------
    -- To_Ident --
