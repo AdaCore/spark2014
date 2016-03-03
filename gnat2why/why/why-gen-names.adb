@@ -400,6 +400,10 @@ package body Why.Gen.Names is
       end if;
    end Get_Modular_Converter;
 
+   ---------------------------------------
+   -- Get_Modular_Converter_Range_Check --
+   ---------------------------------------
+
    function Get_Modular_Converter_Range_Check
      (From, To : W_Type_Id) return W_Identifier_Id is
    begin
