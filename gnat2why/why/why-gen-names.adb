@@ -43,8 +43,7 @@ package body Why.Gen.Names is
    --  @param To the BV type to convert to
    --  @return the conversion function from BV From to BV To
 
-   Pre_Computed_Idents : array (Why_Name_Enum) of W_Identifier_Id :=
-     (others => Why_Empty);
+   Pre_Computed_Idents : array (Why_Name_Enum) of W_Identifier_Id;
    --  This array is used to precompute all fixed idents.
 
    function Append_Num (S        : String;
@@ -971,5 +970,12 @@ package body Why.Gen.Names is
          when 3 => WNE_To_Int_3,
          when 4 => WNE_To_Int_4,
          when others => raise Program_Error);
+
+begin
+   --  ??? workaround for a compiler problem; to be annotated with a TN once
+   --  a reproducer is ready.
+   for J in Why_Name_Enum loop
+      Pre_Computed_Idents (J) := Why_Empty;
+   end loop;
 
 end Why.Gen.Names;
