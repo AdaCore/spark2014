@@ -9905,9 +9905,9 @@ package body Gnat2Why.Expr is
            and then Etype (Expr) = Universal_Fixed
            and then Nkind (Parent (Expr)) = N_Type_Conversion
          then
-            Etype (Parent (Expr))
+           Etype (Parent (Expr))
          else
-            Etype (Expr));
+           Etype (Expr));
 
       T            : W_Expr_Id;
       Pretty_Label : Name_Id := No_Name;
@@ -10007,7 +10007,7 @@ package body Gnat2Why.Expr is
          when N_Extension_Aggregate =>
             declare
                Expr_Type : constant Entity_Id := Type_Of_Node (Expr);
-               Assocs : constant W_Field_Association_Array :=
+               Assocs    : constant W_Field_Association_Array :=
                  Transform_Record_Component_Associations
                    (Domain,
                     Expr_Type,
@@ -10033,7 +10033,7 @@ package body Gnat2Why.Expr is
 
                Prefix_Ty : constant Entity_Id :=
                  Unique_Entity (Etype (Ancestor_Part (Expr)));
-               Anc_Ty : constant Entity_Id :=
+               Anc_Ty    : constant Entity_Id :=
                  (if Ekind (Prefix_Ty) in E_Record_Subtype |
                                           E_Record_Subtype_With_Private
                   then
@@ -10139,7 +10139,7 @@ package body Gnat2Why.Expr is
 
          when N_String_Literal =>
             declare
-               M : W_Module_Id := E_Module (Expr);
+               M  : W_Module_Id := E_Module (Expr);
                Id : W_Identifier_Id;
             begin
                if M = Why_Empty then
@@ -10165,9 +10165,9 @@ package body Gnat2Why.Expr is
 
             --  special case for equality between Booleans in predicates
 
-            if Domain = EW_Pred and then
-              Nkind (Expr) = N_Op_Eq and then
-              Is_Standard_Boolean_Type (Etype (Left_Opnd (Expr)))
+            if Domain = EW_Pred
+              and then Nkind (Expr) = N_Op_Eq
+              and then Is_Standard_Boolean_Type (Etype (Left_Opnd (Expr)))
             then
                declare
                   Left : constant W_Expr_Id :=
@@ -10427,9 +10427,9 @@ package body Gnat2Why.Expr is
                  (Op          => Nkind (Expr),
                   Right       =>
                     Transform_Expr (Right_Opnd (Expr),
-                      EW_Bool_Type,
-                      Domain,
-                      Local_Params),
+                                    EW_Bool_Type,
+                                    Domain,
+                                    Local_Params),
                   Right_Type  => Etype (Right_Opnd (Expr)),
                   Return_Type => Expr_Type,
                   Domain      => Domain,
