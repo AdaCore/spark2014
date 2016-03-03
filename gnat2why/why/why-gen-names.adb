@@ -255,11 +255,11 @@ package body Why.Gen.Names is
                         then Get_First_Ancestor_In_SPARK (From_Node)
                         else Root_Record_Type (From_Node));
                   begin
-                     return
-                       E_Symb ((if From_Base = From_Node
-                                then To_Node
-                                else From_Node),
-                               WNE_Of_Base);
+                     if From_Base = From_Node then
+                        return E_Symb (To_Node, WNE_Of_Base);
+                     else
+                        return E_Symb (From_Node, WNE_To_Base);
+                     end if;
                   end;
             end case;
       end case;
