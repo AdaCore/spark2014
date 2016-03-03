@@ -2,7 +2,7 @@ logic.adb:17:07: info: assertion proved
 logic.adb:18:07: info: assertion proved
 logic.adb:19:07: info: assertion proved
 logic.adb:20:07: info: assertion proved
-logic.adb:24:22: medium: assertion might fail, cannot prove not (if F then F else true
+logic.adb:24:22: medium: assertion might fail, cannot prove not (if F then F else true (e.g. when T = True)
 logic.adb:26:07: info: assertion proved
 logic.adb:27:22: medium: assertion might fail, cannot prove not (if F then T else true (e.g. when F = False and T = True)
 logic.adb:29:07: info: assertion proved

@@ -52,7 +52,7 @@ patris.adb:172:07: info: assertion proved
 patris.adb:176:10: info: initialization of "Complete_Lines" proved
 patris.adb:177:52: info: initialization of "To_Line" proved
 patris.adb:178:13: info: loop invariant initialization proved
-patris.adb:178:36: medium: loop invariant might fail after first iteration, cannot prove No_Complete_Lines (Cur_Board)
+patris.adb:178:13: info: loop invariant preservation proved
 patris.adb:179:13: info: loop invariant initialization proved
 patris.adb:179:13: info: loop invariant preservation proved
 patris.adb:179:48: info: initialization of "To_Line" proved

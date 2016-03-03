@@ -76,11 +76,20 @@ is
                       return Unsigned_8
    is
       Mask : constant Unsigned_8 := Shift_Left (1, 7 - Left);
+      R : constant Unsigned_8 := (if Flag then
+                                    (Byte or Mask)
+                                  else
+                                    (Byte and (not Mask)));
+      Left_Bv : constant Unsigned_8 := Unsigned_8 (Left) with Ghost;
    begin
-      return (if Flag then
-                 (Byte or Mask)
-              else
-                 (Byte and (not Mask)));
+      pragma Assert (Left_Bv < 8);
+      pragma Assert (7 - Left_Bv = Unsigned_8 (7 - Left));
+
+      pragma Assert ((for all I in Unsigned_8 range 0 .. 7 =>
+                        (if I /= 7 - Left_Bv then
+                            Nth_Bv (R, I) = Nth_Bv (Byte, I))));
+      pragma Assert (Nth_Bv (R, 7 - Left_Bv) = Flag);
+      return R;
    end PokeBit8;
 
    procedure PokeBit8Array (Addr : in out Byte_Sequence;
