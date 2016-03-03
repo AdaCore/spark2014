@@ -9935,8 +9935,7 @@ package body Gnat2Why.Expr is
          N_Quantified_Expression | N_Case_Expression) and then
          not (Nkind (Expr) in N_Identifier | N_Expanded_Name and then
               Ekind (Entity (Expr)) in E_Enumeration_Literal and then
-              (Entity (Expr) = Standard_True or else
-               Entity (Expr) = Standard_False)) and then
+              (Entity (Expr) in Standard_True | Standard_False)) and then
         not (Nkind (Expr) = N_Function_Call
              and then Is_Predicate_Function (Get_Called_Entity (Expr)))
       then
