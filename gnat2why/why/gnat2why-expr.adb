@@ -10196,7 +10196,7 @@ package body Gnat2Why.Expr is
                   T := New_Op_Expr
                     (Op          => Nkind (Expr),
                      Left        => Left,
-                       Right       => Right,
+                     Right       => Right,
                      Left_Type   => Etype (Left_Opnd (Expr)),
                      Right_Type  => Etype (Right_Opnd (Expr)),
                      Return_Type => Expr_Type,
