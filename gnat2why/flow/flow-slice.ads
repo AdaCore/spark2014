@@ -50,6 +50,8 @@ package Flow.Slice is
    --
    --  Complexity is O(N^2)
 
+   use type Common_Containers.Node_Sets.Set;  --  for the "or" operator
+
    procedure Compute_Globals
      (FA                    : Flow_Analysis_Graphs;
       Inputs_Proof          : out Node_Sets.Set;
@@ -64,13 +66,11 @@ package Flow.Slice is
    with Pre  => (FA.Generating_Globals and then
                    FA.Is_Generative and then
                    not FA.GG.Aborted),
-        Post => (for all E of Definite_Calls =>
-                   not Conditional_Calls.Contains (E)) and then
-                (for all E of Proof_Calls =>
-                   not (Definite_Calls.Contains (E) or else
-                          Conditional_Calls.Contains (E))) and then
-                (for all E of Inputs_Proof =>
-                   not (Inputs.Contains (E) or Outputs.Contains (E)));
+        Post => Definite_Calls.Intersection (Conditional_Calls).Is_Empty
+                and then Proof_Calls.Intersection
+                           (Definite_Calls or Conditional_Calls).Is_Empty
+                and then Inputs_Proof.Intersection
+                           (Inputs or Outputs).Is_Empty;
    --  Computes the set of globals (and procedure calls) of the given
    --  subprogram.
    --

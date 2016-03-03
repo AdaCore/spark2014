@@ -34,7 +34,6 @@ with Why;
 
 package body Flow.Slice is
 
-   use type Node_Sets.Set;
    use type Flow_Id_Sets.Set;
    use type Flow_Graphs.Vertex_Id;
 
