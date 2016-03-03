@@ -1330,10 +1330,10 @@ package body Gnat2Why.External_Axioms is
                      A_Type : constant W_Type_Id :=
                        Type_Of_Node (Etype (Actual));
                      Binders : Binder_Array
-                       (1 .. Integer (List_Length (F_Params)));
+                       (1 .. Natural (List_Length (F_Params)));
                      Args    : W_Expr_Array
-                       (1 .. Integer (List_Length (F_Params)));
-                     Count : Integer := 1;
+                       (1 .. Natural (List_Length (F_Params)));
+                     Count : Positive := 1;
                   begin
 
                      pragma Assert (List_Length (F_Params) =
@@ -1440,12 +1440,12 @@ package body Gnat2Why.External_Axioms is
                   F_W_Type : constant W_Type_Id :=
                     Get_Logic_Type_Of_Ada_Type (F_Type, False);
                   Binders  : Binder_Array
-                    (1 .. Integer (List_Length (F_Params)));
+                    (1 .. Natural (List_Length (F_Params)));
                   Left     : W_Expr_Id := Why_Empty;
                   Right    : W_Expr_Id;
                   Left_Ty  : Entity_Id := Empty;
                   Right_Ty : Entity_Id;
-                  Count    : Integer := 1;
+                  Count    : Positive := 1;
                   Op       : constant N_Op :=
                     (if List_Length (F_Params) = 1 then
                           Get_Unary_Nkind (Actual)
@@ -1496,7 +1496,7 @@ package body Gnat2Why.External_Axioms is
                            B_Ent    => Null_Entity_Name,
                            Mutable  => False);
 
-                        if Count = Integer (List_Length (F_Params)) then
+                        if Count = Natural (List_Length (F_Params)) then
                            Right := +Name;
                            Right_Ty := F_Type;
                         else
