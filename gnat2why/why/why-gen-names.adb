@@ -44,7 +44,7 @@ package body Why.Gen.Names is
    --  @return the conversion function from BV From to BV To
 
    Pre_Computed_Idents : array (Why_Name_Enum) of W_Identifier_Id;
-   --  This array is used to precompute all fixed idents.
+   --  This array is used to precompute all fixed idents
 
    function Append_Num (S        : String;
                         Count    : Positive;
@@ -96,7 +96,7 @@ package body Why.Gen.Names is
         Append_Num (S        => Base & "__" & To_String (Attr_To_Why_Name (A)),
                     Count    => Count,
                     Typ      => Typ,
-                    Module  => Module,
+                    Module   => Module,
                     Ada_Node => Ada_Node);
    end Attr_Append;
 
@@ -182,12 +182,12 @@ package body Why.Gen.Names is
                      return M_Boolean.To_Int;
                   elsif From = EW_Int_Type and then To = EW_Bool_Type then
                      return M_Boolean.Of_Int;
-                  elsif Why_Type_Is_BitVector (From) and then
-                    To = EW_Int_Type
+                  elsif Why_Type_Is_BitVector (From)
+                    and then To = EW_Int_Type
                   then
                      return MF_BVs (From).To_Int;
-                  elsif From = EW_Int_Type and then
-                    Why_Type_Is_BitVector (To)
+                  elsif From = EW_Int_Type
+                    and then Why_Type_Is_BitVector (To)
                   then
                      return MF_BVs (To).Of_Int;
                   elsif Why_Type_Is_BitVector (From) and then
@@ -255,8 +255,8 @@ package body Why.Gen.Names is
                      From_Node : constant Node_Id := Get_Ada_Node (+From);
                      To_Node   : constant Node_Id := Get_Ada_Node (+To);
                      From_Base : constant Node_Id :=
-                       (if Full_View_Not_In_SPARK (From_Node) then
-                             Get_First_Ancestor_In_SPARK (From_Node)
+                       (if Full_View_Not_In_SPARK (From_Node)
+                        then Get_First_Ancestor_In_SPARK (From_Node)
                         else Root_Record_Type (From_Node));
                   begin
                      if From_Base = From_Node then
@@ -526,7 +526,7 @@ package body Why.Gen.Names is
       Domain   : EW_Domain;
       Name     : String;
       Typ      : W_Type_Id := Why_Empty)
-     return W_Identifier_Id is
+      return W_Identifier_Id is
    begin
       return
         New_Identifier
@@ -543,7 +543,7 @@ package body Why.Gen.Names is
       Namespace : Name_Id := No_Name;
       Module    : W_Module_Id;
       Typ       : W_Type_Id := Why_Empty)
-     return W_Identifier_Id is
+      return W_Identifier_Id is
    begin
       return
         New_Identifier (Ada_Node  => Ada_Node,
@@ -647,10 +647,10 @@ package body Why.Gen.Names is
    begin
       return
         New_Name
-          (Ada_Node  => Get_Ada_Node (+Base),
-           Symbol    => NID (Get_Name_String (Get_Symbol (Base))
+          (Ada_Node => Get_Ada_Node (+Base),
+           Symbol   => NID (Get_Name_String (Get_Symbol (Base))
              & To_String (WNE_Ref)),
-           Module    => Get_Module (Base));
+           Module   => Get_Module (Base));
    end Ref_Append;
 
    --------------
@@ -854,7 +854,7 @@ package body Why.Gen.Names is
          case R is
             when RCK_Range_Not_First | RCK_Overflow_Not_First =>
                return M_Boolean.Check_Not_First;
-            when RCK_Range_Not_Last | RCK_Overflow_Not_Last =>
+            when RCK_Range_Not_Last  | RCK_Overflow_Not_Last  =>
                return M_Boolean.Check_Not_Last;
             when others =>
                return M_Boolean.Range_Check;
@@ -865,9 +865,10 @@ package body Why.Gen.Names is
               (case R is
                   when RCK_Range_Not_First | RCK_Overflow_Not_First =>
                      WNE_Check_Not_First,
-                  when RCK_Range_Not_Last | RCK_Overflow_Not_Last =>
+                  when RCK_Range_Not_Last  | RCK_Overflow_Not_Last  =>
                      WNE_Check_Not_Last,
-                  when others        => WNE_Range_Check_Fun);
+                  when others =>
+                     WNE_Range_Check_Fun);
 
          begin
             return E_Symb (Ty, Name);
