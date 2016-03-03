@@ -972,8 +972,7 @@ package body Why.Gen.Names is
          when others => raise Program_Error);
 
 begin
-   --  ??? workaround for a compiler problem; to be annotated with a TN once
-   --  a reproducer is ready.
+   --  ??? workaround for a problem with array initialization (P303-011)
    for J in Why_Name_Enum loop
       Pre_Computed_Idents (J) := Why_Empty;
    end loop;
