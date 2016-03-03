@@ -1130,12 +1130,12 @@ package body Why.Atree.Modules is
          M_Floats (Fl).Ceil :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("ceil"),
+                           Symbol => NID ("roundToIntegralTowardsPositive"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Floor :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("floor"),
+                           Symbol => NID ("roundToIntegralTowardsNegative"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Is_Finite :=
            New_Identifier (Module => M_Floats (Fl).Module,
@@ -1155,7 +1155,7 @@ package body Why.Atree.Modules is
          M_Floats (Fl).Rounding :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("nearbyInt"),
+                           Symbol => NID ("roundToIntegralTiesToAway"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_Int :=
            New_Identifier (Module => M_Floats (Fl).Module,
@@ -1165,7 +1165,7 @@ package body Why.Atree.Modules is
          M_Floats (Fl).Truncate :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("truncate"),
+                           Symbol => NID ("roundToIntegralTowardsZero"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Unary_Minus :=
            New_Identifier (Module => M_Floats (Fl).Module,

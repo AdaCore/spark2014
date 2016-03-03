@@ -244,8 +244,40 @@ module Floating
      ensures{ result = rem x y }
 end
 
+module Float32Prefix
+  use export ieee_float.Float32
+
+  function mul (x y : t) : t = x .* y
+  function div (x y : t) : t = x ./ y
+  function add (x y : t) : t = x .+ y
+  function sub (x y : t) : t = x .- y
+  function neg (x   : t) : t = .- x
+
+  predicate eq (x y : t) = x .=  y
+  predicate lt (x y : t) = x .<  y
+  predicate le (x y : t) = x .<= y
+  predicate gt (x y : t) = x .>  y
+  predicate ge (x y : t) = x .>= y
+end
+
+module Float64Prefix
+  use export ieee_float.Float64
+
+  function mul (x y : t) : t = x .* y
+  function div (x y : t) : t = x ./ y
+  function add (x y : t) : t = x .+ y
+  function sub (x y : t) : t = x .- y
+  function neg (x   : t) : t = .- x
+
+  predicate eq (x y : t) = x .=  y
+  predicate lt (x y : t) = x .<  y
+  predicate le (x y : t) = x .<= y
+  predicate gt (x y : t) = x .>  y
+  predicate ge (x y : t) = x .>= y
+end
+
 module Float32_power
-  use export float.Float32
+  use export Float32Prefix
 
   clone export Floating_power with
     type t = t,
@@ -257,7 +289,7 @@ module Float32_power
 end
 
 module Float64_power
-  use export float.Float64
+  use export Float64Prefix
 
   clone export Floating_power with
     type t = t,
@@ -269,7 +301,7 @@ module Float64_power
 end
 
 module Float32_next_prev
-  use export float.Float32
+  use export Float32Prefix
 
   clone export Floating_next_prev with
     type t = t,
@@ -284,7 +316,7 @@ module Float32_next_prev
 end
 
 module Float64_next_prev
-  use export float.Float64
+  use export Float64Prefix
 
   clone export Floating_next_prev with
     type t = t,
@@ -300,7 +332,7 @@ end
 
 
 module Float32
-  use export float.Float32
+  use export Float32Prefix
 
   clone export Floating with
     type t = t,
@@ -317,7 +349,7 @@ module Float32
 end
 
 module Float64
-  use export float.Float64
+  use export Float64Prefix
 
   clone export Floating with
     type t = t,
@@ -334,18 +366,18 @@ module Float64
 end
 
 module FloatConv
-  use export float.FloatConverter
+  use export ieee_float.FloatConverter
 
   val range_check_ (f l x : Float64.t) : Float64.t
-    requires { (Float64.le f x) /\ (Float64.le x l) }
+    requires { (Float64.(.<=) f x) /\ (Float64.(.<=) x l) }
     ensures { result = x }
 end
 
 module Float32_BV_Converter
-  use export float.Float32_BV_Converter
+  use export ieee_float.Float32_BV_Converter
 end
 module Float64_BV_Converter
-  use export float.Float64_BV_Converter
+  use export ieee_float.Float64_BV_Converter
 end
 
 module Boolean
