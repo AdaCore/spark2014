@@ -3519,9 +3519,9 @@ package body Gnat2Why.Expr is
 
          begin
             --  If Use_Pred is true, then we already have generated a predicate
-            --  for the dynamic predicate of elements of type Ty_Ext. We also
-            --  avoid using the predicate for objects in split form as it would
-            --  introduce an unnecessary conversion harmful to provers.
+            --  for the dynamic predicate of elements of type Pred_Type. We
+            --  also avoid using the predicate for objects in split form as it
+            --  would introduce an unnecessary conversion harmful to provers.
 
             if Use_Pred
               and then Eq_Base (Type_Of_Node (Pred_Type), Get_Type (+Expr))
@@ -3698,11 +3698,10 @@ package body Gnat2Why.Expr is
    begin
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-      --  Register the temporary identifier Pred_Id for parameter
-      --  Pred_Param in the symbol table. This ensures both that a
-      --  distinct name is used each time (preventing name capture), and
-      --  that the type of Expr is used as the type used to represent
-      --  Pred_Param (avoiding type conversion).
+      --  Register the temporary identifier Pred_Id for parameter Pred_Param in
+      --  the symbol table. This ensures both that a distinct name is used each
+      --  time (preventing name capture), and that the type of Expr is used as
+      --  the type used to represent Pred_Param (avoiding type conversion).
 
       if Get_Type_Kind (Get_Type (+Expr)) = EW_Split
         and then Has_Array_Type (Get_Ada_Node (+Get_Type (+Expr)))
