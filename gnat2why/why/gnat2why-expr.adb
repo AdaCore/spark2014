@@ -174,11 +174,11 @@ package body Gnat2Why.Expr is
    --  Build Case expression of Ada Node.
 
    function Compute_Call_Args
-     (Call        :     Node_Id;
-      Domain      :     EW_Domain;
-      Nb_Of_Refs  : out Natural;
-      Nb_Of_Lets  : out Natural;
-      Params      :     Transformation_Params) return W_Expr_Array;
+     (Call       :     Node_Id;
+      Domain     :     EW_Domain;
+      Nb_Of_Refs : out Natural;
+      Nb_Of_Lets : out Natural;
+      Params     :     Transformation_Params) return W_Expr_Array;
    --  Compute arguments for a function call or procedure call. The node in
    --  argument must have a "Name" field and a "Parameter_Associations" field.
    --  Nb_Of_Refs is the number of ref arguments that could not be

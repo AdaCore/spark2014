@@ -322,11 +322,11 @@ package Why.Gen.Names is
                          Count : Positive;
                          Typ   : W_Type_Id) return W_Identifier_Id;
 
-   function Discr_Append (Base  : W_Identifier_Id;
-                          Typ   : W_Type_Id) return W_Identifier_Id;
+   function Discr_Append (Base : W_Identifier_Id;
+                          Typ  : W_Type_Id) return W_Identifier_Id;
 
-   function Field_Append (Base  : W_Identifier_Id;
-                          Typ   : W_Type_Id) return W_Identifier_Id;
+   function Field_Append (Base : W_Identifier_Id;
+                          Typ  : W_Type_Id) return W_Identifier_Id;
 
    function Ref_Append (Base : W_Name_Id) return W_Name_Id;
 
