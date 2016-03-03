@@ -8137,10 +8137,9 @@ package body Gnat2Why.Expr is
             if Is_Floating_Point_Type (Etype (Var)) then
                declare
                   Oper : constant W_Identifier_Id :=
-                    (if Attr_Id = Attribute_Pred then
-                        E_Symb (Etype (Var), WNE_Float_Pred)
-                     else
-                       E_Symb (Etype (Var), WNE_Float_Succ));
+                    E_Symb (Etype (Var), (if Attr_Id = Attribute_Pred
+                                          then WNE_Float_Pred
+                                          else WNE_Float_Succ));
                   Arg : constant W_Expr_Id :=
                     Transform_Expr (First (Expressions (Expr)),
                                     EW_Real_Type,
