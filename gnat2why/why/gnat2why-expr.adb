@@ -5976,13 +5976,20 @@ package body Gnat2Why.Expr is
          Base_Type := EW_Int_Type;
       end if;
 
-      R := New_Range_Expr
-          (Domain    => Domain,
-           Low       => +Transform_Expr (Low, Base_Type, Subdomain, Params),
-           High      => +Transform_Expr (High, Base_Type, Subdomain, Params),
-           Expr      => Insert_Simple_Conversion (Domain   => Subdomain,
-                                                  Expr     => T,
-                                                  To       => Base_Type));
+      declare
+         Low_Expr : constant W_Expr_Id :=
+           +Transform_Expr (Low, Base_Type, Subdomain, Params);
+         High_Expr : constant W_Expr_Id :=
+           +Transform_Expr (High, Base_Type, Subdomain, Params);
+      begin
+         R := New_Range_Expr
+           (Domain    => Domain,
+            Low       => Low_Expr,
+            High      => High_Expr,
+            Expr      => Insert_Simple_Conversion (Domain   => Subdomain,
+                                                   Expr     => T,
+                                                   To       => Base_Type));
+      end;
 
       --  In programs, we generate a check that the range_constraint of a
       --  subtype_indication is compatible with the given subtype.
@@ -10164,22 +10171,27 @@ package body Gnat2Why.Expr is
               Nkind (Expr) = N_Op_Eq and then
               Is_Standard_Boolean_Type (Etype (Left_Opnd (Expr)))
             then
-               T :=
-                 New_Connection
-                   (Domain => EW_Pred,
-                    Left   =>
-                      Transform_Expr
-                        (Left_Opnd (Expr),
-                         EW_Bool_Type,
-                         EW_Pred,
-                         Local_Params),
-                    Right  =>
-                      Transform_Expr
-                        (Right_Opnd (Expr),
-                         EW_Bool_Type,
-                         EW_Pred,
-                         Local_Params),
-                    Op     => EW_Equivalent);
+               declare
+                  Left : constant W_Expr_Id :=
+                    Transform_Expr
+                      (Left_Opnd (Expr),
+                       EW_Bool_Type,
+                       EW_Pred,
+                       Local_Params);
+                  Right : constant W_Expr_Id :=
+                    Transform_Expr
+                         (Right_Opnd (Expr),
+                          EW_Bool_Type,
+                          EW_Pred,
+                          Local_Params);
+               begin
+                  T :=
+                    New_Connection
+                      (Domain => EW_Pred,
+                       Left   => Left,
+                       Right  => Right,
+                       Op     => EW_Equivalent);
+               end;
             elsif Is_Array_Type (Etype (Left_Opnd (Expr))) then
                declare
                   Left : constant W_Expr_Id :=
@@ -10256,20 +10268,24 @@ package body Gnat2Why.Expr is
             --  The arguments of arithmetic functions have to be of base
             --  scalar types.
             declare
-               Left  : constant Node_Id := Left_Opnd (Expr);
-               Right : constant Node_Id := Right_Opnd (Expr);
-               Base  : constant W_Type_Id := Base_Why_Type (Left, Right);
+               Left       : constant Node_Id := Left_Opnd (Expr);
+               Right      : constant Node_Id := Right_Opnd (Expr);
+               Base       : constant W_Type_Id := Base_Why_Type (Left, Right);
+               Left_Expr  : constant W_Expr_Id :=
+                 Transform_Expr (Left,
+                                 Base,
+                                 Domain,
+                                 Local_Params);
+               Right_Expr : constant W_Expr_Id :=
+                 Transform_Expr (Right,
+                                 Base,
+                                 Domain,
+                                 Local_Params);
             begin
                T := New_Op_Expr
                  (Op          => Nkind (Expr),
-                  Left        => Transform_Expr (Left,
-                    Base,
-                    Domain,
-                    Local_Params),
-                  Right       => Transform_Expr (Right,
-                    Base,
-                    Domain,
-                    Local_Params),
+                  Left        => Left_Expr,
+                  Right       => Right_Expr,
                   Left_Type   => Etype (Left),
                   Right_Type  => Etype (Right),
                   Return_Type => Expr_Type,
@@ -10502,17 +10518,24 @@ package body Gnat2Why.Expr is
                   Transform_Actions_Preparation (Actions (Expr));
                end if;
 
-               T :=
-                 New_Short_Circuit_Expr
-                   (Left   => Transform_Expr (Left_Opnd (Expr),
-                                              EW_Bool_Type,
-                                              Domain,
-                                              Local_Params),
-                    Right  => Transform_Expr (Right_Opnd (Expr),
-                                              EW_Bool_Type,
-                                              Domain,
-                                              Local_Params),
-                    Domain => Domain);
+               declare
+                  Left : constant W_Expr_Id :=
+                    Transform_Expr (Left_Opnd (Expr),
+                                    EW_Bool_Type,
+                                    Domain,
+                                    Local_Params);
+                  Right : constant W_Expr_Id :=
+                    Transform_Expr (Right_Opnd (Expr),
+                                    EW_Bool_Type,
+                                    Domain,
+                                    Local_Params);
+               begin
+                  T :=
+                    New_Short_Circuit_Expr
+                      (Left   => Left,
+                       Right  => Right,
+                       Domain => Domain);
+               end;
 
                if Present (Actions (Expr)) then
                   T := Transform_Actions (Actions (Expr),
