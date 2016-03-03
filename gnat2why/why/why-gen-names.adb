@@ -122,16 +122,12 @@ package body Why.Gen.Names is
    ----------------------
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum is
-   begin
-      case A is
-         when Attribute_Constrained => return WNE_Attr_Constrained;
-         when Attribute_First       => return WNE_Attr_First;
-         when Attribute_Last        => return WNE_Attr_Last;
-         when Attribute_Tag         => return WNE_Attr_Tag;
-         when others =>
-            raise Program_Error;
-      end case;
-   end Attr_To_Why_Name;
+     (case A is
+         when Attribute_Constrained => WNE_Attr_Constrained,
+         when Attribute_First       => WNE_Attr_First,
+         when Attribute_Last        => WNE_Attr_Last,
+         when Attribute_Tag         => WNE_Attr_Tag,
+         when others                => raise Program_Error);
 
    --------------------
    -- Content_Append --
@@ -259,11 +255,11 @@ package body Why.Gen.Names is
                         then Get_First_Ancestor_In_SPARK (From_Node)
                         else Root_Record_Type (From_Node));
                   begin
-                     if From_Base = From_Node then
-                        return E_Symb (To_Node, WNE_Of_Base);
-                     else
-                        return E_Symb (From_Node, WNE_To_Base);
-                     end if;
+                     return
+                       E_Symb ((if From_Base = From_Node
+                                then To_Node
+                                else From_Node),
+                               WNE_Of_Base);
                   end;
             end case;
       end case;
