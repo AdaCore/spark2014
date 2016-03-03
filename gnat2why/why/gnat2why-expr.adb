@@ -10181,21 +10181,28 @@ package body Gnat2Why.Expr is
                          Local_Params),
                     Op     => EW_Equivalent);
             elsif Is_Array_Type (Etype (Left_Opnd (Expr))) then
-               T := New_Op_Expr
-                 (Op          => Nkind (Expr),
-                  Left        =>
-                    Transform_Expr (Left_Opnd (Expr),
-                      (if Domain = EW_Pred then EW_Term else Domain),
-                      Local_Params),
-                  Right       =>
-                    Transform_Expr (Right_Opnd (Expr),
-                      (if Domain = EW_Pred then EW_Term else Domain),
-                    Local_Params),
-                  Left_Type   => Etype (Left_Opnd (Expr)),
-                  Right_Type  => Etype (Right_Opnd (Expr)),
-                  Return_Type => Expr_Type,
-                  Domain      => Domain,
-                  Ada_Node    => Expr);
+               declare
+                  Left : constant W_Expr_Id :=
+                    Transform_Expr
+                      (Left_Opnd (Expr),
+                       (if Domain = EW_Pred then EW_Term else Domain),
+                       Local_Params);
+                  Right : constant W_Expr_Id :=
+                    Transform_Expr
+                      (Right_Opnd (Expr),
+                       (if Domain = EW_Pred then EW_Term else Domain),
+                       Local_Params);
+               begin
+                  T := New_Op_Expr
+                    (Op          => Nkind (Expr),
+                     Left        => Left,
+                       Right       => Right,
+                     Left_Type   => Etype (Left_Opnd (Expr)),
+                     Right_Type  => Etype (Right_Opnd (Expr)),
+                     Return_Type => Expr_Type,
+                     Domain      => Domain,
+                     Ada_Node    => Expr);
+               end;
             else
                declare
                   Left  : constant Node_Id := Left_Opnd (Expr);
