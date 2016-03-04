@@ -1,0 +1,3 @@
+base-a-b.ads:3:08: warning: no procedure exists that can initialize abstract state "B.State" constituent of "A.State"
+base-a.ads:2:23: warning: no procedure exists that can initialize abstract state "A.State"
+gp.ads:4:23: warning: no procedure exists that can initialize abstract state "C.State" constituent of "B.State", in instantiation at base-a-b.adb:14
