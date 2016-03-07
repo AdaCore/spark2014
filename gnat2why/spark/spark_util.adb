@@ -181,12 +181,6 @@ package body SPARK_Util is
       Anc_Subt : Entity_Id;
 
    begin
-      Anc_Subt := Ancestor_Subtype (Under_T);
-
-      if Anc_Subt = Empty then
-         Anc_Subt := Base_T;
-      end if;
-
       if not Has_Scalar_Type (Under_T) then
          return False;
 
@@ -194,7 +188,13 @@ package body SPARK_Util is
          return True;
 
       else
-         return     Has_Static_Scalar_Subtype (Anc_Subt)
+         Anc_Subt := Ancestor_Subtype (Under_T);
+
+         if Anc_Subt = Empty then
+            Anc_Subt := Base_T;
+         end if;
+
+         return Has_Static_Scalar_Subtype (Anc_Subt)
            and then Is_Static_Expression (Type_Low_Bound (Under_T))
            and then Is_Static_Expression (Type_High_Bound (Under_T));
       end if;
