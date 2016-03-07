@@ -115,18 +115,11 @@ package body Flow.Data_Dependence_Graph is
                      -------------------
 
                      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id)
-                                             return Boolean
-                     is
-                     begin
-                        case FA.CFG.Edge_Colour (A, B) is
-                           when EC_Default | EC_Inf =>
-                              return True;
-                           when EC_Abend | EC_Barrier =>
-                              return False;
-                           when others =>
-                              raise Program_Error;
-                        end case;
-                     end Edge_Selector;
+                                             return Boolean is
+                       (case FA.CFG.Edge_Colour (A, B) is
+                           when EC_Default | EC_Inf   => True,
+                           when EC_Abend | EC_Barrier => False,
+                           when others                => raise Program_Error);
 
                   begin
                      --  Check for self-dependency (i.e. X := X + 1).
