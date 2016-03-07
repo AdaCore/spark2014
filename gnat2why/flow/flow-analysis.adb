@@ -1453,8 +1453,8 @@ package body Flow.Analysis is
               Vars_Defined and
               (FA.Atr (V).Variables_Defined - FA.Atr (V).Variables_Used);
          begin
-            if V /= Ineffective_Statement and then
-              Intersection.Length >= 1
+            if V /= Ineffective_Statement
+              and then not Intersection.Is_Empty
             then
                Mask.Include (V);
                TV := Flow_Graphs.Skip_Children;
@@ -2712,7 +2712,7 @@ package body Flow.Analysis is
 
       begin
          --  Sanity check that we do not have an empty set.
-         pragma Assert (Vertices_To_Cover.Length >= 1);
+         pragma Assert (not Vertices_To_Cover.Is_Empty);
 
          Start := FA.Start_Vertex;
          for Vert of Vertices_To_Cover loop

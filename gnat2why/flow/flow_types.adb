@@ -772,7 +772,7 @@ package body Flow_Types is
          else
             R.Component.Delete_Last;
          end if;
-         if F.Kind = Record_Field and then R.Component.Length = 0 then
+         if F.Kind = Record_Field and then R.Component.Is_Empty then
             R := (Kind    => Direct_Mapping,
                   Variant => F.Variant,
                   Node    => F.Node,

@@ -3228,7 +3228,7 @@ package body Flow.Control_Flow_Graph is
             end if;
          end loop;
 
-         if Inits.Length = 0 then
+         if Inits.Is_Empty then
             --  We did not have anything with a default initial value,
             --  so we just create a null vertex here.
             Add_Vertex (FA,
@@ -4313,7 +4313,7 @@ package body Flow.Control_Flow_Graph is
                          Use_Computed_Globals => not FA.Generating_Globals,
                          Callsite             => N);
             if D_Map.Contains (Null_Flow_Id)
-              and then D_Map (Null_Flow_Id).Length >= 1
+              and then not D_Map (Null_Flow_Id).Is_Empty
             then
                Add_Vertex
                  (FA,
@@ -5087,7 +5087,7 @@ package body Flow.Control_Flow_Graph is
       --  front of the vertex created for N. We then re-adjust the standard
       --  entry for N.
 
-      if L.Length >= 1 then
+      if not L.Is_Empty then
          L.Append (CM (Union_Id (N)).Standard_Entry);
 
          declare
@@ -6588,7 +6588,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Finally, we need to make sure that all extra checks for folded
       --  functions have been processed.
-      pragma Assert (The_Context.Folded_Function_Checks.Length = 0);
+      pragma Assert (The_Context.Folded_Function_Checks.Is_Empty);
    end Create;
 
 end Flow.Control_Flow_Graph;
