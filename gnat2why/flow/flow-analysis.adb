@@ -1669,9 +1669,8 @@ package body Flow.Analysis is
                      end if;
 
                      if Atr.Is_Parameter and then Key.Variant = In_View then
-                        --  For in parameters we do not emit the
-                        --  ineffective assignment error as its a bit
-                        --  confusing.
+                        --  For in parameters we do not emit the ineffective
+                        --  assignment error as it is a bit confusing.
                         null;
 
                      elsif Atr.Is_Global_Parameter and then
