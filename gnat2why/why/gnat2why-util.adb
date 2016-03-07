@@ -688,7 +688,7 @@ package body Gnat2Why.Util is
          if UR_Eq (Rval, Ureal_0) then
             return Uint_0;
          end if;
-         --  0 is might be represented in base 0 so we make a special case for
+         --  0 might be represented in base 0 so we make a special case for
          --  it since we only deal with number in base 2, 10 or 16
 
          if Base /= 2 and Base /= 10 and Base /= 16 then
@@ -753,7 +753,7 @@ package body Gnat2Why.Util is
 
             Bitpat := Num + Sign_Bit;
 
-         elsif Base = 2 and (UI_Gt (Den, UI_From_Int (149))) then
+         elsif Base = 2 and (UI_Gt (Den, Eoffset + Sig_Size - Uint_1)) then
             --  second format for subnormals
 
             --  Here we expect subnormal of the form
@@ -768,7 +768,7 @@ package body Gnat2Why.Util is
                pragma Assert (UI_Le (Den, Min_Den));
 
                Bitpat := UI_Div (Num,
-                                 UI_Expon (Uint_2, Sig_Size - Min_Den + Den));
+                                  UI_Expon (Uint_2, Sig_Size - Min_Den + Den));
 
                pragma Assert (Num = Bitpat * UI_Expon (Uint_2,
                               Sig_Size - Min_Den + Den));
