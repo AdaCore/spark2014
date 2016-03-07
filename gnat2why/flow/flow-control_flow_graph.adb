@@ -5309,7 +5309,6 @@ package body Flow.Control_Flow_Graph is
       begin
          Dead.Exclude (V);
          if V = FA.End_Vertex or else FA.Atr (V).Is_Exceptional_Path then
-            --  !!! .Element used here because of container bug
             TV := Flow_Graphs.Skip_Children;
          else
             TV := Flow_Graphs.Continue;
