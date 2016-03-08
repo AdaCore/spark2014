@@ -930,8 +930,9 @@ package body Flow.Analysis is
       EV_Unused             : Flow_Id_Sets.Set;
       EV_Ineffective        : Flow_Id_Sets.Set;
 
-   begin
+   --  Start of processing for Find_Ineffective_Imports_And_Unused_Objects
 
+   begin
       --  We look at the null depends (if one exists). For any variables
       --  mentioned there, we suppress the ineffective import warning.
 
@@ -982,7 +983,7 @@ package body Flow.Analysis is
                --  consider it if its actually used. Its not an error to
                --  not explicitly use it.
 
-               Disuse_Not_Bad := Is_Bound (Key) or Is_Discriminant (Key);
+               Disuse_Not_Bad := Is_Bound (Key) or else Is_Discriminant (Key);
 
                --  Generally we allow a discriminant or bound to mark the
                --  entire variable as used (if its used) and otherwise
