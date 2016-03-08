@@ -1073,10 +1073,10 @@ package body Graphs is
                          C    : Cursor)
                          return Boolean
    is
-     ((case Coll.The_Type is
-          when In_Neighbours  => Has_Element (C.VIS_Native_Cursor),
-          when Out_Neighbours => Has_Element (C.EAM_Native_Cursor),
-          when All_Vertices   => Has_Element (C.VL_Native_Cursor)));
+     (case Coll.The_Type is
+         when In_Neighbours  => Has_Element (C.VIS_Native_Cursor),
+         when Out_Neighbours => Has_Element (C.EAM_Native_Cursor),
+         when All_Vertices   => Has_Element (C.VL_Native_Cursor));
 
    ------------
    -- Invert --
