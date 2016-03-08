@@ -548,7 +548,7 @@ package Flow_Types is
       --  are not part of the path itself.
 
       Is_Exceptional_Path          : Boolean;
-      --  True for all nodes on exceptional execution paths, i.e. patch
+      --  True for all nodes on exceptional execution paths, i.e. paths
       --  leading to raise statements, statically false assertions and calls
       --  to subprograms with pragma No_Return. We tend to exclude these from
       --  analysis and sanity checking.
