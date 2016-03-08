@@ -544,12 +544,14 @@ package Flow_Types is
       --  this set to true.
 
       Is_Exceptional_Branch        : Boolean;
-      --  True for nodes which lead *into* an exceptional path, but are not
-      --  part of the path itself.
+      --  True for nodes which lead *into* an exceptional path (see below), but
+      --  are not part of the path itself.
 
       Is_Exceptional_Path          : Boolean;
-      --  True for all nodes on execptional execution paths. We tend to
-      --  exclude these from analysis and sanity checking.
+      --  True for all nodes on exceptional execution paths, i.e. patch
+      --  leading to raise statements, statically false assertions and calls
+      --  to subprograms with pragma No_Return. We tend to exclude these from
+      --  analysis and sanity checking.
 
       Is_Proof                     : Boolean;
       --  True if this vertex represents something in a proof context

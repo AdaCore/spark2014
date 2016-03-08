@@ -1383,7 +1383,7 @@ package body Flow.Analysis is
                                         return Boolean;
       --  Checks if the given vertex V represents an externally visible
       --  outcome, i.e. is a final-use vertex that is also an export or
-      --  a use vertex that branches to a raise statement.
+      --  a use vertex that branches to an exceptional path.
 
       function Is_Final_Use_Unreferenced (V : Flow_Graphs.Vertex_Id)
                                           return Boolean;
