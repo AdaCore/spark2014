@@ -108,18 +108,21 @@ package body Flow.Analysis is
       M : Attribute_Maps.Map;
       V : Flow_Graphs.Vertex_Id) return Node_Or_Entity_Id
    is
-      K : constant Flow_Id                                := G.Get_Key (V);
-      A : constant Attribute_Maps.Constant_Reference_Type := M (V);
+      Loc : constant Node_Or_Entity_Id := M (V).Error_Location;
    begin
-      if Present (A.Error_Location) then
-         return A.Error_Location;
+      if Present (Loc) then
+         return Loc;
       else
-         case K.Kind is
-            when Direct_Mapping | Record_Field =>
-               return Get_Direct_Mapping_Id (K);
-            when others =>
-               raise Why.Unexpected_Node;
-         end case;
+         declare
+            K : constant Flow_Id := G.Get_Key (V);
+         begin
+            case K.Kind is
+               when Direct_Mapping | Record_Field =>
+                  return Get_Direct_Mapping_Id (K);
+               when others =>
+                  raise Why.Unexpected_Node;
+            end case;
+         end;
       end if;
    end Error_Location;
 
