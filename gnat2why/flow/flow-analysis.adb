@@ -181,14 +181,14 @@ package body Flow.Analysis is
      (FA  : in out Flow_Analysis_Graphs;
       Var : Flow_Id)
    is
-      First_Use : Node_Id;
-   begin
-      First_Use := First_Variable_Use
-        (FA      => FA,
-         Var     => Var,
-         Kind    => Use_Any,
-         Precise => True);
+      First_Use : constant Node_Id :=
+        First_Variable_Use
+          (FA      => FA,
+           Var     => Var,
+           Kind    => Use_Any,
+           Precise => True);
 
+   begin
       if First_Use = FA.Analyzed_Entity then
          --  Ok, we did not actually find a node which makes use of
          --  Var, which is a bit odd. This means that the computed
