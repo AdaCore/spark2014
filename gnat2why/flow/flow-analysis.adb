@@ -968,8 +968,7 @@ package body Flow.Analysis is
             Atr : constant Constant_Reference_Type := FA.Atr (V);
 
             E              : Flow_Id;
-            Disuse_Not_Bad : Boolean;
-            Skip_This      : Boolean;
+            Disuse_Allowed : Boolean;
          begin
             if Key.Variant = Initial_Value and then
               Key.Kind /= Synthetic_Null_Export
@@ -983,26 +982,20 @@ package body Flow.Analysis is
                --  consider it if it is actually used. Its not an error to
                --  not explicitly use it.
 
-               Disuse_Not_Bad := Is_Bound (Key) or else Is_Discriminant (Key);
+               Disuse_Allowed := Is_Bound (Key) or else Is_Discriminant (Key);
 
-               --  Generally we allow a discriminant or bound to mark the
-               --  entire variable as used (if it is used) and otherwise have
-               --  no effect (not using it is not flagging the entire variable
-               --  as unused). However, this is only valid for out parameters;
-               --  for in out parameters the value of the entire variable
-               --  itself has to be used and the bounds are completely
-               --  optional.
-
-               Skip_This := (if Disuse_Not_Bad
-                             then Atr.Mode = Mode_In_Out
-                             else False);
+               --  Using discriminants or bounds marks the entire variable
+               --  as used; not using them has no effect. However, this only
+               --  applies to out parameters; for in out parameters the value
+               --  of the entire variable itself has to be used and uses of
+               --  bounds and discriminants are completely ignored.
 
                --  Determine ineffective imports.
 
-               if not Skip_This then
+               if not Disuse_Allowed or else Atr.Mode /= Mode_In_Out then
 
                   if Atr.Is_Initialized and Atr.Is_Import then
-                     if not Disuse_Not_Bad then
+                     if not Disuse_Allowed then
                         EV_Considered_Imports.Include (E);
                      end if;
 
@@ -1010,10 +1003,9 @@ package body Flow.Analysis is
                      --  that we at least partially have used the entire
                      --  variable.
 
-                     if FA.PDG.Non_Trivial_Path_Exists (V,
-                                                        Is_Final_Use'Access)
+                     if FA.PDG.Non_Trivial_Path_Exists (V, Is_Final_Use'Access)
                      then
-                        if Disuse_Not_Bad then
+                        if Disuse_Allowed then
                            EV_Considered_Imports.Include (E);
                         end if;
                         EV_Effective.Include (E);
@@ -1022,7 +1014,7 @@ package body Flow.Analysis is
 
                   --  Determine unused objects.
 
-                  if not Disuse_Not_Bad then
+                  if not Disuse_Allowed then
                      EV_Considered_Objects.Include (E);
                   end if;
 
@@ -1034,14 +1026,14 @@ package body Flow.Analysis is
                         if FA.PDG.Get_Key (Final_V).Variant /= Final_Value
                           or else FA.PDG.In_Neighbour_Count (Final_V) > 1
                         then
-                           if Disuse_Not_Bad then
+                           if Disuse_Allowed then
                               EV_Considered_Objects.Include (E);
                            end if;
                            EV_Used.Include (E);
                         end if;
                      end;
                   else
-                     if Disuse_Not_Bad then
+                     if Disuse_Allowed then
                         EV_Considered_Objects.Include (E);
                      end if;
                      EV_Used.Include (E);
