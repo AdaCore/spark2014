@@ -1144,21 +1144,17 @@ package body Graphs is
 
    function Next_Cursor (Coll : Vertex_Collection_T;
                          C    : Cursor)
-                         return Cursor
-   is
-   begin
-      case Coll.The_Type is
+                         return Cursor is
+     (case Coll.The_Type is
          when In_Neighbours =>
-            return Cursor'(Collection_Type   => In_Neighbours,
-                           VIS_Native_Cursor => Next (C.VIS_Native_Cursor));
+            Cursor'(Collection_Type   => In_Neighbours,
+                    VIS_Native_Cursor => Next (C.VIS_Native_Cursor)),
          when Out_Neighbours =>
-            return Cursor'(Collection_Type   => Out_Neighbours,
-                           EAM_Native_Cursor => Next (C.EAM_Native_Cursor));
+            Cursor'(Collection_Type   => Out_Neighbours,
+                    EAM_Native_Cursor => Next (C.EAM_Native_Cursor)),
          when All_Vertices =>
-            return Cursor'(Collection_Type   => All_Vertices,
-                           VL_Native_Cursor  => Next (C.VL_Native_Cursor));
-      end case;
-   end Next_Cursor;
+            Cursor'(Collection_Type   => All_Vertices,
+                    VL_Native_Cursor  => Next (C.VL_Native_Cursor)));
 
    -------------------------------
    --  Non_Trivial_Path_Exists  --
