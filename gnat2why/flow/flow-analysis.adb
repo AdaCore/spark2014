@@ -274,14 +274,12 @@ package body Flow.Analysis is
             declare
                Body_E : constant Entity_Id := Get_Body_Entity (S);
             begin
-               if Present (Body_E) then
-                  Haystack_A := Get_Pragma (Body_E, Pragma_Refined_Global);
-               else
-                  Haystack_A := Empty;
-               end if;
-
+               Haystack_A := (if Present (Body_E)
+                              then Get_Pragma (Body_E, Pragma_Refined_Global)
+                              else Empty);
                Haystack_B := Get_Pragma (S, Pragma_Global);
             end;
+
          when others =>
             raise Why.Unexpected_Node;
       end case;
