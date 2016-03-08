@@ -108,8 +108,8 @@ package body Flow.Analysis is
       M : Attribute_Maps.Map;
       V : Flow_Graphs.Vertex_Id) return Node_Or_Entity_Id
    is
-      K : constant Flow_Id      := G.Get_Key (V);
-      A : constant V_Attributes := M.Element (V);
+      K : constant Flow_Id                                := G.Get_Key (V);
+      A : constant Attribute_Maps.Constant_Reference_Type := M (V);
    begin
       if Present (A.Error_Location) then
          return A.Error_Location;
@@ -431,7 +431,8 @@ package body Flow.Analysis is
       is
          pragma Unreferenced (Origin, Depth);
 
-         Atr         : constant V_Attributes := FA.Atr.Element (V);
+         Atr : constant Attribute_Maps.Constant_Reference_Type := FA.Atr (V);
+
          Check_Read  : constant Boolean      := Kind in Use_Read | Use_Any;
          Check_Write : constant Boolean      := Kind in Use_Write | Use_Any;
          Of_Interest : Boolean               := False;
@@ -1125,9 +1126,11 @@ package body Flow.Analysis is
 
       for F of EV_Ineffective loop
          declare
-            V   : constant Flow_Graphs.Vertex_Id := Get_Initial_Vertex (FA.PDG,
-                                                                        F);
-            Atr : constant V_Attributes          := FA.Atr.Element (V);
+            V   : constant Flow_Graphs.Vertex_Id :=
+              Get_Initial_Vertex (FA.PDG, F);
+            Atr : constant Attribute_Maps.Constant_Reference_Type :=
+              FA.Atr (V);
+
          begin
             if F.Kind in Direct_Mapping | Record_Field and then
               FA.Unreferenced_Vars.Contains (Get_Direct_Mapping_Id (F))
@@ -3883,8 +3886,9 @@ package body Flow.Analysis is
                   Initial_V : constant Flow_Graphs.Vertex_Id :=
                     Get_Initial_Vertex (FA.CFG, Var);
 
-                  Atr       : constant V_Attributes :=
-                    FA.Atr.Element (Initial_V);
+                  Atr : constant Attribute_Maps.Constant_Reference_Type :=
+                    FA.Atr (Initial_V);
+
                begin
                   if not Atr.Is_Import then
                      Error_Msg_Flow
