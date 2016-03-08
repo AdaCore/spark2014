@@ -77,7 +77,7 @@ package body Flow.Analysis is
 
    function Find_Global
      (S : Entity_Id;
-      F : Flow_Id) return Node_Id;
+      F : Flow_Id) return Entity_Id;
    --  Find the given global F in the subprogram declaration of S (or
    --  in the initializes clause of S). If we can't find it (perhaps
    --  because of computed globals) we just return S which is a useful
@@ -220,12 +220,12 @@ package body Flow.Analysis is
 
    function Find_Global
      (S : Entity_Id;
-      F : Flow_Id) return Node_Id
+      F : Flow_Id) return Entity_Id
    is
       Needle     : Entity_Id;
       Haystack_A : Node_Id;
       Haystack_B : Node_Id;
-      The_Global : Node_Id := Empty;
+      The_Global : Entity_Id := Empty;
 
       function Find_It (N : Node_Id) return Traverse_Result;
       --  Checks if N refers to Needle and sets The_Global to N if
