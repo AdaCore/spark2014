@@ -463,7 +463,7 @@ sort.adb:23:29: info: index check proved
 sort.adb:24:15: info: index check proved
 sort.adb:24:29: info: index check proved
 sort.adb:28:22: info: precondition proved
-sort.adb:28:22: medium: assertion might fail, cannot prove Remove (Init, X) = Remove (Interm, X) (e.g. when Interm = (2 => 0, 100 => 0, 1 => 0, 0 => 0, others => 1) and Init = (others => 0) and X = 2)
+sort.adb:28:22: medium: assertion might fail, cannot prove Remove (Init, X) = Remove (Interm, X) (e.g. when Interm = (99 => 0, 98 => 0, -1 => 0, 100 => 0, 1 => 0, 0 => 0, others => 1) and Init = (others => 0) and X = 99)
 sort.adb:28:36: info: range check proved
 sort.adb:28:41: info: precondition proved
 sort.adb:28:49: info: initialization of "Interm" proved
@@ -472,7 +472,7 @@ sort.adb:30:15: info: index check proved
 sort.adb:30:21: info: initialization of "Temp" proved
 sort.adb:30:21: info: range check proved
 sort.adb:31:22: info: precondition proved
-sort.adb:31:22: medium: assertion might fail, cannot prove Remove (Interm, Y) = Remove (Values, Y) (e.g. when Values = (2 => 0, 1 => 0, 0 => 0, others => 1) and Interm = (3 => 1, others => 0) and Y = 2)
+sort.adb:31:22: medium: assertion might fail, cannot prove Remove (Interm, Y) = Remove (Values, Y) (e.g. when Values = (-2 => 0, 2 => 0, -1 => 0, 1 => 0, 0 => 0, others => 1) and Interm = (others => 0) and Y = 2)
 sort.adb:31:30: info: initialization of "Interm" proved
 sort.adb:31:38: info: range check proved
 sort.adb:31:43: info: precondition proved
