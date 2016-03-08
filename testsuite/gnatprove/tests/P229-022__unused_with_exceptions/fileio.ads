@@ -14,6 +14,8 @@ package Fileio with SPARK_Mode is
 
    procedure Simple (X, Y : in out Integer);
 
+   procedure Simple2 (X, Y : in out Integer);
+
    procedure Getc (File : File_Type; Ch : out Int) with
      Global => (Input => (EOF, The_File), In_Out => Cur_Position),
      Post => Ch = Character'Pos (The_File (Cur_Position'Old)) and then

@@ -10,6 +10,17 @@ package body Fileio with SPARK_Mode is
       Y := Y + 1;
    end Simple;
 
+   procedure Simple2 (X, Y : in out Integer) is
+      Z : Boolean := False;
+   begin
+      Z := X > Y;
+      if Z then
+         raise Constraint_Error;
+      end if;
+      X := X + 1;
+      Y := Y + 1;
+   end Simple2;
+
    procedure Getc (File : File_Type; Ch : out Int) is
    begin
       fgetc (File.Descr, ch);

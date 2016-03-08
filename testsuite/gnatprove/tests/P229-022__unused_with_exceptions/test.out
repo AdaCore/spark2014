@@ -1,0 +1,8 @@
+fileio.adb:6:10: info: initialization of "Z" proved
+fileio.adb:14:07: warning: initialization of Z has no effect
+fileio.adb:17:10: info: initialization of "Z" proved
+fileio.adb:28:10: info: initialization of "Ch" proved
+fileio.adb:38:13: info: initialization of "Result" proved
+fileio.ads:19:38: info: initialization of "Ch" proved
+fileio.ads:20:27: warning: unused initial value of constant with variable input "EOF"
+fileio.ads:21:14: info: initialization of "Ch" proved

@@ -1381,8 +1381,9 @@ package body Flow.Analysis is
 
       function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
                                         return Boolean;
-      --  Checks if the given vertex V is a final-use vertex that is
-      --  also an export.
+      --  Checks if the given vertex V represents an externally visible
+      --  outcome, i.e. is a final-use vertex that is also an export or
+      --  a use vertex that branches to a raise statement.
 
       function Is_Final_Use_Unreferenced (V : Flow_Graphs.Vertex_Id)
                                           return Boolean;
@@ -1525,11 +1526,15 @@ package body Flow.Analysis is
       -----------------------------
 
       function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
-                                        return Boolean
-      is
+                                        return Boolean is
       begin
-         return FA.PDG.Get_Key (V).Variant = Final_Value and then
-           FA.Atr (V).Is_Export;
+         --  ??? not a case-expression-function because of a front-end bug;
+         --  can be refactored once P308-025 is fixed.
+         case FA.PDG.Get_Key (V).Variant is
+            when Final_Value => return FA.Atr (V).Is_Export;
+            when Normal_Use  => return FA.Atr (V).Is_Exceptional_Branch;
+            when others      => return False;
+         end case;
       end Is_Final_Use_Any_Export;
 
       -------------------------------
