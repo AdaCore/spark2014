@@ -716,7 +716,7 @@ package body Flow.Analysis is
 
                   when Kind_Task =>
                      --  Nothing to do - no pre or postconditions.
-                     null;
+                     Vars_Used := Flow_Id_Sets.Empty_Set;
 
                   when others =>
                      Vars_Used := To_Entire_Variables
