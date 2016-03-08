@@ -234,6 +234,10 @@ package body Flow.Analysis is
       --  Checks if N refers to Needle and sets The_Global to N if
       --  that is the case.
 
+      ----------
+      -- Find --
+      ----------
+
       function Find_It (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
@@ -275,6 +279,7 @@ package body Flow.Analysis is
                else
                   Haystack_A := Empty;
                end if;
+
                Haystack_B := Get_Pragma (S, Pragma_Global);
             end;
          when others =>
@@ -284,6 +289,7 @@ package body Flow.Analysis is
       case F.Kind is
          when Direct_Mapping | Record_Field =>
             Needle := Get_Direct_Mapping_Id (F);
+
             Look_For_Global (Haystack_A);
             if Present (The_Global) then
                return The_Global;
@@ -308,9 +314,10 @@ package body Flow.Analysis is
    -- Get_Initial_Vertex --
    ------------------------
 
-   function Get_Initial_Vertex (G : Flow_Graphs.Graph;
-                                F : Flow_Id)
-                                return Flow_Graphs.Vertex_Id
+   function Get_Initial_Vertex
+     (G : Flow_Graphs.Graph;
+      F : Flow_Id)
+      return Flow_Graphs.Vertex_Id
    is
    begin
       for V of G.Get_Collection (Flow_Graphs.All_Vertices) loop
@@ -327,9 +334,10 @@ package body Flow.Analysis is
    -- Get_Final_Vertex --
    ----------------------
 
-   function Get_Final_Vertex (G : Flow_Graphs.Graph;
-                              F : Flow_Id)
-                              return Flow_Graphs.Vertex_Id
+   function Get_Final_Vertex
+     (G : Flow_Graphs.Graph;
+      F : Flow_Id)
+      return Flow_Graphs.Vertex_Id
    is
    begin
       return G.Get_Vertex (Change_Variant (F, Final_Value));
@@ -667,9 +675,7 @@ package body Flow.Analysis is
                                      Proof_Ins  => Tmp_A,
                                      Reads      => Tmp_B,
                                      Writes     => Tmp_C);
-                        for F of To_Entire_Variables (Tmp_A or
-                                                        Tmp_B or
-                                                        Tmp_C)
+                        for F of To_Entire_Variables (Tmp_A or Tmp_B or Tmp_C)
                         loop
                            Vars_Known.Include (Change_Variant (F, Normal_Use));
                         end loop;
@@ -903,8 +909,8 @@ package body Flow.Analysis is
      (FA : in out Flow_Analysis_Graphs)
    is
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean
-      is ((FA.PDG.Get_Key (V).Variant = Final_Value and then
-            FA.Atr (V).Is_Export)
+      is ((FA.PDG.Get_Key (V).Variant = Final_Value
+           and then FA.Atr (V).Is_Export)
          or else FA.Atr (V).Is_Precondition
          or else FA.Atr (V).Is_Postcondition
          or else FA.Atr (V).Is_Proof);
@@ -1233,19 +1239,21 @@ package body Flow.Analysis is
 
          V_Use : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
          V_Atr : V_Attributes;
+
+      --  Start of processing for Check_If_From_Another_Non_Elaborated_CU
+
       begin
-         --  Find a non-'Final vertex where the state abstraction is
-         --  used. If the state abstraction is not used then we do not
-         --  issue an error.
-         for Neighbour of FA.PDG.Get_Collection (V,
-                                                 Flow_Graphs.Out_Neighbours)
+         --  Find a non-'Final vertex where the state abstraction is used. If
+         --  the state abstraction is not used then we do not issue an error.
+         --  ??? this search is useful only when Present (N)
+         for Neighbour of FA.PDG.Get_Collection (V, Flow_Graphs.Out_Neighbours)
          loop
             declare
                Key : constant Flow_Id := FA.PDG.Get_Key (Neighbour);
             begin
                if Key.Variant /= Final_Value
-                 or else Change_Variant (Entire_Variable (Key),
-                                         Normal_Use) /= F
+                 or else
+                   Change_Variant (Entire_Variable (Key), Normal_Use) /= F
                then
                   V_Use := Neighbour;
                   V_Atr := FA.Atr (Neighbour);
@@ -1272,6 +1280,10 @@ package body Flow.Analysis is
                procedure Check_Clauses (CUnit : Node_Id);
                --  Checks the clauses of CUnit for a pragma Elaborate[_All] of
                --  Other_Unit and sets Found to True if it finds it.
+
+               -------------------
+               -- Check_Clauses --
+               -------------------
 
                procedure Check_Clauses (CUnit : Node_Id) is
                   Clause : Node_Id;
@@ -1476,8 +1488,10 @@ package body Flow.Analysis is
       -- Is_Any_Final_Use --
       ----------------------
 
-      function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id)
-                                 return Boolean is
+      function Is_Any_Final_Use
+        (V : Flow_Graphs.Vertex_Id)
+         return Boolean
+      is
       begin
          return FA.PDG.Get_Key (V).Variant = Final_Value;
       end Is_Any_Final_Use;
