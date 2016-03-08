@@ -980,18 +980,18 @@ package body Flow.Analysis is
                E := Change_Variant (Entire_Variable (Key), Normal_Use);
 
                --  If this is a bound variable or discriminant, we only
-               --  consider it if its actually used. Its not an error to
+               --  consider it if it is actually used. Its not an error to
                --  not explicitly use it.
 
                Disuse_Not_Bad := Is_Bound (Key) or else Is_Discriminant (Key);
 
                --  Generally we allow a discriminant or bound to mark the
-               --  entire variable as used (if its used) and otherwise
-               --  have no effect (not using it is not flagging the entire
-               --  variable as unused). However this is only valid for out
-               --  parameters; for in out parameters the value of the
-               --  entire variable itself has to be used and the bounds are
-               --  completely optional.
+               --  entire variable as used (if it is used) and otherwise have
+               --  no effect (not using it is not flagging the entire variable
+               --  as unused). However, this is only valid for out parameters;
+               --  for in out parameters the value of the entire variable
+               --  itself has to be used and the bounds are completely
+               --  optional.
 
                Skip_This := (if Disuse_Not_Bad
                              then Atr.Mode = Mode_In_Out
