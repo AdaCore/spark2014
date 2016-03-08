@@ -1063,11 +1063,11 @@ package body Flow.Analysis is
 
       for F of EV_Unused loop
          declare
-            V : constant Flow_Graphs.Vertex_Id := Get_Initial_Vertex (FA.PDG,
-                                                                      F);
-            A : constant V_Attributes          := FA.Atr.Element (V);
+            V : constant Flow_Graphs.Vertex_Id :=
+              Get_Initial_Vertex (FA.PDG, F);
+
          begin
-            if A.Is_Global then
+            if FA.Atr (V).Is_Global then
                --  We have an unused global, we need to give the error
                --  on the subprogram, instead of on the global. In
                --  generative mode we don't emit this message.
