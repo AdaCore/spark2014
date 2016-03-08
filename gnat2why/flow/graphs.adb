@@ -173,6 +173,10 @@ package body Graphs is
                                   D : Natural);
       --  Add all children of V to the queue.
 
+      -------------
+      -- Enqueue --
+      -------------
+
       procedure Enqueue (A : Valid_Vertex_Id;
                          B : Valid_Vertex_Id;
                          D : Natural) is
@@ -182,6 +186,10 @@ package body Graphs is
                                     Depth  => D));
          Marked (B) := True;
       end Enqueue;
+
+      ----------------------
+      -- Enqueue_Children --
+      ----------------------
 
       procedure Enqueue_Children (V : Valid_Vertex_Id;
                                   D : Natural) is
@@ -208,6 +216,8 @@ package body Graphs is
             end loop;
          end if;
       end Enqueue_Children;
+
+   --  Start of processing for BFS
 
    begin
 
@@ -371,6 +381,8 @@ package body Graphs is
          end if;
       end SIMPLE_TC;
 
+   --  Start of processing for Close
+
    begin
       for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          if not Visited (V) then
@@ -431,6 +443,9 @@ package body Graphs is
             G.Remove_Edge (A, B);
          end if;
       end Visitor;
+
+   --  Start of processing for Conditional_Close
+
    begin
       --  IMPORTANT NOTE: Graphhis current implementation takes advantage of
       --  the inefficient (in terms of space) implementation of Close - we
@@ -619,6 +634,8 @@ package body Graphs is
          end if;
       end Should_Visit;
 
+   --  Start of processing for DFS
+
    begin
       --  Seed the stack with either the start node or all its
       --  neighbours.
@@ -798,6 +815,8 @@ package body Graphs is
             B := Tmp;
          end Swap;
 
+      --  Start of processing for Link
+
       begin
          while Semi (Label (W)) < Semi (Label (Child (S))) loop
             if Size (S) + Size (Child (Child (S))) >= 2 * Size (Child (S)) then
@@ -822,6 +841,8 @@ package body Graphs is
             S            := Child (S);
          end loop;
       end Link;
+
+   --  Start of processing for Dominator_Tree_Internal
 
    begin
       --  Step 1
@@ -1157,6 +1178,10 @@ package body Graphs is
           TV : out Simple_Traversal_Instruction);
       --  Repeatedly checks if we've arrived at out destination.
 
+      ----------------------
+      -- Are_We_There_Yet --
+      ----------------------
+
       procedure Are_We_There_Yet
          (V  : Vertex_Id;
           TV : out Simple_Traversal_Instruction) is
@@ -1169,6 +1194,8 @@ package body Graphs is
             TV := Continue;
          end if;
       end Are_We_There_Yet;
+
+   --  Start of processing for Non_Trivial_Path_Exists
 
    begin
       G.DFS (Start         => A,
@@ -1192,6 +1219,10 @@ package body Graphs is
           TV : out Simple_Traversal_Instruction);
       --  Repeatedly checks if we've arrived at out destination.
 
+      ----------------------
+      -- Are_We_There_Yet --
+      ----------------------
+
       procedure Are_We_There_Yet
         (V  : Vertex_Id;
          TV : out Simple_Traversal_Instruction) is
@@ -1204,6 +1235,9 @@ package body Graphs is
             TV := Continue;
          end if;
       end Are_We_There_Yet;
+
+   --  Start of processing for Non_Trivial_Path_Exists
+
    begin
       G.DFS (Start         => A,
              Include_Start => False,
@@ -1321,6 +1355,10 @@ package body Graphs is
       --  Internal visitor for the BFS. This will construct a tree
       --  which we can use to find our way home.
 
+      ---------------
+      -- Make_Tree --
+      ---------------
+
       procedure Make_Tree (V      : Vertex_Id;
                            Origin : Vertex_Id;
                            Depth  : Natural;
@@ -1405,6 +1443,10 @@ package body Graphs is
       function Escape (S : Unbounded_String) return String;
       --  Convert the unbounded string to a string and escape " to \"
 
+      ------------
+      -- Escape --
+      ------------
+
       function Escape (S : Unbounded_String) return String
       is
          R : Unbounded_String := Null_Unbounded_String;
@@ -1426,6 +1468,9 @@ package body Graphs is
       end Escape;
 
       FD : File_Type;
+
+   --  Start of processing for Write_Dot_File
+
    begin
       Create (FD, Out_File, Filename & ".dot");
 
