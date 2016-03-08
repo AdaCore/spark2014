@@ -2952,8 +2952,8 @@ package body Flow.Analysis is
          --  Gather up all constituents mentioned in the Refined_State
          --  aspect.
          DM := Parse_Refined_State (Refined_State_N);
-         for State in DM.Iterate loop
-            All_Constituents.Union (Dependency_Maps.Element (State));
+         for State of DM loop
+            All_Constituents.Union (State);
          end loop;
 
          --  Warn about hidden unexposed constants with variable input
