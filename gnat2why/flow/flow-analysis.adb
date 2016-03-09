@@ -2569,7 +2569,7 @@ package body Flow.Analysis is
    --------------------------
 
    procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs) is
-      Done      : Boolean            := False;
+      Done      : Boolean;
       M         : Attribute_Maps.Map := FA.Atr;
       Is_Stable : Boolean;
    begin
