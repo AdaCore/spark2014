@@ -116,7 +116,7 @@ package Configuration is
    Proof_Input  : aliased GNAT.Strings.String_Access;
    --  The input variable for command line parsing set by option --proof
 
-   CodePeer_Input  : aliased GNAT.Strings.String_Access;
+   CodePeer_Input : aliased GNAT.Strings.String_Access;
    --  The input variable for command line parsing set by option --codepeer
 
    Proof        : Proof_Mode;
@@ -151,15 +151,15 @@ package Configuration is
    Scenario_Variables : String_Lists.List;
    --  Scenario variables to be passed to gprbuild
 
-   Subdir_Name  : constant Filesystem_String := "gnatprove";
+   Subdir_Name : constant Filesystem_String := "gnatprove";
    --  The name of the directory in which all work takes place
 
-   Main_Subdir  : aliased GNAT.Strings.String_Access := null;
+   Main_Subdir : aliased GNAT.Strings.String_Access := null;
    --  The name of the main sub-directory "gnatprove" in which files are
    --  generated. This is the same as
    --  <obj-dir-for-the-main-project>/Subdir_Name
 
-   Proof_Dir    : aliased GNAT.Strings.String_Access := null;
+   Proof_Dir   : aliased GNAT.Strings.String_Access := null;
    --  The name of the directory in which will be stored Why3 session file and
    --  manual proof files (Attribute of gpr package Prove).
 
@@ -167,7 +167,7 @@ package Configuration is
    --  The name of a why3 configuration file to be used in a single run of
    --  gnatprove.
 
-   Socket_Name  : aliased GNAT.Strings.String_Access := null;
+   Socket_Name : aliased GNAT.Strings.String_Access := null;
    --  Name of the socket used by why3server, based on a hash of the main
    --  object directory.
 

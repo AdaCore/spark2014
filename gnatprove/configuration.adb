@@ -37,7 +37,7 @@ with System.Multiprocessors;
 
 package body Configuration is
 
-   MMode_Input  : aliased GNAT.Strings.String_Access;
+   MMode_Input : aliased GNAT.Strings.String_Access;
    --  The mode of gnatprove, and the input variable for command line parsing
    --  set by option --mode=
 
@@ -48,11 +48,11 @@ package body Configuration is
    Report_Input : aliased GNAT.Strings.String_Access;
    --  The input variable for command line parsing set by option --report=
 
-   Clean        : aliased Boolean;
+   Clean : aliased Boolean;
    --  Set to True when --clean was given. Triggers cleanup of GNATprove
    --  intermediate files.
 
-   Proj_Env     : Project_Environment_Access;
+   Proj_Env : Project_Environment_Access;
    --  This is the project environment used to load the project. It may be
    --  modified before loading it, e.g. -X switches
 
