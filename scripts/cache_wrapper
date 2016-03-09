@@ -16,7 +16,7 @@ def hash_file(hasher, fn):
 def hash_cmd_line(hasher):
     """hash the commandline to avoid hashing different calls to programs. This
     function is specialized to programs cached in SPARK testing (currently
-    only gnatwhy3. It does not hash the file argument (we hash the contents
+    only gnatwhy3). It does not hash the file argument (we hash the contents
     instead), and some arguments are skipped."""
 
     hash_next = True
