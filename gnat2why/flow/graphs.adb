@@ -1279,11 +1279,11 @@ package body Graphs is
       V : Vertex_Id)
       return Vertex_Id
    is
+      C : constant VIS.Cursor := G.Vertices (V).In_Neighbours.First;
    begin
-      for P of G.Vertices (V).In_Neighbours loop
-         return P;
-      end loop;
-      return Null_Vertex;
+      return (if Has_Element (C)
+              then Element (C)
+              else Null_Vertex);
    end Parent;
 
    -----------------
