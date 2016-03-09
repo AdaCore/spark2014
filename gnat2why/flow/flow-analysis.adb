@@ -2579,7 +2579,8 @@ package body Flow.Analysis is
             Done := True;
             for N_Loop of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
                declare
-                  Atr : V_Attributes := M (N_Loop);
+                  Atr : Attribute_Maps.Reference_Type renames
+                    M.Reference (N_Loop);
                begin
                   if Atr.Loops.Contains (Loop_Id) then
                      --  For all nodes in the loop, do:
@@ -2610,7 +2611,6 @@ package body Flow.Analysis is
                      if Is_Stable then
                         --  Remove from the loop
                         Atr.Loops.Delete (Loop_Id);
-                        M (N_Loop) := Atr;
 
                         --  Complain
                         Error_Msg_Flow
