@@ -15,7 +15,7 @@ def print_session_proofs():
         print len(proof)
 
 # run gnatprove once
-prove_all()
+prove_all(cache_allowed=False)
 # touch file so that rerunning gnatprove will re-run the proof machinery
 touch('test.adb')
 # print the number of proofs in the session
@@ -24,5 +24,5 @@ print_session_proofs()
 shutil.copyfile('new.xml', session_file)
 sleep(3)
 # run gnatprove again and print number of proofs, should be higher now
-prove_all()
+prove_all(cache_allowed=False)
 print_session_proofs()
