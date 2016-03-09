@@ -123,14 +123,14 @@ simulink_functions.adb:362:22: medium: overflow check might fail
 simulink_functions.adb:363:29: medium: range check might fail
 simulink_functions.adb:363:44: info: range check proved
 simulink_functions.adb:363:50: info: division check proved
-simulink_functions.adb:363:50: info: overflow check proved
+simulink_functions.adb:363:50: medium: overflow check might fail
 simulink_functions.adb:363:59: info: range check proved
 simulink_functions.adb:363:68: medium: overflow check might fail
 simulink_functions.adb:376:22: medium: overflow check might fail
 simulink_functions.adb:377:30: medium: range check might fail
 simulink_functions.adb:377:45: info: range check proved
 simulink_functions.adb:377:51: info: division check proved
-simulink_functions.adb:377:51: info: overflow check proved
+simulink_functions.adb:377:51: medium: overflow check might fail
 simulink_functions.adb:377:60: info: range check proved
 simulink_functions.adb:377:69: medium: overflow check might fail
 simulink_functions.adb:390:22: medium: overflow check might fail
