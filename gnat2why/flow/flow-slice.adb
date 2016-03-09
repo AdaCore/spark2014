@@ -438,15 +438,15 @@ package body Flow.Slice is
          All_Proof_Ins : Node_Sets.Set := Get_Inputs_Or_Proof_Ins;
       begin
          for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-            --  We go through all vertices in the graph and we
-            --  subtract from the All_Proof_Ins set the variables that
-            --  are used on vertices that are not related to proof.
+            --  We iterate over vertices in the PDG and remove from the set
+            --  All_Proof_Ins those variables that are used on vertices not
+            --  related to proof.
 
             declare
                use Attribute_Maps;
                A : constant Constant_Reference_Type := FA.Atr (V);
-            begin
 
+            begin
                if FA.PDG.Get_Key (V).Variant /= Final_Value
                  and then not A.Is_Proof
                then
