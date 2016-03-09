@@ -411,7 +411,7 @@ package Graphs is
    function Non_Trivial_Path_Exists
      (G        : Graph;
       A        : Vertex_Id;
-      F        : access function (V : Vertex_Id) return Boolean;
+      F        : not null access function (V : Vertex_Id) return Boolean;
       Reversed : Boolean := False)
       return Boolean;
    --  Checks if there is a non-trivial path from A to another vertex
@@ -432,7 +432,7 @@ package Graphs is
      (G             : Graph;
       Start         : Vertex_Id;
       Include_Start : Boolean;
-      Visitor       : access procedure
+      Visitor       : not null access procedure
         (V  : Vertex_Id;
          TV : out Simple_Traversal_Instruction);
       Edge_Selector : access function (A, B : Vertex_Id)
@@ -459,7 +459,7 @@ package Graphs is
      (G             : Graph;
       Start         : Vertex_Id;
       Include_Start : Boolean;
-      Visitor       : access procedure
+      Visitor       : not null access procedure
         (V      : Vertex_Id;
          Origin : Vertex_Id;
          Depth  : Natural;
@@ -473,10 +473,10 @@ package Graphs is
      (G             : Graph;
       Start         : Vertex_Id;
       Allow_Trivial : Boolean;
-      Search        : access procedure
+      Search        : not null access procedure
         (V           : Vertex_Id;
          Instruction : out Traversal_Instruction);
-      Step          : access procedure (V : Vertex_Id);
+      Step          : not null access procedure (V : Vertex_Id);
       Reversed      : Boolean := False);
    --  Search for a path rooted at node Start. If Allow_Trivial is
    --  True we begin by checking Start itself, otherwise Start is only
@@ -547,7 +547,8 @@ package Graphs is
 
    procedure Conditional_Close
      (G             : in out Graph;
-      Edge_Selector : access function (A, B : Vertex_Id) return Boolean);
+      Edge_Selector : not null access function
+        (A, B : Vertex_Id) return Boolean);
    --  Transitively close the graph using SIMPLE_TC from Nuutila's thesis.
    --  A new edge is only added if the Edge_Selector function returns True
    --  for the given vertices.
@@ -584,30 +585,30 @@ package Graphs is
    procedure Write_Dot_File
      (G         : Graph;
       Filename  : String;
-      Node_Info : access function (G : Graph;
-                                   V : Vertex_Id)
-                                   return Node_Display_Info;
-      Edge_Info : access function (G      : Graph;
-                                   A      : Vertex_Id;
-                                   B      : Vertex_Id;
-                                   Marked : Boolean;
-                                   Colour : Edge_Colours)
-                                   return Edge_Display_Info);
+      Node_Info : not null access function (G : Graph;
+                                            V : Vertex_Id)
+                                            return Node_Display_Info;
+      Edge_Info : not null access function (G      : Graph;
+                                            A      : Vertex_Id;
+                                            B      : Vertex_Id;
+                                            Marked : Boolean;
+                                            Colour : Edge_Colours)
+                                            return Edge_Display_Info);
    --  Write the graph G in dot format to Filename, using supplied
    --  functions Node_Info and Edge_Info to pretty-print each vertex.
 
    procedure Write_Pdf_File
      (G         : Graph;
       Filename  : String;
-      Node_Info : access function (G : Graph;
-                                   V : Vertex_Id)
-                                   return Node_Display_Info;
-      Edge_Info : access function (G      : Graph;
-                                   A      : Vertex_Id;
-                                   B      : Vertex_Id;
-                                   Marked : Boolean;
-                                   Colour : Edge_Colours)
-                                   return Edge_Display_Info);
+      Node_Info : not null access function (G : Graph;
+                                            V : Vertex_Id)
+                                            return Node_Display_Info;
+      Edge_Info : not null access function (G      : Graph;
+                                            A      : Vertex_Id;
+                                            B      : Vertex_Id;
+                                            Marked : Boolean;
+                                            Colour : Edge_Colours)
+                                            return Edge_Display_Info);
    --  As above, but also generate a pdf file using dot.
 
    ----------------------------------------------------------------------

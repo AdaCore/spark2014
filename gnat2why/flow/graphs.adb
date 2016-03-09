@@ -142,7 +142,7 @@ package body Graphs is
      (G             : Graph;
       Start         : Vertex_Id;
       Include_Start : Boolean;
-      Visitor       : access procedure
+      Visitor       : not null access procedure
         (V      : Vertex_Id;
          Origin : Vertex_Id;
          Depth  : Natural;
@@ -427,7 +427,8 @@ package body Graphs is
 
    procedure Conditional_Close
      (G             : in out Graph;
-      Edge_Selector : access function (A, B : Vertex_Id) return Boolean)
+      Edge_Selector : not null access function
+        (A, B : Vertex_Id) return Boolean)
    is
       procedure Visitor (A, B : Vertex_Id);
       --  Obvious visitor procedure.
@@ -546,7 +547,7 @@ package body Graphs is
      (G             : Graph;
       Start         : Vertex_Id;
       Include_Start : Boolean;
-      Visitor       : access procedure
+      Visitor       : not null access procedure
         (V  : Vertex_Id;
          TV : out Simple_Traversal_Instruction);
       Edge_Selector : access function (A, B : Vertex_Id)
@@ -1204,7 +1205,7 @@ package body Graphs is
    function Non_Trivial_Path_Exists
      (G        : Graph;
       A        : Vertex_Id;
-      F        : access function (V : Vertex_Id) return Boolean;
+      F        : not null access function (V : Vertex_Id) return Boolean;
       Reversed : Boolean := False)
       return Boolean
    is
@@ -1327,10 +1328,10 @@ package body Graphs is
      (G             : Graph;
       Start         : Vertex_Id;
       Allow_Trivial : Boolean;
-      Search        : access procedure
+      Search        : not null access procedure
         (V           : Vertex_Id;
          Instruction : out Traversal_Instruction);
-      Step          : access procedure (V : Vertex_Id);
+      Step          : not null access procedure (V : Vertex_Id);
       Reversed      : Boolean := False)
    is
       package Vertex_Maps is new Ada.Containers.Hashed_Maps
@@ -1426,15 +1427,15 @@ package body Graphs is
    procedure Write_Dot_File
      (G         : Graph;
       Filename  : String;
-      Node_Info : access function (G : Graph;
-                                   V : Vertex_Id)
-                                   return Node_Display_Info;
-      Edge_Info : access function (G      : Graph;
-                                   A      : Vertex_Id;
-                                   B      : Vertex_Id;
-                                   Marked : Boolean;
-                                   Colour : Edge_Colours)
-                                   return Edge_Display_Info)
+      Node_Info : not null access function (G : Graph;
+                                            V : Vertex_Id)
+                                            return Node_Display_Info;
+      Edge_Info : not null access function (G      : Graph;
+                                            A      : Vertex_Id;
+                                            B      : Vertex_Id;
+                                            Marked : Boolean;
+                                            Colour : Edge_Colours)
+                                            return Edge_Display_Info)
    is
       function Escape (S : Unbounded_String) return String;
       --  Convert the unbounded string to a string and escape " to \"
@@ -1576,15 +1577,15 @@ package body Graphs is
    procedure Write_Pdf_File
      (G         : Graph;
       Filename  : String;
-      Node_Info : access function (G : Graph;
-                                   V : Vertex_Id)
-                                   return Node_Display_Info;
-      Edge_Info : access function (G      : Graph;
-                                   A      : Vertex_Id;
-                                   B      : Vertex_Id;
-                                   Marked : Boolean;
-                                   Colour : Edge_Colours)
-                                   return Edge_Display_Info)
+      Node_Info : not null access function (G : Graph;
+                                            V : Vertex_Id)
+                                            return Node_Display_Info;
+      Edge_Info : not null access function (G      : Graph;
+                                            A      : Vertex_Id;
+                                            B      : Vertex_Id;
+                                            Marked : Boolean;
+                                            Colour : Edge_Colours)
+                                            return Edge_Display_Info)
    is
    begin
       Write_Dot_File (G, Filename, Node_Info, Edge_Info);
