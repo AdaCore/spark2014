@@ -146,9 +146,10 @@ package body Flow.Interprocedural is
       pragma Assert (Nkind (N) in N_Procedure_Call_Statement |
                                   N_Entry_Call_Statement);
 
-      A : constant V_Attributes := FA.Atr (V);
-      pragma Assert (A.Is_Callsite);
-      pragma Assert (not A.Perform_IPFA);
+      Atr : constant Attribute_Maps.Constant_Reference_Type := FA.Atr (V)
+      with Ghost;
+      pragma Assert (Atr.Is_Callsite);
+      pragma Assert (not Atr.Perform_IPFA);
 
       Called_Thing : constant Entity_Id := Get_Called_Entity (N);
 
