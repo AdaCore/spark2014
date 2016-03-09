@@ -1,4 +1,4 @@
-# This Makefile compiles the GNAT standard library to .mlw files for Hi-Lite.
+# This Makefile compiles the GNAT standard library to .mlw files for GNATprove
 
 PWD_COMMAND=$${PWDCMD-pwd}
 GNAT2WHY = gnat2why
