@@ -25,7 +25,7 @@
 
 with Ada.Directories;   use Ada.Directories;
 with GNAT.Strings;
-with Gnat2Why_Args;     use  Gnat2Why_Args;
+with Gnat2Why_Args;     use Gnat2Why_Args;
 with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
@@ -88,9 +88,9 @@ package Configuration is
    --  Set to True if no counterexample should be get
    Benchmark_Mode    : aliased Boolean;
    --  Provides the fake_* binaries instead of the real prover binaries
-   --  (undocumented)
+   --  (undocumented).
    Caching           : aliased Boolean;
-   --  Enables caching using memcached (undocumented).
+   --  Enables caching using memcached (undocumented)
 
    type GP_Mode is (GPM_Check, GPM_Flow, GPM_Prove, GPM_All);
    --  The four feature modes of GNATprove:
