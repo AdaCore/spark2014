@@ -1405,8 +1405,8 @@ package body Flow_Utility is
                                Use_Computed_Globals => Use_Computed_Globals);
 
                   --  Gather all inputs
-                  for C in D_Map.Iterate loop
-                     All_Inputs_F.Union (Dependency_Maps.Element (C));
+                  for Inputs of D_Map loop
+                     All_Inputs_F.Union (Inputs);
                   end loop;
 
                   --  Convert set of Flow_Ids to a set of Node_Ids
