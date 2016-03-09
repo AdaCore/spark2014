@@ -2579,8 +2579,7 @@ package body Flow.Analysis is
             Done := True;
             for N_Loop of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
                declare
-                  Atr : Attribute_Maps.Reference_Type renames
-                    M.Reference (N_Loop);
+                  Atr : Attribute_Maps.Reference_Type renames M (N_Loop);
                begin
                   if Atr.Loops.Contains (Loop_Id) then
                      --  For all nodes in the loop, do:
