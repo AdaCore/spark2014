@@ -450,8 +450,8 @@ package body Flow.Slice is
                if FA.PDG.Get_Key (V).Variant /= Final_Value
                  and then not A.Is_Proof
                then
-                  All_Proof_Ins := All_Proof_Ins -
-                    To_Node_Set (To_Entire_Variables (A.Variables_Used));
+                  All_Proof_Ins.Difference
+                    (To_Node_Set (To_Entire_Variables (A.Variables_Used)));
                end if;
             end;
          end loop;

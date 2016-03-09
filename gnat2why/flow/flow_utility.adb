@@ -1406,8 +1406,7 @@ package body Flow_Utility is
 
                   --  Gather all inputs
                   for C in D_Map.Iterate loop
-                     All_Inputs_F := All_Inputs_F or
-                                       Dependency_Maps.Element (C);
+                     All_Inputs_F.Union (Dependency_Maps.Element (C));
                   end loop;
 
                   --  Convert set of Flow_Ids to a set of Node_Ids
@@ -1416,7 +1415,7 @@ package body Flow_Utility is
                   end loop;
 
                   --  Do the trimming
-                  G_In := G_In and All_Inputs_N;
+                  G_In.Intersection (All_Inputs_N);
                end if;
             end;
 
