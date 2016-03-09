@@ -2774,35 +2774,41 @@ package body Flow.Analysis is
             then
                for Input of Inputs loop
                   declare
-                     V              : constant Flow_Graphs.Vertex_Id :=
+                     V : constant Flow_Graphs.Vertex_Id :=
                        Get_Initial_Vertex (FA.PDG, Input);
-                     Tracefile      : constant String := Fresh_Trace_File;
-                     Vertices_Trail : Vertex_Sets.Set;
                   begin
                      if V /= Flow_Graphs.Null_Vertex
                        and then FA.Atr (V).Mode = Mode_Proof
                      then
-                        Error_Msg_Flow
-                          (FA        => FA,
-                           Tracefile => Tracefile,
-                           Msg       => "export & must not depend " &
-                             "on Proof_In &",
-                           SRM_Ref   => "6.1.4(17)",
-                           N         => Find_Global (FA.Analyzed_Entity,
-                                                     Input),
-                           F1        => Output,
-                           F2        => Input,
-                           Severity  => Error_Kind,
-                           Tag       => Export_Depends_On_Proof_In);
+                        declare
+                           Tracefile      : constant String :=
+                             Fresh_Trace_File;
+                           Vertices_Trail : Vertex_Sets.Set;
 
-                        Vertices_Trail := Path_Leading_To_Proof_In_Dependency
-                          (From => V,
-                           To   => Get_Final_Vertex (FA.PDG, Output));
+                        begin
+                           Error_Msg_Flow
+                             (FA        => FA,
+                              Tracefile => Tracefile,
+                              Msg       => "export & must not depend " &
+                                "on Proof_In &",
+                              SRM_Ref   => "6.1.4(17)",
+                              N         => Find_Global (FA.Analyzed_Entity,
+                                Input),
+                              F1        => Output,
+                              F2        => Input,
+                              Severity  => Error_Kind,
+                              Tag       => Export_Depends_On_Proof_In);
 
-                        Write_Vertex_Set
-                          (FA       => FA,
-                           Set      => Vertices_Trail,
-                           Filename => Tracefile);
+                           Vertices_Trail :=
+                             Path_Leading_To_Proof_In_Dependency
+                               (From => V,
+                                To   => Get_Final_Vertex (FA.PDG, Output));
+
+                           Write_Vertex_Set
+                             (FA       => FA,
+                              Set      => Vertices_Trail,
+                              Filename => Tracefile);
+                        end;
                      end if;
                   end;
                end loop;
