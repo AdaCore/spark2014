@@ -906,14 +906,29 @@ package body Flow.Analysis is
    procedure Find_Ineffective_Imports_And_Unused_Objects
      (FA : in out Flow_Analysis_Graphs)
    is
-      function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean
-      is ((FA.PDG.Get_Key (V).Variant = Final_Value
-           and then FA.Atr (V).Is_Export)
-         or else FA.Atr (V).Is_Precondition
-         or else FA.Atr (V).Is_Postcondition
-         or else FA.Atr (V).Is_Proof);
-      --  Checks if the given vertex V is a final-use vertex or is useful for
-      --  proof.
+      function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
+      --  Checks if the given vertex V is a final-use vertex, branches to
+      --  exceptional path or is useful for proof.
+
+      ------------------
+      -- Is_Final_Use --
+      ------------------
+
+      function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean is
+         Atr : constant Attribute_Maps.Constant_Reference_Type := FA.Atr (V);
+         --  ??? cannot use expression function with F.Atr (V) due to front-end
+         --  bug; can be refactored once P308-025 is fixed.
+
+      begin
+         return
+           (case FA.PDG.Get_Key (V).Variant is
+                when Final_Value => Atr.Is_Export,
+                when Normal_Use  => Atr.Is_Exceptional_Branch,
+                when others      => False)
+              or else FA.Atr (V).Is_Precondition
+              or else FA.Atr (V).Is_Postcondition
+              or else FA.Atr (V).Is_Proof;
+      end Is_Final_Use;
 
       Suppressed_Entire_Ids : Flow_Id_Sets.Set;
       --  Entire variables appearing in a "null => Blah" dependency relation;

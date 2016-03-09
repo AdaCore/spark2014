@@ -4,7 +4,6 @@ raise_statements.adb:29:10: info: raise statement proved unreachable
 raise_statements.adb:32:23: medium: overflow check might fail (e.g. when Par1 = 2147483645 and Par2 = 3)
 raise_statements.adb:32:30: info: overflow check proved
 raise_statements.adb:58:10: info: assertion proved
-raise_statements.adb:63:19: warning: unused initial value of "A"
 raise_statements.adb:64:19: info: initialization of "O" proved
 raise_statements.adb:65:09: medium: missing dependency "null => A"
 raise_statements.adb:65:26: medium: incorrect dependency "O => A"
