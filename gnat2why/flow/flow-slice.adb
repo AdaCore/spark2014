@@ -589,7 +589,6 @@ package body Flow.Slice is
             case Nkind (N) is
                when N_Entry_Body              |
                     N_Entry_Declaration       |
-                    N_Single_Task_Declaration |
                     N_Subprogram_Body         |
                     N_Subprogram_Declaration  |
                     N_Task_Body               |
@@ -715,6 +714,11 @@ package body Flow.Slice is
                         end if;
                      end if;
                   end;
+
+               when N_Single_Protected_Declaration |
+                    N_Single_Task_Declaration      =>
+                  --  These nodes should never occur after expansion
+                  raise Program_Error;
 
                when others =>
                   null;
