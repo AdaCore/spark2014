@@ -624,25 +624,6 @@ package body Flow.Slice is
                   else
                      Local_Vars.Include (Defining_Identifier (N));
                   end if;
-
-               when N_Single_Task_Declaration |
-                    N_Task_Type_Declaration   =>
-                  if Unique_Defining_Entity (N) /=
-                    Unique_Entity (FA.Analyzed_Entity)
-                  then
-                     Local_Subs.Include (Unique_Defining_Entity (N));
-                     return Skip;
-                  end if;
-
-               when N_Entry_Declaration      |
-                    N_Subprogram_Declaration =>
-                  if Unique_Defining_Entity (N) /=
-                    Unique_Entity (FA.Analyzed_Entity)
-                  then
-                     Local_Subs.Include (Unique_Defining_Entity (N));
-                     return Skip;
-                  end if;
-
                when N_Package_Declaration =>
                   --  State abstractions of nested packages appear as local
                   --  variables.
@@ -709,16 +690,13 @@ package body Flow.Slice is
                      end if;
                   end;
 
-               when N_Entry_Body |
-                    N_Task_Body  =>
-                  if Unique_Defining_Entity (N) /=
-                    Unique_Entity (FA.Analyzed_Entity)
-                  then
-                     Local_Subs.Include (Unique_Defining_Entity (N));
-                     return Skip;
-                  end if;
-
-               when N_Subprogram_Body =>
+               when N_Entry_Body              |
+                    N_Entry_Declaration       |
+                    N_Single_Task_Declaration |
+                    N_Subprogram_Body         |
+                    N_Subprogram_Declaration  |
+                    N_Task_Body               |
+                    N_Task_Type_Declaration   =>
                   if Unique_Defining_Entity (N) /=
                     Unique_Entity (FA.Analyzed_Entity)
                   then
