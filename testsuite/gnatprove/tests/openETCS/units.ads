@@ -20,7 +20,7 @@
 
 package Units is pragma SPARK_Mode (On);
    -- For Breaking Curves computation
-   type Speed_t is new Float; -- m/s unit
+   subtype Speed_t is Float; -- m/s unit
    type Speed_km_per_h_t is new Float; -- km/h unit
    type Acceleration_t is new Float; -- m/s**2 unit
    type Deceleration_t is new Float range 0.0..Float'Last; -- m/s**2 unit

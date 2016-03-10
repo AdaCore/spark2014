@@ -911,11 +911,12 @@ package body Why.Gen.Expr is
       --  bitvector.
 
       if Is_Modular_Integer_Type (Ty) then
-         W_Fun := E_Symb (Ty, WNE_Range_Check_Fun_BV_Int);
 
          --  The type of expression is int, so we apply the range check on int
 
          if W_Type = EW_Int_Type then
+
+            W_Fun := E_Symb (Ty, WNE_Range_Check_Fun_BV_Int);
 
             --  If the bounds are dynamic, we need to retrieve them for the
             --  check.
@@ -984,6 +985,42 @@ package body Why.Gen.Expr is
          --  The type of expression is bitvector, so we apply the range check
          --  on the largest bitvector type involved.
 
+         elsif Why_Type_Is_Float (W_Type) then
+            W_Fun := MF_Floats (W_Type).Converter_Range_Check;
+
+            declare
+               --  Convert first and last bounds from bitvector to float
+               W_First : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Ada_Node => Ty,
+                    Domain   => EW_Term,
+                    Expr     =>
+                      New_Attribute_Expr (Ty     => Ty,
+                                          Domain => EW_Term,
+                                          Attr   => Attribute_First,
+                                          Params => Body_Params),
+                    To       => W_Type);
+               W_Last : constant W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Ada_Node => Ty,
+                    Domain   => EW_Term,
+                    Expr     =>
+                      New_Attribute_Expr (Ty     => Ty,
+                                          Domain => EW_Term,
+                                          Attr   => Attribute_Last,
+                                          Params => Body_Params),
+                    To       => W_Type);
+            begin
+               Result :=
+                 +New_VC_Call (Domain   => EW_Prog,
+                               Ada_Node => Ada_Node,
+                               Name     => W_Fun,
+                               Progs    => (1 => W_First,
+                                            2 => W_Last,
+                                            3 => W_Expr),
+                               Reason   => To_VC_Kind (Check_Kind),
+                               Typ      => Get_Type (W_Expr));
+            end;
          else
             pragma Assert (Why_Type_Is_BitVector (W_Type));
 

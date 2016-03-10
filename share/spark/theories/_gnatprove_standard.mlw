@@ -376,9 +376,20 @@ end
 
 module Float32_BV_Converter
   use export ieee_float.Float32_BV_Converter
+  use import ieee_float.Float32
+
+  val range_check_ (f l n : t) : t
+    requires {f .<= n .<= l}
+    ensures {result = n /\ f .<= n .<= l}
 end
+
 module Float64_BV_Converter
   use export ieee_float.Float64_BV_Converter
+  use import ieee_float.Float64
+
+  val range_check_ (f l n : t) : t
+    requires {f .<= n .<= l}
+    ensures {result = n /\ f .<= n .<= l}
 end
 
 module Boolean

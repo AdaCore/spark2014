@@ -1326,6 +1326,13 @@ package body Why.Atree.Modules is
                            Domain => EW_Term,
                            Symbol => NID ("to_ubv64"),
                            Typ    => EW_BitVector_64_Type);
+         M_Floats (Fl).Converter_Range_Check :=
+           New_Identifier (Module => (if Fl = Float32
+                                      then Float32_BV_Converter
+                                      else Float64_BV_Converter),
+                           Domain => EW_Term,
+                           Symbol => NID ("range_check_"),
+                           Typ    => M_Floats (Fl).T);
       end loop;
 
       EW_Float_32_Type := M_Floats (Float32).T;
