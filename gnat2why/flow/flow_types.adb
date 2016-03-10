@@ -1016,13 +1016,7 @@ package body Flow_Types is
             return True;
 
          when Direct_Mapping =>
-            case Nkind (F.Node) is
-               when N_Has_Chars =>
-                  return True;
-
-               when others =>
-                  return False;
-            end case;
+            return Nkind (F.Node) in N_Has_Chars;
       end case;
    end Is_Easily_Printable;
 
@@ -1105,11 +1099,9 @@ package body Flow_Types is
       FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       for E of S loop
-         if Nkind (E) = N_Selected_Component then
-            FS.Include (Record_Field_Id (E));
-         else
-            FS.Include (Direct_Mapping_Id (E));
-         end if;
+         FS.Include (if Nkind (E) = N_Selected_Component
+                     then Record_Field_Id (E)
+                     else Direct_Mapping_Id (E));
       end loop;
       return FS;
    end To_Flow_Id_Set;
