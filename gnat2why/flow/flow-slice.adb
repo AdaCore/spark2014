@@ -480,8 +480,7 @@ package body Flow.Slice is
                A : constant Constant_Reference_Type := FA.Atr (V);
             begin
                if not A.Is_Proof then
-                  All_Proof_Subprograms :=
-                    All_Proof_Subprograms - A.Subprograms_Called;
+                  All_Proof_Subprograms.Difference (A.Subprograms_Called);
                end if;
             end;
          end loop;
@@ -771,7 +770,7 @@ package body Flow.Slice is
                end if;
             end loop;
 
-            Local_Vars := Local_Vars - Part_Of_Vars;
+            Local_Vars.Difference (Part_Of_Vars);
          end Remove_PO_And_Task_Parts;
 
          procedure Gather_Local_Variables_And_Subprograms is
