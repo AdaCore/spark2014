@@ -925,9 +925,9 @@ package body Flow.Analysis is
                 when Final_Value => Atr.Is_Export,
                 when Normal_Use  => Atr.Is_Exceptional_Branch,
                 when others      => False)
-              or else FA.Atr (V).Is_Precondition
-              or else FA.Atr (V).Is_Postcondition
-              or else FA.Atr (V).Is_Proof;
+              or else Atr.Is_Precondition
+              or else Atr.Is_Postcondition
+              or else Atr.Is_Proof;
       end Is_Final_Use;
 
       Suppressed_Entire_Ids : Flow_Id_Sets.Set;
