@@ -118,6 +118,10 @@ package body Flow_Dependency_Maps is
          Inputs  := Flow_Id_Sets.Empty_Set;
          Outputs := Flow_Id_Sets.Empty_Set;
 
+         --  Processing for LHS (outputs) and RHS (inputs) is almost identical,
+         --  except for few special cases. It seems good to leave this code
+         --  like this, since it offers more protection against malformed AST.
+
          --  Process LHS (outputs)
 
          pragma Assert (List_Length (Choices (Row)) = 1);
@@ -215,24 +219,46 @@ package body Flow_Dependency_Maps is
          Inputs := Filter_Out_Constants (Inputs,
                                          Node_Sets.Empty_Set,
                                          True);
-
          --  Assemble map
+         declare
+            procedure Populate (Output : Flow_Id);
+            --  Populate map M with entries from Output to each element of
+            --  Inputs.
 
-         if Outputs.Is_Empty and then not Inputs.Is_Empty then
-            --  The insert is on purpose - we want this to fail if we
-            --  manage to obtain more than one null derives.
-            M.Insert (Null_Flow_Id, Flow_Id_Sets.Empty_Set);
-            for Input of Inputs loop
-               M (Null_Flow_Id).Include (Input);
-            end loop;
-         else
-            for Output of Outputs loop
-               M.Include (Output, Flow_Id_Sets.Empty_Set);
+            --------------
+            -- Populate --
+            --------------
+
+            procedure Populate (Output : Flow_Id) is
+               C        : Dependency_Maps.Cursor;
+               Inserted : Boolean;
+            begin
+               --  Attempt to insert a mapping from Output to empty set
+               M.Insert (Key      => Output,
+                         Position => C,
+                         Inserted => Inserted);
+
+               --  Make sure that front-end rejected any duplicates
+               pragma Assert (Inserted);
+
                for Input of Inputs loop
-                  M (Output).Include (Input);
+                  M (C).Include (Input);
                end loop;
-            end loop;
-         end if;
+            end Populate;
+
+         begin
+            if Outputs.Is_Empty then
+               --  Do nothing if both Outputs and inputs are empty
+               if not Inputs.Is_Empty then
+                  --  No explicit outputs means null
+                  Populate (Null_Flow_Id);
+               end if;
+            else
+               for Output of Outputs loop
+                  Populate (Output);
+               end loop;
+            end if;
+         end;
 
          Row := Next (Row);
       end loop;
