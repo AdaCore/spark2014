@@ -62,8 +62,7 @@ package body Flow.Control_Dependence_Graph is
             then
                --  Sanity check that we will not lose control
                --  dependence.
-               for P of FA.CDG.Get_Collection (V,
-                                               Flow_Graphs.In_Neighbours)
+               for P of FA.CDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                loop
                   if P = V then
                      --  Self dependence is OK and we don't care if it
@@ -85,8 +84,8 @@ package body Flow.Control_Dependence_Graph is
 
                --  Sanity check that we won't lose outwards control
                --  influence.
-               for S of FA.CDG.Get_Collection (V,
-                                               Flow_Graphs.Out_Neighbours)
+               for S of FA.CDG.Get_Collection (V, Flow_Graphs.Out_Neighbours)
+
                loop
                   if S = V then
                      --  Self dependence is OK and we don't care if it

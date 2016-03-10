@@ -2132,6 +2132,10 @@ package body Flow.Analysis is
             --  Stops the DFS search when we reach a vertex that contains
             --  The_Var in its Variables_Explicitly_Used set.
 
+            ---------------------
+            -- Found_V_Exp_Use --
+            ---------------------
+
             procedure Found_V_Exp_Use
               (V  : Flow_Graphs.Vertex_Id;
                TV : out Flow_Graphs.Simple_Traversal_Instruction)
@@ -2155,6 +2159,8 @@ package body Flow.Analysis is
                   TV := Flow_Graphs.Continue;
                end if;
             end Found_V_Exp_Use;
+
+         --  Start of processing for Find_Explicit_Use_Vertex
 
          begin
             FA.CFG.DFS (Start         => V_Use,
@@ -2214,7 +2220,6 @@ package body Flow.Analysis is
             TV : out Flow_Graphs.Simple_Traversal_Instruction)
          is
          begin
-
             if V = FA.Start_Vertex or else V = V_Use then
 
                --  If we reach the start vertex (remember, this
@@ -2224,7 +2229,6 @@ package body Flow.Analysis is
                TV := Flow_Graphs.Skip_Children;
 
             else
-
                TV := Flow_Graphs.Continue;
                if FA.Atr (V).Variables_Defined.Contains (The_Var) then
 
@@ -2398,9 +2402,7 @@ package body Flow.Analysis is
             V_Goal    := V_Error;
             V_Allowed := Vertex;
             N         := First_Variable_Use
-              (N        => Error_Location (FA.PDG,
-                                           FA.Atr,
-                                           V_Error),
+              (N        => Error_Location (FA.PDG, FA.Atr, V_Error),
                FA       => FA,
                Scope    => FA.B_Scope,
                Var      => Var,
@@ -2615,9 +2617,7 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      => "stable",
-                           N        => Error_Location (FA.PDG,
-                                                       FA.Atr,
-                                                       N_Loop),
+                           N        => Error_Location (FA.PDG, FA.Atr, N_Loop),
                            Tag      => Stable,
                            Severity => Warning_Kind,
                            Vertex   => N_Loop);

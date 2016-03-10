@@ -2612,6 +2612,10 @@ package body Flow.Control_Flow_Graph is
             --  Visitor to ensure all paths following a definition of T do
             --  not use it.
 
+            -------------------
+            -- Check_Defined --
+            -------------------
+
             procedure Check_Defined
               (V  : Flow_Graphs.Vertex_Id;
                Tv : out Flow_Graphs.Simple_Traversal_Instruction)
@@ -2650,6 +2654,10 @@ package body Flow.Control_Flow_Graph is
                end if;
             end Check_Defined;
 
+            ------------------
+            -- Check_Unused --
+            ------------------
+
             procedure Check_Unused
               (V  : Flow_Graphs.Vertex_Id;
                Tv : out Flow_Graphs.Simple_Traversal_Instruction)
@@ -2666,6 +2674,8 @@ package body Flow.Control_Flow_Graph is
                   Tv := Flow_Graphs.Continue;
                end if;
             end Check_Unused;
+
+         --  Start of processing for Fully_Defined_In_Original_Loop
 
          begin
             FA.CFG.DFS (Start         => Lc.Standard_Entry,
