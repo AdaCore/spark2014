@@ -843,7 +843,7 @@ module BV8
   val t__havoc (x : t__ref) : unit
      writes { x }
 
-  function one : t = of_uint 1
+  function one : t = of_int 1
 
   clone export BVAda with
     type t = t,
@@ -855,9 +855,9 @@ module BV8
     function ( * ) = mul,
     function one = one
 
-  val of_uint_ (i : int) : t
+  val of_int_ (i : int) : t
     requires{ uint_in_range i }
-    ensures{ result = of_uint i }
+    ensures{ result = of_int i }
 
   val udiv_ (x : t) (y : t) : t
     requires{ y <> zeros }
@@ -875,7 +875,7 @@ module BV16
   val t__havoc (x : t__ref) : unit
      writes { x }
 
-  function one : t = of_uint 1
+  function one : t = of_int 1
 
   clone export BVAda with
     type t = t,
@@ -887,9 +887,9 @@ module BV16
     function ( * ) = mul,
     function one = one
 
-  val of_uint_ (i : int) : t
+  val of_int_ (i : int) : t
     requires{ uint_in_range i }
-    ensures{ result = of_uint i }
+    ensures{ result = of_int i }
 
   val udiv_ (x : t) (y : t) : t
     requires{ y <> zeros }
@@ -907,7 +907,7 @@ module BV32
   val t__havoc (x : t__ref) : unit
      writes { x }
 
-  function one : t = of_uint 1
+  function one : t = of_int 1
 
   clone export BVAda with
     type t = t,
@@ -919,9 +919,9 @@ module BV32
     function ( * ) = mul,
     function one = one
 
-  val of_uint_ (i : int) : t
+  val of_int_ (i : int) : t
     requires{ uint_in_range i }
-    ensures{ result = of_uint i }
+    ensures{ result = of_int i }
 
   val udiv_ (x : t) (y : t) : t
     requires{ y <> zeros }
@@ -939,7 +939,7 @@ module BV64
   val t__havoc (x : t__ref) : unit
      writes { x }
 
-  function one : t = of_uint 1
+  function one : t = of_int 1
 
   clone export BVAda with
     type t = t,
@@ -951,9 +951,9 @@ module BV64
     function ( * ) = mul,
     function one = one
 
-  val of_uint_ (i : int) : t
+  val of_int_ (i : int) : t
     requires{ uint_in_range i }
-    ensures{ result = of_uint i }
+    ensures{ result = of_int i }
 
   val udiv_ (x : t) (y : t) : t
     requires{ y <> zeros }

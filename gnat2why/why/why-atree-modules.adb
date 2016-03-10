@@ -1025,7 +1025,7 @@ package body Why.Atree.Modules is
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Of_Int :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("of_uint"),
+                           Symbol => NID ("of_int"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).To_Int :=

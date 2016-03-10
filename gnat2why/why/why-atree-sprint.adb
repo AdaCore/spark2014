@@ -1121,7 +1121,7 @@ package body Why.Atree.Sprint is
       else
          raise Unexpected_Node;
       end if;
-      P (O, "of_uint ");
+      P (O, "of_int ");
       P (O, Value);
       P (O, " )");
    end Print_Modular_Constant;
