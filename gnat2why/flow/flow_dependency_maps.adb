@@ -54,13 +54,10 @@ package body Flow_Dependency_Maps is
 
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
    is
-      use type Ada.Containers.Count_Type;
+      pragma Assert (List_Length (Pragma_Argument_Associations (N)) = 1);
 
-      pragma Assert
-        (List_Length (Pragma_Argument_Associations (N)) = 1);
+      PAA : constant Node_Id := First (Pragma_Argument_Associations (N));
 
-      PAA : constant Node_Id :=
-        First (Pragma_Argument_Associations (N));
       pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
       M : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
