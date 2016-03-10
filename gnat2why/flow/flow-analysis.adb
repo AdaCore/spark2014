@@ -1251,7 +1251,8 @@ package body Flow.Analysis is
                                       else Empty);
 
          V_Use : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
-         V_Atr : V_Attributes;
+
+         V_Error_Location : Node_Or_Entity_Id;
 
       --  Start of processing for Check_If_From_Another_Non_Elaborated_CU
 
@@ -1269,7 +1270,7 @@ package body Flow.Analysis is
                    Change_Variant (Entire_Variable (Key), Normal_Use) /= F
                then
                   V_Use := Neighbour;
-                  V_Atr := FA.Atr (Neighbour);
+                  V_Error_Location := FA.Atr (Neighbour).Error_Location;
                   exit;
                end if;
             end;
@@ -1334,7 +1335,7 @@ package body Flow.Analysis is
                                  " during elaboration of &" &
                                  " - Elaborate_All pragma required for &",
                      SRM_Ref  => "7.7.1(4)",
-                     N        => V_Atr.Error_Location,
+                     N        => V_Error_Location,
                      F1       => F,
                      F2       => Direct_Mapping_Id (FA.Spec_Entity),
                      F3       => Direct_Mapping_Id (Scope (N)),
