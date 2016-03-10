@@ -242,24 +242,22 @@ package body Flow_Utility is
       --  read-locked protected object.
 
       procedure Process_Type (E : Entity_Id);
-      --  Merge predicate function for the given type.
+      --  Merge predicate function for the given type
 
       ------------------
       -- Process_Type --
       ------------------
 
-      procedure Process_Type (E : Entity_Id)
-      is
-         P : Node_Id;
+      procedure Process_Type (E : Entity_Id) is
       begin
-         if Include_Predicates and then Present (E) then
-            P := Predicate_Function (E);
-         else
-            return;
-         end if;
-
-         if Present (P) then
-            Functions_Called.Include (P);
+         if Include_Predicates then
+            declare
+               P : constant Entity_Id := Predicate_Function (E);
+            begin
+               if Present (P) then
+                  Functions_Called.Include (P);
+               end if;
+            end;
          end if;
       end Process_Type;
 
@@ -685,7 +683,7 @@ package body Flow_Utility is
                end if;
             end loop;
 
-            if Ekind (T) in Private_Kind or Contains_Non_Visible then
+            if Ekind (T) in Private_Kind or else Contains_Non_Visible then
                --  We must have some discriminant, so return X'Private_Part
                --  and the discriminants. For simple private types we don't
                --  do this split.
@@ -1209,6 +1207,7 @@ package body Flow_Utility is
                case The_Mode is
                   when Name_Input =>
                      G_In.Insert (Non_Limited_Global);
+
                   when Name_In_Out =>
                      G_In.Insert (Non_Limited_Global);
                      G_Out.Insert (Non_Limited_Global);
@@ -1225,8 +1224,10 @@ package body Flow_Utility is
 
                   when Name_Proof_In =>
                      G_Proof.Insert (Non_Limited_Global);
+
                   when others =>
                      raise Program_Error;
+
                end case;
             end Process;
          begin
@@ -1241,15 +1242,14 @@ package body Flow_Utility is
                --  No globals, nothing to do.
                return;
 
-            elsif Nkind (Expression (PAA)) in
-              N_Identifier | N_Expanded_Name
+            elsif Nkind (Expression (PAA)) in N_Identifier | N_Expanded_Name
             then
                --  global => foo
                --  A single input
                Process (Name_Input, Entity (Expression (PAA)));
 
-            elsif Nkind (Expression (PAA)) = N_Aggregate and then
-              Expressions (Expression (PAA)) /= No_List
+            elsif Nkind (Expression (PAA)) = N_Aggregate
+              and then Expressions (Expression (PAA)) /= No_List
             then
                --  global => (foo, bar)
                --  Inputs
@@ -1258,6 +1258,7 @@ package body Flow_Utility is
                   case Nkind (RHS) is
                      when N_Identifier | N_Expanded_Name =>
                         Process (Name_Input, Entity (RHS));
+
                      when N_Numeric_Or_String_Literal =>
                         --  We should only ever get here if we are
                         --  dealing with a rewritten constant.
@@ -1268,12 +1269,13 @@ package body Flow_Utility is
 
                      when others =>
                         raise Why.Unexpected_Node;
+
                   end case;
                   RHS := Next (RHS);
                end loop;
 
-            elsif Nkind (Expression (PAA)) = N_Aggregate and then
-              Component_Associations (Expression (PAA)) /= No_List
+            elsif Nkind (Expression (PAA)) = N_Aggregate
+              and then Component_Associations (Expression (PAA)) /= No_List
             then
                --  global => (mode => foo,
                --             mode => (bar, baz))
@@ -1304,13 +1306,17 @@ package body Flow_Utility is
 
                                  when others =>
                                     Process (The_Mode, Entity (RHS));
+
                               end case;
                               RHS := Next (RHS);
                            end loop;
+
                         when N_Identifier | N_Expanded_Name =>
                            Process (The_Mode, Entity (RHS));
+
                         when N_Null =>
                            null;
+
                         when N_Numeric_Or_String_Literal =>
                            --  We should only ever get here if we are
                            --  dealing with a rewritten constant.
@@ -1323,6 +1329,7 @@ package body Flow_Utility is
                         when others =>
                            Print_Node_Subtree (RHS);
                            raise Why.Unexpected_Node;
+
                      end case;
 
                      Row := Next (Row);
@@ -1407,9 +1414,8 @@ package body Flow_Utility is
                                Use_Computed_Globals => Use_Computed_Globals);
 
                   --  Gather all inputs
-                  for C in D_Map.Iterate loop
-                     All_Inputs_F := All_Inputs_F or
-                                       Dependency_Maps.Element (C);
+                  for Inputs of D_Map loop
+                     All_Inputs_F.Union (Inputs);
                   end loop;
 
                   --  Convert set of Flow_Ids to a set of Node_Ids
@@ -1418,12 +1424,12 @@ package body Flow_Utility is
                   end loop;
 
                   --  Do the trimming
-                  G_In := G_In and All_Inputs_N;
+                  G_In.Intersection (All_Inputs_N);
                end if;
             end;
 
             ---------------------------------------------------------------
-            --  Step 5: Convert to a Flow_Id set.
+            --  Step 5: Convert to Flow_Id sets
             ---------------------------------------------------------------
 
             for V of G_Proof loop
@@ -2233,7 +2239,7 @@ package body Flow_Utility is
          return R : Flow_Id_Sets.Set do
             R := Flow_Id_Sets.Empty_Set;
             for Tmp of V loop
-               if Reduced or Tmp.Kind = Record_Field then
+               if Reduced or else Tmp.Kind = Record_Field then
                   R.Include (Tmp);
                else
                   R.Union (Flatten_Variable (Tmp, Scope));
@@ -2524,7 +2530,9 @@ package body Flow_Utility is
             when N_Attribute_Reference =>
                case Get_Attribute_Id (Attribute_Name (N)) is
                   when Attribute_Update =>
-                     if Reduced or Is_Tagged_Type (Get_Type (N, Scope)) then
+                     if Reduced
+                       or else Is_Tagged_Type (Get_Type (N, Scope))
+                     then
                         --  !!! Precise analysis is disabled for tagged types
                         return OK;
                      else
@@ -2647,15 +2655,15 @@ package body Flow_Utility is
                   --  Merge variables used in predicate functions for the
                   --  given type.
 
+                  ------------------
+                  -- Process_Type --
+                  ------------------
+
                   procedure Process_Type (E : Entity_Id) is
-                     P          : Node_Id;
+                     P : constant Entity_Id := Predicate_Function (E);
+
                      GP, GI, GO : Flow_Id_Sets.Set;
                   begin
-                     if Present (E) then
-                        P := Predicate_Function (E);
-                     else
-                        P := Empty;
-                     end if;
                      if No (P) then
                         return;
                      end if;
@@ -2675,10 +2683,10 @@ package body Flow_Utility is
                         Reads                => GI,
                         Writes               => GO,
                         Use_Computed_Globals => Use_Computed_Globals);
-                     pragma Assert (GO.Length = 0);
+                     pragma Assert (GO.Is_Empty);
 
                      declare
-                        Effects : constant Flow_Id_Sets.Set := GP or GI or GO;
+                        Effects : constant Flow_Id_Sets.Set := GP or GI;
                      begin
                         for F of Effects loop
                            VS.Include (Change_Variant (F, Normal_Use));
@@ -4261,9 +4269,8 @@ package body Flow_Utility is
       --  First, we figure out what the root node is. For example in
       --  Foo.Bar'Update(...).Z the root node will be Foo.
       --
-      --  We also note all components (bar, z), 'update nodes and the
-      --  order in which they access or update fields (bar,
-      --  the_update, z).
+      --  We also note all components (bar, z), 'update nodes and the order in
+      --  which they access or update fields (bar, the_update, z).
 
       while Nkind (Root_Node) = N_Selected_Component or else
         (Is_Attribute_Update (Root_Node) and then

@@ -34,7 +34,6 @@ with Why;
 
 package body Flow.Slice is
 
-   use type Node_Sets.Set;
    use type Flow_Id_Sets.Set;
    use type Flow_Graphs.Vertex_Id;
 
@@ -65,9 +64,12 @@ package body Flow.Slice is
       procedure Visitor
         (V  : Flow_Graphs.Vertex_Id;
          TV : out Flow_Graphs.Simple_Traversal_Instruction);
-      --  If the visited vertex is an in vertex or a procedure
-      --  parameter vertex, we add it to the set of things we depend
-      --  on.
+      --  If the visited vertex is an in vertex or a procedure parameter
+      --  vertex, we add it to the set of things we depend on.
+
+      -------------
+      -- Visitor --
+      -------------
 
       procedure Visitor
         (V  : Flow_Graphs.Vertex_Id;
@@ -89,6 +91,8 @@ package body Flow.Slice is
          end case;
          TV := Flow_Graphs.Continue;
       end Visitor;
+
+   --  Start of processing for Internal_Dependency
 
    begin
       Flow_Graphs.DFS (G             => FA.PDG,
@@ -151,8 +155,7 @@ package body Flow.Slice is
 
       function Flow_Equivalent (F : Flow_Id) return Flow_Id
       with Post => Flow_Equivalent'Result.Variant = Normal_Use;
-      --  Given a flow id, return the view the dependency relation
-      --  cares about.
+      --  Given a flow id, return the view the dependency relation cares about
 
       ---------------------
       -- Flow_Equivalent --
@@ -192,42 +195,41 @@ package body Flow.Slice is
 
    begin
 
-      --  Determine all out vertices.
+      --  Determine all out vertices
 
       for V_Final of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            F_Final : constant Flow_Id      := FA.PDG.Get_Key (V_Final);
+            F_Final : constant Flow_Id := FA.PDG.Get_Key (V_Final);
          begin
             if F_Final.Variant = Final_Value
-              and FA.Atr (V_Final).Is_Export
-              and not Synthetic (F_Final)
+              and then FA.Atr (V_Final).Is_Export
+              and then not Synthetic (F_Final)
             then
                Out_Vertices.Include (V_Final);
             end if;
          end;
       end loop;
 
-      --  Determine all input vertices.
+      --  Determine all input vertices
 
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            use Attribute_Maps;
-            F_Initial : constant Flow_Id      := FA.PDG.Get_Key (V_Initial);
-            Attr      : constant Constant_Reference_Type := FA.Atr (V_Initial);
+            F_Initial : constant Flow_Id := FA.PDG.Get_Key (V_Initial);
+
+            Attr : V_Attributes renames FA.Atr (V_Initial);
          begin
             if F_Initial.Variant = Initial_Value
-              and Attr.Is_Import
-              and not Synthetic (F_Initial)
+              and then Attr.Is_Import
+              and then not Synthetic (F_Initial)
             then
                In_Vertices.Include (V_Initial);
                Unused_Inputs.Include (Flow_Equivalent (F_Initial));
 
-               if (Is_Discriminant (F_Initial) or Is_Bound (F_Initial))
+               if (Is_Discriminant (F_Initial) or else Is_Bound (F_Initial))
                  and then Attr.Mode = Mode_Out
                then
-                  --  See above about suppressing "null => foo"
-                  --  dependency error messages for out parameters and
-                  --  globals.
+                  --  See above about suppressing "null => foo" dependency
+                  --  error messages for out parameters and globals.
                   Out_Discrim.Include
                     (Change_Variant (Entire_Variable (F_Initial),
                                      Normal_Use));
@@ -236,7 +238,7 @@ package body Flow.Slice is
          end;
       end loop;
 
-      --  Determine dependencies.
+      --  Determine dependencies
 
       for V_Out of Out_Vertices loop
          declare
@@ -244,21 +246,28 @@ package body Flow.Slice is
             F_Out : constant Flow_Id :=
               Flow_Equivalent (FA.PDG.Get_Key (V_Out));
 
-            --  Compute dependencies (and filter out local variables).
+            --  Compute dependencies (and filter out local variables)
             Deps : constant Vertex_Sets.Set :=
               Internal_Dependency (FA      => FA,
                                    V_Final => V_Out,
                                    IPFA    => False)
               and In_Vertices;
+
+            F_Out_Position : Dependency_Maps.Cursor;
+            Dummy          : Boolean;
+            --  Dummy variables required by the container API
+
          begin
-            if not DM.Contains (F_Out) then
-               DM.Include (F_Out, Flow_Id_Sets.Empty_Set);
-            end if;
+            --  Initialize map entry with empty set or do nothing if already
+            --  an entry is already there.
+            DM.Insert (Key      => F_Out,
+                       Position => F_Out_Position,
+                       Inserted => Dummy);
 
             for V_In of Deps loop
                F_In := Flow_Equivalent (FA.PDG.Get_Key (V_In));
 
-               DM (F_Out).Include (F_In);
+               DM (F_Out_Position).Include (F_In);
                Unused_Inputs.Exclude (F_In);
             end loop;
          end;
@@ -439,20 +448,19 @@ package body Flow.Slice is
          All_Proof_Ins : Node_Sets.Set := Get_Inputs_Or_Proof_Ins;
       begin
          for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-            --  We go through all vertices in the graph and we
-            --  subtract from the All_Proof_Ins set the variables that
-            --  are used on vertices that are not related to proof.
+            --  We iterate over vertices in the PDG and remove from the set
+            --  All_Proof_Ins those variables that are used on vertices not
+            --  related to proof.
 
             declare
-               use Attribute_Maps;
-               A : constant Constant_Reference_Type := FA.Atr (V);
-            begin
+               A : V_Attributes renames FA.Atr (V);
 
+            begin
                if FA.PDG.Get_Key (V).Variant /= Final_Value
                  and then not A.Is_Proof
                then
-                  All_Proof_Ins := All_Proof_Ins -
-                    To_Node_Set (To_Entire_Variables (A.Variables_Used));
+                  All_Proof_Ins.Difference
+                    (To_Node_Set (To_Entire_Variables (A.Variables_Used)));
                end if;
             end;
          end loop;
@@ -468,18 +476,15 @@ package body Flow.Slice is
          All_Proof_Subprograms : Node_Sets.Set := FA.Direct_Calls;
       begin
          for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-            --  We go through all vertices in the graph and we
-            --  subtract from the All_Proof_Subprograms set the
-            --  subprograms that are called on vertices that are not
-            --  related to proof.
+            --  We exclude subprograms called in graph vertices not related to
+            --  proof.
 
             declare
-               use Attribute_Maps;
-               A : constant Constant_Reference_Type := FA.Atr (V);
+               A : V_Attributes renames FA.Atr (V);
+
             begin
                if not A.Is_Proof then
-                  All_Proof_Subprograms :=
-                    All_Proof_Subprograms - A.Subprograms_Called;
+                  All_Proof_Subprograms.Difference (A.Subprograms_Called);
                end if;
             end;
          end loop;
@@ -493,19 +498,20 @@ package body Flow.Slice is
 
       function Get_Definite_Subprograms return Node_Sets.Set is
          All_Definite_Subprograms  : Node_Sets.Set := Node_Sets.Empty_Set;
-         F                         : Flow_Id;
-         V_Initial                 : Flow_Graphs.Vertex_Id;
       begin
+         --  We go through all directly called subprograms and check if their
+         --  corresponding 'Initial vertex has no Out_Neighbours.
+
          for G of FA.Direct_Calls loop
-            --  We go through all Subprograms and check if their
-            --  corresponding 'Initial vertex has no Out_Neighbours.
-
-            F := Direct_Mapping_Id (G);
-            V_Initial := FA.PDG.Get_Vertex (Change_Variant (F, Initial_Value));
-
-            if FA.PDG.Out_Neighbour_Count (V_Initial) = 0 then
-               All_Definite_Subprograms.Include (G);
-            end if;
+            declare
+               F         : constant Flow_Id := Direct_Mapping_Id (G);
+               V_Initial : constant Flow_Graphs.Vertex_Id :=
+                 FA.PDG.Get_Vertex (Change_Variant (F, Initial_Value));
+            begin
+               if FA.PDG.Out_Neighbour_Count (V_Initial) = 0 then
+                  All_Definite_Subprograms.Include (G);
+               end if;
+            end;
          end loop;
 
          return Subprograms_Without_Contracts (All_Definite_Subprograms);
@@ -570,18 +576,14 @@ package body Flow.Slice is
                declare
                   Scp : constant Entity_Id := Scope (E);
                begin
-                  case Ekind (Scp) is
-                     when E_Package =>
-                        return
-                          --  Enclosing scope has Initializes
-                          Present (Get_Pragma (Scp, Pragma_Initializes))
+                  return Ekind (Scp) = E_Package
+                    and then
+                      (Present (Get_Pragma (Scp, Pragma_Initializes))
+                       --  Enclosing scope has Initializes
 
-                          --  Enclosing scope has SPARK_Mode => Off
-                          or else not Private_Spec_In_SPARK (Scp);
-
-                     when others    =>
-                        return False;
-                  end case;
+                       or else not Private_Spec_In_SPARK (Scp)
+                       --  Enclosing scope has SPARK_Mode => Off
+                      );
                end;
 
             end Hidden_In_Package;
@@ -590,6 +592,41 @@ package body Flow.Slice is
 
          begin
             case Nkind (N) is
+               when N_Entry_Body              |
+                    N_Entry_Declaration       |
+                    N_Subprogram_Body         |
+                    N_Subprogram_Declaration  |
+                    N_Task_Body               |
+                    N_Task_Type_Declaration   =>
+                  if Unique_Defining_Entity (N) /=
+                    Unique_Entity (FA.Analyzed_Entity)
+                  then
+                     Local_Subs.Include (Unique_Defining_Entity (N));
+                     return Skip;
+                  end if;
+
+               when N_Generic_Package_Declaration    |
+                    N_Generic_Subprogram_Declaration =>
+                  --  Skip generic declarations
+                  return Skip;
+
+               when N_Handled_Sequence_Of_Statements =>
+                  --  Skip statements of a nested package's body
+                  if Nkind (Parent (N)) = N_Package_Body then
+                     return Skip;
+                  end if;
+
+               when N_Loop_Parameter_Specification =>
+                  --  Add variable introduced by for loop (but do not add
+                  --  variables introduced by quantified expressions).
+                  if Nkind (Parent (N)) /= N_Iteration_Scheme
+                    or else Hidden_In_Package (Defining_Identifier (N))
+                  then
+                     return Skip;
+                  else
+                     Local_Vars.Include (Defining_Identifier (N));
+                  end if;
+
                when N_Object_Declaration =>
                   declare
                      E : constant Entity_Id := Defining_Entity (N);
@@ -610,73 +647,9 @@ package body Flow.Slice is
                            Local_Vars.Include (E);
                         elsif Has_Variable_Input (Direct_Mapping_Id (E)) then
                            --  If the Full_View is present then add that
-                           if Present (Full_View (E)) then
-                              Local_Vars.Include (Full_View (E));
-                           else
-                              Local_Vars.Include (E);
-                           end if;
-                        end if;
-                     end if;
-                  end;
-
-               when N_Loop_Parameter_Specification =>
-                  --  Add variable introduced by for loop (but do not add
-                  --  variables introduced by quantified expressions)
-                  if Nkind (Parent (N)) /= N_Iteration_Scheme
-                    or else Hidden_In_Package (Defining_Identifier (N))
-                  then
-                     return Skip;
-                  else
-                     Local_Vars.Include (Defining_Identifier (N));
-                  end if;
-
-               when N_Single_Task_Declaration |
-                    N_Task_Type_Declaration   =>
-                  if Unique_Entity (Defining_Identifier (N)) /=
-                    Unique_Entity (FA.Analyzed_Entity)
-                  then
-                     Local_Subs.Include (Unique_Defining_Entity (N));
-                     return Skip;
-                  end if;
-
-               when N_Entry_Declaration      |
-                    N_Subprogram_Declaration =>
-                  if Unique_Defining_Entity (N) /=
-                    Unique_Entity (FA.Analyzed_Entity)
-                  then
-                     Local_Subs.Include (Unique_Defining_Entity (N));
-                     return Skip;
-                  end if;
-
-               when N_Package_Declaration =>
-                  --  State abstractions of nested packages appear as local
-                  --  variables.
-                  declare
-                     AS_Pragma : constant Node_Id :=
-                       Get_Pragma (Defining_Entity (N),
-                                   Pragma_Abstract_State);
-
-                     PAA       : Node_Id;
-                     AS_N      : Node_Id;
-                     AS_E      : Entity_Id;
-                  begin
-                     if Present (AS_Pragma) then
-                        PAA  :=
-                          First (Pragma_Argument_Associations (AS_Pragma));
-
-                        --  Check that we don't have Abstract_State => null
-                        if Nkind (Expression (PAA)) /= N_Null then
-                           AS_N := First (Expressions (Expression (PAA)));
-
-                           while Present (AS_N) loop
-                              AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
-                                       then Entity (Ancestor_Part (AS_N))
-                                       else Entity (AS_N));
-
-                              Local_Vars.Include (AS_E);
-
-                              Next (AS_N);
-                           end loop;
+                           Local_Vars.Include (if Present (Full_View (E))
+                                               then Full_View (E)
+                                               else E);
                         end if;
                      end if;
                   end;
@@ -714,34 +687,43 @@ package body Flow.Slice is
                      end if;
                   end;
 
-               when N_Entry_Body |
-                    N_Task_Body  =>
-                  if Unique_Entity (Defining_Identifier (N)) /=
-                    Unique_Entity (FA.Analyzed_Entity)
-                  then
-                     Local_Subs.Include
-                       (Unique_Entity (Defining_Identifier (N)));
-                     return Skip;
-                  end if;
+               when N_Package_Declaration =>
+                  --  State abstractions of nested packages appear as local
+                  --  variables.
+                  declare
+                     AS_Pragma : constant Node_Id :=
+                       Get_Pragma (Defining_Entity (N),
+                                   Pragma_Abstract_State);
 
-               when N_Subprogram_Body =>
-                  if Unique_Defining_Entity (N) /=
-                    Unique_Entity (FA.Analyzed_Entity)
-                  then
-                     Local_Subs.Include (Unique_Defining_Entity (N));
-                     return Skip;
-                  end if;
+                     PAA       : Node_Id;
+                     AS_N      : Node_Id;
+                     AS_E      : Entity_Id;
+                  begin
+                     if Present (AS_Pragma) then
+                        PAA :=
+                          First (Pragma_Argument_Associations (AS_Pragma));
 
-               when N_Handled_Sequence_Of_Statements =>
-                  --  Skip statements of a nested package's body
-                  if Nkind (Parent (N)) = N_Package_Body then
-                     return Skip;
-                  end if;
+                        --  Check that we don't have Abstract_State => null
+                        if Nkind (Expression (PAA)) /= N_Null then
+                           AS_N := First (Expressions (Expression (PAA)));
 
-               when N_Generic_Package_Declaration    |
-                    N_Generic_Subprogram_Declaration =>
-                  --  Skip generic declarations
-                  return Skip;
+                           while Present (AS_N) loop
+                              AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
+                                       then Entity (Ancestor_Part (AS_N))
+                                       else Entity (AS_N));
+
+                              Local_Vars.Include (AS_E);
+
+                              Next (AS_N);
+                           end loop;
+                        end if;
+                     end if;
+                  end;
+
+               when N_Single_Protected_Declaration |
+                    N_Single_Task_Declaration      =>
+                  --  These nodes should never occur after expansion
+                  raise Program_Error;
 
                when others =>
                   null;
@@ -762,12 +744,14 @@ package body Flow.Slice is
             end if;
 
             for Var of Local_Vars loop
+               --  Note: deleting a variable while iterating over container
+               --  would tamper with cursors, which is not allowed.
                if Is_Part_Of_Concurrent_Object (Var) then
                   Part_Of_Vars.Insert (Var);
                end if;
             end loop;
 
-            Local_Vars := Local_Vars - Part_Of_Vars;
+            Local_Vars.Difference (Part_Of_Vars);
          end Remove_PO_And_Task_Parts;
 
          procedure Gather_Local_Variables_And_Subprograms is
@@ -793,20 +777,24 @@ package body Flow.Slice is
                   AS_Pragma : constant Node_Id :=
                     Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State);
 
-                  PAA       : Node_Id;
-                  AS_N      : Node_Id;
-                  AS_E      : Entity_Id;
+                  PAA : Node_Id;
+                  --  Argument associations of the Abstract_State pragma
+
+                  AS_N : Node_Id;
+                  AS_E : Entity_Id;
+                  --  Node and entity of the individual abstract states
                begin
                   if Present (AS_Pragma) then
                      PAA := First (Pragma_Argument_Associations (AS_Pragma));
 
-                     --  Check that we don't have Abstract_State => null
+                     --  Check that it is not Abstract_State => null
                      if Nkind (Expression (PAA)) /= N_Null then
                         AS_N := First (Expressions (Expression (PAA)));
                         while Present (AS_N) loop
-                           AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
-                                    then Entity (Ancestor_Part (AS_N))
-                                    else Entity (AS_N));
+                           AS_E :=
+                             Entity (if Nkind (AS_N) = N_Extension_Aggregate
+                                    then Ancestor_Part (AS_N)
+                                    else AS_N);
 
                            Local_Vars.Insert (AS_E);
 

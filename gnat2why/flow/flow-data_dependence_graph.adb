@@ -33,8 +33,7 @@ package body Flow.Data_Dependence_Graph is
 
       for V_D of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            Atr_Def : constant Attribute_Maps.Constant_Reference_Type :=
-              FA.Atr (V_D);
+            Atr_Def : V_Attributes renames FA.Atr (V_D);
          begin
             if not Atr_Def.Is_Exceptional_Path then
                Combined_Defined :=
@@ -64,9 +63,7 @@ package body Flow.Data_Dependence_Graph is
                        (V_U : Flow_Graphs.Vertex_Id;
                         TV  : out Flow_Graphs.Simple_Traversal_Instruction)
                      is
-                        Atr :
-                        constant Attribute_Maps.Constant_Reference_Type :=
-                          FA.Atr (V_U);
+                        Atr : V_Attributes renames FA.Atr (V_U);
                      begin
                         if Atr.Variables_Used.Contains (Var) then
                            FA.DDG.Add_Edge (V_D, V_U, EC_DDG);
@@ -115,18 +112,11 @@ package body Flow.Data_Dependence_Graph is
                      -------------------
 
                      function Edge_Selector (A, B : Flow_Graphs.Vertex_Id)
-                                             return Boolean
-                     is
-                     begin
-                        case FA.CFG.Edge_Colour (A, B) is
-                           when EC_Default | EC_Inf =>
-                              return True;
-                           when EC_Abend | EC_Barrier =>
-                              return False;
-                           when others =>
-                              raise Program_Error;
-                        end case;
-                     end Edge_Selector;
+                                             return Boolean is
+                       (case FA.CFG.Edge_Colour (A, B) is
+                           when EC_Default | EC_Inf   => True,
+                           when EC_Abend | EC_Barrier => False,
+                           when others                => raise Program_Error);
 
                   begin
                      --  Check for self-dependency (i.e. X := X + 1).

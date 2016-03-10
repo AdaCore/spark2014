@@ -181,12 +181,6 @@ package body SPARK_Util is
       Anc_Subt : Entity_Id;
 
    begin
-      Anc_Subt := Ancestor_Subtype (Under_T);
-
-      if Anc_Subt = Empty then
-         Anc_Subt := Base_T;
-      end if;
-
       if not Has_Scalar_Type (Under_T) then
          return False;
 
@@ -194,7 +188,13 @@ package body SPARK_Util is
          return True;
 
       else
-         return     Has_Static_Scalar_Subtype (Anc_Subt)
+         Anc_Subt := Ancestor_Subtype (Under_T);
+
+         if Anc_Subt = Empty then
+            Anc_Subt := Base_T;
+         end if;
+
+         return Has_Static_Scalar_Subtype (Anc_Subt)
            and then Is_Static_Expression (Type_Low_Bound (Under_T))
            and then Is_Static_Expression (Type_High_Bound (Under_T));
       end if;
@@ -2538,17 +2538,23 @@ package body SPARK_Util is
    -----------------------------
 
    function Is_Ignored_Pragma_Check (N : Node_Id) return Boolean is
-     (Is_Pragma (N, Pragma_Check)
-        and then
-        Chars (Get_Pragma_Arg (First (Pragma_Argument_Associations (N)))) in
-          Name_Precondition     |
-          Name_Pre              |
-          Name_Postcondition    |
-          Name_Post             |
-          Name_Refined_Post     |
-          Name_Static_Predicate |
-          Name_Predicate        |
-          Name_Dynamic_Predicate);
+   begin
+      return Is_Pragma_Check (N, Name_Precondition)
+               or else
+             Is_Pragma_Check (N, Name_Pre)
+               or else
+             Is_Pragma_Check (N, Name_Postcondition)
+               or else
+             Is_Pragma_Check (N, Name_Post)
+               or else
+             Is_Pragma_Check (N, Name_Refined_Post)
+               or else
+             Is_Pragma_Check (N, Name_Static_Predicate)
+               or else
+             Is_Pragma_Check (N, Name_Predicate)
+               or else
+             Is_Pragma_Check (N, Name_Dynamic_Predicate);
+   end Is_Ignored_Pragma_Check;
 
    --------------------------
    -- Is_In_Analyzed_Files --

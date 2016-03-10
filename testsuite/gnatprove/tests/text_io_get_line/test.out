@@ -1,0 +1,113 @@
+helpers.ads:15:54: info: division check proved
+helpers.ads:26:47: info: index check proved
+helpers.ads:34:48: info: index check proved
+helpers.ads:49:42: info: overflow check proved
+helpers.ads:49:46: info: overflow check proved
+helpers.ads:49:56: info: index check proved
+helpers.ads:54:43: info: overflow check proved
+helpers.ads:54:47: info: overflow check proved
+helpers.ads:54:57: info: index check proved
+helpers.ads:60:50: info: precondition proved
+textio-get_line.adb:34:08: info: postcondition proved
+textio-get_line.adb:34:56: info: index check proved
+textio-get_line.adb:34:73: info: index check proved
+textio-get_line.adb:39:17: info: index check proved
+textio-get_line.adb:39:53: info: index check proved
+textio-get_line.adb:49:82: info: range check proved
+textio-get_line.adb:51:80: info: range check proved
+textio-get_line.adb:55:30: info: index check proved
+textio-get_line.adb:58:80: info: range check proved
+textio-get_line.adb:59:30: info: precondition proved
+textio-get_line.adb:59:99: info: range check proved
+textio-get_line.adb:60:48: info: precondition proved
+textio-get_line.adb:60:117: info: range check proved
+textio-get_line.adb:61:55: info: index check proved
+textio-get_line.adb:61:72: info: index check proved
+textio-get_line.adb:65:30: info: precondition proved
+textio-get_line.adb:65:97: info: range check proved
+textio-get_line.adb:66:48: info: precondition proved
+textio-get_line.adb:66:115: info: range check proved
+textio-get_line.adb:67:55: info: index check proved
+textio-get_line.adb:67:72: info: index check proved
+textio-get_line.adb:89:14: info: length check proved
+textio-get_line.adb:96:07: info: precondition proved
+textio-get_line.adb:98:07: info: assertion proved
+textio-get_line.adb:98:27: info: index check proved
+textio-get_line.adb:114:13: info: raise statement proved unreachable
+textio-get_line.adb:118:12: info: precondition proved
+textio-get_line.adb:126:10: info: precondition proved
+textio-get_line.adb:126:44: info: overflow check proved
+textio-get_line.adb:128:27: info: overflow check proved
+textio-get_line.adb:139:39: info: range check proved
+textio-get_line.adb:145:13: info: assertion proved
+textio-get_line.adb:145:106: info: range check proved
+textio-get_line.adb:146:35: info: precondition proved
+textio-get_line.adb:146:114: info: range check proved
+textio-get_line.adb:148:18: info: overflow check proved
+textio-get_line.adb:148:41: info: index check proved
+textio-get_line.adb:148:41: info: overflow check proved
+textio-get_line.adb:152:16: info: assertion proved
+textio-get_line.adb:152:36: info: index check proved
+textio-get_line.adb:153:23: info: range check proved
+textio-get_line.adb:156:13: info: precondition proved
+textio-get_line.adb:156:47: info: overflow check proved
+textio-get_line.adb:158:26: info: overflow check proved
+textio-get_line.adb:173:09: info: length check proved
+textio-get_line.adb:174:23: info: overflow check proved
+textio-get_line.adb:174:23: medium: range check might fail
+textio-get_line.adb:184:19: info: overflow check proved
+textio-get_line.adb:184:32: info: overflow check proved
+textio-get_line.adb:184:32: info: range check proved
+textio-get_line.adb:187:07: info: loop invariant initialization proved
+textio-get_line.adb:187:07: info: loop invariant preservation proved
+textio-get_line.adb:189:07: info: loop invariant initialization proved
+textio-get_line.adb:189:07: info: loop invariant preservation proved
+textio-get_line.adb:190:38: info: index check proved
+textio-get_line.adb:190:72: medium: array index check might fail
+textio-get_line.adb:191:07: info: loop invariant initialization proved
+textio-get_line.adb:191:07: info: loop invariant preservation proved
+textio-get_line.adb:195:07: info: precondition proved
+textio-get_line.adb:200:30: info: range check proved
+textio-get_line.adb:208:07: info: precondition proved
+textio-get_line.adb:208:18: info: range check proved
+textio-get_line.adb:209:12: info: range check proved
+textio-get_line.adb:215:07: info: assertion proved
+textio-get_line.adb:223:13: info: raise statement proved unreachable
+textio-get_line.adb:233:23: info: overflow check proved
+textio-get_line.adb:234:16: info: index check proved
+textio-get_line.adb:234:40: info: range check proved
+textio.adb:12:14: info: postcondition proved
+textio.adb:52:06: info: complete contract cases proved
+textio.adb:52:06: info: disjoint contract cases proved
+textio.adb:138:07: info: precondition proved
+textio.adb:152:23: info: index check proved
+textio.adb:152:54: info: index check proved
+textio.adb:154:14: info: postcondition proved
+textio.adb:155:25: info: index check proved
+textio.adb:174:10: info: range check proved
+textio.adb:178:10: info: precondition proved
+textio.adb:181:38: low: range check might fail
+textio.adb:181:40: info: range check proved
+textio.adb:183:28: medium: assertion might fail, cannot prove R'First = S'first
+textio.adb:184:28: medium: assertion might fail, cannot prove R'Last = S'Last + Last
+textio.adb:186:27: info: overflow check proved
+textio.adb:186:37: info: overflow check proved
+textio.adb:186:41: info: overflow check proved
+textio.adb:186:41: info: range check proved
+textio.adb:189:34: info: length check proved
+textio.adb:189:37: info: length check proved
+textio.adb:192:16: info: assertion proved
+textio.adb:199:37: info: length check proved
+textio.adb:199:40: info: length check proved
+textio.adb:202:19: info: precondition proved
+textio.adb:211:07: info: precondition proved
+textio.ads:26:32: info: contract case proved
+textio.ads:32:16: info: contract case proved
+textio.ads:35:20: info: index check proved
+textio.ads:35:54: info: index check proved
+textio.ads:55:32: info: contract case proved
+textio.ads:61:16: info: contract case proved
+textio.ads:64:20: info: index check proved
+textio.ads:64:54: info: index check proved
+textio.ads:92:14: info: postcondition proved
+textio.ads:93:25: info: index check proved

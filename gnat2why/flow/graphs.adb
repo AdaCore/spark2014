@@ -142,7 +142,7 @@ package body Graphs is
      (G             : Graph;
       Start         : Vertex_Id;
       Include_Start : Boolean;
-      Visitor       : access procedure
+      Visitor       : not null access procedure
         (V      : Vertex_Id;
          Origin : Vertex_Id;
          Depth  : Natural;
@@ -173,6 +173,10 @@ package body Graphs is
                                   D : Natural);
       --  Add all children of V to the queue.
 
+      -------------
+      -- Enqueue --
+      -------------
+
       procedure Enqueue (A : Valid_Vertex_Id;
                          B : Valid_Vertex_Id;
                          D : Natural) is
@@ -182,6 +186,10 @@ package body Graphs is
                                     Depth  => D));
          Marked (B) := True;
       end Enqueue;
+
+      ----------------------
+      -- Enqueue_Children --
+      ----------------------
 
       procedure Enqueue_Children (V : Valid_Vertex_Id;
                                   D : Natural) is
@@ -208,6 +216,8 @@ package body Graphs is
             end loop;
          end if;
       end Enqueue_Children;
+
+   --  Start of processing for BFS
 
    begin
 
@@ -371,6 +381,8 @@ package body Graphs is
          end if;
       end SIMPLE_TC;
 
+   --  Start of processing for Close
+
    begin
       for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          if not Visited (V) then
@@ -415,7 +427,8 @@ package body Graphs is
 
    procedure Conditional_Close
      (G             : in out Graph;
-      Edge_Selector : access function (A, B : Vertex_Id) return Boolean)
+      Edge_Selector : not null access function
+        (A, B : Vertex_Id) return Boolean)
    is
       procedure Visitor (A, B : Vertex_Id);
       --  Obvious visitor procedure.
@@ -431,6 +444,9 @@ package body Graphs is
             G.Remove_Edge (A, B);
          end if;
       end Visitor;
+
+   --  Start of processing for Conditional_Close
+
    begin
       --  IMPORTANT NOTE: Graphhis current implementation takes advantage of
       --  the inefficient (in terms of space) implementation of Close - we
@@ -531,7 +547,7 @@ package body Graphs is
      (G             : Graph;
       Start         : Vertex_Id;
       Include_Start : Boolean;
-      Visitor       : access procedure
+      Visitor       : not null access procedure
         (V  : Vertex_Id;
          TV : out Simple_Traversal_Instruction);
       Edge_Selector : access function (A, B : Vertex_Id)
@@ -618,6 +634,8 @@ package body Graphs is
                                   B => B);
          end if;
       end Should_Visit;
+
+   --  Start of processing for DFS
 
    begin
       --  Seed the stack with either the start node or all its
@@ -798,6 +816,8 @@ package body Graphs is
             B := Tmp;
          end Swap;
 
+      --  Start of processing for Link
+
       begin
          while Semi (Label (W)) < Semi (Label (Child (S))) loop
             if Size (S) + Size (Child (Child (S))) >= 2 * Size (Child (S)) then
@@ -822,6 +842,8 @@ package body Graphs is
             S            := Child (S);
          end loop;
       end Link;
+
+   --  Start of processing for Dominator_Tree_Internal
 
    begin
       --  Step 1
@@ -1052,10 +1074,10 @@ package body Graphs is
                          C    : Cursor)
                          return Boolean
    is
-     ((case Coll.The_Type is
-          when In_Neighbours  => Has_Element (C.VIS_Native_Cursor),
-          when Out_Neighbours => Has_Element (C.EAM_Native_Cursor),
-          when All_Vertices   => Has_Element (C.VL_Native_Cursor)));
+     (case Coll.The_Type is
+         when In_Neighbours  => Has_Element (C.VIS_Native_Cursor),
+         when Out_Neighbours => Has_Element (C.EAM_Native_Cursor),
+         when All_Vertices   => Has_Element (C.VL_Native_Cursor));
 
    ------------
    -- Invert --
@@ -1123,21 +1145,17 @@ package body Graphs is
 
    function Next_Cursor (Coll : Vertex_Collection_T;
                          C    : Cursor)
-                         return Cursor
-   is
-   begin
-      case Coll.The_Type is
+                         return Cursor is
+     (case Coll.The_Type is
          when In_Neighbours =>
-            return Cursor'(Collection_Type   => In_Neighbours,
-                           VIS_Native_Cursor => Next (C.VIS_Native_Cursor));
+            Cursor'(Collection_Type   => In_Neighbours,
+                    VIS_Native_Cursor => Next (C.VIS_Native_Cursor)),
          when Out_Neighbours =>
-            return Cursor'(Collection_Type   => Out_Neighbours,
-                           EAM_Native_Cursor => Next (C.EAM_Native_Cursor));
+            Cursor'(Collection_Type   => Out_Neighbours,
+                    EAM_Native_Cursor => Next (C.EAM_Native_Cursor)),
          when All_Vertices =>
-            return Cursor'(Collection_Type   => All_Vertices,
-                           VL_Native_Cursor  => Next (C.VL_Native_Cursor));
-      end case;
-   end Next_Cursor;
+            Cursor'(Collection_Type   => All_Vertices,
+                    VL_Native_Cursor  => Next (C.VL_Native_Cursor)));
 
    -------------------------------
    --  Non_Trivial_Path_Exists  --
@@ -1157,6 +1175,10 @@ package body Graphs is
           TV : out Simple_Traversal_Instruction);
       --  Repeatedly checks if we've arrived at out destination.
 
+      ----------------------
+      -- Are_We_There_Yet --
+      ----------------------
+
       procedure Are_We_There_Yet
          (V  : Vertex_Id;
           TV : out Simple_Traversal_Instruction) is
@@ -1170,6 +1192,8 @@ package body Graphs is
          end if;
       end Are_We_There_Yet;
 
+   --  Start of processing for Non_Trivial_Path_Exists
+
    begin
       G.DFS (Start         => A,
              Include_Start => False,
@@ -1181,7 +1205,7 @@ package body Graphs is
    function Non_Trivial_Path_Exists
      (G        : Graph;
       A        : Vertex_Id;
-      F        : access function (V : Vertex_Id) return Boolean;
+      F        : not null access function (V : Vertex_Id) return Boolean;
       Reversed : Boolean := False)
       return Boolean
    is
@@ -1191,6 +1215,10 @@ package body Graphs is
          (V  : Vertex_Id;
           TV : out Simple_Traversal_Instruction);
       --  Repeatedly checks if we've arrived at out destination.
+
+      ----------------------
+      -- Are_We_There_Yet --
+      ----------------------
 
       procedure Are_We_There_Yet
         (V  : Vertex_Id;
@@ -1204,6 +1232,9 @@ package body Graphs is
             TV := Continue;
          end if;
       end Are_We_There_Yet;
+
+   --  Start of processing for Non_Trivial_Path_Exists
+
    begin
       G.DFS (Start         => A,
              Include_Start => False,
@@ -1248,11 +1279,11 @@ package body Graphs is
       V : Vertex_Id)
       return Vertex_Id
    is
+      C : constant VIS.Cursor := G.Vertices (V).In_Neighbours.First;
    begin
-      for P of G.Vertices (V).In_Neighbours loop
-         return P;
-      end loop;
-      return Null_Vertex;
+      return (if Has_Element (C)
+              then Element (C)
+              else Null_Vertex);
    end Parent;
 
    -----------------
@@ -1297,10 +1328,10 @@ package body Graphs is
      (G             : Graph;
       Start         : Vertex_Id;
       Allow_Trivial : Boolean;
-      Search        : access procedure
+      Search        : not null access procedure
         (V           : Vertex_Id;
          Instruction : out Traversal_Instruction);
-      Step          : access procedure (V : Vertex_Id);
+      Step          : not null access procedure (V : Vertex_Id);
       Reversed      : Boolean := False)
    is
       package Vertex_Maps is new Ada.Containers.Hashed_Maps
@@ -1320,6 +1351,10 @@ package body Graphs is
                            T_Ins  : out Simple_Traversal_Instruction);
       --  Internal visitor for the BFS. This will construct a tree
       --  which we can use to find our way home.
+
+      ---------------
+      -- Make_Tree --
+      ---------------
 
       procedure Make_Tree (V      : Vertex_Id;
                            Origin : Vertex_Id;
@@ -1392,18 +1427,22 @@ package body Graphs is
    procedure Write_Dot_File
      (G         : Graph;
       Filename  : String;
-      Node_Info : access function (G : Graph;
-                                   V : Vertex_Id)
-                                   return Node_Display_Info;
-      Edge_Info : access function (G      : Graph;
-                                   A      : Vertex_Id;
-                                   B      : Vertex_Id;
-                                   Marked : Boolean;
-                                   Colour : Edge_Colours)
-                                   return Edge_Display_Info)
+      Node_Info : not null access function (G : Graph;
+                                            V : Vertex_Id)
+                                            return Node_Display_Info;
+      Edge_Info : not null access function (G      : Graph;
+                                            A      : Vertex_Id;
+                                            B      : Vertex_Id;
+                                            Marked : Boolean;
+                                            Colour : Edge_Colours)
+                                            return Edge_Display_Info)
    is
       function Escape (S : Unbounded_String) return String;
       --  Convert the unbounded string to a string and escape " to \"
+
+      ------------
+      -- Escape --
+      ------------
 
       function Escape (S : Unbounded_String) return String
       is
@@ -1426,6 +1465,9 @@ package body Graphs is
       end Escape;
 
       FD : File_Type;
+
+   --  Start of processing for Write_Dot_File
+
    begin
       Create (FD, Out_File, Filename & ".dot");
 
@@ -1535,15 +1577,15 @@ package body Graphs is
    procedure Write_Pdf_File
      (G         : Graph;
       Filename  : String;
-      Node_Info : access function (G : Graph;
-                                   V : Vertex_Id)
-                                   return Node_Display_Info;
-      Edge_Info : access function (G      : Graph;
-                                   A      : Vertex_Id;
-                                   B      : Vertex_Id;
-                                   Marked : Boolean;
-                                   Colour : Edge_Colours)
-                                   return Edge_Display_Info)
+      Node_Info : not null access function (G : Graph;
+                                            V : Vertex_Id)
+                                            return Node_Display_Info;
+      Edge_Info : not null access function (G      : Graph;
+                                            A      : Vertex_Id;
+                                            B      : Vertex_Id;
+                                            Marked : Boolean;
+                                            Colour : Edge_Colours)
+                                            return Edge_Display_Info)
    is
    begin
       Write_Dot_File (G, Filename, Node_Info, Edge_Info);

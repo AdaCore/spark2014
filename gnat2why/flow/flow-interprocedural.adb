@@ -35,30 +35,35 @@ package body Flow.Interprocedural is
    procedure Add_Simple_Procedure_Dependency
      (FA : in out Flow_Analysis_Graphs;
       V  : Flow_Graphs.Vertex_Id);
-   --  Add dependencies for a simple procedure call where we cannot
-   --  perform IPFA.
+   --  Add dependencies for a simple procedure call where we cannot perform
+   --  IPFA.
 
    function Find_Parameter_Vertex (FA        : Flow_Analysis_Graphs;
                                    Callsite  : Flow_Graphs.Vertex_Id;
                                    Parameter : Flow_Id)
                                    return Flow_Graphs.Vertex_Id;
-   --  Search for the relevant parameter vertex for a given call.
+   --  Search for the relevant parameter vertex for a given call
 
-   function Find_Parameter_Vertex (FA        : Flow_Analysis_Graphs;
-                                   Callsite  : Flow_Graphs.Vertex_Id;
-                                   Parameter : Flow_Id)
-                                   return Flow_Graphs.Vertex_Id is
+   ---------------------------
+   -- Find_Parameter_Vertex --
+   ---------------------------
+
+   function Find_Parameter_Vertex
+     (FA        : Flow_Analysis_Graphs;
+      Callsite  : Flow_Graphs.Vertex_Id;
+      Parameter : Flow_Id)
+      return Flow_Graphs.Vertex_Id is
    begin
       for V of FA.CDG.Get_Collection (Callsite,
                                       Flow_Graphs.Out_Neighbours)
       loop
          declare
-            F : constant Flow_Id      := FA.CDG.Get_Key (V);
-            A : constant V_Attributes := FA.Atr (V);
+            F : constant Flow_Id := FA.CDG.Get_Key (V);
+            A : V_Attributes renames FA.Atr (V);
          begin
             if A.Is_Parameter then
-               --  Parameters *must* be using direct mapping for both
-               --  the actual and formal.
+               --  Parameters *must* be using direct mapping for both the
+               --  actual and formal.
                pragma Assert (A.Parameter_Formal.Kind = Direct_Mapping);
                pragma Assert (F.Kind = Direct_Mapping);
                if Parameter.Kind = Direct_Mapping and then
@@ -84,6 +89,7 @@ package body Flow.Interprocedural is
                      then
                         return V;
                      end if;
+
                   when Record_Field =>
                      if Parameter.Kind = Record_Field
                        and then A.Parameter_Formal.Variant = Parameter.Variant
@@ -92,6 +98,7 @@ package body Flow.Interprocedural is
                      then
                         return V;
                      end if;
+
                   when Magic_String =>
                      if Parameter.Kind = Magic_String and then
                        A.Parameter_Formal.Variant = Parameter.Variant and then
@@ -99,14 +106,17 @@ package body Flow.Interprocedural is
                      then
                         return V;
                      end if;
+
                   when Synthetic_Null_Export =>
                      if Parameter.Kind = Synthetic_Null_Export and then
                        A.Parameter_Formal.Variant = Parameter.Variant
                      then
                         return V;
                      end if;
+
                   when others =>
                      raise Program_Error;
+
                end case;
 
             else
@@ -124,6 +134,10 @@ package body Flow.Interprocedural is
       raise Program_Error;
    end Find_Parameter_Vertex;
 
+   -------------------------------------
+   -- Add_Simple_Procedure_Dependency --
+   -------------------------------------
+
    procedure Add_Simple_Procedure_Dependency
      (FA : in out Flow_Analysis_Graphs;
       V  : Flow_Graphs.Vertex_Id)
@@ -132,9 +146,9 @@ package body Flow.Interprocedural is
       pragma Assert (Nkind (N) in N_Procedure_Call_Statement |
                                   N_Entry_Call_Statement);
 
-      A : constant V_Attributes := FA.Atr (V);
-      pragma Assert (A.Is_Callsite);
-      pragma Assert (not A.Perform_IPFA);
+      Atr : V_Attributes renames FA.Atr (V);
+      pragma Assert (Atr.Is_Callsite);
+      pragma Assert (not Atr.Perform_IPFA);
 
       Called_Thing : constant Entity_Id := Get_Called_Entity (N);
 
@@ -207,8 +221,8 @@ package body Flow.Interprocedural is
          end;
 
       else
-         --  We do not have a dependency aspect, so we will make up
-         --  one (all outputs depend on all inputs).
+         --  We do not have a dependency aspect, so we will make up one (all
+         --  outputs depend on all inputs).
          declare
             Proof_Ins : Flow_Id_Sets.Set;
             Inputs    : Flow_Id_Sets.Set;
@@ -216,7 +230,7 @@ package body Flow.Interprocedural is
             The_In    : Flow_Id;
             The_Out   : Flow_Id;
          begin
-            --  Collect all the globals first.
+            --  Collect all the globals first
             Get_Globals (Subprogram             => Called_Thing,
                          Scope                  => FA.B_Scope,
                          Classwide              => Is_Dispatching_Call (N),
@@ -226,7 +240,7 @@ package body Flow.Interprocedural is
                          Consider_Discriminants => True,
                          Use_Computed_Globals   => not FA.Generating_Globals);
 
-            --  Add parameters.
+            --  Add parameters
             for E of Get_Formals (Called_Thing, N, False) loop
                if Nkind (E) in N_Entity then
                   case Ekind (E) is
@@ -272,6 +286,7 @@ package body Flow.Interprocedural is
 
                      when others =>
                         raise Why.Unexpected_Node;
+
                   end case;
                else
                   The_In  := Change_Variant (Concurrent_Object_Id (E),
@@ -288,7 +303,7 @@ package body Flow.Interprocedural is
             end loop;
 
             if not Outputs.Is_Empty then
-               --  Each output depends on all inputs.
+               --  Each output depends on all inputs
                for Input of Inputs loop
                   for Output of Outputs loop
                      FA.TDG.Add_Edge (Find_Parameter_Vertex (FA, V, Input),
@@ -297,7 +312,7 @@ package body Flow.Interprocedural is
                   end loop;
                end loop;
             else
-               --  All inputs flow into the null export vertex.
+               --  All inputs flow into the null export vertex
                for Input of Inputs loop
                   Add_TD_Edge (Input, Null_Export_Flow_Id);
                end loop;
@@ -305,6 +320,10 @@ package body Flow.Interprocedural is
          end;
       end if;
    end Add_Simple_Procedure_Dependency;
+
+   ------------
+   -- Create --
+   ------------
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
    begin
@@ -314,7 +333,7 @@ package body Flow.Interprocedural is
       --  in the dependencies.
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            A : constant V_Attributes := FA.Atr (V);
+            A : V_Attributes renames FA.Atr (V);
          begin
             if A.Is_Callsite and not A.Perform_IPFA then
                Add_Simple_Procedure_Dependency (FA, V);

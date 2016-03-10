@@ -153,8 +153,8 @@ package body Flow is
                                  M : Attribute_Maps.Map;
                                  V : Flow_Graphs.Vertex_Id)
    is
-      F : constant Flow_Id      := G.Get_Key (V);
-      A : constant V_Attributes := M (V);
+      F : constant Flow_Id := G.Get_Key (V);
+      A : V_Attributes renames M (V);
 
       procedure Format_Item (K, V : String);
 
@@ -338,8 +338,8 @@ package body Flow is
             Fill_Colour => Null_Unbounded_String,
             Label       => Null_Unbounded_String);
 
-         F : constant Flow_Id      := G.Get_Key (V);
-         A : constant V_Attributes := M (V);
+         F : constant Flow_Id := G.Get_Key (V);
+         A : V_Attributes renames M (V);
 
          procedure Print_Node (N : Node_Id);
 
@@ -1384,10 +1384,10 @@ package body Flow is
 
             when E_Package =>
                declare
-                  Pkg_Body   : constant Entity_Id :=
-                             Defining_Entity (Package_Body (E),
-                                              Empty_On_Errors => True);
-                  Needs_Body : Boolean := Unit_Requires_Body (E);
+                  Pkg_Body : constant Entity_Id :=
+                    Defining_Entity (Package_Body (E),
+                                     Empty_On_Errors => True);
+
                begin
                   if SPARK_Util.Analysis_Requested (E, With_Inlined => True)
                     and then Entity_Spec_In_SPARK (E)
@@ -1398,14 +1398,11 @@ package body Flow is
                     --  them would be confusing.
                   then
                      if Present (Pkg_Body) then
-                        pragma Assert
-                          (Nkind (Pkg_Body) = N_Defining_Identifier and then
-                           Ekind (Pkg_Body) = E_Package_Body);
-                        Needs_Body := True;
-                     end if;
-
-                     if Needs_Body then
                         if Entity_Body_In_SPARK (E) then
+                           pragma Assert
+                             (Nkind (Pkg_Body) = N_Defining_Identifier and then
+                              Ekind (Pkg_Body) = E_Package_Body);
+
                            FA_Graphs.Include
                              (Pkg_Body,
                               Flow_Analyse_Entity
@@ -1414,7 +1411,9 @@ package body Flow is
                            null;
                            --  ??? warn that we can't flow analyze elaboration?
                         end if;
-                     else
+                     elsif Generating_Globals
+                       or else not Unit_Requires_Body (E)
+                     then
                         FA_Graphs.Include
                           (E,
                            Flow_Analyse_Entity (E, E, Generating_Globals));

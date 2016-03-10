@@ -7,8 +7,8 @@ list_allocator.adb:35:19: info: index check proved
 list_allocator.adb:35:19: info: precondition proved
 list_allocator.adb:36:53: info: precondition proved
 list_allocator.adb:36:77: info: overflow check proved
-list_allocator.adb:39:32: info: precondition proved
-list_allocator.adb:39:60: info: precondition proved
+list_allocator.adb:39:16: info: precondition proved
+list_allocator.adb:39:44: info: precondition proved
 list_allocator.adb:41:11: info: precondition proved
 list_allocator.adb:51:10: info: loop invariant initialization proved
 list_allocator.adb:51:10: info: loop invariant preservation proved

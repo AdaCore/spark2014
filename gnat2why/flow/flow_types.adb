@@ -772,7 +772,7 @@ package body Flow_Types is
          else
             R.Component.Delete_Last;
          end if;
-         if F.Kind = Record_Field and then R.Component.Length = 0 then
+         if F.Kind = Record_Field and then R.Component.Is_Empty then
             R := (Kind    => Direct_Mapping,
                   Variant => F.Variant,
                   Node    => F.Node,
@@ -884,26 +884,44 @@ package body Flow_Types is
          Nam : Node_Id := N;
       begin
          if Nkind (N) in N_Entity then
-            if Is_Subprogram (N) then
-               if Present (Overridden_Operation (N)) then
-                  Nam := Overridden_Operation (N);
-               end if;
-
-               while Present (Homonym (Nam)) loop
-                  Nam := Homonym (Nam);
-               end loop;
-
-            elsif Ekind (N) = E_Task_Type then
-               declare
-                  Task_Object : constant Entity_Id := Anonymous_Object (N);
-                  --  For single task declarations return the original name,
-                  --  i.e. without the "tk" suffix added by expansion.
-               begin
-                  if Present (Task_Object) then
-                     Nam := Task_Object;
+            case Ekind (N) is
+               when E_Function | E_Procedure =>
+                  if Present (Overridden_Operation (N)) then
+                     Nam := Overridden_Operation (N);
                   end if;
-               end;
-            end if;
+
+                  while Present (Homonym (Nam)) loop
+                     Nam := Homonym (Nam);
+                  end loop;
+
+               when E_Task_Type =>
+                  declare
+                     Task_Object : constant Entity_Id := Anonymous_Object (N);
+                     --  For single task declarations return the original name,
+                     --  i.e. without the "tk" suffix added by expansion.
+                  begin
+                     if Present (Task_Object) then
+                        Nam := Task_Object;
+                     end if;
+                  end;
+
+               --  For references to internal formal argument in predicate
+               --  function bodies use name of the predicated type.
+
+               when E_In_Parameter =>
+                  declare
+                     S : constant Entity_Id := Scope (N);
+                  begin
+                     if Ekind (S) = E_Function
+                       and then Is_Predicate_Function (S)
+                     then
+                        Nam := Etype (N);
+                     end if;
+                  end;
+
+               when others =>
+                  null;
+            end case;
          end if;
 
          Get_Name_String (Chars (Nam));
@@ -912,6 +930,9 @@ package body Flow_Types is
       end Get_Unmangled_Name;
 
       R : Unbounded_String := Null_Unbounded_String;
+
+   --  Start of processing Flow_Id_To_String
+
    begin
       --  Return "Prefix.State" instead of just "State", but only for abstract
       --  state for now. (However, the code below would work for any other flow

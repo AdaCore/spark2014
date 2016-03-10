@@ -51,8 +51,7 @@ package body Flow.Control_Dependence_Graph is
 
       for V of FA.CDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            use Attribute_Maps;
-            A  : constant Constant_Reference_Type := FA.Atr (V);
+            A  : V_Attributes renames FA.Atr (V);
             CV : constant Flow_Graphs.Vertex_Id :=
               FA.CDG.Get_Vertex (A.Call_Vertex);
          begin
@@ -62,8 +61,7 @@ package body Flow.Control_Dependence_Graph is
             then
                --  Sanity check that we will not lose control
                --  dependence.
-               for P of FA.CDG.Get_Collection (V,
-                                               Flow_Graphs.In_Neighbours)
+               for P of FA.CDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                loop
                   if P = V then
                      --  Self dependence is OK and we don't care if it
@@ -85,8 +83,8 @@ package body Flow.Control_Dependence_Graph is
 
                --  Sanity check that we won't lose outwards control
                --  influence.
-               for S of FA.CDG.Get_Collection (V,
-                                               Flow_Graphs.Out_Neighbours)
+               for S of FA.CDG.Get_Collection (V, Flow_Graphs.Out_Neighbours)
+
                loop
                   if S = V then
                      --  Self dependence is OK and we don't care if it
@@ -95,7 +93,7 @@ package body Flow.Control_Dependence_Graph is
 
                   elsif S = CV
                     or else
-                      CV = FA.CDG.Get_Vertex (FA.Atr.Element (S).Call_Vertex)
+                      CV = FA.CDG.Get_Vertex (FA.Atr (S).Call_Vertex)
                   then
                      --  This can happen if we have infinite loops.
                      null;

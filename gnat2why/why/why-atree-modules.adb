@@ -1192,6 +1192,11 @@ package body Why.Atree.Modules is
                            Domain => EW_Term,
                            Symbol => NID ("div"),
                            Typ    => M_Floats (Fl).T);
+         M_Floats (Fl).Remainder :=
+           New_Identifier (Module => M_Floats (Fl).Module,
+                           Domain => EW_Term,
+                           Symbol => NID ("rem"),
+                           Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Le :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,

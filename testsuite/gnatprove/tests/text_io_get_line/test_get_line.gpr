@@ -1,0 +1,11 @@
+project Test_Get_Line is
+   for Main use ("test_get_line.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnato13", "-gnata", "-gnateDTEST_GET_LINE=True");
+   end Compiler;
+
+   package Builder is
+      for Global_Configuration_Pragmas use "spark.adc";
+   end Builder;
+end Test_Get_Line;

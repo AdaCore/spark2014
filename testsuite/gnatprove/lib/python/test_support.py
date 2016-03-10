@@ -476,7 +476,7 @@ def gnatprove(opt=["-P", "test.gpr"]):
 
 def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
               vc_timeout=vc_timeout(), mode="all", counterexample=True,
-              prover=default_provers):
+              prover=default_provers, cache_allowed=True):
     """Call gnatprove with standard options.
 
        For option steps the default is max_steps set above, setting this
@@ -497,7 +497,7 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
         fullopt += [build_prover_switch(prover)]
     if benchmark_mode():
         fullopt += ["--benchmark"]
-    if cache_mode():
+    if cache_allowed and cache_mode():
         fullopt += ["--cache"]
     if not counterexample:
         fullopt += ["--no-counterexample"]

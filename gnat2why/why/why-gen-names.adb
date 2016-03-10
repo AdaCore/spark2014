@@ -45,7 +45,7 @@ package body Why.Gen.Names is
 
    Pre_Computed_Idents : array (Why_Name_Enum) of W_Identifier_Id :=
      (others => Why_Empty);
-   --  This array is used to precompute all fixed idents.
+   --  This array is used to precompute all fixed idents
 
    function Append_Num (S        : String;
                         Count    : Positive;
@@ -97,7 +97,7 @@ package body Why.Gen.Names is
         Append_Num (S        => Base & "__" & To_String (Attr_To_Why_Name (A)),
                     Count    => Count,
                     Typ      => Typ,
-                    Module  => Module,
+                    Module   => Module,
                     Ada_Node => Ada_Node);
    end Attr_Append;
 
@@ -123,16 +123,12 @@ package body Why.Gen.Names is
    ----------------------
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum is
-   begin
-      case A is
-         when Attribute_Constrained => return WNE_Attr_Constrained;
-         when Attribute_First       => return WNE_Attr_First;
-         when Attribute_Last        => return WNE_Attr_Last;
-         when Attribute_Tag         => return WNE_Attr_Tag;
-         when others =>
-            raise Program_Error;
-      end case;
-   end Attr_To_Why_Name;
+     (case A is
+         when Attribute_Constrained => WNE_Attr_Constrained,
+         when Attribute_First       => WNE_Attr_First,
+         when Attribute_Last        => WNE_Attr_Last,
+         when Attribute_Tag         => WNE_Attr_Tag,
+         when others                => raise Program_Error);
 
    --------------------
    -- Content_Append --
@@ -198,8 +194,8 @@ package body Why.Gen.Names is
                      return M_Boolean.To_Int;
                   elsif From = EW_Int_Type and then To = EW_Bool_Type then
                      return M_Boolean.Of_Int;
-                  elsif Why_Type_Is_BitVector (From) and then
-                    To = EW_Int_Type
+                  elsif Why_Type_Is_BitVector (From)
+                    and then To = EW_Int_Type
                   then
                      return MF_BVs (From).To_Int;
                   elsif Why_Type_Is_BitVector (From) and then
@@ -214,8 +210,8 @@ package body Why.Gen.Names is
                              elsif From = EW_BitVector_64_Type then
                                 MF_Floats (To).Of_BV64
                              else raise Program_Error);
-                  elsif From = EW_Int_Type and then
-                    Why_Type_Is_BitVector (To)
+                  elsif From = EW_Int_Type
+                    and then Why_Type_Is_BitVector (To)
                   then
                      return MF_BVs (To).Of_Int;
                   elsif Why_Type_Is_BitVector (From) and then
@@ -287,8 +283,8 @@ package body Why.Gen.Names is
                      From_Node : constant Node_Id := Get_Ada_Node (+From);
                      To_Node   : constant Node_Id := Get_Ada_Node (+To);
                      From_Base : constant Node_Id :=
-                       (if Full_View_Not_In_SPARK (From_Node) then
-                             Get_First_Ancestor_In_SPARK (From_Node)
+                       (if Full_View_Not_In_SPARK (From_Node)
+                        then Get_First_Ancestor_In_SPARK (From_Node)
                         else Root_Record_Type (From_Node));
                   begin
                      if From_Base = From_Node then
@@ -436,6 +432,10 @@ package body Why.Gen.Names is
       end if;
    end Get_Modular_Converter;
 
+   ---------------------------------------
+   -- Get_Modular_Converter_Range_Check --
+   ---------------------------------------
+
    function Get_Modular_Converter_Range_Check
      (From, To : W_Type_Id) return W_Identifier_Id is
    begin
@@ -558,7 +558,7 @@ package body Why.Gen.Names is
       Domain   : EW_Domain;
       Name     : String;
       Typ      : W_Type_Id := Why_Empty)
-     return W_Identifier_Id is
+      return W_Identifier_Id is
    begin
       return
         New_Identifier
@@ -575,7 +575,7 @@ package body Why.Gen.Names is
       Namespace : Name_Id := No_Name;
       Module    : W_Module_Id;
       Typ       : W_Type_Id := Why_Empty)
-     return W_Identifier_Id is
+      return W_Identifier_Id is
    begin
       return
         New_Identifier (Ada_Node  => Ada_Node,
@@ -679,10 +679,10 @@ package body Why.Gen.Names is
    begin
       return
         New_Name
-          (Ada_Node  => Get_Ada_Node (+Base),
-           Symbol    => NID (Get_Name_String (Get_Symbol (Base))
+          (Ada_Node => Get_Ada_Node (+Base),
+           Symbol   => NID (Get_Name_String (Get_Symbol (Base))
              & To_String (WNE_Ref)),
-           Module    => Get_Module (Base));
+           Module   => Get_Module (Base));
    end Ref_Append;
 
    --------------
@@ -703,113 +703,105 @@ package body Why.Gen.Names is
    -- To_String --
    ---------------
 
-   function To_String (W : Why_Name_Enum) return String
-   is
-   begin
-      case W is
-         when WNE_Array_Component_Type   => return "component_type";
-         when WNE_Array_Type             => return "__t";
-         when WNE_Attr_Constrained       => return "attr__constrained";
-         when WNE_Attr_First             => return "first";
-         when WNE_Attr_Last              => return "last";
-         when WNE_Attr_Tag               => return "attr__tag";
-         when WNE_Content                => return "__content";
-         when WNE_Havoc                  => return "__havoc";
-         when WNE_Rec_Extension_Suffix   => return "ext__";
-         when WNE_Rec_Ancestor_Suffix    => return "anc__";
-         when WNE_Rec_Comp_Prefix        => return "rec__";
-         when WNE_Rec_Main_Suffix        => return "main__";
-         when WNE_Ref                    => return "__ref";
-         when WNE_Extract_Prefix         => return "extract__";
-         when WNE_Ancestor_Prefix        => return "extract_anc__";
-         when WNE_Hide_Extension         => return "hide_ext__";
-         when WNE_Dispatch_Module        => return "Dispatch";
-         when WNE_No_Return_Module       => return "No_Return";
-         when WNE_Refine_Module          => return "Refine";
+   function To_String (W : Why_Name_Enum) return String is
+     (case W is
+         when WNE_Ancestor_Prefix      => "extract_anc__",
+         when WNE_Array_Component_Type => "component_type",
+         when WNE_Array_Type           => "__t",
+         when WNE_Attr_Constrained     => "attr__constrained",
+         when WNE_Attr_First           => "first",
+         when WNE_Attr_Last            => "last",
+         when WNE_Attr_Tag             => "attr__tag",
+         when WNE_Content              => "__content",
+         when WNE_Dispatch_Module      => "Dispatch",
+         when WNE_Extract_Prefix       => "extract__",
+         when WNE_Havoc                => "__havoc",
+         when WNE_Hide_Extension       => "hide_ext__",
+         when WNE_No_Return_Module     => "No_Return",
+         when WNE_Rec_Ancestor_Suffix  => "anc__",
+         when WNE_Rec_Comp_Prefix      => "rec__",
+         when WNE_Rec_Extension_Suffix => "ext__",
+         when WNE_Rec_Main_Suffix      => "main__",
+         when WNE_Refine_Module        => "Refine",
+         when WNE_Ref                  => "__ref",
 
          --  these are used both by E_Symb function and by To_String
 
-         when WNE_Rec_Split_Discrs       => return "__split_discrs";
-         when WNE_Rec_Split_Fields       => return "__split_fields";
+         when WNE_Rec_Split_Discrs     => "__split_discrs",
+         when WNE_Rec_Split_Fields     => "__split_fields",
 
          --  please use these only in conjunction with E_Symb function
 
-         when WNE_Array_Elts |
-              WNE_Attr_Object_Size |
-              WNE_Attr_Value_Size |
-              WNE_Attr_Address |
-              WNE_Attr_First_2 |
-              WNE_Attr_First_3 |
-              WNE_Attr_First_4 |
-              WNE_Attr_Last_2  |
-              WNE_Attr_Last_3  |
-              WNE_Attr_Last_4  |
-              WNE_Attr_Length |
-              WNE_Attr_Length_2 |
-              WNE_Attr_Length_3 |
-              WNE_Attr_Length_4 |
-              WNE_Attr_Image  |
-              WNE_Attr_Value |
-              WNE_Attr_Modulus |
-              WNE_Fixed_Point_Div |
-              WNE_Fixed_Point_Div_Int |
+         when WNE_Array_Base_Range_Pred      |
+              WNE_Array_Base_Range_Pred_2    |
+              WNE_Array_Base_Range_Pred_3    |
+              WNE_Array_Base_Range_Pred_4    |
+              WNE_Array_Elts                 |
+              WNE_Attr_Address               |
+              WNE_Attr_First_2               |
+              WNE_Attr_First_3               |
+              WNE_Attr_First_4               |
+              WNE_Attr_Image                 |
+              WNE_Attr_Last_2                |
+              WNE_Attr_Last_3                |
+              WNE_Attr_Last_4                |
+              WNE_Attr_Length                |
+              WNE_Attr_Length_2              |
+              WNE_Attr_Length_3              |
+              WNE_Attr_Length_4              |
+              WNE_Attr_Modulus               |
+              WNE_Of_Float32                 |
+              WNE_To_Float32                 |
+              WNE_Of_Float64                 |
+              WNE_To_Float64                 |
+              WNE_Attr_Object_Size           |
+              WNE_Attr_Small                 |
+              WNE_Attr_Value                 |
+              WNE_Attr_Value_Size            |
+              WNE_Bool_Eq                    |
+              WNE_Check_Not_First            |
+              WNE_Check_Not_Last             |
+              WNE_Default_Init               |
+              WNE_Dispatch_Eq                |
+              WNE_Dummy                      |
+              WNE_Dynamic_Invariant          |
+              WNE_Dynamic_Predicate          |
+              WNE_Dynamic_Property           |
+              WNE_Dynamic_Property_BV_Int    |
+              WNE_Fixed_Point_Div            |
+              WNE_Fixed_Point_Div_Int        |
               WNE_Fixed_Point_Div_Result_Int |
-              WNE_Fixed_Point_Mult |
-              WNE_Fixed_Point_Mult_Int |
-              WNE_Attr_Small |
-              WNE_Check_Not_First |
-              WNE_Check_Not_Last  |
-              WNE_Range_Check_Fun |
-              WNE_Range_Pred |
-              WNE_Range_Pred_BV_Int |
-              WNE_Range_Check_Fun_BV_Int |
-              WNE_Default_Init |
-              WNE_Dynamic_Invariant |
-              WNE_Dynamic_Property |
-              WNE_Dynamic_Property_BV_Int |
-              WNE_Dynamic_Predicate |
-              WNE_To_Int |
-              WNE_To_Int_2 |
-              WNE_To_Int_3 |
-              WNE_To_Int_4 |
-              WNE_Of_Int |
-              WNE_Of_Fixed |
-              WNE_Of_Real |
-              WNE_Of_Float32 |
-              WNE_Of_Float64 |
-              WNE_Of_BitVector |
-              WNE_To_Fixed |
-              WNE_To_Float32 |
-              WNE_To_Float64 |
-              WNE_To_BitVector |
-              WNE_To_Array |
-              WNE_Of_Array |
-              WNE_To_Base |
-              WNE_Of_Base |
-              WNE_To_Rep |
-              WNE_Of_Rep |
-              WNE_Index_Dynamic_Property |
-              WNE_Index_Dynamic_Property_2 |
-              WNE_Index_Dynamic_Property_3 |
-              WNE_Index_Dynamic_Property_4 |
-              WNE_Array_Base_Range_Pred |
-              WNE_Array_Base_Range_Pred_2 |
-              WNE_Array_Base_Range_Pred_3 |
-              WNE_Array_Base_Range_Pred_4 |
-              WNE_Bool_Eq |
-              WNE_Dispatch_Eq |
-              WNE_Rec_Extension |
-              WNE_Rec_Main |
-              WNE_Tag  |
-              WNE_Rec_Ancestor |
-              WNE_Hide_Ancestor |
-              WNE_Dummy
-            =>
-
-            raise Program_Error;
-
-      end case;
-   end To_String;
+              WNE_Fixed_Point_Mult           |
+              WNE_Fixed_Point_Mult_Int       |
+              WNE_Hide_Ancestor              |
+              WNE_Index_Dynamic_Property     |
+              WNE_Index_Dynamic_Property_2   |
+              WNE_Index_Dynamic_Property_3   |
+              WNE_Index_Dynamic_Property_4   |
+              WNE_Of_Array                   |
+              WNE_Of_Base                    |
+              WNE_Of_BitVector               |
+              WNE_Of_Fixed                   |
+              WNE_Of_Int                     |
+              WNE_Of_Real                    |
+              WNE_Of_Rep                     |
+              WNE_Range_Check_Fun            |
+              WNE_Range_Check_Fun_BV_Int     |
+              WNE_Range_Pred                 |
+              WNE_Range_Pred_BV_Int          |
+              WNE_Rec_Ancestor               |
+              WNE_Rec_Extension              |
+              WNE_Rec_Main                   |
+              WNE_Tag                        |
+              WNE_To_Array                   |
+              WNE_To_Base                    |
+              WNE_To_BitVector               |
+              WNE_To_Fixed                   |
+              WNE_To_Int                     |
+              WNE_To_Int_2                   |
+              WNE_To_Int_3                   |
+              WNE_To_Int_4                   |
+              WNE_To_Rep                     => raise Program_Error);
 
    --------------
    -- To_Ident --
@@ -885,7 +877,7 @@ package body Why.Gen.Names is
          case R is
             when RCK_Range_Not_First | RCK_Overflow_Not_First =>
                return M_Boolean.Check_Not_First;
-            when RCK_Range_Not_Last | RCK_Overflow_Not_Last =>
+            when RCK_Range_Not_Last  | RCK_Overflow_Not_Last  =>
                return M_Boolean.Check_Not_Last;
             when others =>
                return M_Boolean.Range_Check;
@@ -896,9 +888,10 @@ package body Why.Gen.Names is
               (case R is
                   when RCK_Range_Not_First | RCK_Overflow_Not_First =>
                      WNE_Check_Not_First,
-                  when RCK_Range_Not_Last | RCK_Overflow_Not_Last =>
+                  when RCK_Range_Not_Last  | RCK_Overflow_Not_Last  =>
                      WNE_Check_Not_Last,
-                  when others        => WNE_Range_Check_Fun);
+                  when others =>
+                     WNE_Range_Check_Fun);
 
          begin
             return E_Symb (Ty, Name);

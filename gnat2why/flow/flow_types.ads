@@ -196,9 +196,7 @@ package Flow_Types is
    function "<" (Left, Right : Flow_Id) return Boolean;
    --  Ordering for Flow_Id
 
-   Null_Flow_Id : constant Flow_Id :=
-     Flow_Id'(Kind    => Null_Value,
-              Variant => Normal_Use);
+   Null_Flow_Id : constant Flow_Id;
 
    Null_Export_Flow_Id : constant Flow_Id :=
      Flow_Id'(Kind    => Synthetic_Null_Export,
@@ -544,12 +542,14 @@ package Flow_Types is
       --  this set to true.
 
       Is_Exceptional_Branch        : Boolean;
-      --  True for nodes which lead *into* an exceptional path, but are not
-      --  part of the path itself.
+      --  True for nodes which lead *into* an exceptional path (see below), but
+      --  are not part of the path itself.
 
       Is_Exceptional_Path          : Boolean;
-      --  True for all nodes on execptional execution paths. We tend to
-      --  exclude these from analysis and sanity checking.
+      --  True for all nodes on exceptional execution paths, i.e. paths
+      --  leading to raise statements, statically false assertions and calls
+      --  to subprograms with pragma No_Return. We tend to exclude these from
+      --  analysis and sanity checking.
 
       Is_Proof                     : Boolean;
       --  True if this vertex represents something in a proof context
@@ -681,6 +681,16 @@ package Flow_Types is
       --  print the vertex in --flow-debug mode.
    end record;
    pragma Pack (V_Attributes);
+
+   Null_Attributes : constant V_Attributes;
+
+   Null_Node_Attributes : constant V_Attributes;
+
+private
+
+   Null_Flow_Id : constant Flow_Id :=
+     Flow_Id'(Kind    => Null_Value,
+              Variant => Normal_Use);
 
    Null_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node                    => False,

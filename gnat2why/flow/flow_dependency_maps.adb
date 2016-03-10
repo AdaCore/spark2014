@@ -73,10 +73,6 @@ package body Flow_Dependency_Maps is
       Outputs : Flow_Id_Sets.Set;
    begin
       case Nkind (Expression (PAA)) is
-         when N_Null =>
-            --  Aspect => null
-            return M;
-
          when N_Aggregate =>
             --  Aspect => (...)
 
@@ -89,6 +85,10 @@ package body Flow_Dependency_Maps is
             --  Aspect => Foobar
             M.Include (Direct_Mapping_Id (Expression (PAA)),
                        Flow_Id_Sets.Empty_Set);
+            return M;
+
+         when N_Null =>
+            --  Aspect => null
             return M;
 
          when others =>
@@ -118,6 +118,10 @@ package body Flow_Dependency_Maps is
          Inputs  := Flow_Id_Sets.Empty_Set;
          Outputs := Flow_Id_Sets.Empty_Set;
 
+         --  Processing for LHS (outputs) and RHS (inputs) is almost identical,
+         --  except for few special cases. It seems good to leave this code
+         --  like this, since it offers more protection against malformed AST.
+
          --  Process LHS (outputs)
 
          pragma Assert (List_Length (Choices (Row)) = 1);
@@ -133,6 +137,12 @@ package body Flow_Dependency_Maps is
                   LHS := Next (LHS);
                end loop;
 
+            when N_Attribute_Reference =>
+               --  foo'result => ...
+               pragma Assert (Present (Entity (Prefix (LHS))));
+               Outputs.Include
+                 (Direct_Mapping_Id (Unique_Entity (Entity (Prefix (LHS)))));
+
             when N_Identifier | N_Expanded_Name =>
                --  Foo => ...
                pragma Assert (Present (Entity (LHS)));
@@ -142,12 +152,6 @@ package body Flow_Dependency_Maps is
             when N_Null =>
                --  null => ...
                null;
-
-            when N_Attribute_Reference =>
-               --  foo'result => ...
-               pragma Assert (Present (Entity (Prefix (LHS))));
-               Outputs.Include
-                 (Direct_Mapping_Id (Unique_Entity (Entity (Prefix (LHS)))));
 
             when N_Numeric_Or_String_Literal =>
                --  We should only ever get here if we are dealing with
@@ -185,12 +189,15 @@ package body Flow_Dependency_Maps is
                   end if;
                   RHS := Next (RHS);
                end loop;
+
             when N_Identifier | N_Expanded_Name =>
                pragma Assert (Present (Entity (RHS)));
                Inputs.Include
                  (Direct_Mapping_Id (Unique_Entity (Entity (RHS))));
+
             when N_Null =>
                null;
+
             when N_Numeric_Or_String_Literal =>
                --  We should only ever get here if we are dealing with
                --  a rewritten constant.
@@ -204,6 +211,7 @@ package body Flow_Dependency_Maps is
             when others =>
                Print_Node_Subtree (RHS);
                raise Why.Unexpected_Node;
+
          end case;
 
          --  Filter out generic formals without variable output
@@ -211,24 +219,46 @@ package body Flow_Dependency_Maps is
          Inputs := Filter_Out_Constants (Inputs,
                                          Node_Sets.Empty_Set,
                                          True);
-
          --  Assemble map
+         declare
+            procedure Populate (Output : Flow_Id);
+            --  Populate map M with entries from Output to each element of
+            --  Inputs.
 
-         if Outputs.Length = 0 and then Inputs.Length >= 1 then
-            --  The insert is on purpose - we want this to fail if we
-            --  manage to obtain more than one null derives.
-            M.Insert (Null_Flow_Id, Flow_Id_Sets.Empty_Set);
-            for Input of Inputs loop
-               M (Null_Flow_Id).Include (Input);
-            end loop;
-         else
-            for Output of Outputs loop
-               M.Include (Output, Flow_Id_Sets.Empty_Set);
+            --------------
+            -- Populate --
+            --------------
+
+            procedure Populate (Output : Flow_Id) is
+               C        : Dependency_Maps.Cursor;
+               Inserted : Boolean;
+            begin
+               --  Attempt to insert a mapping from Output to empty set
+               M.Insert (Key      => Output,
+                         Position => C,
+                         Inserted => Inserted);
+
+               --  Make sure that front-end rejected any duplicates
+               pragma Assert (Inserted);
+
                for Input of Inputs loop
-                  M (Output).Include (Input);
+                  M (C).Include (Input);
                end loop;
-            end loop;
-         end if;
+            end Populate;
+
+         begin
+            if Outputs.Is_Empty then
+               --  Do nothing if both Outputs and inputs are empty
+               if not Inputs.Is_Empty then
+                  --  No explicit outputs means null
+                  Populate (Null_Flow_Id);
+               end if;
+            else
+               for Output of Outputs loop
+                  Populate (Output);
+               end loop;
+            end if;
+         end;
 
          Row := Next (Row);
       end loop;

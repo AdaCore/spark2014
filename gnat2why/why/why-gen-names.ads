@@ -313,11 +313,11 @@ package Why.Gen.Names is
                          Count : Positive;
                          Typ   : W_Type_Id) return W_Identifier_Id;
 
-   function Discr_Append (Base  : W_Identifier_Id;
-                          Typ   : W_Type_Id) return W_Identifier_Id;
+   function Discr_Append (Base : W_Identifier_Id;
+                          Typ  : W_Type_Id) return W_Identifier_Id;
 
-   function Field_Append (Base  : W_Identifier_Id;
-                          Typ   : W_Type_Id) return W_Identifier_Id;
+   function Field_Append (Base : W_Identifier_Id;
+                          Typ  : W_Type_Id) return W_Identifier_Id;
 
    function Ref_Append (Base : W_Name_Id) return W_Name_Id;
 
@@ -340,6 +340,10 @@ package Why.Gen.Names is
    --  @return the identifier or name where the module component has been
    --    removed
 
+   function WNE_Array_Base_Range_Pred (I : Integer) return Why_Name_Enum;
+   --  wrapper function for the enumeration literals WNE_Array_Base_Range_Pred
+   --  @param I an index between 1 and 4 selectind the dimension
+
    function WNE_Attr_First (I : Integer) return Why_Name_Enum;
    --  wrapper function for the enumeration literals WNE_Attr_First_X
    --  @param I an index between 1 and 4 selecting the dimension
@@ -352,16 +356,12 @@ package Why.Gen.Names is
    --  wrapper function for the enumeration literals WNE_Attr_Last_X
    --  @param I an index between 1 and 4 selectind the dimension
 
-   function WNE_To_Int (I : Integer) return Why_Name_Enum;
-   --  wrapper function for the enumeration literals WNE_To_Int_X
-   --  @param I an index between 1 and 4 selectind the dimension
-
-   function WNE_Array_Base_Range_Pred (I : Integer) return Why_Name_Enum;
-   --  wrapper function for the enumeration literals WNE_Array_Base_Range_Pred
-   --  @param I an index between 1 and 4 selectind the dimension
-
    function WNE_Index_Dynamic_Property (I : Integer) return Why_Name_Enum;
    --  wrapper function for the enumeration literals WNE_Index_Dynamic_Property
+   --  @param I an index between 1 and 4 selectind the dimension
+
+   function WNE_To_Int (I : Integer) return Why_Name_Enum;
+   --  wrapper function for the enumeration literals WNE_To_Int_X
    --  @param I an index between 1 and 4 selectind the dimension
 
    function Get_Modular_Converter_Range_Check

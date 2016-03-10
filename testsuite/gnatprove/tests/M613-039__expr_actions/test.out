@@ -20,7 +20,7 @@ list.adb:30:23: medium: precondition might fail
 list.adb:30:28: info: initialization of "S" proved
 list.adb:31:10: medium: precondition might fail
 list.adb:31:15: info: initialization of "S" proved
-list.adb:32:10: medium: loop invariant might fail after first iteration (e.g. when Last = 2 and I = 2 and First = 1)
+list.adb:32:10: medium: loop invariant might fail after first iteration (e.g. when First = 1 and Last = 2 and I = 2)
 list.adb:32:10: medium: loop invariant might fail in first iteration (e.g. when Last = 2 and First = 1 and I = 1)
 list.adb:33:23: info: initialization of "S" proved
 list.adb:33:38: info: overflow check proved
@@ -52,7 +52,7 @@ main.adb:9:15: medium: precondition might fail
 main.adb:9:24: info: initialization of private part of "L" proved
 main.adb:13:07: info: initialization of private part of "Rev_L" proved
 main.adb:13:42: info: initialization of private part of "L" proved
-main.adb:16:29: medium: precondition might fail (e.g. when I = 2)
+main.adb:16:29: medium: precondition might fail (e.g. when I = 1)
 main.adb:16:39: info: initialization of private part of "Rev_L" proved
 stack.adb:4:47: info: range check proved
 stack.adb:5:55: info: range check proved

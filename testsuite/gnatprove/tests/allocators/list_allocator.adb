@@ -35,8 +35,8 @@ is
             Data (Get (Model.Available, J)).Next =
               (if J < Length (Model.Available) then Get (Model.Available, J + 1) else No_Resource)
               and then
-            (for all K in 1 .. Length (Model.Available) =>
-               (if J /= K then Get (Model.Available, J) /= Get (Model.Available, K))))
+            (for all K in 1 .. J - 1 =>
+               Get (Model.Available, J) /= Get (Model.Available, K)))
             and then
          (for all E in Model.Allocated => E in Valid_Resource)
             and then

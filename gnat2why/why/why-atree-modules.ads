@@ -178,6 +178,7 @@ package Why.Atree.Modules is
       Subtr              : W_Identifier_Id;
       Mult               : W_Identifier_Id;
       Div                : W_Identifier_Id;
+      Remainder          : W_Identifier_Id;
       Le                 : W_Identifier_Id;
       Lt                 : W_Identifier_Id;
       Ge                 : W_Identifier_Id;

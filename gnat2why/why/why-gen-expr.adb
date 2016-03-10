@@ -2190,11 +2190,10 @@ package body Why.Gen.Expr is
               (if Is_Standard_Boolean_Type (Ty) then EW_Int_Type
                else Base_Why_Type (Ty));
          begin
-            if Attr = Attribute_First then
-               return Transform_Expr (Low_Bound (Rng), BT, Subdomain, Params);
-            else
-               return Transform_Expr (High_Bound (Rng), BT, Subdomain, Params);
-            end if;
+            return Transform_Expr ((if Attr = Attribute_First
+                                    then Low_Bound (Rng)
+                                    else High_Bound (Rng)),
+                                   BT, Subdomain, Params);
          end;
 
       elsif Attr in Attribute_First | Attribute_Last

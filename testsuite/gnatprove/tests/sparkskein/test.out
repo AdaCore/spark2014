@@ -126,7 +126,7 @@ skein.adb:744:13: info: initialization of "Msg_Byte_Count" proved
 skein.adb:747:29: info: initialization of "Msg_Byte_Count" proved
 skein.adb:747:49: info: division check proved
 skein.adb:747:49: info: range check proved
-skein.adb:749:13: medium: precondition might fail
+skein.adb:749:13: info: precondition proved
 skein.adb:752:35: info: initialization of "Current_Msg_Offset" proved
 skein.adb:753:35: info: initialization of "Block_Count" proved
 skein.adb:756:29: info: initialization of "Block_Count" proved

@@ -860,11 +860,11 @@ module BV8
     ensures{ result = of_uint i }
 
   val udiv_ (x : t) (y : t) : t
-    requires{ y <> zero }
+    requires{ y <> zeros }
     ensures{ result = udiv x y }
 
   val urem_ (x : t) (y : t) : t
-    requires{ y <> zero }
+    requires{ y <> zeros }
     ensures{ result = urem x y }
 end
 
@@ -892,11 +892,11 @@ module BV16
     ensures{ result = of_uint i }
 
   val udiv_ (x : t) (y : t) : t
-    requires{ y <> zero }
+    requires{ y <> zeros }
     ensures{ result = udiv x y }
 
   val urem_ (x : t) (y : t) : t
-    requires{ y <> zero }
+    requires{ y <> zeros }
     ensures{ result = urem x y }
 end
 
@@ -924,11 +924,11 @@ module BV32
     ensures{ result = of_uint i }
 
   val udiv_ (x : t) (y : t) : t
-    requires{ y <> zero }
+    requires{ y <> zeros }
     ensures{ result = udiv x y }
 
   val urem_ (x : t) (y : t) : t
-    requires{ y <> zero }
+    requires{ y <> zeros }
     ensures{ result = urem x y }
 end
 
@@ -956,11 +956,11 @@ module BV64
     ensures{ result = of_uint i }
 
   val udiv_ (x : t) (y : t) : t
-    requires{ y <> zero }
+    requires{ y <> zeros }
     ensures{ result = udiv x y }
 
   val urem_ (x : t) (y : t) : t
-    requires{ y <> zero }
+    requires{ y <> zeros }
     ensures{ result = urem x y }
 end
 

@@ -15,10 +15,10 @@ pack.ads:6:14: medium: the task might terminate, which is not allowed in SPARK
 task_and_po_arrays.adb:9:24: warning: statement has no effect
 task_and_po_arrays.ads:5:14: info: ceiling priority protocol is respected
 task_and_po_arrays.ads:5:14: medium: "POs" might not be initialized before start of tasks of type "T"
-task_and_po_arrays.ads:5:14: medium: the task might terminate, which is not allowed in SPARK (e.g. when Id = 0)
+task_and_po_arrays.ads:5:14: medium: the task might terminate, which is not allowed in SPARK
 task_and_po_arrays.ads:12:04: high: multiple tasks might suspend on protected object "task_and_po_arrays.pos" (SPARK RM 9(11))
 task_and_po_arrays.ads:12:04: high: with task "task_and_po_arrays.ts"
-task_and_so_arrays.ads:7:14: medium: the task might terminate, which is not allowed in SPARK (e.g. when Id = 0)
+task_and_so_arrays.ads:7:14: medium: the task might terminate, which is not allowed in SPARK
 task_and_so_arrays.ads:10:04: high: multiple tasks might suspend on suspension object "task_and_so_arrays.sos" (SPARK RM 9(11))
 task_and_so_arrays.ads:10:04: high: with task "task_and_so_arrays.ts"
 task_in_empty_arrays.ads:4:14: medium: the task might terminate, which is not allowed in SPARK

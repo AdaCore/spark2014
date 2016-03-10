@@ -565,7 +565,7 @@ is used purely for static analysis purposes and is not executed.
    ``mode_selector`` of Output or In_Out, reads of array bounds, discriminants,
    or tags of any part of the output are ignored. Similarly, for purposes of
    determining whether an entity is fully initialized as a result of any
-   successful execution of the call", only nondiscriminant parts are considered.
+   successful execution of the call, only nondiscriminant parts are considered.
    This implies that given an output of a discriminated type that is not known
    to be constrained ("known to be constrained" is defined in Ada RM 3.3), the
    discriminants of the output might or might not be updated by the call.]

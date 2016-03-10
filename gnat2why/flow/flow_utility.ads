@@ -142,17 +142,17 @@ is
         Post => (for all C in Depends.Iterate =>
                    (for all D of Dependency_Maps.Element (C) =>
                       Present (D)));
-   --  Return the dependency relation of the given Subprogram, as viewed
-   --  from the given Scope. The dependency relation is represented as a
-   --  map from entities to sets of entities.
+   --  Return the dependency relation of the given Subprogram, as viewed from
+   --  the given Scope. The dependency relation is represented as a map from
+   --  entities to sets of entities.
    --
    --  For example (X, Y) =>+ Z would be represented as:
    --     x -> {x, z}
    --     y -> {y, z}
    --
-   --  This procedure can deal with all forms of the depends
-   --  annotation. For each item in the dependency annotation, the LHS
-   --  and RHS can be any of the following:
+   --  This procedure deals with all forms of the depends annotation. For each
+   --  item in the dependency annotation, the LHS and RHS can be any of the
+   --  following:
    --     * (x, y, z)     (an aggregate)
    --     * x             (a variable)
    --     * null          (keyword null)
@@ -269,9 +269,8 @@ is
         Post => (if Reduced
                  then (for all F of Get_Variable_Set'Result
                          => F.Kind /= Record_Field));
-   --  Obtain all variables used in an expression. We use Scope to
-   --  determine if called subprograms should provide their abstract or
-   --  refined view.
+   --  Obtain all variables used in an expression; use Scope to determine if
+   --  called subprograms should provide their abstract or refined view.
    --
    --  Local_Constants describes a set of constants (which should all come
    --  from source) which are treated as if they were variables; this means

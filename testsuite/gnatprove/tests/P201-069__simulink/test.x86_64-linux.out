@@ -1,0 +1,265 @@
+abs_controller_oem_with_property.adb:33:07: info: assertion proved
+abs_controller_oem_with_property.adb:56:26: medium: overflow check might fail
+abs_controller_oem_with_property.adb:56:43: info: division check proved
+abs_controller_oem_with_property.adb:56:43: medium: overflow check might fail
+abs_controller_oem_with_property.adb:56:46: info: initialization of "EpsIfZero_out1" proved
+abs_controller_oem_with_property.adb:64:32: medium: overflow check might fail
+abs_controller_oem_with_property.adb:64:35: info: initialization of "Diff_out1" proved
+abs_controller_oem_with_property.adb:74:44: info: initialization of "Difference_out1" proved
+abs_controller_oem_with_property.adb:74:71: medium: overflow check might fail
+abs_controller_oem_with_property.adb:88:22: medium: assertion might fail, cannot prove not ((Vehicle_Speed) = (0.0E+00))) or else ((Sum_out1) = (1.0
+abs_controller_oem_with_property.adb:89:20: info: initialization of "Sum_out1" proved
+abs_controller_oem_with_property.adb:98:23: info: initialization of "Sum_out1" proved
+abs_controller_oem_with_property.ads:20:08: info: initialization of "Apply_Brakes" proved
+abs_controller_supplier_with_property.adb:49:40: medium: range check might fail (e.g. when Wheel_Speed = 858993459)
+abs_controller_supplier_with_property.adb:49:58: info: overflow check proved
+abs_controller_supplier_with_property.adb:49:77: medium: range check might fail (e.g. when Vehicle_Speed = 3758096383)
+abs_controller_supplier_with_property.adb:53:64: info: initialization of "Sum_out1" proved
+abs_controller_supplier_with_property.adb:53:82: medium: overflow check might fail
+abs_controller_supplier_with_property.adb:55:14: info: initialization of "Sum_1_out1_sat" proved
+abs_controller_supplier_with_property.adb:59:17: info: initialization of "Sum_1_out1_sat" proved
+abs_controller_supplier_with_property.adb:62:41: info: initialization of "Sum_1_out1_sat" proved
+abs_controller_supplier_with_property.adb:62:41: info: range check proved
+abs_controller_supplier_with_property.adb:68:45: info: initialization of "Sum_1_out1" proved
+abs_controller_supplier_with_property.adb:93:07: info: assertion proved
+abs_controller_supplier_with_property.adb:94:20: info: initialization of "At_Rest_Switch_out1" proved
+abs_controller_supplier_with_property.adb:103:23: info: initialization of "At_Rest_Switch_out1" proved
+abs_controller_supplier_with_property.ads:22:08: info: initialization of "Apply_Brakes" proved
+assertionproperties.adb:30:12: info: initialization of "Sqrt_out1" proved
+assertionproperties.adb:36:07: info: assertion proved
+assertionproperties.adb:43:22: medium: assertion might fail, cannot prove Sqrt_out1) /= (4.0 (e.g. when Sqrt_out1 = 4.0)
+assertionproperties.adb:43:23: info: initialization of "Sqrt_out1" proved
+assertionproperties.ads:18:46: info: initialization of "y" proved
+biaseddivide.adb:24:16: medium: divide by zero might fail (e.g. when z = (/ 1619218026458484767050649287519747683465934119210663585057512969988785443113881617403007264110533863253019300506998474171004590027692990156146338385109285586524708754738406513147841837071260454427698540181687841095413107782391772750794144502730394976813369911271632993068156632335545780310244681589451745271105332304523821057 404804506614621191762662321879936920866483529802665896264378242497196360778470404350751816027633465813254825126749618542751147506923247539036584596277321396631177188684601628286960459267815113606924635045421960273853276945597943187698536125682598744203342477817908248267039158083886445077561170397362936317776333076130955264))
+biaseddivide.adb:24:16: medium: overflow check might fail
+biaseddivide.adb:24:23: medium: overflow check might fail (e.g. when z = -179769313486231570814527423731704356798070567525844996598917476803157260780028538760589558632766878171540458953514382464234321326889464182768467546703537516986049910576551282076245490090389328944075868508455133942304583236903222948165808559332123348274797826204144723168738177180919299881250404026184124858365.0)
+biaseddivide.ads:16:52: info: initialization of "r" proved
+biaseddivide.ads:19:14: info: initialization of "r" proved
+biaseddivide.ads:19:14: info: postcondition proved
+biaseddivide.ads:19:20: info: overflow check proved
+biaseddivide.ads:19:20: medium: divide by zero might fail (e.g. when z = (/ 3238436052916970253178552519965858458653944554031220617305817516900199979948087865736717750224920257339947890644141032822464699540959410947451752027885061144439140067373310537367257373604462014064275485347752160003158023904806620854191018375312315849279181985852214639538356003016284520409473117097768709883635983105944190977 809609013229242563294638129991464614663486138507805154326454379225049994987021966434179437556230064334986972661035258205616174885239852736862938006971265286109785016843327634341814343401115503516068871336938040000789505976201655213547754593828078962319795496463053659884589000754071130102368279274442177470908995776486047744))
+biaseddivide.ads:19:25: medium: overflow check might fail
+dynamicsaturateassert.adb:49:26: info: initialization of "Saturation_Dynamic_out1" proved
+dynamicsaturateassert.adb:58:07: info: assertion proved
+dynamicsaturateassert.adb:58:24: info: initialization of "Saturation_Dynamic_out1" proved
+dynamicsaturateassert.adb:71:07: info: assertion proved
+dynamicsaturateassert.ads:23:08: info: initialization of "Saturated_Value" proved
+errorexample.adb:28:07: info: assertion proved
+errorexample.adb:38:65: info: division check proved
+errorexample.adb:47:22: medium: assertion might fail, cannot prove Long_Float (Abs_out1)) <= (0.01
+errorexample.adb:47:35: info: initialization of "Abs_out1" proved
+errorexample.adb:47:35: info: range check proved
+errorexample.adb:52:25: info: initialization of "Abs_out1" proved
+errorexample.ads:22:08: info: initialization of "Relative_Error" proved
+errorexample.ads:26:14: info: initialization of "Relative_Error" proved
+errorexample.ads:26:14: info: postcondition proved
+errorexample.ads:26:77: info: division check proved
+errorexamplefloat.adb:29:07: info: assertion proved
+errorexamplefloat.adb:39:43: info: overflow check proved
+errorexamplefloat.adb:39:65: info: division check proved
+errorexamplefloat.adb:39:65: info: overflow check proved
+errorexamplefloat.adb:48:22: medium: assertion might fail, cannot prove Abs_out1) <= (0.01
+errorexamplefloat.adb:48:23: info: initialization of "Abs_out1" proved
+errorexamplefloat.adb:53:25: info: initialization of "Abs_out1" proved
+errorexamplefloat.ads:21:08: info: initialization of "Relative_Error" proved
+simulink_functions.adb:48:04: warning: types for unchecked conversion have different sizes
+simulink_functions.adb:50:04: warning: types for unchecked conversion have different sizes
+simulink_functions.adb:52:04: warning: types for unchecked conversion have different sizes
+simulink_functions.adb:54:04: warning: types for unchecked conversion have different sizes
+simulink_functions.adb:234:40: medium: overflow check might fail (e.g. when Left = -128)
+simulink_functions.adb:234:51: info: division check proved
+simulink_functions.adb:234:51: info: overflow check proved
+simulink_functions.adb:234:51: info: range check proved
+simulink_functions.adb:234:53: medium: overflow check might fail (e.g. when Right = -128)
+simulink_functions.adb:236:28: info: overflow check proved
+simulink_functions.adb:236:36: info: overflow check proved
+simulink_functions.adb:236:38: info: initialization of "Quotient" proved
+simulink_functions.adb:236:47: info: overflow check proved
+simulink_functions.adb:236:52: medium: overflow check might fail
+simulink_functions.adb:239:25: info: overflow check proved
+simulink_functions.adb:239:33: info: division check proved
+simulink_functions.adb:239:33: medium: overflow check might fail
+simulink_functions.adb:239:42: info: overflow check proved
+simulink_functions.adb:255:41: medium: overflow check might fail (e.g. when Left = -32768)
+simulink_functions.adb:255:52: info: division check proved
+simulink_functions.adb:255:52: info: overflow check proved
+simulink_functions.adb:255:52: info: range check proved
+simulink_functions.adb:255:54: medium: overflow check might fail (e.g. when Right = -32768)
+simulink_functions.adb:257:28: info: overflow check proved
+simulink_functions.adb:257:36: info: overflow check proved
+simulink_functions.adb:257:38: info: initialization of "Quotient" proved
+simulink_functions.adb:257:47: info: overflow check proved
+simulink_functions.adb:257:52: medium: overflow check might fail
+simulink_functions.adb:261:20: info: overflow check proved
+simulink_functions.adb:261:28: info: division check proved
+simulink_functions.adb:261:28: medium: overflow check might fail
+simulink_functions.adb:261:37: info: overflow check proved
+simulink_functions.adb:277:41: medium: overflow check might fail (e.g. when Left = -2147483648)
+simulink_functions.adb:277:52: info: division check proved
+simulink_functions.adb:277:52: info: overflow check proved
+simulink_functions.adb:277:52: info: range check proved
+simulink_functions.adb:277:54: medium: overflow check might fail (e.g. when Right = -2147483648)
+simulink_functions.adb:279:28: info: overflow check proved
+simulink_functions.adb:279:36: info: overflow check proved
+simulink_functions.adb:279:38: info: initialization of "Quotient" proved
+simulink_functions.adb:279:47: info: overflow check proved
+simulink_functions.adb:279:52: medium: overflow check might fail
+simulink_functions.adb:283:20: info: overflow check proved
+simulink_functions.adb:283:28: info: division check proved
+simulink_functions.adb:283:28: medium: overflow check might fail
+simulink_functions.adb:283:37: info: overflow check proved
+simulink_functions.adb:297:30: info: division check proved
+simulink_functions.adb:310:30: info: division check proved
+simulink_functions.adb:323:30: info: division check proved
+simulink_functions.adb:336:22: medium: overflow check might fail
+simulink_functions.adb:336:42: info: division check proved
+simulink_functions.adb:336:42: medium: overflow check might fail
+simulink_functions.adb:336:51: medium: overflow check might fail
+simulink_functions.adb:349:22: medium: overflow check might fail
+simulink_functions.adb:349:47: info: division check proved
+simulink_functions.adb:349:47: medium: overflow check might fail
+simulink_functions.adb:349:56: medium: overflow check might fail
+simulink_functions.adb:362:22: medium: overflow check might fail
+simulink_functions.adb:363:29: medium: range check might fail
+simulink_functions.adb:363:44: info: range check proved
+simulink_functions.adb:363:50: info: division check proved
+simulink_functions.adb:363:50: medium: overflow check might fail
+simulink_functions.adb:363:59: info: range check proved
+simulink_functions.adb:363:68: medium: overflow check might fail
+simulink_functions.adb:376:22: medium: overflow check might fail
+simulink_functions.adb:377:30: medium: range check might fail
+simulink_functions.adb:377:45: info: range check proved
+simulink_functions.adb:377:51: info: division check proved
+simulink_functions.adb:377:51: medium: overflow check might fail
+simulink_functions.adb:377:60: info: range check proved
+simulink_functions.adb:377:69: medium: overflow check might fail
+simulink_functions.adb:390:22: medium: overflow check might fail
+simulink_functions.adb:391:30: medium: range check might fail
+simulink_functions.adb:391:45: info: range check proved
+simulink_functions.adb:391:51: info: division check proved
+simulink_functions.adb:391:51: medium: overflow check might fail
+simulink_functions.adb:391:60: info: range check proved
+simulink_functions.adb:391:69: medium: overflow check might fail
+simulink_functions.adb:404:30: info: division check proved
+simulink_functions.adb:417:30: info: division check proved
+simulink_functions.adb:430:30: info: division check proved
+simulink_functions.adb:443:22: medium: overflow check might fail
+simulink_functions.adb:444:27: medium: range check might fail
+simulink_functions.adb:444:42: info: range check proved
+simulink_functions.adb:444:48: info: division check proved
+simulink_functions.adb:444:48: medium: overflow check might fail
+simulink_functions.adb:444:57: info: range check proved
+simulink_functions.adb:444:66: medium: overflow check might fail
+simulink_functions.adb:457:22: medium: overflow check might fail
+simulink_functions.adb:457:42: info: division check proved
+simulink_functions.adb:457:42: medium: overflow check might fail
+simulink_functions.adb:457:51: medium: overflow check might fail
+simulink_functions.adb:470:22: medium: overflow check might fail
+simulink_functions.adb:470:47: info: division check proved
+simulink_functions.adb:470:47: medium: overflow check might fail
+simulink_functions.adb:470:56: medium: overflow check might fail
+simulink_functions.adb:483:22: info: overflow check proved
+simulink_functions.adb:483:30: info: division check proved
+simulink_functions.adb:483:30: medium: overflow check might fail
+simulink_functions.adb:483:39: info: overflow check proved
+simulink_functions.adb:496:22: info: overflow check proved
+simulink_functions.adb:496:30: info: division check proved
+simulink_functions.adb:496:30: medium: overflow check might fail
+simulink_functions.adb:496:39: info: overflow check proved
+simulink_functions.adb:509:22: info: overflow check proved
+simulink_functions.adb:509:30: info: division check proved
+simulink_functions.adb:509:30: medium: overflow check might fail
+simulink_functions.adb:509:39: info: overflow check proved
+simulink_functions.adb:522:30: info: division check proved
+simulink_functions.adb:535:30: info: division check proved
+simulink_functions.adb:548:30: info: division check proved
+simulink_functions.adb:558:19: medium: overflow check might fail
+simulink_functions.adb:558:44: medium: divide by zero might fail (e.g. when Right = 0.0)
+simulink_functions.adb:558:44: medium: overflow check might fail
+simulink_functions.adb:558:53: medium: overflow check might fail
+simulink_functions.adb:567:19: medium: overflow check might fail
+simulink_functions.adb:567:49: medium: divide by zero might fail (e.g. when Right = 0.0)
+simulink_functions.adb:567:49: medium: overflow check might fail
+simulink_functions.adb:567:58: medium: overflow check might fail
+simulink_functions.adb:577:26: medium: range check might fail
+simulink_functions.adb:577:39: info: range check proved
+simulink_functions.adb:587:27: medium: range check might fail
+simulink_functions.adb:587:40: info: range check proved
+simulink_functions.adb:597:27: medium: range check might fail
+simulink_functions.adb:597:40: info: range check proved
+simulink_functions.adb:607:25: medium: range check might fail
+simulink_functions.adb:607:38: info: range check proved
+simulink_functions.adb:617:26: medium: range check might fail
+simulink_functions.adb:617:39: info: range check proved
+simulink_functions.adb:627:26: medium: range check might fail
+simulink_functions.adb:627:39: info: range check proved
+simulink_functions.adb:637:21: medium: range check might fail
+simulink_functions.adb:1194:21: medium: range check might fail
+simulink_functions.adb:1209:31: info: division check proved
+simulink_functions.adb:1209:31: info: overflow check proved
+simulink_functions.adb:1212:26: info: initialization of "Result" proved
+simulink_functions.adb:1212:33: medium: overflow check might fail
+simulink_functions.adb:1214:26: info: initialization of "Result" proved
+simulink_functions.adb:1214:33: medium: overflow check might fail
+simulink_functions.adb:1217:17: info: initialization of "Result" proved
+simulink_functions.adb:1219:33: info: division check proved
+simulink_functions.adb:1219:33: medium: overflow check might fail
+simulink_functions.adb:1221:23: info: initialization of "Result" proved
+simulink_functions.adb:1221:30: medium: overflow check might fail
+simulink_functions.adb:1223:23: info: initialization of "Result" proved
+simulink_functions.adb:1223:30: medium: overflow check might fail
+simulink_functions.adb:1225:17: info: initialization of "Result" proved
+simulink_functions.adb:1334:14: info: initialization of "Res" proved
+simulink_functions.adb:1350:14: info: initialization of "Res" proved
+simulink_functions.adb:1366:14: info: initialization of "Res" proved
+simulink_functions.adb:1382:14: info: initialization of "Res" proved
+simulink_functions.adb:1398:14: info: initialization of "Res" proved
+simulink_functions.adb:1414:14: info: initialization of "Res" proved
+simulink_functions.adb:1430:14: info: initialization of "Res" proved
+simulink_functions.adb:1446:14: info: initialization of "Res" proved
+simulink_functions.adb:1462:14: info: initialization of "Res" proved
+simulink_functions.adb:1473:19: warning: assuming "**" has no effect on global items
+simulink_functions.adb:1473:19: warning: no Global contract available for "**"
+simulink_functions.adb:1484:19: warning: assuming "**" has no effect on global items
+simulink_functions.adb:1484:19: warning: no Global contract available for "**"
+simulink_functions.adb:1494:19: medium: overflow check might fail
+simulink_functions.adb:1494:31: medium: range check might fail (e.g. when Right = -1)
+simulink_functions.adb:1504:19: medium: overflow check might fail
+simulink_functions.adb:1504:31: medium: range check might fail (e.g. when Right = -1)
+simulink_functions.adb:1514:19: medium: overflow check might fail
+simulink_functions.adb:1514:31: medium: range check might fail (e.g. when Right = -1)
+simulink_functions.adb:1523:41: medium: range check might fail (e.g. when Right = 4294967295)
+simulink_functions.adb:1523:48: info: division check proved
+simulink_functions.adb:1532:51: medium: range check might fail (e.g. when Right = 4294967295)
+simulink_functions.adb:1532:58: info: division check proved
+simulink_functions.adb:1541:50: medium: range check might fail (e.g. when Right = 4294967295)
+simulink_functions.adb:1541:57: info: division check proved
+simulink_functions.adb:1550:53: medium: range check might fail (e.g. when Right = 4294967295)
+simulink_functions.adb:1550:60: info: division check proved
+simulink_functions.adb:1559:53: medium: range check might fail (e.g. when Right = 4294967295)
+simulink_functions.adb:1559:60: info: division check proved
+simulink_functions.adb:1568:52: medium: range check might fail (e.g. when Right = 4294967295)
+simulink_functions.adb:1568:59: info: division check proved
+simulink_functions.adb:1577:49: info: division check proved
+simulink_functions.adb:1586:49: info: division check proved
+simulink_functions.adb:1595:42: medium: range check might fail (e.g. when Right = 4294967295)
+simulink_functions.adb:1595:49: info: division check proved
+smoothing.adb:33:42: info: overflow check proved
+smoothing.adb:40:32: info: initialization of "Abs_Delta_out1" proved
+smoothing.adb:46:07: info: assertion proved
+smoothing.adb:54:07: info: assertion proved
+smoothing.adb:65:44: medium: overflow check might fail
+smoothing.adb:65:60: info: overflow check proved
+smoothing.adb:65:77: info: division check proved
+smoothing.adb:65:77: info: overflow check proved
+smoothing.adb:76:35: info: initialization of "Smoother_Value_out1" proved
+smoothing.adb:76:56: medium: overflow check might fail
+smoothing.adb:86:22: medium: assertion might fail, cannot prove not (not (Compare_To_Zero_out1))) or else ((Abs_New_Delta_out1) < (Abs_Delta_out1
+smoothing.adb:86:35: info: initialization of "Compare_To_Zero_out1" proved
+smoothing.adb:87:20: info: initialization of "Abs_New_Delta_out1" proved
+smoothing.adb:87:43: info: initialization of "Abs_Delta_out1" proved
+smoothing.adb:98:22: medium: assertion might fail, cannot prove not (Compare_To_Zero_out1)) or else ((Abs_New_Delta_out1) = (0.0
+smoothing.adb:98:29: info: initialization of "Compare_To_Zero_out1" proved
+smoothing.adb:99:20: info: initialization of "Abs_New_Delta_out1" proved
+smoothing.adb:106:25: info: initialization of "Smoother_Value_out1" proved
+smoothing.ads:20:08: info: initialization of "Smoothed_Value" proved

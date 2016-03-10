@@ -159,7 +159,7 @@ simple_unc_arrays.ads:30:51: info: overflow check proved
 simple_unc_arrays.ads:40:14: medium: postcondition might fail (e.g. when A = (Last => ?, V => (others => 0)) and A.V'First = 1 and A.V'Last = 2 and Min'Result = -1)
 simple_unc_arrays.ads:40:64: info: index check proved
 simple_unc_arrays.ads:42:65: info: index check proved
-simple_unc_arrays.ads:52:15: medium: postcondition might fail (e.g. when A = (Last => ?, V => (2 => -1, 1 => -1, 0 => 1, others => 0)) and A.V'First = 1 and A.V'Last = 2 and Max'Result = 0)
+simple_unc_arrays.ads:52:15: medium: postcondition might fail (e.g. when A = (Last => ?, V => (others => 0)) and A.V'First = 1 and A.V'Last = 2 and Max'Result = 1)
 simple_unc_arrays.ads:52:64: info: index check proved
 simple_unc_arrays.ads:54:68: info: index check proved
 simple_unc_arrays.ads:64:14: info: precondition proved
