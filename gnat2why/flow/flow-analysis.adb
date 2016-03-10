@@ -2337,7 +2337,7 @@ package body Flow.Analysis is
             elsif Is_Initialized                   then Init
             else                                        Err);
 
-         N            : Node_Id := FA.Atr (Vertex).Error_Location;
+         N            : Node_Or_Entity_Id := FA.Atr (Vertex).Error_Location;
          Msg          : Unbounded_String;
 
          V_Error      : Flow_Graphs.Vertex_Id;
