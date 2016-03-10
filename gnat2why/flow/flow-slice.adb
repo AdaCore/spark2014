@@ -64,9 +64,12 @@ package body Flow.Slice is
       procedure Visitor
         (V  : Flow_Graphs.Vertex_Id;
          TV : out Flow_Graphs.Simple_Traversal_Instruction);
-      --  If the visited vertex is an in vertex or a procedure
-      --  parameter vertex, we add it to the set of things we depend
-      --  on.
+      --  If the visited vertex is an in vertex or a procedure parameter
+      --  vertex, we add it to the set of things we depend on.
+
+      -------------
+      -- Visitor --
+      -------------
 
       procedure Visitor
         (V  : Flow_Graphs.Vertex_Id;
@@ -88,6 +91,8 @@ package body Flow.Slice is
          end case;
          TV := Flow_Graphs.Continue;
       end Visitor;
+
+   --  Start of processing for Internal_Dependency
 
    begin
       Flow_Graphs.DFS (G             => FA.PDG,
@@ -150,8 +155,7 @@ package body Flow.Slice is
 
       function Flow_Equivalent (F : Flow_Id) return Flow_Id
       with Post => Flow_Equivalent'Result.Variant = Normal_Use;
-      --  Given a flow id, return the view the dependency relation
-      --  cares about.
+      --  Given a flow id, return the view the dependency relation cares about
 
       ---------------------
       -- Flow_Equivalent --
@@ -191,22 +195,22 @@ package body Flow.Slice is
 
    begin
 
-      --  Determine all out vertices.
+      --  Determine all out vertices
 
       for V_Final of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            F_Final : constant Flow_Id      := FA.PDG.Get_Key (V_Final);
+            F_Final : constant Flow_Id := FA.PDG.Get_Key (V_Final);
          begin
             if F_Final.Variant = Final_Value
-              and FA.Atr (V_Final).Is_Export
-              and not Synthetic (F_Final)
+              and then FA.Atr (V_Final).Is_Export
+              and then not Synthetic (F_Final)
             then
                Out_Vertices.Include (V_Final);
             end if;
          end;
       end loop;
 
-      --  Determine all input vertices.
+      --  Determine all input vertices
 
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -215,18 +219,17 @@ package body Flow.Slice is
             Attr      : constant Constant_Reference_Type := FA.Atr (V_Initial);
          begin
             if F_Initial.Variant = Initial_Value
-              and Attr.Is_Import
-              and not Synthetic (F_Initial)
+              and then Attr.Is_Import
+              and then not Synthetic (F_Initial)
             then
                In_Vertices.Include (V_Initial);
                Unused_Inputs.Include (Flow_Equivalent (F_Initial));
 
-               if (Is_Discriminant (F_Initial) or Is_Bound (F_Initial))
+               if (Is_Discriminant (F_Initial) or else Is_Bound (F_Initial))
                  and then Attr.Mode = Mode_Out
                then
-                  --  See above about suppressing "null => foo"
-                  --  dependency error messages for out parameters and
-                  --  globals.
+                  --  See above about suppressing "null => foo" dependency
+                  --  error messages for out parameters and globals.
                   Out_Discrim.Include
                     (Change_Variant (Entire_Variable (F_Initial),
                                      Normal_Use));
@@ -235,7 +238,7 @@ package body Flow.Slice is
          end;
       end loop;
 
-      --  Determine dependencies.
+      --  Determine dependencies
 
       for V_Out of Out_Vertices loop
          declare
@@ -243,7 +246,7 @@ package body Flow.Slice is
             F_Out : constant Flow_Id :=
               Flow_Equivalent (FA.PDG.Get_Key (V_Out));
 
-            --  Compute dependencies (and filter out local variables).
+            --  Compute dependencies (and filter out local variables)
             Deps : constant Vertex_Sets.Set :=
               Internal_Dependency (FA      => FA,
                                    V_Final => V_Out,
@@ -620,7 +623,7 @@ package body Flow.Slice is
 
                when N_Loop_Parameter_Specification =>
                   --  Add variable introduced by for loop (but do not add
-                  --  variables introduced by quantified expressions)
+                  --  variables introduced by quantified expressions).
                   if Nkind (Parent (N)) /= N_Iteration_Scheme
                     or else Hidden_In_Package (Defining_Identifier (N))
                   then
@@ -660,7 +663,7 @@ package body Flow.Slice is
                      AS_E      : Entity_Id;
                   begin
                      if Present (AS_Pragma) then
-                        PAA  :=
+                        PAA :=
                           First (Pragma_Argument_Associations (AS_Pragma));
 
                         --  Check that we don't have Abstract_State => null
@@ -761,6 +764,8 @@ package body Flow.Slice is
             end if;
 
             for Var of Local_Vars loop
+               --  Note: deleting a variable while iterating over container
+               --  would tamper with cursors, which is not allowed.
                if Is_Part_Of_Concurrent_Object (Var) then
                   Part_Of_Vars.Insert (Var);
                end if;

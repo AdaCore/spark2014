@@ -2622,7 +2622,7 @@ package body Flow.Analysis is
                            Severity => Warning_Kind,
                            Vertex   => N_Loop);
 
-                        --  There might be other stable elements now.
+                        --  There might be other stable elements now
                         Done := False;
                      end if;
                   end if;
