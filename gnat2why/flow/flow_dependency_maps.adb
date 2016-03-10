@@ -270,10 +270,10 @@ package body Flow_Dependency_Maps is
    -- Parse_Depends --
    -------------------
 
-   function Parse_Depends (N : Node_Id) return Dependency_Maps.Map is
-   begin
-      return Parse_Raw_Dependency_Map (N);
-   end Parse_Depends;
+   function Parse_Depends
+     (N : Node_Id)
+      return Dependency_Maps.Map renames
+     Parse_Raw_Dependency_Map;
 
    -----------------------
    -- Parse_Initializes --
@@ -341,9 +341,9 @@ package body Flow_Dependency_Maps is
    -- Parse_Refined_State --
    -------------------------
 
-   function Parse_Refined_State (N : Node_Id) return Dependency_Maps.Map is
-   begin
-      return Parse_Raw_Dependency_Map (N);
-   end Parse_Refined_State;
+   function Parse_Refined_State
+     (N : Node_Id)
+      return Dependency_Maps.Map renames
+     Parse_Raw_Dependency_Map;
 
 end Flow_Dependency_Maps;
