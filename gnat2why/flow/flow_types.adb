@@ -345,6 +345,8 @@ package body Flow_Types is
          then Anonymous_Object (PT)
          else PT);
 
+   --  Start of processing for Get_Enclosing_Concurrent_Object
+
    begin
       if No (Callsite) then
          if Is_Part_Of_Concurrent_Object (E) then
