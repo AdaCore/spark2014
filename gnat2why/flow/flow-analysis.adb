@@ -2568,9 +2568,8 @@ package body Flow.Analysis is
    --------------------------
 
    procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs) is
-      Done      : Boolean;
-      M         : Attribute_Maps.Map := FA.Atr;
-      Is_Stable : Boolean;
+      Done : Boolean;
+      M    : Attribute_Maps.Map := FA.Atr;
    begin
       for Loop_Id of FA.Loops loop
          Done := False;
@@ -2579,6 +2578,8 @@ package body Flow.Analysis is
             for N_Loop of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
                declare
                   Atr : V_Attributes renames M (N_Loop);
+
+                  Is_Stable : Boolean;
                begin
                   if Atr.Loops.Contains (Loop_Id) then
                      --  For all nodes in the loop, do:
