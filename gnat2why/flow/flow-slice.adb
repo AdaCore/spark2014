@@ -498,19 +498,20 @@ package body Flow.Slice is
 
       function Get_Definite_Subprograms return Node_Sets.Set is
          All_Definite_Subprograms  : Node_Sets.Set := Node_Sets.Empty_Set;
-         F                         : Flow_Id;
-         V_Initial                 : Flow_Graphs.Vertex_Id;
       begin
+         --  We go through all directly called subprograms and check if their
+         --  corresponding 'Initial vertex has no Out_Neighbours.
+
          for G of FA.Direct_Calls loop
-            --  We go through all Subprograms and check if their
-            --  corresponding 'Initial vertex has no Out_Neighbours.
-
-            F := Direct_Mapping_Id (G);
-            V_Initial := FA.PDG.Get_Vertex (Change_Variant (F, Initial_Value));
-
-            if FA.PDG.Out_Neighbour_Count (V_Initial) = 0 then
-               All_Definite_Subprograms.Include (G);
-            end if;
+            declare
+               F         : constant Flow_Id := Direct_Mapping_Id (G);
+               V_Initial : constant Flow_Graphs.Vertex_Id :=
+                 FA.PDG.Get_Vertex (Change_Variant (F, Initial_Value));
+            begin
+               if FA.PDG.Out_Neighbour_Count (V_Initial) = 0 then
+                  All_Definite_Subprograms.Include (G);
+               end if;
+            end;
          end loop;
 
          return Subprograms_Without_Contracts (All_Definite_Subprograms);
