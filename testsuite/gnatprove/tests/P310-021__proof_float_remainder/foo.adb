@@ -9,4 +9,11 @@ is
       C := Float'Remainder (A + B, Angle'Last);
    end Test_01;
 
+   procedure Test_02 (A, B : Angle;
+                      C    : out Angle)
+   is
+   begin
+      C := Float'Remainder (A, B);
+   end Test_02;
+
 end Foo;

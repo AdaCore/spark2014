@@ -232,6 +232,12 @@ module Floating
     requires { y <> 0.0 }
     ensures { result = div_real x y }
 
+  function remainder (x y : real) : real
+
+  val remainder_ (x y : real) : real
+    requires { y <> 0.0 }
+    ensures { result = remainder x y }
+
 end
 
 module Boolean

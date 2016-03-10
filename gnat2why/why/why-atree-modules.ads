@@ -165,6 +165,7 @@ package Why.Atree.Modules is
       Floor        : W_Identifier_Id;
       Power        : W_Identifier_Id;
       Truncate     : W_Identifier_Id;
+      Remainder    : W_Identifier_Id;
    end record;
 
    type M_Boolean_Type is record

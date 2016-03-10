@@ -1162,6 +1162,10 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symbol => NID ("bool_gt"),
                         Typ    => EW_Bool_Type);
+      M_Floating.Remainder :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symbol => NID ("remainder"));
    end Init_Floating_Module;
 
    -------------------------

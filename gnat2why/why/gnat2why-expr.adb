@@ -8618,6 +8618,31 @@ package body Gnat2Why.Expr is
                               Typ      => EW_Int_Type);
             end;
 
+         when Attribute_Remainder =>
+            declare
+               Ada_Ty : constant Entity_Id := Etype (Expr);
+               Base   : constant W_Type_Id := Base_Why_Type (Ada_Ty);
+               Arg_1  : constant W_Expr_Id :=
+                 Transform_Expr (First (Expressions (Expr)),
+                                 EW_Real_Type,
+                                 Domain,
+                                 Params);
+               Arg_2  : constant W_Expr_Id :=
+                 Transform_Expr (Next (First (Expressions (Expr))),
+                                 EW_Real_Type,
+                                 Domain,
+                                 Params);
+            begin
+               T := New_VC_Call (Ada_Node => Expr,
+                                 Name     =>
+                                   To_Program_Space (M_Floating.Remainder),
+                                 Progs    => (1 => Arg_1,
+                                              2 => Arg_2),
+                                 Reason   => VC_Division_Check,
+                                 Domain   => Domain,
+                                 Typ      => Base);
+            end;
+
          when Attribute_Min | Attribute_Max =>
             declare
                Ada_Ty : constant Entity_Id := Etype (Expr);
