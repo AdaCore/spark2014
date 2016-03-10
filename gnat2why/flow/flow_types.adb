@@ -1061,8 +1061,7 @@ package body Flow_Types is
          case X.Kind is
             when Direct_Mapping | Record_Field =>
                declare
-                  E_Name : constant Entity_Name :=
-                    To_Entity_Name (X.Node);
+                  E_Name : constant Entity_Name := To_Entity_Name (X.Node);
                begin
                   N.Include (E_Name);
                end;
