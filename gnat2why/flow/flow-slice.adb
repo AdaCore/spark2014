@@ -587,6 +587,42 @@ package body Flow.Slice is
 
          begin
             case Nkind (N) is
+               when N_Entry_Body              |
+                    N_Entry_Declaration       |
+                    N_Single_Task_Declaration |
+                    N_Subprogram_Body         |
+                    N_Subprogram_Declaration  |
+                    N_Task_Body               |
+                    N_Task_Type_Declaration   =>
+                  if Unique_Defining_Entity (N) /=
+                    Unique_Entity (FA.Analyzed_Entity)
+                  then
+                     Local_Subs.Include (Unique_Defining_Entity (N));
+                     return Skip;
+                  end if;
+
+               when N_Generic_Package_Declaration    |
+                    N_Generic_Subprogram_Declaration =>
+                  --  Skip generic declarations
+                  return Skip;
+
+               when N_Handled_Sequence_Of_Statements =>
+                  --  Skip statements of a nested package's body
+                  if Nkind (Parent (N)) = N_Package_Body then
+                     return Skip;
+                  end if;
+
+               when N_Loop_Parameter_Specification =>
+                  --  Add variable introduced by for loop (but do not add
+                  --  variables introduced by quantified expressions).
+                  if Nkind (Parent (N)) /= N_Iteration_Scheme
+                    or else Hidden_In_Package (Defining_Identifier (N))
+                  then
+                     return Skip;
+                  else
+                     Local_Vars.Include (Defining_Identifier (N));
+                  end if;
+
                when N_Object_Declaration =>
                   declare
                      E : constant Entity_Id := Defining_Entity (N);
@@ -610,49 +646,6 @@ package body Flow.Slice is
                            Local_Vars.Include (if Present (Full_View (E))
                                                then Full_View (E)
                                                else E);
-                        end if;
-                     end if;
-                  end;
-
-               when N_Loop_Parameter_Specification =>
-                  --  Add variable introduced by for loop (but do not add
-                  --  variables introduced by quantified expressions).
-                  if Nkind (Parent (N)) /= N_Iteration_Scheme
-                    or else Hidden_In_Package (Defining_Identifier (N))
-                  then
-                     return Skip;
-                  else
-                     Local_Vars.Include (Defining_Identifier (N));
-                  end if;
-               when N_Package_Declaration =>
-                  --  State abstractions of nested packages appear as local
-                  --  variables.
-                  declare
-                     AS_Pragma : constant Node_Id :=
-                       Get_Pragma (Defining_Entity (N),
-                                   Pragma_Abstract_State);
-
-                     PAA       : Node_Id;
-                     AS_N      : Node_Id;
-                     AS_E      : Entity_Id;
-                  begin
-                     if Present (AS_Pragma) then
-                        PAA :=
-                          First (Pragma_Argument_Associations (AS_Pragma));
-
-                        --  Check that we don't have Abstract_State => null
-                        if Nkind (Expression (PAA)) /= N_Null then
-                           AS_N := First (Expressions (Expression (PAA)));
-
-                           while Present (AS_N) loop
-                              AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
-                                       then Entity (Ancestor_Part (AS_N))
-                                       else Entity (AS_N));
-
-                              Local_Vars.Include (AS_E);
-
-                              Next (AS_N);
-                           end loop;
                         end if;
                      end if;
                   end;
@@ -690,30 +683,38 @@ package body Flow.Slice is
                      end if;
                   end;
 
-               when N_Entry_Body              |
-                    N_Entry_Declaration       |
-                    N_Single_Task_Declaration |
-                    N_Subprogram_Body         |
-                    N_Subprogram_Declaration  |
-                    N_Task_Body               |
-                    N_Task_Type_Declaration   =>
-                  if Unique_Defining_Entity (N) /=
-                    Unique_Entity (FA.Analyzed_Entity)
-                  then
-                     Local_Subs.Include (Unique_Defining_Entity (N));
-                     return Skip;
-                  end if;
+               when N_Package_Declaration =>
+                  --  State abstractions of nested packages appear as local
+                  --  variables.
+                  declare
+                     AS_Pragma : constant Node_Id :=
+                       Get_Pragma (Defining_Entity (N),
+                                   Pragma_Abstract_State);
 
-               when N_Handled_Sequence_Of_Statements =>
-                  --  Skip statements of a nested package's body
-                  if Nkind (Parent (N)) = N_Package_Body then
-                     return Skip;
-                  end if;
+                     PAA       : Node_Id;
+                     AS_N      : Node_Id;
+                     AS_E      : Entity_Id;
+                  begin
+                     if Present (AS_Pragma) then
+                        PAA :=
+                          First (Pragma_Argument_Associations (AS_Pragma));
 
-               when N_Generic_Package_Declaration    |
-                    N_Generic_Subprogram_Declaration =>
-                  --  Skip generic declarations
-                  return Skip;
+                        --  Check that we don't have Abstract_State => null
+                        if Nkind (Expression (PAA)) /= N_Null then
+                           AS_N := First (Expressions (Expression (PAA)));
+
+                           while Present (AS_N) loop
+                              AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
+                                       then Entity (Ancestor_Part (AS_N))
+                                       else Entity (AS_N));
+
+                              Local_Vars.Include (AS_E);
+
+                              Next (AS_N);
+                           end loop;
+                        end if;
+                     end if;
+                  end;
 
                when others =>
                   null;
