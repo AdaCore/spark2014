@@ -30,8 +30,6 @@ with Why;
 
 package body Flow.Interprocedural is
 
-   use type Flow_Graphs.Vertex_Id;
-
    procedure Add_Simple_Procedure_Dependency
      (FA : in out Flow_Analysis_Graphs;
       V  : Flow_Graphs.Vertex_Id);
