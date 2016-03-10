@@ -153,8 +153,8 @@ package body Flow is
                                  M : Attribute_Maps.Map;
                                  V : Flow_Graphs.Vertex_Id)
    is
-      F : constant Flow_Id      := G.Get_Key (V);
-      A : constant V_Attributes := M (V);
+      F : constant Flow_Id := G.Get_Key (V);
+      A : V_Attributes renames M (V);
 
       procedure Format_Item (K, V : String);
 
@@ -338,8 +338,8 @@ package body Flow is
             Fill_Colour => Null_Unbounded_String,
             Label       => Null_Unbounded_String);
 
-         F : constant Flow_Id      := G.Get_Key (V);
-         A : constant V_Attributes := M (V);
+         F : constant Flow_Id := G.Get_Key (V);
+         A : V_Attributes renames M (V);
 
          procedure Print_Node (N : Node_Id);
 

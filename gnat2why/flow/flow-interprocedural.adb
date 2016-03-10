@@ -58,8 +58,8 @@ package body Flow.Interprocedural is
                                       Flow_Graphs.Out_Neighbours)
       loop
          declare
-            F : constant Flow_Id      := FA.CDG.Get_Key (V);
-            A : constant V_Attributes := FA.Atr (V);
+            F : constant Flow_Id := FA.CDG.Get_Key (V);
+            A : V_Attributes renames FA.Atr (V);
          begin
             if A.Is_Parameter then
                --  Parameters *must* be using direct mapping for both the
@@ -146,8 +146,7 @@ package body Flow.Interprocedural is
       pragma Assert (Nkind (N) in N_Procedure_Call_Statement |
                                   N_Entry_Call_Statement);
 
-      Atr : constant Attribute_Maps.Constant_Reference_Type := FA.Atr (V)
-      with Ghost;
+      Atr : V_Attributes renames FA.Atr (V);
       pragma Assert (Atr.Is_Callsite);
       pragma Assert (not Atr.Perform_IPFA);
 
@@ -334,7 +333,7 @@ package body Flow.Interprocedural is
       --  in the dependencies.
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            A : constant V_Attributes := FA.Atr (V);
+            A : V_Attributes renames FA.Atr (V);
          begin
             if A.Is_Callsite and not A.Perform_IPFA then
                Add_Simple_Procedure_Dependency (FA, V);

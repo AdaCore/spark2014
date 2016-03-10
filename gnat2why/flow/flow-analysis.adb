@@ -440,7 +440,7 @@ package body Flow.Analysis is
       is
          pragma Unreferenced (Origin, Depth);
 
-         Atr : constant Attribute_Maps.Constant_Reference_Type := FA.Atr (V);
+         Atr : V_Attributes renames FA.Atr (V);
 
          Check_Read  : constant Boolean      := Kind in Use_Read | Use_Any;
          Check_Write : constant Boolean      := Kind in Use_Write | Use_Any;
@@ -814,8 +814,7 @@ package body Flow.Analysis is
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             F_Final : constant Flow_Id := FA.PDG.Get_Key (V);
-            A_Final : constant Attribute_Maps.Constant_Reference_Type :=
-              FA.Atr (V);
+            A_Final : V_Attributes renames FA.Atr (V);
 
             Unwritten : Boolean;
 
@@ -859,8 +858,7 @@ package body Flow.Analysis is
       for V of Unwritten_Vars loop
          declare
             F_Final : constant Flow_Id := FA.PDG.Get_Key (V);
-            A_Final : constant Attribute_Maps.Constant_Reference_Type :=
-              FA.Atr (V);
+            A_Final : V_Attributes renames FA.Atr (V);
          begin
             if not Written_Entire_Vars.Contains (Entire_Variable (F_Final))
             then
@@ -915,7 +913,7 @@ package body Flow.Analysis is
       ------------------
 
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean is
-         Atr : constant Attribute_Maps.Constant_Reference_Type := FA.Atr (V);
+         Atr : V_Attributes renames FA.Atr (V);
          --  ??? cannot use expression function with F.Atr (V) due to front-end
          --  bug; can be refactored once P308-025 is fixed.
 
@@ -986,8 +984,8 @@ package body Flow.Analysis is
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             use Attribute_Maps;
-            Key : constant Flow_Id                 := FA.PDG.Get_Key (V);
-            Atr : constant Constant_Reference_Type := FA.Atr (V);
+            Key : constant Flow_Id := FA.PDG.Get_Key (V);
+            Atr : V_Attributes renames FA.Atr (V);
 
             E              : Flow_Id;
             Disuse_Allowed : Boolean;
@@ -1143,8 +1141,7 @@ package body Flow.Analysis is
          declare
             V   : constant Flow_Graphs.Vertex_Id :=
               Get_Initial_Vertex (FA.PDG, F);
-            Atr : constant Attribute_Maps.Constant_Reference_Type :=
-              FA.Atr (V);
+            Atr : V_Attributes renames FA.Atr (V);
 
          begin
             if F.Kind in Direct_Mapping | Record_Field and then
@@ -1459,7 +1456,7 @@ package body Flow.Analysis is
          return Vertex_Sets.Set
       is
          Mask         : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-         Vars_Defined : constant Flow_Id_Sets.Set :=
+         Vars_Defined : Flow_Id_Sets.Set renames
            FA.Atr (Ineffective_Statement).Variables_Defined;
 
          procedure Visitor
@@ -1627,8 +1624,8 @@ package body Flow.Analysis is
          declare
             use Attribute_Maps;
             N         : Node_Id;
-            Key       : constant Flow_Id                 := FA.PDG.Get_Key (V);
-            Atr       : constant Constant_Reference_Type := FA.Atr (V);
+            Key       : constant Flow_Id := FA.PDG.Get_Key (V);
+            Atr       : V_Attributes renames FA.Atr (V);
             Mask      : Vertex_Sets.Set;
             Tag       : constant Flow_Tag_Kind := Ineffective;
             Tmp       : Flow_Id;
@@ -1858,8 +1855,7 @@ package body Flow.Analysis is
       --  Guilty until proven innocent.
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            use Attribute_Maps;
-            Atr : constant Constant_Reference_Type := FA.Atr (V);
+            Atr : V_Attributes renames FA.Atr (V);
          begin
             if Atr.Is_Program_Node or
               Atr.Is_Parameter or
@@ -1950,8 +1946,8 @@ package body Flow.Analysis is
 
       function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean is
          use Attribute_Maps;
-         V_Key : constant Flow_Id                 := FA.PDG.Get_Key (V);
-         V_Atr : constant Constant_Reference_Type := FA.Atr (V);
+         V_Key : constant Flow_Id := FA.PDG.Get_Key (V);
+         V_Atr : V_Attributes renames FA.Atr (V);
       begin
          --  Ignore exceptional paths
          if V_Atr.Is_Exceptional_Path then
@@ -2582,7 +2578,7 @@ package body Flow.Analysis is
             Done := True;
             for N_Loop of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
                declare
-                  Atr : Attribute_Maps.Reference_Type renames M (N_Loop);
+                  Atr : V_Attributes renames M (N_Loop);
                begin
                   if Atr.Loops.Contains (Loop_Id) then
                      --  For all nodes in the loop, do:
@@ -2765,8 +2761,8 @@ package body Flow.Analysis is
 
       for O in FA.Dependency_Map.Iterate loop
          declare
-            Output : constant Flow_Id          := Dependency_Maps.Key (O);
-            Inputs : constant Flow_Id_Sets.Set := Dependency_Maps.Element (O);
+            Output : constant Flow_Id := Dependency_Maps.Key (O);
+            Inputs : Flow_Id_Sets.Set renames Dependency_Maps.Element (O);
          begin
             if Output /= Null_Flow_Id
               and then Output.Kind in Direct_Mapping | Record_Field
@@ -3915,11 +3911,8 @@ package body Flow.Analysis is
                   Initial_V : constant Flow_Graphs.Vertex_Id :=
                     Get_Initial_Vertex (FA.CFG, Var);
 
-                  Atr : constant Attribute_Maps.Constant_Reference_Type :=
-                    FA.Atr (Initial_V);
-
                begin
-                  if not Atr.Is_Import then
+                  if not FA.Atr (Initial_V).Is_Import then
                      Error_Msg_Flow
                        (FA         => FA,
                         Msg        => "& is not initialized at " &
@@ -3967,8 +3960,7 @@ package body Flow.Analysis is
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            use Attribute_Maps;
-            Atr : constant Constant_Reference_Type := FA.Atr (V);
+            Atr : V_Attributes renames FA.Atr (V);
          begin
             if Atr.Is_Program_Node
               and not Atr.Is_Exceptional_Path
