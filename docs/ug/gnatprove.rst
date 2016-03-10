@@ -2946,7 +2946,7 @@ remained in C, by using Ada capabilities for multi-language programs.
 
 The goal was to prove absence of runtime errors on the most critical code parts
 of the drone's firmware. The techniques used to achieve this aim were presented
-in a post on the AdaCore Blog :
+in a post on the AdaCore Blog:
 http://blog.adacore.com/how-to-prevent-drone-crashes-using-spark
 
 Data dependency contracts are given for most subprograms, specially in the
@@ -3092,6 +3092,22 @@ library ``Ada.Text_IO``, for example the generic unit
 ``Ada.Text_IO.Integer_IO``. Partial function contracts are expressed on all
 subprograms. |GNATprove| proves all checks on the implementation of these
 wrapper units.
+
+.. rubric:: ``text_io_get_line``
+
+This program is a simplified extracted version of the standard library function
+``Ada.Text_IO.Get_Line``, which reads a line of text from an input file. The
+various versions of ``Ada.Text_IO.Get_Line`` (procedures and functions) are
+specified with respect to a simplified model of the file system, with a single
+file ``The_File`` opened at a location ``Cur_Location``. The low-level
+functions providing an efficient implementation (``fgets``, ``memcpy``, etc.)
+are also specified with respect to the same model of the file system.
+
+|GNATprove| proves automatically that the code is free of run-time errors
+(apart from a few messages that are either intentional or related to the ghost
+code instrumentation) and that subprogram bodies respect their functional
+contracts. The story behind this work was presented in a post on the AdaCore
+Blog: http://blog.adacore.com/formal-verification-of-legacy-code
 
 .. rubric:: ``thumper``
 
