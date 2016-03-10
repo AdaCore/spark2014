@@ -214,9 +214,9 @@ package body Flow.Slice is
 
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            use Attribute_Maps;
-            F_Initial : constant Flow_Id      := FA.PDG.Get_Key (V_Initial);
-            Attr      : constant Constant_Reference_Type := FA.Atr (V_Initial);
+            F_Initial : constant Flow_Id := FA.PDG.Get_Key (V_Initial);
+
+            Attr : V_Attributes renames FA.Atr (V_Initial);
          begin
             if F_Initial.Variant = Initial_Value
               and then Attr.Is_Import
@@ -453,8 +453,7 @@ package body Flow.Slice is
             --  related to proof.
 
             declare
-               use Attribute_Maps;
-               A : constant Constant_Reference_Type := FA.Atr (V);
+               A : V_Attributes renames FA.Atr (V);
 
             begin
                if FA.PDG.Get_Key (V).Variant /= Final_Value
@@ -477,14 +476,12 @@ package body Flow.Slice is
          All_Proof_Subprograms : Node_Sets.Set := FA.Direct_Calls;
       begin
          for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-            --  We go through all vertices in the graph and we
-            --  subtract from the All_Proof_Subprograms set the
-            --  subprograms that are called on vertices that are not
-            --  related to proof.
+            --  We exclude subprograms called in graph vertices not related to
+            --  proof.
 
             declare
-               use Attribute_Maps;
-               A : constant Constant_Reference_Type := FA.Atr (V);
+               A : V_Attributes renames FA.Atr (V);
+
             begin
                if not A.Is_Proof then
                   All_Proof_Subprograms.Difference (A.Subprograms_Called);
