@@ -1033,7 +1033,7 @@ package body Flow_Types is
    function To_Ordered_Flow_Id_Set (S : Flow_Id_Sets.Set)
                                     return Ordered_Flow_Id_Sets.Set
    is
-      OS : Ordered_Flow_Id_Sets.Set;
+      OS : Ordered_Flow_Id_Sets.Set := Ordered_Flow_Id_Sets.Empty_Set;
    begin
       for X of S loop
          OS.Include (X);
