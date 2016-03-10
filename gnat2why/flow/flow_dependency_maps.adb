@@ -73,10 +73,6 @@ package body Flow_Dependency_Maps is
       Outputs : Flow_Id_Sets.Set;
    begin
       case Nkind (Expression (PAA)) is
-         when N_Null =>
-            --  Aspect => null
-            return M;
-
          when N_Aggregate =>
             --  Aspect => (...)
 
@@ -89,6 +85,10 @@ package body Flow_Dependency_Maps is
             --  Aspect => Foobar
             M.Include (Direct_Mapping_Id (Expression (PAA)),
                        Flow_Id_Sets.Empty_Set);
+            return M;
+
+         when N_Null =>
+            --  Aspect => null
             return M;
 
          when others =>
@@ -133,6 +133,12 @@ package body Flow_Dependency_Maps is
                   LHS := Next (LHS);
                end loop;
 
+            when N_Attribute_Reference =>
+               --  foo'result => ...
+               pragma Assert (Present (Entity (Prefix (LHS))));
+               Outputs.Include
+                 (Direct_Mapping_Id (Unique_Entity (Entity (Prefix (LHS)))));
+
             when N_Identifier | N_Expanded_Name =>
                --  Foo => ...
                pragma Assert (Present (Entity (LHS)));
@@ -142,12 +148,6 @@ package body Flow_Dependency_Maps is
             when N_Null =>
                --  null => ...
                null;
-
-            when N_Attribute_Reference =>
-               --  foo'result => ...
-               pragma Assert (Present (Entity (Prefix (LHS))));
-               Outputs.Include
-                 (Direct_Mapping_Id (Unique_Entity (Entity (Prefix (LHS)))));
 
             when N_Numeric_Or_String_Literal =>
                --  We should only ever get here if we are dealing with
@@ -185,12 +185,15 @@ package body Flow_Dependency_Maps is
                   end if;
                   RHS := Next (RHS);
                end loop;
+
             when N_Identifier | N_Expanded_Name =>
                pragma Assert (Present (Entity (RHS)));
                Inputs.Include
                  (Direct_Mapping_Id (Unique_Entity (Entity (RHS))));
+
             when N_Null =>
                null;
+
             when N_Numeric_Or_String_Literal =>
                --  We should only ever get here if we are dealing with
                --  a rewritten constant.
@@ -204,6 +207,7 @@ package body Flow_Dependency_Maps is
             when others =>
                Print_Node_Subtree (RHS);
                raise Why.Unexpected_Node;
+
          end case;
 
          --  Filter out generic formals without variable output
