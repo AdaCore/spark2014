@@ -627,7 +627,7 @@ package body Flow.Slice is
 
                when N_Single_Task_Declaration |
                     N_Task_Type_Declaration   =>
-                  if Unique_Entity (Defining_Identifier (N)) /=
+                  if Unique_Defining_Entity (N) /=
                     Unique_Entity (FA.Analyzed_Entity)
                   then
                      Local_Subs.Include (Unique_Defining_Entity (N));
@@ -711,11 +711,10 @@ package body Flow.Slice is
 
                when N_Entry_Body |
                     N_Task_Body  =>
-                  if Unique_Entity (Defining_Identifier (N)) /=
+                  if Unique_Defining_Entity (N) /=
                     Unique_Entity (FA.Analyzed_Entity)
                   then
-                     Local_Subs.Include
-                       (Unique_Entity (Defining_Identifier (N)));
+                     Local_Subs.Include (Unique_Defining_Entity (N));
                      return Skip;
                   end if;
 
