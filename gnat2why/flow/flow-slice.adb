@@ -252,15 +252,22 @@ package body Flow.Slice is
                                    V_Final => V_Out,
                                    IPFA    => False)
               and In_Vertices;
+
+            F_Out_Position : Dependency_Maps.Cursor;
+            Dummy          : Boolean;
+            --  Dummy variables required by the container API
+
          begin
-            if not DM.Contains (F_Out) then
-               DM.Include (F_Out, Flow_Id_Sets.Empty_Set);
-            end if;
+            --  Initialize map entry with empty set or do nothing if already
+            --  an entry is already there.
+            DM.Insert (Key      => F_Out,
+                       Position => F_Out_Position,
+                       Inserted => Dummy);
 
             for V_In of Deps loop
                F_In := Flow_Equivalent (FA.PDG.Get_Key (V_In));
 
-               DM (F_Out).Include (F_In);
+               DM (F_Out_Position).Include (F_In);
                Unused_Inputs.Exclude (F_In);
             end loop;
          end;
