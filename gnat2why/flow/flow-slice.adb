@@ -571,18 +571,14 @@ package body Flow.Slice is
                declare
                   Scp : constant Entity_Id := Scope (E);
                begin
-                  case Ekind (Scp) is
-                     when E_Package =>
-                        return
-                          --  Enclosing scope has Initializes
-                          Present (Get_Pragma (Scp, Pragma_Initializes))
+                  return Ekind (Scp) = E_Package
+                    and then
+                      (Present (Get_Pragma (Scp, Pragma_Initializes))
+                       --  Enclosing scope has Initializes
 
-                          --  Enclosing scope has SPARK_Mode => Off
-                          or else not Private_Spec_In_SPARK (Scp);
-
-                     when others    =>
-                        return False;
-                  end case;
+                       or else not Private_Spec_In_SPARK (Scp)
+                       --  Enclosing scope has SPARK_Mode => Off
+                      );
                end;
 
             end Hidden_In_Package;
@@ -611,11 +607,9 @@ package body Flow.Slice is
                            Local_Vars.Include (E);
                         elsif Has_Variable_Input (Direct_Mapping_Id (E)) then
                            --  If the Full_View is present then add that
-                           if Present (Full_View (E)) then
-                              Local_Vars.Include (Full_View (E));
-                           else
-                              Local_Vars.Include (E);
-                           end if;
+                           Local_Vars.Include (if Present (Full_View (E))
+                                               then Full_View (E)
+                                               else E);
                         end if;
                      end if;
                   end;
@@ -796,20 +790,24 @@ package body Flow.Slice is
                   AS_Pragma : constant Node_Id :=
                     Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State);
 
-                  PAA       : Node_Id;
-                  AS_N      : Node_Id;
-                  AS_E      : Entity_Id;
+                  PAA : Node_Id;
+                  --  Argument associations of the Abstract_State pragma
+
+                  AS_N : Node_Id;
+                  AS_E : Entity_Id;
+                  --  Node and entity of the individual abstract states
                begin
                   if Present (AS_Pragma) then
                      PAA := First (Pragma_Argument_Associations (AS_Pragma));
 
-                     --  Check that we don't have Abstract_State => null
+                     --  Check that it is not Abstract_State => null
                      if Nkind (Expression (PAA)) /= N_Null then
                         AS_N := First (Expressions (Expression (PAA)));
                         while Present (AS_N) loop
-                           AS_E := (if Nkind (AS_N) = N_Extension_Aggregate
-                                    then Entity (Ancestor_Part (AS_N))
-                                    else Entity (AS_N));
+                           AS_E :=
+                             Entity (if Nkind (AS_N) = N_Extension_Aggregate
+                                    then Ancestor_Part (AS_N)
+                                    else AS_N);
 
                            Local_Vars.Insert (AS_E);
 
