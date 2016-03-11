@@ -8,9 +8,9 @@ helpers.ads:54:43: info: overflow check proved
 helpers.ads:54:47: info: overflow check proved
 helpers.ads:54:57: info: index check proved
 helpers.ads:60:50: info: precondition proved
-textio-get_line.adb:34:08: info: postcondition proved
 textio-get_line.adb:34:56: info: index check proved
 textio-get_line.adb:34:73: info: index check proved
+textio-get_line.adb:35:09: medium: postcondition might fail, cannot prove Cur_Position - Cur_Position'Old = Last - Last'old
 textio-get_line.adb:39:17: info: index check proved
 textio-get_line.adb:39:53: info: index check proved
 textio-get_line.adb:49:82: info: range check proved
@@ -46,9 +46,9 @@ textio-get_line.adb:146:114: info: range check proved
 textio-get_line.adb:148:18: info: overflow check proved
 textio-get_line.adb:148:41: info: index check proved
 textio-get_line.adb:148:41: info: overflow check proved
-textio-get_line.adb:152:16: info: assertion proved
-textio-get_line.adb:152:36: info: index check proved
-textio-get_line.adb:153:23: info: range check proved
+textio-get_line.adb:152:31: medium: assertion might fail, cannot prove Buf (K) = ASCII.nul
+textio-get_line.adb:152:36: medium: array index check might fail
+textio-get_line.adb:153:23: medium: range check might fail
 textio-get_line.adb:156:13: info: precondition proved
 textio-get_line.adb:156:47: info: overflow check proved
 textio-get_line.adb:158:26: info: overflow check proved
@@ -82,7 +82,7 @@ textio.adb:52:06: info: disjoint contract cases proved
 textio.adb:138:07: info: precondition proved
 textio.adb:152:23: info: index check proved
 textio.adb:152:54: info: index check proved
-textio.adb:154:14: info: postcondition proved
+textio.adb:155:17: medium: postcondition might fail, cannot prove Result (Idx) = The_File (Idx - 1 + Cur_Position_At_Start)
 textio.adb:155:25: info: index check proved
 textio.adb:174:10: info: range check proved
 textio.adb:178:10: info: precondition proved
@@ -99,10 +99,10 @@ textio.adb:189:37: info: length check proved
 textio.adb:192:16: info: assertion proved
 textio.adb:199:37: info: length check proved
 textio.adb:199:40: info: length check proved
-textio.adb:202:19: info: precondition proved
+textio.adb:202:19: medium: precondition might fail
 textio.adb:211:07: info: precondition proved
 textio.ads:26:32: info: contract case proved
-textio.ads:32:16: info: contract case proved
+textio.ads:32:16: medium: contract case might fail
 textio.ads:35:20: info: index check proved
 textio.ads:35:54: info: index check proved
 textio.ads:55:32: info: contract case proved
