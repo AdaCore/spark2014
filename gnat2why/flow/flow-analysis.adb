@@ -2011,7 +2011,7 @@ package body Flow.Analysis is
          procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
             F : Flow_Id renames FA.CFG.Get_Key (V);
          begin
-            if V /= To and F.Kind = Direct_Mapping then
+            if V /= To and then F.Kind = Direct_Mapping then
                Path.Include (V);
             end if;
          end Add_Loc;
