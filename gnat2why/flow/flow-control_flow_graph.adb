@@ -2475,8 +2475,7 @@ package body Flow.Control_Flow_Graph is
          --  and checks if they are fully initialized.
 
          procedure Rec (N : Node_Id);
-         --  Wrapper around the traversal, so that Proc_Search can call
-         --  itself.
+         --  Wrapper around the traversal, so that Proc_Search can call itself
 
          ---------------------
          -- Get_Array_Index --
@@ -2777,7 +2776,7 @@ package body Flow.Control_Flow_Graph is
          V : Flow_Graphs.Vertex_Id;
          Funcs : Node_Sets.Set;
       begin
-         --  Set up parameter variable.
+         --  Set up parameter variable
          Create_Initial_And_Final_Vertices (Param, Variable_Kind, FA);
 
          --  Create vertex for the container expression. We also define the
@@ -3766,6 +3765,8 @@ package body Flow.Control_Flow_Graph is
 
       V : Flow_Graphs.Vertex_Id;
 
+   --  Start of processing for Do_Package_Body_Or_Stub
+
    begin
 
       if Nkind (Parent (Parent (Package_Spec))) = N_Generic_Package_Declaration
@@ -4750,8 +4751,7 @@ package body Flow.Control_Flow_Graph is
       Writes      : Flow_Id_Sets.Set;
       V           : Flow_Graphs.Vertex_Id;
    begin
-      --  Obtain globals (either from contracts or the computed
-      --  stuff).
+      --  Obtain globals (either from contracts or the computed stuff)
       Get_Globals (Subprogram           => Get_Called_Entity (Callsite),
                    Scope                => FA.B_Scope,
                    Classwide            => Is_Dispatching_Call (Callsite),

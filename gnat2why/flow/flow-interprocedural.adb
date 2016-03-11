@@ -333,7 +333,7 @@ package body Flow.Interprocedural is
          declare
             A : V_Attributes renames FA.Atr (V);
          begin
-            if A.Is_Callsite and then not A.Perform_IPFA then
+            if A.Is_Callsite and not A.Perform_IPFA then
                Add_Simple_Procedure_Dependency (FA, V);
             end if;
          end;
