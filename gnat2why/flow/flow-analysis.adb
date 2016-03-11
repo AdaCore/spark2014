@@ -2683,10 +2683,12 @@ package body Flow.Analysis is
             procedure Add_Loc
               (V : Flow_Graphs.Vertex_Id)
             is
-               F : constant Flow_Id := (if CFG_Graph then FA.CFG.Get_Key (V)
-                                        else FA.PDG.Get_Key (V));
+               F_Kind : constant Flow_Id_Kind :=
+                 (if CFG_Graph
+                  then FA.CFG.Get_Key (V).Kind
+                  else FA.PDG.Get_Key (V).Kind);
             begin
-               if V /= To and then V /= From and then F.Kind = Direct_Mapping
+               if V /= To and then V /= From and then F_Kind = Direct_Mapping
                then
                   Vertices.Include (V);
                end if;
