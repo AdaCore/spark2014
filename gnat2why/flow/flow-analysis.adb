@@ -3351,8 +3351,8 @@ package body Flow.Analysis is
 
       for C in Actual_Deps.Iterate loop
          declare
-            F_Out  : constant Flow_Id          := Dependency_Maps.Key (C);
-            A_Deps : constant Flow_Id_Sets.Set := Dependency_Maps.Element (C);
+            F_Out  : Flow_Id          renames Dependency_Maps.Key (C);
+            A_Deps : Flow_Id_Sets.Set renames Dependency_Maps.Element (C);
             U_Deps : Flow_Id_Sets.Set;
 
             Missing_Deps : Ordered_Flow_Id_Sets.Set;
@@ -3774,10 +3774,9 @@ package body Flow.Analysis is
             --  Populate the All_Actual_Outs and All_Actual_Ins sets
             for O in FA.Dependency_Map.Iterate loop
                declare
-                  Actual_Out : constant Flow_Id :=
-                    Dependency_Maps.Key (O);
+                  Actual_Out : Flow_Id renames Dependency_Maps.Key (O);
 
-                  Actual_Ins : constant Flow_Id_Sets.Set :=
+                  Actual_Ins : Flow_Id_Sets.Set renames
                     Dependency_Maps.Element (O);
                begin
                   if All_Contract_Outs.Contains (Actual_Out) then
