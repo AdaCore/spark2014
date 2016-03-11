@@ -457,7 +457,6 @@ package body Flow.Control_Flow_Graph.Utility is
       I     : constant Flow_Id    := Change_Variant (Implicit, Normal_Use);
       A     : V_Attributes        := Null_Attributes;
       Scope : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
-      Tmp   : Flow_Id_Sets.Set;
    begin
       A.Is_Implicit_Parameter := True;
       A.Call_Vertex           := Direct_Mapping_Id (Call_Vertex);
@@ -467,17 +466,16 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case Implicit.Variant is
          when In_View =>
-            Tmp := Flatten_Variable (I, Scope);
-            for F of Tmp loop
-               A.Variables_Used.Include (F);
-               A.Variables_Explicitly_Used.Include (F);
-            end loop;
+            declare
+               Implicit_Flat : constant Flow_Id_Sets.Set :=
+                 Flatten_Variable (I, Scope);
+            begin
+               A.Variables_Used := Implicit_Flat;
+               A.Variables_Explicitly_Used := Implicit_Flat;
+            end;
 
          when Out_View =>
-            Tmp := Flatten_Variable (I, Scope);
-            for F of Tmp loop
-               A.Variables_Defined.Include (F);
-            end loop;
+            A.Variables_Defined := Flatten_Variable (I, Scope);
 
          when others =>
             raise Program_Error;
