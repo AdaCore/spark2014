@@ -3438,7 +3438,7 @@ package body Flow.Control_Flow_Graph is
                if (for some Comp of Components_Of_Type =>
                      Variables_Used.Contains (Comp))
                then
-                  Variables_Used := Variables_Used - Components_Of_Type;
+                  Variables_Used.Difference (Components_Of_Type);
                   Variables_Used.Union (Components_Of_Object);
                end if;
 
