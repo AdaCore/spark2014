@@ -2740,10 +2740,7 @@ package body Flow.Control_Flow_Graph is
          -- Rec --
          ---------
 
-         procedure Rec (N : Node_Id) is
-         begin
-            Rec_Inner (N);
-         end Rec;
+         procedure Rec (N : Node_Id) renames Rec_Inner;
 
       --  Start of processing for Variables_Initialized_By_Loop
 
