@@ -3823,9 +3823,9 @@ package body Flow.Control_Flow_Graph is
          begin
             for C in DM.Iterate loop
                declare
-                  The_Out : constant Flow_Id := Dependency_Maps.Key (C);
-                  The_Ins : constant Flow_Id_Sets.Set :=
-                    Dependency_Maps.Element (C);
+                  use Dependency_Maps;
+                  The_Out : Flow_Id          renames Key (C);
+                  The_Ins : Flow_Id_Sets.Set renames Element (C);
 
                   Init_Item : constant Node_Id :=
                     Find_Node (Get_Direct_Mapping_Id (The_Out));
