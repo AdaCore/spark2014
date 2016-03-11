@@ -111,7 +111,9 @@ package body Flow_Utility.Initialization is
          when Record_Field =>
             --  If the Flow_Id represents the 'Hidden part of a record
             --  then we do not consider it to be initialized.
-            if Is_Private_Part (F) or Is_Extension (F) or Is_Record_Tag (F)
+            if Is_Private_Part (F)
+              or else Is_Extension (F)
+              or else Is_Record_Tag (F)
             then
                return Empty;
             end if;
