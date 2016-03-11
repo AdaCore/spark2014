@@ -1523,9 +1523,8 @@ package body Flow_Utility is
             for C in D_Map.Iterate loop
                declare
                   E      : Entity_Id;
-                  Output : constant Flow_Id := Dependency_Maps.Key (C);
-                  Inputs : constant Flow_Id_Sets.Set :=
-                    Dependency_Maps.Element (C);
+                  Output : Flow_Id          renames Dependency_Maps.Key (C);
+                  Inputs : Flow_Id_Sets.Set renames D_Map (C);
                begin
                   E := (if Present (Output)
                         then Get_Direct_Mapping_Id (Output)
@@ -3835,10 +3834,8 @@ package body Flow_Utility is
 
                for C in Tmp.Iterate loop
                   declare
-                     use Flow_Id_Maps;
-                     Output : constant Flow_Id := Flow_Id_Maps.Key (C);
-                     Inputs : constant Flow_Id_Maps.Constant_Reference_Type :=
-                       Tmp (C);
+                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                     Inputs : Flow_Id_Sets.Set renames Tmp (C);
                   begin
                      M.Include (Output, Inputs);
                   end;
@@ -4075,9 +4072,8 @@ package body Flow_Utility is
 
                for C in Tmp.Iterate loop
                   declare
-                     Output : constant Flow_Id := Flow_Id_Maps.Key (C);
-                     Inputs : constant Flow_Id_Sets.Set :=
-                       Flow_Id_Maps.Element (C);
+                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                     Inputs : Flow_Id_Sets.Set renames Tmp (C);
                   begin
                      if Valid_To_Fields.Contains (Output) then
                         M.Include (Output, Inputs);
@@ -4513,9 +4509,8 @@ package body Flow_Utility is
                begin
                   for C in M.Iterate loop
                      declare
-                        K : constant Flow_Id          := Flow_Id_Maps.Key (C);
-                        V : constant Flow_Id_Sets.Set :=
-                          Flow_Id_Maps.Element (C);
+                        K : Flow_Id          renames Flow_Id_Maps.Key (C);
+                        V : Flow_Id_Sets.Set renames M (C);
                      begin
                         if K.Kind = Record_Field
                           and then Natural (K.Component.Length) >= Comp_Id

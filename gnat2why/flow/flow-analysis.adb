@@ -114,7 +114,7 @@ package body Flow.Analysis is
          return Loc;
       else
          declare
-            K : constant Flow_Id := G.Get_Key (V);
+            K : Flow_Id renames G.Get_Key (V);
          begin
             case K.Kind is
                when Direct_Mapping | Record_Field =>
@@ -161,7 +161,7 @@ package body Flow.Analysis is
 
          for V of Set loop
             declare
-               F : constant Flow_Id := FA.PDG.Get_Key (V);
+               F : Flow_Id renames FA.PDG.Get_Key (V);
             begin
                if F.Kind = Direct_Mapping then
                   Ada.Text_IO.Put_Line (FD, Get_Line (FA.PDG, FA.Atr, V));
@@ -813,7 +813,7 @@ package body Flow.Analysis is
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            F_Final : constant Flow_Id := FA.PDG.Get_Key (V);
+            F_Final : Flow_Id      renames FA.PDG.Get_Key (V);
             A_Final : V_Attributes renames FA.Atr (V);
 
             Unwritten : Boolean;
@@ -830,10 +830,9 @@ package body Flow.Analysis is
                Unwritten := False;
                if FA.PDG.In_Neighbour_Count (V) = 1 then
                   declare
-                     F_Initial : constant Flow_Id :=
+                     F_Initial : Flow_Id renames
                        FA.PDG.Get_Key (FA.PDG.Parent (V));
-                     A_Initial :
-                     constant Attribute_Maps.Constant_Reference_Type :=
+                     A_Initial : V_Attributes renames
                        FA.Atr (FA.PDG.Parent (V));
                   begin
                      if F_Initial.Variant = Initial_Value
@@ -857,7 +856,7 @@ package body Flow.Analysis is
 
       for V of Unwritten_Vars loop
          declare
-            F_Final : constant Flow_Id := FA.PDG.Get_Key (V);
+            F_Final : Flow_Id      renames FA.PDG.Get_Key (V);
             A_Final : V_Attributes renames FA.Atr (V);
          begin
             if not Written_Entire_Vars.Contains (Entire_Variable (F_Final))
@@ -983,8 +982,7 @@ package body Flow.Analysis is
 
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            use Attribute_Maps;
-            Key : constant Flow_Id := FA.PDG.Get_Key (V);
+            Key : Flow_Id      renames FA.PDG.Get_Key (V);
             Atr : V_Attributes renames FA.Atr (V);
 
             E              : Flow_Id;
@@ -1260,7 +1258,7 @@ package body Flow.Analysis is
          for Neighbour of FA.PDG.Get_Collection (V, Flow_Graphs.Out_Neighbours)
          loop
             declare
-               Key : constant Flow_Id := FA.PDG.Get_Key (Neighbour);
+               Key : Flow_Id renames FA.PDG.Get_Key (Neighbour);
             begin
                if Key.Variant /= Final_Value
                  or else
@@ -1354,7 +1352,7 @@ package body Flow.Analysis is
 
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            Key : constant Flow_Id := FA.PDG.Get_Key (V);
+            Key : Flow_Id renames FA.PDG.Get_Key (V);
             F   : Flow_Id;
          begin
             if Key.Variant = Initial_Value
@@ -1624,7 +1622,7 @@ package body Flow.Analysis is
          declare
             use Attribute_Maps;
             N         : Node_Id;
-            Key       : constant Flow_Id := FA.PDG.Get_Key (V);
+            Key       : Flow_Id renames FA.PDG.Get_Key (V);
             Atr       : V_Attributes renames FA.Atr (V);
             Mask      : Vertex_Sets.Set;
             Tag       : constant Flow_Tag_Kind := Ineffective;
@@ -1945,8 +1943,7 @@ package body Flow.Analysis is
       ---------------------
 
       function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean is
-         use Attribute_Maps;
-         V_Key : constant Flow_Id := FA.PDG.Get_Key (V);
+         V_Key : Flow_Id      renames FA.PDG.Get_Key (V);
          V_Atr : V_Attributes renames FA.Atr (V);
       begin
          --  Ignore exceptional paths
@@ -2012,7 +2009,7 @@ package body Flow.Analysis is
          -------------
 
          procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
-            F : constant Flow_Id := FA.CFG.Get_Key (V);
+            F : Flow_Id renames FA.CFG.Get_Key (V);
          begin
             if V /= To and F.Kind = Direct_Mapping then
                Path.Include (V);
@@ -2323,7 +2320,7 @@ package body Flow.Analysis is
       is
          type Msg_Kind is (Init, Unknown, Err);
 
-         V_Key        : constant Flow_Id := FA.PDG.Get_Key (Vertex);
+         V_Key        : Flow_Id renames FA.PDG.Get_Key (Vertex);
 
          V_Initial    : constant Flow_Graphs.Vertex_Id :=
            FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
@@ -3047,7 +3044,7 @@ package body Flow.Analysis is
 
          for C in DM.Iterate loop
             declare
-               The_Out : constant Flow_Id := Dependency_Maps.Key (C);
+               The_Out : Flow_Id renames Dependency_Maps.Key (C);
             begin
                FS.Include (The_Out);
             end;
@@ -3230,10 +3227,8 @@ package body Flow.Analysis is
 
          for C in DM.Iterate loop
             declare
-               F_Out  : Flow_Id                   :=
-                 Dependency_Maps.Key (C);
-               F_Deps : constant Flow_Id_Sets.Set :=
-                 Dependency_Maps.Element (C);
+               F_Out  : Flow_Id := Dependency_Maps.Key (C);
+               F_Deps : Flow_Id_Sets.Set renames DM (C);
                AS     : Flow_Id;
             begin
                --  Add output
@@ -3329,7 +3324,7 @@ package body Flow.Analysis is
 
       for C in User_Deps.Iterate loop
          declare
-            F_Out : constant Flow_Id := Dependency_Maps.Key (C);
+            F_Out : Flow_Id renames Dependency_Maps.Key (C);
          begin
             if not Actual_Deps.Contains (F_Out) then
                --  ??? check quotation in errout.ads
@@ -3661,7 +3656,7 @@ package body Flow.Analysis is
          -------------
 
          procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
-            F : constant Flow_Id := FA.CFG.Get_Key (V);
+            F : Flow_Id renames FA.CFG.Get_Key (V);
          begin
             if not To.Contains (V)
               and then F.Kind = Direct_Mapping

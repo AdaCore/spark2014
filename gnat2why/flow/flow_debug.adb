@@ -169,8 +169,8 @@ package body Flow_Debug is
       Indent;
       for C in M.Iterate loop
          declare
-            K : constant Flow_Id          := Flow_Id_Maps.Key (C);
-            V : constant Flow_Id_Sets.Set := Flow_Id_Maps.Element (C);
+            K : Flow_Id          renames Flow_Id_Maps.Key (C);
+            V : Flow_Id_Sets.Set renames M (C);
          begin
             Sprint_Flow_Id (K);
             Write_Str (" =>");
@@ -196,8 +196,8 @@ package body Flow_Debug is
       Indent;
       for C in M.Iterate loop
          declare
-            A : constant Flow_Id          := Dependency_Maps.Key (C);
-            D : constant Flow_Id_Sets.Set := Dependency_Maps.Element (C);
+            A : Flow_Id          renames Dependency_Maps.Key (C);
+            D : Flow_Id_Sets.Set renames M (C);
          begin
             Sprint_Flow_Id (A);
             Write_Line (" depends on:");

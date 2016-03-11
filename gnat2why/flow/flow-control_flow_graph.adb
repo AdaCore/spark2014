@@ -2621,7 +2621,7 @@ package body Flow.Control_Flow_Graph is
               (V  : Flow_Graphs.Vertex_Id;
                Tv : out Flow_Graphs.Simple_Traversal_Instruction)
             is
-               F : constant Flow_Id := FA.CFG.Get_Key (V);
+               F : Flow_Id      renames FA.CFG.Get_Key (V);
                A : V_Attributes renames FA.Atr (V);
             begin
                Touched.Include (V);
@@ -6090,8 +6090,8 @@ package body Flow.Control_Flow_Graph is
 
                   for C in Globals.Iterate loop
                      declare
-                        G : constant Flow_Id := Global_Maps.Key (C);
-                        P : constant G_Prop  := Global_Maps.Element (C);
+                        G : Flow_Id renames Global_Maps.Key (C);
+                        P : G_Prop  renames Globals (C);
 
                         Mode : constant Param_Mode :=
                           (if P.Is_Read and P.Is_Write then Mode_In_Out

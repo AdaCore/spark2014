@@ -391,9 +391,8 @@ package body Flow_Classwide is
 
       for C in My_Dep.Iterate loop
          declare
-            My_Output  : constant Flow_Id := Dependency_Maps.Key (C);
-            My_Inputs  : constant Flow_Id_Sets.Set :=
-              Dependency_Maps.Element (C);
+            My_Output  : Flow_Id          renames Dependency_Maps.Key (C);
+            My_Inputs  : Flow_Id_Sets.Set renames My_Dep (C);
 
             Anc_Inputs : Flow_Id_Sets.Set;
             Tmp        : Flow_Id_Sets.Set;

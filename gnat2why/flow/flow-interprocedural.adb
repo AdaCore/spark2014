@@ -56,7 +56,7 @@ package body Flow.Interprocedural is
                                       Flow_Graphs.Out_Neighbours)
       loop
          declare
-            F : constant Flow_Id := FA.CDG.Get_Key (V);
+            F : Flow_Id      renames FA.CDG.Get_Key (V);
             A : V_Attributes renames FA.Atr (V);
          begin
             if A.Is_Parameter then
@@ -201,9 +201,8 @@ package body Flow.Interprocedural is
                          Callsite             => N);
             for C in Deps.Iterate loop
                declare
-                  Output : constant Flow_Id := Dependency_Maps.Key (C);
-                  Inputs : constant Flow_Id_Sets.Set :=
-                    Dependency_Maps.Element (C);
+                  Output : Flow_Id          renames Dependency_Maps.Key (C);
+                  Inputs : Flow_Id_Sets.Set renames Deps (C);
                begin
                   for Input of Inputs loop
                      --  Output could be a null node, in which case we

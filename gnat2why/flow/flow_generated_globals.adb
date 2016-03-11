@@ -2840,13 +2840,13 @@ package body Flow_Generated_Globals is
    begin
       for S in DM.Iterate loop
          declare
-            State_F      : constant Flow_Id := Dependency_Maps.Key (S);
+            State_F      : Flow_Id renames Dependency_Maps.Key (S);
 
             State_N      : constant Entity_Name :=
               To_Entity_Name (Get_Direct_Mapping_Id (State_F));
 
             Constituents : constant Name_Sets.Set :=
-              To_Name_Set (To_Node_Set (Dependency_Maps.Element (S)));
+              To_Name_Set (To_Node_Set (DM (S)));
          begin
             --  Include (possibly overwrite) new state info into State_Comp_Map
             State_Comp_Map.Include (State_N, Constituents);

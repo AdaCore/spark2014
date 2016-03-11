@@ -75,7 +75,7 @@ package body Flow.Slice is
         (V  : Flow_Graphs.Vertex_Id;
          TV : out Flow_Graphs.Simple_Traversal_Instruction)
       is
-         F : constant Flow_Id := FA.PDG.Get_Key (V);
+         F : Flow_Id renames FA.PDG.Get_Key (V);
       begin
          case F.Variant is
             when Initial_Value | Final_Value =>
@@ -199,7 +199,7 @@ package body Flow.Slice is
 
       for V_Final of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            F_Final : constant Flow_Id := FA.PDG.Get_Key (V_Final);
+            F_Final : Flow_Id renames FA.PDG.Get_Key (V_Final);
          begin
             if F_Final.Variant = Final_Value
               and then FA.Atr (V_Final).Is_Export
@@ -214,8 +214,7 @@ package body Flow.Slice is
 
       for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            F_Initial : constant Flow_Id := FA.PDG.Get_Key (V_Initial);
-
+            F_Initial : Flow_Id renames FA.PDG.Get_Key (V_Initial);
             Attr : V_Attributes renames FA.Atr (V_Initial);
          begin
             if F_Initial.Variant = Initial_Value
