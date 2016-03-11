@@ -470,11 +470,14 @@ package body Flow.Control_Flow_Graph.Utility is
                Implicit_Flat : constant Flow_Id_Sets.Set :=
                  Flatten_Variable (I, Scope);
             begin
+               pragma Assert (A.Variables_Used.Is_Empty);
+               pragma Assert (A.Variables_Explicitly_Used.Is_Empty);
                A.Variables_Used := Implicit_Flat;
                A.Variables_Explicitly_Used := Implicit_Flat;
             end;
 
          when Out_View =>
+            pragma Assert (A.Variables_Defined.Is_Empty);
             A.Variables_Defined := Flatten_Variable (I, Scope);
 
          when others =>
