@@ -4602,7 +4602,7 @@ package body Flow_Utility is
       Base_Node                : Flow_Id;
       Seq                      : Node_Lists.List;
 
-      Idx                      : Natural;
+      Idx                      : Positive;
       Process_Type_Conversions : Boolean;
 
    --  Start of processing for Untangle_Assignment_Target
