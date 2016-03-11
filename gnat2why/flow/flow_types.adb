@@ -45,13 +45,12 @@ package body Flow_Types is
    --  equal. (This can happen if you forget to use Unique_Entity or
    --  Original_Record_Component.)
 
-   use type Ada.Containers.Count_Type;
-
    -----------------------
    -- Flow_Id operators --
    -----------------------
 
    function "=" (Left, Right : Flow_Id) return Boolean is
+      use type Ada.Containers.Count_Type;
    begin
       if Left.Kind /= Right.Kind then
          return False;
