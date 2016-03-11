@@ -2778,7 +2778,11 @@ package body Flow.Analysis is
                         declare
                            Tracefile      : constant String :=
                              Fresh_Trace_File;
-                           Vertices_Trail : Vertex_Sets.Set;
+
+                           Vertices_Trail : constant Vertex_Sets.Set :=
+                             Path_Leading_To_Proof_In_Dependency
+                               (From => V,
+                                To   => Get_Final_Vertex (FA.PDG, Output));
 
                         begin
                            Error_Msg_Flow
@@ -2793,11 +2797,6 @@ package body Flow.Analysis is
                               F2        => Input,
                               Severity  => Error_Kind,
                               Tag       => Export_Depends_On_Proof_In);
-
-                           Vertices_Trail :=
-                             Path_Leading_To_Proof_In_Dependency
-                               (From => V,
-                                To   => Get_Final_Vertex (FA.PDG, Output));
 
                            Write_Vertex_Set
                              (FA       => FA,
