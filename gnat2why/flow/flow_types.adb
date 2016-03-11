@@ -27,6 +27,7 @@ with Errout;                 use Errout;
 with Flow_Generated_Globals; use Flow_Generated_Globals;
 with Flow_Utility;           use Flow_Utility;
 with Gnat2Why_Args;
+with GNATCOLL.Utils;
 with Hashing;                use Hashing;
 with Interfaces;
 with Namet;                  use Namet;
@@ -824,6 +825,7 @@ package body Flow_Types is
    -------------------
 
    procedure Print_Flow_Id (F : Flow_Id) is
+      use GNATCOLL.Utils;
    begin
       Sprint_Flow_Id (F);
       case F.Variant is
@@ -857,11 +859,11 @@ package body Flow_Types is
       if Gnat2Why_Args.Flow_Advanced_Debug then
          case F.Kind is
             when Direct_Mapping =>
-               Output.Write_Str (" <" & F.Node'Img & ">");
+               Output.Write_Str (" <" & Image (Natural (F.Node), 1) & ">");
             when Record_Field =>
-               Output.Write_Str (" <" & F.Node'Img);
+               Output.Write_Str (" <" & Image (Natural (F.Node), 1));
                for C of F.Component loop
-                  Output.Write_Str ("|" & C'Img);
+                  Output.Write_Str ("|" & Image (Natural (C), 1));
                end loop;
                Output.Write_Str (">");
             when others =>
