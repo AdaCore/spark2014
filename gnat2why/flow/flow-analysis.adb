@@ -2440,12 +2440,10 @@ package body Flow.Analysis is
            and then FA.Kind in Kind_Package | Kind_Package_Body
            and then Present (FA.Initializes_N)
          then
-            Msg := To_Unbounded_String
-              ("initialization of & is specified @");
             Error_Msg_Flow
               (FA           => FA,
                Tracefile    => Tracefile,
-               Msg          => To_String (Msg),
+               Msg          => "initialization of & is specified @",
                N            => N,
                F1           => Direct_Mapping_Id
                                  (Encapsulating_State
