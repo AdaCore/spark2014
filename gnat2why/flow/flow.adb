@@ -702,7 +702,7 @@ package body Flow is
                   null;
             end case;
 
-            if A.Loops.Length > 0 and not (A.Is_Parameter or
+            if not A.Loops.Is_Empty and not (A.Is_Parameter or
                                              A.Is_Global_Parameter)
             then
                Write_Str ("\nLoops:");
@@ -721,7 +721,7 @@ package body Flow is
             end if;
          end if;
 
-         if A.Variables_Used.Length > 0 then
+         if not A.Variables_Used.Is_Empty then
             Write_Str ("\nVU: {");
             declare
                First : Boolean := True;
@@ -738,7 +738,7 @@ package body Flow is
             Write_Str ("}");
          end if;
 
-         if A.Subprograms_Called.Length > 0 then
+         if not A.Subprograms_Called.Is_Empty then
             Write_Str ("\nSC: {");
             declare
                First : Boolean := True;
@@ -755,7 +755,7 @@ package body Flow is
             Write_Str ("}");
          end if;
 
-         if A.Variables_Defined.Length > 0 then
+         if not A.Variables_Defined.Is_Empty then
             Write_Str ("\nVD: {");
             declare
                First : Boolean := True;

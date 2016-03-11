@@ -110,7 +110,7 @@ package body Flow_Debug is
 
    procedure Print_Node_Set (S : Node_Sets.Set) is
    begin
-      if S.Length > 0 then
+      if not S.Is_Empty then
          Write_Str ("Node_Set with ");
          Write_Int (Int (S.Length));
          Write_Str (" elements:");
@@ -127,7 +127,7 @@ package body Flow_Debug is
 
    procedure Print_Node_Set (S : Flow_Id_Sets.Set) is
    begin
-      if S.Length > 0 then
+      if not S.Is_Empty then
          Write_Str ("Flow_Id_Set with ");
          Write_Int (Int (S.Length));
          Write_Str (" elements:");
@@ -144,7 +144,7 @@ package body Flow_Debug is
 
    procedure Print_Node_Set (S : Ordered_Flow_Id_Sets.Set) is
    begin
-      if S.Length > 0 then
+      if not S.Is_Empty then
          Write_Str ("Ordered_Flow_Id_Set with ");
          Write_Int (Int (S.Length));
          Write_Str (" elements:");

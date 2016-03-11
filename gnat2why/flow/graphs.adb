@@ -647,7 +647,7 @@ package body Graphs is
          Schedule_Children (Start);
       end if;
 
-      while Stack.Length > 0 loop
+      while not Stack.Is_Empty loop
          declare
             Current_Node : constant Valid_Vertex_Id := Stack.Last_Element;
          begin
@@ -873,7 +873,7 @@ package body Graphs is
             Link (Parent (W), W);
 
             --  Step 3
-            while Bucket (Parent (W)).Length > 0 loop
+            while not Bucket (Parent (W)).Is_Empty loop
                declare
                   V : constant Valid_Vertex_Id
                     := Bucket (Parent (W)).Last_Element;

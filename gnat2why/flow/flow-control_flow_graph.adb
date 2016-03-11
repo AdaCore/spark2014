@@ -2219,7 +2219,7 @@ package body Flow.Control_Flow_Graph is
             --  If the loop contains a return statement we do not add
             --  the faux exit.
             null;
-         elsif CM (Union_Id (N)).Standard_Exits.Length > 0 then
+         elsif not CM (Union_Id (N)).Standard_Exits.Is_Empty then
             --  If we already have a standard exit that means an exit
             --  statement added it. We don't need the faux exit.
             null;
@@ -5079,7 +5079,7 @@ package body Flow.Control_Flow_Graph is
                Use_Computed_Globals => not FA.Generating_Globals);
             V : Flow_Graphs.Vertex_Id;
          begin
-            if Unchecked.Length > 0 then
+            if not Unchecked.Is_Empty then
                Add_Vertex
                  (FA,
                   Make_Sink_Vertex_Attributes (FA            => FA,
