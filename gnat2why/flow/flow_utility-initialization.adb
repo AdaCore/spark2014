@@ -49,9 +49,10 @@ package body Flow_Utility.Initialization is
       -- Get_Component_From_Aggregate --
       ----------------------------------
 
-      function Get_Component_From_Aggregate (A : Node_Id;
-                                             C : Node_Id)
-                                             return Node_Id
+      function Get_Component_From_Aggregate
+        (A : Node_Id;
+         C : Node_Id)
+         return Node_Id
       is
          N : Node_Id;
       begin
@@ -99,6 +100,9 @@ package body Flow_Utility.Initialization is
 
       N       : Node_Id;
       Comp_Id : Positive;
+
+   --  Start of processing for Get_Default_Initialization
+
    begin
       case F.Kind is
          when Direct_Mapping =>
@@ -183,6 +187,8 @@ package body Flow_Utility.Initialization is
          return Default_Initialization (Typ, Explicit_Only) =
                   Full_Default_Initialization;
       end Call_Default_Initialization;
+
+   --  Start of processing for Is_Default_Initialized
 
    begin
       case F.Kind is

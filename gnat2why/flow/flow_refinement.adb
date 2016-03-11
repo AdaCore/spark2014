@@ -64,6 +64,10 @@ package body Flow_Refinement is
 
       function Proc (X : Node_Id) return Traverse_Result;
 
+      ----------
+      -- Proc --
+      ----------
+
       function Proc (X : Node_Id) return Traverse_Result is
       begin
          if X = N then
@@ -75,6 +79,9 @@ package body Flow_Refinement is
       end Proc;
 
       procedure Search_For_Node is new Traverse_Proc (Proc);
+
+   --  Start of processing for Tree_Contains
+
    begin
       Search_For_Node (T);
       return Found;
@@ -522,6 +529,9 @@ package body Flow_Refinement is
       end Expand;
 
       P : Node_Sets.Set := Node_Sets.Empty_Set;
+
+   --  Start of processing for Down_Project
+
    begin
       for V of Vars loop
          P.Union (Expand (V));
