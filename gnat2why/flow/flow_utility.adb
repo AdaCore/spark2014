@@ -965,9 +965,9 @@ package body Flow_Utility is
                for O of D_Out loop
                   if All_Writes.Contains (O) then
                      if O = Null_Flow_Id then
-                        D_In := D_In and All_Proof_Ins;
+                        D_In.Intersection (All_Proof_Ins);
                      else
-                        D_In := D_In and All_Reads;
+                        D_In.Intersection (All_Reads);
                      end if;
                      Depends.Include (O, D_In);
                   end if;
