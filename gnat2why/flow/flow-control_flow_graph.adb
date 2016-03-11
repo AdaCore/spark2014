@@ -3710,8 +3710,9 @@ package body Flow.Control_Flow_Graph is
         Get_Pragma (Package_Spec,
                     Pragma_Abstract_State);
 
-      Initializes_Aspect : constant Node_Id := Get_Pragma (Package_Spec,
-                                                           Pragma_Initializes);
+      Initializes_Aspect : constant Node_Id :=
+        Get_Pragma (Package_Spec,
+                    Pragma_Initializes);
 
       Pkg_Body : constant Node_Id :=
         (case Nkind (N) is
