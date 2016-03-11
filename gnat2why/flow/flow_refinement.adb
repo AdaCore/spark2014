@@ -325,7 +325,7 @@ package body Flow_Refinement is
                      P := Corresponding_Spec (P);
 
                   when others =>
-                     raise Why.Unexpected_Node;
+                     raise Program_Error;
                end case;
                exit;
 
@@ -352,7 +352,7 @@ package body Flow_Refinement is
                      P := Defining_Identifier (Parent (P));
 
                   when others =>
-                     raise Why.Unexpected_Node;
+                     raise Program_Error;
                end case;
                exit;
 
