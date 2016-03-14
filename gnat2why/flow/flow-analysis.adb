@@ -1470,17 +1470,22 @@ package body Flow.Analysis is
            (V  : Flow_Graphs.Vertex_Id;
             TV : out Flow_Graphs.Simple_Traversal_Instruction)
          is
-            Intersection : constant Flow_Id_Sets.Set :=
-              Vars_Defined and
-              (FA.Atr (V).Variables_Defined - FA.Atr (V).Variables_Used);
          begin
-            if V /= Ineffective_Statement
-              and then not Intersection.Is_Empty
-            then
-               Mask.Include (V);
-               TV := Flow_Graphs.Skip_Children;
-            else
+            if V = Ineffective_Statement then
                TV := Flow_Graphs.Continue;
+            else
+               declare
+                  Intersection : constant Flow_Id_Sets.Set :=
+                    Vars_Defined and
+                    (FA.Atr (V).Variables_Defined - FA.Atr (V).Variables_Used);
+               begin
+                  if Intersection.Is_Empty then
+                     TV := Flow_Graphs.Continue;
+                  else
+                     Mask.Include (V);
+                     TV := Flow_Graphs.Skip_Children;
+                  end if;
+               end;
             end if;
          end Visitor;
 
