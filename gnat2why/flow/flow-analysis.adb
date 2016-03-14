@@ -2186,6 +2186,10 @@ package body Flow.Analysis is
             --  Stops the DFS search when we reach V_Def and skips the
             --  children of V_Use.
 
+            -----------------
+            -- Found_V_Def --
+            -----------------
+
             procedure Found_V_Def
               (V  : Flow_Graphs.Vertex_Id;
                TV : out Flow_Graphs.Simple_Traversal_Instruction)
@@ -2200,6 +2204,8 @@ package body Flow.Analysis is
                   TV := Flow_Graphs.Continue;
                end if;
             end Found_V_Def;
+
+         --  Start_To_V_Def_Without_V_Use
 
          begin
             FA.CFG.DFS (Start         => FA.Start_Vertex,
