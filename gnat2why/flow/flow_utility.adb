@@ -152,8 +152,7 @@ package body Flow_Utility is
    begin
       Append (Temp_String,
               Trim (To_Unbounded_String (S), Whitespace, Whitespace));
-      Append (Temp_String, '\');
-      Append (Temp_String, 'n');
+      Append (Temp_String, "\n");
    end Add_To_Temp_String;
 
    --------------------
