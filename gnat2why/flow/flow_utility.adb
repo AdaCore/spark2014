@@ -3024,7 +3024,7 @@ package body Flow_Utility is
       Inserted : Boolean;
       --  Indicates than an element was inserted to a set
 
-      Unused    : Node_Sets.Cursor;
+      Unused   : Node_Sets.Cursor;
       --  Dummy variable required by the standard containers API
 
    --  Start of processing for Initialize
