@@ -903,7 +903,7 @@ package body Flow.Slice is
    begin
       Inputs_Proof          := Get_Proof_Ins;
       Inputs                := Get_In_Outs or (Get_Inputs_Or_Proof_Ins -
-                                                 Get_Proof_Ins);
+                                                 Inputs_Proof);
       Outputs               := Get_In_Outs or Get_Outputs;
       Proof_Calls           := Get_Proof_Subprograms;
       Definite_Calls        := Get_Definite_Subprograms - Proof_Calls;
