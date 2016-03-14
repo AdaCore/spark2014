@@ -6170,14 +6170,11 @@ package body Flow.Control_Flow_Graph is
                     Get_Pragma (FA.Analyzed_Entity,
                                 Pragma_Refined_State);
 
-                  Constituents    : Flow_Id_Sets.Set;
                   DM              : Dependency_Maps.Map;
                begin
                   if Present (Refined_State_N) then
                      DM := Parse_Refined_State (Refined_State_N);
-                     for C in DM.Iterate loop
-                        Constituents := Dependency_Maps.Element (C);
-
+                     for Constituents of DM loop
                         for Constituent of Constituents loop
                            if Is_Abstract_State (Constituent) then
                               --  Found a constituent that is an
