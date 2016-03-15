@@ -136,6 +136,7 @@ package Configuration is
    --  Value 0 should be passed explicitly to force absence of timeout.
    Steps        : aliased Integer;
    --  The number of steps to try to prove each VC. Specified with --steps=.
+   --  Value 0 should be passed explicitly to force absence of steps.
    Project_File : aliased GNAT.Strings.String_Access;
    --  The project file name, given with option -P
    File_List    : String_Lists.List;

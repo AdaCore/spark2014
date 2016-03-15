@@ -64,6 +64,7 @@ Command Line Invocation
   --prover=s[,s]*     Use given provers (s=altergo, cvc4*, z3, ...)
   --RTS=dir           Specify the Ada runtime name/location
   --steps=nnn         Set the maximum number of proof steps (prover-specific)
+                      (0 steps means no steps limit)
   --timeout=s         Set the prover timeout in seconds (default: 1)
   --why3-conf=f       Specify a configuration file for why3
 
