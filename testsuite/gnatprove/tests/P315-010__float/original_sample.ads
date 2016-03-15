@@ -36,7 +36,7 @@ private
      Pre     => Nb_Of_Pp > 0 and Delta_Time > 0.0 and
                 Time >= 0.5 * Float (Nb_Of_Fp + Nb_Of_Pp) * Delta_Time and
                 Time < Float'Last - Float (Nb_Of_Fp + Nb_Of_Pp) * Delta_Time,
-     Post    => (if Nb_Of_Fp > 0 then Time > Time'Old);
+     Post    => (if Nb_Of_Fp > 0 then Time >= Time'Old);
 
      -- Contract_Cases => (Nb_Of_Fp = 0 => Are_Float_Equal(Time'Old, Time),
      --                    Nb_Of_Fp > 0 => Time > Time'Old);
