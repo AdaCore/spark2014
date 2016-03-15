@@ -151,26 +151,25 @@ package body Flow.Interprocedural is
       Called_Thing : constant Entity_Id := Get_Called_Entity (N);
 
       procedure Add_TD_Edge (A, B : Flow_Id);
-      --  Add a parameter dependency edge from the input A to the
-      --  output B.
+      --  Add a parameter dependency edge from the input A to the output B
 
       -----------------
       -- Add_TD_Edge --
       -----------------
 
       procedure Add_TD_Edge (A, B : Flow_Id) is
-         V_A, V_B : Flow_Graphs.Vertex_Id;
+         V_A : constant Flow_Graphs.Vertex_Id :=
+           Find_Parameter_Vertex
+             (FA,
+              V,
+              Change_Variant (A, In_View));
+
+         V_B : constant Flow_Graphs.Vertex_Id :=
+           Find_Parameter_Vertex
+             (FA,
+              V,
+              Change_Variant (B, Out_View));
       begin
-         V_A := Find_Parameter_Vertex
-           (FA,
-            V,
-            Change_Variant (A, In_View));
-
-         V_B := Find_Parameter_Vertex
-           (FA,
-            V,
-            Change_Variant (B, Out_View));
-
          FA.TDG.Add_Edge (V_A, V_B, EC_TDG);
       end Add_TD_Edge;
 
