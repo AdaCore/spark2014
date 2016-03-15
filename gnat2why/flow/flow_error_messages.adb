@@ -377,13 +377,14 @@ package body Flow_Error_Messages is
       Vertex       : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
       Continuation : Boolean               := False)
    is
-      Img     : constant String := Natural'Image
-        (FA.CFG.Vertex_To_Natural (Vertex));
-      Tmp     : constant String :=
+      Vertex_Img : constant String :=
+        Image (FA.CFG.Vertex_To_Natural (Vertex), 1);
+      Debug_Msg  : constant String :=
         (if Gnat2Why_Args.Flow_Advanced_Debug
            and then Vertex /= Flow_Graphs.Null_Vertex
-         then Msg & " <" & Img (2 .. Img'Last) & ">"
+         then Msg & " <" & Vertex_Img & ">"
          else Msg);
+
       Suppressed : Boolean;
 
       E : constant Entity_Id :=
@@ -393,7 +394,7 @@ package body Flow_Error_Messages is
 
    begin
       Error_Msg_Flow (E            => E,
-                      Msg          => Tmp,
+                      Msg          => Debug_Msg,
                       Severity     => Severity,
                       N            => N,
                       Suppressed   => Suppressed,
