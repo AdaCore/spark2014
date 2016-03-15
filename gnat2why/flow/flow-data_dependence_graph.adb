@@ -23,17 +23,22 @@
 
 package body Flow.Data_Dependence_Graph is
 
-   use type Flow_Id_Sets.Set;
-   use type Flow_Graphs.Vertex_Id;
+   ------------
+   -- Create --
+   ------------
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
-      Combined_Defined : Flow_Id_Sets.Set;
    begin
       FA.DDG := Flow_Graphs.Create (FA.CFG);
 
       for V_D of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             Atr_Def : V_Attributes renames FA.Atr (V_D);
+
+            Combined_Defined : Flow_Id_Sets.Set;
+
+            use type Flow_Id_Sets.Set;
+
          begin
             if not Atr_Def.Is_Exceptional_Path then
                Combined_Defined :=
@@ -119,12 +124,12 @@ package body Flow.Data_Dependence_Graph is
                            when others                => raise Program_Error);
 
                   begin
-                     --  Check for self-dependency (i.e. X := X + 1).
+                     --  Check for self-dependency (i.e. X := X + 1)
                      if Atr_Def.Variables_Used.Contains (Var) then
                         FA.DDG.Add_Edge (V_D, V_D, EC_DDG);
                      end if;
 
-                     --  Flag all def-used chains rooted at V_D.
+                     --  Flag all def-used chains rooted at V_D
                      FA.CFG.DFS (Start         => V_D,
                                  Include_Start => False,
                                  Visitor       => Visitor'Access,
@@ -135,6 +140,8 @@ package body Flow.Data_Dependence_Graph is
                            V_Final : constant Flow_Graphs.Vertex_Id :=
                              FA.CFG.Get_Vertex
                                (Change_Variant (Vol, Final_Value));
+
+                           use type Flow_Graphs.Vertex_Id;
 
                         begin
                            if V_Final /= Flow_Graphs.Null_Vertex then
