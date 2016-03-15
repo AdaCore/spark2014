@@ -1,0 +1,64 @@
+call_sample.adb:6:04: info: precondition proved
+call_sample.adb:6:27: info: initialization of "Time" proved
+original_sample.adb:14:30: info: range check proved
+original_sample.adb:14:42: info: overflow check proved
+original_sample.adb:14:42: info: range check proved
+original_sample.adb:15:19: info: overflow check proved
+original_sample.adb:15:22: info: initialization of "D" proved
+original_sample.adb:15:24: info: division check proved
+original_sample.adb:15:24: info: overflow check proved
+original_sample.adb:16:14: info: initialization of "T_Fp" proved
+original_sample.adb:16:19: medium: overflow check might fail
+original_sample.adb:16:28: info: range check proved
+original_sample.adb:16:38: info: overflow check proved
+original_sample.adb:17:14: info: initialization of "T_Pp" proved
+original_sample.adb:17:19: medium: overflow check might fail
+original_sample.adb:17:25: info: overflow check proved
+original_sample.adb:17:34: info: range check proved
+original_sample.adb:17:44: info: overflow check proved
+original_sample.adb:27:19: info: overflow check proved
+original_sample.adb:27:25: info: overflow check proved
+original_sample.ads:15:128: medium: overflow check might fail (e.g. when Float_Tested = -340282346638528859811704183484516925440.0 and Float_Ref = (/ 1 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608))
+original_sample.ads:15:140: info: division check proved
+original_sample.ads:15:140: medium: overflow check might fail
+original_sample.ads:37:29: info: overflow check proved
+original_sample.ads:37:47: info: range check proved
+original_sample.ads:37:59: info: overflow check proved
+original_sample.ads:38:35: info: overflow check proved
+original_sample.ads:38:53: info: range check proved
+original_sample.ads:38:65: info: overflow check proved
+original_sample.ads:39:39: medium: postcondition might fail, cannot prove Time > Time'old
+original_sample.ads:59:17: medium: postcondition might fail, cannot prove Time >= Time'old
+sample.adb:16:30: info: range check proved
+sample.adb:16:42: info: overflow check proved
+sample.adb:16:42: info: range check proved
+sample.adb:17:19: info: overflow check proved
+sample.adb:17:19: info: range check proved
+sample.adb:17:22: info: initialization of "D" proved
+sample.adb:17:24: info: division check proved
+sample.adb:17:24: info: overflow check proved
+sample.adb:18:21: info: range check proved
+sample.adb:18:31: info: overflow check proved
+sample.adb:18:31: info: range check proved
+sample.adb:19:14: info: initialization of "T_Fp" proved
+sample.adb:19:19: info: overflow check proved
+sample.adb:19:21: info: initialization of "Tmp1" proved
+sample.adb:20:18: info: overflow check proved
+sample.adb:20:27: info: range check proved
+sample.adb:20:37: info: overflow check proved
+sample.adb:20:37: info: range check proved
+sample.adb:21:14: info: initialization of "T_Pp" proved
+sample.adb:21:19: info: overflow check proved
+sample.adb:21:21: info: initialization of "Tmp2" proved
+sample.adb:29:43: info: overflow check proved
+sample.adb:29:43: info: range check proved
+sample.adb:32:19: info: overflow check proved
+sample.adb:32:21: info: initialization of "Tmp" proved
+sample.ads:13:128: medium: overflow check might fail (e.g. when Float_Tested = -340282346638528859811704183484516925440.0 and Float_Ref = (/ 1 89884656743115795386465259539451236680898848947115328636715040578866337902750481566354238661203768010560056939935696678829394884407208311246423715319737062188883946712432742638151109800623047059726541476042502884419075341171231440736956555270413618581675255342293149119973622969239858152417678164812112068608))
+sample.ads:13:140: info: division check proved
+sample.ads:13:140: medium: overflow check might fail
+sample.ads:35:29: info: overflow check proved
+sample.ads:35:47: info: range check proved
+sample.ads:35:59: info: overflow check proved
+sample.ads:37:39: medium: postcondition might fail, cannot prove Time > Time'old
+sample.ads:57:17: medium: postcondition might fail, cannot prove Time >= Time'old
