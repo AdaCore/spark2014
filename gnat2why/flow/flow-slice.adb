@@ -498,8 +498,8 @@ package body Flow.Slice is
       function Get_Definite_Subprograms return Node_Sets.Set is
          All_Definite_Subprograms  : Node_Sets.Set := Node_Sets.Empty_Set;
       begin
-         --  We go through all directly called subprograms and check if their
-         --  corresponding 'Initial vertex has no Out_Neighbours.
+         --  Collect those directly called subprograms whose corresponding
+         --  'Initial vertex has no Out_Neighbours.
 
          for G of FA.Direct_Calls loop
             declare
@@ -508,7 +508,7 @@ package body Flow.Slice is
                  FA.PDG.Get_Vertex (Change_Variant (F, Initial_Value));
             begin
                if FA.PDG.Out_Neighbour_Count (V_Initial) = 0 then
-                  All_Definite_Subprograms.Include (G);
+                  All_Definite_Subprograms.Insert (G);
                end if;
             end;
          end loop;
