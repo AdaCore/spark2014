@@ -184,7 +184,7 @@ package body Flow.Slice is
       --  We need to keep track of discriminated or unconstrained out
       --  parameters, as the implicit input (the discriminant) is
       --  never unused. So if it is unused after all we silently take
-      --  it out the unused_inputs set, so that we don't produce a
+      --  it out the Unused_Inputs set, so that we don't produce a
       --  flow error about a missing null dependency.
 
       DM            : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
