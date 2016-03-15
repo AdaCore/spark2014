@@ -1,5 +1,25 @@
 call_sample.adb:6:04: info: precondition proved
 call_sample.adb:6:27: info: initialization of "Time" proved
+call_sample2.adb:6:14: warning: subprogram "Test_Original" has no effect
+call_sample2.adb:13:07: info: precondition proved, in call inlined at call_sample2.adb:28
+call_sample2.adb:13:19: info: initialization of "Nb_Of_Fp" proved
+call_sample2.adb:13:19: info: initialization of "Nb_Of_Fp" proved, in call inlined at call_sample2.adb:28
+call_sample2.adb:13:29: info: initialization of "Nb_Of_Pp" proved
+call_sample2.adb:13:29: info: initialization of "Nb_Of_Pp" proved, in call inlined at call_sample2.adb:28
+call_sample2.adb:13:39: info: initialization of "Delta_Time" proved
+call_sample2.adb:13:39: info: initialization of "Delta_Time" proved, in call inlined at call_sample2.adb:28
+call_sample2.adb:13:51: info: initialization of "Time" proved
+call_sample2.adb:13:51: info: initialization of "Time" proved, in call inlined at call_sample2.adb:28
+call_sample2.adb:16:14: warning: subprogram "Test_New" has no effect
+call_sample2.adb:23:07: info: precondition proved, in call inlined at call_sample2.adb:27
+call_sample2.adb:23:19: info: initialization of "Nb_Of_Fp" proved
+call_sample2.adb:23:19: info: initialization of "Nb_Of_Fp" proved, in call inlined at call_sample2.adb:27
+call_sample2.adb:23:29: info: initialization of "Nb_Of_Pp" proved
+call_sample2.adb:23:29: info: initialization of "Nb_Of_Pp" proved, in call inlined at call_sample2.adb:27
+call_sample2.adb:23:39: info: initialization of "Delta_Time" proved
+call_sample2.adb:23:39: info: initialization of "Delta_Time" proved, in call inlined at call_sample2.adb:27
+call_sample2.adb:23:51: info: initialization of "Time" proved
+call_sample2.adb:23:51: info: initialization of "Time" proved, in call inlined at call_sample2.adb:27
 original_sample.adb:14:30: info: range check proved
 original_sample.adb:14:42: info: overflow check proved
 original_sample.adb:14:42: info: range check proved
@@ -27,7 +47,7 @@ original_sample.ads:37:59: info: overflow check proved
 original_sample.ads:38:35: info: overflow check proved
 original_sample.ads:38:53: info: range check proved
 original_sample.ads:38:65: info: overflow check proved
-original_sample.ads:39:39: medium: postcondition might fail, cannot prove Time > Time'old
+original_sample.ads:39:39: medium: postcondition might fail, cannot prove Time >= Time'old
 original_sample.ads:59:17: medium: postcondition might fail, cannot prove Time >= Time'old
 sample.adb:16:30: info: range check proved
 sample.adb:16:42: info: overflow check proved
@@ -60,5 +80,5 @@ sample.ads:13:140: medium: overflow check might fail
 sample.ads:35:29: info: overflow check proved
 sample.ads:35:47: info: range check proved
 sample.ads:35:59: info: overflow check proved
-sample.ads:37:39: medium: postcondition might fail, cannot prove Time > Time'old
+sample.ads:37:39: medium: postcondition might fail, cannot prove Time >= Time'old
 sample.ads:57:17: medium: postcondition might fail, cannot prove Time >= Time'old

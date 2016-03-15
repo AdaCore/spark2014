@@ -10,7 +10,7 @@ package Original_Sample is
    --------------------------------------------------------------------------------------------
 
 
-private
+
 
    function Are_Float_Equal (Float_Tested, Float_Ref : in Float) return Boolean is (Float_Ref /= 0.0 and then abs(Float_Tested - Float_Ref)/Float_Ref < 1.0e-5);
 
