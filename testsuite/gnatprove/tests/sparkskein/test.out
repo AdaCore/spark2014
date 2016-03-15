@@ -77,7 +77,7 @@ skein.adb:697:26: info: initialization of "Dst" proved
 skein.adb:697:26: info: initialization of "Dst" proved, in call inlined at skein.adb:728
 skein.adb:697:26: info: initialization of "Dst" proved, in call inlined at skein.adb:768
 skein.adb:697:30: info: range check proved, in call inlined at skein.adb:728
-skein.adb:697:30: info: range check proved, in call inlined at skein.adb:768
+skein.adb:697:30: medium: range check might fail, in call inlined at skein.adb:768
 skein.adb:699:26: info: initialization of "Src" proved
 skein.adb:699:26: info: initialization of "Src" proved, in call inlined at skein.adb:728
 skein.adb:699:26: info: initialization of "Src" proved, in call inlined at skein.adb:768
@@ -126,7 +126,7 @@ skein.adb:744:13: info: initialization of "Msg_Byte_Count" proved
 skein.adb:747:29: info: initialization of "Msg_Byte_Count" proved
 skein.adb:747:49: info: division check proved
 skein.adb:747:49: info: range check proved
-skein.adb:749:13: info: precondition proved
+skein.adb:749:13: medium: precondition might fail
 skein.adb:752:35: info: initialization of "Current_Msg_Offset" proved
 skein.adb:753:35: info: initialization of "Block_Count" proved
 skein.adb:756:29: info: initialization of "Block_Count" proved
@@ -268,7 +268,7 @@ skein.ads:176:36: info: initialization of "Ctx.H.Tweak_Words.First_Block" proved
 skein.ads:176:36: info: initialization of "Ctx.H.Tweak_Words.Reserved" proved
 skein.ads:176:36: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
 skein.ads:176:36: info: initialization of "Ctx.X" proved
-skein.ads:190:19: medium: postcondition might fail
+skein.ads:190:19: info: postcondition proved
 skein.ads:195:31: info: initialization of "Hash" proved
 skein.ads:200:46: info: division check proved
 skein.ads:369:52: info: length check proved

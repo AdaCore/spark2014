@@ -44,7 +44,7 @@ list_allocator.ads:28:06: info: initial condition proved
 list_allocator.ads:33:09: info: precondition proved
 list_allocator.ads:35:41: info: precondition proved
 list_allocator.ads:52:43: info: precondition proved
-list_allocator.ads:69:14: info: postcondition proved
+list_allocator.ads:69:14: medium: postcondition might fail, cannot prove (Is_Valid)
 list_allocator.ads:75:38: info: contract case proved
 list_allocator.ads:82:16: info: contract case proved
 list_allocator.ads:89:14: info: postcondition proved

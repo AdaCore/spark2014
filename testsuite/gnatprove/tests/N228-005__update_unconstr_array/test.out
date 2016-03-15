@@ -24,7 +24,7 @@ update_checks_1.ads:6:19: info: postcondition proved
 update_checks_1.ads:6:37: info: range check proved
 update_checks_1.ads:9:19: info: postcondition proved
 update_checks_1.ads:9:39: info: range check proved
-update_checks_1.ads:12:19: medium: postcondition might fail, cannot prove A = A'Old'update
+update_checks_1.ads:12:19: medium: postcondition might fail, cannot prove A = A'Old'update (e.g. when A = (1 => 1, others => 0) and A'Old'First = 1 and A'Old'Last = 1 and A'Old = (others => 1) and I = 1 and New_Val = 0)
 update_checks_1.ads:12:42: info: range check proved
 update_checks_1.ads:15:19: medium: postcondition might fail, cannot prove A = A'Old'update
 update_checks_1.ads:15:42: info: range check proved

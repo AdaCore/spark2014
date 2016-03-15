@@ -15,7 +15,7 @@ deceleration_curve.adb:43:14: medium: assertion might fail, cannot prove Speed_t
 deceleration_curve.adb:44:38: info: division check proved
 deceleration_curve.adb:44:38: info: overflow check proved
 deceleration_curve.adb:44:40: info: initialization of "speed" proved
-deceleration_curve.adb:46:14: medium: assertion might fail, cannot prove Speed_t(Minimum_Valid_Acceleration) / Minimum_Valid_Speed) * Speed_t(Distance_Resolution) <= (Speed_t(Acceleration) / speed) * Distance_Resolution
+deceleration_curve.adb:45:10: info: assertion proved
 deceleration_curve.adb:48:39: info: division check proved
 deceleration_curve.adb:48:39: info: overflow check proved
 deceleration_curve.adb:48:41: info: initialization of "speed" proved
@@ -73,7 +73,7 @@ deceleration_curve.ads:81:32: info: initialization of "Braking_Curve.end_point" 
 deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved
 deceleration_curve_test.adb:15:19: info: precondition proved
-deceleration_curve_test.adb:15:19: medium: assertion might fail, cannot prove Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000 (e.g. when initial_speed = (/ 63433227006016362258829782382481923486253055999 1427247692705959881058285969449495136382746624))
+deceleration_curve_test.adb:15:19: medium: assertion might fail, cannot prove Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000 (e.g. when initial_speed = (/ 570899111110620644517160734117258797729919795209 12845229234353638929524573725045456227444719616))
 deceleration_curve_test.adb:15:37: info: initialization of "initial_speed" proved
 deceleration_curve_test.adb:17:04: info: precondition proved
 deceleration_curve_test.adb:17:22: info: initialization of "target.location" proved

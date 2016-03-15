@@ -1,9 +1,9 @@
 harness.adb:3:11: warning: subprogram "Harness" has no effect
-harness.adb:10:04: medium: precondition might fail
+harness.adb:10:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 65535, Length => 65536))
 harness.adb:10:10: info: initialization of "R.Data" proved
 harness.adb:10:10: info: initialization of "R.First" proved
 harness.adb:10:10: info: initialization of "R.Length" proved
-harness.adb:11:04: medium: precondition might fail
+harness.adb:11:04: medium: precondition might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 65536))
 harness.adb:11:10: info: initialization of "R.Data" proved
 harness.adb:11:10: info: initialization of "R.First" proved
 harness.adb:11:10: info: initialization of "R.Length" proved
@@ -45,11 +45,11 @@ ring_buf.ads:51:51: medium: range check might fail (e.g. when M = (others => 0) 
 ring_buf.ads:58:21: info: initialization of "R.Data" proved
 ring_buf.ads:58:21: info: initialization of "R.First" proved
 ring_buf.ads:58:21: info: initialization of "R.Length" proved
-ring_buf.ads:59:19: info: postcondition proved
+ring_buf.ads:59:19: medium: postcondition might fail, cannot prove To_Model (R) = ModelModel'(1..0 => 0) (e.g. when R = (Data => (others => 0), First => 0, Length => 0))
 ring_buf.ads:59:30: info: initialization of "R.Data" proved
 ring_buf.ads:59:30: info: initialization of "R.First" proved
 ring_buf.ads:59:30: info: initialization of "R.Length" proved
-ring_buf.ads:63:17: info: postcondition proved
+ring_buf.ads:63:17: medium: postcondition might fail, cannot prove Head'Result = Func_Head (To_Model (R)
 ring_buf.ads:63:31: medium: precondition might fail
 ring_buf.ads:67:19: medium: postcondition might fail, cannot prove To_Model (R) = Func_Push (To_Model(R)'Old, X)
 ring_buf.ads:69:43: info: initialization of "Element" proved

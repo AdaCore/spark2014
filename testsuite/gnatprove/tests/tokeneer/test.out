@@ -477,7 +477,7 @@ bio.adb:173:42: info: initialization of "Result" proved, in call inlined at bio.
 bio.adb:173:42: info: length check proved, in call inlined at bio.adb:183
 bio.adb:173:45: info: initialization of "FullString" proved
 bio.adb:173:45: info: initialization of "FullString" proved, in call inlined at bio.adb:183
-bio.adb:173:45: medium: length check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 2 and FullString'Last = 150)
+bio.adb:173:45: medium: length check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 2 and FullString'Last = 9)
 bio.adb:175:23: info: initialization of "FullString" proved
 bio.adb:175:23: info: initialization of "FullString" proved, in call inlined at bio.adb:183
 bio.adb:175:23: info: length check proved, in call inlined at bio.adb:183
@@ -2209,9 +2209,9 @@ screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at
 screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at screen.adb:603
 screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at screen.adb:609
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:591 (e.g. when ValueStr'First = 1 and ValueStr'Last = 0)
-screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:597 (e.g. when Str = (5 => 0, others => 1) and ValueStr'First = 2 and ValueStr'Last = 1)
-screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:603 (e.g. when Str = (5 => 0, others => 1) and ValueStr'First = 2 and ValueStr'Last = 1)
-screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:609 (e.g. when Str = (5 => 0, others => 1) and ValueStr'First = 2 and ValueStr'Last = 1)
+screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:597 (e.g. when Str = (5 => 0, others => -1) and ValueStr'First = 3 and ValueStr'Last = 2)
+screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:603 (e.g. when Str = (5 => 0, others => -1) and ValueStr'First = 3 and ValueStr'Last = 2)
+screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:609 (e.g. when Str = (5 => 0, others => -1) and ValueStr'First = 3 and ValueStr'Last = 2)
 screen.adb:440:41: info: initialization of "Str" proved
 screen.adb:440:41: info: initialization of "Str" proved, in call inlined at screen.adb:591
 screen.adb:440:41: info: initialization of "Str" proved, in call inlined at screen.adb:597
@@ -2715,7 +2715,7 @@ tokenreader.adb:175:56: low: range check might fail (e.g. when FullString = (oth
 tokenreader.adb:180:43: info: length check proved
 tokenreader.adb:180:46: medium: length check might fail (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 7)
 tokenreader.adb:182:23: info: length check proved
-tokenreader.adb:182:23: medium: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 2147483642 and FullString'Last = 2147483647)
+tokenreader.adb:182:23: medium: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 151)
 tokenreader.adb:188:07: info: initialization of "Result" proved
 tokenreader.adb:188:07: info: initialization of "TheCodeName" proved
 tokenreader.adb:189:14: info: initialization of "Result" proved

@@ -6,7 +6,7 @@ list.adb:23:10: medium: precondition might fail
 list.adb:23:16: info: initialization of "S" proved
 list.adb:23:19: info: precondition proved
 list.adb:23:31: info: range check proved
-list.adb:24:10: medium: loop invariant might fail after first iteration (e.g. when First = 1 and I = 2)
+list.adb:24:10: medium: loop invariant might fail after first iteration
 list.adb:24:10: medium: loop invariant might fail in first iteration (e.g. when First = 1 and I = 1)
 list.adb:25:23: info: initialization of "S" proved
 list.adb:25:35: info: overflow check proved
@@ -20,13 +20,13 @@ list.adb:30:23: medium: precondition might fail
 list.adb:30:28: info: initialization of "S" proved
 list.adb:31:10: medium: precondition might fail
 list.adb:31:15: info: initialization of "S" proved
-list.adb:32:10: medium: loop invariant might fail after first iteration (e.g. when First = 1 and Last = 2 and I = 2)
-list.adb:32:10: medium: loop invariant might fail in first iteration (e.g. when Last = 2 and First = 1 and I = 1)
+list.adb:32:10: medium: loop invariant might fail after first iteration
+list.adb:32:10: medium: loop invariant might fail in first iteration
 list.adb:33:23: info: initialization of "S" proved
 list.adb:33:38: info: overflow check proved
-list.adb:34:21: medium: range check might fail (e.g. when First = 1)
+list.adb:34:21: medium: range check might fail
 list.adb:34:44: info: overflow check proved
-list.adb:35:24: medium: range check might fail (e.g. when First = 1)
+list.adb:35:24: medium: range check might fail
 list.adb:35:58: info: overflow check proved
 list.adb:37:15: medium: precondition might fail
 list.adb:37:24: info: initialization of private part of "Res" proved
@@ -60,6 +60,6 @@ stack.adb:20:22: info: range check proved
 stack.adb:21:19: info: index check proved
 stack.adb:32:22: info: range check proved
 stack.ads:19:14: info: precondition proved
-stack.ads:19:14: medium: postcondition might fail (e.g. when X = 0)
+stack.ads:19:14: medium: postcondition might fail
 stack.ads:23:14: info: postcondition proved
 stack.ads:31:34: info: length check proved

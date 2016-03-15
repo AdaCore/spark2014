@@ -11,19 +11,19 @@ bitwalker.adb:26:31: info: precondition proved
 bitwalker.adb:26:31: medium: assertion might fail, cannot prove Nth_Bv (R, I) = Nth_Bv (Value, I)
 bitwalker.adb:26:47: info: precondition proved
 bitwalker.adb:28:10: medium: assertion might fail
-bitwalker.adb:33:25: medium: assertion might fail, cannot prove Flag = Nth_Bv (R, 63 - Left_Bv)
+bitwalker.adb:33:10: info: assertion proved
 bitwalker.adb:33:32: info: precondition proved
 bitwalker.adb:47:16: info: overflow check proved
 bitwalker.adb:47:29: info: overflow check proved
 bitwalker.adb:56:13: info: loop invariant initialization proved
 bitwalker.adb:58:18: info: precondition proved
-bitwalker.adb:58:18: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr, Start + Length - J - 1) = Nth (Retval, J)
+bitwalker.adb:58:18: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr, Start + Length - J - 1) = Nth (Retval, J) (e.g. when Addr = (others => 0) and Addr'First = 0 and Addr'Last = 268435454 and Start = 8 and Length = 9 and Retval = 0)
 bitwalker.adb:58:56: info: range check proved
 bitwalker.adb:59:18: info: precondition proved
 bitwalker.adb:59:23: info: initialization of "Retval" proved
 bitwalker.adb:59:31: info: range check proved
-bitwalker.adb:61:13: info: loop invariant initialization proved
-bitwalker.adb:63:18: medium: loop invariant might fail after first iteration, cannot prove not Nth (Retval, J)
+bitwalker.adb:63:18: medium: loop invariant might fail after first iteration, cannot prove not Nth (Retval, J) (e.g. when Retval = 0)
+bitwalker.adb:63:18: medium: loop invariant might fail in first iteration, cannot prove not Nth (Retval, J) (e.g. when Retval = 0)
 bitwalker.adb:63:22: info: precondition proved
 bitwalker.adb:63:27: info: initialization of "Retval" proved
 bitwalker.adb:63:35: info: range check proved
@@ -77,8 +77,8 @@ bitwalker.adb:130:47: info: range check proved
 bitwalker.adb:132:10: info: precondition proved
 bitwalker.adb:133:31: info: overflow check proved
 bitwalker.adb:134:25: info: initialization of "Flag" proved
+bitwalker.adb:136:25: info: precondition proved
 bitwalker.adb:136:25: medium: assertion might fail, cannot prove Nth8_Stream (Addr, Start + I) = Nth (Value, Len - I - 1)
-bitwalker.adb:136:25: medium: precondition might fail
 bitwalker.adb:137:25: info: precondition proved
 bitwalker.adb:137:45: info: range check proved
 bitwalker.adb:138:10: medium: assertion might fail
@@ -87,8 +87,8 @@ bitwalker.adb:142:32: info: range check proved
 bitwalker.adb:142:37: info: precondition proved
 bitwalker.adb:142:65: info: range check proved
 bitwalker.adb:149:53: info: range check proved
-bitwalker.adb:151:07: info: assertion proved
 bitwalker.adb:152:24: info: precondition proved
+bitwalker.adb:152:24: medium: assertion might fail, cannot prove Nth (X, J) = Nth (Unsigned_64 (0), J) (e.g. when X = 1)
 bitwalker.adb:152:32: info: range check proved
 bitwalker.adb:152:37: info: precondition proved
 bitwalker.adb:152:59: info: range check proved
@@ -112,15 +112,15 @@ bitwalker.adb:177:12: info: precondition proved
 bitwalker.adb:177:31: info: range check proved
 bitwalker.adb:177:36: info: precondition proved
 bitwalker.adb:177:58: info: range check proved
-bitwalker.adb:187:48: medium: assertion might fail, cannot prove not Nth (Value, I)
+bitwalker.adb:187:48: medium: assertion might fail, cannot prove not Nth (Value, I) (e.g. when Value = 0)
 bitwalker.adb:187:52: info: precondition proved
 bitwalker.adb:187:64: info: range check proved
 bitwalker.adb:189:07: info: precondition proved
 bitwalker.adb:191:07: info: assertion proved
 bitwalker.adb:191:22: info: initialization of "PokeResult" proved
 bitwalker.adb:193:17: info: precondition proved
+bitwalker.adb:195:07: info: assertion proved
 bitwalker.adb:195:22: info: precondition proved
-bitwalker.adb:195:22: medium: assertion might fail, cannot prove Eq (Result, Value)
 bitwalker.adb:195:26: info: initialization of "Result" proved
 bitwalker.ads:10:35: info: range check proved
 bitwalker.ads:13:14: medium: postcondition might fail, cannot prove PeekBit8'Result = Nth (Byte, 7 - Left)
@@ -140,14 +140,14 @@ bitwalker.ads:34:52: info: range check proved
 bitwalker.ads:45:08: info: complete contract cases proved
 bitwalker.ads:45:08: info: disjoint contract cases proved
 bitwalker.ads:46:44: info: contract case proved
-bitwalker.ads:48:46: medium: contract case might fail
+bitwalker.ads:48:46: medium: contract case might fail (e.g. when Length = 0 and Addr = (others => 0) and Addr'First = 0 and Addr'Last = -1 and Start = 0 and Peek'Result = 0)
 bitwalker.ads:50:21: info: precondition proved
 bitwalker.ads:50:59: info: range check proved
 bitwalker.ads:51:21: info: precondition proved
 bitwalker.ads:53:46: info: precondition proved
 bitwalker.ads:53:64: info: range check proved
 bitwalker.ads:59:36: info: range check proved
-bitwalker.ads:62:16: info: postcondition proved
+bitwalker.ads:62:16: medium: postcondition might fail, cannot prove PeekBit64'Result = Nth (Value, (63 - Left)
 bitwalker.ads:62:35: info: precondition proved
 bitwalker.ads:62:51: info: range check proved
 bitwalker.ads:71:10: medium: postcondition might fail
@@ -189,4 +189,4 @@ bitwalker.ads:140:15: info: precondition proved
 bitwalker.ads:140:39: info: precondition proved
 bitwalker.ads:145:28: info: initialization of "Result" proved
 bitwalker.ads:155:10: info: initialization of "Result" proved
-bitwalker.ads:155:10: medium: postcondition might fail, cannot prove Result = Value
+bitwalker.ads:155:10: medium: postcondition might fail, cannot prove Result = Value (e.g. when Result = 18446744073709551615 and Value = 0)

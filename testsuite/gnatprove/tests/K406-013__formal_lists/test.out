@@ -78,8 +78,8 @@ test_vdll.adb:60:19: info: precondition proved
 test_vdll.adb:60:25: info: initialization of private part of "L1" proved
 test_vdll.adb:60:47: info: precondition proved
 test_vdll.adb:60:57: info: precondition proved
-test_vdll.adb:61:04: info: assertion proved
 test_vdll.adb:61:19: info: precondition proved
+test_vdll.adb:61:19: medium: assertion might fail, cannot prove Find (L1, 4, No_Element) = Last (L1)
 test_vdll.adb:61:25: info: initialization of private part of "L1" proved
 test_vdll.adb:61:47: info: precondition proved
 test_vdll.adb:62:04: info: assertion proved
@@ -105,7 +105,7 @@ test_vdll.adb:73:04: info: assertion proved
 test_vdll.adb:73:19: info: precondition proved
 test_vdll.adb:73:36: info: precondition proved
 test_vdll.adb:73:43: info: initialization of private part of "L3" proved
-test_vdll.adb:74:19: medium: assertion might fail, cannot prove Test_Element (L3, First (L3), 1)
+test_vdll.adb:74:04: info: assertion proved
 test_vdll.adb:74:37: info: precondition proved
 test_vdll.adb:74:44: info: initialization of private part of "L3" proved
 test_vdll.adb:75:04: info: assertion proved
@@ -113,7 +113,7 @@ test_vdll.adb:75:19: info: precondition proved
 test_vdll.adb:75:36: info: precondition proved
 test_vdll.adb:75:46: info: precondition proved
 test_vdll.adb:75:53: info: initialization of private part of "L3" proved
-test_vdll.adb:76:19: medium: assertion might fail, cannot prove Test_Element (L3, Next (L3, First (L3)), 3)
+test_vdll.adb:76:04: info: assertion proved
 test_vdll.adb:76:37: info: precondition proved
 test_vdll.adb:76:47: info: precondition proved
 test_vdll.adb:76:54: info: initialization of private part of "L3" proved
@@ -129,21 +129,21 @@ test_vdll.adb:82:19: medium: assertion might fail, cannot prove Find (L3, 3, No_
 test_vdll.adb:82:25: info: initialization of private part of "L3" proved
 test_vdll.adb:82:47: info: precondition proved
 test_vdll.adb:82:57: info: precondition proved
+test_vdll.adb:83:04: info: assertion proved
 test_vdll.adb:83:19: info: precondition proved
-test_vdll.adb:83:19: medium: assertion might fail, cannot prove Find (L3, 3, No_Element) = Last (L3)
 test_vdll.adb:83:25: info: initialization of private part of "L3" proved
 test_vdll.adb:83:46: info: precondition proved
+test_vdll.adb:84:04: info: assertion proved
 test_vdll.adb:84:19: info: precondition proved
-test_vdll.adb:84:19: medium: assertion might fail, cannot prove Find (L3, 1, No_Element) = First (L3)
 test_vdll.adb:84:25: info: initialization of private part of "L3" proved
 test_vdll.adb:84:47: info: precondition proved
+test_vdll.adb:85:04: info: assertion proved
 test_vdll.adb:85:19: info: precondition proved
-test_vdll.adb:85:19: medium: assertion might fail, cannot prove Find (L3, 1, No_Element) = Previous (L3, Last (L3)
 test_vdll.adb:85:25: info: initialization of private part of "L3" proved
 test_vdll.adb:85:46: info: precondition proved
 test_vdll.adb:85:60: info: precondition proved
+test_vdll.adb:88:04: info: assertion proved
 test_vdll.adb:88:19: info: precondition proved
-test_vdll.adb:88:19: medium: assertion might fail, cannot prove Find (L3, 1, Next (L3, First (L3))) = No_Element
 test_vdll.adb:88:32: info: precondition proved
 test_vdll.adb:88:42: info: precondition proved
 test_vdll.adb:88:49: info: initialization of private part of "L3" proved
@@ -175,8 +175,8 @@ test_vdll.adb:111:40: info: precondition proved
 test_vdll.adb:111:46: info: initialization of private part of "L1" proved
 test_vdll.adb:111:50: info: precondition proved
 test_vdll.adb:111:57: info: initialization of private part of "L4" proved
+test_vdll.adb:114:04: info: assertion proved
 test_vdll.adb:114:19: info: precondition proved
-test_vdll.adb:114:19: medium: assertion might fail, cannot prove Find (L4, 1, No_Element) = First (L4)
 test_vdll.adb:114:25: info: initialization of private part of "L4" proved
 test_vdll.adb:114:47: info: precondition proved
 test_vdll.adb:122:12: medium: precondition might fail

@@ -30,4 +30,4 @@ skp-subjects.adb:436:07: info: assertion proved
 skp-subjects.adb:438:50: info: division check proved
 skp-subjects.ads:49:17: info: postcondition proved
 skp-subjects.ads:49:42: info: division check proved
-skp-subjects.ads:57:17: info: postcondition proved
+skp-subjects.ads:57:17: medium: postcondition might fail, cannot prove Get_Event'Result.Dst_Subject /= Subject_Id
