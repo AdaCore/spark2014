@@ -248,7 +248,10 @@ ASCII.LF &
 " --RTS=dir           Specify the Ada runtime name/location" &
 ASCII.LF &
 " --steps=nnn         Set the maximum number of proof steps (prover-specific)"
-& ASCII.LF &
+     & ASCII.LF &
+"                     Value 0 should be passed explicitly to force absence " &
+"of steps." &
+ASCII.LF &
 " --timeout=s         Set the prover timeout in seconds (default: 1)" &
 ASCII.LF &
 " --why3-conf=f       Specify a configuration file for why3" &
