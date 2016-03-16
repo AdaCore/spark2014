@@ -17,7 +17,10 @@ is
       return True;
    end Foo;
 
-   type T is null record with Dynamic_Predicate => Foo;
+   type T is record
+      Dummy : Integer := 0;
+   end record
+   with Dynamic_Predicate => Foo and then T.Dummy = 0;
 
    --------
    -- PO --
