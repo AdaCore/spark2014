@@ -127,14 +127,12 @@ private
      (Data_Collector : FF_Acc_Data_Collector) return Float;
 
    --  Get the time since last landing after a recovery from a free fall.
-   function Get_Time_Since_Last_Landing return Time_Span is
-     (Clock - Last_Landing_Time)
+   function Get_Time_Since_Last_Landing return Time_Span
    with Volatile_Function;
    pragma Inline (Get_Time_Since_Last_Landing);
 
    --  Get the time since the last free fall detection.
-   function Get_Time_Since_Last_Free_Fall return Time_Span is
-     (Clock - Last_FF_Detected_Time)
+   function Get_Time_Since_Last_Free_Fall return Time_Span
    with Volatile_Function;
 
 end Free_Fall_Pack;

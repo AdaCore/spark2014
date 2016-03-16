@@ -512,12 +512,12 @@ postgresql.adb:40:07: warning: literal "PGRES_FATAL_ERROR" is not referenced
 postgresql.adb:41:07: warning: literal "PGRES_COPY_BOTH" is not referenced
 postgresql.adb:42:07: warning: literal "PGRES_SINGLE_TUPLE" is not referenced
 serial_generator.adb:21:04: info: initialization of "Current" constituent of "State" proved
-serial_generator.adb:47:28: info: initialization of "Year" proved
-serial_generator.adb:47:33: info: range check proved
-serial_generator.adb:48:30: info: initialization of "Month" proved
-serial_generator.adb:49:32: info: initialization of "Day" proved
-serial_generator.adb:50:28: info: initialization of "Seconds" proved
-serial_generator.adb:50:28: info: range check proved
+serial_generator.adb:48:28: info: initialization of "Year" proved
+serial_generator.adb:48:33: info: range check proved
+serial_generator.adb:49:30: info: initialization of "Month" proved
+serial_generator.adb:50:32: info: initialization of "Day" proved
+serial_generator.adb:51:28: info: initialization of "Seconds" proved
+serial_generator.adb:51:28: info: range check proved
 serial_generator.ads:27:19: info: initialization of "Number" proved
 server_spark_boundary.adb:36:13: info: initialization of "Read_Status" proved
 server_spark_boundary.adb:39:54: info: initialization of "Network_Request.Data" proved

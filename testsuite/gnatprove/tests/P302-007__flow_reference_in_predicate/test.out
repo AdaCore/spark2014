@@ -1,1 +1,6 @@
 greater.adb:1:22: warning: unused variable "Y"
+main.adb:3:25: warning: unused variable "Y"
+main.adb:4:09: medium: missing dependency "null => Y"
+main.adb:4:42: medium: incorrect dependency "Greater'Result => Y"
+main.adb:15:23: medium: assertion might fail, cannot prove Greater (5, 3)
+main.adb:16:19: medium: assertion might fail, cannot prove not Greater (3, 5)

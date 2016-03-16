@@ -2300,6 +2300,73 @@ package body SPARK_Definition is
       E   : Entity_Id;
       --  Entity of the called subprogram or entry
 
+      function Is_Volatile_Call (Target : Entity_Id) return Boolean;
+      --  Returns True iff call to Target is volatile
+
+      ----------------------
+      -- Is_Volatile_Call --
+      ----------------------
+
+      function Is_Volatile_Call (Target : Entity_Id) return Boolean is
+        (if Current_Protected_Type = Scope (Target) then
+           --  This is an internal call to protected function
+           Is_Enabled_Pragma (Get_Pragma (Target, Pragma_Volatile_Function))
+         else
+           Is_Volatile_Function (Target));
+
+      procedure Mark_Param (Formal : Entity_Id; Actual : Node_Id);
+      --  Mark actuals of the call
+
+      ----------------
+      -- Mark_Param --
+      ----------------
+
+      procedure Mark_Param
+        (Formal : Entity_Id;
+         Actual : Node_Id) is
+      begin
+         --  Special checks for effectively volatile calls and objects
+         if Comes_From_Source (Actual)
+           and then
+             (Is_Effectively_Volatile_Object (Actual)
+              or else (Nkind (Actual) = N_Function_Call
+                       and then Is_Volatile_Call (Get_Called_Entity (Actual))))
+         then
+            --  An effectively volatile object may act as an actual when the
+            --  corresponding formal is of a non-scalar effectively volatile
+            --  type (SPARK RM 7.1.3(11)).
+
+            if not Is_Scalar_Type (Etype (Formal))
+              and then Is_Effectively_Volatile (Etype (Formal))
+            then
+               null;
+
+            --  An effectively volatile object may act as an actual in a call
+            --  to an instance of Unchecked_Conversion. (SPARK RM 7.1.3(11)).
+
+            elsif Is_Unchecked_Conversion_Instance (E) then
+               null;
+
+            else
+               Mark_Violation
+                 (Msg           =>
+                    "volatile " &
+                  (if Nkind (Actual) = N_Function_Call
+                     then "function call"
+                     else "object") & " as actual",
+                  N             => Actual,
+                  SRM_Reference => "7.1.3(11)");
+            end if;
+         end if;
+
+         --  Regular checks
+         Mark (Actual);
+      end Mark_Param;
+
+      procedure Mark_Actuals is new Iterate_Call_Parameters (Mark_Param);
+
+   --  Start processing for Mark_Call
+
    begin
       case Nkind (Nam) is
          when N_Explicit_Dereference =>
@@ -2332,25 +2399,14 @@ package body SPARK_Definition is
       if Ekind (E) in E_Function | E_Generic_Function
         and then not Is_OK_Volatile_Context (Context => Parent (N),
                                              Obj_Ref => N)
-        and then
-          (if Current_Protected_Type = Scope (E) then
-              --  This is an internal call to protected function
-              Is_Enabled_Pragma (Get_Pragma (E, Pragma_Volatile_Function))
-           else
-              Is_Volatile_Function (E))
+        and then Is_Volatile_Call (E)
       then
          Mark_Violation ("call to a volatile function in interfering context",
                          N);
+         return;
       end if;
 
-      Mark_Actuals : declare
-         A : Node_Id := First_Actual (N);
-      begin
-         while Present (A) loop
-            Mark (A);
-            Next_Actual (A);
-         end loop;
-      end Mark_Actuals;
+      Mark_Actuals (N);
 
       --  Call is in SPARK only if the subprogram called is in SPARK
 

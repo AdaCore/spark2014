@@ -37,11 +37,12 @@ begin
       Month   : Month_Number;
       Day     : Day_Number;
       Seconds : Day_Duration;
+      Now     : constant Time := Clock;
    begin
       -- Clock does read a global time. However, it's not worth modeling fully here.
       pragma Warnings(Off, "no Global contract available for ""Split""");
       pragma Warnings(Off, "no Global contract available for ""Clock""");
-      Split(Clock, Year, Month, Day, Seconds);
+      Split(Now, Year, Month, Day, Seconds);
       -- Store the date/time into a 64 bit value. The precise layout is not important.
       Current :=
         Serial_Number_Type(Year - Year_Number'First) * 2**54 +  -- 9 bits.
