@@ -2296,8 +2296,7 @@ package body SPARK_Definition is
    ---------------
 
    procedure Mark_Call (N : Node_Id) is
-      Nam : constant Node_Id := Name (N);
-      E   : Entity_Id;
+      E : Entity_Id;
       --  Entity of the called subprogram or entry
 
       function Is_Volatile_Call (Target : Entity_Id) return Boolean;
@@ -2368,30 +2367,21 @@ package body SPARK_Definition is
    --  Start processing for Mark_Call
 
    begin
-      case Nkind (Nam) is
-         when N_Explicit_Dereference =>
+      if Nkind (Name (N)) = N_Explicit_Dereference then
+         --  Indirect calls are not in SPARK
+         Mark_Violation
+           ("call through access to " &
+            (case Nkind (N) is
+                  when N_Procedure_Call_Statement => "procedure",
+                  when N_Function_Call            => "function",
+                  when others                     => raise Program_Error),
+            N);
 
-            --  Indirect calls are not in SPARK
-            Mark_Violation
-              ("call through access to " &
-                 (case Nkind (N) is
-                     when N_Procedure_Call_Statement => "procedure",
-                     when N_Function_Call            => "function",
-                     when others                     => raise Program_Error),
-               N);
+         return;
 
-            return;
-
-         when N_Selected_Component =>
-            E := Entity (Selector_Name (Nam));
-
-         when N_Identifier | N_Expanded_Name | N_Operator_Symbol =>
-            E := Entity (Nam);
-
-         when others =>
-            raise Program_Error;
-
-      end case;
+      else
+         E := Get_Called_Entity (N);
+      end if;
 
       --  Current_Protected_Type is either empty or points to what is says
       pragma Assert (Present (Scope (E)));

@@ -1037,6 +1037,9 @@ package SPARK_Util is
                                                     Entry_Kind;
    --  @param N a call statement
    --  @return the subprogram or entry called
+   --  ??? this duplicates a private function front end Get_Function_Id
+   --      (which perhaps should be renamed to Get_Subprogram_Id, since it
+   --       is explicitly used also for procedures and entries)
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
    with Pre => Nkind (Parent (Actual)) in N_Function_Call            |
