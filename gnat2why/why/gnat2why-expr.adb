@@ -1663,14 +1663,14 @@ package body Gnat2Why.Expr is
          Arg_Cnt  : Positive := 1;
          Bind_Cnt : Positive := Binders'First;
 
-         procedure Compute_Arg (Formal, Actual : Node_Id);
+         procedure Compute_Param (Formal, Actual : Node_Id);
          --  Compute a Why expression for each parameter
 
-         -----------------
-         -- Compute_Arg --
-         -----------------
+         -------------------
+         -- Compute_Param --
+         -------------------
 
-         procedure Compute_Arg (Formal, Actual : Node_Id) is
+         procedure Compute_Param (Formal, Actual : Node_Id) is
          begin
             case Binders (Bind_Cnt).Kind is
                when Regular =>
@@ -2066,10 +2066,10 @@ package body Gnat2Why.Expr is
             end case;
 
             Bind_Cnt := Bind_Cnt + 1;
-         end Compute_Arg;
+         end Compute_Param;
 
          procedure Iterate_Call is new
-           Iterate_Call_Arguments (Compute_Arg);
+           Iterate_Call_Parameters (Compute_Param);
       begin
 
          --  In the case of protected subprograms, there is an invisible first
@@ -2077,7 +2077,7 @@ package body Gnat2Why.Expr is
          --  empty arguments to process this case.
 
          if Is_Protected_Subprogram (Subp) then
-            Compute_Arg (Empty, Empty);
+            Compute_Param (Empty, Empty);
          end if;
 
          Iterate_Call (Call);
@@ -3557,14 +3557,14 @@ package body Gnat2Why.Expr is
       Check           : W_Pred_Id := True_Pred;
       Needs_Check     : Boolean := False;
 
-      procedure One_Arg (Formal, Actual : Node_Id);
+      procedure One_Param (Formal, Actual : Node_Id);
          --  Compute a Why expression for each parameter
 
-      -------------
-      -- One_Arg --
-      -------------
+      ---------------
+      -- One_Param --
+      ---------------
 
-      procedure One_Arg (Formal, Actual : Node_Id) is
+      procedure One_Param (Formal, Actual : Node_Id) is
          pragma Unreferenced (Formal);
          New_Check : W_Pred_Id;
       begin
@@ -3615,9 +3615,9 @@ package body Gnat2Why.Expr is
            (Domain => EW_Pred,
             Left   => +Check,
             Right  => +New_Check);
-      end One_Arg;
+      end One_Param;
 
-      procedure Iterate_Call is new Iterate_Call_Arguments (One_Arg);
+      procedure Iterate_Call is new Iterate_Call_Parameters (One_Param);
 
    --  Start of processing for Compute_Tag_Check
 
@@ -3923,13 +3923,13 @@ package body Gnat2Why.Expr is
         Compute_Subprogram_Parameters (Subp, EW_Prog);
       Bind_Cnt    : Positive := Binders'First;
 
-      procedure Process_Arg (Formal, Actual : Node_Id);
+      procedure Process_Param (Formal, Actual : Node_Id);
 
-      -----------------
-      -- Process_Arg --
-      -----------------
+      -------------------
+      -- Process_Param --
+      -------------------
 
-      procedure Process_Arg (Formal, Actual : Node_Id) is
+      procedure Process_Param (Formal, Actual : Node_Id) is
       begin
          case Binders (Bind_Cnt).Kind is
             when Prot_Self =>
@@ -4500,10 +4500,10 @@ package body Gnat2Why.Expr is
          end;
 
          Bind_Cnt := Bind_Cnt + 1;
-      end Process_Arg;
+      end Process_Param;
 
       procedure Iterate_Call is new
-        Iterate_Call_Arguments (Process_Arg);
+        Iterate_Call_Parameters (Process_Param);
 
    --  Start of processing for Insert_Ref_Context
 

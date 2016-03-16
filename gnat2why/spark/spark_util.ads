@@ -1072,9 +1072,9 @@ package SPARK_Util is
    --  @return True iff N is a call to a frontend-generated predicate function
 
    generic
-      with procedure Handle_Argument (Formal, Actual : Node_Id);
-   procedure Iterate_Call_Arguments (Call : Node_Id);
-   --  Call [Handle_Argument] for each pair of formal and actual parameters
+      with procedure Handle_Parameter (Formal, Actual : Node_Id);
+   procedure Iterate_Call_Parameters (Call : Node_Id);
+   --  Call [Handle_Parameter] for each pair of formal and actual parameters
    --  of a function or procedure call.
    --  @param Call function or procedure call
 

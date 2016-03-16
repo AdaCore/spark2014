@@ -1574,23 +1574,23 @@ package body SPARK_Util is
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id is
       Formal : Entity_Id := Empty;
 
-      procedure Check_Call_Arg (Some_Formal, Some_Actual : Node_Id);
+      procedure Check_Call_Param (Some_Formal, Some_Actual : Node_Id);
       --  If Some_Actual is the desired actual parameter, set Formal_Type to
       --  the type of the corresponding formal parameter.
 
-      --------------------
-      -- Check_Call_Arg --
-      --------------------
+      ----------------------
+      -- Check_Call_Param --
+      ----------------------
 
-      procedure Check_Call_Arg (Some_Formal, Some_Actual : Node_Id) is
+      procedure Check_Call_Param (Some_Formal, Some_Actual : Node_Id) is
       begin
          if Some_Actual = Actual then
             Formal := Some_Formal;
          end if;
-      end Check_Call_Arg;
+      end Check_Call_Param;
 
-      procedure Find_Expr_In_Call_Args is new
-        Iterate_Call_Arguments (Check_Call_Arg);
+      procedure Find_Expr_In_Call_Params is new
+        Iterate_Call_Parameters (Check_Call_Param);
 
       Par : constant Node_Id :=
         (if Nkind (Parent (Actual)) = N_Unchecked_Type_Conversion
@@ -1603,9 +1603,9 @@ package body SPARK_Util is
 
    begin
       if Nkind (Par) = N_Parameter_Association then
-         Find_Expr_In_Call_Args (Parent (Par));
+         Find_Expr_In_Call_Params (Parent (Par));
       else
-         Find_Expr_In_Call_Args (Par);
+         Find_Expr_In_Call_Params (Par);
       end if;
 
       pragma Assert (Present (Formal));
@@ -2886,7 +2886,7 @@ package body SPARK_Util is
    -- Iterate_Call_Arguments --
    ----------------------------
 
-   procedure Iterate_Call_Arguments (Call : Node_Id)
+   procedure Iterate_Call_Parameters (Call : Node_Id)
    is
       Params     : constant List_Id := Parameter_Associations (Call);
       Cur_Formal : Node_Id := First_Entity (Get_Called_Entity (Call));
@@ -2917,7 +2917,7 @@ package body SPARK_Util is
       end if;
 
       while Present (Cur_Formal) and then Present (Cur_Actual) loop
-         Handle_Argument (Cur_Formal, Cur_Actual);
+         Handle_Parameter (Cur_Formal, Cur_Actual);
          Cur_Formal := Next_Formal (Cur_Formal);
 
          if In_Named then
@@ -2931,7 +2931,7 @@ package body SPARK_Util is
             end if;
          end if;
       end loop;
-   end Iterate_Call_Arguments;
+   end Iterate_Call_Parameters;
 
    ----------------------------------
    -- Location_In_Standard_Library --
