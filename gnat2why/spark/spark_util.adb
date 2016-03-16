@@ -1574,7 +1574,9 @@ package body SPARK_Util is
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id is
       Formal : Entity_Id := Empty;
 
-      procedure Check_Call_Param (Some_Formal, Some_Actual : Node_Id);
+      procedure Check_Call_Param
+        (Some_Formal : Entity_Id;
+         Some_Actual : Node_Id);
       --  If Some_Actual is the desired actual parameter, set Formal_Type to
       --  the type of the corresponding formal parameter.
 
@@ -1582,7 +1584,9 @@ package body SPARK_Util is
       -- Check_Call_Param --
       ----------------------
 
-      procedure Check_Call_Param (Some_Formal, Some_Actual : Node_Id) is
+      procedure Check_Call_Param
+        (Some_Formal : Entity_Id;
+         Some_Actual : Node_Id) is
       begin
          if Some_Actual = Actual then
             Formal := Some_Formal;
@@ -2889,7 +2893,7 @@ package body SPARK_Util is
    procedure Iterate_Call_Parameters (Call : Node_Id)
    is
       Params     : constant List_Id := Parameter_Associations (Call);
-      Cur_Formal : Node_Id := First_Entity (Get_Called_Entity (Call));
+      Cur_Formal : Entity_Id := First_Entity (Get_Called_Entity (Call));
       Cur_Actual : Node_Id := First (Params);
       In_Named   : Boolean := False;
    begin

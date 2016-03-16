@@ -1663,14 +1663,14 @@ package body Gnat2Why.Expr is
          Arg_Cnt  : Positive := 1;
          Bind_Cnt : Positive := Binders'First;
 
-         procedure Compute_Param (Formal, Actual : Node_Id);
+         procedure Compute_Param (Formal : Entity_Id; Actual : Node_Id);
          --  Compute a Why expression for each parameter
 
          -------------------
          -- Compute_Param --
          -------------------
 
-         procedure Compute_Param (Formal, Actual : Node_Id) is
+         procedure Compute_Param (Formal : Entity_Id; Actual : Node_Id) is
          begin
             case Binders (Bind_Cnt).Kind is
                when Regular =>
@@ -3557,14 +3557,14 @@ package body Gnat2Why.Expr is
       Check           : W_Pred_Id := True_Pred;
       Needs_Check     : Boolean := False;
 
-      procedure One_Param (Formal, Actual : Node_Id);
+      procedure One_Param (Formal : Entity_Id; Actual : Node_Id);
          --  Compute a Why expression for each parameter
 
       ---------------
       -- One_Param --
       ---------------
 
-      procedure One_Param (Formal, Actual : Node_Id) is
+      procedure One_Param (Formal : Entity_Id; Actual : Node_Id) is
          pragma Unreferenced (Formal);
          New_Check : W_Pred_Id;
       begin
@@ -3923,13 +3923,13 @@ package body Gnat2Why.Expr is
         Compute_Subprogram_Parameters (Subp, EW_Prog);
       Bind_Cnt    : Positive := Binders'First;
 
-      procedure Process_Param (Formal, Actual : Node_Id);
+      procedure Process_Param (Formal : Entity_Id; Actual : Node_Id);
 
       -------------------
       -- Process_Param --
       -------------------
 
-      procedure Process_Param (Formal, Actual : Node_Id) is
+      procedure Process_Param (Formal : Entity_Id; Actual : Node_Id) is
       begin
          case Binders (Bind_Cnt).Kind is
             when Prot_Self =>
