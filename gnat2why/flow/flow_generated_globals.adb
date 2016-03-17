@@ -1926,11 +1926,11 @@ package body Flow_Generated_Globals is
                RHS.Difference (P.Local_Variables);
                RHS_Proof.Difference (P.Local_Variables);
 
-               --  Populate II
-               II.LHS       := LHS;
-               II.LHS_Proof := LHS_Proof;
-               II.RHS       := RHS;
-               II.RHS_Proof := RHS_Proof;
+               --  Assign II
+               II := (LHS       => LHS,
+                      LHS_Proof => LHS_Proof,
+                      RHS       => RHS,
+                      RHS_Proof => RHS_Proof);
 
                --  Add LHS and LHS_Proof to the All_Initialized_Names set
                All_Initialized_Names.Union (II.LHS);
