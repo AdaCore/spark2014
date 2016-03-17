@@ -6044,32 +6044,43 @@ package body Flow.Control_Flow_Graph is
                                Proof_Ins  => Proof_Ins,
                                Reads      => Reads,
                                Writes     => Writes);
+
                   for G of Proof_Ins loop
                      Globals.Include (Change_Variant (G, Normal_Use),
                                       G_Prop'(Is_Read     => False,
                                               Is_Write    => False,
                                               Is_Proof_In => True));
                   end loop;
+
                   for G of Reads loop
                      Globals.Include (Change_Variant (G, Normal_Use),
                                       G_Prop'(Is_Read     => True,
                                               Is_Write    => False,
                                               Is_Proof_In => False));
                   end loop;
+
                   for G of Writes loop
                      declare
-                        P : G_Prop;
+                        Position : Global_Maps.Cursor;
+                        Inserted : Boolean;
+
+                        P : constant G_Prop := (Is_Read     => False,
+                                                Is_Write    => True,
+                                                Is_Proof_In => False);
+
                      begin
-                        if Globals.Contains (Change_Variant (G, Normal_Use))
-                        then
-                           P := Globals (Change_Variant (G, Normal_Use));
-                           P.Is_Write := True;
-                        else
-                           P := G_Prop'(Is_Read     => False,
-                                        Is_Write    => True,
-                                        Is_Proof_In => False);
+                        --  Attempt to insert mapping from G to P; if insertion
+                        --  fails it means that a mapping was already present.
+                        --  In this case update the existing property as write.
+                        Globals.Insert
+                          (Key      => Change_Variant (G, Normal_Use),
+                           New_Item => P,
+                           Position => Position,
+                           Inserted => Inserted);
+
+                        if not Inserted then
+                           Globals (Position).Is_Write := True;
                         end if;
-                        Globals.Include (Change_Variant (G, Normal_Use), P);
 
                         --  If we are dealing with a function, since we found a
                         --  global output, we raise an error.
