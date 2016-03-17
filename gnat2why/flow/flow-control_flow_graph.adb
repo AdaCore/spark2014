@@ -1385,8 +1385,6 @@ package body Flow.Control_Flow_Graph is
       if not Partial and then RHS_Split_Useful (N, FA.B_Scope) then
          declare
             M            : Flow_Id_Maps.Map;
-            Output       : Flow_Id;
-            Inputs       : Flow_Id_Sets.Set;
             All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
             Missing      : Flow_Id_Sets.Set;
          begin
@@ -1409,24 +1407,27 @@ package body Flow.Control_Flow_Graph is
 
             --  Split out the assignment over a number of vertices.
             for C in M.Iterate loop
-               Output := Flow_Id_Maps.Key (C);
-               Inputs := Flow_Id_Maps.Element (C);
+               declare
+                  Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                  Inputs : Flow_Id_Sets.Set renames M (C);
+               begin
 
-               Missing.Delete (Output);
+                  Missing.Delete (Output);
 
-               Add_Vertex
-                 (FA,
-                  Make_Basic_Attributes
-                    (FA         => FA,
-                     Var_Def    => Flow_Id_Sets.To_Set (Output),
-                     Var_Ex_Use => Inputs,
-                     Sub_Called => Funcs,
-                     Loops      => Ctx.Current_Loops,
-                     E_Loc      => N,
-                     Print_Hint => Pretty_Print_Record_Field),
-                  V);
-               Verts.Append (V);
-               All_Vertices.Insert (V);
+                  Add_Vertex
+                    (FA,
+                     Make_Basic_Attributes
+                       (FA         => FA,
+                        Var_Def    => Flow_Id_Sets.To_Set (Output),
+                        Var_Ex_Use => Inputs,
+                        Sub_Called => Funcs,
+                        Loops      => Ctx.Current_Loops,
+                        E_Loc      => N,
+                        Print_Hint => Pretty_Print_Record_Field),
+                     V);
+                  Verts.Append (V);
+                  All_Vertices.Insert (V);
+               end;
             end loop;
 
             if not View_Conversion then
@@ -3282,8 +3283,6 @@ package body Flow.Control_Flow_Graph is
                      Use_Computed_Globals         => not FA.Generating_Globals,
                      Expand_Synthesized_Constants => False);
 
-                  Output       : Flow_Id;
-                  Inputs       : Flow_Id_Sets.Set;
                   All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
                   Missing      : Flow_Id_Sets.Set := Var_Def;
                begin
@@ -3294,27 +3293,30 @@ package body Flow.Control_Flow_Graph is
                      Include_Predicates => FA.Generating_Globals);
 
                   for C in M.Iterate loop
-                     Output := Flow_Id_Maps.Key (C);
-                     Inputs := Flow_Id_Maps.Element (C);
+                     declare
+                        Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                        Inputs : Flow_Id_Sets.Set renames M (C);
+                     begin
 
-                     --  ??? It might be useful to improve E_Loc to point
-                     --      at the relevant bit in the aggregate.
+                        --  ??? It might be useful to improve E_Loc to point
+                        --      at the relevant bit in the aggregate.
 
-                     Add_Vertex
-                       (FA,
-                        Make_Basic_Attributes
-                          (FA         => FA,
-                           Var_Def    => Flow_Id_Sets.To_Set (Output),
-                           Var_Ex_Use => Inputs,
-                           Sub_Called => Funcs,
-                           Loops      => Ctx.Current_Loops,
-                           E_Loc      => N,
-                           Print_Hint => Pretty_Print_Record_Field),
-                        V);
-                     Missing.Delete (Output);
+                        Add_Vertex
+                          (FA,
+                           Make_Basic_Attributes
+                             (FA         => FA,
+                              Var_Def    => Flow_Id_Sets.To_Set (Output),
+                              Var_Ex_Use => Inputs,
+                              Sub_Called => Funcs,
+                              Loops      => Ctx.Current_Loops,
+                              E_Loc      => N,
+                              Print_Hint => Pretty_Print_Record_Field),
+                           V);
+                        Missing.Delete (Output);
 
-                     Inits.Append (V);
-                     All_Vertices.Insert (V);
+                        Inits.Append (V);
+                        All_Vertices.Insert (V);
+                     end;
                   end loop;
 
                   --  Any "missing" fields which are produced by flatten,
@@ -3823,9 +3825,8 @@ package body Flow.Control_Flow_Graph is
          begin
             for C in DM.Iterate loop
                declare
-                  use Dependency_Maps;
-                  The_Out : Flow_Id          renames Key (C);
-                  The_Ins : Flow_Id_Sets.Set renames Element (C);
+                  The_Out : Flow_Id          renames Dependency_Maps.Key (C);
+                  The_Ins : Flow_Id_Sets.Set renames DM (C);
 
                   Init_Item : constant Node_Id :=
                     Find_Node (Get_Direct_Mapping_Id (The_Out));
@@ -6135,39 +6136,40 @@ package body Flow.Control_Flow_Graph is
                --  We need to make sure to only add each global once (an entity
                --  might be used to derive more than one of our states).
 
-               The_Out : Flow_Id;
-               The_In  : Flow_Id_Sets.Set;
-               DM      : constant Dependency_Maps.Map :=
+               DM : constant Dependency_Maps.Map :=
                  Parse_Initializes (FA.Initializes_N,
                                     FA.Spec_Entity,
                                     FA.S_Scope);
             begin
                for C in DM.Iterate loop
-                  The_Out := Dependency_Maps.Key (C);
-                  The_In  := Dependency_Maps.Element (C);
+                  declare
+                     The_Out : Flow_Id renames Dependency_Maps.Key (C);
+                     The_In  : Flow_Id_Sets.Set renames DM (C);
 
-                  for G of The_In loop
-                     if not Global_Ins.Contains (G)
-                       and then (G.Kind in Direct_Mapping | Record_Field
-                                   and then not In_Generic_Actual
-                                                  (Get_Direct_Mapping_Id (G)))
-                     then
-                        --  We have already introduced initial and final
-                        --  vertices for formals of generics so these have to
-                        --  also be excluded.
+                  begin
+                     for G of The_In loop
+                        if not Global_Ins.Contains (G)
+                          and then (G.Kind in Direct_Mapping | Record_Field
+                                    and then not In_Generic_Actual
+                                                   (Get_Direct_Mapping_Id (G)))
+                        then
+                           --  We have already introduced initial and final
+                           --  vertices for formals of generics so these have
+                           --  to also be excluded.
 
-                        Global_Ins.Include (G);
-                        Create_Initial_And_Final_Vertices
-                          (F             => G,
-                           Mode          => Mode_In,
-                           Uninitialized => False,
-                           FA            => FA);
+                           Global_Ins.Include (G);
+                           Create_Initial_And_Final_Vertices
+                             (F             => G,
+                              Mode          => Mode_In,
+                              Uninitialized => False,
+                              FA            => FA);
+                        end if;
+                     end loop;
+
+                     if Present (The_Out) then
+                        Package_Writes.Include (The_Out);
                      end if;
-                  end loop;
-
-                  if Present (The_Out) then
-                     Package_Writes.Include (The_Out);
-                  end if;
+                  end;
                end loop;
             end;
 
