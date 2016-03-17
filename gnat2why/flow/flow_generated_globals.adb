@@ -1803,10 +1803,12 @@ package body Flow_Generated_Globals is
                --  LHS and LHS_Proof combined will represent the left hand side
                --  of the generated initializes aspect.
 
-               RHS       : Name_Sets.Set := Name_Sets.Empty_Set;
-               RHS_Proof : Name_Sets.Set := Name_Sets.Empty_Set;
-               --  RHS and RHS_Proof combined will represent the right hand
-               --  side of the generated initializes aspect.
+               RHS       : Name_Sets.Set := P.Inputs;
+               RHS_Proof : Name_Sets.Set := P.Inputs_Proof;
+               --  RHS and RHS_Proof combined will represent the right
+               --  hand side of the generated initializes aspect; they
+               --  are initialized with package inputs and proof inputs,
+               --  respectively.
 
                LV        : Name_Sets.Set := Name_Sets.Empty_Set;
                LV_Proof  : Name_Sets.Set := Name_Sets.Empty_Set;
@@ -1846,12 +1848,6 @@ package body Flow_Generated_Globals is
             --  Start of processing for Generate_Initializes_Aspects
 
             begin
-               --  Add inputs to the RHS set
-               RHS.Union (P.Inputs);
-
-               --  Add proof inputs to the RHS_Proof set
-               RHS_Proof.Union (P.Inputs_Proof);
-
                --  Add local variables to either LV_Proof or LV depending on
                --  whether they are ghosts or not.
                for Local_Variable of P.Local_Variables loop
