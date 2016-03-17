@@ -916,7 +916,7 @@ procedure Gnatprove is
 
       procedure Generate_Altergo_Section is
          Altergo_Command : constant String :=
-           Altergo_Binary & " -max-split 5 -no-rm-eq-existential %f";
+           Altergo_Binary & " -max-split 5 %f";
       begin
          Start_Section ("prover");
          Put_Keyval ("command", Altergo_Command);
