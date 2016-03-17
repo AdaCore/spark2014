@@ -4272,8 +4272,7 @@ package body Flow.Analysis is
    begin
       for C in Task_Instances.Iterate loop
          declare
-            This_Task_Type : constant Entity_Name :=
-              Task_Instances_Maps.Key (C);
+            This_Task_Type : Entity_Name renames Task_Instances_Maps.Key (C);
 
          begin
             for This_Task_Object of Task_Instances_Maps.Element (C) loop
