@@ -1859,8 +1859,7 @@ package body Flow_Generated_Globals is
                   --  list of local definite writes since they are trivially
                   --  initialized.
                   if State_Comp_Map.Contains (Local_Variable)
-                    and then State_Comp_Map.Element (Local_Variable) =
-                               Name_Sets.Empty_Set
+                    and then State_Comp_Map (Local_Variable).Is_Empty
                   then
                      Add_To_Proof_Or_Normal_Set (Local_Variable,
                                                  LHS_Proof,
