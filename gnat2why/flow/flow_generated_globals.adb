@@ -1927,8 +1927,8 @@ package body Flow_Generated_Globals is
 
                --  Remove local variables from the sets since they should not
                --  appear in Initializes aspects.
-               RHS       := RHS - P.Local_Variables;
-               RHS_Proof := RHS_Proof - P.Local_Variables;
+               RHS.Difference (P.Local_Variables);
+               RHS_Proof.Difference (P.Local_Variables);
 
                --  Populate II
                II.LHS       := LHS;
@@ -1970,9 +1970,9 @@ package body Flow_Generated_Globals is
 
                   --  Remove constituents whose enclosing state abstraction is
                   --  not fully initialized.
-                  All_Initialized_Names := All_Initialized_Names - To_Remove;
-                  II.LHS                := II.LHS - To_Remove;
-                  II.LHS_Proof          := II.LHS_Proof - To_Remove;
+                  All_Initialized_Names.Difference (To_Remove);
+                  II.LHS.Difference (To_Remove);
+                  II.LHS_Proof.Difference (To_Remove);
                end;
 
                --  Insert II into Initializes_Aspects_Map
