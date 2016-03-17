@@ -2273,24 +2273,6 @@ package body Flow_Generated_Globals is
                         --  it already existed in a map. It is required by
                         --  the hashed-maps API, but not used here.
 
-                        procedure Union_With_S_Objects
-                          (Key     : Entity_Name;
-                           Element : in out Name_Sets.Set);
-                        --  Record objects accessed by S as accessed also by TN
-
-                        --------------------------
-                        -- Union_With_S_Objects --
-                        --------------------------
-
-                        procedure Union_With_S_Objects
-                          (Key     : Entity_Name;
-                           Element : in out Name_Sets.Set)
-                        is
-                           pragma Unreferenced (Key);
-                        begin
-                           Element.Union (Name_Graphs.Element (S_C));
-                        end Union_With_S_Objects;
-
                      begin
                         --  Only do something if S accesses any objects
                         if Name_Graphs.Has_Element (S_C) then
@@ -2299,9 +2281,8 @@ package body Flow_Generated_Globals is
                               Position => T_C,
                               Inserted => Inserted);
 
-                           Tasking_Info_Bag (Phase_2, Kind).Update_Element
-                             (Position => T_C,
-                              Process  => Union_With_S_Objects'Access);
+                           Tasking_Info_Bag (Phase_2, Kind) (T_C).Union
+                             (Tasking_Info_Bag (Phase_1, Kind) (S_C));
                         end if;
                      end;
                   end loop;
