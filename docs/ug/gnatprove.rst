@@ -616,7 +616,7 @@ may be proved using a manual prover.
 In the appendix, section :ref:`Alternative_Provers`, is explained how to use
 different provers than the one |GNATprove| uses as default.
 
-Manual proof in command line
+Manual Proof in Command Line
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When the prover used by |GNATprove| is configured as interactive, for each
@@ -650,7 +650,7 @@ Where ``check-kind`` can be deduced from the message associated to the
 failing condition reported by |GNATprove|:
 
 .. UPDATES TO THIS TABLE SHOULD ALSO BE REFLECTED IN THE TABLE UNDER SECTION
-.. "GNATprove Messages"
+.. "Description of Messages"
 
 .. csv-table::
    :header: "Warning", "Check kind"
@@ -661,6 +661,8 @@ failing condition reported by |GNATprove|:
    "array index check might fail",                         "VC_INDEX_CHECK"
    "overflow check might fail",                            "VC_OVERFLOW_CHECK"
    "range check might fail",                               "VC_RANGE_CHECK"
+   "predicate check might fail",                           "VC_PREDICATE_CHECK"
+   "predicate check might fail on default value",          "VC_PREDICATE_CHECK_ON_DEFAULT_VALUE"
    "length check might fail",                              "VC_LENGTH_CHECK"
    "discriminant check might fail",                        "VC_DISCRIMINANT_CHECK"
    "tag check might fail",                                 "VC_TAG_CHECK"
@@ -895,6 +897,8 @@ The following table shows the kinds of check messages issued by proof.
    "index check", "Check that the given index is within the bounds of the array."
    "overflow check", "Check that the result of the given arithmetic operation is within the bounds of the base type."
    "range check", "Check that the given value is within the bounds of the expected scalar subtype."
+   "predicate check", "Check that the given value respects the applicable type predicate."
+   "predicate check on default value", "Check that the default value for the type respects the applicable type predicate."
    "length check", "Check that the given array is of the length of the expected array subtype."
    "discriminant check", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
    "tag check",          "Check that the tag of the given tagged object has the expected value."

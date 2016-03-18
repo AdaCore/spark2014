@@ -27,6 +27,7 @@ with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Ada.Strings;                        use Ada.Strings;
 with Assumption_Types;                   use Assumption_Types;
+with Aspects;                            use Aspects;
 with Csets;                              use Csets;
 with Errout;                             use Errout;
 with Exp_Util;                           use Exp_Util;
@@ -1315,6 +1316,28 @@ package body SPARK_Util is
             raise Program_Error;
       end case;
    end Find_Contracts;
+
+   ---------------------------
+   -- Find_Predicate_Aspect --
+   ---------------------------
+
+   function Find_Predicate_Aspect (Typ : Entity_Id) return Node_Id is
+      N : Node_Id;
+
+   begin
+      N := Find_Aspect (Typ, Aspect_Predicate);
+      if Present (N) then
+         return N;
+      end if;
+
+      N := Find_Aspect (Typ, Aspect_Dynamic_Predicate);
+      if Present (N) then
+         return N;
+      end if;
+
+      N := Find_Aspect (Typ, Aspect_Static_Predicate);
+      return N;
+   end Find_Predicate_Aspect;
 
    ---------------
    -- Full_Name --

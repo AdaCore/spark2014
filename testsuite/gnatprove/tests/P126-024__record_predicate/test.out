@@ -1,2 +1,1 @@
-inst.adb:3:08: predicate on null record type is not supported
-gnatprove: error during flow analysis and proof
+inst.adb:4:10: medium: predicate check might fail on default value

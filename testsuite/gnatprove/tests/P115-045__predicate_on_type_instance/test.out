@@ -1,1 +1,2 @@
+g.ads:3:08: medium: predicate check might fail on default value, in instantiation at inst.adb:6
 pred.ads:5:11: warning: unused variable "A_Subtype"

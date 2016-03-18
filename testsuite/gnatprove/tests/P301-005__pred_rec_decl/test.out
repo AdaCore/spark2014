@@ -1,1 +1,64 @@
 main.adb:3:09: warning: unused variable "T"
+main.adb:6:09: medium: predicate check might fail on default value
+preds.adb:6:12: info: initialization of "Tmp" proved
+preds.adb:12:12: info: initialization of "Tmp" proved
+preds.adb:18:12: info: initialization of "Tmp" proved
+preds.adb:24:12: info: initialization of "Tmp" proved
+preds.adb:30:12: info: initialization of "Tmp" proved
+preds.adb:36:12: info: initialization of "Tmp" proved
+preds.adb:42:12: info: initialization of "Tmp" proved
+preds.adb:48:12: info: initialization of "Tmp" proved
+preds.adb:54:12: info: initialization of "Tmp.A" proved
+preds.adb:54:12: info: initialization of "Tmp.I" proved
+preds.adb:54:12: info: initialization of "Tmp.X" proved
+preds.adb:60:12: info: initialization of "Tmp.A" proved
+preds.adb:60:12: info: initialization of "Tmp.I" proved
+preds.adb:60:12: info: initialization of "Tmp.X" proved
+preds.adb:63:04: warning: analyzing unreferenced procedure "Create_Rec_Wrap_OK"
+preds.adb:63:34: info: initialization of "X.X" proved
+preds.adb:66:12: info: initialization of "Tmp.X" proved
+preds.adb:69:04: warning: analyzing unreferenced procedure "Create_Rec_Wrap_Bad"
+preds.adb:69:35: info: initialization of "X.X" proved
+preds.adb:72:12: info: initialization of "Tmp.X" proved
+preds.ads:4:23: info: predicate check proved
+preds.ads:4:23: info: range check proved
+preds.ads:5:06: info: predicate check proved on default value
+preds.ads:8:23: info: range check proved
+preds.ads:8:23: medium: predicate check might fail
+preds.ads:9:06: medium: predicate check might fail on default value
+preds.ads:11:29: info: initialization of "X" proved
+preds.ads:12:30: info: initialization of "X" proved
+preds.ads:15:23: info: predicate check proved
+preds.ads:15:23: info: range check proved
+preds.ads:18:23: info: range check proved
+preds.ads:18:23: medium: predicate check might fail
+preds.ads:21:06: info: predicate check proved on default value
+preds.ads:24:06: medium: predicate check might fail on default value
+preds.ads:26:33: info: initialization of "X" proved
+preds.ads:27:34: info: initialization of "X" proved
+preds.ads:30:06: info: predicate check proved on default value
+preds.ads:30:06: medium: predicate check might fail on default value
+preds.ads:33:23: info: predicate check proved
+preds.ads:33:23: info: range check proved
+preds.ads:36:23: info: range check proved
+preds.ads:36:23: medium: predicate check might fail
+preds.ads:38:34: info: initialization of "X" proved
+preds.ads:39:35: info: initialization of "X" proved
+preds.ads:43:06: info: predicate check proved on default value
+preds.ads:47:06: medium: predicate check might fail on default value
+preds.ads:49:29: info: initialization of "X" proved
+preds.ads:50:30: info: initialization of "X" proved
+preds.ads:57:06: info: predicate check proved on default value
+preds.ads:64:06: medium: predicate check might fail on default value
+preds.ads:66:29: info: initialization of "X.A" proved
+preds.ads:66:29: info: initialization of "X.I" proved
+preds.ads:66:29: info: initialization of "X.X" proved
+preds.ads:67:30: info: initialization of "X.A" proved
+preds.ads:67:30: info: initialization of "X.I" proved
+preds.ads:67:30: info: initialization of "X.X" proved
+preds.ads:70:23: info: predicate check proved
+preds.ads:70:23: info: range check proved
+preds.ads:71:06: info: predicate check proved on default value
+preds.ads:74:23: info: range check proved
+preds.ads:74:23: medium: predicate check might fail
+preds.ads:75:06: medium: predicate check might fail on default value

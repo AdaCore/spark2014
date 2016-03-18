@@ -489,6 +489,12 @@ package SPARK_Util is
    --    type.
    --  @return the Default_Initialization_Kind of Typ
 
+   function Find_Predicate_Aspect (Typ : Entity_Id) return Node_Id;
+   --  Find the aspect specification Predicate or Dynamic_Predicate or
+   --  Static_Predicate associated with entity Typ. Return Empty if Typ does
+   --  not have any of these aspects. Typ might still inherit the aspect in
+   --  such cases.
+
    function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
      with Pre => Present (N);
    --  Get the type of the given entity. This function looks through

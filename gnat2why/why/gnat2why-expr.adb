@@ -289,12 +289,15 @@ package body Gnat2Why.Expr is
    --  @result Why3 pred that expressed the check
 
    function New_Predicate_Check
-     (Ada_Node : Node_Id;
-      Ty       : Entity_Id;
-      W_Expr   : W_Expr_Id) return W_Prog_Id;
+     (Ada_Node         : Node_Id;
+      Ty               : Entity_Id;
+      W_Expr           : W_Expr_Id;
+      On_Default_Value : Boolean := False) return W_Prog_Id;
    --  @param Ada_Node node to which the check is attached
    --  @param Ty type whose predicate needs to be checked
    --  @param W_Expr Why3 expression on which to check the predicate
+   --  @param On_Default_Value True iff this predicate check applies to the
+   --    default value for a type
    --  @result Why3 program that performs the check
 
    function One_Level_Access
@@ -2106,23 +2109,24 @@ package body Gnat2Why.Expr is
 
    function Compute_Default_Check
      (Ty     : Entity_Id;
-      Params : Transformation_Params) return W_Prog_Id is
-
+      Params : Transformation_Params) return W_Prog_Id
+   is
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
 
       Ty_Ext : constant Entity_Id := Retysp (Ty);
       Checks : W_Prog_Id := +Void;
+
    begin
       if Is_Scalar_Type (Ty_Ext) then
          if Has_Default_Aspect (Ty_Ext) then
             declare
                Default_Expr : constant W_Expr_Id :=
                  Transform_Expr
-                      (Expr          => Default_Aspect_Value (Ty_Ext),
-                       Expected_Type => Base_Why_Type (Ty_Ext),
-                       Domain        => EW_Prog,
-                       Params        => Params);
+                   (Expr          => Default_Aspect_Value (Ty_Ext),
+                    Expected_Type => Base_Why_Type (Ty_Ext),
+                    Domain        => EW_Prog,
+                    Params        => Params);
                Range_Check  : constant W_Expr_Id :=
                  Insert_Scalar_Conversion
                    (Domain     => EW_Prog,
@@ -2135,6 +2139,7 @@ package body Gnat2Why.Expr is
                Checks := +Range_Check;
             end;
          end if;
+
       elsif Is_Array_Type (Ty_Ext)
         and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
       then
@@ -2150,8 +2155,8 @@ package body Gnat2Why.Expr is
             Num_Dim    : constant Positive :=
               Positive (Number_Dimensions (Ty_Ext));
             T_Comp     : W_Expr_Id;
-         begin
 
+         begin
             --  Generate the condition length (Index_Type1) > 0 /\ ..
 
             for Dim in 1 .. Num_Dim loop
@@ -2172,19 +2177,18 @@ package body Gnat2Why.Expr is
             --    Default_Component_Value         <if any>
             --    default_checks (Component_Type) <otherwise>
 
+            --  If Ty_Ext as a Default_Component_Value aspect, use it.
+
             if Has_Default_Aspect (Ty_Ext) then
-
-               --  if Ty_Ext as a Default_Component_Value aspect, use it.
-
                T_Comp := Transform_Expr
                  (Expr          => Default_Aspect_Component_Value (Ty_Ext),
                   Expected_Type => Type_Of_Node (Component_Type (Ty_Ext)),
                   Domain        => EW_Prog,
                   Params        => Params);
+
+            --  Otherwise, use its Component_Type default value.
+
             else
-
-               --  otherwise, use its Component_Type default value.
-
                T_Comp := +Compute_Default_Check
                  (Ty     => Component_Type (Ty_Ext),
                   Params => Params);
@@ -2514,6 +2518,67 @@ package body Gnat2Why.Expr is
 
                Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
             end if;
+         end;
+      end if;
+
+      if Has_Predicates (Ty) and then
+        Default_Initialization (Ty) in
+          No_Possible_Initialization | Full_Default_Initialization
+      then
+         declare
+            Tmp_Exp : constant W_Identifier_Id :=
+              New_Temp_Identifier (Ty_Ext, EW_Abstract (Ty_Ext));
+            --  Temporary variable for tmp_exp
+
+            --  Create a value of type Ty_Ext that respects the default
+            --  initialization value for Ty_Ext, including its default initial
+            --  condition when specified. Since we use an any-expr, the
+            --  predicate needs to apply to the special "result" term.
+
+            Default_Init_Pred : constant W_Pred_Id :=
+              Compute_Default_Init
+                (Expr           => +New_Result_Ident (EW_Abstract (Ty_Ext)),
+                 Ty             => Ty_Ext,
+                 Params         => Params,
+                 Skip_Last_Cond => False_Term);
+
+            Default_Init_Prog : constant W_Prog_Id :=
+              New_Any_Expr (Ada_Node    => Ty_Ext,
+                            Pre         => True_Pred,
+                            Post        => Default_Init_Pred,
+                            Return_Type => EW_Abstract (Ty_Ext));
+
+            --  Find the node to which the check should be attached. If a
+            --  predicate aspect applies to Ty, use that node. Otherwise (case
+            --  of a pragma or an inherited predicate) use type Ty. Note that
+            --  Compute_Default_Check is only called when an object of the type
+            --  is being default initialized. If no such object exists, the
+            --  check that the default value of the type respects the predicate
+            --  will not be generated.
+
+            Pred_Node : constant Node_Id := Find_Predicate_Aspect (Ty);
+            Check_Node : constant Node_Id :=
+              (if Present (Pred_Node) then Pred_Node else Ty);
+
+            --  Generate the predicate check, specifying that it applies to the
+            --  default value of a type, so that a special VC kind is used for
+            --  better messages.
+
+            Pred_Check : constant W_Prog_Id :=
+              New_Predicate_Check
+                (Ada_Node         => Check_Node,
+                 Ty               => Ty,
+                 W_Expr           => +Tmp_Exp,
+                 On_Default_Value => True);
+
+         begin
+            Checks := Sequence
+              (New_Ignore (Prog => Checks),
+               +New_Typed_Binding
+                 (Domain   => EW_Prog,
+                  Name     => Tmp_Exp,
+                  Def      => +Default_Init_Prog,
+                  Context  => +Pred_Check));
          end;
       end if;
 
@@ -5638,18 +5703,24 @@ package body Gnat2Why.Expr is
    -------------------------
 
    function New_Predicate_Check
-     (Ada_Node : Node_Id;
-      Ty       : Entity_Id;
-      W_Expr   : W_Expr_Id) return W_Prog_Id
+     (Ada_Node         : Node_Id;
+      Ty               : Entity_Id;
+      W_Expr           : W_Expr_Id;
+      On_Default_Value : Boolean := False) return W_Prog_Id
    is
       Check : constant W_Pred_Id :=
         Compute_Dynamic_Predicate (Expr    => +W_Expr,
                                    Ty      => Ty,
                                    Params  => Body_Params);
+      Kind : constant VC_Kind :=
+        (if On_Default_Value then
+           VC_Predicate_Check_On_Default_Value
+         else
+           VC_Predicate_Check);
    begin
       return New_Assert
         (Pred =>
-           New_Label (Labels => New_VC_Labels (Ada_Node, VC_Predicate_Check),
+           New_Label (Labels => New_VC_Labels (Ada_Node, Kind),
                       Def    => +Check),
          Assert_Kind => EW_Assert);
    end New_Predicate_Check;

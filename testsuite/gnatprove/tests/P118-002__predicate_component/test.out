@@ -1,6 +1,2 @@
-pred_comp.adb:3:09: predicate on null record type is not supported
-pred_comp.adb:9:09: "R" is not allowed in SPARK
-pred_comp.adb:9:09: violation of pragma SPARK_Mode at test.adc:1
-pred_comp.adb:23:11: "RO" is not allowed in SPARK
-pred_comp.adb:23:11: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
+pred_comp.adb:3:32: medium: predicate check might fail on default value
+pred_comp.adb:11:14: warning: subprogram "Inner" has no effect

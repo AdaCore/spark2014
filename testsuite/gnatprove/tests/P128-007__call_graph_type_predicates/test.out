@@ -1,2 +1,3 @@
 client.adb:3:11: info: ceiling priority protocol is respected
+p.adb:23:09: medium: predicate check might fail on default value
 p.adb:30:20: warning: statement has no effect

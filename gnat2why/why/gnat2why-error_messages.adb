@@ -226,21 +226,23 @@ package body Gnat2Why.Error_Messages is
                        SA_Message'(SA_Messages.Tag_Check,
                                    Statically_Known_Success));
 
-            when VC_Precondition              |
-                 VC_Precondition_Main         |
-                 VC_Postcondition             |
-                 VC_Predicate_Check           |
-                 VC_Initial_Condition         |
-                 VC_Default_Initial_Condition |
-                 VC_Refined_Post              |
-                 VC_Contract_Case             |
-                 VC_Disjoint_Contract_Cases   |
-                 VC_Complete_Contract_Cases   |
-                 VC_Loop_Variant              |
-                 VC_Loop_Invariant            |
-                 VC_Loop_Invariant_Init       |
-                 VC_Loop_Invariant_Preserv    |
-                 VC_Assert            =>
+            when VC_Precondition
+               | VC_Precondition_Main
+               | VC_Postcondition
+               | VC_Predicate_Check
+               | VC_Predicate_Check_On_Default_Value
+               | VC_Initial_Condition
+               | VC_Default_Initial_Condition
+               | VC_Refined_Post
+               | VC_Contract_Case
+               | VC_Disjoint_Contract_Cases
+               | VC_Complete_Contract_Cases
+               | VC_Loop_Variant
+               | VC_Loop_Invariant
+               | VC_Loop_Invariant_Init
+               | VC_Loop_Invariant_Preserv
+               | VC_Assert
+            =>
                return (True,
                        SA_Message'(SA_Messages.Assertion_Check,
                                    Statically_Known_Success));
@@ -457,6 +459,8 @@ package body Gnat2Why.Error_Messages is
             return "range check might fail";
          when VC_Predicate_Check           =>
             return "predicate check might fail";
+         when VC_Predicate_Check_On_Default_Value =>
+            return "predicate check might fail on default value";
          when VC_Length_Check              =>
             return "length check might fail";
          when VC_Discriminant_Check        =>
@@ -672,6 +676,8 @@ package body Gnat2Why.Error_Messages is
          when VC_Overflow_Check            => return "overflow check proved";
          when VC_Range_Check               => return "range check proved";
          when VC_Predicate_Check           => return "predicate check proved";
+         when VC_Predicate_Check_On_Default_Value =>
+            return "predicate check proved on default value";
          when VC_Length_Check              => return "length check proved";
          when VC_Discriminant_Check        =>
             return "discriminant check proved";

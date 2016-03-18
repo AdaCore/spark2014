@@ -3740,14 +3740,6 @@ package body SPARK_Definition is
                Mark_Violation (E, From => Base_Type (E));
             end if;
 
-            if Is_Null_Record_Type (E) and then Has_Predicates (E) then
-               Violation_Detected := True;
-               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_N ("predicate on null record type"
-                               & " is not supported", E);
-               end if;
-            end if;
-
             if not Is_Interface (E) then
                declare
                   Field : Entity_Id := First_Component_Or_Discriminant (E);

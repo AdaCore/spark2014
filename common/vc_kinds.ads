@@ -46,6 +46,10 @@ package VC_Kinds is
       VC_Overflow_Check,
       VC_Range_Check,
       VC_Predicate_Check,
+      VC_Predicate_Check_On_Default_Value,  --  the predicate check on
+                                            --  the default value of a type,
+                                            --  to be used when a value of the
+                                            --  type is default initialized
       VC_Length_Check,
       VC_Discriminant_Check,
       VC_Tag_Check,
