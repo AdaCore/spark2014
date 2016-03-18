@@ -871,8 +871,8 @@ package body Flow_Generated_Globals is
 
          --  Remove state abstractions that are only partially initialized from
          --  the left hand side.
-         FS_LHS       := FS_LHS - To_Remove;
-         FS_LHS_Proof := FS_LHS_Proof - To_Remove;
+         FS_LHS.Difference (To_Remove);
+         FS_LHS_Proof.Difference (To_Remove);
 
          --  Add regular variables
          for F of FS_LHS loop
