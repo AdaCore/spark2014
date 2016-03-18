@@ -589,7 +589,7 @@ package body Flow_Generated_Globals is
       return Object_Priority_Lists.List
    is
    begin
-      return Protected_Objects.Phase_2.Element (Key => Obj);
+      return Protected_Objects.Phase_2 (Obj);
    end Component_Priorities;
 
    ---------------------------------------
@@ -624,11 +624,14 @@ package body Flow_Generated_Globals is
       begin
          for Kind in Protected_Info_Kind loop
             declare
-               C : constant Name_Graphs.Cursor :=
-                 Tasking_Info_Bag (Phase_1, Kind).Find (S);
+               Phase_1_Info : Name_Graphs.Map renames
+                 Tasking_Info_Bag (Phase_1, Kind);
+
+               C : constant Name_Graphs.Cursor := Phase_1_Info.Find (S);
+
             begin
                if Has_Element (C) then
-                  Res.Union (Element (C));
+                  Res.Union (Phase_1_Info (C));
                end if;
             end;
          end loop;
@@ -804,8 +807,8 @@ package body Flow_Generated_Globals is
          LHS_Scope    : Flow_Scope;
 
          DM           : Dependency_Maps.Map;
-         II           : constant Initializes_Info :=
-           Initializes_Aspects_Map.Element (EN);
+         II           : Initializes_Info renames
+           Initializes_Aspects_Map (EN);
 
          All_LHS_UP   : Name_Sets.Set;
          LHS_UP       : Name_Sets.Set;
@@ -893,7 +896,7 @@ package body Flow_Generated_Globals is
 
    function GG_Get_Local_Variables (EN : Entity_Name) return Name_Sets.Set is
      (if GG_Exists_Cache.Contains (EN)
-      then Package_To_Locals_Map.Element (EN)
+      then Package_To_Locals_Map (EN)
       else Name_Sets.Empty_Set);
 
    -----------------------
@@ -1346,8 +1349,7 @@ package body Flow_Generated_Globals is
             while not Stack.Is_Empty loop
 
                declare
-                  Caller : constant Entity_Name :=
-                    Name_Sets.Element (Stack.First);
+                  Caller : constant Entity_Name := Stack (Stack.First);
                   --  Name of the caller
 
                   V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
@@ -1424,8 +1426,7 @@ package body Flow_Generated_Globals is
             while not Stack.Is_Empty loop
 
                declare
-                  Caller : constant Entity_Name :=
-                    Name_Sets.Element (Stack.First);
+                  Caller : constant Entity_Name := Stack (Stack.First);
                   --  Name of the caller
 
                   V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
@@ -1498,8 +1499,7 @@ package body Flow_Generated_Globals is
             while not Stack.Is_Empty loop
 
                declare
-                  Caller : constant Entity_Name :=
-                    Name_Sets.Element (Stack.First);
+                  Caller : constant Entity_Name := Stack (Stack.First);
                   --  Name of the caller
 
                   V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
@@ -2159,7 +2159,7 @@ package body Flow_Generated_Globals is
                         while C /= Task_Lists.No_Element loop
                            Register_Task_Object
                              (V.The_Type,
-                              Task_Lists.Element (C));
+                              V.The_Objects (C));
                            Task_Lists.Next (C);
                         end loop;
                      end;
@@ -2210,8 +2210,9 @@ package body Flow_Generated_Globals is
             if not Tasking_Info_Bag (P, Kind).Is_Empty then
                for C in Tasking_Info_Bag (P, Kind).Iterate loop
                   declare
-                     Subp : constant Entity_Name   := Key (C);
-                     Objs : constant Name_Sets.Set := Element (C);
+                     Subp : Entity_Name renames Key (C);
+                     Objs : Name_Sets.Set renames
+                       Tasking_Info_Bag (P, Kind) (C);
                   begin
                      if not Objs.Is_Empty then
                         Write_Line (To_String (Subp) & ":");
@@ -2261,8 +2262,11 @@ package body Flow_Generated_Globals is
                   for Kind in Tasking_Info_Kind loop
                      declare
 
+                        Phase_1_Info : Name_Graphs.Map renames
+                          Tasking_Info_Bag (Phase_1, Kind);
+
                         S_C : constant Name_Graphs.Cursor :=
-                          Tasking_Info_Bag (Phase_1, Kind).Find (S);
+                          Phase_1_Info.Find (S);
                         --  Pointer to objects accessed by subprogram S
 
                         T_C : Name_Graphs.Cursor;
@@ -2282,7 +2286,7 @@ package body Flow_Generated_Globals is
                               Inserted => Inserted);
 
                            Tasking_Info_Bag (Phase_2, Kind) (T_C).Union
-                             (Tasking_Info_Bag (Phase_1, Kind) (S_C));
+                             (Phase_1_Info (S_C));
                         end if;
                      end;
                   end loop;
@@ -2407,8 +2411,8 @@ package body Flow_Generated_Globals is
 
          for C in State_Comp_Map.Iterate loop
             declare
-               State : constant Entity_Name := Key (C);
-               Constituents : constant Name_Sets.Set := Element (C);
+               State        : Entity_Name   renames Key (C);
+               Constituents : Name_Sets.Set renames State_Comp_Map (C);
             begin
                Write_Eol;
                Write_Line ("Abstract state " & To_String (State));
@@ -2581,7 +2585,7 @@ package body Flow_Generated_Globals is
       --  structure.
       Comp_State_Map := Name_Maps.Empty_Map;
       for C in State_Comp_Map.Iterate loop
-         for Comp of Element (C) loop
+         for Comp of State_Comp_Map (C) loop
             Comp_State_Map.Insert (Comp, Key (C));
          end loop;
       end loop;
@@ -2661,7 +2665,7 @@ package body Flow_Generated_Globals is
       for C in State_Comp_Map.Iterate loop
          V := (Kind             => EK_State_Map,
                The_State        => Key (C),
-               The_Constituents => Element (C));
+               The_Constituents => State_Comp_Map (C));
          Write_To_ALI (V);
       end loop;
 
@@ -2712,11 +2716,14 @@ package body Flow_Generated_Globals is
                   The_Tasking_Info => <>);
             for Kind in Tasking_Info_Kind loop
                declare
-                  C : constant Name_Graphs.Cursor :=
-                    Tasking_Info_Bag (Phase_1, Kind).Find (Name);
+                  Phase_1_Info : Name_Graphs.Map renames
+                    Tasking_Info_Bag (Phase_1, Kind);
+
+                  C : constant Name_Graphs.Cursor := Phase_1_Info.Find (Name);
+
                begin
                   V.The_Tasking_Info (Kind) := (if Has_Element (C)
-                                                then Element (C)
+                                                then Phase_1_Info (C)
                                                 else Name_Sets.Empty_Set);
                end;
             end loop;
@@ -2727,7 +2734,7 @@ package body Flow_Generated_Globals is
       for C in Task_Instances.Iterate loop
          V := (Kind        => EK_Tasking_Instance_Count,
                The_Type    => Task_Instances_Maps.Key (C),
-               The_Objects => Task_Instances_Maps.Element (C));
+               The_Objects => Task_Instances (C));
          Write_To_ALI (V);
       end loop;
 
@@ -2972,11 +2979,9 @@ package body Flow_Generated_Globals is
       Write_Line ("Synthesized initializes aspects:");
       for Init in Initializes_Aspects_Map.Iterate loop
          declare
-            Pkg : constant Entity_Name :=
-              Initializes_Aspects_Maps.Key (Init);
+            Pkg : Entity_Name      renames Initializes_Aspects_Maps.Key (Init);
+            II  : Initializes_Info renames Initializes_Aspects_Map (Init);
 
-            II  : constant Initializes_Info :=
-              Initializes_Aspects_Maps.Element (Init);
          begin
             Indent;
             Write_Line ("Package " & To_String (Pkg)  & ":");
@@ -3263,11 +3268,13 @@ package body Flow_Generated_Globals is
       Subp : Entity_Name)
       return Name_Sets.Set
    is
-      C : constant Name_Graphs.Cursor :=
-        Tasking_Info_Bag (Phase_2, Kind).Find (Subp);
+      Phase_2_Info : Name_Graphs.Map renames Tasking_Info_Bag (Phase_2, Kind);
+
+      C : constant Name_Graphs.Cursor := Phase_2_Info.Find (Subp);
+
    begin
       return (if Has_Element (C)
-              then Element (C)
+              then Phase_2_Info (C)
               else Name_Sets.Empty_Set);
    end Tasking_Objects;
 

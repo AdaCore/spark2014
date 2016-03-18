@@ -1089,15 +1089,21 @@ package body Graphs is
    begin
       --  Add reversed edges.
       for V_1 in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
-         for C in G.Vertices (V_1).Out_Neighbours.Iterate loop
-            declare
-               V_2 : Valid_Vertex_Id renames Key (C);
-               Atr : Edge_Attributes renames Element (C);
-            begin
-               R.Vertices (V_2).Out_Neighbours.Include (V_1, Atr);
-               R.Vertices (V_1).In_Neighbours.Include (V_2);
-            end;
-         end loop;
+         declare
+            Out_Neighbours : Edge_Attribute_Map renames
+              G.Vertices (V_1).Out_Neighbours;
+
+         begin
+            for C in Out_Neighbours.Iterate loop
+               declare
+                  V_2 : Valid_Vertex_Id renames Key (C);
+                  Atr : Edge_Attributes renames Out_Neighbours (C);
+               begin
+                  R.Vertices (V_2).Out_Neighbours.Include (V_1, Atr);
+                  R.Vertices (V_1).In_Neighbours.Include (V_2);
+               end;
+            end loop;
+         end;
       end loop;
 
       return R;
