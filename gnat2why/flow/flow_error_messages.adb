@@ -1555,13 +1555,13 @@ package body Flow_Error_Messages is
    ------------------------
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String is
-     ((case Severity is
-          when Error_Kind        => "error",
-          when Warning_Kind      => "warning",
-          when Info_Kind         => "info",
-          when High_Check_Kind   => "high",
-          when Medium_Check_Kind => "medium",
-          when Low_Check_Kind    => "low"));
+     (case Severity is
+         when Error_Kind        => "error",
+         when Warning_Kind      => "warning",
+         when Info_Kind         => "info",
+         when High_Check_Kind   => "high",
+         when Medium_Check_Kind => "medium",
+         when Low_Check_Kind    => "low");
 
    ------------------
    -- Add_Json_Msg --
