@@ -4190,12 +4190,10 @@ package body Flow_Utility is
       return Flow_Id_Sets.Set
    is
       function Is_Ignored_Node (N : Node_Id) return Boolean
-      is (case Nkind (N) is
-             when N_Attribute_Reference =>
-                Get_Attribute_Id (Attribute_Name (N)) in
-                  Attribute_Old | Attribute_Loop_Entry,
-             when others =>
-                False);
+      is (Nkind (N) = N_Attribute_Reference
+          and then
+            Get_Attribute_Id (Attribute_Name (N)) in
+                     Attribute_Old | Attribute_Loop_Entry);
 
       function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
       is (Get_Variable_Set
