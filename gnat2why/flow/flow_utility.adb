@@ -4653,8 +4653,8 @@ package body Flow_Utility is
                      function In_Type (C : Entity_Id) return Boolean is
                      begin
                         return
-                          (for some Ptr in All_Components (New_Typ).Iterate =>
-                             Same_Component (C, Node_Lists.Element (Ptr)));
+                          (for some Ptr of All_Components (New_Typ) =>
+                             Same_Component (C, Ptr));
                      end In_Type;
                   begin
                      if Is_Tagged_Type (Old_Typ)

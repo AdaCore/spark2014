@@ -139,9 +139,8 @@ is
       Callsite             : Node_Id := Empty)
    with Pre  => Ekind (Subprogram) in E_Entry | E_Task_Type | Subprogram_Kind
                   and then Has_Depends (Subprogram),
-        Post => (for all C in Depends.Iterate =>
-                   (for all D in Dependency_Maps.Element (C).Iterate =>
-                      Present (Flow_Id_Sets.Element (D))));
+        Post => (for all Inputs of Depends =>
+                   (for all Input of Inputs => Present (Input)));
    --  Return the dependency relation of the given Subprogram, as viewed from
    --  the given Scope. The dependency relation is represented as a map from
    --  entities to sets of entities.

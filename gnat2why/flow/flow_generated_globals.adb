@@ -1947,9 +1947,8 @@ package body Flow_Generated_Globals is
                      State := GG_Enclosing_State (Var);
 
                      if State /= Null_Entity_Name then
-                        if (for all Const in
-                              GG_Get_Constituents (State).Iterate
-                              => All_LHS.Contains (Name_Sets.Element (Const)))
+                        if (for all Const of GG_Get_Constituents (State)
+                              => All_LHS.Contains (Const))
                         then
                            --  All constituents are initialized so we add the
                            --  entire abstract state.
