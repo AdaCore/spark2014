@@ -1,0 +1,1 @@
+ALL XFAIL crash because of Is_Null_Record_Type (P317-022)
