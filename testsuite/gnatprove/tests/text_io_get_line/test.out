@@ -53,7 +53,7 @@ textio-get_line.adb:139:39: info: range check proved
 textio-get_line.adb:145:13: info: assertion proved
 textio-get_line.adb:145:106: info: range check proved
 textio-get_line.adb:146:31: info: initialization of "K" proved
-textio-get_line.adb:146:35: info: precondition proved
+textio-get_line.adb:146:35: medium: precondition might fail
 textio-get_line.adb:146:114: info: range check proved
 textio-get_line.adb:148:16: info: initialization of "K" proved
 textio-get_line.adb:148:18: info: overflow check proved
@@ -112,7 +112,7 @@ textio-get_line.adb:215:22: info: initialization of "Last" proved
 textio-get_line.adb:215:29: info: initialization of "N" proved
 textio-get_line.adb:221:10: info: initialization of "ch" proved
 textio-get_line.adb:222:14: info: initialization of "Last" proved
-textio-get_line.adb:223:13: info: raise statement proved unreachable
+textio-get_line.adb:223:13: medium: exception might be raised
 textio-get_line.adb:233:18: info: initialization of "Last" proved
 textio-get_line.adb:233:23: info: overflow check proved
 textio-get_line.adb:234:16: info: index check proved
@@ -160,7 +160,7 @@ textio.adb:192:31: info: initialization of "Last" proved
 textio.adb:199:32: info: initialization of "Num" proved
 textio.adb:199:37: info: length check proved
 textio.adb:199:40: info: length check proved
-textio.adb:202:19: medium: precondition might fail
+textio.adb:202:19: info: precondition proved
 textio.adb:211:07: info: precondition proved
 textio.ads:6:21: warning: no procedure exists that can initialize abstract state "TextIO.Current_Input_File"
 textio.ads:12:07: warning: "File" is not modified, could be IN

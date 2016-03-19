@@ -21,7 +21,7 @@ call_sample2.adb:23:39: info: initialization of "Delta_Time" proved, in call inl
 call_sample2.adb:23:51: info: initialization of "Time" proved
 call_sample2.adb:23:51: info: initialization of "Time" proved, in call inlined at call_sample2.adb:27
 original_sample.adb:14:30: info: range check proved
-original_sample.adb:14:42: info: overflow check proved
+original_sample.adb:14:42: medium: overflow check might fail
 original_sample.adb:14:42: medium: range check might fail
 original_sample.adb:15:19: medium: overflow check might fail
 original_sample.adb:15:22: info: initialization of "D" proved
