@@ -629,7 +629,7 @@ package body Gnat2Why.Expr is
          if Modulus_Val = UI_Expon (2, Esize (E)) then
             return T;
 
-         --  Otherwise we perform the modulo on bitvectors.
+         --  Otherwise we perform the modulo on bitvectors
 
          else
             return New_Call (Name   => MF_BVs (BV_Type).Urem,
@@ -1817,7 +1817,7 @@ package body Gnat2Why.Expr is
                               Arg_Cnt := Arg_Cnt + 1;
                            elsif Formal_Binder.Fields.Present then
 
-                              --  Otherwise, we need a new reference.
+                              --  Otherwise, we need a new reference
 
                               Why_Args (Arg_Cnt) :=
                                 +New_Identifier
@@ -2177,7 +2177,7 @@ package body Gnat2Why.Expr is
             --    Default_Component_Value         <if any>
             --    default_checks (Component_Type) <otherwise>
 
-            --  If Ty_Ext as a Default_Component_Value aspect, use it.
+            --  If Ty_Ext has a Default_Component_Value aspect, use it
 
             if Has_Default_Aspect (Ty_Ext) then
                T_Comp := Transform_Expr
@@ -2186,7 +2186,7 @@ package body Gnat2Why.Expr is
                   Domain        => EW_Prog,
                   Params        => Params);
 
-            --  Otherwise, use its Component_Type default value.
+            --  Otherwise, use its Component_Type default value
 
             else
                T_Comp := +Compute_Default_Check
@@ -11170,7 +11170,7 @@ package body Gnat2Why.Expr is
                      pragma Assert (Is_Mutable_In_Why (Ent));
                      pragma Assert (Params.Ref_Allowed);
 
-                     --  Assume dynamic invariant of the object after havoc.
+                     --  Assume dynamic invariant of the object after havoc
 
                      declare
                         Dyn_Prop : constant W_Pred_Id :=
@@ -11196,7 +11196,7 @@ package body Gnat2Why.Expr is
                      end if;
 
                      --  If the object is not constrained then also havoc the
-                     --  reference for discriminants
+                     --  reference for discriminants.
 
                      if E.Discrs.Present and then E.Discrs.Binder.Mutable then
                         pragma Assert (E.Constr.Present);
@@ -11241,8 +11241,8 @@ package body Gnat2Why.Expr is
             Prot      : constant Entity_Id :=
               (if Is_Type (Obj_Or_Ty) then Obj_Or_Ty else Etype (Obj_Or_Ty));
 
-            --  the Ada_Node is important here, because that's how we detect
-            --  occurrences of "self" in a term later
+            --  The Ada_Node is important here, because that's how we detect
+            --  occurrences of "self" in a term later.
 
             Id : constant W_Identifier_Id :=
               New_Identifier
@@ -11294,7 +11294,7 @@ package body Gnat2Why.Expr is
          begin
             if Dyn_Prop /= True_Pred then
 
-               --  Assume dynamic invariant of the object after the havoc.
+               --  Assume dynamic invariant of the object after the havoc
 
                Havoc := +Sequence
                  (Havoc, New_Assume_Statement (Pred => Dyn_Prop));
@@ -11430,7 +11430,7 @@ package body Gnat2Why.Expr is
                            Typ  => EW_Bool_Type);
                      end if;
 
-                     --  If Ty is tagged, we need to check its tag.
+                     --  If Ty is tagged, we need to check its tag
 
                      if Is_Tagged_Type (Ty)
                        and then Is_Class_Wide_Type (Ty)
@@ -11566,7 +11566,7 @@ package body Gnat2Why.Expr is
    --  Start of processing for Transform_Membership_Expression
 
    begin
-      --  For ranges and membership, "bool" should be mapped to "int".
+      --  For ranges and membership, "bool" should be mapped to "int"
 
       if Base_Type = EW_Bool_Type then
          Base_Type := EW_Int_Type;
