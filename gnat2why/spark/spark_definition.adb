@@ -5555,14 +5555,14 @@ package body SPARK_Definition is
    ------------------
 
    function First_Cursor (Kind : Entity_Collection) return Cursor is
-     ((case Kind is
-          when Entities_To_Translate =>
-             Cursor'(Kind => Entities_To_Translate,
-                     Entity_To_Translate_Cursor => Entity_List.First),
+     (case Kind is
+         when Entities_To_Translate =>
+            Cursor'(Kind => Entities_To_Translate,
+                    Entity_To_Translate_Cursor => Entity_List.First),
 
-          when Marked_Entities =>
-             Cursor'(Kind => Marked_Entities,
-                     Marked_Entities_Cursor     => Entity_Set.First)));
+         when Marked_Entities =>
+            Cursor'(Kind => Marked_Entities,
+                    Marked_Entities_Cursor     => Entity_Set.First));
 
    -----------------
    -- Next_Cursor --
@@ -5571,16 +5571,16 @@ package body SPARK_Definition is
    function Next_Cursor (Kind : Entity_Collection;
                          C    : Cursor)
                          return Cursor is
-     ((case Kind is
-          when Entities_To_Translate =>
-             Cursor'(Kind => Entities_To_Translate,
-                     Entity_To_Translate_Cursor =>
-                       Node_Lists.Next (C.Entity_To_Translate_Cursor)),
+     (case Kind is
+         when Entities_To_Translate =>
+            Cursor'(Kind => Entities_To_Translate,
+                    Entity_To_Translate_Cursor =>
+                      Node_Lists.Next (C.Entity_To_Translate_Cursor)),
 
           when Marked_Entities =>
              Cursor'(Kind => Marked_Entities,
                      Marked_Entities_Cursor     =>
-                       Node_Sets.Next (C.Marked_Entities_Cursor))));
+                       Node_Sets.Next (C.Marked_Entities_Cursor)));
 
    -----------------
    -- Has_Element --
@@ -5589,12 +5589,12 @@ package body SPARK_Definition is
    function Has_Element (Kind : Entity_Collection;
                          C    : Cursor)
                          return Boolean is
-     ((case Kind is
-          when Entities_To_Translate =>
-             Node_Lists.Has_Element (C.Entity_To_Translate_Cursor),
+     (case Kind is
+         when Entities_To_Translate =>
+            Node_Lists.Has_Element (C.Entity_To_Translate_Cursor),
 
-          when Marked_Entities =>
-             Node_Sets.Has_Element (C.Marked_Entities_Cursor)));
+         when Marked_Entities =>
+            Node_Sets.Has_Element (C.Marked_Entities_Cursor));
 
    -----------------
    -- Get_Element --
@@ -5603,11 +5603,11 @@ package body SPARK_Definition is
    function Get_Element (Kind : Entity_Collection;
                          C    : Cursor)
                          return Entity_Id is
-     ((case Kind is
-          when Entities_To_Translate =>
-             Node_Lists.Element (C.Entity_To_Translate_Cursor),
+     (case Kind is
+         when Entities_To_Translate =>
+            Node_Lists.Element (C.Entity_To_Translate_Cursor),
 
-          when Marked_Entities =>
-             Node_Sets.Element (C.Marked_Entities_Cursor)));
+         when Marked_Entities =>
+            Node_Sets.Element (C.Marked_Entities_Cursor));
 
 end SPARK_Definition;
