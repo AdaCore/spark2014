@@ -1255,7 +1255,8 @@ package body Flow is
       --  Initialize the Global_Info_List to the empty set
       Global_Info_List := Global_Info_Lists.Empty_List;
 
-      for E of Marked_Entities loop --  ??? why Entity_Set and not Entity_List?
+      for E of Marked_Entities loop
+         --  ??? why Marked_Entities and not Entities_To_Translate?
          case Ekind (E) is
             when E_Entry | E_Task_Type | Subprogram_Kind =>
 
@@ -1441,7 +1442,7 @@ package body Flow is
       --  out in SRM 6.1.6.
       Success := True;
       for E of Marked_Entities loop
-         --  ??? why Entity_Set and not Entity_List?
+         --  ??? why Marked_Entities and not Entities_To_Translate?
          if Is_Subprogram (E)
            and then SPARK_Util.Analysis_Requested (E, With_Inlined => True)
            and then Entity_In_SPARK (E)
