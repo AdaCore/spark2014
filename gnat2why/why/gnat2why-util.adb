@@ -517,27 +517,10 @@ package body Gnat2Why.Util is
       Result   : Set;
       Work_Set : Set;
       Cur_Node : Node_Id;
+      Cur_Ptr  : Node_Graphs.Cursor;
 
-      procedure Update_Work_Set (Ignored : Node_Id; New_Set : Set);
-      --  Update sets Result and Work_Set by adding those nodes from New_Set
-      --  that have not been encountered yet.
-
-      ---------------------
-      -- Update_Work_Set --
-      ---------------------
-
-      procedure Update_Work_Set (Ignored : Node_Id; New_Set : Set) is
-         pragma Unreferenced (Ignored);
-      begin
-         for N of New_Set loop
-            if not Result.Contains (N) then
-               Result.Include (N);
-               Work_Set.Include (N);
-            end if;
-         end loop;
-      end Update_Work_Set;
-
-   --  Start of processing for Get_Graph_Closure
+      Ignored  : Node_Sets.Cursor;
+      Inserted : Boolean;
 
    begin
       Work_Set := From;
@@ -546,9 +529,18 @@ package body Gnat2Why.Util is
       while not Work_Set.Is_Empty loop
          Cur_Node := Work_Set.First_Element;
 
-         if Map.Contains (Cur_Node) then
-            Node_Graphs.Query_Element (Position => Map.Find (Cur_Node),
-                                       Process  => Update_Work_Set'Access);
+         Cur_Ptr := Map.Find (Cur_Node);
+
+         if Node_Graphs.Has_Element (Cur_Ptr) then
+            for N of Map (Cur_Ptr) loop
+               Result.Insert (New_Item => N,
+                              Position => Ignored,
+                              Inserted => Inserted);
+
+               if Inserted then
+                  Work_Set.Include (N);
+               end if;
+            end loop;
          end if;
 
          Work_Set.Delete (Cur_Node);
