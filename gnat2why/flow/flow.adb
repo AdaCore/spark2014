@@ -1362,7 +1362,7 @@ package body Flow is
                                     when E_Task_Type     => Kind_Task,
                                     when Subprogram_Kind => Kind_Subprogram,
                                     when others          =>
-                                      raise Why.Unexpected_Node),
+                                      raise Program_Error),
                                  Globals_Origin        => Origin_Frontend,
                                  Inputs_Proof          => Name_Sets.Empty_Set,
                                  Inputs                => Reads,
