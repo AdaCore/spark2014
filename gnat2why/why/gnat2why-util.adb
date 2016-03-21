@@ -532,7 +532,6 @@ package body Gnat2Why.Util is
       use Node_Sets;
       Result   : Set;
       Work_Set : Set;
-      First    : Node_Sets.Cursor;
       Cur_Node : Node_Id;
 
       procedure Update_Work_Set (Ignored : Node_Id; New_Set : Set);
@@ -554,14 +553,15 @@ package body Gnat2Why.Util is
          end loop;
       end Update_Work_Set;
 
+   --  Start of processing for Get_Graph_Closure
+
    begin
       Work_Set := From;
       Result := From;
 
       while not Work_Set.Is_Empty loop
-         First := Work_Set.First;
-         Cur_Node := Element (First);
-         Work_Set.Delete (First);
+         Cur_Node := Work_Set.First_Element;
+         Work_Set.Delete_First;
 
          if Map.Contains (Cur_Node) then
             Node_Graphs.Query_Element (Position => Map.Find (Cur_Node),
