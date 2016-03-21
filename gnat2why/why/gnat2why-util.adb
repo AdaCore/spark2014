@@ -545,12 +545,13 @@ package body Gnat2Why.Util is
 
       while not Work_Set.Is_Empty loop
          Cur_Node := Work_Set.First_Element;
-         Work_Set.Delete_First;
 
          if Map.Contains (Cur_Node) then
             Node_Graphs.Query_Element (Position => Map.Find (Cur_Node),
                                        Process  => Update_Work_Set'Access);
          end if;
+
+         Work_Set.Delete (Cur_Node);
       end loop;
 
       return Result;
