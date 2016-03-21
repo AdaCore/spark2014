@@ -472,6 +472,8 @@ package body Gnat2Why.Util is
          end if;
       end Is_Variable_Reference;
 
+   --  Start of processing for Expression_Depends_On_Variables
+
    begin
       Search_Variable_Reference (N);
       return Variable_Reference_Seen;
