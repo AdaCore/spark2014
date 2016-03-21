@@ -322,29 +322,13 @@ package body Gnat2Why.Util is
    ------------------
 
    procedure Add_To_Graph (Map : in out Node_Graphs.Map; From, To : Node_Id) is
-
-      procedure Add_To_Set (Ignored : Node_Id; Set : in out Node_Sets.Set);
-      --  Add entity To to set Set
-
-      ----------------
-      -- Add_To_Set --
-      ----------------
-
-      procedure Add_To_Set (Ignored : Node_Id; Set : in out Node_Sets.Set)
-      is
-         pragma Unreferenced (Ignored);
-      begin
-         Set.Include (To);
-      end Add_To_Set;
-
       Position : Node_Graphs.Cursor;
       Ignored  : Boolean;
 
-   --  Start of processing for Add_To_Graph
-
    begin
+      --  Insert an empty set or do nothing
       Map.Insert (Key => From, Position => Position, Inserted => Ignored);
-      Map.Update_Element (Position, Add_To_Set'Access);
+      Map (Position).Include (To);
    end Add_To_Graph;
 
    ------------------------
