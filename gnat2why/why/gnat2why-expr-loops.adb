@@ -1185,10 +1185,16 @@ package body Gnat2Why.Expr.Loops is
                                        EW_Prog,
                                        Params => Body_Params);
                   begin
-                     Entire_Loop := +New_Typed_Binding
-                       (Stmt, EW_Prog, Low_Id, Low_Expr, +Entire_Loop);
+                     --  Insert assignment to high bound first, so that
+                     --  assignment to low bound is done prior to assignment to
+                     --  high bound in generated Why3 code. This ensures that a
+                     --  common error is detected on low bound rather than high
+                     --  bound, which is more intuitive.
+
                      Entire_Loop := +New_Typed_Binding
                        (Stmt, EW_Prog, High_Id, High_Expr, +Entire_Loop);
+                     Entire_Loop := +New_Typed_Binding
+                       (Stmt, EW_Prog, Low_Id, Low_Expr, +Entire_Loop);
                   end;
                end if;
 

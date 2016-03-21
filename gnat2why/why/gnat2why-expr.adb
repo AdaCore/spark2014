@@ -10707,11 +10707,15 @@ package body Gnat2Why.Expr is
             --  base type. Necessary checks, rounding and conversions will
             --  be introduced at the end of Transform_Expr below. Fixed-point
             --  types are special, because the base type __fixed really
-            --  represents a different base for every fixed-point type, so
-            --  use full conversion to the expected type in that case.
+            --  represents a different base for every fixed-point type, so use
+            --  full conversion to the expected type in that case. Types with
+            --  predicates are also treated specially, so that the type with
+            --  predicate is explicitly the target of the conversion, to avoid
+            --  having it being skipped.
 
             if Is_Elementary_Type (Expr_Type)
-              and not Has_Fixed_Point_Type (Expr_Type)
+              and then not Has_Fixed_Point_Type (Expr_Type)
+              and then not Has_Predicates (Expr_Type)
             then
                T := Transform_Expr (Expression (Expr),
                                     Base_Why_Type (Expr_Type),

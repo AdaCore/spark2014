@@ -7,8 +7,10 @@ dynamic_preds.adb:28:19: medium: predicate check might fail
 dynamic_preds.adb:29:22: info: predicate check proved
 dynamic_preds.adb:34:19: medium: predicate check might fail
 dynamic_preds.adb:35:22: info: predicate check proved
+dynamic_preds.adb:39:27: info: predicate check proved
 dynamic_preds.adb:39:27: info: range check proved
 dynamic_preds.adb:39:27: medium: predicate check might fail
+dynamic_preds.adb:39:30: info: predicate check proved
 dynamic_preds.adb:39:30: info: range check proved
 dynamic_preds.adb:39:30: medium: predicate check might fail
 dynamic_preds.adb:41:12: info: initialization of "Tmp.A" proved
@@ -100,8 +102,10 @@ dynamic_preds_array.adb:29:21: info: predicate check proved
 dynamic_preds_array.adb:34:18: medium: predicate check might fail
 dynamic_preds_array.adb:35:21: info: predicate check proved
 dynamic_preds_array.adb:40:26: info: length check proved
+dynamic_preds_array.adb:40:27: info: predicate check proved
 dynamic_preds_array.adb:40:27: info: range check proved
 dynamic_preds_array.adb:40:27: medium: predicate check might fail
+dynamic_preds_array.adb:40:30: info: predicate check proved
 dynamic_preds_array.adb:40:30: info: range check proved
 dynamic_preds_array.adb:40:30: medium: predicate check might fail
 dynamic_preds_array.adb:42:12: info: initialization of "Tmp" proved
