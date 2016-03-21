@@ -1473,10 +1473,10 @@ package body Flow is
          Analysis.Sanity_Check (FA, Success);
          if Success then
             case FA.Kind is
-               when Kind_Entry         |
-                    Kind_Package       |
-                    Kind_Package_Body  |
-                    Kind_Subprogram    =>
+               when Kind_Entry        |
+                    Kind_Package      |
+                    Kind_Package_Body |
+                    Kind_Subprogram   =>
                   Analysis.Sanity_Check_Postcondition (FA, Success);
 
                when Kind_Task =>
