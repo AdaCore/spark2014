@@ -335,5 +335,4 @@ very_longs.ads:62:19: info: postcondition proved
 very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
 very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
 very_longs.ads:75:37: info: overflow check proved
-very_longs.ads:89:13: info: range check proved
 very_longs.ads:90:68: info: index check proved

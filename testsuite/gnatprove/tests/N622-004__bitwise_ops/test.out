@@ -389,5 +389,4 @@ aco-math-very_longs.ads:75:96: info: initialization of "Remainder.Long_Digits" p
 aco-math-very_longs.ads:81:45: medium: overflow check might fail
 aco-math-very_longs.ads:90:16: info: postcondition proved
 aco-math-very_longs.ads:96:16: info: postcondition proved
-aco-math-very_longs.ads:113:13: info: range check proved
 aco-math-very_longs.ads:114:67: info: index check proved

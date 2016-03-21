@@ -9,10 +9,6 @@ state_machine_with_discriminant.adb:29:13: info: precondition proved
 state_machine_with_discriminant.adb:31:13: info: precondition proved
 state_machine_with_discriminant.adb:33:13: info: precondition proved
 state_machine_with_discriminant.adb:35:13: info: precondition proved
-state_machine_with_discriminant.ads:12:13: info: range check proved
-state_machine_with_discriminant.ads:14:13: info: range check proved
-state_machine_with_discriminant.ads:16:13: info: range check proved
-state_machine_with_discriminant.ads:19:13: info: range check proved
 state_machine_with_discriminant.ads:26:14: info: postcondition proved
 state_machine_with_discriminant.ads:30:14: info: postcondition proved
 state_machine_with_discriminant.ads:34:14: info: postcondition proved

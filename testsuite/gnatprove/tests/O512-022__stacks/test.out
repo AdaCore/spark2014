@@ -49,8 +49,4 @@ stacks.ads:47:14: medium: precondition is stronger than the default class-wide p
 stacks.ads:48:14: info: postcondition proved
 stacks.ads:67:13: medium: precondition is stronger than the default class-wide precondition of True (e.g. when S = (Max => ?, Top => 0, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.ads:69:14: warning: subprogram "Print" has no effect
-stacks.ads:78:13: info: range check proved
-stacks.ads:80:13: info: range check proved
-stacks.ads:82:13: info: range check proved
-stacks.ads:84:13: info: range check proved
 stacks.ads:84:58: medium: array index check might fail (e.g. when S = (Max => ?, Top => 2, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)

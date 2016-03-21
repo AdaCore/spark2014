@@ -6,7 +6,6 @@ dynamic_array.adb:25:66: info: range check proved
 dynamic_array.adb:27:37: info: length check proved
 dynamic_array.adb:27:40: info: range check proved
 dynamic_array.adb:27:66: info: range check proved
-dynamic_array.adb:31:13: info: range check proved
 dynamic_array.adb:32:24: info: discriminant check proved
 dynamic_array.adb:32:38: info: discriminant check proved
 dynamic_array.adb:32:42: info: overflow check proved

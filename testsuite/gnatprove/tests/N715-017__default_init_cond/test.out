@@ -69,6 +69,4 @@ default_init.ads:61:50: info: range check proved
 default_init.ads:63:52: info: range check proved
 default_init.ads:85:39: info: precondition proved
 default_init.ads:92:64: info: precondition proved
-default_init.ads:97:13: info: range check proved
 default_init.ads:98:20: info: discriminant check proved
-default_init.ads:99:13: info: range check proved

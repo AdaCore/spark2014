@@ -180,9 +180,6 @@ simple_unc_arrays.ads:96:68: info: index check proved
 simple_unc_arrays.ads:96:68: info: overflow check proved
 simple_unc_arrays.ads:98:55: info: index check proved
 simple_unc_arrays.ads:98:65: info: index check proved
-simple_unc_arrays.ads:105:13: info: range check proved
-simple_unc_arrays.ads:106:13: info: range check proved
-simple_unc_arrays.ads:107:13: info: range check proved
 simple_unc_arrays.ads:112:61: info: index check proved
 simple_unc_arrays.ads:116:18: info: postcondition proved
 simple_unc_arrays.ads:121:20: medium: postcondition might fail (e.g. when A = (others => 1) and A'Old'First = 1 and A'Old'Last = 2 and A'Old = (2 => 1, others => 0) and J = 2 and I = 1)
