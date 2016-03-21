@@ -25,8 +25,6 @@
 
 with Ada.Strings;            use Ada.Strings;
 with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
-with Atree;                  use Atree;
-with Einfo;                  use Einfo;
 with Flow_Types;
 with Flow_Utility;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
@@ -728,8 +726,8 @@ package body Gnat2Why.Util is
       then
          return False;
 
-      --  same for objects that have Part_Of specified (for a protected
-      --  object), they are like components for proof
+      --  Same for objects that have Part_Of specified (for a protected
+      --  object), they are like components for proof.
 
       elsif Is_Part_Of_Protected_Object (N) then
          return False;
@@ -848,7 +846,6 @@ package body Gnat2Why.Util is
 
    function Use_Base_Type_For_Type (E : Entity_Id) return Boolean is
    begin
-      pragma Assert (Nkind (E) in N_Entity);
       return Is_Scalar_Type (E) and then
         not Is_Standard_Boolean_Type (E);
    end Use_Base_Type_For_Type;
