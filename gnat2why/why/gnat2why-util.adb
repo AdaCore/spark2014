@@ -558,24 +558,20 @@ package body Gnat2Why.Util is
       Is_Record_Field : Boolean := False;
       Append : String := "") return Name_Id_Sets.Set
    is
-      Labels : Name_Id_Sets.Set := Name_Id_Sets.Empty_Set;
-   begin
-      Labels.Include
+     (Name_Id_Sets.To_Set
         (NID
            (Model_Trace_Label &
             (if E = Empty
-               then ""
-               else (if Is_Record_Field then "."
-                 else "") & Trim (Entity_Id'Image (E), Both) &
-                 Append &
-                 --  Add information whether labels are generated for a
-                 --  variable holding result of a function.
-                 (if Ekind (E) = E_Function then "@result" else "")
-             )
-           )
-        );
-      return Labels;
-   end Get_Model_Trace_Label;
+             then ""
+             else
+               (if Is_Record_Field
+                then "."
+                else "") &
+                Trim (Entity_Id'Image (E), Both) &
+                Append &
+                --  Add information whether labels are generated for a
+                --  variable holding result of a function.
+                (if Ekind (E) = E_Function then "@result" else "")))));
 
    ------------------------------
    -- Get_Static_Call_Contract --
