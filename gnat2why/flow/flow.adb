@@ -265,8 +265,8 @@ package body Flow is
            Ekind (X.Analyzed_Entity) = E_Package,
         when Kind_Package_Body =>
            Ekind (X.Analyzed_Entity) = E_Package_Body)
-           and then (if not X.Generating_Globals
-                     then not X.GG.Aborted and X.GG.Globals.Is_Empty)
+       and then (if not X.Generating_Globals
+                 then not X.GG.Aborted and X.GG.Globals.Is_Empty)
       );
 
    -------------------------------
