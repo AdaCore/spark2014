@@ -133,6 +133,8 @@ package body Flow_Classwide is
          end case;
       end Mode;
 
+   --  Start of processing for Check_Classwide_Global
+
    begin
       Get_Globals (Subprogram => Overridden_Operation (E),
                    Scope      => Scope,
