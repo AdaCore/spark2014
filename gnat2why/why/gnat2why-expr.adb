@@ -6450,6 +6450,39 @@ package body Gnat2Why.Expr is
          Values : Node_Lists.List;
          Types  : Node_Lists.List)
       is
+         function Get_Name_For_Aggregate (Expr : Node_Id) return String;
+         --  Return a suitable name for the aggregate Expr. If Expr is the
+         --  initialization expression in an object declaration, then use the
+         --  name of the object as basis, which ensures stable naming across
+         --  changes in GNATprove. Otherwise, use a temporary name based on a
+         --  counter.
+
+         ----------------------------
+         -- Get_Name_For_Aggregate --
+         ----------------------------
+
+         function Get_Name_For_Aggregate (Expr : Node_Id) return String is
+            Par : Node_Id;
+
+         begin
+            --  The object declaration might be the parent expression of the
+            --  aggregate, or there might be a qualification in between. Deal
+            --  uniformly with both cases.
+
+            Par := Parent (Expr);
+
+            if Nkind (Par) = N_Qualified_Expression then
+               Par := Parent (Par);
+            end if;
+
+            if Nkind (Par) = N_Object_Declaration then
+               return Get_Module_Name (E_Module (Defining_Identifier (Par)))
+                 & To_String (WNE_Aggregate_Def_Suffix);
+            else
+               return New_Temp_Identifier;
+            end if;
+         end Get_Name_For_Aggregate;
+
          use Node_Lists;
 
          Expr_Typ : constant Entity_Id  := Type_Of_Node (Expr);
@@ -6457,7 +6490,7 @@ package body Gnat2Why.Expr is
          --  Generate name for the function based on the location of the
          --  aggregate.
 
-         Name          : constant String := New_Temp_Identifier;
+         Name          : constant String := Get_Name_For_Aggregate (Expr);
          Func          : constant W_Identifier_Id :=
                            New_Identifier (Name     => Name,
                                            Ada_Node => Expr);

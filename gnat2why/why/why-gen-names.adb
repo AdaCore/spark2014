@@ -670,6 +670,7 @@ package body Why.Gen.Names is
 
    function To_String (W : Why_Name_Enum) return String is
      (case W is
+         when WNE_Aggregate_Def_Suffix => "__aggregate_def",
          when WNE_Ancestor_Prefix      => "extract_anc__",
          when WNE_Array_Component_Type => "component_type",
          when WNE_Array_Type           => "__t",
