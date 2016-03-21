@@ -1293,6 +1293,8 @@ package body Flow is
                           Get_Contract_Node (E, Scope, Global_Contract);
                         Depends_Node : constant Node_Id :=
                           Get_Contract_Node (E, Scope, Depends_Contract);
+
+                        Global_Info : Global_Phase_1_Info;
                      begin
                         if Present (Global_Node)
                           or else Present (Depends_Node)
@@ -1302,10 +1304,9 @@ package body Flow is
                            --  Note that in such a case components *_Calls
                            --  and Local_* will be left as empty sets.
                            declare
-                              Proof_Ins   : Flow_Id_Sets.Set;
-                              Reads       : Flow_Id_Sets.Set;
-                              Writes      : Flow_Id_Sets.Set;
-                              Global_Info : Global_Phase_1_Info;
+                              Proof_Ins : Flow_Id_Sets.Set;
+                              Reads     : Flow_Id_Sets.Set;
+                              Writes    : Flow_Id_Sets.Set;
                            begin
                               Get_Globals (Subprogram           => E,
                                            Scope                => Scope,
@@ -1336,18 +1337,15 @@ package body Flow is
                                  Local_Variables       => Name_Sets.Empty_Set,
                                  Local_Subprograms     => Name_Sets.Empty_Set,
                                  Local_Definite_Writes => Name_Sets.Empty_Set);
-
-                              Global_Info_List.Append (Global_Info);
                            end;
 
                         else
                            --  Use (Yannick's) Computed Globals info
                            --  to add a GG entry to the ALI file.
                            declare
-                              Reads       : Name_Sets.Set;
-                              Writes      : Name_Sets.Set;
-                              Calls       : Name_Sets.Set;
-                              Global_Info : Global_Phase_1_Info;
+                              Reads  : Name_Sets.Set;
+                              Writes : Name_Sets.Set;
+                              Calls  : Name_Sets.Set;
                            begin
                               --  Collect the computed globals using only info
                               --  from the current compilation unit.
@@ -1375,10 +1373,11 @@ package body Flow is
                                  Local_Variables       => Name_Sets.Empty_Set,
                                  Local_Subprograms     => Name_Sets.Empty_Set,
                                  Local_Definite_Writes => Name_Sets.Empty_Set);
-
-                              Global_Info_List.Append (Global_Info);
                            end;
                         end if;
+
+                        Global_Info_List.Append (Global_Info);
+
                      end;
                   end if;
                end if;
