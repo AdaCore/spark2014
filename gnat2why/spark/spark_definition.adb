@@ -131,6 +131,13 @@ package body SPARK_Definition is
    --  When processing delayed aspect type (e.g. Predicate) this is set to the
    --  delayed type itself; used to reference the type in the error message.
 
+   Current_Scope : Node_Trees.Cursor := Entity_Tree.Root;
+   Last_Package_Scope : Node_Trees.Cursor := Node_Trees.No_Element;
+   --  Cursors to the current package/subprogram/entry/task type (which are the
+   --  entities processed by the flow analyzis) and to the last package
+   --  inserted under the current scope (sibling packages goes first and then
+   --  go other entities).
+
    Violation_Detected : Boolean;
    --  Set to True when a violation is detected
 
@@ -2460,7 +2467,7 @@ package body SPARK_Definition is
       CU        : constant Node_Id := Parent (N);
       Context_N : Node_Id;
 
-      use type Node_Lists.Cursor;
+      use type Node_Lists.Cursor, Node_Trees.Cursor;
 
    begin
       --  Avoid rewriting generic units which are only preanalyzed, which may
@@ -2558,6 +2565,7 @@ package body SPARK_Definition is
       --  Ensure that global variables are restored to their initial values
       pragma Assert (No (Current_Protected_Type));
       pragma Assert (No (Current_Delayed_Aspect_Type));
+      pragma Assert (Current_Scope = Entity_Tree.Root);
    end Mark_Compilation_Unit;
 
    --------------------------------
@@ -3884,6 +3892,9 @@ package body SPARK_Definition is
       Save_Violation_Detected : constant Boolean := Violation_Detected;
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
 
+      Save_Scope        : constant Node_Trees.Cursor := Current_Scope;
+      Save_Last_Package : constant Node_Trees.Cursor := Last_Package_Scope;
+
    --  Start of processing for Mark_Entity
 
    begin
@@ -3967,6 +3978,19 @@ package body SPARK_Definition is
 
       Entity_Set.Insert (E);
 
+      if Ekind (E) in E_Entry     |
+                      E_Function  |
+                      E_Procedure |
+                      E_Task_Type
+      then
+         Entity_Tree.Insert_Child
+           (Parent   => Current_Scope,
+            Before   => Node_Trees.No_Element,
+            New_Item => E,
+            Position => Current_Scope);
+         Last_Package_Scope := Node_Trees.No_Element;
+      end if;
+
       --  If the entity is declared in the scope of SPARK_Mode => Off, then
       --  do not consider whether it could be in SPARK or not. An exception to
       --  this rule is abstract state, which has to be added to the Entity_List
@@ -3977,6 +4001,8 @@ package body SPARK_Definition is
         and then Ekind (E) /= E_Abstract_State
       then
          Current_SPARK_Pragma := Save_SPARK_Pragma;
+         Last_Package_Scope   := Save_Last_Package;
+         Current_Scope        := Save_Scope;
          return;
       end if;
 
@@ -4066,6 +4092,8 @@ package body SPARK_Definition is
       --  Restore SPARK_Mode pragma
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;
+      Last_Package_Scope   := Save_Last_Package;
+      Current_Scope        := Save_Scope;
    end Mark_Entity;
 
    ------------------------------------
@@ -4356,9 +4384,16 @@ package body SPARK_Definition is
    ------------------------------
 
    procedure Mark_Package_Declaration (N : Node_Id) is
-      Id : constant Entity_Id := Defining_Entity (N);
+      Id         : constant Entity_Id := Defining_Entity (N);
+      Save_Scope : constant Node_Trees.Cursor := Current_Scope;
 
    begin
+      Entity_Tree.Insert_Child
+        (Parent   => Current_Scope,
+         Before   => Node_Trees.Next_Sibling (Last_Package_Scope),
+         New_Item => Id,
+         Position => Current_Scope);
+      Last_Package_Scope := Node_Trees.No_Element;
 
       if Entity_In_Ext_Axioms (Id) then
 
@@ -4420,6 +4455,9 @@ package body SPARK_Definition is
          end;
 
       end if;
+
+      Last_Package_Scope := Current_Scope;
+      Current_Scope := Save_Scope;
 
       --  Postprocessing: indicate in output file if package is in SPARK or
       --  not, for reporting, debug and verification. Only do so if there

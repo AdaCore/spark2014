@@ -41,6 +41,7 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Multiway_Trees;
 with Atree;                 use Atree;
 with Common_Containers;     use Common_Containers;
 with Einfo;                 use Einfo;
@@ -170,6 +171,17 @@ package SPARK_Definition is
    ----------------------------------------------------------------------
    --  Marked entity collections
    ----------------------------------------------------------------------
+
+   package Node_Trees is new Ada.Containers.Multiway_Trees
+     (Element_Type => Entity_Id,
+      "="          => "=");
+
+   Entity_Tree : Node_Trees.Tree;
+   --  A hierarchical container with entities processed by the flow analysis,
+   --  i.e. packages, subprograms, entries and task types. The hierarchy of its
+   --  contents mirrors the hierarchy of the analyzed code; the ordering of
+   --  siblings is that packages go first and subprograms/entries/task types go
+   --  after them.
 
    type Entity_Collection is
      (Entities_To_Translate,

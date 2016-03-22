@@ -1255,8 +1255,7 @@ package body Flow is
       --  Initialize the Global_Info_List to the empty set
       Global_Info_List := Global_Info_Lists.Empty_List;
 
-      for E of Marked_Entities loop
-         --  ??? why Marked_Entities and not Entities_To_Translate?
+      for E of Entity_Tree loop
          case Ekind (E) is
             when E_Entry | E_Task_Type | Subprogram_Kind =>
 
