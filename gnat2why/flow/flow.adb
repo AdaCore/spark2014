@@ -1125,8 +1125,7 @@ package body Flow is
                   Refined_State_N : constant Node_Id :=
                     Get_Pragma (E, Pragma_Refined_State);
 
-                  DM              : Dependency_Maps.Map;
-                  Constituents    : Flow_Id_Sets.Set;
+                  DM : Dependency_Maps.Map;
                begin
                   if Present (Refined_State_N) then
                      if Gnat2Why_Args.Flow_Advanced_Debug then
@@ -1141,9 +1140,8 @@ package body Flow is
                            Print_Flow_Id (Dependency_Maps.Key (State));
                            Outdent;
                            Write_Line ("Constituents:");
-                           Constituents := Dependency_Maps.Element (State);
                            Indent;
-                           for Constituent of Constituents loop
+                           for Constituent of DM (State) loop
                               Print_Flow_Id (Constituent);
                            end loop;
                            Outdent;
