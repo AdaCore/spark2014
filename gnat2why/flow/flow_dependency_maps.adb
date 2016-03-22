@@ -27,7 +27,6 @@ with Elists;                 use Elists;
 with Flow_Generated_Globals; use Flow_Generated_Globals;
 with Flow_Utility;           use Flow_Utility;
 with Nlists;                 use Nlists;
-with Sem_Util;               use Sem_Util;
 with Treepr;                 use Treepr;
 with Why;
 

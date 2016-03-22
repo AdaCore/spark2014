@@ -21,8 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package deals with parsing and representing dependency maps
---  from the depends and initializes aspects.
+--  This package deals with parsing and representing dependency maps from the
+--  depends and initializes aspects.
 
 with Ada.Containers.Hashed_Maps;
 with Atree;                      use Atree;
@@ -30,6 +30,7 @@ with Flow_Refinement;            use Flow_Refinement;
 with Flow_Types;                 use Flow_Types;
 with Sinfo;                      use Sinfo;
 with Snames;                     use Snames;
+with Sem_Util;                   use Sem_Util;
 with Types;                      use Types;
 
 package Flow_Dependency_Maps is
@@ -51,7 +52,7 @@ package Flow_Dependency_Maps is
 
    function Parse_Depends (N : Node_Id) return Dependency_Maps.Map
    with Pre => Nkind (N) = N_Pragma and then
-               Get_Pragma_Id (Chars (Pragma_Identifier (N))) in
+               Get_Pragma_Id (N) in
                  Pragma_Depends         |
                  Pragma_Refined_Depends;
 
@@ -62,8 +63,7 @@ package Flow_Dependency_Maps is
       return Dependency_Maps.Map
    with Pre => (if Present (N) then
                   Nkind (N) = N_Pragma and then
-                    Get_Pragma_Id (Chars (Pragma_Identifier (N))) =
-                      Pragma_Initializes);
+                    Get_Pragma_Id (N) = Pragma_Initializes);
    --  Parses the Initializes aspect. If the initializes aspect does not exist
    --  but we have a generated initializes aspect then we use that.
    --
@@ -82,8 +82,8 @@ package Flow_Dependency_Maps is
 
    function Parse_Refined_State (N : Node_Id) return Dependency_Maps.Map
    with Pre => Nkind (N) = N_Pragma and then
-               Get_Pragma_Id (Chars (Pragma_Identifier (N))) =
-                 Pragma_Refined_State;
+               Get_Pragma_Id (N) = Pragma_Refined_State;
+
    --  Parses the Refined_State aspect
 
 end Flow_Dependency_Maps;
