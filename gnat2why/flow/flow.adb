@@ -1186,7 +1186,7 @@ package body Flow is
          end loop;
       end if;
 
-      --  We print this graph first in case the other algorithms barf
+      --  Print this graph now in case the other algorithms barf
       if Debug_Print_CFG then
          Print_Graph (Filename          =>
                         To_String (FA.Base_Filename) & "_cfg",
