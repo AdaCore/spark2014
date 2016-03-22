@@ -1054,11 +1054,11 @@ package body Flow is
          case FA.Kind is
             when Kind_Subprogram | Kind_Task | Kind_Entry =>
                if not FA.Is_Generative then
-                  Debug (if Present (FA.Global_N)
-                         then "skipped (global found)"
-                         elsif Present (FA.Depends_N)
-                         then "skipped (depends found)"
-                         else raise Program_Error);
+                  Debug ("skipped" & (if Present (FA.Global_N)
+                                      then "(global found)"
+                                      elsif Present (FA.Depends_N)
+                                      then "(depends found)"
+                                      else raise Program_Error));
 
                   --  Even if aborting we still collect tasking-related info
                   --  using control flow traversal and register the results.
