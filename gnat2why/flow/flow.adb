@@ -881,6 +881,9 @@ package body Flow is
       procedure Debug (Str : String);
       --  Write debug string
 
+      procedure Debug (Str : String; V : Boolean);
+      --  Write debug string followed by yes or no, depending on V
+
       -----------------
       -- Debug --
       -----------------
@@ -890,6 +893,11 @@ package body Flow is
          if Gnat2Why_Args.Flow_Advanced_Debug then
             Write_Line (Str);
          end if;
+      end Debug;
+
+      procedure Debug (Str : String; V : Boolean) is
+      begin
+         Debug (Str & (if V then "yes" else "no"));
       end Debug;
 
       FA : Flow_Analysis_Graphs_Root
@@ -1071,13 +1079,8 @@ package body Flow is
                   FA.GG.Aborted := True;
                end if;
 
-               Debug ("Spec in SPARK: " & (if Entity_In_SPARK (E)
-                                           then "yes"
-                                           else "no"));
-
-               Debug ("Body in SPARK: " & (if Entity_Body_In_SPARK (E)
-                                           then "yes"
-                                           else "no"));
+               Debug ("Spec in SPARK: ", Entity_In_SPARK (E));
+               Debug ("Body in SPARK: ", Entity_Body_In_SPARK (E));
 
             when Kind_Package =>
                if Present (FA.Initializes_N) then
@@ -1087,15 +1090,10 @@ package body Flow is
 
                   FA.GG.Aborted := True;
                else
-                  if Entity_Spec_In_SPARK (E) then
-                     Debug ("Spec in SPARK: yes");
+                  Debug ("Spec in SPARK: ", Entity_Spec_In_SPARK (E));
 
-                  else
-                     --  We cannot create a GG graph if the spec is not in
-                     --  SPARK.
-
-                     Debug ("Spec in SPARK: no");
-
+                  --  We cannot create a GG graph if the spec is not in SPARK
+                  if not Entity_Spec_In_SPARK (E) then
                      FA.GG.Aborted := True;
                   end if;
                end if;
@@ -1110,18 +1108,12 @@ package body Flow is
 
                   FA.GG.Aborted := True;
                else
-                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
+                  Debug ("Spec in SPARK: ",
+                         Entity_Spec_In_SPARK (FA.Spec_Entity));
+                  Debug ("Body in SPARK: ",
+                         Entity_Body_In_SPARK (FA.Spec_Entity));
 
-                     Debug ("Spec in SPARK: yes");
-                     Debug ("Body in SPARK: yes");
-
-                  else
-                     Debug ("Spec in SPARK: " &
-                                   (if Entity_In_SPARK (FA.Spec_Entity)
-                                    then "yes"
-                                    else "no"));
-                     Debug ("Body in SPARK: no");
-
+                  if not Entity_Body_In_SPARK (FA.Spec_Entity) then
                      FA.GG.Aborted := True;
                   end if;
                end if;
