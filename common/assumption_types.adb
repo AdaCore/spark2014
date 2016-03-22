@@ -110,8 +110,8 @@ package body Assumption_Types is
    -- Hash --
    ----------
 
-   function Hash (S : Subp_Type) return Ada.Containers.Hash_Type is
-     (Unique_Subps.Hash (S));
+   function Hash (S : Subp_Type) return Ada.Containers.Hash_Type renames
+     Unique_Subps.Hash;
 
    function Hash (S : Unit_Type) return Ada.Containers.Hash_Type is
      (Hash (Symbol (S)));
