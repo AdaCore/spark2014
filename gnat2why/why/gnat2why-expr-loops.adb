@@ -484,7 +484,7 @@ package body Gnat2Why.Expr.Loops is
 
          if not Loop_Invariants.Is_Empty then
             declare
-               Count : Integer := 1;
+               Count : Positive := 1;
 
             begin
                --  Generate the relevant bits for the various loop invariants

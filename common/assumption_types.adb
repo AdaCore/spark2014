@@ -120,7 +120,7 @@ package body Assumption_Types is
    -- Mk_Base_Sloc --
    ------------------
 
-   function Mk_Base_Sloc (File : String; Line : Integer) return Base_Sloc is
+   function Mk_Base_Sloc (File : String; Line : Positive) return Base_Sloc is
    begin
       return (File => Find (Symbol_Table, File), Line => Line);
    end Mk_Base_Sloc;

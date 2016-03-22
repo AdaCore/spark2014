@@ -55,7 +55,7 @@ package Assumption_Types is
    function From_JSON (V : JSON_Value) return Subp_Type;
    function To_JSON (S : Subp_Type) return JSON_Value;
 
-   function Mk_Base_Sloc (File : String; Line : Integer) return Base_Sloc;
+   function Mk_Base_Sloc (File : String; Line : Positive) return Base_Sloc;
    function Mk_Subp (Name : String; Sloc : My_Sloc) return Subp_Type;
    --  Build a a subp object from its defining components
 

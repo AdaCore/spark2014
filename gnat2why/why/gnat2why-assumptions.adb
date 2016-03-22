@@ -146,8 +146,8 @@ package body Gnat2Why.Assumptions is
       while Slc /= No_Location loop
          declare
             File : constant String := File_Name (Slc);
-            Line : constant Integer :=
-              Integer (Get_Physical_Line_Number (Slc));
+            Line : constant Positive :=
+              Positive (Get_Physical_Line_Number (Slc));
          begin
             Sloc.Append (Mk_Base_Sloc (File => File, Line => Line));
          end;

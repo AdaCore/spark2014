@@ -5768,7 +5768,7 @@ package body Gnat2Why.Expr is
                Ar      : constant Node_Id := Prefix (N);
                Ar_Tmp  : constant W_Expr_Id := New_Temp_For_Expr (Expr);
                Dim     : constant Pos := Number_Dimensions (Type_Of_Node (Ar));
-               Indices : W_Expr_Array (1 .. Integer (Dim));
+               Indices : W_Expr_Array (1 .. Positive (Dim));
                Cursor  : Node_Id := First (Expressions (N));
                Count   : Positive := 1;
             begin
@@ -5863,7 +5863,7 @@ package body Gnat2Why.Expr is
                Dim     : constant Pos :=
                   Number_Dimensions (Type_Of_Node (Prefix (N)));
                Ar_Tmp  : constant W_Expr_Id := New_Temp_For_Expr (Pref);
-               Indices : W_Expr_Array (1 .. Integer (Dim));
+               Indices : W_Expr_Array (1 .. Positive (Dim));
                Cursor  : Node_Id := First (Expressions (N));
                Count   : Positive := 1;
             begin
@@ -6300,7 +6300,7 @@ package body Gnat2Why.Expr is
          Cnt   : Positive;
          Value : Node_Lists.Cursor;
          Typ   : Node_Lists.Cursor;
-         Args  : W_Expr_Array (1 .. Integer (Values.Length));
+         Args  : W_Expr_Array (1 .. Natural (Values.Length));
          R     : W_Expr_Id;
 
       begin
@@ -6513,8 +6513,8 @@ package body Gnat2Why.Expr is
 
          --  Arrays of binders and arguments, and mapping of nodes to names
 
-         Call_Params   : Binder_Array (1 .. Integer (Values.Length));
-         Call_Args     : W_Expr_Array (1 .. Integer (Values.Length));
+         Call_Params   : Binder_Array (1 .. Natural (Values.Length));
+         Call_Args     : W_Expr_Array (1 .. Natural (Values.Length));
          Args_Map      : Ada_Ent_To_Why.Map;
 
          --  Counter and iterators
@@ -7275,8 +7275,9 @@ package body Gnat2Why.Expr is
                               Next (Multi_Expression);
                               Current_Dim := Current_Dim + 1;
                            end loop;
-                           pragma Assert (Integer (Current_Dim - 1) =
-                                            Integer (Num_Dim));
+
+                           pragma Assert (Pos (Current_Dim - 1) = Num_Dim);
+
                            Rng_Expr := Conjunct;
                         end;
                      when others =>
