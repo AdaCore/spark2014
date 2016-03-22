@@ -64,19 +64,17 @@ package Flow_Dependency_Maps is
    with Pre => (if Present (N) then
                   Nkind (N) = N_Pragma and then
                     Get_Pragma_Id (N) = Pragma_Initializes);
-   --  Parses the Initializes aspect. If the initializes aspect does not exist
-   --  but we have a generated initializes aspect then we use that.
+   --  Parse the Initializes aspect if it exists, or a generated one otherwise
    --
    --  When we parse the Initializes aspect we add any external state
-   --  abstractions with the property Async_Writers set to the
-   --  dependency map (even if the user did not manually write them
-   --  there). This is to ensure that constituents that are not
-   --  volatile and have Async_Writers are also initialized. Notice
-   --  that as a result of this, the function may return a Dependency
-   --  map even if there is no Initializes aspect to begin with. P
-   --  represents the enclosing package.
-   --  @param N is the node representing the initializes aspect
-   --  @param P is the entity representing the package
+   --  abstractions with enabled property Async_Writers to the dependency map
+   --  (even if the user did not manually put them there). This ensures that
+   --  constituents that are not volatile but have Async_Writers are also
+   --  initialized. In effect, we may return a Dependency map even if there
+   --  is no Initializes aspect to begin with.
+   --
+   --  @param N node of the Initializes aspect
+   --  @param P entity of the enclosing package
    --  @param S is the Flow_Scope at which we need to up project the results
    --  @returns the dependency map representing the initializes aspect
 
