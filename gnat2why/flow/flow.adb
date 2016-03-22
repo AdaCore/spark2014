@@ -878,6 +878,20 @@ package body Flow is
                                  Generating_Globals : Boolean)
                                  return Flow_Analysis_Graphs
    is
+      procedure Debug (Str : String);
+      --  Write debug string
+
+      -----------------
+      -- Debug --
+      -----------------
+
+      procedure Debug (Str : String) is
+      begin
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            Write_Line (Str);
+         end if;
+      end Debug;
+
       FA : Flow_Analysis_Graphs_Root
         (Kind               => (case Ekind (E) is
                                 when Subprogram_Kind => Kind_Subprogram,
@@ -891,6 +905,9 @@ package body Flow is
       Phase : constant String := (if Generating_Globals
                                   then "Global generation"
                                   else "Flow analysis");
+
+   --  Start of processing for Flow_Analyse_Entity
+
    begin
       FA.Analyzed_Entity       := E;
       FA.Spec_Entity           := S;
@@ -1037,15 +1054,11 @@ package body Flow is
          case FA.Kind is
             when Kind_Subprogram | Kind_Task | Kind_Entry =>
                if not FA.Is_Generative then
-                  if Gnat2Why_Args.Flow_Advanced_Debug then
-                     if Present (FA.Global_N) then
-                        Write_Line ("skipped (global found)");
-                     elsif Present (FA.Depends_N) then
-                        Write_Line ("skipped (depends found)");
-                     else
-                        raise Program_Error;
-                     end if;
-                  end if;
+                  Debug (if Present (FA.Global_N)
+                         then "skipped (global found)"
+                         elsif Present (FA.Depends_N)
+                         then "skipped (depends found)"
+                         else raise Program_Error);
 
                   --  Even if aborting we still collect tasking-related info
                   --  using control flow traversal and register the results.
@@ -1058,37 +1071,31 @@ package body Flow is
                   FA.GG.Aborted := True;
                end if;
 
-               if Gnat2Why_Args.Flow_Advanced_Debug then
-                  Write_Line ("Spec in SPARK: " & (if Entity_In_SPARK (E)
-                                                   then "yes"
-                                                   else "no"));
+               Debug ("Spec in SPARK: " & (if Entity_In_SPARK (E)
+                                           then "yes"
+                                           else "no"));
 
-                  Write_Line ("Body in SPARK: " &
-                                (if Entity_Body_In_SPARK (E)
-                                 then "yes"
-                                 else "no"));
-               end if;
+               Debug ("Body in SPARK: " & (if Entity_Body_In_SPARK (E)
+                                           then "yes"
+                                           else "no"));
 
             when Kind_Package =>
                if Present (FA.Initializes_N) then
                   --  There is no need to create a GG graph if the package has
                   --  an Initializes aspect.
-                  if Gnat2Why_Args.Flow_Advanced_Debug then
-                     Write_Line ("skipped (package spec)");
-                  end if;
+                  Debug ("skipped (package spec)");
+
                   FA.GG.Aborted := True;
                else
                   if Entity_Spec_In_SPARK (E) then
-                     if Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("Spec in SPARK: yes");
-                     end if;
+                     Debug ("Spec in SPARK: yes");
+
                   else
                      --  We cannot create a GG graph if the spec is not in
                      --  SPARK.
 
-                     if Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("Spec in SPARK: no");
-                     end if;
+                     Debug ("Spec in SPARK: no");
+
                      FA.GG.Aborted := True;
                   end if;
                end if;
@@ -1098,25 +1105,23 @@ package body Flow is
                   --  There is no need to create a GG graph if the package has
                   --  an Initializes aspect.
 
-                  if Gnat2Why_Args.Flow_Advanced_Debug then
-                     Write_Line ("skipped (package spec)");
-                     Write_Line ("skipped (package body)");
-                  end if;
+                  Debug ("skipped (package spec)");
+                  Debug ("skipped (package body)");
+
                   FA.GG.Aborted := True;
                else
                   if Entity_Body_In_SPARK (FA.Spec_Entity) then
-                     if Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("Spec in SPARK: yes");
-                        Write_Line ("Body in SPARK: yes");
-                     end if;
+
+                     Debug ("Spec in SPARK: yes");
+                     Debug ("Body in SPARK: yes");
+
                   else
-                     if Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("Spec in SPARK: " &
-                                      (if Entity_In_SPARK (FA.Spec_Entity)
-                                       then "yes"
-                                       else "no"));
-                        Write_Line ("Body in SPARK: no");
-                     end if;
+                     Debug ("Spec in SPARK: " &
+                                   (if Entity_In_SPARK (FA.Spec_Entity)
+                                    then "yes"
+                                    else "no"));
+                     Debug ("Body in SPARK: no");
+
                      FA.GG.Aborted := True;
                   end if;
                end if;
@@ -1128,9 +1133,7 @@ package body Flow is
                   DM : Dependency_Maps.Map;
                begin
                   if Present (Refined_State_N) then
-                     if Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("Refinement found: yes");
-                     end if;
+                     Debug ("Refinement found: yes");
 
                      DM := Parse_Refined_State (Refined_State_N);
                      if Gnat2Why_Args.Flow_Advanced_Debug then
@@ -1147,8 +1150,8 @@ package body Flow is
                            Outdent;
                         end loop;
                      end if;
-                  elsif Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("Refinement found: no");
+                  else
+                     Debug ("Refinement found: no");
                   end if;
                end;
          end case;
