@@ -952,7 +952,9 @@ package body Flow is
 
             FA.Is_Generative := Refinement_Needed (E);
 
-            FA.Function_Side_Effects_Present := False;
+            if Ekind (E) = E_Function then
+               FA.Function_Side_Effects_Present := False;
+            end if;
 
          when E_Package =>
             FA.B_Scope       := Flow_Scope'(E, Private_Part);
