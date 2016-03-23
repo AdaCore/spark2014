@@ -401,8 +401,7 @@ package body Why.Gen.Binders is
    function Mk_Item_Of_Entity
      (E           : Entity_Id;
       Local       : Boolean := False;
-      In_Fun_Decl : Boolean := False)
-      return Item_Type
+      In_Fun_Decl : Boolean := False) return Item_Type
    is
       Use_Ty : constant Entity_Id :=
         (if not In_Fun_Decl
@@ -425,8 +424,8 @@ package body Why.Gen.Binders is
 
       Ty : constant Entity_Id :=
         (if Is_Type (Spec_Ty) then Retysp (Spec_Ty) else Spec_Ty);
-   begin
 
+   begin
       --  For procedures, use a regular binder
 
       if Ekind (E) = E_Procedure then

@@ -1112,8 +1112,10 @@ package body Gnat2Why.Subprograms is
    -- Compute_Subprogram_Parameters  --
    ------------------------------------
 
-   function Compute_Subprogram_Parameters  (E : Entity_Id; Domain : EW_Domain)
-                             return Item_Array is
+   function Compute_Subprogram_Parameters
+     (E      : Entity_Id;
+      Domain : EW_Domain) return Item_Array
+   is
       Raw_Binders : constant Item_Array := Compute_Raw_Binders (E);
    begin
       return (if Domain = EW_Prog then Raw_Binders
@@ -3302,7 +3304,7 @@ package body Gnat2Why.Subprograms is
 
          begin
             --  If E is an expression function, add its body to its
-            --  postcodition.
+            --  postcondition.
 
             if Present (Expr_Fun_N)
               and then Entity_Body_In_SPARK (E)
