@@ -2048,13 +2048,8 @@ package body Flow.Analysis is
            Flow_Generated_Globals.GG_Get_Initializes
              (To_Entity_Name (Unique_Entity (FA.Spec_Entity)),
               FA.S_Scope);
-      begin
-         if DM.Is_Empty then
-            --  If there is no generated initializes aspect then Var cannot
-            --  possibly be mentioned on it.
-            return False;
-         end if;
 
+      begin
          return
            (for some Init_Var in DM.Iterate =>
               Dependency_Maps.Key (Init_Var) = Var);
