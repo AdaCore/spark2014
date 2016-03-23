@@ -29,7 +29,7 @@ package body Flow.Data_Dependence_Graph is
 
    procedure Create (FA : in out Flow_Analysis_Graphs) is
    begin
-      FA.DDG := Flow_Graphs.Create (FA.CFG);
+      FA.DDG := FA.CFG.Create;
 
       for V_D of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
