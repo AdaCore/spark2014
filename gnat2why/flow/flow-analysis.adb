@@ -2494,13 +2494,13 @@ package body Flow.Analysis is
 
                if not
                  FA.Atr
-                   (FA.PDG.Get_Vertex
+                   (FA.DDG.Get_Vertex
                       (Change_Variant
                          (Var_Read, Initial_Value))).Is_Initialized
                  and then (if Ekind (FA.Analyzed_Entity) in
                              E_Package | E_Package_Body
                            then not Is_Abstract_State (Var_Read) and then
-                             (FA.PDG.Get_Vertex
+                             (FA.DDG.Get_Vertex
                                 (Change_Variant (Var_Read, Final_Value)) /= V
                                  or else not Mentioned_On_Gen_Init (Var_Read)))
                  and then (if Var_Read.Kind in Direct_Mapping | Record_Field
