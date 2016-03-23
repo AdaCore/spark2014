@@ -570,7 +570,7 @@ package body Flow.Analysis.Sanity is
             for Var of All_Vars loop
                F := Change_Variant (Var, Normal_Use);
 
-               if not (FA.All_Vars.Contains (F) or Synthetic (F)) then
+               if not (FA.All_Vars.Contains (F) or else Synthetic (F)) then
 
                   --  Here we are dealing with a missing global
 
