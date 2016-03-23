@@ -530,30 +530,21 @@ package body Flow.Analysis.Sanity is
       ------------------------
 
       function Find_Aspect_To_Fix return String is
-      begin
-         case FA.Kind is
+        (case FA.Kind is
             when Kind_Subprogram | Kind_Entry | Kind_Task =>
-               if Present (FA.Refined_Global_N) then
-                  return "Refined_Global";
-               elsif Present (FA.Global_N) then
-                  if Present (FA.Refined_Depends_N) then
-                     return "Refined_Depends";
-                  else
-                     return "Global";
-                  end if;
-               elsif Present (FA.Depends_N) then
-                  if Present (FA.Refined_Depends_N) then
-                     return "Refined_Depends";
-                  else
-                     return "Depends";
-                  end if;
-               else
-                  return "Global";
-               end if;
+              (if Present (FA.Refined_Global_N)
+               then "Refined_Global"
+               elsif Present (FA.Global_N)
+               then (if Present (FA.Refined_Depends_N)
+                     then "Refined_Depends"
+                     else "Global")
+               elsif Present (FA.Depends_N)
+               then (if Present (FA.Refined_Depends_N)
+                     then "Refined_Depends"
+                     else "Depends")
+               else "Global"),
             when Kind_Package | Kind_Package_Body  =>
-               return "Initializes";
-         end case;
-      end Find_Aspect_To_Fix;
+               "Initializes");
 
    --  Start of processing for Check_All_Variables_Known
 
