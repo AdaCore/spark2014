@@ -2764,9 +2764,8 @@ package body Flow.Analysis is
 
       for O in FA.Dependency_Map.Iterate loop
          declare
-            Output : Flow_Id renames Dependency_Maps.Key (O);
-            Inputs : Flow_Id_Sets.Set renames
-              FA.Dependency_Map.Constant_Reference (O);
+            Output : Flow_Id          renames Dependency_Maps.Key (O);
+            Inputs : Flow_Id_Sets.Set renames FA.Dependency_Map (O);
          begin
             if Output /= Null_Flow_Id
               and then Output.Kind in Direct_Mapping | Record_Field
@@ -3352,8 +3351,7 @@ package body Flow.Analysis is
       for C in Actual_Deps.Iterate loop
          declare
             F_Out  : Flow_Id          renames Dependency_Maps.Key (C);
-            A_Deps : Flow_Id_Sets.Set renames
-              Actual_Deps.Constant_Reference (C);
+            A_Deps : Flow_Id_Sets.Set renames Actual_Deps (C);
             U_Deps : Flow_Id_Sets.Set;
 
             Missing_Deps : Ordered_Flow_Id_Sets.Set;
@@ -3776,9 +3774,7 @@ package body Flow.Analysis is
             for O in FA.Dependency_Map.Iterate loop
                declare
                   Actual_Out : Flow_Id renames Dependency_Maps.Key (O);
-
-                  Actual_Ins : Flow_Id_Sets.Set renames
-                    FA.Dependency_Map.Constant_Reference (O);
+                  Actual_Ins : Flow_Id_Sets.Set renames FA.Dependency_Map (O);
                begin
                   if All_Contract_Outs.Contains (Actual_Out) then
                      All_Actual_Ins.Union (Actual_Ins);
