@@ -36,7 +36,7 @@ package body Flow_Dependency_Maps is
 
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
    with Pre => Nkind (N) = N_Pragma and then
-               Get_Pragma_Id (Chars (Pragma_Identifier (N))) in
+               Get_Pragma_Id (N) in
                  Pragma_Depends         |
                  Pragma_Refined_Depends |
                  Pragma_Refined_State   |
