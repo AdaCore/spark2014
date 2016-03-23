@@ -126,6 +126,18 @@ package body Gnat2Why.Decls is
                Labels      => Get_Counterexample_Labels (E),
                Return_Type => Typ));
 
+      --  Define a logic function to return the address of a constant object
+
+      if Is_Object (E) then
+         Emit (File,
+               Why.Atree.Builders.New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
+                  Binders     => (1 .. 0 => <>),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
+      end if;
+
       Close_Theory (File,
                     Kind => Definition_Theory,
                     Defined_Entity => E);
