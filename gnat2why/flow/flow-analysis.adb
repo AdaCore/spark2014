@@ -2046,8 +2046,7 @@ package body Flow.Analysis is
       function Mentioned_On_Gen_Init (Var : Flow_Id) return Boolean is
          DM : constant Dependency_Maps.Map :=
            Flow_Generated_Globals.GG_Get_Initializes
-             (To_Entity_Name (Unique_Entity (FA.Spec_Entity)),
-              FA.S_Scope);
+             (To_Entity_Name (FA.Spec_Entity), FA.S_Scope);
 
       begin
          return
