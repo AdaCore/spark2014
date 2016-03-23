@@ -522,15 +522,15 @@ package body Flow_Types is
 
                Is_Vol : constant Boolean :=
                  (if Ekind (E) = E_Abstract_State then
-                     Is_External_State (E)
+                    Is_External_State (E)
                   elsif Is_Part_Of_Concurrent_Object (E) then
-                     True
+                    True
                   elsif Is_Concurrent_Type (Etype (E)) then
-                     True
+                    True
                   elsif Ekind (E) in Object_Kind then
-                     Is_Effectively_Volatile (E)
+                    Is_Effectively_Volatile (E)
                   else
-                     Is_Effectively_Volatile_Object (E));
+                    Is_Effectively_Volatile_Object (E));
 
                CO : Entity_Id;
             begin
