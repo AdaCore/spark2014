@@ -1,6 +1,6 @@
 subprograms.adb:4:18: info: overflow check proved
 subprograms.adb:17:21: info: division check proved
-subprograms.adb:17:21: info: overflow check proved
+subprograms.adb:17:21: medium: overflow check might fail
 subprograms.adb:33:16: info: overflow check proved
 subprograms.adb:38:18: info: overflow check proved
 subprograms.ads:3:11: medium: contract cases might not be complete

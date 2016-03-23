@@ -57,7 +57,7 @@ errorexample.ads:26:77: info: division check proved
 errorexamplefloat.adb:29:07: info: assertion proved
 errorexamplefloat.adb:39:43: info: overflow check proved
 errorexamplefloat.adb:39:65: info: division check proved
-errorexamplefloat.adb:39:65: info: overflow check proved
+errorexamplefloat.adb:39:65: medium: overflow check might fail
 errorexamplefloat.adb:48:22: medium: assertion might fail, cannot prove Abs_out1) <= (0.01
 errorexamplefloat.adb:48:23: info: initialization of "Abs_out1" proved
 errorexamplefloat.adb:53:25: info: initialization of "Abs_out1" proved
@@ -71,7 +71,7 @@ simulink_functions.adb:234:51: info: division check proved
 simulink_functions.adb:234:51: info: overflow check proved
 simulink_functions.adb:234:51: info: range check proved
 simulink_functions.adb:234:53: medium: overflow check might fail
-simulink_functions.adb:236:28: info: overflow check proved
+simulink_functions.adb:236:28: medium: overflow check might fail
 simulink_functions.adb:236:36: info: overflow check proved
 simulink_functions.adb:236:38: info: initialization of "Quotient" proved
 simulink_functions.adb:236:47: info: overflow check proved
@@ -85,7 +85,7 @@ simulink_functions.adb:255:52: info: division check proved
 simulink_functions.adb:255:52: info: overflow check proved
 simulink_functions.adb:255:52: info: range check proved
 simulink_functions.adb:255:54: medium: overflow check might fail
-simulink_functions.adb:257:28: info: overflow check proved
+simulink_functions.adb:257:28: medium: overflow check might fail
 simulink_functions.adb:257:36: info: overflow check proved
 simulink_functions.adb:257:38: info: initialization of "Quotient" proved
 simulink_functions.adb:257:47: info: overflow check proved
@@ -99,7 +99,7 @@ simulink_functions.adb:277:52: info: division check proved
 simulink_functions.adb:277:52: info: overflow check proved
 simulink_functions.adb:277:52: info: range check proved
 simulink_functions.adb:277:54: medium: overflow check might fail
-simulink_functions.adb:279:28: info: overflow check proved
+simulink_functions.adb:279:28: medium: overflow check might fail
 simulink_functions.adb:279:36: info: overflow check proved
 simulink_functions.adb:279:38: info: initialization of "Quotient" proved
 simulink_functions.adb:279:47: info: overflow check proved
@@ -196,7 +196,7 @@ simulink_functions.adb:627:39: info: range check proved
 simulink_functions.adb:637:21: medium: range check might fail
 simulink_functions.adb:1194:21: medium: range check might fail
 simulink_functions.adb:1209:31: info: division check proved
-simulink_functions.adb:1209:31: info: overflow check proved
+simulink_functions.adb:1209:31: medium: overflow check might fail
 simulink_functions.adb:1212:26: info: initialization of "Result" proved
 simulink_functions.adb:1212:33: medium: overflow check might fail
 simulink_functions.adb:1214:26: info: initialization of "Result" proved
@@ -251,7 +251,7 @@ smoothing.adb:54:07: info: assertion proved
 smoothing.adb:65:44: medium: overflow check might fail
 smoothing.adb:65:60: info: overflow check proved
 smoothing.adb:65:77: info: division check proved
-smoothing.adb:65:77: info: overflow check proved
+smoothing.adb:65:77: medium: overflow check might fail
 smoothing.adb:76:35: info: initialization of "Smoother_Value_out1" proved
 smoothing.adb:76:56: medium: overflow check might fail
 smoothing.adb:86:22: medium: assertion might fail, cannot prove not (not (Compare_To_Zero_out1))) or else ((Abs_New_Delta_out1) < (Abs_Delta_out1
