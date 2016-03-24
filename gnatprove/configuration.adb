@@ -390,15 +390,23 @@ ASCII.LF;
                Obj_Dir  : constant Virtual_File := Project.Object_Dir;
                Name_Dir : constant String := +Base_Dir_Name (Obj_Dir);
                Rm_Dir   : constant String := Obj_Dir.Display_Full_Name;
+
             begin
-               pragma Assert (Name_Dir = Name_GNATprove);
-               if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
-                  if Verbose then
-                     Ada.Text_IO.Put ("Deleting directory " & Rm_Dir & "...");
-                  end if;
-                  GNAT.Directory_Operations.Remove_Dir (Rm_Dir, True);
-                  if Verbose then
-                     Ada.Text_IO.Put_Line (" done");
+               --  Object directory might not exist, for example if there
+               --  are no source files and no explicit object directory is
+               --  specified. Do nothing in that case.
+
+               if Obj_Dir /= GNATCOLL.VFS.No_File then
+                  pragma Assert (Name_Dir = Name_GNATprove);
+                  if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
+                     if Verbose then
+                        Ada.Text_IO.Put
+                          ("Deleting directory " & Rm_Dir & "...");
+                     end if;
+                     GNAT.Directory_Operations.Remove_Dir (Rm_Dir, True);
+                     if Verbose then
+                        Ada.Text_IO.Put_Line (" done");
+                     end if;
                   end if;
                end if;
             exception
