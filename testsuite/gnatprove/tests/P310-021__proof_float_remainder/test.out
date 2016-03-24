@@ -1,9 +1,9 @@
 foo.adb:5:04: warning: analyzing unreferenced procedure "Test_01"
 foo.adb:6:23: info: initialization of "C" proved
 foo.adb:9:17: info: division check proved
-foo.adb:9:17: medium: range check might fail (e.g. when A = 0.0 and B = 0.0)
+foo.adb:9:17: medium: range check might fail
 foo.adb:9:31: info: overflow check proved
 foo.adb:12:04: warning: analyzing unreferenced procedure "Test_02"
 foo.adb:13:23: info: initialization of "C" proved
-foo.adb:16:17: medium: divide by zero might fail (e.g. when B = 0.0)
-foo.adb:16:17: medium: range check might fail (e.g. when A = 0.0 and B = 0.0)
+foo.adb:16:17: medium: divide by zero might fail
+foo.adb:16:17: medium: range check might fail

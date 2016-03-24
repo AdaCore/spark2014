@@ -278,8 +278,10 @@ package body Gnat2Why.Util is
       --  Currently only generate values for scalar, record, and array
       --  variables in counterexamples.
 
-      if not Comes_From_Source (E) and then
-        not Comes_From_Source (Parent (E))
+      if (not Comes_From_Source (E) and then
+            not Comes_From_Source (Parent (E)))
+          or else
+            (Is_Floating_Point_Type (Etype (E)))
       then
          return Name_Id_Sets.Empty_Set;
       end if;

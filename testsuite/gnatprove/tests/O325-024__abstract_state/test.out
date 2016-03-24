@@ -1,7 +1,7 @@
 stabilizer_pack.adb:21:22: medium: overflow check might fail
 stabilizer_pack.adb:21:34: medium: overflow check might fail
 stabilizer_pack.adb:21:44: medium: overflow check might fail
-stabilizer_pack.adb:21:51: medium: overflow check might fail (e.g. when Asl_Alpha = -340282346638528859811704183484516925440.0)
+stabilizer_pack.adb:21:51: medium: overflow check might fail
 stabilizer_pack.adb:22:32: medium: overflow check might fail
 stabilizer_pack.adb:23:09: medium: overflow check might fail
 stabilizer_pack.adb:23:19: medium: overflow check might fail
