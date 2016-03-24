@@ -31,7 +31,7 @@ arrays.adb:191:41: info: range check proved
 arrays.adb:192:57: info: initialization of "R" proved
 arrays.adb:192:57: medium: "R" might not be initialized
 arrays.adb:194:14: info: initialization of "R" proved
-arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C (e.g. when Single_Char_Set_Broken'Result = (others => false) and C = 0)
+arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C (e.g. when Single_Char_Set_Broken'Result = (1 => false, others => true) and C = 0)
 arrays.adb:206:10: info: loop invariant initialization proved
 arrays.adb:206:10: info: loop invariant preservation proved
 arrays.adb:206:41: info: range check proved
