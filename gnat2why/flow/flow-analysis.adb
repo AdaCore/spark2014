@@ -2472,9 +2472,6 @@ package body Flow.Analysis is
          end if;
       end Emit_Message;
 
-      Is_Uninitialized : Boolean;
-      Is_Initialized   : Boolean;
-
    --  Start of processing for Find_Use_Of_Uninitialized_Variables
 
    begin
@@ -2485,80 +2482,93 @@ package body Flow.Analysis is
       for V of FA.DDG.Get_Collection (Flow_Graphs.All_Vertices) loop
 
          if Consider_Vertex (V) then
-            --  For each variable read...
-            for Var_Read of FA.Atr (V).Variables_Used loop
-               Is_Uninitialized := False;
-               Is_Initialized   := False;
+            --  For each used variable...
+            for Var_Used of FA.Atr (V).Variables_Used loop
+               declare
+                  Is_Uninitialized : Boolean := False;
+                  Is_Initialized   : Boolean := False;
 
-               if not
-                 FA.Atr
-                   (FA.DDG.Get_Vertex
-                      (Change_Variant
-                         (Var_Read, Initial_Value))).Is_Initialized
-                 and then (if Ekind (FA.Analyzed_Entity) in
-                             E_Package | E_Package_Body
-                           then not Is_Abstract_State (Var_Read) and then
-                             (FA.DDG.Get_Vertex
-                                (Change_Variant (Var_Read, Final_Value)) /= V
-                                 or else not Mentioned_On_Gen_Init (Var_Read)))
-                 and then (if Var_Read.Kind in Direct_Mapping | Record_Field
-                           then not Is_Constant_Object
-                                      (Get_Direct_Mapping_Id (Var_Read)))
-               then
-                  --  ... we check the in neighbours in the DDG and see if
-                  --  they define it. We record initialized / uninitialized
-                  --  reads accordingly.
-                  --
-                  --  Note we skip this check for abstract state iff we analyze
-                  --  a package, since it is OK to leave some state
-                  --  uninitialized (Check_Initializes_Contract will pick this
-                  --  up). We also skip this check when checking final vertices
-                  --  of variables that are mentioned on a generated
-                  --  Initializes aspect.
-                  for V_Def of
-                    FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
-                  loop
-                     declare
-                        Def_Key : Flow_Id      renames FA.DDG.Get_Key (V_Def);
-                        Def_Atr : V_Attributes renames FA.Atr (V_Def);
-                     begin
-                        if Def_Key.Variant = Initial_Value
-                          and then
-                            Change_Variant (Def_Key, Normal_Use) = Var_Read
-                        then
-                           --  We're using the initial value.
-                           if Def_Atr.Is_Initialized then
-                              Is_Initialized   := True;
-                           else
-                              Is_Uninitialized := True;
+                  Initial_Value_Of_Var_Used : Flow_Graphs.Vertex_Id renames
+                    FA.DDG.Get_Vertex
+                      (Change_Variant (Var_Used, Initial_Value));
+
+                  Final_Value_Of_Var_Used : Flow_Graphs.Vertex_Id renames
+                    FA.DDG.Get_Vertex
+                      (Change_Variant (Var_Used, Final_Value));
+
+               begin
+                  if FA.Atr (Initial_Value_Of_Var_Used).Is_Initialized
+                    or else
+                      (FA.Kind in Kind_Package | Kind_Package_Body
+                       and then
+                         (Is_Abstract_State (Var_Used)
+                          or else
+                            (Final_Value_Of_Var_Used = V
+                             and then Mentioned_On_Gen_Init (Var_Used))))
+                    or else
+                      (Var_Used.Kind in Direct_Mapping | Record_Field
+                       and then
+                         Is_Constant_Object (Get_Direct_Mapping_Id (Var_Used)))
+                  then
+                     --  ... we either do nothing because it is safe, or...
+                     null;
+
+                  else
+                     --  ... we check the in neighbours in the DDG and see if
+                     --  they define it. We record initialized / uninitialized
+                     --  reads accordingly.
+                     --
+                     --  Note we skip this check for abstract state iff we
+                     --  analyze a package, since it is OK to leave some state
+                     --  uninitialized (Check_Initializes_Contract will pick
+                     --  this up). We also skip this check when checking
+                     --  final vertices of variables that are mentioned on
+                     --  a generated Initializes aspect.
+                     for V_Def of
+                       FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
+                     loop
+                        declare
+                           Def_Key : Flow_Id renames FA.DDG.Get_Key (V_Def);
+                           Def_Atr : V_Attributes renames FA.Atr (V_Def);
+                        begin
+                           if Def_Key.Variant = Initial_Value
+                             and then
+                               Change_Variant (Def_Key, Normal_Use) = Var_Used
+                           then
+                              --  We're using the initial value.
+                              if Def_Atr.Is_Initialized then
+                                 Is_Initialized   := True;
+                              else
+                                 Is_Uninitialized := True;
+                              end if;
+                           elsif Def_Atr.Variables_Defined.Contains (Var_Used)
+                             or else Def_Atr.Volatiles_Read.Contains (Var_Used)
+                           then
+                              --  We're using a previously written value.
+                              Is_Initialized := True;
                            end if;
-                        elsif Def_Atr.Variables_Defined.Contains (Var_Read)
-                          or else Def_Atr.Volatiles_Read.Contains (Var_Read)
-                        then
-                           --  We're using a previously written value.
-                           Is_Initialized := True;
+                        end;
+                     end loop;
+
+                     --  Some useful debug output before we issue the message.
+                     if Debug_Trace_Check_Reads then
+                        Write_Str ("@" & FA.DDG.Vertex_To_Natural (V)'Img);
+                        if Is_Initialized then
+                           Write_Str (" INIT");
                         end if;
-                     end;
-                  end loop;
+                        if Is_Uninitialized then
+                           Write_Str (" DIRTY");
+                        end if;
+                        Write_Str (" :");
+                        Print_Flow_Id (Var_Used);
+                     end if;
 
-                  --  Some useful debug output before we issue the message.
-                  if Debug_Trace_Check_Reads then
-                     Write_Str ("@" & FA.DDG.Vertex_To_Natural (V)'Img);
-                     if Is_Initialized then
-                        Write_Str (" INIT");
-                     end if;
-                     if Is_Uninitialized then
-                        Write_Str (" DIRTY");
-                     end if;
-                     Write_Str (" :");
-                     Print_Flow_Id (Var_Read);
+                     Emit_Message (Var              => Var_Used,
+                                   Vertex           => V,
+                                   Is_Initialized   => Is_Initialized,
+                                   Is_Uninitialized => Is_Uninitialized);
                   end if;
-
-                  Emit_Message (Var              => Var_Read,
-                                Vertex           => V,
-                                Is_Initialized   => Is_Initialized,
-                                Is_Uninitialized => Is_Uninitialized);
-               end if;
+               end;
             end loop;
          end if;
       end loop;
