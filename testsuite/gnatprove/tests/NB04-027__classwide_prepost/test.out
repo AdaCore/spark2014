@@ -1,0 +1,3 @@
+derived.ads:7:22: info: initialization of "X.B" proved
+derived.ads:8:20: info: postcondition proved
+derived.ads:8:20: medium: class-wide postcondition might be weaker than overridden one
