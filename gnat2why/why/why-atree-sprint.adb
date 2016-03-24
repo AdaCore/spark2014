@@ -68,13 +68,17 @@ package body Why.Atree.Sprint is
    --  printing function for any node, calls the other functions in this
    --  package as needed
 
+   type Print_Callback is access procedure (N : Why_Node_Id);
+
    procedure Print_List
      (Nodes     : Why_Node_Lists.List;
+      Callback  : Print_Callback := Print_Node'Access;
       Separator : String := ", ";
       Newline   : Boolean := False);
 
    procedure Print_List
      (List_Id   : Why_Node_List;
+      Callback  : Print_Callback := Print_Node'Access;
       Separator : String := ", ";
       Newline   : Boolean := False);
    --  Print a node list on current output, separating each element
@@ -132,7 +136,9 @@ package body Why.Atree.Sprint is
    procedure Print_Record_Binder (Node : W_Record_Binder_Id);
    procedure Print_Record_Definition (Node : W_Record_Definition_Id);
    procedure Print_Record_Update (Node : W_Record_Update_Id);
-   procedure Print_Statement_Sequence (Node : W_Statement_Sequence_Id);
+   procedure Print_Statement_Sequence
+     (Node  : W_Statement_Sequence_Id;
+      Paren : Boolean := True);
    procedure Print_Tagged (Node : W_Tagged_Id);
    procedure Print_Theory_Declaration (Node : W_Theory_Declaration_Id);
    procedure Print_Transparent_Type_Definition
@@ -144,6 +150,10 @@ package body Why.Atree.Sprint is
    procedure Print_Type_Decl (Node : W_Type_Decl_Id);
    procedure Print_Universal_Quantif (Node : W_Universal_Quantif_Id);
    procedure Print_While_Loop (Node : W_While_Loop_Id);
+
+   procedure Print_Inner_Sequence (N : Why_Node_Id);
+   --  callback for the printing of sequences, to avoid too many parens when
+   --  nesting sequences
 
    --------------------------
    -- Print_Abstract_Expr --
@@ -339,14 +349,14 @@ package body Why.Atree.Sprint is
          when EW_Term | EW_Pred | EW_Pterm =>
             Print_Node (+Name);
             P (O, " ");
-            Print_List (+Args, " ");
+            Print_List (+Args, Separator => " ");
 
          when EW_Prog =>
             Print_Node (+Name);
 
             if not Is_Empty (+Args) then
                P (O, "(");
-               Print_List (+Args, ") (");
+               Print_List (+Args, Separator =>  ") (");
                P (O, ")");
             end if;
          end case;
@@ -375,7 +385,7 @@ package body Why.Atree.Sprint is
       if not Is_Empty (+Subst_List) then
          P (O, " with");
          NL (O);
-         Print_List (+Subst_List, ", ", Newline => True);
+         Print_List (+Subst_List, Separator => ", ", Newline => True);
       end if;
       NL (O);
    end Print_Clone_Declaration;
@@ -737,19 +747,19 @@ package body Why.Atree.Sprint is
    begin
       if not Is_Empty (+Reads) then
          P (O, "reads {");
-         Print_List (+Reads, ", ");
+         Print_List (+Reads, Separator => ", ");
          PL (O, "}");
       end if;
 
       if not Is_Empty (+Writes) then
          P (O, "writes {");
-         Print_List (+Writes, ", ");
+         Print_List (+Writes, Separator => ", ");
          PL (O, "}");
       end if;
 
       if not Is_Empty (+Raises) then
          P (O, "raises { ");
-         Print_List (+Raises, ", ");
+         Print_List (+Raises, Separator => ", ");
          PL (O, "}");
       end if;
    end Print_Effects;
@@ -800,7 +810,7 @@ package body Why.Atree.Sprint is
         Get_Kind (+Pred) = W_Existential_Quantif;
    begin
       P (O, "(exists ");
-      Print_List (+Variables, " ");
+      Print_List (+Variables, Separator => " ");
       P (O, " ");
       P (O, Get_Labels (Node), As_String => True);
 
@@ -889,7 +899,7 @@ package body Why.Atree.Sprint is
 
             if not Is_Empty (+Binders) then
                P (O, " (");
-               Print_List (+Binders, ") (");
+               Print_List (+Binders, Separator => ") (");
                P (O, ")");
             end if;
             P (O, " : ");
@@ -927,7 +937,7 @@ package body Why.Atree.Sprint is
             begin
                if not Is_Empty (+Binders) then
                   P (O, " (");
-                  Print_List (+Binders, ") (");
+                  Print_List (+Binders, Separator => ") (");
                   P (O, ")");
                end if;
 
@@ -976,7 +986,7 @@ package body Why.Atree.Sprint is
 
             if not Is_Empty (+Binders) then
                P (O, " (");
-               Print_List (+Binders, ") (");
+               Print_List (+Binders, Separator => ") (");
                P (O, ") ");
             end if;
 
@@ -1069,6 +1079,19 @@ package body Why.Atree.Sprint is
       NL (O);
    end Print_Include_Declaration;
 
+   --------------------------
+   -- Print_Inner_Sequence --
+   --------------------------
+
+   procedure Print_Inner_Sequence (N : Why_Node_Id) is
+   begin
+      if Get_Kind (N) = W_Statement_Sequence then
+         Print_Statement_Sequence (+N, Paren => False);
+      else
+         Print_Node (N);
+      end if;
+   end Print_Inner_Sequence;
+
    -----------------------------
    -- Print_Integer_Constant --
    -----------------------------
@@ -1157,16 +1180,18 @@ package body Why.Atree.Sprint is
 
    procedure Print_List
      (List_Id   : Why_Node_List;
+      Callback  : Print_Callback := Print_Node'Access;
       Separator : String := ", ";
       Newline   : Boolean := False)
    is
       Nodes    : constant Why_Node_Lists.List := Get_List (List_Id);
    begin
-      Print_List (Nodes, Separator, Newline);
+      Print_List (Nodes, Callback, Separator, Newline);
    end Print_List;
 
    procedure Print_List
-     (Nodes   : Why_Node_Lists.List;
+     (Nodes     : Why_Node_Lists.List;
+      Callback  : Print_Callback := Print_Node'Access;
       Separator : String := ", ";
       Newline   : Boolean := False)
    is
@@ -1178,7 +1203,7 @@ package body Why.Atree.Sprint is
          declare
             Node : constant Why_Node_Id := Element (Position);
          begin
-            Print_Node (Node);
+            Callback (Node);
          end;
 
          Position := Next (Position);
@@ -1288,7 +1313,7 @@ package body Why.Atree.Sprint is
       P (O, Get_Name (Node));
       NL (O);
       Relative_Indent (O, 1);
-      Print_List (+Get_Declarations (Node), "", Newline => True);
+      Print_List (+Get_Declarations (Node), Separator => "", Newline => True);
       Relative_Indent (O, -1);
       NL (O);
       PL (O, "end");
@@ -1536,7 +1561,7 @@ package body Why.Atree.Sprint is
       if not Is_Empty (+Handlers) then
          NL (O);
          Relative_Indent (O, 1);
-         Print_List (+Handlers, "", Newline => True);
+         Print_List (+Handlers, Separator => "", Newline => True);
          Relative_Indent (O, -1);
       end if;
    end Print_Postcondition;
@@ -1587,7 +1612,7 @@ package body Why.Atree.Sprint is
    procedure Print_Record_Aggregate (Node : W_Record_Aggregate_Id) is
    begin
       P (O, "{ ");
-      Print_List (+Get_Associations (Node), "; ");
+      Print_List (+Get_Associations (Node), Separator => "; ");
       P (O, " }");
    end Print_Record_Aggregate;
 
@@ -1616,7 +1641,7 @@ package body Why.Atree.Sprint is
    is
    begin
       P (O, "{ ");
-      Print_List (+Get_Fields (Node), "; ");
+      Print_List (+Get_Fields (Node), Separator => "; ");
       P (O, " }");
    end Print_Record_Definition;
 
@@ -1629,7 +1654,7 @@ package body Why.Atree.Sprint is
       P (O, "{ ( ");
       Print_Node (+Get_Name (Node));
       P (O, " ) with ");
-      Print_List (+Get_Updates (Node), "; ");
+      Print_List (+Get_Updates (Node), Separator => "; ");
       P (O, " }");
    end Print_Record_Update;
 
@@ -1666,18 +1691,27 @@ package body Why.Atree.Sprint is
      (WF : Why_Section; To : Output_Id := Stdout) is
    begin
       O := To;
-      Print_List (WF.Theories, "", Newline => True);
+      Print_List (WF.Theories, Separator => "", Newline => True);
    end Print_Section;
 
    -------------------------------
    -- Print_Statement_Sequence --
    -------------------------------
 
-   procedure Print_Statement_Sequence (Node : W_Statement_Sequence_Id) is
+   procedure Print_Statement_Sequence
+     (Node  : W_Statement_Sequence_Id;
+      Paren : Boolean := True) is
    begin
-      P (O, "( ");
-      Print_List (+Get_Statements (Node), ";", Newline => True);
-      P (O, " )");
+      if Paren then
+         P (O, "( ");
+      end if;
+      Print_List (+Get_Statements (Node),
+                  Callback  => Print_Inner_Sequence'Access,
+                  Separator => ";",
+                  Newline   => True);
+      if Paren then
+         P (O, " )");
+      end if;
    end Print_Statement_Sequence;
 
    -----------------------
@@ -1717,9 +1751,9 @@ package body Why.Atree.Sprint is
       P (O, Get_Name (Node));
       NL (O);
       Relative_Indent (O, 1);
-      Print_List (+Get_Includes (Node), "", Newline => False);
+      Print_List (+Get_Includes (Node), Separator => "", Newline => False);
       NL (O);
-      Print_List (+Get_Declarations (Node), "", Newline => True);
+      Print_List (+Get_Declarations (Node), Separator => "", Newline => True);
       Relative_Indent (O, -1);
       NL (O);
       PL (O, "end");
@@ -1755,7 +1789,7 @@ package body Why.Atree.Sprint is
       Triggers : constant W_Trigger_List := Get_Triggers (Node);
    begin
       P (O, "[");
-      Print_List (+Triggers, " | ");
+      Print_List (+Triggers, Separator => " | ");
       P (O, "]");
    end Print_Triggers;
 
@@ -1772,7 +1806,7 @@ package body Why.Atree.Sprint is
       NL (O);
       PL (O, "with");
       Relative_Indent (O, 1);
-      Print_List (+Get_Handler (Node), ", ", Newline => True);
+      Print_List (+Get_Handler (Node), Separator => ", ", Newline => True);
       Relative_Indent (O, -1);
       NL (O);
       P (O, "end");
@@ -1875,7 +1909,7 @@ package body Why.Atree.Sprint is
         Get_Kind (+Pred) = W_Universal_Quantif;
    begin
       P (O, "(forall ");
-      Print_List (+Variables, " ");
+      Print_List (+Variables, Separator => " ");
       P (O, " : ");
       Print_Node (+Var_Type);
 

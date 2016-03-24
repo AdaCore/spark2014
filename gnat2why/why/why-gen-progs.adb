@@ -26,9 +26,6 @@
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Why.Atree.Modules;       use Why.Atree.Modules;
-with Why.Atree.Mutators;      use Why.Atree.Mutators;
-with Why.Atree.Properties;    use Why.Atree.Properties;
-with Why.Atree.Tables;        use Why.Atree.Tables;
 with Why.Conversions;         use Why.Conversions;
 with Why.Gen.Expr;            use Why.Gen.Expr;
 with Why.Gen.Names;           use Why.Gen.Names;
@@ -218,40 +215,8 @@ package body Why.Gen.Progs is
          return Left;
       end if;
 
-      case Get_Kind (+Left) is
-         when W_Statement_Sequence =>
-            case Get_Kind (+Right) is
-               when W_Statement_Sequence =>
-                  return New_Statement_Sequence
-                     (Statements => (1 => Left, 2 => Right));
-               when others =>
-                  if Is_Root (+Left) then
-                     Statement_Sequence_Append_To_Statements
-                        (Id => W_Statement_Sequence_Id (Left),
-                         New_Item => Right);
-                     return Left;
-                  else
-                     return New_Statement_Sequence
-                        (Statements => (1 => Left, 2 => Right));
-                  end if;
-            end case;
-         when others =>
-            case Get_Kind (+Right) is
-               when W_Statement_Sequence =>
-                  if Is_Root (+Right) then
-                     Statement_Sequence_Prepend_To_Statements
-                        (Id => W_Statement_Sequence_Id (Right),
-                         New_Item => Left);
-                     return Right;
-                  else
-                     return New_Statement_Sequence
-                        (Statements => (1 => Left, 2 => Right));
-                  end if;
-               when others =>
-                  return New_Statement_Sequence
-                     (Statements => (1 => Left, 2 => Right));
-            end case;
-      end case;
+      return New_Statement_Sequence
+        (Statements => (1 => Left, 2 => Right));
    end Sequence;
 
    function Sequence (Progs : W_Prog_Array) return W_Prog_Id is
