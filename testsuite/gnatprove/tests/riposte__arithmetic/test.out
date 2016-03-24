@@ -119,7 +119,7 @@ arithmetic.adb:288:29: info: range check proved
 arithmetic.adb:288:34: info: overflow check proved
 arithmetic.adb:288:42: info: overflow check proved
 arithmetic.adb:288:47: info: division check proved
-arithmetic.adb:293:06: medium: postcondition might fail (e.g. when X = 2 and IsPositive_Wrong'Result = 1)
+arithmetic.adb:293:06: medium: postcondition might fail (e.g. when IsPositive_Wrong'Result = 1 and X = 2)
 arithmetic.adb:298:29: info: range check proved
 arithmetic.adb:298:34: info: overflow check proved
 arithmetic.adb:298:42: info: overflow check proved

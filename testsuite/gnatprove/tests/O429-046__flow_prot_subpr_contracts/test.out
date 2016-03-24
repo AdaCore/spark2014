@@ -3,7 +3,7 @@ prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 prot.adb:10:25: medium: overflow check might fail (e.g. when Visible = -1)
 prot.adb:15:33: medium: overflow check might fail (e.g. when X = -2147483649)
 prot.adb:15:37: medium: overflow check might fail
-prot.adb:25:29: medium: overflow check might fail (e.g. when Visible = -1 and Hidden = -2147483648)
+prot.adb:25:29: medium: overflow check might fail (e.g. when Hidden = -2147483648 and Visible = -1)
 prot.adb:35:27: medium: overflow check might fail (e.g. when Hidden = 2147483647)
 prot.adb:41:17: info: initialization of "Visible" proved
 prot.ads:17:09: medium: the task might terminate, which is not allowed in SPARK

@@ -1,6 +1,6 @@
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:9:10: info: initialization of "J" proved
-p.adb:10:12: medium: array index check might fail (e.g. when Tab = (others => 0) and Tab'First = 1 and Tab'Last = 1 and J = 0)
+p.adb:10:12: medium: array index check might fail (e.g. when J = 0 and Tab = (others => 0) and Tab'First = 1 and Tab'Last = 1)
 p.adb:10:15: medium: "Tab" might not be initialized
 p.adb:10:18: info: initialization of "J" proved
 p.adb:11:12: info: initialization of "J" proved
@@ -24,7 +24,7 @@ p.adb:26:07: info: loop variant proved
 p.adb:26:41: info: initialization of "J" proved
 p.adb:27:41: info: initialization of "K" proved
 p.adb:34:10: info: initialization of "J" proved
-p.adb:35:12: medium: array index check might fail (e.g. when Tab = (others => 0) and Tab'First = 100 and Tab'Last = 100 and J = 99)
+p.adb:35:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 0) and Tab'First = 100 and Tab'Last = 100)
 p.adb:35:15: medium: "Tab" might not be initialized
 p.adb:35:18: info: initialization of "J" proved
 p.adb:36:12: info: initialization of "J" proved
@@ -36,7 +36,7 @@ p.adb:38:41: info: initialization of "J" proved
 p.adb:39:07: info: loop variant proved
 p.adb:39:41: info: initialization of "K" proved
 p.adb:45:10: info: initialization of "J" proved
-p.adb:46:12: medium: array index check might fail (e.g. when Tab = (others => 0) and Tab'First = 100 and Tab'Last = 100 and J = 99)
+p.adb:46:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 0) and Tab'First = 100 and Tab'Last = 100)
 p.adb:46:15: medium: "Tab" might not be initialized
 p.adb:46:18: info: initialization of "J" proved
 p.adb:47:12: info: initialization of "J" proved
@@ -50,7 +50,7 @@ p.adb:49:50: medium: overflow check might fail (e.g. when J = -2147483648)
 p.adb:49:57: info: initialization of "Tab" proved
 p.adb:49:62: medium: array index check might fail (e.g. when Tab'First = 100 and Tab'Last = 100)
 p.adb:55:10: info: initialization of "J" proved
-p.adb:56:12: medium: array index check might fail (e.g. when Tab = (others => 0) and Tab'First = 100 and Tab'Last = 100 and J = 99)
+p.adb:56:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 0) and Tab'First = 100 and Tab'Last = 100)
 p.adb:56:15: medium: "Tab" might not be initialized
 p.adb:56:18: info: initialization of "J" proved
 p.adb:57:12: info: initialization of "J" proved
@@ -64,7 +64,7 @@ p.adb:58:62: medium: array index check might fail (e.g. when Tab'First = 100 and
 p.adb:59:07: info: loop variant proved
 p.adb:59:41: info: initialization of "J" proved
 p.adb:66:10: info: initialization of "J" proved
-p.adb:67:12: medium: array index check might fail (e.g. when Tab = (others => 0) and Tab'First = 100 and Tab'Last = 100 and J = 99)
+p.adb:67:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 0) and Tab'First = 100 and Tab'Last = 100)
 p.adb:67:15: medium: "Tab" might not be initialized
 p.adb:67:18: info: initialization of "J" proved
 p.adb:68:12: info: initialization of "J" proved
@@ -94,7 +94,7 @@ p.adb:74:54: medium: overflow check might fail
 p.adb:74:61: info: initialization of "Tab" proved
 p.adb:74:66: medium: array index check might fail (e.g. when Tab'First = 100 and Tab'Last = 100)
 p.adb:79:10: info: initialization of "J" proved
-p.adb:80:12: medium: array index check might fail (e.g. when Tab = (others => 0) and Tab'First = 100 and Tab'Last = 100 and J = 99)
+p.adb:80:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 0) and Tab'First = 100 and Tab'Last = 100)
 p.adb:80:15: medium: "Tab" might not be initialized
 p.adb:80:18: info: initialization of "J" proved
 p.adb:81:12: info: initialization of "J" proved
@@ -124,7 +124,7 @@ p.adb:87:54: medium: overflow check might fail
 p.adb:87:61: info: initialization of "Tab" proved
 p.adb:87:66: medium: array index check might fail (e.g. when Tab'First = 100 and Tab'Last = 100)
 p.adb:92:10: info: initialization of "J" proved
-p.adb:93:12: medium: array index check might fail (e.g. when Tab = (others => 0) and Tab'First = 100 and Tab'Last = 100 and J = 99)
+p.adb:93:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 0) and Tab'First = 100 and Tab'Last = 100)
 p.adb:93:15: medium: "Tab" might not be initialized
 p.adb:93:18: info: initialization of "J" proved
 p.adb:94:12: info: initialization of "J" proved

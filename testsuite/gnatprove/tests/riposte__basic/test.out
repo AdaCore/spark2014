@@ -33,7 +33,7 @@ basic.adb:70:60: info: overflow check proved
 basic.adb:71:14: info: overflow check proved
 basic.adb:75:19: info: postcondition proved
 basic.adb:84:14: info: initialization of "R" proved
-basic.adb:88:19: medium: postcondition might fail, cannot prove Int_Min_B'Result = Integer'min (e.g. when Int_Min_B'Result = 1 and A = 0 and B = 1)
+basic.adb:88:19: medium: postcondition might fail, cannot prove Int_Min_B'Result = Integer'min (e.g. when A = 0 and B = 1 and Int_Min_B'Result = 1)
 basic.adb:97:14: info: initialization of "R" proved
 basic.adb:101:19: info: postcondition proved
 basic.adb:110:14: info: initialization of "R" proved

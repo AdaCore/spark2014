@@ -1,5 +1,5 @@
 arrays.adb:6:15: info: initialization of "S" proved
-arrays.adb:6:17: medium: overflow check might fail (e.g. when S = 2147483647 and X = (1 => 1, others => 0) and X'First = 1 and X'Last = 1 and J = 1)
+arrays.adb:6:17: medium: overflow check might fail (e.g. when J = 1 and S = 2147483647 and X = (1 => 1, others => 0) and X'First = 1 and X'Last = 1)
 arrays.adb:8:14: info: initialization of "S" proved
 arrays.adb:15:19: info: division check proved
 arrays.adb:16:18: info: initialization of "C" proved

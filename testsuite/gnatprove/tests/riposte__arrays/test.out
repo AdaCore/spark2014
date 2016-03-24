@@ -1,8 +1,8 @@
 arrays.adb:21:50: info: length check proved
 arrays.adb:51:18: info: postcondition proved
-arrays.adb:62:22: medium: postcondition might fail, cannot prove Contains_B'Result = S (C) (e.g. when Contains_B'Result = False and S = (0 => true, others => false) and C = 0)
+arrays.adb:62:22: medium: postcondition might fail, cannot prove Contains_B'Result = S (C) (e.g. when C = 0 and Contains_B'Result = False and S = (0 => true, others => false))
 arrays.adb:71:19: info: postcondition proved
-arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C (e.g. when Is_Id_2'Result = False and M = (others => 0) and C = 0)
+arrays.adb:80:19: medium: postcondition might fail, cannot prove Is_Id_2'Result = (M (C) = C (e.g. when C = 0 and Is_Id_2'Result = False and M = (others => 0))
 arrays.adb:94:07: info: assertion proved
 arrays.adb:104:22: medium: assertion might fail, cannot prove C = 'a' (e.g. when C = 0)
 arrays.adb:112:22: medium: assertion might fail, cannot prove M ('a') = 'a' (e.g. when M = (others => 0))
@@ -31,7 +31,7 @@ arrays.adb:191:41: info: range check proved
 arrays.adb:192:57: info: initialization of "R" proved
 arrays.adb:192:57: medium: "R" might not be initialized
 arrays.adb:194:14: info: initialization of "R" proved
-arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C (e.g. when Single_Char_Set_Broken'Result = (1 => false, others => true) and C = 0)
+arrays.adb:199:22: medium: postcondition might fail, cannot prove Single_Char_Set_Broken'Result (I) = (I > C (e.g. when C = 0 and Single_Char_Set_Broken'Result = (others => false))
 arrays.adb:206:10: info: loop invariant initialization proved
 arrays.adb:206:10: info: loop invariant preservation proved
 arrays.adb:206:41: info: range check proved

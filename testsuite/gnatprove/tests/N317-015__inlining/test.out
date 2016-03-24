@@ -58,7 +58,7 @@ array_arith.adb:58:15: info: initialization of "X" proved, in call inlined at ar
 array_arith.adb:58:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
 array_arith.adb:59:16: info: initialization of "X" proved, in call inlined at array_arith.adb:66
 array_arith.adb:59:19: info: initialization of "One" proved, in call inlined at array_arith.adb:66
-array_arith.adb:63:19: medium: overflow check might fail (e.g. when Y = 1 and One = 2147483647)
+array_arith.adb:63:19: medium: overflow check might fail (e.g. when One = 2147483647 and Y = 1)
 array_arith.adb:63:19: medium: range check might fail
 array_arith.adb:70:29: info: initialization of "Y" proved
 array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:77

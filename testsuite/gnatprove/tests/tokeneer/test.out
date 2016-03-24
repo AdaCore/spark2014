@@ -137,7 +137,7 @@ admintoken.ads:148:33: info: initialization of "IDCert.Contents" constituent of 
 admintoken.ads:148:33: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:149:33: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:217:22: medium: postcondition might fail (e.g. when IDCert = (Valid => False) and AuthCert = (Valid => False))
+admintoken.ads:217:22: medium: postcondition might fail (e.g. when AuthCert = (Valid => False) and IDCert = (Valid => False))
 admintoken.ads:217:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:217:26: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:218:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
@@ -257,7 +257,7 @@ auditlog.adb:667:14: info: initialization of "OK" proved
 auditlog.adb:717:59: medium: range check might fail (e.g. when UsedLogFiles = (Length => 0, others => ?))
 auditlog.adb:717:64: info: overflow check proved
 auditlog.adb:718:42: info: overflow check proved
-auditlog.adb:719:22: medium: postcondition might fail (e.g. when NumberLogEntries = 0 and CurrentLogFile = 1 and LogFileEntries = (1 => 1, others => 0) and UsedLogFiles = (Length => 1, others => ?))
+auditlog.adb:719:22: medium: postcondition might fail (e.g. when CurrentLogFile = 1 and LogFileEntries = (1 => 1, others => 0) and NumberLogEntries = 0 and UsedLogFiles = (Length => 1, others => ?))
 auditlog.adb:720:59: info: range check proved
 auditlog.adb:720:64: info: overflow check proved
 auditlog.adb:721:42: info: overflow check proved
@@ -477,7 +477,7 @@ bio.adb:173:42: info: initialization of "Result" proved, in call inlined at bio.
 bio.adb:173:42: info: length check proved, in call inlined at bio.adb:183
 bio.adb:173:45: info: initialization of "FullString" proved
 bio.adb:173:45: info: initialization of "FullString" proved, in call inlined at bio.adb:183
-bio.adb:173:45: medium: length check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 2 and FullString'Last = 9)
+bio.adb:173:45: medium: length check might fail, in call inlined at bio.adb:183 (e.g. when FullString'First = 2 and FullString'Last = 150)
 bio.adb:175:23: info: initialization of "FullString" proved
 bio.adb:175:23: info: initialization of "FullString" proved, in call inlined at bio.adb:183
 bio.adb:175:23: info: length check proved, in call inlined at bio.adb:183
@@ -1510,7 +1510,7 @@ door.adb:114:18: medium: precondition might fail
 door.adb:115:33: info: initialization of "ID" proved
 door.adb:116:33: info: initialization of "Severity" proved
 door.adb:122:20: info: initialization of "LocalAlarm" proved
-door.adb:169:30: medium: refined postcondition might fail (e.g. when SystemFault = False and NewDoor = 0 and DoorAlarm = 1 and ID = 0 and CurrentDoor = 0 and AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0))
+door.adb:169:30: medium: refined postcondition might fail (e.g. when AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0) and CurrentDoor = 0 and DoorAlarm = 1 and ID = 0 and NewDoor = 0 and SystemFault = False)
 door.adb:197:10: info: initialization of "SystemFault" proved
 door.adb:200:18: medium: precondition might fail
 door.adb:209:28: info: initialization of "NewDoor" proved
@@ -1543,7 +1543,7 @@ door.adb:322:41: info: initialization of "AlarmTimeout.Day" constituent of "Stat
 door.adb:322:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.adb:322:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
 door.adb:322:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
-door.adb:347:30: medium: refined postcondition might fail (e.g. when DoorAlarm = 1 and AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0) and CurrentDoor = 0)
+door.adb:347:30: medium: refined postcondition might fail (e.g. when AlarmTimeout = (Year => 1901, Month => 1, Day => 1, MilliSec => 0) and CurrentDoor = 0 and DoorAlarm = 1)
 door.adb:350:57: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
 door.adb:350:57: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.adb:350:57: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
@@ -1698,7 +1698,7 @@ enclave.adb:1670:31: medium: refined postcondition might fail (e.g. when Status 
 enclave.adb:1685:21: medium: precondition might fail
 enclave.adb:1704:18: medium: precondition might fail
 enclave.adb:1731:47: medium: "Floppy.Output" might not be written
-enclave.adb:1887:06: medium: refined postcondition might fail (e.g. when Status = 3 and LocalStatus = 4)
+enclave.adb:1887:06: medium: refined postcondition might fail (e.g. when LocalStatus = 4 and Status = 3)
 enclave.adb:1906:18: medium: precondition might fail
 enclave.adb:1912:19: medium: precondition might fail
 enclave.adb:1937:18: medium: precondition might fail
@@ -2209,9 +2209,9 @@ screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at
 screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at screen.adb:603
 screen.adb:437:20: info: initialization of "ValueStr" proved, in call inlined at screen.adb:609
 screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:591 (e.g. when ValueStr'First = 1 and ValueStr'Last = 0)
-screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:597 (e.g. when Str = (5 => 0, others => -1) and ValueStr'First = 3 and ValueStr'Last = 2)
-screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:603 (e.g. when Str = (5 => 0, others => -1) and ValueStr'First = 3 and ValueStr'Last = 2)
-screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:609 (e.g. when Str = (5 => 0, others => -1) and ValueStr'First = 3 and ValueStr'Last = 2)
+screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:597 (e.g. when Str = (5 => 0, others => 1) and ValueStr'First = 2 and ValueStr'Last = 1)
+screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:603 (e.g. when Str = (5 => 0, others => 1) and ValueStr'First = 2 and ValueStr'Last = 1)
+screen.adb:437:37: medium: array index check might fail, in call inlined at screen.adb:609 (e.g. when Str = (5 => 0, others => 1) and ValueStr'First = 2 and ValueStr'Last = 1)
 screen.adb:440:41: info: initialization of "Str" proved
 screen.adb:440:41: info: initialization of "Str" proved, in call inlined at screen.adb:591
 screen.adb:440:41: info: initialization of "Str" proved, in call inlined at screen.adb:597
@@ -2434,9 +2434,9 @@ screen.adb:784:40: info: length check proved, in call inlined at screen.adb:812
 screen.adb:784:40: info: length check proved, in call inlined at screen.adb:818
 screen.adb:784:40: info: length check proved, in call inlined at screen.adb:824
 screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:806 (e.g. when Data'First = 3 and Data'Last = 2)
-screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:812 (e.g. when Result = (others => 0) and Data'First = 3 and Data'Last = 2)
-screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:818 (e.g. when Result = (others => 0) and Data'First = 3 and Data'Last = 2)
-screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:824 (e.g. when Result = (others => 0) and Data'First = 3 and Data'Last = 2)
+screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:812 (e.g. when Data'First = 3 and Data'Last = 2 and Result = (others => 0))
+screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:818 (e.g. when Data'First = 3 and Data'Last = 2 and Result = (others => 0))
+screen.adb:784:40: medium: range check might fail, in call inlined at screen.adb:824 (e.g. when Data'First = 3 and Data'Last = 2 and Result = (others => 0))
 screen.adb:785:17: info: initialization of "Result" proved
 screen.adb:785:17: info: initialization of "Result" proved, in call inlined at screen.adb:806
 screen.adb:785:17: info: initialization of "Result" proved, in call inlined at screen.adb:812
@@ -2715,7 +2715,7 @@ tokenreader.adb:175:56: low: range check might fail (e.g. when FullString = (oth
 tokenreader.adb:180:43: info: length check proved
 tokenreader.adb:180:46: medium: length check might fail (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 7)
 tokenreader.adb:182:23: info: length check proved
-tokenreader.adb:182:23: medium: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 2 and FullString'Last = 151)
+tokenreader.adb:182:23: medium: range check might fail (e.g. when FullString = (others => 0) and FullString'First = 2147483642 and FullString'Last = 2147483647)
 tokenreader.adb:188:07: info: initialization of "Result" proved
 tokenreader.adb:188:07: info: initialization of "TheCodeName" proved
 tokenreader.adb:189:14: info: initialization of "Result" proved
@@ -2848,7 +2848,7 @@ userentry.adb:923:33: info: initialization of "Status" constituent of "State" pr
 userentry.adb:941:15: medium: precondition might fail
 userentry.adb:1027:47: info: initialization of "NewMsg" proved
 userentry.adb:1045:50: medium: "UserToken.Output" might not be written
-userentry.adb:1183:13: medium: refined postcondition might fail (e.g. when Status = 0 and FingerTimeout = (Year => 0, Month => 0, Day => 0, MilliSec => 0) and TokenRemovalTimeout = (Year => 0, Month => 0, Day => 0, MilliSec => 0) and LocalStatus = 5)
+userentry.adb:1183:13: medium: refined postcondition might fail (e.g. when FingerTimeout = (Year => 0, Month => 0, Day => 0, MilliSec => 0) and LocalStatus = 5 and Status = 0 and TokenRemovalTimeout = (Year => 0, Month => 0, Day => 0, MilliSec => 0))
 userentry.adb:1197:37: info: range check proved
 userentry.adb:1199:12: info: initialization of "LocalStatus" proved
 userentry.adb:1203:13: info: precondition proved

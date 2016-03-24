@@ -17,7 +17,7 @@ bitwalker.adb:47:16: info: overflow check proved
 bitwalker.adb:47:29: info: overflow check proved
 bitwalker.adb:56:13: info: loop invariant initialization proved
 bitwalker.adb:58:18: info: precondition proved
-bitwalker.adb:58:18: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr, Start + Length - J - 1) = Nth (Retval, J) (e.g. when Addr = (others => 0) and Addr'First = 0 and Addr'Last = 268435454 and Start = 8 and Length = 9 and Retval = 0)
+bitwalker.adb:58:18: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr, Start + Length - J - 1) = Nth (Retval, J) (e.g. when Addr = (others => 0) and Addr'First = 0 and Addr'Last = 268435454 and Length = 9 and Retval = 0 and Start = 8)
 bitwalker.adb:58:56: info: range check proved
 bitwalker.adb:59:18: info: precondition proved
 bitwalker.adb:59:23: info: initialization of "Retval" proved
@@ -140,7 +140,7 @@ bitwalker.ads:34:52: info: range check proved
 bitwalker.ads:45:08: info: complete contract cases proved
 bitwalker.ads:45:08: info: disjoint contract cases proved
 bitwalker.ads:46:44: info: contract case proved
-bitwalker.ads:48:46: medium: contract case might fail (e.g. when Length = 0 and Addr = (others => 0) and Addr'First = 0 and Addr'Last = -1 and Start = 0 and Peek'Result = 0)
+bitwalker.ads:48:46: medium: contract case might fail (e.g. when Addr = (others => 0) and Addr'First = 0 and Addr'Last = -1 and Length = 0 and Peek'Result = 0 and Start = 0)
 bitwalker.ads:50:21: info: precondition proved
 bitwalker.ads:50:59: info: range check proved
 bitwalker.ads:51:21: info: precondition proved

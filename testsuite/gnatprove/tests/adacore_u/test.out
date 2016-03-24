@@ -36,7 +36,7 @@ p.adb:89:41: medium: overflow check might fail (e.g. when A = (0 => 1, others =>
 p.adb:93:16: info: index check proved
 p.adb:94:23: info: index check proved
 p.adb:99:42: info: range check proved
-p.adb:99:42: medium: overflow check might fail (e.g. when Current_Index = 0 and Beginning = -2147483648)
+p.adb:99:42: medium: overflow check might fail (e.g. when Beginning = -2147483648 and Current_Index = 0)
 p.adb:107:10: info: loop invariant initialization proved
 p.adb:107:10: info: loop invariant preservation proved
 p.adb:107:33: info: initialization of "Beginning" proved

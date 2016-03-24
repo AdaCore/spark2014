@@ -104,19 +104,19 @@ array_aggregates.adb:297:22: medium: assertion might fail, cannot prove X (1000)
 array_aggregates.adb:300:32: info: initialization of "X" proved
 array_aggregates.adb:306:27: info: length check proved
 array_aggregates.adb:309:22: info: initialization of "X" proved
-array_aggregates.adb:309:22: medium: assertion might fail, cannot prove X (N) = Elem_0 (e.g. when X = (1000 => 2, others => 0) and N = 1000)
+array_aggregates.adb:309:22: medium: assertion might fail, cannot prove X (N) = Elem_0 (e.g. when N = 1000 and X = (1000 => 2, others => 0))
 array_aggregates.adb:312:32: info: initialization of "X" proved
 array_aggregates.adb:318:27: info: length check proved
 array_aggregates.adb:321:22: info: initialization of "X" proved
-array_aggregates.adb:321:22: medium: assertion might fail, cannot prove X (N) = Elem_1 (e.g. when X = (1000 => 2, others => 1) and N = 1000)
+array_aggregates.adb:321:22: medium: assertion might fail, cannot prove X (N) = Elem_1 (e.g. when N = 1000 and X = (1000 => 2, others => 1))
 array_aggregates.adb:324:33: info: initialization of "X" proved
 array_aggregates.adb:330:27: info: length check proved
 array_aggregates.adb:333:22: info: initialization of "X" proved
-array_aggregates.adb:333:22: medium: assertion might fail, cannot prove X (N) = Elem_2 (e.g. when X = (1000 => 2, 2 => 0, others => 1) and N = 2)
+array_aggregates.adb:333:22: medium: assertion might fail, cannot prove X (N) = Elem_2 (e.g. when N = 2 and X = (1000 => 2, 2 => 0, others => 1))
 array_aggregates.adb:336:33: info: initialization of "X" proved
 array_aggregates.adb:342:27: info: length check proved
 array_aggregates.adb:345:46: info: initialization of "X" proved
-array_aggregates.adb:345:46: medium: assertion might fail, cannot prove X (N) = Elem_2 (e.g. when X = (1000 => 2, 2 => 0, others => 1) and N = 2)
+array_aggregates.adb:345:46: medium: assertion might fail, cannot prove X (N) = Elem_2 (e.g. when N = 2 and X = (1000 => 2, 2 => 0, others => 1))
 array_aggregates.adb:348:33: info: initialization of "X" proved
 array_aggregates.adb:352:21: info: length check proved
 array_aggregates.adb:353:22: info: initialization of "X" proved

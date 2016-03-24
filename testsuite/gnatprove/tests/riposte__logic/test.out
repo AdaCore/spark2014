@@ -16,7 +16,7 @@ logic.adb:46:07: info: assertion proved
 logic.adb:50:07: info: assertion proved
 logic.adb:51:22: medium: assertion might fail, cannot prove F = T (e.g. when F = False and T = True)
 logic.adb:53:07: info: assertion proved
-logic.adb:54:22: medium: assertion might fail, cannot prove T = F (e.g. when T = True and F = False)
+logic.adb:54:22: medium: assertion might fail, cannot prove T = F (e.g. when F = False and T = True)
 logic.adb:59:04: warning: analyzing unreferenced procedure "De_Morgan"
 logic.adb:62:07: info: assertion proved
 logic.adb:63:07: info: assertion proved

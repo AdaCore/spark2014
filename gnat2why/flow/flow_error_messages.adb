@@ -46,6 +46,7 @@ with Sinfo;                      use Sinfo;
 with Sinput;                     use Sinput;
 with SPARK_Util;                 use SPARK_Util;
 with Stringt;                    use Stringt;
+with Ada.Containers.Ordered_Sets;
 
 package body Flow_Error_Messages is
 
@@ -509,19 +510,18 @@ package body Flow_Error_Messages is
                package CNT_Elements is
                  new Ada.Containers.Indefinite_Ordered_Maps
                    (Key_Type => String,
-                    Element_Type => CNT_Element_Ptr
-                   );
+                    Element_Type => CNT_Element_Ptr);
 
                type CNT_Element_Map_Ptr is access all
                  CNT_Elements.Map;
 
                package Vars_List is
-                 new Ada.Containers.Doubly_Linked_Lists
+                 new Ada.Containers.Ordered_Sets
                    (Element_Type => Unbounded_String);
 
                --  Represents variables at given source code location.
                type Variables_Info is record
-                  Variables_Order : Vars_List.List;
+                  Variables_Order : Vars_List.Set;
                   --  Vector of variable names in the order in that variables
                   --  should be displayed
 
@@ -850,7 +850,7 @@ package body Flow_Error_Messages is
                                    (Variables.Variables_Order,
                                     Part_Name)
                                  then
-                                    Vars_List.Append
+                                    Vars_List.Include
                                       (Variables.Variables_Order,
                                        Part_Name);
                                  end if;

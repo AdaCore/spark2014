@@ -133,7 +133,7 @@ section_3_5_3.ads:75:14: medium: postcondition might fail, cannot prove Contains
 section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect
 section_4_6.ads:102:24: warning: unused variable "mode"
 section_4_6.ads:106:06: medium: contract cases might not be complete
-section_4_6.ads:106:06: medium: contract cases might not be disjoint (e.g. when ertms_etcs_level = 2 and an_acknowledge_request_for_shunting_is_displayed_to_the_driver = False and driver_acknowledges = False and driver_selects_shunting_mode = False and note_5_conditions_for_shunting_mode = False and reception_of_information_shunting_granted_by_rbc = True and train_is_at_standstill = True and ma_ssp_gardient_on_board = True and no_specific_mode_is_required_by_a_mode_profile = True and valid_train_data_is_stored_on_board = True and driver_isolates_ERTMS_ETCS_on_board_equipment = False and priority = 7)
+section_4_6.ads:106:06: medium: contract cases might not be disjoint (e.g. when an_acknowledge_request_for_shunting_is_displayed_to_the_driver = False and driver_acknowledges = False and driver_isolates_ERTMS_ETCS_on_board_equipment = False and driver_selects_shunting_mode = False and ertms_etcs_level = 2 and ma_ssp_gardient_on_board = True and no_specific_mode_is_required_by_a_mode_profile = True and note_5_conditions_for_shunting_mode = False and priority = 7 and reception_of_information_shunting_granted_by_rbc = True and train_is_at_standstill = True and valid_train_data_is_stored_on_board = True)
 section_4_6.ads:106:55: info: contract case proved
 section_4_6.ads:107:55: info: contract case proved
 section_4_6.ads:108:55: info: contract case proved

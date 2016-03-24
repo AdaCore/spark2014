@@ -434,7 +434,7 @@ ar.ads:334:242: info: range check proved
 ar.ads:334:255: info: index check proved
 ar.ads:334:437: info: range check proved
 ar.ads:339:22: info: postcondition proved
-ar.ads:344:22: medium: postcondition might fail, cannot prove J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or else (J = IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'update (e.g. when J = 50 and E = 99 and I = 1)
+ar.ads:344:22: medium: postcondition might fail, cannot prove J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last))) )) or else (J = IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), IT2'First => A'Old(IT2'First)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'update (e.g. when E = 99 and I = 1 and J = 50)
 ar.ads:344:123: info: range check proved
 ar.ads:344:136: info: index check proved
 ar.ads:344:154: info: range check proved

@@ -106,7 +106,7 @@ pack_gen_pragmas.ads:18:04: medium: missing dependency "null => Pack_Gen_Pragmas
 pack_gen_pragmas.ads:18:04: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:46
 pack_gen_pragmas.ads:18:04: medium: missing dependency "null => constant with variable input Inner", in instantiation at main.adb:46
 pack_gen_pragmas.ads:26:04: info: initialization of "Pack_Inner" proved
-pack_refs.adb:4:21: medium: overflow check might fail, in instantiation at main_refs.adb:5 (e.g. when Formal = 1 and External = 2147483647)
+pack_refs.adb:4:21: medium: overflow check might fail, in instantiation at main_refs.adb:5 (e.g. when External = 2147483647 and Formal = 1)
 pack_refs.ads:12:19: info: postcondition proved, in instantiation at main_refs.adb:5
 pack_refs.ads:12:40: info: overflow check proved, in instantiation at main_refs.adb:5
 pack_refs.ads:13:11: info: complete contract cases proved, in instantiation at main_refs.adb:5
