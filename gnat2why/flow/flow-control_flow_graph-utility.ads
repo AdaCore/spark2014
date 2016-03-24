@@ -188,7 +188,8 @@ package Flow.Control_Flow_Graph.Utility is
       Mode  : Param_Mode;
       E_Loc : Node_Or_Entity_Id := Empty)
       return V_Attributes
-   with Pre  => F_Ent.Kind in Direct_Mapping | Record_Field,
+   with Pre  => F_Ent.Kind in Direct_Mapping | Record_Field and
+                F_Ent.Variant in Initial_Or_Final_Variant,
         Post => not Make_Variable_Attributes'Result.Is_Null_Node and
                 not Make_Variable_Attributes'Result.Is_Program_Node and
                 not Make_Variable_Attributes'Result.Is_Global;

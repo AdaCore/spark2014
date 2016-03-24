@@ -24,7 +24,6 @@
 with Flow_Utility; use Flow_Utility;
 with Sem_Type;     use Sem_Type;
 with Sinfo;        use Sinfo;
-with Why;
 
 package body Flow.Control_Flow_Graph.Utility is
 
@@ -607,7 +606,7 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Variables_Explicitly_Used := A.Variables_Used;
 
          when others =>
-            raise Why.Unexpected_Node;
+            raise Program_Error;
       end case;
 
       A.Is_Proof := Refers_To_Ghost (FA, A);
