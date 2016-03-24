@@ -2472,8 +2472,6 @@ package body Flow.Analysis is
          end if;
       end Emit_Message;
 
-      Def_Atr          : V_Attributes;
-      Def_Key          : Flow_Id;
       Is_Uninitialized : Boolean;
       Is_Initialized   : Boolean;
 
@@ -2520,23 +2518,27 @@ package body Flow.Analysis is
                   for V_Def of
                     FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                   loop
-                     Def_Atr := FA.Atr.Element (V_Def);
-                     Def_Key := FA.DDG.Get_Key (V_Def);
-                     if Def_Key.Variant = Initial_Value
-                       and then Change_Variant (Def_Key, Normal_Use) = Var_Read
-                     then
-                        --  We're using the initial value.
-                        if Def_Atr.Is_Initialized then
-                           Is_Initialized   := True;
-                        else
-                           Is_Uninitialized := True;
+                     declare
+                        Def_Key : Flow_Id      renames FA.DDG.Get_Key (V_Def);
+                        Def_Atr : V_Attributes renames FA.Atr (V_Def);
+                     begin
+                        if Def_Key.Variant = Initial_Value
+                          and then
+                            Change_Variant (Def_Key, Normal_Use) = Var_Read
+                        then
+                           --  We're using the initial value.
+                           if Def_Atr.Is_Initialized then
+                              Is_Initialized   := True;
+                           else
+                              Is_Uninitialized := True;
+                           end if;
+                        elsif Def_Atr.Variables_Defined.Contains (Var_Read)
+                          or else Def_Atr.Volatiles_Read.Contains (Var_Read)
+                        then
+                           --  We're using a previously written value.
+                           Is_Initialized := True;
                         end if;
-                     elsif Def_Atr.Variables_Defined.Contains (Var_Read)
-                       or else Def_Atr.Volatiles_Read.Contains (Var_Read)
-                     then
-                        --  We're using a previously written value.
-                        Is_Initialized := True;
-                     end if;
+                     end;
                   end loop;
 
                   --  Some useful debug output before we issue the message.
