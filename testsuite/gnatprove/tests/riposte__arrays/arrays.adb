@@ -59,7 +59,7 @@ is
                        return Boolean
      with Depends => (Contains_B'Result => S,
                       null => C),
-          Post    => Contains_B'Result = S (C)  --  @POSTCONDITION:FAIL
+          Post    => Contains_B'Result = S (C)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
    begin
       return S ('a');
@@ -77,7 +77,7 @@ is
    function Is_Id_2 (M : in Char_Map;
                      C : in Character)
                     return Boolean
-     with Post => Is_Id_2'Result = (M (C) = C)  --  @POSTCONDITION:FAIL
+     with Post => Is_Id_2'Result = (M (C) = C)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
    begin
       return M (C) = 'a';
@@ -101,7 +101,7 @@ is
    is
    begin
       C := M (C);
-      pragma Assert (C = 'a');  --  @ASSERT:FAIL
+      pragma Assert (C = 'a');  --  @ASSERT:FAIL @COUNTEREXAMPLE
    end Test_Id_2;
 
    procedure Test_A (M : in out Char_Map)
@@ -109,7 +109,7 @@ is
    is
    begin
       M ('a') := 'A';
-      pragma Assert (M ('a') = 'a');  --  @ASSERT:FAIL
+      pragma Assert (M ('a') = 'a');  --  @ASSERT:FAIL @COUNTEREXAMPLE
    end Test_A;
 
    procedure Test_B (M : in out Enum_Map)
@@ -117,7 +117,7 @@ is
    is
    begin
       M (Elem_0) := Elem_2;
-      pragma Assert (M (Elem_0) = Elem_0);  --  @ASSERT:FAIL
+      pragma Assert (M (Elem_0) = Elem_0);  --  @ASSERT:FAIL @COUNTEREXAMPLE
    end Test_B;
 
    procedure Test_C (MM : in out Multi_Array)
@@ -141,11 +141,11 @@ is
    is
    begin
       R.A (3) := 5;
-      pragma Assert (R.Exists);  --  @ASSERT:FAIL
+      pragma Assert (R.Exists);  --  @ASSERT:FAIL @COUNTEREXAMPLE
 
       pragma Assert (R.A(3) = 5);  --  @ASSERT:PASS
 
-      pragma Assert (R.A(1) = 5);  --  @ASSERT:FAIL
+      pragma Assert (R.A(1) = 5);  --  @ASSERT:FAIL @COUNTEREXAMPLE
    end Test_I;
 
    procedure Test_J (S : in out String_T)
@@ -175,7 +175,7 @@ is
      with Depends => (null => A)
    is
    begin
-      pragma Assert (for some B in Boolean => A (B) > 0);  --  @ASSERT:FAIL
+      pragma Assert (for some B in Boolean => A (B) > 0);  --  @ASSERT:FAIL @COUNTEREXAMPLE
       null;
    end Test_L;
 
@@ -196,7 +196,7 @@ is
 
    function Single_Char_Set_Broken (C : in Character) return Char_Set
      with Post => (for all I in Character =>
-                     Single_Char_Set_Broken'Result (I) = (I > C))  --  @POSTCONDITION:FAIL
+                     Single_Char_Set_Broken'Result (I) = (I > C))  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
       R : Char_Set;
    begin
@@ -215,7 +215,7 @@ is
       A : Char_Set;
    begin
       A := Single_Char_Set ('D');
-      pragma Assert (A ('A'));  --  @ASSERT:FAIL
+      pragma Assert (A ('A'));  --  @ASSERT:FAIL @COUNTEREXAMPLE
    end Use_Array_From_Function_A;
 
    procedure Use_Array_From_Function_B
@@ -233,7 +233,7 @@ is
       A : Char_Set;
    begin
       A := Single_Char_Set_Broken ('D');
-      pragma Assert (A ('A'));  --  @ASSERT:FAIL
+      pragma Assert (A ('A'));  --  @ASSERT:FAIL @COUNTEREXAMPLE
    end Use_Array_From_Function_C;
 
    procedure Use_Array_From_Function_D
@@ -251,7 +251,7 @@ is
       A : Int_Array;
    begin
       A := Int_Array'(others => 0);
-      pragma Assert (A = Random_Array (5));  --  @ASSERT:FAIL
+      pragma Assert (A = Random_Array (5));  --  @ASSERT:FAIL @COUNTEREXAMPLE
    end Use_Array_From_Function_E;
 
    pragma Warnings (On, "* has no effect");

@@ -7,14 +7,14 @@ is
      with Post => Minus_I'Result = A - B
    is
    begin
-      return A - B;  --  @OVERFLOW_CHECK:FAIL
+      return A - B;  --  @OVERFLOW_CHECK:FAIL @COUNTEREXAMPLE
    end Minus_I;
 
    function Negation_I (A: Integer) return Integer
      with Post => Negation_I'Result = -A
    is
    begin
-      return -A;  --  @OVERFLOW_CHECK:FAIL
+      return -A;  --  @OVERFLOW_CHECK:FAIL @COUNTEREXAMPLE
    end Negation_I;
 
    function Multiply_A (A, B: Integer) return Integer
@@ -73,7 +73,7 @@ is
    pragma Warnings (On, "* has no effect");
 
    function Plus (A, B: Integer) return Integer
-     with Pre  => A + B in Integer,
+     with Pre  => A + B in Integer,  --  @OVERFLOW_CHECK:FAIL @COUNTEREXAMPLE
           Post => Plus'Result = A + B
    is
       R : Integer;
@@ -110,7 +110,7 @@ is
    end Halve_A;
 
    function Halve_B (N: in Unsigned_Byte) return Unsigned_Byte
-     with Post => Halve_B'Result + Halve_B'Result = N  --  @POSTCONDITION:FAIL
+     with Post => Halve_B'Result + Halve_B'Result = N  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
                     or Halve_B'Result + Halve_B'Result + 1 = N
    is
       Half_Range : constant Unsigned_Byte := Unsigned_Byte'Last / 2;
@@ -120,7 +120,7 @@ is
       for I in Unsigned_Byte range 0 .. Half_Range loop
          R := I;
          exit when R + R = N or (R + R) + 1 = N;
-         pragma Loop_Invariant  --  @LOOP_INVARIANT_PRESERV:FAIL
+         pragma Loop_Invariant  --  @LOOP_INVARIANT_PRESERV:FAIL @COUNTEREXAMPLE
            (N > R + R + 1 and R in Unsigned_Byte);
       end loop;
       return R;
@@ -168,7 +168,7 @@ is
       if N > 0 then
          R := Natural'(N);
       else
-         R := Natural'(-N);  --  @OVERFLOW_CHECK:FAIL
+         R := Natural'(-N);  --  @OVERFLOW_CHECK:FAIL @COUNTEREXAMPLE
       end if;
       return R;
    end Abs_Test_A;
@@ -191,7 +191,7 @@ is
      with Post => Abs_Test_C'Result = abs (N)
    is
    begin
-      return abs (N);  --  @OVERFLOW_CHECK:FAIL
+      return abs (N);  --  @OVERFLOW_CHECK:FAIL @COUNTEREXAMPLE
    end Abs_Test_C;
 
    function Test_Mod_A (N: in Byte) return Byte
@@ -223,7 +223,7 @@ is
    function Test_Div_A (N: in Byte) return Byte
    is
    begin
-      pragma Assert (if N < 0 then N / 10 < 0);  --  @ASSERT:FAIL
+      pragma Assert (if N < 0 then N / 10 < 0);  --  @ASSERT:FAIL @COUNTEREXAMPLE
       return N;
    end Test_Div_A;
 
@@ -251,7 +251,7 @@ is
                         B: in Byte;
                         C: in Byte)
                        return Byte
-     with Pre => B /= 0 and C > A and A + B in Byte
+     with Pre => B /= 0 and C > A and A + B in Byte  --  @OVERFLOW_CHECK:FAIL @COUNTEREXAMPLE
    is
    begin
       return (A + B) rem ((A rem B) + C);  --  @DIVISION_CHECK:FAIL
@@ -290,7 +290,7 @@ is
 
    function IsPositive_Wrong (X : in Integer) return Integer
      with Post =>
-     (if X >= 0 then IsPositive_Wrong'Result = 0) and --  @POSTCONDITION:FAIL
+     (if X >= 0 then IsPositive_Wrong'Result = 0) and --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
         (if X < 0 then IsPositive_Wrong'Result = 1)
    is
       type T is range Integer'First * 2 - 1 .. Integer'Last * 2;
