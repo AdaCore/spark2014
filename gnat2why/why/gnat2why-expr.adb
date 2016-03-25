@@ -2422,9 +2422,11 @@ package body Gnat2Why.Expr is
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       end if;
 
-      --  If Ty's fullview is in SPARK,
-      --  check for absence of runtime errors in Ty's default initial condition
-      --  and check that it is implied by the default initialization of Ty.
+      --  If Ty's fullview is in SPARK, check for absence of runtime errors
+      --  in Ty's default initial condition when specified as a boolean
+      --  expression, and check that it is implied by the default
+      --  initialization of Ty.
+
       --  Generate let x = any Ty in
       --        ignore__ (Def_Init_Cond (x));
       --        assert {Default_Init (x) -> Def_Init_Cond (x)}
@@ -2432,7 +2434,10 @@ package body Gnat2Why.Expr is
       if (Has_Default_Init_Cond (Ty)
             or else
           Has_Inherited_Default_Init_Cond (Ty))
-        and then not Is_Private_Type (Ty_Ext)
+            and then
+          Present (Default_Init_Cond_Procedure (Ty))
+            and then
+          not Is_Private_Type (Ty_Ext)
       then
          declare
             Default_Init_Subp : constant Entity_Id :=
@@ -3009,10 +3014,13 @@ package body Gnat2Why.Expr is
       end if;
 
       --  If Skip_Last_Cond is False, assume the default initial condition for
-      --  Ty.
+      --  Ty, when specified as a boolean expression.
 
-      if Has_Default_Init_Cond (Ty)
-        or else Has_Inherited_Default_Init_Cond (Ty)
+      if (Has_Default_Init_Cond (Ty)
+            or else
+          Has_Inherited_Default_Init_Cond (Ty))
+            and then
+          Present (Default_Init_Cond_Procedure (Ty))
       then
          declare
             Init_Subp : constant Entity_Id :=
@@ -13935,10 +13943,14 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      --  Assume the default initial condition for Ty.
+      --  Assume the default initial condition for Ty, when specified as a
+      --  boolean expression.
 
-      if Has_Default_Init_Cond (Ty)
-        or else Has_Inherited_Default_Init_Cond (Ty)
+      if (Has_Default_Init_Cond (Ty)
+            or else
+          Has_Inherited_Default_Init_Cond (Ty))
+            and then
+          Present (Default_Init_Cond_Procedure (Ty))
       then
          declare
             Default_Init_Subp : constant Entity_Id :=
