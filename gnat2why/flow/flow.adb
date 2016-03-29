@@ -341,6 +341,9 @@ package body Flow is
          F : Flow_Id      renames G.Get_Key (V);
          A : V_Attributes renames M (V);
 
+         NBSP : constant String := "&nbsp;";
+         --  HTML tag for non-breaking space
+
          procedure Print_Node (N : Node_Id);
 
          ----------------
@@ -463,7 +466,7 @@ package body Flow is
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Formal));
                   Write_Str ("'in");
-                  Write_Str ("&nbsp;:=&nbsp;");
+                  Write_Str (NBSP & ":=" & NBSP);
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Actual));
                   if A.Is_Discr_Or_Bounds_Parameter then
                      Write_Str ("'discr_or_bounds");
@@ -474,7 +477,7 @@ package body Flow is
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
                   pragma Assert (not A.Is_Discr_Or_Bounds_Parameter);
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Actual));
-                  Write_Str ("&nbsp;:=&nbsp;");
+                  Write_Str (NBSP & ":=" & NBSP);
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Formal));
                   Write_Str ("'out");
 
@@ -485,7 +488,7 @@ package body Flow is
          elsif A.Is_Global_Parameter then
             Rv.Shape := Shape_None;
 
-            Write_Str ("global&nbsp;");
+            Write_Str ("global" & NBSP);
             Sprint_Flow_Id (A.Parameter_Formal);
             case A.Parameter_Formal.Variant is
                when In_View =>
@@ -505,7 +508,7 @@ package body Flow is
          elsif A.Is_Implicit_Parameter then
             Rv.Shape := Shape_None;
 
-            Write_Str ("implicit&nbsp;");
+            Write_Str ("implicit" & NBSP);
             Sprint_Flow_Id (A.Parameter_Formal);
             case A.Parameter_Formal.Variant is
                when In_View =>
@@ -523,10 +526,10 @@ package body Flow is
 
             Sprint_Flow_Id (A.Default_Init_Var);
             if Present (A.Default_Init_Val) then
-               Write_Str ("&nbsp;is by default&nbsp;");
+               Write_Str (NBSP & "is by default" & NBSP);
                Print_Node (A.Default_Init_Val);
             else
-               Write_Str ("&nbsp;is initialized implicitly");
+               Write_Str (NBSP & "is initialized implicitly");
             end if;
 
          elsif A.Is_Package_Initialization then
@@ -669,16 +672,16 @@ package body Flow is
                      if Is_Volatile (F, S) then
                         Write_Str ("\nvolatile:");
                         if Has_Async_Readers (F, S) then
-                           Write_Str ("&nbsp;AR");
+                           Write_Str (NBSP & "AR");
                         end if;
                         if Has_Async_Writers (F, S) then
-                           Write_Str ("&nbsp;AW");
+                           Write_Str (NBSP & "AW");
                         end if;
                         if Has_Effective_Reads (F, S) then
-                           Write_Str ("&nbsp;ER");
+                           Write_Str (NBSP & "ER");
                         end if;
                         if Has_Effective_Writes (F, S) then
-                           Write_Str ("&nbsp;EW");
+                           Write_Str (NBSP & "EW");
                         end if;
                      end if;
                   end;
@@ -707,7 +710,7 @@ package body Flow is
             then
                Write_Str ("\nLoops:");
                for Loop_Identifier of A.Loops loop
-                  Write_Str ("&nbsp;");
+                  Write_Str (NBSP);
                   Print_Node (Loop_Identifier);
                end loop;
             end if;
