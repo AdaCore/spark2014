@@ -26,6 +26,7 @@
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Why.Atree.Modules;       use Why.Atree.Modules;
+with Why.Atree.Tables;        use Why.Atree.Tables;
 with Why.Conversions;         use Why.Conversions;
 with Why.Gen.Expr;            use Why.Gen.Expr;
 with Why.Gen.Names;           use Why.Gen.Names;

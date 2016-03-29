@@ -861,7 +861,7 @@ package body Why.Atree.Sprint is
 
    procedure Print_File (Node : W_File_Id) is
    begin
-      Print_List (+Get_Theories (Node), "", Newline => True);
+      Print_List (+Get_Theories (Node), Separator => "", Newline => True);
    end Print_File;
 
    ---------------------------
@@ -1209,7 +1209,6 @@ package body Why.Atree.Sprint is
    is
       use Why_Node_Lists;
 
-      Nodes    : constant List := Get_List (List_Id);
       Position : Cursor := First (Nodes);
    begin
       while Position /= No_Element loop
