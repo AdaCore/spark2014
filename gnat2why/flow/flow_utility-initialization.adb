@@ -165,14 +165,14 @@ package body Flow_Utility.Initialization is
       return Boolean
    is
 
-      function Call_Default_Initialization return Boolean;
-      --  Calls Default_Initialization on the type of F
+      function Has_Full_Default_Initialization return Boolean;
+      --  Returns True iff F has full default initialization
 
       ---------------------------------
-      -- Call_Default_Initialization --
+      -- Has_Full_Default_Initialization --
       ---------------------------------
 
-      function Call_Default_Initialization return Boolean is
+      function Has_Full_Default_Initialization return Boolean is
          Typ : Node_Id := Get_Direct_Mapping_Id (F);
       begin
          case Ekind (Typ) is
@@ -188,7 +188,7 @@ package body Flow_Utility.Initialization is
 
          return Default_Initialization (Typ, Explicit_Only) =
                   Full_Default_Initialization;
-      end Call_Default_Initialization;
+      end Has_Full_Default_Initialization;
 
    --  Start of processing for Is_Default_Initialized
 
@@ -197,7 +197,7 @@ package body Flow_Utility.Initialization is
          when Direct_Mapping =>
             return Is_Imported (Get_Direct_Mapping_Id (F))
               or else In_Generic_Actual (Get_Direct_Mapping_Id (F))
-              or else Call_Default_Initialization;
+              or else Has_Full_Default_Initialization;
 
          when Record_Field =>
             if In_Generic_Actual (Get_Direct_Mapping_Id (F)) then
@@ -214,7 +214,7 @@ package body Flow_Utility.Initialization is
                return True;
 
             else
-               return Call_Default_Initialization;
+               return Has_Full_Default_Initialization;
 
             end if;
 
