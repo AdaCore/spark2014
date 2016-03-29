@@ -1143,8 +1143,7 @@ package body Flow.Control_Flow_Graph is
       -------------
 
       procedure Process (F : Flow_Id) is
-         V   : Flow_Graphs.Vertex_Id;
-         A   : V_Attributes;
+         Initial_V, Final_V : Flow_Graphs.Vertex_Id;
 
          PM : constant Param_Mode :=
            (if F.Kind in Direct_Mapping | Record_Field
@@ -1153,37 +1152,43 @@ package body Flow.Control_Flow_Graph is
                Mode_In
             else
                M);
+
+         Initial_Atr : constant V_Attributes :=
+           Make_Variable_Attributes
+             (FA    => FA,
+              F_Ent => Change_Variant (F, Initial_Value),
+              Mode  => PM,
+              E_Loc => E);
+
+         Final_Atr : constant V_Attributes :=
+           Make_Variable_Attributes
+             (FA    => FA,
+              F_Ent => Change_Variant (F, Final_Value),
+              Mode  => PM,
+              E_Loc => E);
+
       begin
          --  Setup the n'initial vertex. Note that initialization for
          --  variables is detected (and set) when building the flow graph
          --  for declarative parts.
-         A := Make_Variable_Attributes
-           (FA    => FA,
-            F_Ent => Change_Variant (F, Initial_Value),
-            Mode  => PM,
-            E_Loc => E);
-
          Add_Vertex
            (FA,
             Change_Variant (F, Initial_Value),
-            A,
-            V);
-         Linkup (FA, V, FA.Start_Vertex);
+            Initial_Atr,
+            Initial_V);
+         Linkup (FA, Initial_V, FA.Start_Vertex);
 
          Create_Record_Tree (Change_Variant (F, Initial_Value),
-                             A,
+                             Initial_Atr,
                              FA);
 
          --  Setup the n'final vertex.
          Add_Vertex
            (FA,
             Change_Variant (F, Final_Value),
-            Make_Variable_Attributes (FA    => FA,
-                                      F_Ent => Change_Variant (F, Final_Value),
-                                      Mode  => PM,
-                                      E_Loc => E),
-            V);
-         Linkup (FA, FA.End_Vertex, V);
+            Final_Atr,
+            Final_V);
+         Linkup (FA, FA.End_Vertex, Final_V);
 
          FA.All_Vars.Include (F);
       end Process;
@@ -1279,37 +1284,41 @@ package body Flow.Control_Flow_Graph is
       -------------
 
       procedure Process (F : Flow_Id) is
-         A : V_Attributes;
-         V : Flow_Graphs.Vertex_Id;
+         Initial_Atr : constant V_Attributes :=
+           Make_Global_Variable_Attributes
+             (FA     => FA,
+              F      => Change_Variant (F, Initial_Value),
+              Mode   => Mode,
+              Uninit => Uninitialized);
+
+         Final_Atr : constant V_Attributes :=
+           Make_Global_Variable_Attributes
+             (FA   => FA,
+              F    => Change_Variant (F, Final_Value),
+              Mode => Mode);
+
+         Initial_V, Final_V : Flow_Graphs.Vertex_Id;
       begin
          --  Setup the n'initial vertex. Initialization is deduced from
          --  the mode.
-         A := Make_Global_Variable_Attributes
-           (FA     => FA,
-            F      => Change_Variant (F, Initial_Value),
-            Mode   => Mode,
-            Uninit => Uninitialized);
          Add_Vertex
            (FA,
             Change_Variant (F, Initial_Value),
-            A,
-            V);
-         Linkup (FA, V, FA.Start_Vertex);
+            Initial_Atr,
+            Initial_V);
+         Linkup (FA, Initial_V, FA.Start_Vertex);
 
          Create_Record_Tree (Change_Variant (F, Initial_Value),
-                             A,
+                             Initial_Atr,
                              FA);
 
          --  Setup the n'final vertex.
          Add_Vertex
            (FA,
             Change_Variant (F, Final_Value),
-            Make_Global_Variable_Attributes
-              (FA   => FA,
-               F    => Change_Variant (F, Final_Value),
-               Mode => Mode),
-            V);
-         Linkup (FA, FA.End_Vertex, V);
+            Final_Atr,
+            Final_V);
+         Linkup (FA, FA.End_Vertex, Final_V);
 
          FA.All_Vars.Include (F);
       end Process;
