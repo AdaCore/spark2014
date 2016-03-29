@@ -6199,23 +6199,24 @@ package body Flow.Control_Flow_Graph is
                      for Constituents of DM loop
                         for Constituent of Constituents loop
                            if Is_Abstract_State (Constituent) then
-                              --  Found a constituent that is an
-                              --  abstract state. We now create
-                              --  Initial and Final vertices for it.
+                              --  Found a constituent that is an abstract
+                              --  state. We now create Initial and Final
+                              --  vertices for it.
 
-                              Create_Initial_And_Final_Vertices
-                                (F             => Constituent,
-                                 Mode          =>
-                                   (if Is_Initialized_At_Elaboration
-                                         (Constituent,
-                                          FA.B_Scope)
-                                    then Mode_In_Out
-                                    else Mode_In),
-                                 Uninitialized =>
-                                   not Is_Initialized_At_Elaboration
-                                         (Constituent,
-                                          FA.B_Scope),
-                                 FA            => FA);
+                              declare
+                                 Initialized : constant Boolean :=
+                                   Is_Initialized_At_Elaboration
+                                     (Constituent, FA.B_Scope);
+
+                              begin
+                                 Create_Initial_And_Final_Vertices
+                                   (F             => Constituent,
+                                    Mode          => (if Initialized
+                                                      then Mode_In_Out
+                                                      else Mode_In),
+                                    Uninitialized => not Initialized,
+                                    FA            => FA);
+                              end;
                            end if;
                         end loop;
                      end loop;
