@@ -3508,7 +3508,7 @@ package body Flow.Control_Flow_Graph is
             begin
                if Final_V_Id /= Flow_Graphs.Null_Vertex then
                   declare
-                     Final_Atr : V_Attributes renames FA.Atr (Final_V_Id);
+                     Final_Atr  : V_Attributes renames FA.Atr (Final_V_Id);
                      Entire_Var : constant Entity_Id :=
                        Get_Direct_Mapping_Id (Entire_Variable (Final_F_Id));
                   begin
