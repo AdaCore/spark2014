@@ -216,7 +216,6 @@ package body SPARK_Frame_Conditions is
       --------------------
 
       procedure Strong_Connect (V : Entity_Name) is
-         Called_Subp : Name_Sets.Set;
       begin
          --  Set the depth index for V to the smallest unused index
 
@@ -227,9 +226,7 @@ package body SPARK_Frame_Conditions is
 
          --  Consider successors of V
 
-         Called_Subp := Calls.Element (V);
-
-         for W of Called_Subp loop
+         for W of Calls (V) loop
             --  Ignore leaf nodes in call-graph as no treatment is needed
             --  for them.
 
@@ -318,7 +315,7 @@ package body SPARK_Frame_Conditions is
       C : constant Name_Graphs.Cursor := Map.Find (Ent);
    begin
       return (if Name_Graphs.Has_Element (C)
-              then Name_Graphs.Element (C).Length
+              then Map (C).Length
               else 0);
    end Count_In_Map;
 
@@ -622,7 +619,7 @@ package body SPARK_Frame_Conditions is
       --  A subprogram is non-recursive if either it contains no call or its
       --  Entity_Name has been stored in Non_Rec_Subp.
 
-      return Calls.Element (E_Name).Is_Empty
+      return Calls (E_Name).Is_Empty
         or else Non_Rec_Subp.Contains (E_Name);
    end Is_Non_Recursive_Subprogram;
 
