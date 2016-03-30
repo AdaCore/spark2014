@@ -253,7 +253,7 @@ package body SPARK_Frame_Conditions is
 
          --  If V is a root node, pop the stack and generate an SCC
 
-         if Lowlinks.Element (V) = Indexes.Element (V) then
+         if Lowlinks (V) = Indexes (V) then
             declare
                function Size_Of_Current_SCC return Positive;
                --  Return the size of the current SCC sitting on the stack
@@ -387,7 +387,7 @@ package body SPARK_Frame_Conditions is
 
    function File_Of_Entity (E : Entity_Name) return Entity_Name is
    begin
-      return File_Defines.Element (E);
+      return File_Defines (E);
    end File_Of_Entity;
 
    -----------------
@@ -513,13 +513,13 @@ package body SPARK_Frame_Conditions is
          return Name_Sets.Empty_Set;
       end if;
 
-      Read_Ids := Reads.Element (E_Name);
+      Read_Ids := Reads (E_Name);
 
       if not Include_Constants then
          Read_Ids.Difference (Constants);
       end if;
 
-      return Read_Ids - Defines.Element (E_Name);
+      return Read_Ids - Defines (E_Name);
    exception
       when Constraint_Error =>
          if Propagate_Error_For_Missing_Scope then
@@ -573,9 +573,9 @@ package body SPARK_Frame_Conditions is
          end;
       end loop;
 
-      Write_Ids.Union (Writes.Element (E_Name));
+      Write_Ids.Union (Writes (E_Name));
 
-      return Write_Ids - Defines.Element (E_Name);
+      return Write_Ids - Defines (E_Name);
    exception
       when Constraint_Error =>
          if Propagate_Error_For_Missing_Scope then
@@ -954,10 +954,8 @@ package body SPARK_Frame_Conditions is
                   Prop_Writes := Flow_Types.To_Name_Set (Write_Ids);
                end;
             else
-               Prop_Reads  :=
-                 Reads.Element (Callee) - Defines.Element (Callee);
-               Prop_Writes :=
-                 Writes.Element (Callee) - Defines.Element (Callee);
+               Prop_Reads  := Reads (Callee) - Defines (Callee);
+               Prop_Writes := Writes (Callee) - Defines (Callee);
             end if;
          end;
 
@@ -1154,7 +1152,7 @@ package body SPARK_Frame_Conditions is
 
       E_Name  := To_Entity_Name (E_Alias);
 
-      Called_Subprograms := Calls.Element (E_Name);
+      Called_Subprograms := Calls (E_Name);
       Inputs             := Get_Generated_Reads (E, False);
       Outputs            := Get_Generated_Writes (E);
 
