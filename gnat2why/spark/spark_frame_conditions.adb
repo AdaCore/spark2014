@@ -980,7 +980,7 @@ package body SPARK_Frame_Conditions is
       is
          Num_Reads   : constant Count_Type := Count_In_Map (Reads, Subp);
          Num_Writes  : constant Count_Type := Count_In_Map (Writes, Subp);
-         Called_Subp : constant Name_Sets.Set := Calls.Element (Subp);
+         Called_Subp : Name_Sets.Set renames Calls (Subp);
 
       begin
          Updated := False;
@@ -1056,7 +1056,7 @@ package body SPARK_Frame_Conditions is
                declare
                   E : constant Entity_Name := Cur_SCCs (J) (1);
                begin
-                  if not Calls.Element (E).Contains (E) then
+                  if not Calls (E).Contains (E) then
                      Non_Rec_Subp.Insert (E);
                   end if;
                end;
