@@ -121,22 +121,7 @@ package body SPARK_Frame_Conditions is
 
    procedure Add_To_Map (Map : in out Name_Graphs.Map; From, To : Entity_Name)
    is
-
-      procedure Add_To_Set (Ignored : Entity_Name; Set : in out Name_Sets.Set);
-      --  Add entity representative To to set Set
-
-      ----------------
-      -- Add_To_Set --
-      ----------------
-
-      procedure Add_To_Set (Ignored : Entity_Name; Set : in out Name_Sets.Set)
-      is
-         pragma Unreferenced (Ignored);
-      begin
-         Set.Include (To);
-      end Add_To_Set;
-
-      Inserted : Boolean;
+      Ignored  : Boolean;
       Position : Name_Graphs.Cursor;
 
    --  Start of processing for Add_To_Map
@@ -145,8 +130,8 @@ package body SPARK_Frame_Conditions is
       --  Try to insert a default value (i.e. empty set) and then update it
       Map.Insert (Key      => From,
                   Position => Position,
-                  Inserted => Inserted);
-      Map.Update_Element (Position, Add_To_Set'Access);
+                  Inserted => Ignored);
+      Map (Position).Include (To);
    end Add_To_Map;
 
    -------------------------------------------
