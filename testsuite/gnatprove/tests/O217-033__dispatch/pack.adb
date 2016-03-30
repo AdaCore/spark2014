@@ -12,8 +12,8 @@ package body Pack is
 
    procedure Incr2 (O : in out Child) is
    begin
-      Incr (O);
       O.F2 := O.F2 + 1;
+      Incr (O);
    end Incr2;
 
 end Pack;
