@@ -5192,20 +5192,6 @@ package body SPARK_Definition is
             Mark_Stmt_Or_Decl_List (Declarations (N));
             Mark (Handled_Statement_Sequence (N));
 
-            --  For the special case of an expression function, the frontend
-            --  generates a distinct body if not already in source code. Use as
-            --  entity for the body the distinct E_Subprogram_Body entity. This
-            --  allows a separate definition of theories in Why3 for declaring
-            --  the logic function and its axiom. This is necessary so that
-            --  they are defined with the proper visibility over previously
-            --  defined entities.
-
-            if Ekind (E) = E_Function
-              and then Present (Get_Expression_Function (E))
-            then
-               Entity_List.Append (Def_E);
-            end if;
-
             --  If a violation was detected on a predicate function, then the
             --  type to which the predicate applies is not in SPARK. Remove it
             --  from the set Entities_In_SPARK if already marked in SPARK.

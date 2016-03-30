@@ -136,35 +136,21 @@ package body Gnat2Why.Driver is
    begin
       case Ekind (E) is
          when E_Entry | E_Function | E_Procedure =>
-            if Is_Translated_Subprogram (E)
-
-              --  Axioms for a SPARK expression function are issued in the same
-              --  module as the function declaration.
-              and then (Ekind (E) in Entry_Kind
-                        or else No (Get_Expression_Function (E))
-                        or else not Entity_Body_In_SPARK (E))
-            then
+            if Is_Translated_Subprogram (E) then
                declare
                   File : constant W_Section_Id :=
                     Dispatch_Entity_Completion (E);
                begin
-                  Generate_Subprogram_Completion (File, E);
+                  if Ekind (E) = E_Function
+                    and then Present (Get_Expression_Function (E))
+                    and then Entity_Body_In_SPARK (E)
+                  then
+                     Translate_Expression_Function_Body (File, E);
+                  else
+                     Generate_Subprogram_Completion (File, E);
+                  end if;
                end;
             end if;
-
-            --  An entity E_Subprogram_Body should be present only for
-            --  expression functions.
-            --  ??? special case of expression functions still necessary ?
-
-         when E_Subprogram_Body =>
-            declare
-               Decl_E : constant Entity_Id := Unique_Entity (E);
-               File   : constant W_Section_Id := Dispatch_Entity (E);
-            begin
-               pragma Assert (Present (Get_Expression_Function (Decl_E)));
-
-               Translate_Expression_Function_Body (File, Decl_E);
-            end;
 
          when Type_Kind =>
             if Entity_In_SPARK (E)
