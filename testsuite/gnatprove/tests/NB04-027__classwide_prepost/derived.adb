@@ -5,4 +5,9 @@ package body Derived is
       X.B := False;
    end Create;
 
+   procedure Do_Stuff (X : in out D) is
+   begin
+      null;
+   end Do_Stuff;
+
 end Derived;
