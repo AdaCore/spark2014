@@ -929,46 +929,6 @@ package body SPARK_Frame_Conditions is
          Prop_Reads  : Name_Sets.Set;
          Prop_Writes : Name_Sets.Set;
 
-         procedure Union_With_Reads
-           (Ignored : Entity_Name;
-            Set     : in out Name_Sets.Set);
-         --  In place union of caller's reads with the set propagated from
-         --  callee.
-
-         procedure Union_With_Writes
-           (Ignored : Entity_Name;
-            Set     : in out Name_Sets.Set);
-         --  In place union of caller's writes with the set propagated from
-         --  callee.
-
-         ----------------------
-         -- Union_With_Reads --
-         ----------------------
-
-         procedure Union_With_Reads
-           (Ignored : Entity_Name;
-            Set     : in out Name_Sets.Set)
-         is
-            pragma Unreferenced (Ignored);
-         begin
-            Set.Union (Prop_Reads);
-         end Union_With_Reads;
-
-         -----------------------
-         -- Union_With_Writes --
-         -----------------------
-
-         procedure Union_With_Writes
-           (Ignored : Entity_Name;
-            Set     : in out Name_Sets.Set)
-         is
-            pragma Unreferenced (Ignored);
-         begin
-            Set.Union (Prop_Writes);
-         end Union_With_Writes;
-
-      --  Start of processing for Propagate_On_Call
-
       begin
          declare
             E : constant Entity_Id := Find_Entity (Callee);
@@ -1001,10 +961,8 @@ package body SPARK_Frame_Conditions is
             end if;
          end;
 
-         Reads.Update_Element
-           (Reads.Find (Caller), Union_With_Reads'Access);
-         Writes.Update_Element
-           (Writes.Find (Caller), Union_With_Writes'Access);
+         Reads (Caller).Union (Prop_Reads);
+         Writes (Caller).Union (Prop_Writes);
       exception
          when Constraint_Error =>
             if Propagate_Error_For_Missing_Scope then
