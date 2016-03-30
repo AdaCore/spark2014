@@ -262,8 +262,7 @@ package Why.Gen.Binders is
    function Mk_Item_Of_Entity
      (E           : Entity_Id;
       Local       : Boolean := False;
-      In_Fun_Decl : Boolean := False)
-      return Item_Type;
+      In_Fun_Decl : Boolean := False) return Item_Type;
    --  Create an Item from an Entity
    --  @param E Ada Entity to be translated into an item.
    --  @param Local do not prefix names.

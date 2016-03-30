@@ -1236,34 +1236,41 @@ package body SPARK_Util is
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
    is
-      C         : Node_Id := Contract (E);
-      P         : Node_Id;
-      Contracts : Node_Lists.List := Node_Lists.Empty_List;
+      function Filter_Classwide_Contracts
+        (Pragmas : Node_Lists.List;
+         From    : Entity_Id) return Node_Lists.List;
+      --  Return the contracts from Contracts that are inherited from From
+
+      --------------------------------
+      -- Filter_Classwide_Contracts --
+      --------------------------------
+
+      function Filter_Classwide_Contracts
+        (Pragmas : Node_Lists.List;
+         From    : Entity_Id) return Node_Lists.List
+      is
+         Result : Node_Lists.List;
+      begin
+         for Prag of Pragmas loop
+            if Entity (Corresponding_Aspect (Prag)) = From then
+               Result.Append (Prag);
+            end if;
+         end loop;
+         return Result;
+      end Filter_Classwide_Contracts;
+
+      --  Local variables
+
+      Contr   : Node_Id := Contract (E);
+      Prag    : Node_Id;
+      Pragmas : Node_Lists.List := Node_Lists.Empty_List;
+
+      Class_Expected : constant Boolean := Classwide or Inherited;
+      --  True iff the Class flag should be set on selected pragmas
+
+   --  Start of processing for Find_Contracts
 
    begin
-      --  If Inherited is True, look for an inherited contract, starting from
-      --  the closest overridden subprogram.
-
-      --  ??? Does not work for multiple inheritance through interfaces
-
-      if Inherited then
-         declare
-            Inherit_Subp : constant Subprogram_List :=
-              Inherited_Subprograms (E);
-         begin
-            for J in Inherit_Subp'Range loop
-               Contracts :=
-                 Find_Contracts (Inherit_Subp (J), Name, Classwide => True);
-
-               if not Contracts.Is_Empty then
-                  return Contracts;
-               end if;
-            end loop;
-         end;
-
-         return Contracts;
-      end if;
-
       case Name is
          when Name_Precondition      |
               Name_Postcondition     |
@@ -1275,39 +1282,35 @@ package body SPARK_Util is
                if Ekind (E) in Subprogram_Kind
                  and then Present (Subprogram_Body (E))
                then
-                  C := Contract (Defining_Entity (Specification
+                  Contr := Contract (Defining_Entity (Specification
                                                     (Subprogram_Body (E))));
                elsif Ekind (E) = E_Entry
                  and then Present (Entry_Body (E))
                then
-                  C := Contract (Entry_Body_Entity (E));
+                  Contr := Contract (Entry_Body_Entity (E));
                else
-                  C := Empty;
+                  Contr := Empty;
                end if;
             end if;
 
-            if Present (C) then
-               P := (case Name is
+            if Present (Contr) then
+               Prag := (case Name is
                         when Name_Precondition  |
                              Name_Postcondition |
-                             Name_Refined_Post  => Pre_Post_Conditions (C),
-                        when Name_Initial_Condition => Classifications (C),
-                        when others => Contract_Test_Cases (C));
+                             Name_Refined_Post  => Pre_Post_Conditions (Contr),
+                        when Name_Initial_Condition => Classifications (Contr),
+                        when others => Contract_Test_Cases (Contr));
 
-               while Present (P) loop
-                  if Chars (Pragma_Identifier (P)) = Name
-                    and then Classwide = Class_Present (P)
+               while Present (Prag) loop
+                  if Chars (Pragma_Identifier (Prag)) = Name
+                    and then Class_Present (Prag) = Class_Expected
                   then
-                     Contracts.Append
-                       (Expression (First (Pragma_Argument_Associations (P))));
+                     Pragmas.Append (Prag);
                   end if;
 
-                  P := Next_Pragma (P);
+                  Prag := Next_Pragma (Prag);
                end loop;
-
             end if;
-
-            return Contracts;
 
          when Name_Global | Name_Depends =>
             raise Why.Not_Implemented;
@@ -1315,6 +1318,43 @@ package body SPARK_Util is
          when others =>
             raise Program_Error;
       end case;
+
+      --  If Inherited is True, look for an inherited contract, starting from
+      --  the closest overridden subprogram.
+
+      --  ??? Does not work for multiple inheritance through interfaces
+
+      if Classwide then
+         Pragmas := Filter_Classwide_Contracts (Pragmas, E);
+
+      elsif Inherited then
+         declare
+            Inherit_Subp : constant Subprogram_List :=
+              Inherited_Subprograms (E);
+            Inherit_Pragmas : Node_Lists.List;
+         begin
+            for J in Inherit_Subp'Range loop
+               Inherit_Pragmas :=
+                 Filter_Classwide_Contracts (Pragmas, Inherit_Subp (J));
+               exit when not Inherit_Pragmas.Is_Empty;
+            end loop;
+            Pragmas := Inherit_Pragmas;
+         end;
+      end if;
+
+      --  Extract the Boolean expressions inside the pragmas, and return the
+      --  list of these expressions.
+
+      declare
+         Contracts : Node_Lists.List;
+      begin
+         for P of Pragmas loop
+            Contracts.Append
+              (Expression (First (Pragma_Argument_Associations (P))));
+         end loop;
+
+         return Contracts;
+      end;
    end Find_Contracts;
 
    ---------------------------

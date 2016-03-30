@@ -1213,9 +1213,11 @@ package body Gnat2Why.Subprograms is
       Result        : Item_Array (1 .. Binder_Len);
       Param         : Node_Id;
       Count         : Positive;
+
    begin
       Param := First (Params);
       Count := 1;
+
       if Is_Protected_Subprogram (E) then
          declare
             Prot : constant Entity_Id := Containing_Protected_Type (E);
@@ -1224,6 +1226,7 @@ package body Gnat2Why.Subprograms is
             Count := 2;
          end;
       end if;
+
       while Present (Param) loop
          Result (Count) := Mk_Item_Of_Entity
            (E           => Defining_Identifier (Param),

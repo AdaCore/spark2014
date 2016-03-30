@@ -9329,6 +9329,7 @@ package body Gnat2Why.Expr is
          end if;
          return R;
       end Check_Discr_Of_Subtype;
+
       -------------------
       -- Get_Base_Type --
       -------------------
@@ -9821,6 +9822,7 @@ package body Gnat2Why.Expr is
          when others =>
             null;
       end case;
+
       return R;
    end Transform_Declaration;
 
