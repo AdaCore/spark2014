@@ -520,41 +520,33 @@ package body Flow_Types is
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
                pragma Assert (Nkind (E) in N_Entity);
 
-               Is_Vol : constant Boolean :=
-                 (if Ekind (E) = E_Abstract_State then
-                    Is_External_State (E)
-                  elsif Is_Part_Of_Concurrent_Object (E) then
-                    True
-                  elsif Is_Concurrent_Type (Etype (E)) then
-                    True
-                  elsif Ekind (E) in Object_Kind then
-                    Is_Effectively_Volatile (E)
-                  else
-                    Is_Effectively_Volatile_Object (E));
-
                CO : Entity_Id;
             begin
-               if No (Scope) or else not Is_Vol then
-                  return Is_Vol;
-               end if;
+               if Present (Scope) then
+                  if Has_Volatile (E) then
+                     --  When we are given a Scope and F is:
+                     --    * a protected object or
+                     --    * a component of a single concurrent type
+                     --  then we only consider F to be volatile when we are
+                     --  outside its enclosing concurrent object.
+                     if Is_Protected_Type (Etype (E)) then
+                        CO := Etype (E);
+                     elsif Is_Concurrent_Comp (F) then
+                        CO := Etype (Get_Enclosing_Concurrent_Object (F));
+                     else
+                        --  There is no enclosing protected object
+                        return True;
+                     end if;
 
-               --  When we are given a Scope and F is:
-               --    * a concurrent object or
-               --    * a component of a single concurrent type
-               --  then we only consider F to be volatile when we are outside
-               --  its enclosing concurrent object.
-               if Is_Concurrent_Type (Etype (E)) then
-                  CO := Etype (E);
-               elsif Is_Concurrent_Comp (F) then
-                  CO := Etype (Get_Enclosing_Concurrent_Object (F));
+                     --  If we are outside the CO then F is indeed volatile
+                     return not Nested_Inside_Concurrent_Object (CO, Scope);
+                  else
+                     return False;
+                  end if;
                else
-                  --  There is no enclosing concurrent object. We just return
-                  --  Is_Vol.
-                  return Is_Vol;
+                  return Has_Volatile (E);
                end if;
 
-               --  If we are outside the CO then F is indeed volatile
-               return not Nested_Inside_Concurrent_Object (CO, Scope);
             end;
 
          when Synthetic_Null_Export =>

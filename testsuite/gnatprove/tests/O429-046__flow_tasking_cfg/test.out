@@ -36,6 +36,7 @@ tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 tasks.adb:10:29: medium: overflow check might fail (e.g. when Hidden = -2147483648 and Visible = -1)
 tasks.adb:17:27: medium: overflow check might fail (e.g. when Hidden = 2147483647)
 tasks.ads:5:04: info: initialization of "Visible" proved
+tasks.ads:7:09: info: initialization of "Singleton_Task" proved
 tasks.ads:7:09: medium: the task might terminate, which is not allowed in SPARK
 tasks.ads:9:14: medium: the task might terminate, which is not allowed in SPARK
 tasks.ads:11:14: info: initialization of "Visible" proved

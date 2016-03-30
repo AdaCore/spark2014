@@ -1970,8 +1970,6 @@ package body SPARK_Util is
         Is_External_State (E)
       elsif Is_Part_Of_Concurrent_Object (E) then
         True
-      elsif Is_Concurrent_Type (Etype (E)) then
-        True
       elsif Ekind (E) in Object_Kind then
         Is_Effectively_Volatile (E)
       else
