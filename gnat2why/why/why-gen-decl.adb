@@ -130,7 +130,9 @@ package body Why.Gen.Decl is
 
       --  For each record field, emit projection from the record to the field
       for Binder in Binders'Range loop
-         if not Is_Floating_Point_Type (Etype (Binders (Binder).Ada_Node)) then
+         if Binders (Binder).Ada_Node = Empty or else
+            not Is_Floating_Point_Type (Etype (Binders (Binder).Ada_Node))
+         then
             Emit_Record_Projection_Declaration
               (Section       => Section,
                Param_Ty_Name => Name,
