@@ -516,7 +516,7 @@ package body SPARK_Frame_Conditions is
       Read_Ids := Reads.Element (E_Name);
 
       if not Include_Constants then
-         Read_Ids := Read_Ids - Constants;
+         Read_Ids.Difference (Constants);
       end if;
 
       return Read_Ids - Defines.Element (E_Name);
@@ -573,7 +573,7 @@ package body SPARK_Frame_Conditions is
          end;
       end loop;
 
-      Write_Ids := Write_Ids or Writes.Element (E_Name);
+      Write_Ids.Union (Writes.Element (E_Name));
 
       return Write_Ids - Defines.Element (E_Name);
    exception
