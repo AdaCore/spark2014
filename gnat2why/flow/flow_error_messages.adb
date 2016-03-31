@@ -91,11 +91,11 @@ package body Flow_Error_Messages is
       Msg_List    : in out GNATCOLL.JSON.JSON_Array;
       E           : Entity_Id;
       Msg_Id      : Message_Id;
+      How_Proved  : Prover_Category;
       Tracefile   : String := "";
       Cntexmp     : JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File     : String := "";
-      How_Proved  : String := "";
-      Stats       : JSON_Value := GNATCOLL.JSON.Create_Object;
+      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd  : String := "");
 
    function Warning_Is_Suppressed
@@ -351,14 +351,15 @@ package body Flow_Error_Messages is
          end if;
 
          Add_Json_Msg
-           (Suppr     => Suppr,
-            Tag       => Flow_Tag_Kind'Image (Tag),
-            Severity  => Severity,
-            Slc       => Slc,
-            Msg_List  => Flow_Msgs,
-            E         => E,
-            Tracefile => Tracefile,
-            Msg_Id    => Msg_Id);
+           (Suppr      => Suppr,
+            Tag        => Flow_Tag_Kind'Image (Tag),
+            How_Proved => PC_Flow,
+            Severity   => Severity,
+            Slc        => Slc,
+            Msg_List   => Flow_Msgs,
+            E          => E,
+            Tracefile  => Tracefile,
+            Msg_Id     => Msg_Id);
       else
          Suppressed := True;
       end if;
@@ -430,8 +431,8 @@ package body Flow_Error_Messages is
       VC_File     : String;
       Editor_Cmd  : String;
       E           : Entity_Id;
-      How_Proved  : String;
-      Stats       : JSON_Value := Create_Object;
+      How_Proved  : Prover_Category;
+      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Place_First : Boolean)
    is
       function JSON_Get_Opt (Val : JSON_Value; Field : String;
@@ -1575,11 +1576,11 @@ package body Flow_Error_Messages is
       Msg_List    : in out GNATCOLL.JSON.JSON_Array;
       E           : Entity_Id;
       Msg_Id      : Message_Id;
+      How_Proved  : Prover_Category;
       Tracefile   : String := "";
       Cntexmp     : JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File     : String := "";
-      How_Proved  : String := "";
-      Stats       : JSON_Value := GNATCOLL.JSON.Create_Object;
+      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd  : String := "")
    is
       Value : constant JSON_Value := Create_Object;
@@ -1628,12 +1629,10 @@ package body Flow_Error_Messages is
          Set_Field (Value, "msg_id", Integer (Msg_Id));
       end if;
 
-      if How_Proved /= "" then
-         Set_Field (Value, "how_proved", How_Proved);
-      end if;
+      Set_Field (Value, "how_proved", To_JSON (How_Proved));
 
-      if not Is_Empty (Stats) then
-         Set_Field (Value, "stats", Stats);
+      if not Stats.Is_Empty then
+         Set_Field (Value, "stats", To_JSON (Stats));
       end if;
 
       Append (Msg_List, Value);

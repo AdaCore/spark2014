@@ -45,7 +45,7 @@ package body Why.Gen.Progs is
          To_VC_Kind (Check_Kind),
          True,
          Current_Subp,
-         How_Proved => "interval");
+         How_Proved => PC_Interval);
    end Emit_Always_True_Range_Check;
 
    -----------------------

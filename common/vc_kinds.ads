@@ -36,6 +36,9 @@
 --    - GPS plug-in spark2014.py
 --    - 2 tables in the section of SPARK User's Guide on GNATprove
 
+with Ada.Containers.Indefinite_Ordered_Maps;
+with GNATCOLL.JSON; use GNATCOLL.JSON;
+
 package VC_Kinds is
 
    type VC_Kind is
@@ -231,5 +234,41 @@ package VC_Kinds is
 
    --  A meta that is used in Why3 to mark a function as projection.
    Model_Proj_Meta : constant String := "model_projection";
+
+   --------------------
+   --  Data Exchange --
+   --------------------
+
+   --  This section defines various types that are used to communicate between
+   --  the various gnatprove processes (most notably between gnat2why/gnatwhy3
+   --  and gnat2why/spark_report). Also, JSON conversion functions are defined.
+
+   type Prover_Stat is record
+      Count     : Natural;
+      Max_Steps : Integer;
+      Max_Time  : Float;
+   end record;
+
+   package Prover_Stat_Maps is new
+     Ada.Containers.Indefinite_Ordered_Maps (Key_Type     => String,
+                                             Element_Type => Prover_Stat,
+                                             "<"          => "<",
+                                             "="          => "=");
+   --  the prover stats JSON format is defined in gnat_report.mli
+
+   type Prover_Category is (PC_Interval, PC_Codepeer, PC_Prover, PC_Flow);
+   --  type that describes the possible ways a check is proved. PC_Prover
+   --  stands for automatic or manual proofs from Why3 and does not specify
+   --  which prover proves it.
+
+   function To_String (P : Prover_Category) return String;
+   --  return a user visible string to describe the category of prover
+
+   function From_JSON (V : JSON_Value) return Prover_Stat;
+   function From_JSON (V : JSON_Value) return Prover_Stat_Maps.Map;
+   function From_JSON (V : JSON_Value) return Prover_Category;
+
+   function To_JSON (M : Prover_Stat_Maps.Map) return JSON_Value;
+   function To_JSON (P : Prover_Category) return JSON_Value;
 
 end VC_Kinds;

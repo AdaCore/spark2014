@@ -232,7 +232,7 @@ procedure SPARK_Report is
       procedure Print_Table_Total;
       --  print the "Total" line of the table
 
-      procedure Put_Provers_Cell (Stats : in out Prover_Stat);
+      procedure Put_Provers_Cell (Stats : in out All_Prover_Stat);
       --  print the "provers" cell of a category, with the total count of
       --  checks and the percentage of each prover
       --  @param Stats the stats for the prover
@@ -350,9 +350,9 @@ procedure SPARK_Report is
       -- Put_Provers_Cell --
       ----------------------
 
-      procedure Put_Provers_Cell (Stats : in out Prover_Stat) is
+      procedure Put_Provers_Cell (Stats : in out All_Prover_Stat) is
          use Ada.Strings.Unbounded;
-         use String_Maps;
+         use Prover_Stat_Maps;
          use Ada.Containers;
          Check_Total : constant Natural := Stats.Total;
          VC_Total    : Natural := 0;
@@ -365,10 +365,10 @@ procedure SPARK_Report is
          end if;
          Append (Buf, Natural'Image (Check_Total));
          for Elt of Stats.Provers loop
-            VC_Total := VC_Total + Elt;
+            VC_Total := VC_Total + Elt.Count;
          end loop;
          for Elt of Stats.Provers loop
-            Elt := Integer_Percent (Elt, VC_Total);
+            Elt.Count := Integer_Percent (Elt.Count, VC_Total);
          end loop;
          Append (Buf, " (");
          if Stats.Provers.Length = 1 then
@@ -380,7 +380,7 @@ procedure SPARK_Report is
                end if;
                First := False;
                Append (Buf, Key (C));
-               Append (Buf, " " & Natural'Image (Element (C)) & "%");
+               Append (Buf, " " & Natural'Image (Element (C).Count) & "%");
             end loop;
          end if;
          Append (Buf, ')');
@@ -561,20 +561,25 @@ procedure SPARK_Report is
                   Subp   => Subp,
                   Proved => Proved);
                if Proved then
-                  if Has_Field (Result, "how_proved")
-                    and then Get (Get (Result, "how_proved")) = "interval"
-                  then
-                     Increment (Summary (Category).Interval);
-                  elsif Has_Field (Result, "how_proved")
-                    and then Get (Get (Result, "how_proved")) = "codepeer"
-                  then
-                     Increment (Summary (Category).CodePeer);
-                  else
-                     if Has_Field (Result, "stats") then
-                        Process_Stats (Category, Get (Result, "stats"));
-                     end if;
-                     Increment (Summary (Category).Provers.Total);
-                  end if;
+                  declare
+                     Cat : constant Prover_Category :=
+                       From_JSON (Get (Result, "how_proved"));
+                  begin
+                     case Cat is
+                        when PC_Interval =>
+                           Increment (Summary (Category).Interval);
+                        when PC_Codepeer =>
+                           Increment (Summary (Category).CodePeer);
+                        when PC_Prover =>
+                           if Has_Field (Result, "stats") then
+                              Process_Stats (Category, Get (Result, "stats"));
+                           end if;
+                           Increment (Summary (Category).Provers.Total);
+                        when PC_Flow =>
+                           --  we shouldn't encounter flow values here
+                           raise Program_Error;
+                     end case;
+                  end;
                else
                   Increment (Summary (Category).Unproved);
                end if;
@@ -856,27 +861,9 @@ procedure SPARK_Report is
 
    procedure Process_Stats (C : Summary_Entries; Stats : JSON_Value) is
 
-      procedure Process_Prover_Stat (Name : UTF8_String; Value : JSON_Value);
-
-      procedure Process_Prover_Stat (Name : UTF8_String; Value : JSON_Value) is
-         use String_Maps;
-         Cur : constant Cursor := Summary (C).Provers.Provers.Find (Name);
-         Count : constant Natural := Get (Value, "count");
-      begin
-         if Has_Element (Cur) then
-            declare
-               Tmp : Natural := Element (Cur);
-            begin
-               Tmp := Tmp + Count;
-               Replace_Element (Summary (C).Provers.Provers, Cur, Tmp);
-            end;
-         else
-            Summary (C).Provers.Provers.Insert (Name, Count);
-         end if;
-      end Process_Prover_Stat;
-
+      Map : constant Prover_Stat_Maps.Map := From_JSON (Stats);
    begin
-      Map_JSON_Object (Stats, Process_Prover_Stat'Access);
+      Merge_Stat_Maps (Summary (C).Provers.Provers, Map);
    end Process_Stats;
 
    -----------------------------

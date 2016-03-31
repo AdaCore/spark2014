@@ -3355,7 +3355,7 @@ package body Why.Gen.Expr is
             Reason,
             True,
             Current_Subp,
-            How_Proved => "codepeer");
+            How_Proved => PC_Codepeer);
          Set.Include (GP_Already_Proved);
       end if;
       Set.Include (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));
