@@ -2,7 +2,7 @@ from test_support import *
 
 print "At level 0"
 print "----------"
-gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--level=0", "--no-counterexample"])
+gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--level=0", "--timeout=auto", "--no-counterexample"])
 
 print ""
 print "Equivalent switches"
@@ -12,7 +12,7 @@ gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--prover=cvc4", "
 print ""
 print "At level 1"
 print "----------"
-gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--level=1", "--no-counterexample"])
+gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--level=1", "--timeout=auto", "--no-counterexample"])
 
 print ""
 print "Equivalent switches"
@@ -22,7 +22,7 @@ gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--prover=cvc4,z3,
 print ""
 print "At level 2"
 print "----------"
-gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--level=2", "--no-counterexample"])
+gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--level=2", "--timeout=auto", "--no-counterexample"])
 
 print ""
 print "Equivalent switches"
@@ -32,7 +32,7 @@ gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--prover=cvc4,z3,
 print ""
 print "At level 3"
 print "----------"
-gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--level=3", "--no-counterexample"])
+gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--level=3", "--timeout=auto", "--no-counterexample"])
 
 print ""
 print "Equivalent switches"
@@ -42,7 +42,7 @@ gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--prover=cvc4,z3,
 print ""
 print "At level 4"
 print "----------"
-gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--level=4", "--no-counterexample"])
+gnatprove(opt=["-P", "test.gpr", "-q", "-j8", "--report=all", "--level=4", "--timeout=auto", "--no-counterexample"])
 
 print ""
 print "Equivalent switches"

@@ -119,21 +119,28 @@ package Configuration is
    CodePeer_Input : aliased GNAT.Strings.String_Access;
    --  The input variable for command line parsing set by option --codepeer
 
-   Proof        : Proof_Mode;
-   Lazy         : Boolean;
+   Timeout_Input : aliased GNAT.Strings.String_Access;
+   --  The input variable for command line parsing set by option --timeout
 
-   Invalid_Level   : constant := -1;
+   Proof   : Proof_Mode;
+   Lazy    : Boolean;
+
+   Default_Level   : constant := 0;
    Invalid_Step    : constant := -1;
    Invalid_Timeout : constant := -1;
+
+   Timeout_Is_Auto : Boolean := False;
+   Timeout : Integer := Invalid_Timeout;
+   --  The number of seconds to try to prove each VC. Specified with
+   --  --timeout=. There is no default timeout. Value 0 should be
+   --  passed explicitly to force absence of timeout. Value "auto" sets
+   --  Timeout_Is_Auto to True, which is used in Compute_Why3_Args to
+   --  adjust the value of timeout to the proof level.
 
    Parallel     : aliased Integer;
    --  The number of parallel processes. Specified with -j.
    Level        : aliased Integer;
    --  The level of proof. Specified with --level=.
-   Timeout      : aliased Integer;
-   --  The number of seconds to try to prove each VC. Specified with
-   --  --timeout=. Default timeout of 1s is set by Compute_Why3_Args.
-   --  Value 0 should be passed explicitly to force absence of timeout.
    Steps        : aliased Integer;
    --  The number of steps to try to prove each VC. Specified with --steps=.
    --  Value 0 should be passed explicitly to force absence of steps.

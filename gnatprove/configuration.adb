@@ -115,6 +115,12 @@ package body Configuration is
       Input  : String);
    --  parse the --codepeer option (possibilities are "on" and "off")
 
+   procedure Set_Timeout
+     (Config : Command_Line_Configuration;
+      Input  : String);
+   --  parse the --timeout option (possibilities are "auto" or a non-negative
+   --  integer)
+
    procedure Set_RTS_Dir
      (Config    : Command_Line_Configuration;
       Proj_Type : Project_Type;
@@ -248,11 +254,14 @@ ASCII.LF &
 " --RTS=dir           Specify the Ada runtime name/location" &
 ASCII.LF &
 " --steps=nnn         Set the maximum number of proof steps (prover-specific)"
-     & ASCII.LF &
-"                     Value 0 should be passed explicitly to force absence " &
-"of steps." &
+& ASCII.LF &
+"                     Use value 0 for no steps limit." &
 ASCII.LF &
-" --timeout=s         Set the prover timeout in seconds (default: 1)" &
+" --timeout=s         Set the prover timeout in seconds (s=auto, nnn)" &
+ASCII.LF &
+"                     Use value 0 for no timeout." &
+ASCII.LF &
+"                     Use value auto for timeout adjusted to proof level." &
 ASCII.LF &
 " --why3-conf=f       Specify a configuration file for why3" &
 ASCII.LF &
@@ -904,17 +913,15 @@ ASCII.LF;
           Long_Switch => "--steps=",
           Initial => Invalid_Step);
 
-      --  If not specified on the command-line, value of level is invalid
       Define_Switch
          (Config, Level'Access,
           Long_Switch => "--level=",
-          Initial => Invalid_Level);
+          Initial => Default_Level);
 
-      --  If not specified on the command-line, value of timeout is invalid
       Define_Switch
-         (Config, Timeout'Access,
-          Long_Switch => "--timeout=",
-          Initial => Invalid_Timeout);
+         (Config,
+          Timeout_Input'Access,
+          Long_Switch => "--timeout=");
 
       Define_Switch
          (Config,
@@ -1055,15 +1062,9 @@ ASCII.LF;
                     With_Help => False);
       end if;
 
-      if Level not in 0 .. 4 and Level /= Invalid_Level then
+      if Level not in 0 .. 4 then
          Abort_Msg (Config,
                     "error: wrong argument for --level",
-                    With_Help => False);
-      end if;
-
-      if Timeout < 0 and Timeout /= Invalid_Timeout then
-         Abort_Msg (Config,
-                    "error: wrong argument for --timeout",
                     With_Help => False);
       end if;
 
@@ -1114,6 +1115,7 @@ ASCII.LF;
 
       Set_Proof_Mode (Config, Proof_Input.all, Proof,  Lazy);
       Set_CodePeer_Mode (Config, CodePeer_Input.all);
+      Set_Timeout (Config, Timeout_Input.all);
       Set_RTS_Dir (Config, Tree.Root_Project, RTS_Dir);
       Set_Target_Dir (Tree.Root_Project);
 
@@ -1430,6 +1432,34 @@ ASCII.LF;
          end;
       end if;
    end Set_Target_Dir;
+
+   -----------------
+   -- Set_Timeout --
+   -----------------
+
+   procedure Set_Timeout
+     (Config : Command_Line_Configuration;
+      Input  : String) is
+   begin
+      if Input = "auto" then
+         Timeout_Is_Auto := True;
+      elsif Input = "" then
+         null;
+      else
+         begin
+            Timeout := Integer'Value (Input);
+            if Timeout < 0 then
+               raise Constraint_Error;
+            end if;
+         exception
+            when Constraint_Error =>
+               Abort_Msg (Config,
+                          "error: wrong argument for --timeout, " &
+                            "must be auto or a non-negative integer",
+                          With_Help => False);
+         end;
+      end if;
+   end Set_Timeout;
 
    -----------------------
    -- SPARK_Report_File --

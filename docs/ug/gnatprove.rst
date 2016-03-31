@@ -206,8 +206,8 @@ to a subprogram declared in a particular file at a particular line.
 A number of options exist to influence the behavior for proof. Internally, the
 prover(s) specified with option ``--prover`` is/are called repeatedly for each
 check or assertion. Using the option ``--timeout``, one can change the maximal
-time that is allocated to each prover to prove each check or assertion
-(default: 1s). Using the option ``--steps`` (default: not used explicitly but
+time that is allocated to each prover to prove each check or assertion.
+Using the option ``--steps`` (default: not used explicitly but
 set by default proof level, see switch ``--level`` below), one can set the
 maximum number of reasoning steps that the prover is allowed to perform before
 giving up. The ``steps`` option should be used when predictable results are
@@ -243,21 +243,26 @@ level 4. More precisely, each value of ``--level`` is equivalent to directly
 setting a collection of other switches discussed above:
 
 * ``--level=0`` is equivalent to
-  ``--prover=cvc4 --proof=per_check --steps=100 --timeout=1``
+  ``--prover=cvc4 --proof=per_check --steps=100``
 * ``--level=1`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=per_check --steps=100 --timeout=1``
+  ``--prover=cvc4,z3,altergo --proof=per_check --steps=100``
 * ``--level=2`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=per_check --steps=1000 --timeout=10``
+  ``--prover=cvc4,z3,altergo --proof=per_check --steps=1000``
 * ``--level=3`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=progressive --steps=1000 --timeout=10``
+  ``--prover=cvc4,z3,altergo --proof=progressive --steps=1000``
 * ``--level=4`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=progressive --steps=10000 --timeout=60``
+  ``--prover=cvc4,z3,altergo --proof=progressive --steps=10000``
+
+When ``--timeout=auto`` is used, a value of timeout is set depending on the
+proof level:
+
+* At levels 0 and 1, ``--timeout=auto`` is equivalent to ``--timeout=1``
+* At levels 2 and 3, ``--timeout=auto`` is equivalent to ``--timeout=10``
+* At level 4, ``--timeout=auto`` is equivalent to ``--timeout=60``
 
 If both ``--level`` is set and an underlying switch is set (``--prover``,
-``--steps``, ``--timeout`` or ``--proof``), the value of the latter takes
-precedence over the value set through ``--level``. The default value of
-``--level=0`` is only set if no underlying switch is set explicitly, either on
-the command line or in the project file.
+``--steps``, or ``--proof``), the value of the latter takes precedence over the
+value set through ``--level``.
 
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
