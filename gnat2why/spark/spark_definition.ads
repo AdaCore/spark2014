@@ -47,6 +47,7 @@ with Common_Containers;     use Common_Containers;
 with Einfo;                 use Einfo;
 with GNATCOLL.JSON;         use GNATCOLL.JSON;
 with Sinfo;                 use Sinfo;
+with SPARK_Util;            use SPARK_Util;
 with Types;                 use Types;
 
 package SPARK_Definition is
@@ -132,6 +133,13 @@ package SPARK_Definition is
                          E_Procedure |
                          E_Task_Type;
    --  Returns True iff the body of E was marked in SPARK and contains no SPARK
+   --  violations.
+
+   function Entity_Body_Compatible_With_SPARK (E : Entity_Id) return Boolean
+   with
+     Pre => Ekind (E) in E_Function
+       and then Present (Get_Expression_Function (E));
+   --  Returns True iff the body of expression function E contains no SPARK
    --  violations.
 
    function Private_Spec_In_SPARK (E : Entity_Id) return Boolean with

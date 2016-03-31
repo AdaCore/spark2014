@@ -48,7 +48,6 @@ with Sem_Disp;              use Sem_Disp;
 with Sem_Prag;              use Sem_Prag;
 with Sem_Util;              use Sem_Util;
 with Snames;                use Snames;
-with SPARK_Util;            use SPARK_Util;
 with Stand;                 use Stand;
 with Uintp;                 use Uintp;
 with Urealp;                use Urealp;
@@ -190,9 +189,20 @@ package body SPARK_Definition is
    --  no violations where attached to the corresponding scope. Standard
    --  entities are individually added to this set.
 
-   Bodies_In_SPARK   : Node_Sets.Set;
+   Bodies_In_SPARK : Node_Sets.Set;
    --  Unique defining entities whose body is marked in SPARK; for kinds of
    --  entities in this set see the contract of Entity_Body_In_SPARK.
+
+   Bodies_Compatible_With_SPARK : Node_Sets.Set;
+   --  Unique defining entities for expression functions whose body does not
+   --  contain SPARK violations. Entities that are in this set and not in
+   --  Bodies_In_SPARK are expression functions that are compatible with
+   --  SPARK and subject to SPARK_Mode of Auto. Thus, their body should not
+   --  be analyzed for AoRTE, but it can be used as implicit postcondition
+   --  for analyzing calls to the function. This ensures that GNATprove treats
+   --  similarly a subprogram with an explicit postcondition and an expression
+   --  function with an implicit postcondition when they are subject to
+   --  SPARK_Mode of Auto.
 
    Full_Views_Not_In_SPARK : Node_Maps.Map;
    --  Maps type entities in SPARK whose full view was declared in a private
@@ -221,6 +231,9 @@ package body SPARK_Definition is
 
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean
      renames Bodies_In_SPARK.Contains;
+
+   function Entity_Body_Compatible_With_SPARK (E : Entity_Id) return Boolean
+     renames Bodies_Compatible_With_SPARK.Contains;
 
    function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
      renames Full_Views_Not_In_SPARK.Contains;
@@ -5036,6 +5049,10 @@ package body SPARK_Definition is
       Save_Delayed_Aspect_Type : constant Entity_Id :=
         Current_Delayed_Aspect_Type;
 
+      SPARK_Pragma_Is_On : Boolean;
+      --  Saves the information that SPARK_Mode is On for the body, for use
+      --  later in the subprogram.
+
    --  Start of processing for Mark_Subprogram_Body
 
    begin
@@ -5084,11 +5101,19 @@ package body SPARK_Definition is
             Current_SPARK_Pragma := SPARK_Pragma (Def_E);
          end if;
 
-         --  Only analyze subprogram body declarations in SPARK_Mode => On
-         --  (or while processing predicate function in discovery mode, which
-         --  is recognized by the call to SPARK_Pragma_Is).
+         SPARK_Pragma_Is_On := SPARK_Pragma_Is (Opt.On);
 
-         if SPARK_Pragma_Is (Opt.On) then
+         --  Only analyze subprogram body declarations in SPARK_Mode => On (or
+         --  while processing predicate function in discovery mode, which is
+         --  recognized by the call to SPARK_Pragma_Is). An exception is made
+         --  for expression functions, so that their body is translated into
+         --  an axiom for analysis of its callers even in SPARK_Mode => Auto.
+
+         if SPARK_Pragma_Is_On
+           or else (Ekind (E) = E_Function
+                     and then Present (Get_Expression_Function (E))
+                     and then not SPARK_Pragma_Is (Opt.Off))
+         then
 
             --  Issue warning on unreferenced local subprograms, which are
             --  analyzed anyway, unless the subprogram is marked with pragma
@@ -5200,8 +5225,24 @@ package body SPARK_Definition is
                if In_Pred_Function_Body then
                   Entities_In_SPARK.Exclude (Current_Delayed_Aspect_Type);
                end if;
+
             else
-               Bodies_In_SPARK.Insert (E);
+               --  If no violation was detected on an expression function body,
+               --  mark it as compatible with SPARK, so that its body gets
+               --  translated into an axiom for analysis of its callers.
+
+               if Ekind (E) = E_Function
+                 and then Present (Get_Expression_Function (E))
+               then
+                  Bodies_Compatible_With_SPARK.Insert (E);
+               end if;
+
+               --  If no violation was detected and SPARK_Mode is On for the
+               --  body, then mark the body for translation to Why3.
+
+               if SPARK_Pragma_Is_On then
+                  Bodies_In_SPARK.Insert (E);
+               end if;
             end if;
 
             Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;

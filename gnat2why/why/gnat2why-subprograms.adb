@@ -3578,7 +3578,7 @@ package body Gnat2Why.Subprograms is
       --  If the entity's body is not in SPARK,
       --  or if the function does not return, do not generate axiom.
 
-      if not Entity_Body_In_SPARK (E) or else No_Return (E) then
+      if not Entity_Body_Compatible_With_SPARK (E) or else No_Return (E) then
          Close_Theory (File,
                        Kind => Standalone_Theory);
          return;
