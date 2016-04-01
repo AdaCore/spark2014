@@ -98,8 +98,8 @@ Preconditions and Postconditions
 .. _tu-sf-preconditions_and_postconditions-01:
 
 1. The corresponding expression for an inherited Pre'Class or Post'Class of an
-   inherited subprogram S of a tagged type T shall not call a primitive
-   function of type T.
+   inherited subprogram S of a tagged type T shall not call a non-inherited
+   primitive function of type T.
 
 .. _etu-preconditions_and_postconditions:
 
