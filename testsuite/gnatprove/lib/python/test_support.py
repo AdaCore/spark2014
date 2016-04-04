@@ -564,7 +564,9 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
     fullopt = ["--report=all", "--warnings=continue"]
     fullopt += ["-P", "test.gpr", "--quiet"]
     fullopt += ["--timeout=%d" % (vc_timeout)]
-    if steps is not None:
+    if steps is None:
+        fullopt += ["--steps=0"]
+    else:
         fullopt += ["--steps=%d" % (steps)]
     fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]
