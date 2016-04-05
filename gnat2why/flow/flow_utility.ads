@@ -385,8 +385,7 @@ is
    with Pre  => Is_Valid_Assignment_Target (N),
         Post => Map_Root.Kind in Direct_Mapping | Record_Field and then
                 (for all X of Seq => Nkind (X) in Valid_Assignment_Kinds);
-   --  Checks the assignment target N and determines a few basic
-   --  properties.
+   --  Checks the assignment target N and determines a few basic properties
    --
    --  * Partial_Definition: the assignment to N touches only a few elements
    --                        of a larger array.
@@ -408,7 +407,7 @@ is
         Post => (if not Is_Null_Record_Type (Etype (N))
                  then not Vars_Defined.Is_Empty);
    --  Process the LHS of an assignment statement or an [in] out parameter,
-   --  establising the sets of variables used. For example, assume we have
+   --  establishing the sets of variables used. For example, assume we have
    --  a function Foo:
    --     function Foo (X : Integer) return Integer
    --     with Global => (Proof_In => Y);

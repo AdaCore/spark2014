@@ -750,21 +750,24 @@ package body Flow_Utility is
           N_Identifier | N_Expanded_Name;
 
       Root_Node : Node_Id := N;
-   begin
 
-      --  First we turn the tree into a more useful sequence. We also
-      --  determine the root node which should be an entire variable.
+   begin
+      --  First we turn the tree into a more useful sequence. We also determine
+      --  the root node which should be an entire variable.
 
       Seq := Node_Lists.Empty_List;
-      while Nkind (Root_Node) in Interesting_Nodes loop
-         Seq.Prepend (Root_Node);
-         case Nkind (Root_Node) is
-            when N_Type_Conversion | N_Unchecked_Type_Conversion =>
-               Root_Node := Expression (Root_Node);
 
-            when others =>
-               Root_Node := Prefix (Root_Node);
-         end case;
+      while Nkind (Root_Node) in Interesting_Nodes loop
+         Seq.Append (Root_Node);
+
+         Root_Node :=
+           (case Nkind (Root_Node) is
+               when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+                  Expression (Root_Node),
+
+               when others =>
+                  Prefix (Root_Node));
+
       end loop;
       pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
 
@@ -774,13 +777,12 @@ package body Flow_Utility is
       Map_Root           := Direct_Mapping_Id (Unique_Entity
                                                  (Entity (Root_Node)));
 
-      --  We now work out which variable (or group of variables) is
-      --  actually defined, by following the selected components. If we
-      --  find an array slice or index we stop and note that we are dealing
-      --  with a partial assignment (the defined variable is implicitly
-      --  used).
+      --  We now work out which variable (or group of variables) is actually
+      --  defined, by following the selected components. If we find an array
+      --  slice or index we stop and note that we are dealing with a partial
+      --  assignment (the defined variable is implicitly used).
 
-      for N of Seq loop
+      for N of reverse Seq loop
          case Valid_Assignment_Kinds (Nkind (N)) is
             when N_Selected_Component =>
                Map_Root := Add_Component (Map_Root,
