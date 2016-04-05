@@ -103,10 +103,10 @@ procedure Gnatprove is
      (Project_File : String;
       Proj         : Project_Tree;
       Status       : out Integer);
-   --  Compute ALI information for all source units, using gprbuild.
+   --  Compute ALI information for all source units, using gprbuild
 
    function CVC4_Resource_Step_Flags return String;
-   --  Work out the flags to use for controlling CVC4's resource counting.
+   --  Work out the flags to use for controlling CVC4's resource counting
 
    procedure Execute_Step
      (Plan         : Plan_Type;
@@ -117,7 +117,7 @@ procedure Gnatprove is
    procedure Generate_SPARK_Report
      (Obj_Dir  : String;
       Obj_Path : File_Array);
-   --  Generate the SPARK report.
+   --  Generate the SPARK report
 
    function Report_File_Is_Empty (Filename : String) return Boolean;
    --  Check if the given file is empty
@@ -126,8 +126,8 @@ procedure Gnatprove is
      (Gnatprove_Subdir : String);
 
    function Compute_Why3_Args return String_Lists.List;
-   --  compute the list of arguments of gnatwhy3. This list is passed first to
-   --  gnat2why, which then passes it to gnatwhy3
+   --  Compute the list of arguments of gnatwhy3. This list is passed first to
+   --  gnat2why, which then passes it to gnatwhy3.
 
    procedure Flow_Analysis_And_Proof
      (Project_File : String;
@@ -170,10 +170,10 @@ procedure Gnatprove is
    function Non_Blocking_Spawn
      (Command   : String;
       Arguments : String_Lists.List) return Process_Descriptor;
-   --  spawn a process in a non-blocking way
+   --  Spawn a process in a non-blocking way
 
    procedure Kill (P : in out Process_Descriptor);
-   --  kill the process
+   --  Kill the process
 
    function Replace_Config_File_If_Needed
      (Config_File : String;
@@ -566,7 +566,7 @@ procedure Gnatprove is
          Args.Append ("--proof-dir");
          --  Why3 is executed in the gnatprove directory and does not know
          --  the project directory so we give it an absolute path to the
-         --  proof_dir
+         --  proof_dir.
          Args.Append (Proof_Dir.all);
          if Alter_Prover.all /= "" then
             Prepare_Why3_Manual;
