@@ -88,7 +88,7 @@ package body Flow_Error_Messages is
       Msg_Id      : Message_Id;
       How_Proved  : Prover_Category;
       Tracefile   : String := "";
-      Cntexmp     : JSON_Value := GNATCOLL.JSON.Create_Object;
+      Cntexmp     : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
       VC_File     : String := "";
       Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd  : String := "");
@@ -475,10 +475,10 @@ package body Flow_Error_Messages is
       Msg2 : constant String     := Compute_Message (Msg, N);
       Slc  : constant Source_Ptr := Compute_Sloc (N, Place_First);
 
-      Pretty_Cntexmp  : constant JSON_Value :=
-        Create_Pretty_Cntexmp (Cntexmp, Slc);
+      Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
+        Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc);
       One_Liner : constant String :=
-        (if Is_Empty (Pretty_Cntexmp) then ""
+        (if Pretty_Cntexmp.Is_Empty then ""
          else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc));
       Msg3     : constant String :=
         (if One_Liner = "" then Msg2
@@ -605,7 +605,7 @@ package body Flow_Error_Messages is
       Msg_Id      : Message_Id;
       How_Proved  : Prover_Category;
       Tracefile   : String := "";
-      Cntexmp     : JSON_Value := GNATCOLL.JSON.Create_Object;
+      Cntexmp     : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
       VC_File     : String := "";
       Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd  : String := "")
@@ -640,8 +640,8 @@ package body Flow_Error_Messages is
          Set_Field (Value, "tracefile", Tracefile);
       end if;
 
-      if not Is_Empty (Cntexmp) then
-         Set_Field (Value, "cntexmp", Cntexmp);
+      if not Cntexmp.Is_Empty then
+         Set_Field (Value, "cntexmp", To_JSON (Cntexmp));
       end if;
 
       if VC_File /= "" then

@@ -36,8 +36,12 @@
 --    - GPS plug-in spark2014.py
 --    - 2 tables in the section of SPARK User's Guide on GNATprove
 
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Indefinite_Ordered_Maps;
-with GNATCOLL.JSON; use GNATCOLL.JSON;
+with Ada.Containers.Ordered_Maps;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with GNATCOLL.JSON;         use GNATCOLL.JSON;
+with Types;                 use Types;
 
 package VC_Kinds is
 
@@ -261,14 +265,49 @@ package VC_Kinds is
    --  stands for automatic or manual proofs from Why3 and does not specify
    --  which prover proves it.
 
+   type CEE_Kind is (CEE_Variable,
+                     CEE_Error_Msg,
+                     CEE_Old,
+                     CEE_Result,
+                     CEE_Other);
+
+   type Cntexample_Elt is record
+      Kind : CEE_Kind;
+      Name : Unbounded_String;
+      Value : Unbounded_String;
+   end record;
+
+   package Cntexample_Elt_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Element_Type => Cntexample_Elt,
+                                         "="          => "=");
+
+   package Cntexample_Line_Maps is new
+     Ada.Containers.Ordered_Maps (Key_Type     => Logical_Line_Number,
+                                  Element_Type => Cntexample_Elt_Lists.List,
+                                  "<"          => "<",
+                                  "="          => Cntexample_Elt_Lists."=");
+
+   type Cntexample_Lines is record
+      VC_Line     : Cntexample_Elt_Lists.List;
+      Other_Lines : Cntexample_Line_Maps.Map;
+   end record;
+
+   package Cntexample_File_Maps is new
+     Ada.Containers.Indefinite_Ordered_Maps (Key_Type     => String,
+                                             Element_Type => Cntexample_Lines,
+                                             "<"          => "<",
+                                             "="          => "=");
+
    function To_String (P : Prover_Category) return String;
    --  return a user visible string to describe the category of prover
 
    function From_JSON (V : JSON_Value) return Prover_Stat;
    function From_JSON (V : JSON_Value) return Prover_Stat_Maps.Map;
    function From_JSON (V : JSON_Value) return Prover_Category;
+   function From_JSON (V : JSON_Value) return Cntexample_File_Maps.Map;
 
    function To_JSON (M : Prover_Stat_Maps.Map) return JSON_Value;
    function To_JSON (P : Prover_Category) return JSON_Value;
+   function To_JSON (F : Cntexample_File_Maps.Map) return JSON_Value;
 
 end VC_Kinds;
