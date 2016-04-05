@@ -758,7 +758,7 @@ package body Flow_Utility is
       Seq := Node_Lists.Empty_List;
 
       while Nkind (Root_Node) in Interesting_Nodes loop
-         Seq.Append (Root_Node);
+         Seq.Prepend (Root_Node);
 
          Root_Node :=
            (case Nkind (Root_Node) is
@@ -782,7 +782,7 @@ package body Flow_Utility is
       --  slice or index we stop and note that we are dealing with a partial
       --  assignment (the defined variable is implicitly used).
 
-      for N of reverse Seq loop
+      for N of Seq loop
          case Valid_Assignment_Kinds (Nkind (N)) is
             when N_Selected_Component =>
                Map_Root := Add_Component (Map_Root,
