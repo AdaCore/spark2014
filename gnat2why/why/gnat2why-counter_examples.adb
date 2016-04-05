@@ -135,29 +135,36 @@ package body Gnat2Why.Counter_Examples is
                Value      : Unbounded_String;
             end record;
 
-            function Print_CNT_Element_Debug (El : CNT_Element)
-                                                 return String;
+            function Print_CNT_Element_Debug (El : CNT_Element) return String;
             --  Debug function, print a CNT_Element without any processing
-            function Print_CNT_Element_Debug (El : CNT_Element)
-                                                 return String
+
+            -----------------------------
+            -- Print_CNT_Element_Debug --
+            -----------------------------
+
+            function Print_CNT_Element_Debug (El : CNT_Element) return String
             is
                R : Unbounded_String := "[ " & El.Value & " | ";
             begin
                for F in El.Fields.Iterate loop
-                  R := R & "<F- " & CNT_Elements.Key (F) &
-                    " = " &
-                    Print_CNT_Element_Debug (CNT_Elements.Element (F).all)
-                    & " -F>";
+                  Append
+                    (R,
+                     "<F- " & CNT_Elements.Key (F) & " = " &
+                     Print_CNT_Element_Debug (CNT_Elements.Element (F).all) &
+                     " -F>");
                end loop;
 
                for F in El.Attributes.Iterate loop
-                  R := R & "<A- " & CNT_Elements.Key (F) &
-                    " = " &
-                    Print_CNT_Element_Debug (CNT_Elements.Element (F).all)
-                    & " -A>";
+                  Append
+                    (R,
+                     "<A- " & CNT_Elements.Key (F) & " = " &
+                     Print_CNT_Element_Debug (CNT_Elements.Element (F).all)
+                     & " -A>");
                end loop;
 
-               return To_String (R & " ]");
+               Append (R, " ]");
+
+               return To_String (R);
             end Print_CNT_Element_Debug;
 
             Dont_Display : constant Unbounded_String :=
