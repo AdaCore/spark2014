@@ -4180,6 +4180,10 @@ package body Flow.Analysis is
       --  Check ownership of a kind Owning_Kind of the Object by a
       --  Task_Instance.
 
+      ---------------------
+      -- Check_Ownership --
+      ---------------------
+
       procedure Check_Ownership (Task_Instance : Task_Object;
                                  Object        : Entity_Name;
                                  Owning_Kind   : Tasking_Owners_Kind)

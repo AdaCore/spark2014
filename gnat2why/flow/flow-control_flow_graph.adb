@@ -4188,6 +4188,10 @@ package body Flow.Control_Flow_Graph is
       --  Ada.Synchronous_Task_Control.Suspend_Until_True or
       --  Ada.Synchronous_Task_Control.EDF.Suspend_Until_True_And_Set_Deadline
 
+      -----------------------------------
+      -- Suspends_On_Suspension_Object --
+      -----------------------------------
+
       function Suspends_On_Suspension_Object return Boolean is
          Scop : Entity_Id := Called_Thing;
          --  Currently analyzed scope
