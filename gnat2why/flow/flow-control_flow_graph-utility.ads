@@ -132,7 +132,13 @@ package Flow.Control_Flow_Graph.Utility is
       Loops                        : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
-   with Pre  => (if Discriminants_Or_Bounds_Only then In_Vertex),
+   with Pre  => (if In_Vertex
+                 then
+                   Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter
+                     or else Discriminants_Or_Bounds_Only
+                 else
+                   Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
+                     and then not Discriminants_Or_Bounds_Only),
         Post =>
           not Make_Parameter_Attributes'Result.Is_Null_Node and
           not Make_Parameter_Attributes'Result.Is_Program_Node and
@@ -140,11 +146,11 @@ package Flow.Control_Flow_Graph.Utility is
           Make_Parameter_Attributes'Result.Is_Parameter and
           Make_Parameter_Attributes'Result.Is_Discr_Or_Bounds_Parameter =
             Discriminants_Or_Bounds_Only;
-   --  Create attributes for parameters for subprogram calls. If
-   --  In_Vertex is true, create the attributes for the in version of
-   --  a parameter; if In_Vertex is false create the attributes for
-   --  the out version. Note that variables defined and used are
-   --  calculated automatically.
+   --  Create attributes for a parameter of a subprogram call. If In_Vertex is
+   --  true, create attributes for the IN version of a parameter; otherwise,
+   --  create attributes for the OUT version.
+   --
+   --  Note: variables defined and used are calculated automatically
 
    function Make_Global_Attributes
      (FA                           : Flow_Analysis_Graphs;

@@ -279,13 +279,15 @@ package body Flow.Control_Flow_Graph.Utility is
    is
       Subprogram : constant Entity_Id  := Get_Called_Entity (Call_Vertex);
       Scope      : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
+
       Ext_Relevant_To_Formal : constant Boolean :=
         Has_Extensions_Visible (Subprogram) or else
         Is_Class_Wide_Type (Get_Type (Formal, Scope));
 
-      A          : V_Attributes        := Null_Attributes;
-      Tmp_Used   : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Unused     : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      A        : V_Attributes     := Null_Attributes;
+      Tmp_Used : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      Unused   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
    begin
       A.Is_Parameter                  := True;
       A.Is_Discr_Or_Bounds_Parameter  := Discriminants_Or_Bounds_Only;
@@ -297,10 +299,6 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Error_Location                := E_Loc;
 
       if In_Vertex then
-         pragma Assert
-           (Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter or else
-              Discriminants_Or_Bounds_Only);
-
          Tmp_Used := Get_Variable_Set
            (Actual,
             Scope                => Scope,
@@ -322,10 +320,8 @@ package body Flow.Control_Flow_Graph.Utility is
                  (F'Update (Facet => The_Bounds));
             end if;
          end loop;
+
       else
-         pragma Assert
-           (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter);
-         pragma Assert (not Discriminants_Or_Bounds_Only);
          declare
             Partial    : Boolean;
             Unused_Vc  : Boolean;
@@ -343,9 +339,8 @@ package body Flow.Control_Flow_Graph.Utility is
                Map_Root           => Map_Root,
                Seq                => Unused_Seq);
 
-            --  We have an unconditional addition to folded_function_checks
-            --  for each actual anyway, so we can ignore the proof
-            --  variables here.
+            --  We have an unconditional addition to folded_function_checks for
+            --  each actual anyway, so we can ignore the proof variables here.
             Untangle_Assignment_Target
               (N                    => Actual,
                Scope                => Scope,
@@ -355,16 +350,20 @@ package body Flow.Control_Flow_Graph.Utility is
                Vars_Used            => A.Variables_Explicitly_Used,
                Vars_Proof           => Unused,
                Partial_Definition   => Partial);
+
             if Ext_Relevant_To_Formal
               and then Extensions_Visible (Map_Root, Scope)
             then
                A.Variables_Defined.Include
                  (Map_Root'Update (Facet => Extension_Part));
             end if;
+
             A.Variables_Used := A.Variables_Explicitly_Used;
+
             if Partial then
                A.Variables_Used.Union (A.Variables_Defined);
             end if;
+
          end;
       end if;
 
