@@ -32,7 +32,6 @@ with Gnat2Why_Args;
 with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
 with Common_Iterators;    use Common_Iterators;
-with Why;
 
 with Flow_Error_Messages; use Flow_Error_Messages;
 with Flow_Utility;        use Flow_Utility;
@@ -596,7 +595,7 @@ package body Flow.Analysis.Sanity is
                         Global_Required (FA, Var);
 
                      when others =>
-                        raise Why.Unexpected_Node;
+                        raise Program_Error;
                   end case;
 
                   Sane := False;
