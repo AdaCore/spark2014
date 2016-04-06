@@ -635,7 +635,7 @@ package body Flow_Utility is
                   when Task_Kind      =>
                      Write_Line ("processing task type");
                   when others         =>
-                     raise Why.Unexpected_Node;
+                     raise Program_Error;
                end case;
             end if;
 
