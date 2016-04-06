@@ -166,10 +166,7 @@ package body Flow is
 
       procedure Format_Item (K, V : String) is
       begin
-         Write_Str (K);
-         Write_Str (": ");
-         Write_Str (V);
-         Write_Eol;
+         Write_Line (K & ": " & V);
       end Format_Item;
 
       -------------------

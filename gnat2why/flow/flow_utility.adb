@@ -4593,8 +4593,7 @@ package body Flow_Utility is
          Seq                => Seq);
 
       if Debug_Trace_Untangle then
-         Write_Str ("Seq is:");
-         Write_Eol;
+         Write_Line ("Seq is:");
          Indent;
          for N of Seq loop
             Print_Tree_Node (N);
