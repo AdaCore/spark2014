@@ -641,7 +641,7 @@ is
                             E_Abstract_State;
    --  Checks if extensions are visible for this particular entity. Note
    --  that if we give it a function, then we always return false, since
-   --  this refers to the return of the function, not if the subprogram's
+   --  this refers to the return of the function, not to the subprogram's
    --  aspect.
    --
    --  To check if a subprogram has the aspect, use the function
