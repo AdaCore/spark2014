@@ -520,15 +520,7 @@ package body Flow.Analysis.Sanity is
    is
       Unused : Unbounded_String;
 
-      function Find_Aspect_To_Fix return String;
-      --  Returns a string that represents the aspect that needs to be
-      --  corrected.
-
-      ------------------------
-      -- Find_Aspect_To_Fix --
-      ------------------------
-
-      function Find_Aspect_To_Fix return String is
+      Aspect_To_Fix : constant String :=
         (case FA.Kind is
             when Kind_Subprogram | Kind_Entry | Kind_Task =>
               (if Present (FA.Refined_Global_N)
@@ -544,8 +536,13 @@ package body Flow.Analysis.Sanity is
                else "Global"),
             when Kind_Package | Kind_Package_Body  =>
                "Initializes");
+      --  A string representation of the aspect that needs to be corrected
 
-   --  Start of processing for Check_All_Variables_Known
+      SRM_Ref : constant String :=
+        (case FA.Kind is
+            when Kind_Subprogram | Kind_Entry | Kind_Task => "6.1.4(13)",
+            when Kind_Package | Kind_Package_Body         => "7.1.5(12)");
+      --  String representation of the violated SPARK RM rule
 
    begin
       Sane := True;
@@ -556,13 +553,6 @@ package body Flow.Analysis.Sanity is
 
             All_Vars : constant Ordered_Flow_Id_Sets.Set :=
               To_Ordered_Flow_Id_Set (A.Variables_Used or A.Variables_Defined);
-
-            Aspect_To_Fix : constant String := Find_Aspect_To_Fix;
-
-            SRM_Ref : constant String :=
-              (case FA.Kind is
-               when Kind_Subprogram | Kind_Entry | Kind_Task => "6.1.4(13)",
-               when Kind_Package | Kind_Package_Body         => "7.1.5(12)");
 
             F : Flow_Id;
          begin
