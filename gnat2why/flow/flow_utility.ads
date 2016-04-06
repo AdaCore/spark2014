@@ -324,18 +324,18 @@ is
    --  parts. For example, we might take X.Y and produce X.Y.A and X.Y.B,
    --  or just X.Y (if we can't see the private part of X.Y's type).
    --
-   --  For magic strings and the null export, we simply return a set
-   --  containing just that.
+   --  For magic strings and the null export, we simply return a set containing
+   --  just that.
    --
-   --  Note in cases where we are dealing with a null record this function
-   --  returns the empty set, but in general you can expect at least one
-   --  element in the result.
+   --  For null records we return the empty set (but in general you can expect
+   --  at least one element in the result).
    --
-   --  For private types we just return F. For private types with
-   --  discriminant C we return F.C and F'Private_Part.
+   --  For private types we just return F. For private types with discriminant
+   --  C we return F.C and F'Private_Part.
    --
-   --  For tagged types T we just return all components as usual. For
-   --  classwide types we also return T'Extension and T'Tag.
+   --  For tagged types T we just return all components as usual. For classwide
+   --  types we also return T'Extension and T'Tag.
+   --
    --  @param F is the Flow_Id whose parts we need to gather
    --  @param Scope is the scope relative to which we will return the parts
    --  @return all parts of F that are visible from Scope.

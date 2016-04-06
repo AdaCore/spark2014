@@ -522,9 +522,9 @@ package body Flow_Utility is
       --  Kind of non-record private types
 
       function Get_Root_Component (N : Node_Id) return Node_Id;
-      --  Returns N's equilavent component of the root type. If this
-      --  is not available then N's Original_Record_Component is
-      --  returned instead.
+      --  Returns N's equilavent component of the root type. If this is not
+      --  available then N's Original_Record_Component is returned instead.
+      --
       --  @param N is the component who's equivalent we are looking for
       --  @return the equivalent component of the root type if one exists
       --    or the Original_Record_Component of N otherwise.
@@ -536,14 +536,8 @@ package body Flow_Utility is
       function Get_Root_Component (N : Node_Id) return Node_Id is
          ORC : constant Node_Id := Original_Record_Component (N);
       begin
-         --  Nothing to compare against. We fall back to N's
-         --  Original_Record_Component.
-         if Root_Components.Is_Empty then
-            return ORC;
-         end if;
-
-         --  If Same_Component is True for one of the Root_Components
-         --  then return that instead.
+         --  If Same_Component is True for one of the Root_Components then
+         --  return that instead.
          for Comp of Root_Components loop
             if Same_Component (ORC, Comp) then
                return Comp;
