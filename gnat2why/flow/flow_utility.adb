@@ -698,7 +698,7 @@ package body Flow_Utility is
             end if;
 
             if Classwide then
-               --  Ids.Include (F'Update (Facet => The_Tag));
+               --  Ids.Include (F'Update (Facet => The_Tag)); ???
                Ids.Include (F'Update (Facet => Extension_Part));
             end if;
 

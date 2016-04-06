@@ -334,7 +334,7 @@ is
    --  C we return F.C and F'Private_Part.
    --
    --  For tagged types T we just return all components as usual. For classwide
-   --  types we also return T'Extension and T'Tag.
+   --  types we also return T'Extension and T'Tag. ??? not true for T'Tag
    --
    --  @param F is the Flow_Id whose parts we need to gather
    --  @param Scope is the scope relative to which we will return the parts
