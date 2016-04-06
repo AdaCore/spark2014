@@ -4,7 +4,7 @@ ng.adb:33:18: info: initialization of "Success" proved
 ng.adb:34:17: info: initialization of "Result" proved
 ng.adb:34:17: medium: postcondition might fail, cannot prove Result = 207 * ThisCount - PrevCount + 207 * ThisCount - PrevCount * CurrTime - ThisTime / ... - ... * ... / ...
 ng.adb:36:27: info: overflow check proved
-ng.adb:36:62: info: overflow check proved
+ng.adb:36:62: medium: overflow check might fail
 ng.adb:37:29: info: overflow check proved
 ng.adb:38:22: info: overflow check proved
 ng.adb:39:22: info: division check proved

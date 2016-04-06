@@ -4,7 +4,7 @@ circle_demo.adb:15:18: warning: assuming "Put_Line" has no effect on global item
 circle_demo.adb:15:18: warning: no Global contract available for "Put_Line"
 circle_demo.adb:17:18: warning: assuming "Put_Line" has no effect on global items
 circle_demo.adb:17:18: warning: no Global contract available for "Put_Line"
-shapes5.adb:8:08: medium: refined postcondition might fail (e.g. when R = (/ 1 404804506614621191762662321879936920866483529802665896264378242497196360778470404350751816027633465813254825126749618542751147506923247539036584596277321396631177188684601628286960459267815113606924635045421960273853276945597943187698536125682598744203342477817908248267039158083886445077561170397362936317776333076130955264))
+shapes5.adb:8:08: medium: refined postcondition might fail
 shapes5.adb:8:37: info: overflow check proved
 shapes5.adb:10:37: info: overflow check proved
 shapes5.adb:12:37: info: overflow check proved

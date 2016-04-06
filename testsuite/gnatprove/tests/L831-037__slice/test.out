@@ -25,7 +25,7 @@ lcp.ads:7:06: medium: range check might fail (e.g. when X = 2 and A = (others =>
 lcp.ads:7:16: info: overflow check proved
 lcp.ads:7:29: info: overflow check proved
 lcp.ads:7:36: medium: range check might fail (e.g. when Y = 1 and A = (others => 0))
-lcp.ads:7:46: medium: overflow check might fail (e.g. when Y = 2 and LCP'Result = 2147483646)
+lcp.ads:7:46: medium: overflow check might fail (e.g. when Y = 1000000 and LCP'Result = 2146483648)
 lcp.ads:7:59: info: overflow check proved
 lcp.ads:8:18: info: overflow check proved
 lcp.ads:8:40: info: overflow check proved
