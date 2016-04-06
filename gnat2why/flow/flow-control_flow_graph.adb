@@ -6001,26 +6001,22 @@ package body Flow.Control_Flow_Graph is
                      Parameter := Explicit_Generic_Actual_Parameter
                                     (Association);
 
-                     case Nkind (Parent (Parameter)) is
-                        when N_Object_Declaration          =>
-                           Create_Initial_And_Final_Vertices
-                             (Direct_Mapping_Id
-                                (Defining_Identifier (Parent (Parameter))),
-                              Mode_In,
-                              False,
-                              FA);
-
-                        when N_Object_Renaming_Declaration =>
-                           Create_Initial_And_Final_Vertices
-                             (Direct_Mapping_Id
-                                (Defining_Identifier (Parent (Parameter))),
-                              Mode_In_Out,
-                              False,
-                              FA);
-
-                        when others                        =>
-                           null;
-                     end case;
+                     if Nkind (Parent (Parameter)) in
+                       N_Object_Declaration | N_Object_Renaming_Declaration
+                     then
+                        Create_Initial_And_Final_Vertices
+                          (Direct_Mapping_Id
+                             (Defining_Identifier (Parent (Parameter))),
+                           (case (Nkind (Parent (Parameter))) is
+                               when N_Object_Declaration =>
+                                  Mode_In,
+                               when N_Object_Renaming_Declaration =>
+                                  Mode_In_Out,
+                               when others =>
+                                  raise Program_Error),
+                           False,
+                           FA);
+                     end if;
 
                      Next (Association);
                   end loop;
