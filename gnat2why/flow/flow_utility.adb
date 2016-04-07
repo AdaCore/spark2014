@@ -2051,7 +2051,7 @@ package body Flow_Utility is
       Consider_Extensions          : Boolean := False)
       return Flow_Id_Sets.Set
    is
-      VS         : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      VS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
       function Recurse_On (N                   : Node_Id;
                            Consider_Extensions : Boolean := False)
