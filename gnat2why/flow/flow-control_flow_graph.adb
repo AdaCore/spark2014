@@ -4466,8 +4466,11 @@ package body Flow.Control_Flow_Graph is
    is
       V : Flow_Graphs.Vertex_Id;
       Funcs : Node_Sets.Set;
+
+      Expr : constant Node_Id := Expression (N);
+
    begin
-      if No (Expression (N)) then
+      if No (Expr) then
          --  We have a return for a procedure.
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
@@ -4476,7 +4479,7 @@ package body Flow.Control_Flow_Graph is
       else
          --  We have a function return.
          Collect_Functions_And_Read_Locked_POs
-           (Expression (N),
+           (Expr,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
             Include_Predicates => FA.Generating_Globals);
@@ -4489,7 +4492,7 @@ package body Flow.Control_Flow_Graph is
                Var_Def    => Flatten_Variable (FA.Analyzed_Entity,
                                                FA.B_Scope),
                Var_Ex_Use => Get_Variable_Set
-                 (Expression (N),
+                 (Expr,
                   Scope                => FA.B_Scope,
                   Local_Constants      => FA.Local_Constants,
                   Fold_Functions       => True,
@@ -4498,7 +4501,7 @@ package body Flow.Control_Flow_Graph is
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
             V);
-         Ctx.Folded_Function_Checks (N).Insert (Expression (N));
+         Ctx.Folded_Function_Checks (N).Insert (Expr);
       end if;
 
       --  Control flows in, but we do not flow out again.
