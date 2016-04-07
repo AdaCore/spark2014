@@ -2999,7 +2999,6 @@ package body Flow.Control_Flow_Graph is
       V     : Flow_Graphs.Vertex_Id;
       Inits : Vertex_Vectors.Vector := Vertex_Vectors.Empty_Vector;
       FS    : Flow_Id_Sets.Set;
-      To_Cw : Boolean;
 
       Is_Constant : constant Boolean := Nkind (N) = N_Object_Declaration
                                         and then Constant_Present (N);
@@ -3260,14 +3259,16 @@ package body Flow.Control_Flow_Graph is
 
       else
          --  We have a variable declaration with an initialization.
-         To_Cw :=
-           Is_Class_Wide_Type (Get_Type (Defining_Identifier (N), FA.B_Scope))
-             and then
-           not Is_Class_Wide_Type (Get_Type (Expression (N), FA.B_Scope));
-
          declare
             Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
             Funcs   : Node_Sets.Set;
+
+            To_CW : constant Boolean :=
+              Is_Class_Wide_Type
+                (Get_Type (Defining_Identifier (N), FA.B_Scope))
+              and then
+                not Is_Class_Wide_Type (Get_Type (Expression (N), FA.B_Scope));
+
          begin
             FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
             for F of FS loop
@@ -3380,7 +3381,7 @@ package body Flow.Control_Flow_Graph is
                         Local_Constants      => FA.Local_Constants,
                         Fold_Functions       => True,
                         Use_Computed_Globals => not FA.Generating_Globals,
-                        Consider_Extensions  => To_Cw),
+                        Consider_Extensions  => To_CW),
                      Sub_Called => Funcs,
                      Loops      => Ctx.Current_Loops,
                      E_Loc      => N),
