@@ -4600,7 +4600,7 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
       V   : Flow_Graphs.Vertex_Id;
-      Typ : constant Node_Id := Defining_Identifier (N);
+      Typ : constant Entity_Id := Defining_Identifier (N);
    begin
       Add_Vertex
         (FA,
