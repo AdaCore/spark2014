@@ -183,7 +183,7 @@ ASCII.LF &
 " -q, --quiet         Be quiet/terse" &
 ASCII.LF &
 "     --report=r      Set the report mode of GNATprove " &
-"(r=fail*, all, statistics)"
+"(r=fail*, all, provers, statistics)"
 &
 ASCII.LF &
 " -u                  Unique analysis. Only analyze the given units" &
@@ -217,7 +217,11 @@ ASCII.LF &
 ASCII.LF &
 "   . fail          - Report failures to prove checks (default)" &
 ASCII.LF &
-"   . statistics    - Same as all, plus timing and steps information" &
+"   . provers       - Same as all, plus information which provers proved " &
+"the check" &
+ASCII.LF &
+"   . statistics    - Same as provers, plus timing and steps information" &
+
 ASCII.LF &
 ASCII.LF &
 " * Warning mode values" &

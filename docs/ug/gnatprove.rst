@@ -853,9 +853,9 @@ implementation (using proof).
 In mode ``all``, |GNATprove| prints on the standard output both messages for
 mode ``flow`` and for mode ``prove``.
 
-If switch ``--report=all`` or ``--report=statistics`` is specified, |GNATprove|
-additionally prints on the standard output information messages for proved
-checks.
+If switch ``--report=all``, ``--report=provers`` or ``--report=statistics`` is
+specified, |GNATprove| additionally prints on the standard output information
+messages for proved checks.
 
 |GNATprove| generates global project statistics in file ``gnatprove.out``,
 which can be displayed in GPS using the menu :menuselection:`SPARK --> Show

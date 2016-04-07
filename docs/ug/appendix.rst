@@ -29,7 +29,7 @@ Command Line Invocation
  -m                  Minimal reanalysis
      --mode=m        Set the mode of GNATprove (m=check, flow, prove, all*)
  -q, --quiet         Be quiet/terse
-     --report=r      Set the report mode of GNATprove (r=fail*, all, statistics)
+     --report=r      Set the report mode of GNATprove (r=fail*, all, provers, statistics)
  -u                  Unique analysis. Only analyze the given units
  -U                  Analyze all units of all projects
  -v, --verbose       Output extra verbose information
@@ -45,7 +45,8 @@ Command Line Invocation
  * Report mode values
    . all           - Report all results of proving checks
    . fail          - Report failures to prove checks (default)
-   . statistics    - Same as all, plus timing and steps information
+   . provers       - Same as all, plus information which provers proved the check
+   . statistics    - Same as provers, plus timing and steps information
 
  * Warning mode values
    . continue      - Issue warnings and continue (default)
