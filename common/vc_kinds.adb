@@ -62,7 +62,7 @@ package body VC_Kinds is
          Map.Insert (Name, From_JSON (Value));
       end Process_Prover_Stat;
 
-      --  Begin processing of From_Json
+   --  Start of processing for From_Json
 
    begin
       Map_JSON_Object (V, Process_Prover_Stat'Access);
@@ -116,6 +116,8 @@ package body VC_Kinds is
          Map.Insert (Name, From_JSON (Value));
       end Process_Entry;
 
+   --  Start of processing for From_JSON
+
    begin
       Map_JSON_Object (V, Process_Entry'Access);
       return Map;
@@ -143,6 +145,8 @@ package body VC_Kinds is
          end if;
       end Process_Entry;
 
+   --  Start of processing for From_JSON
+
    begin
       Map_JSON_Object (V, Process_Entry'Access);
       return Res;
@@ -158,7 +162,7 @@ package body VC_Kinds is
 
    function From_JSON (V : JSON_Value) return Cntexample_Elt_Lists.List is
       Res : Cntexample_Elt_Lists.List := Cntexample_Elt_Lists.Empty_List;
-      Ar : constant JSON_Array := Get (V);
+      Ar  : constant JSON_Array       := Get (V);
    begin
       for Var_Index in Positive range 1 .. Length (Ar) loop
          Res.Append (From_JSON (Get (Ar, Var_Index)));
@@ -235,7 +239,7 @@ package body VC_Kinds is
          return S (S'First + 1 .. S'Last);
       end Line_Number_Image;
 
-      --  begin processing of To_JSON
+   --  Start of processing for To_JSON
 
    begin
       for C in L.Other_Lines.Iterate loop
