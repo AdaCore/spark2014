@@ -2396,24 +2396,20 @@ package body Flow_Utility is
                            E := Discriminal_Link (E);
                         end if;
 
-                        case Ekind (E) is
-                           when E_Discriminant | E_Component =>
-                              if Ekind (Sinfo.Scope (E)) not in
-                                E_Protected_Type | E_Task_Type
-                              then
-                                 --  We include stuff from tasks and POs,
-                                 --  but otherwise we need to ignore
-                                 --  discriminants and components.
-                                 return OK;
-                              end if;
-                           when others =>
-                              null;
-                        end case;
+                        if Ekind (E) in E_Discriminant | E_Component
+                          and then Ekind (Sinfo.Scope (E)) not in
+                            E_Protected_Type | E_Task_Type
+                        then
+                           --  We include stuff from tasks and POs, but
+                           --  otherwise we need to ignore discriminants
+                           --  and components.
+                           return OK;
+                        end if;
 
                         if Ekind (E) /= E_Constant
                           or else Local_Constants.Contains (E)
                           or else Has_Variable_Input
-                          (Direct_Mapping_Id (Unique_Entity (E)))
+                                    (Direct_Mapping_Id (Unique_Entity (E)))
                         then
                            if Reduced then
                               VS.Include (Direct_Mapping_Id
