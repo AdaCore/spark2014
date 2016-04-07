@@ -2200,12 +2200,9 @@ package body Flow_Utility is
          begin
             Ptr := First (Parameter_Associations (Callsite));
             while Present (Ptr) loop
-               case Nkind (Ptr) is
-                  when N_Parameter_Association =>
-                     Actual := Explicit_Actual_Parameter (Ptr);
-                  when others =>
-                     Actual := Ptr;
-               end case;
+               Actual := (if Nkind (Ptr) = N_Parameter_Association
+                          then Explicit_Actual_Parameter (Ptr)
+                          else Ptr);
 
                Find_Actual (N      => Actual,
                             Formal => Formal,

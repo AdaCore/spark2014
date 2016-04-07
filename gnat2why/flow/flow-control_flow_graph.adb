@@ -4703,20 +4703,16 @@ package body Flow.Control_Flow_Graph is
                end if;
 
             when N_Quantified_Expression =>
-               if Present (Iterator_Specification (N)) then
-                  Create_Initial_And_Final_Vertices
-                    (Defining_Identifier (Iterator_Specification (N)),
-                     Quantified_Variable_Kind,
-                     FA);
-               elsif Present (Loop_Parameter_Specification (N)) then
-                  Create_Initial_And_Final_Vertices
-                    (Defining_Identifier (Loop_Parameter_Specification (N)),
-                     Quantified_Variable_Kind,
-                     FA);
-               else
-                  Print_Tree_Node (N);
-                  raise Why.Unexpected_Node;
-               end if;
+               pragma Assert (Present (Iterator_Specification (N))
+                              xor Present (Loop_Parameter_Specification (N)));
+
+               Create_Initial_And_Final_Vertices
+                 (Defining_Identifier
+                    (if Present (Iterator_Specification (N))
+                     then Iterator_Specification (N)
+                     else Loop_Parameter_Specification (N)),
+                  Quantified_Variable_Kind,
+                  FA);
 
             when others =>
                null;
