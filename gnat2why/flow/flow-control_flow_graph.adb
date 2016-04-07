@@ -3264,7 +3264,7 @@ package body Flow.Control_Flow_Graph is
       else
          --  We have a variable declaration with an initialization.
          declare
-            Var_Def : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+            Var_Def : Flow_Id_Sets.Set;
             Funcs   : Node_Sets.Set;
 
             To_CW : constant Boolean :=
@@ -3275,8 +3275,12 @@ package body Flow.Control_Flow_Graph is
 
          begin
             FS := Flatten_Variable (E, FA.B_Scope);
+
+            --  Initialize the set of defined variables with all compononents
+            --  of the flattened view and add extra elements for bounds.
+            Var_Def := FS;
+
             for F of FS loop
-               Var_Def.Include (F);
                if Has_Bounds (F, FA.B_Scope) then
                   Var_Def.Include (F'Update (Facet => The_Bounds));
                end if;
