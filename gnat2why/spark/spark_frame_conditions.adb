@@ -846,19 +846,33 @@ package body SPARK_Frame_Conditions is
 
                      Ref_Scope := Scope_Name'(File_Num  => Xref.File_Num,
                                               Scope_Num => Xref.Scope_Num);
-                     if Scope_Specs.Contains (Ref_Scope) then
-                        Ref_Scope := Scope_Specs.Element (Ref_Scope);
-                     end if;
-                     Ref_Scope_Ent := Scope_Entities.Element (Ref_Scope);
+
+                     declare
+                        C : constant Scope_Spec.Cursor :=
+                          Scope_Specs.Find (Ref_Scope);
+                     begin
+                        if Scope_Spec.Has_Element (C) then
+                           Ref_Scope := Scope_Specs (C);
+                        end if;
+                     end;
+
+                     Ref_Scope_Ent := Scope_Entities (Ref_Scope);
 
                      --  Compute the entity for the scope of the definition
 
                      Def_Scope := Scope_Name'(File_Num  => Srec.File_Num,
                                               Scope_Num => Srec.Scope_Num);
-                     if Scope_Specs.Contains (Def_Scope) then
-                        Def_Scope := Scope_Specs.Element (Def_Scope);
-                     end if;
-                     Def_Scope_Ent := Scope_Entities.Element (Def_Scope);
+
+                     declare
+                        C : constant Scope_Spec.Cursor :=
+                          Scope_Specs.Find (Def_Scope);
+                     begin
+                        if Scope_Spec.Has_Element (C) then
+                           Def_Scope := Scope_Specs (C);
+                        end if;
+                     end;
+
+                     Def_Scope_Ent := Scope_Entities (Def_Scope);
 
                      --  Register the definition on first occurence of
                      --  variables.
