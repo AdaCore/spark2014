@@ -1104,7 +1104,9 @@ ASCII.LF;
       if Report_Input.all = "fail" or else Report_Input.all = "" then
          Report := GPR_Fail;
       elsif Report_Input.all = "all" then
-         Report := GPR_Verbose;
+         Report := GPR_All;
+      elsif Report_Input.all = "provers" then
+         Report := GPR_Provers;
       elsif Report_Input.all = "statistics" then
          Report := GPR_Statistics;
       else

@@ -28,6 +28,7 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Directories;       use Ada.Directories;
+with Ada.Float_Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Common_Containers;     use Common_Containers;
@@ -305,27 +306,28 @@ package body Gnat2Why.Error_Messages is
       function Stat_Message return String;
       --  prepare a message for statistics of proof results
 
-      function Integer_Percent (Part, Total : Integer) return Integer;
+      function Nice_Float (F : Float) return String;
 
-      ---------------------
-      -- Integer_Percent --
-      ---------------------
+      ----------------
+      -- Nice_Float --
+      ----------------
 
-      function Integer_Percent (Part, Total : Integer) return Integer is
-
-         --  copy pasted from spark_report.adb, currently no good place to have
-         --  a common version
-
+      function Nice_Float (F : Float) return String is
+         S : String (1 .. 10);
+         Index : Integer := 1;
       begin
-         return Integer ((Float (100 * Part)) / Float (Total));
-      end Integer_Percent;
+         Ada.Float_Text_IO.Put (S, F, 1, 0);
+         while S (Index) = ' ' loop
+            Index := Index + 1;
+         end loop;
+         return S (Index .. S'Last);
+      end Nice_Float;
 
       ------------------
       -- Stat_Message --
       ------------------
 
       function Stat_Message return String is
-         Total : Natural := 0;
          Buf : Unbounded_String := Null_Unbounded_String;
 
          use type Ada.Containers.Count_Type;
@@ -334,7 +336,9 @@ package body Gnat2Why.Error_Messages is
 
          --  check if VC is not proved or statistics are enabled
 
-         if not Proved or else Gnat2Why_Args.Report_Mode /= GPR_Statistics then
+         if not Proved or else
+           Gnat2Why_Args.Report_Mode not in GPR_Statistics | GPR_Provers
+         then
             return "";
          end if;
 
@@ -351,30 +355,32 @@ package body Gnat2Why.Error_Messages is
             return "";
          end if;
 
-         --  if only one prover, no need for detailed statistics, simply return
-         --  prover name
-
-         if Stats.Length = 1 then
-            return " (" & Stats.First_Key & ")";
-         end if;
-
          --  We are now in the general case (several provers). We first count
          --  the total number of VCs.
-         for Elt of Stats loop
-            Total := Total + Elt.Count;
-         end loop;
 
          Append (Buf, " (");
          for C in Stats.Iterate loop
-            Append (Buf, Key (C));
-            Append (Buf, ':');
-            Append (Buf,
-                    Integer'Image
-                      (Integer_Percent (Element (C).Count, Total)));
-            Append (Buf, '%');
-            if Has_Element (Next (C)) then
-               Append (Buf, ", ");
-            end if;
+            declare
+               Elt : constant Prover_Stat := Element (C);
+            begin
+               Append (Buf, Key (C));
+               Append (Buf, ':');
+               Append (Buf, Integer'Image (Elt.Count));
+               Append (Buf, " VC");
+               if Gnat2Why_Args.Report_Mode = GPR_Statistics then
+                  Append (Buf, " in max ");
+                  Append (Buf, Nice_Float (Elt.Max_Time));
+                  Append (Buf, " seconds and");
+                  Append (Buf, Integer'Image (Elt.Max_Steps));
+                  Append (Buf, " step");
+                  if Elt.Max_Steps /= 1 then
+                     Append (Buf, 's');
+                  end if;
+               end if;
+               if Has_Element (Next (C)) then
+                  Append (Buf, "; ");
+               end if;
+            end;
          end loop;
          Append (Buf, ')');
 

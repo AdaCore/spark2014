@@ -113,12 +113,16 @@ package Gnat2Why_Args is
 
    --  Set the report mode (only failing VCs, all VCs, details)
 
-   type Report_Mode_Type is (GPR_Fail, GPR_Verbose, GPR_Statistics);
+   type Report_Mode_Type is (GPR_Fail,
+                             GPR_All,
+                             GPR_Provers,
+                             GPR_Statistics);
    --  The modes for reporting of VCs.
    --    GPR_Fail means that only unproved VCs will be reported.
-   --    GPR_Verbose means that all VCs will be reported
-   --    GPR_Statistics means that all VCs will be reported, plus steps and
-   --    timing information.
+   --    GPR_All means that all VCs will be reported
+   --    GPR_Provers prints in addition which prover(s) proved a proved check
+   --    GPR_Statistics in addition prints maximum steps and timings for proved
+   --    checks
 
    Report_Mode : Report_Mode_Type := GPR_Fail;
 
