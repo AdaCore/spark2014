@@ -3003,8 +3003,13 @@ package body Flow.Control_Flow_Graph is
       Is_Constant : constant Boolean := Nkind (N) = N_Object_Declaration
                                         and then Constant_Present (N);
 
-      Object_Name : constant Entity_Name :=
-        To_Entity_Name (Defining_Identifier (N));
+      E : constant Entity_Id := Defining_Identifier (N);
+      --  Entity of the object declared by node N
+
+      Object_Name : constant Entity_Name := To_Entity_Name (E);
+
+      Expr : constant Node_Id := Expression (N);
+      --  Object's initialization expression
 
       procedure Find_Protected_Components (T : Entity_Id)
       with Pre => Is_Type (T);
@@ -3195,11 +3200,10 @@ package body Flow.Control_Flow_Graph is
       --  We are dealing with a local constant. These constants are *not*
       --  ignored.
       if Is_Constant then
-         if not In_Generic_Actual (Defining_Identifier (N))
-           and then (Present (Expression (N))
-                       or else Is_Imported (Defining_Identifier (N)))
+         if not In_Generic_Actual (E)
+           and then (Present (Expr) or else Is_Imported (E))
          then
-            FA.Local_Constants.Include (Defining_Identifier (N));
+            FA.Local_Constants.Include (E);
 
          else
             --  This is a deferred constant or a generic actual. We ignore it.
@@ -3214,7 +3218,7 @@ package body Flow.Control_Flow_Graph is
 
       --  We ignore declarations of objects that are Part_Of a single
       --  concurrent type.
-      if Is_Part_Of_Concurrent_Object (Defining_Identifier (N)) then
+      if Is_Part_Of_Concurrent_Object (E) then
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
                      Null_Node_Attributes,
@@ -3224,14 +3228,14 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  First, we need a 'initial and 'final vertex for this object.
-      Create_Initial_And_Final_Vertices (Defining_Identifier (N),
+      Create_Initial_And_Final_Vertices (E,
                                          Variable_Kind,
                                          FA);
 
-      if No (Expression (N)) then
+      if No (Expr) then
          --  We have no initializing expression so we fall back to the default
          --  initialization (if any).
-         FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
+         FS := Flatten_Variable (E, FA.B_Scope);
 
          for F of FS loop
             if Is_Default_Initialized (F) then
@@ -3265,12 +3269,12 @@ package body Flow.Control_Flow_Graph is
 
             To_CW : constant Boolean :=
               Is_Class_Wide_Type
-                (Get_Type (Defining_Identifier (N), FA.B_Scope))
+                (Get_Type (E, FA.B_Scope))
               and then
-                not Is_Class_Wide_Type (Get_Type (Expression (N), FA.B_Scope));
+                not Is_Class_Wide_Type (Get_Type (Expr, FA.B_Scope));
 
          begin
-            FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
+            FS := Flatten_Variable (E, FA.B_Scope);
             for F of FS loop
                Var_Def.Include (F);
                if Has_Bounds (F, FA.B_Scope) then
@@ -3282,11 +3286,9 @@ package body Flow.Control_Flow_Graph is
 
                declare
                   M : constant Flow_Id_Maps.Map := Untangle_Record_Assignment
-                    (N                            => Expression (N),
-                     Map_Root                     =>
-                       Direct_Mapping_Id (Defining_Identifier (N)),
-                     Map_Type                     =>
-                       Get_Type (Defining_Identifier (N), FA.B_Scope),
+                    (N                            => Expr,
+                     Map_Root                     => Direct_Mapping_Id (E),
+                     Map_Type                     => Get_Type (E, FA.B_Scope),
                      Scope                        => FA.B_Scope,
                      Local_Constants              => FA.Local_Constants,
                      Fold_Functions               => True,
@@ -3297,7 +3299,7 @@ package body Flow.Control_Flow_Graph is
                   Missing      : Flow_Id_Sets.Set := Var_Def;
                begin
                   Collect_Functions_And_Read_Locked_POs
-                    (Expression (N),
+                    (Expr,
                      Functions_Called   => Funcs,
                      Tasking            => FA.Tasking,
                      Include_Predicates => FA.Generating_Globals);
@@ -3364,7 +3366,7 @@ package body Flow.Control_Flow_Graph is
 
             else
                Collect_Functions_And_Read_Locked_POs
-                 (Expression (N),
+                 (Expr,
                   Functions_Called   => Funcs,
                   Tasking            => FA.Tasking,
                   Include_Predicates => FA.Generating_Globals);
@@ -3376,7 +3378,7 @@ package body Flow.Control_Flow_Graph is
                     (FA         => FA,
                      Var_Def    => Var_Def,
                      Var_Ex_Use => Get_Variable_Set
-                       (Expression (N),
+                       (Expr,
                         Scope                => FA.B_Scope,
                         Local_Constants      => FA.Local_Constants,
                         Fold_Functions       => True,
@@ -3390,7 +3392,7 @@ package body Flow.Control_Flow_Graph is
 
             end if;
 
-            Ctx.Folded_Function_Checks (N).Include (Expression (N));
+            Ctx.Folded_Function_Checks (N).Include (Expr);
          end;
       end if;
 
@@ -3398,7 +3400,7 @@ package body Flow.Control_Flow_Graph is
       --  create a vertex to check for uninitialized variables within the
       --  Default_Initial_Condition's expression.
       declare
-         Typ  : constant Node_Id := Etype (Defining_Identifier (N));
+         Typ  : constant Node_Id := Etype (E);
          Expr : Node_Id;
 
          Variables_Used       : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -3441,7 +3443,7 @@ package body Flow.Control_Flow_Graph is
                                      (Default_Init_Cond_Procedure (Typ)),
                                    FA.B_Scope);
                Components_Of_Object :=
-                 Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
+                 Flatten_Variable (E, FA.B_Scope);
 
                --  Replace components if needed
                if (for some Comp of Components_Of_Type =>
@@ -3464,7 +3466,7 @@ package body Flow.Control_Flow_Graph is
                      Var_Use    => Replace_Flow_Ids
                        (Of_This   => First_Entity
                                        (Default_Init_Cond_Procedure (Typ)),
-                        With_This => Defining_Identifier (N),
+                        With_This => E,
                         The_Set   => Variables_Used),
                      Sub_Called => Funcs,
                      Is_Proof   => True,
@@ -3506,7 +3508,7 @@ package body Flow.Control_Flow_Graph is
          --  introduced 'Initial and 'Final vertices for an entity
          --  that is mentioned in an initializes aspect, we have
          --  to set Is_Export on the corresponding 'Final vertices.
-         FS := Flatten_Variable (Defining_Identifier (N), FA.B_Scope);
+         FS := Flatten_Variable (E, FA.B_Scope);
 
          for F of FS loop
             declare
@@ -3535,7 +3537,7 @@ package body Flow.Control_Flow_Graph is
          --  register priorities of objects containing protected types.
          if FA.Generating_Globals then
             declare
-               T : constant Entity_Id := Etype (Defining_Identifier (N));
+               T : constant Entity_Id := Etype (E);
             begin
                --  Register task objects
                Find_Tasks (T, Array_Component => False);
