@@ -141,21 +141,22 @@ module Floating_power
   type t
 
   use import int.Int
-  constant one : t
   predicate is_finite t
   predicate is_zero t
 
+  function of_int int : t
   function ( * ) t t   : t
   function div   t t   : t
   function power t int : t
 
-  axiom Power_0 : forall x: t. is_finite x -> power x 0 = one
+  axiom Power_0 : forall x: t. is_finite x -> power x 0 = of_int 1
 
   lemma Power_1 : forall x : t. is_finite x -> power x 1 = x
 
   axiom Power_2 : forall x : t. is_finite x -> power x 2 = x * x
 
-  axiom Power_neg1 : forall x : t. is_finite x -> not (is_zero x) -> power x (-1) = div one x
+  axiom Power_neg1 : forall x : t. is_finite x -> not (is_zero x) ->
+    power x (-1) = div (of_int 1) x
 end
 
 module Floating_next_prev
@@ -282,9 +283,9 @@ module Float32_power
 
   clone export Floating_power with
     type t = t,
-    function one = oneF,
     function ( * ) = mul,
     function div = div,
+    function of_int = of_int,
     predicate is_finite = is_finite,
     predicate is_zero = is_zero
 end
@@ -294,15 +295,18 @@ module Float64_power
 
   clone export Floating_power with
     type t = t,
-    function one = oneF,
     function ( * ) = mul,
     function div = div,
+    function of_int = of_int,
     predicate is_finite = is_finite,
     predicate is_zero = is_zero
 end
 
 module Float32_next_prev
   use export Float32Prefix
+
+  constant max_value : t
+  axiom max_value : max_real = to_real max_value
 
   clone export Floating_next_prev with
     type t = t,
@@ -318,6 +322,9 @@ end
 
 module Float64_next_prev
   use export Float64Prefix
+
+  constant max_value : t
+  axiom max_value : max_real = to_real max_value
 
   clone export Floating_next_prev with
     type t = t,
