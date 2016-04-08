@@ -1575,120 +1575,122 @@ package body Flow_Utility is
             end if;
          end;
 
-      elsif Use_Computed_Globals and then GG_Exist (Subprogram) then
-         --  We don't have a global or a depends aspect so we look at
-         --  the generated globals.
-
-         if Debug_Trace_Get_Global then
-            Indent;
-            Write_Line ("using pavlos globals");
-            Outdent;
-         end if;
-
-         GG_Get_Globals (Subprogram,
-                         Scope,
-                         Proof_Ins,
-                         Reads,
-                         Writes);
-
-         if Debug_Trace_Get_Global then
-            Indent;
-            Write_Line ("proof ins");
-            Indent;
-            for PI of Proof_Ins loop
-               Sprint_Flow_Id (PI);
-               Write_Eol;
-            end loop;
-            Outdent;
-
-            Write_Line ("reads");
-            Indent;
-            for R of Reads loop
-               Sprint_Flow_Id (R);
-               Write_Eol;
-            end loop;
-            Outdent;
-
-            Write_Line ("writes");
-            Indent;
-            for W of Writes loop
-               Sprint_Flow_Id (W);
-               Write_Eol;
-            end loop;
-            Outdent;
-            Outdent;
-         end if;
-
       elsif Use_Computed_Globals then
-         --  We don't have a global or a depends aspect and we don't
-         --  have generated globals, so we should look at the computed
-         --  globals...
 
-         if Debug_Trace_Get_Global then
-            Indent;
-            Write_Line ("using yannick globals");
-            Outdent;
-         end if;
+         if GG_Exist (Subprogram) then
+            --  We don't have a global or a depends aspect so we look at
+            --  the generated globals.
 
-         declare
-            ALI_Reads  : constant Name_Sets.Set :=
-              Get_Generated_Reads (Subprogram,
-                                   Include_Constants => True);
-            ALI_Writes : constant Name_Sets.Set :=
-              Get_Generated_Writes (Subprogram);
-
-            F : Flow_Id;
-         begin
-
-            --  We process the reads
             if Debug_Trace_Get_Global then
                Indent;
+               Write_Line ("using pavlos globals");
+               Outdent;
+            end if;
+
+            GG_Get_Globals (Subprogram,
+                            Scope,
+                            Proof_Ins,
+                            Reads,
+                            Writes);
+
+            if Debug_Trace_Get_Global then
+               Indent;
+               Write_Line ("proof ins");
+               Indent;
+               for PI of Proof_Ins loop
+                  Sprint_Flow_Id (PI);
+                  Write_Eol;
+               end loop;
+               Outdent;
+
                Write_Line ("reads");
                Indent;
-            end if;
-
-            for R of ALI_Reads loop
-               F := Get_Flow_Id (R, In_View, Scope);
-
-               if Debug_Trace_Get_Global then
-                  Sprint_Flow_Id (F);
+               for R of Reads loop
+                  Sprint_Flow_Id (R);
                   Write_Eol;
-               end if;
-
-               if Is_Variable (F) then
-                  Reads.Include (F);
-               end if;
-            end loop;
-
-            if Debug_Trace_Get_Global then
+               end loop;
                Outdent;
+
                Write_Line ("writes");
                Indent;
+               for W of Writes loop
+                  Sprint_Flow_Id (W);
+                  Write_Eol;
+               end loop;
+               Outdent;
+               Outdent;
             end if;
 
-            for W of ALI_Writes loop
-               --  This is not a mistake, we must assume that all
-               --  values written may also not change or that they are
-               --  only partially updated.
-               --
-               --  This also takes care of discriminants as every out
-               --  is really an in out.
-               F := Get_Flow_Id (W, Out_View, Scope);
+         --  We don't have a global or a depends aspect and we don't have
+         --  generated globals, so we should look at the computed globals...
 
+         else
+            if Debug_Trace_Get_Global then
+               Indent;
+               Write_Line ("using yannick globals");
+               Outdent;
+            end if;
+
+            declare
+               ALI_Reads  : constant Name_Sets.Set :=
+                 Get_Generated_Reads (Subprogram,
+                                      Include_Constants => True);
+               ALI_Writes : constant Name_Sets.Set :=
+                 Get_Generated_Writes (Subprogram);
+
+               F : Flow_Id;
+            begin
+
+               --  We process the reads
                if Debug_Trace_Get_Global then
-                  Sprint_Flow_Id (F);
-                  Write_Eol;
+                  Indent;
+                  Write_Line ("reads");
+                  Indent;
                end if;
 
-               Reads.Include (Change_Variant (F, In_View));
-               Writes.Include (F);
-            end loop;
+               for R of ALI_Reads loop
+                  F := Get_Flow_Id (R, In_View, Scope);
 
-            if Debug_Trace_Get_Global then
-               Outdent;
-               Outdent;
-            end if;
-         end;
+                  if Debug_Trace_Get_Global then
+                     Sprint_Flow_Id (F);
+                     Write_Eol;
+                  end if;
+
+                  if Is_Variable (F) then
+                     Reads.Include (F);
+                  end if;
+               end loop;
+
+               if Debug_Trace_Get_Global then
+                  Outdent;
+                  Write_Line ("writes");
+                  Indent;
+               end if;
+
+               for W of ALI_Writes loop
+                  --  This is not a mistake, we must assume that all
+                  --  values written may also not change or that they are
+                  --  only partially updated.
+                  --
+                  --  This also takes care of discriminants as every out
+                  --  is really an in out.
+                  F := Get_Flow_Id (W, Out_View, Scope);
+
+                  if Debug_Trace_Get_Global then
+                     Sprint_Flow_Id (F);
+                     Write_Eol;
+                  end if;
+
+                  Reads.Include (Change_Variant (F, In_View));
+                  Writes.Include (F);
+               end loop;
+
+               if Debug_Trace_Get_Global then
+                  Outdent;
+                  Outdent;
+               end if;
+            end;
+         end if;
 
       else
          --  We don't have user globals and we're not allowed to use
