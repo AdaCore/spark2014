@@ -1,6 +1,8 @@
 concurrency_example_fixed_bis.adb:23:13: info: initialization of "Flip" proved
-concurrency_example_fixed_bis.adb:28:22: info: initialization of "Cur_Time" proved
-concurrency_example_fixed_bis.adb:39:22: info: initialization of "Cur_Time" proved
+concurrency_example_fixed_bis.adb:28:20: info: initialization of "Wakeup" proved
+concurrency_example_fixed_bis.adb:29:22: info: initialization of "Wakeup" proved
+concurrency_example_fixed_bis.adb:40:20: info: initialization of "Wakeup" proved
+concurrency_example_fixed_bis.adb:41:22: info: initialization of "Wakeup" proved
 concurrency_example_fixed_bis.ads:13:09: info: ceiling priority protocol is respected
 concurrency_example_fixed_bis.ads:13:09: info: nontermination of task proved
 concurrency_example_fixed_bis.ads:14:09: info: ceiling priority protocol is respected
