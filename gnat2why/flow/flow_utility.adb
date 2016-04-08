@@ -3348,24 +3348,18 @@ package body Flow_Utility is
 
       function Proc (N : Node_Id) return Traverse_Result is
       begin
-         case Nkind (N) is
-            when N_Quantified_Expression =>
-               if Present (Iterator_Specification (N)) then
-                  RV.Include (Direct_Mapping_Id
-                                (Defining_Identifier
-                                   (Iterator_Specification (N))));
-               elsif Present (Loop_Parameter_Specification (N)) then
-                  RV.Include (Direct_Mapping_Id
-                                (Defining_Identifier
-                                   (Loop_Parameter_Specification (N))));
-               else
-                  Print_Tree_Node (N);
-                  raise Why.Unexpected_Node;
-               end if;
+         if Nkind (N) = N_Quantified_Expression then
+            pragma Assert (Present (Iterator_Specification (N))
+                             xor
+                           Present (Loop_Parameter_Specification (N)));
 
-            when others =>
-               null;
-         end case;
+            RV.Include (Direct_Mapping_Id
+                        (Defining_Identifier
+                           (if Present (Iterator_Specification (N))
+                            then Iterator_Specification (N)
+                            else Loop_Parameter_Specification (N))));
+         end if;
+
          return OK;
       end Proc;
 
