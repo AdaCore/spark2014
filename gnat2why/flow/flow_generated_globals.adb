@@ -3291,75 +3291,63 @@ package body Flow_Generated_Globals is
       Processing_Writes : Boolean := False)
    is
       Abstract_States : Name_Sets.Set := Name_Sets.Empty_Set;
+
    begin
-      --  Initializing Final_View to empty
+      --  Initialize Final_View
       Final_View := Name_Sets.Empty_Set;
 
       for N of Most_Refined loop
-         if GG_Enclosing_State (N) /= Null_Entity_Name
-           and then (No (Find_Entity (N))
-                       or else not Is_Visible (Find_Entity (N), Scope))
-         then
-            declare
-               Var               : Entity_Name :=
-                 (if Present (Find_Entity (N))
-                    and then Is_Visible (Find_Entity (N), Scope)
-                  then N
-                  else GG_Enclosing_State (N));
-               ES                : Entity_Name := GG_Enclosing_State (N);
-               Is_Abstract_State : Boolean     :=
-                 No (Find_Entity (N))
-                   or else not Is_Visible (Find_Entity (N), Scope);
-            begin
-               while No (Find_Entity (ES))
-                 or else not Is_Visible (Find_Entity (ES), Scope)
-               loop
-                  Is_Abstract_State := True;
-                  Var := ES;
 
-                  if GG_Enclosing_State (ES) /= Null_Entity_Name then
-                     ES := GG_Enclosing_State (ES);
-                  else
-                     --  We cannot go any further up and we still do not have
-                     --  visibility of the variable or state abstraction that
-                     --  we are making use of. This means that the user has
-                     --  neglected to provide some state abstraction and the
-                     --  refinement thereof. Unfortunately, we might now refer
-                     --  to a variable or state that the caller should not have
-                     --  vision of.
-                     exit;
-                  end if;
-               end loop;
+         --  We climb the hierarchy of abstract states until we find a visible
+         --  one (because of scope visibility rules) or a one without enclosing
+         --  abstract state (because it must be visible anyway).
 
-               Final_View.Include (Var);
+         declare
+            Var_Name   : Entity_Name := N;
+            Var_Entity : Entity_Id;
 
-               --  We add the enclosing abstract state that we just added to
-               --  the Final_View set to the Abstract_States set.
-               if Is_Abstract_State then
-                  Abstract_States.Include (Var);
+            Enclosing_State : Entity_Name;
+
+            Is_Abstract_State : Boolean := False;
+
+         begin
+            loop
+               Var_Entity      := Find_Entity (Var_Name);
+               Enclosing_State := GG_Enclosing_State (Var_Name);
+
+               if Enclosing_State = Null_Entity_Name
+                 or else (Present (Var_Entity)
+                          and then Is_Visible (Var_Entity, Scope))
+               then
+                  exit;
                end if;
-            end;
-         else
-            --  Add variables that are directly visible or do not belong to any
-            --  state abstraction to the Final_View set.
-            Final_View.Include (N);
-         end if;
+
+               Var_Name := Enclosing_State;
+
+               Is_Abstract_State := True;
+            end loop;
+
+            Final_View.Include (Var_Name);
+
+            if Processing_Writes and then Is_Abstract_State
+            then
+               Abstract_States.Include (Var_Name);
+            end if;
+         end;
       end loop;
 
       --  If we Write some but not all constituents of a state abstraction then
       --  this state abstraction is also a Read.
-      if Processing_Writes then
-         for AS of Abstract_States loop
-            declare
-               Constituents : constant Name_Sets.Set := GG_Fully_Refine (AS);
-            begin
-               if not (for all C of Constituents => Most_Refined.Contains (C))
-               then
-                  Reads.Include (Get_Flow_Id (AS, In_View, Scope));
-               end if;
-            end;
-         end loop;
-      end if;
+      for AS of Abstract_States loop
+         declare
+            Constituents : constant Name_Sets.Set := GG_Fully_Refine (AS);
+         begin
+            if not (for all C of Constituents => Most_Refined.Contains (C))
+            then
+               Reads.Include (Get_Flow_Id (AS, In_View, Scope));
+            end if;
+         end;
+      end loop;
    end Up_Project;
 
 end Flow_Generated_Globals;
