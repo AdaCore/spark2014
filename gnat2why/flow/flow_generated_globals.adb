@@ -504,7 +504,9 @@ package body Flow_Generated_Globals is
       Final_View        : out Name_Sets.Set;
       Scope             : Flow_Scope;
       Reads             : in out Flow_Id_Sets.Set;
-      Processing_Writes : Boolean := False);
+      Processing_Writes : Boolean := False)
+   with Pre  => (if not Processing_Writes then Reads.Is_Empty),
+        Post => (if not Processing_Writes then Reads.Is_Empty);
    --  Distinguishes between simple vars and constituents. For constituents, it
    --  checks if they are visible and if they are NOT we check if their
    --  enclosing state is. If the enclosing state is visible then return that
