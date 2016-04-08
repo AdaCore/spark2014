@@ -24,11 +24,9 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;               use Ada.Text_IO;
-with Call;                      use Call;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.SHA1;
-with GNATCOLL.Utils;
-with Output;                    use Output;
+with GNATCOLL.JSON;             use GNATCOLL.JSON;
 with Types;                     use Types;
 
 package body Gnat2Why_Args is
@@ -61,175 +59,104 @@ package body Gnat2Why_Args is
    CP_Dir_Name              : constant String := "codepeer_dir";
    Prove_Only_Name          : constant String := "debug_prove_only";
 
-   procedure Interpret_Token (Token : String);
-   --  This procedure should be called on an individual token in the
-   --  environment variable. It will set the corresponding boolean variable to
-   --  True. The program is stopped if an unrecognized option is encountered.
-
    ----------
    -- Init --
    ----------
 
    procedure Init is
 
-      procedure Read_File is new For_Line_In_File (Interpret_Token);
+      function Get_Opt_Bool (V : JSON_Value; Field : String) return Boolean;
+      --  return the boolean value of the Field [Field] of the JSON record [V].
+      --  return False if the field doesn't exist.
+
+      ------------------
+      -- Get_Opt_Bool --
+      ------------------
+
+      function Get_Opt_Bool (V : JSON_Value; Field : String) return Boolean is
+      begin
+         return Has_Field (V, Field) and then Get (Get (V, Field));
+      end Get_Opt_Bool;
+
+      File_Text : Unbounded_String := Null_Unbounded_String;
+      File      : File_Type;
+      V         : JSON_Value;
+
+      --  beginning of processing for Init
 
    begin
-      if Opt.SPARK_Switches_File_Name /= null then
-         Read_File (Opt.SPARK_Switches_File_Name.all);
+      if Opt.SPARK_Switches_File_Name = null then
+         return;
+      end if;
+      Ada.Text_IO.Open (File, In_File, Opt.SPARK_Switches_File_Name.all);
+
+      while not End_Of_File (File) loop
+         Append (File_Text, Get_Line (File));
+      end loop;
+      V := Read (File_Text);
+      Global_Gen_Mode := Get_Opt_Bool (V, Global_Gen_Mode_Name);
+      Check_Mode := Get_Opt_Bool (V, Check_Mode_Name);
+      Flow_Analysis_Mode := Get_Opt_Bool (V, Flow_Analysis_Mode_Name);
+      Prove_Mode := Get_Opt_Bool (V, Prove_Mode_Name);
+      Debug_Mode := Get_Opt_Bool (V, Debug_Mode_Name);
+      Debug_Proof_Only := Get_Opt_Bool (V, Prove_Only_Name);
+      Flow_Advanced_Debug := Get_Opt_Bool (V, Flow_Advanced_Debug_Name);
+      Pedantic := Get_Opt_Bool (V, Pedantic_Name);
+      Ide_Mode := Get_Opt_Bool (V, Ide_Mode_Name);
+      if Has_Field (V, Report_Mode_Name) then
+         Report_Mode :=
+           Report_Mode_Type'Value (Get (Get (V, Report_Mode_Name)));
+      end if;
+      if Has_Field (V, Warning_Mode_Name) then
+         Warning_Mode :=
+           Opt.Warning_Mode_Type'Value (Get (Get (V, Warning_Mode_Name)));
+      end if;
+      if Has_Field (V, Limit_Subp_Name) then
+         Limit_Subp := Get (Get (V, Limit_Subp_Name));
+      end if;
+      if Has_Field (V, Limit_Line_Name) then
+         Limit_Line := Get (Get (V, Limit_Line_Name));
+      end if;
+      if Has_Field (V, Why3_Args_Name) then
+         declare
+            Ar  : constant JSON_Array := Get (V, Why3_Args_Name);
+         begin
+            for Var_Index in Positive range 1 .. Length (Ar) loop
+               Why3_Args.Append (Get (Get (Ar, Var_Index)));
+            end loop;
+         end;
+      end if;
+      if Has_Field (V, Why3_Dir_Name) then
+         Why3_Dir := Get (Get (V, Why3_Dir_Name));
+      end if;
+      if Has_Field (V, CP_Dir_Name) then
+         CP_Res_Dir := Get (Get (V, CP_Dir_Name));
       end if;
    end Init;
-
-   ---------------------
-   -- Interpret_Token --
-   ---------------------
-
-   procedure Interpret_Token (Token : String) is
-   begin
-      if Token'Length = 0 then
-         null;
-
-      elsif Token = Global_Gen_Mode_Name then
-         Global_Gen_Mode := True;
-
-      elsif Token = Check_Mode_Name then
-         Check_Mode := True;
-
-      elsif Token = Flow_Analysis_Mode_Name then
-         Flow_Analysis_Mode := True;
-
-      elsif Token = Prove_Mode_Name then
-         Prove_Mode := True;
-
-      elsif Token = Debug_Mode_Name then
-         Debug_Mode := True;
-
-      elsif Token = Prove_Only_Name then
-         Debug_Proof_Only := True;
-
-      elsif Token = Flow_Advanced_Debug_Name then
-         Flow_Advanced_Debug := True;
-
-      elsif Token = Pedantic_Name then
-         Pedantic := True;
-
-      elsif Token = Ide_Mode_Name then
-         Ide_Mode := True;
-
-      elsif GNATCOLL.Utils.Starts_With (Token, Report_Mode_Name) and then
-        Token (Token'First + Report_Mode_Name'Length) = '='
-      then
-         declare
-            Start : constant Integer :=
-              Token'First + Report_Mode_Name'Length + 1;
-         begin
-            Report_Mode :=
-              Report_Mode_Type'Value (Token (Start .. Token'Last));
-         end;
-
-      elsif GNATCOLL.Utils.Starts_With (Token, Warning_Mode_Name) and then
-        Token (Token'First + Warning_Mode_Name'Length) = '='
-      then
-         declare
-            Start : constant Integer :=
-              Token'First + Warning_Mode_Name'Length + 1;
-         begin
-            Warning_Mode :=
-              Opt.Warning_Mode_Type'Value (Token (Start .. Token'Last));
-         end;
-
-      elsif GNATCOLL.Utils.Starts_With (Token, Limit_Subp_Name) and then
-        Token (Token'First + Limit_Subp_Name'Length) = '='
-      then
-         declare
-            Start : constant Integer :=
-              Token'First + Limit_Subp_Name'Length + 1;
-         begin
-            Limit_Subp := To_Unbounded_String (Token (Start .. Token'Last));
-         end;
-
-      elsif GNATCOLL.Utils.Starts_With (Token, Limit_Line_Name) and then
-        Token (Token'First + Limit_Line_Name'Length) = '='
-      then
-         declare
-            Start : constant Integer :=
-              Token'First + Limit_Line_Name'Length + 1;
-         begin
-            Limit_Line := To_Unbounded_String (Token (Start .. Token'Last));
-         end;
-
-      elsif GNATCOLL.Utils.Starts_With (Token, Why3_Args_Name) and then
-        Token (Token'First + Why3_Args_Name'Length) = '='
-      then
-         declare
-            Start : constant Integer :=
-              Token'First + Why3_Args_Name'Length + 1;
-         begin
-            Why3_Args.Append (Token (Start .. Token'Last));
-         end;
-      elsif GNATCOLL.Utils.Starts_With (Token, Why3_Dir_Name) and then
-        Token (Token'First + Why3_Dir_Name'Length) = '='
-      then
-         declare
-            Start : constant Integer :=
-              Token'First + Why3_Dir_Name'Length + 1;
-         begin
-            Why3_Dir := To_Unbounded_String (Token (Start .. Token'Last));
-         end;
-      elsif GNATCOLL.Utils.Starts_With (Token, CP_Dir_Name) and then
-        Token (Token'First + CP_Dir_Name'Length) = '='
-      then
-         declare
-            Start : constant Integer :=
-              Token'First + CP_Dir_Name'Length + 1;
-         begin
-            CP_Res_Dir := To_Unbounded_String (Token (Start .. Token'Last));
-         end;
-
-      else
-
-         --  We play it safe and quit if there is an unrecognized option
-
-         Write_Str ("error: unrecognized option" & Token & " given");
-         Write_Eol;
-         raise Terminate_Program;
-      end if;
-   end Interpret_Token;
 
    ---------
    -- Set --
    ---------
 
    function Set (Obj_Dir : String) return String is
-      Cur_Dir : constant String := Get_Current_Dir;
-      Content : Unbounded_String;
 
-      procedure Add_Line (S : String);
-      --  Write S to FD, and add a newline
-
-      function Write_To_File return String;
+      function Write_To_File (V : JSON_Value) return String;
       --  Write the Content string to a file and return the filename
-
-      --------------
-      -- Add_Line --
-      --------------
-
-      procedure Add_Line (S : String) is
-      begin
-         Append (Content, S);
-         Append (Content, ASCII.LF);
-      end Add_Line;
 
       -------------------
       -- Write_To_File --
       -------------------
 
-      function Write_To_File return String is
-         Write_Cont : constant String := To_String (Content);
+      function Write_To_File (V : JSON_Value) return String is
+         Write_Cont : constant String := Write (V);
          File_Name  : constant String (1 .. 12) :=
            GNAT.SHA1.Digest (Write_Cont) (1 .. 8) & ".tmp";
          FT         : File_Type;
+         Cur_Dir    : constant String := Get_Current_Dir;
       begin
+      --  We need to switch to the given Obj_Dir so that the temp file is
+      --  created there
+
          Change_Dir (Obj_Dir);
          Create (FT, Name => File_Name);
          Put (FT, Write_Cont);
@@ -242,77 +169,41 @@ package body Gnat2Why_Args is
 
       --  beginning of processing for Set
 
+      Obj : constant JSON_Value := Create_Object;
    begin
       --  Warning_Mode is only relevant when Global_Mode = False, so ignore its
       --  value if Global_Mode = True.
 
       if not Global_Gen_Mode then
-         Add_Line (Warning_Mode_Name & "=" &
-                       Opt.Warning_Mode_Type'Image (Warning_Mode));
+         Set_Field (Obj,
+                    Warning_Mode_Name,
+                    Opt.Warning_Mode_Type'Image (Warning_Mode));
       end if;
 
-      if Global_Gen_Mode then
-         Add_Line (Global_Gen_Mode_Name);
-      end if;
+      Set_Field (Obj, Global_Gen_Mode_Name, Global_Gen_Mode);
+      Set_Field (Obj, Check_Mode_Name, Check_Mode);
+      Set_Field (Obj, Flow_Analysis_Mode_Name, Flow_Analysis_Mode);
+      Set_Field (Obj, Prove_Mode_Name, Prove_Mode);
+      Set_Field (Obj, Prove_Only_Name, Debug_Proof_Only);
+      Set_Field (Obj, Debug_Mode_Name, Debug_Mode);
+      Set_Field (Obj, Flow_Advanced_Debug_Name, Flow_Advanced_Debug);
+      Set_Field (Obj, Pedantic_Name, Pedantic);
+      Set_Field (Obj, Ide_Mode_Name, Ide_Mode);
+      Set_Field (Obj, Report_Mode_Name, Report_Mode_Type'Image (Report_Mode));
+      Set_Field (Obj, Limit_Subp_Name, Limit_Subp);
+      Set_Field (Obj, Limit_Line_Name, Limit_Line);
+      Set_Field (Obj, Why3_Dir_Name, Why3_Dir);
+      Set_Field (Obj, CP_Dir_Name, CP_Res_Dir);
+      declare
+         A : JSON_Array := Empty_Array;
+      begin
+         for Arg of Why3_Args loop
+            Append (A, Create (Arg));
+         end loop;
+         Set_Field (Obj, Why3_Args_Name, A);
+      end;
 
-      if Check_Mode then
-         Add_Line (Check_Mode_Name);
-      end if;
-
-      if Flow_Analysis_Mode then
-         Add_Line (Flow_Analysis_Mode_Name);
-      end if;
-
-      if Prove_Mode then
-         Add_Line (Prove_Mode_Name);
-      end if;
-
-      if Debug_Proof_Only then
-         Add_Line (Prove_Only_Name);
-      end if;
-
-      if Debug_Mode then
-         Add_Line (Debug_Mode_Name);
-      end if;
-
-      if Flow_Advanced_Debug then
-         Add_Line (Flow_Advanced_Debug_Name);
-      end if;
-
-      if Pedantic then
-         Add_Line (Pedantic_Name);
-      end if;
-
-      if Ide_Mode then
-         Add_Line (Ide_Mode_Name);
-      end if;
-
-      Add_Line (Report_Mode_Name & "=" & Report_Mode_Type'Image (Report_Mode));
-
-      if Limit_Subp /= Null_Unbounded_String then
-         Add_Line (Limit_Subp_Name & "=" & To_String (Limit_Subp));
-      end if;
-
-      if Limit_Line /= Null_Unbounded_String then
-         Add_Line (Limit_Line_Name & "=" & To_String (Limit_Line));
-      end if;
-
-      if Why3_Dir /= Null_Unbounded_String then
-         Add_Line (Why3_Dir_Name & "=" & To_String (Why3_Dir));
-      end if;
-
-      if CP_Res_Dir /= Null_Unbounded_String then
-         Add_Line (CP_Dir_Name & "=" & To_String (CP_Res_Dir));
-      end if;
-
-      for File of Why3_Args loop
-         Add_Line (Why3_Args_Name & "=" & File);
-      end loop;
-
-      --  We need to switch to the given Obj_Dir so that the temp file is
-      --  created there
-
-      return Write_To_File;
+      return Write_To_File (Obj);
    end Set;
 
 end Gnat2Why_Args;

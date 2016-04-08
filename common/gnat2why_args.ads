@@ -163,9 +163,12 @@ package Gnat2Why_Args is
    --  variables above.
 
    function Set (Obj_Dir : String) return String;
-   --  Read the above variables and prepare passing them to gnat2why. Obj_Dir
-   --  is a place to store temp files, and the return value is the full name
-   --  of the file that is to be passed to gnat2why using -gnates=<file>. The
-   --  chosen file name will be identical for identical contents of the file.
+   --  Assuming that the above global variables are set to meaningful values,
+   --  Read them, store them into a file that gnat2why can read in later and
+   --  return the file name.
+   --  @param Obj_Dir the directory in which the file should be stored
+   --  @return full name of the file that is to be passed to gnat2why using
+   --    -gnates=<file>. The chosen file name will be identical for identical
+   --    contents of the file.
 
 end Gnat2Why_Args;
