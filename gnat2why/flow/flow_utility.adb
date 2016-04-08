@@ -1415,7 +1415,7 @@ package body Flow_Utility is
 
                   --  Convert set of Flow_Ids to a set of Node_Ids
                   for F of All_Inputs_F loop
-                     All_Inputs_N.Include (Get_Direct_Mapping_Id (F));
+                     All_Inputs_N.Insert (Get_Direct_Mapping_Id (F));
                   end loop;
 
                   --  Do the trimming
@@ -1428,13 +1428,13 @@ package body Flow_Utility is
             ---------------------------------------------------------------
 
             for V of G_Proof loop
-               Proof_Ins.Include (Direct_Mapping_Id (V, In_View));
+               Proof_Ins.Insert (Direct_Mapping_Id (V, In_View));
             end loop;
             for V of G_In loop
-               Reads.Include (Direct_Mapping_Id (V, In_View));
+               Reads.Insert (Direct_Mapping_Id (V, In_View));
             end loop;
             for V of G_Out loop
-               Writes.Include (Direct_Mapping_Id (V, Out_View));
+               Writes.Insert (Direct_Mapping_Id (V, Out_View));
             end loop;
 
             ---------------------------------------------------------------
@@ -3664,7 +3664,7 @@ package body Flow_Utility is
       FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       for N of NS loop
-         FS.Include (Get_Flow_Id (N, View, Scope));
+         FS.Insert (Get_Flow_Id (N, View, Scope));
       end loop;
 
       return FS;
