@@ -1679,11 +1679,14 @@ package body Flow is
                Refined_State_N : constant Node_Id :=
                  Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_State);
 
-               DM              : Dependency_Maps.Map;
             begin
                if Present (Refined_State_N) then
-                  DM := Parse_Refined_State (Refined_State_N);
-                  GG_Write_State_Info (DM);
+                  declare
+                     DM : constant Dependency_Maps.Map :=
+                       Parse_Refined_State (Refined_State_N);
+                  begin
+                     GG_Write_State_Info (DM);
+                  end;
                end if;
             end;
          end if;
