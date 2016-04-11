@@ -805,12 +805,15 @@ package body Flow_Generated_Globals is
       --  Retrieve the relevant Name_Dependency_Map, up project it to S and
       --  then convert it into a Dependency_Map.
       declare
-         Pkg          : constant Entity_Id        := Find_Entity (EN);
-         LHS_Scope    : Flow_Scope;
+         Pkg       : constant Entity_Id := Find_Entity (EN);
+         LHS_Scope : constant Flow_Scope :=
+           (if Present (Pkg)
+            then Flow_Scope'(Ent     => Pkg,
+                             Section => Spec_Part)
+            else S);
 
-         DM           : Dependency_Maps.Map;
-         II           : Initializes_Info renames
-           Initializes_Aspects_Map (EN);
+         DM : Dependency_Maps.Map;
+         II : Initializes_Info renames Initializes_Aspects_Map (EN);
 
          All_LHS_UP   : Name_Sets.Set;
          LHS_UP       : Name_Sets.Set;
@@ -818,7 +821,7 @@ package body Flow_Generated_Globals is
          RHS_UP       : Name_Sets.Set;
          RHS_Proof_UP : Name_Sets.Set;
 
-         To_Remove    : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
+         To_Remove    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
          --  This set will hold the names of non fully initialized
          --  states. These will have to be removed from the left hand side
          --  sets.
@@ -830,16 +833,9 @@ package body Flow_Generated_Globals is
          --  These will hold the final flow sets that will be used to populate
          --  the dependency map.
 
-         Unused       : Flow_Id_Sets.Set;
+         Unused : Flow_Id_Sets.Set;
+
       begin
-
-         if Present (Pkg) then
-            LHS_Scope := Flow_Scope'(Ent     => Pkg,
-                                     Section => Spec_Part);
-         else
-            LHS_Scope := S;
-         end if;
-
          --  Up project left hand side
          Up_Project (Most_Refined      => II.LHS or II.LHS_Proof,
                      Final_View        => All_LHS_UP,
