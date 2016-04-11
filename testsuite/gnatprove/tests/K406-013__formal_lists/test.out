@@ -78,8 +78,8 @@ test_vdll.adb:60:19: info: precondition proved
 test_vdll.adb:60:25: info: initialization of private part of "L1" proved
 test_vdll.adb:60:47: info: precondition proved
 test_vdll.adb:60:57: info: precondition proved
+test_vdll.adb:61:04: info: assertion proved
 test_vdll.adb:61:19: info: precondition proved
-test_vdll.adb:61:19: medium: assertion might fail, cannot prove Find (L1, 4, No_Element) = Last (L1)
 test_vdll.adb:61:25: info: initialization of private part of "L1" proved
 test_vdll.adb:61:47: info: precondition proved
 test_vdll.adb:62:04: info: assertion proved

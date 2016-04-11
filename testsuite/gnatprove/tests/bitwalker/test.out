@@ -16,13 +16,13 @@ bitwalker.adb:33:32: info: precondition proved
 bitwalker.adb:47:16: info: overflow check proved
 bitwalker.adb:47:29: info: overflow check proved
 bitwalker.adb:56:13: info: loop invariant initialization proved
+bitwalker.adb:56:13: info: loop invariant preservation proved
 bitwalker.adb:58:18: info: precondition proved
-bitwalker.adb:58:18: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr, Start + Length - J - 1) = Nth (Retval, J) (e.g. when Addr = (others => 0) and Addr'First = 0 and Addr'Last = 268435454 and Length = 9 and Retval = 0 and Start = 8)
 bitwalker.adb:58:56: info: range check proved
 bitwalker.adb:59:18: info: precondition proved
 bitwalker.adb:59:23: info: initialization of "Retval" proved
 bitwalker.adb:59:31: info: range check proved
-bitwalker.adb:63:18: medium: loop invariant might fail after first iteration, cannot prove not Nth (Retval, J) (e.g. when Retval = 0)
+bitwalker.adb:61:13: info: loop invariant preservation proved
 bitwalker.adb:63:18: medium: loop invariant might fail in first iteration, cannot prove not Nth (Retval, J) (e.g. when Retval = 0)
 bitwalker.adb:63:22: info: precondition proved
 bitwalker.adb:63:27: info: initialization of "Retval" proved
@@ -56,8 +56,8 @@ bitwalker.adb:110:36: info: overflow check proved
 bitwalker.adb:119:10: info: loop invariant initialization proved
 bitwalker.adb:119:10: info: loop invariant preservation proved
 bitwalker.adb:120:10: info: loop invariant initialization proved
+bitwalker.adb:120:10: info: loop invariant preservation proved
 bitwalker.adb:122:15: info: precondition proved
-bitwalker.adb:122:15: medium: loop invariant might fail after first iteration, cannot prove Nth8_Stream (Addr'Loop_Entry, J) = Nth8_Stream (Addr, J)
 bitwalker.adb:122:50: info: precondition proved
 bitwalker.adb:123:10: info: loop invariant initialization proved
 bitwalker.adb:125:15: info: precondition proved
@@ -189,4 +189,4 @@ bitwalker.ads:140:15: info: precondition proved
 bitwalker.ads:140:39: info: precondition proved
 bitwalker.ads:145:28: info: initialization of "Result" proved
 bitwalker.ads:155:10: info: initialization of "Result" proved
-bitwalker.ads:155:10: medium: postcondition might fail, cannot prove Result = Value (e.g. when Result = 18446744073709551615 and Value = 0)
+bitwalker.ads:155:10: medium: postcondition might fail, cannot prove Result = Value (e.g. when Result = 1 and Value = 18446744073709551614)

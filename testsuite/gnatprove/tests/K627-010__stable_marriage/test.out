@@ -138,8 +138,8 @@ stable_marriage.adb:311:53: info: range check proved
 stable_marriage.adb:313:31: info: initialization of "G2" proved
 stable_marriage.adb:316:35: info: initialization of "G2" proved
 stable_marriage.adb:321:39: info: initialization of "G2" proved
+stable_marriage.adb:322:13: info: assertion proved
 stable_marriage.adb:322:28: info: precondition proved
-stable_marriage.adb:322:28: medium: assertion might fail, cannot prove Is_Preferred_1 (G1, Result (G2), Ranking_2 (G2) (e.g. when G1 = 2 and G2 = 2 and Result = (2 => 1, 1 => 2, others => 0))
 stable_marriage.adb:322:44: info: initialization of "G1" proved
 stable_marriage.adb:322:72: info: initialization of "G2" proved
 stable_marriage.adb:329:13: info: initialization of "Accepted" proved
@@ -147,10 +147,10 @@ stable_marriage.adb:330:24: info: initialization of "G2" proved
 stable_marriage.adb:330:27: info: initialization of "G1" proved
 stable_marriage.adb:333:10: info: assertion proved
 stable_marriage.adb:335:10: info: assertion proved
+stable_marriage.adb:343:10: info: assertion proved
 stable_marriage.adb:346:29: info: range check proved
-stable_marriage.adb:348:23: medium: assertion might fail, cannot prove Unmatched_G1_Set.Elements (Idx)/= Result (G2_Id)
 stable_marriage.adb:348:51: info: index check proved
-stable_marriage.adb:350:10: medium: assertion might fail (e.g. when Result = (1 => 2, others => 0) and Unmatched_G2_Set = (others => false))
+stable_marriage.adb:350:10: medium: assertion might fail
 stable_marriage.adb:352:24: info: range check proved
 stable_marriage.adb:354:61: info: index check proved
 stable_marriage.adb:355:54: info: index check proved
