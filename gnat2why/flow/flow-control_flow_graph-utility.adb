@@ -409,15 +409,14 @@ package body Flow.Control_Flow_Graph.Utility is
                  Is_Record_Discriminant (F)
                then
                   A.Variables_Used.Include (F);
-                  A.Variables_Explicitly_Used.Include (F);
                end if;
 
                if not Is_Bound (F) and then Has_Bounds (F, Scope) then
                   A.Variables_Used.Include (F'Update (Facet => The_Bounds));
-                  A.Variables_Explicitly_Used.Include
-                    (F'Update (Facet => The_Bounds));
                end if;
             end loop;
+
+            A.Variables_Explicitly_Used := A.Variables_Used;
 
          when Out_View =>
             --  We do not need untangle_assignment_target as we only
