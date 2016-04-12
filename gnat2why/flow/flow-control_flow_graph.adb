@@ -4336,6 +4336,9 @@ package body Flow.Control_Flow_Graph is
          declare
             D_Map : Dependency_Maps.Map;
             V     : Flow_Graphs.Vertex_Id;
+
+            Null_Depends : Dependency_Maps.Cursor;
+
          begin
             Get_Depends (Subprogram           => Called_Thing,
                          Scope                => FA.B_Scope,
@@ -4343,8 +4346,11 @@ package body Flow.Control_Flow_Graph is
                          Depends              => D_Map,
                          Use_Computed_Globals => not FA.Generating_Globals,
                          Callsite             => N);
-            if D_Map.Contains (Null_Flow_Id)
-              and then not D_Map (Null_Flow_Id).Is_Empty
+
+            Null_Depends := D_Map.Find (Null_Flow_Id);
+
+            if Dependency_Maps.Has_Element (Null_Depends)
+              and then not D_Map (Null_Depends).Is_Empty
             then
                Add_Vertex
                  (FA,
