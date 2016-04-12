@@ -3445,6 +3445,8 @@ package body SPARK_Util is
             Result (1 .. Last) := S (S'First .. Last - S'First + 1);
          end Output_Result;
 
+      --  Start of processing for Real_Image
+
       begin
          Output.Set_Special_Output (Output_Result'Unrestricted_Access);
          UR_Write (U);
