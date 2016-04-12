@@ -289,14 +289,14 @@ package body Flow.Control_Flow_Graph.Utility is
       Unused   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
    begin
-      A.Is_Parameter                  := True;
-      A.Is_Discr_Or_Bounds_Parameter  := Discriminants_Or_Bounds_Only;
-      A.Subprograms_Called            := Sub_Called;
-      A.Call_Vertex                   := Direct_Mapping_Id (Call_Vertex);
-      A.Parameter_Actual              := Direct_Mapping_Id (Actual);
-      A.Parameter_Formal              := Direct_Mapping_Id (Formal);
-      A.Loops                         := Loops;
-      A.Error_Location                := E_Loc;
+      A.Is_Parameter                 := True;
+      A.Is_Discr_Or_Bounds_Parameter := Discriminants_Or_Bounds_Only;
+      A.Subprograms_Called           := Sub_Called;
+      A.Call_Vertex                  := Direct_Mapping_Id (Call_Vertex);
+      A.Parameter_Actual             := Direct_Mapping_Id (Actual);
+      A.Parameter_Formal             := Direct_Mapping_Id (Formal);
+      A.Loops                        := Loops;
+      A.Error_Location               := E_Loc;
 
       if In_Vertex then
          Tmp_Used := Get_Variable_Set
