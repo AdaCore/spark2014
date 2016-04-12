@@ -316,9 +316,12 @@ package body Flow_Types is
       end if;
 
       CO := Get_Enclosing_Concurrent_Object (F);
-      return Ekind (CO) in Protected_Kind
-        or else (Ekind (CO) = E_Variable
-                   and then Ekind (Etype (CO)) in Protected_Kind);
+
+      return
+        (case Ekind (CO) is
+            when Protected_Kind => True,
+            when E_Variable     => Ekind (Etype (CO)) in Protected_Kind,
+            when others         => False);
    end Belongs_To_Protected_Object;
 
    -------------------------------------
