@@ -852,8 +852,11 @@ procedure Gnatprove is
 
       --  The CVC4 options explained.
       --
-      --  * lang=smt2
+      --  * --lang=smt2
       --    We process SMTLIB2.
+      --
+      --  * --stats
+      --    This option is needed to obtain steps information
       --
       --  * --no-cbqi
       --    Turn off counter-example based quantifier instantiation, this
@@ -864,9 +867,10 @@ procedure Gnatprove is
       --    the cvc4 step limit works.
 
       Common_CVC4_Options : constant String :=
-          "--lang=smt2 " &
-          "--no-cbqi " &
-          CVC4_Resource_Step_Flags;
+        "--lang=smt2 " &
+        "--stats " &
+        "--no-cbqi " &
+        CVC4_Resource_Step_Flags;
 
       procedure Put_Keyval (Key : String; Value : String);
       procedure Put_Keyval (Key : String; Value : Integer);
