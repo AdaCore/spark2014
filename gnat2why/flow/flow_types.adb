@@ -265,17 +265,16 @@ package body Flow_Types is
       Comp : Entity_Id)
       return Flow_Id
    is
-      Tmp : Flow_Id;
-   begin
-      Tmp := (Kind      => Record_Field,
-              Variant   => F.Variant,
-              Node      => F.Node,
-              Facet     => F.Facet,
-              Component => Entity_Vectors.Empty_Vector);
+      Tmp : Flow_Id :=
+        (Kind      => Record_Field,
+         Variant   => F.Variant,
+         Node      => F.Node,
+         Facet     => F.Facet,
+         Component => (if F.Kind = Record_Field
+                       then F.Component
+                       else Entity_Vectors.Empty_Vector));
 
-      if F.Kind = Record_Field then
-         Tmp.Component := F.Component;
-      end if;
+   begin
       Tmp.Component.Append (Original_Record_Component (Comp));
 
       return Tmp;
