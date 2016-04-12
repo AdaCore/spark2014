@@ -290,18 +290,19 @@ package body Flow_Types is
 
    function Belongs_To_Concurrent_Object (F : Flow_Id) return Boolean is
    begin
-      if F.Kind not in Direct_Mapping | Record_Field then
+      if F.Kind in Direct_Mapping | Record_Field then
+         declare
+            E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+         begin
+            return Is_Part_Of_Concurrent_Object (E)
+              or else Ekind (Scope (E)) in Protected_Kind
+              or else (Is_Discriminant (F)
+                       and then Ekind (Scope (E)) in Task_Kind);
+         end;
+
+      else
          return False;
       end if;
-
-      declare
-         E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-      begin
-         return Is_Part_Of_Concurrent_Object (E)
-           or else Ekind (Scope (E)) in Protected_Kind
-           or else (Is_Discriminant (F)
-                      and then Ekind (Scope (E)) in Task_Kind);
-      end;
    end Belongs_To_Concurrent_Object;
 
    ---------------------------------
