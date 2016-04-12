@@ -1435,8 +1435,8 @@ package body SPARK_Util is
    is
       function Has_No_Output return Boolean;
       --  Return True if procedure E has no output (parameter or global).
-      --  Otherwise, or if we don't know for sure, we return False. If
-      --  After_GG is False, then we will not query generated globals.
+      --  Otherwise, or if we don't know for sure, return False. If After_GG
+      --  is False, then we will not query generated globals.
 
       -------------------
       -- Has_No_Output --
@@ -1484,6 +1484,8 @@ package body SPARK_Util is
             return False;
          end if;
       end Has_No_Output;
+
+   --  Start of processing for Get_Execution_Kind
 
    begin
       if Has_No_Output then
