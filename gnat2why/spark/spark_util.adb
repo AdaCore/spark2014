@@ -1575,22 +1575,20 @@ package body SPARK_Util is
 
    function Get_Expression_Function (E : Entity_Id) return Node_Id is
       Decl_N : constant Node_Id := Parent (Subprogram_Specification (E));
-      Body_N : constant Node_Id := Subprogram_Body (E);
-      Orig_N : Node_Id;
 
-   begin
+      Original_Decl_N : constant Node_Id := Original_Node (Decl_N);
+
       --  Get the original node either from the declaration for E, or from the
       --  subprogram body for E, which may be different if E is attached to a
       --  subprogram declaration.
 
-      if Present (Original_Node (Decl_N))
-        and then Original_Node (Decl_N) /= Decl_N
-      then
-         Orig_N := Original_Node (Decl_N);
-      else
-         Orig_N := Original_Node (Body_N);
-      end if;
+      Orig_N : constant Node_Id :=
+        (if Present (Original_Decl_N)
+           and then Original_Decl_N /= Decl_N
+         then Original_Decl_N
+         else Original_Node (Subprogram_Body (E)));
 
+   begin
       if Nkind (Orig_N) = N_Expression_Function then
          return Orig_N;
       else
