@@ -1173,12 +1173,11 @@ package body SPARK_Util is
 
    function Entry_Body (E : Entity_Id) return Node_Id
    is
-      Ptr : Node_Id := Entry_Body_Entity (E);
+      Ptr : constant Node_Id := Entry_Body_Entity (E);
    begin
-      if Present (Ptr) then
-         Ptr := Parent (Ptr);
-      end if;
-      return Ptr;
+      return (if Present (Ptr)
+              then Parent (Ptr)
+              else Empty);
    end Entry_Body;
 
    -----------------------
