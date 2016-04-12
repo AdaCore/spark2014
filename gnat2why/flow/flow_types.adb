@@ -188,10 +188,7 @@ package body Flow_Types is
    -- Get_Direct_Mapping_Id --
    ---------------------------
 
-   function Get_Direct_Mapping_Id (F : Flow_Id) return Node_Id is
-   begin
-      return F.Node;
-   end Get_Direct_Mapping_Id;
+   function Get_Direct_Mapping_Id (F : Flow_Id) return Node_Id is (F.Node);
 
    ---------------------
    -- Record_Field_Id --
