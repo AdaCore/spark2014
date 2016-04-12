@@ -3590,11 +3590,16 @@ package body SPARK_Util is
                  when others          => raise Program_Error);
    end Get_Body_Entity;
 
-   ----------------------------------
-   -- Is_Part_Of_Concurrent_Object --
-   ----------------------------------
+   generic
+      with function Is_Some_Type (E : Entity_Id) return Boolean;
+   function Is_Part_Of_Type (E : Entity_Id) return Boolean;
+   --  Common routine for checking parts of concurrent and protected objects
 
-   function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean is
+   ---------------------
+   -- Is_Part_Of_Type --
+   ---------------------
+
+   function Is_Part_Of_Type (E : Entity_Id) return Boolean is
    begin
       if Ekind (E) in E_Constant | E_Variable then
          declare
@@ -3604,34 +3609,32 @@ package body SPARK_Util is
 
             return Present (Part_Of_Pragma)
               and then
-                Ekind (Etype (Expression (Get_Argument (Part_Of_Pragma))))
-            in Concurrent_Kind;
+                Is_Some_Type
+                  (Etype (Expression (Get_Argument (Part_Of_Pragma))));
          end;
       else
          return False;
       end if;
-   end Is_Part_Of_Concurrent_Object;
+   end Is_Part_Of_Type;
+
+   ----------------------------------
+   -- Is_Part_Of_Concurrent_Object --
+   ----------------------------------
+
+   function Is_Part_Of_Concurrent is
+     new Is_Part_Of_Type (Is_Concurrent_Type);
+
+   function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean
+     renames Is_Part_Of_Concurrent;
 
    ---------------------------------
    -- Is_Part_Of_Protected_Object --
    ---------------------------------
 
-   function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean is
-   begin
-      if Ekind (E) in E_Constant | E_Variable then
-         declare
-            Part_Of_Pragma : constant Node_Id :=
-              Get_Pragma (E, Pragma_Part_Of);
-         begin
+   function Is_Part_Of_Protected is
+     new Is_Part_Of_Type (Is_Protected_Type);
 
-            return Present (Part_Of_Pragma)
-              and then
-                Ekind (Etype (Expression (Get_Argument (Part_Of_Pragma))))
-            in Protected_Kind;
-         end;
-      else
-         return False;
-      end if;
-   end Is_Part_Of_Protected_Object;
+   function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean
+     renames Is_Part_Of_Protected;
 
 end SPARK_Util;
