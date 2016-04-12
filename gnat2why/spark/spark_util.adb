@@ -3005,15 +3005,15 @@ package body SPARK_Util is
    ----------------------------------
 
    function Location_In_Standard_Library (Loc : Source_Ptr) return Boolean is
-   begin
-      if Loc = No_Location then
-         return False;
-      end if;
+      (case Loc is
+          when No_Location =>
+             False,
 
-      return
-        Loc in Standard_Location | Standard_ASCII_Location | System_Location
-        or else Unit_In_Standard_Library (Unit (Get_Source_File_Index (Loc)));
-   end Location_In_Standard_Library;
+          when Standard_Location | Standard_ASCII_Location | System_Location =>
+             True,
+
+          when others =>
+             Unit_In_Standard_Library (Unit (Get_Source_File_Index (Loc))));
 
    -------------------
    -- Might_Be_Main --
