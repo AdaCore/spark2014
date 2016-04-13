@@ -324,10 +324,6 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Static_Float64"));
-      Static_Float_Rep :=
-        New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Static_Floating_Point_rep"));
       Dynamic_Float :=
         New_Module
           (File => Ada_Model_File,
@@ -340,6 +336,46 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => NID ("Finite_Float64_Literal"));
+      Rep_Proj_IR :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_IR"));
+      Rep_Proj_IRC_Int :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_IRC_Int"));
+      Rep_Proj_IRC_Lt8 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_IRC_ltBV8"));
+      Rep_Proj_IRC_Lt16 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_IRC_ltBV16"));
+      Rep_Proj_IRC_Lt32 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_IRC_ltBV32"));
+      Rep_Proj_IRC_Lt64 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_IRC_ltBV64"));
+      Rep_Proj_IRC_8 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_IRC_BV8"));
+      Rep_Proj_IRC_16 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_IRC_BV16"));
+      Rep_Proj_IRC_32 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_IRC_BV32"));
+      Rep_Proj_IRC_64 :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Rep_Proj_IRC_BV64"));
 
       Constr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,
@@ -1775,7 +1811,11 @@ package body Why.Atree.Modules is
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type));
-               if Is_Floating_Point_Type (E) then
+
+               if not Is_Fixed_Point_Type (E)
+                 and then Is_Scalar_Type (E)
+                 and then not Type_Is_Modeled_As_Base (E)
+               then
                   declare
                      RM : constant W_Module_Id := E_Rep_Module (E);
                   begin
@@ -1810,6 +1850,7 @@ package body Why.Atree.Modules is
                         Symbol => NID ("of_rep"),
                         Typ    => Ty));
                end if;
+
                Insert_Symbol
                  (E, WNE_Attr_First,
                   New_Identifier
@@ -1841,10 +1882,12 @@ package body Why.Atree.Modules is
 
                if Has_Modular_Integer_Type (E) then
                   declare
+                     RM : constant W_Module_Id := E_Rep_Module (E);
+
                      To_Int : constant W_Identifier_Id :=
                        New_Identifier
                          (Symbol => NID ("to_int"),
-                          Module => M,
+                          Module => RM,
                           Domain => EW_Term,
                           Typ    => EW_Int_Type);
                   begin
@@ -2196,13 +2239,27 @@ package body Why.Atree.Modules is
                if Ar_Dim = 1 and then
                  Is_Discrete_Type (Component_Type (E))
                then
-                  Insert_Symbol
-                    (E, WNE_To_Rep,
-                     New_Identifier
-                       (Module => M,
-                        Domain => EW_Term,
-                        Symbol => NID ("to_rep"),
-                        Typ    => EW_Abstract (Component_Type (E))));
+                  if not Type_Is_Modeled_As_Base (E) then
+                     declare
+                        RM : constant W_Module_Id := E_Rep_Module (E);
+                     begin
+                        Insert_Symbol
+                          (E, WNE_To_Rep,
+                           New_Identifier
+                             (Module => RM,
+                              Domain => EW_Term,
+                              Symbol => NID ("to_rep"),
+                              Typ    => EW_Abstract (Component_Type (E))));
+                     end;
+                  else
+                     Insert_Symbol
+                       (E, WNE_To_Rep,
+                        New_Identifier
+                          (Module => M,
+                           Domain => EW_Term,
+                           Symbol => NID ("to_rep"),
+                           Typ    => EW_Abstract (Component_Type (E))));
+                  end if;
                end if;
                for Dim in 1 .. Ar_Dim loop
                   declare

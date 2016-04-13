@@ -88,10 +88,19 @@ package Why.Atree.Modules is
    Fixed_Point_Float_Conv : W_Module_Id;
    Static_Float32         : W_Module_Id;
    Static_Float64         : W_Module_Id;
-   Static_Float_Rep       : W_Module_Id;
    Dynamic_Float          : W_Module_Id;
    Finite_Float32_Literal : W_Module_Id;
    Finite_Float64_Literal : W_Module_Id;
+   Rep_Proj_IR            : W_Module_Id;
+   Rep_Proj_IRC_Int       : W_Module_Id;
+   Rep_Proj_IRC_Lt8       : W_Module_Id;
+   Rep_Proj_IRC_Lt16      : W_Module_Id;
+   Rep_Proj_IRC_Lt32      : W_Module_Id;
+   Rep_Proj_IRC_Lt64      : W_Module_Id;
+   Rep_Proj_IRC_8         : W_Module_Id;
+   Rep_Proj_IRC_16        : W_Module_Id;
+   Rep_Proj_IRC_32        : W_Module_Id;
+   Rep_Proj_IRC_64        : W_Module_Id;
 
    Constr_Arrays                : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays              : W_Module_Array (1 .. Max_Array_Dimensions);

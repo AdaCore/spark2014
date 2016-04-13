@@ -497,26 +497,6 @@ package body Why.Gen.Scalars is
                                    As_Name       => No_Name,
                                    Origin        => Pick_Clone,
                                    Substitutions => Compute_Clone_Subst));
-
-      --  declare metas for functions projecting values of why abstract types
-      --  to concrete values
-      --    - the defined type is why abstract type. To see the concrete value
-      --      in a counterexample, it is needed to project the value of this
-      --      type using projection function
-      --    - the function F is projection function for abstract type T if it
-      --       is marked with the meta "model_projection" and has a single
-      --       argument of type T.
-      --    - the projection functions are cloned from projection functions
-      --       defined in ada__model.mlw
-      --    - Since for why3, the cloned function and the original function are
-      --      two different functions, it is necessary emit projection meta
-      --      for cloned projection functions.
-
-      if Is_Discrete_Type (E) and then Is_Static then
-         --  Note that if E is dynamic type, to_rep is not projection function
-         Emit_Projection_Metas (Section => File, Projection_Fun => "to_rep");
-      end if;
-
    end Declare_Scalar_Type;
 
    ------------------------------
@@ -641,6 +621,148 @@ package body Why.Gen.Scalars is
                Labels      => Name_Id_Sets.Empty_Set,
                Def         => +Last));
    end Define_Scalar_Attributes;
+
+   ----------------------------
+   -- Define_Scalar_Rep_Proj --
+   ----------------------------
+
+   procedure Define_Scalar_Rep_Proj
+     (File : W_Section_Id;
+      E      : Entity_Id)
+   is
+      Rep_Type : constant W_Type_Id := Base_Why_Type (E);
+
+      function Pick_Clone
+         return W_Module_Id;
+
+      function Pick_Clone
+         return W_Module_Id is
+      begin
+         if Why_Type_Is_Float (Rep_Type) then
+            return Rep_Proj_IR;
+         elsif Why_Type_Is_BitVector (Rep_Type) then
+            declare
+               Modulus_Val : constant Uint := Modulus (E);
+            begin
+               return (if Rep_Type = EW_BitVector_8_Type then
+                         (if UI_Lt (Modulus_Val, UI_Expon (2, 8)) then
+                             Rep_Proj_IRC_Lt8
+                          else
+                             Rep_Proj_IRC_8)
+                       elsif Rep_Type = EW_BitVector_16_Type then
+                         (if UI_Lt (Modulus_Val, UI_Expon (2, 16)) then
+                             Rep_Proj_IRC_Lt16
+                          else
+                             Rep_Proj_IRC_16)
+                       elsif Rep_Type = EW_BitVector_32_Type then
+                         (if UI_Lt (Modulus_Val, UI_Expon (2, 32)) then
+                             Rep_Proj_IRC_Lt32
+                          else
+                             Rep_Proj_IRC_32)
+                       elsif Rep_Type = EW_BitVector_64_Type then
+                         (if UI_Lt (Modulus_Val, UI_Expon (2, 64)) then
+                             Rep_Proj_IRC_Lt64
+                          else
+                             Rep_Proj_IRC_64)
+                       else
+                          raise Program_Error);
+            end;
+         elsif Rep_Type = EW_Int_Type then
+            return Rep_Proj_IRC_Int;
+         else
+            raise Program_Error;
+         end if;
+      end Pick_Clone;
+
+      Default_Clone_Subst : constant W_Clone_Substitution_Array :=
+        (1 => New_Clone_Substitution
+           (Kind      => EW_Type_Subst,
+            Orig_Name => New_Name (Symbol => NID ("t")),
+            Image     => To_Why_Type (E)));
+
+      Rep_Type_Subst : constant W_Clone_Substitution_Array :=
+        (if Is_Floating_Point_Type (E) then
+             (1 => New_Clone_Substitution
+              (Kind      => EW_Type_Subst,
+               Orig_Name => New_Name (Symbol => NID ("rep_type")),
+               Image     => Get_Name (Rep_Type)))
+         else
+           (1 .. 0 => <>));
+
+      In_Range_Substs : constant W_Clone_Substitution_Array :=
+        (if Is_Modular_Integer_Type (E) then
+             (1 => New_Clone_Substitution
+              (Kind => EW_Predicate,
+               Orig_Name => New_Name (Symbol => NID ("in_range")),
+               Image => Get_Name (E_Symb (E, WNE_Range_Pred))),
+              2 => New_Clone_Substitution
+                (Kind => EW_Predicate,
+                 Orig_Name => New_Name (Symbol => NID ("in_range_int")),
+                 Image => Get_Name (E_Symb (E, WNE_Range_Pred_BV_Int))))
+         else
+           (1 => New_Clone_Substitution
+                (Kind => EW_Predicate,
+                 Orig_Name => New_Name (Symbol => NID ("in_range")),
+                 Image => Get_Name (E_Symb (E, WNE_Range_Pred)))));
+
+      Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
+        (if Has_Modular_Integer_Type (E)
+         and then Modulus (E) /= UI_Expon (2, Esize (E))
+         then
+           (1 => New_Clone_Substitution
+                (Kind      => EW_Function,
+                 Orig_Name => To_Local (E_Symb (E, WNE_Attr_Modulus)),
+                 Image     => Get_Name (E_Symb (E, WNE_Attr_Modulus))))
+         else (1 .. 0 => <>));
+
+      Substs : constant W_Clone_Substitution_Array :=
+        Default_Clone_Subst & Rep_Type_Subst
+        & In_Range_Substs & Mod_Clone_Subst;
+
+      Clone : constant W_Module_Id := Pick_Clone;
+   begin
+
+      Add_With_Clause (File, E_Module (E), EW_Clone_Default);
+
+      if Is_Modular_Integer_Type (E) then
+
+         Add_With_Clause (File, MF_BVs (Rep_Type).Module, EW_Clone_Default);
+      elsif Is_Floating_Point_Type (E) then
+         Add_With_Clause (File,
+                          MF_Floats (Rep_Type).Module,
+                          EW_Clone_Default);
+      end if;
+
+      Emit (File,
+            New_Clone_Declaration (Theory_Kind   => EW_Module,
+                                   Clone_Kind    => EW_Export,
+                                   As_Name       => No_Name,
+                                   Origin        => Clone,
+                                   Substitutions => Substs));
+
+      Emit_Projection_Metas (Section => File,
+                             Projection_Fun => "to_rep");
+
+      --  declare metas for functions projecting values of why abstract types
+      --  to concrete values
+      --    - the defined type is why abstract type. To see the concrete value
+      --      in a counterexample, it is needed to project the value of this
+      --      type using projection function
+      --    - the function F is projection function for abstract type T if it
+      --       is marked with the meta "model_projection" and has a single
+      --       argument of type T.
+      --    - the projection functions are cloned from projection functions
+      --       defined in ada__model.mlw
+      --    - Since for why3, the cloned function and the original function are
+      --      two different functions, it is necessary emit projection meta
+      --      for cloned projection functions.
+
+      if Is_Discrete_Type (E) then
+         --  Note that if E is dynamic type, to_rep is not projection function
+         Emit_Projection_Metas (Section => File, Projection_Fun => "to_rep");
+      end if;
+
+   end Define_Scalar_Rep_Proj;
 
    ------------------
    -- Num_Constant --

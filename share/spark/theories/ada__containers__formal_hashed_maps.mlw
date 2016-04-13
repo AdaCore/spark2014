@@ -14,6 +14,7 @@ module Ada__containers__formal_hashed_maps__map
   use import "_gnatprove_standard".Main
   use Ada__containers__hash_type
   use Ada__containers__count_type
+  use Ada__containers__count_type__rep
 
   type __split_discrs = { rec__capacity : Ada__containers__count_type.count_type;
                           rec__modulus : Ada__containers__hash_type.hash_type }
@@ -38,7 +39,7 @@ module Ada__containers__formal_hashed_maps__map
      l = { __split_discrs = { rec__capacity = l.__split_discrs.rec__capacity; rec__modulus = l.__split_discrs.rec__modulus }; __split_fields = { rec__main__ = l.__split_fields.rec__main__ } }
 
    function capacity  (co : map) : int =
-          Ada__containers__count_type.to_rep (rec__capacity (__split_discrs co))
+          Ada__containers__count_type__rep.to_rep (rec__capacity (__split_discrs co))
 
   function bool_eq map map : bool
   function user_eq map map : bool
@@ -931,9 +932,10 @@ module Ada__containers__formal_hashed_maps__reserve_capacity
   use import int.Int
   use import "_gnatprove_standard".Main
   use import Ada__containers__formal_hashed_maps__map
+  use Ada__containers__count_type__rep
 
   val reserve_capacity (co:Ada__containers__formal_hashed_maps__map.__split_fields__ref) (cap : Ada__containers__formal_hashed_maps__map.__split_discrs) (c : int) : unit
-    requires { Ada__containers__count_type.to_rep cap.rec__capacity >= c }
+    requires { Ada__containers__count_type__rep.to_rep cap.rec__capacity >= c }
     ensures { co.Ada__containers__formal_hashed_maps__map.__split_fields__content = old co.Ada__containers__formal_hashed_maps__map.__split_fields__content }
 end
 

@@ -39,4 +39,9 @@ package Why.Gen.Scalars is
    --  Populate the Theory with all the necessary declarations for Entity E
    --  (which must be a scalar type)
 
+   procedure Define_Scalar_Rep_Proj
+     (File : W_Section_Id;
+      E      : Entity_Id)
+     with Pre => Is_Scalar_Type (E);
+
 end Why.Gen.Scalars;
