@@ -656,23 +656,23 @@ package body Flow.Analysis is
             else
                case FA.Kind is
                   when Kind_Subprogram | Kind_Entry =>
-                     Vars_Known := Flow_Id_Sets.Empty_Set;
-
                      --  We need to assemble the variables known from the spec:
                      --  these are parameters (both explicit and implicit) and
                      --  globals.
+
+                     Vars_Known :=
+                       To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity));
+
                      declare
                         Tmp_A, Tmp_B, Tmp_C : Flow_Id_Sets.Set;
                      begin
-                        Vars_Known.Union
-                          (To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity)));
-
                         Get_Globals (Subprogram => FA.Spec_Entity,
                                      Scope      => FA.S_Scope,
                                      Classwide  => False,
                                      Proof_Ins  => Tmp_A,
                                      Reads      => Tmp_B,
                                      Writes     => Tmp_C);
+
                         for F of To_Entire_Variables (Tmp_A or Tmp_B or Tmp_C)
                         loop
                            Vars_Known.Include (Change_Variant (F, Normal_Use));
