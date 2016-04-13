@@ -1,4 +1,4 @@
-maths_pack.adb:9:32: info: overflow check proved
+maths_pack.adb:9:32: info: overflow check proved (Interval)
 maths_pack.adb:18:34: info: initialization of "Y" proved
 maths_pack.adb:19:12: info: initialization of "Magic_Num" proved
 maths_pack.adb:19:37: info: initialization of "I" proved
@@ -14,65 +14,65 @@ maths_pack.ads:23:16: medium: postcondition might fail
 safety_pack.adb:16:14: info: initialization of "Res" proved
 safety_pack.adb:30:14: info: initialization of "Res" proved
 safety_pack.adb:41:17: info: initialization of "Res" proved
-safety_pack.adb:41:21: info: overflow check proved
+safety_pack.adb:41:21: info: overflow check proved (CVC4: 1 VC)
 safety_pack.adb:43:17: info: initialization of "Res" proved
-safety_pack.adb:43:21: info: overflow check proved
+safety_pack.adb:43:21: info: overflow check proved (CVC4: 1 VC)
 safety_pack.adb:46:14: info: initialization of "Res" proved
-safety_pack.adb:57:26: info: range check proved
+safety_pack.adb:57:26: info: range check proved (CVC4: 1 VC)
 safety_pack.adb:60:14: info: initialization of "Res" proved
-safety_pack.adb:67:17: info: predicate check proved
-safety_pack.adb:69:17: info: predicate check proved
-safety_pack.adb:71:17: info: predicate check proved
-safety_pack.adb:73:17: info: predicate check proved
+safety_pack.adb:67:17: info: predicate check proved (CVC4: 1 VC)
+safety_pack.adb:69:17: info: predicate check proved (CVC4: 1 VC)
+safety_pack.adb:71:17: info: predicate check proved (CVC4: 1 VC)
+safety_pack.adb:73:17: info: predicate check proved (CVC4: 1 VC)
 safety_pack.adb:76:14: info: initialization of "Res" proved
-safety_pack.ads:15:08: info: complete contract cases proved
-safety_pack.ads:15:08: info: disjoint contract cases proved
-safety_pack.ads:15:62: info: contract case proved
-safety_pack.ads:17:62: info: contract case proved
-safety_pack.ads:18:54: info: overflow check proved
-safety_pack.ads:19:62: info: contract case proved
-safety_pack.ads:20:54: info: overflow check proved
-safety_pack.ads:29:16: info: postcondition proved
-safety_pack.ads:44:17: info: postcondition proved
-safety_pack.ads:59:11: info: complete contract cases proved
-safety_pack.ads:59:11: info: disjoint contract cases proved
-safety_pack.ads:59:38: info: contract case proved
-safety_pack.ads:60:39: info: contract case proved
-sensfusion6_pack.adb:79:21: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:28: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:33: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:38: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:43: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:79:48: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:21: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:27: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:32: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:37: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:42: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:80:47: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:21: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:27: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:32: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:37: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:42: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:81:47: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:21: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:27: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:32: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:37: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:42: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:82:47: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
+safety_pack.ads:15:08: info: complete contract cases proved (CVC4: 1 VC)
+safety_pack.ads:15:08: info: disjoint contract cases proved (CVC4: 1 VC)
+safety_pack.ads:15:62: info: contract case proved (CVC4: 1 VC)
+safety_pack.ads:17:62: info: contract case proved (CVC4: 1 VC)
+safety_pack.ads:18:54: info: overflow check proved (CVC4: 1 VC)
+safety_pack.ads:19:62: info: contract case proved (CVC4: 1 VC)
+safety_pack.ads:20:54: info: overflow check proved (CVC4: 1 VC)
+safety_pack.ads:29:16: info: postcondition proved (CVC4: 1 VC)
+safety_pack.ads:44:17: info: postcondition proved (CVC4: 1 VC)
+safety_pack.ads:59:11: info: complete contract cases proved (CVC4: 1 VC)
+safety_pack.ads:59:11: info: disjoint contract cases proved (CVC4: 1 VC)
+safety_pack.ads:59:38: info: contract case proved (CVC4: 1 VC)
+safety_pack.ads:60:39: info: contract case proved (CVC4: 1 VC)
+sensfusion6_pack.adb:79:21: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:79:28: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:79:33: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:79:38: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:79:43: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:79:48: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:80:21: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:80:27: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:80:32: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:80:37: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:80:42: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:80:47: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:81:21: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:81:27: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:81:32: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:81:37: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:81:42: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:81:47: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:82:21: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:82:27: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:82:32: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:82:37: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:82:42: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:82:47: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:24: info: initialization of "Ax_Tmp" proved
 sensfusion6_pack.adb:91:24: info: initialization of "Ax_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:31: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:40: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:91:31: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:91:40: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:42: info: initialization of "Ay_Tmp" proved
 sensfusion6_pack.adb:91:42: info: initialization of "Ay_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:49: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:58: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:91:49: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:91:58: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:60: info: initialization of "Az_Tmp" proved
 sensfusion6_pack.adb:91:60: info: initialization of "Az_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:67: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:91:67: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:92:34: info: initialization of "Square_Sum" proved
 sensfusion6_pack.adb:92:34: info: initialization of "Square_Sum" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:93:36: info: initialization of "Recip_Norm" proved
@@ -81,19 +81,19 @@ sensfusion6_pack.adb:94:36: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:94:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:95:36: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:95:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:98:23: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:99:23: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:100:23: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:101:23: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:102:23: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:103:23: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:104:23: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:105:23: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:106:23: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:107:22: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:108:22: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:109:22: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:110:22: info: overflow check proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:98:23: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:99:23: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:100:23: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:101:23: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:102:23: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:103:23: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:104:23: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:105:23: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:106:23: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:107:22: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:108:22: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:109:22: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:110:22: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:113:16: info: initialization of "Q0_X4" proved
 sensfusion6_pack.adb:113:16: info: initialization of "Q0_X4" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:113:24: info: initialization of "Q2_Q2" proved
@@ -236,40 +236,40 @@ sensfusion6_pack.adb:150:10: info: initialization of "Q3_Tmp" proved
 sensfusion6_pack.adb:150:10: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:150:19: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:150:19: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:166:35: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:166:40: info: division check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:166:40: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:167:35: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:167:40: info: division check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:167:40: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:168:35: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:168:40: info: division check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:168:40: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:171:35: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:171:40: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:171:45: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:172:35: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:172:40: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:172:45: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:173:35: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:173:40: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:173:46: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:173:51: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:166:35: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:166:40: info: division check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:166:40: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:167:35: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:167:40: info: division check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:167:40: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:168:35: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:168:40: info: division check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:168:40: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:171:35: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:171:40: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:171:45: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:172:35: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:172:40: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:172:45: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:173:35: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:173:40: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:173:46: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:173:51: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:189:24: medium: precondition might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:16: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:21: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:26: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:31: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:190:36: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:191:21: info: range check proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:190:16: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:190:21: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:190:26: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:190:31: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:190:36: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:191:21: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:191:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:191:36: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:191:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:192:21: info: range check proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:192:21: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:192:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:192:36: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:192:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:193:21: info: range check proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:193:21: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:193:34: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:193:36: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:193:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
@@ -350,16 +350,16 @@ sensfusion6_pack.adb:218:38: info: initialization of "Half_Ez" proved
 sensfusion6_pack.adb:218:38: info: initialization of "Half_Ez" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:222:17: info: initialization of "Rad_Gx" proved
 sensfusion6_pack.adb:222:17: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:222:24: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:222:31: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:222:24: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:222:31: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:223:17: info: initialization of "Rad_Gy" proved
 sensfusion6_pack.adb:223:17: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:223:24: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:223:31: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:223:24: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:223:31: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:224:17: info: initialization of "Rad_Gz" proved
 sensfusion6_pack.adb:224:17: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:224:24: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:224:31: info: overflow check proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:224:24: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:224:31: info: overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:226:20: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:226:24: info: initialization of "Qb" proved
 sensfusion6_pack.adb:226:24: info: initialization of "Qb" proved, in call inlined at sensfusion6_pack.adb:258
@@ -442,99 +442,99 @@ sensfusion6_pack.adb:233:49: medium: overflow check might fail, in call inlined 
 sensfusion6_pack.adb:233:51: info: initialization of "Q3_Tmp" proved
 sensfusion6_pack.adb:233:51: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:233:58: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:234:13: info: range check proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:234:13: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:234:23: info: initialization of "Q0_Tmp" proved
 sensfusion6_pack.adb:234:23: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:234:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:234:32: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:234:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:237:13: info: range check proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:237:13: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:237:23: info: initialization of "Q1_Tmp" proved
 sensfusion6_pack.adb:237:23: info: initialization of "Q1_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:237:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:237:32: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:237:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:240:13: info: range check proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:240:13: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:240:23: info: initialization of "Q2_Tmp" proved
 sensfusion6_pack.adb:240:23: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:240:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:240:32: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:240:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:243:13: info: range check proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:243:13: info: range check proved (CVC4: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:243:23: info: initialization of "Q3_Tmp" proved
 sensfusion6_pack.adb:243:23: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:243:30: medium: overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:243:32: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:243:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:284:21: info: overflow check proved
-sensfusion6_pack.adb:284:27: info: overflow check proved
-sensfusion6_pack.adb:284:32: info: overflow check proved
-sensfusion6_pack.adb:284:37: info: overflow check proved
-sensfusion6_pack.adb:285:21: info: overflow check proved
-sensfusion6_pack.adb:285:27: info: overflow check proved
-sensfusion6_pack.adb:285:32: info: overflow check proved
-sensfusion6_pack.adb:285:37: info: overflow check proved
-sensfusion6_pack.adb:286:20: info: overflow check proved
-sensfusion6_pack.adb:286:25: info: overflow check proved
-sensfusion6_pack.adb:286:30: info: overflow check proved
-sensfusion6_pack.adb:286:35: info: overflow check proved
-sensfusion6_pack.adb:286:40: info: overflow check proved
-sensfusion6_pack.adb:286:45: info: overflow check proved
-sensfusion6_pack.adb:286:50: info: overflow check proved
+sensfusion6_pack.adb:284:21: info: overflow check proved (Interval)
+sensfusion6_pack.adb:284:27: info: overflow check proved (Interval)
+sensfusion6_pack.adb:284:32: info: overflow check proved (Interval)
+sensfusion6_pack.adb:284:37: info: overflow check proved (Interval)
+sensfusion6_pack.adb:285:21: info: overflow check proved (Interval)
+sensfusion6_pack.adb:285:27: info: overflow check proved (Interval)
+sensfusion6_pack.adb:285:32: info: overflow check proved (Interval)
+sensfusion6_pack.adb:285:37: info: overflow check proved (Interval)
+sensfusion6_pack.adb:286:20: info: overflow check proved (Interval)
+sensfusion6_pack.adb:286:25: info: overflow check proved (Interval)
+sensfusion6_pack.adb:286:30: info: overflow check proved (Interval)
+sensfusion6_pack.adb:286:35: info: overflow check proved (Interval)
+sensfusion6_pack.adb:286:40: info: overflow check proved (Interval)
+sensfusion6_pack.adb:286:45: info: overflow check proved (Interval)
+sensfusion6_pack.adb:286:50: info: overflow check proved (Interval)
 sensfusion6_pack.adb:288:27: info: initialization of "Grav_X" proved
-sensfusion6_pack.adb:291:21: info: overflow check proved
-sensfusion6_pack.adb:291:27: info: overflow check proved
-sensfusion6_pack.adb:291:32: info: overflow check proved
-sensfusion6_pack.adb:291:37: info: overflow check proved
-sensfusion6_pack.adb:292:20: info: overflow check proved
-sensfusion6_pack.adb:292:25: info: overflow check proved
-sensfusion6_pack.adb:292:30: info: overflow check proved
-sensfusion6_pack.adb:292:35: info: overflow check proved
-sensfusion6_pack.adb:292:40: info: overflow check proved
-sensfusion6_pack.adb:292:45: info: overflow check proved
-sensfusion6_pack.adb:292:50: info: overflow check proved
-sensfusion6_pack.adb:292:56: info: overflow check proved
-sensfusion6_pack.adb:292:64: info: division check proved
-sensfusion6_pack.adb:292:64: info: overflow check proved
-sensfusion6_pack.adb:292:64: info: range check proved
+sensfusion6_pack.adb:291:21: info: overflow check proved (Interval)
+sensfusion6_pack.adb:291:27: info: overflow check proved (Interval)
+sensfusion6_pack.adb:291:32: info: overflow check proved (Interval)
+sensfusion6_pack.adb:291:37: info: overflow check proved (Interval)
+sensfusion6_pack.adb:292:20: info: overflow check proved (Interval)
+sensfusion6_pack.adb:292:25: info: overflow check proved (Interval)
+sensfusion6_pack.adb:292:30: info: overflow check proved (Interval)
+sensfusion6_pack.adb:292:35: info: overflow check proved (Interval)
+sensfusion6_pack.adb:292:40: info: overflow check proved (Interval)
+sensfusion6_pack.adb:292:45: info: overflow check proved (Interval)
+sensfusion6_pack.adb:292:50: info: overflow check proved (Interval)
+sensfusion6_pack.adb:292:56: info: overflow check proved (Interval)
+sensfusion6_pack.adb:292:64: info: division check proved (CVC4: 1 VC)
+sensfusion6_pack.adb:292:64: info: overflow check proved (Interval)
+sensfusion6_pack.adb:292:64: info: range check proved (Interval)
 sensfusion6_pack.adb:294:35: info: initialization of "Grav_X" proved
-sensfusion6_pack.adb:294:43: info: overflow check proved
-sensfusion6_pack.adb:294:51: info: division check proved
-sensfusion6_pack.adb:294:51: info: overflow check proved
-sensfusion6_pack.adb:294:51: info: range check proved
+sensfusion6_pack.adb:294:43: info: overflow check proved (Interval)
+sensfusion6_pack.adb:294:51: info: division check proved (CVC4: 1 VC)
+sensfusion6_pack.adb:294:51: info: overflow check proved (Interval)
+sensfusion6_pack.adb:294:51: info: range check proved (Interval)
 sensfusion6_pack.adb:295:36: info: initialization of "Grav_Y" proved
 sensfusion6_pack.adb:295:44: info: initialization of "Grav_Z" proved
-sensfusion6_pack.adb:295:52: info: overflow check proved
-sensfusion6_pack.adb:295:60: info: division check proved
-sensfusion6_pack.adb:295:60: info: overflow check proved
-sensfusion6_pack.adb:295:60: info: range check proved
-sensfusion6_pack.adb:308:21: info: overflow check proved
-sensfusion6_pack.adb:308:21: info: range check proved
-sensfusion6_pack.adb:308:27: info: overflow check proved
-sensfusion6_pack.adb:308:32: info: overflow check proved
-sensfusion6_pack.adb:308:37: info: overflow check proved
-sensfusion6_pack.adb:310:21: info: overflow check proved
-sensfusion6_pack.adb:310:21: info: range check proved
-sensfusion6_pack.adb:310:27: info: overflow check proved
-sensfusion6_pack.adb:310:32: info: overflow check proved
-sensfusion6_pack.adb:310:37: info: overflow check proved
-sensfusion6_pack.adb:312:20: info: overflow check proved
-sensfusion6_pack.adb:312:25: info: overflow check proved
-sensfusion6_pack.adb:312:30: info: overflow check proved
-sensfusion6_pack.adb:312:35: info: overflow check proved
-sensfusion6_pack.adb:312:40: info: overflow check proved
-sensfusion6_pack.adb:312:45: info: overflow check proved
-sensfusion6_pack.adb:312:45: info: range check proved
-sensfusion6_pack.adb:312:50: info: overflow check proved
-sensfusion6_pack.adb:316:18: info: overflow check proved
+sensfusion6_pack.adb:295:52: info: overflow check proved (Interval)
+sensfusion6_pack.adb:295:60: info: division check proved (CVC4: 1 VC)
+sensfusion6_pack.adb:295:60: info: overflow check proved (Interval)
+sensfusion6_pack.adb:295:60: info: range check proved (Interval)
+sensfusion6_pack.adb:308:21: info: overflow check proved (Interval)
+sensfusion6_pack.adb:308:21: info: range check proved (Interval)
+sensfusion6_pack.adb:308:27: info: overflow check proved (Interval)
+sensfusion6_pack.adb:308:32: info: overflow check proved (Interval)
+sensfusion6_pack.adb:308:37: info: overflow check proved (Interval)
+sensfusion6_pack.adb:310:21: info: overflow check proved (Interval)
+sensfusion6_pack.adb:310:21: info: range check proved (Interval)
+sensfusion6_pack.adb:310:27: info: overflow check proved (Interval)
+sensfusion6_pack.adb:310:32: info: overflow check proved (Interval)
+sensfusion6_pack.adb:310:37: info: overflow check proved (Interval)
+sensfusion6_pack.adb:312:20: info: overflow check proved (Interval)
+sensfusion6_pack.adb:312:25: info: overflow check proved (Interval)
+sensfusion6_pack.adb:312:30: info: overflow check proved (Interval)
+sensfusion6_pack.adb:312:35: info: overflow check proved (Interval)
+sensfusion6_pack.adb:312:40: info: overflow check proved (Interval)
+sensfusion6_pack.adb:312:45: info: overflow check proved (Interval)
+sensfusion6_pack.adb:312:45: info: range check proved (Interval)
+sensfusion6_pack.adb:312:50: info: overflow check proved (Interval)
+sensfusion6_pack.adb:316:18: info: overflow check proved (Interval)
 sensfusion6_pack.adb:316:20: info: initialization of "Grav_X" proved
-sensfusion6_pack.adb:316:27: info: overflow check proved
-sensfusion6_pack.adb:316:32: info: overflow check proved
+sensfusion6_pack.adb:316:27: info: overflow check proved (Interval)
+sensfusion6_pack.adb:316:32: info: overflow check proved (Interval)
 sensfusion6_pack.adb:316:34: info: initialization of "Grav_Y" proved
-sensfusion6_pack.adb:316:41: info: overflow check proved
-sensfusion6_pack.adb:316:46: info: overflow check proved
+sensfusion6_pack.adb:316:41: info: overflow check proved (Interval)
+sensfusion6_pack.adb:316:46: info: overflow check proved (Interval)
 sensfusion6_pack.adb:316:48: info: initialization of "Grav_Z" proved
-sensfusion6_pack.adb:316:56: info: overflow check proved
+sensfusion6_pack.adb:316:56: info: overflow check proved (Interval)
 sensfusion6_pack.ads:27:07: info: initialization of "Euler_Roll_Actual" proved
 sensfusion6_pack.ads:28:07: info: initialization of "Euler_Pitch_Actual" proved
 sensfusion6_pack.ads:29:07: info: initialization of "Euler_Yaw_Actual" proved

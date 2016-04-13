@@ -1,19 +1,19 @@
-list.adb:17:35: info: precondition proved
-list.adb:18:35: info: precondition proved
+list.adb:17:35: info: precondition proved (CVC4: 1 VC)
+list.adb:18:35: info: precondition proved (CVC4: 1 VC)
 list.adb:20:07: info: initialization of private part of "Res" proved
 list.adb:20:14: info: initialization of private part of "Res" proved
 list.adb:23:10: medium: precondition might fail
 list.adb:23:16: info: initialization of "S" proved
-list.adb:23:19: info: precondition proved
-list.adb:23:31: info: range check proved
+list.adb:23:19: info: precondition proved (CVC4: 2 VC)
+list.adb:23:31: info: range check proved (CVC4: 2 VC)
 list.adb:24:10: medium: loop invariant might fail after first iteration
 list.adb:24:10: medium: loop invariant might fail in first iteration (e.g. when First = 1 and I = 1)
 list.adb:25:23: info: initialization of "S" proved
-list.adb:25:35: info: overflow check proved
-list.adb:25:43: info: overflow check proved
+list.adb:25:35: info: overflow check proved (CVC4: 1 VC)
+list.adb:25:43: info: overflow check proved (CVC4: 1 VC)
 list.adb:26:54: medium: array index check might fail
-list.adb:26:59: info: precondition proved
-list.adb:26:71: info: range check proved
+list.adb:26:59: info: precondition proved (CVC4: 1 VC)
+list.adb:26:71: info: range check proved (CVC4: 1 VC)
 list.adb:30:10: medium: precondition might fail
 list.adb:30:18: info: initialization of private part of "Res" proved
 list.adb:30:23: medium: precondition might fail
@@ -23,30 +23,30 @@ list.adb:31:15: info: initialization of "S" proved
 list.adb:32:10: medium: loop invariant might fail after first iteration
 list.adb:32:10: medium: loop invariant might fail in first iteration
 list.adb:33:23: info: initialization of "S" proved
-list.adb:33:38: info: overflow check proved
+list.adb:33:38: info: overflow check proved (CVC4: 1 VC)
 list.adb:34:21: medium: range check might fail
-list.adb:34:44: info: overflow check proved
+list.adb:34:44: info: overflow check proved (CVC4: 1 VC)
 list.adb:35:24: medium: range check might fail
-list.adb:35:58: info: overflow check proved
+list.adb:35:58: info: overflow check proved (CVC4: 1 VC)
 list.adb:37:15: medium: precondition might fail
 list.adb:37:24: info: initialization of private part of "Res" proved
-list.adb:37:29: info: range check proved
-list.adb:37:34: info: precondition proved
-list.adb:37:46: info: precondition proved
-list.adb:37:61: info: overflow check proved
-list.adb:37:65: info: overflow check proved
-list.adb:37:65: info: range check proved
+list.adb:37:29: info: range check proved (CVC4: 1 VC)
+list.adb:37:34: info: precondition proved (CVC4: 1 VC)
+list.adb:37:46: info: precondition proved (CVC4: 1 VC)
+list.adb:37:61: info: overflow check proved (CVC4: 1 VC)
+list.adb:37:65: info: overflow check proved (CVC4: 1 VC)
+list.adb:37:65: info: range check proved (CVC4: 1 VC)
 list.ads:10:12: medium: range check might fail
-list.ads:15:14: info: postcondition proved
-list.ads:15:28: info: precondition proved
-list.ads:15:47: info: precondition proved
-list.ads:16:17: info: precondition proved
-list.ads:16:29: info: range check proved
+list.ads:15:14: info: postcondition proved (Z3: 1 VC)
+list.ads:15:28: info: precondition proved (CVC4: 1 VC)
+list.ads:15:47: info: precondition proved (CVC4: 1 VC)
+list.ads:16:17: info: precondition proved (CVC4: 1 VC)
+list.ads:16:29: info: range check proved (CVC4: 1 VC)
 list.ads:16:34: medium: precondition might fail
-list.ads:16:64: info: precondition proved
-list.ads:16:79: info: overflow check proved
-list.ads:16:83: info: overflow check proved
-list.ads:16:83: info: range check proved
+list.ads:16:64: info: precondition proved (CVC4: 1 VC)
+list.ads:16:79: info: overflow check proved (CVC4: 1 VC)
+list.ads:16:83: info: overflow check proved (CVC4: 1 VC)
+list.ads:16:83: info: range check proved (CVC4: 1 VC)
 main.adb:5:04: info: initialization of private part of "L" proved
 main.adb:9:15: medium: precondition might fail
 main.adb:9:24: info: initialization of private part of "L" proved
@@ -54,12 +54,12 @@ main.adb:13:07: info: initialization of private part of "Rev_L" proved
 main.adb:13:42: info: initialization of private part of "L" proved
 main.adb:16:29: medium: precondition might fail (e.g. when I = 1)
 main.adb:16:39: info: initialization of private part of "Rev_L" proved
-stack.adb:4:47: info: range check proved
-stack.adb:5:55: info: range check proved
-stack.adb:20:22: info: range check proved
-stack.adb:21:19: info: index check proved
-stack.adb:32:22: info: range check proved
-stack.ads:19:14: info: precondition proved
+stack.adb:4:47: info: range check proved (CVC4: 1 VC)
+stack.adb:5:55: info: range check proved (CVC4: 1 VC)
+stack.adb:20:22: info: range check proved (CVC4: 1 VC)
+stack.adb:21:19: info: index check proved (CVC4: 1 VC)
+stack.adb:32:22: info: range check proved (CVC4: 1 VC)
+stack.ads:19:14: info: precondition proved (CVC4: 1 VC)
 stack.ads:19:14: medium: postcondition might fail
-stack.ads:23:14: info: postcondition proved
-stack.ads:31:34: info: length check proved
+stack.ads:23:14: info: postcondition proved (CVC4: 1 VC)
+stack.ads:31:34: info: length check proved (CVC4: 1 VC)
