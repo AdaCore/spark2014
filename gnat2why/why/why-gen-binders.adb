@@ -113,7 +113,13 @@ package body Why.Gen.Binders is
       I       : Positive := 1;
    begin
       for B of Binders loop
-         if Ref_Allowed then
+
+         --  Though here we are only dealing with variables, it can be the case
+         --  that we get a binder of a constant instead.
+         --  It happens in particular for global variables in axioms generated
+         --  for postconditions of functions.
+
+         if Ref_Allowed and then B.Mutable then
             Args (I) := New_Deref (Right => B.B_Name,
                                    Typ   => Get_Typ (B.B_Name));
          else
@@ -229,7 +235,6 @@ package body Why.Gen.Binders is
          for B of Binders loop
             case B.Kind is
             when Regular | Prot_Self =>
-               pragma Assert (B.Main.Mutable);
                Length := Length + 1;
             when UCArray =>
                pragma Assert (B.Content.Mutable);
