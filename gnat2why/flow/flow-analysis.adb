@@ -4317,20 +4317,23 @@ package body Flow.Analysis is
 
       function Variable_Has_CAE (F : Flow_Id) return Boolean is
       begin
-         if F.Kind not in Direct_Mapping | Record_Field then
+         if F.Kind in Direct_Mapping | Record_Field then
+            declare
+               E   : constant Entity_Id := Get_Direct_Mapping_Id (F);
+               CAE : constant Node_Id :=
+                 (if Ekind (E) = E_Variable
+                  then Get_Pragma (E, Pragma_Constant_After_Elaboration)
+                  else Empty);
+            begin
+               return Is_Constant_After_Elaboration (CAE);
+            end;
+
+         else
             return False;
          end if;
-
-         declare
-            E   : constant Entity_Id := Get_Direct_Mapping_Id (F);
-            CAE : constant Node_Id :=
-              (if Ekind (E) = E_Variable
-               then Get_Pragma (E, Pragma_Constant_After_Elaboration)
-               else Empty);
-         begin
-            return Is_Constant_After_Elaboration (CAE);
-         end;
       end Variable_Has_CAE;
+
+   --  Start of processing for Check_CAE_In_Preconditions
 
    begin
       if not Belongs_To_Protected_Object
