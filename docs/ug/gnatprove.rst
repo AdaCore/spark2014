@@ -215,6 +215,14 @@ required, because the results with a timeout may differ depending on the
 computing power or current load of the machine. The option ``-j`` activates
 parallel compilation and parallel proofs.
 
+.. note::
+
+    When the project has a main file, or a file is passed as starting point to
+    gnatprove, and the dependencies in the project are very linear (unit A
+    depends only on unit B, which depends only on unit C, etc), then even when
+    the ``-j`` switch is used, gnatprove may only consider one file at a time.
+    This problem can be avoided by additionally using the ``-U`` switch.
+
 The way checks are passed to the prover can also be influenced using the option
 ``--proof``. By default, the prover is invoked a single time for each check or
 assertion (mode ``per_check``). This can be changed using mode ``per_path`` to
