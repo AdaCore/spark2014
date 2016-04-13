@@ -6127,10 +6127,10 @@ package body Flow.Control_Flow_Graph is
                         P : G_Prop  renames Globals (C);
 
                         Mode : constant Param_Mode :=
-                          (if P.Is_Read and P.Is_Write then Mode_In_Out
-                           elsif P.Is_Read then Mode_In
-                           elsif P.Is_Write then Mode_Out
-                           elsif P.Is_Proof_In then Mode_Proof
+                          (if    P.Is_Read and P.Is_Write then Mode_In_Out
+                           elsif P.Is_Read                then Mode_In
+                           elsif P.Is_Write               then Mode_Out
+                           elsif P.Is_Proof_In            then Mode_Proof
                            else raise Program_Error);
 
                      begin

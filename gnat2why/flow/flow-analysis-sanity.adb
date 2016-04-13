@@ -773,7 +773,6 @@ package body Flow.Analysis.Sanity is
    --  Start of processing for Check_Generated_Refined_Global
 
    begin
-
       Sane := True;
 
       if FA.Kind /= Kind_Subprogram
