@@ -762,7 +762,7 @@ package body Flow.Slice is
          return Subs_Without_Contracts;
       end Subprograms_Without_Contracts;
 
-      All_Outs, All_Ins, In_Outs, Ordinary_Ins : Node_Sets.Set;
+      All_Ins, Ordinary_Ins : Node_Sets.Set;
 
    --  Start of processing for Compute_Globals
 
@@ -816,13 +816,10 @@ package body Flow.Slice is
 
             --  Insert global into appropriate containers
             if Is_Used and Is_Written then
-               In_Outs.Insert (G);
-
                Outputs.Insert (G);
                Inputs.Insert (G);
             else
                if not Is_Used then
-                  All_Outs.Insert (G);
                   Outputs.Insert (G);
                end if;
 
