@@ -723,7 +723,7 @@ package body Flow.Analysis is
                        (Get_Variable_Set
                           (Expr,
                            Scope                => Private_Scope
-                             (Get_Flow_Scope (Expr)),
+                                                     (Get_Flow_Scope (Expr)),
                            Local_Constants      => FA.Local_Constants,
                            Fold_Functions       => False,
                            Reduced              => True,
