@@ -6104,8 +6104,9 @@ package body Flow.Control_Flow_Graph is
                            Globals (Position).Is_Write := True;
                         end if;
 
-                        --  If we are dealing with a function, since we found a
-                        --  global output, we raise an error.
+                        --  Emit error if it is a global output of a function;
+                        --  later it will be difficult to tell which of the
+                        --  globals is an output.
                         if Ekind (FA.Analyzed_Entity) = E_Function then
                            Error_Msg_Flow
                              (FA       => FA,
