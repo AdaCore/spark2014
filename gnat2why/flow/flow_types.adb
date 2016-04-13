@@ -348,39 +348,39 @@ package body Flow_Types is
    --  Start of processing for Get_Enclosing_Concurrent_Object
 
    begin
-      if No (Callsite) then
-         if Is_Part_Of_Concurrent_Object (E) then
-            return Get_Anonymous_Object (Etype (Encapsulating_State (E)));
-         elsif Ekind (Scope (E)) in Concurrent_Kind then
-            return Get_Anonymous_Object (Scope (E));
-         else
-            raise Why.Unexpected_Node;
-         end if;
+      if Present (Callsite) then
+         declare
+            Orig_Name : constant Node_Id := Original_Node (Name (Callsite));
+
+         begin
+            case Nkind (Orig_Name) is
+               when N_Identifier | N_Expanded_Name =>
+                  return Get_Enclosing_Concurrent_Object (E);
+
+               when N_Selected_Component =>
+                  declare
+                     Pref : constant Node_Id := Prefix (Orig_Name);
+                  begin
+                     return (if Entire
+                            then Get_Direct_Mapping_Id
+                                   (Concurrent_Object_Id (Pref))
+                            else Pref);
+                  end;
+
+               when others =>
+                  raise Why.Unexpected_Node;
+            end case;
+         end;
+
+      else
+         return
+           Get_Anonymous_Object
+             (if Is_Part_Of_Concurrent_Object (E)
+              then Etype (Encapsulating_State (E))
+              elsif Ekind (Scope (E)) in Concurrent_Kind
+              then Scope (E)
+              else raise Why.Unexpected_Node);
       end if;
-
-      declare
-         Orig_Name : constant Node_Id := Original_Node (Name (Callsite));
-      begin
-         case Nkind (Orig_Name) is
-            when N_Identifier | N_Expanded_Name =>
-               return Get_Enclosing_Concurrent_Object (E);
-
-            when N_Selected_Component =>
-               declare
-                  Pref : constant Node_Id := Prefix (Orig_Name);
-               begin
-                  if Entire then
-                     return Get_Direct_Mapping_Id
-                              (Concurrent_Object_Id (Pref));
-                  end if;
-
-                  return Pref;
-               end;
-
-            when others =>
-               raise Why.Unexpected_Node;
-         end case;
-      end;
    end Get_Enclosing_Concurrent_Object;
 
    function Get_Enclosing_Concurrent_Object
