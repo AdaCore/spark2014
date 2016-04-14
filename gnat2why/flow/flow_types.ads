@@ -196,7 +196,9 @@ package Flow_Types is
    function "<" (Left, Right : Flow_Id) return Boolean;
    --  Ordering for Flow_Id
 
-   Null_Flow_Id : constant Flow_Id;
+   Null_Flow_Id : constant Flow_Id :=
+     Flow_Id'(Kind    => Null_Value,
+              Variant => Normal_Use);
 
    Null_Export_Flow_Id : constant Flow_Id :=
      Flow_Id'(Kind    => Synthetic_Null_Export,
@@ -681,16 +683,6 @@ package Flow_Types is
       --  print the vertex in --flow-debug mode.
    end record;
    pragma Pack (V_Attributes);
-
-   Null_Attributes : constant V_Attributes;
-
-   Null_Node_Attributes : constant V_Attributes;
-
-private
-
-   Null_Flow_Id : constant Flow_Id :=
-     Flow_Id'(Kind    => Null_Value,
-              Variant => Normal_Use);
 
    Null_Attributes : constant V_Attributes :=
      V_Attributes'(Is_Null_Node                    => False,
