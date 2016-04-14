@@ -909,9 +909,8 @@ package body Flow.Control_Flow_Graph is
                                Dst : Union_Id;
                                Src : Union_Id)
    is
-      C : constant Graph_Connections := CM (Src);
    begin
-      CM.Include (Dst, C);
+      CM.Include (Dst, CM.Element (Src));
    end Copy_Connections;
 
    ----------------
