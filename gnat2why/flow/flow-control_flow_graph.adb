@@ -1674,12 +1674,13 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
       V     : Flow_Graphs.Vertex_Id;
-      L     : Node_Id := N;
+      L     : Node_Id;
       Funcs : Node_Sets.Set;
    begin
       --  Go up the tree until we find the loop we are exiting from.
       if No (Name (N)) then
          --  We just need to find the enclosing loop.
+         L := N;
          loop
             L := Parent (L);
             exit when Nkind (L) = N_Loop_Statement;
