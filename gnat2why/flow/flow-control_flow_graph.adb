@@ -2186,7 +2186,11 @@ package body Flow.Control_Flow_Graph is
          Contains_Return : Boolean := False;
 
          function Proc (N : Node_Id) return Traverse_Result;
-         --  Set Contains_Return to true if we find a return statement.
+         --  Set Contains_Return to true if we find a return statement
+
+         ----------
+         -- Proc --
+         ----------
 
          function Proc (N : Node_Id) return Traverse_Result
          is
@@ -2205,6 +2209,8 @@ package body Flow.Control_Flow_Graph is
 
          V           : Flow_Graphs.Vertex_Id;
          Faux_Exit_V : Flow_Graphs.Vertex_Id;
+
+      --  Start of processing for Do_Loop
 
       begin
          --  Check if we have a return statement.
@@ -2397,8 +2403,7 @@ package body Flow.Control_Flow_Graph is
                V);
             Ctx.Folded_Function_Checks (N).Insert (DSD);
 
-            --  Flow for the conditional for loop is like a while
-            --  loop.
+            --  Flow for the conditional for loop is like a while loop
             CM (Union_Id (N)).Standard_Entry := V;
             CM (Union_Id (N)).Standard_Exits.Include (V);
 
@@ -2420,6 +2425,10 @@ package body Flow.Control_Flow_Graph is
 
          function Proc_Search (N : Node_Id) return Traverse_Result;
 
+         -----------------
+         -- Proc_Search --
+         -----------------
+
          function Proc_Search (N : Node_Id) return Traverse_Result
          is
          begin
@@ -2435,6 +2444,9 @@ package body Flow.Control_Flow_Graph is
          end Proc_Search;
 
          procedure Do_Search is new Traverse_Proc (Proc_Search);
+
+      --  Start of processing for Loop_Might_Exit_Early
+
       begin
          Do_Search (N);
          return Contains_Abort;
@@ -2889,8 +2901,7 @@ package body Flow.Control_Flow_Graph is
          end;
       end if;
 
-      --  Now we need to glue the 'loop_entry checks to the front of
-      --  the loop.
+      --  Now we need to glue the 'loop_entry checks to the front of the loop
       declare
          Augmented_Loop : Union_Lists.List := Union_Lists.Empty_List;
          V              : Flow_Graphs.Vertex_Id;
@@ -5115,9 +5126,8 @@ package body Flow.Control_Flow_Graph is
          end;
       end loop;
 
-      --  Then, if we created any new vertices we need to link them in
-      --  front of the vertex created for N. We then re-adjust the standard
-      --  entry for N.
+      --  Then, if we created any new vertices we need to link them in front of
+      --  the vertex created for N. We then re-adjust the standard entry for N.
 
       if not L.Is_Empty then
          L.Append (CM (Union_Id (N)).Standard_Entry);
