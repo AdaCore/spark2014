@@ -910,7 +910,7 @@ package body Flow.Control_Flow_Graph is
                                Src : Union_Id)
    is
    begin
-      CM.Include (Dst, CM.Element (Src));
+      CM.Insert (Dst, CM.Element (Src));
    end Copy_Connections;
 
    ----------------
@@ -1545,10 +1545,10 @@ package body Flow.Control_Flow_Graph is
          V := W;
       end loop;
 
-      CM.Include (Union_Id (N),
-                  Graph_Connections'
-                    (Standard_Entry => Verts.First_Element,
-                     Standard_Exits => To_Set (Verts.Last_Element)));
+      CM.Insert (Union_Id (N),
+                 Graph_Connections'
+                   (Standard_Entry => Verts.First_Element,
+                    Standard_Exits => To_Set (Verts.Last_Element)));
    end Do_Assignment_Statement;
 
    -------------------------
@@ -1588,9 +1588,9 @@ package body Flow.Control_Flow_Graph is
             E_Loc      => N),
          V);
       Ctx.Folded_Function_Checks (N).Insert (Expression (N));
-      CM.Include (Union_Id (N),
-                  Graph_Connections'(Standard_Entry => V,
-                                     Standard_Exits => Empty_Set));
+      CM.Insert (Union_Id (N),
+                 Graph_Connections'(Standard_Entry => V,
+                                    Standard_Exits => Empty_Set));
 
       Alternative := First (Alternatives (N));
 
@@ -1660,7 +1660,7 @@ package body Flow.Control_Flow_Graph is
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),
          V);
-      CM.Include (Union_Id (N), Trivial_Connection (V));
+      CM.Insert (Union_Id (N), Trivial_Connection (V));
    end Do_Delay_Statement;
 
    -------------------------
@@ -1700,10 +1700,10 @@ package body Flow.Control_Flow_Graph is
                      Direct_Mapping_Id (N),
                      Null_Node_Attributes,
                      V);
-         CM.Include (Union_Id (N),
-                     Graph_Connections'
-                       (Standard_Entry => V,
-                        Standard_Exits => Vertex_Sets.Empty_Set));
+         CM.Insert (Union_Id (N),
+                    Graph_Connections'
+                      (Standard_Entry => V,
+                       Standard_Exits => Vertex_Sets.Empty_Set));
 
          CM (Union_Id (L)).Standard_Exits.Include (V);
 
@@ -1761,9 +1761,9 @@ package body Flow.Control_Flow_Graph is
          Null_Node_Attributes,
          V);
       --  Control flows in, but we do not flow out again.
-      CM.Include (Union_Id (N),
-                  Graph_Connections'(Standard_Entry => V,
-                                     Standard_Exits => Empty_Set));
+      CM.Insert (Union_Id (N),
+                 Graph_Connections'(Standard_Entry => V,
+                                    Standard_Exits => Empty_Set));
 
       --  Go through Ret_Object_L list and locate Ret_Object
       Ret_Object := First (Ret_Object_L);
@@ -1804,9 +1804,9 @@ package body Flow.Control_Flow_Graph is
             Loops           => Ctx.Current_Loops,
             E_Loc           => Ret_Entity),
          V);
-      CM.Include (Union_Id (Ret_Entity),
-                  Graph_Connections'(Standard_Entry => V,
-                                     Standard_Exits => Empty_Set));
+      CM.Insert (Union_Id (Ret_Entity),
+                 Graph_Connections'(Standard_Entry => V,
+                                    Standard_Exits => Empty_Set));
 
       if Present (Handled_Statement_Sequence (N)) then
          declare
@@ -1895,9 +1895,9 @@ package body Flow.Control_Flow_Graph is
             E_Loc      => N),
          V);
       Ctx.Folded_Function_Checks (N).Insert (Condition (N));
-      CM.Include (Union_Id (N),
-                  Graph_Connections'(Standard_Entry => V,
-                                     Standard_Exits => Empty_Set));
+      CM.Insert (Union_Id (N),
+                 Graph_Connections'(Standard_Entry => V,
+                                    Standard_Exits => Empty_Set));
 
       --  We hang the if part off that.
       Process_Statement_List (If_Part, FA, CM, Ctx);
@@ -2839,7 +2839,7 @@ package body Flow.Control_Flow_Graph is
 
    begin
       --  Start with a blank slate for the loops entry and exit.
-      CM.Include (Union_Id (N), No_Connections);
+      CM.Insert (Union_Id (N), No_Connections);
 
       --  Construct graph for the loop body. Please note that early
       --  exists may already change the above, so be sure to only use
@@ -2926,9 +2926,7 @@ package body Flow.Control_Flow_Graph is
                V);
             Ctx.Folded_Function_Checks (N).Insert (Prefix (Reference));
 
-            CM.Include
-              (Union_Id (Reference),
-               Trivial_Connection (V));
+            CM.Insert (Union_Id (Reference), Trivial_Connection (V));
 
             Augmented_Loop.Append (Union_Id (Reference));
          end loop;
@@ -2993,7 +2991,7 @@ package body Flow.Control_Flow_Graph is
                           then Abnormal_Termination
                           else Normal_Execution)),
          V);
-      CM.Include (Union_Id (N), Trivial_Connection (V));
+      CM.Insert (Union_Id (N), Trivial_Connection (V));
    end Do_Null_Or_Raise_Statement;
 
    -----------------------------
@@ -3221,7 +3219,7 @@ package body Flow.Control_Flow_Graph is
                         Direct_Mapping_Id (N),
                         Null_Node_Attributes,
                         V);
-            CM.Include (Union_Id (N), Trivial_Connection (V));
+            CM.Insert (Union_Id (N), Trivial_Connection (V));
             return;
          end if;
       end if;
@@ -3233,7 +3231,7 @@ package body Flow.Control_Flow_Graph is
                      Direct_Mapping_Id (N),
                      Null_Node_Attributes,
                      V);
-         CM.Include (Union_Id (N), Trivial_Connection (V));
+         CM.Insert (Union_Id (N), Trivial_Connection (V));
          return;
       end if;
 
@@ -3278,10 +3276,8 @@ package body Flow.Control_Flow_Graph is
             Funcs   : Node_Sets.Set;
 
             To_CW : constant Boolean :=
-              Is_Class_Wide_Type
-                (Get_Type (E, FA.B_Scope))
-              and then
-                not Is_Class_Wide_Type (Get_Type (Expr, FA.B_Scope));
+              Is_Class_Wide_Type (Get_Type (E, FA.B_Scope))
+                and then not Is_Class_Wide_Type (Get_Type (Expr, FA.B_Scope));
 
          begin
             FS := Flatten_Variable (E, FA.B_Scope);
@@ -3512,10 +3508,10 @@ package body Flow.Control_Flow_Graph is
          end if;
          V := W;
       end loop;
-      CM.Include (Union_Id (N),
-                  Graph_Connections'
-                    (Standard_Entry => Inits.First_Element,
-                     Standard_Exits => To_Set (Inits.Last_Element)));
+      CM.Insert (Union_Id (N),
+                 Graph_Connections'
+                   (Standard_Entry => Inits.First_Element,
+                    Standard_Exits => To_Set (Inits.Last_Element)));
 
       if Ekind (FA.Analyzed_Entity) in E_Package | E_Package_Body then
          --  If we are analyzing a package body or spec and we just
@@ -3676,7 +3672,7 @@ package body Flow.Control_Flow_Graph is
             --  The standard entry of N is the entry to the visible
             --  declarations and the standard exits are the exits of the
             --  private declarations.
-            CM.Include
+            CM.Insert
               (Union_Id (N),
                Graph_Connections'
                  (Standard_Entry => CM.Element
@@ -3801,7 +3797,7 @@ package body Flow.Control_Flow_Graph is
          --  We skip generic package bodies that do not belong to
          --  instantiations.
          Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
-         CM.Include (Union_Id (N), Trivial_Connection (V));
+         CM.Insert (Union_Id (N), Trivial_Connection (V));
          return;
       end if;
 
@@ -3819,7 +3815,7 @@ package body Flow.Control_Flow_Graph is
          --       in SPARK.
 
          Add_Vertex (FA, Direct_Mapping_Id (N), Null_Node_Attributes, V);
-         CM.Include (Union_Id (N), Trivial_Connection (V));
+         CM.Insert (Union_Id (N), Trivial_Connection (V));
          return;
       end if;
 
@@ -3870,8 +3866,7 @@ package body Flow.Control_Flow_Graph is
                         Loops     => Ctx.Current_Loops,
                         E_Loc     => Init_Item),
                      V);
-                  CM.Include (Union_Id (Init_Item),
-                              Trivial_Connection (V));
+                  CM.Insert (Union_Id (Init_Item), Trivial_Connection (V));
                end;
             end loop;
 
@@ -3897,6 +3892,7 @@ package body Flow.Control_Flow_Graph is
                   --  entry of the body's declarations and the
                   --  standard exists of N to the standard exists of
                   --  the last element in the Verts union list.
+                  --  ??? this overwrites the CM entry for N
                   CM.Include
                     (Union_Id (N),
                      Graph_Connections'
@@ -3908,7 +3904,7 @@ package body Flow.Control_Flow_Graph is
             else
                --  Since we do not process any declarations all we
                --  have to do is to connect N to the Initializes_CM.
-               CM.Include (Union_Id (N), Initializes_CM);
+               CM.Insert (Union_Id (N), Initializes_CM);
             end if;
          end;
       end if;
@@ -4128,7 +4124,7 @@ package body Flow.Control_Flow_Graph is
 
       end if;
 
-      CM.Include (Union_Id (N), Trivial_Connection (V));
+      CM.Insert (Union_Id (N), Trivial_Connection (V));
 
       --  We make a note of 'Loop_Entry uses.
       if Get_Pragma_Id (N) in Pragma_Check          |
@@ -4178,7 +4174,7 @@ package body Flow.Control_Flow_Graph is
             E_Loc           => Pre),
          V);
 
-      CM.Include (Union_Id (Pre), Trivial_Connection (V));
+      CM.Insert (Union_Id (Pre), Trivial_Connection (V));
    end Do_Precondition;
 
    -------------------------
@@ -4414,7 +4410,7 @@ package body Flow.Control_Flow_Graph is
          end loop;
 
          if No_Return (Called_Thing) then
-            CM.Include
+            CM.Insert
               (Union_Id (N),
                Graph_Connections'
                  (Standard_Entry => V,
@@ -4424,7 +4420,7 @@ package body Flow.Control_Flow_Graph is
                                   After_GG => not FA.Generating_Globals);
             Linkup (FA, Prev, FA.Helper_End_Vertex);
          else
-            CM.Include
+            CM.Insert
               (Union_Id (N),
                Graph_Connections'
                  (Standard_Entry => V,
@@ -4471,7 +4467,7 @@ package body Flow.Control_Flow_Graph is
             E_Loc            => Post),
          V);
 
-      CM.Include (Union_Id (Post), Trivial_Connection (V));
+      CM.Insert (Union_Id (Post), Trivial_Connection (V));
    end Do_Postcondition;
 
    ----------------------------------
@@ -4525,7 +4521,7 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  Control flows in, but we do not flow out again.
-      CM.Include (Union_Id (N),
+      CM.Insert (Union_Id (N),
                   Graph_Connections'(Standard_Entry => V,
                                      Standard_Exits => Empty_Set));
 
@@ -4611,7 +4607,7 @@ package body Flow.Control_Flow_Graph is
          end;
       end if;
 
-      CM.Include (Union_Id (N), Block);
+      CM.Insert (Union_Id (N), Block);
    end Do_Subprogram_Or_Block;
 
    -------------------------
@@ -4632,7 +4628,7 @@ package body Flow.Control_Flow_Graph is
          Direct_Mapping_Id (N),
          Null_Attributes,
          V);
-      CM.Include (Union_Id (N), Trivial_Connection (V));
+      CM.Insert (Union_Id (N), Trivial_Connection (V));
 
       --  If the type has a Default_Initial_Condition then we:
       --    * add vertices for variables introduced by quantified
@@ -4998,7 +4994,7 @@ package body Flow.Control_Flow_Graph is
             CM    => CM,
             Nodes => Statement_List,
             Block => Block);
-      CM.Include (Union_Id (L), Block);
+      CM.Insert (Union_Id (L), Block);
 
    end Process_Statement_List;
 
