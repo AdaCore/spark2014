@@ -455,12 +455,12 @@ package body Flow.Slice is
 
          begin
             case Nkind (N) is
-               when N_Entry_Body              |
-                    N_Entry_Declaration       |
-                    N_Subprogram_Body         |
-                    N_Subprogram_Declaration  |
-                    N_Task_Body               |
-                    N_Task_Type_Declaration   =>
+               when N_Entry_Body             |
+                    N_Entry_Declaration      |
+                    N_Subprogram_Body        |
+                    N_Subprogram_Declaration |
+                    N_Task_Body              |
+                    N_Task_Type_Declaration  =>
                   if Unique_Defining_Entity (N) /=
                     Unique_Entity (FA.Analyzed_Entity)
                   then
