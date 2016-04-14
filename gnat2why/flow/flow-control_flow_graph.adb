@@ -6164,23 +6164,28 @@ package body Flow.Control_Flow_Graph is
                      The_Out : Flow_Id renames Dependency_Maps.Key (C);
                      The_In  : Flow_Id_Sets.Set renames DM (C);
 
+                     Inserted : Boolean;
+                     Unused   : Flow_Id_Sets.Cursor;
+
                   begin
                      for G of The_In loop
-                        if not Global_Ins.Contains (G)
-                          and then (G.Kind in Direct_Mapping | Record_Field
-                                    and then not In_Generic_Actual
-                                                   (Get_Direct_Mapping_Id (G)))
+                        --  We have already introduced initial and final
+                        --  vertices for formals of generics so skip them.
+                        if G.Kind in Direct_Mapping | Record_Field
+                          and then not In_Generic_Actual
+                                         (Get_Direct_Mapping_Id (G))
                         then
-                           --  We have already introduced initial and final
-                           --  vertices for formals of generics so these have
-                           --  to also be excluded.
+                           Global_Ins.Insert (New_Item => G,
+                                              Position => Unused,
+                                              Inserted => Inserted);
 
-                           Global_Ins.Include (G);
-                           Create_Initial_And_Final_Vertices
-                             (F             => G,
-                              Mode          => Mode_In,
-                              Uninitialized => False,
-                              FA            => FA);
+                           if Inserted then
+                              Create_Initial_And_Final_Vertices
+                                (F             => G,
+                                 Mode          => Mode_In,
+                                 Uninitialized => False,
+                                 FA            => FA);
+                           end if;
                         end if;
                      end loop;
 
