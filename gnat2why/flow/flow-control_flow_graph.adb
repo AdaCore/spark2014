@@ -1588,8 +1588,9 @@ package body Flow.Control_Flow_Graph is
             E_Loc      => N),
          V);
       Ctx.Folded_Function_Checks (N).Insert (Expression (N));
-      CM.Include (Union_Id (N), No_Connections);
-      CM (Union_Id (N)).Standard_Entry := V;
+      CM.Include (Union_Id (N),
+                  Graph_Connections'(Standard_Entry => V,
+                                     Standard_Exits => Empty_Set));
 
       Alternative := First (Alternatives (N));
 
@@ -1803,8 +1804,9 @@ package body Flow.Control_Flow_Graph is
             Loops           => Ctx.Current_Loops,
             E_Loc           => Ret_Entity),
          V);
-      CM.Include (Union_Id (Ret_Entity), No_Connections);
-      CM (Union_Id (Ret_Entity)).Standard_Entry := V;
+      CM.Include (Union_Id (Ret_Entity),
+                  Graph_Connections'(Standard_Entry => V,
+                                     Standard_Exits => Empty_Set));
 
       if Present (Handled_Statement_Sequence (N)) then
          declare
@@ -1893,8 +1895,9 @@ package body Flow.Control_Flow_Graph is
             E_Loc      => N),
          V);
       Ctx.Folded_Function_Checks (N).Insert (Condition (N));
-      CM.Include (Union_Id (N), No_Connections);
-      CM (Union_Id (N)).Standard_Entry := V;
+      CM.Include (Union_Id (N),
+                  Graph_Connections'(Standard_Entry => V,
+                                     Standard_Exits => Empty_Set));
 
       --  We hang the if part off that.
       Process_Statement_List (If_Part, FA, CM, Ctx);
