@@ -67,7 +67,7 @@ pragma Unreferenced (Flow_Debug);
 --  with variable inputs used in the predicate appear.
 --
 --  We currently ignore any proof-flow for the dynamic predicate; and the
---  member ship effects are introduces as follows:
+--  membership effects are introduces as follows:
 --  * only in phase 1, get_function_set will add calls to the predicates for
 --    membership tests
 --  * in phase 1, we generate normal globals for the predicate functions
@@ -133,8 +133,8 @@ package body Flow.Control_Flow_Graph is
    --  The flow graph is produced using two datastructures,
    --  Graph_Connections and a map Union_Id -> Graph_Connections.
    --
-   --  Any node in the AST may be represented by some vertices in the flow
-   --  graph. For example if N is a N_Subprogram_Body and its
+   --  Any node in the AST may be represented by some vertices in the
+   --  flow graph. For example, if N is a N_Subprogram_Body and its
    --  Handled_Statement_Sequence contains the following statement:
    --
    --     if X > 0 then
@@ -143,48 +143,48 @@ package body Flow.Control_Flow_Graph is
    --        X := 0;
    --     end if;
    --
-   --  Lets start at the bottom. We recurse down the tree and at some point
-   --  we will call Do_Assignment_Statement for each of the two
-   --  assignments. Every Do_FOOBAR procedure takes a FOOBAR node, and
-   --  fills in the connection map for that node.
+   --  Lets start at the bottom. We recurse down the tree and at some point we
+   --  will call Do_Assignment_Statement for each of the two assignments. Every
+   --  Do_FOOBAR procedure takes a FOOBAR node, and fills in the connection map
+   --  for that node.
    --
-   --  So, for the first assinment statement (assume this node is Ass_1 in
-   --  the AST) we create a vertex (but no edges!) in the flow graph. We
-   --  also create an entry in the connection map from Ass_1 to a
-   --  connection map with the trivial "unit" connection.
+   --  So, for the first assignment statement (assume this node is Ass_1 in
+   --  the AST) we create a vertex (but no edges!) in the flow graph. We also
+   --  create an entry in the connection map from Ass_1 to a connection map
+   --  with the trivial "unit" connection.
    --
    --        GRAPH            CM
    --    0. [X := X - 1]      Ass_1 -> (0, {0})
    --
    --  (Where "0." is the vertex id of the node for "X := X - 1".) Each
-   --  connection map captures a single entry vertex (0 in our example) and
-   --  a set of exit vertices ({0} in our example). Read this as "control
-   --  flow for the node Ass_1 is as follows: control goes into this vertex
-   --  (0) we do one thing and control leaves this node again (0)".
+   --  connection map captures a single entry vertex (0 in our example) and a
+   --  set of exit vertices ({0} in our example). Read this as "control flow
+   --  for the node Ass_1 is as follows: control goes into this vertex (0) we
+   --  do one thing and control leaves this node again (0)".
    --
-   --  Lets process the second assignment statement, our graph and
-   --  connection map now looks like this:
+   --  Lets process the second assignment statement, our graph and connection
+   --  map now looks like this:
    --
    --        GRAPH            CM
    --    0. [X := X - 1]      Ass_1 -> (0, {0})
    --    1. [X := 0]          Ass_2 -> (1, {1})
    --
    --  We now go up the tree and look at Do_If_Statement. First produce a
-   --  vertex (it will be number "2".) in the graph for the N_If_Statement
+   --  vertex (it will be number "2") in the graph for the N_If_Statement
    --  itself. We then assemble the connection map as follows:
    --
-   --     - The entry point for the if statement is obviously the if
-   --       statement itself (i.e. 2)
+   --     - The entry point for the if statement is obviously the if statement
+   --       itself (i.e. 2).
    --
-   --     - We have two ways we can exit from the if statement S: we can
-   --       fall off the end of the if branch (Then_Statements (S)) or the
-   --       else branch (Else_Statements (S)). So the exits for the if
-   --       statement X is the union of all exits of all branches.
+   --     - We have two ways we can exit from the if statement S: we can fall
+   --       off the end of the if branch (Then_Statements (S)) or the else
+   --       branch (Else_Statements (S)). So the exits for the if statement X
+   --       is the union of all exits of all branches.
    --
-   --       To determine the exit of one of our branch we simply look into
-   --       the connection map what is recorded for Then_Statements (S) and
-   --       Else_Statements (S). In our case we get Ass_1 and Ass_2, but in
-   --       real life you'd get some kind of List_Id.
+   --  To determine the exit of one of our branch we simply look into the
+   --  connection map what is recorded for Then_Statements (S) and
+   --  Else_Statements (S). Here we get Ass_1 and Ass_2, but in general you'd
+   --  get some kind of List_Id.
    --
    --  So now our picture looks like this:
    --
@@ -193,13 +193,12 @@ package body Flow.Control_Flow_Graph is
    --    1. [X := 0]          Ass_2 -> (1, {1})
    --    2. [if X > 0]        S     -> (2, {0, 1})
    --
-   --  But wait, we still have not added any edges to the flow graph. We
-   --  need to make sure that we have an edge from vertex 2 to entry of the
-   --  Then_Statements (S) and an edge to the Else_Statements (S). The
-   --  Do_If_Statement procedure will also call one of the Linkup
-   --  procedures. These take essentially two argumens: A group of "from"
-   --  points and a single target point and create edges from all "from" to
-   --  the "to".
+   --  But wait, we still have not added any edges to the flow graph. We need
+   --  to make sure that we have edges from vertex 2 to the Then_Statements (S)
+   --  and to the Else_Statements (S). The Do_If_Statement procedure will also
+   --  call one of the Linkup procedures. These take essentially two argumens:
+   --  a group of "from" points and a single target point, and create edges
+   --  from all "from" to the "to".
    --
    --  So, we will call:
    --     Linkup (2, connection_map[then_statements (s)].standard_entry)
@@ -214,9 +213,9 @@ package body Flow.Control_Flow_Graph is
    --              /          \
    --  0. [X := X - 1]     1. [X := 0]
    --
-   --  Notice how the connection map was not changed by Linkup, but only
-   --  the graph. The connection map for node N can be considered to be a
-   --  "summary for node N and all child nodes".
+   --  Note that only the graph was changed by Linkup and not the connection
+   --  map. The connection map for node N can be considered to be a "summary
+   --  for node N and all child nodes".
 
    type Graph_Connections is record
       Standard_Entry : Flow_Graphs.Vertex_Id;
@@ -231,7 +230,7 @@ package body Flow.Control_Flow_Graph is
                                return Graph_Connections
    is (Graph_Connections'(Standard_Entry => V,
                           Standard_Exits => Vertex_Sets.To_Set (V)));
-   --  Produce the trivial connection.
+   --  Produce the trivial connection
 
    function Union_Hash (X : Union_Id) return Ada.Containers.Hash_Type
    is (Generic_Integer_Hash (Integer (X)));
@@ -246,21 +245,20 @@ package body Flow.Control_Flow_Graph is
    procedure Copy_Connections (CM  : in out Connection_Maps.Map;
                                Dst : Union_Id;
                                Src : Union_Id);
-   --  Creates the connection map for Dst and copies all fields from Src to
-   --  it.
+   --  Create the connection map for Dst and copies all fields from Src to it
 
    -------------
    -- Context --
    -------------
 
-   --  The context is a bag of extra state that is passed around through
-   --  each Do_* procedure.
+   --  The context is a bag of extra state that is passed around through each
+   --  Do_* procedure.
    --
    --  Perhaps the most important aspect of the Context is the
    --  Folded_Function_Checks map, which is used to keep track of functions
-   --  with dependency relations. The only reason to put a dependency
-   --  relation on a function is to note that not all parameters have been
-   --  used. For example:
+   --  with dependency relations. The only reason to put a dependency relation
+   --  on a function is to note that not all parameters have been used.
+   --  For example:
    --
    --     function Multiply_After_Delay (A, B : Integer;
    --                                    W    : Float)
@@ -269,52 +267,52 @@ package body Flow.Control_Flow_Graph is
    --                      null                        => W);
    --
    --  If such a function is used, we do not want W to flow into the final
-   --  result of whatever it is doing, however, this is difficult as
-   --  functions are not really processed separately. Instead we are just
-   --  interested in the "set of variables" present in an expression. So
-   --  instead we have a parameter in Get_Variable_Set (Fold_Functions)
-   --  which, if specified, will return simply the set {A, B} instead of
-   --  {A, B, W} for expressions involving calls to Multiply_After_Delay.
+   --  result of whatever it is doing, however, this is difficult as functions
+   --  are not really processed separately. Instead we are just interested
+   --  in the "set of variables" present in an expression. So instead we have
+   --  a parameter in Get_Variable_Set (Fold_Functions) which, if specified,
+   --  will return simply the set {A, B} instead of {A, B, W} for expressions
+   --  involving calls to Multiply_After_Delay.
    --
-   --  However, we need to make sure that all variables are initialized
-   --  when we call our function; but the generated vertex for an
-   --  expression involving it no longer features W.
+   --  However, we need to make sure that all variables are initialized when we
+   --  call our function; but the generated vertex for an expression involving
+   --  it no longer features W.
    --
-   --  Hence, in all places where we call Get_Variable_Set and fold
-   --  functions, we also remember the node_id of the expression. For
-   --  example, if we have an if statement:
+   --  Hence, in all places where we call Get_Variable_Set and fold functions,
+   --  we also remember the node_id of the expression. For example, if we have
+   --  an if statement:
    --
    --     if Multiply_After_Delay (X, Y, Z) = 0 then
    --        ...
    --
    --  Lets assume the node_id for the statement is 42, and the node_id for
-   --  Condition (42) is 88. When we process Get_Variable_Set (88), we
-   --  place the following into the Folded_Function_Checks map:
+   --  Condition (42) is 88. When we process Get_Variable_Set (88), we place
+   --  the following into the Folded_Function_Checks map:
    --
    --     42 -> {88}
    --
    --  At the end of Process_Statement we then re-check each of these
-   --  expression and emit a sink vertex in front of the original vertex to
-   --  check only the "unused" variables.
+   --  expression and emit a sink vertex in front of the original vertex
+   --  to check only the "unused" variables.
    --
    --  Inspect the graphs generated for test M412-008 for more information.
    --
-   --  Finally we take a note of all vertices that are linked directly
-   --  to the Helper_End_Vertex because they belong to a non-returning
-   --  procedure. Vertices of this kind that lie within dead code will
-   --  have to be unlinked at the end.
+   --  Finally we take a note of all vertices that are linked directly to the
+   --  Helper_End_Vertex because they belong to a non-returning procedure.
+   --  Vertices of this kind that lie within dead code will have to be
+   --  unlinked at the end.
 
    type Context is record
       Current_Loops          : Node_Sets.Set;
-      --  The set of loops currently processed. The innermost loop
-      --  currently processed is Active_Loop.
+      --  The set of loops currently processed. The innermost loop currently
+      --  processed is Active_Loop.
 
       Active_Loop            : Entity_Id;
       --  The currently processed loop. This is always a member of
       --  Current_Loops, unless no loop is currently processed.
 
       Entry_References       : Node_Graphs.Map;
-      --  A map from loops -> 'loop_entry references.
+      --  A map from loops -> 'loop_entry references
 
       Folded_Function_Checks : Node_Graphs.Map;
       --  A set of nodes we need to separately check for uninitialized
@@ -334,7 +332,7 @@ package body Flow.Control_Flow_Graph is
    procedure Add_Vertex (FA : in out Flow_Analysis_Graphs;
                          F  : Flow_Id;
                          A  : V_Attributes);
-   --  Helper procedure to add a vertex (with attributes) to the graph.
+   --  Helper procedure to add a vertex (with attributes) to the graph
 
    procedure Add_Vertex (FA : in out Flow_Analysis_Graphs;
                          F  : Flow_Id;
@@ -354,7 +352,7 @@ package body Flow.Control_Flow_Graph is
       Froms : Vertex_Sets.Set;
       To    : Flow_Graphs.Vertex_Id)
    with Pre => To /= Flow_Graphs.Null_Vertex;
-   --  Link all vertices in Froms to the To vertex in the given graph.
+   --  Link all vertices in Froms to the To vertex in the given graph
 
    procedure Linkup
      (FA    : in out Flow_Analysis_Graphs;
@@ -362,28 +360,27 @@ package body Flow.Control_Flow_Graph is
       To    : Flow_Graphs.Vertex_Id)
    with Pre => From /= Flow_Graphs.Null_Vertex and then
                To   /= Flow_Graphs.Null_Vertex;
-   --  Link the From to the To vertex in the given graph.
+   --  Link the From to the To vertex in the given graph
 
    procedure Join
      (FA    : in out Flow_Analysis_Graphs;
       CM    : in out Connection_Maps.Map;
       Nodes : Union_Lists.List;
       Block : out Graph_Connections);
-   --  Join up the standard entry and standard exits of the given
-   --  nodes. Block contains the combined standard entry and exits of
-   --  the joined up sequence.
+   --  Join up the standard entry and standard exits of the given nodes.
+   --  Block contains the combined standard entry and exits of the joined
+   --  up sequence.
 
    procedure Create_Record_Tree
      (F        : Flow_Id;
       Leaf_Atr : V_Attributes;
       FA       : in out Flow_Analysis_Graphs);
    --  Create part of the tree structure used to represent records. In
-   --  particular, we create the subtree which is formed by the leaf F
-   --  up to the entire variable represented by F. In the art below
-   --  the vertices marked with a * are created by this procedure if F
-   --  is R.A.Y. If we come to a vertex which already exists, we
-   --  stop. This means calling this procedure once for each leaf will
-   --  eventually result in the entire tree.
+   --  particular, we create the subtree which is formed by the leaf F up to
+   --  the entire variable represented by F. In the art below the vertices
+   --  marked with a * are created by this procedure if F is R.A.Y. If we
+   --  come to a vertex which already exists, we stop. This means calling this
+   --  procedure once for each leaf will eventually result in the entire tree.
    --
    --                  R*
    --                 / \
@@ -402,8 +399,8 @@ package body Flow.Control_Flow_Graph is
      (E    : Entity_Id;
       Kind : Var_Kind;
       FA   : in out Flow_Analysis_Graphs);
-   --  Create the 'initial and 'final vertices for the given entity
-   --  and link them up to the start and end vertices.
+   --  Create the 'initial and 'final vertices for the given entity and link
+   --  them up to the start and end vertices.
 
    procedure Create_Initial_And_Final_Vertices
      (F             : Flow_Id;
@@ -411,8 +408,8 @@ package body Flow.Control_Flow_Graph is
       Uninitialized : Boolean;
       FA            : in out Flow_Analysis_Graphs)
    with Pre => F.Kind in Direct_Mapping | Magic_String;
-   --  Create the 'initial and 'final vertices for the given global
-   --  and link them up to the start and end vertices.
+   --  Create the 'initial and 'final vertices for the given global and link
+   --  them up to the start and end vertices.
 
    procedure Do_Assignment_Statement
      (N   : Node_Id;
@@ -420,7 +417,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    with Pre => Nkind (N) = N_Assignment_Statement;
-   --  Process assignment statements. Pretty obvious stuff.
+   --  Process assignment statements. Pretty obvious stuff
 
    procedure Do_Call_Statement
      (N   : Node_Id;
@@ -5530,19 +5527,18 @@ package body Flow.Control_Flow_Graph is
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          if FA.Atr (V).Is_Null_Node then
-            --  Close the subgraph indicated by V's neighbours.
+            --  Close the subgraph indicated by V's neighbours
             for A of FA.CFG.Get_Collection (V, Flow_Graphs.In_Neighbours) loop
-               for B of FA.CFG.Get_Collection (V,
-                                               Flow_Graphs.Out_Neighbours)
+               for B of FA.CFG.Get_Collection (V, Flow_Graphs.Out_Neighbours)
                loop
                   FA.CFG.Add_Edge (A, B, EC_Default);
                end loop;
             end loop;
 
-            --  Remove all edges from the vertex.
+            --  Remove all edges from the vertex
             FA.CFG.Clear_Vertex (V);
 
-            --  Clear the node.
+            --  Clear the node
             FA.Atr (V) := Null_Attributes'Update (Is_Null_Node => True);
          end if;
       end loop;
@@ -6138,21 +6134,21 @@ package body Flow.Control_Flow_Graph is
             end if;
 
          when Kind_Package | Kind_Package_Body =>
-            --  Packages have no obvious globals, but we can extract a
-            --  list of global variables used from the optional rhs of
-            --  the initializes clause:
+            --  Packages have no obvious globals, but we can extract a list of
+            --  global variables used from the optional rhs of the initializes
+            --  clause:
             --
             --     Initializes => (State => (Global_A, ...),
             --
-            --  Any other use of non-local variables is not legal (SRM
-            --  7.1.5, verification rule 12).
+            --  Any other use of non-local variables is not legal (SRM 7.1.5,
+            --  verification rule 12).
             --
-            --  Any such globals are global inputs *only* as packages
-            --  are only allowed to initialize their own state.
+            --  Such globals are global inputs *only*, as packages are only
+            --  allowed to initialize their own state.
             declare
                Global_Ins : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-               --  We need to make sure to only add each global once (an entity
-               --  might be used to derive more than one of our states).
+               --  An entity might be used to derive more than one of our
+               --  states, so make sure to only add each global once.
 
                DM : constant Dependency_Maps.Map :=
                  Parse_Initializes (FA.Initializes_N,
@@ -6196,9 +6192,9 @@ package body Flow.Control_Flow_Graph is
                end loop;
             end;
 
-            --  If a Refined_State aspect exists, we gather all
-            --  constituents that are abstract states and create
-            --  Initial and Final vertices for them.
+            --  If a Refined_State aspect exists then gather all constituents
+            --  that are abstract states and create initial and final vertices
+            --  for them.
 
             if FA.Kind = Kind_Package_Body then
                declare
@@ -6327,8 +6323,8 @@ package body Flow.Control_Flow_Graph is
 
       end case;
 
-      --  If we are dealing with a function, we use its entity to deal
-      --  with the value returned.
+      --  If we are dealing with a function, we use its entity as a vertex for
+      --  the returned value.
       if Ekind (FA.Analyzed_Entity) = E_Function then
          Create_Initial_And_Final_Vertices (FA.Analyzed_Entity,
                                             Variable_Kind,
@@ -6336,15 +6332,14 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  If you're now wondering where we deal with locally declared
-      --  objects; we deal with them as they are encountered. See
+      --  objects then we deal with them as they are encountered. See
       --  Do_Object_Declaration for enlightenment.
 
-      --  Produce flowgraph for the precondition and postcondition if
-      --  any.
+      --  Produce flowgraph for the precondition and postcondition, if any
       case FA.Kind is
          when Kind_Subprogram | Kind_Entry  =>
-            --  Flowgraph for preconditions and left hand sides of
-            --  contract cases.
+            --  Flowgraph for preconditions and left hand sides of contract
+            --  cases.
             declare
                NL : Union_Lists.List := Union_Lists.Empty_List;
             begin
@@ -6361,8 +6356,8 @@ package body Flow.Control_Flow_Graph is
                      Block => Precon_Block);
             end;
 
-            --  Flowgraph for postconditions and right hand sides of
-            --  contract cases.
+            --  Flowgraph for postconditions and right hand sides of contract
+            --  cases.
             declare
                NL             : Union_Lists.List := Union_Lists.Empty_List;
                Postconditions : Node_Lists.List;
@@ -6417,8 +6412,8 @@ package body Flow.Control_Flow_Graph is
 
       end case;
 
-      --  Produce flowgraphs for the body and link to start, helper
-      --  end and end vertex.
+      --  Produce flowgraphs for the body and link to start, helper end and end
+      --  vertex.
       case FA.Kind is
          when Kind_Subprogram | Kind_Entry =>
             Do_Subprogram_Or_Block (Body_N, FA, Connection_Map, The_Context);
@@ -6509,7 +6504,7 @@ package body Flow.Control_Flow_Graph is
             end;
       end case;
 
-      --  Label all vertices that are part of exceptional execution paths.
+      --  Label all vertices that are part of exceptional execution paths
       Mark_Exceptional_Paths (FA);
       Prune_Exceptional_Paths (FA);
 
