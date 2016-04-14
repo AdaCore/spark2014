@@ -5914,20 +5914,17 @@ package body Flow.Control_Flow_Graph is
 
       end case;
 
-      --  Create the magic start, helper end and end vertices.
-      declare
-         Start_Atr : V_Attributes := Null_Attributes;
-      begin
-         --  We attach the subprogram's location to the start vertex
-         --  as it gives us a convenient way to generate error
-         --  messages applying to the whole subprogram/package/body.
-         Start_Atr.Error_Location := Body_N;
-         Add_Vertex (FA, Start_Atr, FA.Start_Vertex);
-      end;
+      --  Create the magic start, helper end and end vertices
+      --
+      --  The start vertex has the entity's location, because it is
+      --  convenient to way to generate error messages thay apply to the
+      --  whole subprogram/package/body.
+      Add_Vertex (FA, Null_Attributes'Update (Error_Location => Body_N),
+                  FA.Start_Vertex);
       Add_Vertex (FA, Null_Attributes, FA.Helper_End_Vertex);
       Add_Vertex (FA, Null_Attributes, FA.End_Vertex);
 
-      --  Create the magic null export vertices.
+      --  Create the magic null export vertices, initial and final
       declare
          F : constant Flow_Id := Change_Variant (Null_Export_Flow_Id,
                                                  Initial_Value);
@@ -5941,8 +5938,8 @@ package body Flow.Control_Flow_Graph is
          Add_Vertex (FA, F, Make_Null_Export_Attributes (F));
       end;
 
-      --  Collect parameters of the analyzed entity and produce
-      --  initial and final vertices.
+      --  Create initial and final vertices for the parameters of the analyzed
+      --  entity.
       case FA.Kind is
          when Kind_Subprogram | Kind_Entry =>
             for Param of Get_Formals (FA.Analyzed_Entity) loop
@@ -5950,7 +5947,7 @@ package body Flow.Control_Flow_Graph is
             end loop;
 
          when Kind_Task =>
-            --  Tasks see themselves as formal "in out" parameters.
+            --  Tasks see themselves as formal "in out" parameters
             --
             --  This includes:
             --    * variables that are Part_Of tasks,
@@ -5964,7 +5961,7 @@ package body Flow.Control_Flow_Graph is
                FA);
 
          when Kind_Package | Kind_Package_Body =>
-            --  We create initial and final vertices for the package's state
+            --  Create initial and final vertices for the package's state
             --  abstractions.
             declare
                AS_Pragma : constant Node_Id :=
@@ -6004,8 +6001,7 @@ package body Flow.Control_Flow_Graph is
                   Association : Node_Id;
                   Parameter   : Node_Id;
                begin
-                  --  Sanity check that Instance is indeed an
-                  --  N_Package_Instantiation.
+                  --  Sanity check for the kind of Instance node
                   pragma Assert (Nkind (Instance) = N_Package_Instantiation);
 
                   Association := First (Generic_Associations (Instance));
