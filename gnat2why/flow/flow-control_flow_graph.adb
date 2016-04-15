@@ -3543,15 +3543,17 @@ package body Flow.Control_Flow_Graph is
          --  library level because of the Ravenscar profile restrictions) and
          --  register priorities of objects containing protected types.
          if FA.Generating_Globals then
-            declare
-               T : constant Entity_Id := Etype (E);
-            begin
-               --  Register task objects
-               Find_Tasks (T, Array_Component => False);
+            if Ekind (Scope (E)) in E_Package | E_Package_Body then
+               declare
+                  T : constant Entity_Id := Etype (E);
+               begin
+                  --  Register task objects
+                  Find_Tasks (T, Array_Component => False);
 
-               --  Register priorities of protected components
-               Find_Protected_Components (T);
-            end;
+                  --  Register priorities of protected components
+                  Find_Protected_Components (T);
+               end;
+            end if;
          end if;
       end if;
    end Do_Object_Declaration;
