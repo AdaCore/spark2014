@@ -5008,8 +5008,7 @@ package body Flow.Control_Flow_Graph is
          when N_Case_Statement =>
             Do_Case_Statement (N, FA, CM, Ctx);
 
-         when N_Component_Declaration |
-              N_Object_Declaration    =>
+         when N_Object_Declaration =>
             Do_Object_Declaration (N, FA, CM, Ctx);
 
          when N_Delay_Relative_Statement |
