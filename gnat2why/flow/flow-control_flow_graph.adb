@@ -130,7 +130,7 @@ package body Flow.Control_Flow_Graph is
    -- Connection_Maps --
    ---------------------
 
-   --  The flow graph is produced using two datastructures,
+   --  The flow graph is produced using two data structures,
    --  Graph_Connections and a map Union_Id -> Graph_Connections.
    --
    --  Any node in the AST may be represented by some vertices in the
@@ -159,8 +159,8 @@ package body Flow.Control_Flow_Graph is
    --  (Where "0." is the vertex id of the node for "X := X - 1".) Each
    --  connection map captures a single entry vertex (0 in our example) and a
    --  set of exit vertices ({0} in our example). Read this as "control flow
-   --  for the node Ass_1 is as follows: control goes into this vertex (0) we
-   --  do one thing and control leaves this node again (0)".
+   --  for the node Ass_1 is as follows: control goes into this vertex (0), we
+   --  do one thing, and control leaves this vertex (0)".
    --
    --  Lets process the second assignment statement, our graph and connection
    --  map now looks like this:
@@ -169,7 +169,7 @@ package body Flow.Control_Flow_Graph is
    --    0. [X := X - 1]      Ass_1 -> (0, {0})
    --    1. [X := 0]          Ass_2 -> (1, {1})
    --
-   --  We now go up the tree and look at Do_If_Statement. First produce a
+   --  We now go up the tree and look at Do_If_Statement. First we produce a
    --  vertex (it will be number "2") in the graph for the N_If_Statement
    --  itself. We then assemble the connection map as follows:
    --
@@ -177,12 +177,12 @@ package body Flow.Control_Flow_Graph is
    --       itself (i.e. 2).
    --
    --     - We have two ways we can exit from the if statement S: we can fall
-   --       off the end of the if branch (Then_Statements (S)) or the else
-   --       branch (Else_Statements (S)). So the exits for the if statement X
-   --       is the union of all exits of all branches.
+   --       off the end of the then branch (Then_Statements (S)) or of the else
+   --       branch (Else_Statements (S)). So the exits of the if statement
+   --       are the union of all exits of all branches.
    --
    --  To determine the exit of one of our branch we simply look into the
-   --  connection map what is recorded for Then_Statements (S) and
+   --  connection map for what is recorded for Then_Statements (S) and
    --  Else_Statements (S). Here we get Ass_1 and Ass_2, but in general you'd
    --  get some kind of List_Id.
    --
@@ -196,8 +196,8 @@ package body Flow.Control_Flow_Graph is
    --  But wait, we still have not added any edges to the flow graph. We need
    --  to make sure that we have edges from vertex 2 to the Then_Statements (S)
    --  and to the Else_Statements (S). The Do_If_Statement procedure will also
-   --  call one of the Linkup procedures. These take essentially two argumens:
-   --  a group of "from" points and a single target point, and create edges
+   --  call one of the Linkup procedures. These take two argumens:
+   --  a group of "from" points and a single "to" point, and create edges
    --  from all "from" to the "to".
    --
    --  So, we will call:
@@ -2842,7 +2842,7 @@ package body Flow.Control_Flow_Graph is
       CM.Insert (Union_Id (N), No_Connections);
 
       --  Construct graph for the loop body. Please note that early
-      --  exists may already change the above, so be sure to only use
+      --  exits may already change the above, so be sure to only use
       --  union or include, instead of setting the standard exits.
       --
       --  We also change the context to include the current
@@ -4744,6 +4744,9 @@ package body Flow.Control_Flow_Graph is
       end Proc;
 
       procedure Traverse is new Traverse_Proc (Process => Proc);
+
+   --  Start of processing for Process_Quantified_Expressions
+
    begin
       Traverse (N);
    end Process_Quantified_Expressions;
@@ -6634,8 +6637,8 @@ package body Flow.Control_Flow_Graph is
          end loop;
       end if;
 
-      --  Finally, we need to make sure that all extra checks for folded
-      --  functions have been processed.
+      --  Finally, make sure that all extra checks for folded functions have
+      --  been processed.
       pragma Assert (The_Context.Folded_Function_Checks.Is_Empty);
    end Create;
 
