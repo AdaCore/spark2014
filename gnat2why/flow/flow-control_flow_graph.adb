@@ -1731,8 +1731,8 @@ package body Flow.Control_Flow_Graph is
                E_Loc      => N),
             V);
          Ctx.Folded_Function_Checks (N).Insert (Condition (N));
-         CM.Include (Union_Id (N),
-                     Trivial_Connection (V));
+         CM.Insert (Union_Id (N),
+                    Trivial_Connection (V));
 
          CM (Union_Id (L)).Standard_Exits.Include (V);
       end if;
