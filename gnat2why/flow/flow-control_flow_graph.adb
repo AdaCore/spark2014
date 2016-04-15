@@ -3510,7 +3510,7 @@ package body Flow.Control_Flow_Graph is
                    (Standard_Entry => Inits.First_Element,
                     Standard_Exits => To_Set (Inits.Last_Element)));
 
-      if Ekind (FA.Analyzed_Entity) in E_Package | E_Package_Body then
+      if FA.Kind in Kind_Package | Kind_Package_Body then
          --  If we are analyzing a package body or spec and we just
          --  introduced 'Initial and 'Final vertices for an entity
          --  that is mentioned in an initializes aspect, we have
