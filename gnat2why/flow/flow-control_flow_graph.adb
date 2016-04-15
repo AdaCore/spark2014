@@ -1705,10 +1705,7 @@ package body Flow.Control_Flow_Graph is
                       (Standard_Entry => V,
                        Standard_Exits => Vertex_Sets.Empty_Set));
 
-         CM (Union_Id (L)).Standard_Exits.Include (V);
-
       else
-
          Collect_Functions_And_Read_Locked_POs
            (Condition (N),
             Functions_Called   => Funcs,
@@ -1733,9 +1730,9 @@ package body Flow.Control_Flow_Graph is
          Ctx.Folded_Function_Checks (N).Insert (Condition (N));
          CM.Insert (Union_Id (N),
                     Trivial_Connection (V));
-
-         CM (Union_Id (L)).Standard_Exits.Include (V);
       end if;
+
+      CM (Union_Id (L)).Standard_Exits.Insert (V);
    end Do_Exit_Statement;
 
    ----------------------------------
