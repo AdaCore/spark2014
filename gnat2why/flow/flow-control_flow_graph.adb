@@ -3876,13 +3876,12 @@ package body Flow.Control_Flow_Graph is
                --  the body's declarations and the standard exists of N to the
                --  standard exists of the last element in the Verts union list.
                --  ??? this overwrites the CM entry for N
-               CM.Include
-                 (Union_Id (N),
-                  Graph_Connections'
-                    (Standard_Entry => CM.Element
-                       (Union_Id (Pkg_Body_Declarations)).Standard_Entry,
-                     Standard_Exits => CM.Element
-                       (Verts.Last_Element).Standard_Exits));
+               CM (Union_Id (N)) :=
+                 Graph_Connections'
+                   (Standard_Entry => CM.Element
+                      (Union_Id (Pkg_Body_Declarations)).Standard_Entry,
+                    Standard_Exits => CM.Element
+                      (Verts.Last_Element).Standard_Exits);
             else
                --  Since we do not process any declarations all we
                --  have to do is to connect N to the Initializes_CM.
