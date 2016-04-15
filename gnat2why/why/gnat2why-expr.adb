@@ -4877,10 +4877,18 @@ package body Gnat2Why.Expr is
    --  Start of processing for New_Assignment
 
    begin
+      --  When assigning to the view conversion of an object, it is really the
+      --  object which will be assigned to in Why3. So start with skipping all
+      --  view conversions, so that the correct type of object is used later.
+
+      while Nkind (Left_Side) in N_Type_Conversion loop
+         Shift_Rvalue (Left_Side, Right_Side);
+      end loop;
+
       --  Record attributes of objects are not modified by assignments
 
       declare
-         Ty : constant Entity_Id := Etype (Lvalue);
+         Ty : constant Entity_Id := Etype (Left_Side);
       begin
          if Has_Record_Type (Ty) or else Full_View_Not_In_SPARK (Ty) then
             Right_Side :=
@@ -7984,8 +7992,7 @@ package body Gnat2Why.Expr is
    -- Transform_Assignment_Statement --
    ------------------------------------
 
-   function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id
-   is
+   function Transform_Assignment_Statement (Stmt : Node_Id) return W_Prog_Id is
       Lvalue     : constant Node_Id := Sinfo.Name (Stmt);
       Exp_Entity : constant W_Type_Id := Expected_Type_Of_Prefix (Lvalue);
       L_Type     : constant W_Type_Id := Type_Of_Node (Etype (Lvalue));
@@ -8013,8 +8020,8 @@ package body Gnat2Why.Expr is
         not Is_Constrained (Get_Ada_Node (+L_Type));
       Tmp      : constant W_Expr_Id :=
         New_Temp_For_Expr (+T, Lgth_Check or else Disc_Check);
-   begin
 
+   begin
       --  The Exp_Entity type is in fact the type that is expected in Why.
       --  The L_Type is a more precise type entity in Ada. We have to
       --  respect both constraints here, so we first convert to the Ada type
@@ -8060,6 +8067,7 @@ package body Gnat2Why.Expr is
                                     Tmp      => Lval,
                                     Context  => +T);
          end;
+
       elsif Disc_Check then
 
          --  Discriminants should be preserved by assignment except if the
@@ -8120,6 +8128,7 @@ package body Gnat2Why.Expr is
                                     Tmp      => Lval,
                                     Context  => +T);
          end;
+
       elsif Is_Class_Wide_Type (Etype (Lvalue)) and then
         not Sem_Disp.Is_Tag_Indeterminate (Expression (Stmt))
       then
@@ -8152,6 +8161,7 @@ package body Gnat2Why.Expr is
                                     Context  => +T);
          end;
       end if;
+
       T :=
         +Insert_Simple_Conversion
         (Domain => EW_Pterm,
