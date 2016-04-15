@@ -224,7 +224,7 @@ procedure Gnatprove is
 
       Args.Prepend ("-c");
 
-      for Var of Configuration.Scenario_Variables loop
+      for Var of CL_Switches.X loop
          Args.Prepend (Var);
       end loop;
 
@@ -237,12 +237,10 @@ procedure Gnatprove is
          Args.Prepend ("--config=" & Actual_Config_File);
       end if;
 
-      if not GPR_Project_Path.Is_Empty then
-         for S of GPR_Project_Path loop
-            Args.Prepend (S);
-            Args.Prepend ("-aP");
-         end loop;
-      end if;
+      for S of CL_Switches.GPR_Project_Path loop
+         Args.Prepend (S);
+         Args.Prepend ("-aP");
+      end loop;
 
       if Debug then
          Args.Prepend ("-dn");
@@ -278,13 +276,13 @@ procedure Gnatprove is
       Args.Append ("--restricted-to-languages=ada");
       Args.Append ("--no-object-check");
 
-      for Arg of Cargs_List loop
+      for Arg of CL_Switches.Cargs_List loop
          Args.Append (Arg);
       end loop;
 
       --  Keep going after a compilation error in 'check' mode
 
-      if MMode = GPM_Check then
+      if Configuration.Mode = GPM_Check then
          Args.Append ("-k");
       end if;
 
@@ -292,7 +290,7 @@ procedure Gnatprove is
          Args.Append ("-m");
       end if;
 
-      for File of File_List loop
+      for File of CL_Switches.File_List loop
          Args.Append (File);
       end loop;
 
@@ -340,22 +338,6 @@ procedure Gnatprove is
       procedure Prepare_Why3_Manual;
       --  Build user libraries (if any) for manual provers
 
-      procedure Set_Alter_Prover (Val : String);
-      --  Set alternative prover according to value of --level, if not already
-      --  set explicitly.
-
-      procedure Set_Proof_Mode (Val : Proof_Mode);
-      --  Set proof mode according to value of --level, if not already set
-      --  explicitly.
-
-      procedure Set_Steps (Val : Positive);
-      --  Set step limit according to value of --level, if not already set
-      --  explicitly.
-
-      procedure Set_Timeout (Val : Positive);
-      --  Set timeout according to value of --level, when --timeout=auto was
-      --  given in argument.
-
       ---------------------------
       --  Prepare_Why3_Manual  --
       ---------------------------
@@ -365,7 +347,7 @@ procedure Gnatprove is
            (if Gnatwhy3_Conf /= "" then
               (1 => new String'("--prepare-shared"),
                2 => new String'("--prover"),
-               3 => new String'(Alter_Prover.all),
+               3 => new String'(Prover_List),
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all),
                6 => new String'("--why3-conf"),
@@ -373,7 +355,7 @@ procedure Gnatprove is
             else
               (1 => new String'("--prepare-shared"),
                2 => new String'("--prover"),
-               3 => new String'(Alter_Prover.all),
+               3 => new String'(Prover_List),
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all)));
          Res : Boolean;
@@ -395,50 +377,6 @@ procedure Gnatprove is
          end if;
       end Prepare_Why3_Manual;
 
-      ----------------------
-      -- Set_Alter_Prover --
-      ----------------------
-
-      procedure Set_Alter_Prover (Val : String) is
-      begin
-         if Alter_Prover.all = "" then
-            Alter_Prover := new String'(Val);
-         end if;
-      end Set_Alter_Prover;
-
-      --------------------
-      -- Set_Proof_Mode --
-      --------------------
-
-      procedure Set_Proof_Mode (Val : Proof_Mode) is
-      begin
-         if Proof_Input.all = "" then
-            Proof := Val;
-         end if;
-      end Set_Proof_Mode;
-
-      ---------------
-      -- Set_Steps --
-      ---------------
-
-      procedure Set_Steps (Val : Positive) is
-      begin
-         if Steps = Invalid_Step then
-            Steps := Val;
-         end if;
-      end Set_Steps;
-
-      -----------------
-      -- Set_Timeout --
-      -----------------
-
-      procedure Set_Timeout (Val : Positive) is
-      begin
-         if Timeout_Is_Auto then
-            Timeout := Val;
-         end if;
-      end Set_Timeout;
-
    --  Start of processing for Compute_Why3_Args
 
    begin
@@ -453,83 +391,19 @@ procedure Gnatprove is
          Args.Append ("gnatwhy3");
       end if;
 
-      --  Start by taking into account the --level switch if used. If a switch
-      --  that is impacted by --level is also set independently, the latter
-      --  setting takes precedence.
-
-      case Level is
-         --  Level 0 is equivalent to
-         --    --prover=cvc4 --proof=per_check --steps=100
-         --  If --timeout=auto is given, level 0 implies --timeout=1
-
-         when 0 =>
-            Set_Alter_Prover ("cvc4");
-            Set_Proof_Mode (No_Split);
-            Set_Steps (100);
-            Set_Timeout (1);
-
-         --  Level 1 is equivalent to
-         --    --prover=cvc4,z3,altergo --proof=per_check --steps=100
-         --  If --timeout=auto is given, level 1 implies --timeout=1
-
-         when 1 =>
-            Set_Alter_Prover ("cvc4,z3,altergo");
-            Set_Proof_Mode (No_Split);
-            Set_Steps (100);
-            Set_Timeout (1);
-
-         --  Level 2 is equivalent to --prover=cvc4,z3,altergo
-         --    --proof=per_check --steps=1000
-         --  If --timeout=auto is given, level 2 implies --timeout=10
-
-         when 2 =>
-            Set_Alter_Prover ("cvc4,z3,altergo");
-            Set_Proof_Mode (No_Split);
-            Set_Steps (1000);
-            Set_Timeout (10);
-
-         --  Level 3 is equivalent to --prover=cvc4,z3,altergo
-         --    --proof=progressive --steps=1000
-         --  If --timeout=auto is given, level 3 implies --timeout=10
-
-         when 3 =>
-            Set_Alter_Prover ("cvc4,z3,altergo");
-            Set_Proof_Mode (Then_Split);
-            Set_Steps (1000);
-            Set_Timeout (10);
-
-         --  Level 4 is equivalent to --prover=cvc4,z3,altergo
-         --    --proof=progressive --steps=10000
-         --  If --timeout=auto is given, level 4 implies --timeout=60
-
-         when 4 =>
-            Set_Alter_Prover ("cvc4,z3,altergo");
-            Set_Proof_Mode (Then_Split);
-            Set_Steps (10_000);
-            Set_Timeout (60);
-
-         when others =>
-            raise Program_Error;
-      end case;
-
       --  If not set explicitly, the code above always sets a suitable value
       --  for the prover list, the proof strategy and the steps limit. No
       --  value of timeout may be set though, which is expected in general
       --  for deterministic behavior.
 
-      if Timeout /= Invalid_Timeout and Timeout /= 0 then
-         Args.Append ("--timeout");
-         Args.Append (Image (Timeout, 1));
-      end if;
+      Args.Append ("--timeout");
+      Args.Append (Image (Timeout, 1));
 
-      if Steps /= Invalid_Step then
-         Args.Append ("--steps");
-         Args.Append (Image (Steps, 1));
-      end if;
+      Args.Append ("--steps");
+      Args.Append (Image (Steps, 1));
 
-      pragma Assert (Alter_Prover.all /= "");
       Args.Append ("--prover");
-      Args.Append (Alter_Prover.all);
+      Args.Append (Prover_List);
 
       Args.Append ("--proof");
       Args.Append (To_String (Proof));
@@ -568,7 +442,7 @@ procedure Gnatprove is
          --  the project directory so we give it an absolute path to the
          --  proof_dir.
          Args.Append (Proof_Dir.all);
-         if Alter_Prover.all /= "" then
+         if Is_Manual_Prover then
             Prepare_Why3_Manual;
          end if;
       end if;
@@ -579,10 +453,10 @@ procedure Gnatprove is
       end if;
 
       Args.Append ("--counterexample");
-      if No_Counterexample then
-         Args.Append ("off");
-      else
+      if Counterexample then
          Args.Append ("on");
+      else
+         Args.Append ("off");
       end if;
 
       return Args;
@@ -682,7 +556,7 @@ procedure Gnatprove is
       end case;
 
       if Status /= 0
-        and then MMode = GPM_Check
+        and then Configuration.Mode = GPM_Check
       then
          Status := 0;
       end if;
@@ -733,7 +607,7 @@ procedure Gnatprove is
          Args.Append ("-u");
       end if;
 
-      for File of File_List loop
+      for File of CL_Switches.File_List loop
          Args.Append (File);
       end loop;
 
@@ -743,7 +617,7 @@ procedure Gnatprove is
 
       Args.Append ("-gnates=" & Opt_File);
 
-      for Carg of Cargs_List loop
+      for Carg of CL_Switches.Cargs_List loop
          Args.Append (Carg);
       end loop;
       if RTS_Dir.all /= "" then
@@ -789,7 +663,7 @@ procedure Gnatprove is
       Close (Obj_Dir_File);
 
       Args.Append (Obj_Dir_Fn);
-      if Assumptions then
+      if Configuration.Assumptions then
          Args.Append ("--assumptions");
          if Limit_Subp.all /= "" then
             Args.Append ("--limit-subp=" & Limit_Subp.all);
@@ -814,7 +688,7 @@ procedure Gnatprove is
             --  the user has probably forgotten to put a SPARK_Mode pragma
             --  somewhere.
 
-            if MMode /= GPM_Check
+            if Configuration.Mode /= GPM_Check
               and then Report_File_Is_Empty (File)
             then
                Put_Line
@@ -1105,9 +979,9 @@ procedure Gnatprove is
       if Translation_Phase then
          Gnat2Why_Args.Global_Gen_Mode := False;
          Gnat2Why_Args.Warning_Mode := Warning_Mode;
-         Gnat2Why_Args.Check_Mode := MMode = GPM_Check;
-         Gnat2Why_Args.Flow_Analysis_Mode := MMode = GPM_Flow;
-         Gnat2Why_Args.Prove_Mode := MMode = GPM_Prove;
+         Gnat2Why_Args.Check_Mode := Configuration.Mode = GPM_Check;
+         Gnat2Why_Args.Flow_Analysis_Mode := Configuration.Mode = GPM_Flow;
+         Gnat2Why_Args.Prove_Mode := Configuration.Mode = GPM_Prove;
          Gnat2Why_Args.Pedantic := Pedantic;
          Gnat2Why_Args.Ide_Mode := IDE_Progress_Bar;
          Gnat2Why_Args.Limit_Subp :=
@@ -1171,7 +1045,7 @@ procedure Gnatprove is
          then
             Put_Line
               (Handle,
-               " for Target use """ & Target_Dir.all & """;");
+               " for Target use """ & Prj_Attr.Target.all & """;");
          else
             Put_Line (Handle, Line);
          end if;
@@ -1183,14 +1057,14 @@ procedure Gnatprove is
 
    begin
       if RTS_Dir.all = "" and then
-        Null_Or_Empty_String (Target_Dir)
+        Null_Or_Empty_String (Prj_Attr.Target)
       then
          return Config_File;
       end if;
       if RTS_Dir.all /= "" then
          RTS_Set := True;
       end if;
-      if not Null_Or_Empty_String (Target_Dir) then
+      if not Null_Or_Empty_String (Prj_Attr.Target) then
          Target_Set := True;
       end if;
 
@@ -1254,8 +1128,8 @@ procedure Gnatprove is
       --  what we want
       Args.Append ("--subdirs=gnatprove/codepeer");
 
-      if not GPR_Project_Path.Is_Empty then
-         for S of GPR_Project_Path loop
+      if not CL_Switches.GPR_Project_Path.Is_Empty then
+         for S of CL_Switches.GPR_Project_Path loop
             Args.Append ("-aP");
             Args.Append (S);
          end loop;
@@ -1330,7 +1204,7 @@ procedure Gnatprove is
             return "CodePeer analysis";
 
          when GS_Gnat2Why =>
-            case MMode is
+            case Configuration.Mode is
                when GPM_Check =>
                   return "checking of SPARK legality rules";
                when GPM_Flow =>
@@ -1360,7 +1234,7 @@ begin
          else (GS_ALI, GS_Gnat2Why));
    begin
       for Step in Plan'Range loop
-         Execute_Step (Plan, Step, Project_File.all, Tree);
+         Execute_Step (Plan, Step, CL_Switches.P.all, Tree);
       end loop;
    end;
 
@@ -1373,5 +1247,5 @@ begin
 exception
    when Invalid_Project =>
       Abort_With_Message
-         ("Error while loading project file: " & Project_File.all);
+         ("Error while loading project file: " & CL_Switches.P.all);
 end Gnatprove;

@@ -27,6 +27,7 @@ with Ada.Characters.Handling;
 with Ada.Command_Line;
 with Ada.Containers;            use Ada.Containers;
 with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;
 with Ada.Text_IO;               use Ada.Text_IO;
 with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
@@ -37,16 +38,7 @@ with System.Multiprocessors;
 
 package body Configuration is
 
-   MMode_Input : aliased GNAT.Strings.String_Access;
-   --  The mode of gnatprove, and the input variable for command line parsing
-   --  set by option --mode=
-
-   Warning_Input : aliased GNAT.Strings.String_Access;
-   --  The warnings mode of gnatprove, and the input variable for command line
-   --  parsing set by option --warnings=
-
-   Report_Input : aliased GNAT.Strings.String_Access;
-   --  The input variable for command line parsing set by option --report=
+   Invalid_Step    : constant := -1;
 
    Clean : aliased Boolean;
    --  Set to True when --clean was given. Triggers cleanup of GNATprove
@@ -66,10 +58,6 @@ package body Configuration is
    procedure Clean_Up (Tree : Project_Tree);
    --  Deletes generated "gnatprove" sub-directories in all object directories
    --  of the project.
-
-   procedure Configure_Proof_Dir (Proj_Type : Project_Type);
-   --  If attribute Proof_Dir is set in the project file, set global variable
-   --  Proof_Dir to the full path <path-to-project-file>/<value-of-proof-dir>.
 
    procedure Handle_Project_Loading_Switches
      (Switch    : String;
@@ -103,40 +91,18 @@ package body Configuration is
    --  The String in argument is an error message from gnatcoll. Print it on
    --  stderr with a prefix
 
-   procedure Set_Proof_Mode
-     (Config : Command_Line_Configuration;
-      Input  : String;
-      Proof  : out Proof_Mode;
-      Lazy   : out Boolean);
-   --  parse the "--proof" option into the two values "proof" and "lazy"
-
    procedure Set_CodePeer_Mode
      (Config : Command_Line_Configuration;
       Input  : String);
    --  parse the --codepeer option (possibilities are "on" and "off")
 
-   procedure Set_Timeout
-     (Config : Command_Line_Configuration;
-      Input  : String);
-   --  parse the --timeout option (possibilities are "auto" or a non-negative
-   --  integer)
-
-   procedure Set_RTS_Dir
-     (Config    : Command_Line_Configuration;
-      Proj_Type : Project_Type;
-      RTS_Dir   : in out GNAT.Strings.String_Access);
+   procedure Set_RTS_Dir (Config    : Command_Line_Configuration);
    --  if a runtime dir was defined, normalize it into an absolute path. To
    --  find the runtime dir, we first look at the initial value of RTS which
    --  contains the command-line argument of --RTS, if present. If it was not
    --  present, look in the project file to find the Runtime attribute.
 
-   procedure Set_Target_Dir (Proj_Type : Project_Type);
-   --  if "Target" attribute is set in the project file, set the global
-   --  variable Target_Dir to its value, otherwise set that variable
-   --  to "null". Also, issue a warning if -gnateT is not set in
-   --  Builder.Global_Configuration_Switches
-
-   procedure Check_gnateT_Switch (Proj_Type : Project_Type);
+   procedure Check_gnateT_Switch;
    --  Do the actual check and issue warning for the check mentioned in
    --  Set_Target_Dir: if -gnateT is not set in
    --  Builder.Global_Configuration_Switches
@@ -332,36 +298,31 @@ ASCII.LF;
    -- Check_gnateT_Switch --
    -------------------------
 
-   procedure Check_gnateT_Switch (Proj_Type : Project_Type) is
-      Attr : constant Attribute_Pkg_List :=
-        Build ("Builder", "Global_Compilation_Switches");
+   procedure Check_gnateT_Switch is
    begin
+      if Prj_Attr.Target.all /= "" then
 
-      --  We check the conditions for *not* issuing the warning, in which
-      --  case we return. At the end of the procedure, the warning is issued
-      --  unconditionally.
+         --  We check the conditions for *not* issuing the warning, in which
+         --  case we return. At the end of the procedure, the warning is issued
+         --  unconditionally.
 
-      if Has_Attribute (Proj_Type, Attr, "Ada") then
-         declare
-            Args : GNAT.Strings.String_List_Access :=
-              Attribute_Value (Proj_Type, Attr, "Ada");
-         begin
-            for Arg of Args.all loop
+         if Prj_Attr.Builder.Global_Compilation_Switches_Ada /= null then
+            for Arg of Prj_Attr.Builder.Global_Compilation_Switches_Ada.all
+            loop
                if GNATCOLL.Utils.Starts_With (Arg.all, "-gnateT=") then
                   return;
                end if;
             end loop;
-            Free (Args);
-         end;
+         end if;
+         Put_Line
+           (Standard_Error,
+            "warning: attribute ""Target"" of your project file is " &
+              "currently ignored by gnatprove");
+         Put_Line
+           (Standard_Error,
+            "warning: to specify target properties, specify option " &
+              """-gnateT"" using ""Builder.Global_Compilation_Switches""");
       end if;
-      Put_Line
-        (Standard_Error,
-         "warning: attribute ""Target"" of your project file is currently " &
-           "ignored by gnatprove");
-      Put_Line
-        (Standard_Error,
-         "warning: to specify target properties, specify option ""-gnateT"" " &
-           "using ""Builder.Global_Compilation_Switches""");
    end Check_gnateT_Switch;
 
    --------------
@@ -412,19 +373,19 @@ ASCII.LF;
                if Obj_Dir /= GNATCOLL.VFS.No_File then
                   pragma Assert (Name_Dir = Name_GNATprove);
                   if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
-                     if Verbose then
+                     if CL_Switches.V then
                         Ada.Text_IO.Put
                           ("Deleting directory " & Rm_Dir & "...");
                      end if;
                      GNAT.Directory_Operations.Remove_Dir (Rm_Dir, True);
-                     if Verbose then
+                     if CL_Switches.V then
                         Ada.Text_IO.Put_Line (" done");
                      end if;
                   end if;
                end if;
             exception
                when GNAT.Directory_Operations.Directory_Error =>
-                  if Verbose then
+                  if CL_Switches.V then
                      Ada.Text_IO.Put_Line (" failed, please delete manually");
                   end if;
             end;
@@ -433,28 +394,6 @@ ASCII.LF;
          Next (Iter);
       end loop;
    end Clean_Up;
-
-   -------------------------
-   -- Configure_Proof_Dir --
-   -------------------------
-
-   procedure Configure_Proof_Dir (Proj_Type : Project_Type) is
-      Attr : constant Attribute_Pkg_String := Build ("Prove", "Proof_Dir");
-   begin
-      if Has_Attribute (Proj_Type, Attr) then
-         declare
-            Dir_Name : constant Virtual_File :=
-              Create (Proj_Type.Project_Path.Dir_Name);
-            File_Name : constant String :=
-              Attribute_Value (Proj_Type, Attr, Default => "");
-            Full_Name : constant Virtual_File :=
-              Create_From_Dir (Dir_Name, +File_Name);
-         begin
-            Full_Name.Normalize_Path;
-            Proof_Dir := new String'(Full_Name.Display_Full_Name);
-         end;
-      end if;
-   end Configure_Proof_Dir;
 
    -------------------------------------
    -- Handle_Project_Loading_Switches --
@@ -495,9 +434,9 @@ ASCII.LF;
 
          --  Second, we add the whole switch to the list of Scenario switches
 
-         Scenario_Variables.Append (Switch);
+         CL_Switches.X.Append (Switch);
       elsif Switch = "-aP" then
-         GPR_Project_Path.Append (Parameter);
+         CL_Switches.GPR_Project_Path.Append (Parameter);
       end if;
    end Handle_Project_Loading_Switches;
 
@@ -511,14 +450,14 @@ ASCII.LF;
       Section   : String) is
    begin
       if Section = "cargs" then
-         Cargs_List.Append (Switch & Separator & Parameter);
+         CL_Switches.Cargs_List.Append (Switch & Separator & Parameter);
 
       elsif Switch (Switch'First) /= '-' then
 
          --  We assume that the "switch" is actually an argument and put it in
          --  the file list
 
-         File_List.Append (Switch);
+         CL_Switches.File_List.Append (Switch);
 
       --  We can ignore -X switches, have been parsed by the first pass
 
@@ -539,16 +478,9 @@ ASCII.LF;
 
    function Is_Manual_Prover return Boolean is
    begin
-      if Alter_Prover.all = "" then
-         return False;
-      elsif
-        Alter_Prover.all = "coq" or else
-        Alter_Prover.all = "isabelle"
-      then
-         return True;
-      else
-         return False;
-      end if;
+      return Provers.Length = 1
+        and then
+          (Provers.Contains ("coq") or else Provers.Contains ("isabelle"));
    end Is_Manual_Prover;
 
    -------------------
@@ -557,10 +489,7 @@ ASCII.LF;
 
    function Is_Coq_Prover return Boolean is
    begin
-      if Is_Manual_Prover and then Alter_Prover.all = "coq" then
-         return True;
-      end if;
-      return False;
+      return Provers.Length = 1 and then Provers.Contains ("coq");
    end Is_Coq_Prover;
 
    ------------------------
@@ -571,7 +500,7 @@ ASCII.LF;
 
       Success : Boolean := True;
       Prover_Name : constant String :=
-        Ada.Characters.Handling.To_Lower (Alter_Prover.all);
+        Ada.Characters.Handling.To_Lower (Provers.First_Element);
       Prover_Lib_Dir : constant String := Compose
         (Compose (Why3_Dir, "libs"), Name => Prover_Name);
       Prover_Obj_Dir : constant String := Compose
@@ -658,9 +587,9 @@ ASCII.LF;
       case P is
          when No_WP => return "no_wp";
          when All_Split => return "all_split";
-         when Then_Split => return "then_split";
-         when Path_WP => return "path_wp";
-         when No_Split => return "no_split";
+         when Progressive => return "progressive";
+         when Per_Path => return "per_path";
+         when Per_Check => return "per_check";
       end case;
    end To_String;
 
@@ -673,6 +602,30 @@ ASCII.LF;
       Ada.Text_IO.Put_Line (Standard_Error, "gnatprove: " & S);
    end Print_Errors;
 
+   -----------------
+   -- Prover_List --
+   -----------------
+
+   function Prover_List return String is
+      use Ada.Strings.Unbounded;
+      use String_Lists;
+
+      Buf : Unbounded_String := Null_Unbounded_String;
+      C : Cursor := First (Provers);
+   begin
+      --  prover list is not empty
+
+      pragma Assert (Has_Element (C));
+
+      loop
+         Append (Buf, Element (C));
+         Next (C);
+         exit when not Has_Element (C);
+         Append (Buf, ',');
+      end loop;
+      return To_String (Buf);
+   end Prover_List;
+
    -----------------------
    -- Read_Command_Line --
    -----------------------
@@ -683,6 +636,24 @@ ASCII.LF;
       function Init return Project_Tree;
       --  Load the project file; This function requires the project file to be
       --  present.
+
+      procedure Postprocess;
+      --  read the switch variables set by CL parsing and set the gnatprove
+      --  variables
+
+      procedure Set_Project_Vars;
+      --  set the variables of the Prj_Attr package
+
+      procedure Set_Mode;
+      procedure Set_Warning_Mode;
+      procedure Set_Report_Mode;
+      procedure Set_Level_Timeout_Steps_Provers_Proof_Mode;
+      procedure Set_Proof_Mode;
+      procedure Process_Limit_Switches;
+      procedure Set_Provers;
+      procedure Set_Proof_Dir;
+   --  If attribute Proof_Dir is set in the project file, set global variable
+   --  Proof_Dir to the full path <path-to-project-file>/<value-of-proof-dir>.
 
       ----------
       -- Init --
@@ -717,19 +688,20 @@ ASCII.LF;
 
          declare
             Arr  : constant File_Array := Proj_Env.Predefined_Project_Path;
-            Arr2 : File_Array (1 .. Integer (GPR_Project_Path.Length));
+            Arr2 : File_Array
+              (1 .. Integer (CL_Switches.GPR_Project_Path.Length));
             I    : Integer := 1;
          begin
-            for S of GPR_Project_Path loop
+            for S of CL_Switches.GPR_Project_Path loop
                Arr2 (I) := Create (Filesystem_String (S));
                I := I + 1;
             end loop;
             Proj_Env.Set_Predefined_Project_Path (Arr & Arr2);
          end;
 
-         if Project_File.all /= "" then
+         if CL_Switches.P.all /= "" then
             Tree.Load
-              (GNATCOLL.VFS.Create (Filesystem_String (Project_File.all)),
+              (GNATCOLL.VFS.Create (Filesystem_String (CL_Switches.P.all)),
                Proj_Env,
                Errors => Print_Errors'Access);
          else
@@ -738,9 +710,433 @@ ASCII.LF;
          return Tree;
       end Init;
 
+      procedure Postprocess is
+      begin
+         Verbose := CL_Switches.V;
+         Force   := CL_Switches.F;
+         Debug   := CL_Switches.D or else CL_Switches.Flow_Debug;
+         Quiet   := CL_Switches.Q;
+         Minimal_Compile := CL_Switches.M;
+         Flow_Extra_Debug := CL_Switches.Flow_Debug;
+         Debug_Proof_Only := CL_Switches.Dbg_Proof_Only;
+         Continue_On_Error := CL_Switches.K;
+         All_Projects := CL_Switches.UU;
+         Pedantic := CL_Switches.Pedantic;
+         IDE_Progress_Bar := CL_Switches.IDE_Progress_Bar;
+         Limit_Line := CL_Switches.Limit_Line;
+         Limit_Subp := CL_Switches.Limit_Subp;
+         Assumptions := CL_Switches.Assumptions;
+         Counterexample := not CL_Switches.No_Counterexample;
+         Caching := CL_Switches.Cache;
+         Benchmark_Mode := CL_Switches.Benchmark;
+         Why3_Config_File := CL_Switches.Why3_Conf;
+
+         --  Adjust the number of parallel processes. If -j0 was used, the
+         --  number of processes should be set to the actual number of
+         --  processors available on the machine.
+
+         if CL_Switches.J = 0 then
+            Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
+         elsif CL_Switches.J < 0 then
+            Abort_Msg (Config,
+                       "error: wrong argument for -j",
+                       With_Help => False);
+         else
+            Parallel := CL_Switches.J;
+         end if;
+
+         --  handling of Only_Given and Filelist
+
+         Only_Given := CL_Switches.U
+           or not Null_Or_Empty_String (CL_Switches.Limit_Subp)
+           or not Null_Or_Empty_String (CL_Switches.Limit_Line);
+
+         Process_Limit_Switches;
+
+         Set_CodePeer_Mode (Config, CL_Switches.CodePeer.all);
+         Check_gnateT_Switch;
+         Set_Mode;
+         Set_Warning_Mode;
+         Set_RTS_Dir (Config);
+         Set_Report_Mode;
+         Set_Level_Timeout_Steps_Provers_Proof_Mode;
+         Set_Proof_Dir;
+      end Postprocess;
+
+      ----------------------------
+      -- Process_Limit_Switches --
+      ----------------------------
+
+      procedure Process_Limit_Switches is
+      begin
+         --  Unless -U is specified, use of --limit-line or --limit-subp leads
+         --  to only the file with the given line or subprogram to be analyzed.
+         --  Specifying -U with --limit-line or --limit-subp is useful to
+         --  force analysis of all files, when the line or subprogram is
+         --  inside a generic or itself a generic, so that all instances of
+         --  the line/subprogram are analyzed.
+
+         if not All_Projects then
+            declare
+               Limit_String : GNAT.Strings.String_Access := null;
+
+            begin
+               --  Limit_Line and Limit_Subp both imply -u for the
+               --  corresponding file. We take care of that using the
+               --  Limit_String variable, note that "Limit_Line" is
+               --  stronger naturally.
+
+               if not Null_Or_Empty_String (Limit_Subp) then
+                  Limit_String := Limit_Subp;
+               end if;
+
+               if not Null_Or_Empty_String (Limit_Line) then
+                  Limit_String := Limit_Line;
+               end if;
+
+               if Limit_String /= null then
+                  declare
+                     Index : Integer := Limit_String.all'First;
+                  begin
+                     while Index < Limit_String.all'Last and then
+                       Limit_String.all (Index) /= ':' loop
+                        Index := Index + 1;
+                     end loop;
+                     if Index = Limit_String.all'Last then
+                        Abort_Msg
+                          (Config,
+                           "limit-line: incorrect line specification" &
+                             " - missing ':' followed by operand",
+                           With_Help => False);
+                     end if;
+                     CL_Switches.File_List.Append
+                       (Limit_String.all
+                          (Limit_String.all'First .. Index - 1));
+                  end;
+               end if;
+            end;
+         end if;
+      end Process_Limit_Switches;
+
+      -------------------------------------
+      -- Set_Level_Timeout_Steps_Provers --
+      -------------------------------------
+
+      procedure Set_Level_Timeout_Steps_Provers_Proof_Mode is
+      begin
+         case CL_Switches.Level is
+
+            --  Level 0 is equivalent to
+            --    --prover=cvc4 --proof=per_check --steps=100
+            --  If --timeout=auto is given, level 0 implies --timeout=1
+
+            when 0 =>
+               Provers.Append ("cvc4");
+               Proof := Per_Check;
+               Steps := 100;
+               Timeout := 1;
+
+               --  Level 1 is equivalent to
+               --    --prover=cvc4,z3,altergo --proof=per_check --steps=100
+               --  If --timeout=auto is given, level 1 implies --timeout=1
+
+            when 1 =>
+               Provers.Append ("cvc4");
+               Provers.Append ("z3");
+               Provers.Append ("altergo");
+               Proof := Per_Check;
+               Steps := 100;
+               Timeout := 1;
+
+               --  Level 2 is equivalent to --prover=cvc4,z3,altergo
+               --    --proof=per_check --steps=1000
+               --  If --timeout=auto is given, level 2 implies --timeout=10
+
+            when 2 =>
+               Provers.Append ("cvc4");
+               Provers.Append ("z3");
+               Provers.Append ("altergo");
+               Proof := Per_Check;
+               Steps := 1000;
+               Timeout := 10;
+
+               --  Level 3 is equivalent to --prover=cvc4,z3,altergo
+               --    --proof=progressive --steps=1000
+               --  If --timeout=auto is given, level 3 implies --timeout=10
+
+            when 3 =>
+               Provers.Append ("cvc4");
+               Provers.Append ("z3");
+               Provers.Append ("altergo");
+               Proof := Progressive;
+               Steps := 1000;
+               Timeout := 10;
+
+               --  Level 4 is equivalent to --prover=cvc4,z3,altergo
+               --    --proof=progressive --steps=10000
+               --  If --timeout=auto is given, level 4 implies --timeout=60
+
+            when 4 =>
+               Provers.Append ("cvc4");
+               Provers.Append ("z3");
+               Provers.Append ("altergo");
+               Proof := Progressive;
+               Steps := 10_000;
+               Timeout := 60;
+
+            when others =>
+               Abort_Msg (Config,
+                          "error: wrong argument for --level",
+                          With_Help => False);
+
+               raise Program_Error;
+         end case;
+
+         --  in mode auto, leave the timeout as set above. If option --timeout
+         --  was not provided, set timeout to 0 (no timeout). Otherwise, take
+         --  the user-provided timeout
+
+         if CL_Switches.Timeout.all = "auto" then
+            null;
+         elsif CL_Switches.Timeout.all = "" then
+            Timeout := 0;
+         else
+            begin
+               Timeout := Integer'Value (CL_Switches.Timeout.all);
+               if Timeout < 0 then
+                  raise Constraint_Error;
+               end if;
+            exception
+               when Constraint_Error =>
+                  Abort_Msg (Config,
+                             "error: wrong argument for --timeout, " &
+                               "must be auto or a non-negative integer",
+                             With_Help => False);
+            end;
+         end if;
+
+         if CL_Switches.Steps = Invalid_Step then
+            null;
+         elsif CL_Switches.Steps < 0 then
+            Abort_Msg (Config,
+                       "error: wrong argument for --steps",
+                       With_Help => False);
+         else
+            Steps := CL_Switches.Steps;
+         end if;
+
+         Set_Proof_Mode;
+         Set_Provers;
+      end Set_Level_Timeout_Steps_Provers_Proof_Mode;
+
+      --------------
+      -- Set_Mode --
+      --------------
+
+      procedure Set_Mode is
+      begin
+         Mode := GPM_All;
+         if CL_Switches.Mode.all = "" then
+            null;
+         elsif CL_Switches.Mode.all = "prove" then
+            Mode := GPM_Prove;
+         elsif CL_Switches.Mode.all = "check" then
+            Mode := GPM_Check;
+         elsif CL_Switches.Mode.all = "flow" then
+            Mode := GPM_Flow;
+         elsif CL_Switches.Mode.all = "all" then
+            Mode := GPM_All;
+         else
+            Abort_Msg (Config,
+                       "error: wrong argument for --mode",
+                       With_Help => False);
+         end if;
+      end Set_Mode;
+
+      ----------------------
+      -- Set_Project_Vars --
+      ----------------------
+
+      procedure Set_Project_Vars is
+         Glob_Comp_Switch_Attr : constant Attribute_Pkg_List :=
+           Build ("Builder", "Global_Compilation_Switches");
+         Proof_Dir_Attr : constant Attribute_Pkg_String :=
+           Build ("Prove", "Proof_Dir");
+      begin
+         Prj_Attr.Target := new String'(Tree.Root_Project.Get_Target);
+         Prj_Attr.Runtime := new String'(Tree.Root_Project.Get_Runtime);
+         Prj_Attr.Builder.Global_Compilation_Switches_Ada :=
+           (if Has_Attribute (Tree.Root_Project, Glob_Comp_Switch_Attr, "Ada")
+            then Attribute_Value (Tree.Root_Project,
+                                  Glob_Comp_Switch_Attr, "Ada")
+            else null);
+         Prj_Attr.Prove.Proof_Dir :=
+           (if Has_Attribute (Tree.Root_Project, Proof_Dir_Attr)
+            then new String'(Attribute_Value (Tree.Root_Project,
+                                              Proof_Dir_Attr))
+            else null);
+      end Set_Project_Vars;
+
+      -------------------
+      -- Set_Proof_Dir --
+      -------------------
+
+      procedure Set_Proof_Dir is
+      begin
+         if Prj_Attr.Prove.Proof_Dir /= null
+           and then Prj_Attr.Prove.Proof_Dir.all /= ""
+         then
+            declare
+               Dir_Name : constant Virtual_File :=
+                 Create (Tree.Root_Project.Project_Path.Dir_Name);
+               Full_Name : constant Virtual_File :=
+                 Create_From_Dir (Dir_Name, +Prj_Attr.Prove.Proof_Dir.all);
+            begin
+               Full_Name.Normalize_Path;
+               Proof_Dir := new String'(Full_Name.Display_Full_Name);
+            end;
+         end if;
+      end Set_Proof_Dir;
+
+      --------------------
+      -- Set_Proof_Mode --
+      --------------------
+
+      procedure Set_Proof_Mode is
+         Find_Colon : Integer := 0;
+         Input : constant String := CL_Switches.Proof.all;
+      begin
+         Lazy := True;
+         for I in Input'Range loop
+            if Input (I) = ':' then
+               Find_Colon := I;
+               exit;
+            end if;
+         end loop;
+
+         declare
+            Proof_Input : constant String :=
+              (if Find_Colon /= 0 then Input (Input'First .. Find_Colon - 1)
+               else Input);
+            Lazy_Input : constant String :=
+              (if Find_Colon /= 0 then Input (Find_Colon + 1 .. Input'Last)
+               else "");
+         begin
+            if Proof_Input = "" then
+               null;
+            elsif Proof_Input = "progressive" then
+               Proof := Progressive;
+            elsif Proof_Input = "per_path" then
+               Proof := Per_Path;
+            elsif Proof_Input = "per_check" then
+               Proof := Per_Check;
+
+               --  Hidden debugging values
+
+            elsif Proof_Input = "no_wp" then
+               Proof := No_WP;
+            elsif Proof_Input = "all_split" then
+               Proof := All_Split;
+            else
+               Abort_Msg (Config,
+                          "error: wrong argument for --proof",
+                          With_Help => False);
+            end if;
+
+            if Lazy_Input = "" then
+               null;
+            elsif Lazy_Input = "all" then
+               Lazy := False;
+            elsif Lazy_Input = "lazy" then
+               Lazy := True;
+            else
+               Abort_Msg (Config,
+                          "error: wrong argument for --proof",
+                          With_Help => False);
+            end if;
+         end;
+      end Set_Proof_Mode;
+
+      -----------------
+      -- Set_Provers --
+      -----------------
+
+      procedure Set_Provers is
+         First : Integer;
+         S : constant String :=
+           (if CL_Switches.Prover /= null then CL_Switches.Prover.all else "");
+      begin
+         if S /= "" then
+            Provers.Clear;
+         end if;
+         First := S'First;
+         for Cur in S'Range loop
+            if S (Cur) = ',' then
+               Provers.Append (S (First .. Cur - 1));
+               First := Cur + 1;
+            end if;
+         end loop;
+         if S /= "" then
+            Provers.Append (S (First .. S'Last));
+         end if;
+      end Set_Provers;
+
+      ---------------------
+      -- Set_Report_Mode --
+      ---------------------
+
+      procedure Set_Report_Mode is
+      begin
+         Report := GPR_Fail;
+         if CL_Switches.Report.all = "" then
+            null;
+         elsif CL_Switches.Report.all = "fail" then
+            Report := GPR_Fail;
+         elsif CL_Switches.Report.all = "all" then
+            Report := GPR_All;
+         elsif CL_Switches.Report.all = "provers" then
+            Report := GPR_Provers;
+         elsif CL_Switches.Report.all = "statistics" then
+            Report := GPR_Statistics;
+         else
+            Abort_Msg (Config,
+                       "error: wrong argument for --report",
+                       With_Help => False);
+         end if;
+      end Set_Report_Mode;
+
+      ----------------------
+      -- Set_Warning_Mode --
+      ----------------------
+
+      procedure Set_Warning_Mode is
+      begin
+         Warning_Mode := Opt.Normal;
+         --  Note that "on" here is retained for backwards compatibility
+         --  with release 14.0.1
+         if CL_Switches.Warnings.all = "" then
+            null;
+         elsif CL_Switches.Warnings.all = "off" then
+            Warning_Mode := Opt.Suppress;
+         elsif CL_Switches.Warnings.all = "error" then
+            Warning_Mode := Opt.Treat_As_Error;
+         elsif CL_Switches.Warnings.all = "on"
+           or else CL_Switches.Warnings.all = "continue"
+         then
+            Warning_Mode := Opt.Normal;
+         else
+
+            Abort_Msg (Config,
+                       "error: wrong argument for --warnings",
+                       With_Help => False);
+         end if;
+      end Set_Warning_Mode;
+
       First_Config : Command_Line_Configuration;
       Com_Lin : aliased String_List :=
         (1 .. Ada.Command_Line.Argument_Count => <>);
+
+      use CL_Switches;
 
    --  Start of processing for Read_Command_Line
 
@@ -781,7 +1177,7 @@ ASCII.LF;
       end loop;
 
       Define_Switch
-        (First_Config, Project_File'Access,
+        (First_Config, CL_Switches.P'Access,
          "-P:",
          Help => "The name of the project file");
 
@@ -793,7 +1189,7 @@ ASCII.LF;
 
       Define_Switch
         (First_Config,
-         Verbose'Access,
+         CL_Switches.V'Access,
          "-v", Long_Switch => "--verbose");
 
       Define_Switch
@@ -829,167 +1225,162 @@ ASCII.LF;
 
       Define_Switch
          (Config,
-          Debug'Access,
+          CL_Switches.D'Access,
           "-d", Long_Switch => "--debug");
 
       Define_Switch
          (Config,
-          Flow_Extra_Debug'Access,
+          CL_Switches.Flow_Debug'Access,
           Long_Switch => "--flow-debug");
 
       Define_Switch
          (Config,
-          Debug_Proof_Only'Access,
+          CL_Switches.Dbg_Proof_Only'Access,
           Long_Switch => "--dbg-proof-only");
 
       Define_Switch
-        (Config, Project_File'Access,
+        (Config, CL_Switches.P'Access,
          "-P:");
 
       Define_Switch
         (Config,
-         Force'Access,
+         CL_Switches.F'Access,
          "-f");
 
       Define_Switch
-        (Config, Parallel'Access,
+        (Config, CL_Switches.J'Access,
          Long_Switch => "-j:",
          Initial => 1);
 
       Define_Switch
         (Config,
-         Continue_On_Error'Access,
+         CL_Switches.K'Access,
          "-k");
 
       Define_Switch
         (Config,
-         MMode_Input'Access,
+         CL_Switches.Mode'Access,
          Long_Switch => "--mode=");
 
       Define_Switch
         (Config,
-         Minimal_Compile'Access,
+         CL_Switches.M'Access,
          "-m");
 
       Define_Switch
         (Config,
-         Warning_Input'Access,
+         CL_Switches.Warnings'Access,
          Long_Switch => "--warnings=");
 
       Define_Switch
         (Config,
-         Proof_Input'Access,
+         CL_Switches.Proof'Access,
          Long_Switch => "--proof=");
 
       Define_Switch
         (Config,
-         CodePeer_Input'Access,
+         CL_Switches.CodePeer'Access,
          Long_Switch => "--codepeer=");
 
       Define_Switch
         (Config,
-         Pedantic'Access,
+         CL_Switches.Pedantic'Access,
          Long_Switch => "--pedantic");
 
       Define_Switch
         (Config,
-         RTS_Dir'Access,
+         CL_Switches.RTS'Access,
          Long_Switch => "--RTS=");
 
       Define_Switch
         (Config,
-         IDE_Progress_Bar'Access,
+         CL_Switches.IDE_Progress_Bar'Access,
          Long_Switch => "--ide-progress-bar");
 
       Define_Switch
          (Config,
-          Quiet'Access,
+          CL_Switches.Q'Access,
           "-q", Long_Switch => "--quiet");
 
       Define_Switch
         (Config,
-         Report_Input'Access,
+         CL_Switches.Report'Access,
          Long_Switch => "--report=");
 
       --  If not specified on the command-line, value of steps is invalid
       Define_Switch
-         (Config, Steps'Access,
+         (Config, CL_Switches.Steps'Access,
           Long_Switch => "--steps=",
           Initial => Invalid_Step);
 
       Define_Switch
-         (Config, Level'Access,
+         (Config, CL_Switches.Level'Access,
           Long_Switch => "--level=",
           Initial => Default_Level);
 
       Define_Switch
          (Config,
-          Timeout_Input'Access,
+          CL_Switches.Timeout'Access,
           Long_Switch => "--timeout=");
 
       Define_Switch
          (Config,
-          Only_Given'Access,
+          CL_Switches.U'Access,
           "-u");
 
       Define_Switch
          (Config,
-          All_Projects'Access,
+          CL_Switches.UU'Access,
           "-U");
 
       Define_Switch
         (Config,
-         Verbose'Access,
+         CL_Switches.V'Access,
          "-v", Long_Switch => "--verbose");
 
       Define_Switch
         (Config,
-         Assumptions'Access,
+         CL_Switches.Assumptions'Access,
          Long_Switch => "--assumptions");
 
       Define_Switch
         (Config,
-         Limit_Line'Access,
+         CL_Switches.Limit_Line'Access,
          Long_Switch => "--limit-line=");
 
       Define_Switch (Config, "*");
 
       Define_Switch
         (Config,
-         Limit_Subp'Access,
+         CL_Switches.Limit_Subp'Access,
          Long_Switch => "--limit-subp=");
 
       Define_Switch
         (Config,
-         Alter_Prover'Access,
+         CL_Switches.Prover'Access,
          Long_Switch => "--prover=");
 
       Define_Switch
         (Config,
-         No_Counterexample'Access,
+         CL_Switches.No_Counterexample'Access,
          Long_Switch => "--no-counterexample");
 
       Define_Switch
-        (Config,
-         Report_Input'Access,
-         Long_Switch => "--report=");
-
-      Define_Switch
-        (Config, Why3_Config_File'Access,
+        (Config, CL_Switches.Why3_Conf'Access,
          Long_Switch => "--why3-conf=");
 
       --  This switch is not documented on purpose. We provide the fake_*
       --  binaries instead of the real prover binaries. This helps when
       --  collecting benchmarks for prover developers.
       Define_Switch
-         (Config, Benchmark_Mode'Access,
+         (Config, CL_Switches.Benchmark'Access,
           Long_Switch => "--benchmark");
 
       --  This switch is not documented on purpose. This enables memcached
       --  caching for developers.
 
       Define_Switch
-         (Config, Caching'Access,
+         (Config, CL_Switches.Cache'Access,
           Long_Switch => "--cache");
 
       Define_Section (Config, "cargs");
@@ -1029,8 +1420,6 @@ ASCII.LF;
                     Concatenate => False);
          end if;
 
-         Configure_Proof_Dir (Proj_Type);
-
          --  After the call to Init, the object directory includes the
          --  sub-directory "gnatprove" set through Set_Object_Subdir.
          Main_Subdir := new String'(Proj_Type.Object_Dir.Display_Full_Name);
@@ -1044,139 +1433,8 @@ ASCII.LF;
          end;
       end;
 
-      --  Adjust the number of parallel processes. If -j0 was used, the
-      --  number of processes should be set to the actual number of
-      --  processors available on the machine.
-
-      if Parallel = 0 then
-         Parallel := Natural (System.Multiprocessors.Number_Of_CPUs);
-      elsif Parallel < 0 then
-         Abort_Msg (Config,
-                    "error: wrong argument for -j",
-                    With_Help => False);
-      end if;
-
-      --  Check value of integer switches --steps, --level and --timeout, to
-      --  make sure they are either the special invalid value or an expected
-      --  value.
-
-      if Steps < 0 and Steps /= Invalid_Step then
-         Abort_Msg (Config,
-                    "error: wrong argument for --steps",
-                    With_Help => False);
-      end if;
-
-      if Level not in 0 .. 4 then
-         Abort_Msg (Config,
-                    "error: wrong argument for --level",
-                    With_Help => False);
-      end if;
-
-      --  Set modes from string values passed in argument to switches
-
-      if MMode_Input.all = "prove" then
-         MMode := GPM_Prove;
-      elsif MMode_Input.all = "check" then
-         MMode := GPM_Check;
-      elsif MMode_Input.all = "flow" then
-         MMode := GPM_Flow;
-      elsif MMode_Input.all = "all" or else MMode_Input.all = "" then
-         MMode := GPM_All;
-      else
-         Abort_Msg (Config,
-                    "error: wrong argument for --mode",
-                    With_Help => False);
-      end if;
-
-      --  Note that "on" here is retained for backwards compatibility
-      --  with release 14.0.1
-      if Warning_Input.all = "off" then
-         Warning_Mode := Opt.Suppress;
-      elsif Warning_Input.all = "error" then
-         Warning_Mode := Opt.Treat_As_Error;
-      elsif Warning_Input.all = "on"
-        or else Warning_Input.all = "continue"
-        or else Warning_Input.all = ""
-      then
-         Warning_Mode := Opt.Normal;
-      else
-         Abort_Msg (Config,
-                    "error: wrong argument for --warnings",
-                    With_Help => False);
-      end if;
-
-      if Report_Input.all = "fail" or else Report_Input.all = "" then
-         Report := GPR_Fail;
-      elsif Report_Input.all = "all" then
-         Report := GPR_All;
-      elsif Report_Input.all = "provers" then
-         Report := GPR_Provers;
-      elsif Report_Input.all = "statistics" then
-         Report := GPR_Statistics;
-      else
-         Abort_Msg (Config,
-                    "error: wrong argument for --report",
-                    With_Help => False);
-      end if;
-
-      Set_Proof_Mode (Config, Proof_Input.all, Proof,  Lazy);
-      Set_CodePeer_Mode (Config, CodePeer_Input.all);
-      Set_Timeout (Config, Timeout_Input.all);
-      Set_RTS_Dir (Config, Tree.Root_Project, RTS_Dir);
-      Set_Target_Dir (Tree.Root_Project);
-
-      if Flow_Extra_Debug and not Debug then
-         Abort_Msg (Config,
-                    "extra debugging for flow analysis requires -d",
-                    With_Help => False);
-      end if;
-
-      --  Unless -U is specified, use of --limit-line or --limit-subp leads
-      --  to only the file with the given line or subprogram to be analyzed.
-      --  Specifying -U with --limit-line or --limit-subp is useful to
-      --  force analysis of all files, when the line or subprogram is
-      --  inside a generic or itself a generic, so that all instances of
-      --  the line/subprogram are analyzed.
-
-      if not All_Projects then
-         declare
-            Limit_String : GNAT.Strings.String_Access := null;
-
-         begin
-            --  Limit_Line and Limit_Subp both imply -u for the corresponding
-            --  file. We take care of that using the Limit_String variable,
-            --  note that "Limit_Line" is stronger naturally.
-
-            if not Null_Or_Empty_String (Limit_Subp) then
-               Limit_String := Limit_Subp;
-            end if;
-
-            if not Null_Or_Empty_String (Limit_Line) then
-               Limit_String := Limit_Line;
-            end if;
-
-            if Limit_String /= null then
-               declare
-                  Index : Integer := Limit_String.all'First;
-               begin
-                  while Index < Limit_String.all'Last and then
-                    Limit_String.all (Index) /= ':' loop
-                     Index := Index + 1;
-                  end loop;
-                  if Index = Limit_String.all'Last then
-                     Abort_Msg
-                       (Config,
-                        "limit-line: incorrect line specification" &
-                          " - missing ':' followed by operand",
-                        With_Help => False);
-                  end if;
-                  File_List.Append
-                    (Limit_String.all (Limit_String.all'First .. Index - 1));
-               end;
-               Only_Given := True;
-            end if;
-         end;
-      end if;
+      Set_Project_Vars;
+      Postprocess;
 
       if Is_Coq_Prover then
          Prepare_Prover_Lib (Config);
@@ -1199,7 +1457,7 @@ ASCII.LF;
    procedure Sanitize_File_List (Tree : Project_Tree) is
       use String_Lists;
    begin
-      for Cursor in File_List.Iterate loop
+      for Cursor in CL_Switches.File_List.Iterate loop
          declare
             File_VF : constant Virtual_File :=
               Create_From_Base (Filesystem_String (Element (Cursor)));
@@ -1214,7 +1472,7 @@ ASCII.LF;
                     Tree.Other_File (File_VF);
                begin
                   if Is_Regular_File (Other_VF) then
-                     File_List.Replace_Element
+                     CL_Switches.File_List.Replace_Element
                        (Cursor,
                         String (Base_Name (Other_VF)));
                   end if;
@@ -1241,7 +1499,7 @@ ASCII.LF;
                                             "Ada"));
                   begin
                      if Is_Regular_File (Other_VF) then
-                        File_List.Replace_Element
+                        CL_Switches.File_List.Replace_Element
                           (Cursor,
                            String (Base_Name (Other_VF)));
                      end if;
@@ -1260,12 +1518,12 @@ ASCII.LF;
       Input  : String) is
    begin
       CodePeer := False;
-      if Input = "on" then
+      if Input = "" then
+         null;
+      elsif Input = "on" then
          CodePeer := True;
       elsif Input = "off" then
          CodePeer := False;
-      elsif Input = "" then
-         null;
       else
          Abort_Msg (Config,
                     "error: wrong argument for --codepeer, " &
@@ -1274,81 +1532,17 @@ ASCII.LF;
       end if;
    end Set_CodePeer_Mode;
 
-   --------------------
-   -- Set_Proof_Mode --
-   --------------------
-
-   procedure Set_Proof_Mode
-     (Config : Command_Line_Configuration;
-      Input  : String;
-      Proof  : out Proof_Mode;
-      Lazy   : out Boolean)
-   is
-      Find_Colon : Integer := 0;
-   begin
-      for I in Input'Range loop
-         if Input (I) = ':' then
-            Find_Colon := I;
-            exit;
-         end if;
-      end loop;
-
-      declare
-         Proof_Input : constant String :=
-           (if Find_Colon /= 0 then Input (Input'First .. Find_Colon - 1)
-            else Input);
-         Lazy_Input : constant String :=
-           (if Find_Colon /= 0 then Input (Find_Colon + 1 .. Input'Last)
-            else "");
-      begin
-         if Proof_Input = "progressive" then
-            Proof := Then_Split;
-         elsif Proof_Input = "per_path" then
-            Proof := Path_WP;
-         elsif Proof_Input = "per_check" then
-            Proof := No_Split;
-
-         --  Hidden debugging values
-
-         elsif Proof_Input = "no_wp" then
-            Proof := No_WP;
-         elsif Proof_Input = "all_split" then
-            Proof := All_Split;
-
-         --  The default proof mode is per_check
-
-         elsif Proof_Input = "" then
-            Proof := No_Split;
-         else
-            Abort_Msg (Config,
-                       "error: wrong argument for --proof",
-                       With_Help => False);
-         end if;
-
-         if Lazy_Input = "all" then
-            Lazy := False;
-         elsif Lazy_Input = "lazy" or else Lazy_Input = "" then
-            Lazy := True;
-         else
-            Abort_Msg (Config,
-                       "error: wrong argument for --proof",
-                       With_Help => False);
-         end if;
-      end;
-   end Set_Proof_Mode;
-
    -----------------
    -- Set_RTS_Dir --
    -----------------
 
    procedure Set_RTS_Dir
-     (Config    : Command_Line_Configuration;
-      Proj_Type : Project_Type;
-      RTS_Dir   : in out GNAT.Strings.String_Access)
+     (Config    : Command_Line_Configuration)
    is
-      Target  : constant String := Proj_Type.Get_Target;
-      Runtime : constant String := Proj_Type.Get_Runtime;
    begin
+
+      RTS_Dir := CL_Switches.RTS;
+
       --  When command-line switch --RTS is not provided, consider attribute
       --  Runtime of project file.
 
@@ -1359,13 +1553,16 @@ ASCII.LF;
          --  installation, which should work if GNAT and SPARK were
          --  installed at the same location.
 
-         if Target /= "" and then Runtime /= "" then
+         if Prj_Attr.Target.all /= ""
+           and then Prj_Attr.Runtime.all /= ""
+         then
             declare
                Dir     : constant String :=
-                 Executable_Location & Target &
+                 Executable_Location & Prj_Attr.Target.all &
                  GNAT.Directory_Operations.Dir_Separator & "lib" &
                  GNAT.Directory_Operations.Dir_Separator & "gnat" &
-                 GNAT.Directory_Operations.Dir_Separator & Runtime;
+                 GNAT.Directory_Operations.Dir_Separator &
+                 Prj_Attr.Runtime.all;
             begin
                if GNAT.OS_Lib.Is_Directory (Dir) then
                   RTS_Dir := new String'(Dir);
@@ -1377,10 +1574,9 @@ ASCII.LF;
          --  should work if the runtime has been copied in SPARK installation.
 
          if Null_Or_Empty_String (RTS_Dir)
-           and then Proj_Type.Has_Attribute (Runtime_Attribute)
+           and then Prj_Attr.Runtime.all /= ""
          then
-            RTS_Dir := new String'
-              (Proj_Type.Attribute_Value (Runtime_Attribute, Index => "Ada"));
+            RTS_Dir := Prj_Attr.Runtime;
          end if;
       end if;
 
@@ -1418,54 +1614,6 @@ ASCII.LF;
          end if;
       end;
    end Set_RTS_Dir;
-
-   --------------------
-   -- Set_Target_Dir --
-   --------------------
-
-   procedure Set_Target_Dir (Proj_Type : Project_Type) is
-   begin
-      Target_Dir := null;
-      if Has_Attribute (Proj_Type, Target_Attribute) then
-         declare
-            Targ : constant String :=
-              Attribute_Value (Proj_Type, Target_Attribute);
-         begin
-            if Targ /= "" then
-               Target_Dir := new String'(Targ);
-               Check_gnateT_Switch (Proj_Type);
-            end if;
-         end;
-      end if;
-   end Set_Target_Dir;
-
-   -----------------
-   -- Set_Timeout --
-   -----------------
-
-   procedure Set_Timeout
-     (Config : Command_Line_Configuration;
-      Input  : String) is
-   begin
-      if Input = "auto" then
-         Timeout_Is_Auto := True;
-      elsif Input = "" then
-         null;
-      else
-         begin
-            Timeout := Integer'Value (Input);
-            if Timeout < 0 then
-               raise Constraint_Error;
-            end if;
-         exception
-            when Constraint_Error =>
-               Abort_Msg (Config,
-                          "error: wrong argument for --timeout, " &
-                            "must be auto or a non-negative integer",
-                          With_Help => False);
-         end;
-      end if;
-   end Set_Timeout;
 
    -----------------------
    -- SPARK_Report_File --
