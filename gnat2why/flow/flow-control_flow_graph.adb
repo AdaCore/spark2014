@@ -1006,36 +1006,35 @@ package body Flow.Control_Flow_Graph is
       Nodes : Union_Lists.List;
       Block : out Graph_Connections)
    is
-      Prev : Union_Id;
-      V    : Flow_Graphs.Vertex_Id;
    begin
-      Block := No_Connections;
-
-      Prev := Union_Id (Empty);
-      for P of Nodes loop
-         if Prev /= Empty_List_Or_Node then
-            --  Connect this statement to the previous one.
-            Linkup (FA,
-                    CM (Prev).Standard_Exits,
-                    CM (P).Standard_Entry);
-         else
-            --  This is the first vertex, so set the standard entry of
-            --  the list.
-            Block.Standard_Entry := CM (P).Standard_Entry;
-         end if;
-
-         Prev := P;
-      end loop;
-
-      if Prev /= Empty_List_Or_Node then
-         --  Set the standard exits of the list, if we processed at
-         --  least one element.
-         Block.Standard_Exits := CM (Prev).Standard_Exits;
+      if Nodes.Is_Empty then
+         declare
+            V : Flow_Graphs.Vertex_Id;
+         begin
+            --  We had a null sequence so we need to produce a null node.
+            Add_Vertex (FA, Null_Node_Attributes, V);
+            Block := (Standard_Entry => V,
+                      Standard_Exits => To_Set (V));
+         end;
       else
-         --  We had a null sequence so we need to produce a null node.
-         Add_Vertex (FA, Null_Node_Attributes, V);
-         Block.Standard_Entry := V;
-         Block.Standard_Exits := To_Set (V);
+         Block.Standard_Entry := CM (Nodes.First_Element).Standard_Entry;
+
+         declare
+            Prev : Union_Lists.Cursor := Nodes.First;
+            Curr : Union_Lists.Cursor := Union_Lists.Next (Prev);
+         begin
+            while Union_Lists.Has_Element (Curr) loop
+               --  Connect this statement to the previous one
+               Linkup (FA,
+                       CM (Nodes (Prev)).Standard_Exits,
+                       CM (Nodes (Curr)).Standard_Entry);
+
+               Prev := Curr;
+               Curr := Union_Lists.Next (Curr);
+            end loop;
+         end;
+
+         Block.Standard_Exits := CM (Nodes.Last_Element).Standard_Exits;
       end if;
    end Join;
 
