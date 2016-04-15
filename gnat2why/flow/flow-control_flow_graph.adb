@@ -2851,15 +2851,15 @@ package body Flow.Control_Flow_Graph is
       --  is here as well.
       FA.Loops.Insert (Loop_Id);
       Ctx.Current_Loops.Insert (Loop_Id);
-      Ctx.Entry_References.Include (Loop_Id, Node_Sets.Empty_Set);
+      Ctx.Entry_References.Insert (Loop_Id, Node_Sets.Empty_Set);
 
       declare
-         Tmp : constant Entity_Id := Ctx.Active_Loop;
+         Outer_Loop : constant Entity_Id := Ctx.Active_Loop;
       begin
          --  We can't use 'Update here as we may modify Ctx.
          Ctx.Active_Loop := Loop_Id;
          Process_Statement_List (Statements (N), FA, CM, Ctx);
-         Ctx.Active_Loop := Tmp;
+         Ctx.Active_Loop := Outer_Loop;
       end;
 
       if No (I_Scheme) then
@@ -2943,6 +2943,7 @@ package body Flow.Control_Flow_Graph is
          CM (Union_Id (N)) := Block;
       end;
 
+      Ctx.Entry_References.Delete (Loop_Id);
       Ctx.Current_Loops.Delete (Loop_Id);
 
       --  Finally, we can update the loop information in Flow_Utility.
@@ -6638,8 +6639,8 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  Finally, make sure that all extra checks for folded functions have
-      --  been processed.
-      pragma Assert (The_Context.Folded_Function_Checks.Is_Empty);
+      --  been processed and other context information has been dropped.
+      pragma Assert (The_Context = No_Context);
    end Create;
 
 end Flow.Control_Flow_Graph;
