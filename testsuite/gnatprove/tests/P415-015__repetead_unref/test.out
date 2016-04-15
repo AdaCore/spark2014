@@ -1,0 +1,2 @@
+unmod.adb:1:18: warning: unused variable "X"
+unref.adb:1:11: warning: subprogram "Unref" has no effect

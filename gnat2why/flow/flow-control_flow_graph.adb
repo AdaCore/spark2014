@@ -4047,12 +4047,12 @@ package body Flow.Control_Flow_Graph is
                            --  If a pragma Unmodified was found, we insert
                            --  its associated variable to the set of
                            --  unmodified variables.
-                           FA.Unmodified_Vars.Insert (Associated_Variable);
+                           FA.Unmodified_Vars.Include (Associated_Variable);
                         else
                            --  If a pragma Unreferenced was found, we insert
                            --  its associated variable to the set of
                            --  unreferenced variables.
-                           FA.Unreferenced_Vars.Insert (Associated_Variable);
+                           FA.Unreferenced_Vars.Include (Associated_Variable);
                         end if;
                      end if;
 
