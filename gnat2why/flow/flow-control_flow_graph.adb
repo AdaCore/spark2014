@@ -6512,8 +6512,9 @@ package body Flow.Control_Flow_Graph is
       end loop;
       pragma Assert (for all E of FA.Direct_Calls => Nkind (E) in N_Entity);
 
-      --  In GG mode, we now assemble a list of globals and subprograms (and
-      --  retroactively make some initial and final vertices).
+      --  In GG mode, we now assemble a list of globals and subprograms; also,
+      --  we retroactively make some initial and final vertices, which is the
+      --  only reason for this code to be here.
       if FA.Generating_Globals then
          declare
             Known_Vars : constant Flow_Id_Sets.Set :=

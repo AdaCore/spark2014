@@ -141,8 +141,8 @@ package Flow is
       --  or if the entity should not be analyzed in the first place.
 
       Globals : Node_Sets.Set;
-      --  All obvious globals (non-local variables or parameters that are
-      --  not subprogram parameters of the analyzed entity).
+      --  Non-local variables and parameters other than those of the analyzed
+      --  entity.
    end record;
 
    type Tasking_Info_Kind is (Suspends_On,
