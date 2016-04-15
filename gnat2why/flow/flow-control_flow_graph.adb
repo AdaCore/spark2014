@@ -3716,9 +3716,6 @@ package body Flow.Control_Flow_Graph is
       --     Initializes => (X => Y
       --  we return the node for => (N_Component_Association).
 
-      function Get_Declarations return List_Id;
-      --  Returns the List_Id that corresponds to the body's declarations.
-
       Package_Spec : constant Entity_Id :=
         (case Nkind (N) is
          when N_Package_Body      => Corresponding_Spec (N),
@@ -3738,6 +3735,8 @@ package body Flow.Control_Flow_Graph is
          when N_Package_Body      => N,
          when N_Package_Body_Stub => Parent (Corresponding_Body (N)),
          when others              => raise Program_Error);
+
+      Pkg_Body_Declarations : constant List_Id := Declarations (Pkg_Body);
 
       Initializes_Scope : constant Flow_Scope :=
         (case Nkind (N) is
@@ -3777,12 +3776,6 @@ package body Flow.Control_Flow_Graph is
          raise Program_Error;
       end Find_Node;
 
-      ----------------------
-      -- Get_Declarations --
-      ----------------------
-
-      function Get_Declarations return List_Id is (Declarations (Pkg_Body));
-
       V : Flow_Graphs.Vertex_Id;
 
    --  Start of processing for Do_Package_Body_Or_Stub
@@ -3821,15 +3814,11 @@ package body Flow.Control_Flow_Graph is
         and then Entity_Body_In_SPARK (Package_Spec)
       then
          --  Traverse package body declarations.
-         declare
-            Body_Declarations : constant List_Id := Get_Declarations;
-         begin
-            Process_Statement_List (Body_Declarations, FA, CM, Ctx);
+         Process_Statement_List (Pkg_Body_Declarations, FA, CM, Ctx);
 
-            Copy_Connections (CM,
-                              Dst => Union_Id (N),
-                              Src => Union_Id (Body_Declarations));
-         end;
+         Copy_Connections (CM,
+                           Dst => Union_Id (N),
+                           Src => Union_Id (Pkg_Body_Declarations));
       end if;
 
       if not DM.Is_Empty then
@@ -3876,29 +3865,24 @@ package body Flow.Control_Flow_Graph is
             if No (Abstract_State_Aspect)
               and then Entity_Body_In_SPARK (Package_Spec)
             then
-               declare
-                  Body_Declarations : constant List_Id := Get_Declarations;
-               begin
-                  --  We connect the Declarations of the body to the
-                  --  Initializes_CM.
-                  Linkup
-                    (FA,
-                     CM (Union_Id (Body_Declarations)).Standard_Exits,
-                     CM (Verts.First_Element).Standard_Entry);
+               --  We connect the Declarations of the body to the
+               --  Initializes_CM.
+               Linkup
+                 (FA,
+                  CM (Union_Id (Pkg_Body_Declarations)).Standard_Exits,
+                  CM (Verts.First_Element).Standard_Entry);
 
-                  --  We set the standard entry of N to the standard
-                  --  entry of the body's declarations and the
-                  --  standard exists of N to the standard exists of
-                  --  the last element in the Verts union list.
-                  --  ??? this overwrites the CM entry for N
-                  CM.Include
-                    (Union_Id (N),
-                     Graph_Connections'
-                       (Standard_Entry => CM.Element
-                          (Union_Id (Body_Declarations)).Standard_Entry,
-                        Standard_Exits => CM.Element
-                          (Verts.Last_Element).Standard_Exits));
-               end;
+               --  We set the standard entry of N to the standard entry of
+               --  the body's declarations and the standard exists of N to the
+               --  standard exists of the last element in the Verts union list.
+               --  ??? this overwrites the CM entry for N
+               CM.Include
+                 (Union_Id (N),
+                  Graph_Connections'
+                    (Standard_Entry => CM.Element
+                       (Union_Id (Pkg_Body_Declarations)).Standard_Entry,
+                     Standard_Exits => CM.Element
+                       (Verts.Last_Element).Standard_Exits));
             else
                --  Since we do not process any declarations all we
                --  have to do is to connect N to the Initializes_CM.
