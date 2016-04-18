@@ -6443,14 +6443,17 @@ package body Flow.Control_Flow_Graph is
 
          when Kind_Package | Kind_Package_Body =>
             declare
-               UL   : Union_Lists.List := Union_Lists.Empty_List;
-               Prev : Union_Id;
+               Nodes : Union_Lists.List := Union_Lists.Empty_List;
+               Block : Graph_Connections;
+               --  List of nodes that represent the order in which a package
+               --  is elaborated; it is then abstracted into a single block.
+
             begin
                if Present (Visible_Declarations (Spec_N)) then
                   Process_Statement_List (Visible_Declarations (Spec_N),
                                           FA, Connection_Map, The_Context);
 
-                  UL.Append (Union_Id (Visible_Declarations (Spec_N)));
+                  Nodes.Append (Union_Id (Visible_Declarations (Spec_N)));
                end if;
 
                --  Ok, we need a copy of all variables from the spec +
@@ -6463,33 +6466,32 @@ package body Flow.Control_Flow_Graph is
                if Present (Private_Declarations (Spec_N)) then
                   Process_Statement_List (Private_Declarations (Spec_N),
                                           FA, Connection_Map, The_Context);
-                  UL.Append (Union_Id (Private_Declarations (Spec_N)));
+                  Nodes.Append (Union_Id (Private_Declarations (Spec_N)));
                end if;
 
                if FA.Kind = Kind_Package_Body then
                   Do_Subprogram_Or_Block (Body_N,
                                           FA, Connection_Map, The_Context);
-                  UL.Append (Union_Id (Body_N));
+                  Nodes.Append (Union_Id (Body_N));
                end if;
 
-               Prev := Union_Id (Empty);
+               Join (FA    => FA,
+                     CM    => Connection_Map,
+                     Nodes => Nodes,
+                     Block => Block);
+
                Linkup (FA,
                        FA.Start_Vertex,
-                       Connection_Map (UL.First_Element).Standard_Entry);
-               for X of UL loop
-                  if Prev /= Union_Id (Empty) then
-                     Linkup (FA,
-                             Connection_Map (Prev).Standard_Exits,
-                             Connection_Map (X).Standard_Entry);
-                  end if;
-                  Prev := X;
-               end loop;
+                       Block.Standard_Entry);
+
                Linkup (FA,
-                       Connection_Map (UL.Last_Element).Standard_Exits,
+                       Block.Standard_Exits,
                        FA.Helper_End_Vertex);
+
                Linkup (FA,
                        FA.Helper_End_Vertex,
                        Postcon_Block.Standard_Entry);
+
                Linkup (FA,
                        Postcon_Block.Standard_Exits,
                        FA.End_Vertex);
