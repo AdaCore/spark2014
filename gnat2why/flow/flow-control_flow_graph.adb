@@ -834,13 +834,14 @@ package body Flow.Control_Flow_Graph is
    --  provided in a subprogram call. The vertices are created but not
    --  linked up; as above, they are appended to Ins and Outs.
 
+   use type Node_Graphs.Map;
+
    procedure Process_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-   with Post => Ctx'Old.Folded_Function_Checks.Length =
-                Ctx.Folded_Function_Checks.Length;
+   with Post => Ctx'Old.Folded_Function_Checks = Ctx.Folded_Function_Checks;
    --  Process an arbitrary statement (this is basically a big case
    --  block which calls the various Do_XYZ procedures).
 
