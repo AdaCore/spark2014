@@ -1569,10 +1569,6 @@ package body Flow is
                   Severity => High_Check_Kind);
             end if;
          end if;
-
-         --  Not really necessary, but it forces N131-017 to occur
-         --  immediately, instead of when this procedure ends.
-         FA.Atr.Clear;
       end loop;
 
       --  Finally check concurrent accesses. This check is done for the whole
