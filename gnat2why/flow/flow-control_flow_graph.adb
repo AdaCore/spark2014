@@ -6277,7 +6277,7 @@ package body Flow.Control_Flow_Graph is
             declare
                Postconditions : constant Node_Lists.List :=
                  Get_Postcondition_Expressions (FA.Analyzed_Entity,
-                                                False);
+                                                Refined => False);
             begin
                for Postcondition of Postconditions loop
                   Process_Quantified_Expressions
@@ -6306,7 +6306,7 @@ package body Flow.Control_Flow_Graph is
                Postconditions : constant Node_Lists.List :=
                  Get_Postcondition_Expressions (Spec_Entity
                                                   (FA.Analyzed_Entity),
-                                                False);
+                                                Refined => False);
             begin
                for Postcondition of Postconditions loop
                   Process_Quantified_Expressions
@@ -6388,7 +6388,7 @@ package body Flow.Control_Flow_Graph is
                NL             : Union_Lists.List := Union_Lists.Empty_List;
                Postconditions : constant Node_Lists.List :=
                  Get_Postcondition_Expressions (Spec_E,
-                                                False);
+                                                Refined => False);
             begin
                for Postcondition of Postconditions loop
                   Do_Postcondition (Postcondition,
