@@ -4346,6 +4346,8 @@ package body SPARK_Definition is
       Spec_E : constant Entity_Id := Unique_Entity (Body_E);
 
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+      Save_Scope        : constant Node_Trees.Cursor := Current_Scope;
+      Save_Last_Package : constant Node_Trees.Cursor := Last_Package_Scope;
 
    begin
       --  Do not analyze generic bodies
@@ -4353,6 +4355,28 @@ package body SPARK_Definition is
       if Ekind (Spec_E) = E_Generic_Package then
          return;
       end if;
+
+      --  Set the current scope to the corresponding spec; this is where any
+      --  nested entities are attached, no matter if they are defined in spec
+      --  or body.
+      --
+      --  First rewind the current scope to the spec of this package
+      Current_Scope := Node_Trees.First_Child (Current_Scope);
+      loop
+         pragma Assert (Node_Trees.Has_Element (Current_Scope));
+         if Entity_Tree (Current_Scope) = Spec_E then
+            exit;
+         end if;
+         Node_Trees.Next_Sibling (Current_Scope);
+      end loop;
+
+      --  Then fast-forward the Last_Package
+      Last_Package_Scope := Node_Trees.First_Child (Current_Scope);
+      while Node_Trees.Has_Element (Last_Package_Scope)
+        and then Ekind (Node_Trees.Element (Last_Package_Scope)) = E_Package
+      loop
+         Node_Trees.Next_Sibling (Last_Package_Scope);
+      end loop;
 
       --  Do not analyze bodies for packages with external axioms. Only check
       --  that their SPARK_Mode is Off.
@@ -4408,6 +4432,10 @@ package body SPARK_Definition is
          Current_SPARK_Pragma := Save_SPARK_Pragma;
 
       end if;
+
+      --  Restore hierarchical cursors
+      Last_Package_Scope := Save_Last_Package;
+      Current_Scope := Save_Scope;
 
       --  Postprocessing: indicate in output file if package is in SPARK or
       --  not, for reporting, debug and verification.
