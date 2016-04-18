@@ -324,7 +324,7 @@ package Gnat2Why.Util is
      (E  : Node_Id;
       Ty : W_Type_Id) return W_Integer_Constant_Id
      with Pre => Why_Type_Is_Float (Ty)
-     and Is_Floating_Point_Type (Etype (E));
+     and Is_Floating_Point_Type (Retysp (Etype (E)));
    --  cast a real constant (litteral) into either a float32 or a float64,
    --  This function will do the actual computation in order to produce
    --  a float_constant from a real_constant, i.e., a bitstream for a ureal.

@@ -10301,11 +10301,11 @@ package body Gnat2Why.Expr is
                else
                   T := +Transform_Float_Literal
                     (Expr,
-                     (if Is_Single_Precision_Floating_Point_Type
+                     (if Has_Single_Precision_Floating_Point_Type
                           (Etype (Expr))
                       then
                          EW_Float_32_Type
-                      elsif Is_Double_Precision_Floating_Point_Type
+                      elsif Has_Double_Precision_Floating_Point_Type
                         (Etype (Expr))
                       then
                          EW_Float_64_Type
