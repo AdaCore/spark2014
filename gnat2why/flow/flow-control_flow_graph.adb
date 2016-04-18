@@ -6133,8 +6133,8 @@ package body Flow.Control_Flow_Graph is
             --
             --     Initializes => (State => (Global_A, ...),
             --
-            --  Any other use of non-local variables is not legal (SRM 7.1.5,
-            --  verification rule 12).
+            --  Any other use of non-local variables is not legal, see SRM
+            --  7.1.5(11).
             --
             --  Such globals are global inputs *only*, as packages are only
             --  allowed to initialize their own state.
