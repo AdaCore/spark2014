@@ -220,11 +220,6 @@ package Flow is
       Dependency_Map        : Dependency_Maps.Map;
       --  A map of all the dependencies.
 
-      No_Effects            : Boolean;
-      --  True if this is a subprogram with no effects. Certain analysis
-      --  are disabled in this case as we would spam the user with error
-      --  messages for almost every statement.
-
       No_Errors_Or_Warnings : Boolean;
       --  True if no errors or warnings were found while flow
       --  analysing this entity. This is initialized to True and set
@@ -259,6 +254,11 @@ package Flow is
             Refined_Depends_N : Node_Id;
             --  A few contract nodes cached as they can be a bit
             --  tedious to find.
+
+            No_Effects : Boolean;
+            --  True if this is a subprogram with no effects. Certain analysis
+            --  are disabled in this case as we would spam the user with error
+            --  messages for almost every statement.
 
             Function_Side_Effects_Present : Boolean;
             --  Set to True if we are dealing with a function that has side

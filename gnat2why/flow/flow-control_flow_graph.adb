@@ -6607,19 +6607,10 @@ package body Flow.Control_Flow_Graph is
 
       --  Note if this is a subprogram with no effects.
       if FA.Kind = Kind_Subprogram then
-         FA.No_Effects := True;
-         for F of FA.All_Vars loop
-            declare
-               V : constant Flow_Graphs.Vertex_Id :=
-                 FA.CFG.Get_Vertex (Change_Variant (F, Final_Value));
-            begin
-               pragma Assert (V /= Flow_Graphs.Null_Vertex);
-               if FA.Atr (V).Is_Export then
-                  FA.No_Effects := False;
-                  exit;
-               end if;
-            end;
-         end loop;
+         FA.No_Effects :=
+           (for all F of FA.All_Vars =>
+              not FA.Atr (FA.CFG.Get_Vertex
+                            (Change_Variant (F, Final_Value))).Is_Export);
       end if;
 
       --  Finally, make sure that all extra checks for folded functions have

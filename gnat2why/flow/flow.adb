@@ -935,7 +935,6 @@ package body Flow is
       FA.Unreferenced_Vars     := Node_Sets.Empty_Set;
       FA.Loops                 := Node_Sets.Empty_Set;
       FA.Dependency_Map        := Dependency_Maps.Empty_Map;
-      FA.No_Effects            := False;
       FA.No_Errors_Or_Warnings := True;
       FA.Direct_Calls          := Node_Sets.Empty_Set;
       FA.Tasking               := (others => Node_Sets.Empty_Set);
@@ -977,6 +976,7 @@ package body Flow is
 
             FA.Is_Generative := Refinement_Needed (E);
 
+            FA.No_Effects := False;
             if Ekind (E) = E_Function then
                FA.Function_Side_Effects_Present := False;
             end if;
