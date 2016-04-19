@@ -174,4 +174,16 @@ is
       end if;
    end FF_Get_Recovery_Thrust;
 
+   function Get_Time_Since_Last_Landing return Time_Span is
+      Now : constant Time := Clock;
+   begin
+      return Now - Last_Landing_Time;
+   end Get_Time_Since_Last_Landing;
+
+   function Get_Time_Since_Last_Free_Fall return Time_Span is
+      Now : constant Time := Clock;
+   begin
+      return Now - Last_FF_Detected_Time;
+   end Get_Time_Since_Last_Free_Fall;
+
 end Free_Fall_Pack;

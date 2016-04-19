@@ -103,10 +103,10 @@ procedure Gnatprove is
      (Project_File : String;
       Proj         : Project_Tree;
       Status       : out Integer);
-   --  Compute ALI information for all source units, using gprbuild.
+   --  Compute ALI information for all source units, using gprbuild
 
    function CVC4_Resource_Step_Flags return String;
-   --  Work out the flags to use for controlling CVC4's resource counting.
+   --  Work out the flags to use for controlling CVC4's resource counting
 
    procedure Execute_Step
      (Plan         : Plan_Type;
@@ -117,7 +117,7 @@ procedure Gnatprove is
    procedure Generate_SPARK_Report
      (Obj_Dir  : String;
       Obj_Path : File_Array);
-   --  Generate the SPARK report.
+   --  Generate the SPARK report
 
    function Report_File_Is_Empty (Filename : String) return Boolean;
    --  Check if the given file is empty
@@ -126,8 +126,8 @@ procedure Gnatprove is
      (Gnatprove_Subdir : String);
 
    function Compute_Why3_Args return String_Lists.List;
-   --  compute the list of arguments of gnatwhy3. This list is passed first to
-   --  gnat2why, which then passes it to gnatwhy3
+   --  Compute the list of arguments of gnatwhy3. This list is passed first to
+   --  gnat2why, which then passes it to gnatwhy3.
 
    procedure Flow_Analysis_And_Proof
      (Project_File : String;
@@ -170,10 +170,10 @@ procedure Gnatprove is
    function Non_Blocking_Spawn
      (Command   : String;
       Arguments : String_Lists.List) return Process_Descriptor;
-   --  spawn a process in a non-blocking way
+   --  Spawn a process in a non-blocking way
 
    procedure Kill (P : in out Process_Descriptor);
-   --  kill the process
+   --  Kill the process
 
    function Replace_Config_File_If_Needed
      (Config_File : String;
@@ -353,8 +353,8 @@ procedure Gnatprove is
       --  explicitly.
 
       procedure Set_Timeout (Val : Positive);
-      --  Set timeout according to value of --level, if not already set
-      --  explicitly.
+      --  Set timeout according to value of --level, when --timeout=auto was
+      --  given in argument.
 
       ---------------------------
       --  Prepare_Why3_Manual  --
@@ -434,7 +434,7 @@ procedure Gnatprove is
 
       procedure Set_Timeout (Val : Positive) is
       begin
-         if Timeout = Invalid_Timeout then
+         if Timeout_Is_Auto then
             Timeout := Val;
          end if;
       end Set_Timeout;
@@ -458,43 +458,9 @@ procedure Gnatprove is
       --  setting takes precedence.
 
       case Level is
-         when Invalid_Level =>
-
-            --  When no explicit value of level is set, it defaults to 0 if
-            --  no switch impacted is independently set, either on the command
-            --  line or in the project file, which is equivalen to
-            --  --prover=cvc4 --proof=per_check --steps=100 --timeout=1
-
-            if Alter_Prover.all = ""
-              and then Proof_Input.all = ""
-              and then Steps = Invalid_Step
-              and then Timeout = Invalid_Timeout
-            then
-               Set_Alter_Prover ("cvc4");
-               Set_Proof_Mode (No_Split);
-               Set_Steps (100);
-               Set_Timeout (1);
-
-            --  Otherwise, no value of level is set. Directly set the default
-            --  value for --timeout, --prover and --proof if needed. There is
-            --  no default value for --steps.
-
-            else
-               if Alter_Prover.all = "" then
-                  Set_Alter_Prover ("cvc4");  --  --prover=cvc4
-               end if;
-
-               if Proof_Input.all = "" then
-                  Set_Proof_Mode (No_Split);  --  --proof=per_check
-               end if;
-
-               if Timeout = Invalid_Timeout then
-                  Set_Timeout (1);  --  --timeout=1
-               end if;
-            end if;
-
          --  Level 0 is equivalent to
-         --  --prover=cvc4 --proof=per_check --steps=100 --timeout=1
+         --    --prover=cvc4 --proof=per_check --steps=100
+         --  If --timeout=auto is given, level 0 implies --timeout=1
 
          when 0 =>
             Set_Alter_Prover ("cvc4");
@@ -503,7 +469,8 @@ procedure Gnatprove is
             Set_Timeout (1);
 
          --  Level 1 is equivalent to
-         --  --prover=cvc4,z3,altergo --proof=per_check --steps=100 --timeout=1
+         --    --prover=cvc4,z3,altergo --proof=per_check --steps=100
+         --  If --timeout=auto is given, level 1 implies --timeout=1
 
          when 1 =>
             Set_Alter_Prover ("cvc4,z3,altergo");
@@ -512,7 +479,8 @@ procedure Gnatprove is
             Set_Timeout (1);
 
          --  Level 2 is equivalent to --prover=cvc4,z3,altergo
-         --  --proof=per_check --steps=1000 --timeout=10
+         --    --proof=per_check --steps=1000
+         --  If --timeout=auto is given, level 2 implies --timeout=10
 
          when 2 =>
             Set_Alter_Prover ("cvc4,z3,altergo");
@@ -521,7 +489,8 @@ procedure Gnatprove is
             Set_Timeout (10);
 
          --  Level 3 is equivalent to --prover=cvc4,z3,altergo
-         --  --proof=progressive --steps=1000 --timeout=10
+         --    --proof=progressive --steps=1000
+         --  If --timeout=auto is given, level 3 implies --timeout=10
 
          when 3 =>
             Set_Alter_Prover ("cvc4,z3,altergo");
@@ -530,7 +499,8 @@ procedure Gnatprove is
             Set_Timeout (10);
 
          --  Level 4 is equivalent to --prover=cvc4,z3,altergo
-         --  --proof=progressive --steps=10000 --timeout=60
+         --    --proof=progressive --steps=10000
+         --  If --timeout=auto is given, level 4 implies --timeout=60
 
          when 4 =>
             Set_Alter_Prover ("cvc4,z3,altergo");
@@ -542,11 +512,12 @@ procedure Gnatprove is
             raise Program_Error;
       end case;
 
-      --  Then take into account all other settings, in particular for switches
-      --  impacted by --level, which ensures that the independent setting of
-      --  such switches takes precedence.
+      --  If not set explicitly, the code above always sets a suitable value
+      --  for the prover list, the proof strategy and the steps limit. No
+      --  value of timeout may be set though, which is expected in general
+      --  for deterministic behavior.
 
-      if Timeout /= 0 then
+      if Timeout /= Invalid_Timeout and Timeout /= 0 then
          Args.Append ("--timeout");
          Args.Append (Image (Timeout, 1));
       end if;
@@ -555,9 +526,6 @@ procedure Gnatprove is
          Args.Append ("--steps");
          Args.Append (Image (Steps, 1));
       end if;
-
-      --  If not set explicitly, the code above always sets a suitable value
-      --  for the prover list and the proof strategy.
 
       pragma Assert (Alter_Prover.all /= "");
       Args.Append ("--prover");
@@ -598,7 +566,7 @@ procedure Gnatprove is
          Args.Append ("--proof-dir");
          --  Why3 is executed in the gnatprove directory and does not know
          --  the project directory so we give it an absolute path to the
-         --  proof_dir
+         --  proof_dir.
          Args.Append (Proof_Dir.all);
          if Alter_Prover.all /= "" then
             Prepare_Why3_Manual;
@@ -884,16 +852,25 @@ procedure Gnatprove is
 
       --  The CVC4 options explained.
       --
-      --  * lang=smt2
-      --    we process SMTLIB2
+      --  * --lang=smt2
+      --    We process SMTLIB2.
+      --
+      --  * --stats
+      --    This option is needed to obtain steps information
+      --
+      --  * --no-cbqi
+      --    Turn off counter-example based quantifier instantiation, this
+      --    causes quite a few regressions for us (also see CVC4 bug 714).
       --
       --  * FOO-step=X
-      --    generated by CVC4_Resource_Step_Flags, this fine-tunes how
-      --    the cvc4 step limit works
+      --    Generated by CVC4_Resource_Step_Flags, this fine-tunes how
+      --    the cvc4 step limit works.
 
       Common_CVC4_Options : constant String :=
-          "--lang=smt2 " &
-          CVC4_Resource_Step_Flags;
+        "--lang=smt2 " &
+        "--stats " &
+        "--no-cbqi " &
+        CVC4_Resource_Step_Flags;
 
       procedure Put_Keyval (Key : String; Value : String);
       procedure Put_Keyval (Key : String; Value : Integer);
@@ -912,7 +889,7 @@ procedure Gnatprove is
 
       procedure Generate_Altergo_Section is
          Altergo_Command : constant String :=
-           Altergo_Binary & " -max-split 5 -no-rm-eq-existential %f";
+           Altergo_Binary & " -max-split 5 %f";
       begin
          Start_Section ("prover");
          Put_Keyval ("command", Altergo_Command);
@@ -931,7 +908,9 @@ procedure Gnatprove is
       ---------------------------
 
       procedure Generate_CVC4_Section is
-         Command : constant String := CVC4_Binary & " " & Common_CVC4_Options;
+         Command : constant String :=
+           CVC4_Binary & " " &
+           Common_CVC4_Options;
       begin
          Start_Section ("prover");
          Put_Keyval ("command",

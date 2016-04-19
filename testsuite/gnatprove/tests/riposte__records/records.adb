@@ -84,7 +84,7 @@ is
    function Safe_Add_Pair_B (A, B : in Pair) return Pair
      with Post => (if (A.A + B.A in Unsigned_Byte and
                          A.B + B.B in Unsigned_Byte)
-                   then Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  --  @POSTCONDITION:FAIL
+                   then Safe_Add_Pair_B'Result = Pair'(A.A + B.A,  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
                                                        A.B + B.B))
    is
       R : Pair;
@@ -117,7 +117,7 @@ is
    end Is_Valid_B;
 
    function Is_Valid_C (A : in Optional_Pair) return Boolean
-     with Post => Is_Valid_C'Result = (if not A.Exists  --  @POSTCONDITION:FAIL
+     with Post => Is_Valid_C'Result = (if not A.Exists  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
                                          then A.The_Pair = Null_Pair)
    is
    begin
@@ -140,7 +140,7 @@ is
                         Dst :    out Optional_Pair)
      with Depends => (Dst => Src),
           Pre     => Is_Valid (Src),
-          Post    => Is_Valid (Dst) and Dst = Src  --  @POSTCONDITION:FAIL
+          Post    => Is_Valid (Dst) and Dst = Src  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
    begin
       Dst := Src;
@@ -163,7 +163,7 @@ is
    procedure Optimised_Copy_B (Src : in     Optional_Pair;
                                Dst :    out Optional_Pair)
      with Depends => (Dst => Src),
-          Post    => Dst = Src  --  @POSTCONDITION:FAIL
+          Post    => Dst = Src  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
    begin
       Dst.Exists := Src.Exists;
@@ -188,7 +188,7 @@ is
 
    procedure Swap_Fields_A_2 (X : in out Optional_Pair)
      with Depends => (X =>+ null),
-          Post    => (X.Exists = X'Old.Exists)  --  @POSTCONDITION:FAIL
+          Post    => (X.Exists = X'Old.Exists)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
                        and (if X.Exists
                               then (X.The_Pair.A = X'Old.The_Pair.B
                                       and X.The_Pair.B = X'Old.The_Pair.A))
@@ -202,7 +202,7 @@ is
 
    procedure Swap_Fields_A_2_Cut (X : in out Optional_Pair)
      with Depends => (X =>+ null),
-          Post    => (X.Exists = X'Old.Exists)  --  @POSTCONDITION:FAIL
+          Post    => (X.Exists = X'Old.Exists)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
                         and (if X.Exists
                                then (X.The_Pair.A = X'Old.The_Pair.B
                                        and X.The_Pair.B = X'Old.The_Pair.A))
@@ -252,7 +252,7 @@ is
 
    procedure Swap_Fields_B_2 (X : in out Optional_Pair)
      with Depends => (X =>+ null),
-          Post    => X = X'Old'Update (The_Pair =>  --  @POSTCONDITION:FAIL
+          Post    => X = X'Old'Update (The_Pair =>  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
                                          X'Old.The_Pair'Update
                                            (A => X'Old.The_Pair.B,
                                             B => X'Old.The_Pair.A))
@@ -266,7 +266,7 @@ is
 
    procedure Swap_Fields_B_3 (X : in out Optional_Pair)
      with Depends => (X =>+ null),
-          Post    => X = X'Old'Update (The_Pair =>  --  @POSTCONDITION:FAIL
+          Post    => X = X'Old'Update (The_Pair =>  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
                                          X'Old.The_Pair'Update
                                            (A => X'Old.The_Pair.B,
                                             B => X'Old.The_Pair.A))
@@ -293,7 +293,7 @@ is
 
    procedure Swap_Fields_D (X : in out Optional_Pair)
      with Depends => (X =>+ null),
-          Post    => (X.Exists = X'Old.Exists)  --  @POSTCONDITION:FAIL
+          Post    => (X.Exists = X'Old.Exists)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
                         and (if X.Exists
                                then (X.The_Pair.A = X'Old.The_Pair.B
                                        and X.The_Pair.B = X'Old.The_Pair.A))
@@ -319,7 +319,7 @@ is
                       N: in Unsigned_Byte)
                      return Optional_Pair
      with Pre  => N < Unsigned_Byte'Last,
-          Post => Update_B'Result = X'Update(The_Pair =>  --  @POSTCONDITION:FAIL
+          Post => Update_B'Result = X'Update(The_Pair =>  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
                                                X.The_Pair'Update (A => N))
    is
       Tmp : Optional_Pair;
@@ -376,7 +376,7 @@ is
    end Make_Optional_Pair_A_1;
 
    function Make_Optional_Pair_A_2 (X: in Pair) return Optional_Pair
-     with Post => Make_Optional_Pair_A_2'Result =  --  @POSTCONDITION:FAIL
+     with Post => Make_Optional_Pair_A_2'Result =  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
                     Optional_Pair'(Exists   => False,
                                    The_Pair => X)
    is
@@ -406,7 +406,7 @@ is
    is
    begin
       X := X;
-      pragma Assert (X.The_Pair.A = 0);  --  @ASSERT:FAIL
+      pragma Assert (X.The_Pair.A = 0);  --  @ASSERT:FAIL @COUNTEREXAMPLE
    end Test_C;
 
    procedure Test_D (X: in out Optional_Pair)
@@ -414,7 +414,7 @@ is
    is
    begin
       X := X;
-      pragma Assert (X.The_Pair.A = X.The_Pair.B);  --  @ASSERT:FAIL
+      pragma Assert (X.The_Pair.A = X.The_Pair.B);  --  @ASSERT:FAIL @COUNTEREXAMPLE
    end Test_D;
 
    procedure Test_E (X: in out Optional_Pair)
@@ -422,7 +422,7 @@ is
    is
    begin
       X.The_Pair.A := X.The_Pair.B;
-      pragma Assert (X.The_Pair.A /= X.The_Pair.B);  --  @ASSERT:FAIL
+      pragma Assert (X.The_Pair.A /= X.The_Pair.B);  --  @ASSERT:FAIL @COUNTEREXAMPLE
    end Test_E;
 
    procedure Test_F (X: out Optional_Pair)
@@ -432,7 +432,7 @@ is
       X := Optional_Pair'(Exists   => True,
                           The_Pair => Pair'(A => 5,
                                             B => 10));
-      pragma Assert (not X.Exists);  --  @ASSERT:FAIL
+      pragma Assert (not X.Exists);  --  @ASSERT:FAIL @COUNTEREXAMPLE
    end Test_F;
 
    function Swap_Fields (P: in Pair) return Pair
@@ -449,7 +449,7 @@ is
       case P.Command is
          when Increment_A =>
             R   := P.Data;
-            R.A := R.A + 1;  --  @RANGE_CHECK:FAIL
+            R.A := R.A + 1;  --  @RANGE_CHECK:FAIL @COUNTEREXAMPLE
          when Assign_A =>
             R := Pair'(A => P.Data.B,
                        B => P.Data.B);
@@ -479,7 +479,7 @@ is
    procedure Tilde_Test_B (R: in out Optional_Pair;
                            X: in     Unsigned_Byte)
      with Depends => (R =>+ X),
-          Post    => R = R'Old'Update (The_Pair =>  --  @POSTCONDITION:FAIL
+          Post    => R = R'Old'Update (The_Pair =>  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
                                          R'Old.The_Pair'Update
                                            (A => X,
                                             B => X))
@@ -500,7 +500,7 @@ is
      with Post => Field_Suppression_On_Computation_Is_Insufficient'Result = True  --  @POSTCONDITION:PASS
    is
    begin
-      pragma Assert (R.Exists);  --  @ASSERT:FAIL
+      pragma Assert (R.Exists);  --  @ASSERT:FAIL @COUNTEREXAMPLE
 
       return R.Exists;
    end Field_Suppression_On_Computation_Is_Insufficient;

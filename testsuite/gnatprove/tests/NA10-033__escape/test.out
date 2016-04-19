@@ -5,7 +5,7 @@ escape.adb:10:22: warning: unused assignment
 escape.adb:10:25: info: initialization of "Count_Bs" proved
 escape.adb:10:34: medium: overflow check might fail (e.g. when Count_Bs = 2147483647)
 escape.adb:14:48: info: range check proved
-escape.adb:14:48: medium: overflow check might fail (e.g. when Len = 0 and S = (others => 0) and S'First = 1 and S'Last = 1 and Count_Bs = 2147483647)
+escape.adb:14:48: medium: overflow check might fail (e.g. when Count_Bs = 2147483647 and Len = 0 and S = (others => 0) and S'First = 1 and S'Last = 1)
 escape.adb:14:50: info: initialization of "Count_Bs" proved
 escape.adb:15:10: info: range check proved
 escape.adb:19:21: medium: array index check might fail (e.g. when Result'First = 1 and Result'Last = 1 and TI = 2)

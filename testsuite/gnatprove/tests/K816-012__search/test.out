@@ -6,14 +6,14 @@ search.adb:20:58: info: initialization of "Found2" proved
 search.adb:23:24: info: initialization of "Found1" proved
 search.adb:23:24: medium: assertion might fail, cannot prove Found1 = False or else Found2 = false (e.g. when Found1 = True and Found2 = True)
 search.adb:23:47: info: initialization of "Found2" proved
-search.adb:24:24: medium: assertion might fail, cannot prove not Found1 or else Table(Index1) = Value1 (e.g. when Found1 = True and Table = (0 => 1, others => 0) and Table'First = 0 and Table'Last = 0 and Index1 = 0 and Value1 = 0)
+search.adb:24:24: medium: assertion might fail, cannot prove not Found1 or else Table(Index1) = Value1 (e.g. when Found1 = True and Index1 = 0 and Table = (0 => 1, others => 0) and Table'First = 0 and Table'Last = 0 and Value1 = 0)
 search.adb:24:28: info: initialization of "Found1" proved
 search.adb:24:49: info: initialization of "Index1" proved
-search.adb:24:49: medium: array index check might fail (e.g. when Table = (others => 0) and Table'First = 0 and Table'Last = 0 and Index1 = -1)
-search.adb:25:24: medium: assertion might fail, cannot prove not Found2 or else Table(Index2) = Value2 (e.g. when Found2 = True and Table = (0 => 1, others => 0) and Table'First = 0 and Table'Last = 0 and Index2 = 0 and Value2 = 0)
+search.adb:24:49: medium: array index check might fail (e.g. when Index1 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0)
+search.adb:25:24: medium: assertion might fail, cannot prove not Found2 or else Table(Index2) = Value2 (e.g. when Found2 = True and Index2 = 0 and Table = (0 => 1, others => 0) and Table'First = 0 and Table'Last = 0 and Value2 = 0)
 search.adb:25:28: info: initialization of "Found2" proved
 search.adb:25:49: info: initialization of "Index2" proved
-search.adb:25:49: medium: array index check might fail (e.g. when Table = (others => 0) and Table'First = 0 and Table'Last = 0 and Index2 = -1)
+search.adb:25:49: medium: array index check might fail (e.g. when Index2 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0)
 search.adb:26:09: info: assertion proved
 search.adb:26:24: info: initialization of "Found" proved
 search.adb:27:16: info: initialization of "Found1" proved
@@ -42,10 +42,10 @@ search.ads:12:06: info: initialization of "Index2" proved
 search.ads:13:25: info: postcondition proved
 search.ads:13:29: info: initialization of "Found1" proved
 search.ads:13:50: info: initialization of "Index1" proved
-search.ads:13:50: medium: array index check might fail (e.g. when Table = (others => 0) and Table'First = 0 and Table'Last = 0 and Index1 = -1)
+search.ads:13:50: medium: array index check might fail (e.g. when Index1 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0)
 search.ads:14:29: info: initialization of "Found2" proved
 search.ads:14:50: info: initialization of "Index2" proved
-search.ads:14:50: medium: array index check might fail (e.g. when Table = (others => 0) and Table'First = 0 and Table'Last = 0 and Index2 = -1)
+search.ads:14:50: medium: array index check might fail (e.g. when Index2 = -1 and Table = (others => 0) and Table'First = 0 and Table'Last = 0)
 search.ads:24:25: info: postcondition proved
 search.ads:24:53: info: index check proved
 search.ads:25:55: info: index check proved

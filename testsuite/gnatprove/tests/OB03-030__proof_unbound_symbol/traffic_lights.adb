@@ -47,8 +47,9 @@ package body Traffic_Lights is
                Seconds (2)
             else
                Seconds (15));
+         Now : constant Time := Clock;
       begin
-         if Clock - Last_State_Change >= Wait_Duration then
+         if Now - Last_State_Change >= Wait_Duration then
             Change_State := True;
          end if;
       end Check_Time;

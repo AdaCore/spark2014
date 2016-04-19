@@ -6,14 +6,14 @@ is
      with Post => Add_UB'Result = A + B
    is
    begin
-      return A + B;  --  @RANGE_CHECK:FAIL
+      return A + B;  --  @RANGE_CHECK:FAIL @COUNTEREXAMPLE
    end Add_UB;
 
    function Add_I (A, B: Integer) return Integer
      with Post => Add_I'Result = A + B
    is
    begin
-      return A + B;  --  @OVERFLOW_CHECK:FAIL
+      return A + B;  --  @OVERFLOW_CHECK:FAIL @COUNTEREXAMPLE
    end Add_I;
 
    function Min_UB (A, B: Unsigned_Byte) return Unsigned_Byte
@@ -62,7 +62,7 @@ is
    procedure Tilde_Test_B (X : in out Integer)
      with Depends => (X => X),
           Pre     => X > 0 and X < 10,
-          Post    => X = X'Old + 5  --  @POSTCONDITION:FAIL
+          Post    => X = X'Old + 5  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
       X_Old : constant Integer := X;
    begin
@@ -85,7 +85,7 @@ is
    end Int_Min_A;
 
    function Int_Min_B (A, B : in Integer) return Integer
-     with Post => Int_Min_B'Result = Integer'Min (A, B) --  @POSTCONDITION:FAIL
+     with Post => Int_Min_B'Result = Integer'Min (A, B) --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
       R : Integer;
    begin

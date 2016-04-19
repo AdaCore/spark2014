@@ -16,7 +16,7 @@ is
    function Enum_Equals_Broken_A (A, B : in Big_Type) return Boolean
      with Depends => (Enum_Equals_Broken_A'Result => A,
                       null => B),
-          Post    => Enum_Equals_Broken_A'Result = (A = B)  --  @POSTCONDITION:FAIL
+          Post    => Enum_Equals_Broken_A'Result = (A = B)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
       Tmp : Big_Type := A;
    begin
@@ -24,7 +24,7 @@ is
    end Enum_Equals_Broken_A;
 
    function Enum_Equals_Broken_B (A, B : in Big_Type) return Boolean
-     with Post => Enum_Equals_Broken_B'Result = (A = B)  --  @POSTCONDITION:FAIL
+     with Post => Enum_Equals_Broken_B'Result = (A = B)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
    begin
       return A <= B;
@@ -64,7 +64,7 @@ is
    end Enum_LT_5;
 
    function Enum_LT_5_Broken_A (A : in Big_Type) return Boolean
-     with Post => Enum_LT_5_Broken_A'Result = (A < Elem_5)  --  @POSTCONDITION:FAIL
+     with Post => Enum_LT_5_Broken_A'Result = (A < Elem_5)  --  @POSTCONDITION:FAIL @COUNTEREXAMPLE
    is
       R : Boolean;
    begin

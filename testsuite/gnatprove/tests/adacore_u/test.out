@@ -11,7 +11,7 @@ search_array.adb:12:07: medium: exception might be raised
 stack.ads:7:13: function with "in" "out" parameter is not allowed in SPARK
 stack.ads:7:13: violation of aspect SPARK_Mode at line 1
 use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = 0)
-use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 0 and W = (others => 0) and W'First = 2 and W'Last = 1)
+use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 0 and W = (others => 0) and W'First = 1 and W'Last = 0)
 gnatprove: error during flow analysis and proof
 p.adb:13:41: info: index check proved
 p.adb:14:16: info: index check proved
@@ -36,7 +36,7 @@ p.adb:89:41: medium: overflow check might fail (e.g. when A = (0 => 1, others =>
 p.adb:93:16: info: index check proved
 p.adb:94:23: info: index check proved
 p.adb:99:42: info: range check proved
-p.adb:99:42: medium: overflow check might fail (e.g. when Current_Index = 0 and Beginning = -2147483648)
+p.adb:99:42: medium: overflow check might fail (e.g. when Beginning = -2147483648 and Current_Index = 0)
 p.adb:107:10: info: loop invariant initialization proved
 p.adb:107:10: info: loop invariant preservation proved
 p.adb:107:33: info: initialization of "Beginning" proved
@@ -121,7 +121,7 @@ stacks.adb:8:22: info: range check proved
 stacks.adb:9:19: info: index check proved
 stacks.ads:8:14: info: postcondition proved
 stacks.ads:27:52: info: index check proved
-communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 0) and Address'First = 2 and Address'Last = 1)
+communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 0) and Address'First = 1 and Address'Last = 0)
 communication.adb:19:25: medium: array index check might fail
 communication.adb:20:32: medium: overflow check might fail
 communication.adb:21:24: medium: overflow check might fail

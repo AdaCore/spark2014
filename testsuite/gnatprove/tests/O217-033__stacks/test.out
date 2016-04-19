@@ -13,11 +13,11 @@ stackp.ads:36:14: info: postcondition proved
 stackp.ads:36:21: info: initialization of "S.Length" proved
 stackp.ads:36:21: medium: input value of "S.Content" will be used in "Reset"
 stackp.ads:38:37: info: initialization of "E" proved
+stackp.ads:39:20: info: class-wide postcondition is stronger than overridden one
 stackp.ads:39:20: info: postcondition proved
-stackp.ads:39:20: medium: class-wide postcondition might be weaker than overridden one
 stackp.ads:39:34: info: range check proved
+stackp.ads:42:20: info: class-wide postcondition is stronger than overridden one
 stackp.ads:42:20: info: postcondition proved
-stackp.ads:42:20: medium: class-wide postcondition might be weaker than overridden one
 stackp.ads:42:54: info: range check proved
 stackp.ads:49:20: medium: postcondition might fail, cannot prove Get_Model (S) = E & Get_Model (S)'old
 stackp.ads:49:38: info: range check proved

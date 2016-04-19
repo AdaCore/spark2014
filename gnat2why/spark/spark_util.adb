@@ -27,6 +27,7 @@ with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Ada.Strings;                        use Ada.Strings;
 with Assumption_Types;                   use Assumption_Types;
+with Aspects;                            use Aspects;
 with Csets;                              use Csets;
 with Errout;                             use Errout;
 with Exp_Util;                           use Exp_Util;
@@ -1172,12 +1173,11 @@ package body SPARK_Util is
 
    function Entry_Body (E : Entity_Id) return Node_Id
    is
-      Ptr : Node_Id := Entry_Body_Entity (E);
+      Ptr : constant Node_Id := Entry_Body_Entity (E);
    begin
-      if Present (Ptr) then
-         Ptr := Parent (Ptr);
-      end if;
-      return Ptr;
+      return (if Present (Ptr)
+              then Parent (Ptr)
+              else Empty);
    end Entry_Body;
 
    -----------------------
@@ -1235,34 +1235,41 @@ package body SPARK_Util is
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
    is
-      C         : Node_Id := Contract (E);
-      P         : Node_Id;
-      Contracts : Node_Lists.List := Node_Lists.Empty_List;
+      function Filter_Classwide_Contracts
+        (Pragmas : Node_Lists.List;
+         From    : Entity_Id) return Node_Lists.List;
+      --  Return the contracts from Contracts that are inherited from From
+
+      --------------------------------
+      -- Filter_Classwide_Contracts --
+      --------------------------------
+
+      function Filter_Classwide_Contracts
+        (Pragmas : Node_Lists.List;
+         From    : Entity_Id) return Node_Lists.List
+      is
+         Result : Node_Lists.List;
+      begin
+         for Prag of Pragmas loop
+            if Entity (Corresponding_Aspect (Prag)) = From then
+               Result.Append (Prag);
+            end if;
+         end loop;
+         return Result;
+      end Filter_Classwide_Contracts;
+
+      --  Local variables
+
+      Contr   : Node_Id := Contract (E);
+      Prag    : Node_Id;
+      Pragmas : Node_Lists.List := Node_Lists.Empty_List;
+
+      Class_Expected : constant Boolean := Classwide or Inherited;
+      --  True iff the Class flag should be set on selected pragmas
+
+   --  Start of processing for Find_Contracts
 
    begin
-      --  If Inherited is True, look for an inherited contract, starting from
-      --  the closest overridden subprogram.
-
-      --  ??? Does not work for multiple inheritance through interfaces
-
-      if Inherited then
-         declare
-            Inherit_Subp : constant Subprogram_List :=
-              Inherited_Subprograms (E);
-         begin
-            for J in Inherit_Subp'Range loop
-               Contracts :=
-                 Find_Contracts (Inherit_Subp (J), Name, Classwide => True);
-
-               if not Contracts.Is_Empty then
-                  return Contracts;
-               end if;
-            end loop;
-         end;
-
-         return Contracts;
-      end if;
-
       case Name is
          when Name_Precondition      |
               Name_Postcondition     |
@@ -1274,39 +1281,35 @@ package body SPARK_Util is
                if Ekind (E) in Subprogram_Kind
                  and then Present (Subprogram_Body (E))
                then
-                  C := Contract (Defining_Entity (Specification
+                  Contr := Contract (Defining_Entity (Specification
                                                     (Subprogram_Body (E))));
                elsif Ekind (E) = E_Entry
                  and then Present (Entry_Body (E))
                then
-                  C := Contract (Entry_Body_Entity (E));
+                  Contr := Contract (Entry_Body_Entity (E));
                else
-                  C := Empty;
+                  Contr := Empty;
                end if;
             end if;
 
-            if Present (C) then
-               P := (case Name is
+            if Present (Contr) then
+               Prag := (case Name is
                         when Name_Precondition  |
                              Name_Postcondition |
-                             Name_Refined_Post  => Pre_Post_Conditions (C),
-                        when Name_Initial_Condition => Classifications (C),
-                        when others => Contract_Test_Cases (C));
+                             Name_Refined_Post  => Pre_Post_Conditions (Contr),
+                        when Name_Initial_Condition => Classifications (Contr),
+                        when others => Contract_Test_Cases (Contr));
 
-               while Present (P) loop
-                  if Chars (Pragma_Identifier (P)) = Name
-                    and then Classwide = Class_Present (P)
+               while Present (Prag) loop
+                  if Chars (Pragma_Identifier (Prag)) = Name
+                    and then Class_Present (Prag) = Class_Expected
                   then
-                     Contracts.Append
-                       (Expression (First (Pragma_Argument_Associations (P))));
+                     Pragmas.Append (Prag);
                   end if;
 
-                  P := Next_Pragma (P);
+                  Prag := Next_Pragma (Prag);
                end loop;
-
             end if;
-
-            return Contracts;
 
          when Name_Global | Name_Depends =>
             raise Why.Not_Implemented;
@@ -1314,7 +1317,66 @@ package body SPARK_Util is
          when others =>
             raise Program_Error;
       end case;
+
+      --  If Inherited is True, look for an inherited contract, starting from
+      --  the closest overridden subprogram.
+
+      --  ??? Does not work for multiple inheritance through interfaces
+
+      if Classwide then
+         Pragmas := Filter_Classwide_Contracts (Pragmas, E);
+
+      elsif Inherited then
+         declare
+            Inherit_Subp : constant Subprogram_List :=
+              Inherited_Subprograms (E);
+            Inherit_Pragmas : Node_Lists.List;
+         begin
+            for J in Inherit_Subp'Range loop
+               Inherit_Pragmas :=
+                 Filter_Classwide_Contracts (Pragmas, Inherit_Subp (J));
+               exit when not Inherit_Pragmas.Is_Empty;
+            end loop;
+            Pragmas := Inherit_Pragmas;
+         end;
+      end if;
+
+      --  Extract the Boolean expressions inside the pragmas, and return the
+      --  list of these expressions.
+
+      declare
+         Contracts : Node_Lists.List;
+      begin
+         for P of Pragmas loop
+            Contracts.Append
+              (Expression (First (Pragma_Argument_Associations (P))));
+         end loop;
+
+         return Contracts;
+      end;
    end Find_Contracts;
+
+   ---------------------------
+   -- Find_Predicate_Aspect --
+   ---------------------------
+
+   function Find_Predicate_Aspect (Typ : Entity_Id) return Node_Id is
+      N : Node_Id;
+
+   begin
+      N := Find_Aspect (Typ, Aspect_Predicate);
+      if Present (N) then
+         return N;
+      end if;
+
+      N := Find_Aspect (Typ, Aspect_Dynamic_Predicate);
+      if Present (N) then
+         return N;
+      end if;
+
+      N := Find_Aspect (Typ, Aspect_Static_Predicate);
+      return N;
+   end Find_Predicate_Aspect;
 
    ---------------
    -- Full_Name --
@@ -1355,9 +1417,11 @@ package body SPARK_Util is
    function Get_Called_Entity (N : Node_Id) return Entity_Id is
       Nam : constant Node_Id := Name (N);
    begin
-      return Entity (if Nkind (Nam) = N_Selected_Component
-                     then Selector_Name (Nam)
-                     else Nam);
+      return
+        Entity (case Nkind (Nam) is
+                   when N_Selected_Component => Selector_Name (Nam),
+                   when N_Indexed_Component  => Selector_Name (Prefix (Nam)),
+                   when others               => Nam);
    end Get_Called_Entity;
 
    ------------------------
@@ -1370,8 +1434,8 @@ package body SPARK_Util is
    is
       function Has_No_Output return Boolean;
       --  Return True if procedure E has no output (parameter or global).
-      --  Otherwise, or if we don't know for sure, we return False. If
-      --  After_GG is False, then we will not query generated globals.
+      --  Otherwise, or if we don't know for sure, return False. If After_GG
+      --  is False, then we will not query generated globals.
 
       -------------------
       -- Has_No_Output --
@@ -1419,6 +1483,8 @@ package body SPARK_Util is
             return False;
          end if;
       end Has_No_Output;
+
+   --  Start of processing for Get_Execution_Kind
 
    begin
       if Has_No_Output then
@@ -1510,22 +1576,20 @@ package body SPARK_Util is
 
    function Get_Expression_Function (E : Entity_Id) return Node_Id is
       Decl_N : constant Node_Id := Parent (Subprogram_Specification (E));
-      Body_N : constant Node_Id := Subprogram_Body (E);
-      Orig_N : Node_Id;
 
-   begin
+      Original_Decl_N : constant Node_Id := Original_Node (Decl_N);
+
       --  Get the original node either from the declaration for E, or from the
       --  subprogram body for E, which may be different if E is attached to a
       --  subprogram declaration.
 
-      if Present (Original_Node (Decl_N))
-        and then Original_Node (Decl_N) /= Decl_N
-      then
-         Orig_N := Original_Node (Decl_N);
-      else
-         Orig_N := Original_Node (Body_N);
-      end if;
+      Orig_N : constant Node_Id :=
+        (if Present (Original_Decl_N)
+           and then Original_Decl_N /= Decl_N
+         then Original_Decl_N
+         else Original_Node (Subprogram_Body (E)));
 
+   begin
       if Nkind (Orig_N) = N_Expression_Function then
          return Orig_N;
       else
@@ -1574,23 +1638,27 @@ package body SPARK_Util is
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id is
       Formal : Entity_Id := Empty;
 
-      procedure Check_Call_Arg (Some_Formal, Some_Actual : Node_Id);
+      procedure Check_Call_Param
+        (Some_Formal : Entity_Id;
+         Some_Actual : Node_Id);
       --  If Some_Actual is the desired actual parameter, set Formal_Type to
       --  the type of the corresponding formal parameter.
 
-      --------------------
-      -- Check_Call_Arg --
-      --------------------
+      ----------------------
+      -- Check_Call_Param --
+      ----------------------
 
-      procedure Check_Call_Arg (Some_Formal, Some_Actual : Node_Id) is
+      procedure Check_Call_Param
+        (Some_Formal : Entity_Id;
+         Some_Actual : Node_Id) is
       begin
          if Some_Actual = Actual then
             Formal := Some_Formal;
          end if;
-      end Check_Call_Arg;
+      end Check_Call_Param;
 
-      procedure Find_Expr_In_Call_Args is new
-        Iterate_Call_Arguments (Check_Call_Arg);
+      procedure Find_Expr_In_Call_Params is new
+        Iterate_Call_Parameters (Check_Call_Param);
 
       Par : constant Node_Id :=
         (if Nkind (Parent (Actual)) = N_Unchecked_Type_Conversion
@@ -1603,9 +1671,9 @@ package body SPARK_Util is
 
    begin
       if Nkind (Par) = N_Parameter_Association then
-         Find_Expr_In_Call_Args (Parent (Par));
+         Find_Expr_In_Call_Params (Parent (Par));
       else
-         Find_Expr_In_Call_Args (Par);
+         Find_Expr_In_Call_Params (Par);
       end if;
 
       pragma Assert (Present (Formal));
@@ -1940,8 +2008,6 @@ package body SPARK_Util is
      (if Ekind (E) = E_Abstract_State then
         Is_External_State (E)
       elsif Is_Part_Of_Concurrent_Object (E) then
-        True
-      elsif Is_Concurrent_Type (Etype (E)) then
         True
       elsif Ekind (E) in Object_Kind then
         Is_Effectively_Volatile (E)
@@ -2886,10 +2952,10 @@ package body SPARK_Util is
    -- Iterate_Call_Arguments --
    ----------------------------
 
-   procedure Iterate_Call_Arguments (Call : Node_Id)
+   procedure Iterate_Call_Parameters (Call : Node_Id)
    is
       Params     : constant List_Id := Parameter_Associations (Call);
-      Cur_Formal : Node_Id := First_Entity (Get_Called_Entity (Call));
+      Cur_Formal : Entity_Id := First_Entity (Get_Called_Entity (Call));
       Cur_Actual : Node_Id := First (Params);
       In_Named   : Boolean := False;
    begin
@@ -2917,7 +2983,7 @@ package body SPARK_Util is
       end if;
 
       while Present (Cur_Formal) and then Present (Cur_Actual) loop
-         Handle_Argument (Cur_Formal, Cur_Actual);
+         Handle_Parameter (Cur_Formal, Cur_Actual);
          Cur_Formal := Next_Formal (Cur_Formal);
 
          if In_Named then
@@ -2931,22 +2997,22 @@ package body SPARK_Util is
             end if;
          end if;
       end loop;
-   end Iterate_Call_Arguments;
+   end Iterate_Call_Parameters;
 
    ----------------------------------
    -- Location_In_Standard_Library --
    ----------------------------------
 
    function Location_In_Standard_Library (Loc : Source_Ptr) return Boolean is
-   begin
-      if Loc = No_Location then
-         return False;
-      end if;
+      (case Loc is
+          when No_Location =>
+             False,
 
-      return
-        Loc in Standard_Location | Standard_ASCII_Location | System_Location
-        or else Unit_In_Standard_Library (Unit (Get_Source_File_Index (Loc)));
-   end Location_In_Standard_Library;
+          when Standard_Location | Standard_ASCII_Location | System_Location =>
+             True,
+
+          when others =>
+             Unit_In_Standard_Library (Unit (Get_Source_File_Index (Loc))));
 
    -------------------
    -- Might_Be_Main --
@@ -3378,6 +3444,8 @@ package body SPARK_Util is
             Result (1 .. Last) := S (S'First .. Last - S'First + 1);
          end Output_Result;
 
+      --  Start of processing for Real_Image
+
       begin
          Output.Set_Special_Output (Output_Result'Unrestricted_Access);
          UR_Write (U);
@@ -3523,11 +3591,16 @@ package body SPARK_Util is
                  when others          => raise Program_Error);
    end Get_Body_Entity;
 
-   ----------------------------------
-   -- Is_Part_Of_Concurrent_Object --
-   ----------------------------------
+   generic
+      with function Is_Some_Type (E : Entity_Id) return Boolean;
+   function Is_Part_Of_Type (E : Entity_Id) return Boolean;
+   --  Common routine for checking parts of concurrent and protected objects
 
-   function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean is
+   ---------------------
+   -- Is_Part_Of_Type --
+   ---------------------
+
+   function Is_Part_Of_Type (E : Entity_Id) return Boolean is
    begin
       if Ekind (E) in E_Constant | E_Variable then
          declare
@@ -3537,34 +3610,32 @@ package body SPARK_Util is
 
             return Present (Part_Of_Pragma)
               and then
-                Ekind (Etype (Expression (Get_Argument (Part_Of_Pragma))))
-            in Concurrent_Kind;
+                Is_Some_Type
+                  (Etype (Expression (Get_Argument (Part_Of_Pragma))));
          end;
       else
          return False;
       end if;
-   end Is_Part_Of_Concurrent_Object;
+   end Is_Part_Of_Type;
+
+   ----------------------------------
+   -- Is_Part_Of_Concurrent_Object --
+   ----------------------------------
+
+   function Is_Part_Of_Concurrent is
+     new Is_Part_Of_Type (Is_Concurrent_Type);
+
+   function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean
+     renames Is_Part_Of_Concurrent;
 
    ---------------------------------
    -- Is_Part_Of_Protected_Object --
    ---------------------------------
 
-   function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean is
-   begin
-      if Ekind (E) in E_Constant | E_Variable then
-         declare
-            Part_Of_Pragma : constant Node_Id :=
-              Get_Pragma (E, Pragma_Part_Of);
-         begin
+   function Is_Part_Of_Protected is
+     new Is_Part_Of_Type (Is_Protected_Type);
 
-            return Present (Part_Of_Pragma)
-              and then
-                Ekind (Etype (Expression (Get_Argument (Part_Of_Pragma))))
-            in Protected_Kind;
-         end;
-      else
-         return False;
-      end if;
-   end Is_Part_Of_Protected_Object;
+   function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean
+     renames Is_Part_Of_Protected;
 
 end SPARK_Util;

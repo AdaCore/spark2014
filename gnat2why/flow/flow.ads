@@ -141,8 +141,8 @@ package Flow is
       --  or if the entity should not be analyzed in the first place.
 
       Globals : Node_Sets.Set;
-      --  All obvious globals (non-local variables or parameters that are
-      --  not subprogram parameters of the analyzed entity).
+      --  Non-local variables and parameters other than those of the analyzed
+      --  entity.
    end record;
 
    type Tasking_Info_Kind is (Suspends_On,
@@ -203,11 +203,11 @@ package Flow is
 
       Unmodified_Vars       : Node_Sets.Set;
       --  A set of all variables that are not expected to be modified
-      --  because the were named in a pragma Unmodified.
+      --  because they were named in a pragma Unmodified.
 
       Unreferenced_Vars     : Node_Sets.Set;
       --  A set of all variables that are not expected to be referenced
-      --  because the were named in a pragma Unreferenced.
+      --  because they were named in a pragma Unreferenced.
 
       Loops                 : Node_Sets.Set;
       --  A set of all loops (identified by label).
@@ -219,11 +219,6 @@ package Flow is
 
       Dependency_Map        : Dependency_Maps.Map;
       --  A map of all the dependencies.
-
-      No_Effects            : Boolean;
-      --  True if this is a subprogram with no effects. Certain analysis
-      --  are disabled in this case as we would spam the user with error
-      --  messages for almost every statement.
 
       No_Errors_Or_Warnings : Boolean;
       --  True if no errors or warnings were found while flow
@@ -259,6 +254,11 @@ package Flow is
             Refined_Depends_N : Node_Id;
             --  A few contract nodes cached as they can be a bit
             --  tedious to find.
+
+            No_Effects : Boolean;
+            --  True if this is a subprogram with no effects. Certain analysis
+            --  are disabled in this case as we would spam the user with error
+            --  messages for almost every statement.
 
             Function_Side_Effects_Present : Boolean;
             --  Set to True if we are dealing with a function that has side

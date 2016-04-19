@@ -32,7 +32,6 @@ with Gnat2Why_Args;
 with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
 with Common_Iterators;    use Common_Iterators;
-with Why;
 
 with Flow_Error_Messages; use Flow_Error_Messages;
 with Flow_Utility;        use Flow_Utility;
@@ -521,41 +520,29 @@ package body Flow.Analysis.Sanity is
    is
       Unused : Unbounded_String;
 
-      function Find_Aspect_To_Fix return String;
-      --  Returns a string that represents the aspect that needs to be
-      --  corrected.
-
-      ------------------------
-      -- Find_Aspect_To_Fix --
-      ------------------------
-
-      function Find_Aspect_To_Fix return String is
-      begin
-         case FA.Kind is
+      Aspect_To_Fix : constant String :=
+        (case FA.Kind is
             when Kind_Subprogram | Kind_Entry | Kind_Task =>
-               if Present (FA.Refined_Global_N) then
-                  return "Refined_Global";
-               elsif Present (FA.Global_N) then
-                  if Present (FA.Refined_Depends_N) then
-                     return "Refined_Depends";
-                  else
-                     return "Global";
-                  end if;
-               elsif Present (FA.Depends_N) then
-                  if Present (FA.Refined_Depends_N) then
-                     return "Refined_Depends";
-                  else
-                     return "Depends";
-                  end if;
-               else
-                  return "Global";
-               end if;
+              (if Present (FA.Refined_Global_N)
+               then "Refined_Global"
+               elsif Present (FA.Global_N)
+               then (if Present (FA.Refined_Depends_N)
+                     then "Refined_Depends"
+                     else "Global")
+               elsif Present (FA.Depends_N)
+               then (if Present (FA.Refined_Depends_N)
+                     then "Refined_Depends"
+                     else "Depends")
+               else "Global"),
             when Kind_Package | Kind_Package_Body  =>
-               return "Initializes";
-         end case;
-      end Find_Aspect_To_Fix;
+               "Initializes");
+      --  A string representation of the aspect that needs to be corrected
 
-   --  Start of processing for Check_All_Variables_Known
+      SRM_Ref : constant String :=
+        (case FA.Kind is
+            when Kind_Subprogram | Kind_Entry | Kind_Task => "6.1.4(13)",
+            when Kind_Package | Kind_Package_Body         => "7.1.5(12)");
+      --  String representation of the violated SPARK RM rule
 
    begin
       Sane := True;
@@ -567,19 +554,12 @@ package body Flow.Analysis.Sanity is
             All_Vars : constant Ordered_Flow_Id_Sets.Set :=
               To_Ordered_Flow_Id_Set (A.Variables_Used or A.Variables_Defined);
 
-            Aspect_To_Fix : constant String := Find_Aspect_To_Fix;
-
-            SRM_Ref : constant String :=
-              (case FA.Kind is
-               when Kind_Subprogram | Kind_Entry | Kind_Task => "6.1.4(13)",
-               when Kind_Package | Kind_Package_Body         => "7.1.5(12)");
-
             F : Flow_Id;
          begin
             for Var of All_Vars loop
                F := Change_Variant (Var, Normal_Use);
 
-               if not (FA.All_Vars.Contains (F) or Synthetic (F)) then
+               if not (FA.All_Vars.Contains (F) or else Synthetic (F)) then
 
                   --  Here we are dealing with a missing global
 
@@ -605,7 +585,7 @@ package body Flow.Analysis.Sanity is
                         Global_Required (FA, Var);
 
                      when others =>
-                        raise Why.Unexpected_Node;
+                        raise Program_Error;
                   end case;
 
                   Sane := False;
@@ -793,7 +773,6 @@ package body Flow.Analysis.Sanity is
    --  Start of processing for Check_Generated_Refined_Global
 
    begin
-
       Sane := True;
 
       if FA.Kind /= Kind_Subprogram

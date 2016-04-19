@@ -152,6 +152,11 @@ package Why.Gen.Names is
 
    type Why_Name_Enum is
      (
+      --  Suffix appended to the name of an object to build the name of
+      --  the aggregate function used as initialization expression in the
+      --  declaration of the object.
+      WNE_Aggregate_Def_Suffix,
+
       WNE_Array_Base_Range_Pred,
       WNE_Array_Base_Range_Pred_2,
       WNE_Array_Base_Range_Pred_3,

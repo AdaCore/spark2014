@@ -1112,8 +1112,10 @@ package body Gnat2Why.Subprograms is
    -- Compute_Subprogram_Parameters  --
    ------------------------------------
 
-   function Compute_Subprogram_Parameters  (E : Entity_Id; Domain : EW_Domain)
-                             return Item_Array is
+   function Compute_Subprogram_Parameters
+     (E      : Entity_Id;
+      Domain : EW_Domain) return Item_Array
+   is
       Raw_Binders : constant Item_Array := Compute_Raw_Binders (E);
    begin
       return (if Domain = EW_Prog then Raw_Binders
@@ -1211,9 +1213,11 @@ package body Gnat2Why.Subprograms is
       Result        : Item_Array (1 .. Binder_Len);
       Param         : Node_Id;
       Count         : Positive;
+
    begin
       Param := First (Params);
       Count := 1;
+
       if Is_Protected_Subprogram (E) then
          declare
             Prot : constant Entity_Id := Containing_Protected_Type (E);
@@ -1222,6 +1226,7 @@ package body Gnat2Why.Subprograms is
             Count := 2;
          end;
       end if;
+
       while Present (Param) loop
          Result (Count) := Mk_Item_Of_Entity
            (E           => Defining_Identifier (Param),
@@ -3302,7 +3307,7 @@ package body Gnat2Why.Subprograms is
 
          begin
             --  If E is an expression function, add its body to its
-            --  postcodition.
+            --  postcondition.
 
             if Present (Expr_Fun_N)
               and then Entity_Body_In_SPARK (E)
@@ -3573,7 +3578,7 @@ package body Gnat2Why.Subprograms is
       --  If the entity's body is not in SPARK,
       --  or if the function does not return, do not generate axiom.
 
-      if not Entity_Body_In_SPARK (E) or else No_Return (E) then
+      if not Entity_Body_Compatible_With_SPARK (E) or else No_Return (E) then
          Close_Theory (File,
                        Kind => Standalone_Theory);
          return;

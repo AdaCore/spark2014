@@ -1,5 +1,3 @@
-with Ada.Dispatching;
-
 package P
   with SPARK_Mode
 is

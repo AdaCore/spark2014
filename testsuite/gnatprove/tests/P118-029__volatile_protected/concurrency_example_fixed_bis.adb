@@ -16,8 +16,8 @@ package body Concurrency_Example_Fixed_Bis is
    end Data;
 
    task body Writer is
-      Flip     : Boolean := True;
-      Cur_Time : Time    := Clock;
+      Flip   : Boolean := True;
+      Wakeup : Time    := Clock;
    begin
       loop
          if Flip then
@@ -25,18 +25,20 @@ package body Concurrency_Example_Fixed_Bis is
          else
             Data.Set (0);
          end if;
-         delay until Cur_Time + Seconds (1);
+         Wakeup := Wakeup + Seconds (1);
+         delay until Wakeup;
       end loop;
    end Writer;
 
    task body Reader is
-      Value    : Integer;
-      Cur_Time : Time := Clock;
+      Value  : Integer;
+      Wakeup : Time := Clock;
    begin
       loop
          Value := Data.Get;
          --  do some work with value read
-         delay until Cur_Time + Seconds (1);
+         Wakeup := Wakeup + Seconds (1);
+         delay until Wakeup;
       end loop;
    end Reader;
 

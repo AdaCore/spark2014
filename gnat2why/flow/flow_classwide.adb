@@ -133,6 +133,8 @@ package body Flow_Classwide is
          end case;
       end Mode;
 
+   --  Start of processing for Check_Classwide_Global
+
    begin
       Get_Globals (Subprogram => Overridden_Operation (E),
                    Scope      => Scope,
@@ -155,7 +157,7 @@ package body Flow_Classwide is
       --  each Input-mode item of G2 is an Input-mode or an In_Out-mode item
       --  of G1 or a direct or indirect constituent thereof; and
       for F of My_Proof loop
-         if not (Anc_Proof.Contains (F) or Anc_Reads.Contains (F)) then
+         if not (Anc_Proof.Contains (F) or else Anc_Reads.Contains (F)) then
             Error_Msg_Flow
               (E          => E,
                Msg        =>
@@ -233,8 +235,10 @@ package body Flow_Classwide is
          declare
             F_In : constant Flow_Id := Change_Variant (F_Out, In_View);
          begin
-            if not (Anc_Reads.Contains (F_In) or Anc_Proof.Contains (F_In))
-              and then (My_Reads.Contains (F_In) or My_Proof.Contains (F_In))
+            if not (Anc_Reads.Contains (F_In)
+                    or else Anc_Proof.Contains (F_In))
+              and then (My_Reads.Contains (F_In)
+                        or else My_Proof.Contains (F_In))
             then
                Error_Msg_Flow
                  (E          => E,
@@ -389,9 +393,8 @@ package body Flow_Classwide is
 
       for C in My_Dep.Iterate loop
          declare
-            My_Output  : constant Flow_Id := Dependency_Maps.Key (C);
-            My_Inputs  : constant Flow_Id_Sets.Set :=
-              Dependency_Maps.Element (C);
+            My_Output  : Flow_Id          renames Dependency_Maps.Key (C);
+            My_Inputs  : Flow_Id_Sets.Set renames My_Dep (C);
 
             Anc_Inputs : Flow_Id_Sets.Set;
             Tmp        : Flow_Id_Sets.Set;

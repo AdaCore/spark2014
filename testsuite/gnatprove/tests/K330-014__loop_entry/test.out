@@ -33,7 +33,7 @@ optional.adb:24:46: info: length check proved
 optional.adb:27:11: medium: array index check might fail
 optional.adb:27:26: info: initialization of "TA" proved
 optional.adb:31:13: info: loop invariant initialization proved
-optional.adb:31:36: medium: loop invariant might fail after first iteration, cannot prove TA'Loop_Entry (Outer, Inner) = 0 (e.g. when Outer = 1 and Inner = 2)
+optional.adb:31:36: medium: loop invariant might fail after first iteration, cannot prove TA'Loop_Entry (Outer, Inner) = 0 (e.g. when Inner = 2 and Outer = 1)
 optional.adb:31:38: info: initialization of "TA" proved
 optional.adb:35:07: warning: assuming "Put_Line" has no effect on global items
 optional.adb:35:07: warning: no Global contract available for "Put_Line"

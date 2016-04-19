@@ -28,6 +28,7 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Directories;       use Ada.Directories;
+with Ada.Float_Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Common_Containers;     use Common_Containers;
@@ -226,21 +227,23 @@ package body Gnat2Why.Error_Messages is
                        SA_Message'(SA_Messages.Tag_Check,
                                    Statically_Known_Success));
 
-            when VC_Precondition              |
-                 VC_Precondition_Main         |
-                 VC_Postcondition             |
-                 VC_Predicate_Check           |
-                 VC_Initial_Condition         |
-                 VC_Default_Initial_Condition |
-                 VC_Refined_Post              |
-                 VC_Contract_Case             |
-                 VC_Disjoint_Contract_Cases   |
-                 VC_Complete_Contract_Cases   |
-                 VC_Loop_Variant              |
-                 VC_Loop_Invariant            |
-                 VC_Loop_Invariant_Init       |
-                 VC_Loop_Invariant_Preserv    |
-                 VC_Assert            =>
+            when VC_Precondition
+               | VC_Precondition_Main
+               | VC_Postcondition
+               | VC_Predicate_Check
+               | VC_Predicate_Check_On_Default_Value
+               | VC_Initial_Condition
+               | VC_Default_Initial_Condition
+               | VC_Refined_Post
+               | VC_Contract_Case
+               | VC_Disjoint_Contract_Cases
+               | VC_Complete_Contract_Cases
+               | VC_Loop_Variant
+               | VC_Loop_Invariant
+               | VC_Loop_Invariant_Init
+               | VC_Loop_Invariant_Preserv
+               | VC_Assert
+            =>
                return (True,
                        SA_Message'(SA_Messages.Assertion_Check,
                                    Statically_Known_Success));
@@ -292,16 +295,101 @@ package body Gnat2Why.Error_Messages is
       Kind        : VC_Kind;
       Proved      : Boolean;
       E           : Entity_Id;
+      How_Proved  : Prover_Category;
       Extra_Msg   : String := "";
       Tracefile   : String := "";
       Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File     : String := "";
-      How_Proved  : String := "";
-      Stats       : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd  : String := "") is
+
+      function Stat_Message return String;
+      --  prepare a message for statistics of proof results
+
+      function Nice_Float (F : Float) return String;
+
+      ----------------
+      -- Nice_Float --
+      ----------------
+
+      function Nice_Float (F : Float) return String is
+         S : String (1 .. 10);
+         Index : Integer := 1;
+      begin
+         Ada.Float_Text_IO.Put (S, F, 1, 0);
+         while S (Index) = ' ' loop
+            Index := Index + 1;
+         end loop;
+         return S (Index .. S'Last);
+      end Nice_Float;
+
+      ------------------
+      -- Stat_Message --
+      ------------------
+
+      function Stat_Message return String is
+         Buf : Unbounded_String := Null_Unbounded_String;
+
+         use type Ada.Containers.Count_Type;
+         use Prover_Stat_Maps;
+      begin
+
+         --  check if VC is not proved or statistics are enabled
+
+         if not Proved or else
+           Gnat2Why_Args.Report_Mode not in GPR_Statistics | GPR_Provers
+         then
+            return "";
+         end if;
+
+         --  in case of the check being proved not by Why3, simply identify
+         --  this, no need for statistics
+
+         if How_Proved /= PC_Prover then
+            return " (" & To_String (How_Proved) & ")";
+         end if;
+
+         --  in the case of missing statistics, don't show them
+
+         if Stats.Is_Empty then
+            return "";
+         end if;
+
+         --  We are now in the general case (several provers). We first count
+         --  the total number of VCs.
+
+         Append (Buf, " (");
+         for C in Stats.Iterate loop
+            declare
+               Elt : constant Prover_Stat := Element (C);
+            begin
+               Append (Buf, Key (C));
+               Append (Buf, ':');
+               Append (Buf, Integer'Image (Elt.Count));
+               Append (Buf, " VC");
+               if Gnat2Why_Args.Report_Mode = GPR_Statistics then
+                  Append (Buf, " in max ");
+                  Append (Buf, Nice_Float (Elt.Max_Time));
+                  Append (Buf, " seconds and");
+                  Append (Buf, Integer'Image (Elt.Max_Steps));
+                  Append (Buf, " step");
+                  if Elt.Max_Steps /= 1 then
+                     Append (Buf, 's');
+                  end if;
+               end if;
+               if Has_Element (Next (C)) then
+                  Append (Buf, "; ");
+               end if;
+            end;
+         end loop;
+         Append (Buf, ')');
+
+         return To_String (Buf);
+      end Stat_Message;
+
       Msg : constant String :=
         (if Proved
-         then Proved_Message (Node, Kind)
+         then Proved_Message (Node, Kind) & Stat_Message
          else Not_Proved_Message (Node, Kind)) &
               Extra_Msg &
               (if VC_File /= "" then ", vc file: " & VC_File else "");
@@ -457,6 +545,8 @@ package body Gnat2Why.Error_Messages is
             return "range check might fail";
          when VC_Predicate_Check           =>
             return "predicate check might fail";
+         when VC_Predicate_Check_On_Default_Value =>
+            return "predicate check might fail on default value";
          when VC_Length_Check              =>
             return "length check might fail";
          when VC_Discriminant_Check        =>
@@ -543,6 +633,22 @@ package body Gnat2Why.Error_Messages is
 
       use GNATCOLL.JSON;
 
+      type Why3_Prove_Result is record
+         Id         : VC_Id;
+         Kind       : VC_Kind;
+         Result     : Boolean;
+         Extra_Info : Node_Id;
+         Tracefile  : Unbounded_String;
+         VC_File    : Unbounded_String;
+         Editor_Cmd : Unbounded_String;
+         Stats      : Prover_Stat_Maps.Map;
+         Cntexmp    : JSON_Value;
+      end record;
+
+      function Parse_Why3_Prove_Result (V : JSON_Value)
+                                        return Why3_Prove_Result;
+      --  parse the JSON produced for Why3 for a single Why3 result record.
+
       procedure Handle_Result (V : JSON_Value);
       procedure Handle_Error (Msg : String; Internal : Boolean);
 
@@ -568,54 +674,64 @@ package body Gnat2Why.Error_Messages is
       -------------------
 
       procedure Handle_Result (V : JSON_Value) is
-         Id        : constant VC_Id := VC_Id (Integer'(Get (Get (V, "id"))));
-         VC        : constant VC_Info := VC_Table.Element (Id);
-         Kind      : constant VC_Kind :=
-           VC_Kind'Value (Get (Get (V, "reason")));
-         Proved    : constant Boolean := Get (Get (V, "result"));
-         Extra     : constant Node_Id :=
-           Node_Id (Integer'(Get (Get (V, "extra_info"))));
+         Rec : constant Why3_Prove_Result := Parse_Why3_Prove_Result (V);
+         VC  : constant VC_Info := VC_Table.Element (Rec.Id);
          Extra_Text : constant String :=
-           (if not Proved and then Present (Extra) then String_Of_Node (Extra)
+           (if not Rec.Result and then Present (Rec.Extra_Info)
+            then String_Of_Node (Rec.Extra_Info)
             else "");
          Extra_Msg  : constant String :=
-           (if Extra_Text /= "" then ", cannot prove ~"
-            else "");
+           (if Extra_Text /= "" then ", cannot prove ~" else "");
          Node   : constant Node_Id :=
-           (if Present (Extra) then Extra else VC.Node);
-         Tracefile : constant String :=
-           (if Has_Field (V, "tracefile") then Get (Get (V, "tracefile"))
-            else "");
-         VC_File : constant String :=
-           (if Has_Field (V, "vc_file") then Get (Get (V, "vc_file"))
-            else "");
-         Editor_Cmd : constant String :=
-           (if Has_Field (V, "editor_cmd") then Get (Get (V, "editor_cmd"))
-            else "");
-         Stats : constant JSON_Value :=
-           (if Has_Field (V, "stats") then Get (V, "stats")
-            else Create_Object);
-         Cntexmp : constant JSON_Value :=
-           (if Has_Field (V, "cntexmp") then Get (V, "cntexmp")
-            else Create_Object);
+           (if Present (Rec.Extra_Info) then Rec.Extra_Info else VC.Node);
       begin
-         if Proved then
-            Mark_VC_As_Proved_For_Entity (Id, Kind, VC.Entity);
+         if Rec.Result then
+            Mark_VC_As_Proved_For_Entity (Rec.Id, Rec.Kind, VC.Entity);
          end if;
          Errout.Error_Msg_String (1 .. Extra_Text'Length) := Extra_Text;
          Errout.Error_Msg_Strlen := Extra_Text'Length;
          Emit_Proof_Result
            (Node        => Node,
-            Kind        => Kind,
-            Proved      => Proved,
+            Kind        => Rec.Kind,
+            Proved      => Rec.Result,
             E           => VC.Entity,
-            Tracefile   => Tracefile,
-            Cntexmp     => Cntexmp,
-            VC_File     => VC_File,
-            Editor_Cmd  => Editor_Cmd,
-            Stats       => Stats,
+            How_Proved  => PC_Prover,
+            Tracefile   => To_String (Rec.Tracefile),
+            Cntexmp     => Rec.Cntexmp,
+            VC_File     => To_String (Rec.VC_File),
+            Editor_Cmd  => To_String (Rec.Editor_Cmd),
+            Stats       => Rec.Stats,
             Extra_Msg   => Extra_Msg);
       end Handle_Result;
+
+      -----------------------------
+      -- Parse_Why3_Prove_Result --
+      -----------------------------
+
+      function Parse_Why3_Prove_Result  (V : JSON_Value)
+                                         return Why3_Prove_Result is
+      begin
+         return Why3_Prove_Result'
+           (Id         => VC_Id (Integer'(Get (Get (V, "id")))),
+            Kind       => VC_Kind'Value (Get (Get (V, "reason"))),
+            Result     => Get (Get (V, "result")),
+            Extra_Info => Node_Id (Integer'(Get (Get (V, "extra_info")))),
+            Tracefile  =>
+            (if Has_Field (V, "tracefile") then Get (Get (V, "tracefile"))
+             else Null_Unbounded_String),
+            VC_File    =>
+            (if Has_Field (V, "vc_file") then Get (Get (V, "vc_file"))
+             else Null_Unbounded_String),
+            Editor_Cmd =>
+              (if Has_Field (V, "editor_cmd") then Get (Get (V, "editor_cmd"))
+               else Null_Unbounded_String),
+            Stats      =>
+              (if Has_Field (V, "stats") then From_JSON (Get (V, "stats"))
+               else Prover_Stat_Maps.Empty_Map),
+            Cntexmp    =>
+              (if Has_Field (V, "cntexmp") then Get (V, "cntexmp")
+               else Create_Object));
+      end Parse_Why3_Prove_Result;
 
    --  Start of processing for Parse_Why3_Results
 
@@ -672,6 +788,8 @@ package body Gnat2Why.Error_Messages is
          when VC_Overflow_Check            => return "overflow check proved";
          when VC_Range_Check               => return "range check proved";
          when VC_Predicate_Check           => return "predicate check proved";
+         when VC_Predicate_Check_On_Default_Value =>
+            return "predicate check proved on default value";
          when VC_Length_Check              => return "length check proved";
          when VC_Discriminant_Check        =>
             return "discriminant check proved";

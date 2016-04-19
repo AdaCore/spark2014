@@ -2,7 +2,7 @@ p.adb:8:17: info: overflow check proved
 p.adb:15:17: info: overflow check proved
 p.adb:22:17: info: overflow check proved
 p.adb:29:17: info: overflow check proved
-p.ads:12:14: medium: postcondition might fail, cannot prove X = Integer'min (e.g. when X = 0 and X'Old = 0 and Threshold = -1)
+p.ads:12:14: medium: postcondition might fail, cannot prove X = Integer'min (e.g. when Threshold = -1 and X = 0 and X'Old = 0)
 p.ads:12:37: medium: overflow check might fail (e.g. when X = 2147483647)
 p.ads:15:06: info: complete contract cases proved
 p.ads:15:06: info: disjoint contract cases proved

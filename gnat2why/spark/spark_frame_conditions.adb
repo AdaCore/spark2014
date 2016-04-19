@@ -121,22 +121,7 @@ package body SPARK_Frame_Conditions is
 
    procedure Add_To_Map (Map : in out Name_Graphs.Map; From, To : Entity_Name)
    is
-
-      procedure Add_To_Set (Ignored : Entity_Name; Set : in out Name_Sets.Set);
-      --  Add entity representative To to set Set
-
-      ----------------
-      -- Add_To_Set --
-      ----------------
-
-      procedure Add_To_Set (Ignored : Entity_Name; Set : in out Name_Sets.Set)
-      is
-         pragma Unreferenced (Ignored);
-      begin
-         Set.Include (To);
-      end Add_To_Set;
-
-      Inserted : Boolean;
+      Ignored  : Boolean;
       Position : Name_Graphs.Cursor;
 
    --  Start of processing for Add_To_Map
@@ -145,8 +130,8 @@ package body SPARK_Frame_Conditions is
       --  Try to insert a default value (i.e. empty set) and then update it
       Map.Insert (Key      => From,
                   Position => Position,
-                  Inserted => Inserted);
-      Map.Update_Element (Position, Add_To_Set'Access);
+                  Inserted => Ignored);
+      Map (Position).Include (To);
    end Add_To_Map;
 
    -------------------------------------------
@@ -231,7 +216,6 @@ package body SPARK_Frame_Conditions is
       --------------------
 
       procedure Strong_Connect (V : Entity_Name) is
-         Called_Subp : Name_Sets.Set;
       begin
          --  Set the depth index for V to the smallest unused index
 
@@ -242,9 +226,7 @@ package body SPARK_Frame_Conditions is
 
          --  Consider successors of V
 
-         Called_Subp := Calls.Element (V);
-
-         for W of Called_Subp loop
+         for W of Calls (V) loop
             --  Ignore leaf nodes in call-graph as no treatment is needed
             --  for them.
 
@@ -271,7 +253,7 @@ package body SPARK_Frame_Conditions is
 
          --  If V is a root node, pop the stack and generate an SCC
 
-         if Lowlinks.Element (V) = Indexes.Element (V) then
+         if Lowlinks (V) = Indexes (V) then
             declare
                function Size_Of_Current_SCC return Positive;
                --  Return the size of the current SCC sitting on the stack
@@ -333,7 +315,7 @@ package body SPARK_Frame_Conditions is
       C : constant Name_Graphs.Cursor := Map.Find (Ent);
    begin
       return (if Name_Graphs.Has_Element (C)
-              then Name_Graphs.Element (C).Length
+              then Map (C).Length
               else 0);
    end Count_In_Map;
 
@@ -405,7 +387,7 @@ package body SPARK_Frame_Conditions is
 
    function File_Of_Entity (E : Entity_Name) return Entity_Name is
    begin
-      return File_Defines.Element (E);
+      return File_Defines (E);
    end File_Of_Entity;
 
    -----------------
@@ -531,13 +513,13 @@ package body SPARK_Frame_Conditions is
          return Name_Sets.Empty_Set;
       end if;
 
-      Read_Ids := Reads.Element (E_Name);
+      Read_Ids := Reads (E_Name);
 
       if not Include_Constants then
-         Read_Ids := Read_Ids - Constants;
+         Read_Ids.Difference (Constants);
       end if;
 
-      return Read_Ids - Defines.Element (E_Name);
+      return Read_Ids - Defines (E_Name);
    exception
       when Constraint_Error =>
          if Propagate_Error_For_Missing_Scope then
@@ -591,9 +573,9 @@ package body SPARK_Frame_Conditions is
          end;
       end loop;
 
-      Write_Ids := Write_Ids or Writes.Element (E_Name);
+      Write_Ids.Union (Writes (E_Name));
 
-      return Write_Ids - Defines.Element (E_Name);
+      return Write_Ids - Defines (E_Name);
    exception
       when Constraint_Error =>
          if Propagate_Error_For_Missing_Scope then
@@ -637,7 +619,7 @@ package body SPARK_Frame_Conditions is
       --  A subprogram is non-recursive if either it contains no call or its
       --  Entity_Name has been stored in Non_Rec_Subp.
 
-      return Calls.Element (E_Name).Is_Empty
+      return Calls (E_Name).Is_Empty
         or else Non_Rec_Subp.Contains (E_Name);
    end Is_Non_Recursive_Subprogram;
 
@@ -864,19 +846,33 @@ package body SPARK_Frame_Conditions is
 
                      Ref_Scope := Scope_Name'(File_Num  => Xref.File_Num,
                                               Scope_Num => Xref.Scope_Num);
-                     if Scope_Specs.Contains (Ref_Scope) then
-                        Ref_Scope := Scope_Specs.Element (Ref_Scope);
-                     end if;
-                     Ref_Scope_Ent := Scope_Entities.Element (Ref_Scope);
+
+                     declare
+                        C : constant Scope_Spec.Cursor :=
+                          Scope_Specs.Find (Ref_Scope);
+                     begin
+                        if Scope_Spec.Has_Element (C) then
+                           Ref_Scope := Scope_Specs (C);
+                        end if;
+                     end;
+
+                     Ref_Scope_Ent := Scope_Entities (Ref_Scope);
 
                      --  Compute the entity for the scope of the definition
 
                      Def_Scope := Scope_Name'(File_Num  => Srec.File_Num,
                                               Scope_Num => Srec.Scope_Num);
-                     if Scope_Specs.Contains (Def_Scope) then
-                        Def_Scope := Scope_Specs.Element (Def_Scope);
-                     end if;
-                     Def_Scope_Ent := Scope_Entities.Element (Def_Scope);
+
+                     declare
+                        C : constant Scope_Spec.Cursor :=
+                          Scope_Specs.Find (Def_Scope);
+                     begin
+                        if Scope_Spec.Has_Element (C) then
+                           Def_Scope := Scope_Specs (C);
+                        end if;
+                     end;
+
+                     Def_Scope_Ent := Scope_Entities (Def_Scope);
 
                      --  Register the definition on first occurence of
                      --  variables.
@@ -947,46 +943,6 @@ package body SPARK_Frame_Conditions is
          Prop_Reads  : Name_Sets.Set;
          Prop_Writes : Name_Sets.Set;
 
-         procedure Union_With_Reads
-           (Ignored : Entity_Name;
-            Set     : in out Name_Sets.Set);
-         --  In place union of caller's reads with the set propagated from
-         --  callee.
-
-         procedure Union_With_Writes
-           (Ignored : Entity_Name;
-            Set     : in out Name_Sets.Set);
-         --  In place union of caller's writes with the set propagated from
-         --  callee.
-
-         ----------------------
-         -- Union_With_Reads --
-         ----------------------
-
-         procedure Union_With_Reads
-           (Ignored : Entity_Name;
-            Set     : in out Name_Sets.Set)
-         is
-            pragma Unreferenced (Ignored);
-         begin
-            Set.Union (Prop_Reads);
-         end Union_With_Reads;
-
-         -----------------------
-         -- Union_With_Writes --
-         -----------------------
-
-         procedure Union_With_Writes
-           (Ignored : Entity_Name;
-            Set     : in out Name_Sets.Set)
-         is
-            pragma Unreferenced (Ignored);
-         begin
-            Set.Union (Prop_Writes);
-         end Union_With_Writes;
-
-      --  Start of processing for Propagate_On_Call
-
       begin
          declare
             E : constant Entity_Id := Find_Entity (Callee);
@@ -1012,17 +968,13 @@ package body SPARK_Frame_Conditions is
                   Prop_Writes := Flow_Types.To_Name_Set (Write_Ids);
                end;
             else
-               Prop_Reads  :=
-                 Reads.Element (Callee) - Defines.Element (Callee);
-               Prop_Writes :=
-                 Writes.Element (Callee) - Defines.Element (Callee);
+               Prop_Reads  := Reads (Callee) - Defines (Callee);
+               Prop_Writes := Writes (Callee) - Defines (Callee);
             end if;
          end;
 
-         Reads.Update_Element
-           (Reads.Find (Caller), Union_With_Reads'Access);
-         Writes.Update_Element
-           (Writes.Find (Caller), Union_With_Writes'Access);
+         Reads (Caller).Union (Prop_Reads);
+         Writes (Caller).Union (Prop_Writes);
       exception
          when Constraint_Error =>
             if Propagate_Error_For_Missing_Scope then
@@ -1042,7 +994,7 @@ package body SPARK_Frame_Conditions is
       is
          Num_Reads   : constant Count_Type := Count_In_Map (Reads, Subp);
          Num_Writes  : constant Count_Type := Count_In_Map (Writes, Subp);
-         Called_Subp : constant Name_Sets.Set := Calls.Element (Subp);
+         Called_Subp : Name_Sets.Set renames Calls (Subp);
 
       begin
          Updated := False;
@@ -1118,7 +1070,7 @@ package body SPARK_Frame_Conditions is
                declare
                   E : constant Entity_Name := Cur_SCCs (J) (1);
                begin
-                  if not Calls.Element (E).Contains (E) then
+                  if not Calls (E).Contains (E) then
                      Non_Rec_Subp.Insert (E);
                   end if;
                end;
@@ -1214,7 +1166,7 @@ package body SPARK_Frame_Conditions is
 
       E_Name  := To_Entity_Name (E_Alias);
 
-      Called_Subprograms := Calls.Element (E_Name);
+      Called_Subprograms := Calls (E_Name);
       Inputs             := Get_Generated_Reads (E, False);
       Outputs            := Get_Generated_Writes (E);
 

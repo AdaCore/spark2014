@@ -459,6 +459,9 @@ package Why.Atree.Modules is
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
    function E_Rep_Module (E : Entity_Id) return W_Module_Id;
 
+   function Get_Module_Name (M : W_Module_Id) return String;
+   --  Return the name of the module.
+
    procedure Insert_Extra_Module (N : Node_Id; M : W_Module_Id);
    --  After a call to this procedure, E_Module (N) will return M.
 

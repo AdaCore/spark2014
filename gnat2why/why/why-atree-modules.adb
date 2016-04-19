@@ -23,20 +23,22 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;     use Ada.Containers;
-with Atree;              use Atree;
-with Common_Containers;  use Common_Containers;
-with Einfo;              use Einfo;
-with GNATCOLL.Utils;     use GNATCOLL.Utils;
-with Gnat2Why.Util;      use Gnat2Why.Util;
-with Sem_Util;           use Sem_Util;
-with Sinfo;              use Sinfo;
-with SPARK_Util;         use SPARK_Util;
-with Stand;              use Stand;
-with VC_Kinds;           use VC_Kinds;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Gen.Arrays;     use Why.Gen.Arrays;
-with Why.Inter;          use Why.Inter;
+with Ada.Containers;      use Ada.Containers;
+with Atree;               use Atree;
+with Common_Containers;   use Common_Containers;
+with Einfo;               use Einfo;
+with GNATCOLL.Utils;      use GNATCOLL.Utils;
+with Gnat2Why.Util;       use Gnat2Why.Util;
+with Sem_Util;            use Sem_Util;
+with Sinfo;               use Sinfo;
+with SPARK_Util;          use SPARK_Util;
+with Stand;               use Stand;
+with VC_Kinds;            use VC_Kinds;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Arrays;      use Why.Gen.Arrays;
+with Why.Inter;           use Why.Inter;
 
 package body Why.Atree.Modules is
 
@@ -161,6 +163,15 @@ package body Why.Atree.Modules is
          return Why_Empty;
       end if;
    end E_Axiom_Module;
+
+   ---------------------
+   -- Get_Module_Name --
+   ---------------------
+
+   function Get_Module_Name (M : W_Module_Id) return String is
+   begin
+      return Get_Name_String (Module_Get_Name (+M));
+   end Get_Module_Name;
 
    --------------------
    -- E_Rep_Module --

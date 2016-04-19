@@ -12,7 +12,7 @@ package Ghost_Example is
      Pre  => Cur_State = In_Progress,
      Post => Cur_State = (if Done then All_Done else In_Progress);
 
-   procedure Reset with
+   procedure Reset with Ghost,
      Post => Cur_State = Start;
 
    type State_T is (Start, Init_Done, In_Progress, All_Done);

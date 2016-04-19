@@ -119,8 +119,50 @@ arithmetic.adb:288:29: info: range check proved
 arithmetic.adb:288:34: info: overflow check proved
 arithmetic.adb:288:42: info: overflow check proved
 arithmetic.adb:288:47: info: division check proved
-arithmetic.adb:293:06: medium: postcondition might fail (e.g. when X = 2 and IsPositive_Wrong'Result = 1)
+arithmetic.adb:293:06: medium: postcondition might fail (e.g. when IsPositive_Wrong'Result = 1 and X = 2)
 arithmetic.adb:298:29: info: range check proved
 arithmetic.adb:298:34: info: overflow check proved
 arithmetic.adb:298:42: info: overflow check proved
 arithmetic.adb:298:47: info: division check proved
+counterexample expected for check at arithmetic.adb:10
+  trace at arithmetic.adb:6 --> A = -2147483648 and B = 1
+  trace at arithmetic.adb:10 --> A = -2147483648 and B = 1
+counterexample expected for check at arithmetic.adb:17
+  trace at arithmetic.adb:13 --> A = -2147483648
+  trace at arithmetic.adb:17 --> A = -2147483648
+counterexample expected for check at arithmetic.adb:76
+  trace at arithmetic.adb:75 --> A = -2147483648 and B = -1
+  trace at arithmetic.adb:76 --> A = -2147483648 and B = -1
+counterexample expected for check at arithmetic.adb:113
+  trace at arithmetic.adb:3 --> Halve_B'Result = 0
+  trace at arithmetic.adb:112 --> N = 2
+  trace at arithmetic.adb:113 --> Halve_B'Result = 0 and N = 2
+  trace at arithmetic.adb:116 --> Half_Range = 127
+  trace at arithmetic.adb:120 --> I = 128 and R = (mk_int__ref 0)
+  trace at arithmetic.adb:121 --> R = 128
+  trace at arithmetic.adb:126 --> Halve_B'Result = 0
+counterexample expected for check at arithmetic.adb:123
+  trace at arithmetic.adb:112 --> N = 2
+  trace at arithmetic.adb:116 --> Half_Range = 127
+  trace at arithmetic.adb:120 --> I = 2 and R = 0
+  trace at arithmetic.adb:121 --> R = 2
+  trace at arithmetic.adb:123 --> N = 2 and R = 2
+counterexample expected for check at arithmetic.adb:171
+  trace at arithmetic.adb:163 --> N = -2147483648
+  trace at arithmetic.adb:171 --> N = -2147483648
+counterexample expected for check at arithmetic.adb:194
+  trace at arithmetic.adb:190 --> N = -2147483648
+  trace at arithmetic.adb:194 --> N = -2147483648
+counterexample expected for check at arithmetic.adb:226
+  trace at arithmetic.adb:223 --> N = -1
+  trace at arithmetic.adb:226 --> N = -1
+counterexample expected for check at arithmetic.adb:254
+  trace at arithmetic.adb:250 --> A = -128
+  trace at arithmetic.adb:251 --> B = -1
+  trace at arithmetic.adb:252 --> C = 0
+  trace at arithmetic.adb:254 --> A = -128 and B = -1
+counterexample expected for check at arithmetic.adb:293
+  trace at arithmetic.adb:291 --> X = 2
+  trace at arithmetic.adb:293 --> IsPositive_Wrong'Result = 1 and X = 2
+  trace at arithmetic.adb:298 --> IsPositive_Wrong'Result = 1
+  trace at system.ads:1 --> IsPositive_Wrong'Result = 0

@@ -110,8 +110,8 @@ package body Assumption_Types is
    -- Hash --
    ----------
 
-   function Hash (S : Subp_Type) return Ada.Containers.Hash_Type is
-     (Unique_Subps.Hash (S));
+   function Hash (S : Subp_Type) return Ada.Containers.Hash_Type renames
+     Unique_Subps.Hash;
 
    function Hash (S : Unit_Type) return Ada.Containers.Hash_Type is
      (Hash (Symbol (S)));
@@ -120,7 +120,7 @@ package body Assumption_Types is
    -- Mk_Base_Sloc --
    ------------------
 
-   function Mk_Base_Sloc (File : String; Line : Integer) return Base_Sloc is
+   function Mk_Base_Sloc (File : String; Line : Positive) return Base_Sloc is
    begin
       return (File => Find (Symbol_Table, File), Line => Line);
    end Mk_Base_Sloc;

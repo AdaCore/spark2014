@@ -1,1 +1,2 @@
+pred_comp.adb:3:32: medium: predicate check might fail on default value
 pred_comp.adb:11:14: warning: subprogram "Inner" has no effect

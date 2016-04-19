@@ -166,10 +166,7 @@ package body Flow is
 
       procedure Format_Item (K, V : String) is
       begin
-         Write_Str (K);
-         Write_Str (": ");
-         Write_Str (V);
-         Write_Eol;
+         Write_Line (K & ": " & V);
       end Format_Item;
 
       -------------------
@@ -265,8 +262,8 @@ package body Flow is
            Ekind (X.Analyzed_Entity) = E_Package,
         when Kind_Package_Body =>
            Ekind (X.Analyzed_Entity) = E_Package_Body)
-           and then (if not X.Generating_Globals
-                     then not X.GG.Aborted and X.GG.Globals.Is_Empty)
+       and then (if not X.Generating_Globals
+                 then not X.GG.Aborted and X.GG.Globals.Is_Empty)
       );
 
    -------------------------------
@@ -338,8 +335,11 @@ package body Flow is
             Fill_Colour => Null_Unbounded_String,
             Label       => Null_Unbounded_String);
 
-         F : constant Flow_Id := G.Get_Key (V);
+         F : Flow_Id      renames G.Get_Key (V);
          A : V_Attributes renames M (V);
+
+         NBSP : constant String := "&nbsp;";
+         --  HTML tag for non-breaking space
 
          procedure Print_Node (N : Node_Id);
 
@@ -463,7 +463,7 @@ package body Flow is
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Formal));
                   Write_Str ("'in");
-                  Write_Str ("&nbsp;:=&nbsp;");
+                  Write_Str (NBSP & ":=" & NBSP);
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Actual));
                   if A.Is_Discr_Or_Bounds_Parameter then
                      Write_Str ("'discr_or_bounds");
@@ -474,7 +474,7 @@ package body Flow is
                   pragma Assert (A.Parameter_Actual.Kind = Direct_Mapping);
                   pragma Assert (not A.Is_Discr_Or_Bounds_Parameter);
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Actual));
-                  Write_Str ("&nbsp;:=&nbsp;");
+                  Write_Str (NBSP & ":=" & NBSP);
                   Print_Node (Get_Direct_Mapping_Id (A.Parameter_Formal));
                   Write_Str ("'out");
 
@@ -485,7 +485,7 @@ package body Flow is
          elsif A.Is_Global_Parameter then
             Rv.Shape := Shape_None;
 
-            Write_Str ("global&nbsp;");
+            Write_Str ("global" & NBSP);
             Sprint_Flow_Id (A.Parameter_Formal);
             case A.Parameter_Formal.Variant is
                when In_View =>
@@ -505,7 +505,7 @@ package body Flow is
          elsif A.Is_Implicit_Parameter then
             Rv.Shape := Shape_None;
 
-            Write_Str ("implicit&nbsp;");
+            Write_Str ("implicit" & NBSP);
             Sprint_Flow_Id (A.Parameter_Formal);
             case A.Parameter_Formal.Variant is
                when In_View =>
@@ -523,10 +523,10 @@ package body Flow is
 
             Sprint_Flow_Id (A.Default_Init_Var);
             if Present (A.Default_Init_Val) then
-               Write_Str ("&nbsp;is by default&nbsp;");
+               Write_Str (NBSP & "is by default" & NBSP);
                Print_Node (A.Default_Init_Val);
             else
-               Write_Str ("&nbsp;is initialized implicitly");
+               Write_Str (NBSP & "is initialized implicitly");
             end if;
 
          elsif A.Is_Package_Initialization then
@@ -669,16 +669,16 @@ package body Flow is
                      if Is_Volatile (F, S) then
                         Write_Str ("\nvolatile:");
                         if Has_Async_Readers (F, S) then
-                           Write_Str ("&nbsp;AR");
+                           Write_Str (NBSP & "AR");
                         end if;
                         if Has_Async_Writers (F, S) then
-                           Write_Str ("&nbsp;AW");
+                           Write_Str (NBSP & "AW");
                         end if;
                         if Has_Effective_Reads (F, S) then
-                           Write_Str ("&nbsp;ER");
+                           Write_Str (NBSP & "ER");
                         end if;
                         if Has_Effective_Writes (F, S) then
-                           Write_Str ("&nbsp;EW");
+                           Write_Str (NBSP & "EW");
                         end if;
                      end if;
                   end;
@@ -702,12 +702,12 @@ package body Flow is
                   null;
             end case;
 
-            if A.Loops.Length > 0 and not (A.Is_Parameter or
+            if not A.Loops.Is_Empty and not (A.Is_Parameter or
                                              A.Is_Global_Parameter)
             then
                Write_Str ("\nLoops:");
                for Loop_Identifier of A.Loops loop
-                  Write_Str ("&nbsp;");
+                  Write_Str (NBSP);
                   Print_Node (Loop_Identifier);
                end loop;
             end if;
@@ -721,7 +721,7 @@ package body Flow is
             end if;
          end if;
 
-         if A.Variables_Used.Length > 0 then
+         if not A.Variables_Used.Is_Empty then
             Write_Str ("\nVU: {");
             declare
                First : Boolean := True;
@@ -738,7 +738,7 @@ package body Flow is
             Write_Str ("}");
          end if;
 
-         if A.Subprograms_Called.Length > 0 then
+         if not A.Subprograms_Called.Is_Empty then
             Write_Str ("\nSC: {");
             declare
                First : Boolean := True;
@@ -755,7 +755,7 @@ package body Flow is
             Write_Str ("}");
          end if;
 
-         if A.Variables_Defined.Length > 0 then
+         if not A.Variables_Defined.Is_Empty then
             Write_Str ("\nVD: {");
             declare
                First : Boolean := True;
@@ -878,6 +878,28 @@ package body Flow is
                                  Generating_Globals : Boolean)
                                  return Flow_Analysis_Graphs
    is
+      procedure Debug (Str : String);
+      --  Write debug string
+
+      procedure Debug (Str : String; V : Boolean);
+      --  Write debug string followed by yes or no, depending on V
+
+      -----------------
+      -- Debug --
+      -----------------
+
+      procedure Debug (Str : String) is
+      begin
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            Write_Line (Str);
+         end if;
+      end Debug;
+
+      procedure Debug (Str : String; V : Boolean) is
+      begin
+         Debug (Str & (if V then "yes" else "no"));
+      end Debug;
+
       FA : Flow_Analysis_Graphs_Root
         (Kind               => (case Ekind (E) is
                                 when Subprogram_Kind => Kind_Subprogram,
@@ -891,6 +913,9 @@ package body Flow is
       Phase : constant String := (if Generating_Globals
                                   then "Global generation"
                                   else "Flow analysis");
+
+   --  Start of processing for Flow_Analyse_Entity
+
    begin
       FA.Analyzed_Entity       := E;
       FA.Spec_Entity           := S;
@@ -910,7 +935,6 @@ package body Flow is
       FA.Unreferenced_Vars     := Node_Sets.Empty_Set;
       FA.Loops                 := Node_Sets.Empty_Set;
       FA.Dependency_Map        := Dependency_Maps.Empty_Map;
-      FA.No_Effects            := False;
       FA.No_Errors_Or_Warnings := True;
       FA.Direct_Calls          := Node_Sets.Empty_Set;
       FA.Tasking               := (others => Node_Sets.Empty_Set);
@@ -952,7 +976,10 @@ package body Flow is
 
             FA.Is_Generative := Refinement_Needed (E);
 
-            FA.Function_Side_Effects_Present := False;
+            FA.No_Effects := False;
+            if Ekind (E) = E_Function then
+               FA.Function_Side_Effects_Present := False;
+            end if;
 
          when E_Package =>
             FA.B_Scope       := Flow_Scope'(E, Private_Part);
@@ -1035,15 +1062,11 @@ package body Flow is
          case FA.Kind is
             when Kind_Subprogram | Kind_Task | Kind_Entry =>
                if not FA.Is_Generative then
-                  if Gnat2Why_Args.Flow_Advanced_Debug then
-                     if Present (FA.Global_N) then
-                        Write_Line ("skipped (global found)");
-                     elsif Present (FA.Depends_N) then
-                        Write_Line ("skipped (depends found)");
-                     else
-                        raise Program_Error;
-                     end if;
-                  end if;
+                  Debug ("skipped" & (if Present (FA.Global_N)
+                                      then "(global found)"
+                                      elsif Present (FA.Depends_N)
+                                      then "(depends found)"
+                                      else raise Program_Error));
 
                   --  Even if aborting we still collect tasking-related info
                   --  using control flow traversal and register the results.
@@ -1056,37 +1079,21 @@ package body Flow is
                   FA.GG.Aborted := True;
                end if;
 
-               if Gnat2Why_Args.Flow_Advanced_Debug then
-                  Write_Line ("Spec in SPARK: " & (if Entity_In_SPARK (E)
-                                                   then "yes"
-                                                   else "no"));
-
-                  Write_Line ("Body in SPARK: " &
-                                (if Entity_Body_In_SPARK (E)
-                                 then "yes"
-                                 else "no"));
-               end if;
+               Debug ("Spec in SPARK: ", Entity_In_SPARK (E));
+               Debug ("Body in SPARK: ", Entity_Body_In_SPARK (E));
 
             when Kind_Package =>
                if Present (FA.Initializes_N) then
                   --  There is no need to create a GG graph if the package has
                   --  an Initializes aspect.
-                  if Gnat2Why_Args.Flow_Advanced_Debug then
-                     Write_Line ("skipped (package spec)");
-                  end if;
+                  Debug ("skipped (package spec)");
+
                   FA.GG.Aborted := True;
                else
-                  if Entity_Spec_In_SPARK (E) then
-                     if Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("Spec in SPARK: yes");
-                     end if;
-                  else
-                     --  We cannot create a GG graph if the spec is not in
-                     --  SPARK.
+                  Debug ("Spec in SPARK: ", Entity_Spec_In_SPARK (E));
 
-                     if Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("Spec in SPARK: no");
-                     end if;
+                  --  We cannot create a GG graph if the spec is not in SPARK
+                  if not Entity_Spec_In_SPARK (E) then
                      FA.GG.Aborted := True;
                   end if;
                end if;
@@ -1096,25 +1103,17 @@ package body Flow is
                   --  There is no need to create a GG graph if the package has
                   --  an Initializes aspect.
 
-                  if Gnat2Why_Args.Flow_Advanced_Debug then
-                     Write_Line ("skipped (package spec)");
-                     Write_Line ("skipped (package body)");
-                  end if;
+                  Debug ("skipped (package spec)");
+                  Debug ("skipped (package body)");
+
                   FA.GG.Aborted := True;
                else
-                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
-                     if Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("Spec in SPARK: yes");
-                        Write_Line ("Body in SPARK: yes");
-                     end if;
-                  else
-                     if Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("Spec in SPARK: " &
-                                      (if Entity_In_SPARK (FA.Spec_Entity)
-                                       then "yes"
-                                       else "no"));
-                        Write_Line ("Body in SPARK: no");
-                     end if;
+                  Debug ("Spec in SPARK: ",
+                         Entity_Spec_In_SPARK (FA.Spec_Entity));
+                  Debug ("Body in SPARK: ",
+                         Entity_Body_In_SPARK (FA.Spec_Entity));
+
+                  if not Entity_Body_In_SPARK (FA.Spec_Entity) then
                      FA.GG.Aborted := True;
                   end if;
                end if;
@@ -1123,13 +1122,10 @@ package body Flow is
                   Refined_State_N : constant Node_Id :=
                     Get_Pragma (E, Pragma_Refined_State);
 
-                  DM              : Dependency_Maps.Map;
-                  Constituents    : Flow_Id_Sets.Set;
+                  DM : Dependency_Maps.Map;
                begin
                   if Present (Refined_State_N) then
-                     if Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("Refinement found: yes");
-                     end if;
+                     Debug ("Refinement found: yes");
 
                      DM := Parse_Refined_State (Refined_State_N);
                      if Gnat2Why_Args.Flow_Advanced_Debug then
@@ -1139,16 +1135,15 @@ package body Flow is
                            Print_Flow_Id (Dependency_Maps.Key (State));
                            Outdent;
                            Write_Line ("Constituents:");
-                           Constituents := Dependency_Maps.Element (State);
                            Indent;
-                           for Constituent of Constituents loop
+                           for Constituent of DM (State) loop
                               Print_Flow_Id (Constituent);
                            end loop;
                            Outdent;
                         end loop;
                      end if;
-                  elsif Gnat2Why_Args.Flow_Advanced_Debug then
-                        Write_Line ("Refinement found: no");
+                  else
+                     Debug ("Refinement found: no");
                   end if;
                end;
          end case;
@@ -1183,7 +1178,7 @@ package body Flow is
          end loop;
       end if;
 
-      --  We print this graph first in case the other algorithms barf
+      --  Print this graph now in case the other algorithms barf
       if Debug_Print_CFG then
          Print_Graph (Filename          =>
                         To_String (FA.Base_Filename) & "_cfg",
@@ -1255,7 +1250,7 @@ package body Flow is
       --  Initialize the Global_Info_List to the empty set
       Global_Info_List := Global_Info_Lists.Empty_List;
 
-      for E of Marked_Entities loop --  ??? why Entity_Set and not Entity_List?
+      for E of Entity_Tree loop
          case Ekind (E) is
             when E_Entry | E_Task_Type | Subprogram_Kind =>
 
@@ -1292,6 +1287,8 @@ package body Flow is
                           Get_Contract_Node (E, Scope, Global_Contract);
                         Depends_Node : constant Node_Id :=
                           Get_Contract_Node (E, Scope, Depends_Contract);
+
+                        Global_Info : Global_Phase_1_Info;
                      begin
                         if Present (Global_Node)
                           or else Present (Depends_Node)
@@ -1301,10 +1298,9 @@ package body Flow is
                            --  Note that in such a case components *_Calls
                            --  and Local_* will be left as empty sets.
                            declare
-                              Proof_Ins   : Flow_Id_Sets.Set;
-                              Reads       : Flow_Id_Sets.Set;
-                              Writes      : Flow_Id_Sets.Set;
-                              Global_Info : Global_Phase_1_Info;
+                              Proof_Ins : Flow_Id_Sets.Set;
+                              Reads     : Flow_Id_Sets.Set;
+                              Writes    : Flow_Id_Sets.Set;
                            begin
                               Get_Globals (Subprogram           => E,
                                            Scope                => Scope,
@@ -1335,18 +1331,15 @@ package body Flow is
                                  Local_Variables       => Name_Sets.Empty_Set,
                                  Local_Subprograms     => Name_Sets.Empty_Set,
                                  Local_Definite_Writes => Name_Sets.Empty_Set);
-
-                              Global_Info_List.Append (Global_Info);
                            end;
 
                         else
                            --  Use (Yannick's) Computed Globals info
                            --  to add a GG entry to the ALI file.
                            declare
-                              Reads       : Name_Sets.Set;
-                              Writes      : Name_Sets.Set;
-                              Calls       : Name_Sets.Set;
-                              Global_Info : Global_Phase_1_Info;
+                              Reads  : Name_Sets.Set;
+                              Writes : Name_Sets.Set;
+                              Calls  : Name_Sets.Set;
                            begin
                               --  Collect the computed globals using only info
                               --  from the current compilation unit.
@@ -1363,7 +1356,7 @@ package body Flow is
                                     when E_Task_Type     => Kind_Task,
                                     when Subprogram_Kind => Kind_Subprogram,
                                     when others          =>
-                                      raise Why.Unexpected_Node),
+                                      raise Program_Error),
                                  Globals_Origin        => Origin_Frontend,
                                  Inputs_Proof          => Name_Sets.Empty_Set,
                                  Inputs                => Reads,
@@ -1374,10 +1367,11 @@ package body Flow is
                                  Local_Variables       => Name_Sets.Empty_Set,
                                  Local_Subprograms     => Name_Sets.Empty_Set,
                                  Local_Definite_Writes => Name_Sets.Empty_Set);
-
-                              Global_Info_List.Append (Global_Info);
                            end;
                         end if;
+
+                        Global_Info_List.Append (Global_Info);
+
                      end;
                   end if;
                end if;
@@ -1441,7 +1435,7 @@ package body Flow is
       --  out in SRM 6.1.6.
       Success := True;
       for E of Marked_Entities loop
-         --  ??? why Entity_Set and not Entity_List?
+         --  ??? why Marked_Entities and not Entities_To_Translate?
          if Is_Subprogram (E)
            and then SPARK_Util.Analysis_Requested (E, With_Inlined => True)
            and then Entity_In_SPARK (E)
@@ -1472,10 +1466,10 @@ package body Flow is
          Analysis.Sanity_Check (FA, Success);
          if Success then
             case FA.Kind is
-               when Kind_Entry         |
-                    Kind_Package       |
-                    Kind_Package_Body  |
-                    Kind_Subprogram    =>
+               when Kind_Entry        |
+                    Kind_Package      |
+                    Kind_Package_Body |
+                    Kind_Subprogram   =>
                   Analysis.Sanity_Check_Postcondition (FA, Success);
 
                when Kind_Task =>
@@ -1575,10 +1569,6 @@ package body Flow is
                   Severity => High_Check_Kind);
             end if;
          end if;
-
-         --  Not really necessary, but it forces N131-017 to occur
-         --  immediately, instead of when this procedure ends.
-         FA.Atr.Clear;
       end loop;
 
       --  Finally check concurrent accesses. This check is done for the whole
@@ -1685,11 +1675,14 @@ package body Flow is
                Refined_State_N : constant Node_Id :=
                  Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_State);
 
-               DM              : Dependency_Maps.Map;
             begin
                if Present (Refined_State_N) then
-                  DM := Parse_Refined_State (Refined_State_N);
-                  GG_Write_State_Info (DM);
+                  declare
+                     DM : constant Dependency_Maps.Map :=
+                       Parse_Refined_State (Refined_State_N);
+                  begin
+                     GG_Write_State_Info (DM);
+                  end;
                end if;
             end;
          end if;

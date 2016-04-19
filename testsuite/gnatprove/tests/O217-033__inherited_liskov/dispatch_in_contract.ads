@@ -20,5 +20,5 @@ package Dispatch_In_Contract with SPARK_Mode is
       (O.F1 < Integer'Last and then O.F2 < Integer'Last);
 
    procedure Incr (O : in out Child) with
-     Pre'Class => Less_Than_Max (O); -- Liskov fails here ? What about Incr2 ?
+     Pre'Class => Less_Than_Max (O);
 end Dispatch_In_Contract;

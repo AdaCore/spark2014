@@ -1,0 +1,5 @@
+p1.adb:6:20: Elaborate_All pragma required for "P2"
+p1.adb:6:20: reference to "Body_Elaborated" during elaboration in SPARK
+p2.adb:6:20: Elaborate_All pragma required for "P1"
+p2.adb:6:20: reference to "Body_Elaborated" during elaboration in SPARK
+gnatprove: error during generation of Global contracts

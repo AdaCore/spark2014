@@ -113,12 +113,16 @@ package Gnat2Why_Args is
 
    --  Set the report mode (only failing VCs, all VCs, details)
 
-   type Report_Mode_Type is (GPR_Fail, GPR_Verbose, GPR_Statistics);
+   type Report_Mode_Type is (GPR_Fail,
+                             GPR_All,
+                             GPR_Provers,
+                             GPR_Statistics);
    --  The modes for reporting of VCs.
    --    GPR_Fail means that only unproved VCs will be reported.
-   --    GPR_Verbose means that all VCs will be reported
-   --    GPR_Statistics means that all VCs will be reported, plus steps and
-   --    timing information.
+   --    GPR_All means that all VCs will be reported
+   --    GPR_Provers prints in addition which prover(s) proved a proved check
+   --    GPR_Statistics in addition prints maximum steps and timings for proved
+   --    checks
 
    Report_Mode : Report_Mode_Type := GPR_Fail;
 
@@ -159,9 +163,12 @@ package Gnat2Why_Args is
    --  variables above.
 
    function Set (Obj_Dir : String) return String;
-   --  Read the above variables and prepare passing them to gnat2why. Obj_Dir
-   --  is a place to store temp files, and the return value is the full name
-   --  of the file that is to be passed to gnat2why using -gnates=<file>. The
-   --  chosen file name will be identical for identical contents of the file.
+   --  Assuming that the above global variables are set to meaningful values,
+   --  Read them, store them into a file that gnat2why can read in later and
+   --  return the file name.
+   --  @param Obj_Dir the directory in which the file should be stored
+   --  @return full name of the file that is to be passed to gnat2why using
+   --    -gnates=<file>. The chosen file name will be identical for identical
+   --    contents of the file.
 
 end Gnat2Why_Args;

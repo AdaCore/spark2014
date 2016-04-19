@@ -127,8 +127,8 @@ package Flow_Error_Messages is
       VC_File     : String;
       Editor_Cmd  : String;
       E           : Entity_Id;
-      How_Proved  : String;
-      Stats       : JSON_Value := Create_Object;
+      How_Proved  : Prover_Category;
+      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Place_First : Boolean);
    --  register a message for proof (i.e. which corresponds to a check that is
    --  usually taken care of by proof)

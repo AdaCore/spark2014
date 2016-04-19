@@ -26,6 +26,7 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Atree;                  use Atree;
 with Common_Containers;     use Common_Containers;
 with Einfo;                 use Einfo;
 with Namet;                 use Namet;
@@ -334,47 +335,52 @@ package Gnat2Why.Util is
 
    function Expression_Depends_On_Variables (N : Node_Id) return Boolean;
    --  Returns whether the expression E depends on a variable, either directly,
-   --  or through the read effects of a function call. This is used to decide
-   --  in which output Why file the axiom for the corresponding
-   --  constant (for an initialization expression) or the
-   --  corresponding aggregate/slice/string literal should be declared.
+   --  or through the read effects of a function call. This is used to
+   --  decide in which output Why file the axiom for the corresponding
+   --  constant (for an initialization expression) or the corresponding
+   --  aggregate/slice/string literal should be declared.
 
    function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean;
    --  Returns True if node N is defined locally to a loop
 
-   function Is_Mutable_In_Why (N : Node_Id) return Boolean;
-   --  Given an N_Defining_Identifier, decide if the variable is mutable in
+   function Is_Mutable_In_Why (N : Node_Id) return Boolean with
+     Pre => Nkind (N) in N_Defining_Identifier | N_Defining_Operator_Symbol;
+   --  Given an identifier, decide if it denotes a variable that is mutable in
    --  the Why translation.
 
-   function Type_Is_Modeled_As_Base (T : Entity_Id) return Boolean;
+   function Type_Is_Modeled_As_Base (T : Entity_Id) return Boolean with
+     Pre => Is_Type (T);
    --  Returns True if T is a scalar type that should be translated into Why
    --  as a renaming of its base type. This is currently done for dynamic
    --  discrete types and dynamic types defined inside loops, which should not
    --  be treated as having constants bounds, because translation of the loop
    --  in Why may lead to having two coexisting versions of the type.
 
-   function Use_Base_Type_For_Type (E : Entity_Id) return Boolean;
+   function Use_Base_Type_For_Type (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
    --  Decide whether for function declarations, the Why base type should be
    --  used instead of the Ada type.
    --  This function should be used on entities denoting a type
 
-   function Use_Split_Form_For_Type (E : Entity_Id) return Boolean;
+   function Use_Split_Form_For_Type (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
    --  Decide whether we should use a split form for expressions of a given
    --  type.
    --  This function should be used on entities denoting a type
 
-   function Use_Why_Base_Type (E : Entity_Id) return Boolean;
+   function Use_Why_Base_Type (E : Entity_Id) return Boolean with
+     Pre => Is_Object (E);
    --  Decide whether for function declarations, the Why base type should be
    --  used instead of the Ada type.
-   --  This function should be used on entities denoting an object
+   --  This function should be used on entities denoting an object.
 
    ------------------------------
    -- Symbol table subprograms --
    ------------------------------
 
-   procedure Insert_Entity (E        : Entity_Id;
-                            Name     : W_Identifier_Id;
-                            Mutable  : Boolean := False);
+   procedure Insert_Entity (E       : Entity_Id;
+                            Name    : W_Identifier_Id;
+                            Mutable : Boolean := False);
 
    procedure Insert_Item (E : Entity_Id; I : Item_Type);
 

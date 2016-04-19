@@ -119,6 +119,8 @@ log_pack.adb:347:10: implicit dereference is not allowed in SPARK
 log_pack.adb:347:10: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.adb:348:34: implicit dereference is not allowed in SPARK
 log_pack.adb:348:34: violation of pragma SPARK_Mode at gnat.adc:2
+log_pack.adb:349:34: violation of pragma SPARK_Mode at gnat.adc:2
+log_pack.adb:349:34: volatile function call as actual is not allowed in SPARK (7.1.3(11))
 log_pack.adb:350:34: "Log_Block_Timer_Handler" is not allowed in SPARK
 log_pack.adb:350:34: violation of pragma SPARK_Mode at gnat.adc:2
 log_pack.adb:359:04: info: no contextual analysis of "Log_Stop_Block" (multiple returns)
@@ -264,6 +266,14 @@ stm32f4-dma.ads:592:13: nonvolatile function with effectively volatile parameter
 stm32f4-dma.ads:592:13: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-dma.ads:598:12: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-dma.ads:598:12: violation of pragma SPARK_Mode at gnat.adc:2
+stm32f4-dma.ads:600:30: violation of pragma SPARK_Mode at gnat.adc:2
+stm32f4-dma.ads:600:30: volatile function call as actual is not allowed in SPARK (7.1.3(11))
+stm32f4-dma.ads:602:35: violation of pragma SPARK_Mode at gnat.adc:2
+stm32f4-dma.ads:602:35: volatile function call as actual is not allowed in SPARK (7.1.3(11))
+stm32f4-dma.ads:604:30: violation of pragma SPARK_Mode at gnat.adc:2
+stm32f4-dma.ads:604:30: volatile function call as actual is not allowed in SPARK (7.1.3(11))
+stm32f4-dma.ads:606:35: violation of pragma SPARK_Mode at gnat.adc:2
+stm32f4-dma.ads:606:35: volatile function call as actual is not allowed in SPARK (7.1.3(11))
 stm32f4-gpio.ads:86:09: type with partial default initialization is not allowed in SPARK (SPARK RM 3.8(1))
 stm32f4-gpio.ads:86:09: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-gpio.ads:87:07: access type is not allowed in SPARK

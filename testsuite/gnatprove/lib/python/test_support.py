@@ -118,6 +118,85 @@ def matches(comp_reg, s, invert):
     return (invert and not m) or (not invert and m)
 
 
+def check_counterexamples():
+    """Checks that marks in source code have a matching counterexample.
+
+    Marks are strings in the source that have the format
+        @COUNTEREXAMPLE
+    For each such mark, either issue an error if there is no corresponding
+    counterexample, or display the counterexample trace in a human readable
+    form in the output.
+
+    """
+    files = glob.glob("*.ad?")
+    result_files = glob.glob("gnatprove/*.spark")
+    is_mark = re.compile(r"@COUNTEREXAMPLE")
+
+    def not_found(f, line):
+        """Print an error that the requested mark has not been found"""
+        print "MISSING COUNTEREXAMPLE at " + f + ":" + str(line)
+
+    # store actual results in a map from (file,line) to a list of strings
+    # for the counterexample, where each element of the list gives the
+    # pairs (name,value) for the counterexample in a different line of
+    # code.
+    results = {}
+
+    for result_file in result_files:
+        with open(result_file, 'r') as f:
+            result = json.load(f)
+            proof_result = result["proof"]
+            for msg in proof_result:
+                msg_file = msg["file"]
+                msg_line = msg["line"]
+
+                # list of strings for the trace attached to the counterexample.
+                # In fact we store here pairs of a location (file,line) and
+                # a string for the trace element, so that we can sort the trace
+                # based on location before displaying it.
+                msg_list = []
+
+                def str_elem(val):
+                    return val["name"] + " = " + val["value"]
+
+                def location((loc, ctx)):
+                    return loc
+
+                def trace((loc, ctx)):
+                    return ctx
+
+                if "cntexmp" in msg:
+                    for ff, file_values in msg["cntexmp"].items():
+                        for line, values in file_values.items():
+                            ctx = "  trace at " + ff + ":" + line + " --> " + \
+                                  " and ".join(map(str_elem, values))
+                            msg_list.append(((ff, int(line)), ctx))
+
+                    # sort the trace elements based on location
+                    msg_list.sort(key=location)
+
+                    # store only the list of trace elements, not locations.
+                    # Note that only the last counterexample for a given
+                    # location (msg_file,msg_line) is stored in results, when
+                    # multiple counterexamples are present on the same line.
+                    results[(msg_file, msg_line)] = map(trace, msg_list)
+
+    # check that marks in source code have a matching counterexample, and
+    # dislay the counterexample when found.
+    for f in files:
+        with open(f, 'r') as ff:
+            for line, linestr in enumerate(ff):
+                line = line + 1  # first line in file is 1, not 0
+                for mark in re.finditer(is_mark, linestr):
+                    if (f, line) in results:
+                        print "counterexample expected for check at " + \
+                            f + ":" + str(line)
+                        for ctx in results[(f, line)]:
+                            print ctx
+                    else:
+                        not_found(f, line)
+
+
 def check_marks(strlist):
     """Checks that marks in source code have a matching result.
 
@@ -128,8 +207,8 @@ def check_marks(strlist):
     Marks are any strings in the source that have the format
         @TAG:RESULT
     where both TAG and RESULT are alphanumeric strings without space, possibly
-    with underscores. A tag denotes a line some result is expected (typically
-    this marker will be put in comments).
+    with underscores. A tag denotes a line where some result is expected
+    (typically this marker will be put in comments).
 
     TAG is either:
     - a check (RANGE_CHECK, DIVISION_CHECK, etc), or
@@ -485,7 +564,9 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
     fullopt = ["--report=all", "--warnings=continue"]
     fullopt += ["-P", "test.gpr", "--quiet"]
     fullopt += ["--timeout=%d" % (vc_timeout)]
-    if steps != 0:
+    if steps is None:
+        fullopt += ["--steps=0"]
+    else:
         fullopt += ["--steps=%d" % (steps)]
     fullopt += ["--mode=%s" % (mode)]
     fullopt += ["-j%d" % (procs)]

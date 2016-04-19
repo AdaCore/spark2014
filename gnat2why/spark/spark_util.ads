@@ -489,6 +489,12 @@ package SPARK_Util is
    --    type.
    --  @return the Default_Initialization_Kind of Typ
 
+   function Find_Predicate_Aspect (Typ : Entity_Id) return Node_Id;
+   --  Find the aspect specification Predicate or Dynamic_Predicate or
+   --  Static_Predicate associated with entity Typ. Return Empty if Typ does
+   --  not have any of these aspects. Typ might still inherit the aspect in
+   --  such cases.
+
    function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
      with Pre => Present (N);
    --  Get the type of the given entity. This function looks through
@@ -1037,6 +1043,9 @@ package SPARK_Util is
                                                     Entry_Kind;
    --  @param N a call statement
    --  @return the subprogram or entry called
+   --  ??? this duplicates a private function front end Get_Function_Id
+   --      (which perhaps should be renamed to Get_Subprogram_Id, since it
+   --       is explicitly used also for procedures and entries)
 
    function Get_Formal_From_Actual (Actual : Node_Id) return Entity_Id
    with Pre => Nkind (Parent (Actual)) in N_Function_Call            |
@@ -1072,9 +1081,9 @@ package SPARK_Util is
    --  @return True iff N is a call to a frontend-generated predicate function
 
    generic
-      with procedure Handle_Argument (Formal, Actual : Node_Id);
-   procedure Iterate_Call_Arguments (Call : Node_Id);
-   --  Call [Handle_Argument] for each pair of formal and actual parameters
+      with procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id);
+   procedure Iterate_Call_Parameters (Call : Node_Id);
+   --  Call [Handle_Parameter] for each pair of formal and actual parameters
    --  of a function or procedure call.
    --  @param Call function or procedure call
 

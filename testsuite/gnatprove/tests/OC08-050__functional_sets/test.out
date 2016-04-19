@@ -34,7 +34,7 @@ allocator.ads:41:44: info: postcondition proved
 allocator.ads:49:21: info: initialization of "Res" proved
 allocator.ads:55:36: info: contract case proved
 allocator.ads:56:11: info: initialization of "Res" proved
-allocator.ads:62:16: medium: contract case might fail (e.g. when Data = (2 => 1, 1 => 1, others => 0) and Res = 2)
+allocator.ads:62:16: medium: contract case might fail
 allocator.ads:63:36: info: initialization of "Res" proved
 allocator.ads:72:36: info: contract case proved
 allocator.ads:79:16: info: contract case proved

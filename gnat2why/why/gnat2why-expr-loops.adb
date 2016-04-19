@@ -392,7 +392,6 @@ package body Gnat2Why.Expr.Loops is
       --  These three variables hold the loop parameter in Ada and Why, if any
 
    begin
-
       --  nested loops should not appear before the loop invariant in a loop.
 
       pragma Assert (not In_Loop_Initial_Statements);
@@ -432,9 +431,10 @@ package body Gnat2Why.Expr.Loops is
 
       declare
          Why_Invariants : W_Pred_Array (1 .. Integer (Loop_Invariants.Length));
-      begin
 
+      begin
          --  Transform statements before and after the loop invariants
+
          In_Loop_Initial_Statements := True;
          Initial_Prog := Transform_Loop_Body_Statements (Initial_Stmts);
          In_Loop_Initial_Statements := False;
@@ -483,11 +483,10 @@ package body Gnat2Why.Expr.Loops is
          --  Generate the loop invariants VCs
 
          if not Loop_Invariants.Is_Empty then
-
             declare
-               Count : Integer := 1;
-            begin
+               Count : Positive := 1;
 
+            begin
                --  Generate the relevant bits for the various loop invariants
 
                for Loop_Invariant of Loop_Invariants loop
@@ -523,7 +522,6 @@ package body Gnat2Why.Expr.Loops is
                Unused_Pred        : W_Pred_Id;
 
             begin
-
                --  Generate the Why expressions for checking absence of
                --  run-time errors and variant progress.
 
@@ -577,7 +575,7 @@ package body Gnat2Why.Expr.Loops is
                               Variant_Update     => Variant_Update,
                               Variant_Check      => Variant_Check);
 
-            --  Case of a WHILE loop
+         --  Case of a WHILE loop
 
          elsif Nkind (Iterator_Specification (Scheme)) = N_Empty
            and then
@@ -625,12 +623,12 @@ package body Gnat2Why.Expr.Loops is
                                  Variant_Check      => Variant_Check);
             end While_Loop;
 
-            --  Case of a FOR loop
+         --  Case of a FOR loop
 
-            --  Here, we set the condition to express that the index is in the
-            --  range of the loop. We need to evaluate the range expression
-            --  once at the beginning of the loop, to get potential checks
-            --  in that expression only once.
+         --  Here, we set the condition to express that the index is in the
+         --  range of the loop. We need to evaluate the range expression
+         --  once at the beginning of the loop, to get potential checks
+         --  in that expression only once.
 
          elsif Nkind (Condition (Scheme)) = N_Empty then
             For_Loop : declare
@@ -1187,10 +1185,16 @@ package body Gnat2Why.Expr.Loops is
                                        EW_Prog,
                                        Params => Body_Params);
                   begin
-                     Entire_Loop := +New_Typed_Binding
-                       (Stmt, EW_Prog, Low_Id, Low_Expr, +Entire_Loop);
+                     --  Insert assignment to high bound first, so that
+                     --  assignment to low bound is done prior to assignment to
+                     --  high bound in generated Why3 code. This ensures that a
+                     --  common error is detected on low bound rather than high
+                     --  bound, which is more intuitive.
+
                      Entire_Loop := +New_Typed_Binding
                        (Stmt, EW_Prog, High_Id, High_Expr, +Entire_Loop);
+                     Entire_Loop := +New_Typed_Binding
+                       (Stmt, EW_Prog, Low_Id, Low_Expr, +Entire_Loop);
                   end;
                end if;
 
@@ -1213,8 +1217,9 @@ package body Gnat2Why.Expr.Loops is
                return Entire_Loop;
             end For_Loop;
 
+         --  Some other kind of loop
+
          else
-            --  Some other kind of loop
             Ada.Text_IO.Put_Line ("[Transform_Loop_Statement] other loop");
             raise Not_Implemented;
          end if;

@@ -14,7 +14,7 @@ package body Eff is
 
       entry Set_B_To_Sum_Plus_E (Add : Integer) when True is
       begin
-         pragma Assert (Get_A = 10); --@ASSERT:FAIL
+         pragma Assert (Get_A = 10);
          B := B + A + Add;
       end Set_B_To_Sum_Plus_E;
    end Ty;

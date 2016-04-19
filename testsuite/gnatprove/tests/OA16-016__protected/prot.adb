@@ -1,5 +1,3 @@
-pragma Profile (Ravenscar);
-pragma Partition_Elaboration_Policy (Sequential);
 package body Prot
   with SPARK_Mode
 is

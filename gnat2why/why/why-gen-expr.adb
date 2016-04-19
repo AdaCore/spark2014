@@ -707,25 +707,21 @@ package body Why.Gen.Expr is
             --  code which handles the call
 
             Do_Check : constant Boolean :=
-              (if Domain = EW_Prog and Check_Needed then
-                 (if Do_Range_Check (Ada_Node) then
-                    True
-                  elsif Nkind (Parent (Ada_Node)) = N_Type_Conversion
-                  and then Do_Overflow_Check (Parent (Ada_Node)) then
-                     True
-                  elsif Nkind (Ada_Node) = N_Type_Conversion
-                  and then Do_Range_Check (Expression (Ada_Node))
-                  and then Nkind (Parent (Ada_Node)) in
-                    N_Parameter_Association | N_Procedure_Call_Statement
-                  and then Ekind (Get_Formal_From_Actual (Ada_Node)) in
-                    E_In_Out_Parameter | E_Out_Parameter
-                  then
-                     True
-                  elsif Nkind (Parent (Ada_Node)) = N_Range
-                  and then Do_Range_Check (Parent (Ada_Node)) then
-                     True
-                  else False)
-               else False);
+              Domain = EW_Prog and then Check_Needed and then
+                 (Do_Range_Check (Ada_Node)
+                    or else
+                  (Nkind (Parent (Ada_Node)) = N_Type_Conversion
+                   and then Do_Overflow_Check (Parent (Ada_Node)))
+                    or else
+                  (Nkind (Ada_Node) = N_Type_Conversion
+                   and then Do_Range_Check (Expression (Ada_Node))
+                   and then Nkind (Parent (Ada_Node)) in
+                     N_Parameter_Association | N_Procedure_Call_Statement
+                   and then Ekind (Get_Formal_From_Actual (Ada_Node)) in
+                     E_In_Out_Parameter | E_Out_Parameter)
+                    or else
+                  (Nkind (Parent (Ada_Node)) = N_Range
+                   and then Do_Range_Check (Parent (Ada_Node))));
 
          begin
             T := Insert_Scalar_Conversion (Domain      => Domain,
@@ -3319,7 +3315,7 @@ package body Why.Gen.Expr is
             Reason,
             True,
             Current_Subp,
-            How_Proved => "codepeer");
+            How_Proved => PC_Codepeer);
          Set.Include (GP_Already_Proved);
       end if;
       Set.Include (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));

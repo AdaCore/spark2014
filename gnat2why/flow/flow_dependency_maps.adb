@@ -27,7 +27,6 @@ with Elists;                 use Elists;
 with Flow_Generated_Globals; use Flow_Generated_Globals;
 with Flow_Utility;           use Flow_Utility;
 with Nlists;                 use Nlists;
-with Sem_Util;               use Sem_Util;
 with Treepr;                 use Treepr;
 with Why;
 
@@ -37,7 +36,7 @@ package body Flow_Dependency_Maps is
 
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
    with Pre => Nkind (N) = N_Pragma and then
-               Get_Pragma_Id (Chars (Pragma_Identifier (N))) in
+               Get_Pragma_Id (N) in
                  Pragma_Depends         |
                  Pragma_Refined_Depends |
                  Pragma_Refined_State   |
@@ -54,13 +53,10 @@ package body Flow_Dependency_Maps is
 
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
    is
-      use type Ada.Containers.Count_Type;
+      pragma Assert (List_Length (Pragma_Argument_Associations (N)) = 1);
 
-      pragma Assert
-        (List_Length (Pragma_Argument_Associations (N)) = 1);
+      PAA : constant Node_Id := First (Pragma_Argument_Associations (N));
 
-      PAA : constant Node_Id :=
-        First (Pragma_Argument_Associations (N));
       pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
 
       M : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
@@ -220,45 +216,19 @@ package body Flow_Dependency_Maps is
                                          Node_Sets.Empty_Set,
                                          True);
          --  Assemble map
-         declare
-            procedure Populate (Output : Flow_Id);
-            --  Populate map M with entries from Output to each element of
-            --  Inputs.
 
-            --------------
-            -- Populate --
-            --------------
-
-            procedure Populate (Output : Flow_Id) is
-               C        : Dependency_Maps.Cursor;
-               Inserted : Boolean;
-            begin
-               --  Attempt to insert a mapping from Output to empty set
-               M.Insert (Key      => Output,
-                         Position => C,
-                         Inserted => Inserted);
-
-               --  Make sure that front-end rejected any duplicates
-               pragma Assert (Inserted);
-
-               for Input of Inputs loop
-                  M (C).Include (Input);
-               end loop;
-            end Populate;
-
-         begin
-            if Outputs.Is_Empty then
-               --  Do nothing if both Outputs and inputs are empty
-               if not Inputs.Is_Empty then
-                  --  No explicit outputs means null
-                  Populate (Null_Flow_Id);
-               end if;
-            else
-               for Output of Outputs loop
-                  Populate (Output);
-               end loop;
+         if Outputs.Is_Empty then
+            --  Update map only if both Inputs are present; otherwise do
+            --  nothing, since both Outputs and Inputs are empty.
+            if not Inputs.Is_Empty then
+               --  No explicit outputs means null
+               M.Insert (Key => Null_Flow_Id, New_Item => Inputs);
             end if;
-         end;
+         else
+            for Output of Outputs loop
+               M.Insert (Key => Output, New_Item => Inputs);
+            end loop;
+         end if;
 
          Row := Next (Row);
       end loop;
@@ -270,10 +240,10 @@ package body Flow_Dependency_Maps is
    -- Parse_Depends --
    -------------------
 
-   function Parse_Depends (N : Node_Id) return Dependency_Maps.Map is
-   begin
-      return Parse_Raw_Dependency_Map (N);
-   end Parse_Depends;
+   function Parse_Depends
+     (N : Node_Id)
+      return Dependency_Maps.Map renames
+     Parse_Raw_Dependency_Map;
 
    -----------------------
    -- Parse_Initializes --
@@ -341,9 +311,9 @@ package body Flow_Dependency_Maps is
    -- Parse_Refined_State --
    -------------------------
 
-   function Parse_Refined_State (N : Node_Id) return Dependency_Maps.Map is
-   begin
-      return Parse_Raw_Dependency_Map (N);
-   end Parse_Refined_State;
+   function Parse_Refined_State
+     (N : Node_Id)
+      return Dependency_Maps.Map renames
+     Parse_Raw_Dependency_Map;
 
 end Flow_Dependency_Maps;

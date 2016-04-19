@@ -27,11 +27,10 @@
 --  gnatprove.
 
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Indefinite_Hashed_Maps;
-with Ada.Strings.Hash;
-with Ada.Strings.Unbounded;                 use Ada.Strings.Unbounded;
-with Assumptions;                           use Assumptions;
-with Assumption_Types;                      use Assumption_Types;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Assumptions;           use Assumptions;
+with Assumption_Types;      use Assumption_Types;
+with VC_Kinds;              use VC_Kinds;
 
 package Report_Database is
 
@@ -63,23 +62,16 @@ package Report_Database is
       Assumptions   : Rule_Lists.List;    --  final mapping claims->assumptions
    end record;
 
-   package String_Maps is new Ada.Containers.Indefinite_Hashed_Maps
-     (Key_Type        => String,
-      Element_Type    => Natural,
-      Hash            => Ada.Strings.Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
-
-   type Prover_Stat is record
+   type All_Prover_Stat is record
       Total   : Natural;
-      Provers : String_Maps.Map;
+      Provers : Prover_Stat_Maps.Map;
    end record;
 
    type Summary_Line is record
       Flow      : Natural;
       Interval  : Natural;
       CodePeer  : Natural;
-      Provers   : Prover_Stat;
+      Provers   : All_Prover_Stat;
       Justified : Natural;
       Unproved  : Natural;
    end record;
@@ -100,8 +92,8 @@ package Report_Database is
 
    type Summary_Type is array (Summary_Entries) of Summary_Line;
 
-   Empty_Prover_Stats : Prover_Stat :=
-     (Total => 0, Provers => String_Maps.Empty_Map);
+   Empty_Prover_Stats : All_Prover_Stat :=
+     (Total => 0, Provers => Prover_Stat_Maps.Empty_Map);
    Null_Summary_Line : Summary_Line :=
      (Provers => Empty_Prover_Stats, others => 0);
    Summary : Summary_Type := (others => Null_Summary_Line);
@@ -172,5 +164,10 @@ package Report_Database is
    --  Iterate over all subprograms of a given Unit. If Ordered is True,
    --  iterate in a fixed order defined by the lexicographic order on
    --  subprogram names.
+
+   procedure Merge_Stat_Maps (A : in out Prover_Stat_Maps.Map;
+                              B : Prover_Stat_Maps.Map);
+   --  "add" the second map of prover stats to the first, so that count and
+   --  maximum values area taken into acount
 
 end Report_Database;

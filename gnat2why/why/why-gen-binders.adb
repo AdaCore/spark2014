@@ -113,7 +113,13 @@ package body Why.Gen.Binders is
       I       : Positive := 1;
    begin
       for B of Binders loop
-         if Ref_Allowed then
+
+         --  Though here we are only dealing with variables, it can be the case
+         --  that we get a binder of a constant instead.
+         --  It happens in particular for global variables in axioms generated
+         --  for postconditions of functions.
+
+         if Ref_Allowed and then B.Mutable then
             Args (I) := New_Deref (Right => B.B_Name,
                                    Typ   => Get_Typ (B.B_Name));
          else
@@ -229,7 +235,6 @@ package body Why.Gen.Binders is
          for B of Binders loop
             case B.Kind is
             when Regular | Prot_Self =>
-               pragma Assert (B.Main.Mutable);
                Length := Length + 1;
             when UCArray =>
                pragma Assert (B.Content.Mutable);
@@ -401,8 +406,7 @@ package body Why.Gen.Binders is
    function Mk_Item_Of_Entity
      (E           : Entity_Id;
       Local       : Boolean := False;
-      In_Fun_Decl : Boolean := False)
-      return Item_Type
+      In_Fun_Decl : Boolean := False) return Item_Type
    is
       Use_Ty : constant Entity_Id :=
         (if not In_Fun_Decl
@@ -425,8 +429,8 @@ package body Why.Gen.Binders is
 
       Ty : constant Entity_Id :=
         (if Is_Type (Spec_Ty) then Retysp (Spec_Ty) else Spec_Ty);
-   begin
 
+   begin
       --  For procedures, use a regular binder
 
       if Ekind (E) = E_Procedure then
@@ -669,9 +673,13 @@ package body Why.Gen.Binders is
            (Ada_Node   => Binders (B).Ada_Node,
             Domain     => Domain,
             Name       => Binders (B).B_Name,
-            Labels     => Get_Model_Trace_Label
-              (E               => Binders (B).Ada_Node,
-               Is_Record_Field => True),
+            Labels     =>
+              (if not Present (Binders (B).Ada_Node) or else
+                  not Is_Floating_Point_Type (Etype (Binders (B).Ada_Node))
+               then Get_Model_Trace_Label
+                 (E               => Binders (B).Ada_Node,
+                  Is_Record_Field => True)
+               else Name_Id_Sets.Empty_Set),
             Arg_Type   => New_Arg_Type (Binders (B)),
             Is_Mutable => Binders (B).Mutable);
       end loop;

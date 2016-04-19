@@ -36,6 +36,13 @@
 --    - GPS plug-in spark2014.py
 --    - 2 tables in the section of SPARK User's Guide on GNATprove
 
+with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Indefinite_Ordered_Maps;
+with Ada.Containers.Ordered_Maps;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with GNATCOLL.JSON;         use GNATCOLL.JSON;
+with Types;                 use Types;
+
 package VC_Kinds is
 
    type VC_Kind is
@@ -46,6 +53,10 @@ package VC_Kinds is
       VC_Overflow_Check,
       VC_Range_Check,
       VC_Predicate_Check,
+      VC_Predicate_Check_On_Default_Value,  --  the predicate check on
+                                            --  the default value of a type,
+                                            --  to be used when a value of the
+                                            --  type is default initialized
       VC_Length_Check,
       VC_Discriminant_Check,
       VC_Tag_Check,
@@ -227,5 +238,76 @@ package VC_Kinds is
 
    --  A meta that is used in Why3 to mark a function as projection.
    Model_Proj_Meta : constant String := "model_projection";
+
+   --------------------
+   --  Data Exchange --
+   --------------------
+
+   --  This section defines various types that are used to communicate between
+   --  the various gnatprove processes (most notably between gnat2why/gnatwhy3
+   --  and gnat2why/spark_report). Also, JSON conversion functions are defined.
+
+   type Prover_Stat is record
+      Count     : Natural;
+      Max_Steps : Integer;
+      Max_Time  : Float;
+   end record;
+
+   package Prover_Stat_Maps is new
+     Ada.Containers.Indefinite_Ordered_Maps (Key_Type     => String,
+                                             Element_Type => Prover_Stat,
+                                             "<"          => "<",
+                                             "="          => "=");
+   --  the prover stats JSON format is defined in gnat_report.mli
+
+   type Prover_Category is (PC_Interval, PC_Codepeer, PC_Prover, PC_Flow);
+   --  type that describes the possible ways a check is proved. PC_Prover
+   --  stands for automatic or manual proofs from Why3 and does not specify
+   --  which prover proves it.
+
+   type CEE_Kind is (CEE_Variable,
+                     CEE_Error_Msg,
+                     CEE_Old,
+                     CEE_Result,
+                     CEE_Other);
+
+   type Cntexample_Elt is record
+      Kind : CEE_Kind;
+      Name : Unbounded_String;
+      Value : Unbounded_String;
+   end record;
+
+   package Cntexample_Elt_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Element_Type => Cntexample_Elt,
+                                         "="          => "=");
+
+   package Cntexample_Line_Maps is new
+     Ada.Containers.Ordered_Maps (Key_Type     => Logical_Line_Number,
+                                  Element_Type => Cntexample_Elt_Lists.List,
+                                  "<"          => "<",
+                                  "="          => Cntexample_Elt_Lists."=");
+
+   type Cntexample_Lines is record
+      VC_Line     : Cntexample_Elt_Lists.List;
+      Other_Lines : Cntexample_Line_Maps.Map;
+   end record;
+
+   package Cntexample_File_Maps is new
+     Ada.Containers.Indefinite_Ordered_Maps (Key_Type     => String,
+                                             Element_Type => Cntexample_Lines,
+                                             "<"          => "<",
+                                             "="          => "=");
+
+   function To_String (P : Prover_Category) return String;
+   --  return a user visible string to describe the category of prover
+
+   function From_JSON (V : JSON_Value) return Prover_Stat;
+   function From_JSON (V : JSON_Value) return Prover_Stat_Maps.Map;
+   function From_JSON (V : JSON_Value) return Prover_Category;
+   function From_JSON (V : JSON_Value) return Cntexample_File_Maps.Map;
+
+   function To_JSON (M : Prover_Stat_Maps.Map) return JSON_Value;
+   function To_JSON (P : Prover_Category) return JSON_Value;
+   function To_JSON (F : Cntexample_File_Maps.Map) return JSON_Value;
 
 end VC_Kinds;

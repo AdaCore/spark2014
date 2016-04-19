@@ -361,6 +361,51 @@ package body Report_Database is
       end if;
    end Iter_Unit_Subps;
 
+   ---------------------
+   -- Merge_Stat_Maps --
+   ---------------------
+
+   procedure Merge_Stat_Maps (A : in out Prover_Stat_Maps.Map;
+                              B : Prover_Stat_Maps.Map) is
+
+      procedure Merge_Stat (A : in out Prover_Stat;
+                            B : Prover_Stat);
+
+      ----------------
+      -- Merge_Stat --
+      ----------------
+
+      procedure Merge_Stat (A : in out Prover_Stat;
+                            B : Prover_Stat) is
+      begin
+         A.Count := A.Count + B.Count;
+         A.Max_Steps := Integer'Max (A.Max_Steps, B.Max_Steps);
+         A.Max_Time := Float'Max (A.Max_Time, B.Max_Time);
+      end Merge_Stat;
+
+      use Prover_Stat_Maps;
+
+      --  Beginning of processing for Merge_Stat_Maps
+
+   begin
+      for C in B.Iterate loop
+         declare
+            Cur : constant Cursor := A.Find (Key (C));
+         begin
+            if Has_Element (Cur) then
+               declare
+                  Tmp : Prover_Stat := Element (Cur);
+               begin
+                  Merge_Stat (Tmp, B (C));
+                  A.Replace_Element (Cur, Tmp);
+               end;
+            else
+               A.Insert (Key (C), Element (C));
+            end if;
+         end;
+      end loop;
+   end Merge_Stat_Maps;
+
    ---------------
    -- Num_Subps --
    ---------------

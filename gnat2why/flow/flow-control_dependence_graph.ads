@@ -21,13 +21,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package deals with producing the CDG from the CFG.
+--  This package deals with producing the CDG from the CFG
 
 package Flow.Control_Dependence_Graph is
 
    procedure Create (FA : in out Flow_Analysis_Graphs);
-   --  Create the CDG from the CFG.
+   --  Create the CDG from the CFG
    --
-   --  Complexity is O(N^2).
+   --  Complexity is O(N^2)
 
 end Flow.Control_Dependence_Graph;

@@ -103,7 +103,7 @@ binary_fixed.adb:104:23: info: overflow check proved
 binary_fixed.adb:104:27: info: overflow check proved
 binary_fixed.adb:104:27: medium: range check might fail
 binary_fixed.adb:106:17: info: initialization of "Z1" proved
-binary_fixed.adb:106:17: medium: range check might fail (e.g. when Z1 = 10.0)
+binary_fixed.adb:106:17: medium: range check might fail
 binary_fixed.adb:107:17: info: initialization of "Z2" proved
 binary_fixed.adb:108:17: info: initialization of "Z3" proved
 binary_fixed.adb:115:10: info: assertion proved
@@ -228,7 +228,7 @@ decimal_fixed.adb:104:23: info: overflow check proved
 decimal_fixed.adb:104:27: info: overflow check proved
 decimal_fixed.adb:104:27: medium: range check might fail
 decimal_fixed.adb:106:17: info: initialization of "Z1" proved
-decimal_fixed.adb:106:17: medium: range check might fail (e.g. when Z1 = 10.0)
+decimal_fixed.adb:106:17: medium: range check might fail
 decimal_fixed.adb:107:17: info: initialization of "Z2" proved
 decimal_fixed.adb:108:17: info: initialization of "Z3" proved
 decimal_fixed.adb:115:10: info: assertion proved

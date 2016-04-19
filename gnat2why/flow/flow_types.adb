@@ -27,6 +27,7 @@ with Errout;                 use Errout;
 with Flow_Generated_Globals; use Flow_Generated_Globals;
 with Flow_Utility;           use Flow_Utility;
 with Gnat2Why_Args;
+with GNATCOLL.Utils;
 with Hashing;                use Hashing;
 with Interfaces;
 with Namet;                  use Namet;
@@ -44,13 +45,12 @@ package body Flow_Types is
    --  equal. (This can happen if you forget to use Unique_Entity or
    --  Original_Record_Component.)
 
-   use type Ada.Containers.Count_Type;
-
    -----------------------
    -- Flow_Id operators --
    -----------------------
 
    function "=" (Left, Right : Flow_Id) return Boolean is
+      use type Ada.Containers.Count_Type;
    begin
       if Left.Kind /= Right.Kind then
          return False;
@@ -188,10 +188,7 @@ package body Flow_Types is
    -- Get_Direct_Mapping_Id --
    ---------------------------
 
-   function Get_Direct_Mapping_Id (F : Flow_Id) return Node_Id is
-   begin
-      return F.Node;
-   end Get_Direct_Mapping_Id;
+   function Get_Direct_Mapping_Id (F : Flow_Id) return Node_Id is (F.Node);
 
    ---------------------
    -- Record_Field_Id --
@@ -268,17 +265,16 @@ package body Flow_Types is
       Comp : Entity_Id)
       return Flow_Id
    is
-      Tmp : Flow_Id;
-   begin
-      Tmp := (Kind      => Record_Field,
-              Variant   => F.Variant,
-              Node      => F.Node,
-              Facet     => F.Facet,
-              Component => Entity_Vectors.Empty_Vector);
+      Tmp : Flow_Id :=
+        (Kind      => Record_Field,
+         Variant   => F.Variant,
+         Node      => F.Node,
+         Facet     => F.Facet,
+         Component => (if F.Kind = Record_Field
+                       then F.Component
+                       else Entity_Vectors.Empty_Vector));
 
-      if F.Kind = Record_Field then
-         Tmp.Component := F.Component;
-      end if;
+   begin
       Tmp.Component.Append (Original_Record_Component (Comp));
 
       return Tmp;
@@ -290,18 +286,19 @@ package body Flow_Types is
 
    function Belongs_To_Concurrent_Object (F : Flow_Id) return Boolean is
    begin
-      if F.Kind not in Direct_Mapping | Record_Field then
+      if F.Kind in Direct_Mapping | Record_Field then
+         declare
+            E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+         begin
+            return Is_Part_Of_Concurrent_Object (E)
+              or else Ekind (Scope (E)) in Protected_Kind
+              or else (Is_Discriminant (F)
+                       and then Ekind (Scope (E)) in Task_Kind);
+         end;
+
+      else
          return False;
       end if;
-
-      declare
-         E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-      begin
-         return Is_Part_Of_Concurrent_Object (E)
-           or else Ekind (Scope (E)) in Protected_Kind
-           or else (Is_Discriminant (F)
-                      and then Ekind (Scope (E)) in Task_Kind);
-      end;
    end Belongs_To_Concurrent_Object;
 
    ---------------------------------
@@ -309,16 +306,18 @@ package body Flow_Types is
    ---------------------------------
 
    function Belongs_To_Protected_Object (F : Flow_Id) return Boolean is
-      CO : Entity_Id;
    begin
-      if not Belongs_To_Concurrent_Object (F) then
+      if F.Kind in Direct_Mapping | Record_Field then
+         declare
+            E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+         begin
+            return Is_Part_Of_Protected_Object (E)
+              or else Ekind (Scope (E)) in Protected_Kind;
+         end;
+
+      else
          return False;
       end if;
-
-      CO := Get_Enclosing_Concurrent_Object (F);
-      return Ekind (CO) in Protected_Kind
-        or else (Ekind (CO) = E_Variable
-                   and then Ekind (Etype (CO)) in Protected_Kind);
    end Belongs_To_Protected_Object;
 
    -------------------------------------
@@ -345,40 +344,42 @@ package body Flow_Types is
          then Anonymous_Object (PT)
          else PT);
 
+   --  Start of processing for Get_Enclosing_Concurrent_Object
+
    begin
-      if No (Callsite) then
-         if Is_Part_Of_Concurrent_Object (E) then
-            return Get_Anonymous_Object (Etype (Encapsulating_State (E)));
-         elsif Ekind (Scope (E)) in Concurrent_Kind then
-            return Get_Anonymous_Object (Scope (E));
-         else
-            raise Why.Unexpected_Node;
-         end if;
+      if Present (Callsite) then
+         declare
+            Orig_Name : constant Node_Id := Original_Node (Name (Callsite));
+
+         begin
+            case Nkind (Orig_Name) is
+               when N_Identifier | N_Expanded_Name =>
+                  return Get_Enclosing_Concurrent_Object (E);
+
+               when N_Selected_Component =>
+                  declare
+                     Pref : constant Node_Id := Prefix (Orig_Name);
+                  begin
+                     return (if Entire
+                            then Get_Direct_Mapping_Id
+                                   (Concurrent_Object_Id (Pref))
+                            else Pref);
+                  end;
+
+               when others =>
+                  raise Why.Unexpected_Node;
+            end case;
+         end;
+
+      else
+         return
+           Get_Anonymous_Object
+             (if Is_Part_Of_Concurrent_Object (E)
+              then Etype (Encapsulating_State (E))
+              elsif Ekind (Scope (E)) in Concurrent_Kind
+              then Scope (E)
+              else raise Why.Unexpected_Node);
       end if;
-
-      declare
-         Orig_Name : constant Node_Id := Original_Node (Name (Callsite));
-      begin
-         case Nkind (Orig_Name) is
-            when N_Identifier | N_Expanded_Name =>
-               return Get_Enclosing_Concurrent_Object (E);
-
-            when N_Selected_Component =>
-               declare
-                  Pref : constant Node_Id := Prefix (Orig_Name);
-               begin
-                  if Entire then
-                     return Get_Direct_Mapping_Id
-                              (Concurrent_Object_Id (Pref));
-                  end if;
-
-                  return Pref;
-               end;
-
-            when others =>
-               raise Why.Unexpected_Node;
-         end case;
-      end;
    end Get_Enclosing_Concurrent_Object;
 
    function Get_Enclosing_Concurrent_Object
@@ -418,42 +419,30 @@ package body Flow_Types is
    ---------------------
 
    function Is_Discriminant (F : Flow_Id) return Boolean is
-   begin
-      case F.Kind is
+     (case F.Kind is
          when Record_Field =>
-            if F.Facet /= Normal_Part then
-               return False;
-            else
-               return Ekind (F.Component.Last_Element) = E_Discriminant;
-            end if;
+            F.Facet = Normal_Part
+              and then Ekind (F.Component.Last_Element) = E_Discriminant,
          when Direct_Mapping =>
-            return Ekind (F.Node) = E_Discriminant;
+            Ekind (F.Node) = E_Discriminant,
          when Magic_String | Synthetic_Null_Export =>
-            return False;
+            False,
          when Null_Value =>
-            raise Why.Unexpected_Node;
-      end case;
-   end Is_Discriminant;
+            raise Why.Unexpected_Node);
 
    ----------------------------
    -- Is_Record_Discriminant --
    ----------------------------
 
    function Is_Record_Discriminant (F : Flow_Id) return Boolean is
-   begin
-      case F.Kind is
+     (case F.Kind is
          when Record_Field =>
-            if F.Facet /= Normal_Part then
-               return False;
-            else
-               return Ekind (F.Component.Last_Element) = E_Discriminant;
-            end if;
+            F.Facet = Normal_Part
+              and then Ekind (F.Component.Last_Element) = E_Discriminant,
          when Direct_Mapping | Magic_String | Synthetic_Null_Export =>
-            return False;
+            False,
          when Null_Value =>
-            raise Why.Unexpected_Node;
-      end case;
-   end Is_Record_Discriminant;
+            raise Why.Unexpected_Node);
 
    --------------------------------
    -- Is_Concurrent_Discriminant --
@@ -518,41 +507,33 @@ package body Flow_Types is
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
                pragma Assert (Nkind (E) in N_Entity);
 
-               Is_Vol : constant Boolean :=
-                 (if Ekind (E) = E_Abstract_State then
-                     Is_External_State (E)
-                  elsif Is_Part_Of_Concurrent_Object (E) then
-                     True
-                  elsif Is_Concurrent_Type (Etype (E)) then
-                     True
-                  elsif Ekind (E) in Object_Kind then
-                     Is_Effectively_Volatile (E)
-                  else
-                     Is_Effectively_Volatile_Object (E));
-
                CO : Entity_Id;
             begin
-               if No (Scope) or else not Is_Vol then
-                  return Is_Vol;
-               end if;
+               if Present (Scope) then
+                  if Has_Volatile (E) then
+                     --  When we are given a Scope and F is:
+                     --    * a protected object or
+                     --    * a component of a single concurrent type
+                     --  then we only consider F to be volatile when we are
+                     --  outside its enclosing concurrent object.
+                     if Is_Protected_Type (Etype (E)) then
+                        CO := Etype (E);
+                     elsif Is_Concurrent_Comp (F) then
+                        CO := Etype (Get_Enclosing_Concurrent_Object (F));
+                     else
+                        --  There is no enclosing protected object
+                        return True;
+                     end if;
 
-               --  When we are given a Scope and F is:
-               --    * a concurrent object or
-               --    * a component of a single concurrent type
-               --  then we only consider F to be volatile when we are outside
-               --  its enclosing concurrent object.
-               if Is_Concurrent_Type (Etype (E)) then
-                  CO := Etype (E);
-               elsif Is_Concurrent_Comp (F) then
-                  CO := Etype (Get_Enclosing_Concurrent_Object (F));
+                     --  If we are outside the CO then F is indeed volatile
+                     return not Nested_Inside_Concurrent_Object (CO, Scope);
+                  else
+                     return False;
+                  end if;
                else
-                  --  There is no enclosing concurrent object. We just return
-                  --  Is_Vol.
-                  return Is_Vol;
+                  return Has_Volatile (E);
                end if;
 
-               --  If we are outside the CO then F is indeed volatile
-               return not Nested_Inside_Concurrent_Object (CO, Scope);
             end;
 
          when Synthetic_Null_Export =>
@@ -697,15 +678,9 @@ package body Flow_Types is
    ------------------------
 
    function Is_Function_Entity (F : Flow_Id) return Boolean is
-   begin
-      case F.Kind is
-         when Direct_Mapping | Record_Field =>
-            return Nkind (F.Node) in N_Entity
-                   and then Ekind (F.Node) in E_Function | E_Operator;
-         when others =>
-            return False;
-      end case;
-   end Is_Function_Entity;
+     (F.Kind in Direct_Mapping | Record_Field
+      and then Nkind (F.Node) in N_Entity
+      and then Ekind (F.Node) in E_Function | E_Operator);
 
    ---------------------
    -- Magic_String_Id --
@@ -822,6 +797,7 @@ package body Flow_Types is
    -------------------
 
    procedure Print_Flow_Id (F : Flow_Id) is
+      use GNATCOLL.Utils;
    begin
       Sprint_Flow_Id (F);
       case F.Variant is
@@ -855,11 +831,11 @@ package body Flow_Types is
       if Gnat2Why_Args.Flow_Advanced_Debug then
          case F.Kind is
             when Direct_Mapping =>
-               Output.Write_Str (" <" & F.Node'Img & ">");
+               Output.Write_Str (" <" & Image (Natural (F.Node), 1) & ">");
             when Record_Field =>
-               Output.Write_Str (" <" & F.Node'Img);
+               Output.Write_Str (" <" & Image (Natural (F.Node), 1));
                for C of F.Component loop
-                  Output.Write_Str ("|" & C'Img);
+                  Output.Write_Str ("|" & Image (Natural (C), 1));
                end loop;
                Output.Write_Str (">");
             when others =>
@@ -1014,13 +990,7 @@ package body Flow_Types is
             return True;
 
          when Direct_Mapping =>
-            case Nkind (F.Node) is
-               when N_Has_Chars =>
-                  return True;
-
-               when others =>
-                  return False;
-            end case;
+            return Nkind (F.Node) in N_Has_Chars;
       end case;
    end Is_Easily_Printable;
 
@@ -1031,7 +1001,7 @@ package body Flow_Types is
    function To_Ordered_Flow_Id_Set (S : Flow_Id_Sets.Set)
                                     return Ordered_Flow_Id_Sets.Set
    is
-      OS : Ordered_Flow_Id_Sets.Set;
+      OS : Ordered_Flow_Id_Sets.Set := Ordered_Flow_Id_Sets.Empty_Set;
    begin
       for X of S loop
          OS.Include (X);
@@ -1065,8 +1035,7 @@ package body Flow_Types is
          case X.Kind is
             when Direct_Mapping | Record_Field =>
                declare
-                  E_Name : constant Entity_Name :=
-                    To_Entity_Name (X.Node);
+                  E_Name : constant Entity_Name := To_Entity_Name (X.Node);
                begin
                   N.Include (E_Name);
                end;
@@ -1103,11 +1072,9 @@ package body Flow_Types is
       FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       for E of S loop
-         if Nkind (E) = N_Selected_Component then
-            FS.Include (Record_Field_Id (E));
-         else
-            FS.Include (Direct_Mapping_Id (E));
-         end if;
+         FS.Include (if Nkind (E) = N_Selected_Component
+                     then Record_Field_Id (E)
+                     else Direct_Mapping_Id (E));
       end loop;
       return FS;
    end To_Flow_Id_Set;

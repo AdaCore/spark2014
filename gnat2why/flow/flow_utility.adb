@@ -152,8 +152,7 @@ package body Flow_Utility is
    begin
       Append (Temp_String,
               Trim (To_Unbounded_String (S), Whitespace, Whitespace));
-      Append (Temp_String, '\');
-      Append (Temp_String, 'n');
+      Append (Temp_String, "\n");
    end Add_To_Temp_String;
 
    --------------------
@@ -523,9 +522,9 @@ package body Flow_Utility is
       --  Kind of non-record private types
 
       function Get_Root_Component (N : Node_Id) return Node_Id;
-      --  Returns N's equilavent component of the root type. If this
-      --  is not available then N's Original_Record_Component is
-      --  returned instead.
+      --  Returns N's equilavent component of the root type. If this is not
+      --  available then N's Original_Record_Component is returned instead.
+      --
       --  @param N is the component who's equivalent we are looking for
       --  @return the equivalent component of the root type if one exists
       --    or the Original_Record_Component of N otherwise.
@@ -537,14 +536,8 @@ package body Flow_Utility is
       function Get_Root_Component (N : Node_Id) return Node_Id is
          ORC : constant Node_Id := Original_Record_Component (N);
       begin
-         --  Nothing to compare against. We fall back to N's
-         --  Original_Record_Component.
-         if Root_Components.Is_Empty then
-            return ORC;
-         end if;
-
-         --  If Same_Component is True for one of the Root_Components
-         --  then return that instead.
+         --  If Same_Component is True for one of the Root_Components then
+         --  return that instead.
          for Comp of Root_Components loop
             if Same_Component (ORC, Comp) then
                return Comp;
@@ -642,7 +635,7 @@ package body Flow_Utility is
                   when Task_Kind      =>
                      Write_Line ("processing task type");
                   when others         =>
-                     raise Why.Unexpected_Node;
+                     raise Program_Error;
                end case;
             end if;
 
@@ -705,7 +698,7 @@ package body Flow_Utility is
             end if;
 
             if Classwide then
-               --  Ids.Include (F'Update (Facet => The_Tag));
+               --  Ids.Include (F'Update (Facet => The_Tag)); ???
                Ids.Include (F'Update (Facet => Extension_Part));
             end if;
 
@@ -751,21 +744,24 @@ package body Flow_Utility is
           N_Identifier | N_Expanded_Name;
 
       Root_Node : Node_Id := N;
-   begin
 
-      --  First we turn the tree into a more useful sequence. We also
-      --  determine the root node which should be an entire variable.
+   begin
+      --  First we turn the tree into a more useful sequence. We also determine
+      --  the root node which should be an entire variable.
 
       Seq := Node_Lists.Empty_List;
+
       while Nkind (Root_Node) in Interesting_Nodes loop
          Seq.Prepend (Root_Node);
-         case Nkind (Root_Node) is
-            when N_Type_Conversion | N_Unchecked_Type_Conversion =>
-               Root_Node := Expression (Root_Node);
 
-            when others =>
-               Root_Node := Prefix (Root_Node);
-         end case;
+         Root_Node :=
+           (case Nkind (Root_Node) is
+               when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+                  Expression (Root_Node),
+
+               when others =>
+                  Prefix (Root_Node));
+
       end loop;
       pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
 
@@ -775,11 +771,10 @@ package body Flow_Utility is
       Map_Root           := Direct_Mapping_Id (Unique_Entity
                                                  (Entity (Root_Node)));
 
-      --  We now work out which variable (or group of variables) is
-      --  actually defined, by following the selected components. If we
-      --  find an array slice or index we stop and note that we are dealing
-      --  with a partial assignment (the defined variable is implicitly
-      --  used).
+      --  We now work out which variable (or group of variables) is actually
+      --  defined, by following the selected components. If we find an array
+      --  slice or index we stop and note that we are dealing with a partial
+      --  assignment (the defined variable is implicitly used).
 
       for N of Seq loop
          case Valid_Assignment_Kinds (Nkind (N)) is
@@ -965,9 +960,9 @@ package body Flow_Utility is
                for O of D_Out loop
                   if All_Writes.Contains (O) then
                      if O = Null_Flow_Id then
-                        D_In := D_In and All_Proof_Ins;
+                        D_In.Intersection (All_Proof_Ins);
                      else
-                        D_In := D_In and All_Reads;
+                        D_In.Intersection (All_Reads);
                      end if;
                      Depends.Include (O, D_In);
                   end if;
@@ -1420,7 +1415,7 @@ package body Flow_Utility is
 
                   --  Convert set of Flow_Ids to a set of Node_Ids
                   for F of All_Inputs_F loop
-                     All_Inputs_N.Include (Get_Direct_Mapping_Id (F));
+                     All_Inputs_N.Insert (Get_Direct_Mapping_Id (F));
                   end loop;
 
                   --  Do the trimming
@@ -1433,13 +1428,13 @@ package body Flow_Utility is
             ---------------------------------------------------------------
 
             for V of G_Proof loop
-               Proof_Ins.Include (Direct_Mapping_Id (V, In_View));
+               Proof_Ins.Insert (Direct_Mapping_Id (V, In_View));
             end loop;
             for V of G_In loop
-               Reads.Include (Direct_Mapping_Id (V, In_View));
+               Reads.Insert (Direct_Mapping_Id (V, In_View));
             end loop;
             for V of G_Out loop
-               Writes.Include (Direct_Mapping_Id (V, Out_View));
+               Writes.Insert (Direct_Mapping_Id (V, Out_View));
             end loop;
 
             ---------------------------------------------------------------
@@ -1523,9 +1518,8 @@ package body Flow_Utility is
             for C in D_Map.Iterate loop
                declare
                   E      : Entity_Id;
-                  Output : constant Flow_Id := Dependency_Maps.Key (C);
-                  Inputs : constant Flow_Id_Sets.Set :=
-                    Dependency_Maps.Element (C);
+                  Output : Flow_Id          renames Dependency_Maps.Key (C);
+                  Inputs : Flow_Id_Sets.Set renames D_Map (C);
                begin
                   E := (if Present (Output)
                         then Get_Direct_Mapping_Id (Output)
@@ -1581,120 +1575,122 @@ package body Flow_Utility is
             end if;
          end;
 
-      elsif Use_Computed_Globals and then GG_Exist (Subprogram) then
-         --  We don't have a global or a depends aspect so we look at
-         --  the generated globals.
-
-         if Debug_Trace_Get_Global then
-            Indent;
-            Write_Line ("using pavlos globals");
-            Outdent;
-         end if;
-
-         GG_Get_Globals (Subprogram,
-                         Scope,
-                         Proof_Ins,
-                         Reads,
-                         Writes);
-
-         if Debug_Trace_Get_Global then
-            Indent;
-            Write_Line ("proof ins");
-            Indent;
-            for PI of Proof_Ins loop
-               Sprint_Flow_Id (PI);
-               Write_Eol;
-            end loop;
-            Outdent;
-
-            Write_Line ("reads");
-            Indent;
-            for R of Reads loop
-               Sprint_Flow_Id (R);
-               Write_Eol;
-            end loop;
-            Outdent;
-
-            Write_Line ("writes");
-            Indent;
-            for W of Writes loop
-               Sprint_Flow_Id (W);
-               Write_Eol;
-            end loop;
-            Outdent;
-            Outdent;
-         end if;
-
       elsif Use_Computed_Globals then
-         --  We don't have a global or a depends aspect and we don't
-         --  have generated globals, so we should look at the computed
-         --  globals...
 
-         if Debug_Trace_Get_Global then
-            Indent;
-            Write_Line ("using yannick globals");
-            Outdent;
-         end if;
+         if GG_Exist (Subprogram) then
+            --  We don't have a global or a depends aspect so we look at
+            --  the generated globals.
 
-         declare
-            ALI_Reads  : constant Name_Sets.Set :=
-              Get_Generated_Reads (Subprogram,
-                                   Include_Constants => True);
-            ALI_Writes : constant Name_Sets.Set :=
-              Get_Generated_Writes (Subprogram);
-
-            F : Flow_Id;
-         begin
-
-            --  We process the reads
             if Debug_Trace_Get_Global then
                Indent;
+               Write_Line ("using pavlos globals");
+               Outdent;
+            end if;
+
+            GG_Get_Globals (Subprogram,
+                            Scope,
+                            Proof_Ins,
+                            Reads,
+                            Writes);
+
+            if Debug_Trace_Get_Global then
+               Indent;
+               Write_Line ("proof ins");
+               Indent;
+               for PI of Proof_Ins loop
+                  Sprint_Flow_Id (PI);
+                  Write_Eol;
+               end loop;
+               Outdent;
+
                Write_Line ("reads");
                Indent;
-            end if;
-
-            for R of ALI_Reads loop
-               F := Get_Flow_Id (R, In_View, Scope);
-
-               if Debug_Trace_Get_Global then
-                  Sprint_Flow_Id (F);
+               for R of Reads loop
+                  Sprint_Flow_Id (R);
                   Write_Eol;
-               end if;
-
-               if Is_Variable (F) then
-                  Reads.Include (F);
-               end if;
-            end loop;
-
-            if Debug_Trace_Get_Global then
+               end loop;
                Outdent;
+
                Write_Line ("writes");
                Indent;
+               for W of Writes loop
+                  Sprint_Flow_Id (W);
+                  Write_Eol;
+               end loop;
+               Outdent;
+               Outdent;
             end if;
 
-            for W of ALI_Writes loop
-               --  This is not a mistake, we must assume that all
-               --  values written may also not change or that they are
-               --  only partially updated.
-               --
-               --  This also takes care of discriminants as every out
-               --  is really an in out.
-               F := Get_Flow_Id (W, Out_View, Scope);
+         --  We don't have a global or a depends aspect and we don't have
+         --  generated globals, so we should look at the computed globals...
 
+         else
+            if Debug_Trace_Get_Global then
+               Indent;
+               Write_Line ("using yannick globals");
+               Outdent;
+            end if;
+
+            declare
+               ALI_Reads  : constant Name_Sets.Set :=
+                 Get_Generated_Reads (Subprogram,
+                                      Include_Constants => True);
+               ALI_Writes : constant Name_Sets.Set :=
+                 Get_Generated_Writes (Subprogram);
+
+               F : Flow_Id;
+            begin
+
+               --  We process the reads
                if Debug_Trace_Get_Global then
-                  Sprint_Flow_Id (F);
-                  Write_Eol;
+                  Indent;
+                  Write_Line ("reads");
+                  Indent;
                end if;
 
-               Reads.Include (Change_Variant (F, In_View));
-               Writes.Include (F);
-            end loop;
+               for R of ALI_Reads loop
+                  F := Get_Flow_Id (R, In_View, Scope);
 
-            if Debug_Trace_Get_Global then
-               Outdent;
-               Outdent;
-            end if;
-         end;
+                  if Debug_Trace_Get_Global then
+                     Sprint_Flow_Id (F);
+                     Write_Eol;
+                  end if;
+
+                  if Is_Variable (F) then
+                     Reads.Include (F);
+                  end if;
+               end loop;
+
+               if Debug_Trace_Get_Global then
+                  Outdent;
+                  Write_Line ("writes");
+                  Indent;
+               end if;
+
+               for W of ALI_Writes loop
+                  --  This is not a mistake, we must assume that all
+                  --  values written may also not change or that they are
+                  --  only partially updated.
+                  --
+                  --  This also takes care of discriminants as every out
+                  --  is really an in out.
+                  F := Get_Flow_Id (W, Out_View, Scope);
+
+                  if Debug_Trace_Get_Global then
+                     Sprint_Flow_Id (F);
+                     Write_Eol;
+                  end if;
+
+                  Reads.Include (Change_Variant (F, In_View));
+                  Writes.Include (F);
+               end loop;
+
+               if Debug_Trace_Get_Global then
+                  Outdent;
+                  Outdent;
+               end if;
+            end;
+         end if;
 
       else
          --  We don't have user globals and we're not allowed to use
@@ -2057,7 +2053,7 @@ package body Flow_Utility is
       Consider_Extensions          : Boolean := False)
       return Flow_Id_Sets.Set
    is
-      VS         : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      VS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
       function Recurse_On (N                   : Node_Id;
                            Consider_Extensions : Boolean := False)
@@ -2206,12 +2202,9 @@ package body Flow_Utility is
          begin
             Ptr := First (Parameter_Associations (Callsite));
             while Present (Ptr) loop
-               case Nkind (Ptr) is
-                  when N_Parameter_Association =>
-                     Actual := Explicit_Actual_Parameter (Ptr);
-                  when others =>
-                     Actual := Ptr;
-               end case;
+               Actual := (if Nkind (Ptr) = N_Parameter_Association
+                          then Explicit_Actual_Parameter (Ptr)
+                          else Ptr);
 
                Find_Actual (N      => Actual,
                             Formal => Formal,
@@ -2402,24 +2395,20 @@ package body Flow_Utility is
                            E := Discriminal_Link (E);
                         end if;
 
-                        case Ekind (E) is
-                           when E_Discriminant | E_Component =>
-                              if Ekind (Sinfo.Scope (E)) not in
-                                E_Protected_Type | E_Task_Type
-                              then
-                                 --  We include stuff from tasks and POs,
-                                 --  but otherwise we need to ignore
-                                 --  discriminants and components.
-                                 return OK;
-                              end if;
-                           when others =>
-                              null;
-                        end case;
+                        if Ekind (E) in E_Discriminant | E_Component
+                          and then Ekind (Sinfo.Scope (E)) not in
+                            E_Protected_Type | E_Task_Type
+                        then
+                           --  We include stuff from tasks and POs, but
+                           --  otherwise we need to ignore discriminants
+                           --  and components.
+                           return OK;
+                        end if;
 
                         if Ekind (E) /= E_Constant
                           or else Local_Constants.Contains (E)
                           or else Has_Variable_Input
-                          (Direct_Mapping_Id (Unique_Entity (E)))
+                                    (Direct_Mapping_Id (Unique_Entity (E)))
                         then
                            if Reduced then
                               VS.Include (Direct_Mapping_Id
@@ -3025,7 +3014,7 @@ package body Flow_Utility is
       Inserted : Boolean;
       --  Indicates than an element was inserted to a set
 
-      Unused    : Node_Sets.Cursor;
+      Unused   : Node_Sets.Cursor;
       --  Dummy variable required by the standard containers API
 
    --  Start of processing for Initialize
@@ -3288,32 +3277,6 @@ package body Flow_Utility is
       end;
    end Is_Non_Visible_Constituent;
 
-   --------------------
-   -- Is_Null_Record --
-   --------------------
-
-   function Is_Null_Record (E : Entity_Id) return Boolean is
-   begin
-      if Is_Type (E) then
-         if Ekind (E) in Record_Kind then
-            case Ekind (E) is
-               when E_Class_Wide_Type | E_Class_Wide_Subtype =>
-                  --  We always have the tag.
-                  return False;
-               when others =>
-                  --  ??? there should be a cheaper way to check this
-                  return All_Components (E).Is_Empty;
-            end case;
-         else
-            return False;
-         end if;
-      elsif Ekind (E) = E_Abstract_State then
-         return False;
-      else
-         return Is_Null_Record (Get_Full_Type_Without_Checking (E));
-      end if;
-   end Is_Null_Record;
-
    ---------------------------
    -- Is_Precondition_Check --
    ---------------------------
@@ -3385,24 +3348,18 @@ package body Flow_Utility is
 
       function Proc (N : Node_Id) return Traverse_Result is
       begin
-         case Nkind (N) is
-            when N_Quantified_Expression =>
-               if Present (Iterator_Specification (N)) then
-                  RV.Include (Direct_Mapping_Id
-                                (Defining_Identifier
-                                   (Iterator_Specification (N))));
-               elsif Present (Loop_Parameter_Specification (N)) then
-                  RV.Include (Direct_Mapping_Id
-                                (Defining_Identifier
-                                   (Loop_Parameter_Specification (N))));
-               else
-                  Print_Tree_Node (N);
-                  raise Why.Unexpected_Node;
-               end if;
+         if Nkind (N) = N_Quantified_Expression then
+            pragma Assert (Present (Iterator_Specification (N))
+                             xor
+                           Present (Loop_Parameter_Specification (N)));
 
-            when others =>
-               null;
-         end case;
+            RV.Include (Direct_Mapping_Id
+                        (Defining_Identifier
+                           (if Present (Iterator_Specification (N))
+                            then Iterator_Specification (N)
+                            else Loop_Parameter_Specification (N))));
+         end if;
+
          return OK;
       end Proc;
 
@@ -3707,7 +3664,7 @@ package body Flow_Utility is
       FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       for N of NS loop
-         FS.Include (Get_Flow_Id (N, View, Scope));
+         FS.Insert (Get_Flow_Id (N, View, Scope));
       end loop;
 
       return FS;
@@ -3835,10 +3792,8 @@ package body Flow_Utility is
 
                for C in Tmp.Iterate loop
                   declare
-                     use Flow_Id_Maps;
-                     Output : constant Flow_Id := Flow_Id_Maps.Key (C);
-                     Inputs : constant Flow_Id_Maps.Constant_Reference_Type :=
-                       Tmp (C);
+                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                     Inputs : Flow_Id_Sets.Set renames Tmp (C);
                   begin
                      M.Include (Output, Inputs);
                   end;
@@ -4075,9 +4030,8 @@ package body Flow_Utility is
 
                for C in Tmp.Iterate loop
                   declare
-                     Output : constant Flow_Id := Flow_Id_Maps.Key (C);
-                     Inputs : constant Flow_Id_Sets.Set :=
-                       Flow_Id_Maps.Element (C);
+                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                     Inputs : Flow_Id_Sets.Set renames Tmp (C);
                   begin
                      if Valid_To_Fields.Contains (Output) then
                         M.Include (Output, Inputs);
@@ -4221,12 +4175,10 @@ package body Flow_Utility is
       return Flow_Id_Sets.Set
    is
       function Is_Ignored_Node (N : Node_Id) return Boolean
-      is (case Nkind (N) is
-             when N_Attribute_Reference =>
-                Get_Attribute_Id (Attribute_Name (N)) in
-                  Attribute_Old | Attribute_Loop_Entry,
-             when others =>
-                False);
+      is (Nkind (N) = N_Attribute_Reference
+          and then
+            Get_Attribute_Id (Attribute_Name (N)) in
+                     Attribute_Old | Attribute_Loop_Entry);
 
       function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
       is (Get_Variable_Set
@@ -4513,9 +4465,8 @@ package body Flow_Utility is
                begin
                   for C in M.Iterate loop
                      declare
-                        K : constant Flow_Id          := Flow_Id_Maps.Key (C);
-                        V : constant Flow_Id_Sets.Set :=
-                          Flow_Id_Maps.Element (C);
+                        K : Flow_Id          renames Flow_Id_Maps.Key (C);
+                        V : Flow_Id_Sets.Set renames M (C);
                      begin
                         if K.Kind = Record_Field
                           and then Natural (K.Component.Length) >= Comp_Id
@@ -4602,7 +4553,7 @@ package body Flow_Utility is
       Base_Node                : Flow_Id;
       Seq                      : Node_Lists.List;
 
-      Idx                      : Natural;
+      Idx                      : Positive;
       Process_Type_Conversions : Boolean;
 
    --  Start of processing for Untangle_Assignment_Target
@@ -4625,8 +4576,7 @@ package body Flow_Utility is
          Seq                => Seq);
 
       if Debug_Trace_Untangle then
-         Write_Str ("Seq is:");
-         Write_Eol;
+         Write_Line ("Seq is:");
          Indent;
          for N of Seq loop
             Print_Tree_Node (N);

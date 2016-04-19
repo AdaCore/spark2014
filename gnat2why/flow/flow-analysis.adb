@@ -114,7 +114,7 @@ package body Flow.Analysis is
          return Loc;
       else
          declare
-            K : constant Flow_Id := G.Get_Key (V);
+            K : Flow_Id renames G.Get_Key (V);
          begin
             case K.Kind is
                when Direct_Mapping | Record_Field =>
@@ -161,7 +161,7 @@ package body Flow.Analysis is
 
          for V of Set loop
             declare
-               F : constant Flow_Id := FA.PDG.Get_Key (V);
+               F : Flow_Id renames FA.PDG.Get_Key (V);
             begin
                if F.Kind = Direct_Mapping then
                   Ada.Text_IO.Put_Line (FD, Get_Line (FA.PDG, FA.Atr, V));
@@ -656,23 +656,23 @@ package body Flow.Analysis is
             else
                case FA.Kind is
                   when Kind_Subprogram | Kind_Entry =>
-                     Vars_Known := Flow_Id_Sets.Empty_Set;
-
                      --  We need to assemble the variables known from the spec:
                      --  these are parameters (both explicit and implicit) and
                      --  globals.
+
+                     Vars_Known :=
+                       To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity));
+
                      declare
                         Tmp_A, Tmp_B, Tmp_C : Flow_Id_Sets.Set;
                      begin
-                        Vars_Known.Union
-                          (To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity)));
-
                         Get_Globals (Subprogram => FA.Spec_Entity,
                                      Scope      => FA.S_Scope,
                                      Classwide  => False,
                                      Proof_Ins  => Tmp_A,
                                      Reads      => Tmp_B,
                                      Writes     => Tmp_C);
+
                         for F of To_Entire_Variables (Tmp_A or Tmp_B or Tmp_C)
                         loop
                            Vars_Known.Include (Change_Variant (F, Normal_Use));
@@ -723,7 +723,7 @@ package body Flow.Analysis is
                        (Get_Variable_Set
                           (Expr,
                            Scope                => Private_Scope
-                             (Get_Flow_Scope (Expr)),
+                                                     (Get_Flow_Scope (Expr)),
                            Local_Constants      => FA.Local_Constants,
                            Fold_Functions       => False,
                            Reduced              => True,
@@ -813,7 +813,7 @@ package body Flow.Analysis is
    begin
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            F_Final : constant Flow_Id := FA.PDG.Get_Key (V);
+            F_Final : Flow_Id      renames FA.PDG.Get_Key (V);
             A_Final : V_Attributes renames FA.Atr (V);
 
             Unwritten : Boolean;
@@ -830,10 +830,9 @@ package body Flow.Analysis is
                Unwritten := False;
                if FA.PDG.In_Neighbour_Count (V) = 1 then
                   declare
-                     F_Initial : constant Flow_Id :=
+                     F_Initial : Flow_Id renames
                        FA.PDG.Get_Key (FA.PDG.Parent (V));
-                     A_Initial :
-                     constant Attribute_Maps.Constant_Reference_Type :=
+                     A_Initial : V_Attributes renames
                        FA.Atr (FA.PDG.Parent (V));
                   begin
                      if F_Initial.Variant = Initial_Value
@@ -857,7 +856,7 @@ package body Flow.Analysis is
 
       for V of Unwritten_Vars loop
          declare
-            F_Final : constant Flow_Id := FA.PDG.Get_Key (V);
+            F_Final : Flow_Id      renames FA.PDG.Get_Key (V);
             A_Final : V_Attributes renames FA.Atr (V);
          begin
             if not Written_Entire_Vars.Contains (Entire_Variable (F_Final))
@@ -983,8 +982,7 @@ package body Flow.Analysis is
 
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            use Attribute_Maps;
-            Key : constant Flow_Id := FA.PDG.Get_Key (V);
+            Key : Flow_Id      renames FA.PDG.Get_Key (V);
             Atr : V_Attributes renames FA.Atr (V);
 
             E              : Flow_Id;
@@ -1260,7 +1258,7 @@ package body Flow.Analysis is
          for Neighbour of FA.PDG.Get_Collection (V, Flow_Graphs.Out_Neighbours)
          loop
             declare
-               Key : constant Flow_Id := FA.PDG.Get_Key (Neighbour);
+               Key : Flow_Id renames FA.PDG.Get_Key (Neighbour);
             begin
                if Key.Variant /= Final_Value
                  or else
@@ -1354,7 +1352,7 @@ package body Flow.Analysis is
 
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            Key : constant Flow_Id := FA.PDG.Get_Key (V);
+            Key : Flow_Id renames FA.PDG.Get_Key (V);
             F   : Flow_Id;
          begin
             if Key.Variant = Initial_Value
@@ -1472,17 +1470,22 @@ package body Flow.Analysis is
            (V  : Flow_Graphs.Vertex_Id;
             TV : out Flow_Graphs.Simple_Traversal_Instruction)
          is
-            Intersection : constant Flow_Id_Sets.Set :=
-              Vars_Defined and
-              (FA.Atr (V).Variables_Defined - FA.Atr (V).Variables_Used);
          begin
-            if V /= Ineffective_Statement
-              and then not Intersection.Is_Empty
-            then
-               Mask.Include (V);
-               TV := Flow_Graphs.Skip_Children;
-            else
+            if V = Ineffective_Statement then
                TV := Flow_Graphs.Continue;
+            else
+               declare
+                  Intersection : constant Flow_Id_Sets.Set :=
+                    Vars_Defined and
+                    (FA.Atr (V).Variables_Defined - FA.Atr (V).Variables_Used);
+               begin
+                  if Intersection.Is_Empty then
+                     TV := Flow_Graphs.Continue;
+                  else
+                     Mask.Include (V);
+                     TV := Flow_Graphs.Skip_Children;
+                  end if;
+               end;
             end if;
          end Visitor;
 
@@ -1624,7 +1627,7 @@ package body Flow.Analysis is
          declare
             use Attribute_Maps;
             N         : Node_Id;
-            Key       : constant Flow_Id := FA.PDG.Get_Key (V);
+            Key       : Flow_Id renames FA.PDG.Get_Key (V);
             Atr       : V_Attributes renames FA.Atr (V);
             Mask      : Vertex_Sets.Set;
             Tag       : constant Flow_Tag_Kind := Ineffective;
@@ -1945,8 +1948,7 @@ package body Flow.Analysis is
       ---------------------
 
       function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean is
-         use Attribute_Maps;
-         V_Key : constant Flow_Id := FA.PDG.Get_Key (V);
+         V_Key : Flow_Id      renames FA.PDG.Get_Key (V);
          V_Atr : V_Attributes renames FA.Atr (V);
       begin
          --  Ignore exceptional paths
@@ -2012,9 +2014,9 @@ package body Flow.Analysis is
          -------------
 
          procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
-            F : constant Flow_Id := FA.CFG.Get_Key (V);
+            F : Flow_Id renames FA.CFG.Get_Key (V);
          begin
-            if V /= To and F.Kind = Direct_Mapping then
+            if V /= To and then F.Kind = Direct_Mapping then
                Path.Include (V);
             end if;
          end Add_Loc;
@@ -2044,15 +2046,9 @@ package body Flow.Analysis is
       function Mentioned_On_Gen_Init (Var : Flow_Id) return Boolean is
          DM : constant Dependency_Maps.Map :=
            Flow_Generated_Globals.GG_Get_Initializes
-             (To_Entity_Name (Unique_Entity (FA.Spec_Entity)),
-              FA.S_Scope);
-      begin
-         if DM.Is_Empty then
-            --  If there is no generated initializes aspect then Var cannot
-            --  possibly be mentioned on it.
-            return False;
-         end if;
+             (To_Entity_Name (FA.Spec_Entity), FA.S_Scope);
 
+      begin
          return
            (for some Init_Var in DM.Iterate =>
               Dependency_Maps.Key (Init_Var) = Var);
@@ -2184,6 +2180,10 @@ package body Flow.Analysis is
             --  Stops the DFS search when we reach V_Def and skips the
             --  children of V_Use.
 
+            -----------------
+            -- Found_V_Def --
+            -----------------
+
             procedure Found_V_Def
               (V  : Flow_Graphs.Vertex_Id;
                TV : out Flow_Graphs.Simple_Traversal_Instruction)
@@ -2198,6 +2198,8 @@ package body Flow.Analysis is
                   TV := Flow_Graphs.Continue;
                end if;
             end Found_V_Def;
+
+         --  Start_To_V_Def_Without_V_Use
 
          begin
             FA.CFG.DFS (Start         => FA.Start_Vertex,
@@ -2323,7 +2325,7 @@ package body Flow.Analysis is
       is
          type Msg_Kind is (Init, Unknown, Err);
 
-         V_Key        : constant Flow_Id := FA.PDG.Get_Key (Vertex);
+         V_Key        : Flow_Id renames FA.PDG.Get_Key (Vertex);
 
          V_Initial    : constant Flow_Graphs.Vertex_Id :=
            FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
@@ -2443,12 +2445,10 @@ package body Flow.Analysis is
            and then FA.Kind in Kind_Package | Kind_Package_Body
            and then Present (FA.Initializes_N)
          then
-            Msg := To_Unbounded_String
-              ("initialization of & is specified @");
             Error_Msg_Flow
               (FA           => FA,
                Tracefile    => Tracefile,
-               Msg          => To_String (Msg),
+               Msg          => "initialization of & is specified @",
                N            => N,
                F1           => Direct_Mapping_Id
                                  (Encapsulating_State
@@ -2472,11 +2472,6 @@ package body Flow.Analysis is
          end if;
       end Emit_Message;
 
-      Def_Atr          : V_Attributes;
-      Def_Key          : Flow_Id;
-      Is_Uninitialized : Boolean;
-      Is_Initialized   : Boolean;
-
    --  Start of processing for Find_Use_Of_Uninitialized_Variables
 
    begin
@@ -2487,76 +2482,93 @@ package body Flow.Analysis is
       for V of FA.DDG.Get_Collection (Flow_Graphs.All_Vertices) loop
 
          if Consider_Vertex (V) then
-            --  For each variable read...
-            for Var_Read of FA.Atr (V).Variables_Used loop
-               Is_Uninitialized := False;
-               Is_Initialized   := False;
+            --  For each used variable...
+            for Var_Used of FA.Atr (V).Variables_Used loop
+               declare
+                  Is_Uninitialized : Boolean := False;
+                  Is_Initialized   : Boolean := False;
 
-               if not
-                 FA.Atr
-                   (FA.PDG.Get_Vertex
-                      (Change_Variant
-                         (Var_Read, Initial_Value))).Is_Initialized
-                 and then (if Ekind (FA.Analyzed_Entity) in
-                             E_Package | E_Package_Body
-                           then not Is_Abstract_State (Var_Read) and then
-                             (FA.PDG.Get_Vertex
-                                (Change_Variant (Var_Read, Final_Value)) /= V
-                                 or else not Mentioned_On_Gen_Init (Var_Read)))
-                 and then (if Var_Read.Kind in Direct_Mapping | Record_Field
-                           then not Is_Constant_Object
-                                      (Get_Direct_Mapping_Id (Var_Read)))
-               then
-                  --  ... we check the in neighbours in the DDG and see if
-                  --  they define it. We record initialized / uninitialized
-                  --  reads accordingly.
-                  --
-                  --  Note we skip this check for abstract state iff we analyze
-                  --  a package, since it is OK to leave some state
-                  --  uninitialized (Check_Initializes_Contract will pick this
-                  --  up). We also skip this check when checking final vertices
-                  --  of variables that are mentioned on a generated
-                  --  Initializes aspect.
-                  for V_Def of
-                    FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
-                  loop
-                     Def_Atr := FA.Atr.Element (V_Def);
-                     Def_Key := FA.DDG.Get_Key (V_Def);
-                     if Def_Key.Variant = Initial_Value
-                       and then Change_Variant (Def_Key, Normal_Use) = Var_Read
-                     then
-                        --  We're using the initial value.
-                        if Def_Atr.Is_Initialized then
-                           Is_Initialized   := True;
-                        else
-                           Is_Uninitialized := True;
+                  Initial_Value_Of_Var_Used : Flow_Graphs.Vertex_Id renames
+                    FA.DDG.Get_Vertex
+                      (Change_Variant (Var_Used, Initial_Value));
+
+                  Final_Value_Of_Var_Used : Flow_Graphs.Vertex_Id renames
+                    FA.DDG.Get_Vertex
+                      (Change_Variant (Var_Used, Final_Value));
+
+               begin
+                  if FA.Atr (Initial_Value_Of_Var_Used).Is_Initialized
+                    or else
+                      (FA.Kind in Kind_Package | Kind_Package_Body
+                       and then
+                         (Is_Abstract_State (Var_Used)
+                          or else
+                            (Final_Value_Of_Var_Used = V
+                             and then Mentioned_On_Gen_Init (Var_Used))))
+                    or else
+                      (Var_Used.Kind in Direct_Mapping | Record_Field
+                       and then
+                         Is_Constant_Object (Get_Direct_Mapping_Id (Var_Used)))
+                  then
+                     --  ... we either do nothing because it is safe, or...
+                     null;
+
+                  else
+                     --  ... we check the in neighbours in the DDG and see if
+                     --  they define it. We record initialized / uninitialized
+                     --  reads accordingly.
+                     --
+                     --  Note we skip this check for abstract state iff we
+                     --  analyze a package, since it is OK to leave some state
+                     --  uninitialized (Check_Initializes_Contract will pick
+                     --  this up). We also skip this check when checking
+                     --  final vertices of variables that are mentioned on
+                     --  a generated Initializes aspect.
+                     for V_Def of
+                       FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
+                     loop
+                        declare
+                           Def_Key : Flow_Id renames FA.DDG.Get_Key (V_Def);
+                           Def_Atr : V_Attributes renames FA.Atr (V_Def);
+                        begin
+                           if Def_Key.Variant = Initial_Value
+                             and then
+                               Change_Variant (Def_Key, Normal_Use) = Var_Used
+                           then
+                              --  We're using the initial value.
+                              if Def_Atr.Is_Initialized then
+                                 Is_Initialized   := True;
+                              else
+                                 Is_Uninitialized := True;
+                              end if;
+                           elsif Def_Atr.Variables_Defined.Contains (Var_Used)
+                             or else Def_Atr.Volatiles_Read.Contains (Var_Used)
+                           then
+                              --  We're using a previously written value.
+                              Is_Initialized := True;
+                           end if;
+                        end;
+                     end loop;
+
+                     --  Some useful debug output before we issue the message.
+                     if Debug_Trace_Check_Reads then
+                        Write_Str ("@" & FA.DDG.Vertex_To_Natural (V)'Img);
+                        if Is_Initialized then
+                           Write_Str (" INIT");
                         end if;
-                     elsif Def_Atr.Variables_Defined.Contains (Var_Read)
-                       or else Def_Atr.Volatiles_Read.Contains (Var_Read)
-                     then
-                        --  We're using a previously written value.
-                        Is_Initialized := True;
+                        if Is_Uninitialized then
+                           Write_Str (" DIRTY");
+                        end if;
+                        Write_Str (" :");
+                        Print_Flow_Id (Var_Used);
                      end if;
-                  end loop;
 
-                  --  Some useful debug output before we issue the message.
-                  if Debug_Trace_Check_Reads then
-                     Write_Str ("@" & FA.DDG.Vertex_To_Natural (V)'Img);
-                     if Is_Initialized then
-                        Write_Str (" INIT");
-                     end if;
-                     if Is_Uninitialized then
-                        Write_Str (" DIRTY");
-                     end if;
-                     Write_Str (" :");
-                     Print_Flow_Id (Var_Read);
+                     Emit_Message (Var              => Var_Used,
+                                   Vertex           => V,
+                                   Is_Initialized   => Is_Initialized,
+                                   Is_Uninitialized => Is_Uninitialized);
                   end if;
-
-                  Emit_Message (Var              => Var_Read,
-                                Vertex           => V,
-                                Is_Initialized   => Is_Initialized,
-                                Is_Uninitialized => Is_Uninitialized);
-               end if;
+               end;
             end loop;
          end if;
       end loop;
@@ -2686,10 +2698,12 @@ package body Flow.Analysis is
             procedure Add_Loc
               (V : Flow_Graphs.Vertex_Id)
             is
-               F : constant Flow_Id := (if CFG_Graph then FA.CFG.Get_Key (V)
-                                        else FA.PDG.Get_Key (V));
+               F_Kind : constant Flow_Id_Kind :=
+                 (if CFG_Graph
+                  then FA.CFG.Get_Key (V).Kind
+                  else FA.PDG.Get_Key (V).Kind);
             begin
-               if V /= To and then V /= From and then F.Kind = Direct_Mapping
+               if V /= To and then V /= From and then F_Kind = Direct_Mapping
                then
                   Vertices.Include (V);
                end if;
@@ -2762,8 +2776,8 @@ package body Flow.Analysis is
 
       for O in FA.Dependency_Map.Iterate loop
          declare
-            Output : constant Flow_Id := Dependency_Maps.Key (O);
-            Inputs : Flow_Id_Sets.Set renames Dependency_Maps.Element (O);
+            Output : Flow_Id          renames Dependency_Maps.Key (O);
+            Inputs : Flow_Id_Sets.Set renames FA.Dependency_Map (O);
          begin
             if Output /= Null_Flow_Id
               and then Output.Kind in Direct_Mapping | Record_Field
@@ -2780,7 +2794,11 @@ package body Flow.Analysis is
                         declare
                            Tracefile      : constant String :=
                              Fresh_Trace_File;
-                           Vertices_Trail : Vertex_Sets.Set;
+
+                           Vertices_Trail : constant Vertex_Sets.Set :=
+                             Path_Leading_To_Proof_In_Dependency
+                               (From => V,
+                                To   => Get_Final_Vertex (FA.PDG, Output));
 
                         begin
                            Error_Msg_Flow
@@ -2795,11 +2813,6 @@ package body Flow.Analysis is
                               F2        => Input,
                               Severity  => Error_Kind,
                               Tag       => Export_Depends_On_Proof_In);
-
-                           Vertices_Trail :=
-                             Path_Leading_To_Proof_In_Dependency
-                               (From => V,
-                                To   => Get_Final_Vertex (FA.PDG, Output));
 
                            Write_Vertex_Set
                              (FA       => FA,
@@ -3046,7 +3059,7 @@ package body Flow.Analysis is
 
          for C in DM.Iterate loop
             declare
-               The_Out : constant Flow_Id := Dependency_Maps.Key (C);
+               The_Out : Flow_Id renames Dependency_Maps.Key (C);
             begin
                FS.Include (The_Out);
             end;
@@ -3229,10 +3242,8 @@ package body Flow.Analysis is
 
          for C in DM.Iterate loop
             declare
-               F_Out  : Flow_Id                   :=
-                 Dependency_Maps.Key (C);
-               F_Deps : constant Flow_Id_Sets.Set :=
-                 Dependency_Maps.Element (C);
+               F_Out  : Flow_Id := Dependency_Maps.Key (C);
+               F_Deps : Flow_Id_Sets.Set renames DM (C);
                AS     : Flow_Id;
             begin
                --  Add output
@@ -3328,7 +3339,7 @@ package body Flow.Analysis is
 
       for C in User_Deps.Iterate loop
          declare
-            F_Out : constant Flow_Id := Dependency_Maps.Key (C);
+            F_Out : Flow_Id renames Dependency_Maps.Key (C);
          begin
             if not Actual_Deps.Contains (F_Out) then
                --  ??? check quotation in errout.ads
@@ -3351,8 +3362,8 @@ package body Flow.Analysis is
 
       for C in Actual_Deps.Iterate loop
          declare
-            F_Out  : constant Flow_Id          := Dependency_Maps.Key (C);
-            A_Deps : constant Flow_Id_Sets.Set := Dependency_Maps.Element (C);
+            F_Out  : Flow_Id          renames Dependency_Maps.Key (C);
+            A_Deps : Flow_Id_Sets.Set renames Actual_Deps (C);
             U_Deps : Flow_Id_Sets.Set;
 
             Missing_Deps : Ordered_Flow_Id_Sets.Set;
@@ -3659,7 +3670,7 @@ package body Flow.Analysis is
          -------------
 
          procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
-            F : constant Flow_Id := FA.CFG.Get_Key (V);
+            F : Flow_Id renames FA.CFG.Get_Key (V);
          begin
             if not To.Contains (V)
               and then F.Kind = Direct_Mapping
@@ -3774,11 +3785,8 @@ package body Flow.Analysis is
             --  Populate the All_Actual_Outs and All_Actual_Ins sets
             for O in FA.Dependency_Map.Iterate loop
                declare
-                  Actual_Out : constant Flow_Id :=
-                    Dependency_Maps.Key (O);
-
-                  Actual_Ins : constant Flow_Id_Sets.Set :=
-                    Dependency_Maps.Element (O);
+                  Actual_Out : Flow_Id renames Dependency_Maps.Key (O);
+                  Actual_Ins : Flow_Id_Sets.Set renames FA.Dependency_Map (O);
                begin
                   if All_Contract_Outs.Contains (Actual_Out) then
                      All_Actual_Ins.Union (Actual_Ins);
@@ -4172,6 +4180,10 @@ package body Flow.Analysis is
       --  Check ownership of a kind Owning_Kind of the Object by a
       --  Task_Instance.
 
+      ---------------------
+      -- Check_Ownership --
+      ---------------------
+
       procedure Check_Ownership (Task_Instance : Task_Object;
                                  Object        : Entity_Name;
                                  Owning_Kind   : Tasking_Owners_Kind)
@@ -4266,8 +4278,7 @@ package body Flow.Analysis is
    begin
       for C in Task_Instances.Iterate loop
          declare
-            This_Task_Type : constant Entity_Name :=
-              Task_Instances_Maps.Key (C);
+            This_Task_Type : Entity_Name renames Task_Instances_Maps.Key (C);
 
          begin
             for This_Task_Object of Task_Instances_Maps.Element (C) loop
@@ -4306,20 +4317,23 @@ package body Flow.Analysis is
 
       function Variable_Has_CAE (F : Flow_Id) return Boolean is
       begin
-         if F.Kind not in Direct_Mapping | Record_Field then
+         if F.Kind in Direct_Mapping | Record_Field then
+            declare
+               E   : constant Entity_Id := Get_Direct_Mapping_Id (F);
+               CAE : constant Node_Id :=
+                 (if Ekind (E) = E_Variable
+                  then Get_Pragma (E, Pragma_Constant_After_Elaboration)
+                  else Empty);
+            begin
+               return Is_Constant_After_Elaboration (CAE);
+            end;
+
+         else
             return False;
          end if;
-
-         declare
-            E   : constant Entity_Id := Get_Direct_Mapping_Id (F);
-            CAE : constant Node_Id :=
-              (if Ekind (E) = E_Variable
-               then Get_Pragma (E, Pragma_Constant_After_Elaboration)
-               else Empty);
-         begin
-            return Is_Constant_After_Elaboration (CAE);
-         end;
       end Variable_Has_CAE;
+
+   --  Start of processing for Check_CAE_In_Preconditions
 
    begin
       if not Belongs_To_Protected_Object

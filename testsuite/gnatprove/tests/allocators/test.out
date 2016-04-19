@@ -21,7 +21,7 @@ list_allocator.adb:54:10: info: loop invariant initialization proved
 list_allocator.adb:54:10: info: loop invariant preservation proved
 list_allocator.adb:55:37: info: precondition proved
 list_allocator.adb:56:10: info: loop invariant initialization proved
-list_allocator.adb:56:10: info: loop invariant preservation proved
+list_allocator.adb:57:37: medium: loop invariant might fail after first iteration, cannot prove Mem (Model.Available, RR)
 list_allocator.adb:57:59: info: range check proved
 list_allocator.adb:67:30: info: index check proved
 list_allocator.adb:68:16: info: index check proved

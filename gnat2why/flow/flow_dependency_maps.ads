@@ -21,8 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package deals with parsing and representing dependency maps
---  from the depends and initializes aspects.
+--  This package deals with parsing and representing dependency maps from the
+--  depends and initializes aspects.
 
 with Ada.Containers.Hashed_Maps;
 with Atree;                      use Atree;
@@ -30,6 +30,7 @@ with Flow_Refinement;            use Flow_Refinement;
 with Flow_Types;                 use Flow_Types;
 with Sinfo;                      use Sinfo;
 with Snames;                     use Snames;
+with Sem_Util;                   use Sem_Util;
 with Types;                      use Types;
 
 package Flow_Dependency_Maps is
@@ -51,7 +52,7 @@ package Flow_Dependency_Maps is
 
    function Parse_Depends (N : Node_Id) return Dependency_Maps.Map
    with Pre => Nkind (N) = N_Pragma and then
-               Get_Pragma_Id (Chars (Pragma_Identifier (N))) in
+               Get_Pragma_Id (N) in
                  Pragma_Depends         |
                  Pragma_Refined_Depends;
 
@@ -62,28 +63,25 @@ package Flow_Dependency_Maps is
       return Dependency_Maps.Map
    with Pre => (if Present (N) then
                   Nkind (N) = N_Pragma and then
-                    Get_Pragma_Id (Chars (Pragma_Identifier (N))) =
-                      Pragma_Initializes);
-   --  Parses the Initializes aspect. If the initializes aspect does not exist
-   --  but we have a generated initializes aspect then we use that.
+                    Get_Pragma_Id (N) = Pragma_Initializes);
+   --  Parse the Initializes aspect if it exists, or a generated one otherwise
    --
    --  When we parse the Initializes aspect we add any external state
-   --  abstractions with the property Async_Writers set to the
-   --  dependency map (even if the user did not manually write them
-   --  there). This is to ensure that constituents that are not
-   --  volatile and have Async_Writers are also initialized. Notice
-   --  that as a result of this, the function may return a Dependency
-   --  map even if there is no Initializes aspect to begin with. P
-   --  represents the enclosing package.
-   --  @param N is the node representing the initializes aspect
-   --  @param P is the entity representing the package
+   --  abstractions with enabled property Async_Writers to the dependency map
+   --  (even if the user did not manually put them there). This ensures that
+   --  constituents that are not volatile but have Async_Writers are also
+   --  initialized. In effect, we may return a Dependency map even if there
+   --  is no Initializes aspect to begin with.
+   --
+   --  @param N node of the Initializes aspect
+   --  @param P entity of the enclosing package
    --  @param S is the Flow_Scope at which we need to up project the results
    --  @returns the dependency map representing the initializes aspect
 
    function Parse_Refined_State (N : Node_Id) return Dependency_Maps.Map
    with Pre => Nkind (N) = N_Pragma and then
-               Get_Pragma_Id (Chars (Pragma_Identifier (N))) =
-                 Pragma_Refined_State;
+               Get_Pragma_Id (N) = Pragma_Refined_State;
+
    --  Parses the Refined_State aspect
 
 end Flow_Dependency_Maps;

@@ -17,75 +17,80 @@ Command Line Invocation
  -cargs switches are passed to gcc
 
  gnatprove basic switches:
-  -aP=p               Add path p to project path
-      --assumptions   Output assumptions information
-      --clean         Remove GNATprove intermediate files, and exit
-  -f                  Force recompilation/analysis of all units
-  -h, --help          Display this usage information
-  -jnnn               Use nnn parallel processes (default: 1)
-  -k                  Do not stop analysis at the first error
-      --level=n       Set the level of proof (0 = faster* to 4 = more powerful)
-  -m                  Minimal reanalysis
-      --mode=m        Set the mode of GNATprove (m=check, flow, prove, all*)
-  -q, --quiet         Be quiet/terse
-      --report=r      Set the report mode of GNATprove (r=fail*, all, statistics)
-  -u                  Unique analysis. Only analyze the given units
-  -U                  Analyze all units of all projects
-  -v, --verbose       Output extra verbose information
-      --version       Output version of the tool and exit
-      --warnings=w    Set the warning mode of GNATprove (w=off, continue*, error)
+ -aP=p               Add path p to project path
+     --assumptions   Output assumptions information
+     --codepeer=c    Enable or disable CodePeer analysis (c=on,off*)
+     --clean         Remove GNATprove intermediate files, and exit
+ -f                  Force recompilation/analysis of all units
+ -h, --help          Display this usage information
+ -jnnn               Use nnn parallel processes (default: 1)
+ -k                  Do not stop analysis at the first error
+     --level=n       Set the level of proof (0 = faster* to 4 = more powerful)
+ -m                  Minimal reanalysis
+     --mode=m        Set the mode of GNATprove (m=check, flow, prove, all*)
+ -q, --quiet         Be quiet/terse
+     --report=r      Set the report mode of GNATprove (r=fail*, all, provers, statistics)
+ -u                  Unique analysis. Only analyze the given units
+ -U                  Analyze all units of all projects
+ -v, --verbose       Output extra verbose information
+     --version       Output version of the tool and exit
+     --warnings=w    Set the warning mode of GNATprove (w=off, continue*, error)
 
-  * Main mode values
-    . all           - Activates all modes (default)
-    . check         - Check SPARK restrictions for code where SPARK_Mode=On
-    . flow          - Prove object initialization and flow contracts
-    . prove         - Prove subprogram contracts and absence of run-time errors
+ * Main mode values
+   . all           - Activates all modes (default)
+   . check         - Check SPARK restrictions for code where SPARK_Mode=On
+   . flow          - Prove object initialization and flow contracts
+   . prove         - Prove subprogram contracts and absence of run-time errors
 
-  * Report mode values
-    . all           - Report all results of proving checks
-    . fail          - Report failures to prove checks (default)
-    . statistics    - Same as all, plus timing and steps information
+ * Report mode values
+   . all           - Report all results of proving checks
+   . fail          - Report failures to prove checks (default)
+   . provers       - Same as all, plus information which provers proved the check
+   . statistics    - Same as provers, plus timing and steps information
 
-  * Warning mode values
-    . continue      - Issue warnings and continue (default)
-    . error         - Treat warnings as errors
-    . off           - Do not issue warnings
+ * Warning mode values
+   . continue      - Issue warnings and continue (default)
+   . error         - Treat warnings as errors
+   . off           - Do not issue warnings
 
  gnatprove advanced switches:
-  --no-counterexample Do not generate a counterexample for unproved formulas
-  -d, --debug         Debug mode
-  --dbg-proof-only    Disable flow analysis (possibly unsound results)
-  --flow-debug        Extra debugging for flow analysis (requires graphviz)
-  --limit-line=s      Limit analysis to given file and line
-  --limit-subp=s      Limit analysis to subprogram defined by file and line
-  --pedantic          Use a strict interpretation of the Ada standard
-  --proof=g[:l]       Set the proof modes for generation of formulas
-                      (g=per_check*, per_path, progressive) (l=lazy*, all)
-  --prover=s[,s]*     Use given provers (s=altergo, cvc4*, z3, ...)
-  --RTS=dir           Specify the Ada runtime name/location
-  --steps=nnn         Set the maximum number of proof steps (prover-specific)
-  --timeout=s         Set the prover timeout in seconds (default: 1)
-  --why3-conf=f       Specify a configuration file for why3
+ --no-counterexample Do not generate a counterexample for unproved formulas
+ -d, --debug         Debug mode
+ --dbg-proof-only    Disable flow analysis (possibly unsound results)
+ --flow-debug        Extra debugging for flow analysis (requires graphviz)
+ --limit-line=s      Limit analysis to given file and line
+ --limit-subp=s      Limit analysis to subprogram defined by file and line
+ --pedantic          Use a strict interpretation of the Ada standard
+ --proof=g[:l]       Set the proof modes for generation of formulas
+                     (g=per_check*, per_path, progressive) (l=lazy*, all)
+ --prover=s[,s]*     Use given provers (s=altergo, cvc4*, z3, ...)
+ --RTS=dir           Specify the Ada runtime name/location
+ --steps=nnn         Set the maximum number of proof steps (prover-specific)
+                     Use value 0 for no steps limit.
+ --timeout=s         Set the prover timeout in seconds (s=auto, nnn)
+                     Use value 0 for no timeout.
+                     Use value auto for timeout adjusted to proof level.
+ --why3-conf=f       Specify a configuration file for why3
 
-  * Proof mode values for generation
-    . per_check     - Generate one formula per check (default)
-    . per_path      - Generate one formula per path for each check
-    . progressive   - Start with one formula per check, then split into
-                      paths when needed
+ * Proof mode values for generation
+   . per_check     - Generate one formula per check (default)
+   . per_path      - Generate one formula per path for each check
+   . progressive   - Start with one formula per check, then split into
+                     paths when needed
 
-  * Proof mode values for laziness
-    . all           - Attempt to prove all formulas
-                      (most suited for combination of automatic and manual proof)
-    . lazy          - Stop at first unproved formula for each check
-                      (most suited for fully automatic proof) (default)
+ * Proof mode values for laziness
+   . all           - Attempt to prove all formulas
+                     (most suited for combination of automatic and manual proof)
+   . lazy          - Stop at first unproved formula for each check
+                     (most suited for fully automatic proof) (default)
 
-  * Prover name values
-    (Default prover is cvc4.)
-    (Provers marked with [steps] support the --steps switch.)
-    . altergo       - [steps] Use Alt-Ergo
-    . cvc4          - [steps] Use CVC4
-    . z3            - [steps] Use Z3
-    . ...           - Any other prover configured in your .why3.conf file
+ * Prover name values
+   (Default prover is cvc4.)
+   (Provers marked with [steps] support the --steps switch.)
+   . altergo       - [steps] Use Alt-Ergo
+   . cvc4          - [steps] Use CVC4
+   . z3            - [steps] Use Z3
+   . ...           - Any other prover configured in your .why3.conf file
 
 .. _Alternative_Provers:
 
@@ -915,12 +920,6 @@ Proof Limitations
 
 #. |GNATprove| does not follow the value of tags for tagged objects. As a
    consequence, tag checks are currently unprovable in most cases.
-
-#. For calls in class-wide postconditions, |GNATprove| uses
-   the semantics defined originally in the Ada 2012 Reference Manual (calls to
-   primitive operations are dispatching), and not yet the modified semantics
-   introduced in the revision of the language AI12-0113 (calls to primitive
-   operations are reinterpreted at each level of the inheritance hierarchy).
 
 #. Calls to primitive operations of the tagged type being defined are not
    supported in classwide preconditions. GNATprove does not raise an

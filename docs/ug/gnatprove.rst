@@ -206,14 +206,22 @@ to a subprogram declared in a particular file at a particular line.
 A number of options exist to influence the behavior for proof. Internally, the
 prover(s) specified with option ``--prover`` is/are called repeatedly for each
 check or assertion. Using the option ``--timeout``, one can change the maximal
-time that is allocated to each prover to prove each check or assertion
-(default: 1s). Using the option ``--steps`` (default: not used explicitly but
+time that is allocated to each prover to prove each check or assertion.
+Using the option ``--steps`` (default: not used explicitly but
 set by default proof level, see switch ``--level`` below), one can set the
 maximum number of reasoning steps that the prover is allowed to perform before
 giving up. The ``steps`` option should be used when predictable results are
 required, because the results with a timeout may differ depending on the
 computing power or current load of the machine. The option ``-j`` activates
 parallel compilation and parallel proofs.
+
+.. note::
+
+    When the project has a main file, or a file is passed as starting point to
+    gnatprove, and the dependencies in the project are very linear (unit A
+    depends only on unit B, which depends only on unit C, etc), then even when
+    the ``-j`` switch is used, gnatprove may only consider one file at a time.
+    This problem can be avoided by additionally using the ``-U`` switch.
 
 The way checks are passed to the prover can also be influenced using the option
 ``--proof``. By default, the prover is invoked a single time for each check or
@@ -243,21 +251,26 @@ level 4. More precisely, each value of ``--level`` is equivalent to directly
 setting a collection of other switches discussed above:
 
 * ``--level=0`` is equivalent to
-  ``--prover=cvc4 --proof=per_check --steps=100 --timeout=1``
+  ``--prover=cvc4 --proof=per_check --steps=100``
 * ``--level=1`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=per_check --steps=100 --timeout=1``
+  ``--prover=cvc4,z3,altergo --proof=per_check --steps=100``
 * ``--level=2`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=per_check --steps=1000 --timeout=10``
+  ``--prover=cvc4,z3,altergo --proof=per_check --steps=1000``
 * ``--level=3`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=progressive --steps=1000 --timeout=10``
+  ``--prover=cvc4,z3,altergo --proof=progressive --steps=1000``
 * ``--level=4`` is equivalent to
-  ``--prover=cvc4,z3,altergo --proof=progressive --steps=10000 --timeout=60``
+  ``--prover=cvc4,z3,altergo --proof=progressive --steps=10000``
+
+When ``--timeout=auto`` is used, a value of timeout is set depending on the
+proof level:
+
+* At levels 0 and 1, ``--timeout=auto`` is equivalent to ``--timeout=1``
+* At levels 2 and 3, ``--timeout=auto`` is equivalent to ``--timeout=10``
+* At level 4, ``--timeout=auto`` is equivalent to ``--timeout=60``
 
 If both ``--level`` is set and an underlying switch is set (``--prover``,
-``--steps``, ``--timeout`` or ``--proof``), the value of the latter takes
-precedence over the value set through ``--level``. The default value of
-``--level=0`` is only set if no underlying switch is set explicitly, either on
-the command line or in the project file.
+``--steps``, or ``--proof``), the value of the latter takes precedence over the
+value set through ``--level``.
 
 By default, |GNATprove| avoids reanalyzing unchanged files, on a
 per-unit basis. This mechanism can be disabled with the option ``-f``.
@@ -616,7 +629,7 @@ may be proved using a manual prover.
 In the appendix, section :ref:`Alternative_Provers`, is explained how to use
 different provers than the one |GNATprove| uses as default.
 
-Manual proof in command line
+Manual Proof in Command Line
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When the prover used by |GNATprove| is configured as interactive, for each
@@ -650,7 +663,7 @@ Where ``check-kind`` can be deduced from the message associated to the
 failing condition reported by |GNATprove|:
 
 .. UPDATES TO THIS TABLE SHOULD ALSO BE REFLECTED IN THE TABLE UNDER SECTION
-.. "GNATprove Messages"
+.. "Description of Messages"
 
 .. csv-table::
    :header: "Warning", "Check kind"
@@ -661,6 +674,8 @@ failing condition reported by |GNATprove|:
    "array index check might fail",                         "VC_INDEX_CHECK"
    "overflow check might fail",                            "VC_OVERFLOW_CHECK"
    "range check might fail",                               "VC_RANGE_CHECK"
+   "predicate check might fail",                           "VC_PREDICATE_CHECK"
+   "predicate check might fail on default value",          "VC_PREDICATE_CHECK_ON_DEFAULT_VALUE"
    "length check might fail",                              "VC_LENGTH_CHECK"
    "discriminant check might fail",                        "VC_DISCRIMINANT_CHECK"
    "tag check might fail",                                 "VC_TAG_CHECK"
@@ -846,9 +861,9 @@ implementation (using proof).
 In mode ``all``, |GNATprove| prints on the standard output both messages for
 mode ``flow`` and for mode ``prove``.
 
-If switch ``--report=all`` or ``--report=statistics`` is specified, |GNATprove|
-additionally prints on the standard output information messages for proved
-checks.
+If switch ``--report=all``, ``--report=provers`` or ``--report=statistics`` is
+specified, |GNATprove| additionally prints on the standard output information
+messages for proved checks.
 
 |GNATprove| generates global project statistics in file ``gnatprove.out``,
 which can be displayed in GPS using the menu :menuselection:`SPARK --> Show
@@ -895,6 +910,8 @@ The following table shows the kinds of check messages issued by proof.
    "index check", "Check that the given index is within the bounds of the array."
    "overflow check", "Check that the result of the given arithmetic operation is within the bounds of the base type."
    "range check", "Check that the given value is within the bounds of the expected scalar subtype."
+   "predicate check", "Check that the given value respects the applicable type predicate."
+   "predicate check on default value", "Check that the default value for the type respects the applicable type predicate."
    "length check", "Check that the given array is of the length of the expected array subtype."
    "discriminant check", "Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required."
    "tag check",          "Check that the tag of the given tagged object has the expected value."
@@ -2946,7 +2963,7 @@ remained in C, by using Ada capabilities for multi-language programs.
 
 The goal was to prove absence of runtime errors on the most critical code parts
 of the drone's firmware. The techniques used to achieve this aim were presented
-in a post on the AdaCore Blog :
+in a post on the AdaCore Blog:
 http://blog.adacore.com/how-to-prevent-drone-crashes-using-spark
 
 Data dependency contracts are given for most subprograms, specially in the
@@ -3092,6 +3109,22 @@ library ``Ada.Text_IO``, for example the generic unit
 ``Ada.Text_IO.Integer_IO``. Partial function contracts are expressed on all
 subprograms. |GNATprove| proves all checks on the implementation of these
 wrapper units.
+
+.. rubric:: ``text_io_get_line``
+
+This program is a simplified extracted version of the standard library function
+``Ada.Text_IO.Get_Line``, which reads a line of text from an input file. The
+various versions of ``Ada.Text_IO.Get_Line`` (procedures and functions) are
+specified with respect to a simplified model of the file system, with a single
+file ``The_File`` opened at a location ``Cur_Location``. The low-level
+functions providing an efficient implementation (``fgets``, ``memcpy``, etc.)
+are also specified with respect to the same model of the file system.
+
+|GNATprove| proves automatically that the code is free of run-time errors
+(apart from a few messages that are either intentional or related to the ghost
+code instrumentation) and that subprogram bodies respect their functional
+contracts. The story behind this work was presented in a post on the AdaCore
+Blog: http://blog.adacore.com/formal-verification-of-legacy-code
 
 .. rubric:: ``thumper``
 

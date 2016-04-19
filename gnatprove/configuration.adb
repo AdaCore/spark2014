@@ -115,6 +115,12 @@ package body Configuration is
       Input  : String);
    --  parse the --codepeer option (possibilities are "on" and "off")
 
+   procedure Set_Timeout
+     (Config : Command_Line_Configuration;
+      Input  : String);
+   --  parse the --timeout option (possibilities are "auto" or a non-negative
+   --  integer)
+
    procedure Set_RTS_Dir
      (Config    : Command_Line_Configuration;
       Proj_Type : Project_Type;
@@ -177,7 +183,7 @@ ASCII.LF &
 " -q, --quiet         Be quiet/terse" &
 ASCII.LF &
 "     --report=r      Set the report mode of GNATprove " &
-"(r=fail*, all, statistics)"
+"(r=fail*, all, provers, statistics)"
 &
 ASCII.LF &
 " -u                  Unique analysis. Only analyze the given units" &
@@ -211,7 +217,11 @@ ASCII.LF &
 ASCII.LF &
 "   . fail          - Report failures to prove checks (default)" &
 ASCII.LF &
-"   . statistics    - Same as all, plus timing and steps information" &
+"   . provers       - Same as all, plus information which provers proved " &
+"the check" &
+ASCII.LF &
+"   . statistics    - Same as provers, plus timing and steps information" &
+
 ASCII.LF &
 ASCII.LF &
 " * Warning mode values" &
@@ -249,7 +259,13 @@ ASCII.LF &
 ASCII.LF &
 " --steps=nnn         Set the maximum number of proof steps (prover-specific)"
 & ASCII.LF &
-" --timeout=s         Set the prover timeout in seconds (default: 1)" &
+"                     Use value 0 for no steps limit." &
+ASCII.LF &
+" --timeout=s         Set the prover timeout in seconds (s=auto, nnn)" &
+ASCII.LF &
+"                     Use value 0 for no timeout." &
+ASCII.LF &
+"                     Use value auto for timeout adjusted to proof level." &
 ASCII.LF &
 " --why3-conf=f       Specify a configuration file for why3" &
 ASCII.LF &
@@ -387,15 +403,23 @@ ASCII.LF;
                Obj_Dir  : constant Virtual_File := Project.Object_Dir;
                Name_Dir : constant String := +Base_Dir_Name (Obj_Dir);
                Rm_Dir   : constant String := Obj_Dir.Display_Full_Name;
+
             begin
-               pragma Assert (Name_Dir = Name_GNATprove);
-               if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
-                  if Verbose then
-                     Ada.Text_IO.Put ("Deleting directory " & Rm_Dir & "...");
-                  end if;
-                  GNAT.Directory_Operations.Remove_Dir (Rm_Dir, True);
-                  if Verbose then
-                     Ada.Text_IO.Put_Line (" done");
+               --  Object directory might not exist, for example if there
+               --  are no source files and no explicit object directory is
+               --  specified. Do nothing in that case.
+
+               if Obj_Dir /= GNATCOLL.VFS.No_File then
+                  pragma Assert (Name_Dir = Name_GNATprove);
+                  if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
+                     if Verbose then
+                        Ada.Text_IO.Put
+                          ("Deleting directory " & Rm_Dir & "...");
+                     end if;
+                     GNAT.Directory_Operations.Remove_Dir (Rm_Dir, True);
+                     if Verbose then
+                        Ada.Text_IO.Put_Line (" done");
+                     end if;
                   end if;
                end if;
             exception
@@ -893,17 +917,15 @@ ASCII.LF;
           Long_Switch => "--steps=",
           Initial => Invalid_Step);
 
-      --  If not specified on the command-line, value of level is invalid
       Define_Switch
          (Config, Level'Access,
           Long_Switch => "--level=",
-          Initial => Invalid_Level);
+          Initial => Default_Level);
 
-      --  If not specified on the command-line, value of timeout is invalid
       Define_Switch
-         (Config, Timeout'Access,
-          Long_Switch => "--timeout=",
-          Initial => Invalid_Timeout);
+         (Config,
+          Timeout_Input'Access,
+          Long_Switch => "--timeout=");
 
       Define_Switch
          (Config,
@@ -1044,15 +1066,9 @@ ASCII.LF;
                     With_Help => False);
       end if;
 
-      if Level not in 0 .. 4 and Level /= Invalid_Level then
+      if Level not in 0 .. 4 then
          Abort_Msg (Config,
                     "error: wrong argument for --level",
-                    With_Help => False);
-      end if;
-
-      if Timeout < 0 and Timeout /= Invalid_Timeout then
-         Abort_Msg (Config,
-                    "error: wrong argument for --timeout",
                     With_Help => False);
       end if;
 
@@ -1092,7 +1108,9 @@ ASCII.LF;
       if Report_Input.all = "fail" or else Report_Input.all = "" then
          Report := GPR_Fail;
       elsif Report_Input.all = "all" then
-         Report := GPR_Verbose;
+         Report := GPR_All;
+      elsif Report_Input.all = "provers" then
+         Report := GPR_Provers;
       elsif Report_Input.all = "statistics" then
          Report := GPR_Statistics;
       else
@@ -1103,6 +1121,7 @@ ASCII.LF;
 
       Set_Proof_Mode (Config, Proof_Input.all, Proof,  Lazy);
       Set_CodePeer_Mode (Config, CodePeer_Input.all);
+      Set_Timeout (Config, Timeout_Input.all);
       Set_RTS_Dir (Config, Tree.Root_Project, RTS_Dir);
       Set_Target_Dir (Tree.Root_Project);
 
@@ -1419,6 +1438,34 @@ ASCII.LF;
          end;
       end if;
    end Set_Target_Dir;
+
+   -----------------
+   -- Set_Timeout --
+   -----------------
+
+   procedure Set_Timeout
+     (Config : Command_Line_Configuration;
+      Input  : String) is
+   begin
+      if Input = "auto" then
+         Timeout_Is_Auto := True;
+      elsif Input = "" then
+         null;
+      else
+         begin
+            Timeout := Integer'Value (Input);
+            if Timeout < 0 then
+               raise Constraint_Error;
+            end if;
+         exception
+            when Constraint_Error =>
+               Abort_Msg (Config,
+                          "error: wrong argument for --timeout, " &
+                            "must be auto or a non-negative integer",
+                          With_Help => False);
+         end;
+      end if;
+   end Set_Timeout;
 
    -----------------------
    -- SPARK_Report_File --

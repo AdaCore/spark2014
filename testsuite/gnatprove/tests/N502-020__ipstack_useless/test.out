@@ -1,6 +1,6 @@
 cascade.adb:1:20: warning: unused initial value of "X"
 cascade.adb:3:57: info: initialization of "Err" proved
-cascade.adb:7:18: medium: overflow check might fail (e.g. when Nid = -2147483648 and Buf = -1)
+cascade.adb:7:18: medium: overflow check might fail (e.g. when Buf = -1 and Nid = -2147483648)
 cascade.adb:13:07: warning: unused assignment
 cascade.adb:13:12: medium: overflow check might fail (e.g. when X = -1073741825)
 cascade.adb:14:04: warning: statement has no effect

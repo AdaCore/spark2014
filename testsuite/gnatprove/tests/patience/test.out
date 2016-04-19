@@ -1,149 +1,149 @@
 patience.adb:12:13: info: initialization of "I" proved
-patience.adb:13:10: info: loop invariant initialization proved
-patience.adb:13:10: info: loop invariant preservation proved
+patience.adb:13:10: info: loop invariant initialization proved (CVC4: 1 VC)
+patience.adb:13:10: info: loop invariant preservation proved (CVC4: 1 VC)
 patience.adb:13:33: info: initialization of "I" proved
-patience.adb:14:10: info: loop invariant initialization proved
-patience.adb:14:10: info: loop invariant preservation proved
+patience.adb:14:10: info: loop invariant initialization proved (CVC4: 1 VC)
+patience.adb:14:10: info: loop invariant preservation proved (CVC4: 1 VC)
 patience.adb:20:13: info: initialization of "Pred" proved
 patience.adb:22:31: info: initialization of "I" proved
-patience.adb:22:32: info: index check proved
-patience.adb:22:32: info: overflow check proved
-patience.adb:22:50: info: index check proved
-patience.adb:22:50: info: overflow check proved
-patience.adb:22:53: info: index check proved
-patience.adb:24:28: info: index check proved
-patience.adb:27:26: info: index check proved
-patience.adb:27:35: info: overflow check proved
-patience.adb:29:39: info: index check proved
+patience.adb:22:32: info: index check proved (CVC4: 1 VC)
+patience.adb:22:32: info: overflow check proved (CVC4: 1 VC)
+patience.adb:22:50: info: index check proved (CVC4: 1 VC)
+patience.adb:22:50: info: overflow check proved (CVC4: 1 VC)
+patience.adb:22:53: info: index check proved (CVC4: 1 VC)
+patience.adb:24:28: info: index check proved (CVC4: 1 VC)
+patience.adb:27:26: info: index check proved (CVC4: 1 VC)
+patience.adb:27:35: info: overflow check proved (CVC4: 1 VC)
+patience.adb:29:39: info: index check proved (CVC4: 1 VC)
 patience.adb:29:39: info: initialization of "I" proved
-patience.adb:30:34: info: index check proved
+patience.adb:30:34: info: index check proved (CVC4: 1 VC)
 patience.adb:30:34: info: initialization of "I" proved
 patience.adb:30:37: info: initialization of "StackISize" proved
-patience.adb:30:48: info: index check proved
-patience.adb:31:36: info: index check proved
+patience.adb:30:48: info: index check proved (altergo: 1 VC)
+patience.adb:31:36: info: index check proved (CVC4: 1 VC)
 patience.adb:31:36: info: initialization of "TopStackI" proved
-patience.adb:32:12: info: assertion proved
+patience.adb:32:12: info: assertion proved (CVC4: 1 VC)
 patience.adb:32:32: info: initialization of "TopStackI" proved
-patience.adb:33:12: info: assertion proved
-patience.adb:35:31: info: index check proved
+patience.adb:33:12: info: assertion proved (CVC4: 1 VC)
+patience.adb:35:31: info: index check proved (CVC4: 1 VC)
 patience.adb:35:31: info: initialization of "TopStackI" proved
-patience.adb:36:28: info: index check proved
-patience.adb:37:34: info: index check proved
-patience.adb:38:30: info: index check proved
-patience.adb:38:57: info: index check proved
-patience.adb:38:67: info: index check proved
-patience.adb:39:28: info: index check proved
-patience.adb:39:38: info: index check proved
-patience.adb:39:52: info: index check proved
-patience.adb:39:63: info: index check proved
-patience.adb:40:28: info: index check proved
+patience.adb:36:28: info: index check proved (CVC4: 1 VC)
+patience.adb:37:34: info: index check proved (CVC4: 1 VC)
+patience.adb:38:30: info: index check proved (CVC4: 1 VC)
+patience.adb:38:57: info: index check proved (CVC4: 1 VC)
+patience.adb:38:67: info: index check proved (CVC4: 1 VC)
+patience.adb:39:28: info: index check proved (CVC4: 1 VC)
+patience.adb:39:38: info: index check proved (CVC4: 1 VC)
+patience.adb:39:52: info: index check proved (CVC4: 1 VC)
+patience.adb:39:63: info: index check proved (CVC4: 1 VC)
+patience.adb:40:28: info: index check proved (CVC4: 1 VC)
 patience.adb:40:41: info: initialization of "I" proved
-patience.adb:40:64: info: index check proved
+patience.adb:40:64: info: index check proved (CVC4: 1 VC)
 patience.adb:40:77: info: initialization of "StackISize" proved
 patience.adb:42:20: info: initialization of "TopStackI" proved
 patience.adb:43:17: info: initialization of "I" proved
-patience.adb:43:19: info: overflow check proved
-patience.adb:46:16: info: index check proved
+patience.adb:43:19: info: overflow check proved (CVC4: 1 VC)
+patience.adb:46:16: info: index check proved (CVC4: 1 VC)
 patience.adb:46:21: info: initialization of "Idx" proved
 patience.adb:47:20: info: initialization of "Idx" proved
-patience.adb:47:24: info: overflow check proved
-patience.adb:47:24: info: range check proved
-patience.adb:48:15: info: index check proved
+patience.adb:47:24: info: overflow check proved (CVC4: 1 VC)
+patience.adb:47:24: info: range check proved (CVC4: 1 VC)
+patience.adb:48:15: info: index check proved (CVC4: 1 VC)
 patience.adb:48:20: info: initialization of "Idx" proved
 patience.adb:48:23: info: initialization of "Pred" proved
-patience.adb:48:23: info: range check proved
+patience.adb:48:23: info: range check proved (CVC4: 1 VC)
 patience.adb:49:10: info: initialization of "I" proved
-patience.adb:53:40: info: range check proved
-patience.adb:54:26: info: index check proved
+patience.adb:53:40: info: range check proved (CVC4: 1 VC)
+patience.adb:54:26: info: index check proved (CVC4: 1 VC)
 patience.adb:54:29: info: initialization of "I" proved
-patience.adb:55:22: info: index check proved
+patience.adb:55:22: info: index check proved (CVC4: 1 VC)
 patience.adb:55:28: info: initialization of "I" proved
 patience.adb:55:31: info: initialization of "Idx" proved
-patience.adb:55:31: info: range check proved
-patience.adb:56:24: info: index check proved
+patience.adb:55:31: info: range check proved (CVC4: 1 VC)
+patience.adb:56:24: info: index check proved (CVC4: 1 VC)
 patience.adb:56:29: info: initialization of "Idx" proved
 patience.adb:56:32: info: initialization of "I" proved
-patience.adb:56:32: info: range check proved
-patience.adb:57:25: info: index check proved
+patience.adb:56:32: info: range check proved (CVC4: 1 VC)
+patience.adb:57:25: info: index check proved (CVC4: 1 VC)
 patience.adb:57:30: info: initialization of "Idx" proved
-patience.adb:62:40: info: index check proved
+patience.adb:62:40: info: index check proved (CVC4: 1 VC)
 patience.adb:62:40: info: initialization of "I" proved
-patience.adb:63:26: info: index check proved
+patience.adb:63:26: info: index check proved (CVC4: 1 VC)
 patience.adb:63:29: info: initialization of "I" proved
 patience.adb:63:32: info: initialization of "StackISize" proved
-patience.adb:63:43: info: range check proved
-patience.adb:64:22: info: index check proved
-patience.adb:64:25: info: index check proved
+patience.adb:63:43: info: range check proved (CVC4: 1 VC)
+patience.adb:64:22: info: index check proved (CVC4: 1 VC)
+patience.adb:64:25: info: index check proved (CVC4: 1 VC)
 patience.adb:64:37: info: initialization of "I" proved
 patience.adb:64:37: info: initialization of "StackISize" proved
 patience.adb:64:40: info: initialization of "Idx" proved
-patience.adb:64:40: info: range check proved
-patience.adb:65:24: info: index check proved
+patience.adb:64:40: info: range check proved (CVC4: 1 VC)
+patience.adb:65:24: info: index check proved (CVC4: 1 VC)
 patience.adb:65:29: info: initialization of "Idx" proved
 patience.adb:65:32: info: initialization of "I" proved
-patience.adb:65:32: info: range check proved
-patience.adb:66:25: info: index check proved
+patience.adb:65:32: info: range check proved (CVC4: 1 VC)
+patience.adb:66:25: info: index check proved (CVC4: 1 VC)
 patience.adb:66:30: info: initialization of "Idx" proved
 patience.adb:66:33: info: initialization of "StackISize" proved
-patience.adb:70:07: info: assertion proved
+patience.adb:70:07: info: assertion proved (CVC4: 1 VC)
 patience.adb:80:13: medium: assertion might fail, cannot prove S.StackSizes(I) >= 1
-patience.adb:80:26: info: index check proved
-patience.adb:82:07: info: assertion proved
-patience.adb:83:26: info: index check proved
-patience.adb:86:45: info: index check proved
-patience.adb:87:30: info: index check proved
-patience.adb:87:33: info: index check proved
-patience.adb:87:49: info: index check proved
-patience.adb:87:52: info: index check proved
+patience.adb:80:26: info: index check proved (CVC4: 1 VC)
+patience.adb:82:07: info: assertion proved (CVC4: 1 VC)
+patience.adb:83:26: info: index check proved (CVC4: 1 VC)
+patience.adb:86:45: info: index check proved (CVC4: 1 VC)
+patience.adb:87:30: info: index check proved (CVC4: 1 VC)
+patience.adb:87:33: info: index check proved (CVC4: 1 VC)
+patience.adb:87:49: info: index check proved (CVC4: 1 VC)
+patience.adb:87:52: info: index check proved (CVC4: 1 VC)
 patience.adb:90:07: medium: assertion might fail
-patience.adb:92:24: info: index check proved
-patience.adb:94:25: info: index check proved
-patience.adb:94:50: info: index check proved
-patience.adb:94:60: info: index check proved
-patience.adb:95:32: info: index check proved
-patience.adb:95:42: info: index check proved
-patience.adb:95:47: info: index check proved
-patience.adb:95:58: info: index check proved
-patience.adb:100:44: info: index check proved
-patience.adb:101:32: info: index check proved
-patience.adb:101:40: info: index check proved
-patience.adb:101:45: info: index check proved
-patience.adb:103:32: info: index check proved
-patience.adb:103:40: info: index check proved
-patience.adb:103:45: info: index check proved
-patience.adb:107:45: info: index check proved
-patience.adb:108:31: info: overflow check proved
-patience.adb:108:50: info: index check proved
-patience.adb:109:28: info: index check proved
-patience.adb:109:31: info: index check proved
-patience.adb:109:45: info: index check proved
-patience.adb:109:48: info: index check proved
-patience.adb:113:45: info: index check proved
-patience.adb:114:31: info: overflow check proved
-patience.adb:114:50: info: index check proved
-patience.adb:115:29: info: index check proved
-patience.adb:115:37: info: index check proved
-patience.adb:115:40: info: index check proved
-patience.adb:115:57: info: index check proved
-patience.adb:115:65: info: index check proved
-patience.adb:115:68: info: index check proved
-patience.adb:119:21: info: index check proved
-patience.adb:122:21: info: index check proved
-patience.adb:125:25: info: index check proved
-patience.adb:125:48: info: index check proved
-patience.adb:128:24: info: index check proved
-patience.adb:128:31: info: index check proved
-patience.adb:128:46: info: index check proved
-patience.adb:130:31: info: index check proved
-patience.adb:132:32: info: index check proved
-patience.adb:132:39: info: index check proved
-patience.adb:132:56: info: index check proved
-patience.adb:146:10: info: loop invariant initialization proved
-patience.adb:146:10: info: loop invariant preservation proved
+patience.adb:92:24: info: index check proved (CVC4: 2 VC)
+patience.adb:94:25: info: index check proved (CVC4: 2 VC)
+patience.adb:94:50: info: index check proved (CVC4: 1 VC)
+patience.adb:94:60: info: index check proved (CVC4: 1 VC)
+patience.adb:95:32: info: index check proved (CVC4: 1 VC)
+patience.adb:95:42: info: index check proved (CVC4: 1 VC)
+patience.adb:95:47: info: index check proved (CVC4: 1 VC)
+patience.adb:95:58: info: index check proved (CVC4: 1 VC)
+patience.adb:100:44: info: index check proved (CVC4: 1 VC)
+patience.adb:101:32: info: index check proved (CVC4: 1 VC)
+patience.adb:101:40: info: index check proved (CVC4: 1 VC)
+patience.adb:101:45: info: index check proved (CVC4: 1 VC)
+patience.adb:103:32: info: index check proved (CVC4: 1 VC)
+patience.adb:103:40: info: index check proved (CVC4: 1 VC)
+patience.adb:103:45: info: index check proved (CVC4: 1 VC)
+patience.adb:107:45: info: index check proved (CVC4: 1 VC)
+patience.adb:108:31: info: overflow check proved (CVC4: 1 VC)
+patience.adb:108:50: info: index check proved (CVC4: 1 VC)
+patience.adb:109:28: info: index check proved (CVC4: 1 VC)
+patience.adb:109:31: info: index check proved (CVC4: 1 VC)
+patience.adb:109:45: info: index check proved (CVC4: 1 VC)
+patience.adb:109:48: info: index check proved (CVC4: 1 VC)
+patience.adb:113:45: info: index check proved (CVC4: 1 VC)
+patience.adb:114:31: info: overflow check proved (CVC4: 1 VC)
+patience.adb:114:50: info: index check proved (CVC4: 1 VC)
+patience.adb:115:29: info: index check proved (CVC4: 1 VC)
+patience.adb:115:37: info: index check proved (CVC4: 1 VC)
+patience.adb:115:40: info: index check proved (CVC4: 1 VC)
+patience.adb:115:57: info: index check proved (CVC4: 1 VC)
+patience.adb:115:65: info: index check proved (CVC4: 1 VC)
+patience.adb:115:68: info: index check proved (CVC4: 1 VC)
+patience.adb:119:21: info: index check proved (CVC4: 2 VC)
+patience.adb:122:21: info: index check proved (CVC4: 1 VC)
+patience.adb:125:25: info: index check proved (CVC4: 1 VC)
+patience.adb:125:48: info: index check proved (CVC4: 1 VC)
+patience.adb:128:24: info: index check proved (CVC4: 1 VC)
+patience.adb:128:31: info: index check proved (CVC4: 1 VC)
+patience.adb:128:46: info: index check proved (CVC4: 1 VC)
+patience.adb:130:31: info: index check proved (CVC4: 1 VC)
+patience.adb:132:32: info: index check proved (CVC4: 1 VC)
+patience.adb:132:39: info: index check proved (CVC4: 1 VC)
+patience.adb:132:56: info: index check proved (CVC4: 1 VC)
+patience.adb:146:10: info: loop invariant initialization proved (CVC4: 1 VC)
+patience.adb:146:10: info: loop invariant preservation proved (CVC4: 1 VC)
 patience.adb:146:33: info: initialization of "S.NumElts" proved
-patience.adb:146:47: info: overflow check proved
-patience.adb:147:10: info: loop invariant initialization proved
-patience.adb:147:10: info: loop invariant preservation proved
+patience.adb:146:47: info: overflow check proved (CVC4: 1 VC)
+patience.adb:147:10: info: loop invariant initialization proved (CVC4: 1 VC)
+patience.adb:147:10: info: loop invariant preservation proved (CVC4: 1 VC)
 patience.adb:147:37: info: initialization of "S.NumElts" proved
 patience.adb:147:37: info: initialization of "S.NumStacks" proved
 patience.adb:147:37: info: initialization of "S.PosHeight" proved
@@ -152,7 +152,7 @@ patience.adb:147:37: info: initialization of "S.Preds" proved
 patience.adb:147:37: info: initialization of "S.StackSizes" proved
 patience.adb:147:37: info: initialization of "S.Stacks" proved
 patience.adb:147:37: info: initialization of "S.Values" proved
-patience.adb:148:10: info: precondition proved
+patience.adb:148:10: info: precondition proved (CVC4: 1 VC)
 patience.adb:148:28: info: initialization of "S.NumElts" proved
 patience.adb:148:28: info: initialization of "S.NumStacks" proved
 patience.adb:148:28: info: initialization of "S.PosHeight" proved
@@ -169,65 +169,65 @@ patience.adb:150:14: info: initialization of "S.Preds" proved
 patience.adb:150:14: info: initialization of "S.StackSizes" proved
 patience.adb:150:14: info: initialization of "S.Stacks" proved
 patience.adb:150:14: info: initialization of "S.Values" proved
-patience.ads:45:37: info: length check proved
-patience.ads:47:38: info: length check proved
-patience.ads:48:39: info: length check proved
-patience.ads:48:50: info: length check proved
-patience.ads:49:38: info: length check proved
-patience.ads:50:38: info: length check proved
-patience.ads:51:38: info: length check proved
-patience.ads:63:26: info: index check proved
-patience.ads:66:26: info: index check proved
-patience.ads:69:45: info: index check proved
-patience.ads:70:30: info: index check proved
-patience.ads:70:33: info: index check proved
-patience.ads:70:49: info: index check proved
-patience.ads:70:52: info: index check proved
-patience.ads:75:24: info: index check proved
-patience.ads:77:25: info: index check proved
-patience.ads:77:50: info: index check proved
-patience.ads:77:60: info: index check proved
-patience.ads:78:32: info: index check proved
-patience.ads:78:42: info: index check proved
-patience.ads:78:47: info: index check proved
-patience.ads:78:58: info: index check proved
-patience.ads:83:44: info: index check proved
-patience.ads:84:32: info: index check proved
-patience.ads:84:40: info: index check proved
-patience.ads:84:45: info: index check proved
-patience.ads:86:32: info: index check proved
-patience.ads:86:40: info: index check proved
-patience.ads:86:45: info: index check proved
-patience.ads:90:45: info: index check proved
-patience.ads:91:31: info: overflow check proved
-patience.ads:91:50: info: index check proved
-patience.ads:92:28: info: index check proved
-patience.ads:92:31: info: index check proved
-patience.ads:92:45: info: index check proved
-patience.ads:92:48: info: index check proved
-patience.ads:96:45: info: index check proved
-patience.ads:97:31: info: overflow check proved
-patience.ads:97:50: info: index check proved
-patience.ads:98:29: info: index check proved
-patience.ads:98:37: info: index check proved
-patience.ads:98:40: info: index check proved
-patience.ads:98:57: info: index check proved
-patience.ads:98:65: info: index check proved
-patience.ads:98:68: info: index check proved
-patience.ads:102:21: info: index check proved
-patience.ads:105:21: info: index check proved
-patience.ads:108:25: info: index check proved
-patience.ads:108:48: info: index check proved
-patience.ads:111:24: info: index check proved
-patience.ads:111:31: info: index check proved
-patience.ads:111:46: info: index check proved
-patience.ads:113:31: info: index check proved
-patience.ads:115:32: info: index check proved
-patience.ads:115:39: info: index check proved
-patience.ads:115:56: info: index check proved
-patience.ads:125:14: info: postcondition proved
-patience.ads:125:43: info: index check proved
-patience.ads:130:14: info: postcondition proved
+patience.ads:45:37: info: length check proved (CVC4: 1 VC)
+patience.ads:47:38: info: length check proved (CVC4: 1 VC)
+patience.ads:48:39: info: length check proved (CVC4: 1 VC)
+patience.ads:48:50: info: length check proved (CVC4: 1 VC)
+patience.ads:49:38: info: length check proved (CVC4: 1 VC)
+patience.ads:50:38: info: length check proved (CVC4: 1 VC)
+patience.ads:51:38: info: length check proved (CVC4: 1 VC)
+patience.ads:63:26: info: index check proved (CVC4: 1 VC)
+patience.ads:66:26: info: index check proved (CVC4: 1 VC)
+patience.ads:69:45: info: index check proved (CVC4: 1 VC)
+patience.ads:70:30: info: index check proved (CVC4: 1 VC)
+patience.ads:70:33: info: index check proved (CVC4: 1 VC)
+patience.ads:70:49: info: index check proved (CVC4: 1 VC)
+patience.ads:70:52: info: index check proved (CVC4: 1 VC)
+patience.ads:75:24: info: index check proved (CVC4: 2 VC)
+patience.ads:77:25: info: index check proved (CVC4: 2 VC)
+patience.ads:77:50: info: index check proved (CVC4: 1 VC)
+patience.ads:77:60: info: index check proved (CVC4: 1 VC)
+patience.ads:78:32: info: index check proved (CVC4: 1 VC)
+patience.ads:78:42: info: index check proved (CVC4: 1 VC)
+patience.ads:78:47: info: index check proved (CVC4: 1 VC)
+patience.ads:78:58: info: index check proved (CVC4: 1 VC)
+patience.ads:83:44: info: index check proved (CVC4: 1 VC)
+patience.ads:84:32: info: index check proved (CVC4: 1 VC)
+patience.ads:84:40: info: index check proved (CVC4: 1 VC)
+patience.ads:84:45: info: index check proved (CVC4: 1 VC)
+patience.ads:86:32: info: index check proved (CVC4: 1 VC)
+patience.ads:86:40: info: index check proved (CVC4: 1 VC)
+patience.ads:86:45: info: index check proved (CVC4: 1 VC)
+patience.ads:90:45: info: index check proved (CVC4: 1 VC)
+patience.ads:91:31: info: overflow check proved (CVC4: 1 VC)
+patience.ads:91:50: info: index check proved (CVC4: 1 VC)
+patience.ads:92:28: info: index check proved (CVC4: 1 VC)
+patience.ads:92:31: info: index check proved (CVC4: 1 VC)
+patience.ads:92:45: info: index check proved (CVC4: 1 VC)
+patience.ads:92:48: info: index check proved (CVC4: 1 VC)
+patience.ads:96:45: info: index check proved (CVC4: 1 VC)
+patience.ads:97:31: info: overflow check proved (CVC4: 1 VC)
+patience.ads:97:50: info: index check proved (CVC4: 1 VC)
+patience.ads:98:29: info: index check proved (CVC4: 1 VC)
+patience.ads:98:37: info: index check proved (CVC4: 1 VC)
+patience.ads:98:40: info: index check proved (CVC4: 1 VC)
+patience.ads:98:57: info: index check proved (CVC4: 1 VC)
+patience.ads:98:65: info: index check proved (CVC4: 1 VC)
+patience.ads:98:68: info: index check proved (CVC4: 1 VC)
+patience.ads:102:21: info: index check proved (CVC4: 2 VC)
+patience.ads:105:21: info: index check proved (CVC4: 1 VC)
+patience.ads:108:25: info: index check proved (CVC4: 1 VC)
+patience.ads:108:48: info: index check proved (CVC4: 1 VC)
+patience.ads:111:24: info: index check proved (CVC4: 1 VC)
+patience.ads:111:31: info: index check proved (CVC4: 1 VC)
+patience.ads:111:46: info: index check proved (CVC4: 1 VC)
+patience.ads:113:31: info: index check proved (CVC4: 1 VC)
+patience.ads:115:32: info: index check proved (CVC4: 1 VC)
+patience.ads:115:39: info: index check proved (CVC4: 1 VC)
+patience.ads:115:56: info: index check proved (CVC4: 1 VC)
+patience.ads:125:14: info: postcondition proved (CVC4: 1 VC)
+patience.ads:125:43: info: index check proved (CVC4: 1 VC)
+patience.ads:130:14: info: postcondition proved (CVC4: 1 VC)
 test_patience.adb:7:14: warning: subprogram "PrintCardStack" has no effect
 test_patience.adb:9:07: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:9:07: warning: no Global contract available for "Put_Line"
@@ -239,7 +239,7 @@ test_patience.adb:12:10: warning: assuming "Put" has no effect on global items
 test_patience.adb:12:10: warning: no Global contract available for "Put"
 test_patience.adb:12:18: low: range check might fail, in call inlined at test_patience.adb:51
 test_patience.adb:12:31: info: initialization of "Input" proved, in call inlined at test_patience.adb:51
-test_patience.adb:12:33: info: index check proved, in call inlined at test_patience.adb:51
+test_patience.adb:12:33: info: index check proved (CVC4: 1 VC), in call inlined at test_patience.adb:51
 test_patience.adb:14:07: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:14:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:15:07: warning: assuming "Put_Line" has no effect on global items
@@ -283,12 +283,12 @@ test_patience.adb:36:42: info: initialization of "Idx" proved, in call inlined a
 test_patience.adb:36:47: low: range check might fail, in call inlined at test_patience.adb:53
 test_patience.adb:36:55: low: range check might fail, in call inlined at test_patience.adb:53
 test_patience.adb:36:68: info: initialization of "S.Values" proved, in call inlined at test_patience.adb:53
-test_patience.adb:36:77: info: index check proved, in call inlined at test_patience.adb:53
+test_patience.adb:36:77: info: index check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
 test_patience.adb:38:13: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:38:13: warning: no Global contract available for "Put_Line"
 test_patience.adb:41:07: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:41:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:50:04: warning: assuming "Put_Line" has no effect on global items
 test_patience.adb:50:04: warning: no Global contract available for "Put_Line"
-test_patience.adb:52:09: info: precondition proved
+test_patience.adb:52:09: info: precondition proved (CVC4: 1 VC)
 test_patience.adb:52:18: info: initialization of "Input" proved

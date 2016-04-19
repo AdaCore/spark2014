@@ -139,9 +139,8 @@ is
       Callsite             : Node_Id := Empty)
    with Pre  => Ekind (Subprogram) in E_Entry | E_Task_Type | Subprogram_Kind
                   and then Has_Depends (Subprogram),
-        Post => (for all C in Depends.Iterate =>
-                   (for all D of Dependency_Maps.Element (C) =>
-                      Present (D)));
+        Post => (for all Inputs of Depends =>
+                   (for all Input of Inputs => Present (Input)));
    --  Return the dependency relation of the given Subprogram, as viewed from
    --  the given Scope. The dependency relation is represented as a map from
    --  entities to sets of entities.
@@ -313,11 +312,6 @@ is
    --  Return the set of entire variables which are introduced in a
    --  quantifier under node N.
 
-   function Is_Null_Record (E : Entity_Id) return Boolean
-   with Pre => Nkind (E) in N_Entity;
-   --  Checks if E is a record that contains no fields at all. If E is not
-   --  a record we return False.
-
    function Flatten_Variable
      (F     : Flow_Id;
       Scope : Flow_Scope)
@@ -330,18 +324,18 @@ is
    --  parts. For example, we might take X.Y and produce X.Y.A and X.Y.B,
    --  or just X.Y (if we can't see the private part of X.Y's type).
    --
-   --  For magic strings and the null export, we simply return a set
-   --  containing just that.
+   --  For magic strings and the null export, we simply return a set containing
+   --  just that.
    --
-   --  Note in cases where we are dealing with a null record this function
-   --  returns the empty set, but in general you can expect at least one
-   --  element in the result.
+   --  For null records we return the empty set (but in general you can expect
+   --  at least one element in the result).
    --
-   --  For private types we just return F. For private types with
-   --  discriminant C we return F.C and F'Private_Part.
+   --  For private types we just return F. For private types with discriminant
+   --  C we return F.C and F'Private_Part.
    --
-   --  For tagged types T we just return all components as usual. For
-   --  classwide types we also return T'Extension and T'Tag.
+   --  For tagged types T we just return all components as usual. For classwide
+   --  types we also return T'Extension and T'Tag. ??? not true for T'Tag
+   --
    --  @param F is the Flow_Id whose parts we need to gather
    --  @param Scope is the scope relative to which we will return the parts
    --  @return all parts of F that are visible from Scope.
@@ -391,8 +385,7 @@ is
    with Pre  => Is_Valid_Assignment_Target (N),
         Post => Map_Root.Kind in Direct_Mapping | Record_Field and then
                 (for all X of Seq => Nkind (X) in Valid_Assignment_Kinds);
-   --  Checks the assignment target N and determines a few basic
-   --  properties.
+   --  Checks the assignment target N and determines a few basic properties
    --
    --  * Partial_Definition: the assignment to N touches only a few elements
    --                        of a larger array.
@@ -411,10 +404,10 @@ is
       Vars_Proof           : out Flow_Id_Sets.Set;
       Partial_Definition   : out Boolean)
    with Pre  => Is_Valid_Assignment_Target (N),
-        Post => (if not Is_Null_Record (Etype (N))
+        Post => (if not Is_Null_Record_Type (Etype (N))
                  then not Vars_Defined.Is_Empty);
    --  Process the LHS of an assignment statement or an [in] out parameter,
-   --  establising the sets of variables used. For example, assume we have
+   --  establishing the sets of variables used. For example, assume we have
    --  a function Foo:
    --     function Foo (X : Integer) return Integer
    --     with Global => (Proof_In => Y);
@@ -648,7 +641,7 @@ is
                             E_Abstract_State;
    --  Checks if extensions are visible for this particular entity. Note
    --  that if we give it a function, then we always return false, since
-   --  this refers to the return of the function, not if the subprogram's
+   --  this refers to the return of the function, not to the subprogram's
    --  aspect.
    --
    --  To check if a subprogram has the aspect, use the function

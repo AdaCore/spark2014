@@ -54,10 +54,12 @@ begin
          end loop;
       end Third_Task;
    begin
-      Release_Time := Ada.Real_Time.Clock + Period;
+      Release_Time := Ada.Real_Time.Clock;
+      Release_Time := Release_Time + Period;
       delay until Release_Time;
       Put_Line("This is in the block body.");
-      Release_Time := Ada.Real_Time.Clock + Period;
+      Release_Time := Ada.Real_Time.Clock;
+      Release_Time := Release_Time + Period;
       delay until Release_Time;
       Put_Line("This is also in the block body.");
    end; -- of declare

@@ -93,6 +93,27 @@ an *entire object*.
 Preconditions and Postconditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. centered:: **Legality Rules**
+
+.. _tu-sf-preconditions_and_postconditions-01:
+
+1. The corresponding expression for an inherited Pre'Class or Post'Class of an
+   inherited subprogram S of a tagged type T shall not call a non-inherited
+   primitive function of type T.
+
+.. _etu-preconditions_and_postconditions:
+
+[The notion of corresponding expression is defined in Ada RM 6.1.1(18/4) as
+follows: If a Pre'Class or Post'Class aspect is specified for a primitive
+subprogram S of a tagged type T, or such an aspect defaults to True, then a
+corresponding expression also applies to the corresponding primitive subprogram
+S of each descendant of T.]
+
+[The rationale for this rule is that, otherwise, if the contract applicable to
+an inherited subprogram changes due to called subprograms in its contract being
+overridden, then the inherited subprogram would have to be re-verified for the
+derived type. This rule forbids the cases that require re-verification.]
+
 .. centered:: **Verification Rules**
 
 For a call on a nondispatching operation,

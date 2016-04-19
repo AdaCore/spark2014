@@ -782,8 +782,7 @@ package body Flow.Analysis.Antialiasing is
    is
    begin
 
-      --  Check out and in out parameters against other parameters and
-      --  globals.
+      --  Check out and in out parameters against other parameters and globals
 
       declare
          P      : Node_Id;

@@ -6,7 +6,7 @@ trains.adb:33:10: info: loop invariant initialization proved
 trains.adb:33:10: info: loop invariant preservation proved
 trains.adb:35:47: info: index check proved
 trains.adb:57:10: info: assertion proved
-trains.adb:58:25: medium: assertion might fail, cannot prove (Previous_Tracks_On_Orange_Or_Red) (e.g. when Cur_Num_Trains = 1 and Track_Signals = (1 => 2, others => 0))
+trains.adb:58:25: medium: assertion might fail, cannot prove (Previous_Tracks_On_Orange_Or_Red)
 trains.adb:59:10: info: assertion proved
 trains.adb:65:10: info: assertion proved
 trains.adb:72:10: info: assertion proved
@@ -20,8 +20,8 @@ trains.adb:89:13: info: loop invariant initialization proved
 trains.adb:89:13: info: loop invariant preservation proved
 trains.adb:94:32: info: range check proved
 trains.adb:95:52: info: index check proved
-trains.adb:100:25: medium: assertion might fail, cannot prove (Occupied_Tracks_On_Red)
-trains.adb:102:10: medium: assertion might fail
+trains.adb:100:25: medium: assertion might fail, cannot prove (Occupied_Tracks_On_Red) (e.g. when Cur_Num_Trains = 1 and Track_Signals = (2 => 1, 8 => 2, others => 0))
+trains.adb:102:10: medium: assertion might fail (e.g. when Track_Signals = (1 => 2, others => 0))
 trains.adb:103:21: info: range check proved
 trains.adb:105:50: info: index check proved
 trains.adb:106:36: info: index check proved
@@ -43,7 +43,7 @@ trains.adb:144:82: info: range check proved
 trains.adb:146:19: info: loop invariant initialization proved
 trains.adb:146:19: info: loop invariant preservation proved
 trains.adb:153:16: info: assertion proved
-trains.adb:154:31: medium: assertion might fail, cannot prove (Previous_Tracks_On_Orange_Or_Red)
+trains.adb:154:16: info: assertion proved
 trains.adb:155:16: info: assertion proved
 trains.ads:28:06: info: length check proved
 trains.ads:47:06: info: length check proved
@@ -73,4 +73,4 @@ trains.ads:151:51: info: index check proved
 trains.ads:152:31: info: index check proved
 trains.ads:152:65: info: index check proved
 trains.ads:220:07: info: initialization of "Result" proved
-trains.ads:228:14: info: postcondition proved
+trains.ads:228:14: medium: postcondition might fail

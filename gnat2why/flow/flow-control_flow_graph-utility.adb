@@ -24,7 +24,6 @@
 with Flow_Utility; use Flow_Utility;
 with Sem_Type;     use Sem_Type;
 with Sinfo;        use Sinfo;
-with Why;
 
 package body Flow.Control_Flow_Graph.Utility is
 
@@ -280,28 +279,26 @@ package body Flow.Control_Flow_Graph.Utility is
    is
       Subprogram : constant Entity_Id  := Get_Called_Entity (Call_Vertex);
       Scope      : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
+
       Ext_Relevant_To_Formal : constant Boolean :=
         Has_Extensions_Visible (Subprogram) or else
         Is_Class_Wide_Type (Get_Type (Formal, Scope));
 
-      A          : V_Attributes        := Null_Attributes;
-      Tmp_Used   : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
-      Unused     : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
+      A        : V_Attributes     := Null_Attributes;
+      Tmp_Used : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      Unused   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
    begin
-      A.Is_Parameter                  := True;
-      A.Is_Discr_Or_Bounds_Parameter  := Discriminants_Or_Bounds_Only;
-      A.Subprograms_Called            := Sub_Called;
-      A.Call_Vertex                   := Direct_Mapping_Id (Call_Vertex);
-      A.Parameter_Actual              := Direct_Mapping_Id (Actual);
-      A.Parameter_Formal              := Direct_Mapping_Id (Formal);
-      A.Loops                         := Loops;
-      A.Error_Location                := E_Loc;
+      A.Is_Parameter                 := True;
+      A.Is_Discr_Or_Bounds_Parameter := Discriminants_Or_Bounds_Only;
+      A.Subprograms_Called           := Sub_Called;
+      A.Call_Vertex                  := Direct_Mapping_Id (Call_Vertex);
+      A.Parameter_Actual             := Direct_Mapping_Id (Actual);
+      A.Parameter_Formal             := Direct_Mapping_Id (Formal);
+      A.Loops                        := Loops;
+      A.Error_Location               := E_Loc;
 
       if In_Vertex then
-         pragma Assert
-           (Ekind (Formal) in E_In_Parameter | E_In_Out_Parameter or else
-              Discriminants_Or_Bounds_Only);
-
          Tmp_Used := Get_Variable_Set
            (Actual,
             Scope                => Scope,
@@ -315,18 +312,15 @@ package body Flow.Control_Flow_Graph.Utility is
               or else Is_Record_Discriminant (F)
             then
                A.Variables_Used.Include (F);
-               A.Variables_Explicitly_Used.Include (F);
             end if;
             if not Is_Bound (F) and then Has_Bounds (F, Scope) then
                A.Variables_Used.Include (F'Update (Facet => The_Bounds));
-               A.Variables_Explicitly_Used.Include
-                 (F'Update (Facet => The_Bounds));
             end if;
          end loop;
+
+         A.Variables_Explicitly_Used := A.Variables_Used;
+
       else
-         pragma Assert
-           (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter);
-         pragma Assert (not Discriminants_Or_Bounds_Only);
          declare
             Partial    : Boolean;
             Unused_Vc  : Boolean;
@@ -344,9 +338,8 @@ package body Flow.Control_Flow_Graph.Utility is
                Map_Root           => Map_Root,
                Seq                => Unused_Seq);
 
-            --  We have an unconditional addition to folded_function_checks
-            --  for each actual anyway, so we can ignore the proof
-            --  variables here.
+            --  We have an unconditional addition to folded_function_checks for
+            --  each actual anyway, so we can ignore the proof variables here.
             Untangle_Assignment_Target
               (N                    => Actual,
                Scope                => Scope,
@@ -356,16 +349,20 @@ package body Flow.Control_Flow_Graph.Utility is
                Vars_Used            => A.Variables_Explicitly_Used,
                Vars_Proof           => Unused,
                Partial_Definition   => Partial);
+
             if Ext_Relevant_To_Formal
               and then Extensions_Visible (Map_Root, Scope)
             then
                A.Variables_Defined.Include
                  (Map_Root'Update (Facet => Extension_Part));
             end if;
+
             A.Variables_Used := A.Variables_Explicitly_Used;
+
             if Partial then
                A.Variables_Used.Union (A.Variables_Defined);
             end if;
+
          end;
       end if;
 
@@ -412,15 +409,14 @@ package body Flow.Control_Flow_Graph.Utility is
                  Is_Record_Discriminant (F)
                then
                   A.Variables_Used.Include (F);
-                  A.Variables_Explicitly_Used.Include (F);
                end if;
 
                if not Is_Bound (F) and then Has_Bounds (F, Scope) then
                   A.Variables_Used.Include (F'Update (Facet => The_Bounds));
-                  A.Variables_Explicitly_Used.Include
-                    (F'Update (Facet => The_Bounds));
                end if;
             end loop;
+
+            A.Variables_Explicitly_Used := A.Variables_Used;
 
          when Out_View =>
             --  We do not need untangle_assignment_target as we only
@@ -457,7 +453,6 @@ package body Flow.Control_Flow_Graph.Utility is
       I     : constant Flow_Id    := Change_Variant (Implicit, Normal_Use);
       A     : V_Attributes        := Null_Attributes;
       Scope : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
-      Tmp   : Flow_Id_Sets.Set;
    begin
       A.Is_Implicit_Parameter := True;
       A.Call_Vertex           := Direct_Mapping_Id (Call_Vertex);
@@ -467,17 +462,19 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case Implicit.Variant is
          when In_View =>
-            Tmp := Flatten_Variable (I, Scope);
-            for F of Tmp loop
-               A.Variables_Used.Include (F);
-               A.Variables_Explicitly_Used.Include (F);
-            end loop;
+            declare
+               Implicit_Flat : constant Flow_Id_Sets.Set :=
+                 Flatten_Variable (I, Scope);
+            begin
+               pragma Assert (A.Variables_Used.Is_Empty);
+               pragma Assert (A.Variables_Explicitly_Used.Is_Empty);
+               A.Variables_Used := Implicit_Flat;
+               A.Variables_Explicitly_Used := Implicit_Flat;
+            end;
 
          when Out_View =>
-            Tmp := Flatten_Variable (I, Scope);
-            for F of Tmp loop
-               A.Variables_Defined.Include (F);
-            end loop;
+            pragma Assert (A.Variables_Defined.Is_Empty);
+            A.Variables_Defined := Flatten_Variable (I, Scope);
 
          when others =>
             raise Program_Error;
@@ -606,7 +603,7 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Variables_Explicitly_Used := A.Variables_Used;
 
          when others =>
-            raise Why.Unexpected_Node;
+            raise Program_Error;
       end case;
 
       A.Is_Proof := Refers_To_Ghost (FA, A);

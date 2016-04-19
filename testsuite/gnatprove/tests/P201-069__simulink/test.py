@@ -1,3 +1,4 @@
 from test_support import *
 
-prove_all()
+# No counter-examples as there are platform issues in biasdivide
+prove_all(opt=["--no-counterexample"],prover=["cvc4"])

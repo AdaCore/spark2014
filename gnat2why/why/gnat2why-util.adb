@@ -25,7 +25,6 @@
 
 with Ada.Strings;            use Ada.Strings;
 with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
-with Atree;                  use Atree;
 with Eval_Fat;
 with Flow_Types;
 with Flow_Utility;
@@ -282,8 +281,10 @@ package body Gnat2Why.Util is
       --  Currently only generate values for scalar, record, and array
       --  variables in counterexamples.
 
-      if not Comes_From_Source (E) and then
-        not Comes_From_Source (Parent (E))
+      if (not Comes_From_Source (E) and then
+            not Comes_From_Source (Parent (E)))
+          or else
+            (Is_Floating_Point_Type (Etype (E)))
       then
          return Name_Id_Sets.Empty_Set;
       end if;
@@ -326,29 +327,13 @@ package body Gnat2Why.Util is
    ------------------
 
    procedure Add_To_Graph (Map : in out Node_Graphs.Map; From, To : Node_Id) is
-
-      procedure Add_To_Set (Ignored : Node_Id; Set : in out Node_Sets.Set);
-      --  Add entity To to set Set
-
-      ----------------
-      -- Add_To_Set --
-      ----------------
-
-      procedure Add_To_Set (Ignored : Node_Id; Set : in out Node_Sets.Set)
-      is
-         pragma Unreferenced (Ignored);
-      begin
-         Set.Include (To);
-      end Add_To_Set;
-
       Position : Node_Graphs.Cursor;
       Ignored  : Boolean;
 
-   --  Start of processing for Add_To_Graph
-
    begin
+      --  Insert an empty set or do nothing
       Map.Insert (Key => From, Position => Position, Inserted => Ignored);
-      Map.Update_Element (Position, Add_To_Set'Access);
+      Map (Position).Include (To);
    end Add_To_Graph;
 
    ------------------------
@@ -492,6 +477,8 @@ package body Gnat2Why.Util is
          end if;
       end Is_Variable_Reference;
 
+   --  Start of processing for Expression_Depends_On_Variables
+
    begin
       Search_Variable_Reference (N);
       return Variable_Reference_Seen;
@@ -536,41 +523,34 @@ package body Gnat2Why.Util is
       use Node_Sets;
       Result   : Set;
       Work_Set : Set;
-      First    : Node_Sets.Cursor;
       Cur_Node : Node_Id;
+      Cur_Ptr  : Node_Graphs.Cursor;
 
-      procedure Update_Work_Set (Ignored : Node_Id; New_Set : Set);
-      --  Update sets Result and Work_Set by adding those nodes from New_Set
-      --  that have not been encountered yet.
-
-      ---------------------
-      -- Update_Work_Set --
-      ---------------------
-
-      procedure Update_Work_Set (Ignored : Node_Id; New_Set : Set) is
-         pragma Unreferenced (Ignored);
-      begin
-         for N of New_Set loop
-            if not Result.Contains (N) then
-               Result.Include (N);
-               Work_Set.Include (N);
-            end if;
-         end loop;
-      end Update_Work_Set;
+      Ignored  : Node_Sets.Cursor;
+      Inserted : Boolean;
 
    begin
       Work_Set := From;
       Result := From;
 
       while not Work_Set.Is_Empty loop
-         First := Work_Set.First;
-         Cur_Node := Element (First);
-         Work_Set.Delete (First);
+         Cur_Node := Work_Set.First_Element;
 
-         if Map.Contains (Cur_Node) then
-            Node_Graphs.Query_Element (Position => Map.Find (Cur_Node),
-                                       Process  => Update_Work_Set'Access);
+         Cur_Ptr := Map.Find (Cur_Node);
+
+         if Node_Graphs.Has_Element (Cur_Ptr) then
+            for N of Map (Cur_Ptr) loop
+               Result.Insert (New_Item => N,
+                              Position => Ignored,
+                              Inserted => Inserted);
+
+               if Inserted then
+                  Work_Set.Include (N);
+               end if;
+            end loop;
          end if;
+
+         Work_Set.Delete (Cur_Node);
       end loop;
 
       return Result;
@@ -585,24 +565,20 @@ package body Gnat2Why.Util is
       Is_Record_Field : Boolean := False;
       Append : String := "") return Name_Id_Sets.Set
    is
-      Labels : Name_Id_Sets.Set := Name_Id_Sets.Empty_Set;
-   begin
-      Labels.Include
+     (Name_Id_Sets.To_Set
         (NID
            (Model_Trace_Label &
             (if E = Empty
-               then ""
-               else (if Is_Record_Field then "."
-                 else "") & Trim (Entity_Id'Image (E), Both) &
-                 Append &
-                 --  Add information whether labels are generated for a
-                 --  variable holding result of a function.
-                 (if Ekind (E) = E_Function then "@result" else "")
-             )
-           )
-        );
-      return Labels;
-   end Get_Model_Trace_Label;
+             then ""
+             else
+               (if Is_Record_Field
+                then "."
+                else "") &
+                Trim (Entity_Id'Image (E), Both) &
+                Append &
+                --  Add information whether labels are generated for a
+                --  variable holding result of a function.
+                (if Ekind (E) = E_Function then "@result" else "")))));
 
    ------------------------------
    -- Get_Static_Call_Contract --
@@ -955,8 +931,8 @@ package body Gnat2Why.Util is
       then
          return False;
 
-      --  same for objects that have Part_Of specified (for a protected
-      --  object), they are like components for proof
+      --  Same for objects that have Part_Of specified (for a protected
+      --  object), they are like components for proof.
 
       elsif Is_Part_Of_Protected_Object (N) then
          return False;
@@ -1075,7 +1051,6 @@ package body Gnat2Why.Util is
 
    function Use_Base_Type_For_Type (E : Entity_Id) return Boolean is
    begin
-      pragma Assert (Nkind (E) in N_Entity);
       return Is_Scalar_Type (E) and then
         not Is_Standard_Boolean_Type (E);
    end Use_Base_Type_For_Type;

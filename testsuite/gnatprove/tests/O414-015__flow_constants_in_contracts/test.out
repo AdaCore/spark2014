@@ -23,7 +23,7 @@ const3.adb:20:22: info: initialization of "F" proved
 const3.adb:21:22: info: initialization of "L" proved
 const3.adb:22:22: info: initialization of "R" proved
 const3.adb:31:15: info: initialization of "R" proved
-const3.adb:31:17: medium: overflow check might fail (e.g. when R = -1 and It = -2147483648)
+const3.adb:31:17: medium: overflow check might fail (e.g. when It = -2147483648 and R = -1)
 const4.adb:5:04: info: initialization of "H" constituent of "State" proved
 const4.ads:7:37: high: constant without variable input S must be initialized at elaboration
 const4.ads:10:04: info: initialization of "V" proved
@@ -32,7 +32,7 @@ const4.ads:15:14: medium: constant without variable input "C" cannot appear in G
 const4.ads:15:17: info: initialization of "X" proved
 const4.ads:16:11: medium: constant without variable input "C" cannot appear in Depends
 const4.ads:18:14: info: initialization of "H" constituent of "State" proved
-other.adb:4:49: medium: overflow check might fail (e.g. when V = -2147483648 and C = -1)
+other.adb:4:49: medium: overflow check might fail (e.g. when C = -1 and V = -2147483648)
 other.ads:4:04: info: initialization of "V" proved
 other.ads:6:28: info: initialization of "V" proved
 other.ads:21:21: info: postcondition proved

@@ -504,7 +504,9 @@ package body Flow_Generated_Globals is
       Final_View        : out Name_Sets.Set;
       Scope             : Flow_Scope;
       Reads             : in out Flow_Id_Sets.Set;
-      Processing_Writes : Boolean := False);
+      Processing_Writes : Boolean := False)
+   with Pre  => (if not Processing_Writes then Reads.Is_Empty),
+        Post => (if not Processing_Writes then Reads.Is_Empty);
    --  Distinguishes between simple vars and constituents. For constituents, it
    --  checks if they are visible and if they are NOT we check if their
    --  enclosing state is. If the enclosing state is visible then return that
@@ -589,7 +591,7 @@ package body Flow_Generated_Globals is
       return Object_Priority_Lists.List
    is
    begin
-      return Protected_Objects.Phase_2.Element (Key => Obj);
+      return Protected_Objects.Phase_2 (Obj);
    end Component_Priorities;
 
    ---------------------------------------
@@ -624,11 +626,14 @@ package body Flow_Generated_Globals is
       begin
          for Kind in Protected_Info_Kind loop
             declare
-               C : constant Name_Graphs.Cursor :=
-                 Tasking_Info_Bag (Phase_1, Kind).Find (S);
+               Phase_1_Info : Name_Graphs.Map renames
+                 Tasking_Info_Bag (Phase_1, Kind);
+
+               C : constant Name_Graphs.Cursor := Phase_1_Info.Find (S);
+
             begin
                if Has_Element (C) then
-                  Res.Union (Element (C));
+                  Res.Union (Phase_1_Info (C));
                end if;
             end;
          end loop;
@@ -800,12 +805,15 @@ package body Flow_Generated_Globals is
       --  Retrieve the relevant Name_Dependency_Map, up project it to S and
       --  then convert it into a Dependency_Map.
       declare
-         Pkg          : constant Entity_Id        := Find_Entity (EN);
-         LHS_Scope    : Flow_Scope;
+         Pkg       : constant Entity_Id := Find_Entity (EN);
+         LHS_Scope : constant Flow_Scope :=
+           (if Present (Pkg)
+            then Flow_Scope'(Ent     => Pkg,
+                             Section => Spec_Part)
+            else S);
 
-         DM           : Dependency_Maps.Map;
-         II           : constant Initializes_Info :=
-           Initializes_Aspects_Map.Element (EN);
+         DM : Dependency_Maps.Map;
+         II : Initializes_Info renames Initializes_Aspects_Map (EN);
 
          All_LHS_UP   : Name_Sets.Set;
          LHS_UP       : Name_Sets.Set;
@@ -813,7 +821,7 @@ package body Flow_Generated_Globals is
          RHS_UP       : Name_Sets.Set;
          RHS_Proof_UP : Name_Sets.Set;
 
-         To_Remove    : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
+         To_Remove    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
          --  This set will hold the names of non fully initialized
          --  states. These will have to be removed from the left hand side
          --  sets.
@@ -825,16 +833,9 @@ package body Flow_Generated_Globals is
          --  These will hold the final flow sets that will be used to populate
          --  the dependency map.
 
-         Unused       : Flow_Id_Sets.Set;
+         Unused : Flow_Id_Sets.Set;
+
       begin
-
-         if Present (Pkg) then
-            LHS_Scope := Flow_Scope'(Ent     => Pkg,
-                                     Section => Spec_Part);
-         else
-            LHS_Scope := S;
-         end if;
-
          --  Up project left hand side
          Up_Project (Most_Refined      => II.LHS or II.LHS_Proof,
                      Final_View        => All_LHS_UP,
@@ -871,8 +872,8 @@ package body Flow_Generated_Globals is
 
          --  Remove state abstractions that are only partially initialized from
          --  the left hand side.
-         FS_LHS       := FS_LHS - To_Remove;
-         FS_LHS_Proof := FS_LHS_Proof - To_Remove;
+         FS_LHS.Difference (To_Remove);
+         FS_LHS_Proof.Difference (To_Remove);
 
          --  Add regular variables
          for F of FS_LHS loop
@@ -893,7 +894,7 @@ package body Flow_Generated_Globals is
 
    function GG_Get_Local_Variables (EN : Entity_Name) return Name_Sets.Set is
      (if GG_Exists_Cache.Contains (EN)
-      then Package_To_Locals_Map.Element (EN)
+      then Package_To_Locals_Map (EN)
       else Name_Sets.Empty_Set);
 
    -----------------------
@@ -1346,8 +1347,7 @@ package body Flow_Generated_Globals is
             while not Stack.Is_Empty loop
 
                declare
-                  Caller : constant Entity_Name :=
-                    Name_Sets.Element (Stack.First);
+                  Caller : constant Entity_Name := Stack (Stack.First);
                   --  Name of the caller
 
                   V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
@@ -1424,8 +1424,7 @@ package body Flow_Generated_Globals is
             while not Stack.Is_Empty loop
 
                declare
-                  Caller : constant Entity_Name :=
-                    Name_Sets.Element (Stack.First);
+                  Caller : constant Entity_Name := Stack (Stack.First);
                   --  Name of the caller
 
                   V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
@@ -1498,8 +1497,7 @@ package body Flow_Generated_Globals is
             while not Stack.Is_Empty loop
 
                declare
-                  Caller : constant Entity_Name :=
-                    Name_Sets.Element (Stack.First);
+                  Caller : constant Entity_Name := Stack (Stack.First);
                   --  Name of the caller
 
                   V_Caller : constant Entity_Name_Graphs.Vertex_Id :=
@@ -1803,10 +1801,12 @@ package body Flow_Generated_Globals is
                --  LHS and LHS_Proof combined will represent the left hand side
                --  of the generated initializes aspect.
 
-               RHS       : Name_Sets.Set := Name_Sets.Empty_Set;
-               RHS_Proof : Name_Sets.Set := Name_Sets.Empty_Set;
-               --  RHS and RHS_Proof combined will represent the right hand
-               --  side of the generated initializes aspect.
+               RHS       : Name_Sets.Set := P.Inputs;
+               RHS_Proof : Name_Sets.Set := P.Inputs_Proof;
+               --  RHS and RHS_Proof combined will represent the right
+               --  hand side of the generated initializes aspect; they
+               --  are initialized with package inputs and proof inputs,
+               --  respectively.
 
                LV        : Name_Sets.Set := Name_Sets.Empty_Set;
                LV_Proof  : Name_Sets.Set := Name_Sets.Empty_Set;
@@ -1846,12 +1846,6 @@ package body Flow_Generated_Globals is
             --  Start of processing for Generate_Initializes_Aspects
 
             begin
-               --  Add inputs to the RHS set
-               RHS.Union (P.Inputs);
-
-               --  Add proof inputs to the RHS_Proof set
-               RHS_Proof.Union (P.Inputs_Proof);
-
                --  Add local variables to either LV_Proof or LV depending on
                --  whether they are ghosts or not.
                for Local_Variable of P.Local_Variables loop
@@ -1863,8 +1857,7 @@ package body Flow_Generated_Globals is
                   --  list of local definite writes since they are trivially
                   --  initialized.
                   if State_Comp_Map.Contains (Local_Variable)
-                    and then State_Comp_Map.Element (Local_Variable) =
-                               Name_Sets.Empty_Set
+                    and then State_Comp_Map (Local_Variable).Is_Empty
                   then
                      Add_To_Proof_Or_Normal_Set (Local_Variable,
                                                  LHS_Proof,
@@ -1927,14 +1920,14 @@ package body Flow_Generated_Globals is
 
                --  Remove local variables from the sets since they should not
                --  appear in Initializes aspects.
-               RHS       := RHS - P.Local_Variables;
-               RHS_Proof := RHS_Proof - P.Local_Variables;
+               RHS.Difference (P.Local_Variables);
+               RHS_Proof.Difference (P.Local_Variables);
 
-               --  Populate II
-               II.LHS       := LHS;
-               II.LHS_Proof := LHS_Proof;
-               II.RHS       := RHS;
-               II.RHS_Proof := RHS_Proof;
+               --  Assign II
+               II := (LHS       => LHS,
+                      LHS_Proof => LHS_Proof,
+                      RHS       => RHS,
+                      RHS_Proof => RHS_Proof);
 
                --  Add LHS and LHS_Proof to the All_Initialized_Names set
                All_Initialized_Names.Union (II.LHS);
@@ -1969,9 +1962,9 @@ package body Flow_Generated_Globals is
 
                   --  Remove constituents whose enclosing state abstraction is
                   --  not fully initialized.
-                  All_Initialized_Names := All_Initialized_Names - To_Remove;
-                  II.LHS                := II.LHS - To_Remove;
-                  II.LHS_Proof          := II.LHS_Proof - To_Remove;
+                  All_Initialized_Names.Difference (To_Remove);
+                  II.LHS.Difference (To_Remove);
+                  II.LHS_Proof.Difference (To_Remove);
                end;
 
                --  Insert II into Initializes_Aspects_Map
@@ -2163,7 +2156,7 @@ package body Flow_Generated_Globals is
                         while C /= Task_Lists.No_Element loop
                            Register_Task_Object
                              (V.The_Type,
-                              Task_Lists.Element (C));
+                              V.The_Objects (C));
                            Task_Lists.Next (C);
                         end loop;
                      end;
@@ -2214,8 +2207,9 @@ package body Flow_Generated_Globals is
             if not Tasking_Info_Bag (P, Kind).Is_Empty then
                for C in Tasking_Info_Bag (P, Kind).Iterate loop
                   declare
-                     Subp : constant Entity_Name   := Key (C);
-                     Objs : constant Name_Sets.Set := Element (C);
+                     Subp : Entity_Name renames Key (C);
+                     Objs : Name_Sets.Set renames
+                       Tasking_Info_Bag (P, Kind) (C);
                   begin
                      if not Objs.Is_Empty then
                         Write_Line (To_String (Subp) & ":");
@@ -2265,8 +2259,11 @@ package body Flow_Generated_Globals is
                   for Kind in Tasking_Info_Kind loop
                      declare
 
+                        Phase_1_Info : Name_Graphs.Map renames
+                          Tasking_Info_Bag (Phase_1, Kind);
+
                         S_C : constant Name_Graphs.Cursor :=
-                          Tasking_Info_Bag (Phase_1, Kind).Find (S);
+                          Phase_1_Info.Find (S);
                         --  Pointer to objects accessed by subprogram S
 
                         T_C : Name_Graphs.Cursor;
@@ -2277,24 +2274,6 @@ package body Flow_Generated_Globals is
                         --  it already existed in a map. It is required by
                         --  the hashed-maps API, but not used here.
 
-                        procedure Union_With_S_Objects
-                          (Key     : Entity_Name;
-                           Element : in out Name_Sets.Set);
-                        --  Record objects accessed by S as accessed also by TN
-
-                        --------------------------
-                        -- Union_With_S_Objects --
-                        --------------------------
-
-                        procedure Union_With_S_Objects
-                          (Key     : Entity_Name;
-                           Element : in out Name_Sets.Set)
-                        is
-                           pragma Unreferenced (Key);
-                        begin
-                           Element.Union (Name_Graphs.Element (S_C));
-                        end Union_With_S_Objects;
-
                      begin
                         --  Only do something if S accesses any objects
                         if Name_Graphs.Has_Element (S_C) then
@@ -2303,9 +2282,8 @@ package body Flow_Generated_Globals is
                               Position => T_C,
                               Inserted => Inserted);
 
-                           Tasking_Info_Bag (Phase_2, Kind).Update_Element
-                             (Position => T_C,
-                              Process  => Union_With_S_Objects'Access);
+                           Tasking_Info_Bag (Phase_2, Kind) (T_C).Union
+                             (Phase_1_Info (S_C));
                         end if;
                      end;
                   end loop;
@@ -2430,8 +2408,8 @@ package body Flow_Generated_Globals is
 
          for C in State_Comp_Map.Iterate loop
             declare
-               State : constant Entity_Name := Key (C);
-               Constituents : constant Name_Sets.Set := Element (C);
+               State        : Entity_Name   renames Key (C);
+               Constituents : Name_Sets.Set renames State_Comp_Map (C);
             begin
                Write_Eol;
                Write_Line ("Abstract state " & To_String (State));
@@ -2604,7 +2582,7 @@ package body Flow_Generated_Globals is
       --  structure.
       Comp_State_Map := Name_Maps.Empty_Map;
       for C in State_Comp_Map.Iterate loop
-         for Comp of Element (C) loop
+         for Comp of State_Comp_Map (C) loop
             Comp_State_Map.Insert (Comp, Key (C));
          end loop;
       end loop;
@@ -2684,7 +2662,7 @@ package body Flow_Generated_Globals is
       for C in State_Comp_Map.Iterate loop
          V := (Kind             => EK_State_Map,
                The_State        => Key (C),
-               The_Constituents => Element (C));
+               The_Constituents => State_Comp_Map (C));
          Write_To_ALI (V);
       end loop;
 
@@ -2735,11 +2713,14 @@ package body Flow_Generated_Globals is
                   The_Tasking_Info => <>);
             for Kind in Tasking_Info_Kind loop
                declare
-                  C : constant Name_Graphs.Cursor :=
-                    Tasking_Info_Bag (Phase_1, Kind).Find (Name);
+                  Phase_1_Info : Name_Graphs.Map renames
+                    Tasking_Info_Bag (Phase_1, Kind);
+
+                  C : constant Name_Graphs.Cursor := Phase_1_Info.Find (Name);
+
                begin
                   V.The_Tasking_Info (Kind) := (if Has_Element (C)
-                                                then Element (C)
+                                                then Phase_1_Info (C)
                                                 else Name_Sets.Empty_Set);
                end;
             end loop;
@@ -2750,7 +2731,7 @@ package body Flow_Generated_Globals is
       for C in Task_Instances.Iterate loop
          V := (Kind        => EK_Tasking_Instance_Count,
                The_Type    => Task_Instances_Maps.Key (C),
-               The_Objects => Task_Instances_Maps.Element (C));
+               The_Objects => Task_Instances (C));
          Write_To_ALI (V);
       end loop;
 
@@ -2840,13 +2821,13 @@ package body Flow_Generated_Globals is
    begin
       for S in DM.Iterate loop
          declare
-            State_F      : constant Flow_Id := Dependency_Maps.Key (S);
+            State_F      : Flow_Id renames Dependency_Maps.Key (S);
 
             State_N      : constant Entity_Name :=
               To_Entity_Name (Get_Direct_Mapping_Id (State_F));
 
             Constituents : constant Name_Sets.Set :=
-              To_Name_Set (To_Node_Set (Dependency_Maps.Element (S)));
+              To_Name_Set (To_Node_Set (DM (S)));
          begin
             --  Include (possibly overwrite) new state info into State_Comp_Map
             State_Comp_Map.Include (State_N, Constituents);
@@ -2995,11 +2976,9 @@ package body Flow_Generated_Globals is
       Write_Line ("Synthesized initializes aspects:");
       for Init in Initializes_Aspects_Map.Iterate loop
          declare
-            Pkg : constant Entity_Name :=
-              Initializes_Aspects_Maps.Key (Init);
+            Pkg : Entity_Name      renames Initializes_Aspects_Maps.Key (Init);
+            II  : Initializes_Info renames Initializes_Aspects_Map (Init);
 
-            II  : constant Initializes_Info :=
-              Initializes_Aspects_Maps.Element (Init);
          begin
             Indent;
             Write_Line ("Package " & To_String (Pkg)  & ":");
@@ -3286,11 +3265,13 @@ package body Flow_Generated_Globals is
       Subp : Entity_Name)
       return Name_Sets.Set
    is
-      C : constant Name_Graphs.Cursor :=
-        Tasking_Info_Bag (Phase_2, Kind).Find (Subp);
+      Phase_2_Info : Name_Graphs.Map renames Tasking_Info_Bag (Phase_2, Kind);
+
+      C : constant Name_Graphs.Cursor := Phase_2_Info.Find (Subp);
+
    begin
       return (if Has_Element (C)
-              then Element (C)
+              then Phase_2_Info (C)
               else Name_Sets.Empty_Set);
    end Tasking_Objects;
 
@@ -3306,75 +3287,63 @@ package body Flow_Generated_Globals is
       Processing_Writes : Boolean := False)
    is
       Abstract_States : Name_Sets.Set := Name_Sets.Empty_Set;
+
    begin
-      --  Initializing Final_View to empty
+      --  Initialize Final_View
       Final_View := Name_Sets.Empty_Set;
 
       for N of Most_Refined loop
-         if GG_Enclosing_State (N) /= Null_Entity_Name
-           and then (No (Find_Entity (N))
-                       or else not Is_Visible (Find_Entity (N), Scope))
-         then
-            declare
-               Var               : Entity_Name :=
-                 (if Present (Find_Entity (N))
-                    and then Is_Visible (Find_Entity (N), Scope)
-                  then N
-                  else GG_Enclosing_State (N));
-               ES                : Entity_Name := GG_Enclosing_State (N);
-               Is_Abstract_State : Boolean     :=
-                 No (Find_Entity (N))
-                   or else not Is_Visible (Find_Entity (N), Scope);
-            begin
-               while No (Find_Entity (ES))
-                 or else not Is_Visible (Find_Entity (ES), Scope)
-               loop
-                  Is_Abstract_State := True;
-                  Var := ES;
 
-                  if GG_Enclosing_State (ES) /= Null_Entity_Name then
-                     ES := GG_Enclosing_State (ES);
-                  else
-                     --  We cannot go any further up and we still do not have
-                     --  visibility of the variable or state abstraction that
-                     --  we are making use of. This means that the user has
-                     --  neglected to provide some state abstraction and the
-                     --  refinement thereof. Unfortunately, we might now refer
-                     --  to a variable or state that the caller should not have
-                     --  vision of.
-                     exit;
-                  end if;
-               end loop;
+         --  We climb the hierarchy of abstract states until we find a visible
+         --  one (because of scope visibility rules) or a one without enclosing
+         --  abstract state (because it must be visible anyway).
 
-               Final_View.Include (Var);
+         declare
+            Var_Name   : Entity_Name := N;
+            Var_Entity : Entity_Id;
 
-               --  We add the enclosing abstract state that we just added to
-               --  the Final_View set to the Abstract_States set.
-               if Is_Abstract_State then
-                  Abstract_States.Include (Var);
+            Enclosing_State : Entity_Name;
+
+            Is_Abstract_State : Boolean := False;
+
+         begin
+            loop
+               Var_Entity      := Find_Entity (Var_Name);
+               Enclosing_State := GG_Enclosing_State (Var_Name);
+
+               if Enclosing_State = Null_Entity_Name
+                 or else (Present (Var_Entity)
+                          and then Is_Visible (Var_Entity, Scope))
+               then
+                  exit;
                end if;
-            end;
-         else
-            --  Add variables that are directly visible or do not belong to any
-            --  state abstraction to the Final_View set.
-            Final_View.Include (N);
-         end if;
+
+               Var_Name := Enclosing_State;
+
+               Is_Abstract_State := True;
+            end loop;
+
+            Final_View.Include (Var_Name);
+
+            if Processing_Writes and then Is_Abstract_State
+            then
+               Abstract_States.Include (Var_Name);
+            end if;
+         end;
       end loop;
 
       --  If we Write some but not all constituents of a state abstraction then
       --  this state abstraction is also a Read.
-      if Processing_Writes then
-         for AS of Abstract_States loop
-            declare
-               Constituents : constant Name_Sets.Set := GG_Fully_Refine (AS);
-            begin
-               if not (for all C of Constituents => Most_Refined.Contains (C))
-               then
-                  Reads.Include (Get_Flow_Id (AS, In_View, Scope));
-               end if;
-            end;
-         end loop;
-      end if;
+      for AS of Abstract_States loop
+         declare
+            Constituents : constant Name_Sets.Set := GG_Fully_Refine (AS);
+         begin
+            if not (for all C of Constituents => Most_Refined.Contains (C))
+            then
+               Reads.Include (Get_Flow_Id (AS, In_View, Scope));
+            end if;
+         end;
+      end loop;
    end Up_Project;
 
 end Flow_Generated_Globals;

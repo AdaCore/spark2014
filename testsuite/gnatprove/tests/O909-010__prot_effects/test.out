@@ -1,8 +1,9 @@
-eff.adb:12:17: medium: overflow check might fail
-eff.adb:12:21: medium: overflow check might fail
-eff.adb:17:25: medium: assertion might fail, cannot prove Get_A = 10
-eff.adb:18:17: medium: overflow check might fail
-eff.adb:18:21: medium: overflow check might fail
-eff.adb:23:22: medium: assertion might fail, cannot prove Shared.Get_A = 10
-eff.adb:24:13: info: precondition proved
-eff.adb:28:13: medium: precondition might fail
+eff.adb:23:22: call to a volatile function in interfering context is not allowed in SPARK
+eff.adb:23:22: violation of pragma SPARK_Mode at test.adc:1
+eff.adb:28:07: "Set_B_To_Sum_Plus_E" is not allowed in SPARK
+eff.adb:28:07: violation of pragma SPARK_Mode at test.adc:1
+eff.ads:10:22: call to a volatile function in interfering context is not allowed in SPARK
+eff.ads:10:22: violation of pragma SPARK_Mode at test.adc:1
+eff.ads:19:19: call to a volatile function in interfering context is not allowed in SPARK
+eff.ads:19:19: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof

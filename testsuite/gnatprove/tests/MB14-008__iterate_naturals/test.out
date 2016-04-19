@@ -1,7 +1,3 @@
-test_iterable.ads:13:13: info: range check proved
-test_iterable.ads:15:13: info: range check proved
-test_iterable.ads:17:13: info: range check proved
 test_iterable.ads:18:52: info: overflow check proved
-test_iterable.ads:19:13: info: range check proved
 test_iterable.ads:20:07: info: precondition proved
 test_iterable.ads:20:42: info: index check proved

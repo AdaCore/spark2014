@@ -1073,7 +1073,7 @@ shapes2.adb:14:30: medium: overflow check might fail
 shapes2.adb:14:32: info: initialization of "Delta_Y" proved
 shapes2.adb:14:39: info: overflow check proved
 shapes2.adb:14:75: info: overflow check proved
-shapes2.adb:14:75: info: range check proved
+shapes2.adb:14:75: medium: range check might fail
 shapes3.adb:7:08: info: refined post proved
 shapes3.adb:18:10: info: initialization of "R" proved
 shapes3.adb:19:36: info: range check proved
@@ -1115,7 +1115,7 @@ shapes4.adb:27:30: medium: overflow check might fail
 shapes4.adb:27:32: info: initialization of "Delta_Y" proved
 shapes4.adb:27:39: info: overflow check proved
 shapes4.adb:27:75: info: overflow check proved
-shapes4.adb:27:75: info: range check proved
+shapes4.adb:27:75: medium: range check might fail
 shapes4.ads:22:09: warning: type invariant ignored (not yet supported)
 shapes5.adb:8:08: info: refined post proved
 shapes5.adb:19:10: info: initialization of "R" proved
@@ -1137,7 +1137,7 @@ shapes5.adb:44:30: medium: overflow check might fail
 shapes5.adb:44:32: info: initialization of "Delta_Y" proved
 shapes5.adb:44:39: info: overflow check proved
 shapes5.adb:44:75: info: overflow check proved
-shapes5.adb:44:75: info: range check proved
+shapes5.adb:44:75: medium: range check might fail
 shapes5.ads:14:18: medium: postcondition might fail, cannot prove In_Bounds (Make_Circle'result)
 shapes5.ads:21:04: info: initialization of "Wild_Man" proved
 silly.adb:3:21: info: initialization of "Result" proved
@@ -1220,7 +1220,6 @@ sqrt.adb:6:35: medium: overflow check might fail
 sqrt.adb:8:11: info: initialization of "Approx" proved
 stacks-more.adb:2:13: info: range check proved
 stacks-more.adb:4:32: medium: array index check might fail
-stacks.adb:8:13: info: range check proved
 stacks.adb:14:30: medium: overflow check might fail
 stacks.adb:15:25: medium: array index check might fail
 stacks.adb:21:33: medium: array index check might fail
@@ -1805,7 +1804,6 @@ very_longs.ads:62:19: info: postcondition proved
 very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
 very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
 very_longs.ads:75:37: info: overflow check proved
-very_longs.ads:89:13: info: range check proved
 very_longs.ads:90:68: info: index check proved
 workspaces.adb:5:07: info: range check proved
 workspaces.adb:5:48: info: length check proved
@@ -1816,34 +1814,3 @@ workspaces.adb:9:27: medium: overflow check might fail
 workspaces.adb:9:32: info: index check proved
 workspaces.adb:9:37: info: initialization of "Workspace" proved
 workspaces.adb:11:14: info: initialization of "Workspace" proved
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

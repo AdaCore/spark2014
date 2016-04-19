@@ -30,8 +30,6 @@ with Why;
 
 package body Flow.Interprocedural is
 
-   use type Flow_Graphs.Vertex_Id;
-
    procedure Add_Simple_Procedure_Dependency
      (FA : in out Flow_Analysis_Graphs;
       V  : Flow_Graphs.Vertex_Id);
@@ -58,7 +56,7 @@ package body Flow.Interprocedural is
                                       Flow_Graphs.Out_Neighbours)
       loop
          declare
-            F : constant Flow_Id := FA.CDG.Get_Key (V);
+            F : Flow_Id      renames FA.CDG.Get_Key (V);
             A : V_Attributes renames FA.Atr (V);
          begin
             if A.Is_Parameter then
@@ -153,26 +151,25 @@ package body Flow.Interprocedural is
       Called_Thing : constant Entity_Id := Get_Called_Entity (N);
 
       procedure Add_TD_Edge (A, B : Flow_Id);
-      --  Add a parameter dependency edge from the input A to the
-      --  output B.
+      --  Add a parameter dependency edge from the input A to the output B
 
       -----------------
       -- Add_TD_Edge --
       -----------------
 
       procedure Add_TD_Edge (A, B : Flow_Id) is
-         V_A, V_B : Flow_Graphs.Vertex_Id;
+         V_A : constant Flow_Graphs.Vertex_Id :=
+           Find_Parameter_Vertex
+             (FA,
+              V,
+              Change_Variant (A, In_View));
+
+         V_B : constant Flow_Graphs.Vertex_Id :=
+           Find_Parameter_Vertex
+             (FA,
+              V,
+              Change_Variant (B, Out_View));
       begin
-         V_A := Find_Parameter_Vertex
-           (FA,
-            V,
-            Change_Variant (A, In_View));
-
-         V_B := Find_Parameter_Vertex
-           (FA,
-            V,
-            Change_Variant (B, Out_View));
-
          FA.TDG.Add_Edge (V_A, V_B, EC_TDG);
       end Add_TD_Edge;
 
@@ -203,9 +200,8 @@ package body Flow.Interprocedural is
                          Callsite             => N);
             for C in Deps.Iterate loop
                declare
-                  Output : constant Flow_Id := Dependency_Maps.Key (C);
-                  Inputs : constant Flow_Id_Sets.Set :=
-                    Dependency_Maps.Element (C);
+                  Output : Flow_Id          renames Dependency_Maps.Key (C);
+                  Inputs : Flow_Id_Sets.Set renames Deps (C);
                begin
                   for Input of Inputs loop
                      --  Output could be a null node, in which case we
@@ -221,20 +217,27 @@ package body Flow.Interprocedural is
          end;
 
       else
-         --  We do not have a dependency aspect, so we will make up one (all
-         --  outputs depend on all inputs).
+         --  We do not have a dependency aspect, so we will make up one: all
+         --  outputs depend on all inputs (but respecting the non-interference
+         --  of ghost entities).
          declare
-            Proof_Ins : Flow_Id_Sets.Set;
-            Inputs    : Flow_Id_Sets.Set;
-            Outputs   : Flow_Id_Sets.Set;
-            The_In    : Flow_Id;
-            The_Out   : Flow_Id;
+            Ignored : Flow_Id_Sets.Set;
+            Inputs  : Flow_Id_Sets.Set;
+            Outputs : Flow_Id_Sets.Set;
+            --  Globals deduced from the contract (if available) or body
+
+            The_In  : Flow_Id;
+            The_Out : Flow_Id;
+
+            Ghost_Subprogram : constant Boolean :=
+              Is_Ghost_Entity (Called_Thing);
+
          begin
             --  Collect all the globals first
             Get_Globals (Subprogram             => Called_Thing,
                          Scope                  => FA.B_Scope,
                          Classwide              => Is_Dispatching_Call (N),
-                         Proof_Ins              => Proof_Ins,
+                         Proof_Ins              => Ignored,
                          Reads                  => Inputs,
                          Writes                 => Outputs,
                          Consider_Discriminants => True,
@@ -304,12 +307,38 @@ package body Flow.Interprocedural is
 
             if not Outputs.Is_Empty then
                --  Each output depends on all inputs
-               for Input of Inputs loop
-                  for Output of Outputs loop
-                     FA.TDG.Add_Edge (Find_Parameter_Vertex (FA, V, Input),
-                                      Find_Parameter_Vertex (FA, V, Output),
-                                      EC_TDG);
-                  end loop;
+               for Output of Outputs loop
+                  declare
+                     Output_V : constant Flow_Graphs.Vertex_Id :=
+                       Find_Parameter_Vertex (FA, V, Output);
+
+                     Output_Is_Proof : constant Boolean :=
+                       FA.Atr (Output_V).Is_Proof;
+
+                  begin
+                     for Input of Inputs loop
+                        declare
+                           Input_V : constant Flow_Graphs.Vertex_Id :=
+                             Find_Parameter_Vertex (FA, V, Input);
+
+                           Input_Is_Proof : constant Boolean :=
+                             FA.Atr (Input_V).Is_Proof;
+
+                           Dependency_Allowed : constant Boolean :=
+                             Output_Is_Proof
+                             or else (not Ghost_Subprogram
+                                      and then not Input_Is_Proof);
+                           --  Ghost outputs can always be modified; non-ghost
+                           --  outputs can only be modified by non-ghost
+                           --  subprograms using non-ghost inputs.
+
+                        begin
+                           if Dependency_Allowed then
+                              FA.TDG.Add_Edge (Input_V, Output_V, EC_TDG);
+                           end if;
+                        end;
+                     end loop;
+                  end;
                end loop;
             else
                --  All inputs flow into the null export vertex

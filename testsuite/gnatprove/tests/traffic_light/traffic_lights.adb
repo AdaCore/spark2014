@@ -57,8 +57,9 @@ package body Traffic_Lights is
             else
                --  All other states last 15 seconds.
                Seconds (15));
+         Now : constant Time := Clock;
       begin
-         if Clock - Last_State_Change >= Wait_Duration then
+         if Now - Last_State_Change >= Wait_Duration then
             --  We have waited enough. It is time for a state change...
             Change_State := True;
          end if;

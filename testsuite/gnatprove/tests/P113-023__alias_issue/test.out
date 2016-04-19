@@ -1,6 +1,7 @@
 aalias.adb:12:15: info: postcondition proved
 aalias.adb:18:13: info: initialization of "B" proved
 aalias.adb:27:50: info: index check proved
+aalias.adb:27:50: medium: array index check might fail
 aalias.adb:31:30: info: length check proved
 aalias.adb:34:04: info: precondition proved
 aalias.adb:34:17: info: initialization of "A" proved
