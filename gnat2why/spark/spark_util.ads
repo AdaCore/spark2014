@@ -654,6 +654,7 @@ package SPARK_Util is
                               E_Package   |
                               E_Procedure |
                               Entry_Kind  |
+                              Protected_Kind  |
                               Task_Kind
                and then not (Classwide and Inherited);
    --  @param E subprogram or package
@@ -729,10 +730,11 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Boolean
-   with Pre => Ekind (E) in E_Function  |
-                            E_Package   |
-                            E_Procedure |
-                            Entry_Kind  |
+   with Pre => Ekind (E) in E_Function      |
+                            E_Package       |
+                            E_Procedure     |
+                            Entry_Kind      |
+                            Protected_Kind  |
                             Task_Kind;
    --  @param E subprogram or package
    --  @param Name contract name
@@ -824,6 +826,7 @@ package SPARK_Util is
    with Pre => Ekind (E) in Subprogram_Kind |
                             E_Package       |
                             Task_Kind       |
+                            Protected_Kind  |
                             Entry_Kind;
    --  @param E subprogram, package, task or entry
    --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file and

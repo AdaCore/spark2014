@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Doubly_Linked_Lists;
 with Common_Containers;       use Common_Containers;
 with Errout;                  use Errout;
 with Flow_Dependency_Maps;    use Flow_Dependency_Maps;
@@ -59,6 +60,7 @@ with Why.Gen.Expr;            use Why.Gen.Expr;
 with Why.Gen.Names;           use Why.Gen.Names;
 with Why.Gen.Preds;           use Why.Gen.Preds;
 with Why.Gen.Progs;           use Why.Gen.Progs;
+with Why.Gen.Records;         use Why.Gen.Records;
 with Why.Gen.Terms;           use Why.Gen.Terms;
 with Why.Inter;               use Why.Inter;
 with Why.Types;               use Why.Types;
@@ -210,6 +212,15 @@ package body Gnat2Why.Subprograms is
    --    ceiling protocol is respected in the call graph starting from this
    --    entity, i.e. that external calls to protected operations are made with
    --    a priority lower or equal to the priority of the object in question.
+
+   function Compute_Attach_Handler_Check
+     (Ty     : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+     with Pre => Is_Protected_Type (Ty);
+   --  @param Ty a protected type
+   --  @return an assertion (if necessary) that checks if any of the
+   --    Attach_Handler pragmas of the procedures of the type is reserved
+   --    see also Ada RM C.3.1(10/3)
 
    ----------------------------------
    -- Add_Dependencies_For_Effects --
@@ -515,6 +526,114 @@ package body Gnat2Why.Subprograms is
 
       return Result;
    end Compute_Args;
+
+   ----------------------------------
+   -- Compute_Attach_Handler_Check --
+   ----------------------------------
+
+   function Compute_Attach_Handler_Check
+     (Ty     : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   is
+      function Single_Attach_Handler_Check (Proc : Entity_Id) return W_Prog_Id;
+      --  @param Proc a procedure with an Attach_Handler pragma
+      --  @return an assertion statement that expresses the attach handler
+      --    check for this pragma
+
+      procedure Process_Declarations (L : List_Id);
+      --  @param L list of declarations to check for interrupt attachments
+
+      Stat : W_Prog_Id := +Void;
+      --  Why3 program with static checks
+
+      ---------------------------------
+      -- Single_Attach_Handler_Check --
+      ---------------------------------
+
+      function Single_Attach_Handler_Check (Proc : Entity_Id) return W_Prog_Id
+      is
+
+         --  The interrupt is given as the second argument of the pragma
+         --  Attach_Handler.
+         Att_Val : constant Node_Id :=
+           Expression (Next (First (Pragma_Argument_Associations
+                       (Get_Pragma (Proc, Pragma_Attach_Handler)))));
+
+         --  To check whether the attach handler is reserved, we call the
+         --  Ada.Interrupts.Is_Reserved. However, this function reads a global
+         --  state, which makes it a bit difficult to generate a call in
+         --  the logic (we would have to come up with the state object - not
+         --  impossible but not currently proposed by frontend). Instead,
+         --  we call the program function, which has only the interrupt as
+         --  argument, store the result in a temp and assert that the result
+         --  is false. So we are essentially asserting "not is_reserved(int)".
+
+         Res     : constant W_Expr_Id :=
+           New_Temp_For_Expr
+             (New_Call
+                (Name   => To_Why_Id (RTE (RE_Is_Reserved), Domain => EW_Prog),
+                 Domain => EW_Prog,
+                 Args   =>
+                   (1 =>
+                      Transform_Expr (Att_Val, EW_Int_Type, EW_Term, Params)),
+                 Typ    => EW_Bool_Type));
+
+         Pred    : constant W_Pred_Id :=
+           New_Call
+             (Name => Why_Eq,
+              Args => (1 => +Res,
+                       2 => Bool_False (EW_Term)));
+      begin
+         return
+           +Binding_For_Temp
+             (Domain  => EW_Prog,
+              Tmp     => Res,
+              Context =>
+                +New_Located_Assert
+                  (Ada_Node => Att_Val,
+                   Reason   => VC_Interrupt_Reserved,
+                   Kind     => EW_Check,
+                   Pred     => Pred));
+      end Single_Attach_Handler_Check;
+
+      --------------------------
+      -- Process_Declarations --
+      --------------------------
+
+      procedure Process_Declarations (L : List_Id) is
+         Proc : Node_Id := First (L);
+      begin
+         while Present (Proc) loop
+            if Nkind (Proc) = N_Subprogram_Declaration then
+               declare
+                  Ent : constant Entity_Id := Defining_Entity (Proc);
+               begin
+                  if Ekind (Ent) = E_Procedure
+                    and then Present (Get_Pragma (Ent, Pragma_Attach_Handler))
+                  then
+                     Stat := Sequence (Stat,
+                                       Single_Attach_Handler_Check (Ent));
+                  end if;
+               end;
+            end if;
+            Next (Proc);
+         end loop;
+      end Process_Declarations;
+
+      pragma Assert (Nkind (Parent (Ty)) = N_Protected_Type_Declaration);
+
+      PT_Def : constant Node_Id := Protected_Definition (Parent (Ty));
+
+   --  Start of processing for Compute_Attach_Handler_Check
+
+   begin
+      Process_Declarations (Visible_Declarations (PT_Def));
+
+      --  ??? only if private part has SPARK_Mode => On
+      Process_Declarations (Private_Declarations (PT_Def));
+
+      return Stat;
+   end Compute_Attach_Handler_Check;
 
    ---------------------
    -- Compute_Binders --
@@ -2141,6 +2260,189 @@ package body Gnat2Why.Subprograms is
       Close_Theory (File,
                     Kind => VC_Generation_Theory);
    end Generate_VCs_For_Package_Elaboration;
+
+   -------------------------------------
+   -- Generate_VCs_For_Protected_Type --
+   -------------------------------------
+
+   procedure Generate_VCs_For_Protected_Type
+     (File : W_Section_Id;
+      E    : Entity_Id)
+   is
+      Why_Body : W_Prog_Id := +Void;
+      Name     : constant String  := Full_Name (E);
+   begin
+      --  We open a new theory, so that the context is fresh for this task
+
+      Open_Theory (File,
+                   New_Module
+                     (Name => NID (Name & "__protected_type"),
+                      File => No_Name),
+                   Comment =>
+                     "Module for various checks related to the protected type "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Current_Subp := E;
+
+      Register_VC_Entity (E);
+
+      --  If protected object attaches an interrupt, the priority must be in
+      --  range of System.Interrupt_Priorioty; see RM C.3.1(11/3).
+
+      if Requires_Interrupt_Priority (E) then
+         declare
+            P : constant Node_Id :=
+              Get_Priority_Or_Interrupt_Priority (E);
+            Arg : constant W_Identifier_Id :=
+              New_Temp_Identifier (Ada_Node => E, Typ => EW_Abstract (E));
+         begin
+
+            Emit (File,
+                  Why.Gen.Binders.New_Function_Decl
+                    (Domain  => EW_Term,
+                     Name    => Arg,
+                     Binders => (1 .. 0 => <>),
+                     Labels  => Name_Id_Sets.Empty_Set,
+                     Return_Type => Get_Typ (Arg)));
+
+            --  If no priority was specified, the default priority
+            --  is implementation-defined (RM D.3 (10/3)), but in
+            --  range of System.Interrupt_Priority.
+
+            if Present (P) then
+
+               --  ??? why discriminants are translated only when
+               --  priority is given?
+
+               --  Store the value of Decl's discriminants in the
+               --  symbol table.
+
+               declare
+                  type Discr is record
+                     Id  : W_Identifier_Id;
+                     Val : W_Expr_Id;
+                  end record;
+                  --  Why3 representation of discriminants
+
+                  package Discriminant_Lists is new
+                    Ada.Containers.Doubly_Linked_Lists
+                      (Element_Type => Discr);
+
+                  W_Discriminants : Discriminant_Lists.List;
+                  --  Container for Why3 representations
+
+                  Discr_N : Node_Id;
+                  --  Discriminant node in SPARK AST
+
+                  P_Expr : W_Expr_Id;
+               begin
+                  Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+                  Discr_N := First_Discriminant (E);
+                  while Present (Discr_N) loop
+                     declare
+                        Discr_W : constant Discr :=
+                          (Id =>
+                             New_Temp_Identifier
+                               (Typ =>
+                                    EW_Abstract (Etype (Discr_N))),
+
+                           Val =>
+                             New_Ada_Record_Access
+                               (Ada_Node => Empty,
+                                Domain   => EW_Term,
+                                Name     => +Arg,
+                                Field    => Discr_N,
+                                Ty       => E));
+                     begin
+                        Insert_Entity (Discriminal (Discr_N),
+                                       Discr_W.Id);
+
+                        W_Discriminants.Append (Discr_W);
+                     end;
+
+                     Next_Discriminant (Discr_N);
+                  end loop;
+
+                  P_Expr :=
+                    Transform_Expr
+                      (Expr          => P,
+                       Domain        => EW_Term,
+                       Params        => Body_Params,
+                       Expected_Type => EW_Int_Type);
+
+                  for W_D of reverse W_Discriminants loop
+                     P_Expr :=
+                       New_Typed_Binding
+                         (Domain   => EW_Term,
+                          Name     => W_D.Id,
+                          Def      => W_D.Val,
+                          Context  => P_Expr);
+                  end loop;
+
+                  --  Generate a range check, but with a reason of
+                  --  ceiling check, as specified in RM index for
+                  --  "Ceiling_Check".
+
+                  Why_Body := Sequence
+                    (Why_Body,
+                     New_Located_Assert
+                       (Ada_Node => E,
+                        Pred     =>
+                          +New_Range_Expr
+                          (Domain => EW_Pred,
+                           Low    =>
+                             New_Attribute_Expr
+                               (Domain => EW_Term,
+                                Ty     =>
+                                  RTE (RE_Interrupt_Priority),
+                                Attr   => Attribute_First,
+                                Params => Body_Params),
+                           High   =>
+                             New_Attribute_Expr
+                               (Domain => EW_Term,
+                                Ty     =>
+                                  RTE (RE_Interrupt_Priority),
+                                Attr   => Attribute_Last,
+                                Params => Body_Params),
+                           Expr   => P_Expr),
+                        Reason   => VC_Ceiling_Interrupt,
+                        Kind     => EW_Check));
+
+                  Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+               end;
+            end if;
+         end;
+      end if;
+
+      --  Check that no Attach_Handler expression of the protected
+      --  object corresponds to a reserved interrupt; see RM
+      --  C.3.1(10/3).
+
+      Why_Body := Sequence (Why_Body,
+                     Compute_Attach_Handler_Check
+                       (Base_Type (E), Body_Params));
+
+      declare
+         Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
+      begin
+         Label_Set.Include (NID ("W:diverges:N"));
+         Emit (File,
+                Why.Gen.Binders.New_Function_Decl
+                 (Domain  => EW_Prog,
+                  Name    => Def_Name,
+                  Binders => (1 => Unit_Param),
+                  Labels  => Label_Set,
+                  Def     => +Why_Body));
+      end;
+
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      Close_Theory (File,
+                    Kind => VC_Generation_Theory);
+   end Generate_VCs_For_Protected_Type;
 
    ---------------------------------
    -- Generate_VCs_For_Subprogram --

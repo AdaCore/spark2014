@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;         use Ada.Containers;
-with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                 use Checks;
@@ -40,7 +39,6 @@ with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
 with Namet;                  use Namet;
 with Nlists;                 use Nlists;
 with Opt;
-with Rtsfind;                use Rtsfind;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Disp;               use Sem_Disp;
 with Sem_Util;               use Sem_Util;
@@ -194,15 +192,6 @@ package body Gnat2Why.Expr is
    function Compute_Tag_Check
      (Call   : Node_Id;
       Params : Transformation_Params) return W_Prog_Id;
-
-   function Compute_Attach_Handler_Check
-     (Ty     : Entity_Id;
-      Params : Transformation_Params) return W_Prog_Id
-     with Pre => Is_Protected_Type (Ty);
-   --  @param Ty a protected type
-   --  @return an assertion (if necessary) that checks if any of the
-   --    Attach_Handler pragmas of the procedures of the type is reserved
-   --    see also Ada RM C.3.1(10/3)
 
    function Declaration_Is_Associated_To_Parameter
      (N : Node_Id) return Boolean
@@ -1529,114 +1518,6 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
    end Check_Subtype_Indication;
-
-   ----------------------------------
-   -- Compute_Attach_Handler_Check --
-   ----------------------------------
-
-   function Compute_Attach_Handler_Check
-     (Ty     : Entity_Id;
-      Params : Transformation_Params) return W_Prog_Id
-   is
-      function Single_Attach_Handler_Check (Proc : Entity_Id) return W_Prog_Id;
-      --  @param Proc a procedure with an Attach_Handler pragma
-      --  @return an assertion statement that expresses the attach handler
-      --    check for this pragma
-
-      procedure Process_Declarations (L : List_Id);
-      --  @param L list of declarations to check for interrupt attachments
-
-      Stat : W_Prog_Id := +Void;
-      --  Why3 program with static checks
-
-      ---------------------------------
-      -- Single_Attach_Handler_Check --
-      ---------------------------------
-
-      function Single_Attach_Handler_Check (Proc : Entity_Id) return W_Prog_Id
-      is
-
-         --  The interrupt is given as the second argument of the pragma
-         --  Attach_Handler.
-         Att_Val : constant Node_Id :=
-           Expression (Next (First (Pragma_Argument_Associations
-                       (Get_Pragma (Proc, Pragma_Attach_Handler)))));
-
-         --  To check whether the attach handler is reserved, we call the
-         --  Ada.Interrupts.Is_Reserved. However, this function reads a global
-         --  state, which makes it a bit difficult to generate a call in
-         --  the logic (we would have to come up with the state object - not
-         --  impossible but not currently proposed by frontend). Instead,
-         --  we call the program function, which has only the interrupt as
-         --  argument, store the result in a temp and assert that the result
-         --  is false. So we are essentially asserting "not is_reserved(int)".
-
-         Res     : constant W_Expr_Id :=
-           New_Temp_For_Expr
-             (New_Call
-                (Name   => To_Why_Id (RTE (RE_Is_Reserved), Domain => EW_Prog),
-                 Domain => EW_Prog,
-                 Args   =>
-                   (1 =>
-                      Transform_Expr (Att_Val, EW_Int_Type, EW_Term, Params)),
-                 Typ    => EW_Bool_Type));
-
-         Pred    : constant W_Pred_Id :=
-           New_Call
-             (Name => Why_Eq,
-              Args => (1 => +Res,
-                       2 => Bool_False (EW_Term)));
-      begin
-         return
-           +Binding_For_Temp
-             (Domain  => EW_Prog,
-              Tmp     => Res,
-              Context =>
-                +New_Located_Assert
-                  (Ada_Node => Att_Val,
-                   Reason   => VC_Interrupt_Reserved,
-                   Kind     => EW_Check,
-                   Pred     => Pred));
-      end Single_Attach_Handler_Check;
-
-      --------------------------
-      -- Process_Declarations --
-      --------------------------
-
-      procedure Process_Declarations (L : List_Id) is
-         Proc : Node_Id := First (L);
-      begin
-         while Present (Proc) loop
-            if Nkind (Proc) = N_Subprogram_Declaration then
-               declare
-                  Ent : constant Entity_Id := Defining_Entity (Proc);
-               begin
-                  if Ekind (Ent) = E_Procedure
-                    and then Present (Get_Pragma (Ent, Pragma_Attach_Handler))
-                  then
-                     Stat := Sequence (Stat,
-                                       Single_Attach_Handler_Check (Ent));
-                  end if;
-               end;
-            end if;
-            Next (Proc);
-         end loop;
-      end Process_Declarations;
-
-      pragma Assert (Nkind (Parent (Ty)) = N_Protected_Type_Declaration);
-
-      PT_Def : constant Node_Id := Protected_Definition (Parent (Ty));
-
-   --  Start of processing for Compute_Attach_Handler_Check
-
-   begin
-      Process_Declarations (Visible_Declarations (PT_Def));
-
-      --  ??? only if private part has SPARK_Mode => On
-      Process_Declarations (Private_Declarations (PT_Def));
-
-      return Stat;
-   end Compute_Attach_Handler_Check;
 
    -----------------------
    -- Compute_Call_Args --
@@ -9402,8 +9283,6 @@ package body Gnat2Why.Expr is
                Lvalue      : constant Entity_Id := (if Is_Full_View (Obj)
                                                     then Partial_View (Obj)
                                                     else Obj);
-               Lvalue_Type : constant Entity_Id := Etype (Lvalue);
-
             begin
                --  We can ignore task declarations
 
@@ -9436,141 +9315,6 @@ package body Gnat2Why.Expr is
                           Ty          => Etype (Lvalue),
                           Initialized => Present (Expression (Decl)),
                           Only_Var    => False));
-               end if;
-
-               if Is_Protected_Type (Obj_Type) then
-
-                  --  If protected object attaches an interrupt, the priority
-                  --  must be in range of System.Interrupt_Priorioty; see RM
-                  --  C.3.1(11/3).
-
-                  if Requires_Interrupt_Priority (Obj_Type) then
-                     declare
-                        P : constant Node_Id :=
-                          Get_Priority_Or_Interrupt_Priority (Obj_Type);
-                     begin
-                        --  If no priority was specified, the default priority
-                        --  is implementation-defined (RM D.3 (10/3)), but in
-                        --  range of System.Interrupt_Priority.
-
-                        if Present (P) then
-
-                           --  ??? why discriminants are translated only when
-                           --  priority is given?
-
-                           --  Store the value of Decl's discriminants in the
-                           --  symbol table.
-
-                           declare
-                              type Discr is record
-                                 Id  : W_Identifier_Id;
-                                 Val : W_Expr_Id;
-                              end record;
-                              --  Why3 representation of discriminants
-
-                              package Discriminant_Lists is new
-                                Ada.Containers.Doubly_Linked_Lists
-                                  (Element_Type => Discr);
-
-                              W_Discriminants : Discriminant_Lists.List;
-                              --  Container for Why3 representations
-
-                              Discr_N : Node_Id;
-                              --  Discriminant node in SPARK AST
-
-                              P_Expr : W_Expr_Id;
-                           begin
-                              Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-                              Discr_N := First_Discriminant (Lvalue_Type);
-                              while Present (Discr_N) loop
-                                 declare
-                                    Discr_W : constant Discr :=
-                                      (Id =>
-                                         New_Temp_Identifier
-                                           (Typ =>
-                                              EW_Abstract (Etype (Discr_N))),
-
-                                       Val =>
-                                         New_Ada_Record_Access
-                                           (Ada_Node => Empty,
-                                            Domain   => EW_Term,
-                                            Name     =>
-                                              +Transform_Identifier
-                                                (Expr   => Lvalue,
-                                                 Ent    => Lvalue,
-                                                 Domain => EW_Term,
-                                                 Params => Body_Params),
-                                            Field    => Discr_N,
-                                            Ty       => Lvalue_Type));
-                                 begin
-                                    Insert_Entity (Discriminal (Discr_N),
-                                                   Discr_W.Id);
-
-                                    W_Discriminants.Append (Discr_W);
-                                 end;
-
-                                 Next_Discriminant (Discr_N);
-                              end loop;
-
-                              P_Expr :=
-                                Transform_Expr
-                                  (Expr          => P,
-                                   Domain        => EW_Term,
-                                   Params        => Body_Params,
-                                   Expected_Type => EW_Int_Type);
-
-                              for W_D of reverse W_Discriminants loop
-                                 P_Expr :=
-                                   New_Typed_Binding
-                                     (Domain   => EW_Term,
-                                      Name     => W_D.Id,
-                                      Def      => W_D.Val,
-                                      Context  => P_Expr);
-                              end loop;
-
-                              --  Generate a range check, but with a reason of
-                              --  ceiling check, as specified in RM index for
-                              --  "Ceiling_Check".
-
-                              R := Sequence
-                                (R,
-                                 New_Located_Assert
-                                   (Ada_Node => Decl,
-                                    Pred     =>
-                                      +New_Range_Expr
-                                        (Domain => EW_Pred,
-                                         Low    =>
-                                           New_Attribute_Expr
-                                             (Domain => EW_Term,
-                                              Ty     =>
-                                                RTE (RE_Interrupt_Priority),
-                                              Attr   => Attribute_First,
-                                              Params => Body_Params),
-                                         High   =>
-                                           New_Attribute_Expr
-                                             (Domain => EW_Term,
-                                              Ty     =>
-                                                RTE (RE_Interrupt_Priority),
-                                              Attr   => Attribute_Last,
-                                              Params => Body_Params),
-                                         Expr   => P_Expr),
-                                    Reason   => VC_Ceiling_Interrupt,
-                                    Kind     => EW_Check));
-
-                              Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-                           end;
-                        end if;
-                     end;
-                  end if;
-
-                  --  Check that no Attach_Handler expression of the protected
-                  --  object corresponds to a reserved interrupt; see RM
-                  --  C.3.1(10/3).
-
-                  R := Sequence (R,
-                                 Compute_Attach_Handler_Check
-                                   (Base_Type (Obj_Type), Body_Params));
                end if;
 
             end;

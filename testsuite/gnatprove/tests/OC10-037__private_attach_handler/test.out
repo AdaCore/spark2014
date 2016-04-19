@@ -6,8 +6,8 @@ q.ads:7:37: medium: this interrupt might be reserved
 q.ads:11:18: info: range check proved
 q.ads:11:26: info: range check proved
 q.ads:11:34: info: range check proved
+r.ads:5:19: info: ceiling priority in Interrupt_Priority proved
 r.ads:9:37: medium: this interrupt might be reserved
-r.ads:13:04: info: ceiling priority in Interrupt_Priority proved
 r.ads:13:18: info: range check proved
 r.ads:13:26: info: range check proved
 r.ads:13:34: info: range check proved

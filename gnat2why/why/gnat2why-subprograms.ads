@@ -93,6 +93,10 @@ package Gnat2Why.Subprograms is
    --  @param File the file and section in which the VCs should be generated
    --  @param E the task entity to be translated
 
+   procedure Generate_VCs_For_Protected_Type
+     (File : W_Section_Id;
+      E    : Entity_Id);
+
    procedure Translate_Subprogram_Spec
      (File : W_Section_Id;
       E    : Entity_Id) with
