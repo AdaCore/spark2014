@@ -130,13 +130,6 @@ package body SPARK_Definition is
    --  When processing delayed aspect type (e.g. Predicate) this is set to the
    --  delayed type itself; used to reference the type in the error message.
 
-   Current_Scope : Node_Trees.Cursor := Entity_Tree.Root;
-   Last_Package_Scope : Node_Trees.Cursor := Node_Trees.No_Element;
-   --  Cursors to the current package/subprogram/entry/task type (which are the
-   --  entities processed by the flow analyzis) and to the last package
-   --  inserted under the current scope (sibling packages goes first and then
-   --  go other entities).
-
    Violation_Detected : Boolean;
    --  Set to True when a violation is detected
 
@@ -183,6 +176,20 @@ package body SPARK_Definition is
    Entity_Set : Node_Sets.Set;
    --  Set of all entities marked so far. It contains entities from both the
    --  current compilation unit and other units.
+
+   Entity_Tree : Node_Trees.Tree;
+   --  Hierarchical container with entities processed by the flow analysis,
+   --  i.e. packages, subprograms, entries and task types. The hierarchy of
+   --  its contents mirrors the hierarchy of the analyzed code; the ordering of
+   --  siblings is that packages go first and subprograms/entries/task types go
+   --  after them.
+
+   Current_Scope : Node_Trees.Cursor := Entity_Tree.Root;
+   Last_Package_Scope : Node_Trees.Cursor := Node_Trees.No_Element;
+   --  Cursors to the current package/subprogram/entry/task type (which are the
+   --  entities processed by the flow analyzis) and to the last package
+   --  inserted under the current scope (sibling packages goes first and then
+   --  go other entities).
 
    Entities_In_SPARK : Node_Sets.Set;
    --  Entities in SPARK. An entity is added to this set if, after marking,
@@ -5726,5 +5733,50 @@ package body SPARK_Definition is
 
          when Marked_Entities =>
             Node_Sets.Element (C.Marked_Entities_Cursor));
+
+   -----------------------
+   -- Postorder_Iterate --
+   -----------------------
+
+   procedure Iterate_Entities
+     (Process : not null access procedure (E : Entity_Id))
+   is
+
+      procedure Iterate_Subtree (Subtree : Node_Trees.Cursor);
+
+      ---------------------
+      -- Iterate_Subtree --
+      ---------------------
+
+      procedure Iterate_Subtree (Subtree : Node_Trees.Cursor) is
+         Debug_Tree_Traversal : constant Boolean := False;
+         --  Display the entity name as the entity tree is traversed
+
+      begin
+         --  This is a helper function to recursively iterate over all the
+         --  nodes in a subtree, in depth-first fashion. It first visits the
+         --  children and then the root.
+
+         Node_Trees.Iterate_Children (Parent  => Subtree,
+                                      Process => Iterate_Subtree'Access);
+         Process (Entity_Tree (Subtree));
+
+         if Debug_Tree_Traversal then
+            Ada.Text_IO.Put
+              (Ada.Containers.Count_Type'Image (Node_Trees.Depth (Subtree)));
+            for J in 1 .. Node_Trees.Depth (Subtree) loop
+               Ada.Text_IO.Put (" ");
+            end loop;
+            Ada.Text_IO.Put_Line
+              (To_String (To_Entity_Name (Entity_Tree (Subtree))));
+         end if;
+      end Iterate_Subtree;
+
+   --  Start of processing for Iterate_Entities
+
+   begin
+      Node_Trees.Iterate_Children (Parent  => Entity_Tree.Root,
+                                   Process => Iterate_Subtree'Access);
+   end Iterate_Entities;
 
 end SPARK_Definition;

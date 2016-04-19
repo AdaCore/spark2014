@@ -1246,11 +1246,16 @@ package body Flow is
       Global_Info_List   : out Global_Info_Lists.List;
       Generating_Globals : Boolean)
    is
-   begin
-      --  Initialize the Global_Info_List to the empty set
-      Global_Info_List := Global_Info_Lists.Empty_List;
 
-      for E of Entity_Tree loop
+      procedure Build_Graphs_For_Entity (E : Entity_Id);
+      --  Build graphs and, if requisted, collect globals for a given entity
+
+      -----------------------------
+      -- Build_Graphs_For_Entity --
+      -----------------------------
+
+      procedure Build_Graphs_For_Entity (E : Entity_Id) is
+      begin
          case Ekind (E) is
             when E_Entry | E_Task_Type | Subprogram_Kind =>
 
@@ -1417,9 +1422,17 @@ package body Flow is
                end;
 
             when others =>
-               null;
+               raise Program_Error;
          end case;
-      end loop;
+      end Build_Graphs_For_Entity;
+
+   --  Start of processing for Build_Graphs_For_Compilation_Unit
+
+   begin
+      --  Initialize the Global_Info_List to the empty set
+      Global_Info_List := Global_Info_Lists.Empty_List;
+
+      Iterate_Entities (Build_Graphs_For_Entity'Access);
    end Build_Graphs_For_Compilation_Unit;
 
    ------------------------
