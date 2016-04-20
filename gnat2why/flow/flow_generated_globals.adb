@@ -1891,7 +1891,7 @@ package body Flow_Generated_Globals is
                      end if;
                   end;
                end loop;
-               LHS.Union (Name_Sets.Intersection (LV, ODC));
+               LHS.Union (LV and ODC);
 
                --  Add Reads and Writes of conditional calls to the RHS set and
                --  their Proof_Reads to the RHS_Proof set.
