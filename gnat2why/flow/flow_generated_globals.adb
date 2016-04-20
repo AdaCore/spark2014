@@ -681,27 +681,24 @@ package body Flow_Generated_Globals is
    ---------------------
 
    function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
-      NS       : Name_Sets.Set;
-      Tmp_Name : Entity_Name;
+      Unrefined : Name_Sets.Set := GG_Get_Constituents (EN);
+      Refined   : Name_Sets.Set := Name_Sets.Empty_Set;
+
    begin
-      NS := GG_Get_Constituents (EN);
-
-      while (for some S of NS => GG_Has_Refinement (S)) loop
-         Tmp_Name := Null_Entity_Name;
-         for S of NS loop
-            if GG_Has_Refinement (S) then
-               Tmp_Name := S;
-               exit;
+      while not Unrefined.Is_Empty loop
+         declare
+            Constituent : constant Entity_Name := Unrefined (Unrefined.First);
+         begin
+            if GG_Has_Refinement (Constituent) then
+               Unrefined.Union (GG_Get_Constituents (Constituent));
+            else
+               Refined.Include (Constituent);
             end if;
-         end loop;
-
-         if Tmp_Name /= Null_Entity_Name then
-            NS.Union (GG_Get_Constituents (Tmp_Name));
-            NS.Exclude (Tmp_Name);
-         end if;
+            Unrefined.Delete (Constituent);
+         end;
       end loop;
 
-      return NS;
+      return Refined;
    end GG_Fully_Refine;
 
    -----------------------------------
