@@ -1981,10 +1981,10 @@ package body Flow_Generated_Globals is
          ALI_File_Name_Str : constant String :=
            Get_Name_String (Full_Lib_File_Name (ALI_File_Name));
 
-         Sanitized_Name : constant Unbounded_String :=
-           Trim (Source => To_Unbounded_String (ALI_File_Name_Str),
-                 Left   => Null_Set,
-                 Right  => To_Set (Character'Val (0)));
+         Sanitized_Name : constant String :=
+           To_String (Trim (Source => To_Unbounded_String (ALI_File_Name_Str),
+                            Left   => Null_Set,
+                            Right  => To_Set (Character'Val (0))));
 
          procedure Issue_Corrupted_File_Error (Msg : String)
          with No_Return;
@@ -1998,8 +1998,7 @@ package body Flow_Generated_Globals is
          procedure Issue_Corrupted_File_Error (Msg : String) is
          begin
             Abort_With_Message
-              ("Corrupted ali file detected (" &
-                 To_String (Sanitized_Name) & "): " &
+              ("Corrupted ali file detected (" & Sanitized_Name & "): " &
                  Msg &
                  ". Call gnatprove with ""--clean"".");
          end Issue_Corrupted_File_Error;
