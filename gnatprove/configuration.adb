@@ -647,14 +647,21 @@ ASCII.LF;
       procedure Set_Mode;
       procedure Set_Warning_Mode;
       procedure Set_Report_Mode;
+
       procedure Set_Level_Timeout_Steps_Provers_Proof_Mode;
+      --  using the --level, --timeout, --steps and --provers switches, set the
+      --  corresponding variables
+
       procedure Set_Proof_Mode;
       procedure Process_Limit_Switches;
       procedure Set_Provers;
       procedure Set_Proof_Dir;
-   --  If attribute Proof_Dir is set in the project file, set global variable
-   --  Proof_Dir to the full path <path-to-project-file>/<value-of-proof-dir>.
+      --  If attribute Proof_Dir is set in the project file,
+      --  set global variable Proof_Dir to the full path
+      --  <path-to-project-file>/<value-of-proof-dir>.
 
+      procedure Limit_Provers;
+      --  remove built-in provers from Provers list that are not available
       ----------
       -- Init --
       ----------
@@ -709,6 +716,45 @@ ASCII.LF;
          end if;
          return Tree;
       end Init;
+
+      -------------------
+      -- Limit_Provers --
+      -------------------
+
+      procedure Limit_Provers is
+
+         procedure Limit_Prover (Name : String; Executable : String);
+         --  if the Executable is not present in libexec/spark/bin/, remove the
+         --  prover Name from the list of provers to be used
+
+         ------------------
+         -- Limit_Prover --
+         ------------------
+
+         procedure Limit_Prover (Name : String; Executable : String) is
+         begin
+            if GNAT.OS_Lib.Locate_Exec_On_Path (Executable) = null then
+               declare
+                  C : String_Lists.Cursor := Provers.Find (Name);
+               begin
+                  if String_Lists.Has_Element (C) then
+                     Provers.Delete (C);
+                  end if;
+               end;
+            end if;
+         end Limit_Prover;
+
+         --  beginning of processing for Limit_Prover
+
+      begin
+         Limit_Prover ("cvc4", "cvc4");
+         Limit_Prover ("z3", "z3");
+         Limit_Prover ("altergo", "alt-ergo");
+      end Limit_Provers;
+
+      -----------------
+      -- Postprocess --
+      -----------------
 
       procedure Postprocess is
       begin
@@ -927,6 +973,7 @@ ASCII.LF;
 
          Set_Proof_Mode;
          Set_Provers;
+         Limit_Provers;
       end Set_Level_Timeout_Steps_Provers_Proof_Mode;
 
       --------------
