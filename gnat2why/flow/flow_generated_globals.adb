@@ -107,22 +107,20 @@ package body Flow_Generated_Globals is
    ----------------------------------------------------------------------
 
    State_Comp_Map         : Name_Graphs.Map := Name_Graphs.Empty_Map;
-   --  state -> {components}
-   --
-   --  This maps abstract state to its constituents.
+   --  Mapping from abstract states to their constituents, i.e.
+   --  abstract_state -> {constituents}
 
    Comp_State_Map         : Name_Maps.Map   := Name_Maps.Empty_Map;
-   --  component -> state
-   --
-   --  This is the reverse of the above, and is filled in at the end of
-   --  GG_Read from state_comp_map, in order to speed up some queries.
+   --  A reverse of the above mapping, i.e. constituent -> abstract_state,
+   --  which speeds up some queries. It is populated at the end of GG_Read from
+   --  State_Comp_Map.
 
    All_State_Abstractions : Name_Sets.Set   := Name_Sets.Empty_Set;
-   --  This will hold all the state abstractions that the GG knows of.
+   --  State abstractions that the GG knows of
 
    Remote_States          : Name_Sets.Set   := Name_Sets.Empty_Set;
-   --  This will hold all state abstractions that are somehow used in this
-   --  compilation unit but are not declared inside it.
+   --  State abstractions that are referenced in the current compilation unit
+   --  but are declared outside of it.
 
    ----------------------------------------------------------------------
    --  Initializes information
@@ -314,13 +312,13 @@ package body Flow_Generated_Globals is
       "="                 => Global_Graphs."=");
 
    Local_Graph  : Global_Graphs.Graph;
-   --  This graph will represent the hierarchy of subprograms (which
-   --  subprogram is nested in which one) and will be used to determine
-   --  which local variables can act as globals to which subprograms.
+   --  A graph that represents the hierarchy of subprograms (which subprogram
+   --  is nested in which one); used to determine which local variables may act
+   --  as globals to which subprograms.
 
    Global_Graph : Global_Graphs.Graph;
-   --  This graph will represent the globals that each subprogram has as
-   --  inputs, outputs and proof inputs.
+   --  A graph that represents the globals that each subprogram has as inputs,
+   --  outputs and proof inputs.
 
    ---------------------------------------------------
    -- Regular expression for predefined subprograms --
@@ -2792,7 +2790,7 @@ package body Flow_Generated_Globals is
       --  Set mode to writing mode
       Current_Mode := GG_Write_Mode;
 
-      --  Store the current compilation unit on which we are working.
+      --  Store the current compilation unit on which we are working
       Current_Comp_Unit := GNAT_Root;
    end GG_Write_Initialize;
 
