@@ -75,13 +75,13 @@ package body Report_Database is
 
    Subp_Unit_Map : Subp_Unit_Maps.Map := Subp_Unit_Maps.Empty_Map;
    --  This map maps subprograms to their unit. This map is filled by the
-   --  Add_SPARK_Status function
+   --  Add_SPARK_Status function.
 
    procedure Update_Subp_Entry
      (Unit    : Unit_Type;
       Subp    : Subp_Type;
       Process : not null access procedure (Stat : in out Stat_Rec));
-   --  update the stat record of the given subp using the callback. If the
+   --  Update the stat record of the given subp using the callback. If the
    --  unit/subp didn't exist yet, they are added, and a default Stat_Rec
    --  is created.
 
@@ -104,6 +104,9 @@ package body Report_Database is
       end Add_Claim_Entry;
 
       Subp : constant Subp_Type := Claim.Arg;
+
+   --  Start of processing for Add_Claim_With_Assumptions
+
    begin
       Update_Subp_Entry (Subp_Unit_Map.Element (Subp),
                          Subp,
@@ -232,6 +235,8 @@ package body Report_Database is
                                 Line   => Line,
                                 Column => Column));
       end Process;
+
+   --  Start of processing for Add_Suppressed_Warning
 
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
@@ -385,7 +390,7 @@ package body Report_Database is
 
       use Prover_Stat_Maps;
 
-      --  Beginning of processing for Merge_Stat_Maps
+   --  Start of processing for Merge_Stat_Maps
 
    begin
       for C in B.Iterate loop
@@ -416,11 +421,17 @@ package body Report_Database is
 
       procedure Update (Subp : Subp_Type; Stat : Stat_Rec);
 
+      ------------
+      -- Update --
+      ------------
+
       procedure Update (Subp : Subp_Type; Stat : Stat_Rec) is
          pragma Unreferenced (Subp, Stat);
       begin
          Count := Count + 1;
       end Update;
+
+   --  Start of processing for Num_Subps
 
    begin
       Iter_Unit_Subps (Unit, Update'Access);
@@ -437,6 +448,10 @@ package body Report_Database is
 
       procedure Update (Subp : Subp_Type; Stat : Stat_Rec);
 
+      ------------
+      -- Update --
+      ------------
+
       procedure Update (Subp : Subp_Type; Stat : Stat_Rec) is
          pragma Unreferenced (Subp);
       begin
@@ -444,6 +459,8 @@ package body Report_Database is
             Count := Count + 1;
          end if;
       end Update;
+
+   --  Start of processing for Num_Subps_SPARK
 
    begin
       Iter_Unit_Subps (Unit, Update'Access);
@@ -458,6 +475,10 @@ package body Report_Database is
       Count : Natural := 0;
 
       procedure Update (U : Unit_Type);
+
+      ------------
+      -- Update --
+      ------------
 
       procedure Update (U : Unit_Type) is
          pragma Unreferenced (U);

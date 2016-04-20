@@ -844,10 +844,11 @@ procedure SPARK_Report is
 
       N_Un : constant Natural := Num_Units;
 
-   --  Start of processing for Print_Analysis_Report
-
       Unit_Str : constant String :=
         (if N_Un = 1 then "unit" else "units");
+
+   --  Start of processing for Print_Analysis_Report
+
    begin
       if N_Un > 0 then
          Put_Line (Handle, "Analyzed" & N_Un'Img & " " & Unit_Str);
