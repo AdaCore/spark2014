@@ -2564,16 +2564,16 @@ package body Flow_Generated_Globals is
               Spec_File_Name_Without_Suffix
                 (Enclosing_Comp_Unit_Node (GNAT_Root));
 
-            LG_Filename   : constant String :=
+            Local_Filename   : constant String :=
               Common_Prefix & "_locals_graph";
 
-            GG_Filename   : constant String :=
+            Global_Filename   : constant String :=
               Common_Prefix & "_globals_graph";
          begin
-            Print_Global_Graph (Filename => LG_Filename,
+            Print_Global_Graph (Filename => Local_Filename,
                                 G        => Local_Graph);
 
-            Print_Global_Graph (Filename => GG_Filename,
+            Print_Global_Graph (Filename => Global_Filename,
                                 G        => Global_Graph);
          end;
       end if;
