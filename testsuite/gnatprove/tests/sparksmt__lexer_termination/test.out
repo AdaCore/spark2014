@@ -1,0 +1,186 @@
+lexer.adb:83:27: info: discriminant check proved
+lexer.adb:85:45: info: overflow check proved
+lexer.adb:90:43: info: overflow check proved
+lexer.adb:101:39: info: initialization of "The_Filename" constituent of "State" proved
+lexer.adb:102:39: info: initialization of "The_File" constituent of "State" proved
+lexer.adb:103:39: info: initialization of "Current_Read.C" constituent of "State" proved
+lexer.adb:104:39: info: initialization of "Current_Line" constituent of "State" proved
+lexer.adb:105:39: info: initialization of "Current_Col" constituent of "State" proved
+lexer.adb:106:39: info: initialization of "Current_Idx" constituent of "State" proved
+lexer.adb:107:39: info: initialization of "Next_Read.C" constituent of "State" proved
+lexer.adb:108:39: info: initialization of "Next_Idx" constituent of "State" proved
+lexer.adb:114:07: info: precondition proved
+lexer.adb:119:07: info: precondition proved
+lexer.adb:119:13: info: initialization of "The_File" constituent of "State" proved
+lexer.adb:120:30: info: initialization of "The_File" constituent of "State" proved
+lexer.adb:121:07: info: initialization of "Current_Col" constituent of "State" proved
+lexer.adb:121:07: info: initialization of "Current_Line" constituent of "State" proved
+lexer.adb:121:07: info: initialization of "Current_Read.C" constituent of "State" proved
+lexer.adb:124:10: info: precondition proved
+lexer.adb:124:16: info: initialization of "The_File" constituent of "State" proved
+lexer.adb:125:30: info: initialization of "The_File" constituent of "State" proved
+lexer.adb:127:20: info: discriminant check proved
+lexer.adb:127:23: info: initialization of "Current_Read.C" constituent of "State" proved
+lexer.adb:128:23: info: initialization of "Current_Idx" constituent of "State" proved
+lexer.adb:150:07: info: initialization of "S" proved
+lexer.adb:164:20: info: postcondition proved
+lexer.adb:173:20: info: postcondition proved
+lexer.adb:181:20: info: postcondition proved
+lexer.adb:182:48: info: overflow check proved
+lexer.adb:184:56: info: overflow check proved
+lexer.adb:200:23: info: discriminant check proved
+lexer.adb:205:13: info: precondition proved
+lexer.adb:218:21: info: postcondition proved
+lexer.adb:223:27: info: discriminant check proved
+lexer.adb:225:16: info: loop invariant initialization proved
+lexer.adb:225:16: info: loop invariant preservation proved
+lexer.adb:227:16: info: loop variant proved
+lexer.adb:230:16: info: precondition proved
+lexer.adb:237:33: info: discriminant check proved
+lexer.adb:238:21: info: postcondition proved
+lexer.adb:244:13: info: precondition proved
+lexer.adb:246:27: info: discriminant check proved
+lexer.adb:248:16: info: loop invariant initialization proved
+lexer.adb:248:16: info: loop invariant preservation proved
+lexer.adb:250:16: info: loop variant proved
+lexer.adb:253:16: info: precondition proved
+lexer.adb:260:13: info: precondition proved
+lexer.adb:264:35: info: discriminant check proved
+lexer.adb:265:13: info: precondition proved
+lexer.adb:271:13: info: loop invariant initialization proved
+lexer.adb:271:13: info: loop invariant preservation proved
+lexer.adb:273:13: info: loop variant proved
+lexer.adb:283:33: info: discriminant check proved
+lexer.adb:284:10: info: precondition proved
+lexer.adb:305:15: info: precondition proved
+lexer.adb:307:15: info: initialization of "L" proved
+lexer.adb:309:15: info: initialization of "C" proved
+lexer.adb:322:33: info: initialization of "T.Col" proved
+lexer.adb:322:33: info: initialization of "T.Length" proved
+lexer.adb:322:33: info: initialization of "T.Line" proved
+lexer.adb:322:33: info: initialization of "T.Value" proved
+lexer.adb:325:20: info: postcondition proved
+lexer.adb:326:20: info: initialization of "T.Line" proved
+lexer.adb:327:20: info: initialization of "T.Col" proved
+lexer.adb:328:20: info: initialization of "T.Length" proved
+lexer.adb:333:18: info: discriminant check proved
+lexer.adb:339:18: info: discriminant check proved
+lexer.adb:345:16: info: raise statement proved unreachable
+lexer.adb:356:33: info: initialization of "T.Col" proved
+lexer.adb:356:33: info: initialization of "T.Length" proved
+lexer.adb:356:33: info: initialization of "T.Line" proved
+lexer.adb:356:33: info: initialization of "T.Value" proved
+lexer.adb:360:20: info: postcondition proved
+lexer.adb:362:20: info: initialization of "T.Line" proved
+lexer.adb:363:20: info: initialization of "T.Col" proved
+lexer.adb:364:20: info: initialization of "T.Length" proved
+lexer.adb:364:43: info: overflow check proved
+lexer.adb:366:53: info: overflow check proved
+lexer.adb:366:53: info: range check proved
+lexer.adb:369:10: info: precondition proved
+lexer.adb:372:18: info: discriminant check proved
+lexer.adb:376:32: info: initialization of "N" proved
+lexer.adb:378:18: info: discriminant check proved
+lexer.adb:382:32: info: initialization of "N" proved
+lexer.adb:384:18: info: discriminant check proved
+lexer.adb:388:32: info: initialization of "N" proved
+lexer.adb:390:18: info: discriminant check proved
+lexer.adb:394:32: info: initialization of "N" proved
+lexer.adb:396:18: info: discriminant check proved
+lexer.adb:400:32: info: initialization of "N" proved
+lexer.adb:402:18: info: discriminant check proved
+lexer.adb:406:32: info: initialization of "N" proved
+lexer.adb:450:10: info: precondition proved
+lexer.adb:454:15: info: discriminant check proved
+lexer.adb:456:41: info: overflow check proved
+lexer.adb:461:10: info: loop invariant initialization proved
+lexer.adb:461:10: info: loop invariant preservation proved
+lexer.adb:463:10: info: loop variant proved
+lexer.adb:468:36: info: discriminant check proved
+lexer.adb:470:10: info: initialization of "S" proved
+lexer.adb:470:10: info: precondition proved
+lexer.adb:474:16: info: initialization of "First_Col" proved
+lexer.adb:474:16: info: initialization of "First_Line" proved
+lexer.adb:474:16: info: precondition proved
+lexer.adb:478:16: info: initialization of "First_Col" proved
+lexer.adb:478:16: info: initialization of "First_Line" proved
+lexer.adb:478:16: info: precondition proved
+lexer.adb:502:16: info: initialization of "First_Col" proved
+lexer.adb:502:16: info: initialization of "First_Line" proved
+lexer.adb:502:16: info: precondition proved
+lexer.adb:502:54: info: range check proved
+lexer.adb:502:56: info: initialization of "C" proved
+lexer.adb:502:58: info: range check proved
+lexer.adb:508:27: info: discriminant check proved
+lexer.adb:510:10: info: loop invariant initialization proved
+lexer.adb:510:10: info: loop invariant preservation proved
+lexer.adb:517:13: info: initialization of "State" proved
+lexer.adb:521:21: info: initialization of "S" proved
+lexer.adb:522:28: info: initialization of "First_Idx" proved
+lexer.adb:528:10: info: loop variant proved
+lexer.adb:533:21: info: initialization of "C" proved
+lexer.adb:540:21: info: initialization of "C" proved
+lexer.adb:548:21: info: initialization of "C" proved
+lexer.adb:552:22: info: initialization of "First_Col" proved
+lexer.adb:552:22: info: initialization of "First_Line" proved
+lexer.adb:552:22: info: precondition proved
+lexer.adb:556:21: info: initialization of "C" proved
+lexer.adb:562:21: info: initialization of "C" proved
+lexer.adb:568:21: info: initialization of "C" proved
+lexer.adb:574:21: info: initialization of "C" proved
+lexer.adb:576:22: info: initialization of "S" proved
+lexer.adb:576:22: info: precondition proved
+lexer.adb:585:21: info: initialization of "C" proved
+lexer.adb:588:33: info: discriminant check proved
+lexer.adb:590:25: info: precondition proved
+lexer.adb:592:25: info: initialization of "S" proved
+lexer.adb:592:25: info: precondition proved
+lexer.adb:593:25: info: initialization of "State" proved
+lexer.adb:602:16: info: raise statement proved unreachable
+lexer.adb:606:10: info: initialization of "S" proved
+lexer.adb:606:10: info: precondition proved
+lexer.adb:609:07: info: assertion proved
+lexer.adb:609:25: info: initialization of "State" proved
+lexer.adb:610:35: info: initialization of "S" proved
+lexer.adb:614:46: info: initialization of "S" proved
+lexer.adb:618:18: info: initialization of "State" proved
+lexer.adb:631:18: info: initialization of "State" proved
+lexer.adb:636:40: info: range check proved
+lexer.adb:636:55: info: overflow check proved
+lexer.adb:638:40: info: range check proved
+lexer.adb:638:55: info: overflow check proved
+lexer.adb:638:71: info: overflow check proved
+lexer.adb:640:40: info: range check proved
+lexer.adb:640:55: info: overflow check proved
+lexer.adb:642:10: info: initialization of "First_Col" proved
+lexer.adb:642:10: info: initialization of "First_Idx" proved
+lexer.adb:642:10: info: initialization of "First_Line" proved
+lexer.adb:642:10: info: precondition proved
+lexer.adb:642:21: info: initialization of "K" proved
+lexer.adb:642:24: info: initialization of "Str" proved
+lexer.adb:645:12: info: initialization of "State" proved
+lexer.adb:647:13: info: initialization of "First_Col" proved
+lexer.adb:647:13: info: initialization of "First_Line" proved
+lexer.adb:647:13: info: precondition proved
+lexer.adb:649:13: info: initialization of "First_Col" proved
+lexer.adb:649:13: info: initialization of "First_Line" proved
+lexer.adb:649:13: info: precondition proved
+lexer.adb:651:13: info: initialization of "First_Col" proved
+lexer.adb:651:13: info: initialization of "First_Line" proved
+lexer.adb:651:13: info: precondition proved
+lexer.adb:661:14: info: range check proved
+lexer.adb:669:12: info: precondition proved
+lexer.ads:76:17: info: initialization of "Current_Col" constituent of "State" proved
+lexer.ads:76:17: info: initialization of "Current_Idx" constituent of "State" proved
+lexer.ads:76:17: info: initialization of "Current_Line" constituent of "State" proved
+lexer.ads:76:17: info: initialization of "Current_Read.C" constituent of "State" proved
+lexer.ads:76:17: info: initialization of "Next_Idx" constituent of "State" proved
+lexer.ads:76:17: info: initialization of "Next_Read.C" constituent of "State" proved
+lexer.ads:76:17: info: initialization of "The_File" constituent of "State" proved
+lexer.ads:76:17: info: initialization of "The_Filename" constituent of "State" proved
+lexer.ads:76:17: info: postcondition proved
+lexer.ads:79:26: info: initialization of "T.Col" proved
+lexer.ads:79:26: info: initialization of "T.Length" proved
+lexer.ads:79:26: info: initialization of "T.Line" proved
+lexer.ads:79:26: info: initialization of "T.Value" proved
+lexer.ads:83:19: info: postcondition proved
