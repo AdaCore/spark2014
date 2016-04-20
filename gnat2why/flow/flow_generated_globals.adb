@@ -2294,34 +2294,29 @@ package body Flow_Generated_Globals is
       procedure Remove_Constants_Without_Variable_Input is
          use Global_Graphs;
 
-         All_Constants : Name_Sets.Set := Name_Sets.Empty_Set;
       begin
-         --  Gather up all constants without variable input
+         --  Detect constants without variable input
          for Glob of All_Globals loop
             declare
                Const : constant Entity_Id := Find_Entity (Glob);
             begin
-               if Const /= Empty
+               if Present (Const)
                  and then Ekind (Const) = E_Constant
                  and then not Has_Variable_Input (Direct_Mapping_Id (Const))
                then
-                  All_Constants.Include (Glob);
+                  --  Remove all edges going in and out of a constant without
+                  --  variable input.
+                  declare
+                     Const_G_Id : constant Global_Id :=
+                       Global_Id'(Kind => Variable_Kind,
+                                  Name => Glob);
+
+                     Const_V    : constant Vertex_Id :=
+                       Global_Graph.Get_Vertex (Const_G_Id);
+                  begin
+                     Global_Graph.Clear_Vertex (Const_V);
+                  end;
                end if;
-            end;
-         end loop;
-
-         --  Remove all edges going in and out of a constant without
-         --  variable input.
-         for Const of All_Constants loop
-            declare
-               Const_G_Id : constant Global_Id :=
-                 Global_Id'(Kind => Variable_Kind,
-                            Name => Const);
-
-               Const_V    : constant Vertex_Id :=
-                 Global_Graph.Get_Vertex (Const_G_Id);
-            begin
-               Global_Graph.Clear_Vertex (Const_V);
             end;
          end loop;
       end Remove_Constants_Without_Variable_Input;
