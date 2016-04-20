@@ -518,31 +518,27 @@ package body Flow_Generated_Globals is
 
    procedure Add_To_Remote_States (F : Flow_Id) is
    begin
-      --  If we are not dealing with a state abstraction then we have nothing
-      --  to do.
-      if not Is_Abstract_State (F) then
-         return;
-      end if;
-
-      case F.Kind is
-         when Direct_Mapping | Record_Field =>
-            declare
-               N : Entity_Name;
-            begin
-               N := To_Entity_Name (Get_Direct_Mapping_Id (F));
+      if Is_Abstract_State (F) then
+         case F.Kind is
+            when Direct_Mapping | Record_Field =>
                if Enclosing_Comp_Unit_Node (Get_Direct_Mapping_Id (F)) /=
                  Current_Comp_Unit
                then
-                  Remote_States.Include (N);
+                  declare
+                     N : constant Entity_Name :=
+                       To_Entity_Name (Get_Direct_Mapping_Id (F));
+                  begin
+                     Remote_States.Include (N);
+                  end;
                end if;
-            end;
 
-         when Magic_String =>
-            Remote_States.Include (F.Name);
+            when Magic_String =>
+               Remote_States.Include (F.Name);
 
-         when others =>
-            return;
-      end case;
+            when others =>
+               return;
+         end case;
+      end if;
    end Add_To_Remote_States;
 
    --------------------------------------
