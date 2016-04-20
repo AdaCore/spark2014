@@ -1847,13 +1847,18 @@ package body Flow_Generated_Globals is
                   --  Add local state abstractions with null refinements to the
                   --  list of local definite writes since they are trivially
                   --  initialized.
-                  if State_Comp_Map.Contains (Local_Variable)
-                    and then State_Comp_Map (Local_Variable).Is_Empty
-                  then
-                     Add_To_Proof_Or_Normal_Set (Local_Variable,
-                                                 LHS_Proof,
-                                                 LHS);
-                  end if;
+                  declare
+                     Local_State : constant Name_Graphs.Cursor :=
+                       State_Comp_Map.Find (Local_Variable);
+                  begin
+                     if Name_Graphs.Has_Element (Local_State)
+                       and then State_Comp_Map (Local_State).Is_Empty
+                     then
+                        Add_To_Proof_Or_Normal_Set (Local_Variable,
+                                                    LHS_Proof,
+                                                    LHS);
+                     end if;
+                  end;
                end loop;
 
                --  Add definite local writes to either LHS_Proof or LHS
