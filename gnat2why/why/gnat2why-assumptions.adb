@@ -57,28 +57,18 @@ package body Gnat2Why.Assumptions is
 
    procedure Assume_For_Claim
      (C      : Claim;
-      Assume : Claim) is
-      use Claim_Maps;
+      Assume : Claim)
+   is
+      Position : Claim_Maps.Cursor;
+      Dummy    : Boolean;
 
-      procedure Process (C : Claim; S : in out Claim_Sets.Set);
-
-      -------------
-      -- Process --
-      -------------
-
-      procedure Process (C : Claim; S : in out Claim_Sets.Set) is
-         pragma Unreferenced (C);
-      begin
-         S.Include (Assume);
-      end Process;
-
-      Cu : constant Cursor := Claim_Assumptions.Find (C);
    begin
-      if Cu = No_Element then
-         Claim_Assumptions.Include (C, Claim_Sets.To_Set (Assume));
-      else
-         Claim_Assumptions.Update_Element (Cu, Process'Access);
-      end if;
+      --  Attempt to insert an empty set and then put the assumption there
+      Claim_Assumptions.Insert (Key      => C,
+                                Position => Position,
+                                Inserted => Dummy);
+
+      Claim_Assumptions (Position).Include (Assume);
    end Assume_For_Claim;
 
    procedure Assume_For_Claim

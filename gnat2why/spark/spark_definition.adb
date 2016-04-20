@@ -5637,37 +5637,18 @@ package body SPARK_Definition is
       C : Task_Instances_Maps.Cursor;
       --  Cursor with a list of instances of a given task type
 
-      Inserted : Boolean;
+      Dummy : Boolean;
       --  Flag that indicates if a key was inserted or if it already existed in
       --  a map. It is required by the hashed-maps API, but not used here.
-
-      procedure Append_Object
-        (Key     : Entity_Name;
-         Element : in out Task_Lists.List);
-      --  Append object to a list of task type instances
-
-      -------------------
-      -- Append_Object --
-      -------------------
-
-      procedure Append_Object
-        (Key     : Entity_Name;
-         Element : in out Task_Lists.List)
-      is
-         pragma Unreferenced (Key);
-      begin
-         Element.Append (Object);
-      end Append_Object;
-
-   --  Start of processing for Register_Task_Object
 
    begin
       --  Find a list of instances of the task type; if it does not exist then
       --  initialize with an empty list.
       Task_Instances.Insert (Key      => Type_Name,
                              Position => C,
-                             Inserted => Inserted);
-      Task_Instances.Update_Element (C, Append_Object'Access);
+                             Inserted => Dummy);
+
+      Task_Instances (C).Append (Object);
    end Register_Task_Object;
 
    ----------------------------------------------------------------------

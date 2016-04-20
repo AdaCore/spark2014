@@ -2119,33 +2119,13 @@ package body Flow_Generated_Globals is
                         C     : Entity_Name_To_Priorities_Maps.Cursor;
                         Dummy : Boolean;
 
-                        procedure Append
-                          (Key     : Entity_Name;
-                           Element : in out Object_Priority_Lists.List);
-                        --  Append element to multiset
-
-                        ------------
-                        -- Append --
-                        ------------
-
-                        procedure Append
-                          (Key     : Entity_Name;
-                           Element : in out Object_Priority_Lists.List)
-                        is
-                           pragma Unreferenced (Key);
-                        begin
-                           Element.Append (V.The_Priority);
-                        end Append;
-
                      begin
                         Protected_Objects.Phase_2.Insert
                           (Key      => V.The_Variable,
                            Position => C,
                            Inserted => Dummy);
 
-                        Protected_Objects.Phase_2.Update_Element
-                          (Position => C,
-                           Process  => Append'Access);
+                        Protected_Objects.Phase_2 (C).Append (V.The_Priority);
                      end;
 
                   when EK_Tasking_Instance_Count =>
@@ -2153,6 +2133,9 @@ package body Flow_Generated_Globals is
                         use type Task_Lists.Cursor;
                         C : Task_Lists.Cursor := V.The_Objects.First;
                      begin
+                        --  Explicit iteration with while is necessary, because
+                        --  iteration with for is not allowed for discriminant-
+                        --  dependent component of a mutable object.
                         while C /= Task_Lists.No_Element loop
                            Register_Task_Object
                              (V.The_Type,
