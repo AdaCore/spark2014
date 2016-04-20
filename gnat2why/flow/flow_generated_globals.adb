@@ -98,9 +98,8 @@ package body Flow_Generated_Globals is
    --     {x.name for all x of Subprogram_Info_List}
 
    Nonblocking_Subprograms_Set : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  Subprograms, entries and tasks that do not contain potentially
-   --  blocking statements (but still may call another blocking
-   --  subprogram).
+   --  Subprograms, entries and tasks that do not contain potentially blocking
+   --  statements (but still may call another blocking subprogram).
 
    ----------------------------------------------------------------------
    --  State information
@@ -790,96 +789,97 @@ package body Flow_Generated_Globals is
       return Dependency_Maps.Map
    is
    begin
-      --  If we have no info for this package then we cannot have possibly
-      --  generated an initializes package for it.
-      if not GG_Exists_Cache.Contains (EN) then
+      if GG_Exists_Cache.Contains (EN) then
+         --  Retrieve the relevant Name_Dependency_Map, up project it to S and
+         --  then convert it into a Dependency_Map.
+         declare
+            Pkg       : constant Entity_Id := Find_Entity (EN);
+            LHS_Scope : constant Flow_Scope :=
+              (if Present (Pkg)
+               then Flow_Scope'(Ent     => Pkg,
+                                Section => Spec_Part)
+               else S);
+
+            DM : Dependency_Maps.Map;
+            II : Initializes_Info renames Initializes_Aspects_Map (EN);
+
+            All_LHS_UP   : Name_Sets.Set;
+            LHS_UP       : Name_Sets.Set;
+            LHS_Proof_UP : Name_Sets.Set;
+            RHS_UP       : Name_Sets.Set;
+            RHS_Proof_UP : Name_Sets.Set;
+
+            To_Remove    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+            --  This set will hold the names of non fully initialized states.
+            --  These will have to be removed from the left hand side sets.
+
+            FS_LHS       : Flow_Id_Sets.Set;
+            FS_LHS_Proof : Flow_Id_Sets.Set;
+            FS_RHS       : Flow_Id_Sets.Set;
+            FS_RHS_Proof : Flow_Id_Sets.Set;
+            --  These will hold the final flow sets that will be used to
+            --  populate the dependency map.
+
+            Unused : Flow_Id_Sets.Set;
+
+         begin
+            --  Up project left hand side
+            Up_Project (Most_Refined      => II.LHS or II.LHS_Proof,
+                        Final_View        => All_LHS_UP,
+                        Scope             => LHS_Scope,
+                        Reads             => To_Remove,
+                        Processing_Writes => True);
+
+            Up_Project (Most_Refined => II.LHS,
+                        Final_View   => LHS_UP,
+                        Scope        => LHS_Scope,
+                        Reads        => Unused);
+
+            Up_Project (Most_Refined => II.LHS_Proof,
+                        Final_View   => LHS_Proof_UP,
+                        Scope        => LHS_Scope,
+                        Reads        => Unused);
+
+            --  Up project right hand side
+            Up_Project (Most_Refined => II.RHS,
+                        Final_View   => RHS_UP,
+                        Scope        => S,
+                        Reads        => Unused);
+
+            Up_Project (Most_Refined => II.RHS_Proof,
+                        Final_View   => RHS_Proof_UP,
+                        Scope        => S,
+                        Reads        => Unused);
+
+            --  Populate and return DM
+            FS_LHS       := To_Flow_Id_Set (LHS_UP);
+            FS_LHS_Proof := To_Flow_Id_Set (LHS_Proof_UP);
+            FS_RHS       := To_Flow_Id_Set (RHS_UP);
+            FS_RHS_Proof := To_Flow_Id_Set (RHS_Proof_UP);
+
+            --  Remove state abstractions that are only partially initialized
+            --  from the left hand side.
+            FS_LHS.Difference (To_Remove);
+            FS_LHS_Proof.Difference (To_Remove);
+
+            --  Add regular variables
+            for F of FS_LHS loop
+               DM.Insert (F, FS_RHS);
+            end loop;
+            --  Add proof variables
+            for F of FS_LHS_Proof loop
+               DM.Insert (F, FS_RHS_Proof);
+            end loop;
+
+            return DM;
+         end;
+
+      --  If we have no info for this package then we also did not generate the
+      --  initializes aspect for it.
+
+      else
          return Dependency_Maps.Empty_Map;
       end if;
-
-      --  Retrieve the relevant Name_Dependency_Map, up project it to S and
-      --  then convert it into a Dependency_Map.
-      declare
-         Pkg       : constant Entity_Id := Find_Entity (EN);
-         LHS_Scope : constant Flow_Scope :=
-           (if Present (Pkg)
-            then Flow_Scope'(Ent     => Pkg,
-                             Section => Spec_Part)
-            else S);
-
-         DM : Dependency_Maps.Map;
-         II : Initializes_Info renames Initializes_Aspects_Map (EN);
-
-         All_LHS_UP   : Name_Sets.Set;
-         LHS_UP       : Name_Sets.Set;
-         LHS_Proof_UP : Name_Sets.Set;
-         RHS_UP       : Name_Sets.Set;
-         RHS_Proof_UP : Name_Sets.Set;
-
-         To_Remove    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-         --  This set will hold the names of non fully initialized
-         --  states. These will have to be removed from the left hand side
-         --  sets.
-
-         FS_LHS       : Flow_Id_Sets.Set;
-         FS_LHS_Proof : Flow_Id_Sets.Set;
-         FS_RHS       : Flow_Id_Sets.Set;
-         FS_RHS_Proof : Flow_Id_Sets.Set;
-         --  These will hold the final flow sets that will be used to populate
-         --  the dependency map.
-
-         Unused : Flow_Id_Sets.Set;
-
-      begin
-         --  Up project left hand side
-         Up_Project (Most_Refined      => II.LHS or II.LHS_Proof,
-                     Final_View        => All_LHS_UP,
-                     Scope             => LHS_Scope,
-                     Reads             => To_Remove,
-                     Processing_Writes => True);
-
-         Up_Project (Most_Refined => II.LHS,
-                     Final_View   => LHS_UP,
-                     Scope        => LHS_Scope,
-                     Reads        => Unused);
-
-         Up_Project (Most_Refined => II.LHS_Proof,
-                     Final_View   => LHS_Proof_UP,
-                     Scope        => LHS_Scope,
-                     Reads        => Unused);
-
-         --  Up project right hand side
-         Up_Project (Most_Refined => II.RHS,
-                     Final_View   => RHS_UP,
-                     Scope        => S,
-                     Reads        => Unused);
-
-         Up_Project (Most_Refined => II.RHS_Proof,
-                     Final_View   => RHS_Proof_UP,
-                     Scope        => S,
-                     Reads        => Unused);
-
-         --  Populate and return DM
-         FS_LHS       := To_Flow_Id_Set (LHS_UP);
-         FS_LHS_Proof := To_Flow_Id_Set (LHS_Proof_UP);
-         FS_RHS       := To_Flow_Id_Set (RHS_UP);
-         FS_RHS_Proof := To_Flow_Id_Set (RHS_Proof_UP);
-
-         --  Remove state abstractions that are only partially initialized from
-         --  the left hand side.
-         FS_LHS.Difference (To_Remove);
-         FS_LHS_Proof.Difference (To_Remove);
-
-         --  Add regular variables
-         for F of FS_LHS loop
-            DM.Insert (F, FS_RHS);
-         end loop;
-         --  Add proof variables
-         for F of FS_LHS_Proof loop
-            DM.Insert (F, FS_RHS_Proof);
-         end loop;
-
-         return DM;
-      end;
    end GG_Get_Initializes;
 
    ----------------------------
