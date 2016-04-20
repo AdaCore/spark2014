@@ -365,7 +365,7 @@ package Gnat2Why.Expr is
    --  Name to use for occurrences of F'Result in the postcondition. It should
    --  be equal to Why_Empty when we are not translating a postcondition.
 
-   Self_Name   : W_Identifier_Id := Why_Empty;
+   Self_Name       : W_Identifier_Id := Why_Empty;
    Self_Is_Mutable : Boolean := False;
    --  Name to use to refer to the state (i.e. fields) of a protected object.
    --  It should be equal to empty when we are not generating code for a
@@ -424,12 +424,11 @@ package Gnat2Why.Expr is
    --  During the generation of code for detecting run-time errors in the
    --  postcondition, return the name to use for occurrences of N'Old.
 
-   --  Register a node that appears with attribute 'Old; return a fresh
-   --  Name_Id for this Node. This function is intended to be called by the
-   --  code that translates expressions to Why (Gnat2why.Expr), which itself
-   --  is called by Transform_Subprogram. For each call to this
-   --  function, a declaration at the beginning of the Why program is
-   --  generated.
+   --  Register a node that appears with attribute 'Old; return a fresh Name_Id
+   --  for this Node. This function is intended to be called by the code that
+   --  translates expressions to Why (Gnat2why.Expr), which itself is called by
+   --  Transform_Subprogram. For each call to this function, a declaration at
+   --  the beginning of the Why program is generated.
 
    function Name_For_Result return W_Identifier_Id;
    --  During the generation of code for detecting run-time errors in the
@@ -437,10 +436,10 @@ package Gnat2Why.Expr is
 
 private
    --  Mapping of all expressions whose 'Old attribute is used in the current
-   --  postcondition to the translation of the corresponding
-   --  expression in Why. Until 'Old is forbidden in the body, this is also
-   --  used to translate occurrences of 'Old that are left by the frontend (for
-   --  example, inside quantified expressions that are only preanalyzed).
+   --  postcondition to the translation of the corresponding expression in
+   --  Why. Until 'Old is forbidden in the body, this is also used to translate
+   --  occurrences of 'Old that are left by the frontend (for example, inside
+   --  quantified expressions that are only preanalyzed).
    --
    --  The mapping is cleared before generating Why code for VC generation for
    --  the body and postcondition, filled during the translation, and used
