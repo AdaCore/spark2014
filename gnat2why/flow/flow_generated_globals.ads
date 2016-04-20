@@ -168,7 +168,7 @@ package Flow_Generated_Globals is
 
    ----------------------------------------------------------------------
 
-   function GG_Mode return GG_Mode_T;
+   function GG_Mode return GG_Mode_T with Ghost;
    --  Returns the current mode.
 
    -------------
@@ -387,7 +387,7 @@ package Flow_Generated_Globals is
 
 private
 
-   Current_Mode      : GG_Mode_T := GG_No_Mode;
+   Current_Mode      : GG_Mode_T := GG_No_Mode with Ghost;
 
    Current_Comp_Unit : Node_Id;
    --  This node will hold the current compilation unit that is being analyzed.
