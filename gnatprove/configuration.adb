@@ -741,6 +741,9 @@ ASCII.LF;
                      Provers.Delete (C);
                   end if;
                end;
+               if Name = "cvc4" then
+                  Counterexample := False;
+               end if;
             end if;
          end Limit_Prover;
 
