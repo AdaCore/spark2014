@@ -1082,6 +1082,9 @@ package body Flow_Generated_Globals is
       --  Loads the GG info from an ALI file and stores them in the
       --  Subprogram_Info_List, State_Comp_Map and volatile info sets.
 
+      procedure Note_Time (Message : String);
+      --  Record timing statistics (but only in timing debug mode)
+
       procedure Remove_Constants_Without_Variable_Input;
       --  Removes edges leading to constants without variable input
 
@@ -2166,6 +2169,17 @@ package body Flow_Generated_Globals is
          Close (ALI_File);
       end Load_GG_Info_From_ALI;
 
+      ---------------
+      -- Note_Time --
+      ---------------
+
+      procedure Note_Time (Message : String) is
+      begin
+         if Debug_GG_Read_Timing then
+            Flow_Debug.Note_Time (Message);
+         end if;
+      end Note_Time;
+
       ----------------------------
       -- Print_Tasking_Info_Bag --
       ----------------------------
@@ -2363,9 +2377,7 @@ package body Flow_Generated_Globals is
          end loop;
       end;
 
-      if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - ALI files read");
-      end if;
+      Note_Time ("gg_read - ALI files read");
 
       if Debug_Print_Info_Sets_Read then
          --  Print all GG related info gathered from the ALI files
@@ -2422,15 +2434,11 @@ package body Flow_Generated_Globals is
 
       --  Create the Local_Graph
       Create_Local_Graph;
-      if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - local graph done");
-      end if;
+      Note_Time ("gg_read - local graph done");
 
       --  Create all vertices of the Global_Graph
       Create_All_Vertices;
-      if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - vertices added");
-      end if;
+      Note_Time ("gg_read - vertices added");
 
       --  If it is a library-level subprogram with no parameters then it may
       --  be the main subprogram of a partition and thus be executed by the
@@ -2497,15 +2505,11 @@ package body Flow_Generated_Globals is
 
       --  Add all edges in the Global_Graph and tasking-related graphs
       Add_All_Edges;
-      if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - edges added");
-      end if;
+      Note_Time ("gg_read - edges added");
 
       --  Edit Proof_Ins
       Edit_Proof_Ins;
-      if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - proof ins");
-      end if;
+      Note_Time ("gg_read - proof ins");
 
       --  Put tasking-related information back to the bag
       Process_Tasking_Graph;
@@ -2520,9 +2524,7 @@ package body Flow_Generated_Globals is
 
       --  Remove edges leading to constants which do not have variable input
       Remove_Constants_Without_Variable_Input;
-      if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - removed nonvariable constants");
-      end if;
+      Note_Time ("gg_read - removed nonvariable constants");
 
       if Debug_Print_Global_Graph then
          declare
