@@ -4406,10 +4406,13 @@ package body SPARK_Definition is
          end if;
 
       else
-
          Current_SPARK_Pragma := SPARK_Pragma (Body_E);
 
-         Mark_Stmt_Or_Decl_List (Declarations (N));
+         --  Only analyze package body when SPARK_Mode /= Off
+
+         if not SPARK_Pragma_Is (Opt.Off) then
+            Mark_Stmt_Or_Decl_List (Declarations (N));
+         end if;
 
          Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
 
