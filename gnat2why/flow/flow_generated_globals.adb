@@ -536,7 +536,7 @@ package body Flow_Generated_Globals is
                Remote_States.Include (F.Name);
 
             when others =>
-               return;
+               null;
          end case;
       end if;
    end Add_To_Remote_States;
