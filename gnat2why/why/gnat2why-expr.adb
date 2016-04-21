@@ -12235,6 +12235,7 @@ package body Gnat2Why.Expr is
            Pragma_Universal_Data                 |
            Pragma_Unreferenced_Objects           |
            Pragma_Unreserve_All_Interrupts       |
+           Pragma_Unused                         |
            Pragma_Use_VADS_Size                  |
            Pragma_Warning_As_Error               |
            Pragma_Wide_Character_Encoding        |
