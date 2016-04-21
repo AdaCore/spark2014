@@ -230,6 +230,7 @@ package body Flow_Generated_Globals is
                            Variable_Kind
                            --  Represents a global variable
                           );
+   pragma Ordered (Global_Id_Kind);
 
    type Global_Id (Kind : Global_Id_Kind := Null_Kind) is record
       case Kind is
@@ -1543,24 +1544,17 @@ package body Flow_Generated_Globals is
          end loop;
 
          --  Create Ins, Outs and Proof_Ins vertices for all subprograms
-         for N of All_Subprograms loop
-            declare
-               G_Ins       : constant Global_Id :=
-                 Global_Id'(Kind => Ins_Kind,
-                            Name => N);
-
-               G_Outs      : constant Global_Id :=
-                 Global_Id'(Kind => Outs_Kind,
-                            Name => N);
-
-               G_Proof_Ins : constant Global_Id :=
-                 Global_Id'(Kind => Proof_Ins_Kind,
-                            Name => N);
-            begin
-               Global_Graph.Add_Vertex (G_Ins);
-               Global_Graph.Add_Vertex (G_Outs);
-               Global_Graph.Add_Vertex (G_Proof_Ins);
-            end;
+         for Subprogram_Name of All_Subprograms loop
+            for K in Ins_Kind .. Proof_Ins_Kind loop
+               declare
+                  G : Global_Id (K);
+                  --  This should really be a constant, but its initialization
+                  --  would require the use of non-static discriminant.
+               begin
+                  G.Name := Subprogram_Name;
+                  Global_Graph.Add_Vertex (G);
+               end;
+            end loop;
          end loop;
 
          --  Lastly, create vertices for variables that come from the
@@ -1581,7 +1575,7 @@ package body Flow_Generated_Globals is
                ----------------------------
 
                procedure Create_Vertices_For_FS (FS : Flow_Id_Sets.Set) is
-                  G   : Global_Id;
+                  G   : Global_Id (Variable_Kind);
                   Nam : Entity_Name;
                begin
                   for F of FS loop
@@ -1624,9 +1618,9 @@ package body Flow_Generated_Globals is
       procedure Create_Local_Graph is
          use Global_Graphs;
 
-         G_Subp       : Global_Id;
-         G_Local_Subp : Global_Id;
-         G_Local_Var  : Global_Id;
+         G_Subp       : Global_Id (Subprogram_Kind);
+         G_Local_Subp : Global_Id (Subprogram_Kind);
+         G_Local_Var  : Global_Id (Variable_Kind);
 
       --  Start of processing for Create_Local_Graph
 
