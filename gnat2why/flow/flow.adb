@@ -1638,6 +1638,10 @@ package body Flow is
             procedure Collect_Unsynchronized_Globals (From : Name_Sets.Set);
             --  Collect unsynchronized globals accesses by S
 
+            ------------------------------------
+            -- Collect_Unsynchronized_Globals --
+            ------------------------------------
+
             procedure Collect_Unsynchronized_Globals (From : Name_Sets.Set) is
                E : Entity_Id;
             begin

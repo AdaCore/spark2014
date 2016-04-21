@@ -1595,7 +1595,7 @@ package body Flow_Generated_Globals is
                end Create_Vertices_For_FS;
 
             begin
-               if Subprogram /= Empty then
+               if Present (Subprogram) then
                   Get_Globals (Subprogram => Subprogram,
                                Scope      => Get_Flow_Scope (Subprogram),
                                Classwide  => False,
