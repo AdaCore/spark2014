@@ -1055,7 +1055,7 @@ package body Flow_Generated_Globals is
       --  Reads the populated Subprogram_Info_List and generates all the edges
       --  of the Global_Graph. While adding edges we consult the Local_Graph so
       --  as not to add edges to local variables.
-      --  It also created edges for (conditional and unconditional) subprogram
+      --  Also, creates edges for (conditional and unconditional) subprogram
       --  calls in the tasking-related call graphs.
 
       procedure Create_All_Vertices;
@@ -1067,16 +1067,16 @@ package body Flow_Generated_Globals is
       --  edges to local variables on the Global_Graph.
 
       procedure Edit_Proof_Ins;
-      --  A variable cannot be simultaneously a Proof_In and an Input
-      --  of a subprogram. In this case we need to remove the Proof_In
-      --  edge. Furthermore, a variable cannot be simultaneously a
-      --  Proof_In and an Output (but not an input). In this case we
-      --  need to change the Proof_In variable into an Input.
+      --  A variable cannot be simultaneously a Proof_In and an Input of
+      --  a subprogram. In this case we need to remove the Proof_In edge.
+      --  Furthermore, a variable cannot be simultaneously a Proof_In and
+      --  an Output (but not an input). In this case we need to change the
+      --  Proof_In variable into an Input.
 
       procedure Generate_Initializes_Aspects;
-      --  Once the global graph has been generated, we use it to generate
-      --  the initializes aspects. We also take this opportunity to populate
-      --  the Package_To_Locals_Map.
+      --  Once the global graph has been generated, we use it to generate the
+      --  Initializes aspects. We also take this opportunity to populate the
+      --  Package_To_Locals_Map.
 
       procedure Load_GG_Info_From_ALI (ALI_File_Name : File_Name_Type);
       --  Loads the GG info from an ALI file and stores them in the
@@ -1102,8 +1102,8 @@ package body Flow_Generated_Globals is
          G_Ins, G_Outs, G_Proof_Ins : Global_Id;
 
          function Edge_Selector (A, B : Vertex_Id) return Boolean;
-         --  Check if we should add the given edge to the graph based
-         --  wheather it is in the local graph or not.
+         --  Check if we should add the given edge to the graph based weather
+         --  it is in the local graph or not.
 
          -------------------
          -- Edge_Selector --
@@ -1150,7 +1150,6 @@ package body Flow_Generated_Globals is
       --  Start of processing for Add_All_Edges
 
       begin
-
          --  Go through the Subprogram_Info_List and add edges
          for Info of Subprogram_Info_List loop
             G_Ins       := Global_Id'(Kind => Ins_Kind,
@@ -1162,32 +1161,32 @@ package body Flow_Generated_Globals is
             G_Proof_Ins := Global_Id'(Kind => Proof_Ins_Kind,
                                       Name => Info.Name);
 
-            --  Connect the subprogram's Proof_In variables to the
-            --  subprogram's Proof_Ins vertex.
+            --  Connect the subprogram's Proof_In variables to the subprogram's
+            --  Proof_Ins vertex.
             for Input_Proof of Info.Inputs_Proof loop
                Global_Graph.Add_Edge (G_Proof_Ins,
                                       Global_Id'(Kind => Variable_Kind,
                                                  Name => Input_Proof));
             end loop;
 
-            --  Connect the subprogram's Input variables to the
-            --  subprogram's Ins vertex.
+            --  Connect the subprogram's Input variables to the subprogram's
+            --  Ins vertex.
             for Input of Info.Inputs loop
                Global_Graph.Add_Edge (G_Ins,
                                       Global_Id'(Kind => Variable_Kind,
                                                  Name => Input));
             end loop;
 
-            --  Connect the subprogram's Output variables to the
-            --  subprogram's Outputs vertex.
+            --  Connect the subprogram's Output variables to the subprogram's
+            --  Outputs vertex.
             for Output of Info.Outputs loop
                Global_Graph.Add_Edge (G_Outs,
                                       Global_Id'(Kind => Variable_Kind,
                                                  Name => Output));
             end loop;
 
-            --  Connect the subprogram's Proof_Ins vertex to the
-            --  callee's Ins and Proof_Ins vertices.
+            --  Connect the subprogram's Proof_Ins vertex to the callee's Ins
+            --  and Proof_Ins vertices.
             for Proof_Call of Info.Proof_Calls loop
                Global_Graph.Add_Edge (G_Proof_Ins,
                                       Global_Id'(Kind => Proof_Ins_Kind,
@@ -1198,9 +1197,8 @@ package body Flow_Generated_Globals is
                                                  Name => Proof_Call));
             end loop;
 
-            --  Connect the subprogram's Proof_Ins, Ins and Outs
-            --  vertices respectively to the callee's Proof_Ins, Ins
-            --  and Outs vertices.
+            --  Connect the subprogram's Proof_Ins, Ins and Outs vertices
+            --  respectively to the callee's Proof_Ins, Ins and Outs vertices.
             for Definite_Call of Info.Definite_Calls loop
                Global_Graph.Add_Edge (G_Proof_Ins,
                                       Global_Id'(Kind => Proof_Ins_Kind,
@@ -1215,8 +1213,8 @@ package body Flow_Generated_Globals is
                                                  Name => Definite_Call));
             end loop;
 
-            --  As above but also add an edge from the subprogram's
-            --  Ins vertex to the callee's Outs vertex.
+            --  As above but also add an edge from the subprogram's Ins vertex
+            --  to the callee's Outs vertex.
             for Conditional_Call of Info.Conditional_Calls loop
                Global_Graph.Add_Edge (G_Proof_Ins,
                                       Global_Id'(Kind => Proof_Ins_Kind,
@@ -1236,8 +1234,8 @@ package body Flow_Generated_Globals is
             end loop;
          end loop;
 
-         --  Add edges between subprograms and variables coming from
-         --  the Get_Globals function.
+         --  Add edges between subprograms and variables coming from the
+         --  Get_Globals function.
          for N of All_Other_Subprograms loop
             declare
                Subprogram   : constant Entity_Id := Find_Entity (N);
@@ -1307,8 +1305,7 @@ package body Flow_Generated_Globals is
             end;
          end loop;
 
-         --  Close graph, but only add edges that are not in the local
-         --  graph.
+         --  Close graph, but only add edges that are not in the local graph
          Global_Graph.Conditional_Close (Edge_Selector'Access);
 
          ----------------------------------------
@@ -1573,8 +1570,8 @@ package body Flow_Generated_Globals is
                FS_Writes    : Flow_Id_Sets.Set;
 
                procedure Create_Vertices_For_FS (FS : Flow_Id_Sets.Set);
-               --  Creates a vertex for every Flow_Id in FS that
-               --  does not already have one.
+               --  Creates a vertex for every Flow_Id in FS that does not
+               --  already have one.
 
                ----------------------------
                -- Create_Vertices_For_FS --
@@ -1702,8 +1699,8 @@ package body Flow_Generated_Globals is
          function Get_Variable_Neighbours
            (Start : Vertex_Id)
             return Vertex_Sets.Set;
-         --  Returns a set of all Neighbours of Start that correspond
-         --  to variables.
+         --  Returns a set of all Neighbours of Start that correspond to
+         --  variables.
 
          -----------------------------
          -- Get_Variable_Neighbours --
@@ -1870,9 +1867,9 @@ package body Flow_Generated_Globals is
                end loop;
 
                --  Add the intersection of pure outputs (outputs that are not
-               --  also read) of definite calls and local variables to
-               --  LHS. Additionally, add Reads and Proof_Reads of definite
-               --  calls to RHS and RHS_Proof respectively.
+               --  also read) of definite calls and local variables to LHS.
+               --  Additionally, add Reads and Proof_Reads of definite calls
+               --  to RHS and RHS_Proof respectively.
                for Definite_Call of P.Definite_Calls loop
                   declare
                      Proof_Reads : Name_Sets.Set;
@@ -1993,8 +1990,8 @@ package body Flow_Generated_Globals is
 
          procedure Issue_Corrupted_File_Error (Msg : String)
          with No_Return;
-         --  Issues an error about the ALI file being corrupted and
-         --  suggests the usage of "gnatprove --clean".
+         --  Issues an error about the ALI file being corrupted and suggests
+         --  the usage of "gnatprove --clean".
 
          --------------------------------
          -- Issue_Corrupted_File_Error --
@@ -2012,14 +2009,14 @@ package body Flow_Generated_Globals is
          Line      : Unbounded_String;
 
          Found_End : Boolean := False;
-         --  This will be set to True once we find the end marker.
+         --  This will be set to True once we find the end marker
 
       --  Start of processing for Load_GG_Info_From_ALI
 
       begin
          Open (ALI_File, In_File, ALI_File_Name_Str);
 
-         --  Skip to the GG section (this should be the very last section).
+         --  Skip to the GG section (this should be the very last section)
          loop
             if End_Of_File (ALI_File) then
                Close (ALI_File);
@@ -2225,8 +2222,8 @@ package body Flow_Generated_Globals is
                --  Corresponding vertex in tasking call graph
 
                procedure Collect_From (S : Entity_Name);
-               --  Collect tasking objects accessed by subprogram S as
-               --  they were accessed by task task TN.
+               --  Collect tasking objects accessed by subprogram S as they
+               --  were accessed by task task TN.
 
                ------------------
                -- Collect_From --
@@ -2274,13 +2271,11 @@ package body Flow_Generated_Globals is
                --  itself, and then all subprogram called it calls (directly
                --  or indirectly).
 
---                 Ada.Text_IO.Put_Line ("Main: " & To_String (TN));
                Collect_From (TN);
                for SV of G.Get_Collection (TV, Out_Neighbours) loop
                   declare
                      S : constant Entity_Name := G.Get_Key (SV);
                   begin
---                       Ada.Text_IO.Put_Line ("   ->" & To_String (S));
                      Collect_From (S);
                   end;
                end loop;
@@ -2339,7 +2334,7 @@ package body Flow_Generated_Globals is
       Effective_Reads_Vars  := Name_Sets.Empty_Set;
       Effective_Writes_Vars := Name_Sets.Empty_Set;
 
-      --  Go through all ALI files and populate the Subprogram_Info_List.
+      --  Go through all ALI files and populate the Subprogram_Info_List
       declare
          Read_Files : String_Sets.Set;
          Nam        : Unbounded_String;
@@ -2348,9 +2343,9 @@ package body Flow_Generated_Globals is
          Dummy    : String_Sets.Cursor;
       begin
          for Index in ALIs.First .. ALIs.Last loop
-            --  ??? The ALI table seems to incldue some entries twice, but
-            --  that is because some of them are null-terminated. See
-            --  O714-006; this is the workaround for now.
+            --  ??? The ALI table seems to incldue some entries twice, but that
+            --  is because some of them are null-terminated. See O714-006; this
+            --  is the workaround for now.
             Nam := To_Unbounded_String
               (Get_Name_String (Full_Lib_File_Name
                (ALIs.Table (Index).Afile)));
@@ -2373,7 +2368,7 @@ package body Flow_Generated_Globals is
       end if;
 
       if Debug_Print_Info_Sets_Read then
-         --  Print all GG related info gathered from the ALI files.
+         --  Print all GG related info gathered from the ALI files
          for Info of Subprogram_Info_List loop
             Write_Eol;
             Print_Global_Phase_1_Info (Info);
@@ -2500,7 +2495,7 @@ package body Flow_Generated_Globals is
 
       end Detect_Main_Subprogram;
 
-      --  Add all edges in the Global_Graph and tasking-related graphs.
+      --  Add all edges in the Global_Graph and tasking-related graphs
       Add_All_Edges;
       if Debug_GG_Read_Timing then
          Note_Time ("gg_read - edges added");
@@ -2516,16 +2511,14 @@ package body Flow_Generated_Globals is
       Process_Tasking_Graph;
       Print_Tasking_Info_Bag (Phase_2);
 
-      --  Now that the Globals Graph has been generated we set
-      --  GG_Generated to True. Notice that we set GG_Generated to
-      --  True before we remove edges leading to constants without
-      --  variable input. The reasoning behind this is to use the
-      --  generated globals instead of the computed globals when we
-      --  call Get_Globals from within Has_Variable_Input.
+      --  Now that the Globals Graph has been generated we set GG_Generated to
+      --  True. Notice that we set GG_Generated to True before we remove edges
+      --  leading to constants without variable input. The reasoning behind
+      --  this is to use the generated globals instead of the computed globals
+      --  when we call Get_Globals from within Has_Variable_Input.
       GG_Generated := True;
 
-      --  Remove edges leading to constants which do not have variable
-      --  input.
+      --  Remove edges leading to constants which do not have variable input
       Remove_Constants_Without_Variable_Input;
       if Debug_GG_Read_Timing then
          Note_Time ("gg_read - removed nonvariable constants");
