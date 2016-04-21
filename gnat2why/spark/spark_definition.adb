@@ -5556,22 +5556,22 @@ package body SPARK_Definition is
    ---------------------
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
-     ((if Present (Current_Delayed_Aspect_Type)
-         and then In_SPARK (Current_Delayed_Aspect_Type)
-       then Mode = Opt.On
-       --  Force SPARK_Mode => On for expressions of a delayed aspects, if the
-       --  type bearing this aspect was marked in SPARK, as we have assumed
-       --  it when marking everything between their declaration and freezing
-       --  point, so we cannot revert that.
+     (if Present (Current_Delayed_Aspect_Type)
+        and then In_SPARK (Current_Delayed_Aspect_Type)
+      then Mode = Opt.On
+      --  Force SPARK_Mode => On for expressions of a delayed aspects, if the
+      --  type bearing this aspect was marked in SPARK, as we have assumed
+      --  it when marking everything between their declaration and freezing
+      --  point, so we cannot revert that.
 
-       elsif Present (Current_SPARK_Pragma)
-       then Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = Mode
-       --  In the usual case where Current_SPARK_Pragma is a pragma node, get
-       --  the current mode from the pragma.
+      elsif Present (Current_SPARK_Pragma)
+      then Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = Mode
+      --  In the usual case where Current_SPARK_Pragma is a pragma node, get
+      --  the current mode from the pragma.
 
        else Mode = Opt.None
-       --  Otherwise there is no applicable pragma, so SPARK_Mode is None
-     ));
+      --  Otherwise there is no applicable pragma, so SPARK_Mode is None
+     );
 
    --------------------------
    -- SPARK_Pragma_Of_Type --
