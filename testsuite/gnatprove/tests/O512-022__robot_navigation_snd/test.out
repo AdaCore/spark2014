@@ -217,7 +217,7 @@ algorithm.adb:477:35: info: precondition proved
 algorithm.adb:477:57: info: initialization of "Candidate_Valley_IDS.rising" proved
 algorithm.adb:477:77: info: discriminant check proved
 algorithm.adb:477:96: info: precondition proved
-algorithm.adb:478:36: medium: precondition might fail
+algorithm.adb:478:36: medium: precondition might fail (e.g. when This = (robot => (scan_Count => 0, speed => False, goal_reached => False, others => ?), others => ?))
 algorithm.adb:478:58: info: initialization of "Best_Valley_IDS.rising" proved
 algorithm.adb:478:73: info: discriminant check proved
 algorithm.adb:478:92: info: precondition proved
@@ -232,10 +232,10 @@ algorithm.adb:504:29: info: initialization of "iR" proved
 algorithm.adb:510:30: info: precondition proved
 algorithm.adb:510:52: info: initialization of "Best_Valley_IDS.rising" proved
 algorithm.adb:510:67: info: discriminant check proved
-algorithm.adb:514:20: medium: precondition might fail
+algorithm.adb:514:20: medium: precondition might fail (e.g. when This = (robot => (scan_Count => 0, speed => False, goal_reached => False, others => ?), others => ?))
 algorithm.adb:514:42: info: initialization of "Best_Valley_IDS.rising" proved
 algorithm.adb:514:57: info: discriminant check proved
-algorithm.adb:515:20: medium: precondition might fail
+algorithm.adb:515:20: medium: precondition might fail (e.g. when This = (robot => (scan_Count => 0, speed => False, goal_reached => False, others => ?), others => ?))
 algorithm.adb:515:42: info: initialization of "Best_Valley_IDS.other" proved
 algorithm.adb:515:57: info: discriminant check proved
 algorithm.adb:537:10: info: loop invariant initialization proved
