@@ -561,8 +561,10 @@ package body Gnat2Why.Types is
          --  Cloned subtypes are a special case, they do not need such a
          --  definition.
 
-         if Is_Record_Type (E) and then
-           Ekind (E) not in E_Class_Wide_Type | E_Class_Wide_Subtype and then
+         if (Is_Record_Type (E) or Is_Private_Type (E))
+             and then
+           Ekind (E) not in E_Class_Wide_Type | E_Class_Wide_Subtype
+             and then
            (if Ekind (E) = E_Record_Subtype then
                 not (Present (Cloned_Subtype (E))))
          then
