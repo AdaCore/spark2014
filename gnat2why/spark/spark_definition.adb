@@ -5280,9 +5280,6 @@ package body SPARK_Definition is
                   Bodies_In_SPARK.Insert (E);
                end if;
             end if;
-
-            Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
-
          end if;
 
          --  Postprocessing: indicate in output file if subprogram is in
@@ -5290,6 +5287,7 @@ package body SPARK_Definition is
 
          Generate_Output_In_Out_SPARK (E);
 
+         Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
          Current_SPARK_Pragma := Save_SPARK_Pragma;
       end if;
    end Mark_Subprogram_Body;
@@ -5559,10 +5557,12 @@ package body SPARK_Definition is
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
      ((if Present (Current_Delayed_Aspect_Type)
+         and then In_SPARK (Current_Delayed_Aspect_Type)
        then Mode = Opt.On
-       --  Force SPARK_Mode => On for expressions of a delayed aspects; we
-       --  assume that types with such aspects are in SPARK when marking
-       --  everything between their declaration and freezing point.
+       --  Force SPARK_Mode => On for expressions of a delayed aspects, if the
+       --  type bearing this aspect was marked in SPARK, as we have assumed
+       --  it when marking everything between their declaration and freezing
+       --  point, so we cannot revert that.
 
        elsif Present (Current_SPARK_Pragma)
        then Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = Mode
@@ -5578,10 +5578,21 @@ package body SPARK_Definition is
    --------------------------
 
    function SPARK_Pragma_Of_Type (E : Entity_Id) return Node_Id is
+
+      --  Version of Einfo.Scope that returns the lexical scope instead of the
+      --  semantics scope for an entity. For example, it returns the package
+      --  body entity for an entity declared directly in the body of a package,
+      --  instead of the package entity. This is important to return the
+      --  appropriate SPARK_Mode pragma, as this may differ between a
+      --  declaration and its corresponding body.
+      function Lexical_Scope (E : Entity_Id) return Entity_Id is
+        (Defining_Entity (Enclosing_Declaration
+                          (Parent (Enclosing_Declaration (E)))));
+
       Def : Entity_Id := E;
       --  Entity which defines type E
 
-      Def_Scop : Entity_Id := Scope (E);
+      Def_Scop : Entity_Id := Lexical_Scope (E);
       --  Immediate scope of entity that defines E
 
       subtype SPARK_Pragma_Scope_With_Type_Decl is Entity_Kind
@@ -5600,7 +5611,7 @@ package body SPARK_Definition is
       while Ekind (Def_Scop) not in SPARK_Pragma_Scope_With_Type_Decl
       loop
          Def := Def_Scop;
-         Def_Scop := Scope (Def_Scop);
+         Def_Scop := Lexical_Scope (Def_Scop);
       end loop;
 
       case Ekind (Def_Scop) is
