@@ -26,8 +26,7 @@ with Ada.Strings.Hash;
 
 with Ada.Containers.Formal_Vectors;
 
-package body Names
-is
+package body Names is
 
    subtype Valid_Name_Id is Name_Id range 1 .. Name_Id'Last;
 
@@ -61,10 +60,7 @@ is
       Table_Index : Char_Table_Index;
       Length      : Positive;
       Next_Hash   : Name_Id;
-   end record with
-     Predicate =>
-     (Name_Entry.Table_Index <=
-        Char_Table_Index'Last - Char_Table_Index (Name_Entry.Length - 1));
+   end record;
 
    function Eq (A, B : Name_Entry) return Boolean is (A = B);
    --  Workaround for P414-029
@@ -94,7 +90,8 @@ is
 
    function Valid_Entry (E : Name_Entry) return Boolean is
       (E.Next_Hash <= Last_Index (Entry_Table) and
-       E.Table_Index + Char_Table_Index (E.Length - 1) <= Last_Index (Char_Table))
+       Char_Table_Index (E.Length - 1) <=
+         Last_Index (Char_Table) - E.Table_Index)
    with Ghost,
         Pre => Valid_Tables;
 
@@ -134,14 +131,10 @@ is
               Length (Char_Table)'Loop_Entry + Char_Tables.Capacity_Range (I));
       end loop;
 
-      declare
-         E : constant Name_Entry :=
-           (Table_Index => Last_Index (Char_Table) - (S'Length - 1),
-            Length      => S'Length,
-            Next_Hash   => 0);
-      begin
-         Append (Entry_Table, E);
-      end;
+      Append (Entry_Table,
+              (Table_Index => Last_Index (Char_Table) - (S'Length - 1),
+               Length      => S'Length,
+               Next_Hash   => 0));
       N := Last_Index (Entry_Table);
    end Merge;
 
@@ -182,6 +175,9 @@ is
 
       Merge (S, N);
 
+      --  Fix up the hash table. In the first case we need to update the
+      --  last link in the hash bucket; in the second case we update the
+      --  top-level hash table as its the first item in the bucket.
       if Ptr in Valid_Name_Id then
          Replace_Element (Entry_Table,
                           Ptr,
@@ -196,8 +192,7 @@ is
    -- To_String --
    ---------------
 
-   function To_String (N : Name_Id) return String
-   is
+   function To_String (N : Name_Id) return String is
       --  The only names are the ones produced by lookup.
       pragma Assume (N <= Last_Index (Entry_Table));
    begin
