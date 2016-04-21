@@ -1,9 +1,13 @@
 with Ada.Text_IO;
 
-procedure Main is
+procedure Main (J : Integer; K : in out Integer) is
+
+   pragma Unreferenced (J);         --  Valid
+   pragma Unused (K);               --  Valid
 
    --  Improper use
-   X, Y, Z : Boolean := False;
+   Z : Boolean := False;
+   pragma Unreferenced (Z);         --  Valid
 
    --  Proper use
    A, B, C, D : Boolean := True;
