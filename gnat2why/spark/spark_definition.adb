@@ -4747,6 +4747,7 @@ package body SPARK_Definition is
               Pragma_Test_Case                    |
               Pragma_Unmodified                   |
               Pragma_Unreferenced                 |
+              Pragma_Unused                       |
               Pragma_Validity_Checks              |
               Pragma_Warnings                     |
               Pragma_Weak_External                =>
@@ -4896,7 +4897,6 @@ package body SPARK_Definition is
            Pragma_Universal_Data                 |
            Pragma_Unreferenced_Objects           |
            Pragma_Unreserve_All_Interrupts       |
-           Pragma_Unused                         |
            Pragma_Use_VADS_Size                  |
            Pragma_Warning_As_Error               |
            Pragma_Wide_Character_Encoding        |

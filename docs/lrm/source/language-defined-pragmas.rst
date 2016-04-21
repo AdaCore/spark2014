@@ -139,8 +139,8 @@ Style_Checks      	      Yes
 Test_Case          	      Yes
 Unmodified                    Yes
 Unreferenced                  Yes
+Unused                        Yes
 Validity_Checks               Yes
 Warnings           	      Yes
 Weak_External          	      Yes
 ============================= ====================== =================================================
-
