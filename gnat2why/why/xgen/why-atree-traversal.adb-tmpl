@@ -53,7 +53,16 @@ package body Why.Atree.Traversal is
 
       L        : constant List := Get_List (List_Id);
       Position : Cursor := First (L);
+
    begin
+      if State.Control = Terminate_Immediately then
+         return;
+      end if;
+
+      if State.Control = Abandon_Siblings then
+         return;
+      end if;
+
       while Position /= No_Element loop
          pragma Assert (Has_Element (Position)
                         and then State.Control /= Abandon_Siblings
