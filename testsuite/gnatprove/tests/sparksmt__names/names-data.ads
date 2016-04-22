@@ -2,7 +2,7 @@
 --                                                                          --
 --                           SPARKSMT COMPONENTS                            --
 --                                                                          --
---                                N A M E S                                 --
+--                           N A M E S . D A T A                            --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
@@ -21,42 +21,59 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This is a name table that maps strings to name_id and can recover the
---  original string.
+with Ada.Containers;                use Ada.Containers;
+with Ada.Containers.Formal_Vectors;
 
-package Names with
-   SPARK_Mode,
-   Abstract_State => Name_Table,
-   Initializes    => Name_Table,
-   Initial_Condition => Invariant
+private package Names.Data with
+   SPARK_Mode
 is
 
-   type Name_Id is private;
+   -------------
+   -- General --
+   -------------
 
-   No_Name : constant Name_Id;
-   --  The empty string.
+   subtype Valid_Name_Id is Name_Id range 1 .. Name_Id'Last;
 
-   function Invariant return Boolean
-   with Ghost,
-        Global => Name_Table;
-   --  Internal invariant for the name table.
+   ------------------
+   -- Hash_Table_T --
+   ------------------
 
-   procedure Lookup (S : String;
-                     N : out Name_Id)
-   with Global => (In_Out => Name_Table),
-        Pre    => Invariant,
-        Post   => Invariant;
-   --  Obtain name_id for the given string.
+   Hash_Table_Size : constant := 256;
+   subtype Hash_Table_Index_T is Hash_Type range 0 .. (Hash_Table_Size - 1);
+   type Hash_Table_T is array (Hash_Table_Index_T) of Name_Id;
 
-   function To_String (N : Name_Id) return String
-   with Global => Name_Table,
-        Pre    => Invariant;
-   --  The original string.
+   -----------------
+   -- Char_Tables --
+   -----------------
 
-private
+   type Char_Table_Index is range 0 .. 2 ** 31 - 2;
 
-   type Name_Id is new Natural;
+   function Eq (A, B : Character) return Boolean is (A = B);
+   --  Workaround for P414-029
 
-   No_Name : constant Name_Id := Name_Id'First;
+   package Char_Tables is new Ada.Containers.Formal_Vectors
+     (Index_Type   => Char_Table_Index,
+      Element_Type => Character,
+      "="          => Eq,
+      Bounded      => False);
 
-end Names;
+   ------------------
+   -- Entry_Tables --
+   ------------------
+
+   type Name_Entry is record
+      Table_Index : Char_Table_Index;
+      Length      : Positive;
+      Next_Hash   : Name_Id;
+   end record;
+
+   function Eq (A, B : Name_Entry) return Boolean is (A = B);
+   --  Workaround for P414-029
+
+   package Entry_Tables is new Ada.Containers.Formal_Vectors
+     (Index_Type   => Valid_Name_Id,
+      Element_Type => Name_Entry,
+      "="          => Eq,
+      Bounded      => False);
+
+end Names.Data;

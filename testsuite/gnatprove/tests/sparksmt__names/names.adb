@@ -21,57 +21,23 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;   use Ada.Containers;
+with Ada.Containers;         use Ada.Containers;
 with Ada.Strings.Hash;
 
-with Ada.Containers.Formal_Vectors;
+with Names.Data;             use Names.Data;
 
-package body Names is
+use Names.Data.Char_Tables;
+use Names.Data.Entry_Tables;
 
-   subtype Valid_Name_Id is Name_Id range 1 .. Name_Id'Last;
-
-   --  Initial hash table for strings -> name_id
-
-   Hash_Table_Size : constant := 256;
-   subtype Hash_Table_Index_T is Hash_Type range 0 .. (Hash_Table_Size - 1);
-   type Hash_Table_T is array (Hash_Table_Index_T) of Name_Id;
+package body Names with
+   SPARK_Mode,
+   Refined_State => (Name_Table => (Hash_Table,
+                                    Char_Table,
+                                    Entry_Table))
+is
 
    Hash_Table  : Hash_Table_T := (others => 0);
-
-   --  Table for string content
-
-   type Char_Table_Index is range 0 .. 2 ** 31 - 2;
-
-   function Eq (A, B : Character) return Boolean is (A = B);
-   --  Workaround for P414-029
-
-   package Char_Tables is new Ada.Containers.Formal_Vectors
-     (Index_Type   => Char_Table_Index,
-      Element_Type => Character,
-      "="          => Eq,
-      Bounded      => False);
-   use Char_Tables;
-
    Char_Table  : Char_Tables.Vector (1024);
-
-   --  Combined table for string table pointers and hash chains.
-
-   type Name_Entry is record
-      Table_Index : Char_Table_Index;
-      Length      : Positive;
-      Next_Hash   : Name_Id;
-   end record;
-
-   function Eq (A, B : Name_Entry) return Boolean is (A = B);
-   --  Workaround for P414-029
-
-   package Entry_Tables is new Ada.Containers.Formal_Vectors
-     (Index_Type   => Valid_Name_Id,
-      Element_Type => Name_Entry,
-      "="          => Eq,
-      Bounded      => False);
-   use Entry_Tables;
-
    Entry_Table : Entry_Tables.Vector (256);
 
    ----------------
@@ -144,6 +110,7 @@ package body Names is
 
    procedure Lookup (S : String;
                      N : out Name_Id)
+   with Refined_Global => (In_Out => (Char_Table, Entry_Table, Hash_Table))
    is
       Ptr : Name_Id := 0;
       H   : constant Hash_Table_Index_T :=
@@ -192,7 +159,9 @@ package body Names is
    -- To_String --
    ---------------
 
-   function To_String (N : Name_Id) return String is
+   function To_String (N : Name_Id) return String
+   with Refined_Global => (Char_Table, Entry_Table, Hash_Table)
+   is
       --  The only names are the ones produced by lookup.
       pragma Assume (N <= Last_Index (Entry_Table));
    begin
@@ -222,6 +191,7 @@ package body Names is
 
    function Invariant return Boolean is
       ((Valid_Tables and then Valid_Name_Table) and
-       Valid_Hashes);
+       Valid_Hashes)
+   with Refined_Global => (Char_Table, Entry_Table, Hash_Table);
 
 end Names;
