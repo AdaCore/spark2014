@@ -184,10 +184,10 @@ package body SPARK_Definition is
    --  siblings is that packages go first and subprograms/entries/task types go
    --  after them.
 
-   Current_Scope : Node_Trees.Cursor := Entity_Tree.Root;
-   Last_Package_Scope : Node_Trees.Cursor := Node_Trees.No_Element;
+   Current_Scope       : Node_Trees.Cursor := Entity_Tree.Root;
+   First_Non_Pkg_Scope : Node_Trees.Cursor := Node_Trees.No_Element;
    --  Cursors to the current package/subprogram/entry/task type (which are the
-   --  entities processed by the flow analyzis) and to the last package
+   --  entities processed by the flow analyzis) and to the first non-package
    --  inserted under the current scope (sibling packages goes first and then
    --  go other entities).
 
@@ -3936,8 +3936,10 @@ package body SPARK_Definition is
       Save_Violation_Detected : constant Boolean := Violation_Detected;
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
 
-      Save_Scope        : constant Node_Trees.Cursor := Current_Scope;
-      Save_Last_Package : constant Node_Trees.Cursor := Last_Package_Scope;
+      Save_Scope         : constant Node_Trees.Cursor := Current_Scope;
+      Save_Non_Pkg_Scope : constant Node_Trees.Cursor := First_Non_Pkg_Scope;
+
+      use type Node_Trees.Cursor;
 
    --  Start of processing for Mark_Entity
 
@@ -4032,7 +4034,7 @@ package body SPARK_Definition is
             Before   => Node_Trees.No_Element,
             New_Item => E,
             Position => Current_Scope);
-         Last_Package_Scope := Node_Trees.No_Element;
+         First_Non_Pkg_Scope := Node_Trees.No_Element;
       end if;
 
       --  If the entity is declared in the scope of SPARK_Mode => Off, then
@@ -4045,7 +4047,13 @@ package body SPARK_Definition is
         and then Ekind (E) /= E_Abstract_State
       then
          Current_SPARK_Pragma := Save_SPARK_Pragma;
-         Last_Package_Scope   := Save_Last_Package;
+         First_Non_Pkg_Scope  := (if Save_Non_Pkg_Scope = Node_Trees.No_Element
+                                    and then Ekind (E) in E_Entry     |
+                                                          E_Function  |
+                                                          E_Procedure |
+                                                          E_Task_Type
+                                  then Current_Scope
+                                  else Save_Non_Pkg_Scope);
          Current_Scope        := Save_Scope;
          return;
       end if;
@@ -4136,7 +4144,13 @@ package body SPARK_Definition is
       --  Restore SPARK_Mode pragma
 
       Current_SPARK_Pragma := Save_SPARK_Pragma;
-      Last_Package_Scope   := Save_Last_Package;
+      First_Non_Pkg_Scope  := (if Save_Non_Pkg_Scope = Node_Trees.No_Element
+                                 and then Ekind (E) in E_Entry     |
+                                                       E_Function  |
+                                                       E_Procedure |
+                                                       E_Task_Type
+                               then Current_Scope
+                               else Save_Non_Pkg_Scope);
       Current_Scope        := Save_Scope;
    end Mark_Entity;
 
@@ -4352,9 +4366,9 @@ package body SPARK_Definition is
       Body_E : constant Entity_Id := Defining_Entity (N);
       Spec_E : constant Entity_Id := Unique_Entity (Body_E);
 
-      Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
-      Save_Scope        : constant Node_Trees.Cursor := Current_Scope;
-      Save_Last_Package : constant Node_Trees.Cursor := Last_Package_Scope;
+      Save_SPARK_Pragma  : constant Node_Id := Current_SPARK_Pragma;
+      Save_Scope         : constant Node_Trees.Cursor := Current_Scope;
+      Save_Non_Pkg_Scope : constant Node_Trees.Cursor := First_Non_Pkg_Scope;
 
    begin
       --  Do not analyze generic bodies
@@ -4378,11 +4392,11 @@ package body SPARK_Definition is
       end loop;
 
       --  Then fast-forward the Last_Package
-      Last_Package_Scope := Node_Trees.First_Child (Current_Scope);
-      while Node_Trees.Has_Element (Last_Package_Scope)
-        and then Ekind (Node_Trees.Element (Last_Package_Scope)) = E_Package
+      First_Non_Pkg_Scope := Node_Trees.First_Child (Current_Scope);
+      while Node_Trees.Has_Element (First_Non_Pkg_Scope)
+        and then Ekind (Node_Trees.Element (First_Non_Pkg_Scope)) = E_Package
       loop
-         Node_Trees.Next_Sibling (Last_Package_Scope);
+         Node_Trees.Next_Sibling (First_Non_Pkg_Scope);
       end loop;
 
       --  Do not analyze bodies for packages with external axioms. Only check
@@ -4444,7 +4458,7 @@ package body SPARK_Definition is
       end if;
 
       --  Restore hierarchical cursors
-      Last_Package_Scope := Save_Last_Package;
+      First_Non_Pkg_Scope := Save_Non_Pkg_Scope;
       Current_Scope := Save_Scope;
 
       --  Postprocessing: indicate in output file if package is in SPARK or
@@ -4459,16 +4473,17 @@ package body SPARK_Definition is
    ------------------------------
 
    procedure Mark_Package_Declaration (N : Node_Id) is
-      Id         : constant Entity_Id := Defining_Entity (N);
-      Save_Scope : constant Node_Trees.Cursor := Current_Scope;
+      Id           : constant Entity_Id := Defining_Entity (N);
+      Save_Scope   : constant Node_Trees.Cursor := Current_Scope;
+      Save_Non_Pkg : constant Node_Trees.Cursor := First_Non_Pkg_Scope;
 
    begin
       Entity_Tree.Insert_Child
         (Parent   => Current_Scope,
-         Before   => Node_Trees.Next_Sibling (Last_Package_Scope),
+         Before   => First_Non_Pkg_Scope,
          New_Item => Id,
          Position => Current_Scope);
-      Last_Package_Scope := Node_Trees.No_Element;
+      First_Non_Pkg_Scope := Node_Trees.No_Element;
 
       if Entity_In_Ext_Axioms (Id) then
 
@@ -4531,7 +4546,7 @@ package body SPARK_Definition is
 
       end if;
 
-      Last_Package_Scope := Current_Scope;
+      First_Non_Pkg_Scope := Save_Non_Pkg;
       Current_Scope := Save_Scope;
 
       --  Postprocessing: indicate in output file if package is in SPARK or
