@@ -294,17 +294,16 @@ package body Flow.Slice is
       Local_Subprograms     : out Node_Sets.Set;
       Local_Definite_Writes : out Node_Sets.Set)
    is
-      --  The "Get" functions that follow return sets of nodes that
-      --  are purely of the mode described in their names. This is
-      --  pointed out so as to prevent confusion between the functions
-      --  and the formal parameters of Compute_Globals (where an Input
-      --  could also appear as an Output).
+      --  The "Get" functions that follow return sets of nodes that are purely
+      --  of the mode described in their names. This is pointed out so as to
+      --  prevent confusion between the functions and the formal parameters
+      --  of Compute_Globals (where an Input could also appear as an Output).
 
       --  Utitlity functions for calculating subprogram calls
 
       function Get_Proof_Subprograms return Node_Sets.Set;
-      --  Returns all subprograms that are only ever called in proof
-      --  related vertices.
+      --  Returns all subprograms that are only ever called in proof related
+      --  vertices.
 
       function Get_Definite_Subprograms return Node_Sets.Set;
       --  Returns all subprograms that are definitely called
@@ -313,8 +312,8 @@ package body Flow.Slice is
         (Local_Vars : out Node_Sets.Set;
          Local_Subs : out Node_Sets.Set);
       --  Traverses the tree under FA.Analyzed_Entity and gathers all
-      --  object and subprogram declarations and puts them
-      --  respectivelly under Local_Vars and Local_Subs.
+      --  object and subprogram declarations and puts them in Local_Vars
+      --  and Local_Subs, respectivelly.
       --  @param Local_Vars is populated with all local variables
       --  @param Local_Subs is populated with all local subprograms
 
@@ -325,8 +324,8 @@ package body Flow.Slice is
       function Subprograms_Without_Contracts
         (NS : Node_Sets.Set)
          return Node_Sets.Set;
-      --  Returns a subset of NS that comprises those subprograms that
-      --  have no user-provided Global or Depends contracts.
+      --  Returns a subset of NS that comprises those subprograms that have no
+      --  user-provided Global or Depends contracts.
       --  @param NS is the initial set of subprograms that we opperate on
       --  @return a subset of NS that comprises those subprograms that
       --    have no user-provided Global or Depends contracts.
@@ -391,14 +390,13 @@ package body Flow.Slice is
          function Get_Object_Or_Subprogram_Declaration
            (N : Node_Id)
             return Traverse_Result;
-         --  Picks up entities coming from object and subprogram
-         --  declarations and adds them respectively to Local_Vars
-         --  and Local_Subs.
+         --  Picks up entities coming from object and subprogram declarations
+         --  and adds them respectively to Local_Vars and Local_Subs.
 
          procedure Remove_PO_And_Task_Parts;
          --  Removes from Local_Vars these variables which are parts of a
-         --  singleton protected object or a singleton task. We don't do this
-         --  when we process tasks.
+         --  singleton protected object or a singleton task. We don't do
+         --  this when we process tasks.
 
          ------------------------------------------
          -- Get_Object_Or_Subprogram_Declaration --
