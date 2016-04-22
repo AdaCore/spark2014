@@ -93,7 +93,8 @@ package body Flow is
                                  S                  : Entity_Id;
                                  Generating_Globals : Boolean)
                                  return Flow_Analysis_Graphs
-   with Pre  => Ekind (E) in Subprogram_Kind  |
+   with Pre  => Ekind (E) in E_Function       |
+                             E_Procedure      |
                              E_Task_Type      |
                              E_Protected_Type |
                              E_Entry          |
@@ -115,7 +116,7 @@ package body Flow is
    --  Build all flow graphs for the current compilation unit
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry;
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
    --  Returns True if the last statement in the
    --  Handled_Sequence_Of_Statements of E is an N_Raise_Statement.
 
@@ -900,7 +901,8 @@ package body Flow is
 
       FA : Flow_Analysis_Graphs_Root
         (Kind               => (case Ekind (E) is
-                                when Subprogram_Kind => Kind_Subprogram,
+                                when E_Function
+                                   | E_Procedure     => Kind_Subprogram,
                                 when E_Task_Type     => Kind_Task,
                                 when E_Entry         => Kind_Entry,
                                 when E_Package       => Kind_Package,
@@ -943,9 +945,10 @@ package body Flow is
                                                else "fa_");
 
       case Ekind (E) is
-         when E_Entry         |
-              E_Task_Type     |
-              Subprogram_Kind =>
+         when E_Entry     |
+              E_Task_Type |
+              E_Function  |
+              E_Procedure =>
             FA.B_Scope := Get_Flow_Scope (Get_Body (E));
             FA.S_Scope := Get_Flow_Scope (E);
 
@@ -953,10 +956,11 @@ package body Flow is
 
             FA.Is_Main :=
               (case Ekind (E) is
-               when Subprogram_Kind => Might_Be_Main (E),
-               when E_Entry         => False,
-               when E_Task_Type     => True,
-               when others          => raise Program_Error);
+               when E_Function
+                  | E_Procedure => Might_Be_Main (E),
+               when E_Entry     => False,
+               when E_Task_Type => True,
+               when others      => raise Program_Error);
 
             FA.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
 
@@ -1317,11 +1321,11 @@ package body Flow is
                                 (Name                  => To_Entity_Name (E),
                                  Kind                  =>
                                    (case Ekind (E) is
-                                    when E_Entry         => Kind_Entry,
-                                    when E_Task_Type     => Kind_Task,
-                                    when Subprogram_Kind => Kind_Subprogram,
-                                    when others          =>
-                                      raise Program_Error),
+                                    when E_Entry     => Kind_Entry,
+                                    when E_Function
+                                       | E_Procedure => Kind_Subprogram,
+                                    when E_Task_Type => Kind_Task,
+                                    when others      => raise Program_Error),
                                  Globals_Origin        => Origin_User,
                                  Inputs_Proof          =>
                                    To_Name_Set (Proof_Ins),
@@ -1355,11 +1359,11 @@ package body Flow is
                                 (Name                  => To_Entity_Name (E),
                                  Kind                  =>
                                    (case Ekind (E) is
-                                    when E_Entry         => Kind_Entry,
-                                    when E_Task_Type     => Kind_Task,
-                                    when Subprogram_Kind => Kind_Subprogram,
-                                    when others          =>
-                                      raise Program_Error),
+                                    when E_Entry     => Kind_Entry,
+                                    when E_Function
+                                       | E_Procedure => Kind_Subprogram,
+                                    when E_Task_Type => Kind_Task,
+                                    when others      => raise Program_Error),
                                  Globals_Origin        => Origin_Frontend,
                                  Inputs_Proof          => Name_Sets.Empty_Set,
                                  Inputs                => Reads,
