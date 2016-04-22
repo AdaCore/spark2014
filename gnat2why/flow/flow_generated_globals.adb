@@ -212,29 +212,29 @@ package body Flow_Generated_Globals is
    --  Global_Id
    ----------------------------------------------------------------------
 
-   type Global_Id_Kind is (Null_Kind,
+   type Global_Id_Kind is (Null_Global_Id,
                            --  Does not represent anything yet
 
-                           Subprogram_Kind,
+                           Subprogram,
                            --  This kind should only be used in Local_Graphs
 
-                           Ins_Kind,
-                           --  Represents subprogram's Ins
+                           Inputs,
+                           --  Represents subprogram's Inputs
 
-                           Outs_Kind,
-                           --  Represents subprogram's Outs
+                           Outputs,
+                           --  Represents subprogram's Outputs
 
-                           Proof_Ins_Kind,
+                           Proof_Ins,
                            --  Represents subprogram's Proof_Ins
 
-                           Variable_Kind
+                           Variable
                            --  Represents a global variable
                           );
    pragma Ordered (Global_Id_Kind);
 
-   type Global_Id (Kind : Global_Id_Kind := Null_Kind) is record
+   type Global_Id (Kind : Global_Id_Kind := Null_Global_Id) is record
       case Kind is
-         when Null_Kind =>
+         when Null_Global_Id =>
             null;
 
          when others =>
@@ -242,10 +242,10 @@ package body Flow_Generated_Globals is
       end case;
    end record;
 
-   Null_Global_Id : constant Global_Id := Global_Id'(Kind => Null_Kind);
+   Empty_Global_Id : constant Global_Id := Global_Id'(Kind => Null_Global_Id);
 
    function Global_Hash (X : Global_Id) return Ada.Containers.Hash_Type
-   is (if X.Kind = Null_Kind
+   is (if X.Kind = Null_Global_Id
        then Generic_Integer_Hash (-1)
        else Name_Hash (X.Name));
 
@@ -302,7 +302,7 @@ package body Flow_Generated_Globals is
      (Vertex_Key   => Global_Id,
       Key_Hash     => Global_Hash,
       Edge_Colours => No_Colours,
-      Null_Key     => Null_Global_Id,
+      Null_Key     => Empty_Global_Id,
       Test_Key     => "=");
 
    package Vertex_Sets is new Ada.Containers.Hashed_Sets
@@ -901,13 +901,13 @@ package body Flow_Generated_Globals is
       use Global_Graphs;
 
       G_Proof_Ins : constant Global_Id :=
-        Global_Id'(Kind => Proof_Ins_Kind,
+        Global_Id'(Kind => Proof_Ins,
                    Name => EN);
       G_Ins       : constant Global_Id :=
-        Global_Id'(Kind => Ins_Kind,
+        Global_Id'(Kind => Inputs,
                    Name => EN);
       G_Outs      : constant Global_Id :=
-        Global_Id'(Kind => Outs_Kind,
+        Global_Id'(Kind => Outputs,
                    Name => EN);
       --  The above 3 Global_Ids correspond to the subprogram's Ins,
       --  Outs and Proof_Ins.
@@ -923,7 +923,7 @@ package body Flow_Generated_Globals is
 
       function Calculate_MR (Start : Vertex_Id) return Name_Sets.Set;
       --  Returns a set of all vertices that can be reached from Start and are
-      --  of the Variable_Kind.
+      --  of the Variable.
 
       ------------------
       -- Calculate_MR --
@@ -957,7 +957,7 @@ package body Flow_Generated_Globals is
          for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
             G := Global_Graph.Get_Key (V);
 
-            if G.Kind = Variable_Kind then
+            if G.Kind = Variable then
                Expand_State (G.Name);
             end if;
          end loop;
@@ -1115,10 +1115,8 @@ package body Flow_Generated_Globals is
             Key_A :          Global_Id := Global_Graph.Get_Key (A);
             Key_B : constant Global_Id := Global_Graph.Get_Key (B);
          begin
-            if Key_B.Kind /= Variable_Kind
-              or else Key_A.Kind not in Proof_Ins_Kind |
-                                        Ins_Kind       |
-                                        Outs_Kind
+            if Key_B.Kind /= Variable
+              or else Key_A.Kind not in Proof_Ins | Inputs | Outputs
             then
                --  We only need to consult the Local_Graph when attempting
                --  to establish a link between a subprogram and a variable.
@@ -1126,7 +1124,7 @@ package body Flow_Generated_Globals is
             end if;
 
             --  Convert kind so that it can be used on Local_Graph
-            Key_A := Global_Id'(Kind => Subprogram_Kind,
+            Key_A := Global_Id'(Kind => Subprogram,
                                 Name => Key_A.Name);
 
             declare
@@ -1155,16 +1153,16 @@ package body Flow_Generated_Globals is
          --  Go through the Subprogram_Info_List and add edges
          for Info of Subprogram_Info_List loop
             declare
-               G_Ins : constant Global_Id (Ins_Kind) :=
-                 (Kind => Ins_Kind,
+               G_Ins : constant Global_Id (Inputs) :=
+                 (Kind => Inputs,
                   Name => Info.Name);
 
-               G_Outs : constant Global_Id (Outs_Kind) :=
-                 (Kind => Outs_Kind,
+               G_Outs : constant Global_Id (Outputs) :=
+                 (Kind => Outputs,
                   Name => Info.Name);
 
-               G_Proof_Ins : constant Global_Id (Proof_Ins_Kind) :=
-                 (Kind => Proof_Ins_Kind,
+               G_Proof_Ins : constant Global_Id (Proof_Ins) :=
+                 (Kind => Proof_Ins,
                   Name => Info.Name);
 
             begin
@@ -1172,7 +1170,7 @@ package body Flow_Generated_Globals is
                --  subprogram's Proof_Ins vertex.
                for Input_Proof of Info.Inputs_Proof loop
                   Global_Graph.Add_Edge (G_Proof_Ins,
-                                         Global_Id'(Kind => Variable_Kind,
+                                         Global_Id'(Kind => Variable,
                                                     Name => Input_Proof));
                end loop;
 
@@ -1180,7 +1178,7 @@ package body Flow_Generated_Globals is
                --  Ins vertex.
                for Input of Info.Inputs loop
                   Global_Graph.Add_Edge (G_Ins,
-                                         Global_Id'(Kind => Variable_Kind,
+                                         Global_Id'(Kind => Variable,
                                                     Name => Input));
                end loop;
 
@@ -1188,7 +1186,7 @@ package body Flow_Generated_Globals is
                --  subprogram's Outputs vertex.
                for Output of Info.Outputs loop
                   Global_Graph.Add_Edge (G_Outs,
-                                         Global_Id'(Kind => Variable_Kind,
+                                         Global_Id'(Kind => Variable,
                                                     Name => Output));
                end loop;
 
@@ -1196,11 +1194,11 @@ package body Flow_Generated_Globals is
                --  Ins and Proof_Ins vertices.
                for Proof_Call of Info.Proof_Calls loop
                   Global_Graph.Add_Edge (G_Proof_Ins,
-                                         Global_Id'(Kind => Proof_Ins_Kind,
+                                         Global_Id'(Kind => Proof_Ins,
                                                     Name => Proof_Call));
 
                   Global_Graph.Add_Edge (G_Proof_Ins,
-                                         Global_Id'(Kind => Ins_Kind,
+                                         Global_Id'(Kind => Inputs,
                                                     Name => Proof_Call));
                end loop;
 
@@ -1209,15 +1207,15 @@ package body Flow_Generated_Globals is
                --  vertices.
                for Definite_Call of Info.Definite_Calls loop
                   Global_Graph.Add_Edge (G_Proof_Ins,
-                                         Global_Id'(Kind => Proof_Ins_Kind,
+                                         Global_Id'(Kind => Proof_Ins,
                                                     Name => Definite_Call));
 
                   Global_Graph.Add_Edge (G_Ins,
-                                         Global_Id'(Kind => Ins_Kind,
+                                         Global_Id'(Kind => Inputs,
                                                     Name => Definite_Call));
 
                   Global_Graph.Add_Edge (G_Outs,
-                                         Global_Id'(Kind => Outs_Kind,
+                                         Global_Id'(Kind => Outputs,
                                                     Name => Definite_Call));
                end loop;
 
@@ -1225,19 +1223,19 @@ package body Flow_Generated_Globals is
                --  vertex to the callee's Outs vertex.
                for Conditional_Call of Info.Conditional_Calls loop
                   Global_Graph.Add_Edge (G_Proof_Ins,
-                                         Global_Id'(Kind => Proof_Ins_Kind,
+                                         Global_Id'(Kind => Proof_Ins,
                                                     Name => Conditional_Call));
 
                   Global_Graph.Add_Edge (G_Ins,
-                                         Global_Id'(Kind => Ins_Kind,
+                                         Global_Id'(Kind => Inputs,
                                                     Name => Conditional_Call));
 
                   Global_Graph.Add_Edge (G_Ins,
-                                         Global_Id'(Kind => Outs_Kind,
+                                         Global_Id'(Kind => Outputs,
                                                     Name => Conditional_Call));
 
                   Global_Graph.Add_Edge (G_Outs,
-                                         Global_Id'(Kind => Outs_Kind,
+                                         Global_Id'(Kind => Outputs,
                                                     Name => Conditional_Call));
                end loop;
             end;
@@ -1249,16 +1247,16 @@ package body Flow_Generated_Globals is
             declare
                Subprogram  : constant Entity_Id := Find_Entity (N);
 
-               G_Proof_Ins : constant Global_Id (Proof_Ins_Kind) :=
-                 (Kind => Proof_Ins_Kind,
+               G_Proof_Ins : constant Global_Id (Proof_Ins) :=
+                 (Kind => Proof_Ins,
                   Name => N);
 
-               G_Ins       : constant Global_Id (Ins_Kind) :=
-                 (Kind => Ins_Kind,
+               G_Ins       : constant Global_Id (Inputs) :=
+                 (Kind => Inputs,
                   Name => N);
 
-               G_Outs      : constant Global_Id (Outs_Kind) :=
-                 (Kind => Outs_Kind,
+               G_Outs      : constant Global_Id (Outputs) :=
+                 (Kind => Outputs,
                   Name => N);
 
                FS_Proof_Ins : Flow_Id_Sets.Set;
@@ -1290,8 +1288,8 @@ package body Flow_Generated_Globals is
                            else
                               raise Program_Error);
 
-                        G : constant Global_Id (Variable_Kind) :=
-                          (Kind => Variable_Kind,
+                        G : constant Global_Id (Variable) :=
+                          (Kind => Variable,
                            Name => Nam);
 
                      begin
@@ -1408,7 +1406,7 @@ package body Flow_Generated_Globals is
             --  current compilation unit.
             for E of Marked_Entities loop
                if (Ekind (E) = E_Entry
-                   or else (Ekind (E) in Einfo.Subprogram_Kind
+                   or else (Ekind (E) in E_Function | E_Procedure
                             and then Convention (E) = Convention_Protected))
                  and then Entity_Body_In_SPARK (E)
                then
@@ -1477,7 +1475,7 @@ package body Flow_Generated_Globals is
                if (case Ekind (E) is
                       when E_Entry | E_Task_Type =>
                          True,
-                      when Einfo.Subprogram_Kind =>
+                      when E_Function | E_Procedure =>
                          Convention (E) = Convention_Protected
                          or else Might_Be_Main (E),
                       when others =>
@@ -1548,13 +1546,13 @@ package body Flow_Generated_Globals is
       begin
          --  Create vertices for all global variables
          for N of All_Globals loop
-            Global_Graph.Add_Vertex (Global_Id'(Kind => Variable_Kind,
+            Global_Graph.Add_Vertex (Global_Id'(Kind => Variable,
                                                 Name => N));
          end loop;
 
          --  Create Ins, Outs and Proof_Ins vertices for all subprograms
          for Subprogram_Name of All_Subprograms loop
-            for K in Ins_Kind .. Proof_Ins_Kind loop
+            for K in Inputs .. Proof_Ins loop
                declare
                   G : Global_Id (K);
                   --  This should really be a constant, but its initialization
@@ -1584,7 +1582,7 @@ package body Flow_Generated_Globals is
                ----------------------------
 
                procedure Create_Vertices_For_FS (FS : Flow_Id_Sets.Set) is
-                  G   : Global_Id (Variable_Kind);
+                  G   : Global_Id (Variable);
                   Nam : Entity_Name;
                begin
                   for F of FS loop
@@ -1594,7 +1592,7 @@ package body Flow_Generated_Globals is
                                 F.Name
                              else
                                 raise Program_Error);
-                     G   := Global_Id'(Kind => Variable_Kind,
+                     G   := Global_Id'(Kind => Variable,
                                        Name => Nam);
 
                      if not Global_Graph.Contains (G) then
@@ -1627,15 +1625,15 @@ package body Flow_Generated_Globals is
       procedure Create_Local_Graph is
          use Global_Graphs;
 
-         G_Subp       : Global_Id (Subprogram_Kind);
-         G_Local_Subp : Global_Id (Subprogram_Kind);
-         G_Local_Var  : Global_Id (Variable_Kind);
+         G_Subp       : Global_Id (Subprogram);
+         G_Local_Subp : Global_Id (Subprogram);
+         G_Local_Var  : Global_Id (Variable);
 
       --  Start of processing for Create_Local_Graph
 
       begin
          for Info of Subprogram_Info_List loop
-            G_Subp := Global_Id'(Kind => Subprogram_Kind,
+            G_Subp := Global_Id'(Kind => Subprogram,
                                  Name => Info.Name);
 
             if not Local_Graph.Contains (G_Subp) then
@@ -1647,7 +1645,7 @@ package body Flow_Generated_Globals is
             --  Create a vertex for every local variable and link it to the
             --  enclosing subprogram.
             for Local_Variable of Info.Local_Variables loop
-               G_Local_Var := Global_Id'(Kind => Variable_Kind,
+               G_Local_Var := Global_Id'(Kind => Variable,
                                          Name => Local_Variable);
 
                --  Create a vertex for every local variable if one does not
@@ -1663,7 +1661,7 @@ package body Flow_Generated_Globals is
             --  Create a vertex for every local subprogram and link it to the
             --  enclosing subprogram.
             for Local_Subprogram of Info.Local_Subprograms loop
-               G_Local_Subp := Global_Id'(Kind => Subprogram_Kind,
+               G_Local_Subp := Global_Id'(Kind => Subprogram,
                                           Name => Local_Subprogram);
 
                if not Local_Graph.Contains (G_Local_Subp) then
@@ -1679,11 +1677,11 @@ package body Flow_Generated_Globals is
             --  Link all local variables to all local subprograms (this
             --  effectively means that they can act as their globals).
             for Local_Variable of Info.Local_Variables loop
-               G_Local_Var := Global_Id'(Kind => Variable_Kind,
+               G_Local_Var := Global_Id'(Kind => Variable,
                                          Name => Local_Variable);
 
                for Local_Subprogram of Info.Local_Subprograms loop
-                  G_Local_Subp := Global_Id'(Kind => Subprogram_Kind,
+                  G_Local_Subp := Global_Id'(Kind => Subprogram,
                                              Name => Local_Subprogram);
 
                   Local_Graph.Add_Edge (G_Local_Var, G_Local_Subp);
@@ -1721,7 +1719,7 @@ package body Flow_Generated_Globals is
             for V of Global_Graph.Get_Collection (Start,
                                                   Out_Neighbours)
             loop
-               if Global_Graph.Get_Key (V).Kind = Variable_Kind then
+               if Global_Graph.Get_Key (V).Kind = Variable then
                   VS.Include (V);
                end if;
             end loop;
@@ -1735,15 +1733,15 @@ package body Flow_Generated_Globals is
          for Info of Subprogram_Info_List loop
             declare
                G_Ins       : constant Global_Id :=
-                 Global_Id'(Kind => Ins_Kind,
+                 Global_Id'(Kind => Inputs,
                             Name => Info.Name);
 
                G_Outs      : constant Global_Id :=
-                 Global_Id'(Kind => Outs_Kind,
+                 Global_Id'(Kind => Outputs,
                             Name => Info.Name);
 
                G_Proof_Ins : constant Global_Id :=
-                 Global_Id'(Kind => Proof_Ins_Kind,
+                 Global_Id'(Kind => Proof_Ins,
                             Name => Info.Name);
 
                V_Ins       : constant Vertex_Id :=
@@ -2321,7 +2319,7 @@ package body Flow_Generated_Globals is
                   --  variable input.
                   declare
                      Const_G_Id : constant Global_Id :=
-                       Global_Id'(Kind => Variable_Kind,
+                       Global_Id'(Kind => Variable,
                                   Name => Glob);
 
                      Const_V    : constant Vertex_Id :=
@@ -2998,18 +2996,18 @@ package body Flow_Generated_Globals is
       is
          G_Id  : constant Global_Id := G.Get_Key (V);
 
-         Shape : constant Node_Shape_T := (if G_Id.Kind = Variable_Kind
+         Shape : constant Node_Shape_T := (if G_Id.Kind = Variable
                                            then Shape_Oval
                                            else Shape_Box);
 
          Label : constant String :=
            (case G_Id.Kind is
-              when Subprogram_Kind => "Subprogram " & To_String (G_Id.Name),
-              when Proof_Ins_Kind  => To_String (G_Id.Name) & "'Proof_Ins",
-              when Ins_Kind        => To_String (G_Id.Name) & "'Ins",
-              when Outs_Kind       => To_String (G_Id.Name) & "'Outs",
-              when Variable_Kind   => To_String (G_Id.Name),
-              when Null_Kind       => raise Program_Error);
+              when Subprogram      => "Subprogram " & To_String (G_Id.Name),
+              when Proof_Ins       => To_String (G_Id.Name) & "'Proof_Ins",
+              when Inputs          => To_String (G_Id.Name) & "'Inputs",
+              when Outputs         => To_String (G_Id.Name) & "'Outputs",
+              when Variable        => To_String (G_Id.Name),
+              when Null_Global_Id  => raise Program_Error);
 
          Rv : constant Node_Display_Info := Node_Display_Info'
            (Show        => True,
