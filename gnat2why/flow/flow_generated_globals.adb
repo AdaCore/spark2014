@@ -1045,8 +1045,8 @@ package body Flow_Generated_Globals is
       --  Contains all subprograms for which a GG entry exists
 
       All_Subprograms       : Name_Sets.Set := Name_Sets.Empty_Set;
-      --  Contains all subprograms that we know of, even if a
-      --  GG entry does not exist for them.
+      --  Contains all subprograms that we know of, even if a GG entry does not
+      --  exist for them.
 
       All_Other_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
       --  Contains all subprograms for which a GG entry does not exist
@@ -1103,8 +1103,6 @@ package body Flow_Generated_Globals is
       procedure Add_All_Edges is
          use Global_Graphs;
 
-         G_Ins, G_Outs, G_Proof_Ins : Global_Id;
-
          function Edge_Selector (A, B : Vertex_Id) return Boolean;
          --  Check if we should add the given edge to the graph based weather
          --  it is in the local graph or not.
@@ -1156,96 +1154,113 @@ package body Flow_Generated_Globals is
       begin
          --  Go through the Subprogram_Info_List and add edges
          for Info of Subprogram_Info_List loop
-            G_Ins       := Global_Id'(Kind => Ins_Kind,
-                                      Name => Info.Name);
+            declare
+               G_Ins : constant Global_Id (Ins_Kind) :=
+                 (Kind => Ins_Kind,
+                  Name => Info.Name);
 
-            G_Outs      := Global_Id'(Kind => Outs_Kind,
-                                      Name => Info.Name);
+               G_Outs : constant Global_Id (Outs_Kind) :=
+                 (Kind => Outs_Kind,
+                  Name => Info.Name);
 
-            G_Proof_Ins := Global_Id'(Kind => Proof_Ins_Kind,
-                                      Name => Info.Name);
+               G_Proof_Ins : constant Global_Id (Proof_Ins_Kind) :=
+                 (Kind => Proof_Ins_Kind,
+                  Name => Info.Name);
 
-            --  Connect the subprogram's Proof_In variables to the subprogram's
-            --  Proof_Ins vertex.
-            for Input_Proof of Info.Inputs_Proof loop
-               Global_Graph.Add_Edge (G_Proof_Ins,
-                                      Global_Id'(Kind => Variable_Kind,
-                                                 Name => Input_Proof));
-            end loop;
+            begin
+               --  Connect the subprogram's Proof_In variables to the
+               --  subprogram's Proof_Ins vertex.
+               for Input_Proof of Info.Inputs_Proof loop
+                  Global_Graph.Add_Edge (G_Proof_Ins,
+                                         Global_Id'(Kind => Variable_Kind,
+                                                    Name => Input_Proof));
+               end loop;
 
-            --  Connect the subprogram's Input variables to the subprogram's
-            --  Ins vertex.
-            for Input of Info.Inputs loop
-               Global_Graph.Add_Edge (G_Ins,
-                                      Global_Id'(Kind => Variable_Kind,
-                                                 Name => Input));
-            end loop;
+               --  Connect the subprogram's Input variables to the subprogram's
+               --  Ins vertex.
+               for Input of Info.Inputs loop
+                  Global_Graph.Add_Edge (G_Ins,
+                                         Global_Id'(Kind => Variable_Kind,
+                                                    Name => Input));
+               end loop;
 
-            --  Connect the subprogram's Output variables to the subprogram's
-            --  Outputs vertex.
-            for Output of Info.Outputs loop
-               Global_Graph.Add_Edge (G_Outs,
-                                      Global_Id'(Kind => Variable_Kind,
-                                                 Name => Output));
-            end loop;
+               --  Connect the subprogram's Output variables to the
+               --  subprogram's Outputs vertex.
+               for Output of Info.Outputs loop
+                  Global_Graph.Add_Edge (G_Outs,
+                                         Global_Id'(Kind => Variable_Kind,
+                                                    Name => Output));
+               end loop;
 
-            --  Connect the subprogram's Proof_Ins vertex to the callee's Ins
-            --  and Proof_Ins vertices.
-            for Proof_Call of Info.Proof_Calls loop
-               Global_Graph.Add_Edge (G_Proof_Ins,
-                                      Global_Id'(Kind => Proof_Ins_Kind,
-                                                 Name => Proof_Call));
+               --  Connect the subprogram's Proof_Ins vertex to the callee's
+               --  Ins and Proof_Ins vertices.
+               for Proof_Call of Info.Proof_Calls loop
+                  Global_Graph.Add_Edge (G_Proof_Ins,
+                                         Global_Id'(Kind => Proof_Ins_Kind,
+                                                    Name => Proof_Call));
 
-               Global_Graph.Add_Edge (G_Proof_Ins,
-                                      Global_Id'(Kind => Ins_Kind,
-                                                 Name => Proof_Call));
-            end loop;
+                  Global_Graph.Add_Edge (G_Proof_Ins,
+                                         Global_Id'(Kind => Ins_Kind,
+                                                    Name => Proof_Call));
+               end loop;
 
-            --  Connect the subprogram's Proof_Ins, Ins and Outs vertices
-            --  respectively to the callee's Proof_Ins, Ins and Outs vertices.
-            for Definite_Call of Info.Definite_Calls loop
-               Global_Graph.Add_Edge (G_Proof_Ins,
-                                      Global_Id'(Kind => Proof_Ins_Kind,
-                                                 Name => Definite_Call));
+               --  Connect the subprogram's Proof_Ins, Ins and Outs vertices
+               --  respectively to the callee's Proof_Ins, Ins and Outs
+               --  vertices.
+               for Definite_Call of Info.Definite_Calls loop
+                  Global_Graph.Add_Edge (G_Proof_Ins,
+                                         Global_Id'(Kind => Proof_Ins_Kind,
+                                                    Name => Definite_Call));
 
-               Global_Graph.Add_Edge (G_Ins,
-                                      Global_Id'(Kind => Ins_Kind,
-                                                 Name => Definite_Call));
+                  Global_Graph.Add_Edge (G_Ins,
+                                         Global_Id'(Kind => Ins_Kind,
+                                                    Name => Definite_Call));
 
-               Global_Graph.Add_Edge (G_Outs,
-                                      Global_Id'(Kind => Outs_Kind,
-                                                 Name => Definite_Call));
-            end loop;
+                  Global_Graph.Add_Edge (G_Outs,
+                                         Global_Id'(Kind => Outs_Kind,
+                                                    Name => Definite_Call));
+               end loop;
 
-            --  As above but also add an edge from the subprogram's Ins vertex
-            --  to the callee's Outs vertex.
-            for Conditional_Call of Info.Conditional_Calls loop
-               Global_Graph.Add_Edge (G_Proof_Ins,
-                                      Global_Id'(Kind => Proof_Ins_Kind,
-                                                 Name => Conditional_Call));
+               --  As above but also add an edge from the subprogram's Ins
+               --  vertex to the callee's Outs vertex.
+               for Conditional_Call of Info.Conditional_Calls loop
+                  Global_Graph.Add_Edge (G_Proof_Ins,
+                                         Global_Id'(Kind => Proof_Ins_Kind,
+                                                    Name => Conditional_Call));
 
-               Global_Graph.Add_Edge (G_Ins,
-                                      Global_Id'(Kind => Ins_Kind,
-                                                 Name => Conditional_Call));
+                  Global_Graph.Add_Edge (G_Ins,
+                                         Global_Id'(Kind => Ins_Kind,
+                                                    Name => Conditional_Call));
 
-               Global_Graph.Add_Edge (G_Ins,
-                                      Global_Id'(Kind => Outs_Kind,
-                                                 Name => Conditional_Call));
+                  Global_Graph.Add_Edge (G_Ins,
+                                         Global_Id'(Kind => Outs_Kind,
+                                                    Name => Conditional_Call));
 
-               Global_Graph.Add_Edge (G_Outs,
-                                      Global_Id'(Kind => Outs_Kind,
-                                                 Name => Conditional_Call));
-            end loop;
+                  Global_Graph.Add_Edge (G_Outs,
+                                         Global_Id'(Kind => Outs_Kind,
+                                                    Name => Conditional_Call));
+               end loop;
+            end;
          end loop;
 
          --  Add edges between subprograms and variables coming from the
          --  Get_Globals function.
          for N of All_Other_Subprograms loop
             declare
-               Subprogram   : constant Entity_Id := Find_Entity (N);
-               G_Proof_Ins  : Global_Id;
-               G_Ins        : Global_Id;
-               G_Outs       : Global_Id;
+               Subprogram  : constant Entity_Id := Find_Entity (N);
+
+               G_Proof_Ins : constant Global_Id (Proof_Ins_Kind) :=
+                 (Kind => Proof_Ins_Kind,
+                  Name => N);
+
+               G_Ins       : constant Global_Id (Ins_Kind) :=
+                 (Kind => Ins_Kind,
+                  Name => N);
+
+               G_Outs      : constant Global_Id (Outs_Kind) :=
+                 (Kind => Outs_Kind,
+                  Name => N);
+
                FS_Proof_Ins : Flow_Id_Sets.Set;
                FS_Reads     : Flow_Id_Sets.Set;
                FS_Writes    : Flow_Id_Sets.Set;
@@ -1263,37 +1278,31 @@ package body Flow_Generated_Globals is
                  (FS   : Flow_Id_Sets.Set;
                   From : Global_Id)
                is
-                  G   : Global_Id;
-                  Nam : Entity_Name;
                begin
                   for F of FS loop
-                     Nam := (if F.Kind in Direct_Mapping |
-                                          Record_Field
-                             then
-                                To_Entity_Name (Get_Direct_Mapping_Id (F))
-                             elsif F.Kind = Magic_String then
-                                F.Name
-                             else
-                                raise Program_Error);
-                     G   := Global_Id'(Kind => Variable_Kind,
-                                       Name => Nam);
+                     declare
+                        Nam : constant Entity_Name :=
+                          (if F.Kind in Direct_Mapping | Record_Field
+                           then
+                              To_Entity_Name (Get_Direct_Mapping_Id (F))
+                           elsif F.Kind = Magic_String then
+                              F.Name
+                           else
+                              raise Program_Error);
 
-                     if not Global_Graph.Edge_Exists (From, G) then
-                        Global_Graph.Add_Edge (From, G);
-                     end if;
+                        G : constant Global_Id (Variable_Kind) :=
+                          (Kind => Variable_Kind,
+                           Name => Nam);
+
+                     begin
+                        if not Global_Graph.Edge_Exists (From, G) then
+                           Global_Graph.Add_Edge (From, G);
+                        end if;
+                     end;
                   end loop;
                end Add_Edges_For_FS;
 
             begin
-               G_Proof_Ins := Global_Id'(Kind => Proof_Ins_Kind,
-                                         Name => N);
-
-               G_Ins       := Global_Id'(Kind => Ins_Kind,
-                                         Name => N);
-
-               G_Outs      := Global_Id'(Kind => Outs_Kind,
-                                         Name => N);
-
                if Present (Subprogram) then
                   Get_Globals (Subprogram => Subprogram,
                                Scope      => Get_Flow_Scope (Subprogram),
