@@ -34,63 +34,77 @@ with String_Utils;      use String_Utils;
 
 package Configuration is
 
-   Max_Non_Blank_Lines : constant := 6;
-   --  Maximum number of consecutive non blank lines on standard output
+   package CL_Switches is
 
-   Label_Length      : constant := 26;
-   --  Maximum length of label in report. Other characters are discarded.
+      --  These are the variables that contain the values of the corresponding
+      --  switches of gnatprove:
+      --  * single letter variables correspond to single letter switches with
+      --    one dash, like -j, -v
+      --  * variable UU corresponds to -U
+      --  * other variables are with two dashes, e.g. --codepeer
+      --  * File_List stands for the file arguments (that are not arguments of
+      --    some switch)
+      --  * Cargs_List is the list of arguments in the --cargs section
 
-   Version           : aliased Boolean;
-   --  True if --version switch is present. Output current version and exit.
-   Verbose           : aliased Boolean;
-   --  True if -v switch is present. All executed commands are printed.
-   Force             : aliased Boolean;
-   --  True if -f is present. Force recompilation of all units.
-   Quiet             : aliased Boolean;
-   --  True if -q is present. Do not print on standard output.
-   Debug             : aliased Boolean;
-   --  True if -d is present. Do not remove temporary files.
-   Minimal_Compile   : aliased Boolean;
-   --  True if -m is present. Do not remove temporary files.
-   Flow_Extra_Debug  : aliased Boolean;
-   --  Enable some extra debugging for flow analysis.
-   Debug_Proof_Only  : aliased Boolean;
-   --  Do only proof (i.e. disable flow analysis), for debugging only
-   Continue_On_Error : aliased Boolean;
-   --  True if -k is present. Continue analysis in case of errors.
-   Only_Given        : aliased Boolean;
-   --  True if -u is present. Only compile/prove given files
-   All_Projects      : aliased Boolean;
-   --  True if -U is present. compile/prove all files of all projects
-   Pedantic          : aliased Boolean;
-   --  True if --strict switch is present. Stricter interpretation of language.
-   IDE_Progress_Bar  : aliased Boolean;
-   --  True if --ide-progress-bar switch is present. Generate information on
-   --  progress for display in IDE.
-   Assumptions       : aliased Boolean;
-   --  True if --assumptions switch is present. Generate assumption information
-   --  in the gnatprove.out file.
-   CodePeer         : aliased Boolean;
-   --  True if --codepeer=on switch is present. Generate assumption information
-   --  in the gnatprove.out file.
-   RTS_Dir           : aliased GNAT.Strings.String_Access;
-   --  The RTS dir set by option --RTS or by the project file via "Runtime"
-   --  attribute
-   Target_Dir        : GNAT.Strings.String_Access;
-   --  the attribute "target" of the project file, if set
-   Limit_Line        : aliased GNAT.Strings.String_Access;
-   --  Set to non-empty string when option --limit-line= was given
-   Limit_Subp        : aliased GNAT.Strings.String_Access;
-   --  Set to non-empty string when option --limit-subp= was given
-   Alter_Prover      : aliased GNAT.Strings.String_Access;
-   --  Set to non-empty string when option --prover= was given
-   No_Counterexample : aliased Boolean := False;
-   --  Set to True if no counterexample should be get
-   Benchmark_Mode    : aliased Boolean;
-   --  Provides the fake_* binaries instead of the real prover binaries
-   --  (undocumented).
-   Caching           : aliased Boolean;
-   --  Enables caching using memcached (undocumented)
+      Assumptions       : aliased Boolean;
+      Benchmark         : aliased Boolean;
+      Cache             : aliased Boolean;
+      Cargs_List        : String_Lists.List;
+      CodePeer          : aliased GNAT.Strings.String_Access;
+      D                 : aliased Boolean;
+      Dbg_Proof_Only    : aliased Boolean;
+      F                 : aliased Boolean;
+      File_List         : String_Lists.List;
+      --  The list of files to be compiled
+      Flow_Debug        : aliased Boolean;
+      GPR_Project_Path  : String_Lists.List;
+      --  extra paths to look for project files, passed to gnatprove via -aP
+      IDE_Progress_Bar  : aliased Boolean;
+      J                 : aliased Integer;
+      K                 : aliased Boolean;
+      Level             : aliased Integer;
+      Limit_Line        : aliased GNAT.Strings.String_Access;
+      Limit_Subp        : aliased GNAT.Strings.String_Access;
+      M                 : aliased Boolean;
+      Mode              : aliased GNAT.Strings.String_Access;
+      No_Counterexample : aliased Boolean;
+      P                 : aliased GNAT.Strings.String_Access;
+      --  The project file name, given with option -P
+      Pedantic          : aliased Boolean;
+      Proof             : aliased GNAT.Strings.String_Access;
+      Prover            : aliased GNAT.Strings.String_Access;
+      Q                 : aliased Boolean;
+      Report            : aliased GNAT.Strings.String_Access;
+      RTS               : aliased GNAT.Strings.String_Access;
+      Steps             : aliased Integer;
+      Timeout           : aliased GNAT.Strings.String_Access;
+      U                 : aliased Boolean;
+      UU                : aliased Boolean;
+      V                 : aliased Boolean;
+      Version           : aliased Boolean;
+      Warnings          : aliased GNAT.Strings.String_Access;
+      Why3_Conf         : aliased GNAT.Strings.String_Access;
+      X                 : String_Lists.List;
+      --  Scenario variables to be passed to gprbuild
+   end CL_Switches;
+
+   package Prj_Attr is
+
+      --  The attributes of the project file that are accessed by gnatprove.
+      --  This does not include the "Prove.Switches" attribute, which is
+      --  considered to be part of the command line.
+
+      Runtime : GNAT.Strings.String_Access;
+      Target  : GNAT.Strings.String_Access;
+
+      package Builder is
+         Global_Compilation_Switches_Ada : GNAT.Strings.String_List_Access;
+      end Builder;
+
+      package Prove is
+         Proof_Dir : GNAT.Strings.String_Access;
+      end Prove;
+   end Prj_Attr;
 
    type GP_Mode is (GPM_Check, GPM_Flow, GPM_Prove, GPM_All);
    --  The four feature modes of GNATprove:
@@ -99,65 +113,52 @@ package Configuration is
    --  * GPM_Flow   : Check validity of Globals, Depends
    --  * GPM_All    : Union of GPM_Prove and GPM_Flow
 
-   type Proof_Mode is (Then_Split, No_WP, All_Split, Path_WP, No_Split);
-   --  The modes for generating VCs.
-   --    Then_Split: compute WP, split VCs and call prover as necessary
-   --    No_WP: do not compute WP, do not split VCs, do not call prover
-   --    All_Split: compute VCs, split all VCs, do not call prover
-   --    Path_WP: use the "normal" (exponential) WP
-   --    No_Split: only use fast WP, no split of VCs at all
-   --  This option is simply passed to gnatwhy3.
+   type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
 
-   MMode        : GP_Mode := GPM_Prove;
-   Warning_Mode : Opt.Warning_Mode_Type := Opt.Normal;
-   Report       : Report_Mode_Type := GPR_Fail;
-   --  Silent reporting is the default
+   --  The variables that govern behavior of gnatprove. Many of them directly
+   --  correspond to a command line switch, but not all. See the Postprocess
+   --  function which links variables and switches.
 
-   Proof_Input  : aliased GNAT.Strings.String_Access;
-   --  The input variable for command line parsing set by option --proof
+   Verbose           : Boolean;
+   Quiet             : Boolean;
+   Debug             : Boolean;
+   Force             : Boolean;
+   Minimal_Compile   : Boolean;
+   Flow_Extra_Debug  : Boolean;
+   Debug_Proof_Only  : Boolean;
+   Continue_On_Error : Boolean;
+   All_Projects      : Boolean;
+   Pedantic          : Boolean;
+   IDE_Progress_Bar  : Boolean;
+   Limit_Line        : GNAT.Strings.String_Access;
+   Limit_Subp        : GNAT.Strings.String_Access;
+   Assumptions       : Boolean;
+   Only_Given        : Boolean;
+   CodePeer          : Boolean;
+   RTS_Dir           : GNAT.Strings.String_Access;
+   Counterexample    : Boolean;
+   Mode              : GP_Mode;
+   Warning_Mode      : Opt.Warning_Mode_Type;
+   Caching           : Boolean;
+   --  enable caching thrrough memcached
+   Benchmark_Mode    : Boolean;
+   --  replace prover binaries by fake binaries to allow extracting VCs
+   Report            : Report_Mode_Type;
+   Proof             : Proof_Mode;
+   Lazy              : Boolean;
+   Parallel          : Integer;
+   Provers           : String_Lists.List;
+   Timeout           : Integer;
+   Steps             : Integer;
+   Why3_Config_File  : GNAT.Strings.String_Access;
 
-   CodePeer_Input : aliased GNAT.Strings.String_Access;
-   --  The input variable for command line parsing set by option --codepeer
+   Max_Non_Blank_Lines : constant := 6;
+   --  Maximum number of consecutive non blank lines on standard output
 
-   Timeout_Input : aliased GNAT.Strings.String_Access;
-   --  The input variable for command line parsing set by option --timeout
-
-   Proof   : Proof_Mode;
-   Lazy    : Boolean;
+   Label_Length      : constant := 26;
+   --  Maximum length of label in report. Other characters are discarded.
 
    Default_Level   : constant := 0;
-   Invalid_Step    : constant := -1;
-   Invalid_Timeout : constant := -1;
-
-   Timeout_Is_Auto : Boolean := False;
-   Timeout : Integer := Invalid_Timeout;
-   --  The number of seconds to try to prove each VC. Specified with
-   --  --timeout=. There is no default timeout. Value 0 should be
-   --  passed explicitly to force absence of timeout. Value "auto" sets
-   --  Timeout_Is_Auto to True, which is used in Compute_Why3_Args to
-   --  adjust the value of timeout to the proof level.
-
-   Parallel     : aliased Integer;
-   --  The number of parallel processes. Specified with -j.
-   Level        : aliased Integer;
-   --  The level of proof. Specified with --level=.
-   Steps        : aliased Integer;
-   --  The number of steps to try to prove each VC. Specified with --steps=.
-   --  Value 0 should be passed explicitly to force absence of steps.
-   Project_File : aliased GNAT.Strings.String_Access;
-   --  The project file name, given with option -P
-   File_List    : String_Lists.List;
-   --  The list of files to be compiled
-
-   Cargs_List   : String_Lists.List;
-   --  The options to be passed to the compilers, passed to gnatprove via
-   --  --cargs
-
-   GPR_Project_Path : String_Lists.List;
-   --  extra paths to look for project files, passed to gnatprove via -aP
-
-   Scenario_Variables : String_Lists.List;
-   --  Scenario variables to be passed to gprbuild
 
    Subdir_Name : constant Filesystem_String := "gnatprove";
    --  The name of the directory in which all work takes place
@@ -167,11 +168,10 @@ package Configuration is
    --  generated. This is the same as
    --  <obj-dir-for-the-main-project>/Subdir_Name
 
-   Proof_Dir   : aliased GNAT.Strings.String_Access := null;
+   Proof_Dir   : GNAT.Strings.String_Access := null;
    --  The name of the directory in which will be stored Why3 session file and
    --  manual proof files (Attribute of gpr package Prove).
 
-   Why3_Config_File : aliased GNAT.Strings.String_Access;
    --  The name of a why3 configuration file to be used in a single run of
    --  gnatprove.
 
@@ -223,4 +223,7 @@ package Configuration is
 
    function To_String (P : Proof_Mode) return String;
    --  transform the proof mode into a string for gnatwhy3 command line option
+
+   function Prover_List return String;
+   --  return comma-separated list of provers
 end Configuration;

@@ -12137,6 +12137,7 @@ package body Gnat2Why.Expr is
               Pragma_Test_Case                    |
               Pragma_Unmodified                   |
               Pragma_Unreferenced                 |
+              Pragma_Unused                       |
               Pragma_Validity_Checks              |
               Pragma_Warnings                     |
               Pragma_Weak_External                =>

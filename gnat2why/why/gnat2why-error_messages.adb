@@ -121,28 +121,9 @@ package body Gnat2Why.Error_Messages is
    -- Add_Id_To_Entity --
    ----------------------
 
-   procedure Add_Id_To_Entity (Id : VC_Id; E : Entity_Id)
-   is
-
-      procedure Add_To_Set (Key : Entity_Id; S : in out Id_Sets.Set);
-
-      ----------------
-      -- Add_To_Set --
-      ----------------
-
-      procedure Add_To_Set (Key : Entity_Id; S : in out Id_Sets.Set) is
-         pragma Unreferenced (Key);
-      begin
-         S.Include (Id);
-      end Add_To_Set;
-
-      use Ent_Id_Set_Maps;
-      Dummy    : Boolean;
-      Position : Cursor;
+   procedure Add_Id_To_Entity (Id : VC_Id; E : Entity_Id) is
    begin
-      VC_Set_Table.Insert (Key => E, Position => Position, Inserted => Dummy);
-      pragma Assert (not Dummy);
-      VC_Set_Table.Update_Element (Position, Add_To_Set'Access);
+      VC_Set_Table (E).Include (Id);
    end Add_Id_To_Entity;
 
    -------------------------
@@ -483,29 +464,11 @@ package body Gnat2Why.Error_Messages is
    procedure Mark_VC_As_Proved_For_Entity
      (Id   : VC_Id;
       Kind : VC_Kind;
-      E    : Entity_Id) is
+      E    : Entity_Id)
+   is
+      C : Ent_Id_Set_Maps.Cursor;
 
-      Removal_Made_Set_Empty : Boolean := False;
-
-      procedure Remove_Id (Key : Entity_Id; S : in out Id_Sets.Set);
-
-      ---------------
-      -- Remove_Id --
-      ---------------
-
-      procedure Remove_Id (Key : Entity_Id; S : in out Id_Sets.Set) is
-         pragma Unreferenced (Key);
-      begin
-         S.Delete (Id);
-         if S.Is_Empty then
-            Removal_Made_Set_Empty := True;
-         end if;
-      end Remove_Id;
-
-      use Ent_Id_Set_Maps;
-      C : constant Cursor := VC_Set_Table.Find (E);
    begin
-
       --  ??? little trick; loop invariant assertions cannot be simply removed,
       --  because there are two of them with the same ID. We fix this by only
       --  counting the "preservation" one, and ignore the "init" one.
@@ -513,9 +476,13 @@ package body Gnat2Why.Error_Messages is
       if Kind = VC_Loop_Invariant_Init then
          return;
       end if;
-      pragma Assert (C /= No_Element);
-      VC_Set_Table.Update_Element (C, Remove_Id'Access);
-      if Removal_Made_Set_Empty then
+
+      C := VC_Set_Table.Find (E);
+      pragma Assert (Ent_Id_Set_Maps.Has_Element (C));
+
+      VC_Set_Table (C).Delete (Id);
+
+      if VC_Set_Table (C).Is_Empty then
          Register_Proof_Claims (E);
       end if;
    end Mark_VC_As_Proved_For_Entity;

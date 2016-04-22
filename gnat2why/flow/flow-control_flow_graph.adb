@@ -5666,6 +5666,7 @@ package body Flow.Control_Flow_Graph is
               Pragma_Restriction_Warnings         |
               Pragma_Style_Checks                 |
               Pragma_Test_Case                    |
+              Pragma_Unused                       |
               Pragma_Validity_Checks              |
               Pragma_Warnings                     |
               Pragma_Weak_External                =>

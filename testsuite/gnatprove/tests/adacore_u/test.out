@@ -111,7 +111,7 @@ p.ads:11:14: info: initialization of "Data1" proved
 p.ads:11:14: info: initialization of "Data2" proved
 p.ads:11:14: info: initialization of "Size" proved
 p.ads:14:06: info: disjoint contract cases proved
-p.ads:14:06: medium: contract cases might not be complete
+p.ads:14:06: medium: contract cases might not be complete (e.g. when X = 0)
 p.ads:14:41: info: contract case proved
 p.ads:15:43: info: contract case proved
 p.ads:16:34: info: contract case proved

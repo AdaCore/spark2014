@@ -506,14 +506,22 @@ package body Flow.Slice is
                         --     aspect.
                         return Skip;
                      else
-                        if Ekind (E) /= E_Constant then
-                           Local_Vars.Include (E);
-                        elsif Has_Variable_Input (Direct_Mapping_Id (E)) then
-                           --  If the Full_View is present then add that
-                           Local_Vars.Include (if Present (Full_View (E))
-                                               then Full_View (E)
-                                               else E);
-                        end if;
+                        case Ekind (E) is
+                           when E_Variable =>
+                              Local_Vars.Include (E);
+
+                           when E_Constant =>
+                              if Has_Variable_Input (Direct_Mapping_Id (E))
+                              then
+                                 --  If the Full_View is present then add that
+                                 Local_Vars.Include (if Present (Full_View (E))
+                                                     then Full_View (E)
+                                                     else E);
+                              end if;
+
+                           when others =>
+                              raise Program_Error;
+                        end case;
                      end if;
                   end;
 
@@ -853,6 +861,7 @@ package body Flow.Slice is
       Inputs_Proof := All_Ins - Ordinary_Ins;
       Inputs.Union (All_Ins and Ordinary_Ins);
 
+      --  Classify subprogram calls into proof, definite and conditional ones
       Proof_Calls       := Get_Proof_Subprograms;
       Definite_Calls    := Get_Definite_Subprograms - Proof_Calls;
       Conditional_Calls := Subprograms_Without_Contracts

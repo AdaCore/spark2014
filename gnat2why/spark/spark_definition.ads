@@ -184,12 +184,11 @@ package SPARK_Definition is
      (Element_Type => Entity_Id,
       "="          => "=");
 
-   Entity_Tree : Node_Trees.Tree;
-   --  A hierarchical container with entities processed by the flow analysis,
-   --  i.e. packages, subprograms, entries and task types. The hierarchy of its
-   --  contents mirrors the hierarchy of the analyzed code; the ordering of
-   --  siblings is that packages go first and subprograms/entries/task types go
-   --  after them.
+   procedure Iterate_Entities
+     (Process : not null access procedure (E : Entity_Id));
+   --  Post-order iterate over the hierarchical container with entities
+   --  processed by the flow analysis, i.e. packages, subprograms, entries
+   --  and task types.
 
    type Entity_Collection is
      (Entities_To_Translate,

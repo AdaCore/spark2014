@@ -1,0 +1,81 @@
+names.adb:39:34: info: length check proved
+names.adb:55:04: info: initialization of private part of "Char_Table" proved
+names.adb:75:04: info: initialization of private part of "Entry_Table" proved
+names.adb:82:08: info: precondition proved
+names.adb:83:08: info: precondition proved
+names.adb:88:28: info: precondition proved
+names.adb:92:23: info: precondition proved
+names.adb:94:10: info: precondition proved
+names.adb:94:34: info: overflow check proved
+names.adb:99:16: info: range check proved
+names.adb:100:16: info: precondition proved
+names.adb:100:45: info: precondition proved
+names.adb:101:10: info: precondition proved
+names.adb:101:23: info: precondition proved
+names.adb:101:45: info: range check proved
+names.adb:106:21: info: initialization of "N" proved
+names.adb:110:19: info: postcondition proved
+names.adb:111:19: info: precondition proved
+names.adb:111:42: info: precondition proved
+names.adb:111:67: info: overflow check proved
+names.adb:112:19: info: precondition proved
+names.adb:112:42: info: precondition proved
+names.adb:113:19: info: initialization of "N" proved
+names.adb:113:23: info: precondition proved
+names.adb:122:22: info: precondition proved
+names.adb:124:22: info: precondition proved
+names.adb:126:11: info: range check proved
+names.adb:127:10: info: precondition proved
+names.adb:127:35: info: index check proved
+names.adb:127:35: info: overflow check proved
+names.adb:127:46: info: overflow check proved
+names.adb:128:10: info: loop invariant initialization proved
+names.adb:128:10: info: loop invariant preservation proved
+names.adb:130:13: info: precondition proved
+names.adb:131:15: info: precondition proved
+names.adb:131:46: info: overflow check proved
+names.adb:134:07: info: precondition proved
+names.adb:135:31: info: precondition proved
+names.adb:135:55: info: overflow check proved
+names.adb:135:55: info: range check proved
+names.adb:138:12: info: precondition proved
+names.adb:150:30: info: division check proved
+names.adb:150:30: info: range check proved
+names.adb:158:10: info: initialization of "N" proved
+names.adb:159:17: info: initialization of "N" proved
+names.adb:161:16: info: precondition proved
+names.adb:161:27: info: initialization of "Ptr" proved
+names.adb:162:21: info: initialization of "Ptr" proved
+names.adb:166:13: info: loop invariant initialization proved
+names.adb:166:13: info: loop invariant preservation proved
+names.adb:167:16: info: initialization of "Ptr" proved
+names.adb:168:23: info: precondition proved
+names.adb:171:23: info: precondition proved
+names.adb:171:45: info: initialization of "Ptr" proved
+names.adb:171:45: info: range check proved
+names.adb:172:20: info: precondition proved
+names.adb:172:42: info: initialization of "Ptr" proved
+names.adb:172:42: info: range check proved
+names.adb:176:07: info: precondition proved
+names.adb:181:10: info: initialization of "Ptr" proved
+names.adb:182:10: info: precondition proved
+names.adb:183:27: info: initialization of "Ptr" proved
+names.adb:183:27: info: range check proved
+names.adb:184:27: info: precondition proved
+names.adb:184:49: info: initialization of "Ptr" proved
+names.adb:184:49: info: range check proved
+names.adb:184:75: info: initialization of "N" proved
+names.adb:186:28: info: initialization of "N" proved
+names.adb:197:27: info: precondition proved
+names.adb:203:37: info: precondition proved
+names.adb:203:59: info: range check proved
+names.adb:209:17: info: range check proved
+names.adb:210:17: info: range check proved
+names.adb:211:25: info: precondition proved
+names.adb:212:48: info: overflow check proved
+names.adb:212:48: info: range check proved
+names.adb:213:16: info: loop invariant initialization proved
+names.adb:213:16: info: loop invariant preservation proved
+names.adb:224:31: info: precondition proved
+names.ads:39:22: info: initialization of "N" proved
+names.ads:41:19: info: postcondition proved

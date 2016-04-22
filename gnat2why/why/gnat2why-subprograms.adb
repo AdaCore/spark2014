@@ -1679,143 +1679,6 @@ package body Gnat2Why.Subprograms is
       return Result;
    end Compute_Contract_Cases_Postcondition;
 
-   ------------------------------------------
-   -- Generate_VCs_For_Package_Elaboration --
-   ------------------------------------------
-
-   procedure Generate_VCs_For_Package_Elaboration
-     (File : W_Section_Id;
-      E    : Entity_Id)
-   is
-      Name       : constant String  := Full_Name (E);
-      Spec_N     : constant Node_Id := Package_Specification (E);
-      Body_N     : constant Node_Id := Package_Body (E);
-      Vis_Decls  : constant List_Id := Visible_Declarations (Spec_N);
-      Priv_Decls : constant List_Id := Private_Declarations (Spec_N);
-      Init_Cond  : constant Node_Id :=
-        Get_Pragma (E, Pragma_Initial_Condition);
-      Params     : Transformation_Params;
-
-      Why_Body   : W_Prog_Id := +Void;
-      Post       : W_Pred_Id;
-
-   begin
-      --  We open a new theory, so that the context is fresh for that package
-
-      Open_Theory (File,
-                   New_Module
-                     (Name => NID (Name & "__package_def"),
-                      File => No_Name),
-                   Comment =>
-                     "Module for checking absence of run-time errors and "
-                       & "package initial condition on package elaboration of "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & (if Sloc (E) > 0 then
-                            " defined at " & Build_Location_String (Sloc (E))
-                          else "")
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-      Current_Subp := E;
-
-      Register_VC_Entity (E);
-
-      Params := (File        => File,
-                 Phase       => Generate_VCs_For_Body,
-                 Gen_Marker  => False,
-                 Ref_Allowed => True);
-
-      --  Translate initial condition of E
-
-      if Present (Init_Cond) then
-         declare
-            Expr : constant Node_Id :=
-              Expression (First (Pragma_Argument_Associations (Init_Cond)));
-         begin
-            --  Generate postcondition for generated subprogram, that
-            --  corresponds to the initial condition of the package.
-
-            Params.Phase := Generate_Contract_For_Body;
-            Post := +Transform_Expr (Expr, EW_Bool_Type, EW_Pred, Params);
-            Post :=
-              +New_VC_Expr (Init_Cond, +Post, VC_Initial_Condition, EW_Pred);
-
-            --  Generate program to check the absence of run-time errors in the
-            --  initial condition.
-
-            Params.Phase := Generate_VCs_For_Contract;
-            Why_Body :=
-              +Transform_Expr (Expr, EW_Bool_Type, EW_Prog, Params);
-         end;
-
-      --  No initial condition, so no postcondition for the generated
-      --  subprogram.
-
-      else
-         Post := True_Pred;
-      end if;
-
-      --  Translate declarations and statements in the package body, if there
-      --  is one and it is in SPARK.
-
-      if Present (Body_N) and then
-        Entity_Body_In_SPARK (E)
-      then
-         if Present (Handled_Statement_Sequence (Body_N)) and then
-           Body_Statements_In_SPARK (E)
-         then
-            Why_Body :=
-              Sequence
-                (Transform_Statements_And_Declarations
-                   (Statements (Handled_Statement_Sequence (Body_N))),
-                 Why_Body);
-         end if;
-
-         Why_Body :=
-           Transform_Declarations_Block (Declarations (Body_N), Why_Body);
-      end if;
-
-      --  Translate public and private declarations of the package
-
-      if Present (Priv_Decls) and then
-        Private_Spec_In_SPARK (E)
-      then
-         Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
-      end if;
-
-      if Present (Vis_Decls) then
-         Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
-      end if;
-
-      --  We assume that objects used in the program are in range, if
-      --  they are of a dynamic type.
-
-      Why_Body :=
-        Sequence
-          (Compute_Dynamic_Property_For_Inputs (Params => Params,
-                                                E      => E),
-           Why_Body);
-
-      --  Assume values of constants
-
-      Assume_Value_Of_Constants (Why_Body, E, Params);
-
-      declare
-         Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
-      begin
-         Label_Set.Include (NID ("W:diverges:N"));
-         Emit (File,
-                Why.Gen.Binders.New_Function_Decl
-                 (Domain  => EW_Prog,
-                  Name    => Def_Name,
-                  Binders => (1 => Unit_Param),
-                  Labels  => Label_Set,
-                  Post    => Post,
-                  Def     => +Why_Body));
-      end;
-
-      Close_Theory (File,
-                    Kind => VC_Generation_Theory);
-   end Generate_VCs_For_Package_Elaboration;
-
    --------------------------
    -- Generate_VCs_For_LSP --
    --------------------------
@@ -2141,6 +2004,143 @@ package body Gnat2Why.Subprograms is
                     Kind => VC_Generation_Theory,
                     Defined_Entity => E);
    end Generate_VCs_For_LSP;
+
+   ------------------------------------------
+   -- Generate_VCs_For_Package_Elaboration --
+   ------------------------------------------
+
+   procedure Generate_VCs_For_Package_Elaboration
+     (File : W_Section_Id;
+      E    : Entity_Id)
+   is
+      Name       : constant String  := Full_Name (E);
+      Spec_N     : constant Node_Id := Package_Specification (E);
+      Body_N     : constant Node_Id := Package_Body (E);
+      Vis_Decls  : constant List_Id := Visible_Declarations (Spec_N);
+      Priv_Decls : constant List_Id := Private_Declarations (Spec_N);
+      Init_Cond  : constant Node_Id :=
+        Get_Pragma (E, Pragma_Initial_Condition);
+      Params     : Transformation_Params;
+
+      Why_Body   : W_Prog_Id := +Void;
+      Post       : W_Pred_Id;
+
+   begin
+      --  We open a new theory, so that the context is fresh for that package
+
+      Open_Theory (File,
+                   New_Module
+                     (Name => NID (Name & "__package_def"),
+                      File => No_Name),
+                   Comment =>
+                     "Module for checking absence of run-time errors and "
+                       & "package initial condition on package elaboration of "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Current_Subp := E;
+
+      Register_VC_Entity (E);
+
+      Params := (File        => File,
+                 Phase       => Generate_VCs_For_Body,
+                 Gen_Marker  => False,
+                 Ref_Allowed => True);
+
+      --  Translate initial condition of E
+
+      if Present (Init_Cond) then
+         declare
+            Expr : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Init_Cond)));
+         begin
+            --  Generate postcondition for generated subprogram, that
+            --  corresponds to the initial condition of the package.
+
+            Params.Phase := Generate_Contract_For_Body;
+            Post := +Transform_Expr (Expr, EW_Bool_Type, EW_Pred, Params);
+            Post :=
+              +New_VC_Expr (Init_Cond, +Post, VC_Initial_Condition, EW_Pred);
+
+            --  Generate program to check the absence of run-time errors in the
+            --  initial condition.
+
+            Params.Phase := Generate_VCs_For_Contract;
+            Why_Body :=
+              +Transform_Expr (Expr, EW_Bool_Type, EW_Prog, Params);
+         end;
+
+      --  No initial condition, so no postcondition for the generated
+      --  subprogram.
+
+      else
+         Post := True_Pred;
+      end if;
+
+      --  Translate declarations and statements in the package body, if there
+      --  is one and it is in SPARK.
+
+      if Present (Body_N) and then
+        Entity_Body_In_SPARK (E)
+      then
+         if Present (Handled_Statement_Sequence (Body_N)) and then
+           Body_Statements_In_SPARK (E)
+         then
+            Why_Body :=
+              Sequence
+                (Transform_Statements_And_Declarations
+                   (Statements (Handled_Statement_Sequence (Body_N))),
+                 Why_Body);
+         end if;
+
+         Why_Body :=
+           Transform_Declarations_Block (Declarations (Body_N), Why_Body);
+      end if;
+
+      --  Translate public and private declarations of the package
+
+      if Present (Priv_Decls) and then
+        Private_Spec_In_SPARK (E)
+      then
+         Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
+      end if;
+
+      if Present (Vis_Decls) then
+         Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
+      end if;
+
+      --  We assume that objects used in the program are in range, if
+      --  they are of a dynamic type.
+
+      Why_Body :=
+        Sequence
+          (Compute_Dynamic_Property_For_Inputs (Params => Params,
+                                                E      => E),
+           Why_Body);
+
+      --  Assume values of constants
+
+      Assume_Value_Of_Constants (Why_Body, E, Params);
+
+      declare
+         Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
+      begin
+         Label_Set.Include (NID ("W:diverges:N"));
+         Emit (File,
+                Why.Gen.Binders.New_Function_Decl
+                 (Domain  => EW_Prog,
+                  Name    => Def_Name,
+                  Binders => (1 => Unit_Param),
+                  Labels  => Label_Set,
+                  Post    => Post,
+                  Def     => +Why_Body));
+      end;
+
+      Close_Theory (File,
+                    Kind => VC_Generation_Theory);
+   end Generate_VCs_For_Package_Elaboration;
 
    ---------------------------------
    -- Generate_VCs_For_Subprogram --

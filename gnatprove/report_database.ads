@@ -45,6 +45,7 @@ package Report_Database is
       File   : Unbounded_String;
       Line   : Integer;
       Column : Integer;
+      --  ??? Line and Column are Positive (or at least Natural)
    end record;
 
    package Warning_Lists is new
@@ -54,12 +55,12 @@ package Report_Database is
    type Stat_Rec is record
       SPARK         : Boolean;            --  In SPARK or not
       Analysis      : Analysis_Status;    --  Status of analysis performed
-      Suppr_Msgs    : Warning_Lists.List; --  list of suppressed messages
+      Suppr_Msgs    : Warning_Lists.List; --  List of suppressed messages
       Flow_Warnings : Natural;            --  Number of flow analysis warnings
       Flow_Errors   : Natural;            --  Number of flow analysis errors
       VC_Count      : Natural;            --  Total number of checks
       VC_Proved     : Natural;            --  Number of checks that were proved
-      Assumptions   : Rule_Lists.List;    --  final mapping claims->assumptions
+      Assumptions   : Rule_Lists.List;    --  Final mapping claims->assumptions
    end record;
 
    type All_Prover_Stat is record
@@ -87,15 +88,18 @@ package Report_Database is
       Functional_Contracts,
       LSP,
       Total);
+   pragma Ordered (Possible_Entries);
 
    subtype Summary_Entries is Possible_Entries range Data_Dep .. Total;
 
    type Summary_Type is array (Summary_Entries) of Summary_Line;
 
-   Empty_Prover_Stats : All_Prover_Stat :=
+   Empty_Prover_Stats : constant All_Prover_Stat :=
      (Total => 0, Provers => Prover_Stat_Maps.Empty_Map);
-   Null_Summary_Line : Summary_Line :=
+
+   Null_Summary_Line : constant Summary_Line :=
      (Provers => Empty_Prover_Stats, others => 0);
+
    Summary : Summary_Type := (others => Null_Summary_Line);
 
    procedure Add_Flow_Result
@@ -116,7 +120,7 @@ package Report_Database is
       Subp         : Subp_Type;
       SPARK_Status : Boolean;
       Analysis     : Analysis_Status);
-   --  Registers the SPARK status as well as the level of analysis performed
+   --  Register the SPARK status as well as the level of analysis performed
    --  for the given unit.
 
    procedure Add_Suppressed_Warning
@@ -127,10 +131,10 @@ package Report_Database is
       Line   : Integer;
       Column : Integer);
    --  For the subprogram in the given unit, register a suppressed warning with
-   --  a reason
+   --  a reason.
 
    procedure Add_Claim_With_Assumptions (Claim : Token; S : Token_Sets.Set);
-   --  register that claim C ultimately only depends on assumptions S
+   --  Register that claim C ultimately only depends on assumptions S
 
    procedure Reset_All_Results;
    --  Resets the results, removing all information on units and subprograms
@@ -146,10 +150,10 @@ package Report_Database is
    --  Return the number of units
 
    function Num_Subps (Unit : Unit_Type) return Natural;
-   --  return the number of subprograms in the unit
+   --  Return the number of subprograms in the unit
 
    function Num_Subps_SPARK (Unit : Unit_Type) return Natural;
-   --  return the number of subprograms in SPARK in the unit
+   --  Return the number of subprograms in SPARK in the unit
 
    procedure Iter_Units
      (Process : not null access procedure (U : Unit_Type);
@@ -167,7 +171,7 @@ package Report_Database is
 
    procedure Merge_Stat_Maps (A : in out Prover_Stat_Maps.Map;
                               B : Prover_Stat_Maps.Map);
-   --  "add" the second map of prover stats to the first, so that count and
+   --  "Add" the second map of prover stats to the first, so that count and
    --  maximum values area taken into acount
 
 end Report_Database;

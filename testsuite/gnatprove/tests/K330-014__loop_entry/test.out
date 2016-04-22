@@ -1,7 +1,7 @@
 for_loops.adb:9:04: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:9:04: warning: no Global contract available for "Put_Line"
 for_loops.adb:16:10: info: loop invariant preservation proved
-for_loops.adb:16:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test1) > 0
+for_loops.adb:16:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test1) > 0 (e.g. when Counter = 1)
 for_loops.adb:16:49: info: initialization of "Counter" proved
 for_loops.adb:18:10: warning: assuming "Put_Line" has no effect on global items
 for_loops.adb:18:10: warning: no Global contract available for "Put_Line"

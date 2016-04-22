@@ -130,13 +130,6 @@ package body SPARK_Definition is
    --  When processing delayed aspect type (e.g. Predicate) this is set to the
    --  delayed type itself; used to reference the type in the error message.
 
-   Current_Scope : Node_Trees.Cursor := Entity_Tree.Root;
-   Last_Package_Scope : Node_Trees.Cursor := Node_Trees.No_Element;
-   --  Cursors to the current package/subprogram/entry/task type (which are the
-   --  entities processed by the flow analyzis) and to the last package
-   --  inserted under the current scope (sibling packages goes first and then
-   --  go other entities).
-
    Violation_Detected : Boolean;
    --  Set to True when a violation is detected
 
@@ -183,6 +176,20 @@ package body SPARK_Definition is
    Entity_Set : Node_Sets.Set;
    --  Set of all entities marked so far. It contains entities from both the
    --  current compilation unit and other units.
+
+   Entity_Tree : Node_Trees.Tree;
+   --  Hierarchical container with entities processed by the flow analysis,
+   --  i.e. packages, subprograms, entries and task types. The hierarchy of
+   --  its contents mirrors the hierarchy of the analyzed code; the ordering of
+   --  siblings is that packages go first and subprograms/entries/task types go
+   --  after them.
+
+   Current_Scope : Node_Trees.Cursor := Entity_Tree.Root;
+   Last_Package_Scope : Node_Trees.Cursor := Node_Trees.No_Element;
+   --  Cursors to the current package/subprogram/entry/task type (which are the
+   --  entities processed by the flow analyzis) and to the last package
+   --  inserted under the current scope (sibling packages goes first and then
+   --  go other entities).
 
    Entities_In_SPARK : Node_Sets.Set;
    --  Entities in SPARK. An entity is added to this set if, after marking,
@@ -4356,6 +4363,8 @@ package body SPARK_Definition is
       Spec_E : constant Entity_Id := Unique_Entity (Body_E);
 
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+      Save_Scope        : constant Node_Trees.Cursor := Current_Scope;
+      Save_Last_Package : constant Node_Trees.Cursor := Last_Package_Scope;
 
    begin
       --  Do not analyze generic bodies
@@ -4363,6 +4372,28 @@ package body SPARK_Definition is
       if Ekind (Spec_E) = E_Generic_Package then
          return;
       end if;
+
+      --  Set the current scope to the corresponding spec; this is where any
+      --  nested entities are attached, no matter if they are defined in spec
+      --  or body.
+      --
+      --  First rewind the current scope to the spec of this package
+      Current_Scope := Node_Trees.First_Child (Current_Scope);
+      loop
+         pragma Assert (Node_Trees.Has_Element (Current_Scope));
+         if Entity_Tree (Current_Scope) = Spec_E then
+            exit;
+         end if;
+         Node_Trees.Next_Sibling (Current_Scope);
+      end loop;
+
+      --  Then fast-forward the Last_Package
+      Last_Package_Scope := Node_Trees.First_Child (Current_Scope);
+      while Node_Trees.Has_Element (Last_Package_Scope)
+        and then Ekind (Node_Trees.Element (Last_Package_Scope)) = E_Package
+      loop
+         Node_Trees.Next_Sibling (Last_Package_Scope);
+      end loop;
 
       --  Do not analyze bodies for packages with external axioms. Only check
       --  that their SPARK_Mode is Off.
@@ -4385,10 +4416,13 @@ package body SPARK_Definition is
          end if;
 
       else
-
          Current_SPARK_Pragma := SPARK_Pragma (Body_E);
 
-         Mark_Stmt_Or_Decl_List (Declarations (N));
+         --  Only analyze package body when SPARK_Mode /= Off
+
+         if not SPARK_Pragma_Is (Opt.Off) then
+            Mark_Stmt_Or_Decl_List (Declarations (N));
+         end if;
 
          Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
 
@@ -4418,6 +4452,10 @@ package body SPARK_Definition is
          Current_SPARK_Pragma := Save_SPARK_Pragma;
 
       end if;
+
+      --  Restore hierarchical cursors
+      Last_Package_Scope := Save_Last_Package;
+      Current_Scope := Save_Scope;
 
       --  Postprocessing: indicate in output file if package is in SPARK or
       --  not, for reporting, debug and verification.
@@ -4722,6 +4760,7 @@ package body SPARK_Definition is
               Pragma_Test_Case                    |
               Pragma_Unmodified                   |
               Pragma_Unreferenced                 |
+              Pragma_Unused                       |
               Pragma_Validity_Checks              |
               Pragma_Warnings                     |
               Pragma_Weak_External                =>
@@ -5258,9 +5297,6 @@ package body SPARK_Definition is
                   Bodies_In_SPARK.Insert (E);
                end if;
             end if;
-
-            Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
-
          end if;
 
          --  Postprocessing: indicate in output file if subprogram is in
@@ -5268,6 +5304,7 @@ package body SPARK_Definition is
 
          Generate_Output_In_Out_SPARK (E);
 
+         Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
          Current_SPARK_Pragma := Save_SPARK_Pragma;
       end if;
    end Mark_Subprogram_Body;
@@ -5536,30 +5573,43 @@ package body SPARK_Definition is
    ---------------------
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
-     ((if Present (Current_Delayed_Aspect_Type)
-       then Mode = Opt.On
-       --  Force SPARK_Mode => On for expressions of a delayed aspects; we
-       --  assume that types with such aspects are in SPARK when marking
-       --  everything between their declaration and freezing point.
+     (if Present (Current_Delayed_Aspect_Type)
+        and then In_SPARK (Current_Delayed_Aspect_Type)
+      then Mode = Opt.On
+      --  Force SPARK_Mode => On for expressions of a delayed aspects, if the
+      --  type bearing this aspect was marked in SPARK, as we have assumed
+      --  it when marking everything between their declaration and freezing
+      --  point, so we cannot revert that.
 
-       elsif Present (Current_SPARK_Pragma)
-       then Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = Mode
-       --  In the usual case where Current_SPARK_Pragma is a pragma node, get
-       --  the current mode from the pragma.
+      elsif Present (Current_SPARK_Pragma)
+      then Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = Mode
+      --  In the usual case where Current_SPARK_Pragma is a pragma node, get
+      --  the current mode from the pragma.
 
        else Mode = Opt.None
-       --  Otherwise there is no applicable pragma, so SPARK_Mode is None
-     ));
+      --  Otherwise there is no applicable pragma, so SPARK_Mode is None
+     );
 
    --------------------------
    -- SPARK_Pragma_Of_Type --
    --------------------------
 
    function SPARK_Pragma_Of_Type (E : Entity_Id) return Node_Id is
+
+      --  Version of Einfo.Scope that returns the lexical scope instead of the
+      --  semantics scope for an entity. For example, it returns the package
+      --  body entity for an entity declared directly in the body of a package,
+      --  instead of the package entity. This is important to return the
+      --  appropriate SPARK_Mode pragma, as this may differ between a
+      --  declaration and its corresponding body.
+      function Lexical_Scope (E : Entity_Id) return Entity_Id is
+        (Defining_Entity (Enclosing_Declaration
+                          (Parent (Enclosing_Declaration (E)))));
+
       Def : Entity_Id := E;
       --  Entity which defines type E
 
-      Def_Scop : Entity_Id := Scope (E);
+      Def_Scop : Entity_Id := Lexical_Scope (E);
       --  Immediate scope of entity that defines E
 
       subtype SPARK_Pragma_Scope_With_Type_Decl is Entity_Kind
@@ -5578,7 +5628,7 @@ package body SPARK_Definition is
       while Ekind (Def_Scop) not in SPARK_Pragma_Scope_With_Type_Decl
       loop
          Def := Def_Scop;
-         Def_Scop := Scope (Def_Scop);
+         Def_Scop := Lexical_Scope (Def_Scop);
       end loop;
 
       case Ekind (Def_Scop) is
@@ -5616,37 +5666,18 @@ package body SPARK_Definition is
       C : Task_Instances_Maps.Cursor;
       --  Cursor with a list of instances of a given task type
 
-      Inserted : Boolean;
+      Dummy : Boolean;
       --  Flag that indicates if a key was inserted or if it already existed in
       --  a map. It is required by the hashed-maps API, but not used here.
-
-      procedure Append_Object
-        (Key     : Entity_Name;
-         Element : in out Task_Lists.List);
-      --  Append object to a list of task type instances
-
-      -------------------
-      -- Append_Object --
-      -------------------
-
-      procedure Append_Object
-        (Key     : Entity_Name;
-         Element : in out Task_Lists.List)
-      is
-         pragma Unreferenced (Key);
-      begin
-         Element.Append (Object);
-      end Append_Object;
-
-   --  Start of processing for Register_Task_Object
 
    begin
       --  Find a list of instances of the task type; if it does not exist then
       --  initialize with an empty list.
       Task_Instances.Insert (Key      => Type_Name,
                              Position => C,
-                             Inserted => Inserted);
-      Task_Instances.Update_Element (C, Append_Object'Access);
+                             Inserted => Dummy);
+
+      Task_Instances (C).Append (Object);
    end Register_Task_Object;
 
    ----------------------------------------------------------------------
@@ -5712,5 +5743,50 @@ package body SPARK_Definition is
 
          when Marked_Entities =>
             Node_Sets.Element (C.Marked_Entities_Cursor));
+
+   -----------------------
+   -- Postorder_Iterate --
+   -----------------------
+
+   procedure Iterate_Entities
+     (Process : not null access procedure (E : Entity_Id))
+   is
+
+      procedure Iterate_Subtree (Subtree : Node_Trees.Cursor);
+
+      ---------------------
+      -- Iterate_Subtree --
+      ---------------------
+
+      procedure Iterate_Subtree (Subtree : Node_Trees.Cursor) is
+         Debug_Tree_Traversal : constant Boolean := False;
+         --  Display the entity name as the entity tree is traversed
+
+      begin
+         --  This is a helper function to recursively iterate over all the
+         --  nodes in a subtree, in depth-first fashion. It first visits the
+         --  children and then the root.
+
+         Node_Trees.Iterate_Children (Parent  => Subtree,
+                                      Process => Iterate_Subtree'Access);
+         Process (Entity_Tree (Subtree));
+
+         if Debug_Tree_Traversal then
+            Ada.Text_IO.Put
+              (Ada.Containers.Count_Type'Image (Node_Trees.Depth (Subtree)));
+            for J in 1 .. Node_Trees.Depth (Subtree) loop
+               Ada.Text_IO.Put (" ");
+            end loop;
+            Ada.Text_IO.Put_Line
+              (To_String (To_Entity_Name (Entity_Tree (Subtree))));
+         end if;
+      end Iterate_Subtree;
+
+   --  Start of processing for Iterate_Entities
+
+   begin
+      Node_Trees.Iterate_Children (Parent  => Entity_Tree.Root,
+                                   Process => Iterate_Subtree'Access);
+   end Iterate_Entities;
 
 end SPARK_Definition;

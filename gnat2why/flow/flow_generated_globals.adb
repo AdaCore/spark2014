@@ -98,31 +98,28 @@ package body Flow_Generated_Globals is
    --     {x.name for all x of Subprogram_Info_List}
 
    Nonblocking_Subprograms_Set : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  Subprograms, entries and tasks that do not contain potentially
-   --  blocking statements (but still may call another blocking
-   --  subprogram).
+   --  Subprograms, entries and tasks that do not contain potentially blocking
+   --  statements (but still may call another blocking subprogram).
 
    ----------------------------------------------------------------------
    --  State information
    ----------------------------------------------------------------------
 
    State_Comp_Map         : Name_Graphs.Map := Name_Graphs.Empty_Map;
-   --  state -> {components}
-   --
-   --  This maps abstract state to its constituents.
+   --  Mapping from abstract states to their constituents, i.e.
+   --  abstract_state -> {constituents}
 
    Comp_State_Map         : Name_Maps.Map   := Name_Maps.Empty_Map;
-   --  component -> state
-   --
-   --  This is the reverse of the above, and is filled in at the end of
-   --  GG_Read from state_comp_map, in order to speed up some queries.
+   --  A reverse of the above mapping, i.e. constituent -> abstract_state,
+   --  which speeds up some queries. It is populated at the end of GG_Read from
+   --  State_Comp_Map.
 
    All_State_Abstractions : Name_Sets.Set   := Name_Sets.Empty_Set;
-   --  This will hold all the state abstractions that the GG knows of.
+   --  State abstractions that the GG knows of
 
    Remote_States          : Name_Sets.Set   := Name_Sets.Empty_Set;
-   --  This will hold all state abstractions that are somehow used in this
-   --  compilation unit but are not declared inside it.
+   --  State abstractions that are referenced in the current compilation unit
+   --  but are declared outside of it.
 
    ----------------------------------------------------------------------
    --  Initializes information
@@ -233,6 +230,7 @@ package body Flow_Generated_Globals is
                            Variable_Kind
                            --  Represents a global variable
                           );
+   pragma Ordered (Global_Id_Kind);
 
    type Global_Id (Kind : Global_Id_Kind := Null_Kind) is record
       case Kind is
@@ -314,13 +312,13 @@ package body Flow_Generated_Globals is
       "="                 => Global_Graphs."=");
 
    Local_Graph  : Global_Graphs.Graph;
-   --  This graph will represent the hierarchy of subprograms (which
-   --  subprogram is nested in which one) and will be used to determine
-   --  which local variables can act as globals to which subprograms.
+   --  A graph that represents the hierarchy of subprograms (which subprogram
+   --  is nested in which one); used to determine which local variables may act
+   --  as globals to which subprograms.
 
    Global_Graph : Global_Graphs.Graph;
-   --  This graph will represent the globals that each subprogram has as
-   --  inputs, outputs and proof inputs.
+   --  A graph that represents the globals that each subprogram has as inputs,
+   --  outputs and proof inputs.
 
    ---------------------------------------------------
    -- Regular expression for predefined subprograms --
@@ -520,31 +518,27 @@ package body Flow_Generated_Globals is
 
    procedure Add_To_Remote_States (F : Flow_Id) is
    begin
-      --  If we are not dealing with a state abstraction then we have nothing
-      --  to do.
-      if not Is_Abstract_State (F) then
-         return;
-      end if;
-
-      case F.Kind is
-         when Direct_Mapping | Record_Field =>
-            declare
-               N : Entity_Name;
-            begin
-               N := To_Entity_Name (Get_Direct_Mapping_Id (F));
+      if Is_Abstract_State (F) then
+         case F.Kind is
+            when Direct_Mapping | Record_Field =>
                if Enclosing_Comp_Unit_Node (Get_Direct_Mapping_Id (F)) /=
                  Current_Comp_Unit
                then
-                  Remote_States.Include (N);
+                  declare
+                     N : constant Entity_Name :=
+                       To_Entity_Name (Get_Direct_Mapping_Id (F));
+                  begin
+                     Remote_States.Include (N);
+                  end;
                end if;
-            end;
 
-         when Magic_String =>
-            Remote_States.Include (F.Name);
+            when Magic_String =>
+               Remote_States.Include (F.Name);
 
-         when others =>
-            return;
-      end case;
+            when others =>
+               null;
+         end case;
+      end if;
    end Add_To_Remote_States;
 
    --------------------------------------
@@ -688,27 +682,24 @@ package body Flow_Generated_Globals is
    ---------------------
 
    function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
-      NS       : Name_Sets.Set;
-      Tmp_Name : Entity_Name;
+      Unrefined : Name_Sets.Set := GG_Get_Constituents (EN);
+      Refined   : Name_Sets.Set := Name_Sets.Empty_Set;
+
    begin
-      NS := GG_Get_Constituents (EN);
-
-      while (for some S of NS => GG_Has_Refinement (S)) loop
-         Tmp_Name := Null_Entity_Name;
-         for S of NS loop
-            if GG_Has_Refinement (S) then
-               Tmp_Name := S;
-               exit;
+      while not Unrefined.Is_Empty loop
+         declare
+            Constituent : constant Entity_Name := Unrefined (Unrefined.First);
+         begin
+            if GG_Has_Refinement (Constituent) then
+               Unrefined.Union (GG_Get_Constituents (Constituent));
+            else
+               Refined.Include (Constituent);
             end if;
-         end loop;
-
-         if Tmp_Name /= Null_Entity_Name then
-            NS.Union (GG_Get_Constituents (Tmp_Name));
-            NS.Exclude (Tmp_Name);
-         end if;
+            Unrefined.Delete (Constituent);
+         end;
       end loop;
 
-      return NS;
+      return Refined;
    end GG_Fully_Refine;
 
    -----------------------------------
@@ -796,96 +787,97 @@ package body Flow_Generated_Globals is
       return Dependency_Maps.Map
    is
    begin
-      --  If we have no info for this package then we cannot have possibly
-      --  generated an initializes package for it.
-      if not GG_Exists_Cache.Contains (EN) then
+      if GG_Exists_Cache.Contains (EN) then
+         --  Retrieve the relevant Name_Dependency_Map, up project it to S and
+         --  then convert it into a Dependency_Map.
+         declare
+            Pkg       : constant Entity_Id := Find_Entity (EN);
+            LHS_Scope : constant Flow_Scope :=
+              (if Present (Pkg)
+               then Flow_Scope'(Ent     => Pkg,
+                                Section => Spec_Part)
+               else S);
+
+            DM : Dependency_Maps.Map;
+            II : Initializes_Info renames Initializes_Aspects_Map (EN);
+
+            All_LHS_UP   : Name_Sets.Set;
+            LHS_UP       : Name_Sets.Set;
+            LHS_Proof_UP : Name_Sets.Set;
+            RHS_UP       : Name_Sets.Set;
+            RHS_Proof_UP : Name_Sets.Set;
+
+            To_Remove    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+            --  This set will hold the names of non fully initialized states.
+            --  These will have to be removed from the left hand side sets.
+
+            FS_LHS       : Flow_Id_Sets.Set;
+            FS_LHS_Proof : Flow_Id_Sets.Set;
+            FS_RHS       : Flow_Id_Sets.Set;
+            FS_RHS_Proof : Flow_Id_Sets.Set;
+            --  These will hold the final flow sets that will be used to
+            --  populate the dependency map.
+
+            Unused : Flow_Id_Sets.Set;
+
+         begin
+            --  Up project left hand side
+            Up_Project (Most_Refined      => II.LHS or II.LHS_Proof,
+                        Final_View        => All_LHS_UP,
+                        Scope             => LHS_Scope,
+                        Reads             => To_Remove,
+                        Processing_Writes => True);
+
+            Up_Project (Most_Refined => II.LHS,
+                        Final_View   => LHS_UP,
+                        Scope        => LHS_Scope,
+                        Reads        => Unused);
+
+            Up_Project (Most_Refined => II.LHS_Proof,
+                        Final_View   => LHS_Proof_UP,
+                        Scope        => LHS_Scope,
+                        Reads        => Unused);
+
+            --  Up project right hand side
+            Up_Project (Most_Refined => II.RHS,
+                        Final_View   => RHS_UP,
+                        Scope        => S,
+                        Reads        => Unused);
+
+            Up_Project (Most_Refined => II.RHS_Proof,
+                        Final_View   => RHS_Proof_UP,
+                        Scope        => S,
+                        Reads        => Unused);
+
+            --  Populate and return DM
+            FS_LHS       := To_Flow_Id_Set (LHS_UP);
+            FS_LHS_Proof := To_Flow_Id_Set (LHS_Proof_UP);
+            FS_RHS       := To_Flow_Id_Set (RHS_UP);
+            FS_RHS_Proof := To_Flow_Id_Set (RHS_Proof_UP);
+
+            --  Remove state abstractions that are only partially initialized
+            --  from the left hand side.
+            FS_LHS.Difference (To_Remove);
+            FS_LHS_Proof.Difference (To_Remove);
+
+            --  Add regular variables
+            for F of FS_LHS loop
+               DM.Insert (F, FS_RHS);
+            end loop;
+            --  Add proof variables
+            for F of FS_LHS_Proof loop
+               DM.Insert (F, FS_RHS_Proof);
+            end loop;
+
+            return DM;
+         end;
+
+      --  If we have no info for this package then we also did not generate the
+      --  initializes aspect for it.
+
+      else
          return Dependency_Maps.Empty_Map;
       end if;
-
-      --  Retrieve the relevant Name_Dependency_Map, up project it to S and
-      --  then convert it into a Dependency_Map.
-      declare
-         Pkg       : constant Entity_Id := Find_Entity (EN);
-         LHS_Scope : constant Flow_Scope :=
-           (if Present (Pkg)
-            then Flow_Scope'(Ent     => Pkg,
-                             Section => Spec_Part)
-            else S);
-
-         DM : Dependency_Maps.Map;
-         II : Initializes_Info renames Initializes_Aspects_Map (EN);
-
-         All_LHS_UP   : Name_Sets.Set;
-         LHS_UP       : Name_Sets.Set;
-         LHS_Proof_UP : Name_Sets.Set;
-         RHS_UP       : Name_Sets.Set;
-         RHS_Proof_UP : Name_Sets.Set;
-
-         To_Remove    : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-         --  This set will hold the names of non fully initialized
-         --  states. These will have to be removed from the left hand side
-         --  sets.
-
-         FS_LHS       : Flow_Id_Sets.Set;
-         FS_LHS_Proof : Flow_Id_Sets.Set;
-         FS_RHS       : Flow_Id_Sets.Set;
-         FS_RHS_Proof : Flow_Id_Sets.Set;
-         --  These will hold the final flow sets that will be used to populate
-         --  the dependency map.
-
-         Unused : Flow_Id_Sets.Set;
-
-      begin
-         --  Up project left hand side
-         Up_Project (Most_Refined      => II.LHS or II.LHS_Proof,
-                     Final_View        => All_LHS_UP,
-                     Scope             => LHS_Scope,
-                     Reads             => To_Remove,
-                     Processing_Writes => True);
-
-         Up_Project (Most_Refined => II.LHS,
-                     Final_View   => LHS_UP,
-                     Scope        => LHS_Scope,
-                     Reads        => Unused);
-
-         Up_Project (Most_Refined => II.LHS_Proof,
-                     Final_View   => LHS_Proof_UP,
-                     Scope        => LHS_Scope,
-                     Reads        => Unused);
-
-         --  Up project right hand side
-         Up_Project (Most_Refined => II.RHS,
-                     Final_View   => RHS_UP,
-                     Scope        => S,
-                     Reads        => Unused);
-
-         Up_Project (Most_Refined => II.RHS_Proof,
-                     Final_View   => RHS_Proof_UP,
-                     Scope        => S,
-                     Reads        => Unused);
-
-         --  Populate and return DM
-         FS_LHS       := To_Flow_Id_Set (LHS_UP);
-         FS_LHS_Proof := To_Flow_Id_Set (LHS_Proof_UP);
-         FS_RHS       := To_Flow_Id_Set (RHS_UP);
-         FS_RHS_Proof := To_Flow_Id_Set (RHS_Proof_UP);
-
-         --  Remove state abstractions that are only partially initialized from
-         --  the left hand side.
-         FS_LHS.Difference (To_Remove);
-         FS_LHS_Proof.Difference (To_Remove);
-
-         --  Add regular variables
-         for F of FS_LHS loop
-            DM.Insert (F, FS_RHS);
-         end loop;
-         --  Add proof variables
-         for F of FS_LHS_Proof loop
-            DM.Insert (F, FS_RHS_Proof);
-         end loop;
-
-         return DM;
-      end;
    end GG_Get_Initializes;
 
    ----------------------------
@@ -1064,7 +1056,7 @@ package body Flow_Generated_Globals is
       --  Reads the populated Subprogram_Info_List and generates all the edges
       --  of the Global_Graph. While adding edges we consult the Local_Graph so
       --  as not to add edges to local variables.
-      --  It also created edges for (conditional and unconditional) subprogram
+      --  Also, creates edges for (conditional and unconditional) subprogram
       --  calls in the tasking-related call graphs.
 
       procedure Create_All_Vertices;
@@ -1076,20 +1068,23 @@ package body Flow_Generated_Globals is
       --  edges to local variables on the Global_Graph.
 
       procedure Edit_Proof_Ins;
-      --  A variable cannot be simultaneously a Proof_In and an Input
-      --  of a subprogram. In this case we need to remove the Proof_In
-      --  edge. Furthermore, a variable cannot be simultaneously a
-      --  Proof_In and an Output (but not an input). In this case we
-      --  need to change the Proof_In variable into an Input.
+      --  A variable cannot be simultaneously a Proof_In and an Input of
+      --  a subprogram. In this case we need to remove the Proof_In edge.
+      --  Furthermore, a variable cannot be simultaneously a Proof_In and
+      --  an Output (but not an input). In this case we need to change the
+      --  Proof_In variable into an Input.
 
       procedure Generate_Initializes_Aspects;
-      --  Once the global graph has been generated, we use it to generate
-      --  the initializes aspects. We also take this opportunity to populate
-      --  the Package_To_Locals_Map.
+      --  Once the global graph has been generated, we use it to generate the
+      --  Initializes aspects. We also take this opportunity to populate the
+      --  Package_To_Locals_Map.
 
       procedure Load_GG_Info_From_ALI (ALI_File_Name : File_Name_Type);
       --  Loads the GG info from an ALI file and stores them in the
       --  Subprogram_Info_List, State_Comp_Map and volatile info sets.
+
+      procedure Note_Time (Message : String);
+      --  Record timing statistics (but only in timing debug mode)
 
       procedure Remove_Constants_Without_Variable_Input;
       --  Removes edges leading to constants without variable input
@@ -1111,8 +1106,8 @@ package body Flow_Generated_Globals is
          G_Ins, G_Outs, G_Proof_Ins : Global_Id;
 
          function Edge_Selector (A, B : Vertex_Id) return Boolean;
-         --  Check if we should add the given edge to the graph based
-         --  wheather it is in the local graph or not.
+         --  Check if we should add the given edge to the graph based weather
+         --  it is in the local graph or not.
 
          -------------------
          -- Edge_Selector --
@@ -1159,7 +1154,6 @@ package body Flow_Generated_Globals is
       --  Start of processing for Add_All_Edges
 
       begin
-
          --  Go through the Subprogram_Info_List and add edges
          for Info of Subprogram_Info_List loop
             G_Ins       := Global_Id'(Kind => Ins_Kind,
@@ -1171,32 +1165,32 @@ package body Flow_Generated_Globals is
             G_Proof_Ins := Global_Id'(Kind => Proof_Ins_Kind,
                                       Name => Info.Name);
 
-            --  Connect the subprogram's Proof_In variables to the
-            --  subprogram's Proof_Ins vertex.
+            --  Connect the subprogram's Proof_In variables to the subprogram's
+            --  Proof_Ins vertex.
             for Input_Proof of Info.Inputs_Proof loop
                Global_Graph.Add_Edge (G_Proof_Ins,
                                       Global_Id'(Kind => Variable_Kind,
                                                  Name => Input_Proof));
             end loop;
 
-            --  Connect the subprogram's Input variables to the
-            --  subprogram's Ins vertex.
+            --  Connect the subprogram's Input variables to the subprogram's
+            --  Ins vertex.
             for Input of Info.Inputs loop
                Global_Graph.Add_Edge (G_Ins,
                                       Global_Id'(Kind => Variable_Kind,
                                                  Name => Input));
             end loop;
 
-            --  Connect the subprogram's Output variables to the
-            --  subprogram's Outputs vertex.
+            --  Connect the subprogram's Output variables to the subprogram's
+            --  Outputs vertex.
             for Output of Info.Outputs loop
                Global_Graph.Add_Edge (G_Outs,
                                       Global_Id'(Kind => Variable_Kind,
                                                  Name => Output));
             end loop;
 
-            --  Connect the subprogram's Proof_Ins vertex to the
-            --  callee's Ins and Proof_Ins vertices.
+            --  Connect the subprogram's Proof_Ins vertex to the callee's Ins
+            --  and Proof_Ins vertices.
             for Proof_Call of Info.Proof_Calls loop
                Global_Graph.Add_Edge (G_Proof_Ins,
                                       Global_Id'(Kind => Proof_Ins_Kind,
@@ -1207,9 +1201,8 @@ package body Flow_Generated_Globals is
                                                  Name => Proof_Call));
             end loop;
 
-            --  Connect the subprogram's Proof_Ins, Ins and Outs
-            --  vertices respectively to the callee's Proof_Ins, Ins
-            --  and Outs vertices.
+            --  Connect the subprogram's Proof_Ins, Ins and Outs vertices
+            --  respectively to the callee's Proof_Ins, Ins and Outs vertices.
             for Definite_Call of Info.Definite_Calls loop
                Global_Graph.Add_Edge (G_Proof_Ins,
                                       Global_Id'(Kind => Proof_Ins_Kind,
@@ -1224,8 +1217,8 @@ package body Flow_Generated_Globals is
                                                  Name => Definite_Call));
             end loop;
 
-            --  As above but also add an edge from the subprogram's
-            --  Ins vertex to the callee's Outs vertex.
+            --  As above but also add an edge from the subprogram's Ins vertex
+            --  to the callee's Outs vertex.
             for Conditional_Call of Info.Conditional_Calls loop
                Global_Graph.Add_Edge (G_Proof_Ins,
                                       Global_Id'(Kind => Proof_Ins_Kind,
@@ -1245,8 +1238,8 @@ package body Flow_Generated_Globals is
             end loop;
          end loop;
 
-         --  Add edges between subprograms and variables coming from
-         --  the Get_Globals function.
+         --  Add edges between subprograms and variables coming from the
+         --  Get_Globals function.
          for N of All_Other_Subprograms loop
             declare
                Subprogram   : constant Entity_Id := Find_Entity (N);
@@ -1316,8 +1309,7 @@ package body Flow_Generated_Globals is
             end;
          end loop;
 
-         --  Close graph, but only add edges that are not in the local
-         --  graph.
+         --  Close graph, but only add edges that are not in the local graph
          Global_Graph.Conditional_Close (Edge_Selector'Access);
 
          ----------------------------------------
@@ -1552,24 +1544,17 @@ package body Flow_Generated_Globals is
          end loop;
 
          --  Create Ins, Outs and Proof_Ins vertices for all subprograms
-         for N of All_Subprograms loop
-            declare
-               G_Ins       : constant Global_Id :=
-                 Global_Id'(Kind => Ins_Kind,
-                            Name => N);
-
-               G_Outs      : constant Global_Id :=
-                 Global_Id'(Kind => Outs_Kind,
-                            Name => N);
-
-               G_Proof_Ins : constant Global_Id :=
-                 Global_Id'(Kind => Proof_Ins_Kind,
-                            Name => N);
-            begin
-               Global_Graph.Add_Vertex (G_Ins);
-               Global_Graph.Add_Vertex (G_Outs);
-               Global_Graph.Add_Vertex (G_Proof_Ins);
-            end;
+         for Subprogram_Name of All_Subprograms loop
+            for K in Ins_Kind .. Proof_Ins_Kind loop
+               declare
+                  G : Global_Id (K);
+                  --  This should really be a constant, but its initialization
+                  --  would require the use of non-static discriminant.
+               begin
+                  G.Name := Subprogram_Name;
+                  Global_Graph.Add_Vertex (G);
+               end;
+            end loop;
          end loop;
 
          --  Lastly, create vertices for variables that come from the
@@ -1582,15 +1567,15 @@ package body Flow_Generated_Globals is
                FS_Writes    : Flow_Id_Sets.Set;
 
                procedure Create_Vertices_For_FS (FS : Flow_Id_Sets.Set);
-               --  Creates a vertex for every Flow_Id in FS that
-               --  does not already have one.
+               --  Creates a vertex for every Flow_Id in FS that does not
+               --  already have one.
 
                ----------------------------
                -- Create_Vertices_For_FS --
                ----------------------------
 
                procedure Create_Vertices_For_FS (FS : Flow_Id_Sets.Set) is
-                  G   : Global_Id;
+                  G   : Global_Id (Variable_Kind);
                   Nam : Entity_Name;
                begin
                   for F of FS loop
@@ -1610,7 +1595,7 @@ package body Flow_Generated_Globals is
                end Create_Vertices_For_FS;
 
             begin
-               if Subprogram /= Empty then
+               if Present (Subprogram) then
                   Get_Globals (Subprogram => Subprogram,
                                Scope      => Get_Flow_Scope (Subprogram),
                                Classwide  => False,
@@ -1633,9 +1618,9 @@ package body Flow_Generated_Globals is
       procedure Create_Local_Graph is
          use Global_Graphs;
 
-         G_Subp       : Global_Id;
-         G_Local_Subp : Global_Id;
-         G_Local_Var  : Global_Id;
+         G_Subp       : Global_Id (Subprogram_Kind);
+         G_Local_Subp : Global_Id (Subprogram_Kind);
+         G_Local_Var  : Global_Id (Variable_Kind);
 
       --  Start of processing for Create_Local_Graph
 
@@ -1711,8 +1696,8 @@ package body Flow_Generated_Globals is
          function Get_Variable_Neighbours
            (Start : Vertex_Id)
             return Vertex_Sets.Set;
-         --  Returns a set of all Neighbours of Start that correspond
-         --  to variables.
+         --  Returns a set of all Neighbours of Start that correspond to
+         --  variables.
 
          -----------------------------
          -- Get_Variable_Neighbours --
@@ -1856,13 +1841,18 @@ package body Flow_Generated_Globals is
                   --  Add local state abstractions with null refinements to the
                   --  list of local definite writes since they are trivially
                   --  initialized.
-                  if State_Comp_Map.Contains (Local_Variable)
-                    and then State_Comp_Map (Local_Variable).Is_Empty
-                  then
-                     Add_To_Proof_Or_Normal_Set (Local_Variable,
-                                                 LHS_Proof,
-                                                 LHS);
-                  end if;
+                  declare
+                     Local_State : constant Name_Graphs.Cursor :=
+                       State_Comp_Map.Find (Local_Variable);
+                  begin
+                     if Name_Graphs.Has_Element (Local_State)
+                       and then State_Comp_Map (Local_State).Is_Empty
+                     then
+                        Add_To_Proof_Or_Normal_Set (Local_Variable,
+                                                    LHS_Proof,
+                                                    LHS);
+                     end if;
+                  end;
                end loop;
 
                --  Add definite local writes to either LHS_Proof or LHS
@@ -1874,9 +1864,9 @@ package body Flow_Generated_Globals is
                end loop;
 
                --  Add the intersection of pure outputs (outputs that are not
-               --  also read) of definite calls and local variables to
-               --  LHS. Additionally, add Reads and Proof_Reads of definite
-               --  calls to RHS and RHS_Proof respectively.
+               --  also read) of definite calls and local variables to LHS.
+               --  Additionally, add Reads and Proof_Reads of definite calls
+               --  to RHS and RHS_Proof respectively.
                for Definite_Call of P.Definite_Calls loop
                   declare
                      Proof_Reads : Name_Sets.Set;
@@ -1895,7 +1885,7 @@ package body Flow_Generated_Globals is
                      end if;
                   end;
                end loop;
-               LHS.Union (Name_Sets.Intersection (LV, ODC));
+               LHS.Union (LV and ODC);
 
                --  Add Reads and Writes of conditional calls to the RHS set and
                --  their Proof_Reads to the RHS_Proof set.
@@ -1990,15 +1980,15 @@ package body Flow_Generated_Globals is
          ALI_File_Name_Str : constant String :=
            Get_Name_String (Full_Lib_File_Name (ALI_File_Name));
 
-         Sanitized_Name : constant Unbounded_String :=
-           Trim (Source => To_Unbounded_String (ALI_File_Name_Str),
-                 Left   => Null_Set,
-                 Right  => To_Set (Character'Val (0)));
+         Sanitized_Name : constant String :=
+           To_String (Trim (Source => To_Unbounded_String (ALI_File_Name_Str),
+                            Left   => Null_Set,
+                            Right  => To_Set (Character'Val (0))));
 
          procedure Issue_Corrupted_File_Error (Msg : String)
          with No_Return;
-         --  Issues an error about the ALI file being corrupted and
-         --  suggests the usage of "gnatprove --clean".
+         --  Issues an error about the ALI file being corrupted and suggests
+         --  the usage of "gnatprove --clean".
 
          --------------------------------
          -- Issue_Corrupted_File_Error --
@@ -2007,8 +1997,7 @@ package body Flow_Generated_Globals is
          procedure Issue_Corrupted_File_Error (Msg : String) is
          begin
             Abort_With_Message
-              ("Corrupted ali file detected (" &
-                 To_String (Sanitized_Name) & "): " &
+              ("Corrupted ali file detected (" & Sanitized_Name & "): " &
                  Msg &
                  ". Call gnatprove with ""--clean"".");
          end Issue_Corrupted_File_Error;
@@ -2017,14 +2006,14 @@ package body Flow_Generated_Globals is
          Line      : Unbounded_String;
 
          Found_End : Boolean := False;
-         --  This will be set to True once we find the end marker.
+         --  This will be set to True once we find the end marker
 
       --  Start of processing for Load_GG_Info_From_ALI
 
       begin
          Open (ALI_File, In_File, ALI_File_Name_Str);
 
-         --  Skip to the GG section (this should be the very last section).
+         --  Skip to the GG section (this should be the very last section)
          loop
             if End_Of_File (ALI_File) then
                Close (ALI_File);
@@ -2119,33 +2108,13 @@ package body Flow_Generated_Globals is
                         C     : Entity_Name_To_Priorities_Maps.Cursor;
                         Dummy : Boolean;
 
-                        procedure Append
-                          (Key     : Entity_Name;
-                           Element : in out Object_Priority_Lists.List);
-                        --  Append element to multiset
-
-                        ------------
-                        -- Append --
-                        ------------
-
-                        procedure Append
-                          (Key     : Entity_Name;
-                           Element : in out Object_Priority_Lists.List)
-                        is
-                           pragma Unreferenced (Key);
-                        begin
-                           Element.Append (V.The_Priority);
-                        end Append;
-
                      begin
                         Protected_Objects.Phase_2.Insert
                           (Key      => V.The_Variable,
                            Position => C,
                            Inserted => Dummy);
 
-                        Protected_Objects.Phase_2.Update_Element
-                          (Position => C,
-                           Process  => Append'Access);
+                        Protected_Objects.Phase_2 (C).Append (V.The_Priority);
                      end;
 
                   when EK_Tasking_Instance_Count =>
@@ -2153,6 +2122,9 @@ package body Flow_Generated_Globals is
                         use type Task_Lists.Cursor;
                         C : Task_Lists.Cursor := V.The_Objects.First;
                      begin
+                        --  Explicit iteration with while is necessary, because
+                        --  iteration with for is not allowed for discriminant-
+                        --  dependent component of a mutable object.
                         while C /= Task_Lists.No_Element loop
                            Register_Task_Object
                              (V.The_Type,
@@ -2190,6 +2162,17 @@ package body Flow_Generated_Globals is
 
          Close (ALI_File);
       end Load_GG_Info_From_ALI;
+
+      ---------------
+      -- Note_Time --
+      ---------------
+
+      procedure Note_Time (Message : String) is
+      begin
+         if Debug_GG_Read_Timing then
+            Flow_Debug.Note_Time (Message);
+         end if;
+      end Note_Time;
 
       ----------------------------
       -- Print_Tasking_Info_Bag --
@@ -2247,8 +2230,8 @@ package body Flow_Generated_Globals is
                --  Corresponding vertex in tasking call graph
 
                procedure Collect_From (S : Entity_Name);
-               --  Collect tasking objects accessed by subprogram S as
-               --  they were accessed by task task TN.
+               --  Collect tasking objects accessed by subprogram S as they
+               --  were accessed by task task TN.
 
                ------------------
                -- Collect_From --
@@ -2296,13 +2279,11 @@ package body Flow_Generated_Globals is
                --  itself, and then all subprogram called it calls (directly
                --  or indirectly).
 
---                 Ada.Text_IO.Put_Line ("Main: " & To_String (TN));
                Collect_From (TN);
                for SV of G.Get_Collection (TV, Out_Neighbours) loop
                   declare
                      S : constant Entity_Name := G.Get_Key (SV);
                   begin
---                       Ada.Text_IO.Put_Line ("   ->" & To_String (S));
                      Collect_From (S);
                   end;
                end loop;
@@ -2317,34 +2298,29 @@ package body Flow_Generated_Globals is
       procedure Remove_Constants_Without_Variable_Input is
          use Global_Graphs;
 
-         All_Constants : Name_Sets.Set := Name_Sets.Empty_Set;
       begin
-         --  Gather up all constants without variable input
+         --  Detect constants without variable input
          for Glob of All_Globals loop
             declare
                Const : constant Entity_Id := Find_Entity (Glob);
             begin
-               if Const /= Empty
+               if Present (Const)
                  and then Ekind (Const) = E_Constant
                  and then not Has_Variable_Input (Direct_Mapping_Id (Const))
                then
-                  All_Constants.Include (Glob);
+                  --  Remove all edges going in and out of a constant without
+                  --  variable input.
+                  declare
+                     Const_G_Id : constant Global_Id :=
+                       Global_Id'(Kind => Variable_Kind,
+                                  Name => Glob);
+
+                     Const_V    : constant Vertex_Id :=
+                       Global_Graph.Get_Vertex (Const_G_Id);
+                  begin
+                     Global_Graph.Clear_Vertex (Const_V);
+                  end;
                end if;
-            end;
-         end loop;
-
-         --  Remove all edges going in and out of a constant without
-         --  variable input.
-         for Const of All_Constants loop
-            declare
-               Const_G_Id : constant Global_Id :=
-                 Global_Id'(Kind => Variable_Kind,
-                            Name => Const);
-
-               Const_V    : constant Vertex_Id :=
-                 Global_Graph.Get_Vertex (Const_G_Id);
-            begin
-               Global_Graph.Clear_Vertex (Const_V);
             end;
          end loop;
       end Remove_Constants_Without_Variable_Input;
@@ -2366,7 +2342,7 @@ package body Flow_Generated_Globals is
       Effective_Reads_Vars  := Name_Sets.Empty_Set;
       Effective_Writes_Vars := Name_Sets.Empty_Set;
 
-      --  Go through all ALI files and populate the Subprogram_Info_List.
+      --  Go through all ALI files and populate the Subprogram_Info_List
       declare
          Read_Files : String_Sets.Set;
          Nam        : Unbounded_String;
@@ -2375,9 +2351,9 @@ package body Flow_Generated_Globals is
          Dummy    : String_Sets.Cursor;
       begin
          for Index in ALIs.First .. ALIs.Last loop
-            --  ??? The ALI table seems to incldue some entries twice, but
-            --  that is because some of them are null-terminated. See
-            --  O714-006; this is the workaround for now.
+            --  ??? The ALI table seems to incldue some entries twice, but that
+            --  is because some of them are null-terminated. See O714-006; this
+            --  is the workaround for now.
             Nam := To_Unbounded_String
               (Get_Name_String (Full_Lib_File_Name
                (ALIs.Table (Index).Afile)));
@@ -2395,12 +2371,10 @@ package body Flow_Generated_Globals is
          end loop;
       end;
 
-      if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - ALI files read");
-      end if;
+      Note_Time ("gg_read - ALI files read");
 
       if Debug_Print_Info_Sets_Read then
-         --  Print all GG related info gathered from the ALI files.
+         --  Print all GG related info gathered from the ALI files
          for Info of Subprogram_Info_List loop
             Write_Eol;
             Print_Global_Phase_1_Info (Info);
@@ -2454,15 +2428,11 @@ package body Flow_Generated_Globals is
 
       --  Create the Local_Graph
       Create_Local_Graph;
-      if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - local graph done");
-      end if;
+      Note_Time ("gg_read - local graph done");
 
       --  Create all vertices of the Global_Graph
       Create_All_Vertices;
-      if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - vertices added");
-      end if;
+      Note_Time ("gg_read - vertices added");
 
       --  If it is a library-level subprogram with no parameters then it may
       --  be the main subprogram of a partition and thus be executed by the
@@ -2527,36 +2497,28 @@ package body Flow_Generated_Globals is
 
       end Detect_Main_Subprogram;
 
-      --  Add all edges in the Global_Graph and tasking-related graphs.
+      --  Add all edges in the Global_Graph and tasking-related graphs
       Add_All_Edges;
-      if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - edges added");
-      end if;
+      Note_Time ("gg_read - edges added");
 
       --  Edit Proof_Ins
       Edit_Proof_Ins;
-      if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - proof ins");
-      end if;
+      Note_Time ("gg_read - proof ins");
 
       --  Put tasking-related information back to the bag
       Process_Tasking_Graph;
       Print_Tasking_Info_Bag (Phase_2);
 
-      --  Now that the Globals Graph has been generated we set
-      --  GG_Generated to True. Notice that we set GG_Generated to
-      --  True before we remove edges leading to constants without
-      --  variable input. The reasoning behind this is to use the
-      --  generated globals instead of the computed globals when we
-      --  call Get_Globals from within Has_Variable_Input.
+      --  Now that the Globals Graph has been generated we set GG_Generated to
+      --  True. Notice that we set GG_Generated to True before we remove edges
+      --  leading to constants without variable input. The reasoning behind
+      --  this is to use the generated globals instead of the computed globals
+      --  when we call Get_Globals from within Has_Variable_Input.
       GG_Generated := True;
 
-      --  Remove edges leading to constants which do not have variable
-      --  input.
+      --  Remove edges leading to constants which do not have variable input
       Remove_Constants_Without_Variable_Input;
-      if Debug_GG_Read_Timing then
-         Note_Time ("gg_read - removed nonvariable constants");
-      end if;
+      Note_Time ("gg_read - removed nonvariable constants");
 
       if Debug_Print_Global_Graph then
          declare
@@ -2564,16 +2526,16 @@ package body Flow_Generated_Globals is
               Spec_File_Name_Without_Suffix
                 (Enclosing_Comp_Unit_Node (GNAT_Root));
 
-            LG_Filename   : constant String :=
+            Local_Filename   : constant String :=
               Common_Prefix & "_locals_graph";
 
-            GG_Filename   : constant String :=
+            Global_Filename   : constant String :=
               Common_Prefix & "_globals_graph";
          begin
-            Print_Global_Graph (Filename => LG_Filename,
+            Print_Global_Graph (Filename => Local_Filename,
                                 G        => Local_Graph);
 
-            Print_Global_Graph (Filename => GG_Filename,
+            Print_Global_Graph (Filename => Global_Filename,
                                 G        => Global_Graph);
          end;
       end if;
@@ -2809,7 +2771,7 @@ package body Flow_Generated_Globals is
       --  Set mode to writing mode
       Current_Mode := GG_Write_Mode;
 
-      --  Store the current compilation unit on which we are working.
+      --  Store the current compilation unit on which we are working
       Current_Comp_Unit := GNAT_Root;
    end GG_Write_Initialize;
 

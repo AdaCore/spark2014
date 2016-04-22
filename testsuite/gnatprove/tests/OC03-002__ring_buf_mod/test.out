@@ -36,11 +36,11 @@ ring_buf.adb:24:28: info: range check proved
 ring_buf.ads:41:11: info: range check proved
 ring_buf.ads:41:42: medium: range check might fail
 ring_buf.ads:42:10: info: range check proved
-ring_buf.ads:43:47: medium: range check might fail
+ring_buf.ads:43:47: medium: range check might fail (e.g. when R = (Data => (others => 0), First => 65535, Length => 65536))
 ring_buf.ads:45:13: info: range check proved
-ring_buf.ads:45:52: medium: range check might fail
+ring_buf.ads:45:52: medium: range check might fail (e.g. when R = (Data => (others => 0), First => 0, Length => 65536))
 ring_buf.ads:47:58: info: index check proved
-ring_buf.ads:50:67: medium: range check might fail
+ring_buf.ads:50:67: medium: range check might fail (e.g. when M = (others => 0) and M'First = 65535 and M'Last = 65535 and X = 0)
 ring_buf.ads:51:51: medium: range check might fail (e.g. when M = (others => 0) and M'First = 0 and M'Last = 0)
 ring_buf.ads:58:21: info: initialization of "R.Data" proved
 ring_buf.ads:58:21: info: initialization of "R.First" proved

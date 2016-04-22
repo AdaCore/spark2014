@@ -107,13 +107,11 @@ package body Flow is
    use type Analysis_Maps.Map;
 
    procedure Build_Graphs_For_Compilation_Unit
-     (FA_Graphs          : out Analysis_Maps.Map;
-      Global_Info_List   : out Global_Info_Lists.List;
-      Generating_Globals : Boolean)
-   with Pre  => FA_Graphs = Analysis_Maps.Empty_Map and then
-                Global_Info_List = Global_Info_Lists.Empty_List,
-        Post => (if not Generating_Globals then
-                   Global_Info_List = Global_Info_Lists.Empty_List);
+     (FA_Graphs               : out Analysis_Maps.Map;
+      Routines_With_Spec_Only : out Global_Info_Lists.List;
+      Generating_Globals      : Boolean)
+   with Post => (if not Generating_Globals then
+                   Routines_With_Spec_Only.Is_Empty);
    --  Build all flow graphs for the current compilation unit
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
@@ -1242,15 +1240,20 @@ package body Flow is
    ---------------------------------------
 
    procedure Build_Graphs_For_Compilation_Unit
-     (FA_Graphs          : out Analysis_Maps.Map;
-      Global_Info_List   : out Global_Info_Lists.List;
-      Generating_Globals : Boolean)
+     (FA_Graphs               : out Analysis_Maps.Map;
+      Routines_With_Spec_Only : out Global_Info_Lists.List;
+      Generating_Globals      : Boolean)
    is
-   begin
-      --  Initialize the Global_Info_List to the empty set
-      Global_Info_List := Global_Info_Lists.Empty_List;
 
-      for E of Entity_Tree loop
+      procedure Build_Graphs_For_Entity (E : Entity_Id);
+      --  Build graphs and, if requisted, collect globals for a given entity
+
+      -----------------------------
+      -- Build_Graphs_For_Entity --
+      -----------------------------
+
+      procedure Build_Graphs_For_Entity (E : Entity_Id) is
+      begin
          case Ekind (E) is
             when E_Entry | E_Task_Type | Subprogram_Kind =>
 
@@ -1370,7 +1373,7 @@ package body Flow is
                            end;
                         end if;
 
-                        Global_Info_List.Append (Global_Info);
+                        Routines_With_Spec_Only.Append (Global_Info);
 
                      end;
                   end if;
@@ -1417,9 +1420,18 @@ package body Flow is
                end;
 
             when others =>
-               null;
+               raise Program_Error;
          end case;
-      end loop;
+      end Build_Graphs_For_Entity;
+
+   --  Start of processing for Build_Graphs_For_Compilation_Unit
+
+   begin
+      --  Initialize outputs
+      Routines_With_Spec_Only := Global_Info_Lists.Empty_List;
+      FA_Graphs               := Analysis_Maps.Empty_Map;
+
+      Iterate_Entities (Build_Graphs_For_Entity'Access);
    end Build_Graphs_For_Compilation_Unit;
 
    ------------------------
@@ -1445,9 +1457,9 @@ package body Flow is
       end loop;
 
       --  Process entities and construct graphs if necessary
-      Build_Graphs_For_Compilation_Unit (FA_Graphs          => FA_Graphs,
-                                         Global_Info_List   => Unused,
-                                         Generating_Globals => False);
+      Build_Graphs_For_Compilation_Unit (FA_Graphs               => FA_Graphs,
+                                         Routines_With_Spec_Only => Unused,
+                                         Generating_Globals      => False);
 
       --  ??? Perform interprocedural analysis
 
@@ -1601,22 +1613,22 @@ package body Flow is
    ---------------------------
 
    procedure Generate_Flow_Globals (GNAT_Root : Node_Id) is
-      Global_Info_List : Global_Info_Lists.List;
+      Routines_With_Spec_Only : Global_Info_Lists.List;
    begin
       GG_Write_Initialize (GNAT_Root);
 
       --  Process entities and construct graphs if necessary
       Build_Graphs_For_Compilation_Unit
-        (FA_Graphs          => FA_Graphs,
-         Global_Info_List   => Global_Info_List,
-         Generating_Globals => True);
+        (FA_Graphs               => FA_Graphs,
+         Routines_With_Spec_Only => Routines_With_Spec_Only,
+         Generating_Globals      => True);
 
       --  Write GG info for entities without graphs
       --
       --  Entities without graphs are those with a contract but no body
       --  in SPARK. For them we need to explicitly register accesses to
       --  unsynchronized states and variables that occur in contract.
-      for S of Global_Info_List loop
+      for S of Routines_With_Spec_Only loop
          GG_Write_Global_Info (GI => S);
 
          Register_Unsynch_Accesses : declare
@@ -1624,6 +1636,10 @@ package body Flow is
 
             procedure Collect_Unsynchronized_Globals (From : Name_Sets.Set);
             --  Collect unsynchronized globals accesses by S
+
+            ------------------------------------
+            -- Collect_Unsynchronized_Globals --
+            ------------------------------------
 
             procedure Collect_Unsynchronized_Globals (From : Name_Sets.Set) is
                E : Entity_Id;
