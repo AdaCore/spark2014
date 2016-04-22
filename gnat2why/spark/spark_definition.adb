@@ -4412,31 +4412,31 @@ package body SPARK_Definition is
 
          if not SPARK_Pragma_Is (Opt.Off) then
             Mark_Stmt_Or_Decl_List (Declarations (N));
-         end if;
 
-         Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
+            --  Only analyze package body statements in SPARK_Mode => On
 
-         --  Only analyze package body statements in SPARK_Mode => On
+            Current_SPARK_Pragma := SPARK_Aux_Pragma (Body_E);
 
-         if SPARK_Pragma_Is (Opt.On) then
+            if SPARK_Pragma_Is (Opt.On) then
 
-            declare
-               HSS : constant Node_Id := Handled_Statement_Sequence (N);
-            begin
-               if Present (HSS) then
-                  Mark (HSS);
-               end if;
-            end;
+               declare
+                  HSS : constant Node_Id := Handled_Statement_Sequence (N);
+               begin
+                  if Present (HSS) then
+                     Mark (HSS);
+                  end if;
+               end;
 
-         end if;
+            end if;
 
-         --  Finally check if SPARK_Mode => On applies to body and no violation
-         --  was detected.
+            --  Finally check if SPARK_Mode => On applies to body and no
+            --  violation was detected.
 
-         Current_SPARK_Pragma := SPARK_Pragma (Body_E);
+            Current_SPARK_Pragma := SPARK_Pragma (Body_E);
 
-         if SPARK_Pragma_Is (Opt.On) and then not Violation_Detected then
-            Bodies_In_SPARK.Insert (Spec_E);
+            if SPARK_Pragma_Is (Opt.On) and then not Violation_Detected then
+               Bodies_In_SPARK.Insert (Spec_E);
+            end if;
          end if;
 
          Current_SPARK_Pragma := Save_SPARK_Pragma;
