@@ -1255,13 +1255,13 @@ package body Flow is
       procedure Build_Graphs_For_Entity (E : Entity_Id) is
       begin
          case Ekind (E) is
-            when E_Entry | E_Task_Type | Subprogram_Kind =>
+            when E_Entry | E_Function | E_Procedure | E_Task_Type =>
 
                --  Check for potentially blocking statements in callable
                --  entities, i.e. entries and subprograms.
 
                if Generating_Globals
-                 and then Ekind (E) in Subprogram_Kind | E_Entry
+                 and then Ekind (E) in E_Entry | E_Function | E_Procedure
                  and then Entity_Body_In_SPARK (E)
                then
                   declare
