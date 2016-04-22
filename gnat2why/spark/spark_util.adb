@@ -98,6 +98,26 @@ package body SPARK_Util is
    function Specific_Tagged (E : Entity_Id) return Entity_Id is
      (Specific_Tagged_Types.Element (E));
 
+   ---------------------------------
+   -- Extra tables on expressions --
+   ---------------------------------
+
+   Dispatching_Contracts : Node_Maps.Map;
+   --  Map from classwide pre- and postcondition expressions to versions of
+   --  the same expressions where the type of the controlling operand is of
+   --  class-wide type, and corresponding calls to primitive subprograms are
+   --  dispatching calls.
+
+   procedure Set_Dispatching_Contract (C, D : Node_Id) is
+   begin
+      Dispatching_Contracts.Insert (C, D);
+   end Set_Dispatching_Contract;
+
+   function Dispatching_Contract (C : Node_Id) return Node_Id is
+     (if Dispatching_Contracts.Contains (C) then
+        Dispatching_Contracts.Element (C)
+      else Empty);
+
    ------------------------------------------------
    -- Queries related to external axiomatization --
    ------------------------------------------------

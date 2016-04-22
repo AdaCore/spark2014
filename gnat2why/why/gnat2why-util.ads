@@ -293,13 +293,26 @@ package Gnat2Why.Util is
       Prog : W_Prog_Id) return W_Prog_Id;
    --  Return a program which binds every variable in Vars to 0 in Prog
 
-   function Get_Dispatching_Contract
+   function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Name_Id;
       Domain : EW_Domain) return W_Expr_Id;
 
-   function Get_Dispatching_Contract
+   function Get_LSP_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id) return W_Pred_Id;
+   --  Returns the precondition or postcondition (depending on Kind) for a
+   --  dispatching call.
+
+   function Get_Dispatching_Call_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id;
+      Domain : EW_Domain) return W_Expr_Id;
+
+   function Get_Dispatching_Call_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Name_Id) return W_Pred_Id;

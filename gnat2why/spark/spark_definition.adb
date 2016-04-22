@@ -49,6 +49,7 @@ with Sem_Prag;              use Sem_Prag;
 with Sem_Util;              use Sem_Util;
 with Snames;                use Snames;
 with Stand;                 use Stand;
+with Tbuild;
 with Uintp;                 use Uintp;
 with Urealp;                use Urealp;
 
@@ -2976,6 +2977,13 @@ package body SPARK_Definition is
          procedure Mark_Subprogram_Specification (N : Node_Id);
          --  Mark violations related to parameters, result and contract
 
+         procedure Process_Class_Wide_Condition
+           (Expr    : Node_Id;
+            Spec_Id : Entity_Id);
+         --  Replace the type of all references to the controlling formal of
+         --  subprogram Spec_Id found in expression Expr with the corresponding
+         --  class-wide type.
+
          ---------------------------------
          -- Mark_Function_Specification --
          ---------------------------------
@@ -3128,6 +3136,95 @@ package body SPARK_Definition is
             Mark_Global_Items (Subp_Outputs);
          end Mark_Subprogram_Specification;
 
+         ----------------------------------
+         -- Process_Class_Wide_Condition --
+         ----------------------------------
+
+         procedure Process_Class_Wide_Condition
+           (Expr    : Node_Id;
+            Spec_Id : Entity_Id)
+         is
+            Disp_Typ : constant Entity_Id :=
+              Sem_Disp.Find_Dispatching_Type (Spec_Id);
+
+            function Replace_Type (N : Node_Id) return Traverse_Result;
+            --  Within the expression for a Pre'Class or Post'Class aspect for
+            --  a primitive subprogram of a tagged type Disp_Typ, a name that
+            --  denotes a formal parameter of type Disp_Typ is treated as
+            --  having type Disp_Typ'Class. This is used to create a suitable
+            --  pre- or postcondition expression for analyzing dispatching
+            --  calls.
+
+            ------------------
+            -- Replace_Type --
+            ------------------
+
+            function Replace_Type (N : Node_Id) return Traverse_Result is
+               Context : constant Node_Id    := Parent (N);
+               Loc     : constant Source_Ptr := Sloc (N);
+               CW_Typ  : Entity_Id := Empty;
+               Ent     : Entity_Id;
+               Typ     : Entity_Id;
+
+            begin
+               if Is_Entity_Name (N)
+                 and then Present (Entity (N))
+                 and then Is_Formal (Entity (N))
+               then
+                  Ent := Entity (N);
+                  Typ := Etype (Ent);
+
+                  if Nkind (Context) = N_Type_Conversion then
+                     null;
+
+                  --  Do not perform the type replacement for selector names
+                  --  in parameter associations. These carry an entity for
+                  --  reference purposes, but semantically they are just
+                  --  identifiers.
+
+                  elsif Nkind (Context) = N_Parameter_Association
+                    and then Selector_Name (Context) = N
+                  then
+                     null;
+
+                  elsif Typ = Disp_Typ then
+                     CW_Typ := Class_Wide_Type (Typ);
+                  end if;
+
+                  if Present (CW_Typ) then
+                     Rewrite (N,
+                       Nmake.Make_Type_Conversion (Loc,
+                         Subtype_Mark =>
+                           Tbuild.New_Occurrence_Of (CW_Typ, Loc),
+                         Expression   => Tbuild.New_Occurrence_Of (Ent, Loc)));
+                     Set_Etype (N, CW_Typ);
+
+                     --  When changing the type of an argument to a potential
+                     --  dispatching call, make the call dispatching indeed by
+                     --  setting its controlling argument.
+
+                     if Nkind (Parent (N)) = N_Function_Call
+                       and then Nkind (Name (Context)) in N_Has_Entity
+                       and then Present (Entity (Name (Context)))
+                       and then
+                         Is_Dispatching_Operation (Entity (Name (Context)))
+                     then
+                        Set_Controlling_Argument (Context, N);
+                     end if;
+                  end if;
+               end if;
+
+               return OK;
+            end Replace_Type;
+
+            procedure Replace_Types is new Traverse_Proc (Replace_Type);
+
+         --  Start of processing for Process_Class_Wide_Condition
+
+         begin
+            Replace_Types (Expr);
+         end Process_Class_Wide_Condition;
+
          Prag : Node_Id;
          Expr : Node_Id;
 
@@ -3169,6 +3266,27 @@ package body SPARK_Definition is
             else
                Mark (Expr);
             end if;
+
+            --  For a class-wide condition, a corresponding expression must
+            --  be created in which a reference to a controlling formal
+            --  is interpreted as having the class-wide type. This is used
+            --  to create a suitable pre- or postcondition expression for
+            --  analyzing dispatching calls. This is done here so that the
+            --  newly created expression can be marked, including its possible
+            --  newly created itypes.
+
+            if Class_Present (Prag) then
+               declare
+                  New_Expr : constant Node_Id :=
+                    New_Copy_Tree (Source => Expr);
+               begin
+                  Process_Class_Wide_Condition (New_Expr, E);
+                  Mark (New_Expr);
+                  Set_Dispatching_Contract (Expr, New_Expr);
+                  Set_Parent (New_Expr, Prag);
+               end;
+            end if;
+
             Prag := Next_Pragma (Prag);
          end loop;
 

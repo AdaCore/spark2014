@@ -481,11 +481,44 @@ package body Gnat2Why.Util is
       return Variable_Reference_Seen;
    end Expression_Depends_On_Variables;
 
-   ------------------------------
-   -- Get_Dispatching_Contract --
-   ------------------------------
+   -----------------------------------
+   -- Get_Dispatching_Call_Contract --
+   -----------------------------------
 
-   function Get_Dispatching_Contract
+   function Get_Dispatching_Call_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   is
+      Conjuncts_List : Node_Lists.List :=
+        Find_Contracts (E, Kind, Classwide => True);
+   begin
+      if Conjuncts_List.Is_Empty then
+         Conjuncts_List := Find_Contracts (E, Kind, Inherited => True);
+      end if;
+
+      for Expr of Conjuncts_List loop
+         Expr := Dispatching_Contract (Expr);
+         pragma Assert (Present (Expr));
+      end loop;
+
+      return +Compute_Spec (Params, Conjuncts_List, Domain);
+   end Get_Dispatching_Call_Contract;
+
+   function Get_Dispatching_Call_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id) return W_Pred_Id is
+   begin
+      return +Get_Dispatching_Call_Contract (Params, E, Kind, EW_Pred);
+   end Get_Dispatching_Call_Contract;
+
+   ----------------------
+   -- Get_LSP_Contract --
+   ----------------------
+
+   function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Name_Id;
@@ -499,15 +532,15 @@ package body Gnat2Why.Util is
       end if;
 
       return +Compute_Spec (Params, Conjuncts_List, Domain);
-   end Get_Dispatching_Contract;
+   end Get_LSP_Contract;
 
-   function Get_Dispatching_Contract
+   function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Name_Id) return W_Pred_Id is
    begin
-      return +Get_Dispatching_Contract (Params, E, Kind, EW_Pred);
-   end Get_Dispatching_Contract;
+      return +Get_LSP_Contract (Params, E, Kind, EW_Pred);
+   end Get_LSP_Contract;
 
    -----------------------
    -- Get_Graph_Closure --
@@ -590,7 +623,7 @@ package body Gnat2Why.Util is
       Conjuncts_List : constant Node_Lists.List := Find_Contracts (E, Kind);
    begin
       if Conjuncts_List.Is_Empty then
-         return Get_Dispatching_Contract (Params, E, Kind, Domain);
+         return Get_LSP_Contract (Params, E, Kind, Domain);
       end if;
 
       return +Compute_Spec (Params, Conjuncts_List, Domain);

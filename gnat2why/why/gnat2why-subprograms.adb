@@ -1840,7 +1840,7 @@ package body Gnat2Why.Subprograms is
       if not Pre_List.Is_Empty then
          Classwide_Pre_Assume :=
            New_Assume_Statement (Pred =>
-             Get_Dispatching_Contract (Params, E, Name_Precondition));
+             Get_LSP_Contract (Params, E, Name_Precondition));
 
          Pre_Check := New_Located_Assert
            (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition),
@@ -1884,7 +1884,7 @@ package body Gnat2Why.Subprograms is
          Classwide_Post_Check := New_Located_Assert
            (Ada_Node => Get_Location_For_Aspect (E, Name_Postcondition),
             Pred     =>
-              Get_Dispatching_Contract (Params, E, Name_Postcondition),
+              Get_LSP_Contract (Params, E, Name_Postcondition),
             Reason   => VC_Stronger_Post,
             Kind     => EW_Assert);
 
@@ -2973,9 +2973,9 @@ package body Gnat2Why.Subprograms is
 
       if Is_Dispatching_Operation (E) then
          Dispatch_Pre :=
-           Get_Dispatching_Contract (Params, E, Name_Precondition);
+           Get_Dispatching_Call_Contract (Params, E, Name_Precondition);
          Dispatch_Post :=
-           Get_Dispatching_Contract (Params, E, Name_Postcondition);
+           Get_Dispatching_Call_Contract (Params, E, Name_Postcondition);
       end if;
 
       if Has_Contracts (E, Name_Refined_Post) then
@@ -3169,7 +3169,7 @@ package body Gnat2Why.Subprograms is
 
       if Is_Dispatching_Operation (E) then
          Dispatch_Pre :=
-           Get_Dispatching_Contract (Params, E, Name_Precondition);
+           Get_Dispatching_Call_Contract (Params, E, Name_Precondition);
       end if;
 
       --  For a subprogram marked with No_Return, the postcondition at call
@@ -3200,7 +3200,7 @@ package body Gnat2Why.Subprograms is
 
          if Is_Dispatching_Operation (E) then
             Dispatch_Post :=
-              Get_Dispatching_Contract (Params, E, Name_Postcondition);
+              Get_Dispatching_Call_Contract (Params, E, Name_Postcondition);
          end if;
 
          if Has_Contracts (E, Name_Refined_Post) then

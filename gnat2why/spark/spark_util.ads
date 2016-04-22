@@ -152,6 +152,22 @@ package SPARK_Util is
    --  @param E classwide type
    --  @return the specific tagged type corresponding to classwide type E
 
+   ---------------------------------
+   -- Extra tables on expressions --
+   ---------------------------------
+
+   procedure Set_Dispatching_Contract (C, D : Node_Id);
+   --  @param C expression of a classwide pre- or postcondition
+   --  @param D dispatching expression for C, in which a reference to a
+   --    controlling formal is interpreted as having the class-wide type. This
+   --    is used to create a suitable pre- or postcondition expression for
+   --    analyzing dispatching calls.
+
+   function Dispatching_Contract (C : Node_Id) return Node_Id;
+   --  @param C expression of a classwide pre- or postcondition
+   --  @return the dispatching expression previously stored for C, or Empty if
+   --    no such expression was stored for C.
+
    ------------------------------------------------
    -- Queries related to external axiomatization --
    ------------------------------------------------
