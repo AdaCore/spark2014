@@ -629,8 +629,9 @@ package body Gnat2Why.Subprograms is
    begin
       Process_Declarations (Visible_Declarations (PT_Def));
 
-      --  ??? only if private part has SPARK_Mode => On
-      Process_Declarations (Private_Declarations (PT_Def));
+      if Private_Spec_In_SPARK (Ty) then
+         Process_Declarations (Private_Declarations (PT_Def));
+      end if;
 
       return Stat;
    end Compute_Attach_Handler_Check;

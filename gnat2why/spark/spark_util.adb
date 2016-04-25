@@ -3187,14 +3187,16 @@ package body SPARK_Util is
          end if;
          Next (Decl);
       end loop;
-      Decls := Private_Declarations_of_Prot_Type (E);
-      Decl := First (Decls);
-      while Present (Decl) loop
-         if Decl_Has_Attach_Handler (Decl) then
-            return True;
-         end if;
-         Next (Decl);
-      end loop;
+      if Private_Spec_In_SPARK (E) then
+         Decls := Private_Declarations_of_Prot_Type (E);
+         Decl := First (Decls);
+         while Present (Decl) loop
+            if Decl_Has_Attach_Handler (Decl) then
+               return True;
+            end if;
+            Next (Decl);
+         end loop;
+      end if;
       return False;
    end Requires_Interrupt_Priority;
 
