@@ -2291,8 +2291,8 @@ package body Gnat2Why.Subprograms is
 
       Register_VC_Entity (E);
 
-      --  the Ada_Node is important here, because that's how we detect
-      --  occurrences of "self" in a term later
+      --  The Ada_Node is important here, because that's how we detect
+      --  occurrences of "self" in a term later.
 
       Self_Name :=
         New_Identifier
@@ -2316,17 +2316,16 @@ package body Gnat2Why.Subprograms is
               Get_Priority_Or_Interrupt_Priority (E);
          begin
 
-            --  If no priority was specified, the default priority
-            --  is implementation-defined (RM D.3 (10/3)), but in
-            --  range of System.Interrupt_Priority.
+            --  If no priority was specified, the default priority is
+            --  implementation-defined (RM D.3 (10/3)), but in range
+            --  of System.Interrupt_Priority.
 
             if Present (P) then
 
                --  ??? why discriminants are translated only when
                --  priority is given?
 
-               --  Store the value of Decl's discriminants in the
-               --  symbol table.
+               --  Store the value of Decl's discriminants in the symbol table
 
                declare
                   type Discr is record
@@ -2391,9 +2390,8 @@ package body Gnat2Why.Subprograms is
                           Context  => P_Expr);
                   end loop;
 
-                  --  Generate a range check, but with a reason of
-                  --  ceiling check, as specified in RM index for
-                  --  "Ceiling_Check".
+                  --  Generate a range check, but with a reason of ceiling
+                  --  check, as specified in RM index for "Ceiling_Check".
 
                   Why_Body := Sequence
                     (Why_Body,
@@ -2426,9 +2424,8 @@ package body Gnat2Why.Subprograms is
          end;
       end if;
 
-      --  Check that no Attach_Handler expression of the protected
-      --  object corresponds to a reserved interrupt; see RM
-      --  C.3.1(10/3).
+      --  Check that no Attach_Handler expression of the protected object
+      --  corresponds to a reserved interrupt; see RM C.3.1(10/3).
 
       Why_Body := Sequence (Why_Body,
                             Compute_Attach_Handler_Check
