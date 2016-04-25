@@ -311,11 +311,6 @@ package body Flow_Generated_Globals is
       Equivalent_Elements => Global_Graphs."=",
       "="                 => Global_Graphs."=");
 
-   Local_Graph  : Global_Graphs.Graph;
-   --  A graph that represents the hierarchy of subprograms (which subprogram
-   --  is nested in which one); used to determine which local variables may act
-   --  as globals to which subprograms.
-
    Global_Graph : Global_Graphs.Graph;
    --  A graph that represents the globals that each subprogram has as inputs,
    --  outputs and proof inputs.
@@ -1051,6 +1046,11 @@ package body Flow_Generated_Globals is
       All_Other_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
       --  Contains all subprograms for which a GG entry does not exist
       --  ??? rename to No_GG_Subprograms?
+
+      Local_Graph : Global_Graphs.Graph;
+      --  A graph that represents the hierarchy of subprograms (which
+      --  subprogram is nested in which one); used to determine which
+      --  local variables may act as globals to which subprograms.
 
       procedure Add_All_Edges;
       --  Reads the populated Subprogram_Info_List and generates all the edges
