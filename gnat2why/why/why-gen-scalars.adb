@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;               use Atree;
 with Common_Containers;   use Common_Containers;
 with Gnat2Why.Expr;       use Gnat2Why.Expr;
 with Namet;               use Namet;
@@ -779,7 +780,18 @@ package body Why.Gen.Scalars is
       elsif Is_Fixed_Point_Type (Ty) then
          return New_Fixed_Constant (Value => Expr_Value (N));
       elsif Is_Floating_Point_Type (Ty) then
-         return +Transform_Float_Literal (N, Base_Why_Type (Ty));
+         if Is_Fixed_Point_Type (Etype (N)) and then
+           Nkind (Parent (N)) = N_Real_Range_Specification
+         then
+            --  Allow Real ranges to use fixed point values; see acats c35704a
+            return +Insert_Simple_Conversion
+              (Ada_Node       => N,
+               Domain         => EW_Term,
+               Expr           => New_Fixed_Constant (Value => Expr_Value (N)),
+               To             => Base_Why_Type (Ty));
+         else
+            return +Transform_Float_Literal (N, Base_Why_Type (Ty));
+         end if;
       else
          return New_Real_Constant (Value => Expr_Value_R (N));
       end if;
