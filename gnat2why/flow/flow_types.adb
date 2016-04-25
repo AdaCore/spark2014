@@ -400,8 +400,8 @@ package body Flow_Types is
    function Is_Concurrent_Comp_Or_Disc (F : Flow_Id) return Boolean is
    begin
       return Belongs_To_Concurrent_Object (F)
-        and then Ekind (Get_Direct_Mapping_Id (F)) not in Subprogram_Kind |
-                                                          E_Entry;
+        and then Ekind (Get_Direct_Mapping_Id (F)) not in Entry_Kind     |
+                                                          Subprogram_Kind;
    end Is_Concurrent_Comp_Or_Disc;
 
    ------------------------
