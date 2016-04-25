@@ -11738,7 +11738,7 @@ package body Gnat2Why.Expr is
          --
          --  Group 1 - ignored
          --
-         --  Pragmas that do not need any marking, either because:
+         --  Pragmas that do not need any proof processing, either because:
          --  . they are defined by SPARK 2014, or
          --  . they are already taken into account elsewhere (contracts)
          --  . they have no effect on verification
@@ -11750,6 +11750,7 @@ package body Gnat2Why.Expr is
          when Pragma_Assertion_Policy             |
               Pragma_Atomic                       |
               Pragma_Atomic_Components            |
+              Pragma_Attach_Handler               |
               Pragma_Convention                   |
               Pragma_Elaborate                    |
               Pragma_Elaborate_All                |
@@ -11759,6 +11760,7 @@ package body Gnat2Why.Expr is
               Pragma_Independent                  |
               Pragma_Independent_Components       |
               Pragma_Inline                       |
+              Pragma_Interrupt_Priority           |
               Pragma_Linker_Options               |
               Pragma_List                         |
               Pragma_No_Return                    |
@@ -11769,6 +11771,7 @@ package body Gnat2Why.Expr is
               Pragma_Partition_Elaboration_Policy |
               Pragma_Preelaborable_Initialization |
               Pragma_Preelaborate                 |
+              Pragma_Priority                     |
               Pragma_Profile                      |
               Pragma_Pure                         |
               Pragma_Restrictions                 |
@@ -11991,13 +11994,10 @@ package body Gnat2Why.Expr is
            Pragma_Task_Dispatching_Policy        |
            Pragma_All_Calls_Remote               |
            Pragma_Asynchronous                   |
-           Pragma_Attach_Handler                 |
            Pragma_Remote_Call_Interface          |
            Pragma_Remote_Types                   |
            Pragma_Shared_Passive                 |
-           Pragma_Interrupt_Priority             |
            Pragma_Lock_Free                      |
-           Pragma_Priority                       |
            Pragma_Storage_Size                   =>
 
             Error_Msg_Name_1 := Pragma_Name (Prag);

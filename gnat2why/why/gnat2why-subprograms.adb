@@ -2269,8 +2269,10 @@ package body Gnat2Why.Subprograms is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
-      Why_Body : W_Prog_Id := +Void;
-      Name     : constant String  := Full_Name (E);
+      Why_Body   : W_Prog_Id := +Void;
+      Name       : constant String  := Full_Name (E);
+      Priv_Decls : constant List_Id := Private_Declarations_of_Prot_Type (E);
+      Vis_Decls  : constant List_Id := Visible_Declarations_of_Prot_Type (E);
    begin
       --  We open a new theory, so that the context is fresh for this task
 
@@ -2289,6 +2291,22 @@ package body Gnat2Why.Subprograms is
 
       Register_VC_Entity (E);
 
+      --  the Ada_Node is important here, because that's how we detect
+      --  occurrences of "self" in a term later
+
+      Self_Name :=
+        New_Identifier
+          (Name     => "self__",
+           Ada_Node => E,
+           Typ      => Type_Of_Node (E));
+
+      Emit (File,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain  => EW_Term,
+               Name    => Self_Name,
+               Binders => (1 .. 0 => <>),
+               Labels  => Name_Id_Sets.Empty_Set,
+               Return_Type => Get_Typ (Self_Name)));
       --  If protected object attaches an interrupt, the priority must be in
       --  range of System.Interrupt_Priorioty; see RM C.3.1(11/3).
 
@@ -2296,17 +2314,7 @@ package body Gnat2Why.Subprograms is
          declare
             P : constant Node_Id :=
               Get_Priority_Or_Interrupt_Priority (E);
-            Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Ada_Node => E, Typ => EW_Abstract (E));
          begin
-
-            Emit (File,
-                  Why.Gen.Binders.New_Function_Decl
-                    (Domain  => EW_Term,
-                     Name    => Arg,
-                     Binders => (1 .. 0 => <>),
-                     Labels  => Name_Id_Sets.Empty_Set,
-                     Return_Type => Get_Typ (Arg)));
 
             --  If no priority was specified, the default priority
             --  is implementation-defined (RM D.3 (10/3)), but in
@@ -2354,7 +2362,7 @@ package body Gnat2Why.Subprograms is
                              New_Ada_Record_Access
                                (Ada_Node => Empty,
                                 Domain   => EW_Term,
-                                Name     => +Arg,
+                                Name     => +Self_Name,
                                 Field    => Discr_N,
                                 Ty       => E));
                      begin
@@ -2423,8 +2431,20 @@ package body Gnat2Why.Subprograms is
       --  C.3.1(10/3).
 
       Why_Body := Sequence (Why_Body,
-                     Compute_Attach_Handler_Check
-                       (Base_Type (E), Body_Params));
+                            Compute_Attach_Handler_Check
+                              (Base_Type (E), Body_Params));
+
+      --  Translate public and private declarations of the package
+
+      if Present (Priv_Decls) and then
+        Private_Spec_In_SPARK (E)
+      then
+         Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
+      end if;
+
+      if Present (Vis_Decls) then
+         Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
+      end if;
 
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
@@ -2440,6 +2460,10 @@ package body Gnat2Why.Subprograms is
       end;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      Self_Name := Why_Empty;
+      Self_Is_Mutable := False;
+
       Close_Theory (File,
                     Kind => VC_Generation_Theory);
    end Generate_VCs_For_Protected_Type;
