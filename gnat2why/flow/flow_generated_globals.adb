@@ -2833,8 +2833,6 @@ package body Flow_Generated_Globals is
            Protected_Operation_Call_Graph.Get_Vertex (EN);
          --  Vertex that represents the analysed subprogram
 
-         Callee : Entity_Name;
-
          function Calls_Same_Target_Type (S : Entity_Name) return Boolean;
          --  Check if subprogram S calls the enclosing protected type of E
 
@@ -2850,17 +2848,16 @@ package body Flow_Generated_Globals is
               Protected_Operation_Call_Graph.Get_Vertex (S);
             --  Vertex that represents subprogram S
 
-            Callee : Entity_Name;
-            --  Vertex that represent subprogram called by S
          begin
             --  Iterate over subprograms called by subprogram S
             for V of Protected_Operation_Call_Graph.
               Get_Collection (Subp_V, Out_Neighbours)
             loop
-
-               Callee := Protected_Operation_Call_Graph.Get_Key (V);
-
                declare
+                  Callee : constant Entity_Name :=
+                    Protected_Operation_Call_Graph.Get_Key (V);
+                  --  Vertex that represent subprogram called by S
+
                   Callee_E : constant Entity_Id := Find_Entity (Callee);
                begin
                   if Present (Callee_E)
@@ -2890,10 +2887,10 @@ package body Flow_Generated_Globals is
          for V of Protected_Operation_Call_Graph.
            Get_Collection (Caller, Out_Neighbours)
          loop
-
-            Callee := Protected_Operation_Call_Graph.Get_Key (V);
-
             declare
+               Callee : constant Entity_Name :=
+                 Protected_Operation_Call_Graph.Get_Key (V);
+
                Callee_E : constant Entity_Id := Find_Entity (Callee);
                --  Entities from other compilation units have empty id
             begin
