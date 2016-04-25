@@ -3159,8 +3159,8 @@ package body SPARK_Util is
    function Requires_Interrupt_Priority (E : Entity_Id) return Boolean is
 
       function Decl_Has_Attach_Handler (Decl : Node_Id) return Boolean;
-      --  check whether the declaration is a subprogram with an attach_handler
-      --  pragma attached
+      --  Check whether the declaration is a subprogram with an attach_handler
+      --  pragma attached.
 
       -----------------------------
       -- Decl_Has_Attach_Handler --
@@ -3170,13 +3170,16 @@ package body SPARK_Util is
       begin
          return
            Nkind (Decl) in N_Subprogram_Declaration
-           | N_Abstract_Subprogram_Declaration
+                         | N_Abstract_Subprogram_Declaration
            and then Present (Get_Pragma (Defining_Entity (Decl),
-                             Pragma_Attach_Handler));
+                                         Pragma_Attach_Handler));
       end Decl_Has_Attach_Handler;
 
       Decls : List_Id := Visible_Declarations_of_Prot_Type (E);
       Decl  : Node_Id := First (Decls);
+
+   --  Start of processing for Requires_Interrupt_Priority
+
    begin
       while Present (Decl) loop
          if Decl_Has_Attach_Handler (Decl) then
