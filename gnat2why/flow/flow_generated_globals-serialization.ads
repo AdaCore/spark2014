@@ -21,8 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package implements writing, reading and computing global
---  contracts.
+--  This package implements writing and reading of global contracts
 
 with Serialisation;              use Serialisation;
 
@@ -71,8 +70,8 @@ package Flow_Generated_Globals.Serialization is
             The_Nonblocking_Subprograms : Name_Sets.Set;
       end case;
    end record;
-   --  IMPORTANT: If you change this, please also remember to update the
-   --  serialisation procedure, and Null_ALI_Entry to initialize any scalars.
+   --  IMPORTANT: If you change this, then also update the serialisation
+   --  procedure, and Null_ALI_Entry to initialize any scalars.
 
    procedure Serialize (A : in out Archive; V : in out ALI_Entry);
    --  Serialization procedure for a single ALI entry
