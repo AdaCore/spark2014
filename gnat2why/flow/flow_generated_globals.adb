@@ -2237,8 +2237,8 @@ package body Flow_Generated_Globals is
                --  Corresponding vertex in tasking call graph
 
                procedure Collect_From (S : Entity_Name);
-               --  Collect tasking objects accessed by subprogram S as they
-               --  were accessed by task task TN.
+               --  Collect tasking objects accessed by subprogram S as if they
+               --  were accessed by task TN.
 
                ------------------
                -- Collect_From --
