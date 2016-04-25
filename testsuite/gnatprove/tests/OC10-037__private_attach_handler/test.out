@@ -1,7 +1,9 @@
+p.ads:5:19: info: ceiling priority in Interrupt_Priority proved
 p.ads:8:37: medium: this interrupt might be reserved
 p.ads:12:18: info: range check proved
 p.ads:12:26: info: range check proved
 p.ads:12:34: info: range check proved
+q.ads:3:19: info: ceiling priority in Interrupt_Priority proved
 q.ads:7:37: medium: this interrupt might be reserved
 q.ads:11:18: info: range check proved
 q.ads:11:26: info: range check proved

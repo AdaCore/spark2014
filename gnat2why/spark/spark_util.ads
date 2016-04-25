@@ -904,6 +904,12 @@ package SPARK_Util is
    --  @param E a protected type entity
    --  @return the list of visible declarations of the protected type
 
+   function Private_Declarations_of_Prot_Type (E : Entity_Id) return List_Id
+   is (Private_Declarations (PO_Definition (Base_Type (E))))
+   with Pre => Is_Protected_Type (E);
+   --  @param E a protected type entity
+   --  @return the list of visible declarations of the protected type
+
    --------------------------------
    -- Queries related to entries --
    --------------------------------
