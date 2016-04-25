@@ -2,9 +2,9 @@
 --                                                                          --
 --                           GNAT2WHY COMPONENTS                            --
 --                                                                          --
---               F L O W . C O M P U T E D _ G L O B A L S                  --
+--                 F L O W . G E N E R A T E D _ G L O B A L S              --
 --                                                                          --
---                                B o d y                                   --
+--                                 B o d y                                  --
 --                                                                          --
 --               Copyright (C) 2014-2016, Altran UK Limited                 --
 --                                                                          --
