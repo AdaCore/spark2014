@@ -382,8 +382,14 @@ package body Flow_Generated_Globals is
       end case;
    end record;
    --  IMPORTANT: If you change this, please also remember to update the
-   --  serialisation procedure, and Null_ALI_Entry to initialize any
-   --  scalars.
+   --  serialisation procedure, and Null_ALI_Entry to initialize any scalars.
+
+   Null_Global_Info : constant Global_Phase_1_Info :=
+     (Name           => Null_Entity_Name,
+      Kind           => Analyzed_Subject_Kind'First,
+      Globals_Origin => Globals_Origin_T'First,
+      others         => <>);
+   --  Dummy value required only for the serialization API
 
    Null_ALI_Entry : constant array (ALI_Entry_Kind) of ALI_Entry := (
       EK_Error                  => (Kind => EK_Error),
@@ -420,6 +426,7 @@ package body Flow_Generated_Globals is
       EK_Tasking_Nonblocking    => (Kind   => EK_Tasking_Nonblocking,
                                     others => <>)
    );
+   --  Dummy value required only for the serialization API
 
    procedure Serialize (A : in out Archive; V : in out Entity_Name);
 

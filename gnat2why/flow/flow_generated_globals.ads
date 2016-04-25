@@ -142,12 +142,6 @@ package Flow_Generated_Globals is
    --  serialisation procedure (in the body of flow_generated_globals), and
    --  update Null_Global_Info below.
 
-   Null_Global_Info : constant Global_Phase_1_Info :=
-     (Name           => Null_Entity_Name,
-      Kind           => Analyzed_Subject_Kind'First,
-      Globals_Origin => Globals_Origin_T'First,
-      others         => <>);
-
    package Global_Info_Lists is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Global_Phase_1_Info);
 
