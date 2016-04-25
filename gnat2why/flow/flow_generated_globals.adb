@@ -3273,7 +3273,10 @@ package body Flow_Generated_Globals is
 
             Enclosing_State : Entity_Name;
 
-            Is_Abstract_State : Boolean := False;
+            function Is_Abstract_State return Boolean is
+               (Var_Name /= N);
+            --  If the visible name is different from the original one, then
+            --  the original one must have been hidden in an abstract state.
 
          begin
             loop
@@ -3288,8 +3291,6 @@ package body Flow_Generated_Globals is
                end if;
 
                Var_Name := Enclosing_State;
-
-               Is_Abstract_State := True;
             end loop;
 
             Final_View.Include (Var_Name);
