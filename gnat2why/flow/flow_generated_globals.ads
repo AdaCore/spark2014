@@ -25,6 +25,7 @@
 --  contracts.
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Hashed_Maps;
 with Atree;                              use Atree;
 with Common_Containers;                  use Common_Containers;
 with Einfo;                              use Einfo;
@@ -378,6 +379,50 @@ package Flow_Generated_Globals is
    --  @param Obj an entity name that refers to a library-level object with
    --    protected components
    --  @return priorities of protected object components
+
+   ----------------------------------------------------------------------
+   --  Task instances
+   ----------------------------------------------------------------------
+
+   --  ??? Task instances have nothing to do with marking; they are here only
+   --  because conceptually they are similar to entity containers. Perhaps
+   --  Flow_Generated_Globals is a better place.
+
+   type Instance_Number is (One, Many);
+   --  Number of task type instances in an object declaration
+
+   type Task_Object is
+      record
+         Name      : Entity_Name;
+         Instances : Instance_Number;
+         Node      : Node_Id;
+      end record;
+   --  Task object with the name of the library-level object and task type
+   --  instances (which can be many, e.g. for task arrays or records with
+   --  two components of a given task type).
+   --
+   --  Error messages related to a task object will be attached to Node.
+
+   package Task_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Task_Object);
+   --  Containers with task instances
+
+   package Task_Instances_Maps is
+     new Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
+                                     Element_Type    => Task_Lists.List,
+                                     Hash            => Name_Hash,
+                                     Equivalent_Keys => "=",
+                                     "="             => Task_Lists."=");
+   --  Containers that map task types to objects with task instances (e.g. task
+   --  arrays may contain several instances of a task type and task record may
+   --  contain instances of several tasks).
+
+   Task_Instances : Task_Instances_Maps.Map;
+   --  Task instances
+
+   procedure Register_Task_Object (Type_Name : Entity_Name;
+                                   Object    : Task_Object);
+   --  Register object that instantiates tasks of a given type
 
 private
 

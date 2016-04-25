@@ -34,7 +34,6 @@ with Snames;                      use Snames;
 with Stand;                       use Stand;
 
 with Common_Iterators;            use Common_Iterators;
-with SPARK_Definition;
 with SPARK_Util;                  use SPARK_Util;
 with VC_Kinds;                    use VC_Kinds;
 
@@ -4172,7 +4171,7 @@ package body Flow.Analysis is
       --  only the first owning task instance, if there are more then it is
       --  SPARK violation.
 
-      use Flow_Generated_Globals, SPARK_Definition;
+      use Flow_Generated_Globals;
 
       procedure Check_Ownership (Task_Instance : Task_Object;
                                  Object        : Entity_Name;

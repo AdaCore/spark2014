@@ -1,0 +1,236 @@
+------------------------------------------------------------------------------
+--                                                                          --
+--                           GNAT2WHY COMPONENTS                            --
+--                                                                          --
+--  F L O W . G E N E R A T E D _ G L O B A L S . S E R I A L I Z A T I O N --
+--                                                                          --
+--                                B o d y                                   --
+--                                                                          --
+--                  Copyright (C) 2016, Altran UK Limited                   --
+--                                                                          --
+-- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
+-- under terms of the  GNU General Public License as published  by the Free --
+-- Software  Foundation;  either version 3,  or (at your option)  any later --
+-- version.  gnat2why is distributed  in the hope that  it will be  useful, --
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of  MERCHAN- --
+-- TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public --
+-- License for  more details.  You should have  received  a copy of the GNU --
+-- General  Public License  distributed with  gnat2why;  see file COPYING3. --
+-- If not,  go to  http://www.gnu.org/licenses  for a complete  copy of the --
+-- license.                                                                 --
+--                                                                          --
+------------------------------------------------------------------------------
+
+with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
+with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
+
+package body Flow_Generated_Globals.Serialization is
+
+   Null_Global_Info : constant Global_Phase_1_Info :=
+     (Name           => Null_Entity_Name,
+      Kind           => Analyzed_Subject_Kind'First,
+      Globals_Origin => Globals_Origin_T'First,
+      others         => <>);
+   --  Dummy value required only for the serialization API
+
+   Null_ALI_Entry : constant array (ALI_Entry_Kind) of ALI_Entry := (
+      EK_Error                  => (Kind => EK_Error),
+
+      EK_End_Marker             => (Kind => EK_End_Marker),
+
+      EK_State_Map              => (Kind      => EK_State_Map,
+                                    The_State => Null_Entity_Name,
+                                    others    => <>),
+
+      EK_Remote_States          => (Kind          => EK_Remote_States,
+                                    Remote_States => Name_Sets.Empty_Set),
+
+      EK_Volatiles              => (Kind   => EK_Volatiles,
+                                    others => <>),
+
+      EK_Globals                => (Kind            => EK_Globals,
+                                    The_Global_Info => Null_Global_Info),
+
+      EK_Protected_Variable     => (Kind         => EK_Protected_Variable,
+                                    The_Variable => Null_Entity_Name,
+                                    The_Priority => Priority_Value'
+                                      (Kind => Priority_Kind'First,
+                                       Value => 0)),
+
+      EK_Tasking_Instance_Count => (Kind     => EK_Tasking_Instance_Count,
+                                    The_Type => Null_Entity_Name,
+                                    others   => <>),
+
+      EK_Tasking_Info           => (Kind       => EK_Tasking_Info,
+                                    The_Entity => Null_Entity_Name,
+                                    others     => <>),
+
+      EK_Tasking_Nonblocking    => (Kind   => EK_Tasking_Nonblocking,
+                                    others => <>)
+   );
+   --  Dummy value required only for the serialization API
+
+   procedure Serialize (A : in out Archive; V : in out Entity_Name);
+
+   procedure Serialize is new Serialize_Set
+     (T              => Name_Sets.Set,
+      E              => Entity_Name,
+      Cursor         => Name_Sets.Cursor,
+      Null_Container => Name_Sets.Empty_Set,
+      Null_Element   => Null_Entity_Name,
+      First          => Name_Sets.First,
+      Next           => Name_Sets.Next,
+      Has_Element    => Name_Sets.Has_Element,
+      Element        => Name_Sets.Element,
+      Insert         => Name_Sets.Insert);
+
+   procedure Serialize (A : in out Archive; V : in out Task_Object);
+
+   Null_Task_Object : constant Task_Object := (Null_Entity_Name,
+                                               Instance_Number'First,
+                                               Empty);
+   --  Null task object required for serialization
+
+   procedure Serialize is new Serialize_List
+     (T              => Task_Lists.List,
+      E              => Task_Object,
+      Cursor         => Task_Lists.Cursor,
+      Null_Container => Task_Lists.Empty_List,
+      Null_Element   => Null_Task_Object,
+      First          => Task_Lists.First,
+      Next           => Task_Lists.Next,
+      Has_Element    => Task_Lists.Has_Element,
+      Element        => Task_Lists.Element,
+      Append         => Task_Lists.Append);
+
+   procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info);
+
+   procedure Serialize (A : in out Archive; V : in out Global_Phase_1_Info);
+
+   ---------------
+   -- Serialize --
+   ---------------
+
+   procedure Serialize (A : in out Archive; V : in out Entity_Name) is
+      S : Unbounded_String;
+   begin
+      if A.Kind = Serialisation.Output then
+         S := To_Unbounded_String (To_String (V));
+      end if;
+      Serialize (A, S);
+      if A.Kind = Serialisation.Input then
+         V := To_Entity_Name (To_String (S));
+      end if;
+   end Serialize;
+
+   procedure Serialize (A : in out Archive; V : in out Task_Object) is
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Instance_Number);
+   begin
+      Serialize (A, V.Name);
+      Serialize (A, V.Instances);
+      --  ??? Serialize (A, V.Node);
+      if A.Kind = Serialisation.Input then
+         V.Node := Find_Entity (V.Name);
+      end if;
+   end Serialize;
+
+   procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info) is
+   begin
+      for Kind in Tasking_Info_Kind loop
+         Serialize (A, V (Kind), Kind'Img);
+      end loop;
+   end Serialize;
+
+   procedure Serialize (A : in out Archive; V : in out Global_Phase_1_Info) is
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Analyzed_Subject_Kind);
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Globals_Origin_T);
+   begin
+      Serialize (A, V.Name);
+      Serialize (A, V.Kind);
+      Serialize (A, V.Globals_Origin);
+      Serialize (A, V.Inputs_Proof,          "var_proof");
+      Serialize (A, V.Inputs,                "var_in");
+      Serialize (A, V.Outputs,               "var_out");
+      Serialize (A, V.Proof_Calls,           "calls_proof");
+      Serialize (A, V.Definite_Calls,        "calls");
+      Serialize (A, V.Conditional_Calls,     "calls_conditional");
+      Serialize (A, V.Local_Variables,       "local_var");
+      Serialize (A, V.Local_Subprograms,     "local_sub");
+      Serialize (A, V.Local_Definite_Writes, "local_init");
+   end Serialize;
+
+   procedure Serialize (A : in out Archive; V : in out ALI_Entry) is
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => ALI_Entry_Kind);
+
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Priority_Kind);
+
+      procedure Serialize is new Serialisation.Serialize_Discrete
+        (T => Int);
+
+      Kind : ALI_Entry_Kind := ALI_Entry_Kind'First;
+
+   --  Start of processing for Serialize
+
+   begin
+      if A.Kind = Serialisation.Output then
+         Kind := V.Kind;
+      end if;
+      Serialize (A, Kind);
+      if A.Kind = Serialisation.Input then
+         V := Null_ALI_Entry (Kind);
+      end if;
+
+      case V.Kind is
+         when EK_Error =>
+            raise Program_Error;
+
+         when EK_End_Marker =>
+            null;
+
+         when EK_State_Map =>
+            Serialize (A, V.The_State);
+            Serialize (A, V.The_Constituents);
+
+         when EK_Remote_States =>
+            Serialize (A, V.Remote_States, "RS");
+
+         when EK_Volatiles =>
+            Serialize (A, V.All_Async_Readers,    "AR");
+            Serialize (A, V.All_Async_Writers,    "AW");
+            Serialize (A, V.All_Effective_Reads,  "ER");
+            Serialize (A, V.All_Effective_Writes, "EW");
+
+         when EK_Globals =>
+            Serialize (A, V.The_Global_Info);
+
+         when EK_Protected_Variable =>
+            Serialize (A, V.The_Variable);
+            Serialize (A, V.The_Priority.Kind);
+            if V.The_Priority.Kind = Static then
+               Serialize (A, V.The_Priority.Value);
+            end if;
+
+         when EK_Tasking_Instance_Count =>
+            Serialize (A, V.The_Type);
+            Serialize (A, V.The_Objects);
+
+         when EK_Tasking_Info =>
+            Serialize (A, V.The_Entity);
+            Serialize (A, V.The_Tasking_Info);
+
+         when EK_Tasking_Nonblocking =>
+            Serialize (A, V.The_Nonblocking_Subprograms);
+      end case;
+
+   exception
+      when Serialisation.Parse_Error =>
+         pragma Assert (A.Kind = Serialisation.Input);
+         V := (Kind => EK_Error);
+   end Serialize;
+
+end Flow_Generated_Globals.Serialization;
