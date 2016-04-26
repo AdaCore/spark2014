@@ -39,6 +39,7 @@ with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Opt;
+with Rtsfind;                        use Rtsfind;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Disp;                       use Sem_Disp;
 with Sem_Util;                       use Sem_Util;
@@ -404,6 +405,11 @@ package body Gnat2Why.Expr is
       Domain : EW_Domain;
       Params : Transformation_Params) return W_Expr_Id;
    --  @return the Why3 expression for SPARK quantified expression [Expr]
+
+   function Transform_Priority_Pragmas (Prag : Node_Id) return W_Prog_Id;
+   --  @param Prag either a pragma Priority or a pragma Interrupt_priority
+   --  @return an expression that checks that the argument of the pragma is in
+   --    the required range for this object type and pragma type
 
    function Transform_Slice
      (Params : Transformation_Params;
@@ -11708,6 +11714,9 @@ package body Gnat2Why.Expr is
                return +Void;
             end if;
 
+         when Pragma_Interrupt_Priority | Pragma_Priority =>
+            return Transform_Priority_Pragmas (Prag);
+
          --  Pragma Inspection_Point is ignored, but we insert a call to a
          --  dummy procedure, to allow to break on it during debugging.
 
@@ -11760,7 +11769,6 @@ package body Gnat2Why.Expr is
               Pragma_Independent                  |
               Pragma_Independent_Components       |
               Pragma_Inline                       |
-              Pragma_Interrupt_Priority           |
               Pragma_Linker_Options               |
               Pragma_List                         |
               Pragma_No_Return                    |
@@ -11771,7 +11779,6 @@ package body Gnat2Why.Expr is
               Pragma_Partition_Elaboration_Policy |
               Pragma_Preelaborable_Initialization |
               Pragma_Preelaborate                 |
-              Pragma_Priority                     |
               Pragma_Profile                      |
               Pragma_Pure                         |
               Pragma_Restrictions                 |
@@ -12108,6 +12115,69 @@ package body Gnat2Why.Expr is
 
       return T;
    end Transform_Pragma_Check;
+
+   --------------------------------
+   -- Transform_Priority_Pragmas --
+   --------------------------------
+
+   function Transform_Priority_Pragmas (Prag : Node_Id) return W_Prog_Id is
+      Pname   : constant Name_Id   := Pragma_Name (Prag);
+      Prag_Id : constant Pragma_Id := Get_Pragma_Id (Pname);
+      Expr    : constant Node_Id :=
+        Expression (First (Pragma_Argument_Associations (Prag)));
+
+      --  For the Priority aspect, the value of the expression is converted to
+      --  the subtype Priority; for the Interrupt_Priority aspect, this value
+      --  is converted to the subtype Any_Priority. (D.1 (17))
+      --
+      --  The expression specified for the Priority or Interrupt_Priority
+      --  aspect (see D.1) is evaluated as part of the creation of the
+      --  corresponding protected object and converted to the subtype
+      --  System.Any_Priority or System.Interrupt_Priority, respectively.
+      --  (D.3 (6))
+
+      Ty      : constant Entity_Id :=
+        (if Ekind (Scope (Prag)) in Task_Kind then
+             (if Prag_Id = Pragma_Interrupt_Priority then
+                   RTE (RE_Any_Priority)
+              else RTE (RE_Priority))
+         else (if Prag_Id = Pragma_Interrupt_Priority then
+                RTE (RE_Interrupt_Priority)
+               else RTE (RE_Any_Priority)));
+      Why_Expr : W_Expr_Id;
+   begin
+      if Present (Expr) then
+         Why_Expr :=
+           Transform_Expr
+             (Expr          => Expr,
+              Domain        => EW_Term,
+              Params        => Body_Params,
+              Expected_Type => EW_Int_Type);
+
+         return
+           New_Located_Assert
+             (Ada_Node => Expr,
+              Pred     =>
+                +New_Range_Expr
+                (Domain => EW_Pred,
+                 Low    =>
+                   New_Attribute_Expr
+                     (Domain => EW_Term,
+                      Ty     => Ty,
+                      Attr   => Attribute_First,
+                      Params => Body_Params),
+                 High   =>
+                   New_Attribute_Expr
+                     (Domain => EW_Term,
+                      Ty     => Ty,
+                      Attr   => Attribute_Last,
+                      Params => Body_Params),
+                 Expr   => Why_Expr),
+              Reason   => VC_Range_Check,
+              Kind     => EW_Check);
+      end if;
+      return +Void;
+   end Transform_Priority_Pragmas;
 
    -------------------------------------
    -- Transform_Quantified_Expression --

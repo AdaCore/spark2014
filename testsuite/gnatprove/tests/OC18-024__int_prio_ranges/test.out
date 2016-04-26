@@ -1,3 +1,5 @@
+p.ads:6:30: info: range check proved
+p.ads:10:40: medium: range check might fail
 t.adb:10:20: info: initialization of "Wakeup" proved
 t.adb:11:22: info: initialization of "Wakeup" proved
 t.adb:20:20: info: initialization of "Wakeup" proved

@@ -2271,10 +2271,89 @@ package body Gnat2Why.Subprograms is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
+      type Discr is record
+         Id  : W_Identifier_Id;
+         Val : W_Expr_Id;
+      end record;
+      --  Why3 representation of discriminants
+
+      package Discriminant_Lists is new
+        Ada.Containers.Doubly_Linked_Lists
+          (Element_Type => Discr);
+
+      W_Discriminants : Discriminant_Lists.List;
+      --  Container for Why3 representations
+
+      procedure Prepare_Discr;
+      --  insert the discriminants into the symbol table so that they can be
+      --  referred to by the Why generated for the various checks
+
+      procedure Wrap_Discr (Expr : in out W_Prog_Id);
+
+      -------------------
+      -- Prepare_Discr --
+      -------------------
+
+      procedure Prepare_Discr is
+         Discr_N : Node_Id := Empty;
+      begin
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+         if Has_Discriminants (E)
+           or else Has_Unknown_Discriminants (E)
+         then
+            Discr_N := First_Discriminant (E);
+         end if;
+         while Present (Discr_N) loop
+            declare
+               Discr_W : constant Discr :=
+                 (Id =>
+                    New_Temp_Identifier
+                      (Typ =>
+                           EW_Abstract (Etype (Discr_N))),
+
+                  Val =>
+                    New_Ada_Record_Access
+                      (Ada_Node => Empty,
+                       Domain   => EW_Term,
+                       Name     => +Self_Name,
+                       Field    => Discr_N,
+                       Ty       => E));
+            begin
+               Insert_Entity (Discriminal (Discr_N),
+                              Discr_W.Id);
+
+               W_Discriminants.Append (Discr_W);
+            end;
+
+            Next_Discriminant (Discr_N);
+         end loop;
+      end Prepare_Discr;
+
+      ----------------
+      -- Wrap_Discr --
+      ----------------
+
+      procedure Wrap_Discr (Expr : in out W_Prog_Id) is
+      begin
+         for W_D of reverse W_Discriminants loop
+            Expr :=
+              +New_Typed_Binding
+                 (Domain   => EW_Term,
+                  Name     => W_D.Id,
+                  Def      => W_D.Val,
+                  Context  => +Expr);
+         end loop;
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      end Wrap_Discr;
+
       Why_Body   : W_Prog_Id := +Void;
       Name       : constant String  := Full_Name (E);
       Priv_Decls : constant List_Id := Private_Declarations_of_Prot_Type (E);
       Vis_Decls  : constant List_Id := Visible_Declarations_of_Prot_Type (E);
+
+      --  beginning of processing for Generate_VCs_For_Protected_Type
+
    begin
       --  We open a new theory, so that the context is fresh for this task
 
@@ -2309,6 +2388,9 @@ package body Gnat2Why.Subprograms is
                Binders => (1 .. 0 => <>),
                Labels  => Name_Id_Sets.Empty_Set,
                Return_Type => Get_Typ (Self_Name)));
+
+      Prepare_Discr;
+
       --  If protected object attaches an interrupt, the priority must be in
       --  range of System.Interrupt_Priorioty; see RM C.3.1(11/3).
 
@@ -2324,77 +2406,14 @@ package body Gnat2Why.Subprograms is
 
             if Present (P) then
 
-               --  ??? why discriminants are translated only when
-               --  priority is given?
-
-               --  Store the value of Decl's discriminants in the symbol table
-
                declare
-                  type Discr is record
-                     Id  : W_Identifier_Id;
-                     Val : W_Expr_Id;
-                  end record;
-                  --  Why3 representation of discriminants
-
-                  package Discriminant_Lists is new
-                    Ada.Containers.Doubly_Linked_Lists
-                      (Element_Type => Discr);
-
-                  W_Discriminants : Discriminant_Lists.List;
-                  --  Container for Why3 representations
-
-                  Discr_N : Node_Id := Empty;
-                  --  Discriminant node in SPARK AST
-
-                  P_Expr : W_Expr_Id;
-               begin
-                  Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-                  if Has_Discriminants (E)
-                    or else Has_Unknown_Discriminants (E)
-                  then
-                     Discr_N := First_Discriminant (E);
-                  end if;
-                  while Present (Discr_N) loop
-                     declare
-                        Discr_W : constant Discr :=
-                          (Id =>
-                             New_Temp_Identifier
-                               (Typ =>
-                                    EW_Abstract (Etype (Discr_N))),
-
-                           Val =>
-                             New_Ada_Record_Access
-                               (Ada_Node => Empty,
-                                Domain   => EW_Term,
-                                Name     => +Self_Name,
-                                Field    => Discr_N,
-                                Ty       => E));
-                     begin
-                        Insert_Entity (Discriminal (Discr_N),
-                                       Discr_W.Id);
-
-                        W_Discriminants.Append (Discr_W);
-                     end;
-
-                     Next_Discriminant (Discr_N);
-                  end loop;
-
-                  P_Expr :=
+                  P_Expr : constant W_Expr_Id :=
                     Transform_Expr
                       (Expr          => P,
                        Domain        => EW_Term,
                        Params        => Body_Params,
                        Expected_Type => EW_Int_Type);
-
-                  for W_D of reverse W_Discriminants loop
-                     P_Expr :=
-                       New_Typed_Binding
-                         (Domain   => EW_Term,
-                          Name     => W_D.Id,
-                          Def      => W_D.Val,
-                          Context  => P_Expr);
-                  end loop;
+               begin
 
                   --  Generate a range check, but with a reason of ceiling
                   --  check, as specified in RM index for "Ceiling_Check".
@@ -2423,8 +2442,6 @@ package body Gnat2Why.Subprograms is
                            Expr   => P_Expr),
                         Reason   => VC_Ceiling_Interrupt,
                         Kind     => EW_Check));
-
-                  Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
                end;
             end if;
          end;
@@ -2448,6 +2465,8 @@ package body Gnat2Why.Subprograms is
       if Present (Vis_Decls) then
          Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
       end if;
+
+      Wrap_Discr (Why_Body);
 
       declare
          Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
