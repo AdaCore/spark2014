@@ -25,7 +25,7 @@
 
 with Serialisation;              use Serialisation;
 
-package Flow_Generated_Globals.Serialization is
+package Flow_Generated_Globals.ALI_Serialization is
 
    type ALI_Entry_Kind is (EK_Error,
                            EK_End_Marker,
@@ -76,4 +76,4 @@ package Flow_Generated_Globals.Serialization is
    procedure Serialize (A : in out Archive; V : in out ALI_Entry);
    --  Serialization procedure for a single ALI entry
 
-end Flow_Generated_Globals.Serialization;
+end Flow_Generated_Globals.ALI_Serialization;

@@ -24,7 +24,7 @@
 with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
 
-package body Flow_Generated_Globals.Serialization is
+package body Flow_Generated_Globals.ALI_Serialization is
 
    Null_Global_Info : constant Global_Phase_1_Info :=
      (Name           => Null_Entity_Name,
@@ -233,4 +233,4 @@ package body Flow_Generated_Globals.Serialization is
          V := (Kind => EK_Error);
    end Serialize;
 
-end Flow_Generated_Globals.Serialization;
+end Flow_Generated_Globals.ALI_Serialization;

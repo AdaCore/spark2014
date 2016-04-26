@@ -21,13 +21,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;      use Common_Containers;
-with Einfo;                  use Einfo;
-with Elists;                 use Elists;
-with Flow_Generated_Globals; use Flow_Generated_Globals;
-with Flow_Utility;           use Flow_Utility;
-with Nlists;                 use Nlists;
-with Treepr;                 use Treepr;
+with Common_Containers;              use Common_Containers;
+with Einfo;                          use Einfo;
+with Elists;                         use Elists;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Utility;                   use Flow_Utility;
+with Nlists;                         use Nlists;
+with Treepr;                         use Treepr;
 with Why;
 
 package body Flow_Dependency_Maps is

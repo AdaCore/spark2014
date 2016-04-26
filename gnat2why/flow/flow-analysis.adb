@@ -23,27 +23,27 @@
 
 with Ada.Text_IO;
 
-with Elists;                      use Elists;
-with Errout;                      use Errout;
-with Namet;                       use Namet;
-with Nlists;                      use Nlists;
-with Output;                      use Output;
-with Sem_Util;                    use Sem_Util;
-with Sinput;                      use Sinput;
-with Snames;                      use Snames;
-with Stand;                       use Stand;
+with Elists;                         use Elists;
+with Errout;                         use Errout;
+with Namet;                          use Namet;
+with Nlists;                         use Nlists;
+with Output;                         use Output;
+with Sem_Util;                       use Sem_Util;
+with Sinput;                         use Sinput;
+with Snames;                         use Snames;
+with Stand;                          use Stand;
 
-with Common_Iterators;            use Common_Iterators;
-with SPARK_Util;                  use SPARK_Util;
-with VC_Kinds;                    use VC_Kinds;
+with Common_Iterators;               use Common_Iterators;
+with SPARK_Util;                     use SPARK_Util;
+with VC_Kinds;                       use VC_Kinds;
 
 with Flow.Analysis.Antialiasing;
 with Flow.Analysis.Sanity;
-with Flow_Debug;                  use Flow_Debug;
-with Flow_Generated_Globals;
-with Flow_Error_Messages;         use Flow_Error_Messages;
-with Flow_Utility;                use Flow_Utility;
-with Flow_Utility.Initialization; use Flow_Utility.Initialization;
+with Flow_Debug;                     use Flow_Debug;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Error_Messages;            use Flow_Error_Messages;
+with Flow_Utility;                   use Flow_Utility;
+with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 
 with Why;
 
@@ -2044,8 +2044,7 @@ package body Flow.Analysis is
 
       function Mentioned_On_Gen_Init (Var : Flow_Id) return Boolean is
          DM : constant Dependency_Maps.Map :=
-           Flow_Generated_Globals.GG_Get_Initializes
-             (To_Entity_Name (FA.Spec_Entity), FA.S_Scope);
+           GG_Get_Initializes (To_Entity_Name (FA.Spec_Entity), FA.S_Scope);
 
       begin
          return

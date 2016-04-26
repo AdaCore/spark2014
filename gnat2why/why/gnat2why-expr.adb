@@ -23,49 +23,49 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;         use Ada.Containers;
+with Ada.Containers;                 use Ada.Containers;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
-with Checks;                 use Checks;
-with Elists;                 use Elists;
-with Errout;                 use Errout;
-with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
-with Flow_Generated_Globals; use Flow_Generated_Globals;
-with Flow_Refinement;        use Flow_Refinement;
-with Flow_Utility;           use Flow_Utility;
+with Checks;                         use Checks;
+with Elists;                         use Elists;
+with Errout;                         use Errout;
+with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Refinement;                use Flow_Refinement;
+with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
-with Gnat2Why.Expr.Loops;    use Gnat2Why.Expr.Loops;
-with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
-with Namet;                  use Namet;
-with Nlists;                 use Nlists;
+with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
+with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
+with Namet;                          use Namet;
+with Nlists;                         use Nlists;
 with Opt;
-with Sem_Aux;                use Sem_Aux;
-with Sem_Disp;               use Sem_Disp;
-with Sem_Util;               use Sem_Util;
-with Sem_Type;               use Sem_Type;
-with Sinput;                 use Sinput;
-with Snames;                 use Snames;
-with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
-with Stand;                  use Stand;
-with Uintp;                  use Uintp;
-with Urealp;                 use Urealp;
-with VC_Kinds;               use VC_Kinds;
-with Why;                    use Why;
-with Why.Atree.Builders;     use Why.Atree.Builders;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
-with Why.Atree.Mutators;     use Why.Atree.Mutators;
-with Why.Atree.Modules;      use Why.Atree.Modules;
-with Why.Conversions;        use Why.Conversions;
-with Why.Gen.Arrays;         use Why.Gen.Arrays;
-with Why.Gen.Binders;        use Why.Gen.Binders;
-with Why.Gen.Decl;           use Why.Gen.Decl;
-with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Gen.Names;          use Why.Gen.Names;
-with Why.Gen.Preds;          use Why.Gen.Preds;
-with Why.Gen.Progs;          use Why.Gen.Progs;
-with Why.Gen.Records;        use Why.Gen.Records;
-with Why.Unchecked_Ids;      use Why.Unchecked_Ids;
+with Sem_Aux;                        use Sem_Aux;
+with Sem_Disp;                       use Sem_Disp;
+with Sem_Util;                       use Sem_Util;
+with Sem_Type;                       use Sem_Type;
+with Sinput;                         use Sinput;
+with Snames;                         use Snames;
+with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
+with Stand;                          use Stand;
+with Uintp;                          use Uintp;
+with Urealp;                         use Urealp;
+with VC_Kinds;                       use VC_Kinds;
+with Why;                            use Why;
+with Why.Atree.Builders;             use Why.Atree.Builders;
+with Why.Atree.Accessors;            use Why.Atree.Accessors;
+with Why.Atree.Mutators;             use Why.Atree.Mutators;
+with Why.Atree.Modules;              use Why.Atree.Modules;
+with Why.Conversions;                use Why.Conversions;
+with Why.Gen.Arrays;                 use Why.Gen.Arrays;
+with Why.Gen.Binders;                use Why.Gen.Binders;
+with Why.Gen.Decl;                   use Why.Gen.Decl;
+with Why.Gen.Expr;                   use Why.Gen.Expr;
+with Why.Gen.Names;                  use Why.Gen.Names;
+with Why.Gen.Preds;                  use Why.Gen.Preds;
+with Why.Gen.Progs;                  use Why.Gen.Progs;
+with Why.Gen.Records;                use Why.Gen.Records;
+with Why.Unchecked_Ids;              use Why.Unchecked_Ids;
 
 package body Gnat2Why.Expr is
 

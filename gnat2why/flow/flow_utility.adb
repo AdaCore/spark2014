@@ -25,28 +25,28 @@ with Ada.Characters.Latin_1;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Maps;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 
-with Errout;                     use Errout;
-with Namet;                      use Namet;
-with Nlists;                     use Nlists;
-with Output;                     use Output;
-with Sem_Aux;                    use Sem_Aux;
-with Sem_Eval;                   use Sem_Eval;
-with Sem_Type;                   use Sem_Type;
-with Sprint;                     use Sprint;
-with Treepr;                     use Treepr;
+with Errout;                          use Errout;
+with Namet;                           use Namet;
+with Nlists;                          use Nlists;
+with Output;                          use Output;
+with Sem_Aux;                         use Sem_Aux;
+with Sem_Eval;                        use Sem_Eval;
+with Sem_Type;                        use Sem_Type;
+with Sprint;                          use Sprint;
+with Treepr;                          use Treepr;
 
-with Common_Iterators;           use Common_Iterators;
+with Common_Iterators;                use Common_Iterators;
 with Gnat2Why.Util;
-with SPARK_Definition;           use SPARK_Definition;
-with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
-with SPARK_Util;                 use SPARK_Util;
+with SPARK_Definition;                use SPARK_Definition;
+with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
+with SPARK_Util;                      use SPARK_Util;
 with Why;
 
-with Flow_Classwide;             use Flow_Classwide;
-with Flow_Debug;                 use Flow_Debug;
-with Flow_Generated_Globals;     use Flow_Generated_Globals;
+with Flow_Classwide;                  use Flow_Classwide;
+with Flow_Debug;                      use Flow_Debug;
+with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Graphs;
 
 package body Flow_Utility is

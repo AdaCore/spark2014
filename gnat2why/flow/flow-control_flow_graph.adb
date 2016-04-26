@@ -46,6 +46,7 @@ with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
 with Flow_Debug;                         use Flow_Debug;
 with Flow_Error_Messages;                use Flow_Error_Messages;
 with Flow_Generated_Globals;             use Flow_Generated_Globals;
+with Flow_Generated_Globals.Phase_1;     use Flow_Generated_Globals.Phase_1;
 with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
 with Flow_Utility;                       use Flow_Utility;
 

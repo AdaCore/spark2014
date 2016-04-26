@@ -26,14 +26,9 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
-with Atree;                              use Atree;
 with Common_Containers;                  use Common_Containers;
-with Einfo;                              use Einfo;
 with Flow;                               use Flow;
-with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
-with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Types;                         use Flow_Types;
-with Sinfo;                              use Sinfo;
 with Types;                              use Types;
 
 package Flow_Generated_Globals is
@@ -166,227 +161,9 @@ package Flow_Generated_Globals is
    function GG_Mode return GG_Mode_T with Ghost;
    --  Returns the current mode.
 
-   -------------
-   -- Writing --
-   -------------
-
-   procedure GG_Write_Initialize (GNAT_Root : Node_Id)
-   with Pre  => GG_Mode = GG_No_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Must be called before the first call to
-   --  GG_Write_Global_Info and GG_Write_Package_Info.
-
-   procedure GG_Write_State_Info (DM : Dependency_Maps.Map)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Record information related to state abstractions and the refinements
-   --  thereof. This will later be used to return the appropriate view
-   --  depending on the caller (as opposed to always returning the most refined
-   --  view). It also stores information related to external states.
-
-   procedure GG_Write_Global_Info (GI : Global_Phase_1_Info)
-   with Pre  => GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Record the information we need to later compute globals.
-   --  Compute_Globals in Flow.Slice is used to produce the inputs.
-   --  It also stores information related to volatiles and possibly blocking
-   --  property.
-
-   procedure GG_Register_Nonblocking (EN : Entity_Name)
-   with Pre  => EN /= Null_Entity_Name and then
-                GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Register entity with no potentially blocking statements.
-
-   procedure GG_Register_Tasking_Info (EN : Entity_Name;
-                                       TI : Tasking_Info)
-   with Pre  => EN /= Null_Entity_Name and then
-                GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Register tasking-related information for entity.
-
-   procedure GG_Register_Protected_Object (PO   : Entity_Name;
-                                           Prio : Priority_Value)
-   with Pre  => PO /= Null_Entity_Name and then
-                GG_Mode = GG_Write_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Register protected object and its priority
-
-   procedure GG_Write_Finalize
-   with Pre => GG_Mode = GG_Write_Mode;
-   --  Appends all collected information to the ALI file.
-
-   -------------------------
-   -- Reading & Computing --
-   -------------------------
-
-   procedure GG_Read (GNAT_Root : Node_Id)
-   with Pre  => Nkind (GNAT_Root) = N_Compilation_Unit
-                and then GG_Mode = GG_No_Mode,
-        Post => GG_Mode = GG_Read_Mode;
-   --  Reads all ALI files and produce the transitive closure.
-
-   --------------
-   -- Querying --
-   --------------
-
-   function GG_Has_Been_Generated return Boolean;
-   --  Checks if the Globals Graph has been generated.
-   --  @return True iff the Globals Graph has been generated
-
-   function GG_Exist (E : Entity_Id) return Boolean
-   with Pre => GG_Mode = GG_Read_Mode;
-   --  Returns True if generated globals have been computed for the
-   --  given entity.
-
-   function GG_Has_Refinement (EN : Entity_Name) return Boolean
-   with Pre => GG_Mode = GG_Read_Mode;
-   --  Returns true if E is a state abstraction whose constituents we
-   --  loaded while reading the ALI files.
-
-   function GG_Is_Constituent (EN : Entity_Name) return Boolean
-   with Pre => GG_Mode = GG_Read_Mode;
-   --  Returns true if E is a constituent of some state abstraction
-   --  that we loaded while reading the ALI files.
-
-   function GG_Get_Constituents (EN : Entity_Name) return Name_Sets.Set
-   with Pre => GG_Mode = GG_Read_Mode;
-   --  Returns the set of direct constituents of a state abstraction
-   --  or an Empty_Set if they do not exist.
-
-   function GG_Enclosing_State (EN : Entity_Name) return Entity_Name
-   with Pre => GG_Mode = GG_Read_Mode;
-   --  Returns the Entity_Name of the directly enclosing state. If one
-   --  does not exist it returns Null_Entity_Name.
-
-   function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set
-   with Pre => GG_Mode = GG_Read_Mode and then
-               GG_Has_Refinement (EN);
-   --  Returns the most refined constituents of state abstraction EN.
-
-   procedure GG_Get_Globals (E           : Entity_Id;
-                             S           : Flow_Scope;
-                             Proof_Reads : out Flow_Id_Sets.Set;
-                             Reads       : out Flow_Id_Sets.Set;
-                             Writes      : out Flow_Id_Sets.Set)
-   with Pre  => GG_Mode = GG_Read_Mode and then
-                GG_Exist (E),
-        Post => GG_Mode = GG_Read_Mode;
-   --  Determines the set of all globals.
-
-   function GG_Get_All_State_Abstractions return Name_Sets.Set
-   with Pre => GG_Mode = GG_Read_Mode;
-   --  @return a set of Entity_Names with all the state abstractions
-   --    that the Generated Globals know of.
-
-   function GG_Get_Initializes
-     (EN : Entity_Name;
-      S  : Flow_Scope)
-      return Dependency_Maps.Map
-   with Pre => GG_Has_Been_Generated;
-   --  @param EN is the entity name whose generated initialize aspect we want
-   --  @param S is the Flow_Scope at which we need to up project the results
-   --  @return the generated initializes if it exists or an empty dependency
-   --    map otherwise.
-
-   function GG_Get_Local_Variables
-     (EN : Entity_Name)
-      return Name_Sets.Set
-   with Pre => GG_Has_Been_Generated;
-   --  This function takes as a parameter the name of a package and returns a
-   --  set of names comprising:
-   --    * all variables declared directly inside the package,
-   --    * variables declared in the private part of nested packages that are
-   --      in SPARK and do NOT have a user-provided Initializes aspect and
-   --    * variables introduced in the declarations of the body part of nested
-   --      packages that are in SPARK and do NOT have a user-provided
-   --      Abstract_State aspect.
-   --  Constants with variable inputs are also included in the above.
-   --
-   --  @param EN is the entity name whose local variables we are asking for
-   --  @return the set of Entity_Names of the local variables as recorded
-   --    by the generated globals
-
-   function GG_Is_Initialized_At_Elaboration (EN : Entity_Name) return Boolean
-   with Pre => GG_Has_Been_Generated;
-   --  @param EN is the entity name we want to check
-   --  @return True iff EN is initialized at elaboration
-
-   function GG_Is_Volatile (EN : Entity_Name) return Boolean
-   with Pre => GG_Has_Been_Generated;
-   --  @param EN is the entity name that we check for being volatile
-   --  @return True iff EN is volatile.
-
-   function GG_Has_Async_Writers (EN : Entity_Name) return Boolean
-   with Pre  => GG_Has_Been_Generated,
-        Post => (if GG_Has_Async_Writers'Result
-                 then GG_Is_Volatile (EN));
-   --  @param EN is the entity name that we check for having Async_Writers
-   --  @return True iff EN has Async_Writers set.
-
-   function GG_Has_Async_Readers (EN : Entity_Name) return Boolean
-   with Pre  => GG_Has_Been_Generated,
-        Post => (if GG_Has_Async_Readers'Result
-                 then GG_Is_Volatile (EN));
-   --  @param EN is the entity name that we check for having Async_Readers
-   --  @return True iff EN has Async_Readers set.
-
-   function GG_Has_Effective_Reads (EN : Entity_Name) return Boolean
-   with Pre  => GG_Has_Been_Generated,
-        Post => (if GG_Has_Effective_Reads'Result
-                 then GG_Has_Async_Writers (EN));
-   --  @param EN is the entity name that we check for having Effective_Reads
-   --  @return True iff EN has Effective_Reads set.
-
-   function GG_Has_Effective_Writes (EN : Entity_Name) return Boolean
-   with Pre  => GG_Has_Been_Generated,
-        Post => (if GG_Has_Effective_Writes'Result
-                 then GG_Has_Async_Readers (EN));
-   --  @param EN is the entity name that we check for having Effective_Writes
-   --  @return True iff EN has Effective_Writes set.
-
-   function Is_Potentially_Blocking (E : Entity_Id) return Boolean
-   with Pre => GG_Has_Been_Generated and then
-               Ekind (E) in E_Entry | E_Procedure | E_Function;
-   --  Returns True if subprogram E is potentially blocking or its blocking
-   --  status is unknown; returns False it if is known to be nonblocking.
-
-   function Tasking_Objects
-     (Kind : Tasking_Info_Kind;
-      Subp : Entity_Name)
-      return Name_Sets.Set
-   with Pre => GG_Has_Been_Generated;
-   --  Returns the set of objects (e.g. suspension objects or entries,
-   --  depending on the Kind) accessed by a main-like subprogram Subp.
-
-   function Directly_Called_Protected_Objects
-     (Ent : Entity_Name) return Name_Sets.Set
-   with Pre => Ent /= Null_Entity_Name;
-   --  @param Ent an entity name that refers to a task, main-like subprogram or
-   --    protected operation
-   --  @return the set of protected operations that are called "directly", that
-   --    is without going through other protected operations
-
-   package Object_Priority_Lists is
-     new Ada.Containers.Doubly_Linked_Lists (Element_Type => Priority_Value);
-   --  Containers with priorities of protected components
-
-   function Component_Priorities
-     (Obj : Entity_Name)
-      return Object_Priority_Lists.List
-   with
-     Post => not Object_Priority_Lists.Is_Empty (Component_Priorities'Result);
-   --  @param Obj an entity name that refers to a library-level object with
-   --    protected components
-   --  @return priorities of protected object components
-
    ----------------------------------------------------------------------
    --  Task instances
    ----------------------------------------------------------------------
-
-   --  ??? Task instances have nothing to do with marking; they are here only
-   --  because conceptually they are similar to entity containers. Perhaps
-   --  Flow_Generated_Globals is a better place.
 
    type Instance_Number is (One, Many);
    --  Number of task type instances in an object declaration
@@ -420,9 +197,70 @@ package Flow_Generated_Globals is
    Task_Instances : Task_Instances_Maps.Map;
    --  Task instances
 
-   procedure Register_Task_Object (Type_Name : Entity_Name;
-                                   Object    : Task_Object);
-   --  Register object that instantiates tasks of a given type
+   type Phase is (GG_Phase_1, GG_Phase_2);
+
+   Tasking_Info_Bag :
+     array (Phase, Tasking_Info_Kind) of Name_Graphs.Map :=
+     (others => (others => Name_Graphs.Empty_Map));
+   --  Maps from subprogram names to accessed objects
+   --
+   --  In phase 1 it is populated with objects directly accessed by each
+   --  subprogram and stored in the ALI file. In phase 2 it is populated
+   --  with objects directly and indirectly accessed by each subprogram.
+
+   type Object_Priority is
+      record
+         Variable : Entity_Name;
+         Priority : Priority_Value;
+      end record;
+   --  Protected object and its priority
+
+   procedure Register_Task_Object
+     (Type_Name : Entity_Name;
+      Object    : Task_Object);
+
+   ----------------------------------------------------------------------
+   --  State information
+   ----------------------------------------------------------------------
+
+   State_Comp_Map         : Name_Graphs.Map := Name_Graphs.Empty_Map;
+   --  Mapping from abstract states to their constituents, i.e.
+   --  abstract_state -> {constituents}
+
+   Comp_State_Map         : Name_Maps.Map   := Name_Maps.Empty_Map;
+   --  A reverse of the above mapping, i.e. constituent -> abstract_state,
+   --  which speeds up some queries. It is populated at the end of GG_Read from
+   --  State_Comp_Map.
+
+   All_State_Abstractions : Name_Sets.Set   := Name_Sets.Empty_Set;
+   --  State abstractions that the GG knows of
+
+   Remote_States          : Name_Sets.Set   := Name_Sets.Empty_Set;
+   --  State abstractions that are referenced in the current compilation unit
+   --  but are declared outside of it.
+
+   ----------------------------------------------------------------------
+   --  Volatile information
+   ----------------------------------------------------------------------
+
+   All_Volatile_Vars     : Name_Sets.Set := Name_Sets.Empty_Set;
+   Async_Writers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
+   Async_Readers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
+   Effective_Reads_Vars  : Name_Sets.Set := Name_Sets.Empty_Set;
+   Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
+   --  Volatile information
+
+   procedure Add_To_Remote_States (F : Flow_Id);
+   --  Processes F and adds it to Remote_States if it is a remote state
+   --  abstraction.
+
+   procedure Add_To_Volatile_Sets_If_Volatile (F : Flow_Id);
+   --  Processes F and adds it to All_Volatile_Vars, Async_Writers_Vars,
+   --  Async_Readers_Vars, Effective_Reads_Vars, or Effective_Writes_Vars
+   --  as appropriate.
+
+   procedure Print_Tasking_Info_Bag (P : Phase);
+   --  Display the tasking-related information
 
 private
 
@@ -441,12 +279,5 @@ private
    -------------
 
    function GG_Mode return GG_Mode_T is (Current_Mode);
-
-   ---------------------------
-   -- GG_Has_Been_Generated --
-   ---------------------------
-
-   function GG_Has_Been_Generated return Boolean is (GG_Generated);
-   --  @return True iff the Global Graph has been generated.
 
 end Flow_Generated_Globals;
