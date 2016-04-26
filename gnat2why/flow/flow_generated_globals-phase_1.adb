@@ -107,9 +107,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
    procedure GG_Write_Finalize is
       procedure Write_To_ALI (V : in out ALI_Entry);
-      --  Helper subprogram to write the given entry to the ALI file.
-      --  Second parameter has to be in out because of the way serialize
-      --  works.
+      --  Helper subprogram to write the given entry to the ALI file
 
       ------------------
       -- Write_To_ALI --
@@ -216,11 +214,11 @@ package body Flow_Generated_Globals.Phase_1 is
          Write_To_ALI (V);
       end loop;
 
-      --  Write the finalization string.
+      --  Write the finalization string
       V := (Kind => EK_End_Marker);
       Write_To_ALI (V);
 
-      --  Close file and put the package out of writing mode.
+      --  Close file and put the package out of writing mode
       Close_Output_Library_Info;
       Current_Mode := GG_No_Mode;
    end GG_Write_Finalize;
