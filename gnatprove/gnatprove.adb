@@ -363,6 +363,13 @@ procedure Gnatprove is
          Gnatwhy3 : constant String := Compose (Libexec_Bin_Dir, "gnatwhy3");
       begin
          Set_Directory  (Main_Subdir.all);
+         if Verbose then
+            Ada.Text_IO.Put (Gnatwhy3 & " ");
+            for Arg of Args loop
+               Ada.Text_IO.Put (Arg.all & " ");
+            end loop;
+            Ada.Text_IO.New_Line;
+         end if;
          GNAT.OS_Lib.Spawn (Program_Name => Gnatwhy3,
                             Args => Args,
                             Success => Res);
