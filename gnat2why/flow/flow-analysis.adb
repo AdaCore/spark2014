@@ -4277,9 +4277,10 @@ package body Flow.Analysis is
       for C in Task_Instances.Iterate loop
          declare
             This_Task_Type : Entity_Name renames Task_Instances_Maps.Key (C);
+            This_Task_Objects : Task_Lists.List renames Task_Instances (C);
 
          begin
-            for This_Task_Object of Task_Instances_Maps.Element (C) loop
+            for This_Task_Object of This_Task_Objects loop
                for Owning_Kind in Tasking_Owners_Kind loop
                   for Obj of Tasking_Objects (Owning_Kind, This_Task_Type) loop
                      Check_Ownership (Task_Instance => This_Task_Object,
