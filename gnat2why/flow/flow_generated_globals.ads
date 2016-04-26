@@ -21,8 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package implements writing, reading and computing global
---  contracts.
+--  This package implements writing, reading and computing global contracts
 
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;

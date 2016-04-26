@@ -223,11 +223,11 @@ package body Flow_Generated_Globals.Phase_1 is
       Current_Mode := GG_No_Mode;
    end GG_Write_Finalize;
 
-   --------------------------
-   -- GG_Write_Global_Info --
-   --------------------------
+   -----------------------------
+   -- GG_Register_Global_Info --
+   -----------------------------
 
-   procedure GG_Write_Global_Info (GI : Global_Phase_1_Info) is
+   procedure GG_Register_Global_Info (GI : Global_Phase_1_Info) is
       procedure Process_Volatiles_And_States (NS : Name_Sets.Set);
       --  Goes through NS, finds volatiles and remote states and stores them in
       --  the appropriate sets.
@@ -250,7 +250,7 @@ package body Flow_Generated_Globals.Phase_1 is
          end loop;
       end Process_Volatiles_And_States;
 
-   --  Start of processing for GG_Write_Global_Info
+   --  Start of processing for GG_Register_Global_Info
 
    begin
       case GI.Kind is
@@ -268,7 +268,7 @@ package body Flow_Generated_Globals.Phase_1 is
       Process_Volatiles_And_States (GI.Inputs);
       Process_Volatiles_And_States (GI.Outputs);
       Process_Volatiles_And_States (GI.Local_Variables);
-   end GG_Write_Global_Info;
+   end GG_Register_Global_Info;
 
    -------------------------
    -- GG_Write_Initialize --
@@ -286,11 +286,11 @@ package body Flow_Generated_Globals.Phase_1 is
       Current_Comp_Unit := GNAT_Root;
    end GG_Write_Initialize;
 
-   -------------------------
-   -- GG_Write_State_Info --
-   -------------------------
+   ----------------------------
+   -- GG_Register_State_Info --
+   ----------------------------
 
-   procedure GG_Write_State_Info (DM : Dependency_Maps.Map) is
+   procedure GG_Register_State_Info (DM : Dependency_Maps.Map) is
    begin
       for S in DM.Iterate loop
          declare
@@ -310,6 +310,6 @@ package body Flow_Generated_Globals.Phase_1 is
             Add_To_Volatile_Sets_If_Volatile (State_F);
          end;
       end loop;
-   end GG_Write_State_Info;
+   end GG_Register_State_Info;
 
 end Flow_Generated_Globals.Phase_1;

@@ -1635,7 +1635,7 @@ package body Flow is
       --  in SPARK. For them we need to explicitly register accesses to
       --  unsynchronized states and variables that occur in contract.
       for S of Routines_With_Spec_Only loop
-         GG_Write_Global_Info (GI => S);
+         GG_Register_Global_Info (GI => S);
 
          Register_Unsynch_Accesses : declare
             Tasking : Tasking_Info;
@@ -1703,7 +1703,7 @@ package body Flow is
                      DM : constant Dependency_Maps.Map :=
                        Parse_Refined_State (Refined_State_N);
                   begin
-                     GG_Write_State_Info (DM);
+                     GG_Register_State_Info (DM);
                   end;
                end if;
             end;
@@ -1787,7 +1787,7 @@ package body Flow is
                   Local_Definite_Writes =>
                     To_Name_Set (Local_Definite_Writes));
 
-               GG_Write_Global_Info (GI => Global_Info);
+               GG_Register_Global_Info (GI => Global_Info);
             end;
 
          end if;
