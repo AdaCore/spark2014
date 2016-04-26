@@ -155,6 +155,53 @@ package Configuration is
    Max_Non_Blank_Lines : constant := 6;
    --  Maximum number of consecutive non blank lines on standard output
 
+   package File_System is
+      package Install is
+         use GNAT.Strings;
+
+         --  Here we set the various paths that are needed during a run of
+         --  gnatprove. The hierarchy looks as follows:
+         --  prefix
+         --  prefix/lib
+         --  prefix/libexec/spark
+         --  prefix/libexec/spark/bin      - all auxiliary tools, e.g. gprbuild
+         --  prefix/share
+         --  prefix/share/why3             - files that come with Why3
+         --  prefix/share/spark/config     - gprbuild config files
+         --  prefix/share/spark/stdlib     - Why3 files of the stdlib
+         --  prefix/share/spark/theories   - Why3 files for Ada theories
+
+         Prefix                   : constant String := Executable_Location;
+         Lib                      : constant String := Compose (Prefix, "lib");
+         Libexec_Spark            : constant String :=
+           Compose (Compose (Prefix, "libexec"), "spark");
+         Libexec_Spark_Bin        : constant String :=
+           Compose (Libexec_Spark, "bin");
+         Share                    : constant String :=
+           Compose (Prefix, "share");
+         Share_Why3               : constant String :=
+           Compose (Share, "why3");
+         Share_Spark              : constant String :=
+           Compose (Share, "spark");
+         Share_Spark_Theories     : constant String :=
+           Compose (Share_Spark, "theories");
+         Share_Spark_Config       : constant String :=
+           Compose (Share_Spark, "config");
+         Share_Why3_Drivers       : constant String :=
+           Compose (Share_Why3, "drivers");
+         Share_Spark_Runtimes     : aliased constant String :=
+           Compose (Share_Spark, "runtimes");
+         Frames_Cgpr              : constant String := "frames.cgpr";
+         Gnat2why_Cgpr            : constant String := "gnat2why.cgpr";
+         Gpr_Translation_Cnf_File : constant String :=
+           Compose (Share_Spark_Config, Gnat2why_Cgpr);
+         Gpr_Frames_Cnf_File      : constant String :=
+           Compose (Share_Spark_Config, Frames_Cgpr);
+         Z3_Present               : Boolean;
+         CVC4_Present             : Boolean;
+      end Install;
+   end File_System;
+
    Label_Length      : constant := 26;
    --  Maximum length of label in report. Other characters are discarded.
 
@@ -178,39 +225,6 @@ package Configuration is
    Socket_Name : aliased GNAT.Strings.String_Access := null;
    --  Name of the socket used by why3server, based on a hash of the main
    --  object directory.
-
-   --  Here we set the various paths that are needed during a run of
-   --  gnatprove. The hierarchy looks as follows:
-   --  prefix
-   --  prefix/lib
-   --  prefix/libexec/spark
-   --  prefix/libexec/spark/bin      - all auxiliary tools, e.g. gprbuild
-   --  prefix/share
-   --  prefix/share/why3             - files that come with Why3
-   --  prefix/share/spark/config     - gprbuild config files
-   --  prefix/share/spark/stdlib     - Why3 files of the stdlib
-   --  prefix/share/spark/theories   - Why3 files for Ada theories
-   --
-   Prefix           : constant String := Executable_Location;
-   Lib_Dir          : constant String := Compose (Prefix, "lib");
-   Libexec_Dir      : constant String :=
-     Compose (Compose (Prefix, "libexec"), "spark");
-   Libexec_Bin_Dir  : constant String := Compose (Libexec_Dir, "bin");
-   Share_Dir        : constant String := Compose (Prefix, "share");
-   Why3_Dir         : constant String := Compose (Share_Dir, "why3");
-   Gnatprove_Dir    : constant String := Compose (Share_Dir, "spark");
-   Theories_Dir     : constant String := Compose (Gnatprove_Dir, "theories");
-   Gpr_Cnf_Dir      : constant String := Compose (Gnatprove_Dir, "config");
-   Why3_Drivers_Dir : constant String := Compose (Why3_Dir, "drivers");
-   Runtimes_Dir     : aliased constant String :=
-     Compose (Gnatprove_Dir, "runtimes");
-
-   --  The exact places for the  configuration files used by gnatprove
-   Frames_Cgpr              : constant String := "frames.cgpr";
-   Gnat2why_Cgpr            : constant String := "gnat2why.cgpr";
-   Gpr_Translation_Cnf_File : constant String :=
-     Compose (Gpr_Cnf_Dir, Gnat2why_Cgpr);
-   Gpr_Frames_Cnf_File : constant String := Compose (Gpr_Cnf_Dir, Frames_Cgpr);
 
    function SPARK_Report_File (Out_Dir : String) return String;
    --  The name of the file in which the SPARK report is generated:

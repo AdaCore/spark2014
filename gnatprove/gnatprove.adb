@@ -304,8 +304,8 @@ procedure Gnatprove is
       end if;
 
       Call_Gprbuild (Project_File,
-                     Gpr_Frames_Cnf_File,
-                     Compose (Obj_Dir, Frames_Cgpr),
+                     File_System.Install.Gpr_Frames_Cnf_File,
+                     Compose (Obj_Dir, File_System.Install.Frames_Cgpr),
                      Args,
                      Status);
       if Status = 0 and then not Debug then
@@ -360,7 +360,8 @@ procedure Gnatprove is
                5 => new String'(Proof_Dir.all)));
          Res : Boolean;
          Old_Dir  : constant String := Current_Directory;
-         Gnatwhy3 : constant String := Compose (Libexec_Bin_Dir, "gnatwhy3");
+         Gnatwhy3 : constant String :=
+           Compose (File_System.Install.Libexec_Spark_Bin, "gnatwhy3");
       begin
          Set_Directory  (Main_Subdir.all);
          if Verbose then
@@ -634,8 +635,8 @@ procedure Gnatprove is
       Id := Spawn_VC_Server (Proj.Root_Project);
 
       Call_Gprbuild (Project_File,
-                     Gpr_Translation_Cnf_File,
-                     Compose (Obj_Dir, Gnat2why_Cgpr),
+                     File_System.Install.Gpr_Translation_Cnf_File,
+                     Compose (Obj_Dir, File_System.Install.Gnat2why_Cgpr),
                      Args,
                      Status);
       if Status = 0 and then not Debug then
@@ -777,7 +778,8 @@ procedure Gnatprove is
                      Altergo_Command & " -steps-bound %S");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
-                       (Why3_Drivers_Dir, "alt_ergo.drv"));
+                       (File_System.Install.Share_Why3_Drivers,
+                        "alt_ergo.drv"));
          Put_Keyval ("name", "altergo");
          Put_Keyval ("shortcut", "altergo");
          Put_Keyval ("version", "0.99.1");
@@ -802,7 +804,8 @@ procedure Gnatprove is
                        " %f");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
-                       (Why3_Drivers_Dir, "cvc4_gnatprove.drv"));
+                       (File_System.Install.Share_Why3_Drivers,
+                        "cvc4_gnatprove.drv"));
          Put_Keyval ("name", "CVC4");
          Put_Keyval ("shortcut", "cvc4");
          Put_Keyval ("version", "1.5");
@@ -842,7 +845,8 @@ procedure Gnatprove is
                        " %f");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
-                       (Why3_Drivers_Dir, "cvc4_gnatprove_ce.drv"));
+                       (File_System.Install.Share_Why3_Drivers,
+                        "cvc4_gnatprove_ce.drv"));
          Put_Keyval ("name", "CVC4_CE");
          Put_Keyval ("shortcut", "cvc4_ce");
          Put_Keyval ("version", "1.5");
@@ -856,10 +860,12 @@ procedure Gnatprove is
       begin
          Start_Section ("main");
          Put_Keyval ("loadpath",
-                     Ada.Directories.Compose (Why3_Dir, "theories"));
+                     Ada.Directories.Compose
+                       (File_System.Install.Share_Why3, "theories"));
          Put_Keyval ("loadpath",
-                     Ada.Directories.Compose (Why3_Dir, "modules"));
-         Put_Keyval ("loadpath", Theories_Dir);
+                     Ada.Directories.Compose
+                       (File_System.Install.Share_Why3, "modules"));
+         Put_Keyval ("loadpath", File_System.Install.Share_Spark_Theories);
          Put_Keyval ("magic", 14);
          Put_Keyval ("memlimit", 0);
          Put_Keyval ("running_provers_max", 2);
@@ -911,7 +917,8 @@ procedure Gnatprove is
                        " %f");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
-                       (Why3_Drivers_Dir, "z3_gnatprove.drv"));
+                       (File_System.Install.Share_Why3_Drivers,
+                        "z3_gnatprove.drv"));
          Put_Keyval ("name", "Z3");
          Put_Keyval ("shortcut", "z3");
          Put_Keyval ("version", "4.4.1");
@@ -1159,12 +1166,15 @@ procedure Gnatprove is
 
       Path_Val : constant String := Value ("PATH", "");
       Gpr_Val  : constant String := Value ("GPR_PROJECT_PATH", "");
-      Libgnat  : constant String := Compose (Lib_Dir, "gnat");
-      Sharegpr : constant String := Compose (Share_Dir, "gpr");
+      Libgnat  : constant String :=
+        Compose (File_System.Install.Lib, "gnat");
+      Sharegpr : constant String :=
+        Compose (File_System.Install.Share, "gpr");
 
    begin
       --  Add <prefix>/libexec/spark2014/bin in front of the PATH
-      Set ("PATH", Libexec_Bin_Dir & Path_Separator & Path_Val);
+      Set ("PATH",
+           File_System.Install.Libexec_Spark_Bin & Path_Separator & Path_Val);
 
       --  Add <prefix>/lib/gnat & <prefix>/share/gpr in GPR_PROJECT_PATH
       --  so that project files installed with GNAT (not with SPARK)
