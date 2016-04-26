@@ -182,6 +182,10 @@ package body Flow_Error_Messages is
             loop
                exit when Instantiation_Location (Loc) = No_Location;
 
+               --  Any change to the strings below should be reflected in GPS
+               --  plugin spark2014.py, so that the unit for a given message
+               --  is correctly computed.
+
                Context :=
                  To_Unbounded_String
                    (if Comes_From_Inlined_Body (Loc) then
