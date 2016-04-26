@@ -2342,14 +2342,18 @@ package body Gnat2Why.Subprograms is
                   W_Discriminants : Discriminant_Lists.List;
                   --  Container for Why3 representations
 
-                  Discr_N : Node_Id;
+                  Discr_N : Node_Id := Empty;
                   --  Discriminant node in SPARK AST
 
                   P_Expr : W_Expr_Id;
                begin
                   Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-                  Discr_N := First_Discriminant (E);
+                  if Has_Discriminants (E)
+                    or else Has_Unknown_Discriminants (E)
+                  then
+                     Discr_N := First_Discriminant (E);
+                  end if;
                   while Present (Discr_N) loop
                      declare
                         Discr_W : constant Discr :=
