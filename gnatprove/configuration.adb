@@ -579,8 +579,11 @@ ASCII.LF;
       Compile_Lib ("bool", "Bool");
       Compile_Lib ("int", "Int");
       Compile_Lib ("int", "Abs");
+      Compile_Lib ("int", "MinMax");
       Compile_Lib ("int", "EuclideanDivision");
       Compile_Lib ("int", "ComputerDivision");
+      Compile_Lib ("bv", "Pow2int");
+      Compile_Lib ("bv", "BV_Gen");
    end Prepare_Prover_Lib;
 
    ---------------
