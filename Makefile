@@ -34,6 +34,8 @@
 
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
+INCLUDEDIR=$(INSTALLDIR)/include/spark
+LIBDIR=$(INSTALLDIR)/lib/gnat
 EXAMPLESDIR=$(SHAREDIR)/examples/spark
 DOCDIR=$(SHAREDIR)/doc/spark
 GNATPROVEDIR=$(SHAREDIR)/spark
@@ -95,13 +97,16 @@ install-all:
 	$(MV) install/bin/cvc4 install/libexec/spark/bin 2> /dev/null || true
 
 install:
-	mkdir -p $(INSTALLDIR)/bin $(CONFIGDIR) $(THEORIESDIR)
+	mkdir -p $(INSTALLDIR)/bin $(CONFIGDIR) $(THEORIESDIR) \
+	  $(INCLUDEDIR) $(LIBDIR)
 	@echo "generating default target.atp in $(INSTALLDIR)/bin:"
 	$(GNATMAKE) -q -c -u -gnats spark2014vsn.ads \
 	  -gnatet=$(INSTALLDIR)/bin/target.atp
 	$(CP) share/spark/config/*cgpr $(CONFIGDIR)
 	$(CP) share/spark/theories/*why $(THEORIESDIR)
 	$(CP) share/spark/theories/*mlw $(THEORIESDIR)
+	$(CP) include/*.ad? $(INCLUDEDIR)
+	$(CP) include/proof $(LIBDIR)
 
 doc: $(DOC)
 
