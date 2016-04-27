@@ -12121,6 +12121,7 @@ package body Gnat2Why.Expr is
    --------------------------------
 
    function Transform_Priority_Pragmas (Prag : Node_Id) return W_Prog_Id is
+
       Pname   : constant Name_Id   := Pragma_Name (Prag);
       Prag_Id : constant Pragma_Id := Get_Pragma_Id (Pname);
       Expr    : constant Node_Id :=
@@ -12136,15 +12137,20 @@ package body Gnat2Why.Expr is
       --  System.Any_Priority or System.Interrupt_Priority, respectively.
       --  (D.3 (6))
 
-      Ty      : constant Entity_Id :=
-        (if Ekind (Scope (Prag)) in Task_Kind then
-             (if Prag_Id = Pragma_Interrupt_Priority then
-                   RTE (RE_Any_Priority)
-              else RTE (RE_Priority))
+      --  We use the Current_Subp entity to know whether we are in a task or a
+      --  PO
+
+      Is_In_Task_Type : constant Boolean :=
+        Ekind (Current_Subp) in Task_Kind;
+      Ty              : constant Entity_Id :=
+        (if Is_In_Task_Type then
+           (if Prag_Id = Pragma_Interrupt_Priority then
+                 RTE (RE_Any_Priority)
+            else RTE (RE_Priority))
          else (if Prag_Id = Pragma_Interrupt_Priority then
-                RTE (RE_Interrupt_Priority)
+                    RTE (RE_Interrupt_Priority)
                else RTE (RE_Any_Priority)));
-      Why_Expr : W_Expr_Id;
+      Why_Expr        : W_Expr_Id;
    begin
       if Present (Expr) then
          Why_Expr :=
