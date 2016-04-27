@@ -861,6 +861,18 @@ package SPARK_Util is
    --  @return the entity of the task body for the given type, similar
    --    to what Subprogram_Body_Entity might produce.
 
+   function Visible_Declarations_of_Task_Type (E : Entity_Id) return List_Id
+   is (Visible_Declarations (Task_Definition (Parent (E))))
+   with Pre => Is_Task_Type (E);
+   --  @param E a protected type entity
+   --  @return the list of visible declarations of the protected type
+
+   function Private_Declarations_of_Task_Type (E : Entity_Id) return List_Id
+   is (Private_Declarations (Task_Definition (Parent (E))))
+   with Pre => Is_Task_Type (E);
+   --  @param E a protected type entity
+   --  @return the list of visible declarations of the protected type
+
    ------------------------------------------
    -- Queries related to protected objects --
    ------------------------------------------

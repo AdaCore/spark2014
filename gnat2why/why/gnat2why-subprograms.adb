@@ -3113,6 +3113,8 @@ package body Gnat2Why.Subprograms is
 
       Why_Body   : W_Prog_Id := +Void;
       Post       : W_Pred_Id;
+      Priv_Decls : constant List_Id := Private_Declarations_of_Task_Type (E);
+      Vis_Decls  : constant List_Id := Visible_Declarations_of_Task_Type (E);
    begin
       --  We open a new theory, so that the context is fresh for this task
 
@@ -3161,6 +3163,21 @@ package body Gnat2Why.Subprograms is
 
          Why_Body :=
            Transform_Declarations_Block (Declarations (Body_N), Why_Body);
+      end if;
+
+      --  We check any assertions and pragma (Interrupt)_Priority in the
+      --  declarations of the task
+
+      --  Translate public and private declarations of the package
+
+      if Present (Priv_Decls) and then
+        Private_Spec_In_SPARK (E)
+      then
+         Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
+      end if;
+
+      if Present (Vis_Decls) then
+         Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
       end if;
 
       --  We check that the call graph starting from this task respects the
