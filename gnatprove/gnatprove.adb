@@ -584,65 +584,67 @@ procedure Gnatprove is
       Proj         : Project_Tree;
       Status       : out Integer)
    is
-      use String_Lists;
-      Args     : String_Lists.List;
       Obj_Dir  : constant String :=
         Proj.Root_Project.Object_Dir.Display_Full_Name;
-      Opt_File : constant String :=
-        Pass_Extra_Options_To_Gnat2why
-          (Translation_Phase => True,
-           Obj_Dir           => Obj_Dir,
-           Proj_Name         => Project_File);
-      Del_Succ : Boolean;
-      Id       : Process_Descriptor;
    begin
-
       Generate_Why3_Conf_File (Obj_Dir);
+      declare
+         use String_Lists;
+         Args     : String_Lists.List;
+         Opt_File : constant String :=
+           Pass_Extra_Options_To_Gnat2why
+             (Translation_Phase => True,
+              Obj_Dir           => Obj_Dir,
+              Proj_Name         => Project_File);
+         Del_Succ : Boolean;
+         Id       : Process_Descriptor;
+      begin
 
-      Args.Append ("--subdirs=" & String (Subdir_Name));
-      Args.Append ("--restricted-to-languages=ada");
-      Args.Append ("-s");
+         Args.Append ("--subdirs=" & String (Subdir_Name));
+         Args.Append ("--restricted-to-languages=ada");
+         Args.Append ("-s");
 
-      if Minimal_Compile then
-         Args.Append ("-m");
-      end if;
+         if Minimal_Compile then
+            Args.Append ("-m");
+         end if;
 
-      if IDE_Progress_Bar then
-         Args.Append ("-d");
-      end if;
+         if IDE_Progress_Bar then
+            Args.Append ("-d");
+         end if;
 
-      if Only_Given then
-         Args.Append ("-u");
-      end if;
+         if Only_Given then
+            Args.Append ("-u");
+         end if;
 
-      for File of CL_Switches.File_List loop
-         Args.Append (File);
-      end loop;
+         for File of CL_Switches.File_List loop
+            Args.Append (File);
+         end loop;
 
-      Args.Append ("-cargs:Ada");
-      Args.Append ("-gnatc");              --  No object file generation
-      Args.Prepend ("--complete-output");  --  Replay results if up-to-date
+         Args.Append ("-cargs:Ada");
+         Args.Append ("-gnatc");              --  No object file generation
+         Args.Prepend ("--complete-output");  --  Replay results if up-to-date
 
-      Args.Append ("-gnates=" & Opt_File);
+         Args.Append ("-gnates=" & Opt_File);
 
-      for Carg of CL_Switches.Cargs_List loop
-         Args.Append (Carg);
-      end loop;
-      if RTS_Dir.all /= "" then
-         Args.Append ("--RTS=" & RTS_Dir.all);
-      end if;
+         for Carg of CL_Switches.Cargs_List loop
+            Args.Append (Carg);
+         end loop;
+         if RTS_Dir.all /= "" then
+            Args.Append ("--RTS=" & RTS_Dir.all);
+         end if;
 
-      Id := Spawn_VC_Server (Proj.Root_Project);
+         Id := Spawn_VC_Server (Proj.Root_Project);
 
-      Call_Gprbuild (Project_File,
-                     File_System.Install.Gpr_Translation_Cnf_File,
-                     Compose (Obj_Dir, File_System.Install.Gnat2why_Cgpr),
-                     Args,
-                     Status);
-      if Status = 0 and then not Debug then
-         GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
-      end if;
-      Kill (Id);
+         Call_Gprbuild (Project_File,
+                        File_System.Install.Gpr_Translation_Cnf_File,
+                        Compose (Obj_Dir, File_System.Install.Gnat2why_Cgpr),
+                        Args,
+                        Status);
+         if Status = 0 and then not Debug then
+            GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
+         end if;
+         Kill (Id);
+      end;
    end Flow_Analysis_And_Proof;
 
    ---------------------------

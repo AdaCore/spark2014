@@ -509,6 +509,9 @@ ASCII.LF;
         (Compose (Main_Subdir.all, "why3_libs"), Name => Prover_Name);
 
       procedure Compile_Lib (Dir, File : String);
+      --  compile a Coq library
+      --  @param Dir  the directory where the file is located
+      --  @param File the file to be compiled
 
       -----------------
       -- Compile_Lib --
