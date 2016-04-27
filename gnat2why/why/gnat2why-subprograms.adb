@@ -2673,7 +2673,7 @@ package body Gnat2Why.Subprograms is
               Transform_Declarations_For_Body (Declarations (Body_N)),
               Transform_Statements_And_Declarations
                 (Statements
-                    (Handled_Statement_Sequence (Body_N))),
+                   (Handled_Statement_Sequence (Body_N))),
               Raise_Stmt));
 
          --  Enclose the subprogram body in a try-block, so that return
