@@ -1,0 +1,29 @@
+.\" Manpage for ironsides.
+.TH man 1 "06 May 2010" "1.0" "nuseradd man page"
+.SH NAME
+ironsides \- authoritative DNS server
+
+.SH SYNOPSIS
+spark_dns_main configuration_file_name
+.SH DESCRIPTION
+IRONSIDES is an authoritative DNS server that is provably invulnerable to
+many of the problems that plague other servers. It achieves this property
+through the use of formal methods in its design, in particular the language
+Ada and the SPARK formal methods tool set. Code validated in this way is
+provably exception-free, contains no data flow errors, and terminates only
+in the ways that its programmers explicitly say that it can. These are very
+desirable properties from a computer security perspective.
+
+IRONSIDES is not a complete implementation of DNS. In particular, it does
+not support zone transfers or recursive queries. It does, however, support
+a sufficient number of DNS records to be useful as an authoritative DNS
+server for an enterprise.
+
+WWW: http://ironsides.martincarlisle.com
+.SH OPTIONS
+spark_dns_main does not take any options. However, you must supply a configuration file. 
+dfcs.usafa.edu.zonefile is a sample configuration file.
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+Martin Carlisle (ironsides@martincarlisle.com)

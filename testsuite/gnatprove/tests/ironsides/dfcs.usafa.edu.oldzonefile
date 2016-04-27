@@ -1,0 +1,42 @@
+; CURRENTLY SUPPORTED RECORDS:  {A, AAAA, CNAME, MX, NS, PTR}
+; TO DO:
+;	print diagnostic message if any record table fills up
+;	support for {SOA} records
+;	$ORIGIN directive
+;	$TTL directive
+;	$INCLUDE directive (or else indicate not supported)
+;	suffixes {s,m,h,d,w} for TTL values
+;	@ symbol
+;	support for arbitrary domain names and labels (see
+;	http://tools.ietf.org/html/rfc2181#section-11–)
+
+fagin0.dfcs.usafa.edu.	3600	IN	A	128.236.9.2
+fagin1.dfcs.usafa.edu.	A	128.236.9.2
+doc.dfcs.usafa.edu. CNAME    carlisle.dfcs.usafa.edu.
+ ;
+        
+dfcs.usafa.edu.	NS	ns.dfcs.usafa.edu.
+dfcs.usafa.edu.	NS	carlisle.dfcs.usafa.edu.
+ns.dfcs.usafa.edu.	A	128.236.9.7
+carlisle.dfcs.usafa.edu.	A	128.236.9.8
+e.dfcs.usafa.edu. cname    carlisle.dfcs.usafa.edu. ; oh so clever
+boleng.dfcs.usafa.edu.   10800	IN	A 128.236.9.15; comment
+gibson.dfcs.usafa.edu.	MX	1	mail0.dfcs.usafa.edu.
+gibson.dfcs.usafa.edu.	IN	MX	3	mail1.dfcs.usafa.edu.
+gibson.dfcs.usafa.edu.	MX	5	mail2.dfcs.usafa.edu.
+mail0.dfcs.usafa.edu.   10800	IN	A 128.236.9.16; comment
+mail1.dfcs.usafa.edu.   10800	IN	A 128.236.9.17; comment
+mail2.dfcs.usafa.edu.   10800	IN	A 128.236.9.18; comment
+ipv6.dfcs.usafa.edu.	256	IN	AAAA E:0:0:0:0:00b0:FFFE:ffff
+ipv6.dfcs.usafa.edu.	256	IN	AAAa D:1:2:3:4:5:6:7
+ipv6.dfcs.usafa.edu.	256	IN	AAAA C:0:0:0:80:EC:12:11
+ipv6.dfcs.usafa.edu.	256	IN	aaaa 0B:0:0:0:0:00b0:FFFE:ffff
+15.9.236.128.in-addr.arpa.	IN	PTR	boleng.dfcs.usafa.edu.
+dfcs.usafa.edu.		In	SOA	ns.dfcs.usafa.edu. hostmaster.example.com. (
+               2003080800 ; serial number
+               1d12h      ; refresh =  1 day 12 hours
+               15M        ; update retry = 15 minutes
+               3W12h      ; expiry = 3 weeks + 12 hours
+               2h20M      ; minimum = 2 hours + 20 minutes
+			)
+ipv6.dfcs.usafa.edu.	256	IN	AAAA C:DD:EEE:FFFF:80:EC:12:11

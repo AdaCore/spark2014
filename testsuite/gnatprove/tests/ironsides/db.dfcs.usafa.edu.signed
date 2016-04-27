@@ -1,0 +1,193 @@
+; File written on Tue Dec  6 11:00:00 2011
+; dnssec_signzone version 9.7.0-P1
+dfcs.usafa.edu.	86400	IN SOA	ns1.dfcs.usafa.edu.dfcs.usafa.edu. sleven.dfcs.usafa.edu. (
+					2010       ; serial
+					10800      ; refresh (3 hours)
+					3600       ; retry (1 hour)
+					604800     ; expire (1 week)
+					86400      ; minimum (1 day)
+					)
+			86400	DNSKEY	256 3 5 (
+					AwEAAeto+Sv25GX00IUsQTnQS+CBUMMdHrLy
+					qtryl8tG1N1iAvepgAUrhOzOK31/AR/+XgNL
+					EFnc5PovHxQlJELmC+jKCHBK/iNDkbT6WlXd
+					9FRhOKk+7g0zNmvQPQmgjg6ECDJ2dz8Eh0EE
+					JevQEFNQNW95IksslGABzfrXW16fzlQt
+					) ; key id = 11946
+			86400	RRSIG	SOA 5 3 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					towOVY2GEwyPz+/4hkTW9CPEYDjNBkYqx3G7
+					i33J4usR6pkfkaunGqsBEBS3t3fiyRMa1ANm
+					LvUrnjODIlpwxggoujFDZonh6jHOGw+eXimL
+					Q5AY8+VHKz41pA1VKQs9MJqZ72Dpvzb3VSu9
+					7ElQHV6RAYkQ1pZOFShVgXDIPtA= )
+			86400	NS	ns1.dfcs.usafa.edu.
+			86400	RRSIG	NS 5 3 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					JeSKUYWz0W7wScOGAK0wBOitQUpjRg3pCmoT
+					jIo00xEN/tBvpR0DA5SCW6sOHP6n3wWoT1XJ
+					aiPykLnrJhPxRq86YgYknquZRTOnzjkfMPyA
+					gvuqYa6BjAohOhcpOU9p1cM5jUHQCIa++oAp
+					jTdb9p7noWn0KMblFaIvRxBY9so= )
+			86400	MX	10 smtp.dfcs.usafa.edu.
+			86400	RRSIG	MX 5 3 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					6GCAdI5XcnuANrozD6AkUgwzKykLLyDPybKi
+					EyoSe9bRr0g0LZJuntrTPfOpExjUcrk2OOyg
+					xuxZnnwYuXasjxOJEWuJXQ729xvASFCypX3G
+					DNtnb6uEu+XIC/ijFMGxj7X0/Aiw87ug51I/
+					xcxtOrijkP3F+L6jRET6P0DlCDQ= )
+			86400	NSEC	jabber.dfcs.usafa.edu. NS SOA MX RRSIG NSEC DNSKEY
+			86400	RRSIG	NSEC 5 3 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					QQ7/L7qnJOg/OKqCfyeOMRRbtp/AW4qiqS7y
+					gmA+y2wKnmpZXfjf1ZxOAJn5AZ+MjNZlvxNb
+					4E3j+KOM5BtdYP0YO6Y3BTY7BluaJwm3Dwy2
+					/6Clu0l1wmgNPgRm+K2TH5x70UrRZn6Q4UNC
+					chDCYnXFUbX1yCKFGWh21Iwb+N0= )
+			86400	DNSKEY	257 3 5 (
+					AwEAAeAWnj/F6ZT4Z4CxpV7RrMk9n0D0gdeF
+					L1XlninDiibDnbsSujpN3Qp58l1vgkaoQ2Jt
+					5jmfX30R7fub4htY5UzSHkrw88vwhuJ9b7cF
+					QHmB+35KBXSgpDOUkqQzQSDjciR6cWgGIb3Q
+					jj8BQKk6plpS43BjqFHkLQnj/chlcTgVogZo
+					HsAOTN4n7WGBS5ulqDFjUrJ4KOH4r0eWrVmb
+					bWk5hTmDDy2Ld2lqUp/k3uzh0scwh1oOr4sQ
+					12DABSR245nEWU1unB4UxkKJaQMaJMoW84uh
+					cIGlH6meBoPBToO0tuaNpT8Oz4xj2day+8qO
+					V/EOw2YI9Tc45wIXUhbKII8Z0CRtGQXpXcNe
+					lbUwHSr5lG0HTT2xETsRi8/frKr6qA+QY2b4
+					obj3UcYn1cFMTl0ZWrYmi4LdI31iN8NBEdZq
+					x5gKAJGlAp5T38LoH7gze7Ap73aYNpySwszQ
+					sNFclEl9v5/zr3pD/6j6b0gmb12m9dQQj8DJ
+					Nc/tbYY1Lct48p1JIsaxv8VnOADZijmYcBC7
+					NcgM/M8WQyH2Ghb+J25MkIl8Dw8F5k+5YjVp
+					6PVGu7B+fzwChLSngbJvbcCZAucNTIDaiXWR
+					PiqGzdW/Mm5rgzVNAe2UlMp566amaDG5mdAW
+					XjLQXE6vFZoCKbP0mGSZ4lS3QWaDB2gUpOrA
+					gg6n
+					) ; key id = 59068
+			86400	RRSIG	DNSKEY 5 3 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					uqQBP8GKfhV6Sm7mCwncs3c+M42H1xKOXvCA
+					iUResh7A9TABB7FZ/ojZXyZyqEHmQ40n36qD
+					qRPV5dIavolC+a6LIBX3E1zQJjOevKFoDQiu
+					k5FSGARdg3AdquG401ZLr53s9J6WZdLDQtOF
+					EuKYI4qPj90/a8W6cQdLcP9hzTc= )
+			86400	RRSIG	DNSKEY 5 3 86400 20120105150000 (
+					20111206150000 59068 dfcs.usafa.edu.
+					Xpcg952PyQJRfwZGIGvIVd3HQorJwNHCLHqR
+					crYwCrjE731P3lEFZVFMSEXD3RpHz3tAwkDF
+					JrHHmUKxDcjkS++ExXSSLDMmMv763TN5N9gE
+					iBsVJjdCtz31Iv/si0MxY6CVqqnK1rfZs0Ci
+					WDwdPqVzeA4p/yKtdd3g3DLGFDgdKhMIbFTG
+					SWQACykP6KitnMmq9uKC3nrTzEmCBPdlczP0
+					cn4yAGY3yeYC0TY2XipksBnLJW+giqn5rzgG
+					Z4t/zwQKjJZAqtrz9haL9bxk4fBduRAXoKOP
+					bPzuH1rFjnmeihU7tFnw1Hi3Bvylxcd7Y+Xz
+					PJcKFvy+ciOl8RleLsAhnm//L7pZhonb/N4K
+					x+aniwvXH8E2zmUd05dg9EI0emPQRbBgIsWW
+					pkNEpJImN5SFxxe4g3klpZEaKSBfRUsT9C4F
+					7Krpiiqixpj9Q4eoH9uJw6zN/HCfpFPFcXiV
+					BNrIyrrlFpKw35J7QXJvNpipJm67duOM6ZA+
+					kY6UN+Wgzfxl6sEowULhqKAS+SftDK+GV9CE
+					F7EBo5WcylPad5WiP2niIP4AUUfCcy7eEOjl
+					dHD/n2ZhtHpFKfK6RAZsmitWPSzcEsC4plgu
+					+e7VkytVfG98DTPOMwM+7oMV/DZoDYiEc1IT
+					9py0Yoc7sHSlfgS7e+TajOksOIZpSU620FQ= )
+jabber.dfcs.usafa.edu.	86400	IN A	10.1.20.40
+			86400	RRSIG	A 5 4 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					SOyeZQxMI7ohprsb+zqoM2UsXnxqAoBwKkgd
+					CTXpeBw7QIWXzsazbYXWfE08J/Ww88R+dTh9
+					dAlFL6pHlyf7FVrX4Vn2uRY+KEGD8KaMSiqP
+					RGImpyGhJKhnM7uvEoLdmOVWlr/llvtNFQaM
+					WrCKMygTxhjYEgWejagr9qil/j0= )
+			86400	NSEC	localhost.dfcs.usafa.edu. A RRSIG NSEC
+			86400	RRSIG	NSEC 5 4 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					GK3ZDfdD1hVNRdfIiiPcNFtVTsDvcaKx2+UZ
+					tpSosfU2w3GhWca1GluLIm2U/FmgAYyCY6AZ
+					qvl3U3b/i2q/VHwzQqiyK2x4VrtgSbOYBSED
+					88UtVTHn8CmekjTTN1E/YADs2Bki45igBYZ6
+					Fq4HT6qJOole+NlbZojjBDtHGv0= )
+log.dfcs.usafa.edu.	86400	IN A	10.1.20.80
+			86400	RRSIG	A 5 4 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					mAlGcYx/u+EULs4eJMNu0CPeIS8rGJrey3Xs
+					w2/TuZLVEFjvj5hlrYz+ShEzhwKepdIwLtln
+					bXIeu3hH7gKIODmXmofNCn+F8p81op0jWkok
+					Ckmg0VRNzt70Pvcuqoz36slFNhtnryV74RSk
+					JwTzrwh/SKoNtxTHYTqdCMhlLGY= )
+			86400	NSEC	ns1.dfcs.usafa.edu. A RRSIG NSEC
+			86400	RRSIG	NSEC 5 4 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					WeXskN985DFeKXzE5cYD3mTCLnHTLPvpeCtp
+					trRaZaCPM9P40ROZSiEYNE4rt0tvd69dgOhu
+					Mzxm6bl601MTKhIbXmslo1MH8mKuVZESPT+w
+					Iau6uzjB6tH4yeCgabeGo0o8QkbLyeKg0c1f
+					90bUGvUCyeYRCtIocoadSKYPtDM= )
+ns1.dfcs.usafa.edu.	86400	IN A	10.1.20.5
+			86400	RRSIG	A 5 4 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					cufiIlxW90Ggdi7zpMJgYqjBjE461I3JG+lt
+					DF4bBtCP026cH5N14n+B8Rh0fm8P4VkybARq
+					kOUP+WNl5wzmo0kfhych6ZpPlYQq+LfuvG01
+					QOv/o3xOnEGOOMXv8e4gcwpqDB1xx6rKZO3p
+					xlBE1SwK+cNYNg5zXJxXHmlAQo4= )
+			86400	NSEC	ns2.dfcs.usafa.edu. A RRSIG NSEC
+			86400	RRSIG	NSEC 5 4 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					A2auuyTFlqWwtEz8RvUyuq7xgoSdAap6qsDU
+					JnTfbJjCIMnUbWc/2de+SGoNSiN/nLLbd2rW
+					rUIkJ/e1qmdyPnhe52538VC1Or5T7kkxftMF
+					J2RNn88TaAGe0+tZsUV62+VU0Q4RLoUrWsxK
+					A0G/B0yZy1E9qJeLVbbOeUY1H6E= )
+localhost.dfcs.usafa.edu. 86400	IN A	127.0.0.1
+			86400	RRSIG	A 5 4 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					akH2HJhYky/LPnpEpo3NZZMIBznR9ex59MJz
+					qawIXoDFHfmmx6vgCVldGhvfhsbAJqpefNVa
+					KqYTIcqTcLzhKyQGEIT0a7QwRZefVeQXW/ON
+					oRMpGrpeYxnE6klN1en7ORvmnwuFyqMs0G1N
+					YR2uXVzYX3wOs4yPkv/YVAfnNlc= )
+			86400	NSEC	log.dfcs.usafa.edu. A RRSIG NSEC
+			86400	RRSIG	NSEC 5 4 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					dHzEdjqNV3V8T9Ovfzf0SP9M+UtY4i4KK2at
+					QRq4FFghGsx6C0IMuTR9X+txoFJFTrE3Hds2
+					ej4Nch55fCSyJYz6RegtwUlJV2vGUh4qnJQE
+					fA/O3PAkj2DKWpEYs3mqxAOV2KEFLkmPfzH3
+					KHVpDWShjjtyuIyu4f7RjBHBqK4= )
+www.dfcs.usafa.edu.	86400	IN A	10.1.20.50
+			86400	RRSIG	A 5 4 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					rNREwZyMMj63FtvaflkyATBKvBxRgaCtOFaA
+					tdrxjGuBe7csDnl4OYmCO2xqkm5/wq9jeL4x
+					g0E+rsKYQ3xhfwAQh8onC5IY7j50AFsyWrg5
+					VlQmt2xr7tgC/wTfW8QSnVQ20iwkyfx6pTHx
+					AzwJaEcZqcrQKFL75wozjdR0uh8= )
+			86400	NSEC	dfcs.usafa.edu. A RRSIG NSEC
+			86400	RRSIG	NSEC 5 4 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					LFiYuqIoDYCPmZ5cYTgUdF3MhWZclsVoq0CU
+					EQWYX7L4WWzimjiLkuDIYB5Y+0DC8NxmzXS1
+					P/QuvGW4kTJRXdsVFaIeN3FgzK0+2Z+OKXpF
+					xkH5hJJtlnsGIsSt0sStpt01AaEHuwdDtXwa
+					rpX5dgny4E4jPgH4/hNV82Tfbog= )
+ns2.dfcs.usafa.edu.	86400	IN A	10.1.20.6
+			86400	RRSIG	A 5 4 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					4cztwblJV4jXK+yCu1OANXFm/HY7UY0kFNF1
+					Pfk8IYe2nYzLg5nyScUGBFVHRJjR5Ht6hm87
+					Cv/stFR+v+xERtfe9jVJDPKDzMHxgYagWRuu
+					IpP3gPDF4ZlPioDGZsGxtquYPL6yeKsGy4ql
+					O3oM4quIIzJEfLOUI+bHjoeA2i8= )
+			86400	NSEC	www.dfcs.usafa.edu. A RRSIG NSEC
+			86400	RRSIG	NSEC 5 4 86400 20120105150000 (
+					20111206150000 11946 dfcs.usafa.edu.
+					5qwSn78baMwFtgmGjRZA0okvd//hk3wRtbL4
+					iaYA8VUAVhhaSFHWUNdBA8f8uEID7tq6ImtX
+					43Opt9S92mbfpfg4GGQ73Va8iNfCvddevxxB
+					ccJB3ZEDleIwErbAFPUY0YXNbJsh4zuE9cim
+					sesIpw4RMNBjsMpiD84KqNj+BpY= )
