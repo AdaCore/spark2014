@@ -12125,7 +12125,9 @@ package body Gnat2Why.Expr is
       Pname   : constant Name_Id   := Pragma_Name (Prag);
       Prag_Id : constant Pragma_Id := Get_Pragma_Id (Pname);
       Expr    : constant Node_Id :=
-        Expression (First (Pragma_Argument_Associations (Prag)));
+        (if Present (Pragma_Argument_Associations (Prag)) then
+            Expression (First (Pragma_Argument_Associations (Prag)))
+         else Empty);
 
       --  For the Priority aspect, the value of the expression is converted to
       --  the subtype Priority; for the Interrupt_Priority aspect, this value
@@ -12181,8 +12183,9 @@ package body Gnat2Why.Expr is
                  Expr   => Why_Expr),
               Reason   => VC_Range_Check,
               Kind     => EW_Check);
+      else
+         return +Void;
       end if;
-      return +Void;
    end Transform_Priority_Pragmas;
 
    -------------------------------------
