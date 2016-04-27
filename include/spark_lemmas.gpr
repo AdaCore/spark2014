@@ -1,0 +1,15 @@
+project SPARK_Lemmas is
+
+   for Object_Dir use External("SPARK_LEMMAS_OBJECT_DIR");
+
+   for Source_Dirs use (".");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnato13", "-gnata");
+   end Compiler;
+
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+
+end SPARK_Lemmas;
