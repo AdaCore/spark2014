@@ -23,19 +23,20 @@
 
 with Ada.Text_IO;
 
-with Elists;                         use Elists;
-with Errout;                         use Errout;
-with Namet;                          use Namet;
-with Nlists;                         use Nlists;
-with Output;                         use Output;
-with Sem_Util;                       use Sem_Util;
-with Sinput;                         use Sinput;
-with Snames;                         use Snames;
-with Stand;                          use Stand;
+with Elists;                      use Elists;
+with Errout;                      use Errout;
+with Namet;                       use Namet;
+with Nlists;                      use Nlists;
+with Opt;                         use Opt;
+with Output;                      use Output;
+with Sem_Util;                    use Sem_Util;
+with Sinput;                      use Sinput;
+with Snames;                      use Snames;
+with Stand;                       use Stand;
 
-with Common_Iterators;               use Common_Iterators;
-with SPARK_Util;                     use SPARK_Util;
-with VC_Kinds;                       use VC_Kinds;
+with Common_Iterators;            use Common_Iterators;
+with SPARK_Util;                  use SPARK_Util;
+with VC_Kinds;                    use VC_Kinds;
 
 with Flow.Analysis.Antialiasing;
 with Flow.Analysis.Sanity;
@@ -4384,5 +4385,93 @@ package body Flow.Analysis is
          end;
       end loop;
    end Check_CAE_In_Preconditions;
+
+   --------------------------
+   -- Check_Elaborate_Body --
+   --------------------------
+
+   procedure Check_Elaborate_Body (FA : in out Flow_Analysis_Graphs)
+   is
+      use Flow_Graphs;
+
+      Visible_Vars : Flow_Id_Sets.Set;
+
+      procedure Visitor (V  : Vertex_Id;
+                         TV : out Simple_Traversal_Instruction);
+      --  Emit a high check for all publically visible variables modified
+      --  at this vertex.
+
+      procedure Visitor (V  : Vertex_Id;
+                         TV : out Simple_Traversal_Instruction)
+      is
+         K : constant Flow_Id := FA.PDG.Get_Key (V);
+      begin
+         TV := Continue;
+
+         if not Present (K) then
+            return;
+         end if;
+
+         --  Only check nodes in the body
+         if K.Kind in Direct_Mapping | Record_Field and then
+           Get_Flow_Scope (K.Node).Section in Spec_Part | Private_Part
+         then
+            return;
+         end if;
+
+         for Var of Visible_Vars loop
+            if FA.Atr (V).Variables_Defined.Contains (Var) then
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "modification of & in elaboration requires " &
+                    "Elaborate_Body on package &",
+                  Severity => High_Check_Kind,
+                  N        => Error_Location (FA.PDG, FA.Atr, V),
+                  F1       => Var,
+                  F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                  Tag      => Pragma_Elaborate_Body_Needed,
+                  Vertex   => V);
+            end if;
+         end loop;
+      end Visitor;
+   begin
+      --  We only do this check when we use the gnat static elaboration
+      --  model, since otherwise the front-end has a much more brutal
+      --  method of enforcing this.
+      if Dynamic_Elaboration_Checks then
+         return;
+      end if;
+
+      --  We only apply this check to a package without Elaborate_Body.
+      if Has_Pragma_Elaborate_Body (FA.Spec_Entity) then
+         return;
+      end if;
+
+      --  Also only applicable to packages that can be seen from the
+      --  standard scope.
+      if not Is_Visible (FA.Spec_Entity, Null_Flow_Scope) then
+         return;
+      end if;
+
+      --  We only check variables that we claim to initialize (either
+      --  because we said so or because flow thinks so), since otherwise
+      --  their use will be flagged as a potentially uninitialized read.
+      Visible_Vars := Flow_Id_Sets.Empty_Set;
+      declare
+         Tmp : constant Flow_Id_Sets.Set := FA.Spec_Vars;
+      begin
+         for Var of Tmp loop
+            if Is_Initialized_At_Elaboration (Var, FA.S_Scope) and then
+              not Is_Constant (Var)
+            then
+               Visible_Vars.Insert (Var);
+            end if;
+         end loop;
+      end;
+
+      FA.PDG.DFS (Start         => FA.Start_Vertex,
+                  Include_Start => False,
+                  Visitor       => Visitor'Access);
+   end Check_Elaborate_Body;
 
 end Flow.Analysis;

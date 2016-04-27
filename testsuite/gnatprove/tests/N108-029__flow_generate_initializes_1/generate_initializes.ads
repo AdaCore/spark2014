@@ -1,5 +1,5 @@
 package Generate_Initializes
-  with Abstract_State => State
+  with Elaborate_Body, Abstract_State => State
 is
    A : Integer := 0;
    B : Integer;

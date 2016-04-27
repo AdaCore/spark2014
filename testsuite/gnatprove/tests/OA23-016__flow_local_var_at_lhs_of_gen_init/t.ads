@@ -1,4 +1,4 @@
-package T is
+package T with Elaborate_Body Is
    V : Integer
      with Constant_After_Elaboration;
 

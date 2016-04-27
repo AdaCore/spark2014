@@ -1,4 +1,4 @@
-package Foo with
+package Foo with Elaborate_Body,
    Abstract_State    => State,
    Initializes       => State,
    Initial_Condition => F1 and F3 and F4 and Get_A = C

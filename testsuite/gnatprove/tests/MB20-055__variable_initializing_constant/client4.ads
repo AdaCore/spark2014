@@ -4,10 +4,7 @@
 with Trouble;
 package Client4
   with SPARK_Mode => On,
-       Initializes => (null => Trouble.V)
+       Initializes => (C => Trouble.V)
 is
-   C : constant Integer := (Trouble.V + 1);   
+   C : constant Integer := (Trouble.V + 1);
 end Client4;
-
-
-

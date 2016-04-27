@@ -994,6 +994,7 @@ package body Flow is
             FA.Initializes_N := Get_Pragma (E, Pragma_Initializes);
 
             FA.Visible_Vars  := Flow_Id_Sets.Empty_Set;
+            FA.Spec_Vars     := Flow_Id_Sets.Empty_Set;
 
             FA.Is_Generative := No (FA.Initializes_N);
 
@@ -1007,6 +1008,7 @@ package body Flow is
                                             Pragma_Initializes);
 
             FA.Visible_Vars  := Flow_Id_Sets.Empty_Set;
+            FA.Spec_Vars     := Flow_Id_Sets.Empty_Set;
 
             FA.Is_Generative := No (FA.Initializes_N);
 
@@ -1567,6 +1569,9 @@ package body Flow is
                   Analysis.Find_Non_Elaborated_State_Abstractions (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Check_Initializes_Contract (FA);
+                  if FA.Kind = Kind_Package_Body then
+                     Analysis.Check_Elaborate_Body (FA);
+                  end if;
             end case;
          end if;
 

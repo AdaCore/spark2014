@@ -408,6 +408,10 @@ package Flow_Types is
    function Is_Abstract_State (F : Flow_Id) return Boolean;
    --  Checks if F is an abstract state.
 
+   function Is_Constant (F : Flow_Id) return Boolean;
+   --  Checks if F is either a constant or a constant with variable input
+   --  (i.e. is an Ada constant).
+
    function Is_Constituent (F : Flow_Id) return Boolean;
    --  Checks if F is a constituent of an abstract state.
 

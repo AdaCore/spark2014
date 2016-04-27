@@ -270,6 +270,11 @@ package Flow is
             --  tedious to find.
 
             Visible_Vars : Flow_Id_Sets.Set;
+            --  All variables visible in the package elaboration.
+
+            Spec_Vars    : Flow_Id_Sets.Set;
+            --  All variables visible in the package specification (include
+            --  private stuff).
 
       end case;
    end record;

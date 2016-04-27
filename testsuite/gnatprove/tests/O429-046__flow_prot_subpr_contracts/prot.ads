@@ -1,5 +1,5 @@
 package Prot
-  with Abstract_State => State
+  with Elaborate_Body, Abstract_State => State
 is
    Visible : Integer := 0;
 

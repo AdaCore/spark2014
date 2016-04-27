@@ -169,6 +169,10 @@ package VC_Kinds is
       --  A remote state abstraction has been used during elaboration
       --  so a pragma Elaborate_All is needed.
 
+      Pragma_Elaborate_Body_Needed,
+      --  State visible in a package spec is modified in the package
+      --  elaboration.
+
       Side_Effects,
       --  A function with side-effects has been found
 
