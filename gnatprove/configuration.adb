@@ -782,9 +782,6 @@ ASCII.LF;
          Limit_Line := CL_Switches.Limit_Line;
          Limit_Subp := CL_Switches.Limit_Subp;
          Assumptions := CL_Switches.Assumptions;
-         Counterexample :=
-           not CL_Switches.No_Counterexample
-           and then File_System.Install.CVC4_Present;
          Caching := CL_Switches.Cache;
          Benchmark_Mode := CL_Switches.Benchmark;
          Why3_Config_File := CL_Switches.Why3_Conf;
@@ -819,6 +816,11 @@ ASCII.LF;
          Set_Report_Mode;
          Set_Level_Timeout_Steps_Provers_Proof_Mode;
          Set_Proof_Dir;
+
+         Counterexample :=
+           not CL_Switches.No_Counterexample
+           and then File_System.Install.CVC4_Present
+           and then not Is_Manual_Prover;
       end Postprocess;
 
       ----------------------------
