@@ -22,6 +22,7 @@ init.adb:5:04: info: initialization of "D" constituent of "State" proved
 init.adb:11:06: warning: unused assignment
 init.ads:11:28: info: initialization of "B" proved
 init.ads:14:14: warning: subprogram "Dummy" has no effect
+nested-priv.adb:7:06: high: modification of "Y" constituent of "Nested.State" in elaboration requires Elaborate_Body on package "Priv"
 nested-priv.adb:7:09: info: initialization of "Y" constituent of "Nested.State" proved
 nested-priv.ads:5:14: warning: subprogram "Blah" has no effect
 nested.adb:11:09: high: modification of "X" in elaboration requires Elaborate_Body on package "P"

@@ -5,6 +5,5 @@ package body Nested.Priv is
 begin
 
    Y := Y + 1;
-   --  This is OK since Y is not actually publically visible...
 
 end Nested.Priv;

@@ -4447,11 +4447,25 @@ package body Flow.Analysis is
          return;
       end if;
 
-      --  Also only applicable to packages that can be seen from the
-      --  standard scope.
-      if not Is_Visible (FA.Spec_Entity, Null_Flow_Scope) then
-         return;
-      end if;
+      --  We only check packages that are in spec files. This tests if the
+      --  package in question is nested in a body or not.
+      declare
+         Ptr : Node_Id   := FA.Spec_Entity;
+         K   : Node_Kind := Node_Kind'First;
+      begin
+         --  We go up the chain, finding either specs or bodies. If the
+         --  last thing we find was a spec, then we must be in a spec
+         --  file.
+         while Present (Ptr) loop
+            if Nkind (Ptr) in N_Package_Specification | N_Package_Body then
+               K := Nkind (Ptr);
+            end if;
+            Ptr := Parent (Ptr);
+         end loop;
+         if K /= N_Package_Specification then
+            return;
+         end if;
+      end;
 
       --  We only check variables that we claim to initialize (either
       --  because we said so or because flow thinks so), since otherwise
