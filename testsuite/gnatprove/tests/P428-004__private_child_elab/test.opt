@@ -1,1 +1,1 @@
-ALL XFAIL missing error on elaboration + spurious error/warning
+ALL XFAIL missing error on elaboration + spurious error
