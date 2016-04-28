@@ -106,6 +106,7 @@ install:
 	$(CP) share/spark/theories/*why $(THEORIESDIR)
 	$(CP) share/spark/theories/*mlw $(THEORIESDIR)
 	$(CP) include/*.ad? $(INCLUDEDIR)
+	$(CP) include/*.gpr $(LIBDIR)
 	$(CP) include/proof $(LIBDIR)
 
 doc: $(DOC)
