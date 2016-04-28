@@ -21,30 +21,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  Ada
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Strings;
-with Interfaces;
-
---  Compiler
 with Errout;                         use Errout;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Utility;                   use Flow_Utility;
+with GNATCOLL.Utils;
+with Gnat2Why_Args;
+with Hashing;                        use Hashing;
+with Interfaces;
 with Namet;                          use Namet;
 with Output;                         use Output;
 with Sem_Util;                       use Sem_Util;
 with Snames;                         use Snames;
-
---  Libs
-with Gnat2Why_Args;
-with GNATCOLL.Utils;
-
---  Common
-with Hashing;                        use Hashing;
 with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 with Why;
-
---  Flow
-with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
-with Flow_Utility;                   use Flow_Utility;
 
 package body Flow_Types is
 
@@ -188,17 +179,17 @@ package body Flow_Types is
       Facet   : Variable_Facet_T := Normal_Part)
       return Flow_Id
    is
-      Tmp : Node_Or_Entity_Id := N;
+      N_Or_Limited_View : Node_Or_Entity_Id := N;
    begin
       if Nkind (N) in N_Entity and then
         Present (Non_Limited_View (N))
       then
-         Tmp := Non_Limited_View (N);
+         N_Or_Limited_View := Non_Limited_View (N);
       end if;
 
       return (Kind    => Direct_Mapping,
               Variant => Variant,
-              Node    => Tmp,
+              Node    => N_Or_Limited_View,
               Facet   => Facet);
    end Direct_Mapping_Id;
 
