@@ -1817,7 +1817,7 @@ package body Process_Dns_Request is
 
       if NumFound > 1 then
          Protected_SPARK_IO_05.SPARK_IO_PO.Put_Line
-           (Protected_SPARK_IO_05.SPARK_IO_PO.Standard_Output,
+           (Protected_SPARK_IO_05.Standard_Output,
             "more than one cname?",
             0);
       elsif NumFound = 1 then
@@ -1838,7 +1838,7 @@ package body Process_Dns_Request is
       --ada.text_io.put_line("numfound: " & integer'image(numfound));
       if Query_Class /= DNS_Types.In_Class then
          Protected_SPARK_IO_05.SPARK_IO_PO.Put_Line
-           (Protected_SPARK_IO_05.SPARK_IO_PO.Standard_Output,
+           (Protected_SPARK_IO_05.Standard_Output,
             "bad query class",
             0);
          -- Ada.Text_IO.Put_Line ("qc: " &
@@ -2158,7 +2158,7 @@ package body Process_Dns_Request is
          end loop;
       else
          Protected_SPARK_IO_05.SPARK_IO_PO.Put_Line
-           (Protected_SPARK_IO_05.SPARK_IO_PO.Standard_Output,
+           (Protected_SPARK_IO_05.Standard_Output,
             "bad query type",
             0);
          -- Ada.Text_IO.Put_Line ("qc: " &
@@ -2201,12 +2201,12 @@ package body Process_Dns_Request is
             Max_Transmit     => Max_Transmit);
       elsif Input_Packet.Header.QDCount /= 1 then
          Protected_SPARK_IO_05.SPARK_IO_PO.Put_Line
-           (Protected_SPARK_IO_05.SPARK_IO_PO.Standard_Output,
+           (Protected_SPARK_IO_05.Standard_Output,
             "query count > 1",
             0);
       elsif Input_Packet.Header.ARCount > 1 then
          Protected_SPARK_IO_05.SPARK_IO_PO.Put_Line
-           (Protected_SPARK_IO_05.SPARK_IO_PO.Standard_Output,
+           (Protected_SPARK_IO_05.Standard_Output,
             "ar count > 1",
             0);
       end if;
@@ -2314,12 +2314,12 @@ package body Process_Dns_Request is
             Failure      => Failure);
          if Failure then
             Protected_SPARK_IO_05.SPARK_IO_PO.Put_Integer
-              (Protected_SPARK_IO_05.SPARK_IO_PO.Standard_Output,
+              (Protected_SPARK_IO_05.Standard_Output,
                Integer (Output_Packet.Rest.Header.MessageID),
                0,
                16);
             Protected_SPARK_IO_05.SPARK_IO_PO.Put_Line
-              (Protected_SPARK_IO_05.SPARK_IO_PO.Standard_Output,
+              (Protected_SPARK_IO_05.Standard_Output,
                "Respond failed",
                0);
          end if;

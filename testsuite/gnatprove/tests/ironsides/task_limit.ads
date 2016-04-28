@@ -24,19 +24,19 @@ package Task_Limit is
    protected type Task_Count_Type is
       pragma Priority(0);
 
-      function Valid_Number_Of_Tasks return Boolean;
+      --  function Valid_Number_Of_Tasks return Boolean;
 
       procedure Increment (Success : out Boolean)
         with Global  => null,
-             Depends => ((Success, Task_Count_Type) => Task_Count_Type),
-             Pre     => Valid_Number_Of_Tasks,
-             Post    => Valid_Number_Of_Tasks;
+             Depends => ((Success, Task_Count_Type) => Task_Count_Type); --  ,
+             --  Pre     => Valid_Number_Of_Tasks,
+             --  Post    => Valid_Number_Of_Tasks;
 
       procedure Decrement
         with Global  => null,
-             Depends => (Task_Count_Type =>+ null),
-             Pre     => Valid_Number_Of_Tasks,
-             Post    => Valid_Number_Of_Tasks;
+             Depends => (Task_Count_Type =>+ null); --  ,
+             --  Pre     => Valid_Number_Of_Tasks,
+             --  Post    => Valid_Number_Of_Tasks;
    private
       Task_Count : Task_Count_Subtype := 0;
    end Task_Count_Type;

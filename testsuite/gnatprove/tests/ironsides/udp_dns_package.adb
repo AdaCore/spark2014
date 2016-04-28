@@ -20,8 +20,9 @@
 with Protected_SPARK_IO_05;
 
 package body UDP_DNS_Package
-  with Refined_State => (Startup_Suspension => (The_Task,
-                                                The_Startup_Suspension))
+  with SPARK_Mode => Off,
+       Refined_State => (Startup_Suspension => (The_Startup_Suspension,
+                                                The_Task))
 is
    --type Task_Array is array (1 .. 10) of UDP_DNS_Task;
    The_Task : UDP_DNS_Task;
@@ -58,11 +59,11 @@ is
             Failure       => Failure);
          if Failure then
             Protected_SPARK_IO_05.SPARK_IO_PO.Put_Line
-              (Protected_SPARK_IO_05.SPARK_IO_PO.Standard_Output,
+              (Protected_SPARK_IO_05.Standard_Output,
                "Receive failed",
                0);
          else
-            Process_Dns_Request.Create_Response
+            Process_DNS_Request.Create_Response
               (Input_Packet  => Input_Packet,
                Input_Bytes   => Input_Bytes,
                Output_Packet => Output_Packet,
@@ -83,7 +84,7 @@ is
 
             if Failure then
                Protected_SPARK_IO_05.SPARK_IO_PO.Put_Line
-                 (Protected_SPARK_IO_05.SPARK_IO_PO.Standard_Output,
+                 (Protected_SPARK_IO_05.Standard_Output,
                   "send failed",
                   0);
             end if;

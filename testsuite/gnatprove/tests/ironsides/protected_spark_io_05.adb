@@ -63,19 +63,19 @@ is
    --
    --===========================================================================
 
+   function Standard_Input return File_Type is
+   begin
+      return File_Sys.Standard_Input;
+   end Standard_Input;
+
+   function Standard_Output return File_Type is
+   begin
+      return File_Sys.Standard_Output;
+   end Standard_Output;
+
    protected body SPARK_IO_05 is
 
       --  File Management
-
-      function Standard_Input return File_Type is
-      begin
-         return File_Sys.Standard_Input;
-      end Standard_Input;
-
-      function Standard_Output return File_Type is
-      begin
-         return File_Sys.Standard_Output;
-      end Standard_Output;
 
       procedure Create
         (File         :    out File_Type;

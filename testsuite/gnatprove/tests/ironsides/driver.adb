@@ -33,9 +33,7 @@ WITH Zone_File_IO,
      Unsigned_Types;
 
 with Ada.Text_IO,
-     Spark.Ada.Text_IO;
-
-use type Spark.Ada.Text_IO.Exception_T;
+     SPARK.Text_IO;
 
 procedure Driver is
    pragma Priority(0);
@@ -69,18 +67,16 @@ procedure Driver is
    --zoneFileName : constant String := "DFAN/alabnet.zonefile";
 
    function OpenZoneFile (FileName : in String) return boolean is
-      ZoneFile : Spark.Ada.Text_IO.File_Type;
+      ZoneFile : SPARK.Text_IO.File_Type;
       Success  : Boolean := True;
    begin
-      Spark.Ada.Text_IO.Open
-        (File => ZoneFile,
-         Mode => Spark.Ada.Text_IO.In_File,
-         Name => FileName,
-         Form => "");
+      SPARK.Text_IO.Open
+        (The_File => ZoneFile,
+         The_Mode => SPARK.Text_IO.In_File,
+         The_Name => FileName,
+         The_Form => "");
 
-      if (Spark.Ada.Text_IO.Get_Last_Exception_File (ZoneFile) /=
-            Spark.Ada.Text_IO.No_Exception)
-      then
+      if not SPARK.Text_IO.Is_Readable (ZoneFile) then
          Ada.Text_IO.Put ("Unable to open zone file " & ZoneFileName);
          Ada.Text_IO.New_Line;
          Ada.Text_IO.Put ("Check spelling, path, permissions etc and retry.");

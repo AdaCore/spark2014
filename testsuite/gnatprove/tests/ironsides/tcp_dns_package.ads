@@ -27,8 +27,8 @@ package TCP_DNS_Package
   with Abstract_State => (Startup_Suspension with External)
 is
    procedure Initialization_Done
-   with Global  => (Output => Startup_Suspension),
-        Depends => (Startup_Suspension => null);
+     with Global  => (Output => Startup_Suspension),
+          Depends => (Startup_Suspension => null);
 
    task type TCP_DNS_Task
      with Global  => (Output => Startup_Suspension,

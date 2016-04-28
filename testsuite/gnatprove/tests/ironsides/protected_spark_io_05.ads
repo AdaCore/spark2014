@@ -43,10 +43,11 @@ is
    subtype Number_Base is Integer range 2 .. 16;
    Null_File : constant File_Type;
 
+   function Standard_Output return File_Type
+   with Global => null;
+
    protected type SPARK_IO_05 is
       pragma Priority(0);
-
-      function Standard_Output return File_Type;
 
       ---------------------
       -- File Management --
@@ -183,32 +184,32 @@ is
       procedure Set_In_File_Col
         (File : in File_Type;
          Posn : in Positive)
-      with Depends => (SPARK_IO_05 =>+ (File, Posn)),
-           Pre     => Mode (File) = In_File;
+      with Depends => (SPARK_IO_05 =>+ (File, Posn)); --  ,
+           --  Pre     => Mode (File) = In_File;
 
       procedure Set_Out_File_Col
         (File : in File_Type;
          Posn : in Positive)
-      with Depends => (SPARK_IO_05 =>+ (File, Posn)),
-           Pre     => Mode(File) = Out_File or Mode (File) = Append_File;
+      with Depends => (SPARK_IO_05 =>+ (File, Posn)); --  ,
+           --  Pre     => Mode(File) = Out_File or Mode (File) = Append_File;
 
-      function In_File_Col (File : File_Type) return Positive
-      with Pre => Mode (File) = In_File;
+      function In_File_Col (File : File_Type) return Positive;
+      --  with Pre => Mode (File) = In_File;
       --  This is a potentially blocking function.
       --  DO NOT CALL THIS FUNCTION FROM A PROTECTED OPERATION.
 
-      function Out_File_Col (File : File_Type) return Positive
-      with Pre    => Mode (File) = Out_File or Mode (File) = Append_File;
+      function Out_File_Col (File : File_Type) return Positive;
+      --  with Pre => Mode (File) = Out_File or Mode (File) = Append_File;
       --  This is a potentially blocking function.
       --  DO NOT CALL THIS FUNCTION FROM A PROTECTED OPERATION.
 
-      function In_File_Line (File : File_Type) return Positive
-      with Pre    => Mode (File) = In_File;
+      function In_File_Line (File : File_Type) return Positive;
+      --  with Pre => Mode (File) = In_File;
       --  This is a potentially blocking function.
       --  DO NOT CALL THIS FUNCTION FROM A PROTECTED OPERATION.
 
-      function Out_File_Line (File : File_Type) return Positive
-      with Pre => Mode (File) = Out_File or Mode (File) = Append_File;
+      function Out_File_Line (File : File_Type) return Positive;
+      --  with Pre => Mode (File) = Out_File or Mode (File) = Append_File;
       --  This is a potentially blocking function.
       --  DO NOT CALL THIS FUNCTION FROM A PROTECTED OPERATION.
 

@@ -30,8 +30,8 @@ package body Task_Limit is
       -- Valid_Number_Of_Tasks --
       ---------------------------
 
-      function Valid_Number_Of_Tasks return Boolean is
-        (Task_Count in Task_Count_Subtype);
+      --  function Valid_Number_Of_Tasks return Boolean is
+      --    (Task_Count in Task_Count_Subtype);
 
       ---------------
       -- Increment --
@@ -61,7 +61,7 @@ package body Task_Limit is
 
       procedure Decrement
         with Refined_Post =>
-               Valid_Number_Of_Tasks and
+               Task_Count in Task_Count_Subtype and
                (if Task_Count'Old > 0 then
                   Task_Count = Task_Count'Old - 1) and
                (if Task_Count'Old = 0 then Task_Count = Task_Count'Old)

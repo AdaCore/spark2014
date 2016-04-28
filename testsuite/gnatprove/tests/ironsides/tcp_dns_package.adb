@@ -18,7 +18,8 @@
 ----------------------------------------------------------------
 
 package body TCP_DNS_Package
-  with Refined_State => (Startup_Suspension => (The_Task,
+  with SPARK_Mode => Off,
+       Refined_State => (Startup_Suspension => (The_Task,
                                                 The_Startup_Suspension))
 is
    The_Task : TCP_DNS_Task;
