@@ -2,10 +2,17 @@ project SPARK_Lemmas is
 
    for Object_Dir use External("SPARK_LEMMAS_OBJECT_DIR");
 
-   for Source_Dirs use (".");
+   --  In general, bodies of the library should be used with SPARK_Mode => Off
+   --  so that lemmas are not reproved when analyzing client code.
+   type SPARK_Body_Mode_T is ("Off", "On");
+   SPARK_Body_Mode := External ("SPARK_LEMMAS_BODY_MODE", "Off");
+
+   --  This project file is installed in <install>/lib/gnat
+   --  and the sources in <install>/include/spark
+   for Source_Dirs use ("../../include/spark");
 
    package Compiler is
-      for Default_Switches ("Ada") use ("-gnato13", "-gnata");
+      for Default_Switches ("Ada") use ("-gnato13", "-gnata", "-gnateDSPARK_BODY_MODE=" & SPARK_Body_Mode);
    end Compiler;
 
    package Prove is

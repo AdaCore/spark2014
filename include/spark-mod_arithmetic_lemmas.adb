@@ -27,7 +27,11 @@
 ------------------------------------------------------------------------------
 
 package body SPARK.Mod_Arithmetic_Lemmas
-  with SPARK_Mode
+#if SPARK_BODY_MODE="On"
+  On
+#else
+  Off
+#end if;
 is
 
    procedure Lemma_Mult_Scale

@@ -29,8 +29,8 @@
 generic
    type Int is range <>;
 package SPARK.Arithmetic_Lemmas
-  with SPARK_Mode,
-       Ghost
+  with SPARK_Mode
+--       Ghost
 is
    pragma Warnings
      (Off, "postcondition does not check the outcome of calling");
