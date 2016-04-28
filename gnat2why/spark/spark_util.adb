@@ -3683,6 +3683,36 @@ package body SPARK_Util is
      new Is_Part_Of_Type (Is_Protected_Type);
 
    function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean
-     renames Is_Part_Of_Protected;
+                                         renames Is_Part_Of_Protected;
+
+   ---------------------------------------
+   -- Visible_Declarations_of_Task_Type --
+   ---------------------------------------
+
+   function Visible_Declarations_of_Task_Type (E : Entity_Id) return List_Id
+   is
+      Def : constant Node_Id := Definition_of_Task_Type (E);
+   begin
+      if Present (Def) then
+         return Visible_Declarations (Def);
+      else
+         return Empty_List;
+      end if;
+   end Visible_Declarations_of_Task_Type;
+
+   ---------------------------------------
+   -- Private_Declarations_of_Task_Type --
+   ---------------------------------------
+
+   function Private_Declarations_of_Task_Type (E : Entity_Id) return List_Id
+   is
+      Def : constant Node_Id := Definition_of_Task_Type (E);
+   begin
+      if Present (Def) then
+         return Private_Declarations (Def);
+      else
+         return Empty_List;
+      end if;
+   end Private_Declarations_of_Task_Type;
 
 end SPARK_Util;
