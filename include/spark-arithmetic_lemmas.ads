@@ -30,6 +30,7 @@ generic
    type Int is range <>;
 package SPARK.Arithmetic_Lemmas
   with SPARK_Mode
+--  ??? Commenting out Ghost aspect for now until frontend accepts it
 --       Ghost
 is
    pragma Warnings

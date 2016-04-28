@@ -30,6 +30,7 @@ generic
    type Uint is mod <>;
 package SPARK.Mod_Arithmetic_Lemmas
   with SPARK_Mode
+--  ??? Commenting out Ghost aspect for now until frontend accepts it
 --       Ghost
 is
    pragma Warnings
