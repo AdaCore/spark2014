@@ -38,6 +38,16 @@ is
 
    subtype Pos is Uint range 1 .. Uint'Last;
 
+   procedure Lemma_Mult_Is_Monotonic
+     (Val1   : Uint;
+      Val2   : Uint;
+      Factor : Pos)
+   with
+     Global => null,
+     Pre  => Val1 < Val2 and then
+             Val2 <= Uint'Last / Factor,
+     Post => Val1 * Factor < Val2 * Factor;
+
    procedure Lemma_Mult_Scale
      (Val         : Uint;
       Scale_Num   : Uint;

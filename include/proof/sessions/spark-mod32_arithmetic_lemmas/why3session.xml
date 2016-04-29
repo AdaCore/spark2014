@@ -5,8 +5,6 @@
 <prover id="0" name="CVC4_CE" version="1.5" timelimit="0" steplimit="75000" memlimit="0"/>
 <prover id="1" name="CVC4" version="1.5" timelimit="0" steplimit="75000" memlimit="0"/>
 <prover id="2" name="Coq" version="8.5pl1" timelimit="0" steplimit="0" memlimit="0"/>
-<prover id="3" name="altergo" version="0.99.1" timelimit="0" steplimit="1000" memlimit="0"/>
-<prover id="4" name="Z3" version="4.4.1" timelimit="0" steplimit="15100000" memlimit="0"/>
 <file name="../../../obj/gnatprove/spark-mod32_arithmetic_lemmas.mlw" expanded="true">
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -264,6 +262,18 @@
 </theory>
 <theory name="Spark__mod32_arithmetic_lemmas__pos" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__val1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__val1__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__val2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__val2__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__factor" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__factor__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_scale__val" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_scale__val__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -454,6 +464,8 @@
 </theory>
 <theory name="Standard__universal_real__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_scale" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__min_int" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -622,6 +634,8 @@
 </theory>
 <theory name="System__zcx_by_default__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_scale__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Olt__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -640,22 +654,32 @@
  </transf>
  </goal>
 </theory>
+<theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__subprogram_def" sum="b1183a43406a1c694f5f63fd39424e82" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. precondition">
+  <proof prover="1"><result status="valid" time="0.05" steps="0"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. postcondition">
+  <proof prover="0"><result status="highfailure" time="0.43"/></proof>
+  <proof prover="1"><result status="highfailure" time="0.42"/></proof>
+  <proof prover="2" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp1.v"><result status="valid" time="0.81"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
 <theory name="Spark__mod32_arithmetic_lemmas__lemma_mult_scale__subprogram_def" sum="c906b7cd48033b416ed880c94503a417" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="0" obsolete="true"><result status="unknown" time="0.08" steps="110"/></proof>
   <proof prover="1"><result status="valid" time="0.05" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
   <proof prover="1"><result status="valid" time="0.05" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0" steplimit="300000"><result status="timeout" time="0.98" steps="109605"/></proof>
-  <proof prover="1" steplimit="300000"><result status="timeout" time="0.98" steps="109655"/></proof>
-  <proof prover="2" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_scale__pragargs__cmp.v"><result status="valid" time="1.09"/></proof>
-  <proof prover="3"><result status="steplimitexceeded" time="0.13"/></proof>
-  <proof prover="4"><result status="highfailure" time="0.97"/></proof>
+  <proof prover="0"><result status="highfailure" time="0.70"/></proof>
+  <proof prover="1"><result status="highfailure" time="0.69"/></proof>
   </goal>
  </transf>
  </goal>
