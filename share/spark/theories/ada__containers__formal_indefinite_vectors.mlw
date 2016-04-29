@@ -220,6 +220,10 @@ end
 module Ada__containers__formal_indefinite_vectors__element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use        "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__element_type
   use import Ada__containers__formal_indefinite_vectors__index_type_helper
   use import Ada__containers__formal_indefinite_vectors__vector
@@ -275,6 +279,10 @@ module Ada__containers__formal_indefinite_vectors__to_vector
   use import int.Int
   use        "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__oeq
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use import Ada__containers__formal_indefinite_vectors__index_type_helper
   use import Ada__containers__formal_indefinite_vectors__vector
   use import Ada__containers__formal_indefinite_vectors__length
@@ -413,6 +421,10 @@ end
 module Ada__containers__formal_indefinite_vectors__replace_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use        "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__element_type
   use        "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__oeq
   use import Ada__containers__formal_indefinite_vectors__index_type_helper
@@ -506,6 +518,10 @@ end
 module Ada__containers__formal_indefinite_vectors__append__2
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__element_type
   use        "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__oeq
   use import Ada__containers__formal_indefinite_vectors__vector
@@ -681,6 +697,10 @@ end
 module Ada__containers__formal_indefinite_vectors__first_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__element_type
   use import Ada__containers__formal_indefinite_vectors__vector
   use import Ada__containers__formal_indefinite_vectors__length
@@ -717,6 +737,10 @@ end
 module Ada__containers__formal_indefinite_vectors__last_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__element_type
   use import Ada__containers__formal_indefinite_vectors__vector
   use import Ada__containers__formal_indefinite_vectors__length
@@ -735,6 +759,10 @@ end
 module Ada__containers__formal_indefinite_vectors__find_index
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__element_type
   use "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__oeq
   use import Ada__containers__formal_indefinite_vectors__index_type_helper
@@ -808,6 +836,10 @@ end
 module Ada__containers__formal_indefinite_vectors__reverse_find_index
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__element_type
   use "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__oeq
   use import Ada__containers__formal_indefinite_vectors__index_type_helper
@@ -883,6 +915,10 @@ end
 module Ada__containers__formal_indefinite_vectors__contains
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__index_type
   use import Ada__containers__formal_indefinite_vectors__extended_index
   use import Ada__containers__formal_indefinite_vectors__extended_index_helper

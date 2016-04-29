@@ -19,6 +19,10 @@
 module Ada__containers__formal_indefinite_vectors__generic_sorting__is_sorted
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use        "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__element_type
   use import "ada__containers__formal_indefinite_vectors".Ada__containers__formal_indefinite_vectors__vector
   use import "ada__containers__formal_indefinite_vectors".Ada__containers__formal_indefinite_vectors__length
@@ -43,6 +47,10 @@ end
 module Ada__containers__formal_indefinite_vectors__generic_sorting__sort
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use        "ada__containers__formal_indefinite_vectors__args".Ada__containers__formal_indefinite_vectors__element_type
   use import "ada__containers__formal_indefinite_vectors".Ada__containers__formal_indefinite_vectors__vector
   use import "ada__containers__formal_indefinite_vectors".Ada__containers__formal_indefinite_vectors__capacity

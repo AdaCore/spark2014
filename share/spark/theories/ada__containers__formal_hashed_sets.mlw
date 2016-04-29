@@ -1,4 +1,8 @@
 module Ada__containers__formal_hashed_sets__witness
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__equivalent_elements
 
@@ -146,6 +150,10 @@ end
 module Ada__containers__formal_hashed_sets__element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use import Ada__containers__formal_hashed_sets__set
   use import Ada__containers__formal_hashed_sets__length
@@ -225,6 +233,10 @@ end
 module Ada__containers__formal_hashed_sets__find
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use import Ada__containers__formal_hashed_sets__set
   use import Ada__containers__formal_hashed_sets__witness
@@ -357,6 +369,10 @@ end
 module Ada__containers__formal_hashed_sets__replace
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__oeq
   use import Ada__containers__formal_hashed_sets__witness
@@ -395,6 +411,10 @@ end
 module Ada__containers__formal_hashed_sets__replace_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__oeq
   use import Ada__containers__formal_hashed_sets__witness
@@ -458,6 +478,10 @@ end
 module Ada__containers__formal_hashed_sets__insert
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__oeq
   use import Ada__containers__formal_hashed_sets__witness
@@ -534,6 +558,10 @@ end
 module Ada__containers__formal_hashed_sets__insert__2
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use import Ada__containers__formal_hashed_sets__witness
   use import Ada__containers__formal_hashed_sets__set
@@ -559,6 +587,10 @@ end
 module Ada__containers__formal_hashed_sets__delete
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use import Ada__containers__formal_hashed_sets__witness
   use import Ada__containers__formal_hashed_sets__set
@@ -655,6 +687,10 @@ module Ada__containers__formal_hashed_sets__delete__2
 module Ada__containers__formal_hashed_sets__include
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use import Ada__containers__formal_hashed_sets__witness
   use import Ada__containers__formal_hashed_sets__set
@@ -682,6 +718,10 @@ end
 module Ada__containers__formal_hashed_sets__exclude
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use import Ada__containers__formal_hashed_sets__witness
   use import Ada__containers__formal_hashed_sets__set
@@ -705,6 +745,10 @@ end
 module Ada__containers__formal_hashed_sets__to_set
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__oeq
   use import Ada__containers__formal_hashed_sets__set
@@ -747,6 +791,10 @@ end
 module Ada__containers__formal_hashed_sets__contains
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use import Ada__containers__formal_hashed_sets__witness
   use import Ada__containers__formal_hashed_sets__set
@@ -767,6 +815,10 @@ end
 module Ada__containers__formal_hashed_sets__strict_equal
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use import Ada__containers__formal_hashed_sets__set
   use import Ada__containers__formal_hashed_sets__length
@@ -792,6 +844,10 @@ end
 
 module Ada__containers__formal_hashed_sets__Oeq__2
   use import int.Int
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__oeq
   use import Ada__containers__formal_hashed_sets__witness
@@ -837,6 +893,10 @@ end
 module Ada__containers__formal_hashed_sets__equivalent_sets
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use import Ada__containers__formal_hashed_sets__set
   use import Ada__containers__formal_hashed_sets__length
@@ -1096,6 +1156,10 @@ end
 module Ada__containers__formal_hashed_sets__overlap
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use import Ada__containers__formal_hashed_sets__set
   use import Ada__containers__formal_hashed_sets__length
@@ -1149,6 +1213,10 @@ module Ada__containers__formal_hashed_sets__default_modulus
 end
 
 module Ada__containers__formal_hashed_sets__equivalent_elements__2
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__equivalent_elements
   use import Ada__containers__formal_hashed_sets__set
@@ -1164,6 +1232,10 @@ module Ada__containers__formal_hashed_sets__equivalent_elements__2
 end
 
 module Ada__containers__formal_hashed_sets__equivalent_elements__3
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__equivalent_elements
   use import Ada__containers__formal_hashed_sets__set
@@ -1179,6 +1251,10 @@ module Ada__containers__formal_hashed_sets__equivalent_elements__3
 end
 
 module Ada__containers__formal_hashed_sets__equivalent_elements__4
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__element_type
   use "ada__containers__formal_hashed_sets__args".Ada__containers__formal_hashed_sets__equivalent_elements
   use import Ada__containers__formal_hashed_sets__set

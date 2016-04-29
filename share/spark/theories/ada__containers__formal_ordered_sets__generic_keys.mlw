@@ -1,5 +1,9 @@
 module Ada__containers__formal_ordered_sets__generic_keys__witness
   use import real.Real
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__witness
   use "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key
   use "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key_type
@@ -21,6 +25,10 @@ end
 module Ada__containers__formal_ordered_sets__generic_keys__key__2
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
   use "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key_type
   use "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key
@@ -41,6 +49,10 @@ end
 module Ada__containers__formal_ordered_sets__generic_keys__find
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key_type
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__set
   use import Ada__containers__formal_ordered_sets__generic_keys__witness
@@ -57,6 +69,10 @@ end
 module Ada__containers__formal_ordered_sets__generic_keys__floor
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key_type
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__set
   use import Ada__containers__formal_ordered_sets__generic_keys__witness
@@ -73,6 +89,10 @@ end
 module Ada__containers__formal_ordered_sets__generic_keys__ceiling
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key_type
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__set
   use import Ada__containers__formal_ordered_sets__generic_keys__witness
@@ -89,6 +109,10 @@ end
 module Ada__containers__formal_ordered_sets__generic_keys__element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key_type
   use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
   use import Ada__containers__formal_ordered_sets__generic_keys__witness
@@ -108,6 +132,10 @@ end
 module Ada__containers__formal_ordered_sets__generic_keys__replace
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key_type
   use "ada__containers__formal_ordered_sets__args".Ada__containers__formal_ordered_sets__element_type
   use import Ada__containers__formal_ordered_sets__generic_keys__witness
@@ -133,6 +161,10 @@ end
 module Ada__containers__formal_ordered_sets__generic_keys__delete
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key_type
   use import Ada__containers__formal_ordered_sets__generic_keys__witness
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__set
@@ -157,6 +189,10 @@ end
 module Ada__containers__formal_ordered_sets__generic_keys__exclude
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key_type
   use import Ada__containers__formal_ordered_sets__generic_keys__witness
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__set
@@ -179,6 +215,10 @@ end
 module Ada__containers__formal_ordered_sets__generic_keys__contains
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_sets__generic_keys__args".Ada__containers__formal_ordered_sets__generic_keys__key_type
   use import Ada__containers__formal_ordered_sets__generic_keys__witness
   use import "ada__containers__formal_ordered_sets".Ada__containers__formal_ordered_sets__set
