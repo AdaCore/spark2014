@@ -18,6 +18,8 @@ greatest_common_divisor.adb:10:10: info: loop invariant initialization proved
 greatest_common_divisor.adb:10:10: medium: loop invariant might fail after first iteration, vc file: gnatprove/../proof/Coq/greatest_common_divisor/Greatest_common_divisor__g_c_d__L_1_loop.v
 greatest_common_divisor.adb:10:38: info: initialization of "C" proved
 greatest_common_divisor.adb:10:41: info: initialization of "D" proved
+<W> Grammar extension: in [constr:operconstr] some rule has been masked
+<W> Grammar extension: in [constr:pattern] some rule has been masked
 =======================================
 =======================================
 greatest_common_divisor.adb:10:10: info: loop invariant initialization proved
