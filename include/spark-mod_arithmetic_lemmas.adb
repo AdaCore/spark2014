@@ -27,6 +27,7 @@
 ------------------------------------------------------------------------------
 
 package body SPARK.Mod_Arithmetic_Lemmas
+  with SPARK_Mode =>
 #if SPARK_BODY_MODE="On"
   On
 #else
