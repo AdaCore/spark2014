@@ -1,0 +1,9 @@
+with "spark_lemmas";
+
+project Test is
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnata");
+   end Compiler;
+
+end Test;

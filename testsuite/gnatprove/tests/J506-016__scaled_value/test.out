@@ -1,3 +1,25 @@
-sv.adb:9:33: info: division check proved
-sv.adb:9:33: info: range check proved
-sv.ads:15:14: medium: postcondition might fail, cannot prove Scale'Result <= Capacity
+spark-arithmetic_lemmas.ads:50:38: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:50:38: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:63:26: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:63:26: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:64:26: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:64:26: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:73:25: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:73:25: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:84:26: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:84:26: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:85:29: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:85:29: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:94:34: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:94:34: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-mod_arithmetic_lemmas.ads:49:54: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:49:54: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:50:38: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:50:38: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+sv.adb:13:48: info: division check proved
+sv.adb:13:48: info: range check proved
+sv.adb:15:07: info: precondition proved
+sv.adb:17:40: info: range check proved
+sv.adb:18:53: info: initialization of "Res" proved
+sv.adb:19:14: info: initialization of "Res" proved
+sv.ads:17:14: info: postcondition proved
