@@ -2,11 +2,9 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4_CE" version="1.5" timelimit="0" steplimit="300000" memlimit="0"/>
-<prover id="1" name="altergo" version="0.99.1" timelimit="0" steplimit="1000" memlimit="0"/>
-<prover id="2" name="Z3" version="4.4.1" timelimit="0" steplimit="15100000" memlimit="0"/>
-<prover id="3" name="CVC4" version="1.5" timelimit="0" steplimit="300000" memlimit="0"/>
-<prover id="4" name="Coq" version="8.5pl1" timelimit="0" steplimit="0" memlimit="0"/>
+<prover id="0" name="CVC4_CE" version="1.5" timelimit="0" steplimit="75000" memlimit="0"/>
+<prover id="1" name="Coq" version="8.5pl1" timelimit="0" steplimit="0" memlimit="0"/>
+<prover id="3" name="CVC4" version="1.5" timelimit="0" steplimit="75000" memlimit="0"/>
 <file name="../../../obj/gnatprove/spark-long_integer_arithmetic_lemmas.mlw" expanded="true">
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -83,6 +81,18 @@
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_scale__res" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_scale__res__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect__arg1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect__arg1__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect__arg2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect__arg2__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect__upper_bound" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect__upper_bound__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_div_is_monotonic__val1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -320,6 +330,8 @@
 </theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_scale" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_div_is_monotonic" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mod_range" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -460,6 +472,8 @@
 </theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_scale__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_div_is_monotonic__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mod_range__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -488,11 +502,22 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="2"><result status="valid" time="0.04"/></proof>
-  <proof prover="3"><result status="unknown" time="0.05" steps="1050"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect__subprogram_def" sum="1576b1812dfcfbc1501c8fd209649af5" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. precondition">
+  <proof prover="3"><result status="valid" time="0.02" steps="0"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. postcondition">
+  <proof prover="0"><result status="highfailure" time="0.02"/></proof>
+  <proof prover="1" edited="../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mult_protect__pragargs__cmp.v"><result status="valid" time="0.52"/></proof>
+  <proof prover="3"><result status="unknown" time="0.02" steps="390"/></proof>
   </goal>
  </transf>
  </goal>
@@ -501,17 +526,10 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="highfailure" time="0.02"/></proof>
-  <proof prover="1"><result status="unknown" time="0.13"/></proof>
-  <proof prover="2"><result status="highfailure" time="0.99"/></proof>
-  <proof prover="3"><result status="unknown" time="0.05" steps="1340"/></proof>
-  <proof prover="4" edited="../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.54"/></proof>
   </goal>
  </transf>
  </goal>
@@ -520,10 +538,8 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="3"><result status="valid" time="0.04" steps="80"/></proof>
   </goal>
  </transf>
  </goal>
@@ -532,17 +548,10 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.02" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="highfailure" time="0.02"/></proof>
-  <proof prover="1"><result status="unknown" time="0.34"/></proof>
-  <proof prover="2"><result status="highfailure" time="0.98"/></proof>
-  <proof prover="3"><result status="unknown" time="0.04" steps="140"/></proof>
-  <proof prover="4" edited="../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid" time="0.45"/></proof>
   </goal>
  </transf>
  </goal>
@@ -551,12 +560,8 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="3"><result status="valid" time="0.03" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="1"><result status="valid" time="0.03" steps="31"/></proof>
-  <proof prover="2"><result status="highfailure" time="0.95"/></proof>
-  <proof prover="3"><result status="unknown" time="0.04" steps="110"/></proof>
   </goal>
  </transf>
  </goal>

@@ -104,6 +104,15 @@ is
       R := (X / Y) * Y;
    end Div_Then_Mult;
 
+   procedure Protect_Mult (X : Natural; Y : Positive; Z : Natural; R : out Integer) with
+     Pre  => X <= Z / Y,
+     Post => R <= Z
+   is
+   begin
+      Lemma_Mult_Protect (X, Y, Z);
+      R := X * Y;
+   end Protect_Mult;
+
    --  Modulo
 
    procedure Mod_Range (X, Y : Small_Integer; R : out Integer) with
@@ -207,6 +216,11 @@ begin
    X := 24;
    Y := 45;
    Div_Then_Mult (X, Y, R);
+
+   X := 24;
+   Y := 45;
+   Z := 2046;
+   Protect_Mult (X, Y, Z, R);
 
    X := -2356;
    Y := -45;

@@ -42,6 +42,12 @@ is
       Res         : Int)
    is null;
 
+   procedure Lemma_Mult_Protect
+     (Arg1        : Int;
+      Arg2        : Nat;
+      Upper_Bound : Nat)
+   is null;
+
    procedure Lemma_Div_Is_Monotonic
      (Val1  : Int;
       Val2  : Int;

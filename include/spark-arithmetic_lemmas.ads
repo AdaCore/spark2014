@@ -51,6 +51,15 @@ is
      Post => abs (Res) <= abs (Val) and then
              (if Val >= 0 then Res >= 0 else Res <= 0);
 
+   procedure Lemma_Mult_Protect
+     (Arg1        : Int;
+      Arg2        : Nat;
+      Upper_Bound : Nat)
+   with
+     Global => null,
+     Pre  => Arg2 = 0 or else Arg1 <= Upper_Bound / Arg2,
+     Post => Arg1 * Arg2 <= Upper_Bound;
+
    procedure Lemma_Div_Is_Monotonic
      (Val1  : Int;
       Val2  : Int;
