@@ -63,44 +63,32 @@ is
    procedure Lemma_Div_Is_Monotonic
      (Val1  : Int;
       Val2  : Int;
-      Denom : Pos;
-      Res1  : Int;
-      Res2  : Int)
+      Denom : Pos)
    with
      Global => null,
-     Pre  => Val1 <= Val2 and then
-             Res1 = Val1 / Denom and then
-             Res2 = Val2 / Denom,
-     Post => Res1 <= Res2;
+     Pre  => Val1 <= Val2,
+     Post => Val1 / Denom <= Val2 / Denom;
 
    procedure Lemma_Mod_Range
      (Arg1 : Int;
-      Arg2 : Pos;
-      Res  : Int)
+      Arg2 : Pos)
    with
      Global => null,
-     Pre  => Res = Arg1 mod Arg2,
-     Post => Res in 0 .. Arg2 - 1;
+     Post => Arg1 mod Arg2 in 0 .. Arg2 - 1;
 
    procedure Lemma_Mod_Symmetry
      (Arg1 : Int;
-      Arg2 : Int;
-      Res1 : Int;
-      Res2 : Int)
+      Arg2 : Int)
    with
      Global => null,
-     Pre  => Arg2 /= 0 and then
-             Res1 = Arg1 mod Arg2 and then
-             Res2 = (-Arg1) mod (-Arg2),
-     Post => Res2 = -Res1;
+     Pre  => Arg2 /= 0,
+     Post => (-Arg1) mod (-Arg2) = -(Arg1 mod Arg2);
 
    procedure Lemma_Mult_Then_Mod_Is_Zero
      (Arg1 : Int;
-      Arg2 : Pos;
-      Res  : Int)
+      Arg2 : Pos)
    with
      Global => null,
-     Pre  => Res = (Arg1 * Arg2) mod Arg2,
-     Post => Res = 0;
+     Post => (Arg1 * Arg2) mod Arg2 = 0;
 
 end SPARK.Arithmetic_Lemmas;

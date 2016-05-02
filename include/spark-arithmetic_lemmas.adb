@@ -51,28 +51,22 @@ is
    procedure Lemma_Div_Is_Monotonic
      (Val1  : Int;
       Val2  : Int;
-      Denom : Pos;
-      Res1  : Int;
-      Res2  : Int)
+      Denom : Pos)
    is null;
 
    procedure Lemma_Mod_Range
      (Arg1 : Int;
-      Arg2 : Pos;
-      Res  : Int)
+      Arg2 : Pos)
    is null;
 
    procedure Lemma_Mod_Symmetry
      (Arg1 : Int;
-      Arg2 : Int;
-      Res1 : Int;
-      Res2 : Int)
+      Arg2 : Int)
    is null;
 
    procedure Lemma_Mult_Then_Mod_Is_Zero
      (Arg1 : Int;
-      Arg2 : Pos;
-      Res  : Int)
+      Arg2 : Pos)
    is null;
 
 end SPARK.Arithmetic_Lemmas;

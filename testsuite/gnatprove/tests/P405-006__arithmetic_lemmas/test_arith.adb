@@ -85,7 +85,7 @@ is
    begin
       R1 := X1 / Y;
       R2 := X2 / Y;
-      Lemma_Div_Is_Monotonic (X1, X2, Y, R1, R2);
+      Lemma_Div_Is_Monotonic (X1, X2, Y);
    end Div_Is_Monotonic;
 
    --  Multiplication and division
@@ -122,10 +122,10 @@ is
    begin
       R := X mod Y;
       if Y > 0 then
-         Lemma_Mod_Range (X, Y, R);
+         Lemma_Mod_Range (X, Y);
       else
-         Lemma_Mod_Symmetry (X, Y, R, (-X) mod (-Y));
-         Lemma_Mod_Range (-X, -Y, -R);
+         Lemma_Mod_Symmetry (X, Y);
+         Lemma_Mod_Range (-X, -Y);
       end if;
    end Mod_Range;
 
@@ -144,7 +144,7 @@ is
    begin
       R1 := X mod Y;
       R2 := (-X) mod (-Y);
-      Lemma_Mod_Symmetry (X, Y, R1, R2);
+      Lemma_Mod_Symmetry (X, Y);
    end Mod_Symmetrical;
 
    procedure Mult_For_Mod (X, Y : Small_Integer; R : out Integer) with
@@ -154,10 +154,10 @@ is
    begin
       R := X * Y;
       if Y > 0 then
-         Lemma_Mult_Then_Mod_Is_Zero (X, Y, R mod Y);
+         Lemma_Mult_Then_Mod_Is_Zero (X, Y);
       else
-         Lemma_Mult_Then_Mod_Is_Zero (X, -Y, (-R) mod (-Y));
-         Lemma_Mod_Symmetry (R, Y, R mod Y, (-R) mod (-Y));
+         Lemma_Mult_Then_Mod_Is_Zero (X, -Y);
+         Lemma_Mod_Symmetry (R, Y);
       end if;
    end Mult_For_Mod;
 

@@ -1,11 +1,5 @@
 spark-arithmetic_lemmas.ads:50:38: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:60:51: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:72:26: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:73:26: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:82:25: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:93:26: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:94:29: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:103:34: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 test_arith.adb:16:41: info: initialization of "R" proved
 test_arith.adb:18:14: info: initialization of "R" proved
 test_arith.adb:18:14: info: postcondition proved
@@ -59,8 +53,6 @@ test_arith.adb:83:20: info: initialization of "R2" proved
 test_arith.adb:86:16: info: division check proved
 test_arith.adb:87:16: info: division check proved
 test_arith.adb:88:07: info: precondition proved
-test_arith.adb:88:42: info: initialization of "R1" proved
-test_arith.adb:88:46: info: initialization of "R2" proved
 test_arith.adb:93:52: info: initialization of "R" proved
 test_arith.adb:94:14: info: initialization of "R" proved
 test_arith.adb:94:14: info: postcondition proved
@@ -84,16 +76,9 @@ test_arith.adb:120:14: info: postcondition proved
 test_arith.adb:120:19: info: initialization of "R" proved
 test_arith.adb:120:24: info: overflow check proved
 test_arith.adb:123:14: info: division check proved
-test_arith.adb:125:10: info: precondition proved
 test_arith.adb:125:30: info: range check proved
-test_arith.adb:125:33: info: initialization of "R" proved
 test_arith.adb:127:10: info: precondition proved
-test_arith.adb:127:36: info: initialization of "R" proved
-test_arith.adb:127:44: info: division check proved
-test_arith.adb:128:10: info: precondition proved
 test_arith.adb:128:31: info: range check proved
-test_arith.adb:128:35: info: overflow check proved
-test_arith.adb:128:36: info: initialization of "R" proved
 test_arith.adb:132:46: info: initialization of "R" proved
 test_arith.adb:134:14: info: postcondition proved
 test_arith.adb:134:36: info: initialization of "R" proved
@@ -107,29 +92,15 @@ test_arith.adb:142:21: info: initialization of "R2" proved
 test_arith.adb:145:15: info: division check proved
 test_arith.adb:146:18: info: division check proved
 test_arith.adb:147:07: info: precondition proved
-test_arith.adb:147:33: info: initialization of "R1" proved
-test_arith.adb:147:37: info: initialization of "R2" proved
 test_arith.adb:150:50: info: initialization of "R" proved
 test_arith.adb:152:14: info: initialization of "R" proved
 test_arith.adb:152:14: info: postcondition proved
 test_arith.adb:152:16: info: division check proved
 test_arith.adb:155:14: info: overflow check proved
-test_arith.adb:157:10: info: precondition proved
 test_arith.adb:157:42: info: range check proved
-test_arith.adb:157:45: info: initialization of "R" proved
-test_arith.adb:157:47: info: division check proved
-test_arith.adb:159:10: info: precondition proved
 test_arith.adb:159:42: info: range check proved
-test_arith.adb:159:47: info: overflow check proved
-test_arith.adb:159:48: info: initialization of "R" proved
-test_arith.adb:159:51: info: division check proved
 test_arith.adb:160:10: info: precondition proved
 test_arith.adb:160:30: info: initialization of "R" proved
-test_arith.adb:160:36: info: initialization of "R" proved
-test_arith.adb:160:38: info: division check proved
-test_arith.adb:160:46: info: overflow check proved
-test_arith.adb:160:47: info: initialization of "R" proved
-test_arith.adb:160:50: info: division check proved
 test_arith.adb:170:04: info: precondition proved
 test_arith.adb:170:15: info: initialization of "X" proved
 test_arith.adb:170:18: info: initialization of "Y" proved
