@@ -3,7 +3,8 @@ spark-mod_arithmetic_lemmas.ads:57:51: info: division check proved, in instantia
 spark-mod_arithmetic_lemmas.ads:68:54: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:69:38: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:86:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:101:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:95:26: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:103:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 test_arith.adb:13:47: info: initialization of "R" proved
 test_arith.adb:14:14: info: initialization of "R" proved
 test_arith.adb:14:14: info: postcondition proved
@@ -70,9 +71,11 @@ test_arith.adb:140:14: info: postcondition proved
 test_arith.adb:143:20: info: division check proved
 test_arith.adb:144:07: info: precondition proved
 test_arith.adb:147:66: info: initialization of "R" proved
-test_arith.adb:148:14: medium: postcondition might fail
+test_arith.adb:148:14: info: postcondition proved
 test_arith.adb:151:17: info: initialization of "R" proved
 test_arith.adb:154:15: info: division check proved
+test_arith.adb:155:07: info: precondition proved
+test_arith.adb:155:41: info: initialization of "R" proved
 test_arith.adb:158:79: info: initialization of "R" proved
 test_arith.adb:159:21: info: division check proved
 test_arith.adb:160:14: info: initialization of "R" proved

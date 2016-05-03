@@ -657,47 +657,84 @@ Parameter arg2: t.
 
 Parameter attr__ATTRIBUTE_ADDRESS1: Z.
 
+Parameter res: t.
+
+Parameter attr__ATTRIBUTE_ADDRESS2: Z.
+
 (* Why3 goal *)
-Theorem WP_parameter_def : (in_range arg2) ->
-                           (*      Post => (Arg1 / Arg2) * Arg2 <= Arg1;                                                                                 *)
-                           (*               ^ spark-mod_arithmetic_lemmas.ads:85:15:instantiated:spark-mod64_arithmetic_lemmas.ads:33:1:VC_POSTCONDITION *)
-                           (ule (mul (udiv arg1 arg2) arg2) arg1).
-intros h1.
+Theorem WP_parameter_def : ((in_range arg2)
+                            /\ (res = (mul (udiv arg1 arg2) arg2))) ->
+                           (*      Post => Res <= Arg1 and then Arg1 - Res < Arg2;                                                                      *)
+                           (*              ^ spark-mod_arithmetic_lemmas.ads:96:14:instantiated:spark-mod64_arithmetic_lemmas.ads:33:1:VC_POSTCONDITION *)
+                           ((ule res arg1) /\ (ult (sub arg1 res) arg2)).
+intros (arg2_type,pre).
 Open Scope Z_scope.
 
+Lemma div_mul_le : forall x y, 0 <= x -> 0 < y -> (x / y) * y <= x.
+  intros.
+  replace (x / y * y) with (y * (x / y)) by auto with zarith.
+  apply (Z.mul_div_le _ _ H0).
+Qed.
+
 (* rewrite hypotheses *)
-unfold in_range in h1.
-pose (to_uint_bounds arg1).
-destruct h1, a.
-unfold ule in H, H0.
-rewrite to_uint_of_int in H, H0 by auto with zarith.
+pose (to_uint_bounds arg1) as arg1_type.
+pose (to_uint_bounds res) as res_type.
+unfold in_range in arg2_type.
+destruct arg1_type as (arg1_lb, arg1_ub), arg2_type as (arg2_lb, arg2_ub), res_type as (res_lb, res_ub).
+unfold ule in arg2_lb, arg2_ub.
+rewrite to_uint_of_int in arg2_lb, arg2_ub by auto with zarith.
+assert (0 < to_uint arg2) as arg2_pos by auto with zarith.
 
-(* shared lemma for two subgoals (arg1 / arg2) * arg1 <= arg1 *)
-assert (to_uint arg1 / to_uint arg2 * to_uint arg2 <= to_uint arg1) as Shared_Lemma.
-assert (0 < to_uint arg2) as Arg2_Pos by auto with zarith.
-pose (Z.mul_div_le (to_uint arg1) (to_uint arg2) Arg2_Pos).
-replace (to_uint arg1 / to_uint arg2 * to_uint arg2) with (to_uint arg2 * (to_uint arg1 / to_uint arg2)) by auto with zarith.
-auto with zarith.
+(* shared lemma: no overflow in (arg1 / arg2) * arg2 *)
+assert (0 <= (to_uint arg1 / to_uint arg2) * to_uint arg2 < 18446744073709551616) as no_ovfl_div_mul.
+split.
+{ assert (to_uint arg2 > 0) as arg2_pos2 by auto with zarith.
+  assert (0 <= to_uint arg1 / to_uint arg2) as div_nat.
+  apply (Z_div_pos _ _ arg2_pos2 arg1_lb).
+  apply (Zmult_gt_0_le_0_compat _ _ arg2_pos2 div_nat).
+}
+{
+  assert (to_uint arg1 / to_uint arg2 * to_uint arg2 <= to_uint arg1) as inter_ineq.
+  apply (div_mul_le _ _ arg1_lb arg2_pos).
+  auto with zarith.
+}
 
-(* rewrite goal *)
-unfold ule.
-rewrite to_uint_mul.
-rewrite to_uint_udiv.
+(* shared lemma: res <= arg1 *)
+assert (to_uint res <= to_uint arg1) as res_le_arg1.
+rewrite pre, to_uint_mul, to_uint_udiv.
 unfold EuclideanDivision.div.
 case Z_le_dec; [intros|intros neg_hyp; contradict neg_hyp; apply Z_mod_lt; auto with zarith].
 rewrite BV_Gen.mod1_out.
-
 (* apply theorem *)
-* exact Shared_Lemma.
+{ apply (div_mul_le _ _ arg1_lb arg2_pos). }
+(* no overflow in (arg1 / arg2) * arg2 *)
+{ exact no_ovfl_div_mul. }
 
-(* no overflow in (arg1 / arg2) * arg1 *)
-* split.
+(* rewrite goal *)
+split.
 
-  assert (to_uint arg2 > 0) as Arg2_Pos by auto with zarith.
-  assert (0 <= to_uint arg1 / to_uint arg2) as Div_Nat.
-  apply (Z_div_pos _ _ Arg2_Pos H1).
-  apply (Zmult_gt_0_le_0_compat _ _ Arg2_Pos Div_Nat).
-  auto with zarith.
-  
+(* res <= arg1 *)
+* unfold ule.
+  exact res_le_arg1.
+
+(* arg1 - res < arg2 *)
+* unfold ult.
+  rewrite to_uint_sub.
+  rewrite BV_Gen.mod1_out by auto with zarith. (* res_le_arg1 used here *)
+  rewrite pre, to_uint_mul, to_uint_udiv.
+  unfold EuclideanDivision.div.
+  case Z_le_dec; [intros|intros neg_hyp; contradict neg_hyp; apply Z_mod_lt; auto with zarith].
+  rewrite BV_Gen.mod1_out.
+    
+  (* arg1 - (arg1 / arg2) * arg2 < arg2 *)
+  + pose (Z.mul_succ_div_gt (to_uint arg1) (to_uint arg2) arg2_pos).
+    replace (Z.succ (to_uint arg1 / to_uint arg2)) with (to_uint arg1 / to_uint arg2 + 1) in l0 by auto with zarith.
+    rewrite Int.Mul_distr_l in l0.
+    replace (to_uint arg2 * (to_uint arg1 / to_uint arg2)) with ((to_uint arg1 / to_uint arg2) * to_uint arg2) in l0 by auto with zarith.
+    auto with zarith.
+
+  (* no overflow in (arg1 / arg2) * arg2 *)
+  + exact no_ovfl_div_mul. 
+
 Qed.
 

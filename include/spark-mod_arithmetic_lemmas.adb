@@ -65,9 +65,10 @@ is
       Arg2 : Pos)
    is null;
 
-   procedure Lemma_Div_Then_Mult
+   procedure Lemma_Div_Then_Mult_Bounds
      (Arg1 : Uint;
-      Arg2 : Pos)
+      Arg2 : Pos;
+      Res  : Uint)
    is null;
 
    procedure Lemma_Mult_Then_Mod_Is_Zero

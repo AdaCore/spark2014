@@ -152,7 +152,7 @@ is
    is
    begin
       R := (X / Y) * Y;
-      Lemma_Div_Then_Mult (X, Y);
+      Lemma_Div_Then_Mult_Bounds (X, Y, R);
    end Div_Then_Mult;
 
    procedure Protect_Mult (X : Unsigned_32; Y : Positive_32; Z : Unsigned_32; R : out Unsigned_32) with

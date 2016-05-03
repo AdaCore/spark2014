@@ -86,12 +86,14 @@ is
      Pre  => Arg1 <= Uint'Last / Arg2,
      Post => (Arg1 * Arg2) / Arg2 = Arg1;
 
-   procedure Lemma_Div_Then_Mult
+   procedure Lemma_Div_Then_Mult_Bounds
      (Arg1 : Uint;
-      Arg2 : Pos)
+      Arg2 : Pos;
+      Res  : Uint)
    with
      Global => null,
-     Post => (Arg1 / Arg2) * Arg2 <= Arg1;
+     Pre  => Res = (Arg1 / Arg2) * Arg2,
+     Post => Res <= Arg1 and then Arg1 - Res < Arg2;
 
    procedure Lemma_Mult_Then_Mod_Is_Zero
      (Arg1 : Uint;
