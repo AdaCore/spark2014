@@ -93,4 +93,12 @@ is
      Global => null,
      Post => (Arg1 / Arg2) * Arg2 <= Arg1;
 
+   procedure Lemma_Mult_Then_Mod_Is_Zero
+     (Arg1 : Uint;
+      Arg2 : Pos)
+   with
+     Global => null,
+     Pre  => Arg1 <= Uint'Last / Arg2,
+     Post => (Arg1 * Arg2) mod Arg2 = 0;
+
 end SPARK.Mod_Arithmetic_Lemmas;

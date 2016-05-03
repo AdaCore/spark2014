@@ -70,4 +70,9 @@ is
       Arg2 : Pos)
    is null;
 
+   procedure Lemma_Mult_Then_Mod_Is_Zero
+     (Arg1 : Uint;
+      Arg2 : Pos)
+   is null;
+
 end SPARK.Mod_Arithmetic_Lemmas;

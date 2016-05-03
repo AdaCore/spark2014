@@ -188,12 +188,7 @@ is
    is
    begin
       R := X * Y;
---        if Y > 0 then
---           Lemma_Mult_Then_Mod_Is_Zero (X, Y, R mod Y);
---        else
---           Lemma_Mult_Then_Mod_Is_Zero (X, -Y, (-R) mod (-Y));
---           Lemma_Mod_Symmetry (R, Y, R mod Y, (-R) mod (-Y));
---        end if;
+      Lemma_Mult_Then_Mod_Is_Zero (X, Y);
    end Mult_For_Mod;
 
    X, Y, Z, R, S : Unsigned_32;

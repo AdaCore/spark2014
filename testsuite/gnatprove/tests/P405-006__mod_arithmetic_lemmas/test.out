@@ -3,6 +3,7 @@ spark-mod_arithmetic_lemmas.ads:57:51: info: division check proved, in instantia
 spark-mod_arithmetic_lemmas.ads:68:54: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:69:38: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:86:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:101:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 test_arith.adb:13:47: info: initialization of "R" proved
 test_arith.adb:14:14: info: initialization of "R" proved
 test_arith.adb:14:14: info: postcondition proved
@@ -87,94 +88,96 @@ test_arith.adb:179:14: info: postcondition proved
 test_arith.adb:182:14: info: division check proved
 test_arith.adb:185:50: info: initialization of "R" proved
 test_arith.adb:187:14: info: initialization of "R" proved
-test_arith.adb:187:14: medium: postcondition might fail, cannot prove R mod Y = 0
+test_arith.adb:187:14: info: postcondition proved
 test_arith.adb:187:16: info: division check proved
-test_arith.adb:203:20: info: initialization of "X" proved
-test_arith.adb:206:14: info: initialization of "X" proved
-test_arith.adb:211:04: info: precondition proved
-test_arith.adb:211:15: info: initialization of "X" proved
-test_arith.adb:211:18: info: initialization of "Y" proved
-test_arith.adb:211:21: info: initialization of "Z" proved
-test_arith.adb:214:19: info: initialization of "X" proved
-test_arith.adb:217:13: info: initialization of "X" proved
-test_arith.adb:222:04: info: precondition proved
-test_arith.adb:222:14: info: initialization of "X" proved
-test_arith.adb:222:17: info: initialization of "Y" proved
-test_arith.adb:222:20: info: initialization of "Z" proved
-test_arith.adb:226:04: info: precondition proved
-test_arith.adb:226:15: info: initialization of "X" proved
-test_arith.adb:226:18: info: initialization of "Y" proved
-test_arith.adb:230:19: info: initialization of "X" proved
-test_arith.adb:230:19: info: range check proved
-test_arith.adb:230:22: info: initialization of "Y" proved
-test_arith.adb:230:22: info: range check proved
-test_arith.adb:234:18: info: initialization of "X" proved
-test_arith.adb:234:18: info: range check proved
-test_arith.adb:234:21: info: initialization of "Y" proved
-test_arith.adb:234:21: info: range check proved
-test_arith.adb:237:18: info: initialization of "X" proved
-test_arith.adb:237:18: info: range check proved
-test_arith.adb:237:21: info: initialization of "Y" proved
-test_arith.adb:237:21: info: range check proved
-test_arith.adb:241:04: info: precondition proved
-test_arith.adb:241:23: info: initialization of "X" proved
-test_arith.adb:241:23: info: range check proved
-test_arith.adb:241:26: info: initialization of "X" proved
-test_arith.adb:241:28: info: range check proved
-test_arith.adb:241:34: info: initialization of "Y" proved
-test_arith.adb:241:34: info: range check proved
-test_arith.adb:245:04: info: precondition proved
+test_arith.adb:191:07: info: precondition proved
+test_arith.adb:191:39: info: range check proved
+test_arith.adb:198:20: info: initialization of "X" proved
+test_arith.adb:201:14: info: initialization of "X" proved
+test_arith.adb:206:04: info: precondition proved
+test_arith.adb:206:15: info: initialization of "X" proved
+test_arith.adb:206:18: info: initialization of "Y" proved
+test_arith.adb:206:21: info: initialization of "Z" proved
+test_arith.adb:209:19: info: initialization of "X" proved
+test_arith.adb:212:13: info: initialization of "X" proved
+test_arith.adb:217:04: info: precondition proved
+test_arith.adb:217:14: info: initialization of "X" proved
+test_arith.adb:217:17: info: initialization of "Y" proved
+test_arith.adb:217:20: info: initialization of "Z" proved
+test_arith.adb:221:04: info: precondition proved
+test_arith.adb:221:15: info: initialization of "X" proved
+test_arith.adb:221:18: info: initialization of "Y" proved
+test_arith.adb:225:19: info: initialization of "X" proved
+test_arith.adb:225:19: info: range check proved
+test_arith.adb:225:22: info: initialization of "Y" proved
+test_arith.adb:225:22: info: range check proved
+test_arith.adb:229:18: info: initialization of "X" proved
+test_arith.adb:229:18: info: range check proved
+test_arith.adb:229:21: info: initialization of "Y" proved
+test_arith.adb:229:21: info: range check proved
+test_arith.adb:232:18: info: initialization of "X" proved
+test_arith.adb:232:18: info: range check proved
+test_arith.adb:232:21: info: initialization of "Y" proved
+test_arith.adb:232:21: info: range check proved
+test_arith.adb:236:04: info: precondition proved
+test_arith.adb:236:23: info: initialization of "X" proved
+test_arith.adb:236:23: info: range check proved
+test_arith.adb:236:26: info: initialization of "X" proved
+test_arith.adb:236:28: info: range check proved
+test_arith.adb:236:34: info: initialization of "Y" proved
+test_arith.adb:236:34: info: range check proved
+test_arith.adb:240:04: info: precondition proved
+test_arith.adb:240:19: info: initialization of "X" proved
+test_arith.adb:240:19: info: range check proved
+test_arith.adb:240:22: info: initialization of "Y" proved
+test_arith.adb:240:22: info: range check proved
+test_arith.adb:240:25: info: initialization of "Y" proved
+test_arith.adb:240:27: info: range check proved
 test_arith.adb:245:19: info: initialization of "X" proved
-test_arith.adb:245:19: info: range check proved
 test_arith.adb:245:22: info: initialization of "Y" proved
-test_arith.adb:245:22: info: range check proved
-test_arith.adb:245:25: info: initialization of "Y" proved
-test_arith.adb:245:27: info: range check proved
-test_arith.adb:250:19: info: initialization of "X" proved
-test_arith.adb:250:22: info: initialization of "Y" proved
-test_arith.adb:250:25: info: initialization of "Z" proved
-test_arith.adb:254:04: info: precondition proved
-test_arith.adb:254:14: info: initialization of "X" proved
-test_arith.adb:254:17: info: initialization of "Y" proved
-test_arith.adb:258:17: info: initialization of "X" proved
-test_arith.adb:258:17: info: range check proved
-test_arith.adb:258:20: info: initialization of "Y" proved
-test_arith.adb:258:20: info: range check proved
-test_arith.adb:261:17: info: initialization of "X" proved
-test_arith.adb:261:17: info: range check proved
-test_arith.adb:261:20: info: initialization of "Y" proved
-test_arith.adb:261:20: info: range check proved
-test_arith.adb:266:04: info: precondition proved
-test_arith.adb:266:22: info: initialization of "X" proved
-test_arith.adb:266:22: info: range check proved
-test_arith.adb:266:25: info: initialization of "Y" proved
-test_arith.adb:266:25: info: range check proved
-test_arith.adb:266:28: info: initialization of "Z" proved
-test_arith.adb:266:28: info: range check proved
-test_arith.adb:270:19: info: initialization of "X" proved
-test_arith.adb:270:19: info: range check proved
-test_arith.adb:270:22: info: initialization of "Y" proved
-test_arith.adb:270:22: info: range check proved
-test_arith.adb:274:19: info: initialization of "X" proved
-test_arith.adb:274:22: info: initialization of "Y" proved
-test_arith.adb:274:22: info: range check proved
-test_arith.adb:279:04: info: precondition proved
-test_arith.adb:279:18: info: initialization of "X" proved
-test_arith.adb:279:21: info: initialization of "Y" proved
-test_arith.adb:279:21: info: range check proved
-test_arith.adb:279:24: info: initialization of "Z" proved
-test_arith.adb:283:04: info: precondition proved
-test_arith.adb:283:15: info: initialization of "X" proved
-test_arith.adb:283:15: info: range check proved
-test_arith.adb:283:18: info: initialization of "Y" proved
-test_arith.adb:283:18: info: range check proved
-test_arith.adb:287:04: info: precondition proved
-test_arith.adb:287:14: info: initialization of "X" proved
-test_arith.adb:287:14: info: range check proved
-test_arith.adb:287:17: info: initialization of "Y" proved
-test_arith.adb:287:17: info: range check proved
-test_arith.adb:291:04: info: precondition proved
-test_arith.adb:291:18: info: initialization of "X" proved
-test_arith.adb:291:18: info: range check proved
-test_arith.adb:291:21: info: initialization of "Y" proved
-test_arith.adb:291:21: info: range check proved
+test_arith.adb:245:25: info: initialization of "Z" proved
+test_arith.adb:249:04: info: precondition proved
+test_arith.adb:249:14: info: initialization of "X" proved
+test_arith.adb:249:17: info: initialization of "Y" proved
+test_arith.adb:253:17: info: initialization of "X" proved
+test_arith.adb:253:17: info: range check proved
+test_arith.adb:253:20: info: initialization of "Y" proved
+test_arith.adb:253:20: info: range check proved
+test_arith.adb:256:17: info: initialization of "X" proved
+test_arith.adb:256:17: info: range check proved
+test_arith.adb:256:20: info: initialization of "Y" proved
+test_arith.adb:256:20: info: range check proved
+test_arith.adb:261:04: info: precondition proved
+test_arith.adb:261:22: info: initialization of "X" proved
+test_arith.adb:261:22: info: range check proved
+test_arith.adb:261:25: info: initialization of "Y" proved
+test_arith.adb:261:25: info: range check proved
+test_arith.adb:261:28: info: initialization of "Z" proved
+test_arith.adb:261:28: info: range check proved
+test_arith.adb:265:19: info: initialization of "X" proved
+test_arith.adb:265:19: info: range check proved
+test_arith.adb:265:22: info: initialization of "Y" proved
+test_arith.adb:265:22: info: range check proved
+test_arith.adb:269:19: info: initialization of "X" proved
+test_arith.adb:269:22: info: initialization of "Y" proved
+test_arith.adb:269:22: info: range check proved
+test_arith.adb:274:04: info: precondition proved
+test_arith.adb:274:18: info: initialization of "X" proved
+test_arith.adb:274:21: info: initialization of "Y" proved
+test_arith.adb:274:21: info: range check proved
+test_arith.adb:274:24: info: initialization of "Z" proved
+test_arith.adb:278:04: info: precondition proved
+test_arith.adb:278:15: info: initialization of "X" proved
+test_arith.adb:278:15: info: range check proved
+test_arith.adb:278:18: info: initialization of "Y" proved
+test_arith.adb:278:18: info: range check proved
+test_arith.adb:282:04: info: precondition proved
+test_arith.adb:282:14: info: initialization of "X" proved
+test_arith.adb:282:14: info: range check proved
+test_arith.adb:282:17: info: initialization of "Y" proved
+test_arith.adb:282:17: info: range check proved
+test_arith.adb:286:04: info: precondition proved
+test_arith.adb:286:18: info: initialization of "X" proved
+test_arith.adb:286:18: info: range check proved
+test_arith.adb:286:21: info: initialization of "Y" proved
+test_arith.adb:286:21: info: range check proved
