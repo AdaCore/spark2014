@@ -60,4 +60,13 @@ is
              Res = (Val * Scale_Num) / Scale_Denom,
      Post => Res <= Val;
 
+   procedure Lemma_Div_Is_Monotonic
+     (Val1  : Uint;
+      Val2  : Uint;
+      Denom : Pos)
+   with
+     Global => null,
+     Pre  => Val1 <= Val2,
+     Post => Val1 / Denom <= Val2 / Denom;
+
 end SPARK.Mod_Arithmetic_Lemmas;

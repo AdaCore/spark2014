@@ -131,6 +131,7 @@ is
    begin
       R1 := X1 / Y;
       R2 := X2 / Y;
+      Lemma_Div_Is_Monotonic (X1, X2, Y);
    end Div_Is_Monotonic;
 
    --  Multiplication and division

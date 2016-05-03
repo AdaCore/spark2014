@@ -48,4 +48,10 @@ is
       Res         : Uint)
    is null;
 
+   procedure Lemma_Div_Is_Monotonic
+     (Val1  : Uint;
+      Val2  : Uint;
+      Denom : Pos)
+   is null;
+
 end SPARK.Mod_Arithmetic_Lemmas;
