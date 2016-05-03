@@ -1941,7 +1941,7 @@ package body Why.Atree.Modules is
 
          --  symbols for array types
 
-         elsif Is_Array_Type (E) then
+         elsif Has_Array_Type (E) then
             declare
                Ar_Dim : constant Positive := Positive (Number_Dimensions (E));
             begin

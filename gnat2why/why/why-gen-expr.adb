@@ -472,7 +472,7 @@ package body Why.Gen.Expr is
          --  but in Why we have to convert from the split representation to the
          --  unique representation. This is checked here.
 
-         if not Is_Static_Array_Type (To_Ent) then
+         if not Has_Static_Array_Type (To_Ent) then
             if Get_Type_Kind (From) = EW_Split and then
               Get_Type_Kind (To) = EW_Abstract
             then

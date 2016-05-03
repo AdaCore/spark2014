@@ -4946,7 +4946,7 @@ package body Gnat2Why.Expr is
                        To       => EW_Bool_Type),
                     Op     => EW_Equivalent);
 
-            elsif Is_Array_Type (Left_Type)
+            elsif Has_Array_Type (Left_Type)
               and then Op in N_Op_Eq | N_Op_Ne
             then
                T := Transform_Array_Equality
@@ -4956,7 +4956,7 @@ package body Gnat2Why.Expr is
                   Left_Type => Left_Type,
                   Domain    => Domain,
                   Ada_Node  => Ada_Node);
-            elsif Is_Array_Type (Left_Type) then
+            elsif Has_Array_Type (Left_Type) then
                T := Transform_Array_Comparison
                  (Op        => Op,
                   Left      => Left,
@@ -5464,7 +5464,7 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Op_Not =>
-            if Is_Array_Type (Right_Type) then
+            if Has_Array_Type (Right_Type) then
                T := Transform_Array_Negation
                  (Right      => Right,
                   Right_Type => Right_Type,
@@ -5498,7 +5498,7 @@ package body Gnat2Why.Expr is
             end if;
 
          when N_Op_And | N_Op_Or | N_Op_Xor =>
-            if Is_Array_Type (Left_Type) then
+            if Has_Array_Type (Left_Type) then
                T := Transform_Array_Logical_Op
                  (Op        => Op,
                   Left      => Left,
@@ -7729,7 +7729,8 @@ package body Gnat2Why.Expr is
           (Ada_Node => Ada_Node,
            Domain   => Subdomain,
            Name     => W_Op,
-           Args     => Args);
+           Args     => Args,
+           Typ      => Type_Of_Node (Left_Type));
 
       if Do_Check then
 
@@ -7761,20 +7762,22 @@ package body Gnat2Why.Expr is
 
       --  Conversion from base, first and right are attributes of left
 
-      T := Array_Convert_From_Base
-        (Domain => Subdomain,
-         Target => Left_Type,
-         Ar     => T,
-         First  =>
-           Get_Array_Attr (Domain => Subdomain,
-                           Expr   => Left_Expr,
-                           Attr   => Attribute_First,
-                           Dim    => 1),
-         Last   =>
-           Get_Array_Attr (Domain => Subdomain,
-                           Expr   => Left_Expr,
-                           Attr   => Attribute_Last,
-                           Dim    => 1));
+      if not Has_Static_Array_Type (Left_Type) then
+         T := Array_Convert_From_Base
+           (Domain => Subdomain,
+            Target => Left_Type,
+            Ar     => T,
+            First  =>
+              Get_Array_Attr (Domain => Subdomain,
+                              Expr   => Left_Expr,
+                              Attr   => Attribute_First,
+                              Dim    => 1),
+            Last   =>
+              Get_Array_Attr (Domain => Subdomain,
+                              Expr   => Left_Expr,
+                              Attr   => Attribute_Last,
+                              Dim    => 1));
+      end if;
 
       T := Binding_For_Temp (Domain  => Domain,
                              Tmp     => Left_Expr,
@@ -7916,7 +7919,6 @@ package body Gnat2Why.Expr is
       --  types right.
 
       if Lgth_Check then
-         --           if Is_Array_Type (Get_Ada_Node (+L_Type)) then
          declare
             Check : W_Pred_Id := True_Pred;
             Lval  : constant W_Expr_Id :=
@@ -8504,10 +8506,11 @@ package body Gnat2Why.Expr is
                   Arg  : W_Expr_Id :=
                     Transform_Expr (Var, Domain, Params);
                begin
-                  if Is_Array_Type (Etype (Var)) and then
-                    not Is_Static_Array_Type (Etype (Var))
+                  if Has_Array_Type (Etype (Var)) and then
+                    not Has_Static_Array_Type (Etype (Var))
                     and then
-                      not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (Arg)))
+                      not Has_Static_Array_Type
+                        (Get_Ada_Node (+Get_Type (Arg)))
                     and then Get_Type_Kind (Get_Type (Arg)) /= EW_Split
                   then
                      Arg := Array_Convert_To_Base (Domain, Arg);
@@ -10089,7 +10092,7 @@ package body Gnat2Why.Expr is
                        Right  => Right,
                        Op     => EW_Equivalent);
                end;
-            elsif Is_Array_Type (Etype (Left_Opnd (Expr))) then
+            elsif Has_Array_Type (Etype (Left_Opnd (Expr))) then
                declare
                   Left : constant W_Expr_Id :=
                     Transform_Expr
@@ -10291,7 +10294,7 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Op_Not =>
-            if Is_Array_Type (Etype (Right_Opnd (Expr))) then
+            if Has_Array_Type (Etype (Right_Opnd (Expr))) then
                declare
                   Subdomain : constant EW_Domain :=
                     (if Domain = EW_Pred then EW_Term else Domain);
@@ -10337,7 +10340,7 @@ package body Gnat2Why.Expr is
 
          when N_Op_And | N_Op_Or | N_Op_Xor =>
 
-            if Is_Array_Type (Etype (Left_Opnd (Expr))) then
+            if Has_Array_Type (Etype (Left_Opnd (Expr))) then
                declare
                   Subdomain : constant EW_Domain :=
                     (if Domain = EW_Pred then EW_Term else Domain);

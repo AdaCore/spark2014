@@ -130,7 +130,9 @@ package body Why.Gen.Arrays is
       W_Ty : constant W_Type_Id := Get_Type (Expr);
       Ty   : constant Entity_Id := Get_Ada_Node (+W_Ty);
    begin
-      if Is_Static_Array_Type (Ty) or else Get_Type_Kind (W_Ty) = EW_Split then
+      if Has_Static_Array_Type (Ty)
+        or else Get_Type_Kind (W_Ty) = EW_Split
+      then
          Args (Arg_Ind) := Expr;
       else
          Args (Arg_Ind) :=

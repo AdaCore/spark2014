@@ -562,6 +562,9 @@ package SPARK_Util is
    --  @return True iff E is a constrained array type with statically known
    --     bounds
 
+   function Has_Static_Array_Type (T : Entity_Id) return Boolean is
+     (Is_Static_Array_Type (Retysp (T)));
+
    function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
    with Pre => Is_Subprogram (E);
    --  @param E any subprogram
