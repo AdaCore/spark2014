@@ -41,6 +41,12 @@ is
       Factor : Pos)
    is null;
 
+   procedure Lemma_Mult_Protect
+     (Arg1        : Uint;
+      Arg2        : Uint;
+      Upper_Bound : Uint)
+   is null;
+
    procedure Lemma_Mult_Scale
      (Val         : Uint;
       Scale_Num   : Uint;
@@ -52,6 +58,16 @@ is
      (Val1  : Uint;
       Val2  : Uint;
       Denom : Pos)
+   is null;
+
+   procedure Lemma_Mult_Then_Div_Is_Ident
+     (Arg1 : Uint;
+      Arg2 : Pos)
+   is null;
+
+   procedure Lemma_Div_Then_Mult
+     (Arg1 : Uint;
+      Arg2 : Pos)
    is null;
 
 end SPARK.Mod_Arithmetic_Lemmas;

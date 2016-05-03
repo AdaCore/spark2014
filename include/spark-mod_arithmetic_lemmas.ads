@@ -48,6 +48,15 @@ is
              Val2 <= Uint'Last / Factor,
      Post => Val1 * Factor < Val2 * Factor;
 
+   procedure Lemma_Mult_Protect
+     (Arg1        : Uint;
+      Arg2        : Uint;
+      Upper_Bound : Uint)
+   with
+     Global => null,
+     Pre  => Arg2 = 0 or else Arg1 <= Upper_Bound / Arg2,
+     Post => Arg1 * Arg2 <= Upper_Bound;
+
    procedure Lemma_Mult_Scale
      (Val         : Uint;
       Scale_Num   : Uint;
@@ -68,5 +77,20 @@ is
      Global => null,
      Pre  => Val1 <= Val2,
      Post => Val1 / Denom <= Val2 / Denom;
+
+   procedure Lemma_Mult_Then_Div_Is_Ident
+     (Arg1 : Uint;
+      Arg2 : Pos)
+   with
+     Global => null,
+     Pre  => Arg1 <= Uint'Last / Arg2,
+     Post => (Arg1 * Arg2) / Arg2 = Arg1;
+
+   procedure Lemma_Div_Then_Mult
+     (Arg1 : Uint;
+      Arg2 : Pos)
+   with
+     Global => null,
+     Post => (Arg1 / Arg2) * Arg2 <= Arg1;
 
 end SPARK.Mod_Arithmetic_Lemmas;

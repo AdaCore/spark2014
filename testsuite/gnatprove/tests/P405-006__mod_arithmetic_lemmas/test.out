@@ -1,6 +1,8 @@
 spark-mod_arithmetic_lemmas.ads:48:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:59:54: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:60:38: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:57:51: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:68:54: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:69:38: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:86:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 test_arith.adb:13:47: info: initialization of "R" proved
 test_arith.adb:14:14: info: initialization of "R" proved
 test_arith.adb:14:14: info: postcondition proved
@@ -63,8 +65,9 @@ test_arith.adb:133:16: info: division check proved
 test_arith.adb:134:07: info: precondition proved
 test_arith.adb:139:52: info: initialization of "R" proved
 test_arith.adb:140:14: info: initialization of "R" proved
-test_arith.adb:140:14: medium: postcondition might fail, cannot prove R = X
+test_arith.adb:140:14: info: postcondition proved
 test_arith.adb:143:20: info: division check proved
+test_arith.adb:144:07: info: precondition proved
 test_arith.adb:147:66: info: initialization of "R" proved
 test_arith.adb:148:14: medium: postcondition might fail
 test_arith.adb:151:17: info: initialization of "R" proved
@@ -72,7 +75,8 @@ test_arith.adb:154:15: info: division check proved
 test_arith.adb:158:79: info: initialization of "R" proved
 test_arith.adb:159:21: info: division check proved
 test_arith.adb:160:14: info: initialization of "R" proved
-test_arith.adb:160:14: medium: postcondition might fail, cannot prove R <= Z
+test_arith.adb:160:14: info: postcondition proved
+test_arith.adb:163:07: info: precondition proved
 test_arith.adb:169:47: info: initialization of "R" proved
 test_arith.adb:171:14: info: initialization of "R" proved
 test_arith.adb:171:14: info: postcondition proved

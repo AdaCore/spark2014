@@ -141,7 +141,7 @@ is
    is
    begin
       R := (X * Y) / Y;
-      --  need Lemma here
+      Lemma_Mult_Then_Div_Is_Ident (X, Y);
    end Mult_Then_Div;
 
    procedure Div_Then_Mult (X : Unsigned_32; Y : Small_Positive; R : out Unsigned_32) with
@@ -152,7 +152,7 @@ is
    is
    begin
       R := (X / Y) * Y;
-      --  need Lemma here
+      Lemma_Div_Then_Mult (X, Y);
    end Div_Then_Mult;
 
    procedure Protect_Mult (X : Unsigned_32; Y : Positive_32; Z : Unsigned_32; R : out Unsigned_32) with
@@ -160,7 +160,7 @@ is
      Post => R <= Z
    is
    begin
-      -- Lemma_Mult_Protect (X, Y, Z);
+      Lemma_Mult_Protect (X, Y, Z);
       R := X * Y;
    end Protect_Mult;
 
