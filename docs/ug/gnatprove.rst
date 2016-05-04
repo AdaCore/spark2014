@@ -15,6 +15,8 @@ statically with |GNATprove|. |GNATprove| also performs additional verifications
 on the specification of the expected behavior itself, and its correspondence to
 the code.
 
+.. _How to Install GNATprove:
+
 How to Install |GNATprove|
 ==========================
 
@@ -26,14 +28,17 @@ mechanism.
 If you choose to install |GNATprove| in a different location, you should also
 modify the environment variables ``GPR_PROJECT_PATH`` (if you installed GNAT).
 On Windows, edit the value of ``GPR_PROJECT_PATH`` under the Environnement
-Variables panel, and add to it the value of ``<GNAT install dir>/lib/gnat``.
-On Linux/Mac with Bourne shell, use::
+Variables panel, and add to it the value of ``<GNAT install dir>/lib/gnat`` (so
+that |SPARK| can find library projects installed with GNAT) and ``<SPARK
+install dir>/lib/gnat`` (so that GNAT can find the SPARK lemma library project
+installed with |SPARK|, for details see :ref:`Manual Proof Using SPARK Lemma
+Library`). On Linux/Mac with Bourne shell, use::
 
-  export GPR_PROJECT_PATH=<GNAT install dir>/lib/gnat:$GPR_PROJECT_PATH
+  export GPR_PROJECT_PATH=<GNAT install dir>/lib/gnat:<SPARK install dir>/lib/gnat:$GPR_PROJECT_PATH
 
 or on Linux/Mac with C shell::
 
-  setenv GPR_PROJECT_PATH <GNAT install dir>/lib/gnat:$GPR_PROJECT_PATH
+  setenv GPR_PROJECT_PATH <GNAT install dir>/lib/gnat:<SPARK install dir>/lib/gnat:$GPR_PROJECT_PATH
 
 See below for detailed installation instructions of GPS and |GNATprove|.
 
