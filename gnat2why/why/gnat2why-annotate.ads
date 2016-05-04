@@ -33,6 +33,8 @@ package Gnat2Why.Annotate is
    --  This package deals with justification of individual messages using
    --  pragma Annotate.
 
+   --  It also stores uses of pragma Annotate for Iterable_For_Proof.
+
    --  The user can suppress check messages emitted by GNATprove by putting a
    --  pragma Annotate in the source code. An example is the following:
 
@@ -111,5 +113,21 @@ package Gnat2Why.Annotate is
    --  Should be called when all messages have been generated. Generates a
    --  warning for all pragma Annotate which do not correspond to a check,
    --  or which covers only proved checks.
+
+   type Iterable_Kind is (Model, Contains);
+
+   type Iterable_Annotation is record
+      Kind   : Iterable_Kind;   --  the kind of Annotate Iterable_For_Proof
+      Entity : Entity_Id;       --  the entity of the corresponding function
+   end record;
+
+   procedure Retrieve_Iterable_Annotation
+     (Container_Type : Entity_Id;
+      Found          : out Boolean;
+      Info           : out Iterable_Annotation);
+   --  For a given container type with Iterable aspect, search if there is a
+   --  pragma Annotate Iterable_For_Proof that applies to type. If so, set
+   --  Found to True and fill in the Info record. Otherwise, set Found to False
+   --  and leave Info uninitialized.
 
 end Gnat2Why.Annotate;

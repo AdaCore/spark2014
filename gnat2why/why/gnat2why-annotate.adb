@@ -24,8 +24,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Vectors;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+with Aspects;                use Aspects;
 with Common_Containers;
 with Einfo;                  use Einfo;
 with Errout;                 use Errout;
@@ -36,6 +38,8 @@ with Nlists;                 use Nlists;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with Sinput;                 use Sinput;
+with Snames;                 use Snames;
+with Stringt;                use Stringt;
 
 package body Gnat2Why.Annotate is
 
@@ -43,6 +47,12 @@ package body Gnat2Why.Annotate is
      (Index_Type   => Natural,
       Element_Type => Annotated_Range,
       "="          => "=");
+
+   package Iterable_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Iterable_Annotation,
+      Hash            => Common_Containers.Node_Hash,
+      Equivalent_Keys => "=");
 
    Pragma_Set : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
@@ -59,6 +69,9 @@ package body Gnat2Why.Annotate is
    Annotations : Annot_Range_Vectors.Vector :=
      Annot_Range_Vectors.Empty_Vector;
    --  A sorted vector of ranges
+
+   Iterable_Annotations : Iterable_Maps.Map := Iterable_Maps.Empty_Map;
+   --  A map from Iterable aspects to Iterable annotations
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
@@ -98,8 +111,16 @@ package body Gnat2Why.Annotate is
    --  Check validity of the pragma Annotate (Gnatprove, ...), and fill in the
    --  kind, pattern and reason of the pragma. The boolean Ok is always set,
    --  the others are only set if Ok is True. Ok is False if some syntax error
-   --  has been detected, and Check_Pragma_Annotate_Gnatprove reports this
-   --  error.
+   --  has been detected, or if the pragma Annotate is not used for
+   --  justification purposes (it has Iterable_For_Proof or
+   --  External_Axiomatization as a second argument). If it is necessary,
+   --  Syntax_Check_Pragma_Annotate_Gnatprove reports this error.
+
+   procedure Check_Iterable_Annotation
+     (Arg3_Exp : Node_Id;
+      Arg4_Exp : Node_Id);
+   --  Check validity of a pragma Annotate (Gnatprove, Iterate_For_Proof, )
+   --  and inserts it in the Iterable_Annotations map.
 
    ------------------------
    -- Check_Is_Annotated --
@@ -172,6 +193,166 @@ package body Gnat2Why.Annotate is
          end if;
       end loop;
    end Check_Is_Annotated;
+
+   -------------------------------
+   -- Check_Iterable_Annotation --
+   -------------------------------
+
+   procedure Check_Iterable_Annotation
+     (Arg3_Exp :     Node_Id;
+      Arg4_Exp :     Node_Id)
+   is
+
+      procedure Check_Contains_Entity (E : Entity_Id; Ok : in out Boolean);
+      --  Checks that E is a valid Contains function for a type with an
+      --  Iterable aspect.
+
+      procedure Check_Model_Entity (E : Entity_Id; Ok : in out Boolean);
+      --  Checks that E is a valid Contains function for a type with an
+      --  Iterable aspect.
+
+      procedure Insert_Iterable_Annotation
+        (Kind   : Iterable_Kind;
+         Entity : Entity_Id);
+      --  Insert an iterable annotation into the Iterable_Annotations map.
+
+      ------------------------
+      -- Check_Contains_Entity --
+      ------------------------
+
+      procedure Check_Contains_Entity (E : Entity_Id; Ok : in out Boolean) is
+      begin
+         if No (First_Entity (E))
+           or else No (Next_Entity (First_Entity (E)))
+           or else Present (Next_Entity (Next_Entity (First_Entity (E))))
+         then
+            Error_Msg_N
+              ("Contains function must have exactly two parameter", E);
+         elsif not Is_Standard_Boolean_Type (Etype (E)) then
+            Error_Msg_N
+              ("Contains function must return Booleans", E);
+         else
+            declare
+               Container_Type : constant Entity_Id := Etype (First_Entity (E));
+               --  Type of the first Argument of the Contains function
+
+               Element_Type   : constant Entity_Id :=
+                 Etype (Next_Entity (First_Entity (E)));
+               --  Type of the second argument of the Contains function
+
+               Cont_Element   : constant Entity_Id :=
+                 Get_Iterable_Type_Primitive (Container_Type, Name_Element);
+               --  Element primitive of Container_Type
+            begin
+               if No (Cont_Element) then
+                  Error_Msg_N
+                    ("first parameter of Contains function must allow for of "
+                     & "iteration", First_Entity (E));
+               elsif Etype (Cont_Element) /= Element_Type then
+                  Error_Msg_N
+                    ("second parameter of Contains must have the type of "
+                     & "elements", Next_Entity (First_Entity (E)));
+               else
+                  Ok := True;
+               end if;
+            end;
+         end if;
+      end Check_Contains_Entity;
+
+      ------------------------
+      -- Check_Model_Entity --
+      ------------------------
+
+      procedure Check_Model_Entity (E : Entity_Id; Ok : in out Boolean) is
+      begin
+         if No (First_Entity (E))
+           or else Present (Next_Entity (First_Entity (E)))
+         then
+            Error_Msg_N
+              ("Model function must have exactly one parameter", E);
+         else
+            declare
+               Container_Type : constant Entity_Id := Etype (First_Entity (E));
+               --  Type of the first Argument of the model function
+
+               Model_Type     : constant Entity_Id := Etype (E);
+               --  Return type of the model function
+
+               Cont_Element   : constant Entity_Id :=
+                 Get_Iterable_Type_Primitive (Container_Type, Name_Element);
+               --  Element primitive of Container_Type
+
+               Model_Element  : constant Entity_Id :=
+                 Get_Iterable_Type_Primitive (Model_Type, Name_Element);
+               --  Element primitive of Model_Type
+            begin
+               if No (Cont_Element) then
+                  Error_Msg_N
+                    ("parameter of Model function must allow for of iteration",
+                     First_Entity (E));
+               elsif No (Model_Element) then
+                  Error_Msg_N
+                    ("return type of Model function must allow for of " &
+                       "iteration", E);
+               elsif Etype (Cont_Element) /= Etype (Model_Element) then
+                  Error_Msg_N
+                    ("iteration on model and container types must range on "
+                     & "the same elements", E);
+               else
+                  Ok := True;
+               end if;
+            end;
+         end if;
+      end Check_Model_Entity;
+
+      --------------------------------
+      -- Insert_Iterable_Annotation --
+      --------------------------------
+
+      procedure Insert_Iterable_Annotation
+        (Kind   : Iterable_Kind;
+         Entity : Entity_Id)
+      is
+         Container_Type : constant Entity_Id := Etype (First_Entity (Entity));
+         Iterable_Node  : constant Node_Id :=
+           Find_Value_Of_Aspect (Container_Type, Aspect_Iterable);
+      begin
+         pragma Assert (Present (Iterable_Node));
+         pragma Assert (not Iterable_Annotations.Contains (Iterable_Node));
+         Iterable_Annotations.Include
+           (Iterable_Node, Iterable_Annotation'(Kind, Entity));
+      end Insert_Iterable_Annotation;
+
+      Args_Str : constant String_Id := Strval (Arg3_Exp);
+      Kind     : Iterable_Kind;
+      New_Prim : Entity_Id;
+      Ok       : Boolean := False;
+   begin
+
+      --  The fourth argument must be an entity.
+
+      pragma Assert (Present (Arg4_Exp) and then Present (Entity (Arg4_Exp)));
+      New_Prim := Entity (Arg4_Exp);
+
+      String_To_Name_Buffer (Args_Str);
+      if Name_Len = 5 and then Name_Buffer (1 .. 5) = "Model" then
+         Kind := Model;
+         Check_Model_Entity (New_Prim, Ok);
+      elsif Name_Len = 8 and then Name_Buffer (1 .. 8) = "Contains" then
+         Kind := Contains;
+         Check_Contains_Entity (New_Prim, Ok);
+      else
+         Error_Msg_N
+           ("the third argument of a Gnatprove Annotate Iterable_For_Proof "
+            & "pragma must be Model or Contains",
+            Arg3_Exp);
+         return;
+      end if;
+
+      if Ok then
+         Insert_Iterable_Annotation (Kind, New_Prim);
+      end if;
+   end Check_Iterable_Annotation;
 
    -----------------------------------------------
    -- Generate_Useless_Pragma_Annotate_Warnings --
@@ -347,6 +528,26 @@ package body Gnat2Why.Annotate is
       end if;
    end Mark_Pragma_Annotate;
 
+   ----------------------------------
+   -- Retrieve_Iterable_Annotation --
+   ----------------------------------
+
+   procedure Retrieve_Iterable_Annotation
+     (Container_Type : Entity_Id;
+      Found          : out Boolean;
+      Info           : out Iterable_Annotation)
+   is
+      Iterable_Node : constant Node_Id :=
+        Find_Value_Of_Aspect (Container_Type, Aspect_Iterable);
+      C             : constant Iterable_Maps.Cursor :=
+        Iterable_Annotations.Find (Iterable_Node);
+   begin
+      Found := Iterable_Maps.Has_Element (C);
+      if Found then
+         Info := Iterable_Maps.Element (C);
+      end if;
+   end Retrieve_Iterable_Annotation;
+
    --------------------------------------------
    -- Syntax_Check_Pragma_Annotate_Gnatprove --
    --------------------------------------------
@@ -405,6 +606,9 @@ package body Gnat2Why.Annotate is
                Kind := False_Positive;
             elsif Args_Str = "intentional" then
                Kind := Intentional;
+            elsif Args_Str = "iterable_for_proof" then
+               Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp);
+               return;
             else
                Error_Msg_N
                  ("the second argument of a Gnatprove Annotate pragma must " &
