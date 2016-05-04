@@ -56,7 +56,7 @@ the complete list).
   order of evaluation of subexpressions chosen by the compiler.
 
 * Handling of exceptions is not permitted. Exception handling can create
-  complex and invisible control flows in a program, which increase the
+  complex and invisible control flows in a program, which increases the
   likelihood of introducing errors during maintenance. What is more, when an
   exception is raised, subprograms that are terminated abnormally leave their
   variables in a possibly uninitialized or inconsistent state, in which data
@@ -205,7 +205,7 @@ test:
   and respects its contract, this proof depends on the precondition of the
   subprogram being respected at the call site. This verification can be
   achieved by proving the caller too, or by checking dynamically the
-  precondition of the called subprogram during unit testing for the caller.
+  precondition of the called subprogram during unit testing of the caller.
 
 * If proof is used to demonstrate that a subprogram is free of run-time errors
   and respects its contract, and this subprogram calls other subprograms, this
@@ -527,7 +527,7 @@ Note that we consider here portability in its strictest sense, whereby a
 program is portable if its observable behavior is exactly the same across a
 change of compiler and/or target. In the more common sense of the word, a
 program is portable if it can be reused without modification on a different
-target, or when changing compiler.  That's consistent with the definition of
+target, or when changing compiler.  That is consistent with the definition of
 portability in WikiPedia: "Portability in high-level computer programming is
 the usability of the same software in different environments". As an example of
 a difference between both interpretations, many algorithms which use
@@ -583,7 +583,7 @@ floating-point types:
   implementation defined set of values (Ada RM G.2.3(5)).
 
 * The semantics of operations on floating-point types is implementation defined
-  (Ada RM G.2). It may or not follow the IEEE 754 floating point standard.
+  (Ada RM G.2). It may or may not follow the IEEE 754 floating point standard.
 
 * The precision of elementary functions (exponential and trigonometric
   functions) is implementation defined (Ada RM G.2.4).
@@ -732,7 +732,7 @@ description of the different modes):
   re-ordered by the compiler, thus leading to a possible overflow with one
   compiler and not another. For example, arithmetic operation ``A + B + C`` can
   be interpreted as ``(A + B) + C`` by one compiler, and ``A + (B + C)`` (after
-  re-ordering) by another compiler. Note that GNAT always use the former
+  re-ordering) by another compiler. Note that GNAT always uses the former
   version without re-ordering. See :ref:`Parenthesized Arithmetic Operations`.
 
 * In modes ``flow``, ``prove`` and ``all``, |GNATprove| issues high check
