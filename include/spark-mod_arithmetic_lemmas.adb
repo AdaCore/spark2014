@@ -35,6 +35,18 @@ package body SPARK.Mod_Arithmetic_Lemmas
 #end if;
 is
 
+   procedure Lemma_Div_Is_Monotonic
+     (Val1  : Uint;
+      Val2  : Uint;
+      Denom : Pos)
+   is null;
+
+   procedure Lemma_Div_Then_Mult_Bounds
+     (Arg1 : Uint;
+      Arg2 : Pos;
+      Res  : Uint)
+   is null;
+
    procedure Lemma_Mult_Is_Monotonic
      (Val1   : Uint;
       Val2   : Uint;
@@ -54,21 +66,9 @@ is
       Res         : Uint)
    is null;
 
-   procedure Lemma_Div_Is_Monotonic
-     (Val1  : Uint;
-      Val2  : Uint;
-      Denom : Pos)
-   is null;
-
    procedure Lemma_Mult_Then_Div_Is_Ident
      (Arg1 : Uint;
       Arg2 : Pos)
-   is null;
-
-   procedure Lemma_Div_Then_Mult_Bounds
-     (Arg1 : Uint;
-      Arg2 : Pos;
-      Res  : Uint)
    is null;
 
    procedure Lemma_Mult_Then_Mod_Is_Zero

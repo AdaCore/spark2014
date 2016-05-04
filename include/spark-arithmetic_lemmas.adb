@@ -35,19 +35,6 @@ package body SPARK.Arithmetic_Lemmas
 #end if;
 is
 
-   procedure Lemma_Mult_Scale
-     (Val         : Int;
-      Scale_Num   : Nat;
-      Scale_Denom : Pos;
-      Res         : Int)
-   is null;
-
-   procedure Lemma_Mult_Protect
-     (Arg1        : Int;
-      Arg2        : Nat;
-      Upper_Bound : Nat)
-   is null;
-
    procedure Lemma_Div_Is_Monotonic
      (Val1  : Int;
       Val2  : Int;
@@ -62,6 +49,19 @@ is
    procedure Lemma_Mod_Symmetry
      (Arg1 : Int;
       Arg2 : Int)
+   is null;
+
+   procedure Lemma_Mult_Protect
+     (Arg1        : Int;
+      Arg2        : Nat;
+      Upper_Bound : Nat)
+   is null;
+
+   procedure Lemma_Mult_Scale
+     (Val         : Int;
+      Scale_Num   : Nat;
+      Scale_Denom : Pos;
+      Res         : Int)
    is null;
 
    procedure Lemma_Mult_Then_Mod_Is_Zero

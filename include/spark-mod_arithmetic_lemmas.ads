@@ -38,6 +38,24 @@ is
 
    subtype Pos is Uint range 1 .. Uint'Last;
 
+   procedure Lemma_Div_Is_Monotonic
+     (Val1  : Uint;
+      Val2  : Uint;
+      Denom : Pos)
+   with
+     Global => null,
+     Pre  => Val1 <= Val2,
+     Post => Val1 / Denom <= Val2 / Denom;
+
+   procedure Lemma_Div_Then_Mult_Bounds
+     (Arg1 : Uint;
+      Arg2 : Pos;
+      Res  : Uint)
+   with
+     Global => null,
+     Pre  => Res = (Arg1 / Arg2) * Arg2,
+     Post => Res <= Arg1 and then Arg1 - Res < Arg2;
+
    procedure Lemma_Mult_Is_Monotonic
      (Val1   : Uint;
       Val2   : Uint;
@@ -69,15 +87,6 @@ is
              Res = (Val * Scale_Num) / Scale_Denom,
      Post => Res <= Val;
 
-   procedure Lemma_Div_Is_Monotonic
-     (Val1  : Uint;
-      Val2  : Uint;
-      Denom : Pos)
-   with
-     Global => null,
-     Pre  => Val1 <= Val2,
-     Post => Val1 / Denom <= Val2 / Denom;
-
    procedure Lemma_Mult_Then_Div_Is_Ident
      (Arg1 : Uint;
       Arg2 : Pos)
@@ -85,15 +94,6 @@ is
      Global => null,
      Pre  => Arg1 <= Uint'Last / Arg2,
      Post => (Arg1 * Arg2) / Arg2 = Arg1;
-
-   procedure Lemma_Div_Then_Mult_Bounds
-     (Arg1 : Uint;
-      Arg2 : Pos;
-      Res  : Uint)
-   with
-     Global => null,
-     Pre  => Res = (Arg1 / Arg2) * Arg2,
-     Post => Res <= Arg1 and then Arg1 - Res < Arg2;
 
    procedure Lemma_Mult_Then_Mod_Is_Zero
      (Arg1 : Uint;

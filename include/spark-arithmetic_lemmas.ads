@@ -39,27 +39,6 @@ is
    subtype Nat is Int range 0 .. Int'Last;
    subtype Pos is Int range 1 .. Int'Last;
 
-   procedure Lemma_Mult_Scale
-     (Val         : Int;
-      Scale_Num   : Nat;
-      Scale_Denom : Pos;
-      Res         : Int)
-   with
-     Global => null,
-     Pre  => Scale_Num <= Scale_Denom and then
-             Res = (Val * Scale_Num) / Scale_Denom,
-     Post => abs (Res) <= abs (Val) and then
-             (if Val >= 0 then Res >= 0 else Res <= 0);
-
-   procedure Lemma_Mult_Protect
-     (Arg1        : Int;
-      Arg2        : Nat;
-      Upper_Bound : Nat)
-   with
-     Global => null,
-     Pre  => Arg2 = 0 or else Arg1 <= Upper_Bound / Arg2,
-     Post => Arg1 * Arg2 <= Upper_Bound;
-
    procedure Lemma_Div_Is_Monotonic
      (Val1  : Int;
       Val2  : Int;
@@ -83,6 +62,27 @@ is
      Global => null,
      Pre  => Arg2 /= 0,
      Post => (-Arg1) mod (-Arg2) = -(Arg1 mod Arg2);
+
+   procedure Lemma_Mult_Protect
+     (Arg1        : Int;
+      Arg2        : Nat;
+      Upper_Bound : Nat)
+   with
+     Global => null,
+     Pre  => Arg2 = 0 or else Arg1 <= Upper_Bound / Arg2,
+     Post => Arg1 * Arg2 <= Upper_Bound;
+
+   procedure Lemma_Mult_Scale
+     (Val         : Int;
+      Scale_Num   : Nat;
+      Scale_Denom : Pos;
+      Res         : Int)
+   with
+     Global => null,
+     Pre  => Scale_Num <= Scale_Denom and then
+             Res = (Val * Scale_Num) / Scale_Denom,
+     Post => abs (Res) <= abs (Val) and then
+             (if Val >= 0 then Res >= 0 else Res <= 0);
 
    procedure Lemma_Mult_Then_Mod_Is_Zero
      (Arg1 : Int;
