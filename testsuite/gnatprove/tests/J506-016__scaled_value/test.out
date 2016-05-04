@@ -4,10 +4,18 @@ spark-arithmetic_lemmas.ads:60:51: info: division check proved, in instantiation
 spark-arithmetic_lemmas.ads:60:51: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-mod_arithmetic_lemmas.ads:48:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:48:32: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:59:54: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:59:54: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:60:38: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:60:38: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:57:51: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:57:51: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:68:54: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:68:54: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:69:38: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:69:38: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:86:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:86:32: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:95:26: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:95:26: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:103:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:103:32: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 sv.adb:13:48: info: division check proved
 sv.adb:13:48: info: range check proved
 sv.adb:15:07: info: precondition proved
