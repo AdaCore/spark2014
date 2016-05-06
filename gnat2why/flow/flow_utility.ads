@@ -46,7 +46,7 @@ is
    procedure Initialize;
    --  Set up state required by some functions in this package
 
-   function Is_Initialized return Boolean;
+   function Is_Initialized return Boolean with Ghost;
    --  Tests if we're initialized
 
    procedure Collect_Functions_And_Read_Locked_POs
