@@ -406,7 +406,9 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params) return W_Expr_Id;
    --  @return the Why3 expression for SPARK quantified expression [Expr]
 
-   function Transform_Priority_Pragmas (Prag : Node_Id) return W_Prog_Id;
+   function Transform_Priority_Pragmas (Prag : Node_Id) return W_Prog_Id with
+     Pre => Get_Pragma_Id (Prag) in Pragma_Interrupt_Priority |
+                                    Pragma_Priority;
    --  @param Prag either a pragma Priority or a pragma Interrupt_priority
    --  @return an expression that checks that the argument of the pragma is in
    --    the required range for this object type and pragma type
@@ -12127,18 +12129,21 @@ package body Gnat2Why.Expr is
             Expression (First (Pragma_Argument_Associations (Prag)))
          else Empty);
 
+      --  Task Priorities (D.1 (17)):
+      --
       --  For the Priority aspect, the value of the expression is converted to
       --  the subtype Priority; for the Interrupt_Priority aspect, this value
-      --  is converted to the subtype Any_Priority. (D.1 (17))
+      --  is converted to the subtype Any_Priority.
+      --
+      --  Protected Subprograms (D.3 (6)):
       --
       --  The expression specified for the Priority or Interrupt_Priority
       --  aspect (see D.1) is evaluated as part of the creation of the
       --  corresponding protected object and converted to the subtype
       --  System.Any_Priority or System.Interrupt_Priority, respectively.
-      --  (D.3 (6))
-
-      --  We use the Current_Subp entity to know whether we are in a task or a
-      --  PO
+      --
+      --  We use the Current_Subp entity to know whether we are in a task type
+      --  or a protected type.
 
       Is_In_Task_Type : constant Boolean :=
         Ekind (Current_Subp) in Task_Kind;
