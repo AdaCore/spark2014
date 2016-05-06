@@ -158,7 +158,7 @@ package Flow_Generated_Globals is
    ----------------------------------------------------------------------
 
    function GG_Mode return GG_Mode_T with Ghost;
-   --  Returns the current mode.
+   --  Returns the current mode
 
    ----------------------------------------------------------------------
    --  Task instances
