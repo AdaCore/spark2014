@@ -1,3 +1,2 @@
-p2.adb:6:06: Elaborate_All pragma required for "P1"
-p2.adb:6:06: call to "P" during elaboration in SPARK
-gnatprove: error during generation of Global contracts
+p1.ads:2:13: warning: subprogram "P" has no effect
+p2.ads:2:13: warning: subprogram "P" has no effect
