@@ -733,7 +733,8 @@ is
    --  @return True iff Constant_After_Elaboration is True
 
    function Is_Empty_Record_Type (T : Entity_Id) return Boolean with
-     Pre => Is_Type (T);
+     Pre => No (T) or else Is_Type (T),
+     Ghost;
    --  Similar to Is_Null_Record_Type, but also returns true if this is a
    --  null extension of a null record type (or extension).
 
