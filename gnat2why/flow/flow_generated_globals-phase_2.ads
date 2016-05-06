@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
 with Atree;                              use Atree;
 with Einfo;                              use Einfo;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
@@ -28,6 +29,23 @@ with Flow_Refinement;                    use Flow_Refinement;
 with Sinfo;                              use Sinfo;
 
 package Flow_Generated_Globals.Phase_2 is
+
+   package Task_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Task_Object);
+   --  Containers with instances of a task type
+
+   package Task_Instances_Maps is
+     new Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
+                                     Element_Type    => Task_Lists.List,
+                                     Hash            => Name_Hash,
+                                     Equivalent_Keys => "=",
+                                     "="             => Task_Lists."=");
+   --  Containers that map task types to objects with task instances (e.g. task
+   --  arrays may contain several instances of a task type and task record may
+   --  contain instances of several tasks).
+
+   Task_Instances : Task_Instances_Maps.Map;
+   --  Task instances
 
    -------------------------
    -- Reading & Computing --

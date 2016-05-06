@@ -287,6 +287,10 @@ package body Flow_Generated_Globals.Phase_2 is
                                 Writes      : out Name_Sets.Set);
    --  Gets the most refined proof reads, reads and writes globals of EN
 
+   procedure Register_Task_Object
+     (Type_Name : Entity_Name;
+      Object    : Task_Object);
+
    procedure Up_Project
      (Most_Refined      : Name_Sets.Set;
       Final_View        : out Name_Sets.Set;
@@ -1764,21 +1768,8 @@ package body Flow_Generated_Globals.Phase_2 is
                         Protected_Objects (C).Append (V.The_Priority);
                      end;
 
-                  when EK_Tasking_Instance_Count =>
-                     declare
-                        use type Task_Lists.Cursor;
-                        C : Task_Lists.Cursor := V.The_Objects.First;
-                     begin
-                        --  Explicit iteration with while is necessary, because
-                        --  iteration with for is not allowed for discriminant-
-                        --  dependent component of a mutable object.
-                        while C /= Task_Lists.No_Element loop
-                           Register_Task_Object
-                             (V.The_Type,
-                              V.The_Objects (C));
-                           Task_Lists.Next (C);
-                        end loop;
-                     end;
+                  when EK_Task_Instance =>
+                     Register_Task_Object (V.The_Type, V.The_Object);
 
                   when EK_Tasking_Info =>
                      for Kind in Tasking_Info_Kind loop
@@ -2653,5 +2644,30 @@ package body Flow_Generated_Globals.Phase_2 is
          --  ??? use Indent/Outdent instead of fixed amount of spaces
       end loop;
    end Print_Name_Set;
+
+   --------------------------
+   -- Register_Task_Object --
+   --------------------------
+
+   procedure Register_Task_Object
+     (Type_Name : Entity_Name;
+      Object    : Task_Object)
+   is
+      C : Task_Instances_Maps.Cursor;
+      --  Cursor with a list of instances of a given task type
+
+      Dummy : Boolean;
+      --  Flag that indicates if a key was inserted or if it already existed in
+      --  a map. It is required by the hashed-maps API, but not used here.
+
+   begin
+      --  Find a list of instances of the task type; if it does not exist then
+      --  initialize with an empty list.
+      Task_Instances.Insert (Key      => Type_Name,
+                             Position => C,
+                             Inserted => Dummy);
+
+      Task_Instances (C).Append (Object);
+   end Register_Task_Object;
 
 end Flow_Generated_Globals.Phase_2;

@@ -131,29 +131,4 @@ package body Flow_Generated_Globals is
       end loop;
    end Print_Tasking_Info_Bag;
 
-   --------------------------
-   -- Register_Task_Object --
-   --------------------------
-
-   procedure Register_Task_Object
-     (Type_Name : Entity_Name;
-      Object    : Task_Object)
-   is
-      C : Task_Instances_Maps.Cursor;
-      --  Cursor with a list of instances of a given task type
-
-      Dummy : Boolean;
-      --  Flag that indicates if a key was inserted or if it already existed in
-      --  a map. It is required by the hashed-maps API, but not used here.
-
-   begin
-      --  Find a list of instances of the task type; if it does not exist then
-      --  initialize with an empty list.
-      Task_Instances.Insert (Key      => Type_Name,
-                             Position => C,
-                             Inserted => Dummy);
-
-      Task_Instances (C).Append (Object);
-   end Register_Task_Object;
-
 end Flow_Generated_Globals;

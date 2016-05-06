@@ -34,7 +34,7 @@ package Flow_Generated_Globals.ALI_Serialization is
                            EK_Volatiles,
                            EK_Globals,
                            EK_Protected_Variable,
-                           EK_Tasking_Instance_Count,
+                           EK_Task_Instance,
                            EK_Tasking_Info,
                            EK_Tasking_Nonblocking);
 
@@ -60,9 +60,9 @@ package Flow_Generated_Globals.ALI_Serialization is
          when EK_Protected_Variable =>
             The_Variable                : Entity_Name;
             The_Priority                : Priority_Value;
-         when EK_Tasking_Instance_Count =>
+         when EK_Task_Instance =>
             The_Type                    : Entity_Name;
-            The_Objects                 : Task_Lists.List;
+            The_Object                  : Task_Object;
          when EK_Tasking_Info =>
             The_Entity                  : Entity_Name;
             The_Tasking_Info            : Name_Tasking_Info;

@@ -47,6 +47,18 @@ package body Flow_Generated_Globals.Phase_1 is
    --  accessible from the current compilation unit (including variables
    --  declared in bodies of other packages).
 
+   type Task_Instance is record
+      Type_Name : Entity_Name;
+      Object    : Task_Object;
+   end record;
+
+   package Task_Instances_Lists is
+     new Ada.Containers.Doubly_Linked_Lists (Element_Type => Task_Instance);
+   --  Containers with instances of task objects
+
+   Task_Instances : Task_Instances_Lists.List;
+   --  Task instances
+
    Nonblocking_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
    --  Subprograms, entries and tasks that do not contain potentially blocking
    --  statements (but still may call another blocking subprogram).
@@ -100,6 +112,14 @@ package body Flow_Generated_Globals.Phase_1 is
          Tasking_Info_Bag (Kind).Insert (EN, To_Name_Set (TI (Kind)));
       end loop;
    end GG_Register_Tasking_Info;
+
+   procedure GG_Register_Task_Object (Type_Name : Entity_Name;
+                                      Object    : Task_Object)
+   is
+   begin
+      Task_Instances.Append ((Type_Name => Type_Name,
+                              Object    => Object));
+   end GG_Register_Task_Object;
 
    -----------------------
    -- GG_Write_Finalize --
@@ -200,10 +220,10 @@ package body Flow_Generated_Globals.Phase_1 is
          end loop;
       end;
 
-      for C in Task_Instances.Iterate loop
-         V := (Kind        => EK_Tasking_Instance_Count,
-               The_Type    => Task_Instances_Maps.Key (C),
-               The_Objects => Task_Instances (C));
+      for Instance of Task_Instances loop
+         V := (Kind        => EK_Task_Instance,
+               The_Type    => Instance.Type_Name,
+               The_Object  => Instance.Object);
          Write_To_ALI (V);
       end loop;
 

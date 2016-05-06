@@ -24,7 +24,6 @@
 --  This package implements writing, reading and computing global contracts
 
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Containers.Hashed_Maps;
 with Common_Containers;                  use Common_Containers;
 with Flow;                               use Flow;
 with Flow_Types;                         use Flow_Types;
@@ -177,24 +176,7 @@ package Flow_Generated_Globals is
    --  instances (which can be many, e.g. for task arrays or records with
    --  two components of a given task type).
    --
-   --  Error messages related to a task object will be attached to Node.
-
-   package Task_Lists is
-     new Ada.Containers.Doubly_Linked_Lists (Task_Object);
-   --  Containers with task instances
-
-   package Task_Instances_Maps is
-     new Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
-                                     Element_Type    => Task_Lists.List,
-                                     Hash            => Name_Hash,
-                                     Equivalent_Keys => "=",
-                                     "="             => Task_Lists."=");
-   --  Containers that map task types to objects with task instances (e.g. task
-   --  arrays may contain several instances of a task type and task record may
-   --  contain instances of several tasks).
-
-   Task_Instances : Task_Instances_Maps.Map;
-   --  Task instances
+   --  Error messages related to a task object will be attached to Node
 
    type Phase is (GG_Phase_1, GG_Phase_2);
 
@@ -213,10 +195,6 @@ package Flow_Generated_Globals is
          Priority : Priority_Value;
       end record;
    --  Protected object and its priority
-
-   procedure Register_Task_Object
-     (Type_Name : Entity_Name;
-      Object    : Task_Object);
 
    ----------------------------------------------------------------------
    --  State information

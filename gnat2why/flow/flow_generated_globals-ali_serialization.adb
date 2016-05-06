@@ -34,39 +34,42 @@ package body Flow_Generated_Globals.ALI_Serialization is
    --  Dummy value required only for the serialization API
 
    Null_ALI_Entry : constant array (ALI_Entry_Kind) of ALI_Entry := (
-      EK_Error                  => (Kind => EK_Error),
+      EK_Error               => (Kind => EK_Error),
 
-      EK_End_Marker             => (Kind => EK_End_Marker),
+      EK_End_Marker          => (Kind => EK_End_Marker),
 
-      EK_State_Map              => (Kind      => EK_State_Map,
-                                    The_State => Null_Entity_Name,
-                                    others    => <>),
+      EK_State_Map           => (Kind      => EK_State_Map,
+                                 The_State => Null_Entity_Name,
+                                 others    => <>),
 
-      EK_Remote_States          => (Kind          => EK_Remote_States,
-                                    Remote_States => Name_Sets.Empty_Set),
+      EK_Remote_States       => (Kind          => EK_Remote_States,
+                                 Remote_States => Name_Sets.Empty_Set),
 
-      EK_Volatiles              => (Kind   => EK_Volatiles,
-                                    others => <>),
+      EK_Volatiles           => (Kind   => EK_Volatiles,
+                                 others => <>),
 
-      EK_Globals                => (Kind            => EK_Globals,
-                                    The_Global_Info => Null_Global_Info),
+      EK_Globals             => (Kind            => EK_Globals,
+                                 The_Global_Info => Null_Global_Info),
 
-      EK_Protected_Variable     => (Kind         => EK_Protected_Variable,
-                                    The_Variable => Null_Entity_Name,
-                                    The_Priority => Priority_Value'
-                                      (Kind => Priority_Kind'First,
-                                       Value => 0)),
+      EK_Protected_Variable  => (Kind         => EK_Protected_Variable,
+                                 The_Variable => Null_Entity_Name,
+                                 The_Priority => Priority_Value'
+                                   (Kind => Priority_Kind'First,
+                                    Value => 0)),
 
-      EK_Tasking_Instance_Count => (Kind     => EK_Tasking_Instance_Count,
-                                    The_Type => Null_Entity_Name,
-                                    others   => <>),
+      EK_Task_Instance       => (Kind       => EK_Task_Instance,
+                                 The_Type   => Null_Entity_Name,
+                                 The_Object => Task_Object'
+                                   (Name      => Null_Entity_Name,
+                                    Instances => Instance_Number'First,
+                                    Node      => Empty)),
 
-      EK_Tasking_Info           => (Kind       => EK_Tasking_Info,
-                                    The_Entity => Null_Entity_Name,
-                                    others     => <>),
+      EK_Tasking_Info        => (Kind       => EK_Tasking_Info,
+                                 The_Entity => Null_Entity_Name,
+                                 others     => <>),
 
-      EK_Tasking_Nonblocking    => (Kind   => EK_Tasking_Nonblocking,
-                                    others => <>)
+      EK_Tasking_Nonblocking => (Kind   => EK_Tasking_Nonblocking,
+                                 others => <>)
    );
    --  Dummy value required only for the serialization API
 
@@ -85,23 +88,6 @@ package body Flow_Generated_Globals.ALI_Serialization is
       Insert         => Name_Sets.Insert);
 
    procedure Serialize (A : in out Archive; V : in out Task_Object);
-
-   Null_Task_Object : constant Task_Object := (Null_Entity_Name,
-                                               Instance_Number'First,
-                                               Empty);
-   --  Null task object required for serialization
-
-   procedure Serialize is new Serialize_List
-     (T              => Task_Lists.List,
-      E              => Task_Object,
-      Cursor         => Task_Lists.Cursor,
-      Null_Container => Task_Lists.Empty_List,
-      Null_Element   => Null_Task_Object,
-      First          => Task_Lists.First,
-      Next           => Task_Lists.Next,
-      Has_Element    => Task_Lists.Has_Element,
-      Element        => Task_Lists.Element,
-      Append         => Task_Lists.Append);
 
    procedure Serialize (A : in out Archive; V : in out Name_Tasking_Info);
 
@@ -215,9 +201,9 @@ package body Flow_Generated_Globals.ALI_Serialization is
                Serialize (A, V.The_Priority.Value);
             end if;
 
-         when EK_Tasking_Instance_Count =>
+         when EK_Task_Instance =>
             Serialize (A, V.The_Type);
-            Serialize (A, V.The_Objects);
+            Serialize (A, V.The_Object);
 
          when EK_Tasking_Info =>
             Serialize (A, V.The_Entity);

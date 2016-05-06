@@ -3165,7 +3165,7 @@ package body Flow.Control_Flow_Graph is
                --  the base type.
                TN : constant Entity_Name := To_Entity_Name (Etype (T));
             begin
-               Register_Task_Object
+               GG_Register_Task_Object
                  (Type_Name => TN,
                   Object => (Name => Object_Name,
                              Instances =>
