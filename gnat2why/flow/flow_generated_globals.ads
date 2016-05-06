@@ -111,7 +111,10 @@ package Flow_Generated_Globals is
 
    type GG_Mode_T is (GG_No_Mode,
                       GG_Read_Mode,
-                      GG_Write_Mode);
+                      GG_Write_Mode) with Ghost;
+
+   function GG_Mode return GG_Mode_T with Ghost;
+   --  Returns the current mode
 
    type Globals_Origin_T is (Origin_User, Origin_Flow, Origin_Frontend);
    --  User     : Hand-written annotations
@@ -155,9 +158,6 @@ package Flow_Generated_Globals is
    --  in containers is troublesome).
 
    ----------------------------------------------------------------------
-
-   function GG_Mode return GG_Mode_T with Ghost;
-   --  Returns the current mode
 
    ----------------------------------------------------------------------
    --  Task instances
