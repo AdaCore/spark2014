@@ -11652,8 +11652,7 @@ package body Gnat2Why.Expr is
      (Prag  : Node_Id;
       Force : Boolean) return W_Prog_Id
    is
-      Pname   : constant Name_Id   := Pragma_Name (Prag);
-      Prag_Id : constant Pragma_Id := Get_Pragma_Id (Pname);
+      Prag_Id : constant Pragma_Id := Get_Pragma_Id (Prag);
 
       procedure tip;
       --  A dummy procedure called when pragma Inspection_Point is processed.
@@ -12122,8 +12121,7 @@ package body Gnat2Why.Expr is
 
    function Transform_Priority_Pragmas (Prag : Node_Id) return W_Prog_Id is
 
-      Pname   : constant Name_Id   := Pragma_Name (Prag);
-      Prag_Id : constant Pragma_Id := Get_Pragma_Id (Pname);
+      Prag_Id : constant Pragma_Id := Get_Pragma_Id (Prag);
       Expr    : constant Node_Id :=
         (if Present (Pragma_Argument_Associations (Prag)) then
             Expression (First (Pragma_Argument_Associations (Prag)))
