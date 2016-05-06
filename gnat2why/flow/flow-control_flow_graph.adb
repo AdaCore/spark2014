@@ -23,7 +23,6 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Errout;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
 with Sem_Aux;                            use Sem_Aux;
