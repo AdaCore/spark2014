@@ -182,7 +182,8 @@ package body Flow_Types is
       N_Or_Limited_View : Node_Or_Entity_Id := N;
    begin
       if Nkind (N) in N_Entity and then
-        Present (Non_Limited_View (N))
+        Ekind (N) in E_Incomplete_Type | E_Incomplete_Subtype and then
+        Has_Non_Limited_View (N)
       then
          N_Or_Limited_View := Non_Limited_View (N);
       end if;
