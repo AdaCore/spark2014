@@ -2352,7 +2352,7 @@ package body Gnat2Why.Subprograms is
       Priv_Decls : constant List_Id := Private_Declarations_of_Prot_Type (E);
       Vis_Decls  : constant List_Id := Visible_Declarations_of_Prot_Type (E);
 
-      --  beginning of processing for Generate_VCs_For_Protected_Type
+   --  Start of processing for Generate_VCs_For_Protected_Type
 
    begin
       --  We open a new theory, so that the context is fresh for this task

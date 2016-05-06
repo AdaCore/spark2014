@@ -749,7 +749,7 @@ ASCII.LF;
             end if;
          end Remove_Prover;
 
-         --  beginning of processing for Limit_Prover
+      --  Start of processing for Limit_Prover
 
       begin
          if not File_System.Install.CVC4_Present then
