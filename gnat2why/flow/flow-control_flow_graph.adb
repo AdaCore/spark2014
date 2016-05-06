@@ -5687,9 +5687,9 @@ package body Flow.Control_Flow_Graph is
          --  a "when others" to force re-consideration when
          --  SNames.Pragma_Id is extended.
          --
-         --  These all generate a warning.  In future, these pragmas
-         --  may move to be fully ignored or to be processed with more
-         --  semantic detail as required.
+         --  These can all be ignored - we already generated a warning during
+         --  Marking. In future, these pragmas may move to be fully ignored
+         --  or to be processed with more semantic detail as required.
 
          --  Group 2a - GNAT Defined and obsolete pragmas
          when Pragma_Abort_Defer                 |
@@ -5837,9 +5837,6 @@ package body Flow.Control_Flow_Graph is
            Pragma_Priority                       |
            Pragma_Storage_Size                   =>
 
-            Errout.Error_Msg_Name_1 := Pragma_Name (N);
-            Errout.Error_Msg_N
-              ("?pragma % ignored in flow analysis (not yet supported)", N);
             return False;
 
          --  ??? ignored for now, see NA03-003

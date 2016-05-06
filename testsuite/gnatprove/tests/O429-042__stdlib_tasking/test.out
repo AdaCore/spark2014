@@ -1,5 +1,4 @@
 ada_real_time.ads:42:04: warning: pragma "Compile_Time_Error" ignored (not yet supported)
-ada_real_time.ads:42:04: warning: pragma "Compile_Time_Error" ignored in proof (not yet supported)
 ada_real_time.ads:64:48: medium: overflow check might fail
 ada_real_time.ads:67:47: medium: overflow check might fail
 ada_real_time.ads:73:48: medium: overflow check might fail

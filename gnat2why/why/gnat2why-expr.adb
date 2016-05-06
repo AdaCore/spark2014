@@ -11863,9 +11863,9 @@ package body Gnat2Why.Expr is
          --  a "when others" to force re-consideration when
          --  SNames.Pragma_Id is extended.
          --
-         --  These all generate a warning.  In future, these pragmas
-         --  may move to be fully ignored or to be processed with more
-         --  semantic detail as required.
+         --  These can all be ignored - we have already generated a warning
+         --  during Marking. In the future, these pragmas may move to be fully
+         --  ignored or to be processed with more semantic detail as required.
 
          --  Group 2a - GNAT Defined and obsolete pragmas
          when Pragma_Abort_Defer                 |
@@ -12010,9 +12010,6 @@ package body Gnat2Why.Expr is
            Pragma_Lock_Free                      |
            Pragma_Storage_Size                   =>
 
-            Error_Msg_Name_1 := Pragma_Name (Prag);
-            Error_Msg_N
-              ("?pragma % ignored in proof (not yet supported)", Prag);
             return +Void;
       end case;
    end Transform_Pragma;
