@@ -44,10 +44,10 @@ package Flow_Utility
 is
 
    procedure Initialize;
-   --  Set up state required by some functions in this package.
+   --  Set up state required by some functions in this package
 
    function Is_Initialized return Boolean;
-   --  Tests if we're initialized.
+   --  Tests if we're initialized
 
    procedure Collect_Functions_And_Read_Locked_POs
      (N                  : Node_Id;
@@ -55,9 +55,8 @@ is
       Tasking            : in out Tasking_Info;
       Include_Predicates : Boolean)
    with Pre => Present (N);
-   --  For an expression N collect its called functions and update the set
-   --  of protected objects that are read-locked when evaluating these
-   --  functions.
+   --  For an expression N collect its called functions and update the set of
+   --  protected objects that are read-locked when evaluating these functions.
    --
    --  When Include_Predicates is set, then the implicit calls to predicate
    --  functions appear in the set of subprograms called. This is what we
@@ -68,7 +67,7 @@ is
    with Pre => Is_Initialized and then
                  Nkind (E) in N_Entity and then
                  Ekind (E) in E_Component | E_Discriminant;
-   --  Compute a suitable hash for the given record component.
+   --  Compute a suitable hash for the given record component
 
    function Filter_Out_Constants
      (FS : Flow_Id_Sets.Set;
