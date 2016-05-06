@@ -133,7 +133,7 @@ scale.adb:19:32: info: division check proved
 scale.adb:19:32: info: overflow check proved
 scale.adb:19:44: info: overflow check proved
 scale.adb:20:15: info: initialization of "Calc" proved
-scale.adb:20:15: info: range check proved
+scale.adb:20:15: medium: range check might fail
 scale.adb:21:14: info: initialization of "Ans" proved
 scale.adb:45:13: info: initialization of "Gap" proved
 scale.adb:48:10: info: assertion proved
