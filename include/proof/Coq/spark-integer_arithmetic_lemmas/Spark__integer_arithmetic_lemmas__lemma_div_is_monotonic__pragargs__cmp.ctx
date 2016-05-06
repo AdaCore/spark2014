@@ -106,6 +106,14 @@ Parameter us_compatible_tags: Z -> Z -> Prop.
 
 Axiom us_compatible_tags_refl : forall (tag:Z), (us_compatible_tags tag tag).
 
+Parameter mod1: Z -> Z -> Z.
+
+Axiom mod_def : forall (x:Z) (y:Z),
+                 ((0%Z < y)%Z ->
+                  ((mod1 x y) = (int.EuclideanDivision.mod1 x y)))
+                 /\ ((~ (0%Z < y)%Z) ->
+                     ((mod1 x y) = ((int.EuclideanDivision.mod1 x y) + y)%Z)).
+
 Axiom int__ : Type.
 Parameter int___WhyType : WhyType int__.
 Existing Instance int___WhyType.
@@ -260,32 +268,12 @@ Parameter denom: Z.
 
 Parameter attr__ATTRIBUTE_ADDRESS2: Z.
 
-Parameter res1: Z.
-
-Parameter attr__ATTRIBUTE_ADDRESS3: Z.
-
-Parameter res2: Z.
-
-Parameter attr__ATTRIBUTE_ADDRESS4: Z.
-
 (* Why3 goal *)
 Theorem WP_parameter_def : ((in_range val1)
                             /\ ((in_range val2)
-                                /\ ((in_range1 denom)
-                                    /\ ((in_range res1)
-                                        /\ ((in_range res2)
-                                            /\ ((val1 <= val2)%Z
-                                                /\ ((res1 = (ZArith.BinInt.Z.quot val1 denom))
-                                                    /\ (res2 = (ZArith.BinInt.Z.quot val2 denom))))))))) ->
-                           (*      Post => Res1 <= Res2;                                                                                             *)
-                           (*              ^ spark-arithmetic_lemmas.ads:35:14:instantiated:spark-integer_arithmetic_lemmas.ads:3:1:VC_POSTCONDITION *)
-                           (res1 <= res2)%Z.
-(* Why3 intros (h1,(h2,(h3,(h4,(h5,(h6,(h7,h8))))))). *)
-intros (h1,(h2,(h3,(h4,(h5,(h6,(h7,h8))))))).
-rewrite h7,h8.
-apply Z.quot_le_mono.
-unfold in_range1 in h3.
-auto with zarith.
-auto with zarith.
-Qed.
+                                /\ ((in_range1 denom) /\ (val1 <= val2)%Z))) ->
+                           (*      Post => Val1 / Denom <= Val2 / Denom;                                                                              *)
+                           (*              ^ spark-arithmetic_lemmas.ads:49:14:instantiated:spark-integer_arithmetic_lemmas.ads:31:1:VC_POSTCONDITION *)
+                           ((ZArith.BinInt.Z.quot val1 denom) <= (ZArith.BinInt.Z.quot val2 denom))%Z.
 
+#include "lemma_div_is_monotonic.prf"

@@ -584,6 +584,7 @@ ASCII.LF;
       Compile_Lib ("int", "ComputerDivision");
       Compile_Lib ("bv", "Pow2int");
       Compile_Lib ("bv", "BV_Gen");
+      Compile_Lib ("", "SPARK");
    end Prepare_Prover_Lib;
 
    ---------------

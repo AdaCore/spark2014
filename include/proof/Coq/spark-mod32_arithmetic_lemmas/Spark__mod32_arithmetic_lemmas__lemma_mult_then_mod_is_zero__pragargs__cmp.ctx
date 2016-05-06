@@ -131,21 +131,21 @@ Parameter bw_and: t -> t -> t.
 
 Axiom Nth_bw_and : forall (v1:t) (v2:t) (n:Z),
                     ((0%Z <= n)%Z /\ (n < 32%Z)%Z) ->
-                    ((nth (bw_and v1 v2) n) = (Init.Datatypes.andb (nth v1 n) 
+                    ((nth (bw_and v1 v2) n) = (Init.Datatypes.andb (nth v1 n)
                     (nth v2 n))).
 
 Parameter bw_or: t -> t -> t.
 
 Axiom Nth_bw_or : forall (v1:t) (v2:t) (n:Z),
                    ((0%Z <= n)%Z /\ (n < 32%Z)%Z) ->
-                   ((nth (bw_or v1 v2) n) = (Init.Datatypes.orb (nth v1 n) 
+                   ((nth (bw_or v1 v2) n) = (Init.Datatypes.orb (nth v1 n)
                    (nth v2 n))).
 
 Parameter bw_xor: t -> t -> t.
 
 Axiom Nth_bw_xor : forall (v1:t) (v2:t) (n:Z),
                     ((0%Z <= n)%Z /\ (n < 32%Z)%Z) ->
-                    ((nth (bw_xor v1 v2) n) = (Init.Datatypes.xorb (nth v1 n) 
+                    ((nth (bw_xor v1 v2) n) = (Init.Datatypes.xorb (nth v1 n)
                     (nth v2 n))).
 
 Parameter bw_not: t -> t.
@@ -276,7 +276,7 @@ Axiom to_uint_add : forall (v1:t) (v2:t),
 
 Axiom to_uint_add_bounded : forall (v1:t) (v2:t),
                              (((to_uint v1) + (to_uint v2))%Z < 4294967296%Z)%Z ->
-                             ((to_uint (add v1 v2)) = ((to_uint v1) + 
+                             ((to_uint (add v1 v2)) = ((to_uint v1) +
                              (to_uint v2))%Z).
 
 Parameter sub: t -> t -> t.
@@ -289,7 +289,7 @@ Axiom to_uint_sub : forall (v1:t) (v2:t),
 Axiom to_uint_sub_bounded : forall (v1:t) (v2:t),
                              ((0%Z <= ((to_uint v1) - (to_uint v2))%Z)%Z
                               /\ (((to_uint v1) - (to_uint v2))%Z < 4294967296%Z)%Z) ->
-                             ((to_uint (sub v1 v2)) = ((to_uint v1) - 
+                             ((to_uint (sub v1 v2)) = ((to_uint v1) -
                              (to_uint v2))%Z).
 
 Parameter neg: t -> t.
@@ -307,19 +307,19 @@ Axiom to_uint_mul : forall (v1:t) (v2:t),
 
 Axiom to_uint_mul_bounded : forall (v1:t) (v2:t),
                              (((to_uint v1) * (to_uint v2))%Z < 4294967296%Z)%Z ->
-                             ((to_uint (mul v1 v2)) = ((to_uint v1) * 
+                             ((to_uint (mul v1 v2)) = ((to_uint v1) *
                              (to_uint v2))%Z).
 
 Parameter udiv: t -> t -> t.
 
 Axiom to_uint_udiv : forall (v1:t) (v2:t),
-                      ((to_uint (udiv v1 v2)) = (int.EuclideanDivision.div 
+                      ((to_uint (udiv v1 v2)) = (int.EuclideanDivision.div
                                                   (to_uint v1) (to_uint v2))).
 
 Parameter urem: t -> t -> t.
 
 Axiom to_uint_urem : forall (v1:t) (v2:t),
-                      ((to_uint (urem v1 v2)) = (int.EuclideanDivision.mod1 
+                      ((to_uint (urem v1 v2)) = (int.EuclideanDivision.mod1
                                                   (to_uint v1) (to_uint v2))).
 
 Parameter lsr_bv: t -> t -> t.
@@ -328,7 +328,7 @@ Axiom lsr_bv_is_lsr : forall (x:t) (n:t),
                        ((lsr_bv x n) = (lsr x (to_uint n))).
 
 Axiom to_uint_lsr : forall (v:t) (n:t),
-                     ((to_uint (lsr_bv v n)) = (int.EuclideanDivision.div 
+                     ((to_uint (lsr_bv v n)) = (int.EuclideanDivision.div
                                                  (to_uint v)
                                                  (bv.Pow2int.pow2 (to_uint n)))).
 
@@ -344,7 +344,7 @@ Axiom lsl_bv_is_lsl : forall (x:t) (n:t),
 
 Axiom to_uint_lsl : forall (v:t) (n:t),
                      ((to_uint (lsl_bv v n)) = (int.EuclideanDivision.mod1 (
-                                                 (to_uint v) * (bv.Pow2int.pow2 
+                                                 (to_uint v) * (bv.Pow2int.pow2
                                                                  (to_uint n)))%Z
                                                  4294967296%Z)).
 
@@ -481,11 +481,11 @@ Axiom bv_max_def : forall (x:t) (y:t),
                     /\ ((~ (ule x y)) -> ((bv_max x y) = x)).
 
 Axiom bv_min_to_uint : forall (x:t) (y:t),
-                        ((to_uint (bv_min x y)) = (ZArith.BinInt.Z.min 
+                        ((to_uint (bv_min x y)) = (ZArith.BinInt.Z.min
                         (to_uint x) (to_uint y))).
 
 Axiom bv_max_to_uint : forall (x:t) (y:t),
-                        ((to_uint (bv_max x y)) = (ZArith.BinInt.Z.max 
+                        ((to_uint (bv_max x y)) = (ZArith.BinInt.Z.max
                         (to_uint x) (to_uint y))).
 
 Axiom uint : Type.
@@ -647,80 +647,21 @@ Definition dynamic_invariant1 (temp___expr_222:t) (temp___is_init_219:bool)
   ((temp___is_init_219 = true) \/ (ule (of_int 1%Z) (of_int 4294967295%Z))) ->
   (in_range temp___expr_222).
 
-Parameter val1: t.
+Parameter arg1: t.
 
 Parameter attr__ATTRIBUTE_ADDRESS: Z.
 
-Parameter val2: t.
+Parameter arg2: t.
 
 Parameter attr__ATTRIBUTE_ADDRESS1: Z.
 
-Parameter factor: t.
-
-Parameter attr__ATTRIBUTE_ADDRESS2: Z.
-
 (* Why3 goal *)
-Theorem WP_parameter_def : ((in_range factor)
-                            /\ ((ult val1 val2) /\ (ule val2
-                                (udiv (of_int 4294967295%Z) factor)))) ->
-                           (*      Post => Val1 * Factor < Val2 * Factor;                                                                               *)
-                           (*              ^ spark-mod_arithmetic_lemmas.ads:49:14:instantiated:spark-mod32_arithmetic_lemmas.ads:33:1:VC_POSTCONDITION *)
-                           (ult (mul val1 factor) (mul val2 factor)).
-(* Why3 intros (h1,(h2,h3)). *)
-intros (h1,(h2,h3)).
-Open Scope Z_scope.
+Theorem WP_parameter_def : ((in_range arg2) /\ (ule arg1
+                            (udiv (of_int 4294967295%Z) arg2))) ->
+                           (*      Post => (Arg1 * Arg2) mod Arg2 = 0;                                                                                    *)
+                           (*               ^ spark-mod_arithmetic_lemmas.ads:104:15:instantiated:spark-mod32_arithmetic_lemmas.ads:33:1:VC_POSTCONDITION *)
+                           ((urem (mul arg1 arg2) arg2) = (of_int 0%Z)).
 
-(* rewrite hypotheses *)
-unfold in_range in h1.
-destruct h1.
-unfold ule in H, H0, h3.
-unfold ult in h2.
-rewrite to_uint_udiv in h3.
-assert (0 <= to_uint val1 /\ to_uint val1 < 4294967296) as Val1_Bounds.
-apply to_uint_bounds.
-destruct Val1_Bounds.
-assert (0 <= to_uint val2 /\ to_uint val2 < 4294967296) as Val2_Bounds.
-apply to_uint_bounds.
-destruct Val2_Bounds.
-unfold EuclideanDivision.div in h3.
-rewrite to_uint_of_int in H, H0, h3 by auto with zarith.
-case Z_le_dec in h3.
-
-(* rewrite goal *)
-unfold ult.
-rewrite to_uint_mul, to_uint_mul.
-rewrite BV_Gen.mod1_out, BV_Gen.mod1_out.
-
-(* monotonicity of multiplication *)
-SearchPattern (0 < ?c -> ?a < ?b -> ?a * ?c < ?b * ?c).
-assert (0 < to_uint factor) as Factor_Pos by auto with zarith.
-apply (Zmult_lt_compat_r _ _ _ Factor_Pos h2).
-
-(* no overflow in val2 * factor *)
-split.
-auto with zarith.
-assert (0 <= to_uint factor) as Factor_Nat by auto with zarith.
-pose (Int.CompatOrderMult (to_uint val2) (4294967295 / to_uint factor) (to_uint factor) h3 Factor_Nat).
-replace (4294967295 / to_uint factor * to_uint factor) with (to_uint factor * (4294967295 / to_uint factor)) in l0 by auto with zarith.
-assert (0 < to_uint factor) as Factor_Pos by auto with zarith.
-pose (Z.mul_div_le 4294967295 (to_uint factor) Factor_Pos).
-auto with zarith.
-
-(* no overflow in val1 * factor *)
-split.
-auto with zarith.
-assert (to_uint val1 <= 4294967295 / to_uint factor) as Val1_Bound by auto with zarith.
-assert (0 <= to_uint factor) as Factor_Nat by auto with zarith.
-pose (Int.CompatOrderMult (to_uint val1) (4294967295 / to_uint factor) (to_uint factor) Val1_Bound Factor_Nat).
-replace (4294967295 / to_uint factor * to_uint factor) with (to_uint factor * (4294967295 / to_uint factor)) in l0 by auto with zarith.
-assert (0 < to_uint factor) as Factor_Pos by auto with zarith.
-pose (Z.mul_div_le 4294967295 (to_uint factor) Factor_Pos).
-auto with zarith.
-
-(* absurd case *)
-contradict n.
-apply Z_mod_lt.
-auto with zarith.
-
-Qed.
-
+#define SPARK_MAX_UINT 4294967295
+#define SPARK_MAX_UINT_PLUS1 4294967296
+#include "lemma_modular_mult_then_mod_is_zero.prf"

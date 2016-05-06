@@ -99,12 +99,14 @@ install-all:
 install:
 	mkdir -p $(INSTALLDIR)/bin $(CONFIGDIR) $(THEORIESDIR) \
 	  $(INCLUDEDIR) $(LIBDIR)
-	@echo "generating default target.atp in $(INSTALLDIR)/bin:"
+	@echo "Generate default target.atp in $(INSTALLDIR)/bin:"
 	$(GNATMAKE) -q -c -u -gnats spark2014vsn.ads \
 	  -gnatet=$(INSTALLDIR)/bin/target.atp
 	$(CP) share/spark/config/*cgpr $(CONFIGDIR)
 	$(CP) share/spark/theories/*why $(THEORIESDIR)
 	$(CP) share/spark/theories/*mlw $(THEORIESDIR)
+	@echo "Generate Coq files by preprocessing context files:"
+	$(MAKE) -C include generate
 	$(CP) include/*.ad? $(INCLUDEDIR)
 	$(CP) include/*.gpr $(LIBDIR)
 	$(CP) include/proof $(LIBDIR)

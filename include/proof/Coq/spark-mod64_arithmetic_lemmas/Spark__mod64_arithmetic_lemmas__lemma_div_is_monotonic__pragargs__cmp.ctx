@@ -131,21 +131,21 @@ Parameter bw_and: t -> t -> t.
 
 Axiom Nth_bw_and : forall (v1:t) (v2:t) (n:Z),
                     ((0%Z <= n)%Z /\ (n < 64%Z)%Z) ->
-                    ((nth (bw_and v1 v2) n) = (Init.Datatypes.andb (nth v1 n) 
+                    ((nth (bw_and v1 v2) n) = (Init.Datatypes.andb (nth v1 n)
                     (nth v2 n))).
 
 Parameter bw_or: t -> t -> t.
 
 Axiom Nth_bw_or : forall (v1:t) (v2:t) (n:Z),
                    ((0%Z <= n)%Z /\ (n < 64%Z)%Z) ->
-                   ((nth (bw_or v1 v2) n) = (Init.Datatypes.orb (nth v1 n) 
+                   ((nth (bw_or v1 v2) n) = (Init.Datatypes.orb (nth v1 n)
                    (nth v2 n))).
 
 Parameter bw_xor: t -> t -> t.
 
 Axiom Nth_bw_xor : forall (v1:t) (v2:t) (n:Z),
                     ((0%Z <= n)%Z /\ (n < 64%Z)%Z) ->
-                    ((nth (bw_xor v1 v2) n) = (Init.Datatypes.xorb (nth v1 n) 
+                    ((nth (bw_xor v1 v2) n) = (Init.Datatypes.xorb (nth v1 n)
                     (nth v2 n))).
 
 Parameter bw_not: t -> t.
@@ -276,7 +276,7 @@ Axiom to_uint_add : forall (v1:t) (v2:t),
 
 Axiom to_uint_add_bounded : forall (v1:t) (v2:t),
                              (((to_uint v1) + (to_uint v2))%Z < 18446744073709551616%Z)%Z ->
-                             ((to_uint (add v1 v2)) = ((to_uint v1) + 
+                             ((to_uint (add v1 v2)) = ((to_uint v1) +
                              (to_uint v2))%Z).
 
 Parameter sub: t -> t -> t.
@@ -289,7 +289,7 @@ Axiom to_uint_sub : forall (v1:t) (v2:t),
 Axiom to_uint_sub_bounded : forall (v1:t) (v2:t),
                              ((0%Z <= ((to_uint v1) - (to_uint v2))%Z)%Z
                               /\ (((to_uint v1) - (to_uint v2))%Z < 18446744073709551616%Z)%Z) ->
-                             ((to_uint (sub v1 v2)) = ((to_uint v1) - 
+                             ((to_uint (sub v1 v2)) = ((to_uint v1) -
                              (to_uint v2))%Z).
 
 Parameter neg: t -> t.
@@ -308,19 +308,19 @@ Axiom to_uint_mul : forall (v1:t) (v2:t),
 
 Axiom to_uint_mul_bounded : forall (v1:t) (v2:t),
                              (((to_uint v1) * (to_uint v2))%Z < 18446744073709551616%Z)%Z ->
-                             ((to_uint (mul v1 v2)) = ((to_uint v1) * 
+                             ((to_uint (mul v1 v2)) = ((to_uint v1) *
                              (to_uint v2))%Z).
 
 Parameter udiv: t -> t -> t.
 
 Axiom to_uint_udiv : forall (v1:t) (v2:t),
-                      ((to_uint (udiv v1 v2)) = (int.EuclideanDivision.div 
+                      ((to_uint (udiv v1 v2)) = (int.EuclideanDivision.div
                                                   (to_uint v1) (to_uint v2))).
 
 Parameter urem: t -> t -> t.
 
 Axiom to_uint_urem : forall (v1:t) (v2:t),
-                      ((to_uint (urem v1 v2)) = (int.EuclideanDivision.mod1 
+                      ((to_uint (urem v1 v2)) = (int.EuclideanDivision.mod1
                                                   (to_uint v1) (to_uint v2))).
 
 Parameter lsr_bv: t -> t -> t.
@@ -329,7 +329,7 @@ Axiom lsr_bv_is_lsr : forall (x:t) (n:t),
                        ((lsr_bv x n) = (lsr x (to_uint n))).
 
 Axiom to_uint_lsr : forall (v:t) (n:t),
-                     ((to_uint (lsr_bv v n)) = (int.EuclideanDivision.div 
+                     ((to_uint (lsr_bv v n)) = (int.EuclideanDivision.div
                                                  (to_uint v)
                                                  (bv.Pow2int.pow2 (to_uint n)))).
 
@@ -345,7 +345,7 @@ Axiom lsl_bv_is_lsl : forall (x:t) (n:t),
 
 Axiom to_uint_lsl : forall (v:t) (n:t),
                      ((to_uint (lsl_bv v n)) = (int.EuclideanDivision.mod1 (
-                                                 (to_uint v) * (bv.Pow2int.pow2 
+                                                 (to_uint v) * (bv.Pow2int.pow2
                                                                  (to_uint n)))%Z
                                                  18446744073709551616%Z)).
 
@@ -482,11 +482,11 @@ Axiom bv_max_def : forall (x:t) (y:t),
                     /\ ((~ (ule x y)) -> ((bv_max x y) = x)).
 
 Axiom bv_min_to_uint : forall (x:t) (y:t),
-                        ((to_uint (bv_min x y)) = (ZArith.BinInt.Z.min 
+                        ((to_uint (bv_min x y)) = (ZArith.BinInt.Z.min
                         (to_uint x) (to_uint y))).
 
 Axiom bv_max_to_uint : forall (x:t) (y:t),
-                        ((to_uint (bv_max x y)) = (ZArith.BinInt.Z.max 
+                        ((to_uint (bv_max x y)) = (ZArith.BinInt.Z.max
                         (to_uint x) (to_uint y))).
 
 Axiom uint : Type.
@@ -579,71 +579,92 @@ Definition uint__ref___projection (a:uint__ref): uint := (uint__content a).
 Definition dynamic_invariant (temp___expr_216:t) (temp___is_init_213:bool)
   (temp___do_constant_214:bool) (temp___do_toplevel_215:bool): Prop := True.
 
-Parameter arg1: t.
+Axiom pos : Type.
+Parameter pos_WhyType : WhyType pos.
+Existing Instance pos_WhyType.
+
+Parameter attr__ATTRIBUTE_MODULUS1: t.
+
+(* Why3 assumption *)
+Definition in_range (x:t): Prop :=
+  (ule (of_int 1%Z) x) /\ (ule x (of_int 18446744073709551615%Z)).
+
+(* Why3 assumption *)
+Definition in_range_int (x:Z): Prop :=
+  (1%Z <= x)%Z /\ (x <= 18446744073709551615%Z)%Z.
+
+(* Why3 assumption *)
+Definition rep_type1 := t.
+
+Parameter bool_eq3: t -> t -> bool.
+
+Axiom bool_eq_def2 : forall (x:t) (y:t),
+                      ((x = y) -> ((bool_eq3 x y) = true))
+                      /\ ((~ (x = y)) -> ((bool_eq3 x y) = false)).
+
+Parameter attr__ATTRIBUTE_IMAGE1: t -> us_image.
+
+Parameter attr__ATTRIBUTE_VALUE__pre_check1: us_image -> Prop.
+
+Parameter attr__ATTRIBUTE_VALUE1: us_image -> t.
+
+Parameter to_rep1: pos -> t.
+
+Parameter of_rep1: t -> pos.
+
+Parameter user_eq1: pos -> pos -> bool.
+
+Parameter dummy1: pos.
+
+Axiom inversion_axiom1 : forall (x:pos), ((of_rep1 (to_rep1 x)) = x).
+
+Axiom range_axiom1 : forall (x:pos), (in_range (to_rep1 x)).
+
+(* Why3 assumption *)
+Definition to_int2 (x:pos): Z := (to_uint (to_rep1 x)).
+
+Axiom range_int_axiom1 : forall (x:pos), (in_range_int (to_int2 x)).
+
+Axiom coerce_axiom1 : forall (x:t),
+                       (in_range x) -> ((to_rep1 (of_rep1 x)) = x).
+
+(* Why3 assumption *)
+Inductive pos__ref :=
+  | mk_pos__ref : pos -> pos__ref.
+Axiom pos__ref_WhyType : WhyType pos__ref.
+Existing Instance pos__ref_WhyType.
+
+(* Why3 assumption *)
+Definition pos__content (v:pos__ref): pos :=
+  match v with
+  | (mk_pos__ref x) => x
+  end.
+
+(* Why3 assumption *)
+Definition pos__ref___projection (a:pos__ref): pos := (pos__content a).
+
+(* Why3 assumption *)
+Definition dynamic_invariant1 (temp___expr_222:t) (temp___is_init_219:bool)
+  (temp___do_constant_220:bool) (temp___do_toplevel_221:bool): Prop :=
+  ((temp___is_init_219 = true) \/ (ule (of_int 1%Z)
+   (of_int 18446744073709551615%Z))) -> (in_range temp___expr_222).
+
+Parameter val1: t.
 
 Parameter attr__ATTRIBUTE_ADDRESS: Z.
 
-Parameter arg2: t.
+Parameter val2: t.
 
 Parameter attr__ATTRIBUTE_ADDRESS1: Z.
 
-Parameter upper_bound: t.
+Parameter denom: t.
 
 Parameter attr__ATTRIBUTE_ADDRESS2: Z.
 
 (* Why3 goal *)
-Theorem WP_parameter_def : ((arg2 = (of_int 0%Z)) \/ (ule arg1
-                            (udiv upper_bound arg2))) ->
-                           (*      Post => Arg1 * Arg2 <= Upper_Bound;                                                                                  *)
-                           (*              ^ spark-mod_arithmetic_lemmas.ads:58:14:instantiated:spark-mod64_arithmetic_lemmas.ads:33:1:VC_POSTCONDITION *)
-                           (ule (mul arg1 arg2) upper_bound).
-intros h1.
-Open Scope Z_scope.
+Theorem WP_parameter_def : ((in_range denom) /\ (ule val1 val2)) ->
+                           (*      Post => Val1 / Denom <= Val2 / Denom;                                                                                *)
+                           (*              ^ spark-mod_arithmetic_lemmas.ads:48:14:instantiated:spark-mod64_arithmetic_lemmas.ads:33:1:VC_POSTCONDITION *)
+                           (ule (udiv val1 denom) (udiv val2 denom)).
 
-(* rewrite hypotheses *)
-pose (to_uint_bounds arg1) as Arg1_Bounds.
-pose (to_uint_bounds arg2) as Arg2_Bounds.
-pose (to_uint_bounds upper_bound) as Upper_Bounds.
-destruct Arg1_Bounds, Arg2_Bounds.
-unfold ule in h1.
-
-(* rewrite goal *)
-unfold ule.
-rewrite to_uint_mul.
-
-(* split on arg2 *)
-case (Z_eq_dec (to_uint arg2) 0); intros.
-
-* assert (0 <= to_uint arg1 * to_uint arg2 < 18446744073709551616) as Zero_Bound.
-  rewrite e, Z.mul_0_r.
-  auto with zarith.
-  pose (BV_Gen.mod1_out (to_uint arg1 * to_uint arg2) 18446744073709551616 Zero_Bound).
-  rewrite e0, e, Z.mul_0_r.
-  auto with zarith.
-
-* destruct h1.
-  rewrite H3 in n.
-  rewrite to_uint_of_int in n by auto with zarith.
-  contradict n.
-  trivial.
-
-  (* shared lemma for two subgoals (arg1 / arg2) * arg1 <= arg1 *)
-  assert (to_uint arg1 * to_uint arg2 <= to_uint upper_bound) as Shared_Lemma. 
-  rewrite to_uint_udiv in H3.
-  unfold EuclideanDivision.div in H3.
-  case Z_le_dec in H3; [|contradict n0; apply Z_mod_lt; auto with zarith].
-  assert (0 < to_uint arg2) as Arg2_Pos by auto with zarith.
-  pose (Z.mul_div_le (to_uint upper_bound) (to_uint arg2) Arg2_Pos).
-  apply Int.Trans with (y := to_uint arg2 * (to_uint upper_bound / to_uint arg2)).
-  replace (to_uint arg2 * (to_uint upper_bound / to_uint arg2)) with ((to_uint upper_bound / to_uint arg2) * to_uint arg2) by auto with zarith.
-  apply (Zmult_le_compat_r _ _ _ H3 H1).
-  trivial.
-
-  rewrite BV_Gen.mod1_out.
-
-  + exact Shared_Lemma.
-
-  + auto with zarith.
-
-Qed.
-
+#include "lemma_modular_div_is_monotonic.prf"
