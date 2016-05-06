@@ -43,7 +43,7 @@ package Flow_Utility
   with Initial_Condition => not Is_Initialized
 is
 
-   procedure Initialize;
+   procedure Initialize with Pre => not Is_Initialized;
    --  Set up state required by some functions in this package
 
    function Is_Initialized return Boolean with Ghost;
