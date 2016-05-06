@@ -205,6 +205,10 @@ package body Flow_Error_Messages is
       return To_String (M);
    end Compute_Message;
 
+   ------------------
+   -- Compute_Sloc --
+   ------------------
+
    function Compute_Sloc
      (N           : Node_Id;
       Place_First : Boolean := False) return Source_Ptr
