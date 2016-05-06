@@ -1,2 +1,3 @@
 from test_support import *
-prove_all()
+# small steps to avoid timeout on Darwin
+prove_all(steps=1)
