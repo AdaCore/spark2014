@@ -404,7 +404,7 @@ is
       Vars_Proof           : out Flow_Id_Sets.Set;
       Partial_Definition   : out Boolean)
    with Pre  => Is_Valid_Assignment_Target (N),
-        Post => (if not Is_Empty_Record (Etype (N))
+        Post => (if not Is_Empty_Record_Type (Etype (N))
                  then not Vars_Defined.Is_Empty);
    --  Process the LHS of an assignment statement or an [in] out parameter,
    --  establishing the sets of variables used. For example, assume we have
@@ -732,7 +732,8 @@ is
    --     Pragma_Constant_After_Elaboration. N might be Empty.
    --  @return True iff Constant_After_Elaboration is True
 
-   function Is_Empty_Record (T : Entity_Id) return Boolean;
+   function Is_Empty_Record_Type (T : Entity_Id) return Boolean with
+     Pre => Is_Type (T);
    --  Similar to Is_Null_Record_Type, but also returns true if this is a
    --  null extension of a null record type (or extension).
 

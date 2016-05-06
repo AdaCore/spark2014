@@ -4779,11 +4779,11 @@ package body Flow_Utility is
       return FS;
    end Replace_Flow_Ids;
 
-   ---------------------
-   -- Is_Empty_Record --
-   ---------------------
+   --------------------------
+   -- Is_Empty_Record_Type --
+   --------------------------
 
-   function Is_Empty_Record (T : Entity_Id) return Boolean is
+   function Is_Empty_Record_Type (T : Entity_Id) return Boolean is
       Decl : constant Node_Id := Parent (T);
       Def  : Node_Id;
    begin
@@ -4796,16 +4796,19 @@ package body Flow_Utility is
          when N_Record_Definition =>
             return No (Component_List (Def))
               or else Null_Present (Component_List (Def));
+
          when N_Derived_Type_Definition =>
-            --  First check the root, then check if this is a null
-            --  extension...
-            return Is_Empty_Record (Etype (Subtype_Indication (Def))) and then
-              (if Present (Record_Extension_Part (Def))
-               then Null_Present (Record_Extension_Part (Def)) or else
-                    No (Component_List (Record_Extension_Part (Def))));
+            --  First check the root, then check if this is a null extension...
+            return Is_Empty_Record_Type (Etype (Subtype_Indication (Def)))
+              and then
+                (if Present (Record_Extension_Part (Def))
+                 then Null_Present (Record_Extension_Part (Def))
+                 or else No (Component_List (Record_Extension_Part (Def))));
+
          when others =>
             return False;
+
       end case;
-   end Is_Empty_Record;
+   end Is_Empty_Record_Type;
 
 end Flow_Utility;
