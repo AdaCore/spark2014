@@ -21,9 +21,39 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sem_Util; use Sem_Util;
 with Output;   use Output;
 
 package body Flow_Generated_Globals is
+
+   --------------------------
+   -- Add_To_Remote_States --
+   --------------------------
+
+   procedure Add_To_Remote_States (F : Flow_Id) is
+   begin
+      if Is_Abstract_State (F) then
+         case F.Kind is
+            when Direct_Mapping | Record_Field =>
+               if Enclosing_Comp_Unit_Node (Get_Direct_Mapping_Id (F)) /=
+                 Current_Comp_Unit
+               then
+                  declare
+                     N : constant Entity_Name :=
+                       To_Entity_Name (Get_Direct_Mapping_Id (F));
+                  begin
+                     Remote_States.Include (N);
+                  end;
+               end if;
+
+            when Magic_String =>
+               Remote_States.Include (F.Name);
+
+            when others =>
+               null;
+         end case;
+      end if;
+   end Add_To_Remote_States;
 
    --------------------------------------
    -- Add_To_Volatile_Sets_If_Volatile --

@@ -1735,6 +1735,21 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      State_Abstractions.Insert (V.The_State);
 
+                  when EK_Remote_States =>
+                     State_Abstractions.Union (V.Remote_States);
+                     declare
+                        F   : Flow_Id;
+                        Tmp : constant Name_Sets.Set := V.Remote_States;
+                     begin
+                        for State of Tmp loop
+                           F := (if Present (Find_Entity (State))
+                                 then Direct_Mapping_Id (Find_Entity (State))
+                                 else Magic_String_Id (State));
+
+                           Add_To_Remote_States (F);
+                        end loop;
+                     end;
+
                   when EK_Volatiles =>
                      Async_Writers_Vars.Union (V.All_Async_Writers);
                      All_Volatile_Vars.Union (V.All_Async_Writers);

@@ -204,6 +204,11 @@ package body Flow_Generated_Globals.Phase_1 is
          Write_To_ALI (V);
       end loop;
 
+      --  Write remote states
+      V := (Kind          => EK_Remote_States,
+            Remote_States => Remote_States);
+      Write_To_ALI (V);
+
       --  Write globals for package and subprograms/tasks
       for Info of Package_Info_List loop
          V := (Kind            => EK_Globals,
@@ -308,6 +313,7 @@ package body Flow_Generated_Globals.Phase_1 is
                      F : constant Flow_Id := Direct_Mapping_Id (E);
                   begin
                      Add_To_Volatile_Sets_If_Volatile (F);
+                     Add_To_Remote_States (F);
                   end;
                end if;
             end;
