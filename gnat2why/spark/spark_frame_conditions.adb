@@ -453,7 +453,7 @@ package body SPARK_Frame_Conditions is
      (Process : not null access procedure (E : Entity_Name))
    is
    begin
-      for State_Name of GG_Get_All_State_Abstractions loop
+      for State_Name of GG_Get_State_Abstractions loop
          --  Any state abstraction for which we do NOT have a
          --  corresponding Entidy_Id is an External state abstraction.
 

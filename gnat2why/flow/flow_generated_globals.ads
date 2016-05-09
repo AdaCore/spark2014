@@ -198,7 +198,7 @@ package Flow_Generated_Globals is
    --  State information
    ----------------------------------------------------------------------
 
-   All_State_Abstractions : Name_Sets.Set := Name_Sets.Empty_Set;
+   State_Abstractions : Name_Sets.Set := Name_Sets.Empty_Set;
    --  State abstractions that the GG knows of
 
    ----------------------------------------------------------------------

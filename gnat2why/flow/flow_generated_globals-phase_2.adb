@@ -348,10 +348,10 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_Get_All_State_Abstractions --
    -----------------------------------
 
-   function GG_Get_All_State_Abstractions return Name_Sets.Set is
+   function GG_Get_State_Abstractions return Name_Sets.Set is
    begin
-      return All_State_Abstractions;
-   end GG_Get_All_State_Abstractions;
+      return State_Abstractions;
+   end GG_Get_State_Abstractions;
 
    -------------------------
    -- GG_Get_Constituents --
@@ -1730,7 +1730,7 @@ package body Flow_Generated_Globals.Phase_2 is
                         end loop;
                      end;
 
-                     All_State_Abstractions.Insert (V.The_State);
+                     State_Abstractions.Insert (V.The_State);
 
                   when EK_Volatiles =>
                      Async_Writers_Vars.Union (V.All_Async_Writers);
