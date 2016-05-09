@@ -5166,6 +5166,14 @@ package body Flow.Control_Flow_Graph is
             return False;
          end if;
 
+         if not Is_Visible (T, Scope) then
+            --  Sometimes we process things we're not really meant to see
+            --  (such as private types in nested packages); in which case
+            --  we should not split them. See OA14-027__flow_crash for a
+            --  good example of this.
+            return False;
+         end if;
+
          case Nkind (N) is
             when N_Identifier | N_Expanded_Name | N_Aggregate =>
                return True;
