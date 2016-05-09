@@ -1670,6 +1670,7 @@ package body Flow is
                end loop;
 
             end Collect_Unsynchronized_Globals;
+
          begin
             if S.Globals_Origin = Origin_User then
                Collect_Unsynchronized_Globals (S.Inputs_Proof);
@@ -1695,9 +1696,9 @@ package body Flow is
          end if;
 
          if FA.Kind = Kind_Package_Body then
-            --  Here we utilize the package's Refined_State aspect (if it
-            --  exists). Notice that we process this aspect regardless of
-            --  whether we generate a gg graph or not.
+            --  Here we use the package's Refined_State aspect (if it exists).
+            --  Note that we process this aspect regardless of whether we
+            --  generate a gg graph or not.
             declare
                Refined_State_N : constant Node_Id :=
                  Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_State);
