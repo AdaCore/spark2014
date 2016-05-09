@@ -21,41 +21,41 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
+with Flow_Dependency_Maps; use Flow_Dependency_Maps;
 
 package Flow_Generated_Globals.Phase_1 is
 
-   -------------
-   -- Writing --
-   -------------
-
-   procedure GG_Write_Initialize (GNAT_Root : Node_Id)
-   with Pre  => GG_Mode = GG_No_Mode,
-        Post => GG_Mode = GG_Write_Mode;
-   --  Must be called before the first call to
-   --  GG_Write_Global_Info and GG_Write_Package_Info.
+   -----------------
+   -- Registering --
+   -----------------
 
    procedure GG_Register_State_Info (DM : Dependency_Maps.Map)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
-   --  Register information related to state abstractions and the refinements
-   --  thereof. This will later be used to return the appropriate view
-   --  depending on the caller (as opposed to always returning the most refined
-   --  view). It also stores information related to external states.
+   --  Register information related to state abstractions and their
+   --  refinements. This will later be used to return the appropriate view
+   --  depending on the caller (as opposed to always returning the most
+   --  refined view). It also stores information related to external states.
 
    procedure GG_Register_Global_Info (GI : Global_Phase_1_Info)
    with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
-   --  Register the information we need to later compute globals.
-   --  Compute_Globals in Flow.Slice is used to produce the inputs.
-   --  It also stores information related to volatiles and possibly blocking
-   --  property.
+   --  Register information needed later to compute globals. The argument
+   --  is produced by Flow.Slice.Compute_Globals. It also stores information
+   --  related to volatiles and remote states.
 
    procedure GG_Register_Nonblocking (EN : Entity_Name)
    with Pre  => EN /= Null_Entity_Name and then
                 GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register entity with no potentially blocking statements
+
+   procedure GG_Register_Protected_Object (PO   : Entity_Name;
+                                           Prio : Priority_Value)
+   with Pre  => PO /= Null_Entity_Name and then
+                GG_Mode = GG_Write_Mode,
+        Post => GG_Mode = GG_Write_Mode;
+   --  Register protected object and its priority
 
    procedure GG_Register_Task_Object (Type_Name : Entity_Name;
                                       Object    : Task_Object)
@@ -71,15 +71,18 @@ package Flow_Generated_Globals.Phase_1 is
         Post => GG_Mode = GG_Write_Mode;
    --  Register tasking-related information for entity
 
-   procedure GG_Register_Protected_Object (PO   : Entity_Name;
-                                           Prio : Priority_Value)
-   with Pre  => PO /= Null_Entity_Name and then
-                GG_Mode = GG_Write_Mode,
+   -------------
+   -- Writing --
+   -------------
+
+   procedure GG_Write_Initialize (GNAT_Root : Node_Id)
+   with Pre  => GG_Mode = GG_No_Mode,
         Post => GG_Mode = GG_Write_Mode;
-   --  Register protected object and its priority
+   --  Must be called before the first call to GG_Write_Global_Info and
+   --  GG_Write_Package_Info.
 
    procedure GG_Write_Finalize
    with Pre => GG_Mode = GG_Write_Mode;
-   --  Appends all collected information to the ALI file.
+   --  Appends all collected information to the ALI file
 
 end Flow_Generated_Globals.Phase_1;

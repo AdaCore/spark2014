@@ -65,11 +65,11 @@ package body Flow_Generated_Globals.Phase_1 is
    --  subprogram and stored in the ALI file. In phase 2 it is populated
    --  with objects directly and indirectly accessed by each subprogram.
 
-   Subprogram_Info_List        : Global_Info_Lists.List :=
+   Subprogram_Info_List : Global_Info_Lists.List :=
      Global_Info_Lists.Empty_List;
    --  Information about subprograms from the "generated globals" algorithm
 
-   Package_Info_List           : Global_Info_Lists.List :=
+   Package_Info_List : Global_Info_Lists.List :=
      Global_Info_Lists.Empty_List;
    --  Information about packages from the "generated globals" algorithm
 
@@ -94,18 +94,31 @@ package body Flow_Generated_Globals.Phase_1 is
                                    Priority => Prio));
    end GG_Register_Protected_Object;
 
-   ------------------------------
-   -- GG_Register_Tasking_Info --
-   ------------------------------
+   ----------------------------
+   -- GG_Register_State_Info --
+   ----------------------------
 
-   procedure GG_Register_Tasking_Info (EN : Entity_Name;
-                                       TI : Tasking_Info)
-   is
+   procedure GG_Register_State_Info (DM : Dependency_Maps.Map) is
    begin
-      for Kind in Tasking_Info_Kind loop
-         Tasking_Info_Bag (Kind).Insert (EN, To_Name_Set (TI (Kind)));
+      for S in DM.Iterate loop
+         declare
+            State_F      : Flow_Id renames Dependency_Maps.Key (S);
+
+            State_N      : constant Entity_Name :=
+              To_Entity_Name (Get_Direct_Mapping_Id (State_F));
+
+            Constituents : constant Name_Sets.Set :=
+              To_Name_Set (To_Node_Set (DM (S)));
+         begin
+            --  Include (possibly overwrite) new state info into State_Comp_Map
+            State_Comp_Map.Include (State_N, Constituents);
+
+            --  Check if State_F is volatile and if it is then add it to the
+            --  appropriate sets.
+            Add_To_Volatile_Sets_If_Volatile (State_F);
+         end;
       end loop;
-   end GG_Register_Tasking_Info;
+   end GG_Register_State_Info;
 
    -----------------------------
    -- GG_Register_Task_Object --
@@ -118,6 +131,19 @@ package body Flow_Generated_Globals.Phase_1 is
       Task_Instances.Append ((Type_Name => Type_Name,
                               Object    => Object));
    end GG_Register_Task_Object;
+
+   ------------------------------
+   -- GG_Register_Tasking_Info --
+   ------------------------------
+
+   procedure GG_Register_Tasking_Info (EN : Entity_Name;
+                                       TI : Tasking_Info)
+   is
+   begin
+      for Kind in Tasking_Info_Kind loop
+         Tasking_Info_Bag (Kind).Insert (EN, To_Name_Set (TI (Kind)));
+      end loop;
+   end GG_Register_Tasking_Info;
 
    -----------------------
    -- GG_Write_Finalize --
@@ -307,31 +333,5 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Store the current compilation unit on which we are working
       Current_Comp_Unit := GNAT_Root;
    end GG_Write_Initialize;
-
-   ----------------------------
-   -- GG_Register_State_Info --
-   ----------------------------
-
-   procedure GG_Register_State_Info (DM : Dependency_Maps.Map) is
-   begin
-      for S in DM.Iterate loop
-         declare
-            State_F      : Flow_Id renames Dependency_Maps.Key (S);
-
-            State_N      : constant Entity_Name :=
-              To_Entity_Name (Get_Direct_Mapping_Id (State_F));
-
-            Constituents : constant Name_Sets.Set :=
-              To_Name_Set (To_Node_Set (DM (S)));
-         begin
-            --  Include (possibly overwrite) new state info into State_Comp_Map
-            State_Comp_Map.Include (State_N, Constituents);
-
-            --  Check if State_F is volatile and if it is then add it to the
-            --  appropriate sets.
-            Add_To_Volatile_Sets_If_Volatile (State_F);
-         end;
-      end loop;
-   end GG_Register_State_Info;
 
 end Flow_Generated_Globals.Phase_1;
