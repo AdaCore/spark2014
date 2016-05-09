@@ -23,7 +23,7 @@
 
 --  This package implements writing and reading of global contracts
 
-with Serialisation;              use Serialisation;
+with Serialisation; use Serialisation;
 
 package Flow_Generated_Globals.ALI_Serialization is
 
@@ -33,10 +33,10 @@ package Flow_Generated_Globals.ALI_Serialization is
                            EK_Remote_States,
                            EK_Volatiles,
                            EK_Globals,
-                           EK_Protected_Variable,
+                           EK_Protected_Instace,
                            EK_Task_Instance,
                            EK_Tasking_Info,
-                           EK_Tasking_Nonblocking);
+                           EK_Nonblocking);
 
    type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
    --  Similar to Tasking_Info_Bag, but with sets of object names
@@ -57,7 +57,7 @@ package Flow_Generated_Globals.ALI_Serialization is
             All_Effective_Writes        : Name_Sets.Set;
          when EK_Globals =>
             The_Global_Info             : Global_Phase_1_Info;
-         when EK_Protected_Variable =>
+         when EK_Protected_Instace =>
             The_Variable                : Entity_Name;
             The_Priority                : Priority_Value;
          when EK_Task_Instance =>
@@ -66,7 +66,7 @@ package Flow_Generated_Globals.ALI_Serialization is
          when EK_Tasking_Info =>
             The_Entity                  : Entity_Name;
             The_Tasking_Info            : Name_Tasking_Info;
-         when EK_Tasking_Nonblocking =>
+         when EK_Nonblocking =>
             The_Nonblocking_Subprograms : Name_Sets.Set;
       end case;
    end record;

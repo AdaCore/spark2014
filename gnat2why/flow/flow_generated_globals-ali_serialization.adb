@@ -51,10 +51,10 @@ package body Flow_Generated_Globals.ALI_Serialization is
       EK_Globals             => (Kind            => EK_Globals,
                                  The_Global_Info => Null_Global_Info),
 
-      EK_Protected_Variable  => (Kind         => EK_Protected_Variable,
+      EK_Protected_Instace   => (Kind         => EK_Protected_Instace,
                                  The_Variable => Null_Entity_Name,
                                  The_Priority => Priority_Value'
-                                   (Kind => Priority_Kind'First,
+                                   (Kind  => Priority_Kind'First,
                                     Value => 0)),
 
       EK_Task_Instance       => (Kind       => EK_Task_Instance,
@@ -68,7 +68,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
                                  The_Entity => Null_Entity_Name,
                                  others     => <>),
 
-      EK_Tasking_Nonblocking => (Kind   => EK_Tasking_Nonblocking,
+      EK_Nonblocking         => (Kind   => EK_Nonblocking,
                                  others => <>)
    );
    --  Dummy value required only for the serialization API
@@ -194,7 +194,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
          when EK_Globals =>
             Serialize (A, V.The_Global_Info);
 
-         when EK_Protected_Variable =>
+         when EK_Protected_Instace =>
             Serialize (A, V.The_Variable);
             Serialize (A, V.The_Priority.Kind);
             if V.The_Priority.Kind = Static then
@@ -209,7 +209,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
             Serialize (A, V.The_Entity);
             Serialize (A, V.The_Tasking_Info);
 
-         when EK_Tasking_Nonblocking =>
+         when EK_Nonblocking =>
             Serialize (A, V.The_Nonblocking_Subprograms);
       end case;
 

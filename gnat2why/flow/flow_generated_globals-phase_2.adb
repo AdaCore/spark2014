@@ -1754,7 +1754,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      GG_Exists_Cache.Insert (V.The_Global_Info.Name);
 
-                  when EK_Protected_Variable =>
+                  when EK_Protected_Instace =>
                      declare
                         C     : Entity_Name_To_Priorities_Maps.Cursor;
                         Dummy : Boolean;
@@ -1780,7 +1780,7 @@ package body Flow_Generated_Globals.Phase_2 is
                         end if;
                      end loop;
 
-                  when EK_Tasking_Nonblocking =>
+                  when EK_Nonblocking =>
                      Nonblocking_Subprograms.Union
                        (V.The_Nonblocking_Subprograms);
                end case;

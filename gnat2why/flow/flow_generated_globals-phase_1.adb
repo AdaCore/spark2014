@@ -33,19 +33,13 @@ with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
 
 package body Flow_Generated_Globals.Phase_1 is
 
-   package Entity_Name_To_Priority_Lists is
+   package Protected_Instances_Lists is
      new Ada.Containers.Doubly_Linked_Lists (Element_Type => Object_Priority);
-   --  List of variables containing protected objects and their static
-   --  priorities; for priority ceiling checks.
+   --  Containers with variables that contain instances of protected types; for
+   --  priority ceiling checks.
 
-   Protected_Objects : Entity_Name_To_Priority_Lists.List;
-   --  Mapping from variables containing protected objects to their static
-   --  priorities; for priority ceiling checks.
-   --
-   --  In phase 1 it is populated with information from current compilation
-   --  unit. In phase 2 this information is collected for all variables
-   --  accessible from the current compilation unit (including variables
-   --  declared in bodies of other packages).
+   Protected_Instances : Protected_Instances_Lists.List;
+   --  Instances of protected types and their static priorities
 
    type Task_Instance is record
       Type_Name : Entity_Name;
@@ -54,10 +48,10 @@ package body Flow_Generated_Globals.Phase_1 is
 
    package Task_Instances_Lists is
      new Ada.Containers.Doubly_Linked_Lists (Element_Type => Task_Instance);
-   --  Containers with instances of task objects
+   --  Containers with variables that contain instances of task types
 
    Task_Instances : Task_Instances_Lists.List;
-   --  Task instances
+   --  Instances of task types
 
    Nonblocking_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
    --  Subprograms, entries and tasks that do not contain potentially blocking
@@ -96,8 +90,8 @@ package body Flow_Generated_Globals.Phase_1 is
                                            Prio : Priority_Value)
    is
    begin
-      Protected_Objects.Append (Object_Priority'(Variable => PO,
-                                                 Priority => Prio));
+      Protected_Instances.Append ((Variable => PO,
+                                   Priority => Prio));
    end GG_Register_Protected_Object;
 
    ------------------------------
@@ -189,7 +183,7 @@ package body Flow_Generated_Globals.Phase_1 is
       Write_To_ALI (V);
 
       --  Write nonblocking subprograms
-      V := (Kind                        => EK_Tasking_Nonblocking,
+      V := (Kind                        => EK_Nonblocking,
             The_Nonblocking_Subprograms => Nonblocking_Subprograms);
       Write_To_ALI (V);
 
@@ -231,10 +225,10 @@ package body Flow_Generated_Globals.Phase_1 is
          Write_To_ALI (V);
       end loop;
 
-      for PO of Protected_Objects loop
-         V := (Kind         => EK_Protected_Variable,
-               The_Variable => PO.Variable,
-               The_Priority => PO.Priority);
+      for Instance of Protected_Instances loop
+         V := (Kind         => EK_Protected_Instace,
+               The_Variable => Instance.Variable,
+               The_Priority => Instance.Priority);
          Write_To_ALI (V);
       end loop;
 
