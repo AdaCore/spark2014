@@ -195,13 +195,6 @@ package Flow_Generated_Globals is
    --  Protected object and its priority
 
    ----------------------------------------------------------------------
-   --  State information
-   ----------------------------------------------------------------------
-
-   State_Abstractions : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  State abstractions that the GG knows of
-
-   ----------------------------------------------------------------------
    --  Volatile information
    ----------------------------------------------------------------------
 

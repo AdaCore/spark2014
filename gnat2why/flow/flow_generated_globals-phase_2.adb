@@ -232,6 +232,9 @@ package body Flow_Generated_Globals.Phase_2 is
    --  which speeds up some queries. It is populated at the end of GG_Read from
    --  State_Comp_Map.
 
+   State_Abstractions : Name_Sets.Set := Name_Sets.Empty_Set;
+   --  State abstractions that the GG knows of
+
    ----------------------------------------------------------------------
    --  Local state
    ----------------------------------------------------------------------
