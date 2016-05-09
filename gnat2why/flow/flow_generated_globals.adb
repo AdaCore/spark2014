@@ -96,7 +96,7 @@ package body Flow_Generated_Globals is
 
    procedure Print_Tasking_Info_Bag (P : Phase) is
 
-      Debug_Print_Tasking_Info          : constant Boolean := False;
+      Debug_Print_Tasking_Info : constant Boolean := False;
       --  Enables printing of tasking-related information
 
       use Name_Graphs;
@@ -112,9 +112,8 @@ package body Flow_Generated_Globals is
          if not Tasking_Info_Bag (P, Kind).Is_Empty then
             for C in Tasking_Info_Bag (P, Kind).Iterate loop
                declare
-                  Subp : Entity_Name renames Key (C);
-                  Objs : Name_Sets.Set renames
-                    Tasking_Info_Bag (P, Kind) (C);
+                  Subp : Entity_Name   renames Key (C);
+                  Objs : Name_Sets.Set renames Tasking_Info_Bag (P, Kind) (C);
                begin
                   if not Objs.Is_Empty then
                      Write_Line (To_String (Subp) & ":");
