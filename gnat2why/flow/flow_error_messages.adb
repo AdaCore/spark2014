@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2013-2015, Altran UK Limited              --
---                  Copyright (C) 2013-2015, AdaCore                        --
+--                  Copyright (C) 2013-2016, Altran UK Limited              --
+--                  Copyright (C) 2013-2016, AdaCore                        --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -203,22 +203,24 @@ package body Flow_Error_Messages is
       return To_String (M);
    end Compute_Message;
 
+   ------------------
+   -- Compute_Sloc --
+   ------------------
+
    function Compute_Sloc
      (N           : Node_Id;
       Place_First : Boolean := False) return Source_Ptr
    is
-      Slc : Source_Ptr;
+      Slc : Source_Ptr :=
+        (if Place_First
+         then Safe_First_Sloc (N)
+         else Sloc (N));
    begin
-      if Instantiation_Location (Sloc (N)) /= No_Location then
+      if Instantiation_Location (Slc) /= No_Location then
          --  If we are dealing with an instantiation of a generic we change
          --  the message to point at the implementation of the generic and we
          --  mention where the generic is instantiated.
-         Slc := Original_Location (Sloc (N));
-
-      elsif Place_First then
-         Slc := First_Sloc (N);
-      else
-         Slc := Sloc (N);
+         Slc := Original_Location (Slc);
       end if;
       return Slc;
    end Compute_Sloc;

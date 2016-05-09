@@ -31,6 +31,7 @@ with Csets;                              use Csets;
 with Gnat2Why.Assumptions;               use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
 with GNATCOLL.Utils;                     use GNATCOLL.Utils;
+with Errout;                             use Errout;
 with Exp_Util;                           use Exp_Util;
 with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
@@ -3105,6 +3106,15 @@ package body SPARK_Util is
 
       return Result;
    end Root_Record_Type;
+
+   ---------------------
+   -- Safe_First_Sloc --
+   ---------------------
+
+   function Safe_First_Sloc (N : Node_Id) return Source_Ptr is
+     (if Instantiation_Location (Sloc (N)) = No_Location
+      then First_Sloc (N)
+      else Sloc (First_Node (N)));
 
    ------------------------------
    -- Search_Component_By_Name --

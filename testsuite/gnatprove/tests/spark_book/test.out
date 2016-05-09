@@ -521,7 +521,7 @@ double_list.adb:67:25: info: range check proved, in instantiation at list_handle
 double_list.ads:9:05: info: initial condition proved, in instantiation at list_handler.adb:8
 double_list.ads:9:26: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
 double_list.ads:19:19: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.ads:19:24: info: postcondition proved, in instantiation at list_handler.adb:8
+double_list.ads:19:19: info: postcondition proved, in instantiation at list_handler.adb:8
 double_list.ads:23:29: info: initialization of "Status" proved, in instantiation at list_handler.adb:8
 elaboration_demo.adb:2:29: warning: unused initial value of "Size"
 elaboration_demo.adb:3:29: high: "Count" is not initialized in "Elaboration_Demo"

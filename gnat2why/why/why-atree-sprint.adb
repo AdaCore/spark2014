@@ -27,6 +27,7 @@ with Ada.Containers;        use Ada.Containers;
 with Ada.Direct_IO;
 with Ada.Directories;
 with Ada.Strings.Unbounded;
+with Atree;                 use Atree;
 with Errout;                use Errout;
 with GNAT.Regpat;
 with GNAT.OS_Lib;           use GNAT.OS_Lib;
@@ -1338,9 +1339,14 @@ package body Why.Atree.Sprint is
 
    procedure Print_Node (N : Why_Node_Id) is
       N_Kind : constant Why_Node_Kind := Get_Kind (N);
+      Ada_N  : constant Node_Id := Original_Node (Get_Ada_Node (N));
+      --  ??? the above call to Original_Node is a hack to prevent accessing
+      --  junk data when calling First_Sloc; however, this happens only when
+      --  Print_Node itself is called with junk data, which in turn happens
+      --  only on astrium_sgs test. Please remove it once P111-034 is fixed.
    begin
-      if Get_Ada_Node (N) /= Empty then
-         Curr_Sloc := First_Sloc (Get_Ada_Node (N));
+      if Present (Ada_N) then
+         Curr_Sloc := Safe_First_Sloc (Ada_N);
       end if;
 
       case N_Kind is
