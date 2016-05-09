@@ -1818,11 +1818,10 @@ package body Flow is
    -----------------------------
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean is
-      Ptr : Node_Id;
+      Last_Statement : constant Node_Id :=
+        Last (Statements (Handled_Statement_Sequence (Get_Body (E))));
    begin
-      Ptr := Get_Body (E);
-      Ptr := Last (Statements (Handled_Statement_Sequence (Ptr)));
-      return Nkind (Ptr) in N_Raise_xxx_Error | N_Raise_Statement;
+      return Nkind (Last_Statement) in N_Raise_xxx_Error | N_Raise_Statement;
    end Last_Statement_Is_Raise;
 
 end Flow;
