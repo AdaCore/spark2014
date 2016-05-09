@@ -7592,7 +7592,7 @@ package body Gnat2Why.Expr is
       Ada_Node  : Node_Id) return W_Expr_Id
    is
       Dim       : constant Positive :=
-        Positive (Number_Dimensions (Left_Type));
+        Positive (Number_Dimensions (Retysp (Left_Type)));
       Subdomain : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
       Args      : W_Expr_Array (1 .. 4 * Dim + 2);
