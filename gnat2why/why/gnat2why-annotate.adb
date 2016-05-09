@@ -294,10 +294,6 @@ package body Gnat2Why.Annotate is
                   Error_Msg_N
                     ("return type of Model function must allow for of " &
                        "iteration", E);
-               elsif Etype (Cont_Element) /= Etype (Model_Element) then
-                  Error_Msg_N
-                    ("iteration on model and container types must range on "
-                     & "the same elements", E);
                else
                   Ok := True;
                end if;

@@ -34,6 +34,7 @@ with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
+with Gnat2Why.Annotate;              use Gnat2Why.Annotate;
 with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Namet;                          use Namet;
@@ -12239,18 +12240,34 @@ package body Gnat2Why.Expr is
          Domain      : EW_Domain;
          Element_T   : W_Type_Id;
          Params      : Transformation_Params) return W_Expr_Id;
-      --  Constructs an expression that should be used to bind the index of a
+      --  @param Ada_Node quantified expression over a container
+      --  @param W_Over_E Why3 expression for the container value
+      --  @param Over_Type Entity of the container type
+      --  @param W_Index_Var Why3 name for the index of the quantification
+      --  @param Domain domain in which the quantification is translated
+      --  @param Element_T Why3 type of the Index variable
+      --  @param Params transformation parameters to be used.
+      --  @return the expression that should be used to bind the index of a
       --  "of" quantified expression on a type with the Iterable aspect.
       --  Returns Element (W_Over_E, W_Index_Var)
 
       function Make_Constraint_For_Iterable
-        (Ada_Node    : Node_Id;
-         W_Over_E    : W_Expr_Id;
-         Over_Type   : Entity_Id;
-         W_Index_Var : W_Expr_Id;
-         Domain      : EW_Domain;
-         Params      : Transformation_Params) return W_Expr_Id;
-      --  Constructs an expression for the constraint of a quantified
+        (Ada_Node     : Node_Id;
+         Use_Contains : Boolean;
+         W_Over_E     : W_Expr_Id;
+         Over_Type    : Entity_Id;
+         W_Index_Var  : W_Expr_Id;
+         Domain       : EW_Domain;
+         Params       : Transformation_Params) return W_Expr_Id;
+      --  @param Ada_Node quantified expression over a container
+      --  @param Use_Contains wether there is a Contains primitive specified
+      --         for Over_Type
+      --  @param W_Over_E Why3 expression for the container value
+      --  @param Over_Type Entity of the container type
+      --  @param W_Index_Var Why3 name for the index of the quantification
+      --  @param Domain domain in which the quantification is translated
+      --  @param Params transformation parameters to be used.
+      --  @return the expression for the constraint of a quantified
       --  expression on a type with the Iterable aspect.
       --  Returns Has_Element (W_Over_E, W_Index_Var)
 
@@ -12264,6 +12281,13 @@ package body Gnat2Why.Expr is
       --  Computes the Index_Type to be used for quantifying over Over_Type.
       --  Goes through Model functions from pragma Annotate Iterate_For_Proof
       --  and updates W_Over_E and Over_Type accordingly.
+      --  @param Ada_Node quantified expression over a container
+      --  @param Of_Present quantification is done over a container's content
+      --  @param W_Over_E Why3 expression for the container value
+      --  @param Over_Type Entity of the container type on which quantification
+      --         should be done
+      --  @param Index_Type type of the index variable
+      --  @param Need_Tmp_Var do we need a temporary variable.
 
       -----------------------------
       -- Get_Quantified_Variable --
@@ -12377,64 +12401,96 @@ package body Gnat2Why.Expr is
       ----------------------------------
 
       function Make_Constraint_For_Iterable
-        (Ada_Node    : Node_Id;
-         W_Over_E    : W_Expr_Id;
-         Over_Type   : Entity_Id;
-         W_Index_Var : W_Expr_Id;
-         Domain      : EW_Domain;
-         Params      : Transformation_Params) return W_Expr_Id
+        (Ada_Node     : Node_Id;
+         Use_Contains : Boolean;
+         W_Over_E     : W_Expr_Id;
+         Over_Type    : Entity_Id;
+         W_Index_Var  : W_Expr_Id;
+         Domain       : EW_Domain;
+         Params       : Transformation_Params) return W_Expr_Id
        is
-         Subdomain   : constant EW_Domain :=
-           (if Domain = EW_Pred then EW_Term else Domain);
-         Has_Element : constant Entity_Id := Get_Iterable_Type_Primitive
-           (Over_Type, Name_Has_Element);
-         Cont_Type   : constant Entity_Id :=
-           Etype (First_Entity (Has_Element));
-         Cont_Expr   : constant W_Expr_Id :=
-           Insert_Simple_Conversion
-             (Domain   => Subdomain,
-              Expr     => W_Over_E,
-              To       => (if Use_Base_Type_For_Type (Cont_Type)
-                           then Base_Why_Type (Cont_Type)
-                           else Type_Of_Node (Cont_Type)));
-         Curs_Type   : constant Entity_Id :=
-           Etype (Next_Entity (First_Entity (Has_Element)));
-         Curs_Expr   : constant W_Expr_Id :=
-           Insert_Simple_Conversion
-             (Ada_Node => Empty,
-              Domain   => Subdomain,
-              Expr     => +W_Index_Var,
-              To       =>
-                (if Use_Base_Type_For_Type (Curs_Type)
-                 then Base_Why_Type (Curs_Type)
-                 else Type_Of_Node (Curs_Type)));
-         T           : W_Expr_Id;
+         Has_Element : Entity_Id;
 
       begin
-         T := New_VC_Call
-           (Ada_Node => Ada_Node,
-            Name     =>
+         --  Look for the function that should be called to make the constraint
+         --  over W_Index_Var.
+
+         if not Use_Contains then
+
+            --  If there is no Contains annotation to use, use the Has_Element
+            --  function of the Iterable aspect.
+
+            Has_Element := Get_Iterable_Type_Primitive
+              (Over_Type, Name_Has_Element);
+         else
+
+            --  A Contains Iterable_For_Proof annotation is specified for
+            --  Over_Type.
+            --  Use the provided Contains primitive.
+
+            declare
+               Found         : Boolean;
+               Iterable_Info : Iterable_Annotation;
+            begin
+               Retrieve_Iterable_Annotation (Over_Type, Found, Iterable_Info);
+               pragma Assert (Found and then Iterable_Info.Kind = Contains);
+               Has_Element := Iterable_Info.Entity;
+            end;
+         end if;
+
+         --  Call the function with the appropriate arguments.
+
+         declare
+            Subdomain   : constant EW_Domain :=
+              (if Domain = EW_Pred then EW_Term else Domain);
+            Cont_Type   : constant Entity_Id :=
+              Etype (First_Entity (Has_Element));
+            Cont_Expr   : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Domain   => Subdomain,
+                 Expr     => W_Over_E,
+                 To       => (if Use_Base_Type_For_Type (Cont_Type)
+                              then Base_Why_Type (Cont_Type)
+                              else Type_Of_Node (Cont_Type)));
+            Curs_Type   : constant Entity_Id :=
+              Etype (Next_Entity (First_Entity (Has_Element)));
+            Curs_Expr   : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Ada_Node => Empty,
+                 Domain   => Subdomain,
+                 Expr     => +W_Index_Var,
+                 To       =>
+                   (if Use_Base_Type_For_Type (Curs_Type)
+                    then Base_Why_Type (Curs_Type)
+                    else Type_Of_Node (Curs_Type)));
+            T           : W_Expr_Id;
+         begin
+
+            T := New_VC_Call
+              (Ada_Node => Ada_Node,
+               Name     =>
                  W_Identifier_Id
                    (Transform_Identifier (Params       => Params,
                                           Expr         => Has_Element,
                                           Ent          => Has_Element,
                                           Domain       => Subdomain)),
-            Progs    => (1 => Cont_Expr,
-                         2 => Curs_Expr),
-            Reason   => VC_Precondition,
-            Domain   => Subdomain,
-            Typ      => Type_Of_Node (Etype (Has_Element)));
+               Progs    => (1 => Cont_Expr,
+                            2 => Curs_Expr),
+               Reason   => VC_Precondition,
+               Domain   => Subdomain,
+               Typ      => Type_Of_Node (Etype (Has_Element)));
 
-         if Domain = EW_Pred then
-            T :=
-              New_Call
-                (Domain => Domain,
-                 Typ    => EW_Bool_Type,
-                 Name   => Why_Eq,
-                 Args   => (T, +True_Term));
-         end if;
+            if Domain = EW_Pred then
+               T :=
+                 New_Call
+                   (Domain => Domain,
+                    Typ    => EW_Bool_Type,
+                    Name   => Why_Eq,
+                    Args   => (T, +True_Term));
+            end if;
 
-         return T;
+            return T;
+         end;
       end Make_Constraint_For_Iterable;
 
       -----------------------------------------
@@ -12449,18 +12505,94 @@ package body Gnat2Why.Expr is
          Index_Type   :    out Entity_Id;
          Need_Tmp_Var :    out Boolean)
       is
-         pragma Unreferenced (Ada_Node, W_Over_E);
-         pragma Unmodified (Over_Type);
+         Subdomain     : constant EW_Domain :=
+           (if Domain = EW_Pred then EW_Term else Domain);
+         Found         : Boolean;
+         Iterable_Info : Iterable_Annotation;
       begin
-         Index_Type := Get_Cursor_Type (Over_Type);
-         Need_Tmp_Var := Of_Present;
+         if not Of_Present then
+
+            --  for ... in quantification:
+            --  Iteration is done on cursors, no need for a temporary variable.
+
+            Index_Type := Get_Cursor_Type (Over_Type);
+            Need_Tmp_Var := False;
+
+         else
+
+            --  for ... of quantification:
+            --  Check wether an Iterable_For_Proof annotation is recorded for
+            --  Over_Type.
+
+            Retrieve_Iterable_Annotation (Over_Type, Found, Iterable_Info);
+
+            --  Go through Model Iterable_For_Proof annotations to find the
+            --  type on which quantification should be done.
+
+            while Found
+              and then Iterable_Info.Kind = Gnat2Why.Annotate.Model
+            loop
+
+               --  Replace W_Over_E by Model (W_Over_E) and Over_Type by the
+               --  model's type.
+
+               declare
+                  Model       : constant Entity_Id := Iterable_Info.Entity;
+                  Cont_Type   : constant Entity_Id :=
+                    Etype (First_Entity (Model));
+                  Cont_Expr   : constant W_Expr_Id :=
+                    Insert_Simple_Conversion
+                      (Domain   => Subdomain,
+                       Expr     => W_Over_E,
+                       To       => (if Use_Base_Type_For_Type (Cont_Type)
+                                    then Base_Why_Type (Cont_Type)
+                                    else Type_Of_Node (Cont_Type)));
+               begin
+                  Over_Type := Etype (Model);
+                  W_Over_E := New_VC_Call
+                    (Ada_Node => Ada_Node,
+                     Name     =>
+                       W_Identifier_Id
+                         (Transform_Identifier (Params => Params,
+                                                Expr   => Model,
+                                                Ent    => Model,
+                                                Domain => Subdomain)),
+                     Progs    => (1 => Cont_Expr),
+                     Reason   => VC_Precondition,
+                     Domain   => Subdomain,
+                     Typ      => Type_Of_Node (Over_Type));
+               end;
+
+               Retrieve_Iterable_Annotation (Over_Type, Found, Iterable_Info);
+            end loop;
+
+            if not Found then
+
+               --  No Iterable_For_Proof annotation found.
+               --  Iteration is done on cursors, we need a temporary variable
+               --  to store the element
+
+               Index_Type := Get_Cursor_Type (Over_Type);
+               Need_Tmp_Var := True;
+            else
+
+               --  A Contains Iterable_For_Proof annotation has been found.
+               --  Iteration is directly done on elements, no need for a
+               --  temporary variable.
+
+               Index_Type := Etype (Get_Iterable_Type_Primitive
+                                    (Over_Type, Name_Element));
+               Need_Tmp_Var := False;
+            end if;
+         end if;
       end Parse_Iteration_Scheme_For_Iterable;
 
-      --  We distinguish between 3 types of quantified expressions:
+      --  We distinguish between 4 types of quantified expressions:
       --  . over a scalar range (for all V in Low .. High)
       --  . over an array (for all V of Arr)
-      --  . over a container (for all V of Cont) or (for all V in Cont)
-      --  The boolean variables below correspond to these 3 mutually exclusive
+      --  . over a container's content (for all V of Cont)
+      --  . over a container's cursors (for all V in Cont)
+      --  The boolean variables below correspond to these 4 mutually exclusive
       --  cases.
 
       Over_Range : constant Boolean :=
@@ -12470,9 +12602,16 @@ package body Gnat2Why.Expr is
         Present (Iterator_Specification (Expr))
           and then Is_Iterator_Over_Array (Iterator_Specification (Expr));
 
-      Over_Container : constant Boolean :=
-        Present (Iterator_Specification (Expr)) and then not Over_Array;
-      pragma Unreferenced (Over_Container);
+      Over_Content : constant Boolean :=
+        Present (Iterator_Specification (Expr))
+          and then not Over_Array
+          and then Of_Present (Iterator_Specification (Expr));
+
+      Over_Cursors : constant Boolean :=
+        Present (Iterator_Specification (Expr))
+          and then not Over_Array
+          and then not Over_Content;
+      pragma Unreferenced (Over_Cursors);
 
       --  We distinguish the quantified variable from the index variable in our
       --  translation. For quantifications over a scalar range, they are the
@@ -12578,11 +12717,15 @@ package body Gnat2Why.Expr is
          Index_Type := Quant_Type;
 
       else
-         --  Over_Container
+         --  Over_Content or Over_Cursor
 
          Parse_Iteration_Scheme_For_Iterable
-           (Expr, Of_Present (Iterator_Specification (Expr)),
-            W_Over_Expr, Over_Type, Index_Type, Need_Temp_Var);
+           (Ada_Node     => Expr,
+            Of_Present   => Over_Content,
+            W_Over_E     => W_Over_Expr,
+            Over_Type    => Over_Type,
+            Index_Type   => Index_Type,
+            Need_Tmp_Var => Need_Temp_Var);
       end if;
 
       if Need_Temp_Var then
@@ -12601,10 +12744,7 @@ package body Gnat2Why.Expr is
       --  context to possibly generate run-time checks
 
       if not Over_Range then
-         W_Over_Expr :=
-           New_Temp_For_Expr
-             (Transform_Expr
-                (Over_Expr, Prog_Or_Term_Domain (Domain), Params));
+         W_Over_Expr := New_Temp_For_Expr (W_Over_Expr);
       end if;
 
       --  Step 4: translate the constraints over the index variable
@@ -12621,7 +12761,13 @@ package body Gnat2Why.Expr is
       else
          W_Bound_Expr :=
            +Make_Constraint_For_Iterable
-             (Expr, W_Over_Expr, Over_Type, +W_Index_Var, Domain, Params);
+           (Ada_Node     => Expr,
+            Use_Contains => Over_Content and then not Need_Temp_Var,
+            W_Over_E     => W_Over_Expr,
+            Over_Type    => Over_Type,
+            W_Index_Var  => +W_Index_Var,
+            Domain       => Domain,
+            Params       => Params);
       end if;
 
       --  Step 5: translate the condition in the quantified expression, in a
