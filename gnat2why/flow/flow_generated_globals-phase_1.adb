@@ -263,8 +263,12 @@ package body Flow_Generated_Globals.Phase_1 is
                E : constant Entity_Id := Find_Entity (Name);
             begin
                if Present (E) then
-                  Add_To_Volatile_Sets_If_Volatile (Direct_Mapping_Id (E));
-                  Add_To_Remote_States (Direct_Mapping_Id (E));
+                  declare
+                     F : constant Flow_Id := Direct_Mapping_Id (E);
+                  begin
+                     Add_To_Volatile_Sets_If_Volatile (F);
+                     Add_To_Remote_States (F);
+                  end;
                end if;
             end;
          end loop;
