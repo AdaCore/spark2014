@@ -1730,7 +1730,7 @@ package body Flow_Generated_Globals.Phase_2 is
                         end loop;
                      end;
 
-                     All_State_Abstractions.Include (V.The_State);
+                     All_State_Abstractions.Insert (V.The_State);
 
                   when EK_Volatiles =>
                      Async_Writers_Vars.Union (V.All_Async_Writers);
