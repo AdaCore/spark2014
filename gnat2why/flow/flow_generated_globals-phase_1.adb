@@ -113,6 +113,10 @@ package body Flow_Generated_Globals.Phase_1 is
       end loop;
    end GG_Register_Tasking_Info;
 
+   -----------------------------
+   -- GG_Register_Task_Object --
+   -----------------------------
+
    procedure GG_Register_Task_Object (Type_Name : Entity_Name;
                                       Object    : Task_Object)
    is
