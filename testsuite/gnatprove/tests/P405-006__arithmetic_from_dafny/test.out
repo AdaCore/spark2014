@@ -300,36 +300,7 @@ mul_lemmas.adb:229:29: info: range check proved
 mul_lemmas.adb:229:32: info: initialization of "Y" proved
 mul_lemmas.adb:229:32: info: range check proved
 mul_lemmas.adb:229:35: info: initialization of "Z" proved
-mul_lemmas.adb:229:35: info: range checld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(init.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(final.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-soflin.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(initialize.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(raise-gcc.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(a-except.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(rtfinal.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(rtinit.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(argv.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(exit.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-assert.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-exctab.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-except.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-secsta.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-stalib.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-excdeb.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-memory.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(adaint.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(a-elchha.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(cio.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-excmac.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-imgint.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-traceb.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-traent.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-wchcon.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-wchstw.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(tracebak.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(raise.o)) was built for newer OSX version (10.10) than being linked (10.9)
-ld: warning: object file (/Users/moy/install/sandbox/x86_64-darwin/gnat/install/lib/gcc/x86_64-apple-darwin14.5.0/4.9.4/adalib/libgnat.a(s-wchjis.o)) was built for newer OSX version (10.10) than being linked (10.9)
-k proved
+mul_lemmas.adb:229:35: info: range check proved
 mul_lemmas.adb:234:04: info: precondition proved
 mul_lemmas.adb:234:27: info: initialization of "X" proved
 mul_lemmas.adb:234:27: info: range check proved
