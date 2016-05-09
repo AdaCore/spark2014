@@ -1,0 +1,334 @@
+bits_manipulation-functions.adb:8:61: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:8:61: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:8:61: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:9:36: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:9:62: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:9:62: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:10:36: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:10:36: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:10:62: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:11:36: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:11:36: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:11:36: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:15:64: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:15:64: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:15:64: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:16:65: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:16:65: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:17:65: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:27:20: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:27:20: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:27:20: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:27:20: medium: postcondition might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:28:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:28:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:28:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:28:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:29:98: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:29:98: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:29:98: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:29:98: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:31:75: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:31:75: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:31:75: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:31:75: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:33:46: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:33:46: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:33:46: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:33:46: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:34:47: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:34:47: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:34:47: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:34:47: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:38:07: info: assertion proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:38:07: info: assertion proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:38:07: info: assertion proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:38:07: info: assertion proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:38:22: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:38:22: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:38:22: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:38:22: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:39:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:39:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:39:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:39:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:44:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:44:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:44:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:44:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:47:18: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:47:18: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:47:18: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:47:18: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:48:80: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:48:80: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:48:80: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:48:80: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:49:89: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:49:89: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:49:89: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:49:89: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:51:74: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:51:74: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:51:74: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:51:74: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:55:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:55:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:55:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:55:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:58:18: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:58:18: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:58:18: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:58:18: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:59:80: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:59:80: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:59:80: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:59:80: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:60:93: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:60:93: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:60:93: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:60:93: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:62:74: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:62:74: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:62:74: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:62:74: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:67:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:67:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:67:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:67:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:70:26: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:70:26: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:70:26: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:70:26: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:72:26: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:72:26: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:72:26: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:72:26: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:74:26: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:74:26: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:74:26: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:74:26: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:82:14: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:82:14: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:82:14: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:82:14: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:89:13: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:89:13: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:89:13: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:89:13: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:89:35: info: initialization of "V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:89:35: info: initialization of "V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:89:35: info: initialization of "V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:89:35: info: initialization of "V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:90:32: info: initialization of "V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:90:32: info: initialization of "V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:90:32: info: initialization of "V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:90:32: info: initialization of "V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:90:35: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:90:35: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:90:35: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:90:35: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:91:13: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:91:13: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:91:13: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:91:13: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:92:28: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:92:28: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:92:28: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:92:28: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:92:37: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:92:37: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:92:37: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:92:37: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:93:23: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:93:23: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:93:23: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:93:23: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:93:30: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:93:30: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:93:30: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:93:30: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:93:32: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:93:32: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:93:32: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:93:32: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:94:18: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:94:18: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:94:18: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:94:18: info: initialization of "New_V" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:98:32: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:98:32: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:98:32: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:98:32: info: initialization of "Shift_Amount" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:98:45: info: division check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:98:45: info: division check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:98:45: info: division check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:98:45: info: division check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:100:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:100:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:100:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:100:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:104:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:104:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:104:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:104:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:107:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:107:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:107:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:107:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:110:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:110:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:110:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:110:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:113:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:113:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:113:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:113:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:118:14: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:118:14: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:118:14: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:118:14: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:126:10: info: loop invariant initialization proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:126:10: info: loop invariant initialization proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:126:10: info: loop invariant initialization proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:126:10: info: loop invariant initialization proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:126:10: info: loop invariant preservation proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:126:10: info: loop invariant preservation proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:126:10: info: loop invariant preservation proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:126:10: info: loop invariant preservation proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:128:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:128:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:128:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:128:14: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:132:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:132:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:132:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:132:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:135:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:135:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:135:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:135:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:138:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:138:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:138:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:138:08: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:141:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:141:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:141:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:141:12: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:146:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:146:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:146:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:146:07: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:151:32: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:151:32: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:151:32: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:151:32: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:160:32: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:160:32: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:160:32: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:160:32: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:180:13: info: assertion proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:180:13: info: assertion proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:180:13: info: assertion proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:180:13: info: assertion proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:182:20: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:182:20: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:182:20: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:182:20: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:200:32: medium: postcondition might fail, cannot prove Ones'Result and 2 ** (i - 1)) = 2 ** (i - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42 (e.g. when Ones'Result = 253)
+bits_manipulation-functions.adb:200:32: medium: postcondition might fail, cannot prove Ones'Result and 2 ** (i - 1)) = 2 ** (i - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43 (e.g. when Ones'Result = 65533)
+bits_manipulation-functions.adb:200:32: medium: postcondition might fail, cannot prove Ones'Result and 2 ** (i - 1)) = 2 ** (i - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44 (e.g. when Ones'Result = 4160749503)
+bits_manipulation-functions.adb:200:32: medium: postcondition might fail, cannot prove Ones'Result and 2 ** (i - 1)) = 2 ** (i - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45 (e.g. when Ones'Result = 18437734675431538685)
+bits_manipulation-functions.adb:206:29: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:206:29: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:206:29: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:206:29: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:207:19: info: loop invariant initialization proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:207:19: info: loop invariant initialization proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:207:19: info: loop invariant initialization proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:207:19: info: loop invariant initialization proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:207:43: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:207:43: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:207:43: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:207:43: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:207:43: medium: loop invariant might fail after first iteration, cannot prove Result and 2 ** (i - 1)) = 2 ** (i - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42 (e.g. when Result = 84 and i = 2)
+bits_manipulation-functions.adb:207:43: medium: loop invariant might fail after first iteration, cannot prove Result and 2 ** (i - 1)) = 2 ** (i - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43 (e.g. when Result = 21841 and i = 2)
+bits_manipulation-functions.adb:207:43: medium: loop invariant might fail after first iteration, cannot prove Result and 2 ** (i - 1)) = 2 ** (i - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44 (e.g. when Result = 1431655761 and i = 2)
+bits_manipulation-functions.adb:207:43: medium: loop invariant might fail after first iteration, cannot prove Result and 2 ** (i - 1)) = 2 ** (i - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45 (e.g. when Result = 6148914691236500816 and i = 2)
+bits_manipulation-functions.adb:209:23: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:209:23: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:209:23: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:209:23: info: initialization of "Result" proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:214:28: medium: assertion might fail, cannot prove Functions.Make_Mask (1) = Modular (2) ** 1 - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:214:28: medium: assertion might fail, cannot prove Functions.Make_Mask (1) = Modular (2) ** 1 - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:214:28: medium: assertion might fail, cannot prove Functions.Make_Mask (1) = Modular (2) ** 1 - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:214:28: medium: assertion might fail, cannot prove Functions.Make_Mask (1) = Modular (2) ** 1 - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:216:31: medium: assertion might fail, cannot prove Functions.Make_Mask (i) = Modular (2) ** i - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42 (e.g. when i = 2)
+bits_manipulation-functions.adb:216:31: medium: assertion might fail, cannot prove Functions.Make_Mask (i) = Modular (2) ** i - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43 (e.g. when i = 2)
+bits_manipulation-functions.adb:216:31: medium: assertion might fail, cannot prove Functions.Make_Mask (i) = Modular (2) ** i - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44 (e.g. when i = 2)
+bits_manipulation-functions.adb:216:31: medium: assertion might fail, cannot prove Functions.Make_Mask (i) = Modular (2) ** i - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45 (e.g. when i = 2)
+bits_manipulation-functions.adb:218:42: medium: loop invariant might fail after first iteration, cannot prove Functions.Make_Mask (j) = Modular (2) ** j - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:218:42: medium: loop invariant might fail after first iteration, cannot prove Functions.Make_Mask (j) = Modular (2) ** j - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:218:42: medium: loop invariant might fail after first iteration, cannot prove Functions.Make_Mask (j) = Modular (2) ** j - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:218:42: medium: loop invariant might fail after first iteration, cannot prove Functions.Make_Mask (j) = Modular (2) ** j - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:218:42: medium: loop invariant might fail in first iteration, cannot prove Functions.Make_Mask (j) = Modular (2) ** j - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:218:42: medium: loop invariant might fail in first iteration, cannot prove Functions.Make_Mask (j) = Modular (2) ** j - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:218:42: medium: loop invariant might fail in first iteration, cannot prove Functions.Make_Mask (j) = Modular (2) ** j - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:218:42: medium: loop invariant might fail in first iteration, cannot prove Functions.Make_Mask (j) = Modular (2) ** j - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:218:63: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:218:63: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:218:63: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:218:63: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:221:30: medium: assertion might fail, cannot prove Functions.Make_Mask (Size) = Modular (2) ** (Size) - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:221:30: medium: assertion might fail, cannot prove Functions.Make_Mask (Size) = Modular (2) ** (Size) - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:221:30: medium: assertion might fail, cannot prove Functions.Make_Mask (Size) = Modular (2) ** (Size) - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:221:30: medium: assertion might fail, cannot prove Functions.Make_Mask (Size) = Modular (2) ** (Size) - 1, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:222:20: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:222:20: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:222:20: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:222:20: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:17:20: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:17:20: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:17:20: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:17:20: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:18:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:18:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:18:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:18:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:19:84: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:19:84: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:19:84: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:19:84: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:21:75: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:21:75: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:21:75: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:21:75: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:27:16: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:27:16: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:27:16: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:27:16: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:39:56: info: division check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:39:56: info: division check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:39:56: info: division check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:39:56: info: division check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:58:67: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:58:67: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:58:67: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:58:67: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:105:66: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:105:66: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:105:66: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:105:66: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:122:92: medium: range check might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:122:92: medium: range check might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:122:92: medium: range check might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:122:92: medium: range check might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:300:26: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:300:26: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:300:26: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:300:26: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.ads:303:26: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.ads:303:26: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.ads:303:26: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.ads:303:26: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45

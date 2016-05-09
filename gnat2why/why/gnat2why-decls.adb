@@ -308,7 +308,8 @@ package body Gnat2Why.Decls is
       Open_Theory
         (File,
          New_Module (Name =>
-                         NID (Capitalize_First (To_String (E)) & "__axiom"),
+                       NID (Capitalize_First
+                         (To_String (E)) & To_String (WNE_Axiom_Suffix)),
                      File => No_Name),
          Comment =>
            "Module giving an empty axiom for the entity "

@@ -188,6 +188,10 @@ package Why.Gen.Names is
       WNE_Attr_Small,
 
       WNE_Attr_Value,
+
+      --  Suffix of the module giving the axiom defining a logic function
+      WNE_Axiom_Suffix,  --  ___axiom
+
       WNE_Bool_Eq,
       WNE_Check_Not_First,
       WNE_Check_Not_Last,

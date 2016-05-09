@@ -151,7 +151,8 @@ package body Why.Atree.Modules is
               New_Module
                 (Ada_Node => E,
                  File     => No_Name,
-                 Name     => NID (Full_Name (E) & "__axiom"));
+                 Name     =>
+                   NID (Full_Name (E) & To_String (WNE_Axiom_Suffix)));
          begin
             Axiom_Modules.Insert (E, Why_Node_Id (M));
             return M;

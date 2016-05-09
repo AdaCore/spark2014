@@ -678,6 +678,7 @@ package body Why.Gen.Names is
          when WNE_Attr_First           => "first",
          when WNE_Attr_Last            => "last",
          when WNE_Attr_Tag             => "attr__tag",
+         when WNE_Axiom_Suffix         => "___axiom",
          when WNE_Content              => "__content",
          when WNE_Dispatch_Module      => "Dispatch",
          when WNE_Extract_Prefix       => "extract__",
