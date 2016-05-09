@@ -7675,9 +7675,9 @@ package body Gnat2Why.Expr is
            Args   => (+Left_Length, +Right_Length));
 
       Index_Type : constant W_Type_Id :=
-        (if First_Index (Left_Type) = Empty
+        (if First_Index (Retysp (Left_Type)) = Empty
          then EW_Int_Type
-         else Base_Why_Type_No_Bool (First_Index (Left_Type)));
+         else Base_Why_Type_No_Bool (First_Index (Retysp (Left_Type))));
 
       --  if Length (Left) > 0 then not (Left'First = Left'Last and
       --                                 Left'Last  = 1);
@@ -7703,10 +7703,10 @@ package body Gnat2Why.Expr is
                         Name   => Why_Eq,
                         Args   =>
                           (1 =>
-                               +E_Symb (Component_Type (Left_Type),
+                               +E_Symb (Component_Type (Retysp (Left_Type)),
                                         WNE_Attr_First),
                            2 =>
-                               +E_Symb (Component_Type (Left_Type),
+                               +E_Symb (Component_Type (Retysp (Left_Type)),
                                         WNE_Attr_Last))),
                      Right  =>
                        New_Call
@@ -7717,7 +7717,7 @@ package body Gnat2Why.Expr is
                             (1 => New_Discrete_Constant (Value => Uint_1,
                                                          Typ   => Index_Type),
                              2 =>
-                               +E_Symb (Component_Type (Left_Type),
+                               +E_Symb (Component_Type (Retysp (Left_Type)),
                                         WNE_Attr_Last))),
                      Domain => EW_Pred)));
    begin
@@ -7750,8 +7750,8 @@ package body Gnat2Why.Expr is
          --  operator is to call xor on arrays of the singleton subtype True of
          --  boolean.
 
-         if not Is_Standard_Boolean_Type (Component_Type (Left_Type)) and then
-           W_Op = Array_Theory.Xorb
+         if not Is_Standard_Boolean_Type (Component_Type (Retysp (Left_Type)))
+           and then W_Op = Array_Theory.Xorb
          then
             T := +Sequence (New_Ignore (Prog =>
                                           New_Located_Assert (Ada_Node,

@@ -1360,10 +1360,11 @@ package body Why.Gen.Arrays is
 
    function Get_Array_Theory_Name (E : Entity_Id) return Name_Id is
       Name      : Unbounded_String := To_Unbounded_String ("Array_");
+      Ty        : constant Entity_Id := Retysp (Etype (E));
       Type_Name : Unbounded_String;
-      Index     : Node_Id := First_Index (Retysp (Etype (E)));
+      Index     : Node_Id := First_Index (Ty);
       Dim       : constant Positive :=
-        Positive (Number_Dimensions (Retysp (Etype (E))));
+        Positive (Number_Dimensions (Ty));
    begin
       for I in 1 .. Dim loop
          if Has_Modular_Integer_Type (Etype (Index)) then
@@ -1381,7 +1382,7 @@ package body Why.Gen.Arrays is
       Type_Name := (To_Unbounded_String
                     ("__" &
                          Capitalize_First
-                         (Full_Name (Retysp (Component_Type (Etype (E)))))));
+                         (Full_Name (Retysp (Component_Type (Ty))))));
       Name := Name & Type_Name;
 
       return NID (To_String (Name));
