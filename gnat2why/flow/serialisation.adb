@@ -155,12 +155,10 @@ package body Serialisation is
             if Length (S) > 0 then
                Append (S, " ");
             end if;
-            case E.Kind is
-               when Tag =>
-                  Append (S, E.Value);
-               when Data =>
-                  Append (S, Escape (E.Value));
-            end case;
+            Append (S,
+                    (case E.Kind is
+                        when Tag  => E.Value,
+                        when Data => Escape (E.Value)));
          end loop;
       end return;
    end To_String;
@@ -453,6 +451,9 @@ package body Serialisation is
          Null_Container => Null_Container,
          Null_Element   => Null_Element,
          Merge          => Merge);
+
+   --  Start of processing for Serialize_List
+
    begin
       Serialize (A, V, To_Unbounded_String (Tag));
    end Serialize_List;
