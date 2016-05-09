@@ -115,21 +115,25 @@ package body Flow_Generated_Globals.Phase_1 is
    begin
       for S in DM.Iterate loop
          declare
-            State_F      : Flow_Id renames Dependency_Maps.Key (S);
+            State_F : Flow_Id renames Dependency_Maps.Key (S);
 
-            State_N      : constant Entity_Name :=
+            State_N : constant Entity_Name :=
               To_Entity_Name (Get_Direct_Mapping_Id (State_F));
 
---              Constituents : constant Name_Sets.Set :=
---                To_Name_Set (To_Node_Set (DM (S)));
          begin
             --  Append new state info into State_Comp_Map
             State_Constituents.Append ((State_N, Name_Lists.Empty_List));
-            for Constituent of DM (S) loop
-               State_Constituents (State_Constituents.Last).Constituents.
-                 Append
-                   (To_Entity_Name (Get_Direct_Mapping_Id (Constituent)));
-            end loop;
+
+            declare
+               New_Constituents : Name_Lists.List renames
+                 State_Constituents (State_Constituents.Last).Constituents;
+
+            begin
+               for Constituent of DM (S) loop
+                  New_Constituents.Append
+                    (To_Entity_Name (Get_Direct_Mapping_Id (Constituent)));
+               end loop;
+            end;
 
             --  Check if State_F is volatile and if it is then add it to the
             --  appropriate sets.
