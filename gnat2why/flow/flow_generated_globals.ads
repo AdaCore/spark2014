@@ -198,12 +198,8 @@ package Flow_Generated_Globals is
    --  State information
    ----------------------------------------------------------------------
 
-   All_State_Abstractions : Name_Sets.Set   := Name_Sets.Empty_Set;
+   All_State_Abstractions : Name_Sets.Set := Name_Sets.Empty_Set;
    --  State abstractions that the GG knows of
-
-   Remote_States          : Name_Sets.Set   := Name_Sets.Empty_Set;
-   --  State abstractions that are referenced in the current compilation unit
-   --  but are declared outside of it.
 
    ----------------------------------------------------------------------
    --  Volatile information
@@ -215,10 +211,6 @@ package Flow_Generated_Globals is
    Effective_Reads_Vars  : Name_Sets.Set := Name_Sets.Empty_Set;
    Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
    --  Volatile information
-
-   procedure Add_To_Remote_States (F : Flow_Id);
-   --  Processes F and adds it to Remote_States if it is a remote state
-   --  abstraction.
 
    procedure Add_To_Volatile_Sets_If_Volatile (F : Flow_Id);
    --  Processes F and adds it to All_Volatile_Vars, Async_Writers_Vars,

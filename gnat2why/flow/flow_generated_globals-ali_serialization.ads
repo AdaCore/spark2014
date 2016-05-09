@@ -30,7 +30,6 @@ package Flow_Generated_Globals.ALI_Serialization is
    type ALI_Entry_Kind is (EK_Error,
                            EK_End_Marker,
                            EK_State_Map,
-                           EK_Remote_States,
                            EK_Volatiles,
                            EK_Globals,
                            EK_Protected_Instace,
@@ -48,8 +47,6 @@ package Flow_Generated_Globals.ALI_Serialization is
          when EK_State_Map =>
             The_State                   : Entity_Name;
             The_Constituents            : Name_Lists.List;
-         when EK_Remote_States =>
-            Remote_States               : Name_Sets.Set;
          when EK_Volatiles =>
             All_Async_Readers           : Name_Sets.Set;
             All_Async_Writers           : Name_Sets.Set;
