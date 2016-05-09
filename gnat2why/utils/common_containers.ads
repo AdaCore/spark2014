@@ -88,6 +88,9 @@ package Common_Containers is
 
    Null_Entity_Name : constant Entity_Name;
 
+   package Name_Lists is new Ada.Containers.Doubly_Linked_Lists
+     (Element_Type => Entity_Name);
+
    function Name_Hash (E : Entity_Name) return Ada.Containers.Hash_Type is
       (Generic_Integer_Hash (Integer (E)));
 

@@ -220,6 +220,19 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Enables printing of the generated initializes aspects
 
    ----------------------------------------------------------------------
+   --  State information
+   ----------------------------------------------------------------------
+
+   State_Comp_Map : Name_Graphs.Map := Name_Graphs.Empty_Map;
+   --  Mapping from abstract states to their constituents, i.e.
+   --  abstract_state -> {constituents}
+
+   Comp_State_Map : Name_Maps.Map   := Name_Maps.Empty_Map;
+   --  A reverse of the above mapping, i.e. constituent -> abstract_state,
+   --  which speeds up some queries. It is populated at the end of GG_Read from
+   --  State_Comp_Map.
+
+   ----------------------------------------------------------------------
    --  Local state
    ----------------------------------------------------------------------
 
@@ -1693,8 +1706,30 @@ package body Flow_Generated_Globals.Phase_2 is
                      exit;
 
                   when EK_State_Map =>
-                     State_Comp_Map.Include (V.The_State,
-                                             V.The_Constituents);
+                     declare
+                        State    : Name_Graphs.Cursor;
+                        Inserted : Boolean;
+
+                        C : Name_Lists.Cursor;
+                        --  Cursor to iterate over original constituents; it
+                        --  is required because the serialized list object
+                        --  is a part of a discriminated record and it is
+                        --  not possible to iterate over it.
+
+                     begin
+                        State_Comp_Map.Insert (Key      => V.The_State,
+                                               Position => State,
+                                               Inserted => Inserted);
+                        pragma Assert (Inserted);
+
+                        C := V.The_Constituents.First;
+                        while Name_Lists.Has_Element (C) loop
+                           State_Comp_Map (State).Insert
+                             (V.The_Constituents (C));
+                           Name_Lists.Next (C);
+                        end loop;
+                     end;
+
                      All_State_Abstractions.Include (V.The_State);
 
                   when EK_Remote_States =>

@@ -73,6 +73,19 @@ package body Flow_Generated_Globals.Phase_1 is
      Global_Info_Lists.Empty_List;
    --  Information about packages from the "generated globals" algorithm
 
+   type Abstract_State_Constituents is record
+      State        : Entity_Name;
+      Constituents : Name_Lists.List;
+   end record;
+
+   package Abstract_State_Constituents_Lists is new
+     Ada.Containers.Doubly_Linked_Lists
+       (Element_Type => Abstract_State_Constituents);
+
+   State_Constituents : Abstract_State_Constituents_Lists.List;
+   --  List of abstract states and their constituents, i.e.
+   --  abstract_state . {constituents}.
+
    -----------------------------
    -- GG_Register_Nonblocking --
    -----------------------------
@@ -107,11 +120,16 @@ package body Flow_Generated_Globals.Phase_1 is
             State_N      : constant Entity_Name :=
               To_Entity_Name (Get_Direct_Mapping_Id (State_F));
 
-            Constituents : constant Name_Sets.Set :=
-              To_Name_Set (To_Node_Set (DM (S)));
+--              Constituents : constant Name_Sets.Set :=
+--                To_Name_Set (To_Node_Set (DM (S)));
          begin
-            --  Include (possibly overwrite) new state info into State_Comp_Map
-            State_Comp_Map.Include (State_N, Constituents);
+            --  Append new state info into State_Comp_Map
+            State_Constituents.Append ((State_N, Name_Lists.Empty_List));
+            for Constituent of DM (S) loop
+               State_Constituents (State_Constituents.Last).Constituents.
+                 Append
+                   (To_Entity_Name (Get_Direct_Mapping_Id (Constituent)));
+            end loop;
 
             --  Check if State_F is volatile and if it is then add it to the
             --  appropriate sets.
@@ -175,10 +193,10 @@ package body Flow_Generated_Globals.Phase_1 is
 
    begin
       --  Write State info
-      for C in State_Comp_Map.Iterate loop
+      for SC of State_Constituents loop
          V := (Kind             => EK_State_Map,
-               The_State        => Key (C),
-               The_Constituents => State_Comp_Map (C));
+               The_State        => SC.State,
+               The_Constituents => SC.Constituents);
          Write_To_ALI (V);
       end loop;
 

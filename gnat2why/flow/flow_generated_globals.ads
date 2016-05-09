@@ -198,15 +198,6 @@ package Flow_Generated_Globals is
    --  State information
    ----------------------------------------------------------------------
 
-   State_Comp_Map         : Name_Graphs.Map := Name_Graphs.Empty_Map;
-   --  Mapping from abstract states to their constituents, i.e.
-   --  abstract_state -> {constituents}
-
-   Comp_State_Map         : Name_Maps.Map   := Name_Maps.Empty_Map;
-   --  A reverse of the above mapping, i.e. constituent -> abstract_state,
-   --  which speeds up some queries. It is populated at the end of GG_Read from
-   --  State_Comp_Map.
-
    All_State_Abstractions : Name_Sets.Set   := Name_Sets.Empty_Set;
    --  State abstractions that the GG knows of
 

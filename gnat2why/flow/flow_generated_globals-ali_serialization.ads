@@ -47,7 +47,7 @@ package Flow_Generated_Globals.ALI_Serialization is
             null;
          when EK_State_Map =>
             The_State                   : Entity_Name;
-            The_Constituents            : Name_Sets.Set;
+            The_Constituents            : Name_Lists.List;
          when EK_Remote_States =>
             Remote_States               : Name_Sets.Set;
          when EK_Volatiles =>

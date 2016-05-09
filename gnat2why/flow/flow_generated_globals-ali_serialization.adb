@@ -158,6 +158,19 @@ package body Flow_Generated_Globals.ALI_Serialization is
       procedure Serialize is new Serialisation.Serialize_Discrete
         (T => Int);
 
+      procedure Serialize is new Serialisation.Serialize_List
+        (T              => Name_Lists.List,
+         E              => Entity_Name,
+         Cursor         => Name_Lists.Cursor,
+         Null_Container => Name_Lists.Empty_List,
+         Null_Element   => Null_Entity_Name,
+         First          => Name_Lists.First,
+         Next           => Name_Lists.Next,
+         Has_Element    => Name_Lists.Has_Element,
+         Element        => Name_Lists.Element,
+         Append         => Name_Lists.Append,
+         Serialize      => Serialize);
+
       Kind : ALI_Entry_Kind := ALI_Entry_Kind'First;
 
    --  Start of processing for Serialize
