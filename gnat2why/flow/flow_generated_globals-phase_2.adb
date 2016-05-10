@@ -1715,9 +1715,8 @@ package body Flow_Generated_Globals.Phase_2 is
 
                         C : Name_Lists.Cursor;
                         --  Cursor to iterate over original constituents; it is
-                        --  required because the serialized list is a component
-                        --  of a discriminated record and it is not possible to
-                        --  iterate over such a component.
+                        --  required because it is not possible to iterate over
+                        --  a component of a discriminated record.
 
                      begin
                         State_Comp_Map.Insert (Key      => V.The_State,
@@ -1737,16 +1736,33 @@ package body Flow_Generated_Globals.Phase_2 is
 
                   when EK_Remote_States =>
                      State_Abstractions.Union (V.Remote_States);
-                     declare
-                        F   : Flow_Id;
-                        Tmp : constant Name_Sets.Set := V.Remote_States;
-                     begin
-                        for State of Tmp loop
-                           F := (if Present (Find_Entity (State))
-                                 then Direct_Mapping_Id (Find_Entity (State))
-                                 else Magic_String_Id (State));
 
-                           Add_To_Remote_States (F);
+                     declare
+                        C : Name_Sets.Cursor;
+                        --  Cursor to iterate over original constituents; it is
+                        --  required because it is not possible to iterate over
+                        --  a component of a discriminated record.
+
+                     begin
+                        C := V.Remote_States.First;
+                        while Name_Sets.Has_Element (C) loop
+                           declare
+                              State_Name : constant Entity_Name :=
+                                V.Remote_States (C);
+
+                              State_Entity : constant Entity_Id :=
+                                Find_Entity (State_Name);
+
+                              F : constant Flow_Id :=
+                                (if Present (State_Entity)
+                                 then Direct_Mapping_Id (State_Entity)
+                                 else Magic_String_Id (State_Name));
+
+                           begin
+                              Add_To_Remote_States (F);
+
+                              Name_Sets.Next (C);
+                           end;
                         end loop;
                      end;
 
