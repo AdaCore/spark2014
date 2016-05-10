@@ -2166,16 +2166,14 @@ package body Why.Gen.Records is
       --  ??? We probably still need a way to tell that the right conversion
       --  function from this records subtype should go through the clone.
 
-      if Ekind (E) = E_Record_Subtype and then
-        Present (Cloned_Subtype (E))
-      then
+      if Record_Type_Is_Clone (E) then
 
          --  This type is simply a copy of an existing type, we re-export the
          --  corresponding module and generate trivial conversion functions,
          --  then return
 
          declare
-            Clone : constant Entity_Id := Cloned_Subtype (E);
+            Clone : constant Entity_Id := Record_Type_Cloned_Subtype (E);
          begin
             Add_Use_For_Entity (P, Clone, EW_Export, With_Completion => False);
 
@@ -3248,6 +3246,44 @@ package body Why.Gen.Records is
       return Record_From_Split_Form (E, Values, Ty);
    end Record_From_Split_Form;
 
+   --------------------------------
+   -- Record_Type_Cloned_Subtype --
+   --------------------------------
+
+   function Record_Type_Cloned_Subtype (E : Entity_Id) return Entity_Id is
+      Result : Entity_Id := E;
+   begin
+      while Record_Type_Is_Clone (Result) loop
+
+         --  Classwide types are translated as clones of their specific types
+
+         if Ekind (Result) in E_Class_Wide_Type | E_Class_Wide_Subtype then
+            Result := Retysp (Get_Specific_Type_From_Classwide (Result));
+
+         --  Subtypes with a cloned_subtype with the same name are clones
+
+         elsif Ekind (Result) = E_Record_Subtype
+           and then Present (Cloned_Subtype (Result))
+         then
+            Result := Retysp (Cloned_Subtype (Result));
+
+         --  Untagged private subtypes with no discriminants are clones
+
+         elsif Ekind (Result) = E_Private_Subtype
+           and then not Is_Tagged_Type (Result)
+           and then not Has_Discriminants (Result)
+         then
+            Result := Retysp (Etype (Result));
+
+         --   Result is not a cloned record type.
+         else
+            raise Program_Error;
+         end if;
+      end loop;
+
+      return Result;
+   end Record_Type_Cloned_Subtype;
+
    --------------------------
    -- Record_Type_Is_Clone --
    --------------------------
@@ -3270,7 +3306,15 @@ package body Why.Gen.Records is
       elsif Ekind (E) = E_Record_Subtype
         and then Present (Cloned_Subtype (E))
       then
-         return Short_Name (E) = Short_Name (Cloned_Subtype (E));
+         return True;
+
+      --  Untagged private subtypes with no discriminants are clones
+
+      elsif Ekind (E) = E_Private_Subtype
+        and then not Is_Tagged_Type (E)
+        and then not Has_Discriminants (E)
+      then
+         return True;
       else
          return False;
       end if;
