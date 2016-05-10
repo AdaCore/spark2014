@@ -2845,29 +2845,6 @@ package body Flow_Utility is
 
    function Has_Variable_Input (F : Flow_Id) return Boolean is
 
-      function Get_Declaration (E : Entity_Id) return Node_Id
-      with Post => Nkind (Get_Declaration'Result) = N_Object_Declaration;
-      --  Returns the N_Object_Declaration corresponding to entity E
-      --  @param E is the entity whose declaration we are looking for
-      --  @return the N_Object_Declaration of entity E
-
-      ---------------------
-      -- Get_Declaration --
-      ---------------------
-
-      function Get_Declaration (E : Entity_Id) return Node_Id is
-         D : Node_Id;
-      begin
-         D := E;
-         while Nkind (D) /= N_Object_Declaration
-           and then Present (Parent (D))
-         loop
-            D := Parent (D);
-         end loop;
-
-         return D;
-      end Get_Declaration;
-
       E    : Entity_Id;
       Decl : Node_Id;
       FS   : Flow_Id_Sets.Set;
@@ -2905,12 +2882,12 @@ package body Flow_Utility is
          return True;
       end if;
 
-      Decl := Get_Declaration (E);
+      Decl := Declaration_Node (E);
       if No (Expression (Decl)) then
          --  We are dealing with a deferred constant so we need to get
          --  to the full view.
          E    := Full_View (E);
-         Decl := Get_Declaration (E);
+         Decl := Declaration_Node (E);
       end if;
 
       if not Entity_In_SPARK (E) then
