@@ -3352,11 +3352,11 @@ package body Flow_Utility is
                              xor
                            Present (Loop_Parameter_Specification (N)));
 
-            RV.Include (Direct_Mapping_Id
-                        (Defining_Identifier
-                           (if Present (Iterator_Specification (N))
-                            then Iterator_Specification (N)
-                            else Loop_Parameter_Specification (N))));
+            RV.Insert (Direct_Mapping_Id
+                       (Defining_Identifier
+                          (if Present (Iterator_Specification (N))
+                           then Iterator_Specification (N)
+                           else Loop_Parameter_Specification (N))));
          end if;
 
          return OK;

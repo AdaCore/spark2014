@@ -581,7 +581,7 @@ package body Flow.Slice is
                                        then Entity (Ancestor_Part (AS_N))
                                        else Entity (AS_N));
 
-                              Local_Vars.Include (AS_E);
+                              Local_Vars.Insert (AS_E);
 
                               Next (AS_N);
                            end loop;
