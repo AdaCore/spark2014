@@ -12143,13 +12143,14 @@ package body Gnat2Why.Expr is
       --  corresponding protected object and converted to the subtype
       --  System.Any_Priority or System.Interrupt_Priority, respectively.
       --
-      --  We use the Current_Subp entity to know whether we are in a task type
-      --  or a protected type.
+      --  We use the Current_Subp entity to know whether the priority is a task
+      --  priority or a protected priority. The priority is a task priority if
+      --  it applies syntactically to a task or to a subprogram.
 
-      Is_In_Task_Type : constant Boolean :=
-        Ekind (Current_Subp) in Task_Kind;
+      Is_Task_Priority : constant Boolean :=
+        Ekind (Current_Subp) in Task_Kind | Subprogram_Kind;
       Ty              : constant Entity_Id :=
-        (if Is_In_Task_Type then
+        (if Is_Task_Priority then
            (if Prag_Id = Pragma_Interrupt_Priority then
                  RTE (RE_Any_Priority)
             else RTE (RE_Priority))
