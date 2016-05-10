@@ -2136,7 +2136,7 @@ package body Flow_Generated_Globals.Phase_2 is
                Main_Entity_Name : constant Entity_Name := To_Entity_Name (S);
             begin
                Register_Task_Object (Type_Name => Main_Entity_Name,
-                                     Object =>
+                                     Object    =>
                                        (Name      => Main_Entity_Name,
                                         Instances => One,
                                         Node      => S));
