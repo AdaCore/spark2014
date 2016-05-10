@@ -274,7 +274,7 @@ package body Flow_Generated_Globals.Phase_1 is
       end loop;
 
       for Instance of Protected_Instances loop
-         V := (Kind         => EK_Protected_Instace,
+         V := (Kind         => EK_Protected_Instance,
                The_Variable => Instance.Variable,
                The_Priority => Instance.Priority);
          Write_To_ALI (V);

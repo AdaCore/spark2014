@@ -1792,7 +1792,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      GG_Exists_Cache.Insert (V.The_Global_Info.Name);
 
-                  when EK_Protected_Instace =>
+                  when EK_Protected_Instance =>
                      declare
                         C     : Entity_Name_To_Priorities_Maps.Cursor;
                         Dummy : Boolean;

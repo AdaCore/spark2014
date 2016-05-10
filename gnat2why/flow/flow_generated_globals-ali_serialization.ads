@@ -33,7 +33,7 @@ package Flow_Generated_Globals.ALI_Serialization is
                            EK_Remote_States,
                            EK_Volatiles,
                            EK_Globals,
-                           EK_Protected_Instace,
+                           EK_Protected_Instance,
                            EK_Task_Instance,
                            EK_Tasking_Info,
                            EK_Nonblocking);
@@ -57,7 +57,7 @@ package Flow_Generated_Globals.ALI_Serialization is
             All_Effective_Writes        : Name_Sets.Set;
          when EK_Globals =>
             The_Global_Info             : Global_Phase_1_Info;
-         when EK_Protected_Instace =>
+         when EK_Protected_Instance =>
             The_Variable                : Entity_Name;
             The_Priority                : Priority_Value;
          when EK_Task_Instance =>

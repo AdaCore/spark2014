@@ -51,7 +51,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
       EK_Globals             => (Kind            => EK_Globals,
                                  The_Global_Info => Null_Global_Info),
 
-      EK_Protected_Instace   => (Kind         => EK_Protected_Instace,
+      EK_Protected_Instance   => (Kind         => EK_Protected_Instance,
                                  The_Variable => Null_Entity_Name,
                                  The_Priority => Priority_Value'
                                    (Kind  => Priority_Kind'First,
@@ -207,7 +207,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
          when EK_Globals =>
             Serialize (A, V.The_Global_Info);
 
-         when EK_Protected_Instace =>
+         when EK_Protected_Instance =>
             Serialize (A, V.The_Variable);
             Serialize (A, V.The_Priority.Kind);
             if V.The_Priority.Kind = Static then
