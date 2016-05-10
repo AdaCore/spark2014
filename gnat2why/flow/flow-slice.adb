@@ -485,7 +485,7 @@ package body Flow.Slice is
                   then
                      return Skip;
                   else
-                     Local_Vars.Include (Defining_Identifier (N));
+                     Local_Vars.Insert (Defining_Identifier (N));
                   end if;
 
                when N_Object_Declaration =>
@@ -506,7 +506,7 @@ package body Flow.Slice is
                      else
                         case Ekind (E) is
                            when E_Variable =>
-                              Local_Vars.Include (E);
+                              Local_Vars.Insert (E);
 
                            when E_Constant =>
                               if Has_Variable_Input (Direct_Mapping_Id (E))
