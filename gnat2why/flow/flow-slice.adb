@@ -646,19 +646,14 @@ package body Flow.Slice is
 
             when Kind_Package | Kind_Package_Body =>
                declare
-                  Decl : Entity_Id := FA.Spec_Entity;
-               begin
-                  while Nkind (Decl) not in N_Package_Declaration         |
-                                            N_Generic_Package_Declaration
-                    and then Present (Parent (Decl))
-                  loop
-                     Decl := Parent (Decl);
-                  end loop;
+                  Decl : constant Node_Id := Package_Spec (FA.Spec_Entity);
+                  --  Package declaration node
 
                   pragma Assert (Nkind (Decl) in
                                    N_Package_Declaration         |
                                    N_Generic_Package_Declaration);
 
+               begin
                   Gather_Local_Variables_And_Subprograms (Decl);
 
                   if FA.Kind = Kind_Package_Body then
