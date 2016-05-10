@@ -1714,10 +1714,10 @@ package body Flow_Generated_Globals.Phase_2 is
                         Inserted : Boolean;
 
                         C : Name_Lists.Cursor;
-                        --  Cursor to iterate over original constituents; it
-                        --  is required because the serialized list object
-                        --  is a part of a discriminated record and it is
-                        --  not possible to iterate over it.
+                        --  Cursor to iterate over original constituents; it is
+                        --  required because the serialized list is a component
+                        --  of a discriminated record and it is not possible to
+                        --  iterate over such a component.
 
                      begin
                         State_Comp_Map.Insert (Key      => V.The_State,
