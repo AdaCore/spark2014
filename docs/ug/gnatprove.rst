@@ -2513,6 +2513,8 @@ involving multiplication, division, modulo or exponentiation.
 
 In that case, a user may either:
 
+* add in the code a call to a lemma from the SPARK lemma library (see details
+  in :ref:`Manual Proof Using SPARK Lemma Library`), or
 * manually review the unproved checks and record that they can be trusted
   (for example by storing the result of |GNATprove| under version control),
   or
@@ -2521,7 +2523,7 @@ In that case, a user may either:
   prove it, and uses it in subsequent code. The assumption can be manually
   reviewed like mentioned above, and marking it as an assumption in the
   code helps documenting it, or
-* instantiate a lemma which makes the missing property available.
+* define and call a lemma which makes the missing property available.
 
 The last is a technique which is a combination of expression functions and
 ``pragma Assume``. For example the below code is currently not provable
