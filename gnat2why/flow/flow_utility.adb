@@ -2928,15 +2928,14 @@ package body Flow_Utility is
       --  finds a constant. This means that there might be some mutual
       --  recursion here (but this should be fine).
 
-      if FS /= Flow_Id_Sets.Empty_Set then
+      if not FS.Is_Empty then
          --  If any variable was found then return True
          return True;
       end if;
 
       if not GG_Has_Been_Generated
-        and then Get_Function_Set (Expression (Decl),
-                                   Include_Predicates => False)
-          /= Node_Sets.Empty_Set
+        and then not Get_Function_Set (Expression (Decl),
+                                       Include_Predicates => False).Is_Empty
       then
          --  Globals have not yet been computed. If we find any function
          --  calls we consider the constant to have variable inputs (this
