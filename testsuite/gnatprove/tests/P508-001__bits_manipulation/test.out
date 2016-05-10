@@ -16,9 +16,9 @@ bits_manipulation-functions.adb:15:64: info: range check proved, in instantiatio
 bits_manipulation-functions.adb:16:65: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:16:65: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:17:65: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:27:20: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:27:20: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:27:20: info: postcondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:27:20: medium: postcondition might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:27:20: medium: postcondition might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:27:20: medium: postcondition might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:27:20: medium: postcondition might fail, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:28:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:28:82: info: range check proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
@@ -228,10 +228,10 @@ bits_manipulation-functions.adb:160:32: info: precondition proved, in instantiat
 bits_manipulation-functions.adb:160:32: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:160:32: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:160:32: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:180:13: info: assertion proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:180:13: info: assertion proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:180:13: info: assertion proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:180:13: info: assertion proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
+bits_manipulation-functions.adb:181:30: medium: assertion might fail, cannot prove Functions.Make_Mask (Size) < Modular (2) ** (Size, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
+bits_manipulation-functions.adb:181:30: medium: assertion might fail, cannot prove Functions.Make_Mask (Size) < Modular (2) ** (Size, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
+bits_manipulation-functions.adb:181:30: medium: assertion might fail, cannot prove Functions.Make_Mask (Size) < Modular (2) ** (Size, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
+bits_manipulation-functions.adb:181:30: medium: assertion might fail, cannot prove Functions.Make_Mask (Size) < Modular (2) ** (Size, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:182:20: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:182:20: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:182:20: info: precondition proved, in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
