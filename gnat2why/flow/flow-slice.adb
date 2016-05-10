@@ -509,6 +509,9 @@ package body Flow.Slice is
                               Local_Vars.Insert (E);
 
                            when E_Constant =>
+                              --  ??? there is no point in checking both the
+                              --  partial and the full views; also no need to
+                              --  include the full view for the second time.
                               if Has_Variable_Input (Direct_Mapping_Id (E))
                               then
                                  --  If the Full_View is present then add that
