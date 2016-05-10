@@ -1794,10 +1794,19 @@ package body Flow_Generated_Globals.Phase_2 is
 
                   when EK_Protected_Instance =>
                      declare
-                        C     : Entity_Name_To_Priorities_Maps.Cursor;
+                        C : Entity_Name_To_Priorities_Maps.Cursor;
+                        --  Position of a list of protected components of a
+                        --  global variable and their priorities.
+
                         Dummy : Boolean;
+                        --  Flag that indicates if a key was inserted or if
+                        --  it already existed in a map. It is required by
+                        --  the hashed-maps API, but not used here.
 
                      begin
+                        --  Find a list of protected components of a global
+                        --  variable; if it does not exist then initialize
+                        --  with an empty list.
                         Protected_Objects.Insert
                           (Key      => V.The_Variable,
                            Position => C,
