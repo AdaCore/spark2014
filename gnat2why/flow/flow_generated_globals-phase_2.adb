@@ -21,8 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Regpat;                        use GNAT.Regpat;
-with Serialisation;                      use Serialisation;
+with GNAT.Regpat;                use GNAT.Regpat;
+with Serialisation;              use Serialisation;
 with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Maps;           use Ada.Strings.Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
