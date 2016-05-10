@@ -590,10 +590,7 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
 
 def do_flow(opt=None, procs=parallel_procs):
     """Call gnatprove with standard options for flow"""
-    if opt is None:
-        opt = []
-    opt += ["--debug"]
-    prove_all(opt, mode="flow")
+    prove_all(opt, mode="flow", procs=procs)
 
 
 def clean():
