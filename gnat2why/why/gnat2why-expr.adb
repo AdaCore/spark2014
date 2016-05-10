@@ -12425,8 +12425,7 @@ package body Gnat2Why.Expr is
          else
 
             --  A Contains Iterable_For_Proof annotation is specified for
-            --  Over_Type.
-            --  Use the provided Contains primitive.
+            --  Over_Type. Use the provided Contains primitive.
 
             declare
                Found         : Boolean;
@@ -12537,10 +12536,10 @@ package body Gnat2Why.Expr is
                --  model's type.
 
                declare
-                  Model       : constant Entity_Id := Iterable_Info.Entity;
-                  Cont_Type   : constant Entity_Id :=
+                  Model     : constant Entity_Id := Iterable_Info.Entity;
+                  Cont_Type : constant Entity_Id :=
                     Etype (First_Entity (Model));
-                  Cont_Expr   : constant W_Expr_Id :=
+                  Cont_Expr : constant W_Expr_Id :=
                     Insert_Simple_Conversion
                       (Domain   => Subdomain,
                        Expr     => W_Over_E,
@@ -12686,7 +12685,7 @@ package body Gnat2Why.Expr is
       --  Step 2: translate the expression over which the quantification is
       --          applied.
 
-      Over_Expr  := Get_Expr_Quantified_Over (Expr, Over_Range);
+      Over_Expr := Get_Expr_Quantified_Over (Expr, Over_Range);
 
       if not Over_Range then
          Over_Type := Etype (Over_Expr);
@@ -12839,19 +12838,18 @@ package body Gnat2Why.Expr is
             end if;
          end;
 
-      --  We are interested in the checks for the entire range, and
-      --  in the return value of the entire expression, but we are
-      --  not interested in the exact order in which things are
-      --  evaluated. We also do not want to translate the expression
-      --  function by a loop. So our scheme is the following:
+      --  We are interested in the checks for the entire range, and in the
+      --  return value of the entire expression, but we are not interested in
+      --  the exact order in which things are evaluated. We also do not want
+      --  to translate the expression function by a loop. So our scheme is:
       --    for all I in Cond => Expr
       --
       --  becomes:
       --    (let i = ref [ int ] in
       --       if cond then ignore (expr));
       --    [ { } bool { result = true <-> expr } ]
-      --  The condition is a formula that expresses that i is in the
-      --  range given by the quantification.
+      --  The condition is a formula that expresses that i is in the range
+      --  given by the quantification.
 
       else  --  Domain = EW_Prog
          declare

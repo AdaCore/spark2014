@@ -103,11 +103,11 @@ package body Gnat2Why.Annotate is
    --  until (and excluding) a node which comes from source.
 
    procedure Syntax_Check_Pragma_Annotate_Gnatprove
-     (Node     : Node_Id;
-      Ok       : out Boolean;
-      Kind     : out Annotate_Kind;
-      Pattern  : out String_Id;
-      Reason   : out String_Id);
+     (Node    : Node_Id;
+      Ok      : out Boolean;
+      Kind    : out Annotate_Kind;
+      Pattern : out String_Id;
+      Reason  : out String_Id);
    --  Check validity of the pragma Annotate (Gnatprove, ...), and fill in the
    --  kind, pattern and reason of the pragma. The boolean Ok is always set,
    --  the others are only set if Ok is True. Ok is False if some syntax error
@@ -199,8 +199,8 @@ package body Gnat2Why.Annotate is
    -------------------------------
 
    procedure Check_Iterable_Annotation
-     (Arg3_Exp :     Node_Id;
-      Arg4_Exp :     Node_Id)
+     (Arg3_Exp : Node_Id;
+      Arg4_Exp : Node_Id)
    is
 
       procedure Check_Contains_Entity (E : Entity_Id; Ok : in out Boolean);
@@ -323,9 +323,11 @@ package body Gnat2Why.Annotate is
       Kind     : Iterable_Kind;
       New_Prim : Entity_Id;
       Ok       : Boolean := False;
-   begin
 
-      --  The fourth argument must be an entity.
+   --  Start of processing for Check_Iterable_Annotation
+
+   begin
+      --  The fourth argument must be an entity
 
       pragma Assert (Present (Arg4_Exp) and then Present (Entity (Arg4_Exp)));
       New_Prim := Entity (Arg4_Exp);

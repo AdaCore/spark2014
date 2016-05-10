@@ -33,7 +33,7 @@ package Gnat2Why.Annotate is
    --  This package deals with justification of individual messages using
    --  pragma Annotate.
 
-   --  It also stores uses of pragma Annotate for Iterable_For_Proof.
+   --  It also stores uses of pragma Annotate for Iterable_For_Proof
 
    --  The user can suppress check messages emitted by GNATprove by putting a
    --  pragma Annotate in the source code. An example is the following:
