@@ -1030,7 +1030,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      --  one and put the callee on the stack.
                      if V_Callee = Entity_Name_Graphs.Null_Vertex then
                         Tasking_Call_Graph.Add_Vertex (Callee, V_Callee);
-                        Stack.Include (Callee);
+                        Stack.Insert (Callee);
                      end if;
 
                      Tasking_Call_Graph.Add_Edge (V_Caller, V_Callee);
@@ -1104,7 +1104,7 @@ package body Flow_Generated_Globals.Phase_2 is
                         --  one and put the callee on the stack.
                         if V_Callee = Entity_Name_Graphs.Null_Vertex then
                            Call_Graph.Add_Vertex (Callee, V_Callee);
-                           Stack.Include (Callee);
+                           Stack.Insert (Callee);
                         end if;
 
                         Call_Graph.Add_Edge (V_Caller, V_Callee);
