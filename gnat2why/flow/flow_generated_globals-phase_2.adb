@@ -1733,7 +1733,7 @@ package body Flow_Generated_Globals.Phase_2 is
                         end loop;
                      end;
 
-                     State_Abstractions.Insert (V.The_State);
+                     State_Abstractions.Include (V.The_State);
 
                   when EK_Remote_States =>
                      State_Abstractions.Union (V.Remote_States);
