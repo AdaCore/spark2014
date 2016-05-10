@@ -629,50 +629,14 @@ package body Flow.Slice is
       --  Start of processing for Get_Local_Variables_And_Subprograms
 
       begin
-         --  Initialize Local_Vars and Local_Subs
-         Local_Vars := Node_Sets.Empty_Set;
+         --  Initialize Local_Vars and Local_Subs: collect formal parameters of
+         --  the entry/subprogram/task or state abstractions of the package.
+         Local_Vars :=
+           (if FA.Kind in Kind_Subprogram | Kind_Entry | Kind_Task
+            then Get_Formals (FA.Analyzed_Entity)
+            else Node_Sets.Empty_Set);
+
          Local_Subs := Node_Sets.Empty_Set;
-
-         --  Gather formal parameters of the entry/subprogram/task or state
-         --  abstractions of the package.
-         case FA.Kind is
-            when Kind_Subprogram | Kind_Entry | Kind_Task =>
-               Local_Vars := Get_Formals (FA.Analyzed_Entity);
-
-            when Kind_Package | Kind_Package_Body =>
-               --  State abstractions of a package effectively act as local
-               --  variables.
-               declare
-                  AS_Pragma : constant Node_Id :=
-                    Get_Pragma (FA.Spec_Entity, Pragma_Abstract_State);
-
-                  PAA : Node_Id;
-                  --  Argument associations of the Abstract_State pragma
-
-                  AS_N : Node_Id;
-                  AS_E : Entity_Id;
-                  --  Node and entity of the individual abstract states
-               begin
-                  if Present (AS_Pragma) then
-                     PAA := First (Pragma_Argument_Associations (AS_Pragma));
-
-                     --  Check that it is not Abstract_State => null
-                     if Nkind (Expression (PAA)) /= N_Null then
-                        AS_N := First (Expressions (Expression (PAA)));
-                        while Present (AS_N) loop
-                           AS_E :=
-                             Entity (if Nkind (AS_N) = N_Extension_Aggregate
-                                    then Ancestor_Part (AS_N)
-                                    else AS_N);
-
-                           Local_Vars.Insert (AS_E);
-
-                           Next (AS_N);
-                        end loop;
-                     end if;
-                  end if;
-               end;
-         end case;
 
          --  Gather local parameters and subprograms
          case FA.Kind is
