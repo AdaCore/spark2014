@@ -966,6 +966,13 @@ procedure Gnatprove is
          Ada.Text_IO.Put_Line ("Could not find executable " & Command);
          GNAT.OS_Lib.OS_Exit (1);
       end if;
+      if Debug then
+         Ada.Text_IO.Put (Executable.all);
+         for Arg of Args loop
+            Ada.Text_IO.Put (" " & Arg.all);
+         end loop;
+         Ada.Text_IO.New_Line;
+      end if;
       Non_Blocking_Spawn
         (Proc,
          Executable.all,
@@ -1202,6 +1209,9 @@ procedure Gnatprove is
       Args.Append (Image (Parallel, 1));
       Args.Append ("--socket");
       Args.Append (Socket_Name.all);
+      if Debug then
+         Args.Append ("--logging");
+      end if;
       Id := Non_Blocking_Spawn ("why3server", Args);
       Ada.Directories.Set_Directory (Cur);
       return Id;
