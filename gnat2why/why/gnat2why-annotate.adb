@@ -208,7 +208,7 @@ package body Gnat2Why.Annotate is
       --  Iterable aspect.
 
       procedure Check_Model_Entity (E : Entity_Id; Ok : in out Boolean);
-      --  Checks that E is a valid Contains function for a type with an
+      --  Checks that E is a valid Model function for a type with an
       --  Iterable aspect.
 
       procedure Insert_Iterable_Annotation
