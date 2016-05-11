@@ -234,11 +234,11 @@ package VC_Kinds is
    --  A few labels are used in Why3 to identify variables and terms whose
    --  value is interesting in counter-examples.
 
-   Model_Label          : constant String := "model";
-   Model_Trace_Label    : constant String := "model_trace:";
-   Model_Proj_Label     : constant String := "model_projected";
-   Model_VC_Label       : constant String := "model_vc";
-   Model_VC_Post_Label  : constant String := "model_vc_post";
+   Model_Label         : constant String := "model";
+   Model_Trace_Label   : constant String := "model_trace:";
+   Model_Proj_Label    : constant String := "model_projected";
+   Model_VC_Label      : constant String := "model_vc";
+   Model_VC_Post_Label : constant String := "model_vc_post";
 
    --  A meta that is used in Why3 to mark a function as projection.
    Model_Proj_Meta : constant String := "model_projection";

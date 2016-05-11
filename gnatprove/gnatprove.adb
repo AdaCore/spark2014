@@ -584,7 +584,7 @@ procedure Gnatprove is
       Proj         : Project_Tree;
       Status       : out Integer)
    is
-      Obj_Dir  : constant String :=
+      Obj_Dir : constant String :=
         Proj.Root_Project.Object_Dir.Display_Full_Name;
    begin
       Generate_Why3_Conf_File (Obj_Dir);

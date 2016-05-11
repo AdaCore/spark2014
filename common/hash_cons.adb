@@ -48,6 +48,7 @@ package body Hash_Cons is
 
       Addr : constant Integer_Address :=
         To_Integer (A.all'Address) mod 2147483647;
+      --  ??? why 2147483647?
    begin
       return (Hash_Type (Addr));
    end Hash;

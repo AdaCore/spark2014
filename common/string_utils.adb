@@ -57,8 +57,7 @@ package body String_Utils is
    -- Lower_Case_First --
    ----------------------
 
-   procedure Lower_Case_First (S : in out String)
-   is
+   procedure Lower_Case_First (S : in out String) is
    begin
       S (S'First) := Ada.Characters.Handling.To_Lower (S (S'First));
    end Lower_Case_First;

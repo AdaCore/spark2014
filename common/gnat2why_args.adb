@@ -154,8 +154,8 @@ package body Gnat2Why_Args is
          FT         : File_Type;
          Cur_Dir    : constant String := Get_Current_Dir;
       begin
-      --  We need to switch to the given Obj_Dir so that the temp file is
-      --  created there
+         --  We need to switch to the given Obj_Dir so that the temp file is
+         --  created there.
 
          Change_Dir (Obj_Dir);
          Create (FT, Name => File_Name);

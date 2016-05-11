@@ -206,9 +206,9 @@ package body VC_Kinds is
    function To_JSON (K : CEE_Kind) return JSON_Value is
       S : constant String :=
         (case K is
-            when CEE_Old => "old",
-            when CEE_Result => "result",
-            when CEE_Variable => "variable",
+            when CEE_Old       => "old",
+            when CEE_Result    => "result",
+            when CEE_Variable  => "variable",
             when CEE_Error_Msg => "error_message",
             when CEE_Other     => "other");
    begin

@@ -58,7 +58,7 @@ package Assumptions is
       "="                 => "=");
 
    type Rule is record
-      Claim : Token;
+      Claim       : Token;
       Assumptions : Token_Sets.Set;
    end record;
 
