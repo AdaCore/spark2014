@@ -1288,10 +1288,10 @@ package body Flow is
 
                   if Entity_Body_In_SPARK (E) then
                      --  Body is in SPARK, so we just analyze it
-                     FA_Graphs.Include (E, Flow_Analyse_Entity
-                                          (E,
-                                           E,
-                                           Generating_Globals));
+                     FA_Graphs.Include (E,
+                                        Flow_Analyse_Entity
+                                          (E, E, Generating_Globals));
+
                   elsif Generating_Globals then
                      declare
                         Scope        : constant Flow_Scope :=
