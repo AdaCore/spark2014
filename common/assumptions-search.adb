@@ -63,25 +63,32 @@ package body Assumptions.Search is
       Cur_Token : Token;
       Map_Cur   : Goal_Maps.Cursor;
 
+      Unused   : Token_Sets.Cursor;
+      Inserted : Boolean;
+
    begin
       while not Needed_Claims.Is_Empty loop
-         Cur_Token := Token_Sets.Element (Needed_Claims.First);
-         Needed_Claims.Delete (Cur_Token);
+         Cur_Token := Needed_Claims (Needed_Claims.First);
 
          Map_Cur := Map.Find (Cur_Token);
-         if Map_Cur = Goal_Maps.No_Element then
-            Unverified_Claims.Include (Cur_Token);
 
-         elsif Seen.Contains (Cur_Token) then
-            null;
+         if Map_Cur = Goal_Maps.No_Element then
+            Unverified_Claims.Insert (Cur_Token);
 
          else
-            Seen.Insert (Cur_Token);
-            for Tok of Goal_Maps.Element (Map_Cur) loop
-               Needed_Claims.Include (Tok);
-            end loop;
+            Seen.Insert (New_Item => Cur_Token,
+                         Position => Unused,
+                         Inserted => Inserted);
+
+            if Inserted then
+               for Tok of Map (Map_Cur) loop
+                  Needed_Claims.Include (Tok);
+               end loop;
+            end if;
 
          end if;
+
+         Needed_Claims.Delete (Cur_Token);
 
       end loop;
 
