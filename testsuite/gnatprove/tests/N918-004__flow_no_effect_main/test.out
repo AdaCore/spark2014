@@ -1,3 +1,12 @@
+main.adb:17:33: medium: overflow check might fail
+main.adb:18:30: medium: overflow check might fail
+main.adb:18:40: medium: overflow check might fail
+main.adb:18:50: medium: overflow check might fail
+main.adb:19:25: medium: postcondition might fail, cannot prove Is_Right_Angle_Triangle'Result = true
+main.adb:25:20: medium: overflow check might fail
+main.adb:25:42: medium: overflow check might fail
+main.adb:25:52: medium: overflow check might fail
+main.adb:25:62: medium: overflow check might fail
 main.adb:34:14: warning: assuming "Put_Line" has no effect on global items
 main.adb:34:14: warning: no Global contract available for "Put_Line"
 main.adb:36:14: warning: assuming "Put_Line" has no effect on global items

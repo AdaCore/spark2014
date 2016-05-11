@@ -1,8 +1,29 @@
 people.adb:4:04: info: initialization of "Today" constituent of "Date" proved
 people.adb:7:40: info: initialization of "Today" constituent of "Date" proved
+professionals.ads:62:21: medium: precondition is stronger than the default class-wide precondition of True
+professionals.ads:69:19: medium: precondition is stronger than the default class-wide precondition of True
+professionals.ads:79:57: medium: length check might fail
+simple_oo_with_contracts.adb:4:22: medium: assertion might fail, cannot prove G1 = G2
+simple_oo_with_contracts.adb:5:16: medium: overflow check might fail
+simple_oo_with_contracts.adb:6:19: medium: overflow check might fail
+simple_oo_with_contracts.adb:12:22: medium: assertion might fail, cannot prove G1 = G2
+simple_oo_with_contracts.adb:13:16: medium: overflow check might fail
+simple_oo_with_contracts.adb:13:24: medium: overflow check might fail
+simple_oo_with_contracts.adb:19:22: medium: assertion might fail, cannot prove G3 = Par.Z1
+simple_oo_with_contracts.adb:27:25: medium: assertion might fail, cannot prove G2 /= I + Par.Z2
+simple_oo_with_contracts.adb:27:33: medium: overflow check might fail
 simple_oo_with_contracts.ads:12:34: info: initialization of "G4" proved
 simple_oo_with_contracts.ads:22:34: info: initialization of "G4" proved
 simple_oo_with_contracts.ads:31:34: info: initialization of "G4" proved
+simple_oo_without_contracts.adb:4:22: medium: assertion might fail, cannot prove G1 = G2
+simple_oo_without_contracts.adb:5:16: medium: overflow check might fail
+simple_oo_without_contracts.adb:6:19: medium: overflow check might fail
+simple_oo_without_contracts.adb:12:22: medium: assertion might fail, cannot prove G1 = G2
+simple_oo_without_contracts.adb:13:16: medium: overflow check might fail
+simple_oo_without_contracts.adb:13:24: medium: overflow check might fail
+simple_oo_without_contracts.adb:19:22: medium: assertion might fail, cannot prove G3 = Par.Z1
+simple_oo_without_contracts.adb:27:25: medium: assertion might fail, cannot prove G2 /= I + Par.Z2
+simple_oo_without_contracts.adb:27:33: medium: overflow check might fail
 simple_oo_without_contracts.ads:8:14: info: initialization of "G4" proved
 simple_oo_without_contracts.ads:15:14: info: initialization of "G4" proved
 simple_oo_without_contracts.ads:22:14: info: initialization of "G4" proved

@@ -589,8 +589,18 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
 
 
 def do_flow(opt=None, procs=parallel_procs):
-    """Call gnatprove with standard options for flow"""
-    prove_all(opt, mode="flow", procs=procs)
+    """
+    Call gnatprove with standard options for flow. We do generate
+    verification conditions, but we don't actually try and prove anything
+    (hence benchmark mode).
+    """
+
+    full_opt = ["--benchmark"]
+    if opt is not None:
+        full_opt += opt
+
+    prove_all(full_opt, procs=procs, steps=1, counterexample=False,
+              prover=["cvc4"])
 
 
 def clean():

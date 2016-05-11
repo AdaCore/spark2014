@@ -9,4 +9,4 @@ foo.adb:56:23: info: initialization of "O" proved
 foo.adb:66:12: info: initialization of "X" proved
 foo.adb:71:23: info: initialization of "O" proved
 foo.adb:81:12: info: initialization of "X" proved
-gnatprove: error during analysis of data and information flow
+gnatprove: error during flow analysis and proof

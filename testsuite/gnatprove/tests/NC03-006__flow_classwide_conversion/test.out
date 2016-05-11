@@ -1,4 +1,5 @@
 use_logging.adb:3:24: info: initialization of "Log" proved
+use_logging.adb:8:04: medium: precondition might fail
 use_logging.adb:8:19: info: initialization of "Log" proved
 use_logging_classwide.adb:4:34: high: extension of "Log" is not initialized in "Use_Logging_Classwide"
 use_logging_classwide.adb:4:34: info: initialization of "Log" proved

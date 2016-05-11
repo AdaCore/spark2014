@@ -1,2 +1,3 @@
 initial_condition_legal.adb:5:04: info: initialization of "Flag" constituent of "State" proved
+initial_condition_legal.ads:5:08: medium: initial condition might fail
 initial_condition_legal.ads:5:29: info: initialization of "Flag" constituent of "State" proved

@@ -1,9 +1,30 @@
+t3q5.adb:10:23: medium: postcondition might fail
+t3q5.adb:11:82: medium: array index check might fail
+t3q5.adb:20:10: medium: assertion might fail
 t3q5.adb:20:33: info: initialization of "K" proved
+t3q5.adb:21:72: medium: array index check might fail
+t3q5.adb:23:17: medium: range check might fail
 t3q5.adb:24:34: info: initialization of "K" proved
+t3q5.adb:27:16: medium: loop invariant might fail after first iteration
+t3q5.adb:27:16: medium: loop invariant might fail in first iteration
 t3q5.adb:30:67: info: initialization of "K" proved
+t3q5.adb:30:78: medium: array index check might fail
 t3q5.adb:34:17: info: initialization of "K" proved
+t3q5.adb:39:24: medium: postcondition might fail
 t3q5.adb:46:10: warning: initialization of T_Old has no effect
 t3q5.adb:49:46: info: initialization of "Temp" proved
 t3q5.adb:50:34: info: initialization of "T_Old" proved
+t3q5.adb:55:17: medium: precondition might fail
 t3q5.adb:56:13: info: initialization of "Key" proved
 t3q5.adb:57:39: info: initialization of "Key" proved
+t3q5.adb:59:10: medium: loop invariant might fail after first iteration
+t3q5.adb:59:10: medium: loop invariant might fail in first iteration
+t3q5.adb:59:66: medium: array index check might fail
+t3q5.adb:59:81: medium: array index check might fail
+t3q5.adb:59:81: medium: overflow check might fail
+t3q5.adb:60:94: medium: array index check might fail
+t3q5.ads:12:16: medium: range check might fail
+t3q5.ads:12:51: medium: array index check might fail
+t3q5.ads:12:60: medium: array index check might fail
+t3q5.ads:12:60: medium: overflow check might fail
+t3q5.ads:47:20: medium: postcondition might fail

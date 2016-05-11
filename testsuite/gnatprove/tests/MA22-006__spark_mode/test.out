@@ -1,3 +1,5 @@
+p.adb:7:21: medium: range check might fail
+p.adb:17:21: medium: range check might fail
 p.ads:4:37: info: initialization of "Z" proved
 Summary of SPARK analysis
 =========================
@@ -9,18 +11,18 @@ Data Dependencies . . . . . . .
 Flow Dependencies . . . . . . .
 Initialization 1 1 . . . . .
 Non-Aliasing . . . . . . .
-Run-time Checks . . . . . . .
+Run-time Checks 2 . . . . . 2
 Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
 -
-Total 1 1 (100%) . . . . .
+Total 3 1 (33%) . . . . 2 (67%)
 
 
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed
- P at p.ads:1 flow analyzed (0 errors and 0 warnings)
- P.Op at p.ads:4 flow analyzed (0 errors and 0 warnings)
+ P at p.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
+ P.Op at p.ads:4 flow analyzed (0 errors and 0 warnings) and not proved, 0 checks out of 2 proved
 
 Summary of SPARK analysis
 =========================
@@ -68,6 +70,8 @@ in unit p, 2 subprograms and packages out of 2 analyzed
  P at p.ads:1 flow analyzed (0 errors and 0 warnings) and proved (0 checks)
  P.Op at p.ads:4 flow analyzed (0 errors and 0 warnings) and proved (2 checks)
 
+p.adb:7:21: medium: range check might fail
+p.adb:17:21: medium: range check might fail
 p.ads:4:37: info: initialization of "Z" proved
 Summary of SPARK analysis
 =========================

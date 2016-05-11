@@ -1,4 +1,9 @@
 test.adb:3:04: warning: analyzing unreferenced function "Random_Number"
 test.adb:6:14: info: initialization of "N" proved
+test.adb:20:11: medium: range check might fail
+test.adb:20:38: medium: divide by zero might fail
+test.adb:21:15: medium: divide by zero might fail
 test.adb:28:04: warning: analyzing unreferenced function "Ext_Return_01"
 test.adb:30:07: info: initialization of "R" proved
+test.adb:31:17: medium: overflow check might fail
+test.adb:44:07: medium: exception might be raised

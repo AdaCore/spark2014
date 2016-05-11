@@ -7,6 +7,7 @@ advancebutton.adb:37:24: info: initialization of "TimePressed" proved
 advancebutton.adb:53:21: info: initialization of "StillPressed" proved
 advancebutton.adb:55:10: info: initialization of "StillPressed" proved
 advancebutton.adb:56:13: info: initialization of "TimeNow" proved
+advancebutton.adb:57:34: medium: range check might fail
 advancebutton.adb:72:21: info: initialization of "Pressed" proved
 advancebutton.adb:73:21: info: initialization of "Pressed" proved
 advancebutton.ads:25:14: info: initialization of "AdvanceMode" proved
@@ -22,12 +23,20 @@ heatingsystem_dfa.adb:11:11: info: initialization of "display.output_ext" proved
 heatingsystem_dfa.adb:11:11: medium: "actuator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
 heatingsystem_dfa.adb:11:11: medium: "indicator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
 heatingsystem_dfa.adb:26:14: info: initialization of "display.output_ext" proved
+heatingsystem_dfa.adb:35:20: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:36:23: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:36:42: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:38:38: medium: length check might fail, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:38:44: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:39:39: info: initialization of "Hour" proved
 heatingsystem_dfa.adb:39:39: info: initialization of "Hour" proved, in call inlined at heatingsystem_dfa.adb:114
 heatingsystem_dfa.adb:39:39: info: initialization of "Hour" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:39:44: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:40:46: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:41:39: info: initialization of "Minute" proved
 heatingsystem_dfa.adb:41:39: info: initialization of "Minute" proved, in call inlined at heatingsystem_dfa.adb:114
 heatingsystem_dfa.adb:41:39: info: initialization of "Minute" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:41:46: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:42:22: info: initialization of "TheDisplay" proved
 heatingsystem_dfa.adb:42:22: info: initialization of "TheDisplay" proved, in call inlined at heatingsystem_dfa.adb:114
 heatingsystem_dfa.adb:42:22: info: initialization of "TheDisplay" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
@@ -42,6 +51,8 @@ heatingsystem_dfa.adb:58:16: info: initialization of "SlowAdvance" proved, in ca
 heatingsystem_dfa.adb:59:25: info: initialization of "ClockOffset" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:59:25: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:110
 heatingsystem_dfa.adb:59:25: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:59:49: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:59:49: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:63:16: info: initialization of "ChangeToFastMode" proved
 heatingsystem_dfa.adb:63:16: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:105
 heatingsystem_dfa.adb:63:16: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
@@ -58,6 +69,8 @@ heatingsystem_dfa.adb:69:16: info: initialization of "FastAdvance" proved, in ca
 heatingsystem_dfa.adb:70:25: info: initialization of "ClockOffset" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:70:25: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:110
 heatingsystem_dfa.adb:70:25: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:70:54: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:70:54: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:74:16: info: initialization of "ChangeToSlowMode" proved
 heatingsystem_dfa.adb:74:16: info: initialization of "ChangeToSlowMode" proved, in call inlined at heatingsystem_dfa.adb:105
 heatingsystem_dfa.adb:74:16: info: initialization of "ChangeToSlowMode" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
@@ -70,12 +83,17 @@ heatingsystem_dfa.adb:86:13: info: initialization of "Timer" proved, in call inl
 heatingsystem_dfa.adb:86:13: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:106, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:86:17: info: initialization of "ClockOffset" proved, in call inlined at heatingsystem_dfa.adb:101, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:86:17: info: initialization of "ClockOffset" proved, in call inlined at heatingsystem_dfa.adb:106, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:86:30: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:101, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:86:30: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:106, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:86:30: medium: divide by zero might fail, in call inlined at heatingsystem_dfa.adb:169
 heatingsystem_dfa.adb:91:14: info: initialization of "display.output_ext" proved
 heatingsystem_dfa.adb:109:22: info: initialization of "OnOffTime" proved, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:109:32: info: initialization of "SwitchPosition" proved
 heatingsystem_dfa.adb:109:32: info: initialization of "SwitchPosition" proved, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:109:32: medium: array index check might fail, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:111:23: info: initialization of "SwitchPosition" proved
 heatingsystem_dfa.adb:111:23: info: initialization of "SwitchPosition" proved, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:111:23: medium: array index check might fail, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:111:39: info: initialization of "OnOffTime" proved, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:111:39: info: initialization of "SwitchPosition" proved
 heatingsystem_dfa.adb:111:39: info: initialization of "SwitchPosition" proved, in call inlined at heatingsystem_dfa.adb:200
@@ -87,6 +105,7 @@ heatingsystem_dfa.adb:153:13: info: initialization of "MayOperate" proved, in ca
 heatingsystem_dfa.adb:155:16: info: initialization of "AboveTemp" proved, in call inlined at heatingsystem_dfa.adb:185
 heatingsystem_dfa.adb:172:12: info: initialization of "ModeSetting" proved
 heatingsystem_dfa.adb:178:37: info: initialization of "CurrentTime" proved
+heatingsystem_dfa.adb:194:28: medium: length check might fail
 heatingsystem_dfa.adb:201:07: info: initialization of "ClockOffset" proved
 heatingsystem_dfa.adb:201:07: info: initialization of "HeatingIsOn" proved
 heatingsystem_dfa.adb:201:07: info: initialization of "OnOffTime" proved

@@ -1,2 +1,4 @@
+test.adb:8:14: medium: length check might fail, in call inlined at test.adb:18
 test.adb:11:04: warning: analyzing unreferenced function "F"
+test.adb:13:14: medium: length check might fail
 test.adb:16:04: warning: analyzing unreferenced function "Test_01"

@@ -1,11 +1,41 @@
+fruit-priv_child.adb:9:41: medium: overflow check might fail
+fruit-priv_child.adb:10:43: medium: overflow check might fail
+fruit-priv_child.adb:21:42: medium: overflow check might fail
+fruit-priv_child.adb:22:45: medium: overflow check might fail
 fruit-priv_child.adb:34:18: info: initialization of "Fruit_Salads" proved
+fruit-priv_child.adb:34:31: medium: overflow check might fail
+fruit-priv_child.adb:34:31: medium: range check might fail
 fruit-priv_child.adb:36:18: info: initialization of "Money" proved
+fruit-priv_child.adb:36:24: medium: overflow check might fail
+fruit-priv_child.adb:36:24: medium: range check might fail
+fruit-priv_child.adb:36:33: medium: overflow check might fail
 fruit-priv_child.adb:37:18: info: initialization of "Money" proved
+fruit-priv_child.adb:37:24: medium: overflow check might fail
+fruit-priv_child.adb:37:24: medium: range check might fail
+fruit-priv_child.adb:37:34: medium: overflow check might fail
 fruit-priv_child.adb:41:18: info: initialization of "Money" proved
 fruit-priv_child.ads:21:46: info: initialization of "Profit" proved
 fruit-priv_child.ads:25:04: info: initialization of "Extra_Cost" constituent of "Price_Related_Stuff" proved
+fruit-pub_child.adb:20:30: medium: divide by zero might fail
+fruit-pub_child.adb:21:33: medium: divide by zero might fail
+fruit-pub_child.adb:23:30: medium: divide by zero might fail
+fruit-pub_child.adb:23:30: medium: range check might fail
+fruit-pub_child.adb:25:31: medium: divide by zero might fail
+fruit-pub_child.adb:25:31: medium: range check might fail
+fruit-pub_child.adb:27:07: medium: precondition might fail
 fruit-pub_child.adb:27:23: info: initialization of "Fruit_Salads_Made" proved
+fruit-pub_child.adb:27:41: medium: overflow check might fail
+fruit-pub_child.adb:27:41: medium: range check might fail
+fruit-pub_child.adb:28:07: medium: precondition might fail
 fruit-pub_child.adb:28:24: info: initialization of "Fruit_Salads_Made" proved
+fruit-pub_child.adb:28:42: medium: overflow check might fail
+fruit-pub_child.adb:28:42: medium: range check might fail
+fruit-pub_child.adb:33:31: medium: overflow check might fail
+fruit-pub_child.adb:33:31: medium: range check might fail
+fruit-pub_child.adb:33:56: medium: overflow check might fail
+fruit-pub_child.adb:34:32: medium: overflow check might fail
+fruit-pub_child.adb:34:32: medium: range check might fail
+fruit-pub_child.adb:34:57: medium: overflow check might fail
 fruit-pub_child.adb:36:30: low: unused global "Fruit.Fruits"
 fruit-pub_child.ads:5:37: info: initialization of "Fruit_Salads_Made" proved
 fruit-pub_child.ads:13:13: low: unused global "Apples" constituent of "Fruits"
@@ -13,6 +43,13 @@ fruit-pub_child.ads:13:13: low: unused global "Oranges" constituent of "Fruits"
 fruit-pub_child.ads:13:13: low: unused global "Priv_Child.Price_Related_Stuff" constituent of "Fruit.Fruits"
 fruit-pub_child.ads:17:04: info: initialization of "Apples_In_Fruit_Salad" constituent of "Fruit_Salad" proved
 fruit-pub_child.ads:19:04: info: initialization of "Oranges_In_Fruit_Salad" constituent of "Fruit_Salad" proved
+fruit.adb:21:24: medium: overflow check might fail
+fruit.adb:21:24: medium: range check might fail
+fruit.adb:29:26: medium: overflow check might fail
+fruit.adb:29:26: medium: range check might fail
+fruit.adb:38:26: medium: overflow check might fail
+fruit.adb:50:29: medium: overflow check might fail
+fruit.ads:22:24: medium: overflow check might fail
 fruit.ads:37:04: info: initialization of "Apples" constituent of "Fruits" proved
 fruit.ads:40:04: info: initialization of "Oranges" constituent of "Fruits" proved
 fruit.ads:43:04: info: initialization of "Price_Of_Apple" constituent of "Fruits" proved
@@ -20,30 +57,60 @@ fruit.ads:46:04: info: initialization of "Price_Of_Orange" constituent of "Fruit
 levels.adb:9:27: warning: no procedure exists that can initialize abstract state "Nested_1.Abs_1" constituent of "Levels.Abs_0"
 levels.adb:18:26: info: initialization of "A" proved
 levels.adb:20:20: info: initialization of "A" proved
+levels.adb:20:20: medium: postcondition might fail, cannot prove A = Read_Partial_0 + Read_Partial_1 + (Read_Partial_1_Inner)
+levels.adb:20:39: medium: overflow check might fail
+levels.adb:20:56: medium: overflow check might fail
 levels.adb:22:28: info: initialization of "X" proved
+levels.adb:43:27: medium: refined postcondition might fail
+levels.adb:55:27: medium: refined postcondition might fail
+levels.adb:55:42: medium: overflow check might fail
 levels.adb:62:23: info: initialization of "A" proved
+levels.adb:76:15: medium: overflow check might fail
+levels.adb:77:14: medium: overflow check might fail
 levels.adb:80:23: info: initialization of "A" proved
+levels.adb:98:09: medium: initial condition might fail
 levels.adb:98:30: info: initialization of "X2" constituent of "Abs_2" proved
 levels.adb:109:10: info: initialization of "X2" constituent of "Abs_2" proved
 levels.adb:110:10: info: initialization of "Y2" constituent of "Abs_2" proved
 levels.adb:137:25: info: initialization of "A" proved
+levels.adb:137:25: medium: refined postcondition might fail
+levels.adb:137:44: medium: overflow check might fail
+levels.adb:137:61: medium: overflow check might fail
+levels.adb:140:18: medium: overflow check might fail
+levels.adb:140:23: medium: overflow check might fail
 levels.adb:149:24: info: initialization of "Tmp" proved
 levels.adb:150:15: info: initialization of "X" proved
+levels.adb:150:17: medium: overflow check might fail
 levels.adb:150:19: info: initialization of "Tmp" proved
 levels.adb:157:25: info: initialization of "A" proved
+levels.adb:157:25: medium: refined postcondition might fail
+levels.adb:157:44: medium: overflow check might fail
+levels.adb:157:70: medium: overflow check might fail
+levels.adb:167:17: medium: overflow check might fail
 levels.ads:2:26: warning: no procedure exists that can initialize abstract state "Levels.Abs_0"
+levels.ads:11:56: medium: overflow check might fail
+levels.ads:16:21: medium: postcondition might fail, cannot prove Wibble_0 > (Read_Partial_0)
+levels.ads:20:21: medium: postcondition might fail, cannot prove Read_Partial_0 + 1 > (Read_Partial_0)
+levels.ads:20:36: medium: overflow check might fail
 levels.ads:22:23: info: initialization of "A" proved
 levels.ads:25:25: info: initialization of "X" proved
+par-priv.adb:8:18: medium: overflow check might fail
 par-priv.adb:13:04: warning: analyzing unreferenced procedure "Test"
 par-priv.adb:13:14: info: initialization of "D" constituent of "Par.State" proved
 par-priv.ads:4:27: warning: no procedure exists that can initialize abstract state "Priv.Private_Child_State" constituent of "Par.State"
 par-priv.ads:9:14: info: initialization of "E" constituent of "Private_Child_State" proved
+par-priv.ads:11:40: medium: overflow check might fail
 par-priv2.ads:4:27: warning: no procedure exists that can initialize abstract state "Priv2.More_Private_State" constituent of "Par.State"
 par-priv2.ads:9:14: info: initialization of "D2" constituent of "Par.State" proved
+par-pub.adb:9:18: medium: overflow check might fail
 par-pub.adb:14:04: warning: analyzing unreferenced procedure "Test"
 par-pub.adb:14:14: info: initialization of "A" proved
 par-pub.ads:8:14: info: initialization of "A" proved
+par-pub.ads:15:40: medium: overflow check might fail
 par.adb:16:04: warning: analyzing unreferenced function "Wibble"
+par.adb:20:16: medium: overflow check might fail
+par.adb:20:20: medium: overflow check might fail
+par.adb:26:14: medium: overflow check might fail
 par.adb:29:04: warning: analyzing unreferenced procedure "Test_1"
 par.adb:29:14: info: initialization of "Z" constituent of "State" proved
 par.adb:37:04: warning: analyzing unreferenced procedure "Test_2"
