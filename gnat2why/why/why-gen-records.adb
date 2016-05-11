@@ -3275,7 +3275,8 @@ package body Why.Gen.Records is
          then
             Result := Retysp (Etype (Result));
 
-         --   Result is not a cloned record type.
+         --   Result is not a cloned record type
+
          else
             raise Program_Error;
          end if;

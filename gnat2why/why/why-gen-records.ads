@@ -253,6 +253,6 @@ package Why.Gen.Records is
 
    function Record_Type_Cloned_Subtype (E : Entity_Id) return Entity_Id with
      Pre => Record_Type_Is_Clone (E);
-   --  Return the existing type declaration that has been cloned for E.
+   --  Return the existing type declaration that has been cloned for E
 
 end Why.Gen.Records;
