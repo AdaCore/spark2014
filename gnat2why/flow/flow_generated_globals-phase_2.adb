@@ -1737,35 +1737,6 @@ package body Flow_Generated_Globals.Phase_2 is
                   when EK_Remote_States =>
                      State_Abstractions.Union (V.Remote_States);
 
-                     declare
-                        C : Name_Sets.Cursor;
-                        --  Cursor to iterate over original constituents; it is
-                        --  required because it is not possible to iterate over
-                        --  a component of a discriminated record.
-
-                     begin
-                        C := V.Remote_States.First;
-                        while Name_Sets.Has_Element (C) loop
-                           declare
-                              State_Name : constant Entity_Name :=
-                                V.Remote_States (C);
-
-                              State_Entity : constant Entity_Id :=
-                                Find_Entity (State_Name);
-
-                              F : constant Flow_Id :=
-                                (if Present (State_Entity)
-                                 then Direct_Mapping_Id (State_Entity)
-                                 else Magic_String_Id (State_Name));
-
-                           begin
-                              Add_To_Remote_States (F);
-
-                              Name_Sets.Next (C);
-                           end;
-                        end loop;
-                     end;
-
                   when EK_Volatiles =>
                      Async_Writers_Vars.Union (V.All_Async_Writers);
                      All_Volatile_Vars.Union (V.All_Async_Writers);

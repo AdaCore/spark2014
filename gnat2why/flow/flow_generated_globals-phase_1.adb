@@ -26,9 +26,11 @@ use Flow_Generated_Globals.ALI_Serialization;
 
 with Atree;                   use Atree;
 with Ada.Strings.Unbounded;
+with Einfo;                   use Einfo;
 with Lib.Util;                use Lib.Util;
 with Osint.C;                 use Osint.C;
 with Serialisation;           use Serialisation;
+with Sem_Util;                use Sem_Util;
 with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
 
 package body Flow_Generated_Globals.Phase_1 is
@@ -85,6 +87,10 @@ package body Flow_Generated_Globals.Phase_1 is
    State_Constituents : Abstract_State_Constituents_Lists.List;
    --  List of abstract states and their constituents, i.e.
    --  abstract_state . {constituents}.
+
+   Remote_States : Name_Sets.Set := Name_Sets.Empty_Set;
+   --  State abstractions referenced in the current compilation unit but
+   --  declared outside of it.
 
    -----------------------------
    -- GG_Register_Nonblocking --
@@ -294,6 +300,7 @@ package body Flow_Generated_Globals.Phase_1 is
    -----------------------------
 
    procedure GG_Register_Global_Info (GI : Global_Phase_1_Info) is
+
       procedure Process_Volatiles_And_States (NS : Name_Sets.Set);
       --  Goes through NS, finds volatiles and remote states and stores them in
       --  the appropriate sets.
@@ -313,8 +320,13 @@ package body Flow_Generated_Globals.Phase_1 is
                      F : constant Flow_Id := Direct_Mapping_Id (E);
                   begin
                      Add_To_Volatile_Sets_If_Volatile (F);
-                     Add_To_Remote_States (F);
                   end;
+
+                  if Ekind (E) = E_Abstract_State
+                    and then Enclosing_Comp_Unit_Node (E) /= Current_Comp_Unit
+                  then
+                     Remote_States.Insert (Name);
+                  end if;
                end if;
             end;
          end loop;
@@ -333,7 +345,9 @@ package body Flow_Generated_Globals.Phase_1 is
       --  GG_Exists_Cache.Insert (GI.Name);
       --  ??? not needed in phase 1?
 
-      --  Gather and save volatile variables and state abstractions
+      --  Collect volatile variables and state abstractions; these sets are
+      --  disjoints, so it is more efficient to process them separately instead
+      --  of doing an expensive union to have a single procedure call.
       Process_Volatiles_And_States (GI.Inputs_Proof);
       Process_Volatiles_And_States (GI.Inputs);
       Process_Volatiles_And_States (GI.Outputs);
