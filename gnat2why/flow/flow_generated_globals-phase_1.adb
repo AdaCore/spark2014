@@ -100,36 +100,64 @@ package body Flow_Generated_Globals.Phase_1 is
    Effective_Writes_Vars : Name_Sets.Set;
    --  Volatile information
 
-   procedure Add_To_Volatile_Sets_If_Volatile (E : Entity_Id);
+   procedure Register_Volatile (E : Entity_Id);
    --  Processes F and adds it to Async_Writers_Vars, Async_Readers_Vars,
    --  Effective_Reads_Vars, or Effective_Writes_Vars as appropriate.
 
-   --------------------------------------
-   -- Add_To_Volatile_Sets_If_Volatile --
-   --------------------------------------
+   -----------------------------
+   -- GG_Register_Global_Info --
+   -----------------------------
 
-   procedure Add_To_Volatile_Sets_If_Volatile (E : Entity_Id) is
-      Name : constant Entity_Name := To_Entity_Name (E);
+   procedure GG_Register_Global_Info (GI : Global_Phase_1_Info) is
+
+      procedure Process_Volatiles_And_States (NS : Name_Sets.Set);
+      --  Goes through NS, finds volatiles and remote states and stores them in
+      --  the appropriate sets.
+
+      -----------------------------------
+      -- Processs_Volatiles_And_States --
+      -----------------------------------
+
+      procedure Process_Volatiles_And_States (NS : Name_Sets.Set) is
+      begin
+         for Name of NS loop
+            declare
+               E : constant Entity_Id := Find_Entity (Name);
+            begin
+               if Present (E) then
+                  Register_Volatile (E);
+
+                  if Ekind (E) = E_Abstract_State
+                    and then Enclosing_Comp_Unit_Node (E) /= Current_Comp_Unit
+                  then
+                     Remote_States.Include (Name);
+                  end if;
+               end if;
+            end;
+         end loop;
+      end Process_Volatiles_And_States;
+
+   --  Start of processing for GG_Register_Global_Info
+
    begin
-      if Has_Volatile (E) then
+      case GI.Kind is
+         when Kind_Entry | Kind_Subprogram | Kind_Task =>
+            Subprogram_Info_List.Append (GI);
 
-         if Has_Volatile_Flavor (E, Pragma_Async_Readers) then
-            Async_Readers_Vars.Include (Name);
+         when Kind_Package | Kind_Package_Body =>
+            Package_Info_List.Append (GI);
+      end case;
+      --  GG_Exists_Cache.Insert (GI.Name);
+      --  ??? not needed in phase 1?
 
-            if Has_Volatile_Flavor (E, Pragma_Effective_Writes) then
-               Effective_Writes_Vars.Include (Name);
-            end if;
-         end if;
-
-         if Has_Volatile_Flavor (E, Pragma_Async_Writers) then
-            Async_Writers_Vars.Include (Name);
-
-            if Has_Volatile_Flavor (E, Pragma_Effective_Reads) then
-               Effective_Reads_Vars.Include (Name);
-            end if;
-         end if;
-      end if;
-   end Add_To_Volatile_Sets_If_Volatile;
+      --  Collect volatile variables and state abstractions; these sets are
+      --  disjoints, so it is more efficient to process them separately instead
+      --  of doing an expensive union to have a single procedure call.
+      Process_Volatiles_And_States (GI.Inputs_Proof);
+      Process_Volatiles_And_States (GI.Inputs);
+      Process_Volatiles_And_States (GI.Outputs);
+      Process_Volatiles_And_States (GI.Local_Variables);
+   end GG_Register_Global_Info;
 
    -----------------------------
    -- GG_Register_Nonblocking --
@@ -185,7 +213,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
             --  Check if State_F is volatile and if it is then add it to the
             --  appropriate sets.
-            Add_To_Volatile_Sets_If_Volatile (State_Entity);
+            Register_Volatile (State_Entity);
          end;
       end loop;
    end GG_Register_State_Info;
@@ -214,6 +242,33 @@ package body Flow_Generated_Globals.Phase_1 is
          Tasking_Info_Bag (Kind).Insert (EN, To_Name_Set (TI (Kind)));
       end loop;
    end GG_Register_Tasking_Info;
+
+   -----------------------
+   -- Register_Volatile --
+   -----------------------
+
+   procedure Register_Volatile (E : Entity_Id) is
+      Name : constant Entity_Name := To_Entity_Name (E);
+   begin
+      if Has_Volatile (E) then
+
+         if Has_Volatile_Flavor (E, Pragma_Async_Readers) then
+            Async_Readers_Vars.Include (Name);
+
+            if Has_Volatile_Flavor (E, Pragma_Effective_Writes) then
+               Effective_Writes_Vars.Include (Name);
+            end if;
+         end if;
+
+         if Has_Volatile_Flavor (E, Pragma_Async_Writers) then
+            Async_Writers_Vars.Include (Name);
+
+            if Has_Volatile_Flavor (E, Pragma_Effective_Reads) then
+               Effective_Reads_Vars.Include (Name);
+            end if;
+         end if;
+      end if;
+   end Register_Volatile;
 
    -----------------------
    -- GG_Write_Finalize --
@@ -336,61 +391,6 @@ package body Flow_Generated_Globals.Phase_1 is
       Close_Output_Library_Info;
       Current_Mode := GG_No_Mode;
    end GG_Write_Finalize;
-
-   -----------------------------
-   -- GG_Register_Global_Info --
-   -----------------------------
-
-   procedure GG_Register_Global_Info (GI : Global_Phase_1_Info) is
-
-      procedure Process_Volatiles_And_States (NS : Name_Sets.Set);
-      --  Goes through NS, finds volatiles and remote states and stores them in
-      --  the appropriate sets.
-
-      -----------------------------------
-      -- Processs_Volatiles_And_States --
-      -----------------------------------
-
-      procedure Process_Volatiles_And_States (NS : Name_Sets.Set) is
-      begin
-         for Name of NS loop
-            declare
-               E : constant Entity_Id := Find_Entity (Name);
-            begin
-               if Present (E) then
-                  Add_To_Volatile_Sets_If_Volatile (E);
-
-                  if Ekind (E) = E_Abstract_State
-                    and then Enclosing_Comp_Unit_Node (E) /= Current_Comp_Unit
-                  then
-                     Remote_States.Include (Name);
-                  end if;
-               end if;
-            end;
-         end loop;
-      end Process_Volatiles_And_States;
-
-   --  Start of processing for GG_Register_Global_Info
-
-   begin
-      case GI.Kind is
-         when Kind_Entry | Kind_Subprogram | Kind_Task =>
-            Subprogram_Info_List.Append (GI);
-
-         when Kind_Package | Kind_Package_Body =>
-            Package_Info_List.Append (GI);
-      end case;
-      --  GG_Exists_Cache.Insert (GI.Name);
-      --  ??? not needed in phase 1?
-
-      --  Collect volatile variables and state abstractions; these sets are
-      --  disjoints, so it is more efficient to process them separately instead
-      --  of doing an expensive union to have a single procedure call.
-      Process_Volatiles_And_States (GI.Inputs_Proof);
-      Process_Volatiles_And_States (GI.Inputs);
-      Process_Volatiles_And_States (GI.Outputs);
-      Process_Volatiles_And_States (GI.Local_Variables);
-   end GG_Register_Global_Info;
 
    -------------------------
    -- GG_Write_Initialize --
