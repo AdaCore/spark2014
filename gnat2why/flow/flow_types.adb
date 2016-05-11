@@ -509,8 +509,7 @@ package body Flow_Types is
             return False;
 
          when Magic_String =>
-            return GG_Has_Been_Generated
-              and then GG_Is_Volatile (F.Name);
+            return GG_Is_Volatile (F.Name);
 
          when Direct_Mapping | Record_Field =>
             declare
@@ -693,11 +692,14 @@ package body Flow_Types is
                                          E_Constant       |
                                          E_Variable
               and then Present (Encapsulating_State (F.Node));
+
          when Magic_String =>
-            return GG_Has_Been_Generated
-              and then GG_Is_Constituent (F.Name);
+            pragma Assert (GG_Has_Been_Generated);
+            return GG_Is_Constituent (F.Name);
+
          when others =>
             return False;
+
       end case;
    end Is_Constituent;
 
