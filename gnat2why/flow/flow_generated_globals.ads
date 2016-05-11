@@ -124,7 +124,7 @@ package Flow_Generated_Globals is
    type Global_Phase_1_Info is record
       Name                  : Entity_Name;
       Kind                  : Analyzed_Subject_Kind;
-      Globals_Origin        : Globals_Origin_T;
+      Origin                : Globals_Origin_T;
       Inputs_Proof          : Name_Sets.Set; --  Flow/User
       Inputs                : Name_Sets.Set; --  Flow/Frontend/User
       Outputs               : Name_Sets.Set; --  Flow/Frontend/User

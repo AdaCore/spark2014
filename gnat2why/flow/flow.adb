@@ -1330,7 +1330,7 @@ package body Flow is
                                        | E_Procedure => Kind_Subprogram,
                                     when E_Task_Type => Kind_Task,
                                     when others      => raise Program_Error),
-                                 Globals_Origin        => Origin_User,
+                                 Origin                => Origin_User,
                                  Inputs_Proof          =>
                                    To_Name_Set (Proof_Ins),
                                  Inputs                => To_Name_Set (Reads),
@@ -1368,7 +1368,7 @@ package body Flow is
                                        | E_Procedure => Kind_Subprogram,
                                     when E_Task_Type => Kind_Task,
                                     when others      => raise Program_Error),
-                                 Globals_Origin        => Origin_Frontend,
+                                 Origin                => Origin_Frontend,
                                  Inputs_Proof          => Name_Sets.Empty_Set,
                                  Inputs                => Reads,
                                  Outputs               => Writes,
@@ -1672,7 +1672,7 @@ package body Flow is
             end Collect_Unsynchronized_Globals;
 
          begin
-            if S.Globals_Origin = Origin_User then
+            if S.Origin = Origin_User then
                Collect_Unsynchronized_Globals (S.Inputs_Proof);
                Collect_Unsynchronized_Globals (S.Inputs);
                Collect_Unsynchronized_Globals (S.Outputs);
@@ -1781,7 +1781,7 @@ package body Flow is
                                     then Spec_Entity (FA.Analyzed_Entity)
                                     else FA.Analyzed_Entity),
                   Kind                  => FA.Kind,
-                  Globals_Origin        => Origin_Flow,
+                  Origin                => Origin_Flow,
                   Inputs_Proof          => To_Name_Set (Inputs_Proof),
                   Inputs                => To_Name_Set (Inputs),
                   Outputs               => To_Name_Set (Outputs),

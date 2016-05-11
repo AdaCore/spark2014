@@ -27,10 +27,10 @@ with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
 package body Flow_Generated_Globals.ALI_Serialization is
 
    Null_Global_Info : constant Global_Phase_1_Info :=
-     (Name           => Null_Entity_Name,
-      Kind           => Analyzed_Subject_Kind'First,
-      Globals_Origin => Globals_Origin_T'First,
-      others         => <>);
+     (Name   => Null_Entity_Name,
+      Kind   => Analyzed_Subject_Kind'First,
+      Origin => Globals_Origin_T'First,
+      others => <>);
    --  Dummy value required only for the serialization API
 
    Null_ALI_Entry : constant array (ALI_Entry_Kind) of ALI_Entry :=
@@ -136,7 +136,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
    begin
       Serialize (A, V.Name);
       Serialize (A, V.Kind);
-      Serialize (A, V.Globals_Origin);
+      Serialize (A, V.Origin);
       Serialize (A, V.Inputs_Proof,          "var_proof");
       Serialize (A, V.Inputs,                "var_in");
       Serialize (A, V.Outputs,               "var_out");
