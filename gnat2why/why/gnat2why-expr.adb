@@ -12149,15 +12149,20 @@ package body Gnat2Why.Expr is
 
       Is_Task_Priority : constant Boolean :=
         Ekind (Current_Subp) in Task_Kind | Subprogram_Kind;
-      Ty              : constant Entity_Id :=
-        (if Is_Task_Priority then
-           (if Prag_Id = Pragma_Interrupt_Priority then
-                 RTE (RE_Any_Priority)
-            else RTE (RE_Priority))
-         else (if Prag_Id = Pragma_Interrupt_Priority then
-                    RTE (RE_Interrupt_Priority)
-               else RTE (RE_Any_Priority)));
-      Why_Expr        : W_Expr_Id;
+
+      Ty : constant Entity_Id :=
+        RTE (if Is_Task_Priority
+             then
+               (if Prag_Id = Pragma_Interrupt_Priority
+                then RE_Any_Priority
+                else RE_Priority)
+             else
+               (if Prag_Id = Pragma_Interrupt_Priority
+                then RE_Interrupt_Priority
+                else RE_Any_Priority));
+
+      Why_Expr : W_Expr_Id;
+
    begin
       if Present (Expr) then
          Why_Expr :=
