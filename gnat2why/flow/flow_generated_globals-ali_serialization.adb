@@ -33,44 +33,44 @@ package body Flow_Generated_Globals.ALI_Serialization is
       others         => <>);
    --  Dummy value required only for the serialization API
 
-   Null_ALI_Entry : constant array (ALI_Entry_Kind) of ALI_Entry := (
-      EK_Error               => (Kind => EK_Error),
+   Null_ALI_Entry : constant array (ALI_Entry_Kind) of ALI_Entry :=
+     (EK_Error              => (Kind => EK_Error),
 
-      EK_End_Marker          => (Kind => EK_End_Marker),
+      EK_End_Marker         => (Kind => EK_End_Marker),
 
-      EK_State_Map           => (Kind      => EK_State_Map,
-                                 The_State => Null_Entity_Name,
-                                 others    => <>),
+      EK_State_Map          => (Kind      => EK_State_Map,
+                                The_State => Null_Entity_Name,
+                                others    => <>),
 
-      EK_Remote_States       => (Kind          => EK_Remote_States,
-                                 Remote_States => Name_Sets.Empty_Set),
+      EK_Remote_States      => (Kind          => EK_Remote_States,
+                                Remote_States => Name_Sets.Empty_Set),
 
-      EK_Volatiles           => (Kind   => EK_Volatiles,
-                                 others => <>),
+      EK_Volatiles          => (Kind   => EK_Volatiles,
+                                others => <>),
 
-      EK_Globals             => (Kind            => EK_Globals,
-                                 The_Global_Info => Null_Global_Info),
+      EK_Globals            => (Kind            => EK_Globals,
+                                The_Global_Info => Null_Global_Info),
 
-      EK_Protected_Instance   => (Kind         => EK_Protected_Instance,
-                                 The_Variable => Null_Entity_Name,
-                                 The_Priority => Priority_Value'
-                                   (Kind  => Priority_Kind'First,
-                                    Value => 0)),
+      EK_Protected_Instance => (Kind         => EK_Protected_Instance,
+                                The_Variable => Null_Entity_Name,
+                                The_Priority => Priority_Value'
+                                  (Kind  => Priority_Kind'First,
+                                   Value => 0)),
 
-      EK_Task_Instance       => (Kind       => EK_Task_Instance,
-                                 The_Type   => Null_Entity_Name,
-                                 The_Object => Task_Object'
-                                   (Name      => Null_Entity_Name,
-                                    Instances => Instance_Number'First,
-                                    Node      => Empty)),
+      EK_Task_Instance      => (Kind       => EK_Task_Instance,
+                                The_Type   => Null_Entity_Name,
+                                The_Object => Task_Object'
+                                  (Name      => Null_Entity_Name,
+                                   Instances => Instance_Number'First,
+                                   Node      => Empty)),
 
-      EK_Tasking_Info        => (Kind       => EK_Tasking_Info,
-                                 The_Entity => Null_Entity_Name,
-                                 others     => <>),
+      EK_Tasking_Info       => (Kind       => EK_Tasking_Info,
+                                The_Entity => Null_Entity_Name,
+                                others     => <>),
 
-      EK_Nonblocking         => (Kind   => EK_Nonblocking,
-                                 others => <>)
-   );
+      EK_Nonblocking        => (Kind   => EK_Nonblocking,
+                                others => <>)
+     );
    --  Dummy value required only for the serialization API
 
    procedure Serialize (A : in out Archive; V : in out Entity_Name);
