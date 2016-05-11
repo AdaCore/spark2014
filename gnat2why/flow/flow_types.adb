@@ -655,8 +655,7 @@ package body Flow_Types is
             return Nkind (F.Node) in N_Entity
               and then Ekind (F.Node) = E_Abstract_State;
          when Magic_String =>
-            return GG_Has_Been_Generated
-              and then GG_Get_State_Abstractions.Contains (F.Name);
+            return GG_Get_State_Abstractions.Contains (F.Name);
          when others =>
             return False;
       end case;
