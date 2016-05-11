@@ -325,7 +325,7 @@ package body Flow_Generated_Globals.Phase_1 is
                   if Ekind (E) = E_Abstract_State
                     and then Enclosing_Comp_Unit_Node (E) /= Current_Comp_Unit
                   then
-                     Remote_States.Insert (Name);
+                     Remote_States.Include (Name);
                   end if;
                end if;
             end;
