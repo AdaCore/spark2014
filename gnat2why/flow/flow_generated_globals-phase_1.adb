@@ -31,6 +31,8 @@ with Lib.Util;                use Lib.Util;
 with Osint.C;                 use Osint.C;
 with Serialisation;           use Serialisation;
 with Sem_Util;                use Sem_Util;
+with Snames;                  use Snames;
+with SPARK_Util;              use SPARK_Util;
 with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
 
 package body Flow_Generated_Globals.Phase_1 is
@@ -102,7 +104,7 @@ package body Flow_Generated_Globals.Phase_1 is
    Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
    --  Volatile information
 
-   procedure Add_To_Volatile_Sets_If_Volatile (F : Flow_Id);
+   procedure Add_To_Volatile_Sets_If_Volatile (E : Entity_Id);
    --  Processes F and adds it to Async_Writers_Vars, Async_Readers_Vars,
    --  Effective_Reads_Vars, or Effective_Writes_Vars as appropriate.
 
@@ -110,31 +112,24 @@ package body Flow_Generated_Globals.Phase_1 is
    -- Add_To_Volatile_Sets_If_Volatile --
    --------------------------------------
 
-   procedure Add_To_Volatile_Sets_If_Volatile (F : Flow_Id) is
-      N : Entity_Name;
+   procedure Add_To_Volatile_Sets_If_Volatile (E : Entity_Id) is
+      Name : constant Entity_Name := To_Entity_Name (E);
    begin
-      case F.Kind is
-         when Direct_Mapping | Record_Field =>
-            N := To_Entity_Name (Get_Direct_Mapping_Id (F));
-         when others =>
-            return;
-      end case;
+      if Has_Volatile (E) then
 
-      if Is_Volatile (F) then
+         if Has_Volatile_Flavor (E, Pragma_Async_Readers) then
+            Async_Readers_Vars.Include (Name);
 
-         if Has_Async_Readers (F) then
-            Async_Readers_Vars.Include (N);
-
-            if Has_Effective_Writes (F) then
-               Effective_Writes_Vars.Include (N);
+            if Has_Volatile_Flavor (E, Pragma_Effective_Writes) then
+               Effective_Writes_Vars.Include (Name);
             end if;
          end if;
 
-         if Has_Async_Writers (F) then
-            Async_Writers_Vars.Include (N);
+         if Has_Volatile_Flavor (E, Pragma_Async_Writers) then
+            Async_Writers_Vars.Include (Name);
 
-            if Has_Effective_Reads (F) then
-               Effective_Reads_Vars.Include (N);
+            if Has_Volatile_Flavor (E, Pragma_Effective_Reads) then
+               Effective_Reads_Vars.Include (Name);
             end if;
          end if;
       end if;
@@ -171,12 +166,15 @@ package body Flow_Generated_Globals.Phase_1 is
          declare
             State_F : Flow_Id renames Dependency_Maps.Key (S);
 
-            State_N : constant Entity_Name :=
-              To_Entity_Name (Get_Direct_Mapping_Id (State_F));
+            State_Entity : constant Entity_Id :=
+              Get_Direct_Mapping_Id (State_F);
+
+            State_Name : constant Entity_Name :=
+              To_Entity_Name (State_Entity);
 
          begin
             --  Append new state info into State_Comp_Map
-            State_Constituents.Append ((State_N, Name_Lists.Empty_List));
+            State_Constituents.Append ((State_Name, Name_Lists.Empty_List));
 
             declare
                New_Constituents : Name_Lists.List renames
@@ -191,7 +189,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
             --  Check if State_F is volatile and if it is then add it to the
             --  appropriate sets.
-            Add_To_Volatile_Sets_If_Volatile (State_F);
+            Add_To_Volatile_Sets_If_Volatile (State_Entity);
          end;
       end loop;
    end GG_Register_State_Info;
@@ -364,11 +362,7 @@ package body Flow_Generated_Globals.Phase_1 is
                E : constant Entity_Id := Find_Entity (Name);
             begin
                if Present (E) then
-                  declare
-                     F : constant Flow_Id := Direct_Mapping_Id (E);
-                  begin
-                     Add_To_Volatile_Sets_If_Volatile (F);
-                  end;
+                  Add_To_Volatile_Sets_If_Volatile (E);
 
                   if Ekind (E) = E_Abstract_State
                     and then Enclosing_Comp_Unit_Node (E) /= Current_Comp_Unit
