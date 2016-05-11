@@ -92,6 +92,54 @@ package body Flow_Generated_Globals.Phase_1 is
    --  State abstractions referenced in the current compilation unit but
    --  declared outside of it.
 
+   ----------------------------------------------------------------------
+   --  Volatile information
+   ----------------------------------------------------------------------
+
+   Async_Writers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
+   Async_Readers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
+   Effective_Reads_Vars  : Name_Sets.Set := Name_Sets.Empty_Set;
+   Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
+   --  Volatile information
+
+   procedure Add_To_Volatile_Sets_If_Volatile (F : Flow_Id);
+   --  Processes F and adds it to Async_Writers_Vars, Async_Readers_Vars,
+   --  Effective_Reads_Vars, or Effective_Writes_Vars as appropriate.
+
+   --------------------------------------
+   -- Add_To_Volatile_Sets_If_Volatile --
+   --------------------------------------
+
+   procedure Add_To_Volatile_Sets_If_Volatile (F : Flow_Id) is
+      N : Entity_Name;
+   begin
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            N := To_Entity_Name (Get_Direct_Mapping_Id (F));
+         when others =>
+            return;
+      end case;
+
+      if Is_Volatile (F) then
+
+         if Has_Async_Readers (F) then
+            Async_Readers_Vars.Include (N);
+
+            if Has_Effective_Writes (F) then
+               Effective_Writes_Vars.Include (N);
+            end if;
+         end if;
+
+         if Has_Async_Writers (F) then
+            Async_Writers_Vars.Include (N);
+
+            if Has_Effective_Reads (F) then
+               Effective_Reads_Vars.Include (N);
+            end if;
+         end if;
+      end if;
+   end Add_To_Volatile_Sets_If_Volatile;
+
    -----------------------------
    -- GG_Register_Nonblocking --
    -----------------------------

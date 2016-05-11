@@ -194,22 +194,6 @@ package Flow_Generated_Globals is
       end record;
    --  Protected object and its priority
 
-   ----------------------------------------------------------------------
-   --  Volatile information
-   ----------------------------------------------------------------------
-
-   All_Volatile_Vars     : Name_Sets.Set := Name_Sets.Empty_Set;
-   Async_Writers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
-   Async_Readers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
-   Effective_Reads_Vars  : Name_Sets.Set := Name_Sets.Empty_Set;
-   Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  Volatile information
-
-   procedure Add_To_Volatile_Sets_If_Volatile (F : Flow_Id);
-   --  Processes F and adds it to All_Volatile_Vars, Async_Writers_Vars,
-   --  Async_Readers_Vars, Effective_Reads_Vars, or Effective_Writes_Vars
-   --  as appropriate.
-
    procedure Print_Tasking_Info_Bag (P : Phase);
    --  Display the tasking-related information
 

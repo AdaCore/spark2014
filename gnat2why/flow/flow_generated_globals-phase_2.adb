@@ -281,6 +281,17 @@ package body Flow_Generated_Globals.Phase_2 is
    --  This maps packages to their local variables
 
    ----------------------------------------------------------------------
+   --  Volatile information
+   ----------------------------------------------------------------------
+
+   All_Volatile_Vars     : Name_Sets.Set := Name_Sets.Empty_Set;
+   Async_Writers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
+   Async_Readers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
+   Effective_Reads_Vars  : Name_Sets.Set := Name_Sets.Empty_Set;
+   Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
+   --  Volatile information
+
+   ----------------------------------------------------------------------
    --  Local subprograms
    ----------------------------------------------------------------------
 
