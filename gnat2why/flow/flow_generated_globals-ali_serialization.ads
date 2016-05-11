@@ -67,7 +67,7 @@ package Flow_Generated_Globals.ALI_Serialization is
             The_Entity                  : Entity_Name;
             The_Tasking_Info            : Name_Tasking_Info;
          when EK_Nonblocking =>
-            The_Nonblocking_Subprograms : Name_Sets.Set;
+            The_Nonblocking_Subprograms : Name_Lists.List;
       end case;
    end record;
    --  IMPORTANT: If you change this, then also update the serialisation

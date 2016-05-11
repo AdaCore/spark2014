@@ -1265,25 +1265,27 @@ package body Flow is
          case Ekind (E) is
             when E_Entry | E_Function | E_Procedure | E_Task_Type =>
 
-               --  Check for potentially blocking statements in callable
-               --  entities, i.e. entries and subprograms.
-
-               if Generating_Globals
-                 and then Ekind (E) in E_Entry | E_Function | E_Procedure
-                 and then Entity_Body_In_SPARK (E)
-               then
-                  declare
-                     Body_N : constant Node_Id := Get_Body (E);
-                  begin
-                     if Present (Body_N)
-                       and then Has_Only_Nonblocking_Statements (Body_N)
-                     then
-                        GG_Register_Nonblocking (To_Entity_Name (E));
-                     end if;
-                  end;
-               end if;
-
                if SPARK_Util.Analysis_Requested (E, With_Inlined => True) then
+
+                  --  Check for potentially blocking statements in callable
+                  --  entities, i.e. entries and subprograms.
+                  --  ??? also analyze spec
+
+                  if Generating_Globals
+                     and then Ekind (E) in E_Entry | E_Function | E_Procedure
+                     and then Entity_Body_In_SPARK (E)
+                  then
+                     declare
+                        Body_N : constant Node_Id := Get_Body (E);
+                     begin
+                        if Present (Body_N)
+                          and then Has_Only_Nonblocking_Statements (Body_N)
+                        then
+                           GG_Register_Nonblocking (To_Entity_Name (E));
+                        end if;
+                     end;
+                  end if;
+
                   if Entity_Body_In_SPARK (E) then
                      --  Body is in SPARK, so we just analyze it
                      FA_Graphs.Include (E, Flow_Analyse_Entity

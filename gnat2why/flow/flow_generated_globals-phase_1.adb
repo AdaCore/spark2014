@@ -57,7 +57,7 @@ package body Flow_Generated_Globals.Phase_1 is
    Task_Instances : Task_Instances_Lists.List;
    --  Instances of task types
 
-   Nonblocking_Subprograms : Name_Sets.Set;
+   Nonblocking_Subprograms : Name_Lists.List;
    --  Subprograms, entries and tasks that do not contain potentially blocking
    --  statements (but still may call another blocking subprogram).
 
@@ -137,7 +137,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
    procedure GG_Register_Nonblocking (EN : Entity_Name) is
    begin
-      Nonblocking_Subprograms.Insert (EN);
+      Nonblocking_Subprograms.Append (EN);
    end GG_Register_Nonblocking;
 
    ----------------------------------

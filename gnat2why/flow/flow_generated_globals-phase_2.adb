@@ -1840,8 +1840,17 @@ package body Flow_Generated_Globals.Phase_2 is
                      end loop;
 
                   when EK_Nonblocking =>
-                     Nonblocking_Subprograms.Union
-                       (V.The_Nonblocking_Subprograms);
+                     declare
+                        C : Name_Lists.Cursor :=
+                          V.The_Nonblocking_Subprograms.First;
+                     begin
+                        while Name_Lists.Has_Element (C) loop
+                           Nonblocking_Subprograms.Insert
+                             (V.The_Nonblocking_Subprograms (C));
+
+                           Name_Lists.Next (C);
+                        end loop;
+                     end;
                end case;
             end;
 
