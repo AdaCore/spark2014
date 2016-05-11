@@ -1,4 +1,4 @@
-package Logging with
+package Logging_No_Dispatch with
   SPARK_Mode
 is
    Max_Count : constant := 10_000;
@@ -10,11 +10,11 @@ is
    function Log_Size (Log : Log_Type) return Log_Count;
 
    procedure Init_Log (Log : out Log_Type) with
-     Post'Class => Log.Log_Size = 0;
+     Post => Log.Log_Size = 0;
 
    procedure Append_To_Log (Log : in out Log_Type; Incr : in Integer) with
-     Pre'Class  => Log.Log_Size < Max_Count,
-     Post'Class => Log.Log_Size = Log.Log_Size'Old + 1;
+     Pre  => Log.Log_Size < Max_Count,
+     Post => Log.Log_Size = Log.Log_Size'Old + 1;
 
 private
 
@@ -28,4 +28,4 @@ private
 
    function Log_Size (Log : Log_Type) return Log_Count is (Log.Log_Size);
 
-end Logging;
+end Logging_No_Dispatch;

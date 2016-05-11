@@ -3370,6 +3370,8 @@ Principle: every overriding operation of the derived type should behave so that
 it can be substituted for the corresponding overridden operation of the parent
 type anywhere.
 
+.. _Class-Wide Subprogram Contracts:
+
 Class-Wide Subprogram Contracts
 -------------------------------
 
