@@ -1,1 +1,1 @@
-main.adb:39:21: medium: range check might fail
+main.adb:39:21: info: range check proved

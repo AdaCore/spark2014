@@ -7,22 +7,22 @@ double_list.adb:23:48: info: initialization of "Count" constituent of "Internal_
 double_list.adb:23:55: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.adb:23:66: info: initialization of "Free" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.adb:25:26: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.adb:25:26: medium: refined postcondition might fail, in instantiation at list_handler.adb:11
-double_list.adb:29:17: medium: length check might fail, in instantiation at list_handler.adb:11
-double_list.adb:33:20: medium: length check might fail, in instantiation at list_handler.adb:11
+double_list.adb:25:26: info: refined post proved, in instantiation at list_handler.adb:11
+double_list.adb:29:17: info: length check proved, in instantiation at list_handler.adb:11
+double_list.adb:33:20: info: length check proved, in instantiation at list_handler.adb:11
 double_list.adb:36:28: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.adb:63:30: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
 double_list.adb:64:54: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
 double_list.adb:65:41: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
-double_list.adb:68:25: medium: range check might fail, in instantiation at list_handler.adb:11
-double_list.ads:9:05: medium: initial condition might fail, in instantiation at list_handler.adb:11
+double_list.adb:68:25: info: range check proved, in instantiation at list_handler.adb:11
+double_list.ads:9:05: info: initial condition proved, in instantiation at list_handler.adb:11
 double_list.ads:9:26: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.ads:18:16: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.ads:18:16: medium: postcondition might fail, cannot prove Size = 0, in instantiation at list_handler.adb:11
+double_list.ads:18:16: info: postcondition proved, in instantiation at list_handler.adb:11
 double_list.ads:22:29: info: initialization of "Status" proved, in instantiation at list_handler.adb:11
 list_handler.adb:24:13: info: initialization of "Current" proved
 list_handler.adb:25:56: info: initialization of "Current" proved
 list_handler.adb:26:20: info: initialization of "Status" proved
 list_handler.adb:26:54: info: initialization of "Current" proved
 list_handler.adb:27:21: info: initialization of "Current" proved
-list_handler.adb:27:29: medium: overflow check might fail
+list_handler.adb:27:29: info: overflow check proved

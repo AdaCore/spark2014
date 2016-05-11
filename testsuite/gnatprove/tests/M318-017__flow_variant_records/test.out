@@ -22,15 +22,15 @@ definite.adb:55:09: medium: discriminant check might fail
 definite.adb:58:25: info: initialization of "X.A" proved
 definite.adb:58:25: info: initialization of "X.B" proved
 definite.adb:58:25: info: initialization of "X.X" proved
-definite.adb:65:15: medium: discriminant check might fail
-definite.adb:67:15: medium: discriminant check might fail
-definite.adb:69:15: medium: discriminant check might fail
+definite.adb:65:15: info: discriminant check proved
+definite.adb:67:15: info: discriminant check proved
+definite.adb:69:15: info: discriminant check proved
 definite.adb:74:31: info: initialization of "G.A" proved
 definite.adb:74:31: info: initialization of "G.B" proved
 definite.adb:74:31: info: initialization of "G.X" proved
-definite.adb:80:15: medium: discriminant check might fail
-definite.adb:82:15: medium: discriminant check might fail
-definite.adb:84:15: medium: discriminant check might fail
+definite.adb:80:15: info: discriminant check proved
+definite.adb:82:15: info: discriminant check proved
+definite.adb:84:15: info: discriminant check proved
 definite.adb:89:26: info: initialization of "X.A" proved
 definite.adb:89:26: info: initialization of "X.B" proved
 definite.adb:89:26: info: initialization of "X.X" proved
@@ -52,17 +52,17 @@ definite.adb:107:23: info: initialization of "X.B" proved
 definite.adb:107:23: info: initialization of "X.X" proved
 definite.adb:108:23: info: initialization of "Y" proved
 definite.adb:115:12: info: initialization of "Y" proved
-definite.adb:117:15: medium: discriminant check might fail
-definite.adb:119:15: medium: discriminant check might fail
-definite.adb:121:15: medium: discriminant check might fail
+definite.adb:117:15: info: discriminant check proved
+definite.adb:119:15: info: discriminant check proved
+definite.adb:121:15: info: discriminant check proved
 definite.adb:125:26: info: initialization of "X.A" proved
 definite.adb:125:26: info: initialization of "X.B" proved
 definite.adb:125:26: info: initialization of "X.X" proved
 definite.adb:126:26: info: initialization of "Y" proved
 definite.adb:131:12: info: initialization of "Y" proved
-definite.adb:133:15: medium: discriminant check might fail
-definite.adb:135:15: medium: discriminant check might fail
-definite.adb:137:15: medium: discriminant check might fail
+definite.adb:133:15: info: discriminant check proved
+definite.adb:135:15: info: discriminant check proved
+definite.adb:137:15: info: discriminant check proved
 definite.adb:141:23: info: initialization of "X.A" proved
 definite.adb:141:23: info: initialization of "X.B" proved
 definite.adb:141:23: info: initialization of "X.X" proved
@@ -90,7 +90,7 @@ test.adb:33:28: info: initialization of "R.Flag" proved
 test.adb:33:28: info: initialization of "R.X" proved
 test.adb:33:28: info: initialization of "R.Y" proved
 test.adb:33:28: info: initialization of "R.Z" proved
-test.adb:35:19: medium: range check might fail
+test.adb:35:19: info: range check proved
 test.adb:40:09: medium: discriminant check might fail
 test.adb:40:12: high: "V.Z" is not initialized
 test.adb:40:12: info: initialization of "V.Flag" proved
@@ -99,13 +99,13 @@ test.adb:43:28: info: initialization of "R.Flag" proved
 test.adb:43:28: info: initialization of "R.X" proved
 test.adb:43:28: info: initialization of "R.Y" proved
 test.adb:43:28: info: initialization of "R.Z" proved
-test.adb:45:19: medium: range check might fail
-test.adb:48:08: medium: discriminant check might fail
+test.adb:45:19: info: range check proved
+test.adb:48:08: info: discriminant check proved
 test.adb:50:09: medium: discriminant check might fail
 test.adb:50:12: info: initialization of "V.Flag" proved
 test.adb:50:12: info: initialization of "V.Z" proved
-test.adb:61:37: medium: range check might fail
-test.adb:61:40: medium: range check might fail
+test.adb:61:37: info: range check proved
+test.adb:61:40: info: range check proved
 test.adb:80:04: warning: analyzing unreferenced procedure "Test_Definite_01"
 test.adb:80:32: info: initialization of "X.Index" proved
 test.adb:80:32: info: initialization of "X.Reason" proved
@@ -117,20 +117,20 @@ test.adb:93:08: medium: discriminant check might fail
 test.adb:96:04: warning: analyzing unreferenced procedure "Test_Definite_03"
 test.adb:96:32: medium: "X.Index" might not be initialized in "Test_Definite_03"
 test.adb:96:32: medium: "X.Reason" might not be initialized in "Test_Definite_03"
-test.adb:102:14: medium: discriminant check might fail
-test.adb:104:14: medium: discriminant check might fail
+test.adb:102:14: info: discriminant check proved
+test.adb:104:14: info: discriminant check proved
 test.adb:108:04: warning: analyzing unreferenced procedure "Test_Definite_04"
 test.adb:108:32: info: initialization of "X.Index" proved
 test.adb:108:32: info: initialization of "X.Reason" proved
-test.adb:114:15: medium: discriminant check might fail
-test.adb:116:15: medium: discriminant check might fail
+test.adb:114:15: info: discriminant check proved
+test.adb:116:15: info: discriminant check proved
 test.adb:120:04: warning: analyzing unreferenced procedure "Test_Definite_05"
 test.adb:120:32: info: initialization of "X.Index" proved
 test.adb:120:32: info: initialization of "X.Reason" proved
-test.adb:123:28: medium: range check might fail
-test.adb:128:14: medium: discriminant check might fail
-test.adb:130:18: medium: discriminant check might fail
-test.adb:132:09: medium: discriminant check might fail
+test.adb:123:28: info: range check proved
+test.adb:128:14: info: discriminant check proved
+test.adb:130:18: info: discriminant check proved
+test.adb:132:09: info: discriminant check proved
 test.adb:132:12: info: initialization of "R.Index" proved
 test.adb:132:12: medium: "R.Reason" might not be initialized
 test.adb:135:32: info: initialization of "X.Index" proved

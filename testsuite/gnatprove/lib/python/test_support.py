@@ -595,12 +595,7 @@ def do_flow(opt=None, procs=parallel_procs):
     (hence benchmark mode).
     """
 
-    full_opt = ["--benchmark"]
-    if opt is not None:
-        full_opt += opt
-
-    prove_all(full_opt, procs=procs, steps=1, counterexample=False,
-              prover=["cvc4"])
+    prove_all(opt, procs=procs, steps=1, counterexample=False, prover=["cvc4"])
 
 
 def clean():

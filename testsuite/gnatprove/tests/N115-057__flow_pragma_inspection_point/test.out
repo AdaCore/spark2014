@@ -1,5 +1,5 @@
 foo.adb:1:16: info: initialization of "X" proved
 foo.adb:6:09: info: initialization of "X" proved
-foo.adb:6:11: medium: overflow check might fail
+foo.adb:6:11: info: overflow check proved
 foo.adb:7:09: info: initialization of "X" proved
-foo.adb:7:11: medium: divide by zero might fail
+foo.adb:7:11: info: division check proved

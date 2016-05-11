@@ -1,8 +1,8 @@
+alarm.adb:23:09: info: ceiling priority protocol is respected
 alarm.adb:23:09: info: initialization of "Blinken_Task" constituent of "Blinkenlights" proved
-alarm.adb:23:09: medium: ceiling priority protocol might not be respected
-alarm.adb:23:09: medium: the task might terminate, which is not allowed in SPARK
-main.adb:5:11: medium: ceiling priority protocol might not be respected
+alarm.adb:23:09: info: nontermination of task proved
+main.adb:5:11: info: ceiling priority protocol is respected
 sensor.ads:5:20: info: initialization of "T" proved
 watchdog.adb:9:13: info: initialization of "T" proved
-watchdog.ads:6:09: medium: ceiling priority protocol might not be respected
-watchdog.ads:6:09: medium: the task might terminate, which is not allowed in SPARK
+watchdog.ads:6:09: info: ceiling priority protocol is respected
+watchdog.ads:6:09: info: nontermination of task proved

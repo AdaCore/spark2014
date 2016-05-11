@@ -5,20 +5,20 @@ test.adb:43:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:44:23: info: initialization of "L" proved
 test.adb:55:24: info: initialization of "B" proved
 test.adb:67:24: info: initialization of "B" proved
-test.adb:71:15: medium: range check might fail
+test.adb:71:15: info: range check proved
 test.adb:78:24: info: initialization of "S" proved
-test.adb:82:09: medium: length check might fail
+test.adb:82:09: info: length check proved
 test.adb:86:24: info: initialization of "A" proved
 test.adb:90:33: high: "A" is not initialized
 test.adb:96:24: info: initialization of "A" proved
 test.adb:100:31: high: "A" is not initialized
-test.adb:101:15: medium: range check might fail
+test.adb:101:15: info: range check proved
 test.adb:111:24: info: initialization of "A" proved
 test.adb:112:24: info: initialization of "B" proved
-test.adb:119:09: medium: length check might fail
+test.adb:119:09: info: length check proved
 test.adb:122:24: warning: unused initial value of "A"
 test.adb:123:24: info: initialization of "B" proved
-test.adb:130:09: medium: length check might fail
+test.adb:130:09: info: length check proved
 test.adb:133:24: warning: unused initial value of "A"
 test.adb:134:24: info: initialization of "B" proved
-test.adb:140:09: medium: length check might fail
+test.adb:140:09: info: length check proved

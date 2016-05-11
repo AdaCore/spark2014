@@ -2,6 +2,6 @@ package_1.adb:7:04: info: initialization of "State_Var_1" constituent of "State"
 package_1.adb:8:04: info: initialization of "State_Var_2" constituent of "State" proved
 package_1.adb:32:22: medium: postcondition might fail, cannot prove (Invariant)
 package_1.adb:35:37: medium: overflow check might fail
-package_1.adb:39:07: medium: precondition might fail
+package_1.adb:39:07: info: precondition proved
 package_1.adb:40:34: medium: overflow check might fail
-package_1.ads:19:21: medium: postcondition might fail, cannot prove (Invariant)
+package_1.ads:19:21: info: postcondition proved

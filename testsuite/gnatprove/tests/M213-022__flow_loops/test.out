@@ -1,10 +1,10 @@
 test.adb:3:04: warning: analyzing unreferenced procedure "Basic_Loop"
 test.adb:7:17: medium: overflow check might fail
-test.adb:8:17: medium: divide by zero might fail
+test.adb:8:17: info: division check proved
 test.adb:13:24: info: initialization of "P" proved
-test.adb:16:11: medium: range check might fail
-test.adb:16:38: medium: divide by zero might fail
-test.adb:17:15: medium: divide by zero might fail
+test.adb:16:11: info: range check proved
+test.adb:16:38: info: division check proved
+test.adb:17:15: info: division check proved
 test.adb:25:04: warning: analyzing unreferenced procedure "Loop_Exits"
 test.adb:25:26: warning: unused initial value of "X"
 test.adb:26:26: warning: unused initial value of "Y"
@@ -70,8 +70,8 @@ test.adb:112:33: warning: statement has no effect
 test.adb:113:12: warning: this statement is never reached
 test.adb:117:04: warning: analyzing unreferenced procedure "For_Test_02"
 test.adb:117:27: info: initialization of "X" proved
+test.adb:130:17: info: range check proved
 test.adb:130:17: medium: overflow check might fail
-test.adb:130:17: medium: range check might fail
 test.adb:134:17: medium: range check might fail
 test.adb:138:04: warning: analyzing unreferenced function "Loop_Stability"
 test.adb:145:20: info: initialization of "A" proved

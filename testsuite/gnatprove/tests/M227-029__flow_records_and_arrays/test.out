@@ -31,7 +31,7 @@ parameter_tests.adb:36:32: info: initialization of "G.X" proved
 parameter_tests.adb:50:33: warning: unused initial value of "G"
 parameter_tests.adb:50:36: warning: "H" is not modified, could be INPUT
 test.adb:26:04: warning: analyzing unreferenced function "New_Player_01"
-test.adb:32:34: medium: length check might fail
+test.adb:32:34: info: length check proved
 test.adb:33:14: info: initialization of "P.Ammo" proved
 test.adb:33:14: info: initialization of "P.Look_Pitch" proved
 test.adb:33:14: info: initialization of "P.Look_Yaw" proved
@@ -39,7 +39,7 @@ test.adb:33:14: info: initialization of "P.Position.X" proved
 test.adb:33:14: info: initialization of "P.Position.Y" proved
 test.adb:33:14: info: initialization of "P.Position.Z" proved
 test.adb:36:04: warning: analyzing unreferenced function "New_Player_02"
-test.adb:42:23: medium: length check might fail
+test.adb:42:23: info: length check proved
 test.adb:43:14: info: initialization of "P.Ammo" proved
 test.adb:43:14: info: initialization of "P.Look_Pitch" proved
 test.adb:43:14: info: initialization of "P.Look_Yaw" proved
@@ -47,7 +47,7 @@ test.adb:43:14: info: initialization of "P.Position.X" proved
 test.adb:43:14: info: initialization of "P.Position.Y" proved
 test.adb:43:14: info: initialization of "P.Position.Z" proved
 test.adb:46:04: warning: analyzing unreferenced function "New_Player_03"
-test.adb:54:23: medium: length check might fail
+test.adb:54:23: info: length check proved
 test.adb:55:14: info: initialization of "P.Ammo" proved
 test.adb:55:14: info: initialization of "P.Look_Pitch" proved
 test.adb:55:14: info: initialization of "P.Look_Yaw" proved
@@ -61,9 +61,9 @@ untangle_tests.adb:30:14: info: initialization of "R.Y" proved
 untangle_tests.adb:30:14: info: initialization of "R.Z" proved
 untangle_tests.adb:34:04: warning: analyzing unreferenced procedure "Swap_Triangle"
 untangle_tests.adb:37:28: medium: array index check might fail
-untangle_tests.adb:39:10: medium: array index check might fail
+untangle_tests.adb:39:10: info: index check proved
 untangle_tests.adb:39:19: medium: array index check might fail
-untangle_tests.adb:40:10: medium: array index check might fail
+untangle_tests.adb:40:10: info: index check proved
 untangle_tests.adb:40:16: info: initialization of "Tmp.Normal.W" proved
 untangle_tests.adb:40:16: info: initialization of "Tmp.Normal.X" proved
 untangle_tests.adb:40:16: info: initialization of "Tmp.Normal.Y" proved
@@ -71,16 +71,16 @@ untangle_tests.adb:40:16: info: initialization of "Tmp.Normal.Z" proved
 untangle_tests.adb:40:16: info: initialization of "Tmp.Vertices" proved
 untangle_tests.adb:44:04: warning: analyzing unreferenced procedure "Sieve"
 untangle_tests.adb:44:21: info: initialization of "P" proved
-untangle_tests.adb:48:12: medium: length check might fail
+untangle_tests.adb:48:12: info: length check proved
 untangle_tests.adb:52:13: info: initialization of "P" proved
-untangle_tests.adb:53:20: medium: overflow check might fail
-untangle_tests.adb:53:20: medium: range check might fail
+untangle_tests.adb:53:20: info: overflow check proved
+untangle_tests.adb:53:20: info: range check proved
 untangle_tests.adb:54:19: info: initialization of "N" proved
-untangle_tests.adb:55:19: medium: array index check might fail
+untangle_tests.adb:55:19: info: index check proved
 untangle_tests.adb:55:22: info: initialization of "N" proved
 untangle_tests.adb:55:22: info: initialization of "P" proved
 untangle_tests.adb:56:21: info: initialization of "N" proved
-untangle_tests.adb:56:23: medium: overflow check might fail
+untangle_tests.adb:56:23: info: overflow check proved
 untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform"
 untangle_tests.adb:69:60: medium: overflow check might fail
 untangle_tests.adb:70:60: medium: overflow check might fail

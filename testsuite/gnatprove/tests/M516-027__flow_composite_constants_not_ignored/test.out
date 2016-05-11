@@ -1,1 +1,1 @@
-c43209a.adb:8:28: medium: length check might fail
+c43209a.adb:8:28: info: length check proved

@@ -56,7 +56,7 @@ mod_lemmas.adb:52:16: info: division check proved
 mod_lemmas.adb:55:52: info: initialization of "Res1" proved
 mod_lemmas.adb:55:58: info: initialization of "Res2" proved
 mod_lemmas.adb:56:14: info: initialization of "Res1" proved
-mod_lemmas.adb:56:14: info: postcondition proved
+mod_lemmas.adb:56:14: medium: postcondition might fail, cannot prove Res1 = Res2
 mod_lemmas.adb:56:21: info: initialization of "Res2" proved
 mod_lemmas.adb:59:17: info: division check proved
 mod_lemmas.adb:60:15: info: initialization of "Res1" proved
