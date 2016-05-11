@@ -33,6 +33,7 @@ with Flow_Refinement;                use Flow_Refinement;
 with Flow_Types;                     use Flow_Types;
 with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
+with Gnat2Why.Annotate;              use Gnat2Why.Annotate;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with Namet;                          use Namet;
@@ -222,6 +223,19 @@ package body Gnat2Why.Subprograms is
    --  @return an assertion (if necessary) that checks if any of the
    --    Attach_Handler pragmas of the procedures of the type is reserved
    --    see also Ada RM C.3.1(10/3)
+
+   function Compute_Inlined_Expr
+     (Function_Entity    : Entity_Id;
+      Logic_Func_Binders : Item_Array;
+      W_Return_Type      : W_Type_Id;
+      File               : W_Section_Id) return W_Expr_Id;
+   --  @param Function_Entity entity of a function
+   --  @param Logic_Func_Binders binders for Function_Entity's declaration
+   --  @param W_Return_Type Why3 type for Function_Entity's return type
+   --  @param File section in which the expression should be translated
+   --  @return if Function_Entity is non recursive and has a pragma Annotate
+   --          (GNATprove, Inline_For_Proof), return the Why3 expression for
+   --          its value. Otherwise returns Why_Empty.
 
    ----------------------------------
    -- Add_Dependencies_For_Effects --
@@ -1799,6 +1813,86 @@ package body Gnat2Why.Subprograms is
 
       return Result;
    end Compute_Contract_Cases_Postcondition;
+
+   --------------------------
+   -- Compute_Inlined_Expr --
+   --------------------------
+
+   function Compute_Inlined_Expr
+     (Function_Entity    : Entity_Id;
+      Logic_Func_Binders : Item_Array;
+      W_Return_Type      : W_Type_Id;
+      File               : W_Section_Id) return W_Expr_Id
+   is
+      Value  : constant Node_Id :=
+        Retrieve_Inline_Annotation (Function_Entity);
+      Params : constant Transformation_Params :=
+        (File        => File,
+         Phase       => Generate_Logic,
+         Gen_Marker  => False,
+         Ref_Allowed => False);
+      W_Def  : W_Expr_Id;
+
+   begin
+      if No (Value) then
+         W_Def := Why_Empty;
+
+      --  If Functon_Entity is recursive, it is not inlined as it may interfere
+      --  with its veification.
+
+      elsif not Is_Non_Recursive_Subprogram (Function_Entity) then
+         Error_Msg_N
+           ("?recursive function cannot be inlined for proof",
+            Function_Entity);
+
+         W_Def := Why_Empty;
+      else
+
+         --  We fill the map of parameters, so that in the definition, we use
+         --  local names of the parameters, instead of the global names.
+
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+         for Binder of Logic_Func_Binders loop
+            declare
+               A : constant Node_Id :=
+                 (case Binder.Kind is
+                     when Regular | Prot_Self => Binder.Main.Ada_Node,
+                     when others  => raise Program_Error);
+               --  in parameters should not be split
+            begin
+               pragma Assert (Present (A) or else Binder.Kind = Regular);
+
+               if Present (A) then
+                  Ada_Ent_To_Why.Insert (Symbol_Table,
+                                         Unique_Entity (A),
+                                         Binder);
+               elsif Binder.Main.B_Ent /= Null_Entity_Name then
+
+                  --  If there is no Ada_Node, this is a binder generated
+                  --  from an effect; we add the parameter in the name
+                  --  map using its unique name.
+
+                  Ada_Ent_To_Why.Insert
+                    (Symbol_Table,
+                     Binder.Main.B_Ent,
+                     Binder);
+               end if;
+            end;
+         end loop;
+
+         --  Translate the Value expression in Why.
+
+         W_Def := Transform_Expr
+           (Expr          => Value,
+            Expected_Type => W_Return_Type,
+            Domain        => EW_Term,
+            Params        => Params);
+
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      end if;
+      return W_Def;
+   end Compute_Inlined_Expr;
 
    --------------------------
    -- Generate_VCs_For_LSP --
@@ -3422,9 +3516,13 @@ package body Gnat2Why.Subprograms is
       --  Start of processing for Generate_Axiom_For_Post
 
       begin
-         --  ??? clean up this code duplication for dispatch and refine
+         --  Do not emit an axiom for E if it is inlined for proof
 
-         Emit_Post_Axiom (Post_Axiom, Logic_Id, Pre, Post);
+         if No (Retrieve_Inline_Annotation (E)) then
+            Emit_Post_Axiom (Post_Axiom, Logic_Id, Pre, Post);
+         end if;
+
+         --  ??? clean up this code duplication for dispatch and refine
 
          if Is_Dispatching_Operation (E) then
             Emit_Post_Axiom (Post_Dispatch_Axiom,
@@ -4139,6 +4237,8 @@ package body Gnat2Why.Subprograms is
               To_Binder_Array (Logic_Func_Binders);
             Logic_Id          : constant W_Identifier_Id :=
               To_Why_Id (E, Domain => EW_Term, Local => True);
+            Def               : constant W_Expr_Id :=
+              Compute_Inlined_Expr (E, Logic_Func_Binders, Why_Type, File);
          begin
             --  Generate a logic function
 
@@ -4150,7 +4250,10 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Term,
                   Name        => Logic_Id,
                   Binders     => Logic_Why_Binders,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      =>
+                    (if Def = Why_Empty then Name_Id_Sets.Empty_Set
+                     else Name_Id_Sets.To_Set (NID ("inline"))),
+                  Def         => Def,
                   Return_Type => Why_Type));
 
             if Is_Dispatching_Operation (E) then

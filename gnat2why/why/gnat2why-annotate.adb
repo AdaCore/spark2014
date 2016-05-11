@@ -70,6 +70,11 @@ package body Gnat2Why.Annotate is
      Annot_Range_Vectors.Empty_Vector;
    --  A sorted vector of ranges
 
+   Inline_Annotations : Common_Containers.Node_Maps.Map :=
+     Common_Containers.Node_Maps.Empty_Map;
+   --  Contains all the function entities E with a pragma Annotate
+   --  (GNATprove, Inline_For_Proof, E) and map them to their expression.
+
    Iterable_Annotations : Iterable_Maps.Map := Iterable_Maps.Empty_Map;
    --  A map from Iterable aspects to Iterable annotations
 
@@ -116,11 +121,15 @@ package body Gnat2Why.Annotate is
    --  External_Axiomatization as a second argument). If it is necessary,
    --  Syntax_Check_Pragma_Annotate_Gnatprove reports this error.
 
+   procedure Check_Inline_Annotation (Arg3_Exp : Node_Id);
+   --  Check validity of a pragma Annotate (Gnatprove, Iterate_For_Proof, )
+   --  and inserts it in the Iterable_Annotations map.
+
    procedure Check_Iterable_Annotation
      (Arg3_Exp : Node_Id;
       Arg4_Exp : Node_Id);
-   --  Check validity of a pragma Annotate (Gnatprove, Iterate_For_Proof, )
-   --  and inserts it in the Iterable_Annotations map.
+   --  Check validity of a pragma Annotate (Gnatprove, Inline_For_Proof, )
+   --  and inserts it in the Inline_Annotations map.
 
    ------------------------
    -- Check_Is_Annotated --
@@ -193,6 +202,59 @@ package body Gnat2Why.Annotate is
          end if;
       end loop;
    end Check_Is_Annotated;
+
+   -----------------------------
+   -- Check_Inline_Annotation --
+   -----------------------------
+
+   procedure Check_Inline_Annotation (Arg3_Exp : Node_Id) is
+      E     : Entity_Id;
+      Nodes : Common_Containers.Node_Lists.List;
+      Value : Node_Id;
+   begin
+      --  The third argument must be an entity
+
+      pragma Assert (Present (Arg3_Exp) and then Present (Entity (Arg3_Exp)));
+      E := Entity (Arg3_Exp);
+
+      --  This entity must be a function
+
+      if Ekind (E) /= E_Function then
+         Error_Msg_N
+           ("Entity parameter of a pragma Inline_For_Proof must be a function",
+            Arg3_Exp);
+         return;
+      end if;
+
+      --  It must have a postcondition
+
+      Nodes := Find_Contracts (E, Name_Postcondition, False, False);
+
+      if Natural (Nodes.Length) /= 1 then
+         Error_Msg_N
+           ("Function with Inline_For_Proof must have a postcondition", E);
+         return;
+      end if;
+
+      --  Its postcondition must be of the form F'Result = Expr
+
+      Value := Nodes.First_Element;
+
+      if Nkind (Value) = N_Op_Eq
+        and then Nkind (Left_Opnd (Value)) = N_Attribute_Reference
+        and then Get_Attribute_Id (Attribute_Name (Left_Opnd (Value))) =
+        Attribute_Result
+      then
+         Value := Right_Opnd (Value);
+      else
+         Error_Msg_N
+           ("A post of the form F'Result = Expr must apply to "
+            & "function with Inline_For_Proof", E);
+         return;
+      end if;
+
+      Inline_Annotations.Include (E, Value);
+   end Check_Inline_Annotation;
 
    -------------------------------
    -- Check_Iterable_Annotation --
@@ -526,6 +588,21 @@ package body Gnat2Why.Annotate is
       end if;
    end Mark_Pragma_Annotate;
 
+   ---------------------------
+   -- Retrieve_Inline_Annotation --
+   ---------------------------
+
+   function Retrieve_Inline_Annotation (E : Entity_Id) return Node_Id is
+      Position : constant Common_Containers.Node_Maps.Cursor :=
+        Inline_Annotations.Find (E);
+   begin
+      if not Common_Containers.Node_Maps.Has_Element (Position) then
+         return Empty;
+      else
+         return Common_Containers.Node_Maps.Element (Position);
+      end if;
+   end Retrieve_Inline_Annotation;
+
    ----------------------------------
    -- Retrieve_Iterable_Annotation --
    ----------------------------------
@@ -576,6 +653,18 @@ package body Gnat2Why.Annotate is
                return;
             end if;
          end;
+      elsif List_Length (Pragma_Argument_Associations (Node)) = 3  then
+         Arg1 := First (Pragma_Argument_Associations (Node));
+         Arg2 := Next (Arg1);
+         Arg3 := Next (Arg2);
+         Arg3_Exp := Expression (Arg3);
+         if Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) =
+           "inline_for_proof"
+         then
+            Check_Inline_Annotation (Arg3_Exp);
+            Ok := False;
+            return;
+         end if;
       end if;
 
       --  We set Ok to false so that whenever we detect a problem we can simply
