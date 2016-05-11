@@ -65,9 +65,8 @@ package body Flow_Generated_Globals.Phase_1 is
      (others => Name_Graphs.Empty_Map);
    --  Maps from subprogram names to accessed objects
    --
-   --  In phase 1 it is populated with objects directly accessed by each
-   --  subprogram and stored in the ALI file. In phase 2 it is populated
-   --  with objects directly and indirectly accessed by each subprogram.
+   --  It is populated with objects directly accessed by each subprogram and
+   --  stored in the ALI file.
 
    Subprogram_Info_List : Global_Info_Lists.List :=
      Global_Info_Lists.Empty_List;

@@ -142,6 +142,10 @@ package Flow_Generated_Globals is
    package Global_Info_Lists is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Global_Phase_1_Info);
 
+   ----------------------------------------------------------------------
+   --  Protected types instances
+   ----------------------------------------------------------------------
+
    type Priority_Kind is (Nonstatic,
                           Static,
                           Default_Prio,
@@ -158,7 +162,7 @@ package Flow_Generated_Globals is
    --  in containers is troublesome).
 
    ----------------------------------------------------------------------
-   --  Task instances
+   --  Task types instances
    ----------------------------------------------------------------------
 
    type Instance_Number is (One, Many);
@@ -176,26 +180,12 @@ package Flow_Generated_Globals is
    --
    --  Error messages related to a task object will be attached to Node
 
-   type Phase is (GG_Phase_1, GG_Phase_2);
-
-   Tasking_Info_Bag :
-     array (Phase, Tasking_Info_Kind) of Name_Graphs.Map :=
-     (others => (others => Name_Graphs.Empty_Map));
-   --  Maps from subprogram names to accessed objects
-   --
-   --  In phase 1 it is populated with objects directly accessed by each
-   --  subprogram and stored in the ALI file. In phase 2 it is populated
-   --  with objects directly and indirectly accessed by each subprogram.
-
    type Object_Priority is
       record
          Variable : Entity_Name;
          Priority : Priority_Value;
       end record;
    --  Protected object and its priority
-
-   procedure Print_Tasking_Info_Bag (P : Phase);
-   --  Display the tasking-related information
 
 private
 

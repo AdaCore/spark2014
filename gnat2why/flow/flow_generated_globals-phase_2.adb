@@ -144,6 +144,17 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Tasking graphs --
    --------------------
 
+   type Phase is (GG_Phase_1, GG_Phase_2);
+
+   Tasking_Info_Bag :
+     array (Phase, Tasking_Info_Kind) of Name_Graphs.Map :=
+     (others => (others => Name_Graphs.Empty_Map));
+   --  Maps from subprogram names to accessed objects
+   --
+   --  In phase 1 it is populated with objects directly accessed by each
+   --  subprogram and stored in the ALI file. In phase 2 it is populated
+   --  with objects directly and indirectly accessed by each subprogram.
+
    package Entity_Name_Graphs is new Graphs
      (Vertex_Key   => Entity_Name,
       Edge_Colours => No_Colours,
@@ -294,6 +305,9 @@ package body Flow_Generated_Globals.Phase_2 is
    ----------------------------------------------------------------------
    --  Local subprograms
    ----------------------------------------------------------------------
+
+   procedure Print_Tasking_Info_Bag (P : Phase);
+   --  Display the tasking-related information
 
    procedure Print_Global_Phase_1_Info (Info : Global_Phase_1_Info);
    --  Prints all global related info of an entity
@@ -2689,6 +2703,44 @@ package body Flow_Generated_Globals.Phase_2 is
          --  ??? use Indent/Outdent instead of fixed amount of spaces
       end loop;
    end Print_Name_Set;
+
+   ----------------------------
+   -- Print_Tasking_Info_Bag --
+   ----------------------------
+
+   procedure Print_Tasking_Info_Bag (P : Phase) is
+
+      Debug_Print_Tasking_Info : constant Boolean := False;
+      --  Enables printing of tasking-related information
+
+   begin
+      if not Debug_Print_Tasking_Info then
+         return;
+      end if;
+
+      for Kind in Tasking_Info_Kind loop
+         Write_Line ("Tasking: " & Kind'Img);
+         Indent;
+         if not Tasking_Info_Bag (P, Kind).Is_Empty then
+            for C in Tasking_Info_Bag (P, Kind).Iterate loop
+               declare
+                  Subp : Entity_Name   renames Key (C);
+                  Objs : Name_Sets.Set renames Tasking_Info_Bag (P, Kind) (C);
+               begin
+                  if not Objs.Is_Empty then
+                     Write_Line (To_String (Subp) & ":");
+                     Indent;
+                     for Obj of Objs loop
+                        Write_Line (To_String (Obj));
+                     end loop;
+                     Outdent;
+                  end if;
+               end;
+            end loop;
+         end if;
+         Outdent;
+      end loop;
+   end Print_Tasking_Info_Bag;
 
    --------------------------
    -- Register_Task_Object --
