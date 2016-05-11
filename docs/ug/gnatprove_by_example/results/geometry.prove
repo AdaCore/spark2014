@@ -1,0 +1,2 @@
+geometry.ads:34:20: info: class-wide postcondition is stronger than overridden one
+geometry.ads:37:20: info: class-wide postcondition is stronger than overridden one
