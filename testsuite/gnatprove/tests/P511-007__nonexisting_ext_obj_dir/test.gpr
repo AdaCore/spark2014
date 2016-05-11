@@ -1,0 +1,5 @@
+project Test is
+
+  for Object_Dir use External("NONEXISTING_ENVIRONMENTAL_VARIABLE");
+
+end Test;
