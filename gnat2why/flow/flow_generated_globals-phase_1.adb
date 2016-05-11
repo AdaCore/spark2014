@@ -57,23 +57,20 @@ package body Flow_Generated_Globals.Phase_1 is
    Task_Instances : Task_Instances_Lists.List;
    --  Instances of task types
 
-   Nonblocking_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
+   Nonblocking_Subprograms : Name_Sets.Set;
    --  Subprograms, entries and tasks that do not contain potentially blocking
    --  statements (but still may call another blocking subprogram).
 
-   Tasking_Info_Bag : array (Tasking_Info_Kind) of Name_Graphs.Map :=
-     (others => Name_Graphs.Empty_Map);
+   Tasking_Info_Bag : array (Tasking_Info_Kind) of Name_Graphs.Map;
    --  Maps from subprogram names to accessed objects
    --
    --  It is populated with objects directly accessed by each subprogram and
    --  stored in the ALI file.
 
-   Subprogram_Info_List : Global_Info_Lists.List :=
-     Global_Info_Lists.Empty_List;
+   Subprogram_Info_List : Global_Info_Lists.List;
    --  Information about subprograms from the "generated globals" algorithm
 
-   Package_Info_List : Global_Info_Lists.List :=
-     Global_Info_Lists.Empty_List;
+   Package_Info_List : Global_Info_Lists.List;
    --  Information about packages from the "generated globals" algorithm
 
    type Abstract_State_Constituents is record
@@ -89,7 +86,7 @@ package body Flow_Generated_Globals.Phase_1 is
    --  List of abstract states and their constituents, i.e.
    --  abstract_state . {constituents}.
 
-   Remote_States : Name_Sets.Set := Name_Sets.Empty_Set;
+   Remote_States : Name_Sets.Set;
    --  State abstractions referenced in the current compilation unit but
    --  declared outside of it.
 
@@ -97,10 +94,10 @@ package body Flow_Generated_Globals.Phase_1 is
    --  Volatile information
    ----------------------------------------------------------------------
 
-   Async_Writers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
-   Async_Readers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
-   Effective_Reads_Vars  : Name_Sets.Set := Name_Sets.Empty_Set;
-   Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
+   Async_Writers_Vars    : Name_Sets.Set;
+   Async_Readers_Vars    : Name_Sets.Set;
+   Effective_Reads_Vars  : Name_Sets.Set;
+   Effective_Writes_Vars : Name_Sets.Set;
    --  Volatile information
 
    procedure Add_To_Volatile_Sets_If_Volatile (E : Entity_Id);
