@@ -192,7 +192,7 @@ package body SPARK_Frame_Conditions is
       begin
          S_Size := S_Size + 1;
          S.Data (S_Size) := E;
-         S.Content.Include (E);
+         S.Content.Insert (E);
       end Push;
 
       function Pop return Entity_Name is
