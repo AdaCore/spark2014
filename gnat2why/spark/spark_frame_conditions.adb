@@ -160,7 +160,7 @@ package body SPARK_Frame_Conditions is
       Indexes  : Value_Map.Map;
       Lowlinks : Value_Map.Map;
 
-      Index : Natural := 1;
+      Index : Positive := 1;
 
       -----------------------
       -- Local Subprograms --
