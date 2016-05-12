@@ -4099,7 +4099,7 @@ package body Flow_Utility is
                   end;
 
                when others =>
-                  Error_Msg_N ("can't untangle attribute", N);
+                  Error_Msg_N ("cannot untangle attribute", N);
                   raise Why.Not_Implemented;
             end case;
 
@@ -4123,8 +4123,14 @@ package body Flow_Utility is
             end;
 
          when others =>
-            Error_Msg_N ("can't untangle node " & Nkind (N)'Img, N);
-            raise Why.Unexpected_Node;
+            declare
+               S : constant String := Nkind (N)'Img;
+            begin
+               Error_Msg_Strlen := S'Length;
+               Error_Msg_String (1 .. Error_Msg_Strlen) := S;
+               Error_Msg_N ("cannot untangle node ~", N);
+               raise Why.Unexpected_Node;
+            end;
       end case;
 
       if Debug_Trace_Untangle_Record then
