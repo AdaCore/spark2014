@@ -211,6 +211,9 @@ package body Gnat2Why.Annotate is
       E     : Entity_Id;
       Nodes : Common_Containers.Node_Lists.List;
       Value : Node_Id;
+
+      use type Ada.Containers.Count_Type;
+
    begin
       --  The third argument must be an entity
 
@@ -230,7 +233,7 @@ package body Gnat2Why.Annotate is
 
       Nodes := Find_Contracts (E, Name_Postcondition, False, False);
 
-      if Natural (Nodes.Length) /= 1 then
+      if Nodes.Length /= 1 then
          Error_Msg_N
            ("Function with Inline_For_Proof must have a postcondition", E);
          return;

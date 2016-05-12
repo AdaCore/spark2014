@@ -90,7 +90,7 @@ package Gnat2Why.Annotate is
    --  allows for ... of quantification on compatible element types.
 
    --  When such an annotation is provided, for ... of quantification on a
-   --  container C is translated as for of quantification on its model
+   --  container C is translated as for ... of quantification on its model
    --  Get_Model (C) instead.
 
    --  If Kind is "Contains" then E must have the following signature:

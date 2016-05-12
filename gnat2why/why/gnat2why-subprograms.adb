@@ -1838,7 +1838,7 @@ package body Gnat2Why.Subprograms is
          W_Def := Why_Empty;
 
       --  If Functon_Entity is recursive, it is not inlined as it may interfere
-      --  with its veification.
+      --  with its verification.
 
       elsif not Is_Non_Recursive_Subprogram (Function_Entity) then
          Error_Msg_N
