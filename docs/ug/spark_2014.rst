@@ -3390,7 +3390,7 @@ Although these contracts are defined in Ada 2012, they have a stricter meaning
 in |SPARK| for checking Liskov Substitution Principle:
 
 * The class-wide precondition of an overriding operation should be weaker (more
-  permissive) than the class-wide precondition of the corresponding overridden.
+  permissive) than the class-wide precondition of the corresponding overridden
   operation.
 * The class-wide postcondition of an overriding operation should be stronger
   (more restrictive) than the class-wide postcondition of the corresponding

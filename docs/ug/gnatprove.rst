@@ -2136,7 +2136,7 @@ in the following list:
 
 For abstract subprograms (on interfaces or regular tagged types), only a
 class-wide contract can be specified. For other dispatching subprograms, it is
-possible to specify both regular contracts and a class-wide contracts. In such
+possible to specify both a regular contract and a class-wide contract. In such
 a case, |GNATprove| uses the regular contract to analyze static calls to the
 subprogram and the class-wide contract to analyze dispatching calls to the
 subprogram, and it checks that the specific contract is a refinement of the
