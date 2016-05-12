@@ -194,11 +194,19 @@ package body SPARK_Frame_Conditions is
       function Pop return Entity_Name;
       function Has (E : Entity_Name) return Boolean;
 
+      ----------
+      -- Push --
+      ----------
+
       procedure Push (E : Entity_Name) is
       begin
          S.Content.Insert (E);
          S.Data.Append (E);
       end Push;
+
+      ---------
+      -- Pop --
+      ---------
 
       function Pop return Entity_Name is
          E : constant Entity_Name := S.Data.Last_Element;
@@ -208,10 +216,18 @@ package body SPARK_Frame_Conditions is
          return E;
       end Pop;
 
+      ----------
+      -- Peer --
+      ----------
+
       function Peer (Lookahead : Natural) return Entity_Name is
       begin
          return S.Data (Positive (S.Content.Length) - Lookahead);
       end Peer;
+
+      ---------
+      -- Has --
+      ---------
 
       function Has (E : Entity_Name) return Boolean
         renames S.Content.Contains;
