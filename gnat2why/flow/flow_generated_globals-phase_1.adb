@@ -24,7 +24,6 @@
 with Flow_Generated_Globals.ALI_Serialization;
 use Flow_Generated_Globals.ALI_Serialization;
 
-with Atree;                   use Atree;
 with Ada.Strings.Unbounded;
 with Einfo;                   use Einfo;
 with Lib.Util;                use Lib.Util;

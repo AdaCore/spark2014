@@ -21,7 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Atree;                use Atree;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
+with Sinfo;                use Sinfo;
 
 package Flow_Generated_Globals.Phase_1 is
 
@@ -76,7 +78,8 @@ package Flow_Generated_Globals.Phase_1 is
    -------------
 
    procedure GG_Write_Initialize (GNAT_Root : Node_Id)
-   with Pre  => GG_Mode = GG_No_Mode,
+   with Pre  => GG_Mode = GG_No_Mode
+        and then Nkind (GNAT_Root) = N_Compilation_Unit,
         Post => GG_Mode = GG_Write_Mode;
    --  Must be called before the first call to GG_Write_Global_Info and
    --  GG_Write_Package_Info.

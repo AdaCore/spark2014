@@ -52,8 +52,8 @@ package Flow_Generated_Globals.Phase_2 is
    -------------------------
 
    procedure GG_Read (GNAT_Root : Node_Id)
-   with Pre  => Nkind (GNAT_Root) = N_Compilation_Unit
-                and then GG_Mode = GG_No_Mode,
+   with Pre  => GG_Mode = GG_No_Mode
+                and then Nkind (GNAT_Root) = N_Compilation_Unit,
         Post => GG_Mode = GG_Read_Mode;
    --  Reads all ALI files and produce the transitive closure.
 
