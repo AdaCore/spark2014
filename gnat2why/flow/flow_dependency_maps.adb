@@ -27,6 +27,7 @@ with Elists;                         use Elists;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
 with Nlists;                         use Nlists;
+with Sinfo;                          use Sinfo;
 with Treepr;                         use Treepr;
 with Why;
 
@@ -35,8 +36,7 @@ package body Flow_Dependency_Maps is
    use Dependency_Maps;
 
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
-   with Pre => Nkind (N) = N_Pragma and then
-               Get_Pragma_Id (N) in
+   with Pre => Get_Pragma_Id (N) in
                  Pragma_Depends         |
                  Pragma_Refined_Depends |
                  Pragma_Refined_State   |
