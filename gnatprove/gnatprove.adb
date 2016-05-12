@@ -915,7 +915,7 @@ procedure Gnatprove is
          Put_Keyval ("command", Command &
                        " %f");
          Put_Keyval ("command_steps", Command &
-                       " rlimit=%S" &
+                       " memory_max_alloc_count=%S" &
                        " %f");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
