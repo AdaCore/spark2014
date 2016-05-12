@@ -2134,6 +2134,15 @@ in the following list:
 #. or otherwise the default class-wide precondition (resp. postcondition) of
    ``True``.
 
+For abstract subprograms (on interfaces or regular tagged types), only a
+class-wide contract can be specified. For other dispatching subprograms, it is
+possible to specify both regular contracts and a class-wide contracts. In such
+a case, |GNATprove| uses the regular contract to analyze static calls to the
+subprogram and the class-wide contract to analyze dispatching calls to the
+subprogram, and it checks that the specific contract is a refinement of the
+class-wide contract, as explained in :ref:`Mixing Class-Wide and Specific
+Subprogram Contracts`.
+
 Let's consider the various cases that may occur when overridding a subprogram:
 
 .. literalinclude:: gnatprove_by_example/examples/geometry.ads

@@ -3441,6 +3441,8 @@ parent type and when it is inherited from an interface.
 |GNATprove| separately checks that a subprogram implements its class-wide
 contract, like for a specific contract.
 
+.. _Mixing Class-Wide and Specific Subprogram Contracts:
+
 Mixing Class-Wide and Specific Subprogram Contracts
 ---------------------------------------------------
 
