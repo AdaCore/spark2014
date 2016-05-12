@@ -2222,7 +2222,40 @@ proofs take into account both possible types of ``S``, for example:
 Writing Contracts on Subprograms with Class-wide Parameters
 -----------------------------------------------------------
 
+Subprograms with class-wide parameters are not in general dispatching
+subprograms, hence they are specified through regular :ref:`Subprogram
+Contracts`, not :ref:`Class-Wide Subprogram Contracts`. Inside the regular
+contract, calls on primitive subprograms of the class-wide parameters are
+dispatching though, like in the code. For example, consider procedure
+``More_Use_Geometry`` which takes four class-wide parameters of type
+``Shape'Class``, which can all be dynamically of both types ``Shape`` or
+``Rectangle``:
 
+.. literalinclude:: gnatprove_by_example/examples/more_use_geometry.adb
+   :language: ada
+   :linenos:
+
+The precondition of ``More_Use_Geometry`` specifies that ``S1.Valid`` holds,
+which takes into account both possible types of ``S1``:
+
+* If ``S1`` is dynamically a shape, then the precondition specifies that
+  ``Shape.Valid`` holds, which ensures that the precondition to the call to
+  ``Shape.Operate`` is satisfied on line 8.
+
+* If ``S1`` is dynamically a rectangle, then the precondition specifies that
+  ``Rectangle.Valid`` holds, which ensures that the precondition to the call to
+  ``Rectangle.Operate`` is satisfied on line 8.
+
+Similarly, the test on ``S2.Valid`` on line 10 ensures that the precondition to
+the call to ``S2.Operate`` on line 11 is satisfied, and the call to
+``S3.Set_Default`` on line 14 ensures through its postcondition that the
+precondition to the call to ``S3.Operate`` on line 15 is satisfied. But no
+precondition or test or call ensures that the precondition to the call to
+``S4.Operate`` on line 17 is satisfied. Hence the results of |GNATprove|'s
+analysis on this program:
+
+.. literalinclude:: gnatprove_by_example/results/more_use_geometry.prove
+   :language: none
 
 .. _How to Write Package Contracts:
 
