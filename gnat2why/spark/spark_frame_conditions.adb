@@ -190,7 +190,6 @@ package body SPARK_Frame_Conditions is
       S : Stack;
 
       procedure Push (E : Entity_Name);
-      function Peer (Lookahead : Natural) return Entity_Name;
       function Pop return Entity_Name;
       function Has (E : Entity_Name) return Boolean;
 
@@ -215,15 +214,6 @@ package body SPARK_Frame_Conditions is
          S.Data.Delete_Last;
          return E;
       end Pop;
-
-      ----------
-      -- Peer --
-      ----------
-
-      function Peer (Lookahead : Natural) return Entity_Name is
-      begin
-         return S.Data (Positive (S.Content.Length) - Lookahead);
-      end Peer;
 
       ---------
       -- Has --
@@ -284,13 +274,7 @@ package body SPARK_Frame_Conditions is
                -------------------------
 
                function Size_Of_Current_SCC return Positive is
-                  Size : Natural := 0;
-               begin
-                  while Peer (Size) /= V loop
-                     Size := Size + 1;
-                  end loop;
-                  return Size + 1;
-               end Size_Of_Current_SCC;
+                 (S.Data.Last_Index - S.Data.Reverse_Find_Index (V) + 1);
 
                --  Start a new strongly connected component
 
