@@ -410,16 +410,8 @@ package body SPARK_Frame_Conditions is
    procedure For_All_External_Objects
      (Process : not null access procedure (E : Entity_Name))
    is
-      procedure For_All_Define_Sets (Key : Entity_Name; S : Name_Sets.Set);
-      --  will be called for all "define sets" for all subprograms
-
-      -------------------------
-      -- For_All_Define_Sets --
-      -------------------------
-
-      procedure For_All_Define_Sets (Key : Entity_Name; S : Name_Sets.Set) is
-         pragma Unreferenced (Key);
-      begin
+   begin
+      for S of Defines loop
          --  External objects are those in the sets of defined objects Defines,
          --  that are not constant objects from the set Constants.
 
@@ -429,19 +421,12 @@ package body SPARK_Frame_Conditions is
                   C : constant Name_Sets.Cursor :=
                     Translated_Object_Entities.Find (Elt);
                begin
-                  if not (Name_Sets.Has_Element (C)) then
+                  if not Name_Sets.Has_Element (C) then
                      Process (Elt);
                   end if;
                end;
             end if;
          end loop;
-      end For_All_Define_Sets;
-
-   --  Start of processing for For_All_External_Objects
-
-   begin
-      for C in Defines.Iterate loop
-         Name_Graphs.Query_Element (C, For_All_Define_Sets'Access);
       end loop;
    end For_All_External_Objects;
 
