@@ -235,7 +235,7 @@ package body Gnat2Why.Subprograms is
    --  @param File section in which the expression should be translated
    --  @return if Function_Entity is non recursive and has a pragma Annotate
    --          (GNATprove, Inline_For_Proof), return the Why3 expression for
-   --          its value. Otherwise returns Why_Empty.
+   --          its value. Otherwise return Why_Empty.
 
    ----------------------------------
    -- Add_Dependencies_For_Effects --

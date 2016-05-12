@@ -72,8 +72,8 @@ package body Gnat2Why.Annotate is
 
    Inline_Annotations : Common_Containers.Node_Maps.Map :=
      Common_Containers.Node_Maps.Empty_Map;
-   --  Contains all the function entities E with a pragma Annotate
-   --  (GNATprove, Inline_For_Proof, E) and map them to their expression.
+   --  Maps all the function entities E with a pragma Annotate
+   --  (GNATprove, Inline_For_Proof, E) to their expression.
 
    Iterable_Annotations : Iterable_Maps.Map := Iterable_Maps.Empty_Map;
    --  A map from Iterable aspects to Iterable annotations
@@ -122,14 +122,14 @@ package body Gnat2Why.Annotate is
    --  Syntax_Check_Pragma_Annotate_Gnatprove reports this error.
 
    procedure Check_Inline_Annotation (Arg3_Exp : Node_Id);
-   --  Check validity of a pragma Annotate (Gnatprove, Iterate_For_Proof, )
-   --  and inserts it in the Iterable_Annotations map.
+   --  Check validity of a pragma Annotate (Gnatprove, Inline_For_Proof, )
+   --  and insert it in the Inline_Annotations map.
 
    procedure Check_Iterable_Annotation
      (Arg3_Exp : Node_Id;
       Arg4_Exp : Node_Id);
-   --  Check validity of a pragma Annotate (Gnatprove, Inline_For_Proof, )
-   --  and inserts it in the Inline_Annotations map.
+   --  Check validity of a pragma Annotate (Gnatprove, Iterate_For_Proof, )
+   --  and insert it in the Iterable_Annotations map.
 
    ------------------------
    -- Check_Is_Annotated --
