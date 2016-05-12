@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Vectors;
 with Ada.Text_IO;                    use Ada.Text_IO;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Types;                     use Flow_Types;
@@ -55,7 +56,13 @@ package body SPARK_Frame_Conditions is
    --  ordered so as to follow call chains for better propagation.
 
    type SCC_Ptr is access SCC;
-   type SCCs is array (Positive range <>) of SCC_Ptr;
+
+   package SCC_Ptrs is new
+     Ada.Containers.Vectors (Index_Type => Positive,
+                             Element_Type => SCC_Ptr);
+
+   subtype SCCs is SCC_Ptrs.Vector;
+
    --  Ordered list of strongly connected components in call-graph, with the
    --  "leaf" SCCs coming first.
 
@@ -141,12 +148,9 @@ package body SPARK_Frame_Conditions is
    function Compute_Strongly_Connected_Components
      (Nodes : Name_Sets.Set) return SCCs
    is
-      subtype Node_Range is Integer range 1 .. Integer (Nodes.Length);
-
       --  There are at most as many SCCs as nodes (if no recursion at all)
 
-      Cur_SCCs     : SCCs (Node_Range);
-      Cur_SCCs_Num : Natural := 0;
+      Cur_SCCs : SCC_Ptrs.Vector;
 
       package Value_Map is new Hashed_Maps
         (Key_Type        => Entity_Name,
@@ -174,9 +178,12 @@ package body SPARK_Frame_Conditions is
       -- Stack of nodes --
       --------------------
 
-      type Stack_Data is array (Node_Range) of Entity_Name;
+      package Entity_Name_Vectors is new
+        Ada.Containers.Vectors (Index_Type   => Positive,
+                                Element_Type => Entity_Name);
+
       type Stack is record
-         Data    : Stack_Data;
+         Data    : Entity_Name_Vectors.Vector;
          Content : Name_Sets.Set;
       end record;
 
@@ -190,19 +197,20 @@ package body SPARK_Frame_Conditions is
       procedure Push (E : Entity_Name) is
       begin
          S.Content.Insert (E);
-         S.Data (Natural (S.Content.Length)) := E;
+         S.Data.Append (E);
       end Push;
 
       function Pop return Entity_Name is
-         E : constant Entity_Name := S.Data (Natural (S.Content.Length));
+         E : constant Entity_Name := S.Data.Last_Element;
       begin
          S.Content.Delete (E);
+         S.Data.Delete_Last;
          return E;
       end Pop;
 
       function Peer (Lookahead : Natural) return Entity_Name is
       begin
-         return S.Data (Natural (S.Content.Length) - Lookahead);
+         return S.Data (Positive (S.Content.Length) - Lookahead);
       end Peer;
 
       function Has (E : Entity_Name) return Boolean
@@ -282,8 +290,7 @@ package body SPARK_Frame_Conditions is
 
                --  Output the current strongly connected component
 
-               Cur_SCCs_Num := Cur_SCCs_Num + 1;
-               Cur_SCCs (Cur_SCCs_Num) := Cur_SCC;
+               Cur_SCCs.Append (Cur_SCC);
             end;
          end if;
       end Strong_Connect;
@@ -298,7 +305,7 @@ package body SPARK_Frame_Conditions is
          end if;
       end loop;
 
-      return Cur_SCCs (1 .. Cur_SCCs_Num);
+      return Cur_SCCs;
    end Compute_Strongly_Connected_Components;
 
    ------------------
@@ -453,8 +460,8 @@ package body SPARK_Frame_Conditions is
       procedure Free is new Unchecked_Deallocation (SCC, SCC_Ptr);
       Tmp : SCC_Ptr;
    begin
-      for J in X'Range loop
-         Tmp := X (J);
+      for J of X loop
+         Tmp := J;
          Free (Tmp);
       end loop;
    end Free_SCCs;
@@ -1047,10 +1054,10 @@ package body SPARK_Frame_Conditions is
          --  A subprogram is non-recursive if it is alone in its strongly
          --  connected component and if it does not call itself directly.
 
-         for J in Cur_SCCs'Range loop
-            if Cur_SCCs (J)'Length = 1 then
+         for C of Cur_SCCs loop
+            if C'Length = 1 then
                declare
-                  E : constant Entity_Name := Cur_SCCs (J) (1);
+                  E : constant Entity_Name := C (1);
                begin
                   if not Calls (E).Contains (E) then
                      Non_Rec_Subp.Insert (E);
@@ -1061,7 +1068,7 @@ package body SPARK_Frame_Conditions is
 
          --  Iterate on SCCs
 
-         for J in Cur_SCCs'Range loop
+         for C of Cur_SCCs loop
             declare
                Continue : Boolean;
                Updated  : Boolean;
@@ -1069,8 +1076,8 @@ package body SPARK_Frame_Conditions is
                loop
                   Continue := False;
 
-                  for K in Cur_SCCs (J)'Range loop
-                     Update_Subprogram (Cur_SCCs (J) (K), Updated);
+                  for K in C'Range loop
+                     Update_Subprogram (C (K), Updated);
                      Continue := Continue or else Updated;
                   end loop;
                   exit when not Continue;
