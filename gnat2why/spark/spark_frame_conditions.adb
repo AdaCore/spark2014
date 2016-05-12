@@ -181,7 +181,6 @@ package body SPARK_Frame_Conditions is
       end record;
 
       S : Stack;
-      S_Size : Natural := 0;
 
       procedure Push (E : Entity_Name);
       function Peer (Lookahead : Natural) return Entity_Name;
@@ -190,22 +189,20 @@ package body SPARK_Frame_Conditions is
 
       procedure Push (E : Entity_Name) is
       begin
-         S_Size := S_Size + 1;
-         S.Data (S_Size) := E;
          S.Content.Insert (E);
+         S.Data (Natural (S.Content.Length)) := E;
       end Push;
 
       function Pop return Entity_Name is
-         E : constant Entity_Name := S.Data (S_Size);
+         E : constant Entity_Name := S.Data (Natural (S.Content.Length));
       begin
-         S_Size := S_Size - 1;
          S.Content.Delete (E);
          return E;
       end Pop;
 
       function Peer (Lookahead : Natural) return Entity_Name is
       begin
-         return S.Data (S_Size - Lookahead);
+         return S.Data (Natural (S.Content.Length) - Lookahead);
       end Peer;
 
       function Has (E : Entity_Name) return Boolean
