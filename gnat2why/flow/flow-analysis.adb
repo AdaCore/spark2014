@@ -863,9 +863,11 @@ package body Flow.Analysis is
             then
                --  We do not issue messages:
                --    * for variables that have been marked as unmodified or
+               --    * for variables that have been marked as unused or
+               --    * for variables that have been marked as unreferenced or
                --    * for variables that are/belong to a concurrent object.
                if F_Final.Kind not in Direct_Mapping | Record_Field
-                 or else (not FA.Unmodified_Vars.Contains
+                 or else (not FA.Pragma_Un_Vars.Contains
                           (Get_Direct_Mapping_Id (F_Final))
                           and then not Is_Or_Belongs_To_Concurrent_Object
                             (F_Final))
@@ -1106,10 +1108,14 @@ package body Flow.Analysis is
             else
                --  We suppress this warning when we are dealing with a
                --  concurrent type or a component of a concurrent type.
+               --  Also when the variable has been marked either as
+               --  Unreferenced or Unmodified or Unused.
                if F.Kind /= Direct_Mapping
-                 or else (Ekind (Etype (Get_Direct_Mapping_Id (F))) not in
-                            Concurrent_Kind
-                          and then not Is_Concurrent_Comp_Or_Disc (F))
+                 or else (Ekind (Etype (Get_Direct_Mapping_Id (F)))
+                          not in Concurrent_Kind
+                          and then not Is_Concurrent_Comp_Or_Disc (F)
+                          and then not FA.Pragma_Un_Vars.Contains
+                            (Get_Direct_Mapping_Id (F)))
                then
                   Error_Msg_Flow
                     (FA       => FA,
@@ -1130,7 +1136,8 @@ package body Flow.Analysis is
       --  Finally, we issue warnings on ineffective imports. We exclude
       --  items which are suppressed by a null derives and which have
       --  previously been flagged as unused. In the loop below we further
-      --  exclude objects that are marked by a pragma Unreferenced.
+      --  exclude objects that are marked by a pragma Unreferenced or a
+      --  pragma Unmodified or a pragma Unused.
 
       EV_Ineffective := EV_Considered_Imports -
         (EV_Effective or Suppressed_Entire_Ids or EV_Unused);
@@ -1142,11 +1149,13 @@ package body Flow.Analysis is
             Atr : V_Attributes renames FA.Atr (V);
 
          begin
-            if F.Kind in Direct_Mapping | Record_Field and then
-              FA.Unreferenced_Vars.Contains (Get_Direct_Mapping_Id (F))
+            if F.Kind in Direct_Mapping | Record_Field
+              and then
+                FA.Pragma_Un_Vars.Contains (Get_Direct_Mapping_Id (F))
             then
-               --  This variable is marked with a pragma Unreferenced, so
-               --  we do not emit the warning here.
+               --  This variable is marked with a pragma Unreferenced, pragma
+               --  Unused or pragma Unmodified so we do not emit the
+               --  warning here.
                null;
             elsif Atr.Mode = Mode_Proof then
                --  Proof_Ins are never ineffective imports, for now.
@@ -1405,11 +1414,10 @@ package body Flow.Analysis is
       --  outcome, i.e. is a final-use vertex that is also an export or
       --  a use vertex that branches to an exceptional path.
 
-      function Is_Final_Use_Unreferenced (V : Flow_Graphs.Vertex_Id)
-                                          return Boolean;
-      --  Checks if the given vertex V is a final-use vertex that
-      --  corresponds to a variable that is mentioned in a pragma
-      --  Unreferenced.
+      function Is_In_Pragma_Un (S : Flow_Id_Sets.Set)
+                                return Boolean;
+      --  Checks if variables in the set Variables_Defined have been
+      --  mentioned in a pragma Unreferenced, Unused or Unreferenced.
 
       function Other_Fields_Are_Ineffective (V : Flow_Graphs.Vertex_Id)
                                              return Boolean;
@@ -1564,19 +1572,24 @@ package body Flow.Analysis is
          end case;
       end Is_Final_Use_Any_Export;
 
-      -------------------------------
-      -- Is_Final_Use_Unreferenced --
-      -------------------------------
+      ---------------------
+      -- Is_In_Pragma_Un --
+      ---------------------
 
-      function Is_Final_Use_Unreferenced (V : Flow_Graphs.Vertex_Id)
-                                          return Boolean
-      is
+      function Is_In_Pragma_Un (S : Flow_Id_Sets.Set)
+                                return Boolean is
       begin
-         return FA.PDG.Get_Key (V).Variant = Final_Value and then
-           FA.Unreferenced_Vars.Contains
-             (Get_Direct_Mapping_Id (Change_Variant
-                                       (FA.PDG.Get_Key (V), Normal_Use)));
-      end Is_Final_Use_Unreferenced;
+         for U of FA.Pragma_Un_Vars loop
+            for E of S loop
+               if E.Kind in Direct_Mapping | Record_Field
+                 and then E.Node = U
+               then
+                  return True;
+               end if;
+            end loop;
+         end loop;
+         return False;
+      end Is_In_Pragma_Un;
 
       --------------------------
       -- Skip_Any_Conversions --
@@ -1662,13 +1675,12 @@ package body Flow.Analysis is
                     and then No (FA.Initializes_N)
                   then
                      not FA.PDG.Non_Trivial_Path_Exists
-                       (V, Is_Any_Final_Use'Access)) and then
+                      (V, Is_Any_Final_Use'Access)) and then
 
-                 --  Suppression for vertices that lead to a final
-                 --  vertex that corresponds to a variable that is
-                 --  mentioned in a pragma unreferenced.
-                 not FA.PDG.Non_Trivial_Path_Exists
-                       (V, Is_Final_Use_Unreferenced'Access) and then
+                 --  Suppression for vertices that talk about a variable
+                 --  that is mentioned in a pragma Unused, Unmodified or
+                 --  Unreferenced.
+                 not Is_In_Pragma_Un (Atr.Variables_Defined) and then
 
                  --  Suppression for vertices that can lead to
                  --  abnormal termination and have had some of their

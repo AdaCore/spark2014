@@ -4028,10 +4028,11 @@ package body Flow.Control_Flow_Graph is
          case Get_Pragma_Id (N) is
 
             when Pragma_Unmodified   |
+                 Pragma_Unused       |
                  Pragma_Unreferenced =>
 
-               --  For pragma unmodified and pragma unreferenced we
-               --  produce a null vertex.
+               --  For pragma unmodified, pragma unused and pragma
+               --  unreferenced we produce a null vertex.
                Add_Vertex (FA, Null_Node_Attributes, V);
 
                declare
@@ -4046,17 +4047,7 @@ package body Flow.Control_Flow_Graph is
                        Associated_Node (Expression (Argument_Association));
 
                      if not Is_Subprogram (Associated_Variable) then
-                        if Get_Pragma_Id (N) = Pragma_Unmodified then
-                           --  If a pragma Unmodified was found, we insert
-                           --  its associated variable to the set of
-                           --  unmodified variables.
-                           FA.Unmodified_Vars.Include (Associated_Variable);
-                        else
-                           --  If a pragma Unreferenced was found, we insert
-                           --  its associated variable to the set of
-                           --  unreferenced variables.
-                           FA.Unreferenced_Vars.Include (Associated_Variable);
-                        end if;
+                        FA.Pragma_Un_Vars.Include (Associated_Variable);
                      end if;
 
                      Argument_Association := Next (Argument_Association);
@@ -5559,6 +5550,7 @@ package body Flow.Control_Flow_Graph is
             return True;
 
          when Pragma_Unmodified   |
+              Pragma_Unused       |
               Pragma_Unreferenced =>
             return True;
 
@@ -5674,7 +5666,6 @@ package body Flow.Control_Flow_Graph is
               Pragma_Restriction_Warnings         |
               Pragma_Style_Checks                 |
               Pragma_Test_Case                    |
-              Pragma_Unused                       |
               Pragma_Validity_Checks              |
               Pragma_Warnings                     |
               Pragma_Weak_External                =>

@@ -201,13 +201,10 @@ package Flow is
       All_Vars              : Flow_Id_Sets.Set;
       --  A set of all variables used in the body.
 
-      Unmodified_Vars       : Node_Sets.Set;
-      --  A set of all variables that are not expected to be modified
-      --  because they were named in a pragma Unmodified.
-
-      Unreferenced_Vars     : Node_Sets.Set;
-      --  A set of all variables that are not expected to be referenced
-      --  because they were named in a pragma Unreferenced.
+      Pragma_Un_Vars        : Node_Sets.Set;
+      --  A set of all variables that are not expected to be modified, used or
+      --  referenced because they were named in a pragma Unmodified or a pragma
+      --  Unused or pragma Unreferenced.
 
       Loops                 : Node_Sets.Set;
       --  A set of all loops (identified by label).

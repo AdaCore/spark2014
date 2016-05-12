@@ -5,4 +5,3 @@ client.adb:8:19: info: initialization of "X" proved
 p.adb:7:07: warning: statement has no effect
 p.adb:12:52: warning: statement has no effect
 p.ads:6:13: high: potentially blocking operation in protected operation "Dummy"
-p.ads:6:20: warning: unused variable "Arg"
