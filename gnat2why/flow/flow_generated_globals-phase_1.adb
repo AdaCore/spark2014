@@ -38,7 +38,7 @@ with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
 package body Flow_Generated_Globals.Phase_1 is
 
    package Protected_Instances_Lists is
-     new Ada.Containers.Doubly_Linked_Lists (Element_Type => Object_Priority);
+     new Ada.Containers.Doubly_Linked_Lists (Object_Priority);
    --  Containers with variables that contain instances of protected types; for
    --  priority ceiling checks.
 
@@ -51,7 +51,7 @@ package body Flow_Generated_Globals.Phase_1 is
    end record;
 
    package Task_Instances_Lists is
-     new Ada.Containers.Doubly_Linked_Lists (Element_Type => Task_Instance);
+     new Ada.Containers.Doubly_Linked_Lists (Task_Instance);
    --  Containers with variables that contain instances of task types
 
    Task_Instances : Task_Instances_Lists.List;
@@ -61,11 +61,17 @@ package body Flow_Generated_Globals.Phase_1 is
    --  Subprograms, entries and tasks that do not contain potentially blocking
    --  statements (but still may call another blocking subprogram).
 
-   Tasking_Info_Bag : array (Tasking_Info_Kind) of Name_Graphs.Map;
-   --  Maps from subprogram names to accessed objects
-   --
-   --  It is populated with objects directly accessed by each subprogram and
-   --  stored in the ALI file.
+   type Accessed_Tasking_Objects is record
+      Caller  : Entity_Name;
+      Objects : Tasking_Info;
+   end record;
+
+   package Tasking_Info_Lists is new
+     Ada.Containers.Doubly_Linked_Lists (Accessed_Tasking_Objects);
+   --  Containers with tasking objects accessed by a given caller
+
+   Tasking_Info_List : Tasking_Info_Lists.List;
+   --  List with tasking objects directly accessed by subprograms
 
    Subprogram_Info_List : Global_Info_Lists.List;
    --  Information about subprograms from the "generated globals" algorithm
@@ -238,9 +244,7 @@ package body Flow_Generated_Globals.Phase_1 is
                                        TI : Tasking_Info)
    is
    begin
-      for Kind in Tasking_Info_Kind loop
-         Tasking_Info_Bag (Kind).Insert (EN, To_Name_Set (TI (Kind)));
-      end loop;
+      Tasking_Info_List.Append ((Caller => EN, Objects => TI));
    end GG_Register_Tasking_Info;
 
    -----------------------
@@ -338,36 +342,18 @@ package body Flow_Generated_Globals.Phase_1 is
             The_Nonblocking_Subprograms => Nonblocking_Subprograms);
       Write_To_ALI (V);
 
-      --  Write tasking-related information. This is a bit awkward since we
-      --  need to rotate the information in Tasking_Info_Bag.
-      declare
-         All_Names : Name_Sets.Set := Name_Sets.Empty_Set;
-      begin
+      for Subprogram of Tasking_Info_List loop
+         V := (Kind             => EK_Tasking_Info,
+               The_Entity       => Subprogram.Caller,
+               The_Tasking_Info => <>);
+
          for Kind in Tasking_Info_Kind loop
-            for C in Tasking_Info_Bag (Kind).Iterate loop
-               All_Names.Include (Key (C));
-            end loop;
+            V.The_Tasking_Info (Kind) :=
+              To_Name_Set (Subprogram.Objects (Kind));
          end loop;
-         for Name of All_Names loop
-            V := (Kind             => EK_Tasking_Info,
-                  The_Entity       => Name,
-                  The_Tasking_Info => <>);
-            for Kind in Tasking_Info_Kind loop
-               declare
-                  Phase_1_Info : Name_Graphs.Map renames
-                    Tasking_Info_Bag (Kind);
 
-                  C : constant Name_Graphs.Cursor := Phase_1_Info.Find (Name);
-
-               begin
-                  V.The_Tasking_Info (Kind) := (if Has_Element (C)
-                                                then Phase_1_Info (C)
-                                                else Name_Sets.Empty_Set);
-               end;
-            end loop;
-            Write_To_ALI (V);
-         end loop;
-      end;
+         Write_To_ALI (V);
+      end loop;
 
       for Instance of Task_Instances loop
          V := (Kind        => EK_Task_Instance,
