@@ -1,0 +1,18 @@
+inline_for_proof.adb:4:20: info: index check proved
+inline_for_proof.adb:4:31: info: index check proved
+inline_for_proof.adb:9:20: info: index check proved
+inline_for_proof.adb:9:31: info: index check proved
+inline_for_proof.ads:11:14: info: postcondition proved
+inline_for_proof.ads:11:41: info: index check proved
+inline_for_proof.ads:11:52: info: index check proved
+inline_for_proof.ads:15:14: warning: subprogram "P" has no effect
+inline_for_proof.ads:17:14: info: postcondition proved
+inline_for_proof.ads:18:43: info: precondition proved
+inline_for_proof.ads:18:56: info: precondition proved
+inline_for_proof.ads:22:14: info: postcondition proved
+inline_for_proof.ads:22:42: info: index check proved
+inline_for_proof.ads:22:53: info: index check proved
+inline_for_proof.ads:24:14: warning: subprogram "P2" has no effect
+inline_for_proof.ads:26:14: medium: postcondition might fail (e.g. when B = False and X = (others => 0) and Y = (others => 0))
+inline_for_proof.ads:27:43: info: precondition proved
+inline_for_proof.ads:27:57: info: precondition proved
