@@ -1,0 +1,4 @@
+untangle.ads:25:51: info: initialization of "Nf.Flag" proved
+untangle.ads:25:51: info: initialization of "Nf.Idx" proved
+untangle.ads:25:51: info: initialization of "Nf.The_P.X" proved
+untangle.ads:25:51: info: initialization of "Nf.The_P.Y" proved

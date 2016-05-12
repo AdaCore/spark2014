@@ -4103,7 +4103,9 @@ package body Flow_Utility is
                   raise Why.Not_Implemented;
             end case;
 
-         when N_Function_Call =>
+         when N_Function_Call | N_Indexed_Component =>
+            --  For these we just summarize the entire blob.
+
             declare
                FS  : constant Flow_Id_Sets.Set := Get_Vars_Wrapper (N);
                LHS : Flow_Id_Sets.Set;
