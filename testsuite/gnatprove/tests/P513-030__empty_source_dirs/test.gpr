@@ -1,0 +1,4 @@
+with "subproj";
+project Test is
+  for Source_Dirs use ();
+end Test;
