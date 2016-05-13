@@ -718,7 +718,7 @@ package body SPARK_Frame_Conditions is
 
          Scope_Entities : Scope_Entity.Map;
          Scope_Specs    : Scope_Spec.Map;
-         Current_Entity : Entity_Name;
+         Current_Entity : Any_Entity_Name;
 
       --  Start of processing for Walk_SPARK_Tables
 

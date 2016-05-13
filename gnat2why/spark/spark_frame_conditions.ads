@@ -66,8 +66,7 @@ package SPARK_Frame_Conditions is
    procedure Display_Maps;
    --  Send maps to output for debug
 
-   function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
-   with Pre => E_Name /= Null_Entity_Name;
+   function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set;
    --  Get subprograms directly called by subprogram E_Name
 
    function Get_Generated_Reads
@@ -122,8 +121,7 @@ package SPARK_Frame_Conditions is
    function Is_Non_Recursive_Subprogram (E : Entity_Id) return Boolean;
    --  Return True if E is not a (mutually) recursive subprogram
 
-   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean with
-     Pre => E_Name /= Null_Entity_Name;
+   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean;
    --  Return True if E_Name refers to entry or protected subprogram
 
    --  -----------------------------------------

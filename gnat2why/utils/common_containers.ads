@@ -77,7 +77,19 @@ package Common_Containers is
       "="             => Node_Sets."=");
    --  Maps of nodes to sets of nodes
 
-   type Entity_Name is new Integer range 0 .. Integer'Last;
+   type Any_Entity_Name is new Integer range 0 .. Integer'Last;
+   --  Entities represented by their string names, which is the only way to
+   --  represent entities coming from the bodies of other compilation units
+   --  (they get into scope of the analysis when reading the ALI files).
+   --
+   --  Note: names Any_Entity_Name and Entity_Name below are inspired by
+   --  System.Any_Priority and System.Priority.
+
+   Null_Entity_Name : constant Any_Entity_Name;
+   --  A special value to represent that no entity is present
+
+   subtype Entity_Name is Any_Entity_Name range 1 .. Any_Entity_Name'Last;
+   --  A type that represent non-empty values of entity names
 
    function To_Entity_Name (S : String) return Entity_Name;
 
@@ -85,8 +97,6 @@ package Common_Containers is
      with Pre => Ekind (E) not in E_Package_Body | E_Subprogram_Body;
 
    function To_String (E : Entity_Name) return String;
-
-   Null_Entity_Name : constant Entity_Name;
 
    package Name_Lists is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Entity_Name);
@@ -129,6 +139,6 @@ package Common_Containers is
 
 private
 
-   Null_Entity_Name : constant Entity_Name := 0;
+   Null_Entity_Name : constant Any_Entity_Name := 0;
 
 end Common_Containers;

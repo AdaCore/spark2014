@@ -85,7 +85,7 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns the set of direct constituents of a state abstraction
    --  or an Empty_Set if they do not exist.
 
-   function GG_Enclosing_State (EN : Entity_Name) return Entity_Name
+   function GG_Enclosing_State (EN : Entity_Name) return Any_Entity_Name
    with Pre => GG_Mode = GG_Read_Mode;
    --  Returns the Entity_Name of the directly enclosing state. If one
    --  does not exist it returns Null_Entity_Name.
@@ -191,8 +191,7 @@ package Flow_Generated_Globals.Phase_2 is
    --  depending on the Kind) accessed by a main-like subprogram Subp.
 
    function Directly_Called_Protected_Objects
-     (Ent : Entity_Name) return Name_Sets.Set
-   with Pre => Ent /= Null_Entity_Name;
+     (Ent : Entity_Name) return Name_Sets.Set;
    --  @param Ent an entity name that refers to a task, main-like subprogram or
    --    protected operation
    --  @return the set of protected operations that are called "directly", that

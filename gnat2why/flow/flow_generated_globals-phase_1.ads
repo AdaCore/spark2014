@@ -47,29 +47,25 @@ package Flow_Generated_Globals.Phase_1 is
    --  related to volatiles and remote states.
 
    procedure GG_Register_Nonblocking (EN : Entity_Name)
-   with Pre  => EN /= Null_Entity_Name and then
-                GG_Mode = GG_Write_Mode,
+   with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register entity with no potentially blocking statements
 
    procedure GG_Register_Protected_Object (PO   : Entity_Name;
                                            Prio : Priority_Value)
-   with Pre  => PO /= Null_Entity_Name and then
-                GG_Mode = GG_Write_Mode,
+   with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register protected object and its priority
 
    procedure GG_Register_Task_Object (Type_Name : Entity_Name;
                                       Object    : Task_Object)
-   with Pre  => Type_Name /= Null_Entity_Name and then
-                GG_Mode = GG_Write_Mode,
+   with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register an instance of a task object
 
    procedure GG_Register_Tasking_Info (EN : Entity_Name;
                                        TI : Tasking_Info)
-   with Pre  => EN /= Null_Entity_Name and then
-                GG_Mode = GG_Write_Mode,
+   with Pre  => GG_Mode = GG_Write_Mode,
         Post => GG_Mode = GG_Write_Mode;
    --  Register tasking-related information for entity
 

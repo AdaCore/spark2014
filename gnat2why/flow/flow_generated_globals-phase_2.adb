@@ -158,9 +158,11 @@ package body Flow_Generated_Globals.Phase_2 is
    package Entity_Name_Graphs is new Graphs
      (Vertex_Key   => Entity_Name,
       Edge_Colours => No_Colours,
-      Null_Key     => Null_Entity_Name,
+      Null_Key     => Entity_Name'Last,
       Key_Hash     => Name_Hash,
       Test_Key     => "=");
+   --  Note: Null_Key is required by the Graphs API, but not used here; the
+   --  'Last value is a dummy one.
 
    Protected_Operation_Call_Graph : Entity_Name_Graphs.Graph :=
      Entity_Name_Graphs.Create;
@@ -671,7 +673,7 @@ package body Flow_Generated_Globals.Phase_2 is
             Var_Name   : Entity_Name := N;
             Var_Entity : Entity_Id;
 
-            Enclosing_State : Entity_Name;
+            Enclosing_State : Any_Entity_Name;
 
             function Is_Abstract_State return Boolean is
                (Var_Name /= N);
@@ -1620,7 +1622,7 @@ package body Flow_Generated_Globals.Phase_2 is
                --  state abstractions that are not fully initialized.
                declare
                   All_LHS   : constant Name_Sets.Set := LHS or LHS_Proof;
-                  State     : Entity_Name;
+                  State     : Any_Entity_Name;
                   To_Remove : Name_Sets.Set := Name_Sets.Empty_Set;
                begin
                   for Var of All_LHS loop
@@ -2316,7 +2318,7 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_Enclosing_State --
    ------------------------
 
-   function GG_Enclosing_State (EN : Entity_Name) return Entity_Name is
+   function GG_Enclosing_State (EN : Entity_Name) return Any_Entity_Name is
       C : constant Name_Maps.Cursor := Comp_State_Map.Find (EN);
       use Name_Maps;
    begin

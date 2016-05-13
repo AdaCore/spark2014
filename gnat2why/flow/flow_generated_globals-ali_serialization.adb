@@ -26,8 +26,12 @@ with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
 
 package body Flow_Generated_Globals.ALI_Serialization is
 
+   Invalid_Entity_Name : constant Entity_Name := Entity_Name'Last;
+   --  Special dummy value for serialization which is not expected to represent
+   --  any valid entity name, yet it must reside in the Entity_Name type.
+
    Null_Global_Info : constant Global_Phase_1_Info :=
-     (Name   => Null_Entity_Name,
+     (Name   => Invalid_Entity_Name,
       Kind   => Analyzed_Subject_Kind'First,
       Origin => Globals_Origin_T'First,
       others => <>);
@@ -39,7 +43,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
       EK_End_Marker         => (Kind => EK_End_Marker),
 
       EK_State_Map          => (Kind      => EK_State_Map,
-                                The_State => Null_Entity_Name,
+                                The_State => Invalid_Entity_Name,
                                 others    => <>),
 
       EK_Remote_States      => (Kind          => EK_Remote_States,
@@ -52,20 +56,20 @@ package body Flow_Generated_Globals.ALI_Serialization is
                                 The_Global_Info => Null_Global_Info),
 
       EK_Protected_Instance => (Kind         => EK_Protected_Instance,
-                                The_Variable => Null_Entity_Name,
+                                The_Variable => Invalid_Entity_Name,
                                 The_Priority => Priority_Value'
                                   (Kind  => Priority_Kind'First,
                                    Value => 0)),
 
       EK_Task_Instance      => (Kind       => EK_Task_Instance,
-                                The_Type   => Null_Entity_Name,
+                                The_Type   => Invalid_Entity_Name,
                                 The_Object => Task_Object'
-                                  (Name      => Null_Entity_Name,
+                                  (Name      => Invalid_Entity_Name,
                                    Instances => Instance_Number'First,
                                    Node      => Empty)),
 
       EK_Tasking_Info       => (Kind       => EK_Tasking_Info,
-                                The_Entity => Null_Entity_Name,
+                                The_Entity => Invalid_Entity_Name,
                                 others     => <>),
 
       EK_Nonblocking        => (Kind   => EK_Nonblocking,
@@ -80,7 +84,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
       E              => Entity_Name,
       Cursor         => Name_Sets.Cursor,
       Null_Container => Name_Sets.Empty_Set,
-      Null_Element   => Null_Entity_Name,
+      Null_Element   => Invalid_Entity_Name,
       First          => Name_Sets.First,
       Next           => Name_Sets.Next,
       Has_Element    => Name_Sets.Has_Element,
@@ -163,7 +167,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
          E              => Entity_Name,
          Cursor         => Name_Lists.Cursor,
          Null_Container => Name_Lists.Empty_List,
-         Null_Element   => Null_Entity_Name,
+         Null_Element   => Invalid_Entity_Name,
          First          => Name_Lists.First,
          Next           => Name_Lists.Next,
          Has_Element    => Name_Lists.Has_Element,
