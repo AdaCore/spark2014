@@ -5,11 +5,11 @@ import glob
 
 conf_file = "test.whyconf"
 
-proof = """intros (val1_type,(val2_type,(denom_type,pre))).
+proof = """
 Open Scope Z_scope.
 
 (* rewrite hypotheses *)
-unfold in_range1 in denom_type.
+unfold in_range1 in h3.
 
 (* apply arithmetic theorem *)
 apply Z.quot_le_mono; auto with zarith.
