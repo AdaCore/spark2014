@@ -12,6 +12,6 @@ is
    with
      Global => null,
      Pre  => Val1 <= Val2,
-     Post => Val1 / Denom <= Val2 / Denom;
+     Post => Val1 / Denom < Val2 / Denom;
 
 end Lemmas;
