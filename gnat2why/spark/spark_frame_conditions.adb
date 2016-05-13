@@ -34,7 +34,6 @@ with Lib.Xref;                       use Lib.Xref;
 with Sem_Aux;                        use Sem_Aux;
 with Snames;                         use Snames;
 with SPARK_Xrefs;                    use SPARK_Xrefs;
-with Unchecked_Deallocation;
 
 package body SPARK_Frame_Conditions is
 
@@ -51,20 +50,29 @@ package body SPARK_Frame_Conditions is
 
    Name_To_Entity : Name_To_Entity_Map.Map := Name_To_Entity_Map.Empty_Map;
 
-   type SCC is array (Positive range <>) of Entity_Name;
+   package Entity_Name_Vectors is new
+     Ada.Containers.Vectors (Index_Type   => Positive,
+                             Element_Type => Entity_Name);
+
+   subtype SCC is Entity_Name_Vectors.Vector;
    --  Ordered list of subprograms in a strongly connected component, roughly
    --  ordered so as to follow call chains for better propagation.
 
-   type SCC_Ptr is access SCC;
+   package SCC_Vectors is new
+     Ada.Containers.Vectors (Index_Type   => Positive,
+                             Element_Type => SCC,
+                             "="          => Entity_Name_Vectors."=");
 
-   package SCC_Ptrs is new
-     Ada.Containers.Vectors (Index_Type => Positive,
-                             Element_Type => SCC_Ptr);
-
-   subtype SCCs is SCC_Ptrs.Vector;
-
+   subtype SCCs is SCC_Vectors.Vector;
    --  Ordered list of strongly connected components in call-graph, with the
    --  "leaf" SCCs coming first.
+   --
+   --  ??? originally this code was using arrays, which was difficult to follow
+   --  and required manual memory allocation and freeing; now it uses vectors,
+   --  which makes it easier to understand; perhaps with lists it would be even
+   --  cleaner, but I suspect that vectors give slightly better performance
+   --  because of data locality. Lastly, the transitive closure algorithm
+   --  that is used in flow analysis should give even better performance.
 
    ---------------------
    -- Local Variables --
@@ -109,9 +117,6 @@ package body SPARK_Frame_Conditions is
    --  Return the number of elements in the set associated to Ent in Map, or
    --  else 0.
 
-   procedure Free_SCCs (X : SCCs);
-   --  Free memory allocated for strongly connected components
-
    function Make_Entity_Name (Name : String_Ptr) return Entity_Name
    with Pre => Name /= null and then Name.all /= "";
    --  Build a name for an entity, making sure the name is not empty
@@ -148,7 +153,7 @@ package body SPARK_Frame_Conditions is
    is
       --  There are at most as many SCCs as nodes (if no recursion at all)
 
-      Cur_SCCs : SCC_Ptrs.Vector;
+      Cur_SCCs : SCCs;
 
       package Value_Map is new Hashed_Maps
         (Key_Type        => Entity_Name,
@@ -175,10 +180,6 @@ package body SPARK_Frame_Conditions is
       --------------------
       -- Stack of nodes --
       --------------------
-
-      package Entity_Name_Vectors is new
-        Ada.Containers.Vectors (Index_Type   => Positive,
-                                Element_Type => Entity_Name);
 
       type Stack is record
          Data    : Entity_Name_Vectors.Vector;
@@ -264,27 +265,21 @@ package body SPARK_Frame_Conditions is
 
          if Lowlinks (V) = Indexes (V) then
             declare
-               function Size_Of_Current_SCC return Positive;
-               --  Return the size of the current SCC sitting on the stack
+               Size_Of_Current_SCC : constant Positive :=
+                 S.Data.Last_Index - S.Data.Reverse_Find_Index (V) + 1;
+               --  Size of the current SCC sitting on the stack
 
-               -------------------------
-               -- Size_Of_Current_SCC --
-               -------------------------
-
-               function Size_Of_Current_SCC return Positive is
-                 (S.Data.Last_Index - S.Data.Reverse_Find_Index (V) + 1);
-
-               --  Start a new strongly connected component
-
-               Cur_SCC : constant SCC_Ptr :=
-                           new SCC (1 .. Size_Of_Current_SCC);
+               Cur_SCC : SCC;
+               --  A new strongly connected component
 
             begin
-               for J in Cur_SCC'Range loop
-                  Cur_SCC (J) := Pop;
+               Cur_SCC.Reserve_Capacity (Count_Type (Size_Of_Current_SCC));
+
+               for J in 1 .. Size_Of_Current_SCC loop
+                  Cur_SCC.Append (Pop);
                end loop;
 
-               pragma Assert (Cur_SCC (Cur_SCC'Last) = V);
+               pragma Assert (Cur_SCC.Last_Element = V);
 
                --  Output the current strongly connected component
 
@@ -445,20 +440,6 @@ package body SPARK_Frame_Conditions is
          end if;
       end loop;
    end For_All_External_States;
-
-   ---------------
-   -- Free_SCCs --
-   ---------------
-
-   procedure Free_SCCs (X : SCCs) is
-      procedure Free is new Unchecked_Deallocation (SCC, SCC_Ptr);
-      Tmp : SCC_Ptr;
-   begin
-      for J of X loop
-         Tmp := J;
-         Free (Tmp);
-      end loop;
-   end Free_SCCs;
 
    --------------------
    -- Computed_Calls --
@@ -1050,7 +1031,7 @@ package body SPARK_Frame_Conditions is
          --  connected component and if it does not call itself directly.
 
          for C of Cur_SCCs loop
-            if C'Length = 1 then
+            if C.Length = 1 then
                declare
                   E : constant Entity_Name := C (1);
                begin
@@ -1063,7 +1044,7 @@ package body SPARK_Frame_Conditions is
 
          --  Iterate on SCCs
 
-         for C of Cur_SCCs loop
+         for Component of Cur_SCCs loop
             declare
                Continue : Boolean;
                Updated  : Boolean;
@@ -1071,16 +1052,14 @@ package body SPARK_Frame_Conditions is
                loop
                   Continue := False;
 
-                  for K in C'Range loop
-                     Update_Subprogram (C (K), Updated);
+                  for Node of Component loop
+                     Update_Subprogram (Node, Updated);
                      Continue := Continue or else Updated;
                   end loop;
                   exit when not Continue;
                end loop;
             end;
          end loop;
-
-         Free_SCCs (Cur_SCCs);
       end;
    end Propagate_Through_Call_Graph;
 
