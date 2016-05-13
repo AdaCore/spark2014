@@ -2241,10 +2241,7 @@ package body Flow_Generated_Globals.Phase_2 is
    function Component_Priorities
      (Obj : Entity_Name)
       return Object_Priority_Lists.List
-   is
-   begin
-      return Protected_Objects (Obj);
-   end Component_Priorities;
+      renames Protected_Objects.Element;
 
    ---------------------------------------
    -- Directly_Called_Protected_Objects --
