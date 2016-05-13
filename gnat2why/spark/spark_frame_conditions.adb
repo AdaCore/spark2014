@@ -365,7 +365,7 @@ package body SPARK_Frame_Conditions is
       procedure Display_One_Set (Set : Name_Sets.Set) is
       begin
          for Ent of Set loop
-            Put ("  "); Display_Entity (Ent); Put_Line ("");
+            Put ("  "); Display_Entity (Ent); New_Line;
          end loop;
       end Display_One_Set;
 
@@ -373,13 +373,13 @@ package body SPARK_Frame_Conditions is
 
    begin
       Display_One_Map (Defines, "Variables defined by subprograms", "defines");
-      Put_Line ("");
+      New_Line;
       Display_One_Map (Reads, "Variables read by subprograms", "reads");
-      Put_Line ("");
+      New_Line;
       Display_One_Map (Writes, "Variables written by subprograms", "writes");
-      Put_Line ("");
+      New_Line;
       Display_One_Map (Calls, "Subprograms called", "calls");
-      Put_Line ("");
+      New_Line;
       Display_One_Map (Callers, "Callers of subprograms", "is called by");
    end Display_Maps;
 
