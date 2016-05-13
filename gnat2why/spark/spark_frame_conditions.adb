@@ -151,13 +151,11 @@ package body SPARK_Frame_Conditions is
    function Compute_Strongly_Connected_Components
      (Nodes : Name_Sets.Set) return SCCs
    is
-      --  There are at most as many SCCs as nodes (if no recursion at all)
-
       Cur_SCCs : SCCs;
 
       package Value_Map is new Hashed_Maps
         (Key_Type        => Entity_Name,
-         Element_Type    => Integer,
+         Element_Type    => Positive,
          Hash            => Name_Hash,
          Equivalent_Keys => "=",
          "="             => "=");
@@ -283,7 +281,9 @@ package body SPARK_Frame_Conditions is
 
                --  Output the current strongly connected component
 
-               Cur_SCCs.Append (Cur_SCC);
+               Cur_SCCs.Append (Entity_Name_Vectors.Empty_Vector);
+               Entity_Name_Vectors.Move (Target => Cur_SCCs (Cur_SCCs.Last),
+                                         Source => Cur_SCC);
             end;
          end if;
       end Strong_Connect;
@@ -291,6 +291,8 @@ package body SPARK_Frame_Conditions is
    --  Start of processing for Compute_Strongly_Connected_Components
 
    begin
+      --  There are at most as many SCCs as nodes (if no recursion at all)
+      Cur_SCCs.Reserve_Capacity (Nodes.Length);
 
       for V of Nodes loop
          if not Indexes.Contains (V) then
