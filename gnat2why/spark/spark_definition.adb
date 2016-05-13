@@ -2381,6 +2381,7 @@ package body SPARK_Definition is
            and then
              (Is_Effectively_Volatile_Object (Actual)
               or else (Nkind (Actual) = N_Function_Call
+                       and then Nkind (Name (Actual)) /= N_Explicit_Dereference
                        and then Is_Volatile_Call (Get_Called_Entity (Actual))))
          then
             --  An effectively volatile object may act as an actual when the
