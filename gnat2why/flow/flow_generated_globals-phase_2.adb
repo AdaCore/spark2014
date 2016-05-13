@@ -252,15 +252,7 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Local state
    ----------------------------------------------------------------------
 
-   Subprogram_Info_List        : Global_Info_Lists.List :=
-     Global_Info_Lists.Empty_List;
-   --  Information about subprograms from the "generated globals" algorithm
-
-   Package_Info_List           : Global_Info_Lists.List :=
-     Global_Info_Lists.Empty_List;
-   --  Information about packages from the "generated globals" algorithm
-
-   GG_Exists_Cache             : Name_Sets.Set := Name_Sets.Empty_Set;
+   GG_Exists_Cache : Name_Sets.Set := Name_Sets.Empty_Set;
    --  This should be equivalent to:
    --     {x.name for all x of Subprogram_Info_List}
 
@@ -723,17 +715,17 @@ package body Flow_Generated_Globals.Phase_2 is
    -------------
 
    procedure GG_Read (GNAT_Root : Node_Id) is
-      All_Globals           : Name_Sets.Set := Name_Sets.Empty_Set;
+      All_Globals           : Name_Sets.Set;
       --  Contains all global variables
 
-      GG_Subprograms        : Name_Sets.Set := Name_Sets.Empty_Set;
+      GG_Subprograms        : Name_Sets.Set;
       --  Contains all subprograms for which a GG entry exists
 
-      All_Subprograms       : Name_Sets.Set := Name_Sets.Empty_Set;
+      All_Subprograms       : Name_Sets.Set;
       --  Contains all subprograms that we know of, even if a GG entry does not
       --  exist for them.
 
-      All_Other_Subprograms : Name_Sets.Set := Name_Sets.Empty_Set;
+      All_Other_Subprograms : Name_Sets.Set;
       --  Contains all subprograms for which a GG entry does not exist
       --  ??? rename to No_GG_Subprograms?
 
@@ -741,6 +733,12 @@ package body Flow_Generated_Globals.Phase_2 is
       --  A graph that represents the hierarchy of subprograms (which
       --  subprogram is nested in which one); used to determine which
       --  local variables may act as globals to which subprograms.
+
+      Subprogram_Info_List : Global_Info_Lists.List;
+      --  Information about subprograms from the "generated globals" algorithm
+
+      Package_Info_List : Global_Info_Lists.List;
+      --  Information about packages from the "generated globals" algorithm
 
       procedure Add_All_Edges;
       --  Reads the populated Subprogram_Info_List and generates all the edges
