@@ -13447,12 +13447,14 @@ package body Gnat2Why.Expr is
                        Domain => EW_Prog),
                     To     => Ret_Type);
             begin
-               Expr :=
-                 Sequence
-                   (Expr,
-                    Transform_Statements_And_Declarations
-                      (Statements
-                         (Handled_Statement_Sequence (Stmt_Or_Decl))));
+               if Present (Handled_Statement_Sequence (Stmt_Or_Decl)) then
+                  Expr :=
+                    Sequence
+                      (Expr,
+                       Transform_Statements_And_Declarations
+                         (Statements
+                            (Handled_Statement_Sequence (Stmt_Or_Decl))));
+               end if;
                Expr :=
                  Sequence
                    (Expr,
