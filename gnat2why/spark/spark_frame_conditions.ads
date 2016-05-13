@@ -44,8 +44,8 @@ package SPARK_Frame_Conditions is
    use Name_Sets;
 
    Translated_Object_Entities : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  Is filled by gnat2why-driver.adb, and represents all object entities
-   --  that are actually translated to Why
+   --  Filled by gnat2why-driver.adb, and represents all object entities that
+   --  are actually translated to Why.
 
    function File_Name_Hash (F : File_Name_Type) return Hash_Type is
      (Hash_Type (F));
@@ -58,10 +58,10 @@ package SPARK_Frame_Conditions is
    use File_Name_Set;
 
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
-   --  Return whether Ent is the special variable "__HEAP"
+   --  Return True iff Ent is the special variable "__HEAP"
 
    function Is_Constant (Ent : Entity_Name) return Boolean;
-   --  Tests if Ent is a constant (or in parameter, etc.)
+   --  Return True iff Ent is a constant (or an IN parameter, etc.)
 
    procedure Display_Maps;
    --  Send maps to output for debug
@@ -93,7 +93,7 @@ package SPARK_Frame_Conditions is
       Called_Subprograms : out Name_Sets.Set)
    with Pre  => Ekind (E) in Subprogram_Kind | Task_Kind | Entry_Kind,
         Post => Outputs.Is_Subset (Inputs);
-   --  Collects the Computed Globals information based on the current
+   --  Collect the Computed Globals information based on the current
    --  compilation unit alone.
    --
    --  This procedure is only called in phase 1 so no ALI file is actually
@@ -116,15 +116,15 @@ package SPARK_Frame_Conditions is
    --  in simpler modes of operation that do not lead to translation into Why.
    --  It also determines which subprograms are (mutually) recursive.
    --
-   --  If Current_Unit_Only is set then we only want the direct calls
-   --  and globals.
+   --  If Current_Unit_Only is set then we only want the direct calls and
+   --  globals.
 
    function Is_Non_Recursive_Subprogram (E : Entity_Id) return Boolean;
-   --  Returns True if E is not a (mutually) recursive subprogram.
+   --  Return True if E is not a (mutually) recursive subprogram
 
    function Is_Protected_Operation (E_Name : Entity_Name) return Boolean with
      Pre => E_Name /= Null_Entity_Name;
-   --  Returns True if E_Name refers to entry or protected subprogram
+   --  Return True if E_Name refers to entry or protected subprogram
 
    --  -----------------------------------------
    --  Mapping between Entities and Entity_Names
@@ -150,8 +150,8 @@ package SPARK_Frame_Conditions is
 
    procedure For_All_External_States
      (Process : not null access procedure (E : Entity_Name));
-   --  Invoke the callback for all state entity_names that do not
-   --  correspond to a state abstraction in the tree (i.e. are defined
-   --  in some other unit body).
+   --  Invoke the callback for all state entity_names that do not correspond to
+   --  a state abstraction in the tree (i.e. are defined in some other unit
+   --  body).
 
 end SPARK_Frame_Conditions;

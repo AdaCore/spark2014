@@ -74,8 +74,8 @@ package body SPARK_Frame_Conditions is
    --  By default, propagate an error if a scope is missing, unless set to
    --  False for a degraded mode of operation in which such errors are ignored.
 
-   Scopes       : Name_Sets.Set;  --  All scope entities
-   Constants    : Name_Sets.Set;  --  All constants
+   Scopes       : Name_Sets.Set;    --  All scope entities
+   Constants    : Name_Sets.Set;    --  All constants
 
    File_Defines : Name_Maps.Map;    --  File defining each entities
    Defines      : Name_Graphs.Map;  --  Entities defined by each scope
@@ -100,8 +100,8 @@ package body SPARK_Frame_Conditions is
 
    function Compute_Strongly_Connected_Components
      (Nodes : Name_Sets.Set) return SCCs;
-   --  Computation of strongly connected components from Tarjan. Individual
-   --  components are dynamically allocated.
+   --  Compute of strongly connected components using Tarjan's algorithm.
+   --  Individual components are dynamically allocated.
 
    function Count_In_Map
      (Map : Name_Graphs.Map;
@@ -130,8 +130,6 @@ package body SPARK_Frame_Conditions is
    is
       Ignored  : Boolean;
       Position : Name_Graphs.Cursor;
-
-   --  Start of processing for Add_To_Map
 
    begin
       --  Try to insert a default value (i.e. empty set) and then update it
@@ -244,7 +242,7 @@ package body SPARK_Frame_Conditions is
             if not Nodes.Contains (W) then
                null;
 
-               --  Successor W has not yet been visited; recurse on it
+            --  Successor W has not yet been visited; recurse on it
 
             elsif not Indexes.Contains (W) then
                Strong_Connect (W);
@@ -252,7 +250,7 @@ package body SPARK_Frame_Conditions is
                  (V, Natural'Min
                     (Lowlinks.Element (V), Lowlinks.Element (W)));
 
-               --  Successor W is in stack S and hence in the current SCC
+            --  Successor W is in stack S and hence in the current SCC
 
             elsif Has (W) then
                Lowlinks.Include
@@ -401,6 +399,7 @@ package body SPARK_Frame_Conditions is
    function Find_Entity (E : Entity_Name) return Entity_Id is
       use Name_To_Entity_Map;
       C : constant Name_To_Entity_Map.Cursor := Name_To_Entity.Find (E);
+
    begin
       return (if Has_Element (C)
               then Element (C)
@@ -1051,6 +1050,7 @@ package body SPARK_Frame_Conditions is
          Set_Default_To_Empty (Calls,   Scopes);
 
          --  Collect non-recursive subprograms
+         --
          --  A subprogram is non-recursive if it is alone in its strongly
          --  connected component and if it does not call itself directly.
 
@@ -1110,6 +1110,7 @@ package body SPARK_Frame_Conditions is
       Inserted : Boolean;
       Position : Name_Graphs.Cursor;
       --  Dummy variables required by the container API
+
    begin
       for Ent of Set loop
          Map.Insert (Key      => Ent,
@@ -1133,7 +1134,6 @@ package body SPARK_Frame_Conditions is
       E_Name  : Entity_Name;
 
    begin
-
       --  Initialize to empty sets
       Inputs             := Name_Sets.Empty_Set;
       Outputs            := Name_Sets.Empty_Set;
@@ -1153,7 +1153,7 @@ package body SPARK_Frame_Conditions is
          return;
       end if;
 
-      E_Name  := To_Entity_Name (E_Alias);
+      E_Name := To_Entity_Name (E_Alias);
 
       Called_Subprograms := Calls (E_Name);
       Inputs             := Get_Generated_Reads (E, False);
