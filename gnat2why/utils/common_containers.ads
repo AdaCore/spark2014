@@ -102,7 +102,7 @@ package Common_Containers is
      (Element_Type => Entity_Name);
 
    function Name_Hash (E : Entity_Name) return Ada.Containers.Hash_Type is
-      (Generic_Integer_Hash (Integer (E)));
+     (Generic_Integer_Hash (Integer (E)));
 
    package Name_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Entity_Name,
