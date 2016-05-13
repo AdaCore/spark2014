@@ -309,10 +309,9 @@ package body SPARK_Rewrite is
             Rewrite_Nodes (Original_Node (N));
          end if;
 
-         --  Register packages and protected types
+         --  Register packages and protected types; ??? why?
          if Nkind (N) in N_Entity
-           and then Ekind (N) in E_Package        |
-                                 E_Protected_Type
+           and then Ekind (N) in E_Package | E_Protected_Type
          then
             Register_Entity (N);
          end if;
@@ -327,7 +326,7 @@ package body SPARK_Rewrite is
             Register_Entity (Defining_Entity (N));
          end if;
 
-         --  And finally rewrite the node.
+         --  And finally rewrite the node
 
          case Nkind (N) is
             when N_Real_Literal =>
@@ -342,7 +341,7 @@ package body SPARK_Rewrite is
             when N_Subprogram_Instantiation =>
                Rewrite_Subprogram_Instantiation (N);
 
-            --  Recursively call the tree rewriting procedure on subunits.
+            --  Recursively call the tree rewriting procedure on subunits
 
             when N_Body_Stub =>
                Rewrite_Nodes (Unit (Library_Unit (N)));
