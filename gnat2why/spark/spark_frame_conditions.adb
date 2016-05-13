@@ -382,10 +382,8 @@ package body SPARK_Frame_Conditions is
    -- File_Of_Entity --
    --------------------
 
-   function File_Of_Entity (E : Entity_Name) return Entity_Name is
-   begin
-      return File_Defines (E);
-   end File_Of_Entity;
+   function File_Of_Entity (E : Entity_Name) return Entity_Name
+     renames File_Defines.Element;
 
    -----------------
    -- Find_Entity --
@@ -446,7 +444,7 @@ package body SPARK_Frame_Conditions is
    --------------------
 
    function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
-   renames Calls.Element;
+     renames Calls.Element;
 
    -------------------------
    -- Get_Generated_Reads --
