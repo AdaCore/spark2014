@@ -1561,7 +1561,8 @@ package body Flow.Analysis is
       -----------------------------
 
       function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
-                                        return Boolean is
+                                        return Boolean
+      is
       begin
          --  ??? not a case-expression-function because of a front-end bug;
          --  can be refactored once P308-025 is fixed.
@@ -1577,7 +1578,8 @@ package body Flow.Analysis is
       ---------------------
 
       function Is_In_Pragma_Un (S : Flow_Id_Sets.Set)
-                                return Boolean is
+                                return Boolean
+      is
       begin
          for U of FA.Pragma_Un_Vars loop
             for E of S loop
