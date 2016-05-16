@@ -76,7 +76,7 @@ package Flow_Generated_Globals.Phase_2 is
    --  loaded while reading the ALI files.
 
    function GG_Is_Constituent (EN : Entity_Name) return Boolean
-   with Pre => GG_Mode = GG_Read_Mode;
+   with Pre => GG_Has_Been_Generated;
    --  Returns true if E is a constituent of some state abstraction
    --  that we loaded while reading the ALI files.
 

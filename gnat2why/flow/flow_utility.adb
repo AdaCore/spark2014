@@ -3169,8 +3169,7 @@ package body Flow_Utility is
                                                   S);
 
          when Magic_String =>
-            return GG_Has_Been_Generated
-              and then GG_Is_Initialized_At_Elaboration (F.Name);
+            return GG_Is_Initialized_At_Elaboration (F.Name);
 
          when Synthetic_Null_Export =>
             return False;

@@ -694,7 +694,6 @@ package body Flow_Types is
               and then Present (Encapsulating_State (F.Node));
 
          when Magic_String =>
-            pragma Assert (GG_Has_Been_Generated);
             return GG_Is_Constituent (F.Name);
 
          when others =>
