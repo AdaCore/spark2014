@@ -55,14 +55,14 @@ package Flow_Generated_Globals.Phase_2 is
    with Pre  => GG_Mode = GG_No_Mode
                 and then Nkind (GNAT_Root) = N_Compilation_Unit,
         Post => GG_Mode = GG_Read_Mode;
-   --  Reads all ALI files and produce the transitive closure.
+   --  Reads all ALI files and produce the transitive closure
 
    --------------
    -- Querying --
    --------------
 
    function GG_Has_Been_Generated return Boolean;
-   --  Checks if the Globals Graph has been generated.
+   --  Checks if the Globals Graph has been generated
    --  @return True iff the Globals Graph has been generated
 
    function GG_Exist (E : Entity_Id) return Boolean
@@ -83,7 +83,7 @@ package Flow_Generated_Globals.Phase_2 is
    with Pre  => GG_Mode = GG_Read_Mode and then
                 GG_Exist (E),
         Post => GG_Mode = GG_Read_Mode;
-   --  Determines the set of all globals.
+   --  Determines the set of all globals
 
    function GG_Get_State_Abstractions return Name_Sets.Set
    with Pre => GG_Has_Been_Generated;
@@ -126,35 +126,35 @@ package Flow_Generated_Globals.Phase_2 is
    function GG_Is_Volatile (EN : Entity_Name) return Boolean
    with Pre => GG_Has_Been_Generated;
    --  @param EN is the entity name that we check for being volatile
-   --  @return True iff EN is volatile.
+   --  @return True iff EN is volatile
 
    function GG_Has_Async_Writers (EN : Entity_Name) return Boolean
    with Pre  => GG_Has_Been_Generated,
         Post => (if GG_Has_Async_Writers'Result
                  then GG_Is_Volatile (EN));
    --  @param EN is the entity name that we check for having Async_Writers
-   --  @return True iff EN has Async_Writers set.
+   --  @return True iff EN has Async_Writers set
 
    function GG_Has_Async_Readers (EN : Entity_Name) return Boolean
    with Pre  => GG_Has_Been_Generated,
         Post => (if GG_Has_Async_Readers'Result
                  then GG_Is_Volatile (EN));
    --  @param EN is the entity name that we check for having Async_Readers
-   --  @return True iff EN has Async_Readers set.
+   --  @return True iff EN has Async_Readers set
 
    function GG_Has_Effective_Reads (EN : Entity_Name) return Boolean
    with Pre  => GG_Has_Been_Generated,
         Post => (if GG_Has_Effective_Reads'Result
                  then GG_Has_Async_Writers (EN));
    --  @param EN is the entity name that we check for having Effective_Reads
-   --  @return True iff EN has Effective_Reads set.
+   --  @return True iff EN has Effective_Reads set
 
    function GG_Has_Effective_Writes (EN : Entity_Name) return Boolean
    with Pre  => GG_Has_Been_Generated,
         Post => (if GG_Has_Effective_Writes'Result
                  then GG_Has_Async_Readers (EN));
    --  @param EN is the entity name that we check for having Effective_Writes
-   --  @return True iff EN has Effective_Writes set.
+   --  @return True iff EN has Effective_Writes set
 
    function Is_Potentially_Blocking (E : Entity_Id) return Boolean
    with Pre => GG_Has_Been_Generated and then

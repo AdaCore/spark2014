@@ -67,7 +67,7 @@ package body Flow_Generated_Globals.Phase_2 is
    --
    --  However, here we still need to distinguish between user-defined and
    --  predefined subprograms and can only do this by their Entity_Name (i.e.
-   --  string). This is done with regular expressions, which more efficient
+   --  string). We do this with regular expressions, which are more efficient
    --  than naive string matching. The regexp is a global constant and so it
    --  is compiled only once.
 
