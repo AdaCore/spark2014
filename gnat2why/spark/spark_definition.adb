@@ -1982,19 +1982,17 @@ package body SPARK_Definition is
    begin
       Inside_Actions := True;
 
-      if Present (L) then
-         Mark_List (L);
-         if Emit_Messages
-           and then SPARK_Pragma_Is (Opt.On)
-           and then not Acceptable_Actions (L)
-         then
+      Mark_List (L);
+      if Emit_Messages
+        and then SPARK_Pragma_Is (Opt.On)
+        and then not Acceptable_Actions (L)
+      then
 
-            --  We should never reach here, but in case we do, we issue an
-            --  understandable error message pointing to the source of the
-            --  too complex actions.
+         --  We should never reach here, but in case we do, we issue an
+         --  understandable error message pointing to the source of the
+         --  too complex actions.
 
-            Error_Msg_N ("too complex actions inserted in expression", N);
-         end if;
+         Error_Msg_N ("too complex actions inserted in expression", N);
       end if;
 
       Inside_Actions := Save_Inside_Actions;
