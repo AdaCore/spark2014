@@ -90,11 +90,6 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns the Entity_Name of the directly enclosing state. If one
    --  does not exist it returns Null_Entity_Name.
 
-   function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set
-   with Pre => GG_Mode = GG_Read_Mode and then
-               GG_Has_Refinement (EN);
-   --  Returns the most refined constituents of state abstraction EN.
-
    procedure GG_Get_Globals (E           : Entity_Id;
                              S           : Flow_Scope;
                              Proof_Reads : out Flow_Id_Sets.Set;

@@ -344,31 +344,6 @@ package body Flow_Generated_Globals.Phase_2 is
    --  check if all constituents are used and if they are not we also add them
    --  on the Reads set.
 
-   ---------------------
-   -- GG_Fully_Refine --
-   ---------------------
-
-   function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
-      Unrefined : Name_Sets.Set := GG_Get_Constituents (EN);
-      Refined   : Name_Sets.Set := Name_Sets.Empty_Set;
-
-   begin
-      while not Unrefined.Is_Empty loop
-         declare
-            Constituent : constant Entity_Name := Unrefined (Unrefined.First);
-         begin
-            if GG_Has_Refinement (Constituent) then
-               Unrefined.Union (GG_Get_Constituents (Constituent));
-            else
-               Refined.Include (Constituent);
-            end if;
-            Unrefined.Delete (Constituent);
-         end;
-      end loop;
-
-      return Refined;
-   end GG_Fully_Refine;
-
    -----------------------------------
    -- GG_Get_All_State_Abstractions --
    -----------------------------------
@@ -703,7 +678,39 @@ package body Flow_Generated_Globals.Phase_2 is
       --  this state abstraction is also a Read.
       for AS of Abstract_States loop
          declare
+            function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set
+              with Pre => GG_Mode = GG_Read_Mode and then
+                          GG_Has_Refinement (EN);
+            --  Returns the most refined constituents of state abstraction EN
+
+            ---------------------
+            -- GG_Fully_Refine --
+            ---------------------
+
+            function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
+               Unrefined : Name_Sets.Set := GG_Get_Constituents (EN);
+               Refined   : Name_Sets.Set := Name_Sets.Empty_Set;
+
+            begin
+               while not Unrefined.Is_Empty loop
+                  declare
+                     Constituent : constant Entity_Name :=
+                       Unrefined (Unrefined.First);
+                  begin
+                     if GG_Has_Refinement (Constituent) then
+                        Unrefined.Union (GG_Get_Constituents (Constituent));
+                     else
+                        Refined.Include (Constituent);
+                     end if;
+                     Unrefined.Delete (Constituent);
+                  end;
+               end loop;
+
+               return Refined;
+            end GG_Fully_Refine;
+
             Constituents : constant Name_Sets.Set := GG_Fully_Refine (AS);
+
          begin
             if not (for all C of Constituents => Most_Refined.Contains (C))
             then
