@@ -70,25 +70,10 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns True if generated globals have been computed for the
    --  given entity.
 
-   function GG_Has_Refinement (EN : Entity_Name) return Boolean
-   with Pre => GG_Mode = GG_Read_Mode;
-   --  Returns true if E is a state abstraction whose constituents we
-   --  loaded while reading the ALI files.
-
    function GG_Is_Constituent (EN : Entity_Name) return Boolean
    with Pre => GG_Has_Been_Generated;
    --  Returns true if E is a constituent of some state abstraction
    --  that we loaded while reading the ALI files.
-
-   function GG_Get_Constituents (EN : Entity_Name) return Name_Sets.Set
-   with Pre => GG_Mode = GG_Read_Mode;
-   --  Returns the set of direct constituents of a state abstraction
-   --  or an Empty_Set if they do not exist.
-
-   function GG_Enclosing_State (EN : Entity_Name) return Any_Entity_Name
-   with Pre => GG_Mode = GG_Read_Mode;
-   --  Returns the Entity_Name of the directly enclosing state. If one
-   --  does not exist it returns Null_Entity_Name.
 
    procedure GG_Get_Globals (E           : Entity_Id;
                              S           : Flow_Scope;

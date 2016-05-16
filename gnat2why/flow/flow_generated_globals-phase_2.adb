@@ -301,21 +301,9 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Local subprograms
    ----------------------------------------------------------------------
 
-   procedure Print_Tasking_Info_Bag (P : Phase);
-   --  Display the tasking-related information
-
-   procedure Print_Global_Phase_1_Info (Info : Global_Phase_1_Info);
-   --  Prints all global related info of an entity
-
-   procedure Print_Global_Graph (Filename : String;
-                                 G        : Global_Graphs.Graph);
-   --  Writes dot and pdf files for the Global_Graph
-
-   procedure Print_Generated_Initializes_Aspects;
-   --  Prints all the generated initializes aspects
-
-   procedure Print_Name_Set (Header : String; Set : Name_Sets.Set);
-   --  Print Header followed by elements of Set
+   function GG_Enclosing_State (EN : Entity_Name) return Any_Entity_Name;
+   --  Returns the Entity_Name of the directly enclosing state. If one
+   --  does not exist it returns Null_Entity_Name.
 
    procedure GG_Get_MR_Globals (EN          : Entity_Name;
                                 Proof_Reads : out Name_Sets.Set;
@@ -345,6 +333,26 @@ package body Flow_Generated_Globals.Phase_2 is
    --  check if all constituents are used and if they are not we also add them
    --  on the Reads set.
 
+   ----------------------------------------------------------------------
+   --  Debug routines
+   ----------------------------------------------------------------------
+
+   procedure Print_Tasking_Info_Bag (P : Phase);
+   --  Display the tasking-related information
+
+   procedure Print_Global_Phase_1_Info (Info : Global_Phase_1_Info);
+   --  Prints all global related info of an entity
+
+   procedure Print_Global_Graph (Filename : String;
+                                 G        : Global_Graphs.Graph);
+   --  Writes dot and pdf files for the Global_Graph
+
+   procedure Print_Generated_Initializes_Aspects;
+   --  Prints all the generated initializes aspects
+
+   procedure Print_Name_Set (Header : String; Set : Name_Sets.Set);
+   --  Print Header followed by elements of Set
+
    -----------------------------------
    -- GG_Get_All_State_Abstractions --
    -----------------------------------
@@ -353,18 +361,6 @@ package body Flow_Generated_Globals.Phase_2 is
    begin
       return State_Abstractions;
    end GG_Get_State_Abstractions;
-
-   -------------------------
-   -- GG_Get_Constituents --
-   -------------------------
-
-   function GG_Get_Constituents (EN : Entity_Name) return Name_Sets.Set is
-      C : constant Name_Graphs.Cursor := State_Comp_Map.Find (EN);
-   begin
-      return (if Has_Element (C)
-              then Element (C)
-              else Name_Sets.Empty_Set);
-   end GG_Get_Constituents;
 
    --------------------
    -- GG_Get_Globals --
@@ -574,19 +570,21 @@ package body Flow_Generated_Globals.Phase_2 is
 
       function Calculate_MR (Start : Vertex_Id) return Name_Sets.Set is
          NS : Name_Sets.Set := Name_Sets.Empty_Set;
-         G  : Global_Id;
 
          procedure Expand_State (State : Entity_Name);
-         --  Expands State as much as possible and adds the constituents to NS.
+         --  Expands State as much as possible and adds the constituents to NS
 
          ------------------
          -- Expand_State --
          ------------------
 
          procedure Expand_State (State : Entity_Name) is
+            Constituents : constant Name_Graphs.Cursor :=
+              State_Comp_Map.Find (State);
+
          begin
-            if GG_Has_Refinement (State) then
-               for Constituent of GG_Get_Constituents (State) loop
+            if Name_Graphs.Has_Element (Constituents) then
+               for Constituent of State_Comp_Map (Constituents) loop
                   Expand_State (Constituent);
                end loop;
             else
@@ -598,11 +596,13 @@ package body Flow_Generated_Globals.Phase_2 is
 
       begin
          for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
-            G := Global_Graph.Get_Key (V);
-
-            if G.Kind = Variable then
-               Expand_State (G.Name);
-            end if;
+            declare
+               G : constant Global_Id := Global_Graph.Get_Key (V);
+            begin
+               if G.Kind = Variable then
+                  Expand_State (G.Name);
+               end if;
+            end;
          end loop;
 
          return NS;
@@ -679,17 +679,16 @@ package body Flow_Generated_Globals.Phase_2 is
       --  this state abstraction is also a Read.
       for AS of Abstract_States loop
          declare
-            function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set
-              with Pre => GG_Mode = GG_Read_Mode and then
-                          GG_Has_Refinement (EN);
+            function Fully_Refine (EN : Entity_Name) return Name_Sets.Set
+              with Pre => State_Comp_Map.Contains (EN);
             --  Returns the most refined constituents of state abstraction EN
 
             ---------------------
-            -- GG_Fully_Refine --
+            -- Fully_Refine --
             ---------------------
 
-            function GG_Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
-               Unrefined : Name_Sets.Set := GG_Get_Constituents (EN);
+            function Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
+               Unrefined : Name_Sets.Set := State_Comp_Map (EN);
                Refined   : Name_Sets.Set := Name_Sets.Empty_Set;
 
             begin
@@ -697,9 +696,13 @@ package body Flow_Generated_Globals.Phase_2 is
                   declare
                      Constituent : constant Entity_Name :=
                        Unrefined (Unrefined.First);
+
+                     Refinement : constant Name_Graphs.Cursor :=
+                       State_Comp_Map.Find (Constituent);
+
                   begin
-                     if GG_Has_Refinement (Constituent) then
-                        Unrefined.Union (GG_Get_Constituents (Constituent));
+                     if Name_Graphs.Has_Element (Refinement) then
+                        Unrefined.Union (State_Comp_Map (Refinement));
                      else
                         Refined.Include (Constituent);
                      end if;
@@ -708,9 +711,9 @@ package body Flow_Generated_Globals.Phase_2 is
                end loop;
 
                return Refined;
-            end GG_Fully_Refine;
+            end Fully_Refine;
 
-            Constituents : constant Name_Sets.Set := GG_Fully_Refine (AS);
+            Constituents : constant Name_Sets.Set := Fully_Refine (AS);
 
          begin
             if not (for all C of Constituents => Most_Refined.Contains (C))
@@ -1638,7 +1641,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      State := GG_Enclosing_State (Var);
 
                      if State /= Null_Entity_Name then
-                        if (for all Const of GG_Get_Constituents (State)
+                        if (for all Const of State_Comp_Map (State)
                               => All_LHS.Contains (Const))
                         then
                            --  All constituents are initialized so we add the
@@ -2404,13 +2407,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function GG_Has_Effective_Writes (EN : Entity_Name) return Boolean
      renames Effective_Writes_Vars.Contains;
-
-   -----------------------
-   -- GG_Has_Refinement --
-   -----------------------
-
-   function GG_Has_Refinement (EN : Entity_Name) return Boolean
-     renames State_Comp_Map.Contains;
 
    -----------------------
    -- GG_Is_Constituent --
