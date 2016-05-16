@@ -295,6 +295,24 @@ package body SPARK_Definition is
    -- SPARK Violations --
    ----------------------
 
+   procedure Mark_Unsupported
+     (Msg  : String;
+      N    : Node_Id;
+      Extra_Name : Name_Id := No_Name;
+      Extra_Num  : Uint    := No_Uint;
+      Extra_Node : Node_Id := Empty) with
+     Pre => (Extra_Name /= No_Name) = (for some C of Msg => C = '%') and then
+            (Extra_Num  /= No_Uint) = (for some C of Msg => C = '^') and then
+            (Extra_Node /= Empty)   = (for some C of Msg => C = '}'),
+        Global => (Output => Violation_Detected,
+                   Input  => Current_SPARK_Pragma);
+   --  Mark node N as an unsupported SPARK construct. An error message is
+   --  issued if current SPARK_Mode is On.
+   --
+   --  Extra parameters correspond to special characters in the Msg string and
+   --  precondition (which is slightly less restrictive than it should) checks
+   --  that they are set correctly.
+
    procedure Mark_Violation
      (Msg           : String;
       N             : Node_Id;
@@ -857,38 +875,23 @@ package body SPARK_Definition is
 
                         Loop_Entity_Set.Include (Defining_Entity (N));
                      else
-                        Violation_Detected := True;
-                        if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                           Error_Msg_N
-                             ("non-scalar objects declared before "
-                              & "loop-invariant not yet supported", N);
-                        end if;
+                        Mark_Unsupported
+                          ("non-scalar object declared before loop-invariant",
+                           N);
                      end if;
                   when N_Loop_Statement =>
-                     Violation_Detected := True;
-                     if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                        Error_Msg_N
-                          ("nested loops before loop-invariant not yet "
-                             & "supported", N);
-                     end if;
+                     Mark_Unsupported
+                       ("nested loop before loop-invariant", N);
                   when N_Package_Declaration =>
-                     Violation_Detected := True;
-                     if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                        Error_Msg_N
-                          ("nested packages before loop-invariant not yet "
-                             & "supported", N);
-                     end if;
+                     Mark_Unsupported
+                       ("nested packages before loop-invariant", N);
                   when N_Subprogram_Declaration | N_Subprogram_Body =>
-                     Violation_Detected := True;
-                     if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                        Error_Msg_N
-                          ("nested subprograms before loop-invariant not yet "
-                             & "supported", N);
-                     end if;
+                     Mark_Unsupported
+                       ("nested subprogram before loop-invariant", N);
 
-                     --  Go inside if, case, and exended return statements to
-                     --  check for absence of non-scalar object declarations
-                     --  and nested loops.
+                  --  Go inside if, case, and exended return statements to
+                  --  check for absence of non-scalar object declarations
+                  --  and nested loops.
 
                   when N_If_Statement =>
                      Check_Loop_Invariant_Placement
@@ -1017,15 +1020,9 @@ package body SPARK_Definition is
             elsif Is_Update_Aggregate (N)
               and then Is_Update_Unconstr_Multidim_Aggr (N)
             then
-               Violation_Detected := True;
-
-               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_Name_1 := Name_Update;
-                  Error_Msg_N
-                    ("attribute % of unconstrained multidimensional array "
-                       & "is not yet supported",
-                     N);
-               end if;
+               Mark_Unsupported
+                 ("attribute % of unconstrained multidimensional array",
+                  N, Name_Update);
             end if;
             Mark_List (Expressions (N));
             Mark_List (Component_Associations (N));
@@ -1104,17 +1101,12 @@ package body SPARK_Definition is
             if Nkind (Ancestor_Part (N)) in N_Identifier | N_Expanded_Name
               and then Is_Type (Entity (Ancestor_Part (N)))
             then
-
                --  The ancestor part of an aggregate can be either an
                --  expression or a subtype.
                --  The second case is not currently supported in SPARK.
 
-               Violation_Detected := True;
-               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_N ("extension aggregate with subtype ancestor "
-                               & "part is not yet supported",
-                               N);
-               end if;
+               Mark_Unsupported
+                 ("extension aggregate with subtype ancestor part", N);
             end if;
 
             Mark (Ancestor_Part (N));
@@ -1192,14 +1184,11 @@ package body SPARK_Definition is
                  and then Has_Array_Type (Etype (Name (N)))
                then
                   if Number_Dimensions (Etype (Name (N))) > 1 then
-                     Violation_Detected := True;
-                     if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                        Error_Msg_Uint_1 :=
-                          UI_From_Int (Number_Dimensions (Etype (Name (N))));
-                        Error_Msg_N ("iterator specification over array of "
-                                     & "dimension ^ is not yet supported",
-                                     N);
-                     end if;
+                     Mark_Unsupported
+                       ("iterator specification over array of dimension ^",
+                        N,
+                        Extra_Num =>
+                          UI_From_Int (Number_Dimensions (Etype (Name (N)))));
                   end if;
 
                   if Present (Subtype_Indication (N)) then
@@ -1236,12 +1225,7 @@ package body SPARK_Definition is
 
          when N_Membership_Test =>
             if Is_Array_Type (Etype (Left_Opnd (N))) then
-               Violation_Detected := True;
-               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_N
-                    ("membership test on array values is not yet supported",
-                     N);
-               end if;
+               Mark_Unsupported ("membership test on array values", N);
             end if;
 
             Mark (Left_Opnd (N));
@@ -1495,13 +1479,9 @@ package body SPARK_Definition is
                     Retysp (Component_Type (Retysp (Etype (Expression (N)))));
                begin
                   if Target_Comp_Typ /= Source_Comp_Typ then
-                     Violation_Detected := True;
-                     if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                        Error_Msg_N
-                          ("conversion between array types that have "
-                           & "different element types is not yet supported",
-                           N);
-                     end if;
+                     Mark_Unsupported
+                       ("conversion between array types "
+                        & "that have different element types", N);
                   end if;
                end;
 
@@ -1543,13 +1523,8 @@ package body SPARK_Definition is
                         Has_Modular_Integer_Type (Source_Type)
                      then
                         if Esize (Target_Type) /= Esize (Source_Type) then
-                           Violation_Detected := True;
-                           if Emit_Messages and then SPARK_Pragma_Is (Opt.On)
-                           then
-                              Error_Msg_N
-                                ("this conversion between array types is not "
-                                 & "yet supported", N);
-                           end if;
+                           Mark_Unsupported
+                             ("this conversion between array types", N);
                            exit;
                         end if;
 
@@ -1557,12 +1532,8 @@ package body SPARK_Definition is
                              or else
                            Has_Modular_Integer_Type (Source_Type)
                      then
-                        Violation_Detected := True;
-                        if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                           Error_Msg_N
-                             ("this conversion between array types is not "
-                              & "yet supported", N);
-                        end if;
+                        Mark_Unsupported
+                          ("this conversion between array types", N);
                         exit;
                      end if;
 
@@ -1602,12 +1573,8 @@ package body SPARK_Definition is
                     Root_Type (Expr_Type);
                begin
                   if Target_Root_Type /= Source_Root_Type then
-                     Violation_Detected := True;
-                     if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                        Error_Msg_N
-                          ("conversion between different fixed-point types "
-                           & "is not yet supported", N);
-                     end if;
+                     Mark_Unsupported
+                       ("conversion between different fixed-point types", N);
                   end if;
                end;
             end if;
@@ -2161,12 +2128,8 @@ package body SPARK_Definition is
                --  if needed.
 
                else
-                  Violation_Detected := True;
-                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                     Error_Msg_Name_1 := Aname;
-                     Error_Msg_N ("attribute % not on variable or constant"
-                                  & " is not yet supported", N);
-                  end if;
+                  Mark_Unsupported
+                    ("attribute % not on variable or constant", N, Aname);
                end if;
             end if;
 
@@ -2226,11 +2189,8 @@ package body SPARK_Definition is
                  and then
                L_Type /= R_Type
             then
-               Violation_Detected := True;
-               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_N ("operation between different fixed-point types"
-                               & " is not yet supported", N);
-               end if;
+               Mark_Unsupported
+                 ("operation between different fixed-point types", N);
 
             elsif (Is_Fixed_Point_Type (L_Type)
                      and then
@@ -2240,11 +2200,8 @@ package body SPARK_Definition is
                      and then
                    Is_Floating_Point_Type (L_Type))
             then
-               Violation_Detected := True;
-               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_N ("operation between fixed-point type and"
-                               & " universal real is not yet supported", N);
-               end if;
+               Mark_Unsupported
+                 ("operation between fixed-point type and universal real", N);
 
             elsif (Is_Fixed_Point_Type (L_Type) and then L_Type /= E_Type)
                      or else
@@ -2259,12 +2216,8 @@ package body SPARK_Definition is
                then
                   null;
                else
-                  Violation_Detected := True;
-                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                     Error_Msg_N ("operation on fixed-point type"
-                                  & " with different result type"
-                                  & " is not fully supported", N);
-                  end if;
+                  Mark_Unsupported ("operation on fixed-point type"
+                                    & " with non-integer result type", N);
                end if;
             end if;
          end;
@@ -3358,23 +3311,15 @@ package body SPARK_Definition is
                --  from an interface.
 
                elsif Inherit_Subp_No_Intf'Length /= 0 then
-                  Violation_Detected := True;
-                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                     Error_Msg_N
-                       ("subprogram inherited from root and interface"
-                        & " is not yet supported", E);
-                  end if;
+                  Mark_Unsupported
+                    ("subprogram inherited from root and interface", E);
 
                --  Do not support yet a subprogram inherited from multiple
                --  interfaces.
 
                else
-                  Violation_Detected := True;
-                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                     Error_Msg_N
-                       ("subprogram inherited from multiple interfaces"
-                        & " is not yet supported", E);
-                  end if;
+                  Mark_Unsupported
+                    ("subprogram inherited from multiple interfaces", E);
                end if;
             end;
          end if;
@@ -3521,11 +3466,7 @@ package body SPARK_Definition is
                         --  as it is unclear wether we should do discriminant
                         --  checks for them or not.
 
-                        Violation_Detected := True;
-                        if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                           Error_Msg_N ("constrained class-wide subtypes "
-                                        & "are not yet supported", E);
-                        end if;
+                        Mark_Unsupported ("constrained class-wide subtype", E);
                      when others =>
                         raise Program_Error;
                   end case;
@@ -3749,13 +3690,9 @@ package body SPARK_Definition is
 
             begin
                if Positive (Number_Dimensions (E)) > Max_Array_Dimensions then
-                  Violation_Detected := True;
-                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                     Error_Msg_Node_1 := E;
-                     Error_Msg_N ("} of dimension greater than" &
-                                    Max_Array_Dimensions'Img &
-                                    " is not yet supported", E);
-                  end if;
+                  Mark_Unsupported
+                    ("} of dimension greater than" & Max_Array_Dimensions'Img,
+                     E, Extra_Node => E);
                end if;
 
                --  Check that all index types are in SPARK
@@ -3822,12 +3759,8 @@ package body SPARK_Definition is
                then
                   null;
                else
-                  Violation_Detected := True;
-                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                     Error_Msg_N
-                       ("fixed-point type whose small is not a negative power "
-                        & "of 2 or 10 is not yet supported", E);
-                  end if;
+                  Mark_Unsupported ("fixed-point type whose small is not "
+                                    & "a negative power of 2 or 10", E);
                end if;
             end;
 
@@ -3845,11 +3778,7 @@ package body SPARK_Definition is
             if Is_Modular_Integer_Type (E)
               and then Modulus (E) > UI_Expon (2, 64)
             then
-               Violation_Detected := True;
-               if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                  Error_Msg_N ("modulus greater than 2 ** 64 "
-                               & "is not yet supported", E);
-               end if;
+               Mark_Unsupported ("modulus greater than 2 ** 64", E);
             end if;
 
          elsif Is_Class_Wide_Type (E) then
@@ -3875,11 +3804,8 @@ package body SPARK_Definition is
                elsif Has_Discriminants (Retysp (Specific_Type))
                  and then Is_Constrained (Retysp (Specific_Type))
                then
-                  Violation_Detected := True;
-                  if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-                     Error_Msg_N ("Class attribute of a constrained type "
-                                  & "is not yet supported", E);
-                  end if;
+                  Mark_Unsupported
+                    ("Class attribute of a constrained type", E);
                end if;
             end;
 
@@ -5575,6 +5501,32 @@ package body SPARK_Definition is
    begin
       Mark (Right_Opnd (N));
    end Mark_Unary_Op;
+
+   ----------------------
+   -- Mark_Unsupported --
+   ----------------------
+
+   procedure Mark_Unsupported
+     (Msg  : String;
+      N    : Node_Id;
+      Extra_Name : Name_Id := No_Name;
+      Extra_Num  : Uint    := No_Uint;
+      Extra_Node : Node_Id := Empty)
+   is
+   begin
+      --  Flag the violation, so that the current entity is marked accordingly
+
+      Violation_Detected := True;
+
+      --  If SPARK_Mode is On, raise an error
+
+      if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+         Error_Msg_Name_1 := Extra_Name;
+         Error_Msg_Uint_1 := Extra_Num;
+         Error_Msg_Node_1 := Extra_Node;
+         Error_Msg_N (Msg & " is not yet supported", N);
+      end if;
+   end Mark_Unsupported;
 
    --------------------
    -- Mark_Violation --
