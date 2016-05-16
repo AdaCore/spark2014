@@ -1,0 +1,4 @@
+foo.ads:6:14: info: initialization of "G" proved
+foo.ads:6:14: info: initialization of "G" proved
+Corrupted ali file detected (foo.ali): inconsistent spark version. Call gnatprove with "--clean".
+gnatprove: error during flow analysis and proof

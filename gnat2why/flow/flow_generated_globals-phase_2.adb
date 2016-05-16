@@ -39,6 +39,7 @@ with Snames;                     use Snames;
 with Call;                       use Call;
 with Gnat2Why_Args;
 with Hashing;                    use Hashing;
+with SPARK2014VSN;               use SPARK2014VSN;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
@@ -1707,7 +1708,8 @@ package body Flow_Generated_Globals.Phase_2 is
          ALI_File  : Ada.Text_IO.File_Type;
          Line      : Unbounded_String;
 
-         Found_End : Boolean := False;
+         Found_End     : Boolean := False;
+         Found_Version : Boolean := False;
          --  This will be set to True once we find the end marker
 
       --  Start of processing for Load_GG_Info_From_ALI
@@ -1715,7 +1717,33 @@ package body Flow_Generated_Globals.Phase_2 is
       begin
          Open (ALI_File, In_File, ALI_File_Name_Str);
 
-         --  Skip to the GG section (this should be the very last section)
+         --  Skip to the version section
+         loop
+            if End_Of_File (ALI_File) then
+               Close (ALI_File);
+               return;
+            end if;
+
+            Get_Line (ALI_File, Line);
+            if Length (Line) >= 3 then
+               if Slice (Line, 1, 3) = "QQ " then
+                  Found_Version := To_String (Line) = "QQ SPARKVERSION " &
+                    SPARK2014_Static_Version_String;
+                  exit;
+               elsif Slice (Line, 1, 3) = "GG " then
+                  --  We have encountered a GG section without the spark
+                  --  version marker. This indicates an older spark
+                  --  version.
+                  exit;
+               end if;
+            end if;
+         end loop;
+
+         if not Found_Version then
+            Issue_Corrupted_File_Error ("inconsistent spark version");
+         end if;
+
+         --  Now skip to the GG section
          loop
             if End_Of_File (ALI_File) then
                Close (ALI_File);

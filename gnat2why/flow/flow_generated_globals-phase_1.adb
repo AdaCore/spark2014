@@ -21,18 +21,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Flow_Generated_Globals.ALI_Serialization;
-use Flow_Generated_Globals.ALI_Serialization;
-
 with Ada.Strings.Unbounded;
+
 with Einfo;                   use Einfo;
 with Lib.Util;                use Lib.Util;
 with Osint.C;                 use Osint.C;
-with Serialisation;           use Serialisation;
 with Sem_Util;                use Sem_Util;
 with Snames;                  use Snames;
+
 with SPARK_Util;              use SPARK_Util;
 with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
+with SPARK2014VSN;            use SPARK2014VSN;
+
+with Flow_Generated_Globals.ALI_Serialization;
+use Flow_Generated_Globals.ALI_Serialization;
+with Serialisation;           use Serialisation;
 
 package body Flow_Generated_Globals.Phase_1 is
 
@@ -384,6 +387,9 @@ package body Flow_Generated_Globals.Phase_1 is
    begin
       --  Open output library info for writing
       Open_Output_Library_Info;
+      Write_Info_Str ("QQ SPARKVERSION " &
+                        SPARK2014_Static_Version_String);
+      Write_Info_Terminate;
 
       --  Set mode to writing mode
       Current_Mode := GG_Write_Mode;
