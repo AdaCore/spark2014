@@ -3037,8 +3037,8 @@ package body Gnat2Why.Expr is
       --  Dynamic property of the type itself
 
       if Type_Is_Modeled_As_Base (Ty_Ext)
-        or else (Is_Scalar_Type (Ty_Ext)
-                 and then Get_Type_Kind (Get_Type (+Expr)) = EW_Split)
+        or else (Use_Split_Form_For_Type (Ty_Ext)
+                 and then Get_Type_Kind (Get_Type (+Expr)) /= EW_Abstract)
       then
          T := +New_Dynamic_Property (Domain => EW_Pred,
                                      Ty     => Ty_Ext,
@@ -12687,7 +12687,7 @@ package body Gnat2Why.Expr is
       Quant_Var  := Get_Quantified_Variable (Expr, Over_Range);
       Quant_Type := Etype (Quant_Var);
 
-      W_Quant_Type := (if Use_Base_Type_For_Type (Quant_Type)
+      W_Quant_Type := (if Use_Split_Form_For_Type (Quant_Type)
                        then Base_Why_Type (Quant_Type)
                        else Type_Of_Node (Quant_Type));
 
@@ -12740,9 +12740,9 @@ package body Gnat2Why.Expr is
       end if;
 
       if Need_Temp_Var then
-         W_Index_Type := (if Use_Base_Type_For_Type (Index_Type)
-                          then Base_Why_Type (Index_Type)
-                          else Type_Of_Node (Index_Type));
+         W_Index_Type := (if Use_Split_Form_For_Type (Index_Type)
+                       then Base_Why_Type (Index_Type)
+                       else Type_Of_Node (Index_Type));
          W_Index_Var := New_Temp_Identifier (Typ => W_Index_Type);
       else
          W_Index_Type := W_Quant_Type;
@@ -12770,6 +12770,9 @@ package body Gnat2Why.Expr is
 
          W_Bound_Expr := Range_Expr (Bound_Expr, +W_Index_Var, Domain, Params);
       else
+         --  Over_Content or Over_Cursor
+         --  Call the appropriate primitive
+
          W_Bound_Expr :=
            +Make_Constraint_For_Iterable
            (Ada_Node     => Expr,
@@ -12779,6 +12782,24 @@ package body Gnat2Why.Expr is
             W_Index_Var  => +W_Index_Var,
             Domain       => Domain,
             Params       => Params);
+
+         --  Add the dynamic predicate of the index type
+         --  It will be needed to use Has_Element definition.
+
+         declare
+            Inv : constant W_Pred_Id := Compute_Dynamic_Invariant
+              (Expr          => +W_Index_Var,
+               Ty            => Index_Type,
+               Initialized   => True_Term,
+               Only_Var      => False_Term,
+               Params        => Params);
+         begin
+            W_Bound_Expr :=
+              New_And_Expr
+                (Left   => Boolean_Expr_Of_Pred (+Inv, Domain),
+                 Right  => W_Bound_Expr,
+                 Domain => Domain);
+         end;
       end if;
 
       --  Step 5: translate the condition in the quantified expression, in a
