@@ -12122,77 +12122,83 @@ package body Gnat2Why.Expr is
    -- Transform_Priority_Pragmas --
    --------------------------------
 
-   function Transform_Priority_Pragmas (Prag : Node_Id) return W_Prog_Id is
+   function Transform_Priority_Pragmas (Prag : Node_Id) return W_Prog_Id
+   is
+      Pragma_Arguments : constant List_Id :=
+        Pragma_Argument_Associations (Prag);
 
-      Prag_Id : constant Pragma_Id := Get_Pragma_Id (Prag);
-      Expr    : constant Node_Id :=
-        (if Present (Pragma_Argument_Associations (Prag)) then
-            Expression (First (Pragma_Argument_Associations (Prag)))
+      Expr : constant Node_Id :=
+        (if Present (Pragma_Arguments)
+         then Expression (First (Pragma_Arguments))
          else Empty);
-
-      --  Task Priorities (D.1 (17)):
-      --
-      --  For the Priority aspect, the value of the expression is converted to
-      --  the subtype Priority; for the Interrupt_Priority aspect, this value
-      --  is converted to the subtype Any_Priority.
-      --
-      --  Protected Subprograms (D.3 (6)):
-      --
-      --  The expression specified for the Priority or Interrupt_Priority
-      --  aspect (see D.1) is evaluated as part of the creation of the
-      --  corresponding protected object and converted to the subtype
-      --  System.Any_Priority or System.Interrupt_Priority, respectively.
-      --
-      --  We use the Current_Subp entity to know whether the priority is a task
-      --  priority or a protected priority. The priority is a task priority if
-      --  it applies syntactically to a task or to a subprogram.
-
-      Is_Task_Priority : constant Boolean :=
-        Ekind (Current_Subp) in Task_Kind | Subprogram_Kind;
-
-      Ty : constant Entity_Id :=
-        RTE (if Is_Task_Priority
-             then
-               (if Prag_Id = Pragma_Interrupt_Priority
-                then RE_Any_Priority
-                else RE_Priority)
-             else
-               (if Prag_Id = Pragma_Interrupt_Priority
-                then RE_Interrupt_Priority
-                else RE_Any_Priority));
-
-      Why_Expr : W_Expr_Id;
 
    begin
       if Present (Expr) then
-         Why_Expr :=
-           Transform_Expr
-             (Expr          => Expr,
-              Domain        => EW_Term,
-              Params        => Body_Params,
-              Expected_Type => EW_Int_Type);
+         declare
+            --  Task Priorities (D.1 (17)):
+            --
+            --  For the Priority aspect, the value of the expression is
+            --  converted to the subtype Priority; for the Interrupt_Priority
+            --  aspect, this value is converted to the subtype Any_Priority.
+            --
+            --  Protected Subprograms (D.3 (6)):
+            --
+            --  The expression specified for the Priority or Interrupt_Priority
+            --  aspect (see D.1) is evaluated as part of the creation of the
+            --  corresponding protected object and converted to the subtype
+            --  System.Any_Priority or System.Interrupt_Priority, respectively.
+            --
+            --  We use the Current_Subp entity to know whether the priority is
+            --  a task priority or a protected priority. The priority is a task
+            --  priority if it applies syntactically to a task or to a
+            --  subprogram.
 
-         return
-           New_Located_Assert
-             (Ada_Node => Expr,
-              Pred     =>
-                +New_Range_Expr
-                (Domain => EW_Pred,
-                 Low    =>
-                   New_Attribute_Expr
-                     (Domain => EW_Term,
-                      Ty     => Ty,
-                      Attr   => Attribute_First,
-                      Params => Body_Params),
-                 High   =>
-                   New_Attribute_Expr
-                     (Domain => EW_Term,
-                      Ty     => Ty,
-                      Attr   => Attribute_Last,
-                      Params => Body_Params),
-                 Expr   => Why_Expr),
-              Reason   => VC_Range_Check,
-              Kind     => EW_Check);
+            Is_Task_Priority : constant Boolean :=
+              Ekind (Current_Subp) in Task_Kind | Subprogram_Kind;
+
+            Prag_Id : constant Pragma_Id := Get_Pragma_Id (Prag);
+
+            Ty : constant Entity_Id :=
+              RTE (if Is_Task_Priority
+                   then
+                     (if Prag_Id = Pragma_Interrupt_Priority
+                      then RE_Any_Priority
+                      else RE_Priority)
+                   else
+                     (if Prag_Id = Pragma_Interrupt_Priority
+                      then RE_Interrupt_Priority
+                      else RE_Any_Priority));
+
+            Why_Expr : constant W_Expr_Id :=
+              Transform_Expr
+                (Expr          => Expr,
+                 Domain        => EW_Term,
+                 Params        => Body_Params,
+                 Expected_Type => EW_Int_Type);
+
+         begin
+            return
+              New_Located_Assert
+                (Ada_Node => Expr,
+                 Pred     =>
+                   +New_Range_Expr
+                     (Domain => EW_Pred,
+                      Low    =>
+                        New_Attribute_Expr
+                          (Domain => EW_Term,
+                           Ty     => Ty,
+                           Attr   => Attribute_First,
+                           Params => Body_Params),
+                      High   =>
+                        New_Attribute_Expr
+                          (Domain => EW_Term,
+                           Ty     => Ty,
+                           Attr   => Attribute_Last,
+                           Params => Body_Params),
+                      Expr   => Why_Expr),
+                 Reason   => VC_Range_Check,
+                 Kind     => EW_Check);
+         end;
       else
          return +Void;
       end if;
