@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2015, AdaCore                   --
---                       Copyright (C) 2014-2015, Altran UK Limited         --
+--                       Copyright (C) 2010-2016, AdaCore                   --
+--                       Copyright (C) 2014-2016, Altran UK Limited         --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -519,31 +519,18 @@ package body Gnat2Why.Driver is
    ------------------------
 
    function Is_Back_End_Switch (Switch : String) return Boolean is
-      First : constant Positive := Switch'First + 1;
-      Last  : Natural           := Switch'Last;
+      First : constant Natural := Switch'First + 1;
+      Last  : constant Natural := Switch_Last (Switch);
 
    begin
-      if Last >= First
-        and then Switch (Last) = ASCII.NUL
-      then
-         Last := Last - 1;
-      end if;
+      --  For now we allow the -g/-O/-f/-m/-W/-w and -pipe switches, even
+      --  though they will have no effect. This permits compatibility with
+      --  existing scripts.
 
-      if not Is_Switch (Switch) then
-         return False;
-      end if;
-
-      --  For now we allow the -g/-O/-f/-m/-W/-w switches, even though they
-      --  will have no effect.
-      --  This permits compatibility with existing scripts.
-
-      case Switch (First) is
-         when 'f' | 'g' | 'm' | 'O' | 'W' | 'w' =>
-            return True;
-
-         when others =>
-            return False;
-      end case;
+      return
+        Is_Switch (Switch)
+          and then (Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w'
+                      or else Switch (First .. Last) = "pipe");
    end Is_Back_End_Switch;
 
    ------------------------------
