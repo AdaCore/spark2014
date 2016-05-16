@@ -301,6 +301,9 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Local subprograms
    ----------------------------------------------------------------------
 
+   function Fully_Refine (EN : Entity_Name) return Name_Sets.Set;
+   --  Returns the most refined constituents of variable or state abstraction
+
    function GG_Enclosing_State (EN : Entity_Name) return Any_Entity_Name;
    --  Returns the Entity_Name of the directly enclosing state. If one
    --  does not exist it returns Null_Entity_Name.
@@ -352,6 +355,39 @@ package body Flow_Generated_Globals.Phase_2 is
 
    procedure Print_Name_Set (Header : String; Set : Name_Sets.Set);
    --  Print Header followed by elements of Set
+
+   ---------------------
+   -- Fully_Refine --
+   ---------------------
+
+   function Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
+      Refined : Name_Sets.Set := Name_Sets.Empty_Set;
+
+      procedure Expand (State : Entity_Name);
+      --  Recursively expand state into its constituents
+
+      ------------
+      -- Expand --
+      ------------
+
+      procedure Expand (State : Entity_Name) is
+         Constituents : constant Name_Graphs.Cursor :=
+           State_Comp_Map.Find (State);
+      begin
+         if Name_Graphs.Has_Element (Constituents) then
+            for Constituent of State_Comp_Map (Constituents) loop
+               Expand (Constituent);
+            end loop;
+         else
+            Refined.Insert (State);
+         end if;
+      end Expand;
+
+   begin
+      Expand (EN);
+
+      return Refined;
+   end Fully_Refine;
 
    -----------------------------------
    -- GG_Get_All_State_Abstractions --
@@ -571,36 +607,13 @@ package body Flow_Generated_Globals.Phase_2 is
       function Calculate_MR (Start : Vertex_Id) return Name_Sets.Set is
          NS : Name_Sets.Set := Name_Sets.Empty_Set;
 
-         procedure Expand_State (State : Entity_Name);
-         --  Expands State as much as possible and adds the constituents to NS
-
-         ------------------
-         -- Expand_State --
-         ------------------
-
-         procedure Expand_State (State : Entity_Name) is
-            Constituents : constant Name_Graphs.Cursor :=
-              State_Comp_Map.Find (State);
-
-         begin
-            if Name_Graphs.Has_Element (Constituents) then
-               for Constituent of State_Comp_Map (Constituents) loop
-                  Expand_State (Constituent);
-               end loop;
-            else
-               NS.Include (State);
-            end if;
-         end Expand_State;
-
-      --  Start of processing for Calculate_MR
-
       begin
          for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
             declare
                G : constant Global_Id := Global_Graph.Get_Key (V);
             begin
                if G.Kind = Variable then
-                  Expand_State (G.Name);
+                  NS.Union (Fully_Refine (G.Name));
                end if;
             end;
          end loop;
@@ -647,7 +660,7 @@ package body Flow_Generated_Globals.Phase_2 is
             Enclosing_State : Any_Entity_Name;
 
             function Is_Abstract_State return Boolean is
-               (Var_Name /= N);
+              (Var_Name /= N);
             --  If the visible name is different from the original one, then
             --  the original one must have been hidden in an abstract state.
 
@@ -679,40 +692,6 @@ package body Flow_Generated_Globals.Phase_2 is
       --  this state abstraction is also a Read.
       for AS of Abstract_States loop
          declare
-            function Fully_Refine (EN : Entity_Name) return Name_Sets.Set
-              with Pre => State_Comp_Map.Contains (EN);
-            --  Returns the most refined constituents of state abstraction EN
-
-            ---------------------
-            -- Fully_Refine --
-            ---------------------
-
-            function Fully_Refine (EN : Entity_Name) return Name_Sets.Set is
-               Unrefined : Name_Sets.Set := State_Comp_Map (EN);
-               Refined   : Name_Sets.Set := Name_Sets.Empty_Set;
-
-            begin
-               while not Unrefined.Is_Empty loop
-                  declare
-                     Constituent : constant Entity_Name :=
-                       Unrefined (Unrefined.First);
-
-                     Refinement : constant Name_Graphs.Cursor :=
-                       State_Comp_Map.Find (Constituent);
-
-                  begin
-                     if Name_Graphs.Has_Element (Refinement) then
-                        Unrefined.Union (State_Comp_Map (Refinement));
-                     else
-                        Refined.Include (Constituent);
-                     end if;
-                     Unrefined.Delete (Constituent);
-                  end;
-               end loop;
-
-               return Refined;
-            end Fully_Refine;
-
             Constituents : constant Name_Sets.Set := Fully_Refine (AS);
 
          begin
