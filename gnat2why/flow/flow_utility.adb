@@ -1587,11 +1587,8 @@ package body Flow_Utility is
                Outdent;
             end if;
 
-            GG_Get_Globals (Subprogram,
-                            Scope,
-                            Proof_Ins,
-                            Reads,
-                            Writes);
+            GG_Get_Globals (Subprogram, Scope,
+                            Proof_Ins, Reads, Writes);
 
             if Debug_Trace_Get_Global then
                Indent;

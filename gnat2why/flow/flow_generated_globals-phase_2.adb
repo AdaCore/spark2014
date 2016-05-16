@@ -325,6 +325,9 @@ package body Flow_Generated_Globals.Phase_2 is
    procedure Register_Task_Object
      (Type_Name : Entity_Name;
       Object    : Task_Object);
+   --  Register an instance Object whose type is a task type Type_Name; this
+   --  will be either an explicit instance or the implicit environment task
+   --  for the "main" subprogram.
 
    procedure Up_Project
      (Most_Refined      : Name_Sets.Set;
