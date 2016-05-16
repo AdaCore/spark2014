@@ -168,10 +168,8 @@ package body Flow_Generated_Globals.Phase_1 is
    -- GG_Register_Nonblocking --
    -----------------------------
 
-   procedure GG_Register_Nonblocking (EN : Entity_Name) is
-   begin
-      Nonblocking_Subprograms.Append (EN);
-   end GG_Register_Nonblocking;
+   procedure GG_Register_Nonblocking (EN : Entity_Name) renames
+     Nonblocking_Subprograms.Append;
 
    ----------------------------------
    -- GG_Register_Protected_Object --
@@ -243,7 +241,8 @@ package body Flow_Generated_Globals.Phase_1 is
                                        TI : Tasking_Info)
    is
    begin
-      Tasking_Info_List.Append ((Caller => EN, Objects => TI));
+      Tasking_Info_List.Append ((Caller => EN,
+                                 Objects => TI));
    end GG_Register_Tasking_Info;
 
    -----------------------
