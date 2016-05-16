@@ -48,13 +48,13 @@ package Why.Atree.Modules is
    --  Predefined Why modules --
    -----------------------------
 
-   --  the Why standard library
+   --  The Why standard library
 
    Int_Module : W_Module_Id;
    RealInfix  : W_Module_Id;
    Ref_Module : W_Module_Id;
 
-   --  basic Why types
+   --  Basic Why types
 
    EW_Bool_Type         : W_Type_Id;
    EW_Int_Type          : W_Type_Id;
@@ -96,7 +96,7 @@ package Why.Atree.Modules is
    Standard_Array_Logical_Ax    : W_Module_Id;
    Subtype_Array_Logical_Ax     : W_Module_Id;
 
-   --  modules of the _gnatprove_standard.mlw file
+   --  Modules of the _gnatprove_standard.mlw file
 
    type M_Main_Type is record
       Module            : W_Module_Id;
@@ -193,13 +193,13 @@ package Why.Atree.Modules is
       Dynamic_Prop    : W_Identifier_Id;
    end record;
 
-   --  Array_Modules, an array of the four modules Array__1 .. Array__4
-   --  that should only be used to create the array theories of M_Arrays(_1),
+   --  Array_Modules, an array of the four modules Array__1 .. Array__4 that
+   --  should only be used to create the array theories of M_Arrays(_1),
    --  through "Create_Rep_Array_Theory".
 
    Array_Modules : W_Module_Array (1 .. Max_Array_Dimensions);
 
-   --  symbols common to all arrays
+   --  Symbols common to all arrays
 
    type M_Array_Type is record
       Module  : W_Module_Id;
@@ -210,7 +210,7 @@ package Why.Atree.Modules is
       Slide   : W_Identifier_Id;
    end record;
 
-   --  symbols which only exist for one-dimensional arrays
+   --  Symbols which only exist for one-dimensional arrays
 
    type M_Array_1_Type is record
       Module    : W_Module_Id;         --  copy of M_Arrays (1).Module
@@ -218,21 +218,21 @@ package Why.Atree.Modules is
       Singleton : W_Identifier_Id;
    end record;
 
-   --  symbols which only exist for one-dimensional arrays of discrete types
+   --  Symbols which only exist for one-dimensional arrays of discrete types
 
    type M_Array_1_Comp_Type is record
-      Module    : W_Module_Id;         --  copy of M_Arrays (1).Module
-      Compare   : W_Identifier_Id;
+      Module  : W_Module_Id;         --  copy of M_Arrays (1).Module
+      Compare : W_Identifier_Id;
    end record;
 
-   --  symbols which only exist for one-dimensional arrays of boolean types
+   --  Symbols which only exist for one-dimensional arrays of boolean types
 
    type M_Array_1_Bool_Op_Type is record
-      Module    : W_Module_Id;         --  copy of M_Arrays (1).Module
-      Xorb      : W_Identifier_Id;
-      Andb      : W_Identifier_Id;
-      Orb       : W_Identifier_Id;
-      Notb      : W_Identifier_Id;
+      Module : W_Module_Id;         --  copy of M_Arrays (1).Module
+      Xorb   : W_Identifier_Id;
+      Andb   : W_Identifier_Id;
+      Orb    : W_Identifier_Id;
+      Notb   : W_Identifier_Id;
    end record;
 
    type M_BV_Type is record
@@ -345,47 +345,47 @@ package Why.Atree.Modules is
    --  @param T a bitvector type as Why tree node
    --  @return the corresponding Why module record
 
-   --  builtin unary minus
+   --  Built-in unary minus
 
-   Int_Unary_Minus           : W_Identifier_Id;
-   Fixed_Unary_Minus         : W_Identifier_Id;
-   Real_Unary_Minus          : W_Identifier_Id;
+   Int_Unary_Minus   : W_Identifier_Id;
+   Fixed_Unary_Minus : W_Identifier_Id;
+   Real_Unary_Minus  : W_Identifier_Id;
 
-   --  built_in void ident
+   --  Built-in void ident
 
    Void : W_Identifier_Id;
 
-   --  builtin infix symbols
+   --  Built-in infix symbols
 
-   Why_Eq                    : W_Identifier_Id;
-   Why_Neq                   : W_Identifier_Id;
-   Int_Infix_Add             : W_Identifier_Id;
-   Int_Infix_Subtr           : W_Identifier_Id;
-   Int_Infix_Mult            : W_Identifier_Id;
-   Int_Infix_Le              : W_Identifier_Id;
-   Int_Infix_Ge              : W_Identifier_Id;
-   Int_Infix_Gt              : W_Identifier_Id;
-   Int_Infix_Lt              : W_Identifier_Id;
+   Why_Eq            : W_Identifier_Id;
+   Why_Neq           : W_Identifier_Id;
+   Int_Infix_Add     : W_Identifier_Id;
+   Int_Infix_Subtr   : W_Identifier_Id;
+   Int_Infix_Mult    : W_Identifier_Id;
+   Int_Infix_Le      : W_Identifier_Id;
+   Int_Infix_Ge      : W_Identifier_Id;
+   Int_Infix_Gt      : W_Identifier_Id;
+   Int_Infix_Lt      : W_Identifier_Id;
 
-   Fixed_Infix_Add           : W_Identifier_Id;
-   Fixed_Infix_Subtr         : W_Identifier_Id;
-   Fixed_Infix_Mult          : W_Identifier_Id;
+   Fixed_Infix_Add   : W_Identifier_Id;
+   Fixed_Infix_Subtr : W_Identifier_Id;
+   Fixed_Infix_Mult  : W_Identifier_Id;
 
-   Real_Infix_Add            : W_Identifier_Id;
-   Real_Infix_Subtr          : W_Identifier_Id;
-   Real_Infix_Mult           : W_Identifier_Id;
-   Real_Infix_Lt             : W_Identifier_Id;
-   Real_Infix_Le             : W_Identifier_Id;
-   Real_Infix_Gt             : W_Identifier_Id;
-   Real_Infix_Ge             : W_Identifier_Id;
+   Real_Infix_Add    : W_Identifier_Id;
+   Real_Infix_Subtr  : W_Identifier_Id;
+   Real_Infix_Mult   : W_Identifier_Id;
+   Real_Infix_Lt     : W_Identifier_Id;
+   Real_Infix_Le     : W_Identifier_Id;
+   Real_Infix_Gt     : W_Identifier_Id;
+   Real_Infix_Ge     : W_Identifier_Id;
 
-   To_String_Id              : W_Identifier_Id;
-   Of_String_Id              : W_Identifier_Id;
+   To_String_Id      : W_Identifier_Id;
+   Of_String_Id      : W_Identifier_Id;
 
    --  Other identifiers
 
-   Old_Tag                   : Name_Id;
-   Def_Name                  : W_Identifier_Id;
+   Old_Tag  : Name_Id;
+   Def_Name : W_Identifier_Id;
 
    --  Labels
 
@@ -398,17 +398,16 @@ package Why.Atree.Modules is
    Keep_On_Simp      : Name_Id;
 
    procedure Initialize;
-   --  Call this procedure before using any of the entities in this package.
+   --  Call this procedure before using any of the entities in this package
 
    function E_Module (E : Entity_Id) return W_Module_Id;
-   --  this function returns the module where File = No_Name and Name =
-   --  Full_Name (E). Memoization may be used. Returns empty when it is called
-   --  with a node which is not an entity, and no module is known for this
-   --  entity.
+   --  Returns the module where File = No_Name and Name = Full_Name (E).
+   --  Memoization may be used. Returns Empty when it is called with a node
+   --  which is not an entity, and no module is known for this entity.
 
    function E_Symb (E : Entity_Id; S : Why_Name_Enum)
                     return W_Identifier_Id;
-   --  return the symbol which corresponds to [S] in the Why3 module which
+   --  Return the symbol which corresponds to [S] in the Why3 module which
    --  corresponds to E
    --  @param E the Ada type entity
    --  @param S a symbol which is allowed for that type entity
@@ -416,10 +415,10 @@ package Why.Atree.Modules is
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
 
    function Get_Module_Name (M : W_Module_Id) return String;
-   --  Return the name of the module.
+   --  Return the name of the module
 
    procedure Insert_Extra_Module (N : Node_Id; M : W_Module_Id);
-   --  After a call to this procedure, E_Module (N) will return M.
+   --  After a call to this procedure, E_Module (N) will return M
 
    function Init_Array_Module (Module : W_Module_Id) return M_Array_Type;
    function Init_Array_1_Module (Module : W_Module_Id) return M_Array_1_Type;
