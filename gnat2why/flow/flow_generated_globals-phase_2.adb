@@ -695,8 +695,7 @@ package body Flow_Generated_Globals.Phase_2 is
             Constituents : constant Name_Sets.Set := Fully_Refine (AS);
 
          begin
-            if not (for all C of Constituents => Most_Refined.Contains (C))
-            then
+            if not Constituents.Is_Subset (Of_Set => Most_Refined) then
                Reads.Include (Get_Flow_Id (AS, In_View, Scope));
             end if;
          end;
@@ -1620,8 +1619,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      State := GG_Enclosing_State (Var);
 
                      if State /= Null_Entity_Name then
-                        if (for all Const of State_Comp_Map (State)
-                              => All_LHS.Contains (Const))
+                        if State_Comp_Map (State).Is_Subset (Of_Set => All_LHS)
                         then
                            --  All constituents are initialized so we add the
                            --  entire abstract state.
