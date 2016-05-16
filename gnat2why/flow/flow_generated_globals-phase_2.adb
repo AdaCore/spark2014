@@ -1729,16 +1729,20 @@ package body Flow_Generated_Globals.Phase_2 is
 
             Get_Line (ALI_File, Line);
             if Length (Line) >= 3 then
-               if Slice (Line, 1, 3) = "QQ " then
-                  Found_Version := To_String (Line) = "QQ SPARKVERSION " &
-                    SPARK2014_Static_Version_String;
-                  exit;
-               elsif Slice (Line, 1, 3) = "GG " then
-                  --  We have encountered a GG section without the spark
-                  --  version marker. This indicates an older spark
-                  --  version.
-                  exit;
-               end if;
+               declare
+                  Header : constant String (1 .. 3) := Slice (Line, 1, 3);
+
+               begin
+                  if Header = "QQ " then
+                     Found_Version := To_String (Line) = "QQ SPARKVERSION " &
+                       SPARK2014_Static_Version_String;
+                     exit;
+                  elsif Header = "GG " then
+                     --  We have encountered a GG section without the spark
+                     --  version marker. This indicates an older spark version.
+                     exit;
+                  end if;
+               end;
             end if;
          end loop;
 
