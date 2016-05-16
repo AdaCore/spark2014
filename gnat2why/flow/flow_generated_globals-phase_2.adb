@@ -1687,8 +1687,8 @@ package body Flow_Generated_Globals.Phase_2 is
                  ". Call gnatprove with ""--clean"".");
          end Issue_Corrupted_File_Error;
 
-         ALI_File  : Ada.Text_IO.File_Type;
-         Line      : Unbounded_String;
+         ALI_File : Ada.Text_IO.File_Type;
+         Line     : Unbounded_String;
 
          Found_End     : Boolean := False;
          Found_Version : Boolean := False;
@@ -2317,7 +2317,7 @@ package body Flow_Generated_Globals.Phase_2 is
    begin
       --  Vertex V might be null if we only have a spec for entity Ent
       if V /= Null_Vertex then
-         --  Collect objects from the caller subprogram it self
+         --  Collect objects from the caller subprogram itself
          Collect_Objects_From_Subprogram (Ent);
 
          --  and from all its callees
@@ -2361,7 +2361,6 @@ package body Flow_Generated_Globals.Phase_2 is
    ---------------------------
 
    function GG_Has_Been_Generated return Boolean is (GG_Generated);
-   --  @return True iff the Global Graph has been generated
 
    --------------------------
    -- GG_Has_Async_Readers --
@@ -2630,12 +2629,12 @@ package body Flow_Generated_Globals.Phase_2 is
 
          Label : constant String :=
            (case G_Id.Kind is
-              when Subprogram      => "Subprogram " & To_String (G_Id.Name),
-              when Proof_Ins       => To_String (G_Id.Name) & "'Proof_Ins",
-              when Inputs          => To_String (G_Id.Name) & "'Inputs",
-              when Outputs         => To_String (G_Id.Name) & "'Outputs",
-              when Variable        => To_String (G_Id.Name),
-              when Null_Global_Id  => raise Program_Error);
+              when Subprogram     => "Subprogram " & To_String (G_Id.Name),
+              when Proof_Ins      => To_String (G_Id.Name) & "'Proof_Ins",
+              when Inputs         => To_String (G_Id.Name) & "'Inputs",
+              when Outputs        => To_String (G_Id.Name) & "'Outputs",
+              when Variable       => To_String (G_Id.Name),
+              when Null_Global_Id => raise Program_Error);
 
          Rv : constant Node_Display_Info := Node_Display_Info'
            (Show        => True,
