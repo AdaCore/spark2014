@@ -182,8 +182,7 @@ package body Flow_Classwide is
               (E          => E,
                Msg        =>
                  "class-wide " & Mode (F) & " & must also be a " &
-                 "class-wide input " &
-                 "of overridden subprogram #",
+                 "class-wide input of overridden subprogram #",
                Severity   => Error_Kind,
                N          => E,
                Suppressed => Suppressed,
@@ -204,8 +203,7 @@ package body Flow_Classwide is
               (E          => E,
                Msg        =>
                  "class-wide " & Mode (F) & " & must also be a " &
-                 "class-wide output " &
-                 "of overridden subprogram #",
+                 "class-wide output of overridden subprogram #",
                Severity   => Error_Kind,
                N          => E,
                Suppressed => Suppressed,
@@ -244,8 +242,7 @@ package body Flow_Classwide is
                  (E          => E,
                   Msg        =>
                     "class-wide output & of overridden subprogram # " &
-                    "must also be a " &
-                    "class-wide output here",
+                    "must also be a class-wide output here",
                   Severity   => Error_Kind,
                   N          => E,
                   Suppressed => Suppressed,
