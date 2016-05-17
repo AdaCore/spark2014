@@ -431,14 +431,7 @@ package body Flow_Refinement is
                                          S : Flow_Scope)
                                          return Boolean
    is
-      Ref_Scope : Flow_Scope;
-   begin
-      Ref_Scope := Get_Flow_Scope (E);
-      pragma Assert (Present (Ref_Scope));
-      Ref_Scope.Section := Body_Part;
-
-      return Is_Visible (Ref_Scope, S);
-   end State_Refinement_Is_Visible;
+     (Is_Visible (Body_Scope (Get_Flow_Scope (E)), S));
 
    -----------------------
    -- Get_Contract_Node --
@@ -637,7 +630,7 @@ package body Flow_Refinement is
       begin
          case Valid_Section_T'(S.Section) is
             when Body_Part =>
-               return S'Update (Section => Private_Part);
+               return Private_Scope (S);
 
             when Private_Part | Spec_Part =>
                return Get_Enclosing_Flow_Scope (S);
