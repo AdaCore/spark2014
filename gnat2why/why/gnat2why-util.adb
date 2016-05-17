@@ -800,17 +800,14 @@ package body Gnat2Why.Util is
    function Nth_Index_Rep_Type_No_Bool (E : Entity_Id; Dim : Positive)
                                         return W_Type_Id
    is
-   begin
-      if Ekind (E) = E_String_Literal_Subtype then
-
-         --  If E is a string literal subtype use its base type's index type
-
-         return
-           Base_Why_Type_No_Bool (Nth_Index_Type (Retysp (Etype (E)), Dim));
-      else
-         return (Base_Why_Type_No_Bool (Nth_Index_Type (E, Dim)));
-      end if;
-   end Nth_Index_Rep_Type_No_Bool;
+     (Base_Why_Type_No_Bool
+        (Nth_Index_Type
+           ((if Ekind (E) = E_String_Literal_Subtype
+             --  If E is a string literal subtype then use its base type's
+             --  index type type's.
+             then Retysp (Etype (E))
+             else E),
+            Dim)));
 
    -----------------------------
    -- Type_Is_Modeled_As_Base --
