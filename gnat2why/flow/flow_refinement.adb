@@ -726,6 +726,7 @@ package body Flow_Refinement is
                if Ekind (Etype (Ent)) in Concurrent_Kind then
                   --  Instances of a protected type are always fully default
                   --  initialized.
+                  --  ??? arrays and record with protected types too
                   return True;
                elsif Is_Part_Of_Concurrent_Object (Ent) then
                   --  Variables that are Part_Of a concurrent type are always
