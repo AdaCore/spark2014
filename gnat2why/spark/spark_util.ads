@@ -246,9 +246,6 @@ package SPARK_Util is
    with Pre => Is_Type (T);
    --  @param T any type
    --  @return the entity kind of the "Representative Type in SPARK" of type T.
-   --     This is not the same as Ekind (Retysp (T)), because Retysp (T) may
-   --     be a private type, and we're interested here in the underlying kind
-   --     of type.
 
    --  The following functions provide wrappers for the query functions in
    --  Einfo, that apply the query on the "Representative Type in SPARK" of
@@ -282,6 +279,9 @@ package SPARK_Util is
 
    function Has_Record_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Record_Kind);
+
+   function Has_Private_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Private_Kind);
 
    function Has_Scalar_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Scalar_Kind);
@@ -482,7 +482,7 @@ package SPARK_Util is
 
    function Can_Be_Default_Initialized (Typ : Entity_Id) return Boolean is
      ((not Has_Array_Type (Typ) or else Is_Constrained (Typ))
-      and then (not Has_Record_Type (Typ)
+      and then (not (Has_Record_Type (Typ) or else Has_Private_Type (Typ))
                 or else not Has_Discriminants (Typ)
                 or else Is_Constrained (Typ)
                 or else Has_Defaulted_Discriminants (Typ))

@@ -561,7 +561,7 @@ package body Gnat2Why.Types is
          --  Cloned subtypes are a special case, they do not need such a
          --  definition.
 
-         if (Has_Record_Type (E) or else Is_Private_Type (Retysp (E)))
+         if (Has_Record_Type (E) or else Has_Private_Type (E))
              and then not Record_Type_Is_Clone (Retysp (E))
          then
             Emit
@@ -584,7 +584,7 @@ package body Gnat2Why.Types is
          --  Classwide types are a special case as they are clones of their
          --  specifica types but do not have the same short name.
 
-         if (not (Has_Record_Type (E) or else Is_Private_Type (Retysp (E)))
+         if (not (Has_Record_Type (E) or else Has_Private_Type (E))
              or else not Record_Type_Is_Clone (Retysp (E))
              or else Short_Name (Retysp (E)) /=
                Short_Name (Record_Type_Cloned_Subtype (Retysp (E))))

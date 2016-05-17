@@ -323,12 +323,8 @@ package body SPARK_Util is
    end Retysp;
 
    function Retysp_Kind (T : Entity_Id) return Entity_Kind is
-      Typ : Entity_Id := T;
    begin
-      while Is_Private_Type (Typ) loop
-         Typ := Underlying_Type (Typ);
-      end loop;
-      return Ekind (Typ);
+      return Ekind (Retysp (T));
    end Retysp_Kind;
 
    ------------------------------------
