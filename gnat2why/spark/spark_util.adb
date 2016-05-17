@@ -2122,6 +2122,8 @@ package body SPARK_Util is
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  Process a node to check if it is a potentially blocking statement
+      --  ??? respect SPARK_Mode => Off and do not look into bodies of nested
+      --  entities
 
       procedure Traverse is new Traverse_Proc (Proc);
       --  Traverse a tree to check if it includes blocking statements

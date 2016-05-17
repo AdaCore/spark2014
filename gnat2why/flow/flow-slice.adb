@@ -392,6 +392,7 @@ package body Flow.Slice is
             return Traverse_Result;
          --  Picks up entities coming from object and subprogram declarations
          --  and adds them respectively to Local_Vars and Local_Subs.
+         --  ??? respect SPARK_Mode => Off
 
          procedure Remove_PO_And_Task_Parts;
          --  Removes from Local_Vars these variables which are parts of a
