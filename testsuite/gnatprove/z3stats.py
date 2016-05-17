@@ -10,8 +10,6 @@ import socket
 import subprocess
 import time
 
-z3_cmd = ["z3", "-st", "-T:30", "rlimit=100000"]
-
 args = None
 descr = """Run provers on files and return results in JSON format. Currently
 only z3 supported (hence the name)"""
@@ -30,7 +28,16 @@ def parse_arguments():
                         help='file to dump results to, stdout if absent')
     parser.add_argument('-v', dest='verbose', action='store_true',
                         help='print number of remaining VCs on stdout')
+    parser.add_argument('-t', dest='timeout', type=int, action='store',
+                        default=None,
+                        help='timeout to be used, no timeout if not used')
     args = parser.parse_args()
+
+
+def z3_cmd():
+    z3_cmd = ["z3", "-st"]
+    if args.timeout:
+        z3_cmd.append("-T:" + str(args.timeout))
 
 
 def compute_file_list():
@@ -142,7 +149,7 @@ def get_all_results(cmd, output_parser, fnlist, max_running_processes=1):
 def main():
     parse_arguments()
     file_list = compute_file_list()
-    results = get_all_results(cmd=z3_cmd,
+    results = get_all_results(cmd=z3_cmd(),
                               output_parser=parse_z3_output,
                               fnlist=file_list,
                               max_running_processes=args.parallel)
