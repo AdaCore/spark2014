@@ -879,16 +879,16 @@ package body Flow_Refinement is
       S  : Flow_Scope)
       return Boolean
    is
-      Tmp : Entity_Id;
+      Context : Entity_Id := S.Ent;
+
    begin
-      Tmp := S.Ent;
-      while Present (Tmp)
-        and then Tmp /= Standard_Standard
+      while Present (Context)
+        and then Context /= Standard_Standard
       loop
-         if Tmp = CO then
+         if Context = CO then
             return True;
          end if;
-         Tmp := Scope (Tmp);
+         Context := Scope (Context);
       end loop;
 
       return False;
