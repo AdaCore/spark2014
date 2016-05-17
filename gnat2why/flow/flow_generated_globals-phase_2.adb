@@ -408,9 +408,9 @@ package body Flow_Generated_Globals.Phase_2 is
                              Reads       : out Flow_Id_Sets.Set;
                              Writes      : out Flow_Id_Sets.Set)
    is
-      MR_Proof_Reads : Name_Sets.Set := Name_Sets.Empty_Set;
-      MR_Reads       : Name_Sets.Set := Name_Sets.Empty_Set;
-      MR_Writes      : Name_Sets.Set := Name_Sets.Empty_Set;
+      MR_Proof_Reads : Name_Sets.Set;
+      MR_Reads       : Name_Sets.Set;
+      MR_Writes      : Name_Sets.Set;
       --  The above 3 sets will contain the most refined views of their
       --  respective globals.
 
@@ -418,11 +418,6 @@ package body Flow_Generated_Globals.Phase_2 is
       Unused  : Flow_Id_Sets.Set;
 
    begin
-      --  Initialize the Proof_Reads, Reads and Writes sets
-      Proof_Reads := Flow_Id_Sets.Empty_Set;
-      Reads       := Flow_Id_Sets.Empty_Set;
-      Writes      := Flow_Id_Sets.Empty_Set;
-
       --  Call GG_Get_MR_Globals to calculate MR_Proof_Reads, MR_Reads and
       --  MR_Writes.
       GG_Get_MR_Globals (To_Entity_Name (E),
