@@ -751,7 +751,7 @@ package body Flow_Refinement is
 
          Init := Present (Find_Node_In_Initializes (Ent));
 
-         if Ptr.Ent = Common_Scope.Ent or Ptr.Ent = S.Ent then
+         if Ptr.Ent in Common_Scope.Ent | S.Ent then
             if Trace then
                Write_Line ("   -> in common scope or home");
             end if;
