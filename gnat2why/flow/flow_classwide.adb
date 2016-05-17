@@ -98,7 +98,7 @@ package body Flow_Classwide is
         Direct_Mapping_Id (Overridden_Operation (E));
 
       function Mode (F : Flow_Id) return String;
-      --  Given F, check if its a proof_in, input, in_out or output.
+      --  Given F, check if its a proof_in, input, in_out or output
 
       ----------
       -- Mode --
@@ -272,7 +272,7 @@ package body Flow_Classwide is
                                     Classwide : Boolean)
                                     return Dependency_Maps.Map
       with Pre => Is_Subprogram (E);
-      --  Obtain the dependency relation for E, or synthesize one.
+      --  Obtain the dependency relation for E, or synthesize one
 
       -------------------------
       -- Get_Or_Make_Depends --
@@ -386,7 +386,7 @@ package body Flow_Classwide is
          pragma Assert (Present (Anc_Ptr) = Present (My_Ptr));
       end;
 
-      --  We now check that My_Dep is a strict subset of Anc_Dep.
+      --  We now check that My_Dep is a strict subset of Anc_Dep
 
       for C in My_Dep.Iterate loop
          declare
@@ -454,9 +454,9 @@ package body Flow_Classwide is
       end if;
 
       if No (Overridden_Operation (E)) then
-         --  This subprogram is not overriding, hence there can't be a
-         --  problem currently. (Since we assume both global'class and
-         --  depends'class are equal to their non-class-wide versions.)
+         --  This subprogram is not overriding, hence there can't be a problem
+         --  currently. (Since we assume both global'class and depends'class
+         --  are equal to their non-class-wide versions.)
          return;
       end if;
 

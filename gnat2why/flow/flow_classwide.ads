@@ -21,8 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package deals with the sanity checking of classwide flow
---  contracts.
+--  This package deals with the sanity checking of classwide flow contracts
 
 with Atree; use Atree;
 with Einfo; use Einfo;
@@ -36,7 +35,7 @@ package Flow_Classwide is
        then Present (Controlling_Argument (N))
        else False)
    with Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
-   --  Checks if the given call node is dispatching.
+   --  Checks if the given call node is dispatching
    --
    --  ??? O429-046 can entry calls be dispatching? I guess not...
 
@@ -44,9 +43,9 @@ package Flow_Classwide is
                                         Valid : out Boolean)
    with Pre => Nkind (E) in N_Entity and then
                Ekind (E) in Subprogram_Kind;
-   --  Checks the classwide contracts of the given subprogram. If not
-   --  Valid then some error messages will have been issued. If the
-   --  subprogram does not have a controlling parameter nor a result,
-   --  this check procedure does nothing.
+   --  Checks the classwide contracts of the given subprogram. If not Valid
+   --  then some error messages will have been issued. If the subprogram does
+   --  not have a controlling parameter nor a result, this check procedure does
+   --  nothing.
 
 end Flow_Classwide;
