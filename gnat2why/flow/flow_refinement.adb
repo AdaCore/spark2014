@@ -604,14 +604,19 @@ package body Flow_Refinement is
    ----------------------
 
    function Get_Body_Or_Stub (N : Node_Id) return Node_Id is
+      P : constant Node_Id := Parent (N);
    begin
-      if Nkind (Parent (N)) = N_Subunit
-        and then Present (Corresponding_Stub (Parent (N)))
-      then
-         return Corresponding_Stub (Parent (N));
-      else
-         return N;
+      if Nkind (P) = N_Subunit then
+         declare
+            Stub : constant Node_Id := Corresponding_Stub (P);
+         begin
+            if Present (Stub) then
+               return Stub;
+            end if;
+         end;
       end if;
+
+      return N;
    end Get_Body_Or_Stub;
 
    -----------------------------------
