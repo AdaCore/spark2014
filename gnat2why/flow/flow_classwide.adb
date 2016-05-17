@@ -125,12 +125,12 @@ package body Flow_Classwide is
             M := Mode_Out;
          end if;
 
-         case Valid_Param_Mode (M) is
-            when Mode_Proof  => return "proof_in";
-            when Mode_In     => return "input";
-            when Mode_In_Out => return "in_out";
-            when Mode_Out    => return "output";
-         end case;
+         return
+           (case Valid_Param_Mode (M) is
+               when Mode_Proof  => "proof_in",
+               when Mode_In     => "input",
+               when Mode_In_Out => "in_out",
+               when Mode_Out    => "output");
       end Mode;
 
    --  Start of processing for Check_Classwide_Global
