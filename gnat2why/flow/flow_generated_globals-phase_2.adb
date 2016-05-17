@@ -573,61 +573,46 @@ package body Flow_Generated_Globals.Phase_2 is
                                 Reads       : out Name_Sets.Set;
                                 Writes      : out Name_Sets.Set)
    is
-      use Global_Graphs;
+      procedure Compute_MR (Kind   :     Global_Id_Kind;
+                            Result : out Name_Sets.Set);
+      --  Compute vertices that can be reached from EN'Kind vertex and are of
+      --  the kind Variable.
 
-      G_Proof_Ins : constant Global_Id :=
-        Global_Id'(Kind => Proof_Ins,
-                   Name => EN);
-      G_Ins       : constant Global_Id :=
-        Global_Id'(Kind => Inputs,
-                   Name => EN);
-      G_Outs      : constant Global_Id :=
-        Global_Id'(Kind => Outputs,
-                   Name => EN);
-      --  The above 3 Global_Ids correspond to the subprogram's Ins,
-      --  Outs and Proof_Ins.
+      ----------------
+      -- Compute_MR --
+      ----------------
 
-      V_Proof_Ins : constant Vertex_Id :=
-        Global_Graph.Get_Vertex (G_Proof_Ins);
-      V_Ins       : constant Vertex_Id :=
-        Global_Graph.Get_Vertex (G_Ins);
-      V_Outs      : constant Vertex_Id :=
-        Global_Graph.Get_Vertex (G_Outs);
-      --  The above 3 Vertex_Ids correspond to the subprogram's Ins,
-      --  Outs and Proof_Ins.
+      procedure Compute_MR (Kind   :     Global_Id_Kind;
+                            Result : out Name_Sets.Set)
+      is
+         use Global_Graphs;
 
-      function Calculate_MR (Start : Vertex_Id) return Name_Sets.Set;
-      --  Returns a set of all vertices that can be reached from Start and are
-      --  of the Variable.
-
-      ------------------
-      -- Calculate_MR --
-      ------------------
-
-      function Calculate_MR (Start : Vertex_Id) return Name_Sets.Set is
-         NS : Name_Sets.Set := Name_Sets.Empty_Set;
+         Start_G : Global_Id (Kind);
+         Start_V : Vertex_Id;
 
       begin
-         for V of Global_Graph.Get_Collection (Start, Out_Neighbours) loop
+         Start_G.Name := EN;
+         Start_V      := Global_Graph.Get_Vertex (Start_G);
+
+         Result := Name_Sets.Empty_Set;
+
+         for V of Global_Graph.Get_Collection (Start_V, Out_Neighbours) loop
             declare
                G : constant Global_Id := Global_Graph.Get_Key (V);
             begin
                if G.Kind = Variable then
-                  NS.Union (Fully_Refine (G.Name));
+                  Result.Union (Fully_Refine (G.Name));
                end if;
             end;
          end loop;
-
-         return NS;
-      end Calculate_MR;
+      end Compute_MR;
 
       --  Start of processing for GG_Get_MR_Globals
 
    begin
-      --  Calculate MR_Proof_Reads, MR_Reads and MR_Writes
-      Proof_Reads := Calculate_MR (V_Proof_Ins);
-      Reads       := Calculate_MR (V_Ins);
-      Writes      := Calculate_MR (V_Outs);
+      Compute_MR (Kind => Proof_Ins, Result => Proof_Reads);
+      Compute_MR (Kind => Inputs,    Result => Reads);
+      Compute_MR (Kind => Outputs,   Result => Writes);
    end GG_Get_MR_Globals;
 
    ----------------
