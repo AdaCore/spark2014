@@ -5,6 +5,7 @@ import glob
 import json
 import os
 import os.path
+import random
 import re
 import socket
 import subprocess
@@ -31,13 +32,17 @@ def parse_arguments():
     parser.add_argument('-t', dest='timeout', type=int, action='store',
                         default=None,
                         help='timeout to be used, no timeout if not used')
+    parser.add_argument('--limit', dest='limit', type=int, action='store',
+                        default=None, metavar='N',
+                        help='randomly select N files from all files')
     args = parser.parse_args()
 
 
 def z3_cmd():
-    z3_cmd = ["z3", "-st"]
+    result = ["z3", "-st"]
     if args.timeout:
-        z3_cmd.append("-T:" + str(args.timeout))
+        result.append("-T:" + str(args.timeout))
+    return result
 
 
 def compute_file_list():
@@ -47,6 +52,8 @@ def compute_file_list():
             result += glob.glob(os.path.join(fn, "*.smt2"))
         else:
             result.append(fn)
+    if args.limit and args.limit < len(result):
+        result = random.sample(result, args.limit)
     return result
 
 
