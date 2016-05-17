@@ -451,16 +451,16 @@ package body Flow_Refinement is
          N := Get_Pragma
            (Get_Body_Or_Stub (Body_E),
             (case C is
-               when Global_Contract  => Pragma_Refined_Global,
-               when Depends_Contract => Pragma_Refined_Depends));
+                when Global_Contract  => Pragma_Refined_Global,
+                when Depends_Contract => Pragma_Refined_Depends));
       end if;
 
       if No (N) then
          N := Get_Pragma
            (E,
             (case C is
-               when Global_Contract  => Pragma_Global,
-               when Depends_Contract => Pragma_Depends));
+                when Global_Contract  => Pragma_Global,
+                when Depends_Contract => Pragma_Depends));
       end if;
 
       return N;
