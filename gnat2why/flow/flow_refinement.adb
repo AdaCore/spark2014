@@ -23,28 +23,27 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Nlists;                 use Nlists;
-with Output;                 use Output;
-with Sem_Util;               use Sem_Util;
-with Snames;                 use Snames;
-with Sprint;                 use Sprint;
-with Stand;                  use Stand;
-with Treepr;                 use Treepr;
+with Nlists;               use Nlists;
+with Output;               use Output;
+with Sem_Util;             use Sem_Util;
+with Snames;               use Snames;
+with Sprint;               use Sprint;
+with Stand;                use Stand;
+with Treepr;               use Treepr;
 
-with Common_Iterators;       use Common_Iterators;
-with SPARK_Util;             use SPARK_Util;
+with Common_Iterators;     use Common_Iterators;
+with SPARK_Util;           use SPARK_Util;
 with Why;
 
-with Flow_Debug;             use Flow_Debug;
-with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
-with Flow_Types;             use Flow_Types;
+with Flow_Debug;           use Flow_Debug;
+with Flow_Dependency_Maps; use Flow_Dependency_Maps;
+with Flow_Types;           use Flow_Types;
 
 package body Flow_Refinement is
 
    function List_Contains (L : List_Id;
                            N : Node_Id)
                            return Boolean;
-
    --  Returns True iff the list L contains node N
 
    -------------------
@@ -107,6 +106,7 @@ package body Flow_Refinement is
          end if;
          P := Next (P);
       end loop;
+
       return False;
    end List_Contains;
 
@@ -306,9 +306,8 @@ package body Flow_Refinement is
             raise Why.Unexpected_Node;
       end case;
 
-      --  We need to get to the node that is above the
-      --  N_Package_Body/N_Protected_Body/N_Task_Body that corresponds to flow
-      --  scope S.
+      --  We need to get to the node that is above the N_Package_Body,
+      --  N_Protected_Body or N_Task_Body that corresponds to flow scope S.
       while Nkind (P) not in N_Package_Body   |
                              N_Protected_Body |
                              N_Task_Body
@@ -377,10 +376,10 @@ package body Flow_Refinement is
                exit;
 
             when N_Aspect_Specification =>
-               --  We only get here when we call Get_Flow_Scope on an
-               --  abstract state. On this occasion we want to return
-               --  the Spec_Part followed by the name of the package
-               --  that introduces the abstract state.
+               --  We only get here when we call Get_Flow_Scope on an abstract
+               --  state. On this occasion we want to return the Spec_Part
+               --  followed by the name of the package that introduces the
+               --  abstract state.
                pragma Assert (Nkind (N) = N_Defining_Identifier
                                 and then Ekind (N) = E_Abstract_State);
 
@@ -398,10 +397,9 @@ package body Flow_Refinement is
                null;
          end case;
 
-         --  If we get a node from some contract, we will get the node from
-         --  the generated pragma instead. This pragma does not have a
-         --  parent set, so in this case we jump to the entity the aspect
-         --  is for.
+         --  If we get a node from some contract, we will get the node from the
+         --  generated pragma instead. This pragma does not have a parent set,
+         --  so in this case we jump to the entity the aspect is for.
          if Nkind (P) = N_Pragma and then From_Aspect_Specification (P) then
             P := Corresponding_Aspect (P);
             pragma Assert (Nkind (P) = N_Aspect_Specification);
@@ -435,8 +433,8 @@ package body Flow_Refinement is
       end if;
 
       if No (Body_E) then
-         --  If we don't even have it in the AST, then it's a safe bet that
-         --  we can't see the refinement...
+         --  If we don't even have it in the AST, then it's a safe bet that we
+         --  can't see the refinement...
          return False;
       end if;
 
@@ -821,9 +819,8 @@ package body Flow_Refinement is
       Found_State_Abstraction : Boolean := False;
 
       function Proc (N : Node_Id) return Traverse_Result;
-      --  Traversal procedure that sets Found_State_Abstraction to
-      --  True if we find a State Abstraction whose refinement is
-      --  visible from Scope.
+      --  Traversal procedure that sets Found_State_Abstraction to True if we
+      --  find a State Abstraction whose refinement is visible from Scope.
 
       ----------
       -- Proc --
