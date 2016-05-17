@@ -830,24 +830,22 @@ package body Flow_Refinement is
 
    function Refinement_Needed (E : Entity_Id) return Boolean is
       Body_E : constant Entity_Id := Get_Body_Entity (E);
-   begin
 
+   begin
       if Present (Body_E) then
          declare
-            Depends_N         : constant Node_Id    :=
-              Get_Pragma (E, Pragma_Depends);
-            Global_N          : constant Node_Id    :=
-              Get_Pragma (E, Pragma_Global);
+            Depends_N : constant Node_Id := Get_Pragma (E, Pragma_Depends);
+            Global_N  : constant Node_Id := Get_Pragma (E, Pragma_Global);
 
-            Refined_Depends_N : constant Node_Id    :=
+            Refined_Depends_N : constant Node_Id :=
               Get_Pragma (Body_E, Pragma_Refined_Depends);
-            Refined_Global_N  : constant Node_Id    :=
+            Refined_Global_N  : constant Node_Id :=
               Get_Pragma (Body_E, Pragma_Refined_Global);
 
-            B_Scope           : constant Flow_Scope :=
-              Get_Flow_Scope (Body_E);
+            B_Scope : constant Flow_Scope := Get_Flow_Scope (Body_E);
+
          begin
-            if
+            return
               --  1) No Global and no Depends aspect
               (No (Global_N) and then No (Depends_N)) or else
 
@@ -864,10 +862,7 @@ package body Flow_Refinement is
               (Present (Depends_N) and then
                  No (Refined_Depends_N) and then
                  No (Refined_Global_N) and then
-                 Mentions_State_With_Visible_Refinement (Depends_N, B_Scope))
-            then
-               return True;
-            end if;
+                 Mentions_State_With_Visible_Refinement (Depends_N, B_Scope));
          end;
       end if;
 
