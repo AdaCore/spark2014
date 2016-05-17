@@ -306,7 +306,7 @@ package body Flow_Refinement is
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope is
       P : Node_Id := N;
-      V : Section_T;
+      V : Valid_Section_T;
    begin
       while Present (P) loop
          P := Get_Body_Or_Stub (P);
