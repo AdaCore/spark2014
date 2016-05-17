@@ -1039,7 +1039,7 @@ package body Flow is
                Ptr : Flow_Scope := FA.S_Scope;
             begin
                Indent;
-               while Ptr /= Null_Flow_Scope loop
+               while Present (Ptr) loop
                   case Valid_Section_T'(Ptr.Section) is
                      when Body_Part =>
                         Ptr.Section := Private_Part;
@@ -1047,7 +1047,7 @@ package body Flow is
                      when Private_Part | Spec_Part =>
                         Ptr := Get_Enclosing_Flow_Scope (Ptr);
                   end case;
-                  if Ptr /= Null_Flow_Scope then
+                  if Present (Ptr) then
                      Print_Flow_Scope (Ptr);
                      Write_Eol;
                   end if;

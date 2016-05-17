@@ -1167,9 +1167,9 @@ package body Flow.Analysis is
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      =>
-                       (if FA.B_Scope.Section /= Body_Part
+                       (if Present (FA.B_Scope)
                           and then Is_Abstract_State (F)
-                          and then Present (FA.B_Scope)
+                          and then FA.B_Scope.Section /= Body_Part
                           and then State_Refinement_Is_Visible
                             (Get_Direct_Mapping_Id (F),
                              Body_Scope (FA.B_Scope))

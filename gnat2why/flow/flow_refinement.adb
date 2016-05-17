@@ -148,7 +148,7 @@ package body Flow_Refinement is
       --  Go upwards from S (the scope we are in) and see if we end up in
       --  Target_Scope (what we're checking if we can see).
       Ptr := S;
-      while Ptr /= Null_Flow_Scope loop
+      while Present (Ptr) loop
          if Ptr = Target_Scope then
             return True;
          end if;
@@ -161,7 +161,7 @@ package body Flow_Refinement is
                   return True;
                end if;
 
-               if Get_Enclosing_Body_Flow_Scope (Ptr) /= Null_Flow_Scope then
+               if Present (Get_Enclosing_Body_Flow_Scope (Ptr)) then
                   Ptr := Get_Enclosing_Body_Flow_Scope (Ptr);
                else
                   Ptr.Section := Private_Part;
@@ -185,16 +185,15 @@ package body Flow_Refinement is
       --  from origin scope while going up the spec parts of the
       --  target scope).
       Ptr := Target_Scope;
-      while Ptr /= Null_Flow_Scope and Ptr /= S loop
+      while Present (Ptr) and then Ptr /= S loop
          case Valid_Section_T'(Ptr.Section) is
             when Spec_Part =>
                Ptr := Get_Enclosing_Flow_Scope (Ptr);
-               if Ptr.Section = Private_Part then
-                  --  This deals with visibility of private children. A
-                  --  package body can see a private child's spec (and test
-                  --  for this if the enclosing flow scope of the private
-                  --  child's (the parents private part) can be seen from
-                  --  S).
+               if Present (Ptr) and then Ptr.Section = Private_Part then
+                  --  This deals with visibility of private children. A package
+                  --  body can see a private child's spec (and test for this if
+                  --  the enclosing flow scope of the private child's, i.e. the
+                  --  parents private part, can be seen from S).
                   return Is_Visible (Ptr, S);
                end if;
 
@@ -202,10 +201,11 @@ package body Flow_Refinement is
                exit;
          end case;
       end loop;
-      return Ptr = Null_Flow_Scope
+
+      return No (Ptr)
         or else Ptr = S
-        or else (Ptr /= Target_Scope
-                   and then Is_Visible (Ptr, S));
+        or else (Ptr /= Target_Scope and then Is_Visible (Ptr, S));
+
    end Is_Visible;
 
    function Is_Visible (N : Node_Id;
@@ -233,7 +233,7 @@ package body Flow_Refinement is
       end loop;
       Enclosing_Scope := Get_Flow_Scope (Ptr);
 
-      if Enclosing_Scope = Null_Flow_Scope
+      if No (Enclosing_Scope)
         and then Scope (S.Ent) /= Standard_Standard
       then
          Ptr := Scope (S.Ent);
@@ -622,7 +622,7 @@ package body Flow_Refinement is
 
       function Heritage (S : Flow_Scope) return Scope_Vectors.Vector
       with Post => not Heritage'Result.Is_Empty and then
-                   Heritage'Result.First_Element = Null_Flow_Scope and then
+                   No (Heritage'Result.First_Element) and then
                    Heritage'Result.Last_Element = S;
       --  Determine all ancestors of S up to and including Standard.
 

@@ -1084,7 +1084,7 @@ package body Flow_Utility is
       if Present (E) then
          if Ekind (E) in Type_Kind | E_Constant
            and then Present (Full_View (E))
-           and then (Scope = Null_Flow_Scope
+           and then (No (Scope)
                        or else Is_Visible (Full_View (E), Scope))
          then
             return Direct_Mapping_Id (Full_View (E), View);
