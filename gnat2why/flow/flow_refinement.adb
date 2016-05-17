@@ -494,26 +494,27 @@ package body Flow_Refinement is
                           S    : Flow_Scope)
                           return Node_Sets.Set
    is
-      function Expand (E : Entity_Id) return Node_Sets.Set;
-      --  We return either E if its refinement is not visible, or all
+      P : Node_Sets.Set;
+
+      procedure Expand (E : Entity_Id);
+      --  Include in P either E if its refinement is not visible, or all
       --  consitituents of E otherwise.
       --
-      --  If E is not abstract state, we also just return E.
+      --  If E is not abstract state, we put just E
 
       ------------
       -- Expand --
       ------------
 
-      function Expand (E : Entity_Id) return Node_Sets.Set is
-         Tmp                        : Node_Sets.Set := Node_Sets.Empty_Set;
-         Possible_Hidden_Components : Boolean       := False;
+      procedure Expand (E : Entity_Id) is
+         Possible_Hidden_Components : Boolean := False;
       begin
          case Ekind (E) is
             when E_Abstract_State =>
                if State_Refinement_Is_Visible (E, S) then
                   for C of Iter (Refinement_Constituents (E)) loop
                      if Nkind (C) /= N_Null then
-                        Tmp.Union (Expand (C));
+                        Expand (C);
                      end if;
                   end loop;
                else
@@ -522,7 +523,7 @@ package body Flow_Refinement is
 
                for C of Iter (Part_Of_Constituents (E)) loop
                   if Is_Visible (C, S) then
-                     Tmp.Union (Expand (C));
+                     Expand (C);
                   else
                      Possible_Hidden_Components := True;
                   end if;
@@ -532,23 +533,21 @@ package body Flow_Refinement is
                   --  We seem to have an abstract state which has no
                   --  refinement, or where we have unexpanded state. Lets
                   --  include the abstract state itself.
-                  Tmp.Include (E);
+                  P.Include (E);
                end if;
 
             when others =>
-               Tmp.Include (E);
+               P.Include (E);
          end case;
-         return Tmp;
       end Expand;
-
-      P : Node_Sets.Set := Node_Sets.Empty_Set;
 
    --  Start of processing for Down_Project
 
    begin
       for V of Vars loop
-         P.Union (Expand (V));
+         Expand (V);
       end loop;
+
       return P;
    end Down_Project;
 
