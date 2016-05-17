@@ -1002,7 +1002,7 @@ package body Gnat2Why.Expr is
       Context       : in out W_Prog_Id)
    is
       Max_Assocs : constant Natural := 100;
-      --  if the defining expression of a constant contains more than
+      --  If the defining expression of a constant contains more than
       --  Max_Assocs N_Component_Association nodes, its definition will not be
       --  inlined.
 
@@ -1045,9 +1045,8 @@ package body Gnat2Why.Expr is
                 (Expression (Decl)) <= Max_Assocs
             then
 
-               --  We do not issue checks here. Checks for this
-               --  declaration will be issued when verifying its
-               --  enclosing unit.
+               --  We do not issue checks here. Checks for this declaration
+               --  will be issued when verifying its enclosing unit.
 
                Expr :=
                  +Transform_Expr (Expression (Decl),
@@ -1109,11 +1108,11 @@ package body Gnat2Why.Expr is
         (if Top_Predicate then True_Term else False_Term);
       T        : constant W_Pred_Id :=
         Compute_Dynamic_Invariant (Expr          => Expr,
-                                  Ty            => Ty,
-                                  Initialized   => Init,
-                                  Only_Var      => O_Var,
-                                  Top_Predicate => Top_Pred,
-                                  Use_Pred      => Use_Pred);
+                                   Ty            => Ty,
+                                   Initialized   => Init,
+                                   Only_Var      => O_Var,
+                                   Top_Predicate => Top_Pred,
+                                   Use_Pred      => Use_Pred);
    begin
       if T /= True_Pred then
          return New_Assume_Statement (Ada_Node => Ty,
