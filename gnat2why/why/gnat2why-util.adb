@@ -818,9 +818,9 @@ package body Gnat2Why.Util is
 
    function Type_Is_Modeled_As_Base (T : Entity_Id) return Boolean is
    begin
-      return Is_Scalar_Type (T) and then
-        (not Has_Static_Scalar_Subtype (T) or else
-         Is_Null_Range (T));
+      return Is_Scalar_Type (T)
+        and then (not Has_Static_Scalar_Subtype (T)
+                  or else Is_Null_Range (T));
    end Type_Is_Modeled_As_Base;
 
    ------------------
@@ -856,8 +856,8 @@ package body Gnat2Why.Util is
 
    function Use_Base_Type_For_Type (E : Entity_Id) return Boolean is
    begin
-      return Is_Scalar_Type (E) and then
-        not Is_Standard_Boolean_Type (E);
+      return Is_Scalar_Type (E)
+        and then not Is_Standard_Boolean_Type (E);
    end Use_Base_Type_For_Type;
 
    -----------------------------
@@ -866,8 +866,8 @@ package body Gnat2Why.Util is
 
    function Use_Split_Form_For_Type (E : Entity_Id) return Boolean is
    begin
-      return Is_Discrete_Type (Retysp (E)) and then
-        not Is_Standard_Boolean_Type (Retysp (E));
+      return Is_Discrete_Type (Retysp (E))
+        and then not Is_Standard_Boolean_Type (Retysp (E));
    end Use_Split_Form_For_Type;
 
    -----------------------
@@ -877,8 +877,8 @@ package body Gnat2Why.Util is
    function Use_Why_Base_Type (E : Entity_Id) return Boolean is
       Ty : constant Entity_Id := Etype (E);
    begin
-      return not Is_Mutable_In_Why (E) and then
-        Use_Base_Type_For_Type (Ty);
+      return not Is_Mutable_In_Why (E)
+        and then Use_Base_Type_For_Type (Ty);
    end Use_Why_Base_Type;
 
    ------------------------
