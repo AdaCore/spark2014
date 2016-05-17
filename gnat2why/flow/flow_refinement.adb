@@ -143,69 +143,82 @@ package body Flow_Refinement is
       --     S.Section = Enclosing_Scope (S).Section
       --  unless S is a private descendant, in which case it is always "priv".
 
-      Ptr : Flow_Scope;
+      Context : Flow_Scope;
    begin
       --  Go upwards from S (the scope we are in) and see if we end up in
       --  Target_Scope (what we're checking if we can see).
-      Ptr := S;
-      while Present (Ptr) loop
-         if Ptr = Target_Scope then
-            return True;
-         end if;
-
-         case Valid_Section_T'(Ptr.Section) is
+      Context := S;
+      while Present (Context) loop
+         case Context.Section is
             when Body_Part =>
-               if Flow_Scope'(Ptr.Ent, Private_Part) = Target_Scope
-                 or else Flow_Scope'(Ptr.Ent, Spec_Part) = Target_Scope
-               then
+               if Target_Scope.Ent = Context.Ent then
                   return True;
-               end if;
-
-               if Present (Get_Enclosing_Body_Flow_Scope (Ptr)) then
-                  Ptr := Get_Enclosing_Body_Flow_Scope (Ptr);
                else
-                  Ptr.Section := Private_Part;
+                  declare
+                     Enclosing_Body_Scope : constant Flow_Scope :=
+                       Get_Enclosing_Body_Flow_Scope (Context);
+                  begin
+                     Context := (if Present (Enclosing_Body_Scope)
+                                 then Enclosing_Body_Scope
+                                 else Private_Scope (Context));
+                  end;
                end if;
 
             when Private_Part =>
-               if Flow_Scope'(Ptr.Ent, Spec_Part) = Target_Scope then
+               if Target_Scope.Ent = Context.Ent
+                 and then Target_Scope.Section in Private_Part | Spec_Part
+               then
                   return True;
+               else
+                  Context := Get_Enclosing_Flow_Scope (Context);
                end if;
-               Ptr := Get_Enclosing_Flow_Scope (Ptr);
 
             when Spec_Part =>
-               Ptr := Get_Enclosing_Flow_Scope (Ptr);
+               if Target_Scope.Ent = Context.Ent
+                 and then Target_Scope.Section = Spec_Part
+               then
+                  return True;
+               else
+                  Context := Get_Enclosing_Flow_Scope (Context);
+               end if;
+
+            when Null_Part =>
+               raise Program_Error;
+
          end case;
       end loop;
 
-      --  Check if Target_Scope is generally visible from anywhere (we
-      --  know this if we reach the null flow scope) or if are dealing
-      --  with a nested package where we happen to have visibility of
-      --  its spec (we know this if we find a scope that is visible
-      --  from origin scope while going up the spec parts of the
-      --  target scope).
-      Ptr := Target_Scope;
-      while Present (Ptr) and then Ptr /= S loop
-         case Valid_Section_T'(Ptr.Section) is
+      --  Check if Target_Scope is generally visible from anywhere (we know
+      --  this if we reach the null flow scope) or if are dealing with a nested
+      --  package where we happen to have visibility of its spec (we know this
+      --  if we find a scope that is visible from origin scope while going up
+      --  the spec parts of the target scope).
+      Context := Target_Scope;
+      while Present (Context) and then Context /= S loop
+         case Context.Section is
             when Spec_Part =>
-               Ptr := Get_Enclosing_Flow_Scope (Ptr);
-               if Present (Ptr) and then Ptr.Section = Private_Part then
-                  --  This deals with visibility of private children. A package
-                  --  body can see a private child's spec (and test for this if
-                  --  the enclosing flow scope of the private child's, i.e. the
+               Context := Get_Enclosing_Flow_Scope (Context);
+               if Present (Context) and then Context.Section = Private_Part
+               then
+                  --  Deal with visibility of private children. A package body
+                  --  can see a private child's spec (and test for this if the
+                  --  enclosing flow scope of the private child's, i.e. the
                   --  parents private part, can be seen from S).
-                  return Is_Visible (Ptr, S);
+                  return Is_Visible (Context, S);
                end if;
 
             when Private_Part | Body_Part =>
                exit;
+
+            when Null_Part =>
+               raise Program_Error;
+
          end case;
       end loop;
 
-      return No (Ptr)
-        or else Ptr = S
-        or else (Ptr /= Target_Scope and then Is_Visible (Ptr, S));
-
+      return No (Context)
+        or else Context = S
+        or else (Context /= Target_Scope and then Is_Visible (Context, S));
    end Is_Visible;
 
    function Is_Visible (N : Node_Id;
