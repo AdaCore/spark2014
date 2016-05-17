@@ -45,12 +45,12 @@ package body Flow_Refinement is
    function Tree_Contains (T : Node_Id;
                            N : Node_Id)
                            return Boolean;
-   --  Returns True iff the tree rooted at T contains node N.
+   --  Returns True iff the tree rooted at T contains node N
 
    function Tree_Contains (L : List_Id;
                            N : Node_Id)
                            return Boolean;
-   --  Returns True iff the list L contains node N.
+   --  Returns True iff the list L contains node N
 
    -------------------
    -- Tree_Contains --
@@ -119,7 +119,7 @@ package body Flow_Refinement is
       --  The scope DAG may look like a twisty maze, but it is actually
       --  reasonably easy to traverse upwards. The only complication is when we
       --  deal with a private part, in which case we need to quickly check one
-      --  extra scope (the visible part), but then we continue on as normal.
+      --  extra scope (the visible part), but then we continue as normal.
       --
       --     S is...     Next node is...
       --     =======     ===============
@@ -129,7 +129,7 @@ package body Flow_Refinement is
       --     X|spec      enclosing_scope (S)
       --
       --  The enclosing scope of S is computed by Get_Enclosing_Flow_Scope and
-      --  may be one of:
+      --  is either:
       --
       --     1. The first parent (just going up the AST) of S which is a
       --        package/PO declaration (this deals with nested packages)
@@ -140,8 +140,8 @@ package body Flow_Refinement is
       --     3. null (if we have hit Standard)
       --
       --  The visibility is the same as before, i.e.
-      --     s.section = enclosing_scope(s).section
-      --  Unless S is a private descendant, in which case it is always "priv".
+      --     S.Section = Enclosing_Scope (S).Section
+      --  unless S is a private descendant, in which case it is always "priv".
 
       Ptr : Flow_Scope;
    begin
@@ -603,7 +603,7 @@ package body Flow_Refinement is
                                            return Boolean
    is
       Trace : constant Boolean := False;
-      --  Enable this for some tracing output.
+      --  Enable this for some tracing output
 
       package Scope_Vectors is new Ada.Containers.Vectors
         (Index_Type   => Positive,
@@ -611,16 +611,16 @@ package body Flow_Refinement is
 
       function Ancestor (S : Flow_Scope) return Flow_Scope
       with Pre => Present (S);
-      --  Determine the immediate ancestor of S.
+      --  Determine the immediate ancestor of S
 
       function Heritage (S : Flow_Scope) return Scope_Vectors.Vector
       with Post => not Heritage'Result.Is_Empty and then
                    No (Heritage'Result.First_Element) and then
                    Heritage'Result.Last_Element = S;
-      --  Determine all ancestors of S up to and including Standard.
+      --  Determine all ancestors of S up to and including Standard
 
       function Common_Ancestor (A, B : Flow_Scope) return Flow_Scope;
-      --  Return the common ancestor of both flow scopes.
+      --  Return the common ancestor of both flow scopes
 
       --------------
       -- Ancestor --

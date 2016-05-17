@@ -87,7 +87,7 @@ package Flow_Refinement is
    ---------------
 
    function Present (S : Flow_Scope) return Boolean is (Present (S.Ent));
-   --  Returns True iff S is not the Null_Flow_Scope.
+   --  Returns True iff S is not the Null_Flow_Scope
 
    function No (S : Flow_Scope) return Boolean is (No (S.Ent));
    --  Returns True iff S is Null_Flow_Scope
@@ -95,15 +95,15 @@ package Flow_Refinement is
    function Private_Scope (S : Flow_Scope) return Flow_Scope
    is (S'Update (Section => Private_Part))
    with Pre => Present (S);
-   --  Returns the private scope for a valid scope.
+   --  Returns the private scope for a valid scope
 
    function Body_Scope (S : Flow_Scope) return Flow_Scope
    is (S'Update (Section => Body_Part))
    with Pre => Present (S);
-   --  Returns the body scope for a valid scope.
+   --  Returns the body scope for a valid scope
 
    function Get_Body_Or_Stub (N : Node_Id) return Node_Id;
-   --  If a corresponding stub exists, then we return that instead of N.
+   --  If a corresponding stub exists, then we return that instead of N
 
    ---------------------------
    -- Queries and utilities --
@@ -112,12 +112,12 @@ package Flow_Refinement is
    function Is_Visible (N : Node_Id;
                         S : Flow_Scope)
                         return Boolean;
-   --  Returns True iff the node N is visible from the scope S.
+   --  Returns True iff the node N is visible from the scope S
 
    function Is_Visible (Target_Scope : Flow_Scope;
                         S            : Flow_Scope)
                         return Boolean;
-   --  Returns True if Target_Scope is visible from the scope S.
+   --  Returns True if Target_Scope is visible from the scope S
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
    with Pre => Present (N);
@@ -135,7 +135,7 @@ package Flow_Refinement is
                                          S : Flow_Scope)
                                          return Boolean
    with Pre => Ekind (E) = E_Abstract_State;
-   --  Return true iff the constituents of E are visible from S.
+   --  Return true iff the constituents of E are visible from S
 
    function Get_Contract_Node (E : Entity_Id;
                                S : Flow_Scope;
@@ -154,16 +154,16 @@ package Flow_Refinement is
                           return Node_Sets.Set
    with Pre  => (for all V of Vars => Nkind (V) in N_Entity),
         Post => (for all V of Down_Project'Result => Nkind (V) in N_Entity);
-   --  Given a set of variables and a scope, recursively expand all
-   --  abstract state where its refinement is visible in S.
+   --  Given a set of variables and a scope, recursively expand all abstract
+   --  state where its refinement is visible in S.
 
    function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
    with Post => No (Find_Node_In_Initializes'Result)
                   or else Find_Node_In_Initializes'Result = E
                   or else Find_Node_In_Initializes'Result =
                             Encapsulating_State (E);
-   --  Returns the node representing E (or its immediately encapsulating
-   --  state) in an initializes aspect or Empty.
+   --  Returns the node representing E (or its immediately encapsulating state)
+   --  in an initializes aspect or Empty.
 
    function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope
    with Pre => S.Section in Spec_Part | Private_Part;
@@ -187,8 +187,8 @@ package Flow_Refinement is
    --     package Outer (Initialized "State")
    --        package Inner (X, not initialized, but part of State)
    --
-   --  Then from the scope of Inner, X is not initialized at elaboration,
-   --  but from the scope of Outer, it is.
+   --  Then from the scope of Inner, X is not initialized at elaboration, but
+   --  from the scope of Outer, it is.
 
    function Mentions_State_With_Visible_Refinement
      (N     : Node_Id;
@@ -216,6 +216,6 @@ package Flow_Refinement is
       S  : Flow_Scope)
       return Boolean
    with Pre => Present (CO);
-   --  Returns True iff S is nested inside concurrent object CO.
+   --  Returns True iff S is nested inside concurrent object CO
 
 end Flow_Refinement;
