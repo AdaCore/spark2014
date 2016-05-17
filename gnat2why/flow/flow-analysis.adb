@@ -1173,8 +1173,7 @@ package body Flow.Analysis is
                           and then State_Refinement_Is_Visible
                             (Get_Direct_Mapping_Id (F),
                              Body_Scope (FA.B_Scope))
-                        then "non-visible constituents " &
-                             "of & are not used " &
+                        then "non-visible constituents of & are not used " &
                               "- consider moving the subprogram to the " &
                               "package body and adding a Refined_Global"
                         else "unused initial value of &"),

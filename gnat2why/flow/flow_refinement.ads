@@ -21,9 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package provides the infrastructure to deal with refinement
---  issues: when to use the abstract view or refined view of a subprogram,
---  and if the latter which of the possible refined views.
+--  This package provides the infrastructure to deal with refinement issues:
+--  when to use the abstract or refined views of a subprogram, and if the
+--  refined view then which one.
 
 with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
@@ -40,8 +40,7 @@ package Flow_Refinement is
    --  The scopes we care about in flow analysis are restricted to packages,
    --  protected objects and task objects.
    --
-   --  There are eight places any particular variable or subprogram can be
-   --  declared or implemented in a:
+   --  Variables or subprograms can be declared or defined in:
    --    * package's spec
    --    * package's private part
    --    * package's body
@@ -51,7 +50,7 @@ package Flow_Refinement is
    --    * task object's spec
    --    * task object's body
    --
-   --  Therefore flow scope is an entity + spec|priv|body.
+   --  Therefore flow scope is an entity + spec|priv|body
 
    type Section_T is (Null_Part, Spec_Part, Private_Part, Body_Part);
 
@@ -141,12 +140,12 @@ package Flow_Refinement is
                                C : Contract_T)
                                return Node_Id
    with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry;
-   --  A helpful wrapper around Refinement_Is_Visible: given a subprogram E
-   --  and scope S (from which it is called), return the appropriate node
-   --  for the abstract or refined version of the global or depends aspect.
-   --  We choose the refined version if it exists and is visible, otherwise
-   --  we fall back on the abstract version. If we can't find an abstract
-   --  version, we return Empty.
+   --  A wrapper around Refinement_Is_Visible: given a subprogram E and scope
+   --  S (from which it is called) return the appropriate node for the abstract
+   --  or refined version of the global or depends contract. We choose the
+   --  refined version if it exists and is visible, otherwise we fall back on
+   --  the abstract version. If we can't find an abstract version, we return
+   --  Empty.
 
    function Down_Project (Vars : Node_Sets.Set;
                           S    : Flow_Scope)

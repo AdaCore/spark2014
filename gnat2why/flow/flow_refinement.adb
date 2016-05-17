@@ -704,7 +704,6 @@ package body Flow_Refinement is
    --  Start of processing for Is_Initialized_At_Elaboration
 
    begin
-
       if Trace then
          Write_Str ("Query: ");
          Sprint_Node (E);
@@ -796,7 +795,6 @@ package body Flow_Refinement is
       Scope : Flow_Scope)
       return Boolean
    is
-
       Found_State_Abstraction : Boolean := False;
 
       function Proc (N : Node_Id) return Traverse_Result;
