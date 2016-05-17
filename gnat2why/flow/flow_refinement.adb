@@ -463,27 +463,27 @@ package body Flow_Refinement is
                                return Node_Id
    is
       Body_E : constant Entity_Id := Get_Body_Entity (E);
-      N      : Node_Id := Empty;
+      Prag   : Node_Id;
+
    begin
       if Subprogram_Refinement_Is_Visible (E, S) then
-         pragma Assert (Present (Body_E));
-
-         N := Get_Pragma
-           (Get_Body_Or_Stub (Body_E),
-            (case C is
-                when Global_Contract  => Pragma_Refined_Global,
-                when Depends_Contract => Pragma_Refined_Depends));
+         Prag :=
+           Get_Pragma (Get_Body_Or_Stub (Body_E),
+                       (case C is
+                           when Global_Contract  => Pragma_Refined_Global,
+                           when Depends_Contract => Pragma_Refined_Depends));
+      else
+         Prag := Empty;
       end if;
 
-      if No (N) then
-         N := Get_Pragma
-           (E,
-            (case C is
-                when Global_Contract  => Pragma_Global,
-                when Depends_Contract => Pragma_Depends));
+      if No (Prag) then
+         Prag := Get_Pragma (E,
+                             (case C is
+                                 when Global_Contract  => Pragma_Global,
+                                 when Depends_Contract => Pragma_Depends));
       end if;
 
-      return N;
+      return Prag;
    end Get_Contract_Node;
 
    ------------------

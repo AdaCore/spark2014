@@ -103,7 +103,8 @@ package Flow_Refinement is
    with Pre => Present (S);
    --  Returns the body scope for a valid scope
 
-   function Get_Body_Or_Stub (N : Node_Id) return Node_Id;
+   function Get_Body_Or_Stub (N : Node_Id) return Node_Id with
+     Pre => Present (N);
    --  If a corresponding stub exists, then we return that instead of N
 
    ---------------------------
