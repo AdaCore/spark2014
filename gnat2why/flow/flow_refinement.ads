@@ -57,12 +57,13 @@ package Flow_Refinement is
    subtype Valid_Section_T is Section_T range Spec_Part .. Body_Part;
 
    subtype Scope_Id is Entity_Id
-   with Dynamic_Predicate => No (Scope_Id) or else
-     (Nkind (Scope_Id) in N_Entity and then
-      Ekind (Scope_Id) in E_Generic_Package |
-                          E_Package         |
-                          Protected_Kind    |
-                          Task_Kind);
+   with Dynamic_Predicate =>
+     (if Present (Scope_Id)
+      then Nkind (Scope_Id) = N_Defining_Identifier and then
+           Ekind (Scope_Id) in E_Generic_Package |
+                               E_Package         |
+                               Protected_Kind    |
+                               Task_Kind);
 
    type Flow_Scope is record
       Ent     : Scope_Id;
