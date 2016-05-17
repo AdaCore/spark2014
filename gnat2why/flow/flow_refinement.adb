@@ -41,56 +41,64 @@ with Flow_Types;             use Flow_Types;
 
 package body Flow_Refinement is
 
-   function Tree_Contains (T : Node_Id;
+   function List_Contains (L : List_Id;
                            N : Node_Id)
                            return Boolean;
-   --  Returns True iff the tree rooted at T contains node N
 
-   function Tree_Contains (L : List_Id;
-                           N : Node_Id)
-                           return Boolean;
    --  Returns True iff the list L contains node N
 
    -------------------
-   -- Tree_Contains --
+   -- List_Contains --
    -------------------
 
-   function Tree_Contains (T : Node_Id;
+   function List_Contains (L : List_Id;
                            N : Node_Id)
                            return Boolean
    is
-      Found : Boolean := False;
+      function Tree_Contains (T : Node_Id;
+                              N : Node_Id)
+                           return Boolean;
+      --  Returns True iff the tree rooted at T contains node N
 
-      function Proc (X : Node_Id) return Traverse_Result;
+      -------------------
+      -- Tree_Contains --
+      -------------------
 
-      ----------
-      -- Proc --
-      ----------
+      function Tree_Contains (T : Node_Id;
+                              N : Node_Id)
+                           return Boolean
+      is
+         Found : Boolean := False;
 
-      function Proc (X : Node_Id) return Traverse_Result is
+         function Proc (X : Node_Id) return Traverse_Result;
+
+         ----------
+         -- Proc --
+         ----------
+
+         function Proc (X : Node_Id) return Traverse_Result is
+         begin
+            if X = N then
+               Found := True;
+               return Abandon;
+            else
+               return OK;
+            end if;
+         end Proc;
+
+         procedure Search_For_Node is new Traverse_Proc (Proc);
+
+         --  Start of processing for Tree_Contains
+
       begin
-         if X = N then
-            Found := True;
-            return Abandon;
-         else
-            return OK;
-         end if;
-      end Proc;
+         Search_For_Node (T);
+         return Found;
+      end Tree_Contains;
 
-      procedure Search_For_Node is new Traverse_Proc (Proc);
-
-   --  Start of processing for Tree_Contains
-
-   begin
-      Search_For_Node (T);
-      return Found;
-   end Tree_Contains;
-
-   function Tree_Contains (L : List_Id;
-                           N : Node_Id)
-                           return Boolean
-   is
       P : Node_Id;
+
+   --  Start of processing for List_Contains
+
    begin
       P := First (L);
       while Present (P) loop
@@ -100,7 +108,7 @@ package body Flow_Refinement is
          P := Next (P);
       end loop;
       return False;
-   end Tree_Contains;
+   end List_Contains;
 
    ----------------
    -- Is_Visible --
@@ -345,7 +353,7 @@ package body Flow_Refinement is
                  N_Protected_Definition  |
                  N_Task_Definition       =>
                if Nkind (P) = N_Task_Definition
-                 or else not Tree_Contains (Private_Declarations (P),
+                 or else not List_Contains (Private_Declarations (P),
                                             Get_Body_Or_Stub (N))
                then
                   V := Spec_Part;
