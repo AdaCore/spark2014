@@ -69,9 +69,8 @@ package Flow_Refinement is
       Ent     : Scope_Id;
       Section : Section_T;
    end record
-   with Dynamic_Predicate => (if Present (Flow_Scope.Ent)
-                              then Flow_Scope.Section /= Null_Part
-                              else Flow_Scope.Section = Null_Part);
+   with Dynamic_Predicate => (Flow_Scope.Ent = Empty) =
+                             (Flow_Scope.Section = Null_Part);
    --  Note: conceptually this is a discrimated record type, but discriminating
    --  on Scope_Id (which is an Entity_Id with a predicate) is troublesome.
 
