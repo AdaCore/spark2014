@@ -895,9 +895,7 @@ package body Flow_Utility is
                   Formal_Param := Concurrent_Object_Id (Param);
                   All_Reads.Insert (Formal_Param);
                   All_Proof_Ins.Insert (Formal_Param);
-                  if Ekind (Subprogram) not in E_Function         |
-                                               E_Generic_Function
-                  then
+                  if Ekind (Subprogram) /= E_Function then
                      All_Writes.Insert (Formal_Param);
                   end if;
             end case;

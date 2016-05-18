@@ -125,9 +125,12 @@ is
    --  @return the equivalent set of flow ids
 
    function Has_Depends (Subprogram : Entity_Id) return Boolean
-   with Pre => Ekind (Subprogram) in E_Entry | E_Task_Type | Subprogram_Kind;
-   --  Return true if the given subprogram has been annotated with a
-   --  dependency relation.
+   with Pre  => Ekind (Subprogram) in E_Entry     |
+                                      E_Function  |
+                                      E_Procedure |
+                                      E_Task_Type;
+   --  Return true if the given subprogram has been annotated with a dependency
+   --  relation.
 
    procedure Get_Depends
      (Subprogram           : Entity_Id;
@@ -136,7 +139,10 @@ is
       Depends              : out Dependency_Maps.Map;
       Use_Computed_Globals : Boolean := True;
       Callsite             : Node_Id := Empty)
-   with Pre  => Ekind (Subprogram) in E_Entry | E_Task_Type | Subprogram_Kind
+   with Pre  => Ekind (Subprogram) in E_Entry     |
+                                      E_Function  |
+                                      E_Procedure |
+                                      E_Task_Type
                   and then Has_Depends (Subprogram),
         Post => (for all Inputs of Depends =>
                    (for all Input of Inputs => Present (Input)));
