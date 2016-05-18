@@ -4758,9 +4758,9 @@ package body Flow_Utility is
          if F.Kind in Direct_Mapping | Record_Field
            and then Get_Direct_Mapping_Id (F) = Of_This
          then
-            FS.Include (F'Update (Node => With_This));
+            FS.Insert (F'Update (Node => With_This));
          else
-            FS.Include (F);
+            FS.Insert (F);
          end if;
       end loop;
       return FS;

@@ -704,9 +704,11 @@ is
       With_This : Entity_Id;
       The_Set   : Flow_Id_Sets.Set)
       return Flow_Id_Sets.Set;
-   --  Returns a flow set that replaces all Flow_Ids of The_Set that
-   --  correspond to Of_This with equivalent Flow_Ids that correspond to
-   --  With_This.
+   --  Returns a flow set that replaces all Flow_Ids of The_Set that correspond
+   --  to Of_This with equivalent Flow_Ids that correspond to With_This.
+   --
+   --  ??? this function is inefficient and its uses should be probably
+   --  replaced with a call to Ada.Containers.Hashed_Sets.Replace_Element
 
    function Has_Variable_Input (F : Flow_Id) return Boolean
    with Pre => F.Kind in Direct_Mapping | Record_Field;
