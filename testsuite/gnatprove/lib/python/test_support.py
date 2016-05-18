@@ -528,7 +528,7 @@ def gnatprove_(opt=["-P", "test.gpr"]):
         cmd += ["--verbose"]
     cmd += to_list(opt)
     if verbose_mode():
-        print cmd
+        print ' '.join(cmd)
     process = Run(cmd)
     # Replace line above by the one below for testing the scripts without
     # running the tool:
