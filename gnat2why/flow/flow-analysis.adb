@@ -3171,8 +3171,8 @@ package body Flow.Analysis is
          else
             FA.Analyzed_Entity);
 
-      Params           : Node_Sets.Set := Node_Sets.Empty_Set;
-      Implicit_Params  : Node_Sets.Set := Node_Sets.Empty_Set;
+      Params         : Node_Sets.Set := Node_Sets.Empty_Set;
+      Implicit_Param : Entity_Id;
       --  This set will hold all local parameters of the subprogram
 
       Depends_Scope    : constant Flow_Scope :=
@@ -3333,7 +3333,7 @@ package body Flow.Analysis is
 
       --  Populate the Params and Implicit_Params sets
       Params := Get_Formals (FA.Analyzed_Entity);
-      Implicit_Params := Get_Implicit_Formals (FA.Analyzed_Entity);
+      Implicit_Param := Get_Implicit_Formal (FA.Analyzed_Entity);
 
       --  Up project the dependencies
       User_Deps   := Up_Project_Map (User_Deps);
@@ -3442,8 +3442,9 @@ package body Flow.Analysis is
                         null;
                      elsif F_Out = Null_Flow_Id
                        and then Missing_Var.Kind = Direct_Mapping
-                       and then Implicit_Params.Contains
-                                  (Get_Direct_Mapping_Id (Missing_Var))
+                       and then Present (Implicit_Param)
+                       and then Implicit_Param =
+                                  Get_Direct_Mapping_Id (Missing_Var)
                      then
                         --  Suppress missing dependencies related to implicit
                         --  concurrent objects.
@@ -3517,8 +3518,9 @@ package body Flow.Analysis is
                      --  since this is trivially True.
                      null;
                   elsif F_Out.Kind = Direct_Mapping
-                    and then Implicit_Params.Contains
-                               (Get_Direct_Mapping_Id (Wrong_Var))
+                    and then Present (Implicit_Param)
+                    and then Implicit_Param =
+                               Get_Direct_Mapping_Id (Wrong_Var)
                     and then Wrong_Var.Kind = Direct_Mapping
                   then
                      --  Suppress incorrect dependencies related to implicit

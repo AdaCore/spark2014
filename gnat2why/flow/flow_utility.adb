@@ -1964,38 +1964,36 @@ package body Flow_Utility is
    -- Get_Implicit_Formals --
    --------------------------
 
-   function Get_Implicit_Formals
+   function Get_Implicit_Formal
      (E        : Entity_Id;
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
-      return Node_Sets.Set
+      return Entity_Id
    is
       F : constant Flow_Id := Direct_Mapping_Id (E);
-      use Node_Sets;
    begin
       case Ekind (E) is
-         when E_Entry | Subprogram_Kind =>
+         when E_Entry | E_Function | E_Procedure =>
             --  If E is directly enclosed in a protected object then add the
             --  protected object as an implicit formal parameter of the
             --  entry/subprogram.
             return
               (if Belongs_To_Protected_Object (F)
                then
-                  To_Set
-                    (Get_Enclosing_Concurrent_Object (F, Callsite, Entire))
-               else Empty_Set);
+                  Get_Enclosing_Concurrent_Object (F, Callsite, Entire)
+               else Empty);
 
          when E_Task_Type =>
             --  A task sees itself as a formal parameter
-            return To_Set ((if Present (Anonymous_Object (E))
-                            then Anonymous_Object (E)
-                            else E));
+            return (if Present (Anonymous_Object (E))
+                    then Anonymous_Object (E)
+                    else E);
 
          when others =>
             raise Program_Error;
 
       end case;
-   end Get_Implicit_Formals;
+   end Get_Implicit_Formal;
 
    -----------------
    -- Get_Formals --
@@ -2008,10 +2006,16 @@ package body Flow_Utility is
       return Node_Sets.Set
    is
       Param  : Entity_Id;
-      Params : Node_Sets.Set := Get_Implicit_Formals (E, Callsite, Entire);
+      Params : Node_Sets.Set;
    begin
+      Param := Get_Implicit_Formal (E, Callsite, Entire);
+
+      if Present (Param) then
+         Params.Insert (Param);
+      end if;
+
       case Ekind (E) is
-         when E_Entry | Subprogram_Kind =>
+         when E_Entry | E_Function | E_Procedure =>
             --  Collect explicit formal parameters
             Param := First_Formal (E);
             while Present (Param) loop
