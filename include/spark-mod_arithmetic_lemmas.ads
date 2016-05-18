@@ -45,7 +45,7 @@ is
    with
      Global => null,
      Pre  => Val1 <= Val2,
-     Post => Val1 / Denom <= Val2 / Denom;
+     Post => Val1 / Denom <= Val2 / Denom;  --  MANUAL PROOF
 
    procedure Lemma_Div_Then_Mult_Bounds
      (Arg1 : Uint;
@@ -54,7 +54,7 @@ is
    with
      Global => null,
      Pre  => Res = (Arg1 / Arg2) * Arg2,
-     Post => Res <= Arg1 and then Arg1 - Res < Arg2;
+     Post => Res <= Arg1 and then Arg1 - Res < Arg2;  --  MANUAL PROOF
 
    procedure Lemma_Mult_Is_Monotonic
      (Val1   : Uint;
@@ -73,7 +73,7 @@ is
    with
      Global => null,
      Pre  => Arg2 = 0 or else Arg1 <= Upper_Bound / Arg2,
-     Post => Arg1 * Arg2 <= Upper_Bound;
+     Post => Arg1 * Arg2 <= Upper_Bound;  --  MANUAL PROOF
 
    procedure Lemma_Mult_Scale
      (Val         : Uint;
@@ -85,7 +85,7 @@ is
      Pre  => Scale_Num <= Scale_Denom and then
              (Scale_Num = 0 or else Val <= Uint'Last / Scale_Num) and then
              Res = (Val * Scale_Num) / Scale_Denom,
-     Post => Res <= Val;
+     Post => Res <= Val;  --  MANUAL PROOF
 
    procedure Lemma_Mult_Then_Div_Is_Ident
      (Arg1 : Uint;
@@ -93,7 +93,7 @@ is
    with
      Global => null,
      Pre  => Arg1 <= Uint'Last / Arg2,
-     Post => (Arg1 * Arg2) / Arg2 = Arg1;
+     Post => (Arg1 * Arg2) / Arg2 = Arg1;  --  MANUAL PROOF
 
    procedure Lemma_Mult_Then_Mod_Is_Zero
      (Arg1 : Uint;
@@ -101,6 +101,6 @@ is
    with
      Global => null,
      Pre  => Arg1 <= Uint'Last / Arg2,
-     Post => (Arg1 * Arg2) mod Arg2 = 0;
+     Post => (Arg1 * Arg2) mod Arg2 = 0;  --  MANUAL PROOF
 
 end SPARK.Mod_Arithmetic_Lemmas;

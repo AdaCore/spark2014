@@ -2,9 +2,10 @@
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="4">
-<prover id="0" name="CVC4_CE" version="1.5" timelimit="0" steplimit="75000" memlimit="0"/>
-<prover id="1" name="CVC4" version="1.5" timelimit="0" steplimit="75000" memlimit="0"/>
-<prover id="2" name="Coq" version="8.5pl1" timelimit="0" steplimit="0" memlimit="0"/>
+<prover id="0" name="altergo" version="0.99.1" timelimit="10" steplimit="1000" memlimit="0"/>
+<prover id="1" name="Z3" version="4.4.1" timelimit="10" steplimit="15100000" memlimit="0"/>
+<prover id="2" name="CVC4" version="1.5" timelimit="10" steplimit="300000" memlimit="0"/>
+<prover id="3" name="Coq" version="8.4pl6" timelimit="0" steplimit="0" memlimit="0"/>
 <file name="../../../obj/gnatprove/spark-integer_arithmetic_lemmas.mlw" expanded="true">
 <theory name="Standard__short_short_integer" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -66,93 +67,69 @@
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__pos" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__val" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__val__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__scale_num" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__scale_num__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__scale_denom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__scale_denom__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__res" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__res__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__arg1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__arg1__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__arg2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__arg2__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__upper_bound" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__upper_bound__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__val1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__val1__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__val1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__val2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__val2__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__val2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__denom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__denom__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__res1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__res1__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__res2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__res2__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__denom___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__arg1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__arg1__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__arg1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__arg2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__arg2__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__res" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__res__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__arg2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__arg1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__arg1__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__arg1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__arg2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__arg2__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__arg2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__res1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__arg1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__res1__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__arg1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__res2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__arg2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__res2__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__arg2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__upper_bound" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__upper_bound___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__val" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__val___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__scale_num" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__scale_num___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__scale_denom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__scale_denom___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__res" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__res___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__arg1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__arg1__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__arg1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__arg2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__arg2__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__res" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__res__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__arg2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__name" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -164,51 +141,51 @@
 </theory>
 <theory name="System__Olt__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Olt__left__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Olt__left___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Olt__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Olt__right__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Olt__right___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Olt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Ole__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Ole__left__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Ole__left___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Ole__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Ole__right__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Ole__right___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Ole" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Ogt__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Ogt__left__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Ogt__left___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Ogt__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Ogt__right__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Ogt__right___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Ogt" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Oge__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Oge__left__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Oge__left___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Oge__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Oge__right__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Oge__right___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Oge" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Oeq__left" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Oeq__left__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Oeq__left___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Oeq__right" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Oeq__right__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Oeq__right___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="System__Oeq" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -280,63 +257,63 @@
 </theory>
 <theory name="System__zcx_by_default" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__short_short_integer__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__short_integer__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__integer__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__long_integer__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__long_long_integer__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_long_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__natural__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__natural___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__positive__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__positive___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__short_float__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__short_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__float__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__long_float__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__long_long_float__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__long_long_float___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__character__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__wide_character__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__wide_wide_character__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_character___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__string__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__wide_string__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__wide_wide_string__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__wide_wide_string___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__duration__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__duration___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__integer_8__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_8___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__integer_16__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_16___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__integer_32__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_32___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__integer_64__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__integer_64___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__universal_integer__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__universal_integer___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Standard__universal_real__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Standard__universal_real___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
@@ -364,133 +341,133 @@
 </theory>
 <theory name="System__memory_size" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__int__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__int___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__nat__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__nat___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__pos__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__pos___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__name__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__name___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__address__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__address___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__bit_order__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__bit_order___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__any_priority__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__any_priority___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__priority__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__priority___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__interrupt_priority__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__interrupt_priority___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__system_name__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__system_name___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__min_int__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__min_int___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__max_int__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__max_int___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__max_binary_modulus__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__max_binary_modulus___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__max_nonbinary_modulus__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__max_nonbinary_modulus___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__max_base_digits__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__max_base_digits___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__max_digits__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__max_digits___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__max_mantissa__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__max_mantissa___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__fine_delta__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__fine_delta___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__tick__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__tick___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__storage_unit__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__storage_unit___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__word_size__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__word_size___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__memory_size__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__memory_size___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__default_bit_order__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__default_bit_order___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__max_interrupt_priority__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__max_interrupt_priority___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__max_priority__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__max_priority___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__default_priority__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__default_priority___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__null_address__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__null_address___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__backend_divide_checks__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__backend_divide_checks___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__backend_overflow_checks__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__backend_overflow_checks___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__command_line_args__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__command_line_args___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__configurable_run_time__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__configurable_run_time___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__denorm__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__denorm___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__duration_32_bits__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__duration_32_bits___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__exit_status_supported__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__exit_status_supported___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__fractional_fixed_ops__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__fractional_fixed_ops___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__frontend_layout__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__frontend_layout___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__machine_overflows__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__machine_overflows___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__machine_rounds__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__machine_rounds___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__preallocated_stacks__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__preallocated_stacks___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__signed_zeros__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__signed_zeros___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__stack_check_default__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__stack_check_default___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__stack_check_probes__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__stack_check_probes___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__stack_check_limits__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__stack_check_limits___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__support_aggregates__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__support_aggregates___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__support_atomic_primitives__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__support_atomic_primitives___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__support_composite_assign__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__support_composite_assign___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__support_composite_compare__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__support_composite_compare___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__support_long_shifts__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__support_long_shifts___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__always_compatible_rep__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__always_compatible_rep___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__suppress_standard_library__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__suppress_standard_library___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__use_ada_main_program_name__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__use_ada_main_program_name___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__frontend_exceptions__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__frontend_exceptions___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__zcx_by_default__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__zcx_by_default___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Olt__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Olt___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Ole__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Ole___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Ogt__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Ogt___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Oge__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Oge___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
-<theory name="System__Oeq__axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+<theory name="System__Oeq___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__integer_arithmetic_lemmas__package_def" sum="68d85ea08773c83fbb28b61054b5d437" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
@@ -498,15 +475,50 @@
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__subprogram_def" sum="e3e842dc03db8cd5a67875644886cbf8" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" sum="7a48ff2b01a652d4a448d5cf7cb53a62" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.03" steps="0"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. precondition">
+  <proof prover="2"><result status="valid" time="0.03" steps="0"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="3. postcondition">
+  <proof prover="0"><result status="unknown" time="0.14"/></proof>
+  <proof prover="1"><result status="timeout" time="12.41"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="1340"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="unknown" time="0.80"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__subprogram_def" sum="bfa69a943633b49bde09377d3cf661ec" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. precondition">
+  <proof prover="2"><result status="valid" time="0.03" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="0"><result status="highfailure" time="0.02"/></proof>
-  <proof prover="1"><result status="unknown" time="0.02" steps="1050"/></proof>
+  <proof prover="2"><result status="valid" time="0.03" steps="80"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__subprogram_def" sum="11a71503158ef4c9d4296a8be8c2c4d8" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. precondition">
+  <proof prover="2"><result status="valid" time="0.02" steps="0"/></proof>
+  </goal>
+  <goal name="WP_parameter def.2" expl="2. precondition">
+  <proof prover="2"><result status="valid" time="0.02" steps="0"/></proof>
+  </goal>
+  <goal name="WP_parameter def.3" expl="3. postcondition">
+  <proof prover="0"><result status="unknown" time="0.30"/></proof>
+  <proof prover="1"><result status="outofmemory" time="19.71"/></proof>
+  <proof prover="2"><result status="unknown" time="0.03" steps="140"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="unknown" time="0.78"/></proof>
   </goal>
  </transf>
  </goal>
@@ -515,69 +527,38 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.02" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="0"><result status="highfailure" time="0.02"/></proof>
-  <proof prover="1"><result status="unknown" time="0.02" steps="390"/></proof>
-  <proof prover="2" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mult_protect__pragargs__cmp.v"><result status="valid" time="0.46"/></proof>
+  <proof prover="1"><result status="valid" time="0.02"/></proof>
+  <proof prover="2"><result status="unknown" time="0.03" steps="390"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" sum="6858dedaba996f8fcbdce35e04faff83" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__subprogram_def" sum="e3e842dc03db8cd5a67875644886cbf8" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="0"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="0"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="highfailure" time="0.02"/></proof>
-  <proof prover="1"><result status="unknown" time="0.03" steps="1340"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__subprogram_def" sum="8d831bccfa4b5a7f28e99c1b9e74e308" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.03" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="80"/></proof>
+  <proof prover="1"><result status="valid" time="0.04"/></proof>
+  <proof prover="2"><result status="unknown" time="0.04" steps="1050"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__subprogram_def" sum="84426f9439ce24e454558f7690fd23e9" expanded="true">
+<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__subprogram_def" sum="409867ff4f9e1a929425097a0f9cd7ae" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="0"/></proof>
-  </goal>
-  <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="1"><result status="valid" time="0.01" steps="0"/></proof>
-  </goal>
-  <goal name="WP_parameter def.3" expl="3. postcondition">
-  <proof prover="0"><result status="highfailure" time="0.01"/></proof>
-  <proof prover="1"><result status="unknown" time="0.02" steps="140"/></proof>
-  </goal>
- </transf>
- </goal>
-</theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__subprogram_def" sum="793097d399926cff3941df1bfcdcc277" expanded="true">
- <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
-  <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="1"><result status="valid" time="0.02" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.02" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. postcondition">
-  <proof prover="0"><result status="highfailure" time="0.02"/></proof>
-  <proof prover="1"><result status="unknown" time="0.02" steps="110"/></proof>
+  <proof prover="0"><result status="valid" time="0.04" steps="135"/></proof>
+  <proof prover="1"><result status="timeout" time="19.64"/></proof>
+  <proof prover="2"><result status="unknown" time="0.03" steps="110"/></proof>
   </goal>
  </transf>
  </goal>

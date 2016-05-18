@@ -46,7 +46,7 @@ is
    with
      Global => null,
      Pre  => Val1 <= Val2,
-     Post => Val1 / Denom <= Val2 / Denom;
+     Post => Val1 / Denom <= Val2 / Denom;  --  MANUAL PROOF
 
    procedure Lemma_Mod_Range
      (Arg1 : Int;
@@ -61,7 +61,7 @@ is
    with
      Global => null,
      Pre  => Arg2 /= 0,
-     Post => (-Arg1) mod (-Arg2) = -(Arg1 mod Arg2);
+     Post => (-Arg1) mod (-Arg2) = -(Arg1 mod Arg2);  --  MANUAL PROOF
 
    procedure Lemma_Mult_Protect
      (Arg1        : Int;
