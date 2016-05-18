@@ -830,8 +830,8 @@ package body Flow_Utility is
       F             : Flow_Id;
 
       function Trimming_Required return Boolean;
-      --  Checks if the projected Depends constituents need to be
-      --  trimmed (based on a user-provided Refined_Global aspect).
+      --  Checks if the projected Depends constituents need to be trimmed
+      --  (based on a user-provided Refined_Global aspect).
 
       -----------------------
       -- Trimming_Required --
@@ -855,10 +855,11 @@ package body Flow_Utility is
          return True;
       end Trimming_Required;
 
-   begin
+   --  Start of processing for Get_Depends
 
+   begin
       ----------------------------------------------------------------------
-      --  Step 1: Parse the appropriate dependency relation.
+      --  Step 1: Parse the appropriate dependency relation
       ----------------------------------------------------------------------
 
       Tmp := Parse_Depends (Depends_N);
@@ -870,7 +871,7 @@ package body Flow_Utility is
       --  user-provided Refined_Global contract.
       ----------------------------------------------------------------------
 
-      --  Initializing Depends map
+      --  Initialize Depends map
       Depends := Dependency_Maps.Empty_Map;
 
       if Trimming_Required then

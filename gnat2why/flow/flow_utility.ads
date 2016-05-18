@@ -140,28 +140,28 @@ is
                   and then Has_Depends (Subprogram),
         Post => (for all Inputs of Depends =>
                    (for all Input of Inputs => Present (Input)));
-   --  Return the dependency relation of the given Subprogram, as viewed from
-   --  the given Scope. The dependency relation is represented as a map from
-   --  entities to sets of entities.
+   --  Return the dependency relation of the Subprogram, as viewed from the
+   --  Scope. Dependency relation is represented as a map from entities to
+   --  sets of entities.
    --
-   --  For example (X, Y) =>+ Z would be represented as:
+   --  For example, (X, Y) =>+ Z is represented as:
    --     x -> {x, z}
    --     y -> {y, z}
    --
-   --  This procedure deals with all forms of the depends annotation. For each
+   --  This procedure deals with all forms of the Depends annotation. For each
    --  item in the dependency annotation, the LHS and RHS can be any of the
    --  following:
    --     * (x, y, z)     (an aggregate)
    --     * x             (a variable)
    --     * null          (keyword null)
-   --  One final form which is supported is the null dependency.
+   --  Finally, the dependency annotation can be just a null dependency.
    --
-   --  The + shorthand to mean "itself" is expanded away by the
-   --  front-end and this procedure does not have to deal with it.
+   --  The + shorthand to mean "itself" is expanded away by the front-end and
+   --  this procedure does not have to deal with it.
    --
-   --  The Use_Computed_Globals flag is set to False during the
-   --  generation of globals phase. It prevents us from attempting to
-   --  use generated globals before they have actually been produced.
+   --  The Use_Computed_Globals flag is set to False during the generation of
+   --  globals phase. It prevents us from attempting to use generated globals
+   --  before they have actually been produced.
 
    procedure Get_Globals (Subprogram             : Entity_Id;
                           Scope                  : Flow_Scope;
