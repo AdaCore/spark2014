@@ -246,7 +246,9 @@ package Flow_Types is
                             N_Expanded_Name     |
                             N_Identifier        |
                             N_Indexed_Component |
-                            N_Selected_Component;
+                            N_Selected_Component,
+        Post => Concurrent_Object_Id'Result.Kind in Direct_Mapping |
+                                                    Record_Field;
    --  Returns the Flow_Id for a concurrent object. This can be either a
    --  Direct_mapping or a Record_Field.
 
