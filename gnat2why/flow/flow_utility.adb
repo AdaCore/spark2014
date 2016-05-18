@@ -2016,18 +2016,18 @@ package body Flow_Utility is
             Param := First_Formal (E);
             while Present (Param) loop
                Params.Insert (Param);
-               Param := Next_Formal (Param);
+               Next_Formal (Param);
             end loop;
 
          when E_Task_Type =>
-            --  Add discriminants of task as formal parameters.
+            --  Add discriminants of task as formal parameters
             if Has_Discriminants (E)
               or else Has_Unknown_Discriminants (E)
             then
-               Param :=  First_Discriminant (E);
+               Param := First_Discriminant (E);
                while Present (Param) loop
-                  Params.Include (Param);
-                  Param := Next_Discriminant (Param);
+                  Params.Insert (Param);
+                  Next_Discriminant (Param);
                end loop;
             end if;
 
