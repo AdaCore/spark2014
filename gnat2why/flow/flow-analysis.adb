@@ -629,8 +629,8 @@ package body Flow.Analysis is
    is
       Vars_Used  : Flow_Id_Sets.Set;
       Vars_Known : Flow_Id_Sets.Set;
-   begin
 
+   begin
       for Refined in Boolean loop
          declare
             Aspect_To_Fix : constant String :=

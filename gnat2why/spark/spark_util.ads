@@ -650,11 +650,11 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
-     with Pre => Ekind (E) in E_Function  |
-                              E_Package   |
-                              E_Procedure |
-                              Entry_Kind  |
-                              Protected_Kind  |
+     with Pre => Ekind (E) in E_Function     |
+                              E_Package      |
+                              E_Procedure    |
+                              Entry_Kind     |
+                              Protected_Kind |
                               Task_Kind
                and then not (Classwide and Inherited);
    --  @param E subprogram or package
