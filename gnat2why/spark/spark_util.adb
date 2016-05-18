@@ -2955,7 +2955,7 @@ package body SPARK_Util is
         or else
      (Ekind (E) = E_Enumeration_Subtype
         and then Etype (E) = Standard_Boolean
-        and then Scalar_Range (E) = Scalar_Range (Etype (E))));
+        and then Scalar_Range (E) = Scalar_Range (Standard_Boolean)));
 
    --------------------------
    -- Is_Static_Array_Type --
