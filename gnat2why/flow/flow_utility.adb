@@ -817,53 +817,40 @@ package body Flow_Utility is
       --  For now we assume classwide globals are the same as the actual
       --  globals.
 
-      Tmp           : Dependency_Maps.Map;
+      Depends_N : constant Node_Id :=
+        Get_Contract_Node (Subprogram, Scope, Depends_Contract);
 
-      Depends_N     : constant Node_Id := Get_Contract_Node (Subprogram,
-                                                             Scope,
-                                                             Depends_Contract);
+      pragma Assert
+        (Present (Depends_N)
+         and then Get_Pragma_Id (Depends_N) in Pragma_Depends |
+                                               Pragma_Refined_Depends);
+
+      Contract_Relation : constant Dependency_Maps.Map :=
+        Parse_Depends (Depends_N);
+      --  Step 1: Parse the appropriate dependency relation
 
       All_Proof_Ins : Flow_Id_Sets.Set;
       All_Reads     : Flow_Id_Sets.Set;
       All_Writes    : Flow_Id_Sets.Set;
 
-      F             : Flow_Id;
+      Formal_Param : Flow_Id;
 
       function Trimming_Required return Boolean;
       --  Checks if the projected Depends constituents need to be trimmed
       --  (based on a user-provided Refined_Global aspect).
+      --  ??? what is trimming?
 
       -----------------------
       -- Trimming_Required --
       -----------------------
 
       function Trimming_Required return Boolean is
-      begin
-         if Pragma_Name (Depends_N) = Name_Refined_Depends
-           or else not Mentions_State_With_Visible_Refinement (Depends_N,
-                                                               Scope)
-         then
-            --  No trimming required if:
-            --
-            --    a) there is a user-provided Refined_Depends
-            --
-            --    b) the Depends aspect does not mention state with visible
-            --       refinement
-            return False;
-         end if;
-
-         return True;
-      end Trimming_Required;
+        (Get_Pragma_Id (Depends_N) = Pragma_Depends
+           and then Mentions_State_With_Visible_Refinement (Depends_N, Scope));
 
    --  Start of processing for Get_Depends
 
    begin
-      ----------------------------------------------------------------------
-      --  Step 1: Parse the appropriate dependency relation
-      ----------------------------------------------------------------------
-
-      Tmp := Parse_Depends (Depends_N);
-
       ----------------------------------------------------------------------
       --  Step 2: Expand out any abstract state for which the refinement is
       --  visible, similar to what we do for globals. During this step we
@@ -875,9 +862,9 @@ package body Flow_Utility is
       Depends := Dependency_Maps.Empty_Map;
 
       if Trimming_Required then
-         --  Use the Refined_Global to trim the down projected Depends
+         --  Use the Refined_Global to trim the down-projected Depends
 
-         --  Collecting all global Proof_Ins, Outputs and Inputs
+         --  Collect all global Proof_Ins, Outputs and Inputs
          Get_Globals (Subprogram           => Subprogram,
                       Scope                => Scope,
                       Classwide            => False,
@@ -886,33 +873,32 @@ package body Flow_Utility is
                       Writes               => All_Writes,
                       Use_Computed_Globals => Use_Computed_Globals);
 
-         --  Add formal parameters so that we have the complete set of
-         --  Proof_Ins, Reads and Writes.
+         --  Add formal parameters
          for Param of Get_Formals (Subprogram) loop
             case Ekind (Param) is
                when E_In_Parameter     =>
-                  F := Direct_Mapping_Id (Param);
-                  All_Reads.Insert (F);
-                  All_Proof_Ins.Insert (F);
+                  Formal_Param := Direct_Mapping_Id (Param);
+                  All_Reads.Insert (Formal_Param);
+                  All_Proof_Ins.Insert (Formal_Param);
 
                when E_In_Out_Parameter =>
-                  F := Direct_Mapping_Id (Param);
-                  All_Proof_Ins.Insert (F);
-                  All_Reads.Insert (F);
-                  All_Writes.Insert (F);
+                  Formal_Param := Direct_Mapping_Id (Param);
+                  All_Proof_Ins.Insert (Formal_Param);
+                  All_Reads.Insert (Formal_Param);
+                  All_Writes.Insert (Formal_Param);
 
                when E_Out_Parameter    =>
-                  F := Direct_Mapping_Id (Param);
-                  All_Writes.Insert (F);
+                  Formal_Param := Direct_Mapping_Id (Param);
+                  All_Writes.Insert (Formal_Param);
 
                when others             =>
-                  F := Concurrent_Object_Id (Param);
-                  All_Reads.Insert (F);
-                  All_Proof_Ins.Insert (F);
+                  Formal_Param := Concurrent_Object_Id (Param);
+                  All_Reads.Insert (Formal_Param);
+                  All_Proof_Ins.Insert (Formal_Param);
                   if Ekind (Subprogram) not in E_Function         |
                                                E_Generic_Function
                   then
-                     All_Writes.Insert (F);
+                     All_Writes.Insert (Formal_Param);
                   end if;
             end case;
          end loop;
@@ -940,7 +926,7 @@ package body Flow_Utility is
                                                 Node_Sets.Empty_Set,
                                                 True);
 
-         for C in Tmp.Iterate loop
+         for C in Contract_Relation.Iterate loop
             declare
                D_Out : constant Flow_Id_Sets.Set :=
                  (if Present (Dependency_Maps.Key (C)) then
@@ -953,18 +939,15 @@ package body Flow_Utility is
                      Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
 
                D_In  : Flow_Id_Sets.Set :=
-                 To_Flow_Id_Set (Down_Project
-                                   (To_Node_Set
-                                      (Dependency_Maps.Element (C)),
-                                    Scope));
+                 To_Flow_Id_Set
+                   (Down_Project (To_Node_Set (Contract_Relation (C)), Scope));
+
             begin
                for O of D_Out loop
                   if All_Writes.Contains (O) then
-                     if O = Null_Flow_Id then
-                        D_In.Intersection (All_Proof_Ins);
-                     else
-                        D_In.Intersection (All_Reads);
-                     end if;
+                     D_In.Intersection (if O = Null_Flow_Id
+                                        then All_Proof_Ins
+                                        else All_Reads);
                      Depends.Include (O, D_In);
                   end if;
                end loop;
@@ -973,7 +956,7 @@ package body Flow_Utility is
 
       else
          --  Simply add the dependencies as they are
-         for C in Tmp.Iterate loop
+         for C in Contract_Relation.Iterate loop
             declare
                D_Out : constant Flow_Id_Sets.Set :=
                  (if Present (Dependency_Maps.Key (C)) then
@@ -986,10 +969,9 @@ package body Flow_Utility is
                      Flow_Id_Sets.To_Set (Dependency_Maps.Key (C)));
 
                D_In  : constant Flow_Id_Sets.Set :=
-                 To_Flow_Id_Set (Down_Project
-                                   (To_Node_Set
-                                      (Dependency_Maps.Element (C)),
-                                    Scope));
+                 To_Flow_Id_Set
+                   (Down_Project (To_Node_Set (Contract_Relation (C)), Scope));
+
             begin
                for O of D_Out loop
                   Depends.Include (O, D_In);
@@ -1016,16 +998,22 @@ package body Flow_Utility is
       --  Change variant of All_Proof_Ins to Normal_Use
       All_Proof_Ins := Change_Variant (All_Proof_Ins, Normal_Use);
 
-      if Depends.Contains (Null_Flow_Id) then
-         --  Add All_Proof_Ins to the existing RHS of the "null => RHS"
-         --  dependency.
-         for P_In of All_Proof_Ins loop
-            Depends (Null_Flow_Id).Include (P_In);
-         end loop;
-      else
-         --  Create new dependency where "null => All_Proof_Ins"
-         Depends.Insert (Null_Flow_Id, All_Proof_Ins);
-      end if;
+      --  Create new dependency with "null => All_Proof_Ins" or extend the
+      --  existing "null => ..." with All_Proof_Ins.
+      declare
+         Position : Dependency_Maps.Cursor;
+         Inserted : Boolean;
+
+      begin
+         Depends.Insert (Key      => Null_Flow_Id,
+                         New_Item => All_Proof_Ins,
+                         Position => Position,
+                         Inserted => Inserted);
+
+         if not Inserted then
+            Depends (Position).Union (All_Proof_Ins);
+         end if;
+      end;
 
       ----------------------------------------------------------------------
       --  Step 4: If we are dealing with a protected operation and the
@@ -1038,33 +1026,51 @@ package body Flow_Utility is
       then
          declare
             PO_Type : constant Entity_Id :=
-              Get_Enclosing_Concurrent_Object  (E        => Subprogram,
-                                                Callsite => Empty,
-                                                Entire   => True);
+              Get_Enclosing_Concurrent_Object (E        => Subprogram,
+                                               Callsite => Empty,
+                                               Entire   => True);
 
             The_PO  : constant Entity_Id :=
-              Get_Enclosing_Concurrent_Object  (E        => Subprogram,
-                                                Callsite => Callsite,
-                                                Entire   => True);
+              Get_Enclosing_Concurrent_Object (E        => Subprogram,
+                                               Callsite => Callsite,
+                                               Entire   => True);
 
-            New_Map : Dependency_Maps.Map := Dependency_Maps.Empty_Map;
-            New_Key : Flow_Id;
          begin
+            --  Substitute reference on LHS
+            if Depends.Contains (Direct_Mapping_Id (PO_Type)) then
+               declare
+                  Position : Dependency_Maps.Cursor;
+                  Inserted : Boolean;
+
+               begin
+                  Depends.Insert (Key      => Direct_Mapping_Id (The_PO),
+                                  Position => Position,
+                                  Inserted => Inserted);
+
+                  pragma Assert (Inserted);
+
+                  Flow_Id_Sets.Move
+                    (Target => Depends (Position),
+                     Source => Depends (Direct_Mapping_Id (PO_Type)));
+
+                  Depends.Delete (Direct_Mapping_Id (PO_Type));
+               end;
+            end if;
+
+            --  Substitute references on RHS
             for D in Depends.Iterate loop
-               New_Key :=
-                 (if Dependency_Maps.Key (D) = Direct_Mapping_Id (PO_Type)
-                  then Direct_Mapping_Id (The_PO)
-                  else Dependency_Maps.Key (D));
+               declare
+                  C : constant Flow_Id_Sets.Cursor :=
+                    Depends (D).Find (Direct_Mapping_Id (PO_Type));
 
-               New_Map.Insert
-                    (New_Key,
-                     Replace_Flow_Ids
-                       (Of_This   => PO_Type,
-                        With_This => The_PO,
-                        The_Set   => Dependency_Maps.Element (D)));
+               begin
+                  if Flow_Id_Sets.Has_Element (C) then
+                     Depends (D).Replace_Element
+                       (Position => C,
+                        New_Item => Direct_Mapping_Id (The_PO));
+                  end if;
+               end;
             end loop;
-
-            Depends := New_Map;
          end;
       end if;
 
