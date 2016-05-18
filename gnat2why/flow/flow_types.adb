@@ -210,11 +210,11 @@ package body Flow_Types is
       Facet   : Variable_Facet_T := Normal_Part)
       return Flow_Id
    is
-      F : Flow_Id := (Kind        => Record_Field,
-                      Variant     => Variant,
-                      Node        => Empty,
-                      Facet       => Facet,
-                      Component   => Entity_Vectors.Empty_Vector);
+      F : Flow_Id := (Kind      => Record_Field,
+                      Variant   => Variant,
+                      Node      => Empty,
+                      Facet     => Facet,
+                      Component => Entity_Vectors.Empty_Vector);
       P : Node_Id;
    begin
       P := N;
