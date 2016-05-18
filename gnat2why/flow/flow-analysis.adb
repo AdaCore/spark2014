@@ -3520,8 +3520,6 @@ package body Flow.Analysis is
                     and then Implicit_Params.Contains
                                (Get_Direct_Mapping_Id (Wrong_Var))
                     and then Wrong_Var.Kind = Direct_Mapping
-                    and then Implicit_Params.Contains
-                               (Get_Direct_Mapping_Id (Wrong_Var))
                   then
                      --  Suppress incorrect dependencies related to implicit
                      --  concurrent objects.
