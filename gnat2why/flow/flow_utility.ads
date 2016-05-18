@@ -65,7 +65,7 @@ is
 
    function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type
    with Pre => Is_Initialized and then
-                 Nkind (E) in N_Entity and then
+                 Nkind (E) = N_Defining_Identifier and then
                  Ekind (E) in E_Component | E_Discriminant;
    --  Compute a suitable hash for the given record component
 
@@ -86,8 +86,8 @@ is
 
    function Same_Component (C1, C2 : Entity_Id) return Boolean
    with Pre => Is_Initialized and then
-               Nkind (C1) in N_Entity and then
-               Nkind (C2) in N_Entity and then
+               Nkind (C1) = N_Defining_Identifier and then
+               Nkind (C2) = N_Defining_Identifier and then
                Ekind (C1) in E_Component | E_Discriminant and then
                Ekind (C2) in E_Component | E_Discriminant;
    --  Given two record components, checks if one can be considered to be
@@ -125,10 +125,10 @@ is
    --  @return the equivalent set of flow ids
 
    function Has_Depends (Subprogram : Entity_Id) return Boolean
-   with Pre  => Ekind (Subprogram) in E_Entry     |
-                                      E_Function  |
-                                      E_Procedure |
-                                      E_Task_Type;
+   with Pre => Ekind (Subprogram) in E_Entry     |
+                                     E_Function  |
+                                     E_Procedure |
+                                     E_Task_Type;
    --  Return true if the given subprogram has been annotated with a dependency
    --  relation.
 
@@ -178,23 +178,22 @@ is
                           Consider_Discriminants : Boolean := False;
                           Use_Computed_Globals   : Boolean := True;
                           Ignore_Depends         : Boolean := False)
-   with Pre  => Ekind (Subprogram) in E_Entry         |
-                                      E_Task_Type     |
-                                      Subprogram_Kind,
-        Post => (for all G of Proof_Ins => G.Variant = In_View) and
-                (for all G of Reads     => G.Variant = In_View) and
+   with Pre  => Ekind (Subprogram) in E_Entry     |
+                                      E_Function  |
+                                      E_Procedure |
+                                      E_Task_Type,
+        Post => (for all G of Proof_Ins => G.Variant = In_View) and then
+                (for all G of Reads     => G.Variant = In_View) and then
                 (for all G of Writes    => G.Variant = Out_View);
-   --  Given a subprogram, work out globals from the appropriate
-   --  global aspect (relative to Scope), or the depends aspect (if no
-   --  global aspect is given). If the Global and Depends aspects are
-   --  not present then use the generated globals or finally, if non
-   --  of the above exist fall back to the computed globals. The sets
-   --  returned will contain Flow_Id with the variant set to In_View
-   --  and Out_View.
+   --  Given a subprogram, work out globals from the appropriate global aspect
+   --  (relative to Scope), or the depends aspect (if no global aspect is
+   --  given). If the Global and Depends aspects are not present then use the
+   --  generated globals or finally, if non of the above exist fall back to
+   --  the computed globals. The sets returned will contain Flow_Id with the
+   --  variant set to In_View and Out_View.
    --
-   --  If Consider_Discriminants is True then an out global will
-   --  include a corresponding read if the global includes at least
-   --  one discriminant.
+   --  If Consider_Discriminants is True then an out global will include a
+   --  corresponding read if the global includes at least one discriminant.
    --
    --  If Ignore_Depends is True then we do not use the Refined_Depends
    --  contract to trim the Globals.
@@ -205,19 +204,20 @@ is
                                 Writes               : out Flow_Id_Sets.Set;
                                 Use_Computed_Globals : Boolean := True;
                                 Keep_Constants       : Boolean := False)
-   with Pre  => Ekind (Subprogram) in E_Entry         |
-                                      E_Task_Type     |
-                                      Subprogram_Kind,
-        Post => (for all G of Reads  => G.Variant = In_View) and
+   with Pre  => Ekind (Subprogram) in E_Entry     |
+                                      E_Function  |
+                                      E_Procedure |
+                                      E_Task_Type,
+        Post => (for all G of Reads  => G.Variant = In_View) and then
                 (for all G of Writes => G.Variant = Out_View);
    --  Same as above but Reads consists of both the Reads and Proof_Ins,
-   --  discriminants receive no special handling and globals are proof
-   --  globals, and we always return the most refined view possible.
-   --  If Keep_Constants is true then constants with variable inputs are
-   --  not suppressed form the Globals even if they are constants in Why.
-   --  In the case of nested subprograms of protected types which may have
-   --  an effect on the components of the protected type, the protected type
-   --  itself is returned as an effect.
+   --  discriminants receive no special handling and globals are proof globals,
+   --  and we always return the most refined view possible. If Keep_Constants
+   --  is true then constants with variable inputs are not suppressed form
+   --  the Globals even if they are constants in Why. In the case of nested
+   --  subprograms of protected types which may have an effect on the
+   --  components of the protected type, the protected type itself is
+   --  returned as an effect.
 
    function Has_Proof_Global_Reads (Subprogram : Entity_Id;
                                     Classwide  : Boolean)
@@ -237,26 +237,25 @@ is
      (E     : Entity_Id;
       Scope : Flow_Scope)
       return Boolean
-   with Pre => Nkind (E) in N_Entity and then
-               Ekind (E) in E_Task_Type | E_Entry | Subprogram_Kind;
-   --  Returns True if Scope has visibility of E's body and Generated
-   --  Globals will be produced for E.
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
+   --  Returns True if Scope has visibility of E's body and Generated Globals
+   --  will be produced for E.
 
    function Rely_On_Generated_Depends
      (E     : Entity_Id;
       Scope : Flow_Scope)
       return Boolean
-   with Pre => Nkind (E) in N_Entity and then
-               Ekind (E) in E_Entry | E_Task_Type | Subprogram_Kind;
-   --  Returns True if Scope has visibility of E's body and a
-   --  Generated Depends will be produced for E.
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
+   --  Returns True if Scope has visibility of E's body and a Generated Depends
+   --  will be produced for E.
 
-   function Get_Function_Set (N                  : Node_Id;
-                              Include_Predicates : Boolean)
-                              return Node_Sets.Set;
-   --  Collect all functions called in an expression N. If
-   --  Include_Predicates is set, then we also mention implicit calls to
-   --  predicate functions.
+   function Get_Function_Set
+     (N                  : Node_Id;
+      Include_Predicates : Boolean)
+      return Node_Sets.Set with
+     Pre => Present (N);
+   --  Collect all functions called in an expression N. If Include_Predicates
+   --  is set, then we also mention implicit calls to predicate functions.
 
    function Get_Variable_Set
      (N                            : Node_Id;
@@ -313,7 +312,8 @@ is
    --  As above, but operating on a list. Note we don't have the
    --  Consider_Extensions parameter here as its implicitly false.
 
-   function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set;
+   function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set
+   with Pre => Present (N);
    --  Return the set of entire variables which are introduced in a
    --  quantifier under node N.
 
@@ -350,33 +350,36 @@ is
       Scope : Flow_Scope)
       return Flow_Id_Sets.Set
    is (Flatten_Variable (Direct_Mapping_Id (Unique_Entity (E)), Scope))
-   with Pre => Nkind (E) in N_Entity;
+   with Pre => Present (E) and then Nkind (E) in N_Entity;
    --  As above, but conveniently taking an Entity_Id instead of a Flow_Id
 
-   function Get_Part_Of_Variables (E : Entity_Id) return Node_Sets.Set;
+   function Get_Part_Of_Variables (E : Entity_Id) return Node_Sets.Set
+   with Pre => Is_Protected_Type (E);
    --  @param E the entity of a protected type
-   --  @return the variables that belong to E by virtue of "part_of".
+   --  @return the variables that belong to E by virtue of "part_of"
 
    function Expand_Abstract_State
      (F               : Flow_Id;
       Erase_Constants : Boolean)
       return Flow_Id_Sets.Set;
-   --  If F represents abstract state, return the set of all its
-   --  components. Otherwise return F. Additionally, remove formal
-   --  in parameters from the set if Erase_Constants is true.
+   --  If F represents abstract state, return the set of all its components.
+   --  Otherwise return F. Additionally, remove formal in parameters from the
+   --  set if Erase_Constants is true.
 
-   subtype Valid_Assignment_Kinds is Node_Kind with Static_Predicate =>
-     Valid_Assignment_Kinds in N_Identifier                |
-                               N_Expanded_Name             |
-                               N_Type_Conversion           |
-                               N_Unchecked_Type_Conversion |
-                               N_Indexed_Component         |
-                               N_Slice                     |
-                               N_Selected_Component;
+   subtype Valid_Assignment_Kinds is Node_Kind
+   with Static_Predicate =>
+          Valid_Assignment_Kinds in N_Identifier                |
+                                    N_Expanded_Name             |
+                                    N_Type_Conversion           |
+                                    N_Unchecked_Type_Conversion |
+                                    N_Indexed_Component         |
+                                    N_Slice                     |
+                                    N_Selected_Component;
 
    function Is_Valid_Assignment_Target (N : Node_Id) return Boolean
    with Post => (if Is_Valid_Assignment_Target'Result
-                 then Nkind (N) in Valid_Assignment_Kinds);
+                 then Nkind (N) in Valid_Assignment_Kinds),
+        Ghost;
    --  Returns True if the tree under N is a combination of
    --  Valid_Assignment_Kinds only.
 
@@ -454,7 +457,7 @@ is
       return Flow_Id_Maps.Map
    with Pre => Ekind (Get_Type (N, Scope)) in Record_Kind | Private_Kind
                  and then Map_Root.Kind in Direct_Mapping | Record_Field
-                 and then Nkind (Map_Type) in N_Entity
+                 and then Nkind (Map_Type) in N_Defining_Identifier
                  and then Ekind (Map_Type) in Type_Kind;
    --  Process a record or aggregate N and return a map which can be used
    --  to work out which fields will depend on what inputs.
@@ -505,26 +508,23 @@ is
    --  function should never be called when it's true...)
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
-   with Pre => Ekind (E) in Subprogram_Kind |
-                            E_Entry;
-   --  Given the entity for a subprogram, return the expression(s) for
-   --  its precondition and the condition(s) of its Contract_Cases (or
-   --  return the empty list if none of these exist).
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
+   --  Given the entity for a subprogram, return the expression(s) for its
+   --  precondition and the condition(s) of its Contract_Cases (or return
+   --  the empty list if none of these exist).
 
    function Get_Postcondition_Expressions (E       : Entity_Id;
                                            Refined : Boolean)
                                            return Node_Lists.List
-   with Pre => Ekind (E) in E_Entry         |
-                            E_Package       |
-                            Subprogram_Kind;
-   --  Given the entity for a subprogram or package, return all
-   --  expression(s) associated with postconditions: the
-   --  postcondition, the rhs for contract cases and the initial
-   --  condition; or an empty list of none of these exist.
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Package | E_Procedure;
+   --  Given the entity for a subprogram or package, return all expression(s)
+   --  associated with postconditions: the postcondition, the rhs for contract
+   --  cases and the initial condition; or an empty list of none of these
+   --  exist.
 
    function Is_Precondition_Check (N : Node_Id) return Boolean
-     with Pre => Nkind (N) = N_Pragma and then
-                 Get_Pragma_Id (N) = Pragma_Check;
+   with Pre => Nkind (N) = N_Pragma and then
+               Get_Pragma_Id (N) = Pragma_Check;
    --  Given a check pragma, return if this is a precondition check.
 
    function Contains_Discriminants
@@ -584,7 +584,7 @@ is
       return Entity_Id
    with Pre  => F.Kind in Direct_Mapping | Record_Field and then
                 F.Facet = Normal_Part,
-        Post => Nkind (Get_Type'Result) in N_Entity;
+        Post => Nkind (Get_Type'Result) = N_Defining_Identifier;
    --  @param F is the Flow_Id who's type we need to retrieve
    --  @param Scope is the scope relative to which we retrieve the type
    --  @return the entity corresponding to the type of F. If the full view
@@ -607,11 +607,7 @@ is
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
       return Entity_Id
-   with Pre => Present (E)
-               and then Ekind (E) in E_Entry     |
-                                     E_Function  |
-                                     E_Procedure |
-                                     E_Task_Type;
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
    --  Returns the protected type for protected subprograms and entries and the
    --  task type itself for task types; returns Empty for ordinary subprograms.
    --  @param E is the entity of an entry/task/subprogram
@@ -624,11 +620,7 @@ is
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
       return Node_Sets.Set
-   with Pre => Present (E)
-                and then Ekind (E) in E_Entry     |
-                                      E_Function  |
-                                      E_Procedure |
-                                      E_Task_Type;
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
    --  This function returns a set of nodes containing all implicit and
    --  explicit formal parameters of an Entry or Subprogram. For tasks it
    --  returns a set containing all discriminants of the task and the task
@@ -645,10 +637,9 @@ is
                             Object_Kind      |
                             E_Function       |
                             E_Abstract_State;
-   --  Checks if extensions are visible for this particular entity. Note
-   --  that if we give it a function, then we always return false, since
-   --  this refers to the return of the function, not to the subprogram's
-   --  aspect.
+   --  Checks if extensions are visible for this particular entity. Note that
+   --  if we give it a function, then we always return false, since this refers
+   --  to the return of the function, not to the subprogram's aspect.
    --
    --  To check if a subprogram has the aspect, use the function
    --  Has_Extensions_Visible_Aspect from Flow_Tree_Utilities instead.
@@ -658,8 +649,10 @@ is
                                 return Boolean
    with Pre => (if F.Kind in Direct_Mapping | Record_Field
                 then Ekind (Get_Direct_Mapping_Id (F))
-                  in Object_Kind | E_Function | E_Abstract_State |
-                     Concurrent_Kind);
+                  in Concurrent_Kind  |
+                     E_Abstract_State |
+                     E_Function       |
+                     Object_Kind);
    --  As above, but using a flow_id.
 
    function Search_Contract (Unit     : Node_Id;
@@ -668,20 +661,20 @@ is
                              Input    : Entity_Id := Empty)
                              return Node_Id
    with Pre  => Contract in Pragma_Depends | Pragma_Initializes
-                  and then Nkind (Output) in N_Entity
+                  and then Nkind (Output) in N_Defining_Identifier
                   and then (if Present (Input)
-                            then Nkind (Input) in N_Entity),
+                            then Nkind (Input) in N_Defining_Identifier),
         Post => Present (Search_Contract'Result);
    --  Search the Contract of Unit for the given Output. If Input is
    --  also given, search for that Input of the given Output. For now
-   --  Search_Contract only works with either subprograms and pragma
-   --  depends or packages and pragma initializes.
+   --  Search_Contract only works with either subprograms and pragma Depends
+   --  or packages and pragma Initializes.
    --
    --  If we can't find what we're looking for, we return either the
    --  Unit itself or the corresponding contract (if it exists).
 
    function All_Components (E : Entity_Id) return Node_Lists.List
-   with Pre => Nkind (E) in N_Entity and then
+   with Pre => Nkind (E) = N_Defining_Identifier and then
                Ekind (E) in Type_Kind;
    --  Obtain all components of the given entity E, similar to
    --  {First,Next}_Component_Or_Discriminant, with the difference that any
