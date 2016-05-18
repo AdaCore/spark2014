@@ -2649,7 +2649,7 @@ package body SPARK_Util is
       --  Retrieve the library unit containing E
 
    begin
-      --  case 1: the entity is neither in the spec or body compilation unit of
+      --  Case 1: the entity is neither in the spec or body compilation unit of
       --  the unit currently analyzed, so return False.
 
       if Cunit (Main_Unit) /= Encl_Unit
@@ -2658,7 +2658,7 @@ package body SPARK_Util is
          return False;
 
       --  gnat2why is now only called on requested files, so here the result is
-      --  always true
+      --  always true.
 
       else
          return True;
@@ -2729,7 +2729,7 @@ package body SPARK_Util is
       --  flag Is_Inlined_Always set to True. However, subprograms with
       --  renaming-as-body satisfy these conditions and are not always inlined.
 
-      --  Also, subprograms of protected objects are never inlined.
+      --  Also, subprograms of protected objects are never inlined
 
       if not Is_Subprogram (E)
         or else not Is_Inlined_Always (E)
@@ -2852,11 +2852,11 @@ package body SPARK_Util is
    begin
       case Ekind (E) is
 
-         --  entries are always protected subprograms
+         --  Entries are always protected subprograms
          when E_Entry =>
             return True;
 
-         --  detect subprograms declared in scope of a protected type
+         --  Detect subprograms declared in scope of a protected type
          when Subprogram_Kind =>
 
             Scop := Scope (E);
