@@ -869,13 +869,13 @@ package SPARK_Util is
    --  @param E a task type entity
    --  @return the definition of the task type
 
-   function Visible_Declarations_of_Task_Type (E : Entity_Id) return List_Id
+   function Visible_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
    with Pre => Is_Task_Type (E);
    --  @param E a task type entity
    --  @return the list of visible declarations of the task type, or the empty
    --    list if not available
 
-   function Private_Declarations_of_Task_Type (E : Entity_Id) return List_Id
+   function Private_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
    with Pre => Is_Task_Type (E);
    --  @param E a task type entity
    --  @return the list of visible declarations of the task type, or the empty

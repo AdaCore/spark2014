@@ -3684,10 +3684,10 @@ package body SPARK_Util is
                                          renames Is_Part_Of_Protected;
 
    ---------------------------------------
-   -- Visible_Declarations_of_Task_Type --
+   -- Visible_Declarations_Of_Task_Type --
    ---------------------------------------
 
-   function Visible_Declarations_of_Task_Type (E : Entity_Id) return List_Id
+   function Visible_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
    is
       Def : constant Node_Id := Definition_of_Task_Type (E);
    begin
@@ -3696,13 +3696,13 @@ package body SPARK_Util is
       else
          return Empty_List;
       end if;
-   end Visible_Declarations_of_Task_Type;
+   end Visible_Declarations_Of_Task_Type;
 
    ---------------------------------------
-   -- Private_Declarations_of_Task_Type --
+   -- Private_Declarations_Of_Task_Type --
    ---------------------------------------
 
-   function Private_Declarations_of_Task_Type (E : Entity_Id) return List_Id
+   function Private_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
    is
       Def : constant Node_Id := Definition_of_Task_Type (E);
    begin
@@ -3711,6 +3711,6 @@ package body SPARK_Util is
       else
          return Empty_List;
       end if;
-   end Private_Declarations_of_Task_Type;
+   end Private_Declarations_Of_Task_Type;
 
 end SPARK_Util;

@@ -3207,8 +3207,8 @@ package body Gnat2Why.Subprograms is
 
       Why_Body   : W_Prog_Id := +Void;
       Post       : W_Pred_Id;
-      Priv_Decls : constant List_Id := Private_Declarations_of_Task_Type (E);
-      Vis_Decls  : constant List_Id := Visible_Declarations_of_Task_Type (E);
+      Priv_Decls : constant List_Id := Private_Declarations_Of_Task_Type (E);
+      Vis_Decls  : constant List_Id := Visible_Declarations_Of_Task_Type (E);
    begin
       --  We open a new theory, so that the context is fresh for this task
 
