@@ -2861,7 +2861,7 @@ package body SPARK_Util is
 
             Scop := Scope (E);
             while Present (Scop) loop
-               if Ekind (Scop) in Protected_Kind then
+               if Ekind (Scop) in E_Protected_Type then
                   return True;
                end if;
                Scop := Scope (Scop);
