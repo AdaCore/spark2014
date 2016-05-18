@@ -3315,6 +3315,16 @@ package body SPARK_Util is
         (if Is_Class_Wide_Type (Rec)
          then Retysp (Get_Specific_Type_From_Classwide (Rec))
          else Rec);
+
+      --  Check that it is safe to call First_Component_Or_Discriminant on
+      --  Specific_Rec.
+
+      pragma Assert
+        (Is_Concurrent_Type (Specific_Rec)
+         or else Is_Incomplete_Or_Private_Type (Specific_Rec)
+         or else Is_Record_Type (Specific_Rec)
+         or else Has_Discriminants (Specific_Rec));
+
       Cur_Comp     : Entity_Id :=
         First_Component_Or_Discriminant (Specific_Rec);
    begin

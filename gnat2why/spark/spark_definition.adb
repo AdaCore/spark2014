@@ -1335,7 +1335,7 @@ package body SPARK_Definition is
                  Unique_Entity (Etype (Name));
 
             begin
-               if Has_Access_Type (Prefix_Type) then
+               if Is_Access_Type (Prefix_Type) then
                   Mark_Violation ("implicit dereference", N);
 
                elsif No (Search_Component_By_Name (Prefix_Type, Selector)) then
