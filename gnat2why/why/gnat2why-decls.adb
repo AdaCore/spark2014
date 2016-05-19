@@ -426,28 +426,28 @@ package body Gnat2Why.Decls is
 
                --  generate a constant for 'Constrained attribute
 
-                  Emit
-                    (File,
-                     Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Term,
-                        Name        => To_Local (Var.Constr.Id),
-                        Binders     => (1 .. 0 => <>),
-                        Labels      => Name_Id_Sets.Empty_Set,
-                        Return_Type => Get_Typ (Var.Constr.Id)));
+               Emit
+                 (File,
+                  Why.Atree.Builders.New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Local (Var.Constr.Id),
+                     Binders     => (1 .. 0 => <>),
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Return_Type => Get_Typ (Var.Constr.Id)));
             end if;
 
             if Var.Tag.Present then
 
                --  generate a constant for 'Tag attribute
 
-                  Emit
-                    (File,
-                     Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Term,
-                        Name        => To_Local (Var.Tag.Id),
-                        Binders     => (1 .. 0 => <>),
-                        Labels      => Name_Id_Sets.Empty_Set,
-                        Return_Type => Get_Typ (Var.Tag.Id)));
+               Emit
+                 (File,
+                  Why.Atree.Builders.New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Local (Var.Tag.Id),
+                     Binders     => (1 .. 0 => <>),
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Return_Type => Get_Typ (Var.Tag.Id)));
             end if;
 
          when UCArray =>
