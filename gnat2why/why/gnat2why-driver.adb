@@ -230,9 +230,8 @@ package body Gnat2Why.Driver is
       if Text = null then
          --  No such ALI file
 
-         Write_Str ("error:" & Get_Name_String (Main_Lib_File) &
-                      " does not exist");
-         Write_Eol;
+         Write_Line ("error:" & Get_Name_String (Main_Lib_File) &
+                     " does not exist");
 
          raise Terminate_Program;
       end if;
