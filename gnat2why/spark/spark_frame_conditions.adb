@@ -414,10 +414,10 @@ package body SPARK_Frame_Conditions is
          --  that are not constant objects from the set Constants.
 
          for Elt of S loop
-            if not Constants.Contains (Elt) then
-               if not Translated_Object_Entities.Contains (Elt) then
-                  Process (Elt);
-               end if;
+            if not Constants.Contains (Elt)
+              and then not Translated_Object_Entities.Contains (Elt)
+            then
+               Process (Elt);
             end if;
          end loop;
       end loop;
