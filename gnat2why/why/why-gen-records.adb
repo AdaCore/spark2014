@@ -628,7 +628,7 @@ package body Why.Gen.Records is
 
          --  Step 2. Convert the __split_fields field for components
 
-         if Num_E_Fields > 0 or Num_Root_Fields > 0 then
+         if Num_E_Fields > 0 or else Num_Root_Fields > 0 then
             declare
                To_Root_Field   :
                  W_Field_Association_Array (1 .. Num_Root_Fields);
