@@ -639,7 +639,7 @@ package body SPARK_Frame_Conditions is
             return Line (Index);
 
          else
-            return Character'Val (16#1a#);
+            return ASCII.SUB;
          end if;
       end Nextc;
 
