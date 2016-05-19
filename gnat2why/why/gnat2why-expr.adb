@@ -8744,6 +8744,38 @@ package body Gnat2Why.Expr is
          when Attribute_Terminated =>
             T := +False_Term;
 
+         when Attribute_Component_Size =>
+
+            if Nkind (Var) in N_Has_Entity
+              and then Present (Entity (Var))
+            then
+               case Ekind (Entity (Var)) is
+                  when Type_Kind =>
+                     T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+                  when Object_Kind =>
+                     if Known_Component_Size (Etype (Var)) then
+                        return New_Integer_Constant (Expr,
+                                                     Component_Size
+                                                       (Etype (Var)));
+                     else
+                        declare
+                           Name : constant W_Identifier_Id :=
+                             E_Symb (Etype (Var), WNE_Attr_Component_Size);
+                           Arg  : constant W_Expr_Id :=
+                             Transform_Expr (Var, Domain, Params);
+                        begin
+                           return New_Call (Ada_Node => Parent (Var),
+                                            Domain   => Domain,
+                                            Name     => Name,
+                                            Args     => (1 => Arg),
+                                            Typ      => EW_Int_Type);
+                        end;
+                     end if;
+                  when others =>
+                     raise Program_Error;
+               end case;
+            end if;
+
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Attr] not implemented: "
                                   & Attribute_Id'Image (Attr_Id));

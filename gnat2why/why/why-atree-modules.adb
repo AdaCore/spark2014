@@ -1974,6 +1974,13 @@ package body Why.Atree.Modules is
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
                Insert_Symbol
+                 (E, WNE_Attr_Component_Size,
+                  New_Identifier
+                    (Symbol => NID ("component__size"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
+               Insert_Symbol
                  (E, WNE_Dynamic_Property,
                   New_Identifier
                     (Symbol => NID ("dynamic_property"),

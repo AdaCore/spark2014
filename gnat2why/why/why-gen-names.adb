@@ -705,6 +705,7 @@ package body Why.Gen.Names is
               WNE_Array_Base_Range_Pred_4    |
               WNE_Array_Elts                 |
               WNE_Attr_Address               |
+              WNE_Attr_Component_Size        |
               WNE_Attr_First_2               |
               WNE_Attr_First_3               |
               WNE_Attr_First_4               |

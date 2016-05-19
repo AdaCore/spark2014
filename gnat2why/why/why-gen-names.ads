@@ -165,6 +165,7 @@ package Why.Gen.Names is
       WNE_Array_Elts,
       WNE_Array_Type,
       WNE_Attr_Address,
+      WNE_Attr_Component_Size,
       WNE_Attr_Constrained,
       WNE_Attr_First,
       WNE_Attr_First_2,
