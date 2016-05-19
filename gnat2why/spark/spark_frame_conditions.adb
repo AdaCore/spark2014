@@ -1133,13 +1133,4 @@ package body SPARK_Frame_Conditions is
       Inputs.Union (Outputs);
    end Collect_Direct_Computed_Globals;
 
-   -----------------------
-   -- Set_Ignore_Errors --
-   -----------------------
-
-   procedure Set_Ignore_Errors (Ignore_Errors : Boolean) is
-   begin
-      Propagate_Error_For_Missing_Scope := not Ignore_Errors;
-   end Set_Ignore_Errors;
-
 end SPARK_Frame_Conditions;

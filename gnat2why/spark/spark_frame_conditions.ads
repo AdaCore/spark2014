@@ -104,10 +104,6 @@ package SPARK_Frame_Conditions is
    --  The Inputs set will contain both variables that are either read or
    --  written (since the Computed Globals are an over-approximation).
 
-   procedure Set_Ignore_Errors (Ignore_Errors : Boolean);
-   --  Set a flag to ignore failures to find some scope that should have been
-   --  present in some ALI file.
-
    procedure Propagate_Through_Call_Graph
      (Ignore_Errors     : Boolean;
       Current_Unit_Only : Boolean := False);
