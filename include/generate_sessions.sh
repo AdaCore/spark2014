@@ -3,8 +3,8 @@
 gnatprove -P spark_lemmas.gpr --level=2 --timeout=auto --no-counterexample -j0
 
 # signed arithmetic
-gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-arithmetic_lemmas.ads:50
-gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-arithmetic_lemmas.ads:65
+gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-arithmetic_lemmas.ads:49
+gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-arithmetic_lemmas.ads:64
 
 # modular arithmetic
 gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:48
