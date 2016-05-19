@@ -993,15 +993,6 @@ package SPARK_Util is
    --  @param N pragma
    --  @return True iff N is a pragma Assert_And_Cut
 
-   procedure Get_Global_Items
-     (P      :     Node_Id;
-      Reads  : out Node_Sets.Set;
-      Writes : out Node_Sets.Set);
-   --  @param P pragma Global
-   --  @param Reads inputs in P
-   --  @param Writes outputs in P
-   --  Computes the set of inputs and outputs in Global pragma P
-
    ---------------------------------
    -- Queries for arbitrary nodes --
    ---------------------------------
