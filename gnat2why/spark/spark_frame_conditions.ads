@@ -69,7 +69,7 @@ package SPARK_Frame_Conditions is
    function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set;
    --  Get subprograms directly called by subprogram E_Name
 
-   function Get_Computed_Reads
+   function Computed_Reads
      (E                 : Entity_Id;
       Include_Constants : Boolean) return Name_Sets.Set
    with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
@@ -77,7 +77,7 @@ package SPARK_Frame_Conditions is
    --  then include constants in the result (for flow analysis); if it is
    --  False then do not (for proof).
 
-   function Get_Computed_Writes (E : Entity_Id) return Name_Sets.Set
+   function Computed_Writes (E : Entity_Id) return Name_Sets.Set
    with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
    --  Get the variables written by subprogram E
 

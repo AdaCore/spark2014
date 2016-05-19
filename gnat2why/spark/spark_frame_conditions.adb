@@ -448,11 +448,11 @@ package body SPARK_Frame_Conditions is
    function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
      renames Calls.Element;
 
-   ------------------------
-   -- Get_Computed_Reads --
-   ------------------------
+   --------------------
+   -- Computed_Reads --
+   --------------------
 
-   function Get_Computed_Reads
+   function Computed_Reads
      (E                 : Entity_Id;
       Include_Constants : Boolean) return Name_Sets.Set
    is
@@ -490,13 +490,13 @@ package body SPARK_Frame_Conditions is
          else
             return Name_Sets.Empty_Set;
          end if;
-   end Get_Computed_Reads;
+   end Computed_Reads;
 
-   -------------------------
-   -- Get_Computed_Writes --
-   -------------------------
+   ---------------------
+   -- Computed_Writes --
+   ---------------------
 
-   function Get_Computed_Writes (E : Entity_Id) return Name_Sets.Set is
+   function Computed_Writes (E : Entity_Id) return Name_Sets.Set is
       E_Alias : constant Entity_Id :=
         (if Ekind (E) in E_Function | E_Procedure | E_Entry
            and then Present (Alias (E))
@@ -520,7 +520,7 @@ package body SPARK_Frame_Conditions is
       --  variables (not constants) have pragma Effective_Reads set. If so,
       --  then these entities are also writes.
 
-      for E_N of Get_Computed_Reads (E, False) loop
+      for E_N of Computed_Reads (E, False) loop
          declare
             Read : constant Entity_Id := Find_Entity (E_N);
          begin
@@ -544,7 +544,7 @@ package body SPARK_Frame_Conditions is
          else
             return Name_Sets.Empty_Set;
          end if;
-   end Get_Computed_Writes;
+   end Computed_Writes;
 
    ----------------------
    -- Is_Heap_Variable --
@@ -1126,8 +1126,8 @@ package body SPARK_Frame_Conditions is
       E_Name := To_Entity_Name (E_Alias);
 
       Called_Subprograms := Calls (E_Name);
-      Inputs             := Get_Computed_Reads (E, False);
-      Outputs            := Get_Computed_Writes (E);
+      Inputs             := Computed_Reads (E, False);
+      Outputs            := Computed_Writes (E);
 
       --  Add variables written to variables read
       Inputs.Union (Outputs);
