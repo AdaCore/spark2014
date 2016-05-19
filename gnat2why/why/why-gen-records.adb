@@ -360,9 +360,9 @@ package body Why.Gen.Records is
       --  Component_Info record. This map is initialized by a call to
       --  Init_Component_Info;
 
-      A_Ident   : constant W_Identifier_Id :=
+      A_Ident  : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Abstr_Ty);
-      R_Binder  : constant Binder_Array :=
+      R_Binder : constant Binder_Array :=
         (1 => (B_Name => A_Ident,
                others => <>));
 
@@ -375,6 +375,7 @@ package body Why.Gen.Records is
          Info : Component_Info :=
            Comp_Info.Element (Original_Record_Component (Field));
          Cond : W_Pred_Id := True_Pred;
+
       begin
          while Present (Info.Parent_Variant) loop
             declare
@@ -409,6 +410,7 @@ package body Why.Gen.Records is
                Info := Comp_Info.Element (Info.Parent_Var_Part);
             end;
          end loop;
+
          return Cond;
       end Compute_Discriminant_Check;
 
@@ -422,6 +424,7 @@ package body Why.Gen.Records is
          Var_Part : constant Node_Id := Info.Parent_Var_Part;
          Var      : Node_Id := First (Variants (Var_Part));
          Cond     : W_Pred_Id := True_Pred;
+
       begin
          while Present (Var) loop
             if not Is_Others_Choice (Discrete_Choices (Var)) then
@@ -437,6 +440,7 @@ package body Why.Gen.Records is
             end if;
             Next (Var);
          end loop;
+
          return Cond;
       end Compute_Others_Choice;
 
@@ -482,9 +486,9 @@ package body Why.Gen.Records is
               New_Integer_Constant (Value => Uint_0);
 
             Value_Size_Fun : constant W_Expr_Id :=
-              New_Call (Name     => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
-                        Domain   => EW_Term,
-                        Typ      => EW_Int_Type);
+              New_Call (Name   => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type);
 
             Value_Size_Axiom : constant W_Pred_Id :=
               +New_Comparison (Symbol => Int_Infix_Ge,
@@ -493,11 +497,11 @@ package body Why.Gen.Records is
                                Domain => EW_Term);
 
             Object_Size_Fun : constant W_Expr_Id :=
-              New_Call (Name     =>
+              New_Call (Name   =>
                           To_Local (E_Symb (E, WNE_Attr_Object_Size)),
-                        Args     => (1 => +A_Ident),
-                        Domain   => EW_Term,
-                        Typ      => EW_Int_Type);
+                        Args   => (1 => +A_Ident),
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type);
 
             Object_Size_Pred : constant W_Pred_Id :=
               +New_Comparison (Symbol => Int_Infix_Ge,
@@ -596,7 +600,7 @@ package body Why.Gen.Records is
 
          if Num_Discrs > 0 then
             declare
-               Orig_D_Id       : constant W_Identifier_Id :=
+               Orig_D_Id      : constant W_Identifier_Id :=
                  E_Symb (Root, WNE_Rec_Split_Discrs);
                E_Discr_Access : constant W_Expr_Id :=
                  New_Record_Access (Name  => +A_Ident,
@@ -627,18 +631,19 @@ package body Why.Gen.Records is
          if Num_E_Fields > 0 or Num_Root_Fields > 0 then
             declare
                To_Root_Field   :
-               W_Field_Association_Array (1 .. Num_Root_Fields);
+                 W_Field_Association_Array (1 .. Num_Root_Fields);
                From_Root_Field :
-               W_Field_Association_Array (1 .. Num_E_Fields);
+                 W_Field_Association_Array (1 .. Num_E_Fields);
                Orig_F_Id       : constant W_Identifier_Id :=
                  E_Symb (Root, WNE_Rec_Split_Fields);
-               E_Field_Access : constant W_Expr_Id :=
+               E_Field_Access  : constant W_Expr_Id :=
                  New_Record_Access (Name  => +A_Ident,
                                     Field => To_Ident (WNE_Rec_Split_Fields));
-               R_Field_Access : constant W_Expr_Id :=
+               R_Field_Access  : constant W_Expr_Id :=
                  New_Record_Access (Name  => +R_Ident,
                                     Field => Orig_F_Id);
-               Field          : Entity_Id := First_Component (E);
+               Field           : Entity_Id := First_Component (E);
+
                Field_From_Index : Natural := 0;
                Field_To_Index   : Natural := 0;
 
@@ -867,9 +872,9 @@ package body Why.Gen.Records is
                        (Domain => EW_Term,
                         Field  => +New_Extension_Component_Expr (Root),
                         Value  => New_Call (Domain => EW_Term,
-                                            Name =>
+                                            Name   =>
                                               To_Ident (WNE_Hide_Extension),
-                                            Args => Args));
+                                            Args   => Args));
                   end;
                end if;
 
@@ -1163,7 +1168,7 @@ package body Why.Gen.Records is
                Hide_Binders (Index) :=
                  (B_Name =>
                     New_Identifier (Name => Short_Name (Field),
-                                    Typ => EW_Abstract (Etype (Field))),
+                                    Typ  => EW_Abstract (Etype (Field))),
                   others => <>);
             end loop;
 
@@ -1264,14 +1269,14 @@ package body Why.Gen.Records is
                            Name    => Extract_Fun (Field, Is_Ancestor),
                            Args    =>
                              (1 => New_Call
-                                  (Domain   => EW_Term,
-                                   Name     => Hide_Name,
-                                   Binders  => Hide_Binders,
-                                   Typ      => EW_Private_Type)),
+                                  (Domain  => EW_Term,
+                                   Name    => Hide_Name,
+                                   Binders => Hide_Binders,
+                                   Typ     => EW_Private_Type)),
                            Typ     => EW_Abstract (Etype (Field))),
                         Right  => +New_Identifier
                           (Name => Short_Name (Field),
-                           Typ => EW_Abstract (Etype (Field))),
+                           Typ  => EW_Abstract (Etype (Field))),
                         Domain => EW_Term)));
 
          end loop;
@@ -1571,8 +1576,8 @@ package body Why.Gen.Records is
                      begin
                         Emit (P,
                               New_Function_Decl
-                                (Domain => EW_Pred,
-                                 Name   => Pred_Name,
+                                (Domain  => EW_Pred,
+                                 Name    => Pred_Name,
                                  Binders => R_Binder,
                                  Labels  => Name_Id_Sets.Empty_Set,
                                  Def     => +Pre_Cond));
@@ -1651,13 +1656,13 @@ package body Why.Gen.Records is
          Binders_F  : Binder_Array (1 .. Num_Fields);
          Binders_A  : Binder_Array (1 .. Num_All);
          Field      : Entity_Id := (if Has_Discriminants (E)
-                                    or else Has_Unknown_Discriminants (E)
+                                      or else Has_Unknown_Discriminants (E)
                                     then First_Discriminant (E)
                                     else Empty);
          Index      : Positive := 1;
          Index_All  : Positive := 1;
-      begin
 
+      begin
          --  Generate a record type for E's discriminants if E is a root type
          --  and use Root's record type for discriminants otherwise.
 
@@ -1674,7 +1679,7 @@ package body Why.Gen.Records is
                              To_Why_Id
                                (Field,
                                 Local => True,
-                                Typ => EW_Abstract (Etype (Field))),
+                                Typ   => EW_Abstract (Etype (Field))),
                            Ada_Node => Field,
                            others   => <>);
                         Index := Index + 1;
@@ -1735,7 +1740,7 @@ package body Why.Gen.Records is
                           To_Why_Id
                             (Field,
                              Local => True,
-                             Typ => EW_Abstract (Etype (Field))),
+                             Typ   => EW_Abstract (Etype (Field))),
                         Ada_Node => Field,
                         others   => <>);
                      Index := Index + 1;
@@ -1781,7 +1786,7 @@ package body Why.Gen.Records is
                        To_Why_Id
                          (Part,
                           Local => True,
-                          Typ => EW_Abstract (Etype (Part))),
+                          Typ   => EW_Abstract (Etype (Part))),
                      others => <>);
                   Index := Index + 1;
                end loop;
@@ -2099,7 +2104,7 @@ package body Why.Gen.Records is
          if Is_Root then
             Emit (P,
                   New_Type_Decl
-                    (Name  => Ty_Name,
+                    (Name   => Ty_Name,
                      Labels => Name_Id_Sets.Empty_Set));
          else
             Emit (P,
@@ -2170,20 +2175,20 @@ package body Why.Gen.Records is
 
          --  This type is simply a copy of an existing type, we re-export the
          --  corresponding module and generate trivial conversion functions,
-         --  then return
+         --  then return.
 
          declare
             Clone : constant Entity_Id := Record_Type_Cloned_Subtype (E);
          begin
             Add_Use_For_Entity (P, Clone, EW_Export, With_Completion => False);
 
-            --  if the copy has the same name as the original, do not redefine
+            --  If the copy has the same name as the original, do not redefine
             --  the type name.
 
             if Short_Name (E) /= Short_Name (Clone) then
                Emit (P,
                      New_Type_Decl
-                       (Name => Ty_Name,
+                       (Name  => Ty_Name,
                         Alias =>
                           +New_Named_Type
                           (Name =>
@@ -2219,6 +2224,7 @@ package body Why.Gen.Records is
          return;
       end if;
 
+      --  ??? rewrite with case statement
       if Ekind (E) in E_Record_Subtype | E_Record_Subtype_With_Private then
          Init_Component_Info (Retysp (Etype (E)));
       elsif Ekind (E) in E_Record_Type | E_Record_Type_With_Private then
@@ -2344,14 +2350,14 @@ package body Why.Gen.Records is
       end loop;
       Emit (Section,
             New_Function_Decl
-              (Domain      => EW_Pred,
-               Name        => To_Local (E_Symb (E, WNE_Range_Pred)),
-               Labels      => Name_Id_Sets.Empty_Set,
-               Binders     => R_Binder,
-               Def         => +Check_Pred));
+              (Domain  => EW_Pred,
+               Name    => To_Local (E_Symb (E, WNE_Range_Pred)),
+               Labels  => Name_Id_Sets.Empty_Set,
+               Binders => R_Binder,
+               Def     => +Check_Pred));
       Pre_Cond :=
-        New_Call (Name   => To_Local (E_Symb (E, WNE_Range_Pred)),
-                  Args   => Args);
+        New_Call (Name => To_Local (E_Symb (E, WNE_Range_Pred)),
+                  Args => Args);
       Emit (Section,
             New_Function_Decl
               (Domain      => EW_Prog,
@@ -2437,9 +2443,9 @@ package body Why.Gen.Records is
            and then Component_Is_Visible_In_SPARK (Component)
          then
             Assoc := New_Field_Association
-              (Domain   => Domain,
-               Field    => To_Why_Id (Component),
-               Value    => New_Ada_Record_Access
+              (Domain => Domain,
+               Field  => To_Why_Id (Component),
+               Value  => New_Ada_Record_Access
                  (Ada_Node => Ada_Node,
                   Domain   => (if Domain in EW_Prog | EW_Pterm then EW_Pterm
                                else EW_Term),
@@ -2464,9 +2470,9 @@ package body Why.Gen.Records is
 
       if Has_Private_Ancestor_Or_Root (Ty) then
          Assoc := New_Field_Association
-           (Domain   => Domain,
-            Field    => E_Symb (Ty, WNE_Rec_Ancestor),
-            Value    => Get_Ancestor_Part_From_Root (Expr, Ty));
+           (Domain => Domain,
+            Field  => E_Symb (Ty, WNE_Rec_Ancestor),
+            Value  => Get_Ancestor_Part_From_Root (Expr, Ty));
 
          Field_Index := Field_Index + 1;
          Field_Assocs (Field_Index) := Assoc;
@@ -2540,11 +2546,11 @@ package body Why.Gen.Records is
       pragma Assert (Index = Num_Args);
 
       return New_Call (Domain => EW_Term,
-                       Name =>
+                       Name   =>
                          (if Local
                           then To_Local (E_Symb (Ty, WNE_Hide_Ancestor))
                           else E_Symb (Ty, WNE_Hide_Ancestor)),
-                       Args => Args);
+                       Args   => Args);
    end Get_Ancestor_Part_From_Root;
 
    ---------------------------------------
@@ -2611,9 +2617,9 @@ package body Why.Gen.Records is
          Domain   => EW_Pred,
          Name     => M_Main.Compat_Tags_Id,
          Args     =>
-           (1 => New_Tag_Access (Domain   => EW_Term,
-                                 Name     => Id,
-                                 Ty       => Root),
+           (1 => New_Tag_Access (Domain => EW_Term,
+                                 Name   => Id,
+                                 Ty     => Root),
             2 => +E_Symb (E => Check_Ty,
                           S => WNE_Tag)),
          Typ      => EW_Bool_Type);
@@ -2624,9 +2630,9 @@ package body Why.Gen.Records is
          Reason   => VC_Tag_Check,
          Kind     => EW_Assert);
    begin
-      return +Binding_For_Temp (Domain   => EW_Prog,
-                                Tmp      => Id,
-                                Context  => +Sequence
+      return +Binding_For_Temp (Domain  => EW_Prog,
+                                Tmp     => Id,
+                                Context => +Sequence
                                   (Left  => Check,
                                    Right => +Id));
    end Insert_Tag_Check;
@@ -2724,15 +2730,15 @@ package body Why.Gen.Records is
             if Is_Tagged_Type (Ty) then
                All_Field_Assocs (Num_Fields) :=
                  New_Field_Association
-                   (Domain   => Domain,
-                    Field    => E_Symb (Ty, WNE_Rec_Extension),
-                    Value    => +M_Main.Null_Extension);
+                   (Domain => Domain,
+                    Field  => E_Symb (Ty, WNE_Rec_Extension),
+                    Value  => +M_Main.Null_Extension);
             end if;
 
             Assoc := New_Field_Association
-              (Domain   => Domain,
-               Field    => E_Symb (Ty, WNE_Rec_Split_Fields),
-               Value    => New_Record_Aggregate
+              (Domain => Domain,
+               Field  => E_Symb (Ty, WNE_Rec_Split_Fields),
+               Value  => New_Record_Aggregate
                  (Associations => All_Field_Assocs));
             Index := Index + 1;
             Assocs (Index) := Assoc;
@@ -2746,9 +2752,9 @@ package body Why.Gen.Records is
 
       if Is_Tagged_Type (Ty) then
          Assoc := New_Field_Association
-           (Domain   => Domain,
-            Field    => E_Symb (Ty, WNE_Attr_Tag),
-            Value    => +E_Symb (Ty, WNE_Tag));
+           (Domain => Domain,
+            Field  => E_Symb (Ty, WNE_Attr_Tag),
+            Value  => +E_Symb (Ty, WNE_Tag));
          Index := Index + 1;
          Assocs (Index) := Assoc;
       end if;
@@ -3005,11 +3011,12 @@ package body Why.Gen.Records is
       --  If Ty is tagged, its 'Tag attribute should be preserved except for
       --  defaults of classwide types.
 
-      Num_Attr        : constant Natural :=
+      Num_Attr     : constant Natural :=
         (if Has_Constrained then (if Has_Tag then 2 else 1)
          else (if Has_Tag then 1 else 0));
-      Associations    : W_Field_Association_Array (1 .. Num_Attr);
-      Index           : Positive := 1;
+      Associations : W_Field_Association_Array (1 .. Num_Attr);
+      Index        : Positive := 1;
+
    begin
       if Num_Attr = 0 then
          return Name;
@@ -3105,6 +3112,7 @@ package body Why.Gen.Records is
       Count     : Natural := 1;
       Discr     : Entity_Id := First_Discriminant (Check_Ty);
       Elmt      : Elmt_Id := First_Elmt (Stored_Constraint (Check_Ty));
+
    begin
       Args (Num_Discr + 1) := +Expr;
       while Present (Discr) loop
@@ -3121,6 +3129,7 @@ package body Why.Gen.Records is
          end if;
          Next_Discriminant (Discr);
       end loop;
+
       return Args;
    end Prepare_Args_For_Subtype_Check;
 
@@ -3162,11 +3171,11 @@ package body Why.Gen.Records is
 
       if not Is_Constrained (Ty) and then Has_Defaulted_Discriminants (Ty) then
          Associations (Index) := New_Field_Association
-           (Domain   => EW_Term,
-            Field    => +New_Attribute_Expr (Ty     => Ty,
-                                             Domain => EW_Term,
-                                             Attr   => Attribute_Constrained),
-            Value    => A (Index));
+           (Domain => EW_Term,
+            Field  => +New_Attribute_Expr (Ty     => Ty,
+                                           Domain => EW_Term,
+                                           Attr   => Attribute_Constrained),
+            Value  => A (Index));
          Index := Index + 1;
       end if;
 
@@ -3174,11 +3183,11 @@ package body Why.Gen.Records is
 
       if Is_Tagged_Type (Ty) then
          Associations (Index) := New_Field_Association
-           (Domain   => EW_Term,
-            Field    => +New_Attribute_Expr (Ty     => Ty,
-                                             Domain => EW_Term,
-                                             Attr   => Attribute_Tag),
-            Value    => A (Index));
+           (Domain => EW_Term,
+            Field  => +New_Attribute_Expr (Ty     => Ty,
+                                           Domain => EW_Term,
+                                           Attr   => Attribute_Tag),
+            Value  => A (Index));
          Index := Index + 1;
       end if;
 
