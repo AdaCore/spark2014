@@ -8724,9 +8724,9 @@ package body Gnat2Why.Expr is
                      Why_Expr : constant W_Expr_Id :=
                        Transform_Expr (Var, Domain, Params);
                   begin
-                     T := New_Is_Constrained_Access (Domain   => Domain,
-                                                     Name     => Why_Expr,
-                                                     Ty       => Ty_Ent);
+                     T := New_Is_Constrained_Access (Domain => Domain,
+                                                     Name   => Why_Expr,
+                                                     Ty     => Ty_Ent);
                      if Domain = EW_Prog then
                         T :=
                           +Sequence (New_Ignore (Prog => +Why_Expr), +T);
