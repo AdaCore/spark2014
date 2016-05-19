@@ -76,10 +76,16 @@ package body SPARK_Util is
    -- Partial_View --
    ------------------
 
-   function Partial_View (E : Entity_Id) return Entity_Id is
-     (if Partial_Views.Contains (E) then
-        Partial_Views.Element (E)
-      else Empty);
+   function Partial_View (E : Entity_Id) return Entity_Id
+   is
+      C : constant Node_Maps.Cursor := Partial_Views.Find (E);
+      use Node_Maps;
+
+   begin
+      return (if Has_Element (C)
+              then Element (C)
+              else Empty);
+   end Partial_View;
 
    ------------------
    -- Is_Full_View --
@@ -105,17 +111,16 @@ package body SPARK_Util is
 
    procedure Set_Specific_Tagged (E, V : Entity_Id) is
    begin
-      if Is_Full_View (V)
-        and then Full_View_Not_In_SPARK (Partial_View (V))
-      then
-         Specific_Tagged_Types.Insert (E, Partial_View (V));
-      else
-         Specific_Tagged_Types.Insert (E, V);
-      end if;
+      Specific_Tagged_Types.Insert
+        (E,
+         (if Is_Full_View (V)
+          and then Full_View_Not_In_SPARK (Partial_View (V))
+          then Partial_View (V)
+          else V));
    end Set_Specific_Tagged;
 
-   function Specific_Tagged (E : Entity_Id) return Entity_Id is
-     (Specific_Tagged_Types.Element (E));
+   function Specific_Tagged (E : Entity_Id) return Entity_Id
+     renames Specific_Tagged_Types.Element;
 
    ---------------------------------
    -- Extra tables on expressions --
@@ -141,9 +146,14 @@ package body SPARK_Util is
    --------------------------
 
    function Dispatching_Contract (C : Node_Id) return Node_Id is
-     (if Dispatching_Contracts.Contains (C) then
-        Dispatching_Contracts.Element (C)
-      else Empty);
+      Primitive : constant Node_Maps.Cursor := Dispatching_Contracts.Find (C);
+      use Node_Maps;
+
+   begin
+      return (if Has_Element (Primitive)
+              then Element (Primitive)
+              else Empty);
+   end Dispatching_Contract;
 
    ------------------------------------------------
    -- Queries related to external axiomatization --
