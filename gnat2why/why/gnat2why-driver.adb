@@ -511,7 +511,8 @@ package body Gnat2Why.Driver is
    ------------------------
 
    function Is_Back_End_Switch (Switch : String) return Boolean is
-      First : constant Positive := Switch'First + 1;
+      First : constant Natural := Switch'First + 1;
+      Last  : constant Natural := Switch_Last (Switch);
 
    begin
       --  For now we allow the -g/-O/-f/-m/-W/-w and -pipe switches, even
@@ -521,7 +522,7 @@ package body Gnat2Why.Driver is
       return
         Is_Switch (Switch)
           and then (Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w'
-                      or else Switch (First .. Switch'Last) = "pipe");
+                      or else Switch (First .. Last) = "pipe");
    end Is_Back_End_Switch;
 
    ------------------------------
