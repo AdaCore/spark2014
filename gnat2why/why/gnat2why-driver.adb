@@ -756,13 +756,12 @@ package body Gnat2Why.Driver is
 
          when Object_Kind =>
 
-            --  we can ignore discriminals, these are objects used for
-            --  analysis, that can occur for discriminants of protected
-            --  types and task types
+            --  Ignore discriminals, i.e. objects that occur for discriminants
+            --  of protected types and task types.
 
             if Ekind (E) in Formal_Kind
               and then Present (Discriminal_Link (E))
-                and then Ekind (Scope (E)) in Protected_Kind | Task_Kind
+                and then Ekind (Scope (E)) in E_Protected_Type | E_Task_Type
             then
                return;
             end if;
@@ -809,7 +808,7 @@ package body Gnat2Why.Driver is
             Translate_Abstract_State (File, E);
             Generate_Empty_Axiom_Theory (File, E);
 
-         --  Generate a logic function for Ada functions
+         --  Generate a logic function for Ada subprograms
 
          when E_Entry | E_Function | E_Procedure =>
             if Is_Translated_Subprogram (E) then
