@@ -63,18 +63,34 @@ package body SPARK_Util is
    --  Map from full views of entities to their partial views, for deferred
    --  constants and private types.
 
+   ----------------------
+   -- Set_Partial_View --
+   ----------------------
+
    procedure Set_Partial_View (E, V : Entity_Id) is
    begin
       Partial_Views.Insert (E, V);
    end Set_Partial_View;
+
+   ------------------
+   -- Partial_View --
+   ------------------
 
    function Partial_View (E : Entity_Id) return Entity_Id is
      (if Partial_Views.Contains (E) then
         Partial_Views.Element (E)
       else Empty);
 
+   ------------------
+   -- Is_Full_View --
+   ------------------
+
    function Is_Full_View (E : Entity_Id) return Boolean is
      (Present (Partial_View (E)));
+
+   ---------------------
+   -- Is_Partial_View --
+   ---------------------
 
    function Is_Partial_View (E : Entity_Id) return Boolean is
      ((Is_Type (E) or else Ekind (E) = E_Constant) and then
@@ -82,6 +98,10 @@ package body SPARK_Util is
 
    Specific_Tagged_Types : Node_Maps.Map;
    --  Map from classwide types to the corresponding specific tagged type
+
+   -------------------------
+   -- Set_Specific_Tagged --
+   -------------------------
 
    procedure Set_Specific_Tagged (E, V : Entity_Id) is
    begin
@@ -107,10 +127,18 @@ package body SPARK_Util is
    --  class-wide type, and corresponding calls to primitive subprograms are
    --  dispatching calls.
 
+   ------------------------------
+   -- Set_Dispatching_Contract --
+   ------------------------------
+
    procedure Set_Dispatching_Contract (C, D : Node_Id) is
    begin
       Dispatching_Contracts.Insert (C, D);
    end Set_Dispatching_Contract;
+
+   --------------------------
+   -- Dispatching_Contract --
+   --------------------------
 
    function Dispatching_Contract (C : Node_Id) return Node_Id is
      (if Dispatching_Contracts.Contains (C) then
@@ -120,6 +148,10 @@ package body SPARK_Util is
    ------------------------------------------------
    -- Queries related to external axiomatization --
    ------------------------------------------------
+
+   --------------------------
+   -- Entity_In_Ext_Axioms --
+   --------------------------
 
    function Entity_In_Ext_Axioms (E : Entity_Id) return Boolean is
       Pack : constant Entity_Id :=
@@ -138,6 +170,10 @@ package body SPARK_Util is
       end;
    end Entity_In_Ext_Axioms;
 
+   ------------------------------------------
+   -- Is_Access_To_Ext_Axioms_Discriminant --
+   ------------------------------------------
+
    function Is_Access_To_Ext_Axioms_Discriminant
      (N : Node_Id) return Boolean
    is
@@ -147,6 +183,10 @@ package body SPARK_Util is
         and then Is_Ext_Axioms_Discriminant (E);
    end Is_Access_To_Ext_Axioms_Discriminant;
 
+   --------------------------------
+   -- Is_Ext_Axioms_Discriminant --
+   --------------------------------
+
    function Is_Ext_Axioms_Discriminant (E : Entity_Id) return Boolean is
       Typ : constant Entity_Id :=
         Unique_Defining_Entity (Enclosing_Declaration (E));
@@ -154,11 +194,23 @@ package body SPARK_Util is
       return Type_Based_On_Ext_Axioms (Etype (Typ));
    end Is_Ext_Axioms_Discriminant;
 
+   ----------------------------
+   -- Package_Has_Ext_Axioms --
+   ----------------------------
+
    function Package_Has_Ext_Axioms (E : Entity_Id) return Boolean
      renames Has_Annotate_Pragma_For_External_Axiomatization;
 
+   ------------------------------
+   -- Type_Based_On_Ext_Axioms --
+   ------------------------------
+
    function Type_Based_On_Ext_Axioms (E : Entity_Id) return Boolean is
      (Present (Underlying_Ext_Axioms_Type (E)));
+
+   --------------------------------
+   -- Underlying_Ext_Axioms_Type --
+   --------------------------------
 
    function Underlying_Ext_Axioms_Type (E : Entity_Id) return Entity_Id is
       Typ : Entity_Id := E;
@@ -195,6 +247,10 @@ package body SPARK_Util is
    --  considers scalar subtypes (otherwise returns False), and looks past
    --  private types.
 
+   -------------------------------
+   -- Has_Static_Scalar_Subtype --
+   -------------------------------
+
    function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean is
       Under_T  : constant Entity_Id := Underlying_Type (T);
       Base_T   : constant Entity_Id := Base_Type (Under_T);
@@ -219,6 +275,10 @@ package body SPARK_Util is
            and then Is_Static_Expression (Type_High_Bound (Under_T));
       end if;
    end Has_Static_Scalar_Subtype;
+
+   ------------
+   -- Retysp --
+   ------------
 
    function Retysp (T : Entity_Id) return Entity_Id is
       Typ : Entity_Id := T;
@@ -320,6 +380,10 @@ package body SPARK_Util is
          end loop;
       end if;
    end Retysp;
+
+   -----------------
+   -- Retysp_Kind --
+   -----------------
 
    function Retysp_Kind (T : Entity_Id) return Entity_Kind is
    begin
@@ -1431,6 +1495,7 @@ package body SPARK_Util is
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id is
       Nam : constant Node_Id := Name (N);
+
    begin
       return
         Entity (case Nkind (Nam) is
