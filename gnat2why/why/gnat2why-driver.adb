@@ -847,18 +847,18 @@ package body Gnat2Why.Driver is
 
    procedure Translate_Standard_Package is
 
-      procedure Translate (E : Entity_Id);
+      procedure Translate_Standard_Entity (E : Entity_Id);
       --  Translate and complete declaration of entity E
 
-      ---------------
-      -- Translate --
-      ---------------
+      -------------------------------
+      -- Translate_Standard_Entity --
+      -------------------------------
 
-      procedure Translate (E : Entity_Id) is
+      procedure Translate_Standard_Entity (E : Entity_Id) is
       begin
          Translate_Entity (E);
          Complete_Declaration (E);
-      end Translate;
+      end Translate_Standard_Entity;
 
       Decl : Node_Id :=
         First (Visible_Declarations (Specification (Standard_Package_Node)));
@@ -871,7 +871,7 @@ package body Gnat2Why.Driver is
             when N_Full_Type_Declaration |
                  N_Subtype_Declaration   |
                  N_Object_Declaration    =>
-               Translate (Defining_Entity (Decl));
+               Translate_Standard_Entity (Defining_Entity (Decl));
             when others =>
                null;
          end case;
@@ -882,12 +882,12 @@ package body Gnat2Why.Driver is
       --  The following types are not in the tree of the standard package, but
       --  still are referenced elsewhere.
 
-      Translate (Standard_Integer_8);
-      Translate (Standard_Integer_16);
-      Translate (Standard_Integer_32);
-      Translate (Standard_Integer_64);
-      Translate (Universal_Integer);
-      Translate (Universal_Real);
+      Translate_Standard_Entity (Standard_Integer_8);
+      Translate_Standard_Entity (Standard_Integer_16);
+      Translate_Standard_Entity (Standard_Integer_32);
+      Translate_Standard_Entity (Standard_Integer_64);
+      Translate_Standard_Entity (Universal_Integer);
+      Translate_Standard_Entity (Universal_Real);
 
    end Translate_Standard_Package;
 
