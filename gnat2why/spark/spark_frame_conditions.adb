@@ -448,11 +448,11 @@ package body SPARK_Frame_Conditions is
    function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
      renames Calls.Element;
 
-   -------------------------
-   -- Get_Generated_Reads --
-   -------------------------
+   ------------------------
+   -- Get_Computed_Reads --
+   ------------------------
 
-   function Get_Generated_Reads
+   function Get_Computed_Reads
      (E                 : Entity_Id;
       Include_Constants : Boolean) return Name_Sets.Set
    is
@@ -492,13 +492,13 @@ package body SPARK_Frame_Conditions is
          else
             return Name_Sets.Empty_Set;
          end if;
-   end Get_Generated_Reads;
+   end Get_Computed_Reads;
 
-   --------------------------
-   -- Get_Generated_Writes --
-   --------------------------
+   -------------------------
+   -- Get_Computed_Writes --
+   -------------------------
 
-   function Get_Generated_Writes (E : Entity_Id) return Name_Sets.Set is
+   function Get_Computed_Writes (E : Entity_Id) return Name_Sets.Set is
       E_Alias   : constant Entity_Id :=
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
       E_Name    : constant Entity_Name := To_Entity_Name (E_Alias);
@@ -524,7 +524,7 @@ package body SPARK_Frame_Conditions is
       --  variables (not constants) have pragma Effective_Reads set. If so,
       --  then these entities are also writes.
 
-      for E_N of Get_Generated_Reads (E, False) loop
+      for E_N of Get_Computed_Reads (E, False) loop
          declare
             Read : constant Entity_Id := Find_Entity (E_N);
          begin
@@ -548,7 +548,7 @@ package body SPARK_Frame_Conditions is
          else
             return Name_Sets.Empty_Set;
          end if;
-   end Get_Generated_Writes;
+   end Get_Computed_Writes;
 
    ----------------------
    -- Is_Heap_Variable --
@@ -1130,8 +1130,8 @@ package body SPARK_Frame_Conditions is
       E_Name := To_Entity_Name (E_Alias);
 
       Called_Subprograms := Calls (E_Name);
-      Inputs             := Get_Generated_Reads (E, False);
-      Outputs            := Get_Generated_Writes (E);
+      Inputs             := Get_Computed_Reads (E, False);
+      Outputs            := Get_Computed_Writes (E);
 
       --  Add variables written to variables read
       Inputs.Union (Outputs);

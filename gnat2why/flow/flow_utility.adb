@@ -1635,10 +1635,10 @@ package body Flow_Utility is
 
             declare
                ALI_Reads  : constant Name_Sets.Set :=
-                 Get_Generated_Reads (Subprogram,
-                                      Include_Constants => True);
+                 Get_Computed_Reads (Subprogram,
+                                     Include_Constants => True);
                ALI_Writes : constant Name_Sets.Set :=
-                 Get_Generated_Writes (Subprogram);
+                 Get_Computed_Writes (Subprogram);
 
                F : Flow_Id;
             begin
