@@ -456,24 +456,22 @@ package body SPARK_Frame_Conditions is
      (E                 : Entity_Id;
       Include_Constants : Boolean) return Name_Sets.Set
    is
-      E_Alias  : constant Entity_Id :=
-        (if Present (Alias (E)) then Ultimate_Alias (E) else E);
+      E_Alias : constant Entity_Id :=
+        (if Ekind (E) in E_Function | E_Procedure | E_Entry
+           and then Present (Alias (E))
+         then Ultimate_Alias (E)
+         else E);
+
       E_Name   : constant Entity_Name := To_Entity_Name (E_Alias);
       Read_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
 
    begin
-      --  ??? O429-046, O603-033 Task types, entries and Abstract subprograms
-      --  not yet supported. Avoid issuing an error on those, instead return
-      --  empty sets.
+      --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
+      --  those, instead return empty sets.
 
-      if Ekind (E) in Task_Kind | Entry_Kind then
-         return Name_Sets.Empty_Set;
-      end if;
-
-      --  Abstract subprograms not yet supported. Avoid issuing an error on
-      --  those, which do not have effects, instead return the empty set.
-
-      if Is_Abstract_Subprogram (E_Alias) then
+      if Ekind (E) in E_Function | E_Procedure | E_Entry
+        and then Is_Abstract_Subprogram (E_Alias)
+      then
          return Name_Sets.Empty_Set;
       end if;
 
@@ -499,24 +497,22 @@ package body SPARK_Frame_Conditions is
    -------------------------
 
    function Get_Computed_Writes (E : Entity_Id) return Name_Sets.Set is
-      E_Alias   : constant Entity_Id :=
-        (if Present (Alias (E)) then Ultimate_Alias (E) else E);
+      E_Alias : constant Entity_Id :=
+        (if Ekind (E) in E_Function | E_Procedure | E_Entry
+           and then Present (Alias (E))
+         then Ultimate_Alias (E)
+         else E);
+
       E_Name    : constant Entity_Name := To_Entity_Name (E_Alias);
       Write_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
 
    begin
-      --  ??? O429-046, O603-033 Task types, entries and Abstract subprograms
-      --  not yet supported. Avoid issuing an error on those, instead return
-      --  empty sets.
-
-      if Ekind (E) in Task_Kind | Entry_Kind then
-         return Name_Sets.Empty_Set;
-      end if;
-
-      --  Abstract subprograms not yet supported. Avoid issuing an error on
+      --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, which do not have effects, instead return the empty set.
 
-      if Is_Abstract_Subprogram (E_Alias) then
+      if Ekind (E) in E_Function | E_Procedure | E_Entry
+        and then Is_Abstract_Subprogram (E_Alias)
+      then
          return Name_Sets.Empty_Set;
       end if;
 
@@ -573,7 +569,7 @@ package body SPARK_Frame_Conditions is
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
       E_Name  : constant Entity_Name := To_Entity_Name (E);
    begin
-      --  Abstract subprograms not yet supported. Avoid issuing an error on
+      --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, instead return false.
 
       if Is_Abstract_Subprogram (E_Alias) then
@@ -1104,7 +1100,12 @@ package body SPARK_Frame_Conditions is
       Outputs            : out Name_Sets.Set;
       Called_Subprograms : out Name_Sets.Set)
    is
-      E_Alias : Entity_Id;
+      E_Alias : constant Entity_Id :=
+        (if Ekind (E) in E_Function | E_Procedure | E_Entry
+           and then Present (Alias (E))
+         then Ultimate_Alias (E)
+         else E);
+
       E_Name  : Entity_Name;
 
    begin
@@ -1113,17 +1114,12 @@ package body SPARK_Frame_Conditions is
       Outputs            := Name_Sets.Empty_Set;
       Called_Subprograms := Name_Sets.Empty_Set;
 
-      --  ??? O429-046, O603-033 Task types, entries and Abstract subprograms
-      --  not yet supported. Avoid issuing an error on those, instead return
-      --  empty sets.
+      --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
+      --  those, instead return empty sets.
 
-      if Ekind (E) in Task_Kind | Entry_Kind then
-         return;
-      end if;
-
-      E_Alias := (if Present (Alias (E)) then Ultimate_Alias (E) else E);
-
-      if Is_Abstract_Subprogram (E_Alias) then
+      if Ekind (E) in E_Function | E_Procedure | E_Entry
+        and then Is_Abstract_Subprogram (E_Alias)
+      then
          return;
       end if;
 

@@ -71,12 +71,14 @@ package SPARK_Frame_Conditions is
 
    function Get_Computed_Reads
      (E                 : Entity_Id;
-      Include_Constants : Boolean) return Name_Sets.Set;
+      Include_Constants : Boolean) return Name_Sets.Set
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
    --  Get the variables read by subprogram E. If Include_Constants is True
    --  then include constants in the result (for flow analysis); if it is
    --  False then do not (for proof).
 
-   function Get_Computed_Writes (E : Entity_Id) return Name_Sets.Set;
+   function Get_Computed_Writes (E : Entity_Id) return Name_Sets.Set
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
    --  Get the variables written by subprogram E
 
    function File_Of_Entity (E : Entity_Name) return Entity_Name;
@@ -90,7 +92,7 @@ package SPARK_Frame_Conditions is
       Inputs             : out Name_Sets.Set;
       Outputs            : out Name_Sets.Set;
       Called_Subprograms : out Name_Sets.Set)
-   with Pre  => Ekind (E) in Subprogram_Kind | Task_Kind | Entry_Kind,
+   with Pre  => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type,
         Post => Outputs.Is_Subset (Of_Set => Inputs);
    --  Collect the Computed Globals information based on the current
    --  compilation unit alone.
