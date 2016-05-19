@@ -351,7 +351,7 @@ package body SPARK_Frame_Conditions is
          for Cu in Map.Iterate loop
             Display_Entity (Key (Cu));
             Put_Line (" " & Action);
-            Display_One_Set (Element (Cu));
+            Display_One_Set (Map (Cu));
          end loop;
       end Display_One_Map;
 
