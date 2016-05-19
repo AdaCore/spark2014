@@ -221,23 +221,23 @@ package body Why.Gen.Records is
       --  Declare functions for the record attributes
 
       procedure Declare_Record_Type;
-      --  declare the record type
+      --  Declare the record type
 
       procedure Declare_Protected_Access_Functions;
-      --  for each record field, declare an access program function, whose
+      --  For each record field, declare an access program function, whose
       --  result is the same as the record field access, but there is a
-      --  precondition (when needed)
+      --  precondition (when needed).
 
       function Compute_Discriminant_Check (Field : Entity_Id) return W_Pred_Id;
-      --  compute the discriminant check for an access to the given field, as a
-      --  predicate which can be used as a precondition
+      --  Compute the discriminant check for an access to the given field, as a
+      --  predicate which can be used as a precondition.
 
       function Compute_Others_Choice
         (Info  : Component_Info;
          Discr : W_Term_Id) return W_Pred_Id;
-      --  compute (part of) the discriminant check for one discriminant in the
+      --  Compute (part of) the discriminant check for one discriminant in the
       --  special case where the N_Discrete_Choice is actually an
-      --  N_Others_Choice
+      --  N_Others_Choice.
 
       procedure Declare_Conversion_Functions;
       --  Generate conversion functions from this type to the root type, and
@@ -268,7 +268,7 @@ package body Why.Gen.Records is
       function Transform_Discrete_Choices
         (Case_N : Node_Id;
          Expr   : W_Term_Id) return W_Pred_Id;
-      --  Wrapper for the function in Gnat2Why.Expr;
+      --  Wrapper for the function in Gnat2Why.Expr
 
       function Extract_Fun
         (Field       : Entity_Id;
