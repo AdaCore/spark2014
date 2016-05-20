@@ -194,10 +194,13 @@ package body Flow.Analysis is
          --  Var, which is a bit odd. This means that the computed
          --  globals for FA.Analyzed_Entity contain a symbol Var for
          --  no good reason.
+         --
+         --  ??? error message that says "bug: ..." is not the way we crash
+
          Error_Msg_Flow
            (FA       => FA,
             Msg      => "bug: & contains reference to &, " &
-              "but no use can be found",
+                        "but no use can be found",
             N        => FA.Analyzed_Entity,
             F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
             F2       => Var,
@@ -209,7 +212,7 @@ package body Flow.Analysis is
          Error_Msg_Flow
            (FA       => FA,
             Msg      => "called subprogram & requires GLOBAL " &
-              "aspect to make state & visible",
+                        "aspect to make state & visible",
             N        => First_Use,
             F1       => Direct_Mapping_Id (Get_Called_Entity (First_Use)),
             F2       => Var,
