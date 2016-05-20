@@ -267,7 +267,7 @@ package body Flow.Analysis.Antialiasing is
       is
          R : Node_Id := N;
       begin
-         while Is_Interesting (Nkind (R)) and not Is_Root (Nkind (R)) loop
+         while Is_Interesting (Nkind (R)) and then not Is_Root (Nkind (R)) loop
             R := Down_One_Level (R);
          end loop;
          return R;
@@ -385,7 +385,7 @@ package body Flow.Analysis.Antialiasing is
          Write_Line ("   -> same root entity");
       end if;
 
-      while Ptr_A /= A and Ptr_B /= B loop
+      while Ptr_A /= A and then Ptr_B /= B loop
          --  Go up the tree one level. If we hit an unchecked
          --  conversion or type conversion we 'ignore' it. For
          --  example:

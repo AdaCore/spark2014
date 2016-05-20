@@ -598,7 +598,7 @@ package body Why.Gen.Expr is
               Typ  => To);
       end if;
 
-      if Domain = EW_Prog and Need_Check then
+      if Domain = EW_Prog and then Need_Check then
          declare
             Check_Type : constant Entity_Id := Get_Ada_Node (+To);
          begin
@@ -650,7 +650,7 @@ package body Why.Gen.Expr is
       From : constant W_Type_Id := Get_Type (Expr);
       Check_Needed : constant Boolean :=
         (if Get_Type_Kind (From) in EW_Abstract | EW_Split
-              and
+              and then
             Get_Type_Kind (To) in EW_Abstract | EW_Split
          then
             Check_Needed_On_Conversion (From => Get_Ada_Node (+From),
@@ -785,7 +785,7 @@ package body Why.Gen.Expr is
    begin
       --  When From = To and no check needs to be inserted, do nothing
 
-      if Eq_Base (To, From) and not Need_Check then
+      if Eq_Base (To, From) and then not Need_Check then
          return Expr;
       end if;
 
@@ -2978,7 +2978,7 @@ package body Why.Gen.Expr is
       Pointer := Line_Start (Physical_Line_Number (Line),
                              Get_Source_File_Index (Pointer));
 
-      while Src_Buff (Pointer) /= ASCII.LF and Src_Buff (Pointer) /= ASCII.CR
+      while Src_Buff (Pointer) not in ASCII.LF | ASCII.CR
       loop
 
          Buf := Buf & (if Src_Buff (Pointer) = ASCII.Back_Slash then

@@ -543,7 +543,7 @@ package body Gnat2Why.Annotate is
    begin
       Insert_Annotate_Range (Prgma, Kind, Pattern, Reason, Node);
       Next (Node);
-      while Present (Node) and not Comes_From_Source (Node) loop
+      while Present (Node) and then not Comes_From_Source (Node) loop
          Insert_Annotate_Range (Prgma, Kind, Pattern, Reason, Node);
          Next (Node);
       end loop;

@@ -1418,7 +1418,7 @@ package body Flow is
                            --  ??? warn that we can't flow analyze elaboration?
                         end if;
                      elsif Generating_Globals
-                       or else not Unit_Requires_Body (E)
+                       or not Unit_Requires_Body (E)
                      then
                         FA_Graphs.Include
                           (E,

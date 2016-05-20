@@ -2060,7 +2060,7 @@ package body Gnat2Why.Subprograms is
          Pre_Check := New_Located_Assert
            (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition),
             Pred     => Pre_Spec,
-            Reason   => (if Classwide_Pre_List.Is_Empty and
+            Reason   => (if Classwide_Pre_List.Is_Empty and then
                             Inherited_Pre_List.Is_Empty
                          then
                            VC_Trivial_Weaker_Pre

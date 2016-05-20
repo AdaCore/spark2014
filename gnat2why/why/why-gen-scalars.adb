@@ -104,7 +104,7 @@ package body Why.Gen.Scalars is
               Orig_Name => New_Name (Symbol => NID ("t")),
               Image     => Why_Name);
          Rep_Type_Clone_Substitution : constant W_Clone_Substitution_Array :=
-           (if not Is_Static and Has_Discrete_Type (E) then
+           (if not Is_Static and then Has_Discrete_Type (E) then
                 (1 => New_Clone_Substitution
                  (Kind      => EW_Type_Subst,
                   Orig_Name => New_Name
@@ -226,7 +226,7 @@ package body Why.Gen.Scalars is
 
          Fst : constant W_Identifier_Id :=
            (if not Is_Static or else
-              (Has_Modular_Integer_Type (E) and Ty = EW_Int_Type)
+              (Has_Modular_Integer_Type (E) and then Ty = EW_Int_Type)
             then
                New_Identifier
               (Symbol => NID ("first_int"),
@@ -235,7 +235,7 @@ package body Why.Gen.Scalars is
             else To_Local (E_Symb (E, WNE_Attr_First)));
          Lst : constant W_Identifier_Id :=
            (if not Is_Static or else
-              (Has_Modular_Integer_Type (E) and Ty = EW_Int_Type)
+              (Has_Modular_Integer_Type (E) and then Ty = EW_Int_Type)
             then
                New_Identifier
               (Symbol => NID ("last_int"),

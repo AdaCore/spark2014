@@ -9128,7 +9128,7 @@ package body Gnat2Why.Expr is
                                                To     => Comp_Type),
                      Right_First)
                   elsif Is_Static_Array_Type (Right_Type)
-                  or (Get_Type_Kind (Get_Type (Right_Expr)) = EW_Split)
+                    or else (Get_Type_Kind (Get_Type (Right_Expr)) = EW_Split)
                   then Right_Expr
                   else Array_Convert_To_Base (Domain => Domain,
                                               Ar     => Right_Expr));
@@ -13236,8 +13236,8 @@ package body Gnat2Why.Expr is
          --  resulting in a modulo on the amount of the shift Introduced by
          --  the convertion at the why3 level.
          if Nb_Of_Bits < 32
-           and Name /= MF_BVs (Typ).Rotate_Left
-           and Name /= MF_BVs (Typ).Rotate_Right
+           and then Name /= MF_BVs (Typ).Rotate_Left
+           and then Name /= MF_BVs (Typ).Rotate_Right
          then
             declare
                Nb_Of_Buits_UI : constant Uint := UI_From_Int (Nb_Of_Bits);
@@ -14306,7 +14306,7 @@ package body Gnat2Why.Expr is
                        Classwide => True,
                        Inherited => True);
    begin
-      return (Selector /= Dispatch and Has_Precondition)
+      return (Selector /= Dispatch and then Has_Precondition)
         or else Has_Classwide_Or_Inherited_Precondition
         or else Entity_In_Ext_Axioms (E)
 
@@ -14314,7 +14314,8 @@ package body Gnat2Why.Expr is
         --  error-signaling procedure (this is what the No_Return variant
         --  means) for which an implicit precondition of False is used.
 
-        or else (Selector = No_Return and Is_Error_Signaling_Procedure (E));
+        or else (Selector = No_Return
+                   and then Is_Error_Signaling_Procedure (E));
    end Why_Subp_Has_Precondition;
 
 end Gnat2Why.Expr;

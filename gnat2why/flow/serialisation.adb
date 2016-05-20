@@ -44,8 +44,8 @@ package body Serialisation is
    --  Returns true iff the next element of A is a tag and equal to S.
 
    procedure Append_Tag (A : in out Archive; The_Tag : Unbounded_String)
-   with Pre => The_Tag = Coll_Begin or
-               The_Tag = Coll_End or
+   with Pre => The_Tag = Coll_Begin or else
+               The_Tag = Coll_End or else
                (Length (The_Tag) > 2 and then Element (The_Tag, 2) = ':');
    --  Append a given tag to the archive.
 
@@ -178,8 +178,8 @@ package body Serialisation is
             if Element (S, I) = ' ' or else I = Length (S) then
                if Length (Tmp) > 0 then
                   if Tmp = Coll_Begin
-                    or Tmp = Coll_End
-                    or (Length (Tmp) >= 2 and then Element (Tmp, 2) = ':')
+                    or else Tmp = Coll_End
+                    or else (Length (Tmp) >= 2 and then Element (Tmp, 2) = ':')
                   then
                      Append_Tag (A, Tmp);
                   else
