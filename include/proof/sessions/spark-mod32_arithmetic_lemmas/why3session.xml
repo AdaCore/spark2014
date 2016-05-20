@@ -731,10 +731,10 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="2"><result status="valid" time="0.08" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.09" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="2"><result status="valid" time="0.09" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.08" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
   <proof prover="0"><result status="steplimitexceeded" time="0.25"/></proof>
@@ -770,6 +770,7 @@
   <proof prover="0"><result status="steplimitexceeded" time="0.31"/></proof>
   <proof prover="1"><result status="timeout" time="20.34"/></proof>
   <proof prover="2"><result status="highfailure" time="3.37"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-mod32_arithmetic_lemmas/Spark__mod32_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp.v"><result status="valid" time="1.01"/></proof>
   </goal>
  </transf>
  </goal>
