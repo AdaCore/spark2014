@@ -1,5 +1,5 @@
-spark-arithmetic_lemmas.ads:49:14: medium: postcondition might fail, cannot prove Val1 / Denom <= Val2 / Denom, in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:49:14: medium: postcondition might fail, cannot prove Val1 / Denom <= Val2 / Denom, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:49:14: info: postcondition proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:49:14: info: postcondition proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:49:19: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:49:19: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:49:35: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
@@ -8,8 +8,8 @@ spark-arithmetic_lemmas.ads:56:14: info: postcondition proved, in instantiation 
 spark-arithmetic_lemmas.ads:56:14: info: postcondition proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:56:19: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:56:19: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:64:15: medium: postcondition might fail, cannot prove -Arg1) mod (-Arg2) = -(Arg1 mod Arg2, in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:64:15: medium: postcondition might fail, cannot prove -Arg1) mod (-Arg2) = -(Arg1 mod Arg2, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:64:15: info: postcondition proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:64:15: info: postcondition proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:64:22: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:64:22: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:64:43: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
@@ -20,55 +20,45 @@ spark-arithmetic_lemmas.ads:73:14: info: postcondition proved, in instantiation 
 spark-arithmetic_lemmas.ads:73:14: info: postcondition proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:83:38: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:83:38: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:84:14: medium: postcondition might fail, in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:84:14: medium: postcondition might fail, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:92:15: medium: postcondition might fail, cannot prove Arg1 * Arg2) mod Arg2 = 0, in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:92:15: medium: postcondition might fail, cannot prove Arg1 * Arg2) mod Arg2 = 0, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:84:14: info: postcondition proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:84:14: info: postcondition proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:92:15: info: postcondition proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:92:15: info: postcondition proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:92:28: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:92:28: info: division check proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
-spark-mod_arithmetic_lemmas.ads:48:14: medium: postcondition might fail, cannot prove Val1 / Denom <= Val2 / Denom, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:48:14: medium: postcondition might fail, cannot prove Val1 / Denom <= Val2 / Denom, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:48:14: info: postcondition proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:48:14: info: postcondition proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:48:19: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:48:19: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:48:35: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:48:35: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:56:26: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:56:26: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:57:14: medium: postcondition might fail, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:57:14: medium: postcondition might fail, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:57:14: info: postcondition proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:57:14: info: postcondition proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:66:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:66:32: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:67:14: info: postcondition proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:67:14: info: postcondition proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:75:51: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:75:51: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:76:14: medium: postcondition might fail, cannot prove Arg1 * Arg2 <= Upper_Bound, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:76:14: medium: postcondition might fail, cannot prove Arg1 * Arg2 <= Upper_Bound, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:76:14: info: postcondition proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:76:14: info: postcondition proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:86:54: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:86:54: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:87:38: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:87:38: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:88:14: medium: postcondition might fail, cannot prove Res <= Val, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:88:14: medium: postcondition might fail, cannot prove Res <= Val, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:88:14: info: postcondition proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:88:14: info: postcondition proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:95:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:95:32: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:96:15: medium: postcondition might fail, cannot prove Arg1 * Arg2) / Arg2 = Arg1, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:96:15: medium: postcondition might fail, cannot prove Arg1 * Arg2) / Arg2 = Arg1, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:96:15: info: postcondition proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:96:15: info: postcondition proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:96:28: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:96:28: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:103:32: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:103:32: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:104:15: medium: postcondition might fail, cannot prove Arg1 * Arg2) mod Arg2 = 0, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
-spark-mod_arithmetic_lemmas.ads:104:15: medium: postcondition might fail, cannot prove Arg1 * Arg2) mod Arg2 = 0, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:104:15: info: postcondition proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:104:15: info: postcondition proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:104:28: info: division check proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:104:28: info: division check proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
-
-
-
-
-
-
-
-
-
-
