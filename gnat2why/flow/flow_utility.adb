@@ -2168,8 +2168,8 @@ package body Flow_Utility is
 
          --  Apply sanity check for functions
 
-         if Nkind (Callsite) = N_Function_Call and then
-           Flow_Id_Sets.Length (Global_Writes) > 0
+         if Nkind (Callsite) = N_Function_Call
+           and then not Global_Writes.Is_Empty
          then
             Error_Msg_NE
               (Msg => "side effects of function & are not modeled in SPARK",
