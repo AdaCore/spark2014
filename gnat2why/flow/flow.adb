@@ -686,7 +686,7 @@ package body Flow is
 
                   if not A.Is_Initialized then
                      Rv.Colour := To_Unbounded_String ("red");
-                  elsif Is_Discriminant (F) or Is_Record_Tag (F) then
+                  elsif Is_Discriminant (F) or else Is_Record_Tag (F) then
                      Rv.Colour := To_Unbounded_String ("purple");
                   end if;
 
@@ -703,8 +703,8 @@ package body Flow is
                   null;
             end case;
 
-            if not A.Loops.Is_Empty and not (A.Is_Parameter or
-                                             A.Is_Global_Parameter)
+            if not A.Loops.Is_Empty and then not (A.Is_Parameter or
+                                                  A.Is_Global_Parameter)
             then
                Write_Str ("\nLoops:");
                for Loop_Identifier of A.Loops loop
@@ -1418,7 +1418,7 @@ package body Flow is
                            --  ??? warn that we can't flow analyze elaboration?
                         end if;
                      elsif Generating_Globals
-                       or not Unit_Requires_Body (E)
+                       or else not Unit_Requires_Body (E)
                      then
                         FA_Graphs.Include
                           (E,
