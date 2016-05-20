@@ -574,12 +574,15 @@ package body Flow.Analysis is
 
       declare
          Init_Msg : constant String :=
+           "& might not be initialized " &
            (case FA.Kind is
-            when Kind_Subprogram =>
-              "& might not be initialized after elaboration of main program &",
-            when Kind_Task =>
-              "& might not be initialized before start of tasks of type &",
-            when others => raise Program_Error);
+               when Kind_Subprogram =>
+                  "after elaboration of main program &",
+               when Kind_Task =>
+                  "before start of tasks of type &",
+               when others =>
+                  raise Program_Error);
+
       begin
          for R of Reads loop
             if not Is_Initialized_At_Elaboration (R, FA.B_Scope) then
