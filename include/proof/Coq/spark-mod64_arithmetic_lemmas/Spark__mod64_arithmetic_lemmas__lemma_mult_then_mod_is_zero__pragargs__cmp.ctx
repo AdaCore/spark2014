@@ -666,4 +666,4 @@ Theorem WP_parameter_def : ((in_range arg2) /\ (ule arg1
 
 #define SPARK_MAX_UINT 18446744073709551615
 #define SPARK_MAX_UINT_PLUS1 18446744073709551616
-#include "lemma_modular_mult_then_div_is_ident.prf"
+#include "lemma_modular_mult_then_mod_is_zero.prf"
