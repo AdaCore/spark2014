@@ -488,7 +488,7 @@
   <proof prover="0"><result status="unknown" time="0.14"/></proof>
   <proof prover="1"><result status="timeout" time="12.41"/></proof>
   <proof prover="2"><result status="unknown" time="0.04" steps="1340"/></proof>
-  <proof prover="3" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="unknown" time="0.80"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.83"/></proof>
   </goal>
  </transf>
  </goal>
@@ -518,7 +518,7 @@
   <proof prover="0"><result status="unknown" time="0.30"/></proof>
   <proof prover="1"><result status="outofmemory" time="19.71"/></proof>
   <proof prover="2"><result status="unknown" time="0.03" steps="140"/></proof>
-  <proof prover="3" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="unknown" time="0.78"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid" time="0.77"/></proof>
   </goal>
  </transf>
  </goal>

@@ -731,16 +731,16 @@
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
  <transf name="split_goal_wp" expanded="true">
   <goal name="WP_parameter def.1" expl="1. precondition">
-  <proof prover="2"><result status="valid" time="0.15" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.16" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.2" expl="2. precondition">
-  <proof prover="2"><result status="valid" time="0.16" steps="0"/></proof>
+  <proof prover="2"><result status="valid" time="0.15" steps="0"/></proof>
   </goal>
   <goal name="WP_parameter def.3" expl="3. postcondition">
   <proof prover="0"><result status="steplimitexceeded" time="0.26"/></proof>
   <proof prover="1"><result status="timeout" time="20.82"/></proof>
   <proof prover="2"><result status="timeout" time="10.01"/></proof>
-  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="unknown" time="0.90"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid" time="0.94"/></proof>
   </goal>
  </transf>
  </goal>
@@ -755,7 +755,7 @@
   <proof prover="0"><result status="steplimitexceeded" time="0.27"/></proof>
   <proof prover="1"><result status="timeout" time="20.78"/></proof>
   <proof prover="2"><result status="timeout" time="15.81"/></proof>
-  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds__pragargs__cmp.v"><result status="unknown" time="0.89"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds__pragargs__cmp.v"><result status="valid" time="1.10"/></proof>
   </goal>
  </transf>
  </goal>
@@ -784,7 +784,7 @@
   <proof prover="0"><result status="steplimitexceeded" time="0.29"/></proof>
   <proof prover="1"><result status="timeout" time="20.57"/></proof>
   <proof prover="2"><result status="highfailure" time="4.43"/></proof>
-  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_mult_protect__pragargs__cmp.v"><result status="unknown" time="0.87"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_mult_protect__pragargs__cmp.v"><result status="valid" time="0.95"/></proof>
   </goal>
  </transf>
  </goal>
@@ -802,7 +802,7 @@
   <proof prover="0"><result status="steplimitexceeded" time="0.25"/></proof>
   <proof prover="1"><result status="timeout" time="20.63"/></proof>
   <proof prover="2"><result status="timeout" time="15.40"/></proof>
-  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_mult_scale__pragargs__cmp.v"><result status="unknown" time="0.91"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_mult_scale__pragargs__cmp.v"><result status="valid" time="1.11"/></proof>
   </goal>
  </transf>
  </goal>
@@ -820,7 +820,7 @@
   <proof prover="0"><result status="steplimitexceeded" time="0.30"/></proof>
   <proof prover="1"><result status="timeout" time="20.77"/></proof>
   <proof prover="2"><result status="timeout" time="20.83" steps="179677"/></proof>
-  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_mult_then_div_is_ident__pragargs__cmp.v"><result status="unknown" time="0.89"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_mult_then_div_is_ident__pragargs__cmp.v"><result status="valid" time="1.04"/></proof>
   </goal>
  </transf>
  </goal>
@@ -838,7 +838,7 @@
   <proof prover="0"><result status="steplimitexceeded" time="0.26"/></proof>
   <proof prover="1"><result status="timeout" time="20.76"/></proof>
   <proof prover="2"><result status="timeout" time="20.82" steps="207848"/></proof>
-  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_mult_then_mod_is_zero__pragargs__cmp.v"><result status="unknown" time="0.87"/></proof>
+  <proof prover="3" edited="../../proof/Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_mult_then_mod_is_zero__pragargs__cmp.v"><result status="highfailure" time="0.95"/></proof>
   </goal>
  </transf>
  </goal>
