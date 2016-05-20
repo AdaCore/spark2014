@@ -217,7 +217,7 @@ package body Flow_Generated_Globals.Phase_1 is
                end loop;
             end;
 
-            --  Check if State_F is volatile and if it is then add it to the
+            --  Check if state is volatile and if it is then add it to the
             --  appropriate sets.
             Register_Volatile (State_Entity);
          end;
