@@ -2582,23 +2582,16 @@ package body SPARK_Util is
 
    function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
       Encl_Unit : constant Node_Id := Enclosing_Lib_Unit_Node (E);
-      --  Retrieve the library unit containing E
+      --  The library unit containing E
+
+      Main_Unit_Node : constant Node_Id := Cunit (Main_Unit);
 
    begin
-      --  Case 1: the entity is neither in the spec or body compilation unit of
-      --  the unit currently analyzed, so return False.
+      --  Check if the entity is either in the spec or in the body of the
+      --  current compilation unit. gnat2why is now only called on requested
+      --  files, so otherwise just return False.
 
-      if Cunit (Main_Unit) /= Encl_Unit
-        and then Library_Unit (Cunit (Main_Unit)) /= Encl_Unit
-      then
-         return False;
-
-      --  gnat2why is now only called on requested files, so here the result is
-      --  always true.
-
-      else
-         return True;
-      end if;
+      return Encl_Unit in Main_Unit_Node | Library_Unit (Main_Unit_Node);
    end Is_In_Analyzed_Files;
 
    ----------------------------------------
