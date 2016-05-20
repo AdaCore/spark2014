@@ -26,6 +26,7 @@
 
 with Ada.Containers.Hashed_Maps;
 with Atree;                      use Atree;
+with Einfo;                      use Einfo;
 with Flow_Refinement;            use Flow_Refinement;
 with Flow_Types;                 use Flow_Types;
 with Snames;                     use Snames;
@@ -57,7 +58,8 @@ package Flow_Dependency_Maps is
       P : Entity_Id;
       S : Flow_Scope)
       return Dependency_Maps.Map
-   with Pre => (if Present (N) then Get_Pragma_Id (N) = Pragma_Initializes);
+   with Pre => Ekind (P) in E_Package | E_Generic_Package and then
+               N = Get_Pragma (P, Pragma_Initializes);
    --  Parse the Initializes aspect if it exists, or a generated one otherwise
    --
    --  When we parse the Initializes aspect we add any external state
