@@ -2019,6 +2019,8 @@ package body SPARK_Util is
          return Prag in Pragma_Async_Readers | Pragma_Async_Writers;
       end if;
 
+      --  ??? how about arrays and records with protected or task components?
+
       case Ekind (E) is
          when E_Abstract_State | E_Variable =>
             return
