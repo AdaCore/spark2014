@@ -1997,6 +1997,14 @@ package body SPARK_Util is
      (E : Entity_Id;
       A : Pragma_Id) return Boolean
    is
+      subtype Volatile_Pragma is Pragma_Id with
+        Static_Predicate => Volatile_Pragma in Pragma_Async_Readers   |
+                                               Pragma_Async_Writers   |
+                                               Pragma_Effective_Reads |
+                                               Pragma_Effective_Writes;
+
+      Prag : constant Volatile_Pragma := A;
+
    begin
       --  Protected objects and components of concurrent objects are considered
       --  to be fully volatile.
@@ -2008,59 +2016,26 @@ package body SPARK_Util is
 
       --  Tasks are considered to have Async_Readers and Async_Writers
       if Ekind (Etype (E)) in Task_Kind then
-         case A is
-            when Pragma_Async_Readers |
-                 Pragma_Async_Writers =>
-               return True;
-            when Pragma_Effective_Reads  |
-                 Pragma_Effective_Writes =>
-               return False;
-            when others =>
-               raise Program_Error;
-         end case;
+         return Prag in Pragma_Async_Readers | Pragma_Async_Writers;
       end if;
 
       case Ekind (E) is
          when E_Abstract_State | E_Variable =>
-            case A is
-               when Pragma_Async_Readers =>
-                  return Async_Readers_Enabled (E);
-               when Pragma_Async_Writers =>
-                  return Async_Writers_Enabled (E);
-               when Pragma_Effective_Reads =>
-                  return Effective_Reads_Enabled (E);
-               when Pragma_Effective_Writes =>
-                  return Effective_Writes_Enabled (E);
-               when others =>
-                  raise Program_Error;
-            end case;
+            return
+              (case Prag is
+               when Pragma_Async_Readers    => Async_Readers_Enabled (E),
+               when Pragma_Async_Writers    => Async_Writers_Enabled (E),
+               when Pragma_Effective_Reads  => Effective_Reads_Enabled (E),
+               when Pragma_Effective_Writes => Effective_Writes_Enabled (E));
 
          --  Why restrict the flavors of volatility for IN and OUT
          --  parameters???
 
          when E_In_Parameter  =>
-            case A is
-               when Pragma_Async_Writers =>
-                  return True;
-               when Pragma_Async_Readers    |
-                    Pragma_Effective_Reads  |
-                    Pragma_Effective_Writes =>
-                  return False;
-               when others =>
-                  raise Program_Error;
-            end case;
+            return Prag = Pragma_Async_Writers;
 
          when E_Out_Parameter =>
-            case A is
-               when Pragma_Async_Writers   |
-                    Pragma_Effective_Reads =>
-                  return False;
-               when Pragma_Async_Readers    |
-                    Pragma_Effective_Writes =>
-                  return True;
-               when others =>
-                  raise Program_Error;
-            end case;
+            return Prag in Pragma_Async_Readers | Pragma_Effective_Writes;
 
          when E_In_Out_Parameter =>
             return True;
