@@ -2190,6 +2190,7 @@ package body Flow_Utility is
                end if;
             end if;
          end loop;
+
          for G of Global_Writes loop
             V.Include (Change_Variant (G, Normal_Use));
             if Extensions_Visible (G, Scope) then
@@ -2258,7 +2259,7 @@ package body Flow_Utility is
                if not Allow_Statements then
                   --  If we ever get one of these we have a problem -
                   --  Get_Variable_Set is only really meant to be
-                  --  called on expressions and not statements.
+                  --  called on expressions and not on statements.
                   raise Program_Error;
 
                else
@@ -2267,8 +2268,7 @@ package body Flow_Utility is
                end if;
 
             when N_Later_Decl_Item =>
-               --  These should allow us to go through package specs
-               --  and bodies.
+               --  These should allow us to go through package specs and bodies
                return Skip;
 
             when N_Function_Call =>
@@ -2288,7 +2288,7 @@ package body Flow_Utility is
                            declare
                               Obj_Decl : constant Node_Id :=
                                 Parent (Entity (N));
-                              E        : constant Node_Id :=
+                              Expr     : constant Node_Id :=
                                 Expression (Obj_Decl);
                            begin
                               pragma Assert
@@ -2296,9 +2296,9 @@ package body Flow_Utility is
                                    N_Object_Declaration,
                                  "Bad parent of constant entity");
                               pragma Assert
-                                (Present (E),
+                                (Present (Expr),
                                  "Constant has no expression");
-                              VS.Union (Recurse_On (E));
+                              VS.Union (Recurse_On (Expr));
                            end;
 
                         elsif Local_Constants.Contains (Entity (N))
@@ -2609,8 +2609,7 @@ package body Flow_Utility is
                                  VS.Include (F'Update (Facet => The_Bounds));
 
                               else
-                                 --  This is something else. We just
-                                 --  copy it.
+                                 --  This is something else. We just copy it
                                  VS.Include (F);
                               end if;
                            end loop;
