@@ -631,6 +631,10 @@ package body Why.Gen.Names is
       return Result;
    end New_Temp_Identifiers;
 
+   ----------------------
+   -- New_Result_Ident --
+   ----------------------
+
    function New_Result_Ident (Typ : W_Type_Id) return W_Identifier_Id is
    begin
       return New_Identifier (Name => "result", Typ => Typ);
