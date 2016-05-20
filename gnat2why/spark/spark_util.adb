@@ -3011,6 +3011,7 @@ package body SPARK_Util is
 
    begin
       if Ekind (E) = E_String_Literal_Subtype then
+         pragma Assert (Dim = 1);
          return E;
       end if;
 
