@@ -45,7 +45,6 @@ with Why.Gen.Decl;          use Why.Gen.Decl;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Inter;             use Why.Inter;
-with Ada.Strings.Fixed;
 
 package body Why.Gen.Arrays is
 
@@ -957,12 +956,8 @@ package body Why.Gen.Arrays is
       Emit_Projection_Metas (Section, "last");
       --  Dim_Count is actually nb of dimention + 1 here
       for I in 2 .. Dim_Count - 1 loop
-         Emit_Projection_Metas (Section, "first_"
-                                & Ada.Strings.Fixed.Trim (Integer'Image (I),
-                                                          Ada.Strings.Left));
-         Emit_Projection_Metas (Section, "last_"
-                                & Ada.Strings.Fixed.Trim (Integer'Image (I),
-                                                          Ada.Strings.Left));
+         Emit_Projection_Metas (Section, "first_" & Image (I, 1));
+         Emit_Projection_Metas (Section, "last_"  & Image (I, 1));
       end loop;
 
       if Und_Ent = Standard_String then

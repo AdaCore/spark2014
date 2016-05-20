@@ -604,7 +604,7 @@ package body Gnat2Why.Util is
                (if Is_Record_Field
                 then "."
                 else "") &
-                Trim (Entity_Id'Image (E), Both) &
+                Trim (Entity_Id'Image (E), Left) &
                 Append &
                 --  Add information whether labels are generated for a
                 --  variable holding result of a function.

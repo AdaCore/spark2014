@@ -24,10 +24,9 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Ordered_Maps;
-with Ada.Strings;         use Ada.Strings;
-with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
 with Common_Containers;   use Common_Containers;
 with Einfo;               use Einfo;
+with GNATCOLL.Utils;      use GNATCOLL.Utils;
 with Namet;               use Namet;
 with Sinfo;               use Sinfo;
 with SPARK_Util;          use SPARK_Util;
@@ -177,25 +176,32 @@ package body Why.Gen.Decl is
       --  Projection function name
       Param_Ty_Name_Str : constant String :=
         Get_Name_String (Get_Symbol (Param_Ty_Name));
+
       Proj_Name : constant String :=
-        Param_Ty_Name_Str & "_" &
-        Source_Name (SPARK_Node);
+        Param_Ty_Name_Str & "_" & Source_Name (SPARK_Node);
+
       Proj_Name_Cursor : constant Cursor :=
         Projection_Names_Decls.Find (Proj_Name);
-      Proj_Name_Decls_Num : constant Natural :=
+
+      Proj_Name_Decls_Num : constant Positive :=
         (if Proj_Name_Cursor = No_Element then 1
          else Element (Proj_Name_Cursor));
+
       Proj_Fun_Name : constant String :=
-        (if Proj_Name_Decls_Num = 1 then Proj_Name & "__projection"
-         else Proj_Name & Ada.Strings.Fixed.Trim
-           (Natural'Image (Proj_Name_Decls_Num), Ada.Strings.Left) &
-           "__projection");
+        Proj_Name
+        & (if Proj_Name_Decls_Num = 1
+           then ""
+           else Image (Proj_Name_Decls_Num, 1))
+        & "__projection";
+
       --  Parameter type and identifier
-      Param_Ty : constant W_Type_Id := New_Named_Type (Name => Param_Ty_Name);
-      Param_Ident   : constant W_Identifier_Id :=
+      Param_Ty    : constant W_Type_Id :=
+        New_Named_Type (Name => Param_Ty_Name);
+      Param_Ident : constant W_Identifier_Id :=
         Why.Gen.Names.New_Identifier (Name => "a", Typ => Param_Ty);
+
       --  The access to the field to that the record is projected
-      Field_Access    : constant W_Expr_Id :=
+      Field_Access : constant W_Expr_Id :=
         Why.Atree.Builders.New_Record_Access
           (Name  => +Param_Ident,
            Field => Field_Id);

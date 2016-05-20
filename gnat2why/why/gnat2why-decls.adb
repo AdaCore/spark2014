@@ -472,9 +472,9 @@ package body Gnat2Why.Decls is
                        " (" & Trim (Integer'Image (Num_Dim), Both) &
                        ")");
 
-                  Ty_First   : constant W_Type_Id :=
+                  Ty_First : constant W_Type_Id :=
                     Get_Typ (Var.Bounds (D).First);
-                  Ty_Last    : constant W_Type_Id :=
+                  Ty_Last  : constant W_Type_Id :=
                     Get_Typ (Var.Bounds (D).Last);
 
                begin
