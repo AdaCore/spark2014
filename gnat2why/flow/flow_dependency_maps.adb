@@ -273,11 +273,10 @@ package body Flow_Dependency_Maps is
          M := Dependency_Maps.Empty_Map;
       end if;
 
-      --  When we parse the Initializes aspect we add any external
-      --  state abstractions with the property Async_Writers set to
-      --  the dependency map (even if the user did not manually write
-      --  them there). This is to ensure that constituents that are
-      --  not volatile and have Async_Writers are also initialized.
+      --  Add any external state abstractions with Async_Writers property to
+      --  the dependency map (even if they are not in the user's annotations).
+      --  This ensures that constituents that are not volatile and have
+      --  Async_Writers are also initialized.
       if Present (P)
         and then Ekind (P) in E_Generic_Package | E_Package
         and then Present (Abstract_States (P))
