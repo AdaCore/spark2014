@@ -82,9 +82,6 @@ package body Flow_Generated_Globals.Phase_2 is
    type Global_Id_Kind is (Null_Global_Id,
                            --  Does not represent anything yet
 
-                           Subprogram,
-                           --  This kind should only be used in Local_Graphs
-
                            Inputs,
                            --  Represents subprogram's Inputs
 
@@ -129,6 +126,13 @@ package body Flow_Generated_Globals.Phase_2 is
       Key_Hash     => Global_Hash,
       Edge_Colours => No_Colours,
       Null_Key     => Empty_Global_Id,
+      Test_Key     => "=");
+
+   package Local_Graphs is new Graphs
+     (Vertex_Key   => Entity_Name,
+      Edge_Colours => No_Colours,
+      Null_Key     => Entity_Name'Last, --  dummy value for local graphs
+      Key_Hash     => Name_Hash,
       Test_Key     => "=");
 
    package Vertex_Sets is new Ada.Containers.Hashed_Sets
@@ -345,9 +349,14 @@ package body Flow_Generated_Globals.Phase_2 is
    procedure Print_Global_Phase_1_Info (Info : Global_Phase_1_Info);
    --  Prints all global related info of an entity
 
-   procedure Print_Global_Graph (Filename : String;
-                                 G        : Global_Graphs.Graph);
+   procedure Print_Global_Graph (Prefix : String;
+                                 G      : Global_Graphs.Graph);
    --  Writes dot and pdf files for the Global_Graph
+
+   procedure Print_Local_Graph (Prefix      : String;
+                                G           : Local_Graphs.Graph;
+                                Subprograms : Name_Sets.Set);
+   --  Writes dot and pdf files for the Local_Graph
 
    procedure Print_Generated_Initializes_Aspects;
    --  Prints all the generated initializes aspects
@@ -700,7 +709,7 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Contains all subprograms for which a GG entry does not exist
       --  ??? rename to No_GG_Subprograms?
 
-      Local_Graph : Global_Graphs.Graph;
+      Local_Graph : Local_Graphs.Graph;
       --  A graph that represents the hierarchy of subprograms (which
       --  subprogram is nested in which one); used to determine which
       --  local variables may act as globals to which subprograms.
@@ -768,7 +777,7 @@ package body Flow_Generated_Globals.Phase_2 is
          -------------------
 
          function Edge_Selector (A, B : Vertex_Id) return Boolean is
-            Key_A :          Global_Id := Global_Graph.Get_Key (A);
+            Key_A : constant Global_Id := Global_Graph.Get_Key (A);
             Key_B : constant Global_Id := Global_Graph.Get_Key (B);
          begin
             if Key_B.Kind /= Variable
@@ -779,22 +788,20 @@ package body Flow_Generated_Globals.Phase_2 is
                return True;
             end if;
 
-            --  Convert kind so that it can be used on Local_Graph
-            Key_A := Global_Id'(Kind => Subprogram,
-                                Name => Key_A.Name);
-
             declare
-               Vertex_A, Vertex_B : Vertex_Id;
-            begin
-               Vertex_A := Local_Graph.Get_Vertex (Key_A);
+               use Local_Graphs;
 
-               if Vertex_A = Null_Vertex then
+               Vertex_A, Vertex_B : Local_Graphs.Vertex_Id;
+            begin
+               Vertex_A := Local_Graph.Get_Vertex (Key_A.Name);
+
+               if Vertex_A = Local_Graphs.Null_Vertex then
                   return True;
                end if;
 
-               Vertex_B := Local_Graph.Get_Vertex (Key_B);
+               Vertex_B := Local_Graph.Get_Vertex (Key_B.Name);
 
-               if Vertex_B = Null_Vertex then
+               if Vertex_B = Local_Graphs.Null_Vertex then
                   return True;
                end if;
 
@@ -1279,68 +1286,45 @@ package body Flow_Generated_Globals.Phase_2 is
       ------------------------
 
       procedure Create_Local_Graph is
-         use Global_Graphs;
-
-         G_Subp       : Global_Id (Subprogram);
-         G_Local_Subp : Global_Id (Subprogram);
-         G_Local_Var  : Global_Id (Variable);
-
-      --  Start of processing for Create_Local_Graph
-
       begin
          for Info of Subprogram_Info_List loop
-            G_Subp := Global_Id'(Kind => Subprogram,
-                                 Name => Info.Name);
-
-            if not Local_Graph.Contains (G_Subp) then
+            if not Local_Graph.Contains (Info.Name) then
                --  Create a vertex for the subprogram if one does not already
                --  exist.
-               Local_Graph.Add_Vertex (G_Subp);
+               Local_Graph.Add_Vertex (Info.Name);
             end if;
 
             --  Create a vertex for every local variable and link it to the
             --  enclosing subprogram.
             for Local_Variable of Info.Local_Variables loop
-               G_Local_Var := Global_Id'(Kind => Variable,
-                                         Name => Local_Variable);
-
                --  Create a vertex for every local variable if one does not
                --  already exist.
-               if not Local_Graph.Contains (G_Local_Var) then
-                  Local_Graph.Add_Vertex (G_Local_Var);
+               if not Local_Graph.Contains (Local_Variable) then
+                  Local_Graph.Add_Vertex (Local_Variable);
                end if;
 
                --  Link enclosing subprogram to local variable
-               Local_Graph.Add_Edge (G_Subp, G_Local_Var);
+               Local_Graph.Add_Edge (Info.Name, Local_Variable);
             end loop;
 
             --  Create a vertex for every local subprogram and link it to the
             --  enclosing subprogram.
             for Local_Subprogram of Info.Local_Subprograms loop
-               G_Local_Subp := Global_Id'(Kind => Subprogram,
-                                          Name => Local_Subprogram);
-
-               if not Local_Graph.Contains (G_Local_Subp) then
+               if not Local_Graph.Contains (Local_Subprogram) then
                   --  Create a vertex for every local subprogram if one does
                   --  not already exist.
-                  Local_Graph.Add_Vertex (G_Local_Subp);
+                  Local_Graph.Add_Vertex (Local_Subprogram);
                end if;
 
                --  Link enclosing subprogram to local subprogram
-               Local_Graph.Add_Edge (G_Subp, G_Local_Subp);
+               Local_Graph.Add_Edge (Info.Name, Local_Subprogram);
             end loop;
 
             --  Link all local variables to all local subprograms (this
             --  effectively means that they can act as their globals).
             for Local_Variable of Info.Local_Variables loop
-               G_Local_Var := Global_Id'(Kind => Variable,
-                                         Name => Local_Variable);
-
                for Local_Subprogram of Info.Local_Subprograms loop
-                  G_Local_Subp := Global_Id'(Kind => Subprogram,
-                                             Name => Local_Subprogram);
-
-                  Local_Graph.Add_Edge (G_Local_Var, G_Local_Subp);
+                  Local_Graph.Add_Edge (Local_Variable, Local_Subprogram);
                end loop;
             end loop;
          end loop;
@@ -2088,7 +2072,7 @@ package body Flow_Generated_Globals.Phase_2 is
       All_Other_Subprograms := All_Subprograms - GG_Subprograms;
 
       --  Initialize Local_Graph and Global_Graph
-      Local_Graph  := Global_Graphs.Create;
+      Local_Graph  := Local_Graphs.Create;
       Global_Graph := Global_Graphs.Create;
 
       --  Create the Local_Graph
@@ -2187,21 +2171,17 @@ package body Flow_Generated_Globals.Phase_2 is
 
       if Debug_Print_Global_Graph then
          declare
-            Common_Prefix : constant String :=
+            Prefix : constant String :=
               Spec_File_Name_Without_Suffix
                 (Enclosing_Comp_Unit_Node (GNAT_Root));
 
-            Local_Filename   : constant String :=
-              Common_Prefix & "_locals_graph";
-
-            Global_Filename   : constant String :=
-              Common_Prefix & "_globals_graph";
          begin
-            Print_Global_Graph (Filename => Local_Filename,
-                                G        => Local_Graph);
+            Print_Local_Graph (Prefix      => Prefix,
+                               G           => Local_Graph,
+                               Subprograms => All_Subprograms);
 
-            Print_Global_Graph (Filename => Global_Filename,
-                                G        => Global_Graph);
+            Print_Global_Graph (Prefix => Prefix,
+                                G      => Global_Graph);
          end;
       end if;
 
@@ -2563,10 +2543,12 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Print_Global_Graph --
    ------------------------
 
-   procedure Print_Global_Graph (Filename : String;
-                                 G        : Global_Graphs.Graph)
+   procedure Print_Global_Graph (Prefix : String;
+                                 G      : Global_Graphs.Graph)
    is
       use Global_Graphs;
+
+      Filename : constant String := Prefix & "_globals_graph";
 
       function NDI
         (G : Graph;
@@ -2599,7 +2581,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
          Label : constant String :=
            (case G_Id.Kind is
-              when Subprogram     => "Subprogram " & To_String (G_Id.Name),
               when Proof_Ins      => To_String (G_Id.Name) & "'Proof_Ins",
               when Inputs         => To_String (G_Id.Name) & "'Inputs",
               when Outputs        => To_String (G_Id.Name) & "'Outputs",
@@ -2682,6 +2663,99 @@ package body Flow_Generated_Globals.Phase_2 is
          Print_Name_Set ("Local definite writes:", Info.Local_Definite_Writes);
       end if;
    end Print_Global_Phase_1_Info;
+
+   -----------------------
+   -- Print_Local_Graph --
+   -----------------------
+
+   procedure Print_Local_Graph (Prefix      : String;
+                                G           : Local_Graphs.Graph;
+                                Subprograms : Name_Sets.Set)
+   is
+      use Local_Graphs;
+
+      Filename : constant String := Prefix & "_locals_graph";
+
+      function NDI
+        (G : Graph;
+         V : Vertex_Id)
+         return Node_Display_Info;
+      --  Pretty-printing for each vertex in the dot output
+
+      function EDI
+        (G      : Graph;
+         A      : Vertex_Id;
+         B      : Vertex_Id;
+         Marked : Boolean;
+         Colour : No_Colours)
+         return Edge_Display_Info;
+      --  Pretty-printing for each edge in the dot output
+
+      ---------
+      -- NDI --
+      ---------
+
+      function NDI
+        (G : Graph;
+         V : Vertex_Id) return Node_Display_Info
+      is
+         Name : constant Entity_Name := G.Get_Key (V);
+
+         Label : constant String :=
+           (if Subprograms.Contains (Name)
+            then "Subprogram "
+            else "") & To_String (Name);
+
+         Rv : constant Node_Display_Info := Node_Display_Info'
+           (Show        => True,
+            Shape       => Shape_Box,
+            Colour      => Null_Unbounded_String,
+            Fill_Colour => Null_Unbounded_String,
+            Label       => To_Unbounded_String (Label));
+      begin
+         return Rv;
+      end NDI;
+
+      ---------
+      -- EDI --
+      ---------
+
+      function EDI
+        (G      : Graph;
+         A      : Vertex_Id;
+         B      : Vertex_Id;
+         Marked : Boolean;
+         Colour : No_Colours)
+         return Edge_Display_Info
+      is
+         pragma Unreferenced (G, A, B, Marked, Colour);
+
+         Rv : constant Edge_Display_Info :=
+           Edge_Display_Info'(Show   => True,
+                              Shape  => Edge_Normal,
+                              Colour => Null_Unbounded_String,
+                              Label  => Null_Unbounded_String);
+      begin
+         return Rv;
+      end EDI;
+
+   --  Start of processing for Print_Global_Graph
+
+   begin
+      if Gnat2Why_Args.Debug_Mode then
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            G.Write_Pdf_File
+              (Filename  => Filename,
+               Node_Info => NDI'Access,
+               Edge_Info => EDI'Access);
+         else
+            G.Write_Dot_File
+              (Filename  => Filename,
+               Node_Info => NDI'Access,
+               Edge_Info => EDI'Access);
+         end if;
+      end if;
+   end Print_Local_Graph;
 
    --------------------
    -- Print_Name_Set --
