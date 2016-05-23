@@ -200,7 +200,7 @@ package Graphs is
    procedure Add_Vertex
      (G  : in out Graph;
       V  : Vertex_Key)
-   with Pre  => not G.Is_Frozen and then not G.Contains (V);
+   with Pre => not G.Is_Frozen and then not G.Contains (V);
    --  Add a new keyed vertex, but do not return its Id.
 
    function Vertex_Hash
