@@ -278,8 +278,7 @@ package body Flow_Generated_Globals.Phase_2 is
      Initializes_Aspects_Maps.Empty_Map;
 
    All_Initialized_Names   : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  This set of names will hold all variables and state abstractions
-   --  that we know are initialized.
+   --  Variables and state abstractions know to be initialized
 
    Package_To_Locals_Map   : Name_Graphs.Map := Name_Graphs.Empty_Map;
    --  package -> {local variables}
