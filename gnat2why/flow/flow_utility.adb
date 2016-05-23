@@ -2850,14 +2850,12 @@ package body Flow_Utility is
 
    function Has_Variable_Input (F : Flow_Id) return Boolean is
 
-      E    : Entity_Id;
+      E    : Entity_Id := Get_Direct_Mapping_Id (F);
       Decl : Node_Id;
       FS   : Flow_Id_Sets.Set;
 
-   --  Start of processing for Has_Variable_Input
-
    begin
-      E := Get_Direct_Mapping_Id (F);
+      pragma Assert (Nkind (E) = N_Defining_Identifier);
 
       if not Is_Constant_Object (E) then
          --  If we are not dealing with a constant object then we do
@@ -2865,13 +2863,13 @@ package body Flow_Utility is
          return False;
       end if;
 
-      if Nkind (E) in N_Entity
-        and then Ekind (E) in Formal_Kind | E_Loop_Parameter
-      then
-         --  If we are dealing with a formal parameter or a loop parameter then
-         --  we consider this to be a variable.
+      if Ekind (E) in E_In_Parameter | E_Loop_Parameter then
+         --  If we are dealing with a formal IN parameter or a loop parameter
+         --  then we consider this to be a variable.
          return True;
       end if;
+
+      pragma Assert (Ekind (E) = E_Constant);
 
       if In_Generic_Actual (E)
         and then Nkind (Parent (E)) = N_Object_Renaming_Declaration
@@ -2889,15 +2887,15 @@ package body Flow_Utility is
 
       Decl := Declaration_Node (E);
       if No (Expression (Decl)) then
-         --  We are dealing with a deferred constant so we need to get
-         --  to the full view.
+         --  We are dealing with a deferred constant so we need to get to the
+         --  full view.
          E    := Full_View (E);
          Decl := Declaration_Node (E);
       end if;
 
       if not Entity_In_SPARK (E) then
-         --  We are dealing with an entity that is not in SPARK so we
-         --  assume that it does not have variable input.
+         --  We are dealing with an entity that is not in SPARK so we assume
+         --  that it does not have variable input.
          return False;
       end if;
 
@@ -2906,9 +2904,9 @@ package body Flow_Utility is
                               Local_Constants      => Node_Sets.Empty_Set,
                               Fold_Functions       => True,
                               Use_Computed_Globals => GG_Has_Been_Generated);
-      --  Note that Get_Variable_Set calls Has_Variable_Input when it
-      --  finds a constant. This means that there might be some mutual
-      --  recursion here (but this should be fine).
+      --  Note that Get_Variable_Set calls Has_Variable_Input when it finds a
+      --  constant. This means that there might be some mutual recursion here
+      --  (but this should be fine).
 
       if not FS.Is_Empty then
          --  If any variable was found then return True
@@ -2919,14 +2917,14 @@ package body Flow_Utility is
         and then not Get_Function_Set (Expression (Decl),
                                        Include_Predicates => False).Is_Empty
       then
-         --  Globals have not yet been computed. If we find any function
-         --  calls we consider the constant to have variable inputs (this
-         --  is the safe thing to do).
+         --  Globals have not yet been computed. If we find any function calls
+         --  we consider the constant to have variable inputs (this is the safe
+         --  thing to do).
          return True;
       end if;
 
-      --  If we reach this point then the constant does not have
-      --  variable input.
+      --  If we reach this point then the constant does not have variable
+      --  input.
       return False;
    end Has_Variable_Input;
 
