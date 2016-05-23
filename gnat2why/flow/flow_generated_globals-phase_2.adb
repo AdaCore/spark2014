@@ -2007,13 +2007,6 @@ package body Flow_Generated_Globals.Phase_2 is
          Init_Time ("gg_read");
       end if;
 
-      --  Initialize volatile info
-      All_Volatile_Vars     := Name_Sets.Empty_Set;
-      Async_Writers_Vars    := Name_Sets.Empty_Set;
-      Async_Readers_Vars    := Name_Sets.Empty_Set;
-      Effective_Reads_Vars  := Name_Sets.Empty_Set;
-      Effective_Writes_Vars := Name_Sets.Empty_Set;
-
       --  Go through all ALI files and populate the Subprogram_Info_List
       declare
          Read_Files : String_Sets.Set;
