@@ -1961,12 +1961,10 @@ package body Flow_Generated_Globals.Phase_2 is
                   --  Remove all edges going in and out of a constant without
                   --  variable input.
                   declare
-                     Const_G_Id : constant Global_Id :=
-                       Global_Id'(Kind => Variable,
-                                  Name => Glob);
+                     Const_V : constant Vertex_Id :=
+                       Global_Graph.Get_Vertex (Global_Id'(Kind => Variable,
+                                                           Name => Glob));
 
-                     Const_V    : constant Vertex_Id :=
-                       Global_Graph.Get_Vertex (Const_G_Id);
                   begin
                      Global_Graph.Clear_Vertex (Const_V);
                   end;
