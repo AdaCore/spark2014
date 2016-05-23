@@ -748,7 +748,8 @@ package body Flow_Generated_Globals.Phase_2 is
       procedure Note_Time (Message : String);
       --  Record timing statistics (but only in timing debug mode)
 
-      procedure Remove_Constants_Without_Variable_Input;
+      procedure Remove_Constants_Without_Variable_Input with
+        Pre => GG_Generated;
       --  Removes edges leading to constants without variable input
 
       procedure Process_Tasking_Graph;
