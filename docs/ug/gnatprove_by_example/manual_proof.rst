@@ -38,6 +38,12 @@ You may need to update the environment variable ``GPR_PROJECT_PATH`` for the
 lemma library project to be found by GNAT compiler, as described in :ref:`How
 to Install GNATprove`.
 
+You also need to set the environment variable ``SPARK_LEMMAS_OBJECT_DIR`` to
+the absolute path of the object directory where you want compilation and
+verification artefacts for the lemma library to be created. This should be an
+absolute path (not a relative one) otherwise these artefacts will be created
+inside you |SPARK| install.
+
 This library consists in a set of ghost null procedures with contracts (called
 `lemmas`). Here is an example of such a lemma:
 
