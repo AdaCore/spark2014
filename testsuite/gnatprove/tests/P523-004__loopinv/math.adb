@@ -18,4 +18,21 @@ is
       end loop;
    end Shift_Right;
 
+   procedure Div_All (V : in out Sorted_Values) is
+   begin
+      for J in Index loop
+         pragma Assert (Sorted (V));
+         V(J) := V(J) / 2;
+      end loop;
+   end Div_All;
+
+   procedure Div_All2 (V : in out Sorted_Values) is
+   begin
+      for J in Index loop
+         pragma Assert (Sorted (V));
+         V(J) := V(J) / 2;
+         pragma Loop_Invariant (True);
+      end loop;
+   end Div_All2;
+
 end Math;

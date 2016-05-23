@@ -13,4 +13,8 @@ is
 
    procedure Shift_Right (V : in out Sorted_Values);
 
+   procedure Div_All (V : in out Sorted_Values);
+
+   procedure Div_All2 (V : in out Sorted_Values);
+
 end Math;
