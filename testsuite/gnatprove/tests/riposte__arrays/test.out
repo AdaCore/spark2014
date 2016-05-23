@@ -89,7 +89,7 @@ counterexample expected for check at arrays.adb:199
   trace at arrays.adb:14 --> Single_Char_Set_Broken'Result = (others => false)
   trace at arrays.adb:197 --> C = 0
   trace at arrays.adb:199 --> C = 0 and Single_Char_Set_Broken'Result = (1 => false, others => true)
-  trace at arrays.adb:203 --> R = (1 => false, others => true) and X = 256
+  trace at arrays.adb:203 --> R = (1 => false, others => true) and X = 255
   trace at arrays.adb:204 --> R = (0 => true, others => false)
   trace at arrays.adb:209 --> Single_Char_Set_Broken'Result = (1 => false, others => true)
 counterexample expected for check at arrays.adb:218

@@ -122,13 +122,14 @@ package body Gnat2Why.Expr.Loops is
       Loop_End           : W_Prog_Id;
       Loop_Restart       : W_Prog_Id;
       Enter_Condition    : W_Prog_Id;
-      Loop_Condition     : W_Prog_Id;
+      Exit_Condition     : W_Prog_Id;
       Implicit_Invariant : W_Pred_Id;
       User_Invariants    : W_Pred_Array;
       Invariant_Check    : W_Prog_Id;
       Variant_Tmps       : Why_Node_Lists.List;
       Variant_Update     : W_Prog_Id;
-      Variant_Check      : W_Prog_Id) return W_Prog_Id;
+      Variant_Check      : W_Prog_Id;
+      Update_Stmt        : W_Prog_Id := Why_Empty) return W_Prog_Id;
    --  Returns the loop expression in Why.
    --
    --  Loop_Start and Loop_End correspond to the statements and declarations
@@ -567,7 +568,7 @@ package body Gnat2Why.Expr.Loops is
                               Loop_End           => Final_Prog,
                               Loop_Restart       => Initial_Prog,
                               Enter_Condition    => True_Prog,
-                              Loop_Condition     => True_Prog,
+                              Exit_Condition     => False_Prog,
                               Implicit_Invariant => Dyn_Types_Inv,
                               User_Invariants    => Why_Invariants,
                               Invariant_Check    => Inv_Check,
@@ -614,7 +615,10 @@ package body Gnat2Why.Expr.Loops is
                                  Loop_End           => Final_Prog,
                                  Loop_Restart       => Initial_Prog,
                                  Enter_Condition    => Cond_Prog,
-                                 Loop_Condition     => Cond_Prog,
+                                 Exit_Condition     => +W_Not_OId'(New_Not
+                                   (Ada_Node => Condition (Scheme),
+                                    Domain   => EW_Prog,
+                                    Right    => +Cond_Prog)),
                                  Implicit_Invariant => Impl_Inv,
                                  User_Invariants    => Why_Invariants,
                                  Invariant_Check    => Inv_Check,
@@ -704,6 +708,11 @@ package body Gnat2Why.Expr.Loops is
                --  @param Domain in which the constraint should be created
                --  @result Has_Element (W_Container, Iter_Deref)
 
+               function Exit_Condition_For_Iterable return W_Expr_Id
+                 with
+                   Pre => not Over_Range;
+               --  @result not (Has_Element (W_Container, Next (Iter_Deref)))
+
                function Init_Iter return W_Prog_Id with
                  Pre => not Over_Range;
                --  @result First (W_Container)
@@ -760,6 +769,59 @@ package body Gnat2Why.Expr.Loops is
                         Typ      => EW_Bool_Type);
                   end if;
                end Constraint_For_Iterable;
+
+               ---------------------------------
+               -- Exit_Condition_For_Iterable --
+               ---------------------------------
+
+               function Exit_Condition_For_Iterable return W_Expr_Id is
+                  H_Elmt   : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Over_Node), Name_Has_Element);
+                  W_H_Elmt : constant W_Identifier_Id :=
+                    +Transform_Identifier
+                    (Params       => Body_Params,
+                     Expr         => H_Elmt,
+                     Ent          => H_Elmt,
+                     Domain       => EW_Prog);
+                  N_Elmt   : constant Entity_Id :=
+                    Get_Iterable_Type_Primitive
+                      (Etype (Over_Node), Name_Next);
+                  W_N_Elmt : constant W_Identifier_Id :=
+                    +Transform_Identifier
+                    (Params       => Body_Params,
+                     Expr         => N_Elmt,
+                     Ent          => N_Elmt,
+                     Domain       => EW_Prog);
+                  Cur_Expr  : constant W_Expr_Id :=
+                    Insert_Simple_Conversion
+                      (Domain         => EW_Term,
+                       Expr           => +Iter_Deref,
+                       To             => Typ_For_Iter,
+                       Force_No_Slide => True);
+               begin
+                  return
+                    +W_Not_Id'(New_Not
+                               (Ada_Node => LParam_Spec,
+                                Domain   => EW_Prog,
+                                Right    =>
+                                  +New_VC_Call
+                                  (Ada_Node => LParam_Spec,
+                                   Name     => W_H_Elmt,
+                                   Progs    =>
+                                     (1 => W_Container,
+                                      2 => +New_VC_Call
+                                        (Ada_Node => LParam_Spec,
+                                         Name     => W_N_Elmt,
+                                         Progs    => (1 => W_Container,
+                                                      2 => Cur_Expr),
+                                         Reason   => VC_Precondition,
+                                         Domain   => EW_Prog,
+                                         Typ      => EW_Bool_Type)),
+                                   Reason   => VC_Precondition,
+                                   Domain   => EW_Prog,
+                                   Typ      => EW_Bool_Type)));
+               end Exit_Condition_For_Iterable;
 
                ---------------
                -- Init_Iter --
@@ -864,7 +926,7 @@ package body Gnat2Why.Expr.Loops is
                --  @return Condition to enter the loop
 
                function Construct_Exit_Cond return W_Prog_Id;
-               --  @return Condition to not exit the loop
+               --  @return Condition to exit the loop
 
                function Construct_Init_Prog return W_Prog_Id;
                --  @return Initialization of Loop_Index
@@ -906,24 +968,17 @@ package body Gnat2Why.Expr.Loops is
                begin
                   if Over_Range then
 
-                     --  Index_Deref >= Low_Id if Is_Reverse
-                     --  Index_Deref <= High_Id otherwise
+                     --  Index_Deref = Low_Id if Is_Reverse
+                     --  Index_Deref = High_Id otherwise
 
                      declare
                         Is_Reverse : constant Boolean :=
                           Reverse_Present (LParam_Spec);
                         Exit_Index : constant W_Expr_Id :=
                           (if Is_Reverse then +Low_Id else +High_Id);
-                        Exit_Cmp   : constant W_Identifier_Id :=
-                          (if Why_Type_Is_BitVector (Loop_Index_Type) then
-                               (if Is_Reverse then MF_BVs (Loop_Index_Type).Uge
-                                else MF_BVs (Loop_Index_Type).Ule)
-                           else
-                             (if Is_Reverse then Int_Infix_Ge
-                              else Int_Infix_Le));
                         Exit_Cond  : constant W_Expr_Id :=
                           New_Call (Domain => EW_Prog,
-                                    Name   => Exit_Cmp,
+                                    Name   => Why_Eq,
                                     Typ    => EW_Bool_Type,
                                     Args   => (+Index_Deref, +Exit_Index));
                      begin
@@ -931,9 +986,9 @@ package body Gnat2Why.Expr.Loops is
                      end;
                   else
 
-                     --  Has_Element (W_Container, Iter_Deref);
+                     --  not (Has_Element (W_Container, Next (Iter_Deref)));
 
-                     return +Constraint_For_Iterable (EW_Prog);
+                     return +Exit_Condition_For_Iterable;
                   end if;
                end Construct_Exit_Cond;
 
@@ -1136,17 +1191,17 @@ package body Gnat2Why.Expr.Loops is
                Entire_Loop : W_Prog_Id :=
                  Wrap_Loop (Loop_Id            => Loop_Id,
                             Loop_Start         => Initial_Prog,
-                            Loop_End           =>
-                              Sequence (Final_Prog, Update_Stmt),
+                            Loop_End           => Final_Prog,
                             Loop_Restart       => Initial_Prog,
                             Enter_Condition    => Cond_Prog,
-                            Loop_Condition     => Exit_Cond,
+                            Exit_Condition     => Exit_Cond,
                             Implicit_Invariant => Impl_Inv,
                             User_Invariants    => Why_Invariants,
                             Invariant_Check    => Inv_Check,
                             Variant_Tmps       => Variant_Tmps,
                             Variant_Update     => Variant_Update,
-                            Variant_Check      => Variant_Check);
+                            Variant_Check      => Variant_Check,
+                            Update_Stmt        => Update_Stmt);
 
             --  Start of processing for For_Loop
 
@@ -1467,11 +1522,11 @@ package body Gnat2Why.Expr.Loops is
    --          invariant_check;
    --          variant_update;
    --          loop_end;
-   --          if loop_condition then
-   --            loop_restart;
-   --            variant_check
-   --          else
-   --            raise loop_name
+   --          if exit_condition then
+   --            raise loop_name;
+   --          [Update_Stmt;]
+   --          loop_restart;
+   --          variant_check
    --        end loop
    --    with loop_name -> void
    --  end if
@@ -1490,13 +1545,14 @@ package body Gnat2Why.Expr.Loops is
       Loop_End           : W_Prog_Id;
       Loop_Restart       : W_Prog_Id;
       Enter_Condition    : W_Prog_Id;
-      Loop_Condition     : W_Prog_Id;
+      Exit_Condition     : W_Prog_Id;
       Implicit_Invariant : W_Pred_Id;
       User_Invariants    : W_Pred_Array;
       Invariant_Check    : W_Prog_Id;
       Variant_Tmps       : Why_Node_Lists.List;
       Variant_Update     : W_Prog_Id;
-      Variant_Check      : W_Prog_Id) return W_Prog_Id
+      Variant_Check      : W_Prog_Id;
+      Update_Stmt        : W_Prog_Id := Why_Empty) return W_Prog_Id
    is
       Loop_Ident : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
       Loop_Inner : constant W_Prog_Id :=
@@ -1514,10 +1570,15 @@ package body Gnat2Why.Expr.Loops is
                       & (if Sloc (Loop_Id) > 0 then
                            " of loop " & Build_Location_String (Sloc (Loop_Id))
                         else ""))),
-                   5 => New_Conditional
-                     (Condition => +Loop_Condition,
-                      Then_Part => +Sequence (+Loop_Restart, +Variant_Check),
-                      Else_Part => New_Raise (Name => Loop_Ident))));
+                   5 => +Sequence
+                     (New_Conditional
+                        (Condition => +Exit_Condition,
+                         Then_Part => New_Raise (Name => Loop_Ident)),
+                      (if Update_Stmt = Why_Empty then
+                         +Sequence (+Loop_Restart, +Variant_Check)
+                       else
+                         +Sequence (+Update_Stmt,
+                         +Sequence (+Loop_Restart, +Variant_Check))))));
 
       Loop_Body : constant W_Prog_Id :=
         Sequence ((1 => New_Comment
