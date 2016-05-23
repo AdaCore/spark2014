@@ -35,14 +35,23 @@ is
       R := X * Y;
    end Mult_Is_Zero;
 
-   procedure Mult_Is_Monotonic (X1, X2 : Small_Natural; Y : Small_Positive; R1, R2 : out Integer) with
+   procedure Mult_Is_Monotonic (X1, X2, Y : Small_Natural; R1, R2 : out Integer) with
+     Pre => X1 <= X2,
+     Post => R1 <= R2
+   is
+   begin
+      R1 := X1 * Y;
+      R2 := X2 * Y;
+   end Mult_Is_Monotonic;
+
+   procedure Mult_Is_Strictly_Monotonic (X1, X2 : Small_Natural; Y : Small_Positive; R1, R2 : out Integer) with
      Pre => X1 < X2,
      Post => R1 < R2
    is
    begin
       R1 := X1 * Y;
       R2 := X2 * Y;
-   end Mult_Is_Monotonic;
+   end Mult_Is_Strictly_Monotonic;
 
    procedure Mult_By_Scale (X, Y : Small_Natural; Z : Small_Positive; R : out Integer) with
      Pre => Y <= Z,
@@ -183,6 +192,10 @@ begin
    X := 45;
    Y := 234;
    Mult_Is_Monotonic (X, X + 34, Y, R, S);
+
+   X := 45;
+   Y := 234;
+   Mult_Is_Strictly_Monotonic (X, X + 34, Y, R, S);
 
    X := 45;
    Y := 234;
