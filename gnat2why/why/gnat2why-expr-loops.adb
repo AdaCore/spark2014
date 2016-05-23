@@ -780,19 +780,19 @@ package body Gnat2Why.Expr.Loops is
                       (Etype (Over_Node), Name_Has_Element);
                   W_H_Elmt : constant W_Identifier_Id :=
                     +Transform_Identifier
-                    (Params       => Body_Params,
-                     Expr         => H_Elmt,
-                     Ent          => H_Elmt,
-                     Domain       => EW_Prog);
+                    (Params => Body_Params,
+                     Expr   => H_Elmt,
+                     Ent    => H_Elmt,
+                     Domain => EW_Prog);
                   N_Elmt   : constant Entity_Id :=
                     Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_Next);
                   W_N_Elmt : constant W_Identifier_Id :=
                     +Transform_Identifier
-                    (Params       => Body_Params,
-                     Expr         => N_Elmt,
-                     Ent          => N_Elmt,
-                     Domain       => EW_Prog);
+                    (Params => Body_Params,
+                     Expr   => N_Elmt,
+                     Ent    => N_Elmt,
+                     Domain => EW_Prog);
                   Cur_Expr  : constant W_Expr_Id :=
                     Insert_Simple_Conversion
                       (Domain         => EW_Term,
@@ -836,10 +836,10 @@ package body Gnat2Why.Expr.Loops is
                      Name     =>
                        W_Identifier_Id
                          (Transform_Identifier
-                              (Params       => Body_Params,
-                               Expr         => First,
-                               Ent          => First,
-                               Domain       => EW_Prog)),
+                              (Params => Body_Params,
+                               Expr   => First,
+                               Ent    => First,
+                               Domain => EW_Prog)),
                      Progs    => (1 => W_Container),
                      Reason   => VC_Precondition,
                      Domain   => EW_Prog,
@@ -865,10 +865,10 @@ package body Gnat2Why.Expr.Loops is
                        Force_No_Slide => True);
                   W_Elmt    : constant W_Identifier_Id :=
                     +Transform_Identifier
-                      (Params       => Body_Params,
-                       Expr         => Elmt,
-                       Ent          => Elmt,
-                       Domain       => Domain);
+                      (Params => Body_Params,
+                       Expr   => Elmt,
+                       Ent    => Elmt,
+                       Domain => Domain);
                begin
                   if Domain = EW_Prog then
                      return New_VC_Call
@@ -901,10 +901,10 @@ package body Gnat2Why.Expr.Loops is
                     +Loop_Index_Value (EW_Prog);
                   Upd_Elmt : constant W_Expr_Id :=
                     New_Conditional
-                      (Domain      => EW_Prog,
-                       Condition   =>
+                      (Domain    => EW_Prog,
+                       Condition =>
                          Constraint_For_Iterable (EW_Prog),
-                       Then_Part   =>
+                       Then_Part =>
                          New_Assignment
                            (Ada_Node => Stmt,
                             Name     => Loop_Index,
@@ -948,10 +948,10 @@ package body Gnat2Why.Expr.Loops is
 
                      --  Low_Id <= Index_Deref <= High_Id
 
-                     return +New_Range_Expr (Domain    => EW_Prog,
-                                             Low       => +Low_Id,
-                                             High      => +High_Id,
-                                             Expr      => +Index_Deref);
+                     return +New_Range_Expr (Domain => EW_Prog,
+                                             Low    => +Low_Id,
+                                             High   => +High_Id,
+                                             Expr   => +Index_Deref);
                   else
 
                      --  Has_Element (W_Container, Iter_Deref)
@@ -1049,7 +1049,7 @@ package body Gnat2Why.Expr.Loops is
                      return
                        +Range_Expr (Over_Node,
                                     New_Deref (Right => Loop_Index,
-                                               Typ => Loop_Index_Type),
+                                               Typ   => Loop_Index_Type),
                                     EW_Pred,
                                     Params => Body_Params,
                                     T_Type => Loop_Index_Type);
@@ -1092,18 +1092,18 @@ package body Gnat2Why.Expr.Loops is
                      --  Loop_Index := Index_Deref + 1 otherwise
 
                      declare
-                        Is_Reverse   : constant Boolean :=
+                        Is_Reverse  : constant Boolean :=
                           Reverse_Present (LParam_Spec);
-                        Update_Op    : constant W_Identifier_Id :=
+                        Update_Op   : constant W_Identifier_Id :=
                           (if Why_Type_Is_BitVector (Loop_Index_Type) then
                                (if Is_Reverse then
-                                     MF_BVs (Loop_Index_Type).Sub
+                                   MF_BVs (Loop_Index_Type).Sub
                                 else
                                    MF_BVs (Loop_Index_Type).Add)
                            else
                              (if Is_Reverse then Int_Infix_Subtr
                               else Int_Infix_Add));
-                        One_Expr     : constant W_Expr_Id :=
+                        One_Expr    : constant W_Expr_Id :=
                           (if Why_Type_Is_BitVector (Loop_Index_Type) then
                                 New_Modular_Constant
                              (Ada_Node => Stmt,
@@ -1112,8 +1112,8 @@ package body Gnat2Why.Expr.Loops is
                            else
                               New_Integer_Constant
                              (Ada_Node => Stmt,
-                              Value     => Uint_1));
-                        Update_Expr  : constant W_Prog_Id :=
+                              Value    => Uint_1));
+                        Update_Expr : constant W_Prog_Id :=
                           New_Call
                             (Ada_Node => Stmt,
                              Name     => Update_Op,
@@ -1144,10 +1144,10 @@ package body Gnat2Why.Expr.Loops is
                            Name     =>
                              W_Identifier_Id
                                (Transform_Identifier
-                                    (Params       => Body_Params,
-                                     Expr         => Next,
-                                     Ent          => Next,
-                                     Domain       => EW_Prog)),
+                                    (Params => Body_Params,
+                                     Expr   => Next,
+                                     Ent    => Next,
+                                     Domain => EW_Prog)),
                            Progs    => (1 => W_Container,
                                         2 => Cur_Expr),
                            Reason   => VC_Precondition,
@@ -1401,8 +1401,8 @@ package body Gnat2Why.Expr.Loops is
            +New_Comparison
            (Symbol => Cmp,
             Left   => Variant_Expr (Expr, EW_Term),
-            Right  =>  New_Deref (Right => +Name,
-                                  Typ   => WTyp),
+            Right  => New_Deref (Right => +Name,
+                                 Typ   => WTyp),
             Domain => EW_Pred);
       end Variant_Part_Does_Progress;
 
@@ -1472,10 +1472,10 @@ package body Gnat2Why.Expr.Loops is
                  Prog
                else
                  Sequence (Prog,
-                   +W_Expr_Id'(New_Conditional (Ada_Node    => Variant,
-                                                Domain      => EW_Prog,
-                                                Condition   => +Pred_Progress,
-                                                Then_Part   => +Check_Prog))));
+                   +W_Expr_Id'(New_Conditional (Ada_Node  => Variant,
+                                                Domain    => EW_Prog,
+                                                Condition => +Pred_Progress,
+                                                Then_Part => +Check_Prog))));
 
             Progress_Pred :=
               (if No (Next (Variant)) then
