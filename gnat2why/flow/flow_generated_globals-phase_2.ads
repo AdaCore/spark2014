@@ -160,7 +160,7 @@ package Flow_Generated_Globals.Phase_2 is
    with Pre => GG_Has_Been_Generated and then
                Ekind (E) in E_Entry | E_Procedure | E_Function;
    --  Returns True if subprogram E is potentially blocking or its blocking
-   --  status is unknown; returns False it if is known to be nonblocking.
+   --  status is unknown; returns False if it is known to be nonblocking.
 
    function Tasking_Objects
      (Kind : Tasking_Info_Kind;
