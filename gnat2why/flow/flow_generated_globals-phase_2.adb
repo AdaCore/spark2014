@@ -2146,10 +2146,6 @@ package body Flow_Generated_Globals.Phase_2 is
       Edit_Proof_Ins;
       Note_Time ("gg_read - proof ins");
 
-      --  Put tasking-related information back to the bag
-      Process_Tasking_Graph;
-      Print_Tasking_Info_Bag (GG_Phase_2);
-
       --  Now that the Globals Graph has been generated we set GG_Generated to
       --  True. Notice that we set GG_Generated to True before we remove edges
       --  leading to constants without variable input. The reasoning behind
@@ -2189,6 +2185,10 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Now that the globals are generated, we use them to also generate the
       --  initializes aspects.
       Generate_Initializes_Aspects;
+
+      --  Put tasking-related information back to the bag
+      Process_Tasking_Graph;
+      Print_Tasking_Info_Bag (GG_Phase_2);
 
       if Debug_GG_Read_Timing then
          Final_Time ("gg_read");
