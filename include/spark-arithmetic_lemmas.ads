@@ -63,6 +63,24 @@ is
      Pre  => Arg2 /= 0,
      Post => (-Arg1) mod (-Arg2) = -(Arg1 mod Arg2);  --  MANUAL PROOF
 
+   procedure Lemma_Mult_Is_Monotonic
+     (Val1   : Int;
+      Val2   : Int;
+      Factor : Nat)
+   with
+     Global => null,
+     Pre  => Val1 <= Val2,
+     Post => Val1 * Factor <= Val2 * Factor;
+
+   procedure Lemma_Mult_Is_Strictly_Monotonic
+     (Val1   : Int;
+      Val2   : Int;
+      Factor : Pos)
+   with
+     Global => null,
+     Pre  => Val1 < Val2,
+     Post => Val1 * Factor < Val2 * Factor;
+
    procedure Lemma_Mult_Protect
      (Arg1        : Int;
       Arg2        : Nat;

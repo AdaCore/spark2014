@@ -95,6 +95,30 @@
 </theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mod_symmetry__arg2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_monotonic__val1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_monotonic__val1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_monotonic__val2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_monotonic__val2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_monotonic__factor" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_monotonic__factor___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__val1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__val1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__val2" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__val2___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__factor" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__factor___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect__arg1" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect__arg1___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -311,6 +335,10 @@
 </theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mod_symmetry" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_monotonic" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_scale" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -453,6 +481,10 @@
 </theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mod_symmetry___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_monotonic___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
+</theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_protect___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
 </theory>
 <theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_scale___axiom" sum="d41d8cd98f00b204e9800998ecf8427e" expanded="true">
@@ -519,6 +551,26 @@
   <proof prover="1"><result status="outofmemory" time="20.34"/></proof>
   <proof prover="2"><result status="unknown" time="0.03" steps="140"/></proof>
   <proof prover="3" edited="../../proof/Coq/spark-long_integer_arithmetic_lemmas/Spark__long_integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid" time="0.75"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_monotonic__subprogram_def" sum="66dc7cfe919518b5576de3dbf7ade4c6" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. postcondition">
+  <proof prover="1"><result status="valid" time="0.02"/></proof>
+  <proof prover="2"><result status="unknown" time="0.02" steps="80"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+<theory name="Spark__long_integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__subprogram_def" sum="754676d00f0fac1cd185c8556fc5b655" expanded="true">
+ <goal name="WP_parameter def" expl="VC for def" expanded="true">
+ <transf name="split_goal_wp" expanded="true">
+  <goal name="WP_parameter def.1" expl="1. postcondition">
+  <proof prover="1"><result status="valid" time="0.02"/></proof>
+  <proof prover="2"><result status="unknown" time="0.02" steps="80"/></proof>
   </goal>
  </transf>
  </goal>

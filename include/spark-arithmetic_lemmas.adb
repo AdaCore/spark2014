@@ -51,6 +51,18 @@ is
       Arg2 : Int)
    is null;
 
+   procedure Lemma_Mult_Is_Monotonic
+     (Val1   : Int;
+      Val2   : Int;
+      Factor : Nat)
+   is null;
+
+   procedure Lemma_Mult_Is_Strictly_Monotonic
+     (Val1   : Int;
+      Val2   : Int;
+      Factor : Pos)
+   is null;
+
    procedure Lemma_Mult_Protect
      (Arg1        : Int;
       Arg2        : Nat;
