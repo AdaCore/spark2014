@@ -1162,7 +1162,7 @@ package body SPARK_Definition is
                   begin
 
                      while Present (Iterable_Field) loop
-                        Mark (Expression (Iterable_Field));
+                        Mark_Entity (Entity (Expression (Iterable_Field)));
                         Next (Iterable_Field);
                      end loop;
 
