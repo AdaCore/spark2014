@@ -579,76 +579,6 @@ Definition uint__ref___projection (a:uint__ref): uint := (uint__content a).
 Definition dynamic_invariant (temp___expr_216:t) (temp___is_init_213:bool)
   (temp___do_constant_214:bool) (temp___do_toplevel_215:bool): Prop := True.
 
-Axiom pos : Type.
-Parameter pos_WhyType : WhyType pos.
-Existing Instance pos_WhyType.
-
-Parameter attr__ATTRIBUTE_MODULUS1: t.
-
-(* Why3 assumption *)
-Definition in_range (x:t): Prop :=
-  (ule (of_int 1%Z) x) /\ (ule x (of_int 18446744073709551615%Z)).
-
-(* Why3 assumption *)
-Definition in_range_int (x:Z): Prop :=
-  (1%Z <= x)%Z /\ (x <= 18446744073709551615%Z)%Z.
-
-(* Why3 assumption *)
-Definition rep_type1 := t.
-
-Parameter bool_eq3: t -> t -> bool.
-
-Axiom bool_eq_def2 : forall (x:t) (y:t),
-                      ((x = y) -> ((bool_eq3 x y) = true))
-                      /\ ((~ (x = y)) -> ((bool_eq3 x y) = false)).
-
-Parameter attr__ATTRIBUTE_IMAGE1: t -> us_image.
-
-Parameter attr__ATTRIBUTE_VALUE__pre_check1: us_image -> Prop.
-
-Parameter attr__ATTRIBUTE_VALUE1: us_image -> t.
-
-Parameter to_rep1: pos -> t.
-
-Parameter of_rep1: t -> pos.
-
-Parameter user_eq1: pos -> pos -> bool.
-
-Parameter dummy1: pos.
-
-Axiom inversion_axiom1 : forall (x:pos), ((of_rep1 (to_rep1 x)) = x).
-
-Axiom range_axiom1 : forall (x:pos), (in_range (to_rep1 x)).
-
-(* Why3 assumption *)
-Definition to_int2 (x:pos): Z := (to_uint (to_rep1 x)).
-
-Axiom range_int_axiom1 : forall (x:pos), (in_range_int (to_int2 x)).
-
-Axiom coerce_axiom1 : forall (x:t),
-                       (in_range x) -> ((to_rep1 (of_rep1 x)) = x).
-
-(* Why3 assumption *)
-Inductive pos__ref :=
-  | mk_pos__ref : pos -> pos__ref.
-Axiom pos__ref_WhyType : WhyType pos__ref.
-Existing Instance pos__ref_WhyType.
-
-(* Why3 assumption *)
-Definition pos__content (v:pos__ref): pos :=
-  match v with
-  | (mk_pos__ref x) => x
-  end.
-
-(* Why3 assumption *)
-Definition pos__ref___projection (a:pos__ref): pos := (pos__content a).
-
-(* Why3 assumption *)
-Definition dynamic_invariant1 (temp___expr_222:t) (temp___is_init_219:bool)
-  (temp___do_constant_220:bool) (temp___do_toplevel_221:bool): Prop :=
-  ((temp___is_init_219 = true) \/ (ule (of_int 1%Z)
-   (of_int 18446744073709551615%Z))) -> (in_range temp___expr_222).
-
 Parameter val1: t.
 
 Parameter attr__ATTRIBUTE_ADDRESS: Z.
@@ -662,12 +592,12 @@ Parameter factor: t.
 Parameter attr__ATTRIBUTE_ADDRESS2: Z.
 
 (* Why3 goal *)
-Theorem WP_parameter_def : ((in_range factor)
-                            /\ ((ult val1 val2) /\ (ule val2
+Theorem WP_parameter_def : ((ule val1 val2)
+                            /\ ((factor = (of_int 0%Z)) \/ (ule val2
                                 (udiv (of_int 18446744073709551615%Z) factor)))) ->
-                           (*      Post => Val1 * Factor < Val2 * Factor;                                                                               *)
+                           (*      Post => Val1 * Factor <= Val2 * Factor;  --  MANUAL PROOF                                                            *)
                            (*              ^ spark-mod_arithmetic_lemmas.ads:67:14:instantiated:spark-mod64_arithmetic_lemmas.ads:33:1:VC_POSTCONDITION *)
-                           (ult (mul val1 factor) (mul val2 factor)).
+                           (ule (mul val1 factor) (mul val2 factor)).
 
 #define SPARK_MAX_UINT 18446744073709551615
 #include "lemma_modular_mult_is_monotonic.prf"

@@ -59,6 +59,16 @@ is
    procedure Lemma_Mult_Is_Monotonic
      (Val1   : Uint;
       Val2   : Uint;
+      Factor : Uint)
+   with
+     Global => null,
+     Pre  => Val1 <= Val2 and then
+             (Factor = 0 or else Val2 <= Uint'Last / Factor),
+     Post => Val1 * Factor <= Val2 * Factor;  --  MANUAL PROOF
+
+   procedure Lemma_Mult_Is_Strictly_Monotonic
+     (Val1   : Uint;
+      Val2   : Uint;
       Factor : Pos)
    with
      Global => null,

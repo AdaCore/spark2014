@@ -10,7 +10,8 @@ gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-arithmetic_lemm
 gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:48
 gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:57
 gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:67
-gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:76
-gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:88
-gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:96
-gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:104
+gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:77
+gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:86
+gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:98
+gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:106
+gnatprove -P spark_lemmas.gpr -U --prover=coq --limit-line=spark-mod_arithmetic_lemmas.ads:114

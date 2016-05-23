@@ -50,6 +50,12 @@ is
    procedure Lemma_Mult_Is_Monotonic
      (Val1   : Uint;
       Val2   : Uint;
+      Factor : Uint)
+   is null;
+
+   procedure Lemma_Mult_Is_Strictly_Monotonic
+     (Val1   : Uint;
+      Val2   : Uint;
       Factor : Pos)
    is null;
 
