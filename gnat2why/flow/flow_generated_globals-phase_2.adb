@@ -811,91 +811,76 @@ package body Flow_Generated_Globals.Phase_2 is
          --  Go through the Subprogram_Info_List and add edges
          for Info of Subprogram_Info_List loop
             declare
-               G_Ins : constant Global_Id (Inputs) :=
-                 (Kind => Inputs,
-                  Name => Info.Name);
+               type Kinds is record
+                  Source, Target : Global_Id_Kind;
+               end record;
 
-               G_Outs : constant Global_Id (Outputs) :=
-                 (Kind => Outputs,
-                  Name => Info.Name);
+               type Kinds_Array is array (Positive range <>) of Kinds;
 
-               G_Proof_Ins : constant Global_Id (Proof_Ins) :=
-                 (Kind => Proof_Ins,
-                  Name => Info.Name);
+               procedure Connect
+                 (Targets     : Name_Sets.Set;
+                  Connections : Kinds_Array);
+               --  Connect vertex Source with vertices of a given Kind and
+               --  names from the Targets container.
+
+               -------------
+               -- Connect --
+               -------------
+
+               procedure Connect
+                 (Targets     : Name_Sets.Set;
+                  Connections : Kinds_Array)
+               is
+               begin
+                  for Target_Name of Targets loop
+                     for Connection of Connections loop
+                        declare
+                           subtype Source_Global_Kind is
+                             Global_Id (Connection.Source);
+
+                           subtype Target_Global_Kind is
+                             Global_Id (Connection.Target);
+
+                           Source : Source_Global_Kind;
+                           Target : Target_Global_Kind;
+
+                        begin
+                           Source.Name := Info.Name;
+                           Target.Name := Target_Name;
+                           Global_Graph.Add_Edge (Source, Target);
+                        end;
+                     end loop;
+                  end loop;
+               end Connect;
 
             begin
-               --  Connect the subprogram's Proof_In variables to the
-               --  subprogram's Proof_Ins vertex.
-               for Input_Proof of Info.Inputs_Proof loop
-                  Global_Graph.Add_Edge (G_Proof_Ins,
-                                         Global_Id'(Kind => Variable,
-                                                    Name => Input_Proof));
-               end loop;
-
-               --  Connect the subprogram's Input variables to the subprogram's
-               --  Ins vertex.
-               for Input of Info.Inputs loop
-                  Global_Graph.Add_Edge (G_Ins,
-                                         Global_Id'(Kind => Variable,
-                                                    Name => Input));
-               end loop;
-
-               --  Connect the subprogram's Output variables to the
-               --  subprogram's Outputs vertex.
-               for Output of Info.Outputs loop
-                  Global_Graph.Add_Edge (G_Outs,
-                                         Global_Id'(Kind => Variable,
-                                                    Name => Output));
-               end loop;
+               --  Connect the subprogram's variables: proof inputs, inputs and
+               --  outputs, to corresponding vertices.
+               Connect (Info.Inputs_Proof, (1 => (Proof_Ins, Variable)));
+               Connect (Info.Inputs,       (1 => (Inputs,    Variable)));
+               Connect (Info.Outputs,      (1 => (Outputs,   Variable)));
 
                --  Connect the subprogram's Proof_Ins vertex to the callee's
                --  Ins and Proof_Ins vertices.
-               for Proof_Call of Info.Proof_Calls loop
-                  Global_Graph.Add_Edge (G_Proof_Ins,
-                                         Global_Id'(Kind => Proof_Ins,
-                                                    Name => Proof_Call));
-
-                  Global_Graph.Add_Edge (G_Proof_Ins,
-                                         Global_Id'(Kind => Inputs,
-                                                    Name => Proof_Call));
-               end loop;
+               Connect (Info.Proof_Calls,
+                        (1 => (Proof_Ins, Proof_Ins),
+                         2 => (Proof_Ins, Inputs)));
 
                --  Connect the subprogram's Proof_Ins, Ins and Outs vertices
                --  respectively to the callee's Proof_Ins, Ins and Outs
                --  vertices.
-               for Definite_Call of Info.Definite_Calls loop
-                  Global_Graph.Add_Edge (G_Proof_Ins,
-                                         Global_Id'(Kind => Proof_Ins,
-                                                    Name => Definite_Call));
-
-                  Global_Graph.Add_Edge (G_Ins,
-                                         Global_Id'(Kind => Inputs,
-                                                    Name => Definite_Call));
-
-                  Global_Graph.Add_Edge (G_Outs,
-                                         Global_Id'(Kind => Outputs,
-                                                    Name => Definite_Call));
-               end loop;
+               Connect (Info.Definite_Calls,
+                        (1 => (Proof_Ins, Proof_Ins),
+                         2 => (Inputs,    Inputs),
+                         3 => (Outputs,   Outputs)));
 
                --  As above but also add an edge from the subprogram's Ins
                --  vertex to the callee's Outs vertex.
-               for Conditional_Call of Info.Conditional_Calls loop
-                  Global_Graph.Add_Edge (G_Proof_Ins,
-                                         Global_Id'(Kind => Proof_Ins,
-                                                    Name => Conditional_Call));
-
-                  Global_Graph.Add_Edge (G_Ins,
-                                         Global_Id'(Kind => Inputs,
-                                                    Name => Conditional_Call));
-
-                  Global_Graph.Add_Edge (G_Ins,
-                                         Global_Id'(Kind => Outputs,
-                                                    Name => Conditional_Call));
-
-                  Global_Graph.Add_Edge (G_Outs,
-                                         Global_Id'(Kind => Outputs,
-                                                    Name => Conditional_Call));
-               end loop;
+               Connect (Info.Conditional_Calls,
+                        (1 => (Proof_Ins, Proof_Ins),
+                         2 => (Inputs,    Inputs),
+                         3 => (Inputs,    Outputs),
+                         4 => (Outputs,   Outputs)));
             end;
          end loop;
 
@@ -903,27 +888,13 @@ package body Flow_Generated_Globals.Phase_2 is
          --  Get_Globals function.
          for N of All_Other_Subprograms loop
             declare
-               Subprogram  : constant Entity_Id := Find_Entity (N);
+               Subprogram : constant Entity_Id := Find_Entity (N);
 
-               G_Proof_Ins : constant Global_Id (Proof_Ins) :=
-                 (Kind => Proof_Ins,
-                  Name => N);
-
-               G_Ins       : constant Global_Id (Inputs) :=
-                 (Kind => Inputs,
-                  Name => N);
-
-               G_Outs      : constant Global_Id (Outputs) :=
-                 (Kind => Outputs,
-                  Name => N);
-
-               FS_Proof_Ins : Flow_Id_Sets.Set;
-               FS_Reads     : Flow_Id_Sets.Set;
-               FS_Writes    : Flow_Id_Sets.Set;
+               FS_Proof_Ins, FS_Reads, FS_Writes : Flow_Id_Sets.Set;
 
                procedure Add_Edges_For_FS
-                 (FS   : Flow_Id_Sets.Set;
-                  From : Global_Id);
+                 (FS          : Flow_Id_Sets.Set;
+                  Source_Kind : Global_Id_Kind);
                --  Adds an edge from From to every Flow_Id in FS
 
                ----------------------
@@ -931,29 +902,37 @@ package body Flow_Generated_Globals.Phase_2 is
                ----------------------
 
                procedure Add_Edges_For_FS
-                 (FS   : Flow_Id_Sets.Set;
-                  From : Global_Id)
+                 (FS          : Flow_Id_Sets.Set;
+                  Source_Kind : Global_Id_Kind)
                is
+                  subtype Source_Global is Global_Id (Source_Kind);
+
+                  Source : Source_Global;
+
                begin
+                  Source.Name := N;
+
                   for F of FS loop
                      declare
                         Nam : constant Entity_Name :=
-                          (if F.Kind in Direct_Mapping | Record_Field
-                           then
-                              To_Entity_Name (Get_Direct_Mapping_Id (F))
-                           elsif F.Kind = Magic_String then
-                              F.Name
-                           else
-                              raise Program_Error);
+                          (case F.Kind is
+                              when Direct_Mapping |
+                                   Record_Field   =>
+                                 To_Entity_Name (Get_Direct_Mapping_Id (F)),
 
-                        G : constant Global_Id (Variable) :=
+                              when Magic_String =>
+                                 F.Name,
+
+                              when others =>
+                                 raise Program_Error);
+
+                        Target : constant Global_Id (Variable) :=
                           (Kind => Variable,
                            Name => Nam);
 
                      begin
-                        if not Global_Graph.Edge_Exists (From, G) then
-                           Global_Graph.Add_Edge (From, G);
-                        end if;
+                        --  Add edge or do nothing if it already exists
+                        Global_Graph.Add_Edge (Source, Target);
                      end;
                   end loop;
                end Add_Edges_For_FS;
@@ -967,9 +946,9 @@ package body Flow_Generated_Globals.Phase_2 is
                                Reads      => FS_Reads,
                                Writes     => FS_Writes);
 
-                  Add_Edges_For_FS (FS_Proof_Ins, G_Proof_Ins);
-                  Add_Edges_For_FS (FS_Reads, G_Ins);
-                  Add_Edges_For_FS (FS_Writes, G_Outs);
+                  Add_Edges_For_FS (FS_Proof_Ins, Proof_Ins);
+                  Add_Edges_For_FS (FS_Reads,     Inputs);
+                  Add_Edges_For_FS (FS_Writes,    Outputs);
                end if;
             end;
          end loop;
@@ -1264,7 +1243,6 @@ package body Flow_Generated_Globals.Phase_2 is
       -------------------------
 
       procedure Create_All_Vertices is
-         use Global_Graphs;
       begin
          --  Create vertices for all global variables
          for N of All_Globals loop
@@ -1308,12 +1286,17 @@ package body Flow_Generated_Globals.Phase_2 is
                   Nam : Entity_Name;
                begin
                   for F of FS loop
-                     Nam := (if F.Kind in Direct_Mapping | Record_Field then
-                                To_Entity_Name (Get_Direct_Mapping_Id (F))
-                             elsif F.Kind = Magic_String then
-                                F.Name
-                             else
-                                raise Program_Error);
+                     Nam := (case F.Kind is
+                                when Direct_Mapping |
+                                     Record_Field   =>
+                                   To_Entity_Name (Get_Direct_Mapping_Id (F)),
+
+                                when Magic_String  =>
+                                   F.Name,
+
+                                when others =>
+                                   raise Program_Error);
+
                      G   := Global_Id'(Kind => Variable,
                                        Name => Nam);
 
