@@ -481,6 +481,29 @@ package body Why.Gen.Records is
 
          --  Both value size and object size are non-negative
 
+         --  The value alignement is defined as a logic constant
+
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb
+                    (E, WNE_Attr_Value_Alignment)),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
+
+         --  The object alignment is defined as a logic function
+
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb (E,
+                    WNE_Attr_Object_Alignment)),
+                  Binders     => R_Binder,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
+
+         --  Both value alignment and object alignment are non-negative
+
          declare
             Zero : constant W_Expr_Id :=
               New_Integer_Constant (Value => Uint_0);
@@ -513,6 +536,36 @@ package body Why.Gen.Records is
               New_Universal_Quantif (Binders => R_Binder,
                                      Pred    => Object_Size_Pred);
 
+            Value_Alignment_Fun : constant W_Expr_Id :=
+              New_Call (Name     => To_Local (E_Symb
+                        (E, WNE_Attr_Value_Alignment)),
+                        Domain   => EW_Term,
+                        Typ      => EW_Int_Type);
+
+            Value_Alignment_Axiom : constant W_Pred_Id :=
+              +New_Comparison (Symbol => Int_Infix_Ge,
+                               Left   => Value_Alignment_Fun,
+                               Right  => Zero,
+                               Domain => EW_Term);
+
+            Object_Alignment_Fun : constant W_Expr_Id :=
+              New_Call (Name     =>
+                          To_Local (E_Symb (E,
+                            WNE_Attr_Object_Alignment)),
+                        Args     => (1 => +A_Ident),
+                        Domain   => EW_Term,
+                        Typ      => EW_Int_Type);
+
+            Object_Alignment_Pred : constant W_Pred_Id :=
+              +New_Comparison (Symbol => Int_Infix_Ge,
+                               Left   => Object_Alignment_Fun,
+                               Right  => Zero,
+                               Domain => EW_Term);
+
+            Object_Alignment_Axiom : constant W_Pred_Id :=
+              New_Universal_Quantif (Binders => R_Binder,
+                                     Pred    => Object_Alignment_Pred);
+
          begin
             Emit (P,
                   New_Axiom (Ada_Node => E,
@@ -523,6 +576,15 @@ package body Why.Gen.Records is
                   New_Axiom (Ada_Node => E,
                              Name     => NID ("object__size_axiom"),
                              Def      => Object_Size_Axiom));
+            Emit (P,
+                  New_Axiom (Ada_Node => E,
+                             Name     => NID ("value__alignment_axiom"),
+                             Def      => Value_Alignment_Axiom));
+
+            Emit (P,
+                  New_Axiom (Ada_Node => E,
+                             Name     => NID ("object__alignment_axiom"),
+                             Def      => Object_Alignment_Axiom));
          end;
 
       end Declare_Attributes;

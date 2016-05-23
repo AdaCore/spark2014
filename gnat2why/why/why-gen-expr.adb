@@ -2326,19 +2326,21 @@ package body Why.Gen.Expr is
          case Attr is
             when Attribute_First       => return +E_Symb (Ty, WNE_Attr_First);
             when Attribute_Last        => return +E_Symb (Ty, WNE_Attr_Last);
-            when Attribute_Modulus     =>
+            when Attribute_Alignment      =>
+               return +E_Symb (Ty, WNE_Attr_Value_Alignment);
+            when Attribute_Modulus        =>
                return +E_Symb (Ty, WNE_Attr_Modulus);
-            when Attribute_Constrained =>
+            when Attribute_Constrained    =>
                return +E_Symb (Ty, WNE_Attr_Constrained);
-            when Attribute_Size        =>
+            when Attribute_Size           =>
                return +E_Symb (Ty, WNE_Attr_Value_Size);
             when Attribute_Component_Size =>
-               return +E_Symb (Ty, WNE_Attr_Component_Size);
-            when Attribute_Tag         =>
+               return +E_Symb (Ty, WNE_Attr_Value_Component_Size);
+            when Attribute_Tag            =>
                return +E_Symb (Ty, WNE_Attr_Tag);
-            when Attribute_Image       =>
+            when Attribute_Image          =>
                return +E_Symb (Ty, WNE_Attr_Image);
-            when Attribute_Value       =>
+            when Attribute_Value          =>
                return +E_Symb (Ty, WNE_Attr_Value);
             when others =>
                raise Program_Error;

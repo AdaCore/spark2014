@@ -8748,32 +8748,52 @@ package body Gnat2Why.Expr is
 
             if Nkind (Var) in N_Has_Entity
               and then Present (Entity (Var))
+              and then Ekind (Entity (Var)) in Type_Kind
             then
-               case Ekind (Entity (Var)) is
-                  when Type_Kind =>
-                     T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
-                  when Object_Kind =>
-                     if Known_Component_Size (Etype (Var)) then
-                        return New_Integer_Constant (Expr,
-                                                     Component_Size
-                                                       (Etype (Var)));
-                     else
-                        declare
-                           Name : constant W_Identifier_Id :=
-                             E_Symb (Etype (Var), WNE_Attr_Component_Size);
-                           Arg  : constant W_Expr_Id :=
-                             Transform_Expr (Var, Domain, Params);
-                        begin
-                           return New_Call (Ada_Node => Parent (Var),
-                                            Domain   => Domain,
-                                            Name     => Name,
-                                            Args     => (1 => Arg),
-                                            Typ      => EW_Int_Type);
-                        end;
-                     end if;
-                  when others =>
-                     raise Program_Error;
-               end case;
+
+               T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+
+            else
+               declare
+                  Name : constant W_Identifier_Id :=
+                    E_Symb (Etype (Var), WNE_Attr_Object_Component_Size);
+                  Arg : constant W_Expr_Id :=
+                    Transform_Expr (Var, Domain, Params);
+               begin
+                  return New_Call (Ada_Node => Parent (Var),
+                                   Domain   => Domain,
+                                   Name     => Name,
+                                   Args     => (1 => Arg),
+                                   Typ      => EW_Int_Type);
+               end;
+            end if;
+
+         when Attribute_Alignment =>
+
+            if Nkind (Var) in N_Has_Entity
+              and then Present (Entity (Var))
+              and then Ekind (Entity (Var)) in Type_Kind
+            then
+
+               T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+
+            elsif Known_Alignment (Etype (Var)) then
+
+               return New_Integer_Constant (Expr, Alignment (Etype (Var)));
+
+            else
+               declare
+                  Name : constant W_Identifier_Id :=
+                    E_Symb (Etype (Var), WNE_Attr_Object_Alignment);
+                  Arg  : constant W_Expr_Id :=
+                    Transform_Expr (Var, Domain, Params);
+               begin
+                  return New_Call (Ada_Node => Parent (Var),
+                                   Domain   => Domain,
+                                   Name     => Name,
+                                   Args     => (1 => Arg),
+                                   Typ      => EW_Int_Type);
+               end;
             end if;
 
          when others =>

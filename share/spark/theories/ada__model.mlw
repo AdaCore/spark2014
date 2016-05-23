@@ -1087,7 +1087,13 @@ module Unconstr_Array
 
   function object__size (a : map) : int
 
-  function component__size (a : map) : int
+  function value__component__size : int
+
+  function object__component__size (a : map) : int
+
+  function value__alignment : int
+
+  function object__alignment (a : map) : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1096,9 +1102,19 @@ module Unconstr_Array
     forall a : map.
     object__size (a) >= 0
 
-  axiom component__size_axiom:
+  axiom value__component__size_axiom :
+    value__component__size >= 0
+
+  axiom object__component__size_axiom :
     forall a : map.
-    component__size (a) >= 0
+    object__component__size (a) >= 0
+
+  axiom value__alignment_axiom :
+    value__alignment >= 0
+
+  axiom object__alignment_axiom :
+    forall a : map.
+    object__alignment (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq
@@ -1190,7 +1206,13 @@ module Unconstr_Array_2
 
   function object__size (a : map) : int
 
-  function component__size (a : map) : int
+  function value__component__size : int
+
+  function object__component__size (a : map) : int
+
+  function value__alignment : int
+
+  function object__alignment (a : map) : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1199,9 +1221,19 @@ module Unconstr_Array_2
     forall a : map.
     object__size (a) >= 0
 
-  axiom component__size_axiom:
+  axiom value__component__size_axiom :
+    value__component__size >= 0
+
+  axiom object__component__size_axiom :
     forall a : map.
-    component__size (a) >= 0
+    object__component__size (a) >= 0
+
+  axiom value__alignment_axiom:
+    value__alignment >= 0
+
+  axiom object__alignment_axiom:
+    forall a : map.
+    object__alignment (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq
@@ -1325,7 +1357,13 @@ module Unconstr_Array_3
 
   function object__size (a : map) : int
 
-  function component__size (a : map) : int
+  function value__component__size : int
+
+  function object__component__size (a : map) : int
+
+  function value__alignment : int
+
+  function object__alignment (a : map) : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1334,9 +1372,19 @@ module Unconstr_Array_3
     forall a : map.
     object__size (a) >= 0
 
-  axiom component__size_axiom:
+  axiom value__component__size_axiom :
+    value__component__size >= 0
+
+  axiom object__component__size_axiom :
     forall a : map.
-    component__size (a) >= 0
+    object__component__size (a) >= 0
+
+  axiom value__alignment_axiom :
+    value__alignment >= 0
+
+  axiom object__alignment_axiom :
+    forall a : map.
+    object__alignment (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq
@@ -1493,7 +1541,13 @@ module Unconstr_Array_4
 
   function object__size (a : map) : int
 
-  function component__size (a : map) : int
+  function value__component__size : int
+
+  function object__component__size (a : map) : int
+
+  function value__alignment : int
+
+  function object__alignment (a : map) : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1502,9 +1556,19 @@ module Unconstr_Array_4
     forall a : map.
     object__size (a) >= 0
 
-  axiom component__size_axiom:
+  axiom value__component__size_axiom :
+    value__component__size >= 0
+
+  axiom object__component__size_axiom :
     forall a : map.
-    component__size (a) >= 0
+    object__component__size (a) >= 0
+
+  axiom value__alignment_axiom :
+    value__alignment >= 0
+
+  axiom object__alignment_axiom :
+    forall a : map.
+    object__alignment (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq
@@ -1543,7 +1607,13 @@ module Constr_Array
 
   function object__size (a : __t) : int
 
-  function component__size (a : __t) : int
+  function value__component__size : int
+
+  function object__component__size (a : __t) : int
+
+  function value__alignment : int
+
+  function object__alignment (a : __t) : int
 
   use import int.Int
 
@@ -1554,9 +1624,19 @@ module Constr_Array
     forall a : __t.
     object__size (a) >= 0
 
-  axiom component__size_axiom:
+  axiom value__component__size_axiom :
+    value__component__size >= 0
+
+  axiom object__component__size_axiom :
     forall a : __t.
-    component__size (a) >= 0
+    object__component__size (a) >= 0
+
+  axiom value__alignment_axiom :
+    value__alignment >= 0
+
+  axiom object__alignment_axiom :
+    forall a : __t.
+    object__alignment (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq x first last
@@ -1590,7 +1670,13 @@ module Constr_Array_2
 
   function object__size (a : __t) : int
 
-  function component__size (a : __t) : int
+  function value__component__size : int
+
+  function object__component__size (a : __t) : int
+
+  function value__alignment : int
+
+  function object__alignment (a : __t) : int
 
   use import int.Int
 
@@ -1601,9 +1687,19 @@ module Constr_Array_2
     forall a : __t.
     object__size (a) >= 0
 
-  axiom component__size_axiom:
+  axiom value__component__size_axiom :
+    value__component__size >= 0
+
+  axiom object__component__size_axiom :
     forall a : __t.
-    component__size (a) >= 0
+    object__component__size (a) >= 0
+
+  axiom value__alignment_axiom :
+    value__alignment >= 0
+
+  axiom object__alignment_axiom :
+    forall a : __t.
+    object__alignment (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq x first last first_2 last_2
@@ -1641,7 +1737,13 @@ module Constr_Array_3
 
   function object__size (a : __t) : int
 
-  function component__size (a : __t) : int
+  function value__component__size : int
+
+  function object__component__size (a : __t) : int
+
+  function value__alignment : int
+
+  function object__alignment (a : __t) : int
 
   use import int.Int
 
@@ -1652,9 +1754,19 @@ module Constr_Array_3
     forall a : __t.
     object__size (a) >= 0
 
-  axiom component__size_axiom:
+  axiom value__component__size_axiom :
+    value__component__size >= 0
+
+  axiom object__component__size_axiom :
     forall a : __t.
-    component__size (a) >= 0
+    object__component__size (a) >= 0
+
+  axiom value__alignment_axiom :
+    value__alignment >= 0
+
+  axiom object__alignment_axiom :
+    forall a : __t.
+    object__alignment (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq x first last first_2 last_2 first_3 last_3
@@ -1696,7 +1808,13 @@ module Constr_Array_4
 
   function object__size (a : __t) : int
 
-  function component__size (a : __t) : int
+  function value__component__size : int
+
+  function object__component__size (a : __t) : int
+
+  function value__alignment : int
+
+  function object__alignment (a : __t) : int
 
   use import int.Int
 
@@ -1707,9 +1825,19 @@ module Constr_Array_4
     forall a : __t.
     object__size (a) >= 0
 
-  axiom component__size_axiom:
+  axiom value__component__size_axiom :
+    value__component__size >= 0
+
+  axiom object__component__size_axiom :
     forall a : __t.
-    component__size (a) >= 0
+    object__component__size (a) >= 0
+
+  axiom value__alignment_axiom :
+    value__alignment >= 0
+
+  axiom object__alignment_axiom :
+    forall a : __t.
+    object__alignment (a) >= 0
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq x first last first_2 last_2 first_3 last_3 first_4 last_4
