@@ -1,0 +1,11 @@
+math.adb:7:10: info: predicate check proved
+math.adb:7:25: info: index check proved
+math.adb:9:10: info: loop invariant initialization proved
+math.adb:10:46: medium: loop invariant might fail after first iteration, cannot prove V(K) = V'Loop_Entry(Index'max)
+math.adb:10:48: info: index check proved
+math.adb:10:71: info: index check proved
+math.adb:11:10: info: loop invariant initialization proved
+math.adb:11:10: info: loop invariant preservation proved
+math.adb:12:51: info: index check proved
+math.adb:12:69: info: index check proved
+math.ads:12:35: info: length check proved
