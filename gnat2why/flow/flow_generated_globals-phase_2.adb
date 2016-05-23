@@ -135,12 +135,6 @@ package body Flow_Generated_Globals.Phase_2 is
       Key_Hash     => Name_Hash,
       Test_Key     => "=");
 
-   package Vertex_Sets is new Ada.Containers.Hashed_Sets
-     (Element_Type        => Global_Graphs.Vertex_Id,
-      Hash                => Global_Graphs.Vertex_Hash,
-      Equivalent_Elements => Global_Graphs."=",
-      "="                 => Global_Graphs."=");
-
    Global_Graph : Global_Graphs.Graph;
    --  A graph that represents the globals that each subprogram has as inputs,
    --  outputs and proof inputs.
@@ -736,11 +730,11 @@ package body Flow_Generated_Globals.Phase_2 is
       --  edges to local variables on the Global_Graph.
 
       procedure Edit_Proof_Ins;
-      --  A variable cannot be simultaneously a Proof_In and an Input of
-      --  a subprogram. In this case we need to remove the Proof_In edge.
-      --  Furthermore, a variable cannot be simultaneously a Proof_In and
-      --  an Output (but not an input). In this case we need to change the
-      --  Proof_In variable into an Input.
+      --  A variable cannot be simultaneously a Proof_In and an Input of a
+      --  subprogram. In this case we remove the Proof_In edge. Furthermore,
+      --  a variable cannot be simultaneously a Proof_In and an Output (but
+      --  not an input). In this case we change the Proof_In variable into
+      --  an Input.
 
       procedure Generate_Initializes_Aspects;
       --  Once the global graph has been generated, we use it to generate the
@@ -1338,78 +1332,78 @@ package body Flow_Generated_Globals.Phase_2 is
       --------------------
 
       procedure Edit_Proof_Ins is
-         use Global_Graphs;
-
-         function Get_Variable_Neighbours
-           (Start : Vertex_Id)
-            return Vertex_Sets.Set;
-         --  Returns a set of all Neighbours of Start that correspond to
-         --  variables.
-
-         -----------------------------
-         -- Get_Variable_Neighbours --
-         -----------------------------
-
-         function Get_Variable_Neighbours
-           (Start : Vertex_Id)
-            return Vertex_Sets.Set
-         is
-            VS : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
-         begin
-            for V of Global_Graph.Get_Collection (Start,
-                                                  Out_Neighbours)
-            loop
-               if Global_Graph.Get_Key (V).Kind = Variable then
-                  VS.Include (V);
-               end if;
-            end loop;
-
-            return VS;
-         end Get_Variable_Neighbours;
-
-      --  Start of processing for Edit_Proof_Ins
-
       begin
          for Info of Subprogram_Info_List loop
             declare
-               G_Ins       : constant Global_Id :=
-                 Global_Id'(Kind => Inputs,
-                            Name => Info.Name);
+               use Global_Graphs;
 
-               G_Outs      : constant Global_Id :=
-                 Global_Id'(Kind => Outputs,
-                            Name => Info.Name);
+               package Vertex_Sets is new Ada.Containers.Hashed_Sets
+                 (Element_Type        => Global_Graphs.Vertex_Id,
+                  Hash                => Global_Graphs.Vertex_Hash,
+                  Equivalent_Elements => Global_Graphs."=",
+                  "="                 => Global_Graphs."=");
 
-               G_Proof_Ins : constant Global_Id :=
-                 Global_Id'(Kind => Proof_Ins,
-                            Name => Info.Name);
+               function Get_Variable_Neighbours
+                 (Start : Vertex_Id)
+                  return Vertex_Sets.Set;
+               --  Returns a set of all Neighbours of Start that correspond to
+               --  variables.
+
+               function Needs_Editing (V : Vertex_Id) return Boolean with
+                 Pre => Global_Graph.Get_Key (V).Kind = Variable;
 
                V_Ins       : constant Vertex_Id :=
-                 Global_Graph.Get_Vertex (G_Ins);
+                 Global_Graph.Get_Vertex (Global_Id'(Kind => Inputs,
+                                                     Name => Info.Name));
 
                V_Outs      : constant Vertex_Id :=
-                 Global_Graph.Get_Vertex (G_Outs);
+                 Global_Graph.Get_Vertex (Global_Id'(Kind => Outputs,
+                                                     Name => Info.Name));
 
                V_Proof_Ins : constant Vertex_Id :=
-                 Global_Graph.Get_Vertex (G_Proof_Ins);
+                 Global_Graph.Get_Vertex (Global_Id'(Kind => Proof_Ins,
+                                                     Name => Info.Name));
 
-               Inputs      : constant Vertex_Sets.Set :=
-                 Get_Variable_Neighbours (V_Ins);
+               -----------------------------
+               -- Get_Variable_Neighbours --
+               -----------------------------
 
-               Outputs     : constant Vertex_Sets.Set :=
-                 Get_Variable_Neighbours (V_Outs);
+               function Get_Variable_Neighbours
+                 (Start : Vertex_Id)
+                  return Vertex_Sets.Set
+               is
+                  VS : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+               begin
+                  for V of Global_Graph.Get_Collection (Start,
+                                                        Out_Neighbours)
+                  loop
+                     if Global_Graph.Get_Key (V).Kind = Variable then
+                        VS.Insert (V);
+                     end if;
+                  end loop;
 
-               Proof_Ins   : constant Vertex_Sets.Set :=
+                  return VS;
+               end Get_Variable_Neighbours;
+
+               -------------------
+               -- Needs_Editing --
+               -------------------
+
+               function Needs_Editing (V : Vertex_Id) return Boolean is
+               begin
+                  return Global_Graph.Edge_Exists (V_Ins, V)
+                    or else Global_Graph.Edge_Exists (V_Outs, V);
+               end Needs_Editing;
+
+               Proof_Ins : constant Vertex_Sets.Set :=
                  Get_Variable_Neighbours (V_Proof_Ins);
+               --  Explicit copy of vertex set is required because while
+               --  editing the graph we tamper with its internal cursors.
+
             begin
                for V of Proof_Ins loop
-                  if Inputs.Contains (V)
-                    or else Outputs.Contains (V)
-                  then
-                     if not Global_Graph.Edge_Exists (V_Ins, V) then
-                        Global_Graph.Add_Edge (V_Ins, V);
-                     end if;
-
+                  if Needs_Editing (V) then
+                     Global_Graph.Add_Edge (V_Ins, V);
                      Global_Graph.Remove_Edge (V_Proof_Ins, V);
                   end if;
                end loop;
