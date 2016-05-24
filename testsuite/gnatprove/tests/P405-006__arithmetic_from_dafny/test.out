@@ -334,5 +334,5 @@ mul_lemmas.adb:258:27: info: initialization of "X" proved
 mul_lemmas.adb:258:27: info: range check proved
 mul_lemmas.adb:258:30: info: initialization of "Y" proved
 mul_lemmas.adb:258:30: info: range check proved
-spark-arithmetic_lemmas.ads:72:51: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:83:38: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:90:51: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:101:38: info: division check proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
