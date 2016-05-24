@@ -306,7 +306,8 @@ package body Gnat2Why.Annotate is
                --  Type of the second argument of the Contains function
 
                Cont_Element   : constant Entity_Id :=
-                 Get_Iterable_Type_Primitive (Container_Type, Name_Element);
+                 SPARK_Util.Get_Iterable_Type_Primitive
+                   (Container_Type, Name_Element);
                --  Element primitive of Container_Type
             begin
                if No (Cont_Element) then
@@ -344,11 +345,13 @@ package body Gnat2Why.Annotate is
                --  Return type of the model function
 
                Cont_Element   : constant Entity_Id :=
-                 Get_Iterable_Type_Primitive (Container_Type, Name_Element);
+                 SPARK_Util.Get_Iterable_Type_Primitive
+                   (Container_Type, Name_Element);
                --  Element primitive of Container_Type
 
                Model_Element  : constant Entity_Id :=
-                 Get_Iterable_Type_Primitive (Model_Type, Name_Element);
+                 SPARK_Util.Get_Iterable_Type_Primitive
+                   (Model_Type, Name_Element);
                --  Element primitive of Model_Type
             begin
                if No (Cont_Element) then

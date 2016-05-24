@@ -30,7 +30,6 @@ with Flow_Utility;       use Flow_Utility;
 with Gnat2Why.Util;      use Gnat2Why.Util;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
-with Sem_Util;           use Sem_Util;
 with Sinfo;              use Sinfo;
 with Sinput;             use Sinput;
 with Snames;             use Snames;
@@ -665,7 +664,7 @@ package body Gnat2Why.Expr.Loops is
                  (if Over_Range then EW_Int_Type
                   else Type_Of_Node
                     (Etype (First_Entity
-                     (Get_Iterable_Type_Primitive
+                     (SPARK_Util.Get_Iterable_Type_Primitive
                           (Etype (Over_Node), Name_First)))));
                W_Container  : constant W_Expr_Id :=
                  (if Over_Range then Why_Empty
@@ -683,8 +682,8 @@ package body Gnat2Why.Expr.Loops is
                Typ_For_Iter : constant W_Type_Id :=
                  (if Need_Iter
                   then Type_Of_Node
-                    (Get_Iterable_Type_Primitive (Typ => Etype (Over_Node),
-                                                  Nam => Name_First))
+                    (SPARK_Util.Get_Iterable_Type_Primitive
+                         (Typ => Etype (Over_Node), Nam => Name_First))
                   else Loop_Index_Type);
                Nam_For_Iter : constant W_Identifier_Id :=
                  (if not Need_Iter then Loop_Index
@@ -735,7 +734,7 @@ package body Gnat2Why.Expr.Loops is
                function Constraint_For_Iterable
                  (Domain : EW_Domain) return W_Expr_Id is
                   H_Elmt   : constant Entity_Id :=
-                    Get_Iterable_Type_Primitive
+                    SPARK_Util.Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_Has_Element);
                   W_H_Elmt : constant W_Identifier_Id :=
                     +Transform_Identifier
@@ -829,7 +828,7 @@ package body Gnat2Why.Expr.Loops is
 
                function Init_Iter return W_Prog_Id is
                   First      : constant Entity_Id :=
-                    Get_Iterable_Type_Primitive
+                    SPARK_Util.Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_First);
                   Call_First : constant W_Expr_Id := +New_VC_Call
                     (Ada_Node => LParam_Spec,
@@ -855,7 +854,7 @@ package body Gnat2Why.Expr.Loops is
                function Loop_Index_Value (Domain : EW_Domain) return W_Expr_Id
                is
                   Elmt      : constant Entity_Id :=
-                    Get_Iterable_Type_Primitive
+                    SPARK_Util.Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_Element);
                   Cur_Expr  : constant W_Expr_Id :=
                     Insert_Simple_Conversion
@@ -1131,7 +1130,7 @@ package body Gnat2Why.Expr.Loops is
                   else
                      declare
                         Next      : constant Entity_Id :=
-                          Get_Iterable_Type_Primitive
+                          SPARK_Util.Get_Iterable_Type_Primitive
                             (Etype (Over_Node), Name_Next);
                         Cur_Expr  : constant W_Expr_Id :=
                           Insert_Simple_Conversion

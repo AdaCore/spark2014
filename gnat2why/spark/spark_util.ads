@@ -641,6 +641,13 @@ package SPARK_Util is
    --  Note that if pragma Interrupt_Priority with no expression is present
    --  then Empty is returned but it really means Interrupt_Priority'Last.
 
+   function Get_Iterable_Type_Primitive
+     (Typ : Entity_Id;
+      Nam : Name_Id) return Entity_Id;
+   --  Retrieve one of the primitives First, Next, Has_Element, Element from
+   --  the value of the Iterable aspect of a formal type.
+   --  Return the ultimate alias.
+
    ------------------------------------
    -- Queries related to subprograms --
    ------------------------------------

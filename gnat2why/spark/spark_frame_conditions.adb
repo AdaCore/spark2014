@@ -579,7 +579,8 @@ package body SPARK_Frame_Conditions is
       --  A subprogram is non-recursive if either it contains no call or its
       --  Entity_Name has been stored in Non_Rec_Subp.
 
-      return Calls (E_Name).Is_Empty
+      return not Calls.Contains (E_Name)
+        or else Calls (E_Name).Is_Empty
         or else Non_Rec_Subp.Contains (E_Name);
    end Is_Non_Recursive_Subprogram;
 

@@ -43,8 +43,8 @@ with Opt;
 with Rtsfind;                        use Rtsfind;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Disp;                       use Sem_Disp;
-with Sem_Util;                       use Sem_Util;
 with Sem_Type;                       use Sem_Type;
+with Sem_Util;                       use Sem_Util;
 with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
@@ -12422,7 +12422,7 @@ package body Gnat2Why.Expr is
          Params      : Transformation_Params) return W_Expr_Id
       is
          Element_E   : constant Entity_Id :=
-           Get_Iterable_Type_Primitive (Over_Type, Name_Element);
+           SPARK_Util.Get_Iterable_Type_Primitive (Over_Type, Name_Element);
          Cont_Type   : constant Entity_Id :=
            Etype (First_Entity (Element_E));
          Cont_Expr   : constant W_Expr_Id :=
@@ -12483,7 +12483,7 @@ package body Gnat2Why.Expr is
             --  If there is no Contains annotation to use, use the Has_Element
             --  function of the Iterable aspect.
 
-            Has_Element := Get_Iterable_Type_Primitive
+            Has_Element := SPARK_Util.Get_Iterable_Type_Primitive
               (Over_Type, Name_Has_Element);
          else
 
@@ -12642,7 +12642,7 @@ package body Gnat2Why.Expr is
                --  Iteration is directly done on elements, no need for a
                --  temporary variable.
 
-               Index_Type := Etype (Get_Iterable_Type_Primitive
+               Index_Type := Etype (SPARK_Util.Get_Iterable_Type_Primitive
                                     (Over_Type, Name_Element));
                Need_Tmp_Var := False;
             end if;

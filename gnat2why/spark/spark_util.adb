@@ -1791,6 +1791,15 @@ package body SPARK_Util is
       end if;
    end Get_Full_Type_Without_Checking;
 
+   ---------------------------------
+   -- Get_Iterable_Type_Primitive --
+   ---------------------------------
+
+   function Get_Iterable_Type_Primitive
+     (Typ : Entity_Id;
+      Nam : Name_Id) return Entity_Id
+     is (Ultimate_Alias (Sem_Util.Get_Iterable_Type_Primitive (Typ, Nam)));
+
    ----------------------------------------
    -- Get_Priority_Or_Interrupt_Priority --
    ----------------------------------------
