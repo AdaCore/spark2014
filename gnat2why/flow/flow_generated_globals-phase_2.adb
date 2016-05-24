@@ -775,34 +775,38 @@ package body Flow_Generated_Globals.Phase_2 is
             Key_A : constant Global_Id := Global_Graph.Get_Key (A);
             Key_B : constant Global_Id := Global_Graph.Get_Key (B);
          begin
-            if Key_B.Kind /= Variable
-              or else Key_A.Kind not in Proof_Ins | Inputs | Outputs
+            --  We only need to consult the Local_Graph when attempting to
+            --  establish a link between a subprogram and a variable.
+
+            if Key_A.Kind in Proof_Ins | Inputs | Outputs
+                 and then Key_B.Kind = Variable
             then
-               --  We only need to consult the Local_Graph when attempting
-               --  to establish a link between a subprogram and a variable.
+               declare
+                  use Local_Graphs;
+
+                  Subp, Var : Local_Graphs.Vertex_Id;
+               begin
+                  Subp := Local_Graph.Get_Vertex (Key_A.Name);
+
+                  if Subp = Local_Graphs.Null_Vertex then
+                     return True;
+                  end if;
+
+                  Var := Local_Graph.Get_Vertex (Key_B.Name);
+
+                  if Var = Local_Graphs.Null_Vertex then
+                     return True;
+                  end if;
+
+                  --  Check if local variable B can act as global of subprogram
+                  --  A.
+                  return Local_Graph.Edge_Exists (Var, Subp);
+               end;
+
+            else
                return True;
             end if;
 
-            declare
-               use Local_Graphs;
-
-               Vertex_A, Vertex_B : Local_Graphs.Vertex_Id;
-            begin
-               Vertex_A := Local_Graph.Get_Vertex (Key_A.Name);
-
-               if Vertex_A = Local_Graphs.Null_Vertex then
-                  return True;
-               end if;
-
-               Vertex_B := Local_Graph.Get_Vertex (Key_B.Name);
-
-               if Vertex_B = Local_Graphs.Null_Vertex then
-                  return True;
-               end if;
-
-               --  Check if local variable B can act as global of subprogram A
-               return Local_Graph.Edge_Exists (Vertex_B, Vertex_A);
-            end;
          end Edge_Selector;
 
       --  Start of processing for Add_All_Edges
