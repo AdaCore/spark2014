@@ -29,16 +29,16 @@ is
           else
             Length (Model.Available) = 0)
             and then
-         (for all J in 1 .. Length (Model.Available) =>
+         (for all J in 1 .. Integer (Length (Model.Available)) =>
             Get (Model.Available, J) in Valid_Resource
               and then
             Data (Get (Model.Available, J)).Next =
-              (if J < Length (Model.Available) then Get (Model.Available, J + 1) else No_Resource)
+              (if J < Integer (Length (Model.Available)) then Get (Model.Available, J + 1) else No_Resource)
               and then
             (for all K in 1 .. J - 1 =>
                Get (Model.Available, J) /= Get (Model.Available, K)))
             and then
-         (for all E in Model.Allocated => E in Valid_Resource)
+         (for all E of Model.Allocated => E in Valid_Resource)
             and then
          (for all R in Valid_Resource =>
             (case Data (R).Stat is
@@ -46,10 +46,11 @@ is
                when Allocated => not Mem (Model.Available, R) and Mem (Model.Allocated, R))));
 
    begin
+      pragma Assert (Length (Model.Available) = 0);
       for R in Valid_Resource loop
          Model.Available := Add (Model.Available, R);
          pragma Loop_Invariant (Is_Empty (Model.Allocated));
-         pragma Loop_Invariant (Length (Model.Available) = Natural (R));
+         pragma Loop_Invariant (Integer (Length (Model.Available)) = Natural (R));
          pragma Loop_Invariant (Get (Model.Available, 1) = 1);
          pragma Loop_Invariant
            (for all RR in 1 .. R => Get (Model.Available, Natural (RR)) = RR);
@@ -60,7 +61,7 @@ is
 
    procedure Alloc (Res : out Resource) is
       Next_Avail : Resource;
-      MA : Sequence := Model.Available;
+      MA : Sequence := Model.Available with Ghost;
    begin
       if First_Available /= No_Resource then
          Res := First_Available;
@@ -68,7 +69,7 @@ is
          Data (Res) := Cell'(Stat => Allocated, Next => No_Resource);
          First_Available := Next_Avail;
 
-         Model.Available := Remove_At (Model.Available, 1);
+         Model.Available := Delete (Model.Available, 1);
          Model.Allocated := Add (Model.Allocated, Res);
       else
          Res := No_Resource;

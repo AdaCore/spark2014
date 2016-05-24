@@ -18,9 +18,9 @@ is
    package body M is
 
       function Is_Valid (M : T) return Boolean is
-        ((for all E in M.Available => E in Valid_Resource)
+        ((for all E of M.Available => E in Valid_Resource)
             and then
-         (for all E in M.Allocated => E in Valid_Resource)
+         (for all E of M.Allocated => E in Valid_Resource)
             and then
          (for all R in Valid_Resource =>
             (case Data (R) is
@@ -37,9 +37,9 @@ is
                when Allocated => Alloc := Add (Alloc, R);
             end case;
             pragma Loop_Invariant
-              ((for all E in Avail => E in 1 .. R)
+              ((for all E of Avail => E in 1 .. R)
                   and then
-               (for all E in Alloc => E in 1 .. R)
+               (for all E of Alloc => E in 1 .. R)
                   and then
                (for all RR in 1 .. R =>
                  (case Data (RR) is
