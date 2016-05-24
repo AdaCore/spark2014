@@ -935,6 +935,10 @@ package body Flow_Generated_Globals.Phase_2 is
                            Name => Nam);
 
                      begin
+                        if not Global_Graph.Contains (Target) then
+                           Global_Graph.Add_Vertex (Target);
+                        end if;
+
                         --  Add edge or do nothing if it already exists
                         Global_Graph.Add_Edge (Source, Target);
                      end;
@@ -1266,65 +1270,6 @@ package body Flow_Generated_Globals.Phase_2 is
                   Global_Graph.Add_Vertex (G);
                end;
             end loop;
-         end loop;
-
-         --  Lastly, create vertices for variables that come from the
-         --  Get_Globals function.
-         for N of All_Other_Subprograms loop
-            declare
-               Subprogram   : constant Entity_Id := Find_Entity (N);
-               FS_Proof_Ins : Flow_Id_Sets.Set;
-               FS_Reads     : Flow_Id_Sets.Set;
-               FS_Writes    : Flow_Id_Sets.Set;
-
-               procedure Create_Vertices_For_FS (FS : Flow_Id_Sets.Set);
-               --  Creates a vertex for every Flow_Id in FS that does not
-               --  already have one.
-
-               ----------------------------
-               -- Create_Vertices_For_FS --
-               ----------------------------
-
-               procedure Create_Vertices_For_FS (FS : Flow_Id_Sets.Set) is
-               begin
-                  for F of FS loop
-                     declare
-                        G : constant Global_Id (Variable) :=
-                          (Kind => Variable,
-                           Name =>
-                             (case F.Kind is
-                                when Direct_Mapping |
-                                     Record_Field   =>
-                                   To_Entity_Name (Get_Direct_Mapping_Id (F)),
-
-                                when Magic_String  =>
-                                   F.Name,
-
-                                when others =>
-                                   raise Program_Error));
-
-                     begin
-                        if not Global_Graph.Contains (G) then
-                           Global_Graph.Add_Vertex (G);
-                        end if;
-                     end;
-                  end loop;
-               end Create_Vertices_For_FS;
-
-            begin
-               if Present (Subprogram) then
-                  Get_Globals (Subprogram => Subprogram,
-                               Scope      => Get_Flow_Scope (Subprogram),
-                               Classwide  => False,
-                               Proof_Ins  => FS_Proof_Ins,
-                               Reads      => FS_Reads,
-                               Writes     => FS_Writes);
-
-                  Create_Vertices_For_FS (FS_Proof_Ins);
-                  Create_Vertices_For_FS (FS_Reads);
-                  Create_Vertices_For_FS (FS_Writes);
-               end if;
-            end;
          end loop;
       end Create_All_Vertices;
 
