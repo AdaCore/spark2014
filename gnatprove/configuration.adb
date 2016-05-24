@@ -361,7 +361,7 @@ ASCII.LF;
 
          if not Is_Externally_Built (Project) then
             declare
-               Obj_Dir  : constant Virtual_File := Project.Object_Dir;
+               Obj_Dir  : constant Virtual_File := Project.Artifacts_Dir;
                Name_Dir : constant String := +Base_Dir_Name (Obj_Dir);
                Rm_Dir   : constant String := Obj_Dir.Display_Full_Name;
 
@@ -1503,11 +1503,11 @@ ASCII.LF;
 
          --  After the call to Init, the object directory includes the
          --  sub-directory "gnatprove" set through Set_Object_Subdir.
-         Main_Subdir := new String'(Proj_Type.Object_Dir.Display_Full_Name);
+         Main_Subdir := new String'(Proj_Type.Artifacts_Dir.Display_Full_Name);
 
          declare
             Obj_Dir_Hash : constant Hash_Type :=
-              Full_Name_Hash (Proj_Type.Object_Dir);
+              Full_Name_Hash (Proj_Type.Artifacts_Dir);
          begin
             Socket_Name := new String'
               ("why3server" & Hash_Image (Obj_Dir_Hash) & ".sock");

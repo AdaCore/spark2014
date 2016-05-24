@@ -264,7 +264,7 @@ procedure Gnatprove is
    is
       Args     : String_Lists.List;
       Obj_Dir  : constant String :=
-         Proj.Root_Project.Object_Dir.Display_Full_Name;
+         Proj.Root_Project.Artifacts_Dir.Display_Full_Name;
       Opt_File : constant String :=
          Pass_Extra_Options_To_Gnat2why
             (Translation_Phase => False,
@@ -585,7 +585,7 @@ procedure Gnatprove is
       Status       : out Integer)
    is
       Obj_Dir : constant String :=
-        Proj.Root_Project.Object_Dir.Display_Full_Name;
+        Proj.Root_Project.Artifacts_Dir.Display_Full_Name;
    begin
       Generate_Why3_Conf_File (Obj_Dir);
       declare
@@ -1204,7 +1204,8 @@ procedure Gnatprove is
       Cur  : constant String := Ada.Directories.Current_Directory;
       Id   : Process_Descriptor;
    begin
-      Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
+      Ada.Directories.Set_Directory
+        (Proj_Type.Artifacts_Dir.Display_Full_Name);
       Args.Append ("-j");
       Args.Append (Image (Parallel, 1));
       Args.Append ("--socket");
@@ -1271,7 +1272,8 @@ begin
       Obj_Path : constant File_Array :=
         Object_Path (Proj_Type, Recursive => True);
    begin
-      Generate_SPARK_Report (Proj_Type.Object_Dir.Display_Full_Name, Obj_Path);
+      Generate_SPARK_Report
+        (Proj_Type.Artifacts_Dir.Display_Full_Name, Obj_Path);
    end;
 exception
    when Invalid_Project =>
