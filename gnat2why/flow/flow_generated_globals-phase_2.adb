@@ -692,16 +692,14 @@ package body Flow_Generated_Globals.Phase_2 is
       All_Globals           : Name_Sets.Set;
       --  Contains all global variables
 
-      GG_Subprograms        : Name_Sets.Set;
-      --  Contains all subprograms for which a GG entry exists
+      All_Subprograms : Name_Sets.Set;
+      --  Subprograms that we know of, with or without a GG entry
 
-      All_Subprograms       : Name_Sets.Set;
-      --  Contains all subprograms that we know of, even if a GG entry does not
-      --  exist for them.
+      Subprograms_With_GG : Name_Sets.Set;
+      --  Subprograms for which a GG entry exists
 
-      All_Other_Subprograms : Name_Sets.Set;
-      --  Contains all subprograms for which a GG entry does not exist
-      --  ??? rename to No_GG_Subprograms?
+      Subprograms_Without_GG : Name_Sets.Set;
+      --  Subprograms for which a GG entry does not exist
 
       Local_Graph : Local_Graphs.Graph;
       --  A graph that represents the hierarchy of subprograms (which
@@ -888,9 +886,8 @@ package body Flow_Generated_Globals.Phase_2 is
             end;
          end loop;
 
-         --  Add edges between subprograms and variables coming from the
-         --  Get_Globals function.
-         for N of All_Other_Subprograms loop
+         --  Add edges for subprograms without a GG entry
+         for N of Subprograms_Without_GG loop
             declare
                Subprogram : constant Entity_Id := Find_Entity (N);
 
@@ -1770,7 +1767,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      case V.The_Global_Info.Kind is
                         when Kind_Subprogram | Kind_Entry | Kind_Task =>
-                           GG_Subprograms.Include (V.The_Global_Info.Name);
+                           Subprograms_With_GG.Insert (V.The_Global_Info.Name);
                            All_Subprograms.Include (V.The_Global_Info.Name);
 
                            Subprogram_Info_List.Append (V.The_Global_Info);
@@ -2059,7 +2056,7 @@ package body Flow_Generated_Globals.Phase_2 is
       end if;
 
       --  Populate the All_Other_Subprograms set
-      All_Other_Subprograms := All_Subprograms - GG_Subprograms;
+      Subprograms_Without_GG := All_Subprograms - Subprograms_With_GG;
 
       --  Initialize Local_Graph and Global_Graph
       Local_Graph  := Local_Graphs.Create;
