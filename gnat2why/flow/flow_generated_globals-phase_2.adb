@@ -783,6 +783,8 @@ package body Flow_Generated_Globals.Phase_2 is
                   use Local_Graphs;
 
                   Subp, Var : Local_Graphs.Vertex_Id;
+                  --  Vertices for a subprogram and a variable
+
                begin
                   Subp := Local_Graph.Get_Vertex (Key_A.Name);
 
@@ -822,8 +824,8 @@ package body Flow_Generated_Globals.Phase_2 is
                procedure Connect
                  (Targets     : Name_Sets.Set;
                   Connections : Kinds_Array);
-               --  Connect vertex Source with vertices of a given Kind and
-               --  names from the Targets container.
+               --  Connect Targets names using a given connection source and
+               --  target kind.
 
                -------------
                -- Connect --
