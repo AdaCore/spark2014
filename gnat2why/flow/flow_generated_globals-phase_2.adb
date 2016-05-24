@@ -1997,7 +1997,7 @@ package body Flow_Generated_Globals.Phase_2 is
                (ALIs.Table (Index).Afile)));
             Nam := Trim (Source => Nam,
                          Left   => Null_Set,
-                         Right  => To_Set (Character'Val (0)));
+                         Right  => To_Set (ASCII.NUL));
 
             Read_Files.Insert (New_Item => To_String (Nam),
                                Position => Dummy,
