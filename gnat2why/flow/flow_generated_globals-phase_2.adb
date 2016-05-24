@@ -416,8 +416,8 @@ package body Flow_Generated_Globals.Phase_2 is
       --  The above 3 sets will contain the most refined views of their
       --  respective globals.
 
-      Temp_NS : Name_Sets.Set;
-      Unused  : Flow_Id_Sets.Set;
+      Final_View : Name_Sets.Set;
+      Unused     : Flow_Id_Sets.Set;
 
    begin
       --  Call GG_Get_MR_Globals to calculate MR_Proof_Reads, MR_Reads and
@@ -430,23 +430,23 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Up project variables based on scope S and give Flow_Ids
       --  their correct views.
       Up_Project (Most_Refined => MR_Proof_Reads,
-                  Final_View   => Temp_NS,
+                  Final_View   => Final_View,
                   Scope        => S,
                   Reads        => Unused);
-      Proof_Reads := To_Flow_Id_Set (Temp_NS, In_View, S);
+      Proof_Reads := To_Flow_Id_Set (Final_View, In_View, S);
 
       Up_Project (Most_Refined => MR_Reads,
-                  Final_View   => Temp_NS,
+                  Final_View   => Final_View,
                   Scope        => S,
                   Reads        => Unused);
-      Reads := To_Flow_Id_Set (Temp_NS, In_View, S);
+      Reads := To_Flow_Id_Set (Final_View, In_View, S);
 
       Up_Project (Most_Refined      => MR_Writes,
-                  Final_View        => Temp_NS,
+                  Final_View        => Final_View,
                   Scope             => S,
                   Reads             => Reads,
                   Processing_Writes => True);
-      Writes := To_Flow_Id_Set (Temp_NS, Out_View, S);
+      Writes := To_Flow_Id_Set (Final_View, Out_View, S);
    end GG_Get_Globals;
 
    ------------------------
