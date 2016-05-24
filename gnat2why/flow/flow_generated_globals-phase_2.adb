@@ -80,7 +80,7 @@ package body Flow_Generated_Globals.Phase_2 is
    ----------------------------------------------------------------------
 
    type Global_Id_Kind is (Null_Global_Id,
-                           --  Does not represent anything yet
+                           --  Dummy kind required for graphs
 
                            Inputs,
                            --  Represents subprogram's Inputs
@@ -1694,7 +1694,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
          --  We have reached the "GG" section of the ALI file
          while Length (Line) >= 5 and then Slice (Line, 1, 3) = "GG " loop
-            --  Parse the given record.
+            --  Parse the given record
             declare
                A : Archive (Serialisation.Input) :=
                  From_String (Unbounded_Slice (Line, 4, Length (Line)));
