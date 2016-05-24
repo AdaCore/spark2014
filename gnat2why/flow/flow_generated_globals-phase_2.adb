@@ -1286,11 +1286,13 @@ package body Flow_Generated_Globals.Phase_2 is
                ----------------------------
 
                procedure Create_Vertices_For_FS (FS : Flow_Id_Sets.Set) is
-                  G   : Global_Id (Variable);
-                  Nam : Entity_Name;
                begin
                   for F of FS loop
-                     Nam := (case F.Kind is
+                     declare
+                        G : constant Global_Id (Variable) :=
+                          (Kind => Variable,
+                           Name =>
+                             (case F.Kind is
                                 when Direct_Mapping |
                                      Record_Field   =>
                                    To_Entity_Name (Get_Direct_Mapping_Id (F)),
@@ -1299,14 +1301,13 @@ package body Flow_Generated_Globals.Phase_2 is
                                    F.Name,
 
                                 when others =>
-                                   raise Program_Error);
+                                   raise Program_Error));
 
-                     G   := Global_Id'(Kind => Variable,
-                                       Name => Nam);
-
-                     if not Global_Graph.Contains (G) then
-                        Global_Graph.Add_Vertex (G);
-                     end if;
+                     begin
+                        if not Global_Graph.Contains (G) then
+                           Global_Graph.Add_Vertex (G);
+                        end if;
+                     end;
                   end loop;
                end Create_Vertices_For_FS;
 
