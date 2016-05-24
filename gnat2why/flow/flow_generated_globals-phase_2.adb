@@ -433,20 +433,20 @@ package body Flow_Generated_Globals.Phase_2 is
                   Final_View   => Temp_NS,
                   Scope        => S,
                   Reads        => Unused);
-      Proof_Reads.Union (To_Flow_Id_Set (Temp_NS, In_View, S));
+      Proof_Reads := To_Flow_Id_Set (Temp_NS, In_View, S);
 
       Up_Project (Most_Refined => MR_Reads,
                   Final_View   => Temp_NS,
                   Scope        => S,
                   Reads        => Unused);
-      Reads.Union (To_Flow_Id_Set (Temp_NS, In_View, S));
+      Reads := To_Flow_Id_Set (Temp_NS, In_View, S);
 
       Up_Project (Most_Refined      => MR_Writes,
                   Final_View        => Temp_NS,
                   Scope             => S,
                   Reads             => Reads,
                   Processing_Writes => True);
-      Writes.Union (To_Flow_Id_Set (Temp_NS, Out_View, S));
+      Writes := To_Flow_Id_Set (Temp_NS, Out_View, S);
    end GG_Get_Globals;
 
    ------------------------
