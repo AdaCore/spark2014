@@ -174,6 +174,65 @@ Similarly, variants of ``Init_Vec_Zero`` and ``Init_List_Zero`` that assign a
 different value to each element of the collection would be proved by
 |GNATprove|.
 
+.. _Mapping Loops:
+
+Mapping Loops
+^^^^^^^^^^^^^
+
+This kind of loops iterates over a collection to map every element of the
+collection to a new value:
+
+ ================  ========================
+ Loop Pattern      Separate Modification of Each Element
+ ================  ========================
+ Proof Objective   Every element of the collection has an updated value.
+ Loop Behavior     Loops over the collection and updates every
+                   element of the collection.
+ Loop Invariant    Every element updated so far has its specific value.
+ ================  ========================
+
+In the simplest case, every element is assigned a new value based only on its
+initial value. For example, in procedure ``Map_Arr_Incr`` below, every element
+of array ``A`` is incremented by one:
+
+.. literalinclude:: gnatprove_by_example/examples/map_arr_incr.adb
+   :language: ada
+   :linenos:
+
+The first loop invariant expresses that all elements up to the current loop
+index ``J`` have been incremented. The second loop invariant expresses that
+other elements have not been modified (using :ref:`Attribute Loop_Entry`). With
+this combined loop invariant, |GNATprove| is able to prove the postcondition of
+``Map_Arr_Incr``, namely that all elements of the array have been incremented:
+
+.. literalinclude:: gnatprove_by_example/results/map_arr_incr.prove
+   :language: none
+
+Consider now a variant of the same initialization loop over a list:
+
+.. literalinclude:: gnatprove_by_example/examples/map_list_incr.adb
+   :language: ada
+   :linenos:
+
+Like before, the first loop invariant expresses that all elements up to the
+current loop index ``J`` have been incremented (using function
+``First_To_Previous`` to retrieve the part of the list up to the current
+cursor), and the second loop invariant expresses that other elements have not
+been modified (using function ``Current_To_Last`` to retrieve the part of the
+list following the current cursor). Note that it is necessary to state here
+that the rest of the list at the current iteration is the same as at loop
+entry, using function ``Strict_Equal``, which is stronger that using operator
+``=`` on lists, as the latter only compares element values, while the former
+compares also positions of elements in the internal data structure (that is,
+the value of cursors to these elements). This is needed because we are using
+the same cursor ``Cu`` to denote an element in the current list and the same
+element in the list at loop entry. With this loop invariant, |GNATprove| is
+able to prove the postcondition of ``Map_List_Incr``, namely that all elements
+of the list have been incremented:
+
+.. literalinclude:: gnatprove_by_example/results/map_list_incr.prove
+   :language: none
+
 .. _Validation Loops:
 
 Validation Loops
