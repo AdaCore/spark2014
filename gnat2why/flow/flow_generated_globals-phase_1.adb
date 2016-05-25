@@ -332,10 +332,10 @@ package body Flow_Generated_Globals.Phase_1 is
 
       --  Write Volatile info
       V := (Kind                 => EK_Volatiles,
-            All_Async_Readers    => Async_Readers_Vars,
-            All_Async_Writers    => Async_Writers_Vars,
-            All_Effective_Reads  => Effective_Reads_Vars,
-            All_Effective_Writes => Effective_Writes_Vars);
+            Async_Readers    => Async_Readers_Vars,
+            Async_Writers    => Async_Writers_Vars,
+            Effective_Reads  => Effective_Reads_Vars,
+            Effective_Writes => Effective_Writes_Vars);
       Write_To_ALI (V);
 
       --  Write nonblocking subprograms

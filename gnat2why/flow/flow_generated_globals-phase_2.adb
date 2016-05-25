@@ -275,10 +275,10 @@ package body Flow_Generated_Globals.Phase_2 is
    Initializes_Aspects_Map : Initializes_Aspects_Maps.Map :=
      Initializes_Aspects_Maps.Empty_Map;
 
-   All_Initialized_Names   : Name_Sets.Set := Name_Sets.Empty_Set;
+   Initialized_Vars_And_States : Name_Sets.Set := Name_Sets.Empty_Set;
    --  Variables and state abstractions know to be initialized
 
-   Package_To_Locals_Map   : Name_Graphs.Map := Name_Graphs.Empty_Map;
+   Package_To_Locals_Map : Name_Graphs.Map := Name_Graphs.Empty_Map;
    --  package -> {local variables}
    --
    --  This maps packages to their local variables
@@ -287,12 +287,12 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Volatile information
    ----------------------------------------------------------------------
 
-   All_Volatile_Vars     : Name_Sets.Set := Name_Sets.Empty_Set;
+   Volatile_Vars         : Name_Sets.Set := Name_Sets.Empty_Set;
    Async_Writers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
    Async_Readers_Vars    : Name_Sets.Set := Name_Sets.Empty_Set;
    Effective_Reads_Vars  : Name_Sets.Set := Name_Sets.Empty_Set;
    Effective_Writes_Vars : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  Volatile information
+   --  Volatile variables; Volatile_Vars is a union of the four other sets
 
    ----------------------------------------------------------------------
    --  Local subprograms
@@ -391,9 +391,9 @@ package body Flow_Generated_Globals.Phase_2 is
       return Refined;
    end Fully_Refine;
 
-   -----------------------------------
-   -- GG_Get_All_State_Abstractions --
-   -----------------------------------
+   -------------------------------
+   -- GG_Get_State_Abstractions --
+   -------------------------------
 
    function GG_Get_State_Abstractions return Name_Sets.Set is
    begin
@@ -689,8 +689,8 @@ package body Flow_Generated_Globals.Phase_2 is
    -------------
 
    procedure GG_Read (GNAT_Root : Node_Id) is
-      All_Globals           : Name_Sets.Set;
-      --  Contains all global variables
+      Globals : Name_Sets.Set;
+      --  Global variables
 
       All_Subprograms : Name_Sets.Set;
       --  Subprograms that we know of, with or without a GG entry
@@ -712,16 +712,16 @@ package body Flow_Generated_Globals.Phase_2 is
       Package_Info_List : Global_Info_Lists.List;
       --  Information about packages from the "generated globals" algorithm
 
-      procedure Add_All_Edges;
+      procedure Add_Edges;
       --  Reads the populated Subprogram_Info_List and generates all the edges
       --  of the Global_Graph. While adding edges we consult the Local_Graph so
       --  as not to add edges to local variables.
       --  Also, creates edges for (conditional and unconditional) subprogram
       --  calls in the tasking-related call graphs.
 
-      procedure Create_All_Vertices;
-      --  Creates all the vertices of the Global_Graph and subprogram vertices
-      --  in the Tasking_Graph.
+      procedure Create_Vertices;
+      --  Creates the vertices of the Global_Graph and subprogram vertices in
+      --  the Tasking_Graph.
 
       procedure Create_Local_Graph;
       --  Creates the Local_Graph. This graph will be used to prevent adding
@@ -754,11 +754,11 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Do transitive closure of the tasking graph and put the resulting
       --  information back to bag with tasking-related information.
 
-      -------------------
-      -- Add_All_Edges --
-      -------------------
+      ---------------
+      -- Add_Edges --
+      ---------------
 
-      procedure Add_All_Edges is
+      procedure Add_Edges is
          use Global_Graphs;
 
          function Edge_Selector (A, B : Vertex_Id) return Boolean;
@@ -809,7 +809,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
          end Edge_Selector;
 
-      --  Start of processing for Add_All_Edges
+      --  Start of processing for Add_Edges
 
       begin
          --  Go through the Subprogram_Info_List and add edges
@@ -1243,16 +1243,16 @@ package body Flow_Generated_Globals.Phase_2 is
 
             Call_Graph.Close;
          end Add_Ceiling_Priority_Edges;
-      end Add_All_Edges;
+      end Add_Edges;
 
-      -------------------------
-      -- Create_All_Vertices --
-      -------------------------
+      ---------------------
+      -- Create_Vertices --
+      ---------------------
 
-      procedure Create_All_Vertices is
+      procedure Create_Vertices is
       begin
          --  Create vertices for all global variables
-         for N of All_Globals loop
+         for N of Globals loop
             Global_Graph.Add_Vertex (Global_Id'(Kind => Variable,
                                                 Name => N));
          end loop;
@@ -1270,7 +1270,7 @@ package body Flow_Generated_Globals.Phase_2 is
                end;
             end loop;
          end loop;
-      end Create_All_Vertices;
+      end Create_Vertices;
 
       ------------------------
       -- Create_Local_Graph --
@@ -1557,11 +1557,11 @@ package body Flow_Generated_Globals.Phase_2 is
                       RHS       => RHS,
                       RHS_Proof => RHS_Proof);
 
-               --  Add LHS and LHS_Proof to the All_Initialized_Names set
-               All_Initialized_Names.Union (II.LHS);
-               All_Initialized_Names.Union (II.LHS_Proof);
+               --  Add LHS and LHS_Proof to the Initialized_Vars_And_States set
+               Initialized_Vars_And_States.Union (II.LHS);
+               Initialized_Vars_And_States.Union (II.LHS_Proof);
 
-               --  Add state abstractions to the All_Initialized_Names set when
+               --  Add state abstractions to Initialized_Vars_And_States when
                --  all constituents are initialized and remove constituents of
                --  state abstractions that are not fully initialized.
                declare
@@ -1577,7 +1577,7 @@ package body Flow_Generated_Globals.Phase_2 is
                         then
                            --  All constituents are initialized so we add the
                            --  entire abstract state.
-                           All_Initialized_Names.Include (State);
+                           Initialized_Vars_And_States.Include (State);
                         else
                            --  At least one constituent is not initialized so
                            --  there is no point in considering the current
@@ -1589,14 +1589,13 @@ package body Flow_Generated_Globals.Phase_2 is
 
                   --  Remove constituents whose enclosing state abstraction is
                   --  not fully initialized.
-                  All_Initialized_Names.Difference (To_Remove);
+                  Initialized_Vars_And_States.Difference (To_Remove);
                   II.LHS.Difference (To_Remove);
                   II.LHS_Proof.Difference (To_Remove);
                end;
 
                --  Insert II into Initializes_Aspects_Map
                Initializes_Aspects_Map.Insert (P.Name, II);
-
             end;
 
             --  This is a convenient place to populate the
@@ -1739,32 +1738,32 @@ package body Flow_Generated_Globals.Phase_2 is
                      State_Abstractions.Union (V.Remote_States);
 
                   when EK_Volatiles =>
-                     Async_Writers_Vars.Union (V.All_Async_Writers);
-                     All_Volatile_Vars.Union (V.All_Async_Writers);
+                     Async_Writers_Vars.Union (V.Async_Writers);
+                     Volatile_Vars.Union (V.Async_Writers);
 
-                     Async_Readers_Vars.Union (V.All_Async_Readers);
-                     All_Volatile_Vars.Union (V.All_Async_Readers);
+                     Async_Readers_Vars.Union (V.Async_Readers);
+                     Volatile_Vars.Union (V.Async_Readers);
 
-                     Effective_Reads_Vars.Union (V.All_Effective_Reads);
-                     All_Volatile_Vars.Union (V.All_Effective_Reads);
+                     Effective_Reads_Vars.Union (V.Effective_Reads);
+                     Volatile_Vars.Union (V.Effective_Reads);
 
-                     Effective_Writes_Vars.Union (V.All_Effective_Writes);
-                     All_Volatile_Vars.Union (V.All_Effective_Writes);
+                     Effective_Writes_Vars.Union (V.Effective_Writes);
+                     Volatile_Vars.Union (V.Effective_Writes);
 
                   when EK_Globals =>
-                     All_Globals.Union (V.The_Global_Info.Inputs_Proof);
-                     All_Globals.Union (V.The_Global_Info.Inputs);
-                     All_Globals.Union (V.The_Global_Info.Outputs);
+                     Globals.Union (V.The_Global_Info.Inputs_Proof);
+                     Globals.Union (V.The_Global_Info.Inputs);
+                     Globals.Union (V.The_Global_Info.Outputs);
 
                      All_Subprograms.Union (V.The_Global_Info.Proof_Calls);
                      All_Subprograms.Union (V.The_Global_Info.Definite_Calls);
                      All_Subprograms.Union
                        (V.The_Global_Info.Conditional_Calls);
 
-                     All_Globals.Union (V.The_Global_Info.Local_Variables);
+                     Globals.Union (V.The_Global_Info.Local_Variables);
                      All_Subprograms.Union
                        (V.The_Global_Info.Local_Subprograms);
-                     All_Globals.Union
+                     Globals.Union
                        (V.The_Global_Info.Local_Definite_Writes);
 
                      case V.The_Global_Info.Kind is
@@ -1947,7 +1946,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
       begin
          --  Detect constants without variable input
-         for Glob of All_Globals loop
+         for Glob of Globals loop
             declare
                Const : constant Entity_Id := Find_Entity (Glob);
             begin
@@ -2069,11 +2068,11 @@ package body Flow_Generated_Globals.Phase_2 is
       Note_Time ("gg_read - local graph done");
 
       --  Create all vertices of the Global_Graph
-      Create_All_Vertices;
+      Create_Vertices;
       Note_Time ("gg_read - vertices added");
 
       --  Add all edges in the Global_Graph and tasking-related graphs
-      Add_All_Edges;
+      Add_Edges;
       Note_Time ("gg_read - edges added");
 
       --  Edit Proof_Ins
@@ -2280,7 +2279,7 @@ package body Flow_Generated_Globals.Phase_2 is
    function GG_Is_Initialized_At_Elaboration
      (EN : Entity_Name)
       return Boolean is
-     (All_Initialized_Names.Contains (EN)
+     (Initialized_Vars_And_States.Contains (EN)
         or else GG_Has_Async_Writers (EN));
 
    --------------------
@@ -2288,7 +2287,7 @@ package body Flow_Generated_Globals.Phase_2 is
    --------------------
 
    function GG_Is_Volatile (EN : Entity_Name) return Boolean
-     renames All_Volatile_Vars.Contains;
+     renames Volatile_Vars.Contains;
 
    -----------------------------
    -- Is_Potentially_Blocking --

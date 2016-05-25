@@ -51,10 +51,10 @@ package Flow_Generated_Globals.ALI_Serialization is
          when EK_Remote_States =>
             Remote_States               : Name_Sets.Set;
          when EK_Volatiles =>
-            All_Async_Readers           : Name_Sets.Set;
-            All_Async_Writers           : Name_Sets.Set;
-            All_Effective_Reads         : Name_Sets.Set;
-            All_Effective_Writes        : Name_Sets.Set;
+            Async_Readers               : Name_Sets.Set;
+            Async_Writers               : Name_Sets.Set;
+            Effective_Reads             : Name_Sets.Set;
+            Effective_Writes            : Name_Sets.Set;
          when EK_Globals =>
             The_Global_Info             : Global_Phase_1_Info;
          when EK_Protected_Instance =>
