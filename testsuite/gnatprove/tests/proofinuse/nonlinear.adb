@@ -39,6 +39,13 @@ is
       pragma Assert (Res in -99 .. -Y);
    end Mult;
 
+   procedure Mult_Protect (X, Y, Z : Natural_32; Res : out Integer_32) is
+   begin
+      pragma Assume (Y = 0 or else X <= Z / Y);
+      Res := X * Y;
+      pragma Assert (Res <= Z);
+   end Mult_Protect;
+
    procedure Round (X, Y, Z : Positive_32; Res : out Natural_32) is
    begin
       pragma Assume (Y <= Z);

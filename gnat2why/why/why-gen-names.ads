@@ -180,7 +180,11 @@ package Why.Gen.Names is
       WNE_Attr_Length_3,
       WNE_Attr_Length_4,
       WNE_Attr_Modulus,
+      WNE_Attr_Object_Alignment,
+      WNE_Attr_Object_Component_Size,
       WNE_Attr_Object_Size,
+      WNE_Attr_Value_Alignment,
+      WNE_Attr_Value_Component_Size,
       WNE_Attr_Value_Size,
       WNE_Attr_Tag,
 
@@ -188,6 +192,10 @@ package Why.Gen.Names is
       WNE_Attr_Small,
 
       WNE_Attr_Value,
+
+      --  Suffix of the module giving the axiom defining a logic function
+      WNE_Axiom_Suffix,  --  ___axiom
+
       WNE_Bool_Eq,
       WNE_Check_Not_First,
       WNE_Check_Not_Last,

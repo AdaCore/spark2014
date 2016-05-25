@@ -1,0 +1,34 @@
+intros (arg2_type,pre).
+Open Scope Z_scope.
+Require SPARK.
+
+(* rewrite hypotheses *)
+pose (to_uint_bounds arg1) as arg1_type; clearbody arg1_type.
+destruct arg1_type as (arg1_lb, arg1_ub), arg2_type as (arg2_lb, arg2_ub).
+unfold ule in arg2_lb, arg2_ub, pre.
+rewrite to_uint_udiv in pre.
+rewrite to_uint_of_int in arg2_lb, arg2_ub, pre by auto with zarith.
+assert (0 < to_uint arg2) as arg2_pos by auto with zarith.
+unfold EuclideanDivision.div in pre.
+case Z_le_dec as [hyp|neg_hyp] in pre; [|contradict neg_hyp; apply Z_mod_lt; auto with zarith].
+
+(* rewrite goal *)
+apply to_uint_extensionality.
+rewrite to_uint_udiv.
+unfold EuclideanDivision.div.
+case Z_le_dec; [intros|intros neg_hyp; contradict neg_hyp; apply Z_mod_lt; auto with zarith].
+rewrite to_uint_mul.
+rewrite BV_Gen.mod1_out.
+
+(* (arg1 * arg2) / arg2 = arg1 *)
+* assert (to_uint arg2 <> 0) as arg2_not_zero by auto with zarith.
+  apply (Z.div_mul _ _ arg2_not_zero).
+
+(* no overflow in arg1 * arg2 *)
+* split; [auto with zarith|].
+  replace (SPARK_MAX_UINT_PLUS1) with (Z.succ SPARK_MAX_UINT) by auto with zarith.
+  apply Zle_lt_succ.
+  assert (0 <= SPARK_MAX_UINT) as uint_max_nat by auto with zarith.
+  apply (SPARK.div_then_mult _ _ _ arg2_pos uint_max_nat pre).
+
+Qed.

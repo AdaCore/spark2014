@@ -20,4 +20,4 @@ foo.adb:73:38: info: initialization of "M" proved
 foo.adb:75:32: export "M" must not depend on Proof_In "Y" (SPARK RM 6.1.4(17))
 foo.adb:75:32: export "N" must not depend on Proof_In "Y" (SPARK RM 6.1.4(17))
 foo.adb:84:15: info: initialization of "Tmp1" proved
-gnatprove: error during analysis of data and information flow
+gnatprove: error during flow analysis and proof

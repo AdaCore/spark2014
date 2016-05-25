@@ -24,7 +24,12 @@
 --  This is a name table that maps strings to name_id and can recover the
 --  original string.
 
-package Names is
+package Names with
+   SPARK_Mode,
+   Abstract_State => Name_Table,
+   Initializes    => Name_Table,
+   Initial_Condition => Invariant
+is
 
    type Name_Id is private;
 
@@ -32,17 +37,20 @@ package Names is
    --  The empty string.
 
    function Invariant return Boolean
-   with Ghost;
+   with Ghost,
+        Global => Name_Table;
    --  Internal invariant for the name table.
 
    procedure Lookup (S : String;
                      N : out Name_Id)
-   with Pre    => Invariant,
+   with Global => (In_Out => Name_Table),
+        Pre    => Invariant,
         Post   => Invariant;
    --  Obtain name_id for the given string.
 
    function To_String (N : Name_Id) return String
-   with Pre    => Invariant;
+   with Global => Name_Table,
+        Pre    => Invariant;
    --  The original string.
 
 private

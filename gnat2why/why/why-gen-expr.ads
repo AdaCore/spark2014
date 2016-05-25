@@ -319,7 +319,8 @@ package Why.Gen.Expr is
    --  same as New_Binding, but adds type information coming from Context
 
    subtype Supported_Attribute_Id is Attribute_Id with
-     Static_Predicate => Supported_Attribute_Id in Attribute_Constrained
+     Static_Predicate => Supported_Attribute_Id in Attribute_Alignment
+                                                 | Attribute_Constrained
                                                  | Attribute_First
                                                  | Attribute_Last
                                                  | Attribute_Length
@@ -327,6 +328,7 @@ package Why.Gen.Expr is
                                                  | Attribute_Image
                                                  | Attribute_Value
                                                  | Attribute_Size
+                                                 | Attribute_Component_Size
                                                  | Attribute_Tag;
 
    function New_Attribute_Expr

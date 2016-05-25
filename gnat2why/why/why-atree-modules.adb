@@ -85,7 +85,7 @@ package body Why.Atree.Modules is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   Why_Symb_Map : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
+   Why_Symb_Map   : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
    Entity_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Axiom_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Rep_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
@@ -154,7 +154,8 @@ package body Why.Atree.Modules is
               New_Module
                 (Ada_Node => E,
                  File     => No_Name,
-                 Name     => NID (Full_Name (E) & "__axiom"));
+                 Name     =>
+                   NID (Full_Name (E) & To_String (WNE_Axiom_Suffix)));
          begin
             Axiom_Modules.Insert (E, Why_Node_Id (M));
             return M;
@@ -206,21 +207,22 @@ package body Why.Atree.Modules is
    procedure Initialize is
    begin
 
-      --  initialize files first
+      --  Initialize files first
 
       Int_File  := NID ("int");
       Real_File := NID ("real");
       Ref_File  := NID ("ref");
+
       Gnatprove_Standard_File := NID ("_gnatprove_standard");
-      Ada_Model_File := NID ("ada__model");
+      Ada_Model_File          := NID ("ada__model");
 
-      --  modules of the Why standard library
+      --  Modules of the Why standard library
 
-      Int_Module := New_Module (File => Int_File, Name => NID ("Int"));
+      Int_Module := New_Module (File => Int_File,  Name => NID ("Int"));
       RealInfix  := New_Module (File => Real_File, Name => NID ("RealInfix"));
-      Ref_Module := New_Module (File => Ref_File, Name => NID ("Ref"));
+      Ref_Module := New_Module (File => Ref_File,  Name => NID ("Ref"));
 
-      --  builtin Why types
+      --  Builtin Why types
 
       EW_Bool_Type :=
         New_Type (Type_Kind  => EW_Builtin,
@@ -431,7 +433,7 @@ package body Why.Atree.Modules is
           (File => Ada_Model_File,
            Name => NID ("Subtype_Array_Logical_Op_Axioms"));
 
-      --  builtin unary minus and void
+      --  Builtin unary minus and void
 
       Int_Unary_Minus :=
         New_Identifier (Domain => EW_Term,
@@ -446,7 +448,7 @@ package body Why.Atree.Modules is
                               Symbol => NID ("()"),
                               Typ    => EW_Unit_Type);
 
-      --  builtin infix operations
+      --  Builtin infix operations
 
       Why_Eq :=
         New_Identifier (Domain => EW_Term,
@@ -543,7 +545,7 @@ package body Why.Atree.Modules is
           (Symbol => NID ("def"),
            Domain => EW_Term);
 
-      --  modules of _gnatprove_standard file
+      --  Modules of _gnatprove_standard file
 
       Array_Modules :=
         (1 =>
@@ -600,6 +602,10 @@ package body Why.Atree.Modules is
       return M_Array;
    end Init_Array_Module;
 
+   -------------------------
+   -- Init_Array_1_Module --
+   -------------------------
+
    function Init_Array_1_Module (Module : W_Module_Id) return M_Array_1_Type
    is
       M_Array_1 : M_Array_1_Type;
@@ -609,7 +615,6 @@ package body Why.Atree.Modules is
                                           Module => Module),
                   Is_Mutable => False);
    begin
-
       M_Array_1.Module := Module;
       M_Array_1.Concat :=
         New_Identifier (Module => Module,
@@ -625,12 +630,16 @@ package body Why.Atree.Modules is
       return M_Array_1;
    end Init_Array_1_Module;
 
+   ------------------------------
+   -- Init_Array_1_Comp_Module --
+   ------------------------------
+
    function Init_Array_1_Comp_Module (Module : W_Module_Id)
                                       return M_Array_1_Comp_Type
    is
       M_Array_1 : M_Array_1_Comp_Type;
-   begin
 
+   begin
       M_Array_1.Module := Module;
       M_Array_1.Compare :=
         New_Identifier (Module => Module,
@@ -650,8 +659,8 @@ package body Why.Atree.Modules is
                   Name       => New_Name (Symbol => NID ("map"),
                                           Module => Module),
                   Is_Mutable => False);
-   begin
 
+   begin
       M_Array_1.Module := Module;
       M_Array_1.Xorb :=
         New_Identifier (Module => Module,
@@ -826,6 +835,7 @@ package body Why.Atree.Modules is
                                           Domain => EW_Term,
                                           Symbol => NID ("range_check_"),
                                           Typ => EW_BitVector_64_Type));
+
       M := New_Module (File => Gnatprove_Standard_File,
                        Name => NID ("BVConv_16_64"));
       M_BV_Conv_16_64 :=
@@ -845,6 +855,7 @@ package body Why.Atree.Modules is
                                           Domain => EW_Term,
                                           Symbol => NID ("range_check_"),
                                           Typ => EW_BitVector_64_Type));
+
       M := New_Module (File => Gnatprove_Standard_File,
                        Name => NID ("BVConv_8_64"));
       M_BV_Conv_8_64 :=
@@ -864,6 +875,7 @@ package body Why.Atree.Modules is
                                           Domain => EW_Term,
                                           Symbol => NID ("range_check_"),
                                           Typ => EW_BitVector_64_Type));
+
       M := New_Module (File => Gnatprove_Standard_File,
                        Name => NID ("BVConv_16_32"));
       M_BV_Conv_16_32 :=
@@ -883,6 +895,7 @@ package body Why.Atree.Modules is
                                           Domain => EW_Term,
                                           Symbol => NID ("range_check_"),
                                           Typ => EW_BitVector_32_Type));
+
       M := New_Module (File => Gnatprove_Standard_File,
                        Name => NID ("BVConv_8_32"));
       M_BV_Conv_8_32 :=
@@ -902,6 +915,7 @@ package body Why.Atree.Modules is
                                           Domain => EW_Term,
                                           Symbol => NID ("range_check_"),
                                           Typ => EW_BitVector_32_Type));
+
       M := New_Module (File => Gnatprove_Standard_File,
                        Name => NID ("BVConv_8_16"));
       M_BV_Conv_8_16 :=
@@ -1119,7 +1133,7 @@ package body Why.Atree.Modules is
                            Symbol => NID ("two_power_size"),
                            Typ => EW_Int_Type);
       end loop;
-      EW_BitVector_8_Type := M_BVs (BV8).T;
+      EW_BitVector_8_Type  := M_BVs (BV8).T;
       EW_BitVector_16_Type := M_BVs (BV16).T;
       EW_BitVector_32_Type := M_BVs (BV32).T;
       EW_BitVector_64_Type := M_BVs (BV64).T;
@@ -1420,7 +1434,7 @@ package body Why.Atree.Modules is
 
    procedure Init_Int_Abs_Module is
       M : constant W_Module_Id :=
-                New_Module (File => Gnatprove_Standard_File,
+        New_Module (File => Gnatprove_Standard_File,
                     Name => NID ("Int_Abs"));
    begin
       M_Int_Abs.Module := M;
@@ -1555,13 +1569,13 @@ package body Why.Atree.Modules is
 
    procedure Init_Labels is
    begin
-      Model := NID (Model_Label);
-      Model_Trace := NID (Model_Trace_Label);
-      Model_Projected := NID (Model_Proj_Label);
-      Model_VC := NID (Model_VC_Label);
-      Model_VC_Post := NID (Model_VC_Post_Label);
+      Model             := NID (Model_Label);
+      Model_Trace       := NID (Model_Trace_Label);
+      Model_Projected   := NID (Model_Proj_Label);
+      Model_VC          := NID (Model_VC_Label);
+      Model_VC_Post     := NID (Model_VC_Post_Label);
       GP_Already_Proved := NID (GP_Already_Proved_Marker);
-      Keep_On_Simp := NID (Keep_On_Simp_Marker);
+      Keep_On_Simp      := NID (Keep_On_Simp_Marker);
    end Init_Labels;
 
    -----------------------------
@@ -1762,7 +1776,7 @@ package body Why.Atree.Modules is
                   Typ    => EW_Bool_Type));
          end if;
 
-         --  symbols for scalar types
+         --  Symbols for scalar types
 
          if Is_Scalar_Type (E) then
             declare
@@ -1866,7 +1880,7 @@ package body Why.Atree.Modules is
                      Domain => EW_Term,
                      Typ    => Base));
 
-               --  symbols for static scalar types
+               --  Symbols for static scalar types
 
                if not Type_Is_Modeled_As_Base (E) then
                   Insert_Symbol
@@ -1878,7 +1892,7 @@ package body Why.Atree.Modules is
                         Typ    => EW_Bool_Type));
                end if;
 
-               --  symbols for modular types
+               --  Symbols for modular types
 
                if Has_Modular_Integer_Type (E) then
                   declare
@@ -1924,7 +1938,7 @@ package body Why.Atree.Modules is
                   end;
                end if;
 
-               --  symbols for modular static types
+               --  Symbols for modular static types
 
                if Has_Modular_Integer_Type (E)
                  and then not Type_Is_Modeled_As_Base (E)
@@ -1938,7 +1952,7 @@ package body Why.Atree.Modules is
                         Typ    => EW_Bool_Type));
                end if;
 
-               --  symbols for fixed point types
+               --  Symbols for fixed point types
 
                if Is_Fixed_Point_Type (E) then
                   Insert_Symbol
@@ -2049,7 +2063,7 @@ package body Why.Atree.Modules is
                end if;
             end;
 
-         --  symbols for record types
+         --  Symbols for record types
 
          elsif Is_Record_Type (E)
            or else Full_View_Not_In_SPARK (E)
@@ -2061,6 +2075,20 @@ package body Why.Atree.Modules is
                Root_Ty : constant W_Type_Id :=
                  New_Named_Type (To_Why_Type (Root));
             begin
+               Insert_Symbol
+                 (E, WNE_Attr_Value_Alignment,
+                  New_Identifier
+                    (Symbol => NID ("value__alignment"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
+               Insert_Symbol
+                 (E, WNE_Attr_Object_Alignment,
+                  New_Identifier
+                    (Symbol => NID ("object__alignment"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
                Insert_Symbol
                  (E, WNE_Attr_Value_Size,
                   New_Identifier
@@ -2188,12 +2216,26 @@ package body Why.Atree.Modules is
                end if;
             end;
 
-         --  symbols for array types
+         --  Symbols for array types
 
-         elsif Is_Array_Type (E) then
+         elsif Has_Array_Type (E) then
             declare
                Ar_Dim : constant Positive := Positive (Number_Dimensions (E));
             begin
+               Insert_Symbol
+                 (E, WNE_Attr_Value_Alignment,
+                  New_Identifier
+                    (Symbol => NID ("value__alignment"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
+               Insert_Symbol
+                 (E, WNE_Attr_Object_Alignment,
+                  New_Identifier
+                    (Symbol => NID ("object__alignment"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
                Insert_Symbol
                  (E, WNE_Attr_Value_Size,
                   New_Identifier
@@ -2205,6 +2247,20 @@ package body Why.Atree.Modules is
                  (E, WNE_Attr_Object_Size,
                   New_Identifier
                     (Symbol => NID ("object__size"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
+               Insert_Symbol
+                 (E, WNE_Attr_Value_Component_Size,
+                  New_Identifier
+                    (Symbol => NID ("value__component__size"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type));
+               Insert_Symbol
+                 (E, WNE_Attr_Object_Component_Size,
+                  New_Identifier
+                    (Symbol => NID ("object__component__size"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));

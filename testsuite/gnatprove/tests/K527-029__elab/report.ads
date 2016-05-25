@@ -1,4 +1,4 @@
-package Report is 
+package Report with Elaborate_Body Is
 
      function Time_Stamp return String;
 

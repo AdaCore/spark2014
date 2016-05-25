@@ -16,6 +16,9 @@ is
    --  from NA05-006 (example for teaching)
    procedure Mult (X, Y : Integer; Res : out Integer);
 
+   --  from NB26-002 (industrial user)
+   procedure Mult_Protect (X, Y, Z : Natural_32; Res : out Integer_32);
+
    --  example for internal test
    procedure Round (X, Y, Z : Positive_32; Res : out Natural_32);
 

@@ -1,1 +1,3 @@
+p.ads:3:19: medium: ceiling priority might not be in Interrupt_Priority
 p.ads:6:37: medium: this interrupt might be reserved
+p.ads:8:24: medium: range check might fail

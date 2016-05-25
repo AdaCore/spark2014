@@ -1,6 +1,10 @@
 module Ada__containers__formal_doubly_linked_lists__generic_sorting__is_sorted
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__list
   use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__cursor
@@ -21,6 +25,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__generic_sorting__sort
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__list
   use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__length
@@ -43,6 +51,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__generic_sorting__merge
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__list
   use import "ada__containers__formal_doubly_linked_lists".Ada__containers__formal_doubly_linked_lists__length

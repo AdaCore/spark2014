@@ -1,3 +1,4 @@
 attributes.adb:5:24: info: initialization of "W" proved
 attributes.adb:13:04: warning: analyzing unreferenced procedure "Test_Mod"
 attributes.adb:14:24: info: initialization of "W" proved
+attributes.adb:18:31: medium: range check might fail

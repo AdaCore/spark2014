@@ -3,6 +3,8 @@ with Functional_Sequences;
 pragma Elaborate_All (Functional_Sequences);
 with Functional_Sets;
 pragma Elaborate_All (Functional_Sets);
+with Conts;
+use type Conts.Count_Type;
 
 package List_Allocator with
   SPARK_Mode,
@@ -24,7 +26,7 @@ is
 
    function All_Available return Boolean with Ghost;
 
-   package M with
+   package M with Ghost,
      Initial_Condition =>
        (Is_Empty (Model.Allocated)
           and then
@@ -35,12 +37,12 @@ is
         (for all RR in 1 .. Capacity => Get (Model.Available, RR) = Resource (RR))
           and then
         (for all RR in 1 .. Capacity => Mem (Model.Available, Resource (RR))))
-   is -- with Ghost is
-      package S1 is new Functional_Sequences (Element_Type => Resource);
+   is
+      package S1 is new Functional_Sequences (Index_Type => Positive,
+                                              Element_Type => Resource);
       use S1;
 
-      package S2 is new Functional_Sets (Element_Type => Resource,
-                                         No_Element   => No_Resource);
+      package S2 is new Functional_Sets (Element_Type => Resource);
       use S2;
 
       type T is record
@@ -49,7 +51,7 @@ is
       end record;
 
       function Mem (S : Sequence; E : Resource) return Boolean is
-        (for some I in 1 .. Length (S) => Get (S, I) = E);
+        (for some I in 1 .. Integer (Length (S)) => Get (S, I) = E);
 
       function "=" (X, Y : T) return Boolean is
         (X.Available = Y.Available

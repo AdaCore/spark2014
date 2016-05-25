@@ -1,3 +1,4 @@
 foo.adb:13:41: info: initialization of "Length" constituent of "State" proved
 foo.adb:13:49: high: "Data" constituent of "State" is not initialized
 foo.adb:13:49: low: unused global "Data" constituent of "State"
+foo.adb:18:07: warning: no check message justified by this pragma

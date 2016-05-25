@@ -26,9 +26,9 @@
 
 with Ada.Containers.Hashed_Maps;
 with Atree;                      use Atree;
+with Einfo;                      use Einfo;
 with Flow_Refinement;            use Flow_Refinement;
 with Flow_Types;                 use Flow_Types;
-with Sinfo;                      use Sinfo;
 with Snames;                     use Snames;
 with Sem_Util;                   use Sem_Util;
 with Types;                      use Types;
@@ -51,19 +51,15 @@ package Flow_Dependency_Maps is
    ----------------------------------------------------------------------
 
    function Parse_Depends (N : Node_Id) return Dependency_Maps.Map
-   with Pre => Nkind (N) = N_Pragma and then
-               Get_Pragma_Id (N) in
-                 Pragma_Depends         |
-                 Pragma_Refined_Depends;
+   with Pre => Get_Pragma_Id (N) in Pragma_Depends | Pragma_Refined_Depends;
 
    function Parse_Initializes
      (N : Node_Id;
       P : Entity_Id;
       S : Flow_Scope)
       return Dependency_Maps.Map
-   with Pre => (if Present (N) then
-                  Nkind (N) = N_Pragma and then
-                    Get_Pragma_Id (N) = Pragma_Initializes);
+   with Pre => Ekind (P) in E_Package | E_Generic_Package and then
+               N = Get_Pragma (P, Pragma_Initializes);
    --  Parse the Initializes aspect if it exists, or a generated one otherwise
    --
    --  When we parse the Initializes aspect we add any external state
@@ -79,8 +75,7 @@ package Flow_Dependency_Maps is
    --  @returns the dependency map representing the initializes aspect
 
    function Parse_Refined_State (N : Node_Id) return Dependency_Maps.Map
-   with Pre => Nkind (N) = N_Pragma and then
-               Get_Pragma_Id (N) = Pragma_Refined_State;
+   with Pre => Get_Pragma_Id (N) = Pragma_Refined_State;
 
    --  Parses the Refined_State aspect
 

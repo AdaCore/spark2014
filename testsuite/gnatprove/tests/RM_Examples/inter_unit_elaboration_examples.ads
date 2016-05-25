@@ -2,7 +2,7 @@ with Inter_1;
 pragma Elaborate_All (Inter_1);  --  Ensure the body of the called function F
                                  --  has been elaborated.
 
-package Inter_Unit_Elaboration_Examples is
+package Inter_Unit_Elaboration_Examples with Elaborate_Body is
    X : Integer := Inter_1.F (10);  --  The call to F is ok because its body is
                                    --  sure to have been elaborated.
    Y : Integer;

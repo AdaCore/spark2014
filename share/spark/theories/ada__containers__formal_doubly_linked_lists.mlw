@@ -53,6 +53,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__cursor
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
@@ -254,6 +258,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
@@ -272,6 +280,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__first_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
@@ -290,6 +302,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__last_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
@@ -384,6 +400,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__find
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use  "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__oeq
   use import Ada__containers__formal_doubly_linked_lists__list
@@ -460,6 +480,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__reverse_find
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__oeq
   use import Ada__containers__formal_doubly_linked_lists__list
@@ -501,6 +525,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__strict_equal
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
@@ -526,6 +554,10 @@ end
 
 module Ada__containers__formal_doubly_linked_lists__Oeq__2
   use import int.Int
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__oeq
   use import Ada__containers__formal_doubly_linked_lists__list
@@ -566,6 +598,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__replace_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__oeq
   use import Ada__containers__formal_doubly_linked_lists__list
@@ -666,6 +702,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__insert
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__oeq
   use import Ada__containers__formal_doubly_linked_lists__list
@@ -775,6 +815,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__insert__2
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
@@ -807,6 +851,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__insert__3
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
@@ -853,6 +901,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__prepend
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
@@ -877,6 +929,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__append
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
@@ -1171,6 +1227,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__splice__2
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
@@ -1207,6 +1267,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__splice__3
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length
@@ -1256,6 +1320,10 @@ end
 module Ada__containers__formal_doubly_linked_lists__contains
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_doubly_linked_lists__args".Ada__containers__formal_doubly_linked_lists__element_type
   use import Ada__containers__formal_doubly_linked_lists__list
   use import Ada__containers__formal_doubly_linked_lists__length

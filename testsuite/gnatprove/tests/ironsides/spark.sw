@@ -1,0 +1,2 @@
+-- $Id: spark.sw 3410 2003-06-12 12:44:30Z spark $
+-index=mcc -config=mcc -profile=r -sparklib -listing=ls_ -plain -vcg

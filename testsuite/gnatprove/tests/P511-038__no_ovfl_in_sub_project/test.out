@@ -1,0 +1,2 @@
+raised CONSTRAINT_ERROR : check.adb:8 overflow check failed
+check.adb:8:21: medium: overflow check might fail (e.g. when X = 2147483647 and Y = 1)

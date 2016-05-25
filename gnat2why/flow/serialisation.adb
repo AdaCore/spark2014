@@ -44,8 +44,8 @@ package body Serialisation is
    --  Returns true iff the next element of A is a tag and equal to S.
 
    procedure Append_Tag (A : in out Archive; The_Tag : Unbounded_String)
-   with Pre => The_Tag = Coll_Begin or
-               The_Tag = Coll_End or
+   with Pre => The_Tag = Coll_Begin or else
+               The_Tag = Coll_End or else
                (Length (The_Tag) > 2 and then Element (The_Tag, 2) = ':');
    --  Append a given tag to the archive.
 
@@ -155,12 +155,10 @@ package body Serialisation is
             if Length (S) > 0 then
                Append (S, " ");
             end if;
-            case E.Kind is
-               when Tag =>
-                  Append (S, E.Value);
-               when Data =>
-                  Append (S, Escape (E.Value));
-            end case;
+            Append (S,
+                    (case E.Kind is
+                        when Tag  => E.Value,
+                        when Data => Escape (E.Value)));
          end loop;
       end return;
    end To_String;
@@ -180,8 +178,8 @@ package body Serialisation is
             if Element (S, I) = ' ' or else I = Length (S) then
                if Length (Tmp) > 0 then
                   if Tmp = Coll_Begin
-                    or Tmp = Coll_End
-                    or (Length (Tmp) >= 2 and then Element (Tmp, 2) = ':')
+                    or else Tmp = Coll_End
+                    or else (Length (Tmp) >= 2 and then Element (Tmp, 2) = ':')
                   then
                      Append_Tag (A, Tmp);
                   else
@@ -453,6 +451,9 @@ package body Serialisation is
          Null_Container => Null_Container,
          Null_Element   => Null_Element,
          Merge          => Merge);
+
+   --  Start of processing for Serialize_List
+
    begin
       Serialize (A, V, To_Unbounded_String (Tag));
    end Serialize_List;

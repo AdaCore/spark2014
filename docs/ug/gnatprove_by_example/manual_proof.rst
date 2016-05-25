@@ -1,6 +1,100 @@
 Manual Proof Examples
 ---------------------
 
+The examples in this section contain properties that are difficult to prove
+automatically and thus require more user interaction to prove completely. The
+degre of interaction required depends on the difficuly of the proof:
+
+* simple addition of calls to ghost lemmas for arithmetic properties involving
+  multiplication, division and modulo operations, as decribed in :ref:`Manual
+  Proof Using SPARK Lemma Library`
+
+* more involved addition of ghost code for universally or existentially
+  quantified properties on data structures and containers, as described in
+  :ref:`Manual Proof Using Ghost Code`
+
+* interaction at the level of Verification Condition formulas in the syntax of
+  an interactive prover for arbitrary complex properties, as described in
+  :ref:`Manual Proof Using Coq`
+
+.. _Manual Proof Using SPARK Lemma Library:
+
+Manual Proof Using SPARK Lemma Library
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If the property to prove is part of the :ref:`SPARK Lemma Library`, then manual
+proof simply consists in calling the appropriate lemma in your code. For
+example, consider the following assertion to prove, where ``X1``, ``X2`` and
+``Y`` may be signed or modular positive integers:
+
+.. code-block:: ada
+
+   R1 := X1 / Y;
+   R2 := X2 / Y;
+   pragma Assert (R1 <= R2);
+
+The property here is the monotonicity of division on positive values. There is
+a corresponding lemma for both signed and modular integers, for both 32 bits
+and 64 bits integers:
+
+* for signed 32 bits integers, use
+  ``SPARK.Integer_Arithmetic_Lemmas.Lemma_Div_Is_Monotonic``
+* for signed 64 bits integers, use
+  ``SPARK.Long_Integer_Arithmetic_Lemmas.Lemma_Div_Is_Monotonic``
+* for modular 32 bits integers, use
+  ``SPARK.Mod32_Arithmetic_Lemmas.Lemma_Div_Is_Monotonic``
+* for modular 64 bits integers, use
+  ``SPARK.Mod64_Arithmetic_Lemmas.Lemma_Div_Is_Monotonic``
+
+For example, the lemma for signed integers has the following signature:
+
+.. code-block:: ada
+
+   procedure Lemma_Div_Is_Monotonic
+     (Val1  : Int;
+      Val2  : Int;
+      Denom : Pos)
+   with
+     Global => null,
+     Pre  => Val1 <= Val2,
+     Post => Val1 / Denom <= Val2 / Denom;
+
+Assuming the appropriate library unit is with'ed and used in your code (see
+:ref:`SPARK Lemma Library` for details), using the lemma is simply a call to
+the ghost procedure ``Lemma_Div_Is_Monotonic``:
+
+.. code-block:: ada
+
+   R1 := X1 / Y;
+   R2 := X2 / Y;
+   Lemma_Div_Is_Monotonic (X1, X2, Y);
+   --  at this program point, the prover knows that R1 <= R2
+   --  the following assertion is proved automatically:
+   pragma Assert (R1 <= R2);
+
+Note that the lemma may have a precondition, stating in which contexts the
+lemma holds, which you will need to prove when calling it. For example, a
+precondition check is generated in the code above to show that ``X1 <=
+X2``. Similarly, the types of parameters in the lemma may restrict the contexts
+in which the lemma holds. For example, the type ``Pos`` for parameter ``Denom``
+of ``Lemma_Div_Is_Monotonic`` is the type of positive integers. Hence, a range
+check may be generated in the code above to show that ``Y`` is positive.
+
+To apply lemmas to signed or modular integers of different types than the ones
+used in the instances provided in the library, just convert the expressions
+passed in arguments, as follows:
+
+.. code-block:: ada
+
+   R1 := X1 / Y;
+   R2 := X2 / Y;
+   Lemma_Div_Is_Monotonic (Integer(X1), Integer(X2), Integer(Y));
+   --  at this program point, the prover knows that R1 <= R2
+   --  the following assertion is proved automatically:
+   pragma Assert (R1 <= R2);
+
+.. _Manual Proof Using Ghost Code:
+
 Manual Proof Using Ghost Code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -78,6 +172,8 @@ timeout of 1s for the default automatic prover CVC4.
 
 .. literalinclude:: gnatprove_by_example/results/perm-lemma_subprograms.prove
    :language: none
+
+.. _Manual Proof Using Coq:
 
 Manual Proof Using Coq
 ^^^^^^^^^^^^^^^^^^^^^^

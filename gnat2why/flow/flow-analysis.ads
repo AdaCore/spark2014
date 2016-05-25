@@ -181,6 +181,16 @@ package Flow.Analysis is
    --  Check that preconditions of protected operations only reference global
    --  variables that have Constant_After_Elaboration set.
 
+   procedure Check_Elaborate_Body (FA : in out Flow_Analysis_Graphs)
+   with Pre => FA.Kind = Kind_Package_Body;
+   --  Checks that the package has Elaborate_Body applied if at least one
+   --  variable declared in the specification is modified in the package
+   --  elaboration.
+   --
+   --  We do this only if we're in the gnat static elaboration model
+   --  (otherwise the front-end has some draconian checks that take care of
+   --  it).
+
 private
 
    type Var_Use_Kind is (Use_Read, Use_Write, Use_Any);

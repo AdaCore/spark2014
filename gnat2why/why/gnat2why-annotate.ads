@@ -70,6 +70,58 @@ package Gnat2Why.Annotate is
    --  to the enclosing entity. If the preceding item is a subprogram body, the
    --  pragma applies both to the body and the spec of the subprogram.
 
+   --  This package also stores uses of pragma Annotate for Iterable_For_Proof
+   --  and Inline_For_Proof. This uses are not documented as they are provided
+   --  for internal use only.
+
+   --  A pragma Annotate for Iterable_For_Proof has the following form:
+   --    pragma Annotate (GNATprove, Iterable_For_Proof, Kind, Entity => E);
+
+   --  where
+   --    GNATprove            is a fixed identifier
+   --    Iterable_For_Proof   is a fixed identifier
+   --    Kind                 must be one of "Model" or "Contains"
+   --    E                    is a function entity.
+
+   --  If Kind is "Model" then E must have the following signature:
+   --    function Get_Model (C : Container_Type) return Model_Type;
+
+   --  where Container_Type and Model_Type both have an Iterable aspect that
+   --  allows for ... of quantification on compatible element types.
+
+   --  When such an annotation is provided, for ... of quantification on a
+   --  container C is translated as for ... of quantification on its model
+   --  Get_Model (C) instead.
+
+   --  If Kind is "Contains" then E must have the following signature:
+   --    function Contains (C : Container_Type; X : Element) return Boolean;
+
+   --  where Container_Type have an Iterable aspect that allows for ... of
+   --  quantification on elements of type Element.
+
+   --  When such an annotation is provided, for ... of quantification on a
+   --  container C is translated in Why3 as quantification over elements
+   --  using the provided Contains function.
+
+   --  A pragma Annotate for Inline_For_Proof has the following form:
+   --    pragma Annotate (GNATprove, Itnline_For_Proof, Entity => E);
+
+   --  where
+   --    GNATprove           is a fixed identifier
+   --    Itnline_For_Proof   is a fixed identifier
+   --    E                   is a function entity.
+
+   --  If  E must have the following signature:
+   --    function E (...) return ... with
+   --      Post => E'Result = Expr;
+
+   --  where Expr must not contain any forward reference to entities defined
+   --  after E.
+
+   --  When such an annotation is provided, E is translated as a function
+   --  definition in Why3 on which the label "inline" is set so that gnatwhy3
+   --  inlines its definition for provers.
+
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
       Preceding     : Node_Id;
@@ -111,5 +163,25 @@ package Gnat2Why.Annotate is
    --  Should be called when all messages have been generated. Generates a
    --  warning for all pragma Annotate which do not correspond to a check,
    --  or which covers only proved checks.
+
+   type Iterable_Kind is (Model, Contains);
+
+   type Iterable_Annotation is record
+      Kind   : Iterable_Kind;   --  the kind of Annotate Iterable_For_Proof
+      Entity : Entity_Id;       --  the entity of the corresponding function
+   end record;
+
+   function Retrieve_Inline_Annotation (E : Entity_Id) return Node_Id;
+   --  If a pragma Annotate Inline_For_Proof applies to E then returns the
+   --  Ada expression that should be used instead of E.
+
+   procedure Retrieve_Iterable_Annotation
+     (Container_Type : Entity_Id;
+      Found          : out Boolean;
+      Info           : out Iterable_Annotation);
+   --  For a given container type with Iterable aspect, search if there is a
+   --  pragma Annotate Iterable_For_Proof that applies to type. If so, set
+   --  Found to True and fill in the Info record. Otherwise, set Found to False
+   --  and leave Info uninitialized.
 
 end Gnat2Why.Annotate;

@@ -98,7 +98,7 @@ package body Flow_Classwide is
         Direct_Mapping_Id (Overridden_Operation (E));
 
       function Mode (F : Flow_Id) return String;
-      --  Given F, check if its a proof_in, input, in_out or output.
+      --  Given F, check if its a proof_in, input, in_out or output
 
       ----------
       -- Mode --
@@ -125,12 +125,12 @@ package body Flow_Classwide is
             M := Mode_Out;
          end if;
 
-         case Valid_Param_Mode (M) is
-            when Mode_Proof  => return "proof_in";
-            when Mode_In     => return "input";
-            when Mode_In_Out => return "in_out";
-            when Mode_Out    => return "output";
-         end case;
+         return
+           (case Valid_Param_Mode (M) is
+               when Mode_Proof  => "proof_in",
+               when Mode_In     => "input",
+               when Mode_In_Out => "in_out",
+               when Mode_Out    => "output");
       end Mode;
 
    --  Start of processing for Check_Classwide_Global
@@ -182,8 +182,7 @@ package body Flow_Classwide is
               (E          => E,
                Msg        =>
                  "class-wide " & Mode (F) & " & must also be a " &
-                 "class-wide input " &
-                 "of overridden subprogram #",
+                 "class-wide input of overridden subprogram #",
                Severity   => Error_Kind,
                N          => E,
                Suppressed => Suppressed,
@@ -204,8 +203,7 @@ package body Flow_Classwide is
               (E          => E,
                Msg        =>
                  "class-wide " & Mode (F) & " & must also be a " &
-                 "class-wide output " &
-                 "of overridden subprogram #",
+                 "class-wide output of overridden subprogram #",
                Severity   => Error_Kind,
                N          => E,
                Suppressed => Suppressed,
@@ -244,8 +242,7 @@ package body Flow_Classwide is
                  (E          => E,
                   Msg        =>
                     "class-wide output & of overridden subprogram # " &
-                    "must also be a " &
-                    "class-wide output here",
+                    "must also be a class-wide output here",
                   Severity   => Error_Kind,
                   N          => E,
                   Suppressed => Suppressed,
@@ -275,7 +272,7 @@ package body Flow_Classwide is
                                     Classwide : Boolean)
                                     return Dependency_Maps.Map
       with Pre => Is_Subprogram (E);
-      --  Obtain the dependency relation for E, or synthesize one.
+      --  Obtain the dependency relation for E, or synthesize one
 
       -------------------------
       -- Get_Or_Make_Depends --
@@ -389,7 +386,7 @@ package body Flow_Classwide is
          pragma Assert (Present (Anc_Ptr) = Present (My_Ptr));
       end;
 
-      --  We now check that My_Dep is a strict subset of Anc_Dep.
+      --  We now check that My_Dep is a strict subset of Anc_Dep
 
       for C in My_Dep.Iterate loop
          declare
@@ -457,9 +454,9 @@ package body Flow_Classwide is
       end if;
 
       if No (Overridden_Operation (E)) then
-         --  This subprogram is not overriding, hence there can't be a
-         --  problem currently. (Since we assume both global'class and
-         --  depends'class are equal to their non-class-wide versions.)
+         --  This subprogram is not overriding, hence there can't be a problem
+         --  currently. (Since we assume both global'class and depends'class
+         --  are equal to their non-class-wide versions.)
          return;
       end if;
 

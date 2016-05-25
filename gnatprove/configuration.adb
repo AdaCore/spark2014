@@ -31,8 +31,8 @@ with Ada.Strings.Unbounded;
 with Ada.Text_IO;               use Ada.Text_IO;
 with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
-with GNAT.Strings;              use GNAT.Strings;
 with GNAT.OS_Lib;
+with GNAT.Strings;              use GNAT.Strings;
 with SPARK2014VSN;              use SPARK2014VSN;
 with System.Multiprocessors;
 
@@ -361,7 +361,7 @@ ASCII.LF;
 
          if not Is_Externally_Built (Project) then
             declare
-               Obj_Dir  : constant Virtual_File := Project.Object_Dir;
+               Obj_Dir  : constant Virtual_File := Project.Artifacts_Dir;
                Name_Dir : constant String := +Base_Dir_Name (Obj_Dir);
                Rm_Dir   : constant String := Obj_Dir.Display_Full_Name;
 
@@ -501,12 +501,17 @@ ASCII.LF;
       Success : Boolean := True;
       Prover_Name : constant String :=
         Ada.Characters.Handling.To_Lower (Provers.First_Element);
-      Prover_Lib_Dir : constant String := Compose
-        (Compose (Why3_Dir, "libs"), Name => Prover_Name);
+      Prover_Lib_Dir : constant String :=
+        Compose
+          (Compose (File_System.Install.Share_Why3, "libs"),
+           Name => Prover_Name);
       Prover_Obj_Dir : constant String := Compose
         (Compose (Main_Subdir.all, "why3_libs"), Name => Prover_Name);
 
       procedure Compile_Lib (Dir, File : String);
+      --  compile a Coq library
+      --  @param Dir  the directory where the file is located
+      --  @param File the file to be compiled
 
       -----------------
       -- Compile_Lib --
@@ -574,8 +579,12 @@ ASCII.LF;
       Compile_Lib ("bool", "Bool");
       Compile_Lib ("int", "Int");
       Compile_Lib ("int", "Abs");
+      Compile_Lib ("int", "MinMax");
       Compile_Lib ("int", "EuclideanDivision");
       Compile_Lib ("int", "ComputerDivision");
+      Compile_Lib ("bv", "Pow2int");
+      Compile_Lib ("bv", "BV_Gen");
+      Compile_Lib ("", "SPARK");
    end Prepare_Prover_Lib;
 
    ---------------
@@ -661,7 +670,9 @@ ASCII.LF;
       --  <path-to-project-file>/<value-of-proof-dir>.
 
       procedure Limit_Provers;
-      --  remove built-in provers from Provers list that are not available
+      --  if not on the PATH, remove cvc4/z3 from provers list. If the provers
+      --  list becomes empty, add alt-ergo
+
       ----------
       -- Init --
       ----------
@@ -723,36 +734,31 @@ ASCII.LF;
 
       procedure Limit_Provers is
 
-         procedure Limit_Prover (Name : String; Executable : String);
-         --  if the Executable is not present in libexec/spark/bin/, remove the
-         --  prover Name from the list of provers to be used
+         procedure Remove_Prover (Name : String);
+         --  Remove prover from Provers list
+         --  @param Name prover name to be removed
 
          ------------------
          -- Limit_Prover --
          ------------------
 
-         procedure Limit_Prover (Name : String; Executable : String) is
+         procedure Remove_Prover (Name : String) is
+            C : String_Lists.Cursor := Provers.Find (Name);
          begin
-            if GNAT.OS_Lib.Locate_Exec_On_Path (Executable) = null then
-               declare
-                  C : String_Lists.Cursor := Provers.Find (Name);
-               begin
-                  if String_Lists.Has_Element (C) then
-                     Provers.Delete (C);
-                  end if;
-               end;
-               if Name = "cvc4" then
-                  Counterexample := False;
-               end if;
+            if String_Lists.Has_Element (C) then
+               Provers.Delete (C);
             end if;
-         end Limit_Prover;
+         end Remove_Prover;
 
-         --  beginning of processing for Limit_Prover
+      --  Start of processing for Limit_Prover
 
       begin
-         Limit_Prover ("cvc4", "cvc4");
-         Limit_Prover ("z3", "z3");
-         Limit_Prover ("altergo", "alt-ergo");
+         if not File_System.Install.CVC4_Present then
+            Remove_Prover ("cvc4");
+         end if;
+         if not File_System.Install.Z3_Present then
+            Remove_Prover ("z3");
+         end if;
       end Limit_Provers;
 
       -----------------
@@ -761,6 +767,11 @@ ASCII.LF;
 
       procedure Postprocess is
       begin
+         File_System.Install.Z3_Present :=
+           GNAT.OS_Lib.Locate_Exec_On_Path ("z3") /= null;
+         File_System.Install.CVC4_Present :=
+           GNAT.OS_Lib.Locate_Exec_On_Path ("cvc4") /= null;
+
          Verbose := CL_Switches.V;
          Force   := CL_Switches.F;
          Debug   := CL_Switches.D or else CL_Switches.Flow_Debug;
@@ -775,7 +786,6 @@ ASCII.LF;
          Limit_Line := CL_Switches.Limit_Line;
          Limit_Subp := CL_Switches.Limit_Subp;
          Assumptions := CL_Switches.Assumptions;
-         Counterexample := not CL_Switches.No_Counterexample;
          Caching := CL_Switches.Cache;
          Benchmark_Mode := CL_Switches.Benchmark;
          Why3_Config_File := CL_Switches.Why3_Conf;
@@ -810,6 +820,11 @@ ASCII.LF;
          Set_Report_Mode;
          Set_Level_Timeout_Steps_Provers_Proof_Mode;
          Set_Proof_Dir;
+
+         Counterexample :=
+           not CL_Switches.No_Counterexample
+           and then File_System.Install.CVC4_Present
+           and then not Is_Manual_Prover;
       end Postprocess;
 
       ----------------------------
@@ -1116,9 +1131,10 @@ ASCII.LF;
          S : constant String :=
            (if CL_Switches.Prover /= null then CL_Switches.Prover.all else "");
       begin
-         if S /= "" then
-            Provers.Clear;
+         if S = "" then
+            return;
          end if;
+         Provers.Clear;
          First := S'First;
          for Cur in S'Range loop
             if S (Cur) = ',' then
@@ -1129,6 +1145,21 @@ ASCII.LF;
          if S /= "" then
             Provers.Append (S (First .. S'Last));
          end if;
+
+         --  we now check if cvc4 or z3 have explicitly been requested, but are
+         --  missing from the install
+
+         for Prover of Provers loop
+            if (Prover = "cvc4" and then not File_System.Install.CVC4_Present)
+              or else
+                (Prover = "z3" and then not File_System.Install.Z3_Present)
+            then
+               Abort_Msg (Config,
+                          "error: prover " & Prover &
+                            " was selected, but it is not installed",
+                          With_Help => False);
+            end if;
+         end loop;
       end Set_Provers;
 
       ---------------------
@@ -1472,11 +1503,11 @@ ASCII.LF;
 
          --  After the call to Init, the object directory includes the
          --  sub-directory "gnatprove" set through Set_Object_Subdir.
-         Main_Subdir := new String'(Proj_Type.Object_Dir.Display_Full_Name);
+         Main_Subdir := new String'(Proj_Type.Artifacts_Dir.Display_Full_Name);
 
          declare
             Obj_Dir_Hash : constant Hash_Type :=
-              Full_Name_Hash (Proj_Type.Object_Dir);
+              Full_Name_Hash (Proj_Type.Artifacts_Dir);
          begin
             Socket_Name := new String'
               ("why3server" & Hash_Image (Obj_Dir_Hash) & ".sock");
@@ -1652,7 +1683,8 @@ ASCII.LF;
             RTS_Dir := new String'(Dir.Display_Full_Name);
          else
             Dir := Create_From_Dir
-              (Create (Filesystem_String (Runtimes_Dir)),
+              (Create (Filesystem_String
+               (File_System.Install.Share_Spark_Runtimes)),
                Filesystem_String (RTS_Dir.all));
             if Is_Directory (Dir) then
                Normalize_Path (Dir);

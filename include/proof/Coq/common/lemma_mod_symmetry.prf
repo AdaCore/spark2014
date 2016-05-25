@@ -1,0 +1,7 @@
+intros (arg1_type,(arg2_type,pre)).
+Open Scope Z_scope.
+
+(* apply arithmetic theorem *)
+apply Zmod_opp_opp.
+
+Qed.

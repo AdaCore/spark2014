@@ -1,9 +1,9 @@
-loops.adb:8:13: non-scalar objects declared before loop-invariant not yet supported
-loops.adb:34:32: nested loops before loop-invariant not yet supported
-loops.adb:68:35: nested loops before loop-invariant not yet supported
-loops.adb:87:35: nested loops before loop-invariant not yet supported
-loops.adb:106:35: nested loops before loop-invariant not yet supported
-loops.adb:125:38: nested loops before loop-invariant not yet supported
-loops.adb:144:38: nested loops before loop-invariant not yet supported
-loops.adb:164:20: non-scalar objects declared before loop-invariant not yet supported
+loops.adb:8:13: non-scalar object declared before loop-invariant is not yet supported
+loops.adb:34:32: nested loop before loop-invariant is not yet supported
+loops.adb:68:35: nested loop before loop-invariant is not yet supported
+loops.adb:87:35: nested loop before loop-invariant is not yet supported
+loops.adb:106:35: nested loop before loop-invariant is not yet supported
+loops.adb:125:38: nested loop before loop-invariant is not yet supported
+loops.adb:144:38: nested loop before loop-invariant is not yet supported
+loops.adb:164:20: non-scalar object declared before loop-invariant is not yet supported
 gnatprove: error during flow analysis and proof

@@ -239,7 +239,6 @@ auditlog.adb:531:52: info: initialization of "OK" proved
 auditlog.adb:532:30: info: initialization of "TheFile" proved
 auditlog.adb:534:52: info: initialization of "OK" proved
 auditlog.adb:536:26: info: initialization of "TheFile" proved
-auditlog.adb:582:28: warning: unused variable "E"
 auditlog.adb:588:68: info: initialization of "ElementText" proved
 auditlog.adb:588:68: info: initialization of "ElementText" proved, in call inlined at auditlog.adb:636
 auditlog.adb:588:68: info: length check proved (CVC4: 1 VC), in call inlined at auditlog.adb:636

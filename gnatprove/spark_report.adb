@@ -463,6 +463,7 @@ procedure SPARK_Report is
             | Missing_Return
             | Not_Constant_After_Elaboration
             | Pragma_Elaborate_All_Needed
+            | Pragma_Elaborate_Body_Needed
             | Reference_To_Non_CAE_Variable
             | Stable
             | Unused

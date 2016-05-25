@@ -355,8 +355,9 @@ package body Gnat2Why.External_Axioms is
                            Module =>
                              New_Module
                                (Name =>
-                                    NID (Capitalize_First (Instance_Name)
-                                  & "__" & Short_Name (Formal) & "__axiom"),
+                                  NID (Capitalize_First (Instance_Name)
+                                  & "__" & Short_Name (Formal)
+                                  & To_String (WNE_Axiom_Suffix)),
                                 File => No_Name),
                            Comment =>
                              "Module giving axioms for the type entity "

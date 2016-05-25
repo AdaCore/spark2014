@@ -528,7 +528,7 @@ def gnatprove_(opt=["-P", "test.gpr"]):
         cmd += ["--verbose"]
     cmd += to_list(opt)
     if verbose_mode():
-        print cmd
+        print ' '.join(cmd)
     process = Run(cmd)
     # Replace line above by the one below for testing the scripts without
     # running the tool:
@@ -589,11 +589,13 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
 
 
 def do_flow(opt=None, procs=parallel_procs):
-    """Call gnatprove with standard options for flow"""
-    if opt is None:
-        opt = []
-    opt += ["--debug"]
-    prove_all(opt, mode="flow")
+    """
+    Call gnatprove with standard options for flow. We do generate
+    verification conditions, but we don't actually try and prove anything
+    (hence benchmark mode).
+    """
+
+    prove_all(opt, procs=procs, steps=1, counterexample=False, prover=["cvc4"])
 
 
 def clean():

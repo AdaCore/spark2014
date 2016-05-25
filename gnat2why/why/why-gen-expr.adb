@@ -472,7 +472,7 @@ package body Why.Gen.Expr is
          --  but in Why we have to convert from the split representation to the
          --  unique representation. This is checked here.
 
-         if not Is_Static_Array_Type (To_Ent) then
+         if not Has_Static_Array_Type (To_Ent) then
             if Get_Type_Kind (From) = EW_Split and then
               Get_Type_Kind (To) = EW_Abstract
             then
@@ -598,7 +598,7 @@ package body Why.Gen.Expr is
               Typ  => To);
       end if;
 
-      if Domain = EW_Prog and Need_Check then
+      if Domain = EW_Prog and then Need_Check then
          declare
             Check_Type : constant Entity_Id := Get_Ada_Node (+To);
          begin
@@ -649,7 +649,7 @@ package body Why.Gen.Expr is
       From : constant W_Type_Id := Get_Type (Expr);
       Check_Needed : constant Boolean :=
         (if Get_Type_Kind (From) in EW_Abstract | EW_Split
-              and
+              and then
             Get_Type_Kind (To) in EW_Abstract | EW_Split
          then
             Check_Needed_On_Conversion (From => Get_Ada_Node (+From),
@@ -772,7 +772,7 @@ package body Why.Gen.Expr is
    begin
       --  When From = To and no check needs to be inserted, do nothing
 
-      if Eq_Base (To, From) and not Need_Check then
+      if Eq_Base (To, From) and then not Need_Check then
          return Expr;
       end if;
 
@@ -2290,17 +2290,21 @@ package body Why.Gen.Expr is
          case Attr is
             when Attribute_First       => return +E_Symb (Ty, WNE_Attr_First);
             when Attribute_Last        => return +E_Symb (Ty, WNE_Attr_Last);
-            when Attribute_Modulus     =>
+            when Attribute_Alignment      =>
+               return +E_Symb (Ty, WNE_Attr_Value_Alignment);
+            when Attribute_Modulus        =>
                return +E_Symb (Ty, WNE_Attr_Modulus);
-            when Attribute_Constrained =>
+            when Attribute_Constrained    =>
                return +E_Symb (Ty, WNE_Attr_Constrained);
-            when Attribute_Size        =>
+            when Attribute_Size           =>
                return +E_Symb (Ty, WNE_Attr_Value_Size);
-            when Attribute_Tag         =>
+            when Attribute_Component_Size =>
+               return +E_Symb (Ty, WNE_Attr_Value_Component_Size);
+            when Attribute_Tag            =>
                return +E_Symb (Ty, WNE_Attr_Tag);
-            when Attribute_Image       =>
+            when Attribute_Image          =>
                return +E_Symb (Ty, WNE_Attr_Image);
-            when Attribute_Value       =>
+            when Attribute_Value          =>
                return +E_Symb (Ty, WNE_Attr_Value);
             when others =>
                raise Program_Error;
@@ -2940,7 +2944,7 @@ package body Why.Gen.Expr is
       Pointer := Line_Start (Physical_Line_Number (Line),
                              Get_Source_File_Index (Pointer));
 
-      while Src_Buff (Pointer) /= ASCII.LF and Src_Buff (Pointer) /= ASCII.CR
+      while Src_Buff (Pointer) not in ASCII.LF | ASCII.CR
       loop
 
          Buf := Buf & (if Src_Buff (Pointer) = ASCII.Back_Slash then

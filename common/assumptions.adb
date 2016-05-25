@@ -110,7 +110,7 @@ package body Assumptions is
    function To_String (T : Token) return String is
 
       function Human_Readable (C : Claim_Kind) return String;
-      --  human readable string for claim kind
+      --  Human-readable string for claim kind
 
       --------------------
       -- Human_Readable --
@@ -131,6 +131,8 @@ package body Assumptions is
                return "absence of run-time errors";
          end case;
       end Human_Readable;
+
+   --  Start of processing for To_String
 
    begin
       return Human_Readable (T.Predicate) & " of " & Subp_Name (T.Arg);

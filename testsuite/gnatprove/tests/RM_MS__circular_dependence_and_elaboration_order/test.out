@@ -1,7 +1,7 @@
 p_14.adb:7:04: info: initialization of "P_S" constituent of "P_State" proved
 p_14.adb:19:19: info: initialization of "Global_Var" proved
-p_14.ads:6:04: info: initialization of "Global_Var" proved
-p_14.ads:8:20: info: initialization of "S" proved
+p_14.ads:7:04: info: initialization of "Global_Var" proved
+p_14.ads:9:20: info: initialization of "S" proved
 q_14.adb:8:04: info: initialization of "Q_S" constituent of "Q_State" proved
 q_14.adb:14:10: info: initialization of "V" proved
 q_14.adb:15:17: info: initialization of "V" proved

@@ -3370,6 +3370,8 @@ Principle: every overriding operation of the derived type should behave so that
 it can be substituted for the corresponding overridden operation of the parent
 type anywhere.
 
+.. _Class-Wide Subprogram Contracts:
+
 Class-Wide Subprogram Contracts
 -------------------------------
 
@@ -3388,7 +3390,7 @@ Although these contracts are defined in Ada 2012, they have a stricter meaning
 in |SPARK| for checking Liskov Substitution Principle:
 
 * The class-wide precondition of an overriding operation should be weaker (more
-  permissive) than the class-wide precondition of the corresponding overridden.
+  permissive) than the class-wide precondition of the corresponding overridden
   operation.
 * The class-wide postcondition of an overriding operation should be stronger
   (more restrictive) than the class-wide postcondition of the corresponding
@@ -3438,6 +3440,8 @@ parent type and when it is inherited from an interface.
 
 |GNATprove| separately checks that a subprogram implements its class-wide
 contract, like for a specific contract.
+
+.. _Mixing Class-Wide and Specific Subprogram Contracts:
 
 Mixing Class-Wide and Specific Subprogram Contracts
 ---------------------------------------------------
@@ -4537,3 +4541,121 @@ quantified expression above is equivalent to:
 
 where ``Result`` is the value of the quantified expression. See |GNAT Pro|
 Reference Manual for details on aspect ``Iterable``.
+
+.. _SPARK Lemma Library:
+
+SPARK Lemma Library
+-------------------
+
+As part of the |SPARK| product, a library of lemmas is available through the
+project file :file:`<spark-install>/lib/gnat/spark_lemmas.gpr`. To use this
+library in a program, you need to add a corresponding dependency in your
+project file, for example:
+
+.. code-block:: ada
+
+  with "spark_lemmas";
+  project My_Project is
+     ...
+  end My_Project;
+
+You may need to update the environment variable ``GPR_PROJECT_PATH`` for the
+lemma library project to be found by GNAT compiler, as described in :ref:`How
+to Install GNATprove`.
+
+You also need to set the environment variable ``SPARK_LEMMAS_OBJECT_DIR`` to
+the absolute path of the object directory where you want compilation and
+verification artefacts for the lemma library to be created. This should be an
+absolute path (not a relative one) otherwise these artefacts will be created
+inside you |SPARK| install.
+
+This library consists in a set of ghost null procedures with contracts (called
+`lemmas`). Here is an example of such a lemma:
+
+.. code-block:: ada
+
+   procedure Lemma_Div_Is_Monotonic
+     (Val1  : Int;
+      Val2  : Int;
+      Denom : Pos)
+   with
+     Global => null,
+     Pre  => Val1 <= Val2,
+     Post => Val1 / Denom <= Val2 / Denom;
+
+whose body is simply a null procedure:
+
+.. code-block:: ada
+
+   procedure Lemma_Div_Is_Monotonic
+     (Val1  : Int;
+      Val2  : Int;
+      Denom : Pos)
+   is null;
+
+This procedure is ghost (as part of a ghost package), which means that the
+procedure body and all calls to the procedure are compiled away when producing
+the final executable without assertions (when switch `-gnata` is not set). On
+the contrary, when compiling with assertions for testing (when switch `-gnata`
+is set) the precondition of the procedure is executed, possibly detecting
+invalid uses of the lemma. However, the main purpose of such a lemma is to
+facilitate automatic proof, by providing the prover specific properties
+expressed in the postcondition. In the case of ``Lemma_Div_Is_Monotonic``, the
+postcondition expresses an inequality between two expressions. You may use this
+lemma in your program by calling it on specific expressions, for example:
+
+.. code-block:: ada
+
+   R1 := X1 / Y;
+   R2 := X2 / Y;
+   Lemma_Div_Is_Monotonic (X1, X2, Y);
+   --  at this program point, the prover knows that R1 <= R2
+   --  the following assertion is proved automatically:
+   pragma Assert (R1 <= R2);
+
+Note that the lemma may have a precondition, stating in which contexts the
+lemma holds, which you will need to prove when calling it. For example, a
+precondition check is generated in the code above to show that ``X1 <=
+X2``. Similarly, the types of parameters in the lemma may restrict the contexts
+in which the lemma holds. For example, the type ``Pos`` for parameter ``Denom``
+of ``Lemma_Div_Is_Monotonic`` is the type of positive integers. Hence, a range
+check may be generated in the code above to show that ``Y`` is positive.
+
+All the lemmas provided in the SPARK lemma library have been proved either
+automatically or using Coq interactive prover. The Why3 session file recording
+all proofs, as well as the individual Coq proof scripts, are available as part
+of the |SPARK| product under directory
+:file:`<spark-install>/lib/gnat/proof`. For example, the proof of lemma
+``Lemma_Div_Is_Monotonic`` is a Coq proof of the mathematical property (in Coq
+syntax):
+
+.. image:: static/div_is_monotonic_in_coq.png
+   :width: 400 px
+   :align: center
+   :alt: Property that division is monotonic in Coq syntax
+
+Currenly, the SPARK lemma library provides the following lemmas:
+
+* Lemmas on signed integer arithmetic in file ``spark-arithmetic_lemmas.ads``,
+  that are instantiated for 32 bits signed integers (``Integer``) in file
+  ``spark-integer_arithmetic_lemmas.ads`` and for 64 bits signed integers
+  (``Long_Integer``) in file ``spark-long_integer_arithmetic_lemmas.ads``.
+
+* Lemmas on modular integer arithmetic in file
+  ``spark-mod_arithmetic_lemmas.ads``, that are instantiated for 32 bits
+  modular integers (``Interfaces.Unsigned_32``) in file
+  ``spark-mod32_arithmetic_lemmas.ads`` and for 64 bits modular integers
+  (``Interfaces.Unsigned_64``) in file ``spark-mod64_arithmetic_lemmas.ads``.
+
+To apply lemmas to signed or modular integers of different types than the ones
+used in the instances provided in the library, just convert the expressions
+passed in arguments, as follows:
+
+.. code-block:: ada
+
+   R1 := X1 / Y;
+   R2 := X2 / Y;
+   Lemma_Div_Is_Monotonic (Integer(X1), Integer(X2), Integer(Y));
+   --  at this program point, the prover knows that R1 <= R2
+   --  the following assertion is proved automatically:
+   pragma Assert (R1 <= R2);

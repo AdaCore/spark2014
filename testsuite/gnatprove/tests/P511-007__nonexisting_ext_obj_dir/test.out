@@ -1,0 +1,7 @@
+test.gpr:3:22: undefined external reference
+
+
+gnatprove: error during generation of Global contracts
+gnatprove: test.gpr:3:22: undefined external reference
+gnatprove: test.gpr:3:22: undefined external reference
+gprbuild: "test.gpr" processing failed

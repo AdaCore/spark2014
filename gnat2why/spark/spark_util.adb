@@ -47,7 +47,6 @@ with Sem_Eval;                           use Sem_Eval;
 with Sem_Prag;                           use Sem_Prag;
 with SPARK_Definition;                   use SPARK_Definition;
 with Stringt;                            use Stringt;
-with Treepr;                             use Treepr;
 with Urealp;                             use Urealp;
 with VC_Kinds;                           use VC_Kinds;
 
@@ -64,18 +63,40 @@ package body SPARK_Util is
    --  Map from full views of entities to their partial views, for deferred
    --  constants and private types.
 
+   ----------------------
+   -- Set_Partial_View --
+   ----------------------
+
    procedure Set_Partial_View (E, V : Entity_Id) is
    begin
       Partial_Views.Insert (E, V);
    end Set_Partial_View;
 
-   function Partial_View (E : Entity_Id) return Entity_Id is
-     (if Partial_Views.Contains (E) then
-        Partial_Views.Element (E)
-      else Empty);
+   ------------------
+   -- Partial_View --
+   ------------------
+
+   function Partial_View (E : Entity_Id) return Entity_Id
+   is
+      C : constant Node_Maps.Cursor := Partial_Views.Find (E);
+      use Node_Maps;
+
+   begin
+      return (if Has_Element (C)
+              then Element (C)
+              else Empty);
+   end Partial_View;
+
+   ------------------
+   -- Is_Full_View --
+   ------------------
 
    function Is_Full_View (E : Entity_Id) return Boolean is
      (Present (Partial_View (E)));
+
+   ---------------------
+   -- Is_Partial_View --
+   ---------------------
 
    function Is_Partial_View (E : Entity_Id) return Boolean is
      ((Is_Type (E) or else Ekind (E) = E_Constant) and then
@@ -84,23 +105,63 @@ package body SPARK_Util is
    Specific_Tagged_Types : Node_Maps.Map;
    --  Map from classwide types to the corresponding specific tagged type
 
+   -------------------------
+   -- Set_Specific_Tagged --
+   -------------------------
+
    procedure Set_Specific_Tagged (E, V : Entity_Id) is
    begin
-      if Is_Full_View (V)
-        and then Full_View_Not_In_SPARK (Partial_View (V))
-      then
-         Specific_Tagged_Types.Insert (E, Partial_View (V));
-      else
-         Specific_Tagged_Types.Insert (E, V);
-      end if;
+      Specific_Tagged_Types.Insert
+        (E,
+         (if Is_Full_View (V)
+          and then Full_View_Not_In_SPARK (Partial_View (V))
+          then Partial_View (V)
+          else V));
    end Set_Specific_Tagged;
 
-   function Specific_Tagged (E : Entity_Id) return Entity_Id is
-     (Specific_Tagged_Types.Element (E));
+   function Specific_Tagged (E : Entity_Id) return Entity_Id
+     renames Specific_Tagged_Types.Element;
+
+   ---------------------------------
+   -- Extra tables on expressions --
+   ---------------------------------
+
+   Dispatching_Contracts : Node_Maps.Map;
+   --  Map from classwide pre- and postcondition expressions to versions of
+   --  the same expressions where the type of the controlling operand is of
+   --  class-wide type, and corresponding calls to primitive subprograms are
+   --  dispatching calls.
+
+   ------------------------------
+   -- Set_Dispatching_Contract --
+   ------------------------------
+
+   procedure Set_Dispatching_Contract (C, D : Node_Id) is
+   begin
+      Dispatching_Contracts.Insert (C, D);
+   end Set_Dispatching_Contract;
+
+   --------------------------
+   -- Dispatching_Contract --
+   --------------------------
+
+   function Dispatching_Contract (C : Node_Id) return Node_Id is
+      Primitive : constant Node_Maps.Cursor := Dispatching_Contracts.Find (C);
+      use Node_Maps;
+
+   begin
+      return (if Has_Element (Primitive)
+              then Element (Primitive)
+              else Empty);
+   end Dispatching_Contract;
 
    ------------------------------------------------
    -- Queries related to external axiomatization --
    ------------------------------------------------
+
+   --------------------------
+   -- Entity_In_Ext_Axioms --
+   --------------------------
 
    function Entity_In_Ext_Axioms (E : Entity_Id) return Boolean is
       Pack : constant Entity_Id :=
@@ -119,6 +180,10 @@ package body SPARK_Util is
       end;
    end Entity_In_Ext_Axioms;
 
+   ------------------------------------------
+   -- Is_Access_To_Ext_Axioms_Discriminant --
+   ------------------------------------------
+
    function Is_Access_To_Ext_Axioms_Discriminant
      (N : Node_Id) return Boolean
    is
@@ -128,6 +193,10 @@ package body SPARK_Util is
         and then Is_Ext_Axioms_Discriminant (E);
    end Is_Access_To_Ext_Axioms_Discriminant;
 
+   --------------------------------
+   -- Is_Ext_Axioms_Discriminant --
+   --------------------------------
+
    function Is_Ext_Axioms_Discriminant (E : Entity_Id) return Boolean is
       Typ : constant Entity_Id :=
         Unique_Defining_Entity (Enclosing_Declaration (E));
@@ -135,11 +204,23 @@ package body SPARK_Util is
       return Type_Based_On_Ext_Axioms (Etype (Typ));
    end Is_Ext_Axioms_Discriminant;
 
+   ----------------------------
+   -- Package_Has_Ext_Axioms --
+   ----------------------------
+
    function Package_Has_Ext_Axioms (E : Entity_Id) return Boolean
      renames Has_Annotate_Pragma_For_External_Axiomatization;
 
+   ------------------------------
+   -- Type_Based_On_Ext_Axioms --
+   ------------------------------
+
    function Type_Based_On_Ext_Axioms (E : Entity_Id) return Boolean is
      (Present (Underlying_Ext_Axioms_Type (E)));
+
+   --------------------------------
+   -- Underlying_Ext_Axioms_Type --
+   --------------------------------
 
    function Underlying_Ext_Axioms_Type (E : Entity_Id) return Entity_Id is
       Typ : Entity_Id := E;
@@ -176,6 +257,10 @@ package body SPARK_Util is
    --  considers scalar subtypes (otherwise returns False), and looks past
    --  private types.
 
+   -------------------------------
+   -- Has_Static_Scalar_Subtype --
+   -------------------------------
+
    function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean is
       Under_T  : constant Entity_Id := Underlying_Type (T);
       Base_T   : constant Entity_Id := Base_Type (Under_T);
@@ -200,6 +285,10 @@ package body SPARK_Util is
            and then Is_Static_Expression (Type_High_Bound (Under_T));
       end if;
    end Has_Static_Scalar_Subtype;
+
+   ------------
+   -- Retysp --
+   ------------
 
    function Retysp (T : Entity_Id) return Entity_Id is
       Typ : Entity_Id := T;
@@ -302,13 +391,13 @@ package body SPARK_Util is
       end if;
    end Retysp;
 
+   -----------------
+   -- Retysp_Kind --
+   -----------------
+
    function Retysp_Kind (T : Entity_Id) return Entity_Kind is
-      Typ : Entity_Id := T;
    begin
-      while Is_Private_Type (Typ) loop
-         Typ := Underlying_Type (Typ);
-      end loop;
-      return Ekind (Typ);
+      return Ekind (Retysp (T));
    end Retysp_Kind;
 
    ------------------------------------
@@ -1416,6 +1505,7 @@ package body SPARK_Util is
 
    function Get_Called_Entity (N : Node_Id) return Entity_Id is
       Nam : constant Node_Id := Name (N);
+
    begin
       return
         Entity (case Nkind (Nam) is
@@ -1701,120 +1791,14 @@ package body SPARK_Util is
       end if;
    end Get_Full_Type_Without_Checking;
 
-   ----------------------
-   -- Get_Global_Items --
-   ----------------------
+   ---------------------------------
+   -- Get_Iterable_Type_Primitive --
+   ---------------------------------
 
-   procedure Get_Global_Items
-     (P      :     Node_Id;
-      Reads  : out Node_Sets.Set;
-      Writes : out Node_Sets.Set)
-   is
-      pragma Assert (List_Length (Pragma_Argument_Associations (P)) = 1);
-
-      PAA : constant Node_Id := First (Pragma_Argument_Associations (P));
-      pragma Assert (Nkind (PAA) = N_Pragma_Argument_Association);
-
-      Row      : Node_Id;
-      The_Mode : Name_Id;
-      RHS      : Node_Id;
-
-      procedure Process (The_Mode   : Name_Id;
-                         The_Global : Entity_Id);
-      --  Add the given global to the reads or writes list,
-      --  depending on the mode.
-
-      procedure Process (The_Mode   : Name_Id;
-                         The_Global : Entity_Id) is
-      begin
-         case The_Mode is
-            when Name_Input =>
-               Reads.Insert (The_Global);
-            when Name_In_Out =>
-               Reads.Insert (The_Global);
-               Writes.Insert (The_Global);
-            when Name_Output =>
-               Writes.Insert (The_Global);
-            when others =>
-               raise Program_Error;
-         end case;
-      end Process;
-
-   --  Start of processing for Get_Global_Items
-
-   begin
-      Reads  := Node_Sets.Empty_Set;
-      Writes := Node_Sets.Empty_Set;
-
-      if Nkind (Expression (PAA)) = N_Null then
-         --  global => null
-         --  No globals, nothing to do.
-         return;
-
-      elsif Nkind (Expression (PAA)) in
-        N_Identifier | N_Expanded_Name
-      then
-         --  global => foo
-         --  A single input
-         Process (Name_Input, Entity (Expression (PAA)));
-
-      elsif Nkind (Expression (PAA)) = N_Aggregate and then
-        Expressions (Expression (PAA)) /= No_List
-      then
-         --  global => (foo, bar)
-         --  Inputs
-         RHS := First (Expressions (Expression (PAA)));
-         while Present (RHS) loop
-            case Nkind (RHS) is
-               when N_Identifier | N_Expanded_Name =>
-                  Process (Name_Input, Entity (RHS));
-               when others =>
-                  raise Why.Unexpected_Node;
-            end case;
-            RHS := Next (RHS);
-         end loop;
-
-      elsif Nkind (Expression (PAA)) = N_Aggregate and then
-        Component_Associations (Expression (PAA)) /= No_List
-      then
-         --  global => (mode => foo,
-         --             mode => (bar, baz))
-         --  A mixture of things.
-
-         declare
-            CA : constant List_Id :=
-              Component_Associations (Expression (PAA));
-         begin
-            Row := First (CA);
-            while Present (Row) loop
-               pragma Assert (List_Length (Choices (Row)) = 1);
-               The_Mode := Chars (First (Choices (Row)));
-
-               RHS := Expression (Row);
-               case Nkind (RHS) is
-                  when N_Aggregate =>
-                     RHS := First (Expressions (RHS));
-                     while Present (RHS) loop
-                        Process (The_Mode, Entity (RHS));
-                        RHS := Next (RHS);
-                     end loop;
-                  when N_Identifier | N_Expanded_Name =>
-                     Process (The_Mode, Entity (RHS));
-                  when N_Null =>
-                     null;
-                  when others =>
-                     Print_Node_Subtree (RHS);
-                     raise Why.Unexpected_Node;
-               end case;
-
-               Row := Next (Row);
-            end loop;
-         end;
-
-      else
-         raise Why.Unexpected_Node;
-      end if;
-   end Get_Global_Items;
+   function Get_Iterable_Type_Primitive
+     (Typ : Entity_Id;
+      Nam : Name_Id) return Entity_Id
+     is (Ultimate_Alias (Sem_Util.Get_Iterable_Type_Primitive (Typ, Nam)));
 
    ----------------------------------------
    -- Get_Priority_Or_Interrupt_Priority --
@@ -1931,7 +1915,7 @@ package body SPARK_Util is
             Contracts := Find_Contracts (E, Name, Classwide => True);
          end if;
 
-         if Contracts.Is_Empty and Inherited then
+         if Contracts.Is_Empty and then Inherited then
             Contracts := Find_Contracts (E, Name, Inherited => True);
          end if;
 
@@ -2022,6 +2006,14 @@ package body SPARK_Util is
      (E : Entity_Id;
       A : Pragma_Id) return Boolean
    is
+      subtype Volatile_Pragma is Pragma_Id with
+        Static_Predicate => Volatile_Pragma in Pragma_Async_Readers   |
+                                               Pragma_Async_Writers   |
+                                               Pragma_Effective_Reads |
+                                               Pragma_Effective_Writes;
+
+      Prag : constant Volatile_Pragma := A;
+
    begin
       --  Protected objects and components of concurrent objects are considered
       --  to be fully volatile.
@@ -2033,59 +2025,28 @@ package body SPARK_Util is
 
       --  Tasks are considered to have Async_Readers and Async_Writers
       if Ekind (Etype (E)) in Task_Kind then
-         case A is
-            when Pragma_Async_Readers |
-                 Pragma_Async_Writers =>
-               return True;
-            when Pragma_Effective_Reads  |
-                 Pragma_Effective_Writes =>
-               return False;
-            when others =>
-               raise Program_Error;
-         end case;
+         return Prag in Pragma_Async_Readers | Pragma_Async_Writers;
       end if;
+
+      --  ??? how about arrays and records with protected or task components?
 
       case Ekind (E) is
          when E_Abstract_State | E_Variable =>
-            case A is
-               when Pragma_Async_Readers =>
-                  return Async_Readers_Enabled (E);
-               when Pragma_Async_Writers =>
-                  return Async_Writers_Enabled (E);
-               when Pragma_Effective_Reads =>
-                  return Effective_Reads_Enabled (E);
-               when Pragma_Effective_Writes =>
-                  return Effective_Writes_Enabled (E);
-               when others =>
-                  raise Program_Error;
-            end case;
+            return
+              (case Prag is
+               when Pragma_Async_Readers    => Async_Readers_Enabled (E),
+               when Pragma_Async_Writers    => Async_Writers_Enabled (E),
+               when Pragma_Effective_Reads  => Effective_Reads_Enabled (E),
+               when Pragma_Effective_Writes => Effective_Writes_Enabled (E));
 
          --  Why restrict the flavors of volatility for IN and OUT
          --  parameters???
 
          when E_In_Parameter  =>
-            case A is
-               when Pragma_Async_Writers =>
-                  return True;
-               when Pragma_Async_Readers    |
-                    Pragma_Effective_Reads  |
-                    Pragma_Effective_Writes =>
-                  return False;
-               when others =>
-                  raise Program_Error;
-            end case;
+            return Prag = Pragma_Async_Writers;
 
          when E_Out_Parameter =>
-            case A is
-               when Pragma_Async_Writers   |
-                    Pragma_Effective_Reads =>
-                  return False;
-               when Pragma_Async_Readers    |
-                    Pragma_Effective_Writes =>
-                  return True;
-               when others =>
-                  raise Program_Error;
-            end case;
+            return Prag in Pragma_Async_Readers | Pragma_Effective_Writes;
 
          when E_In_Out_Parameter =>
             return True;
@@ -2106,6 +2067,8 @@ package body SPARK_Util is
 
       function Proc (N : Node_Id) return Traverse_Result;
       --  Process a node to check if it is a potentially blocking statement
+      --  ??? respect SPARK_Mode => Off and do not look into bodies of nested
+      --  entities
 
       procedure Traverse is new Traverse_Proc (Proc);
       --  Traverse a tree to check if it includes blocking statements
@@ -2628,23 +2591,16 @@ package body SPARK_Util is
 
    function Is_In_Analyzed_Files (E : Entity_Id) return Boolean is
       Encl_Unit : constant Node_Id := Enclosing_Lib_Unit_Node (E);
-      --  Retrieve the library unit containing E
+      --  The library unit containing E
+
+      Main_Unit_Node : constant Node_Id := Cunit (Main_Unit);
 
    begin
-      --  case 1: the entity is neither in the spec or body compilation unit of
-      --  the unit currently analyzed, so return False.
+      --  Check if the entity is either in the spec or in the body of the
+      --  current compilation unit. gnat2why is now only called on requested
+      --  files, so otherwise just return False.
 
-      if Cunit (Main_Unit) /= Encl_Unit
-        and then Library_Unit (Cunit (Main_Unit)) /= Encl_Unit
-      then
-         return False;
-
-      --  gnat2why is now only called on requested files, so here the result is
-      --  always true
-
-      else
-         return True;
-      end if;
+      return Encl_Unit in Main_Unit_Node | Library_Unit (Main_Unit_Node);
    end Is_In_Analyzed_Files;
 
    ----------------------------------------
@@ -2711,7 +2667,7 @@ package body SPARK_Util is
       --  flag Is_Inlined_Always set to True. However, subprograms with
       --  renaming-as-body satisfy these conditions and are not always inlined.
 
-      --  Also, subprograms of protected objects are never inlined.
+      --  Also, subprograms of protected objects are never inlined
 
       if not Is_Subprogram (E)
         or else not Is_Inlined_Always (E)
@@ -2834,16 +2790,16 @@ package body SPARK_Util is
    begin
       case Ekind (E) is
 
-         --  entries are always protected subprograms
+         --  Entries are always protected subprograms
          when E_Entry =>
             return True;
 
-         --  detect subprograms declared in scope of a protected type
+         --  Detect subprograms declared in scope of a protected type
          when Subprogram_Kind =>
 
             Scop := Scope (E);
             while Present (Scop) loop
-               if Ekind (Scop) in Protected_Kind then
+               if Ekind (Scop) in E_Protected_Type then
                   return True;
                end if;
                Scop := Scope (Scop);
@@ -2937,7 +2893,7 @@ package body SPARK_Util is
         or else
      (Ekind (E) = E_Enumeration_Subtype
         and then Etype (E) = Standard_Boolean
-        and then Scalar_Range (E) = Scalar_Range (Etype (E))));
+        and then Scalar_Range (E) = Scalar_Range (Standard_Boolean)));
 
    --------------------------
    -- Is_Static_Array_Type --
@@ -3064,6 +3020,7 @@ package body SPARK_Util is
 
    begin
       if Ekind (E) = E_String_Literal_Subtype then
+         pragma Assert (Dim = 1);
          return E;
       end if;
 
@@ -3137,19 +3094,46 @@ package body SPARK_Util is
    ---------------------------------
 
    function Requires_Interrupt_Priority (E : Entity_Id) return Boolean is
-      Decls : constant List_Id := Visible_Declarations_of_Prot_Type (E);
+
+      function Decl_Has_Attach_Handler (Decl : Node_Id) return Boolean;
+      --  Check whether the declaration is a subprogram with an attach_handler
+      --  pragma attached.
+
+      -----------------------------
+      -- Decl_Has_Attach_Handler --
+      -----------------------------
+
+      function Decl_Has_Attach_Handler (Decl : Node_Id) return Boolean is
+      begin
+         return
+           Nkind (Decl) in N_Subprogram_Declaration
+                         | N_Abstract_Subprogram_Declaration
+           and then Present (Get_Pragma (Defining_Entity (Decl),
+                                         Pragma_Attach_Handler));
+      end Decl_Has_Attach_Handler;
+
+      Decls : List_Id := Visible_Declarations_of_Prot_Type (E);
       Decl  : Node_Id := First (Decls);
+
+   --  Start of processing for Requires_Interrupt_Priority
+
    begin
       while Present (Decl) loop
-         if Nkind (Decl) in N_Subprogram_Declaration
-           | N_Abstract_Subprogram_Declaration
-           and then Present (Get_Pragma (Defining_Entity (Decl),
-                                         Pragma_Attach_Handler))
-         then
+         if Decl_Has_Attach_Handler (Decl) then
             return True;
          end if;
          Next (Decl);
       end loop;
+      if Private_Spec_In_SPARK (E) then
+         Decls := Private_Declarations_of_Prot_Type (E);
+         Decl := First (Decls);
+         while Present (Decl) loop
+            if Decl_Has_Attach_Handler (Decl) then
+               return True;
+            end if;
+            Next (Decl);
+         end loop;
+      end if;
       return False;
    end Requires_Interrupt_Priority;
 
@@ -3270,6 +3254,16 @@ package body SPARK_Util is
         (if Is_Class_Wide_Type (Rec)
          then Retysp (Get_Specific_Type_From_Classwide (Rec))
          else Rec);
+
+      --  Check that it is safe to call First_Component_Or_Discriminant on
+      --  Specific_Rec.
+
+      pragma Assert
+        (Is_Concurrent_Type (Specific_Rec)
+         or else Is_Incomplete_Or_Private_Type (Specific_Rec)
+         or else Is_Record_Type (Specific_Rec)
+         or else Has_Discriminants (Specific_Rec));
+
       Cur_Comp     : Entity_Id :=
         First_Component_Or_Discriminant (Specific_Rec);
    begin
@@ -3636,6 +3630,36 @@ package body SPARK_Util is
      new Is_Part_Of_Type (Is_Protected_Type);
 
    function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean
-     renames Is_Part_Of_Protected;
+                                         renames Is_Part_Of_Protected;
+
+   ---------------------------------------
+   -- Visible_Declarations_Of_Task_Type --
+   ---------------------------------------
+
+   function Visible_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
+   is
+      Def : constant Node_Id := Definition_of_Task_Type (E);
+   begin
+      if Present (Def) then
+         return Visible_Declarations (Def);
+      else
+         return Empty_List;
+      end if;
+   end Visible_Declarations_Of_Task_Type;
+
+   ---------------------------------------
+   -- Private_Declarations_Of_Task_Type --
+   ---------------------------------------
+
+   function Private_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
+   is
+      Def : constant Node_Id := Definition_of_Task_Type (E);
+   begin
+      if Present (Def) then
+         return Private_Declarations (Def);
+      else
+         return Empty_List;
+      end if;
+   end Private_Declarations_Of_Task_Type;
 
 end SPARK_Util;

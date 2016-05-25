@@ -1,1 +1,5 @@
 foo.adb:27:04: warning: analyzing unreferenced procedure "Test_01_Ok"
+foo.adb:30:10: info: discriminant check proved
+foo.adb:30:28: info: discriminant check proved
+foo.adb:36:08: info: range check proved
+foo.adb:36:10: medium: discriminant check might fail

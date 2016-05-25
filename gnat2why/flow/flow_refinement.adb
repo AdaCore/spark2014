@@ -21,77 +21,83 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;         use Ada.Containers;
-with Ada.Containers.Vectors;
+with Ada.Containers.Doubly_Linked_Lists;
 
-with Nlists;                 use Nlists;
-with Output;                 use Output;
-with Sem_Util;               use Sem_Util;
-with Snames;                 use Snames;
-with Sprint;                 use Sprint;
-with Stand;                  use Stand;
-with Treepr;                 use Treepr;
+with Nlists;               use Nlists;
+with Output;               use Output;
+with Sem_Util;             use Sem_Util;
+with Snames;               use Snames;
+with Sprint;               use Sprint;
+with Stand;                use Stand;
+with Treepr;               use Treepr;
 
-with Common_Iterators;       use Common_Iterators;
-with SPARK_Util;             use SPARK_Util;
+with Common_Iterators;     use Common_Iterators;
+with SPARK_Util;           use SPARK_Util;
 with Why;
 
-with Flow_Debug;             use Flow_Debug;
-with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
-with Flow_Types;             use Flow_Types;
+with Flow_Debug;           use Flow_Debug;
+with Flow_Dependency_Maps; use Flow_Dependency_Maps;
+with Flow_Types;           use Flow_Types;
 
 package body Flow_Refinement is
 
-   function Tree_Contains (T : Node_Id;
+   function List_Contains (L : List_Id;
                            N : Node_Id)
                            return Boolean;
-   --  Returns True iff the tree rooted at T contains node N.
-
-   function Tree_Contains (L : List_Id;
-                           N : Node_Id)
-                           return Boolean;
-   --  Returns True iff the list L contains node N.
+   --  Returns True iff the list L contains node N
 
    -------------------
-   -- Tree_Contains --
+   -- List_Contains --
    -------------------
 
-   function Tree_Contains (T : Node_Id;
+   function List_Contains (L : List_Id;
                            N : Node_Id)
                            return Boolean
    is
-      Found : Boolean := False;
+      function Tree_Contains (T : Node_Id;
+                              N : Node_Id)
+                           return Boolean;
+      --  Returns True iff the tree rooted at T contains node N
 
-      function Proc (X : Node_Id) return Traverse_Result;
+      -------------------
+      -- Tree_Contains --
+      -------------------
 
-      ----------
-      -- Proc --
-      ----------
+      function Tree_Contains (T : Node_Id;
+                              N : Node_Id)
+                           return Boolean
+      is
+         Found : Boolean := False;
 
-      function Proc (X : Node_Id) return Traverse_Result is
+         function Proc (X : Node_Id) return Traverse_Result;
+
+         ----------
+         -- Proc --
+         ----------
+
+         function Proc (X : Node_Id) return Traverse_Result is
+         begin
+            if X = N then
+               Found := True;
+               return Abandon;
+            else
+               return OK;
+            end if;
+         end Proc;
+
+         procedure Search_For_Node is new Traverse_Proc (Proc);
+
+         --  Start of processing for Tree_Contains
+
       begin
-         if X = N then
-            Found := True;
-            return Abandon;
-         else
-            return OK;
-         end if;
-      end Proc;
+         Search_For_Node (T);
+         return Found;
+      end Tree_Contains;
 
-      procedure Search_For_Node is new Traverse_Proc (Proc);
-
-   --  Start of processing for Tree_Contains
-
-   begin
-      Search_For_Node (T);
-      return Found;
-   end Tree_Contains;
-
-   function Tree_Contains (L : List_Id;
-                           N : Node_Id)
-                           return Boolean
-   is
       P : Node_Id;
+
+   --  Start of processing for List_Contains
+
    begin
       P := First (L);
       while Present (P) loop
@@ -100,8 +106,9 @@ package body Flow_Refinement is
          end if;
          P := Next (P);
       end loop;
+
       return False;
-   end Tree_Contains;
+   end List_Contains;
 
    ----------------
    -- Is_Visible --
@@ -119,7 +126,7 @@ package body Flow_Refinement is
       --  The scope DAG may look like a twisty maze, but it is actually
       --  reasonably easy to traverse upwards. The only complication is when we
       --  deal with a private part, in which case we need to quickly check one
-      --  extra scope (the visible part), but then we continue on as normal.
+      --  extra scope (the visible part), but then we continue as normal.
       --
       --     S is...     Next node is...
       --     =======     ===============
@@ -129,7 +136,7 @@ package body Flow_Refinement is
       --     X|spec      enclosing_scope (S)
       --
       --  The enclosing scope of S is computed by Get_Enclosing_Flow_Scope and
-      --  may be one of:
+      --  is either:
       --
       --     1. The first parent (just going up the AST) of S which is a
       --        package/PO declaration (this deals with nested packages)
@@ -140,72 +147,85 @@ package body Flow_Refinement is
       --     3. null (if we have hit Standard)
       --
       --  The visibility is the same as before, i.e.
-      --     s.section = enclosing_scope(s).section
-      --  Unless S is a private descendant, in which case it is always "priv".
+      --     S.Section = Enclosing_Scope (S).Section
+      --  unless S is a private descendant, in which case it is always "priv".
 
-      Ptr : Flow_Scope;
+      Context : Flow_Scope;
    begin
       --  Go upwards from S (the scope we are in) and see if we end up in
       --  Target_Scope (what we're checking if we can see).
-      Ptr := S;
-      while Ptr /= Null_Flow_Scope loop
-         if Ptr = Target_Scope then
-            return True;
-         end if;
-
-         case Valid_Section_T'(Ptr.Section) is
+      Context := S;
+      while Present (Context) loop
+         case Context.Section is
             when Body_Part =>
-               if Flow_Scope'(Ptr.Ent, Private_Part) = Target_Scope
-                 or else Flow_Scope'(Ptr.Ent, Spec_Part) = Target_Scope
-               then
+               if Target_Scope.Ent = Context.Ent then
                   return True;
-               end if;
-
-               if Get_Enclosing_Body_Flow_Scope (Ptr) /= Null_Flow_Scope then
-                  Ptr := Get_Enclosing_Body_Flow_Scope (Ptr);
                else
-                  Ptr.Section := Private_Part;
+                  declare
+                     Enclosing_Body_Scope : constant Flow_Scope :=
+                       Get_Enclosing_Body_Flow_Scope (Context);
+                  begin
+                     Context := (if Present (Enclosing_Body_Scope)
+                                 then Enclosing_Body_Scope
+                                 else Private_Scope (Context));
+                  end;
                end if;
 
             when Private_Part =>
-               if Flow_Scope'(Ptr.Ent, Spec_Part) = Target_Scope then
+               if Target_Scope.Ent = Context.Ent
+                 and then Target_Scope.Section in Private_Part | Spec_Part
+               then
                   return True;
+               else
+                  Context := Get_Enclosing_Flow_Scope (Context);
                end if;
-               Ptr := Get_Enclosing_Flow_Scope (Ptr);
 
             when Spec_Part =>
-               Ptr := Get_Enclosing_Flow_Scope (Ptr);
+               if Target_Scope.Ent = Context.Ent
+                 and then Target_Scope.Section = Spec_Part
+               then
+                  return True;
+               else
+                  Context := Get_Enclosing_Flow_Scope (Context);
+               end if;
+
+            when Null_Part =>
+               raise Program_Error;
+
          end case;
       end loop;
 
-      --  Check if Target_Scope is generally visible from anywhere (we
-      --  know this if we reach the null flow scope) or if are dealing
-      --  with a nested package where we happen to have visibility of
-      --  its spec (we know this if we find a scope that is visible
-      --  from origin scope while going up the spec parts of the
-      --  target scope).
-      Ptr := Target_Scope;
-      while Ptr /= Null_Flow_Scope and Ptr /= S loop
-         case Valid_Section_T'(Ptr.Section) is
+      --  Check if Target_Scope is generally visible from anywhere (we know
+      --  this if we reach the null flow scope) or if are dealing with a nested
+      --  package where we happen to have visibility of its spec (we know this
+      --  if we find a scope that is visible from origin scope while going up
+      --  the spec parts of the target scope).
+      Context := Target_Scope;
+      while Present (Context) and then Context /= S loop
+         case Context.Section is
             when Spec_Part =>
-               Ptr := Get_Enclosing_Flow_Scope (Ptr);
-               if Ptr.Section = Private_Part then
-                  --  This deals with visibility of private children. A
-                  --  package body can see a private child's spec (and test
-                  --  for this if the enclosing flow scope of the private
-                  --  child's (the parents private part) can be seen from
-                  --  S).
-                  return Is_Visible (Ptr, S);
+               Context := Get_Enclosing_Flow_Scope (Context);
+               if Present (Context) and then Context.Section = Private_Part
+               then
+                  --  Deal with visibility of private children. A package body
+                  --  can see a private child's spec (and test for this if the
+                  --  enclosing flow scope of the private child's, i.e. the
+                  --  parents private part, can be seen from S).
+                  return Is_Visible (Context, S);
                end if;
 
             when Private_Part | Body_Part =>
                exit;
+
+            when Null_Part =>
+               raise Program_Error;
+
          end case;
       end loop;
-      return Ptr = Null_Flow_Scope
-        or else Ptr = S
-        or else (Ptr /= Target_Scope
-                   and then Is_Visible (Ptr, S));
+
+      return No (Context)
+        or else Context = S
+        or else (Context /= Target_Scope and then Is_Visible (Context, S));
    end Is_Visible;
 
    function Is_Visible (N : Node_Id;
@@ -233,7 +253,7 @@ package body Flow_Refinement is
       end loop;
       Enclosing_Scope := Get_Flow_Scope (Ptr);
 
-      if Enclosing_Scope = Null_Flow_Scope
+      if No (Enclosing_Scope)
         and then Scope (S.Ent) /= Standard_Standard
       then
          Ptr := Scope (S.Ent);
@@ -286,9 +306,8 @@ package body Flow_Refinement is
             raise Why.Unexpected_Node;
       end case;
 
-      --  We need to get to the node that is above the
-      --  N_Package_Body/N_Protected_Body/N_Task_Body that corresponds to flow
-      --  scope S.
+      --  We need to get to the node that is above the N_Package_Body,
+      --  N_Protected_Body or N_Task_Body that corresponds to flow scope S.
       while Nkind (P) not in N_Package_Body   |
                              N_Protected_Body |
                              N_Task_Body
@@ -306,7 +325,7 @@ package body Flow_Refinement is
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope is
       P : Node_Id := N;
-      V : Section_T;
+      V : Valid_Section_T;
    begin
       while Present (P) loop
          P := Get_Body_Or_Stub (P);
@@ -333,7 +352,7 @@ package body Flow_Refinement is
                  N_Protected_Definition  |
                  N_Task_Definition       =>
                if Nkind (P) = N_Task_Definition
-                 or else not Tree_Contains (Private_Declarations (P),
+                 or else not List_Contains (Private_Declarations (P),
                                             Get_Body_Or_Stub (N))
                then
                   V := Spec_Part;
@@ -357,10 +376,10 @@ package body Flow_Refinement is
                exit;
 
             when N_Aspect_Specification =>
-               --  We only get here when we call Get_Flow_Scope on an
-               --  abstract state. On this occasion we want to return
-               --  the Spec_Part followed by the name of the package
-               --  that introduces the abstract state.
+               --  We only get here when we call Get_Flow_Scope on an abstract
+               --  state. On this occasion we want to return the Spec_Part
+               --  followed by the name of the package that introduces the
+               --  abstract state.
                pragma Assert (Nkind (N) = N_Defining_Identifier
                                 and then Ekind (N) = E_Abstract_State);
 
@@ -378,10 +397,9 @@ package body Flow_Refinement is
                null;
          end case;
 
-         --  If we get a node from some contract, we will get the node from
-         --  the generated pragma instead. This pragma does not have a
-         --  parent set, so in this case we jump to the entity the aspect
-         --  is for.
+         --  If we get a node from some contract, we will get the node from the
+         --  generated pragma instead. This pragma does not have a parent set,
+         --  so in this case we jump to the entity the aspect is for.
          if Nkind (P) = N_Pragma and then From_Aspect_Specification (P) then
             P := Corresponding_Aspect (P);
             pragma Assert (Nkind (P) = N_Aspect_Specification);
@@ -415,8 +433,8 @@ package body Flow_Refinement is
       end if;
 
       if No (Body_E) then
-         --  If we don't even have it in the AST, then it's a safe bet that
-         --  we can't see the refinement...
+         --  If we don't even have it in the AST, then it's a safe bet that we
+         --  can't see the refinement...
          return False;
       end if;
 
@@ -431,14 +449,7 @@ package body Flow_Refinement is
                                          S : Flow_Scope)
                                          return Boolean
    is
-      Ref_Scope : Flow_Scope;
-   begin
-      Ref_Scope := Get_Flow_Scope (E);
-      pragma Assert (Present (Ref_Scope));
-      Ref_Scope.Section := Body_Part;
-
-      return Is_Visible (Ref_Scope, S);
-   end State_Refinement_Is_Visible;
+     (Is_Visible (Body_Scope (Get_Flow_Scope (E)), S));
 
    -----------------------
    -- Get_Contract_Node --
@@ -450,27 +461,27 @@ package body Flow_Refinement is
                                return Node_Id
    is
       Body_E : constant Entity_Id := Get_Body_Entity (E);
-      N      : Node_Id := Empty;
+      Prag   : Node_Id;
+
    begin
       if Subprogram_Refinement_Is_Visible (E, S) then
-         pragma Assert (Present (Body_E));
-
-         N := Get_Pragma
-           (Get_Body_Or_Stub (Body_E),
-            (case C is
-               when Global_Contract  => Pragma_Refined_Global,
-               when Depends_Contract => Pragma_Refined_Depends));
+         Prag :=
+           Get_Pragma (Get_Body_Or_Stub (Body_E),
+                       (case C is
+                           when Global_Contract  => Pragma_Refined_Global,
+                           when Depends_Contract => Pragma_Refined_Depends));
+      else
+         Prag := Empty;
       end if;
 
-      if No (N) then
-         N := Get_Pragma
-           (E,
-            (case C is
-               when Global_Contract  => Pragma_Global,
-               when Depends_Contract => Pragma_Depends));
+      if No (Prag) then
+         Prag := Get_Pragma (E,
+                             (case C is
+                                 when Global_Contract  => Pragma_Global,
+                                 when Depends_Contract => Pragma_Depends));
       end if;
 
-      return N;
+      return Prag;
    end Get_Contract_Node;
 
    ------------------
@@ -481,26 +492,27 @@ package body Flow_Refinement is
                           S    : Flow_Scope)
                           return Node_Sets.Set
    is
-      function Expand (E : Entity_Id) return Node_Sets.Set;
-      --  We return either E if its refinement is not visible, or all
+      P : Node_Sets.Set;
+
+      procedure Expand (E : Entity_Id);
+      --  Include in P either E if its refinement is not visible, or all
       --  consitituents of E otherwise.
       --
-      --  If E is not abstract state, we also just return E.
+      --  If E is not abstract state, we put just E
 
       ------------
       -- Expand --
       ------------
 
-      function Expand (E : Entity_Id) return Node_Sets.Set is
-         Tmp                        : Node_Sets.Set := Node_Sets.Empty_Set;
-         Possible_Hidden_Components : Boolean       := False;
+      procedure Expand (E : Entity_Id) is
+         Possible_Hidden_Components : Boolean := False;
       begin
          case Ekind (E) is
             when E_Abstract_State =>
                if State_Refinement_Is_Visible (E, S) then
                   for C of Iter (Refinement_Constituents (E)) loop
                      if Nkind (C) /= N_Null then
-                        Tmp.Union (Expand (C));
+                        Expand (C);
                      end if;
                   end loop;
                else
@@ -509,7 +521,7 @@ package body Flow_Refinement is
 
                for C of Iter (Part_Of_Constituents (E)) loop
                   if Is_Visible (C, S) then
-                     Tmp.Union (Expand (C));
+                     Expand (C);
                   else
                      Possible_Hidden_Components := True;
                   end if;
@@ -519,23 +531,21 @@ package body Flow_Refinement is
                   --  We seem to have an abstract state which has no
                   --  refinement, or where we have unexpanded state. Lets
                   --  include the abstract state itself.
-                  Tmp.Include (E);
+                  P.Include (E);
                end if;
 
             when others =>
-               Tmp.Include (E);
+               P.Include (E);
          end case;
-         return Tmp;
       end Expand;
-
-      P : Node_Sets.Set := Node_Sets.Empty_Set;
 
    --  Start of processing for Down_Project
 
    begin
       for V of Vars loop
-         P.Union (Expand (V));
+         Expand (V);
       end loop;
+
       return P;
    end Down_Project;
 
@@ -591,14 +601,19 @@ package body Flow_Refinement is
    ----------------------
 
    function Get_Body_Or_Stub (N : Node_Id) return Node_Id is
+      P : constant Node_Id := Parent (N);
    begin
-      if Nkind (Parent (N)) = N_Subunit
-        and then Present (Corresponding_Stub (Parent (N)))
-      then
-         return Corresponding_Stub (Parent (N));
-      else
-         return N;
+      if Nkind (P) = N_Subunit then
+         declare
+            Stub : constant Node_Id := Corresponding_Stub (P);
+         begin
+            if Present (Stub) then
+               return Stub;
+            end if;
+         end;
       end if;
+
+      return N;
    end Get_Body_Or_Stub;
 
    -----------------------------------
@@ -610,88 +625,93 @@ package body Flow_Refinement is
                                            return Boolean
    is
       Trace : constant Boolean := False;
-      --  Enable this for some tracing output.
-
-      package Scope_Vectors is new Ada.Containers.Vectors
-        (Index_Type   => Positive,
-         Element_Type => Flow_Scope);
-
-      function Ancestor (S : Flow_Scope) return Flow_Scope
-      with Pre => Present (S);
-      --  Determine the immediate ancestor of S.
-
-      function Heritage (S : Flow_Scope) return Scope_Vectors.Vector
-      with Post => not Heritage'Result.Is_Empty and then
-                   Heritage'Result.First_Element = Null_Flow_Scope and then
-                   Heritage'Result.Last_Element = S;
-      --  Determine all ancestors of S up to and including Standard.
+      --  Enable this for some tracing output
 
       function Common_Ancestor (A, B : Flow_Scope) return Flow_Scope;
-      --  Return the common ancestor of both flow scopes.
-
-      --------------
-      -- Ancestor --
-      --------------
-
-      function Ancestor (S : Flow_Scope) return Flow_Scope is
-      begin
-         case Valid_Section_T'(S.Section) is
-            when Body_Part =>
-               return S'Update (Section => Private_Part);
-
-            when Private_Part | Spec_Part =>
-               return Get_Enclosing_Flow_Scope (S);
-         end case;
-      end Ancestor;
-
-      --------------
-      -- Heritage --
-      --------------
-
-      function Heritage (S : Flow_Scope) return Scope_Vectors.Vector is
-         Ptr : Flow_Scope := S;
-         V   : Scope_Vectors.Vector := Scope_Vectors.Empty_Vector;
-      begin
-         V.Append (Ptr);
-         while Present (Ptr) loop
-            Ptr := Ancestor (Ptr);
-            V.Append (Ptr);
-         end loop;
-         V.Reverse_Elements;
-         return V;
-      end Heritage;
+      --  Return the common ancestor of both flow scopes
 
       ---------------------
       -- Common_Ancestor --
       ---------------------
 
       function Common_Ancestor (A, B : Flow_Scope) return Flow_Scope is
-         L1  : constant Scope_Vectors.Vector := Heritage (A);
-         L2  : constant Scope_Vectors.Vector := Heritage (B);
 
-         Ptr : Natural := 0;
+         package Scope_Lists is new
+           Ada.Containers.Doubly_Linked_Lists (Element_Type => Flow_Scope);
+
+         function Heritage (S : Flow_Scope) return Scope_Lists.List
+           with Post => not Heritage'Result.Is_Empty and then
+                        No (Heritage'Result.First_Element) and then
+                        Heritage'Result.Last_Element = S;
+         --  Determine all ancestors of S up to and including Standard
+
+         --------------
+         -- Heritage --
+         --------------
+
+         function Heritage (S : Flow_Scope) return Scope_Lists.List is
+
+            function Ancestor (S : Flow_Scope) return Flow_Scope
+              with Pre => Present (S);
+            --  Determine the immediate ancestor of S
+
+            --------------
+            -- Ancestor --
+            --------------
+
+            function Ancestor (S : Flow_Scope) return Flow_Scope is
+            begin
+               case Valid_Section_T'(S.Section) is
+               when Body_Part =>
+                  return Private_Scope (S);
+
+               when Private_Part | Spec_Part =>
+                  return Get_Enclosing_Flow_Scope (S);
+               end case;
+            end Ancestor;
+
+            Context : Flow_Scope := S;
+            L       : Scope_Lists.List;
+
+         --  Start of processing for Heritage
+
+         begin
+            loop
+               L.Prepend (Context);
+               exit when No (Context);
+               Context := Ancestor (Context);
+            end loop;
+
+            return L;
+         end Heritage;
+
+         L1 : constant Scope_Lists.List := Heritage (A);
+         L2 : constant Scope_Lists.List := Heritage (B);
+
+         C1 : Scope_Lists.Cursor := L1.First;
+         C2 : Scope_Lists.Cursor := L2.First;
+
+         Last_Common_Ancestor : Scope_Lists.Cursor;
+
+      --  Start of processing for Common_Ancestor
+
       begin
          loop
-            if Count_Type (Ptr) = L1.Length or else
-              Count_Type (Ptr) = L2.Length
+            pragma Loop_Invariant (L1 (C1) = L2 (C2));
+
+            Last_Common_Ancestor := C1;
+
+            Scope_Lists.Next (C1);
+            Scope_Lists.Next (C2);
+
+            if Scope_Lists.Has_Element (C1)
+              and then Scope_Lists.Has_Element (C2)
+              and then L1 (C1) = L2 (C2)
             then
-               if Ptr >= 1 then
-                  return L1 (Ptr);
-               else
-                  return Null_Flow_Scope;
-               end if;
+               null;
+            else
+               return L1 (Last_Common_Ancestor);
             end if;
-            Ptr := Ptr + 1;
-            if L1 (Ptr) /= L2 (Ptr) then
-               Ptr := Ptr - 1;
-               if Ptr >= 1 then
-                  return L1 (Ptr);
-               else
-                  return Null_Flow_Scope;
-               end if;
-            end if;
-            pragma Loop_Variant   (Increases => Ptr);
-            pragma Loop_Invariant (L1 (Ptr) = L2 (Ptr));
          end loop;
       end Common_Ancestor;
 
@@ -704,7 +724,6 @@ package body Flow_Refinement is
    --  Start of processing for Is_Initialized_At_Elaboration
 
    begin
-
       if Trace then
          Write_Str ("Query: ");
          Sprint_Node (E);
@@ -734,6 +753,7 @@ package body Flow_Refinement is
                if Ekind (Etype (Ent)) in Concurrent_Kind then
                   --  Instances of a protected type are always fully default
                   --  initialized.
+                  --  ??? arrays and record with protected types too
                   return True;
                elsif Is_Part_Of_Concurrent_Object (Ent) then
                   --  Variables that are Part_Of a concurrent type are always
@@ -759,7 +779,7 @@ package body Flow_Refinement is
 
          Init := Present (Find_Node_In_Initializes (Ent));
 
-         if Ptr.Ent = Common_Scope.Ent or Ptr.Ent = S.Ent then
+         if Ptr.Ent in Common_Scope.Ent | S.Ent then
             if Trace then
                Write_Line ("   -> in common scope or home");
             end if;
@@ -796,13 +816,11 @@ package body Flow_Refinement is
       Scope : Flow_Scope)
       return Boolean
    is
-
       Found_State_Abstraction : Boolean := False;
 
       function Proc (N : Node_Id) return Traverse_Result;
-      --  Traversal procedure that sets Found_State_Abstraction to
-      --  True if we find a State Abstraction whose refinement is
-      --  visible from Scope.
+      --  Traversal procedure that sets Found_State_Abstraction to True if we
+      --  find a State Abstraction whose refinement is visible from Scope.
 
       ----------
       -- Proc --
@@ -839,24 +857,22 @@ package body Flow_Refinement is
 
    function Refinement_Needed (E : Entity_Id) return Boolean is
       Body_E : constant Entity_Id := Get_Body_Entity (E);
-   begin
 
+   begin
       if Present (Body_E) then
          declare
-            Depends_N         : constant Node_Id    :=
-              Get_Pragma (E, Pragma_Depends);
-            Global_N          : constant Node_Id    :=
-              Get_Pragma (E, Pragma_Global);
+            Depends_N : constant Node_Id := Get_Pragma (E, Pragma_Depends);
+            Global_N  : constant Node_Id := Get_Pragma (E, Pragma_Global);
 
-            Refined_Depends_N : constant Node_Id    :=
+            Refined_Depends_N : constant Node_Id :=
               Get_Pragma (Body_E, Pragma_Refined_Depends);
-            Refined_Global_N  : constant Node_Id    :=
+            Refined_Global_N  : constant Node_Id :=
               Get_Pragma (Body_E, Pragma_Refined_Global);
 
-            B_Scope           : constant Flow_Scope :=
-              Get_Flow_Scope (Body_E);
+            B_Scope : constant Flow_Scope := Get_Flow_Scope (Body_E);
+
          begin
-            if
+            return
               --  1) No Global and no Depends aspect
               (No (Global_N) and then No (Depends_N)) or else
 
@@ -873,10 +889,7 @@ package body Flow_Refinement is
               (Present (Depends_N) and then
                  No (Refined_Depends_N) and then
                  No (Refined_Global_N) and then
-                 Mentions_State_With_Visible_Refinement (Depends_N, B_Scope))
-            then
-               return True;
-            end if;
+                 Mentions_State_With_Visible_Refinement (Depends_N, B_Scope));
          end;
       end if;
 
@@ -892,16 +905,16 @@ package body Flow_Refinement is
       S  : Flow_Scope)
       return Boolean
    is
-      Tmp : Entity_Id;
+      Context : Entity_Id := S.Ent;
+
    begin
-      Tmp := S.Ent;
-      while Present (Tmp)
-        and then Tmp /= Standard_Standard
+      while Present (Context)
+        and then Context /= Standard_Standard
       loop
-         if Tmp = CO then
+         if Context = CO then
             return True;
          end if;
-         Tmp := Scope (Tmp);
+         Context := Scope (Context);
       end loop;
 
       return False;

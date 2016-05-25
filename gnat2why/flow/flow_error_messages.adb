@@ -174,25 +174,29 @@ package body Flow_Error_Messages is
          --  mention where the generic is instantiated.
 
          declare
-            Tmp     : Source_Ptr := Sloc (First_Node (N));
+            Loc     : Source_Ptr := Sloc (First_Node (N));
             File    : Unbounded_String;
             Line    : Physical_Line_Number;
             Context : Unbounded_String;
          begin
             loop
-               exit when Instantiation_Location (Tmp) = No_Location;
+               exit when Instantiation_Location (Loc) = No_Location;
+
+               --  Any change to the strings below should be reflected in GPS
+               --  plugin spark2014.py, so that the unit for a given message
+               --  is correctly computed.
 
                Context :=
                  To_Unbounded_String
-                   (if Comes_From_Inlined_Body (Tmp) then
+                   (if Comes_From_Inlined_Body (Loc) then
                       ", in call inlined at "
-                    elsif Comes_From_Inherited_Pragma (Tmp) then
+                    elsif Comes_From_Inherited_Pragma (Loc) then
                       ", in inherited contract at "
                     else ", in instantiation at ");
 
-               Tmp := Instantiation_Location (Tmp);
-               File := To_Unbounded_String (File_Name (Tmp));
-               Line := Get_Physical_Line_Number (Tmp);
+               Loc := Instantiation_Location (Loc);
+               File := To_Unbounded_String (File_Name (Loc));
+               Line := Get_Physical_Line_Number (Loc);
                Append (M, To_String (Context) &
                          To_String (File) & ":" & Image (Integer (Line), 1));
             end loop;
@@ -200,6 +204,10 @@ package body Flow_Error_Messages is
       end if;
       return To_String (M);
    end Compute_Message;
+
+   ------------------
+   -- Compute_Sloc --
+   ------------------
 
    function Compute_Sloc
      (N           : Node_Id;

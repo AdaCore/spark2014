@@ -1,0 +1,36 @@
+foo-blah.adb:6:07: info: initialization of "X" proved
+foo-blah.adb:11:16: info: initialization of "X" proved
+foo-blah.adb:15:20: high: modification of "Body_Elaborated" in elaboration requires Elaborate_Body on package "Blah"
+foo-blah.adb:16:10: high: modification of "Foo.B" in elaboration requires Elaborate_Body on package "Blah"
+foo-blah.adb:17:10: high: modification of "Baz" in elaboration requires Elaborate_Body on package "Blah"
+foo-blah.ads:10:04: warning: initialization of Body_Elaborated has no effect
+foo-blah.ads:11:04: info: initialization of "Foo.A" proved
+foo-blah.ads:11:04: info: initialization of "Foo.B" proved
+foo-blah.ads:14:14: warning: subprogram "P" has no effect
+foo-blah.ads:18:04: warning: initialization of Baz has no effect
+foo.adb:6:07: info: initialization of "X" proved
+foo.adb:11:16: info: initialization of "X" proved
+foo.adb:15:20: high: modification of "Body_Elaborated" in elaboration requires Elaborate_Body on package "Foo"
+foo.adb:16:10: high: modification of "Foo.B" in elaboration requires Elaborate_Body on package "Foo"
+foo.adb:17:10: high: modification of "Baz" in elaboration requires Elaborate_Body on package "Foo"
+foo.ads:10:04: warning: initialization of Body_Elaborated has no effect
+foo.ads:11:04: info: initialization of "Foo.A" proved
+foo.ads:11:04: info: initialization of "Foo.B" proved
+foo.ads:14:14: warning: subprogram "P" has no effect
+foo.ads:18:04: warning: initialization of Baz has no effect
+init.adb:5:04: info: initialization of "D" constituent of "State" proved
+init.adb:11:06: warning: unused assignment
+init.ads:11:28: info: initialization of "B" proved
+init.ads:14:14: warning: subprogram "Dummy" has no effect
+nested-priv.adb:7:06: high: modification of "Y" constituent of "Nested.State" in elaboration requires Elaborate_Body on package "Priv"
+nested-priv.adb:7:09: info: initialization of "Y" constituent of "Nested.State" proved
+nested-priv.adb:7:11: info: overflow check proved
+nested-priv.ads:5:14: warning: subprogram "Blah" has no effect
+nested.adb:11:09: high: modification of "X" in elaboration requires Elaborate_Body on package "P"
+nested.adb:11:12: info: initialization of "X" proved
+nested.adb:11:14: info: overflow check proved
+nested.ads:2:22: warning: no procedure exists that can initialize abstract state "Nested.State"
+nested.ads:5:14: warning: subprogram "Dummy" has no effect
+nested.ads:10:07: info: initialization of "X" proved
+use_init.adb:5:15: medium: "B" might not be initialized after elaboration of main program "Use_Init"
+use_init.adb:7:15: medium: "E" might not be initialized after elaboration of main program "Use_Init"

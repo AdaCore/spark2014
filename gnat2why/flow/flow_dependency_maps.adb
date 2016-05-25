@@ -21,13 +21,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;      use Common_Containers;
-with Einfo;                  use Einfo;
-with Elists;                 use Elists;
-with Flow_Generated_Globals; use Flow_Generated_Globals;
-with Flow_Utility;           use Flow_Utility;
-with Nlists;                 use Nlists;
-with Treepr;                 use Treepr;
+with Common_Containers;              use Common_Containers;
+with Elists;                         use Elists;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Utility;                   use Flow_Utility;
+with Nlists;                         use Nlists;
+with Sinfo;                          use Sinfo;
+with Treepr;                         use Treepr;
 with Why;
 
 package body Flow_Dependency_Maps is
@@ -35,8 +35,7 @@ package body Flow_Dependency_Maps is
    use Dependency_Maps;
 
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
-   with Pre => Nkind (N) = N_Pragma and then
-               Get_Pragma_Id (N) in
+   with Pre => Get_Pragma_Id (N) in
                  Pragma_Depends         |
                  Pragma_Refined_Depends |
                  Pragma_Refined_State   |
@@ -79,8 +78,8 @@ package body Flow_Dependency_Maps is
 
          when N_Identifier =>
             --  Aspect => Foobar
-            M.Include (Direct_Mapping_Id (Expression (PAA)),
-                       Flow_Id_Sets.Empty_Set);
+            M.Insert (Direct_Mapping_Id (Expression (PAA)),
+                      Flow_Id_Sets.Empty_Set);
             return M;
 
          when N_Null =>
@@ -94,21 +93,21 @@ package body Flow_Dependency_Maps is
       pragma Assert_And_Cut (Nkind (Expression (PAA)) = N_Aggregate);
       --  Aspect => (...)
 
-      --  First we should look at the expressions of the aggregate,
-      --  i.e. foo and bar in (foo, bar, baz => ..., bork => ...)
+      --  First, we look at the expressions of the aggregate, i.e. foo and bar
+      --  in (foo, bar, baz => ..., bork => ...).
       Row := First (Expressions (Expression (PAA)));
       while Present (Row) loop
          declare
             E : constant Entity_Id := Entity (Original_Node (Row));
          begin
-            M.Include (Direct_Mapping_Id (Unique_Entity (E)),
-                       Flow_Id_Sets.Empty_Set);
+            M.Insert (Direct_Mapping_Id (Unique_Entity (E)),
+                      Flow_Id_Sets.Empty_Set);
          end;
          Row := Next (Row);
       end loop;
 
-      --  Next, we look at the component associations, i.e. baz and
-      --  bork in the above example.
+      --  Next, we look at the component associations, i.e. baz and bork in the
+      --  above example.
       Row := First (Component_Associations (Expression (PAA)));
       while Present (Row) loop
          Inputs  := Flow_Id_Sets.Empty_Set;
@@ -255,52 +254,68 @@ package body Flow_Dependency_Maps is
       S : Flow_Scope)
       return Dependency_Maps.Map
    is
+      Abstr_States : constant Elist_Id := Abstract_States (P);
+
       M : Dependency_Maps.Map;
+
    begin
+      --  If an initializes aspect exists then we use it
       if Present (N) then
-         --  If an initializes aspect exists then we use it
          M := Parse_Raw_Dependency_Map (N);
-      elsif GG_Has_Been_Generated
-        and then Present (P)
-      then
-         --  If an initializes aspect does not exist but the global generation
-         --  phase has been completed then we look for the generate
-         --  initializes.
-         M := GG_Get_Initializes (To_Entity_Name (Unique_Entity (P)), S);
+
+      --  If an initializes aspect does not exist but the global generation
+      --  phase has been completed then look for the generated initializes.
+
+      elsif GG_Has_Been_Generated then
+         M := GG_Get_Initializes (To_Entity_Name (P), S);
+
+      --  There is neither a user-provided nor a generated initializes aspect
+      --  so we just have an empty dependency map.
+
       else
-         --  We have neither a user-provided nor a generated initializes aspect
-         --  so we just have an empty dependency map.
          M := Dependency_Maps.Empty_Map;
+
       end if;
 
-      --  When we parse the Initializes aspect we add any external
-      --  state abstractions with the property Async_Writers set to
-      --  the dependency map (even if the user did not manually write
-      --  them there). This is to ensure that constituents that are
-      --  not volatile and have Async_Writers are also initialized.
-      if Present (P)
-        and then Ekind (P) in E_Generic_Package | E_Package
-        and then Present (Abstract_States (P))
-        and then not Is_Null_State (Node (First_Elmt (Abstract_States (P))))
-      then
+      --  Add any external state abstractions with Async_Writers property to
+      --  the dependency map (even if they are not in the user's annotations).
+      --  This ensures that constituents that are not volatile and have
+      --  Async_Writers are also initialized.
+      if Present (Abstr_States) then
          declare
             State_Elmt : Elmt_Id;
             State      : Entity_Id;
+            State_F    : Flow_Id;
+
+            Position : Dependency_Maps.Cursor;
+            Inserted : Boolean;
+            --  Dummy values required by Hashed_Sets API
+
          begin
-            State_Elmt := First_Elmt (Abstract_States (P));
+            State_Elmt := First_Elmt (Abstr_States);
             State      := Node (State_Elmt);
 
-            while Present (State) loop
-               if Has_Async_Writers (Direct_Mapping_Id (State))
-                 and then not M.Contains (Direct_Mapping_Id (State))
-               then
-                  M.Insert (Direct_Mapping_Id (State), Flow_Id_Sets.Empty_Set);
-               end if;
+            --  If it is just a null state then do nothing
 
-               --  Move on to the next state abstraction
-               Next_Elmt (State_Elmt);
-               State := Node (State_Elmt);
-            end loop;
+            if not Is_Null_State (State) then
+               loop
+                  State_F := Direct_Mapping_Id (State);
+
+                  if Has_Async_Writers (State_F) then
+                     --  Try to insert an empty set, do nothing if another
+                     --  value is already in the map.
+                     M.Insert (Key      => State_F,
+                               Position => Position,
+                               Inserted => Inserted);
+                  end if;
+
+                  --  Move on to the next state abstraction
+                  Next_Elmt (State_Elmt);
+                  State := Node (State_Elmt);
+
+                  exit when No (State);
+               end loop;
+            end if;
          end;
       end if;
 

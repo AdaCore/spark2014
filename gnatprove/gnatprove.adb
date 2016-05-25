@@ -264,7 +264,7 @@ procedure Gnatprove is
    is
       Args     : String_Lists.List;
       Obj_Dir  : constant String :=
-         Proj.Root_Project.Object_Dir.Display_Full_Name;
+         Proj.Root_Project.Artifacts_Dir.Display_Full_Name;
       Opt_File : constant String :=
          Pass_Extra_Options_To_Gnat2why
             (Translation_Phase => False,
@@ -304,8 +304,8 @@ procedure Gnatprove is
       end if;
 
       Call_Gprbuild (Project_File,
-                     Gpr_Frames_Cnf_File,
-                     Compose (Obj_Dir, Frames_Cgpr),
+                     File_System.Install.Gpr_Frames_Cnf_File,
+                     Compose (Obj_Dir, File_System.Install.Frames_Cgpr),
                      Args,
                      Status);
       if Status = 0 and then not Debug then
@@ -360,9 +360,17 @@ procedure Gnatprove is
                5 => new String'(Proof_Dir.all)));
          Res : Boolean;
          Old_Dir  : constant String := Current_Directory;
-         Gnatwhy3 : constant String := Compose (Libexec_Bin_Dir, "gnatwhy3");
+         Gnatwhy3 : constant String :=
+           Compose (File_System.Install.Libexec_Spark_Bin, "gnatwhy3");
       begin
          Set_Directory  (Main_Subdir.all);
+         if Verbose then
+            Ada.Text_IO.Put (Gnatwhy3 & " ");
+            for Arg of Args loop
+               Ada.Text_IO.Put (Arg.all & " ");
+            end loop;
+            Ada.Text_IO.New_Line;
+         end if;
          GNAT.OS_Lib.Spawn (Program_Name => Gnatwhy3,
                             Args => Args,
                             Success => Res);
@@ -576,65 +584,67 @@ procedure Gnatprove is
       Proj         : Project_Tree;
       Status       : out Integer)
    is
-      use String_Lists;
-      Args     : String_Lists.List;
-      Obj_Dir  : constant String :=
-        Proj.Root_Project.Object_Dir.Display_Full_Name;
-      Opt_File : constant String :=
-        Pass_Extra_Options_To_Gnat2why
-          (Translation_Phase => True,
-           Obj_Dir           => Obj_Dir,
-           Proj_Name         => Project_File);
-      Del_Succ : Boolean;
-      Id       : Process_Descriptor;
+      Obj_Dir : constant String :=
+        Proj.Root_Project.Artifacts_Dir.Display_Full_Name;
    begin
-
       Generate_Why3_Conf_File (Obj_Dir);
+      declare
+         use String_Lists;
+         Args     : String_Lists.List;
+         Opt_File : constant String :=
+           Pass_Extra_Options_To_Gnat2why
+             (Translation_Phase => True,
+              Obj_Dir           => Obj_Dir,
+              Proj_Name         => Project_File);
+         Del_Succ : Boolean;
+         Id       : Process_Descriptor;
+      begin
 
-      Args.Append ("--subdirs=" & String (Subdir_Name));
-      Args.Append ("--restricted-to-languages=ada");
-      Args.Append ("-s");
+         Args.Append ("--subdirs=" & String (Subdir_Name));
+         Args.Append ("--restricted-to-languages=ada");
+         Args.Append ("-s");
 
-      if Minimal_Compile then
-         Args.Append ("-m");
-      end if;
+         if Minimal_Compile then
+            Args.Append ("-m");
+         end if;
 
-      if IDE_Progress_Bar then
-         Args.Append ("-d");
-      end if;
+         if IDE_Progress_Bar then
+            Args.Append ("-d");
+         end if;
 
-      if Only_Given then
-         Args.Append ("-u");
-      end if;
+         if Only_Given then
+            Args.Append ("-u");
+         end if;
 
-      for File of CL_Switches.File_List loop
-         Args.Append (File);
-      end loop;
+         for File of CL_Switches.File_List loop
+            Args.Append (File);
+         end loop;
 
-      Args.Append ("-cargs:Ada");
-      Args.Append ("-gnatc");              --  No object file generation
-      Args.Prepend ("--complete-output");  --  Replay results if up-to-date
+         Args.Append ("-cargs:Ada");
+         Args.Append ("-gnatc");              --  No object file generation
+         Args.Prepend ("--complete-output");  --  Replay results if up-to-date
 
-      Args.Append ("-gnates=" & Opt_File);
+         Args.Append ("-gnates=" & Opt_File);
 
-      for Carg of CL_Switches.Cargs_List loop
-         Args.Append (Carg);
-      end loop;
-      if RTS_Dir.all /= "" then
-         Args.Append ("--RTS=" & RTS_Dir.all);
-      end if;
+         for Carg of CL_Switches.Cargs_List loop
+            Args.Append (Carg);
+         end loop;
+         if RTS_Dir.all /= "" then
+            Args.Append ("--RTS=" & RTS_Dir.all);
+         end if;
 
-      Id := Spawn_VC_Server (Proj.Root_Project);
+         Id := Spawn_VC_Server (Proj.Root_Project);
 
-      Call_Gprbuild (Project_File,
-                     Gpr_Translation_Cnf_File,
-                     Compose (Obj_Dir, Gnat2why_Cgpr),
-                     Args,
-                     Status);
-      if Status = 0 and then not Debug then
-         GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
-      end if;
-      Kill (Id);
+         Call_Gprbuild (Project_File,
+                        File_System.Install.Gpr_Translation_Cnf_File,
+                        Compose (Obj_Dir, File_System.Install.Gnat2why_Cgpr),
+                        Args,
+                        Status);
+         if Status = 0 and then not Debug then
+            GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
+         end if;
+         Kill (Id);
+      end;
    end Flow_Analysis_And_Proof;
 
    ---------------------------
@@ -771,7 +781,8 @@ procedure Gnatprove is
                      Altergo_Command & " -steps-bound %S");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
-                       (Why3_Drivers_Dir, "alt-ergo_gnatprove.drv"));
+                       (File_System.Install.Share_Why3_Drivers,
+                        "alt-ergo_gnatprove.drv"));
          Put_Keyval ("name", "altergo");
          Put_Keyval ("shortcut", "altergo");
          Put_Keyval ("version", "0.99.1");
@@ -796,7 +807,8 @@ procedure Gnatprove is
                        " %f");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
-                       (Why3_Drivers_Dir, "cvc4_gnatprove.drv"));
+                       (File_System.Install.Share_Why3_Drivers,
+                        "cvc4_gnatprove.drv"));
          Put_Keyval ("name", "CVC4");
          Put_Keyval ("shortcut", "cvc4");
          Put_Keyval ("version", "1.5");
@@ -836,7 +848,8 @@ procedure Gnatprove is
                        " %f");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
-                       (Why3_Drivers_Dir, "cvc4_gnatprove_ce.drv"));
+                       (File_System.Install.Share_Why3_Drivers,
+                        "cvc4_gnatprove_ce.drv"));
          Put_Keyval ("name", "CVC4_CE");
          Put_Keyval ("shortcut", "cvc4_ce");
          Put_Keyval ("version", "1.5");
@@ -863,7 +876,8 @@ procedure Gnatprove is
                        " %f");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
-                       (Why3_Drivers_Dir, "cvc4_float.drv"));
+                       (File_System.Install.Share_Why3_Drivers,
+                        "cvc4_float.drv"));
          Put_Keyval ("name", "CVC4_FLOAT");
          Put_Keyval ("shortcut", "cvc4_float");
          Put_Keyval ("version", "1.5");
@@ -876,10 +890,12 @@ procedure Gnatprove is
       begin
          Start_Section ("main");
          Put_Keyval ("loadpath",
-                     Ada.Directories.Compose (Why3_Dir, "theories"));
+                     Ada.Directories.Compose
+                       (File_System.Install.Share_Why3, "theories"));
          Put_Keyval ("loadpath",
-                     Ada.Directories.Compose (Why3_Dir, "modules"));
-         Put_Keyval ("loadpath", Theories_Dir);
+                     Ada.Directories.Compose
+                       (File_System.Install.Share_Why3, "modules"));
+         Put_Keyval ("loadpath", File_System.Install.Share_Spark_Theories);
          Put_Keyval ("magic", 14);
          Put_Keyval ("memlimit", 0);
          Put_Keyval ("running_provers_max", 2);
@@ -927,11 +943,12 @@ procedure Gnatprove is
          Put_Keyval ("command", Command &
                        " %f");
          Put_Keyval ("command_steps", Command &
-                       " memory_max_alloc_count=%S" &
+                       " rlimit=%S" &
                        " %f");
          Put_Keyval ("driver",
                      Ada.Directories.Compose
-                       (Why3_Drivers_Dir, "z3_gnatprove.drv"));
+                       (File_System.Install.Share_Why3_Drivers,
+                        "z3_gnatprove.drv"));
          Put_Keyval ("name", "Z3");
          Put_Keyval ("shortcut", "z3");
          Put_Keyval ("version", "4.4.1");
@@ -977,6 +994,13 @@ procedure Gnatprove is
       if Executable = null then
          Ada.Text_IO.Put_Line ("Could not find executable " & Command);
          GNAT.OS_Lib.OS_Exit (1);
+      end if;
+      if Debug then
+         Ada.Text_IO.Put (Executable.all);
+         for Arg of Args loop
+            Ada.Text_IO.Put (" " & Arg.all);
+         end loop;
+         Ada.Text_IO.New_Line;
       end if;
       Non_Blocking_Spawn
         (Proc,
@@ -1180,12 +1204,15 @@ procedure Gnatprove is
 
       Path_Val : constant String := Value ("PATH", "");
       Gpr_Val  : constant String := Value ("GPR_PROJECT_PATH", "");
-      Libgnat  : constant String := Compose (Lib_Dir, "gnat");
-      Sharegpr : constant String := Compose (Share_Dir, "gpr");
+      Libgnat  : constant String :=
+        Compose (File_System.Install.Lib, "gnat");
+      Sharegpr : constant String :=
+        Compose (File_System.Install.Share, "gpr");
 
    begin
       --  Add <prefix>/libexec/spark2014/bin in front of the PATH
-      Set ("PATH", Libexec_Bin_Dir & Path_Separator & Path_Val);
+      Set ("PATH",
+           File_System.Install.Libexec_Spark_Bin & Path_Separator & Path_Val);
 
       --  Add <prefix>/lib/gnat & <prefix>/share/gpr in GPR_PROJECT_PATH
       --  so that project files installed with GNAT (not with SPARK)
@@ -1206,11 +1233,15 @@ procedure Gnatprove is
       Cur  : constant String := Ada.Directories.Current_Directory;
       Id   : Process_Descriptor;
    begin
-      Ada.Directories.Set_Directory (Proj_Type.Object_Dir.Display_Full_Name);
+      Ada.Directories.Set_Directory
+        (Proj_Type.Artifacts_Dir.Display_Full_Name);
       Args.Append ("-j");
       Args.Append (Image (Parallel, 1));
       Args.Append ("--socket");
       Args.Append (Socket_Name.all);
+      if Debug then
+         Args.Append ("--logging");
+      end if;
       Id := Non_Blocking_Spawn ("why3server", Args);
       Ada.Directories.Set_Directory (Cur);
       return Id;
@@ -1270,7 +1301,8 @@ begin
       Obj_Path : constant File_Array :=
         Object_Path (Proj_Type, Recursive => True);
    begin
-      Generate_SPARK_Report (Proj_Type.Object_Dir.Display_Full_Name, Obj_Path);
+      Generate_SPARK_Report
+        (Proj_Type.Artifacts_Dir.Display_Full_Name, Obj_Path);
    end;
 exception
    when Invalid_Project =>

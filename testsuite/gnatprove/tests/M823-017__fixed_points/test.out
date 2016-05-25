@@ -52,10 +52,10 @@ binary_fixed.adb:54:07: info: assertion proved
 binary_fixed.adb:54:22: info: initialization of "Z" proved
 binary_fixed.adb:54:28: info: overflow check proved
 binary_fixed.adb:64:17: info: division check proved
-binary_fixed.adb:64:17: info: overflow check proved
-binary_fixed.adb:64:17: info: range check proved
-binary_fixed.adb:65:10: info: assertion proved
+binary_fixed.adb:64:17: medium: overflow check might fail
+binary_fixed.adb:64:17: medium: range check might fail
 binary_fixed.adb:65:25: info: initialization of "Z" proved
+binary_fixed.adb:65:25: medium: assertion might fail, cannot prove Z = 1.0
 binary_fixed.adb:67:14: info: division check proved
 binary_fixed.adb:67:14: info: overflow check proved
 binary_fixed.adb:67:14: info: range check proved
@@ -178,9 +178,9 @@ decimal_fixed.adb:54:22: info: initialization of "Z" proved
 decimal_fixed.adb:54:28: info: overflow check proved
 decimal_fixed.adb:64:17: info: division check proved
 decimal_fixed.adb:64:17: info: overflow check proved
-decimal_fixed.adb:64:17: info: range check proved
-decimal_fixed.adb:65:10: info: assertion proved
+decimal_fixed.adb:64:17: medium: range check might fail
 decimal_fixed.adb:65:25: info: initialization of "Z" proved
+decimal_fixed.adb:65:25: medium: assertion might fail, cannot prove Z = 1.0
 decimal_fixed.adb:67:14: info: division check proved
 decimal_fixed.adb:67:14: info: overflow check proved
 decimal_fixed.adb:67:14: info: range check proved
@@ -256,7 +256,7 @@ dynamic_fixed.adb:10:10: info: assertion proved
 unsupported.adb:2:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
 unsupported.adb:5:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
 unsupported.adb:8:04: fixed-point type whose small is not a negative power of 2 or 10 is not yet supported
-unsupported.adb:18:13: operation on fixed-point type with different result type is not fully supported
+unsupported.adb:18:13: operation on fixed-point type with non-integer result type is not yet supported
 unsupported.adb:19:13: operation between different fixed-point types is not yet supported
 unsupported.adb:20:13: operation between fixed-point type and universal real is not yet supported
 unsupported.adb:21:14: operation between fixed-point type and universal real is not yet supported

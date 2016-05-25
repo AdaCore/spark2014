@@ -44,8 +44,8 @@ package SPARK_Frame_Conditions is
    use Name_Sets;
 
    Translated_Object_Entities : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  Is filled by gnat2why-driver.adb, and represents all object entities
-   --  that are actually translated to Why
+   --  Filled by gnat2why-driver.adb, and represents all object entities that
+   --  are actually translated to Why.
 
    function File_Name_Hash (F : File_Name_Type) return Hash_Type is
      (Hash_Type (F));
@@ -58,26 +58,27 @@ package SPARK_Frame_Conditions is
    use File_Name_Set;
 
    function Is_Heap_Variable (Ent : Entity_Name) return Boolean;
-   --  Return whether Ent is the special variable "__HEAP"
+   --  Return True iff Ent is the special variable "__HEAP"
 
    function Is_Constant (Ent : Entity_Name) return Boolean;
-   --  Tests if Ent is a constant (or in parameter, etc.)
+   --  Return True iff Ent is a constant (or an IN parameter, etc.)
 
    procedure Display_Maps;
    --  Send maps to output for debug
 
-   function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
-   with Pre => E_Name /= Null_Entity_Name;
+   function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set;
    --  Get subprograms directly called by subprogram E_Name
 
-   function Get_Generated_Reads
+   function Computed_Reads
      (E                 : Entity_Id;
-      Include_Constants : Boolean) return Name_Sets.Set;
-   --  Get the variables read by subprogram E. Include_Constants is True for
-   --  including constants in the returned set (for flow analysis) and False
-   --  for not including them in the returned set (for proof).
+      Include_Constants : Boolean) return Name_Sets.Set
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
+   --  Get the variables read by subprogram E. If Include_Constants is True
+   --  then include constants in the result (for flow analysis); if it is
+   --  False then do not (for proof).
 
-   function Get_Generated_Writes (E : Entity_Id) return Name_Sets.Set;
+   function Computed_Writes (E : Entity_Id) return Name_Sets.Set
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
    --  Get the variables written by subprogram E
 
    function File_Of_Entity (E : Entity_Name) return Entity_Name;
@@ -91,9 +92,9 @@ package SPARK_Frame_Conditions is
       Inputs             : out Name_Sets.Set;
       Outputs            : out Name_Sets.Set;
       Called_Subprograms : out Name_Sets.Set)
-   with Pre  => Ekind (E) in Subprogram_Kind | Task_Kind | Entry_Kind,
-        Post => (for all E of Outputs => Inputs.Contains (E));
-   --  Collects the Computed Globals information based on the current
+   with Pre  => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type,
+        Post => Outputs.Is_Subset (Of_Set => Inputs);
+   --  Collect the Computed Globals information based on the current
    --  compilation unit alone.
    --
    --  This procedure is only called in phase 1 so no ALI file is actually
@@ -102,10 +103,6 @@ package SPARK_Frame_Conditions is
    --
    --  The Inputs set will contain both variables that are either read or
    --  written (since the Computed Globals are an over-approximation).
-
-   procedure Set_Ignore_Errors (Ignore_Errors : Boolean);
-   --  Set a flag to ignore failures to find some scope that should have been
-   --  present in some ALI file.
 
    procedure Propagate_Through_Call_Graph
      (Ignore_Errors     : Boolean;
@@ -116,15 +113,14 @@ package SPARK_Frame_Conditions is
    --  in simpler modes of operation that do not lead to translation into Why.
    --  It also determines which subprograms are (mutually) recursive.
    --
-   --  If Current_Unit_Only is set then we only want the direct calls
-   --  and globals.
+   --  If Current_Unit_Only is set then we only want the direct calls and
+   --  globals.
 
    function Is_Non_Recursive_Subprogram (E : Entity_Id) return Boolean;
-   --  Returns True if E is not a (mutually) recursive subprogram.
+   --  Return True if E is not a (mutually) recursive subprogram
 
-   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean with
-     Pre => E_Name /= Null_Entity_Name;
-   --  Returns True if E_Name refers to entry or protected subprogram
+   function Is_Protected_Operation (E_Name : Entity_Name) return Boolean;
+   --  Return True if E_Name refers to entry or protected subprogram
 
    --  -----------------------------------------
    --  Mapping between Entities and Entity_Names
@@ -150,8 +146,8 @@ package SPARK_Frame_Conditions is
 
    procedure For_All_External_States
      (Process : not null access procedure (E : Entity_Name));
-   --  Invoke the callback for all state entity_names that do not
-   --  correspond to a state abstraction in the tree (i.e. are defined
-   --  in some other unit body).
+   --  Invoke the callback for all state entity_names that do not correspond to
+   --  a state abstraction in the tree (i.e. are defined in some other unit
+   --  body).
 
 end SPARK_Frame_Conditions;

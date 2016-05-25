@@ -82,7 +82,7 @@ package body Gnat2Why_Args is
       File      : File_Type;
       V         : JSON_Value;
 
-      --  beginning of processing for Init
+   --  Start of processing for Init
 
    begin
       if Opt.SPARK_Switches_File_Name = null then
@@ -154,8 +154,8 @@ package body Gnat2Why_Args is
          FT         : File_Type;
          Cur_Dir    : constant String := Get_Current_Dir;
       begin
-      --  We need to switch to the given Obj_Dir so that the temp file is
-      --  created there
+         --  We need to switch to the given Obj_Dir so that the temp file is
+         --  created there.
 
          Change_Dir (Obj_Dir);
          Create (FT, Name => File_Name);
@@ -167,9 +167,10 @@ package body Gnat2Why_Args is
          return Obj_Dir & File_Name;
       end Write_To_File;
 
-      --  beginning of processing for Set
-
       Obj : constant JSON_Value := Create_Object;
+
+   --  Start of processing for Set
+
    begin
       --  Warning_Mode is only relevant when Global_Mode = False, so ignore its
       --  value if Global_Mode = True.

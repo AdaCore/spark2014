@@ -251,4 +251,8 @@ package Why.Gen.Records is
    --  clone an existing one.
    --  This is used so that we can know if we need to create new references
 
+   function Record_Type_Cloned_Subtype (E : Entity_Id) return Entity_Id with
+     Pre => Record_Type_Is_Clone (E);
+   --  Return the existing type declaration that has been cloned for E
+
 end Why.Gen.Records;

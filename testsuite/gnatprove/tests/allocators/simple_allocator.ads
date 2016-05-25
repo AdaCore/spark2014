@@ -20,10 +20,9 @@ is
 
    function All_Available return Boolean with Ghost;
 
-   package M is -- with Ghost is
+   package M with Ghost is
 
-      package S is new Functional_Sets (Element_Type => Resource,
-                                        No_Element   => No_Resource);
+      package S is new Functional_Sets (Element_Type => Resource);
       use S;
 
       type T is record

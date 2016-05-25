@@ -23,7 +23,6 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
-with Errout;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
 with Sem_Aux;                            use Sem_Aux;
@@ -46,6 +45,7 @@ with Flow.Control_Flow_Graph.Utility;    use Flow.Control_Flow_Graph.Utility;
 with Flow_Debug;                         use Flow_Debug;
 with Flow_Error_Messages;                use Flow_Error_Messages;
 with Flow_Generated_Globals;             use Flow_Generated_Globals;
+with Flow_Generated_Globals.Phase_1;     use Flow_Generated_Globals.Phase_1;
 with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
 with Flow_Utility;                       use Flow_Utility;
 
@@ -3165,7 +3165,7 @@ package body Flow.Control_Flow_Graph is
                --  the base type.
                TN : constant Entity_Name := To_Entity_Name (Etype (T));
             begin
-               Register_Task_Object
+               GG_Register_Task_Object
                  (Type_Name => TN,
                   Object => (Name => Object_Name,
                              Instances =>
@@ -4028,10 +4028,11 @@ package body Flow.Control_Flow_Graph is
          case Get_Pragma_Id (N) is
 
             when Pragma_Unmodified   |
+                 Pragma_Unused       |
                  Pragma_Unreferenced =>
 
-               --  For pragma unmodified and pragma unreferenced we
-               --  produce a null vertex.
+               --  For pragma unmodified, pragma unused and pragma
+               --  unreferenced we produce a null vertex.
                Add_Vertex (FA, Null_Node_Attributes, V);
 
                declare
@@ -4046,17 +4047,7 @@ package body Flow.Control_Flow_Graph is
                        Associated_Node (Expression (Argument_Association));
 
                      if not Is_Subprogram (Associated_Variable) then
-                        if Get_Pragma_Id (N) = Pragma_Unmodified then
-                           --  If a pragma Unmodified was found, we insert
-                           --  its associated variable to the set of
-                           --  unmodified variables.
-                           FA.Unmodified_Vars.Include (Associated_Variable);
-                        else
-                           --  If a pragma Unreferenced was found, we insert
-                           --  its associated variable to the set of
-                           --  unreferenced variables.
-                           FA.Unreferenced_Vars.Include (Associated_Variable);
-                        end if;
+                        FA.Pragma_Un_Vars.Include (Associated_Variable);
                      end if;
 
                      Argument_Association := Next (Argument_Association);
@@ -5166,6 +5157,14 @@ package body Flow.Control_Flow_Graph is
             return False;
          end if;
 
+         if not Is_Visible (T, Scope) then
+            --  Sometimes we process things we're not really meant to see
+            --  (such as private types in nested packages); in which case
+            --  we should not split them. See OA14-027__flow_crash for a
+            --  good example of this.
+            return False;
+         end if;
+
          case Nkind (N) is
             when N_Identifier | N_Expanded_Name | N_Aggregate =>
                return True;
@@ -5551,6 +5550,7 @@ package body Flow.Control_Flow_Graph is
             return True;
 
          when Pragma_Unmodified   |
+              Pragma_Unused       |
               Pragma_Unreferenced =>
             return True;
 
@@ -5666,7 +5666,6 @@ package body Flow.Control_Flow_Graph is
               Pragma_Restriction_Warnings         |
               Pragma_Style_Checks                 |
               Pragma_Test_Case                    |
-              Pragma_Unused                       |
               Pragma_Validity_Checks              |
               Pragma_Warnings                     |
               Pragma_Weak_External                =>
@@ -5686,9 +5685,9 @@ package body Flow.Control_Flow_Graph is
          --  a "when others" to force re-consideration when
          --  SNames.Pragma_Id is extended.
          --
-         --  These all generate a warning.  In future, these pragmas
-         --  may move to be fully ignored or to be processed with more
-         --  semantic detail as required.
+         --  These can all be ignored - we already generated a warning during
+         --  Marking. In future, these pragmas may move to be fully ignored
+         --  or to be processed with more semantic detail as required.
 
          --  Group 2a - GNAT Defined and obsolete pragmas
          when Pragma_Abort_Defer                 |
@@ -5836,9 +5835,6 @@ package body Flow.Control_Flow_Graph is
            Pragma_Priority                       |
            Pragma_Storage_Size                   =>
 
-            Errout.Error_Msg_Name_1 := Pragma_Name (N);
-            Errout.Error_Msg_N
-              ("?pragma % ignored in flow analysis (not yet supported)", N);
             return False;
 
          --  ??? ignored for now, see NA03-003
@@ -6469,6 +6465,10 @@ package body Flow.Control_Flow_Graph is
                                           FA, Connection_Map, The_Context);
                   Nodes.Append (Union_Id (Private_Declarations (Spec_N)));
                end if;
+
+               --  We need to keep track of these for checking
+               --  Elaborate_Body...
+               FA.Spec_Vars := FA.All_Vars;
 
                if FA.Kind = Kind_Package_Body then
                   Do_Subprogram_Or_Block (Body_N,

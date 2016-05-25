@@ -1,3 +1,12 @@
+main.adb:17:19: info: postcondition proved
+main.adb:17:33: info: overflow check proved
+main.adb:18:30: info: overflow check proved
+main.adb:18:40: info: overflow check proved
+main.adb:18:50: info: overflow check proved
+main.adb:25:20: medium: overflow check might fail
+main.adb:25:42: medium: overflow check might fail
+main.adb:25:52: medium: overflow check might fail
+main.adb:25:62: medium: overflow check might fail
 main.adb:34:14: warning: assuming "Put_Line" has no effect on global items
 main.adb:34:14: warning: no Global contract available for "Put_Line"
 main.adb:36:14: warning: assuming "Put_Line" has no effect on global items

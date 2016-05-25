@@ -118,7 +118,7 @@ package body Call is
       Arguments : Argument_List;
       Verbose   : Boolean := False)
    is
-      Status     : Integer;
+      Status : Integer;
    begin
       Call_With_Status (Command,
                         Arguments,

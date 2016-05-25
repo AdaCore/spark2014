@@ -3,10 +3,23 @@ across_compilation_units-child.ads:27:24: medium: missing dependency "X => Y"
 across_compilation_units-child.ads:29:24: medium: missing dependency "Y => Y"
 across_compilation_units-child.ads:30:24: medium: missing dependency "Z => X"
 across_compilation_units-child.ads:30:24: medium: missing dependency "Z => Z"
+across_compilation_units.adb:4:23: info: division check proved
+across_compilation_units.adb:5:16: info: division check proved
 across_compilation_units.adb:17:12: info: initialization of "Temp" proved
 across_compilation_units.adb:25:12: info: initialization of "Temp" proved
+caller_of_across_compilation_units.adb:20:16: info: division check proved
+caller_of_across_compilation_units.adb:20:39: info: division check proved
 single_compilation_unit.adb:18:19: info: initialization of "Maximum" proved
 single_compilation_unit.adb:39:04: warning: analyzing unreferenced function "Double_Max"
+single_compilation_unit.adb:43:16: medium: overflow check might fail
 single_compilation_unit.adb:43:18: info: initialization of "Temp" proved
 single_compilation_unit.adb:50:39: info: initialization of "Fact" proved
+single_compilation_unit.adb:53:25: info: range check proved
 single_compilation_unit.adb:54:18: info: initialization of "Fact" proved
+single_compilation_unit.adb:54:23: medium: overflow check might fail
+single_compilation_unit.adb:54:23: medium: range check might fail
+single_compilation_unit.adb:69:30: info: overflow check proved
+single_compilation_unit.adb:69:35: medium: overflow check might fail
+single_compilation_unit.adb:69:50: info: overflow check proved
+single_compilation_unit.adb:94:17: medium: overflow check might fail
+single_compilation_unit.adb:108:17: medium: overflow check might fail

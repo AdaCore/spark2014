@@ -16,4 +16,6 @@ greatest_common_divisor.ads:10:14: medium: postcondition might fail, cannot prov
 =======================================
 greatest_common_divisor.ads:10:14: info: initialization of "G" proved
 greatest_common_divisor.ads:10:14: medium: postcondition might fail, vc file: gnatprove/../proof/Coq/greatest_common_divisor/Greatest_common_divisor__g_c_d__pragargs__cmp.v
+<W> Grammar extension: in [constr:operconstr] some rule has been masked
+<W> Grammar extension: in [constr:pattern] some rule has been masked
 =======================================

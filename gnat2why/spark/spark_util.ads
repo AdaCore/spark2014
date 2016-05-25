@@ -152,6 +152,22 @@ package SPARK_Util is
    --  @param E classwide type
    --  @return the specific tagged type corresponding to classwide type E
 
+   ---------------------------------
+   -- Extra tables on expressions --
+   ---------------------------------
+
+   procedure Set_Dispatching_Contract (C, D : Node_Id);
+   --  @param C expression of a classwide pre- or postcondition
+   --  @param D dispatching expression for C, in which a reference to a
+   --    controlling formal is interpreted as having the class-wide type. This
+   --    is used to create a suitable pre- or postcondition expression for
+   --    analyzing dispatching calls.
+
+   function Dispatching_Contract (C : Node_Id) return Node_Id;
+   --  @param C expression of a classwide pre- or postcondition
+   --  @return the dispatching expression previously stored for C, or Empty if
+   --    no such expression was stored for C.
+
    ------------------------------------------------
    -- Queries related to external axiomatization --
    ------------------------------------------------
@@ -230,18 +246,12 @@ package SPARK_Util is
    with Pre => Is_Type (T);
    --  @param T any type
    --  @return the entity kind of the "Representative Type in SPARK" of type T.
-   --     This is not the same as Ekind (Retysp (T)), because Retysp (T) may
-   --     be a private type, and we're interested here in the underlying kind
-   --     of type.
 
    --  The following functions provide wrappers for the query functions in
    --  Einfo, that apply the query on the "Representative Type in SPARK" of
    --  its argument, hence skipping all layers of private types. To avoid
    --  confusion, the wrapper for function Einfo.Is_Such_And_Such_Type is
    --  called Has_Such_And_Such_Type.
-
-   function Has_Access_Type (T : Entity_Id) return Boolean is
-     (Retysp_Kind (T) in Access_Kind);
 
    function Has_Array_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Array_Kind);
@@ -266,6 +276,9 @@ package SPARK_Util is
 
    function Has_Record_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Record_Kind);
+
+   function Has_Private_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Private_Kind);
 
    function Has_Scalar_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Scalar_Kind);
@@ -474,7 +487,7 @@ package SPARK_Util is
 
    function Can_Be_Default_Initialized (Typ : Entity_Id) return Boolean is
      ((not Has_Array_Type (Typ) or else Is_Constrained (Typ))
-      and then (not Has_Record_Type (Typ)
+      and then (not (Has_Record_Type (Typ) or else Has_Private_Type (Typ))
                 or else not Has_Discriminants (Typ)
                 or else Is_Constrained (Typ)
                 or else Has_Defaulted_Discriminants (Typ))
@@ -553,6 +566,9 @@ package SPARK_Util is
    --  @param E any type
    --  @return True iff E is a constrained array type with statically known
    --     bounds
+
+   function Has_Static_Array_Type (T : Entity_Id) return Boolean is
+     (Is_Static_Array_Type (Retysp (T)));
 
    function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
    with Pre => Is_Subprogram (E);
@@ -633,6 +649,13 @@ package SPARK_Util is
    --  Note that if pragma Interrupt_Priority with no expression is present
    --  then Empty is returned but it really means Interrupt_Priority'Last.
 
+   function Get_Iterable_Type_Primitive
+     (Typ : Entity_Id;
+      Nam : Name_Id) return Entity_Id;
+   --  Retrieve one of the primitives First, Next, Has_Element, Element from
+   --  the value of the Iterable aspect of a formal type.
+   --  Return the ultimate alias.
+
    ------------------------------------
    -- Queries related to subprograms --
    ------------------------------------
@@ -642,10 +665,11 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Node_Lists.List
-     with Pre => Ekind (E) in E_Function  |
-                              E_Package   |
-                              E_Procedure |
-                              Entry_Kind  |
+     with Pre => Ekind (E) in E_Function     |
+                              E_Package      |
+                              E_Procedure    |
+                              Entry_Kind     |
+                              Protected_Kind |
                               Task_Kind
                and then not (Classwide and Inherited);
    --  @param E subprogram or package
@@ -721,10 +745,11 @@ package SPARK_Util is
       Name      : Name_Id;
       Classwide : Boolean := False;
       Inherited : Boolean := False) return Boolean
-   with Pre => Ekind (E) in E_Function  |
-                            E_Package   |
-                            E_Procedure |
-                            Entry_Kind  |
+   with Pre => Ekind (E) in E_Function      |
+                            E_Package       |
+                            E_Procedure     |
+                            Entry_Kind      |
+                            Protected_Kind  |
                             Task_Kind;
    --  @param E subprogram or package
    --  @param Name contract name
@@ -816,6 +841,7 @@ package SPARK_Util is
    with Pre => Ekind (E) in Subprogram_Kind |
                             E_Package       |
                             Task_Kind       |
+                            Protected_Kind  |
                             Entry_Kind;
    --  @param E subprogram, package, task or entry
    --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file and
@@ -849,6 +875,23 @@ package SPARK_Util is
    --  @param E task type
    --  @return the entity of the task body for the given type, similar
    --    to what Subprogram_Body_Entity might produce.
+
+   function Definition_of_Task_Type (E : Entity_Id) return Node_Id
+   is (Task_Definition (Parent (E)));
+   --  @param E a task type entity
+   --  @return the definition of the task type
+
+   function Visible_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
+   with Pre => Is_Task_Type (E);
+   --  @param E a task type entity
+   --  @return the list of visible declarations of the task type, or the empty
+   --    list if not available
+
+   function Private_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
+   with Pre => Is_Task_Type (E);
+   --  @param E a task type entity
+   --  @return the list of visible declarations of the task type, or the empty
+   --    list of not available
 
    ------------------------------------------
    -- Queries related to protected objects --
@@ -889,6 +932,12 @@ package SPARK_Util is
 
    function Visible_Declarations_of_Prot_Type (E : Entity_Id) return List_Id
    is (Visible_Declarations (PO_Definition (Base_Type (E))))
+   with Pre => Is_Protected_Type (E);
+   --  @param E a protected type entity
+   --  @return the list of visible declarations of the protected type
+
+   function Private_Declarations_of_Prot_Type (E : Entity_Id) return List_Id
+   is (Private_Declarations (PO_Definition (Base_Type (E))))
    with Pre => Is_Protected_Type (E);
    --  @param E a protected type entity
    --  @return the list of visible declarations of the protected type
@@ -958,15 +1007,6 @@ package SPARK_Util is
    with Pre => Nkind (N) = N_Pragma;
    --  @param N pragma
    --  @return True iff N is a pragma Assert_And_Cut
-
-   procedure Get_Global_Items
-     (P      :     Node_Id;
-      Reads  : out Node_Sets.Set;
-      Writes : out Node_Sets.Set);
-   --  @param P pragma Global
-   --  @param Reads inputs in P
-   --  @param Writes outputs in P
-   --  Computes the set of inputs and outputs in Global pragma P
 
    ---------------------------------
    -- Queries for arbitrary nodes --

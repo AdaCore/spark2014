@@ -21,19 +21,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Strings;
-with Errout;                 use Errout;
-with Flow_Generated_Globals; use Flow_Generated_Globals;
-with Flow_Utility;           use Flow_Utility;
-with Gnat2Why_Args;
+with Errout;                         use Errout;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Utility;                   use Flow_Utility;
 with GNATCOLL.Utils;
-with Hashing;                use Hashing;
+with Gnat2Why_Args;
+with Hashing;                        use Hashing;
 with Interfaces;
-with Namet;                  use Namet;
-with Output;                 use Output;
-with Sem_Util;               use Sem_Util;
-with Snames;                 use Snames;
+with Namet;                          use Namet;
+with Output;                         use Output;
+with Sem_Util;                       use Sem_Util;
+with Snames;                         use Snames;
+with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 with Why;
 
 package body Flow_Types is
@@ -176,11 +177,20 @@ package body Flow_Types is
      (N       : Node_Or_Entity_Id;
       Variant : Flow_Id_Variant  := Normal_Use;
       Facet   : Variable_Facet_T := Normal_Part)
-      return Flow_Id is
+      return Flow_Id
+   is
+      N_Or_Limited_View : Node_Or_Entity_Id := N;
    begin
+      if Nkind (N) in N_Entity and then
+        Ekind (N) in E_Incomplete_Type | E_Incomplete_Subtype and then
+        Has_Non_Limited_View (N)
+      then
+         N_Or_Limited_View := Non_Limited_View (N);
+      end if;
+
       return (Kind    => Direct_Mapping,
               Variant => Variant,
-              Node    => N,
+              Node    => N_Or_Limited_View,
               Facet   => Facet);
    end Direct_Mapping_Id;
 
@@ -200,11 +210,11 @@ package body Flow_Types is
       Facet   : Variable_Facet_T := Normal_Part)
       return Flow_Id
    is
-      F : Flow_Id := (Kind        => Record_Field,
-                      Variant     => Variant,
-                      Node        => Empty,
-                      Facet       => Facet,
-                      Component   => Entity_Vectors.Empty_Vector);
+      F : Flow_Id := (Kind      => Record_Field,
+                      Variant   => Variant,
+                      Node      => Empty,
+                      Facet     => Facet,
+                      Component => Entity_Vectors.Empty_Vector);
       P : Node_Id;
    begin
       P := N;
@@ -400,8 +410,8 @@ package body Flow_Types is
    function Is_Concurrent_Comp_Or_Disc (F : Flow_Id) return Boolean is
    begin
       return Belongs_To_Concurrent_Object (F)
-        and then Ekind (Get_Direct_Mapping_Id (F)) not in Subprogram_Kind |
-                                                          E_Entry;
+        and then Ekind (Get_Direct_Mapping_Id (F)) not in Entry_Kind     |
+                                                          Subprogram_Kind;
    end Is_Concurrent_Comp_Or_Disc;
 
    ------------------------
@@ -499,8 +509,7 @@ package body Flow_Types is
             return False;
 
          when Magic_String =>
-            return GG_Has_Been_Generated
-              and then GG_Is_Volatile (F.Name);
+            return GG_Is_Volatile (F.Name);
 
          when Direct_Mapping | Record_Field =>
             declare
@@ -645,12 +654,30 @@ package body Flow_Types is
             return Nkind (F.Node) in N_Entity
               and then Ekind (F.Node) = E_Abstract_State;
          when Magic_String =>
-            return GG_Has_Been_Generated
-              and then GG_Get_All_State_Abstractions.Contains (F.Name);
+            return GG_Get_State_Abstractions.Contains (F.Name);
          when others =>
             return False;
       end case;
    end Is_Abstract_State;
+
+   -----------------
+   -- Is_Constant --
+   -----------------
+
+   function Is_Constant (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Direct_Mapping | Record_Field =>
+            pragma Assert (Nkind (F.Node) in N_Entity);
+            return Ekind (F.Node) = E_Constant;
+
+         when Magic_String =>
+            return Is_Constant (F.Name);
+
+         when Null_Value | Synthetic_Null_Export =>
+            return False;
+      end case;
+   end Is_Constant;
 
    --------------------
    -- Is_Constituent --
@@ -665,11 +692,13 @@ package body Flow_Types is
                                          E_Constant       |
                                          E_Variable
               and then Present (Encapsulating_State (F.Node));
+
          when Magic_String =>
-            return GG_Has_Been_Generated
-              and then GG_Is_Constituent (F.Name);
+            return GG_Is_Constituent (F.Name);
+
          when others =>
             return False;
+
       end case;
    end Is_Constituent;
 
@@ -914,8 +943,8 @@ package body Flow_Types is
       --  state for now. (However, the code below would work for any other flow
       --  id as well.)
       if F.Kind in Direct_Mapping | Record_Field
-         and then Nkind (F.Node) in N_Entity
-         and then Ekind (F.Node) = E_Abstract_State
+        and then Nkind (F.Node) in N_Entity
+        and then Ekind (F.Node) = E_Abstract_State
       then
          Append (R, Get_Unmangled_Name (Scope (F.Node)));
          Append (R, ".");

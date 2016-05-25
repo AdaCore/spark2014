@@ -52,7 +52,7 @@ package String_Utils is
    --  Modify S in place to capitalize the first character
 
    function Hash_Image (N : Ada.Containers.Hash_Type) return String;
-   --  Generate a string from an hash, without the leading space
+   --  Generate a string from a hash, without the leading space
 
    function Null_Or_Empty_String (S : String_Access) return Boolean is
      (S = null or else S.all = "");

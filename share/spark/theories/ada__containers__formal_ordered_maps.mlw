@@ -1,5 +1,9 @@
 module Ada__containers__formal_ordered_maps__witness
   use import real.Real
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__olt
 
@@ -146,6 +150,10 @@ end
 module Ada__containers__formal_ordered_maps__key
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__witness
   use import Ada__containers__formal_ordered_maps__map
@@ -170,6 +178,10 @@ end
 module Ada__containers__formal_ordered_maps__element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__element_type
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__cursor
@@ -307,6 +319,10 @@ end
 module Ada__containers__formal_ordered_maps__first_key
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
@@ -324,6 +340,10 @@ end
 module Ada__containers__formal_ordered_maps__last_key
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
@@ -341,6 +361,10 @@ end
 module Ada__containers__formal_ordered_maps__first_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__element_type
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
@@ -358,6 +382,10 @@ end
 module Ada__containers__formal_ordered_maps__last_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__element_type
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
@@ -375,6 +403,10 @@ end
 module Ada__containers__formal_ordered_maps__find
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__witness
@@ -409,6 +441,10 @@ end
 module Ada__containers__formal_ordered_maps__element__2
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__element_type
   use import Ada__containers__formal_ordered_maps__witness
   use import Ada__containers__formal_ordered_maps__map
@@ -427,6 +463,10 @@ end
 module Ada__containers__formal_ordered_maps__ceiling
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__witness
@@ -462,6 +502,10 @@ end
 module Ada__containers__formal_ordered_maps__floor
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__witness
@@ -621,6 +665,10 @@ end
 module Ada__containers__formal_ordered_maps__replace
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__element_type
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__oeq
@@ -664,6 +712,10 @@ end
 module Ada__containers__formal_ordered_maps__replace_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__element_type
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__oeq
@@ -735,6 +787,10 @@ end
 module Ada__containers__formal_ordered_maps__insert
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__element_type
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__oeq
@@ -824,6 +880,10 @@ end
 module Ada__containers__formal_ordered_maps__insert__2
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__witness
   use import Ada__containers__formal_ordered_maps__map
@@ -849,6 +909,10 @@ end
 module Ada__containers__formal_ordered_maps__delete
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__witness
   use import Ada__containers__formal_ordered_maps__map
@@ -994,6 +1058,10 @@ module Ada__containers__formal_ordered_maps__delete_last
 module Ada__containers__formal_ordered_maps__include
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__witness
   use import Ada__containers__formal_ordered_maps__map
@@ -1021,6 +1089,10 @@ end
 module Ada__containers__formal_ordered_maps__exclude
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__witness
   use import Ada__containers__formal_ordered_maps__map
@@ -1065,6 +1137,10 @@ end
 module Ada__containers__formal_ordered_maps__contains
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__witness
   use import Ada__containers__formal_ordered_maps__map
@@ -1085,6 +1161,10 @@ end
 module Ada__containers__formal_ordered_maps__strict_equal
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__map
   use import Ada__containers__formal_ordered_maps__length
@@ -1118,6 +1198,10 @@ end
 
 module Ada__containers__formal_ordered_maps__Oeq__2
   use import int.Int
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use  "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__element_type
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__oeq
@@ -1164,6 +1248,10 @@ end
 
 module Ada__containers__formal_ordered_maps__overlap
   use import int.Int
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use import "_gnatprove_standard".Main
   use  "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use import Ada__containers__formal_ordered_maps__map
@@ -1210,6 +1298,10 @@ module Ada__containers__formal_ordered_maps__reserve_capacity
 end
 
 module Ada__containers__formal_ordered_maps__equivalent_keys
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__key_type
   use "ada__containers__formal_ordered_maps__args".Ada__containers__formal_ordered_maps__olt
   use import Ada__containers__formal_ordered_maps__witness

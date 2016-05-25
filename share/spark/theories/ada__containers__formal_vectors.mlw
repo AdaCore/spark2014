@@ -249,6 +249,10 @@ end
 module Ada__containers__formal_vectors__element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use        "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__element_type
   use import Ada__containers__formal_vectors__index_type_helper
   use import Ada__containers__formal_vectors__vector
@@ -277,6 +281,10 @@ end
 module Ada__containers__formal_vectors__Oeq__2
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use        "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__element_type
   use        "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__oeq
   use import Ada__containers__formal_vectors__vector
@@ -443,6 +451,10 @@ end
 module Ada__containers__formal_vectors__replace_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use        "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__element_type
   use        "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__oeq
   use import Ada__containers__formal_vectors__index_type_helper
@@ -536,6 +548,10 @@ end
 module Ada__containers__formal_vectors__append__2
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__element_type
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__oeq
   use import Ada__containers__formal_vectors__vector
@@ -713,6 +729,10 @@ end
 module Ada__containers__formal_vectors__first_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__element_type
   use import Ada__containers__formal_vectors__vector
   use import Ada__containers__formal_vectors__length
@@ -749,6 +769,10 @@ end
 module Ada__containers__formal_vectors__last_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__element_type
   use import Ada__containers__formal_vectors__vector
   use import Ada__containers__formal_vectors__length
@@ -767,6 +791,10 @@ end
 module Ada__containers__formal_vectors__find_index
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__element_type
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__oeq
   use import Ada__containers__formal_vectors__index_type_helper
@@ -841,6 +869,10 @@ end
 module Ada__containers__formal_vectors__reverse_find_index
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__element_type
   use "ada__containers__formal_vectors__args".Ada__containers__formal_vectors__oeq
   use import Ada__containers__formal_vectors__index_type_helper

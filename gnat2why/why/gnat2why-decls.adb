@@ -139,7 +139,7 @@ package body Gnat2Why.Decls is
       end if;
 
       Close_Theory (File,
-                    Kind => Definition_Theory,
+                    Kind           => Definition_Theory,
                     Defined_Entity => E);
    end Translate_Constant;
 
@@ -226,11 +226,11 @@ package body Gnat2Why.Decls is
             Emit
               (File,
                New_Defining_Axiom
-                 (Ada_Node    => E,
-                  Name        =>
+                 (Ada_Node => E,
+                  Name     =>
                     To_Why_Id (E, Domain => EW_Term, Local => False),
-                  Binders     => (1 .. 0 => <>),
-                  Def         => Def));
+                  Binders  => (1 .. 0 => <>),
+                  Def      => Def));
 
          --  In the general case, we generate a defining axiom if necessary and
          --  possible.
@@ -239,11 +239,11 @@ package body Gnat2Why.Decls is
             Emit
               (File,
                New_Defining_Axiom
-                 (Ada_Node    => E,
-                  Name        =>
+                 (Ada_Node => E,
+                  Name     =>
                     To_Why_Id (E, Domain => EW_Term, Local => False),
-                  Binders     => (1 .. 0 => <>),
-                  Def         => Def));
+                  Binders  => (1 .. 0 => <>),
+                  Def      => Def));
          end if;
       end if;
 
@@ -253,7 +253,7 @@ package body Gnat2Why.Decls is
       --  existing one.
 
       Close_Theory (File,
-                    Kind => Axiom_Theory,
+                    Kind           => Axiom_Theory,
                     Defined_Entity =>
                       (if Is_Full_View (E) then Partial_View (E) else E));
    end Translate_Constant_Value;
@@ -308,12 +308,14 @@ package body Gnat2Why.Decls is
       Open_Theory
         (File,
          New_Module (Name =>
-                         NID (Capitalize_First (To_String (E)) & "__axiom"),
+                       NID (Capitalize_First
+                         (To_String (E)) & To_String (WNE_Axiom_Suffix)),
                      File => No_Name),
          Comment =>
            "Module giving an empty axiom for the entity "
-         & """" & To_String (E) & """"
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+           & """" & To_String (E) & """"
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
       Close_Theory (File,
                     Kind => Standalone_Theory);
    end Translate_External_Object;
@@ -424,28 +426,28 @@ package body Gnat2Why.Decls is
 
                --  generate a constant for 'Constrained attribute
 
-                  Emit
-                    (File,
-                     Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Term,
-                        Name        => To_Local (Var.Constr.Id),
-                        Binders     => (1 .. 0 => <>),
-                        Labels      => Name_Id_Sets.Empty_Set,
-                        Return_Type => Get_Typ (Var.Constr.Id)));
+               Emit
+                 (File,
+                  Why.Atree.Builders.New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Local (Var.Constr.Id),
+                     Binders     => (1 .. 0 => <>),
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Return_Type => Get_Typ (Var.Constr.Id)));
             end if;
 
             if Var.Tag.Present then
 
                --  generate a constant for 'Tag attribute
 
-                  Emit
-                    (File,
-                     Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Term,
-                        Name        => To_Local (Var.Tag.Id),
-                        Binders     => (1 .. 0 => <>),
-                        Labels      => Name_Id_Sets.Empty_Set,
-                        Return_Type => Get_Typ (Var.Tag.Id)));
+               Emit
+                 (File,
+                  Why.Atree.Builders.New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Local (Var.Tag.Id),
+                     Binders     => (1 .. 0 => <>),
+                     Labels      => Name_Id_Sets.Empty_Set,
+                     Return_Type => Get_Typ (Var.Tag.Id)));
             end if;
 
          when UCArray =>
@@ -470,12 +472,12 @@ package body Gnat2Why.Decls is
                        " (" & Trim (Integer'Image (Num_Dim), Both) &
                        ")");
 
-                  Ty_First   : constant W_Type_Id :=
+                  Ty_First : constant W_Type_Id :=
                     Get_Typ (Var.Bounds (D).First);
-                  Ty_Last    : constant W_Type_Id :=
+                  Ty_Last  : constant W_Type_Id :=
                     Get_Typ (Var.Bounds (D).Last);
-               begin
 
+               begin
                   --  generate constants for bounds
 
                   Emit
@@ -487,6 +489,7 @@ package body Gnat2Why.Decls is
                         Labels      => Get_Counterexample_Labels
                           (E, Bound_Dimension_To_Str (Var.Dim, D, "'First")),
                         Return_Type => Ty_First));
+
                   Emit
                     (File,
                      Why.Atree.Builders.New_Function_Decl

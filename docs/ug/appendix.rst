@@ -193,8 +193,8 @@ you can still use Coq on |SPARK| VCs. To do so, you just have to add the
 following lines to your ``.why3.conf``::
 
     [prover]
-    command = "coqtop -batch -I %o/coq-tactic -R %o/coq Why3 -l %f"
-    driver = "${install_dir}/share/why3/drivers/coq.drv"
+    command = "coqtop -batch -I %l/coq-tactic -R %o/why3_libs/coq Why3 -l %f"
+    driver = "${install_dir}/share/why3/drivers/coq_gnatprove.drv"
     editor = "${editor}"
     in_place = false
     interactive = true

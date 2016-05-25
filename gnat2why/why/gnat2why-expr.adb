@@ -23,55 +23,53 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;         use Ada.Containers;
-with Ada.Containers.Doubly_Linked_Lists;
---  with Ada.Containers.Ordered_Maps;
+with Ada.Containers;                 use Ada.Containers;
+with Ada.Containers.Ordered_Maps;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
-with Checks;                 use Checks;
-with Elists;                 use Elists;
-with Errout;                 use Errout;
-with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
-with Flow_Generated_Globals; use Flow_Generated_Globals;
-with Flow_Refinement;        use Flow_Refinement;
-with Flow_Utility;           use Flow_Utility;
+with Checks;                         use Checks;
+with Elists;                         use Elists;
+with Errout;                         use Errout;
+with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Refinement;                use Flow_Refinement;
+with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
-with Gnat2Why.Expr.Loops;    use Gnat2Why.Expr.Loops;
-with Gnat2Why.Subprograms;   use Gnat2Why.Subprograms;
-with Namet;                  use Namet;
-with Nlists;                 use Nlists;
+with Gnat2Why.Annotate;              use Gnat2Why.Annotate;
+with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
+with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
+with Namet;                          use Namet;
+with Nlists;                         use Nlists;
 with Opt;
 with Output;
-with Rtsfind;                use Rtsfind;
-with Sem_Aux;                use Sem_Aux;
-with Sem_Disp;               use Sem_Disp;
-with Sem_Util;               use Sem_Util;
-with Sem_Type;               use Sem_Type;
-with Sinput;                 use Sinput;
-with Snames;                 use Snames;
-with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
-with Stand;                  use Stand;
-with Uintp;                  use Uintp;
-with Urealp;                 use Urealp;
-with VC_Kinds;               use VC_Kinds;
-with Why;                    use Why;
-with Why.Atree.Builders;     use Why.Atree.Builders;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
-with Why.Atree.Mutators;     use Why.Atree.Mutators;
-with Why.Atree.Modules;      use Why.Atree.Modules;
-with Why.Conversions;        use Why.Conversions;
-with Why.Gen.Arrays;         use Why.Gen.Arrays;
-with Why.Gen.Binders;        use Why.Gen.Binders;
-with Why.Gen.Decl;           use Why.Gen.Decl;
-with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Gen.Names;          use Why.Gen.Names;
-with Why.Gen.Preds;          use Why.Gen.Preds;
-with Why.Gen.Progs;          use Why.Gen.Progs;
-with Why.Gen.Records;        use Why.Gen.Records;
-with Why.Unchecked_Ids;      use Why.Unchecked_Ids;
-with Ada.Unchecked_Conversion;
-with Ada.Containers.Ordered_Maps;
+with Rtsfind;                        use Rtsfind;
+with Sem_Aux;                        use Sem_Aux;
+with Sem_Disp;                       use Sem_Disp;
+with Sem_Type;                       use Sem_Type;
+with Sem_Util;                       use Sem_Util;
+with Sinput;                         use Sinput;
+with Snames;                         use Snames;
+with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
+with Stand;                          use Stand;
+with Uintp;                          use Uintp;
+with Urealp;                         use Urealp;
+with VC_Kinds;                       use VC_Kinds;
+with Why;                            use Why;
+with Why.Atree.Builders;             use Why.Atree.Builders;
+with Why.Atree.Accessors;            use Why.Atree.Accessors;
+with Why.Atree.Mutators;             use Why.Atree.Mutators;
+with Why.Atree.Modules;              use Why.Atree.Modules;
+with Why.Conversions;                use Why.Conversions;
+with Why.Gen.Arrays;                 use Why.Gen.Arrays;
+with Why.Gen.Binders;                use Why.Gen.Binders;
+with Why.Gen.Decl;                   use Why.Gen.Decl;
+with Why.Gen.Expr;                   use Why.Gen.Expr;
+with Why.Gen.Names;                  use Why.Gen.Names;
+with Why.Gen.Preds;                  use Why.Gen.Preds;
+with Why.Gen.Progs;                  use Why.Gen.Progs;
+with Why.Gen.Records;                use Why.Gen.Records;
+with Why.Unchecked_Ids;              use Why.Unchecked_Ids;
 
 package body Gnat2Why.Expr is
 
@@ -197,15 +195,6 @@ package body Gnat2Why.Expr is
    function Compute_Tag_Check
      (Call   : Node_Id;
       Params : Transformation_Params) return W_Prog_Id;
-
-   function Compute_Attach_Handler_Check
-     (Ty     : Entity_Id;
-      Params : Transformation_Params) return W_Prog_Id
-     with Pre => Is_Protected_Type (Ty);
-   --  @param Ty a protected type
-   --  @return an assertion (if necessary) that checks if any of the
-   --    Attach_Handler pragmas of the procedures of the type is reserved
-   --    see also Ada RM C.3.1(10/3)
 
    function Declaration_Is_Associated_To_Parameter
      (N : Node_Id) return Boolean
@@ -418,6 +407,13 @@ package body Gnat2Why.Expr is
       Domain : EW_Domain;
       Params : Transformation_Params) return W_Expr_Id;
    --  @return the Why3 expression for SPARK quantified expression [Expr]
+
+   function Transform_Priority_Pragmas (Prag : Node_Id) return W_Prog_Id with
+     Pre => Get_Pragma_Id (Prag) in Pragma_Interrupt_Priority |
+                                    Pragma_Priority;
+   --  @param Prag either a pragma Priority or a pragma Interrupt_priority
+   --  @return an expression that checks that the argument of the pragma is in
+   --    the required range for this object type and pragma type
 
    function Transform_Slice
      (Params : Transformation_Params;
@@ -1000,7 +996,7 @@ package body Gnat2Why.Expr is
       Context       : in out W_Prog_Id)
    is
       Max_Assocs : constant Natural := 100;
-      --  if the defining expression of a constant contains more than
+      --  If the defining expression of a constant contains more than
       --  Max_Assocs N_Component_Association nodes, its definition will not be
       --  inlined.
 
@@ -1043,9 +1039,8 @@ package body Gnat2Why.Expr is
                 (Expression (Decl)) <= Max_Assocs
             then
 
-               --  We do not issue checks here. Checks for this
-               --  declaration will be issued when verifying its
-               --  enclosing unit.
+               --  We do not issue checks here. Checks for this declaration
+               --  will be issued when verifying its enclosing unit.
 
                Expr :=
                  +Transform_Expr (Expression (Decl),
@@ -1107,11 +1102,11 @@ package body Gnat2Why.Expr is
         (if Top_Predicate then True_Term else False_Term);
       T        : constant W_Pred_Id :=
         Compute_Dynamic_Invariant (Expr          => Expr,
-                                  Ty            => Ty,
-                                  Initialized   => Init,
-                                  Only_Var      => O_Var,
-                                  Top_Predicate => Top_Pred,
-                                  Use_Pred      => Use_Pred);
+                                   Ty            => Ty,
+                                   Initialized   => Init,
+                                   Only_Var      => O_Var,
+                                   Top_Predicate => Top_Pred,
+                                   Use_Pred      => Use_Pred);
    begin
       if T /= True_Pred then
          return New_Assume_Statement (Ada_Node => Ty,
@@ -1527,114 +1522,6 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
    end Check_Subtype_Indication;
-
-   ----------------------------------
-   -- Compute_Attach_Handler_Check --
-   ----------------------------------
-
-   function Compute_Attach_Handler_Check
-     (Ty     : Entity_Id;
-      Params : Transformation_Params) return W_Prog_Id
-   is
-      function Single_Attach_Handler_Check (Proc : Entity_Id) return W_Prog_Id;
-      --  @param Proc a procedure with an Attach_Handler pragma
-      --  @return an assertion statement that expresses the attach handler
-      --    check for this pragma
-
-      procedure Process_Declarations (L : List_Id);
-      --  @param L list of declarations to check for interrupt attachments
-
-      Stat : W_Prog_Id := +Void;
-      --  Why3 program with static checks
-
-      ---------------------------------
-      -- Single_Attach_Handler_Check --
-      ---------------------------------
-
-      function Single_Attach_Handler_Check (Proc : Entity_Id) return W_Prog_Id
-      is
-
-         --  The interrupt is given as the second argument of the pragma
-         --  Attach_Handler.
-         Att_Val : constant Node_Id :=
-           Expression (Next (First (Pragma_Argument_Associations
-                       (Get_Pragma (Proc, Pragma_Attach_Handler)))));
-
-         --  To check whether the attach handler is reserved, we call the
-         --  Ada.Interrupts.Is_Reserved. However, this function reads a global
-         --  state, which makes it a bit difficult to generate a call in
-         --  the logic (we would have to come up with the state object - not
-         --  impossible but not currently proposed by frontend). Instead,
-         --  we call the program function, which has only the interrupt as
-         --  argument, store the result in a temp and assert that the result
-         --  is false. So we are essentially asserting "not is_reserved(int)".
-
-         Res     : constant W_Expr_Id :=
-           New_Temp_For_Expr
-             (New_Call
-                (Name   => To_Why_Id (RTE (RE_Is_Reserved), Domain => EW_Prog),
-                 Domain => EW_Prog,
-                 Args   =>
-                   (1 =>
-                      Transform_Expr (Att_Val, EW_Int_Type, EW_Term, Params)),
-                 Typ    => EW_Bool_Type));
-
-         Pred    : constant W_Pred_Id :=
-           New_Call
-             (Name => Why_Eq,
-              Args => (1 => +Res,
-                       2 => Bool_False (EW_Term)));
-      begin
-         return
-           +Binding_For_Temp
-             (Domain  => EW_Prog,
-              Tmp     => Res,
-              Context =>
-                +New_Located_Assert
-                  (Ada_Node => Att_Val,
-                   Reason   => VC_Interrupt_Reserved,
-                   Kind     => EW_Check,
-                   Pred     => Pred));
-      end Single_Attach_Handler_Check;
-
-      --------------------------
-      -- Process_Declarations --
-      --------------------------
-
-      procedure Process_Declarations (L : List_Id) is
-         Proc : Node_Id := First (L);
-      begin
-         while Present (Proc) loop
-            if Nkind (Proc) = N_Subprogram_Declaration then
-               declare
-                  Ent : constant Entity_Id := Defining_Entity (Proc);
-               begin
-                  if Ekind (Ent) = E_Procedure
-                    and then Present (Get_Pragma (Ent, Pragma_Attach_Handler))
-                  then
-                     Stat := Sequence (Stat,
-                                       Single_Attach_Handler_Check (Ent));
-                  end if;
-               end;
-            end if;
-            Next (Proc);
-         end loop;
-      end Process_Declarations;
-
-      pragma Assert (Nkind (Parent (Ty)) = N_Protected_Type_Declaration);
-
-      PT_Def : constant Node_Id := Protected_Definition (Parent (Ty));
-
-   --  Start of processing for Compute_Attach_Handler_Check
-
-   begin
-      Process_Declarations (Visible_Declarations (PT_Def));
-
-      --  ??? only if private part has SPARK_Mode => On
-      Process_Declarations (Private_Declarations (PT_Def));
-
-      return Stat;
-   end Compute_Attach_Handler_Check;
 
    -----------------------
    -- Compute_Call_Args --
@@ -3145,8 +3032,8 @@ package body Gnat2Why.Expr is
       --  Dynamic property of the type itself
 
       if Type_Is_Modeled_As_Base (Ty_Ext)
-        or else (Is_Scalar_Type (Ty_Ext)
-                 and then Get_Type_Kind (Get_Type (+Expr)) = EW_Split)
+        or else (Use_Split_Form_For_Type (Ty_Ext)
+                 and then Get_Type_Kind (Get_Type (+Expr)) /= EW_Abstract)
       then
          T := +New_Dynamic_Property (Domain => EW_Pred,
                                      Ty     => Ty_Ext,
@@ -5055,7 +4942,7 @@ package body Gnat2Why.Expr is
                        To       => EW_Bool_Type),
                     Op     => EW_Equivalent);
 
-            elsif Is_Array_Type (Left_Type)
+            elsif Has_Array_Type (Left_Type)
               and then Op in N_Op_Eq | N_Op_Ne
             then
                T := Transform_Array_Equality
@@ -5065,7 +4952,7 @@ package body Gnat2Why.Expr is
                   Left_Type => Left_Type,
                   Domain    => Domain,
                   Ada_Node  => Ada_Node);
-            elsif Is_Array_Type (Left_Type) then
+            elsif Has_Array_Type (Left_Type) then
                T := Transform_Array_Comparison
                  (Op        => Op,
                   Left      => Left,
@@ -5573,7 +5460,7 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Op_Not =>
-            if Is_Array_Type (Right_Type) then
+            if Has_Array_Type (Right_Type) then
                T := Transform_Array_Negation
                  (Right      => Right,
                   Right_Type => Right_Type,
@@ -5607,7 +5494,7 @@ package body Gnat2Why.Expr is
             end if;
 
          when N_Op_And | N_Op_Or | N_Op_Xor =>
-            if Is_Array_Type (Left_Type) then
+            if Has_Array_Type (Left_Type) then
                T := Transform_Array_Logical_Op
                  (Op        => Op,
                   Left      => Left,
@@ -7699,7 +7586,7 @@ package body Gnat2Why.Expr is
       Ada_Node  : Node_Id) return W_Expr_Id
    is
       Dim       : constant Positive :=
-        Positive (Number_Dimensions (Left_Type));
+        Positive (Number_Dimensions (Retysp (Left_Type)));
       Subdomain : constant EW_Domain :=
         (if Domain = EW_Pred then EW_Term else Domain);
       Args      : W_Expr_Array (1 .. 4 * Dim + 2);
@@ -7782,9 +7669,9 @@ package body Gnat2Why.Expr is
            Args   => (+Left_Length, +Right_Length));
 
       Index_Type : constant W_Type_Id :=
-        (if First_Index (Left_Type) = Empty
+        (if First_Index (Retysp (Left_Type)) = Empty
          then EW_Int_Type
-         else Base_Why_Type_No_Bool (First_Index (Left_Type)));
+         else Base_Why_Type_No_Bool (First_Index (Retysp (Left_Type))));
 
       --  if Length (Left) > 0 then not (Left'First = Left'Last and
       --                                 Left'Last  = 1);
@@ -7810,10 +7697,10 @@ package body Gnat2Why.Expr is
                         Name   => Why_Eq,
                         Args   =>
                           (1 =>
-                               +E_Symb (Component_Type (Left_Type),
+                               +E_Symb (Component_Type (Retysp (Left_Type)),
                                         WNE_Attr_First),
                            2 =>
-                               +E_Symb (Component_Type (Left_Type),
+                               +E_Symb (Component_Type (Retysp (Left_Type)),
                                         WNE_Attr_Last))),
                      Right  =>
                        New_Call
@@ -7824,7 +7711,7 @@ package body Gnat2Why.Expr is
                             (1 => New_Discrete_Constant (Value => Uint_1,
                                                          Typ   => Index_Type),
                              2 =>
-                               +E_Symb (Component_Type (Left_Type),
+                               +E_Symb (Component_Type (Retysp (Left_Type)),
                                         WNE_Attr_Last))),
                      Domain => EW_Pred)));
    begin
@@ -7838,7 +7725,8 @@ package body Gnat2Why.Expr is
           (Ada_Node => Ada_Node,
            Domain   => Subdomain,
            Name     => W_Op,
-           Args     => Args);
+           Args     => Args,
+           Typ      => Type_Of_Node (Left_Type));
 
       if Do_Check then
 
@@ -7856,8 +7744,8 @@ package body Gnat2Why.Expr is
          --  operator is to call xor on arrays of the singleton subtype True of
          --  boolean.
 
-         if not Is_Standard_Boolean_Type (Component_Type (Left_Type)) and then
-           W_Op = Array_Theory.Xorb
+         if not Is_Standard_Boolean_Type (Component_Type (Retysp (Left_Type)))
+           and then W_Op = Array_Theory.Xorb
          then
             T := +Sequence (New_Ignore (Prog =>
                                           New_Located_Assert (Ada_Node,
@@ -7870,20 +7758,22 @@ package body Gnat2Why.Expr is
 
       --  Conversion from base, first and right are attributes of left
 
-      T := Array_Convert_From_Base
-        (Domain => Subdomain,
-         Target => Left_Type,
-         Ar     => T,
-         First  =>
-           Get_Array_Attr (Domain => Subdomain,
-                           Expr   => Left_Expr,
-                           Attr   => Attribute_First,
-                           Dim    => 1),
-         Last   =>
-           Get_Array_Attr (Domain => Subdomain,
-                           Expr   => Left_Expr,
-                           Attr   => Attribute_Last,
-                           Dim    => 1));
+      if not Has_Static_Array_Type (Left_Type) then
+         T := Array_Convert_From_Base
+           (Domain => Subdomain,
+            Target => Left_Type,
+            Ar     => T,
+            First  =>
+              Get_Array_Attr (Domain => Subdomain,
+                              Expr   => Left_Expr,
+                              Attr   => Attribute_First,
+                              Dim    => 1),
+            Last   =>
+              Get_Array_Attr (Domain => Subdomain,
+                              Expr   => Left_Expr,
+                              Attr   => Attribute_Last,
+                              Dim    => 1));
+      end if;
 
       T := Binding_For_Temp (Domain  => Domain,
                              Tmp     => Left_Expr,
@@ -8025,7 +7915,6 @@ package body Gnat2Why.Expr is
       --  types right.
 
       if Lgth_Check then
-         --           if Is_Array_Type (Get_Ada_Node (+L_Type)) then
          declare
             Check : W_Pred_Id := True_Pred;
             Lval  : constant W_Expr_Id :=
@@ -8615,10 +8504,11 @@ package body Gnat2Why.Expr is
                   Arg  : W_Expr_Id :=
                     Transform_Expr (Var, Domain, Params);
                begin
-                  if Is_Array_Type (Etype (Var)) and then
-                    not Is_Static_Array_Type (Etype (Var))
+                  if Has_Array_Type (Etype (Var)) and then
+                    not Has_Static_Array_Type (Etype (Var))
                     and then
-                      not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (Arg)))
+                      not Has_Static_Array_Type
+                        (Get_Ada_Node (+Get_Type (Arg)))
                     and then Get_Type_Kind (Get_Type (Arg)) /= EW_Split
                   then
                      Arg := Array_Convert_To_Base (Domain, Arg);
@@ -8832,9 +8722,9 @@ package body Gnat2Why.Expr is
                      Why_Expr : constant W_Expr_Id :=
                        Transform_Expr (Var, Domain, Params);
                   begin
-                     T := New_Is_Constrained_Access (Domain   => Domain,
-                                                     Name     => Why_Expr,
-                                                     Ty       => Ty_Ent);
+                     T := New_Is_Constrained_Access (Domain => Domain,
+                                                     Name   => Why_Expr,
+                                                     Ty     => Ty_Ent);
                      if Domain = EW_Prog then
                         T :=
                           +Sequence (New_Ignore (Prog => +Why_Expr), +T);
@@ -8851,6 +8741,58 @@ package body Gnat2Why.Expr is
 
          when Attribute_Terminated =>
             T := +False_Term;
+
+         when Attribute_Component_Size =>
+
+            if Nkind (Var) in N_Has_Entity
+              and then Present (Entity (Var))
+              and then Ekind (Entity (Var)) in Type_Kind
+            then
+
+               T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+
+            else
+               declare
+                  Name : constant W_Identifier_Id :=
+                    E_Symb (Etype (Var), WNE_Attr_Object_Component_Size);
+                  Arg : constant W_Expr_Id :=
+                    Transform_Expr (Var, Domain, Params);
+               begin
+                  return New_Call (Ada_Node => Parent (Var),
+                                   Domain   => Domain,
+                                   Name     => Name,
+                                   Args     => (1 => Arg),
+                                   Typ      => EW_Int_Type);
+               end;
+            end if;
+
+         when Attribute_Alignment =>
+
+            if Nkind (Var) in N_Has_Entity
+              and then Present (Entity (Var))
+              and then Ekind (Entity (Var)) in Type_Kind
+            then
+
+               T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+
+            elsif Known_Alignment (Etype (Var)) then
+
+               return New_Integer_Constant (Expr, Alignment (Etype (Var)));
+
+            else
+               declare
+                  Name : constant W_Identifier_Id :=
+                    E_Symb (Etype (Var), WNE_Attr_Object_Alignment);
+                  Arg  : constant W_Expr_Id :=
+                    Transform_Expr (Var, Domain, Params);
+               begin
+                  return New_Call (Ada_Node => Parent (Var),
+                                   Domain   => Domain,
+                                   Name     => Name,
+                                   Args     => (1 => Arg),
+                                   Typ      => EW_Int_Type);
+               end;
+            end if;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Attr] not implemented: "
@@ -9204,7 +9146,7 @@ package body Gnat2Why.Expr is
                                                To     => Comp_Type),
                      Right_First)
                   elsif Is_Static_Array_Type (Right_Type)
-                  or (Get_Type_Kind (Get_Type (Right_Expr)) = EW_Split)
+                    or else (Get_Type_Kind (Get_Type (Right_Expr)) = EW_Split)
                   then Right_Expr
                   else Array_Convert_To_Base (Domain => Domain,
                                               Ar     => Right_Expr));
@@ -9402,8 +9344,6 @@ package body Gnat2Why.Expr is
                Lvalue      : constant Entity_Id := (if Is_Full_View (Obj)
                                                     then Partial_View (Obj)
                                                     else Obj);
-               Lvalue_Type : constant Entity_Id := Etype (Lvalue);
-
             begin
                --  We can ignore task declarations
 
@@ -9436,141 +9376,6 @@ package body Gnat2Why.Expr is
                           Ty          => Etype (Lvalue),
                           Initialized => Present (Expression (Decl)),
                           Only_Var    => False));
-               end if;
-
-               if Is_Protected_Type (Obj_Type) then
-
-                  --  If protected object attaches an interrupt, the priority
-                  --  must be in range of System.Interrupt_Priorioty; see RM
-                  --  C.3.1(11/3).
-
-                  if Requires_Interrupt_Priority (Obj_Type) then
-                     declare
-                        P : constant Node_Id :=
-                          Get_Priority_Or_Interrupt_Priority (Obj_Type);
-                     begin
-                        --  If no priority was specified, the default priority
-                        --  is implementation-defined (RM D.3 (10/3)), but in
-                        --  range of System.Interrupt_Priority.
-
-                        if Present (P) then
-
-                           --  ??? why discriminants are translated only when
-                           --  priority is given?
-
-                           --  Store the value of Decl's discriminants in the
-                           --  symbol table.
-
-                           declare
-                              type Discr is record
-                                 Id  : W_Identifier_Id;
-                                 Val : W_Expr_Id;
-                              end record;
-                              --  Why3 representation of discriminants
-
-                              package Discriminant_Lists is new
-                                Ada.Containers.Doubly_Linked_Lists
-                                  (Element_Type => Discr);
-
-                              W_Discriminants : Discriminant_Lists.List;
-                              --  Container for Why3 representations
-
-                              Discr_N : Node_Id;
-                              --  Discriminant node in SPARK AST
-
-                              P_Expr : W_Expr_Id;
-                           begin
-                              Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-                              Discr_N := First_Discriminant (Lvalue_Type);
-                              while Present (Discr_N) loop
-                                 declare
-                                    Discr_W : constant Discr :=
-                                      (Id =>
-                                         New_Temp_Identifier
-                                           (Typ =>
-                                              EW_Abstract (Etype (Discr_N))),
-
-                                       Val =>
-                                         New_Ada_Record_Access
-                                           (Ada_Node => Empty,
-                                            Domain   => EW_Term,
-                                            Name     =>
-                                              +Transform_Identifier
-                                                (Expr   => Lvalue,
-                                                 Ent    => Lvalue,
-                                                 Domain => EW_Term,
-                                                 Params => Body_Params),
-                                            Field    => Discr_N,
-                                            Ty       => Lvalue_Type));
-                                 begin
-                                    Insert_Entity (Discriminal (Discr_N),
-                                                   Discr_W.Id);
-
-                                    W_Discriminants.Append (Discr_W);
-                                 end;
-
-                                 Next_Discriminant (Discr_N);
-                              end loop;
-
-                              P_Expr :=
-                                Transform_Expr
-                                  (Expr          => P,
-                                   Domain        => EW_Term,
-                                   Params        => Body_Params,
-                                   Expected_Type => EW_Int_Type);
-
-                              for W_D of reverse W_Discriminants loop
-                                 P_Expr :=
-                                   New_Typed_Binding
-                                     (Domain   => EW_Term,
-                                      Name     => W_D.Id,
-                                      Def      => W_D.Val,
-                                      Context  => P_Expr);
-                              end loop;
-
-                              --  Generate a range check, but with a reason of
-                              --  ceiling check, as specified in RM index for
-                              --  "Ceiling_Check".
-
-                              R := Sequence
-                                (R,
-                                 New_Located_Assert
-                                   (Ada_Node => Decl,
-                                    Pred     =>
-                                      +New_Range_Expr
-                                        (Domain => EW_Pred,
-                                         Low    =>
-                                           New_Attribute_Expr
-                                             (Domain => EW_Term,
-                                              Ty     =>
-                                                RTE (RE_Interrupt_Priority),
-                                              Attr   => Attribute_First,
-                                              Params => Body_Params),
-                                         High   =>
-                                           New_Attribute_Expr
-                                             (Domain => EW_Term,
-                                              Ty     =>
-                                                RTE (RE_Interrupt_Priority),
-                                              Attr   => Attribute_Last,
-                                              Params => Body_Params),
-                                         Expr   => P_Expr),
-                                    Reason   => VC_Ceiling_Interrupt,
-                                    Kind     => EW_Check));
-
-                              Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-                           end;
-                        end if;
-                     end;
-                  end if;
-
-                  --  Check that no Attach_Handler expression of the protected
-                  --  object corresponds to a reserved interrupt; see RM
-                  --  C.3.1(10/3).
-
-                  R := Sequence (R,
-                                 Compute_Attach_Handler_Check
-                                   (Base_Type (Obj_Type), Body_Params));
                end if;
 
             end;
@@ -10371,7 +10176,7 @@ package body Gnat2Why.Expr is
                        Right  => Right,
                        Op     => EW_Equivalent);
                end;
-            elsif Is_Array_Type (Etype (Left_Opnd (Expr))) then
+            elsif Has_Array_Type (Etype (Left_Opnd (Expr))) then
                declare
                   Left : constant W_Expr_Id :=
                     Transform_Expr
@@ -10573,7 +10378,7 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Op_Not =>
-            if Is_Array_Type (Etype (Right_Opnd (Expr))) then
+            if Has_Array_Type (Etype (Right_Opnd (Expr))) then
                declare
                   Subdomain : constant EW_Domain :=
                     (if Domain = EW_Pred then EW_Term else Domain);
@@ -10619,7 +10424,7 @@ package body Gnat2Why.Expr is
 
          when N_Op_And | N_Op_Or | N_Op_Xor =>
 
-            if Is_Array_Type (Etype (Left_Opnd (Expr))) then
+            if Has_Array_Type (Etype (Left_Opnd (Expr))) then
                declare
                   Subdomain : constant EW_Domain :=
                     (if Domain = EW_Pred then EW_Term else Domain);
@@ -11930,8 +11735,7 @@ package body Gnat2Why.Expr is
      (Prag  : Node_Id;
       Force : Boolean) return W_Prog_Id
    is
-      Pname   : constant Name_Id   := Pragma_Name (Prag);
-      Prag_Id : constant Pragma_Id := Get_Pragma_Id (Pname);
+      Prag_Id : constant Pragma_Id := Get_Pragma_Id (Prag);
 
       procedure tip;
       --  A dummy procedure called when pragma Inspection_Point is processed.
@@ -11995,6 +11799,9 @@ package body Gnat2Why.Expr is
                return +Void;
             end if;
 
+         when Pragma_Interrupt_Priority | Pragma_Priority =>
+            return Transform_Priority_Pragmas (Prag);
+
          --  Pragma Inspection_Point is ignored, but we insert a call to a
          --  dummy procedure, to allow to break on it during debugging.
 
@@ -12025,7 +11832,7 @@ package body Gnat2Why.Expr is
          --
          --  Group 1 - ignored
          --
-         --  Pragmas that do not need any marking, either because:
+         --  Pragmas that do not need any proof processing, either because:
          --  . they are defined by SPARK 2014, or
          --  . they are already taken into account elsewhere (contracts)
          --  . they have no effect on verification
@@ -12037,6 +11844,7 @@ package body Gnat2Why.Expr is
          when Pragma_Assertion_Policy             |
               Pragma_Atomic                       |
               Pragma_Atomic_Components            |
+              Pragma_Attach_Handler               |
               Pragma_Convention                   |
               Pragma_Elaborate                    |
               Pragma_Elaborate_All                |
@@ -12137,9 +11945,9 @@ package body Gnat2Why.Expr is
          --  a "when others" to force re-consideration when
          --  SNames.Pragma_Id is extended.
          --
-         --  These all generate a warning.  In future, these pragmas
-         --  may move to be fully ignored or to be processed with more
-         --  semantic detail as required.
+         --  These can all be ignored - we have already generated a warning
+         --  during Marking. In the future, these pragmas may move to be fully
+         --  ignored or to be processed with more semantic detail as required.
 
          --  Group 2a - GNAT Defined and obsolete pragmas
          when Pragma_Abort_Defer                 |
@@ -12278,18 +12086,12 @@ package body Gnat2Why.Expr is
            Pragma_Task_Dispatching_Policy        |
            Pragma_All_Calls_Remote               |
            Pragma_Asynchronous                   |
-           Pragma_Attach_Handler                 |
            Pragma_Remote_Call_Interface          |
            Pragma_Remote_Types                   |
            Pragma_Shared_Passive                 |
-           Pragma_Interrupt_Priority             |
            Pragma_Lock_Free                      |
-           Pragma_Priority                       |
            Pragma_Storage_Size                   =>
 
-            Error_Msg_Name_1 := Pragma_Name (Prag);
-            Error_Msg_N
-              ("?pragma % ignored in proof (not yet supported)", Prag);
             return +Void;
       end case;
    end Transform_Pragma;
@@ -12396,6 +12198,92 @@ package body Gnat2Why.Expr is
       return T;
    end Transform_Pragma_Check;
 
+   --------------------------------
+   -- Transform_Priority_Pragmas --
+   --------------------------------
+
+   function Transform_Priority_Pragmas (Prag : Node_Id) return W_Prog_Id
+   is
+      Pragma_Arguments : constant List_Id :=
+        Pragma_Argument_Associations (Prag);
+
+      Expr : constant Node_Id :=
+        (if Present (Pragma_Arguments)
+         then Expression (First (Pragma_Arguments))
+         else Empty);
+
+   begin
+      if Present (Expr) then
+         declare
+            --  Task Priorities (D.1 (17)):
+            --
+            --  For the Priority aspect, the value of the expression is
+            --  converted to the subtype Priority; for the Interrupt_Priority
+            --  aspect, this value is converted to the subtype Any_Priority.
+            --
+            --  Protected Subprograms (D.3 (6)):
+            --
+            --  The expression specified for the Priority or Interrupt_Priority
+            --  aspect (see D.1) is evaluated as part of the creation of the
+            --  corresponding protected object and converted to the subtype
+            --  System.Any_Priority or System.Interrupt_Priority, respectively.
+            --
+            --  We use the Current_Subp entity to know whether the priority is
+            --  a task priority or a protected priority. The priority is a task
+            --  priority if it applies syntactically to a task or to a
+            --  subprogram.
+
+            Is_Task_Priority : constant Boolean :=
+              Ekind (Current_Subp) in Task_Kind | Subprogram_Kind;
+
+            Prag_Id : constant Pragma_Id := Get_Pragma_Id (Prag);
+
+            Ty : constant Entity_Id :=
+              RTE (if Is_Task_Priority
+                   then
+                     (if Prag_Id = Pragma_Interrupt_Priority
+                      then RE_Any_Priority
+                      else RE_Priority)
+                   else
+                     (if Prag_Id = Pragma_Interrupt_Priority
+                      then RE_Interrupt_Priority
+                      else RE_Any_Priority));
+
+            Why_Expr : constant W_Expr_Id :=
+              Transform_Expr
+                (Expr          => Expr,
+                 Domain        => EW_Term,
+                 Params        => Body_Params,
+                 Expected_Type => EW_Int_Type);
+
+         begin
+            return
+              New_Located_Assert
+                (Ada_Node => Expr,
+                 Pred     =>
+                   +New_Range_Expr
+                     (Domain => EW_Pred,
+                      Low    =>
+                        New_Attribute_Expr
+                          (Domain => EW_Term,
+                           Ty     => Ty,
+                           Attr   => Attribute_First,
+                           Params => Body_Params),
+                      High   =>
+                        New_Attribute_Expr
+                          (Domain => EW_Term,
+                           Ty     => Ty,
+                           Attr   => Attribute_Last,
+                           Params => Body_Params),
+                      Expr   => Why_Expr),
+                 Reason   => VC_Range_Check,
+                 Kind     => EW_Check);
+         end;
+      else
+         return +Void;
+      end if;
+   end Transform_Priority_Pragmas;
+
    -------------------------------------
    -- Transform_Quantified_Expression --
    -------------------------------------
@@ -12438,24 +12326,60 @@ package body Gnat2Why.Expr is
 
       function Make_Binding_For_Iterable
         (Ada_Node    : Node_Id;
-         Container   : Node_Id;
+         W_Over_E    : W_Expr_Id;
+         Over_Type   : Entity_Id;
          W_Index_Var : W_Identifier_Id;
          Domain      : EW_Domain;
          Element_T   : W_Type_Id;
          Params      : Transformation_Params) return W_Expr_Id;
-      --  Constructs an expression that should be used to bind the index of a
+      --  @param Ada_Node quantified expression over a container
+      --  @param W_Over_E Why3 expression for the container value
+      --  @param Over_Type Entity of the container type
+      --  @param W_Index_Var Why3 name for the index of the quantification
+      --  @param Domain domain in which the quantification is translated
+      --  @param Element_T Why3 type of the Index variable
+      --  @param Params transformation parameters to be used.
+      --  @return the expression that should be used to bind the index of a
       --  "of" quantified expression on a type with the Iterable aspect.
-      --  Returns Element (Container, W_Index_Var)
+      --  Returns Element (W_Over_E, W_Index_Var)
 
       function Make_Constraint_For_Iterable
-        (Ada_Node    : Node_Id;
-         Container   : Node_Id;
-         W_Index_Var : W_Expr_Id;
-         Domain      : EW_Domain;
-         Params      : Transformation_Params) return W_Expr_Id;
-      --  Constructs an expression for the constraint of a quantified
+        (Ada_Node     : Node_Id;
+         Use_Contains : Boolean;
+         W_Over_E     : W_Expr_Id;
+         Over_Type    : Entity_Id;
+         W_Index_Var  : W_Expr_Id;
+         Domain       : EW_Domain;
+         Params       : Transformation_Params) return W_Expr_Id;
+      --  @param Ada_Node quantified expression over a container
+      --  @param Use_Contains wether there is a Contains primitive specified
+      --         for Over_Type
+      --  @param W_Over_E Why3 expression for the container value
+      --  @param Over_Type Entity of the container type
+      --  @param W_Index_Var Why3 name for the index of the quantification
+      --  @param Domain domain in which the quantification is translated
+      --  @param Params transformation parameters to be used.
+      --  @return the expression for the constraint of a quantified
       --  expression on a type with the Iterable aspect.
-      --  Returns Has_Element (Container, W_Index_Var)
+      --  Returns Has_Element (W_Over_E, W_Index_Var)
+
+      procedure Parse_Iteration_Scheme_For_Iterable
+        (Ada_Node     :        Node_Id;
+         Of_Present   :        Boolean;
+         W_Over_E     : in out W_Expr_Id;
+         Over_Type    : in out Entity_Id;
+         Index_Type   :    out Entity_Id;
+         Need_Tmp_Var :    out Boolean);
+      --  Computes the Index_Type to be used for quantifying over Over_Type.
+      --  Goes through Model functions from pragma Annotate Iterate_For_Proof
+      --  and updates W_Over_E and Over_Type accordingly.
+      --  @param Ada_Node quantified expression over a container
+      --  @param Of_Present quantification is done over a container's content
+      --  @param W_Over_E Why3 expression for the container value
+      --  @param Over_Type Entity of the container type on which quantification
+      --         should be done
+      --  @param Index_Type type of the index variable
+      --  @param Need_Tmp_Var do we need a temporary variable.
 
       -----------------------------
       -- Get_Quantified_Variable --
@@ -12519,20 +12443,21 @@ package body Gnat2Why.Expr is
 
       function Make_Binding_For_Iterable
         (Ada_Node    : Node_Id;
-         Container   : Node_Id;
+         W_Over_E    : W_Expr_Id;
+         Over_Type   : Entity_Id;
          W_Index_Var : W_Identifier_Id;
          Domain      : EW_Domain;
          Element_T   : W_Type_Id;
          Params      : Transformation_Params) return W_Expr_Id
       is
          Element_E   : constant Entity_Id :=
-           Get_Iterable_Type_Primitive (Etype (Container), Name_Element);
+           SPARK_Util.Get_Iterable_Type_Primitive (Over_Type, Name_Element);
          Cont_Type   : constant Entity_Id :=
            Etype (First_Entity (Element_E));
          Cont_Expr   : constant W_Expr_Id :=
            Insert_Simple_Conversion
              (Domain   => Domain,
-              Expr     => Transform_Expr (Container, Domain, Params),
+              Expr     => W_Over_E,
               To       => (if Use_Base_Type_For_Type (Cont_Type)
                            then Base_Why_Type (Cont_Type)
                            else Type_Of_Node (Cont_Type)));
@@ -12568,64 +12493,190 @@ package body Gnat2Why.Expr is
       ----------------------------------
 
       function Make_Constraint_For_Iterable
-        (Ada_Node    : Node_Id;
-         Container   : Node_Id;
-         W_Index_Var : W_Expr_Id;
-         Domain      : EW_Domain;
-         Params      : Transformation_Params) return W_Expr_Id
+        (Ada_Node     : Node_Id;
+         Use_Contains : Boolean;
+         W_Over_E     : W_Expr_Id;
+         Over_Type    : Entity_Id;
+         W_Index_Var  : W_Expr_Id;
+         Domain       : EW_Domain;
+         Params       : Transformation_Params) return W_Expr_Id
        is
-         Subdomain   : constant EW_Domain :=
-           (if Domain = EW_Pred then EW_Term else Domain);
-         Has_Element : constant Entity_Id := Get_Iterable_Type_Primitive
-           (Etype (Container), Name_Has_Element);
-         Cont_Type   : constant Entity_Id :=
-           Etype (First_Entity (Has_Element));
-         Cont_Expr   : constant W_Expr_Id :=
-           Insert_Simple_Conversion
-             (Domain   => Subdomain,
-              Expr     => Transform_Expr (Container, Subdomain, Params),
-              To       => (if Use_Base_Type_For_Type (Cont_Type)
-                           then Base_Why_Type (Cont_Type)
-                           else Type_Of_Node (Cont_Type)));
-         Curs_Type   : constant Entity_Id :=
-           Etype (Next_Entity (First_Entity (Has_Element)));
-         Curs_Expr   : constant W_Expr_Id :=
-           Insert_Simple_Conversion
-             (Ada_Node => Empty,
-              Domain   => Subdomain,
-              Expr     => +W_Index_Var,
-              To       =>
-                (if Use_Base_Type_For_Type (Curs_Type)
-                 then Base_Why_Type (Curs_Type)
-                 else Type_Of_Node (Curs_Type)));
-         T           : W_Expr_Id;
+         Has_Element : Entity_Id;
 
       begin
-         T := New_VC_Call
-           (Ada_Node => Ada_Node,
-            Name     =>
+         --  Look for the function that should be called to make the constraint
+         --  over W_Index_Var.
+
+         if not Use_Contains then
+
+            --  If there is no Contains annotation to use, use the Has_Element
+            --  function of the Iterable aspect.
+
+            Has_Element := SPARK_Util.Get_Iterable_Type_Primitive
+              (Over_Type, Name_Has_Element);
+         else
+
+            --  A Contains Iterable_For_Proof annotation is specified for
+            --  Over_Type. Use the provided Contains primitive.
+
+            declare
+               Found         : Boolean;
+               Iterable_Info : Iterable_Annotation;
+            begin
+               Retrieve_Iterable_Annotation (Over_Type, Found, Iterable_Info);
+               pragma Assert (Found and then Iterable_Info.Kind = Contains);
+               Has_Element := Iterable_Info.Entity;
+            end;
+         end if;
+
+         --  Call the function with the appropriate arguments.
+
+         declare
+            Subdomain   : constant EW_Domain :=
+              (if Domain = EW_Pred then EW_Term else Domain);
+            Cont_Type   : constant Entity_Id :=
+              Etype (First_Entity (Has_Element));
+            Cont_Expr   : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Domain   => Subdomain,
+                 Expr     => W_Over_E,
+                 To       => (if Use_Base_Type_For_Type (Cont_Type)
+                              then Base_Why_Type (Cont_Type)
+                              else Type_Of_Node (Cont_Type)));
+            Curs_Type   : constant Entity_Id :=
+              Etype (Next_Entity (First_Entity (Has_Element)));
+            Curs_Expr   : constant W_Expr_Id :=
+              Insert_Simple_Conversion
+                (Ada_Node => Empty,
+                 Domain   => Subdomain,
+                 Expr     => +W_Index_Var,
+                 To       =>
+                   (if Use_Base_Type_For_Type (Curs_Type)
+                    then Base_Why_Type (Curs_Type)
+                    else Type_Of_Node (Curs_Type)));
+            T           : W_Expr_Id;
+         begin
+
+            T := New_VC_Call
+              (Ada_Node => Ada_Node,
+               Name     =>
                  W_Identifier_Id
                    (Transform_Identifier (Params       => Params,
                                           Expr         => Has_Element,
                                           Ent          => Has_Element,
                                           Domain       => Subdomain)),
-            Progs    => (1 => Cont_Expr,
-                         2 => Curs_Expr),
-            Reason   => VC_Precondition,
-            Domain   => Subdomain,
-            Typ      => Type_Of_Node (Etype (Has_Element)));
+               Progs    => (1 => Cont_Expr,
+                            2 => Curs_Expr),
+               Reason   => VC_Precondition,
+               Domain   => Subdomain,
+               Typ      => Type_Of_Node (Etype (Has_Element)));
 
-         if Domain = EW_Pred then
-            T :=
-              New_Call
-                (Domain => Domain,
-                 Typ    => EW_Bool_Type,
-                 Name   => Why_Eq,
-                 Args   => (T, +True_Term));
-         end if;
+            if Domain = EW_Pred then
+               T :=
+                 New_Call
+                   (Domain => Domain,
+                    Typ    => EW_Bool_Type,
+                    Name   => Why_Eq,
+                    Args   => (T, +True_Term));
+            end if;
 
-         return T;
+            return T;
+         end;
       end Make_Constraint_For_Iterable;
+
+      -----------------------------------------
+      -- Parse_Iteration_Scheme_For_Iterable --
+      -----------------------------------------
+
+      procedure Parse_Iteration_Scheme_For_Iterable
+        (Ada_Node     :        Node_Id;
+         Of_Present   :        Boolean;
+         W_Over_E     : in out W_Expr_Id;
+         Over_Type    : in out Entity_Id;
+         Index_Type   :    out Entity_Id;
+         Need_Tmp_Var :    out Boolean)
+      is
+         Subdomain     : constant EW_Domain :=
+           (if Domain = EW_Pred then EW_Term else Domain);
+         Found         : Boolean;
+         Iterable_Info : Iterable_Annotation;
+      begin
+         if not Of_Present then
+
+            --  for ... in quantification:
+            --  Iteration is done on cursors, no need for a temporary variable.
+
+            Index_Type := Get_Cursor_Type (Over_Type);
+            Need_Tmp_Var := False;
+
+         else
+
+            --  for ... of quantification:
+            --  Check wether an Iterable_For_Proof annotation is recorded for
+            --  Over_Type.
+
+            Retrieve_Iterable_Annotation (Over_Type, Found, Iterable_Info);
+
+            --  Go through Model Iterable_For_Proof annotations to find the
+            --  type on which quantification should be done.
+
+            while Found
+              and then Iterable_Info.Kind = Gnat2Why.Annotate.Model
+            loop
+
+               --  Replace W_Over_E by Model (W_Over_E) and Over_Type by the
+               --  model's type.
+
+               declare
+                  Model     : constant Entity_Id := Iterable_Info.Entity;
+                  Cont_Type : constant Entity_Id :=
+                    Etype (First_Entity (Model));
+                  Cont_Expr : constant W_Expr_Id :=
+                    Insert_Simple_Conversion
+                      (Domain   => Subdomain,
+                       Expr     => W_Over_E,
+                       To       => (if Use_Base_Type_For_Type (Cont_Type)
+                                    then Base_Why_Type (Cont_Type)
+                                    else Type_Of_Node (Cont_Type)));
+               begin
+                  Over_Type := Etype (Model);
+                  W_Over_E := New_VC_Call
+                    (Ada_Node => Ada_Node,
+                     Name     =>
+                       W_Identifier_Id
+                         (Transform_Identifier (Params => Params,
+                                                Expr   => Model,
+                                                Ent    => Model,
+                                                Domain => Subdomain)),
+                     Progs    => (1 => Cont_Expr),
+                     Reason   => VC_Precondition,
+                     Domain   => Subdomain,
+                     Typ      => Type_Of_Node (Over_Type));
+               end;
+
+               Retrieve_Iterable_Annotation (Over_Type, Found, Iterable_Info);
+            end loop;
+
+            if not Found then
+
+               --  No Iterable_For_Proof annotation found.
+               --  Iteration is done on cursors, we need a temporary variable
+               --  to store the element
+
+               Index_Type := Get_Cursor_Type (Over_Type);
+               Need_Tmp_Var := True;
+            else
+
+               --  A Contains Iterable_For_Proof annotation has been found.
+               --  Iteration is directly done on elements, no need for a
+               --  temporary variable.
+
+               Index_Type := Etype (SPARK_Util.Get_Iterable_Type_Primitive
+                                    (Over_Type, Name_Element));
+               Need_Tmp_Var := False;
+            end if;
+         end if;
+      end Parse_Iteration_Scheme_For_Iterable;
 
       --  We distinguish between 4 types of quantified expressions:
       --  . over a scalar range (for all V in Low .. High)
@@ -12660,8 +12711,11 @@ package body Gnat2Why.Expr is
       --  the variable over which quantification is done in Why3, over the
       --  underlying scalar range for array/container E.
 
+      Need_Temp_Var : Boolean; --  Index variable is not quantified variable
+
       Quant_Var  : Entity_Id;  --  Quantified variable for quantification
       Over_Expr  : Node_Id;    --  Expression over which quantification is done
+      Over_Type  : Node_Id;    --  Type used for the quantification
       Quant_Type : Entity_Id;  --  Type of the quantified variable
       Bound_Expr : Node_Id;    --  Bound expression for the quantification
       Index_Type : Entity_Id;  --  Index type for the quantification
@@ -12708,70 +12762,127 @@ package body Gnat2Why.Expr is
 
       --  Domain = EW_Pred or Domain = EW_Prog
 
-      --  Step 1: extract relevant nodes and entities from the expression
+      --  Step 1: create a Why3 variable for the quantified variable
 
       Quant_Var  := Get_Quantified_Variable (Expr, Over_Range);
-      Over_Expr  := Get_Expr_Quantified_Over (Expr, Over_Range);
       Quant_Type := Etype (Quant_Var);
 
-      if Over_Array then
-         Bound_Expr := First_Index (Etype (Over_Expr));
-      else
-         Bound_Expr := Over_Expr;
-      end if;
-
-      if Over_Array then
-         Index_Type := Etype (First_Index (Etype (Over_Expr)));
-      elsif Over_Content then
-         Index_Type := Get_Cursor_Type (Etype (Bound_Expr));
-      else
-         Index_Type := Etype (Quant_Var);
-      end if;
-
-      --  Step 2: create the base Why3 variables/expressions
-
-      W_Quant_Type := (if Use_Base_Type_For_Type (Quant_Type)
+      W_Quant_Type := (if Use_Split_Form_For_Type (Quant_Type)
                        then Base_Why_Type (Quant_Type)
                        else Type_Of_Node (Quant_Type));
-
-      W_Index_Type := (if Use_Base_Type_For_Type (Index_Type)
-                       then Base_Why_Type (Index_Type)
-                       else Type_Of_Node (Index_Type));
 
       W_Quant_Var := New_Identifier (Name => Short_Name (Quant_Var),
                                      Typ  => W_Quant_Type);
 
-      if Over_Array or Over_Content then
-         W_Index_Var := New_Temp_Identifier (Typ => W_Index_Type);
+      --  Step 2: translate the expression over which the quantification is
+      --          applied.
+
+      Over_Expr := Get_Expr_Quantified_Over (Expr, Over_Range);
+
+      if not Over_Range then
+         Over_Type := Etype (Over_Expr);
       else
-         W_Index_Var := W_Quant_Var;
+         Over_Type := Empty;
       end if;
 
-      if Over_Range or Over_Array then
-         W_Bound_Expr := Range_Expr (Bound_Expr, +W_Index_Var, Domain, Params);
-      else
-         W_Bound_Expr :=
-           +Make_Constraint_For_Iterable
-             (Expr, Bound_Expr, +W_Index_Var, Domain, Params);
-      end if;
-
-      --  Step 3: translate the expression over which the quantification is
-      --          applied, and save it in a temporary, which can then be
-      --          referred to in any context (including predicates even when
-      --          Domain = EW_Prog), which requires that the expression is
-      --          first evaluated in the appropriate context to possibly
-      --          generate run-time checks.
-
-      if Over_Array or Over_Content then
+      if not Over_Range then
          W_Over_Expr :=
-           New_Temp_For_Expr
-             (Transform_Expr
-                (Over_Expr, Prog_Or_Term_Domain (Domain), Params));
+           Transform_Expr
+             (Over_Expr, Prog_Or_Term_Domain (Domain), Params);
       else
          W_Over_Expr := Why_Empty;  --  safe assignment in the unused case
       end if;
 
-      --  Step 4: translate the condition in the quantified expression, in a
+      --  Step 3: parse the iteration scheme to compute the proper Index_Type.
+      --          When the quantification is done over a container, also
+      --          update Over_Type and W_Over_Expr to go through model
+      --          functions when one is specified using pragma Annotate
+      --          Iterate_For_Proof.
+
+      if Over_Array then
+         Need_Temp_Var := True;
+         Index_Type := Etype (First_Index (Etype (Over_Expr)));
+
+      elsif Over_Range then
+         Need_Temp_Var := False;
+         Index_Type := Quant_Type;
+
+      else
+         --  Over_Content or Over_Cursor
+
+         Parse_Iteration_Scheme_For_Iterable
+           (Ada_Node     => Expr,
+            Of_Present   => Over_Content,
+            W_Over_E     => W_Over_Expr,
+            Over_Type    => Over_Type,
+            Index_Type   => Index_Type,
+            Need_Tmp_Var => Need_Temp_Var);
+      end if;
+
+      if Need_Temp_Var then
+         W_Index_Type := (if Use_Split_Form_For_Type (Index_Type)
+                       then Base_Why_Type (Index_Type)
+                       else Type_Of_Node (Index_Type));
+         W_Index_Var := New_Temp_Identifier (Typ => W_Index_Type);
+      else
+         W_Index_Type := W_Quant_Type;
+         W_Index_Var := W_Quant_Var;
+      end if;
+
+      --  Save W_Over_Expr in a temporary, which can then be referred to in any
+      --  context (including predicates even when Domain = EW_Prog), which
+      --  requires that the expression is first evaluated in the appropriate
+      --  context to possibly generate run-time checks
+
+      if not Over_Range then
+         W_Over_Expr := New_Temp_For_Expr (W_Over_Expr);
+      end if;
+
+      --  Step 4: translate the constraints over the index variable
+
+      if Over_Range or Over_Array then
+
+         if Over_Array then
+            Bound_Expr := First_Index (Etype (Over_Expr));
+         else
+            Bound_Expr := Over_Expr;
+         end if;
+
+         W_Bound_Expr := Range_Expr (Bound_Expr, +W_Index_Var, Domain, Params);
+      else
+         --  Over_Content or Over_Cursor
+         --  Call the appropriate primitive
+
+         W_Bound_Expr :=
+           +Make_Constraint_For_Iterable
+           (Ada_Node     => Expr,
+            Use_Contains => Over_Content and then not Need_Temp_Var,
+            W_Over_E     => W_Over_Expr,
+            Over_Type    => Over_Type,
+            W_Index_Var  => +W_Index_Var,
+            Domain       => Domain,
+            Params       => Params);
+
+         --  Add the dynamic predicate of the index type
+         --  It will be needed to use Has_Element definition.
+
+         declare
+            Inv : constant W_Pred_Id := Compute_Dynamic_Invariant
+              (Expr          => +W_Index_Var,
+               Ty            => Index_Type,
+               Initialized   => True_Term,
+               Only_Var      => False_Term,
+               Params        => Params);
+         begin
+            W_Bound_Expr :=
+              New_And_Expr
+                (Left   => Boolean_Expr_Of_Pred (+Inv, Domain),
+                 Right  => W_Bound_Expr,
+                 Domain => Domain);
+         end;
+      end if;
+
+      --  Step 5: translate the condition in the quantified expression, in a
       --          context where the quantified variable is known.
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
@@ -12779,12 +12890,12 @@ package body Gnat2Why.Expr is
       Result := Transform_Expr (Condition (Expr), Domain, Params);
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
-      --  Step 5: in those cases where the quantified variable and the index
+      --  Step 6: in those cases where the quantified variable and the index
       --          variable are not the same, wrap the result in an expression
       --          that gives a value to the quantified variable based on the
       --          value of the index variable.
 
-      if Over_Array or Over_Content then
+      if Need_Temp_Var then
          declare
             W_Binding_Expr : W_Expr_Id;
          begin
@@ -12793,10 +12904,10 @@ package body Gnat2Why.Expr is
                  Make_Binding_For_Array
                    (Expr, W_Over_Expr, W_Index_Var, W_Quant_Var,
                     Term_Domain (Domain));
-            else --  Over_Content
+            else --  Over_Container
                W_Binding_Expr :=
                  Make_Binding_For_Iterable
-                   (Expr, Bound_Expr, +W_Index_Var,
+                   (Expr, W_Over_Expr, Over_Type, +W_Index_Var,
                     Prog_Or_Term_Domain (Domain), W_Index_Type, Params);
             end if;
 
@@ -12807,7 +12918,7 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      --  Step 6: translate the quantified expression into a quantification in
+      --  Step 7: translate the quantified expression into a quantification in
       --          the predicate case, and an 'any' expression with a
       --          postcondition that uses the translation to predicate in the
       --          program case.
@@ -12840,19 +12951,18 @@ package body Gnat2Why.Expr is
             end if;
          end;
 
-      --  We are interested in the checks for the entire range, and
-      --  in the return value of the entire expression, but we are
-      --  not interested in the exact order in which things are
-      --  evaluated. We also do not want to translate the expression
-      --  function by a loop. So our scheme is the following:
+      --  We are interested in the checks for the entire range, and in the
+      --  return value of the entire expression, but we are not interested in
+      --  the exact order in which things are evaluated. We also do not want
+      --  to translate the expression function by a loop. So our scheme is:
       --    for all I in Cond => Expr
       --
       --  becomes:
       --    (let i = ref [ int ] in
       --       if cond then ignore (expr));
       --    [ { } bool { result = true <-> expr } ]
-      --  The condition is a formula that expresses that i is in the
-      --  range given by the quantification.
+      --  The condition is a formula that expresses that i is in the range
+      --  given by the quantification.
 
       else  --  Domain = EW_Prog
          declare
@@ -12888,10 +12998,10 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      --  Step 7: possibly bind the value of the temporary introduced for
+      --  Step 8: possibly bind the value of the temporary introduced for
       --          the expression over which quantification is done.
 
-      if Over_Array or Over_Content then
+      if not Over_Range then
          Result := Binding_For_Temp (Ada_Node => Expr,
                                      Domain   => Domain,
                                      Tmp      => W_Over_Expr,
@@ -13175,8 +13285,8 @@ package body Gnat2Why.Expr is
          --  resulting in a modulo on the amount of the shift Introduced by
          --  the convertion at the why3 level.
          if Nb_Of_Bits < 32
-           and Name /= MF_BVs (Typ).Rotate_Left
-           and Name /= MF_BVs (Typ).Rotate_Right
+           and then Name /= MF_BVs (Typ).Rotate_Left
+           and then Name /= MF_BVs (Typ).Rotate_Right
          then
             declare
                Nb_Of_Buits_UI : constant Uint := UI_From_Int (Nb_Of_Bits);
@@ -13444,12 +13554,14 @@ package body Gnat2Why.Expr is
                        Domain => EW_Prog),
                     To     => Ret_Type);
             begin
-               Expr :=
-                 Sequence
-                   (Expr,
-                    Transform_Statements_And_Declarations
-                      (Statements
-                         (Handled_Statement_Sequence (Stmt_Or_Decl))));
+               if Present (Handled_Statement_Sequence (Stmt_Or_Decl)) then
+                  Expr :=
+                    Sequence
+                      (Expr,
+                       Transform_Statements_And_Declarations
+                         (Statements
+                            (Handled_Statement_Sequence (Stmt_Or_Decl))));
+               end if;
                Expr :=
                  Sequence
                    (Expr,
@@ -14430,7 +14542,7 @@ package body Gnat2Why.Expr is
                        Classwide => True,
                        Inherited => True);
    begin
-      return (Selector /= Dispatch and Has_Precondition)
+      return (Selector /= Dispatch and then Has_Precondition)
         or else Has_Classwide_Or_Inherited_Precondition
         or else Entity_In_Ext_Axioms (E)
 
@@ -14438,7 +14550,8 @@ package body Gnat2Why.Expr is
         --  error-signaling procedure (this is what the No_Return variant
         --  means) for which an implicit precondition of False is used.
 
-        or else (Selector = No_Return and Is_Error_Signaling_Procedure (E));
+        or else (Selector = No_Return
+                   and then Is_Error_Signaling_Procedure (E));
    end Why_Subp_Has_Precondition;
 
 end Gnat2Why.Expr;

@@ -1,4 +1,4 @@
-package Dic is
+package Dic with Elaborate_Body Is
    G : Integer;
 
    type Pr_T is private;

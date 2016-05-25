@@ -484,11 +484,44 @@ package body Gnat2Why.Util is
       return Variable_Reference_Seen;
    end Expression_Depends_On_Variables;
 
-   ------------------------------
-   -- Get_Dispatching_Contract --
-   ------------------------------
+   -----------------------------------
+   -- Get_Dispatching_Call_Contract --
+   -----------------------------------
 
-   function Get_Dispatching_Contract
+   function Get_Dispatching_Call_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   is
+      Conjuncts_List : Node_Lists.List :=
+        Find_Contracts (E, Kind, Classwide => True);
+   begin
+      if Conjuncts_List.Is_Empty then
+         Conjuncts_List := Find_Contracts (E, Kind, Inherited => True);
+      end if;
+
+      for Expr of Conjuncts_List loop
+         Expr := Dispatching_Contract (Expr);
+         pragma Assert (Present (Expr));
+      end loop;
+
+      return +Compute_Spec (Params, Conjuncts_List, Domain);
+   end Get_Dispatching_Call_Contract;
+
+   function Get_Dispatching_Call_Contract
+     (Params : Transformation_Params;
+      E      : Entity_Id;
+      Kind   : Name_Id) return W_Pred_Id is
+   begin
+      return +Get_Dispatching_Call_Contract (Params, E, Kind, EW_Pred);
+   end Get_Dispatching_Call_Contract;
+
+   ----------------------
+   -- Get_LSP_Contract --
+   ----------------------
+
+   function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Name_Id;
@@ -502,15 +535,15 @@ package body Gnat2Why.Util is
       end if;
 
       return +Compute_Spec (Params, Conjuncts_List, Domain);
-   end Get_Dispatching_Contract;
+   end Get_LSP_Contract;
 
-   function Get_Dispatching_Contract
+   function Get_LSP_Contract
      (Params : Transformation_Params;
       E      : Entity_Id;
       Kind   : Name_Id) return W_Pred_Id is
    begin
-      return +Get_Dispatching_Contract (Params, E, Kind, EW_Pred);
-   end Get_Dispatching_Contract;
+      return +Get_LSP_Contract (Params, E, Kind, EW_Pred);
+   end Get_LSP_Contract;
 
    -----------------------
    -- Get_Graph_Closure --
@@ -574,7 +607,7 @@ package body Gnat2Why.Util is
                (if Is_Record_Field
                 then "."
                 else "") &
-                Trim (Entity_Id'Image (E), Both) &
+                Trim (Entity_Id'Image (E), Left) &
                 Append &
                 --  Add information whether labels are generated for a
                 --  variable holding result of a function.
@@ -593,7 +626,7 @@ package body Gnat2Why.Util is
       Conjuncts_List : constant Node_Lists.List := Find_Contracts (E, Kind);
    begin
       if Conjuncts_List.Is_Empty then
-         return Get_Dispatching_Contract (Params, E, Kind, Domain);
+         return Get_LSP_Contract (Params, E, Kind, Domain);
       end if;
 
       return +Compute_Spec (Params, Conjuncts_List, Domain);
@@ -995,17 +1028,14 @@ package body Gnat2Why.Util is
    function Nth_Index_Rep_Type_No_Bool (E : Entity_Id; Dim : Positive)
                                         return W_Type_Id
    is
-   begin
-      if Ekind (E) = E_String_Literal_Subtype then
-
-         --  If E is a string literal subtype use its base type's index type
-
-         return
-           Base_Why_Type_No_Bool (Nth_Index_Type (Retysp (Etype (E)), Dim));
-      else
-         return (Base_Why_Type_No_Bool (Nth_Index_Type (E, Dim)));
-      end if;
-   end Nth_Index_Rep_Type_No_Bool;
+     (Base_Why_Type_No_Bool
+        (Nth_Index_Type
+           ((if Ekind (E) = E_String_Literal_Subtype
+             --  If E is a string literal subtype then use its base type's
+             --  index type type's.
+             then Retysp (Etype (E))
+             else E),
+            Dim)));
 
    -----------------------------
    -- Type_Is_Modeled_As_Base --
@@ -1013,9 +1043,9 @@ package body Gnat2Why.Util is
 
    function Type_Is_Modeled_As_Base (T : Entity_Id) return Boolean is
    begin
-      return Is_Scalar_Type (T) and then
-        (not Has_Static_Scalar_Subtype (T) or else
-         Is_Null_Range (T));
+      return Is_Scalar_Type (T)
+        and then (not Has_Static_Scalar_Subtype (T)
+                  or else Is_Null_Range (T));
    end Type_Is_Modeled_As_Base;
 
    ------------------
@@ -1051,8 +1081,8 @@ package body Gnat2Why.Util is
 
    function Use_Base_Type_For_Type (E : Entity_Id) return Boolean is
    begin
-      return Is_Scalar_Type (E) and then
-        not Is_Standard_Boolean_Type (E);
+      return Is_Scalar_Type (E)
+        and then not Is_Standard_Boolean_Type (E);
    end Use_Base_Type_For_Type;
 
    -----------------------------
@@ -1061,10 +1091,9 @@ package body Gnat2Why.Util is
 
    function Use_Split_Form_For_Type (E : Entity_Id) return Boolean is
    begin
-      return (Has_Discrete_Type (E) or else
-              Has_Floating_Point_Type (E))
-        and then
-          not Is_Standard_Boolean_Type (Retysp (E));
+      return (Is_Discrete_Type (Retysp (E)) or else
+              Is_Floating_Point_Type (Retysp (E)))
+        and then not Is_Standard_Boolean_Type (Retysp (E));
    end Use_Split_Form_For_Type;
 
    -----------------------
@@ -1074,8 +1103,8 @@ package body Gnat2Why.Util is
    function Use_Why_Base_Type (E : Entity_Id) return Boolean is
       Ty : constant Entity_Id := Etype (E);
    begin
-      return not Is_Mutable_In_Why (E) and then
-        Use_Base_Type_For_Type (Ty);
+      return not Is_Mutable_In_Why (E)
+        and then Use_Base_Type_For_Type (Ty);
    end Use_Why_Base_Type;
 
    ------------------------

@@ -666,6 +666,10 @@ package body Why.Gen.Names is
       return Result;
    end New_Temp_Identifiers;
 
+   ----------------------
+   -- New_Result_Ident --
+   ----------------------
+
    function New_Result_Ident (Typ : W_Type_Id) return W_Identifier_Id is
    begin
       return New_Identifier (Name => "result", Typ => Typ);
@@ -713,6 +717,7 @@ package body Why.Gen.Names is
          when WNE_Attr_First           => "first",
          when WNE_Attr_Last            => "last",
          when WNE_Attr_Tag             => "attr__tag",
+         when WNE_Axiom_Suffix         => "___axiom",
          when WNE_Content              => "__content",
          when WNE_Dispatch_Module      => "Dispatch",
          when WNE_Extract_Prefix       => "extract__",
@@ -755,9 +760,13 @@ package body Why.Gen.Names is
               WNE_To_Float32                 |
               WNE_Of_Float64                 |
               WNE_To_Float64                 |
+              WNE_Attr_Object_Alignment      |
+              WNE_Attr_Object_Component_Size |
               WNE_Attr_Object_Size           |
               WNE_Attr_Small                 |
               WNE_Attr_Value                 |
+              WNE_Attr_Value_Alignment       |
+              WNE_Attr_Value_Component_Size  |
               WNE_Attr_Value_Size            |
               WNE_Bool_Eq                    |
               WNE_Check_Not_First            |

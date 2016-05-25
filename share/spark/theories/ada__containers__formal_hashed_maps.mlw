@@ -1,4 +1,8 @@
 module Ada__containers__formal_hashed_maps__witness
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__equivalent_keys
 
@@ -147,6 +151,10 @@ end
 module Ada__containers__formal_hashed_maps__key
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use import Ada__containers__formal_hashed_maps__map
   use import Ada__containers__formal_hashed_maps__length
@@ -165,6 +173,10 @@ end
 module Ada__containers__formal_hashed_maps__element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__element_type
   use import Ada__containers__formal_hashed_maps__map
   use import Ada__containers__formal_hashed_maps__cursor
@@ -242,6 +254,10 @@ end
 module Ada__containers__formal_hashed_maps__find
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use import Ada__containers__formal_hashed_maps__map
   use import Ada__containers__formal_hashed_maps__witness
@@ -280,6 +296,10 @@ end
 module Ada__containers__formal_hashed_maps__element__2
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__element_type
   use import Ada__containers__formal_hashed_maps__witness
   use import Ada__containers__formal_hashed_maps__map
@@ -404,6 +424,10 @@ end
 module Ada__containers__formal_hashed_maps__replace
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__oeq
   use import Ada__containers__formal_hashed_maps__witness
@@ -446,6 +470,10 @@ end
 module Ada__containers__formal_hashed_maps__replace_element
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__oeq
   use import Ada__containers__formal_hashed_maps__map
@@ -515,6 +543,10 @@ end
 module Ada__containers__formal_hashed_maps__insert
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__element_type
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__oeq
@@ -601,6 +633,10 @@ end
 module Ada__containers__formal_hashed_maps__insert__2
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use import Ada__containers__formal_hashed_maps__witness
   use import Ada__containers__formal_hashed_maps__map
@@ -626,6 +662,10 @@ end
 module Ada__containers__formal_hashed_maps__delete
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use import Ada__containers__formal_hashed_maps__witness
   use import Ada__containers__formal_hashed_maps__map
@@ -731,6 +771,10 @@ module Ada__containers__formal_hashed_maps__delete__2
 module Ada__containers__formal_hashed_maps__include
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use import Ada__containers__formal_hashed_maps__witness
   use import Ada__containers__formal_hashed_maps__map
@@ -758,6 +802,10 @@ end
 module Ada__containers__formal_hashed_maps__exclude
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use import Ada__containers__formal_hashed_maps__witness
   use import Ada__containers__formal_hashed_maps__map
@@ -802,6 +850,10 @@ end
 module Ada__containers__formal_hashed_maps__contains
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use import Ada__containers__formal_hashed_maps__witness
   use import Ada__containers__formal_hashed_maps__map
@@ -822,6 +874,10 @@ end
 module Ada__containers__formal_hashed_maps__strict_equal
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use import Ada__containers__formal_hashed_maps__map
   use import Ada__containers__formal_hashed_maps__length
@@ -850,6 +906,10 @@ end
 
 module Ada__containers__formal_hashed_maps__Oeq__2
   use import int.Int
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__oeq
   use import Ada__containers__formal_hashed_maps__witness
@@ -896,6 +956,10 @@ end
 module Ada__containers__formal_hashed_maps__overlap
   use import int.Int
   use import "_gnatprove_standard".Main
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use  "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use import Ada__containers__formal_hashed_maps__map
   use import Ada__containers__formal_hashed_maps__length
@@ -950,6 +1014,10 @@ module Ada__containers__formal_hashed_maps__default_modulus
 end
 
 module Ada__containers__formal_hashed_maps__equivalent_keys__2
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__equivalent_keys
   use import Ada__containers__formal_hashed_maps__map
@@ -965,6 +1033,10 @@ module Ada__containers__formal_hashed_maps__equivalent_keys__2
 end
 
 module Ada__containers__formal_hashed_maps__equivalent_keys__3
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__equivalent_keys
   use import Ada__containers__formal_hashed_maps__map
@@ -980,6 +1052,10 @@ module Ada__containers__formal_hashed_maps__equivalent_keys__3
 end
 
 module Ada__containers__formal_hashed_maps__equivalent_keys__4
+  use                 "_gnatprove_standard".BV8
+  use                 "_gnatprove_standard".BV16
+  use                 "_gnatprove_standard".BV32
+  use                 "_gnatprove_standard".BV64
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__key_type
   use "ada__containers__formal_hashed_maps__args".Ada__containers__formal_hashed_maps__equivalent_keys
   use import Ada__containers__formal_hashed_maps__map

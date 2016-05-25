@@ -402,7 +402,7 @@ package body Why.Inter is
          loop
             Typ := Retysp (Typ);
 
-            if (Is_Record_Type (Typ) or Is_Private_Type (Typ))
+            if (Is_Record_Type (Typ) or else Is_Private_Type (Typ))
               and then Ekind (Typ) in SPARK_Util.Subtype_Kind
             then
                Typ := Etype (Typ);
@@ -1213,7 +1213,7 @@ package body Why.Inter is
                            Etype (Get_Enclosing_Concurrent_Object (E))
                       else Scope (E));
             Module : constant W_Module_Id :=
-              E_Module (if Rec = Empty and Ekind (E) = E_Discriminant then
+              E_Module (if Rec = Empty and then Ekind (E) = E_Discriminant then
                              Root_Record_Type (Ada_N)
                         else Ada_N);
          begin

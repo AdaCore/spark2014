@@ -5,7 +5,7 @@ with Trouble;
 pragma Elaborate (Trouble);
 package Client3
   with SPARK_Mode => On,
-       Initializes => (null => Trouble.V)
+       Initializes => (C => Trouble.V)
 is
-   C : constant Integer := (Trouble.V + 1);   
+   C : constant Integer := (Trouble.V + 1);
 end Client3;

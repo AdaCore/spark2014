@@ -28,5 +28,4 @@ private
 
    function Log_Size (Log : Log_Type) return Log_Count is (Log.Log_Size);
 
-
 end Logging;

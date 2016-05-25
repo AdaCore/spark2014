@@ -26,12 +26,17 @@ foo.adb:82:13: info: initialization of "A" proved
 foo.adb:82:13: medium: "A" might not be initialized
 foo.adb:88:04: warning: analyzing unreferenced procedure "Test_07_Ok_Hard"
 foo.adb:88:31: info: initialization of "A" proved
+foo.adb:93:10: info: loop invariant initialization proved
+foo.adb:93:10: info: loop invariant preservation proved
+foo.adb:93:41: info: range check proved
 foo.adb:94:38: info: initialization of "A" proved
 foo.adb:94:38: medium: "A" might not be initialized
+foo.adb:94:41: info: index check proved
 foo.adb:98:04: warning: analyzing unreferenced procedure "Test_08_E"
 foo.adb:98:25: info: initialization of "A" proved
 foo.adb:102:16: medium: "A" might not be initialized
 foo.adb:103:19: info: initialization of "A" proved
+foo.adb:103:24: medium: array index check might fail
 foo.adb:107:25: info: initialization of "A" proved
 foo.adb:111:16: medium: "A" might not be initialized
 foo.adb:118:04: warning: analyzing unreferenced procedure "Test_10_Ok"
@@ -52,6 +57,7 @@ foo.adb:158:25: info: initialization of "A" proved
 foo.adb:159:25: info: initialization of "B" proved
 foo.adb:164:19: info: initialization of "A" proved
 foo.adb:164:19: medium: "A" might not be initialized
+foo.adb:164:24: medium: array index check might fail
 foo.adb:168:04: warning: analyzing unreferenced procedure "Test_15_Ok_Hard"
 foo.adb:168:31: info: initialization of "A" proved
 foo.adb:169:31: info: initialization of "B" proved
@@ -62,6 +68,7 @@ foo.adb:178:25: info: initialization of "A" proved
 foo.adb:182:16: medium: "A" might not be initialized
 foo.adb:186:04: warning: analyzing unreferenced procedure "Test_16_E"
 foo.adb:186:25: medium: "A" might not be initialized in "Test_16_E"
+foo.adb:190:11: info: range check proved
 foo.adb:191:16: medium: "A" might not be initialized
 foo.adb:195:04: warning: analyzing unreferenced procedure "Test_17_Maybe"
 foo.adb:195:29: info: initialization of "A" proved

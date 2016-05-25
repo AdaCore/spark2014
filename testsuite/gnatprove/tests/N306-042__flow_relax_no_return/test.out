@@ -1,0 +1,1 @@
+noreturn.adb:23:07: medium: call to nonreturning subprogram might be executed

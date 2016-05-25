@@ -24,16 +24,16 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Ada.Text_IO;                use Ada.Text_IO;
-with Flow_Generated_Globals;     use Flow_Generated_Globals;
-with Flow_Types;                 use Flow_Types;
-with Flow_Utility;               use Flow_Utility;
+with Ada.Containers.Vectors;
+with Ada.Text_IO;                    use Ada.Text_IO;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Types;                     use Flow_Types;
+with Flow_Utility;                   use Flow_Utility;
 with Get_SPARK_Xrefs;
-with Lib.Xref;                   use Lib.Xref;
-with Sem_Aux;                    use Sem_Aux;
-with Snames;                     use Snames;
-with SPARK_Xrefs;                use SPARK_Xrefs;
-with Unchecked_Deallocation;
+with Lib.Xref;                       use Lib.Xref;
+with Sem_Aux;                        use Sem_Aux;
+with Snames;                         use Snames;
+with SPARK_Xrefs;                    use SPARK_Xrefs;
 
 package body SPARK_Frame_Conditions is
 
@@ -50,14 +50,29 @@ package body SPARK_Frame_Conditions is
 
    Name_To_Entity : Name_To_Entity_Map.Map := Name_To_Entity_Map.Empty_Map;
 
-   type SCC is array (Positive range <>) of Entity_Name;
+   package Entity_Name_Vectors is new
+     Ada.Containers.Vectors (Index_Type   => Positive,
+                             Element_Type => Entity_Name);
+
+   subtype SCC is Entity_Name_Vectors.Vector;
    --  Ordered list of subprograms in a strongly connected component, roughly
    --  ordered so as to follow call chains for better propagation.
 
-   type SCC_Ptr is access SCC;
-   type SCCs is array (Positive range <>) of SCC_Ptr;
+   package SCC_Vectors is new
+     Ada.Containers.Vectors (Index_Type   => Positive,
+                             Element_Type => SCC,
+                             "="          => Entity_Name_Vectors."=");
+
+   subtype SCCs is SCC_Vectors.Vector;
    --  Ordered list of strongly connected components in call-graph, with the
    --  "leaf" SCCs coming first.
+   --
+   --  ??? originally this code was using arrays, which was difficult to follow
+   --  and required manual memory allocation and freeing; now it uses vectors,
+   --  which makes it easier to understand; perhaps with lists it would be even
+   --  cleaner, but I suspect that vectors give slightly better performance
+   --  because of data locality. Lastly, the transitive closure algorithm
+   --  that is used in flow analysis should give even better performance.
 
    ---------------------
    -- Local Variables --
@@ -67,8 +82,8 @@ package body SPARK_Frame_Conditions is
    --  By default, propagate an error if a scope is missing, unless set to
    --  False for a degraded mode of operation in which such errors are ignored.
 
-   Scopes       : Name_Sets.Set;  --  All scope entities
-   Constants    : Name_Sets.Set;  --  All constants
+   Scopes       : Name_Sets.Set;    --  All scope entities
+   Constants    : Name_Sets.Set;    --  All constants
 
    File_Defines : Name_Maps.Map;    --  File defining each entities
    Defines      : Name_Graphs.Map;  --  Entities defined by each scope
@@ -93,17 +108,14 @@ package body SPARK_Frame_Conditions is
 
    function Compute_Strongly_Connected_Components
      (Nodes : Name_Sets.Set) return SCCs;
-   --  Computation of strongly connected components from Tarjan. Individual
-   --  components are dynamically allocated.
+   --  Compute of strongly connected components using Tarjan's algorithm.
+   --  Individual components are dynamically allocated.
 
    function Count_In_Map
      (Map : Name_Graphs.Map;
       Ent : Entity_Name) return Count_Type;
    --  Return the number of elements in the set associated to Ent in Map, or
    --  else 0.
-
-   procedure Free_SCCs (X : SCCs);
-   --  Free memory allocated for strongly connected components
 
    function Make_Entity_Name (Name : String_Ptr) return Entity_Name
    with Pre => Name /= null and then Name.all /= "";
@@ -124,8 +136,6 @@ package body SPARK_Frame_Conditions is
       Ignored  : Boolean;
       Position : Name_Graphs.Cursor;
 
-   --  Start of processing for Add_To_Map
-
    begin
       --  Try to insert a default value (i.e. empty set) and then update it
       Map.Insert (Key      => From,
@@ -141,16 +151,11 @@ package body SPARK_Frame_Conditions is
    function Compute_Strongly_Connected_Components
      (Nodes : Name_Sets.Set) return SCCs
    is
-      subtype Node_Range is Integer range 1 .. Integer (Nodes.Length);
-
-      --  There are at most as many SCCs as nodes (if no recursion at all)
-
-      Cur_SCCs     : SCCs (Node_Range);
-      Cur_SCCs_Num : Natural := 0;
+      Cur_SCCs : SCCs;
 
       package Value_Map is new Hashed_Maps
         (Key_Type        => Entity_Name,
-         Element_Type    => Integer,
+         Element_Type    => Positive,
          Hash            => Name_Hash,
          Equivalent_Keys => "=",
          "="             => "=");
@@ -160,7 +165,7 @@ package body SPARK_Frame_Conditions is
       Indexes  : Value_Map.Map;
       Lowlinks : Value_Map.Map;
 
-      Index : Natural := 1;
+      Index : Positive := 1;
 
       -----------------------
       -- Local Subprograms --
@@ -174,39 +179,42 @@ package body SPARK_Frame_Conditions is
       -- Stack of nodes --
       --------------------
 
-      type Stack_Data is array (Node_Range) of Entity_Name;
       type Stack is record
-         Data    : Stack_Data;
+         Data    : Entity_Name_Vectors.Vector;
          Content : Name_Sets.Set;
       end record;
 
       S : Stack;
-      S_Size : Natural := 0;
 
       procedure Push (E : Entity_Name);
-      function Peer (Lookahead : Natural) return Entity_Name;
       function Pop return Entity_Name;
       function Has (E : Entity_Name) return Boolean;
 
+      ----------
+      -- Push --
+      ----------
+
       procedure Push (E : Entity_Name) is
       begin
-         S_Size := S_Size + 1;
-         S.Data (S_Size) := E;
-         S.Content.Include (E);
+         S.Content.Insert (E);
+         S.Data.Append (E);
       end Push;
 
+      ---------
+      -- Pop --
+      ---------
+
       function Pop return Entity_Name is
-         E : constant Entity_Name := S.Data (S_Size);
+         E : constant Entity_Name := S.Data.Last_Element;
       begin
-         S_Size := S_Size - 1;
          S.Content.Delete (E);
+         S.Data.Delete_Last;
          return E;
       end Pop;
 
-      function Peer (Lookahead : Natural) return Entity_Name is
-      begin
-         return S.Data (S_Size - Lookahead);
-      end Peer;
+      ---------
+      -- Has --
+      ---------
 
       function Has (E : Entity_Name) return Boolean
         renames S.Content.Contains;
@@ -233,7 +241,7 @@ package body SPARK_Frame_Conditions is
             if not Nodes.Contains (W) then
                null;
 
-               --  Successor W has not yet been visited; recurse on it
+            --  Successor W has not yet been visited; recurse on it
 
             elsif not Indexes.Contains (W) then
                Strong_Connect (W);
@@ -241,7 +249,7 @@ package body SPARK_Frame_Conditions is
                  (V, Natural'Min
                     (Lowlinks.Element (V), Lowlinks.Element (W)));
 
-               --  Successor W is in stack S and hence in the current SCC
+            --  Successor W is in stack S and hence in the current SCC
 
             elsif Has (W) then
                Lowlinks.Include
@@ -255,38 +263,27 @@ package body SPARK_Frame_Conditions is
 
          if Lowlinks (V) = Indexes (V) then
             declare
-               function Size_Of_Current_SCC return Positive;
-               --  Return the size of the current SCC sitting on the stack
+               Size_Of_Current_SCC : constant Positive :=
+                 S.Data.Last_Index - S.Data.Reverse_Find_Index (V) + 1;
+               --  Size of the current SCC sitting on the stack
 
-               -------------------------
-               -- Size_Of_Current_SCC --
-               -------------------------
-
-               function Size_Of_Current_SCC return Positive is
-                  Size : Natural := 0;
-               begin
-                  while Peer (Size) /= V loop
-                     Size := Size + 1;
-                  end loop;
-                  return Size + 1;
-               end Size_Of_Current_SCC;
-
-               --  Start a new strongly connected component
-
-               Cur_SCC : constant SCC_Ptr :=
-                           new SCC (1 .. Size_Of_Current_SCC);
+               Cur_SCC : SCC;
+               --  A new strongly connected component
 
             begin
-               for J in Cur_SCC'Range loop
-                  Cur_SCC (J) := Pop;
+               Cur_SCC.Reserve_Capacity (Count_Type (Size_Of_Current_SCC));
+
+               for J in 1 .. Size_Of_Current_SCC loop
+                  Cur_SCC.Append (Pop);
                end loop;
 
-               pragma Assert (Cur_SCC (Cur_SCC'Last) = V);
+               pragma Assert (Cur_SCC.Last_Element = V);
 
                --  Output the current strongly connected component
 
-               Cur_SCCs_Num := Cur_SCCs_Num + 1;
-               Cur_SCCs (Cur_SCCs_Num) := Cur_SCC;
+               Cur_SCCs.Append (Entity_Name_Vectors.Empty_Vector);
+               Entity_Name_Vectors.Move (Target => Cur_SCCs (Cur_SCCs.Last),
+                                         Source => Cur_SCC);
             end;
          end if;
       end Strong_Connect;
@@ -294,6 +291,8 @@ package body SPARK_Frame_Conditions is
    --  Start of processing for Compute_Strongly_Connected_Components
 
    begin
+      --  There are at most as many SCCs as nodes (if no recursion at all)
+      Cur_SCCs.Reserve_Capacity (Nodes.Length);
 
       for V of Nodes loop
          if not Indexes.Contains (V) then
@@ -301,7 +300,7 @@ package body SPARK_Frame_Conditions is
          end if;
       end loop;
 
-      return Cur_SCCs (1 .. Cur_SCCs_Num);
+      return Cur_SCCs;
    end Compute_Strongly_Connected_Components;
 
    ------------------
@@ -352,7 +351,7 @@ package body SPARK_Frame_Conditions is
          for Cu in Map.Iterate loop
             Display_Entity (Key (Cu));
             Put_Line (" " & Action);
-            Display_One_Set (Element (Cu));
+            Display_One_Set (Map (Cu));
          end loop;
       end Display_One_Map;
 
@@ -363,7 +362,7 @@ package body SPARK_Frame_Conditions is
       procedure Display_One_Set (Set : Name_Sets.Set) is
       begin
          for Ent of Set loop
-            Put ("  "); Display_Entity (Ent); Put_Line ("");
+            Put ("  "); Display_Entity (Ent); New_Line;
          end loop;
       end Display_One_Set;
 
@@ -371,13 +370,13 @@ package body SPARK_Frame_Conditions is
 
    begin
       Display_One_Map (Defines, "Variables defined by subprograms", "defines");
-      Put_Line ("");
+      New_Line;
       Display_One_Map (Reads, "Variables read by subprograms", "reads");
-      Put_Line ("");
+      New_Line;
       Display_One_Map (Writes, "Variables written by subprograms", "writes");
-      Put_Line ("");
+      New_Line;
       Display_One_Map (Calls, "Subprograms called", "calls");
-      Put_Line ("");
+      New_Line;
       Display_One_Map (Callers, "Callers of subprograms", "is called by");
    end Display_Maps;
 
@@ -385,10 +384,8 @@ package body SPARK_Frame_Conditions is
    -- File_Of_Entity --
    --------------------
 
-   function File_Of_Entity (E : Entity_Name) return Entity_Name is
-   begin
-      return File_Defines (E);
-   end File_Of_Entity;
+   function File_Of_Entity (E : Entity_Name) return Entity_Name
+     renames File_Defines.Element;
 
    -----------------
    -- Find_Entity --
@@ -397,6 +394,7 @@ package body SPARK_Frame_Conditions is
    function Find_Entity (E : Entity_Name) return Entity_Id is
       use Name_To_Entity_Map;
       C : constant Name_To_Entity_Map.Cursor := Name_To_Entity.Find (E);
+
    begin
       return (if Has_Element (C)
               then Element (C)
@@ -410,38 +408,18 @@ package body SPARK_Frame_Conditions is
    procedure For_All_External_Objects
      (Process : not null access procedure (E : Entity_Name))
    is
-      procedure For_All_Define_Sets (Key : Entity_Name; S : Name_Sets.Set);
-      --  will be called for all "define sets" for all subprograms
-
-      -------------------------
-      -- For_All_Define_Sets --
-      -------------------------
-
-      procedure For_All_Define_Sets (Key : Entity_Name; S : Name_Sets.Set) is
-         pragma Unreferenced (Key);
-      begin
+   begin
+      for S of Defines loop
          --  External objects are those in the sets of defined objects Defines,
          --  that are not constant objects from the set Constants.
 
          for Elt of S loop
-            if not Constants.Contains (Elt) then
-               declare
-                  C : constant Name_Sets.Cursor :=
-                    Translated_Object_Entities.Find (Elt);
-               begin
-                  if not (Name_Sets.Has_Element (C)) then
-                     Process (Elt);
-                  end if;
-               end;
+            if not Constants.Contains (Elt)
+              and then not Translated_Object_Entities.Contains (Elt)
+            then
+               Process (Elt);
             end if;
          end loop;
-      end For_All_Define_Sets;
-
-   --  Start of processing for For_All_External_Objects
-
-   begin
-      for C in Defines.Iterate loop
-         Name_Graphs.Query_Element (C, For_All_Define_Sets'Access);
       end loop;
    end For_All_External_Objects;
 
@@ -453,7 +431,7 @@ package body SPARK_Frame_Conditions is
      (Process : not null access procedure (E : Entity_Name))
    is
    begin
-      for State_Name of GG_Get_All_State_Abstractions loop
+      for State_Name of GG_Get_State_Abstractions loop
          --  Any state abstraction for which we do NOT have a
          --  corresponding Entidy_Id is an External state abstraction.
 
@@ -463,53 +441,37 @@ package body SPARK_Frame_Conditions is
       end loop;
    end For_All_External_States;
 
-   ---------------
-   -- Free_SCCs --
-   ---------------
-
-   procedure Free_SCCs (X : SCCs) is
-      procedure Free is new Unchecked_Deallocation (SCC, SCC_Ptr);
-      Tmp : SCC_Ptr;
-   begin
-      for J in X'Range loop
-         Tmp := X (J);
-         Free (Tmp);
-      end loop;
-   end Free_SCCs;
-
    --------------------
    -- Computed_Calls --
    --------------------
 
    function Computed_Calls (E_Name : Entity_Name) return Name_Sets.Set
-   renames Calls.Element;
+     renames Calls.Element;
 
-   -------------------------
-   -- Get_Generated_Reads --
-   -------------------------
+   --------------------
+   -- Computed_Reads --
+   --------------------
 
-   function Get_Generated_Reads
+   function Computed_Reads
      (E                 : Entity_Id;
       Include_Constants : Boolean) return Name_Sets.Set
    is
-      E_Alias  : constant Entity_Id :=
-        (if Present (Alias (E)) then Ultimate_Alias (E) else E);
+      E_Alias : constant Entity_Id :=
+        (if Ekind (E) in E_Function | E_Procedure | E_Entry
+           and then Present (Alias (E))
+         then Ultimate_Alias (E)
+         else E);
+
       E_Name   : constant Entity_Name := To_Entity_Name (E_Alias);
       Read_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
 
    begin
-      --  ??? O429-046, O603-033 Task types, entries and Abstract subprograms
-      --  not yet supported. Avoid issuing an error on those, instead return
-      --  empty sets.
+      --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
+      --  those, instead return empty sets.
 
-      if Ekind (E) in Task_Kind | Entry_Kind then
-         return Name_Sets.Empty_Set;
-      end if;
-
-      --  Abstract subprograms not yet supported. Avoid issuing an error on
-      --  those, which do not have effects, instead return the empty set.
-
-      if Is_Abstract_Subprogram (E_Alias) then
+      if Ekind (E) in E_Function | E_Procedure | E_Entry
+        and then Is_Abstract_Subprogram (E_Alias)
+      then
          return Name_Sets.Empty_Set;
       end if;
 
@@ -528,31 +490,29 @@ package body SPARK_Frame_Conditions is
          else
             return Name_Sets.Empty_Set;
          end if;
-   end Get_Generated_Reads;
+   end Computed_Reads;
 
-   --------------------------
-   -- Get_Generated_Writes --
-   --------------------------
+   ---------------------
+   -- Computed_Writes --
+   ---------------------
 
-   function Get_Generated_Writes (E : Entity_Id) return Name_Sets.Set is
-      E_Alias   : constant Entity_Id :=
-        (if Present (Alias (E)) then Ultimate_Alias (E) else E);
+   function Computed_Writes (E : Entity_Id) return Name_Sets.Set is
+      E_Alias : constant Entity_Id :=
+        (if Ekind (E) in E_Function | E_Procedure | E_Entry
+           and then Present (Alias (E))
+         then Ultimate_Alias (E)
+         else E);
+
       E_Name    : constant Entity_Name := To_Entity_Name (E_Alias);
       Write_Ids : Name_Sets.Set := Name_Sets.Empty_Set;
 
    begin
-      --  ??? O429-046, O603-033 Task types, entries and Abstract subprograms
-      --  not yet supported. Avoid issuing an error on those, instead return
-      --  empty sets.
-
-      if Ekind (E) in Task_Kind | Entry_Kind then
-         return Name_Sets.Empty_Set;
-      end if;
-
-      --  Abstract subprograms not yet supported. Avoid issuing an error on
+      --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, which do not have effects, instead return the empty set.
 
-      if Is_Abstract_Subprogram (E_Alias) then
+      if Ekind (E) in E_Function | E_Procedure | E_Entry
+        and then Is_Abstract_Subprogram (E_Alias)
+      then
          return Name_Sets.Empty_Set;
       end if;
 
@@ -560,7 +520,7 @@ package body SPARK_Frame_Conditions is
       --  variables (not constants) have pragma Effective_Reads set. If so,
       --  then these entities are also writes.
 
-      for E_N of Get_Generated_Reads (E, False) loop
+      for E_N of Computed_Reads (E, False) loop
          declare
             Read : constant Entity_Id := Find_Entity (E_N);
          begin
@@ -584,7 +544,7 @@ package body SPARK_Frame_Conditions is
          else
             return Name_Sets.Empty_Set;
          end if;
-   end Get_Generated_Writes;
+   end Computed_Writes;
 
    ----------------------
    -- Is_Heap_Variable --
@@ -609,7 +569,7 @@ package body SPARK_Frame_Conditions is
         (if Present (Alias (E)) then Ultimate_Alias (E) else E);
       E_Name  : constant Entity_Name := To_Entity_Name (E);
    begin
-      --  Abstract subprograms not yet supported. Avoid issuing an error on
+      --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
       --  those, instead return false.
 
       if Is_Abstract_Subprogram (E_Alias) then
@@ -619,7 +579,8 @@ package body SPARK_Frame_Conditions is
       --  A subprogram is non-recursive if either it contains no call or its
       --  Entity_Name has been stored in Non_Rec_Subp.
 
-      return Calls (E_Name).Is_Empty
+      return not Calls.Contains (E_Name)
+        or else Calls (E_Name).Is_Empty
         or else Non_Rec_Subp.Contains (E_Name);
    end Is_Non_Recursive_Subprogram;
 
@@ -679,7 +640,7 @@ package body SPARK_Frame_Conditions is
             return Line (Index);
 
          else
-            return Character'Val (16#1a#);
+            return ASCII.SUB;
          end if;
       end Nextc;
 
@@ -756,7 +717,7 @@ package body SPARK_Frame_Conditions is
 
          Scope_Entities : Scope_Entity.Map;
          Scope_Specs    : Scope_Spec.Map;
-         Current_Entity : Entity_Name;
+         Current_Entity : Any_Entity_Name;
 
       --  Start of processing for Walk_SPARK_Tables
 
@@ -1062,13 +1023,14 @@ package body SPARK_Frame_Conditions is
          Set_Default_To_Empty (Calls,   Scopes);
 
          --  Collect non-recursive subprograms
+         --
          --  A subprogram is non-recursive if it is alone in its strongly
          --  connected component and if it does not call itself directly.
 
-         for J in Cur_SCCs'Range loop
-            if Cur_SCCs (J)'Length = 1 then
+         for C of Cur_SCCs loop
+            if C.Length = 1 then
                declare
-                  E : constant Entity_Name := Cur_SCCs (J) (1);
+                  E : constant Entity_Name := C (1);
                begin
                   if not Calls (E).Contains (E) then
                      Non_Rec_Subp.Insert (E);
@@ -1079,7 +1041,7 @@ package body SPARK_Frame_Conditions is
 
          --  Iterate on SCCs
 
-         for J in Cur_SCCs'Range loop
+         for Component of Cur_SCCs loop
             declare
                Continue : Boolean;
                Updated  : Boolean;
@@ -1087,16 +1049,14 @@ package body SPARK_Frame_Conditions is
                loop
                   Continue := False;
 
-                  for K in Cur_SCCs (J)'Range loop
-                     Update_Subprogram (Cur_SCCs (J) (K), Updated);
+                  for Node of Component loop
+                     Update_Subprogram (Node, Updated);
                      Continue := Continue or else Updated;
                   end loop;
                   exit when not Continue;
                end loop;
             end;
          end loop;
-
-         Free_SCCs (Cur_SCCs);
       end;
    end Propagate_Through_Call_Graph;
 
@@ -1121,6 +1081,7 @@ package body SPARK_Frame_Conditions is
       Inserted : Boolean;
       Position : Name_Graphs.Cursor;
       --  Dummy variables required by the container API
+
    begin
       for Ent of Set loop
          Map.Insert (Key      => Ent,
@@ -1140,47 +1101,37 @@ package body SPARK_Frame_Conditions is
       Outputs            : out Name_Sets.Set;
       Called_Subprograms : out Name_Sets.Set)
    is
-      E_Alias : Entity_Id;
+      E_Alias : constant Entity_Id :=
+        (if Ekind (E) in E_Function | E_Procedure | E_Entry
+           and then Present (Alias (E))
+         then Ultimate_Alias (E)
+         else E);
+
       E_Name  : Entity_Name;
 
    begin
-
       --  Initialize to empty sets
       Inputs             := Name_Sets.Empty_Set;
       Outputs            := Name_Sets.Empty_Set;
       Called_Subprograms := Name_Sets.Empty_Set;
 
-      --  ??? O429-046, O603-033 Task types, entries and Abstract subprograms
-      --  not yet supported. Avoid issuing an error on those, instead return
-      --  empty sets.
+      --  ??? Abstract subprograms not yet supported. Avoid issuing an error on
+      --  those, instead return empty sets.
 
-      if Ekind (E) in Task_Kind | Entry_Kind then
+      if Ekind (E) in E_Function | E_Procedure | E_Entry
+        and then Is_Abstract_Subprogram (E_Alias)
+      then
          return;
       end if;
 
-      E_Alias := (if Present (Alias (E)) then Ultimate_Alias (E) else E);
-
-      if Is_Abstract_Subprogram (E_Alias) then
-         return;
-      end if;
-
-      E_Name  := To_Entity_Name (E_Alias);
+      E_Name := To_Entity_Name (E_Alias);
 
       Called_Subprograms := Calls (E_Name);
-      Inputs             := Get_Generated_Reads (E, False);
-      Outputs            := Get_Generated_Writes (E);
+      Inputs             := Computed_Reads (E, False);
+      Outputs            := Computed_Writes (E);
 
       --  Add variables written to variables read
       Inputs.Union (Outputs);
    end Collect_Direct_Computed_Globals;
-
-   -----------------------
-   -- Set_Ignore_Errors --
-   -----------------------
-
-   procedure Set_Ignore_Errors (Ignore_Errors : Boolean) is
-   begin
-      Propagate_Error_For_Missing_Scope := not Ignore_Errors;
-   end Set_Ignore_Errors;
 
 end SPARK_Frame_Conditions;

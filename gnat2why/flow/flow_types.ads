@@ -246,7 +246,9 @@ package Flow_Types is
                             N_Expanded_Name     |
                             N_Identifier        |
                             N_Indexed_Component |
-                            N_Selected_Component;
+                            N_Selected_Component,
+        Post => Concurrent_Object_Id'Result.Kind in Direct_Mapping |
+                                                    Record_Field;
    --  Returns the Flow_Id for a concurrent object. This can be either a
    --  Direct_mapping or a Record_Field.
 
@@ -255,11 +257,11 @@ package Flow_Types is
       Comp : Entity_Id)
       return Flow_Id
    with Pre  => F.Kind in Direct_Mapping | Record_Field and then
-                (Nkind (Comp) in N_Entity and then
+                (Nkind (Comp) = N_Defining_Identifier and then
                    Ekind (Comp) in E_Component | E_Discriminant) and then
                 F.Facet = Normal_Part,
         Post => Add_Component'Result.Kind = Record_Field;
-   --  Returns the same Flow_Id, but accessed with the given component.
+   --  Returns the same Flow_Id, but accessed with the given component
 
    function Magic_String_Id
      (S       : Entity_Name;
@@ -407,6 +409,10 @@ package Flow_Types is
 
    function Is_Abstract_State (F : Flow_Id) return Boolean;
    --  Checks if F is an abstract state.
+
+   function Is_Constant (F : Flow_Id) return Boolean;
+   --  Checks if F is either a constant or a constant with variable input
+   --  (i.e. is an Ada constant).
 
    function Is_Constituent (F : Flow_Id) return Boolean;
    --  Checks if F is a constituent of an abstract state.

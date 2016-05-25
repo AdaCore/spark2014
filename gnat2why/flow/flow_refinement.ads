@@ -21,9 +21,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package provides the infrastructure to deal with refinement
---  issues: when to use the abstract view or refined view of a subprogram,
---  and if the latter which of the possible refined views.
+--  This package provides the infrastructure to deal with refinement issues:
+--  when to use the abstract or refined views of a subprogram, and if the
+--  refined view then which one.
 
 with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
@@ -40,8 +40,7 @@ package Flow_Refinement is
    --  The scopes we care about in flow analysis are restricted to packages,
    --  protected objects and task objects.
    --
-   --  There are eight places any particular variable or subprogram can be
-   --  declared or implemented in a:
+   --  Variables or subprograms can be declared or defined in:
    --    * package's spec
    --    * package's private part
    --    * package's body
@@ -51,27 +50,29 @@ package Flow_Refinement is
    --    * task object's spec
    --    * task object's body
    --
-   --  Therefore flow scope is an entity + spec|priv|body.
+   --  Therefore flow scope is an entity + spec|priv|body
 
    type Section_T is (Null_Part, Spec_Part, Private_Part, Body_Part);
 
    subtype Valid_Section_T is Section_T range Spec_Part .. Body_Part;
 
    subtype Scope_Id is Entity_Id
-   with Dynamic_Predicate => No (Scope_Id) or else
-     (Nkind (Scope_Id) in N_Entity and then
-      Ekind (Scope_Id) in E_Generic_Package |
-                          E_Package         |
-                          Protected_Kind    |
-                          Task_Kind);
+   with Dynamic_Predicate =>
+     (if Present (Scope_Id)
+      then Nkind (Scope_Id) = N_Defining_Identifier and then
+           Ekind (Scope_Id) in E_Generic_Package |
+                               E_Package         |
+                               E_Protected_Type  |
+                               E_Task_Type);
 
    type Flow_Scope is record
       Ent     : Scope_Id;
       Section : Section_T;
    end record
-   with Dynamic_Predicate => (if Present (Flow_Scope.Ent)
-                              then Flow_Scope.Section /= Null_Part
-                              else Flow_Scope.Section = Null_Part);
+   with Dynamic_Predicate => (Flow_Scope.Ent = Empty) =
+                             (Flow_Scope.Section = Null_Part);
+   --  Note: conceptually this is a discrimated record type, but discriminating
+   --  on Scope_Id (which is an Entity_Id with a predicate) is troublesome.
 
    Null_Flow_Scope : constant Flow_Scope := (Empty, Null_Part);
 
@@ -86,23 +87,24 @@ package Flow_Refinement is
    ---------------
 
    function Present (S : Flow_Scope) return Boolean is (Present (S.Ent));
-   --  Returns True iff S is not the Null_Flow_Scope.
+   --  Returns True iff S is not the Null_Flow_Scope
 
    function No (S : Flow_Scope) return Boolean is (No (S.Ent));
    --  Returns True iff S is Null_Flow_Scope
 
    function Private_Scope (S : Flow_Scope) return Flow_Scope
-   is (Flow_Scope'(S.Ent, Private_Part))
+   is (S'Update (Section => Private_Part))
    with Pre => Present (S);
-   --  Returns the private scope for a valid scope.
+   --  Returns the private scope for a valid scope
 
    function Body_Scope (S : Flow_Scope) return Flow_Scope
-   is (Flow_Scope'(S.Ent, Body_Part))
+   is (S'Update (Section => Body_Part))
    with Pre => Present (S);
-   --  Returns the body scope for a valid scope.
+   --  Returns the body scope for a valid scope
 
-   function Get_Body_Or_Stub (N : Node_Id) return Node_Id;
-   --  If a corresponding stub exists, then we return that instead of N.
+   function Get_Body_Or_Stub (N : Node_Id) return Node_Id with
+     Pre => Present (N);
+   --  If a corresponding stub exists, then we return that instead of N
 
    ---------------------------
    -- Queries and utilities --
@@ -111,12 +113,12 @@ package Flow_Refinement is
    function Is_Visible (N : Node_Id;
                         S : Flow_Scope)
                         return Boolean;
-   --  Returns True iff the node N is visible from the scope S.
+   --  Returns True iff the node N is visible from the scope S
 
    function Is_Visible (Target_Scope : Flow_Scope;
                         S            : Flow_Scope)
                         return Boolean;
-   --  Returns True if Target_Scope is visible from the scope S.
+   --  Returns True if Target_Scope is visible from the scope S
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope
    with Pre => Present (N);
@@ -126,7 +128,7 @@ package Flow_Refinement is
    function Subprogram_Refinement_Is_Visible (E : Entity_Id;
                                               S : Flow_Scope)
                                               return Boolean
-   with Pre => Ekind (E) in Subprogram_Kind | E_Entry | E_Task_Type;
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
    --  Return True iff the implementation (and thus refined global or depends)
    --  of subprogram E is visible from S.
 
@@ -134,35 +136,37 @@ package Flow_Refinement is
                                          S : Flow_Scope)
                                          return Boolean
    with Pre => Ekind (E) = E_Abstract_State;
-   --  Return true iff the constituents of E are visible from S.
+   --  Return true iff the constituents of E are visible from S
 
    function Get_Contract_Node (E : Entity_Id;
                                S : Flow_Scope;
                                C : Contract_T)
                                return Node_Id
-   with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry;
-   --  A helpful wrapper around Refinement_Is_Visible: given a subprogram E
-   --  and scope S (from which it is called), return the appropriate node
-   --  for the abstract or refined version of the global or depends aspect.
-   --  We choose the refined version if it exists and is visible, otherwise
-   --  we fall back on the abstract version. If we can't find an abstract
-   --  version, we return Empty.
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
+   --  A wrapper around Refinement_Is_Visible: given a subprogram E and scope
+   --  S (from which it is called) return the appropriate node for the abstract
+   --  or refined version of the global or depends contract. We choose the
+   --  refined version if it exists and is visible, otherwise we fall back on
+   --  the abstract version. If we can't find an abstract version, we return
+   --  Empty.
 
    function Down_Project (Vars : Node_Sets.Set;
                           S    : Flow_Scope)
                           return Node_Sets.Set
-   with Pre  => (for all V of Vars => Nkind (V) in N_Entity),
-        Post => (for all V of Down_Project'Result => Nkind (V) in N_Entity);
-   --  Given a set of variables and a scope, recursively expand all
-   --  abstract state where its refinement is visible in S.
+   with Pre  => (for all V of Vars => Nkind (V) = N_Defining_Identifier),
+        Post => (for all V of Down_Project'Result =>
+                   Nkind (V) = N_Defining_Identifier);
+   --  Given a set of variables and a scope, recursively expand all abstract
+   --  state where its refinement is visible in S.
 
    function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
-   with Post => No (Find_Node_In_Initializes'Result)
+   with Pre  => Present (E),
+        Post => No (Find_Node_In_Initializes'Result)
                   or else Find_Node_In_Initializes'Result = E
                   or else Find_Node_In_Initializes'Result =
                             Encapsulating_State (E);
-   --  Returns the node representing E (or its immediately encapsulating
-   --  state) in an initializes aspect or Empty.
+   --  Returns the node representing E (or its immediately encapsulating state)
+   --  in an initializes aspect or Empty.
 
    function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope
    with Pre => S.Section in Spec_Part | Private_Part;
@@ -177,17 +181,19 @@ package Flow_Refinement is
    --  Returns the flow scope of the enclosing package or concurrent object if
    --  it exists and the null scope otherwise.
 
-   function Is_Initialized_At_Elaboration (E : Entity_Id;
-                                           S : Flow_Scope)
-                                           return Boolean;
+   function Is_Initialized_At_Elaboration
+     (E : Entity_Id;
+      S : Flow_Scope)
+      return Boolean with
+     Pre => Present (E);
    --  Checks if the given entity E is initialized at elaboration, as seen
    --  from scope S. For example if you have a nested package where:
    --
    --     package Outer (Initialized "State")
    --        package Inner (X, not initialized, but part of State)
    --
-   --  Then from the scope of Inner, X is not initialized at elaboration,
-   --  but from the scope of Outer, it is.
+   --  Then from the scope of Inner, X is not initialized at elaboration, but
+   --  from the scope of Outer, it is.
 
    function Mentions_State_With_Visible_Refinement
      (N     : Node_Id;
@@ -197,7 +203,7 @@ package Flow_Refinement is
    --  abstraction whose refinement is visible from Scope.
 
    function Refinement_Needed (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Entry | E_Task_Type | Subprogram_Kind;
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
    --  Returns True if a refinement is needed for the given subprogram, entry
    --  or task E.
    --
@@ -215,6 +221,6 @@ package Flow_Refinement is
       S  : Flow_Scope)
       return Boolean
    with Pre => Present (CO);
-   --  Returns True iff S is nested inside concurrent object CO.
+   --  Returns True iff S is nested inside concurrent object CO
 
 end Flow_Refinement;

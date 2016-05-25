@@ -1,0 +1,59 @@
+-gnat05 -O3 -gnatp -Ic:\spark\2012\lib\spark -Ic:\spark\2012\lib\spark\current
+
+
+spark_dns_main
+WINDOWS_TARGET
+
+
+queryArecord
+Create_Response_AAAA
+ParseRRSig2
+checkValidSRV
+Unchecked_
+Output_Packet
+Unchecked_Conv
+EDNS
+Query_Name_Type_Class
+tcp
+-- Begin compiler switches
+DEBUG <- active (current) build mode
+TRUE <- are gcc/gnatmake/main/target-dir of Release := these from Debug mode ?
+debug o2 false
+debug inlining false
+debug unroll_loops false
+debug suppress_all_checks false
+debug debug_info true
+debug integer_overflow_check true
+debug stack_check false
+debug trace_back false
+debug all_validity_checks false
+debug strip_all_symbols false
+debug profiling false
+debug verbose_details false
+debug all_warnings true
+debug build_in_place false
+release o2 true
+release inlining true
+release unroll_loops true
+release suppress_all_checks true
+release debug_info false
+release integer_overflow_check false
+release stack_check false
+release trace_back false
+release all_validity_checks false
+release strip_all_symbols true
+release profiling false
+release verbose_details false
+release all_warnings true
+release build_in_place false
+-- End compiler switches
+-- Begin Release mode commands
+-gnat05 -O3 -gnatp -Ic:\spark\2011\lib\spark -Ic:\spark\2011\lib\spark\current
+
+
+spark_dns_main
+-- End Release mode commands
+-- Begin run options
+prompt_arguments false
+ad_trace_back false
+-- End run options

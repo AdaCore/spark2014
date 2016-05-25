@@ -262,11 +262,11 @@ package body Graphs is
       V : Vertex_Id)
       return Vertex_Id
    is
+      C : constant EAM.Cursor := G.Vertices (V).Out_Neighbours.First;
    begin
-      for C in G.Vertices (V).Out_Neighbours.Iterate loop
-         return Key (C);
-      end loop;
-      return Null_Vertex;
+      return (if EAM.Has_Element (C)
+              then Key (C)
+              else Null_Vertex);
    end Child;
 
    ------------------

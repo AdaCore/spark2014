@@ -25,55 +25,55 @@
 ------------------------------------------------------------------------------
 
 with Ada.Directories;
-with Ada.Strings.Unbounded;    use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with ALI.Util;                 use ALI.Util;
-with ALI;                      use ALI;
-with Atree;                    use Atree;
+with ALI.Util;                        use ALI.Util;
+with ALI;                             use ALI;
+with Atree;                           use Atree;
 with Binderr;
 with Call;
-with Common_Containers;        use Common_Containers;
-with Debug;                    use Debug;
-with Einfo;                    use Einfo;
-with Errout;                   use Errout;
-with Flow;                     use Flow;
-with Flow.Trivia;              use Flow.Trivia;
-with Flow_Error_Messages;      use Flow_Error_Messages;
-with Flow_Generated_Globals;   use Flow_Generated_Globals;
-with Flow_Utility;             use Flow_Utility;
+with Common_Containers;               use Common_Containers;
+with Debug;                           use Debug;
+with Einfo;                           use Einfo;
+with Errout;                          use Errout;
+with Flow;                            use Flow;
+with Flow.Trivia;                     use Flow.Trivia;
+with Flow_Error_Messages;             use Flow_Error_Messages;
+with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
+with Flow_Utility;                    use Flow_Utility;
 with GNAT.Expect;
 with GNAT.Source_Info;
-with GNATCOLL.JSON;            use GNATCOLL.JSON;
-with Gnat2Why.Annotate;        use Gnat2Why.Annotate;
-with Gnat2Why.Assumptions;     use Gnat2Why.Assumptions;
-with Gnat2Why.Decls;           use Gnat2Why.Decls;
-with Gnat2Why.Error_Messages;  use Gnat2Why.Error_Messages;
-with Gnat2Why.External_Axioms; use Gnat2Why.External_Axioms;
-with Gnat2Why.Subprograms;     use Gnat2Why.Subprograms;
-with Gnat2Why.Types;           use Gnat2Why.Types;
-with Gnat2Why.Util;            use Gnat2Why.Util;
+with GNATCOLL.JSON;                   use GNATCOLL.JSON;
+with Gnat2Why.Annotate;               use Gnat2Why.Annotate;
+with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
+with Gnat2Why.Decls;                  use Gnat2Why.Decls;
+with Gnat2Why.Error_Messages;         use Gnat2Why.Error_Messages;
+with Gnat2Why.External_Axioms;        use Gnat2Why.External_Axioms;
+with Gnat2Why.Subprograms;            use Gnat2Why.Subprograms;
+with Gnat2Why.Types;                  use Gnat2Why.Types;
+with Gnat2Why.Util;                   use Gnat2Why.Util;
 with Gnat2Why_Args;
-with Lib;                      use Lib;
-with Namet;                    use Namet;
-with Nlists;                   use Nlists;
-with Osint.C;                  use Osint.C;
-with Osint;                    use Osint;
-with Output;                   use Output;
-with Outputs;                  use Outputs;
+with Lib;                             use Lib;
+with Namet;                           use Namet;
+with Nlists;                          use Nlists;
+with Osint.C;                         use Osint.C;
+with Osint;                           use Osint;
+with Output;                          use Output;
+with Outputs;                         use Outputs;
 with Sem;
-with Sem_Util;                 use Sem_Util;
-with Sinfo;                    use Sinfo;
-with Sinput;                   use Sinput;
-with SPARK_Definition;         use SPARK_Definition;
-with SPARK_Frame_Conditions;   use SPARK_Frame_Conditions;
-with SPARK_Rewrite;            use SPARK_Rewrite;
-with SPARK_Util;               use SPARK_Util;
-with Stand;                    use Stand;
-with Switch;                   use Switch;
-with Why;                      use Why;
-with Why.Atree.Modules;        use Why.Atree.Modules;
-with Why.Atree.Sprint;         use Why.Atree.Sprint;
-with Why.Inter;                use Why.Inter;
+with Sem_Util;                        use Sem_Util;
+with Sinfo;                           use Sinfo;
+with Sinput;                          use Sinput;
+with SPARK_Definition;                use SPARK_Definition;
+with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
+with SPARK_Rewrite;                   use SPARK_Rewrite;
+with SPARK_Util;                      use SPARK_Util;
+with Stand;                           use Stand;
+with Switch;                          use Switch;
+with Why;                             use Why;
+with Why.Atree.Modules;               use Why.Atree.Modules;
+with Why.Atree.Sprint;                use Why.Atree.Sprint;
+with Why.Inter;                       use Why.Inter;
 
 pragma Warnings (Off, "unit ""Why.Atree.Treepr"" is not referenced");
 with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
@@ -230,9 +230,8 @@ package body Gnat2Why.Driver is
       if Text = null then
          --  No such ALI file
 
-         Write_Str ("error:" & Get_Name_String (Main_Lib_File) &
-                      " does not exist");
-         Write_Eol;
+         Write_Line ("error:" & Get_Name_String (Main_Lib_File) &
+                     " does not exist");
 
          raise Terminate_Program;
       end if;
@@ -339,8 +338,15 @@ package body Gnat2Why.Driver is
                Generate_VCs_For_Task (WF_Main, E);
             end if;
 
+         when E_Protected_Type =>
+            if Entity_Spec_In_SPARK (E) and then
+              Analysis_Requested (E, With_Inlined => False)
+            then
+               Generate_VCs_For_Protected_Type (WF_Main, E);
+            end if;
          when others =>
             null;
+
       end case;
    end Do_Generate_VCs;
 
@@ -504,16 +510,18 @@ package body Gnat2Why.Driver is
    ------------------------
 
    function Is_Back_End_Switch (Switch : String) return Boolean is
-      First : constant Positive := Switch'First + 1;
+      First : constant Natural := Switch'First + 1;
+      Last  : constant Natural := Switch_Last (Switch);
 
    begin
-      --  For now we allow the -g/-O/-f/-m/-W/-w switches, even though they
-      --  will have no effect.
-      --  This permits compatibility with existing scripts.
+      --  For now we allow the -g/-O/-f/-m/-W/-w and -pipe switches, even
+      --  though they will have no effect. This permits compatibility with
+      --  existing scripts.
 
       return
-        Is_Switch (Switch) and then
-        Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w';
+        Is_Switch (Switch)
+          and then (Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w'
+                      or else Switch (First .. Last) = "pipe");
    end Is_Back_End_Switch;
 
    ------------------------------
@@ -750,13 +758,12 @@ package body Gnat2Why.Driver is
 
          when Object_Kind =>
 
-            --  we can ignore discriminals, these are objects used for
-            --  analysis, that can occur for discriminants of protected
-            --  types and task types
+            --  Ignore discriminals, i.e. objects that occur for discriminants
+            --  of protected types and task types.
 
             if Ekind (E) in Formal_Kind
               and then Present (Discriminal_Link (E))
-                and then Ekind (Scope (E)) in Protected_Kind | Task_Kind
+                and then Ekind (Scope (E)) in E_Protected_Type | E_Task_Type
             then
                return;
             end if;
@@ -803,7 +810,7 @@ package body Gnat2Why.Driver is
             Translate_Abstract_State (File, E);
             Generate_Empty_Axiom_Theory (File, E);
 
-         --  Generate a logic function for Ada functions
+         --  Generate a logic function for Ada subprograms
 
          when E_Entry | E_Function | E_Procedure =>
             if Is_Translated_Subprogram (E) then
@@ -841,18 +848,18 @@ package body Gnat2Why.Driver is
 
    procedure Translate_Standard_Package is
 
-      procedure Translate (E : Entity_Id);
+      procedure Translate_Standard_Entity (E : Entity_Id);
       --  Translate and complete declaration of entity E
 
-      ---------------
-      -- Translate --
-      ---------------
+      -------------------------------
+      -- Translate_Standard_Entity --
+      -------------------------------
 
-      procedure Translate (E : Entity_Id) is
+      procedure Translate_Standard_Entity (E : Entity_Id) is
       begin
          Translate_Entity (E);
          Complete_Declaration (E);
-      end Translate;
+      end Translate_Standard_Entity;
 
       Decl : Node_Id :=
         First (Visible_Declarations (Specification (Standard_Package_Node)));
@@ -865,7 +872,7 @@ package body Gnat2Why.Driver is
             when N_Full_Type_Declaration |
                  N_Subtype_Declaration   |
                  N_Object_Declaration    =>
-               Translate (Defining_Entity (Decl));
+               Translate_Standard_Entity (Defining_Entity (Decl));
             when others =>
                null;
          end case;
@@ -876,12 +883,12 @@ package body Gnat2Why.Driver is
       --  The following types are not in the tree of the standard package, but
       --  still are referenced elsewhere.
 
-      Translate (Standard_Integer_8);
-      Translate (Standard_Integer_16);
-      Translate (Standard_Integer_32);
-      Translate (Standard_Integer_64);
-      Translate (Universal_Integer);
---      Translate (Universal_Real);
+      Translate_Standard_Entity (Standard_Integer_8);
+      Translate_Standard_Entity (Standard_Integer_16);
+      Translate_Standard_Entity (Standard_Integer_32);
+      Translate_Standard_Entity (Standard_Integer_64);
+      Translate_Standard_Entity (Universal_Integer);
+      --  Translate_Standard_Entity (Universal_Real);
 
    end Translate_Standard_Package;
 

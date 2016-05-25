@@ -23,45 +23,49 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;       use Common_Containers;
-with Errout;                  use Errout;
-with Flow_Dependency_Maps;    use Flow_Dependency_Maps;
-with Flow_Generated_Globals;  use Flow_Generated_Globals;
-with Flow_Refinement;         use Flow_Refinement;
-with Flow_Types;              use Flow_Types;
-with Flow_Utility;            use Flow_Utility;
+with Ada.Containers.Doubly_Linked_Lists;
+with Common_Containers;              use Common_Containers;
+with Errout;                         use Errout;
+with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
+with Flow_Generated_Globals;         use Flow_Generated_Globals;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Refinement;                use Flow_Refinement;
+with Flow_Types;                     use Flow_Types;
+with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
-with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
-with Gnat2Why.Expr;           use Gnat2Why.Expr;
-with Namet;                   use Namet;
-with Nlists;                  use Nlists;
-with Rtsfind;                 use Rtsfind;
-with Sem_Aux;                 use Sem_Aux;
-with Sem_Disp;                use Sem_Disp;
-with Sem_Util;                use Sem_Util;
-with Sinfo;                   use Sinfo;
-with Sinput;                  use Sinput;
-with Snames;                  use Snames;
-with SPARK_Definition;        use SPARK_Definition;
-with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
-with SPARK_Util;              use SPARK_Util;
-with Stand;                   use Stand;
-with Uintp;                   use Uintp;
-with VC_Kinds;                use VC_Kinds;
-with Why;                     use Why;
-with Why.Atree.Accessors;     use Why.Atree.Accessors;
-with Why.Atree.Builders;      use Why.Atree.Builders;
-with Why.Atree.Modules;       use Why.Atree.Modules;
-with Why.Atree.Mutators;      use Why.Atree.Mutators;
-with Why.Conversions;         use Why.Conversions;
-with Why.Gen.Decl;            use Why.Gen.Decl;
-with Why.Gen.Expr;            use Why.Gen.Expr;
-with Why.Gen.Names;           use Why.Gen.Names;
-with Why.Gen.Preds;           use Why.Gen.Preds;
-with Why.Gen.Progs;           use Why.Gen.Progs;
-with Why.Gen.Terms;           use Why.Gen.Terms;
-with Why.Inter;               use Why.Inter;
-with Why.Types;               use Why.Types;
+with Gnat2Why.Annotate;              use Gnat2Why.Annotate;
+with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;                  use Gnat2Why.Expr;
+with Namet;                          use Namet;
+with Nlists;                         use Nlists;
+with Rtsfind;                        use Rtsfind;
+with Sem_Aux;                        use Sem_Aux;
+with Sem_Disp;                       use Sem_Disp;
+with Sem_Util;                       use Sem_Util;
+with Sinfo;                          use Sinfo;
+with Sinput;                         use Sinput;
+with Snames;                         use Snames;
+with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
+with SPARK_Util;                     use SPARK_Util;
+with Stand;                          use Stand;
+with Uintp;                          use Uintp;
+with VC_Kinds;                       use VC_Kinds;
+with Why;                            use Why;
+with Why.Atree.Accessors;            use Why.Atree.Accessors;
+with Why.Atree.Builders;             use Why.Atree.Builders;
+with Why.Atree.Modules;              use Why.Atree.Modules;
+with Why.Atree.Mutators;             use Why.Atree.Mutators;
+with Why.Conversions;                use Why.Conversions;
+with Why.Gen.Decl;                   use Why.Gen.Decl;
+with Why.Gen.Expr;                   use Why.Gen.Expr;
+with Why.Gen.Names;                  use Why.Gen.Names;
+with Why.Gen.Preds;                  use Why.Gen.Preds;
+with Why.Gen.Progs;                  use Why.Gen.Progs;
+with Why.Gen.Records;                use Why.Gen.Records;
+with Why.Gen.Terms;                  use Why.Gen.Terms;
+with Why.Inter;                      use Why.Inter;
+with Why.Types;                      use Why.Types;
 
 package body Gnat2Why.Subprograms is
 
@@ -210,6 +214,28 @@ package body Gnat2Why.Subprograms is
    --    ceiling protocol is respected in the call graph starting from this
    --    entity, i.e. that external calls to protected operations are made with
    --    a priority lower or equal to the priority of the object in question.
+
+   function Compute_Attach_Handler_Check
+     (Ty     : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+     with Pre => Is_Protected_Type (Ty);
+   --  @param Ty a protected type
+   --  @return an assertion (if necessary) that checks if any of the
+   --    Attach_Handler pragmas of the procedures of the type is reserved
+   --    see also Ada RM C.3.1(10/3)
+
+   function Compute_Inlined_Expr
+     (Function_Entity    : Entity_Id;
+      Logic_Func_Binders : Item_Array;
+      W_Return_Type      : W_Type_Id;
+      File               : W_Section_Id) return W_Expr_Id;
+   --  @param Function_Entity entity of a function
+   --  @param Logic_Func_Binders binders for Function_Entity's declaration
+   --  @param W_Return_Type Why3 type for Function_Entity's return type
+   --  @param File section in which the expression should be translated
+   --  @return if Function_Entity is non recursive and has a pragma Annotate
+   --          (GNATprove, Inline_For_Proof), return the Why3 expression for
+   --          its value. Otherwise return Why_Empty.
 
    ----------------------------------
    -- Add_Dependencies_For_Effects --
@@ -515,6 +541,115 @@ package body Gnat2Why.Subprograms is
 
       return Result;
    end Compute_Args;
+
+   ----------------------------------
+   -- Compute_Attach_Handler_Check --
+   ----------------------------------
+
+   function Compute_Attach_Handler_Check
+     (Ty     : Entity_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   is
+      function Single_Attach_Handler_Check (Proc : Entity_Id) return W_Prog_Id;
+      --  @param Proc a procedure with an Attach_Handler pragma
+      --  @return an assertion statement that expresses the attach handler
+      --    check for this pragma
+
+      procedure Process_Declarations (L : List_Id);
+      --  @param L list of declarations to check for interrupt attachments
+
+      Stat : W_Prog_Id := +Void;
+      --  Why3 program with static checks
+
+      ---------------------------------
+      -- Single_Attach_Handler_Check --
+      ---------------------------------
+
+      function Single_Attach_Handler_Check (Proc : Entity_Id) return W_Prog_Id
+      is
+
+         --  The interrupt is given as the second argument of the pragma
+         --  Attach_Handler.
+         Att_Val : constant Node_Id :=
+           Expression (Next (First (Pragma_Argument_Associations
+                       (Get_Pragma (Proc, Pragma_Attach_Handler)))));
+
+         --  To check whether the attach handler is reserved, we call the
+         --  Ada.Interrupts.Is_Reserved. However, this function reads a global
+         --  state, which makes it a bit difficult to generate a call in
+         --  the logic (we would have to come up with the state object - not
+         --  impossible but not currently proposed by frontend). Instead,
+         --  we call the program function, which has only the interrupt as
+         --  argument, store the result in a temp and assert that the result
+         --  is false. So we are essentially asserting "not is_reserved(int)".
+
+         Res     : constant W_Expr_Id :=
+           New_Temp_For_Expr
+             (New_Call
+                (Name   => To_Why_Id (RTE (RE_Is_Reserved), Domain => EW_Prog),
+                 Domain => EW_Prog,
+                 Args   =>
+                   (1 =>
+                      Transform_Expr (Att_Val, EW_Int_Type, EW_Term, Params)),
+                 Typ    => EW_Bool_Type));
+
+         Pred    : constant W_Pred_Id :=
+           New_Call
+             (Name => Why_Eq,
+              Args => (1 => +Res,
+                       2 => Bool_False (EW_Term)));
+      begin
+         return
+           +Binding_For_Temp
+             (Domain  => EW_Prog,
+              Tmp     => Res,
+              Context =>
+                +New_Located_Assert
+                  (Ada_Node => Att_Val,
+                   Reason   => VC_Interrupt_Reserved,
+                   Kind     => EW_Check,
+                   Pred     => Pred));
+      end Single_Attach_Handler_Check;
+
+      --------------------------
+      -- Process_Declarations --
+      --------------------------
+
+      procedure Process_Declarations (L : List_Id) is
+         Proc : Node_Id := First (L);
+      begin
+         while Present (Proc) loop
+            if Nkind (Proc) = N_Subprogram_Declaration then
+               declare
+                  Ent : constant Entity_Id := Defining_Entity (Proc);
+               begin
+                  if Ekind (Ent) = E_Procedure
+                    and then Present (Get_Pragma (Ent, Pragma_Attach_Handler))
+                  then
+                     Stat := Sequence (Stat,
+                                       Single_Attach_Handler_Check (Ent));
+                  end if;
+               end;
+            end if;
+            Next (Proc);
+         end loop;
+      end Process_Declarations;
+
+      pragma Assert (Nkind (Parent (Ty)) = N_Protected_Type_Declaration);
+
+      PT_Def : constant Node_Id := Protected_Definition (Parent (Ty));
+
+   --  Start of processing for Compute_Attach_Handler_Check
+
+   begin
+      Process_Declarations (Visible_Declarations (PT_Def));
+
+      if Private_Spec_In_SPARK (Ty) then
+         Process_Declarations (Private_Declarations (PT_Def));
+      end if;
+
+      return Stat;
+   end Compute_Attach_Handler_Check;
 
    ---------------------
    -- Compute_Binders --
@@ -1680,6 +1815,86 @@ package body Gnat2Why.Subprograms is
    end Compute_Contract_Cases_Postcondition;
 
    --------------------------
+   -- Compute_Inlined_Expr --
+   --------------------------
+
+   function Compute_Inlined_Expr
+     (Function_Entity    : Entity_Id;
+      Logic_Func_Binders : Item_Array;
+      W_Return_Type      : W_Type_Id;
+      File               : W_Section_Id) return W_Expr_Id
+   is
+      Value  : constant Node_Id :=
+        Retrieve_Inline_Annotation (Function_Entity);
+      Params : constant Transformation_Params :=
+        (File        => File,
+         Phase       => Generate_Logic,
+         Gen_Marker  => False,
+         Ref_Allowed => False);
+      W_Def  : W_Expr_Id;
+
+   begin
+      if No (Value) then
+         W_Def := Why_Empty;
+
+      --  If Functon_Entity is recursive, it is not inlined as it may interfere
+      --  with its verification.
+
+      elsif not Is_Non_Recursive_Subprogram (Function_Entity) then
+         Error_Msg_N
+           ("?recursive function cannot be inlined for proof",
+            Function_Entity);
+
+         W_Def := Why_Empty;
+      else
+
+         --  We fill the map of parameters, so that in the definition, we use
+         --  local names of the parameters, instead of the global names.
+
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+         for Binder of Logic_Func_Binders loop
+            declare
+               A : constant Node_Id :=
+                 (case Binder.Kind is
+                     when Regular | Prot_Self => Binder.Main.Ada_Node,
+                     when others  => raise Program_Error);
+               --  in parameters should not be split
+            begin
+               pragma Assert (Present (A) or else Binder.Kind = Regular);
+
+               if Present (A) then
+                  Ada_Ent_To_Why.Insert (Symbol_Table,
+                                         Unique_Entity (A),
+                                         Binder);
+               elsif Binder.Main.B_Ent /= Null_Entity_Name then
+
+                  --  If there is no Ada_Node, this is a binder generated
+                  --  from an effect; we add the parameter in the name
+                  --  map using its unique name.
+
+                  Ada_Ent_To_Why.Insert
+                    (Symbol_Table,
+                     Binder.Main.B_Ent,
+                     Binder);
+               end if;
+            end;
+         end loop;
+
+         --  Translate the Value expression in Why.
+
+         W_Def := Transform_Expr
+           (Expr          => Value,
+            Expected_Type => W_Return_Type,
+            Domain        => EW_Term,
+            Params        => Params);
+
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      end if;
+      return W_Def;
+   end Compute_Inlined_Expr;
+
+   --------------------------
    -- Generate_VCs_For_LSP --
    --------------------------
 
@@ -1840,12 +2055,12 @@ package body Gnat2Why.Subprograms is
       if not Pre_List.Is_Empty then
          Classwide_Pre_Assume :=
            New_Assume_Statement (Pred =>
-             Get_Dispatching_Contract (Params, E, Name_Precondition));
+             Get_LSP_Contract (Params, E, Name_Precondition));
 
          Pre_Check := New_Located_Assert
            (Ada_Node => Get_Location_For_Aspect (E, Name_Precondition),
             Pred     => Pre_Spec,
-            Reason   => (if Classwide_Pre_List.Is_Empty and
+            Reason   => (if Classwide_Pre_List.Is_Empty and then
                             Inherited_Pre_List.Is_Empty
                          then
                            VC_Trivial_Weaker_Pre
@@ -1884,7 +2099,7 @@ package body Gnat2Why.Subprograms is
          Classwide_Post_Check := New_Located_Assert
            (Ada_Node => Get_Location_For_Aspect (E, Name_Postcondition),
             Pred     =>
-              Get_Dispatching_Contract (Params, E, Name_Postcondition),
+              Get_LSP_Contract (Params, E, Name_Postcondition),
             Reason   => VC_Stronger_Post,
             Kind     => EW_Assert);
 
@@ -2141,6 +2356,233 @@ package body Gnat2Why.Subprograms is
       Close_Theory (File,
                     Kind => VC_Generation_Theory);
    end Generate_VCs_For_Package_Elaboration;
+
+   -------------------------------------
+   -- Generate_VCs_For_Protected_Type --
+   -------------------------------------
+
+   procedure Generate_VCs_For_Protected_Type
+     (File : W_Section_Id;
+      E    : Entity_Id)
+   is
+      type Discr is record
+         Id  : W_Identifier_Id;
+         Val : W_Expr_Id;
+      end record;
+      --  Why3 representation of discriminants
+
+      package Discriminant_Lists is new
+        Ada.Containers.Doubly_Linked_Lists
+          (Element_Type => Discr);
+
+      W_Discriminants : Discriminant_Lists.List;
+      --  Container for Why3 representations
+
+      procedure Prepare_Discr;
+      --  insert the discriminants into the symbol table so that they can be
+      --  referred to by the Why generated for the various checks
+
+      procedure Wrap_Discr (Expr : in out W_Prog_Id);
+
+      -------------------
+      -- Prepare_Discr --
+      -------------------
+
+      procedure Prepare_Discr is
+         Discr_N : Node_Id := Empty;
+      begin
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
+         if Has_Discriminants (E)
+           or else Has_Unknown_Discriminants (E)
+         then
+            Discr_N := First_Discriminant (E);
+         end if;
+         while Present (Discr_N) loop
+            declare
+               Discr_W : constant Discr :=
+                 (Id =>
+                    New_Temp_Identifier
+                      (Typ =>
+                           EW_Abstract (Etype (Discr_N))),
+
+                  Val =>
+                    New_Ada_Record_Access
+                      (Ada_Node => Empty,
+                       Domain   => EW_Term,
+                       Name     => +Self_Name,
+                       Field    => Discr_N,
+                       Ty       => E));
+            begin
+               Insert_Entity (Discriminal (Discr_N),
+                              Discr_W.Id);
+
+               W_Discriminants.Append (Discr_W);
+            end;
+
+            Next_Discriminant (Discr_N);
+         end loop;
+      end Prepare_Discr;
+
+      ----------------
+      -- Wrap_Discr --
+      ----------------
+
+      procedure Wrap_Discr (Expr : in out W_Prog_Id) is
+      begin
+         for W_D of reverse W_Discriminants loop
+            Expr :=
+              +New_Typed_Binding
+                 (Domain   => EW_Term,
+                  Name     => W_D.Id,
+                  Def      => W_D.Val,
+                  Context  => +Expr);
+         end loop;
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      end Wrap_Discr;
+
+      Why_Body   : W_Prog_Id := +Void;
+      Name       : constant String  := Full_Name (E);
+      Priv_Decls : constant List_Id := Private_Declarations_of_Prot_Type (E);
+      Vis_Decls  : constant List_Id := Visible_Declarations_of_Prot_Type (E);
+
+   --  Start of processing for Generate_VCs_For_Protected_Type
+
+   begin
+      --  We open a new theory, so that the context is fresh for this task
+
+      Open_Theory (File,
+                   New_Module
+                     (Name => NID (Name & "__protected_type"),
+                      File => No_Name),
+                   Comment =>
+                     "Module for various checks related to the protected type "
+                       & """" & Get_Name_String (Chars (E)) & """"
+                       & (if Sloc (E) > 0 then
+                            " defined at " & Build_Location_String (Sloc (E))
+                          else "")
+                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Current_Subp := E;
+
+      Register_VC_Entity (E);
+
+      --  The Ada_Node is important here, because that's how we detect
+      --  occurrences of "self" in a term later.
+
+      Self_Name :=
+        New_Identifier
+          (Name     => "self__",
+           Ada_Node => E,
+           Typ      => Type_Of_Node (E));
+
+      Emit (File,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain  => EW_Term,
+               Name    => Self_Name,
+               Binders => (1 .. 0 => <>),
+               Labels  => Name_Id_Sets.Empty_Set,
+               Return_Type => Get_Typ (Self_Name)));
+
+      Prepare_Discr;
+
+      --  If protected object attaches an interrupt, the priority must be in
+      --  range of System.Interrupt_Priorioty; see RM C.3.1(11/3).
+
+      if Requires_Interrupt_Priority (E) then
+         declare
+            P : constant Node_Id :=
+              Get_Priority_Or_Interrupt_Priority (E);
+         begin
+
+            --  If no priority was specified, the default priority is
+            --  implementation-defined (RM D.3 (10/3)), but in range
+            --  of System.Interrupt_Priority.
+
+            if Present (P) then
+
+               declare
+                  P_Expr : constant W_Expr_Id :=
+                    Transform_Expr
+                      (Expr          => P,
+                       Domain        => EW_Term,
+                       Params        => Body_Params,
+                       Expected_Type => EW_Int_Type);
+               begin
+
+                  --  Generate a range check, but with a reason of ceiling
+                  --  check, as specified in RM index for "Ceiling_Check".
+
+                  Why_Body := Sequence
+                    (Why_Body,
+                     New_Located_Assert
+                       (Ada_Node => E,
+                        Pred     =>
+                          +New_Range_Expr
+                          (Domain => EW_Pred,
+                           Low    =>
+                             New_Attribute_Expr
+                               (Domain => EW_Term,
+                                Ty     =>
+                                  RTE (RE_Interrupt_Priority),
+                                Attr   => Attribute_First,
+                                Params => Body_Params),
+                           High   =>
+                             New_Attribute_Expr
+                               (Domain => EW_Term,
+                                Ty     =>
+                                  RTE (RE_Interrupt_Priority),
+                                Attr   => Attribute_Last,
+                                Params => Body_Params),
+                           Expr   => P_Expr),
+                        Reason   => VC_Ceiling_Interrupt,
+                        Kind     => EW_Check));
+               end;
+            end if;
+         end;
+      end if;
+
+      --  Check that no Attach_Handler expression of the protected object
+      --  corresponds to a reserved interrupt; see RM C.3.1(10/3).
+
+      Why_Body := Sequence (Why_Body,
+                            Compute_Attach_Handler_Check
+                              (Base_Type (E), Body_Params));
+
+      --  Translate public and private declarations of the package
+
+      if Present (Priv_Decls) and then
+        Private_Spec_In_SPARK (E)
+      then
+         Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
+      end if;
+
+      if Present (Vis_Decls) then
+         Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
+      end if;
+
+      Wrap_Discr (Why_Body);
+
+      declare
+         Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
+      begin
+         Label_Set.Include (NID ("W:diverges:N"));
+         Emit (File,
+                Why.Gen.Binders.New_Function_Decl
+                 (Domain  => EW_Prog,
+                  Name    => Def_Name,
+                  Binders => (1 => Unit_Param),
+                  Labels  => Label_Set,
+                  Def     => +Why_Body));
+      end;
+
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      Self_Name := Why_Empty;
+      Self_Is_Mutable := False;
+
+      Close_Theory (File,
+                    Kind => VC_Generation_Theory);
+   end Generate_VCs_For_Protected_Type;
 
    ---------------------------------
    -- Generate_VCs_For_Subprogram --
@@ -2765,6 +3207,8 @@ package body Gnat2Why.Subprograms is
 
       Why_Body   : W_Prog_Id := +Void;
       Post       : W_Pred_Id;
+      Priv_Decls : constant List_Id := Private_Declarations_Of_Task_Type (E);
+      Vis_Decls  : constant List_Id := Visible_Declarations_Of_Task_Type (E);
    begin
       --  We open a new theory, so that the context is fresh for this task
 
@@ -2813,6 +3257,21 @@ package body Gnat2Why.Subprograms is
 
          Why_Body :=
            Transform_Declarations_Block (Declarations (Body_N), Why_Body);
+      end if;
+
+      --  We check any assertions and pragma (Interrupt)_Priority in the
+      --  declarations of the task
+
+      --  Translate public and private declarations of the package
+
+      if Present (Priv_Decls) and then
+        Private_Spec_In_SPARK (E)
+      then
+         Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
+      end if;
+
+      if Present (Vis_Decls) then
+         Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
       end if;
 
       --  We check that the call graph starting from this task respects the
@@ -2973,9 +3432,9 @@ package body Gnat2Why.Subprograms is
 
       if Is_Dispatching_Operation (E) then
          Dispatch_Pre :=
-           Get_Dispatching_Contract (Params, E, Name_Precondition);
+           Get_Dispatching_Call_Contract (Params, E, Name_Precondition);
          Dispatch_Post :=
-           Get_Dispatching_Contract (Params, E, Name_Postcondition);
+           Get_Dispatching_Call_Contract (Params, E, Name_Postcondition);
       end if;
 
       if Has_Contracts (E, Name_Refined_Post) then
@@ -3057,9 +3516,13 @@ package body Gnat2Why.Subprograms is
       --  Start of processing for Generate_Axiom_For_Post
 
       begin
-         --  ??? clean up this code duplication for dispatch and refine
+         --  Do not emit an axiom for E if it is inlined for proof
 
-         Emit_Post_Axiom (Post_Axiom, Logic_Id, Pre, Post);
+         if No (Retrieve_Inline_Annotation (E)) then
+            Emit_Post_Axiom (Post_Axiom, Logic_Id, Pre, Post);
+         end if;
+
+         --  ??? clean up this code duplication for dispatch and refine
 
          if Is_Dispatching_Operation (E) then
             Emit_Post_Axiom (Post_Dispatch_Axiom,
@@ -3169,7 +3632,7 @@ package body Gnat2Why.Subprograms is
 
       if Is_Dispatching_Operation (E) then
          Dispatch_Pre :=
-           Get_Dispatching_Contract (Params, E, Name_Precondition);
+           Get_Dispatching_Call_Contract (Params, E, Name_Precondition);
       end if;
 
       --  For a subprogram marked with No_Return, the postcondition at call
@@ -3200,7 +3663,7 @@ package body Gnat2Why.Subprograms is
 
          if Is_Dispatching_Operation (E) then
             Dispatch_Post :=
-              Get_Dispatching_Contract (Params, E, Name_Postcondition);
+              Get_Dispatching_Call_Contract (Params, E, Name_Postcondition);
          end if;
 
          if Has_Contracts (E, Name_Refined_Post) then
@@ -3774,6 +4237,8 @@ package body Gnat2Why.Subprograms is
               To_Binder_Array (Logic_Func_Binders);
             Logic_Id          : constant W_Identifier_Id :=
               To_Why_Id (E, Domain => EW_Term, Local => True);
+            Def               : constant W_Expr_Id :=
+              Compute_Inlined_Expr (E, Logic_Func_Binders, Why_Type, File);
          begin
             --  Generate a logic function
 
@@ -3785,7 +4250,10 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Term,
                   Name        => Logic_Id,
                   Binders     => Logic_Why_Binders,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      =>
+                    (if Def = Why_Empty then Name_Id_Sets.Empty_Set
+                     else Name_Id_Sets.To_Set (NID ("inline"))),
+                  Def         => Def,
                   Return_Type => Why_Type));
 
             if Is_Dispatching_Operation (E) then

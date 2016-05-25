@@ -23,38 +23,40 @@
 
 with Ada.Characters.Latin_1;
 with Ada.Strings.Maps;
-with Ada.Strings;                   use Ada.Strings;
-with Assumptions;                   use Assumptions;
-with Errout;                        use Errout;
+with Ada.Strings;                    use Ada.Strings;
+with Assumptions;                    use Assumptions;
+with Errout;                         use Errout;
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
 with Flow.Control_Flow_Graph;
 with Flow.Data_Dependence_Graph;
 with Flow.Interprocedural;
 with Flow.Program_Dependence_Graph;
-with Flow.Slice;                    use Flow.Slice;
-with Flow_Classwide;                use Flow_Classwide;
-with Flow_Debug;                    use Flow_Debug;
-with Flow_Generated_Globals;        use Flow_Generated_Globals;
-with Flow_Error_Messages;           use Flow_Error_Messages;
-with Flow_Utility;                  use Flow_Utility;
-with Gnat2Why.Assumptions;          use Gnat2Why.Assumptions;
+with Flow.Slice;                     use Flow.Slice;
+with Flow_Classwide;                 use Flow_Classwide;
+with Flow_Debug;                     use Flow_Debug;
+with Flow_Generated_Globals;         use Flow_Generated_Globals;
+with Flow_Generated_Globals.Phase_1; use Flow_Generated_Globals.Phase_1;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Error_Messages;            use Flow_Error_Messages;
+with Flow_Utility;                   use Flow_Utility;
+with Gnat2Why.Assumptions;           use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
-with Lib;                           use Lib;
-with Namet;                         use Namet;
-with Nlists;                        use Nlists;
-with Osint;                         use Osint;
-with Output;                        use Output;
-with Sem_Aux;                       use Sem_Aux;
-with Sem_Util;                      use Sem_Util;
-with Sem_Ch7;                       use Sem_Ch7;
-with Sinfo;                         use Sinfo;
-with Snames;                        use Snames;
-with SPARK_Definition;              use SPARK_Definition;
-with SPARK_Frame_Conditions;        use SPARK_Frame_Conditions;
-with SPARK_Util;                    use SPARK_Util;
-with Sprint;                        use Sprint;
-with VC_Kinds;                      use VC_Kinds;
+with Lib;                            use Lib;
+with Namet;                          use Namet;
+with Nlists;                         use Nlists;
+with Osint;                          use Osint;
+with Output;                         use Output;
+with Sem_Aux;                        use Sem_Aux;
+with Sem_Util;                       use Sem_Util;
+with Sem_Ch7;                        use Sem_Ch7;
+with Sinfo;                          use Sinfo;
+with Snames;                         use Snames;
+with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
+with SPARK_Util;                     use SPARK_Util;
+with Sprint;                         use Sprint;
+with VC_Kinds;                       use VC_Kinds;
 with Why;
 
 use type Ada.Containers.Count_Type;
@@ -93,7 +95,8 @@ package body Flow is
                                  S                  : Entity_Id;
                                  Generating_Globals : Boolean)
                                  return Flow_Analysis_Graphs
-   with Pre  => Ekind (E) in Subprogram_Kind  |
+   with Pre  => Ekind (E) in E_Function       |
+                             E_Procedure      |
                              E_Task_Type      |
                              E_Protected_Type |
                              E_Entry          |
@@ -115,7 +118,7 @@ package body Flow is
    --  Build all flow graphs for the current compilation unit
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in Subprogram_Kind | E_Task_Type | E_Entry;
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
    --  Returns True if the last statement in the
    --  Handled_Sequence_Of_Statements of E is an N_Raise_Statement.
 
@@ -683,7 +686,7 @@ package body Flow is
 
                   if not A.Is_Initialized then
                      Rv.Colour := To_Unbounded_String ("red");
-                  elsif Is_Discriminant (F) or Is_Record_Tag (F) then
+                  elsif Is_Discriminant (F) or else Is_Record_Tag (F) then
                      Rv.Colour := To_Unbounded_String ("purple");
                   end if;
 
@@ -700,8 +703,8 @@ package body Flow is
                   null;
             end case;
 
-            if not A.Loops.Is_Empty and not (A.Is_Parameter or
-                                             A.Is_Global_Parameter)
+            if not A.Loops.Is_Empty and then not (A.Is_Parameter or
+                                                  A.Is_Global_Parameter)
             then
                Write_Str ("\nLoops:");
                for Loop_Identifier of A.Loops loop
@@ -900,7 +903,8 @@ package body Flow is
 
       FA : Flow_Analysis_Graphs_Root
         (Kind               => (case Ekind (E) is
-                                when Subprogram_Kind => Kind_Subprogram,
+                                when E_Function
+                                   | E_Procedure     => Kind_Subprogram,
                                 when E_Task_Type     => Kind_Task,
                                 when E_Entry         => Kind_Entry,
                                 when E_Package       => Kind_Package,
@@ -929,8 +933,7 @@ package body Flow is
       FA.Other_Fields          := Vertex_To_Vertex_Set_Maps.Empty_Map;
       FA.Local_Constants       := Node_Sets.Empty_Set;
       FA.All_Vars              := Flow_Id_Sets.Empty_Set;
-      FA.Unmodified_Vars       := Node_Sets.Empty_Set;
-      FA.Unreferenced_Vars     := Node_Sets.Empty_Set;
+      FA.Pragma_Un_Vars        := Node_Sets.Empty_Set;
       FA.Loops                 := Node_Sets.Empty_Set;
       FA.Dependency_Map        := Dependency_Maps.Empty_Map;
       FA.No_Errors_Or_Warnings := True;
@@ -943,9 +946,10 @@ package body Flow is
                                                else "fa_");
 
       case Ekind (E) is
-         when E_Entry         |
-              E_Task_Type     |
-              Subprogram_Kind =>
+         when E_Entry     |
+              E_Task_Type |
+              E_Function  |
+              E_Procedure =>
             FA.B_Scope := Get_Flow_Scope (Get_Body (E));
             FA.S_Scope := Get_Flow_Scope (E);
 
@@ -953,10 +957,11 @@ package body Flow is
 
             FA.Is_Main :=
               (case Ekind (E) is
-               when Subprogram_Kind => Might_Be_Main (E),
-               when E_Entry         => False,
-               when E_Task_Type     => True,
-               when others          => raise Program_Error);
+               when E_Function
+                  | E_Procedure => Might_Be_Main (E),
+               when E_Entry     => False,
+               when E_Task_Type => True,
+               when others      => raise Program_Error);
 
             FA.Last_Statement_Is_Raise := Last_Statement_Is_Raise (E);
 
@@ -988,6 +993,7 @@ package body Flow is
             FA.Initializes_N := Get_Pragma (E, Pragma_Initializes);
 
             FA.Visible_Vars  := Flow_Id_Sets.Empty_Set;
+            FA.Spec_Vars     := Flow_Id_Sets.Empty_Set;
 
             FA.Is_Generative := No (FA.Initializes_N);
 
@@ -1001,6 +1007,7 @@ package body Flow is
                                             Pragma_Initializes);
 
             FA.Visible_Vars  := Flow_Id_Sets.Empty_Set;
+            FA.Spec_Vars     := Flow_Id_Sets.Empty_Set;
 
             FA.Is_Generative := No (FA.Initializes_N);
 
@@ -1032,7 +1039,7 @@ package body Flow is
                Ptr : Flow_Scope := FA.S_Scope;
             begin
                Indent;
-               while Ptr /= Null_Flow_Scope loop
+               while Present (Ptr) loop
                   case Valid_Section_T'(Ptr.Section) is
                      when Body_Part =>
                         Ptr.Section := Private_Part;
@@ -1040,7 +1047,7 @@ package body Flow is
                      when Private_Part | Spec_Part =>
                         Ptr := Get_Enclosing_Flow_Scope (Ptr);
                   end case;
-                  if Ptr /= Null_Flow_Scope then
+                  if Present (Ptr) then
                      Print_Flow_Scope (Ptr);
                      Write_Eol;
                   end if;
@@ -1255,33 +1262,35 @@ package body Flow is
       procedure Build_Graphs_For_Entity (E : Entity_Id) is
       begin
          case Ekind (E) is
-            when E_Entry | E_Task_Type | Subprogram_Kind =>
-
-               --  Check for potentially blocking statements in callable
-               --  entities, i.e. entries and subprograms.
-
-               if Generating_Globals
-                 and then Ekind (E) in Subprogram_Kind | E_Entry
-                 and then Entity_Body_In_SPARK (E)
-               then
-                  declare
-                     Body_N : constant Node_Id := Get_Body (E);
-                  begin
-                     if Present (Body_N)
-                       and then Has_Only_Nonblocking_Statements (Body_N)
-                     then
-                        GG_Register_Nonblocking (To_Entity_Name (E));
-                     end if;
-                  end;
-               end if;
+            when E_Entry | E_Function | E_Procedure | E_Task_Type =>
 
                if SPARK_Util.Analysis_Requested (E, With_Inlined => True) then
+
+                  --  Check for potentially blocking statements in callable
+                  --  entities, i.e. entries and subprograms.
+                  --  ??? also analyze spec
+
+                  if Generating_Globals
+                     and then Ekind (E) in E_Entry | E_Function | E_Procedure
+                     and then Entity_Body_In_SPARK (E)
+                  then
+                     declare
+                        Body_N : constant Node_Id := Get_Body (E);
+                     begin
+                        if Present (Body_N)
+                          and then Has_Only_Nonblocking_Statements (Body_N)
+                        then
+                           GG_Register_Nonblocking (To_Entity_Name (E));
+                        end if;
+                     end;
+                  end if;
+
                   if Entity_Body_In_SPARK (E) then
                      --  Body is in SPARK, so we just analyze it
-                     FA_Graphs.Include (E, Flow_Analyse_Entity
-                                          (E,
-                                           E,
-                                           Generating_Globals));
+                     FA_Graphs.Include (E,
+                                        Flow_Analyse_Entity
+                                          (E, E, Generating_Globals));
+
                   elsif Generating_Globals then
                      declare
                         Scope        : constant Flow_Scope :=
@@ -1317,12 +1326,12 @@ package body Flow is
                                 (Name                  => To_Entity_Name (E),
                                  Kind                  =>
                                    (case Ekind (E) is
-                                    when E_Entry         => Kind_Entry,
-                                    when E_Task_Type     => Kind_Task,
-                                    when Subprogram_Kind => Kind_Subprogram,
-                                    when others          =>
-                                      raise Program_Error),
-                                 Globals_Origin        => Origin_User,
+                                    when E_Entry     => Kind_Entry,
+                                    when E_Function
+                                       | E_Procedure => Kind_Subprogram,
+                                    when E_Task_Type => Kind_Task,
+                                    when others      => raise Program_Error),
+                                 Origin                => Origin_User,
                                  Inputs_Proof          =>
                                    To_Name_Set (Proof_Ins),
                                  Inputs                => To_Name_Set (Reads),
@@ -1355,12 +1364,12 @@ package body Flow is
                                 (Name                  => To_Entity_Name (E),
                                  Kind                  =>
                                    (case Ekind (E) is
-                                    when E_Entry         => Kind_Entry,
-                                    when E_Task_Type     => Kind_Task,
-                                    when Subprogram_Kind => Kind_Subprogram,
-                                    when others          =>
-                                      raise Program_Error),
-                                 Globals_Origin        => Origin_Frontend,
+                                    when E_Entry     => Kind_Entry,
+                                    when E_Function
+                                       | E_Procedure => Kind_Subprogram,
+                                    when E_Task_Type => Kind_Task,
+                                    when others      => raise Program_Error),
+                                 Origin                => Origin_Frontend,
                                  Inputs_Proof          => Name_Sets.Empty_Set,
                                  Inputs                => Reads,
                                  Outputs               => Writes,
@@ -1561,6 +1570,9 @@ package body Flow is
                   Analysis.Find_Non_Elaborated_State_Abstractions (FA);
                   Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                   Analysis.Check_Initializes_Contract (FA);
+                  if FA.Kind = Kind_Package_Body then
+                     Analysis.Check_Elaborate_Body (FA);
+                  end if;
             end case;
          end if;
 
@@ -1629,7 +1641,7 @@ package body Flow is
       --  in SPARK. For them we need to explicitly register accesses to
       --  unsynchronized states and variables that occur in contract.
       for S of Routines_With_Spec_Only loop
-         GG_Write_Global_Info (GI => S);
+         GG_Register_Global_Info (GI => S);
 
          Register_Unsynch_Accesses : declare
             Tasking : Tasking_Info;
@@ -1659,8 +1671,9 @@ package body Flow is
                end loop;
 
             end Collect_Unsynchronized_Globals;
+
          begin
-            if S.Globals_Origin = Origin_User then
+            if S.Origin = Origin_User then
                Collect_Unsynchronized_Globals (S.Inputs_Proof);
                Collect_Unsynchronized_Globals (S.Inputs);
                Collect_Unsynchronized_Globals (S.Outputs);
@@ -1684,9 +1697,9 @@ package body Flow is
          end if;
 
          if FA.Kind = Kind_Package_Body then
-            --  Here we utilize the package's Refined_State aspect (if it
-            --  exists). Notice that we process this aspect regardless of
-            --  whether we generate a gg graph or not.
+            --  Here we use the package's Refined_State aspect (if it exists).
+            --  Note that we process this aspect regardless of whether we
+            --  generate a gg graph or not.
             declare
                Refined_State_N : constant Node_Id :=
                  Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_State);
@@ -1697,7 +1710,7 @@ package body Flow is
                      DM : constant Dependency_Maps.Map :=
                        Parse_Refined_State (Refined_State_N);
                   begin
-                     GG_Write_State_Info (DM);
+                     GG_Register_State_Info (DM);
                   end;
                end if;
             end;
@@ -1769,7 +1782,7 @@ package body Flow is
                                     then Spec_Entity (FA.Analyzed_Entity)
                                     else FA.Analyzed_Entity),
                   Kind                  => FA.Kind,
-                  Globals_Origin        => Origin_Flow,
+                  Origin                => Origin_Flow,
                   Inputs_Proof          => To_Name_Set (Inputs_Proof),
                   Inputs                => To_Name_Set (Inputs),
                   Outputs               => To_Name_Set (Outputs),
@@ -1781,7 +1794,7 @@ package body Flow is
                   Local_Definite_Writes =>
                     To_Name_Set (Local_Definite_Writes));
 
-               GG_Write_Global_Info (GI => Global_Info);
+               GG_Register_Global_Info (GI => Global_Info);
             end;
 
          end if;
@@ -1806,11 +1819,10 @@ package body Flow is
    -----------------------------
 
    function Last_Statement_Is_Raise (E : Entity_Id) return Boolean is
-      Ptr : Node_Id;
+      Last_Statement : constant Node_Id :=
+        Last (Statements (Handled_Statement_Sequence (Get_Body (E))));
    begin
-      Ptr := Get_Body (E);
-      Ptr := Last (Statements (Handled_Statement_Sequence (Ptr)));
-      return Nkind (Ptr) in N_Raise_xxx_Error | N_Raise_Statement;
+      return Nkind (Last_Statement) in N_Raise_xxx_Error | N_Raise_Statement;
    end Last_Statement_Is_Raise;
 
 end Flow;

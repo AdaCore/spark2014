@@ -8,4 +8,4 @@ foo.adb:35:26: info: initialization of "N" proved
 foo.adb:42:30: info: initialization of "N" proved
 foo.adb:43:09: expected to see "X" on the left-hand-side of a dependency relation
 foo.adb:43:09: medium: missing dependency "X => X"
-gnatprove: error during analysis of data and information flow
+gnatprove: error during flow analysis and proof
