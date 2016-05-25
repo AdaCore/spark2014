@@ -6445,12 +6445,18 @@ package body Flow.Control_Flow_Graph is
                --  List of nodes that represent the order in which a package
                --  is elaborated; it is then abstracted into a single block.
 
+               Visible_Decls : constant List_Id :=
+                 Visible_Declarations (Spec_N);
+
+               Private_Decls : constant List_Id :=
+                 Private_Declarations (Spec_N);
+
             begin
-               if Present (Visible_Declarations (Spec_N)) then
-                  Process_Statement_List (Visible_Declarations (Spec_N),
+               if Present (Visible_Decls) then
+                  Process_Statement_List (Visible_Decls,
                                           FA, Connection_Map, The_Context);
 
-                  Nodes.Append (Union_Id (Visible_Declarations (Spec_N)));
+                  Nodes.Append (Union_Id (Visible_Decls));
                end if;
 
                --  Ok, we need a copy of all variables from the spec +
@@ -6460,10 +6466,10 @@ package body Flow.Control_Flow_Graph is
                --  hard work we've done so far.
                FA.Visible_Vars := FA.All_Vars or Package_Writes;
 
-               if Present (Private_Declarations (Spec_N)) then
-                  Process_Statement_List (Private_Declarations (Spec_N),
+               if Present (Private_Decls) then
+                  Process_Statement_List (Private_Decls,
                                           FA, Connection_Map, The_Context);
-                  Nodes.Append (Union_Id (Private_Declarations (Spec_N)));
+                  Nodes.Append (Union_Id (Private_Decls));
                end if;
 
                --  We need to keep track of these for checking
