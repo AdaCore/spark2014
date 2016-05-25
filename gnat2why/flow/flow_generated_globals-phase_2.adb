@@ -414,22 +414,20 @@ package body Flow_Generated_Globals.Phase_2 is
       MR_Proof_Reads : Name_Sets.Set;
       MR_Reads       : Name_Sets.Set;
       MR_Writes      : Name_Sets.Set;
-      --  The above 3 sets will contain the most refined views of their
+      --  The above sets will contain the most refined views of their
       --  respective globals.
 
       Final_View : Name_Sets.Set;
       Unused     : Flow_Id_Sets.Set;
 
    begin
-      --  Call GG_Get_MR_Globals to calculate MR_Proof_Reads, MR_Reads and
-      --  MR_Writes.
       GG_Get_MR_Globals (To_Entity_Name (E),
                          MR_Proof_Reads,
                          MR_Reads,
                          MR_Writes);
 
-      --  Up project variables based on scope S and give Flow_Ids
-      --  their correct views.
+      --  Up project variables based on scope S and give Flow_Ids their correct
+      --  views.
       Up_Project (Most_Refined => MR_Proof_Reads,
                   Final_View   => Final_View,
                   Scope        => S,
