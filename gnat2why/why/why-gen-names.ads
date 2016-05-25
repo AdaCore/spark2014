@@ -233,6 +233,9 @@ package Why.Gen.Names is
       --  Suffix of the above ancestor field, to be used in related functions
       WNE_Rec_Ancestor_Suffix,  --  anc__
 
+      --  Name of the record type in a representative record theory
+      WNE_Rec_Rep,
+
       --  Name of constant tag value for a tagged type
       WNE_Tag,  --  __tag
 

@@ -539,8 +539,12 @@ package body Gnat2Why.Types is
          return;
 
       else
-         if Is_Array_Type (E) then
+         if Has_Array_Type (E) then
             Create_Rep_Array_Theory_If_Needed (File, E);
+         elsif Retysp_Kind (E) in
+           Private_Kind | E_Record_Type | E_Record_Subtype | Concurrent_Kind
+         then
+            Create_Rep_Record_Theory_If_Needed (File, Retysp (E));
          end if;
 
          New_Theory := True;

@@ -689,6 +689,7 @@ package body Why.Gen.Names is
          when WNE_Havoc                => "__havoc",
          when WNE_Hide_Extension       => "hide_ext__",
          when WNE_No_Return_Module     => "No_Return",
+         when WNE_Rec_Rep              => "__rep",
          when WNE_Rec_Ancestor_Suffix  => "anc__",
          when WNE_Rec_Comp_Prefix      => "rec__",
          when WNE_Rec_Extension_Suffix => "ext__",

@@ -1158,47 +1158,6 @@ package body Gnat2Why.External_Axioms is
                         Alias => Type_Of_Node (Actual)));
                end if;
 
-               if Is_Record_Type (Actual) and then
-                 Root_Record_Type (Actual) = Actual
-               then
-
-                  --  if the actual is a root type of a record type, we need
-                  --  to define the conversion functions
-
-                  declare
-                     F_Ty   : constant W_Type_Id :=
-                       +New_Named_Type (Short_Name (Formal));
-                     A_Ident    : constant W_Identifier_Id :=
-                       New_Identifier (Name => "a", Typ => F_Ty);
-                     R_Binder   : constant Binder_Array :=
-                       (1 => (B_Name => A_Ident,
-                              others => <>));
-                  begin
-
-                     Emit
-                       (TFile,
-                        New_Function_Decl
-                          (Domain      => EW_Term,
-                           Name        =>
-                             To_Local (E_Symb (Actual, WNE_To_Base)),
-                           Binders     => R_Binder,
-                           Labels      => Name_Id_Sets.Empty_Set,
-                           Return_Type => F_Ty,
-                           Def         => +A_Ident));
-                     Emit
-                       (TFile,
-                        New_Function_Decl
-                          (Domain      => EW_Term,
-                           Name        =>
-                             To_Local (E_Symb (Actual, WNE_Of_Base)),
-                           Binders     => R_Binder,
-                           Labels      => Name_Id_Sets.Empty_Set,
-                           Return_Type => F_Ty,
-                           Def         => +A_Ident));
-
-                  end;
-               end if;
-
                Close_Theory (TFile,
                              Kind => Definition_Theory);
 

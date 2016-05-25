@@ -38,8 +38,8 @@ package Why.Gen.Records is
    --  also includes records with variant parts.
 
    procedure Declare_Ada_Record
-     (P       : W_Section_Id;
-      E       : Entity_Id) with
+     (P : W_Section_Id;
+      E : Entity_Id) with
       Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
                           Private_Kind  | Concurrent_Kind;
    --  Emit all necessary Why3 declarations to support Ada records. This also
@@ -47,6 +47,15 @@ package Why.Gen.Records is
    --  @param P the Why section to insert the declaration
    --  @param Theory the theory in which to insert the type declaration
    --  @param E the type entity to translate
+
+   procedure Create_Rep_Record_Theory_If_Needed
+     (P : W_Section_Id;
+      E : Entity_Id) with
+     Pre => Ekind (E) in E_Record_Type | E_Record_Subtype |
+     Private_Kind  | Concurrent_Kind;
+   --  Create a module for the representative type of a record if needed. It
+   --  contains a why record type named WNE_Rec_Rep and all the needed
+   --  functions and attributes except for the tag of tagged types.
 
    function New_Ada_Record_Access
      (Ada_Node : Node_Id;
@@ -254,5 +263,7 @@ package Why.Gen.Records is
    function Record_Type_Cloned_Subtype (E : Entity_Id) return Entity_Id with
      Pre => Record_Type_Is_Clone (E);
    --  Return the existing type declaration that has been cloned for E
+
+   function Oldest_Parent_With_Same_Fields (E : Entity_Id) return Entity_Id;
 
 end Why.Gen.Records;

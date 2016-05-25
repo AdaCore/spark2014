@@ -27,12 +27,14 @@ with Ada.Containers.Hashed_Maps;
 with Common_Containers;          use Common_Containers;
 with Elists;                     use Elists;
 with Flow_Utility;               use Flow_Utility;
+with GNAT.Source_Info;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
 with Sem_Aux;                    use Sem_Aux;
 with Sem_Util;                   use Sem_Util;
 with Sinfo;                      use Sinfo;
+with Sinput;                     use Sinput;
 with Snames;                     use Snames;
 with SPARK_Definition;           use SPARK_Definition;
 with Uintp;                      use Uintp;
@@ -135,12 +137,30 @@ package body Why.Gen.Records is
    --  Counts the number of fields for the Why3 record representing type Root
    --  that are not present in the representation of E.
 
+   function Get_Rep_Record_Module (E : Entity_Id) return W_Module_Id;
+   --  Return the name of a record's representative module.
+
+   procedure Declare_Rep_Record_Type
+     (P      : W_Section_Id;
+      E      : Entity_Id);
+   --  Emit all necessary Why3 declarations to support Ada records. This also
+   --  supports variant records, private types and concurrent types.
+   --  @param P the Why section to insert the declaration
+   --  @param Theory the theory in which to insert the type declaration
+   --  @param E the type entity to translate
+
    procedure Declare_Conversion_Check_Function
      (Section : W_Section_Id;
       E       : Entity_Id;
       Root    : Entity_Id);
    --  generate the program function which is used to insert subtype
    --  discriminant checks
+
+   procedure Declare_Attributes
+     (P       : W_Section_Id;
+      E       : Entity_Id;
+      Ty_Name : W_Name_Id);
+      --  Declare functions for the record attributes
 
    function Discriminant_Check_Pred_Name
      (E     : Entity_Id;
@@ -209,17 +229,55 @@ package body Why.Gen.Records is
       return Count;
    end Count_Root_Fields_Not_In_E;
 
-   -----------------------
-   -- Declare_Ada_Record --
-   -----------------------
+   -------------------------------
+   -- Declare_Rep_Record_Theory --
+   -------------------------------
 
-   procedure Declare_Ada_Record
-     (P      : W_Section_Id;
-      E      : Entity_Id)
+   procedure Create_Rep_Record_Theory_If_Needed
+     (P : W_Section_Id;
+      E : Entity_Id)
    is
-      procedure Declare_Attributes;
-      --  Declare functions for the record attributes
+      Ancestor : constant Entity_Id :=
+        Oldest_Parent_With_Same_Fields (E);
+   begin
+      --  Empty record types and clones do not require a representative
+      --  theory.
 
+      if Count_Why_Top_Level_Fields (E) = 0
+        or else Record_Type_Is_Clone (E)
+      then
+         return;
+      end if;
+
+      --  If E has an ancestor with the same fields, use its representative.
+
+      if Ancestor /= E then
+         return;
+      end if;
+
+      Open_Theory
+        (P, Get_Rep_Record_Module (E),
+         Comment =>
+           "Module for axiomatizing the record theory associated to type "
+         & """" & Get_Name_String (Chars (E)) & """"
+         & (if Sloc (E) > 0 then
+              " defined at " & Build_Location_String (Sloc (E))
+           else "")
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Declare_Rep_Record_Type (P, E);
+
+      Close_Theory (P, Kind => Definition_Theory);
+   end Create_Rep_Record_Theory_If_Needed;
+
+   -----------------------------
+   -- Declare_Rep_Record_Type --
+   -----------------------------
+
+   procedure Declare_Rep_Record_Type
+     (P : W_Section_Id;
+      E : Entity_Id)
+   is
       procedure Declare_Record_Type;
       --  Declare the record type
 
@@ -353,7 +411,7 @@ package body Why.Gen.Records is
 
       Root      : constant Entity_Id := Root_Record_Type (E);
       Is_Root   : constant Boolean   := Root = E;
-      Ty_Name   : constant W_Name_Id := To_Why_Type (E, Local => True);
+      Ty_Name   : constant W_Name_Id := To_Name (WNE_Rec_Rep);
       Abstr_Ty  : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
       Comp_Info : Info_Maps.Map      := Info_Maps.Empty_Map;
       --  This map maps each component and each N_Variant node to a
@@ -443,151 +501,6 @@ package body Why.Gen.Records is
 
          return Cond;
       end Compute_Others_Choice;
-
-      ------------------------
-      -- Declare_Attributes --
-      ------------------------
-
-      procedure Declare_Attributes is
-      begin
-         --  The static tag for the type is defined as a logic constant
-         if Is_Tagged_Type (E) then
-            Emit (P,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => To_Local (E_Symb (E, WNE_Tag)),
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Return_Type => EW_Int_Type));
-         end if;
-
-         --  The value size is defined as a logic constant
-
-         Emit (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Int_Type));
-
-         --  The object size is defined as a logic function
-
-         Emit (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Local (E_Symb (E, WNE_Attr_Object_Size)),
-                  Binders     => R_Binder,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Int_Type));
-
-         --  Both value size and object size are non-negative
-
-         --  The value alignement is defined as a logic constant
-
-         Emit (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Local (E_Symb
-                    (E, WNE_Attr_Value_Alignment)),
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Int_Type));
-
-         --  The object alignment is defined as a logic function
-
-         Emit (P,
-               New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Local (E_Symb (E,
-                    WNE_Attr_Object_Alignment)),
-                  Binders     => R_Binder,
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Return_Type => EW_Int_Type));
-
-         --  Both value alignment and object alignment are non-negative
-
-         declare
-            Zero : constant W_Expr_Id :=
-              New_Integer_Constant (Value => Uint_0);
-
-            Value_Size_Fun : constant W_Expr_Id :=
-              New_Call (Name   => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
-                        Domain => EW_Term,
-                        Typ    => EW_Int_Type);
-
-            Value_Size_Axiom : constant W_Pred_Id :=
-              +New_Comparison (Symbol => Int_Infix_Ge,
-                               Left   => Value_Size_Fun,
-                               Right  => Zero,
-                               Domain => EW_Term);
-
-            Object_Size_Fun : constant W_Expr_Id :=
-              New_Call (Name   =>
-                          To_Local (E_Symb (E, WNE_Attr_Object_Size)),
-                        Args   => (1 => +A_Ident),
-                        Domain => EW_Term,
-                        Typ    => EW_Int_Type);
-
-            Object_Size_Pred : constant W_Pred_Id :=
-              +New_Comparison (Symbol => Int_Infix_Ge,
-                               Left   => Object_Size_Fun,
-                               Right  => Zero,
-                               Domain => EW_Term);
-
-            Object_Size_Axiom : constant W_Pred_Id :=
-              New_Universal_Quantif (Binders => R_Binder,
-                                     Pred    => Object_Size_Pred);
-
-            Value_Alignment_Fun : constant W_Expr_Id :=
-              New_Call (Name     => To_Local (E_Symb
-                        (E, WNE_Attr_Value_Alignment)),
-                        Domain   => EW_Term,
-                        Typ      => EW_Int_Type);
-
-            Value_Alignment_Axiom : constant W_Pred_Id :=
-              +New_Comparison (Symbol => Int_Infix_Ge,
-                               Left   => Value_Alignment_Fun,
-                               Right  => Zero,
-                               Domain => EW_Term);
-
-            Object_Alignment_Fun : constant W_Expr_Id :=
-              New_Call (Name     =>
-                          To_Local (E_Symb (E,
-                            WNE_Attr_Object_Alignment)),
-                        Args     => (1 => +A_Ident),
-                        Domain   => EW_Term,
-                        Typ      => EW_Int_Type);
-
-            Object_Alignment_Pred : constant W_Pred_Id :=
-              +New_Comparison (Symbol => Int_Infix_Ge,
-                               Left   => Object_Alignment_Fun,
-                               Right  => Zero,
-                               Domain => EW_Term);
-
-            Object_Alignment_Axiom : constant W_Pred_Id :=
-              New_Universal_Quantif (Binders => R_Binder,
-                                     Pred    => Object_Alignment_Pred);
-
-         begin
-            Emit (P,
-                  New_Axiom (Ada_Node => E,
-                             Name     => NID ("value__size_axiom"),
-                             Def      => Value_Size_Axiom));
-
-            Emit (P,
-                  New_Axiom (Ada_Node => E,
-                             Name     => NID ("object__size_axiom"),
-                             Def      => Object_Size_Axiom));
-            Emit (P,
-                  New_Axiom (Ada_Node => E,
-                             Name     => NID ("value__alignment_axiom"),
-                             Def      => Value_Alignment_Axiom));
-
-            Emit (P,
-                  New_Axiom (Ada_Node => E,
-                             Name     => NID ("object__alignment_axiom"),
-                             Def      => Object_Alignment_Axiom));
-         end;
-
-      end Declare_Attributes;
 
       ----------------------------------
       -- Declare_Conversion_Functions --
@@ -2156,6 +2069,85 @@ package body Why.Gen.Records is
    --  Start of processing for Declare_Ada_Record
 
    begin
+
+      --  ??? rewrite with case statement
+      if Ekind (E) in E_Record_Subtype | E_Record_Subtype_With_Private then
+         Init_Component_Info (Retysp (Etype (E)));
+      elsif Ekind (E) in E_Record_Type | E_Record_Type_With_Private then
+         Init_Component_Info (E);
+      elsif Ekind (E) in Concurrent_Kind then
+         Init_Component_Info_For_Protected_Types (E);
+      end if;
+
+      Declare_Record_Type;
+
+      --  We need to delare conversion functions before the protected access
+      --  functions, because the former may be used in the latter
+
+      if not Is_Root then
+         if Has_Private_Ancestor_Or_Root (E) then
+            --  The hiding of components from a private ancestor is only used
+            --  for tagged types. For non-tagged types, components are repeated
+            --  in the derived type.
+            pragma Assert (Is_Tagged_Type (E));
+            Declare_Extraction_Functions_For_Ancestor;
+         end if;
+
+         if Is_Tagged_Type (E) then
+            Declare_Extraction_Functions_For_Extension;
+         end if;
+
+         Declare_Conversion_Functions;
+      else
+         --  Declare dummy conversion functions that will be used to convert
+         --  other types which use E as a representative type.
+
+         Emit
+           (P,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (E_Symb (E, WNE_To_Base)),
+               Binders     => R_Binder,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Return_Type => Abstr_Ty,
+               Def         => +A_Ident));
+         Emit
+           (P,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (E_Symb (E, WNE_Of_Base)),
+               Binders     => R_Binder,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Return_Type => Abstr_Ty,
+               Def         => +A_Ident));
+      end if;
+
+      Declare_Protected_Access_Functions;
+      Declare_Equality_Function;
+      Declare_Attributes (P, E, Ty_Name);
+   end Declare_Rep_Record_Type;
+
+   ------------------------
+   -- Declare_Ada_Record --
+   ------------------------
+
+   procedure Declare_Ada_Record
+     (P       : W_Section_Id;
+      E       : Entity_Id)
+   is
+
+      Root      : constant Entity_Id := Root_Record_Type (E);
+      Is_Root   : constant Boolean   := Root = E;
+      Ty_Name   : constant W_Name_Id := To_Why_Type (E, Local => True);
+      Abstr_Ty  : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
+      A_Ident  : constant W_Identifier_Id :=
+        New_Identifier (Name => "a", Typ => Abstr_Ty);
+      R_Binder : constant Binder_Array :=
+        (1 => (B_Name => A_Ident,
+               others => <>));
+      Rep_Module : constant W_Module_Id := Get_Rep_Record_Module (E);
+
+   begin
       --  Get the empty record case out of the way
 
       if Count_Why_Top_Level_Fields (E) = 0 then
@@ -2177,32 +2169,32 @@ package body Why.Gen.Records is
 
          --  Conversion functions are identity
 
-         if not Is_Root then
-            declare
-               R_Ident : constant W_Identifier_Id :=
-                 New_Identifier (Name => "r", Typ => EW_Abstract (Root));
-            begin
-               Emit
-                 (P,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => To_Local (E_Symb (E, WNE_To_Base)),
-                     Binders     => R_Binder,
-                     Labels      => Name_Id_Sets.To_Set (NID ("inline")),
-                     Return_Type => EW_Abstract (Root),
-                     Def         => +A_Ident));
-               Emit
-                 (P,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => To_Local (E_Symb (E, WNE_Of_Base)),
-                     Binders     => Binder_Array'(1 => (B_Name => R_Ident,
-                                                        others => <>)),
-                     Labels      => Name_Id_Sets.To_Set (NID ("inline")),
-                     Return_Type => Abstr_Ty,
-                     Def         => +R_Ident));
-            end;
-         end if;
+         declare
+            R_Ident : constant W_Identifier_Id :=
+              New_Identifier (Name => "r", Typ => (if Is_Root then Abstr_Ty
+                                                   else EW_Abstract (Root)));
+         begin
+            Emit
+              (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb (E, WNE_To_Base)),
+                  Binders     => R_Binder,
+                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
+                  Return_Type => (if Is_Root then Abstr_Ty
+                                  else EW_Abstract (Root)),
+                  Def         => +A_Ident));
+            Emit
+              (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb (E, WNE_Of_Base)),
+                  Binders     => Binder_Array'(1 => (B_Name => R_Ident,
+                                                     others => <>)),
+                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
+                  Return_Type => Abstr_Ty,
+                  Def         => +R_Ident));
+         end;
 
          --  Equality function returns always true
 
@@ -2225,7 +2217,7 @@ package body Why.Gen.Records is
                   Def         => +True_Term));
          end;
 
-         Declare_Attributes;
+         Declare_Attributes (P, E, Ty_Name);
 
          return;
       end if;
@@ -2256,77 +2248,187 @@ package body Why.Gen.Records is
                           (Name =>
                                To_Why_Type (Clone, Local => True))));
             end if;
-
-            --  if the cloned type is a root type, or the private view of a
-            --  root type, we need to define the conversion functions; in all
-            --  other cases, they are already there.
-
-            if Root_Record_Type (Clone) = Retysp (Clone) then
-               Emit
-                 (P,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => To_Local (E_Symb (E, WNE_To_Base)),
-                     Binders     => R_Binder,
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Return_Type => Abstr_Ty,
-                     Def         => +A_Ident));
-               Emit
-                 (P,
-                  New_Function_Decl
-                    (Domain      => EW_Term,
-                     Name        => To_Local (E_Symb (E, WNE_Of_Base)),
-                     Binders     => R_Binder,
-                     Labels      => Name_Id_Sets.Empty_Set,
-                     Return_Type => Abstr_Ty,
-                     Def         => +A_Ident));
-            end if;
          end;
 
          return;
       end if;
 
-      --  ??? rewrite with case statement
-      if Ekind (E) in E_Record_Subtype | E_Record_Subtype_With_Private then
-         Init_Component_Info (Retysp (Etype (E)));
-      elsif Ekind (E) in E_Record_Type | E_Record_Type_With_Private then
-         Init_Component_Info (E);
-      elsif Ekind (E) in Concurrent_Kind then
-         Init_Component_Info_For_Protected_Types (E);
+      --  Export the theory containing the record definition.
+
+      Add_With_Clause (P, Rep_Module, EW_Export);
+
+      --  Rename the representative record type as expected.
+
+      Emit (P,
+            New_Type_Decl
+              (Name  => To_Why_Type (E, Local => True),
+               Alias =>
+                 +New_Named_Type
+                 (Name => To_Name (WNE_Rec_Rep))));
+
+      --  The static tag for the type is defined as a logic constant
+      if Is_Tagged_Type (E) then
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        => To_Local (E_Symb (E, WNE_Tag)),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
       end if;
 
-      Declare_Record_Type;
-
-      --  We need to delare conversion functions before the protected access
-      --  functions, because the former may be used in the latter
-
-      if not Is_Root then
-         if Has_Private_Ancestor_Or_Root (E) then
-            --  The hiding of components from a private ancestor is only used
-            --  for tagged types. For non-tagged types, components are repeated
-            --  in the derived type.
-            pragma Assert (Is_Tagged_Type (E));
-            Declare_Extraction_Functions_For_Ancestor;
-         end if;
-
-         if Is_Tagged_Type (E) then
-            Declare_Extraction_Functions_For_Extension;
-         end if;
-
-         Declare_Conversion_Functions;
-      end if;
-
-      Declare_Protected_Access_Functions;
-      Declare_Equality_Function;
-      Declare_Attributes;
-
-      if not Is_Root
+      if Root /= E
         and then Has_Discriminants (E)
         and then Is_Constrained (E)
       then
          Declare_Conversion_Check_Function (P, E, Root);
       end if;
    end Declare_Ada_Record;
+
+   ------------------------
+   -- Declare_Attributes --
+   ------------------------
+
+   procedure Declare_Attributes
+     (P       : W_Section_Id;
+      E       : Entity_Id;
+      Ty_Name : W_Name_Id)
+   is
+      Abstr_Ty  : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
+      A_Ident  : constant W_Identifier_Id :=
+        New_Identifier (Name => "a", Typ => Abstr_Ty);
+      R_Binder : constant Binder_Array :=
+        (1 => (B_Name => A_Ident,
+               others => <>));
+   begin
+
+      --  The value size is defined as a logic constant
+
+      Emit (P,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
+               Labels      => Name_Id_Sets.Empty_Set,
+               Return_Type => EW_Int_Type));
+
+      --  The object size is defined as a logic function
+
+      Emit (P,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (E_Symb (E, WNE_Attr_Object_Size)),
+               Binders     => R_Binder,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Return_Type => EW_Int_Type));
+
+      --  Both value size and object size are non-negative
+
+      --  The value alignement is defined as a logic constant
+
+      Emit (P,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (E_Symb
+                 (E, WNE_Attr_Value_Alignment)),
+               Labels      => Name_Id_Sets.Empty_Set,
+               Return_Type => EW_Int_Type));
+
+      --  The object alignment is defined as a logic function
+
+      Emit (P,
+            New_Function_Decl
+              (Domain      => EW_Term,
+               Name        => To_Local (E_Symb (E,
+                 WNE_Attr_Object_Alignment)),
+               Binders     => R_Binder,
+               Labels      => Name_Id_Sets.Empty_Set,
+               Return_Type => EW_Int_Type));
+
+      --  Both value alignment and object alignment are non-negative
+
+      declare
+         Zero : constant W_Expr_Id :=
+           New_Integer_Constant (Value => Uint_0);
+
+         Value_Size_Fun : constant W_Expr_Id :=
+           New_Call (Name   => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type);
+
+         Value_Size_Axiom : constant W_Pred_Id :=
+           +New_Comparison (Symbol => Int_Infix_Ge,
+                            Left   => Value_Size_Fun,
+                            Right  => Zero,
+                            Domain => EW_Term);
+
+         Object_Size_Fun : constant W_Expr_Id :=
+           New_Call (Name   =>
+                       To_Local (E_Symb (E, WNE_Attr_Object_Size)),
+                     Args   => (1 => +A_Ident),
+                     Domain => EW_Term,
+                     Typ    => EW_Int_Type);
+
+         Object_Size_Pred : constant W_Pred_Id :=
+           +New_Comparison (Symbol => Int_Infix_Ge,
+                            Left   => Object_Size_Fun,
+                            Right  => Zero,
+                            Domain => EW_Term);
+
+         Object_Size_Axiom : constant W_Pred_Id :=
+           New_Universal_Quantif (Binders => R_Binder,
+                                  Pred    => Object_Size_Pred);
+
+         Value_Alignment_Fun : constant W_Expr_Id :=
+           New_Call (Name     => To_Local (E_Symb
+                     (E, WNE_Attr_Value_Alignment)),
+                     Domain   => EW_Term,
+                     Typ      => EW_Int_Type);
+
+         Value_Alignment_Axiom : constant W_Pred_Id :=
+           +New_Comparison (Symbol => Int_Infix_Ge,
+                            Left   => Value_Alignment_Fun,
+                            Right  => Zero,
+                            Domain => EW_Term);
+
+         Object_Alignment_Fun : constant W_Expr_Id :=
+           New_Call (Name     =>
+                       To_Local (E_Symb (E,
+                         WNE_Attr_Object_Alignment)),
+                     Args     => (1 => +A_Ident),
+                     Domain   => EW_Term,
+                     Typ      => EW_Int_Type);
+
+         Object_Alignment_Pred : constant W_Pred_Id :=
+           +New_Comparison (Symbol => Int_Infix_Ge,
+                            Left   => Object_Alignment_Fun,
+                            Right  => Zero,
+                            Domain => EW_Term);
+
+         Object_Alignment_Axiom : constant W_Pred_Id :=
+           New_Universal_Quantif (Binders => R_Binder,
+                                  Pred    => Object_Alignment_Pred);
+
+      begin
+         Emit (P,
+               New_Axiom (Ada_Node => E,
+                          Name     => NID ("value__size_axiom"),
+                          Def      => Value_Size_Axiom));
+
+         Emit (P,
+               New_Axiom (Ada_Node => E,
+                          Name     => NID ("object__size_axiom"),
+                          Def      => Object_Size_Axiom));
+         Emit (P,
+               New_Axiom (Ada_Node => E,
+                          Name     => NID ("value__alignment_axiom"),
+                          Def      => Value_Alignment_Axiom));
+
+         Emit (P,
+               New_Axiom (Ada_Node => E,
+                          Name     => NID ("object__alignment_axiom"),
+                          Def      => Object_Alignment_Axiom));
+      end;
+
+   end Declare_Attributes;
 
    ---------------------------------------
    -- Declare_Conversion_Check_Function --
@@ -2614,6 +2716,20 @@ package body Why.Gen.Records is
                           else E_Symb (Ty, WNE_Hide_Ancestor)),
                        Args   => Args);
    end Get_Ancestor_Part_From_Root;
+
+   ---------------------------
+   -- Get_Rep_Record_Module --
+   ---------------------------
+
+   function Get_Rep_Record_Module (E : Entity_Id) return W_Module_Id is
+      Ancestor : constant Entity_Id :=
+        Oldest_Parent_With_Same_Fields (E);
+      Name     : constant String :=
+        Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
+   begin
+      return New_Module (File => No_Name,
+                         Name => NID (Name));
+   end Get_Rep_Record_Module;
 
    ---------------------------------------
    -- Insert_Subtype_Discriminant_Check --
@@ -3157,6 +3273,91 @@ package body Why.Gen.Records is
          Domain   => Domain,
          Typ      => EW_Int_Type);
    end New_Tag_Access;
+
+   ------------------------------------
+   -- Oldest_Parent_With_Same_Fields --
+   ------------------------------------
+
+   function Oldest_Parent_With_Same_Fields (E : Entity_Id) return Entity_Id is
+      Current  : Entity_Id := Retysp (E);
+      Ancestor : Entity_Id := Current;
+
+   begin
+      --  Protected types and task types are not handled.
+
+      if Ekind (Current) in Protected_Kind | Task_Kind then
+         return E;
+      end if;
+
+      --  We do not handle types with discriminants yet which can have less
+      --  fields than their parent.
+
+      if Has_Discriminants (Current) then
+         return Current;
+      end if;
+
+      --  If E is not tagged then the root type has the same fields as E.
+
+      if not Is_Tagged_Type (Current) then
+         return Root_Record_Type (Current);
+      else
+
+         --  Otherwise, we follow the Etype link until we find a type with
+         --  more fields.
+
+         loop
+
+            --  If Current is private, its fullview is not in SPARK. Thus, it
+            --  is considered to have private fields of its own.
+
+            if Is_Private_Type (Current) then
+               return Current;
+            end if;
+
+            --  Use the Etype field or the first ancestor in SPARK to get to
+            --  parent type.
+            --  Note that, even if Current is not a private type, its full
+            --  view may still not be in SPARK, in particular when it is
+            --  a (non-private) tagged derivation of a private type.
+
+            if Full_View_Not_In_SPARK (Current) then
+               Ancestor := Get_First_Ancestor_In_SPARK (Current);
+            else
+               Ancestor := Retysp (Etype (Current));
+            end if;
+
+            --  If we have found a type which is not a derived type, we are
+            --  done.
+
+            if Ancestor = Current then
+               return Current;
+            end if;
+
+            --  If Current is not subtype, check whether it has more fields
+            --  than Ancestor.
+
+            if not (Ekind (Current) in SPARK_Util.Subtype_Kind) then
+               declare
+                  Field   : Entity_Id := First_Component (Current);
+                  A_Field : Entity_Id;
+               begin
+                  while Present (Field) loop
+                     A_Field := Search_Component_By_Name (Ancestor, Field);
+
+                     --  If Field is not in Ancestor, we are done.
+
+                     if No (A_Field) then
+                        return Current;
+                     end if;
+                     Field := Next_Component (Field);
+                  end loop;
+               end;
+            end if;
+
+            Current := Ancestor;
+         end loop;
+      end if;
+   end Oldest_Parent_With_Same_Fields;
 
    ------------------------------------
    -- Prepare_Args_For_Subtype_Check --

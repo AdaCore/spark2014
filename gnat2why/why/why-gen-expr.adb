@@ -767,6 +767,10 @@ package body Why.Gen.Expr is
       R : constant Node_Id := Get_Ada_Node (+To);
       pragma Assert (Root_Record_Type (L) = Root_Record_Type (R));
 
+      Need_Conv : constant Boolean :=
+        Oldest_Parent_With_Same_Fields (L) /=
+        Oldest_Parent_With_Same_Fields (R);
+
       Base : constant W_Type_Id := EW_Abstract (Root_Record_Type (L));
 
       Need_Discr_Check : constant Boolean :=
@@ -785,7 +789,7 @@ package body Why.Gen.Expr is
    begin
       --  When From = To and no check needs to be inserted, do nothing
 
-      if Eq_Base (To, From) and then not Need_Check then
+      if not Need_Conv and then not Need_Check then
          return Expr;
       end if;
 
