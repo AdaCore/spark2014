@@ -306,11 +306,12 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Returns the Entity_Name of the directly enclosing state. If one
    --  does not exist it returns Null_Entity_Name.
 
-   procedure GG_Get_MR_Globals (EN          : Entity_Name;
-                                Proof_Reads : out Name_Sets.Set;
-                                Reads       : out Name_Sets.Set;
-                                Writes      : out Name_Sets.Set);
-   --  Gets the most refined proof reads, reads and writes globals of EN
+   procedure GG_Get_Most_Refined_Globals
+     (Subprogram  : Entity_Name;
+      Proof_Reads : out Name_Sets.Set;
+      Reads       : out Name_Sets.Set;
+      Writes      : out Name_Sets.Set);
+   --  Gets the most refined globals of a subprogram
 
    procedure Register_Task_Object
      (Type_Name : Entity_Name;
@@ -421,10 +422,10 @@ package body Flow_Generated_Globals.Phase_2 is
       Unused     : Flow_Id_Sets.Set;
 
    begin
-      GG_Get_MR_Globals (To_Entity_Name (E),
-                         MR_Proof_Reads,
-                         MR_Reads,
-                         MR_Writes);
+      GG_Get_Most_Refined_Globals (To_Entity_Name (E),
+                                   MR_Proof_Reads,
+                                   MR_Reads,
+                                   MR_Writes);
 
       --  Up project variables based on scope S and give Flow_Ids their correct
       --  views.
@@ -560,26 +561,27 @@ package body Flow_Generated_Globals.Phase_2 is
       then Package_To_Locals_Map (EN)
       else Name_Sets.Empty_Set);
 
-   -----------------------
-   -- GG_Get_MR_Globals --
-   -----------------------
+   ---------------------------------
+   -- GG_Get_Most_Refined_Globals --
+   ---------------------------------
 
-   procedure GG_Get_MR_Globals (EN          : Entity_Name;
-                                Proof_Reads : out Name_Sets.Set;
-                                Reads       : out Name_Sets.Set;
-                                Writes      : out Name_Sets.Set)
+   procedure GG_Get_Most_Refined_Globals
+     (Subprogram  : Entity_Name;
+      Proof_Reads : out Name_Sets.Set;
+      Reads       : out Name_Sets.Set;
+      Writes      : out Name_Sets.Set)
    is
-      procedure Compute_MR (Kind   :     Global_Kind;
-                            Result : out Name_Sets.Set);
+      procedure Most_Refined (Kind   :     Global_Kind;
+                              Result : out Name_Sets.Set);
       --  Compute vertices that can be reached from EN'Kind vertex and are of
       --  the kind Variable.
 
-      ----------------
-      -- Compute_MR --
-      ----------------
+      ------------------
+      -- Most_Refined --
+      ------------------
 
-      procedure Compute_MR (Kind   :     Global_Kind;
-                            Result : out Name_Sets.Set)
+      procedure Most_Refined (Kind   :     Global_Kind;
+                              Result : out Name_Sets.Set)
       is
          use Global_Graphs;
 
@@ -587,7 +589,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Start_V : Vertex_Id;
 
       begin
-         Start_G.Name := EN;
+         Start_G.Name := Subprogram;
          Start_V      := Global_Graph.Get_Vertex (Start_G);
 
          Result := Name_Sets.Empty_Set;
@@ -601,15 +603,15 @@ package body Flow_Generated_Globals.Phase_2 is
                end if;
             end;
          end loop;
-      end Compute_MR;
+      end Most_Refined;
 
-      --  Start of processing for GG_Get_MR_Globals
+      --  Start of processing for GG_Get_Most_Refined_Globals
 
    begin
-      Compute_MR (Kind => Proof_Ins, Result => Proof_Reads);
-      Compute_MR (Kind => Inputs,    Result => Reads);
-      Compute_MR (Kind => Outputs,   Result => Writes);
-   end GG_Get_MR_Globals;
+      Most_Refined (Kind => Proof_Ins, Result => Proof_Reads);
+      Most_Refined (Kind => Inputs,    Result => Reads);
+      Most_Refined (Kind => Outputs,   Result => Writes);
+   end GG_Get_Most_Refined_Globals;
 
    ----------------
    -- Up_Project --
@@ -1511,10 +1513,11 @@ package body Flow_Generated_Globals.Phase_2 is
                      Writes      : Name_Sets.Set;
                   begin
                      if GG_Exists_Cache.Contains (Definite_Call) then
-                        GG_Get_MR_Globals (EN          => Definite_Call,
-                                           Proof_Reads => Proof_Reads,
-                                           Reads       => Reads,
-                                           Writes      => Writes);
+                        GG_Get_Most_Refined_Globals
+                          (Subprogram  => Definite_Call,
+                           Proof_Reads => Proof_Reads,
+                           Reads       => Reads,
+                           Writes      => Writes);
 
                         RHS_Proof.Union (Proof_Reads);
                         RHS.Union (Reads);
@@ -1533,10 +1536,11 @@ package body Flow_Generated_Globals.Phase_2 is
                      Writes      : Name_Sets.Set;
                   begin
                      if GG_Exists_Cache.Contains (Conditional_Call) then
-                        GG_Get_MR_Globals (EN          => Conditional_Call,
-                                           Proof_Reads => Proof_Reads,
-                                           Reads       => Reads,
-                                           Writes      => Writes);
+                        GG_Get_Most_Refined_Globals
+                          (Subprogram  => Conditional_Call,
+                           Proof_Reads => Proof_Reads,
+                           Reads       => Reads,
+                           Writes      => Writes);
 
                         RHS_Proof.Union (Proof_Reads);
                         RHS.Union (Reads);
