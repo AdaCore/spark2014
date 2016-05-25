@@ -38,7 +38,6 @@ with Snames;                     use Snames;
 
 with Call;                       use Call;
 with Gnat2Why_Args;
-with Hashing;                    use Hashing;
 with SPARK2014VSN;               use SPARK2014VSN;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
@@ -80,7 +79,7 @@ package body Flow_Generated_Globals.Phase_2 is
    ----------------------------------------------------------------------
 
    type Global_Id_Kind is (Null_Global_Id,
-                           --  Dummy kind required for graphs
+                           --  Dummy kind required by the Graphs package
 
                            Inputs,
                            --  Represents subprogram's Inputs
@@ -107,11 +106,12 @@ package body Flow_Generated_Globals.Phase_2 is
    end record;
 
    Empty_Global_Id : constant Global_Id := Global_Id'(Kind => Null_Global_Id);
+   --  Dummy value required by the Graphs package API
 
    function Global_Hash (X : Global_Id) return Ada.Containers.Hash_Type
-   is (if X.Kind = Null_Global_Id
-       then Generic_Integer_Hash (-1)
-       else Name_Hash (X.Name));
+   is (Name_Hash (X.Name));
+   --  Hash function for Global_Id; raises Constraint_Error when applied to
+   --  Empty_Global_Id.
 
    -------------------
    -- Global_Graphs --
