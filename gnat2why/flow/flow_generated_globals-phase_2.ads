@@ -66,7 +66,11 @@ package Flow_Generated_Globals.Phase_2 is
    --  @return True iff the Globals Graph has been generated
 
    function GG_Exist (E : Entity_Id) return Boolean
-   with Pre => GG_Mode = GG_Read_Mode;
+   with Pre => Ekind (E) in E_Entry     |
+                            E_Function  |
+                            E_Procedure |
+                            E_Task_Type and then
+               GG_Mode = GG_Read_Mode;
    --  Returns True if generated globals have been computed for the
    --  given entity.
 
