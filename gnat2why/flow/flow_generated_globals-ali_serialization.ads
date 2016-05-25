@@ -21,7 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package implements writing and reading of global contracts
+--  This package implements serialization, i.e. writing and reading, of global
+--  contracts from an abstract "archive".
 
 with Serialisation; use Serialisation;
 
@@ -49,12 +50,12 @@ package Flow_Generated_Globals.ALI_Serialization is
             The_State                   : Entity_Name;
             The_Constituents            : Name_Lists.List;
          when EK_Remote_States =>
-            Remote_States               : Name_Sets.Set;
+            The_Remote_States           : Name_Sets.Set;
          when EK_Volatiles =>
-            Async_Readers               : Name_Sets.Set;
-            Async_Writers               : Name_Sets.Set;
-            Effective_Reads             : Name_Sets.Set;
-            Effective_Writes            : Name_Sets.Set;
+            The_Async_Readers           : Name_Sets.Set;
+            The_Async_Writers           : Name_Sets.Set;
+            The_Effective_Reads         : Name_Sets.Set;
+            The_Effective_Writes        : Name_Sets.Set;
          when EK_Globals =>
             The_Global_Info             : Global_Phase_1_Info;
          when EK_Protected_Instance =>

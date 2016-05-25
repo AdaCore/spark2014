@@ -1735,20 +1735,20 @@ package body Flow_Generated_Globals.Phase_2 is
                      State_Abstractions.Include (V.The_State);
 
                   when EK_Remote_States =>
-                     State_Abstractions.Union (V.Remote_States);
+                     State_Abstractions.Union (V.The_Remote_States);
 
                   when EK_Volatiles =>
-                     Async_Writers_Vars.Union (V.Async_Writers);
-                     Volatile_Vars.Union (V.Async_Writers);
+                     Async_Writers_Vars.Union (V.The_Async_Writers);
+                     Volatile_Vars.Union (V.The_Async_Writers);
 
-                     Async_Readers_Vars.Union (V.Async_Readers);
-                     Volatile_Vars.Union (V.Async_Readers);
+                     Async_Readers_Vars.Union (V.The_Async_Readers);
+                     Volatile_Vars.Union (V.The_Async_Readers);
 
-                     Effective_Reads_Vars.Union (V.Effective_Reads);
-                     Volatile_Vars.Union (V.Effective_Reads);
+                     Effective_Reads_Vars.Union (V.The_Effective_Reads);
+                     Volatile_Vars.Union (V.The_Effective_Reads);
 
-                     Effective_Writes_Vars.Union (V.Effective_Writes);
-                     Volatile_Vars.Union (V.Effective_Writes);
+                     Effective_Writes_Vars.Union (V.The_Effective_Writes);
+                     Volatile_Vars.Union (V.The_Effective_Writes);
 
                   when EK_Globals =>
                      Globals.Union (V.The_Global_Info.Inputs_Proof);

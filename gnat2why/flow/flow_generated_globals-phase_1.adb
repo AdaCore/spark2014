@@ -314,7 +314,7 @@ package body Flow_Generated_Globals.Phase_1 is
 
       --  Write remote states
       V := (Kind          => EK_Remote_States,
-            Remote_States => Remote_States);
+            The_Remote_States => Remote_States);
       Write_To_ALI (V);
 
       --  Write globals for package and subprograms/tasks
@@ -332,10 +332,10 @@ package body Flow_Generated_Globals.Phase_1 is
 
       --  Write Volatile info
       V := (Kind                 => EK_Volatiles,
-            Async_Readers    => Async_Readers_Vars,
-            Async_Writers    => Async_Writers_Vars,
-            Effective_Reads  => Effective_Reads_Vars,
-            Effective_Writes => Effective_Writes_Vars);
+            The_Async_Readers    => Async_Readers_Vars,
+            The_Async_Writers    => Async_Writers_Vars,
+            The_Effective_Reads  => Effective_Reads_Vars,
+            The_Effective_Writes => Effective_Writes_Vars);
       Write_To_ALI (V);
 
       --  Write nonblocking subprograms

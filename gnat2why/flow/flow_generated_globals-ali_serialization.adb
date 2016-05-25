@@ -47,7 +47,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
                                 others    => <>),
 
       EK_Remote_States      => (Kind          => EK_Remote_States,
-                                Remote_States => Name_Sets.Empty_Set),
+                                The_Remote_States => Name_Sets.Empty_Set),
 
       EK_Volatiles          => (Kind   => EK_Volatiles,
                                 others => <>),
@@ -200,13 +200,13 @@ package body Flow_Generated_Globals.ALI_Serialization is
             Serialize (A, V.The_Constituents);
 
          when EK_Remote_States =>
-            Serialize (A, V.Remote_States, "RS");
+            Serialize (A, V.The_Remote_States, "RS");
 
          when EK_Volatiles =>
-            Serialize (A, V.Async_Readers,    "AR");
-            Serialize (A, V.Async_Writers,    "AW");
-            Serialize (A, V.Effective_Reads,  "ER");
-            Serialize (A, V.Effective_Writes, "EW");
+            Serialize (A, V.The_Async_Readers,    "AR");
+            Serialize (A, V.The_Async_Writers,    "AW");
+            Serialize (A, V.The_Effective_Reads,  "ER");
+            Serialize (A, V.The_Effective_Writes, "EW");
 
          when EK_Globals =>
             Serialize (A, V.The_Global_Info);
