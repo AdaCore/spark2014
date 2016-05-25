@@ -263,15 +263,14 @@ package Flow is
 
          when Kind_Package | Kind_Package_Body =>
             Initializes_N : Node_Id;
-            --  A few contract nodes cached as they can be a bit
-            --  tedious to find.
+            --  Contract node cached, since it is tedious to find
 
             Visible_Vars : Flow_Id_Sets.Set;
-            --  All variables visible in the package elaboration.
+            --  Variables visible in the package elaboration
 
-            Spec_Vars    : Flow_Id_Sets.Set;
-            --  All variables visible in the package specification (include
-            --  private stuff).
+            Spec_Vars : Flow_Id_Sets.Set;
+            --  Variables visible in the package specification (including
+            --  private ones).
 
       end case;
    end record;
