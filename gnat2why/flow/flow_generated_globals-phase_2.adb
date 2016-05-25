@@ -2111,7 +2111,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
       --  To speed up queries on constituents of state, we fill in a helper
       --  structure.
-      Comp_State_Map := Name_Maps.Empty_Map;
       for C in State_Comp_Map.Iterate loop
          for Comp of State_Comp_Map (C) loop
             Comp_State_Map.Insert (Comp, Key (C));
