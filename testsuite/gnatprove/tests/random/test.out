@@ -1,0 +1,53 @@
+random.adb:47:07: info: initialization of "G.Index" proved
+random.adb:47:07: info: initialization of "G.State" proved
+random.adb:51:27: info: initialization of "Current" proved
+random.adb:52:41: info: initialization of "Last" proved
+random.adb:55:25: info: initialization of "G.State" proved
+random.adb:55:28: info: initialization of "Current" proved
+random.adb:64:07: info: initialization of "G.Index" proved
+random.adb:64:07: info: initialization of "G.State" proved
+random.adb:65:14: info: range check proved
+random.adb:69:16: info: initialization of "G.State" proved
+random.adb:69:25: info: initialization of "I" proved
+random.adb:70:31: info: index check proved
+random.adb:71:46: info: index check proved
+random.adb:72:28: info: index check proved
+random.adb:72:28: info: initialization of "J" proved
+random.adb:73:16: info: initialization of "I" proved
+random.adb:74:31: info: initialization of "G.State" proved
+random.adb:77:31: info: initialization of "I" proved
+random.adb:77:33: info: range check proved
+random.adb:79:53: info: initialization of "J" proved
+random.adb:79:55: info: overflow check proved
+random.adb:80:13: info: loop invariant initialization proved
+random.adb:80:13: info: loop invariant preservation proved
+random.adb:80:36: info: initialization of "I" proved
+random.adb:80:46: info: initialization of "J" proved
+random.adb:85:16: info: initialization of "G.State" proved
+random.adb:85:25: info: initialization of "I" proved
+random.adb:86:31: info: index check proved
+random.adb:87:46: info: index check proved
+random.adb:89:16: info: initialization of "I" proved
+random.adb:90:31: info: initialization of "G.State" proved
+random.adb:93:31: info: initialization of "I" proved
+random.adb:93:33: info: range check proved
+random.adb:95:13: info: loop invariant initialization proved
+random.adb:95:13: info: loop invariant preservation proved
+random.adb:95:36: info: initialization of "I" proved
+random.adb:98:22: info: initialization of "G.State" proved
+random.adb:112:18: info: range check proved
+random.adb:115:09: info: length check proved
+random.adb:126:68: info: range check proved
+random.adb:127:68: info: range check proved
+random.adb:130:41: info: initialization of "Value" proved
+random.adb:131:39: info: index check proved
+random.adb:136:16: info: initialization of "Value" proved
+random.adb:137:16: info: initialization of "Value" proved
+random.adb:138:16: info: initialization of "Value" proved
+random.adb:139:16: info: initialization of "Value" proved
+random.ads:48:22: info: initialization of "Value" proved
+Testing SPARK.Random...
+Everything is OK with Random.
+Testing GNAT.Random_Numbers...
+Everything is OK with GNAT.Random_Numbers.
+
