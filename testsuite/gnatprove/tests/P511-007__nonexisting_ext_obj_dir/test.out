@@ -1,7 +1,5 @@
-test.gpr:3:22: undefined external reference
 
 
-gnatprove: error during generation of Global contracts
+Error while loading project file: test.gpr: could not determine working directory
 gnatprove: test.gpr:3:22: undefined external reference
 gnatprove: test.gpr:3:22: undefined external reference
-gprbuild: "test.gpr" processing failed

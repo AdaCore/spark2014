@@ -1248,15 +1248,17 @@ procedure Gnatprove is
    Tree      : Project_Tree;
    --  GNAT project tree
 
-   Proj_Type : Project_Type;
-   --  GNAT project
-
 --  Start processing for Gnatprove
 
 begin
    Set_Environment;
    Read_Command_Line (Tree);
-   Proj_Type := Root_Project (Tree);
+
+   if Tree.Root_Project.Artifacts_Dir = GNATCOLL.VFS.No_File then
+      Abort_With_Message
+        ("Error while loading project file: " & CL_Switches.P.all & ": " &
+         "could not determine working directory");
+   end if;
 
    declare
       Plan : constant Plan_Type :=
@@ -1270,10 +1272,10 @@ begin
 
    declare
       Obj_Path : constant File_Array :=
-        Object_Path (Proj_Type, Recursive => True);
+        Object_Path (Tree.Root_Project, Recursive => True);
    begin
       Generate_SPARK_Report
-        (Proj_Type.Artifacts_Dir.Display_Full_Name, Obj_Path);
+        (Tree.Root_Project.Artifacts_Dir.Display_Full_Name, Obj_Path);
    end;
 exception
    when Invalid_Project =>
