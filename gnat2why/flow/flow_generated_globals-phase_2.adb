@@ -78,24 +78,25 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Global_Id
    ----------------------------------------------------------------------
 
-   type Global_Id_Kind is (Null_Global_Id,
-                           --  Dummy kind required by the Graphs package
+   type Global_Kind is
+     (Null_Global_Id,
+      --  Dummy kind required by the Graphs package
 
-                           Inputs,
-                           --  Represents subprogram's Inputs
+      Inputs,
+      --  Represents subprogram's Inputs
 
-                           Outputs,
-                           --  Represents subprogram's Outputs
+      Outputs,
+      --  Represents subprogram's Outputs
 
-                           Proof_Ins,
-                           --  Represents subprogram's Proof_Ins
+      Proof_Ins,
+      --  Represents subprogram's Proof_Ins
 
-                           Variable
-                           --  Represents a global variable
-                          );
-   pragma Ordered (Global_Id_Kind);
+      Variable
+      --  Represents a global variable
+     );
+   pragma Ordered (Global_Kind);
 
-   type Global_Id (Kind : Global_Id_Kind := Null_Global_Id) is record
+   type Global_Id (Kind : Global_Kind := Null_Global_Id) is record
       case Kind is
          when Null_Global_Id =>
             null;
@@ -570,7 +571,7 @@ package body Flow_Generated_Globals.Phase_2 is
                                 Reads       : out Name_Sets.Set;
                                 Writes      : out Name_Sets.Set)
    is
-      procedure Compute_MR (Kind   :     Global_Id_Kind;
+      procedure Compute_MR (Kind   :     Global_Kind;
                             Result : out Name_Sets.Set);
       --  Compute vertices that can be reached from EN'Kind vertex and are of
       --  the kind Variable.
@@ -579,7 +580,7 @@ package body Flow_Generated_Globals.Phase_2 is
       -- Compute_MR --
       ----------------
 
-      procedure Compute_MR (Kind   :     Global_Id_Kind;
+      procedure Compute_MR (Kind   :     Global_Kind;
                             Result : out Name_Sets.Set)
       is
          use Global_Graphs;
@@ -816,7 +817,7 @@ package body Flow_Generated_Globals.Phase_2 is
          for Info of Subprogram_Info_List loop
             declare
                type Kinds is record
-                  Source, Target : Global_Id_Kind;
+                  Source, Target : Global_Kind;
                end record;
 
                type Kinds_Array is array (Positive range <>) of Kinds;
@@ -897,7 +898,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
                procedure Add_Edges_For_FS
                  (FS          : Flow_Id_Sets.Set;
-                  Source_Kind : Global_Id_Kind);
+                  Source_Kind : Global_Kind);
                --  Adds an edge from From to every Flow_Id in FS
 
                ----------------------
@@ -906,7 +907,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
                procedure Add_Edges_For_FS
                  (FS          : Flow_Id_Sets.Set;
-                  Source_Kind : Global_Id_Kind)
+                  Source_Kind : Global_Kind)
                is
                   subtype Source_Global is Global_Id (Source_Kind);
 
