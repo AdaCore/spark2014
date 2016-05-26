@@ -1622,7 +1622,7 @@ package body Flow_Generated_Globals.Phase_2 is
          Sanitized_Name : constant String :=
            To_String (Trim (Source => To_Unbounded_String (ALI_File_Name_Str),
                             Left   => Null_Set,
-                            Right  => To_Set (Character'Val (0))));
+                            Right  => To_Set (ASCII.NUL)));
 
          procedure Issue_Corrupted_File_Error (Msg : String)
          with No_Return;
