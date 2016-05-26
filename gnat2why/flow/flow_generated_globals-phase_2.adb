@@ -1660,8 +1660,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
          procedure Parse_GG_Line (Line : String) is
             A : Archive (Serialisation.Input) :=
-              From_String
-                (To_Unbounded_String (Line (Line'First + 3 .. Line'Last)));
+              From_String (Line (Line'First + 3 .. Line'Last));
 
             V : ALI_Entry := (Kind => EK_Error);
          begin

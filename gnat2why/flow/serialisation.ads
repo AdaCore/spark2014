@@ -102,7 +102,7 @@ package Serialisation is
    --  Convert the archive to a string (possibly because we want to write
    --  it to a file).
 
-   function From_String (S : Unbounded_String) return Archive
+   function From_String (S : String) return Archive
    with Post => From_String'Result.Kind = Input;
    --  Create an archive from a string (which we might have just read from
    --  a file).

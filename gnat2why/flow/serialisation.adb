@@ -167,15 +167,15 @@ package body Serialisation is
    -- From_String --
    -----------------
 
-   function From_String (S : Unbounded_String) return Archive is
+   function From_String (S : String) return Archive is
       Tmp : Unbounded_String;
    begin
       return A : Archive (Input) do
-         for I in Natural range 1 .. Length (S) loop
-            if Element (S, I) /= ' ' then
-               Append (Tmp, Element (S, I));
+         for I in Natural range S'Range loop
+            if S (I) /= ' ' then
+               Append (Tmp, S (I));
             end if;
-            if Element (S, I) = ' ' or else I = Length (S) then
+            if S (I) = ' ' or else I = S'Last then
                if Length (Tmp) > 0 then
                   if Tmp = Coll_Begin
                     or else Tmp = Coll_End
