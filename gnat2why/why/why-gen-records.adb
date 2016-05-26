@@ -141,8 +141,8 @@ package body Why.Gen.Records is
    --  Return the name of a record's representative module.
 
    procedure Declare_Rep_Record_Type
-     (P      : W_Section_Id;
-      E      : Entity_Id);
+     (P : W_Section_Id;
+      E : Entity_Id);
    --  Emit all necessary Why3 declarations to support Ada records. This also
    --  supports variant records, private types and concurrent types.
    --  @param P the Why section to insert the declaration
@@ -2132,14 +2132,13 @@ package body Why.Gen.Records is
    ------------------------
 
    procedure Declare_Ada_Record
-     (P       : W_Section_Id;
-      E       : Entity_Id)
+     (P : W_Section_Id;
+      E : Entity_Id)
    is
-
-      Root      : constant Entity_Id := Root_Record_Type (E);
-      Is_Root   : constant Boolean   := Root = E;
-      Ty_Name   : constant W_Name_Id := To_Why_Type (E, Local => True);
-      Abstr_Ty  : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
+      Root     : constant Entity_Id := Root_Record_Type (E);
+      Is_Root  : constant Boolean   := Root = E;
+      Ty_Name  : constant W_Name_Id := To_Why_Type (E, Local => True);
+      Abstr_Ty : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
       A_Ident  : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Abstr_Ty);
       R_Binder : constant Binder_Array :=
@@ -2264,7 +2263,7 @@ package body Why.Gen.Records is
               (Name  => To_Why_Type (E, Local => True),
                Alias =>
                  +New_Named_Type
-                 (Name => To_Name (WNE_Rec_Rep))));
+                   (Name => To_Name (WNE_Rec_Rep))));
 
       --  The static tag for the type is defined as a logic constant
       if Is_Tagged_Type (E) then
@@ -2293,7 +2292,7 @@ package body Why.Gen.Records is
       E       : Entity_Id;
       Ty_Name : W_Name_Id)
    is
-      Abstr_Ty  : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
+      Abstr_Ty : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
       A_Ident  : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Abstr_Ty);
       R_Binder : constant Binder_Array :=
@@ -2726,6 +2725,7 @@ package body Why.Gen.Records is
         Oldest_Parent_With_Same_Fields (E);
       Name     : constant String :=
         Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
+
    begin
       return New_Module (File => No_Name,
                          Name => NID (Name));
