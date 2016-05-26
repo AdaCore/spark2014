@@ -27,7 +27,6 @@ with Ada.Containers.Hashed_Sets;
 with Ada.Strings.Maps;           use Ada.Strings.Maps;
 with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
 with Ada.Text_IO;                use Ada.Text_IO;
-with Ada.Text_IO.Unbounded_IO;   use Ada.Text_IO.Unbounded_IO;
 
 with ALI;                        use ALI;
 with Namet;                      use Namet;
@@ -1625,29 +1624,179 @@ package body Flow_Generated_Globals.Phase_2 is
                             Right  => To_Set (ASCII.NUL)));
 
          ALI_File : Ada.Text_IO.File_Type;
-         Line     : Unbounded_String;
 
-         Found_End     : Boolean := False;
-         Found_Version : Boolean := False;
+         type GG_Parsing_Status is (Before, Started, Finished);
+
+         GG_Parsing_State : GG_Parsing_Status := Before;
+         Found_Version    : Boolean := False;
          --  This will be set to True once we find the end marker
 
-         procedure Issue_Corrupted_File_Error (Msg : String)
+         procedure Corrupted_ALI_File (Msg : String)
          with No_Return;
          --  Issues an error about the ALI file being corrupted and suggests
          --  the usage of "gnatprove --clean".
+
+         procedure Parse_GG_Line (Line : String) with
+           Pre => Line'Length >= 3 and then
+                  Line (Line'First .. Line'First + 2) = "GG ";
+         --  Parse single line of the GG section
 
          --------------------------------
          -- Issue_Corrupted_File_Error --
          --------------------------------
 
-         procedure Issue_Corrupted_File_Error (Msg : String) is
+         procedure Corrupted_ALI_File (Msg : String) is
          begin
             Close (ALI_File);
             Abort_With_Message
               ("Corrupted ali file detected (" & Sanitized_Name & "): " &
                  Msg &
                  ". Call gnatprove with ""--clean"".");
-         end Issue_Corrupted_File_Error;
+         end Corrupted_ALI_File;
+
+         -------------------
+         -- Parse_GG_Line --
+         -------------------
+
+         procedure Parse_GG_Line (Line : String) is
+            A : Archive (Serialisation.Input) :=
+              From_String
+                (To_Unbounded_String (Line (Line'First + 3 .. Line'Last)));
+
+            V : ALI_Entry := (Kind => EK_Error);
+         begin
+            Serialize (A, V);
+            case V.Kind is
+               when EK_Error =>
+                  Corrupted_ALI_File ("parse error");
+
+               when EK_End_Marker =>
+                  if GG_Parsing_State = Started then
+                     GG_Parsing_State := Finished;
+                  else
+                     Corrupted_ALI_File ("unexpected GG end marker");
+                  end if;
+
+               when EK_State_Map =>
+                  declare
+                     State    : Name_Graphs.Cursor;
+                     Inserted : Boolean;
+
+                     C : Name_Lists.Cursor;
+                     --  Cursor to iterate over original constituents; it is
+                     --  required because it is not possible to iterate over
+                     --  a component of a discriminated record.
+
+                  begin
+                     State_Comp_Map.Insert (Key      => V.The_State,
+                                            Position => State,
+                                            Inserted => Inserted);
+                     pragma Assert (Inserted);
+
+                     C := V.The_Constituents.First;
+                     while Name_Lists.Has_Element (C) loop
+                        State_Comp_Map (State).Insert
+                          (V.The_Constituents (C));
+                        Name_Lists.Next (C);
+                     end loop;
+                  end;
+
+                  State_Abstractions.Include (V.The_State);
+
+               when EK_Remote_States =>
+                  State_Abstractions.Union (V.The_Remote_States);
+
+               when EK_Volatiles =>
+                  Async_Writers_Vars.Union (V.The_Async_Writers);
+                  Volatile_Vars.Union (V.The_Async_Writers);
+
+                  Async_Readers_Vars.Union (V.The_Async_Readers);
+                  Volatile_Vars.Union (V.The_Async_Readers);
+
+                  Effective_Reads_Vars.Union (V.The_Effective_Reads);
+                  Volatile_Vars.Union (V.The_Effective_Reads);
+
+                  Effective_Writes_Vars.Union (V.The_Effective_Writes);
+                  Volatile_Vars.Union (V.The_Effective_Writes);
+
+               when EK_Globals =>
+                  Globals.Union (V.The_Global_Info.Inputs_Proof);
+                  Globals.Union (V.The_Global_Info.Inputs);
+                  Globals.Union (V.The_Global_Info.Outputs);
+
+                  All_Subprograms.Union (V.The_Global_Info.Proof_Calls);
+                  All_Subprograms.Union (V.The_Global_Info.Definite_Calls);
+                  All_Subprograms.Union
+                    (V.The_Global_Info.Conditional_Calls);
+
+                  Globals.Union (V.The_Global_Info.Local_Variables);
+                  All_Subprograms.Union
+                    (V.The_Global_Info.Local_Subprograms);
+                  Globals.Union
+                    (V.The_Global_Info.Local_Definite_Writes);
+
+                  case V.The_Global_Info.Kind is
+                     when Kind_Subprogram | Kind_Entry | Kind_Task =>
+                        Subprograms_With_GG.Insert (V.The_Global_Info.Name);
+                        All_Subprograms.Include (V.The_Global_Info.Name);
+
+                        Subprogram_Info_List.Append (V.The_Global_Info);
+
+                     when Kind_Package | Kind_Package_Body =>
+                        Package_Info_List.Append (V.The_Global_Info);
+                  end case;
+
+                  GG_Exists_Cache.Insert (V.The_Global_Info.Name);
+
+               when EK_Protected_Instance =>
+                  declare
+                     C : Entity_Name_To_Priorities_Maps.Cursor;
+                     --  Position of a list of protected components of a global
+                     --  variable and their priorities.
+
+                     Dummy : Boolean;
+                     --  Flag that indicates if a key was inserted or if
+                     --  it already existed in a map. It is required by
+                     --  the hashed-maps API, but not used here.
+
+                  begin
+                     --  Find a list of protected components of a global
+                     --  variable; if it does not exist then initialize with
+                     --  an empty list.
+                     Protected_Objects.Insert
+                       (Key      => V.The_Variable,
+                        Position => C,
+                        Inserted => Dummy);
+
+                     Protected_Objects (C).Append (V.The_Priority);
+                  end;
+
+               when EK_Task_Instance =>
+                  Register_Task_Object (V.The_Type, V.The_Object);
+
+               when EK_Tasking_Info =>
+                  for Kind in Tasking_Info_Kind loop
+                     if not V.The_Tasking_Info (Kind).Is_Empty then
+                        Tasking_Info_Bag (GG_Phase_1, Kind).Insert
+                          (V.The_Entity,
+                           V.The_Tasking_Info (Kind));
+                     end if;
+                  end loop;
+
+               when EK_Nonblocking =>
+                  declare
+                     C : Name_Lists.Cursor :=
+                       V.The_Nonblocking_Subprograms.First;
+                  begin
+                     while Name_Lists.Has_Element (C) loop
+                        Nonblocking_Subprograms.Insert
+                          (V.The_Nonblocking_Subprograms (C));
+
+                        Name_Lists.Next (C);
+                     end loop;
+                  end;
+            end case;
+         end Parse_GG_Line;
 
       --  Start of processing for Load_GG_Info_From_ALI
 
@@ -1655,194 +1804,43 @@ package body Flow_Generated_Globals.Phase_2 is
          Open (ALI_File, In_File, ALI_File_Name_Str);
 
          --  Skip to the version section
-         loop
-            if End_Of_File (ALI_File) then
-               Close (ALI_File);
-               return;
-            end if;
+         while not End_Of_File (ALI_File) loop
 
-            Get_Line (ALI_File, Line);
-            if Length (Line) >= 3 then
-               declare
-                  Header : constant String (1 .. 3) := Slice (Line, 1, 3);
-
-               begin
-                  if Header = "QQ " then
-                     Found_Version := To_String (Line) = "QQ SPARKVERSION " &
-                       SPARK2014_Static_Version_String;
-                     exit;
-                  elsif Header = "GG " then
-                     --  We have encountered a GG section without the spark
-                     --  version marker. This indicates an older spark version.
-                     exit;
-                  end if;
-               end;
-            end if;
-         end loop;
-
-         if not Found_Version then
-            Issue_Corrupted_File_Error ("inconsistent spark version");
-         end if;
-
-         --  Now skip to the GG section
-         loop
-            if End_Of_File (ALI_File) then
-               Close (ALI_File);
-               return;
-            end if;
-
-            Get_Line (ALI_File, Line);
-            exit when Length (Line) >= 3 and then Slice (Line, 1, 3) = "GG ";
-         end loop;
-
-         --  We have reached the "GG" section of the ALI file
-         while Length (Line) >= 5 and then Slice (Line, 1, 3) = "GG " loop
-            --  Parse the given record
             declare
-               A : Archive (Serialisation.Input) :=
-                 From_String (Unbounded_Slice (Line, 4, Length (Line)));
-               V : ALI_Entry := (Kind => EK_Error);
+               Line : constant String := Get_Line (ALI_File);
             begin
-               Serialize (A, V);
-               case V.Kind is
-                  when EK_Error =>
-                     Issue_Corrupted_File_Error ("parse error");
+               if Line'Length >= 3 then
+                  declare
+                     Header : constant String (1 .. 3) := Line (1 .. 3);
 
-                  when EK_End_Marker =>
-                     Found_End := True;
-                     exit;
+                  begin
+                     if Header = "QQ " then
+                        Found_Version := Line = "QQ SPARKVERSION " &
+                          SPARK2014_Static_Version_String;
+                     elsif Header = "GG " then
+                        if Found_Version then
+                           case GG_Parsing_State is
+                              when Before | Started =>
+                                 GG_Parsing_State := Started;
+                                 Parse_GG_Line (Line);
 
-                  when EK_State_Map =>
-                     declare
-                        State    : Name_Graphs.Cursor;
-                        Inserted : Boolean;
+                              when Finished =>
+                                 Corrupted_ALI_File
+                                   ("GG data after GG end marker");
 
-                        C : Name_Lists.Cursor;
-                        --  Cursor to iterate over original constituents; it is
-                        --  required because it is not possible to iterate over
-                        --  a component of a discriminated record.
-
-                     begin
-                        State_Comp_Map.Insert (Key      => V.The_State,
-                                               Position => State,
-                                               Inserted => Inserted);
-                        pragma Assert (Inserted);
-
-                        C := V.The_Constituents.First;
-                        while Name_Lists.Has_Element (C) loop
-                           State_Comp_Map (State).Insert
-                             (V.The_Constituents (C));
-                           Name_Lists.Next (C);
-                        end loop;
-                     end;
-
-                     State_Abstractions.Include (V.The_State);
-
-                  when EK_Remote_States =>
-                     State_Abstractions.Union (V.The_Remote_States);
-
-                  when EK_Volatiles =>
-                     Async_Writers_Vars.Union (V.The_Async_Writers);
-                     Volatile_Vars.Union (V.The_Async_Writers);
-
-                     Async_Readers_Vars.Union (V.The_Async_Readers);
-                     Volatile_Vars.Union (V.The_Async_Readers);
-
-                     Effective_Reads_Vars.Union (V.The_Effective_Reads);
-                     Volatile_Vars.Union (V.The_Effective_Reads);
-
-                     Effective_Writes_Vars.Union (V.The_Effective_Writes);
-                     Volatile_Vars.Union (V.The_Effective_Writes);
-
-                  when EK_Globals =>
-                     Globals.Union (V.The_Global_Info.Inputs_Proof);
-                     Globals.Union (V.The_Global_Info.Inputs);
-                     Globals.Union (V.The_Global_Info.Outputs);
-
-                     All_Subprograms.Union (V.The_Global_Info.Proof_Calls);
-                     All_Subprograms.Union (V.The_Global_Info.Definite_Calls);
-                     All_Subprograms.Union
-                       (V.The_Global_Info.Conditional_Calls);
-
-                     Globals.Union (V.The_Global_Info.Local_Variables);
-                     All_Subprograms.Union
-                       (V.The_Global_Info.Local_Subprograms);
-                     Globals.Union
-                       (V.The_Global_Info.Local_Definite_Writes);
-
-                     case V.The_Global_Info.Kind is
-                        when Kind_Subprogram | Kind_Entry | Kind_Task =>
-                           Subprograms_With_GG.Insert (V.The_Global_Info.Name);
-                           All_Subprograms.Include (V.The_Global_Info.Name);
-
-                           Subprogram_Info_List.Append (V.The_Global_Info);
-
-                        when Kind_Package | Kind_Package_Body =>
-                           Package_Info_List.Append (V.The_Global_Info);
-                     end case;
-
-                     GG_Exists_Cache.Insert (V.The_Global_Info.Name);
-
-                  when EK_Protected_Instance =>
-                     declare
-                        C : Entity_Name_To_Priorities_Maps.Cursor;
-                        --  Position of a list of protected components of a
-                        --  global variable and their priorities.
-
-                        Dummy : Boolean;
-                        --  Flag that indicates if a key was inserted or if
-                        --  it already existed in a map. It is required by
-                        --  the hashed-maps API, but not used here.
-
-                     begin
-                        --  Find a list of protected components of a global
-                        --  variable; if it does not exist then initialize
-                        --  with an empty list.
-                        Protected_Objects.Insert
-                          (Key      => V.The_Variable,
-                           Position => C,
-                           Inserted => Dummy);
-
-                        Protected_Objects (C).Append (V.The_Priority);
-                     end;
-
-                  when EK_Task_Instance =>
-                     Register_Task_Object (V.The_Type, V.The_Object);
-
-                  when EK_Tasking_Info =>
-                     for Kind in Tasking_Info_Kind loop
-                        if not V.The_Tasking_Info (Kind).Is_Empty then
-                           Tasking_Info_Bag (GG_Phase_1, Kind).Insert
-                             (V.The_Entity,
-                              V.The_Tasking_Info (Kind));
+                           end case;
+                        else
+                           Corrupted_ALI_File ("inconsistent spark version");
                         end if;
-                     end loop;
-
-                  when EK_Nonblocking =>
-                     declare
-                        C : Name_Lists.Cursor :=
-                          V.The_Nonblocking_Subprograms.First;
-                     begin
-                        while Name_Lists.Has_Element (C) loop
-                           Nonblocking_Subprograms.Insert
-                             (V.The_Nonblocking_Subprograms (C));
-
-                           Name_Lists.Next (C);
-                        end loop;
-                     end;
-               end case;
+                     end if;
+                  end;
+               end if;
             end;
-
-            exit when End_Of_File (ALI_File);
-
-            --  Proceed to the next line.
-            Get_Line (ALI_File, Line);
          end loop;
 
-         if not Found_End then
-            --  If we have not found the end marker by now, the file is
-            --  broken...
-            Issue_Corrupted_File_Error ("missing end marker");
+         if GG_Parsing_State = Started then
+            --  If we started but not finished then the file is corrupted
+            Corrupted_ALI_File ("missing end marker");
          end if;
 
          Close (ALI_File);
