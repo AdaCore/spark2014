@@ -21,36 +21,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings; use Ada.Strings;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings;       use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Strings.Maps;  use Ada.Strings.Maps;
+with Ada.Text_IO;       use Ada.Text_IO;
 
 package body Serialisation is
 
-   Coll_Begin : constant Unbounded_String := To_Unbounded_String ("[");
-   Coll_End   : constant Unbounded_String := To_Unbounded_String ("]");
-   --  Begin/end markers for collections (lists, sets)
-
    subtype Hex_String is String (1 .. 2);
    --  String of length 2 for text-representation of 8 bits in hex
-
-   procedure Match (A : in out Archive; S : Unbounded_String)
-   with Pre => A.Kind = Input;
-   --  A classic match-token-or-die helper subprogram. Returns if the next
-   --  element of A is a tag equal to S, otherwise raises a Parse_Error
-   --  exception.
-
-   function Test (A : Archive; S : Unbounded_String) return Boolean
-   with Pre => A.Kind = Input;
-   --  Returns true iff the next element of A is a tag and equal to S
-
-   procedure Append_Tag (A : in out Archive; The_Tag : Unbounded_String)
-   with Pre => The_Tag = Coll_Begin or else
-               The_Tag = Coll_End or else
-               (Length (The_Tag) > 2 and then Element (The_Tag, 2) = ':');
-   --  Append a given tag to the archive
-
-   procedure Append_Data (A : in out Archive; The_Data : Unbounded_String);
-   --  Append a given bit of data to the archive
 
    function To_Hex (C : Character) return Hex_String;
    --  Convert a character (such as ' ') to a two-digit hex representation
@@ -86,62 +65,17 @@ package body Serialisation is
                             New_Item  : E);
       with function First (Container : T) return Cursor is <>;
       with function Next (Position : Cursor) return Cursor is <>;
-      with function Has_Element (Position : Cursor) return Boolean is <>;
       with function Element (Position : Cursor) return E is <>;
+      with function Length (Container : T) return Ada.Containers.Count_Type;
+      with procedure Reserve_Capacity
+        (Container : in out T;
+         Capacity  : Ada.Containers.Count_Type);
       with procedure Serialize (A : in out Archive; V : in out E) is <>;
    procedure Serialize_Collection (A   : in out Archive;
-                                   V   : in out T;
-                                   Tag : Unbounded_String);
+                                   V   : in out T);
    --  Generic serialisation for Ada containers. Merge is a subprogram that
    --  is meant to add a single element to the container; we need this because
    --  Append (for lists) and Insert (for sets) have different signatures.
-
-   -----------
-   -- Match --
-   -----------
-
-   procedure Match (A : in out Archive; S : Unbounded_String)
-   is
-   begin
-      if A.Content.Is_Empty then
-         raise Parse_Error with "insufficient data";
-      elsif A.Content.First_Element.Kind = Tag and then
-        A.Content.First_Element.Value = S
-      then
-         A.Content.Delete_First;
-      else
-         raise Parse_Error with "unexpected data";
-      end if;
-   end Match;
-
-   ----------
-   -- Test --
-   ----------
-
-   function Test (A : Archive; S : Unbounded_String) return Boolean
-   is (not A.Content.Is_Empty
-       and then A.Content.First_Element.Kind = Tag
-       and then A.Content.First_Element.Value = S);
-
-   ----------------
-   -- Append_Tag --
-   ----------------
-
-   procedure Append_Tag (A : in out Archive; The_Tag : Unbounded_String) is
-   begin
-      A.Content.Append ((Kind  => Tag,
-                         Value => The_Tag));
-   end Append_Tag;
-
-   -----------------
-   -- Append_Data --
-   -----------------
-
-   procedure Append_Data (A : in out Archive; The_Data : Unbounded_String) is
-   begin
-      A.Content.Append ((Kind  => Data,
-                         Value => The_Data));
-   end Append_Data;
 
    ---------------
    -- To_String --
@@ -154,10 +88,7 @@ package body Serialisation is
             if Length (S) > 0 then
                Append (S, " ");
             end if;
-            Append (S,
-                    (case E.Kind is
-                        when Tag  => E.Value,
-                        when Data => Escape (E.Value)));
+            Append (S, Escape (E));
          end loop;
       end return;
    end To_String;
@@ -167,25 +98,23 @@ package body Serialisation is
    -----------------
 
    function From_String (S : String) return Archive is
-      Tmp : Unbounded_String;
+      From : Positive := S'First;
+      First, Last : Natural;
+
    begin
       return A : Archive (Input) do
-         for I in Natural range S'Range loop
-            if S (I) /= ' ' then
-               Append (Tmp, S (I));
-            end if;
-            if S (I) = ' ' or else I = S'Last then
-               if Length (Tmp) > 0 then
-                  if Tmp = Coll_Begin
-                    or else Tmp = Coll_End
-                    or else (Length (Tmp) >= 2 and then Element (Tmp, 2) = ':')
-                  then
-                     Append_Tag (A, Tmp);
-                  else
-                     Append_Data (A, Interpret (Tmp));
-                  end if;
-                  Tmp := Null_Unbounded_String;
-               end if;
+         while From in S'Range loop
+            Find_Token (Source => S,
+                        Set    => Ada.Strings.Maps.To_Set (' '),
+                        From   => From,
+                        Test   => Outside,
+                        First  => First,
+                        Last   => Last);
+
+            if Last /= 0 then
+               A.Content.Append
+                 (Interpret (To_Unbounded_String (S (First .. Last))));
+               From := Last + 1;
             end if;
          end loop;
       end return;
@@ -243,6 +172,7 @@ package body Serialisation is
       subtype Unescaped_Printable_Character is Printable_Character
         with Static_Predicate =>
            Unescaped_Printable_Character not in Escaped_Character;
+
    begin
       if Length (S) = 0 then
          return To_Unbounded_String ("\0");
@@ -316,12 +246,7 @@ package body Serialisation is
    begin
       Put_Line ("Archive (" & A.Kind'Img & ")");
       for C of A.Content loop
-         case C.Kind is
-            when Tag =>
-               Put_Line ("   Tag: " & To_String (C.Value));
-            when Data =>
-               Put_Line ("   <" & To_String (C.Value) & ">");
-         end case;
+         Put_Line ("   <" & To_String (C) & ">");
       end loop;
    end Debug_Dump_Archive;
 
@@ -335,13 +260,11 @@ package body Serialisation is
          when Input =>
             if A.Content.Is_Empty then
                raise Parse_Error with "insufficient data";
-            elsif A.Content.First_Element.Kind /= Data then
-               raise Parse_Error with "expected data, not tag";
             end if;
-            V := A.Content.First_Element.Value;
+            V := A.Content.First_Element;
             A.Content.Delete_First;
          when Output =>
-            Append_Data (A, V);
+            A.Content.Append (V);
       end case;
    end Serialize;
 
@@ -355,13 +278,12 @@ package body Serialisation is
          when Input =>
             if A.Content.Is_Empty then
                raise Parse_Error with "insufficient data";
-            elsif A.Content.First_Element.Kind /= Data then
-               raise Parse_Error with "expected data, not tag";
             end if;
-            V := T'Value (To_String (A.Content.First_Element.Value));
+            V := T'Value (To_String (A.Content.First_Element));
             A.Content.Delete_First;
+
          when Output =>
-            Append_Data (A, (Trim (To_Unbounded_String (T'Image (V)), Both)));
+            A.Content.Append (Trim (To_Unbounded_String (T'Image (V)), Left));
       end case;
    end Serialize_Discrete;
 
@@ -369,48 +291,41 @@ package body Serialisation is
    -- Serialize_Collection --
    --------------------------
 
-   procedure Serialize_Collection (A   : in out Archive;
-                                   V   : in out T;
-                                   Tag : Unbounded_String)
+   procedure Serialize_Collection (A : in out Archive;
+                                   V : in out T)
    is
-      The_Tag : constant Unbounded_String := "c:" & Tag;
-      Has_Tag : constant Boolean          := Length (Tag) > 0;
-      Tmp     : E := Null_Element;
+      Elt : E := Null_Element;
+
+      procedure Serialize is new
+        Serialize_Discrete (T => Ada.Containers.Count_Type);
+
+      Count : Ada.Containers.Count_Type;
+
    begin
       case A.Kind is
          when Input =>
+            Count := 0;
+            Serialize (A, Count);
+            Reserve_Capacity (V, Count);
+
             V := Null_Container;
-            if Has_Tag then
-               if Test (A, The_Tag) then
-                  Match (A, The_Tag);
-               else
-                  return;
-               end if;
-            end if;
-            Match (A, Coll_Begin);
-            while not Test (A, Coll_End) loop
-               Serialize (A, Tmp);
-               Merge (V, Tmp);
+            for J in 1 .. Count loop
+               Serialize (A, Elt);
+               Merge (V, Elt);
             end loop;
-            Match (A, Coll_End);
+
          when Output =>
+            Count := Length (V);
+            Serialize (A, Count);
+
             declare
                C : Cursor := First (V);
             begin
-               if Has_Tag then
-                  if Has_Element (C) then
-                     Append_Tag (A, The_Tag);
-                  else
-                     return;
-                  end if;
-               end if;
-               Append_Tag (A, Coll_Begin);
-               while Has_Element (C) loop
-                  Tmp := Element (C);
-                  Serialize (A, Tmp);
+               for J in 1 .. Count loop
+                  Elt := Element (C);
+                  Serialize (A, Elt);
                   C := Next (C);
                end loop;
-               Append_Tag (A, Coll_End);
             end;
       end case;
    end Serialize_Collection;
@@ -419,14 +334,17 @@ package body Serialisation is
    -- Serialize_List --
    --------------------
 
-   procedure Serialize_List (A   : in out Archive;
-                             V   : in out T;
-                             Tag : String := "")
+   procedure Serialize_List (A : in out Archive;
+                             V : in out T)
    is
       procedure Merge (Container : in out T;
                        New_Item  : E);
-      --  Local helper subprogram that wraps Append to eliminate the third
-      --  argument.
+      --  Wrapper for Append to eliminate the third argument
+
+      procedure Reserve_Capacity
+        (Container : in out T;
+         Capactity : Ada.Containers.Count_Type) is null;
+      --  Dummy procedure required by the collection serialization API
 
       -----------
       -- Merge --
@@ -444,40 +362,61 @@ package body Serialisation is
       ---------------
 
       procedure Serialize is new Serialize_Collection
-        (T              => T,
-         E              => E,
-         Cursor         => Cursor,
-         Null_Container => Null_Container,
-         Null_Element   => Null_Element,
-         Merge          => Merge);
+        (T                => T,
+         E                => E,
+         Cursor           => Cursor,
+         Null_Container   => Null_Container,
+         Null_Element     => Null_Element,
+         Merge            => Merge,
+         Length           => Length,
+         Reserve_Capacity => Reserve_Capacity);
 
    --  Start of processing for Serialize_List
 
    begin
-      Serialize (A, V, To_Unbounded_String (Tag));
+      Serialize (A, V);
    end Serialize_List;
 
    -------------------
    -- Serialize_Set --
    -------------------
 
-   procedure Serialize_Set (A   : in out Archive;
-                            V   : in out T;
-                            Tag : String := "")
+   procedure Serialize_Set (A     : in out Archive;
+                            V     : in out T;
+                            Label : String := "")
    is
       ---------------
       -- Serialize --
       ---------------
 
       procedure Serialize is new Serialize_Collection
-        (T              => T,
-         E              => E,
-         Cursor         => Cursor,
-         Null_Container => Null_Container,
-         Null_Element   => Null_Element,
-         Merge          => Insert);
+        (T                => T,
+         E                => E,
+         Cursor           => Cursor,
+         Null_Container   => Null_Container,
+         Null_Element     => Null_Element,
+         Merge            => Insert,
+         Length           => Length,
+         Reserve_Capacity => Reserve_Capacity);
+
+      Label_Str : Unbounded_String;
+
    begin
-      Serialize (A, V, To_Unbounded_String (Tag));
+      if Label /= "" then
+         case A.Kind is
+            when Input =>
+               Serialize (A, Label_Str);
+               if Label_Str /= Label then
+                  raise Parse_Error with "malformed set label";
+               end if;
+
+            when Output =>
+               Label_Str := To_Unbounded_String (Label);
+               Serialize (A, Label_Str);
+         end case;
+      end if;
+
+      Serialize (A, V);
    end Serialize_Set;
 
 end Serialisation;

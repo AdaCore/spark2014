@@ -136,23 +136,16 @@ package Serialisation is
       Null_Element   : E;
       with function First (Container : T) return Cursor is <>;
       with function Next (Position : Cursor) return Cursor is <>;
-      with function Has_Element (Position : Cursor) return Boolean is <>;
       with function Element (Position : Cursor) return E is <>;
       with procedure Append (Container : in out T;
                              New_Item  : E;
                              Count     : Count_Type) is <>;
+      with function Length (Container : T)
+                            return Ada.Containers.Count_Type;
       with procedure Serialize (A : in out Archive; V : in out E) is <>;
    procedure Serialize_List (A   : in out Archive;
-                             V   : in out T;
-                             Tag : String := "");
-   --  Serialisation for a container that behaves like a list.
-   --
-   --  If tag is specified the format will be "c:tag [ element ... ]". If
-   --  the list is empty then nothing will be produced (effectively making
-   --  this optional).
-   --
-   --  If tag is not specified the format will be "[ element ... ]", if the
-   --  list is empty then we get "[ ]".
+                             V   : in out T);
+   --  Serialisation for a container that behaves like a list
 
    generic
       type T is private;
@@ -162,30 +155,24 @@ package Serialisation is
       Null_Element   : E;
       with function First (Container : T) return Cursor is <>;
       with function Next (Position : Cursor) return Cursor is <>;
-      with function Has_Element (Position : Cursor) return Boolean is <>;
       with function Element (Position : Cursor) return E is <>;
       with procedure Insert (Container : in out T;
                              New_Item  : E) is <>;
+      with function Length (Container : T)
+                            return Ada.Containers.Count_Type;
+      with procedure Reserve_Capacity (Container : in out T;
+                                       Capacity  : Ada.Containers.Count_Type);
       with procedure Serialize (A : in out Archive; V : in out E) is <>;
-   procedure Serialize_Set (A   : in out Archive;
-                            V   : in out T;
-                            Tag : String := "");
-   --  Serialisation for a container that behaves like a set (the only
-   --  difference to the above is the Insert procedure).
-   --
-   --  The format is as with Serialize_List.
+   procedure Serialize_Set (A     : in out Archive;
+                            V     : in out T;
+                            Label : String := "");
+   --  Serialisation for a container that behaves like a set. The only
+   --  difference to the above is Insert (whose signature is different
+   --  than Append) and Label (which makes the output more human-readable).
 
 private
-
-   type Token_Kind is (Tag, Data);
-
-   type Token is record
-      Kind  : Token_Kind;
-      Value : Unbounded_String;
-   end record;
-
    package Token_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Token);
+     (Element_Type => Unbounded_String);
 
    type Archive (Kind : Direction) is record
       Content : Token_Lists.List;

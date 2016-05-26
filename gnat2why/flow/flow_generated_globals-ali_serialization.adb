@@ -80,16 +80,17 @@ package body Flow_Generated_Globals.ALI_Serialization is
    procedure Serialize (A : in out Archive; V : in out Entity_Name);
 
    procedure Serialize is new Serialize_Set
-     (T              => Name_Sets.Set,
-      E              => Entity_Name,
-      Cursor         => Name_Sets.Cursor,
-      Null_Container => Name_Sets.Empty_Set,
-      Null_Element   => Invalid_Entity_Name,
-      First          => Name_Sets.First,
-      Next           => Name_Sets.Next,
-      Has_Element    => Name_Sets.Has_Element,
-      Element        => Name_Sets.Element,
-      Insert         => Name_Sets.Insert);
+     (T                => Name_Sets.Set,
+      E                => Entity_Name,
+      Cursor           => Name_Sets.Cursor,
+      Null_Container   => Name_Sets.Empty_Set,
+      Null_Element     => Invalid_Entity_Name,
+      First            => Name_Sets.First,
+      Next             => Name_Sets.Next,
+      Length           => Name_Sets.Length,
+      Reserve_Capacity => Name_Sets.Reserve_Capacity,
+      Element          => Name_Sets.Element,
+      Insert           => Name_Sets.Insert);
 
    procedure Serialize (A : in out Archive; V : in out Task_Object);
 
@@ -137,6 +138,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
         (T => Analyzed_Subject_Kind);
       procedure Serialize is new Serialisation.Serialize_Discrete
         (T => Globals_Origin_T);
+
    begin
       Serialize (A, V.Name);
       Serialize (A, V.Kind);
@@ -170,7 +172,7 @@ package body Flow_Generated_Globals.ALI_Serialization is
          Null_Element   => Invalid_Entity_Name,
          First          => Name_Lists.First,
          Next           => Name_Lists.Next,
-         Has_Element    => Name_Lists.Has_Element,
+         Length         => Name_Lists.Length,
          Element        => Name_Lists.Element,
          Append         => Name_Lists.Append,
          Serialize      => Serialize);
