@@ -21,8 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;            use Ada.Strings;
-with Ada.Text_IO;            use Ada.Text_IO;
+with Ada.Strings; use Ada.Strings;
+with Ada.Text_IO; use Ada.Text_IO;
 
 package body Serialisation is
 
