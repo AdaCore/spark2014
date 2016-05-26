@@ -28,10 +28,10 @@ package body Serialisation is
 
    Coll_Begin : constant Unbounded_String := To_Unbounded_String ("[");
    Coll_End   : constant Unbounded_String := To_Unbounded_String ("]");
-   --  Begin/end markers for collections (lists, sets).
+   --  Begin/end markers for collections (lists, sets)
 
    subtype Hex_String is String (1 .. 2);
-   --  String of length 2 for text-representation of 8 bits in hex.
+   --  String of length 2 for text-representation of 8 bits in hex
 
    procedure Match (A : in out Archive; S : Unbounded_String)
    with Pre => A.Kind = Input;
@@ -41,28 +41,27 @@ package body Serialisation is
 
    function Test (A : Archive; S : Unbounded_String) return Boolean
    with Pre => A.Kind = Input;
-   --  Returns true iff the next element of A is a tag and equal to S.
+   --  Returns true iff the next element of A is a tag and equal to S
 
    procedure Append_Tag (A : in out Archive; The_Tag : Unbounded_String)
    with Pre => The_Tag = Coll_Begin or else
                The_Tag = Coll_End or else
                (Length (The_Tag) > 2 and then Element (The_Tag, 2) = ':');
-   --  Append a given tag to the archive.
+   --  Append a given tag to the archive
 
    procedure Append_Data (A : in out Archive; The_Data : Unbounded_String);
-   --  Append a given bit of data to the archive.
+   --  Append a given bit of data to the archive
 
    function To_Hex (C : Character) return Hex_String;
    --  Convert a character (such as ' ') to a two-digit hex representation
    --  ("20" in this example).
 
    function From_Hex (S : Hex_String) return Character;
-   --  The inverse of the above. Raises Parse_Error if we get something
-   --  that is not a hex string.
+   --  The inverse of the above. Raises Parse_Error if we get something that is
+   --  not a hex string.
 
    function Escape (S : Unbounded_String) return Unbounded_String;
-   --  Escape a string so that it contains no spaces or unprintable
-   --  characters.
+   --  Escape a string so that it contains no spaces or unprintable characters
    --
    --     * the empty string is encoded as "\0"
    --     * ' ' is translated to ':'
@@ -70,12 +69,12 @@ package body Serialisation is
    --     * non-printable characters are encoded as '\xHH' where H is
    --       an upper-case hex digit.
    --
-   --  This minimal translation ensures most strings are as long as they
-   --  were before, and are reasonably readable. In particular most magic
-   --  strings produced by SPARK 2014 should be untouched.
+   --  This minimal translation ensures most strings are as long as they were
+   --  before, and are reasonably readable. In particular most magic strings
+   --  produced by SPARK 2014 should be untouched.
 
    function Interpret (S : Unbounded_String) return Unbounded_String;
-   --  The inverse of Escape.
+   --  The inverse of Escape
 
    generic
       type T is private;
@@ -93,9 +92,9 @@ package body Serialisation is
    procedure Serialize_Collection (A   : in out Archive;
                                    V   : in out T;
                                    Tag : Unbounded_String);
-   --  Generic serialisation for ada containers. Merge is a subprogram that
-   --  is meant to add a single element to the container; we need this
-   --  because append/insert have different signatures.
+   --  Generic serialisation for Ada containers. Merge is a subprogram that
+   --  is meant to add a single element to the container; we need this because
+   --  Append (for lists) and Insert (for sets) have different signatures.
 
    -----------
    -- Match --

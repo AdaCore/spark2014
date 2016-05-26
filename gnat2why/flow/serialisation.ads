@@ -31,14 +31,13 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --  package, it is kept reasonably generic so that it might be easily used
 --  elsewhere.
 --
---  The idea is taken from the Boost serialisation library, in that we have
---  a *single* procedure for reading and writing, which keeps code size
---  small and maintainance obvious should datastructures be extended or
---  modified.
+--  The idea is taken from the Boost serialisation library, in that we have a
+--  *single* procedure for reading and writing, which keeps code size small and
+--  maintainance obvious should data structures be extended or modified.
 --
---  To use it you first need write a simple Serialize procedure, for
---  example for a record containing three integer fields. Note that this
---  procedure can both read and write the record!
+--  To use it you first need write a simple Serialize procedure, for example
+--  for a record containing three integer fields. Note that this procedure can
+--  both read and write the record!
 --
 --     procedure Serialize (A : in out Archive; V : in out My_Record) is
 --     begin
@@ -48,15 +47,14 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --     end Serialize;
 --
 --  Serialisation procedures can be instantiated for most primitive types
---  from this package, so to make the Serialize procedure for the integer
---  type Small_Range_T which we might have used in the above record we
---  simply do:
+--  from this package, so to make the Serialize procedure for the integer type
+--  Small_Range_T which we might have used in the above record we simply do:
 --
 --     procedure Serialize is new Serialize_Discrete (T => Small_Range_T);
 --
---  Similar pre-made procedures are available for the ada containers as
---  well (or really anything that exports the required functions related to
---  iteration).
+--  Similar pre-made procedures are available for the Ada containers as
+--  well (or really anything that exports the required functions related
+--  to iteration).
 --
 --  Finally, an archive can be converted to/from an unbounded string, which
 --  is how you are expected to ultimately read and write, so a tiny example
@@ -69,12 +67,12 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --        Write_To_File (To_String (A));
 --     end;
 --
---  Note that in the case of reading, the object passed to the
---  serialisation procedure must be fully initialized if it is a scalar, or
---  if it is a composite type any components containing scalars must be
---  fully initialized since the second argument is an "in out". The easiest
---  way to achieve this is to have a "null" constant for the type you
---  ultimately want to serialize. Thus to safely read:
+--  Note that in the case of reading, the object passed to the serialisation
+--  procedure must be fully initialized if it is a scalar, or if it is a
+--  composite type any components containing scalars must be fully initialized
+--  since the second argument is an "in out". The easiest way to achieve this
+--  is to have a "null" constant for the type you ultimately want to serialize.
+--  Thus to safely read:
 --
 --     declare
 --        A          : Archive (Input) := From_String (Read_Line_From_File);
@@ -87,25 +85,24 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package Serialisation is
 
    Parse_Error : exception;
-   --  This exception is raised when attempting to read back from an
-   --  archive, and the given data does not match the format we're
-   --  expecting.
+   --  This exception is raised when attempting to read back from an archive,
+   --  and the given data does not match the expected format.
 
    type Direction is (Input, Output);
-   --  Input is for reading, Output is for writing.
+   --  Input is for reading, Output is for writing
 
    type Archive (Kind : Direction) is private;
-   --  This is the main type defined by this package.
+   --  This is the main type defined by this package
 
    function To_String (A : Archive) return Unbounded_String
    with Pre => A.Kind = Output;
-   --  Convert the archive to a string (possibly because we want to write
-   --  it to a file).
+   --  Convert the archive to a string (possibly because we want to write it to
+   --  a file).
 
    function From_String (S : String) return Archive
    with Post => From_String'Result.Kind = Input;
-   --  Create an archive from a string (which we might have just read from
-   --  a file).
+   --  Create an archive from a string (which we might have just read from a
+   --  file).
 
    ----------------------------------------------------------------------
    --  Debug
@@ -121,15 +118,15 @@ package Serialisation is
 
    procedure Serialize (A : in out Archive; V : in out Unbounded_String);
    --  Serialisation for an unbounded String. If you want to serialize a
-   --  String, convert to/from an unbounded string and use this procedure;
-   --  it produces a much more compact output than looping over each
-   --  element of the string/array.
+   --  String, convert to/from an unbounded string and use this procedure; it
+   --  produces a much more compact output than looping over each element of
+   --  the string/array.
 
    generic
       type T is (<>);
    procedure Serialize_Discrete (A : in out Archive; V : in out T);
-   --  Serialisation for any discrete type (ultimately using 'image and
-   --  'value) of the given type T.
+   --  Serialisation for any discrete type (ultimately using 'Image and 'Value)
+   --  of the given type T.
 
    generic
       type T is private;
@@ -173,8 +170,8 @@ package Serialisation is
    procedure Serialize_Set (A   : in out Archive;
                             V   : in out T;
                             Tag : String := "");
-   --  Serialisation for a container that behaves like a set (the main
-   --  difference to the above is that the add-to-container procedure).
+   --  Serialisation for a container that behaves like a set (the only
+   --  difference to the above is the Insert procedure).
    --
    --  The format is as with Serialize_List.
 
