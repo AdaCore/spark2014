@@ -313,7 +313,7 @@ package body Flow_Generated_Globals.Phase_1 is
       end loop;
 
       --  Write remote states
-      V := (Kind          => EK_Remote_States,
+      V := (Kind              => EK_Remote_States,
             The_Remote_States => Remote_States);
       Write_To_ALI (V);
 

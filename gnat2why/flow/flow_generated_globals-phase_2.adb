@@ -1802,11 +1802,10 @@ package body Flow_Generated_Globals.Phase_2 is
       begin
          Open (ALI_File, In_File, ALI_File_Name_Str);
 
-         --  Skip to the version section
          while not End_Of_File (ALI_File) loop
-
             declare
                Line : constant String := Get_Line (ALI_File);
+
             begin
                if Line'Length >= 3 then
                   declare
@@ -1816,6 +1815,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      if Header = "QQ " then
                         Found_Version := Line = "QQ SPARKVERSION " &
                           SPARK2014_Static_Version_String;
+
                      elsif Header = "GG " then
                         if Found_Version then
                            case GG_Parsing_State is
@@ -1828,6 +1828,7 @@ package body Flow_Generated_Globals.Phase_2 is
                                    ("GG data after GG end marker");
 
                            end case;
+
                         else
                            Corrupted_ALI_File ("inconsistent spark version");
                         end if;
