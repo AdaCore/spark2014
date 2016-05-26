@@ -1624,6 +1624,13 @@ package body Flow_Generated_Globals.Phase_2 is
                             Left   => Null_Set,
                             Right  => To_Set (ASCII.NUL)));
 
+         ALI_File : Ada.Text_IO.File_Type;
+         Line     : Unbounded_String;
+
+         Found_End     : Boolean := False;
+         Found_Version : Boolean := False;
+         --  This will be set to True once we find the end marker
+
          procedure Issue_Corrupted_File_Error (Msg : String)
          with No_Return;
          --  Issues an error about the ALI file being corrupted and suggests
@@ -1635,18 +1642,12 @@ package body Flow_Generated_Globals.Phase_2 is
 
          procedure Issue_Corrupted_File_Error (Msg : String) is
          begin
+            Close (ALI_File);
             Abort_With_Message
               ("Corrupted ali file detected (" & Sanitized_Name & "): " &
                  Msg &
                  ". Call gnatprove with ""--clean"".");
          end Issue_Corrupted_File_Error;
-
-         ALI_File : Ada.Text_IO.File_Type;
-         Line     : Unbounded_String;
-
-         Found_End     : Boolean := False;
-         Found_Version : Boolean := False;
-         --  This will be set to True once we find the end marker
 
       --  Start of processing for Load_GG_Info_From_ALI
 
