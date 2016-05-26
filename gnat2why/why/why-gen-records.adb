@@ -445,24 +445,24 @@ package body Why.Gen.Records is
                     Field => To_Ident (WNE_Rec_Split_Discrs));
                Discr     : constant W_Term_Id :=
                  +Insert_Conversion_To_Rep_No_Bool
-                 (Domain => EW_Term,
-                  Expr   => New_Record_Access
-                    (Name  => R_Access,
-                     Field => To_Why_Id (Ada_Discr, Local => Is_Root),
-                     Typ   => EW_Abstract (Etype (Ada_Discr))));
+                   (Domain => EW_Term,
+                    Expr   => New_Record_Access
+                      (Name  => R_Access,
+                       Field => To_Why_Id (Ada_Discr, Local => Is_Root),
+                       Typ   => EW_Abstract (Etype (Ada_Discr))));
                New_Cond  : constant W_Pred_Id :=
                  (if Is_Others_Choice (Discrete_Choices (Info.Parent_Variant))
                   then
-                  Compute_Others_Choice (Info, Discr)
+                    Compute_Others_Choice (Info, Discr)
                   else
-                  +Transform_Discrete_Choices
-                    (Info.Parent_Variant, Discr));
+                    +Transform_Discrete_Choices
+                      (Info.Parent_Variant, Discr));
             begin
                Cond :=
                  +New_And_Then_Expr
-                 (Domain => EW_Pred,
-                  Left   => +Cond,
-                  Right  => +New_Cond);
+                   (Domain => EW_Pred,
+                    Left   => +Cond,
+                    Right  => +New_Cond);
                Info := Comp_Info.Element (Info.Parent_Var_Part);
             end;
          end loop;
