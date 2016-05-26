@@ -180,18 +180,22 @@ package body Serialisation is
 
       return V : Unbounded_String := Null_Unbounded_String do
          for I in Natural range 1 .. Length (S) loop
-            case Element (S, I) is
-               when ' ' =>
-                  Append (V, ':');
-               when ':' | '\' =>
-                  Append (V, '\');
-                  Append (V, Element (S, I));
-               when Unescaped_Printable_Character =>
-                  Append (V, Element (S, I));
-               when others =>
-                  Append (V, "\x");
-                  Append (V, To_Hex (Element (S, I)));
-            end case;
+            declare
+               C : constant Character := Element (S, I);
+            begin
+               case C is
+                  when ' ' =>
+                     Append (V, ':');
+                  when ':' | '\' =>
+                     Append (V, '\');
+                     Append (V, C);
+                  when Unescaped_Printable_Character =>
+                     Append (V, C);
+                  when others =>
+                     Append (V, "\x");
+                     Append (V, To_Hex (C));
+               end case;
+            end;
          end loop;
       end return;
    end Escape;
@@ -208,31 +212,37 @@ package body Serialisation is
          for I in Natural range 1 .. Length (S) loop
             if Resume > I then
                null;
-            elsif In_Escape then
-               case Element (S, I) is
-                  when '0' =>
-                     null;
-                  when ':' | '\' =>
-                     Append (V, Element (S, I));
-                  when 'x' =>
-                     if Length (S) < I + 2 then
-                        raise Parse_Error with "malformed string data";
-                     end if;
-                     Resume := I + 3;
-                     Append (V, From_Hex (Slice (S, I + 1, I + 2)));
-                  when others =>
-                     raise Parse_Error with "malformed string data";
-               end case;
-               In_Escape := False;
             else
-               case Element (S, I) is
-                  when '\' =>
-                     In_Escape := True;
-                  when ':' =>
-                     Append (V, ' ');
-                  when others =>
-                     Append (V, Element (S, I));
-               end case;
+               declare
+                  C : constant Character := Element (S, I);
+               begin
+                  if In_Escape then
+                     case C is
+                        when '0' =>
+                           null;
+                        when ':' | '\' =>
+                           Append (V, C);
+                        when 'x' =>
+                           if Length (S) < I + 2 then
+                              raise Parse_Error with "malformed string data";
+                           end if;
+                           Resume := I + 3;
+                           Append (V, From_Hex (Slice (S, I + 1, I + 2)));
+                        when others =>
+                           raise Parse_Error with "malformed string data";
+                     end case;
+                     In_Escape := False;
+                  else
+                     case C is
+                        when '\' =>
+                           In_Escape := True;
+                        when ':' =>
+                           Append (V, ' ');
+                        when others =>
+                           Append (V, C);
+                     end case;
+                  end if;
+               end;
             end if;
          end loop;
       end return;
