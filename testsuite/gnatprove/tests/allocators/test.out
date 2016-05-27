@@ -1,50 +1,55 @@
-functional_sequences.ads:44:55: info: overflow check proved, in instantiation at list_allocator.ads:41
-functional_sequences.ads:87:55: info: overflow check proved, in instantiation at list_allocator.ads:41
-functional_sequences.ads:112:56: info: overflow check proved, in instantiation at list_allocator.ads:41
+conts-functional-sequences.ads:65:55: info: overflow check proved, in instantiation at list_allocator.ads:41
+conts-functional-sequences.ads:108:55: info: overflow check proved, in instantiation at list_allocator.ads:41
+conts-functional-sequences.ads:133:56: info: overflow check proved, in instantiation at list_allocator.ads:41
+conts-functional-sets.ads:146:28: info: overflow check proved, in instantiation at list_allocator.ads:45
+conts-functional-sets.ads:146:28: info: overflow check proved, in instantiation at simple_allocator.ads:25
+conts-functional-sets.ads:147:22: info: overflow check proved, in instantiation at list_allocator.ads:45
+conts-functional-sets.ads:147:22: info: overflow check proved, in instantiation at simple_allocator.ads:25
 list_allocator.adb:14:16: info: length check proved
 list_allocator.adb:18:39: info: index check proved
 list_allocator.adb:20:39: info: index check proved
-list_allocator.adb:28:51: info: precondition proved
-list_allocator.adb:33:13: info: precondition proved
-list_allocator.adb:35:19: info: index check proved
-list_allocator.adb:35:19: info: precondition proved
-list_allocator.adb:36:63: info: precondition proved
-list_allocator.adb:36:87: info: overflow check proved
-list_allocator.adb:39:16: info: precondition proved
-list_allocator.adb:39:44: info: precondition proved
-list_allocator.adb:41:11: info: precondition proved
-list_allocator.adb:49:07: info: assertion proved
-list_allocator.adb:51:29: info: precondition proved
-list_allocator.adb:52:10: info: loop invariant initialization proved
-list_allocator.adb:52:10: info: loop invariant preservation proved
-list_allocator.adb:53:10: info: loop invariant initialization proved
-list_allocator.adb:53:10: info: loop invariant preservation proved
-list_allocator.adb:54:10: info: loop invariant initialization proved
-list_allocator.adb:54:10: info: loop invariant preservation proved
-list_allocator.adb:54:33: info: precondition proved
+list_allocator.adb:29:35: info: overflow check proved
+list_allocator.adb:31:51: info: precondition proved
+list_allocator.adb:36:13: info: precondition proved
+list_allocator.adb:38:19: info: index check proved
+list_allocator.adb:38:19: info: precondition proved
+list_allocator.adb:39:63: info: precondition proved
+list_allocator.adb:39:87: info: overflow check proved
+list_allocator.adb:42:16: info: precondition proved
+list_allocator.adb:42:44: info: precondition proved
+list_allocator.adb:44:11: info: precondition proved
+list_allocator.adb:52:07: info: assertion proved
+list_allocator.adb:54:29: info: precondition proved
 list_allocator.adb:55:10: info: loop invariant initialization proved
 list_allocator.adb:55:10: info: loop invariant preservation proved
-list_allocator.adb:56:37: info: precondition proved
+list_allocator.adb:56:10: info: loop invariant initialization proved
+list_allocator.adb:56:10: info: loop invariant preservation proved
 list_allocator.adb:57:10: info: loop invariant initialization proved
-list_allocator.adb:58:37: medium: loop invariant might fail after first iteration, cannot prove Mem (Model.Available, RR)
-list_allocator.adb:58:59: info: range check proved
-list_allocator.adb:68:30: info: index check proved
-list_allocator.adb:69:16: info: index check proved
-list_allocator.adb:72:29: info: precondition proved
-list_allocator.adb:73:29: info: precondition proved
-list_allocator.adb:81:44: info: index check proved
-list_allocator.adb:82:16: info: index check proved
-list_allocator.adb:85:29: info: precondition proved
-list_allocator.adb:92:47: info: range check proved
-list_allocator.adb:93:07: info: loop invariant initialization proved
-list_allocator.adb:93:07: info: loop invariant preservation proved
-list_allocator.adb:95:18: info: index check proved
-list_allocator.adb:95:72: info: overflow check proved
+list_allocator.adb:57:10: info: loop invariant preservation proved
+list_allocator.adb:57:33: info: precondition proved
+list_allocator.adb:58:10: info: loop invariant initialization proved
+list_allocator.adb:58:10: info: loop invariant preservation proved
+list_allocator.adb:59:37: info: precondition proved
+list_allocator.adb:60:10: info: loop invariant initialization proved
+list_allocator.adb:61:37: medium: loop invariant might fail after first iteration, cannot prove Mem (Model.Available, RR)
+list_allocator.adb:61:59: info: range check proved
+list_allocator.adb:71:30: info: index check proved
+list_allocator.adb:72:16: info: index check proved
+list_allocator.adb:75:29: info: precondition proved
+list_allocator.adb:76:29: info: precondition proved
+list_allocator.adb:84:44: info: index check proved
+list_allocator.adb:85:16: info: index check proved
+list_allocator.adb:88:29: info: precondition proved
+list_allocator.adb:95:47: info: range check proved
 list_allocator.adb:96:07: info: loop invariant initialization proved
 list_allocator.adb:96:07: info: loop invariant preservation proved
-list_allocator.adb:97:07: info: loop invariant initialization proved
-list_allocator.adb:97:07: info: loop invariant preservation proved
-list_allocator.ads:13:03: info: initial condition proved
+list_allocator.adb:98:18: info: index check proved
+list_allocator.adb:98:72: info: overflow check proved
+list_allocator.adb:99:07: info: loop invariant initialization proved
+list_allocator.adb:99:07: info: loop invariant preservation proved
+list_allocator.adb:100:07: info: loop invariant initialization proved
+list_allocator.adb:100:07: info: loop invariant preservation proved
+list_allocator.ads:13:03: medium: initial condition might fail
 list_allocator.ads:30:06: info: initial condition proved
 list_allocator.ads:35:09: info: precondition proved
 list_allocator.ads:37:41: info: precondition proved
@@ -52,30 +57,31 @@ list_allocator.ads:54:53: info: precondition proved
 list_allocator.ads:71:14: info: postcondition proved
 list_allocator.ads:77:38: info: contract case proved
 list_allocator.ads:84:16: info: contract case proved
-list_allocator.ads:91:14: info: postcondition proved
+list_allocator.ads:91:14: medium: postcondition might fail, cannot prove (Is_Valid)
 list_allocator.ads:96:36: info: contract case proved
 list_allocator.ads:103:16: info: contract case proved
-simple_allocator.adb:9:16: info: length check proved
-simple_allocator.adb:12:39: info: index check proved
+simple_allocator.adb:11:16: info: length check proved
 simple_allocator.adb:14:39: info: index check proved
-simple_allocator.adb:21:11: info: precondition proved
+simple_allocator.adb:16:39: info: index check proved
 simple_allocator.adb:23:11: info: precondition proved
-simple_allocator.adb:36:43: info: precondition proved
-simple_allocator.adb:37:43: info: precondition proved
-simple_allocator.adb:39:13: info: loop invariant initialization proved
-simple_allocator.adb:39:13: info: loop invariant preservation proved
-simple_allocator.adb:40:17: info: precondition proved
-simple_allocator.adb:42:17: info: precondition proved
-simple_allocator.adb:45:30: info: index check proved
-simple_allocator.adb:46:51: info: range check proved
-simple_allocator.adb:46:75: info: range check proved
-simple_allocator.adb:47:55: info: range check proved
-simple_allocator.adb:47:75: info: range check proved
-simple_allocator.adb:62:10: info: loop invariant initialization proved
-simple_allocator.adb:62:10: info: loop invariant preservation proved
-simple_allocator.adb:64:53: info: index check proved
-simple_allocator.adb:71:44: info: index check proved
-simple_allocator.adb:72:16: info: index check proved
+simple_allocator.adb:25:11: info: precondition proved
+simple_allocator.adb:38:43: info: precondition proved
+simple_allocator.adb:39:43: info: precondition proved
+simple_allocator.adb:41:13: info: loop invariant initialization proved
+simple_allocator.adb:41:13: info: loop invariant preservation proved
+simple_allocator.adb:42:31: info: overflow check proved
+simple_allocator.adb:44:17: info: precondition proved
+simple_allocator.adb:46:17: info: precondition proved
+simple_allocator.adb:49:30: info: index check proved
+simple_allocator.adb:50:51: info: range check proved
+simple_allocator.adb:50:75: info: range check proved
+simple_allocator.adb:51:55: info: range check proved
+simple_allocator.adb:51:75: info: range check proved
+simple_allocator.adb:66:10: info: loop invariant initialization proved
+simple_allocator.adb:66:10: info: loop invariant preservation proved
+simple_allocator.adb:68:53: info: index check proved
+simple_allocator.adb:75:44: info: index check proved
+simple_allocator.adb:76:16: info: index check proved
 simple_allocator.ads:9:03: info: initial condition proved
 simple_allocator.ads:40:44: info: postcondition proved
 simple_allocator.ads:52:36: info: contract case proved

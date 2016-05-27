@@ -24,7 +24,10 @@ is
    package body M is
 
       function Is_Valid return Boolean is
-        ((if First_Available /= No_Resource then
+        (Length (Model.Available) <= Capacity and then
+         Length (Model.Allocated) <= Capacity and then
+         Length (Model.Available) + Length (Model.Allocated) = Capacity and then
+         (if First_Available /= No_Resource then
             Length (Model.Available) > 0 and then Get (Model.Available, 1) = First_Available
           else
             Length (Model.Available) = 0)

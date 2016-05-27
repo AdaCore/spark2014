@@ -1,8 +1,8 @@
 pragma Unevaluated_Use_Of_Old (Allow);
-with Functional_Sequences;
-pragma Elaborate_All (Functional_Sequences);
-with Functional_Sets;
-pragma Elaborate_All (Functional_Sets);
+with Conts.Functional.Sequences;
+pragma Elaborate_All (Conts.Functional.Sequences);
+with Conts.Functional.Sets;
+pragma Elaborate_All (Conts.Functional.Sets);
 with Conts;
 use type Conts.Count_Type;
 
@@ -38,16 +38,16 @@ is
           and then
         (for all RR in 1 .. Capacity => Mem (Model.Available, Resource (RR))))
    is
-      package S1 is new Functional_Sequences (Index_Type => Positive,
-                                              Element_Type => Resource);
+      package S1 is new Conts.Functional.Sequences (Index_Type => Positive,
+                                                    Element_Type => Resource);
       use S1;
 
-      package S2 is new Functional_Sets (Element_Type => Resource);
+      package S2 is new Conts.Functional.Sets (Element_Type => Resource);
       use S2;
 
       type T is record
          Available : Sequence;
-         Allocated : Set;
+         Allocated : S2.Set;
       end record;
 
       function Mem (S : Sequence; E : Resource) return Boolean is

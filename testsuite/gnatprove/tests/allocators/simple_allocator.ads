@@ -1,6 +1,6 @@
 pragma Unevaluated_Use_Of_Old (Allow);
-with Functional_Sets;
-pragma Elaborate_All (Functional_Sets);
+with Conts.Functional.Sets;
+pragma Elaborate_All (Conts.Functional.Sets);
 
 package Simple_Allocator with
   SPARK_Mode,
@@ -22,7 +22,7 @@ is
 
    package M with Ghost is
 
-      package S is new Functional_Sets (Element_Type => Resource);
+      package S is new Conts.Functional.Sets (Element_Type => Resource);
       use S;
 
       type T is record

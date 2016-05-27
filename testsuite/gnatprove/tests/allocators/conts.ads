@@ -28,6 +28,7 @@ with System.Pool_Global;
 package Conts with SPARK_Mode is
 
    type Count_Type is range 0 .. 2 ** 31 - 1;
+   subtype Positive_Count_Type is Count_Type range 1 .. Count_Type'Last;
    subtype Hash_Type is Ada.Containers.Hash_Type;    --  0 .. 2**32 - 1
    --  Base types for the size of containers, and the hash values used
    --  for some containers. We reuse the same values as for Ada.Containers,

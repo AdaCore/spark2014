@@ -1,3 +1,5 @@
+with Conts; use type Conts.Count_Type;
+
 package body Simple_Allocator with
   SPARK_Mode,
   Refined_State => (State => Data)
@@ -37,7 +39,9 @@ is
                when Allocated => Alloc := Add (Alloc, R);
             end case;
             pragma Loop_Invariant
-              ((for all E of Avail => E in 1 .. R)
+              (Length (Avail) + Length (Alloc) = Conts.Count_Type (R)
+                  and then
+               (for all E of Avail => E in 1 .. R)
                   and then
                (for all E of Alloc => E in 1 .. R)
                   and then
