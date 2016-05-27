@@ -1,6 +1,6 @@
 foo.adb:6:16: info: initialization of "B" proved
 foo.adb:11:32: info: length check proved
 foo.adb:2063:45: info: range check proved
-foo.adb:2066:10: info: assertion proved
+foo.adb:2066:45: medium: assertion might fail, cannot prove A = B
 foo.adb:2066:30: info: division check proved
 foo.adb:2066:49: info: initialization of "B" proved
