@@ -30,9 +30,9 @@ generic
    type Uint is mod <>;
 package SPARK.Mod_Arithmetic_Lemmas
   with SPARK_Mode,
+       Pure,
        Ghost
 is
-
    pragma Warnings
      (Off, "postcondition does not check the outcome of calling");
 
