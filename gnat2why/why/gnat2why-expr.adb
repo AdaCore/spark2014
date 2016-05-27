@@ -9624,55 +9624,49 @@ package body Gnat2Why.Expr is
             R := Transform_Raise (Decl);
 
          when N_Package_Declaration =>
-
             --  Assume dynamic property of local variables
             --  ??? What about local variables of nested packages?
 
             declare
-               E        : constant Entity_Id := Unique_Defining_Entity (Decl);
-               Var_Set  : constant Name_Sets.Set := GG_Get_Local_Variables (E);
-               --  Local variables declared in E
+               E : constant Entity_Id := Unique_Defining_Entity (Decl);
 
                Init_Map : constant Dependency_Maps.Map :=
                  Parse_Initializes (Get_Pragma (E, Pragma_Initializes),
                                     E,
                                     Get_Flow_Scope (E));
 
-               Init_Set : Name_Sets.Set;
-               --  Local Variables initialized by E
+               Var_Set : Name_Sets.Set := GG_Get_Local_Variables (E);
+               --  Local variables declared in E and not initialized by E
 
             begin
                --  First, get initialized variables for Initializes aspect
 
                for Cu in Init_Map.Iterate loop
-                  declare
-                     S      : constant Flow_Id_Sets.Set :=
-                       Expand_Abstract_State (Dependency_Maps.Key (Cu),
-                                              Erase_Constants => False);
-                     E_Name : Entity_Name;
-                     Entity : Entity_Id;
-                  begin
-                     for X of S loop
-                        case X.Kind is
-                        when Direct_Mapping | Record_Field =>
-                           E_Name := To_Entity_Name (X.Node);
-                        when Magic_String =>
-                           E_Name := X.Name;
-                        when Null_Value | Synthetic_Null_Export =>
-                           raise Program_Error;
-                        end case;
+                  for X of Expand_Abstract_State (Dependency_Maps.Key (Cu),
+                                                  Erase_Constants => False)
+                  loop
+                     declare
+                        E_Name : constant Entity_Name :=
+                          (case X.Kind is
+                              when Direct_Mapping | Record_Field =>
+                                 To_Entity_Name (X.Node),
+                              when Magic_String =>
+                                 X.Name,
+                              when others =>
+                                 raise Program_Error);
 
-                        Entity := Find_Entity (E_Name);
+                        Entity : constant Entity_Id := Find_Entity (E_Name);
 
+                     begin
                         --  Assume declaration of X
 
                         if Present (Entity)
                           and then Nkind (Entity) in N_Entity
                           and then (Is_Object (Entity)
-                                    or else Is_Named_Number (Entity))
+                                      or else Is_Named_Number (Entity))
                           and then Entity_In_SPARK (Entity)
                           and then Ada_Ent_To_Why.Has_Element
-                            (Symbol_Table, Entity)
+                                     (Symbol_Table, Entity)
                         then
                            Assume_Declaration_Of_Entity
                              (E             => Entity,
@@ -9682,53 +9676,49 @@ package body Gnat2Why.Expr is
                               Context       => R);
                         end if;
 
-                        --  Store it in Init_Set so that we do not declare it
-                        --  again.
+                        --  Exclude it from Var_Set so that we do not declare
+                        --  it again.
 
-                        Init_Set.Include (E_Name);
-                     end loop;
-                  end;
+                        Var_Set.Exclude (E_Name);
+                     end;
+                  end loop;
                end loop;
 
                --  Then also assume dynamic property of unitialized variables
 
                for X of Var_Set loop
+                  declare
+                     Entity : constant Entity_Id := Find_Entity (X);
 
-                  --  Do nothing if the variable has already been declared
+                  begin
+                     --  Assume declaration of X
 
-                  if not Init_Set.Contains (X) then
-                     declare
-                        Entity : constant Entity_Id := Find_Entity (X);
-                     begin
-
-                        --  Assume declaration of X
-
-                        if Present (Entity)
-                          and then Nkind (Entity) in N_Entity
-                          and then (Is_Object (Entity)
-                                    or else Is_Named_Number (Entity))
-                          and then Entity_In_SPARK (Entity)
-                          and then Ada_Ent_To_Why.Has_Element
-                            (Symbol_Table, Entity)
-                        then
-                           Assume_Declaration_Of_Entity
-                             (E             => Entity,
-                              Params        => Body_Params,
-                              Initialized   => False,
-                              Top_Predicate => True,
-                              Context       => R);
-                        end if;
-                     end;
-                  end if;
+                     if Present (Entity)
+                       and then Nkind (Entity) in N_Entity
+                       and then (Is_Object (Entity)
+                                 or else Is_Named_Number (Entity))
+                       and then Entity_In_SPARK (Entity)
+                       and then Ada_Ent_To_Why.Has_Element
+                         (Symbol_Table, Entity)
+                     then
+                        Assume_Declaration_Of_Entity
+                          (E             => Entity,
+                           Params        => Body_Params,
+                           Initialized   => False,
+                           Top_Predicate => True,
+                           Context       => R);
+                     end if;
+                  end;
                end loop;
             end;
 
             --  Assume initial condition
 
             declare
-               Init_Cond  : constant Node_Id :=
+               Init_Cond : constant Node_Id :=
                  Get_Pragma (Unique_Defining_Entity (Decl),
                              Pragma_Initial_Condition);
+
             begin
                if Present (Init_Cond) then
                   declare
