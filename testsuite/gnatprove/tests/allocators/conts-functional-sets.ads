@@ -96,7 +96,8 @@ package Conts.Functional.Sets with SPARK_Mode is
 
      Global => null,
      Pre    => Mem (S, E),
-     Post   => Is_Add (Remove'Result, E, S);
+     Post   => Length (Remove'Result) = Length (S) - 1
+     and Is_Add (Remove'Result, E, S);
 
    function Is_Intersection (S1, S2, Result : Set) return Boolean with
    --  Returns True if Result is the intersection of S1 and S2.

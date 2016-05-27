@@ -75,7 +75,7 @@ package body Conts.Functional.Sequences with SPARK_Mode => Off is
         (for all M in Index_Type'Succ (Index_Type'First) ..
              (Index_Type'Val
                   ((Index_Type'Pos (Index_Type'First) - 1) + Length (Result))) =>
-              Get (Result, M) = Get (S, M)));
+              Get (Result, M) = Get (S, Index_Type'Pred (M))));
 
    function Is_Deleted
      (S : Sequence; N : Index_Type; Result : Sequence) return Boolean

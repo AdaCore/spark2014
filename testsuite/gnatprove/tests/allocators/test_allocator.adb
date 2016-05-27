@@ -13,7 +13,7 @@ begin
    pragma Assert (Res3 /= No_Resource);
    pragma Assert (Is_Allocated (Res3));
    Alloc (Res4);
-   pragma Assert (Res4 = No_Resource);
+   pragma Assert (Res4 /= No_Resource);
    Free (Res1);
    pragma Assert (Is_Available (Res1));
    Free (Res2);

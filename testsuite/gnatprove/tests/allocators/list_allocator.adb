@@ -53,6 +53,7 @@ is
       for R in Valid_Resource loop
          Model.Available := Add (Model.Available, R);
          pragma Loop_Invariant (Is_Empty (Model.Allocated));
+         pragma Loop_Invariant (Length (Model.Allocated) = 0);
          pragma Loop_Invariant (Integer (Length (Model.Available)) = Natural (R));
          pragma Loop_Invariant (Get (Model.Available, 1) = 1);
          pragma Loop_Invariant
@@ -60,6 +61,7 @@ is
          pragma Loop_Invariant
            (for all RR in 1 .. R => Mem (Model.Available, RR));
       end loop;
+      pragma Assert (Length (Model.Available) = Capacity);
    end M;
 
    procedure Alloc (Res : out Resource) is
