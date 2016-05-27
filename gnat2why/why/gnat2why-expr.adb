@@ -9635,8 +9635,40 @@ package body Gnat2Why.Expr is
                                     E,
                                     Get_Flow_Scope (E));
 
-               Var_Set : Name_Sets.Set := GG_Get_Local_Variables (E);
+               Vars : Name_Sets.Set := GG_Get_Local_Variables (E);
                --  Local variables declared in E and not initialized by E
+
+               procedure Assume_Declaration
+                 (Obj         : Entity_Name;
+                  Initialized : Boolean);
+
+               ------------------------
+               -- Assume_Declaration --
+               ------------------------
+
+               procedure Assume_Declaration
+                 (Obj         : Entity_Name;
+                  Initialized : Boolean)
+               is
+                  Entity : constant Entity_Id := Find_Entity (Obj);
+
+               begin
+                  if Present (Entity)
+                    and then Nkind (Entity) in N_Entity
+                    and then (Is_Object (Entity)
+                              or else Is_Named_Number (Entity))
+                    and then Entity_In_SPARK (Entity)
+                    and then Ada_Ent_To_Why.Has_Element
+                      (Symbol_Table, Entity)
+                  then
+                     Assume_Declaration_Of_Entity
+                       (E             => Entity,
+                        Params        => Body_Params,
+                        Initialized   => Initialized,
+                        Top_Predicate => True,
+                        Context       => R);
+                  end if;
+               end Assume_Declaration;
 
             begin
                --  First, get initialized variables for Initializes aspect
@@ -9655,60 +9687,21 @@ package body Gnat2Why.Expr is
                               when others =>
                                  raise Program_Error);
 
-                        Entity : constant Entity_Id := Find_Entity (E_Name);
-
                      begin
-                        --  Assume declaration of X
-
-                        if Present (Entity)
-                          and then Nkind (Entity) in N_Entity
-                          and then (Is_Object (Entity)
-                                      or else Is_Named_Number (Entity))
-                          and then Entity_In_SPARK (Entity)
-                          and then Ada_Ent_To_Why.Has_Element
-                                     (Symbol_Table, Entity)
-                        then
-                           Assume_Declaration_Of_Entity
-                             (E             => Entity,
-                              Params        => Body_Params,
-                              Initialized   => True,
-                              Top_Predicate => True,
-                              Context       => R);
-                        end if;
+                        Assume_Declaration (E_Name, Initialized => True);
 
                         --  Exclude it from Var_Set so that we do not declare
                         --  it again.
 
-                        Var_Set.Exclude (E_Name);
+                        Vars.Exclude (E_Name);
                      end;
                   end loop;
                end loop;
 
                --  Then also assume dynamic property of unitialized variables
 
-               for X of Var_Set loop
-                  declare
-                     Entity : constant Entity_Id := Find_Entity (X);
-
-                  begin
-                     --  Assume declaration of X
-
-                     if Present (Entity)
-                       and then Nkind (Entity) in N_Entity
-                       and then (Is_Object (Entity)
-                                 or else Is_Named_Number (Entity))
-                       and then Entity_In_SPARK (Entity)
-                       and then Ada_Ent_To_Why.Has_Element
-                         (Symbol_Table, Entity)
-                     then
-                        Assume_Declaration_Of_Entity
-                          (E             => Entity,
-                           Params        => Body_Params,
-                           Initialized   => False,
-                           Top_Predicate => True,
-                           Context       => R);
-                     end if;
-                  end;
+               for Var of Vars loop
+                  Assume_Declaration (Var, Initialized => False);
                end loop;
             end;
 
