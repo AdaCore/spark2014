@@ -708,17 +708,17 @@ package body Gnat2Why.Util is
    -- Is_Mutable_In_Why --
    -----------------------
 
-   function Is_Mutable_In_Why (N : Node_Id) return Boolean is
+   function Is_Mutable_In_Why (E : Entity_Id) return Boolean is
    begin
       --  A variable is translated as mutable in Why if it is not constant on
       --  the Ada side, or if it is a loop parameter (of an actual loop, not a
       --  quantified expression).
 
-      if Ekind (N) = E_Loop_Parameter then
-         return not (Is_Quantified_Loop_Param (N));
+      if Ekind (E) = E_Loop_Parameter then
+         return not (Is_Quantified_Loop_Param (E));
 
-      elsif Ekind (N) = E_Variable
-        and then Is_Quantified_Loop_Param (N)
+      elsif Ekind (E) = E_Variable
+        and then Is_Quantified_Loop_Param (E)
       then
          return False;
 
@@ -727,7 +727,7 @@ package body Gnat2Why.Util is
       --  the named notation of aggregates are not considered as references
       --  to mutable variables (e.g. in Expression_Depends_On_Variables).
 
-      elsif Ekind (N) in E_Enumeration_Literal |
+      elsif Ekind (E) in E_Enumeration_Literal |
                          E_Component           |
                          E_Discriminant        |
                          Named_Kind            |
@@ -739,7 +739,7 @@ package body Gnat2Why.Util is
       --  Same for objects that have Part_Of specified (for a protected
       --  object), they are like components for proof.
 
-      elsif Is_Part_Of_Protected_Object (N) then
+      elsif Is_Part_Of_Protected_Object (E) then
          return False;
 
       --  Constants defined locally to a loop inside a subprogram (or any
@@ -747,9 +747,9 @@ package body Gnat2Why.Util is
       --  be mutable in Why, except when they are defined inside "actions" (in
       --  which case they are defined as local "let" bound variables in Why).
 
-      elsif Ekind (N) = E_Constant
-        and then SPARK_Definition.Is_Loop_Entity (N)
-        and then not SPARK_Definition.Is_Actions_Entity (N)
+      elsif Ekind (E) = E_Constant
+        and then SPARK_Definition.Is_Loop_Entity (E)
+        and then not SPARK_Definition.Is_Actions_Entity (E)
       then
          return True;
 
@@ -757,13 +757,13 @@ package body Gnat2Why.Util is
       --  mutable (even if they are, for example, in parameters). Constants
       --  cannot be volatile in SPARK so are not considered here.
 
-      elsif Ekind (N) /= E_Constant
+      elsif Ekind (E) /= E_Constant
         and then
-          Flow_Types.Has_Async_Writers (Flow_Types.Direct_Mapping_Id (N))
+          Flow_Types.Has_Async_Writers (Flow_Types.Direct_Mapping_Id (E))
       then
          return True;
 
-      elsif Is_Constant_Object (N) then
+      elsif Is_Constant_Object (E) then
          return False;
 
       else

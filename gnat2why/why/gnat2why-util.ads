@@ -346,8 +346,8 @@ package Gnat2Why.Util is
    function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean;
    --  Returns True if node N is defined locally to a loop
 
-   function Is_Mutable_In_Why (N : Node_Id) return Boolean with
-     Pre => Nkind (N) in N_Defining_Identifier | N_Defining_Operator_Symbol;
+   function Is_Mutable_In_Why (E : Entity_Id) return Boolean with
+     Pre => Nkind (E) in N_Defining_Identifier | N_Defining_Operator_Symbol;
    --  Given an identifier, decide if it denotes a variable that is mutable in
    --  the Why translation.
 
