@@ -1931,7 +1931,9 @@ package body Flow.Analysis is
       --  define Var. If V_Allowed is set, then the path that we return is
       --  allowed to contain V_Allowed even if V_Allowed does set Var.
 
-      function Mentioned_On_Gen_Init (Var : Flow_Id) return Boolean
+      function Mentioned_On_Generated_Initializes
+        (Var : Flow_Id)
+         return Boolean
       with Pre => Ekind (FA.Analyzed_Entity) in E_Package | E_Package_Body;
       --  Returns True if Var is mentioned on the LHS of a generated
       --  Initializes aspect.
@@ -2058,11 +2060,14 @@ package body Flow.Analysis is
          end if;
       end Mark_Definition_Free_Path;
 
-      ---------------------------
-      -- Mentioned_On_Gen_Init --
-      ---------------------------
+      ----------------------------------------
+      -- Mentioned_On_Generated_Initialized --
+      ----------------------------------------
 
-      function Mentioned_On_Gen_Init (Var : Flow_Id) return Boolean is
+      function Mentioned_On_Generated_Initializes
+        (Var : Flow_Id)
+         return Boolean
+      is
          DM : constant Dependency_Maps.Map :=
            GG_Get_Initializes (To_Entity_Name (FA.Spec_Entity), FA.S_Scope);
 
@@ -2070,7 +2075,7 @@ package body Flow.Analysis is
          return
            (for some Init_Var in DM.Iterate =>
               Dependency_Maps.Key (Init_Var) = Var);
-      end Mentioned_On_Gen_Init;
+      end Mentioned_On_Generated_Initializes;
 
       ------------------------------------
       -- Might_Be_Defined_In_Other_Path --
@@ -2522,7 +2527,8 @@ package body Flow.Analysis is
                          (Is_Abstract_State (Var_Used)
                           or else
                             (Final_Value_Of_Var_Used = V
-                             and then Mentioned_On_Gen_Init (Var_Used))))
+                             and then
+                               Mentioned_On_Generated_Initializes (Var_Used))))
                     or else
                       (Var_Used.Kind in Direct_Mapping | Record_Field
                        and then
