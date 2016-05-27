@@ -701,11 +701,6 @@ package body Flow_Generated_Globals.Phase_2 is
       Subprograms_Without_GG : Name_Sets.Set;
       --  Subprograms for which a GG entry does not exist
 
-      Local_Graph : Local_Graphs.Graph;
-      --  A graph that represents the hierarchy of subprograms (which
-      --  subprogram is nested in which one); used to determine which
-      --  local variables may act as globals to which subprograms.
-
       Subprogram_Info_List : Global_Info_Lists.List;
       --  Information about subprograms from the "generated globals" algorithm
 
@@ -713,9 +708,9 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Information about packages from the "generated globals" algorithm
 
       procedure Add_Edges;
-      --  Reads the populated Subprogram_Info_List and generates all the edges
-      --  of the Global_Graph. While adding edges we consult the Local_Graph so
-      --  as not to add edges to local variables.
+      --  Takes the Subprogram_Info_List and generates edges in the
+      --  Global_Graph. It consults the Local_Graph and do not add edges
+      --  to local variables.
       --  Also, creates edges for (conditional and unconditional) subprogram
       --  calls in the tasking-related call graphs.
 
@@ -723,16 +718,16 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Creates the vertices of the Global_Graph and subprogram vertices in
       --  the Tasking_Graph.
 
-      procedure Create_Local_Graph;
-      --  Creates the Local_Graph. This graph will be used to prevent adding
-      --  edges to local variables on the Global_Graph.
-
       procedure Edit_Proof_Ins;
       --  A variable cannot be simultaneously a Proof_In and an Input of a
       --  subprogram. In this case we remove the Proof_In edge. Furthermore,
       --  a variable cannot be simultaneously a Proof_In and an Output (but
       --  not an input). In this case we change the Proof_In variable into
       --  an Input.
+
+      function Graph_File_Prefix return String;
+      --  Returns a debug filename prefix based on name of the current
+      --  compilation unit.
 
       procedure Generate_Initializes_Aspects;
       --  Once the global graph has been generated, we use it to generate the
@@ -759,17 +754,87 @@ package body Flow_Generated_Globals.Phase_2 is
       ---------------
 
       procedure Add_Edges is
-         use Global_Graphs;
+         Local_Graph : Local_Graphs.Graph;
+         --  A graph that represents the hierarchy of subprograms (which
+         --  subprogram is nested in which one); used to determine which
+         --  local variables may act as globals to which subprograms.
 
-         function Edge_Selector (A, B : Vertex_Id) return Boolean;
-         --  Check if we should add the given edge to the graph based weather
+         procedure Create_Local_Graph;
+         --  Creates a graph used to prevent adding edges to local variables in
+         --  the Global_Graph.
+
+         function Edge_Selector (A, B : Global_Graphs.Vertex_Id)
+                                 return Boolean;
+         --  Check if we should add the given edge to the graph based whether
          --  it is in the local graph or not.
+
+         ------------------------
+         -- Create_Local_Graph --
+         ------------------------
+
+         procedure Create_Local_Graph is
+         begin
+            Local_Graph := Local_Graphs.Create;
+
+            for Info of Subprogram_Info_List loop
+               if not Local_Graph.Contains (Info.Name) then
+                  --  Create a vertex for the subprogram if one does not
+                  --  already exist.
+                  Local_Graph.Add_Vertex (Info.Name);
+               end if;
+
+               --  Create a vertex for every local variable and link it to the
+               --  enclosing subprogram.
+               for Local_Variable of Info.Local_Variables loop
+                  --  Create a vertex for every local variable if one does not
+                  --  already exist.
+                  if not Local_Graph.Contains (Local_Variable) then
+                     Local_Graph.Add_Vertex (Local_Variable);
+                  end if;
+
+                  --  Link enclosing subprogram to local variable
+                  Local_Graph.Add_Edge (Info.Name, Local_Variable);
+               end loop;
+
+               --  Create a vertex for every local subprogram and link it to
+               --  the enclosing subprogram.
+               for Local_Subprogram of Info.Local_Subprograms loop
+                  if not Local_Graph.Contains (Local_Subprogram) then
+                     --  Create a vertex for every local subprogram if one does
+                     --  not already exist.
+                     Local_Graph.Add_Vertex (Local_Subprogram);
+                  end if;
+
+                  --  Link enclosing subprogram to local subprogram
+                  Local_Graph.Add_Edge (Info.Name, Local_Subprogram);
+               end loop;
+
+               --  Link all local variables to all local subprograms (this
+               --  effectively means that they can act as their globals).
+               for Local_Variable of Info.Local_Variables loop
+                  for Local_Subprogram of Info.Local_Subprograms loop
+                     Local_Graph.Add_Edge (Local_Variable, Local_Subprogram);
+                  end loop;
+               end loop;
+            end loop;
+
+            --  Close graph
+            Local_Graph.Close;
+
+            if Debug_Print_Global_Graph then
+               Print_Local_Graph (Prefix      => Graph_File_Prefix,
+                                  G           => Local_Graph,
+                                  Subprograms => All_Subprograms);
+            end if;
+         end Create_Local_Graph;
 
          -------------------
          -- Edge_Selector --
          -------------------
 
-         function Edge_Selector (A, B : Vertex_Id) return Boolean is
+         function Edge_Selector (A, B : Global_Graphs.Vertex_Id)
+                                 return Boolean
+         is
             Key_A : constant Global_Id := Global_Graph.Get_Key (A);
             Key_B : constant Global_Id := Global_Graph.Get_Key (B);
          begin
@@ -780,7 +845,7 @@ package body Flow_Generated_Globals.Phase_2 is
                  and then Key_B.Kind = Variable
             then
                declare
-                  use Local_Graphs;
+                  use type Local_Graphs.Vertex_Id;
 
                   Subp, Var : Local_Graphs.Vertex_Id;
                   --  Vertices for a subprogram and a variable
@@ -812,6 +877,10 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Start of processing for Add_Edges
 
       begin
+         --  Create the Local_Graph
+         Create_Local_Graph;
+         Note_Time ("gg_read - local graph done");
+
          --  Go through the Subprogram_Info_List and add edges
          for Info of Subprogram_Info_List loop
             declare
@@ -1251,13 +1320,13 @@ package body Flow_Generated_Globals.Phase_2 is
 
       procedure Create_Vertices is
       begin
-         --  Create vertices for all global variables
+         --  Create vertices for global variables
          for N of Globals loop
             Global_Graph.Add_Vertex (Global_Id'(Kind => Variable,
                                                 Name => N));
          end loop;
 
-         --  Create Ins, Outs and Proof_Ins vertices for all subprograms
+         --  Create Ins, Outs and Proof_Ins vertices for subprograms
          for Subprogram_Name of All_Subprograms loop
             for K in Inputs .. Proof_Ins loop
                declare
@@ -1271,58 +1340,6 @@ package body Flow_Generated_Globals.Phase_2 is
             end loop;
          end loop;
       end Create_Vertices;
-
-      ------------------------
-      -- Create_Local_Graph --
-      ------------------------
-
-      procedure Create_Local_Graph is
-      begin
-         for Info of Subprogram_Info_List loop
-            if not Local_Graph.Contains (Info.Name) then
-               --  Create a vertex for the subprogram if one does not already
-               --  exist.
-               Local_Graph.Add_Vertex (Info.Name);
-            end if;
-
-            --  Create a vertex for every local variable and link it to the
-            --  enclosing subprogram.
-            for Local_Variable of Info.Local_Variables loop
-               --  Create a vertex for every local variable if one does not
-               --  already exist.
-               if not Local_Graph.Contains (Local_Variable) then
-                  Local_Graph.Add_Vertex (Local_Variable);
-               end if;
-
-               --  Link enclosing subprogram to local variable
-               Local_Graph.Add_Edge (Info.Name, Local_Variable);
-            end loop;
-
-            --  Create a vertex for every local subprogram and link it to the
-            --  enclosing subprogram.
-            for Local_Subprogram of Info.Local_Subprograms loop
-               if not Local_Graph.Contains (Local_Subprogram) then
-                  --  Create a vertex for every local subprogram if one does
-                  --  not already exist.
-                  Local_Graph.Add_Vertex (Local_Subprogram);
-               end if;
-
-               --  Link enclosing subprogram to local subprogram
-               Local_Graph.Add_Edge (Info.Name, Local_Subprogram);
-            end loop;
-
-            --  Link all local variables to all local subprograms (this
-            --  effectively means that they can act as their globals).
-            for Local_Variable of Info.Local_Variables loop
-               for Local_Subprogram of Info.Local_Subprograms loop
-                  Local_Graph.Add_Edge (Local_Variable, Local_Subprogram);
-               end loop;
-            end loop;
-         end loop;
-
-         --  Close graph
-         Local_Graph.Close;
-      end Create_Local_Graph;
 
       --------------------
       -- Edit_Proof_Ins --
@@ -1609,6 +1626,13 @@ package body Flow_Generated_Globals.Phase_2 is
             Print_Generated_Initializes_Aspects;
          end if;
       end Generate_Initializes_Aspects;
+
+      -----------------------
+      -- Graph_File_Prefix --
+      -----------------------
+
+      function Graph_File_Prefix return String is
+        (Spec_File_Name_Without_Suffix (Enclosing_Comp_Unit_Node (GNAT_Root)));
 
       ---------------------------
       -- Load_GG_Info_From_ALI --
@@ -2061,13 +2085,8 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Populate the All_Other_Subprograms set
       Subprograms_Without_GG := All_Subprograms - Subprograms_With_GG;
 
-      --  Initialize Local_Graph and Global_Graph
-      Local_Graph  := Local_Graphs.Create;
+      --  Initialize Global_Graph
       Global_Graph := Global_Graphs.Create;
-
-      --  Create the Local_Graph
-      Create_Local_Graph;
-      Note_Time ("gg_read - local graph done");
 
       --  Create all vertices of the Global_Graph
       Create_Vertices;
@@ -2093,19 +2112,8 @@ package body Flow_Generated_Globals.Phase_2 is
       Note_Time ("gg_read - removed nonvariable constants");
 
       if Debug_Print_Global_Graph then
-         declare
-            Prefix : constant String :=
-              Spec_File_Name_Without_Suffix
-                (Enclosing_Comp_Unit_Node (GNAT_Root));
-
-         begin
-            Print_Local_Graph (Prefix      => Prefix,
-                               G           => Local_Graph,
-                               Subprograms => All_Subprograms);
-
-            Print_Global_Graph (Prefix => Prefix,
-                                G      => Global_Graph);
-         end;
+         Print_Global_Graph (Prefix => Graph_File_Prefix,
+                             G      => Global_Graph);
       end if;
 
       --  To speed up queries on constituents of state, we fill in a helper
