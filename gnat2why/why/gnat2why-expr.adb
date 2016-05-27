@@ -9521,8 +9521,7 @@ package body Gnat2Why.Expr is
 
             declare
                E        : constant Entity_Id := Unique_Defining_Entity (Decl);
-               Var_Set  : constant Name_Sets.Set :=
-                 GG_Get_Local_Variables (To_Entity_Name (E));
+               Var_Set  : constant Name_Sets.Set := GG_Get_Local_Variables (E);
                --  Local variables declared in E.
 
                Init_Map : constant Dependency_Maps.Map :=

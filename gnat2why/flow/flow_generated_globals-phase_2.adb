@@ -453,10 +453,13 @@ package body Flow_Generated_Globals.Phase_2 is
    ------------------------
 
    function GG_Get_Initializes
-     (EN : Entity_Name;
-      S  : Flow_Scope)
+     (E : Entity_Id;
+      S : Flow_Scope)
       return Dependency_Maps.Map
    is
+      EN : constant Entity_Name := To_Entity_Name (E);
+      --  Package entity name
+
    begin
       if GG_Exists_Cache.Contains (EN) then
          --  Retrieve the relevant Name_Dependency_Map, up project it to S and
@@ -555,10 +558,17 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_Get_Local_Variables --
    ----------------------------
 
-   function GG_Get_Local_Variables (EN : Entity_Name) return Name_Sets.Set is
-     (if GG_Exists_Cache.Contains (EN)
-      then Package_To_Locals_Map (EN)
-      else Name_Sets.Empty_Set);
+   function GG_Get_Local_Variables (E : Entity_Id) return Name_Sets.Set
+   is
+      EN : constant Entity_Name := To_Entity_Name (E);
+      --  Package entity name
+
+   begin
+      return
+        (if GG_Exists_Cache.Contains (EN)
+         then Package_To_Locals_Map (EN)
+         else Name_Sets.Empty_Set);
+   end GG_Get_Local_Variables;
 
    ---------------------------------
    -- GG_Get_Most_Refined_Globals --

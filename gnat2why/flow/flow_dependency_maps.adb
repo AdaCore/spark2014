@@ -267,7 +267,7 @@ package body Flow_Dependency_Maps is
       --  phase has been completed then look for the generated initializes.
 
       elsif GG_Has_Been_Generated then
-         M := GG_Get_Initializes (To_Entity_Name (P), S);
+         M := GG_Get_Initializes (P, S);
 
       --  There is neither a user-provided nor a generated initializes aspect
       --  so we just have an empty dependency map.

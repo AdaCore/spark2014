@@ -2069,7 +2069,7 @@ package body Flow.Analysis is
          return Boolean
       is
          DM : constant Dependency_Maps.Map :=
-           GG_Get_Initializes (To_Entity_Name (FA.Spec_Entity), FA.S_Scope);
+           GG_Get_Initializes (FA.Spec_Entity, FA.S_Scope);
 
       begin
          return
