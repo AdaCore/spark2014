@@ -2438,12 +2438,12 @@ package body Why.Gen.Records is
    ----------------------------------
 
    procedure Declare_Component_Attributes
-     (P       : W_Section_Id;
-      E       : Entity_Id)
+     (P : W_Section_Id;
+      E : Entity_Id)
    is
       Field : Entity_Id := First_Component_Or_Discriminant (E);
-   begin
 
+   begin
       while Present (Field) loop
 
          Emit (P,

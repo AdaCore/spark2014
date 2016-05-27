@@ -39,7 +39,7 @@ with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
-with Opt;                            use type Opt.Ada_Version_Type;
+with Opt;
 with Rtsfind;                        use Rtsfind;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Disp;                       use Sem_Disp;
@@ -8118,6 +8118,9 @@ package body Gnat2Why.Expr is
       Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
       Var     : constant Node_Id      := Prefix (Expr);
       T       : W_Expr_Id;
+
+      use type Opt.Ada_Version_Type;
+
    begin
       --  The attributes supported here must be a subset
       --  of those supported by a language as a whole.
@@ -8708,7 +8711,6 @@ package body Gnat2Why.Expr is
             end if;
 
          when Attribute_Constrained =>
-
             --  To be able to handle affectations, we put the constrained why
             --  field to false in components of aggregates that have an
             --  unconstrained type with defaulted discriminants.
@@ -8746,7 +8748,6 @@ package body Gnat2Why.Expr is
             T := +False_Term;
 
          when Attribute_Component_Size =>
-
             if Nkind (Var) in N_Has_Entity
               and then Present (Entity (Var))
               and then Ekind (Entity (Var)) in Type_Kind
@@ -8770,7 +8771,6 @@ package body Gnat2Why.Expr is
             end if;
 
          when Attribute_Alignment =>
-
             if Nkind (Var) in N_Has_Entity
               and then Present (Entity (Var))
               and then Ekind (Entity (Var)) in Type_Kind
@@ -8798,12 +8798,11 @@ package body Gnat2Why.Expr is
             end if;
 
          when Attribute_First_Bit =>
-
             declare
                Component : constant Entity_Id :=
                  Entity (Selector_Name (Var));
-            begin
 
+            begin
                if Present (Component_Clause (Component))
                  and then Opt.Ada_Version >= Opt.Ada_2005
                  and then Reverse_Bit_Order (Scope (Component))
@@ -8834,12 +8833,11 @@ package body Gnat2Why.Expr is
             end;
 
          when Attribute_Last_Bit =>
-
             declare
                Component : constant Entity_Id :=
                  Entity (Selector_Name (Var));
-            begin
 
+            begin
                if Present (Component_Clause (Component))
                  and then Opt.Ada_Version >= Opt.Ada_2005
                  and then Reverse_Bit_Order (Scope (Component))
@@ -8874,15 +8872,13 @@ package body Gnat2Why.Expr is
             end;
 
          when Attribute_Position =>
-
             declare
                Component : constant Entity_Id :=
                  Entity (Selector_Name (Var));
             begin
-               if Present (Component_Clause (Component))
-               then
-                  if Opt.Ada_Version >= Opt.Ada_2005 and then
-                    Reverse_Bit_Order (Scope (Component))
+               if Present (Component_Clause (Component)) then
+                  if Opt.Ada_Version >= Opt.Ada_2005
+                    and then Reverse_Bit_Order (Scope (Component))
                   then
                      return New_Integer_Constant
                        (Expr,
@@ -8894,7 +8890,6 @@ package body Gnat2Why.Expr is
                   end if;
                else
                   declare
-
                      Name : constant W_Identifier_Id := New_Identifier
                        (Name   => Short_Name (Component) & "__position",
                         Module => E_Module (Etype (Prefix (Var))),
@@ -8914,6 +8909,7 @@ package body Gnat2Why.Expr is
                                   & Attribute_Id'Image (Attr_Id));
             raise Not_Implemented;
       end case;
+
       return T;
    end Transform_Attr;
 
