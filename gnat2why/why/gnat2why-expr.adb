@@ -9452,9 +9452,9 @@ package body Gnat2Why.Expr is
                Obj      : constant Entity_Id := Defining_Identifier (Decl);
                Obj_Type : constant Entity_Id := Etype (Obj);
 
-               Lvalue      : constant Entity_Id := (if Is_Full_View (Obj)
-                                                    then Partial_View (Obj)
-                                                    else Obj);
+               Lvalue   : constant Entity_Id := (if Is_Full_View (Obj)
+                                                 then Partial_View (Obj)
+                                                 else Obj);
             begin
                --  We can ignore task declarations
 
@@ -9503,9 +9503,9 @@ package body Gnat2Why.Expr is
                if Entity_In_SPARK (Ent) then
                   case Ekind (Ent) is
                   when Scalar_Kind =>
-                     R := Check_Scalar_Range (Params   => Body_Params,
-                                              N        => Ent,
-                                              Base     => Base);
+                     R := Check_Scalar_Range (Params => Body_Params,
+                                              N      => Ent,
+                                              Base   => Base);
 
                   when Array_Kind =>
                      declare
@@ -9545,9 +9545,9 @@ package body Gnat2Why.Expr is
                               if Comes_From_Source (Index) then
                                  R := Sequence
                                    (Check_Scalar_Range
-                                      (Params   => Body_Params,
-                                       N        => Etype (Index),
-                                       Base     => Etype (Index_Base)),
+                                      (Params => Body_Params,
+                                       N      => Etype (Index),
+                                       Base   => Etype (Index_Base)),
                                     R);
                               end if;
                               Next (Index);
@@ -9587,15 +9587,15 @@ package body Gnat2Why.Expr is
                         end loop;
                      end;
 
-                     --  We need to check that the new discriminants of
-                     --  the subtype fit into the base type
+                     --  We need to check that the new discriminants of the
+                     --  subtype fit into the base type.
 
                      R := Sequence (Check_Discr_Of_Subtype (Base, Ent), R);
 
                   when E_Protected_Subtype =>
 
-                     --  We need to check that the new discriminants of
-                     --  the subtype fit into the base type
+                     --  We need to check that the new discriminants of the
+                     --  subtype fit into the base type.
 
                      R := Sequence (Check_Discr_Of_Subtype (Base, Ent), R);
 
@@ -9625,23 +9625,24 @@ package body Gnat2Why.Expr is
 
          when N_Package_Declaration =>
 
-            --  Assume dynamic property of local variables.
+            --  Assume dynamic property of local variables
             --  ??? What about local variables of nested packages?
 
             declare
                E        : constant Entity_Id := Unique_Defining_Entity (Decl);
                Var_Set  : constant Name_Sets.Set := GG_Get_Local_Variables (E);
-               --  Local variables declared in E.
+               --  Local variables declared in E
 
                Init_Map : constant Dependency_Maps.Map :=
                  Parse_Initializes (Get_Pragma (E, Pragma_Initializes),
                                     E,
                                     Get_Flow_Scope (E));
-               Init_Set : Name_Sets.Set;
-               --  Local Variables initialized by E.
-            begin
 
-               --  First, get initialized variables for Initializes aspect.
+               Init_Set : Name_Sets.Set;
+               --  Local Variables initialized by E
+
+            begin
+               --  First, get initialized variables for Initializes aspect
 
                for Cu in Init_Map.Iterate loop
                   declare
@@ -9689,11 +9690,11 @@ package body Gnat2Why.Expr is
                   end;
                end loop;
 
-               --  Then also assume dynamic property of unitialized variables.
+               --  Then also assume dynamic property of unitialized variables
 
                for X of Var_Set loop
 
-                  --  Do nothing if the variable has already been declared.
+                  --  Do nothing if the variable has already been declared
 
                   if not Init_Set.Contains (X) then
                      declare
