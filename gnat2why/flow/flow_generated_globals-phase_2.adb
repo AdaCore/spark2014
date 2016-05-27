@@ -251,9 +251,15 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Local state
    ----------------------------------------------------------------------
 
-   GG_Exists_Cache : Name_Sets.Set := Name_Sets.Empty_Set;
-   --  This should be equivalent to:
-   --     {x.name for all x of Subprogram_Info_List}
+   type GG_Cache is record
+      Subprograms, Packages : Name_Sets.Set;
+   end record;
+
+   GG_Exists : GG_Cache;
+   --  Disjoint sets with names of subprograms (and entries and task types),
+   --  and packages for which a GG entry exists. These are random-access
+   --  equivalents with names from sequential-access Subprogram_Info_List and
+   --  Package_Info_List.
 
    ----------------------------------------------------------------------
    --  Initializes information
@@ -461,7 +467,7 @@ package body Flow_Generated_Globals.Phase_2 is
       --  Package entity name
 
    begin
-      if GG_Exists_Cache.Contains (EN) then
+      if GG_Exists.Packages.Contains (EN) then
          --  Retrieve the relevant Name_Dependency_Map, up project it to S and
          --  then convert it into a Dependency_Map.
          declare
@@ -565,7 +571,7 @@ package body Flow_Generated_Globals.Phase_2 is
 
    begin
       return
-        (if GG_Exists_Cache.Contains (EN)
+        (if GG_Exists.Packages.Contains (EN)
          then Package_To_Locals_Map (EN)
          else Name_Sets.Empty_Set);
    end GG_Get_Local_Variables;
@@ -1538,7 +1544,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      Reads       : Name_Sets.Set;
                      Writes      : Name_Sets.Set;
                   begin
-                     if GG_Exists_Cache.Contains (Definite_Call) then
+                     if GG_Exists.Subprograms.Contains (Definite_Call) then
                         GG_Get_Most_Refined_Globals
                           (Subprogram  => Definite_Call,
                            Proof_Reads => Proof_Reads,
@@ -1561,7 +1567,7 @@ package body Flow_Generated_Globals.Phase_2 is
                      Reads       : Name_Sets.Set;
                      Writes      : Name_Sets.Set;
                   begin
-                     if GG_Exists_Cache.Contains (Conditional_Call) then
+                     if GG_Exists.Subprograms.Contains (Conditional_Call) then
                         GG_Get_Most_Refined_Globals
                           (Subprogram  => Conditional_Call,
                            Proof_Reads => Proof_Reads,
@@ -1774,12 +1780,12 @@ package body Flow_Generated_Globals.Phase_2 is
                         All_Subprograms.Include (V.The_Global_Info.Name);
 
                         Subprogram_Info_List.Append (V.The_Global_Info);
+                        GG_Exists.Subprograms.Insert (V.The_Global_Info.Name);
 
                      when Kind_Package | Kind_Package_Body =>
                         Package_Info_List.Append (V.The_Global_Info);
+                        GG_Exists.Packages.Insert (V.The_Global_Info.Name);
                   end case;
-
-                  GG_Exists_Cache.Insert (V.The_Global_Info.Name);
 
                when EK_Protected_Instance =>
                   declare
@@ -2247,7 +2253,7 @@ package body Flow_Generated_Globals.Phase_2 is
    function GG_Exist (E : Entity_Id) return Boolean is
       Name : constant Entity_Name := To_Entity_Name (E);
    begin
-      return GG_Exists_Cache.Contains (Name);
+      return GG_Exists.Subprograms.Contains (Name);
    end GG_Exist;
 
    ---------------------------
