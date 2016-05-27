@@ -354,66 +354,67 @@ package body Flow_Utility is
       Erase_Constants : Boolean)
       return Flow_Id_Sets.Set
    is
-      Tmp : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       case F.Kind is
          when Direct_Mapping =>
-            if Ekind (Get_Direct_Mapping_Id (F)) = E_Abstract_State then
-               for C of Iter (Refinement_Constituents
-                                (Get_Direct_Mapping_Id (F)))
-               loop
-                  --  We simply ignore the null refinement, it is
-                  --  treated as if it was not present.
-                  if Nkind (C) /= N_Null then
-                     Tmp.Union
-                       (Expand_Abstract_State (Direct_Mapping_Id (C,
-                                                                  F.Variant),
-                                               Erase_Constants));
-                  end if;
-               end loop;
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+            begin
+               if Ekind (E) = E_Abstract_State then
+                  declare
+                     Result : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
-               for C of Iter (Part_Of_Constituents
-                                (Get_Direct_Mapping_Id (F)))
-               loop
-                  --  Part_of cannot include a null refinement.
-                  Tmp.Union
-                    (Expand_Abstract_State (Direct_Mapping_Id (C,
-                                                               F.Variant),
-                                            Erase_Constants));
-               end loop;
+                  begin
+                     for C of Iter (Refinement_Constituents (E)) loop
+                        --  We simply ignore the null refinement, it is treated
+                        --  as if it was not present.
+                        if Nkind (C) /= N_Null then
+                           Result.Union
+                             (Expand_Abstract_State
+                                (Direct_Mapping_Id (C, F.Variant),
+                                 Erase_Constants));
+                        end if;
+                     end loop;
 
-               if Tmp.Is_Empty then
-                  --  If we can't refine this state (maybe the body
-                  --  is not in SPARK, or simply not implemented or
-                  --  there is a null refinement) then we use the
-                  --  abstract state itself.
+                     for C of Iter (Part_Of_Constituents (E)) loop
+                        --  Part_Of cannot include a null refinement
+                        Result.Union
+                          (Expand_Abstract_State
+                             (Direct_Mapping_Id (C, F.Variant),
+                              Erase_Constants));
+                     end loop;
 
-                  Tmp.Insert (F);
-               end if;
+                     --  If we can't refine this state (maybe the body is not
+                     --  in SPARK, or simply not implemented or there is a null
+                     --  refinement) then we use the abstract state itself.
+                     return
+                       (if Result.Is_Empty
+                        then Flow_Id_Sets.To_Set (F)
+                        else Result);
+                  end;
 
                --  Entities translated as constants in Why3 should not be
                --  considered as effects for proof. This includes in particular
                --  formal parameters of mode IN.
 
-            elsif Erase_Constants
-              and then not
-                Gnat2Why.Util.Is_Mutable_In_Why (Get_Direct_Mapping_Id (F))
-            then
-               null;
+               elsif Erase_Constants
+                 and then not Gnat2Why.Util.Is_Mutable_In_Why (E)
+               then
+                  return Flow_Id_Sets.Empty_Set;
 
                --  Otherwise the effect is significant for proof, keep it
 
-            else
-               Tmp.Insert (F);
-            end if;
+               else
+                  return Flow_Id_Sets.To_Set (F);
+               end if;
+            end;
 
          when Magic_String =>
-            Tmp.Insert (F);
+            return Flow_Id_Sets.To_Set (F);
 
          when Record_Field | Null_Value | Synthetic_Null_Export =>
             raise Program_Error;
       end case;
-      return Tmp;
    end Expand_Abstract_State;
 
    ------------------------
