@@ -240,9 +240,7 @@ package body Flow_Generated_Globals.Phase_2 is
    --  abstract_state -> {constituents}
 
    Comp_State_Map : Name_Maps.Map   := Name_Maps.Empty_Map;
-   --  A reverse of the above mapping, i.e. constituent -> abstract_state,
-   --  which speeds up some queries. It is populated at the end of GG_Read from
-   --  State_Comp_Map.
+   --  A reverse of the above mapping, i.e. constituent -> abstract_state
 
    State_Abstractions : Name_Sets.Set := Name_Sets.Empty_Set;
    --  State abstractions that the GG knows of
@@ -1730,8 +1728,11 @@ package body Flow_Generated_Globals.Phase_2 is
 
                      C := V.The_Constituents.First;
                      while Name_Lists.Has_Element (C) loop
-                        State_Comp_Map (State).Insert
-                          (V.The_Constituents (C));
+                        State_Comp_Map (State).Insert (V.The_Constituents (C));
+
+                        Comp_State_Map.Insert (V.The_Constituents (C),
+                                               V.The_State);
+
                         Name_Lists.Next (C);
                      end loop;
                   end;
@@ -2127,14 +2128,6 @@ package body Flow_Generated_Globals.Phase_2 is
          Print_Global_Graph (Prefix => Graph_File_Prefix,
                              G      => Global_Graph);
       end if;
-
-      --  To speed up queries on constituents of state, we fill in a helper
-      --  structure.
-      for C in State_Comp_Map.Iterate loop
-         for Comp of State_Comp_Map (C) loop
-            Comp_State_Map.Insert (Comp, Key (C));
-         end loop;
-      end loop;
 
       --  Now that the globals are generated, we use them to also generate the
       --  initializes aspects.
