@@ -85,6 +85,10 @@ package Flow_Generated_Globals.Phase_2 is
                              Reads       : out Flow_Id_Sets.Set;
                              Writes      : out Flow_Id_Sets.Set)
    with Pre  => GG_Mode = GG_Read_Mode and then
+                Ekind (E) in E_Entry     |
+                             E_Function  |
+                             E_Procedure |
+                             E_Task_Type and then
                 GG_Exist (E),
         Post => GG_Mode = GG_Read_Mode;
    --  Determines the set of all globals
