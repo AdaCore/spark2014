@@ -1,0 +1,120 @@
+test_trigo.adb:9:04: warning: assuming "Put_Line" has no effect on global items
+test_trigo.adb:9:04: warning: no Global contract available for "Put_Line"
+test_trigo.adb:11:10: info: initialization of "F" proved
+test_trigo.adb:12:21: medium: precondition might fail
+test_trigo.adb:12:27: info: initialization of "F" proved
+test_trigo.adb:13:24: info: initialization of "F" proved
+test_trigo.adb:13:24: info: overflow check proved
+test_trigo.adb:15:04: warning: assuming "Put_Line" has no effect on global items
+test_trigo.adb:15:04: warning: no Global contract available for "Put_Line"
+test_trigo.adb:17:04: warning: assuming "Put_Line" has no effect on global items
+test_trigo.adb:17:04: warning: no Global contract available for "Put_Line"
+test_trigo.adb:19:10: info: initialization of "F" proved
+test_trigo.adb:20:21: medium: precondition might fail
+test_trigo.adb:20:27: info: initialization of "F" proved
+test_trigo.adb:21:24: info: initialization of "F" proved
+test_trigo.adb:21:24: info: overflow check proved
+test_trigo.adb:23:04: warning: assuming "Put_Line" has no effect on global items
+test_trigo.adb:23:04: warning: no Global contract available for "Put_Line"
+test_trigo.adb:25:04: warning: assuming "Put_Line" has no effect on global items
+test_trigo.adb:25:04: warning: no Global contract available for "Put_Line"
+test_trigo.adb:27:10: info: initialization of "F" proved
+test_trigo.adb:28:21: medium: precondition might fail
+test_trigo.adb:28:27: info: initialization of "F" proved
+test_trigo.adb:29:24: info: initialization of "F" proved
+test_trigo.adb:29:24: info: overflow check proved
+test_trigo.adb:31:04: warning: assuming "Put_Line" has no effect on global items
+test_trigo.adb:31:04: warning: no Global contract available for "Put_Line"
+test_trigo.adb:33:04: warning: assuming "Put_Line" has no effect on global items
+test_trigo.adb:33:04: warning: no Global contract available for "Put_Line"
+test_trigo.adb:35:10: info: initialization of "F" proved
+test_trigo.adb:36:22: medium: assertion might fail, cannot prove abs (Trigo.Tan (F) - Trigo.Sin (F) / Trigo.Cos (F)) < 1.0E-3
+test_trigo.adb:36:32: medium: precondition might fail
+test_trigo.adb:36:38: info: initialization of "F" proved
+test_trigo.adb:36:41: medium: overflow check might fail
+test_trigo.adb:36:48: medium: precondition might fail
+test_trigo.adb:36:57: medium: divide by zero might fail
+test_trigo.adb:36:57: medium: overflow check might fail
+test_trigo.adb:36:64: medium: precondition might fail
+test_trigo.adb:37:24: info: initialization of "F" proved
+test_trigo.adb:37:24: info: overflow check proved
+test_trigo.adb:39:04: warning: assuming "Put_Line" has no effect on global items
+test_trigo.adb:39:04: warning: no Global contract available for "Put_Line"
+trigo.ads:4:49: medium: overflow check might fail
+trigo.ads:5:49: medium: overflow check might fail
+trigo.ads:5:53: medium: overflow check might fail
+trigo.ads:6:49: medium: overflow check might fail
+trigo.ads:6:53: medium: overflow check might fail
+trigo.ads:6:57: medium: overflow check might fail
+trigo.ads:7:49: medium: overflow check might fail
+trigo.ads:7:53: medium: overflow check might fail
+trigo.ads:7:57: medium: overflow check might fail
+trigo.ads:7:61: medium: overflow check might fail
+trigo.ads:8:49: medium: overflow check might fail
+trigo.ads:8:53: medium: overflow check might fail
+trigo.ads:8:57: medium: overflow check might fail
+trigo.ads:8:61: medium: overflow check might fail
+trigo.ads:8:65: medium: overflow check might fail
+trigo.ads:9:49: medium: overflow check might fail
+trigo.ads:9:53: medium: overflow check might fail
+trigo.ads:9:57: medium: overflow check might fail
+trigo.ads:9:61: medium: overflow check might fail
+trigo.ads:9:65: medium: overflow check might fail
+trigo.ads:9:69: medium: overflow check might fail
+trigo.ads:10:49: medium: overflow check might fail
+trigo.ads:10:53: medium: overflow check might fail
+trigo.ads:10:57: medium: overflow check might fail
+trigo.ads:10:61: medium: overflow check might fail
+trigo.ads:10:65: medium: overflow check might fail
+trigo.ads:10:69: medium: overflow check might fail
+trigo.ads:10:73: medium: overflow check might fail
+trigo.ads:11:49: medium: overflow check might fail
+trigo.ads:11:53: medium: overflow check might fail
+trigo.ads:11:57: medium: overflow check might fail
+trigo.ads:11:61: medium: overflow check might fail
+trigo.ads:11:65: medium: overflow check might fail
+trigo.ads:11:69: medium: overflow check might fail
+trigo.ads:11:73: medium: overflow check might fail
+trigo.ads:11:77: medium: overflow check might fail
+trigo.ads:14:10: medium: overflow check might fail
+trigo.ads:14:21: info: division check proved
+trigo.ads:14:21: info: overflow check proved
+trigo.ads:14:27: medium: overflow check might fail
+trigo.ads:14:38: info: division check proved
+trigo.ads:14:38: info: overflow check proved
+trigo.ads:14:46: medium: overflow check might fail
+trigo.ads:14:57: info: division check proved
+trigo.ads:14:57: info: overflow check proved
+trigo.ads:18:14: medium: postcondition might fail, cannot prove abs (Sin'Result - Approx_Sin (X)) < 3.0E-6
+trigo.ads:18:30: info: overflow check proved
+trigo.ads:21:12: info: overflow check proved
+trigo.ads:21:23: info: division check proved
+trigo.ads:21:23: info: overflow check proved
+trigo.ads:21:29: info: overflow check proved
+trigo.ads:21:40: info: division check proved
+trigo.ads:21:40: info: overflow check proved
+trigo.ads:21:47: info: overflow check proved
+trigo.ads:21:58: info: division check proved
+trigo.ads:21:58: info: overflow check proved
+trigo.ads:21:66: info: overflow check proved
+trigo.ads:21:77: info: division check proved
+trigo.ads:21:77: info: overflow check proved
+trigo.ads:25:14: medium: postcondition might fail, cannot prove abs (Cos'Result - Approx_Cos (X)) < 3.0E-6
+trigo.ads:25:30: info: overflow check proved
+trigo.ads:28:10: medium: overflow check might fail
+trigo.ads:28:21: info: division check proved
+trigo.ads:28:21: info: overflow check proved
+trigo.ads:28:27: medium: overflow check might fail
+trigo.ads:28:33: medium: overflow check might fail
+trigo.ads:28:44: info: division check proved
+trigo.ads:28:44: info: overflow check proved
+trigo.ads:28:51: medium: overflow check might fail
+trigo.ads:28:58: medium: overflow check might fail
+trigo.ads:28:69: info: division check proved
+trigo.ads:28:69: info: overflow check proved
+trigo.ads:28:77: medium: overflow check might fail
+trigo.ads:28:84: medium: overflow check might fail
+trigo.ads:28:95: info: division check proved
+trigo.ads:28:95: info: overflow check proved
+trigo.ads:32:14: medium: postcondition might fail, cannot prove abs (Tan'Result - Approx_Tan (X)) < 1.0E-4
+trigo.ads:32:30: medium: overflow check might fail

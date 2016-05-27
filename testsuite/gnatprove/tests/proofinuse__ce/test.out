@@ -1,0 +1,10 @@
+counter_examples.adb:8:38: info: overflow check proved
+counter_examples.adb:9:16: medium: overflow check might fail
+counter_examples.adb:17:24: info: division check proved
+counter_examples.adb:18:07: warning: statement has no effect
+counter_examples.adb:19:25: info: initialization of "Res" proved
+counter_examples.adb:19:25: medium: assertion might fail, cannot prove Res <= X (e.g. when Res = 64 and X = 32)
+counter_examples.adb:21:25: info: initialization of "Res" proved
+counter_examples.adb:21:25: medium: assertion might fail, cannot prove Res >= X (e.g. when Res = 0 and X = 4294967257)
+counter_examples.ads:8:40: info: initialization of "Res" proved
+counter_examples.ads:14:07: info: initialization of "Res" proved

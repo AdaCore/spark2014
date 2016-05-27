@@ -1,0 +1,27 @@
+bitwise.adb:6:53: info: range check proved
+bitwise.adb:7:07: info: assertion proved
+bitwise.adb:7:22: info: initialization of "Res" proved
+bitwise.adb:14:07: info: assertion proved
+bitwise.adb:14:29: info: initialization of "Res" proved
+bitwise.adb:20:07: info: assertion proved
+bitwise.adb:20:22: info: initialization of "Res" proved
+bitwise.adb:20:30: info: division check proved
+bitwise.adb:21:27: info: initialization of "Res" proved
+bitwise.adb:22:07: info: assertion proved
+bitwise.adb:22:22: info: initialization of "Res" proved
+bitwise.adb:22:30: info: division check proved
+bitwise.adb:32:07: info: assertion proved
+bitwise.adb:33:07: info: assertion proved
+bitwise.adb:38:34: info: range check proved
+bitwise.adb:39:50: info: range check proved
+bitwise.adb:40:07: info: assertion proved
+bitwise.adb:41:35: info: initialization of "FstHalf" proved
+bitwise.adb:42:50: info: initialization of "SndHalf" proved
+bitwise.adb:51:07: info: assertion proved
+bitwise.adb:51:22: info: initialization of "Res" proved
+bitwise.ads:7:37: info: initialization of "Res" proved
+bitwise.ads:10:46: info: initialization of "Res" proved
+bitwise.ads:13:45: info: initialization of "Res" proved
+bitwise.ads:19:45: info: initialization of "FstHalf" proved
+bitwise.ads:19:54: info: initialization of "SndHalf" proved
+bitwise.ads:22:62: info: initialization of "Res" proved
