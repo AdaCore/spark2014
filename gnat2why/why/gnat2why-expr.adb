@@ -39,7 +39,7 @@ with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
-with Opt;
+with Opt;                            use type Opt.Ada_Version_Type;
 with Rtsfind;                        use Rtsfind;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Disp;                       use Sem_Disp;
@@ -50,6 +50,7 @@ with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 with Stand;                          use Stand;
+with Ttypes;
 with Uintp;                          use Uintp;
 with Urealp;                         use Urealp;
 with VC_Kinds;                       use VC_Kinds;
@@ -8795,6 +8796,118 @@ package body Gnat2Why.Expr is
                                    Typ      => EW_Int_Type);
                end;
             end if;
+
+         when Attribute_First_Bit =>
+
+            declare
+               Component : constant Entity_Id :=
+                 Entity (Selector_Name (Var));
+            begin
+
+               if Present (Component_Clause (Component))
+                 and then Opt.Ada_Version >= Opt.Ada_2005
+                 and then Reverse_Bit_Order (Scope (Component))
+               then
+                  return New_Integer_Constant
+                    (Expr,
+                     Expr_Value (First_Bit (Component_Clause (Component))));
+               elsif Known_Normalized_First_Bit (Component)
+               then
+                  return New_Integer_Constant
+                    (Expr,
+                     Normalized_First_Bit (Component));
+               else
+                  declare
+
+                     Name : constant W_Identifier_Id := New_Identifier
+                       (Name   => Short_Name (Component) & "__first__bit",
+                        Module => E_Module (Etype (Prefix (Var))),
+                        Domain => EW_Term);
+
+                  begin
+                     return New_Call (Ada_Node => Expr,
+                                      Domain   => Domain,
+                                      Name     => Name,
+                                      Typ      => EW_Int_Type);
+                  end;
+               end if;
+            end;
+
+         when Attribute_Last_Bit =>
+
+            declare
+               Component : constant Entity_Id :=
+                 Entity (Selector_Name (Var));
+            begin
+
+               if Present (Component_Clause (Component))
+                 and then Opt.Ada_Version >= Opt.Ada_2005
+                 and then Reverse_Bit_Order (Scope (Component))
+               then
+                  return New_Integer_Constant
+                    (Expr,
+                     Expr_Value (Last_Bit (Component_Clause (Component))));
+
+               elsif Known_Static_Component_Bit_Offset (Component)
+                 and then Known_Static_Esize (Component)
+               then
+                  return New_Integer_Constant
+                    (Expr,
+                     (Component_Bit_Offset (Component) mod
+                        Ttypes.System_Storage_Unit) + Esize (Component) - 1);
+
+               else
+                  declare
+
+                     Name : constant W_Identifier_Id := New_Identifier
+                       (Name   => Short_Name (Component) & "__last__bit",
+                        Module => E_Module (Etype (Prefix (Var))),
+                        Domain => EW_Term);
+
+                  begin
+                     return New_Call (Ada_Node => Expr,
+                                      Domain   => Domain,
+                                      Name     => Name,
+                                      Typ      => EW_Int_Type);
+                  end;
+               end if;
+            end;
+
+         when Attribute_Position =>
+
+            declare
+               Component : constant Entity_Id :=
+                 Entity (Selector_Name (Var));
+            begin
+               if Present (Component_Clause (Component))
+               then
+                  if Opt.Ada_Version >= Opt.Ada_2005 and then
+                    Reverse_Bit_Order (Scope (Component))
+                  then
+                     return New_Integer_Constant
+                       (Expr,
+                        Expr_Value (Position (Component_Clause (Component))));
+                  else
+                     return New_Integer_Constant
+                       (Expr,
+                        Normalized_Position (Component));
+                  end if;
+               else
+                  declare
+
+                     Name : constant W_Identifier_Id := New_Identifier
+                       (Name   => Short_Name (Component) & "__position",
+                        Module => E_Module (Etype (Prefix (Var))),
+                        Domain => EW_Term);
+
+                  begin
+                     return New_Call (Ada_Node => Expr,
+                                      Domain   => Domain,
+                                      Name     => Name,
+                                      Typ      => EW_Int_Type);
+                  end;
+               end if;
+            end;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Attr] not implemented: "

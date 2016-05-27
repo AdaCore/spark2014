@@ -160,7 +160,12 @@ package body Why.Gen.Records is
      (P       : W_Section_Id;
       E       : Entity_Id;
       Ty_Name : W_Name_Id);
-      --  Declare functions for the record attributes
+   --  Declare functions for the record attributes
+
+   procedure Declare_Component_Attributes
+     (P : W_Section_Id;
+      E : Entity_Id);
+   --  Declare functions for the component attributes
 
    function Discriminant_Check_Pred_Name
      (E     : Entity_Id;
@@ -2123,6 +2128,7 @@ package body Why.Gen.Records is
       Declare_Protected_Access_Functions;
       Declare_Equality_Function;
       Declare_Attributes (P, E, Ty_Name);
+      Declare_Component_Attributes (P, E);
    end Declare_Rep_Record_Type;
 
    ------------------------
@@ -2426,6 +2432,106 @@ package body Why.Gen.Records is
       end;
 
    end Declare_Attributes;
+
+   ----------------------------------
+   -- Declare_Component_Attributes --
+   ----------------------------------
+
+   procedure Declare_Component_Attributes
+     (P       : W_Section_Id;
+      E       : Entity_Id)
+   is
+      Field : Entity_Id := First_Component_Or_Discriminant (E);
+   begin
+
+      while Present (Field) loop
+
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        =>
+                    To_Local (E_Symb (Field, WNE_Attr_First_Bit)),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
+
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        =>
+                    To_Local (E_Symb (Field, WNE_Attr_Last_Bit)),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
+
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Term,
+                  Name        =>
+                    To_Local (E_Symb (Field, WNE_Attr_Position)),
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Return_Type => EW_Int_Type));
+         declare
+            Axiom : constant String := Short_Name (Field);
+
+            Zero : constant W_Expr_Id :=
+              New_Integer_Constant (Value => Uint_0);
+
+            First_Bit_Fun : constant W_Expr_Id :=
+              New_Call (Name   =>
+                          To_Local (E_Symb (Field, WNE_Attr_First_Bit)),
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type);
+
+            First_Bit_Axiom : constant W_Pred_Id :=
+              +New_Comparison (Symbol => Int_Infix_Ge,
+                               Left   => First_Bit_Fun,
+                               Right  => Zero,
+                               Domain => EW_Term);
+
+            Last_Bit_Fun : constant W_Expr_Id :=
+              New_Call (Name   =>
+                          To_Local (E_Symb (Field, WNE_Attr_Last_Bit)),
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type);
+
+            Last_Bit_Axiom : constant W_Pred_Id :=
+              +New_Comparison (Symbol => Int_Infix_Gt,
+                               Left   => Last_Bit_Fun,
+                               Right  => First_Bit_Fun,
+                               Domain => EW_Term);
+
+            Position_Fun : constant W_Expr_Id :=
+              New_Call (Name   =>
+                          To_Local (E_Symb (Field, WNE_Attr_Position)),
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type);
+
+            Position_Axiom : constant W_Pred_Id :=
+              +New_Comparison (Symbol => Int_Infix_Ge,
+                               Left   => Position_Fun,
+                               Right  => Zero,
+                               Domain => EW_Term);
+
+         begin
+            Emit (P,
+                  New_Axiom (Ada_Node => Field,
+                             Name     => NID (Axiom & "__first__bit_axiom"),
+                             Def      => First_Bit_Axiom));
+
+            Emit (P,
+                  New_Axiom (Ada_Node => Field,
+                             Name     => NID (Axiom & "__last__bit_axiom"),
+                             Def      => Last_Bit_Axiom));
+            Emit (P,
+                  New_Axiom (Ada_Node => Field,
+                             Name     => NID (Axiom & "__position_axiom"),
+                             Def      => Position_Axiom));
+         end;
+
+         Next_Component_Or_Discriminant (Field);
+
+      end loop;
+
+   end Declare_Component_Attributes;
 
    ---------------------------------------
    -- Declare_Conversion_Check_Function --

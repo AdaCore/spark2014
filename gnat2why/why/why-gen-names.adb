@@ -713,10 +713,12 @@ package body Why.Gen.Names is
               WNE_Attr_First_2               |
               WNE_Attr_First_3               |
               WNE_Attr_First_4               |
+              WNE_Attr_First_Bit             |
               WNE_Attr_Image                 |
               WNE_Attr_Last_2                |
               WNE_Attr_Last_3                |
               WNE_Attr_Last_4                |
+              WNE_Attr_Last_Bit              |
               WNE_Attr_Length                |
               WNE_Attr_Length_2              |
               WNE_Attr_Length_3              |
@@ -725,6 +727,7 @@ package body Why.Gen.Names is
               WNE_Attr_Object_Alignment      |
               WNE_Attr_Object_Component_Size |
               WNE_Attr_Object_Size           |
+              WNE_Attr_Position              |
               WNE_Attr_Small                 |
               WNE_Attr_Value                 |
               WNE_Attr_Value_Alignment       |

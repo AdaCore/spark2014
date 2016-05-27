@@ -1441,7 +1441,9 @@ package body Why.Atree.Modules is
       ---------------------------
 
       procedure Insert_Object_Symbols (E : Entity_Id) is
-         M  : constant W_Module_Id := E_Module (E);
+         M    : constant W_Module_Id := E_Module (E);
+         Name : constant String := Short_Name (E);
+
       begin
          Insert_Symbol
            (E, WNE_Attr_Address,
@@ -1450,6 +1452,28 @@ package body Why.Atree.Modules is
                Module => M,
                Domain => EW_Term,
                Typ    => EW_Int_Type));
+         Insert_Symbol
+           (E, WNE_Attr_First_Bit,
+            New_Identifier
+              (Symbol => NID (Name & "__first__bit"),
+               Module => M,
+               Domain => EW_Term,
+               Typ    => EW_Int_Type));
+         Insert_Symbol
+           (E, WNE_Attr_Last_Bit,
+            New_Identifier
+              (Symbol => NID (Name & "__last__bit"),
+               Module => M,
+               Domain => EW_Term,
+               Typ    => EW_Int_Type));
+         Insert_Symbol
+           (E, WNE_Attr_Position,
+            New_Identifier
+              (Symbol => NID (Name & "__position"),
+               Module => M,
+               Domain => EW_Term,
+               Typ    => EW_Int_Type));
+
       end Insert_Object_Symbols;
 
       -------------------------
