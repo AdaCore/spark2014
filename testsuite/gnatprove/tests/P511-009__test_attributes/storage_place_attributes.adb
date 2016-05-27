@@ -18,8 +18,6 @@ is
       end case;
    end record;
 
-   type R2_Derived is new R2;
-
    subtype SR2 is R2 (5);
 
    type R3 is record

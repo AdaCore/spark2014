@@ -79,43 +79,56 @@ component_size_attribute.adb:52:14: high: no paths in subprogram will return nor
 component_size_attribute.adb:52:14: warning: subprogram "Test5" has no effect
 component_size_attribute.adb:54:07: info: assertion proved
 component_size_attribute.adb:55:22: medium: assertion might fail, cannot prove false
-storage_place_attributes.adb:20:23: info: range check proved
-storage_place_attributes.adb:28:04: warning: analyzing unreferenced procedure "First1"
-storage_place_attributes.adb:28:14: warning: subprogram "First1" has no effect
-storage_place_attributes.adb:30:07: info: assertion proved
-storage_place_attributes.adb:33:04: warning: analyzing unreferenced procedure "First2"
-storage_place_attributes.adb:33:14: info: range check proved
-storage_place_attributes.adb:33:14: warning: subprogram "First2" has no effect
-storage_place_attributes.adb:35:07: info: assertion proved
-storage_place_attributes.adb:38:04: warning: analyzing unreferenced procedure "First3"
-storage_place_attributes.adb:38:14: warning: subprogram "First3" has no effect
-storage_place_attributes.adb:40:07: info: assertion proved
-storage_place_attributes.adb:43:04: warning: analyzing unreferenced procedure "First4"
-storage_place_attributes.adb:43:14: warning: subprogram "First4" has no effect
-storage_place_attributes.adb:45:07: info: assertion proved
-storage_place_attributes.adb:50:04: warning: analyzing unreferenced procedure "Last1"
-storage_place_attributes.adb:50:14: warning: subprogram "Last1" has no effect
-storage_place_attributes.adb:52:07: info: assertion proved
-storage_place_attributes.adb:55:04: warning: analyzing unreferenced procedure "Last2"
-storage_place_attributes.adb:55:14: info: range check proved
-storage_place_attributes.adb:55:14: warning: subprogram "Last2" has no effect
-storage_place_attributes.adb:57:07: info: assertion proved
-storage_place_attributes.adb:60:04: warning: analyzing unreferenced procedure "Last3"
-storage_place_attributes.adb:60:14: warning: subprogram "Last3" has no effect
-storage_place_attributes.adb:62:07: info: assertion proved
-storage_place_attributes.adb:65:04: warning: analyzing unreferenced procedure "Last4"
-storage_place_attributes.adb:65:14: warning: subprogram "Last4" has no effect
-storage_place_attributes.adb:67:07: info: assertion proved
-storage_place_attributes.adb:72:04: warning: analyzing unreferenced procedure "Position1"
-storage_place_attributes.adb:72:14: warning: subprogram "Position1" has no effect
-storage_place_attributes.adb:74:07: info: assertion proved
-storage_place_attributes.adb:77:04: warning: analyzing unreferenced procedure "Position2"
-storage_place_attributes.adb:77:14: info: range check proved
-storage_place_attributes.adb:77:14: warning: subprogram "Position2" has no effect
-storage_place_attributes.adb:79:07: info: assertion proved
-storage_place_attributes.adb:82:04: warning: analyzing unreferenced procedure "Position3"
-storage_place_attributes.adb:82:14: warning: subprogram "Position3" has no effect
-storage_place_attributes.adb:84:07: info: assertion proved
-storage_place_attributes.adb:87:04: warning: analyzing unreferenced procedure "Position4"
-storage_place_attributes.adb:87:14: warning: subprogram "Position4" has no effect
-storage_place_attributes.adb:89:07: info: assertion proved
+storage_place_attributes.adb:21:23: info: range check proved
+storage_place_attributes.adb:27:22: info: range check proved
+storage_place_attributes.adb:28:22: info: range check proved
+storage_place_attributes.adb:39:19: info: initialization of "O2a.D3" proved
+storage_place_attributes.adb:39:19: medium: assertion might fail, cannot prove O2a.D3'First_bit = O2b.D3'first_bit
+storage_place_attributes.adb:39:38: info: initialization of "O2b.D3" proved
+storage_place_attributes.adb:40:04: info: assertion proved
+storage_place_attributes.adb:40:19: info: initialization of "O2a.D3" proved
+storage_place_attributes.adb:40:38: info: initialization of "R2a_arr" proved
+storage_place_attributes.adb:41:04: info: assertion proved
+storage_place_attributes.adb:41:19: info: initialization of "O2a.D3" proved
+storage_place_attributes.adb:45:19: info: initialization of "O2.D3" proved
+storage_place_attributes.adb:45:19: medium: assertion might fail, cannot prove O2.D3'First_Bit = O2a.D3'first_bit
+storage_place_attributes.adb:45:37: info: initialization of "O2a.D3" proved
+storage_place_attributes.adb:49:04: warning: analyzing unreferenced procedure "First1"
+storage_place_attributes.adb:49:14: warning: subprogram "First1" has no effect
+storage_place_attributes.adb:51:07: info: assertion proved
+storage_place_attributes.adb:54:04: warning: analyzing unreferenced procedure "First2"
+storage_place_attributes.adb:54:14: info: range check proved
+storage_place_attributes.adb:54:14: warning: subprogram "First2" has no effect
+storage_place_attributes.adb:56:07: info: assertion proved
+storage_place_attributes.adb:59:04: warning: analyzing unreferenced procedure "First3"
+storage_place_attributes.adb:59:14: warning: subprogram "First3" has no effect
+storage_place_attributes.adb:61:07: info: assertion proved
+storage_place_attributes.adb:64:04: warning: analyzing unreferenced procedure "First4"
+storage_place_attributes.adb:64:14: warning: subprogram "First4" has no effect
+storage_place_attributes.adb:66:07: info: assertion proved
+storage_place_attributes.adb:71:04: warning: analyzing unreferenced procedure "Last1"
+storage_place_attributes.adb:71:14: warning: subprogram "Last1" has no effect
+storage_place_attributes.adb:73:07: info: assertion proved
+storage_place_attributes.adb:76:04: warning: analyzing unreferenced procedure "Last2"
+storage_place_attributes.adb:76:14: info: range check proved
+storage_place_attributes.adb:76:14: warning: subprogram "Last2" has no effect
+storage_place_attributes.adb:78:07: info: assertion proved
+storage_place_attributes.adb:81:04: warning: analyzing unreferenced procedure "Last3"
+storage_place_attributes.adb:81:14: warning: subprogram "Last3" has no effect
+storage_place_attributes.adb:83:07: info: assertion proved
+storage_place_attributes.adb:86:04: warning: analyzing unreferenced procedure "Last4"
+storage_place_attributes.adb:86:14: warning: subprogram "Last4" has no effect
+storage_place_attributes.adb:88:07: info: assertion proved
+storage_place_attributes.adb:93:04: warning: analyzing unreferenced procedure "Position1"
+storage_place_attributes.adb:93:14: warning: subprogram "Position1" has no effect
+storage_place_attributes.adb:95:07: info: assertion proved
+storage_place_attributes.adb:98:04: warning: analyzing unreferenced procedure "Position2"
+storage_place_attributes.adb:98:14: info: range check proved
+storage_place_attributes.adb:98:14: warning: subprogram "Position2" has no effect
+storage_place_attributes.adb:100:07: info: assertion proved
+storage_place_attributes.adb:103:04: warning: analyzing unreferenced procedure "Position3"
+storage_place_attributes.adb:103:14: warning: subprogram "Position3" has no effect
+storage_place_attributes.adb:105:07: info: assertion proved
+storage_place_attributes.adb:108:04: warning: analyzing unreferenced procedure "Position4"
+storage_place_attributes.adb:108:14: warning: subprogram "Position4" has no effect
+storage_place_attributes.adb:110:07: info: assertion proved
