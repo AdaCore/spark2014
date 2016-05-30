@@ -1723,8 +1723,8 @@ package body Flow_Utility is
    function Get_Part_Of_Variables (E : Entity_Id) return Node_Sets.Set is
       S : Node_Sets.Set := Node_Sets.Empty_Set;
 
-      --  to get the right flow scope, we compute some node inside the
-      --  protected object
+      --  To get the right flow scope, we compute some node inside the
+      --  protected object.
 
       Inner : constant Node_Id :=
         First (Visible_Declarations_of_Prot_Type (E));
@@ -1875,10 +1875,10 @@ package body Flow_Utility is
          Consider_Discriminants => False,
          Use_Computed_Globals   => Use_Computed_Globals);
 
-      --  Merge the proof ins with the reads.
+      --  Merge the proof ins with the reads
       Tmp_In.Union (Proof_Ins);
 
-      --  Expand all variables.
+      --  Expand all variables
       Reads := Flow_Id_Sets.Empty_Set;
       for F of Tmp_In loop
          Reads.Union (Expand_Abstract_State (F, not Keep_Constants));
