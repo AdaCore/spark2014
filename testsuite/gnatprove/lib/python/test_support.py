@@ -260,6 +260,8 @@ def check_marks(strlist):
             return 'OVERFLOW_CHECK'
         elif 'predicate check' in text:
             return 'PREDICATE_CHECK'
+        elif 'invariant check' in text:
+            return 'INVARIANT_CHECK'
         elif 'range check' in text:
             return 'RANGE_CHECK'
         elif 'length check' in text:
@@ -329,6 +331,7 @@ def check_marks(strlist):
                        "INDEX_CHECK",
                        "OVERFLOW_CHECK",
                        "PREDICATE_CHECK",
+                       "INVARIANT_CHECK",
                        "RANGE_CHECK",
                        "LENGTH_CHECK",
                        "DISCRIMINANT_CHECK",
