@@ -274,14 +274,15 @@ package body Gnat2Why.Util is
       Labels : Name_Id_Sets.Set := Name_Id_Sets.Empty_Set;
       Model_Trace : constant Name_Id_Sets.Set := Get_Model_Trace_Label
         (E, False, Append_To_Name);
+
    begin
       --  Currently only generate values for scalar, record, and array
       --  variables in counterexamples.
 
-      if (not Comes_From_Source (E) and then
-            not Comes_From_Source (Parent (E)))
-          or else
-            (Is_Floating_Point_Type (Etype (E)))
+      if (not Comes_From_Source (E)
+            and then not Comes_From_Source (Parent (E)))
+        or else
+          Is_Floating_Point_Type (Etype (E))
       then
          return Name_Id_Sets.Empty_Set;
       end if;
