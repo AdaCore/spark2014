@@ -361,12 +361,7 @@ package body Flow.Analysis.Sanity is
 
       case FA.Kind is
          when Kind_Subprogram =>
-            Entry_Node := Subprogram_Body (FA.Analyzed_Entity);
-            pragma Assert (Nkind (Entry_Node) = N_Subprogram_Body);
-            Check_Expressions (Entry_Node);
-
-         when Kind_Entry =>
-            Entry_Node := Entry_Body (FA.Analyzed_Entity);
+            Entry_Node := Get_Body (FA.Analyzed_Entity);
             Check_Expressions (Entry_Node);
 
          when Kind_Task =>
@@ -521,7 +516,7 @@ package body Flow.Analysis.Sanity is
 
       Aspect_To_Fix : constant String :=
         (case FA.Kind is
-            when Kind_Subprogram | Kind_Entry | Kind_Task =>
+            when Kind_Subprogram | Kind_Task =>
               (if Present (FA.Refined_Global_N)
                then "Refined_Global"
                elsif Present (FA.Global_N)
@@ -539,8 +534,8 @@ package body Flow.Analysis.Sanity is
 
       SRM_Ref : constant String :=
         (case FA.Kind is
-            when Kind_Subprogram | Kind_Entry | Kind_Task => "6.1.4(13)",
-            when Kind_Package | Kind_Package_Body         => "7.1.5(12)");
+            when Kind_Subprogram | Kind_Task      => "6.1.4(13)",
+            when Kind_Package | Kind_Package_Body => "7.1.5(12)");
       --  String representation of the violated SPARK RM rule
 
    begin
@@ -785,11 +780,11 @@ package body Flow.Analysis.Sanity is
          --
          --    1) we are not dealing with a subprogram
          --
-         --    2) the user has not specified a Global aspect.
+         --    2) the user has not specified a Global aspect
          --
-         --    3) there is a user-provided Refined_Global contract
-         --       or the Global contract does not reference a state
-         --       abstraction with visible refinement.
+         --    3) there is a user-provided Refined_Global contract or the
+         --       Global contract does not reference a state abstraction with
+         --       visible refinement.
          return;
       end if;
 
@@ -843,8 +838,8 @@ package body Flow.Analysis.Sanity is
             E : constant Entity_Id := Get_Direct_Mapping_Id (W);
          begin
             if not Extended_Set_Contains (W, Projected_Actual_Writes) then
-               --  Don't issue this error for state abstractions that
-               --  have a null refinement.
+               --  Don't issue this error for state abstractions that have a
+               --  null refinement.
 
                if Ekind (E) /= E_Abstract_State
                  or else Has_Non_Null_Refinement (E)
@@ -900,8 +895,8 @@ package body Flow.Analysis.Sanity is
       for R of User_Reads loop
          if not Extended_Set_Contains (R, Projected_Actual_Reads)
            and then not State_Partially_Written (R)
-           --  Don't issue this error if we are dealing with a
-           --  partially written state abstraction.
+           --  Don't issue this error if we are dealing with a partially
+           --  written state abstraction.
          then
             Sane := False;
 

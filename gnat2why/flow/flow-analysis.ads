@@ -48,7 +48,6 @@ package Flow.Analysis is
                                          Sane : in out Boolean)
    with Pre => Sane and then
                FA.Kind in Kind_Subprogram   |
-                          Kind_Entry        |
                           Kind_Package_Body |
                           Kind_Package;
    --  Check post, refined_post and initializes for use of variables
@@ -143,7 +142,7 @@ package Flow.Analysis is
    --  Complexity is O(N^2)
 
    procedure Check_Prefixes_Of_Attribute_Old (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in Kind_Subprogram | Kind_Task | Kind_Entry;
+   with Pre => FA.Kind in Kind_Subprogram | Kind_Task;
    --  We issue a high check whenever a variable that serves as a
    --  prefix of a 'Old attribute is NOT an import.
    --
@@ -156,7 +155,7 @@ package Flow.Analysis is
 
    procedure Check_Constant_After_Elaboration
      (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in Kind_Subprogram | Kind_Task | Kind_Entry;
+   with Pre => FA.Kind in Kind_Subprogram | Kind_Task;
    --  Checks that the subprogram does not modify variables that have
    --  Constant_After_Elaboration set.
    --
@@ -164,7 +163,7 @@ package Flow.Analysis is
 
    procedure Check_Function_For_Volatile_Effects
      (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in Kind_Subprogram | Kind_Task | Kind_Entry;
+   with Pre => FA.Kind in Kind_Subprogram | Kind_Task;
    --  Checks that the subprogram does not have any volatile effects except if
    --  so specified. This check is only doing something when called on
    --  functions. We also issue a warning if we are dealing with a volatile
@@ -177,7 +176,7 @@ package Flow.Analysis is
    --  Check exclusivity rules for concurrent accesses to library-level objects
 
    procedure Check_CAE_In_Preconditions (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in Kind_Subprogram | Kind_Entry;
+   with Pre => FA.Kind = Kind_Subprogram;
    --  Check that preconditions of protected operations only reference global
    --  variables that have Constant_After_Elaboration set.
 

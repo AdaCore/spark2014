@@ -641,7 +641,7 @@ package body Flow.Slice is
          --  Initialize Local_Vars and Local_Subs: collect formal parameters of
          --  the entry/subprogram/task or state abstractions of the package.
          Local_Vars :=
-           (if FA.Kind in Kind_Subprogram | Kind_Entry | Kind_Task
+           (if FA.Kind in Kind_Subprogram | Kind_Task
             then Get_Formals (FA.Analyzed_Entity)
             else Node_Sets.Empty_Set);
 
@@ -649,7 +649,7 @@ package body Flow.Slice is
 
          --  Gather local parameters and subprograms
          case FA.Kind is
-            when Kind_Subprogram | Kind_Entry | Kind_Task =>
+            when Kind_Subprogram | Kind_Task =>
                Gather_Local_Variables_And_Subprograms
                  (Get_Body (FA.Analyzed_Entity));
 

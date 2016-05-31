@@ -5868,17 +5868,7 @@ package body Flow.Control_Flow_Graph is
 
       case FA.Kind is
          when Kind_Subprogram =>
-            Body_N          := Subprogram_Body (FA.Analyzed_Entity);
-            Preconditions   :=
-              Get_Precondition_Expressions (FA.Analyzed_Entity);
-
-            Subprogram_Spec :=
-              (if Acts_As_Spec (Body_N)
-               then Defining_Unit_Name (Specification (Body_N))
-               else Corresponding_Spec (Body_N));
-
-         when Kind_Entry =>
-            Body_N          := Entry_Body (FA.Analyzed_Entity);
+            Body_N          := Get_Body (FA.Analyzed_Entity);
             Preconditions   :=
               Get_Precondition_Expressions (FA.Analyzed_Entity);
 
@@ -5888,7 +5878,7 @@ package body Flow.Control_Flow_Graph is
             --  Tasks cannot have pre- or postconditions right now. This is
             --  a matter for the ARG perhaps.
             Body_N          := Task_Body (FA.Analyzed_Entity);
-            Subprogram_Spec := Corresponding_Spec (Body_N);
+            Subprogram_Spec := FA.Analyzed_Entity;
 
          when Kind_Package =>
             Spec_N := Package_Specification (FA.Analyzed_Entity);
@@ -5927,7 +5917,7 @@ package body Flow.Control_Flow_Graph is
       --  Create initial and final vertices for the parameters of the analyzed
       --  entity.
       case FA.Kind is
-         when Kind_Subprogram | Kind_Entry =>
+         when Kind_Subprogram =>
             for Param of Get_Formals (FA.Analyzed_Entity) loop
                Create_Initial_And_Final_Vertices (Param, Parameter_Kind, FA);
             end loop;
@@ -6021,7 +6011,7 @@ package body Flow.Control_Flow_Graph is
       --  Collect globals for the analyzed entity and create initial
       --  and final vertices.
       case FA.Kind is
-         when Kind_Subprogram | Kind_Entry | Kind_Task =>
+         when Kind_Subprogram | Kind_Task =>
             if not FA.Generating_Globals then
                declare
                   type G_Prop is record
@@ -6234,7 +6224,7 @@ package body Flow.Control_Flow_Graph is
       --     - declarative part
       --     - body
       case FA.Kind is
-         when Kind_Subprogram | Kind_Entry =>
+         when Kind_Subprogram =>
             for Precondition of Preconditions loop
                Process_Quantified_Expressions
                  (Precondition, FA, Connection_Map, The_Context);
@@ -6327,7 +6317,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Produce flowgraph for the precondition and postcondition, if any
       case FA.Kind is
-         when Kind_Subprogram | Kind_Entry  =>
+         when Kind_Subprogram =>
             --  Flowgraph for preconditions and left hand sides of contract
             --  cases.
             declare
@@ -6405,7 +6395,7 @@ package body Flow.Control_Flow_Graph is
       --  Produce flowgraphs for the body and link to start, helper end and end
       --  vertex.
       case FA.Kind is
-         when Kind_Subprogram | Kind_Entry =>
+         when Kind_Subprogram =>
             Do_Subprogram_Or_Block (Body_N, FA, Connection_Map, The_Context);
 
             --  Connect up all the dots...

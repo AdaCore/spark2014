@@ -642,7 +642,6 @@ package body Flow.Analysis is
             Aspect_To_Fix : constant String :=
               (case FA.Kind is
                when Kind_Subprogram |
-                    Kind_Entry      |
                     Kind_Task       => (if Refined
                                         then "Refined_Global"
                                         else "Global"),
@@ -650,9 +649,8 @@ package body Flow.Analysis is
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-               when Kind_Entry      |
-                    Kind_Subprogram |
-                    Kind_Task       => "6.1.4(13)",
+               when Kind_Subprogram   |
+                    Kind_Task         => "6.1.4(13)",
                when Kind_Package      |
                     Kind_Package_Body => "7.1.5(12)");
 
@@ -661,7 +659,7 @@ package body Flow.Analysis is
                Vars_Known := To_Entire_Variables (FA.All_Vars);
             else
                case FA.Kind is
-                  when Kind_Subprogram | Kind_Entry =>
+                  when Kind_Subprogram =>
                      --  We need to assemble the variables known from the spec:
                      --  these are parameters (both explicit and implicit) and
                      --  globals.
@@ -1164,7 +1162,7 @@ package body Flow.Analysis is
                --  warning here.
                null;
             elsif Atr.Mode = Mode_Proof then
-               --  Proof_Ins are never ineffective imports, for now.
+               --  Proof_Ins are never ineffective imports, for now
                null;
             elsif Atr.Is_Global then
                if FA.Kind = Kind_Subprogram

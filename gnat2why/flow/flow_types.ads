@@ -39,11 +39,10 @@ with Types;                       use Types;
 package Flow_Types is
 
    type Analyzed_Subject_Kind is (Kind_Subprogram,
-                                  Kind_Entry,
                                   Kind_Task,
                                   Kind_Package,
                                   Kind_Package_Body);
-   --  The different kinds of things we will analyze.
+   --  The different kinds of things we will analyze
 
    ----------------------------------------------------------------------
    --  Flow_Id
@@ -51,13 +50,13 @@ package Flow_Types is
    --  Represents an instance of a Node or Entity that is involved
    --  in flow analysis. A reference to just the Entity_Id or Node_Id
    --  is not sufficient, though, in a few cases:
-   --    1) Initial and Final values need to be differentiated from
-   --       "Normal" use of an entity.
-   --    2) Individual record field(s) need to be modelled in addition
-   --       to the "entire variable" represented by the Entity_Id.
-   --    3) Entities referenced as a result of global-frame-computataion
-   --       but are NOT in the AST are represented by a "magic string"
-   --       rather than an Entity or Node ID.
+   --    1) Initial and Final values need to be differentiated from "Normal"
+   --       use of an entity.
+   --    2) Individual record field(s) need to be modelled in addition to the
+   --       "entire variable" represented by the Entity_Id.
+   --    3) Entities referenced as a result of global-frame-computataion but
+   --       are NOT in the AST are represented by a "magic string" rather than
+   --       an Entity or Node ID.
    ----------------------------------------------------------------------
 
    type Param_Mode is (Mode_Invalid,

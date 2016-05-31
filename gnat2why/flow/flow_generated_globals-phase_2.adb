@@ -1772,7 +1772,7 @@ package body Flow_Generated_Globals.Phase_2 is
                     (V.The_Global_Info.Local_Definite_Writes);
 
                   case V.The_Global_Info.Kind is
-                     when Kind_Subprogram | Kind_Entry | Kind_Task =>
+                     when Kind_Subprogram | Kind_Task =>
                         Subprograms_With_GG.Insert (V.The_Global_Info.Name);
                         All_Subprograms.Include (V.The_Global_Info.Name);
 
@@ -2585,7 +2585,6 @@ package body Flow_Generated_Globals.Phase_2 is
    begin
       Write_Line ((case Info.Kind is
                    when Kind_Subprogram                  => "Subprogram ",
-                   when Kind_Entry                       => "Entry ",
                    when Kind_Task                        => "Task ",
                    when Kind_Package | Kind_Package_Body => "Package ")
         & To_String (Info.Name));

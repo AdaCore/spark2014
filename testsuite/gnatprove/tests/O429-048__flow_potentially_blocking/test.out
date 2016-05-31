@@ -36,6 +36,7 @@ internal_protected_call.ads:14:17: high: potentially blocking operation in prote
 library_level_function.adb:5:32: warning: unused initial value of "Real_Time.Clock_Time"
 library_level_function.adb:8:04: warning: statement has no effect
 nested_pb_call.adb:6:13: high: potentially blocking operation in protected operation "Dummy"
+nested_pb_call.adb:7:33: warning: unused initial value of "Real_Time.Clock_Time"
 nested_pb_call.adb:11:24: warning: statement has no effect
 nested_pb_call.adb:19:13: warning: statement has no effect
 p-po_stub_1.adb:3:38: warning: statement has no effect

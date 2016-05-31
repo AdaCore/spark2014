@@ -249,19 +249,19 @@ package body Flow is
 
    function Is_Valid (X : Flow_Analysis_Graphs_Root)
                       return Boolean
-   is ((case X.Kind is
-        when Kind_Subprogram =>
-           Is_Subprogram (X.Analyzed_Entity),
-        when Kind_Task =>
-           Ekind (X.Analyzed_Entity) = E_Task_Type,
-        when Kind_Entry =>
-           Ekind (X.Analyzed_Entity) = E_Entry,
-        when Kind_Package =>
-           Ekind (X.Analyzed_Entity) = E_Package,
-        when Kind_Package_Body =>
-           Ekind (X.Analyzed_Entity) = E_Package_Body)
+   is (X.Kind = (case Ekind (X.Analyzed_Entity) is
+                    when E_Function | E_Procedure | E_Entry =>
+                       Kind_Subprogram,
+                    when E_Task_Type =>
+                       Kind_Task,
+                    when E_Package =>
+                       Kind_Package,
+                    when E_Package_Body =>
+                       Kind_Package_Body,
+                    when others =>
+                       raise Program_Error)
        and then (if not X.Generating_Globals
-                 then not X.GG.Aborted and X.GG.Globals.Is_Empty)
+                 then not X.GG.Aborted and then X.GG.Globals.Is_Empty)
       );
 
    -------------------------------
@@ -900,14 +900,13 @@ package body Flow is
       FA : Flow_Analysis_Graphs_Root
         (Kind               => (case Ekind (E) is
                                 when E_Function
-                                   | E_Procedure     => Kind_Subprogram,
-                                when E_Task_Type     => Kind_Task,
-                                when E_Entry         => Kind_Entry,
-                                when E_Package       => Kind_Package,
-                                when E_Package_Body  => Kind_Package_Body,
-                                when others          => raise Program_Error),
+                                   | E_Procedure
+                                   | E_Entry        => Kind_Subprogram,
+                                when E_Task_Type    => Kind_Task,
+                                when E_Package      => Kind_Package,
+                                when E_Package_Body => Kind_Package_Body,
+                                when others         => raise Program_Error),
          Generating_Globals => Generating_Globals);
-
       Phase : constant String := (if Generating_Globals
                                   then "Global generation"
                                   else "Flow analysis");
@@ -1061,7 +1060,7 @@ package body Flow is
          --  If we already have all the needed contracts then we set Aborted
          --  flag and do not produce graphs.
          case FA.Kind is
-            when Kind_Subprogram | Kind_Task | Kind_Entry =>
+            when Kind_Subprogram | Kind_Task =>
                if not FA.Is_Generative then
                   Debug ("skipped" & (if Present (FA.Global_N)
                                       then "(global found)"
@@ -1164,9 +1163,7 @@ package body Flow is
       --  Register tasking-related information; ignore packages because they
       --  are elaborated sequentially anyway.
       if FA.Generating_Globals
-        and then FA.Kind in Kind_Subprogram |
-                            Kind_Entry      |
-                            Kind_Task
+        and then FA.Kind in Kind_Subprogram | Kind_Task
       then
          GG_Register_Tasking_Info (To_Entity_Name (FA.Analyzed_Entity),
                                    FA.Tasking);
@@ -1324,8 +1321,8 @@ package body Flow is
                                 (Name                  => To_Entity_Name (E),
                                  Kind                  =>
                                    (case Ekind (E) is
-                                    when E_Entry     => Kind_Entry,
-                                    when E_Function
+                                    when E_Entry
+                                       | E_Function
                                        | E_Procedure => Kind_Subprogram,
                                     when E_Task_Type => Kind_Task,
                                     when others      => raise Program_Error),
@@ -1362,8 +1359,8 @@ package body Flow is
                                 (Name                  => To_Entity_Name (E),
                                  Kind                  =>
                                    (case Ekind (E) is
-                                    when E_Entry     => Kind_Entry,
-                                    when E_Function
+                                    when E_Entry
+                                       | E_Function
                                        | E_Procedure => Kind_Subprogram,
                                     when E_Task_Type => Kind_Task,
                                     when others      => raise Program_Error),
@@ -1485,8 +1482,7 @@ package body Flow is
          Analysis.Sanity_Check (FA, Success);
          if Success then
             case FA.Kind is
-               when Kind_Entry        |
-                    Kind_Package      |
+               when Kind_Package      |
                     Kind_Package_Body |
                     Kind_Subprogram   =>
                   Analysis.Sanity_Check_Postcondition (FA, Success);
@@ -1501,10 +1497,10 @@ package body Flow is
             FA.Dependency_Map := Compute_Dependency_Relation (FA);
 
             case FA.Kind is
-               when Kind_Entry | Kind_Task | Kind_Subprogram =>
-                  --  In "Prove" mode we do not care about unwritten
-                  --  exports, ineffective statements, dead code and
-                  --  incorrect Depends aspects.
+               when Kind_Task | Kind_Subprogram =>
+                  --  In "Prove" mode we do not care about unwritten exports,
+                  --  ineffective statements, dead code and incorrect Depends
+                  --  aspects.
                   if not Gnat2Why_Args.Prove_Mode then
                      Analysis.Find_Unwritten_Exports (FA);
                      if FA.No_Effects then
@@ -1575,10 +1571,9 @@ package body Flow is
          end if;
 
          --  Check for potentially blocking operations in protected actions
-         if FA.Kind = Kind_Entry
-           or else (FA.Kind = Kind_Subprogram
-                    and then Convention (FA.Analyzed_Entity) =
-                      Convention_Protected)
+         if FA.Kind = Kind_Subprogram
+           and then Convention (FA.Analyzed_Entity) in Convention_Entry |
+                                                       Convention_Protected
          then
             --  ??? issue different warning if the blocking status is unknown
             if Is_Potentially_Blocking (FA.Analyzed_Entity) then

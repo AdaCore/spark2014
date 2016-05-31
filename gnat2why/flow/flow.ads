@@ -235,7 +235,7 @@ package Flow is
       --  True if we do not have a global contract
 
       case Kind is
-         when Kind_Subprogram | Kind_Task | Kind_Entry =>
+         when Kind_Subprogram | Kind_Task =>
             Is_Main : Boolean;
             --  True if this is a task or a main program, i.e. a library level
             --  subprogram without formal parameters (global parameters are
