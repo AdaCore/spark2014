@@ -271,7 +271,7 @@ package body Gnat2Why.Util is
      (E              : Entity_Id;
       Append_To_Name : String := "") return Name_Id_Sets.Set
    is
-      Labels : Name_Id_Sets.Set := Name_Id_Sets.Empty_Set;
+      Labels : Name_Id_Sets.Set;
       Model_Trace : constant Name_Id_Sets.Set := Get_Model_Trace_Label
         (E, False, Append_To_Name);
 
@@ -287,35 +287,33 @@ package body Gnat2Why.Util is
          return Name_Id_Sets.Empty_Set;
       end if;
 
-      if Is_Scalar_Type (Etype (E)) then
-         Labels.Union (Model_Trace);
+      case Ekind (Etype (E)) is
+         when Scalar_Kind =>
+            Labels := Model_Trace;
 
-         --  If E's type is directly a native prover type, simply request the
-         --  value of E in the counterexample. This is known by querying the
-         --  kind of type used in Why3 for the entity. If it's not abstract,
-         --  then a builtin Why3 type is used.
+            --  If E's type is directly a native prover type, simply request
+            --  the value of E in the counterexample. This is known by querying
+            --  the kind of type used in Why3 for the entity. If it's not
+            --  abstract, then a builtin Why3 type is used.
 
-         if Get_Type_Kind (Type_Of_Node (Etype (E))) in EW_Builtin | EW_Split
-         then
-            Labels.Include (Model);
+            if Get_Type_Kind (Type_Of_Node (Etype (E))) /= EW_Abstract then
+               Labels.Include (Model);
 
-         --  If E's type needs a projection to a native prover type, request
-         --  the value of the projection of E in the counterexample.
+            --  If E's type needs a projection to a native prover type, request
+            --  the value of the projection of E in the counterexample.
 
-         else
+            else
+               Labels.Include (Model_Projected);
+            end if;
+
+         when Record_Kind | Array_Kind =>
+            Labels := Model_Trace;
             Labels.Include (Model_Projected);
-         end if;
-      end if;
 
-      if Is_Record_Type (Etype (E)) then
-         Labels.Union (Model_Trace);
-         Labels.Include (Model_Projected);
-      end if;
+         when others =>
+            null;
 
-      if Is_Array_Type (Etype (E)) then
-         Labels.Union (Model_Trace);
-         Labels.Include (Model_Projected);
-      end if;
+      end case;
 
       return Labels;
    end Get_Counterexample_Labels;
