@@ -774,7 +774,7 @@ package body Why.Gen.Expr is
       Base : constant W_Type_Id := EW_Abstract (Root_Record_Type (L));
 
       Need_Discr_Check : constant Boolean :=
-        Need_Check and then Is_Constrained (R);
+        Need_Check and then Has_Discriminants (R) and then Is_Constrained (R);
       Need_Tag_Check   : constant Boolean :=
         Need_Check and then Is_Tagged_Type (R) and then not Is_Ancestor (R, L);
 

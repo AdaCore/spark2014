@@ -654,7 +654,7 @@ package body SPARK_Util is
       --  Converting to a record type with a predicate requires a check.
 
       elsif Is_Record_Type (To_R)
-        and then not Is_Constrained (To_R)
+        and then not (Has_Discriminants (To_R) and then Is_Constrained (To_R))
         and then (not Is_Tagged_Type (To_R) or else Is_Ancestor (To_R, From_R))
         and then not Has_Predicates (To_R)
       then
