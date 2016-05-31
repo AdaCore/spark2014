@@ -1146,6 +1146,7 @@ package body Flow_Utility is
 
       Use_Generated_Globals : constant Boolean :=
         Rely_On_Generated_Global (Subprogram, Scope);
+
    begin
       Proof_Ins := Flow_Id_Sets.Empty_Set;
       Reads     := Flow_Id_Sets.Empty_Set;
@@ -1486,15 +1487,15 @@ package body Flow_Utility is
             end if;
          end;
 
+      --  If we have no Global, but we do have a depends, we can
+      --  reverse-engineer the Global. This also solves the issue where the
+      --  (computed) global is inconsistent with the depends. (See M807-032
+      --  for an example.)
+
       elsif Present (Depends_Node)
         and then not Use_Generated_Globals
         and then not Ignore_Depends
       then
-
-         --  If we have no global, but we do have a depends, we can
-         --  reverse-engineer the global. This also solves the issue where
-         --  the (computed) global is inconsistent with the depends. (See
-         --  M807-032 for an example.)
 
          if Debug_Trace_Get_Global then
             Indent;
@@ -1589,7 +1590,7 @@ package body Flow_Utility is
 
             if Debug_Trace_Get_Global then
                Indent;
-               Write_Line ("using pavlos globals");
+               Write_Line ("using Pavlos globals");
                Outdent;
             end if;
 
@@ -1630,7 +1631,7 @@ package body Flow_Utility is
          else
             if Debug_Trace_Get_Global then
                Indent;
-               Write_Line ("using yannick globals");
+               Write_Line ("using Yannick globals");
                Outdent;
             end if;
 
@@ -1671,12 +1672,12 @@ package body Flow_Utility is
                end if;
 
                for W of ALI_Writes loop
-                  --  This is not a mistake, we must assume that all
-                  --  values written may also not change or that they are
-                  --  only partially updated.
+                  --  This is not a mistake, we must assume that all values
+                  --  written may also not change or that they are only
+                  --  partially updated.
                   --
-                  --  This also takes care of discriminants as every out
-                  --  is really an in out.
+                  --  This also takes care of discriminants as every out is
+                  --  really an in out.
                   F := Get_Flow_Id (W, Out_View, Scope);
 
                   if Debug_Trace_Get_Global then
@@ -1695,9 +1696,10 @@ package body Flow_Utility is
             end;
          end if;
 
+      --  We don't have user globals and we're not allowed to use computed
+      --  globals (i.e. we're trying to compute globals).
+
       else
-         --  We don't have user globals and we're not allowed to use
-         --  computed globals (i.e. we're trying to compute globals).
 
          if Debug_Trace_Get_Global then
             Indent;

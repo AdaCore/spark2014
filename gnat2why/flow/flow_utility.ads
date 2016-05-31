@@ -21,8 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package contains a bunch of helpful procedures used
---  throughout flow analysis.
+--  This package contains a bunch of procedures used throughout flow analysis
 
 with Ada.Containers;
 with Atree;                use Atree;
@@ -213,11 +212,10 @@ is
    --  Same as above but Reads consists of both the Reads and Proof_Ins,
    --  discriminants receive no special handling and globals are proof globals,
    --  and we always return the most refined view possible. If Keep_Constants
-   --  is true then constants with variable inputs are not suppressed form
-   --  the Globals even if they are constants in Why. In the case of nested
-   --  subprograms of protected types which may have an effect on the
-   --  components of the protected type, the protected type itself is
-   --  returned as an effect.
+   --  is true then constants with variable inputs are not suppressed form the
+   --  Globals even if they are constants in Why. For subprograms nested in
+   --  protected types, which may have an effect on the components of the
+   --  protected type, the protected type itself is returned as a global.
 
    function Has_Proof_Global_Reads (Subprogram : Entity_Id;
                                     Classwide  : Boolean)
