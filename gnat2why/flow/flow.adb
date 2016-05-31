@@ -101,9 +101,8 @@ package body Flow is
                              E_Entry          |
                              E_Package        |
                              E_Package_Body;
-   --  Flow analyse the given entity E with a specification entity S (i.e.
-   --  where the N_Contract node is attached). Do nothing for entities with
-   --  no body or not in SPARK 2014.
+   --  Flow analyse entity E. Do nothing for entities with no body or not in
+   --  SPARK 2014.
 
    use type Analysis_Maps.Map;
 
