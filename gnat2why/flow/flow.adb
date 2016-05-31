@@ -92,7 +92,6 @@ package body Flow is
    --  Temp_String. We use this to pretty print nodes via Sprint_Node.
 
    function Flow_Analyse_Entity (E                  : Entity_Id;
-                                 S                  : Entity_Id;
                                  Generating_Globals : Boolean)
                                  return Flow_Analysis_Graphs
    with Pre  => Ekind (E) in E_Function       |
@@ -874,7 +873,6 @@ package body Flow is
    -------------------------
 
    function Flow_Analyse_Entity (E                  : Entity_Id;
-                                 S                  : Entity_Id;
                                  Generating_Globals : Boolean)
                                  return Flow_Analysis_Graphs
    is
@@ -919,7 +917,7 @@ package body Flow is
 
    begin
       FA.Analyzed_Entity       := E;
-      FA.Spec_Entity           := S;
+      FA.Spec_Entity           := Unique_Entity (E);
       FA.Start_Vertex          := Null_Vertex;
       FA.Helper_End_Vertex     := Null_Vertex;
       FA.End_Vertex            := Null_Vertex;
@@ -997,8 +995,8 @@ package body Flow is
             FA.Is_Generative := No (FA.Initializes_N);
 
          when E_Package_Body =>
-            FA.B_Scope       := Flow_Scope'(Spec_Entity (E), Body_Part);
-            FA.S_Scope       := Flow_Scope'(Spec_Entity (E), Private_Part);
+            FA.B_Scope       := Flow_Scope'(FA.Spec_Entity, Body_Part);
+            FA.S_Scope       := Flow_Scope'(FA.Spec_Entity, Private_Part);
 
             Append (FA.Base_Filename, "pkg_body_");
 
@@ -1288,7 +1286,7 @@ package body Flow is
                      --  Body is in SPARK, so we just analyze it
                      FA_Graphs.Include (E,
                                         Flow_Analyse_Entity
-                                          (E, E, Generating_Globals));
+                                          (E, Generating_Globals));
 
                   elsif Generating_Globals then
                      declare
@@ -1411,7 +1409,7 @@ package body Flow is
                            FA_Graphs.Include
                              (Pkg_Body,
                               Flow_Analyse_Entity
-                                (Pkg_Body, E, Generating_Globals));
+                                (Pkg_Body, Generating_Globals));
                         else
                            null;
                            --  ??? warn that we can't flow analyze elaboration?
@@ -1421,7 +1419,7 @@ package body Flow is
                      then
                         FA_Graphs.Include
                           (E,
-                           Flow_Analyse_Entity (E, E, Generating_Globals));
+                           Flow_Analyse_Entity (E, Generating_Globals));
                      end if;
 
                   end if;
