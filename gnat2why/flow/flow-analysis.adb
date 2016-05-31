@@ -3085,7 +3085,7 @@ package body Flow.Analysis is
             declare
                The_Out : Flow_Id renames Dependency_Maps.Key (C);
             begin
-               FS.Include (The_Out);
+               FS.Insert (The_Out);
             end;
          end loop;
 
