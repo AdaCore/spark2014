@@ -1863,10 +1863,12 @@ package body Flow_Utility is
       Tmp_In    : Flow_Id_Sets.Set;
       Tmp_Out   : Flow_Id_Sets.Set;
       Body_E    : constant Entity_Id  := Get_Body_Entity (Subprogram);
-      S         : constant Flow_Scope := (if Present (Body_E) and then
-                                            Entity_Body_In_SPARK (Subprogram)
-                                          then Get_Flow_Scope (Body_E)
-                                          else Get_Flow_Scope (Subprogram));
+      S         : constant Flow_Scope :=
+        Get_Flow_Scope (if Present (Body_E) and then
+                          Entity_Body_In_SPARK (Subprogram)
+                        then Body_E
+                        else Subprogram);
+
    begin
       Get_Globals
         (Subprogram             => Subprogram,
