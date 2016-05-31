@@ -1120,17 +1120,18 @@ package body Flow is
                   end if;
                end if;
 
-               declare
-                  Refined_State_N : constant Node_Id :=
-                    Get_Pragma (E, Pragma_Refined_State);
+               if Gnat2Why_Args.Flow_Advanced_Debug then
+                  declare
+                     Refined_State_N : constant Node_Id :=
+                       Get_Pragma (E, Pragma_Refined_State);
 
-                  DM : Dependency_Maps.Map;
-               begin
-                  if Present (Refined_State_N) then
-                     Debug ("Refinement found: yes");
+                     DM : Dependency_Maps.Map;
+                  begin
+                     if Present (Refined_State_N) then
+                        Write_Line ("Refinement found: yes");
 
-                     DM := Parse_Refined_State (Refined_State_N);
-                     if Gnat2Why_Args.Flow_Advanced_Debug then
+                        DM := Parse_Refined_State (Refined_State_N);
+
                         for State in DM.Iterate loop
                            Write_Line ("State       :");
                            Indent;
@@ -1143,11 +1144,12 @@ package body Flow is
                            end loop;
                            Outdent;
                         end loop;
+
+                     else
+                        Write_Line ("Refinement found: no");
                      end if;
-                  else
-                     Debug ("Refinement found: no");
-                  end if;
-               end;
+                  end;
+               end if;
          end case;
 
          if FA.GG.Aborted then
