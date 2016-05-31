@@ -1564,12 +1564,18 @@ ASCII.LF;
                   --  the separate file. The "unit_name" function of
                   --  gnatcoll.projects sometimes returns the proper unit name,
                   --  but sometimes returns something like "unit.separate". If
-                  --  there is a dot in what has been returned, we remove it.
+                  --  there is a dot before the subunit name in what has been
+                  --  returned, we remove the dot and the subunit name, but
+                  --  keep all dots and names that belong to the child package
+                  --  structure.
 
                   declare
                      Ptype : constant Project_Type := Tree.Root_Project;
                      Sep_Name : constant String := Unit_Name (Info);
-                     Find_Dot : constant Natural := Index (Sep_Name, ".");
+                     Find_Dot : constant Natural :=
+                       Index (Source  => Sep_Name,
+                              Pattern =>  ".",
+                              Going   => Ada.Strings.Backward);
                      U_Name : constant String :=
                        (if Find_Dot = 0 then Sep_Name
                         else Sep_Name (Sep_Name'First .. Find_Dot - 1));
