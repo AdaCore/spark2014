@@ -1029,6 +1029,12 @@ This ensures that ``Account``'s package specification can be checked by
 |GNATprove| even if its implementation is not in |SPARK|, or not available for
 analysis, or not yet developed.
 
+A package with state abstraction must have a package body that states how
+abstract states are refined in aspect ``Refined_State``, unless the package
+body is not in |SPARK|. If there is no other reason for the package to have a
+body, then one should use ``pragma Elaborate_Body`` in the package spec to make
+it legal for the package to have a body on which to express state refinement.
+
 In general, an abstract name corresponds to multiple global variables defined
 in the package. For example, we can imagine adding global variables to log
 values passed in argument to procedure ``Add_To_Total``, that are also mapped to
