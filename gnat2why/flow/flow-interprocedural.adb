@@ -241,7 +241,7 @@ package body Flow.Interprocedural is
                          Reads                  => Inputs,
                          Writes                 => Outputs,
                          Consider_Discriminants => True,
-                         Use_Computed_Globals   => not FA.Generating_Globals);
+                         Use_Deduced_Globals    => not FA.Generating_Globals);
 
             --  Add parameters
             for E of Get_Formals (Called_Thing, N, False) loop

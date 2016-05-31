@@ -866,13 +866,13 @@ package body Flow_Utility is
          --  Use the Refined_Global to trim the down-projected Depends
 
          --  Collect all global Proof_Ins, Outputs and Inputs
-         Get_Globals (Subprogram           => Subprogram,
-                      Scope                => Scope,
-                      Classwide            => False,
-                      Proof_Ins            => All_Proof_Ins,
-                      Reads                => All_Reads,
-                      Writes               => All_Writes,
-                      Use_Computed_Globals => Use_Computed_Globals);
+         Get_Globals (Subprogram          => Subprogram,
+                      Scope               => Scope,
+                      Classwide           => False,
+                      Proof_Ins           => All_Proof_Ins,
+                      Reads               => All_Reads,
+                      Writes              => All_Writes,
+                      Use_Deduced_Globals => Use_Computed_Globals);
 
          --  Add formal parameters
          for Param of Get_Formals (Subprogram) loop
@@ -985,14 +985,14 @@ package body Flow_Utility is
       --  dependency.
       ----------------------------------------------------------------------
 
-      Get_Globals (Subprogram           => Subprogram,
-                   Scope                => Scope,
-                   Classwide            => False,
-                   Proof_Ins            => All_Proof_Ins,
-                   Reads                => All_Reads,
-                   Writes               => All_Writes,
-                   Use_Computed_Globals => Use_Computed_Globals,
-                   Ignore_Depends       => True);
+      Get_Globals (Subprogram          => Subprogram,
+                   Scope               => Scope,
+                   Classwide           => False,
+                   Proof_Ins           => All_Proof_Ins,
+                   Reads               => All_Reads,
+                   Writes              => All_Writes,
+                   Use_Deduced_Globals => Use_Computed_Globals,
+                   Ignore_Depends      => True);
 
       --  Change variant of All_Proof_Ins to Normal_Use
       All_Proof_Ins := Change_Variant (All_Proof_Ins, Normal_Use);
@@ -1134,7 +1134,7 @@ package body Flow_Utility is
                           Reads                  : out Flow_Id_Sets.Set;
                           Writes                 : out Flow_Id_Sets.Set;
                           Consider_Discriminants : Boolean := False;
-                          Use_Computed_Globals   : Boolean := True;
+                          Use_Deduced_Globals    : Boolean := True;
                           Ignore_Depends         : Boolean := False)
    is
       Global_Node  : constant Node_Id := Get_Contract_Node (Subprogram,
@@ -1413,7 +1413,7 @@ package body Flow_Utility is
                                Scope                => Scope,
                                Classwide            => Classwide,
                                Depends              => D_Map,
-                               Use_Computed_Globals => Use_Computed_Globals);
+                               Use_Computed_Globals => Use_Deduced_Globals);
 
                   --  Gather all inputs
                   for Inputs of D_Map loop
@@ -1511,7 +1511,7 @@ package body Flow_Utility is
                          Scope                => Scope,
                          Classwide            => Classwide,
                          Depends              => D_Map,
-                         Use_Computed_Globals => Use_Computed_Globals);
+                         Use_Computed_Globals => Use_Deduced_Globals);
 
             --  We need to make sure not to include our own parameters in the
             --  globals we produce here. Note that the formal parameters that
@@ -1582,7 +1582,7 @@ package body Flow_Utility is
             end if;
          end;
 
-      elsif Use_Computed_Globals then
+      elsif Use_Deduced_Globals then
 
          if GG_Exist (Subprogram) then
             --  We don't have a global or a depends aspect so we look at
@@ -1852,12 +1852,12 @@ package body Flow_Utility is
    -- Get_Proof_Globals --
    -----------------------
 
-   procedure Get_Proof_Globals (Subprogram           : Entity_Id;
-                                Classwide            : Boolean;
-                                Reads                : out Flow_Id_Sets.Set;
-                                Writes               : out Flow_Id_Sets.Set;
-                                Use_Computed_Globals : Boolean := True;
-                                Keep_Constants       : Boolean := False)
+   procedure Get_Proof_Globals (Subprogram          : Entity_Id;
+                                Classwide           : Boolean;
+                                Reads               : out Flow_Id_Sets.Set;
+                                Writes              : out Flow_Id_Sets.Set;
+                                Use_Deduced_Globals : Boolean := True;
+                                Keep_Constants      : Boolean := False)
    is
       Proof_Ins : Flow_Id_Sets.Set;
       Tmp_In    : Flow_Id_Sets.Set;
@@ -1878,7 +1878,7 @@ package body Flow_Utility is
          Reads                  => Tmp_In,
          Writes                 => Tmp_Out,
          Consider_Discriminants => False,
-         Use_Computed_Globals   => Use_Computed_Globals);
+         Use_Deduced_Globals    => Use_Deduced_Globals);
 
       --  Merge the proof ins with the reads
       Tmp_In.Union (Proof_Ins);
@@ -2127,14 +2127,14 @@ package body Flow_Utility is
          declare
             Proof_Reads : Flow_Id_Sets.Set;
          begin
-            Get_Globals (Subprogram           => Subprogram,
-                         Scope                => Scope,
-                         Classwide            =>
+            Get_Globals (Subprogram          => Subprogram,
+                         Scope               => Scope,
+                         Classwide           =>
                            Is_Dispatching_Call (Callsite),
-                         Proof_Ins            => Proof_Reads,
-                         Reads                => Global_Reads,
-                         Writes               => Global_Writes,
-                         Use_Computed_Globals => Use_Computed_Globals);
+                         Proof_Ins           => Proof_Reads,
+                         Reads               => Global_Reads,
+                         Writes              => Global_Writes,
+                         Use_Deduced_Globals => Use_Computed_Globals);
             if not Fold_Functions then
                Global_Reads.Union (Proof_Reads);
             end if;
@@ -2675,13 +2675,13 @@ package body Flow_Utility is
                      --  its globals.
 
                      Get_Globals
-                       (Subprogram           => P,
-                        Scope                => Scope,
-                        Classwide            => False,
-                        Proof_Ins            => GP,
-                        Reads                => GI,
-                        Writes               => GO,
-                        Use_Computed_Globals => Use_Computed_Globals);
+                       (Subprogram          => P,
+                        Scope               => Scope,
+                        Classwide           => False,
+                        Proof_Ins           => GP,
+                        Reads               => GI,
+                        Writes              => GO,
+                        Use_Deduced_Globals => Use_Computed_Globals);
                      pragma Assert (GO.Is_Empty);
 
                      declare

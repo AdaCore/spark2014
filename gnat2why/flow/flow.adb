@@ -1314,13 +1314,13 @@ package body Flow is
                               Reads     : Flow_Id_Sets.Set;
                               Writes    : Flow_Id_Sets.Set;
                            begin
-                              Get_Globals (Subprogram           => E,
-                                           Scope                => Scope,
-                                           Classwide            => False,
-                                           Proof_Ins            => Proof_Ins,
-                                           Reads                => Reads,
-                                           Writes               => Writes,
-                                           Use_Computed_Globals => False);
+                              Get_Globals (Subprogram          => E,
+                                           Scope               => Scope,
+                                           Classwide           => False,
+                                           Proof_Ins           => Proof_Ins,
+                                           Reads               => Reads,
+                                           Writes              => Writes,
+                                           Use_Deduced_Globals => False);
 
                               Global_Info := Global_Phase_1_Info'
                                 (Name                  => To_Entity_Name (E),

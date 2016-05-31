@@ -4759,13 +4759,13 @@ package body Flow.Control_Flow_Graph is
       V           : Flow_Graphs.Vertex_Id;
    begin
       --  Obtain globals (either from contracts or the computed stuff)
-      Get_Globals (Subprogram           => Get_Called_Entity (Callsite),
-                   Scope                => FA.B_Scope,
-                   Classwide            => Is_Dispatching_Call (Callsite),
-                   Proof_Ins            => Proof_Reads,
-                   Reads                => Reads,
-                   Writes               => Writes,
-                   Use_Computed_Globals => not FA.Generating_Globals);
+      Get_Globals (Subprogram          => Get_Called_Entity (Callsite),
+                   Scope               => FA.B_Scope,
+                   Classwide           => Is_Dispatching_Call (Callsite),
+                   Proof_Ins           => Proof_Reads,
+                   Reads               => Reads,
+                   Writes              => Writes,
+                   Use_Deduced_Globals => not FA.Generating_Globals);
       Reads.Union (Proof_Reads);
 
       for R of Reads loop
