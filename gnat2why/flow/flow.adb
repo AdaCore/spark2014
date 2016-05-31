@@ -1387,25 +1387,25 @@ package body Flow is
                end if;
 
             when E_Package =>
-               declare
-                  Pkg_Body : constant Entity_Id :=
-                    Defining_Entity (Package_Body (E),
-                                     Empty_On_Errors => True);
+               if SPARK_Util.Analysis_Requested (E, With_Inlined => True)
+                 and then Entity_Spec_In_SPARK (E)
+                 and then not In_Predefined_Unit (E)
+                 and then not Is_Wrapper_Package (E)
+                 --  Do not generate graphs for wrapper packages of subprogram
+                 --  instantiations since messages emitted on them would be
+                 --  confusing.
+               then
+                  declare
+                     Pkg_Body : constant Entity_Id :=
+                       Defining_Entity (Package_Body (E),
+                                        Empty_On_Errors => True);
 
-               begin
-                  if SPARK_Util.Analysis_Requested (E, With_Inlined => True)
-                    and then Entity_Spec_In_SPARK (E)
-                    and then not In_Predefined_Unit (E)
-                    and then not Is_Wrapper_Package (E)
-                    --  We do not generate graphs for wrapper packages of
-                    --  subprogram instantiations since messages emitted on
-                    --  them would be confusing.
-                  then
+                  begin
                      if Present (Pkg_Body) then
                         if Entity_Body_In_SPARK (E) then
                            pragma Assert
                              (Nkind (Pkg_Body) = N_Defining_Identifier and then
-                              Ekind (Pkg_Body) = E_Package_Body);
+                                Ekind (Pkg_Body) = E_Package_Body);
 
                            FA_Graphs.Include
                              (Pkg_Body,
@@ -1422,9 +1422,9 @@ package body Flow is
                           (E,
                            Flow_Analyse_Entity (E, Generating_Globals));
                      end if;
+                  end;
 
-                  end if;
-               end;
+               end if;
 
             when others =>
                raise Program_Error;
