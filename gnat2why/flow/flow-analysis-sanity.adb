@@ -813,8 +813,7 @@ package body Flow.Analysis.Sanity is
                                                          In_View);
 
       --  Remove Reads from Proof_Ins
-      Projected_Actual_Proof_Ins := Projected_Actual_Proof_Ins -
-                                      Projected_Actual_Reads;
+      Projected_Actual_Proof_Ins.Difference (Projected_Actual_Reads);
 
       --  Compare writes
       for W of Projected_Actual_Writes loop
