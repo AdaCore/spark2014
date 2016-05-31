@@ -25,10 +25,10 @@
 
 with Ada.Strings;            use Ada.Strings;
 with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
-with Flow_Types;
 with Flow_Utility;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
 with Sem_Util;               use Sem_Util;
+with Snames;                 use Snames;
 with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with String_Utils;           use String_Utils;
@@ -758,8 +758,8 @@ package body Gnat2Why.Util is
       --  cannot be volatile in SPARK so are not considered here.
 
       elsif Ekind (E) /= E_Constant
-        and then
-          Flow_Types.Has_Async_Writers (Flow_Types.Direct_Mapping_Id (E))
+        and then Has_Volatile (E)
+        and then Has_Volatile_Flavor (E, Pragma_Async_Writers)
       then
          return True;
 
