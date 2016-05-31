@@ -21,8 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  This package implements a variety of sanity checks that are run before
---  the rest of flow analysis is performed.
+--  This package implements a variety of sanity checks that are run before the
+--  rest of flow analysis is performed.
 
 private package Flow.Analysis.Sanity is
 
@@ -48,13 +48,13 @@ private package Flow.Analysis.Sanity is
    procedure Check_All_Variables_Known
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean);
-   --  Sanity check all vertices if they mention a flow id that we do not
-   --  know about.
+   --  Sanity check all vertices if they mention a flow id that we do not know
+   --  about.
 
    procedure Check_Generated_Refined_Global
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean);
-   --  Checks if the generated Refined_Global contract is correct
-   --  with respect to the user-provided Global contract.
+   --  Checks if the generated Refined_Global contract is correct with respect
+   --  to the user-provided Global contract.
 
 end Flow.Analysis.Sanity;

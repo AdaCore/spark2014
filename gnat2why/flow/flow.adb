@@ -1253,7 +1253,7 @@ package body Flow is
    is
 
       procedure Build_Graphs_For_Entity (E : Entity_Id);
-      --  Build graphs and, if requisted, collect globals for a given entity
+      --  Build graphs and, if requested, collect globals for a given entity
 
       -----------------------------
       -- Build_Graphs_For_Entity --

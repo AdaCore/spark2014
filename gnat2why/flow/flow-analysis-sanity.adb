@@ -286,10 +286,9 @@ package body Flow.Analysis.Sanity is
                   case Nkind (C) is
                      when N_Range_Constraint =>
                         declare
-
                            --  Note that fetching the variable set for C
-                           --  returns the union of the sets of the
-                           --  low-bound and the high-bound.
+                           --  returns the union of the sets of the low-bound
+                           --  and the high-bound.
 
                            Deps : constant Ordered_Flow_Id_Sets.Set :=
                              Simple_Variable_Set (C);
