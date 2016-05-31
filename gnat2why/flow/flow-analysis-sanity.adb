@@ -448,8 +448,8 @@ package body Flow.Analysis.Sanity is
 
                elsif not FA.All_Vars.Contains (F) then
 
-                  --  This case is dealt with in the "all_variables_known"
-                  --  sanity check
+                  --  This case is dealt with in the All_Variables_Known
+                  --  sanity check.
 
                   null;
 
@@ -467,9 +467,9 @@ package body Flow.Analysis.Sanity is
                   Final_Atr := FA.Atr.Element (Corresp_Final_Vertex);
 
                   if Final_Atr.Is_Global
-                    and Final_Atr.Is_Constant
-                    and not Final_Atr.Is_Loop_Parameter
-                    and not Is_Abstract_State (Var)
+                    and then Final_Atr.Is_Constant
+                    and then not Final_Atr.Is_Loop_Parameter
+                    and then not Is_Abstract_State (Var)
                   then
                      if FA.Kind in Kind_Package | Kind_Package_Body then
                         Error_Msg_Flow
