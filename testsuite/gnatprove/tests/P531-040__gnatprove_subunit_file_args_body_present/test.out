@@ -1,0 +1,6 @@
+< capture erroneous output, trigger XFAIL rather than UOK >
+
+parent.adb:7:11: medium: range check might fail (e.g. when X = 99)
+Phase 1 of 2: generation of Global contracts ...
+Phase 2 of 2: flow analysis and proof ...
+Summary logged in gnatprove/gnatprove.out
