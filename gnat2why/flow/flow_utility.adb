@@ -1147,6 +1147,40 @@ package body Flow_Utility is
       Use_Generated_Globals : constant Boolean :=
         Rely_On_Generated_Global (Subprogram, Scope);
 
+      procedure Debug (Msg : String);
+      --  Write message Msg to debug output
+
+      procedure Debug (Label : String; S : Flow_Id_Sets.Set);
+      --  Write Label followed by elements of S to debug output
+
+      -----------
+      -- Debug --
+      -----------
+
+      procedure Debug (Msg : String) is
+      begin
+         if Debug_Trace_Get_Global then
+            Indent;
+            Write_Line (Msg);
+            Outdent;
+         end if;
+      end Debug;
+
+      procedure Debug (Label : String; S : Flow_Id_Sets.Set) is
+      begin
+         if Debug_Trace_Get_Global then
+            Write_Line (Label);
+            Indent;
+            for F of S loop
+               Sprint_Flow_Id (F);
+               Write_Eol;
+            end loop;
+            Outdent;
+         end if;
+      end Debug;
+
+   --  Start of processing for Get_Globals
+
    begin
       Proof_Ins := Flow_Id_Sets.Empty_Set;
       Reads     := Flow_Id_Sets.Empty_Set;
@@ -1163,11 +1197,7 @@ package body Flow_Utility is
       if Present (Global_Node)
         and then not Use_Generated_Globals
       then
-         if Debug_Trace_Get_Global then
-            Indent;
-            Write_Line ("using user annotation");
-            Outdent;
-         end if;
+         Debug ("using user annotation");
 
          declare
             pragma Assert
@@ -1232,8 +1262,8 @@ package body Flow_Utility is
 
                end case;
             end Process;
-         begin
 
+         begin
             ---------------------------------------------------------------
             --  Step 1: Process global annotation, filling in g_proof,
             --  g_in, and g_out.
@@ -1457,35 +1487,11 @@ package body Flow_Utility is
             Writes    := Filter_Out_Constants (Writes,
                                                Node_Sets.Empty_Set,
                                                True);
-
-            if Debug_Trace_Get_Global then
-               Indent;
-               Write_Line ("proof ins");
-               Indent;
-               for F of Proof_Ins loop
-                  Sprint_Flow_Id (F);
-                  Write_Eol;
-               end loop;
-               Outdent;
-
-               Write_Line ("reads");
-               Indent;
-               for F of Reads loop
-                  Sprint_Flow_Id (F);
-                  Write_Eol;
-               end loop;
-               Outdent;
-
-               Write_Line ("writes");
-               Indent;
-               for F of Writes loop
-                  Sprint_Flow_Id (F);
-                  Write_Eol;
-               end loop;
-               Outdent;
-               Outdent;
-            end if;
          end;
+
+         Debug ("proof ins", Proof_Ins);
+         Debug ("reads",     Reads);
+         Debug ("writes",    Writes);
 
       --  If we have no Global, but we do have a depends, we can
       --  reverse-engineer the Global. This also solves the issue where the
@@ -1496,17 +1502,12 @@ package body Flow_Utility is
         and then not Use_Generated_Globals
         and then not Ignore_Depends
       then
-
-         if Debug_Trace_Get_Global then
-            Indent;
-            Write_Line ("reversing depends annotation");
-            Outdent;
-         end if;
-
          declare
             D_Map  : Dependency_Maps.Map;
             Params : Node_Sets.Set;
          begin
+            Debug ("reversing depends annotation");
+
             Get_Depends (Subprogram           => Subprogram,
                          Scope                => Scope,
                          Classwide            => Classwide,
@@ -1536,8 +1537,8 @@ package body Flow_Utility is
                     and then E /= Subprogram
                     and then not Params.Contains (E)
                   then
-                     --  Note we also filter out the function'result
-                     --  construct here.
+                     --  Note we also filter out the function'result construct
+                     --  here.
                      Writes.Include (Change_Variant (Output, Out_View));
                   end if;
 
@@ -1551,9 +1552,9 @@ package body Flow_Utility is
 
                         if Has_Effective_Reads (R) then
                            --  A volatile with effective reads is always an
-                           --  output as well (this should be recorded in
-                           --  the depends, but the front-end does not
-                           --  enforce this).
+                           --  output as well (this should be recorded in the
+                           --  depends, but the front-end does not enforce
+                           --  this).
                            Writes.Include (Change_Variant (R, Out_View));
                         end if;
                      end if;
@@ -1561,79 +1562,30 @@ package body Flow_Utility is
                end;
             end loop;
 
-            if Debug_Trace_Get_Global then
-               Indent;
-               Write_Line ("reads");
-               Indent;
-               for F of Reads loop
-                  Sprint_Flow_Id (F);
-                  Write_Eol;
-               end loop;
-               Outdent;
-
-               Write_Line ("writes");
-               Indent;
-               for F of Writes loop
-                  Sprint_Flow_Id (F);
-                  Write_Eol;
-               end loop;
-               Outdent;
-               Outdent;
-            end if;
+            Debug ("reads", Reads);
+            Debug ("writes", Writes);
          end;
 
       elsif Use_Deduced_Globals then
 
          if GG_Exist (Subprogram) then
-            --  We don't have a global or a depends aspect so we look at
-            --  the generated globals.
+            --  We don't have a global or a depends aspect so we look at the
+            --  generated globals.
 
-            if Debug_Trace_Get_Global then
-               Indent;
-               Write_Line ("using Pavlos globals");
-               Outdent;
-            end if;
+            Debug ("using Pavlos globals");
 
             GG_Get_Globals (Subprogram, Scope,
                             Proof_Ins, Reads, Writes);
 
-            if Debug_Trace_Get_Global then
-               Indent;
-               Write_Line ("proof ins");
-               Indent;
-               for PI of Proof_Ins loop
-                  Sprint_Flow_Id (PI);
-                  Write_Eol;
-               end loop;
-               Outdent;
-
-               Write_Line ("reads");
-               Indent;
-               for R of Reads loop
-                  Sprint_Flow_Id (R);
-                  Write_Eol;
-               end loop;
-               Outdent;
-
-               Write_Line ("writes");
-               Indent;
-               for W of Writes loop
-                  Sprint_Flow_Id (W);
-                  Write_Eol;
-               end loop;
-               Outdent;
-               Outdent;
-            end if;
+            Debug ("proof ins", Proof_Ins);
+            Debug ("reads",     Reads);
+            Debug ("writes",    Writes);
 
          --  We don't have a global or a depends aspect and we don't have
          --  generated globals, so we should look at the computed globals...
 
          else
-            if Debug_Trace_Get_Global then
-               Indent;
-               Write_Line ("using Yannick globals");
-               Outdent;
-            end if;
+            Debug ("using Yannick globals");
 
             declare
                ALI_Reads  : constant Name_Sets.Set :=
@@ -1644,32 +1596,15 @@ package body Flow_Utility is
 
                F : Flow_Id;
             begin
-
-               --  We process the reads
-               if Debug_Trace_Get_Global then
-                  Indent;
-                  Write_Line ("reads");
-                  Indent;
-               end if;
-
                for R of ALI_Reads loop
                   F := Get_Flow_Id (R, In_View, Scope);
-
-                  if Debug_Trace_Get_Global then
-                     Sprint_Flow_Id (F);
-                     Write_Eol;
-                  end if;
 
                   if Is_Variable (F) then
                      Reads.Include (F);
                   end if;
                end loop;
 
-               if Debug_Trace_Get_Global then
-                  Outdent;
-                  Write_Line ("writes");
-                  Indent;
-               end if;
+               Debug ("reads", Reads);
 
                for W of ALI_Writes loop
                   --  This is not a mistake, we must assume that all values
@@ -1680,19 +1615,11 @@ package body Flow_Utility is
                   --  really an in out.
                   F := Get_Flow_Id (W, Out_View, Scope);
 
-                  if Debug_Trace_Get_Global then
-                     Sprint_Flow_Id (F);
-                     Write_Eol;
-                  end if;
-
                   Reads.Include (Change_Variant (F, In_View));
                   Writes.Include (F);
                end loop;
 
-               if Debug_Trace_Get_Global then
-                  Outdent;
-                  Outdent;
-               end if;
+               Debug ("writes", Writes);
             end;
          end if;
 
@@ -1700,12 +1627,7 @@ package body Flow_Utility is
       --  globals (i.e. we're trying to compute globals).
 
       else
-
-         if Debug_Trace_Get_Global then
-            Indent;
-            Write_Line ("defaulting to null globals");
-            Outdent;
-         end if;
+         Debug ("defaulting to null globals");
 
       end if;
    end Get_Globals;
