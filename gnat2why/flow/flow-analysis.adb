@@ -3375,9 +3375,9 @@ package body Flow.Analysis is
             Proceed_With_Analysis : Boolean := True;
          begin
             if F_Out = Null_Flow_Id then
-               --  The null dependency is special: it may not be
-               --  present in the user dependency because null => null
-               --  would be super tedious to write.
+               --  The null dependency is special: it may not be present in the
+               --  user dependency because null => null would be super tedious
+               --  to write.
                if User_Deps.Contains (Null_Flow_Id) then
                   U_Deps := User_Deps (Null_Flow_Id);
                else
@@ -3389,9 +3389,9 @@ package body Flow.Analysis is
                Global_Required (FA, F_Out);
                Proceed_With_Analysis := False;
             else
-               --  If the depends aspect is used to synthesize the
-               --  global aspect, then this is message will be an
-               --  error instead of a medium check.
+               --  If the depends aspect is used to synthesize the global
+               --  aspect, then this is message will be an error instead of
+               --  a medium check.
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "expected to see & on the left-hand-side of" &
@@ -3403,9 +3403,8 @@ package body Flow.Analysis is
                U_Deps := Flow_Id_Sets.Empty_Set;
             end if;
 
-            --  If we mention magic strings anywhere, there is no
-            --  point in proceeding as the dependency relation
-            --  *cannot* be correct.
+            --  If we mention magic strings anywhere, there is no point in
+            --  proceeding as the dependency relation *cannot* be correct.
 
             if Proceed_With_Analysis then
                for Var of A_Deps loop
