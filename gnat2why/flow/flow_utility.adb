@@ -3159,8 +3159,8 @@ package body Flow_Utility is
       return Boolean
    is
    begin
-      --  We can't possibly up-project something that does not
-      --  correspond to a direct mapping.
+      --  We can't possibly up-project something that does not correspond to a
+      --  direct mapping.
       if F.Kind /= Direct_Mapping then
          return False;
       end if;

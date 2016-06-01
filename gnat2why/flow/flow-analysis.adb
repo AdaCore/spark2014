@@ -3173,24 +3173,22 @@ package body Flow.Analysis is
       --  or FA.S_Scope if we are checking a Depends contract.
 
       function Message_Kind (F : Flow_Id) return Msg_Severity;
-      --  Returns the severity of the message that we have to emit.
+      --  Returns the severity of the message that we have to emit
       --
-      --  In the absence of a user-provided Global contract the
-      --  user-provided Depends contract is utilized to synthesize the
-      --  Globals. In this case and if F is a global variable then the
-      --  emitted messages are errors since users of the subprogram
-      --  will be assuming wrong Globals.
+      --  In the absence of a user-provided Global contract the user-provided
+      --  Depends contract is utilized to synthesize the Globals. In this case
+      --  and if F is a global variable then the emitted messages are errors
+      --  since users of the subprogram will be assuming wrong Globals.
       --
-      --  On the other hand, when there exists a user-provided Global
-      --  contract or when F is not a Global variable, emitted
-      --  messages are medium checks.
+      --  On the other hand, when there exists a user-provided Global contract
+      --  or when F is not a Global variable, emitted messages are medium
+      --  checks.
 
       function Up_Project_Map
         (DM : Dependency_Maps.Map)
          return Dependency_Maps.Map;
-      --  Up projects the constituents that are mentioned in DM until
-      --  we have visibility of the enclosing state abstractions from
-      --  Depends_Scope.
+      --  Up projects the constituents that are mentioned in DM until we have
+      --  visibility of the enclosing state abstractions from Depends_Scope.
       --
       --  Example:
       --     State1 => (Con1, Con2)
@@ -3206,9 +3204,9 @@ package body Flow.Analysis is
       --       State2 => (State2, G)
       --       G      => State2
       --
-      --  Notice that the self depence of State1 is an indirect
-      --  consequence of the fact that Con2 is not an Output. So there
-      --  is an implicit Con2 => Con2 dependence.
+      --  Notice that the self depence of State1 is an indirect consequence of
+      --  the fact that Con2 is not an Output. So there is an implicit Con2 =>
+      --  Con2 dependence.
 
       ------------------
       -- Message_Kind --
@@ -3282,9 +3280,8 @@ package body Flow.Analysis is
             end;
          end loop;
 
-         --  If at least one constituent of a state abstraction has
-         --  not been written, then the state abstraction also depends
-         --  on itself.
+         --  If at least one constituent of a state abstraction has not been
+         --  written, then the state abstraction also depends on itself.
          for State of States_Written loop
             for RC of Iter (Refinement_Constituents (State)) loop
                if not Constituents_Written.Contains (RC) then
@@ -3295,8 +3292,7 @@ package body Flow.Analysis is
                      Up_Projected_Map (AS).Include (AS);
                   end;
 
-                  --  There is no need to check the rest of the
-                  --  constituents.
+                  --  There is no need to check the rest of the constituents
                   exit;
                end if;
             end loop;
@@ -3310,8 +3306,8 @@ package body Flow.Analysis is
    begin
 
       if No (FA.Depends_N) then
-         --  If the user has not specified a dependency relation we
-         --  have no work to do.
+         --  If the user has not specified a dependency relation we have no
+         --  work to do.
          return;
       end if;
 
@@ -3333,10 +3329,10 @@ package body Flow.Analysis is
          Print_Dependency_Map (Actual_Deps);
       end if;
 
-      --  If the user depends do not include something we have in the
-      --  actual depends we will raise an appropriate error. We should
-      --  however also sanity check there is nothing in the user
-      --  dependencies which is *not* in the actual dependencies.
+      --  If the user depends do not include something we have in the actual
+      --  depends we will raise an appropriate error. We should however also
+      --  sanity check there is nothing in the user dependencies which is *not*
+      --  in the actual dependencies.
 
       for C in User_Deps.Iterate loop
          declare
@@ -3358,8 +3354,8 @@ package body Flow.Analysis is
          end;
       end loop;
 
-      --  We go through the actual dependencies because they are
-      --  always complete.
+      --  We go through the actual dependencies because they are always
+      --  complete.
 
       for C in Actual_Deps.Iterate loop
          declare
@@ -3387,9 +3383,9 @@ package body Flow.Analysis is
                Global_Required (FA, F_Out);
                Proceed_With_Analysis := False;
             else
-               --  If the depends aspect is used to synthesize the global
-               --  aspect, then this is message will be an error instead of
-               --  a medium check.
+               --  If the Depends aspect is used to synthesize the Global
+               --  aspect, then this message will be an error instead of a
+               --  medium check.
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "expected to see & on the left-hand-side of" &
@@ -3413,7 +3409,7 @@ package body Flow.Analysis is
                end loop;
             end if;
 
-            --  If all is still well we now do a consistency check.
+            --  If all is still well we now do a consistency check
 
             if Proceed_With_Analysis then
                Missing_Deps := To_Ordered_Flow_Id_Set (A_Deps - U_Deps);
@@ -3491,8 +3487,8 @@ package body Flow.Analysis is
                end loop;
 
                for Wrong_Var of Wrong_Deps loop
-                  --  Something the user dependency claims, but does
-                  --  not happen in reality.
+                  --  Something the user dependency claims, but does not happen
+                  --  in reality.
                   if Is_Abstract_State (Wrong_Var)
                     and then Wrong_Var.Kind in Direct_Mapping | Record_Field
                     and then State_Refinement_Is_Visible
