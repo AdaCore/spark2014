@@ -605,7 +605,12 @@ is
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
       return Entity_Id
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type
+                 and then
+               (if Present (Callsite)
+                then Nkind (Callsite) in N_Entry_Call_Statement     |
+                                         N_Function_Call            |
+                                         N_Procedure_Call_Statement);
    --  Returns the protected type for protected subprograms and entries and the
    --  task type itself for task types; returns Empty for ordinary subprograms.
    --  @param E is the entity of an entry/task/subprogram
@@ -618,11 +623,15 @@ is
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
       return Node_Sets.Set
-   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type;
-   --  This function returns a set of nodes containing all implicit and
-   --  explicit formal parameters of an Entry or Subprogram. For tasks it
-   --  returns a set containing all discriminants of the task and the task
-   --  itself.
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type
+                 and then
+               (if Present (Callsite)
+                then Nkind (Callsite) in N_Entry_Call_Statement     |
+                                         N_Function_Call            |
+                                         N_Procedure_Call_Statement);
+   --  Returns a set of nodes containing all implicit and explicit formal
+   --  parameters of an Entry or Subprogram. For tasks it returns a set
+   --  containing all discriminants of the task and the task itself.
    --  @param E is the entity of an entry/task/subprogram
    --  @param Callsite is the place from where the entry/subprogram is called
    --  @param Entire returns the entire object as opposed to a record field
