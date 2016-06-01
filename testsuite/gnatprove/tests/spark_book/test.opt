@@ -1,1 +1,2 @@
 darwin XFAIL crash due to too many open files (OA09-032)
+Windows XFAIL takes too long on Windows
