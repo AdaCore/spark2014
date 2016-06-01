@@ -14,12 +14,12 @@ package body Derived is
 
    function Get (X : T) return Integer is (Integer (X.C));
 
-   procedure Create (X : out D) is  --  @INVARIANT_CHECK:FAIL
+   procedure Create (X : out D) is  --  @INVARIANT_CHECK:NONE
    begin
       X.C := 0;  --  @INVARIANT_CHECK:NONE
    end Create;
 
-   procedure Update (X : in out D) is  --  @INVARIANT_CHECK:FAIL
+   procedure Update (X : in out D) is  --  @INVARIANT_CHECK:NONE
    begin
       if X.C /= Integer'First then
          X.C := 0;  --  @INVARIANT_CHECK:NONE
