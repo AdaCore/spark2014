@@ -5864,8 +5864,6 @@ package body Flow.Control_Flow_Graph is
       Spec_N          : Node_Id;
       Package_Writes  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
-      pragma Assert (Is_Valid (FA));
-
       case FA.Kind is
          when Kind_Subprogram =>
             Body_N          := Get_Body (FA.Analyzed_Entity);
