@@ -1887,9 +1887,9 @@ package body Flow_Utility is
       return T;
    end Get_Type;
 
-   --------------------------
-   -- Get_Implicit_Formals --
-   --------------------------
+   -------------------------
+   -- Get_Implicit_Formal --
+   -------------------------
 
    function Get_Implicit_Formal
      (E        : Entity_Id;
@@ -1897,7 +1897,6 @@ package body Flow_Utility is
       Entire   : Boolean := True)
       return Entity_Id
    is
-      F : constant Flow_Id := Direct_Mapping_Id (E);
    begin
       case Ekind (E) is
          when E_Entry | E_Function | E_Procedure =>
@@ -1905,9 +1904,9 @@ package body Flow_Utility is
             --  protected object as an implicit formal parameter of the
             --  entry/subprogram.
             return
-              (if Belongs_To_Protected_Object (F)
+              (if Ekind (Scope (E)) = E_Protected_Type
                then
-                  Get_Enclosing_Concurrent_Object (F, Callsite, Entire)
+                  Get_Enclosing_Concurrent_Object (E, Callsite, Entire)
                else Empty);
 
          when E_Task_Type =>
@@ -1949,6 +1948,7 @@ package body Flow_Utility is
                Params.Insert (Param);
                Next_Formal (Param);
             end loop;
+            --  ??? what about discriminants of the enclosing protected type?
 
          when E_Task_Type =>
             --  Add discriminants of task as formal parameters
