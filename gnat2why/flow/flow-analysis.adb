@@ -3160,7 +3160,7 @@ package body Flow.Analysis is
          else
             FA.Analyzed_Entity);
 
-      Params         : Node_Sets.Set := Node_Sets.Empty_Set;
+      Params         : Node_Sets.Set;
       Implicit_Param : Entity_Id;
       --  This set will hold all local parameters of the subprogram
 
@@ -3244,21 +3244,25 @@ package body Flow.Analysis is
                F_Out  : Flow_Id := Dependency_Maps.Key (C);
                F_Deps : Flow_Id_Sets.Set renames DM (C);
                AS     : Flow_Id;
+
+               Position : Dependency_Maps.Cursor;
+               Inserted : Boolean;
+               --  Dummy variables required by the maps API
+
             begin
                --  Add output
                if Is_Non_Visible_Constituent (F_Out, Depends_Scope) then
                   AS := Up_Project_Constituent (F_Out, Depends_Scope);
 
-                  --  Add closest enclosing abstract state to the map
-                  --  (if it is not already in it).
-                  if not Up_Projected_Map.Contains (AS) then
-                     Up_Projected_Map.Include (AS, Flow_Id_Sets.Empty_Set);
-                  end if;
+                  --  Add closest enclosing abstract state to the map (if it is
+                  --  not already in it).
+                  Up_Projected_Map.Insert (Key      => AS,
+                                           Position => Position,
+                                           Inserted => Inserted);
 
                   --  Taking some notes
                   States_Written.Include (Get_Direct_Mapping_Id (AS));
-                  Constituents_Written.Include
-                    (Get_Direct_Mapping_Id (F_Out));
+                  Constituents_Written.Include (Get_Direct_Mapping_Id (F_Out));
                   F_Out := AS;
                else
                   --  Add output as it is
@@ -3267,15 +3271,10 @@ package body Flow.Analysis is
 
                --  Add output's dependencies
                for Dep of F_Deps loop
-                  if Is_Non_Visible_Constituent (Dep, Depends_Scope) then
-                     AS := Up_Project_Constituent (Dep, Depends_Scope);
-
-                     --  Add closest enclosing abstract state
-                     Up_Projected_Map (F_Out).Include (AS);
-                  else
-                     --  Add output as it is
-                     Up_Projected_Map (F_Out).Include (Dep);
-                  end if;
+                  Up_Projected_Map (F_Out).Include
+                    (if Is_Non_Visible_Constituent (Dep, Depends_Scope)
+                     then Up_Project_Constituent (Dep, Depends_Scope)
+                     else Dep);
                end loop;
             end;
          end loop;
