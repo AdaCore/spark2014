@@ -745,20 +745,17 @@ package body Flow.Analysis.Sanity is
          return Flow_Id_Sets.Set
       is
          Up_Projected_Set : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
       begin
          for F of FS loop
-            if Is_Non_Visible_Constituent (F, FA.S_Scope) then
-               declare
-                  State : constant Flow_Id :=
-                    Up_Project_Constituent (F, FA.S_Scope);
-               begin
-                  Up_Projected_Set.Include
-                    (Change_Variant (State, Variant));
-               end;
-            else
-               Up_Projected_Set.Include
-                 (Change_Variant (F, Variant));
-            end if;
+            declare
+               Elem : constant Flow_Id :=
+                 (if Is_Non_Visible_Constituent (F, FA.S_Scope)
+                  then Up_Project_Constituent (F, FA.S_Scope)
+                  else F);
+            begin
+               Up_Projected_Set.Include (Change_Variant (Elem, Variant));
+            end;
          end loop;
 
          return Up_Projected_Set;
