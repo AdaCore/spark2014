@@ -1565,14 +1565,12 @@ package body Flow.Analysis is
                                 return Boolean
       is
       begin
-         for U of FA.Pragma_Un_Vars loop
-            for E of S loop
-               if E.Kind in Direct_Mapping | Record_Field
-                 and then E.Node = U
-               then
-                  return True;
-               end if;
-            end loop;
+         for E of S loop
+            if E.Kind in Direct_Mapping | Record_Field
+              and then FA.Pragma_Un_Vars.Contains (E.Node)
+            then
+               return True;
+            end if;
          end loop;
          return False;
       end Is_In_Pragma_Un;

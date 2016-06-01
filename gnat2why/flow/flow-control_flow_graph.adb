@@ -4046,7 +4046,7 @@ package body Flow.Control_Flow_Graph is
                      Associated_Variable :=
                        Associated_Node (Expression (Argument_Association));
 
-                     if not Is_Subprogram (Associated_Variable) then
+                     if Is_Object (Associated_Variable) then
                         FA.Pragma_Un_Vars.Include (Associated_Variable);
                      end if;
 
