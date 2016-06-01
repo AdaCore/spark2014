@@ -338,7 +338,7 @@ package body Flow_Types is
      (E        : Entity_Id;
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
-      return Node_Id
+      return Entity_Id
    is
 
       function Get_Anonymous_Object (PT : Entity_Id) return Entity_Id
@@ -396,7 +396,7 @@ package body Flow_Types is
      (F        : Flow_Id;
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
-      return Node_Id
+      return Entity_Id
    is
       E : constant Entity_Id := Get_Direct_Mapping_Id (F);
    begin

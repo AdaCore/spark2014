@@ -280,7 +280,7 @@ package Flow_Types is
      (F        : Flow_Id;
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
-      return Node_Id
+      return Entity_Id
    with Pre  => Belongs_To_Concurrent_Object (F),
         Post => Present (Get_Enclosing_Concurrent_Object'Result);
    --  @param F is the Flow_Id of a constituent of a concurrent object
@@ -298,7 +298,7 @@ package Flow_Types is
      (E        : Entity_Id;
       Callsite : Node_Id := Empty;
       Entire   : Boolean := True)
-      return Node_Id
+      return Entity_Id
    with Pre  => Belongs_To_Concurrent_Object (Direct_Mapping_Id (E)),
         Post => Present (Get_Enclosing_Concurrent_Object'Result);
    --  Same as above, but for an entity
