@@ -189,35 +189,16 @@ package body Flow.Analysis is
            Precise => True);
 
    begin
-      if First_Use = FA.Analyzed_Entity then
-         --  Ok, we did not actually find a node which makes use of
-         --  Var, which is a bit odd. This means that the computed
-         --  globals for FA.Analyzed_Entity contain a symbol Var for
-         --  no good reason.
-         --
-         --  ??? error message that says "bug: ..." is not the way we crash
+      pragma Assert (Nkind (First_Use) in N_Subprogram_Call);
 
-         Error_Msg_Flow
-           (FA       => FA,
-            Msg      => "bug: & contains reference to &, " &
-                        "but no use can be found",
-            N        => FA.Analyzed_Entity,
-            F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
-            F2       => Var,
-            Severity => Error_Kind);
-
-      else
-         pragma Assert (Nkind (First_Use) in N_Subprogram_Call);
-
-         Error_Msg_Flow
-           (FA       => FA,
-            Msg      => "called subprogram & requires GLOBAL " &
-                        "aspect to make state & visible",
-            N        => First_Use,
-            F1       => Direct_Mapping_Id (Get_Called_Entity (First_Use)),
-            F2       => Var,
-            Severity => Error_Kind);
-      end if;
+      Error_Msg_Flow
+        (FA       => FA,
+         Msg      => "called subprogram & requires GLOBAL " &
+           "aspect to make state & visible",
+         N        => First_Use,
+         F1       => Direct_Mapping_Id (Get_Called_Entity (First_Use)),
+         F2       => Var,
+         Severity => Error_Kind);
    end Global_Required;
 
    -----------------
