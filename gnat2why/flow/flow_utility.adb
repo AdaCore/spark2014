@@ -4656,12 +4656,16 @@ package body Flow_Utility is
       Enclosing_F := F;
       Enclosing_E := Get_Direct_Mapping_Id (F);
       while Is_Non_Visible_Constituent (Enclosing_F, Scope) loop
-         if Present (Encapsulating_State (Enclosing_E)) then
-            Enclosing_E := Encapsulating_State (Enclosing_E);
-         else
-            pragma Assert (Is_Concurrent_Comp_Or_Disc (F));
-            Enclosing_E := Get_Enclosing_Concurrent_Object (F);
-         end if;
+         declare
+            State : constant Entity_Id := Encapsulating_State (Enclosing_E);
+         begin
+            if Present (State) then
+               Enclosing_E := State;
+            else
+               pragma Assert (Is_Concurrent_Comp_Or_Disc (F));
+               Enclosing_E := Get_Enclosing_Concurrent_Object (F);
+            end if;
+         end;
          Enclosing_F := Direct_Mapping_Id (Enclosing_E);
       end loop;
 
