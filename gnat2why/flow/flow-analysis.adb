@@ -2780,7 +2780,7 @@ package body Flow.Analysis is
             Output : Flow_Id          renames Dependency_Maps.Key (O);
             Inputs : Flow_Id_Sets.Set renames FA.Dependency_Map (O);
          begin
-            if Output /= Null_Flow_Id
+            if Present (Output)
               and then Output.Kind in Direct_Mapping | Record_Field
               and then not Is_Ghost_Entity (Get_Direct_Mapping_Id (Output))
             then
