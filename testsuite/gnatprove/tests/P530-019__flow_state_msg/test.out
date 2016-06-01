@@ -1,0 +1,2 @@
+init.adb:5:10: called subprogram "log" requires GLOBAL aspect to make state "logger.queue" visible
+gnatprove: error during flow analysis and proof
