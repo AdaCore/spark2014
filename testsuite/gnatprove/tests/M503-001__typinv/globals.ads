@@ -28,6 +28,7 @@ is
 private
 
    type T is new Integer with
+     Default_Value => 42,
      Type_Invariant => T /= 0;
 
    X : T with Part_Of => State_X;

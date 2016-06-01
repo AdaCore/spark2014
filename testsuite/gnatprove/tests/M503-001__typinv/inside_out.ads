@@ -11,6 +11,7 @@ package Inside_Out is
 private
 
    type T is new Integer with
+     Default_Value => 42,
      Type_Invariant => T /= 0;
 
    procedure Priv_Create (X : out T);

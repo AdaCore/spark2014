@@ -11,6 +11,7 @@ package Simple is
 private
 
    type T is new Integer with
+     Default_Value => 42,
      Type_Invariant => T /= 0;
 
 end Simple;

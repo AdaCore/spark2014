@@ -19,6 +19,7 @@ package Aggregates is
 private
 
    type T is new Integer with
+     Default_Value => 42,
      Type_Invariant => T /= 0;
 
    type Arr_T is array (1 .. 2) of T;

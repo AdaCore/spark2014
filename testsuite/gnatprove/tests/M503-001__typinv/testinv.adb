@@ -1,3 +1,4 @@
+with Ada.Assertions;
 with Simple;
 with Reentrancy;
 with Inside_Out;
@@ -31,7 +32,12 @@ begin
       X : T;
    begin
       Create (X);
-      Update (X);
+      begin
+         Update (X);
+         raise Program_Error;
+      exception when Ada.Assertions.Assertion_Error =>
+         null;  --  OK, failed type invariant on return from Update
+      end;
       pragma Assert (Get (X) = 1);
    end;
 

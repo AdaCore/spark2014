@@ -18,7 +18,7 @@ package Derived is
 private
 
    type T is tagged record
-      C : Integer;
+      C : Integer := 42;
    end record
      with Type_Invariant => T.C /= 0;
 
