@@ -3872,19 +3872,19 @@ package body Gnat2Why.Expr is
       --  children during the traversal and that only root nodes can have
       --  their children modified.
 
-      Ref_Context : W_Prog_Id;
-      Ref_Index       : Positive := 1;
-      Ref_Tmp_Vars    : W_Identifier_Array (1 .. Nb_Of_Refs);
-      Ref_Fetch       : W_Prog_Array (1 .. Nb_Of_Refs);
-      Let_Index       : Positive := 1;
-      Let_Tmp_Vars    : W_Identifier_Array (1 .. Nb_Of_Lets);
-      Let_Fetch       : W_Prog_Array (1 .. Nb_Of_Lets);
-      Store       : constant W_Statement_Sequence_Unchecked_Id :=
+      Ref_Context  : W_Prog_Id;
+      Ref_Index    : Positive := 1;
+      Ref_Tmp_Vars : W_Identifier_Array (1 .. Nb_Of_Refs);
+      Ref_Fetch    : W_Prog_Array (1 .. Nb_Of_Refs);
+      Let_Index    : Positive := 1;
+      Let_Tmp_Vars : W_Identifier_Array (1 .. Nb_Of_Lets);
+      Let_Fetch    : W_Prog_Array (1 .. Nb_Of_Lets);
+      Store        : constant W_Statement_Sequence_Unchecked_Id :=
         New_Unchecked_Statement_Sequence;
-      Subp        : constant Entity_Id := Entity (Sinfo.Name (Ada_Call));
-      Binders     : constant Item_Array :=
+      Subp         : constant Entity_Id := Entity (Sinfo.Name (Ada_Call));
+      Binders      : constant Item_Array :=
         Compute_Subprogram_Parameters (Subp, EW_Prog);
-      Bind_Cnt    : Positive := Binders'First;
+      Bind_Cnt     : Positive := Binders'First;
 
       procedure Process_Param (Formal : Entity_Id; Actual : Node_Id);
 

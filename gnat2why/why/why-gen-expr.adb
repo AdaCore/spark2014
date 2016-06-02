@@ -1220,7 +1220,7 @@ package body Why.Gen.Expr is
             Check_Type :=
               Etype (Return_Applies_To (Return_Statement_Entity (Par)));
 
-            --  For a call, retrieve the type for the corresponding argument
+         --  For a call, retrieve the type for the corresponding argument
 
          when N_Function_Call            |
               N_Procedure_Call_Statement |
