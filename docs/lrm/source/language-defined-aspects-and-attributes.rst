@@ -69,7 +69,7 @@ Storage_Size (access)         No		     No access types
 Storage_Size (task)	      Yes
 Stream_Size  		      No		     No streams
 Synchronization		      Yes
-Type_Invariant		      No
+Type_Invariant		      Yes
 Type_Invariant'Class	      No
 Unchecked_Union		      No
 Variable_Indexing	      No

@@ -2291,64 +2291,173 @@ Private Operations
 
 No extensions or restrictions.
 
+.. _type_invariants:
+
 Type Invariants
 ~~~~~~~~~~~~~~~
+
+[Type invariants are supported in SPARK, but are subject to restrictions
+which imply that if a type invariant is specified for
+a type T, then any new verification conditions which this introduces outside
+of the package which defines T are trivially satisified.
+These restrictions ensure that any object or value of type T which can be
+named outside of that package
+will satisfy the invariant and so, for example, could not fail the runtime
+check associated with passing that object or value as a parameter in call
+to a procedure for which Ada requires runtime checking of the invariant
+(which, in turn, means that the verification condition corresponding
+to that runtime check is trivally satisfied).
+In order to accomplish this goal, verification conditions for
+type invariants are introduced in several contexts where Ada does
+not define corresponding runtime checks.]
+
+[As a consequence of this approach, adding or deleting a type invariant for a
+private type should have little or no impact on users
+outside of the package defining the private type; on the other hand,
+such a change could have a great deal of impact on the verification conditions
+generated for the implementation of the private type and its operations.]
+
+[Just as a reminder to the reader, text enclosed in square brackets
+is non-normative expository text. This is true everywhere in the SPARK
+RM, but there is a lot of such expository text in this section and we
+don't want anyone to be confused about what is strictly part of the
+language definition and what is not.]
 
 .. centered:: **Legality Rules**
 
 .. _tu-type_invariants-01:
 
-1. The ``aspect_specification`` Type_Invariant is not permitted in |SPARK|.
+1. The aspect Type_Invariant may be specified in SPARK, but only for
+   the completion of a private type. [In other words, the Type_Invariant
+   aspect shall not be specified for a partial view of a type, nor for the
+   completion of a private extension.]
+   The aspect Type_Invariant'Class is not in SPARK.
 
-.. _etu-type_invariants:
+.. _tu-type_invariants-02:
 
-.. todo:: Add support for type invariants in SPARK 2014.
-          To be completed in a post-Release 1 version of this document.
+2. [A Type_Invariant expression shall not have a variable input;
+   see :ref:`expressions` for the statement of this rule.]
 
-..
-   .. centered:: **Syntax**
+.. centered:: **Verification Rules**
 
-   There is no additional syntax associated with type invariants.
+In Ada RM 7.3.2, Ada defines the points at which runtime checking of
+type invariants is performed. In SPARK, these rules (or, more precisely,
+the verification conditions corresponding to these Ada dynamic semantics
+rules) are extended in several ways. In effect, verification conditions
+are generated as if Ada defined additional dynamic type invariant checking at
+several points (described below) where, in fact, Ada defines no such checks.
+[This means that when we talk below about extending invariant checks,
+we are only talking about generating additional verification conditions;
+we are not talking about any changes in a program's behavior at run-time.]
 
-   .. centered:: **Legality Rules**
+.. _tu-type_invariants-03:
 
-   There are no additional legality rules associated with type invariants.
+3. Invariant checking is extended to include in-mode parameters of
+   functions in the same way as for in-mode parameters of procedures and
+   entries. A type invariant expression shall not include a call to a function
+   if such a call would introduce a cyclic verification dependency (i.e.,
+   a type invariant that cannot be proven to hold without first proving that
+   the type invariant holds). [This often means that a type invariant
+   expression cannot contain calls to functions declared in the visible part
+   of the package in question.]
 
-   .. note::
-      (SB) This isn't quite right: there is a rule that invariant
-         expressions can't read variables, but it isn't stated here.
-            Fixup needed.
+.. _tu-type_invariants-04:
 
-   .. centered:: **Static Semantics**
+4. Invariant checking is extended to include checking before
+   a call, not only upon returning (although parameters of mode *out*
+   are not checked). [If a callee could not assume that
+   incoming values satisfy their invariants, then it would often be
+   difficult to prove that outgoing values are good when returning.]
 
-   There are no additional static semantics associated with type invariants.
+.. _tu-type_invariants-05:
 
-   .. centered:: **Dynamic Semantics**
+5. Invariant checking is extended to include checking of global
+   inputs and outputs, and for all subprograms.
+   For purposes of determining type invariant verification conditions,
+   a global of a given mode (i.e, *in*, *out*, or *in out*) is treated
+   like a parameter of the given mode. [For example, the parts of a
+   global of mode *out* generate the same type invariant verification conditions
+   as for a parameter of mode *out*.] This rule applies regardless of where the
+   global object in question is declared. [The rule for globals is
+   stronger than the rule for parameters in the sense that it applies to
+   all subprograms, not just the "boundary" subprograms for which Ada defines
+   runtime checking of type invariants (Ada RM 7.3.2(17-19.4)).]
 
-   There are no additional dynamic semantics associated with type invariants.
+.. _tu-type_invariants-06:
 
-   .. centered:: **Verification Rules**
+6. Invariant checking is extended to include checking the
+   incoming parameter values of any calls from code where invariant-violating
+   values may be available to subprograms where invariant-violating
+   values are intended to be unavailable.
+   [The idea here is to prevent invariant-violating values from "leaking out".]
+   If we ignore generic units and dispatching calls
+   for a moment, this means that invariant checking is extended to include
+   checking parameter values for calls from within the immediate scope of
+   a type-invariant bearing type T which will execute (or, in the case of
+   a dispatching call, may execute) a subprogram body which is outside of
+   that scope.
 
-   #. The Ada 2012 RM lists places at which an invariant check is performed. In
-      |SPARK|, we add the following places in order to guarantee that an instance
-      of a type always respects its invariant at the point at which it is passed
-      as an input parameter:
+   In the case of a dispatching call, this rule is applied to any call
+   from inside the immediate scope of T which *might* execute a subprogram
+   body which is outside of that scope (this determination is made without
+   looking at any code outside of the package in which T is declared -
+   conservative assumptions about such code are made instead,
+   based only on visibility rules (and without using any available
+   knowledge about the tag of the controlling operand).
 
-   * Before a call on any subprogram or entry that:
+   [TBD: Generics may introduce another wrinkle. Suppose we have a
+   generic declared outside of the immediate scope of T which is
+   instantiated inside that scope; or perhaps vice versa. Is a subprogram
+   declared within that instance considered to be inside or outside of the
+   immediate scope of T for purposes of these rules? And what if the generic
+   itself is declared within an instance of another generic? For now, we just
+   follow the simple macro-expansion model, but this may need to be revisited.
+   See also the reference to generics and instances in Ada RM 7.3.2(17).]
 
-     * is explicitly declared within the immediate scope of type T (or
-       by an instance of a generic unit, and the generic is declared
-       within the immediate scope of type T), and
+.. _tu-type_invariants-07:
 
-     * is visible outside the immediate scope of type T or overrides
-       an operation that is visible outside the immediate scope of T,
-       and
+7. Invariant checking is extended to include "hidden" components
+   (a term being introduced here) and subcomponents thereof, and for 
+   all subprograms.
+   It is possible that the underlying tag of a tagged object (at runtime)
+   may differ from the tag of its nominal (compile time) type. Suppose that
+   an object X is (statically) of type T1 (or T1'Class) but has T2'Tag
+   as its underlying tag, and that T2 has one or more
+   components which are not components of T1. Ada does not define runtime
+   checking of type invariants for such "hidden" components of parameters.
+   [In particular, when Ada RM 7.3.2(20) says "The check is performed on each
+   such part of type T.", this does not include hidden components.]
 
-     * has one or more in out or in parameters with a part of type T.
+   In SPARK, however, invariant checking is extended (with one exception)
+   to include hidden components. As with globals, this extension applies to
+   all subprograms, not just "boundary" subprograms. The one exception is
+   a parameter of a specific tagged type which is a parameter of a subprogram
+   whose Extensions_Visible aspect is False; extension checking for a call
+   is not extended to include hidden components of such a parameter.
+   [These verification conditions concerning hidden components are
+   trivially discharged except in two cases. One is a subprogram which contains
+   a  "downward" explicit type
+   conversion; that is, a type conversion which takes an operand of a classwide
+   type T1'Class and converts it to a type T2 (or T2'Class) where T2 is a
+   descendant of T1 and T2 has at least one component which T1 does not. If
+   a component made visible by such a conversion is modified, then non-trivial
+   verification conditions may result.
+   The second case is that of a controlling parameter of an overriding
+   dispatching subprogram.
+   If such a parameter has some component and the subprogram overrides
+   (directly or indirectly) a primitive operation of a tagged type which
+   does not have this component (including of an interface type), then
+   that component is considered to be a hidden component [(because it may
+   be hidden from callers)].
 
-     the check is performed on each such part of type T.
-     [Note that these checks are only performed statically, and this does not create an
-     obligation to extend the run-time checks performed in relation to type invariants.]
+   If an extension implements
+   an interface types, then any non-overridden inherited operations may
+   be subject to new associated verification conditions because
+   all components would then be considered to be hidden. An inherited
+   subprogram in this case is subject to the same verification conditions
+   as if an explicit wrapper had been declared, implementing the
+   dynamic semantics described in Ada RM 3.4(27). [This is an unlikely
+   corner case.]
 
 .. _default_initial_condition_aspect:
 
