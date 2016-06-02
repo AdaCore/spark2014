@@ -424,11 +424,22 @@ Ada entity or construct is then defined to be the following value
 - If SPARK_Mode has been specified for the given section of the
   given entity or construct, then the specified value;
 
+- else for the private part of a public child unit whose parent unit's
+  private part has a SPARK_Mode of Off, the SPARK_Mode is Off;
+
 - else for the private part of a package or a protected or task unit,
   the SPARK_Mode of the visible part;
 
 - else for a package body's statements, the SPARK_Mode of the
   package body's declarations;
+
+- else for the first section (in the case of a package, the visible part)
+  of a public child unit, the SPARK_Mode of the visible part of the
+  parent unit;
+
+- else for the first section (in the case of a package, the visible part)
+  of a private child unit, the SPARK_Mode of the private part of the
+  parent unit;
 
 - else for any of the visible part or body declarations of a library
   unit package or either section of a library unit subprogram,
@@ -458,10 +469,16 @@ with one or more non-SPARK subsequent sections (e.g., a package whose
 visible part has a SPARK_Mode of On but whose private part has a SPARK_Mode
 of Off; a package whose visible part has a SPARK_Mode of Auto may also be
 referenced).
-Similarly, code where SPARK_Mode is On shall not enclose code where
-SPARK_Mode is Off unless the non-SPARK code is part of the "completion"
+
+Similarly, code where SPARK_Mode is On shall, with some exceptions,
+not enclose code where SPARK_Mode is Off unless the non-SPARK code is
+part of the "completion"
 (using that term imprecisely, because we are including the private
 part of a package as part of its "completion" here) of a SPARK declaration.
+One major exception to this general rule is the (permitted) case of
+a library-level package (or generic package) visible part or private part
+having a SPARK_Mode of On which immediately encloses a declaration for which
+the initial section is explicitly specified to have SPARK_Mode of Off.
 There are also exceptions to this rule (described below) for protected units.
 
 Code where SPARK_Mode is Off shall not enclose code where Spark_Mode is On.
@@ -475,17 +492,20 @@ entire instance is Off. Similarly, such an ignored SPARK_Mode specification
 could not violate the preceding rule that a SPARK_Mode specification
 shall only apply to a (section of a) library-level entity.]
 
-If SPARK_Mode is Off in the visible part of a library unit package, then
-SPARK_Mode shall be off for the visible part of any visible child unit of
-the package.
-If SPARK_Mode is Off in the private part of a library unit package, then
-SPARK_Mode shall be off for the visible part  of any private child unit of
-the package.
-If SPARK_Mode is Off in the private part of a library unit package, then
-SPARK_Mode shall be off in any subsequent sections of any child unit
-of the package.
-[These rules express the general "Off shall not enclose On" principle
-as it applies to child units.]
+For purposes of both the "Off shall not enclose On" rule and the
+"On shall not enclose non-completion Off" rules just described, the
+initial section of a child unit is considered to occur immediately
+within either the visible part (for a public child unit) or the private
+part (for a private child unit) of the parent unit. In addition, the private
+part of a public child package is considered to occur immediately
+within the private part of the parent unit. [This follows Ada's visibility
+rules for child units. This means, for example, that if a parent unit's
+private part has a SPARK_Mode of Off, then the private part of a
+public child package shall not have a SPARK_Node of On. Note also that
+a SPARK_Mode configuration pragma which applies only to the specification
+(not the body) of a child unit is always ineffective; this is a consequence
+of the rules given above for determining the SPARK_Mode of the first
+section of a child unit.]
 
 All of the above notwithstanding, the interactions between SPARK_Mode
 and protected units follow a slightly different model, not so closely tied
