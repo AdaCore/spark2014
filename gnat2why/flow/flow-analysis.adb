@@ -853,7 +853,7 @@ package body Flow.Analysis is
                --    * for variables that are/belong to a concurrent object.
                if F_Final.Kind not in Direct_Mapping | Record_Field
                  or else (not FA.Pragma_Un_Vars.Contains
-                          (Get_Direct_Mapping_Id (F_Final))
+                            (Get_Direct_Mapping_Id (F_Final))
                           and then not Is_Or_Belongs_To_Concurrent_Object
                             (F_Final))
                then
@@ -1097,7 +1097,7 @@ package body Flow.Analysis is
                --  Unreferenced or Unmodified or Unused.
                if F.Kind /= Direct_Mapping
                  or else (Ekind (Etype (Get_Direct_Mapping_Id (F)))
-                          not in Concurrent_Kind
+                            not in Concurrent_Kind
                           and then not Is_Concurrent_Comp_Or_Disc (F)
                           and then not FA.Pragma_Un_Vars.Contains
                             (Get_Direct_Mapping_Id (F)))
@@ -1564,16 +1564,9 @@ package body Flow.Analysis is
       function Is_In_Pragma_Un (S : Flow_Id_Sets.Set)
                                 return Boolean
       is
-      begin
-         for E of S loop
-            if E.Kind in Direct_Mapping | Record_Field
-              and then FA.Pragma_Un_Vars.Contains (E.Node)
-            then
-               return True;
-            end if;
-         end loop;
-         return False;
-      end Is_In_Pragma_Un;
+        (for some E of S =>
+            E.Kind in Direct_Mapping | Record_Field
+              and then FA.Pragma_Un_Vars.Contains (Get_Direct_Mapping_Id (E)));
 
       --------------------------
       -- Skip_Any_Conversions --

@@ -4050,7 +4050,7 @@ package body Flow.Control_Flow_Graph is
                         FA.Pragma_Un_Vars.Include (Associated_Variable);
                      end if;
 
-                     Argument_Association := Next (Argument_Association);
+                     Next (Argument_Association);
                   end loop;
                end;
 
