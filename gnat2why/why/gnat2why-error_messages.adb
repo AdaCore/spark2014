@@ -456,7 +456,7 @@ package body Gnat2Why.Error_Messages is
       use Ent_Id_Set_Maps;
    begin
       for C in VC_Set_Table.Iterate loop
-         if Element (C).Is_Empty then
+         if VC_Set_Table (C).Is_Empty then
             Register_Proof_Claims (Key (C));
          end if;
       end loop;
