@@ -67,17 +67,17 @@ package Gnat2Why.Error_Messages is
    procedure Parse_Why3_Results (S : String);
 
    procedure Emit_Proof_Result
-     (Node        : Node_Id;
-      Kind        : VC_Kind;
-      Proved      : Boolean;
-      E           : Entity_Id;
-      How_Proved  : Prover_Category;
-      Extra_Msg   : String := "";
-      Tracefile   : String := "";
-      Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      VC_File     : String := "";
-      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd  : String := "");
+     (Node       : Node_Id;
+      Kind       : VC_Kind;
+      Proved     : Boolean;
+      E          : Entity_Id;
+      How_Proved : Prover_Category;
+      Extra_Msg  : String := "";
+      Tracefile  : String := "";
+      Cntexmp    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      VC_File    : String := "";
+      Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Editor_Cmd : String := "");
    --  register the VC identified by node and kind as proved. This will emit
    --  a message if needed and register the result in JSON output. @parameter
    --  How_Proved identifies the prover type (possible values currently are

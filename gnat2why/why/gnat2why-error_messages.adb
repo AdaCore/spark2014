@@ -274,17 +274,17 @@ package body Gnat2Why.Error_Messages is
    -----------------------
 
    procedure Emit_Proof_Result
-     (Node        : Node_Id;
-      Kind        : VC_Kind;
-      Proved      : Boolean;
-      E           : Entity_Id;
-      How_Proved  : Prover_Category;
-      Extra_Msg   : String := "";
-      Tracefile   : String := "";
-      Cntexmp     : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
-      VC_File     : String := "";
-      Stats       : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd  : String := "") is
+     (Node       : Node_Id;
+      Kind       : VC_Kind;
+      Proved     : Boolean;
+      E          : Entity_Id;
+      How_Proved : Prover_Category;
+      Extra_Msg  : String := "";
+      Tracefile  : String := "";
+      Cntexmp    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
+      VC_File    : String := "";
+      Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Editor_Cmd : String := "") is
 
       function Stat_Message return String;
       --  prepare a message for statistics of proof results
