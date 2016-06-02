@@ -83,26 +83,26 @@ package body Gnat2Why.Error_Messages is
       "="                 => "=");
 
    procedure Add_Id_To_Entity (Id : VC_Id; E : Entity_Id);
-   --  enter the VC_Id into the map from entities to Id_Sets
+   --  Enter the VC_Id into the map from entities to Id_Sets
 
    procedure Mark_VC_As_Proved_For_Entity
      (Id   : VC_Id;
       Kind : VC_Kind;
       E    : Entity_Id);
-   --  remove the VC_Id from the map from entities to Id_Sets
+   --  Remove the VC_Id from the map from entities to Id_Sets
 
    procedure Mark_Subprograms_With_No_VC_As_Proved;
-   --  for all subprograms that do not contain any VC, issue related claims
+   --  For all subprograms that do not contain any VC, issue related claims
 
    function Proved_Message
      (Node : Node_Id;
       Kind : VC_Kind) return String;
-   --  return the message string for a proved VC
+   --  Return the message string for a proved VC
 
    function Not_Proved_Message
      (Node : Node_Id;
       Kind : VC_Kind) return String;
-   --  return the message string for an unproved VC
+   --  Return the message string for an unproved VC
 
    VC_Table : Id_Maps.Map := Id_Maps.Empty_Map;
    --  This table maps ids to their VC_Info (entity and Ada node)
@@ -115,7 +115,7 @@ package body Gnat2Why.Error_Messages is
 
    CP_File_Present : Boolean := False;
    --  Set to true when CodePeer results have been found - this allows to skip
-   --  costly work in case when codepeer is not there
+   --  costly work in case when codepeer is not there.
 
    ----------------------
    -- Add_Id_To_Entity --
@@ -287,7 +287,7 @@ package body Gnat2Why.Error_Messages is
       Editor_Cmd : String := "") is
 
       function Stat_Message return String;
-      --  prepare a message for statistics of proof results
+      --  Prepare a message for statistics of proof results
 
       function Nice_Float (F : Float) return String;
 
@@ -315,9 +315,9 @@ package body Gnat2Why.Error_Messages is
 
          use type Ada.Containers.Count_Type;
          use Prover_Stat_Maps;
-      begin
 
-         --  check if VC is not proved or statistics are enabled
+      begin
+         --  Check if VC is not proved or statistics are enabled
 
          if not Proved or else
            Gnat2Why_Args.Report_Mode not in GPR_Statistics | GPR_Provers
@@ -325,14 +325,14 @@ package body Gnat2Why.Error_Messages is
             return "";
          end if;
 
-         --  in case of the check being proved not by Why3, simply identify
-         --  this, no need for statistics
+         --  In case of the check being proved not by Why3, simply identify
+         --  this, no need for statistics.
 
          if How_Proved /= PC_Prover then
             return " (" & To_String (How_Proved) & ")";
          end if;
 
-         --  in the case of missing statistics, don't show them
+         --  In the case of missing statistics, don't show them
 
          if Stats.Is_Empty then
             return "";
@@ -429,9 +429,9 @@ package body Gnat2Why.Error_Messages is
       end if;
       CP_File_Present := True;
 
-      --  opening file with base name and not with full path. We will later
+      --  Opening file with base name and not with full path. We will later
       --  match messages that we construct in gnat2why with the messages that
-      --  we parse here, and the former only have basenames
+      --  we parse here, and the former only have basenames.
 
       Open (File_Name, Full_Path => False);
       while not Done loop
@@ -744,7 +744,7 @@ package body Gnat2Why.Error_Messages is
       end;
    exception
       when Invalid_JSON_Stream =>
-         --  something bad happened, output gnatwhy3 error as is
+         --  Something bad happened, output gnatwhy3 error as is
          Handle_Error (S, Internal => True);
    end Parse_Why3_Results;
 
