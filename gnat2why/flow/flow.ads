@@ -164,8 +164,8 @@ package Flow is
       Analyzed_Entity       : Entity_Id;
       B_Scope               : Flow_Scope;
       S_Scope               : Flow_Scope;
-      --  The entity and scope (of the body and spec) of the analysed
-      --  entity. The two scopes might be the same in some cases.
+      --  The entity and scope (of the body and spec) of the analysed entity.
+      --  The two scopes might be the same in some cases.
 
       Spec_Entity           : Entity_Id;
       --  Useful shorthand to the node where the N_Contract node is attached
@@ -173,24 +173,24 @@ package Flow is
       Start_Vertex          : Flow_Graphs.Vertex_Id;
       Helper_End_Vertex     : Flow_Graphs.Vertex_Id;
       End_Vertex            : Flow_Graphs.Vertex_Id;
-      --  The start, helper end and end vertices in the graphs. Start and
-      --  end are the obvious, and the helper end is used to indicate the
-      --  end of the procedure (i.e. returns jump here), but before
-      --  postconditions are checked.
+      --  The start, helper end and end vertices in the graphs. Start and end
+      --  are the obvious, and the helper end is used to indicate the end of
+      --  the procedure (i.e. returns jump here), but before postconditions
+      --  are checked.
 
       CFG                   : Flow_Graphs.Graph;
       DDG                   : Flow_Graphs.Graph;
       CDG                   : Flow_Graphs.Graph;
       TDG                   : Flow_Graphs.Graph;
       PDG                   : Flow_Graphs.Graph;
-      --  The graphs.
+      --  The graphs
 
       Atr                   : Attribute_Maps.Map;
       --  The vertex attributes for the above graphs.
 
       Other_Fields          : Vertex_To_Vertex_Set_Maps.Map;
-      --  For a vertex corresponding to a record field this map will
-      --  hold a vertex set of the other record fields.
+      --  For a vertex corresponding to a record field this map will hold a
+      --  vertex set of the other record fields.
 
       Local_Constants       : Node_Sets.Set;
       --  All constants that have been locally declared. This is used as a
@@ -199,31 +199,31 @@ package Flow is
       --  dealt with correctly.
 
       All_Vars              : Flow_Id_Sets.Set;
-      --  A set of all variables used in the body.
+      --  Variables used in the body
 
       Pragma_Un_Vars        : Node_Sets.Set;
-      --  A set of all variables that are not expected to be modified, used or
-      --  referenced because they were named in a pragma Unmodified or a pragma
-      --  Unused or pragma Unreferenced.
+      --  Variables that are not expected to be modified, used or referenced
+      --  because they were named in a pragma Unmodified or a pragma Unused
+      --  or pragma Unreferenced.
 
       Loops                 : Node_Sets.Set;
-      --  A set of all loops (identified by label).
+      --  Loops (identified by labels)
 
       Base_Filename         : Unbounded_String;
-      --  A string with the name of the entity that is being analysed.
-      --  This string follows the convention that we use for naming the
-      --  .dot and .pdf files.
+      --  A string with the name of the entity that is being analysed. It
+      --  follows the convention that we use for naming the .dot and .pdf
+      --  files.
 
       Dependency_Map        : Dependency_Maps.Map;
-      --  A map of all the dependencies.
+      --  A map of all the dependencies
 
       No_Errors_Or_Warnings : Boolean;
-      --  True if no errors or warnings were found while flow
-      --  analysing this entity. This is initialized to True and set
-      --  to False when an error or a warning is found.
+      --  True if no errors or warnings were found while flow analysing this
+      --  entity. This is initialized to True and set to False when an error
+      --  or a warning is found.
 
       Direct_Calls          : Node_Sets.Set;
-      --  All subprograms called
+      --  Subprograms called
 
       GG                    : Flow_Global_Generation_Info;
       --  Information for globals computation
@@ -249,8 +249,7 @@ package Flow is
             Refined_Global_N  : Node_Id;
             Depends_N         : Node_Id;
             Refined_Depends_N : Node_Id;
-            --  A few contract nodes cached as they can be a bit
-            --  tedious to find.
+            --  A few contract nodes cached as they can be a tedious to find
 
             No_Effects : Boolean;
             --  True if this is a subprogram with no effects. Certain analysis

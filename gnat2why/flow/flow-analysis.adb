@@ -1139,8 +1139,8 @@ package body Flow.Analysis is
                 FA.Pragma_Un_Vars.Contains (Get_Direct_Mapping_Id (F))
             then
                --  This variable is marked with a pragma Unreferenced, pragma
-               --  Unused or pragma Unmodified so we do not emit the
-               --  warning here.
+               --  Unused or pragma Unmodified so we do not emit the warning
+               --  here.
                null;
             elsif Atr.Mode = Mode_Proof then
                --  Proof_Ins are never ineffective imports, for now
