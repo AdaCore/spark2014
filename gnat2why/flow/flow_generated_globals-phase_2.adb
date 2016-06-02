@@ -469,8 +469,8 @@ package body Flow_Generated_Globals.Phase_2 is
          --  Retrieve the relevant Name_Dependency_Map, up project it to S and
          --  then convert it into a Dependency_Map.
          declare
-            LHS_Scope : constant Flow_Scope := (Ent     => E,
-                                                Section => Spec_Part);
+            LHS_Scope : constant Flow_Scope := (Ent  => E,
+                                                Part => Visible_Part);
 
             DM : Dependency_Maps.Map;
             II : Initializes_Info renames Initializes_Aspects_Map (EN);

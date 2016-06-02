@@ -1154,7 +1154,7 @@ package body Flow.Analysis is
                      Msg      =>
                        (if Present (FA.B_Scope)
                           and then Is_Abstract_State (F)
-                          and then FA.B_Scope.Section /= Body_Part
+                          and then FA.B_Scope.Part /= Body_Part
                           and then State_Refinement_Is_Visible
                             (Get_Direct_Mapping_Id (F),
                              Body_Scope (FA.B_Scope))
@@ -4403,7 +4403,7 @@ package body Flow.Analysis is
 
          --  Only check nodes in the body
          if K.Kind in Direct_Mapping | Record_Field and then
-           Get_Flow_Scope (K.Node).Section in Spec_Part | Private_Part
+           Get_Flow_Scope (K.Node).Part in Visible_Part | Private_Part
          then
             return;
          end if;

@@ -419,7 +419,7 @@ package body Flow.Slice is
             function Hidden_In_Package (E : Entity_Id) return Boolean is
                S : constant Flow_Scope := Get_Flow_Scope (E);
             begin
-               if Present (S) and then S.Section = Private_Part then
+               if Present (S) and then S.Part = Private_Part then
                   null;
 
                --  Not in the private part

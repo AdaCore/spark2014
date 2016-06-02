@@ -1035,11 +1035,11 @@ package body Flow is
             begin
                Indent;
                while Present (Ptr) loop
-                  case Valid_Section_T'(Ptr.Section) is
+                  case Declarative_Part'(Ptr.Part) is
                      when Body_Part =>
-                        Ptr.Section := Private_Part;
+                        Ptr.Part := Private_Part;
 
-                     when Private_Part | Spec_Part =>
+                     when Private_Part | Visible_Part =>
                         Ptr := Get_Enclosing_Flow_Scope (Ptr);
                   end case;
                   if Present (Ptr) then

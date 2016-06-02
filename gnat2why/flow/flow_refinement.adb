@@ -156,7 +156,7 @@ package body Flow_Refinement is
       --  Target_Scope (what we're checking if we can see).
       Context := S;
       while Present (Context) loop
-         case Context.Section is
+         case Context.Part is
             when Body_Part =>
                if Target_Scope.Ent = Context.Ent then
                   return True;
@@ -173,16 +173,16 @@ package body Flow_Refinement is
 
             when Private_Part =>
                if Target_Scope.Ent = Context.Ent
-                 and then Target_Scope.Section in Private_Part | Spec_Part
+                 and then Target_Scope.Part in Private_Part | Visible_Part
                then
                   return True;
                else
                   Context := Get_Enclosing_Flow_Scope (Context);
                end if;
 
-            when Spec_Part =>
+            when Visible_Part =>
                if Target_Scope.Ent = Context.Ent
-                 and then Target_Scope.Section = Spec_Part
+                 and then Target_Scope.Part = Visible_Part
                then
                   return True;
                else
@@ -202,10 +202,10 @@ package body Flow_Refinement is
       --  the spec parts of the target scope).
       Context := Target_Scope;
       while Present (Context) and then Context /= S loop
-         case Context.Section is
-            when Spec_Part =>
+         case Context.Part is
+            when Visible_Part =>
                Context := Get_Enclosing_Flow_Scope (Context);
-               if Present (Context) and then Context.Section = Private_Part
+               if Present (Context) and then Context.Part = Private_Part
                then
                   --  Deal with visibility of private children. A package body
                   --  can see a private child's spec (and test for this if the
@@ -267,12 +267,12 @@ package body Flow_Refinement is
          if Present (Ptr)
            and then Ptr /= Standard_Standard
          then
-            Enclosing_Scope := Flow_Scope'(Ptr, S.Section);
+            Enclosing_Scope := Flow_Scope'(Ptr, S.Part);
          end if;
       end if;
 
       if Is_Private_Descendant (S.Ent) then
-         Enclosing_Scope.Section := Private_Part;
+         Enclosing_Scope.Part := Private_Part;
       end if;
 
       return Enclosing_Scope;
@@ -325,7 +325,7 @@ package body Flow_Refinement is
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope is
       P : Node_Id := N;
-      V : Valid_Section_T;
+      V : Declarative_Part;
    begin
       while Present (P) loop
          P := Get_Body_Or_Stub (P);
@@ -355,7 +355,7 @@ package body Flow_Refinement is
                  or else not List_Contains (Private_Declarations (P),
                                             Get_Body_Or_Stub (N))
                then
-                  V := Spec_Part;
+                  V := Visible_Part;
                else
                   V := Private_Part;
                end if;
@@ -377,14 +377,14 @@ package body Flow_Refinement is
 
             when N_Aspect_Specification =>
                --  We only get here when we call Get_Flow_Scope on an abstract
-               --  state. On this occasion we want to return the Spec_Part
+               --  state. On this occasion we want to return the Visible_Part
                --  followed by the name of the package that introduces the
                --  abstract state.
                pragma Assert (Nkind (N) = N_Defining_Identifier
                                 and then Ekind (N) = E_Abstract_State);
 
                if Nkind (Parent (P)) = N_Package_Declaration then
-                  V := Spec_Part;
+                  V := Visible_Part;
 
                   P := Defining_Unit_Name (Specification (Parent (P)));
                   if Nkind (P) = N_Defining_Program_Unit_Name then
@@ -410,8 +410,8 @@ package body Flow_Refinement is
       end loop;
 
       if Present (P) then
-         return (Ent     => P,
-                 Section => V);
+         return (Ent  => P,
+                 Part => V);
       else
          return Null_Flow_Scope;
       end if;
@@ -661,12 +661,12 @@ package body Flow_Refinement is
 
             function Ancestor (S : Flow_Scope) return Flow_Scope is
             begin
-               case Valid_Section_T'(S.Section) is
-               when Body_Part =>
-                  return Private_Scope (S);
+               case Declarative_Part'(S.Part) is
+                  when Body_Part =>
+                     return Private_Scope (S);
 
-               when Private_Part | Spec_Part =>
-                  return Get_Enclosing_Flow_Scope (S);
+                  when Private_Part | Visible_Part =>
+                     return Get_Enclosing_Flow_Scope (S);
                end case;
             end Ancestor;
 

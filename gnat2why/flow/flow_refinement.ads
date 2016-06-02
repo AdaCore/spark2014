@@ -41,20 +41,23 @@ package Flow_Refinement is
    --  protected objects and task objects.
    --
    --  Variables or subprograms can be declared or defined in:
-   --    * package's spec
+   --    * package's visible part
    --    * package's private part
    --    * package's body
-   --    * protected object's spec
+   --    * protected object's visible
    --    * protected object's private part
    --    * protected object's body
-   --    * task object's spec
+   --    * task object's visible
    --    * task object's body
    --
-   --  Therefore flow scope is an entity + spec|priv|body
+   --  Therefore flow scope is an entity + visible|private|body
 
-   type Section_T is (Null_Part, Spec_Part, Private_Part, Body_Part);
+   type Any_Declarative_Part is
+     (Null_Part, Visible_Part, Private_Part, Body_Part);
+   pragma Ordered (Any_Declarative_Part);
 
-   subtype Valid_Section_T is Section_T range Spec_Part .. Body_Part;
+   subtype Declarative_Part is Any_Declarative_Part range
+     Visible_Part .. Body_Part;
 
    subtype Scope_Id is Entity_Id
    with Dynamic_Predicate =>
@@ -66,11 +69,11 @@ package Flow_Refinement is
                                E_Task_Type);
 
    type Flow_Scope is record
-      Ent     : Scope_Id;
-      Section : Section_T;
+      Ent  : Scope_Id;
+      Part : Any_Declarative_Part;
    end record
    with Dynamic_Predicate => (Flow_Scope.Ent = Empty) =
-                             (Flow_Scope.Section = Null_Part);
+                             (Flow_Scope.Part = Null_Part);
    --  Note: conceptually this is a discrimated record type, but discriminating
    --  on Scope_Id (which is an Entity_Id with a predicate) is troublesome.
 
@@ -93,12 +96,12 @@ package Flow_Refinement is
    --  Returns True iff S is Null_Flow_Scope
 
    function Private_Scope (S : Flow_Scope) return Flow_Scope
-   is (S'Update (Section => Private_Part))
+   is (S'Update (Part => Private_Part))
    with Pre => Present (S);
    --  Returns the private scope for a valid scope
 
    function Body_Scope (S : Flow_Scope) return Flow_Scope
-   is (S'Update (Section => Body_Part))
+   is (S'Update (Part => Body_Part))
    with Pre => Present (S);
    --  Returns the body scope for a valid scope
 
@@ -169,7 +172,7 @@ package Flow_Refinement is
    --  in an initializes aspect or Empty.
 
    function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope
-   with Pre => S.Section in Spec_Part | Private_Part;
+   with Pre => S.Part in Visible_Part | Private_Part;
    --  Returns the most nested scope of the parent of S.Ent that is visible
    --  from S. Returns the null scope once we reach the Standard package.
    --
@@ -177,7 +180,7 @@ package Flow_Refinement is
    --  trace it has been made visible.
 
    function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope
-   with Pre => S.Section = Body_Part;
+   with Pre => S.Part = Body_Part;
    --  Returns the flow scope of the enclosing package or concurrent object if
    --  it exists and the null scope otherwise.
 

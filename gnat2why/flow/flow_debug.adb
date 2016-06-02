@@ -219,12 +219,11 @@ package body Flow_Debug is
    begin
       if Present (S.Ent) then
          Sprint_Node (S.Ent);
-         Write_Str ("|");
-         case Valid_Section_T (S.Section) is
-            when Spec_Part    => Write_Str ("spec");
-            when Private_Part => Write_Str ("priv");
-            when Body_Part    => Write_Str ("body");
-         end case;
+         Write_Str ("|" &
+                    (case Declarative_Part'(S.Part) is
+                        when Visible_Part => "spec",
+                        when Private_Part => "priv",
+                        when Body_Part    => "body"));
       else
          Write_Str ("null_flow_scope");
       end if;
