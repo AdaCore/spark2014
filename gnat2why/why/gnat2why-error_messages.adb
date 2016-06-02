@@ -244,6 +244,8 @@ package body Gnat2Why.Error_Messages is
          end case;
       end Make_Codepeer_Msg;
 
+   --  Start of processing for CodePeer_Has_Proved
+
    begin
       if CP_File_Present then
          declare
@@ -374,6 +376,9 @@ package body Gnat2Why.Error_Messages is
          else Not_Proved_Message (Node, Kind)) &
               Extra_Msg &
               (if VC_File /= "" then ", vc file: " & VC_File else "");
+
+   --  Start of processing for Emit_Proof_Result
+
    begin
       Error_Msg_Proof
         (Node,
