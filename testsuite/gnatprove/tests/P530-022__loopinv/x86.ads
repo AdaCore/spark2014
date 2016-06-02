@@ -711,19 +711,19 @@ is
    --			      Semi-complex X86				--
    -----------------------------------------------------------------------
 
+   function All_Equal_RAX (Start, Last : Unsigned64) return Boolean is
+     (for all I in 0 .. Last => ReadMem64(Start+(I*8)) = RAX);
+
    procedure  rep_stosq with
      Global => (In_Out => (RDI, RCX, Memory, ZeroFlag),
                 Input => (RAX)),
-     Pre => RCX < Unsigned64'Last/8;
---       Post =>
---         RCX = 0 and
---         RDI = RDI'Old + (8*RCX'Old) and
---         (for all i in Unsigned64 =>
---                    ( if not InRange64(i,RDI'Old,RCX'Old*8) then
---                         Memory'Old(i) = Memory(i)));--ß and
---       (if RCX'Old /= 0 then
---          (for all i in 0 .. (RCX'Old-1)  =>
---          ReadMem64(RDI'Old+i*8) = RAX'Old));
+     Pre => RCX < Unsigned64'Last/8,
+     Post => RCX = 0 and
+       RDI = RDI'Old + (8*RCX'Old) and
+       (for all i in Unsigned64 =>
+          ( if not InRange64(i,RDI'Old,RCX'Old*8) then
+             Memory'Old(i) = Memory(i))) and
+       (if RCX'Old /= 0 then All_Equal_RAX (RDI'Old, RCX'Old-1));
 
    procedure repe32_cmpsb with
      Global => (In_Out => (RSI, RDI, RCX, ZeroFlag, CarryFlag),
@@ -771,5 +771,3 @@ is
      Post => (ReadMem8Ghost'Result = (mem(addr)));
 
 end X86;
-
-

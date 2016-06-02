@@ -743,7 +743,8 @@ is
 
       end loop;
 
-
+      pragma Assert (if RCX_Start /= 0 then
+                        All_Equal_RAX (RDI_Start, RCX_Start-1));
    end rep_stosq;
 
 
