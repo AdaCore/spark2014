@@ -41,75 +41,6 @@ with Flow_Types;           use Flow_Types;
 
 package body Flow_Refinement is
 
-   function List_Contains (L : List_Id;
-                           N : Node_Id)
-                           return Boolean;
-   --  Returns True iff the list L contains node N
-
-   -------------------
-   -- List_Contains --
-   -------------------
-
-   function List_Contains (L : List_Id;
-                           N : Node_Id)
-                           return Boolean
-   is
-      function Tree_Contains (T : Node_Id;
-                              N : Node_Id)
-                           return Boolean;
-      --  Returns True iff the tree rooted at T contains node N
-
-      -------------------
-      -- Tree_Contains --
-      -------------------
-
-      function Tree_Contains (T : Node_Id;
-                              N : Node_Id)
-                           return Boolean
-      is
-         Found : Boolean := False;
-
-         function Proc (X : Node_Id) return Traverse_Result;
-
-         ----------
-         -- Proc --
-         ----------
-
-         function Proc (X : Node_Id) return Traverse_Result is
-         begin
-            if X = N then
-               Found := True;
-               return Abandon;
-            else
-               return OK;
-            end if;
-         end Proc;
-
-         procedure Search_For_Node is new Traverse_Proc (Proc);
-
-         --  Start of processing for Tree_Contains
-
-      begin
-         Search_For_Node (T);
-         return Found;
-      end Tree_Contains;
-
-      P : Node_Id;
-
-   --  Start of processing for List_Contains
-
-   begin
-      P := First (L);
-      while Present (P) loop
-         if Tree_Contains (P, N) then
-            return True;
-         end if;
-         P := Next (P);
-      end loop;
-
-      return False;
-   end List_Contains;
-
    ----------------
    -- Is_Visible --
    ----------------
@@ -324,97 +255,89 @@ package body Flow_Refinement is
    --------------------
 
    function Get_Flow_Scope (N : Node_Id) return Flow_Scope is
-      P : Node_Id := N;
-      V : Declarative_Part;
+      Context      : Node_Id := N;
+      Prev_Context : Node_Id := Empty;
+
    begin
-      while Present (P) loop
-         P := Get_Body_Or_Stub (P);
-         case Nkind (P) is
-            when N_Package_Body | N_Protected_Body | N_Task_Body =>
-               V := Body_Part;
-               case Nkind (P) is
-                  when N_Package_Body =>
-                     P := Defining_Unit_Name (P);
-                     if Nkind (P) = N_Defining_Program_Unit_Name then
-                        P := Defining_Identifier (P);
-                     end if;
-                     P := Spec_Entity (P);
+      loop
+         Context := Get_Body_Or_Stub (Context);
 
-                  when N_Protected_Body | N_Task_Body =>
-                     P := Corresponding_Spec (P);
+         case Nkind (Context) is
+            when N_Package_Body   |
+                 N_Protected_Body |
+                 N_Task_Body      =>
 
-                  when others =>
-                     raise Program_Error;
-               end case;
-               exit;
+               return (Ent  => Unique_Defining_Entity (Context),
+                       Part => Body_Part);
 
             when N_Package_Specification |
                  N_Protected_Definition  |
                  N_Task_Definition       =>
-               if Nkind (P) = N_Task_Definition
-                 or else not List_Contains (Private_Declarations (P),
-                                            Get_Body_Or_Stub (N))
-               then
-                  V := Visible_Part;
-               else
-                  V := Private_Part;
-               end if;
 
-               case Nkind (P) is
-                  when N_Package_Specification =>
-                     P := Defining_Unit_Name (P);
-                     if Nkind (P) = N_Defining_Program_Unit_Name then
-                        P := Defining_Identifier (P);
+               declare
+                  Part : Declarative_Part;
+
+               begin
+                  if Present (Prev_Context) then
+                     pragma Assert (Context = Parent (Prev_Context));
+
+                     if Nkind (Context) = N_Task_Definition then
+                        Part := Visible_Part;
+                     else
+                        if Is_List_Member (Prev_Context)
+                          and then List_Containing (Prev_Context) =
+                            Private_Declarations (Context)
+                        then
+                           Part := Private_Part;
+                        else
+                           Part := Visible_Part;
+                        end if;
                      end if;
+                  else
+                     Part := Visible_Part;
+                  end if;
 
-                  when N_Protected_Definition | N_Task_Definition  =>
-                     P := Defining_Identifier (Parent (P));
+                  return (Ent  => Unique_Defining_Entity (Parent (Context)),
+                          Part => Part);
+               end;
 
-                  when others =>
-                     raise Program_Error;
-               end case;
-               exit;
+            --  We only see N_Aspect_Specification here when Get_Flow_Scope is
+            --  called on an abstract state. We want to return the Visible_Part
+            --  of the package that introduces the abstract state.
 
             when N_Aspect_Specification =>
-               --  We only get here when we call Get_Flow_Scope on an abstract
-               --  state. On this occasion we want to return the Visible_Part
-               --  followed by the name of the package that introduces the
-               --  abstract state.
-               pragma Assert (Nkind (N) = N_Defining_Identifier
-                                and then Ekind (N) = E_Abstract_State);
+               pragma Assert (Ekind (N) = E_Abstract_State);
 
-               if Nkind (Parent (P)) = N_Package_Declaration then
-                  V := Visible_Part;
+               pragma Assert
+                 (Nkind (Parent (Context)) = N_Package_Declaration);
 
-                  P := Defining_Unit_Name (Specification (Parent (P)));
-                  if Nkind (P) = N_Defining_Program_Unit_Name then
-                     P := Defining_Identifier (P);
-                  end if;
-                  exit;
+               return (Ent  => Unique_Defining_Entity (Parent (Context)),
+                       Part => Visible_Part);
+
+            --  Front end rewrites aspects into pragmas with empty parents. In
+            --  such cases we jump to the entity of the aspect.
+
+            when N_Pragma =>
+
+               Prev_Context := Context;
+
+               if From_Aspect_Specification (Context) then
+                  Context := Corresponding_Aspect (Context);
+                  pragma Assert (Nkind (Context) = N_Aspect_Specification);
+                  Context := Entity (Context);
+               else
+                  Context := Parent (Context);
                end if;
 
             when others =>
-               null;
+               Prev_Context := Context;
+               Context      := Parent (Context);
          end case;
 
-         --  If we get a node from some contract, we will get the node from the
-         --  generated pragma instead. This pragma does not have a parent set,
-         --  so in this case we jump to the entity the aspect is for.
-         if Nkind (P) = N_Pragma and then From_Aspect_Specification (P) then
-            P := Corresponding_Aspect (P);
-            pragma Assert (Nkind (P) = N_Aspect_Specification);
-            P := Entity (P);
-         else
-            P := Parent (P);
-         end if;
+         exit when No (Context);
       end loop;
 
-      if Present (P) then
-         return (Ent  => P,
-                 Part => V);
-      else
-         return Null_Flow_Scope;
-      end if;
+      return Null_Flow_Scope;
    end Get_Flow_Scope;
 
    --------------------------------------
