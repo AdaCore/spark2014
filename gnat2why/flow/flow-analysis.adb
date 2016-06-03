@@ -525,6 +525,17 @@ package body Flow.Analysis is
       return First_Use;
    end First_Variable_Use;
 
+   -------------------
+   -- Has_Pragma_Un --
+   -------------------
+
+   function Has_Pragma_Un (E : Entity_Id) return Boolean is
+   (Has_Pragma_Unmodified (E)
+      or else Has_Pragma_Unreferenced (E)
+    or else Has_Pragma_Unused (E));
+   --  Checks if the entity E has been mentioned in any pragma Unmodified,
+   --  Unreferenced or Unused.
+
    ------------------
    -- Analyse_Main --
    ------------------
@@ -852,10 +863,9 @@ package body Flow.Analysis is
                --    * for variables that have been marked as unreferenced or
                --    * for variables that are/belong to a concurrent object.
                if F_Final.Kind not in Direct_Mapping | Record_Field
-                 or else (not FA.Pragma_Un_Vars.Contains
-                            (Get_Direct_Mapping_Id (F_Final))
-                          and then not Is_Or_Belongs_To_Concurrent_Object
-                            (F_Final))
+                 or else (not Has_Pragma_Un (Get_Direct_Mapping_Id (F_Final))
+                          and then not
+                            Is_Or_Belongs_To_Concurrent_Object (F_Final))
                then
                   if A_Final.Is_Global then
                      Error_Msg_Flow
@@ -1099,8 +1109,8 @@ package body Flow.Analysis is
                  or else (Ekind (Etype (Get_Direct_Mapping_Id (F)))
                             not in Concurrent_Kind
                           and then not Is_Concurrent_Comp_Or_Disc (F)
-                          and then not FA.Pragma_Un_Vars.Contains
-                            (Get_Direct_Mapping_Id (F)))
+                          and then not
+                            Has_Pragma_Un (Get_Direct_Mapping_Id (F)))
                then
                   Error_Msg_Flow
                     (FA       => FA,
@@ -1135,8 +1145,7 @@ package body Flow.Analysis is
 
          begin
             if F.Kind in Direct_Mapping | Record_Field
-              and then
-                FA.Pragma_Un_Vars.Contains (Get_Direct_Mapping_Id (F))
+              and then Has_Pragma_Un (Get_Direct_Mapping_Id (F))
             then
                --  This variable is marked with a pragma Unreferenced, pragma
                --  Unused or pragma Unmodified so we do not emit the warning
@@ -1566,7 +1575,7 @@ package body Flow.Analysis is
       is
         (for some E of S =>
             E.Kind in Direct_Mapping | Record_Field
-              and then FA.Pragma_Un_Vars.Contains (Get_Direct_Mapping_Id (E)));
+         and then Has_Pragma_Un (Get_Direct_Mapping_Id (E)));
 
       --------------------------
       -- Skip_Any_Conversions --

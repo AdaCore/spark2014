@@ -928,7 +928,6 @@ package body Flow is
       FA.Other_Fields          := Vertex_To_Vertex_Set_Maps.Empty_Map;
       FA.Local_Constants       := Node_Sets.Empty_Set;
       FA.All_Vars              := Flow_Id_Sets.Empty_Set;
-      FA.Pragma_Un_Vars        := Node_Sets.Empty_Set;
       FA.Loops                 := Node_Sets.Empty_Set;
       FA.Dependency_Map        := Dependency_Maps.Empty_Map;
       FA.No_Errors_Or_Warnings := True;

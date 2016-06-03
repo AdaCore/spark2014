@@ -4035,25 +4035,6 @@ package body Flow.Control_Flow_Graph is
                --  unreferenced we produce a null vertex.
                Add_Vertex (FA, Null_Node_Attributes, V);
 
-               declare
-                  Argument_Association : Node_Id;
-                  Associated_Variable  : Node_Id;
-               begin
-                  Argument_Association :=
-                    First (Pragma_Argument_Associations (N));
-
-                  while Present (Argument_Association) loop
-                     Associated_Variable :=
-                       Associated_Node (Expression (Argument_Association));
-
-                     if Is_Object (Associated_Variable) then
-                        FA.Pragma_Un_Vars.Include (Associated_Variable);
-                     end if;
-
-                     Next (Argument_Association);
-                  end loop;
-               end;
-
             when others =>
                --  If we are processing a pragma that is relevant to
                --  flow analysis, and we are not dealing with either
