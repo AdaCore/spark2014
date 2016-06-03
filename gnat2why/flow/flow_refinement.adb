@@ -61,10 +61,10 @@ package body Flow_Refinement is
       --
       --     S is...     Next node is...
       --     =======     ===============
-      --     X|body      X|priv
-      --     X|priv      X|spec                (check this first)
+      --     X|body      X|private
+      --     X|private   X|visible             (check this first)
       --                 enclosing_scope (S)   (then continue here)
-      --     X|spec      enclosing_scope (S)
+      --     X|visible   enclosing_scope (S)
       --
       --  The enclosing scope of S is computed by Get_Enclosing_Flow_Scope and
       --  is either:
