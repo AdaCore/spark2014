@@ -10,3 +10,4 @@ pedantic.adb:62:15: warning: attribute "Size" has an implementation-defined valu
 pedantic.ads:10:04: info: initialization of "V.F1" proved
 pedantic.ads:12:29: warning: attribute "Alignment" has an implementation-defined value
 pedantic.ads:15:30: warning: attribute "Alignment" has an implementation-defined value
+pedantic.ads:22:31: low: unused global "V"

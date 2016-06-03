@@ -2544,10 +2544,12 @@ package body Flow_Utility is
                      end;
                      return Skip;
 
-                  when Attribute_Loop_Entry =>
+                  when Attribute_Loop_Entry | Attribute_Address =>
                      --  Again, we ignore loop entry references, these
                      --  are dealt with by Do_Pragma and
                      --  Do_Loop_Statement in the CFG construction.
+                     --  For the attribute Address we don't want to insert
+                     --  its prefix into the set of used variables.
                      return Skip;
 
                   when Attribute_Callable   |
