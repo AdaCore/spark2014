@@ -641,7 +641,7 @@ package body Flow_Utility is
             end if;
 
             if Ekind (T) in Concurrent_Kind then
-               if Nested_Inside_Concurrent_Object (T, Scope) then
+               if Nested_Within_Concurrent_Type (T, Scope) then
                   --  Include constituents that belong to the concurrent object
                   --  due to a Part_Of.
                   if Present (Anonymous_Object (T)) then

@@ -813,28 +813,15 @@ package body Flow_Refinement is
       return False;
    end Refinement_Needed;
 
-   -------------------------------------
-   -- Nested_Inside_Concurrent_Object --
-   -------------------------------------
+   -----------------------------------
+   -- Nested_Within_Concurrent_Type --
+   -----------------------------------
 
-   function Nested_Inside_Concurrent_Object
-     (CO : Entity_Id;
-      S  : Flow_Scope)
+   function Nested_Within_Concurrent_Type
+     (T : Entity_Id;
+      S : Flow_Scope)
       return Boolean
    is
-      Context : Entity_Id := S.Ent;
-
-   begin
-      while Present (Context)
-        and then Context /= Standard_Standard
-      loop
-         if Context = CO then
-            return True;
-         end if;
-         Context := Scope (Context);
-      end loop;
-
-      return False;
-   end Nested_Inside_Concurrent_Object;
+     (Present (S) and then Sem_Util.Scope_Within_Or_Same (S.Ent, T));
 
 end Flow_Refinement;

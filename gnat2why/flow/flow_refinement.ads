@@ -219,11 +219,11 @@ package Flow_Refinement is
    --       refinement
    --     * ditto for depends and refined depends
 
-   function Nested_Inside_Concurrent_Object
-     (CO : Entity_Id;
-      S  : Flow_Scope)
+   function Nested_Within_Concurrent_Type
+     (T : Entity_Id;
+      S : Flow_Scope)
       return Boolean
-   with Pre => Present (CO);
-   --  Returns True iff S is nested inside concurrent object CO
+   with Pre => Ekind (T) in Concurrent_Kind;
+   --  Returns True iff S is nested inside concurrent type T
 
 end Flow_Refinement;

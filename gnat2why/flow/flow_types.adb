@@ -516,7 +516,7 @@ package body Flow_Types is
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
                pragma Assert (Nkind (E) in N_Entity);
 
-               CO : Entity_Id;
+               T : Entity_Id;
             begin
                if Present (Scope) then
                   if Has_Volatile (E) then
@@ -526,16 +526,16 @@ package body Flow_Types is
                      --  then we only consider F to be volatile when we are
                      --  outside its enclosing concurrent object.
                      if Is_Protected_Type (Etype (E)) then
-                        CO := Etype (E);
+                        T := Etype (E);
                      elsif Is_Concurrent_Comp (F) then
-                        CO := Etype (Get_Enclosing_Concurrent_Object (F));
+                        T := Etype (Get_Enclosing_Concurrent_Object (F));
                      else
                         --  There is no enclosing protected object
                         return True;
                      end if;
 
-                     --  If we are outside the CO then F is indeed volatile
-                     return not Nested_Inside_Concurrent_Object (CO, Scope);
+                     --  If we are outside the type T then F is indeed volatile
+                     return not Nested_Within_Concurrent_Type (T, Scope);
                   else
                      return False;
                   end if;
