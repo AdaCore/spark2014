@@ -12,11 +12,11 @@ math.adb:16:10: info: loop invariant initialization proved
 math.adb:16:10: info: loop invariant preservation proved
 math.adb:17:51: info: index check proved
 math.adb:17:69: info: index check proved
-math.adb:24:25: medium: assertion might fail, cannot prove Sorted (V)
+math.adb:24:10: info: assertion proved
 math.adb:24:33: info: length check proved
 math.adb:25:10: medium: predicate check might fail
 math.adb:25:23: info: division check proved
-math.adb:32:25: medium: assertion might fail, cannot prove Sorted (V)
+math.adb:32:10: info: assertion proved
 math.adb:32:33: info: length check proved
 math.adb:33:10: medium: predicate check might fail
 math.adb:33:23: info: division check proved

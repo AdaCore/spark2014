@@ -447,6 +447,7 @@ package body Gnat2Why.Expr.Loops is
             declare
                Modified : constant Flow_Id_Sets.Set :=
                  To_Entire_Variables (Get_Loop_Writes (Loop_Id));
+               Scope    : constant Entity_Id := Enclosing_Unit (Loop_Id);
                N        : Node_Id;
                Dyn_Prop : W_Pred_Id;
                Expr     : W_Expr_Id;
@@ -462,11 +463,19 @@ package body Gnat2Why.Expr.Loops is
                         Binder := Ada_Ent_To_Why.Element
                           (Symbol_Table, N);
                         Expr := Reconstruct_Item (Binder, Ref_Allowed => True);
+
+                        --  Compute the dynamic property of Expr. Currently,
+                        --  local variables are considered uninitialized.
+
                         Dyn_Prop :=
                           Compute_Dynamic_Invariant
                             (Expr        => +Expr,
                              Ty          => Etype (N),
-                             Initialized => False_Term);
+                             Initialized =>
+                               (if not Is_Declared_In_Unit (N, Scope)
+                                and then Is_Initialized (N, Scope)
+                                then True_Term
+                                else False_Term));
 
                         if Dyn_Prop /= True_Pred then
                            Dyn_Types_Inv :=

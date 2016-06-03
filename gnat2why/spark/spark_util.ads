@@ -348,6 +348,14 @@ package SPARK_Util is
    --
    --     Local (X);
 
+   function Enclosing_Unit (E : Entity_Id) return Entity_Id with
+     Post => (if Present (Enclosing_Unit'Result) then
+                  Ekind (Enclosing_Unit'Result) in
+                  E_Function | E_Procedure | E_Entry | E_Protected_Type
+                    | E_Task_Type | E_Package);
+   --  Returns the entity of the package, subprogram, entry, protected object,
+   --  or task enclosing E, if any. Returns Empty otherwise.
+
    function Full_Name (E : Entity_Id) return String
    with Pre => Nkind (E) in N_Entity;
    --  @param E any entity

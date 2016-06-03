@@ -26,9 +26,9 @@
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Atree;                  use Atree;
+with Atree;                 use Atree;
 with Common_Containers;     use Common_Containers;
-with Einfo;                  use Einfo;
+with Einfo;                 use Einfo;
 with Namet;                 use Namet;
 with Sinfo;                 use Sinfo;
 with SPARK_Util;            use SPARK_Util;
@@ -376,6 +376,21 @@ package Gnat2Why.Util is
    --  Decide whether for function declarations, the Why base type should be
    --  used instead of the Ada type.
    --  This function should be used on entities denoting an object.
+
+   function Is_Initialized
+     (Obj   : Entity_Id;
+      Scope : Entity_Id)
+         return Boolean
+     with
+       Pre => Ekind (Scope) in E_Entry | E_Function | E_Procedure | E_Package
+     | E_Task_Type | E_Protected_Type
+     and then not Is_Declared_In_Unit (Obj, Scope)
+     and then Is_Mutable_In_Why (Obj);
+   --  Returns True if Obj is always initialized in the scope of Scope
+   --  @param Obj the entity of an object global to Scope which is variable in
+   --         why.
+   --  @param Scope the entity of a package, entry, task, protected object, or
+   --         subprogram.
 
    ------------------------------
    -- Symbol table subprograms --

@@ -682,38 +682,6 @@ package body Gnat2Why.Subprograms is
       Pred_Fun_Param : Entity_Id := Empty;
       Initialized    : Boolean   := False) return W_Prog_Id
    is
-      Read_Ids : Flow_Types.Flow_Id_Sets.Set;
-
-      function Is_Initialized (Obj : Entity_Id) return Boolean with
-        Pre => not Is_Declared_In_Unit (Obj, E)
-               and then Is_Mutable_In_Why (Obj);
-      --  Returns True if Obj is always initialized in the scope of E
-
-      --------------------
-      -- Is_Initialized --
-      --------------------
-
-      function Is_Initialized (Obj : Entity_Id) return Boolean is
-      begin
-         if not Initialized
-           and then Ekind (E) in E_Function | E_Procedure
-         then
-
-            --  Inside a subprogram, global variables may be uninitialized if
-            --  they do not occur as reads of the subprogram.
-
-            return (Enclosing_Package_Or_Subprogram (Obj) = E
-                    and then Ekind (Obj) /= E_Out_Parameter)
-              or else Read_Ids.Contains (Direct_Mapping_Id (Obj));
-         else
-
-            --  Every global variable referenced inside a package elaboration
-            --  must be initialized.
-
-            return True;
-         end if;
-      end Is_Initialized;
-
       Includes            : Node_Sets.Set;
       Dynamic_Prop_Inputs : W_Prog_Id := +Void;
 
@@ -722,9 +690,10 @@ package body Gnat2Why.Subprograms is
    begin
       --  Collect global variables read or written in E
 
-      if Ekind (E) in E_Function | E_Procedure | E_Task_Type then
+      if Ekind (E) in E_Function | E_Procedure | E_Task_Type | E_Entry then
          declare
             Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+            Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
 
             procedure Include (S : Flow_Types.Flow_Id_Sets.Set);
             --  Include entities represented in S (as Flow_Ids) in Includes
@@ -814,7 +783,7 @@ package body Gnat2Why.Subprograms is
       --  ??? We may want to account for discriminants of task types and self
       --  reference of protected subprograms.
 
-      if Ekind (E) in E_Function | E_Procedure then
+      if Ekind (E) in E_Function | E_Procedure | E_Entry then
          declare
             Params : constant List_Id :=
               (if Is_Entry (E) then Parameter_Specifications (Parent (E))
@@ -864,8 +833,10 @@ package body Gnat2Why.Subprograms is
                     (E             => Obj,
                      Params        => Params,
                      Initialized   =>
-                       (if Is_Object (Obj) and then Is_Mutable_In_Why (Obj)
-                        then Is_Initialized (Obj)
+                       (if Is_Object (Obj)
+                        and then Is_Mutable_In_Why (Obj)
+                        and then not Initialized
+                        then Is_Initialized (Obj, E)
                         else True),
                      Top_Predicate => Top_Predicate,
                      Context       => Prop_For_Include);

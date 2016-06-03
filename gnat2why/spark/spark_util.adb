@@ -1281,6 +1281,35 @@ package body SPARK_Util is
       return Corresponding_Body (Ptr);
    end Entry_Body_Entity;
 
+   --------------------
+   -- Enclosing_Unit --
+   --------------------
+
+   function Enclosing_Unit (E : Entity_Id) return Entity_Id is
+      S : Entity_Id;
+
+   begin
+      --  Go to unique entity to avoid bodies.
+
+      S := Unique_Entity (Scope (E));
+
+      while Present (S) loop
+         if Ekind (S) in E_Function | E_Entry | E_Procedure | E_Package
+           | E_Protected_Type | E_Task_Type
+         then
+            --  We have found the enclosing unit, return it.
+
+            return S;
+         else
+            --  Go to the next scope.
+
+            S := Unique_Entity (Scope (S));
+         end if;
+      end loop;
+
+      return Empty;
+   end Enclosing_Unit;
+
    ------------------------------
    -- File_Name_Without_Suffix --
    ------------------------------
@@ -2560,7 +2589,7 @@ package body SPARK_Util is
      (E     : Entity_Id;
       Scope : Entity_Id) return Boolean
    is
-     (Enclosing_Package_Or_Subprogram (E) = Scope and then not Is_Formal (E));
+     (Enclosing_Unit (E) = Scope and then not Is_Formal (E));
 
    -----------------------------
    -- Is_Ignored_Pragma_Check --

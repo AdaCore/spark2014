@@ -39,6 +39,7 @@ with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
+with Flow_Types;
 
 package body Gnat2Why.Util is
 
@@ -681,6 +682,43 @@ package body Gnat2Why.Util is
    begin
       Ada_Ent_To_Why.Insert (Symbol_Table, E, I);
    end Insert_Item;
+
+   --------------------
+   -- Is_Initialized --
+   --------------------
+
+   function Is_Initialized
+     (Obj        : Entity_Id;
+      Scope      : Entity_Id)
+      return Boolean
+   is
+      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+   begin
+      if Ekind (Scope) in E_Function | E_Procedure | E_Entry then
+
+         Flow_Utility.Get_Proof_Globals (Subprogram     => Scope,
+                                         Classwide      => True,
+                                         Reads          => Read_Ids,
+                                         Writes         => Write_Ids,
+                                         Keep_Constants => True);
+
+         --  Inside a subprogram, global variables may be uninitialized if
+         --  they do not occur as reads of the subprogram.
+
+         return (Enclosing_Unit (Obj) = Scope
+                 and then Ekind (Obj) /= E_Out_Parameter)
+           or else Read_Ids.Contains (Flow_Types.Direct_Mapping_Id (Obj));
+      else
+
+         --  Every global variable referenced inside a package elaboration
+         --  must be initialized.
+         --  In the same way, tasks and protected objects can only access
+         --  synchronized or part of objects which are always initialized.
+
+         return True;
+      end if;
+   end Is_Initialized;
 
    --------------------------------
    -- Is_Locally_Defined_In_Loop --
