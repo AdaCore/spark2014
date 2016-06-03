@@ -217,25 +217,19 @@ package body Flow_Refinement is
       P : Node_Id;
    begin
       P := S.Ent;
-      while Present (P)
-        and then Nkind (P) not in N_Generic_Package_Declaration |
-                                  N_Package_Declaration         |
-                                  N_Protected_Type_Declaration  |
-                                  N_Task_Type_Declaration
+      while Nkind (P) not in N_Generic_Package_Declaration |
+                             N_Package_Declaration         |
+                             N_Protected_Type_Declaration  |
+                             N_Task_Type_Declaration
       loop
          P := Parent (P);
       end loop;
 
-      case Nkind (P) is
-         when N_Generic_Package_Declaration |
-              N_Package_Declaration         |
-              N_Protected_Type_Declaration  |
-              N_Task_Type_Declaration       =>
-            P := Corresponding_Body (P);
-
-         when others =>
-            raise Why.Unexpected_Node;
-      end case;
+      pragma Assert (Nkind (P) in N_Generic_Package_Declaration |
+                                  N_Package_Declaration         |
+                                  N_Protected_Type_Declaration  |
+                                  N_Task_Type_Declaration);
+      P := Corresponding_Body (P);
 
       --  We need to get to the node that is above the N_Package_Body,
       --  N_Protected_Body or N_Task_Body that corresponds to flow scope S.
