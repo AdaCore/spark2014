@@ -171,8 +171,8 @@ package body Flow_Refinement is
    ------------------------------
 
    function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope is
-      Enclosing_Scope : Flow_Scope := S;
-      Ptr             : Node_Id    := S.Ent;
+      Enclosing_Scope : Flow_Scope;
+      Ptr             : Node_Id := S.Ent;
    begin
       while Nkind (Ptr) not in N_Package_Declaration        |
                                N_Protected_Type_Declaration |
