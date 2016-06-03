@@ -164,10 +164,9 @@ package Flow_Refinement is
 
    function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
    with Pre  => Present (E),
-        Post => No (Find_Node_In_Initializes'Result)
-                  or else Find_Node_In_Initializes'Result = E
-                  or else Find_Node_In_Initializes'Result =
-                            Encapsulating_State (E);
+        Post => (if Present (Find_Node_In_Initializes'Result)
+                 then Find_Node_In_Initializes'Result in
+                        E | Encapsulating_State (E));
    --  Returns the node representing E (or its immediately encapsulating state)
    --  in an initializes aspect or Empty.
 
