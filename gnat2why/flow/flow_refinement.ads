@@ -29,6 +29,8 @@ with Atree;             use Atree;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
 with Sinfo;             use Sinfo;
+with Sem_Util;          use Sem_Util;
+with Snames;            use Snames;
 with Types;             use Types;
 
 package Flow_Refinement is
@@ -200,7 +202,8 @@ package Flow_Refinement is
    function Mentions_State_With_Visible_Refinement
      (N     : Node_Id;
       Scope : Flow_Scope)
-      return Boolean;
+      return Boolean
+   with Pre => Get_Pragma_Id (N) in Pragma_Depends | Pragma_Global;
    --  Traverses the tree under N and returns True if it finds a state
    --  abstraction whose refinement is visible from Scope.
 

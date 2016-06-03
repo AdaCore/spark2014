@@ -25,8 +25,6 @@ with Ada.Containers.Doubly_Linked_Lists;
 
 with Nlists;               use Nlists;
 with Output;               use Output;
-with Sem_Util;             use Sem_Util;
-with Snames;               use Snames;
 with Sprint;               use Sprint;
 with Stand;                use Stand;
 with Treepr;               use Treepr;
@@ -733,11 +731,11 @@ package body Flow_Refinement is
       Scope : Flow_Scope)
       return Boolean
    is
-      Found_State_Abstraction : Boolean := False;
+      Found : Boolean := False;
 
       function Proc (N : Node_Id) return Traverse_Result;
-      --  Traversal procedure that sets Found_State_Abstraction to True if we
-      --  find a State Abstraction whose refinement is visible from Scope.
+      --  Traversal procedure that sets Found to True if we find
+      --  a state abstraction whose refinement is visible from Scope.
 
       ----------
       -- Proc --
@@ -750,7 +748,7 @@ package body Flow_Refinement is
            and then Ekind (Entity (N)) = E_Abstract_State
            and then State_Refinement_Is_Visible (Entity (N), Scope)
          then
-            Found_State_Abstraction := True;
+            Found := True;
             return Abandon;
          end if;
 
@@ -758,14 +756,14 @@ package body Flow_Refinement is
          return OK;
       end Proc;
 
-      procedure Look_For_Abstract_State is new Traverse_Proc (Process => Proc);
+      procedure Find_Abstract_State is new Traverse_Proc (Process => Proc);
 
    --  Start of processing for Mentions_State_With_Visible_Refinement
 
    begin
-      Look_For_Abstract_State (N);
+      Find_Abstract_State (N);
 
-      return Found_State_Abstraction;
+      return Found;
    end Mentions_State_With_Visible_Refinement;
 
    -----------------------
