@@ -3020,7 +3020,7 @@ package body Flow_Utility is
       begin
          while not S.Is_Empty loop
             --  Pick an element at random.
-            Ptr := Node_Sets.Element (S.First);
+            Ptr := S.First_Element;
             S.Exclude (Ptr);
 
             --  Create a new component.
@@ -3031,7 +3031,7 @@ package body Flow_Utility is
 
             --  Flood current component.
             while not Work_List.Is_Empty loop
-               Ptr := Node_Sets.Element (Work_List.First);
+               Ptr := Work_List.First_Element;
                S.Exclude (Ptr);
                Work_List.Exclude (Ptr);
 
