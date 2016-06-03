@@ -571,7 +571,7 @@ shall follow the grammar of ``abstract_state_list`` given below.
    (Ada RM 7.2(4)). One could imagine a simpler rule that an
    Abstract_State aspect specification causes a package to "require a
    completion", but we want a SPARK program with its SPARK aspects removed
-   (or ignored) to remain a legal Ada program.] 
+   (or ignored) to remain a legal Ada program.]
 
 .. _tu-abstract_state_aspects-05:
 
@@ -1332,7 +1332,7 @@ shall follow the grammar of ``global_specification`` in :ref:`global-aspects`.
       aspect specification.
 
    f. At least one state abstraction mentioned in the Global aspect
-      aspect specification shall be unmentioned in the Refined_Global
+      specification shall be unmentioned in the Refined_Global
       aspect specification. [This usually follows as a consequence of
       other rules, but not in some cases involving optionally refinable
       state abstractions where the option is declined.]
@@ -2417,7 +2417,7 @@ we are not talking about any changes in a program's behavior at run-time.]
 .. _tu-type_invariants-07:
 
 7. Invariant checking is extended to include "hidden" components
-   (a term being introduced here) and subcomponents thereof, and for 
+   (a term being introduced here) and subcomponents thereof, and for
    all subprograms.
    It is possible that the underlying tag of a tagged object (at runtime)
    may differ from the tag of its nominal (compile time) type. Suppose that
