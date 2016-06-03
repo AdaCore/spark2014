@@ -341,19 +341,14 @@ package body Flow_Refinement is
                                               return Boolean
    is
       Body_E : constant Entity_Id := Get_Body_Entity (E);
+
    begin
-      if No (S) then
-         --  From the standard scope we won't be able to see much...
-         return False;
-      end if;
-
-      if No (Body_E) then
-         --  If we don't even have it in the AST, then it's a safe bet that we
-         --  can't see the refinement...
-         return False;
-      end if;
-
-      return Is_Visible (Get_Body_Or_Stub (Body_E), S);
+      --  To see the refinement we must not be in the Standard scope, there
+      --  must be some body and the body must be visible.
+      return
+        Present (S)
+        and then Present (Body_E)
+        and then Is_Visible (Get_Body_Or_Stub (Body_E), S);
    end Subprogram_Refinement_Is_Visible;
 
    ---------------------------------
