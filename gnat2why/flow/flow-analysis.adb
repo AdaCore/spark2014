@@ -857,16 +857,18 @@ package body Flow.Analysis is
          begin
             if not Written_Entire_Vars.Contains (Entire_Variable (F_Final))
             then
-               --  We do not issue messages:
-               --    * for variables that have been marked as unmodified or
-               --    * for variables that have been marked as unused or
-               --    * for variables that have been marked as unreferenced or
-               --    * for variables that are/belong to a concurrent object.
-               if F_Final.Kind not in Direct_Mapping | Record_Field
-                 or else (not Has_Pragma_Un (Get_Direct_Mapping_Id (F_Final))
-                          and then not
-                            Is_Or_Belongs_To_Concurrent_Object (F_Final))
+               --  We inhibit messages for variables that:
+               --    * have been marked as unmodified, as unused or as
+               --      unreferenced,
+               --    * are/belong to a concurrent object.
+               if F_Final.Kind in Direct_Mapping | Record_Field
+                 and then (Has_Pragma_Un (Get_Direct_Mapping_Id (F_Final))
+                             or else
+                           Is_Or_Belongs_To_Concurrent_Object (F_Final))
                then
+                  null;
+
+               else
                   if A_Final.Is_Global then
                      Error_Msg_Flow
                        (FA       => FA,
