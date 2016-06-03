@@ -68,10 +68,10 @@ package body Flow_Refinement is
       --  is either:
       --
       --     1. The first parent (just going up the AST) of S which is a
-      --        package/PO declaration (this deals with nested packages)
+      --        package/concurrent type (this deals with nested packages)
       --
-      --     2. The first Scope (see einfo.ads) which is a package/PO (this
-      --        deals with public and private children)
+      --     2. The first Scope (see einfo.ads) which is a package/concurrent
+      --        type (this deals with public and private children)
       --
       --     3. null (if we have hit Standard)
       --
