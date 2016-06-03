@@ -532,7 +532,7 @@ package body Flow.Analysis is
    function Has_Pragma_Un (E : Entity_Id) return Boolean is
    (Has_Pragma_Unmodified (E)
       or else Has_Pragma_Unreferenced (E)
-    or else Has_Pragma_Unused (E));
+      or else Has_Pragma_Unused (E));
    --  Checks if the entity E has been mentioned in any pragma Unmodified,
    --  Unreferenced or Unused.
 
@@ -1574,8 +1574,8 @@ package body Flow.Analysis is
                                 return Boolean
       is
         (for some E of S =>
-            E.Kind in Direct_Mapping | Record_Field
-         and then Has_Pragma_Un (Get_Direct_Mapping_Id (E)));
+           E.Kind in Direct_Mapping | Record_Field
+             and then Has_Pragma_Un (Get_Direct_Mapping_Id (E)));
 
       --------------------------
       -- Skip_Any_Conversions --
