@@ -212,20 +212,21 @@ package body Flow_Types is
    is
       F : Flow_Id := (Kind      => Record_Field,
                       Variant   => Variant,
-                      Node      => Empty,
+                      Node      => <>,
                       Facet     => Facet,
                       Component => Entity_Vectors.Empty_Vector);
       P : Node_Id;
    begin
       P := N;
       while Nkind (P) = N_Selected_Component loop
-         if Ekind (Entity (Selector_Name (P))) in E_Component | E_Discriminant
-         then
+         declare
+            Selector : constant Entity_Id := Entity (Selector_Name (P));
+         begin
             F.Component.Append
-              (Original_Record_Component (Entity (Selector_Name (P))));
-         else
-            F.Component.Append (Entity (Selector_Name (P)));
-         end if;
+              (if Ekind (Selector) in E_Component | E_Discriminant
+               then Original_Record_Component (Selector)
+               else Selector);
+         end;
          P := Prefix (P);
       end loop;
       F.Component.Reverse_Elements;
