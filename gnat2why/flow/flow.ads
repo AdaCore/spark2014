@@ -91,13 +91,6 @@ package Flow is
    --  Utility packages
    ----------------------------------------------------------------------
 
-   package Node_To_Vertex_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Flow_Graphs.Vertex_Id,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => Flow_Graphs."=");
-
    package Vertex_Sets is new Ada.Containers.Hashed_Sets
      (Element_Type        => Flow_Graphs.Vertex_Id,
       Hash                => Flow_Graphs.Vertex_Hash,
@@ -115,19 +108,6 @@ package Flow is
       Hash            => Flow_Graphs.Vertex_Hash,
       Equivalent_Keys => Flow_Graphs."=",
       "="             => Vertex_Sets."=");
-
-   package Vertex_To_Natural_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Flow_Graphs.Vertex_Id,
-      Element_Type    => Natural,
-      Hash            => Flow_Graphs.Vertex_Hash,
-      Equivalent_Keys => Flow_Graphs."=",
-      "="             => "=");
-
-   package Vertex_Pair_Sets is new Ada.Containers.Hashed_Sets
-     (Element_Type        => Vertex_Pair,
-      Hash                => Vertex_Pair_Hash,
-      Equivalent_Elements => "=",
-      "="                 => "=");
 
    ----------------------------------------------------------------------
    --  Flow_Analysis_Graphs
