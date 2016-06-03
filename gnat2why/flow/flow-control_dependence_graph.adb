@@ -48,58 +48,62 @@ package body Flow.Control_Dependence_Graph is
       for V of FA.CDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             A  : V_Attributes renames FA.Atr (V);
-            CV : constant Flow_Graphs.Vertex_Id :=
-              FA.CDG.Get_Vertex (A.Call_Vertex);
-
-            use type Flow_Graphs.Vertex_Id;
          begin
             if A.Is_Parameter
               or else A.Is_Global_Parameter
               or else A.Is_Implicit_Parameter
             then
-               --  Sanity check that we will not lose control dependence
-               for P of FA.CDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
-               loop
-                  if P = V then
-                     --  Self dependence is OK and we don't care if it
-                     --  disappears.
-                     null;
+               declare
+                  CV : constant Flow_Graphs.Vertex_Id :=
+                    FA.CDG.Get_Vertex (A.Call_Vertex);
 
-                  elsif FA.CDG.Non_Trivial_Path_Exists (P, CV) then
-                     --  The call vertex is ultimately control dependent on
-                     --  the in neighbour we are eliminating from our parameter
-                     --  vertex, so we don't really lose anything.
-                     null;
+                  use type Flow_Graphs.Vertex_Id;
+               begin
+                  --  Sanity check that we will not lose control dependence
+                  for P of FA.CDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
+                  loop
+                     if P = V then
+                        --  Self dependence is OK and we don't care if it
+                        --  disappears.
+                        null;
 
-                  else
-                     --  Bath, we have a problem
-                     raise Program_Error;
-                  end if;
-               end loop;
+                     elsif FA.CDG.Non_Trivial_Path_Exists (P, CV) then
+                        --  The call vertex is ultimately control dependent
+                        --  on the in neighbour we are eliminating from our
+                        --  parameter vertex, so we don't really lose anything.
+                        null;
 
-               --  Sanity check that we won't lose outwards control
-               --  influence.
-               for S of FA.CDG.Get_Collection (V, Flow_Graphs.Out_Neighbours)
-               loop
-                  if S = V then
-                     --  Self dependence is OK and we don't care if it
-                     --  disappears.
-                     null;
+                     else
+                        --  Bath, we have a problem
+                        raise Program_Error;
+                     end if;
+                  end loop;
 
-                  elsif S = CV
-                    or else CV = FA.CDG.Get_Vertex (FA.Atr (S).Call_Vertex)
-                  then
-                     --  This can happen if we have infinite loops
-                     null;
+                  --  Sanity check that we won't lose outwards control
+                  --  influence.
+                  for S of FA.CDG.Get_Collection
+                                    (V, Flow_Graphs.Out_Neighbours)
+                  loop
+                     if S = V then
+                        --  Self dependence is OK and we don't care if it
+                        --  disappears.
+                        null;
 
-                  else
-                     --  Panic!
-                     raise Program_Error;
-                  end if;
-               end loop;
+                     elsif S = CV
+                       or else CV = FA.CDG.Get_Vertex (FA.Atr (S).Call_Vertex)
+                     then
+                        --  This can happen if we have infinite loops
+                        null;
 
-               FA.CDG.Clear_Vertex (V);
-               FA.CDG.Add_Edge (CV, V, EC_Default);
+                     else
+                        --  Panic!
+                        raise Program_Error;
+                     end if;
+                  end loop;
+
+                  FA.CDG.Clear_Vertex (V);
+                  FA.CDG.Add_Edge (CV, V, EC_Default);
+               end;
             end if;
          end;
       end loop;
