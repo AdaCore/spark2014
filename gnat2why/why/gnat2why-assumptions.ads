@@ -49,7 +49,7 @@ package Gnat2Why.Assumptions is
       "="                 => "=");
 
    procedure Register_Claim (C : Claim);
-   --  This registers that the claim [C] has been established.
+   --  This registers that the claim [C] has been established
 
    procedure Assume_For_Claim
      (C      : Claim;
