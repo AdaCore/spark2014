@@ -170,7 +170,7 @@ package Flow_Refinement is
                  then Find_Node_In_Initializes'Result in
                         E | Encapsulating_State (E));
    --  Returns the node representing E (or its immediately encapsulating state)
-   --  in an initializes aspect or Empty.
+   --  in an Initializes aspect or Empty.
 
    function Get_Enclosing_Flow_Scope (S : Flow_Scope) return Flow_Scope
    with Pre => S.Part in Visible_Part | Private_Part;

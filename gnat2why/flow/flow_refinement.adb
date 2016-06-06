@@ -31,7 +31,6 @@ with Treepr;               use Treepr;
 
 with Common_Iterators;     use Common_Iterators;
 with SPARK_Util;           use SPARK_Util;
-with Why;
 
 with Flow_Debug;           use Flow_Debug;
 with Flow_Dependency_Maps; use Flow_Dependency_Maps;
@@ -464,44 +463,44 @@ package body Flow_Refinement is
    ------------------------------
 
    function Find_Node_In_Initializes (E : Entity_Id) return Node_Id is
-      P          : Entity_Id := E;
-      Init       : Node_Id;
-      M          : Dependency_Maps.Map;
-      F          : Flow_Id;
-      N          : Node_Id;
+      State : constant Entity_Id := Encapsulating_State (E);
 
       Target_Ent : constant Entity_Id :=
-        (if Present (Encapsulating_State (E))
-           and then Scope (E) = Scope (Encapsulating_State (E))
-         then Encapsulating_State (E)
+        (if Present (State) and then Scope (E) = Scope (State)
+         then State
          else Unique_Entity (E));
       --  What we are searching for. Either the entity itself, or, if this
-      --  entity is part of abstract state of its immediately enclosing
-      --  package, that abstract state.
+      --  entity is a constituent of an abstract state of its immediately
+      --  enclosing package, that abstract state.
+
+      P : Entity_Id := E;
 
    begin
-      while Ekind (P) not in E_Package | E_Generic_Package loop
-         case Ekind (P) is
-            when E_Package_Body =>
-               raise Why.Not_Implemented;
-            when others =>
-               P := Scope (P);
-         end case;
+      while not Is_Package_Or_Generic_Package (P) loop
+         pragma Assert (Ekind (P) /= E_Package_Body);
+         P := Scope (P);
       end loop;
-      Init := Get_Pragma (P, Pragma_Initializes);
 
-      M := Parse_Initializes (Init, P, Get_Flow_Scope (P));
+      declare
+         M : constant Dependency_Maps.Map :=
+           Parse_Initializes (Get_Pragma (P, Pragma_Initializes),
+                              P, Get_Flow_Scope (P));
 
-      for Initialized_Var in M.Iterate loop
-         F := Dependency_Maps.Key (Initialized_Var);
-         N := (if F.Kind in Direct_Mapping | Record_Field
-               then Get_Direct_Mapping_Id (F)
-               else Empty);
-
-         if N = Target_Ent then
-            return N;
-         end if;
-      end loop;
+      begin
+         for Initialized_Var in M.Iterate loop
+            declare
+               F : Flow_Id renames Dependency_Maps.Key (Initialized_Var);
+               N : constant Node_Id :=
+                 (if F.Kind in Direct_Mapping | Record_Field
+                  then Get_Direct_Mapping_Id (F)
+                  else Empty);
+            begin
+               if N = Target_Ent then
+                  return N;
+               end if;
+            end;
+         end loop;
+      end;
 
       return Empty;
    end Find_Node_In_Initializes;
