@@ -148,7 +148,7 @@ package body SPARK_Rewrite is
         and then Ekind (Entity (N)) = E_Constant
       then
          declare
-            Const_Expr     : constant Node_Id  := Constant_Value (Entity (N));
+            Const_Expr     : constant Node_Id := Constant_Value (Entity (N));
             Range_Check    : constant Boolean := Do_Range_Check (N);
             Overflow_Check : constant Boolean := Do_Overflow_Check (N);
             Division_Check : constant Boolean := Do_Division_Check (N);
