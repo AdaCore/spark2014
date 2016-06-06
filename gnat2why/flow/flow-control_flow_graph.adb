@@ -3747,8 +3747,8 @@ package body Flow.Control_Flow_Graph is
          when N_Package_Body_Stub => Get_Flow_Scope
                                        (Get_Body_Or_Stub (Pkg_Body)),
          when others              => raise Program_Error);
-      --  The above holds the scope of the nested package. In the case of a
-      --  stub we look at where the stub is placed instead.
+      --  Scope of the nested package. In the case of a stub we look at where
+      --  the stub is placed instead.
 
       DM : constant Dependency_Maps.Map :=
         Parse_Initializes (Initializes_Aspect,
