@@ -278,7 +278,10 @@ package SPARK_Util is
      (Retysp_Kind (T) in Record_Kind);
 
    function Has_Private_Type (T : Entity_Id) return Boolean is
-     (Retysp_Kind (T) in Private_Kind);
+     (Retysp_Kind (T) in Private_Kind or else
+      (Retysp_Kind (T) = E_Record_Subtype
+       and then Retysp_Kind (Etype (Retysp (T))) in Private_Kind));
+   --  Record subtypes of private types are handled as private types.
 
    function Has_Scalar_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Scalar_Kind);

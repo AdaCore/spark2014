@@ -759,7 +759,7 @@ package body SPARK_Util is
       Count : Natural := 0;
 
    begin
-      if Is_Record_Type (E) or else Is_Protected_Type (E) then
+      if Has_Record_Type (E) or else Is_Protected_Type (E) then
          Field := First_Component (E);
          while Present (Field) loop
             if not Is_Tag (Field)
@@ -773,7 +773,7 @@ package body SPARK_Util is
 
       --  Add one field for private types whose components are not visible.
 
-      if Is_Private_Type (E) or else Is_Task_Type (E) then
+      if Has_Private_Type (E) or else Is_Task_Type (E) then
          Count := Count + 1;
       end if;
 

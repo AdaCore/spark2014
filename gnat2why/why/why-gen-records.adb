@@ -707,7 +707,7 @@ package body Why.Gen.Records is
                      pragma Assert
                        (if not Component_Is_Visible_In_SPARK (Field)
                         then Has_Private_Ancestor_Or_Root (E)
-                       or else Is_Private_Type (E) or else Is_Task_Type (E));
+                       or else Has_Private_Type (E) or else Is_Task_Type (E));
                   end if;
 
                   Next_Component (Field);
@@ -791,7 +791,7 @@ package body Why.Gen.Records is
                        Count_Fields_Not_In_Root (E)
                        + 1  --  for the extension field of the current type
                        + (if Has_Private_Ancestor_Or_Root (E) then 1 else 0)
-                       + (if Is_Private_Type (E) or else Is_Task_Type (E)
+                       + (if Has_Private_Type (E) or else Is_Task_Type (E)
                           then 1 else 0);
                      Args   : W_Expr_Array (1 .. Num_Args);
                      Index  : Natural := 0;
@@ -823,7 +823,7 @@ package body Why.Gen.Records is
 
                      pragma Assert (Num_Args - Index in 0 .. 2);
 
-                     if Is_Private_Type (E) or else Is_Task_Type (E) then
+                     if Has_Private_Type (E) or else Is_Task_Type (E) then
                         Index := Index + 1;
                         Args (Index) :=
                           New_Record_Access
@@ -871,7 +871,7 @@ package body Why.Gen.Records is
 
                --  Step 2.5. Deal with Rec__Main__ component for private types
 
-               if Is_Private_Type (E) or else Is_Task_Type (E) then
+               if Has_Private_Type (E) or else Is_Task_Type (E) then
                   Field_From_Index := Field_From_Index + 1;
                   if Is_Tagged_Type (E) then
                      From_Root_Field (Field_From_Index) :=
@@ -900,7 +900,7 @@ package body Why.Gen.Records is
                   end if;
                end if;
 
-               if Is_Private_Type (Root) or else Is_Task_Type (Root) then
+               if Has_Private_Type (Root) or else Is_Task_Type (Root) then
                   Field_To_Index := Field_To_Index + 1;
                   if Has_Private_Ancestor_Or_Root (E) then
                      To_Root_Field (Field_To_Index) :=
@@ -1089,8 +1089,8 @@ package body Why.Gen.Records is
                Extract_Extension_Fun);
          Needs_Main      : constant Boolean :=
            (if Is_Ancestor then
-               Is_Private_Type (Root) or else Is_Task_Type (Root)
-            else Is_Private_Type (E) or else Is_Task_Type (E));
+               Has_Private_Type (Root) or else Is_Task_Type (Root)
+            else Has_Private_Type (E) or else Is_Task_Type (E));
          Num_Hide_Params : constant Natural :=
            Natural (Components.Length)
            + 1  --  for the extension field of the current type
@@ -1440,7 +1440,7 @@ package body Why.Gen.Records is
 
                --  Equality of the invisible private part
 
-               if Is_Private_Type (E) then
+               if Has_Private_Type (E) then
                   declare
                      Field_Ident : constant W_Identifier_Id :=
                        To_Ident (WNE_Rec_Split_Fields);
@@ -1730,7 +1730,7 @@ package body Why.Gen.Records is
             --  For private types, add a field of type __private representing
             --  the invisible components.
 
-            if Is_Private_Type (E) or else Is_Task_Type (E) then
+            if Has_Private_Type (E) or else Is_Task_Type (E) then
                Binders_F (Index) :=
                  (B_Name => To_Local (E_Symb (E, WNE_Rec_Main)),
                   others => <>);
@@ -2769,7 +2769,7 @@ package body Why.Gen.Records is
       Num_Args : constant Natural :=
         Count_Root_Fields_Not_In_E (Ty, Root)
         + 1  --  for the extension field of the current type
-        + (if Is_Private_Type (Root) or else Is_Task_Type (Root)
+        + (if Has_Private_Type (Root) or else Is_Task_Type (Root)
            then 1 else 0);
       Args     : W_Expr_Array (1 .. Num_Args);
       Index    : Natural := 0;
@@ -2801,7 +2801,7 @@ package body Why.Gen.Records is
 
       pragma Assert (Num_Args - Index in 0 .. 1);
 
-      if Is_Private_Type (Root) or else Is_Task_Type (Root) then
+      if Has_Private_Type (Root) or else Is_Task_Type (Root) then
          Index := Index + 1;
          Args (Index) :=
            New_Record_Access
@@ -3414,7 +3414,7 @@ package body Why.Gen.Records is
             --  If Current is private, its fullview is not in SPARK. Thus, it
             --  is considered to have private fields of its own.
 
-            if Is_Private_Type (Current) then
+            if Has_Private_Type (Current) then
                return Current;
             end if;
 
