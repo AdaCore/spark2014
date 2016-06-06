@@ -545,3 +545,4 @@ sensfusion6_pack.ads:76:04: info: initialization of "Integral_FBx" constituent o
 sensfusion6_pack.ads:78:04: info: initialization of "Integral_FBy" constituent of "SensFusion6_State" proved
 sensfusion6_pack.ads:80:04: info: initialization of "Integral_FBz" constituent of "SensFusion6_State" proved
 sensfusion6_pack.ads:86:04: info: initialization of "Beta" constituent of "SensFusion6_State" proved
+sensfusion6_pack.ads:86:30: info: range check proved

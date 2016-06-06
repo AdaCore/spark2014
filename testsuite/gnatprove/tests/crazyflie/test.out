@@ -800,6 +800,7 @@ sensfusion6_pack.ads:82:04: info: initialization of "Integral_FBx" constituent o
 sensfusion6_pack.ads:84:04: info: initialization of "Integral_FBy" constituent of "SensFusion6_State" proved
 sensfusion6_pack.ads:86:04: info: initialization of "Integral_FBz" constituent of "SensFusion6_State" proved
 sensfusion6_pack.ads:92:04: info: initialization of "Beta" constituent of "SensFusion6_State" proved
+sensfusion6_pack.ads:92:30: info: range check proved
 stabilizer_pack.adb:78:10: info: assertion proved, in call inlined at stabilizer_pack.adb:101
 stabilizer_pack.adb:78:10: info: assertion proved, in call inlined at stabilizer_pack.adb:102
 stabilizer_pack.adb:78:10: info: assertion proved, in call inlined at stabilizer_pack.adb:103
@@ -868,6 +869,7 @@ stabilizer_pack.adb:112:34: info: initialization of "Motor_Power_M1" constituent
 stabilizer_pack.adb:113:34: info: initialization of "Motor_Power_M2" constituent of "Motor_Powers" proved
 stabilizer_pack.adb:114:34: info: initialization of "Motor_Power_M3" constituent of "Motor_Powers" proved
 stabilizer_pack.adb:115:34: info: initialization of "Motor_Power_M4" constituent of "Motor_Powers" proved
+stabilizer_pack.adb:122:31: info: range check proved
 stabilizer_pack.adb:131:25: info: overflow check proved
 stabilizer_pack.adb:131:34: info: overflow check proved
 stabilizer_pack.adb:131:43: info: overflow check proved
@@ -909,6 +911,10 @@ stabilizer_pack.adb:206:31: info: initialization of "V_Speed_ASL" constituent of
 stabilizer_pack.adb:206:43: info: overflow check proved
 stabilizer_pack.adb:206:50: info: overflow check proved
 stabilizer_pack.adb:217:10: info: initialization of "Set_Alt_Hold" constituent of "Alt_Hold_Variables" proved
+stabilizer_pack.adb:226:33: info: range check proved
+stabilizer_pack.adb:227:33: info: range check proved
+stabilizer_pack.adb:228:33: info: range check proved
+stabilizer_pack.adb:231:33: info: range check proved
 stabilizer_pack.adb:233:32: info: initialization of "Prev_Integ" proved
 stabilizer_pack.adb:233:32: info: range check proved
 stabilizer_pack.adb:236:30: info: range check proved
