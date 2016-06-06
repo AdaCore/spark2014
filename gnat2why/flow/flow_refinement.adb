@@ -25,6 +25,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 
 with Nlists;               use Nlists;
 with Output;               use Output;
+with Sem_Aux;              use Sem_Aux;
 with Sprint;               use Sprint;
 with Stand;                use Stand;
 with Treepr;               use Treepr;
@@ -211,34 +212,18 @@ package body Flow_Refinement is
    -----------------------------------
 
    function Get_Enclosing_Body_Flow_Scope (S : Flow_Scope) return Flow_Scope is
-      P : Node_Id;
    begin
-      P := S.Ent;
-      while Nkind (P) not in N_Generic_Package_Declaration |
-                             N_Package_Declaration         |
-                             N_Protected_Type_Declaration  |
-                             N_Task_Type_Declaration
-      loop
-         P := Parent (P);
-      end loop;
-
-      pragma Assert (Nkind (P) in N_Generic_Package_Declaration |
-                                  N_Package_Declaration         |
-                                  N_Protected_Type_Declaration  |
-                                  N_Task_Type_Declaration);
-      P := Corresponding_Body (P);
-
-      --  We need to get to the node that is above the N_Package_Body,
-      --  N_Protected_Body or N_Task_Body that corresponds to flow scope S.
-      while Nkind (P) not in N_Package_Body   |
-                             N_Protected_Body |
-                             N_Task_Body
-      loop
-         P := Parent (P);
-      end loop;
-      P := Parent (P);
-
-      return Get_Flow_Scope (P);
+      return
+        Get_Flow_Scope
+          (Parent (case Ekind (S.Ent) is
+                      when E_Generic_Package | E_Package =>
+                         Package_Body (S.Ent),
+                      when E_Protected_Type =>
+                         PO_Body (S.Ent),
+                      when E_Task_Type =>
+                         Task_Body (S.Ent),
+                      when others =>
+                         raise Program_Error));
    end Get_Enclosing_Body_Flow_Scope;
 
    --------------------
