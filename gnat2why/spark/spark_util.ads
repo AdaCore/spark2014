@@ -278,10 +278,7 @@ package SPARK_Util is
      (Retysp_Kind (T) in Record_Kind);
 
    function Has_Private_Type (T : Entity_Id) return Boolean is
-     (Retysp_Kind (T) in Private_Kind or else
-      (Retysp_Kind (T) = E_Record_Subtype
-       and then Retysp_Kind (Etype (Retysp (T))) in Private_Kind));
-   --  Record subtypes of private types are handled as private types.
+     (Retysp_Kind (T) in Private_Kind);
 
    function Has_Scalar_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Scalar_Kind);
@@ -538,9 +535,15 @@ package SPARK_Util is
    function Has_Private_Ancestor_Or_Root (E : Entity_Id) return Boolean;
    --  @param E any type
    --  @return True iff E is a tagged type whose translation into Why3 requires
-   --     the use of an ancestor field, to denote invisible fieds from an
+   --     the use of an ancestor field, to denote invisible fields from an
    --     ancestor at the Why3 level (due either to a private ancestor or
    --     a root type whose full view not in SPARK).
+
+   function Has_Private_Fields (E : Entity_Id) return Boolean;
+   --  @param E any type
+   --  @return True iff E's translation into Why3 requires the use of a main
+   --     field to represent invisible fields that are not derived from an
+   --     ancestor (E's first ancestor which is a "nouveau" type is private).
 
    function Has_Static_Discrete_Predicate (E : Entity_Id) return Boolean;
    --  @param E any type

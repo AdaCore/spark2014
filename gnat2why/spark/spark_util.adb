@@ -773,7 +773,7 @@ package body SPARK_Util is
 
       --  Add one field for private types whose components are not visible.
 
-      if Has_Private_Type (E) or else Is_Task_Type (E) then
+      if Has_Private_Fields (E) then
          Count := Count + 1;
       end if;
 
@@ -1995,6 +1995,34 @@ package body SPARK_Util is
         and then Full_View_Not_In_SPARK
           (Get_First_Ancestor_In_SPARK (Ancestor));
    end Has_Private_Ancestor_Or_Root;
+
+   ------------------------
+   -- Has_Private_Fields --
+   ------------------------
+
+   function Has_Private_Fields (E : Entity_Id) return Boolean is
+      Ancestor : Entity_Id := E;
+   begin
+      if not Full_View_Not_In_SPARK (E) then
+         return False;
+      end if;
+
+      if Is_Task_Type (E) then
+         return True;
+      end if;
+
+      --  Go to the first new type in E's hierarchy
+
+      while Ekind (Ancestor) in Subtype_Kind loop
+         pragma Assert (Full_View_Not_In_SPARK (Ancestor));
+         pragma Assert (Ancestor /= Get_First_Ancestor_In_SPARK (Ancestor));
+         Ancestor := Get_First_Ancestor_In_SPARK (Ancestor);
+      end loop;
+
+      --  Return True if it is a private type
+
+      return Ekind (Ancestor) in Private_Kind;
+   end Has_Private_Fields;
 
    -----------------------------------
    -- Has_Static_Discrete_Predicate --
