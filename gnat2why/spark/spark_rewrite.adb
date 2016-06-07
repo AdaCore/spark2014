@@ -148,10 +148,8 @@ package body SPARK_Rewrite is
         and then Ekind (Entity (N)) = E_Constant
       then
          declare
-            Const_Expr     : constant Node_Id := Constant_Value (Entity (N));
-            Range_Check    : constant Boolean := Do_Range_Check (N);
-            Overflow_Check : constant Boolean := Do_Overflow_Check (N);
-            Division_Check : constant Boolean := Do_Division_Check (N);
+            Const_Expr  : constant Node_Id := Constant_Value (Entity (N));
+            Range_Check : constant Boolean := Do_Range_Check (N);
          begin
             if Present (Const_Expr)
               and then Compile_Time_Known_Value (Const_Expr)
@@ -164,8 +162,6 @@ package body SPARK_Rewrite is
                               Is_Static_Expression (N));
                end if;
                Set_Do_Range_Check (N, Range_Check);
-               Set_Do_Overflow_Check (N, Overflow_Check);
-               Set_Do_Division_Check (N, Division_Check);
             end if;
          end;
       end if;
