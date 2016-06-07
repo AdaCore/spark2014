@@ -25,6 +25,7 @@
 
 with Ada.Strings;            use Ada.Strings;
 with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
+with Flow_Types;
 with Flow_Utility;
 with Gnat2Why.Expr;          use Gnat2Why.Expr;
 with Sem_Util;               use Sem_Util;
@@ -39,7 +40,6 @@ with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
 with Why.Inter;              use Why.Inter;
 with Why.Types;              use Why.Types;
-with Flow_Types;
 
 package body Gnat2Why.Util is
 
@@ -782,13 +782,15 @@ package body Gnat2Why.Util is
       --  Constants defined locally to a loop inside a subprogram (or any
       --  other dynamic scope) may end up having different values, so should
       --  be mutable in Why, except when they are defined inside "actions" (in
-      --  which case they are defined as local "let" bound variables in Why).
+      --  which case they are defined as local "let" bound variables in Why)
+      --  or when they have no variable inputs.
 
       elsif Ekind (E) = E_Constant
         and then SPARK_Definition.Is_Loop_Entity (E)
         and then not SPARK_Definition.Is_Actions_Entity (E)
       then
-         return True;
+         return Flow_Utility.Has_Variable_Input
+           (Flow_Types.Direct_Mapping_Id (E));
 
       --  We special case any volatile with async writers: they are always
       --  mutable (even if they are, for example, in parameters). Constants
