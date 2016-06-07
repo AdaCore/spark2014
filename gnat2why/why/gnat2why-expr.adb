@@ -4449,7 +4449,8 @@ package body Gnat2Why.Expr is
               and then
                 not Eq_Base (Type_Of_Node (Formal), Type_Of_Node (Actual));
          begin
-            if Has_Predicates (Etype (Actual))
+            if Present (Actual)
+              and then Has_Predicates (Etype (Actual))
               and then Need_Pred_Check_On_Store
             then
                declare
