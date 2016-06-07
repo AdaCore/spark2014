@@ -2910,6 +2910,19 @@ Single Units
 These examples contain a single unit, and are usually small (a few hundreds
 slocs at most).
 
+.. rubric:: ``adacore_u``
+
+This folder contains the complete source code of the small examples used in the
+quiz of the SPARK 2014 course available from the AdaCore University website (at
+http://university.adacore.com/courses/spark-2014/). They include unannotated
+units, examples with formally verified data flow, functional, or abstraction
+contracts, as well as erroneous programs, on which |GNATprove| detects failing
+checks.
+
+Opening the example in GPS or GNATbench opens the project corresponding to the
+first lecture. Projects corresponding to the following lectures are available
+in sibling subdirectories and can be opened manually.
+
 .. rubric:: ``allocators``
 
 This program demonstrates how the specification of a |SPARK| program can be
@@ -2959,19 +2972,6 @@ automatically using |GNATprove|.
    auto-active style through ghost procedure calls.
    The whole program can then be verified automatically with CVC4 and Z3 and a
    60 seconds timeout.
-
-.. rubric:: ``adacore_u``
-
-This folder contains the complete source code of the small examples used in the
-quiz of the SPARK 2014 course available from the AdaCore University website (at
-http://university.adacore.com/courses/spark-2014/). They include unannotated
-units, examples with formally verified data flow, functional, or abstraction
-contracts, as well as erroneous programs, on which |GNATprove| detects failing
-checks.
-
-Opening the example in GPS or GNATbench opens the project corresponding to the
-first lecture. Projects corresponding to the following lectures are available
-in sibling subdirectories and can be opened manually.
 
 .. rubric:: ``database``
 
