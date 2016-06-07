@@ -861,7 +861,7 @@ package SPARK_Util is
    ------------------------------
 
    function Task_Body (E : Entity_Id) return Node_Id
-   with Pre  => Nkind (E) in N_Entity and then Ekind (E) = E_Task_Type,
+   with Pre  => Ekind (E) = E_Task_Type,
         Post => (if Present (Task_Body'Result)
                  then Nkind (Task_Body'Result) = N_Task_Body);
    --  @param E task type
@@ -869,26 +869,29 @@ package SPARK_Util is
    --    Subprogram_Body might produce.
 
    function Task_Body_Entity (E : Entity_Id) return Entity_Id
-   with Pre  => Nkind (E) in N_Entity and then Ekind (E) = E_Task_Type,
+   with Pre  => Ekind (E) = E_Task_Type,
         Post => (if Present (Task_Body_Entity'Result)
                  then Ekind (Task_Body_Entity'Result) = E_Task_Body);
    --  @param E task type
    --  @return the entity of the task body for the given type, similar
    --    to what Subprogram_Body_Entity might produce.
 
-   function Definition_of_Task_Type (E : Entity_Id) return Node_Id
-   is (Task_Definition (Parent (E)));
+   function Task_Type_Definition (E : Entity_Id) return Node_Id
+   is (Task_Definition (Parent (E)))
+   with Pre  => Ekind (E) = E_Task_Type,
+        Post => (if Present (Task_Type_Definition'Result) then
+                 Nkind (Task_Type_Definition'Result) = N_Task_Definition);
    --  @param E a task type entity
    --  @return the definition of the task type
 
    function Visible_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
-   with Pre => Is_Task_Type (E);
+   with Pre => Ekind (E) = E_Task_Type;
    --  @param E a task type entity
    --  @return the list of visible declarations of the task type, or the empty
    --    list if not available
 
    function Private_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
-   with Pre => Is_Task_Type (E);
+   with Pre => Ekind (E) = E_Task_Type;
    --  @param E a task type entity
    --  @return the list of visible declarations of the task type, or the empty
    --    list of not available
@@ -897,18 +900,19 @@ package SPARK_Util is
    -- Queries related to protected objects --
    ------------------------------------------
 
-   function PO_Body (E : Entity_Id) return Node_Id
-   with Pre  => Nkind (E) in N_Entity and then Ekind (E) = E_Protected_Type,
-        Post => (if Present (PO_Body'Result)
-                 then Nkind (PO_Body'Result) = N_Protected_Body);
+   function Protected_Body (E : Entity_Id) return Node_Id
+   with Pre  => Ekind (E) = E_Protected_Type,
+        Post => (if Present (Protected_Body'Result)
+                 then Nkind (Protected_Body'Result) = N_Protected_Body);
    --  @param E protected type
    --  @return the protected body for the given type, similar to what
    --    subprogram_body might produce.
 
-   function PO_Definition (E : Entity_Id) return Node_Id
-   with Pre  => Nkind (E) in N_Entity and then Ekind (E) = E_Protected_Type,
-        Post => (if Present (PO_Definition'Result)
-                 then Nkind (PO_Definition'Result) = N_Protected_Definition);
+   function Protected_Type_Definition (E : Entity_Id) return Node_Id
+   with Pre  => Ekind (E) = E_Protected_Type,
+        Post => (if Present (Protected_Type_Definition'Result)
+                 then Nkind (Protected_Type_Definition'Result) =
+                        N_Protected_Definition);
    --  @param E protected type
    --  @return the protected definition for the given type
 
@@ -930,14 +934,12 @@ package SPARK_Util is
    --            type
    --  @return the enclosing protected type
 
-   function Visible_Declarations_of_Prot_Type (E : Entity_Id) return List_Id
-   is (Visible_Declarations (PO_Definition (Base_Type (E))))
+   function Visible_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
    with Pre => Is_Protected_Type (E);
    --  @param E a protected type entity
    --  @return the list of visible declarations of the protected type
 
-   function Private_Declarations_of_Prot_Type (E : Entity_Id) return List_Id
-   is (Private_Declarations (PO_Definition (Base_Type (E))))
+   function Private_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
    with Pre => Is_Protected_Type (E);
    --  @param E a protected type entity
    --  @return the list of visible declarations of the protected type

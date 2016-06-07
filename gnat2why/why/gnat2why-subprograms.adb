@@ -2414,8 +2414,8 @@ package body Gnat2Why.Subprograms is
 
       Why_Body   : W_Prog_Id := +Void;
       Name       : constant String  := Full_Name (E);
-      Priv_Decls : constant List_Id := Private_Declarations_of_Prot_Type (E);
-      Vis_Decls  : constant List_Id := Visible_Declarations_of_Prot_Type (E);
+      Priv_Decls : constant List_Id := Private_Declarations_Of_Prot_Type (E);
+      Vis_Decls  : constant List_Id := Visible_Declarations_Of_Prot_Type (E);
 
    --  Start of processing for Generate_VCs_For_Protected_Type
 

@@ -1652,7 +1652,7 @@ package body Flow_Utility is
       --  protected object.
 
       Inner : constant Node_Id :=
-        First (Visible_Declarations_of_Prot_Type (E));
+        First (Visible_Declarations_Of_Prot_Type (E));
    begin
 
       --  A hack, but a correct one. Arguably, a protected object without any

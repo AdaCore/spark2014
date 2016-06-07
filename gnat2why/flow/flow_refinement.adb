@@ -219,7 +219,7 @@ package body Flow_Refinement is
                       when E_Generic_Package | E_Package =>
                          Package_Body (S.Ent),
                       when E_Protected_Type =>
-                         PO_Body (S.Ent),
+                         Protected_Body (S.Ent),
                       when E_Task_Type =>
                          Task_Body (S.Ent),
                       when others =>

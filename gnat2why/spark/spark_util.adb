@@ -3094,29 +3094,29 @@ package body SPARK_Util is
       return Count;
    end Number_Of_Assocs_In_Expression;
 
-   -------------
-   -- PO_Body --
-   -------------
+   --------------------
+   -- Protected_Body --
+   --------------------
 
-   function PO_Body (E : Entity_Id) return Node_Id is
+   function Protected_Body (E : Entity_Id) return Node_Id is
       Ptr : constant Node_Id := Parent (E);
 
    begin
       pragma Assert (Nkind (Ptr) = N_Protected_Type_Declaration);
       return Parent (Corresponding_Body (Ptr));
-   end PO_Body;
+   end Protected_Body;
 
-   -------------------
-   -- PO_Definition --
-   -------------------
+   -------------------------------
+   -- Protected_Type_Definition --
+   -------------------------------
 
-   function PO_Definition (E : Entity_Id) return Node_Id is
+   function Protected_Type_Definition (E : Entity_Id) return Node_Id is
       Ptr : constant Node_Id := Parent (E);
 
    begin
       pragma Assert (Nkind (Ptr) = N_Protected_Type_Declaration);
       return Protected_Definition (Ptr);
-   end PO_Definition;
+   end Protected_Type_Definition;
 
    ---------------------------------
    -- Requires_Interrupt_Priority --
@@ -3141,7 +3141,7 @@ package body SPARK_Util is
                                          Pragma_Attach_Handler));
       end Decl_Has_Attach_Handler;
 
-      Decls : List_Id := Visible_Declarations_of_Prot_Type (E);
+      Decls : List_Id := Visible_Declarations_Of_Prot_Type (E);
       Decl  : Node_Id := First (Decls);
 
    --  Start of processing for Requires_Interrupt_Priority
@@ -3154,7 +3154,7 @@ package body SPARK_Util is
          Next (Decl);
       end loop;
       if Private_Spec_In_SPARK (E) then
-         Decls := Private_Declarations_of_Prot_Type (E);
+         Decls := Private_Declarations_Of_Prot_Type (E);
          Decl := First (Decls);
          while Present (Decl) loop
             if Decl_Has_Attach_Handler (Decl) then
@@ -3662,12 +3662,19 @@ package body SPARK_Util is
                                          renames Is_Part_Of_Protected;
 
    ---------------------------------------
+   -- Visible_Declarations_Of_Prot_Type --
+   ---------------------------------------
+
+   function Visible_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
+   is (Visible_Declarations (Protected_Type_Definition (Base_Type (E))));
+
+   ---------------------------------------
    -- Visible_Declarations_Of_Task_Type --
    ---------------------------------------
 
    function Visible_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
    is
-      Def : constant Node_Id := Definition_of_Task_Type (E);
+      Def : constant Node_Id := Task_Type_Definition (E);
    begin
       if Present (Def) then
          return Visible_Declarations (Def);
@@ -3677,12 +3684,19 @@ package body SPARK_Util is
    end Visible_Declarations_Of_Task_Type;
 
    ---------------------------------------
+   -- Private_Declarations_Of_Prot_Type --
+   ---------------------------------------
+
+   function Private_Declarations_Of_Prot_Type (E : Entity_Id) return List_Id
+   is (Private_Declarations (Protected_Type_Definition (Base_Type (E))));
+
+   ---------------------------------------
    -- Private_Declarations_Of_Task_Type --
    ---------------------------------------
 
    function Private_Declarations_Of_Task_Type (E : Entity_Id) return List_Id
    is
-      Def : constant Node_Id := Definition_of_Task_Type (E);
+      Def : constant Node_Id := Task_Type_Definition (E);
    begin
       if Present (Def) then
          return Private_Declarations (Def);
