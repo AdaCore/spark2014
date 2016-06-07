@@ -718,6 +718,7 @@ package body Why.Gen.Expr is
                    and then Do_Range_Check (Expression (Ada_Node))
                    and then Nkind (Parent (Ada_Node)) in
                      N_Parameter_Association | N_Procedure_Call_Statement
+                       | N_Entry_Call_Statement
                    and then Ekind (Get_Formal_From_Actual (Ada_Node)) in
                      E_In_Out_Parameter | E_Out_Parameter)
                     or else
@@ -1224,6 +1225,7 @@ package body Why.Gen.Expr is
 
          when N_Function_Call            |
               N_Procedure_Call_Statement |
+              N_Entry_Call_Statement     |
               N_Parameter_Association    =>
             declare
                Formal : constant Entity_Id := Get_Formal_From_Actual (Expr);

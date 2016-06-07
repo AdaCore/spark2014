@@ -12,7 +12,7 @@ package body InRange is
    is
       X, Y : int10 := 10;
    begin
-      PO.Add_Out (X, Y);
+      PO.Add_Out (X, Y); --@RANGE_CHECK:FAIL
       pragma Assert (X <= 10);
    end Do_It;
 

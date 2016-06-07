@@ -1107,6 +1107,7 @@ package SPARK_Util is
    with Pre => Nkind (Parent (Actual)) in N_Function_Call            |
                                           N_Parameter_Association    |
                                           N_Procedure_Call_Statement |
+                                          N_Entry_Call_Statement     |
                                           N_Unchecked_Type_Conversion;
    --  @param Actual actual parameter of a call
    --  @return the corresponding formal parameter

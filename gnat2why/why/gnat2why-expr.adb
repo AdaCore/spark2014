@@ -3881,7 +3881,7 @@ package body Gnat2Why.Expr is
       Let_Fetch    : W_Prog_Array (1 .. Nb_Of_Lets);
       Store        : constant W_Statement_Sequence_Unchecked_Id :=
         New_Unchecked_Statement_Sequence;
-      Subp         : constant Entity_Id := Entity (Sinfo.Name (Ada_Call));
+      Subp         : constant Entity_Id := Get_Called_Entity (Ada_Call);
       Binders      : constant Item_Array :=
         Compute_Subprogram_Parameters (Subp, EW_Prog);
       Bind_Cnt     : Positive := Binders'First;
@@ -4443,7 +4443,8 @@ package body Gnat2Why.Expr is
 
          declare
             Need_Pred_Check_On_Store : constant Boolean :=
-              not Is_Scalar_Type (Retysp (Etype (Formal)))
+              Present (Formal)
+              and then not Is_Scalar_Type (Retysp (Etype (Formal)))
               and then Ekind (Formal) /= E_In_Parameter
               and then
                 not Eq_Base (Type_Of_Node (Formal), Type_Of_Node (Actual));
@@ -4472,6 +4473,15 @@ package body Gnat2Why.Expr is
 
    begin
       Statement_Sequence_Append_To_Statements (Store, Why_Call);
+
+      --  In the case of protected subprograms, there is an invisible first
+      --  parameter, the protected object itself. We call "Compute_Arg" with
+      --  empty arguments to process this case.
+
+      if Is_Protected_Subprogram (Subp) then
+         Process_Param (Empty, Empty);
+      end if;
+
       Iterate_Call (Ada_Call);
 
       --  Set the pieces together
