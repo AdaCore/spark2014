@@ -28,7 +28,7 @@ is
 
    package M with Ghost,
      Initial_Condition =>
-       (Is_Empty (Model.Allocated)
+       (Is_Empty (Model.Allocated) and then Length (Model.Allocated) = 0
           and then
         Length (Model.Available) = Capacity
           and then

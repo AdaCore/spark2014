@@ -57,7 +57,7 @@ list_allocator.adb:101:07: info: loop invariant initialization proved
 list_allocator.adb:101:07: info: loop invariant preservation proved
 list_allocator.adb:102:07: info: loop invariant initialization proved
 list_allocator.adb:102:07: info: loop invariant preservation proved
-list_allocator.ads:13:03: medium: initial condition might fail
+list_allocator.ads:13:03: info: initial condition proved
 list_allocator.ads:30:06: info: initial condition proved
 list_allocator.ads:35:09: info: precondition proved
 list_allocator.ads:37:41: info: precondition proved
