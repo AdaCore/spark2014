@@ -114,7 +114,7 @@ package body SPARK_Util is
       Specific_Tagged_Types.Insert
         (E,
          (if Is_Full_View (V)
-          and then Full_View_Not_In_SPARK (Partial_View (V))
+            and then Full_View_Not_In_SPARK (Partial_View (V))
           then Partial_View (V)
           else V));
    end Set_Specific_Tagged;
