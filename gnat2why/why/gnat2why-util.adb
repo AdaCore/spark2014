@@ -424,12 +424,12 @@ package body Gnat2Why.Util is
    begin
       for V of Vars loop
          Result :=
-           New_Binding_Ref (Name     => W_Identifier_Id (V),
-                            Def      =>
+           New_Binding_Ref (Name    => W_Identifier_Id (V),
+                            Def     =>
                               +New_Discrete_Constant (Value => Uint_0,
                                                       Typ   => Get_Type (+V)),
-                            Context  => Result,
-                            Typ      => Get_Typ (W_Identifier_Id (V)));
+                            Context => Result,
+                            Typ     => Get_Typ (W_Identifier_Id (V)));
       end loop;
       return Result;
    end Create_Zero_Binding;
@@ -593,7 +593,7 @@ package body Gnat2Why.Util is
    function Get_Model_Trace_Label
      (E               : Entity_Id;
       Is_Record_Field : Boolean := False;
-      Append : String := "") return Name_Id_Sets.Set
+      Append          : String := "") return Name_Id_Sets.Set
    is
      (Name_Id_Sets.To_Set
         (NID
@@ -688,8 +688,8 @@ package body Gnat2Why.Util is
    --------------------
 
    function Is_Initialized
-     (Obj        : Entity_Id;
-      Scope      : Entity_Id)
+     (Obj   : Entity_Id;
+      Scope : Entity_Id)
       return Boolean
    is
       Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
@@ -709,13 +709,12 @@ package body Gnat2Why.Util is
          return (Enclosing_Unit (Obj) = Scope
                  and then Ekind (Obj) /= E_Out_Parameter)
            or else Read_Ids.Contains (Flow_Types.Direct_Mapping_Id (Obj));
+
+      --  Every global variable referenced inside a package elaboration must be
+      --  initialized. In the same way, tasks and protected objects can only
+      --  access synchronized or Part_Of objects, which are always initialized.
+
       else
-
-         --  Every global variable referenced inside a package elaboration
-         --  must be initialized.
-         --  In the same way, tasks and protected objects can only access
-         --  synchronized or part of objects which are always initialized.
-
          return True;
       end if;
    end Is_Initialized;
