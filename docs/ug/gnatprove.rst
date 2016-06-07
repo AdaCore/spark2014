@@ -2910,6 +2910,56 @@ Single Units
 These examples contain a single unit, and are usually small (a few hundreds
 slocs at most).
 
+.. rubric:: ``allocators``
+
+This program demonstrates how the specification of a |SPARK| program can be
+formalized using an abstract model and how the refinement relation between the
+model an its implementation can be verified using |GNATprove|. It is described
+in the paper
+`"Abstract Software Specifications and Automatic Proof of Refinement"`
+(at http://www.spark-2014.org/uploads/rssrail.pdf).
+
+The example contains three versions of an allocator package. They are specified
+in terms of mathematical structures (sequences and sets). The refinement
+relation between the mathematical model and the implementation is expressed as a
+ghost function ``Is_Valid`` and enforced through contracts. It can be verified
+automatically using |GNATprove|.
+
+ * ``Simple_Allocator`` features a naive implementation of the allocator,
+   storing the status (available or allocated) of each resource in a big array.
+   It is specified using a ``Model`` function which always returns a valid
+   refinement of the allocator's data. The refinement relation is verified only
+   once, as a postcondition of the ``Model`` function. The functional contracts
+   on modification functions as well as the refinement relation are
+   straight-forward and can be verified easily with one prover (CVC4) and a 1
+   second timeout.
+
+ * ``List_Allocator`` introduces a free list to access more efficiently the
+   first available resource. Here not every possible state of the allocator data
+   can be refined into a valid model. To work around this problem, the model is
+   stored in a global variable which is updated along with the allocator's data
+   and the refinement relation is expressed as an invariant that must be
+   verified as a postcondition of each modification subprogram. The functional
+   contracts on modification functions are straight-forward but the refinement
+   relation is now more complicated, as it needs to account for the
+   implementation of the free list. They can be verified with two provers (CVC4
+   and Z3) and a 60 seconds timeout.
+
+ * ``List_Mod_Allocator`` features the same implementation and contracts as
+   ``List_Allocator``, but its model is not stored in a global variable but
+   returned by a function, like in ``Simple_Allocator``. As not every possible
+   state of the allocator can be refined into a valid model, the refinement
+   relation is not expressed as a postcondition of Model, but as an invariant,
+   as in ``List_Allocator`` and must be verified as a postcondition of each
+   modification subprogram. The functional contracts and the refinement relation
+   resemble those of ``List_Allocator``. However, as we don't construct
+   explicitly the new model after each modification, the proof of the
+   allocator's functional contracts requires induction, which is beyond the
+   reach of automatic solvers. The induction scheme is given here manually in an
+   auto-active style through ghost procedure calls.
+   The whole program can then be verified automatically with CVC4 and Z3 and a
+   60 seconds timeout.
+
 .. rubric:: ``adacore_u``
 
 This folder contains the complete source code of the small examples used in the
