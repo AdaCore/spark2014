@@ -1,0 +1,25 @@
+with OK_Semantics.Priv;
+
+package body OK_Semantics.Pub with
+  SPARK_Mode
+is
+   function Check return Boolean with
+     Refined_Global => (Input => (X, Y, Z, Priv.YY, Priv.State))
+   is
+   begin
+      return True;
+   end Check;
+
+   procedure Create is
+   begin
+      null;
+   end Create;
+
+   procedure Update with
+     Refined_Global => (In_Out => (X, Y, Z, Priv.YY, Priv.State))
+   is
+   begin
+      null;
+   end Update;
+
+end OK_Semantics.Pub;
