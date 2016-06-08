@@ -1052,15 +1052,20 @@ package SPARK_Util is
    --  @return the node as pretty printed Ada code, limited to 50 chars
 
    function Get_Body (E : Entity_Id) return Node_Id
-   with Pre  => Nkind (E) in N_Entity
-                  and then Ekind (E) in Entry_Kind  |
-                                        E_Function  |
-                                        E_Procedure |
-                                        E_Task_Type,
+   with Pre  => Ekind (E) in Entry_Kind       |
+                             E_Function       |
+                             E_Procedure      |
+                             E_Protected_Type |
+                             E_Task_Type,
         Post => (if Present (Get_Body'Result)
-                 then Nkind (Get_Body'Result) in N_Entry_Body      |
-                                                 N_Subprogram_Body |
-                                                 N_Task_Body);
+                 then Nkind (Get_Body'Result) =
+                        (case Ekind (E) is
+                            when Entry_Kind       => N_Entry_Body,
+                            when E_Function |
+                                 E_Procedure      => N_Subprogram_Body,
+                            when E_Protected_Type => N_Protected_Body,
+                            when E_Task_Type      => N_Task_Body,
+                            when others           => raise Program_Error));
    --  @param E is an entry, subprogram or task
    --  @return the body for the given entry/subprogram/task. This is a wrapper
    --    around Entry_Body, Subprogram_Body and Task_Body.

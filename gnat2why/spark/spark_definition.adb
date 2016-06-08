@@ -723,10 +723,9 @@ package body SPARK_Definition is
 
    procedure Generate_Output_In_Out_SPARK (Id : Entity_Id) is
    begin
-      --  Only add infomation for Id if analysis is requested for that
-      --  subprogram or package. Then, absence of errors in flow and warnings
-      --  in proof for that subprogram/package can be interpreted as correct
-      --  flow analysis or proof of that entity.
+      --  Only add infomation for Id if analysis is requested for it. Then,
+      --  absence of errors in flow and warnings in proof for it can be
+      --  interpreted as a correct flow analysis or proof for it.
 
       if Analysis_Requested (Id, With_Inlined => True) then
          declare
@@ -1654,6 +1653,11 @@ package body SPARK_Definition is
                      Mark_Entity (E);
                      Current_SPARK_Pragma := Save_SPARK_Pragma;
                   end;
+
+                  if In_Main_Unit (E) and then No (Get_Body (E)) then
+                     Generate_Output_In_Out_SPARK (E);
+                  end if;
+
                else
                   Mark_Entity (E);
                end if;
@@ -1672,13 +1676,13 @@ package body SPARK_Definition is
                declare
                   Spec : constant Entity_Id := Corresponding_Spec (N);
                begin
-                  --  For entries, functions and procedures of protected types
-                  --  detect also violations in the enclosing type, which acts
-                  --  as an implicit argument to these subprograms.
-
                   if Entity_In_SPARK (Spec) then
                      case Nkind (N) is
                         when N_Protected_Body =>
+                           --  For protected entries, functions and procedures
+                           --  detect also violations in the enclosing type,
+                           --  which acts as an implicit argument to these
+                           --  subprograms.
                            declare
                               Save_Protected_Type : constant Entity_Id :=
                                 Current_Protected_Type;
@@ -1689,6 +1693,8 @@ package body SPARK_Definition is
 
                               Current_Protected_Type := Save_Protected_Type;
                            end;
+
+                           Generate_Output_In_Out_SPARK (Spec);
 
                         when N_Task_Body =>
                            Mark_Subprogram_Body (N);

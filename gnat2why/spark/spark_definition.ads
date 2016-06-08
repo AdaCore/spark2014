@@ -125,10 +125,11 @@ package SPARK_Definition is
    --    mean that the entity is valid SPARK, only that SPARK_Mode is On.
 
    function Entity_Body_In_SPARK (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) in Entry_Kind  |
-                         E_Function  |
-                         E_Package   |
-                         E_Procedure |
+     Pre => Ekind (E) in Entry_Kind       |
+                         E_Function       |
+                         E_Package        |
+                         E_Procedure      |
+                         E_Protected_Type |
                          E_Task_Type;
    --  Returns True iff the body of E was marked in SPARK and contains no SPARK
    --  violations.
