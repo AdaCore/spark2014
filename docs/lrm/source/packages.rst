@@ -2350,6 +2350,15 @@ several points (described below) where, in fact, Ada defines no such checks.
 we are only talking about generating additional verification conditions;
 we are not talking about any changes in a program's behavior at run-time.]
 
+[TBD: Further non-normative wording is needed for the following
+rules to identify cases in which these new verification conditions are
+always trivially satisfied. In implementation terms, these correspond to
+cases where there is no need to invoke the prover(s). For example,
+the verfification condition corresponding to the runtime check on return
+from a "boundary" subprogram that an in-mode parameter satisifies its
+invariant is trivially satisfied because of the rule that a type
+invariant expression shall not have a variable input.]
+
 .. _tu-type_invariants-03:
 
 3. Invariant checking is extended to include in-mode parameters of
@@ -2393,9 +2402,8 @@ we are not talking about any changes in a program's behavior at run-time.]
    If we ignore generic units and dispatching calls
    for a moment, this means that invariant checking is extended to include
    checking parameter values for calls from within the immediate scope of
-   a type-invariant bearing type T which will execute (or, in the case of
-   a dispatching call, may execute) a subprogram body which is outside of
-   that scope.
+   a type-invariant bearing type T which will execute a subprogram body which
+   is outside of that scope.
 
    In the case of a dispatching call, this rule is applied to any call
    from inside the immediate scope of T which *might* execute a subprogram
@@ -2405,59 +2413,42 @@ we are not talking about any changes in a program's behavior at run-time.]
    based only on visibility rules (and without using any available
    knowledge about the tag of the controlling operand).
 
-   [TBD: Generics may introduce another wrinkle. Suppose we have a
-   generic declared outside of the immediate scope of T which is
-   instantiated inside that scope; or perhaps vice versa. Is a subprogram
-   declared within that instance considered to be inside or outside of the
-   immediate scope of T for purposes of these rules? And what if the generic
-   itself is declared within an instance of another generic? For now, we just
-   follow the simple macro-expansion model, but this may need to be revisited.
-   See also the reference to generics and instances in Ada RM 7.3.2(17).]
+   In determining whether code which occurs within the expansion
+   of an instantiation of a generic unit is inside of the immediate
+   scope of an invariant-bearing type T, the location of the generic
+   unit is ignored. [For example, if the package which declares the type
+   T also exports a visible generic unit which is instantiated outside
+   of that package, then subprograms declared within the expansion of that
+   instance are considered to occur outside of the immediate scope of T.]
+
+   [Note that this rule has no effect on the generation of verification
+   conditions corresponding to Ada-defined runtime checks, and in particular
+   those stemming from the parenthesized clause about instances and generics
+   in Ada RM 7.3.2(17).]
 
 .. _tu-type_invariants-07:
 
-7. Invariant checking is extended to include "hidden" components
-   (a term being introduced here) and subcomponents thereof, and for
-   all subprograms.
-   It is possible that the underlying tag of a tagged object (at runtime)
+7. Invariant checking is extended to apply to all parts of all tagged
+   inputs and outputs of a subprogram or call. As with globals, this
+   extension applies to all subprograms, not just "boundary" subprograms.
+   [This includes the case where a subcomponent of a tagged object is
+   passed as an actual parameter of mode *in out* or *out*.]
+
+   [It is possible that the underlying tag of a tagged object (at runtime)
    may differ from the tag of its nominal (compile time) type. Suppose that
    an object X is (statically) of type T1 (or T1'Class) but has T2'Tag
    as its underlying tag, and that T2 has one or more
    components which are not components of T1. Ada does not define runtime
    checking of type invariants for such "hidden" components of parameters.
-   [In particular, when Ada RM 7.3.2(20) says "The check is performed on each
-   such part of type T.", this does not include hidden components.]
+   In particular, when Ada RM 7.3.2(20) says "The check is performed on each
+   such part of type T.", this does not include hidden components. In
+   contrast, the phrase "all parts" in the preceding paragraph really
+   does mean "all parts", not just the set of components whose
+   existence is known statically. This is more similar to Ada's use
+   of "every component" in Ada RM 7.6.1 (9/3).]
 
-   In SPARK, however, invariant checking is extended (with one exception)
-   to include hidden components. As with globals, this extension applies to
-   all subprograms, not just "boundary" subprograms. The one exception is
-   a parameter of a specific tagged type which is a parameter of a subprogram
-   whose Extensions_Visible aspect is False; extension checking for a call
-   is not extended to include hidden components of such a parameter.
-   [These verification conditions concerning hidden components are
-   trivially discharged except in two cases. One is a subprogram which contains
-   a  "downward" explicit type
-   conversion; that is, a type conversion which takes an operand of a classwide
-   type T1'Class and converts it to a type T2 (or T2'Class) where T2 is a
-   descendant of T1 and T2 has at least one component which T1 does not. If
-   a component made visible by such a conversion is modified, then non-trivial
-   verification conditions may result.
-   The second case is that of a controlling parameter of an overriding
-   dispatching subprogram.
-   If such a parameter has some component and the subprogram overrides
-   (directly or indirectly) a primitive operation of a tagged type which
-   does not have this component (including of an interface type), then
-   that component is considered to be a hidden component [(because it may
-   be hidden from callers)].
-
-   If an extension implements
-   an interface types, then any non-overridden inherited operations may
-   be subject to new associated verification conditions because
-   all components would then be considered to be hidden. An inherited
-   subprogram in this case is subject to the same verification conditions
-   as if an explicit wrapper had been declared, implementing the
-   dynamic semantics described in Ada RM 3.4(27). [This is an unlikely
-   corner case.]
+   [This rule in introduced in order to deal with technical difficulties
+   that would otherwise arise in the treatment of these hidden components.]
 
 .. _default_initial_condition_aspect:
 
