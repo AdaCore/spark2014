@@ -909,7 +909,7 @@ procedure Gnatprove is
       ---------------------------
 
       procedure Generate_Z3_Section is
-         Command : constant String := Z3_Binary & " -smt2";
+         Command : constant String := Z3_Binary & " -smt2 -st";
       begin
          Start_Section ("prover");
          Put_Keyval ("command", Command &
