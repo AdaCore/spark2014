@@ -2839,14 +2839,6 @@ These examples range from single subprograms to demo programs with dozens of
 units. In this section, we describe briefly the code in each example, the
 properties specified, and the results of |GNATprove|'s analysis.
 
-.. note::
-
-   If you are using SPARK GPL 2015, most of these examples were not yet
-   included in your distribution, but you can retrieve them from the public git
-   source repository of |SPARK| at
-   https://forge.open-do.org/anonscm/git/spark2014/spark2014.git in the
-   subdirectory ``testsuite/gnatprove/tests``.
-
 Individual Subprograms
 ----------------------
 
