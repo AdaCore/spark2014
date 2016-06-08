@@ -139,13 +139,13 @@ procedure SPARK_Report is
    Assumptions      : Boolean := False;
 
    function Parse_Command_Line return String;
-   --  parse the command line and set the variables Assumptions and Limit_Subp.
-   --  return the name of the file which contains the object dirs to be
+   --  Parse the command line and set the variables Assumptions and Limit_Subp.
+   --  Return the name of the file which contains the object dirs to be
    --  scanned.
 
    procedure Handle_SPARK_File (Fn : String);
    --  Parse and extract all information from a single SPARK file.
-   --  No_Analysis_Done is set to true if no subprogram or package was
+   --  No_Analysis_Done is left as true if no subprogram or package was
    --  analyzed in this unit.
 
    procedure Handle_Flow_Items (V : JSON_Array; Unit : Unit_Type);
@@ -158,24 +158,24 @@ procedure SPARK_Report is
    --  Parse and extract all information from a proof result array
 
    procedure Handle_Source_Dir (Dir : String);
-   --  Parse all result files of this directory.
+   --  Parse all result files of this directory
 
    procedure Print_Analysis_Report (Handle : Ada.Text_IO.File_Type);
-   --  print the proof report in the given file
+   --  Print the proof report in the given file
 
    procedure Compute_Assumptions;
-   --  compute remaining assumptions for all subprograms and store them in
-   --  database
+   --  Compute remaining assumptions for all subprograms and store them in
+   --  database.
 
    function To_String (Sloc : My_Sloc) return String;
-   --  pretty printing of slocs including instantiation chains
+   --  Pretty-printing of slocs including instantiation chains
 
    procedure Dump_Summary_Table (Handle : Ada.Text_IO.File_Type);
    --  Print the summary table to a file
    --  @param Handle the file handle to print the summary table to
 
    procedure Increment (X : in out Integer);
-   --  @param X increment this parameter by 1
+   --  @param X increment its parameter by 1
 
    function VC_Kind_To_Summary (S : VC_Kind) return Summary_Entries;
    --  @param S a VC kind like VC_DIVISION_CHECK etc
@@ -202,7 +202,6 @@ procedure SPARK_Report is
 
    procedure Compute_Assumptions is
    begin
-
       --  ??? This is slow, use a better algorithm in Assumptions.Search
 
       for C of Get_All_Claims loop
@@ -220,7 +219,7 @@ procedure SPARK_Report is
 
    procedure Dump_Summary_Table (Handle : Ada.Text_IO.File_Type) is
 
-      T               : Table := Create_Table (Lines => 10, Cols => 8);
+      T : Table := Create_Table (Lines => 10, Cols => 8);
 
       procedure Print_Table_Header;
       --  print the header of the table
@@ -308,7 +307,7 @@ procedure SPARK_Report is
       ----------------------
 
       procedure Print_Table_Line (Line : Summary_Entries) is
-         Elt : Summary_Line := Summary (Line);
+         Elt   : Summary_Line := Summary (Line);
          Total : constant Natural :=
            Elt.Flow + Elt.Interval + Elt.CodePeer + Elt.Provers.Total +
              Elt.Justified + Elt.Unproved;
@@ -407,6 +406,8 @@ procedure SPARK_Report is
          end if;
       end Put_Total_Cell;
 
+   --  Start of processing for Dump_Summary_Table
+
    begin
       Compute_Total_Summary_Line;
       Ada.Text_IO.Put_Line (Handle, "Summary of SPARK analysis");
@@ -422,6 +423,10 @@ procedure SPARK_Report is
       end loop;
       Dump_Table (Handle, T);
    end Dump_Summary_Table;
+
+   --------------------------
+   -- Flow_Kind_To_Summary --
+   --------------------------
 
    function Flow_Kind_To_Summary (S : Flow_Tag_Kind) return Possible_Entries is
    begin
@@ -639,14 +644,14 @@ procedure SPARK_Report is
    -----------------------
 
    procedure Handle_SPARK_File (Fn : String) is
-         Dict      : constant JSON_Value :=
-           Read (Read_File_Into_String (Fn), Fn);
-         Basename  : constant String := Ada.Directories.Base_Name (Fn);
-         Unit      : constant Unit_Type := Mk_Unit (Basename);
-         Has_Flow  : constant Boolean := Has_Field (Dict, "flow");
-         Has_Proof : constant Boolean := Has_Field (Dict, "proof");
+      Dict      : constant JSON_Value :=
+        Read (Read_File_Into_String (Fn), Fn);
+      Basename  : constant String := Ada.Directories.Base_Name (Fn);
+      Unit      : constant Unit_Type := Mk_Unit (Basename);
+      Has_Flow  : constant Boolean := Has_Field (Dict, "flow");
+      Has_Proof : constant Boolean := Has_Field (Dict, "proof");
 
-         --  Status of analysis performed on all subprograms and packages of a
+      --  Status of analysis performed on all subprograms and packages of a
       --  unit depend on presence of the "flow" and "proof" files present in
       --  the .spark result file.
 
@@ -862,8 +867,8 @@ procedure SPARK_Report is
    -------------------
 
    procedure Process_Stats (C : Summary_Entries; Stats : JSON_Value) is
-
       Map : constant Prover_Stat_Maps.Map := From_JSON (Stats);
+
    begin
       Merge_Stat_Maps (Summary (C).Provers.Provers, Map);
    end Process_Stats;
@@ -927,11 +932,11 @@ procedure SPARK_Report is
    ---------------
 
    function To_String (Sloc : My_Sloc) return String is
-
       use Ada.Strings.Unbounded;
 
       First : Boolean := True;
       UB    : Unbounded_String;
+
    begin
       for S of Sloc loop
          if not First then
