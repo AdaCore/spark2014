@@ -139,8 +139,6 @@ package body SPARK_Definition is
    --  compiler inside expressions), which require a special translation.
    --  Those entities are stored in Actions_Entity_Set.
 
-   SPARK_Status_JSON : JSON_Array := Empty_Array;
-
    procedure Initialize;
    --  Initialize internal global variables; must be called before marking next
    --  compilation.
@@ -617,12 +615,6 @@ package body SPARK_Definition is
    function Sequential_Elaboration
      return Boolean is (Partition_Elaboration_Policy = 'S');
 
-   ------------------------------
-   -- Output SPARK Information --
-   ------------------------------
-
-   procedure Generate_Output_In_Out_SPARK (Id : Entity_Id);
-
    ----------------------------------
    -- Recursive Marking of the AST --
    ----------------------------------
@@ -717,36 +709,6 @@ package body SPARK_Definition is
       end if;
    end Discard_Underlying_Type;
 
-   ----------------------------------
-   -- Generate_Output_In_Out_SPARK --
-   ----------------------------------
-
-   procedure Generate_Output_In_Out_SPARK (Id : Entity_Id) is
-   begin
-      --  Only add infomation for Id if analysis is requested for it. Then,
-      --  absence of errors in flow and warnings in proof for it can be
-      --  interpreted as a correct flow analysis or proof for it.
-
-      if Analysis_Requested (Id, With_Inlined => True) then
-         declare
-            V : constant JSON_Value := To_JSON (Entity_To_Subp (Id));
-
-            SPARK_Status : constant String :=
-              (if Entity_Body_In_SPARK (Id)
-               then "all"
-               elsif Entity_Spec_In_SPARK (Id)
-               then
-                 (if Ekind (Id) = E_Package and then No (Package_Body (Id))
-                  then "all"
-                  else "spec")
-               else "no");
-         begin
-            Set_Field (V, "spark", SPARK_Status);
-            Append (SPARK_Status_JSON, V);
-         end;
-      end if;
-   end Generate_Output_In_Out_SPARK;
-
    ---------------------------------
    -- Get_First_Ancestor_In_SPARK --
    ---------------------------------
@@ -758,7 +720,52 @@ package body SPARK_Definition is
    -- Get_SPARK_JSON --
    --------------------
 
-   function Get_SPARK_JSON return JSON_Array is (SPARK_Status_JSON);
+   function Get_SPARK_JSON return JSON_Array is
+      SPARK_Status_JSON : JSON_Array := Empty_Array;
+
+   begin
+      --  ??? iterating over all entities is not efficient, but we do it only
+      --  once. Perhaps iteration over hierarchical Entity_Tree would allow to
+      --  skip entities from non-main unit and those whose parent is not in
+      --  SPARK. However, Entity_Tree does not contain protected types (maybe
+      --  it should?) while we want to generate SPARK status for them (maybe
+      --  we should not?).
+
+      for E of Entity_List loop
+         --  Only add infomation for an entity if analysis is requested for it.
+         --  Then, absence of errors in flow and warnings in proof for it can
+         --  be interpreted as a correct flow analysis or proof for it.
+
+         if Ekind (E) in Entry_Kind       |
+                         E_Function       |
+                         E_Procedure      |
+                         E_Package        |
+                         E_Protected_Type |
+                         E_Task_Type
+           and then In_Main_Unit (E)
+           and then Analysis_Requested (E, With_Inlined => True)
+         then
+            declare
+               V : constant JSON_Value := To_JSON (Entity_To_Subp (E));
+
+               SPARK_Status : constant String :=
+                 (if Entity_Body_In_SPARK (E)
+                  then "all"
+                  elsif Entity_Spec_In_SPARK (E)
+                  then
+                    (if Ekind (E) = E_Package and then No (Package_Body (E))
+                     then "all"
+                     else "spec")
+                  else "no");
+            begin
+               Set_Field (V, "spark", SPARK_Status);
+               Append (SPARK_Status_JSON, V);
+            end;
+         end if;
+      end loop;
+
+      return SPARK_Status_JSON;
+   end Get_SPARK_JSON;
 
    ----------------
    -- Initialize --
@@ -1653,11 +1660,6 @@ package body SPARK_Definition is
                      Mark_Entity (E);
                      Current_SPARK_Pragma := Save_SPARK_Pragma;
                   end;
-
-                  if In_Main_Unit (E) and then No (Get_Body (E)) then
-                     Generate_Output_In_Out_SPARK (E);
-                  end if;
-
                else
                   Mark_Entity (E);
                end if;
@@ -1693,8 +1695,6 @@ package body SPARK_Definition is
 
                               Current_Protected_Type := Save_Protected_Type;
                            end;
-
-                           Generate_Output_In_Out_SPARK (Spec);
 
                         when N_Task_Body =>
                            Mark_Subprogram_Body (N);
@@ -4504,11 +4504,6 @@ package body SPARK_Definition is
       First_Non_Pkg_Scope := Save_Non_Pkg_Scope;
       Current_Scope := Save_Scope;
 
-      --  Postprocessing: indicate in output file if package is in SPARK or
-      --  not, for reporting, debug and verification.
-
-      Generate_Output_In_Out_SPARK (Spec_E);
-
    end Mark_Package_Body;
 
    ------------------------------
@@ -4592,14 +4587,6 @@ package body SPARK_Definition is
       First_Non_Pkg_Scope := Save_Non_Pkg;
       Current_Scope := Save_Scope;
 
-      --  Postprocessing: indicate in output file if package is in SPARK or
-      --  not, for reporting, debug and verification. Only do so if there
-      --  is no corresponding package body, otherwise it is reported when
-      --  marking the package body.
-
-      if In_Main_Unit (Id) and then No (Package_Body (Id)) then
-         Generate_Output_In_Out_SPARK (Id);
-      end if;
    end Mark_Package_Declaration;
 
    -----------------
@@ -5343,11 +5330,6 @@ package body SPARK_Definition is
             end if;
          end if;
 
-         --  Postprocessing: indicate in output file if subprogram is in
-         --  SPARK or not, for reporting, debug and verification.
-
-         Generate_Output_In_Out_SPARK (E);
-
          Current_Delayed_Aspect_Type := Save_Delayed_Aspect_Type;
          Current_SPARK_Pragma := Save_SPARK_Pragma;
       end if;
@@ -5415,13 +5397,6 @@ package body SPARK_Definition is
          end;
       end if;
 
-      --  Postprocessing: indicate in output file if the entity is in SPARK or
-      --  not, for reporting, debug and verification. Only do so if there is no
-      --  corresponding body, otherwise it is reported when marking the body.
-
-      if In_Main_Unit (E) and then No (Get_Body (E)) then
-         Generate_Output_In_Out_SPARK (E);
-      end if;
    end Mark_Subprogram_Declaration;
 
    -----------------------------
