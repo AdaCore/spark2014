@@ -159,10 +159,7 @@ package body Gnat2Why.Assumptions is
    -- Register_Claim --
    --------------------
 
-   procedure Register_Claim (C : Claim) is
-   begin
-      Claims.Include (C);
-   end Register_Claim;
+   procedure Register_Claim (C : Claim) renames Claims.Include;
 
    -----------------------------------------
    -- Register_Proof_Assumptions_For_Call --
