@@ -2323,19 +2323,29 @@ RM, but there is a lot of such expository text in this section and we
 don't want anyone to be confused about what is strictly part of the
 language definition and what is not.]
 
+.. centered:: **Static Semantics**
+
+1. For a given type-invariant bearing type T, a *boundary* subprogram is a
+   subprogram which is declared inside the immediate scope of type T, and
+   visible outside the immediate scope of T.
+
+   The point at which a generic is declared plays no role in determining
+   whether a subprogram declared as or within an instantiation of that generic
+   is a boundary subprogram.
+
 .. centered:: **Legality Rules**
 
-.. _tu-type_invariants-01:
+.. _tu-type_invariants-02:
 
-1. The aspect Type_Invariant may be specified in SPARK, but only for
+2. The aspect Type_Invariant may be specified in SPARK, but only for
    the completion of a private type. [In other words, the Type_Invariant
    aspect shall not be specified for a partial view of a type, nor for the
    completion of a private extension.]
    The aspect Type_Invariant'Class is not in SPARK.
 
-.. _tu-type_invariants-02:
+.. _tu-type_invariants-03:
 
-2. [A Type_Invariant expression shall not have a variable input;
+3. [A Type_Invariant expression shall not have a variable input;
    see :ref:`expressions` for the statement of this rule.]
 
 .. centered:: **Verification Rules**
@@ -2359,96 +2369,73 @@ from a "boundary" subprogram that an in-mode parameter satisifies its
 invariant is trivially satisfied because of the rule that a type
 invariant expression shall not have a variable input.]
 
-.. _tu-type_invariants-03:
-
-3. Invariant checking is extended to include in-mode parameters of
-   functions in the same way as for in-mode parameters of procedures and
-   entries. A type invariant expression shall not include a call to a function
-   if such a call would introduce a cyclic verification dependency (i.e.,
-   a type invariant that cannot be proven to hold without first proving that
-   the type invariant holds). [This often means that a type invariant
-   expression cannot contain calls to functions declared in the visible part
-   of the package in question.]
-
 .. _tu-type_invariants-04:
 
-4. Invariant checking is extended to include checking before
-   a call, not only upon returning (although parameters of mode *out*
-   are not checked). [If a callee could not assume that
-   incoming values satisfy their invariants, then it would often be
-   difficult to prove that outgoing values are good when returning.]
+4. The type invariant expression for a type T shall not include a call to a
+   boundary function for type T. [This often means that a type invariant
+   expression cannot contain calls to functions declared in the visible part of
+   the package in question.]
 
 .. _tu-type_invariants-05:
 
-5. Invariant checking is extended to include checking of global
-   inputs and outputs, and for all subprograms.
-   For purposes of determining type invariant verification conditions,
-   a global of a given mode (i.e, *in*, *out*, or *in out*) is treated
-   like a parameter of the given mode. [For example, the parts of a
-   global of mode *out* generate the same type invariant verification conditions
-   as for a parameter of mode *out*.] This rule applies regardless of where the
-   global object in question is declared. [The rule for globals is
-   stronger than the rule for parameters in the sense that it applies to
-   all subprograms, not just the "boundary" subprograms for which Ada defines
-   runtime checking of type invariants (Ada RM 7.3.2(17-19.4)).]
+5. [It is a consequence of other rules that upon entry to a boundary subprogram
+   for a type T, every part of every input that is of type T can be assumed to
+   satisfy T's invariant.]
 
 .. _tu-type_invariants-06:
 
-6. Invariant checking is extended to include checking the
-   incoming parameter values of any calls from code where invariant-violating
-   values may be available to subprograms where invariant-violating
-   values are intended to be unavailable.
-   [The idea here is to prevent invariant-violating values from "leaking out".]
-   If we ignore generic units and dispatching calls
-   for a moment, this means that invariant checking is extended to include
-   checking parameter values for calls from within the immediate scope of
-   a type-invariant bearing type T which will execute a subprogram body which
-   is outside of that scope.
-
-   In the case of a dispatching call, this rule is applied to any call
-   from inside the immediate scope of T which *might* execute a subprogram
-   body which is outside of that scope (this determination is made without
-   looking at any code outside of the package in which T is declared -
-   conservative assumptions about such code are made instead,
-   based only on visibility rules (and without using any available
-   knowledge about the tag of the controlling operand).
-
-   In determining whether code which occurs within the expansion
-   of an instantiation of a generic unit is inside of the immediate
-   scope of an invariant-bearing type T, the location of the generic
-   unit is ignored. [For example, if the package which declares the type
-   T also exports a visible generic unit which is instantiated outside
-   of that package, then subprograms declared within the expansion of that
-   instance are considered to occur outside of the immediate scope of T.]
-
-   [Note that this rule has no effect on the generation of verification
-   conditions corresponding to Ada-defined runtime checks, and in particular
-   those stemming from the parenthesized clause about instances and generics
-   in Ada RM 7.3.2(17).]
+6. Upon returning from a boundary subprogram for a type T, a verification
+   condition is introduced for every part of every output that is of type T, to
+   ensure that this part satisfies T's invariant.
 
 .. _tu-type_invariants-07:
 
-7. Invariant checking is extended to apply to all parts of all tagged
-   inputs and outputs of a subprogram or call. As with globals, this
-   extension applies to all subprograms, not just "boundary" subprograms.
-   [This includes the case where a subcomponent of a tagged object is
-   passed as an actual parameter of mode *in out* or *out*.]
+7. For every subprogram declared inside the immediate scope of type T, the
+   preceding two rules also apply to [any parts of] any global input or output
+   and to [any parts of] any tagged subprogram parameter.
 
-   [It is possible that the underlying tag of a tagged object (at runtime)
-   may differ from the tag of its nominal (compile time) type. Suppose that
-   an object X is (statically) of type T1 (or T1'Class) but has T2'Tag
-   as its underlying tag, and that T2 has one or more
-   components which are not components of T1. Ada does not define runtime
-   checking of type invariants for such "hidden" components of parameters.
-   In particular, when Ada RM 7.3.2(20) says "The check is performed on each
-   such part of type T.", this does not include hidden components. In
-   contrast, the phrase "all parts" in the preceding paragraph really
-   does mean "all parts", not just the set of components whose
-   existence is known statically. This is more similar to Ada's use
-   of "every component" in Ada RM 7.6.1 (9/3).]
+.. _tu-type_invariants-08:
 
-   [This rule in introduced in order to deal with technical difficulties
-   that would otherwise arise in the treatment of these hidden components.]
+8. When calling a boundary subprogram for a type T or a subprogram declared
+   outside of the immediate scope of T, a verification condition is introduced
+   for every part of every input that is of type T, to ensure that this part
+   satisfies T's invariant. [This verification condition is trivially satisfied
+   if the caller is outside of the immediate scope of T, or if the input in
+   question is subject to rule 5 and constant for the caller.] [The idea here
+   is to prevent invariant-violating values from "leaking out".]
+
+.. _tu-type_invariants-09:
+
+9. [It is a consequence of other rules that upon return from a boundary
+   subprogram for a type T or a subprogram declared outside of the immediate
+   scope of T, every part of every output that is of type T can be assumed to
+   satisfy T's invariant.]
+
+.. _tu-type_invariants-10:
+
+10. For every subprogram, the preceding two rules also apply to [any parts of]
+    any global input or output and to [any parts of] any tagged subprogram
+    parameter. [The verification condition of rule 7 is trivially satisfied if
+    the caller is outside of the immediate scope of T, or if the input in
+    question is subject to rule 4 and constant for the caller.]
+
+.. _tu-type_invariants-11:
+
+11. [In determining wether a dispatching call is a call to a boundary
+    subprogram or to a subprogram declared outside of the immediate scope of T,
+    the statically named callee is used.]
+
+.. _tu-type_invariants-12:
+
+12. [It is possible that the underlying tag of a tagged object (at runtime) may
+    differ from the tag of its nominal (compile time) type. Suppose that an
+    object X is (statically) of type T1 (or T1'Class) but has T2'Tag as its
+    underlying tag, and that T2 has one or more components which are not
+    components of T1. Ada does not define runtime checking of type invariants
+    for such "hidden" components of parameters. The rules about tagged inputs
+    and outputs in rules 7 and 10 are introduced in order to deal with
+    technical difficulties that would otherwise arise in the treatment of these
+    hidden components.]
 
 .. _default_initial_condition_aspect:
 
