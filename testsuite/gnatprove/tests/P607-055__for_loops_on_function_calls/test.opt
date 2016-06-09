@@ -1,1 +1,1 @@
-ALL XFAIL for loop on function result
+ALL XFAIL wrong translation of renaming of aggregate P609-015
