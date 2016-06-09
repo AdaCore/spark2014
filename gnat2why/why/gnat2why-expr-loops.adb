@@ -30,6 +30,7 @@ with Flow_Utility;       use Flow_Utility;
 with Gnat2Why.Util;      use Gnat2Why.Util;
 with Namet;              use Namet;
 with Nlists;             use Nlists;
+with Sem_Util;
 with Sinfo;              use Sinfo;
 with Sinput;             use Sinput;
 with Snames;             use Snames;
@@ -677,11 +678,15 @@ package body Gnat2Why.Expr.Loops is
                           (Etype (Over_Node), Name_First)))));
                W_Container  : constant W_Expr_Id :=
                  (if Over_Range then Why_Empty
-                  else Insert_Simple_Conversion
-                    (Domain   => EW_Prog,
-                     Expr     => Transform_Expr
-                       (Over_Node, EW_Prog, Body_Params),
-                     To       => Typ_For_Cont));
+                  else New_Temp_For_Expr
+                    (Insert_Simple_Conversion
+                         (Domain   => EW_Prog,
+                          Expr     => Transform_Expr
+                            (Over_Node, EW_Prog, Body_Params),
+                          To       => Typ_For_Cont),
+                     Need_Temp => not Sem_Util.Is_Variable (Over_Node)));
+               --  Introduce a temporary variable for the container expression
+               --  except if it is a variable.
 
                --  For for of loops, we need an identifier for the additional
                --  variable holding the iterator.
@@ -1229,6 +1234,17 @@ package body Gnat2Why.Expr.Loops is
                        Def     => Init_Iter,
                        Context => Entire_Loop,
                        Typ     => Typ_For_Iter);
+               end if;
+
+               --  bind the temporary variable used for the container
+               --  expression if any.
+
+               if W_Container /= Why_Empty then
+                  Entire_Loop :=
+                    +Binding_For_Temp (Ada_Node => Loop_Id,
+                                       Domain   => EW_Prog,
+                                       Tmp      => W_Container,
+                                       Context  => +Entire_Loop);
                end if;
 
                --  Add let bindings for bounds
