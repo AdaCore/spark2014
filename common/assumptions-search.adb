@@ -34,7 +34,7 @@ package body Assumptions.Search is
       Equivalent_Keys => "=",
       "="             => Token_Sets."=");
 
-   Map : Goal_Maps.Map := Goal_Maps.Empty_Map;
+   Goals : Goal_Maps.Map := Goal_Maps.Empty_Map;
 
    ------------
    -- Import --
@@ -43,8 +43,9 @@ package body Assumptions.Search is
    procedure Import (L : Rule_Lists.List) is
    begin
       for Elt of L loop
-         Map.Insert (Key      => Elt.Claim,
-                     New_Item => Elt.Assumptions);
+         Goals.Insert (Key      => Elt.Claim,
+                       New_Item => Elt.Assumptions);
+         --  ??? Elt.Assumptions can be Moved to avoid copying
       end loop;
    end Import;
 
@@ -70,22 +71,18 @@ package body Assumptions.Search is
       while not Needed_Claims.Is_Empty loop
          Cur_Token := Needed_Claims (Needed_Claims.First);
 
-         Map_Cur := Map.Find (Cur_Token);
+         Map_Cur := Goals.Find (Cur_Token);
 
-         if Map_Cur = Goal_Maps.No_Element then
-            Unverified_Claims.Include (Cur_Token);
-
-         else
+         if Goal_Maps.Has_Element (Map_Cur) then
             Seen.Insert (New_Item => Cur_Token,
                          Position => Unused,
                          Inserted => Inserted);
 
             if Inserted then
-               for Tok of Map (Map_Cur) loop
-                  Needed_Claims.Include (Tok);
-               end loop;
+               Needed_Claims.Union (Goals (Map_Cur));
             end if;
-
+         else
+            Unverified_Claims.Include (Cur_Token);
          end if;
 
          Needed_Claims.Delete (Cur_Token);
@@ -102,9 +99,10 @@ package body Assumptions.Search is
    function Get_All_Claims return Token_Sets.Set is
       S : Token_Sets.Set := Token_Sets.Empty_Set;
    begin
-      for Cursor in Map.Iterate loop
+      for Cursor in Goals.Iterate loop
          S.Insert (Goal_Maps.Key (Cursor));
       end loop;
+
       return S;
    end Get_All_Claims;
 

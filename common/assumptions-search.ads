@@ -32,5 +32,6 @@ package Assumptions.Search is
    function Claim_Depends_On (C : Token) return Token_Sets.Set;
 
    function Get_All_Claims return Token_Sets.Set;
+   --  ??? this can be iterator, for copy is never needed
 
 end Assumptions.Search;
