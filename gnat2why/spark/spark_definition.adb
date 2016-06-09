@@ -5736,11 +5736,11 @@ package body SPARK_Definition is
    function First_Cursor (Kind : Entity_Collection) return Cursor is
      (case Kind is
          when Entities_To_Translate =>
-            Cursor'(Kind => Entities_To_Translate,
+            Cursor'(Kind                       => Entities_To_Translate,
                     Entity_To_Translate_Cursor => Entity_List.First),
 
          when Marked_Entities =>
-            Cursor'(Kind => Marked_Entities,
+            Cursor'(Kind                       => Marked_Entities,
                     Marked_Entities_Cursor     => Entity_Set.First));
 
    -----------------
