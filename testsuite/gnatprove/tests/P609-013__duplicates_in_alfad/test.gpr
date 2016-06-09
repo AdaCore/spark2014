@@ -1,0 +1,13 @@
+with "sub";
+
+project Test is
+
+   for Source_Dirs use (".");
+   for Main use ("check.adb");
+
+   package Compiler is
+      for Local_Configuration_Pragmas use "spark.adc";
+      for Default_Switches ("Ada") use ("-gnato13", "-gnata");
+   end Compiler;
+
+end Test;

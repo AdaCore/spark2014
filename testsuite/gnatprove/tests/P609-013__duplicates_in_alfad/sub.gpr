@@ -1,0 +1,10 @@
+project Sub is
+
+   for Source_Dirs use ("sub");
+
+   package Compiler is
+      for Local_Configuration_Pragmas use "spark.adc";
+      for Default_Switches ("Ada") use ("-gnata");
+   end Compiler;
+
+end Sub;

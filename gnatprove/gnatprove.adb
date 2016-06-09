@@ -65,9 +65,11 @@
 --      on the same units, even when sources have not changed so analysis is
 --      not done on these units.
 
+with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Directories;            use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
+with Ada.Strings.Hash;
 with Ada.Strings.Maps;           use Ada.Strings.Maps;
 with Ada.Strings.Maps.Constants; use Ada.Strings.Maps.Constants;
 with Ada.Strings.Unbounded;
@@ -665,11 +667,37 @@ procedure Gnatprove is
 
    begin
       Create (Obj_Dir_File, Out_File, Obj_Dir_Fn);
-      for Index in Obj_Path'Range loop
-         Put_Line
-            (Obj_Dir_File,
-             Obj_Path (Index).Display_Full_Name);
-      end loop;
+      declare
+         --  Protect against duplicates in Obj_Path by inserting the items into
+         --  a set and only doing something if there item was really inserted.
+         --  This is more robust than relying on Obj_Path being sorted.
+
+         package Dir_Name_Sets is new Ada.Containers.Indefinite_Hashed_Sets
+           (Element_Type        => String,
+            Hash                => Ada.Strings.Hash,
+            Equivalent_Elements => "=",
+            "="                 => "=");
+
+         Dir_Names_Seen : Dir_Name_Sets.Set;
+
+         Inserted : Boolean;
+         Unused   : Dir_Name_Sets.Cursor;
+
+      begin
+         for Index in Obj_Path'Range loop
+            declare
+               Full_Name : String renames Obj_Path (Index).Display_Full_Name;
+            begin
+               Dir_Names_Seen.Insert (New_Item => Full_Name,
+                                      Position => Unused,
+                                      Inserted => Inserted);
+
+               if Inserted then
+                  Put_Line (Obj_Dir_File, Full_Name);
+               end if;
+            end;
+         end loop;
+      end;
       Close (Obj_Dir_File);
 
       Args.Append (Obj_Dir_Fn);
