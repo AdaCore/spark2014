@@ -565,6 +565,7 @@ def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
        option to zero disables steps option
     """
     fullopt = ["--report=all", "--warnings=continue"]
+    fullopt += ["--assumptions"]
     fullopt += ["-P", "test.gpr", "--quiet"]
     fullopt += ["--timeout=%d" % (vc_timeout)]
     if steps is None:
