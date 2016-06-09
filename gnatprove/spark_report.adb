@@ -158,7 +158,7 @@ procedure SPARK_Report is
    --  Parse and extract all information from a proof result array
 
    procedure Handle_Source_Dir (Dir : String);
-   --  Parse all result files of this directory
+   --  Parse all result files in the given directory
 
    procedure Print_Analysis_Report (Handle : Ada.Text_IO.File_Type);
    --  Print the proof report in the given file
@@ -601,9 +601,9 @@ procedure SPARK_Report is
    procedure Handle_Source_Dir (Dir : String) is
 
       procedure Local_Handle_SPARK_File
-        (Item    : String;
-         Index   : Positive;
-         Quit    : in out Boolean);
+        (Item  : String;
+         Index : Positive;
+         Quit  : in out Boolean);
       --  Wrapper for Handle_SPARK_File
 
       -----------------------------
@@ -611,9 +611,9 @@ procedure SPARK_Report is
       -----------------------------
 
       procedure Local_Handle_SPARK_File
-        (Item    : String;
-         Index   : Positive;
-         Quit    : in out Boolean)
+        (Item  : String;
+         Index : Positive;
+         Quit  : in out Boolean)
       is
       begin
          pragma Unreferenced (Index);
