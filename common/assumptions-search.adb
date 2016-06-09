@@ -73,7 +73,7 @@ package body Assumptions.Search is
          Map_Cur := Map.Find (Cur_Token);
 
          if Map_Cur = Goal_Maps.No_Element then
-            Unverified_Claims.Insert (Cur_Token);
+            Unverified_Claims.Include (Cur_Token);
 
          else
             Seen.Insert (New_Item => Cur_Token,
