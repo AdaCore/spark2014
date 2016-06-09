@@ -499,7 +499,7 @@ def altergo(src, timeout=10, opt=None):
     print process.out
 
 
-def gnatprove_(opt=["-P", "test.gpr"]):
+def gnatprove(opt=["-P", "test.gpr"]):
     """Invoke gnatprove, and in case of success return list of output lines
 
     PARAMETERS
@@ -545,15 +545,6 @@ def gnatprove_(opt=["-P", "test.gpr"]):
 
     check_marks(strlist)
     print_sorted(strlist)
-
-
-def gnatprove(opt=["-P", "test.gpr"]):
-    """Invoke gnatprove
-
-    PARAMETERS
-    opt: options to give to gnatprove
-    """
-    gnatprove_(opt)
 
 
 def prove_all(opt=None, steps=max_steps, procs=parallel_procs,
