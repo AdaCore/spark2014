@@ -1,7 +1,7 @@
 procedure Fpmod with
   SPARK_Mode
 is
-   type F is delta 0.01 range -1.0 .. 1.0;
+   type F is delta 0.01 range -1.0 .. 0.99;
    type M is mod 2 ** 8;
 
    X : F;
