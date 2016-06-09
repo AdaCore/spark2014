@@ -72,10 +72,19 @@ package body Gnat2Why.Assumptions is
 
    procedure Assume_For_Claim
      (C      : Claim;
-      Assume : Claim_Sets.Set) is
+      Assume : Claim_Lists.List)
+   is
+      Position : Claim_Maps.Cursor;
+      Dummy    : Boolean;
+
    begin
+      --  Attempt to insert an empty set and then put the assumption there
+      Claim_Assumptions.Insert (Key      => C,
+                                Position => Position,
+                                Inserted => Dummy);
+
       for A of Assume loop
-         Assume_For_Claim (C, A);
+         Claim_Assumptions (Position).Include (A);
       end loop;
    end Assume_For_Claim;
 
@@ -161,17 +170,23 @@ package body Gnat2Why.Assumptions is
 
    procedure Register_Assumptions_For_Call (Caller, Callee : Entity_Id)
    is
-      S : Claim_Sets.Set := Claim_Sets.Empty_Set;
+      Assumptions : Claim_Lists.List;
    begin
-      S.Include ((Kind => Claim_Effects, E => Callee));
-      Assume_For_Claim (C => (Kind => Claim_Effects, E => Caller),
-                        Assume => S);
+      Assumptions.Append ((Kind => Claim_Effects, E => Callee));
+
+      Assume_For_Claim (C      => (Kind => Claim_Effects, E => Caller),
+                        Assume => Assumptions);
+
       if Has_Contracts (Callee, Name_Postcondition) then
-         S.Include ((Kind => Claim_Post, E => Callee));
+         Assumptions.Append ((Kind => Claim_Post, E => Callee));
       end if;
-      S.Include ((Kind => Claim_AoRTE, E => Callee));
-      Assume_For_Claim (C => (Kind => Claim_Post, E => Caller), Assume => S);
-      Assume_For_Claim (C => (Kind => Claim_AoRTE, E => Caller), Assume => S);
+
+      Assumptions.Append ((Kind => Claim_AoRTE, E => Callee));
+
+      Assume_For_Claim (C      => (Kind => Claim_Post, E => Caller),
+                        Assume => Assumptions);
+      Assume_For_Claim (C      => (Kind => Claim_AoRTE, E => Caller),
+                        Assume => Assumptions);
    end Register_Assumptions_For_Call;
 
    ---------------------------
