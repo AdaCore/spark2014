@@ -45,11 +45,10 @@ package body Gnat2Why.Assumptions is
    function Loc_To_Assume_Sloc (Loc : Source_Ptr) return My_Sloc;
 
    Claim_Assumptions : Claim_Maps.Map := Claim_Maps.Empty_Map;
-   --  contains the assumptions of a claim, whether that claim has been
-   --  established or not
+   --  Assumptions of a claim, whether that claim has been established or not.
 
-   Claims  : Claim_Sets.Set := Claim_Sets.Empty_Set;
-   --  contains all established claims
+   Claims : Claim_Sets.Set := Claim_Sets.Empty_Set;
+   --  All established claims
 
    ----------------------
    -- Assume_For_Claim --
@@ -105,7 +104,7 @@ package body Gnat2Why.Assumptions is
    ---------------------
 
    function Get_Assume_JSON return GNATCOLL.JSON.JSON_Value is
-      Rules    : Rule_Lists.List := Rule_Lists.Empty_List;
+      Rules : Rule_Lists.List := Rule_Lists.Empty_List;
    begin
       for C of Claims loop
          declare
@@ -113,8 +112,8 @@ package body Gnat2Why.Assumptions is
             Cu : constant Claim_Maps.Cursor := Claim_Assumptions.Find (C);
             use Claim_Maps;
          begin
-            if Cu /= Claim_Maps.No_Element then
-               for A of Element (Cu) loop
+            if Claim_Maps.Has_Element (Cu) then
+               for A of Claim_Assumptions (Cu) loop
                   S.Include (Claim_To_Token (A));
                end loop;
             end if;
@@ -122,6 +121,7 @@ package body Gnat2Why.Assumptions is
                            Assumptions => S));
          end;
       end loop;
+
       return To_JSON (Rules);
    end Get_Assume_JSON;
 
