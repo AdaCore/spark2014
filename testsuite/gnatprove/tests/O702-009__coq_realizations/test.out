@@ -12,6 +12,58 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<W> Grammar extension: in [constr:operconstr] some rule has been masked
+<W> Grammar extension: in [constr:pattern] some rule has been masked
+
+
+
+
+
+
+
+
+
+
+
+
 File "realize/Array__1.v", line 271, characters 7-20:
 Error: The reference map.Map.const was not found in the current environment.
 

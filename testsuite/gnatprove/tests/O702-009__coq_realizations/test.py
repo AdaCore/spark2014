@@ -24,10 +24,63 @@ def copy_spark_why_files():
 def compile_coq_files():
     cwd = os.getcwd()
     shutil.copytree(coq_libs_dir, 'coq')
+    # if new theories get added to our hardcoded 'coq-realizations.aux' file
+    # in why3 repository, this list needs to be changed, too
     files_to_be_compiled = [
-            'BuiltIn.v',
-            os.path.join('bool','Bool.v'),
-            os.path.join('int', 'Int.v')]
+            "BuiltIn.v",
+            "HighOrd.v",
+            os.path.join("int", "Abs"),
+            os.path.join("int", "ComputerDivision"),
+            os.path.join("int", "Div2"),
+            os.path.join("int", "EuclideanDivision"),
+            os.path.join("int", "Int"),
+            os.path.join("int", "MinMax"),
+            os.path.join("int", "Power"),
+            os.path.join("int", "NumOf"),
+            os.path.join("bool", "Bool"),
+            os.path.join("real", "Abs"),
+            os.path.join("real", "ExpLog"),
+            os.path.join("real", "FromInt"),
+            os.path.join("real", "MinMax"),
+            os.path.join("real", "PowerInt"),
+            os.path.join("real", "PowerReal"),
+            os.path.join("real", "Real"),
+            os.path.join("real", "RealInfix"),
+            os.path.join("real", "Square"),
+            os.path.join("real", "Trigonometry"),
+            os.path.join("number", "Divisibility"),
+            os.path.join("number", "Gcd"),
+            os.path.join("number", "Parity"),
+            os.path.join("number", "Prime"),
+            os.path.join("number", "Coprime"),
+            os.path.join("set", "Set"),
+            os.path.join("map", "Map"),
+            os.path.join("map", "Const"),
+            os.path.join("map", "Occ"),
+            os.path.join("map", "MapPermut"),
+            os.path.join("map", "MapInjection"),
+            os.path.join("list", "List"),
+            os.path.join("list", "Length"),
+            os.path.join("list", "Mem"),
+            os.path.join("list", "Nth"),
+            os.path.join("list", "NthLength"),
+            os.path.join("list", "HdTl"),
+            os.path.join("list", "NthHdTl"),
+            os.path.join("list", "Append"),
+            os.path.join("list", "NthLengthAppend"),
+            os.path.join("list", "Reverse"),
+            os.path.join("list", "HdTlNoOpt"),
+            os.path.join("list", "NthNoOpt"),
+            os.path.join("list", "RevAppend"),
+            os.path.join("list", "Combine"),
+            os.path.join("list", "Distinct"),
+            os.path.join("list", "NumOcc"),
+            os.path.join("list", "Permut"),
+            os.path.join("option", "Option"),
+            os.path.join("seq", "Seq"),
+            os.path.join("bv", "Pow2int"),
+            os.path.join("bv", "BV_Gen")
+            ]
 
     os.chdir('coq')
     for fn in files_to_be_compiled:
