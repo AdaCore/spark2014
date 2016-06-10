@@ -57,7 +57,7 @@ package body Gnat2Why.Expr.Loops is
    -----------------------
 
    In_Loop_Initial_Statements : Boolean := False with Ghost;
-   --  Ghost variable. True when analyzing the initial statements of a loop.
+   --  Ghost variable. True when analyzing the initial statements of a loop
 
    function Is_In_Loop_Initial_Statements return Boolean is
      (In_Loop_Initial_Statements);
@@ -130,7 +130,7 @@ package body Gnat2Why.Expr.Loops is
       Variant_Update     : W_Prog_Id;
       Variant_Check      : W_Prog_Id;
       Update_Stmt        : W_Prog_Id := Why_Empty) return W_Prog_Id;
-   --  Returns the loop expression in Why.
+   --  Returns the loop expression in Why
    --
    --  Loop_Start and Loop_End correspond to the statements and declarations
    --  respectively before and after the loop invariant pragma put by the
@@ -153,7 +153,7 @@ package body Gnat2Why.Expr.Loops is
    --  Variant_Check checks both the absence of run-time errors in the loop
    --  variant, and that the loop variant makes progress.
    --
-   --  See comments in Wrap_Loop's body for the actual transformation.
+   --  See comments in Wrap_Loop's body for the actual transformation
 
    ------------------------
    -- Get_Loop_Invariant --
@@ -288,7 +288,7 @@ package body Gnat2Why.Expr.Loops is
 
       --  Otherwise the exit statement belongs to the innermost loop, so
       --  simply go upwards (follow parent nodes) until we encounter the
-      --  loop
+      --  loop.
 
       else
          declare
@@ -393,11 +393,11 @@ package body Gnat2Why.Expr.Loops is
       --  These three variables hold the loop parameter in Ada and Why, if any
 
    begin
-      --  nested loops should not appear before the loop invariant in a loop.
+      --  Nested loops should not appear before the loop invariant in a loop.
 
       pragma Assert (not In_Loop_Initial_Statements);
 
-      --  add the loop index to the entity table.
+      --  Add the loop index to the entity table
 
       if Present (Scheme)
         and then No (Condition (Scheme))
@@ -867,16 +867,16 @@ package body Gnat2Why.Expr.Loops is
 
                function Loop_Index_Value (Domain : EW_Domain) return W_Expr_Id
                is
-                  Elmt      : constant Entity_Id :=
+                  Elmt     : constant Entity_Id :=
                     SPARK_Util.Get_Iterable_Type_Primitive
                       (Etype (Over_Node), Name_Element);
-                  Cur_Expr  : constant W_Expr_Id :=
+                  Cur_Expr : constant W_Expr_Id :=
                     Insert_Simple_Conversion
                       (Domain         => EW_Term,
                        Expr           => +Iter_Deref,
                        To             => Typ_For_Iter,
                        Force_No_Slide => True);
-                  W_Elmt    : constant W_Identifier_Id :=
+                  W_Elmt   : constant W_Identifier_Id :=
                     +Transform_Identifier
                       (Params => Body_Params,
                        Expr   => Elmt,
@@ -912,7 +912,7 @@ package body Gnat2Why.Expr.Loops is
                function Update_Index return W_Prog_Id is
                   Call_Elmt : constant W_Prog_Id :=
                     +Loop_Index_Value (EW_Prog);
-                  Upd_Elmt : constant W_Expr_Id :=
+                  Upd_Elmt  : constant W_Expr_Id :=
                     New_Conditional
                       (Domain    => EW_Prog,
                        Condition =>
@@ -1236,7 +1236,7 @@ package body Gnat2Why.Expr.Loops is
                        Typ     => Typ_For_Iter);
                end if;
 
-               --  bind the temporary variable used for the container
+               --  Bind the temporary variable used for the container
                --  expression if any.
 
                if W_Container /= Why_Empty then
@@ -1586,14 +1586,14 @@ package body Gnat2Why.Expr.Loops is
                       & " loop invariant"
                       & (if Sloc (Loop_Id) > 0 then
                            " of loop " & Build_Location_String (Sloc (Loop_Id))
-                        else ""))),
+                         else ""))),
                    3 => Loop_End,
                    4 => New_Comment
                      (Comment => NID ("Check for the exit condition and loop"
                       & " statements appearing before the loop invariant"
                       & (if Sloc (Loop_Id) > 0 then
                            " of loop " & Build_Location_String (Sloc (Loop_Id))
-                        else ""))),
+                         else ""))),
                    5 => +Sequence
                      (New_Conditional
                         (Condition => +Exit_Condition,
@@ -1642,7 +1642,7 @@ package body Gnat2Why.Expr.Loops is
                                & (if Sloc (Loop_Id) > 0 then
                                     " of loop " & Build_Location_String
                                    (Sloc (Loop_Id))
-                                 else ""))),
+                                  else ""))),
                             2 => Loop_Start,
                             3 => New_Comment
                               (Comment =>
@@ -1650,7 +1650,7 @@ package body Gnat2Why.Expr.Loops is
                                  & (if Sloc (Loop_Id) > 0 then
                                       " from " & Build_Location_String
                                      (Sloc (Loop_Id))
-                                   else ""))),
+                                    else ""))),
                             4 => Loop_Stmt))));
 
       Loop_Try : constant W_Prog_Id :=
@@ -1665,7 +1665,7 @@ package body Gnat2Why.Expr.Loops is
              (Comment => NID ("Translation of an Ada loop"
               & (if Sloc (Loop_Id) > 0 then
                    " from " & Build_Location_String (Sloc (Loop_Id))
-                else ""))),
+                 else ""))),
            New_Conditional
              (Condition => +Enter_Condition,
               Then_Part => +Loop_Try));
