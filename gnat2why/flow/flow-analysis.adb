@@ -930,17 +930,16 @@ package body Flow.Analysis is
 
       EV_Considered_Imports : Flow_Id_Sets.Set;
       EV_Considered_Objects : Flow_Id_Sets.Set;
-      --  Sets of entire variables marking all objects considered for each of
-      --  the two analyses.
+      --  Entire variables considered for each of the two analyses
 
       EV_Used               : Flow_Id_Sets.Set;
-      --  For variables we have at least used once somewhere (even if its not
+      --  Entire bariables used at least once (even if this use is not
       --  effective).
 
       EV_Effective          : Flow_Id_Sets.Set;
-      --  For variables where we use at least a part (for example an individual
-      --  component of a record, or the bounds of an unconstrained array) to
-      --  determine the final value of at least one export.
+      --  Entire variables whose at least part is used (for example an
+      --  individual component of a record, or the bounds of an unconstrained
+      --  array) to determine the final value of at least one export.
 
       EV_Unused             : Flow_Id_Sets.Set;
       EV_Ineffective        : Flow_Id_Sets.Set;
