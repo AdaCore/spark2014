@@ -46,7 +46,7 @@ package body Gnat2Why.Assumptions is
    with Pre => Loc /= No_Location;
 
    Claim_Assumptions : Claim_Maps.Map := Claim_Maps.Empty_Map;
-   --  Assumptions of a claim, whether that claim has been established or not.
+   --  Assumptions of a claim, whether that claim has been established or not
 
    Claims : Claim_Sets.Set := Claim_Sets.Empty_Set;
    --  All established claims
