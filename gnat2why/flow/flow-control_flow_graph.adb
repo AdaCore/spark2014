@@ -3529,12 +3529,10 @@ package body Flow.Control_Flow_Graph is
                if Final_V_Id /= Flow_Graphs.Null_Vertex then
                   declare
                      Final_Atr  : V_Attributes renames FA.Atr (Final_V_Id);
-                     Entire_Var : constant Entity_Id :=
-                       Get_Direct_Mapping_Id (Entire_Variable (Final_F_Id));
+
                   begin
                      Final_Atr.Is_Export := Final_Atr.Is_Export
-                       or else Is_Initialized_At_Elaboration (Entire_Var,
-                                                              FA.B_Scope);
+                       or else Is_Initialized_At_Elaboration (E, FA.B_Scope);
                   end;
                end if;
             end;
