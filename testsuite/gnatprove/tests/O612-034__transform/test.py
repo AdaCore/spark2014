@@ -22,7 +22,7 @@ touch('test.adb')
 print_session_proofs()
 # copy a file which has an extra transformation applied to the unique goal
 shutil.copyfile('new.xml', session_file)
-sleep(3)
+sleep(4)
 # run gnatprove again and print number of proofs, should be higher now
 prove_all(cache_allowed=False)
 print_session_proofs()
