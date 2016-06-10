@@ -924,32 +924,32 @@ package body Flow.Analysis is
               or else Atr.Is_Proof;
       end Is_Final_Use;
 
-      EV_Suppressed         : Flow_Id_Sets.Set;
+      Suppressed         : Flow_Id_Sets.Set;
       --  Entire variables appearing in a "null => Blah" dependency relation;
       --  for these we suppress the ineffective import warning.
 
-      EV_Considered_Imports : Flow_Id_Sets.Set;
-      EV_Considered_Objects : Flow_Id_Sets.Set;
+      Considered_Imports : Flow_Id_Sets.Set;
+      Considered_Objects : Flow_Id_Sets.Set;
       --  Entire variables considered for each of the two analyses
 
-      EV_Used               : Flow_Id_Sets.Set;
+      Used               : Flow_Id_Sets.Set;
       --  Entire bariables used at least once (even if this use is not
       --  effective).
 
-      EV_Effective          : Flow_Id_Sets.Set;
+      Effective          : Flow_Id_Sets.Set;
       --  Entire variables whose at least part is used (for example an
       --  individual component of a record, or the bounds of an unconstrained
       --  array) to determine the final value of at least one export.
 
-      EV_Unused             : Flow_Id_Sets.Set;
-      EV_Ineffective        : Flow_Id_Sets.Set;
+      Unused             : Flow_Id_Sets.Set;
+      Ineffective        : Flow_Id_Sets.Set;
 
    --  Start of processing for Find_Ineffective_Imports_And_Unused_Objects
 
    begin
       --  We look at the null depends (if one exists). For any variables
       --  mentioned there, we suppress the ineffective import warning by
-      --  putting them to EV_Suppressed.
+      --  putting them to Suppressed.
 
       if FA.Kind = Kind_Subprogram and then Present (FA.Depends_N) then
          declare
@@ -965,7 +965,7 @@ package body Flow.Analysis is
             Null_Position := Dependency_Map.Find (Null_Flow_Id);
 
             if Dependency_Maps.Has_Element (Null_Position) then
-               Flow_Id_Sets.Move (Target => EV_Suppressed,
+               Flow_Id_Sets.Move (Target => Suppressed,
                                   Source => Dependency_Map (Null_Position));
             end if;
          end;
@@ -976,10 +976,10 @@ package body Flow.Analysis is
       --  We now detect imports that do not contribute to at least one export
       --  and objects that are never used.
 
-      EV_Considered_Imports := Flow_Id_Sets.Empty_Set;
-      EV_Considered_Objects := Flow_Id_Sets.Empty_Set;
-      EV_Used               := Flow_Id_Sets.Empty_Set;
-      EV_Effective          := Flow_Id_Sets.Empty_Set;
+      Considered_Imports := Flow_Id_Sets.Empty_Set;
+      Considered_Objects := Flow_Id_Sets.Empty_Set;
+      Used               := Flow_Id_Sets.Empty_Set;
+      Effective          := Flow_Id_Sets.Empty_Set;
 
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -1014,7 +1014,7 @@ package body Flow.Analysis is
 
                      if Atr.Is_Initialized and Atr.Is_Import then
                         if not Disuse_Allowed then
-                           EV_Considered_Imports.Include (Entire_Var);
+                           Considered_Imports.Include (Entire_Var);
                         end if;
 
                         --  Check if we're ineffective or not. If not, we note
@@ -1025,16 +1025,16 @@ package body Flow.Analysis is
                           (V, Is_Final_Use'Access)
                         then
                            if Disuse_Allowed then
-                              EV_Considered_Imports.Include (Entire_Var);
+                              Considered_Imports.Include (Entire_Var);
                            end if;
-                           EV_Effective.Include (Entire_Var);
+                           Effective.Include (Entire_Var);
                         end if;
                      end if;
 
                      --  Determine unused objects
 
                      if not Disuse_Allowed then
-                        EV_Considered_Objects.Include (Entire_Var);
+                        Considered_Objects.Include (Entire_Var);
                      end if;
 
                      if FA.PDG.Out_Neighbour_Count (V) = 1 then
@@ -1046,16 +1046,16 @@ package body Flow.Analysis is
                              or else FA.PDG.In_Neighbour_Count (Final_V) > 1
                            then
                               if Disuse_Allowed then
-                                 EV_Considered_Objects.Include (Entire_Var);
+                                 Considered_Objects.Include (Entire_Var);
                               end if;
-                              EV_Used.Include (Entire_Var);
+                              Used.Include (Entire_Var);
                            end if;
                         end;
                      else
                         if Disuse_Allowed then
-                           EV_Considered_Objects.Include (Entire_Var);
+                           Considered_Objects.Include (Entire_Var);
                         end if;
-                        EV_Used.Include (Entire_Var);
+                        Used.Include (Entire_Var);
                      end if;
                   end if;
                end;
@@ -1064,8 +1064,8 @@ package body Flow.Analysis is
       end loop;
 
       pragma Assert_And_Cut
-        (EV_Considered_Imports.Length >= EV_Effective.Length and
-         EV_Considered_Objects.Length >= EV_Used.Length);
+        (Considered_Imports.Length >= Effective.Length and
+         Considered_Objects.Length >= Used.Length);
 
       --  Now that we can issue error messages. We can't do it inline (i.e. on
       --  detection above) because we need to pay special attention to records
@@ -1073,9 +1073,9 @@ package body Flow.Analysis is
 
       --  First we issue warnings on unused objects
 
-      EV_Unused := EV_Considered_Objects - EV_Used;
+      Unused := Considered_Objects - Used;
 
-      for F of EV_Unused loop
+      for F of Unused loop
          declare
             V : constant Flow_Graphs.Vertex_Id :=
               Get_Initial_Vertex (FA.PDG, F);
@@ -1092,7 +1092,7 @@ package body Flow.Analysis is
                         Msg      => "unused global &",
                         N        => Find_Global (FA.Analyzed_Entity, F),
                         F1       => F,
-                        Tag      => Unused,
+                        Tag      => VC_Kinds.Unused,
                         Severity => Low_Check_Kind);
                   else
                      --  Issue a different message if the global is a constant
@@ -1101,7 +1101,7 @@ package body Flow.Analysis is
                         Msg      => "& cannot appear in Globals",
                         N        => Find_Global (FA.Analyzed_Entity, F),
                         F1       => F,
-                        Tag      => Unused,
+                        Tag      => VC_Kinds.Unused,
                         Severity => Medium_Check_Kind);
                   end if;
                end if;
@@ -1122,16 +1122,12 @@ package body Flow.Analysis is
                      Msg      => "unused variable &",
                      N        => Error_Location (FA.PDG, FA.Atr, V),
                      F1       => F,
-                     Tag      => Unused,
+                     Tag      => VC_Kinds.Unused,
                      Severity => Warning_Kind);
                end if;
             end if;
          end;
       end loop;
-
-      pragma Assert_And_Cut
-        (EV_Considered_Imports.Length >= EV_Effective.Length and
-         EV_Considered_Objects.Length >= EV_Used.Length);
 
       --  Finally, we issue warnings on ineffective imports. We exclude items
       --  which are suppressed by a null derives and which have previously
@@ -1139,10 +1135,9 @@ package body Flow.Analysis is
       --  that are marked by a pragma Unreferenced or a pragma Unmodified or a
       --  pragma Unused.
 
-      EV_Ineffective := EV_Considered_Imports -
-        (EV_Effective or EV_Suppressed or EV_Unused);
+      Ineffective := Considered_Imports - (Effective or Suppressed or Unused);
 
-      for F of EV_Ineffective loop
+      for F of Ineffective loop
          declare
             V   : constant Flow_Graphs.Vertex_Id :=
               Get_Initial_Vertex (FA.PDG, F);
