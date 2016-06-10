@@ -1396,48 +1396,21 @@ package body Flow_Utility is
             --  present in the Refined_Depends.
             ---------------------------------------------------------------
 
-            declare
+            --  Check if the projected Global constituents need to be
+            --  trimmed (based on a user-provided Refined_Depends aspect).
+            if not Ignore_Depends
+              and then Present (Depends_Node)
+              and then Pragma_Name (Global_Node) /= Name_Refined_Global
+              and then Pragma_Name (Depends_Node) = Name_Refined_Depends
+              and then Mentions_State_With_Visible_Refinement
+                         (Global_Node, Scope)
+            then
+               declare
+                  D_Map        : Dependency_Maps.Map;
+                  All_Inputs_F : Flow_Id_Sets.Set;
+                  All_Inputs_N : Node_Sets.Set;
 
-               function Trimming_Required return Boolean;
-               --  Checks if the projected Global constituents need to be
-               --  trimmed (based on a user-provided Refined_Depends aspect).
-
-               -----------------------
-               -- Trimming_Required --
-               -----------------------
-
-               function Trimming_Required return Boolean is
                begin
-                  if Ignore_Depends
-                    or else No (Depends_Node)
-                    or else Pragma_Name (Global_Node) = Name_Refined_Global
-                    or else Pragma_Name (Depends_Node) /= Name_Refined_Depends
-                    or else not Mentions_State_With_Visible_Refinement
-                                  (Global_Node,
-                                   Scope)
-                  then
-                     --  No trimming required if there is:
-                     --
-                     --    a) no user-provided Depends contract
-                     --
-                     --    b) a user-provided Refined_Global
-                     --
-                     --    c) no user-provided Refined_Depends
-                     --
-                     --    d) the Global aspect does not mention state with
-                     --       visible refinement
-                     return False;
-                  end if;
-
-                  return True;
-               end Trimming_Required;
-
-               D_Map        : Dependency_Maps.Map;
-               All_Inputs_F : Flow_Id_Sets.Set     := Flow_Id_Sets.Empty_Set;
-               All_Inputs_N : Node_Sets.Set        := Node_Sets.Empty_Set;
-
-            begin
-               if Trimming_Required then
                   --  Read the Refined_Depends aspect
                   Get_Depends (Subprogram           => Subprogram,
                                Scope                => Scope,
@@ -1457,8 +1430,8 @@ package body Flow_Utility is
 
                   --  Do the trimming
                   G_In.Intersection (All_Inputs_N);
-               end if;
-            end;
+               end;
+            end if;
 
             ---------------------------------------------------------------
             --  Step 5: Convert to Flow_Id sets
