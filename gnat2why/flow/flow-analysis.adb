@@ -932,18 +932,17 @@ package body Flow.Analysis is
 
       EV_Considered_Imports : Flow_Id_Sets.Set;
       EV_Considered_Objects : Flow_Id_Sets.Set;
-      --  Sets of entire variables marking all objects considered for each
-      --  of the two analyses.
+      --  Sets of entire variables marking all objects considered for each of
+      --  the two analyses.
 
       EV_Used               : Flow_Id_Sets.Set;
-      --  For variables we have at least used once somewhere (even if its
-      --  not effective).
+      --  For variables we have at least used once somewhere (even if its not
+      --  effective).
 
       EV_Effective          : Flow_Id_Sets.Set;
-      --  For variables where we use at least a part (for example an
-      --  individual component of a record, or the bounds of an
-      --  unconstrained array) to determine the final value of at least one
-      --  export.
+      --  For variables where we use at least a part (for example an individual
+      --  component of a record, or the bounds of an unconstrained array) to
+      --  determine the final value of at least one export.
 
       EV_Unused             : Flow_Id_Sets.Set;
       EV_Ineffective        : Flow_Id_Sets.Set;
@@ -971,8 +970,8 @@ package body Flow.Analysis is
 
       pragma Assert_And_Cut (True);
 
-      --  We now detect all imports that are ineffective (do not contribute
-      --  to at least one export) and objects that are never used.
+      --  We now detect all imports that are ineffective (do not contribute to
+      --  at least one export) and objects that are never used.
 
       EV_Considered_Imports := Flow_Id_Sets.Empty_Set;
       EV_Considered_Objects := Flow_Id_Sets.Empty_Set;
@@ -991,7 +990,7 @@ package body Flow.Analysis is
               Key.Kind /= Synthetic_Null_Export
             then
 
-               --  Note the entire variable.
+               --  Note the entire variable
 
                E := Change_Variant (Entire_Variable (Key), Normal_Use);
 
@@ -1007,7 +1006,7 @@ package body Flow.Analysis is
                --  of the entire variable itself has to be used and uses of
                --  bounds and discriminants are completely ignored.
 
-               --  Determine ineffective imports.
+               --  Determine ineffective imports
 
                if not Disuse_Allowed or else Atr.Mode /= Mode_In_Out then
 
@@ -1029,7 +1028,7 @@ package body Flow.Analysis is
                      end if;
                   end if;
 
-                  --  Determine unused objects.
+                  --  Determine unused objects
 
                   if not Disuse_Allowed then
                      EV_Considered_Objects.Include (E);
@@ -1064,11 +1063,11 @@ package body Flow.Analysis is
         (EV_Considered_Imports.Length >= EV_Effective.Length and
          EV_Considered_Objects.Length >= EV_Used.Length);
 
-      --  Now that we can issue error messages. We can't do it inline (i.e.
-      --  on detection above) because we need to pay special attention to
-      --  records and unconstrained arrays.
+      --  Now that we can issue error messages. We can't do it inline (i.e. on
+      --  detection above) because we need to pay special attention to records
+      --  and unconstrained arrays.
 
-      --  First we issue warnings on unused objects.
+      --  First we issue warnings on unused objects
 
       EV_Unused := EV_Considered_Objects - EV_Used;
 
@@ -1079,9 +1078,9 @@ package body Flow.Analysis is
 
          begin
             if FA.Atr (V).Is_Global then
-               --  We have an unused global, we need to give the error
-               --  on the subprogram, instead of on the global. In
-               --  generative mode we don't emit this message.
+               --  We have an unused global, we need to give the error on the
+               --  subprogram, instead of on the global. In generative mode we
+               --  don't emit this message.
                if not FA.Is_Generative then
                   if Is_Variable (F) then
                      Error_Msg_Flow
@@ -1092,7 +1091,7 @@ package body Flow.Analysis is
                         Tag      => Unused,
                         Severity => Low_Check_Kind);
                   else
-                     --  Issue a different message if the global is a constant.
+                     --  Issue a different message if the global is a constant
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      => "& cannot appear in Globals",
@@ -1104,9 +1103,9 @@ package body Flow.Analysis is
                end if;
             else
                --  We suppress this warning when we are dealing with a
-               --  concurrent type or a component of a concurrent type.
-               --  Also when the variable has been marked either as
-               --  Unreferenced or Unmodified or Unused.
+               --  concurrent type or a component of a concurrent type. Also
+               --  when the variable has been marked either as Unreferenced
+               --  or Unmodified or Unused.
                if F.Kind /= Direct_Mapping
                  or else (Ekind (Etype (Get_Direct_Mapping_Id (F)))
                             not in Concurrent_Kind
@@ -1130,11 +1129,11 @@ package body Flow.Analysis is
         (EV_Considered_Imports.Length >= EV_Effective.Length and
          EV_Considered_Objects.Length >= EV_Used.Length);
 
-      --  Finally, we issue warnings on ineffective imports. We exclude
-      --  items which are suppressed by a null derives and which have
-      --  previously been flagged as unused. In the loop below we further
-      --  exclude objects that are marked by a pragma Unreferenced or a
-      --  pragma Unmodified or a pragma Unused.
+      --  Finally, we issue warnings on ineffective imports. We exclude items
+      --  which are suppressed by a null derives and which have previously
+      --  been flagged as unused. In the loop below we further exclude objects
+      --  that are marked by a pragma Unreferenced or a pragma Unmodified or a
+      --  pragma Unused.
 
       EV_Ineffective := EV_Considered_Imports -
         (EV_Effective or Suppressed_Entire_Ids or EV_Unused);
