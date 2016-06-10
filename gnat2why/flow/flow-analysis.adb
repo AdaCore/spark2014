@@ -948,19 +948,25 @@ package body Flow.Analysis is
 
    begin
       --  We look at the null depends (if one exists). For any variables
-      --  mentioned there, we suppress the ineffective import warning.
+      --  mentioned there, we suppress the ineffective import warning by
+      --  putting them to Suppressed_Entire_Ids.
 
-      Suppressed_Entire_Ids := Flow_Id_Sets.Empty_Set;
       if FA.Kind = Kind_Subprogram and then Present (FA.Depends_N) then
          declare
-            D : Dependency_Maps.Map;
+            Dependency_Map : Dependency_Maps.Map;
+            Null_Position  : Dependency_Maps.Cursor;
+
          begin
             Get_Depends (Subprogram => FA.Analyzed_Entity,
                          Scope      => FA.B_Scope,
                          Classwide  => False,
-                         Depends    => D);
-            if D.Contains (Null_Flow_Id) then
-               Suppressed_Entire_Ids := D (Null_Flow_Id);
+                         Depends    => Dependency_Map);
+
+            Null_Position := Dependency_Map.Find (Null_Flow_Id);
+
+            if Dependency_Maps.Has_Element (Null_Position) then
+               Flow_Id_Sets.Move (Target => Suppressed_Entire_Ids,
+                                  Source => Dependency_Map (Null_Position));
             end if;
          end;
       end if;
