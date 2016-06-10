@@ -1099,7 +1099,8 @@ package body Flow.Analysis is
                            N        => Error_Location,
                            F1       => F,
                            Tag      => VC_Kinds.Unused,
-                           Severity => Low_Check_Kind);
+                           Severity => Low_Check_Kind,
+                           Vertex   => V);
                      else
                         Error_Msg_Flow
                           (FA       => FA,
@@ -1107,7 +1108,8 @@ package body Flow.Analysis is
                            N        => Error_Location,
                            F1       => F,
                            Tag      => VC_Kinds.Unused,
-                           Severity => Medium_Check_Kind);
+                           Severity => Medium_Check_Kind,
+                           Vertex   => V);
                      end if;
                   end;
                end if;
@@ -1181,7 +1183,8 @@ package body Flow.Analysis is
                      F1       => F,
                      F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                      Tag      => Unused_Initial_Value,
-                     Severity => Warning_Kind);
+                     Severity => Warning_Kind,
+                     Vertex   => V);
                end if;
             else
                --  We suppress this warning when we are dealing with a
@@ -1199,7 +1202,8 @@ package body Flow.Analysis is
                      F1       => F,
                      F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                      Tag      => Unused_Initial_Value,
-                     Severity => Warning_Kind);
+                     Severity => Warning_Kind,
+                     Vertex   => V);
                end if;
             end if;
          end;
