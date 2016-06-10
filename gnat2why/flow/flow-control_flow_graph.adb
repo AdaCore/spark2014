@@ -3512,10 +3512,10 @@ package body Flow.Control_Flow_Graph is
                     Standard_Exits => To_Set (Inits.Last_Element)));
 
       if FA.Kind in Kind_Package | Kind_Package_Body then
-         --  If we are analyzing a package body or spec and we just
-         --  introduced 'Initial and 'Final vertices for an entity
-         --  that is mentioned in an initializes aspect, we have
-         --  to set Is_Export on the corresponding 'Final vertices.
+         --  If we are analyzing a package spec or body and we just introduced
+         --  'Initial and 'Final vertices for an entity that is mentioned in an
+         --  Initializes aspect, we have to set Is_Export on the corresponding
+         --  'Final vertices.
          FS := Flatten_Variable (E, FA.B_Scope);
 
          for F of FS loop
