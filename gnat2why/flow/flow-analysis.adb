@@ -924,7 +924,7 @@ package body Flow.Analysis is
               or else Atr.Is_Proof;
       end Is_Final_Use;
 
-      Suppressed_Entire_Ids : Flow_Id_Sets.Set;
+      EV_Suppressed         : Flow_Id_Sets.Set;
       --  Entire variables appearing in a "null => Blah" dependency relation;
       --  for these we suppress the ineffective import warning.
 
@@ -949,7 +949,7 @@ package body Flow.Analysis is
    begin
       --  We look at the null depends (if one exists). For any variables
       --  mentioned there, we suppress the ineffective import warning by
-      --  putting them to Suppressed_Entire_Ids.
+      --  putting them to EV_Suppressed.
 
       if FA.Kind = Kind_Subprogram and then Present (FA.Depends_N) then
          declare
@@ -965,7 +965,7 @@ package body Flow.Analysis is
             Null_Position := Dependency_Map.Find (Null_Flow_Id);
 
             if Dependency_Maps.Has_Element (Null_Position) then
-               Flow_Id_Sets.Move (Target => Suppressed_Entire_Ids,
+               Flow_Id_Sets.Move (Target => EV_Suppressed,
                                   Source => Dependency_Map (Null_Position));
             end if;
          end;
@@ -1140,7 +1140,7 @@ package body Flow.Analysis is
       --  pragma Unused.
 
       EV_Ineffective := EV_Considered_Imports -
-        (EV_Effective or Suppressed_Entire_Ids or EV_Unused);
+        (EV_Effective or EV_Suppressed or EV_Unused);
 
       for F of EV_Ineffective loop
          declare
