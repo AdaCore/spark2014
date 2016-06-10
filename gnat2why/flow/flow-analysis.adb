@@ -976,10 +976,10 @@ package body Flow.Analysis is
       --  We now detect imports that do not contribute to at least one export
       --  and objects that are never used.
 
-      Considered_Imports := Flow_Id_Sets.Empty_Set;
-      Considered_Objects := Flow_Id_Sets.Empty_Set;
-      Used               := Flow_Id_Sets.Empty_Set;
-      Effective          := Flow_Id_Sets.Empty_Set;
+      pragma Assert (Considered_Imports.Is_Empty and then
+                     Considered_Objects.Is_Empty and then
+                     Used.Is_Empty               and then
+                     Effective.Is_Empty);
 
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -1064,8 +1064,8 @@ package body Flow.Analysis is
       end loop;
 
       pragma Assert_And_Cut
-        (Considered_Imports.Length >= Effective.Length and
-         Considered_Objects.Length >= Used.Length);
+        (Effective.Is_Subset (Of_Set => Considered_Imports) and then
+         Used.Is_Subset      (Of_Set => Considered_Objects));
 
       --  Now that we can issue error messages. We can't do it inline (i.e. on
       --  detection above) because we need to pay special attention to records
