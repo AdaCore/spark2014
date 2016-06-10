@@ -648,7 +648,7 @@ package body Why.Inter is
          when Entry_Kind =>
             return WF_Context;
 
-         when Subprogram_Kind | E_Subprogram_Body =>
+         when E_Function | E_Procedure | E_Subprogram_Body =>
             declare
                Decl_E : constant Entity_Id := Unique_Entity (E);
             begin
@@ -657,6 +657,7 @@ package body Why.Inter is
                --  so that they can be used as parameters of generics whose
                --  axiomatization in Why is written manually (example: formal
                --  containers).
+               --  ??? sequence of calls to Has_Proof_Global_* is inefficient
 
                if Ekind (E) = E_Function
                  and then not Flow_Utility.Has_Proof_Global_Reads
