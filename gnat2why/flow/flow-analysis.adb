@@ -912,8 +912,6 @@ package body Flow.Analysis is
 
       function Is_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean is
          Atr : V_Attributes renames FA.Atr (V);
-         --  ??? cannot use expression function with F.Atr (V) due to front-end
-         --  bug; can be refactored once P308-025 is fixed.
 
       begin
          return
