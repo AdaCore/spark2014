@@ -973,8 +973,8 @@ package body Flow.Analysis is
 
       pragma Assert_And_Cut (True);
 
-      --  We now detect all imports that are ineffective (do not contribute to
-      --  at least one export) and objects that are never used.
+      --  We now detect imports that do not contribute to at least one export
+      --  and objects that are never used.
 
       EV_Considered_Imports := Flow_Id_Sets.Empty_Set;
       EV_Considered_Objects := Flow_Id_Sets.Empty_Set;
@@ -983,81 +983,82 @@ package body Flow.Analysis is
 
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            Key : Flow_Id      renames FA.PDG.Get_Key (V);
+            Var : Flow_Id      renames FA.PDG.Get_Key (V);
             Atr : V_Attributes renames FA.Atr (V);
 
-            E              : Flow_Id;
-            Disuse_Allowed : Boolean;
          begin
-            if Key.Variant = Initial_Value and then
-              Key.Kind /= Synthetic_Null_Export
+            if Var.Variant = Initial_Value and then
+              Var.Kind /= Synthetic_Null_Export
             then
+               declare
+                  Entire_Var : constant Flow_Id :=
+                    Change_Variant (Entire_Variable (Var), Normal_Use);
+                  --  The entire variable
 
-               --  Note the entire variable
+                  Disuse_Allowed : constant Boolean :=
+                    Is_Bound (Var) or else Is_Discriminant (Var);
+                  --  If this is a bound variable or discriminant, we only
+                  --  consider it if it is actually used. Its not an error to
+                  --  not explicitly use it.
 
-               E := Change_Variant (Entire_Variable (Key), Normal_Use);
+               begin
+                  --  Using discriminants or bounds marks the entire variable
+                  --  as used; not using them has no effect. However, this
+                  --  only applies to out parameters; for in out parameters the
+                  --  value of the entire variable itself has to be used and
+                  --  uses of bounds and discriminants are completely ignored.
 
-               --  If this is a bound variable or discriminant, we only
-               --  consider it if it is actually used. Its not an error to
-               --  not explicitly use it.
+                  --  Determine ineffective imports
 
-               Disuse_Allowed := Is_Bound (Key) or else Is_Discriminant (Key);
+                  if not Disuse_Allowed or else Atr.Mode /= Mode_In_Out then
 
-               --  Using discriminants or bounds marks the entire variable
-               --  as used; not using them has no effect. However, this only
-               --  applies to out parameters; for in out parameters the value
-               --  of the entire variable itself has to be used and uses of
-               --  bounds and discriminants are completely ignored.
-
-               --  Determine ineffective imports
-
-               if not Disuse_Allowed or else Atr.Mode /= Mode_In_Out then
-
-                  if Atr.Is_Initialized and Atr.Is_Import then
-                     if not Disuse_Allowed then
-                        EV_Considered_Imports.Include (E);
-                     end if;
-
-                     --  Check if we're ineffective or not. If not, we note
-                     --  that we at least partially have used the entire
-                     --  variable.
-
-                     if FA.PDG.Non_Trivial_Path_Exists (V, Is_Final_Use'Access)
-                     then
-                        if Disuse_Allowed then
-                           EV_Considered_Imports.Include (E);
+                     if Atr.Is_Initialized and Atr.Is_Import then
+                        if not Disuse_Allowed then
+                           EV_Considered_Imports.Include (Entire_Var);
                         end if;
-                        EV_Effective.Include (E);
-                     end if;
-                  end if;
 
-                  --  Determine unused objects
+                        --  Check if we're ineffective or not. If not, we note
+                        --  that we at least partially have used the entire
+                        --  variable.
 
-                  if not Disuse_Allowed then
-                     EV_Considered_Objects.Include (E);
-                  end if;
-
-                  if FA.PDG.Out_Neighbour_Count (V) = 1 then
-                     declare
-                        Final_V : constant Flow_Graphs.Vertex_Id :=
-                          FA.PDG.Child (V);
-                     begin
-                        if FA.PDG.Get_Key (Final_V).Variant /= Final_Value
-                          or else FA.PDG.In_Neighbour_Count (Final_V) > 1
+                        if FA.PDG.Non_Trivial_Path_Exists
+                          (V, Is_Final_Use'Access)
                         then
                            if Disuse_Allowed then
-                              EV_Considered_Objects.Include (E);
+                              EV_Considered_Imports.Include (Entire_Var);
                            end if;
-                           EV_Used.Include (E);
+                           EV_Effective.Include (Entire_Var);
                         end if;
-                     end;
-                  else
-                     if Disuse_Allowed then
-                        EV_Considered_Objects.Include (E);
                      end if;
-                     EV_Used.Include (E);
+
+                     --  Determine unused objects
+
+                     if not Disuse_Allowed then
+                        EV_Considered_Objects.Include (Entire_Var);
+                     end if;
+
+                     if FA.PDG.Out_Neighbour_Count (V) = 1 then
+                        declare
+                           Final_V : constant Flow_Graphs.Vertex_Id :=
+                             FA.PDG.Child (V);
+                        begin
+                           if FA.PDG.Get_Key (Final_V).Variant /= Final_Value
+                             or else FA.PDG.In_Neighbour_Count (Final_V) > 1
+                           then
+                              if Disuse_Allowed then
+                                 EV_Considered_Objects.Include (Entire_Var);
+                              end if;
+                              EV_Used.Include (Entire_Var);
+                           end if;
+                        end;
+                     else
+                        if Disuse_Allowed then
+                           EV_Considered_Objects.Include (Entire_Var);
+                        end if;
+                        EV_Used.Include (Entire_Var);
+                     end if;
                   end if;
-               end if;
+               end;
             end if;
          end;
       end loop;
