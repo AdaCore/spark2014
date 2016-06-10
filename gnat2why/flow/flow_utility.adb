@@ -454,52 +454,6 @@ package body Flow_Utility is
       end case;
    end Extensions_Visible;
 
-   --------------------------
-   -- Filter_Out_Constants --
-   --------------------------
-
-   function Filter_Out_Constants
-     (FS : Flow_Id_Sets.Set;
-      NS : Node_Sets.Set := Node_Sets.Empty_Set;
-      GF : Boolean       := False)
-      return Flow_Id_Sets.Set
-   is
-   begin
-      return R : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set do
-         for F of FS loop
-            case F.Kind is
-               when Direct_Mapping | Record_Field =>
-                  declare
-                     E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-                     pragma Assert (Nkind (E) in N_Entity);
-                  begin
-                     if Ekind (E) /= E_Constant
-                       or else NS.Contains (E)
-                       or else Has_Variable_Input (F)
-                     then
-                        R.Include (F);
-                     elsif GF
-                       and then not In_Generic_Actual (E)
-                     then
-                        R.Include (F);
-                     end if;
-                  end;
-
-               when Magic_String =>
-                  if not Is_Constant (F.Name) then
-                     R.Include (F);
-                  end if;
-
-               when Synthetic_Null_Export =>
-                  R.Include (F);
-
-               when Null_Value =>
-                  raise Program_Error;
-            end case;
-         end loop;
-      end return;
-   end Filter_Out_Constants;
-
    ----------------------
    -- Flatten_Variable --
    ----------------------
@@ -915,15 +869,9 @@ package body Flow_Utility is
          All_Writes    := Change_Variant (All_Writes, Normal_Use);
 
          --  Remove generic formals without variable input
-         All_Proof_Ins := Filter_Out_Constants (All_Proof_Ins,
-                                                Node_Sets.Empty_Set,
-                                                True);
-         All_Reads     := Filter_Out_Constants (All_Reads,
-                                                Node_Sets.Empty_Set,
-                                                True);
-         All_Writes    := Filter_Out_Constants (All_Writes,
-                                                Node_Sets.Empty_Set,
-                                                True);
+         Remove_Constants (All_Proof_Ins, Only_Generic_Formals => True);
+         Remove_Constants (All_Reads,     Only_Generic_Formals => True);
+         Remove_Constants (All_Writes,    Only_Generic_Formals => True);
 
          for C in Contract_Relation.Iterate loop
             declare
@@ -1451,15 +1399,9 @@ package body Flow_Utility is
             --  Step 6: Remove generic formals without variable input
             ---------------------------------------------------------------
 
-            Proof_Ins := Filter_Out_Constants (Proof_Ins,
-                                               Node_Sets.Empty_Set,
-                                               True);
-            Reads     := Filter_Out_Constants (Reads,
-                                               Node_Sets.Empty_Set,
-                                               True);
-            Writes    := Filter_Out_Constants (Writes,
-                                               Node_Sets.Empty_Set,
-                                               True);
+            Remove_Constants (Proof_Ins, Only_Generic_Formals => True);
+            Remove_Constants (Reads,     Only_Generic_Formals => True);
+            Remove_Constants (Writes,    Only_Generic_Formals => True);
          end;
 
          Debug ("proof ins", Proof_Ins);
@@ -2664,8 +2606,8 @@ package body Flow_Utility is
             end case;
          end loop;
 
-         --  And finally, we remove any local constants.
-         S := Filter_Out_Constants (S, Local_Constants);
+         --  And finally, we remove all local constants
+         Remove_Constants (S, Local_Constants);
       end return;
    end Get_Variable_Set;
 
@@ -3307,6 +3249,55 @@ package body Flow_Utility is
         and then Is_Visible (Body_E, Scope)
         and then Refinement_Needed (E);
    end Rely_On_Generated_Global;
+
+   ----------------------
+   -- Remove_Constants --
+   ----------------------
+
+   procedure Remove_Constants
+     (Objects              : in out Flow_Id_Sets.Set;
+      Skip                 :        Node_Sets.Set := Node_Sets.Empty_Set;
+      Only_Generic_Formals :        Boolean       := False)
+   is
+      Constants : Flow_Id_Sets.Set;
+      --  ??? list would be more efficient here, but less intuitive
+   begin
+      for F of Objects loop
+         case F.Kind is
+            when Direct_Mapping | Record_Field =>
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+                  pragma Assert (Nkind (E) = N_Defining_Identifier);
+
+               begin
+                  if Ekind (E) = E_Constant
+                    and then not Skip.Contains (E)
+                    and then not Has_Variable_Input (F)
+                    and then (In_Generic_Actual (E)
+                              or else not Only_Generic_Formals)
+                  then
+                     Constants.Insert (F);
+                  end if;
+               end;
+
+            when Magic_String =>
+               pragma Assert (not Only_Generic_Formals);
+               --  Filtering magic strings for generic formals is meaningless
+
+               if Is_Constant (F.Name) then
+                  Constants.Insert (F);
+               end if;
+
+            when Synthetic_Null_Export =>
+               null;
+
+            when Null_Value =>
+               raise Program_Error;
+         end case;
+      end loop;
+
+      Objects.Difference (Constants);
+   end Remove_Constants;
 
    --------------------
    -- Same_Component --

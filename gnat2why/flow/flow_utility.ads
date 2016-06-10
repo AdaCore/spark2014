@@ -68,20 +68,16 @@ is
                  Ekind (E) in E_Component | E_Discriminant;
    --  Compute a suitable hash for the given record component
 
-   function Filter_Out_Constants
-     (FS : Flow_Id_Sets.Set;
-      NS : Node_Sets.Set := Node_Sets.Empty_Set;
-      GF : Boolean       := False)
-      return Flow_Id_Sets.Set;
-   --  Removes from FS all constants (without variable input) that are not
-   --  contained in NS.
-   --  @param FS is the initial Flow_Ids set
-   --  @param NS is the Nodes set based on which filtering will occur
-   --  @param GF is True when we only want to remove generic formals without
-   --    variable input
-   --  @return a subset of S so that all Flow_Ids that do not correspond to
-   --    constants that Has_Variable_Input or constants that are not
-   --    contained in C have been removed.
+   procedure Remove_Constants
+     (Objects              : in out Flow_Id_Sets.Set;
+      Skip                 :        Node_Sets.Set := Node_Sets.Empty_Set;
+      Only_Generic_Formals :        Boolean       := False);
+   --  Remove from Objects all constants (without variable input) that are not
+   --  contained in Skip.
+   --  @param Objects are the initial flow ids
+   --  @param Skip are the nodes based on which filtering will occur
+   --  @param Only_Generic_Formals is True when we only want to remove generic
+   --    formals without variable input
 
    function Same_Component (C1, C2 : Entity_Id) return Boolean
    with Pre => Is_Initialized and then

@@ -21,7 +21,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;              use Common_Containers;
 with Elists;                         use Elists;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
@@ -210,10 +209,8 @@ package body Flow_Dependency_Maps is
          end case;
 
          --  Filter out generic formals without variable output
+         Remove_Constants (Inputs, Only_Generic_Formals => True);
 
-         Inputs := Filter_Out_Constants (Inputs,
-                                         Node_Sets.Empty_Set,
-                                         True);
          --  Assemble map
 
          if Outputs.Is_Empty then
