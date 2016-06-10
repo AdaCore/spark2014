@@ -4,6 +4,7 @@ Require Import BuiltIn.
 Require BuiltIn.
 Require bool.Bool.
 Require map.Map.
+Require map.Const.
 
 (* Why3 assumption *)
 Definition unit := unit.
@@ -265,7 +266,7 @@ Qed.
 (* Why3 goal *)
 Definition singleton: component_type -> t -> (map.Map.map t component_type).
 intros e i.
-exact (map.Map.const e).
+exact (map.Const.const e).
 Defined.
 
 (* Why3 goal *)
@@ -273,6 +274,6 @@ Lemma singleton_def :
 forall (v:component_type),
  forall (i:t), ((map.Map.get (singleton v i) i) = v).
 intros v i.
-apply map.Map.Const.
+apply map.Const.Const.
 Qed.
 
