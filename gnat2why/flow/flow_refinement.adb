@@ -447,7 +447,7 @@ package body Flow_Refinement is
    -- Find_Node_In_Initializes --
    ------------------------------
 
-   function Find_Node_In_Initializes (E : Entity_Id) return Node_Id is
+   function Find_In_Initializes (E : Entity_Id) return Entity_Id is
       State : constant Entity_Id := Encapsulating_State (E);
 
       Target_Ent : constant Entity_Id :=
@@ -488,7 +488,7 @@ package body Flow_Refinement is
       end;
 
       return Empty;
-   end Find_Node_In_Initializes;
+   end Find_In_Initializes;
 
    ----------------------
    -- Get_Body_Or_Stub --
@@ -671,7 +671,7 @@ package body Flow_Refinement is
                raise Program_Error;
          end case;
 
-         Init := Present (Find_Node_In_Initializes (Ent));
+         Init := Present (Find_In_Initializes (Ent));
 
          if Ptr.Ent in Common_Scope.Ent | S.Ent then
             if Trace then
@@ -685,7 +685,7 @@ package body Flow_Refinement is
                if Trace then
                   Write_Line ("   -> looking up");
                end if;
-               Init := Present (Find_Node_In_Initializes
+               Init := Present (Find_In_Initializes
                                   (Encapsulating_State (Ent)));
             end if;
             return Init;

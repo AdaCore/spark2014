@@ -164,10 +164,10 @@ package Flow_Refinement is
    --  Given a set of variables and a scope, recursively expand all abstract
    --  state where its refinement is visible in S.
 
-   function Find_Node_In_Initializes (E : Entity_Id) return Node_Id
+   function Find_In_Initializes (E : Entity_Id) return Entity_Id
    with Pre  => Present (E),
-        Post => (if Present (Find_Node_In_Initializes'Result)
-                 then Find_Node_In_Initializes'Result in
+        Post => (if Present (Find_In_Initializes'Result)
+                 then Find_In_Initializes'Result in
                         E | Encapsulating_State (E));
    --  Returns the node representing E (or its immediately encapsulating state)
    --  in an Initializes aspect or Empty.

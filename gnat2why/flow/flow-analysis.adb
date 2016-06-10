@@ -1766,7 +1766,7 @@ package body Flow.Analysis is
                         Adjust_Name_Case (Sloc (N));
 
                         if FA.Kind in Kind_Package | Kind_Package_Body
-                          and then No (Find_Node_In_Initializes
+                          and then No (Find_In_Initializes
                                          (Defining_Identifier (N)))
                         then
                            Error_Msg_Flow
