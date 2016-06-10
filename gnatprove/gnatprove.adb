@@ -469,6 +469,9 @@ procedure Gnatprove is
          Args.Append ("off");
       end if;
 
+      Args.Append ("--ce-timeout");
+      Args.Append (Image (CE_Timeout, 1));
+
       return Args;
    end Compute_Why3_Args;
 

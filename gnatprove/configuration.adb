@@ -989,6 +989,13 @@ ASCII.LF;
             Steps := CL_Switches.Steps;
          end if;
 
+         --  Timeout is fully set now, we can set CE_Timeout. Basically we cap
+         --  the CE_Timeout at 10 seconds
+
+         CE_Timeout :=
+           (if Timeout = 0 then Constants.Max_CE_Timeout
+            else Integer'Min (Timeout, Constants.Max_CE_Timeout));
+
          Set_Proof_Mode;
          Set_Provers;
          Limit_Provers;

@@ -34,6 +34,13 @@ with String_Utils;      use String_Utils;
 
 package Configuration is
 
+   package Constants is
+      --  This package contains constants that influence the behavior of
+      --  gnatprove
+
+      Max_CE_Timeout : constant Integer := 10;
+
+   end Constants;
    package CL_Switches is
 
       --  These are the variables that contain the values of the corresponding
@@ -151,6 +158,7 @@ package Configuration is
    Timeout           : Integer;
    Steps             : Integer;
    Why3_Config_File  : GNAT.Strings.String_Access;
+   CE_Timeout        : Integer;
 
    Max_Non_Blank_Lines : constant := 6;
    --  Maximum number of consecutive non blank lines on standard output
