@@ -1598,17 +1598,25 @@ package body Gnat2Why.Expr is
                   else
                      case Ekind (Formal) is
                      when E_In_Out_Parameter | E_Out_Parameter =>
-                        pragma Assert
-                          (Ada_Ent_To_Why.Element
-                             (Symbol_Table, Entity (Actual)).Kind = Regular);
 
                         --  Parameters that are "out" are refs;
                         --  if the actual is a simple identifier and no
                         --  conversion is needed, it can be translated "as is".
 
-                        Why_Args (Arg_Cnt) :=
-                          +Ada_Ent_To_Why.Element
-                            (Symbol_Table, Entity (Actual)).Main.B_Name;
+                        --  We don't want Transform_Identifier to generate a
+                        --  deref here, so putting Ref_Allowed to false
+
+                        declare
+                           My_Params : Transformation_Params := Params;
+                        begin
+                           My_Params.Ref_Allowed := False;
+                           Why_Args (Arg_Cnt) :=
+                             Transform_Identifier
+                               (My_Params,
+                                Actual,
+                                Entity (Actual),
+                                Domain => Domain);
+                        end;
 
                      when others =>
 
@@ -11245,9 +11253,9 @@ package body Gnat2Why.Expr is
         and then Domain = EW_Prog
         and then not Is_Deref
         and then not Is_Part_Of_Protected_Object (Ent)
+        and then Params.Ref_Allowed
       then
          pragma Assert (Is_Mutable_In_Why (Ent));
-         pragma Assert (Params.Ref_Allowed);
 
          declare
             Deref    : constant W_Expr_Id :=
