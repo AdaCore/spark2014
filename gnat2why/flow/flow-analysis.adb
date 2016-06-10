@@ -1082,28 +1082,34 @@ package body Flow.Analysis is
 
          begin
             if FA.Atr (V).Is_Global then
-               --  We have an unused global, we need to give the error on the
-               --  subprogram, instead of on the global. In generative mode we
-               --  don't emit this message.
+               --  In generative mode we inhibit messages on globals
                if not FA.Is_Generative then
-                  if Is_Variable (F) then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "unused global &",
-                        N        => Find_Global (FA.Analyzed_Entity, F),
-                        F1       => F,
-                        Tag      => VC_Kinds.Unused,
-                        Severity => Low_Check_Kind);
-                  else
-                     --  Issue a different message if the global is a constant
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "& cannot appear in Globals",
-                        N        => Find_Global (FA.Analyzed_Entity, F),
-                        F1       => F,
-                        Tag      => VC_Kinds.Unused,
-                        Severity => Medium_Check_Kind);
-                  end if;
+                  declare
+                     Error_Location : constant Entity_Id :=
+                       Find_Global (FA.Analyzed_Entity, F);
+                     --  We prefer the report the error on the subprogram, not
+                     --  on the global.
+
+                  begin
+                     --  Issue a different errors for variables and constants
+                     if Is_Variable (F) then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "unused global &",
+                           N        => Error_Location,
+                           F1       => F,
+                           Tag      => VC_Kinds.Unused,
+                           Severity => Low_Check_Kind);
+                     else
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "& cannot appear in Globals",
+                           N        => Error_Location,
+                           F1       => F,
+                           Tag      => VC_Kinds.Unused,
+                           Severity => Medium_Check_Kind);
+                     end if;
+                  end;
                end if;
             else
                --  We suppress this warning when we are dealing with a
