@@ -11,7 +11,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import sys, os, time
 
 # AdaCore specific Ada/SPARK highlighter, that does not crash
 
@@ -55,18 +55,28 @@ source_suffix = '.rst'
 # The master toctree document.
 master_doc = 'index'
 
+def get_copyright():
+    return u'2013-%s, AdaCore and Altran UK Ltd' % time.strftime("%Y")
+
 # General information about the project.
-project = u'spark2014_rm'
-copyright = u'2013-2014, AdaCore and Altran UK Ltd'
+project = u'SPARK 2014 Reference Manual'
+copyright = get_copyright()
+
+def get_version():
+    """Extract the version from spark2014vsn.ads"""
+    for line in file("../../../spark2014vsn.ads").readlines():
+        if line.find("SPARK2014_Static_Version") and ":=" in line:
+            return line.split('"')[1].split(' ')[0]
+    raise Exception("Cannot find version number")
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = '3.0'
+version = get_version()
 # The full version, including alpha/beta/rc tags.
-release = '3.0'
+release = version
 
 # Substitution for the new SPARK name
 rst_prolog = """.. |SPARK| replace:: SPARK 2014
@@ -125,7 +135,7 @@ html_theme = 'sphinxdoc'
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
-#html_title = None
+html_title = project + ' ' + release
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #html_short_title = None
@@ -186,7 +196,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'spark2014doc'
+htmlhelp_basename = 'SPARK2014RefMandoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -208,7 +218,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'spark2014_rm.tex', u'SPARK 2014 LRM',
+  ('index', 'spark2014_rm.tex', u'SPARK 2014 Reference Manual',
    u'AdaCore and Altran UK Ltd', 'manual'),
 ]
 
@@ -241,6 +251,6 @@ latex_preamble = '\setcounter{tocdepth}{3}'
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'spark2014_rm', u'SPARK 2014 Reference Manual',
+    ('index', 'spark2014refman', u'SPARK 2014 Reference Manual',
      [u'AdaCore and Altran UK Ltd'], 1)
 ]
