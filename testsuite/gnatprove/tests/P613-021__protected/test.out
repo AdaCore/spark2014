@@ -1,0 +1,5 @@
+core.adb:19:28: info: range check proved
+core.adb:27:25: medium: assertion might fail, cannot prove Message_Waiting
+core.adb:30:25: medium: range check might fail
+core.ads:30:22: info: postcondition proved
+core.ads:33:25: info: initialization of "N" proved
