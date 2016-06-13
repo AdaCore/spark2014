@@ -2951,14 +2951,8 @@ package body Flow.Control_Flow_Graph is
             Atr : V_Attributes renames FA.Atr (V);
          begin
             if Atr.Loops.Contains (Loop_Id) then
-               declare
-                  Combined_Writes : constant Flow_Id_Sets.Set :=
-                    Atr.Variables_Defined or Atr.Volatiles_Read;
-               begin
-                  for F of Combined_Writes loop
-                     Add_Loop_Write (Loop_Id, F);
-                  end loop;
-               end;
+               Add_Loop_Writes (Loop_Id,
+                                Atr.Variables_Defined or Atr.Volatiles_Read);
             end if;
          end;
       end loop;

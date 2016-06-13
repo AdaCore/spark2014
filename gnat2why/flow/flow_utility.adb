@@ -128,18 +128,17 @@ package body Flow_Utility is
       Loop_Info.Insert (E, Flow_Id_Sets.Empty_Set);
    end Add_Loop;
 
-   --------------------
-   -- Add_Loop_Write --
-   --------------------
+   ---------------------
+   -- Add_Loop_Writes --
+   ---------------------
 
-   procedure Add_Loop_Write (E : Entity_Id;
-                             F : Flow_Id)
+   procedure Add_Loop_Writes (Loop_E : Entity_Id;
+                              Writes : Flow_Id_Sets.Set)
    is
    begin
       pragma Assert (not Loop_Info_Frozen);
-      pragma Assert (Loop_Info.Contains (E));
-      Loop_Info (E).Include (F);
-   end Add_Loop_Write;
+      Loop_Info (Loop_E).Union (Writes);
+   end Add_Loop_Writes;
 
    -------------------------
    -- Add_To_Temp_String  --
@@ -3260,7 +3259,8 @@ package body Flow_Utility is
       Only_Generic_Formals :        Boolean       := False)
    is
       Constants : Flow_Id_Sets.Set;
-      --  ??? list would be more efficient here, but less intuitive
+      --  ??? list would be more efficient here, since we only Insert and
+      --  Iterate, but sets are more intuitive; for now let's leave it.
    begin
       for F of Objects loop
          case F.Kind is

@@ -551,10 +551,10 @@ is
    with Pre => Ekind (E) = E_Loop;
    --  Indicates that the loop E has been analyzed by flow analysis.
 
-   procedure Add_Loop_Write (E : Entity_Id;
-                             F : Flow_Id)
-   with Pre => Ekind (E) = E_Loop;
-   --  Adds F to the set of variables written by the loop E.
+   procedure Add_Loop_Writes (Loop_E : Entity_Id;
+                              Writes : Flow_Id_Sets.Set)
+   with Pre => Ekind (Loop_E) = E_Loop;
+   --  Adds Writes to the set of variables written by the loop entity Loop_E
 
    procedure Freeze_Loop_Info;
    --  Must be called at the end of flow analysis - this makes it an error
