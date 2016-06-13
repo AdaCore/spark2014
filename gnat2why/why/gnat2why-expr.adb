@@ -1604,7 +1604,7 @@ package body Gnat2Why.Expr is
                         --  conversion is needed, it can be translated "as is".
 
                         --  We don't want Transform_Identifier to generate a
-                        --  deref here, so putting Ref_Allowed to false
+                        --  deref here, so putting Ref_Allowed to false.
 
                         declare
                            My_Params : Transformation_Params := Params;
