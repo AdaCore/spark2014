@@ -24,31 +24,29 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
-with Atree;              use Atree;
-with Einfo;              use Einfo;
-with Flow_Utility;       use Flow_Utility;
-with Gnat2Why.Util;      use Gnat2Why.Util;
-with Namet;              use Namet;
-with Nlists;             use Nlists;
+with Atree;                   use Atree;
+with Einfo;                   use Einfo;
+with Gnat2Why.Expr.Loops.Inv; use Gnat2Why.Expr.Loops.Inv;
+with Gnat2Why.Util;           use Gnat2Why.Util;
+with Namet;                   use Namet;
+with Nlists;                  use Nlists;
 with Sem_Util;
-with Sinfo;              use Sinfo;
-with Sinput;             use Sinput;
-with Snames;             use Snames;
-with SPARK_Util;         use SPARK_Util;
-with Uintp;              use Uintp;
-with VC_Kinds;           use VC_Kinds;
-with Why;                use Why;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Modules;  use Why.Atree.Modules;
-with Why.Atree.Tables;   use Why.Atree.Tables;
-with Why.Conversions;    use Why.Conversions;
-with Why.Gen.Binders;    use Why.Gen.Binders;
-with Why.Gen.Expr;       use Why.Gen.Expr;
-with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Gen.Preds;      use Why.Gen.Preds;
-with Why.Gen.Progs;      use Why.Gen.Progs;
-with Why.Gen.Terms;      use Why.Gen.Terms;
-with Why.Inter;          use Why.Inter;
+with Sinfo;                   use Sinfo;
+with Sinput;                  use Sinput;
+with Snames;                  use Snames;
+with SPARK_Util;              use SPARK_Util;
+with Uintp;                   use Uintp;
+with VC_Kinds;                use VC_Kinds;
+with Why;                     use Why;
+with Why.Atree.Builders;      use Why.Atree.Builders;
+with Why.Atree.Modules;       use Why.Atree.Modules;
+with Why.Atree.Tables;        use Why.Atree.Tables;
+with Why.Conversions;         use Why.Conversions;
+with Why.Gen.Expr;            use Why.Gen.Expr;
+with Why.Gen.Names;           use Why.Gen.Names;
+with Why.Gen.Preds;           use Why.Gen.Preds;
+with Why.Gen.Progs;           use Why.Gen.Progs;
+with Why.Inter;               use Why.Inter;
 
 package body Gnat2Why.Expr.Loops is
 
@@ -444,51 +442,7 @@ package body Gnat2Why.Expr.Loops is
          --  Generate the implicit invariant for the dynamic properties of
          --  objects modified in the loop.
 
-         if Loop_Writes_Known (Loop_Id) then
-            declare
-               Modified : constant Flow_Id_Sets.Set :=
-                 To_Entire_Variables (Get_Loop_Writes (Loop_Id));
-               Scope    : constant Entity_Id := Enclosing_Unit (Loop_Id);
-               N        : Node_Id;
-               Dyn_Prop : W_Pred_Id;
-               Expr     : W_Expr_Id;
-               Binder   : Item_Type;
-            begin
-               for F of Modified loop
-                  if F.Kind = Direct_Mapping then
-                     N := Get_Direct_Mapping_Id (F);
-                     if Nkind (N) in N_Entity
-                       and then Ekind (N) in Object_Kind
-                       and then Is_Mutable_In_Why (N)
-                     then
-                        Binder := Ada_Ent_To_Why.Element
-                          (Symbol_Table, N);
-                        Expr := Reconstruct_Item (Binder, Ref_Allowed => True);
-
-                        --  Compute the dynamic property of Expr. Currently,
-                        --  local variables are considered uninitialized.
-
-                        Dyn_Prop :=
-                          Compute_Dynamic_Invariant
-                            (Expr        => +Expr,
-                             Ty          => Etype (N),
-                             Initialized =>
-                               (if not Is_Declared_In_Unit (N, Scope)
-                                and then Is_Initialized (N, Scope)
-                                then True_Term
-                                else False_Term));
-
-                        if Dyn_Prop /= True_Pred then
-                           Dyn_Types_Inv :=
-                             +New_And_Expr (Left   => +Dyn_Types_Inv,
-                                            Right  => +Dyn_Prop,
-                                            Domain => EW_Prog);
-                        end if;
-                     end if;
-                  end if;
-               end loop;
-            end;
-         end if;
+         Dyn_Types_Inv := Generate_Frame_Condition (Stmt);
 
          --  Generate the loop invariants VCs
 

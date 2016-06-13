@@ -1141,6 +1141,17 @@ package body Gnat2Why.Expr is
       --  If N is inside the consequence expression of a contract case, return
       --  the corresponding guard expression. Otherwise, return Empty.
 
+      function Transform_Expr_Or_Identifier
+        (N      : Node_Id;
+         Domain : EW_Domain;
+         Params : Transformation_Params)
+        return W_Expr_Id
+      is (if Nkind (N) = N_Defining_Identifier
+          then Transform_Identifier (Params, N, N, Domain)
+          else Transform_Expr (N, Domain, Params));
+      --  Loop_Entry_Map may contain both expressions and identifiers. Call
+      --  the appropriate translation function.
+
       -----------------------------
       -- Get_Corresponding_Guard --
       -----------------------------
@@ -1223,9 +1234,11 @@ package body Gnat2Why.Expr is
                          else
                            Guard_Map.Element (Guard)),
                      Then_Part => +New_Ignore
-                       (Prog => +Transform_Expr (N, EW_Prog, Params)))
+                       (Prog => +Transform_Expr_Or_Identifier
+                            (N, EW_Prog, Params)))
                  else
-                   New_Ignore (Prog => +Transform_Expr (N, EW_Prog, Params)))
+                     New_Ignore (Prog => +Transform_Expr_Or_Identifier
+                                 (N, EW_Prog, Params)))
                else
                  +Void);
 
@@ -1250,7 +1263,8 @@ package body Gnat2Why.Expr is
                          Typ    => EW_Bool_Type,
                          Args =>
                            (1 => +New_Result_Ident (EW_Abstract (Etype (N))),
-                            2 => +Transform_Expr (N, EW_Term, Params)))),
+                            2 => +Transform_Expr_Or_Identifier
+                              (N, EW_Term, Params)))),
                  Context => +Result);
          begin
             Result := Sequence (RE_Prog, Let_Prog);
@@ -4582,7 +4596,10 @@ package body Gnat2Why.Expr is
 
          if not Has_Element (Pos) then
 
-            if Nkind (Expr) in N_Identifier | N_Expanded_Name then
+            if Nkind (Expr) in N_Defining_Identifier then
+               Typ := Why_Type_Of_Entity (Expr);
+               Nd  := Expr;
+            elsif Nkind (Expr) in N_Identifier | N_Expanded_Name then
                Typ := Why_Type_Of_Entity (Entity (Expr));
                Nd  := Entity (Expr);
             else

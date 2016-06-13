@@ -23,7 +23,7 @@ fib.adb:29:42: medium: range check might fail (e.g. when i = 0)
 fib.adb:31:38: info: initialization of "copy_n1" proved
 fib.adb:32:10: info: loop variant proved
 fib.adb:33:16: info: initialization of "a1" proved
-fib.adb:33:19: medium: overflow check might fail (e.g. when a1 = 2147483647 and b1 = 1)
+fib.adb:33:19: medium: overflow check might fail (e.g. when a1 = 1 and b1 = 2147483647)
 fib.adb:33:21: info: initialization of "b1" proved
 fib.adb:34:16: info: initialization of "a1" proved
 fib.adb:34:19: info: overflow check proved
@@ -45,7 +45,7 @@ fib.adb:41:42: medium: range check might fail (e.g. when i = 0)
 fib.adb:43:38: info: initialization of "copy_n2" proved
 fib.adb:44:10: info: loop variant proved
 fib.adb:45:16: info: initialization of "a2" proved
-fib.adb:45:19: medium: overflow check might fail (e.g. when a2 = 2147483647 and b2 = 1)
+fib.adb:45:19: medium: overflow check might fail (e.g. when a2 = 1 and b2 = 2147483647)
 fib.adb:45:21: info: initialization of "b2" proved
 fib.adb:46:16: info: initialization of "a2" proved
 fib.adb:46:19: info: overflow check proved

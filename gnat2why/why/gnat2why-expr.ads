@@ -409,6 +409,7 @@ package Gnat2Why.Expr is
      (Expr    : Node_Id;
       Loop_Id : Node_Id) return W_Identifier_Id;
    --  Returns the identifier to use for a Expr'Loop_Entry(Loop_Id)
+   --  Can be called both on expressions and on identifiers.
 
    function Map_For_Loop_Entry (Loop_Id : Node_Id) return Ada_To_Why_Ident.Map;
    --  Returns the map of identifiers to use for Loop_Entry attribute
