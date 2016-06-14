@@ -260,9 +260,9 @@ package body Gnat2Why.Expr is
 
    function Needs_Temporary_Ref
      (Actual     : Node_Id;
-      Formal     : Node_Id;
+      Formal     : Entity_Id;
       Typ_Formal : W_Type_Id) return Boolean;
-   --  True if the parameter passing needs a temporary ref to be performed.
+   --  True if the parameter passing needs a temporary ref to be performed
 
    function New_Assignment
      (Ada_Node : Node_Id := Empty;
@@ -4658,7 +4658,7 @@ package body Gnat2Why.Expr is
 
    function Needs_Temporary_Ref
      (Actual     : Node_Id;
-      Formal     : Node_Id;
+      Formal     : Entity_Id;
       Typ_Formal : W_Type_Id) return Boolean is
    begin
       --  Temporary refs are needed for out or in out parameters that
@@ -4666,11 +4666,11 @@ package body Gnat2Why.Expr is
       case Ekind (Formal) is
          when E_In_Out_Parameter | E_Out_Parameter =>
             return not Eq_Base (Type_Of_Node (Etype (Actual)), Typ_Formal)
-              or else not (Nkind (Actual) in N_Identifier | N_Expanded_Name);
+              or else Nkind (Actual) not in N_Identifier | N_Expanded_Name;
          when E_In_Parameter =>
             return Has_Async_Writers (Direct_Mapping_Id (Formal));
          when others =>
-            return False;
+            raise Program_Error;
       end case;
    end Needs_Temporary_Ref;
 
