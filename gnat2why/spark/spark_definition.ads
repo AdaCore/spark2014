@@ -137,7 +137,7 @@ package SPARK_Definition is
    function Entity_Body_Compatible_With_SPARK (E : Entity_Id) return Boolean
    with
      Pre => Ekind (E) in E_Function
-       and then Present (Get_Expression_Function (E));
+              and then Present (Get_Expression_Function (E));
    --  Returns True iff the body of expression function E contains no SPARK
    --  violations.
 
