@@ -5645,7 +5645,7 @@ package body SPARK_Definition is
         (Defining_Entity (Enclosing_Declaration
                             (Parent (Enclosing_Declaration (E)))));
       --  Version of Einfo.Scope that returns the lexical scope instead of the
-      --  semantics scope for an entity. For example, it returns the package
+      --  semantic scope for an entity. For example, it returns the package
       --  body entity for an entity declared directly in the body of a
       --  package, instead of the package entity. It is important for returning
       --  the appropriate SPARK_Mode pragma, which may be different for a
