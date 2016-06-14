@@ -4,7 +4,6 @@ Require Import BuiltIn.
 Require BuiltIn.
 Require bool.Bool.
 Require map.Map.
-Require map.Const.
 
 (* Why3 assumption *)
 Definition unit := unit.
@@ -262,6 +261,8 @@ split.
    rewrite <- Z.leb_nle in Hi.
    rewrite Hi; auto.
 Qed.
+
+Require map.Const.
 
 (* Why3 goal *)
 Definition singleton: component_type -> t -> (map.Map.map t component_type).
