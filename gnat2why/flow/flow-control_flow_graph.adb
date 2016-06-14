@@ -2580,10 +2580,11 @@ package body Flow.Control_Flow_Graph is
                         if not
                           (Compile_Time_Compare (Low_Bound (Param_Range),
                                                  Low_Bound (Index_Range),
-                                                 True) = EQ and then
-                             Compile_Time_Compare (High_Bound (Param_Range),
-                                                   High_Bound (Index_Range),
-                                                   True) = EQ)
+                                                 True) = EQ
+                             and then
+                           Compile_Time_Compare (High_Bound (Param_Range),
+                                                 High_Bound (Index_Range),
+                                                 True) = EQ)
                         then
                            --  The loop parameter type does not fully
                            --  cover this index type.
