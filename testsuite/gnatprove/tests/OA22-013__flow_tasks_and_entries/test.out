@@ -2,6 +2,7 @@ p.adb:28:14: medium: overflow check might fail
 p.adb:33:14: medium: overflow check might fail
 p.ads:3:09: info: ceiling priority protocol is respected
 p.ads:3:09: info: nontermination of task proved
+F 5*14 p__po 2|.2:4r33 7r7
 F 14*14 p__a 2|.3:13s19 .7:33s19 .8:38s7
 F 15*14 p__b 2|.8:38s10
 F 6*13 p__poT__dummy 2|.2:7s10
