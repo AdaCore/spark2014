@@ -363,7 +363,8 @@ package Gnat2Why.Expr is
 
    Result_Name : W_Identifier_Id := Why_Empty;
    --  Name to use for occurrences of F'Result in the postcondition. It should
-   --  be equal to Why_Empty when we are not translating a postcondition.
+   --  be equal to Why_Empty when we are not translating a postcondition of a
+   --  function.
 
    Self_Name       : W_Identifier_Id := Why_Empty;
    Self_Is_Mutable : Boolean := False;
@@ -429,10 +430,6 @@ package Gnat2Why.Expr is
    --  translates expressions to Why (Gnat2why.Expr), which itself is called by
    --  Transform_Subprogram. For each call to this function, a declaration at
    --  the beginning of the Why program is generated.
-
-   function Name_For_Result return W_Identifier_Id;
-   --  During the generation of code for detecting run-time errors in the
-   --  postcondition of F, return the name to use for occurrences of F'Result.
 
 private
    --  Mapping of all expressions whose 'Old attribute is used in the current

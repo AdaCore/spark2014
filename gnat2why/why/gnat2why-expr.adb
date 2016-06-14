@@ -4652,16 +4652,6 @@ package body Gnat2Why.Expr is
       return Old_Map (C);
    end Name_For_Old;
 
-   ---------------------
-   -- Name_For_Result --
-   ---------------------
-
-   function Name_For_Result return W_Identifier_Id is
-   begin
-      pragma Assert (Result_Name /= Why_Empty);
-      return Result_Name;
-   end Name_For_Result;
-
    -------------------------
    -- Needs_Temporary_Ref --
    -------------------------
@@ -8151,10 +8141,10 @@ package body Gnat2Why.Expr is
                T :=
                  New_Deref
                    (Ada_Node => Expr,
-                    Right    => Name_For_Result,
-                    Typ      => Get_Type (+Name_For_Result));
+                    Right    => Result_Name,
+                    Typ      => Get_Type (+Result_Name));
             else
-               T := +Name_For_Result;
+               T := +Result_Name;
             end if;
 
          when Attribute_Old =>
@@ -13599,7 +13589,7 @@ package body Gnat2Why.Expr is
                      Result_Stmt :=
                        New_Assignment
                          (Ada_Node => Stmt_Or_Decl,
-                          Name     => Name_For_Result,
+                          Name     => Result_Name,
                           Value    =>
                             +Transform_Expr (Expression (Stmt_Or_Decl),
                                              Return_Type,
@@ -13648,7 +13638,7 @@ package body Gnat2Why.Expr is
                  Sequence
                    (Expr,
                     New_Assignment
-                      (Name  => Name_For_Result,
+                      (Name  => Result_Name,
                        Value => Obj_Deref,
                        Typ   => Ret_Type));
                return Sequence (Expr, Raise_Stmt);

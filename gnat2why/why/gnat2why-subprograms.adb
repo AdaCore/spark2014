@@ -1971,7 +1971,7 @@ package body Gnat2Why.Subprograms is
         +Compute_Spec (Params, Classwide_Post_List, EW_Pred);
       Post_Spec := +Compute_Spec (Params, Post_List, EW_Pred);
 
-      --  Compute the effect of a call of the subprogram.
+      --  Compute the effect of a call of the subprogram
 
       Call_Effects := New_Havoc_Statement
         (Ada_Node => E,
@@ -2185,6 +2185,10 @@ package body Gnat2Why.Subprograms is
 
       --  We should *not* filter our own entity, it is needed for recursive
       --  calls.
+
+      if Ekind (E) = E_Function then
+         Result_Name := Why_Empty;
+      end if;
 
       Close_Theory (File,
                     Kind => VC_Generation_Theory,
@@ -3157,6 +3161,10 @@ package body Gnat2Why.Subprograms is
       Self_Name := Why_Empty;
       Self_Is_Mutable := False;
 
+      if Ekind (E) = E_Function then
+         Result_Name := Why_Empty;
+      end if;
+
       --  We should *not* filter our own entity, it is needed for recursive
       --  calls
 
@@ -3544,6 +3552,10 @@ package body Gnat2Why.Subprograms is
       Generate_Subprogram_Program_Fun (File, E);
 
       Generate_Axiom_For_Post (File, E);
+
+      if Ekind (E) = E_Function then
+         Result_Name := Why_Empty;
+      end if;
 
       Close_Theory (File,
                     Kind => Axiom_Theory,
@@ -4017,6 +4029,7 @@ package body Gnat2Why.Subprograms is
       if not Entity_Body_Compatible_With_SPARK (E) or else No_Return (E) then
          Close_Theory (File,
                        Kind => Standalone_Theory);
+         Result_Name := Why_Empty;
          return;
       end if;
 
@@ -4169,6 +4182,8 @@ package body Gnat2Why.Subprograms is
       end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      Result_Name := Why_Empty;
 
       --  No filtering is necessary here, as the theory should on the contrary
       --  use the previously defined theory for the function declaration. Pass
