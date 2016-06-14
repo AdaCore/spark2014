@@ -3005,14 +3005,16 @@ package body Gnat2Why.Subprograms is
          Result_Name :=
            New_Identifier
              (Name => Name & "__result", Typ => Type_Of_Node (Etype (E)));
+
+         Result_Var :=
+           New_Deref
+             (Ada_Node => Body_N,
+              Right    => Result_Name,
+              Typ      => Type_Of_Node (Etype (E)));
+
+      else
+         Result_Var := +Void;
       end if;
-      Result_Var :=
-        (if Ekind (E) = E_Function then
-              New_Deref
-           (Ada_Node => Body_N,
-            Right    => Result_Name,
-            Typ      => Type_Of_Node (Etype (E)))
-         else +Void);
 
       if Is_Protected_Subprogram (E) then
          declare
