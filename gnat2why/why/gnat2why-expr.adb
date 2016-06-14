@@ -4624,32 +4624,37 @@ package body Gnat2Why.Expr is
    ------------------
 
    function Name_For_Old (N : Node_Id) return W_Identifier_Id is
-      Typ : W_Type_Id;
-      Nd  : Node_Id;
-
-      C     : Ada_To_Why_Ident.Cursor := Old_Map.Find (N);
-      Dummy : Boolean;
+      Position : Ada_To_Why_Ident.Cursor := Old_Map.Find (N);
+      Inserted : Boolean;
 
       use Ada_To_Why_Ident;
-   begin
-      if not Has_Element (C) then
-         if Nkind (N) in N_Identifier | N_Expanded_Name then
-            Typ := Why_Type_Of_Entity (Entity (N));
-            Nd  := Entity (N);
-         else
-            Typ := Type_Of_Node (Etype (N));
-            Nd  := Empty;
-         end if;
 
-         Old_Map.Insert (Key      => N,
-                         New_Item => New_Temp_Identifier
-                                       (Typ      => Typ,
-                                        Ada_Node => Nd),
-                         Position => C,
-                         Inserted => Dummy);
+   begin
+      --  Tentatively insert an empty node to update it later
+      Old_Map.Insert (Key      => N,
+                      New_Item => Why_Empty,
+                      Position => Position,
+                      Inserted => Inserted);
+
+      if Inserted then
+         declare
+            Typ : W_Type_Id;
+            Nd  : Node_Id;
+         begin
+            if Nkind (N) in N_Identifier | N_Expanded_Name then
+               Typ := Why_Type_Of_Entity (Entity (N));
+               Nd  := Entity (N);
+            else
+               Typ := Type_Of_Node (Etype (N));
+               Nd  := Empty;
+            end if;
+
+            Old_Map (Position) :=
+              New_Temp_Identifier (Typ => Typ, Ada_Node => Nd);
+         end;
       end if;
 
-      return Old_Map (C);
+      return Old_Map (Position);
    end Name_For_Old;
 
    -------------------------
