@@ -36,7 +36,7 @@ package Why.Types is
    type Why_Node_Id is new Why_Node_Set range 0 .. Why_Node_Set'Last / 2;
 
    type Why_Node_List is new Why_Node_Set
-     range Why_Node_Set (Why_Node_Id'Last) .. Why_Node_Set'Last;
+     range Why_Node_Set (Why_Node_Id'Last + 1) .. Why_Node_Set'Last;
 
    Why_Empty : constant := 0;
 
