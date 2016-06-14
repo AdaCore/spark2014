@@ -4480,14 +4480,23 @@ package body Flow.Analysis is
       --  their use will be flagged as a potentially uninitialized read.
       Visible_Vars := Flow_Id_Sets.Empty_Set;
       declare
-         Tmp : constant Flow_Id_Sets.Set := FA.Spec_Vars;
+         C : Flow_Id_Sets.Cursor := FA.Spec_Vars.First;
+         --  Cursor for iteration over container that is a component of a
+         --  discriminated record. Such components cannot be iterated with
+         --  FOR loop.
+
       begin
-         for Var of Tmp loop
-            if Is_Initialized_At_Elaboration (Var, FA.S_Scope) and then
-              not Is_Constant (Var)
-            then
-               Visible_Vars.Insert (Var);
-            end if;
+         while Flow_Id_Sets.Has_Element (C) loop
+            declare
+               Var : Flow_Id renames FA.Spec_Vars (C);
+            begin
+               if Is_Initialized_At_Elaboration (Var, FA.S_Scope) and then
+                 not Is_Constant (Var)
+               then
+                  Visible_Vars.Insert (Var);
+               end if;
+            end;
+            Flow_Id_Sets.Next (C);
          end loop;
       end;
 
