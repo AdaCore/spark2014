@@ -2184,7 +2184,7 @@ package body Gnat2Why.Subprograms is
       end;
 
       --  We should *not* filter our own entity, it is needed for recursive
-      --  calls
+      --  calls.
 
       Close_Theory (File,
                     Kind => VC_Generation_Theory,
@@ -2996,6 +2996,7 @@ package body Gnat2Why.Subprograms is
       --  create a new identifier for F'Result.
 
       Reset_Map_For_Old;
+
       if Ekind (E) = E_Function then
          Result_Name :=
            New_Identifier
@@ -3014,8 +3015,8 @@ package body Gnat2Why.Subprograms is
             CPT : constant Entity_Id := Containing_Protected_Type (E);
          begin
 
-            --  the Ada_Node is important here, because that's how we detect
-            --  occurrences of "self" in a term later
+            --  The Ada_Node is important here, because that's how we detect
+            --  occurrences of "self" in a term later.
 
             Self_Name :=
               New_Identifier
@@ -3128,10 +3129,10 @@ package body Gnat2Why.Subprograms is
 
       Prog := Sequence
         ((Assume_For_Input,
-         Comp_Decl_At_Subp_Start,
-         RTE_Of_Pre,
-         Assume_Or_Assert_Of_Pre,
-         Prog));
+          Comp_Decl_At_Subp_Start,
+          RTE_Of_Pre,
+          Assume_Or_Assert_Of_Pre,
+          Prog));
 
       --  Assume values of constants
 
@@ -3172,14 +3173,15 @@ package body Gnat2Why.Subprograms is
      (File : W_Section_Id;
       E    : Entity_Id)
    is
-      Name       : constant String  := Full_Name (E);
-      Body_N     : constant Node_Id := Task_Body (E);
-      Params     : Transformation_Params;
+      Name   : constant String  := Full_Name (E);
+      Body_N : constant Node_Id := Task_Body (E);
+      Params : Transformation_Params;
 
       Why_Body   : W_Prog_Id := +Void;
       Post       : W_Pred_Id;
       Priv_Decls : constant List_Id := Private_Declarations_Of_Task_Type (E);
       Vis_Decls  : constant List_Id := Visible_Declarations_Of_Task_Type (E);
+
    begin
       --  We open a new theory, so that the context is fresh for this task
 
@@ -3205,7 +3207,7 @@ package body Gnat2Why.Subprograms is
                  Ref_Allowed => True);
 
       Post :=
-              +New_VC_Expr (Ada_Node   => E,
+        +New_VC_Expr (Ada_Node   => E,
                       Expr       => +False_Pred,
                       Reason     => VC_Task_Termination,
                       Domain     => EW_Pred);
@@ -3235,8 +3237,8 @@ package body Gnat2Why.Subprograms is
 
       --  Translate public and private declarations of the package
 
-      if Present (Priv_Decls) and then
-        Private_Spec_In_SPARK (E)
+      if Present (Priv_Decls)
+        and then Private_Spec_In_SPARK (E)
       then
          Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
       end if;
@@ -3533,7 +3535,7 @@ package body Gnat2Why.Subprograms is
 
       Add_Dependencies_For_Effects (File, E);
 
-      --  Store an appropriate value for the result identifier in Result_Name.
+      --  Store an appropriate value for the result identifier in Result_Name
 
       if Ekind (E) = E_Function then
          Result_Name := New_Result_Ident (Type_Of_Node (Etype (E)));
@@ -4109,10 +4111,10 @@ package body Gnat2Why.Subprograms is
                      Pre         => Guard,
                      Def         =>
                        +Transform_Expr
-                       (Expression (Expr_Fun_N),
-                        Expected_Type => Equ_Ty,
-                        Domain        => EW_Term,
-                        Params        => Params)));
+                         (Expression (Expr_Fun_N),
+                          Expected_Type => Equ_Ty,
+                          Domain        => EW_Term,
+                          Params        => Params)));
             end;
          else
             declare
@@ -4135,12 +4137,12 @@ package body Gnat2Why.Subprograms is
                      Triggers =>
                        New_Triggers
                          (Triggers =>
-                              (1 => New_Trigger
-                                 (Terms =>
-                                    (1 => New_Call
-                                         (Domain  => EW_Term,
-                                          Name    => Logic_Id,
-                                          Binders => Flat_Binders))))),
+                            (1 => New_Trigger
+                               (Terms =>
+                                  (1 => New_Call
+                                     (Domain  => EW_Term,
+                                      Name    => Logic_Id,
+                                      Binders => Flat_Binders))))),
                      Pre      =>
                        +New_And_Expr (Left   => +Guard,
                                       Right  => +Pre,
@@ -4149,13 +4151,13 @@ package body Gnat2Why.Subprograms is
                        New_Call
                          (Name => Why_Eq,
                           Args => (Insert_Simple_Conversion
-                                   (Domain         => EW_Term,
-                                    Expr           => +New_Call
-                                      (Name    => Logic_Id,
-                                       Domain  => EW_Term,
-                                       Binders => Flat_Binders,
-                                       Typ     => Type_Of_Node (Ty_Ent)),
-                                    To             => Equ_Ty),
+                                     (Domain         => EW_Term,
+                                      Expr           => +New_Call
+                                        (Name    => Logic_Id,
+                                         Domain  => EW_Term,
+                                         Binders => Flat_Binders,
+                                         Typ     => Type_Of_Node (Ty_Ent)),
+                                      To             => Equ_Ty),
                                    +Transform_Expr
                                      (Expression (Expr_Fun_N),
                                       Expected_Type => Equ_Ty,
