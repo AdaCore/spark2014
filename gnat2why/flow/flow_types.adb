@@ -669,8 +669,8 @@ package body Flow_Types is
    begin
       case F.Kind is
          when Direct_Mapping | Record_Field =>
-            pragma Assert (Nkind (F.Node) in N_Entity);
             return Ekind (F.Node) = E_Constant;
+            --  ??? Is_Constant_Object?
 
          when Magic_String =>
             return Is_Constant (F.Name);
