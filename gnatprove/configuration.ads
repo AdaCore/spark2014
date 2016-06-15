@@ -36,9 +36,10 @@ package Configuration is
 
    package Constants is
       --  This package contains constants that influence the behavior of
-      --  gnatprove
+      --  gnatprove.
 
       Max_CE_Timeout : constant Integer := 10;
+      --  ???
 
    end Constants;
    package CL_Switches is
@@ -210,10 +211,10 @@ package Configuration is
       end Install;
    end File_System;
 
-   Label_Length      : constant := 26;
-   --  Maximum length of label in report. Other characters are discarded.
+   Label_Length : constant := 26;
+   --  Maximum length of label in report. Other characters are discarded
 
-   Default_Level   : constant := 0;
+   Default_Level : constant := 0;
 
    Subdir_Name : constant Filesystem_String := "gnatprove";
    --  The name of the directory in which all work takes place
@@ -223,7 +224,7 @@ package Configuration is
    --  generated. This is the same as
    --  <obj-dir-for-the-main-project>/Subdir_Name
 
-   Proof_Dir   : GNAT.Strings.String_Access := null;
+   Proof_Dir : GNAT.Strings.String_Access := null;
    --  The name of the directory in which will be stored Why3 session file and
    --  manual proof files (Attribute of gpr package Prove).
 

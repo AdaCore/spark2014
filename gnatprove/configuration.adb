@@ -990,7 +990,7 @@ ASCII.LF;
          end if;
 
          --  Timeout is fully set now, we can set CE_Timeout. Basically we cap
-         --  the CE_Timeout at 10 seconds
+         --  the CE_Timeout at Constants.Max_CE_Timeout seconds.
 
          CE_Timeout :=
            (if Timeout = 0 then Constants.Max_CE_Timeout
