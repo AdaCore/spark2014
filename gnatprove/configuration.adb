@@ -38,7 +38,7 @@ with System.Multiprocessors;
 
 package body Configuration is
 
-   Invalid_Step    : constant := -1;
+   Invalid_Step : constant := -1;
 
    Clean : aliased Boolean;
    --  Set to True when --clean was given. Triggers cleanup of GNATprove
@@ -53,7 +53,7 @@ package body Configuration is
                         With_Help : Boolean)
      with No_Return;
    --  Stop the program, output the message and the help message when
-   --  requested, then exit
+   --  requested, then exit.
 
    procedure Clean_Up (Tree : Project_Tree);
    --  Deletes generated "gnatprove" sub-directories in all object directories
@@ -71,7 +71,7 @@ package body Configuration is
       Section   : String);
    --  Deal with all switches that are not automatic. In gnatprove, all
    --  recognized switches are automatic, so this procedure should only be
-   --  called for unknown switches and for switches in section -cargs
+   --  called for unknown switches and for switches in section -cargs.
 
    procedure Prepare_Prover_Lib (Config : Command_Line_Configuration);
    --  Deal with the why3 libraries manual provers might need.
@@ -85,11 +85,11 @@ package body Configuration is
    --    if the file is a separate, replace with filename of body
    --  This is required to avoid calling gnat2why on a separate body (will
    --  crash) or on a spec when there is a body (gnat2why will incorrectly
-   --  assume that there is no body)
+   --  assume that there is no body).
 
    procedure Print_Errors (S : String);
    --  The String in argument is an error message from gnatcoll. Print it on
-   --  stderr with a prefix
+   --  stderr with a prefix.
 
    procedure Set_CodePeer_Mode
      (Config : Command_Line_Configuration;
@@ -105,7 +105,7 @@ package body Configuration is
    procedure Check_gnateT_Switch;
    --  Do the actual check and issue warning for the check mentioned in
    --  Set_Target_Dir: if -gnateT is not set in
-   --  Builder.Global_Configuration_Switches
+   --  Builder.Global_Configuration_Switches.
 
    function Is_Coq_Prover return Boolean;
    --  @return True iff one alternate prover is "coq"
