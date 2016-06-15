@@ -170,7 +170,7 @@ package body Gnat2Why.Expr.Loops.Inv is
       Expected_Kind  : Write_Kind)
       return Write_Status_Access
    with
-     Pre  => Expected_Kind /= Discard;
+     Pre => Expected_Kind /= Discard;
    --  Create a Write_Status for New_Write.
    --  @param New_Write variable or record field to which we are writing.
    --  @param Expected_Kind expected kind of the updated status.
@@ -308,7 +308,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   Field := Next_Component_Or_Discriminant (Field);
                end loop;
 
-               --  Sanity checking: all the non-visited fields are discarded.
+               --  Sanity checking: all the non-visited fields are discarded
 
                pragma Assert (for all E of Status.Field_Status =>
                                 E.Kind = Discard);
@@ -575,7 +575,6 @@ package body Gnat2Why.Expr.Loops.Inv is
                raise Program_Error;
             when Entire_Object =>
                return new Write_Status'(Kind => Entire_Object);
-
             when Record_Fields =>
                if Retysp_Kind (Etype (New_Write)) in Record_Kind | Private_Kind
                then
@@ -646,7 +645,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          end if;
 
       elsif Expected_Kind = Entire_Object
-        and then not (Element (C).Kind in Entire_Object | Discard)
+        and then Element (C).Kind not in Entire_Object | Discard
       then
 
          --  If Expected_Kind is Entire_Object, update New_Write's status
@@ -665,7 +664,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          --  Array_Elmt to Record_Fields or reverse.
 
       elsif Expected_Kind /= Entire_Object
-        and then not (Element (C).Kind in Entire_Object | Discard)
+        and then Element (C).Kind not in Entire_Object | Discard
       then
          pragma Assert (Element (C).Kind = Expected_Kind);
       end if;
@@ -727,8 +726,8 @@ package body Gnat2Why.Expr.Loops.Inv is
       --  Record writes to the global out and in out of Subp
 
       declare
-         Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
-         Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+         Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+         Write_Ids : Flow_Types.Flow_Id_Sets.Set;
 
       begin
          Flow_Utility.Get_Proof_Globals (Subprogram => Subp,
@@ -858,7 +857,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                end if;
 
                pragma Assert (Present (HSS));
-
+               --  ??? why check what was already asserted?
                if Present (HSS) then
                   Process_Statement (HSS, Loop_Writes, Keep_Local);
                end if;
