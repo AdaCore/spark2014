@@ -2983,7 +2983,7 @@ package body SPARK_Definition is
                      Mark_Violation ("function with OUT parameter", Id);
 
                   when E_In_Out_Parameter =>
-                     Mark_Violation ("function with IN OUT parameter", Id);
+                     Mark_Violation ("function with `IN OUT` parameter", Id);
 
                   when others =>
                      null;
