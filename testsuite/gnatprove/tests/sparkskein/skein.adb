@@ -562,10 +562,6 @@ is
 
    begin -- Skein_512_Process_Block
       for J in Positive_Block_512_Count_T range 1 .. Block_Count loop
-         pragma Loop_Invariant
-           (Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Loop_Entry and
-            Ctx.H.Byte_Count   = Ctx.H.Byte_Count'Loop_Entry);
-
          declare
             Src_Offset : constant U64 :=
               Starting_Offset + (J - 1) * Skein_512_Block_Bytes_C;
@@ -701,9 +697,9 @@ is
             loop
                Ctx.B (Dst) := Msg (Src);
 
-               pragma Loop_Invariant
-                 (Ctx.H.Hash_Bit_Len = Ctx.H.Hash_Bit_Len'Loop_Entry and
-                  Ctx.H.Byte_Count = Ctx.H.Byte_Count'Loop_Entry);
+               --  The empty invariant is needed to force GNATprove to cut the
+               --  loop just before the exit statement
+               pragma Loop_Invariant (True);
 
                exit when Dst >= Final_Dst or Src >= Final_Src;
 
@@ -792,11 +788,6 @@ is
          for I in Skein_512_Block_Bytes_Index
            range Local_Ctx.H.Byte_Count ..
            Skein_512_Block_Bytes_Index'Last loop
-
-            pragma Loop_Invariant
-              (Local_Ctx.H.Hash_Bit_Len =
-                 Local_Ctx.H.Hash_Bit_Len'Loop_Entry and
-               Local_Ctx.H.Byte_Count = Local_Ctx.H.Byte_Count'Loop_Entry);
 
             Local_Ctx.B (I) := 0;
          end loop;
