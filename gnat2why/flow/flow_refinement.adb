@@ -117,10 +117,7 @@ package body Flow_Refinement is
                                  else Private_Scope (Context));
                   end;
 
-               when Private_Part =>
-                  Context := Get_Enclosing_Flow_Scope (Context);
-
-               when Visible_Part =>
+               when Private_Part | Visible_Part =>
                   Context := Get_Enclosing_Flow_Scope (Context);
 
                when others =>
