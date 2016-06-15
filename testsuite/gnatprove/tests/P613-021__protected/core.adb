@@ -24,7 +24,7 @@ package body Core is
 
       entry Get_Message(N : out Integer) when Message_Waiting is
       begin
-         pragma Assert (Message_Waiting);
+         pragma Assert (Message_Waiting); --@ASSERT:PASS
          N := Messages(Next_Out).Value;
          Next_Out := Next_Out + 1;
          Count := Count - 1;

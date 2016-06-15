@@ -2674,7 +2674,7 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
-         Pre : constant W_Pred_Id :=
+         Pre : W_Pred_Id :=
            Get_Static_Call_Contract (Params, E, Name_Precondition);
          Stmt : W_Prog_Id;
       begin
@@ -2690,6 +2690,28 @@ package body Gnat2Why.Subprograms is
                  Reason   => VC_Precondition_Main,
                  Kind     => EW_Assert);
          else
+            if Is_Entry (E)
+              and then Present (Body_N)
+              and then Present (Condition (Entry_Body_Formal_Part (Body_N)))
+            then
+               declare
+                  Params : constant Transformation_Params :=
+                    (File        => File,
+                     Phase       => Generate_Contract_For_Body,
+                     Gen_Marker  => False,
+                     Ref_Allowed => True);
+                  Barrier : constant Node_Id :=
+                    Condition (Entry_Body_Formal_Part (Body_N));
+               begin
+                  Pre :=
+                    +New_And_Then_Expr
+                      (Domain => EW_Pred,
+                       Left  => +Pre,
+                       Right =>
+                         Transform_Expr
+                           (Barrier, EW_Bool_Type, EW_Pred, Params));
+               end;
+            end if;
             Stmt := New_Assume_Statement (Pred => Pre);
          end if;
          return
@@ -2879,7 +2901,19 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => False,
             Ref_Allowed => True);
+         Pre : W_Prog_Id :=
+           +Compute_Spec (Params, E, Name_Precondition, EW_Prog);
       begin
+         if Is_Entry (E)
+           and then Present (Body_N)
+           and then Present (Condition (Entry_Body_Formal_Part (Body_N)))
+         then
+            Pre :=
+              Sequence (Pre,
+                        +Transform_Expr
+                          (Condition (Entry_Body_Formal_Part (Body_N)),
+                           EW_Bool_Type, EW_Pred, Params));
+         end if;
          return
            Sequence
              (New_Comment
@@ -2887,8 +2921,7 @@ package body Gnat2Why.Subprograms is
                  & (if Sloc (E) > 0 then " " & Build_Location_String (Sloc (E))
                    else ""))),
               New_Ignore
-                (Prog => +Compute_Spec (Params, E, Name_Precondition, EW_Prog))
-             );
+                (Prog => Pre));
       end RTE_Of_Pre;
 
       ---------------------------
