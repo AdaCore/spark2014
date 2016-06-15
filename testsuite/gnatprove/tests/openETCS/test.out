@@ -204,14 +204,14 @@ step_function.adb:107:28: medium: loop invariant might fail after first iteratio
 step_function.adb:108:10: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:109:32: info: initialization of "scan_sfun1" proved
 step_function.adb:110:16: info: initialization of "Merge.Step" proved
-step_function.adb:110:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
+step_function.adb:110:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter (e.g. when SFun1 = (Number_Of_Delimiters => 0) and im = 0)
 step_function.adb:110:27: info: initialization of "im" proved
 step_function.adb:110:29: info: index check proved (CVC4: 1 VC)
 step_function.adb:110:56: info: initialization of "i1" proved
 step_function.adb:111:10: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:112:32: info: initialization of "scan_sfun2" proved
 step_function.adb:113:16: info: initialization of "Merge.Step" proved
-step_function.adb:113:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter
+step_function.adb:113:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter (e.g. when SFun2 = (Number_Of_Delimiters => 0) and im = 0)
 step_function.adb:113:27: info: initialization of "im" proved
 step_function.adb:113:29: info: index check proved (CVC4: 1 VC)
 step_function.adb:113:56: info: initialization of "i2" proved
@@ -222,7 +222,7 @@ step_function.adb:116:15: medium: loop invariant might fail after first iteratio
 step_function.adb:116:27: info: index check proved (CVC4: 1 VC)
 step_function.adb:116:54: info: index check proved (CVC4: 1 VC)
 step_function.adb:119:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:119:10: medium: loop invariant might fail after first iteration
+step_function.adb:119:10: medium: loop invariant might fail after first iteration (e.g. when SFun1 = (Number_Of_Delimiters => 0) and im = 0)
 step_function.adb:120:29: info: initialization of "i1" proved
 step_function.adb:121:33: info: initialization of "im" proved
 step_function.adb:122:30: info: index check proved (CVC4: 1 VC)
@@ -243,7 +243,7 @@ step_function.adb:133:30: info: index check proved (CVC4: 1 VC)
 step_function.adb:133:45: info: initialization of "Merge.Step" proved
 step_function.adb:133:56: info: index check proved (CVC4: 1 VC)
 step_function.adb:134:10: info: loop invariant initialization proved (CVC4: 1 VC)
-step_function.adb:134:10: medium: loop invariant might fail after first iteration
+step_function.adb:134:10: medium: loop invariant might fail after first iteration (e.g. when SFun2 = (Number_Of_Delimiters => 0) and im = 0)
 step_function.adb:135:20: info: initialization of "scan_sfun2" proved
 step_function.adb:137:38: info: initialization of "im" proved
 step_function.adb:138:36: info: index check proved (CVC4: 1 VC)
@@ -333,7 +333,7 @@ step_function.ads:80:53: info: index check proved (CVC4: 1 VC)
 step_function.ads:86:06: info: postcondition proved (CVC4: 1 VC)
 step_function.ads:95:32: info: initialization of "Merge.Number_Of_Delimiters" proved
 step_function.ads:95:32: info: initialization of "Merge.Step" proved
-step_function.ads:101:04: medium: postcondition might fail
+step_function.ads:101:04: medium: postcondition might fail (e.g. when Merge = (Number_Of_Delimiters => 0) and SFun1 = (Number_Of_Delimiters => 0) and SFun2 = (Number_Of_Delimiters => 0))
 step_function.ads:101:13: info: initialization of "Merge.Number_Of_Delimiters" proved
 step_function.ads:101:13: info: initialization of "Merge.Step" proved
 step_function.ads:106:30: info: index check proved (CVC4: 1 VC)

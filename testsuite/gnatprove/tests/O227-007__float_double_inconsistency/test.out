@@ -12,7 +12,7 @@ wibble.adb:29:42: info: overflow check proved
 wibble.adb:32:22: info: overflow check proved
 wibble.adb:40:34: info: range check proved
 wibble.adb:40:37: info: overflow check proved
-wibble.adb:41:17: medium: postcondition might fail, cannot prove State <= Float32 (X + 1) * C
+wibble.adb:41:17: medium: postcondition might fail, cannot prove State <= Float32 (X + 1) * C (e.g. when X = 0)
 wibble.adb:41:37: info: range check proved
 wibble.adb:41:42: info: overflow check proved
 wibble.adb:44:22: info: overflow check proved
