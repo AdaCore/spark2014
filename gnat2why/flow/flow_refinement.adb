@@ -84,12 +84,30 @@ package body Flow_Refinement is
       --  Go upwards from S (the scope we are in) and see if we end up in
       --  Target_Scope (what we're checking if we can see).
       Context := S;
-      while Present (Context) loop
-         case Context.Part is
-            when Body_Part =>
-               if Target_Scope.Ent = Context.Ent then
-                  return True;
-               else
+
+      Climbing : while Present (Context) loop
+         if Context.Ent = Target_Scope.Ent then
+            --  Check visibility between different parts of the same entity
+            if (case Context.Part is
+                   when Body_Part    =>
+                      True,
+
+                   when Private_Part =>
+                      Target_Scope.Part in Private_Part | Visible_Part,
+
+                   when Visible_Part =>
+                      Target_Scope.Part = Visible_Part,
+
+                   when others       =>
+                      raise Program_Error)
+            then
+               return True;
+            else
+               exit Climbing;
+            end if;
+         else
+            case Context.Part is
+               when Body_Part =>
                   declare
                      Enclosing_Body_Scope : constant Flow_Scope :=
                        Get_Enclosing_Body_Flow_Scope (Context);
@@ -98,31 +116,19 @@ package body Flow_Refinement is
                                  then Enclosing_Body_Scope
                                  else Private_Scope (Context));
                   end;
-               end if;
 
-            when Private_Part =>
-               if Target_Scope.Ent = Context.Ent
-                 and then Target_Scope.Part in Private_Part | Visible_Part
-               then
-                  return True;
-               else
+               when Private_Part =>
                   Context := Get_Enclosing_Flow_Scope (Context);
-               end if;
 
-            when Visible_Part =>
-               if Target_Scope.Ent = Context.Ent
-                 and then Target_Scope.Part = Visible_Part
-               then
-                  return True;
-               else
+               when Visible_Part =>
                   Context := Get_Enclosing_Flow_Scope (Context);
-               end if;
 
-            when Null_Part =>
-               raise Program_Error;
+               when others =>
+                  raise Program_Error;
 
-         end case;
-      end loop;
+            end case;
+         end if;
+      end loop Climbing;
 
       --  Check if Target_Scope is generally visible from anywhere (we know
       --  this if we reach the null flow scope) or if are dealing with a nested
