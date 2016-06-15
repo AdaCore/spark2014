@@ -8,7 +8,7 @@ global_stack.adb:7:03: warning: variable "Content" is read but never assigned
 global_stack.ads:4:12: function with output global "Top" is not allowed in SPARK
 search_array.adb:9:20: info: range check proved
 search_array.adb:12:07: medium: exception might be raised
-stack.ads:7:13: function with "in" "out" parameter is not allowed in SPARK
+stack.ads:7:13: function with "in out" parameter is not allowed in SPARK
 stack.ads:7:13: violation of aspect SPARK_Mode at line 1
 use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = 0)
 use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 0 and W = (others => 0) and W'First = 1 and W'Last = 0)

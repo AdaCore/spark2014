@@ -300,15 +300,15 @@ stm32f4-gpio.ads:228:09: type with partial default initialization is not allowed
 stm32f4-gpio.ads:228:09: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-i2c.ads:91:19: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-i2c.ads:91:19: violation of pragma SPARK_Mode at gnat.adc:2
-stm32f4-i2c.ads:168:13: function with "in" "out" parameter is not allowed in SPARK
+stm32f4-i2c.ads:168:13: function with "in out" parameter is not allowed in SPARK
 stm32f4-i2c.ads:168:13: violation of pragma SPARK_Mode at gnat.adc:2
-stm32f4-i2c.ads:170:13: function with "in" "out" parameter is not allowed in SPARK
+stm32f4-i2c.ads:170:13: function with "in out" parameter is not allowed in SPARK
 stm32f4-i2c.ads:170:13: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-i2c.ads:189:19: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-i2c.ads:189:19: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-i2c.ads:194:23: call to a volatile function in interfering context is not allowed in SPARK
 stm32f4-i2c.ads:194:23: violation of pragma SPARK_Mode at gnat.adc:2
-stm32f4-i2c.ads:196:13: function with "in" "out" parameter is not allowed in SPARK
+stm32f4-i2c.ads:196:13: function with "in out" parameter is not allowed in SPARK
 stm32f4-i2c.ads:196:13: violation of pragma SPARK_Mode at gnat.adc:2
 stm32f4-spi.ads:131:13: nonvolatile function with effectively volatile parameter is not allowed in SPARK
 stm32f4-spi.ads:131:13: violation of pragma SPARK_Mode at gnat.adc:2
