@@ -5679,7 +5679,7 @@ package body SPARK_Definition is
       case Ekind (Def_Scop) is
          when E_Package =>
             if List_Containing (Parent (Def)) =
-              Private_Declarations (Specification (Package_Spec (Def_Scop)))
+              Private_Declarations (Package_Specification (Def_Scop))
             then
                return SPARK_Aux_Pragma (Def_Scop);
             end if;
