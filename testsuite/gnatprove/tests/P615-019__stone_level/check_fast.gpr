@@ -1,0 +1,7 @@
+project Check_Fast is
+  for Source_Files use ("violations.adb");
+  package Compiler is
+    for Default_Switches ("Ada") use ("-gnatws");
+    for Local_Configuration_Pragmas use "test.adc";
+  end Compiler;
+end Check_Fast;
