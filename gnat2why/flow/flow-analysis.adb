@@ -2508,8 +2508,35 @@ package body Flow.Analysis is
                     FA.DDG.Get_Vertex
                       (Change_Variant (Var_Used, Final_Value));
 
+                  --  If Var_Used is a constituent of an abstract state, this
+                  --  is the Entity_Id of the latter, otherwise is set to
+                  --  Empty.
+                  AS : constant Entity_Id :=
+                    (if Var_Used.Kind in Direct_Mapping | Record_Field
+                      and then
+                        Ekind_In (Get_Direct_Mapping_Id (Var_Used),
+                                  E_Abstract_State, E_Constant, E_Variable)
+                     then
+                        Encapsulating_State (Get_Direct_Mapping_Id
+                          (Var_Used))
+                     else
+                        Empty);
+
+                  --  We check if Var_Used is a constituent of an abstract
+                  --  state that is mentioned in a Initializes aspect.
+                  AS_In_Generated_Inizialized : constant Boolean :=
+                    (if FA.Kind in Kind_Package | Kind_Package_Body
+                       and then
+                         Present (AS)
+                       and then
+                         Mentioned_On_Generated_Initializes
+                           (Direct_Mapping_Id (AS))
+                     then True
+                     else False);
+
                begin
-                  if FA.Atr (Initial_Value_Of_Var_Used).Is_Initialized
+                  if (FA.Atr (Initial_Value_Of_Var_Used).Is_Initialized
+                      and then not AS_In_Generated_Inizialized)
                     or else
                       (FA.Kind in Kind_Package | Kind_Package_Body
                        and then

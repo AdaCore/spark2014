@@ -3506,48 +3506,57 @@ package body Flow.Control_Flow_Graph is
                    (Standard_Entry => Inits.First_Element,
                     Standard_Exits => To_Set (Inits.Last_Element)));
 
-      if FA.Kind in Kind_Package | Kind_Package_Body then
-         --  If we are analyzing a package spec or body and we just introduced
-         --  'Initial and 'Final vertices for an entity that is mentioned in an
-         --  Initializes aspect, we have to set Is_Export on the corresponding
-         --  'Final vertices.
-         FS := Flatten_Variable (E, FA.B_Scope);
+      --  If we are analyzing a package spec or body and we just introduced
+      --  'Initial and 'Final vertices for an entity that is mentioned in an
+      --  Initializes aspect, we have to set Is_Export on the corresponding
+      --  'Final vertices.
+      declare
+         Entity_In_Inizializes : constant Entity_Id :=
+           Find_In_Initializes (E);
+      begin
+         if Present (Entity_In_Inizializes)
+           and then
+             FA.Kind in Kind_Package | Kind_Package_Body
+         then
 
-         for F of FS loop
-            declare
-               Final_F_Id : constant Flow_Id :=
-                 Change_Variant (F, Final_Value);
-
-               Final_V_Id : constant Flow_Graphs.Vertex_Id :=
-                 FA.CFG.Get_Vertex (Final_F_Id);
-            begin
-               if Final_V_Id /= Flow_Graphs.Null_Vertex then
-                  declare
-                     Final_Atr  : V_Attributes renames FA.Atr (Final_V_Id);
-
-                  begin
-                     Final_Atr.Is_Export := Final_Atr.Is_Export
-                       or else Is_Initialized_At_Elaboration (E, FA.B_Scope);
-                  end;
-               end if;
-            end;
-         end loop;
-
-         --  In phase 1 we count task instances (which can be only declared at
-         --  library level because of the Ravenscar profile restrictions) and
-         --  register priorities of objects containing protected types.
-         if FA.Generating_Globals then
-            if Ekind (Scope (E)) in E_Package | E_Package_Body then
+            FS := Flatten_Variable (E, FA.B_Scope);
+            for F of FS loop
                declare
-                  T : constant Entity_Id := Etype (E);
-               begin
-                  --  Register task objects
-                  Find_Tasks (T, Array_Component => False);
+                  Final_F_Id : constant Flow_Id :=
+                    Change_Variant (F, Final_Value);
 
-                  --  Register priorities of protected components
-                  Find_Protected_Components (T);
+                  Final_V_Id : constant Flow_Graphs.Vertex_Id :=
+                    FA.CFG.Get_Vertex (Final_F_Id);
+               begin
+                  if Final_V_Id /= Flow_Graphs.Null_Vertex then
+                     declare
+                        Final_Atr  : V_Attributes renames FA.Atr (Final_V_Id);
+
+                     begin
+                        Final_Atr.Is_Export := Final_Atr.Is_Export
+                          or else Is_Initialized_At_Elaboration
+                            (E, FA.B_Scope);
+                     end;
+                  end if;
                end;
-            end if;
+            end loop;
+         end if;
+      end;
+
+      --  In phase 1 we count task instances (which can be only declared at
+      --  library level because of the Ravenscar profile restrictions) and
+      --  register priorities of objects containing protected types.
+      if FA.Generating_Globals then
+         if Ekind (Scope (E)) in E_Package | E_Package_Body then
+            declare
+               T : constant Entity_Id := Etype (E);
+            begin
+               --  Register task objects
+               Find_Tasks (T, Array_Component => False);
+
+               --  Register priorities of protected components
+               Find_Protected_Components (T);
+            end;
          end if;
       end if;
    end Do_Object_Declaration;
