@@ -1908,12 +1908,7 @@ package body Flow.Analysis is
       --  in a generated Initializes aspect.
 
       function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean;
-      --  Returns True iff V should be considered for uninitialized
-      --  variables.
-      --
-      --  We consider all vertices except for:
-      --     * exceptional ones and
-      --     * synthetic null output.
+      --  Returns True iff V should be considered for uninitialized variables
 
       procedure Mark_Definition_Free_Path
         (From      : Flow_Graphs.Vertex_Id;
@@ -1936,23 +1931,22 @@ package body Flow.Analysis is
          V_Use     : Flow_Graphs.Vertex_Id;
          Found     : out Boolean;
          V_Error   : out Flow_Graphs.Vertex_Id);
-      --  Sets Found when the variable corresponding to V_Initial is
-      --  defined on a path that lead to V_Use. V_Error is the vertex
-      --  where the message should be emitted.
+      --  Sets Found when the variable corresponding to V_Initial is defined on
+      --  a path that leads to V_Use. V_Error is the vertex where the message
+      --  should be emitted.
 
       procedure Emit_Message (Var              : Flow_Id;
                               Vertex           : Flow_Graphs.Vertex_Id;
                               Is_Initialized   : Boolean;
                               Is_Uninitialized : Boolean)
       with Pre => Is_Initialized or Is_Uninitialized;
-      --  Produces an appropriately worded info/low/high message for the
-      --  given variable Var at the given location Vertex.
+      --  Produces an appropriately worded info/low/high message for the given
+      --  variable Var at the given location Vertex.
       --
-      --  Is_Initialized should be set if there is at least one sensible
-      --  read.
+      --  Is_Initialized should be set if there is at least one sensible read
       --
-      --  Is_Uninitialized should be set if there is at least one read from
-      --  an uninitialized variable.
+      --  Is_Uninitialized should be set if there is at least one read from an
+      --  uninitialized variable.
       --
       --  They can be both set, in which case we're most likely going to
       --  produce a medium check, but this is not always the case in loops.
@@ -1996,7 +1990,7 @@ package body Flow.Analysis is
             return False;
          end if;
 
-         --  Ignore synthetic null output
+         --  Ignore synthetic null output and ???
          if V_Key.Variant = Final_Value
            and then (not V_Atr.Is_Export or else Synthetic (V_Key))
          then
@@ -2118,34 +2112,34 @@ package body Flow.Analysis is
            (The_Var.Kind = Record_Field
               and then The_Var.Facet = Normal_Part
               and then Is_Type (Etype (The_Var.Component.Last_Element))
+              --  ??? how Etype might return a non-type?
               and then Has_Array_Type
                          (Etype (The_Var.Component.Last_Element)));
-         --  Notes if The_Var refers to an array.
+         --  True if The_Var refers to an array
 
          Use_Vertex_Points_To_Itself : constant Boolean :=
            (for some V of FA.PDG.Get_Collection (V_Use,
                                                  Flow_Graphs.Out_Neighbours)
               => V = V_Use);
-         --  Notes if V_Use belongs to V_Use's Out_Neighbours
+         --  True if V_Use belongs to V_Use's Out_Neighbours
 
          Use_Execution_Is_Unconditional : constant Boolean :=
            (for some V of FA.PDG.Get_Collection (V_Use,
                                                  Flow_Graphs.In_Neighbours)
               => V = FA.Start_Vertex);
-         --  Notes if FA.Start_Vertex is among the In_Neighbours of
-         --  V_Use in the PDG (in other words, there is no control
-         --  dependence on V).
+         --  True if FA.Start_Vertex is among the In_Neighbours of V_Use in the
+         --  PDG (in other words, there is no control dependence on V).
 
          function Find_Explicit_Use_Vertex return Flow_Graphs.Vertex_Id;
-         --  Find a vertex that explicitly uses The_Var and hangs off
-         --  vertex V_Use in the CFG graph. If such a node does NOT
-         --  exist, then Null_Vertex is returned.
+         --  Find a vertex that explicitly uses The_Var and hangs off vertex
+         --  V_Use in the CFG. If such a node does NOT exist, then Null_Vertex
+         --  is returned.
 
          function Start_To_V_Def_Without_V_Use
            (V_Def : Flow_Graphs.Vertex_Id)
             return Boolean;
-         --  Returns True if there exists a path in the CFG graph from
-         --  Start to V_Def that does not cross V_Use.
+         --  Returns True if there exists a path in the CFG from Start to V_Def
+         --  that does not cross V_Use.
 
          procedure Vertex_Defines_Variable
            (V  : Flow_Graphs.Vertex_Id;
@@ -2179,14 +2173,13 @@ package body Flow.Analysis is
                if V = V_Use then
                   TV := Flow_Graphs.Skip_Children;
                elsif V /= Flow_Graphs.Null_Vertex
-                 and then FA.Atr (V).Variables_Defined.Contains
-                 (The_Var)
+                 and then FA.Atr (V).Variables_Defined.Contains (The_Var)
                then
                   TV := Flow_Graphs.Skip_Children;
                elsif V /= Flow_Graphs.Null_Vertex
                  and then FA.CFG.Get_Key (V).Variant /= Final_Value
-                 and then FA.Atr (V).Variables_Explicitly_Used.Contains
-                   (The_Var)
+                 and then
+                   FA.Atr (V).Variables_Explicitly_Used.Contains (The_Var)
                then
                   V_Exp_Use := V;
                   TV := Flow_Graphs.Abort_Traversal;
@@ -2219,8 +2212,8 @@ package body Flow.Analysis is
             procedure Found_V_Def
               (V  : Flow_Graphs.Vertex_Id;
                TV : out Flow_Graphs.Simple_Traversal_Instruction);
-            --  Stops the DFS search when we reach V_Def and skips the
-            --  children of V_Use.
+            --  Stops the DFS search when we reach V_Def and skips the children
+            --  of V_Use.
 
             -----------------
             -- Found_V_Def --
@@ -2263,9 +2256,9 @@ package body Flow.Analysis is
          begin
             if V = FA.Start_Vertex or else V = V_Use then
 
-               --  If we reach the start vertex (remember, this
-               --  traversal is going backwards through the CFG) or
-               --  ourselves, then we should look for another path.
+               --  If we reach the start vertex (remember, this traversal is
+               --  going backwards through the CFG) or ourselves, then we
+               --  should look for another path.
 
                TV := Flow_Graphs.Skip_Children;
 
@@ -2273,22 +2266,21 @@ package body Flow.Analysis is
                TV := Flow_Graphs.Continue;
                if FA.Atr (V).Variables_Defined.Contains (The_Var) then
 
-                  --  OK, so this vertex V does define The_Var. There
-                  --  are a few cases where we can possibly issue a
-                  --  warning instead of an error.
+                  --  OK, so this vertex V does define The_Var. There are a few
+                  --  cases where we can possibly issue a warning instead of an
+                  --  error.
 
                   if Start_To_V_Def_Without_V_Use (V_Def => V) then
-                     --  There is a path from start -> this definition
-                     --  V, that does not use V (but subsequenty
-                     --  reaches V).
+                     --  There is a path from start -> this definition V that
+                     --  does not use V (but subsequenty reaches V).
 
                      Found := True;
                      TV    := Flow_Graphs.Abort_Traversal;
 
                   elsif not Use_Execution_Is_Unconditional then
-                     --  If the execution of v_use is predicated on
-                     --  something else, then there might be a path
-                     --  that defines the_var first.
+                     --  If the execution of v_use is predicated on something
+                     --  else, then there might be a path that defines the_var
+                     --  first.
 
                      Found := True;
                      TV    := Flow_Graphs.Abort_Traversal;
@@ -2302,25 +2294,23 @@ package body Flow.Analysis is
       --  Start of processing for Might_Be_Defined_In_Other_Path
 
       begin
-
-         --  We initialize V_Print to V_Use and we shall change it
-         --  later on if so required. Ditto for Found.
+         --  Initialize V_Error to V_Use; we shall change it later if required.
+         --  Ditto for Found.
 
          Found   := False;
          V_Error := V_Use;
 
-         --  Check if there might be some path that defines the
-         --  variable before we use it.
+         --  Check if there might be some path that defines the variable before
+         --  we use it.
 
          FA.CFG.DFS (Start         => V_Use,
                      Include_Start => False,
                      Visitor       => Vertex_Defines_Variable'Access,
                      Reversed      => True);
 
-         --  Arrays that are partially defined have an implicit
-         --  dependency on themselves. For this check, we cannot
-         --  depend on the Variables_Used because they capture this
-         --  implicit dependency. Instead, we use
+         --  Arrays that are partially defined have an implicit dependency on
+         --  themselves. For this check, we cannot depend on the Variables_Used
+         --  because they capture this implicit dependency. Instead, we use
          --  Variables_Explicitly_Used.
 
          if not Found and then Use_Vertex_Points_To_Itself then
@@ -2331,9 +2321,9 @@ package body Flow.Analysis is
                     and then not FA.Atr (V_Use).
                       Variables_Explicitly_Used.Contains (The_Var)
                   then
-                     --  We set Found and we then check if
-                     --  there exists a vertex that explicitly uses The_Var,
-                     --  if so, we set V_Print to that vertex.
+                     --  We set Found and we then check if there exists a
+                     --  vertex that explicitly uses The_Var, if so, we set
+                     --  V_Error to that vertex.
 
                      Found := True;
 
@@ -2459,8 +2449,8 @@ package body Flow.Analysis is
          if Kind = Init and then Is_Function_Entity (Var) then
             pragma Assert (Get_Direct_Mapping_Id (Var) = FA.Analyzed_Entity);
             --  We special case this, so we don't emit "X" is initialized
-            --  messages for the "variable" we use to model the value of
-            --  the function return.
+            --  messages for the "variable" that represents the function's
+            --  result.
             return;
          end if;
 
@@ -2517,7 +2507,6 @@ package body Flow.Analysis is
    --  Start of processing for Find_Use_Of_Uninitialized_Variables
 
    begin
-
       --  We look at all vertices except for:
       --     * exceptional ones and
       --     * synthetic null output
@@ -2558,16 +2547,16 @@ package body Flow.Analysis is
                      null;
 
                   else
-                     --  ... we check the in neighbours in the DDG and see if
+                     --  ... we check the in-neighbours in the DDG and see if
                      --  they define it. We record initialized / uninitialized
                      --  reads accordingly.
                      --
                      --  Note we skip this check for abstract state iff we
                      --  analyze a package, since it is OK to leave some state
                      --  uninitialized (Check_Initializes_Contract will pick
-                     --  this up). We also skip this check when checking
-                     --  final vertices of variables that are mentioned on
-                     --  a generated Initializes aspect.
+                     --  this up). We also skip this check when checking final
+                     --  vertices of variables mentioned in the generated
+                     --  Initializes aspect.
                      for V_Def of
                        FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                      loop
@@ -2579,7 +2568,7 @@ package body Flow.Analysis is
                              and then
                                Change_Variant (Def_Key, Normal_Use) = Var_Used
                            then
-                              --  We're using the initial value.
+                              --  We're using the initial value
                               if Def_Atr.Is_Initialized then
                                  Is_Initialized   := True;
                               else
@@ -2588,13 +2577,13 @@ package body Flow.Analysis is
                            elsif Def_Atr.Variables_Defined.Contains (Var_Used)
                              or else Def_Atr.Volatiles_Read.Contains (Var_Used)
                            then
-                              --  We're using a previously written value.
+                              --  We're using a previously written value
                               Is_Initialized := True;
                            end if;
                         end;
                      end loop;
 
-                     --  Some useful debug output before we issue the message.
+                     --  Some debug output before we issue the message
                      if Debug_Trace_Check_Reads then
                         Write_Str ("@" & FA.DDG.Vertex_To_Natural (V)'Img);
                         if Is_Initialized then
@@ -2711,10 +2700,10 @@ package body Flow.Analysis is
            (From      : Flow_Graphs.Vertex_Id;
             To        : Flow_Graphs.Vertex_Id;
             CFG_Graph : Boolean := False) return Vertex_Sets.Set;
-         --  Returns the smallest set of vertices that make up a path
-         --  from "From" to "To" (excluding vertices "From" and "To").
-         --  By default it operates on the PDG graph. If CFG_Graph is
-         --  set to True then it operates on the CFG graph.
+         --  Returns the smallest set of vertices that make up a path from
+         --  "From" to "To" (excluding vertices "From" and "To"). By default
+         --  it operates on the PDG graph. If CFG_Graph is set to True then it
+         --  operates on the CFG.
 
          ------------------------------------
          --  Vertices_Between_From_And_To  --
@@ -2728,26 +2717,24 @@ package body Flow.Analysis is
             Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
             procedure Add_Loc (V : Flow_Graphs.Vertex_Id);
-            --  Step procedure for Shortest_Path.
+            --  Step procedure for Shortest_Path
 
             procedure Are_We_There_Yet
               (V           : Flow_Graphs.Vertex_Id;
                Instruction : out Flow_Graphs.Traversal_Instruction);
-            --  Visitor procedure for Shortest_Path.
+            --  Visitor procedure for Shortest_Path
 
             ---------------
             --  Add_Loc  --
             ---------------
 
-            procedure Add_Loc
-              (V : Flow_Graphs.Vertex_Id)
-            is
-               F_Kind : constant Flow_Id_Kind :=
-                 (if CFG_Graph
-                  then FA.CFG.Get_Key (V).Kind
-                  else FA.PDG.Get_Key (V).Kind);
+            procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
             begin
-               if V /= To and then V /= From and then F_Kind = Direct_Mapping
+               if V /= To
+                 and then V /= From
+                 and then (if CFG_Graph
+                             then FA.CFG.Get_Key (V).Kind
+                             else FA.PDG.Get_Key (V).Kind) = Direct_Mapping
                then
                   Vertices.Include (V);
                end if;
@@ -2852,7 +2839,7 @@ package body Flow.Analysis is
                                 "on Proof_In &",
                               SRM_Ref   => "6.1.4(17)",
                               N         => Find_Global (FA.Analyzed_Entity,
-                                Input),
+                                                        Input),
                               F1        => Output,
                               F2        => Input,
                               Severity  => Error_Kind,
