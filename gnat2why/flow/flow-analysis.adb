@@ -1978,11 +1978,9 @@ package body Flow.Analysis is
          --  Entity_Id of the latter, otherwise is Empty.
 
       begin
-         return (if Present (AS)
+         return (Present (AS)
                  and then Mentioned_On_Generated_Initializes
-                   (Direct_Mapping_Id (AS))
-                 then True
-                 else False);
+                   (Direct_Mapping_Id (AS)));
       end AS_In_Generated_Initializes;
 
       ---------------------
