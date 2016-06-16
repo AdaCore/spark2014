@@ -648,6 +648,7 @@ There are no verification rules associated with the Abstract_State aspect.
 .. centered:: **Examples**
 
 .. code-block:: ada
+   :linenos:
 
    package Q
      with Abstract_State => State         -- Declaration of abstract state named State
@@ -666,6 +667,9 @@ There are no verification rules associated with the Abstract_State aspect.
              Post   => Is_Ready;
    end Q;
 
+.. code-block:: ada
+   :linenos:
+
    package X
      with Abstract_State => (A,
                              B,
@@ -677,6 +681,9 @@ There are no verification rules associated with the Abstract_State aspect.
    is
       ...
    end X;
+
+.. code-block:: ada
+   :linenos:
 
    package Mileage
      with Abstract_State => (Trip,  -- number of miles so far on this trip
@@ -850,6 +857,7 @@ of the package.]
 .. centered:: **Examples**
 
 .. code-block:: ada
+   :linenos:
 
    package Q
      with Abstract_State => State,        -- Declaration of abstract state name State
@@ -861,6 +869,8 @@ of the package.]
       ...
    end Q;
 
+.. code-block:: ada
+   :linenos:
 
    with Q;
    package R
@@ -874,6 +884,9 @@ of the package.]
       ...
    end Q;
 
+.. code-block:: ada
+   :linenos:
+
    package Y
      with Abstract_State => (A, B, (C with External => (Async_Writers, Effective_Reads))),
           --  Three abstract state names are declared A, B & C.
@@ -885,6 +898,9 @@ of the package.]
    is
       ...
    end Y;
+
+.. code-block:: ada
+   :linenos:
 
    package Z
      with Abstract_State => A,
@@ -969,6 +985,7 @@ be a *Boolean_*\ ``expression``.
 .. centered:: **Examples**
 
 .. code-block:: ada
+   :linenos:
 
     package Q
        with Abstract_State    => State,    -- Declaration of abstract state name State
@@ -979,6 +996,9 @@ be a *Boolean_*\ ``expression``.
        function Is_Ready return Boolean
           with Global => State;
     end Q;
+
+.. code-block:: ada
+   :linenos:
 
     package X
        with Abstract_State    => A,      -- Declares an abstract state named A
@@ -1188,6 +1208,7 @@ There are no dynamic semantics associated with Refined_State aspect.
 .. centered:: **Examples**
 
 .. code-block:: ada
+   :linenos:
 
    -- Here, we present a package Q that declares two abstract states:
    package Q
@@ -1721,6 +1742,7 @@ were declared within a protected unit or task unit (see section
 .. centered:: **Examples**
 
 .. code-block:: ada
+   :linenos:
 
    package P
       --  P has no state abstraction
@@ -1756,6 +1778,9 @@ were declared within a protected unit or task unit (see section
       Z : T3;  --  hidden state
       ...
    end P.Pub;
+
+.. code-block:: ada
+   :linenos:
 
    package Outer
      with Abstract_State => (A1, A2)
@@ -1862,6 +1887,8 @@ were declared within a protected unit or task unit (see section
       end Init_A2_With;
    end Outer.Public_Child;
 
+.. code-block:: ada
+   :linenos:
 
    package Q
      with Abstract_State => (Q1, Q2)
@@ -1951,6 +1978,9 @@ were declared within a protected unit or task unit (see section
          Q.Child.Init_Q2;
       end Init_Q2;
    end Q;
+
+.. code-block:: ada
+   :linenos:
 
    package R
      with Abstract_State => R1
